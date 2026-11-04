@@ -1,0 +1,101 @@
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Dans une feuille de calcul, les valeurs 4, 7 et 12 sont en A2:A4 et leurs effectifs 3, 5 et 2 en B2:B4.
+
+[IMAGE_1]
+
+1. Écrire une formule donnant la somme pondérée.
+2. Calculer cette somme pondérée.
+3. Écrire une formule donnant l'effectif total, puis le calculer.
+4. En déduire la moyenne.
+5. Pourquoi la formule =MOYENNE(A2:A4) donnerait-elle un résultat faux ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : La formule de somme pondérée
+
+::: methode
+On multiplie chaque valeur (colonne A) par son effectif (colonne B), ligne par ligne, puis on additionne.
+:::
+
+::: etape Écrire la formule
+Une formule de tableur commence par `=`. Le produit s'écrit avec `*`.
+
+```console
+=A2*B2+A3*B3+A4*B4
+```
+:::
+
+::: resultat
+`=A2*B2+A3*B3+A4*B4`, ou plus court : `=SOMMEPROD(A2:A4;B2:B4)`.
+:::
+
+## Question 2 : La somme pondérée
+
+::: etape Calculer chaque produit
+$4 \times 3 = 12$ ; $7 \times 5 = 35$ ; $12 \times 2 = 24$.
+:::
+
+::: etape Additionner
+$$12 + 35 + 24 = 71$$
+:::
+
+::: resultat
+La somme pondérée vaut $71$.
+:::
+
+## Question 3 : L'effectif total
+
+::: etape Formule
+`=SOMME(B2:B4)` additionne les effectifs.
+:::
+
+::: etape Calcul
+$$3 + 5 + 2 = 10$$
+:::
+
+::: resultat
+L'effectif total est $10$.
+:::
+
+## Question 4 : La moyenne
+
+::: methode
+Moyenne pondérée = somme pondérée ÷ effectif total.
+:::
+
+::: etape Calculer
+$$\frac{71}{10} = 7{,}1$$
+:::
+
+::: resultat
+La moyenne est $7{,}1$.
+:::
+
+## Question 5 : L'erreur de =MOYENNE(A2:A4)
+
+::: etape Ce que calcule cette formule
+Elle fait la moyenne des trois nombres écrits : $\dfrac{4 + 7 + 12}{3} = \dfrac{23}{3} \approx 7{,}67$.
+:::
+
+::: resultat
+Elle ignore les effectifs : chaque valeur compte une seule fois, alors que $7$ apparaît $5$ fois et $12$ seulement $2$ fois.
+:::
+
+::: attention Erreur fréquente
+Utiliser `=MOYENNE(A2:A4)` pour un tableau d'effectifs : le résultat $7{,}67$ est faux, la bonne moyenne pondérée est $7{,}1$.
+:::
+
+::: retenir
+Avec des effectifs, on pondère toujours avant de diviser.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. `=A2*B2+A3*B3+A4*B4`
+2. $71$
+3. `=SOMME(B2:B4)`, soit $10$
+4. $7{,}1$
+5. Elle ignore les effectifs ($\approx 7{,}67$ au lieu de $7{,}1$)

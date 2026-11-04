@@ -1,0 +1,597 @@
+Titre: Combinatoire et dénombrement
+
+<!-- optitab:1 -->
+::: remarque Sections principales
+Les sections I à VII couvrent les concepts fondamentaux de la combinatoire et du dénombrement. Les parties marquées **« Bonus »** sont des approfondissements utiles qui vous permettent d'explorer des thèmes avancés.
+:::
+
+## I. Produit cartésien et k-uplets
+
+### Couple, triplet, k-uplet
+
+::: definition Couple, triplet, k-uplet
+Soient $A$ et $B$ deux ensembles.
+
+- Un **couple** est un élément de la forme $(a, b)$ où $a \in A$ et $b \in B$
+- Un **triplet** est un élément de la forme $(a, b, c)$ où $a \in A$, $b \in B$, $c \in C$
+- Un **k-uplet** (ou **k-liste**) est un élément de la forme $(a_1, a_2, \ldots, a_k)$ où chaque $a_i$ appartient à un ensemble donné
+:::
+
+::: definition Produit cartésien
+Le **produit cartésien** de deux ensembles $A$ et $B$ est l'ensemble de tous les couples :
+
+::: formule
+$$A \times B = \{(a, b) \mid a \in A, b \in B\}$$
+:::
+
+Plus généralement, pour $k$ ensembles $A_1, A_2, \ldots, A_k$ :
+
+::: formule
+$$A_1 \times A_2 \times \cdots \times A_k = \{(a_1, a_2, \ldots, a_k) \mid a_i \in A_i\}$$
+:::
+:::
+
+::: definition Ensemble $\displaystyle A^k$
+Pour un ensemble $A$ et un entier $k \geq 1$, on note $A^k$ l'ensemble des k-uplets d'éléments de $A$ :
+
+::: formule
+$$A^k = \underbrace{A \times A \times \cdots \times A}_{k \text{ fois}}$$
+:::
+:::
+
+::: exemple 1 - Produit cartésien
+Soit $A = \{Rouge, Vert\}$ et $B = \{Petit, Grand\}$.
+
+$$A \times B = \{(Rouge, Petit), (Rouge, Grand), (Vert, Petit), (Vert, Grand)\}$$
+
+Il y a $\displaystyle 2 \times 2 = 4$ couples possibles.
+:::
+
+::: exemple 2 - k-uplets
+Soit $\displaystyle A = \{1, 2, 3\}$.
+
+$$A^2 = \{(1,1), (1,2), (1,3), (2,1), (2,2), (2,3), (3,1), (3,2), (3,3)\}$$
+
+Il y a $3^2 = 9$ éléments dans $A^2$.
+
+Pour $A^3$, il y aurait $3^3 = 27$ triplets possibles.
+:::
+
+## II. Principe additif
+
+### Théorème du principe additif
+
+::: theoreme Principe additif
+Si $A_1, A_2, \ldots, A_k$ sont des ensembles **deux à deux disjoints** (c'est-à-dire $A_i \cap A_j = \emptyset$ pour $i \neq j$), alors :
+
+::: formule
+$$|A_1 \cup A_2 \cup \cdots \cup A_k| = |A_1| + |A_2| + \cdots + |A_k|$$
+:::
+
+où $|A|$ désigne le nombre d'éléments de l'ensemble $A$.
+:::
+
+::: attention Important
+Le principe additif ne s'applique que si les ensembles sont **deux à deux disjoints**. Sinon, il faut utiliser la formule du crible (approche avancée).
+:::
+
+::: exemple 1 - Principe additif
+Dans une classe, il y a 12 élèves qui font du sport et 8 élèves qui font de la musique, et aucun élève ne fait les deux.
+
+Le nombre d'élèves qui font du sport ou de la musique est : $12 + 8 = 20$.
+:::
+
+::: exemple 2 - Principe additif (plusieurs ensembles)
+Un restaurant propose 3 entrées, 5 plats et 4 desserts. Un client choisit soit une entrée, soit un plat, soit un dessert (mais pas plusieurs).
+
+Le nombre de choix possibles est : $3 + 5 + 4 = 12$.
+:::
+
+## III. Principe multiplicatif
+
+### Théorème du principe multiplicatif
+
+::: theoreme Principe multiplicatif
+Le nombre d'éléments du produit cartésien $A_1 \times A_2 \times \cdots \times A_k$ est :
+
+::: formule
+$$|A_1 \times A_2 \times \cdots \times A_k| = |A_1| \times |A_2| \times \cdots \times |A_k|$$
+:::
+:::
+
+::: theoreme Nombre de k-uplets
+Pour un ensemble $A$ à $n$ éléments, le nombre de k-uplets d'éléments de $A$ est :
+
+::: formule
+$$|A^k| = n^k$$
+:::
+:::
+
+::: exemple 1 - Principe multiplicatif (produit cartésien)
+On lance deux dés équilibrés. Le nombre de résultats possibles est :
+
+$$6 \times 6 = 36$$
+
+Plus généralement, pour $k$ lancers, il y a $6^k$ résultats possibles.
+:::
+
+::: exemple 2 - Principe multiplicatif (k-uplets)
+On forme un code à 4 chiffres (de 0 à 9). Chaque chiffre peut être choisi indépendamment.
+
+Le nombre de codes possibles est : $10^4 = 10000$.
+
+Pour un code à 6 caractères (lettres majuscules de A à Z), il y aurait $26^6 = 308915776$ codes possibles.
+:::
+
+## IV. Nombre de parties d'un ensemble
+
+### Théorème
+
+::: theoreme Nombre de parties
+Un ensemble à $n$ éléments possède exactement $2^n$ parties (sous-ensembles).
+
+::: formule
+$$|\mathcal{P}(A)| = 2^n$$
+:::
+
+où $\mathcal{P}(A)$ désigne l'ensemble des parties de $A$.
+:::
+
+::: propriete Liens avec d'autres objets
+Le nombre de parties d'un ensemble à $n$ éléments est égal à :
+
+- Le nombre de n-uplets de $\{0, 1\}$ (chaque élément est soit dans la partie, soit pas)
+- Le nombre de mots de longueur $n$ sur un alphabet à deux éléments
+- Le nombre de chemins dans un arbre binaire de profondeur $n$
+- Le nombre d'issues dans une succession de $n$ épreuves de Bernoulli
+:::
+
+::: exemple 1 - Nombre de parties
+L'ensemble $A = \{a, b, c\}$ a $2^3 = 8$ parties :
+
+$$\emptyset, \{a\}, \{b\}, \{c\}, \{a,b\}, \{a,c\}, \{b,c\}, \{a,b,c\}$$
+:::
+
+::: exemple 2 - Lien avec les n-uplets de {0,1}
+Pour $A = \{a, b, c\}$, chaque partie correspond à un triplet de $\{0, 1\}$ :
+
+$(0,0,0) \leftrightarrow \emptyset$, $(1,0,0) \leftrightarrow \{a\}$, $(1,1,0) \leftrightarrow \{a,b\}$, etc.
+
+Il y a bien $2^3 = 8$ triplets possibles, donc 8 parties.
+:::
+
+## V. Permutations
+
+### Définition
+
+::: definition Permutation
+Une **permutation** d'un ensemble fini $A$ est un **arrangement de tous les éléments** de $A$ dans un certain ordre.
+
+C'est un n-uplet d'éléments **distincts** de $A$, où $n = |A|$.
+:::
+
+::: definition Factorielle
+Pour un entier naturel $n$, on définit la **factorielle** de $n$, notée $n!$, par :
+
+- $\displaystyle 0! = 1$
+- $n! = n \times (n-1) \times (n-2) \times \cdots \times 2 \times 1$ pour $n \geq 1$
+:::
+
+::: theoreme Nombre de permutations
+Le nombre de permutations d'un ensemble à $n$ éléments est :
+
+::: formule
+$$n!$$
+:::
+:::
+
+::: exemple 1 - Permutations
+Le nombre de façons d'arranger 5 personnes en ligne est :
+
+$$5! = 5 \times 4 \times 3 \times 2 \times 1 = 120$$
+
+Par exemple, pour les personnes A, B, C, D, E, on peut avoir : (A,B,C,D,E), (A,B,C,E,D), (B,A,C,D,E), etc.
+:::
+
+::: exemple 2 - Factorielle
+Calculons quelques factorielles :
+
+$\displaystyle 0! = 1$ (par convention)
+
+$$1! = 1$$
+
+$$3! = 3 \times 2 \times 1 = 6$$
+
+$$4! = 4 \times 3 \times 2 \times 1 = 24$$
+:::
+
+### Arrangements (k-uplets d'éléments distincts)
+
+::: definition Arrangement
+Un **arrangement** de $k$ éléments d'un ensemble à $n$ éléments est un k-uplet d'éléments **distincts**.
+:::
+
+::: theoreme Nombre d'arrangements
+Le nombre d'arrangements de $k$ éléments parmi $n$ est :
+
+::: formule
+$$
+\begin{aligned}
+A_n^k &= n \times (n-1) \times \cdots \times (n-k+1) \\
+&= \frac{n!}{(n-k)!}
+\end{aligned}
+$$
+:::
+:::
+
+::: exemple 1 - Arrangements
+Le nombre de façons de choisir et d'ordonner 3 personnes parmi 10 pour former un podium (1er, 2ème, 3ème) est :
+
+$$A_{10}^3 = 10 \times 9 \times 8 = 720$$
+
+On peut aussi calculer : $\displaystyle A_{10}^3 = \frac{10!}{(10-3)!} = \frac{10!}{7!} = \frac{10 \times 9 \times 8 \times 7!}{7!} = 720$
+:::
+
+::: exemple 2 - Arrangements (autre situation)
+On veut former un mot de 4 lettres distinctes à partir de l'alphabet {A, B, C, D, E, F} (26 lettres).
+
+Le nombre de mots possibles est : $A_{26}^4 = 26 \times 25 \times 24 \times 23 = 358800$
+
+Par exemple : ABCD, ABDC, ACBD, etc. (l'ordre des lettres compte).
+:::
+
+## VI. Combinaisons et coefficients binomiaux
+
+### Définition
+
+::: definition Combinaison
+Une **combinaison** de $k$ éléments d'un ensemble à $n$ éléments est une **partie à $k$ éléments** de cet ensemble.
+
+L'ordre n'a pas d'importance dans une combinaison (contrairement à un arrangement).
+:::
+
+::: definition Coefficient binomial
+Le **coefficient binomial** $\binom{n}{k}$ (lire « k parmi n ») est le nombre de combinaisons de $k$ éléments parmi $n$.
+
+::: formule
+$$\binom{n}{k} = \frac{n!}{k!(n-k)!}$$
+:::
+
+pour $\displaystyle 0 \leq k \leq n$.
+:::
+
+::: propriete Relation avec les arrangements
+Le nombre d'arrangements de $k$ éléments parmi $n$ est égal au nombre de combinaisons multiplié par le nombre de permutations de $k$ éléments :
+
+::: formule
+$$A_n^k = \binom{n}{k} \times k!$$
+:::
+:::
+
+::: exemple 1 - Combinaisons
+Le nombre de façons de choisir 3 personnes parmi 10 pour former une équipe (l'ordre n'a pas d'importance) est :
+
+$$
+\begin{aligned}
+\binom{10}{3} &= \frac{10!}{3! \times 7!} \\
+&= \frac{10 \times 9 \times 8}{3 \times 2 \times 1} \\
+&= 120
+\end{aligned}
+$$
+
+Les équipes {A, B, C}, {A, C, B} et {B, A, C} sont identiques (même combinaison).
+:::
+
+::: exemple 2 - Relation avec les arrangements
+Pour former un podium (ordre important) avec 3 personnes parmi 10, on a $A_{10}^3 = 720$ façons.
+
+Pour former une équipe (ordre non important) avec 3 personnes parmi 10, on a $\binom{10}{3} = 120$ façons.
+
+On vérifie : $\displaystyle A_{10}^3 = \binom{10}{3} \times 3! = 120 \times 6 = 720$
+:::
+
+### Formules et propriétés
+
+::: theoreme Formule alternative
+Pour $\displaystyle 0 \leq k \leq n$ :
+
+::: formule
+$$\binom{n}{k} = \frac{n \times (n-1) \times \cdots \times (n-k+1)}{k!}$$
+:::
+:::
+
+::: propriete Cas particuliers
+- $\displaystyle \binom{n}{0} = 1$ (une seule partie vide)
+- $\displaystyle \binom{n}{1} = n$ (n singletons)
+- $\displaystyle \binom{n}{2} = \frac{n(n-1)}{2}$ (nombre de paires)
+- $\binom{n}{n} = 1$ (une seule partie : l'ensemble lui-même)
+- $\displaystyle \binom{n}{n-1} = n$ (n parties à n-1 éléments)
+:::
+
+::: propriete Symétrie
+Pour $\displaystyle 0 \leq k \leq n$ :
+
+::: formule
+$$\binom{n}{k} = \binom{n}{n-k}$$
+:::
+:::
+
+::: exemple 1 - Symétrie
+$$\binom{10}{3} = \binom{10}{7} = 120$$
+
+Choisir 3 éléments parmi 10 revient à choisir les 7 éléments qu'on ne prend pas.
+:::
+
+::: exemple 2 - Cas particuliers
+Pour un ensemble à 8 éléments :
+
+$\binom{8}{0} = 1$ (une seule partie vide : $\emptyset$)
+
+$\binom{8}{1} = 8$ (8 singletons : $\{a\}, \{b\}, \ldots, \{h\}$)
+
+$\displaystyle \binom{8}{2} = \frac{8 \times 7}{2} = 28$ (28 paires possibles)
+
+$\binom{8}{8} = 1$ (une seule partie : l'ensemble complet)
+:::
+
+### Quel outil utiliser ?
+
+::: methode Choisir l'outil de dénombrement adapté
+Pour déterminer quel outil utiliser, posez-vous deux questions :
+
+1. **L'ordre est-il important ?** (Est-ce que (a,b) est différent de (b,a) ?)
+2. **Les répétitions sont-elles autorisées ?** (Peut-on choisir le même élément plusieurs fois ?)
+
+| Ordre | Répétitions | Outil | Formule |
+|---|---|---|---|
+| **Important** | **Non** | **Arrangement** | $\displaystyle A_n^k = \frac{n!}{(n-k)!}$ |
+| **Important** | **Oui** | **k-uplet** | $\displaystyle n^k$ |
+| **Non important** | **Non** | **Combinaison** | $\displaystyle \binom{n}{k} = \frac{n!}{k!(n-k)!}$ |
+| **Non important** | **Oui** | ** Combinaison avec répétitions** | $\displaystyle \binom{n+k-1}{k}$ |
+:::
+
+::: exemple
+- **Arrangement (ordre important, sans répétition) :** Choisir et ordonner 3 personnes parmi 10 pour former un podium (1er, 2ème, 3ème). $A_{10}^3 = 720$ façons.
+- **k-uplet (ordre important, avec répétition) :** Former un code à 4 chiffres (de 0 à 9). $10^4 = 10000$ codes possibles.
+- **Combinaison (ordre non important, sans répétition) :** Choisir 3 personnes parmi 10 pour former une équipe (l'ordre n'a pas d'importance). $\binom{10}{3} = 120$ façons.
+- ** Combinaison avec répétitions (ordre non important, avec répétition) :** Choisir 3 fruits parmi 4 types (pomme, banane, orange, kiwi) en autorisant les répétitions. $\binom{4+3-1}{3} = \binom{6}{3} = 20$ façons.
+:::
+
+## VII. Triangle de Pascal et relation de Pascal
+
+### Relation de Pascal
+
+::: theoreme Relation de Pascal
+Pour $\displaystyle 1 \leq k \leq n-1$ :
+
+::: formule
+$$\binom{n}{k} = \binom{n-1}{k-1} + \binom{n-1}{k}$$
+:::
+:::
+
+::: demonstration
+**Méthode combinatoire :**
+
+Pour choisir $k$ éléments parmi $n$, on peut :
+
+- Soit prendre un élément fixé (par exemple le premier) : $\binom{n-1}{k-1}$ façons
+- Soit ne pas le prendre : $\displaystyle \binom{n-1}{k}$ façons
+
+D'où : $\displaystyle \binom{n}{k} = \binom{n-1}{k-1} + \binom{n-1}{k}$
+
+**Méthode par le calcul :**
+
+$$\binom{n-1}{k-1} + \binom{n-1}{k} = \frac{(n-1)!}{(k-1)!(n-k)!} + \frac{(n-1)!}{k!(n-k-1)!}$$
+
+$$
+\begin{aligned}
+= \frac{(n-1)!}{k!(n-k)!}[k + (n-k)] &= \frac{(n-1)! \times n}{k!(n-k)!} \\
+&= \binom{n}{k}
+\end{aligned}
+$$
+:::
+
+::: propriete Triangle de Pascal
+Le **triangle de Pascal** est un tableau triangulaire où chaque ligne $n$ contient les coefficients $\binom{n}{0}, \binom{n}{1}, \ldots, \binom{n}{n}$.
+
+Chaque coefficient (sauf ceux des bords qui valent 1) est la somme des deux coefficients situés au-dessus.
+:::
+
+::: exemple 1 - Triangle de Pascal (premières lignes)
+Ligne 0 : $\displaystyle 1$
+
+Ligne 1 : $\displaystyle 1 \quad 1$
+
+Ligne 2 : $\displaystyle 1 \quad 2 \quad 1$
+
+Ligne 3 : $\displaystyle 1 \quad 3 \quad 3 \quad 1$
+
+Ligne 4 : $\displaystyle 1 \quad 4 \quad 6 \quad 4 \quad 1$
+
+Par exemple : $\displaystyle \binom{4}{2} = 6 = 3 + 3 = \binom{3}{1} + \binom{3}{2}$
+:::
+
+::: exemple 2 - Application de la relation de Pascal
+Pour calculer $\binom{5}{3}$ en utilisant la relation de Pascal :
+
+$$
+\begin{aligned}
+\binom{5}{3} &= \binom{4}{2} + \binom{4}{3} \\
+&= 6 + 4 \\
+&= 10
+\end{aligned}
+$$
+
+Vérification : $\displaystyle \binom{5}{3} = \frac{5!}{3! \times 2!} = \frac{5 \times 4}{2} = 10$
+:::
+
+### Formule du binôme
+
+::: theoreme Somme des coefficients binomiaux
+Pour tout entier naturel $\displaystyle n$ :
+
+::: formule
+$$\sum_{k=0}^{n} \binom{n}{k} = 2^n$$
+:::
+:::
+
+::: demonstration
+Le nombre total de parties d'un ensemble à $n$ éléments est $2^n$.
+
+Or, ce nombre est aussi la somme du nombre de parties à 0 élément, 1 élément, ..., n éléments :
+
+$$
+\begin{aligned}
+2^n &= \binom{n}{0} + \binom{n}{1} + \cdots + \binom{n}{n} \\
+&= \sum_{k=0}^{n} \binom{n}{k}
+\end{aligned}
+$$
+:::
+
+::: exemple 1 - Somme des coefficients binomiaux
+Pour $\displaystyle n = 4$ :
+
+$$
+\begin{aligned}
+\binom{4}{0} + \binom{4}{1} + \binom{4}{2} + \binom{4}{3} + \binom{4}{4} &= 1 + 4 + 6 + 4 + 1 \\
+&= 16 \\
+&= 2^4
+\end{aligned}
+$$
+
+Cela correspond bien au nombre total de parties d'un ensemble à 4 éléments.
+:::
+
+::: exemple 2 - Interprétation combinatoire
+Pour un ensemble à 5 éléments, le nombre total de parties est :
+
+$$
+\begin{aligned}
+\sum_{k=0}^{5} \binom{5}{k} &= \binom{5}{0} + \binom{5}{1} + \binom{5}{2} + \binom{5}{3} + \binom{5}{4} + \binom{5}{5} \\
+&= 1 + 5 + 10 + 10 + 5 + 1 \\
+&= 32 \\
+&= 2^5
+\end{aligned}
+$$
+:::
+
+## VIII. Bonus - Algorithmes
+
+::: methode Approfondissement
+Les algorithmes suivants illustrent des applications de la combinatoire. Cette section est un approfondissement utile qui vous permet d'explorer des implémentations pratiques.
+:::
+
+### Bonus - Génération des coefficients binomiaux
+
+::: attention Algorithme
+Pour un entier $n$ donné, générer la liste des coefficients $\binom{n}{k}$ à l'aide de la relation de Pascal.
+:::
+
+```python
+def coefficients_binomiaux(n):
+    ligne = [1]  # Ligne 0
+    for i in range(1, n+1):
+        nouvelle_ligne = [1]
+        for j in range(1, i):
+            nouvelle_ligne.append(ligne[j-1] + ligne[j])
+        nouvelle_ligne.append(1)
+        ligne = nouvelle_ligne
+    return ligne
+```
+
+### Bonus - Génération des permutations
+
+::: attention Algorithme
+Générer toutes les permutations d'un ensemble fini, ou tirer aléatoirement une permutation.
+:::
+
+```python
+from random import shuffle
+
+def permutation_aleatoire(ensemble):
+    liste = list(ensemble)
+    shuffle(liste)
+    return liste
+```
+
+### Bonus - Génération des parties
+
+::: attention Algorithme
+Générer les parties à 2, 3 éléments d'un ensemble fini.
+:::
+
+```python
+from itertools import combinations
+
+def parties_k_elements(ensemble, k):
+    return list(combinations(ensemble, k))
+```
+
+::: exemple Note
+En évaluation, l'algorithme pourra être donné en pseudo-code ou en français ; ici il est illustré en Python.
+:::
+
+## IX. Bonus - Approfondissements possibles
+
+::: methode Approfondissement
+Les sections suivantes enrichissent votre culture mathématique et vous offrent une vision plus profonde de la combinatoire.
+:::
+
+### Bonus - Combinaisons avec répétitions
+
+::: definition Combinaisons avec répétitions
+Une **combinaison avec répétitions** de $k$ éléments parmi $n$ est un k-uplet où l'ordre n'a pas d'importance et où les répétitions sont autorisées.
+
+Le nombre de combinaisons avec répétitions de $k$ éléments parmi $n$ est :
+
+::: formule
+$$\binom{n+k-1}{k}$$
+:::
+:::
+
+::: exemple
+Le nombre de façons de choisir 3 fruits parmi 4 types (pomme, banane, orange, kiwi) en autorisant les répétitions est :
+
+$$\binom{4+3-1}{3} = \binom{6}{3} = 20$$
+:::
+
+## X. Erreurs fréquentes et conseils
+
+::: attention
+- Confondre arrangement et combinaison (l'ordre compte-t-il ?)
+- Oublier que le principe additif nécessite des ensembles disjoints
+- Confondre $\binom{n}{k}$ et $\binom{k}{n}$
+- Oublier que $\displaystyle 0! = 1$
+- Ne pas vérifier que $0 \leq k \leq n$ avant de calculer $\binom{n}{k}$
+- Confondre k-uplets (avec répétitions possibles) et arrangements (sans répétitions)
+- Oublier de représenter la situation (arbre, tableau) avant de dénombrer
+:::
+
+::: conseil
+- Toujours se demander si l'ordre compte (arrangement) ou non (combinaison)
+- Vérifier si les répétitions sont autorisées
+- Utiliser une représentation adaptée (arbre, tableau, diagramme)
+- Vérifier que $0 \leq k \leq n$ avant d'utiliser $\binom{n}{k}$
+- Utiliser la symétrie $\binom{n}{k} = \binom{n}{n-k}$ pour simplifier les calculs
+- Pour les grands nombres, utiliser la formule $\binom{n}{k} = \frac{n \times (n-1) \times \cdots \times (n-k+1)}{k!}$
+- Interpréter les résultats dans le contexte de l'exercice
+:::
+
+## XI. Tableau récapitulatif
+
+::: methode Récapitulatif - Formules et définitions à retenir
+| Notion | Formule / Définition |
+|---|---|
+| **Principe additif** | Si $\displaystyle A_1, \ldots, A_k$ sont deux à deux disjoints : <br> $\displaystyle |A_1 \cup \cdots \cup A_k| = |A_1| + \cdots + |A_k|$ |
+| **Principe multiplicatif** | $\displaystyle |A_1 \times \cdots \times A_k| = |A_1| \times \cdots \times |A_k|$ <br> $\displaystyle |A^k| = n^k$ (si $\displaystyle |A| = n$) |
+| **Nombre de parties** | Un ensemble à $\displaystyle n$ éléments a $\displaystyle 2^n$ parties |
+| **Factorielle** | $\displaystyle 0! = 1$ <br> $\displaystyle n! = n \times (n-1) \times \cdots \times 2 \times 1$ pour $\displaystyle n \geq 1$ |
+| **Permutations** | Nombre de permutations d'un ensemble à $\displaystyle n$ éléments : $\displaystyle n!$ |
+| **Arrangements** | Nombre d'arrangements de $\displaystyle k$ éléments parmi $\displaystyle n$ : <br> $\displaystyle A_n^k = \frac{n!}{(n-k)!} = n \times (n-1) \times \cdots \times (n-k+1)$ |
+| **Combinaisons** | Nombre de combinaisons de $\displaystyle k$ éléments parmi $\displaystyle n$ : <br> $\displaystyle \binom{n}{k} = \frac{n!}{k!(n-k)!} = \frac{n \times (n-1) \times \cdots \times (n-k+1)}{k!}$ |
+| **Cas particuliers** | $\displaystyle \binom{n}{0} = 1$, $\displaystyle \binom{n}{1} = n$, $\displaystyle \binom{n}{2} = \frac{n(n-1)}{2}$ <br> $\displaystyle \binom{n}{n} = 1$, $\displaystyle \binom{n}{n-1} = n$ |
+| **Symétrie** | $\displaystyle \binom{n}{k} = \binom{n}{n-k}$ |
+| **Relation de Pascal** | $\displaystyle \binom{n}{k} = \binom{n-1}{k-1} + \binom{n-1}{k}$ (pour $\displaystyle 1 \leq k \leq n-1$) |
+| **Somme des coefficients** | $\displaystyle \sum_{k=0}^{n} \binom{n}{k} = 2^n$ |
+| **Relation arrangements / combinaisons** | $\displaystyle A_n^k = \binom{n}{k} \times k!$ |
+:::

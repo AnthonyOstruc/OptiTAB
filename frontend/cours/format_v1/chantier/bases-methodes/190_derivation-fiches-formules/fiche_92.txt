@@ -1,0 +1,203 @@
+Titre: Résumé : Dérivation - Formules Usuelles et Règles de Calcul
+
+<!-- optitab:1 -->
+## I. Définition du nombre dérivé
+
+| Notion | Définition |
+|---|---|
+| **Nombre dérivé en $\displaystyle a$** | $\displaystyle f'(a) = \lim_{h \to 0} \dfrac{f(a+h) - f(a)}{h}$ |
+| **Formule équivalente** | $\displaystyle f'(a) = \lim_{x \to a} \dfrac{f(x) - f(a)}{x - a}$ |
+| **Interprétation géométrique** | Coefficient directeur de la tangente à la courbe au point $\displaystyle (a, f(a))$ |
+| **Équation de la tangente** | $\displaystyle y = f'(a)(x - a) + f(a)$ |
+
+## II. Dérivées des fonctions usuelles
+
+| Fonction $\displaystyle f(x)$ | Dérivée $\displaystyle f'(x)$ | Domaine |
+|---|---|---|
+| $\displaystyle k$ (constante) | $\displaystyle 0$ | $\displaystyle \mathbb{R}$ |
+| $\displaystyle x$ | $\displaystyle 1$ | $\displaystyle \mathbb{R}$ |
+| $\displaystyle x^n$ ($\displaystyle n \in \mathbb{N}$, $\displaystyle n \geq 1$) | $\displaystyle nx^{n-1}$ | $\displaystyle \mathbb{R}$ |
+| $\displaystyle \dfrac{1}{x}$ | $\displaystyle -\dfrac{1}{x^2}$ | $\displaystyle \mathbb{R}^\ast$ |
+| $\displaystyle \dfrac{1}{x^n}$ ($\displaystyle n \geq 1$) | $\displaystyle -\dfrac{n}{x^{n+1}}$ | $\displaystyle \mathbb{R}^\ast$ |
+| $\displaystyle \sqrt{x}$ | $\displaystyle \dfrac{1}{2\sqrt{x}}$ | $\displaystyle ]0, +\infty[$ |
+| $\displaystyle e^x$ | $\displaystyle e^x$ | $\displaystyle \mathbb{R}$ |
+| $\displaystyle \ln(x)$ | $\displaystyle \dfrac{1}{x}$ | $\displaystyle ]0, +\infty[$ |
+| $\displaystyle \sin(x)$ | $\displaystyle \cos(x)$ | $\displaystyle \mathbb{R}$ |
+| $\displaystyle \cos(x)$ | $\displaystyle -\sin(x)$ | $\displaystyle \mathbb{R}$ |
+| $\displaystyle \tan(x)$ | $\displaystyle 1 + \tan^2(x) = \dfrac{1}{\cos^2(x)}$ | $\displaystyle \mathbb{R} \setminus \{\frac{\pi}{2} + k\pi\}$ |
+
+::: attention
+La dérivée de $\cos(x)$ est $-\sin(x)$ (ne pas oublier le signe $-$)
+:::
+
+## III. Opérations sur les dérivées
+
+| Fonction | Dérivée |
+|---|---|
+| $\displaystyle k \times u$ (où $\displaystyle k$ est une constante) | $\displaystyle k \times u'$ |
+| $\displaystyle u + v$ | $\displaystyle u' + v'$ |
+| $\displaystyle u - v$ | $\displaystyle u' - v'$ |
+| $\displaystyle u \times v$ | $\displaystyle u' \times v + u \times v'$ |
+| $\displaystyle \dfrac{1}{v}$ (si $\displaystyle v \neq 0$) | $\displaystyle -\dfrac{v'}{v^2}$ |
+| $\displaystyle \dfrac{u}{v}$ (si $\displaystyle v \neq 0$) | $\displaystyle \dfrac{u' \times v - u \times v'}{v^2}$ |
+
+| Exemples |
+|---|
+| **Produit :** Si $\displaystyle f(x) = x \times e^x$, alors $\displaystyle f'(x) = 1 \times e^x + x \times e^x = (1+x)e^x$ <br> <br> **Quotient :** Si $\displaystyle f(x) = \dfrac{x}{x+1}$, alors $\displaystyle f'(x) = \dfrac{1 \times (x+1) - x \times 1}{(x+1)^2} = \dfrac{1}{(x+1)^2}$ |
+
+## IV. Dérivée d'une fonction composée
+
+| Règle générale |
+|---|
+| Si $\displaystyle f = g \circ u$, alors $\displaystyle f'(x) = u'(x) \times g'(u(x))$ <br> <br> Autrement dit : $\displaystyle [g(u(x))]' = u'(x) \times g'(u(x))$ |
+
+| Fonction composée | Dérivée |
+|---|---|
+| $\displaystyle u^n$ ($\displaystyle n \in \mathbb{N}$, $\displaystyle n \geq 1$) | $\displaystyle n \times u' \times u^{n-1}$ |
+| $\displaystyle \dfrac{1}{u}$ (si $\displaystyle u \neq 0$) | $\displaystyle -\dfrac{u'}{u^2}$ |
+| $\displaystyle \sqrt{u}$ (si $\displaystyle u > 0$) | $\displaystyle \dfrac{u'}{2\sqrt{u}}$ |
+| $\displaystyle e^{u}$ | $\displaystyle u' \times e^{u}$ |
+| $\displaystyle \ln(u)$ (si $\displaystyle u > 0$) | $\displaystyle \dfrac{u'}{u}$ |
+| $\displaystyle \sin(u)$ | $\displaystyle u' \times \cos(u)$ |
+| $\displaystyle \cos(u)$ | $\displaystyle -u' \times \sin(u)$ |
+
+| Exemples pratiques |
+|---|
+| **1.** $\displaystyle f(x) = (3x + 1)^5$ → $\displaystyle f'(x) = 5 \times 3 \times (3x+1)^4 = 15(3x+1)^4$ <br> <br> **2.** $\displaystyle f(x) = e^{2x}$ → $\displaystyle f'(x) = 2 \times e^{2x} = 2e^{2x}$ <br> <br> **3.** $\displaystyle f(x) = \ln(x^2 + 1)$ → $\displaystyle f'(x) = \dfrac{2x}{x^2 + 1}$ <br> <br> **4.** $\displaystyle f(x) = \sin(5x)$ → $\displaystyle f'(x) = 5\cos(5x)$ <br> <br> **5.** $\displaystyle f(x) = \sqrt{x^2 + 3}$ → $\displaystyle f'(x) = \dfrac{2x}{2\sqrt{x^2 + 3}} = \dfrac{x}{\sqrt{x^2 + 3}}$ |
+
+## V. Tableau récapitulatif complet des dérivées (Lycée → Master)
+
+### 1. Fonctions de base (Lycée)
+
+| Fonction | Dérivée | Conditions |
+|---|---|---|
+| $\displaystyle k$ (constante) | $\displaystyle 0$ | — |
+| $\displaystyle x$ | $\displaystyle 1$ | — |
+| $\displaystyle x^n$ ($\displaystyle n \in \mathbb{N}$) | $\displaystyle nx^{n-1}$ | $\displaystyle n \geq 1$ |
+| $\displaystyle x^\alpha$ ($\displaystyle \alpha \in \mathbb{R}$) | $\displaystyle \alpha x^{\alpha-1}$ | $\displaystyle x > 0$ |
+| $\displaystyle \dfrac{1}{x}$ ou $\displaystyle x^{-1}$ | $\displaystyle -\dfrac{1}{x^2}$ ou $\displaystyle -x^{-2}$ | $\displaystyle x \neq 0$ |
+| $\displaystyle \dfrac{1}{x^n}$ ou $\displaystyle x^{-n}$ | $\displaystyle -\dfrac{n}{x^{n+1}}$ ou $\displaystyle -nx^{-n-1}$ | $\displaystyle x \neq 0$ |
+| $\displaystyle \sqrt{x}$ ou $\displaystyle x^{1/2}$ | $\displaystyle \dfrac{1}{2\sqrt{x}}$ ou $\displaystyle \dfrac{1}{2}x^{-1/2}$ | $\displaystyle x > 0$ |
+| $\displaystyle \sqrt[n]{x}$ ou $\displaystyle x^{1/n}$ | $\displaystyle \dfrac{1}{n\sqrt[n]{x^{n-1}}}$ ou $\displaystyle \dfrac{1}{n}x^{(1/n)-1}$ | $\displaystyle x > 0$ |
+| $\displaystyle |x|$ | $\displaystyle \dfrac{x}{|x|}$ (signe de $\displaystyle x$) | $\displaystyle x \neq 0$ |
+
+### 2. Fonctions exponentielles et logarithmes (Lycée/Prépa)
+
+| Fonction | Dérivée | Conditions |
+|---|---|---|
+| $\displaystyle e^x$ | $\displaystyle e^x$ | — |
+| $\displaystyle e^{u}$ | $\displaystyle u' \times e^{u}$ | — |
+| $\displaystyle a^x$ ($\displaystyle a > 0$) | $\displaystyle a^x \ln(a)$ | $\displaystyle a \neq 1$ |
+| $\displaystyle a^u$ ($\displaystyle a > 0$) | $\displaystyle u' \times a^u \ln(a)$ | $\displaystyle a \neq 1$ |
+| $\displaystyle \ln(x)$ | $\displaystyle \dfrac{1}{x}$ | $\displaystyle x > 0$ |
+| $\displaystyle \ln(u)$ | $\displaystyle \dfrac{u'}{u}$ | $\displaystyle u > 0$ |
+| $\displaystyle \log_a(x)$ ($\displaystyle a > 0$, $\displaystyle a \neq 1$) | $\displaystyle \dfrac{1}{x\ln(a)}$ | $\displaystyle x > 0$ |
+| $\displaystyle \ln|x|$ | $\displaystyle \dfrac{1}{x}$ | $\displaystyle x \neq 0$ |
+
+### 3. Fonctions trigonométriques (Lycée)
+
+| Fonction | Dérivée | Conditions |
+|---|---|---|
+| $\displaystyle \sin(x)$ | $\displaystyle \cos(x)$ | — |
+| $\displaystyle \sin(u)$ | $\displaystyle u' \times \cos(u)$ | — |
+| $\displaystyle \cos(x)$ | $\displaystyle -\sin(x)$ | — |
+| $\displaystyle \cos(u)$ | $\displaystyle -u' \times \sin(u)$ | — |
+| $\displaystyle \tan(x)$ | $\displaystyle 1 + \tan^2(x) = \dfrac{1}{\cos^2(x)}$ | $\displaystyle \cos(x) \neq 0$ |
+| $\displaystyle \tan(u)$ | $\displaystyle u' \times (1 + \tan^2(u)) = \dfrac{u'}{\cos^2(u)}$ | $\displaystyle \cos(u) \neq 0$ |
+| $\displaystyle \cot(x)$ ou $\displaystyle \text{cotan}(x)$ | $\displaystyle -(1 + \cot^2(x)) = -\dfrac{1}{\sin^2(x)}$ | $\displaystyle \sin(x) \neq 0$ |
+
+### 4. Fonctions trigonométriques inverses (Prépa/Licence)
+
+| Fonction | Dérivée | Conditions |
+|---|---|---|
+| $\displaystyle \arcsin(x)$ | $\displaystyle \dfrac{1}{\sqrt{1-x^2}}$ | $\displaystyle |x| < 1$ |
+| $\displaystyle \arcsin(u)$ | $\displaystyle \dfrac{u'}{\sqrt{1-u^2}}$ | $\displaystyle |u| < 1$ |
+| $\displaystyle \arccos(x)$ | $\displaystyle -\dfrac{1}{\sqrt{1-x^2}}$ | $\displaystyle |x| < 1$ |
+| $\displaystyle \arccos(u)$ | $\displaystyle -\dfrac{u'}{\sqrt{1-u^2}}$ | $\displaystyle |u| < 1$ |
+| $\displaystyle \arctan(x)$ | $\displaystyle \dfrac{1}{1+x^2}$ | — |
+| $\displaystyle \arctan(u)$ | $\displaystyle \dfrac{u'}{1+u^2}$ | — |
+| $\displaystyle \text{arccot}(x)$ | $\displaystyle -\dfrac{1}{1+x^2}$ | — |
+
+### 5. Fonctions hyperboliques (Prépa/Licence)
+
+| Fonction | Dérivée | Conditions |
+|---|---|---|
+| $\displaystyle \sinh(x) = \dfrac{e^x - e^{-x}}{2}$ | $\displaystyle \cosh(x)$ | — |
+| $\displaystyle \sinh(u)$ | $\displaystyle u' \times \cosh(u)$ | — |
+| $\displaystyle \cosh(x) = \dfrac{e^x + e^{-x}}{2}$ | $\displaystyle \sinh(x)$ | — |
+| $\displaystyle \cosh(u)$ | $\displaystyle u' \times \sinh(u)$ | — |
+| $\displaystyle \tanh(x) = \dfrac{\sinh(x)}{\cosh(x)}$ | $\displaystyle 1 - \tanh^2(x) = \dfrac{1}{\cosh^2(x)}$ | — |
+| $\displaystyle \tanh(u)$ | $\displaystyle u' \times (1 - \tanh^2(u)) = \dfrac{u'}{\cosh^2(u)}$ | — |
+| $\displaystyle \text{coth}(x) = \dfrac{\cosh(x)}{\sinh(x)}$ | $\displaystyle 1 - \text{coth}^2(x) = -\dfrac{1}{\sinh^2(x)}$ | $\displaystyle x \neq 0$ |
+
+### 6. Fonctions hyperboliques inverses (Prépa/Licence)
+
+| Fonction | Dérivée | Conditions |
+|---|---|---|
+| $\displaystyle \text{argsinh}(x) = \ln(x + \sqrt{x^2+1})$ | $\displaystyle \dfrac{1}{\sqrt{x^2+1}}$ | — |
+| $\displaystyle \text{argsinh}(u)$ | $\displaystyle \dfrac{u'}{\sqrt{u^2+1}}$ | — |
+| $\displaystyle \text{argcosh}(x) = \ln(x + \sqrt{x^2-1})$ | $\displaystyle \dfrac{1}{\sqrt{x^2-1}}$ | $\displaystyle x > 1$ |
+| $\displaystyle \text{argcosh}(u)$ | $\displaystyle \dfrac{u'}{\sqrt{u^2-1}}$ | $\displaystyle u > 1$ |
+| $\displaystyle \text{argtanh}(x) = \dfrac{1}{2}\ln\left(\dfrac{1+x}{1-x}\right)$ | $\displaystyle \dfrac{1}{1-x^2}$ | $\displaystyle |x| < 1$ |
+| $\displaystyle \text{argtanh}(u)$ | $\displaystyle \dfrac{u'}{1-u^2}$ | $\displaystyle |u| < 1$ |
+
+### 7. Opérations (Lycée)
+
+| Fonction | Dérivée | Conditions |
+|---|---|---|
+| $\displaystyle k \times u$ | $\displaystyle k \times u'$ | $\displaystyle k$ constante |
+| $\displaystyle u + v$ | $\displaystyle u' + v'$ | — |
+| $\displaystyle u \times v$ | $\displaystyle u' \times v + u \times v'$ | — |
+| $\displaystyle \dfrac{1}{v}$ | $\displaystyle -\dfrac{v'}{v^2}$ | $\displaystyle v \neq 0$ |
+| $\displaystyle \dfrac{u}{v}$ | $\displaystyle \dfrac{u' \times v - u \times v'}{v^2}$ | $\displaystyle v \neq 0$ |
+
+### 8. Fonctions composées (Lycée)
+
+| Fonction | Dérivée | Conditions |
+|---|---|---|
+| $\displaystyle u^n$ ($\displaystyle n \in \mathbb{N}$) | $\displaystyle n \times u' \times u^{n-1}$ | $\displaystyle n \geq 1$ |
+| $\displaystyle u^\alpha$ ($\displaystyle \alpha \in \mathbb{R}$) | $\displaystyle \alpha \times u' \times u^{\alpha-1}$ | $\displaystyle u > 0$ |
+| $\displaystyle \dfrac{1}{u}$ | $\displaystyle -\dfrac{u'}{u^2}$ | $\displaystyle u \neq 0$ |
+| $\displaystyle \sqrt{u}$ | $\displaystyle \dfrac{u'}{2\sqrt{u}}$ | $\displaystyle u > 0$ |
+
+### 9. Autres fonctions (Master)
+
+| Fonction | Dérivée | Conditions |
+|---|---|---|
+| $\displaystyle u^v$ (fonction de 2 variables) | $\displaystyle u^v \left(\dfrac{u'v}{u} + v'\ln(u)\right)$ | $\displaystyle u > 0$ |
+| $\displaystyle x^x$ | $\displaystyle x^x(1 + \ln(x))$ | $\displaystyle x > 0$ |
+
+## VI. Applications : sens de variation
+
+| Signe de $\displaystyle f'(x)$ | Variation de $\displaystyle f$ |
+|---|---|
+| $\displaystyle f'(x) > 0$ sur un intervalle $\displaystyle I$ | $\displaystyle f$ est **strictement croissante** sur $\displaystyle I$ |
+| $\displaystyle f'(x) < 0$ sur un intervalle $\displaystyle I$ | $\displaystyle f$ est **strictement décroissante** sur $\displaystyle I$ |
+| $\displaystyle f'(x) = 0$ sur un intervalle $\displaystyle I$ | $\displaystyle f$ est **constante** sur $\displaystyle I$ |
+| $\displaystyle f'(a) = 0$ et $\displaystyle f'$ change de signe en $\displaystyle a$ | $\displaystyle f$ admet un **extremum local** en $\displaystyle a$ |
+
+## VII. Erreurs fréquentes à éviter
+
+| Erreur fréquente | Correction |
+|---|---|
+| $\displaystyle (uv)' = u'v'$ | $\displaystyle (uv)' = u'v + uv'$ |
+| $\displaystyle (u+v)' = u' \times v'$ | $\displaystyle (u+v)' = u' + v'$ |
+| $\displaystyle (e^u)' = e^u$ | $\displaystyle (e^u)' = u' \times e^u$ |
+| $\displaystyle (\ln u)' = \dfrac{1}{u}$ | $\displaystyle (\ln u)' = \dfrac{u'}{u}$ |
+| $\displaystyle (\cos x)' = \sin x$ | $\displaystyle (\cos x)' = -\sin x$ (signe négatif !) |
+| Oublier le carré au dénominateur : $\displaystyle \left(\dfrac{u}{v}\right)' = \dfrac{u'v - uv'}{v}$ | $\displaystyle \left(\dfrac{u}{v}\right)' = \dfrac{u'v - uv'}{v^2}$ |
+| $\displaystyle (x^n)' = x^{n-1}$ | $\displaystyle (x^n)' = nx^{n-1}$ (ne pas oublier le coefficient $\displaystyle n$) |
+
+## VIII. Méthode de calcul pas à pas
+
+| Type de fonction | Méthode |
+|---|---|
+| **Fonction simple** | Appliquer directement la formule du tableau des dérivées usuelles |
+| **Somme/différence** | Dériver terme par terme : $\displaystyle (u \pm v)' = u' \pm v'$ |
+| **Produit** | 1. Identifier $\displaystyle u$ et $\displaystyle v$ <br> 2. Calculer $\displaystyle u'$ et $\displaystyle v'$ <br> 3. Appliquer $\displaystyle (uv)' = u'v + uv'$ |
+| **Quotient** | 1. Identifier $\displaystyle u$ (numérateur) et $\displaystyle v$ (dénominateur) <br> 2. Calculer $\displaystyle u'$ et $\displaystyle v'$ <br> 3. Appliquer $\displaystyle \left(\dfrac{u}{v}\right)' = \dfrac{u'v - uv'}{v^2}$ |
+| **Composée** | 1. Identifier la fonction extérieure $\displaystyle g$ et la fonction intérieure $\displaystyle u$ <br> 2. Calculer $\displaystyle u'$ <br> 3. Appliquer $\displaystyle [g(u)]' = u' \times g'(u)$ |
+
+| Exemple détaillé : $\displaystyle f(x) = \dfrac{x^2 + 1}{e^x}$ |
+|---|
+| **Étape 1 :** Identifier $\displaystyle u = x^2 + 1$ et $\displaystyle v = e^x$ <br> <br> **Étape 2 :** Calculer les dérivées : <br> $\displaystyle u' = 2x$ et $\displaystyle v' = e^x$ <br> <br> **Étape 3 :** Appliquer la formule du quotient : <br> $\displaystyle f'(x) = \dfrac{u'v - uv'}{v^2} = \dfrac{2x \times e^x - (x^2 + 1) \times e^x}{(e^x)^2}$ <br> <br> **Étape 4 :** Simplifier : <br> $\displaystyle f'(x) = \dfrac{e^x(2x - x^2 - 1)}{e^{2x}} = \dfrac{2x - x^2 - 1}{e^x} = \dfrac{-x^2 + 2x - 1}{e^x}$ |

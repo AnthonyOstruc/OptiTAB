@@ -1,0 +1,429 @@
+{
+ "notion": 83,
+ "dossier": "c:\\Users\\SWEELCO-AT\\Desktop\\SWINDER\\OptiTABV2\\frontend\\cours\\format_v1\\chantier\\terminale\\83_continuite-des-fonctions",
+ "date": "2026-10-28T16:35:33",
+ "cours": [
+  {
+   "id": 107,
+   "contenu": "<div style=\"background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;\">\n\n    <div style=\"background:#e8f4fd; border:2px solid #3498db; border-radius:8px; padding:15px; margin-bottom:20px;\">\n        <p style=\"margin:0; font-size:1.05em; color:#2c3e50;\"><strong>🎯 Objectifs du chapitre :</strong> définir la continuité, connaître les fonctions continues usuelles, utiliser la continuité pour trouver la limite d’une suite récurrente, appliquer le théorème des valeurs intermédiaires et son corollaire, et approcher une solution par dichotomie.</p>\n    </div>\n\n    <h2 style=\"color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;\">I. Fonction continue</h2>\n\n    <div style=\"background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;\">\n        <div style=\"background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;\">\n            <p style=\"margin:0;\"><strong>Définition :</strong> $\\displaystyle f$ est <strong>continue en $\\displaystyle a$</strong> si $\\displaystyle \\lim\\limits_{x \\to a} f(x) = f(a)$. Elle est continue sur un intervalle $\\displaystyle I$ si elle est continue en tout point de $\\displaystyle I$ : sa courbe se trace « sans lever le crayon ».</p>\n        </div>\n        [IMAGE_1]\n        <div style=\"background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;\">\n            <p style=\"margin:0;\"><strong>Propriétés :</strong> les fonctions polynômes, rationnelles (sur leur ensemble de définition), racine carrée, exponentielle, sinus et cosinus sont continues ; sommes, produits, quotients et composées de fonctions continues sont continues. Toute fonction <strong>dérivable</strong> sur $\\displaystyle I$ est continue sur $\\displaystyle I$.</p>\n        </div>\n        <div style=\"background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;\">\n            <strong>⚠️ Attention :</strong> la réciproque est fausse : $\\displaystyle x \\mapsto |x|$ et $\\displaystyle x \\mapsto \\sqrt{x}$ sont continues en $\\displaystyle 0$ mais pas dérivables en $\\displaystyle 0$.\n        </div>\n        <p style=\"font-size:1em;\"><strong>Exemple :</strong> $\\displaystyle f(x) = x + 1$ si $\\displaystyle x \\lt 1$ et $\\displaystyle f(x) = 3 - x$ si $\\displaystyle x \\ge 1$. On a $\\displaystyle \\lim\\limits_{x \\to 1^-} f(x) = 2 = f(1)$ : $\\displaystyle f$ est continue en $\\displaystyle 1$, donc sur $\\displaystyle \\mathbb{R}$.</p>\n    </div>\n\n    <h2 style=\"color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;\">II. Continuité et suites</h2>\n\n    <div style=\"background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;\">\n        <div style=\"background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;\">\n            <p style=\"margin:0;\"><strong>Théorème :</strong> si $\\displaystyle \\lim u_n = \\ell$ et si $\\displaystyle f$ est continue en $\\displaystyle \\ell$, alors $\\displaystyle \\lim f(u_n) = f(\\ell)$. En particulier, si une suite définie par $\\displaystyle u_{n+1} = f(u_n)$ converge vers $\\displaystyle \\ell$ et si $\\displaystyle f$ est continue en $\\displaystyle \\ell$, alors $\\displaystyle \\ell = f(\\ell)$ : $\\displaystyle \\ell$ est un <strong>point fixe</strong> de $\\displaystyle f$.</p>\n        </div>\n        <p style=\"font-size:1em;\"><strong>Exemple :</strong> $\\displaystyle u_0 = 0$ et $\\displaystyle u_{n+1} = \\sqrt{u_n + 2}$. On admet que la suite est croissante et majorée par $\\displaystyle 2$ (récurrence), donc convergente. Sa limite vérifie $\\displaystyle \\ell = \\sqrt{\\ell + 2}$, soit $\\displaystyle \\ell^2 - \\ell - 2 = 0$ avec $\\displaystyle \\ell \\ge 0$ : $\\displaystyle \\ell = 2$.</p>\n    </div>\n\n    <h2 style=\"color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;\">III. Théorème des valeurs intermédiaires</h2>\n\n    <div style=\"background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;\">\n        <div style=\"background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;\">\n            <p style=\"margin:0;\"><strong>Théorème (TVI) :</strong> si $\\displaystyle f$ est continue sur $\\displaystyle [a\\,;b]$, alors pour tout réel $\\displaystyle k$ compris entre $\\displaystyle f(a)$ et $\\displaystyle f(b)$, l’équation $\\displaystyle f(x) = k$ admet <strong>au moins une</strong> solution dans $\\displaystyle [a\\,;b]$.</p>\n        </div>\n        [IMAGE_2]\n        <div style=\"background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;\">\n            <p style=\"margin:0;\"><strong>Corollaire :</strong> si de plus $\\displaystyle f$ est <strong>strictement monotone</strong> sur $\\displaystyle [a\\,;b]$, la solution est <strong>unique</strong>. Le résultat s’étend aux intervalles ouverts en remplaçant $\\displaystyle f(a)$ et $\\displaystyle f(b)$ par les limites aux bornes.</p>\n        </div>\n        [IMAGE_3]\n        <p style=\"font-size:1em;\"><strong>Exemple :</strong> $\\displaystyle f(x) = x^3 + x - 1$ est continue et strictement croissante sur $\\displaystyle [0\\,;1]$ (car $\\displaystyle f'(x) = 3x^2 + 1 \\gt 0$), avec $\\displaystyle f(0) = -1 \\lt 0$ et $\\displaystyle f(1) = 1 \\gt 0$. L’équation $\\displaystyle f(x) = 0$ a donc une unique solution $\\displaystyle \\alpha$ dans $\\displaystyle [0\\,;1]$.</p>\n        <div style=\"background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;\">\n            <strong>💡 Rédaction type :</strong> « $\\displaystyle f$ est continue et strictement croissante sur $\\displaystyle [a\\,;b]$ ; $\\displaystyle k$ est compris entre $\\displaystyle f(a)$ et $\\displaystyle f(b)$ ; d’après le corollaire du TVI, l’équation $\\displaystyle f(x) = k$ admet une unique solution sur $\\displaystyle [a\\,;b]$. » On s’appuie souvent sur un tableau de variations.\n        </div>\n    </div>\n\n    <h2 style=\"color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;\">IV. Méthode par dichotomie</h2>\n\n    <div style=\"background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;\">\n        <p style=\"font-size:1em;\">On coupe l’intervalle en deux et l’on garde la moitié où $\\displaystyle f$ change de signe, jusqu’à obtenir la précision voulue.</p>\n        [IMAGE_4]\n        <div style=\"background:#2c3e50; color:#ecf0f1; padding:12px; border-radius:6px; margin:10px 0 0 0; font-family:monospace; white-space:pre; overflow-x:auto;\">def f(x):\n    return x &#42; x &#42; x + x - 1\n\ndef dichotomie(f, a, b, e):\n    while b - a &gt; e:\n        m = (a + b) / 2\n        if f(a) &#42; f(m) &lt;= 0:\n            b = m\n        else:\n            a = m\n    return a, b</div>\n        <p style=\"font-size:1em;\"><code>dichotomie(f, 0, 1, 0.001)</code> renvoie $\\displaystyle (0{,}681640625\\,;\\,0{,}6826171875)$ : on en déduit $\\displaystyle \\alpha \\approx 0{,}682$ à $\\displaystyle 10^{-3}$ près.</p>\n    </div>\n\n    <div style=\"background:#ecfdf5; border:2px solid #10b981; border-radius:8px; padding:15px; margin:20px 0 0 0;\">\n        <p style=\"margin:0; font-size:1.05em; color:#2c3e50;\"><strong>🏆 L’essentiel :</strong> continue en $\\displaystyle a$ : $\\displaystyle \\lim\\limits_{x \\to a} f(x) = f(a)$ ; dérivable $\\displaystyle \\Rightarrow$ continue ; si $\\displaystyle u_{n+1} = f(u_n)$ converge vers $\\displaystyle \\ell$ avec $\\displaystyle f$ continue, alors $\\displaystyle \\ell = f(\\ell)$ ; TVI : continue $\\displaystyle \\Rightarrow$ au moins une solution ; continue et strictement monotone $\\displaystyle \\Rightarrow$ une unique solution ; la dichotomie en donne une valeur approchée. Fiche de synthèse dans l’onglet Fiches !</p>\n    </div>\n\n</div>"
+  }
+ ],
+ "fiches": [
+  {
+   "id": 12,
+   "summary": "<div style=\"background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;\">\n\n<div style=\"background:#e8f4fd; border:2px solid #3498db; border-radius:8px; padding:15px; margin-bottom:20px;\">\n<p style=\"margin:0; font-size:1.05em; color:#2c3e50;\"><strong>📚 Objectif pédagogique :</strong> retenir l’essentiel : continuité, point fixe, théorème des valeurs intermédiaires, dichotomie. Programme de Terminale.</p>\n</div>\n\n<h2 style=\"color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;\">I. Continuité</h2>\n\n<div style=\"background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;\">\n<div style=\"background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:12px; margin:12px auto; text-align:center; max-width:460px;\">\n<p style=\"margin:0; font-weight:bold;\">$\\displaystyle f$ continue en $\\displaystyle a$ $\\displaystyle \\iff \\lim\\limits_{x \\to a} f(x) = f(a)$</p>\n</div>\n[IMAGE_1]\n<p style=\"margin:0;\">1️⃣ Fonctions usuelles continues ; dérivable $\\displaystyle \\Rightarrow$ continue (réciproque fausse).</p>\n<p style=\"margin:6px 0 0 0;\">2️⃣ TVI : $\\displaystyle f$ continue sur $\\displaystyle [a\\,;b]$, $\\displaystyle k$ entre $\\displaystyle f(a)$ et $\\displaystyle f(b)$ → au moins une solution de $\\displaystyle f(x) = k$.</p>\n<p style=\"margin:6px 0 0 0;\">3️⃣ $\\displaystyle u_{n+1} = f(u_n) \\to \\ell$ et $\\displaystyle f$ continue → $\\displaystyle \\ell = f(\\ell)$.</p>\n</div>\n\n<h2 style=\"color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;\">II. Unicité et valeur approchée</h2>\n\n<div style=\"background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;\">\n[IMAGE_2]\n<p style=\"margin:0;\">1️⃣ Continue <strong>et strictement monotone</strong> → solution unique.</p>\n<p style=\"margin:6px 0 0 0;\">2️⃣ Sur un intervalle ouvert : on utilise les limites aux bornes.</p>\n<p style=\"margin:6px 0 0 0;\">3️⃣ Dichotomie : on garde la moitié où $\\displaystyle f$ change de signe.</p>\n</div>\n\n<h2 style=\"color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;\">III. Les pièges à éviter</h2>\n\n<div style=\"background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;\">\n<p style=\"margin:0;\"><strong>⚠️ Les 4 erreurs classiques :</strong></p>\n<p style=\"margin:6px 0 0 0;\">1️⃣ Oublier de citer la continuité dans l’application du TVI.</p>\n<p style=\"margin:6px 0 0 0;\">2️⃣ Conclure à l’unicité sans la stricte monotonie.</p>\n<p style=\"margin:6px 0 0 0;\">3️⃣ Vérifier que $\\displaystyle k$ est entre $\\displaystyle f(a)$ et $\\displaystyle f(b)$… avec de mauvaises images.</p>\n<p style=\"margin:6px 0 0 0;\">4️⃣ Croire qu’une fonction continue est forcément dérivable.</p>\n</div>\n\n<div style=\"background:#ecfdf5; border:2px solid #10b981; border-radius:8px; padding:15px; margin:20px 0 0 0;\">\n<p style=\"margin:0; font-size:1.05em; color:#2c3e50;\"><strong>🏆 Réflexe :</strong> « montrer que l’équation a une unique solution » → tableau de variations + continuité + stricte monotonie + corollaire du TVI.</p>\n</div>\n\n</div>"
+  }
+ ],
+ "exercices": [
+  {
+   "id": 868,
+   "question": "Vérifier la continuité des fonctions suivantes aux points indiqués.\n**Question 1 :** Vérifier la continuité de $\\displaystyle f(x) = \\frac{x^2 - 4}{x - 2}$ en $\\displaystyle x = 2$\n$\\\\$\n**Question 2 :** Vérifier la continuité de $\\displaystyle g(x) = \\begin{cases} x^2 & \\text{si } x < 1 \\\\ 2x - 1 & \\text{si } x \\geq 1 \\end{cases}$ en $\\displaystyle x = 1$\n$\\\\$\n**Question 3 :** Vérifier la continuité de $\\displaystyle h(x) = \\frac{\\sin x}{x}$ en $\\displaystyle x = 0$\n$\\\\$\n**Question 4 :** Vérifier la continuité de $\\displaystyle k(x) = \\begin{cases} \\frac{x^2 - 1}{x - 1} & \\text{si } x \\neq 1 \\\\ 2 & \\text{si } x = 1 \\end{cases}$ en $\\displaystyle x = 1$\n$\\\\$\n**Question 5 :** Vérifier la continuité de $\\displaystyle m(x) = |x - 3|$ en $\\displaystyle x = 3$",
+   "etapes": "**Question 1 :** Vérifier la continuité de $\\displaystyle f(x) = \\frac{x^2 - 4}{x - 2}$ en $\\displaystyle x = 2$\n● **Méthode :** Vérification de la définition de continuité\n$\\\\$\n● **Étape 1 :** Vérifier si $\\displaystyle f(2)$ est définie\n$\\qquad$• $\\displaystyle f(2) = \\frac{2^2 - 4}{2 - 2} = \\frac{0}{0}$ → **indéterminée**\n$\\qquad$• $\\displaystyle f(2)$ n'est pas définie\n$\\\\$\n$\\\\$\n● **Étape 2 :** Calculer $\\displaystyle\\lim_{x \\to 2} f(x)$\n$\\qquad$• $\\displaystyle\\lim_{x \\to 2} \\frac{x^2 - 4}{x - 2} = \\lim_{x \\to 2} \\frac{(x-2)(x+2)}{x-2} = \\lim_{x \\to 2} (x+2) = 4$\n$\\\\$\n$\\\\$\n● **Étape 3 :** Conclusion\n$\\qquad$• La limite existe et vaut $\\displaystyle 4$\n$\\qquad$• Mais $\\displaystyle f(2)$ n'est pas définie\n$\\qquad$• **Type de discontinuité :** Discontinuité évitable\n$\\\\$\n● **Résultat :** $\\displaystyle f$ n'est pas continue en $\\displaystyle x = 2$ (discontinuité évitable)\n$\\\\$\n[IMAGE_1]\n**Question 2 :** Vérifier la continuité de $\\displaystyle g(x) = \\begin{cases} x^2 & \\text{si } x < 1 \\\\ 2x - 1 & \\text{si } x \\geq 1 \\end{cases}$ en $\\displaystyle x = 1$\n● **Méthode :** Vérification de la continuité d'une fonction définie par morceaux\n$\\\\$\n● **Étape 1 :** Calculer $\\displaystyle g(1)$\n$\\qquad$• $\\displaystyle g(1) = 2(1) - 1 = 1$ (car $\\displaystyle x = 1 \\geq 1$)\n$\\\\$\n● **Étape 2 :** Calculer les limites latérales\n$\\qquad$• Limite à gauche : $\\displaystyle\\lim_{x \\to 1^-} g(x) = \\lim_{x \\to 1^-} x^2 = 1^2 = 1$\n$\\qquad$• Limite à droite : $\\displaystyle\\lim_{x \\to 1^+} g(x) = \\lim_{x \\to 1^+} (2x - 1) = 2(1) - 1 = 1$\n$\\\\$\n● **Étape 3 :** Vérifier la continuité\n$\\qquad$• $\\displaystyle\\lim_{x \\to 1^-} g(x) = \\lim_{x \\to 1^+} g(x) = 1$\n$\\qquad$• Donc $\\displaystyle\\lim_{x \\to 1} g(x) = 1$\n$\\qquad$• Et $\\displaystyle g(1) = 1$\n$\\qquad$• Donc $\\displaystyle\\lim_{x \\to 1} g(x) = g(1)$\n$\\\\$\n● **Résultat :** $\\displaystyle g$ est continue en $\\displaystyle x = 1$\n$\\\\$\n[IMAGE_2]\n**Question 3 :** Vérifier la continuité de $\\displaystyle h(x) = \\frac{\\sin x}{x}$ en $\\displaystyle x = 0$\n● **Méthode :** Vérification de la continuité avec limite trigonométrique\n$\\\\$\n● **Étape 1 :** Vérifier si $\\displaystyle h(0)$ est définie\n$\\qquad$• $\\displaystyle h(0) = \\frac{\\sin 0}{0} = \\frac{0}{0}$ → **indéterminée**\n$\\qquad$• $\\displaystyle h(0)$ n'est pas définie\n$\\\\$\n● **Étape 2 :** Calculer $\\displaystyle\\lim_{x \\to 0} h(x)$\n$\\qquad$• $\\displaystyle\\lim_{x \\to 0} \\frac{\\sin x}{x} = 1$ (limite trigonométrique fondamentale)\n$\\\\$\n● **Étape 3 :** Conclusion\n$\\qquad$• La limite existe et vaut $\\displaystyle 1$\n$\\qquad$• Mais $\\displaystyle h(0)$ n'est pas définie\n$\\qquad$• **Type de discontinuité :** Discontinuité évitable\n$\\\\$\n● **Résultat :** $\\displaystyle h$ n'est pas continue en $\\displaystyle x = 0$ (discontinuité évitable)\n$\\\\$\n[IMAGE_3]\n**Question 4 :** Vérifier la continuité de $\\displaystyle k(x) = \\begin{cases} \\frac{x^2 - 1}{x - 1} & \\text{si } x \\neq 1 \\\\ 2 & \\text{si } x = 1 \\end{cases}$ en $\\displaystyle x = 1$\n● **Méthode :** Vérification de la continuité avec prolongement par continuité\n$\\\\$\n● **Étape 1 :** Calculer $\\displaystyle k(1)$\n$\\qquad$• $\\displaystyle k(1) = 2$ (défini par la fonction)\n$\\\\$\n● **Étape 2 :** Calculer $\\displaystyle\\lim_{x \\to 1} k(x)$\n$\\qquad$• Pour $\\displaystyle x \\neq 1$ : $\\displaystyle\\lim_{x \\to 1} \\frac{x^2 - 1}{x - 1} = \\lim_{x \\to 1} \\frac{(x-1)(x+1)}{x-1} = \\lim_{x \\to 1} (x+1) = 2$\n$\\\\$\n● **Étape 3 :** Vérifier la continuité\n$\\qquad$• $\\displaystyle\\lim_{x \\to 1} k(x) = 2$\n$\\qquad$• Et $\\displaystyle k(1) = 2$\n$\\qquad$• Donc $\\displaystyle\\lim_{x \\to 1} k(x) = k(1)$\n$\\\\$\n● **Résultat :** $\\displaystyle k$ est continue en $\\displaystyle x = 1$\n$\\\\$\n[IMAGE_4]\n**Question 5 :** Vérifier la continuité de $\\displaystyle m(x) = |x - 3|$ en $\\displaystyle x = 3$\n● **Méthode :** Vérification de la continuité d'une fonction valeur absolue\n$\\\\$\n● **Étape 1 :** Calculer $\\displaystyle m(3)$\n$\\qquad$• $\\displaystyle m(3) = |3 - 3| = |0| = 0$\n$\\\\$\n● **Étape 2 :** Calculer $\\displaystyle\\lim_{x \\to 3} m(x)$\n$\\qquad$• $\\displaystyle\\lim_{x \\to 3} |x - 3| = |3 - 3| = |0| = 0$\n$\\\\$\n● **Étape 3 :** Vérifier la continuité\n$\\qquad$• $\\displaystyle\\lim_{x \\to 3} m(x) = 0$\n$\\qquad$• Et $\\displaystyle m(3) = 0$\n$\\qquad$• Donc $\\displaystyle\\lim_{x \\to 3} m(x) = m(3)$\n$\\\\$\n● **Résultat :** $\\displaystyle m$ est continue en $\\displaystyle x = 3$\n$\\\\$\n[IMAGE_5]",
+   "reponse_correcte": "1. $\\displaystyle f$ n'est pas continue en $\\displaystyle x = 2$ (discontinuité évitable)\n2. $\\displaystyle g$ est continue en $\\displaystyle x = 1$\n3. $\\displaystyle h$ n'est pas continue en $\\displaystyle x = 0$ (discontinuité évitable)\n4. $\\displaystyle k$ est continue en $\\displaystyle x = 1$\n5. $\\displaystyle m$ est continue en $\\displaystyle x = 3$"
+  },
+  {
+   "id": 870,
+   "question": "Classifier les discontinuités des fonctions suivantes.\n**Question 1 :** Classifier la discontinuité de $\\displaystyle a(x) = \\frac{1}{x - 1}$ en $x = 1$\n$\\\\$\n**Question 2 :** Classifier la discontinuité de $g(x) = \\begin{cases} x + 1 & \\text{si } x < 0 \\\\ x - 1 & \\text{si } x \\geq 0 \\end{cases}$ en $x = 0$\n$\\\\$\n**Question 3 :** Classifier la discontinuité de $h(x) = \\frac{1}{x^2}$ en $x = 0$\n$\\\\$\n**Question 4 :** Classifier la discontinuité de $\\displaystyle k(x) = \\begin{cases} \\sin\\!\\left(\\frac{1}{x}\\right) & \\text{si } x \\neq 0 \\\\ 0 & \\text{si } x = 0 \\end{cases}$ en $x = 0$\n$\\\\$\n**Question 5 :** Classifier la discontinuité de $m(x) = \\begin{cases} x^2 & \\text{si } x < 1 \\\\ x + 1 & \\text{si } x \\geq 1 \\end{cases}$ en $x = 1$",
+   "etapes": "**Question 1 :** Classifier la discontinuité de $\\displaystyle a(x) = \\frac{1}{x - 1}$ en $x = 1$\n● **Méthode :** Analyse des limites latérales\n$\\\\$\n● **Étape 1 :** Vérifier si $\\displaystyle a(1)$ est définie\n$\\qquad$• $\\displaystyle a(1) = \\frac{1}{1 - 1} = \\frac{1}{0}$ → **non définie**\n$\\\\$\n● **Étape 2 :** Calculer les limites latérales\n$\\qquad$• $\\displaystyle\\lim_{x \\to 1^-} a(x) = \\lim_{x \\to 1^-} \\frac{1}{x - 1} = -\\infty$\n$\\qquad$• $\\displaystyle\\lim_{x \\to 1^+} a(x) = \\lim_{x \\to 1^+} \\frac{1}{x - 1} = +\\infty$\n$\\\\$\n● **Étape 3 :** Classification\n$\\qquad$• Les limites latérales sont infinies (et de signes opposés)\n$\\qquad$• **Type :** Discontinuité infinie (asymptote verticale en $\\displaystyle x = 1$)\n$\\\\$\n● **Résultat :** Discontinuité infinie en $\\displaystyle x = 1$ (asymptote verticale)\n$\\\\$\n[IMAGE_1]\n**Question 2 :** Classifier la discontinuité de $g(x) = \\begin{cases} x + 1 & \\text{si } x < 0 \\\\ x - 1 & \\text{si } x \\geq 0 \\end{cases}$ en $x = 0$\n● **Méthode :** Analyse des limites latérales\n$\\\\$\n● **Étape 1 :** Calculer $g(0)$\n$\\qquad$• $g(0) = 0 - 1 = -1$ (car $x = 0 \\geq 0$)\n$\\\\$\n● **Étape 2 :** Calculer les limites latérales\n$\\qquad$• Limite à gauche : $\\displaystyle\\lim_{x \\to 0^-} g(x) = \\lim_{x \\to 0^-} (x + 1) = 0 + 1 = 1$\n$\\qquad$• Limite à droite : $\\displaystyle\\lim_{x \\to 0^+} g(x) = \\lim_{x \\to 0^+} (x - 1) = 0 - 1 = -1$\n$\\\\$\n● **Étape 3 :** Classification\n$\\qquad$• Les limites latérales existent mais sont différentes : $1 \\neq -1$\n$\\qquad$• **Amplitude du saut :** $1 - (-1) = 2$\n$\\qquad$• **Type :** Saut fini d'amplitude 2\n$\\\\$\n● **Résultat :** Saut fini d'amplitude 2 en $x = 0$\n$\\\\$\n[IMAGE_2]\n**Question 3 :** Classifier la discontinuité de $h(x) = \\frac{1}{x^2}$ en $x = 0$\n● **Méthode :** Analyse des limites latérales\n$\\\\$\n● **Étape 1 :** Vérifier si $h(0)$ est définie\n$\\qquad$• $h(0) = \\frac{1}{0^2} = \\frac{1}{0}$ → **indéterminée**\n$\\qquad$• $h(0)$ n'est pas définie\n$\\\\$\n● **Étape 2 :** Calculer les limites latérales\n$\\qquad$• Limite à gauche : $\\displaystyle\\lim_{x \\to 0^-} \\frac{1}{x^2} = +\\infty$\n$\\qquad$• Limite à droite : $\\displaystyle\\lim_{x \\to 0^+} \\frac{1}{x^2} = +\\infty$\n$\\\\$\n● **Étape 3 :** Classification\n$\\qquad$• Les limites latérales sont infinies et égales : $\\displaystyle\\lim_{x \\to 0} h(x) = +\\infty$\n$\\qquad$• **Type :** Discontinuité infinie (asymptote verticale)\n$\\\\$\n● **Résultat :** Discontinuité infinie en $x = 0$ (asymptote verticale)\n$\\\\$\n[IMAGE_3]\n**Question 4 :** Classifier la discontinuité de $\\displaystyle k(x) = \\begin{cases} \\sin\\!\\left(\\frac{1}{x}\\right) & \\text{si } x \\neq 0 \\\\ 0 & \\text{si } x = 0 \\end{cases}$ en $x = 0$\n● **Méthode :** Analyse des limites latérales\n$\\\\$\n● **Étape 1 :** Calculer $\\displaystyle k(0)$\n$\\qquad$• $\\displaystyle k(0) = 0$ (défini par la fonction)\n$\\\\$\n● **Étape 2 :** Étudier $\\displaystyle\\lim_{x \\to 0} k(x)$\n$\\qquad$• Quand $\\displaystyle x \\to 0$, $\\displaystyle \\frac{1}{x}$ oscille entre $-\\infty$ et $+\\infty$\n$\\qquad$• Donc $\\displaystyle \\sin\\!\\left(\\frac{1}{x}\\right)$ n'admet pas de limite (oscillations)\n$\\\\$\n● **Étape 3 :** Classification\n$\\qquad$• La limite en $\\displaystyle 0$ n'existe pas\n$\\qquad$• **Type :** Discontinuité essentielle (par oscillations)\n$\\\\$\n● **Résultat :** Discontinuité essentielle en $\\displaystyle x = 0$\n$\\\\$\n[IMAGE_4]\n**Question 5 :** Classifier la discontinuité de $m(x) = \\begin{cases} x^2 & \\text{si } x < 1 \\\\ x + 1 & \\text{si } x \\geq 1 \\end{cases}$ en $x = 1$\n● **Méthode :** Analyse des limites latérales\n$\\\\$\n● **Étape 1 :** Calculer $m(1)$\n$\\qquad$• $m(1) = 1 + 1 = 2$ (car $x = 1 \\geq 1$)\n$\\\\$\n● **Étape 2 :** Calculer les limites latérales\n$\\qquad$• Limite à gauche : $\\displaystyle\\lim_{x \\to 1^-} m(x) = \\lim_{x \\to 1^-} x^2 = 1^2 = 1$\n$\\qquad$• Limite à droite : $\\displaystyle\\lim_{x \\to 1^+} m(x) = \\lim_{x \\to 1^+} (x + 1) = 1 + 1 = 2$\n$\\\\$\n● **Étape 3 :** Classification\n$\\qquad$• Les limites latérales existent mais sont différentes : $1 \\neq 2$\n$\\qquad$• **Amplitude du saut :** $2 - 1 = 1$\n$\\qquad$• **Type :** Saut fini d'amplitude 1\n$\\\\$\n● **Résultat :** Saut fini d'amplitude 1 en $x = 1$\n$\\\\$\n[IMAGE_5]",
+   "reponse_correcte": "1. Discontinuité évitable en $x = 1$\n2. Saut fini d'amplitude 2 en $x = 0$\n3. Discontinuité infinie en $x = 0$ (asymptote verticale)\n4. Discontinuité évitable en $x = 0$\n5. Saut fini d'amplitude 1 en $x = 1$"
+  },
+  {
+   "id": 872,
+   "question": "Étudier la continuité et les prolongements possibles des fonctions suivantes.\n**Question 1 :** Étudier la continuité de $\\displaystyle f(x) = \\frac{x^3 - 8}{x - 2}$ en $x = 2$\n$\\\\$\n**Question 2 :** Étudier la continuité de $\\displaystyle g(x) = \\frac{\\sin(2x)}{x}$ en $x = 0$\n$\\\\$\n**Question 3 :** Étudier la continuité de $\\displaystyle h(x) = \\frac{\\ln(1 + x)}{x}$ en $x = 0$\n$\\\\$\n**Question 4 :** Étudier la continuité de $\\displaystyle k(x) = \\frac{e^x - 1}{x}$ en $x = 0$\n$\\\\$\n**Question 5 :** Étudier la continuité de $\\displaystyle m(x) = \\frac{\\sqrt{x + 1} - 1}{x}$ en $x = 0$",
+   "etapes": "**Question 1 :** Étudier la continuité de $\\displaystyle f(x) = \\frac{x^3 - 8}{x - 2}$ en $x = 2$\n● **Méthode :** Analyse des limites et prolongement par continuité\n$\\\\$\n● **Étape 1 :** Vérifier si $f(2)$ est définie\n$\\qquad$• $f(2) = \\frac{2^3 - 8}{2 - 2} = \\frac{0}{0}$ → **indéterminée**\n$\\qquad$• $f(2)$ n'est pas définie\n$\\\\$\n● **Étape 2 :** Calculer $\\displaystyle\\lim_{x \\to 2} f(x)$\n$\\qquad$• Factorisation : $x^3 - 8 = (x - 2)(x^2 + 2x + 4)$\n$\\qquad$• $\\displaystyle\\lim_{x \\to 2} \\frac{x^3 - 8}{x - 2} = \\lim_{x \\to 2} \\frac{(x-2)(x^2 + 2x + 4)}{x-2} = \\lim_{x \\to 2} (x^2 + 2x + 4) = 4 + 4 + 4 = 12$\n$\\\\$\n● **Étape 3 :** Classification\n$\\qquad$• La limite existe et vaut $12$\n$\\qquad$• Mais $f(2)$ n'est pas définie\n$\\qquad$• **Type :** Discontinuité évitable\n$\\\\$\n● **Résultat :** Discontinuité évitable en $x = 2$ (prolongement possible en $f(2) = 12$)\n● **Fonction prolongée :** $\\displaystyle \\tilde f(x) = \\begin{cases} \\dfrac{x^3 - 8}{x - 2} & \\text{si } x \\neq 2 \\\\ 12 & \\text{si } x = 2 \\end{cases}$\n$\\\\$\n[IMAGE_1]\n**Question 2 :** Étudier la continuité de $\\displaystyle g(x) = \\frac{\\sin(2x)}{x}$ en $x = 0$\n● **Méthode :** Utilisation de la limite trigonométrique fondamentale\n$\\\\$\n● **Étape 1 :** Vérifier si $g(0)$ est définie\n$\\qquad$• $g(0) = \\frac{\\sin(0)}{0} = \\frac{0}{0}$ → **indéterminée**\n$\\qquad$• $g(0)$ n'est pas définie\n$\\\\$\n● **Étape 2 :** Calculer $\\displaystyle\\lim_{x \\to 0} g(x)$\n$\\qquad$• Transformation : $\\displaystyle\\frac{\\sin(2x)}{x} = \\frac{2\\sin(2x)}{2x} = 2 \\cdot \\frac{\\sin(2x)}{2x}$\n$\\qquad$• Avec $u = 2x$, quand $x \\to 0$, on a $u \\to 0$ : $\\displaystyle\\frac{\\sin(2x)}{2x} \\to 1$\n$\\qquad$• **Résultat :** $\\displaystyle\\lim_{x \\to 0} g(x) = 2 \\times 1 = 2$\n$\\\\$\n● **Étape 3 :** Classification\n$\\qquad$• La limite existe et vaut $2$\n$\\qquad$• Mais $g(0)$ n'est pas définie\n$\\qquad$• **Type :** Discontinuité évitable\n$\\\\$\n● **Résultat :** Discontinuité évitable en $x = 0$ (prolongement possible en $g(0) = 2$)\n● **Fonction prolongée :** $\\displaystyle \\tilde g(x) = \\begin{cases} \\dfrac{\\sin(2x)}{x} & \\text{si } x \\neq 0 \\\\ 2 & \\text{si } x = 0 \\end{cases}$\n$\\\\$\n[IMAGE_2]\n**Question 3 :** Étudier la continuité de $\\displaystyle h(x) = \\frac{\\ln(1 + x)}{x}$ en $x = 0$\n● **Méthode :** Utilisation de la limite logarithmique fondamentale\n$\\\\$\n● **Étape 1 :** Vérifier si $h(0)$ est définie\n$\\qquad$• $h(0) = \\frac{\\ln(1 + 0)}{0} = \\frac{\\ln(1)}{0} = \\frac{0}{0}$ → **indéterminée**\n$\\qquad$• $h(0)$ n'est pas définie\n$\\\\$\n● **Étape 2 :** Calculer $\\displaystyle\\lim_{x \\to 0} h(x)$\n$\\qquad$• **Limite fondamentale :** $\\displaystyle\\lim_{x \\to 0} \\frac{\\ln(1 + x)}{x} = 1$\n$\\qquad$• **Résultat :** $\\displaystyle\\lim_{x \\to 0} h(x) = 1$\n$\\\\$\n● **Étape 3 :** Classification\n$\\qquad$• La limite existe et vaut $1$\n$\\qquad$• Mais $h(0)$ n'est pas définie\n$\\qquad$• **Type :** Discontinuité évitable\n$\\\\$\n● **Résultat :** Discontinuité évitable en $x = 0$ (prolongement possible en $h(0) = 1$)\n● **Fonction prolongée :** $\\displaystyle \\tilde h(x) = \\begin{cases} \\dfrac{\\ln(1 + x)}{x} & \\text{si } x \\neq 0 \\\\ 1 & \\text{si } x = 0 \\end{cases}$\n$\\\\$\n[IMAGE_3]\n**Question 4 :** Étudier la continuité de $\\displaystyle k(x) = \\frac{e^x - 1}{x}$ en $x = 0$\n● **Méthode :** Utilisation de la limite exponentielle fondamentale\n$\\\\$\n● **Étape 1 :** Vérifier si $k(0)$ est définie\n$\\qquad$• $k(0) = \\frac{e^0 - 1}{0} = \\frac{1 - 1}{0} = \\frac{0}{0}$ → **indéterminée**\n$\\qquad$• $k(0)$ n'est pas définie\n$\\\\$\n● **Étape 2 :** Calculer $\\displaystyle\\lim_{x \\to 0} k(x)$\n$\\qquad$• **Limite fondamentale :** $\\displaystyle\\lim_{x \\to 0} \\frac{e^x - 1}{x} = 1$\n$\\qquad$• **Résultat :** $\\displaystyle\\lim_{x \\to 0} k(x) = 1$\n$\\\\$\n● **Étape 3 :** Classification\n$\\qquad$• La limite existe et vaut $1$\n$\\qquad$• Mais $k(0)$ n'est pas définie\n$\\qquad$• **Type :** Discontinuité évitable\n$\\\\$\n● **Résultat :** Discontinuité évitable en $x = 0$ (prolongement possible en $k(0) = 1$)\n● **Fonction prolongée :** $\\displaystyle \\tilde k(x) = \\begin{cases} \\dfrac{e^x - 1}{x} & \\text{si } x \\neq 0 \\\\ 1 & \\text{si } x = 0 \\end{cases}$\n$\\\\$\n[IMAGE_4]\n**Question 5 :** Étudier la continuité de $\\displaystyle m(x) = \\frac{\\sqrt{x + 1} - 1}{x}$ en $x = 0$\n● **Méthode :** Multiplication par le conjugué\n$\\\\$\n● **Étape 1 :** Vérifier si $m(0)$ est définie\n$\\qquad$• $m(0) = \\frac{\\sqrt{0 + 1} - 1}{0} = \\frac{1 - 1}{0} = \\frac{0}{0}$ → **indéterminée**\n$\\qquad$• $m(0)$ n'est pas définie\n$\\\\$\n● **Étape 2 :** Calculer $\\displaystyle\\lim_{x \\to 0} m(x)$\n$\\qquad$• Multiplication par le conjugué : $\\displaystyle\\frac{\\sqrt{x + 1} - 1}{x} \\times \\frac{\\sqrt{x + 1} + 1}{\\sqrt{x + 1} + 1}$\n$\\qquad$• Simplification : $\\displaystyle\\frac{(\\sqrt{x + 1})^2 - 1^2}{x(\\sqrt{x + 1} + 1)} = \\frac{x + 1 - 1}{x(\\sqrt{x + 1} + 1)} = \\frac{x}{x(\\sqrt{x + 1} + 1)}$\n$\\qquad$• Pour $x \\neq 0$ : $\\displaystyle\\frac{1}{\\sqrt{x + 1} + 1}$\n$\\qquad$• **Résultat :** $\\displaystyle\\lim_{x \\to 0} m(x) = \\frac{1}{\\sqrt{0 + 1} + 1} = \\frac{1}{2}$\n$\\\\$\n● **Étape 3 :** Classification\n$\\qquad$• La limite existe et vaut $\\frac{1}{2}$\n$\\qquad$• Mais $m(0)$ n'est pas définie\n$\\qquad$• **Type :** Discontinuité évitable\n$\\\\$\n● **Résultat :** Discontinuité évitable en $x = 0$ (prolongement possible en $m(0) = \\frac{1}{2}$)\n● **Fonction prolongée :** $\\displaystyle \\tilde m(x) = \\begin{cases} \\dfrac{\\sqrt{x + 1} - 1}{x} & \\text{si } x \\neq 0 \\\\ \\dfrac{1}{2} & \\text{si } x = 0 \\end{cases}$\n$\\\\$\n[IMAGE_5]",
+   "reponse_correcte": "1. Discontinuité évitable en $x = 2$ (prolongement en $f(2) = 12$)\n2. Discontinuité évitable en $x = 0$ (prolongement en $g(0) = 2$)\n3. Discontinuité évitable en $x = 0$ (prolongement en $h(0) = 1$)\n4. Discontinuité évitable en $x = 0$ (prolongement en $k(0) = 1$)\n5. Discontinuité évitable en $x = 0$ (prolongement en $m(0) = \\frac{1}{2}$)"
+  },
+  {
+   "id": 869,
+   "question": "Appliquer le théorème des valeurs intermédiaires pour résoudre les problèmes suivants.\n**Question 1 :** Montrer que l'équation $\\displaystyle x^3 - 3x + 1 = 0$ admet au moins une solution dans $\\displaystyle [0, 2]$\n**Question 2 :** L'équation $\\displaystyle e^x = 2x$ admet-elle une solution dans $\\displaystyle [0, 1]$ ?\n**Question 3 :** Montrer que l'équation $\\displaystyle \\ln x = 1 - x$ admet au moins une solution dans $\\displaystyle ]0, 1]$\n**Question 4 :** Montrer que l'équation $\\displaystyle \\cos x = x$ admet au moins une solution dans $\\displaystyle [0, \\frac{\\pi}{2}]$\n**Question 5 :** Montrer que l'équation $\\displaystyle x^4 - 2x^2 + 1 = 0$ admet au moins une solution dans $\\displaystyle [-2, 2]$",
+   "etapes": "**Question 1 :** Montrer que l'équation $\\displaystyle x^3 - 3x + 1 = 0$ admet au moins une solution dans $\\displaystyle [0, 2]$\n● **Méthode :** Application du théorème des valeurs intermédiaires\n$\\\\$\n● **Étape 1 :** Définir la fonction $\\displaystyle f(x) = x^3 - 3x + 1$\n$\\\\$\n● **Étape 2 :** Vérifier la continuité de $\\displaystyle f$\n$\\qquad$• $\\displaystyle f$ est un polynôme, donc continue sur $\\displaystyle \\mathbb{R}$\n$\\qquad$• En particulier, $\\displaystyle f$ est continue sur $\\displaystyle [0, 2]$\n$\\\\$\n● **Étape 3 :** Calculer $\\displaystyle f(0)$ et $\\displaystyle f(2)$\n$\\qquad$• $\\displaystyle f(0) = 0^3 - 3(0) + 1 = 1$\n$\\qquad$• $\\displaystyle f(2) = 2^3 - 3(2) + 1 = 8 - 6 + 1 = 3$\n$\\\\$\n● **Étape 4 :** Appliquer le TVI\n$\\qquad$• $\\displaystyle f(0) = 1 > 0$ et $\\displaystyle f(2) = 3 > 0$\n$\\qquad$• On cherche une solution de $\\displaystyle f(x) = 0$\n$\\qquad$• Calculons $\\displaystyle f(1) = 1^3 - 3(1) + 1 = -1 < 0$\n$\\qquad$• Donc $\\displaystyle f(1) < 0 < f(2)$\n$\\qquad$• Par TVI, il existe $\\displaystyle c \\in ]1, 2[$ tel que $\\displaystyle f(c) = 0$\n$\\\\$\n● **Résultat :** L'équation $\\displaystyle x^3 - 3x + 1 = 0$ admet au moins une solution dans $\\displaystyle [0, 2]$\n$\\\\$\n[IMAGE_1]\n**Question 2 :** L'équation $\\displaystyle e^x = 2x$ admet-elle une solution dans $\\displaystyle [0, 1]$ ?\n● **Méthode :** Application du théorème des valeurs intermédiaires\n$\\\\$\n● **Étape 1 :** Définir la fonction $\\displaystyle f(x) = e^x - 2x$\n$\\\\$\n● **Étape 2 :** Vérifier la continuité de $f$\n$\\qquad$• $f$ est la différence de 2 fonctions continues, donc continue sur $\\displaystyle\\mathbb{R}$\n$\\qquad$• En particulier, $f$ est continue sur $\\displaystyle[0, 1]$\n$\\\\$\n● **Étape 3 :** Calculer $\\displaystyle f(0)$ et $\\displaystyle f(1)$\n$\\qquad$• $\\displaystyle f(0) = e^0 - 2(0) = 1 - 0 = 1 > 0$\n$\\qquad$• $\\displaystyle f(1) = e^1 - 2(1) = e - 2 \\approx 2,718 - 2 = 0,718 > 0$\n$\\\\$\n● **Étape 4 :** Chercher un point où $\\displaystyle f(x) < 0$\n$\\qquad$• Calculons $\\displaystyle f(0,5) = e^{0,5} - 2(0,5) = \\sqrt{e} - 1 \\approx 1,649 - 1 = 0,649 > 0$\n$\\qquad$• Calculons $\\displaystyle f(0,1) = e^{0,1} - 2(0,1) \\approx 1,105 - 0,2 = 0,905 > 0$\n$\\qquad$• En fait, $\\displaystyle f(x) > 0$ pour tout $\\displaystyle x \\in [0, 1]$\n$\\qquad$• L'équation $\\displaystyle e^x = 2x$ n'a pas de solution dans $\\displaystyle[0, 1]$\n$\\\\$\n● **Résultat :** L'équation $\\displaystyle e^x = 2x$ n'admet pas de solution dans $\\displaystyle[0, 1]$\n$\\\\$\n[IMAGE_2]\n**Question 3 :** Montrer que l'équation $\\displaystyle \\ln x = 1 - x$ admet au moins une solution dans $\\displaystyle ]0, 1]$\n● **Méthode :** Application du théorème des valeurs intermédiaires\n$\\\\$\n● **Étape 1 :** Définir la fonction $\\displaystyle f(x) = \\ln x - (1 - x) = \\ln x + x - 1$\n$\\\\$\n● **Étape 2 :** Vérifier la continuité de $f$\n$\\qquad$• $f$ est somme de fonctions continues sur $\\displaystyle]0, +\\infty[$\n$\\qquad$• En particulier, $f$ est continue sur $\\displaystyle]0, 1]$\n$\\\\$\n● **Étape 3 :** Calculer $\\displaystyle f(1)$\n$\\qquad$• $\\displaystyle f(1) = \\ln 1 + 1 - 1 = 0 + 1 - 1 = 0$\n$\\qquad$• Donc $\\displaystyle x = 1$ est une solution !\n$\\\\$\n● **Étape 4 :** Vérifier qu'il n'y a pas d'autre solution\n$\\qquad$• Pour $\\displaystyle x \\in ]0, 1[$ : $\\displaystyle\\ln x < 0$ et $\\displaystyle x - 1 < 0$\n$\\qquad$• Donc $\\displaystyle f(x) = \\ln x + x - 1 < 0$ pour $x \\in ]0, 1[$\n$\\qquad$• La seule solution est $\\displaystyle x = 1$\n$\\\\$\n● **Résultat :** L'équation $\\displaystyle\\ln x = 1 - x$ admet exactement une solution dans $\\displaystyle]0, 1]$ (qui est $\\displaystyle x = 1$)\n$\\\\$\n[IMAGE_3]\n**Question 4 :** Montrer que l'équation $\\displaystyle \\cos x = x$ admet au moins une solution dans $\\displaystyle [0, \\frac{\\pi}{2}]$\n● **Méthode :** Application du théorème des valeurs intermédiaires\n$\\\\$\n● **Étape 1 :** Définir la fonction $\\displaystyle f(x) = \\cos x - x$\n$\\\\$\n● **Étape 2 :** Vérifier la continuité de $f$\n$\\qquad$• $f$ est la différence de 2 fonctions continues, donc continue sur $\\displaystyle\\mathbb{R}$\n$\\qquad$• En particulier, $f$ est continue sur $\\displaystyle[0, \\frac{\\pi}{2}]$\n$\\\\$\n● **Étape 3 :** Calculer $\\displaystyle f(0)$ et $\\displaystyle f(\\frac{\\pi}{2})$\n$\\qquad$• $\\displaystyle f(0) = \\cos 0 - 0 = 1 - 0 = 1 > 0$\n$\\qquad$• $\\displaystyle f(\\frac{\\pi}{2}) = \\cos(\\frac{\\pi}{2}) - \\frac{\\pi}{2} = 0 - \\frac{\\pi}{2} = -\\frac{\\pi}{2} < 0$\n$\\\\$\n● **Étape 4 :** Appliquer le TVI\n$\\qquad$• $\\displaystyle f(0) = 1 > 0$ et $\\displaystyle f(\\frac{\\pi}{2}) = -\\frac{\\pi}{2} < 0$\n$\\qquad$• Par TVI, il existe $\\displaystyle c \\in ]0, \\frac{\\pi}{2}[$ tel que $\\displaystyle f(c) = 0$\n$\\qquad$• Donc $\\displaystyle\\cos c = c$\n$\\\\$\n● **Résultat :** L'équation $\\displaystyle\\cos x = x$ admet au moins une solution dans $\\displaystyle[0, \\frac{\\pi}{2}]$\n$\\\\$\n[IMAGE_4]\n**Question 5 :** Montrer que l'équation $\\displaystyle x^4 - 2x^2 + 1 = 0$ admet au moins une solution dans $\\displaystyle [-2, 2]$\n● **Méthode :** Application du théorème des valeurs intermédiaires\n$\\\\$\n● **Étape 1 :** Définir la fonction $\\displaystyle f(x) = x^4 - 2x^2 + 1$\n$\\\\$\n● **Étape 2 :** Vérifier la continuité de $f$\n$\\qquad$• $f$ est un polynôme, donc continue sur $\\displaystyle\\mathbb{R}$\n$\\qquad$• En particulier, $f$ est continue sur $\\displaystyle[-2, 2]$\n$\\\\$\n● **Étape 3 :** Calculer $\\displaystyle f(-2)$ et $\\displaystyle f(2)$\n$\\qquad$• $\\displaystyle f(-2) = (-2)^4 - 2(-2)^2 + 1 = 16 - 8 + 1 = 9 > 0$\n$\\qquad$• $\\displaystyle f(2) = 2^4 - 2(2)^2 + 1 = 16 - 8 + 1 = 9 > 0$\n$\\\\$\n● **Étape 4 :** Chercher un point où $\\displaystyle f(x) = 0$\n$\\qquad$• Factorisons : $\\displaystyle f(x) = x^4 - 2x^2 + 1 = (x^2 - 1)^2$\n$\\qquad$• Donc $\\displaystyle f(x) = 0 \\Leftrightarrow x^2 - 1 = 0 \\Leftrightarrow x = \\pm 1$\n$\\qquad$• Vérifions : $\\displaystyle f(1) = 1^4 - 2(1)^2 + 1 = 0$ et $\\displaystyle f(-1) = (-1)^4 - 2(-1)^2 + 1 = 0$\n$\\\\$\n● **Résultat :** L'équation $\\displaystyle x^4 - 2x^2 + 1 = 0$ admet exactement deux solutions dans $\\displaystyle[-2, 2]$ (qui sont $\\displaystyle x = 1$ et $\\displaystyle x = -1$)\n$\\\\$\n[IMAGE_5]",
+   "reponse_correcte": "1. L'équation $x^3 - 3x + 1 = 0$ admet au moins une solution dans $[0, 2]$\n2. L'équation $\\displaystyle e^x = 2x$ n'admet pas de solution dans $\\displaystyle[0, 1]$\n3. L'équation $\\ln x = 1 - x$ admet exactement une solution dans $]0, 1]$ ($x = 1$)\n4. L'équation $\\displaystyle\\cos x = x$ admet au moins une solution dans $\\displaystyle[0, \\frac{\\pi}{2}]$\n5. L'équation $x^4 - 2x^2 + 1 = 0$ admet exactement deux solutions dans $[-2, 2]$ ($x = \\pm 1$)"
+  },
+  {
+   "id": 871,
+   "question": "Résoudre les problèmes avancés de continuité suivants.\n**Question 1 :** Déterminer la valeur de $a$ pour que $\\displaystyle f(x) = \\begin{cases} \\frac{x^2 - 4}{x - 2} & \\text{si } x \\neq 2 \\\\ a & \\text{si } x = 2 \\end{cases}$ soit continue en $x = 2$\n$\\\\$\n**Question 2 :** Montrer que l'équation $x^5 - 5x + 1 = 0$ admet exactement 3 solutions réelles\n$\\\\$\n**Question 3 :** Déterminer les valeurs de $a$ et $b$ pour que $g(x) = \\begin{cases} ax + b & \\text{si } x < 1 \\\\ x^2 & \\text{si } x \\geq 1 \\end{cases}$ soit continue sur $\\mathbb{R}$\n$\\\\$\n**Question 4 :** Montrer que l'équation $e^x = x + 2$ admet exactement 2 solutions réelles\n$\\\\$\n**Question 5 :** Déterminer la valeur de $k$ pour que $h(x) = \\begin{cases} \\frac{\\sin x}{x} & \\text{si } x \\neq 0 \\\\ k & \\text{si } x = 0 \\end{cases}$ soit continue en $x = 0$",
+   "etapes": "**Question 1 :** Déterminer la valeur de $a$ pour que $\\displaystyle f(x) = \\begin{cases} \\frac{x^2 - 4}{x - 2} & \\text{si } x \\neq 2 \\\\ a & \\text{si } x = 2 \\end{cases}$ soit continue en $x = 2$\n● **Méthode :** Prolongement par continuité\n$\\\\$\n● **Étape 1 :** Calculer $\\displaystyle\\lim_{x \\to 2} f(x)$\n$\\qquad$• $\\displaystyle\\lim_{x \\to 2} \\frac{x^2 - 4}{x - 2} = \\lim_{x \\to 2} \\frac{(x-2)(x+2)}{x-2} = \\lim_{x \\to 2} (x+2) = 4$\n$\\\\$\n● **Étape 2 :** Condition de continuité\n$\\qquad$• Pour que $f$ soit continue en $x = 2$, il faut : $\\displaystyle\\lim_{x \\to 2} f(x) = f(2)$\n$\\qquad$• Donc $4 = a$\n$\\\\$\n● **Résultat :** $a = 4$\n$\\\\$\n[IMAGE_1]\n**Question 2 :** Montrer que l'équation $x^5 - 5x + 1 = 0$ admet exactement 3 solutions réelles\n● **Méthode :** Application du théorème des valeurs intermédiaires + analyse de la dérivée\n$\\\\$\n● **Étape 1 :** Définir $\\displaystyle f(x) = x^5 - 5x + 1$\n$\\\\$\n● **Étape 2 :** Vérifier la continuité\n$\\qquad$• $f$ est un polynôme, donc continue sur $\\displaystyle\\mathbb{R}$\n$\\\\$\n● **Étape 3 :** Analyser les limites\n$\\qquad$• $\\displaystyle\\lim_{x \\to -\\infty} f(x) = \\lim_{x \\to -\\infty} x^5 = -\\infty$\n$\\qquad$• $\\displaystyle\\lim_{x \\to +\\infty} f(x) = \\lim_{x \\to +\\infty} x^5 = +\\infty$\n$\\\\$\n● **Étape 4 :** Calculer la dérivée $f'(x) = 5x^4 - 5 = 5(x^4 - 1) = 5(x^2 - 1)(x^2 + 1) = 5(x-1)(x+1)(x^2+1)$\n$\\qquad$• $f'(x) = 0 \\Leftrightarrow x = \\pm 1$\n● **Tableau de signes de $f'(x)$ :**\n<table style=\"width:100%; border-collapse:collapse; margin:10px auto; max-width:500px; border:2px solid #3498db;\">\n<tr style=\"background:#e8f4f8;\">\n<td style=\"border-top:1px solid #ddd; border-bottom:1px solid #ddd; border-left:1px solid #ddd; padding:8px; text-align:center; font-weight:bold;\">$x$</td>\n<td style=\"border-top:1px solid #ddd; border-bottom:1px solid #ddd; padding:8px; text-align:center; font-weight:bold;\">$-\\infty$</td>\n<td style=\"border-top:1px solid #ddd; border-bottom:1px solid #ddd; padding:8px; text-align:center; font-weight:bold;\"></td>\n<td style=\"border-top:1px solid #ddd; border-bottom:1px solid #ddd; padding:8px; text-align:center; font-weight:bold;\">$-1$</td>\n<td style=\"border-top:1px solid #ddd; border-bottom:1px solid #ddd; padding:8px; text-align:center; font-weight:bold;\"></td>\n<td style=\"border-top:1px solid #ddd; border-bottom:1px solid #ddd; padding:8px; text-align:center; font-weight:bold;\">$1$</td>\n<td style=\"border-top:1px solid #ddd; border-bottom:1px solid #ddd; padding:8px; text-align:center; font-weight:bold;\"></td>\n<td style=\"border-top:1px solid #ddd; border-bottom:1px solid #ddd; border-right:1px solid #ddd; padding:8px; text-align:center; font-weight:bold;\">$+\\infty$</td>\n</tr>\n<tr style=\"background:#ffffff;\">\n<td style=\"border-bottom:1px solid #ddd; border-left:1px solid #ddd; padding:8px; text-align:center; font-weight:bold;\">$(x+1)$</td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center;\"></td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center; color:#e74c3c;\">$-$</td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center; color:#2c3e50;\">$0$</td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center; color:#2e7d32;\">$+$</td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center; \"></td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center; color:#2e7d32;\">$+$</td>\n<td style=\"border-bottom:1px solid #ddd; border-right:1px solid #ddd; padding:8px; text-align:center;\"></td>\n</tr>\n<tr style=\"background:#f8f9fa;\">\n<td style=\"border-bottom:1px solid #ddd; border-left:1px solid #ddd; padding:8px; text-align:center; font-weight:bold;\">$(x-1)$</td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center;\"></td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center; color:#e74c3c;\">$-$</td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center; \"></td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center; color:#e74c3c;\">$-$</td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center; color:#2c3e50;\">$0$</td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center; color:#2e7d32;\">$+$</td>\n<td style=\"border-bottom:1px solid #ddd; border-right:1px solid #ddd; padding:8px; text-align:center;\"></td>\n</tr>\n<tr style=\"background:#ffffff;\">\n<td style=\"border-bottom:1px solid #ddd; border-left:1px solid #ddd; padding:8px; text-align:center; font-weight:bold;\">$(x^2+1)$</td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center;\"></td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center; color:#2e7d32;\">$+$</td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center;\"></td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center; color:#2e7d32;\">$+$</td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center;\"></td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center;color:#2e7d32;\">$+$</td>\n<td style=\"border-bottom:1px solid #ddd; border-right:1px solid #ddd; padding:8px; text-align:center;\"></td>\n</tr>\n<tr style=\"background:#f0f9f0;\">\n<td style=\"border-bottom:1px solid #ddd; border-left:1px solid #ddd; padding:8px; text-align:center; font-weight:bold;\">$f'(x)$</td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center;\"></td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center; color:#2e7d32;\">$+$</td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center; color:#2c3e50;\">$0$</td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center; color:#e74c3c;\">$-$</td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center; color:#2c3e50;\">$0$</td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center; color:#2e7d32;\">$+$</td>\n<td style=\"border-bottom:1px solid #ddd; border-right:1px solid #ddd; padding:8px; text-align:center;\"></td>\n</tr>\n<tr style=\"background:#f8f9fa;\">\n<td style=\"border-bottom:1px solid #ddd; border-left:1px solid #ddd; padding:8px; text-align:center; font-weight:bold;\">$f(x)$</td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center; color:#2c3e50; vertical-align:top;\">$-\\infty$</td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center; color:#2e7d32;\">↗</td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center; color:#2e7d32;\">$5$</td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center; color:#e74c3c;\">↘</td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center; color:#e74c3c;\">$-3$</td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center; color:#2e7d32;\">↗</td>\n<td style=\"border-bottom:1px solid #ddd; border-right:1px solid #ddd; padding:8px; text-align:center; vertical-align:top;\">$+\\infty$</td>\n</tr>\n</table>\n● **Analyse du tableau :** $f'(x) > 0$ pour $x < -1$ et $x > 1$ ; $f'(x) < 0$ pour $-1 < x < 1$\n$\\\\$\n● **Étape 5 :** Analyser les variations\n$\\qquad$• $f(-1) = (-1)^5 - 5(-1) + 1 = -1 + 5 + 1 = 5 > 0$\n$\\qquad$• $f(1) = 1^5 - 5(1) + 1 = 1 - 5 + 1 = -3 < 0$\n$\\qquad$• $f(0) = 0^5 - 5(0) + 1 = 1 > 0$\n$\\\\$\n● **Étape 6 :** Appliquer le TVI\n$\\qquad$• Sur $]-\\infty, -1[$ : $f$ strictement croissante de $-\\infty$ à $5$, donc une solution\n$\\qquad$• Sur $]-1, 1[$ : $f$ strictement décroissante de $5$ à $-3$, donc une solution\n$\\qquad$• Sur $]1, +\\infty[$ : $f$ strictement croissante de $-3$ à $+\\infty$, donc une solution\n$\\\\$\n● **Résultat :** L'équation $x^5 - 5x + 1 = 0$ admet exactement 3 solutions réelles\n$\\\\$\n[IMAGE_2]\n**Question 3 :** Déterminer les valeurs de $a$ et $b$ pour que $g(x) = \\begin{cases} ax + b & \\text{si } x < 1 \\\\ x^2 & \\text{si } x \\geq 1 \\end{cases}$ soit continue sur $\\mathbb{R}$\n● **Méthode :** Continuité d'une fonction définie par morceaux\n$\\\\$\n● **Étape 1 :** Condition de continuité en $x = 1$\n$\\qquad$• $\\displaystyle\\lim_{x \\to 1^-} g(x) = \\lim_{x \\to 1^-} (ax + b) = a + b$\n$\\qquad$• $\\displaystyle\\lim_{x \\to 1^+} g(x) = \\lim_{x \\to 1^+} x^2 = 1$\n$\\qquad$• $g(1) = 1^2 = 1$\n$\\\\$\n● **Étape 2 :** Équation de continuité\n$\\qquad$• Pour la continuité : $\\displaystyle\\lim_{x \\to 1^-} g(x) = \\lim_{x \\to 1^+} g(x) = g(1)$\n$\\qquad$• Donc $a + b = 1$\n$\\\\$\n● **Étape 3 :** Condition supplémentaire\n$\\qquad$• Pour que $g$ soit continue sur $\\mathbb{R}$, il faut aussi que $g$ soit continue en tout point\n$\\qquad$• La fonction $ax + b$ est continue sur $]-\\infty, 1[$\n$\\qquad$• La fonction $x^2$ est continue sur $[1, +\\infty[$\n$\\qquad$• Il suffit donc que $a + b = 1$\n$\\\\$\n● **Résultat :** $a + b = 1$ (une droite de solutions dans le plan $(a,b)$)\n$\\\\$\n[IMAGE_3]\n**Question 4 :** Montrer que l'équation $e^x = x + 2$ admet exactement 2 solutions réelles\n● **Méthode :** Application du théorème des valeurs intermédiaires + analyse de la dérivée\n$\\\\$\n● **Étape 1 :** Définir $\\displaystyle f(x) = e^x - x - 2$\n$\\\\$\n● **Étape 2 :** Vérifier la continuité\n$\\qquad$• $f$ est la différence de 2 fonctions continues, donc continue sur $\\mathbb{R}$\n$\\\\$\n● **Étape 3 :** Analyser les limites\n$\\qquad$• $\\displaystyle\\lim_{x \\to -\\infty} f(x) = \\lim_{x \\to -\\infty} (e^x - x - 2) = 0 - (-\\infty) - 2 = +\\infty$\n$\\qquad$• $\\displaystyle\\lim_{x \\to +\\infty} f(x) = \\lim_{x \\to +\\infty} (e^x - x - 2) = +\\infty - (+\\infty) - 2 = +\\infty$\n$\\\\$\n● **Étape 4 :** Calculer la dérivée $f'(x) = e^x - 1$\n$\\qquad$• $f'(x) = 0 \\Leftrightarrow e^x = 1 \\Leftrightarrow x = 0$\n● **Tableau de signes de $f'(x)$ :**\n<table style=\"width:100%; border-collapse:collapse; margin:10px auto; max-width:500px; border:2px solid #3498db;\">\n<tr style=\"background:#e8f4f8;\">\n<td style=\"border-top:1px solid #ddd; border-bottom:1px solid #ddd; border-left:1px solid #ddd; padding:8px; text-align:center; font-weight:bold;\">$x$</td>\n<td style=\"border-top:1px solid #ddd; border-bottom:1px solid #ddd; padding:8px; text-align:center; font-weight:bold;\">$-\\infty$</td>\n<td style=\"border-top:1px solid #ddd; border-bottom:1px solid #ddd; padding:8px; text-align:center; font-weight:bold;\"></td>\n<td style=\"border-top:1px solid #ddd; border-bottom:1px solid #ddd; padding:8px; text-align:center; font-weight:bold;\">$0$</td>\n<td style=\"border-top:1px solid #ddd; border-bottom:1px solid #ddd; padding:8px; text-align:center; font-weight:bold;\"></td>\n<td style=\"border-top:1px solid #ddd; border-bottom:1px solid #ddd; border-right:1px solid #ddd; padding:8px; text-align:center; font-weight:bold;\">$+\\infty$</td>\n</tr>\n<tr style=\"background:#ffffff;\">\n<td style=\"border-bottom:1px solid #ddd; border-left:1px solid #ddd; padding:8px; text-align:center; font-weight:bold;\">$e^x$</td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center;\"></td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center; color:#2e7d32;\">$+$</td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center; color:#2c3e50;\">$1$</td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center; color:#2e7d32;\">$+$</td>\n<td style=\"border-bottom:1px solid #ddd; border-right:1px solid #ddd; padding:8px; text-align:center;\"></td>\n</tr>\n<tr style=\"background:#f8f9fa;\">\n<td style=\"border-bottom:1px solid #ddd; border-left:1px solid #ddd; padding:8px; text-align:center; font-weight:bold;\">$(e^x-1)$</td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center;\"></td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center; color:#e74c3c;\">$-$</td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center; color:#2c3e50;\">$0$</td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center; color:#2e7d32;\">$+$</td>\n<td style=\"border-bottom:1px solid #ddd; border-right:1px solid #ddd; padding:8px; text-align:center;\"></td>\n</tr>\n<tr style=\"background:#f0f9f0;\">\n<td style=\"border-bottom:1px solid #ddd; border-left:1px solid #ddd; padding:8px; text-align:center; font-weight:bold;\">$f'(x)$</td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center;\"></td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center; color:#e74c3c;\">$-$</td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center; color:#2c3e50;\">$0$</td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center; color:#2e7d32;\">$+$</td>\n<td style=\"border-bottom:1px solid #ddd; border-right:1px solid #ddd; padding:8px; text-align:center;\"></td>\n</tr>\n<tr style=\"background:#f8f9fa;\">\n<td style=\"border-bottom:1px solid #ddd; border-left:1px solid #ddd; padding:8px; text-align:center; font-weight:bold;\">$f(x)$</td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center; color:#2c3e50; vertical-align:top;\">$+\\infty$</td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center; color:#e74c3c;\">↘</td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center; color:#e74c3c;\">$-1$</td>\n<td style=\"border-bottom:1px solid #ddd; padding:8px; text-align:center; color:#2e7d32;\">↗</td>\n<td style=\"border-bottom:1px solid #ddd; border-right:1px solid #ddd; padding:8px; text-align:center; vertical-align:top;\">$+\\infty$</td>\n</tr>\n</table>\n● **Analyse du tableau :** $f'(x) < 0$ pour $x < 0$ ; $f'(x) > 0$ pour $x > 0$\n$\\\\$\n● **Étape 5 :** Analyser les variations\n$\\qquad$• $f(0) = e^0 - 0 - 2 = 1 - 2 = -1 < 0$\n$\\qquad$• $f(-1) = e^{-1} - (-1) - 2 = \\frac{1}{e} + 1 - 2 = \\frac{1}{e} - 1 < 0$\n$\\qquad$• $f(1) = e^1 - 1 - 2 = e - 3 \\approx 2,718 - 3 < 0$\n$\\qquad$• $f(2) = e^2 - 2 - 2 = e^2 - 4 \\approx 7,389 - 4 > 0$\n$\\\\$\n● **Étape 6 :** Appliquer le TVI\n$\\qquad$• Sur $]-\\infty, 0[$ : $f$ strictement décroissante de $+\\infty$ à $-1$, donc une solution\n$\\qquad$• Sur $]0, +\\infty[$ : $f$ strictement croissante de $-1$ à $+\\infty$, donc une solution\n$\\\\$\n● **Résultat :** L'équation $e^x = x + 2$ admet exactement 2 solutions réelles\n$\\\\$\n[IMAGE_4]\n**Question 5 :** Déterminer la valeur de $k$ pour que $h(x) = \\begin{cases} \\frac{\\sin x}{x} & \\text{si } x \\neq 0 \\\\ k & \\text{si } x = 0 \\end{cases}$ soit continue en $x = 0$\n● **Méthode :** Prolongement par continuité\n$\\\\$\n● **Étape 1 :** Calculer $\\displaystyle\\lim_{x \\to 0} h(x)$\n$\\qquad$• $\\displaystyle\\lim_{x \\to 0} \\frac{\\sin x}{x} = 1$ (limite trigonométrique fondamentale)\n$\\\\$\n● **Étape 2 :** Condition de continuité\n$\\qquad$• Pour que $h$ soit continue en $x = 0$, il faut : $\\displaystyle\\lim_{x \\to 0} h(x) = h(0)$\n$\\qquad$• Donc $1 = k$\n$\\\\$\n● **Résultat :** $k = 1$\n$\\\\$\n[IMAGE_5]",
+   "reponse_correcte": "1. $a = 4$\n2. L'équation $x^5 - 5x + 1 = 0$ admet exactement 3 solutions réelles\n3. $a + b = 1$ (une droite de solutions dans le plan $(a,b)$)\n4. L'équation $e^x = x + 2$ admet exactement 2 solutions réelles\n5. $k = 1$"
+  }
+ ],
+ "images": [
+  {
+   "modele": "CoursImage",
+   "id": 751,
+   "proprietaire": 107,
+   "position": 1,
+   "image": "cours_images/term_cont_saut.png",
+   "legende": null,
+   "alt_text": "Figure du cours : cont saut",
+   "title_text": "",
+   "width": 1498,
+   "height": 660
+  },
+  {
+   "modele": "CoursImage",
+   "id": 752,
+   "proprietaire": 107,
+   "position": 2,
+   "image": "cours_images/term_cont_tvi.png",
+   "legende": null,
+   "alt_text": "Figure du cours : cont tvi",
+   "title_text": "",
+   "width": 930,
+   "height": 822
+  },
+  {
+   "modele": "CoursImage",
+   "id": 753,
+   "proprietaire": 107,
+   "position": 3,
+   "image": "cours_images/term_cont_unique.png",
+   "legende": null,
+   "alt_text": "Figure du cours : cont unique",
+   "title_text": "",
+   "width": 930,
+   "height": 876
+  },
+  {
+   "modele": "CoursImage",
+   "id": 754,
+   "proprietaire": 107,
+   "position": 4,
+   "image": "cours_images/term_cont_dichotomie.png",
+   "legende": null,
+   "alt_text": "Figure du cours : cont dichotomie",
+   "title_text": "",
+   "width": 1369,
+   "height": 574
+  },
+  {
+   "modele": "SynthesisImage",
+   "id": 336,
+   "proprietaire": 12,
+   "position": 1,
+   "image": "synthesis_images/term_cont_tvi.png",
+   "legende": null,
+   "alt_text": "Figure de la fiche : cont tvi",
+   "title_text": "",
+   "width": 930,
+   "height": 822
+  },
+  {
+   "modele": "SynthesisImage",
+   "id": 337,
+   "proprietaire": 12,
+   "position": 2,
+   "image": "synthesis_images/term_cont_unique.png",
+   "legende": null,
+   "alt_text": "Figure de la fiche : cont unique",
+   "title_text": "",
+   "width": 930,
+   "height": 876
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 118,
+   "proprietaire": 868,
+   "position": 1,
+   "image": "exercice_images/continuite_question1.png",
+   "legende": null,
+   "alt_text": "Droite avec trou et limite en x egal 2",
+   "title_text": "",
+   "width": null,
+   "height": null
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 119,
+   "proprietaire": 868,
+   "position": 2,
+   "image": "exercice_images/continuite_question2.png",
+   "legende": null,
+   "alt_text": "Fonction par morceaux continue au point x egal 1",
+   "title_text": "",
+   "width": null,
+   "height": null
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 120,
+   "proprietaire": 868,
+   "position": 3,
+   "image": "exercice_images/continuite_question3.png",
+   "legende": null,
+   "alt_text": "Courbe sinc avec trou en x egal zero",
+   "title_text": "",
+   "width": null,
+   "height": null
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 121,
+   "proprietaire": 868,
+   "position": 4,
+   "image": "exercice_images/continuite_question4.png",
+   "legende": null,
+   "alt_text": "Prolongement par continuite d une fonction affine",
+   "title_text": "",
+   "width": null,
+   "height": null
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 122,
+   "proprietaire": 868,
+   "position": 5,
+   "image": "exercice_images/continuite_question5.png",
+   "legende": null,
+   "alt_text": "Courbe valeur absolue continue en x egal 3",
+   "title_text": "",
+   "width": null,
+   "height": null
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 128,
+   "proprietaire": 870,
+   "position": 1,
+   "image": "exercice_images/discontinuites_question1.png",
+   "legende": null,
+   "alt_text": "Hyperbole avec asymptote verticale x egal 1",
+   "title_text": "",
+   "width": null,
+   "height": null
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 129,
+   "proprietaire": 870,
+   "position": 2,
+   "image": "exercice_images/discontinuites_question2.png",
+   "legende": null,
+   "alt_text": "Fonction par morceaux avec discontinuite par saut en 0",
+   "title_text": "",
+   "width": null,
+   "height": null
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 130,
+   "proprietaire": 870,
+   "position": 3,
+   "image": "exercice_images/discontinuites_question3.png",
+   "legende": null,
+   "alt_text": "Courbe un sur x carre avec asymptote en 0",
+   "title_text": "",
+   "width": null,
+   "height": null
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 131,
+   "proprietaire": 870,
+   "position": 4,
+   "image": "exercice_images/discontinuites_question4.png",
+   "legende": null,
+   "alt_text": "Oscillations de sin 1 sur x pres de x egal 0",
+   "title_text": "",
+   "width": null,
+   "height": null
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 132,
+   "proprietaire": 870,
+   "position": 5,
+   "image": "exercice_images/discontinuites_question5.png",
+   "legende": null,
+   "alt_text": "Fonction par morceaux avec saut d amplitude 1",
+   "title_text": "",
+   "width": null,
+   "height": null
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 138,
+   "proprietaire": 872,
+   "position": 1,
+   "image": "exercice_images/prolongement_question1.png",
+   "legende": null,
+   "alt_text": "Prolongement de x cube moins 8 sur x moins 2",
+   "title_text": "",
+   "width": null,
+   "height": null
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 139,
+   "proprietaire": 872,
+   "position": 2,
+   "image": "exercice_images/prolongement_question2.png",
+   "legende": null,
+   "alt_text": "Prolongement continu de sin 2x sur x en zero",
+   "title_text": "",
+   "width": null,
+   "height": null
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 140,
+   "proprietaire": 872,
+   "position": 3,
+   "image": "exercice_images/prolongement_question3.png",
+   "legende": null,
+   "alt_text": "Prolongement continu de ln 1 plus x sur x",
+   "title_text": "",
+   "width": null,
+   "height": null
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 141,
+   "proprietaire": 872,
+   "position": 4,
+   "image": "exercice_images/prolongement_question4.png",
+   "legende": null,
+   "alt_text": "Prolongement de e puissance x moins 1 sur x",
+   "title_text": "",
+   "width": null,
+   "height": null
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 142,
+   "proprietaire": 872,
+   "position": 5,
+   "image": "exercice_images/prolongement_question5.png",
+   "legende": null,
+   "alt_text": "Prolongement de racine de x plus 1 moins 1",
+   "title_text": "",
+   "width": null,
+   "height": null
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 123,
+   "proprietaire": 869,
+   "position": 1,
+   "image": "exercice_images/tvi_question1.png",
+   "legende": null,
+   "alt_text": "Courbe cubique avec valeurs f 0 f 1 f 2",
+   "title_text": "",
+   "width": null,
+   "height": null
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 124,
+   "proprietaire": 869,
+   "position": 2,
+   "image": "exercice_images/tvi_question2.png",
+   "legende": null,
+   "alt_text": "Intersection de y egal e puissance x et y egal 2x",
+   "title_text": "",
+   "width": null,
+   "height": null
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 125,
+   "proprietaire": 869,
+   "position": 3,
+   "image": "exercice_images/tvi_question3.png",
+   "legende": null,
+   "alt_text": "Intersection de y egal ln x et y egal 1 moins x",
+   "title_text": "",
+   "width": null,
+   "height": null
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 126,
+   "proprietaire": 869,
+   "position": 4,
+   "image": "exercice_images/tvi_question4.png",
+   "legende": null,
+   "alt_text": "Courbe cosinus et droite y egal x",
+   "title_text": "",
+   "width": null,
+   "height": null
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 127,
+   "proprietaire": 869,
+   "position": 5,
+   "image": "exercice_images/tvi_question5.png",
+   "legende": null,
+   "alt_text": "Polynome quartique avec zeros en plus ou moins un",
+   "title_text": "",
+   "width": null,
+   "height": null
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 133,
+   "proprietaire": 871,
+   "position": 1,
+   "image": "exercice_images/applications_continuite_question1.png",
+   "legende": null,
+   "alt_text": "Trou puis prolongement continu au point x egal 2",
+   "title_text": "",
+   "width": null,
+   "height": null
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 134,
+   "proprietaire": 871,
+   "position": 2,
+   "image": "exercice_images/applications_continuite_question2.png",
+   "legende": null,
+   "alt_text": "Polynome de degre 5 et changements de signe",
+   "title_text": "",
+   "width": null,
+   "height": null
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 135,
+   "proprietaire": 871,
+   "position": 3,
+   "image": "exercice_images/applications_continuite_question3.png",
+   "legende": null,
+   "alt_text": "Fonction affine puis parabole continue en x egal 1",
+   "title_text": "",
+   "width": null,
+   "height": null
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 136,
+   "proprietaire": 871,
+   "position": 4,
+   "image": "exercice_images/applications_continuite_question4.png",
+   "legende": null,
+   "alt_text": "Exponentielle et droite y egal x plus 2",
+   "title_text": "",
+   "width": null,
+   "height": null
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 137,
+   "proprietaire": 871,
+   "position": 5,
+   "image": "exercice_images/applications_continuite_question5.png",
+   "legende": null,
+   "alt_text": "Prolongement continu de sin x sur x en zero",
+   "title_text": "",
+   "width": null,
+   "height": null
+  }
+ ],
+ "images_creees": [
+  {
+   "modele": "CoursImage",
+   "id": 829
+  }
+ ]
+}

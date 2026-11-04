@@ -1,0 +1,2198 @@
+=== Découverte - Dériver des fonctions exponentielles
+Id: 1291
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Les fonctions suivantes sont définies et dérivables sur $\mathbb{R}$. Calculer leur dérivée.
+
+1. $f(x) = 3e^x - 2x + 1$
+2. $g(x) = e^{3x}$
+3. $h(x) = e^{-2x+1}$
+4. $k(x) = 5e^{0{,}4x} - e^{-x}$
+5. $m(x) = (x + 1)e^x$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Dériver $f(x) = 3e^x - 2x + 1$
+
+::: methode
+On dérive terme à terme, avec $\left(e^x\right)' = e^x$.
+:::
+
+::: etape Dérivée de chaque terme
+- $\left(3e^x\right)' = 3e^x$ (une constante multiplicative se conserve) ;
+- $(-2x)' = -2$ ;
+- $(1)' = 0$.
+:::
+
+::: resultat
+$$f'(x) = 3e^x - 2$$
+:::
+
+## Question 2 : Dériver $g(x) = e^{3x}$
+
+::: methode
+Pour tous réels $a$ et $b$ : $\left(e^{ax+b}\right)' = a\,e^{ax+b}$.
+:::
+
+::: etape Identifier $a$
+$g(x) = e^{ax+b}$ avec $a = 3$ et $b = 0$.
+:::
+
+::: resultat
+$$g'(x) = 3e^{3x}$$
+:::
+
+## Question 3 : Dériver $h(x) = e^{-2x+1}$
+
+::: methode
+Même formule, avec $a = -2$ et $b = 1$.
+:::
+
+::: etape Calcul
+$$h'(x) = (-2) \times e^{-2x+1}$$
+:::
+
+::: resultat
+$$h'(x) = -2e^{-2x+1}$$
+:::
+
+::: attention
+Erreur fréquente : écrire $h'(x) = e^{-2x+1}$ en oubliant le facteur $a = -2$. Seule $e^x$ est égale à sa dérivée.
+:::
+
+## Question 4 : Dériver $k(x) = 5e^{0{,}4x} - e^{-x}$
+
+::: methode
+On dérive chaque terme avec $\left(e^{ax}\right)' = a\,e^{ax}$.
+:::
+
+::: etape Premier terme ($a = 0{,}4$)
+$$\left(5e^{0{,}4x}\right)' = 5 \times 0{,}4\,e^{0{,}4x} = 2e^{0{,}4x}$$
+:::
+
+::: etape Second terme ($a = -1$)
+$$\left(-e^{-x}\right)' = -(-1)e^{-x} = e^{-x}$$
+:::
+
+::: resultat
+$$k'(x) = 2e^{0{,}4x} + e^{-x}$$
+:::
+
+## Question 5 : Dériver $m(x) = (x + 1)e^x$
+
+::: methode
+$m$ est un produit $u \times v$ : $(uv)' = u'v + uv'$.
+:::
+
+::: etape Identifier $u$ et $v$
+$u(x) = x + 1$, donc $u'(x) = 1$ ; $v(x) = e^x$, donc $v'(x) = e^x$.
+:::
+
+::: etape Appliquer la formule et factoriser
+$$
+\begin{aligned}
+m'(x) &= 1 \times e^x + (x + 1)e^x \\
+&= (1 + x + 1)e^x \\
+&= (x + 2)e^x
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$m'(x) = (x + 2)e^x$$
+:::
+
+::: retenir
+On factorise toujours la dérivée par l’exponentielle : comme $e^x > 0$, le signe de $m'(x)$ est celui de $x + 2$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $f'(x) = 3e^x - 2$
+2. $g'(x) = 3e^{3x}$
+3. $h'(x) = -2e^{-2x+1}$
+4. $k'(x) = 2e^{0{,}4x} + e^{-x}$
+5. $m'(x) = (x + 2)e^x$
+
+===
+
+=== Découverte - Signe, variations et tangente en 0
+Id: 1290
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+On a tracé la courbe $\mathcal{C}$ de la fonction exponentielle et sa tangente $T$ au point $A$ d’abscisse $0$.
+
+[IMAGE_1]
+
+1. Sans calculatrice, donner le signe de $e^{-3}$, puis, pour tout réel $x$, le signe de $-2e^x$ et de $e^x + 1$.
+2. Comparer $e^2$ et $e^3$, puis $e^{-1}$ et $e^{-0{,}5}$. Justifier.
+3. Calculer $\exp(0)$ et $\exp'(0)$. En déduire une équation de $T$.
+4. Utiliser $T$ pour donner une valeur approchée de $e^{0{,}1}$, puis comparer avec la valeur donnée par la calculatrice.
+5. Dresser le tableau de signes de $(x - 2)e^x$ sur $\mathbb{R}$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Signes
+
+::: methode
+Pour tout réel $X$, $e^X > 0$ : une exponentielle est toujours strictement positive.
+:::
+
+::: etape Les trois expressions
+- $e^{-3} > 0$ (avec $X = -3$).
+- $e^x > 0$, donc $-2e^x < 0$ : multiplier par $-2$ change le signe.
+- $e^x > 0$, donc $e^x + 1 > 1 > 0$.
+:::
+
+::: resultat
+$e^{-3} > 0$ ; pour tout réel $x$, $-2e^x < 0$ et $e^x + 1 > 0$.
+:::
+
+::: attention
+$e^{-3}$ n’est pas négatif : l’exposant est négatif, mais le nombre $e^{-3} = \dfrac{1}{e^3}$ est positif.
+:::
+
+## Question 2 : Comparaisons
+
+::: methode
+La fonction exponentielle est strictement croissante : $a < b \iff e^a < e^b$.
+:::
+
+::: etape Comparer les exposants
+- $2 < 3$, donc $e^2 < e^3$.
+- $-1 < -0{,}5$, donc $e^{-1} < e^{-0{,}5}$.
+:::
+
+::: resultat
+$e^2 < e^3$ et $e^{-1} < e^{-0{,}5}$.
+:::
+
+## Question 3 : Équation de la tangente $T$
+
+::: methode
+La tangente en $a$ a pour équation $y = f'(a)(x - a) + f(a)$.
+:::
+
+::: etape Valeurs en $0$
+$\exp(0) = e^0 = 1$ (définition) et $\exp'(0) = \exp(0) = 1$, car $\exp' = \exp$.
+:::
+
+::: etape Équation
+$$
+\begin{aligned}
+y &= \exp'(0)(x - 0) + \exp(0) \\
+&= x + 1
+\end{aligned}
+$$
+La droite $T$ passe par $A(0\,;\,1)$ et a pour coefficient directeur $1$ : quand $x$ augmente de $1$, $y$ augmente de $1$.
+
+[IMAGE_2]
+:::
+
+::: resultat
+$$T : y = x + 1$$
+:::
+
+## Question 4 : Valeur approchée de $e^{0{,}1}$
+
+::: methode
+Près du point de contact, la courbe et la tangente sont très proches : $e^h \approx h + 1$ pour $h$ proche de $0$.
+:::
+
+::: etape Approximation
+Avec $h = 0{,}1$ : $e^{0{,}1} \approx 0{,}1 + 1 = 1{,}1$.
+:::
+
+::: etape Comparaison
+La calculatrice donne $e^{0{,}1} \approx 1{,}10517$. L’écart est d’environ $0{,}005$ : l’approximation est bonne. La valeur approchée est un peu trop petite, car la courbe est au-dessus de sa tangente.
+:::
+
+::: resultat
+$e^{0{,}1} \approx 1{,}1$ (valeur exacte $1{,}10517\ldots$).
+:::
+
+## Question 5 : Signe de $(x - 2)e^x$
+
+::: methode
+Dans un produit, le facteur $e^x$ est toujours positif : le signe est celui de l’autre facteur.
+:::
+
+::: etape Tableau de signes
+$x - 2 = 0 \iff x = 2$, et $x - 2 > 0 \iff x > 2$.
+
+::: tableau
+x : -\infty, 2, +\infty
+x - 2 : , -, z, +,
+e^x : , +, , +,
+(x-2)e^x : , -, z, +,
+:::
+:::
+
+::: resultat
+$(x - 2)e^x < 0$ sur $]{-\infty}\,;\,2[$, $(x - 2)e^x = 0$ pour $x = 2$, et $(x - 2)e^x > 0$ sur $]2\,;+\infty[$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $e^{-3} > 0$ ; $-2e^x < 0$ et $e^x + 1 > 0$ pour tout réel $x$.
+2. $e^2 < e^3$ et $e^{-1} < e^{-0{,}5}$ (exponentielle strictement croissante).
+3. $\exp(0) = \exp'(0) = 1$, donc $T : y = x + 1$.
+4. $e^{0{,}1} \approx 1{,}1$ (calculatrice : $1{,}10517\ldots$).
+5. $(x - 2)e^x$ est négatif avant $2$, nul en $2$, positif après $2$.
+
+===
+
+=== Découverte - Propriétés algébriques et calculs
+Id: 1289
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Dans les questions 1 à 5, écrire l’expression sous la forme d’une seule exponentielle ($x$ désigne un réel).
+
+1. $A = e^{2x+3} \times e^{-x}$
+2. $B = \dfrac{e^{3x}}{e^{2x+1}}$
+3. $C = \left(e^x\right)^2 \times e^{-3x}$
+4. $D = \dfrac{e^{x+2} \times e^{3x-1}}{e^{2x}}$
+5. $E = \dfrac{\left(e^{-x}\right)^3 \times e^{4x+1}}{e}$
+6. Montrer que, pour tout réel $x$, $\left(e^x + e^{-x}\right)^2 - \left(e^x - e^{-x}\right)^2 = 4$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $A = e^{2x+3} \times e^{-x}$
+
+::: methode
+Produit : on additionne les exposants, $e^a \times e^b = e^{a+b}$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+A &= e^{(2x+3) + (-x)} \\
+&= e^{x+3}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$A = e^{x+3}$$
+:::
+
+## Question 2 : $B = \dfrac{e^{3x}}{e^{2x+1}}$
+
+::: methode
+Quotient : on soustrait les exposants, $\dfrac{e^a}{e^b} = e^{a-b}$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+B &= e^{3x - (2x + 1)} \\
+&= e^{3x - 2x - 1} \\
+&= e^{x-1}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$B = e^{x-1}$$
+:::
+
+::: attention
+Les parenthèses sont indispensables : on soustrait **tout** l’exposant $2x + 1$, d’où le $-1$.
+:::
+
+## Question 3 : $C = \left(e^x\right)^2 \times e^{-3x}$
+
+::: methode
+Puissance : $\left(e^a\right)^n = e^{na}$, puis on traite le produit.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+C &= e^{2x} \times e^{-3x} \\
+&= e^{2x - 3x} \\
+&= e^{-x}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$C = e^{-x}$$
+:::
+
+## Question 4 : $D = \dfrac{e^{x+2} \times e^{3x-1}}{e^{2x}}$
+
+::: methode
+On regroupe d’abord le numérateur, puis on divise.
+:::
+
+::: etape Numérateur
+$$e^{x+2} \times e^{3x-1} = e^{(x+2) + (3x-1)} = e^{4x+1}$$
+:::
+
+::: etape Quotient
+$$D = \frac{e^{4x+1}}{e^{2x}} = e^{4x + 1 - 2x} = e^{2x+1}$$
+:::
+
+::: resultat
+$$D = e^{2x+1}$$
+:::
+
+## Question 5 : $E = \dfrac{\left(e^{-x}\right)^3 \times e^{4x+1}}{e}$
+
+::: methode
+On écrit $e = e^1$ pour n’avoir que des exponentielles.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+E &= \frac{e^{-3x} \times e^{4x+1}}{e^1} \\
+&= \frac{e^{x+1}}{e^1} \\
+&= e^{x+1-1} \\
+&= e^{x}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$E = e^x$$
+:::
+
+## Question 6 : Une identité
+
+::: methode
+On développe avec les identités remarquables, puis on utilise $e^x \times e^{-x} = e^0 = 1$.
+:::
+
+::: etape Développer
+On pose $a = e^x$ et $b = e^{-x}$.
+$$
+\begin{aligned}
+(a + b)^2 - (a - b)^2 &= \left(a^2 + 2ab + b^2\right) \\
+&\quad - \left(a^2 - 2ab + b^2\right) \\
+&= 4ab
+\end{aligned}
+$$
+:::
+
+::: etape Conclure
+$$4ab = 4e^x \times e^{-x} = 4e^{x - x} = 4e^0 = 4$$
+:::
+
+::: resultat
+Pour tout réel $x$, $\left(e^x + e^{-x}\right)^2 - \left(e^x - e^{-x}\right)^2 = 4$.
+:::
+
+::: attention
+$\left(e^x\right)^2 = e^{2x}$, et non $e^{x^2}$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $A = e^{x+3}$
+2. $B = e^{x-1}$
+3. $C = e^{-x}$
+4. $D = e^{2x+1}$
+5. $E = e^x$
+6. Le développement donne $4e^x e^{-x} = 4e^0 = 4$.
+
+===
+
+=== Entraînement - Équations et inéquations
+Id: 1293
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Résoudre dans $\mathbb{R}$ les équations et inéquations suivantes.
+
+1. $e^{2x+1} = e^{x-3}$
+2. $e^{3x-6} = 1$
+3. $e^{4x} = e \times e^x$
+4. $e^{x-1} < e^{2x+3}$
+5. $e^{-x} \geqslant \dfrac{1}{e^2}$
+6. $e^x = -3$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $e^{2x+1} = e^{x-3}$
+
+::: methode
+$e^a = e^b \iff a = b$ : on compare les exposants.
+:::
+
+::: etape Résolution
+$$
+\begin{aligned}
+e^{2x+1} = e^{x-3} &\iff 2x + 1 = x - 3 \\
+&\iff x = -4
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$S = \{-4\}$$
+:::
+
+## Question 2 : $e^{3x-6} = 1$
+
+::: methode
+On écrit $1 = e^0$.
+:::
+
+::: etape Résolution
+$$
+\begin{aligned}
+e^{3x-6} = e^0 &\iff 3x - 6 = 0 \\
+&\iff x = 2
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$S = \{2\}$$
+:::
+
+## Question 3 : $e^{4x} = e \times e^x$
+
+::: methode
+On écrit le second membre sous la forme d’une seule exponentielle : $e \times e^x = e^1 \times e^x = e^{x+1}$.
+:::
+
+::: etape Résolution
+$$
+\begin{aligned}
+e^{4x} = e^{x+1} &\iff 4x = x + 1 \\
+&\iff 3x = 1 \\
+&\iff x = \frac{1}{3}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$S = \left\{\frac{1}{3}\right\}$$
+:::
+
+## Question 4 : $e^{x-1} < e^{2x+3}$
+
+::: methode
+L’exponentielle est strictement croissante : $e^a < e^b \iff a < b$ (même sens).
+:::
+
+::: etape Résolution
+$$
+\begin{aligned}
+e^{x-1} < e^{2x+3} &\iff x - 1 < 2x + 3 \\
+&\iff -4 < x
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$S = \,]{-4}\,;+\infty[$$
+:::
+
+## Question 5 : $e^{-x} \geqslant \dfrac{1}{e^2}$
+
+::: methode
+On écrit $\dfrac{1}{e^2} = e^{-2}$, puis on compare les exposants.
+:::
+
+::: etape Comparer les exposants
+$$
+\begin{aligned}
+e^{-x} \geqslant e^{-2} &\iff -x \geqslant -2 \\
+&\iff x \leqslant 2
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$S = \,]{-\infty}\,;\,2]$$
+:::
+
+::: attention
+En multipliant les deux membres de $-x \geqslant -2$ par $-1$, on **change le sens** de l’inégalité.
+:::
+
+## Question 6 : $e^x = -3$
+
+::: methode
+Une exponentielle est toujours strictement positive.
+:::
+
+::: etape Raisonnement
+Pour tout réel $x$, $e^x > 0$, donc $e^x$ ne peut pas valoir $-3$. Graphiquement, la courbe de l’exponentielle, toujours au-dessus de l’axe des abscisses, ne coupe jamais la droite d’équation $y = -3$.
+
+[IMAGE_1]
+:::
+
+::: resultat
+L’équation n’a aucune solution : $S = \varnothing$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $S = \{-4\}$
+2. $S = \{2\}$
+3. $S = \left\{\dfrac{1}{3}\right\}$
+4. $S = \,]{-4}\,;+\infty[$
+5. $S = \,]{-\infty}\,;\,2]$
+6. $S = \varnothing$
+
+===
+
+=== Entraînement - Comparer l'exponentielle et sa tangente en 0
+Id: 1298
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On considère la fonction $f$ définie sur $\mathbb{R}$ par $f(x) = e^x - x$. Voici sa courbe $\mathcal{C}_f$.
+
+[IMAGE_1]
+
+1. Quel minimum de $f$ peut-on conjecturer à l’aide du graphique ?
+2. Calculer $f'(x)$.
+3. Résoudre l’inéquation $e^x > 1$. En déduire le signe de $f'(x)$.
+4. Dresser le tableau de variations de $f$ et démontrer la conjecture de la question 1.
+5. En déduire que, pour tout réel $x$, $e^x \geqslant x + 1$. Interpréter graphiquement ce résultat.
+6. Appliquer l’inégalité avec $x = 0{,}1$, puis avec $x = -0{,}1$. En déduire que $1{,}1 \leqslant e^{0{,}1} \leqslant \dfrac{10}{9}$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Conjecture
+
+::: etape Lecture graphique
+Le point le plus bas de $\mathcal{C}_f$ semble être le point de coordonnées $(0\,;\,1)$.
+:::
+
+::: resultat
+Conjecture : $f$ admet un minimum égal à $1$, atteint en $x = 0$.
+:::
+
+## Question 2 : Dérivée
+
+::: methode
+$\left(e^x\right)' = e^x$ et $(x)' = 1$.
+:::
+
+::: resultat
+$$f'(x) = e^x - 1$$
+:::
+
+## Question 3 : Signe de $f'(x)$
+
+::: methode
+On écrit $1 = e^0$ et on compare les exposants.
+:::
+
+::: etape Résoudre $e^x > 1$
+$$e^x > 1 \iff e^x > e^0 \iff x > 0$$
+De même, $e^x < 1 \iff x < 0$ et $e^x = 1 \iff x = 0$.
+:::
+
+::: resultat
+$f'(x) < 0$ pour $x < 0$, $f'(0) = 0$ et $f'(x) > 0$ pour $x > 0$.
+:::
+
+## Question 4 : Variations et minimum
+
+::: etape Valeur en $0$
+$$f(0) = e^0 - 0 = 1$$
+:::
+
+::: point Tableau de variations
+::: tableau
+x : -\infty, 0, +\infty
+f'(x) : , -, z, +,
+f(x) : +/, -/1, +/
+:::
+:::
+
+::: etape Illustration
+[IMAGE_2]
+:::
+
+::: resultat
+$f$ est décroissante sur $]{-\infty}\,;\,0]$ et croissante sur $[0\,;+\infty[$ : son minimum sur $\mathbb{R}$ est $f(0) = 1$. La conjecture est démontrée.
+:::
+
+## Question 5 : L’inégalité $e^x \geqslant x + 1$
+
+::: methode
+Un minimum égal à $1$ signifie : $f(x) \geqslant 1$ pour tout réel $x$.
+:::
+
+::: etape Traduire
+Pour tout réel $x$ :
+$$e^x - x \geqslant 1 \iff e^x \geqslant x + 1$$
+L’égalité n’a lieu que pour $x = 0$.
+:::
+
+::: etape Interprétation graphique
+La droite $y = x + 1$ est la tangente à la courbe de l’exponentielle en $0$. L’inégalité signifie que la courbe de l’exponentielle est **au-dessus de cette tangente** ; elles ne se touchent qu’au point $(0\,;\,1)$.
+
+[IMAGE_3]
+:::
+
+::: resultat
+Pour tout réel $x$, $e^x \geqslant x + 1$ : la courbe de l’exponentielle est au-dessus de sa tangente en $0$.
+:::
+
+## Question 6 : Encadrement de $e^{0{,}1}$
+
+::: etape Avec $x = 0{,}1$
+$$e^{0{,}1} \geqslant 0{,}1 + 1 = 1{,}1$$
+:::
+
+::: etape Avec $x = -0{,}1$
+$e^{-0{,}1} \geqslant 0{,}9$. Or $e^{-0{,}1} = \dfrac{1}{e^{0{,}1}}$, donc $\dfrac{1}{e^{0{,}1}} \geqslant 0{,}9$.
+
+Les deux membres étant strictement positifs, on passe aux inverses en changeant le sens :
+$$e^{0{,}1} \leqslant \frac{1}{0{,}9} = \frac{10}{9}$$
+:::
+
+::: resultat
+$$1{,}1 \leqslant e^{0{,}1} \leqslant \frac{10}{9} \approx 1{,}111$$
+La calculatrice donne bien $e^{0{,}1} \approx 1{,}105$.
+:::
+
+::: attention
+La fonction inverse est décroissante sur $]0\,;+\infty[$ : le passage aux inverses de deux nombres positifs **inverse** le sens de l’inégalité.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Minimum conjecturé : $1$, atteint en $0$.
+2. $f'(x) = e^x - 1$
+3. $e^x > 1 \iff x > 0$ : $f'$ est négative sur $]{-\infty}\,;\,0[$ et positive sur $]0\,;+\infty[$.
+4. $f$ décroît puis croît ; minimum $f(0) = 1$.
+5. $e^x - x \geqslant 1$, soit $e^x \geqslant x + 1$ : la courbe est au-dessus de sa tangente en $0$.
+6. $e^{0{,}1} \geqslant 1{,}1$ et $\dfrac{1}{e^{0{,}1}} \geqslant 0{,}9$, d’où $1{,}1 \leqslant e^{0{,}1} \leqslant \dfrac{10}{9}$.
+
+===
+
+=== Problème - Étude d'un produit avec l'exponentielle
+Id: 1294
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On considère la fonction $g$ définie sur $\mathbb{R}$ par $g(x) = xe^x$, et sa courbe $\mathcal{C}_g$ ci-dessous.
+
+[IMAGE_1]
+
+1. Calculer $g'(x)$.
+2. Étudier le signe de $g'(x)$ et dresser le tableau de variations de $g$.
+3. Déterminer le minimum de $g$ sur $\mathbb{R}$ (valeur exacte et arrondi au millième).
+4. Résoudre l’équation $g(x) = 0$, puis donner le signe de $g(x)$.
+5. Déterminer une équation de la tangente $T$ à $\mathcal{C}_g$ au point d’abscisse $0$.
+6. Montrer que $g(x) - x = x\left(e^x - 1\right)$, puis étudier la position de $\mathcal{C}_g$ par rapport à $T$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Dérivée
+
+::: methode
+$g = uv$ avec $u(x) = x$ et $v(x) = e^x$ : $(uv)' = u'v + uv'$.
+:::
+
+::: etape Calcul
+$u'(x) = 1$ et $v'(x) = e^x$.
+$$
+\begin{aligned}
+g'(x) &= 1 \times e^x + x \times e^x \\
+&= (x + 1)e^x
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$g'(x) = (x + 1)e^x$$
+:::
+
+## Question 2 : Signe de $g'(x)$ et variations
+
+::: methode
+$e^x > 0$ : $g'(x)$ a le signe de $x + 1$.
+:::
+
+::: etape Signe de $x + 1$
+$x + 1 = 0 \iff x = -1$ ; $x + 1 > 0 \iff x > -1$.
+:::
+
+::: point Tableau de variations
+::: tableau
+x : -\infty, -1, +\infty
+x + 1 : , -, z, +,
+e^x : , +, , +,
+g'(x) : , -, z, +,
+g(x) : +/, -/-\frac{1}{e}, +/
+:::
+:::
+
+::: resultat
+$g$ est décroissante sur $]{-\infty}\,;\,-1]$ et croissante sur $[-1\,;+\infty[$.
+:::
+
+## Question 3 : Minimum
+
+::: etape Calcul de $g(-1)$
+$$g(-1) = (-1) \times e^{-1} = -\frac{1}{e}$$
+:::
+
+::: resultat
+Le minimum de $g$ sur $\mathbb{R}$ est $g(-1) = -\dfrac{1}{e} \approx -0{,}368$. Pour tout réel $x$, $xe^x \geqslant -\dfrac{1}{e}$.
+:::
+
+## Question 4 : Zéro et signe de $g$
+
+::: methode
+$e^x > 0$ : $g(x) = xe^x$ a le signe de $x$ et s’annule seulement quand $x = 0$.
+:::
+
+::: etape Équation
+$$xe^x = 0 \iff x = 0 \quad (\text{car } e^x \neq 0)$$
+:::
+
+::: resultat
+$S = \{0\}$ ; $g(x) < 0$ pour $x < 0$ et $g(x) > 0$ pour $x > 0$.
+:::
+
+## Question 5 : Tangente en $0$
+
+::: methode
+$T : y = g'(0)(x - 0) + g(0)$.
+:::
+
+::: etape Valeurs en $0$
+$g(0) = 0 \times e^0 = 0$ et $g'(0) = (0 + 1)e^0 = 1$.
+:::
+
+::: resultat
+$$T : y = x$$
+:::
+
+## Question 6 : Position de $\mathcal{C}_g$ par rapport à $T$
+
+::: methode
+On étudie le signe de la différence $g(x) - x$ : positive, la courbe est au-dessus de la tangente.
+:::
+
+::: etape Factoriser
+$$g(x) - x = xe^x - x = x\left(e^x - 1\right)$$
+:::
+
+::: etape Signe de chaque facteur
+D’après le cours, $e^x - 1 > 0 \iff e^x > e^0 \iff x > 0$.
+
+::: tableau
+x : -\infty, 0, +\infty
+x : , -, z, +,
+e^x - 1 : , -, z, +,
+g(x) - x : , +, z, +,
+:::
+:::
+
+::: etape Illustration
+[IMAGE_2]
+:::
+
+::: resultat
+Pour tout réel $x$, $g(x) - x \geqslant 0$ : la courbe $\mathcal{C}_g$ est au-dessus de sa tangente $T : y = x$, et ne la touche qu’à l’origine.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $g'(x) = (x + 1)e^x$
+2. $g$ décroissante sur $]{-\infty}\,;\,-1]$, croissante sur $[-1\,;+\infty[$.
+3. Minimum $g(-1) = -\dfrac{1}{e} \approx -0{,}368$.
+4. $g(x) = 0 \iff x = 0$ ; $g$ a le signe de $x$.
+5. $T : y = x$
+6. $g(x) - x = x\left(e^x - 1\right) \geqslant 0$ : $\mathcal{C}_g$ est au-dessus de $T$.
+
+===
+
+=== Problème - Équations et inéquations avancées
+Id: 1297
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Résoudre dans $\mathbb{R}$ les équations et inéquations suivantes.
+
+1. $e^{x^2} = e^{3x-2}$
+2. $e^{x^2-4x+3} \geqslant 1$
+3. $e^{2x} - (1 + e)e^x + e = 0$ (on pourra poser $X = e^x$)
+4. $e^{2x} + e^x - 2 > 0$
+5. $e^{x+1} > 2e^{x-1}$
+6. $\left(x^2 - 1\right)e^{-x} \leqslant 0$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $e^{x^2} = e^{3x-2}$
+
+::: methode
+On compare les exposants, puis on résout une équation du second degré.
+:::
+
+::: etape Comparer les exposants
+$$
+\begin{aligned}
+e^{x^2} = e^{3x-2} &\iff x^2 = 3x - 2 \\
+&\iff x^2 - 3x + 2 = 0
+\end{aligned}
+$$
+:::
+
+::: etape Second degré
+$\Delta = (-3)^2 - 4 \times 1 \times 2 = 1 > 0$, donc deux racines :
+$$x_1 = \frac{3 - 1}{2} = 1 \qquad x_2 = \frac{3 + 1}{2} = 2$$
+:::
+
+::: resultat
+$$S = \{1\,;\,2\}$$
+:::
+
+## Question 2 : $e^{x^2-4x+3} \geqslant 1$
+
+::: methode
+$1 = e^0$ : l’inéquation équivaut à $x^2 - 4x + 3 \geqslant 0$.
+:::
+
+::: etape Racines du trinôme
+$\Delta = 16 - 12 = 4$, racines $\dfrac{4 - 2}{2} = 1$ et $\dfrac{4 + 2}{2} = 3$ : $x^2 - 4x + 3 = (x - 1)(x - 3)$.
+:::
+
+::: etape Signe du trinôme
+Le coefficient de $x^2$ est positif : le trinôme est positif à l’extérieur des racines.
+
+[IMAGE_1]
+:::
+
+::: tableau
+x : -\infty, 1, 3, +\infty
+x^2 - 4x + 3 : , +, z, -, z, +,
+:::
+
+::: resultat
+$$S = \,]{-\infty}\,;\,1] \cup [3\,;+\infty[$$
+:::
+
+## Question 3 : $e^{2x} - (1 + e)e^x + e = 0$
+
+::: methode
+Comme $e^{2x} = \left(e^x\right)^2$, on pose $X = e^x$ (avec $X > 0$) : on obtient une équation du second degré en $X$.
+:::
+
+::: etape Équation en $X$
+$$X^2 - (1 + e)X + e = 0$$
+:::
+
+::: etape Racines
+$$
+\begin{aligned}
+\Delta &= (1 + e)^2 - 4e \\
+&= 1 + 2e + e^2 - 4e \\
+&= (e - 1)^2
+\end{aligned}
+$$
+Comme $e - 1 > 0$, $\sqrt{\Delta} = e - 1$, d’où :
+$$
+\begin{aligned}
+X_1 &= \frac{(1 + e) - (e - 1)}{2} = 1 \\
+X_2 &= \frac{(1 + e) + (e - 1)}{2} = e
+\end{aligned}
+$$
+Contrôle : $(X - 1)(X - e) = X^2 - (1 + e)X + e$.
+:::
+
+::: etape Retour à $x$
+Les deux valeurs sont strictement positives, donc acceptables :
+- $e^x = 1 = e^0 \iff x = 0$ ;
+- $e^x = e = e^1 \iff x = 1$.
+:::
+
+::: resultat
+$$S = \{0\,;\,1\}$$
+:::
+
+## Question 4 : $e^{2x} + e^x - 2 > 0$
+
+::: methode
+On pose $X = e^x > 0$ et on factorise $X^2 + X - 2$.
+:::
+
+::: etape Factorisation
+$X = 1$ est racine évidente ($1 + 1 - 2 = 0$) ; le produit des racines vaut $-2$, donc l’autre racine est $-2$ :
+$$X^2 + X - 2 = (X - 1)(X + 2)$$
+:::
+
+::: etape Utiliser $X > 0$
+Comme $X = e^x > 0$, on a $X + 2 > 0$ : le produit a le signe de $X - 1$.
+$$
+\begin{aligned}
+(X - 1)(X + 2) > 0 &\iff X > 1 \\
+&\iff e^x > e^0 \\
+&\iff x > 0
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$S = \,]0\,;+\infty[$$
+:::
+
+::: attention
+La racine $X = -2$ ne donne aucune solution : $e^x$ ne peut pas être négatif. Il faut toujours tenir compte de la condition $X > 0$.
+:::
+
+## Question 5 : $e^{x+1} > 2e^{x-1}$
+
+::: methode
+On divise les deux membres par $e^{x-1}$, qui est strictement positif : le sens ne change pas.
+:::
+
+::: etape Diviser
+$$\frac{e^{x+1}}{e^{x-1}} = e^{(x+1) - (x-1)} = e^2$$
+L’inéquation équivaut donc à $e^2 > 2$.
+:::
+
+::: etape Conclure
+$e^2 \approx 7{,}39 > 2$ : cette inégalité est vraie, quel que soit $x$.
+:::
+
+::: resultat
+$$S = \mathbb{R}$$
+:::
+
+## Question 6 : $\left(x^2 - 1\right)e^{-x} \leqslant 0$
+
+::: methode
+$e^{-x} > 0$ : le produit a le signe de $x^2 - 1$.
+:::
+
+::: etape Signe de $x^2 - 1$
+$x^2 - 1 = (x - 1)(x + 1)$ a pour racines $-1$ et $1$ ; le coefficient de $x^2$ est positif, donc le trinôme est négatif entre les racines.
+:::
+
+::: tableau
+x : -\infty, -1, 1, +\infty
+x^2 - 1 : , +, z, -, z, +,
+e^{-x} : , +, , +, , +,
+(x^2-1)e^{-x} : , +, z, -, z, +,
+:::
+
+::: resultat
+$$S = [-1\,;\,1]$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $S = \{1\,;\,2\}$
+2. $S = \,]{-\infty}\,;\,1] \cup [3\,;+\infty[$
+3. $S = \{0\,;\,1\}$
+4. $S = \,]0\,;+\infty[$
+5. $S = \mathbb{R}$
+6. $S = [-1\,;\,1]$
+
+===
+
+=== Problème - Suites géométriques et exponentielle
+Id: 1299
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+**Partie A — La suite $u_n = e^{-0{,}5n}$**
+
+Pour tout entier naturel $n$, on pose $u_n = e^{-0{,}5n}$. On a tracé la courbe de la fonction $t \mapsto e^{-0{,}5t}$.
+
+[IMAGE_1]
+
+**A1.** Calculer $u_0$, $u_1$ et $u_2$ (valeurs exactes, puis arrondies au millième). Placer les points $(n\,;\,u_n)$ correspondants sur la figure.
+
+**A2.** Montrer que la suite $(u_n)$ est géométrique ; préciser sa raison $q$.
+
+**A3.** Déterminer le sens de variation de $(u_n)$.
+
+**A4.** Calculer la somme $S = u_0 + u_1 + \cdots + u_9$ (valeur exacte, puis arrondi au millième).
+
+**Partie B — La suite $v_n = 3e^{2n+1}$**
+
+**B1.** Montrer que la suite $(v_n)$ est géométrique ; préciser son premier terme et sa raison.
+
+**B2.** Déterminer son sens de variation.
+
+**B3.** Compléter le programme Python suivant pour qu’il affiche le plus petit entier $n$ tel que $v_n > 10^6$, puis donner ce nombre.
+
+```python
+from math import exp
+
+n = 0
+while ...:
+    n = n + 1
+print(n)
+```
+
+Étapes:
+<!-- optitab:1 -->
+## Partie A : la suite $u_n = e^{-0{,}5n}$
+
+## Question A1 : Premiers termes
+
+::: etape Calcul
+- $u_0 = e^{0} = 1$ ;
+- $u_1 = e^{-0{,}5} \approx 0{,}607$ ;
+- $u_2 = e^{-1} = \dfrac{1}{e} \approx 0{,}368$.
+:::
+
+::: etape Sur la figure
+Le point $(n\,;\,u_n)$ a pour ordonnée $e^{-0{,}5n}$ : il est sur la courbe de $t \mapsto e^{-0{,}5t}$, à l’abscisse $t = n$.
+
+[IMAGE_2]
+:::
+
+::: resultat
+$u_0 = 1$, $u_1 = e^{-0{,}5} \approx 0{,}607$, $u_2 = e^{-1} \approx 0{,}368$.
+:::
+
+## Question A2 : Nature de la suite
+
+::: methode
+On exprime $u_{n+1}$ en fonction de $u_n$ avec $e^{a+b} = e^a \times e^b$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+u_{n+1} &= e^{-0{,}5(n+1)} \\
+&= e^{-0{,}5n - 0{,}5} \\
+&= e^{-0{,}5n} \times e^{-0{,}5} \\
+&= e^{-0{,}5} \times u_n
+\end{aligned}
+$$
+:::
+
+::: resultat
+$(u_n)$ est géométrique de premier terme $u_0 = 1$ et de raison $q = e^{-0{,}5} \approx 0{,}607$.
+:::
+
+## Question A3 : Sens de variation
+
+::: methode
+Une suite géométrique de premier terme positif et de raison $q$ comprise entre $0$ et $1$ est décroissante.
+:::
+
+::: etape Position de la raison
+$-0{,}5 < 0$, donc $e^{-0{,}5} < e^0 = 1$ ; et $e^{-0{,}5} > 0$. Ainsi $0 < q < 1$.
+
+Autre justification : $u_{n+1} - u_n = u_n(q - 1) < 0$, car $u_n > 0$ et $q - 1 < 0$.
+:::
+
+::: resultat
+La suite $(u_n)$ est strictement décroissante.
+:::
+
+## Question A4 : Somme de dix termes
+
+::: methode
+Pour une suite géométrique de raison $q \neq 1$ : $u_0 + \cdots + u_{n} = u_0 \times \dfrac{1 - q^{n+1}}{1 - q}$.
+:::
+
+::: etape Application
+Il y a $10$ termes, et $q^{10} = \left(e^{-0{,}5}\right)^{10} = e^{-5}$ :
+$$S = 1 \times \frac{1 - e^{-5}}{1 - e^{-0{,}5}}$$
+:::
+
+::: resultat
+$$S = \frac{1 - e^{-5}}{1 - e^{-0{,}5}} \approx 2{,}524$$
+:::
+
+## Partie B : la suite $v_n = 3e^{2n+1}$
+
+## Question B1 : Nature de la suite
+
+::: etape Calcul de $v_{n+1}$
+$$
+\begin{aligned}
+v_{n+1} &= 3e^{2(n+1)+1} \\
+&= 3e^{2n+1+2} \\
+&= 3e^{2n+1} \times e^2 \\
+&= e^2 \times v_n
+\end{aligned}
+$$
+:::
+
+::: resultat
+$(v_n)$ est géométrique de premier terme $v_0 = 3e$ et de raison $e^2$.
+:::
+
+## Question B2 : Sens de variation
+
+::: etape Raison et premier terme
+$e^2 > e^0 = 1$ et $v_0 = 3e > 0$.
+:::
+
+::: resultat
+La suite $(v_n)$ est strictement croissante.
+:::
+
+## Question B3 : Seuil avec Python
+
+::: methode
+On répète `n = n + 1` **tant que** le seuil n’est pas dépassé, c’est-à-dire tant que $v_n \leqslant 10^6$.
+:::
+
+::: etape Programme complété
+La condition de la boucle est `3 * exp(2*n + 1) <= 1e6` (`1e6` désigne $10^6$) :
+:::
+
+```python
+from math import exp
+
+n = 0
+while 3 * exp(2*n + 1) <= 1e6:
+    n = n + 1
+print(n)
+```
+
+::: etape Contrôle
+- $v_5 = 3e^{11} \approx 179\,622$ ;
+- $v_6 = 3e^{13} \approx 1\,327\,240$.
+
+Comme la suite est croissante, le premier terme qui dépasse $10^6$ est $v_6$.
+:::
+
+::: resultat
+Le programme affiche $6$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+- A1. $u_0 = 1$, $u_1 = e^{-0{,}5} \approx 0{,}607$, $u_2 = e^{-1} \approx 0{,}368$.
+- A2. $u_{n+1} = e^{-0{,}5}u_n$ : géométrique de raison $e^{-0{,}5}$.
+- A3. $0 < q < 1$ et $u_0 > 0$ : $(u_n)$ est décroissante.
+- A4. $S = \dfrac{1 - e^{-5}}{1 - e^{-0{,}5}} \approx 2{,}524$.
+- B1. $v_{n+1} = e^2 v_n$ : géométrique, $v_0 = 3e$, raison $e^2$.
+- B2. $(v_n)$ est croissante.
+- B3. Condition `3 * exp(2*n + 1) <= 1e6` ; le programme affiche $6$.
+
+===
+
+=== Problème - Étude complète d'une fonction
+Id: 1292
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On considère la fonction $f$ définie sur $[-5\,;\,2]$ par $f(x) = \left(x^2 - 3\right)e^x$. Voici sa courbe $\mathcal{C}_f$.
+
+[IMAGE_1]
+
+1. Montrer que, pour tout $x$ de $[-5\,;\,2]$, $f'(x) = (x + 3)(x - 1)e^x$.
+2. Étudier le signe de $f'(x)$ et dresser le tableau de variations de $f$ sur $[-5\,;\,2]$.
+3. Préciser les extremums de $f$ (valeurs exactes et arrondis au centième).
+4. Résoudre l’équation $f(x) = 0$.
+5. Étudier le signe de $f(x)$ sur $[-5\,;\,2]$.
+6. Déterminer une équation de la tangente $T$ à $\mathcal{C}_f$ au point d’abscisse $0$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Dérivée
+
+::: methode
+$f = uv$ avec $u(x) = x^2 - 3$ et $v(x) = e^x$ ; on factorise ensuite par $e^x$.
+:::
+
+::: etape Calcul
+$u'(x) = 2x$ et $v'(x) = e^x$.
+$$
+\begin{aligned}
+f'(x) &= 2xe^x + \left(x^2 - 3\right)e^x \\
+&= \left(x^2 + 2x - 3\right)e^x
+\end{aligned}
+$$
+:::
+
+::: etape Factoriser le trinôme
+$x^2 + 2x - 3$ a pour racine évidente $1$ ($1 + 2 - 3 = 0$) ; le produit des racines vaut $-3$, donc l’autre racine est $-3$ :
+$$x^2 + 2x - 3 = (x + 3)(x - 1)$$
+:::
+
+::: resultat
+$$f'(x) = (x + 3)(x - 1)e^x$$
+:::
+
+## Question 2 : Signe de $f'(x)$ et variations
+
+::: methode
+$e^x > 0$ : $f'(x)$ a le signe de $(x + 3)(x - 1)$.
+:::
+
+::: etape Valeurs utiles
+$$
+\begin{aligned}
+f(-5) &= (25 - 3)e^{-5} = 22e^{-5} \\
+f(-3) &= (9 - 3)e^{-3} = 6e^{-3} \\
+f(1) &= (1 - 3)e^{1} = -2e \\
+f(2) &= (4 - 3)e^{2} = e^2
+\end{aligned}
+$$
+:::
+
+::: tableau
+x : -5, -3, 1, 2
+x + 3 : , -, z, +, , +,
+x - 1 : , -, , -, z, +,
+f'(x) : , +, z, -, z, +,
+f(x) : -/22e^{-5}, +/6e^{-3}, -/-2e, +/e^2
+:::
+
+::: resultat
+$f$ est croissante sur $[-5\,;\,-3]$, décroissante sur $[-3\,;\,1]$ et croissante sur $[1\,;\,2]$.
+:::
+
+## Question 3 : Extremums
+
+::: etape Lecture du tableau
+- En $-3$, $f$ passe de croissante à décroissante : **maximum local** $f(-3) = 6e^{-3} \approx 0{,}30$.
+- En $1$, $f$ passe de décroissante à croissante : **minimum local** $f(1) = -2e \approx -5{,}44$. C’est le minimum de $f$ sur $[-5\,;\,2]$, car l’autre valeur basse du tableau, $f(-5) = 22e^{-5}$, est positive.
+- Le maximum de $f$ sur $[-5\,;\,2]$ est $f(2) = e^2 \approx 7{,}39$, plus grand que $6e^{-3}$.
+:::
+
+::: resultat
+Maximum local $6e^{-3} \approx 0{,}30$ en $-3$ ; minimum $-2e \approx -5{,}44$ en $1$ ; maximum sur $[-5\,;\,2]$ : $e^2 \approx 7{,}39$ en $2$.
+:::
+
+## Question 4 : Équation $f(x) = 0$
+
+::: methode
+$e^x \neq 0$, donc $f(x) = 0 \iff x^2 - 3 = 0$.
+:::
+
+::: etape Résolution
+$$x^2 = 3 \iff x = -\sqrt{3} \text{ ou } x = \sqrt{3}$$
+Les deux valeurs ($\approx -1{,}73$ et $\approx 1{,}73$) sont dans $[-5\,;\,2]$.
+:::
+
+::: resultat
+$$S = \left\{-\sqrt{3}\,;\,\sqrt{3}\right\}$$
+:::
+
+## Question 5 : Signe de $f(x)$
+
+::: methode
+$e^x > 0$ : $f(x)$ a le signe de $x^2 - 3$, trinôme positif à l’extérieur de ses racines.
+:::
+
+::: tableau
+x : -5, -\sqrt{3}, \sqrt{3}, 2
+x^2 - 3 : , +, z, -, z, +,
+f(x) : , +, z, -, z, +,
+:::
+
+::: resultat
+- $f(x) > 0$ sur $[-5\,;\,-\sqrt{3}[$ et sur $]\sqrt{3}\,;\,2]$ ;
+- $f(x) < 0$ sur $]{-\sqrt{3}}\,;\,\sqrt{3}[$.
+:::
+
+## Question 6 : Tangente en $0$
+
+::: etape Valeurs en $0$
+$f(0) = (0 - 3)e^0 = -3$ et $f'(0) = (0 + 3)(0 - 1)e^0 = -3$.
+:::
+
+::: etape Équation
+$$
+\begin{aligned}
+y &= f'(0)(x - 0) + f(0) \\
+&= -3x - 3
+\end{aligned}
+$$
+
+[IMAGE_2]
+:::
+
+::: resultat
+$$T : y = -3x - 3$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $f'(x) = \left(x^2 + 2x - 3\right)e^x = (x + 3)(x - 1)e^x$
+2. $f$ croissante sur $[-5\,;\,-3]$, décroissante sur $[-3\,;\,1]$, croissante sur $[1\,;\,2]$.
+3. Maximum local $6e^{-3} \approx 0{,}30$ ; minimum $-2e \approx -5{,}44$ ; maximum sur l’intervalle $e^2 \approx 7{,}39$.
+4. $S = \left\{-\sqrt{3}\,;\,\sqrt{3}\right\}$
+5. $f > 0$ sur $[-5\,;\,-\sqrt{3}[$ et sur $]\sqrt{3}\,;\,2]$ ; $f < 0$ sur $]{-\sqrt{3}}\,;\,\sqrt{3}[$.
+6. $T : y = -3x - 3$
+
+===
+
+=== Problème - Méthode d'Euler et approximation de e
+Id: 1301
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On note $f$ la fonction exponentielle : $f' = f$ et $f(0) = 1$. On veut construire des valeurs approchées de $f$ sur $[0\,;\,1]$ sans calculatrice, puis approcher le nombre $e = f(1)$.
+
+[IMAGE_1]
+
+1. Pour $h$ proche de $0$, on admet que $f(x + h) \approx f(x) + h\,f'(x)$. Justifier que $f(x + h) \approx (1 + h)f(x)$.
+2. Avec un pas $h = 0{,}5$, on pose $y_0 = 1$ et $y_{k+1} = (1 + h)\,y_k$. Calculer $y_1$ et $y_2$, valeurs approchées de $f(0{,}5)$ et $f(1)$.
+3. Recommencer avec $h = 0{,}25$ : calculer $y_1$, $y_2$, $y_3$, $y_4$. Placer les points obtenus aux questions 2 et 3 sur la figure.
+4. Avec $n$ pas de longueur $h = \dfrac{1}{n}$, montrer que $(y_k)$ est géométrique et que $y_n = \left(1 + \dfrac{1}{n}\right)^n$.
+5. Compléter la fonction Python suivante pour qu’elle renvoie $y_n$.
+
+```python
+def euler(n):
+    h = 1 / n
+    y = 1
+    for k in range(n):
+        y = ...
+    return y
+```
+
+6. On obtient `euler(10)` $\approx 2{,}5937$, `euler(100)` $\approx 2{,}7048$ et `euler(1000)` $\approx 2{,}7169$. Que constate-t-on ? Comparer avec $e \approx 2{,}71828$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Le principe
+
+::: methode
+On remplace $f'(x)$ par $f(x)$, puisque $f' = f$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+f(x + h) &\approx f(x) + h\,f(x) \\
+&= (1 + h)f(x)
+\end{aligned}
+$$
+Avancer d’un pas $h$ revient (environ) à multiplier par $1 + h$.
+:::
+
+::: resultat
+$f(x + h) \approx (1 + h)f(x)$ pour $h$ proche de $0$.
+:::
+
+## Question 2 : Pas $h = 0{,}5$
+
+::: etape Calcul
+On multiplie par $1{,}5$ à chaque pas :
+- $y_1 = 1{,}5 \times 1 = 1{,}5 \approx f(0{,}5)$ ;
+- $y_2 = 1{,}5 \times 1{,}5 = 2{,}25 \approx f(1)$.
+:::
+
+::: resultat
+$y_1 = 1{,}5$ et $y_2 = 2{,}25$ : $e \approx 2{,}25$ avec ce pas.
+:::
+
+## Question 3 : Pas $h = 0{,}25$
+
+::: etape Calcul
+On multiplie par $1{,}25$ à chaque pas :
+
+| $k$ | $0$ | $1$ | $2$ | $3$ | $4$ |
+|---|---|---|---|---|---|
+| $x = 0{,}25k$ | $0$ | $0{,}25$ | $0{,}5$ | $0{,}75$ | $1$ |
+| $y_k$ | $1$ | $1{,}25$ | $1{,}5625$ | $1{,}953125$ | $2{,}44140625$ |
+:::
+
+::: etape Les deux constructions
+[IMAGE_2]
+
+Les deux lignes brisées restent sous la courbe ; celle de pas $0{,}25$ en est plus proche.
+:::
+
+::: resultat
+Avec $h = 0{,}25$ : $f(1) \approx y_4 \approx 2{,}441$, meilleure approximation de $e$ que $2{,}25$.
+:::
+
+## Question 4 : Une suite géométrique
+
+::: etape Nature de la suite
+$y_{k+1} = (1 + h)\,y_k$ : $(y_k)$ est géométrique de premier terme $y_0 = 1$ et de raison $1 + h = 1 + \dfrac{1}{n}$.
+:::
+
+::: etape Terme général
+$y_k = y_0 \times (1 + h)^k = \left(1 + \dfrac{1}{n}\right)^k$. Après $n$ pas, on arrive en $x = n \times \dfrac{1}{n} = 1$.
+:::
+
+::: resultat
+$$y_n = \left(1 + \frac{1}{n}\right)^n \approx f(1) = e$$
+:::
+
+## Question 5 : Programme
+
+::: methode
+À chaque passage dans la boucle, on remplace $y$ par $y + h \times y$, c’est-à-dire $(1 + h)\,y$.
+:::
+
+::: etape Fonction complétée
+```python
+def euler(n):
+    h = 1 / n
+    y = 1
+    for k in range(n):
+        y = y + h * y
+    return y
+```
+:::
+
+::: resultat
+La ligne manquante est `y = y + h * y` (ou `y = (1 + h) * y`).
+:::
+
+## Question 6 : Conclusion
+
+::: etape Comparaison
+| $n$ | $10$ | $100$ | $1\,000$ |
+|---|---|---|---|
+| `euler(n)` | $2{,}5937$ | $2{,}7048$ | $2{,}7169$ |
+| écart avec $e$ | $0{,}12$ | $0{,}013$ | $0{,}0014$ |
+
+Les valeurs augmentent et se rapprochent de $e$ ; elles restent inférieures à $e$.
+:::
+
+::: resultat
+Plus le nombre de pas $n$ est grand, plus $\left(1 + \dfrac{1}{n}\right)^n$ est proche de $e \approx 2{,}71828$.
+:::
+
+::: attention
+Avec un petit nombre de pas, l’approximation est grossière : pour $n = 2$, on trouve seulement $2{,}25$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $f(x + h) \approx f(x) + h\,f(x) = (1 + h)f(x)$.
+2. $y_1 = 1{,}5$ ; $y_2 = 2{,}25$.
+3. $1{,}25$ ; $1{,}5625$ ; $1{,}953125$ ; $2{,}44140625$.
+4. Géométrique de raison $1 + \dfrac{1}{n}$ ; $y_n = \left(1 + \dfrac{1}{n}\right)^n$.
+5. `y = y + h * y`
+6. Les valeurs se rapprochent de $e \approx 2{,}718$ quand $n$ augmente.
+
+===
+
+=== Problème - Fonctions exponentielles de paramètre k
+Id: 1295
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On considère les quatre fonctions définies sur $\mathbb{R}$ par :
+$$f_1(t) = e^{t} \qquad f_2(t) = e^{0{,}5t} \qquad f_3(t) = e^{-t} \qquad f_4(t) = e^{-0{,}5t}$$
+Leurs courbes sont tracées ci-dessous, dans le désordre : $\mathcal{C}_1$, $\mathcal{C}_2$, $\mathcal{C}_3$, $\mathcal{C}_4$.
+
+[IMAGE_1]
+
+1. Calculer la dérivée de chaque fonction, puis donner son sens de variation.
+2. Calculer $f_1(0)$, $f_2(0)$, $f_3(0)$, $f_4(0)$. Quel point commun ont les quatre courbes ?
+3. Donner une équation de la tangente en $0$ à la courbe de $f_1$ et à celle de $f_2$.
+4. Comparer $f_1(2)$ et $f_2(2)$, puis $f_3(-2)$ et $f_4(-2)$. Associer chaque courbe à sa fonction.
+5. Montrer que $f_3(t) = f_1(-t)$ pour tout réel $t$. Que peut-on en déduire pour les courbes de $f_1$ et $f_3$ ?
+6. Résoudre l’inéquation $e^{0{,}5t} \leqslant e^{-t}$ et interpréter graphiquement.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Dérivées et variations
+
+::: methode
+$\left(e^{kt}\right)' = k\,e^{kt}$ ; comme $e^{kt} > 0$, la dérivée a le signe de $k$.
+:::
+
+::: etape Dérivées
+- $f_1'(t) = e^{t} > 0$ ;
+- $f_2'(t) = 0{,}5\,e^{0{,}5t} > 0$ ;
+- $f_3'(t) = -e^{-t} < 0$ ;
+- $f_4'(t) = -0{,}5\,e^{-0{,}5t} < 0$.
+:::
+
+::: resultat
+$f_1$ et $f_2$ sont strictement croissantes, $f_3$ et $f_4$ strictement décroissantes sur $\mathbb{R}$.
+:::
+
+## Question 2 : Point commun
+
+::: etape Valeurs en $0$
+$f_1(0) = f_2(0) = f_3(0) = f_4(0) = e^0 = 1$.
+:::
+
+::: resultat
+Les quatre courbes passent par le point $(0\,;\,1)$.
+:::
+
+## Question 3 : Tangentes en $0$
+
+::: methode
+$y = f'(0)\,t + f(0)$, avec $f(0) = 1$.
+:::
+
+::: etape Coefficients directeurs
+$f_1'(0) = e^0 = 1$ et $f_2'(0) = 0{,}5\,e^0 = 0{,}5$.
+:::
+
+::: resultat
+Tangente à la courbe de $f_1$ : $y = t + 1$ ; à celle de $f_2$ : $y = 0{,}5t + 1$. La courbe de $f_1$ est plus « raide » en $0$.
+:::
+
+## Question 4 : Associer les courbes
+
+::: methode
+On compare les exposants : l’exponentielle est strictement croissante.
+:::
+
+::: etape Pour $t = 2$ et $t = -2$
+- $f_1(2) = e^2$ et $f_2(2) = e^1$ ; $2 > 1$, donc $f_1(2) > f_2(2)$.
+- $f_3(-2) = e^2$ et $f_4(-2) = e^1$, donc $f_3(-2) > f_4(-2)$.
+:::
+
+::: etape Conclusion graphique
+- Les courbes croissantes sont $\mathcal{C}_2$ et $\mathcal{C}_4$ ; la plus haute pour $t > 0$ est $\mathcal{C}_2$ : $\mathcal{C}_2$ représente $f_1$ et $\mathcal{C}_4$ représente $f_2$.
+- Les courbes décroissantes sont $\mathcal{C}_1$ et $\mathcal{C}_3$ ; la plus haute pour $t < 0$ est $\mathcal{C}_3$ : $\mathcal{C}_3$ représente $f_3$ et $\mathcal{C}_1$ représente $f_4$.
+
+[IMAGE_2]
+:::
+
+::: resultat
+$\mathcal{C}_1 : f_4$ ; $\mathcal{C}_2 : f_1$ ; $\mathcal{C}_3 : f_3$ ; $\mathcal{C}_4 : f_2$.
+:::
+
+## Question 5 : Symétrie
+
+::: etape Calcul
+$$f_1(-t) = e^{-t} = f_3(t)$$
+Le point $(t\,;\,y)$ est sur la courbe de $f_3$ si et seulement si le point $(-t\,;\,y)$ est sur celle de $f_1$.
+:::
+
+::: resultat
+Les courbes de $f_1$ et $f_3$ sont symétriques par rapport à l’axe des ordonnées (de même pour $f_2$ et $f_4$).
+:::
+
+## Question 6 : Inéquation
+
+::: etape Résolution
+$$
+\begin{aligned}
+e^{0{,}5t} \leqslant e^{-t} &\iff 0{,}5t \leqslant -t \\
+&\iff 1{,}5t \leqslant 0 \\
+&\iff t \leqslant 0
+\end{aligned}
+$$
+:::
+
+::: resultat
+$S = \,]{-\infty}\,;\,0]$ : la courbe de $f_2$ ($\mathcal{C}_4$) est en dessous de celle de $f_3$ ($\mathcal{C}_3$) pour $t \leqslant 0$ ; elles se coupent en $(0\,;\,1)$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $f_1' = e^{t}$, $f_2' = 0{,}5e^{0{,}5t}$ (croissantes) ; $f_3' = -e^{-t}$, $f_4' = -0{,}5e^{-0{,}5t}$ (décroissantes).
+2. Toutes valent $1$ en $0$ : point commun $(0\,;\,1)$.
+3. $y = t + 1$ et $y = 0{,}5t + 1$.
+4. $\mathcal{C}_1 : f_4$, $\mathcal{C}_2 : f_1$, $\mathcal{C}_3 : f_3$, $\mathcal{C}_4 : f_2$.
+5. $f_3(t) = f_1(-t)$ : courbes symétriques par rapport à l’axe des ordonnées.
+6. $S = \,]{-\infty}\,;\,0]$.
+
+===
+
+=== Problème - Modélisation d'une croissance exponentielle
+Id: 1300
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Le nombre de bactéries d’une culture est modélisé par $N(t) = 1\,000\,e^{0{,}02t}$, où $t \in [0\,;\,120]$ est le temps en heures.
+
+[IMAGE_1]
+
+1. Calculer $N(0)$, puis $N(50)$ (valeur exacte et arrondi à l’unité).
+2. Calculer $N'(t)$ et vérifier que $N'(t) = 0{,}02\,N(t)$. En déduire le sens de variation de $N$.
+3. On pose $u_n = N(n)$ pour tout entier $n$. Montrer que $(u_n)$ est géométrique. De quel pourcentage la population augmente-t-elle chaque heure ?
+4. Le programme ci-dessous affiche le nombre d’heures entières au bout duquel la population a doublé. Quelle valeur affiche-t-il ? Vérifier par le calcul.
+
+```python
+from math import exp
+
+t = 0
+while 1000 * exp(0.02*t) < 2000:
+    t = t + 1
+print(t)
+```
+
+5. Au bout de combien d’heures entières la population dépasse-t-elle $10\,000$ bactéries ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Deux valeurs
+
+::: etape Calcul
+- $N(0) = 1\,000\,e^0 = 1\,000$ ;
+- $N(50) = 1\,000\,e^{0{,}02 \times 50} = 1\,000\,e \approx 2\,718$.
+:::
+
+::: resultat
+$N(0) = 1\,000$ et $N(50) = 1\,000\,e \approx 2\,718$ bactéries.
+:::
+
+## Question 2 : Dérivée et variations
+
+::: methode
+$\left(e^{kt}\right)' = k\,e^{kt}$ avec $k = 0{,}02$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+N'(t) &= 1\,000 \times 0{,}02\,e^{0{,}02t} \\
+&= 20\,e^{0{,}02t} \\
+&= 0{,}02 \times N(t)
+\end{aligned}
+$$
+:::
+
+::: resultat
+$N'(t) = 0{,}02\,N(t) > 0$ : $N$ est strictement croissante. La vitesse de croissance est proportionnelle au nombre de bactéries.
+:::
+
+## Question 3 : Évolution heure par heure
+
+::: etape Suite géométrique
+$$
+\begin{aligned}
+u_{n+1} &= 1\,000\,e^{0{,}02n + 0{,}02} \\
+&= 1\,000\,e^{0{,}02n} \times e^{0{,}02} \\
+&= e^{0{,}02} \times u_n
+\end{aligned}
+$$
+$(u_n)$ est géométrique de premier terme $1\,000$ et de raison $e^{0{,}02} \approx 1{,}0202$.
+:::
+
+::: resultat
+Chaque heure, la population est multipliée par $e^{0{,}02} \approx 1{,}0202$ : elle augmente d’environ $2{,}02\,\%$.
+:::
+
+::: attention
+Le taux horaire est $e^{0{,}02} - 1 \approx 0{,}0202$, et non exactement $0{,}02$.
+:::
+
+## Question 4 : Temps de doublement
+
+::: methode
+La boucle augmente $t$ de $1$ tant que $N(t) < 2\,000$ : elle s’arrête au premier entier $t$ tel que $N(t) \geqslant 2\,000$.
+:::
+
+::: etape Vérification
+- $N(34) = 1\,000\,e^{0{,}68} \approx 1\,974 < 2\,000$ ;
+- $N(35) = 1\,000\,e^{0{,}7} \approx 2\,014 \geqslant 2\,000$.
+
+Comme $N$ est croissante, $35$ est bien le premier entier qui convient.
+
+[IMAGE_2]
+:::
+
+::: resultat
+Le programme affiche $35$ : la population a doublé au bout de $35$ heures (entre $34$ h et $35$ h).
+:::
+
+## Question 5 : Seuil de $10\,000$ bactéries
+
+::: methode
+Même programme en remplaçant $2000$ par $10000$, ou tableau de valeurs.
+:::
+
+::: etape Valeurs encadrantes
+- $N(115) = 1\,000\,e^{2{,}3} \approx 9\,974 < 10\,000$ ;
+- $N(116) = 1\,000\,e^{2{,}32} \approx 10\,176 > 10\,000$.
+:::
+
+::: resultat
+La population dépasse $10\,000$ bactéries au bout de $116$ heures.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $N(0) = 1\,000$ ; $N(50) = 1\,000\,e \approx 2\,718$.
+2. $N'(t) = 20\,e^{0{,}02t} = 0{,}02\,N(t) > 0$ : $N$ est croissante.
+3. Raison $e^{0{,}02} \approx 1{,}0202$ : $+2{,}02\,\%$ par heure.
+4. Le programme affiche $35$.
+5. Au bout de $116$ heures.
+
+===
+
+=== Problème - Optimisation : concentration d'un médicament
+Id: 1296
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Après l’injection d’un médicament, sa concentration dans le sang (en mg/L) est modélisée par $C(t) = 4t\,e^{-0{,}5t}$, où $t \in [0\,;\,10]$ est le temps en heures.
+
+[IMAGE_1]
+
+1. Calculer $C(0)$. Montrer que $C'(t) = (4 - 2t)\,e^{-0{,}5t}$.
+2. Dresser le tableau de variations de $C$ sur $[0\,;\,10]$.
+3. À quel instant la concentration est-elle maximale ? Donner cette concentration maximale (valeur exacte et arrondi au centième).
+4. Déterminer une équation de la tangente à la courbe en $t = 0$. Interpréter son coefficient directeur.
+5. Le médicament est efficace lorsque $C(t) \geqslant 2$. À l’aide de la calculatrice, encadrer au dixième les instants où la concentration vaut $2$ mg/L. Pendant combien de temps environ le médicament est-il efficace ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $C(0)$ et dérivée
+
+::: methode
+$C = uv$ avec $u(t) = 4t$ et $v(t) = e^{-0{,}5t}$ ; $\left(e^{-0{,}5t}\right)' = -0{,}5\,e^{-0{,}5t}$.
+:::
+
+::: etape Calcul
+$C(0) = 0$. Avec $u'(t) = 4$ et $v'(t) = -0{,}5\,e^{-0{,}5t}$ :
+$$
+\begin{aligned}
+C'(t) &= 4e^{-0{,}5t} + 4t \times \left(-0{,}5\,e^{-0{,}5t}\right) \\
+&= 4e^{-0{,}5t} - 2t\,e^{-0{,}5t} \\
+&= (4 - 2t)\,e^{-0{,}5t}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$C(0) = 0$ et $C'(t) = (4 - 2t)\,e^{-0{,}5t}$.
+:::
+
+## Question 2 : Tableau de variations
+
+::: methode
+$e^{-0{,}5t} > 0$ : $C'(t)$ a le signe de $4 - 2t$, positif pour $t < 2$.
+:::
+
+::: etape Valeurs aux bornes et en $2$
+$$
+\begin{aligned}
+C(2) &= 8e^{-1} \approx 2{,}94 \\
+C(10) &= 40e^{-5} \approx 0{,}27
+\end{aligned}
+$$
+:::
+
+::: point Tableau de variations
+::: tableau
+t : 0, 2, 10
+C'(t) : , +, z, -,
+C(t) : -/0, +/8e^{-1}, -/40e^{-5}
+:::
+:::
+
+::: resultat
+$C$ est croissante sur $[0\,;\,2]$ et décroissante sur $[2\,;\,10]$.
+:::
+
+## Question 3 : Concentration maximale
+
+::: etape Lecture du tableau
+Le maximum est atteint en $t = 2$ : $C(2) = 4 \times 2 \times e^{-0{,}5 \times 2} = 8e^{-1} = \dfrac{8}{e}$.
+:::
+
+::: resultat
+La concentration est maximale $2$ heures après l’injection : $\dfrac{8}{e} \approx 2{,}94$ mg/L.
+:::
+
+## Question 4 : Tangente en $0$
+
+::: etape Calcul
+$C(0) = 0$ et $C'(0) = (4 - 0)e^0 = 4$, d’où $y = 4t$.
+:::
+
+::: resultat
+Tangente : $y = 4t$. Juste après l’injection, la concentration augmente à la vitesse de $4$ mg/L par heure.
+:::
+
+## Question 5 : Durée d’efficacité
+
+::: methode
+On calcule $C(t)$ pour des valeurs de $t$ au dixième, de part et d’autre du maximum.
+:::
+
+::: etape Valeurs au dixième
+| $t$ | $0{,}7$ | $0{,}8$ | $4{,}3$ | $4{,}4$ |
+|---|---|---|---|---|
+| $C(t)$ | $1{,}97$ | $2{,}15$ | $2{,}004$ | $1{,}95$ |
+
+$C$ est croissante sur $[0\,;\,2]$ : elle franchit la valeur $2$ une seule fois, entre $0{,}7$ et $0{,}8$. Elle est décroissante sur $[2\,;\,10]$ : elle repasse sous $2$ une seule fois, entre $4{,}3$ et $4{,}4$.
+
+[IMAGE_2]
+:::
+
+::: resultat
+$C(t) = 2$ pour $t_1 \in \,]0{,}7\,;\,0{,}8[$ et $t_2 \in \,]4{,}3\,;\,4{,}4[$. Le médicament est efficace pendant environ $3{,}6$ heures ($t_2 - t_1 \approx 4{,}31 - 0{,}71$).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $C(0) = 0$ ; $C'(t) = (4 - 2t)\,e^{-0{,}5t}$.
+2. $C$ croissante sur $[0\,;\,2]$, décroissante sur $[2\,;\,10]$.
+3. Maximum en $t = 2$ h : $\dfrac{8}{e} \approx 2{,}94$ mg/L.
+4. $y = 4t$ : vitesse initiale de $4$ mg/L par heure.
+5. $t_1 \in \,]0{,}7\,;\,0{,}8[$, $t_2 \in \,]4{,}3\,;\,4{,}4[$ : efficace pendant environ $3{,}6$ h.
+
+===
+
+=== Entraînement - Modélisation d'une décroissance radioactive
+Id: 4941
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+L’activité d’un échantillon radioactif (en becquerels, Bq) est modélisée par $A(t) = 5\,000\,e^{-0{,}2t}$, où $t \geqslant 0$ est le temps en jours.
+
+[IMAGE_1]
+
+1. Calculer $A(0)$, puis $A(5)$ (valeur exacte et arrondi à l’unité).
+2. Calculer $A'(t)$ et l’exprimer en fonction de $A(t)$. En déduire le sens de variation de $A$.
+3. On pose $u_n = A(n)$. Montrer que $(u_n)$ est géométrique. De quel pourcentage l’activité diminue-t-elle chaque jour ?
+4. Montrer que, pour tout $t \geqslant 0$, $A(t + 5) = e^{-1} \times A(t)$. Interpréter.
+5. Écrire un programme Python qui affiche le premier jour entier $n$ tel que $A(n) \leqslant 2\,500$, puis donner ce nombre.
+6. Au bout de combien de jours entiers l’activité devient-elle inférieure à $10\,\%$ de l’activité initiale ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Deux valeurs
+
+::: etape Calcul
+- $A(0) = 5\,000\,e^0 = 5\,000$ Bq ;
+- $A(5) = 5\,000\,e^{-0{,}2 \times 5} = 5\,000\,e^{-1} \approx 1\,839$ Bq.
+:::
+
+::: resultat
+$A(0) = 5\,000$ Bq et $A(5) = 5\,000\,e^{-1} \approx 1\,839$ Bq.
+:::
+
+## Question 2 : Dérivée et variations
+
+::: methode
+$\left(e^{kt}\right)' = k\,e^{kt}$ avec $k = -0{,}2$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+A'(t) &= 5\,000 \times (-0{,}2)\,e^{-0{,}2t} \\
+&= -1\,000\,e^{-0{,}2t} \\
+&= -0{,}2 \times A(t)
+\end{aligned}
+$$
+:::
+
+::: resultat
+$A'(t) = -0{,}2\,A(t) < 0$ : l’activité est strictement décroissante, et sa vitesse de diminution est proportionnelle à l’activité.
+:::
+
+## Question 3 : Évolution jour par jour
+
+::: etape Suite géométrique
+$$
+\begin{aligned}
+u_{n+1} &= 5\,000\,e^{-0{,}2n - 0{,}2} \\
+&= 5\,000\,e^{-0{,}2n} \times e^{-0{,}2} \\
+&= e^{-0{,}2} \times u_n
+\end{aligned}
+$$
+$(u_n)$ est géométrique de premier terme $5\,000$ et de raison $q = e^{-0{,}2} \approx 0{,}8187$.
+:::
+
+::: etape Taux d’évolution
+$q - 1 \approx 0{,}8187 - 1 = -0{,}1813$.
+:::
+
+::: resultat
+Chaque jour, l’activité est multipliée par $e^{-0{,}2} \approx 0{,}819$ : elle diminue d’environ $18{,}1\,\%$.
+:::
+
+::: attention
+Le taux n’est pas $-20\,\%$ : c’est $e^{-0{,}2} - 1 \approx -18{,}1\,\%$.
+:::
+
+## Question 4 : Tous les 5 jours
+
+::: methode
+On utilise $e^{a+b} = e^a \times e^b$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+A(t + 5) &= 5\,000\,e^{-0{,}2t - 1} \\
+&= 5\,000\,e^{-0{,}2t} \times e^{-1} \\
+&= e^{-1} \times A(t)
+\end{aligned}
+$$
+:::
+
+::: resultat
+Tous les $5$ jours, l’activité est divisée par $e \approx 2{,}718$, quelle que soit la date de départ.
+:::
+
+## Question 5 : Seuil de $2\,500$ Bq
+
+::: methode
+On augmente $n$ de $1$ **tant que** $A(n) > 2\,500$.
+:::
+
+::: etape Programme
+On répète la boucle tant que $A(n) > 2\,500$ :
+:::
+
+```python
+from math import exp
+
+n = 0
+while 5000 * exp(-0.2*n) > 2500:
+    n = n + 1
+print(n)
+```
+
+::: etape Vérification
+- $A(3) = 5\,000\,e^{-0{,}6} \approx 2\,744 > 2\,500$ ;
+- $A(4) = 5\,000\,e^{-0{,}8} \approx 2\,247 \leqslant 2\,500$.
+
+Comme $A$ est décroissante, $4$ est bien le premier entier qui convient.
+
+[IMAGE_2]
+:::
+
+::: resultat
+Le programme affiche $4$ : l’activité a diminué de moitié au cours du $4^{\text{e}}$ jour.
+:::
+
+## Question 6 : Seuil de $10\,\%$
+
+::: etape Valeur cible
+$10\,\%$ de $5\,000$ Bq : $500$ Bq. Même programme avec $500$ à la place de $2500$.
+:::
+
+::: etape Valeurs encadrantes
+- $A(11) = 5\,000\,e^{-2{,}2} \approx 554 > 500$ ;
+- $A(12) = 5\,000\,e^{-2{,}4} \approx 454 \leqslant 500$.
+:::
+
+::: resultat
+L’activité devient inférieure à $10\,\%$ de sa valeur initiale au bout de $12$ jours.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $A(0) = 5\,000$ Bq ; $A(5) = 5\,000\,e^{-1} \approx 1\,839$ Bq.
+2. $A'(t) = -1\,000\,e^{-0{,}2t} = -0{,}2\,A(t) < 0$ : $A$ est décroissante.
+3. Raison $e^{-0{,}2} \approx 0{,}819$ : baisse d’environ $18{,}1\,\%$ par jour.
+4. $A(t + 5) = e^{-1}A(t)$ : l’activité est divisée par $e$ tous les $5$ jours.
+5. Le programme affiche $4$.
+6. Au bout de $12$ jours.
+
+===
+
+=== Problème - Démontrer les propriétés de l'exponentielle
+Id: 4942
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+On admet qu’il existe une unique fonction $\exp$, dérivable sur $\mathbb{R}$, telle que $\exp' = \exp$ et $\exp(0) = 1$. On rappelle que, si $u$ est dérivable sur $\mathbb{R}$, la fonction $x \mapsto u(ax + b)$ a pour dérivée $x \mapsto a\,u'(ax + b)$. Le but est de démontrer les propriétés du cours à partir de cette seule définition.
+
+**Partie A — L’exponentielle ne s’annule pas**
+
+On pose $g(x) = \exp(x) \times \exp(-x)$ pour tout réel $x$.
+
+**A1.** Montrer que $g'(x) = 0$ pour tout réel $x$.
+
+**A2.** En déduire que $\exp(x) \times \exp(-x) = 1$, puis que $\exp(x) \neq 0$ pour tout réel $x$.
+
+**Partie B — La relation fonctionnelle**
+
+Soit $b$ un réel fixé. On pose $k(x) = \exp(x + b) \times \exp(-x)$.
+
+**B1.** Montrer que $k$ est constante et que $k(x) = \exp(b)$.
+
+**B2.** En déduire que, pour tous réels $a$ et $b$, $\exp(a + b) = \exp(a) \times \exp(b)$.
+
+**Partie C — Signe et variations**
+
+**C1.** Montrer que, pour tout réel $x$, $\exp(x) = \left(\exp\left(\dfrac{x}{2}\right)\right)^2$. En déduire que $\exp(x) > 0$.
+
+**C2.** En déduire le sens de variation de la fonction exponentielle.
+
+**C3.** Montrer que $\exp(2a) = \left(\exp(a)\right)^2$ et $\exp(3a) = \left(\exp(a)\right)^3$ pour tout réel $a$.
+
+Étapes:
+<!-- optitab:1 -->
+## Partie A : l’exponentielle ne s’annule pas
+
+## Question A1 : Dérivée de $g$
+
+::: methode
+Règle du produit, et dérivée de $x \mapsto \exp(-x)$ avec $a = -1$, $b = 0$.
+:::
+
+::: etape Dérivée de $x \mapsto \exp(-x)$
+$$
+\begin{aligned}
+\left(\exp(-x)\right)' &= -1 \times \exp'(-x) \\
+&= -\exp(-x)
+\end{aligned}
+$$
+:::
+
+::: etape Règle du produit
+$$
+\begin{aligned}
+g'(x) &= \exp'(x)\exp(-x) \\
+&\quad + \exp(x) \times \left(-\exp(-x)\right) \\
+&= \exp(x)\exp(-x) \\
+&\quad - \exp(x)\exp(-x) \\
+&= 0
+\end{aligned}
+$$
+:::
+
+::: resultat
+$g'(x) = 0$ pour tout réel $x$.
+:::
+
+## Question A2 : Conséquences
+
+::: methode
+Une fonction dont la dérivée est nulle sur $\mathbb{R}$ est constante.
+:::
+
+::: etape $g$ est constante
+Pour tout réel $x$ :
+$$
+\begin{aligned}
+g(x) &= g(0) \\
+&= \exp(0) \times \exp(0) \\
+&= 1
+\end{aligned}
+$$
+:::
+
+::: etape Non-annulation
+Si l’on avait $\exp(x_0) = 0$ pour un réel $x_0$, on aurait $g(x_0) = 0 \times \exp(-x_0) = 0 \neq 1$ : c’est impossible.
+:::
+
+::: resultat
+Pour tout réel $x$ : $\exp(x)\exp(-x) = 1$ et $\exp(x) \neq 0$ ; ainsi $\exp(-x) = \dfrac{1}{\exp(x)}$.
+:::
+
+## Partie B : la relation fonctionnelle
+
+## Question B1 : $k$ est constante
+
+::: etape Dérivée de $x \mapsto \exp(x + b)$
+Avec $a = 1$ :
+$$
+\begin{aligned}
+\left(\exp(x + b)\right)' &= \exp'(x + b) \\
+&= \exp(x + b)
+\end{aligned}
+$$
+:::
+
+::: etape Règle du produit
+$$
+\begin{aligned}
+k'(x) &= \exp(x + b)\exp(-x) \\
+&\quad + \exp(x + b) \times \left(-\exp(-x)\right) \\
+&= 0
+\end{aligned}
+$$
+Les deux termes sont opposés. Donc $k$ est constante, et pour tout réel $x$ :
+$$
+\begin{aligned}
+k(x) &= k(0) \\
+&= \exp(b) \times \exp(0) \\
+&= \exp(b)
+\end{aligned}
+$$
+:::
+
+::: resultat
+Pour tout réel $x$ : $\exp(x + b)\exp(-x) = \exp(b)$.
+:::
+
+## Question B2 : Conclusion
+
+::: etape Multiplier par $\exp(x)$
+D’après la partie A, $\exp(-x) \times \exp(x) = 1$, donc :
+$$\exp(x + b) = \exp(b) \times \exp(x)$$
+:::
+
+::: resultat
+Avec $x = a$ : $\exp(a + b) = \exp(a) \times \exp(b)$ pour tous réels $a$ et $b$.
+:::
+
+## Partie C : signe et variations
+
+## Question C1 : Signe
+
+::: etape Relation fonctionnelle avec $a = b = \dfrac{x}{2}$
+$$\exp(x) = \exp\left(\frac{x}{2} + \frac{x}{2}\right) = \left(\exp\left(\frac{x}{2}\right)\right)^2$$
+:::
+
+::: etape Conclusion
+Un carré est positif ou nul, donc $\exp(x) \geqslant 0$. Or $\exp(x) \neq 0$ (partie A).
+:::
+
+::: resultat
+Pour tout réel $x$, $\exp(x) > 0$.
+:::
+
+## Question C2 : Variations
+
+::: etape Signe de la dérivée
+$\exp'(x) = \exp(x) > 0$ pour tout réel $x$.
+:::
+
+::: resultat
+La fonction exponentielle est strictement croissante sur $\mathbb{R}$.
+:::
+
+## Question C3 : Puissances
+
+::: etape Avec la relation fonctionnelle
+$$
+\begin{aligned}
+\exp(2a) &= \exp(a + a) = \left(\exp(a)\right)^2 \\
+\exp(3a) &= \exp(2a + a) \\
+&= \exp(2a) \times \exp(a) \\
+&= \left(\exp(a)\right)^3
+\end{aligned}
+$$
+:::
+
+::: resultat
+$\exp(2a) = \left(\exp(a)\right)^2$ et $\exp(3a) = \left(\exp(a)\right)^3$ ; en continuant, $\exp(na) = \left(\exp(a)\right)^n$.
+:::
+
+::: retenir
+Toutes les propriétés de l’exponentielle découlent de $\exp' = \exp$ et $\exp(0) = 1$, grâce à une même idée : une fonction de dérivée nulle est constante.
+:::
+
+Solution:
+<!-- optitab:1 -->
+- A1. $g'(x) = \exp(x)\exp(-x) - \exp(x)\exp(-x) = 0$.
+- A2. $g$ est constante égale à $g(0) = 1$, donc $\exp(x) \neq 0$.
+- B1. $k'(x) = 0$ et $k(0) = \exp(b)$.
+- B2. $\exp(a + b) = \exp(a)\exp(b)$.
+- C1. $\exp(x) = \left(\exp\left(\frac{x}{2}\right)\right)^2 \geqslant 0$ et $\exp(x) \neq 0$, donc $\exp(x) > 0$.
+- C2. $\exp' = \exp > 0$ : strictement croissante.
+- C3. $\exp(2a) = \exp(a)^2$, $\exp(3a) = \exp(a)^3$.
+
+===

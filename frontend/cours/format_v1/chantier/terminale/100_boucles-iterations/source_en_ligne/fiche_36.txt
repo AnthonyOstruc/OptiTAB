@@ -1,0 +1,109 @@
+Titre: Résumé : Boucles et Itérations en Python
+
+<!-- optitab:1 -->
+::: objectifs
+Retenir l'essentiel : la fonction `range`, les boucles `for` et `while`, les accumulateurs, l'algorithme de seuil, `break` et `continue`, les boucles imbriquées. Programme de Terminale.
+:::
+
+## I. La fonction `range`
+
+`range(a, b)` produit les entiers de $a$ à $b-1$ : la borne $b$ est **exclue** et il y a $b-a$ valeurs.
+
+| Instruction | Valeurs produites |
+|---|---|
+| `range(5)` | $0$, $1$, $2$, $3$, $4$ |
+| `range(2, 6)` | $2$, $3$, $4$, $5$ |
+| `range(1, 10, 3)` | $1$, $4$, $7$ |
+| `range(10, 0, -2)` | $10$, $8$, $6$, $4$, $2$ |
+
+## II. Les deux boucles
+
+::: definition Boucle bornée `for`
+Le bloc indenté est répété pour chaque valeur de `range` : le nombre de tours est connu.
+
+```python
+for i in range(1, 4):
+    print(i, i**2)
+```
+
+```console
+1 1
+2 4
+3 9
+```
+:::
+
+::: definition Boucle non bornée `while`
+Le bloc est répété **tant que** la condition est vraie ; la condition est testée avant chaque tour.
+
+```python
+n = 1
+while n < 100:
+    n = 2 * n
+print(n)
+```
+
+```console
+128
+```
+:::
+
+## III. Accumulateur et seuil
+
+::: methode Accumulateur
+1. Initialiser avant la boucle : $0$ pour une somme, $1$ pour un produit.
+2. Mettre à jour à chaque tour.
+3. Utiliser après la boucle.
+
+```python
+s = 0
+for k in range(1, 11):
+    s = s + k
+print(s)
+```
+
+```console
+55
+```
+:::
+
+::: methode Algorithme de seuil
+Plus petit $n$ tel que $1{,}5^n \gt 100$ : on répète **tant que** $u \le 100$, en comptant les tours.
+
+```python
+u = 1
+n = 0
+while u <= 100:
+    u = 1.5 * u
+    n = n + 1
+print(n)
+```
+
+```console
+12
+```
+
+Vérification : $n \gt \dfrac{\ln(100)}{\ln(1{,}5)} \approx 11{,}36$, donc $n = 12$.
+:::
+
+## IV. Contrôler et imbriquer
+
+| Instruction | Effet |
+|---|---|
+| `break` | sort immédiatement de la boucle |
+| `continue` | passe directement au tour suivant |
+| boucles imbriquées | $n$ tours à l'extérieur, $p$ à l'intérieur : bloc intérieur exécuté $n \times p$ fois |
+
+## V. Les pièges à éviter
+
+::: attention Les 5 erreurs classiques
+1. Écrire `range(1, n)` pour aller jusqu'à $n$ : il faut `range(1, n + 1)`.
+2. Initialiser l'accumulateur dans la boucle : il est remis à zéro à chaque tour.
+3. Se tromper d'indentation : seul le bloc indenté est répété.
+4. Oublier les deux-points `:` après `for …` ou `while …`.
+5. Écrire une condition de `while` qui reste toujours vraie : boucle infinie.
+:::
+
+::: remarque Réflexe
+Nombre de tours connu → `for`. Sinon → `while`, en vérifiant que la condition finira par devenir fausse.
+:::

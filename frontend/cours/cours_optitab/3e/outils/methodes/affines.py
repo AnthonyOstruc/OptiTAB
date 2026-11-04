@@ -1,0 +1,23 @@
+# -*- coding: utf-8 -*-
+METHODES = {
+    (1, 5): r"Toute fonction affine §x \mapsto ax + b§ (les linéaires et les constantes en font partie) est représentée par une droite ; §h(x) = x^2§ n'est pas de la forme §ax + b§.",
+    (2, 5): r"Une fonction linéaire modélise une proportionnalité ; avec §a = -2{,}5 < 0§, la grandeur diminue de 2,5 unités chaque fois que §x§ augmente de 1.",
+    (3, 1): r"Pour §g(x) = ax + b§, la pente (coefficient directeur) est le nombre §a§ qui multiplie §x§ : dans §-3x + 8§, c'est §-3§.",
+    (3, 5): r"Si §x§ augmente de 1, §g(x)§ varie de §a§ : §g(x + 1) - g(x) = -3(x + 1) + 8 - (-3x + 8) = -3§.",
+    (4, 3): r"Deux points suffisent pour tracer une droite : l'origine §O§ (toute linéaire y passe) et le point §A(2\ ;\ 3)§ obtenu à la question 2.",
+    (5, 3): r"On utilise les deux points d'intersection avec les axes trouvés aux questions 1 et 2 : ils sont faciles à placer et suffisent à tracer la droite.",
+    (6, 1): r"On remplace §x§ par 0 : le terme en §x§ s'annule et il ne reste que §b§, l'ordonnée à l'origine.",
+    (7, 5): r"On regarde la forme de la courbe, puis la position par rapport à l'origine : une linéaire est une droite passant par §O§, une affine une droite quelconque.",
+    (8, 1): r"Une fonction linéaire s'écrit toujours §f(x) = ax§, où §a§ est le coefficient de proportionnalité.",
+    (8, 3): r"On remplace §a§ par la valeur trouvée à la question 2, §a = \frac{21}{6} = 3{,}5§, dans la forme §f(x) = ax§.",
+    (9, 3): r"On assemble les deux paramètres trouvés : pente §a = 3§ (question 1) et ordonnée à l'origine §b = -5§ (question 2), dans §f(x) = ax + b§.",
+    (10, 4): r"Modèle affine §P(h) = ah + b§ : §a = 4§ € par heure (question 2) et forfait §b = 6§ € (question 3).",
+    (11, 4): r"On assemble les lectures : ordonnée à l'origine §b = 3§ (question 2) et pente §a = -2§ (question 3), dans §f(x) = ax + b§.",
+    (12, 2): r"La question 1 donne §g(x) - f(x) = 7§ pour TOUTE valeur de §x§ ; en ajoutant §f(x)§ des deux côtés, on obtient §g(x) = f(x) + 7§.",
+    (12, 5): r"Deux droites sont parallèles lorsqu'elles ont la même pente : il suffit de garder §a = 4§ et de choisir n'importe quelle ordonnée à l'origine.",
+    (13, 3): r"On assemble la pente (question 1) et l'ordonnée à l'origine (question 2) dans §f(x) = ax + b§.",
+    (16, 1): r"Au départ, la cuve contient 900 L ; chaque minute, elle perd 35 L. Après §t§ minutes, elle a perdu §35t§ litres.",
+    (20, 1): r"Chaque prix = prise en charge (fixe) + prix au kilomètre §\times§ nombre de kilomètres.",
+    (20, 5): r"On s'appuie sur la question 3 (égalité à 10 km) et sur les comparaisons des questions 2 et 4 : avant 10 km, le taxi A est moins cher ; après, c'est le taxi B.",
+    (21, 1): r"« Libre » : 4 € multipliés par le nombre d'heures. « Pass » : 10 € fixes, plus 2 € par heure.",
+}

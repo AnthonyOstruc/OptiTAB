@@ -1,0 +1,1929 @@
+=== Découverte - Arrangements
+Id: 1523
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Calculer les nombres d'arrangements suivants.
+
+**Rappel :** Un arrangement est un choix ordonné de $k$ éléments parmi $n$. L'ordre compte et on n'utilise pas tous les éléments. Le nombre d'arrangements de $k$ éléments parmi $n$ est $A_n^k = \frac{n!}{(n-k)!}$.
+
+1. De combien de façons peut-on attribuer 3 médailles (or, argent, bronze) à 10 concurrents ?
+2. Calculer $\displaystyle A_{12}^3$
+3. Un code secret est composé de 4 chiffres différents. Combien de codes possibles ?
+4. Simplifier $\displaystyle \frac{A_n^p}{A_n^{p-1}}$
+5. De combien de façons peut-on choisir un président, un vice-président et un secrétaire parmi 15 membres ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Attribution de 3 médailles à 10 concurrents
+
+::: methode
+Calcul d'arrangements
+:::
+
+::: etape Identifier le problème
+- On choisit 3 personnes parmi 10
+- L'ordre compte (or ≠ argent ≠ bronze)
+- Pas tous les éléments sont utilisés
+:::
+
+::: etape Appliquer la formule des arrangements
+- $A_n^p = \frac{n!}{(n-p)!}$ avec $n = 10$ et $p = 3$
+- $\displaystyle A_{10}^3 = \frac{10!}{7!} = 10 \times 9 \times 8$
+:::
+
+::: etape Calculer
+- $\displaystyle A_{10}^3 = 10 \times 9 \times 8 = 720$
+:::
+
+::: resultat
+Il y a **720 façons** d'attribuer les 3 médailles
+:::
+
+## Question 2 : Calculer $\displaystyle A_{12}^3$
+
+::: methode
+Application directe de la formule
+:::
+
+::: etape Appliquer la formule
+- $\displaystyle A_{12}^3 = \frac{12!}{(12-3)!} = \frac{12!}{9!}$
+:::
+
+::: etape Simplifier
+- $\displaystyle A_{12}^3 = 12 \times 11 \times 10$
+:::
+
+::: etape Calculer
+- $\displaystyle A_{12}^3 = 12 \times 11 \times 10 = 1\,320$
+:::
+
+::: resultat
+$$A_{12}^3 = 1\,320$$
+:::
+
+## Question 3 : Code de 4 chiffres différents
+
+::: methode
+Arrangements de chiffres
+:::
+
+::: etape Identifier le problème
+- On choisit 4 chiffres parmi 10 (0 à 9)
+- L'ordre compte (1234 ≠ 4321)
+- Les chiffres sont différents (pas de répétition)
+:::
+
+::: etape Appliquer la formule
+$$
+\begin{aligned}
+A_{10}^4 &= \frac{10!}{6!} \\
+&= 10 \times 9 \times 8 \times 7
+\end{aligned}
+$$
+:::
+
+::: etape Calculer
+- $\displaystyle A_{10}^4 = 10 \times 9 \times 8 \times 7 = 5\,040$
+:::
+
+::: resultat
+Il y a **5 040 codes** possibles
+:::
+
+## Question 4 : Simplifier $\displaystyle \frac{A_n^p}{A_n^{p-1}}$
+
+::: methode
+Simplification algébrique
+:::
+
+::: etape Développer les arrangements
+$$
+\begin{aligned}
+A_n^p &= \frac{n!}{(n-p)!} \\
+&= n \times (n-1) \times \cdots \times (n-p+1)
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+A_n^{p-1} &= \frac{n!}{(n-p+1)!} \\
+&= n \times (n-1) \times \cdots \times (n-p+2)
+\end{aligned}
+$$
+:::
+
+::: etape Simplifier le quotient
+$$
+\begin{aligned}
+\frac{A_n^p}{A_n^{p-1}} &= \frac{n \times (n-1) \times \cdots \times (n-p+1)}{n \times (n-1) \times \cdots \times (n-p+2)} \\
+&= n - p + 1
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$\frac{A_n^p}{A_n^{p-1}} = n - p + 1$$
+:::
+
+## Question 5 : Choix de président, vice-président et secrétaire
+
+::: methode
+Arrangements
+:::
+
+::: etape Identifier le problème
+- On choisit 3 personnes parmi 15
+- L'ordre compte (les rôles sont différents)
+- Pas de répétition (une personne = un rôle)
+:::
+
+::: etape Appliquer la formule
+- $\displaystyle A_{15}^3 = 15 \times 14 \times 13$
+:::
+
+::: etape Calculer
+- $\displaystyle A_{15}^3 = 15 \times 14 \times 13 = 2\,730$
+:::
+
+::: resultat
+Il y a **2 730 façons** de choisir les 3 postes
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle 720$ façons
+2. $\displaystyle A_{12}^3 = 1\,320$
+3. $\displaystyle 5\,040$ codes
+4. $\displaystyle \frac{A_n^p}{A_n^{p-1}} = n - p + 1$
+5. $\displaystyle 2\,730$ façons
+
+===
+
+=== Découverte - Combinaisons
+Id: 1524
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Calculer les nombres de combinaisons suivants.
+
+**Rappel :** Une combinaison est un choix de $k$ éléments parmi $n$ sans ordre. L'ordre ne compte pas et on n'utilise pas tous les éléments. Le nombre de combinaisons de $k$ éléments parmi $n$ est $\binom{n}{k} = \frac{n!}{k!(n-k)!}$.
+
+1. De combien de façons peut-on former une équipe de 3 personnes parmi 8 ?
+2. Calculer $\displaystyle \binom{10}{3}$ et $\displaystyle \binom{10}{7}$
+3. Combien de mains de 5 cartes peut-on former avec un jeu de 52 cartes ?
+4. Vérifier que $\displaystyle \binom{7}{3} = \binom{7}{4}$
+5. Simplifier $\displaystyle \binom{n}{2}$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Former une équipe de 3 personnes parmi 8
+
+::: methode
+Calcul de combinaisons
+:::
+
+::: etape Identifier le problème
+- On choisit 3 personnes parmi 8
+- L'ordre ne compte pas (équipe ABC = équipe CBA)
+- Pas de répétition
+:::
+
+::: etape Appliquer la formule des combinaisons
+- $\binom{n}{p} = \frac{n!}{p!(n-p)!}$ avec $n = 8$ et $p = 3$
+- $\displaystyle \binom{8}{3} = \frac{8!}{3! \times 5!}$
+:::
+
+::: etape Calculer
+$$
+\begin{aligned}
+\binom{8}{3} &= \frac{8 \times 7 \times 6}{3 \times 2 \times 1} \\
+&= \frac{336}{6} \\
+&= 56
+\end{aligned}
+$$
+:::
+
+::: resultat
+Il y a **56 équipes** possibles
+:::
+
+## Question 2 : Calculer $\displaystyle \binom{10}{3}$ et $\displaystyle \binom{10}{7}$
+
+::: point Calcul de $\displaystyle \binom{10}{3}$
+$$
+\begin{aligned}
+\binom{10}{3} &= \frac{10!}{3! \times 7!} \\
+&= \frac{10 \times 9 \times 8}{3 \times 2 \times 1} \\
+&= \frac{720}{6} \\
+&= 120
+\end{aligned}
+$$
+:::
+
+::: point Calcul de $\displaystyle \binom{10}{7}$
+$$
+\begin{aligned}
+\binom{10}{7} &= \frac{10!}{7! \times 3!} \\
+&= \frac{10 \times 9 \times 8}{3 \times 2 \times 1} \\
+&= 120
+\end{aligned}
+$$
+:::
+
+::: point Observation
+$\displaystyle \binom{10}{3} = \binom{10}{7}$ (propriété de symétrie)
+:::
+
+::: point Propriété générale
+$\binom{n}{p} = \binom{n}{n-p}$ pour tout $0 \leq p \leq n$
+
+- Choisir $p$ éléments = choisir les $n-p$ éléments à exclure
+- Ici : choisir 3 parmi 10 = choisir 7 à exclure parmi 10
+:::
+
+::: resultat
+$$\binom{10}{3} = \binom{10}{7} = 120$$
+:::
+
+## Question 3 : Mains de poker (5 cartes parmi 52)
+
+::: methode
+Combinaisons
+:::
+
+::: etape Identifier le problème
+- On choisit 5 cartes parmi 52
+- L'ordre ne compte pas (main de poker)
+:::
+
+::: etape Appliquer la formule
+$$
+\begin{aligned}
+\binom{52}{5} &= \frac{52!}{5! \times 47!} \\
+&= \frac{52 \times 51 \times 50 \times 49 \times 48}{5 \times 4 \times 3 \times 2 \times 1}
+\end{aligned}
+$$
+:::
+
+::: etape Calculer
+$$
+\begin{aligned}
+\binom{52}{5} &= \frac{311\,875\,200}{120} \\
+&= 2\,598\,960
+\end{aligned}
+$$
+:::
+
+::: resultat
+Il y a **2 598 960 mains** possibles
+:::
+
+## Question 4 : Vérifier $\displaystyle \binom{7}{3} = \binom{7}{4}$
+
+::: point Calcul de $\displaystyle \binom{7}{3}$
+$$
+\begin{aligned}
+\binom{7}{3} &= \frac{7!}{3! \times 4!} \\
+&= \frac{7 \times 6 \times 5}{3 \times 2 \times 1} \\
+&= \frac{210}{6} \\
+&= 35
+\end{aligned}
+$$
+:::
+
+::: point Calcul de $\displaystyle \binom{7}{4}$
+$$
+\begin{aligned}
+\binom{7}{4} &= \frac{7!}{4! \times 3!} \\
+&= \frac{7 \times 6 \times 5}{3 \times 2 \times 1} \\
+&= 35
+\end{aligned}
+$$
+:::
+
+::: point Vérification
+$$\binom{7}{3} = \binom{7}{4} = 35$$
+:::
+
+::: point Propriété générale
+$\binom{n}{p} = \binom{n}{n-p}$ pour tout $0 \leq p \leq n$
+
+- Choisir $p$ éléments = choisir les $n-p$ éléments à exclure
+- Ici : choisir 3 parmi 7 = choisir 4 à exclure parmi 7
+:::
+
+## Question 5 : Simplifier $\displaystyle \binom{n}{2}$
+
+::: methode
+Simplification algébrique
+:::
+
+::: etape Appliquer la formule
+$$
+\begin{aligned}
+\binom{n}{2} &= \frac{n!}{2!(n-2)!} \\
+&= \frac{n \times (n-1) \times (n-2)!}{2 \times 1 \times (n-2)!}
+\end{aligned}
+$$
+:::
+
+::: etape Simplifier
+- $\displaystyle \binom{n}{2} = \frac{n(n-1)}{2}$
+:::
+
+::: resultat
+$$\binom{n}{2} = \frac{n(n-1)}{2}$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle 56$ équipes
+2. $\displaystyle \binom{10}{3} = \binom{10}{7} = 120$
+3. $\displaystyle 2\,598\,960$ mains
+4. $\displaystyle \binom{7}{3} = \binom{7}{4} = 35$ (vérifié)
+5. $\displaystyle \binom{n}{2} = \frac{n(n-1)}{2}$
+
+===
+
+=== Découverte - Permutations et Factorielles
+Id: 1522
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Calculer les nombres de permutations suivants.
+
+**Rappel :** Une permutation est un arrangement de tous les éléments d'un ensemble dans un certain ordre. L'ordre compte et tous les éléments sont utilisés. Le nombre de permutations de $n$ objets est $n!$.
+
+1. De combien de façons peut-on ranger 5 livres différents sur une étagère ?
+2. Combien de classements possibles pour 8 coureurs à l'arrivée d'une course ?
+3. Calculer $\displaystyle 6!$ et $\displaystyle 7!$
+4. Simplifier $\displaystyle \frac{8!}{6!}$
+5. De combien de façons peut-on placer 4 personnes autour d'une table ronde (les rotations sont considérées identiques) ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Ranger 5 livres différents
+
+::: methode
+Calcul de permutations
+:::
+
+::: etape Identifier le problème
+- On doit ranger 5 livres différents dans un ordre précis
+- L'ordre compte (livre A à gauche ≠ livre A à droite)
+- Tous les livres sont utilisés
+:::
+
+::: etape Appliquer la formule des permutations
+- Nombre de permutations de $n$ objets : $P_n = n!$
+- Ici $n = 5$, donc $P_5 = 5!$
+:::
+
+::: etape Calculer
+- $\displaystyle 5! = 5 \times 4 \times 3 \times 2 \times 1 = 120$
+:::
+
+::: resultat
+Il y a **120 façons** de ranger les 5 livres
+:::
+
+## Question 2 : Classements de 8 coureurs
+
+::: methode
+Calcul de permutations
+:::
+
+::: etape Identifier le problème
+- On doit classer 8 coureurs différents
+- L'ordre compte (1er, 2ème, 3ème, etc.)
+- Tous les coureurs sont classés
+:::
+
+::: etape Appliquer la formule
+- $\displaystyle P_8 = 8!$
+:::
+
+::: etape Calculer
+$$
+\begin{aligned}
+8! &= 8 \times 7 \times 6 \times 5 \times 4 \times 3 \times 2 \times 1 \\
+&= 40\,320
+\end{aligned}
+$$
+:::
+
+::: resultat
+Il y a **40 320 classements** possibles
+:::
+
+## Question 3 : Calculer $\displaystyle 6!$ et $\displaystyle 7!$
+
+::: point Calcul de $\displaystyle 6!$
+$$
+\begin{aligned}
+6! &= 6 \times 5 \times 4 \times 3 \times 2 \times 1 \\
+&= 720
+\end{aligned}
+$$
+:::
+
+::: point Calcul de $\displaystyle 7!$
+- $\displaystyle 7! = 7 \times 6! = 7 \times 720 = 5\,040$
+:::
+
+::: resultat
+$6! = 720$ et $7! = 5\,040$
+:::
+
+## Question 4 : Simplifier $\displaystyle \frac{8!}{6!}$
+
+::: methode
+Simplification de factorielles
+:::
+
+::: etape Développer la factorielle
+- $\displaystyle 8! = 8 \times 7 \times 6!$
+:::
+
+::: etape Simplifier
+$$
+\begin{aligned}
+\frac{8!}{6!} &= \frac{8 \times 7 \times 6!}{6!} \\
+&= 8 \times 7 \\
+&= 56
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$\frac{8!}{6!} = 56$$
+:::
+
+## Question 5 : Placements autour d'une table ronde
+
+::: methode
+Permutations circulaires
+:::
+
+::: etape Comprendre la différence
+- Pour une table ronde, les rotations sont identiques
+- On fixe une personne et on permute les autres
+:::
+
+::: etape Formule des permutations circulaires
+- Pour $n$ personnes autour d'une table ronde : $(n-1)!$
+:::
+
+::: etape Calculer
+- $\displaystyle (4-1)! = 3! = 3 \times 2 \times 1 = 6$
+:::
+
+::: resultat
+Il y a **6 façons** de placer 4 personnes autour d'une table ronde
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle 120$ façons
+2. $\displaystyle 40\,320$ classements
+3. $6! = 720$ et $7! = 5\,040$
+4. $\displaystyle \frac{8!}{6!} = 56$
+5. $\displaystyle 6$ façons
+
+===
+
+=== Découverte - Principe Additif et Multiplicatif
+Id: 1521
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Résoudre les problèmes suivants en utilisant les principes additif et multiplicatif.
+
+**Rappel :**
+
+- **Principe multiplicatif** : Si on effectue $k$ choix indépendants avec respectivement $n_1, n_2, \ldots, n_k$ possibilités, alors le nombre total de résultats est $n_1 \times n_2 \times \cdots \times n_k$.
+
+- **Principe additif** : Si on a $k$ ensembles deux à deux disjoints de tailles $n_1, n_2, \ldots, n_k$, alors le nombre d'éléments de leur réunion est $n_1 + n_2 + \cdots + n_k$.
+
+1. Un restaurant propose 3 entrées, 5 plats et 4 desserts. Combien de menus complets (entrée + plat + dessert) différents peut-on composer ?
+2. On lance deux dés équilibrés. Combien de résultats possibles obtient-on ?
+3. Un code d'accès est composé de 4 chiffres (de 0 à 9). Combien de codes différents peut-on former si les répétitions sont autorisées ?
+4. Dans une classe, 12 élèves font du sport et 8 élèves font de la musique, et aucun élève ne fait les deux. Combien d'élèves font du sport ou de la musique ?
+5. On forme un mot de passe de 6 caractères avec des lettres majuscules (A à Z). Combien de mots de passe différents peut-on former ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Menus complets au restaurant
+
+::: methode
+Principe multiplicatif
+:::
+
+::: etape Identifier les choix indépendants
+- 3 choix pour l'entrée
+- 5 choix pour le plat
+- 4 choix pour le dessert
+:::
+
+::: etape Appliquer le principe multiplicatif
+- Les choix sont indépendants (choisir une entrée n'influence pas le choix du plat)
+- Nombre de menus = $\displaystyle 3 \times 5 \times 4$
+:::
+
+::: etape Calculer
+- Nombre de menus = $\displaystyle 3 \times 5 \times 4 = 60$
+:::
+
+::: resultat
+Il y a **60 menus** différents possibles
+:::
+
+## Question 2 : Résultats possibles avec deux dés
+
+::: methode
+Principe multiplicatif
+:::
+
+::: etape Analyser les lancers
+- 1er dé : 6 résultats possibles (1, 2, 3, 4, 5, 6)
+- 2ème dé : 6 résultats possibles (1, 2, 3, 4, 5, 6)
+- Les deux lancers sont indépendants
+:::
+
+::: etape Appliquer le principe multiplicatif
+- Nombre de résultats = $\displaystyle 6 \times 6 = 36$
+:::
+
+::: resultat
+Il y a **36 résultats** possibles
+:::
+
+## Question 3 : Code à 4 chiffres avec répétitions
+
+::: methode
+Principe multiplicatif avec répétitions
+:::
+
+::: etape Analyser les positions
+- 4 positions à remplir
+- Chaque position peut contenir un chiffre de 0 à 9 (10 possibilités)
+- Les répétitions sont autorisées
+:::
+
+::: etape Appliquer le principe multiplicatif
+- Nombre de codes = $\displaystyle 10 \times 10 \times 10 \times 10 = 10^4$
+:::
+
+::: etape Calculer
+- Nombre de codes = $\displaystyle 10^4 = 10\,000$
+:::
+
+::: resultat
+Il y a **10 000 codes** différents possibles
+:::
+
+## Question 4 : Élèves faisant du sport ou de la musique
+
+::: methode
+Principe additif
+:::
+
+::: etape Identifier les ensembles disjoints
+- Ensemble A : élèves faisant du sport (12 élèves)
+- Ensemble B : élèves faisant de la musique (8 élèves)
+- Aucun élève ne fait les deux : $A \cap B = \emptyset$ (ensembles disjoints)
+:::
+
+::: etape Appliquer le principe additif
+- Comme les ensembles sont disjoints, on peut additionner
+- On ne compte chaque élève qu'une seule fois (pas de recouvrement)
+- Nombre d'élèves = $\displaystyle 12 + 8 = 20$
+:::
+
+::: resultat
+Il y a **20 élèves** qui font du sport ou de la musique
+:::
+
+## Question 5 : Mot de passe de 6 lettres majuscules
+
+::: methode
+Principe multiplicatif avec répétitions
+:::
+
+::: etape Analyser les positions
+- 6 positions à remplir
+- Chaque position peut contenir une lettre de A à Z (26 possibilités)
+- Les répétitions sont autorisées
+:::
+
+::: etape Appliquer le principe multiplicatif
+- Nombre de mots de passe = $\displaystyle 26^6$
+:::
+
+::: etape Calculer
+- Nombre de mots de passe = $\displaystyle 26^6 = 308\,915\,776$
+:::
+
+::: resultat
+Il y a **308 915 776 mots de passe** différents possibles
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle 60$ menus
+2. $\displaystyle 36$ résultats
+3. $\displaystyle 10\,000$ codes
+4. $\displaystyle 20$ élèves
+5. $\displaystyle 308\,915\,776$ mots de passe
+
+===
+
+=== DS - Dénombrement - Devoir Surveillé Complet
+Id: 1530
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Ce devoir surveillé couvre l'ensemble du chapitre sur la combinatoire et le dénombrement.
+
+$\underline{\textbf{Partie A : Principes Fondamentaux}}$
+
+**Question A1 :** Un restaurant propose 4 entrées, 6 plats et 5 desserts. Combien de menus complets (entrée + plat + dessert) différents peut-on composer ?
+
+**Question A2 :** De combien de façons peut-on ranger 7 livres différents sur une étagère ?
+
+$\underline{\textbf{Partie B : Arrangements et Combinaisons}}$
+
+**Question B1 :** On veut attribuer 3 médailles (or, argent, bronze) à 12 concurrents. Combien de podiums différents peut-on former ?
+
+**Question B2 :** Dans une classe de 15 élèves, on veut former un groupe de 5 délégués. Combien de groupes possibles ?
+
+$\underline{\textbf{Partie C : Dénombrement avec Répétitions}}$
+
+**Question C1 :** Un code d'accès est composé de 5 caractères : 2 lettres majuscules différentes (A-Z) suivies de 3 chiffres (0-9) avec répétitions autorisées. Combien de codes différents peut-on former ?
+
+**Question C2 :** On dispose de 9 boules : 4 rouges identiques, 3 bleues identiques et 2 vertes identiques. De combien de façons peut-on les ranger en ligne ?
+
+$\underline{\textbf{Partie D : Problèmes avec Contraintes}}$
+
+**Question D1 :** Un club de 20 membres (12 hommes et 8 femmes) doit former un comité de 4 personnes. De combien de façons peut-on former ce comité si on exige qu'il contienne au moins 2 femmes ?
+
+**Question D2 :** On veut former un mot de passe de 7 caractères avec exactement 3 lettres majuscules différentes (A-Z) et 4 chiffres (0-9) avec répétitions autorisées. Combien de mots de passe possibles ?
+
+$\underline{\textbf{Partie E : Démontration et Application}}$
+
+**Question E1 :** Démontrer la relation de Pascal : $\binom{n}{k} = \binom{n-1}{k-1} + \binom{n-1}{k}$ pour $1 \leq k \leq n-1$ en utilisant une interprétation combinatoire.
+
+**Question E2 :** Un tournoi de football réunit 16 équipes.
+
+a) Combien de façons y a-t-il de déterminer les 8 équipes qui passeront au deuxième tour (sans ordre) ?
+
+b) Parmi ces 8 équipes, combien de façons y a-t-il de former 4 paires pour les matchs du deuxième tour (les équipes d'une paire s'affrontent) ?
+
+c) Combien de façons y a-t-il de déterminer les 4 équipes qui passeront en demi-finale (sans ordre) ?
+
+Étapes:
+<!-- optitab:1 -->
+**Partie A : Principes Fondamentaux**
+
+**Question A1 :** Menus complets
+
+::: methode
+Principe multiplicatif
+:::
+
+::: point Type de problème
+Choix indépendants successifs (ordre compte : entrée → plat → dessert)
+:::
+
+::: etape Identifier les choix indépendants
+- 4 choix pour l'entrée
+- 6 choix pour le plat
+- 5 choix pour le dessert
+:::
+
+::: etape Appliquer le principe multiplicatif
+- Nombre de menus = $\displaystyle 4 \times 6 \times 5 = 120$
+:::
+
+::: resultat
+Il y a **120 menus** différents possibles
+
+**Question A2 :** Ranger 7 livres
+:::
+
+::: methode
+Permutations
+:::
+
+::: point Type de problème
+Permutation de tous les éléments (ordre compte, pas de répétition, tous les éléments utilisés)
+:::
+
+::: etape Identifier le problème
+- On range 7 livres différents
+- L'ordre compte (un rangement différent = une solution différente)
+- Tous les livres sont utilisés (pas de sélection partielle)
+:::
+
+::: etape Appliquer la formule
+- Nombre de façons = $\displaystyle 7! = 7 \times 6 \times 5 \times 4 \times 3 \times 2 \times 1 = 5\,040$
+:::
+
+::: resultat
+Il y a **5 040 façons** de ranger les 7 livres
+
+**Partie B : Arrangements et Combinaisons**
+
+**Question B1 :** Podiums avec 3 médailles
+:::
+
+::: methode
+Arrangements
+:::
+
+::: point Type de problème
+Arrangement (ordre compte, pas de répétition, sélection partielle)
+:::
+
+::: etape Identifier le problème
+- On choisit 3 concurrents parmi 12
+- L'ordre compte (or ≠ argent ≠ bronze : les rôles sont différents)
+- Pas de répétition (un concurrent ne peut pas avoir plusieurs médailles)
+:::
+
+::: etape Appliquer la formule
+- Nombre de podiums = $\displaystyle A_{12}^3 = 12 \times 11 \times 10 = 1\,320$
+:::
+
+::: resultat
+Il y a **1 320 podiums** différents possibles
+
+**Question B2 :** Groupe de 5 délégués
+:::
+
+::: methode
+Combinaisons
+:::
+
+::: point Type de problème
+Combinaison (ordre ne compte pas, pas de répétition, sélection partielle)
+:::
+
+::: etape Identifier le problème
+- On choisit 5 élèves parmi 15
+- L'ordre ne compte pas (c'est un groupe, pas un classement)
+- Pas de répétition (un élève ne peut pas être choisi deux fois)
+:::
+
+::: etape Appliquer la formule
+- Nombre de groupes = $\displaystyle \binom{15}{5} = \frac{15 \times 14 \times 13 \times 12 \times 11}{5 \times 4 \times 3 \times 2 \times 1} = 3\,003$
+:::
+
+::: resultat
+Il y a **3 003 groupes** possibles
+
+**Partie C : Dénombrement avec Répétitions**
+
+**Question C1 :** Code avec lettres différentes et chiffres répétés
+:::
+
+::: methode
+Arrangements et principe multiplicatif
+:::
+
+::: point Type de problème
+Code mixte (ordre compte, répétition autorisée pour chiffres, pas pour lettres)
+:::
+
+::: etape Décomposer le problème
+- Partie 1 : 2 lettres majuscules différentes parmi 26 (arrangement : ordre compte, pas de répétition)
+- Partie 2 : 3 chiffres (répétitions autorisées : ordre compte, répétition possible)
+:::
+
+::: etape Calculer chaque partie
+- $A_{26}^2 = 26 \times 25 = 650$ (choix des lettres : arrangement)
+- $10^3 = 1\,000$ (choix des chiffres : liste ordonnée avec répétition)
+:::
+
+::: etape Appliquer le principe multiplicatif
+- Nombre de codes = $\displaystyle 650 \times 1\,000 = 650\,000$
+:::
+
+::: resultat
+Il y a **650 000 codes** différents possibles
+
+**Question C2 :** Ranger 9 boules avec répétitions
+:::
+
+::: methode
+Permutations avec répétitions
+:::
+
+::: point Type de problème
+Permutation avec répétitions (ordre compte, tous les éléments utilisés, certains éléments identiques)
+:::
+
+::: etape Identifier le problème
+- Total : 9 boules (4 rouges identiques, 3 bleues identiques, 2 vertes identiques)
+- L'ordre compte (rangement en ligne)
+- Toutes les boules sont utilisées
+- Certaines boules sont identiques (même couleur)
+- **Remarque :** Il s'agit ici de boules identiques (quantités limitées), pas de répétitions illimitées comme dans les codes avec chiffres
+:::
+
+::: etape Appliquer la formule
+- Nombre de rangements = $\displaystyle \frac{9!}{4! \times 3! \times 2!}$
+- On divise par les factorielles des nombres de répétitions pour éliminer les permutations internes
+:::
+
+::: etape Calculer
+$$
+\begin{aligned}
+\frac{9!}{4! \times 3! \times 2!} &= \frac{362\,880}{24 \times 6 \times 2} \\
+&= \frac{362\,880}{288} \\
+&= 1\,260
+\end{aligned}
+$$
+:::
+
+::: resultat
+Il y a **1 260 façons** de ranger les boules
+
+**Partie D : Problèmes avec Contraintes**
+
+**Question D1 :** Comité avec au moins 2 femmes
+:::
+
+::: methode
+Combinaisons multiples avec contrainte
+:::
+
+::: etape Décomposer selon le nombre de femmes
+- Cas 1 : 2 femmes et 2 hommes
+- Cas 2 : 3 femmes et 1 homme
+- Cas 3 : 4 femmes et 0 homme
+:::
+
+::: etape Calculer chaque cas
+Cas 1 :
+
+$$
+\begin{aligned}
+\binom{8}{2} \times \binom{12}{2} &= 28 \times 66 \\
+&= 1\,848
+\end{aligned}
+$$
+
+- Cas 2 : $\displaystyle \binom{8}{3} \times \binom{12}{1} = 56 \times 12 = 672$
+- Cas 3 : $\displaystyle \binom{8}{4} \times \binom{12}{0} = 70 \times 1 = 70$
+:::
+
+::: etape Additionner (événements incompatibles)
+- Total = $\displaystyle 1\,848 + 672 + 70 = 2\,590$
+:::
+
+::: resultat
+Il y a **2 590 façons** de former le comité
+
+**Question D2 :** Mot de passe avec contraintes
+:::
+
+::: methode
+Arrangements et principe multiplicatif
+:::
+
+::: etape Décomposer le problème
+- Choisir 3 positions pour les lettres parmi 7 : $\binom{7}{3}$
+- Choisir 3 lettres différentes parmi 26 : $A_{26}^3$
+- Choisir 4 chiffres (répétitions autorisées) : $10^4$
+:::
+
+::: etape Calculer chaque partie
+- $\displaystyle \binom{7}{3} = \frac{7 \times 6 \times 5}{3 \times 2 \times 1} = 35$ (positions des lettres)
+- $\displaystyle A_{26}^3 = 26 \times 25 \times 24 = 15\,600$ (choix des lettres)
+- $\displaystyle 10^4 = 10\,000$ (choix des chiffres)
+:::
+
+::: etape Appliquer le principe multiplicatif
+- Nombre de mots de passe = $\displaystyle 35 \times 15\,600 \times 10\,000 = 5\,460\,000\,000$
+:::
+
+::: resultat
+Il y a **5 460 000 000 mots de passe** différents possibles
+
+**Partie E : Démontration et Application**
+
+**Question E1 :** Démontrer la relation de Pascal
+:::
+
+::: methode
+Démonstration combinatoire
+:::
+
+::: etape Interprétation combinatoire
+- $\binom{n}{k}$ = nombre de façons de choisir $k$ éléments parmi $n$
+:::
+
+::: etape Décomposer le choix
+- Pour choisir $k$ éléments parmi $n$, on peut :
+- **Cas 1 :** Prendre un élément fixé (par exemple le premier) : il reste à choisir $k-1$ éléments parmi $n-1$ → $\binom{n-1}{k-1}$ façons
+- **Cas 2 :** Ne pas prendre cet élément : il faut choisir $k$ éléments parmi $n-1$ → $\binom{n-1}{k}$ façons
+:::
+
+::: etape Conclusion
+- Ces deux cas sont disjoints et recouvrent tous les choix possibles
+- Donc : $\displaystyle \binom{n}{k} = \binom{n-1}{k-1} + \binom{n-1}{k}$
+:::
+
+::: resultat
+La relation de Pascal est démontrée : $\binom{n}{k} = \binom{n-1}{k-1} + \binom{n-1}{k}$ pour $1 \leq k \leq n-1$
+
+**Question E2 :** Tournoi de football
+:::
+
+::: point a) Déterminer les 8 équipes du deuxième tour
+:::
+
+::: methode
+Combinaisons
+:::
+
+::: etape Identifier le problème
+- On choisit 8 équipes parmi 16
+- L'ordre ne compte pas
+:::
+
+::: etape Appliquer la formule
+- Nombre de façons = $\displaystyle \binom{16}{8} = \frac{16!}{8! \times 8!} = 12\,870$
+:::
+
+::: resultat
+Il y a **12 870 façons** de déterminer les 8 équipes
+:::
+
+::: point b) Former 4 paires pour les matchs
+:::
+
+::: methode
+Dénombrement des partitions en paires
+:::
+
+::: etape Analyser le problème
+- On a 8 équipes à répartir en 4 paires
+- L'ordre des paires ne compte pas
+- L'ordre dans chaque paire ne compte pas (équipe A vs équipe B = équipe B vs équipe A)
+:::
+
+::: etape Méthode de dénombrement
+- On choisit 2 équipes pour la 1ère paire : $\binom{8}{2} = 28$
+- Il reste 6 équipes. On choisit 2 pour la 2ème paire : $\binom{6}{2} = 15$
+- Il reste 4 équipes. On choisit 2 pour la 3ème paire : $\binom{4}{2} = 6$
+- Il reste 2 équipes qui forment automatiquement la 4ème paire : 1
+- Produit : $\displaystyle 28 \times 15 \times 6 \times 1 = 2\,520$
+:::
+
+::: etape Corriger pour l'ordre des paires
+- Les 4 paires sont indistinguables (pas d'ordre)
+- On divise par $4! = 24$ pour éliminer les permutations des paires
+- Nombre de façons = $\displaystyle \frac{2\,520}{24} = 105$
+:::
+
+::: resultat
+Il y a **105 façons** de former les 4 paires
+:::
+
+::: point c) Déterminer les 4 demi-finalistes
+:::
+
+::: methode
+Combinaisons
+:::
+
+::: etape Identifier le problème
+- On choisit 4 équipes parmi les 8 du deuxième tour
+- L'ordre ne compte pas
+:::
+
+::: etape Appliquer la formule
+- Nombre de façons = $\displaystyle \binom{8}{4} = \frac{8 \times 7 \times 6 \times 5}{4 \times 3 \times 2 \times 1} = 70$
+:::
+
+::: resultat
+Il y a **70 façons** de déterminer les 4 demi-finalistes
+:::
+
+Solution:
+<!-- optitab:1 -->
+**Partie A :**
+
+A1. $\displaystyle 120$ menus
+
+A2. $\displaystyle 5\,040$ façons
+
+**Partie B :**
+
+B1. $\displaystyle 1\,320$ podiums
+
+B2. $\displaystyle 3\,003$ groupes
+
+**Partie C :**
+
+C1. $\displaystyle 650\,000$ codes
+
+C2. $\displaystyle 1\,260$ façons
+
+**Partie D :**
+
+D1. $\displaystyle 2\,590$ façons
+
+D2. $\displaystyle 5\,460\,000\,000$ mots de passe
+
+**Partie E :**
+
+E1. Relation de Pascal démontrée : $\binom{n}{k} = \binom{n-1}{k-1} + \binom{n-1}{k}$
+
+E2. a) $12\,870$ façons, b) $105$ façons, c) $70$ façons
+
+===
+
+=== Entraînement - Dénombrement - Applications Avancées
+Id: 1526
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Résoudre les problèmes de dénombrement avancés suivants.
+
+1. Une urne contient 5 boules rouges et 3 boules bleues. On tire 4 boules simultanément. Combien de tirages contiennent exactement 2 boules rouges ?
+2. Combien de nombres de 4 chiffres peut-on former avec les chiffres 1, 2, 3, 4, 5 (avec répétition autorisée) ?
+3. De combien de façons peut-on choisir 3 hommes et 2 femmes parmi 8 hommes et 6 femmes ?
+4. Résoudre l'équation $\displaystyle \binom{n}{2} = 45$
+5. Un mot de passe contient 6 caractères : 3 lettres majuscules et 3 chiffres. Combien de mots de passe possibles ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Tirages avec exactement 2 boules rouges
+
+::: methode
+Combinaisons multiples
+:::
+
+::: etape Décomposer le problème
+- On tire 4 boules : 2 rouges et 2 bleues
+- Choisir 2 rouges parmi 5 : $\displaystyle \binom{5}{2}$
+- Choisir 2 bleues parmi 3 : $\displaystyle \binom{3}{2}$
+:::
+
+::: etape Appliquer le principe de multiplication
+- Nombre de tirages = $\displaystyle \binom{5}{2} \times \binom{3}{2}$
+:::
+
+::: etape Calculer
+- $\displaystyle \binom{5}{2} = \frac{5 \times 4}{2 \times 1} = 10$
+- $\displaystyle \binom{3}{2} = \frac{3 \times 2}{2 \times 1} = 3$
+- Total = $\displaystyle 10 \times 3 = 30$
+:::
+
+::: resultat
+**30 tirages** contiennent exactement 2 boules rouges
+:::
+
+## Question 2 : Nombres de 4 chiffres avec répétition
+
+::: methode
+Principe fondamental avec répétition
+:::
+
+::: etape Identifier le problème
+- 4 positions à remplir
+- 5 choix pour chaque position (répétition autorisée)
+:::
+
+::: etape Calculer
+- Nombre de possibilités = $\displaystyle 5^4 = 5 \times 5 \times 5 \times 5 = 625$
+:::
+
+::: resultat
+**625 nombres** possibles
+:::
+
+## Question 3 : Choisir 3 hommes et 2 femmes
+
+::: methode
+Combinaisons multiples
+:::
+
+::: etape Décomposer le problème
+- Choisir 3 hommes parmi 8 : $\displaystyle \binom{8}{3}$
+- Choisir 2 femmes parmi 6 : $\displaystyle \binom{6}{2}$
+:::
+
+::: etape Appliquer le principe de multiplication
+- Nombre de choix = $\displaystyle \binom{8}{3} \times \binom{6}{2}$
+:::
+
+::: etape Calculer
+$$
+\begin{aligned}
+\binom{8}{3} &= \frac{8 \times 7 \times 6}{3 \times 2 \times 1} \\
+&= 56
+\end{aligned}
+$$
+
+- $\displaystyle \binom{6}{2} = \frac{6 \times 5}{2 \times 1} = 15$
+- Total = $\displaystyle 56 \times 15 = 840$
+:::
+
+::: resultat
+**840 façons** de choisir
+:::
+
+## Question 4 : Résoudre $\displaystyle \binom{n}{2} = 45$
+
+::: methode
+Équation avec combinaisons
+:::
+
+::: etape Utiliser la formule simplifiée
+- $\displaystyle \binom{n}{2} = \frac{n(n-1)}{2} = 45$
+:::
+
+::: etape Résoudre l'équation
+- $\displaystyle n(n-1) = 90$
+- $\displaystyle n^2 - n - 90 = 0$
+- Discriminant : $\displaystyle \Delta = 1 + 360 = 361 = 19^2$
+- $n = \frac{1 + 19}{2} = 10$ ou $n = \frac{1 - 19}{2} = -9$
+:::
+
+::: etape Vérifier
+- $\displaystyle n = 10 > 0$ (seule solution valide)
+- Vérification : $\displaystyle \binom{10}{2} = \frac{10 \times 9}{2} = 45$
+:::
+
+::: resultat
+$$n = 10$$
+:::
+
+## Question 5 : Mot de passe avec 3 lettres et 3 chiffres
+
+::: methode
+Arrangements et principe de multiplication
+:::
+
+::: etape Décomposer le problème
+- Choisir 3 positions pour les lettres parmi 6 : $\binom{6}{3}$
+- Choisir 3 lettres majuscules (26 possibilités chacune) : $26^3$
+- Choisir 3 chiffres (10 possibilités chacun) : $10^3$
+:::
+
+::: etape Calculer
+- $\displaystyle \binom{6}{3} = 20$ (positions des lettres)
+- $\displaystyle 26^3 = 17\,576$ (choix des lettres)
+- $\displaystyle 10^3 = 1\,000$ (choix des chiffres)
+- Total = $\displaystyle 20 \times 17\,576 \times 1\,000 = 351\,520\,000$
+:::
+
+::: resultat
+**351 520 000 mots de passe** possibles
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle 30$ tirages
+2. $\displaystyle 625$ nombres
+3. $\displaystyle 840$ façons
+4. $\displaystyle n = 10$
+5. $\displaystyle 351\,520\,000$ mots de passe
+
+===
+
+=== Entraînement - Dénombrement - Problèmes Mixtes
+Id: 1525
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Résoudre les problèmes de dénombrement suivants.
+
+1. Dans une classe de 12 élèves, on veut former un groupe de 4 délégués. Combien de groupes possibles ?
+2. Combien de mots de 5 lettres peut-on former avec les lettres du mot « MATHS » (sans répétition) ?
+3. Un restaurant propose 5 entrées, 8 plats et 4 desserts. Combien de menus complets (entrée + plat + dessert) différents ?
+4. De combien de façons peut-on répartir 10 personnes en 2 équipes de 5 ?
+5. Combien de diagonales possède un polygone à $\displaystyle n$ côtés ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Groupe de 4 délégués parmi 12
+
+::: methode
+Combinaisons (ordre ne compte pas)
+:::
+
+::: etape Identifier le type
+- On forme un groupe (pas de hiérarchie)
+- L'ordre ne compte pas
+:::
+
+::: etape Calculer
+$$
+\begin{aligned}
+\binom{12}{4} &= \frac{12!}{4! \times 8!} \\
+&= \frac{12 \times 11 \times 10 \times 9}{4 \times 3 \times 2 \times 1} \\
+&= \frac{11\,880}{24} \\
+&= 495
+\end{aligned}
+$$
+:::
+
+::: resultat
+**495 groupes** possibles
+:::
+
+## Question 2 : Mots avec les lettres de « MATHS »
+
+::: methode
+Permutations
+:::
+
+::: etape Identifier le problème
+- 5 lettres différentes : M, A, T, H, S
+- On utilise toutes les lettres
+- L'ordre compte (MATHS ≠ THAMS)
+:::
+
+::: etape Calculer
+- $\displaystyle P_5 = 5! = 5 \times 4 \times 3 \times 2 \times 1 = 120$
+:::
+
+::: resultat
+**120 mots** possibles
+:::
+
+## Question 3 : Menus complets au restaurant
+
+::: methode
+Principe fondamental du dénombrement
+:::
+
+::: etape Identifier les choix indépendants
+- 5 choix pour l'entrée
+- 8 choix pour le plat
+- 4 choix pour le dessert
+:::
+
+::: etape Multiplier les possibilités
+- Nombre de menus = $\displaystyle 5 \times 8 \times 4 = 160$
+:::
+
+::: resultat
+**160 menus** différents
+:::
+
+## Question 4 : Répartir 10 personnes en 2 équipes de 5
+
+::: methode
+Combinaisons avec attention
+:::
+
+::: etape Première approche (naïve)
+- On choisit 5 personnes pour l'équipe 1 : $\binom{10}{5}$
+- Les 5 autres forment automatiquement l'équipe 2
+:::
+
+::: etape Problème du double comptage
+- **Exemple concret :** Soient 10 personnes A, B, C, D, E, F, G, H, I, J
+- Répartition 1 : Équipe 1 = {A,B,C,D,E} et Équipe 2 = {F,G,H,I,J}
+- Répartition 2 : Équipe 1 = {F,G,H,I,J} et Équipe 2 = {A,B,C,D,E}
+- **Ces deux répartitions sont identiques !** (même partition)
+- Chaque répartition est comptée **2 fois** dans $\binom{10}{5}$
+:::
+
+::: etape bis
+- Les équipes n'ont pas de nom (pas d'équipe « 1 » ou « 2 »)
+- On cherche juste à séparer en deux groupes de 5
+- Donc on divise par 2 pour éliminer les doublons
+:::
+
+::: etape Calculer
+$$
+\begin{aligned}
+\binom{10}{5} &= \frac{10!}{5! \times 5!} \\
+&= \frac{30\,240}{120} \\
+&= 252
+\end{aligned}
+$$
+
+- Nombre de répartitions = $\displaystyle \frac{252}{2} = 126$
+:::
+
+::: resultat
+**126 répartitions** possibles
+:::
+
+## Question 5 : Diagonales d'un polygone à $\displaystyle n$ côtés
+
+::: methode
+Combinaisons et soustraction
+:::
+
+::: etape Nombre total de segments
+- On choisit 2 sommets parmi $n$ : $\binom{n}{2} = \frac{n(n-1)}{2}$
+:::
+
+::: etape Soustraire les côtés
+- Un polygone à $n$ côtés a $n$ côtés
+- Nombre de diagonales = segments - côtés
+:::
+
+::: etape Calculer
+$$
+\begin{aligned}
+D &= \frac{n(n-1)}{2} - n \\
+&= \frac{n(n-1) - 2n}{2} \\
+&= \frac{n(n-3)}{2}
+\end{aligned}
+$$
+:::
+
+::: resultat
+Un polygone à $n$ côtés a $\frac{n(n-3)}{2}$ diagonales
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle 495$ groupes
+2. $\displaystyle 120$ mots
+3. $\displaystyle 160$ menus
+4. $\displaystyle 126$ répartitions
+5. $\displaystyle \frac{n(n-3)}{2}$ diagonales
+
+===
+
+=== Problème - Dénombrement - Applications Multiples
+Id: 1528
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Résoudre les problèmes de dénombrement complexes suivants.
+
+1. Un club de 25 membres doit former un comité de 5 personnes. De combien de façons peut-on former ce comité si on exige qu'il contienne au moins un homme et au moins une femme, sachant qu'il y a 15 hommes et 10 femmes ?
+2. On dispose de 10 boules : 4 rouges identiques, 3 bleues identiques et 3 vertes identiques. De combien de façons peut-on les ranger en ligne ?
+3. Un code d'accès est composé de 6 caractères : 3 lettres majuscules (A-Z) suivies de 3 chiffres (0-9). Combien de codes différents peut-on former si les lettres doivent être différentes et les chiffres peuvent se répéter ?
+4. Dans un tournoi de tennis, 16 joueurs participent. Combien de façons y a-t-il de déterminer les 4 demi-finalistes (sans ordre) ?
+5. Démontrer que $\displaystyle \sum_{k=0}^{n} \binom{n}{k} = 2^n$ en utilisant une interprétation combinatoire.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Comité avec contraintes
+
+::: methode
+Combinaisons avec contraintes (méthode par complémentaire)
+:::
+
+::: etape Calculer le nombre total de comités possibles
+- Total : 25 membres
+- On choisit 5 personnes parmi 25 : $\binom{25}{5}$
+:::
+
+::: etape Identifier les cas à exclure
+- Cas à exclure 1 : comité avec uniquement des hommes (0 femme)
+- Cas à exclure 2 : comité avec uniquement des femmes (0 homme)
+:::
+
+::: etape Calculer les cas à exclure
+- Comités avec uniquement des hommes : $\binom{15}{5}$
+- Comités avec uniquement des femmes : $\binom{10}{5}$
+:::
+
+::: etape Appliquer le principe du complémentaire
+- Nombre de comités valides = Total - (uniquement hommes) - (uniquement femmes)
+- $\displaystyle = \binom{25}{5} - \binom{15}{5} - \binom{10}{5}$
+:::
+
+::: etape Calculer
+$$
+\begin{aligned}
+\binom{25}{5} &= \frac{25 \times 24 \times 23 \times 22 \times 21}{5 \times 4 \times 3 \times 2 \times 1} \\
+&= 53\,130
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+\binom{15}{5} &= \frac{15 \times 14 \times 13 \times 12 \times 11}{5 \times 4 \times 3 \times 2 \times 1} \\
+&= 3\,003
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+\binom{10}{5} &= \frac{10 \times 9 \times 8 \times 7 \times 6}{5 \times 4 \times 3 \times 2 \times 1} \\
+&= 252
+\end{aligned}
+$$
+
+- Nombre de comités valides = $\displaystyle 53\,130 - 3\,003 - 252 = 49\,875$
+:::
+
+::: resultat
+Il y a **49 875 façons** de former le comité
+:::
+
+## Question 2 : Ranger 10 boules avec répétitions
+
+::: methode
+Permutations avec répétitions
+:::
+
+::: etape Identifier le problème
+- Total : 10 boules (4 rouges identiques, 3 bleues identiques, 3 vertes identiques)
+- On range toutes les boules en ligne
+- Les boules de même couleur sont indistinguables
+- **Remarque :** Il s'agit ici de boules identiques (quantités limitées), pas de répétitions illimitées comme dans les codes avec chiffres
+:::
+
+::: etape Formule des permutations avec répétitions
+- Si on a $n$ objets dont $n_1$ identiques, $n_2$ identiques, ..., $n_k$ identiques, alors :
+- Nombre de permutations = $\displaystyle \frac{n!}{n_1! \times n_2! \times \cdots \times n_k!}$
+:::
+
+::: etape Appliquer la formule
+- $n = 10$, $n_1 = 4$ (rouges), $n_2 = 3$ (bleues), $n_3 = 3$ (vertes)
+- Nombre de rangements = $\displaystyle \frac{10!}{4! \times 3! \times 3!}$
+:::
+
+::: etape Calculer
+$$
+\begin{aligned}
+\frac{10!}{4! \times 3! \times 3!} &= \frac{3\,628\,800}{24 \times 6 \times 6} \\
+&= \frac{3\,628\,800}{864} \\
+&= 4\,200
+\end{aligned}
+$$
+:::
+
+::: resultat
+Il y a **4 200 façons** de ranger les boules
+:::
+
+## Question 3 : Code avec lettres différentes et chiffres répétés
+
+::: methode
+Arrangements et principe multiplicatif
+:::
+
+::: etape Décomposer le problème
+- Partie 1 : 3 lettres majuscules différentes (A-Z, 26 lettres)
+- Partie 2 : 3 chiffres (0-9, répétitions autorisées)
+:::
+
+::: etape Calculer le nombre de façons de choisir les lettres
+- On choisit 3 lettres différentes parmi 26 : $A_{26}^3$
+- $\displaystyle A_{26}^3 = 26 \times 25 \times 24 = 15\,600$
+:::
+
+::: etape Calculer le nombre de façons de choisir les chiffres
+- 3 positions, 10 choix pour chaque position (répétitions autorisées)
+- Nombre de combinaisons de chiffres = $10^3 = 1\,000$
+:::
+
+::: etape Appliquer le principe multiplicatif
+- Nombre de codes = $\displaystyle 15\,600 \times 1\,000 = 15\,600\,000$
+:::
+
+::: resultat
+Il y a **15 600 000 codes** différents possibles
+:::
+
+## Question 4 : Déterminer les 4 demi-finalistes
+
+::: methode
+Combinaisons (ordre ne compte pas)
+:::
+
+::: etape Identifier le problème
+- On choisit 4 joueurs parmi 16
+- L'ordre ne compte pas (ce sont juste les 4 demi-finalistes, pas leur classement)
+:::
+
+::: etape Appliquer la formule
+- Nombre de façons = $\displaystyle \binom{16}{4}$
+:::
+
+::: etape Calculer
+$$
+\begin{aligned}
+\binom{16}{4} &= \frac{16 \times 15 \times 14 \times 13}{4 \times 3 \times 2 \times 1} \\
+&= \frac{43\,680}{24} \\
+&= 1\,820
+\end{aligned}
+$$
+:::
+
+::: resultat
+Il y a **1 820 façons** de déterminer les 4 demi-finalistes
+:::
+
+## Question 5 : Démontrer $\displaystyle \sum_{k=0}^{n} \binom{n}{k} = 2^n$
+
+::: methode
+Démonstration combinatoire
+:::
+
+::: etape Interprétation combinatoire
+- $\binom{n}{k}$ = nombre de parties à $k$ éléments d'un ensemble à $n$ éléments
+:::
+
+::: etape Décomposer selon la taille des parties
+- Parties à 0 élément : $\binom{n}{0}$ (la partie vide)
+- Parties à 1 élément : $\displaystyle \binom{n}{1}$
+- Parties à 2 éléments : $\displaystyle \binom{n}{2}$
+- ...
+- Parties à $n$ éléments : $\binom{n}{n}$ (l'ensemble lui-même)
+:::
+
+::: etape Somme de tous les cas
+- Le nombre total de parties d'un ensemble à $n$ éléments est :
+- $\displaystyle \binom{n}{0} + \binom{n}{1} + \binom{n}{2} + \cdots + \binom{n}{n} = \sum_{k=0}^{n} \binom{n}{k}$
+:::
+
+::: etape Lien avec le nombre total de parties
+- On sait qu'un ensemble à $n$ éléments possède exactement $2^n$ parties
+- Donc : $\displaystyle \sum_{k=0}^{n} \binom{n}{k} = 2^n$
+:::
+
+::: resultat
+La relation $\sum_{k=0}^{n} \binom{n}{k} = 2^n$ est démontrée par interprétation combinatoire
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle 49\,875$ façons
+2. $\displaystyle 4\,200$ façons
+3. $\displaystyle 15\,600\,000$ codes
+4. $\displaystyle 1\,820$ façons
+5. Relation démontrée : $\displaystyle \sum_{k=0}^{n} \binom{n}{k} = 2^n$
+
+===
+
+=== Problème - Dénombrement - Problèmes Combinés
+Id: 1529
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Résoudre les problèmes de dénombrement complexes suivants.
+
+1. On veut former un mot de passe de 8 caractères avec exactement 4 lettres majuscules (A-Z) et 4 chiffres (0-9). Les lettres doivent être différentes et les chiffres peuvent se répéter. Combien de mots de passe possibles ?
+2. Une classe de 30 élèves doit élire un bureau composé d'un président, d'un vice-président, d'un secrétaire et d'un trésorier (4 personnes distinctes). Combien de bureaux possibles ?
+3. On dispose de 12 boules : 5 rouges identiques, 4 bleues identiques et 3 vertes identiques. De combien de façons peut-on en choisir 6 ?
+4. Dans un groupe de 20 personnes, on veut former 2 équipes de 10. Combien de façons y a-t-il de faire cette répartition si les équipes sont identifiables (équipe A et équipe B) ?
+5. Démontrer que $\displaystyle \binom{n}{k} = \binom{n}{n-k}$ en utilisant une interprétation combinatoire.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Mot de passe avec contraintes
+
+::: methode
+Arrangements et principe multiplicatif
+:::
+
+::: etape Décomposer le problème
+- Choisir 4 positions pour les lettres parmi 8 : $\binom{8}{4}$
+- Choisir 4 lettres différentes parmi 26 : $A_{26}^4$
+- Choisir 4 chiffres (répétitions autorisées) : $10^4$
+:::
+
+::: etape Calculer chaque partie
+- $\displaystyle \binom{8}{4} = \frac{8 \times 7 \times 6 \times 5}{4 \times 3 \times 2 \times 1} = 70$ (positions des lettres)
+- $\displaystyle A_{26}^4 = 26 \times 25 \times 24 \times 23 = 358\,800$ (choix des lettres)
+- $\displaystyle 10^4 = 10\,000$ (choix des chiffres)
+:::
+
+::: etape Appliquer le principe multiplicatif
+- Nombre de mots de passe = $\displaystyle 70 \times 358\,800 \times 10\,000 = 251\,160\,000\,000$
+:::
+
+::: resultat
+Il y a **251 160 000 000 mots de passe** différents possibles
+:::
+
+## Question 2 : Bureau avec 4 postes distincts
+
+::: methode
+Arrangements (ordre compte)
+:::
+
+::: etape Identifier le problème
+- On choisit 4 personnes parmi 30
+- L'ordre compte (les 4 rôles sont différents)
+- Pas de répétition
+:::
+
+::: etape Appliquer la formule
+- Nombre de bureaux = $\displaystyle A_{30}^4 = 30 \times 29 \times 28 \times 27$
+:::
+
+::: etape Calculer
+- $\displaystyle A_{30}^4 = 30 \times 29 \times 28 \times 27 = 657\,720$
+:::
+
+::: resultat
+Il y a **657 720 bureaux** possibles
+:::
+
+## Question 3 : Choisir 6 boules parmi 12 avec répétitions
+
+::: methode
+Résolution d'une équation diophantienne avec bornes
+:::
+
+::: etape Analyser le problème
+- On choisit 6 boules parmi 12 (5 rouges, 4 bleues, 3 vertes)
+- Les boules de même couleur sont identiques (pas d'ordre entre boules de même couleur)
+- L'ordre ne compte pas (c'est un choix, pas un rangement)
+- **Remarque :** Il s'agit ici de quantités limitées de chaque couleur (stocks limités), pas de répétitions illimitées
+- On doit dénombrer toutes les combinaisons possibles de 6 boules
+:::
+
+::: etape Modéliser par une équation diophantienne
+- Soit $r$ le nombre de rouges, $b$ le nombre de bleues, $v$ le nombre de vertes
+- On doit résoudre : $r + b + v = 6$ (équation diophantienne)
+- Avec les bornes : $0 \leq r \leq 5$, $0 \leq b \leq 4$, $0 \leq v \leq 3$ (contraintes de disponibilité)
+:::
+
+::: etape Résoudre systématiquement
+- Pour chaque valeur de $r$ de 0 à 5, on détermine les couples $(b,v)$ possibles :
+- $r = 5$ : $b + v = 1$ avec $0 \leq b \leq 4$, $0 \leq v \leq 3$ → $(1,0), (0,1)$
+- $r = 4$ : $b + v = 2$ avec $0 \leq b \leq 4$, $0 \leq v \leq 3$ → $(2,0), (1,1), (0,2)$
+- $r = 3$ : $b + v = 3$ avec $0 \leq b \leq 4$, $0 \leq v \leq 3$ → $(3,0), (2,1), (1,2), (0,3)$
+- $r = 2$ : $b + v = 4$ avec $0 \leq b \leq 4$, $0 \leq v \leq 3$ → $(4,0), (3,1), (2,2), (1,3)$
+- $r = 1$ : $b + v = 5$ avec $0 \leq b \leq 4$, $0 \leq v \leq 3$ → $(4,1), (3,2), (2,3)$
+- $r = 0$ : $b + v = 6$ avec $0 \leq b \leq 4$, $0 \leq v \leq 3$ → $(4,2), (3,3)$
+:::
+
+::: etape Compter les solutions
+- Total des triplets $(r,b,v)$ valides : $2 + 3 + 4 + 4 + 3 + 2 = 18$
+- Chaque triplet correspond à une façon unique de choisir 6 boules
+:::
+
+::: resultat
+Il y a **18 façons** de choisir 6 boules
+:::
+
+## Question 4 : Répartir en 2 équipes identifiables
+
+::: methode
+Combinaisons (les équipes sont identifiables)
+:::
+
+::: etape Identifier le problème
+- Les équipes sont identifiables (équipe A ≠ équipe B)
+- On choisit 10 personnes pour l'équipe A parmi 20
+- Les 10 autres forment automatiquement l'équipe B
+:::
+
+::: etape Appliquer la formule
+- Nombre de répartitions = $\displaystyle \binom{20}{10}$
+:::
+
+::: etape Calculer
+- $\displaystyle \binom{20}{10} = \frac{20!}{10! \times 10!} = 184\,756$
+:::
+
+::: remarque
+Contrairement à la question 4 de l'exercice « Problèmes Mixtes », ici on ne divise pas par 2 car les équipes sont identifiables (équipe A et équipe B sont différentes).
+:::
+
+::: resultat
+Il y a **184 756 façons** de faire cette répartition
+:::
+
+## Question 5 : Démontrer $\displaystyle \binom{n}{k} = \binom{n}{n-k}$
+
+::: methode
+Démonstration combinatoire
+:::
+
+::: etape Interprétation combinatoire
+- $\binom{n}{k}$ = nombre de façons de choisir $k$ éléments parmi $n$
+:::
+
+::: etape Lien avec le complémentaire
+- Choisir $k$ éléments parmi $n$ revient à choisir les $n-k$ éléments à exclure
+- Donc : choisir $k$ éléments = choisir $n-k$ éléments à ne pas prendre
+:::
+
+::: etape Conclusion
+- $\binom{n}{k}$ = nombre de façons de choisir $k$ éléments
+- $\binom{n}{n-k}$ = nombre de façons de choisir $n-k$ éléments
+- Ces deux nombres sont égaux car choisir $k$ éléments = choisir les $n-k$ à exclure
+- Donc : $\displaystyle \binom{n}{k} = \binom{n}{n-k}$
+:::
+
+::: point Vérification par le calcul
+$$
+\begin{aligned}
+\binom{n}{n-k} &= \frac{n!}{(n-k)!(n-(n-k))!} \\
+&= \frac{n!}{(n-k)!k!} \\
+&= \binom{n}{k}
+\end{aligned}
+$$
+:::
+
+::: resultat
+La propriété de symétrie est démontrée : $\binom{n}{k} = \binom{n}{n-k}$ pour tout $0 \leq k \leq n$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle 251\,160\,000\,000$ mots de passe
+2. $\displaystyle 657\,720$ bureaux
+3. $\displaystyle 18$ façons
+4. $\displaystyle 184\,756$ façons
+5. Propriété de symétrie démontrée : $\binom{n}{k} = \binom{n}{n-k}$
+
+===
+
+=== Problème - Dénombrement - Synthèse Complexe
+Id: 1527
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Résoudre les problèmes de dénombrement complexes suivants.
+
+1. Combien de parties possède un ensemble à $\displaystyle n$ éléments ? Vérifier pour $\displaystyle n = 4$.
+2. On veut former un comité de 5 personnes parmi 7 hommes et 5 femmes. De combien de façons peut-on former ce comité si on exige qu'il contienne au moins 2 femmes ?
+3. Un club de 20 membres doit élire un bureau composé d'un président, d'un secrétaire et d'un trésorier (3 personnes distinctes). Combien de bureaux possibles ?
+4. On dispose de 8 boules : 3 rouges, 2 bleues et 3 vertes. De combien de façons peut-on les ranger en ligne si les boules de même couleur sont identiques ?
+5. Démontrer la relation de Pascal : $\displaystyle \binom{n}{k} = \binom{n-1}{k-1} + \binom{n-1}{k}$ pour $\displaystyle 1 \leq k \leq n-1$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Nombre de parties d'un ensemble
+
+::: methode
+Formule générale et vérification
+:::
+
+::: etape Formule générale
+- Un ensemble à $n$ éléments possède $2^n$ parties
+- Cela inclut la partie vide $\emptyset$ et l'ensemble lui-même
+:::
+
+::: etape Vérification pour $\displaystyle n = 4$
+- Soit $\displaystyle A = \{a, b, c, d\}$
+- Parties à 0 élément : $\displaystyle \{\emptyset\}$ → 1 partie
+- Parties à 1 élément : $\{a\}, \{b\}, \{c\}, \{d\}$ → 4 parties
+- Parties à 2 éléments : $\{a,b\}, \{a,c\}, \{a,d\}, \{b,c\}, \{b,d\}, \{c,d\}$ → $\binom{4}{2} = 6$ parties
+- Parties à 3 éléments : $\{a,b,c\}, \{a,b,d\}, \{a,c,d\}, \{b,c,d\}$ → $\binom{4}{3} = 4$ parties
+- Parties à 4 éléments : $\{a,b,c,d\}$ → 1 partie
+- Total : $\displaystyle 1 + 4 + 6 + 4 + 1 = 16 = 2^4$
+:::
+
+::: resultat
+Un ensemble à $n$ éléments possède $2^n$ parties. Pour $n = 4$, on a bien $2^4 = 16$ parties.
+:::
+
+## Question 2 : Comité avec au moins 2 femmes
+
+::: methode
+Combinaisons multiples avec contrainte
+:::
+
+::: etape Décomposer selon le nombre de femmes
+- Cas 1 : 2 femmes et 3 hommes
+- Cas 2 : 3 femmes et 2 hommes
+- Cas 3 : 4 femmes et 1 homme
+- Cas 4 : 5 femmes et 0 homme
+:::
+
+::: etape Calculer chaque cas
+- Cas 1 : $\displaystyle \binom{5}{2} \times \binom{7}{3} = 10 \times 35 = 350$
+- Cas 2 : $\displaystyle \binom{5}{3} \times \binom{7}{2} = 10 \times 21 = 210$
+- Cas 3 : $\displaystyle \binom{5}{4} \times \binom{7}{1} = 5 \times 7 = 35$
+- Cas 4 : $\displaystyle \binom{5}{5} \times \binom{7}{0} = 1 \times 1 = 1$
+:::
+
+::: etape Additionner (événements incompatibles)
+- Total = $\displaystyle 350 + 210 + 35 + 1 = 596$
+:::
+
+::: resultat
+Il y a **596 façons** de former le comité
+:::
+
+## Question 3 : Bureau avec président, secrétaire et trésorier
+
+::: methode
+Arrangements (ordre compte)
+:::
+
+::: etape Identifier le problème
+- On choisit 3 personnes parmi 20
+- L'ordre compte (les rôles sont différents)
+- Pas de répétition
+:::
+
+::: etape Appliquer la formule
+- $\displaystyle A_{20}^3 = 20 \times 19 \times 18$
+:::
+
+::: etape Calculer
+- $\displaystyle A_{20}^3 = 20 \times 19 \times 18 = 6\,840$
+:::
+
+::: resultat
+Il y a **6 840 bureaux** possibles
+:::
+
+## Question 4 : Ranger 8 boules avec répétitions
+
+::: methode
+Permutations avec répétitions
+:::
+
+::: etape Identifier le problème
+- Total : 8 boules (3 rouges identiques, 2 bleues identiques, 3 vertes identiques)
+- On range toutes les boules
+- Les boules de même couleur sont indistinguables
+- **Remarque :** Il s'agit ici de boules identiques (quantités limitées), pas de répétitions illimitées comme dans les codes avec chiffres
+:::
+
+::: etape Formule des permutations avec répétitions
+- Si on a $n$ objets dont $n_1$ identiques, $n_2$ identiques, ..., $n_k$ identiques, alors :
+- Nombre de permutations = $\displaystyle \frac{n!}{n_1! \times n_2! \times \cdots \times n_k!}$
+:::
+
+::: etape Appliquer la formule
+- $n = 8$, $n_1 = 3$ (rouges), $n_2 = 2$ (bleues), $n_3 = 3$ (vertes)
+- Nombre de rangements = $\displaystyle \frac{8!}{3! \times 2! \times 3!}$
+:::
+
+::: etape Calculer
+$$
+\begin{aligned}
+\frac{8!}{3! \times 2! \times 3!} &= \frac{40\,320}{6 \times 2 \times 6} \\
+&= \frac{40\,320}{72} \\
+&= 560
+\end{aligned}
+$$
+:::
+
+::: resultat
+Il y a **560 façons** de ranger les boules
+:::
+
+## Question 5 : Démontrer la relation de Pascal
+
+::: methode
+Démonstration combinatoire
+:::
+
+::: etape Interprétation combinatoire
+- $\binom{n}{k}$ = nombre de façons de choisir $k$ éléments parmi $n$
+:::
+
+::: etape Décomposer le choix
+- Pour choisir $k$ éléments parmi $n$, on peut :
+- **Cas 1 :** Prendre un élément fixé (par exemple le premier) : il reste à choisir $k-1$ éléments parmi $n-1$ → $\binom{n-1}{k-1}$ façons
+- **Cas 2 :** Ne pas prendre cet élément : il faut choisir $k$ éléments parmi $n-1$ → $\binom{n-1}{k}$ façons
+:::
+
+::: etape Conclusion
+- Ces deux cas sont disjoints et recouvrent tous les choix possibles
+- Donc : $\displaystyle \binom{n}{k} = \binom{n-1}{k-1} + \binom{n-1}{k}$
+:::
+
+::: point Vérification par le calcul
+$$
+\begin{aligned}
+\binom{n-1}{k-1} + \binom{n-1}{k} &= \frac{(n-1)!}{(k-1)!(n-k)!} + \frac{(n-1)!}{k!(n-k-1)!} \\
+&= \frac{(n-1)!}{k!(n-k)!}[k + (n-k)] \\
+&= \frac{(n-1)! \times n}{k!(n-k)!} \\
+&= \binom{n}{k}
+\end{aligned}
+$$
+:::
+
+::: resultat
+La relation de Pascal est démontrée : $\binom{n}{k} = \binom{n-1}{k-1} + \binom{n-1}{k}$ pour $1 \leq k \leq n-1$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $2^n$ parties. Pour $n = 4$ : $2^4 = 16$ parties
+2. $\displaystyle 596$ façons
+3. $\displaystyle 6\,840$ bureaux
+4. $\displaystyle 560$ façons
+5. Relation de Pascal démontrée : $\binom{n}{k} = \binom{n-1}{k-1} + \binom{n-1}{k}$
+
+===

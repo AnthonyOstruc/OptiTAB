@@ -1,0 +1,95 @@
+Titre: Probabilités et expériences à deux étapes
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+    <div style="background:#e8f4fd; border:2px solid #3498db; border-radius:8px; padding:15px; margin-bottom:20px;">
+        <p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🎯 Objectifs du chapitre :</strong> calculer une probabilité dans une situation d'équiprobabilité, utiliser l'événement contraire, énumérer les issues d'une expérience à deux étapes (tableau, arbre), distinguer tirages avec et sans remise, et ne pas confondre probabilité et fréquence observée.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Le vocabulaire des probabilités</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Définitions :</strong> une <strong>issue</strong> est un résultat possible d'une expérience aléatoire. Un <strong>événement</strong> est un ensemble d'issues. Sa <strong>probabilité</strong> est un nombre compris entre 0 et 1.</p>
+            <p style="margin:8px 0 0 0;">• Événement <strong>impossible</strong> : probabilité 0 ;</p>
+            <p style="margin:4px 0 0 0;">• Événement <strong>certain</strong> : probabilité 1.</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">L'équiprobabilité</h3>
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Propriété :</strong> si toutes les issues ont la même probabilité (situation d'<strong>équiprobabilité</strong>) :</p>
+            <div style="text-align:center; margin:10px 0 0 0;">$\displaystyle P(A) = \frac{\text{nombre d'issues favorables à } A}{\text{nombre total d'issues}}$</div>
+        </div>
+        <p style="font-size:1em;"><strong>Exemple :</strong> avec un dé équilibré, $\displaystyle P(\text{pair}) = \frac{3}{6} = \frac{1}{2}$ (issues favorables : 2, 4, 6).</p>
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong> il faut <strong>justifier</strong> l'équiprobabilité (dé équilibré, boules indiscernables au toucher…). Dans un sac de 5 rouges, 3 bleues et 2 vertes, les trois COULEURS ne sont pas équiprobables : on compte les BOULES ($\displaystyle P(\text{rouge}) = \frac{5}{10}$).
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">L'événement contraire</h3>
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Propriété :</strong> l'événement contraire de $\displaystyle A$, noté « non $\displaystyle A$ », contient les issues qui ne réalisent pas $\displaystyle A$ :</p>
+            <div style="text-align:center; margin:10px 0 0 0;">$\displaystyle P(\text{non } A) = 1 - P(A)$</div>
+            <p style="margin:8px 0 0 0;">Si deux événements ne peuvent pas se produire en même temps, la probabilité de leur réunion est la somme de leurs probabilités.</p>
+        </div>
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Astuce :</strong> « au moins un » se calcule souvent plus facilement par le contraire « aucun ».
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Expériences à deux étapes</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Méthode — énumérer :</strong> un <strong>tableau à double entrée</strong> ou un <strong>arbre</strong> permet de ne rien oublier. Chaque feuille de l'arbre est une suite ordonnée d'issues.</p>
+        </div>
+        [IMAGE_1]
+        <p style="font-size:1em;"><strong>Exemple :</strong> deux pièces équilibrées donnent 4 issues équiprobables : PP, PF, FP, FF. « Exactement une face F » contient PF et FP : $\displaystyle P = \frac{2}{4} = \frac{1}{2}$.</p>
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Règles de l'arbre pondéré :</strong></p>
+            <p style="margin:6px 0 0 0;">• on <strong>multiplie</strong> les probabilités le long d'un chemin ;</p>
+            <p style="margin:4px 0 0 0;">• on <strong>additionne</strong> les probabilités des chemins favorables.</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Avec remise ou sans remise ?</h3>
+        <p style="font-size:1em;">Sac de 3 rouges et 2 bleues, deux tirages successifs :</p>
+        <div style="overflow-x:auto; margin:15px 0;">
+<table style="width:100%; min-width:300px; border-collapse:collapse; margin:0; border:2px solid #3498db; background:#ffffff;">
+            <thead>
+                <tr style="background:#3498db;">
+                    <th style="border:1px solid #2b7bb9; padding:10px 12px; text-align:center; vertical-align:middle; background:#3498db; color:#ffffff; font-weight:700;">Tirage</th>
+                    <th style="border:1px solid #2b7bb9; padding:10px 12px; text-align:center; vertical-align:middle; background:#3498db; color:#ffffff; font-weight:700;">$\displaystyle P(RR)$</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f4f8fc;"><td style="border:1px solid #b6c8da; padding:10px 12px; text-align:center; vertical-align:middle; color:#2c3e50;">Avec remise (composition inchangée)</td><td style="border:1px solid #b6c8da; padding:10px 12px; text-align:center; vertical-align:middle; color:#2c3e50;">$\displaystyle \frac{3}{5} \times \frac{3}{5} = \frac{9}{25}$</td></tr>
+                <tr style="background:#ffffff;"><td style="border:1px solid #b6c8da; padding:10px 12px; text-align:center; vertical-align:middle; color:#2c3e50;">Sans remise (il reste 2 R sur 4)</td><td style="border:1px solid #b6c8da; padding:10px 12px; text-align:center; vertical-align:middle; color:#2c3e50;">$\displaystyle \frac{3}{5} \times \frac{2}{4} = \frac{3}{10}$</td></tr>
+            </tbody>
+        </table>
+</div>
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Sans remise :</strong> après le premier tirage, le nombre de boules ET la composition du sac changent : actualiser les probabilités de la deuxième étape !
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Fréquences et simulations</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Fréquence observée :</strong> nombre de succès ÷ nombre d'essais. Pour un grand nombre de répétitions dans les mêmes conditions, elle tend généralement à se <strong>stabiliser</strong> près de la probabilité.</p>
+        </div>
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong> cette stabilisation ne prédit ni le résultat du prochain essai, ni une égalité exacte. Obtenir 46 « face » sur 100 lancers ne prouve pas qu'une pièce est truquée ; et après cinq « pile », la pièce n'a aucune « mémoire » : la probabilité de « face » reste $\displaystyle \frac{1}{2}$.
+        </div>
+    </div>
+
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:8px; padding:15px; margin:20px 0 0 0;">
+        <p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🏆 L'essentiel :</strong> équiprobabilité → favorables ÷ total ; contraire → $\displaystyle 1 - P(A)$ ; arbre → <strong>multiplier</strong> le long d'un chemin, <strong>additionner</strong> les chemins ; sans remise → actualiser la composition ; fréquence ≈ probabilité seulement sur un grand nombre d'essais. Fiche de synthèse dans l'onglet Fiches !</p>
+    </div>
+
+</div>

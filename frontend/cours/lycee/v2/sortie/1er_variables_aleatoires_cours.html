@@ -1,0 +1,77 @@
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+    <div style="background:#e8f4fd; border:2px solid #3498db; border-radius:8px; padding:15px; margin-bottom:20px;">
+        <p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🎯 Objectifs du chapitre :</strong> définir une variable aléatoire et sa loi de probabilité, calculer et interpréter son espérance, sa variance et son écart type, utiliser la linéarité de l’espérance, et simuler une variable aléatoire en Python.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Variable aléatoire et loi</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Définition :</strong> une <strong>variable aléatoire</strong> $\displaystyle X$ associe un nombre réel à chaque issue d’une expérience aléatoire. L’événement « $\displaystyle X$ prend la valeur $\displaystyle a$ » est noté $\displaystyle \{X = a\}$.</p>
+            <p style="margin:6px 0 0 0;">La <strong>loi de probabilité</strong> de $\displaystyle X$ donne, pour chaque valeur $\displaystyle x_i$ prise par $\displaystyle X$, la probabilité $\displaystyle p_i = P(X = x_i)$ ; on a $\displaystyle p_1 + p_2 + \cdots + p_n = 1$.</p>
+        </div>
+        <p style="font-size:1em;"><strong>Exemple :</strong> on lance un dé équilibré. On gagne $\displaystyle 5$ € si l’on obtient $\displaystyle 6$, $\displaystyle 1$ € pour $\displaystyle 2$ ou $\displaystyle 4$, et on perd $\displaystyle 2$ € sinon. Le gain $\displaystyle X$ suit la loi :</p>
+        <table style="border-collapse:collapse; margin:12px auto; text-align:center;">
+            <tr><th style="border:1px solid #bdc3c7; padding:6px 14px; background:#e8f4fd;">$\displaystyle x_i$</th><td style="border:1px solid #bdc3c7; padding:6px 14px;">$\displaystyle -2$</td><td style="border:1px solid #bdc3c7; padding:6px 14px;">$\displaystyle 1$</td><td style="border:1px solid #bdc3c7; padding:6px 14px;">$\displaystyle 5$</td></tr>
+            <tr><th style="border:1px solid #bdc3c7; padding:6px 14px; background:#e8f4fd;">$\displaystyle P(X = x_i)$</th><td style="border:1px solid #bdc3c7; padding:6px 14px;">$\displaystyle \frac{3}{6} = \frac{1}{2}$</td><td style="border:1px solid #bdc3c7; padding:6px 14px;">$\displaystyle \frac{2}{6} = \frac{1}{3}$</td><td style="border:1px solid #bdc3c7; padding:6px 14px;">$\displaystyle \frac{1}{6}$</td></tr>
+        </table>
+        [IMAGE_1]
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Espérance, variance, écart type</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Définitions :</strong></p>
+            <p style="margin:6px 0 0 0;">• <strong>Espérance</strong> : $\displaystyle E(X) = p_1x_1 + p_2x_2 + \cdots + p_nx_n$ (valeur moyenne de $\displaystyle X$).</p>
+            <p style="margin:6px 0 0 0;">• <strong>Variance</strong> : $\displaystyle V(X) = p_1(x_1 - E(X))^2 + \cdots + p_n(x_n - E(X))^2$, qui vaut aussi $\displaystyle E(X^2) - E(X)^2$.</p>
+            <p style="margin:6px 0 0 0;">• <strong>Écart type</strong> : $\displaystyle \sigma(X) = \sqrt{V(X)}$ (dispersion des valeurs autour de $\displaystyle E(X)$).</p>
+        </div>
+        <p style="font-size:1em;"><strong>Exemple :</strong> $\displaystyle E(X) = \frac{1}{2} \times (-2) + \frac{1}{3} \times 1 + \frac{1}{6} \times 5 = \frac{-6 + 2 + 5}{6} = \frac{1}{6} \approx 0{,}17$ €. Ensuite $\displaystyle E(X^2) = \frac{1}{2} \times 4 + \frac{1}{3} \times 1 + \frac{1}{6} \times 25 = 6{,}5$, donc $\displaystyle V(X) = 6{,}5 - \frac{1}{36} = \frac{233}{36} \approx 6{,}47$ et $\displaystyle \sigma(X) \approx 2{,}54$ €.</p>
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Interprétation :</strong> sur un grand nombre de parties, le joueur gagne en moyenne environ $\displaystyle 0{,}17$ € par partie. Un jeu est <strong>équitable</strong> si $\displaystyle E(X) = 0$, favorable au joueur si $\displaystyle E(X) \gt 0$.
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Transformation affine</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Propriétés :</strong> pour tous réels $\displaystyle a$ et $\displaystyle b$, $\displaystyle E(aX + b) = aE(X) + b$, $\displaystyle V(aX + b) = a^2V(X)$ et $\displaystyle \sigma(aX + b) = |a|\,\sigma(X)$.</p>
+            <p style="margin:6px 0 0 0;"><em>Preuve pour l’espérance :</em> $\displaystyle \sum p_i(ax_i + b) = a\sum p_ix_i + b\sum p_i = aE(X) + b$, puisque $\displaystyle \sum p_i = 1$.</p>
+        </div>
+        <p style="font-size:1em;"><strong>Exemple :</strong> si tous les gains sont doublés puis augmentés d’un bonus de $\displaystyle 1$ €, le nouveau gain est $\displaystyle Y = 2X + 1$ : $\displaystyle E(Y) = \frac{2}{6} + 1 = \frac{4}{3}$ et $\displaystyle \sigma(Y) = 2\sigma(X) \approx 5{,}09$.</p>
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong> la constante $\displaystyle b$ ne change pas la dispersion : $\displaystyle V(X + b) = V(X)$. Et le coefficient $\displaystyle a$ est <strong>au carré</strong> dans la variance.
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Simulation</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#2c3e50; color:#ecf0f1; padding:12px; border-radius:6px; margin:10px 0 0 0; font-family:monospace; white-space:pre; overflow-x:auto;">from random import randint
+
+def gain():
+    d = randint(1, 6)
+    if d == 6:
+        return 5
+    elif d % 2 == 0:
+        return 1
+    else:
+        return -2
+
+def moyenne(n):
+    s = 0
+    for i in range(n):
+        s = s + gain()
+    return s / n</div>
+        [IMAGE_2]
+        <p style="font-size:1em;">Quand le nombre de parties augmente, le gain moyen observé se rapproche de l’espérance $\displaystyle E(X) = \frac{1}{6}$ : c’est la loi des grands nombres.</p>
+    </div>
+
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:8px; padding:15px; margin:20px 0 0 0;">
+        <p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🏆 L’essentiel :</strong> la loi de $\displaystyle X$ donne les $\displaystyle P(X = x_i)$, de somme $\displaystyle 1$ ; $\displaystyle E(X) = \sum p_ix_i$ ; $\displaystyle V(X) = \sum p_i(x_i - E(X))^2 = E(X^2) - E(X)^2$ ; $\displaystyle \sigma(X) = \sqrt{V(X)}$ ; $\displaystyle E(aX + b) = aE(X) + b$ et $\displaystyle V(aX + b) = a^2V(X)$ ; la moyenne observée sur de nombreuses simulations approche $\displaystyle E(X)$. Fiche de synthèse dans l’onglet Fiches !</p>
+    </div>
+
+</div>

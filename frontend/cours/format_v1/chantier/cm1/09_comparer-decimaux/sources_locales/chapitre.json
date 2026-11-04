@@ -1,0 +1,178 @@
+{
+  "numero": 9,
+  "slug": "comparer-decimaux",
+  "titre": "Comparer et arrondir les décimaux",
+  "partie": "2 · Fractions et nombres décimaux",
+  "sous_titre": "Ordre · Encadrements · Partie entière · Arrondis",
+  "objectifs": [
+    "Comparer, encadrer et intercaler des nombres décimaux.",
+    "Placer des décimaux sur une demi-droite graduée.",
+    "Donner la partie entière et l’arrondi à l’entier."
+  ],
+  "prerequis": [
+    "Écriture à virgule, dixièmes et centièmes."
+  ],
+  "cours": [
+    "\\essSection{1}{Comparer et ranger}\n\\begin{propriete}Pour comparer deux décimaux : comparer d’abord les parties entières ; si elles sont égales, comparer les chiffres des dixièmes, puis ceux des centièmes. Ainsi $6{,}8>6{,}08$, car 8 dixièmes dépassent 0 dixième.\\end{propriete}\n\\begin{exemple}Comparer $3{,}5$ et $3{,}45$ : écrire $3{,}5=3{,}50$. Comme $50$ centièmes dépassent $45$ centièmes, $3{,}5>3{,}45$. Un nombre n’est pas plus grand parce qu’il a plus de chiffres.\\end{exemple}\n@FIG:cours-droite-decimaux@\n\\begin{savoirfaire}[Intercaler un nombre]Entre deux décimaux, on peut toujours en intercaler un autre : entre $2{,}4$ et $2{,}5$, penser en centièmes : $2{,}40<2{,}45<2{,}50$. Ajouter un rang suffit pour affiner.\\end{savoirfaire}",
+    "\\essSection{2}{Partie entière et arrondi}\n\\begin{definition}La partie entière de $17{,}83$ est 17 : c’est le nombre entier juste avant. On a l’encadrement $17<17{,}83<18$ entre deux entiers consécutifs.\\end{definition}\n\\begin{propriete}L’arrondi à l’entier est l’entier le plus proche. Si le chiffre des dixièmes est 0, 1, 2, 3 ou 4, on garde la partie entière ; sinon on prend l’entier suivant. L’arrondi de $7{,}3$ est 7 ; celui de $7{,}83$ est 8. Pour $12{,}5$, à égale distance, on choisit 13.\\end{propriete}\n\\begin{exemple}Sur la demi-droite, $7{,}83$ est plus près de 8 que de 7 : l’arrondi se voit sur les positions. Un prix de $7{,}83$ euros est proche de 8 euros : l’arrondi aide à estimer.\\end{exemple}\n\\begin{attention}Arrondir n’est pas tronquer : l’arrondi de $9{,}8$ est 10, pas 9. Et deux nombres arrondis au même entier restent différents : l’arrondi sert à estimer, pas à remplacer la valeur exacte.\\end{attention}"
+  ],
+  "exercices": [
+    {
+      "titre": "Le piège classique",
+      "enonce": "Comparer $3{,}5$ et $3{,}45$.",
+      "corrige": "$3{,}5=3{,}50$ : cinquante centièmes contre quarante-cinq. Donc $\\res{3{,}5>3{,}45}$.",
+      "methode": "Écrire les deux nombres avec deux chiffres après la virgule.",
+      "controle": "assert Rational(\"3.5\")>Rational(\"3.45\")",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 1
+    },
+    {
+      "titre": "Compléter par un symbole",
+      "enonce": "Compléter par $<$ ou $>$ : $6{,}08\\ \\ldots\\ 6{,}8$, puis $12{,}34\\ \\ldots\\ 9{,}99$.",
+      "corrige": "Parties entières égales puis $0<8$ aux dixièmes : $\\res{6{,}08<6{,}8}$. Les parties entières décident ensuite : $\\res{12{,}34>9{,}99}$.",
+      "methode": "Comparer rang par rang depuis la gauche.",
+      "controle": "assert Rational(\"6.08\")<Rational(\"6.8\") and Rational(\"12.34\")>Rational(\"9.99\")",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 1
+    },
+    {
+      "titre": "Ranger cinq nombres",
+      "enonce": "Ranger dans l’ordre croissant : $7{,}3$ ; $7{,}09$ ; $7{,}31$ ; $7{,}1$ ; $6{,}99$.",
+      "corrige": "$6{,}99$ a la plus petite partie entière. Ensuite, comparer les dixièmes puis les centièmes : $\\res{6{,}99<7{,}09<7{,}1<7{,}3<7{,}31}$.",
+      "methode": "Aligner mentalement les rangs décimaux.",
+      "controle": "assert Rational(\"6.99\")<Rational(\"7.09\")<Rational(\"7.1\")<Rational(\"7.3\")<Rational(\"7.31\")",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 1
+    },
+    {
+      "titre": "Encadrer par des entiers",
+      "enonce": "Encadrer chaque nombre entre deux entiers consécutifs : $4{,}62$, puis $0{,}85$.",
+      "corrige": "$\\res{4<4{,}62<5}$ et $\\res{0<0{,}85<1}$. La partie entière donne la borne de gauche.",
+      "methode": "Lire la partie entière.",
+      "controle": "assert 4<Rational(\"4.62\")<5 and 0<Rational(\".85\")<1",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 1
+    },
+    {
+      "titre": "Partie entière",
+      "enonce": "Donner la partie entière de $17{,}83$, de $9{,}04$ et de $0{,}76$.",
+      "corrige": "Les parties entières sont $\\res{17}$, $\\res9$ et $\\res0$.",
+      "methode": "Prendre l’entier juste avant le nombre.",
+      "controle": "assert 17<=Rational(\"17.83\")<18 and 9<=Rational(\"9.04\")<10 and 0<=Rational(\".76\")<1",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 1
+    },
+    {
+      "titre": "Lire entre les graduations",
+      "enonce": "La demi-droite est graduée de $0{,}1$ en $0{,}1$. Lire les abscisses de A et B, puis placer $C(5{,}45)$.",
+      "corrige": "$\\res{A(5{,}3)}$ et $\\res{B(5{,}8)}$. Le point C se place au milieu du pas entre $5{,}4$ et $5{,}5$ ; il figure en vert sur le corrigé.",
+      "methode": "Identifier la valeur d’un pas avant de lire.",
+      "controle": "assert Rational(\"5.3\")<Rational(\"5.45\")<Rational(\"5.5\")",
+      "figure": "dec9-6",
+      "conseil": "",
+      "difficulte": 2
+    },
+    {
+      "titre": "Intercaler",
+      "enonce": "Donner un nombre compris entre $2{,}4$ et $2{,}5$, puis un nombre compris entre $8{,}31$ et $8{,}32$.",
+      "corrige": "En centièmes : $\\res{2{,}45}$ convient, car $2{,}40<2{,}45<2{,}50$. En ajoutant un rang : $\\res{8{,}315}$ convient ; tout nombre strictement entre les bornes est accepté.",
+      "methode": "Ajouter un rang décimal pour affiner.",
+      "controle": "assert Rational(\"2.4\")<Rational(\"2.45\")<Rational(\"2.5\") and Rational(\"8.31\")<Rational(\"8.315\")<Rational(\"8.32\")",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 2
+    },
+    {
+      "titre": "Arrondir à l’entier",
+      "enonce": "Donner l’arrondi à l’entier de $7{,}3$, de $7{,}83$ et de $12{,}5$.",
+      "corrige": "$7{,}3$ est plus proche de 7 : arrondi $\\res7$. $7{,}83$ est plus proche de 8 : arrondi $\\res8$. $12{,}5$ est à égale distance : on choisit $\\res{13}$.",
+      "methode": "Regarder le chiffre des dixièmes.",
+      "controle": "assert abs(Rational(\"7.3\")-7)<abs(Rational(\"7.3\")-8) and abs(Rational(\"7.83\")-8)<abs(Rational(\"7.83\")-7) and Rational(\"12.5\")-12==13-Rational(\"12.5\")",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 2
+    },
+    {
+      "titre": "Compter de 0,1 en 0,1",
+      "enonce": "Compter de $0{,}1$ en $0{,}1$ à partir de $3{,}7$, jusqu’à dépasser 4. Écrire les nombres obtenus.",
+      "corrige": "$3{,}7$ ; $3{,}8$ ; $3{,}9$ ; $\\res{4}$ ; $4{,}1$. Dix dixièmes font une unité : après $3{,}9$ vient 4, et non « $3{,}10$ ».",
+      "methode": "Échanger dix dixièmes contre une unité.",
+      "controle": "assert Rational(\"3.9\")+Rational(\".1\")==4 and 4+Rational(\".1\")==Rational(\"4.1\")",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 2
+    },
+    {
+      "titre": "Le même nombre ?",
+      "enonce": "Dire si les écritures désignent le même nombre : $5{,}60$ et $5{,}6$ ; $5{,}06$ et $5{,}6$ ; $07{,}2$ et $7{,}2$.",
+      "corrige": "$5{,}60=\\res{5{,}6}$ : le zéro final des centièmes ne change rien. $5{,}06\\ne5{,}6$ : $\\res{\\text{différents}}$. $07{,}2=\\res{7{,}2}$ : le zéro de gauche est inutile.",
+      "methode": "Situer chaque zéro par rapport aux rangs.",
+      "controle": "assert Rational(\"5.60\")==Rational(\"5.6\") and Rational(\"5.06\")!=Rational(\"5.6\")",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 2
+    },
+    {
+      "titre": "Le podium du saut",
+      "enonce": "Aux essais, Lina saute $3{,}45$ m, Maya $3{,}5$ m et Inès $3{,}09$ m. Donner le classement de la meilleure à la moins bonne performance.",
+      "corrige": "$3{,}5=3{,}50$ dépasse $3{,}45$, qui dépasse $3{,}09$ : $\\res{\\text{Maya, puis Lina, puis Inès}}$. L’ordre décroissant des longueurs est $3{,}5>3{,}45>3{,}09$.",
+      "methode": "Égaliser le nombre de chiffres avant de comparer.",
+      "controle": "assert Rational(\"3.5\")>Rational(\"3.45\")>Rational(\"3.09\")",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 3
+    },
+    {
+      "titre": "La toise de la classe",
+      "enonce": "Quatre élèves mesurent $1{,}38$ m, $1{,}4$ m, $1{,}29$ m et $1{,}33$ m. Les ranger du plus petit au plus grand.",
+      "corrige": "En centièmes : $129$, $133$, $138$, $140$. L’ordre croissant est $\\res{1{,}29<1{,}33<1{,}38<1{,}4}$.",
+      "methode": "Penser chaque taille en centimètres.",
+      "controle": "assert Rational(\"1.29\")<Rational(\"1.33\")<Rational(\"1.38\")<Rational(\"1.4\")",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 3
+    },
+    {
+      "titre": "Toujours un intermédiaire ?",
+      "enonce": "Donner deux nombres différents compris entre $6{,}2$ et $6{,}3$. Peut-on toujours trouver un nombre entre deux décimaux différents ? Expliquer.",
+      "corrige": "Par exemple $\\res{6{,}24}$ et $\\res{6{,}27}$. $\\res{\\text{Oui}}$ : en écrivant les deux nombres avec un rang de plus, des écritures intermédiaires apparaissent toujours ; la demi-droite n’a pas de « trous ».",
+      "methode": "Passer aux centièmes, voire aux rangs suivants.",
+      "controle": "assert Rational(\"6.2\")<Rational(\"6.24\")<Rational(\"6.27\")<Rational(\"6.3\")",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 3
+    },
+    {
+      "titre": "L’étiquette effacée",
+      "enonce": "Dans un magasin, un paquet coûte $4{,}05$ euros et un autre $4{,}5$ euros. Tom pense que $4{,}05$ est le plus cher « car 05 vient après 5 ». Corriger son raisonnement.",
+      "corrige": "$4{,}5=4{,}50$ : cinquante centimes contre cinq centimes. Le paquet à $\\res{4{,}05}$ euros est le moins cher, avec $4{,}50-4{,}05=0{,}45$ euro d’écart. On compare des rangs, pas des écritures.",
+      "methode": "Donner la même longueur décimale aux deux prix.",
+      "controle": "assert Rational(\"4.05\")<Rational(\"4.5\") and Rational(\"4.50\")-Rational(\"4.05\")==Rational(\".45\")",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 3
+    },
+    {
+      "titre": "L’erreur de rangement",
+      "enonce": "Aya écrit : « $12{,}34>12{,}5$ car $34>5$. » Expliquer son erreur, donner la bonne comparaison, puis l’arrondi à l’entier des deux nombres.",
+      "corrige": "Aya compare « 34 » et « 5 » comme des entiers ; or il faut comparer rang par rang : 3 dixièmes contre 5 dixièmes, donc $\\res{12{,}34<12{,}5}$. Les arrondis sont $\\res{12}$ et $\\res{13}$ : $12{,}5$ est à égale distance et s’arrondit au-dessus.",
+      "methode": "Comparer les dixièmes avec les dixièmes.",
+      "controle": "assert Rational(\"12.34\")<Rational(\"12.5\") and abs(Rational(\"12.34\")-12)<abs(Rational(\"12.34\")-13)",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 3
+    }
+  ],
+  "reperes": [
+    "Comparer rang par rang",
+    "Encadrer et intercaler",
+    "Demi-droite et graduations fines",
+    "Partie entière, arrondis et problèmes"
+  ],
+  "deco": "calcul"
+}

@@ -1,0 +1,1016 @@
+[
+  {
+    "id": "nouveau-1",
+    "famille": "lecture-écriture",
+    "niveau": 1,
+    "titre": "La dictée des trois classes",
+    "questions": [
+      {
+        "s": "Écrire en chiffres « sept-millions-huit-mille-trente ».",
+        "m": "Séparer les classes et garder trois chiffres dans les classes intérieures.",
+        "e": "Les classes millions, milliers, unités sont 7, 008, 030. Les zéros occupent les rangs non prononcés.",
+        "r": "$7\\,008\\,030$.",
+        "check": [
+          [
+            "7*1000000+8*1000+30",
+            7008030
+          ]
+        ]
+      },
+      {
+        "s": "Lire $7\\,008\\,030$ en nommant les classes.",
+        "m": "Lire de gauche à droite et omettre les classes nulles.",
+        "e": "La classe de gauche compte 7 millions. On lit ensuite 8 milliers puis 30 unités, sans prononcer les zéros de position.",
+        "r": "« sept-millions-huit-mille-trente ».",
+        "check": []
+      },
+      {
+        "s": "Peut-on supprimer les zéros de la classe des milliers ? Expliquer.",
+        "m": "Comparer la valeur des rangs avant toute suppression.",
+        "e": "Cette classe s’écrit 008 sur trois rangs. Enlever un zéro intérieur déplacerait les chiffres ; les espaces de classes ne sont pas des chiffres.",
+        "r": "Non : ces zéros gardent les positions des chiffres.",
+        "check": []
+      }
+    ]
+  },
+  {
+    "id": "nouveau-2",
+    "famille": "rangs et groupes",
+    "niveau": 1,
+    "titre": "Trois questions sur le chiffre 2",
+    "questions": [
+      {
+        "s": "Dans $52\\,406$, quel est le chiffre des milliers ?",
+        "m": "Partir des unités et compter les rangs.",
+        "e": "Un groupe du rang demandé vaut $1\\,000$. Le chiffre qui occupe cette position est 2.",
+        "r": "Le chiffre est 2.",
+        "check": [
+          [
+            "52406//1000%10",
+            2
+          ]
+        ]
+      },
+      {
+        "s": "Quelle est sa contribution au nombre ?",
+        "m": "Multiplier le chiffre par la valeur de son rang.",
+        "e": "$2\\times 1\\,000=2\\,000$.",
+        "r": "$2\\,000$.",
+        "check": [
+          [
+            "2*1000",
+            2000
+          ]
+        ]
+      },
+      {
+        "s": "Combien de milliers entiers ce nombre contient-il ?",
+        "m": "Compter tous les groupes complets, y compris ceux des rangs supérieurs.",
+        "e": "Le partage de $52\\,406$ par $1\\,000$ donne $52$ groupes complets et un reste de $406$. Ce reste est plus petit que $1\\,000$.",
+        "r": "52 groupes complets.",
+        "check": [
+          [
+            "[52406//1000,52406%1000]",
+            [
+              52,
+              406
+            ]
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-3",
+    "famille": "décompositions et échanges",
+    "niveau": 1,
+    "titre": "Assembler trois classes",
+    "questions": [
+      {
+        "s": "Écrire le nombre formé de 12 millions, 345 milliers et 6 unités.",
+        "m": "Additionner les contributions, avec échange si une classe dépasse 999.",
+        "e": "$12\\,000\\,000+345\\,000+6=12\\,345\\,006$.",
+        "r": "$12\\,345\\,006$.",
+        "check": [
+          [
+            "12*1000000+345*1000+6",
+            12345006
+          ]
+        ]
+      },
+      {
+        "s": "Écrire ce nombre en milliers entiers et unités restantes.",
+        "m": "Un million contient mille milliers.",
+        "e": "$12\\times1\\,000+345=12\\,345$ milliers, puis 6 unités.",
+        "r": "12 345 milliers et 6 unités.",
+        "check": [
+          [
+            "12*1000+345",
+            12345
+          ]
+        ]
+      },
+      {
+        "s": "L’écriture « 12344 milliers et 1006 unités » convient-elle ?",
+        "m": "Échanger un millier contre mille unités.",
+        "e": "On a retiré un millier et ajouté 1 000 unités. Le calcul donne encore $12\\,345\\,006$.",
+        "r": "Oui, les deux écritures ont la même valeur.",
+        "check": [
+          [
+            "(12345-1)*1000+1006",
+            12345006
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-4",
+    "famille": "comparaison et rangement",
+    "niveau": 1,
+    "titre": "Des étiquettes à ranger",
+    "questions": [
+      {
+        "s": "Ranger les cinq nombres dans l’ordre croissant.",
+        "m": "Comparer les classes, puis le premier chiffre différent.",
+        "e": "Les classes les plus à gauche départagent d’abord les nombres. À égalité, on poursuit vers la droite sans ignorer les zéros.",
+        "r": "Ordre croissant : $3\\,400\\,520$, $3\\,405\\,020$, $3\\,405\\,200$, $3\\,450\\,020$, $3\\,450\\,200$.",
+        "check": [
+          [
+            "sorted([3405200, 3450200, 3405020, 3400520, 3450020])",
+            [
+              3400520,
+              3405020,
+              3405200,
+              3450020,
+              3450200
+            ]
+          ]
+        ]
+      },
+      {
+        "s": "Donner le plus grand et le plus petit.",
+        "m": "Lire les deux extrémités du rangement.",
+        "e": "Le premier est le plus petit, $3\\,400\\,520$ ; le dernier est le plus grand, $3\\,450\\,200$.",
+        "r": "Minimum : $3\\,400\\,520$ ; maximum : $3\\,450\\,200$.",
+        "check": [
+          [
+            "[min([3405200, 3450200, 3405020, 3400520, 3450020]),max([3405200, 3450200, 3405020, 3400520, 3450020])]",
+            [
+              3400520,
+              3450200
+            ]
+          ]
+        ]
+      },
+      {
+        "s": "Proposer un entier strictement entre les deux plus petits.",
+        "m": "Ajouter 1 au plus petit et vérifier la seconde borne.",
+        "e": "$3\\,400\\,520<3\\,400\\,521<3\\,405\\,020$.",
+        "r": "Par exemple $3\\,400\\,521$.",
+        "check": [
+          [
+            "3400520<3400521<3405020",
+            true
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-5",
+    "famille": "encadrement et succession",
+    "niveau": 1,
+    "titre": "Entre deux millions",
+    "questions": [
+      {
+        "s": "Encadrer $6\\,472\\,850$ entre deux multiples consécutifs de $1\\,000\\,000$.",
+        "m": "Trouver le multiple juste avant et celui juste après.",
+        "e": "$6\\,000\\,000$ précède le nombre et le multiple suivant est $6\\,000\\,000+1\\,000\\,000=7\\,000\\,000$.",
+        "r": "$6\\,000\\,000<6\\,472\\,850<7\\,000\\,000$.",
+        "check": [
+          [
+            "6000000<6472850<7000000 and 7000000-6000000==1000000",
+            true
+          ]
+        ]
+      },
+      {
+        "s": "Quel entier vient immédiatement avant le nombre étudié ?",
+        "m": "Soustraire une unité, avec les échanges nécessaires.",
+        "e": "$6\\,472\\,850-1=6\\,472\\,849$.",
+        "r": "$6\\,472\\,849$.",
+        "check": [
+          [
+            "6472850-1",
+            6472849
+          ]
+        ]
+      },
+      {
+        "s": "Quel entier vient immédiatement après ?",
+        "m": "Ajouter une unité et contrôler la retenue.",
+        "e": "$6\\,472\\,850+1=6\\,472\\,851$.",
+        "r": "$6\\,472\\,851$.",
+        "check": [
+          [
+            "6472850+1",
+            6472851
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-6",
+    "famille": "graduations",
+    "niveau": 1,
+    "titre": "Cinq intervalles pour un million",
+    "questions": [
+      {
+        "s": "Calculer la valeur d’un petit intervalle.",
+        "m": "Partager l’écart connu par cinq intervalles.",
+        "e": "$(4\\,000\\,000-3\\,000\\,000)\\div5=200\\,000$.",
+        "r": "Un pas vaut $200\\,000$.",
+        "check": [
+          [
+            "(4000000-3000000)//5",
+            200000
+          ]
+        ]
+      },
+      {
+        "s": "Quelle abscisse porte le troisième trait après la première borne ?",
+        "m": "Ajouter trois pas à la borne de départ.",
+        "e": "$3\\,000\\,000+3\\times 200\\,000=3\\,600\\,000$.",
+        "r": "$3\\,600\\,000$.",
+        "check": [
+          [
+            "3000000+3*200000",
+            3600000
+          ]
+        ]
+      },
+      {
+        "s": "Combien de pas séparent $3\\,200\\,000$ de $3\\,800\\,000$ ?",
+        "m": "Calculer la différence puis la diviser par le pas.",
+        "e": "$(3\\,800\\,000-3\\,200\\,000)\\div 200\\,000=3$.",
+        "r": "3 pas.",
+        "check": [
+          [
+            "(3800000-3200000)//200000",
+            3
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-7",
+    "famille": "conditionnement",
+    "niveau": 1,
+    "titre": "Les boîtes de boutons",
+    "questions": [
+      {
+        "s": "Combien de paquets complets peut-on former ?",
+        "m": "Compter les groupes entiers de la taille demandée.",
+        "e": "$123\\,450=123\\times 1\\,000+450$.",
+        "r": "123 paquets complets.",
+        "check": [
+          [
+            "123450//1000",
+            123
+          ]
+        ]
+      },
+      {
+        "s": "Combien d’objets ne sont pas rangés dans un paquet complet ?",
+        "m": "Retirer le contenu des paquets complets.",
+        "e": "$123\\,450-123\\,000=450$.",
+        "r": "450 objets.",
+        "check": [
+          [
+            "123450-123*1000",
+            450
+          ]
+        ]
+      },
+      {
+        "s": "Un élève annonce un paquet de plus. Pourquoi est-ce impossible ?",
+        "m": "Comparer le stock au nombre nécessaire.",
+        "e": "$124$ paquets de $1\\,000$ demanderaient $124\\,000$ objets. Ce total dépasse le stock de $123\\,450$ objets.",
+        "r": "Il manquerait 550 objets.",
+        "check": [
+          [
+            "(123+1)*1000-123450",
+            550
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-8",
+    "famille": "lecture-écriture",
+    "niveau": 2,
+    "titre": "Les classes avec des zéros",
+    "questions": [
+      {
+        "s": "Écrire en chiffres « deux-cent-six-millions-quarante-cinq-mille-dix-huit ».",
+        "m": "Séparer les classes et garder trois chiffres dans les classes intérieures.",
+        "e": "Les classes millions, milliers, unités sont 206, 045, 018. Les zéros occupent les rangs non prononcés.",
+        "r": "$206\\,045\\,018$.",
+        "check": [
+          [
+            "206*1000000+45*1000+18",
+            206045018
+          ]
+        ]
+      },
+      {
+        "s": "Lire $206\\,045\\,018$ en nommant les classes.",
+        "m": "Lire de gauche à droite et omettre les classes nulles.",
+        "e": "La classe de gauche compte 206 millions. On lit ensuite 45 milliers puis 18 unités, sans prononcer les zéros de position.",
+        "r": "« deux-cent-six-millions-quarante-cinq-mille-dix-huit ».",
+        "check": []
+      },
+      {
+        "s": "Peut-on supprimer les zéros de la classe des milliers ? Expliquer.",
+        "m": "Comparer la valeur des rangs avant toute suppression.",
+        "e": "Cette classe s’écrit 045 sur trois rangs. Enlever un zéro intérieur déplacerait les chiffres ; les espaces de classes ne sont pas des chiffres.",
+        "r": "Non : ces zéros gardent les positions des chiffres.",
+        "check": []
+      }
+    ]
+  },
+  {
+    "id": "nouveau-9",
+    "famille": "rangs et groupes",
+    "niveau": 2,
+    "titre": "Le rang qui change tout",
+    "questions": [
+      {
+        "s": "Dans $406\\,072\\,018$, quel est le chiffre des dizaines de milliers ?",
+        "m": "Partir des unités et compter les rangs.",
+        "e": "Un groupe du rang demandé vaut $10\\,000$. Le chiffre qui occupe cette position est 7.",
+        "r": "Le chiffre est 7.",
+        "check": [
+          [
+            "406072018//10000%10",
+            7
+          ]
+        ]
+      },
+      {
+        "s": "Quelle est sa contribution au nombre ?",
+        "m": "Multiplier le chiffre par la valeur de son rang.",
+        "e": "$7\\times 10\\,000=70\\,000$.",
+        "r": "$70\\,000$.",
+        "check": [
+          [
+            "7*10000",
+            70000
+          ]
+        ]
+      },
+      {
+        "s": "Combien de dizaines de milliers entiers ce nombre contient-il ?",
+        "m": "Compter tous les groupes complets, y compris ceux des rangs supérieurs.",
+        "e": "Le partage de $406\\,072\\,018$ par $10\\,000$ donne $40\\,607$ groupes complets et un reste de $2\\,018$. Ce reste est plus petit que $10\\,000$.",
+        "r": "40 607 groupes complets.",
+        "check": [
+          [
+            "[406072018//10000,406072018%10000]",
+            [
+              40607,
+              2018
+            ]
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-10",
+    "famille": "décompositions et échanges",
+    "niveau": 2,
+    "titre": "Deux décompositions du même nombre",
+    "questions": [
+      {
+        "s": "Écrire le nombre formé de 206 millions, 45 milliers et 18 unités.",
+        "m": "Additionner les contributions, avec échange si une classe dépasse 999.",
+        "e": "$206\\,000\\,000+45\\,000+18=206\\,045\\,018$.",
+        "r": "$206\\,045\\,018$.",
+        "check": [
+          [
+            "206*1000000+45*1000+18",
+            206045018
+          ]
+        ]
+      },
+      {
+        "s": "Écrire ce nombre en milliers entiers et unités restantes.",
+        "m": "Un million contient mille milliers.",
+        "e": "$206\\times1\\,000+45=206\\,045$ milliers, puis 18 unités.",
+        "r": "206 045 milliers et 18 unités.",
+        "check": [
+          [
+            "206*1000+45",
+            206045
+          ]
+        ]
+      },
+      {
+        "s": "L’écriture « 206044 milliers et 1018 unités » convient-elle ?",
+        "m": "Échanger un millier contre mille unités.",
+        "e": "On a retiré un millier et ajouté 1 000 unités. Le calcul donne encore $206\\,045\\,018$.",
+        "r": "Oui, les deux écritures ont la même valeur.",
+        "check": [
+          [
+            "(206045-1)*1000+1018",
+            206045018
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-11",
+    "famille": "comparaison et rangement",
+    "niveau": 2,
+    "titre": "Le premier rang différent",
+    "questions": [
+      {
+        "s": "Ranger les cinq nombres dans l’ordre croissant.",
+        "m": "Comparer les classes, puis le premier chiffre différent.",
+        "e": "Les classes les plus à gauche départagent d’abord les nombres. À égalité, on poursuit vers la droite sans ignorer les zéros.",
+        "r": "Ordre croissant : $42\\,907\\,051$, $42\\,907\\,105$, $42\\,970\\,015$, $42\\,970\\,150$, $42\\,971\\,005$.",
+        "check": [
+          [
+            "sorted([42907105, 42970015, 42907051, 42970150, 42971005])",
+            [
+              42907051,
+              42907105,
+              42970015,
+              42970150,
+              42971005
+            ]
+          ]
+        ]
+      },
+      {
+        "s": "Donner le plus grand et le plus petit.",
+        "m": "Lire les deux extrémités du rangement.",
+        "e": "Le premier est le plus petit, $42\\,907\\,051$ ; le dernier est le plus grand, $42\\,971\\,005$.",
+        "r": "Minimum : $42\\,907\\,051$ ; maximum : $42\\,971\\,005$.",
+        "check": [
+          [
+            "[min([42907105, 42970015, 42907051, 42970150, 42971005]),max([42907105, 42970015, 42907051, 42970150, 42971005])]",
+            [
+              42907051,
+              42971005
+            ]
+          ]
+        ]
+      },
+      {
+        "s": "Proposer un entier strictement entre les deux plus petits.",
+        "m": "Ajouter 1 au plus petit et vérifier la seconde borne.",
+        "e": "$42\\,907\\,051<42\\,907\\,052<42\\,907\\,105$.",
+        "r": "Par exemple $42\\,907\\,052$.",
+        "check": [
+          [
+            "42907051<42907052<42907105",
+            true
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-12",
+    "famille": "encadrement et succession",
+    "niveau": 2,
+    "titre": "Encadrer au bon rang",
+    "questions": [
+      {
+        "s": "Encadrer $203\\,047\\,018$ entre deux multiples consécutifs de $10\\,000$.",
+        "m": "Trouver le multiple juste avant et celui juste après.",
+        "e": "$203\\,040\\,000$ précède le nombre et le multiple suivant est $203\\,040\\,000+10\\,000=203\\,050\\,000$.",
+        "r": "$203\\,040\\,000<203\\,047\\,018<203\\,050\\,000$.",
+        "check": [
+          [
+            "203040000<203047018<203050000 and 203050000-203040000==10000",
+            true
+          ]
+        ]
+      },
+      {
+        "s": "Quel entier vient immédiatement avant le nombre étudié ?",
+        "m": "Soustraire une unité, avec les échanges nécessaires.",
+        "e": "$203\\,047\\,018-1=203\\,047\\,017$.",
+        "r": "$203\\,047\\,017$.",
+        "check": [
+          [
+            "203047018-1",
+            203047017
+          ]
+        ]
+      },
+      {
+        "s": "Quel entier vient immédiatement après ?",
+        "m": "Ajouter une unité et contrôler la retenue.",
+        "e": "$203\\,047\\,018+1=203\\,047\\,019$.",
+        "r": "$203\\,047\\,019$.",
+        "check": [
+          [
+            "203047018+1",
+            203047019
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-13",
+    "famille": "graduations",
+    "niveau": 2,
+    "titre": "Une fenêtre sur les millions",
+    "questions": [
+      {
+        "s": "Calculer la valeur d’un petit intervalle.",
+        "m": "Partager l’écart connu par cinq intervalles.",
+        "e": "$(42\\,250\\,000-42\\,000\\,000)\\div5=50\\,000$.",
+        "r": "Un pas vaut $50\\,000$.",
+        "check": [
+          [
+            "(42250000-42000000)//5",
+            50000
+          ]
+        ]
+      },
+      {
+        "s": "Quelle abscisse porte le troisième trait après la première borne ?",
+        "m": "Ajouter trois pas à la borne de départ.",
+        "e": "$42\\,000\\,000+3\\times 50\\,000=42\\,150\\,000$.",
+        "r": "$42\\,150\\,000$.",
+        "check": [
+          [
+            "42000000+3*50000",
+            42150000
+          ]
+        ]
+      },
+      {
+        "s": "Combien de pas séparent $42\\,050\\,000$ de $42\\,200\\,000$ ?",
+        "m": "Calculer la différence puis la diviser par le pas.",
+        "e": "$(42\\,200\\,000-42\\,050\\,000)\\div 50\\,000=3$.",
+        "r": "3 pas.",
+        "check": [
+          [
+            "(42200000-42050000)//50000",
+            3
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-14",
+    "famille": "conditionnement",
+    "niveau": 2,
+    "titre": "Le stock de l’imprimerie",
+    "questions": [
+      {
+        "s": "Combien de paquets complets peut-on former ?",
+        "m": "Compter les groupes entiers de la taille demandée.",
+        "e": "$12\\,342\\,320=1\\,234\\times 10\\,000+2\\,320$.",
+        "r": "1 234 paquets complets.",
+        "check": [
+          [
+            "12342320//10000",
+            1234
+          ]
+        ]
+      },
+      {
+        "s": "Combien d’objets ne sont pas rangés dans un paquet complet ?",
+        "m": "Retirer le contenu des paquets complets.",
+        "e": "$12\\,342\\,320-12\\,340\\,000=2\\,320$.",
+        "r": "2 320 objets.",
+        "check": [
+          [
+            "12342320-1234*10000",
+            2320
+          ]
+        ]
+      },
+      {
+        "s": "Un élève annonce un paquet de plus. Pourquoi est-ce impossible ?",
+        "m": "Comparer le stock au nombre nécessaire.",
+        "e": "$1\\,235$ paquets de $10\\,000$ demanderaient $12\\,350\\,000$ objets. Ce total dépasse le stock de $12\\,342\\,320$ objets.",
+        "r": "Il manquerait 7 680 objets.",
+        "check": [
+          [
+            "(1234+1)*10000-12342320",
+            7680
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-15",
+    "famille": "lecture-écriture",
+    "niveau": 3,
+    "titre": "Retrouver une écriture effacée",
+    "questions": [
+      {
+        "s": "Écrire en chiffres « huit-cent-quatre-vingt-dix-millions-six-mille-quarante ».",
+        "m": "Séparer les classes et garder trois chiffres dans les classes intérieures.",
+        "e": "Les classes millions, milliers, unités sont 890, 006, 040. Les zéros occupent les rangs non prononcés.",
+        "r": "$890\\,006\\,040$.",
+        "check": [
+          [
+            "890*1000000+6*1000+40",
+            890006040
+          ]
+        ]
+      },
+      {
+        "s": "Lire $890\\,006\\,040$ en nommant les classes.",
+        "m": "Lire de gauche à droite et omettre les classes nulles.",
+        "e": "La classe de gauche compte 890 millions. On lit ensuite 6 milliers puis 40 unités, sans prononcer les zéros de position.",
+        "r": "« huit-cent-quatre-vingt-dix-millions-six-mille-quarante ».",
+        "check": []
+      },
+      {
+        "s": "Peut-on supprimer les zéros de la classe des milliers ? Expliquer.",
+        "m": "Comparer la valeur des rangs avant toute suppression.",
+        "e": "Cette classe s’écrit 006 sur trois rangs. Enlever un zéro intérieur déplacerait les chiffres ; les espaces de classes ne sont pas des chiffres.",
+        "r": "Non : ces zéros gardent les positions des chiffres.",
+        "check": []
+      },
+      {
+        "s": "Un nombre a les classes 890, 006 et 040. Un élève écrit 890 640. Identifier son erreur.",
+        "m": "Contrôler trois rangs dans chaque classe intérieure.",
+        "e": "Les classes 006 et 040 doivent chacune conserver leurs trois chiffres. On obtient $890\\,006\\,040$, et non $890\\,640$.",
+        "r": "Il a supprimé des zéros de position : le bon nombre est $890\\,006\\,040$.",
+        "check": [
+          [
+            "890*1000000+6*1000+40",
+            890006040
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-16",
+    "famille": "rangs et groupes",
+    "niveau": 3,
+    "titre": "Les huit n’ont pas la même valeur",
+    "questions": [
+      {
+        "s": "Dans $808\\,080\\,808$, quel est le chiffre des millions ?",
+        "m": "Partir des unités et compter les rangs.",
+        "e": "Un groupe du rang demandé vaut $1\\,000\\,000$. Le chiffre qui occupe cette position est 8.",
+        "r": "Le chiffre est 8.",
+        "check": [
+          [
+            "808080808//1000000%10",
+            8
+          ]
+        ]
+      },
+      {
+        "s": "Quelle est sa contribution au nombre ?",
+        "m": "Multiplier le chiffre par la valeur de son rang.",
+        "e": "$8\\times 1\\,000\\,000=8\\,000\\,000$.",
+        "r": "$8\\,000\\,000$.",
+        "check": [
+          [
+            "8*1000000",
+            8000000
+          ]
+        ]
+      },
+      {
+        "s": "Combien de millions entiers ce nombre contient-il ?",
+        "m": "Compter tous les groupes complets, y compris ceux des rangs supérieurs.",
+        "e": "Le partage de $808\\,080\\,808$ par $1\\,000\\,000$ donne $808$ groupes complets et un reste de $80\\,808$. Ce reste est plus petit que $1\\,000\\,000$.",
+        "r": "808 groupes complets.",
+        "check": [
+          [
+            "[808080808//1000000,808080808%1000000]",
+            [
+              808,
+              80808
+            ]
+          ]
+        ]
+      },
+      {
+        "s": "Dans 808 080 808, échanger le chiffre des unités avec celui des dizaines change-t-il le nombre ? De combien ?",
+        "m": "Recalculer seulement les contributions modifiées.",
+        "e": "Les 8 unités et 0 dizaine deviennent 0 unité et 8 dizaines. La valeur augmente de $80-8=72$.",
+        "r": "Oui : le nouveau nombre est $808\\,080\\,880$, soit 72 de plus.",
+        "check": [
+          [
+            "808080880-808080808",
+            72
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-17",
+    "famille": "décompositions et échanges",
+    "niveau": 3,
+    "titre": "Une classe à regrouper",
+    "questions": [
+      {
+        "s": "Écrire le nombre formé de 490 millions, 1008 milliers et 75 unités.",
+        "m": "Additionner les contributions, avec échange si une classe dépasse 999.",
+        "e": "$490\\,000\\,000+1\\,008\\,000+75=491\\,008\\,075$.",
+        "r": "$491\\,008\\,075$.",
+        "check": [
+          [
+            "490*1000000+1008*1000+75",
+            491008075
+          ]
+        ]
+      },
+      {
+        "s": "Écrire ce nombre en milliers entiers et unités restantes.",
+        "m": "Un million contient mille milliers.",
+        "e": "$490\\times1\\,000+1008=491\\,008$ milliers, puis 75 unités.",
+        "r": "491 008 milliers et 75 unités.",
+        "check": [
+          [
+            "490*1000+1008",
+            491008
+          ]
+        ]
+      },
+      {
+        "s": "L’écriture « 491007 milliers et 1075 unités » convient-elle ?",
+        "m": "Échanger un millier contre mille unités.",
+        "e": "On a retiré un millier et ajouté 1 000 unités. Le calcul donne encore $491\\,008\\,075$.",
+        "r": "Oui, les deux écritures ont la même valeur.",
+        "check": [
+          [
+            "(491008-1)*1000+1075",
+            491008075
+          ]
+        ]
+      },
+      {
+        "s": "Peut-on écrire le nombre obtenu avec 489 millions, 2 008 milliers et 75 unités ?",
+        "m": "Échanger un million contre mille milliers.",
+        "e": "$489\\,000\\,000+2\\,008\\,000+75=491\\,008\\,075$. Cette somme est la même que $490\\,000\\,000+1\\,008\\,000+75$.",
+        "r": "Oui, car un million échangé donne mille milliers.",
+        "check": [
+          [
+            "489*1000000+2008*1000+75==490*1000000+1008*1000+75",
+            true
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-18",
+    "famille": "comparaison et rangement",
+    "niveau": 3,
+    "titre": "Classer sans confondre les zéros",
+    "questions": [
+      {
+        "s": "Ranger les cinq nombres dans l’ordre croissant.",
+        "m": "Comparer les classes, puis le premier chiffre différent.",
+        "e": "Les classes les plus à gauche départagent d’abord les nombres. À égalité, on poursuit vers la droite sans ignorer les zéros.",
+        "r": "Ordre croissant : $908\\,008\\,900$, $908\\,080\\,900$, $908\\,090\\,800$, $908\\,098\\,000$, $980\\,008\\,900$.",
+        "check": [
+          [
+            "sorted([908090800, 908098000, 908008900, 908080900, 980008900])",
+            [
+              908008900,
+              908080900,
+              908090800,
+              908098000,
+              980008900
+            ]
+          ]
+        ]
+      },
+      {
+        "s": "Donner le plus grand et le plus petit.",
+        "m": "Lire les deux extrémités du rangement.",
+        "e": "Le premier est le plus petit, $908\\,008\\,900$ ; le dernier est le plus grand, $980\\,008\\,900$.",
+        "r": "Minimum : $908\\,008\\,900$ ; maximum : $980\\,008\\,900$.",
+        "check": [
+          [
+            "[min([908090800, 908098000, 908008900, 908080900, 980008900]),max([908090800, 908098000, 908008900, 908080900, 980008900])]",
+            [
+              908008900,
+              980008900
+            ]
+          ]
+        ]
+      },
+      {
+        "s": "Proposer un entier strictement entre les deux plus petits.",
+        "m": "Ajouter 1 au plus petit et vérifier la seconde borne.",
+        "e": "$908\\,008\\,900<908\\,008\\,901<908\\,080\\,900$.",
+        "r": "Par exemple $908\\,008\\,901$.",
+        "check": [
+          [
+            "908008900<908008901<908080900",
+            true
+          ]
+        ]
+      },
+      {
+        "s": "Combien d’entiers sont strictement entre les deux plus petits nombres de la liste ?",
+        "m": "Retirer les deux bornes après avoir calculé leur écart.",
+        "e": "Les deux plus petits sont $908\\,008\\,900$ et $908\\,080\\,900$. Leur écart vaut $72\\,000$. Il y a un entier de moins que cet écart entre les bornes.",
+        "r": "$71\\,999$ entiers.",
+        "check": [
+          [
+            "908080900-908008900-1",
+            71999
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-19",
+    "famille": "encadrement et succession",
+    "niveau": 3,
+    "titre": "À la frontière d’une classe",
+    "questions": [
+      {
+        "s": "Encadrer $899\\,999\\,999$ entre deux multiples consécutifs de $1\\,000\\,000$.",
+        "m": "Trouver le multiple juste avant et celui juste après.",
+        "e": "$899\\,000\\,000$ précède le nombre et le multiple suivant est $899\\,000\\,000+1\\,000\\,000=900\\,000\\,000$.",
+        "r": "$899\\,000\\,000<899\\,999\\,999<900\\,000\\,000$.",
+        "check": [
+          [
+            "899000000<899999999<900000000 and 900000000-899000000==1000000",
+            true
+          ]
+        ]
+      },
+      {
+        "s": "Quel entier vient immédiatement avant le nombre étudié ?",
+        "m": "Soustraire une unité, avec les échanges nécessaires.",
+        "e": "$899\\,999\\,999-1=899\\,999\\,998$.",
+        "r": "$899\\,999\\,998$.",
+        "check": [
+          [
+            "899999999-1",
+            899999998
+          ]
+        ]
+      },
+      {
+        "s": "Quel entier vient immédiatement après ?",
+        "m": "Ajouter une unité et contrôler la retenue.",
+        "e": "$899\\,999\\,999+1=900\\,000\\,000$.",
+        "r": "$900\\,000\\,000$.",
+        "check": [
+          [
+            "899999999+1",
+            900000000
+          ]
+        ]
+      },
+      {
+        "s": "Trouver le plus petit entier dont l’encadrement au million est $899\\,000\\,000<n<900\\,000\\,000$ et dont les trois derniers chiffres sont 500.",
+        "m": "Commencer juste après la borne basse et respecter les unités imposées.",
+        "e": "$899\\,000\\,500$ convient. Un nombre plus petit de même terminaison serait au plus $898\\,999\\,500$, hors de l’intervalle.",
+        "r": "$899\\,000\\,500$.",
+        "check": [
+          [
+            "899000000<899000500<900000000 and 899000500%1000==500",
+            true
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-20",
+    "famille": "graduations",
+    "niveau": 3,
+    "titre": "Retrouver une graduation intermédiaire",
+    "questions": [
+      {
+        "s": "Calculer la valeur d’un petit intervalle.",
+        "m": "Partager l’écart connu par cinq intervalles.",
+        "e": "$(209\\,250\\,000-208\\,000\\,000)\\div5=250\\,000$.",
+        "r": "Un pas vaut $250\\,000$.",
+        "check": [
+          [
+            "(209250000-208000000)//5",
+            250000
+          ]
+        ]
+      },
+      {
+        "s": "Quelle abscisse porte le troisième trait après la première borne ?",
+        "m": "Ajouter trois pas à la borne de départ.",
+        "e": "$208\\,000\\,000+3\\times 250\\,000=208\\,750\\,000$.",
+        "r": "$208\\,750\\,000$.",
+        "check": [
+          [
+            "208000000+3*250000",
+            208750000
+          ]
+        ]
+      },
+      {
+        "s": "Combien de pas séparent $208\\,250\\,000$ de $209\\,000\\,000$ ?",
+        "m": "Calculer la différence puis la diviser par le pas.",
+        "e": "$(209\\,000\\,000-208\\,250\\,000)\\div 250\\,000=3$.",
+        "r": "3 pas.",
+        "check": [
+          [
+            "(209000000-208250000)//250000",
+            3
+          ]
+        ]
+      },
+      {
+        "s": "Un point situé à mi-chemin du deuxième et du troisième trait après la borne de départ représente-t-il un entier ? Lequel ?",
+        "m": "Ajouter deux pas et la moitié d’un pas.",
+        "e": "$208\\,000\\,000+2\\times250\\,000+125\\,000=208\\,625\\,000$. La moitié de 250 000 est entière.",
+        "r": "Oui : $208\\,625\\,000$.",
+        "check": [
+          [
+            "208000000+2*250000+125000",
+            208625000
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-21",
+    "famille": "conditionnement",
+    "niveau": 3,
+    "titre": "Le comptable corrige son tableau",
+    "questions": [
+      {
+        "s": "Combien de paquets complets peut-on former ?",
+        "m": "Compter les groupes entiers de la taille demandée.",
+        "e": "$98\\,765\\,432=987\\times 100\\,000+65\\,432$.",
+        "r": "987 paquets complets.",
+        "check": [
+          [
+            "98765432//100000",
+            987
+          ]
+        ]
+      },
+      {
+        "s": "Combien d’objets ne sont pas rangés dans un paquet complet ?",
+        "m": "Retirer le contenu des paquets complets.",
+        "e": "$98\\,765\\,432-98\\,700\\,000=65\\,432$.",
+        "r": "65 432 objets.",
+        "check": [
+          [
+            "98765432-987*100000",
+            65432
+          ]
+        ]
+      },
+      {
+        "s": "Un élève annonce un paquet de plus. Pourquoi est-ce impossible ?",
+        "m": "Comparer le stock au nombre nécessaire.",
+        "e": "$988$ paquets de $100\\,000$ demanderaient $98\\,800\\,000$ objets. Ce total dépasse le stock de $98\\,765\\,432$ objets.",
+        "r": "Il manquerait 34 568 objets.",
+        "check": [
+          [
+            "(987+1)*100000-98765432",
+            34568
+          ]
+        ]
+      },
+      {
+        "s": "Un collègue compte 987 paquets et 65 432 objets isolés. Un autre annonce 986 paquets et 165 432 objets isolés. Qui a le bon total ? Qui a le maximum de paquets complets ?",
+        "m": "Distinguer une décomposition juste d’un rangement terminé.",
+        "e": "Les deux totaux valent $98\\,765\\,432$. Mais 165 432 objets isolés permettent encore un paquet de 100 000.",
+        "r": "Les deux totaux sont justes ; 987 est le maximum de paquets complets.",
+        "check": [
+          [
+            "987*100000+65432==986*100000+165432==98765432",
+            true
+          ]
+        ]
+      }
+    ]
+  }
+]

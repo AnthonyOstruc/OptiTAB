@@ -1,0 +1,207 @@
+Titre: Les primitives
+
+<!-- optitab:1 -->
+::: objectifs
+Définir une primitive et connaître l’ensemble des primitives d’une fonction, déterminer la primitive qui vérifie une condition, calculer des primitives à l’aide des tableaux usuels, de la linéarité et des formes composées $u'u^n$, $\frac{u'}{u}$, $u'e^u$…, traiter un produit par identification ou par intégration par parties, et relier le signe de $f$ aux variations de ses primitives.
+:::
+
+::: prerequis
+Dérivées des fonctions usuelles, d’un produit et d’une fonction composée ; fonctions exponentielle, logarithme népérien, sinus et cosinus.
+:::
+
+## I. Primitive d’une fonction
+
+::: definition Primitive
+Soit $f$ une fonction définie sur un intervalle $I$. Une **primitive** de $f$ sur $I$ est une fonction $F$ dérivable sur $I$ telle que, pour tout $x \in I$ :
+
+$$F'(x) = f(x)$$
+:::
+
+::: exemple
+$F(x) = x^3 + 2x$ définit une primitive de $f(x) = 3x^2 + 2$ sur $\mathbb{R}$, car $F'(x) = 3x^2 + 2 = f(x)$. La fonction $G(x) = x^3 + 2x - 5$ en est une autre : $G'(x) = 3x^2 + 2$ aussi.
+:::
+
+::: theoreme Existence (admis)
+Toute fonction **continue** sur un intervalle $I$ admet des primitives sur $I$.
+:::
+
+::: remarque Vérifier une primitive
+Pour vérifier que $F$ est une primitive de $f$, on **dérive** $F$ : on doit retrouver exactement $f$. C’est le réflexe de contrôle de tout calcul de primitive.
+:::
+
+## II. Ensemble des primitives
+
+::: theoreme Primitives d’une même fonction
+Soit $F$ une primitive de $f$ sur un intervalle $I$. Les primitives de $f$ sur $I$ sont exactement les fonctions
+
+$$x \mapsto F(x) + C, \quad C \in \mathbb{R}$$
+
+Pour tout $x_0 \in I$ et tout réel $y_0$, il existe une **unique** primitive $G$ de $f$ sur $I$ telle que $G(x_0) = y_0$.
+:::
+
+::: demonstration
+- Pour tout réel $C$, $(F + C)' = F' = f$ : la fonction $F + C$ est une primitive de $f$ sur $I$.
+- Réciproquement, si $G$ est une primitive de $f$ sur $I$, alors $(G - F)' = f - f = 0$. Une fonction de dérivée nulle sur un **intervalle** est constante : il existe un réel $C$ tel que $G = F + C$.
+- Enfin, $G(x_0) = y_0 \iff F(x_0) + C = y_0 \iff C = y_0 - F(x_0)$ : une seule valeur de $C$ convient.
+:::
+
+::: methode Déterminer la primitive qui vérifie une condition
+1. On détermine **une** primitive $G$ de $f$ (tableaux, linéarité, formes composées).
+2. Les primitives de $f$ sont les fonctions $F(x) = G(x) + C$, avec $C$ réel.
+3. On traduit la condition $F(x_0) = y_0$ pour calculer $C$.
+:::
+
+::: exemple
+Les primitives de $f(x) = 2x$ sur $\mathbb{R}$ sont les fonctions $F(x) = x^2 + C$. La condition $F(1) = 3$ s’écrit $1 + C = 3$, donc $C = 2$ et $F(x) = x^2 + 2$ : c’est la seule courbe de la famille qui passe par le point de coordonnées $(1\,;3)$.
+:::
+
+[IMAGE_1]
+
+## III. Primitives usuelles
+
+::: propriete Primitives des fonctions de référence
+| Fonction $f$ | Une primitive $F$ | Sur l’intervalle |
+|---|---|---|
+| $k$ (constante réelle) | $kx$ | $\mathbb{R}$ |
+| $x^n$ ($n$ entier naturel) | $\dfrac{x^{n+1}}{n + 1}$ | $\mathbb{R}$ |
+| $\dfrac{1}{x^2}$ | $-\dfrac{1}{x}$ | $]-\infty\,;0[$ ou $]0\,;+\infty[$ |
+| $\dfrac{1}{x^n}$ ($n$ entier, $n \ge 2$) | $-\dfrac{1}{(n - 1)x^{n-1}}$ | $]-\infty\,;0[$ ou $]0\,;+\infty[$ |
+| $\dfrac{1}{\sqrt{x}}$ | $2\sqrt{x}$ | $]0\,;+\infty[$ |
+| $\dfrac{1}{x}$ | $\ln x$ | $]0\,;+\infty[$ |
+| $e^x$ | $e^x$ | $\mathbb{R}$ |
+| $\cos x$ | $\sin x$ | $\mathbb{R}$ |
+| $\sin x$ | $-\cos x$ | $\mathbb{R}$ |
+:::
+
+::: remarque
+Chaque ligne se vérifie en dérivant $F$ : c’est le tableau des dérivées lu « à l’envers ».
+:::
+
+::: propriete Linéarité
+Si $F$ et $G$ sont des primitives de $f$ et $g$ sur $I$, et si $k$ est un réel, alors $F + G$ est une primitive de $f + g$ et $kF$ est une primitive de $kf$ sur $I$.
+:::
+
+::: exemple
+Sur $]0\,;+\infty[$, une primitive de $f(x) = 3x^2 - 4\cos x + \dfrac{1}{x}$ est $F(x) = x^3 - 4\sin x + \ln x$.
+:::
+
+::: attention
+- Une primitive de $x^n$ est $\dfrac{x^{n+1}}{n + 1}$, et non $nx^{n-1}$ (c’est la dérivée !).
+- Une primitive de $\sin x$ est $-\cos x$ : ne pas oublier le signe moins.
+- Il n’existe **aucune règle** pour un produit ou un quotient : une primitive de $f \times g$ n’est pas $F \times G$.
+:::
+
+## IV. Formes composées
+
+::: propriete Primitives des formes composées
+Soit $u$ une fonction dérivable sur un intervalle $I$.
+
+| Forme de $f$ | Une primitive $F$ | Condition sur $I$ |
+|---|---|---|
+| $u'u^n$ ($n$ entier naturel) | $\dfrac{u^{n+1}}{n + 1}$ | aucune |
+| $\dfrac{u'}{u^2}$ | $-\dfrac{1}{u}$ | $u$ ne s’annule pas |
+| $\dfrac{u'}{u^n}$ ($n$ entier, $n \ge 2$) | $-\dfrac{1}{(n - 1)u^{n-1}}$ | $u$ ne s’annule pas |
+| $\dfrac{u'}{\sqrt{u}}$ | $2\sqrt{u}$ | $u \gt 0$ |
+| $\dfrac{u'}{u}$ | $\ln u$ | $u \gt 0$ |
+| $u'e^u$ | $e^u$ | aucune |
+| $u'\cos u$ | $\sin u$ | aucune |
+| $u'\sin u$ | $-\cos u$ | aucune |
+:::
+
+::: propriete Cas particulier : $u(x) = ax + b$
+Si $F$ est une primitive de $f$ et si $a \neq 0$, alors $x \mapsto \dfrac{1}{a}F(ax + b)$ est une primitive de $x \mapsto f(ax + b)$. Par exemple, sur $\mathbb{R}$ :
+- une primitive de $e^{ax+b}$ est $\dfrac{1}{a}e^{ax+b}$ ;
+- une primitive de $\cos(ax + b)$ est $\dfrac{1}{a}\sin(ax + b)$ ;
+- une primitive de $\sin(ax + b)$ est $-\dfrac{1}{a}\cos(ax + b)$.
+:::
+
+::: methode Reconnaître une forme composée
+1. On repère une fonction $u$ dont la dérivée $u'$ apparaît dans $f$, **à une constante multiplicative près**.
+2. On écrit $f$ sous la forme $k \times$ (forme du tableau), en ajustant la constante $k$.
+3. On applique le tableau, puis on vérifie en dérivant.
+:::
+
+::: exemple
+- $f(x) = 2x(x^2 + 1)^3$ sur $\mathbb{R}$ : avec $u(x) = x^2 + 1$, $u'(x) = 2x$ et $f = u'u^3$, donc $F(x) = \dfrac{(x^2 + 1)^4}{4}$.
+- $g(x) = \dfrac{3x^2}{x^3 + 1}$ sur $]-1\,;+\infty[$ : avec $u(x) = x^3 + 1 \gt 0$ sur cet intervalle, $g = \dfrac{u'}{u}$, donc $G(x) = \ln(x^3 + 1)$.
+- $h(x) = xe^{x^2}$ sur $\mathbb{R}$ : avec $u(x) = x^2$, $u'(x) = 2x$, on écrit $h(x) = \dfrac{1}{2} \times 2xe^{x^2}$, donc $H(x) = \dfrac{1}{2}e^{x^2}$.
+- Une primitive de $e^{2x+1}$ est $\dfrac{1}{2}e^{2x+1}$ ; une primitive de $\cos(3x)$ est $\dfrac{1}{3}\sin(3x)$.
+:::
+
+::: attention
+- Ne pas oublier le facteur $\frac{1}{a}$ : une primitive de $e^{3x}$ est $\frac{1}{3}e^{3x}$, et non $3e^{3x}$.
+- $\ln u$ n’a de sens que si $u \gt 0$ sur $I$. Sur $]-\infty\,;0[$, une primitive de $\frac{1}{x}$ est $\ln(-x)$ (forme $\frac{u'}{u}$ avec $u(x) = -x \gt 0$), et non $\ln x$.
+- $xe^{x^2}$ a une primitive simple (forme $u'e^u$), mais $e^{x^2}$ n’en a aucune qui s’exprime avec les fonctions usuelles.
+:::
+
+## V. Primitive d’un produit
+
+Pour un produit qui n’est pas une forme composée du tableau ($xe^x$, $x\cos x$, $\ln x = 1 \times \ln x$…), deux méthodes sont possibles.
+
+### 1. Par identification
+
+::: methode Chercher une primitive d’une forme donnée
+Pour $f(x) = xe^x$ sur $\mathbb{R}$, on cherche $F$ de la forme $F(x) = (ax + b)e^x$. Alors
+
+$$F'(x) = ae^x + (ax + b)e^x = (ax + a + b)e^x$$
+
+et $F' = f$ dès que $a = 1$ et $a + b = 0$, c’est-à-dire $b = -1$ : $F(x) = (x - 1)e^x$ convient.
+:::
+
+### 2. Par intégration par parties
+
+::: propriete Intégration par parties (forme « primitives »)
+Soient $u$ et $v$ deux fonctions dérivables sur $I$, de dérivées continues. Si $G$ est une primitive de $u'v$ sur $I$, alors
+
+$$F = uv - G$$
+
+est une primitive de $uv'$ sur $I$.
+:::
+
+::: demonstration
+$F' = (uv)' - G' = u'v + uv' - u'v = uv'$.
+:::
+
+::: methode Choisir $u$ et $v'$
+On écrit $f = uv'$ en prenant pour $u$ le facteur que la dérivation simplifie (un polynôme, ou $\ln x$) et pour $v'$ le facteur dont on connaît une primitive ($e^x$, $\cos x$, $\sin x$, $1$…).
+:::
+
+::: exemple
+$f(x) = xe^x$ : $u(x) = x$ et $v'(x) = e^x$, donc $u'(x) = 1$ et $v(x) = e^x$. Une primitive de $u'v = e^x$ est $G(x) = e^x$, d’où
+
+$$F(x) = xe^x - e^x = (x - 1)e^x$$
+
+On retrouve le résultat obtenu par identification.
+:::
+
+::: remarque
+C’est la version « primitives » de la formule d’intégration par parties du chapitre Calcul intégral : $\displaystyle\int_a^b u(t)v'(t)\,\mathrm{d}t = \Big[u(t)v(t)\Big]_a^b - \int_a^b u'(t)v(t)\,\mathrm{d}t$.
+:::
+
+## VI. Lecture graphique
+
+::: propriete Signe de $f$ et variations de $F$
+Comme $F' = f$ :
+- si $f \gt 0$ sur un intervalle, $F$ est croissante sur cet intervalle ; si $f \lt 0$, $F$ y est décroissante ;
+- si $f$ s’annule en $x_0$ en changeant de signe, $F$ admet un extremum local en $x_0$.
+:::
+
+::: exemple
+$f(x) = x^2 - 1 = (x - 1)(x + 1)$ est positive à l’extérieur de $[-1\,;1]$ et négative à l’intérieur. Sa primitive $F(x) = \frac{x^3}{3} - x$ est donc croissante, puis décroissante, puis croissante, avec $F(-1) = \frac{2}{3}$ et $F(1) = -\frac{2}{3}$.
+:::
+
+::: tableau Signe de $f$ et variations de $F$
+x : -\infty, -1, 1, +\infty
+f(x) : , +, z, -, z, +,
+F(x) : -/-\infty, +/\frac{2}{3}, -/-\frac{2}{3}, +/+\infty
+:::
+
+[IMAGE_2]
+
+::: retenir
+- $F$ primitive de $f$ sur $I$ $\iff F' = f$ sur $I$ ; les primitives de $f$ sont les fonctions $F + C$.
+- Une condition $F(x_0) = y_0$ fixe une seule primitive.
+- Tableaux des primitives usuelles et des formes composées : on ajuste la constante multiplicative.
+- Un produit se traite par identification ou par intégration par parties.
+- On vérifie toujours une primitive en la dérivant. Fiche de synthèse dans l’onglet Fiches !
+:::

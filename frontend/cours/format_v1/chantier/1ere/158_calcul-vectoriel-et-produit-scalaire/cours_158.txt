@@ -1,0 +1,323 @@
+Titre: Calcul vectoriel et produit scalaire
+
+<!-- optitab:1 -->
+::: objectifs
+- Calculer un produit scalaire de quatre façons : normes et angle, projection orthogonale, normes seules, coordonnées.
+- Utiliser la symétrie et la bilinéarité pour développer et transformer des expressions.
+- Démontrer une orthogonalité, calculer un angle ou une longueur.
+- Démontrer et utiliser la formule d’Al-Kashi et la formule de la médiane.
+- Déterminer l’ensemble des points $M$ tels que $\overrightarrow{MA} \cdot \overrightarrow{MB} = 0$.
+:::
+
+::: prerequis
+- Vecteurs : relation de Chasles, coordonnées, norme $\|\vec{u}\|$, colinéarité.
+- Cosinus d’un angle dans un triangle rectangle et valeurs remarquables.
+- Théorème de Pythagore.
+:::
+
+## I. Définition du produit scalaire
+
+### 1. Avec les normes et un angle
+
+::: definition Produit scalaire
+Soient $\vec{u}$ et $\vec{v}$ deux vecteurs non nuls du plan. Leur **produit scalaire** est le **nombre réel**
+
+$$\vec{u} \cdot \vec{v} = \|\vec{u}\| \times \|\vec{v}\| \times \cos(\vec{u}, \vec{v})$$
+
+où $(\vec{u}, \vec{v})$ désigne l’angle formé par les deux vecteurs. Si $\vec{u} = \vec{0}$ ou $\vec{v} = \vec{0}$, on pose $\vec{u} \cdot \vec{v} = 0$.
+:::
+
+Pour trois points $A$, $B$, $C$ distincts, on obtient : $\overrightarrow{AB} \cdot \overrightarrow{AC} = AB \times AC \times \cos\widehat{BAC}$.
+
+::: propriete Signe du produit scalaire
+Pour deux vecteurs non nuls, le signe de $\vec{u} \cdot \vec{v}$ est celui du cosinus :
+- angle aigu : $\vec{u} \cdot \vec{v} \gt 0$ ;
+- angle droit : $\vec{u} \cdot \vec{v} = 0$ ;
+- angle obtus : $\vec{u} \cdot \vec{v} \lt 0$.
+:::
+
+::: exemple Triangle équilatéral
+$ABC$ est un triangle équilatéral de côté $4$, donc $\widehat{BAC} = 60°$ :
+
+$$\overrightarrow{AB} \cdot \overrightarrow{AC} = 4 \times 4 \times \cos 60° = 16 \times \frac{1}{2} = 8$$
+:::
+
+### 2. Carré scalaire et orthogonalité
+
+::: definition Carré scalaire
+Le produit scalaire d’un vecteur par lui-même est son **carré scalaire** : l’angle est nul et $\cos 0 = 1$, donc
+
+$$\vec{u} \cdot \vec{u} = \|\vec{u}\|^2 \qquad \overrightarrow{AB} \cdot \overrightarrow{AB} = AB^2$$
+:::
+
+::: theoreme Caractérisation de l’orthogonalité
+Deux vecteurs $\vec{u}$ et $\vec{v}$ sont **orthogonaux** si et seulement si $\vec{u} \cdot \vec{v} = 0$.
+:::
+
+::: remarque
+Par convention, le vecteur nul est orthogonal à tout vecteur. Pour des vecteurs non nuls, $\vec{u} \cdot \vec{v} = 0$ équivaut à $\cos(\vec{u}, \vec{v}) = 0$, c’est-à-dire à un angle droit.
+:::
+
+## II. Produit scalaire et projection orthogonale
+
+::: propriete Formule du projeté
+Soient $A$, $B$, $C$ trois points avec $A \neq B$, et $H$ le projeté orthogonal de $C$ sur la droite $(AB)$.
+- Si $\overrightarrow{AB}$ et $\overrightarrow{AH}$ sont de même sens : $\overrightarrow{AB} \cdot \overrightarrow{AC} = AB \times AH$.
+- S’ils sont de sens contraires : $\overrightarrow{AB} \cdot \overrightarrow{AC} = -AB \times AH$.
+
+Autrement dit, $\overrightarrow{AB} \cdot \overrightarrow{AC} = \overrightarrow{AB} \cdot \overrightarrow{AH}$ : on peut remplacer $C$ par son projeté $H$.
+:::
+
+[IMAGE_1]
+
+::: demonstration
+On suppose $C$ hors de la droite $(AB)$ (sinon $H = C$ et il n’y a rien à démontrer). Le triangle $AHC$ est rectangle en $H$.
+- Si l’angle $\widehat{BAC}$ est aigu, $H$ est du côté de $B$ et $\cos\widehat{BAC} = \frac{AH}{AC}$, donc :
+
+$$\overrightarrow{AB} \cdot \overrightarrow{AC} = AB \times AC \times \frac{AH}{AC} = AB \times AH$$
+
+- Si l’angle $\widehat{BAC}$ est obtus, $H$ est de l’autre côté de $A$ ; l’angle $\widehat{HAC}$ est le supplémentaire de $\widehat{BAC}$, donc $\cos\widehat{BAC} = -\cos\widehat{HAC} = -\frac{AH}{AC}$ et $\overrightarrow{AB} \cdot \overrightarrow{AC} = -AB \times AH$.
+- Si l’angle est droit, $H = A$ et les deux membres sont nuls.
+:::
+
+::: methode Calculer par projection
+1. Repérer le projeté orthogonal $H$ de l’extrémité $C$ sur la droite qui porte l’autre vecteur.
+2. Calculer la longueur $AH$.
+3. Multiplier : $+AB \times AH$ si $H$ est du côté de $B$, $-AB \times AH$ sinon.
+:::
+
+::: exemple Dans un carré
+$ABCD$ est un carré de côté $3$. Le projeté orthogonal de $C$ sur $(AB)$ est $B$, donc
+
+$$\overrightarrow{AB} \cdot \overrightarrow{AC} = AB \times AB = 3 \times 3 = 9$$
+
+Le projeté de $D$ sur $(AB)$ est $A$ lui-même : $\overrightarrow{AB} \cdot \overrightarrow{AD} = 0$, les côtés $[AB]$ et $[AD]$ sont perpendiculaires.
+:::
+
+## III. Règles de calcul
+
+::: propriete Symétrie et bilinéarité
+Pour tous vecteurs $\vec{u}$, $\vec{v}$, $\vec{w}$ et tout réel $k$ :
+- symétrie : $\vec{u} \cdot \vec{v} = \vec{v} \cdot \vec{u}$ ;
+- distributivité : $\vec{u} \cdot (\vec{v} + \vec{w}) = \vec{u} \cdot \vec{v} + \vec{u} \cdot \vec{w}$ ;
+- homogénéité : $(k\vec{u}) \cdot \vec{v} = \vec{u} \cdot (k\vec{v}) = k\,(\vec{u} \cdot \vec{v})$.
+:::
+
+::: propriete Identités remarquables
+$$
+\begin{aligned}
+\|\vec{u} + \vec{v}\|^2 &= \|\vec{u}\|^2 + 2\,\vec{u} \cdot \vec{v} + \|\vec{v}\|^2 \\
+\|\vec{u} - \vec{v}\|^2 &= \|\vec{u}\|^2 - 2\,\vec{u} \cdot \vec{v} + \|\vec{v}\|^2 \\
+(\vec{u} + \vec{v}) \cdot (\vec{u} - \vec{v}) &= \|\vec{u}\|^2 - \|\vec{v}\|^2
+\end{aligned}
+$$
+:::
+
+::: demonstration
+Par bilinéarité et symétrie :
+
+$$
+\begin{aligned}
+\|\vec{u} + \vec{v}\|^2 &= (\vec{u} + \vec{v}) \cdot (\vec{u} + \vec{v}) \\
+&= \vec{u} \cdot \vec{u} + \vec{u} \cdot \vec{v} + \vec{v} \cdot \vec{u} + \vec{v} \cdot \vec{v} \\
+&= \|\vec{u}\|^2 + 2\,\vec{u} \cdot \vec{v} + \|\vec{v}\|^2
+\end{aligned}
+$$
+
+Les deux autres identités se démontrent de la même façon.
+:::
+
+::: propriete Produit scalaire à l’aide des normes (polarisation)
+$$\vec{u} \cdot \vec{v} = \frac{1}{2}\left(\|\vec{u} + \vec{v}\|^2 - \|\vec{u}\|^2 - \|\vec{v}\|^2\right)$$
+
+$$\vec{u} \cdot \vec{v} = \frac{1}{2}\left(\|\vec{u}\|^2 + \|\vec{v}\|^2 - \|\vec{u} - \vec{v}\|^2\right)$$
+
+Dans un triangle $ABC$, comme $\overrightarrow{AC} - \overrightarrow{AB} = \overrightarrow{BC}$ :
+
+$$\overrightarrow{AB} \cdot \overrightarrow{AC} = \frac{1}{2}\left(AB^2 + AC^2 - BC^2\right)$$
+:::
+
+::: exemple
+Si $\|\vec{u}\| = 3$, $\|\vec{v}\| = 4$ et $\|\vec{u} + \vec{v}\| = 6$, alors
+
+$$\vec{u} \cdot \vec{v} = \frac{1}{2}\left(36 - 9 - 16\right) = \frac{11}{2}$$
+:::
+
+::: attention Erreurs fréquentes
+- Le produit scalaire est un **nombre**, pas un vecteur : écrire $\vec{u} \cdot \vec{v} = \vec{w}$ n’a pas de sens.
+- On ne « simplifie » pas : $\vec{u} \cdot \vec{v} = \vec{u} \cdot \vec{w}$ n’entraîne pas $\vec{v} = \vec{w}$.
+- Ne pas oublier le double produit : $\|\vec{u} + \vec{v}\|^2 \neq \|\vec{u}\|^2 + \|\vec{v}\|^2$ en général (égalité seulement si $\vec{u} \perp \vec{v}$).
+:::
+
+## IV. Dans un repère orthonormé
+
+::: propriete Expression analytique
+Dans un repère **orthonormé**, si $\vec{u}\,(x\,;y)$ et $\vec{v}\,(x'\,;y')$, alors
+
+$$\vec{u} \cdot \vec{v} = xx' + yy' \qquad \|\vec{u}\| = \sqrt{x^2 + y^2}$$
+
+En particulier, $\vec{u}$ et $\vec{v}$ sont orthogonaux si et seulement si $xx' + yy' = 0$.
+:::
+
+::: demonstration
+Avec $\|\vec{u}\|^2 = x^2 + y^2$ (Pythagore, repère orthonormé) et la polarisation :
+
+$$
+\begin{aligned}
+\vec{u} \cdot \vec{v} &= \frac{1}{2}\left(\|\vec{u} + \vec{v}\|^2 - \|\vec{u}\|^2 - \|\vec{v}\|^2\right) \\
+&= \frac{1}{2}\left((x + x')^2 + (y + y')^2 - x^2 - y^2 - x'^2 - y'^2\right) \\
+&= \frac{1}{2}\left(2xx' + 2yy'\right) \\
+&= xx' + yy'
+\end{aligned}
+$$
+:::
+
+::: exemple Orthogonalité
+$\vec{u}\,(2\,;-1)$ et $\vec{v}\,(3\,;6)$ : $\vec{u} \cdot \vec{v} = 2 \times 3 + (-1) \times 6 = 0$. Les vecteurs sont orthogonaux.
+:::
+
+::: methode Calculer un angle
+1. Calculer $\vec{u} \cdot \vec{v}$ avec les coordonnées, puis $\|\vec{u}\|$ et $\|\vec{v}\|$.
+2. Isoler le cosinus : $\cos(\vec{u}, \vec{v}) = \frac{\vec{u} \cdot \vec{v}}{\|\vec{u}\| \times \|\vec{v}\|}$.
+3. Conclure avec une valeur remarquable ou la touche $\cos^{-1}$ (Arccos) de la calculatrice.
+:::
+
+::: exemple Un angle de $45°$
+$\vec{u}\,(1\,;2)$ et $\vec{v}\,(3\,;1)$ : $\vec{u} \cdot \vec{v} = 3 + 2 = 5$, $\|\vec{u}\| = \sqrt{5}$ et $\|\vec{v}\| = \sqrt{10}$.
+
+$$\cos(\vec{u}, \vec{v}) = \frac{5}{\sqrt{5} \times \sqrt{10}} = \frac{5}{5\sqrt{2}} = \frac{\sqrt{2}}{2}$$
+
+L’angle entre $\vec{u}$ et $\vec{v}$ mesure $45°$.
+:::
+
+::: attention
+La formule $xx' + yy'$ n’est valable que dans un repère **orthonormé**.
+:::
+
+::: remarque Choisir la méthode
+- Coordonnées connues : $xx' + yy'$.
+- Deux longueurs et l’angle connus : formule avec le cosinus.
+- Figure avec des angles droits (carré, rectangle, hauteur) : projection orthogonale.
+- Trois longueurs connues : $\frac{1}{2}\left(AB^2 + AC^2 - BC^2\right)$.
+- Figure décomposable (Chasles) : bilinéarité.
+:::
+
+## V. Applications au triangle et au cercle
+
+### 1. Formule d’Al-Kashi
+
+::: theoreme Formule d’Al-Kashi
+Dans un triangle $ABC$, on note $a = BC$, $b = AC$ et $c = AB$. Alors
+
+$$a^2 = b^2 + c^2 - 2bc\cos\widehat{A}$$
+:::
+
+[IMAGE_2]
+
+::: demonstration
+D’après la relation de Chasles, $\overrightarrow{BC} = \overrightarrow{AC} - \overrightarrow{AB}$. Donc
+
+$$
+\begin{aligned}
+BC^2 &= \|\overrightarrow{AC} - \overrightarrow{AB}\|^2 \\
+&= AC^2 - 2\,\overrightarrow{AB} \cdot \overrightarrow{AC} + AB^2 \\
+&= b^2 + c^2 - 2bc\cos\widehat{A}
+\end{aligned}
+$$
+:::
+
+::: exemple Calculer une longueur
+$b = 5$, $c = 8$ et $\widehat{A} = 60°$ :
+
+$$a^2 = 25 + 64 - 2 \times 5 \times 8 \times \frac{1}{2} = 49$$
+
+donc $a = 7$.
+:::
+
+::: exemple Calculer un angle
+Un triangle a pour côtés $7$, $8$ et $13$. L’angle $\alpha$ opposé au côté $13$ vérifie $169 = 49 + 64 - 2 \times 7 \times 8 \cos\alpha$, d’où
+
+$$\cos\alpha = \frac{49 + 64 - 169}{112} = -\frac{1}{2}$$
+
+donc $\alpha = 120°$.
+:::
+
+::: remarque
+Si $\widehat{A} = 90°$, alors $\cos\widehat{A} = 0$ et l’on retrouve le théorème de Pythagore : $a^2 = b^2 + c^2$.
+:::
+
+### 2. Formule de la médiane
+
+::: propriete Formule de la médiane
+Soient $A$ et $B$ deux points, $I$ le milieu de $[AB]$. Pour tout point $M$ du plan :
+
+$$\overrightarrow{MA} \cdot \overrightarrow{MB} = MI^2 - \frac{AB^2}{4}$$
+
+$$MA^2 + MB^2 = 2MI^2 + \frac{AB^2}{2}$$
+:::
+
+[IMAGE_4]
+
+::: demonstration
+Comme $I$ est le milieu de $[AB]$, $\overrightarrow{IB} = -\overrightarrow{IA}$ et $IA = \frac{AB}{2}$. Avec Chasles, $\overrightarrow{MA} = \overrightarrow{MI} + \overrightarrow{IA}$ et $\overrightarrow{MB} = \overrightarrow{MI} - \overrightarrow{IA}$.
+
+$$
+\begin{aligned}
+\overrightarrow{MA} \cdot \overrightarrow{MB} &= (\overrightarrow{MI} + \overrightarrow{IA}) \cdot (\overrightarrow{MI} - \overrightarrow{IA}) \\
+&= MI^2 - IA^2 \\
+&= MI^2 - \frac{AB^2}{4}
+\end{aligned}
+$$
+
+De même, les doubles produits s’annulant :
+
+$$
+\begin{aligned}
+MA^2 + MB^2 &= \|\overrightarrow{MI} + \overrightarrow{IA}\|^2 + \|\overrightarrow{MI} - \overrightarrow{IA}\|^2 \\
+&= 2MI^2 + 2IA^2 \\
+&= 2MI^2 + \frac{AB^2}{2}
+\end{aligned}
+$$
+:::
+
+::: exemple Longueur d’une médiane
+Dans un triangle $MAB$ avec $MA = 5$, $MB = 7$ et $AB = 6$, la médiane $[MI]$ vérifie $25 + 49 = 2MI^2 + 18$, donc $MI^2 = 28$ et $MI = 2\sqrt{7}$.
+:::
+
+### 3. Ensembles de points
+
+::: theoreme Cercle de diamètre $[AB]$
+Soient $A$ et $B$ deux points distincts. L’ensemble des points $M$ du plan tels que $\overrightarrow{MA} \cdot \overrightarrow{MB} = 0$ est le **cercle de diamètre $[AB]$**.
+:::
+
+[IMAGE_3]
+
+::: demonstration
+Soit $I$ le milieu de $[AB]$. D’après la formule de la médiane, $\overrightarrow{MA} \cdot \overrightarrow{MB} = MI^2 - IA^2$. Donc
+
+$$\overrightarrow{MA} \cdot \overrightarrow{MB} = 0 \iff MI^2 = IA^2 \iff MI = IA$$
+
+car les longueurs sont positives. C’est exactement le cercle de centre $I$ et de rayon $IA = \frac{AB}{2}$, c’est-à-dire le cercle de diamètre $[AB]$ ($A$ et $B$ compris).
+:::
+
+::: methode Ensemble des points $M$ tels que $\overrightarrow{MA} \cdot \overrightarrow{MB} = k$
+1. Introduire le milieu $I$ de $[AB]$ : l’égalité devient $MI^2 = k + \frac{AB^2}{4}$.
+2. Conclure selon le signe du membre de droite $r^2 = k + \frac{AB^2}{4}$ :
+   - s’il est strictement positif : cercle de centre $I$ et de rayon $\sqrt{k + \frac{AB^2}{4}}$ ;
+   - s’il est nul : le seul point $I$ ;
+   - s’il est strictement négatif : ensemble vide.
+:::
+
+::: exemple
+$AB = 6$ et $\overrightarrow{MA} \cdot \overrightarrow{MB} = 7$ : $MI^2 = 7 + 9 = 16$, donc $M$ décrit le cercle de centre $I$ et de rayon $4$.
+:::
+
+::: retenir
+- $\vec{u} \cdot \vec{v} = \|\vec{u}\|\|\vec{v}\|\cos(\vec{u}, \vec{v}) = xx' + yy'$ (repère orthonormé).
+- Projection : $\overrightarrow{AB} \cdot \overrightarrow{AC} = \overrightarrow{AB} \cdot \overrightarrow{AH}$, soit $\pm AB \times AH$.
+- Normes : $\overrightarrow{AB} \cdot \overrightarrow{AC} = \frac{1}{2}\left(AB^2 + AC^2 - BC^2\right)$.
+- $\vec{u} \cdot \vec{v} = 0 \iff \vec{u}$ et $\vec{v}$ orthogonaux.
+- Al-Kashi : $a^2 = b^2 + c^2 - 2bc\cos\widehat{A}$.
+- Médiane : $\overrightarrow{MA} \cdot \overrightarrow{MB} = MI^2 - \frac{AB^2}{4}$ et $MA^2 + MB^2 = 2MI^2 + \frac{AB^2}{2}$.
+- $\overrightarrow{MA} \cdot \overrightarrow{MB} = 0 \iff M$ appartient au cercle de diamètre $[AB]$.
+:::

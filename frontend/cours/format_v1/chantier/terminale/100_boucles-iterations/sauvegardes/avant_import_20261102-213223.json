@@ -1,0 +1,205 @@
+{
+ "notion": 100,
+ "dossier": "C:\\Users\\SWEELCO-AT\\Desktop\\SWINDER\\OptiTABV2\\frontend\\cours\\format_v1\\chantier\\terminale\\100_boucles-iterations",
+ "date": "2026-11-02T21:32:23",
+ "cours": [
+  {
+   "id": 104,
+   "contenu": "<!-- optitab:1 -->\n::: objectifs\nProduire des suites d'entiers avec `range`, répéter des instructions avec une boucle bornée `for` ou une boucle non bornée `while`, utiliser un accumulateur et suivre un programme dans un tableau d'état, puis programmer les algorithmes classiques de Terminale : seuil d'une suite, dichotomie, simulation.\n:::\n\n::: prerequis\nVariables et affectation, instructions conditionnelles `if`, fonctions `def` ; suites numériques ; fonction logarithme népérien.\n:::\n\n## I. Boucles et fonction `range`\n\nUne **boucle** répète un bloc d'instructions. Python en propose deux :\n\n- la boucle **bornée** `for`, quand le nombre de répétitions est connu à l'avance ;\n- la boucle **non bornée** `while`, quand on répète tant qu'une condition est vraie.\n\nLa fonction `range` fournit les valeurs parcourues par une boucle `for`.\n\n::: definition La fonction `range`\n- `range(n)` produit les entiers $0$, $1$, …, $n-1$ : il y en a $n$.\n- `range(a, b)` produit les entiers de $a$ à $b-1$ : la borne $b$ est **exclue** et il y a $b-a$ valeurs.\n- `range(a, b, p)` produit $a$, $a+p$, $a+2p$, … en s'arrêtant avant $b$ ; le pas $p$ peut être négatif.\n:::\n\n| Instruction | Valeurs produites | Nombre |\n|---|---|---|\n| `range(5)` | $0$, $1$, $2$, $3$, $4$ | $5$ |\n| `range(2, 6)` | $2$, $3$, $4$, $5$ | $4$ |\n| `range(1, 10, 3)` | $1$, $4$, $7$ | $3$ |\n| `range(10, 0, -2)` | $10$, $8$, $6$, $4$, $2$ | $5$ |\n| `range(5, 2)` | aucune | $0$ |\n\n::: exemple Afficher les valeurs avec `list`\n```python\nprint(list(range(2, 6)))\nprint(list(range(10, 0, -2)))\n```\n\n```console\n[2, 3, 4, 5]\n[10, 8, 6, 4, 2]\n```\n:::\n\n::: attention Aller jusqu'à $n$ inclus\n`range(1, n)` s'arrête à $n-1$. Pour parcourir les entiers de $1$ à $n$, on écrit `range(1, n + 1)`.\n:::\n\n## II. La boucle bornée `for`\n\n::: definition Boucle bornée\nL'instruction `for i in range(…):` répète le **bloc indenté** qui la suit pour chaque valeur produite par `range`, dans l'ordre : la variable `i` prend successivement chacune de ces valeurs. Le nombre de tours est connu à l'avance.\n:::\n\n::: exemple Un premier programme\n```python\nfor i in range(1, 6):\n    print(i, i**2)\nprint(\"Fin\")\n```\n\n```console\n1 1\n2 4\n3 9\n4 16\n5 25\nFin\n```\n\nL'instruction `print(i, i**2)` est indentée : elle est exécutée à chaque tour, soit $5$ fois (`i**2` désigne $i^2$). L'instruction `print(\"Fin\")` n'est pas indentée : elle est exécutée une seule fois, après la boucle.\n:::\n\n::: remarque Syntaxe\nLa ligne `for` se termine par deux-points `:` et le bloc répété est décalé de $4$ espaces. C'est l'**indentation** qui délimite ce qui est répété.\n:::\n\n### Parcourir une chaîne de caractères\n\nUne boucle `for` peut aussi parcourir directement les caractères d'une chaîne, ou les éléments d'une liste (voir la notion « Listes »).\n\n```python\nfor lettre in \"PYTHON\":\n    print(lettre, end=\" \")\n```\n\n```console\nP Y T H O N\n```\n\nL'option `end=\" \"` remplace le retour à la ligne par une espace : tout s'affiche sur une seule ligne.\n\n## III. Accumulateurs et tableau d'état\n\n::: definition Accumulateur\nUn **accumulateur** est une variable qui construit un résultat au fil des tours :\n\n1. on l'**initialise** avant la boucle ($0$ pour une somme, $1$ pour un produit) ;\n2. on le **met à jour** à chaque tour ;\n3. on l'**utilise** après la boucle.\n:::\n\n::: exemple Calculer $1 + 2 + 3 + 4$\n```python\ns = 0\nfor k in range(1, 5):\n    s = s + k\nprint(s)\n```\n\n```console\n10\n```\n\nLe **tableau d'état** donne les valeurs des variables à la fin de chaque tour :\n\n| Étape | `k` | `s` |\n|---|---|---|\n| avant la boucle | — | $0$ |\n| tour 1 | $1$ | $1$ |\n| tour 2 | $2$ | $3$ |\n| tour 3 | $3$ | $6$ |\n| tour 4 | $4$ | $10$ |\n:::\n\n::: methode Calculer un produit : la factorielle\nPour $n \\ge 1$, $n! = 1 \\times 2 \\times \\dots \\times n$. L'accumulateur d'un produit s'initialise à $1$ : avec $0$, le produit resterait nul.\n\n```python\ndef factorielle(n):\n    p = 1\n    for k in range(1, n + 1):\n        p = p * k\n    return p\n\nprint(factorielle(5))\nprint(factorielle(10))\n```\n\n```console\n120\n3628800\n```\n:::\n\n::: exemple Moyenne d'une liste de notes\n```python\nnotes = [14, 12, 16, 10, 18]\nsomme = 0\nfor note in notes:\n    somme = somme + note\nprint(somme / len(notes))\n```\n\n```console\n14.0\n```\n\n`len(notes)` est le nombre d'éléments de la liste : la moyenne vaut $\\dfrac{70}{5} = 14$.\n:::\n\n::: methode Calculer un terme d'une suite définie par récurrence\nPour $u_0 = 3$ et $u_{n+1} = 2u_n - 1$, on part de $u_0$ et on applique $n$ fois la relation de récurrence : la boucle fait $n$ tours, la variable `k` ne sert qu'à les compter.\n\n```python\ndef terme(n):\n    u = 3\n    for k in range(n):\n        u = 2 * u - 1\n    return u\n\nfor n in range(6):\n    print(n, terme(n))\n```\n\n```console\n0 3\n1 5\n2 9\n3 17\n4 33\n5 65\n```\n\nOn conjecture, puis on démontre par récurrence, que $u_n = 2^{n+1} + 1$ pour tout entier naturel $n$.\n:::\n\n::: remarque Écritures raccourcies\n`s += k` signifie `s = s + k` ; `p *= k` signifie `p = p * k` ; `n += 1` signifie `n = n + 1`.\n:::\n\n## IV. La boucle non bornée `while`\n\n::: definition Boucle non bornée\nL'instruction `while condition:` répète le bloc indenté **tant que** la condition est vraie. La condition est testée **avant** chaque tour : si elle est fausse dès le départ, le bloc n'est jamais exécuté. Le nombre de tours n'est pas connu à l'avance.\n:::\n\n[IMAGE_1]\n\n::: exemple Doubler tant que le nombre est inférieur à $100$\n```python\nn = 1\nwhile n < 100:\n    n = 2 * n\nprint(n)\n```\n\n```console\n128\n```\n\n`n` prend les valeurs $1$, $2$, $4$, $8$, $16$, $32$, $64$ puis $128$. Pour $n = 128$, le test `n < 100` est faux : la boucle s'arrête et le programme affiche $128$.\n:::\n\n::: attention Boucle infinie\nLe bloc doit modifier une variable de la condition, sinon la condition reste vraie et la boucle ne s'arrête jamais. Sans la ligne `n = 2 * n`, le programme ci-dessus tournerait indéfiniment (on l'interrompt avec Ctrl + C).\n:::\n\n::: methode Algorithme de seuil\nOn cherche le plus petit entier $n$ tel que $1{,}5^n \\gt 100$. On répète la multiplication **tant que** le seuil n'est pas dépassé, en comptant les tours.\n\n```python\nu = 1\nn = 0\nwhile u <= 100:\n    u = 1.5 * u\n    n = n + 1\nprint(n)\n```\n\n```console\n12\n```\n\nLa condition de la boucle est le **contraire** de la condition d'arrêt : on veut s'arrêter dès que $u \\gt 100$, on répète donc tant que $u \\le 100$. À la sortie de la boucle, $u = 1{,}5^n$.\n\n**Vérification :** comme $\\ln(1{,}5) \\gt 0$,\n\n$$\n\\begin{aligned}\n&1{,}5^n \\gt 100 \\\\\n\\iff\\ &n\\ln(1{,}5) \\gt \\ln(100) \\\\\n\\iff\\ &n \\gt \\frac{\\ln(100)}{\\ln(1{,}5)} \\approx 11{,}36\n\\end{aligned}\n$$\n\ndonc $n = 12$.\n:::\n\n[IMAGE_2]\n\n::: remarque S'assurer que le seuil est atteint\nAvant d'écrire un algorithme de seuil, on vérifie que le seuil sera dépassé : ici $\\lim\\limits_{n \\to +\\infty} 1{,}5^n = +\\infty$ car $1{,}5 \\gt 1$. Pour une suite croissante qui converge vers $15$, la condition « $u \\le 16$ » resterait toujours vraie : la boucle ne s'arrêterait jamais.\n:::\n\n## V. Les instructions `break` et `continue`\n\n::: definition\n- `break` interrompt **immédiatement** la boucle ; le programme reprend après la boucle.\n- `continue` interrompt le tour en cours et passe **directement au tour suivant**.\n:::\n\n::: exemple `break` : premier carré supérieur à $500$\n```python\nfor n in range(1, 100):\n    if n**2 > 500:\n        break\nprint(n)\n```\n\n```console\n23\n```\n\n$22^2 = 484 \\le 500$ et $23^2 = 529 \\gt 500$ : la boucle est interrompue pour $n = 23$, les valeurs suivantes ne sont pas parcourues.\n:::\n\n::: exemple `continue` : sauter les nombres pairs\n```python\nfor i in range(1, 16):\n    if i % 2 == 0:\n        continue\n    print(i, end=\" \")\n```\n\n```console\n1 3 5 7 9 11 13 15\n```\n\n`i % 2` est le reste de la division euclidienne de `i` par $2$ : le test `i % 2 == 0` signifie « `i` est pair ». Pour un nombre pair, `continue` fait sauter l'affichage.\n:::\n\n::: remarque\n`break` et `continue` ne sont jamais indispensables : une boucle `while` avec une condition bien choisie, ou un simple test `if`, donne le même résultat, souvent de façon plus lisible.\n:::\n\n## VI. Boucles imbriquées\n\n::: propriete\nUne boucle placée dans une autre est exécutée **entièrement** à chaque tour de la boucle extérieure : si la boucle extérieure fait $n$ tours et la boucle intérieure $p$ tours, le bloc intérieur est exécuté $n \\times p$ fois.\n:::\n\n::: exemple Dénombrer avec deux dés\nOn lance deux dés équilibrés. Combien d'issues donnent une somme égale à $7$ ?\n\n```python\nnb = 0\nfor d1 in range(1, 7):\n    for d2 in range(1, 7):\n        if d1 + d2 == 7:\n            nb = nb + 1\nprint(nb, \"sur 36\")\n```\n\n```console\n6 sur 36\n```\n\nLes deux boucles parcourent les $6 \\times 6 = 36$ couples $(d_1\\,;d_2)$ : pour chaque valeur de `d1`, la variable `d2` prend les $6$ valeurs. La probabilité d'obtenir une somme égale à $7$ est $\\dfrac{6}{36} = \\dfrac{1}{6}$.\n:::\n\n[IMAGE_3]\n\n## VII. Deux algorithmes classiques\n\n### 1. La méthode de dichotomie\n\nLa fonction $f : x \\mapsto x^3 + x - 1$ est continue et strictement croissante sur $[0\\,;1]$, avec $f(0) = -1 \\lt 0$ et $f(1) = 1 \\gt 0$ : l'équation $f(x) = 0$ admet une unique solution $\\alpha$ dans $[0\\,;1]$. À chaque tour, on coupe l'intervalle en deux et on garde la moitié où $f$ change de signe.\n\n```python\ndef f(x):\n    return x**3 + x - 1\n\ndef dichotomie(a, b, e):\n    while b - a > e:\n        m = (a + b) / 2\n        if f(a) * f(m) <= 0:\n            b = m\n        else:\n            a = m\n    return a, b\n\nprint(dichotomie(0, 1, 0.001))\n```\n\n```console\n(0.681640625, 0.6826171875)\n```\n\n[IMAGE_4]\n\nLa longueur de l'intervalle est divisée par $2$ à chaque tour : après $n$ tours, elle vaut $\\dfrac{1}{2^n}$. Comme $\\dfrac{1}{2^9} \\gt 0{,}001$ et $\\dfrac{1}{2^{10}} = \\dfrac{1}{1024} \\le 0{,}001$, la boucle fait $10$ tours. On obtient l'encadrement $0{,}6816 \\le \\alpha \\le 0{,}6827$.\n\n### 2. Simuler une expérience aléatoire\n\nLa fonction `randint(1, 6)` du module `random` simule le lancer d'un dé équilibré. On compte les « $6$ » obtenus en $n$ lancers.\n\n```python\nfrom random import randint\n\ndef frequence_six(n):\n    nb = 0\n    for i in range(n):\n        if randint(1, 6) == 6:\n            nb = nb + 1\n    return nb / n\n\nprint(frequence_six(10000))\n```\n\nUn affichage possible (le résultat change à chaque exécution) :\n\n```console\n0.1671\n```\n\nPour $n$ grand, la fréquence obtenue est proche de la probabilité $\\dfrac{1}{6} \\approx 0{,}1667$ : c'est la loi des grands nombres.\n\n::: remarque Les boucles dans tout le programme\nCes schémas reviennent dans toute l'année : boucle `for` pour la méthode des rectangles (intégrales), la méthode d'Euler (équations différentielles) ou la liste des coefficients binomiaux ; boucle `while` pour les seuils, la dichotomie ou la méthode de Newton.\n:::\n\n## VIII. Bien choisir sa boucle\n\n| Situation | Instruction |\n|---|---|\n| nombre de tours connu | `for i in range(n):` |\n| parcourir une chaîne, une liste | `for x in liste:` |\n| répéter tant qu'une condition est vraie | `while condition:` |\n| sortir immédiatement de la boucle | `break` |\n| passer au tour suivant | `continue` |\n\n::: attention Pièges fréquents\n- `range(1, n)` s'arrête à $n-1$ : pour aller jusqu'à $n$, on écrit `range(1, n + 1)`.\n- L'accumulateur s'initialise **avant** la boucle : placé dans la boucle, il serait remis à zéro à chaque tour.\n- L'indentation décide de ce qui est répété : un `print` indenté s'exécute à chaque tour, sinon une seule fois, après la boucle.\n- Oublier les deux-points `:` à la fin de la ligne `for` ou `while` provoque une erreur de syntaxe.\n- Une boucle `while` dont la condition reste toujours vraie ne s'arrête jamais.\n- Dans un algorithme de seuil, la condition du `while` est le **contraire** de la condition cherchée.\n:::\n\n::: retenir\n- `range(a, b)` : entiers de $a$ à $b-1$, soit $b-a$ valeurs.\n- `for` : nombre de tours connu ; `while` : tant qu'une condition est vraie.\n- Accumulateur : initialiser, mettre à jour, utiliser ; $0$ pour une somme, $1$ pour un produit.\n- Seuil : boucle `while` et compteur, puis vérification par le calcul (logarithme).\n- Boucles imbriquées : le bloc intérieur est exécuté $n \\times p$ fois.\n\nFiche de synthèse dans l'onglet Fiches !\n:::"
+  }
+ ],
+ "fiches": [
+  {
+   "id": 36,
+   "summary": "<!-- optitab:1 -->\n::: objectifs\nRetenir l'essentiel : la fonction `range`, les boucles `for` et `while`, les accumulateurs, l'algorithme de seuil, `break` et `continue`, les boucles imbriquées. Programme de Terminale.\n:::\n\n## I. La fonction `range`\n\n`range(a, b)` produit les entiers de $a$ à $b-1$ : la borne $b$ est **exclue** et il y a $b-a$ valeurs.\n\n| Instruction | Valeurs produites |\n|---|---|\n| `range(5)` | $0$, $1$, $2$, $3$, $4$ |\n| `range(2, 6)` | $2$, $3$, $4$, $5$ |\n| `range(1, 10, 3)` | $1$, $4$, $7$ |\n| `range(10, 0, -2)` | $10$, $8$, $6$, $4$, $2$ |\n\n## II. Les deux boucles\n\n::: definition Boucle bornée `for`\nLe bloc indenté est répété pour chaque valeur de `range` : le nombre de tours est connu.\n\n```python\nfor i in range(1, 4):\n    print(i, i**2)\n```\n\n```console\n1 1\n2 4\n3 9\n```\n:::\n\n::: definition Boucle non bornée `while`\nLe bloc est répété **tant que** la condition est vraie ; la condition est testée avant chaque tour.\n\n```python\nn = 1\nwhile n < 100:\n    n = 2 * n\nprint(n)\n```\n\n```console\n128\n```\n:::\n\n## III. Accumulateur et seuil\n\n::: methode Accumulateur\n1. Initialiser avant la boucle : $0$ pour une somme, $1$ pour un produit.\n2. Mettre à jour à chaque tour.\n3. Utiliser après la boucle.\n\n```python\ns = 0\nfor k in range(1, 11):\n    s = s + k\nprint(s)\n```\n\n```console\n55\n```\n:::\n\n::: methode Algorithme de seuil\nPlus petit $n$ tel que $1{,}5^n \\gt 100$ : on répète **tant que** $u \\le 100$, en comptant les tours.\n\n```python\nu = 1\nn = 0\nwhile u <= 100:\n    u = 1.5 * u\n    n = n + 1\nprint(n)\n```\n\n```console\n12\n```\n\nVérification : $n \\gt \\dfrac{\\ln(100)}{\\ln(1{,}5)} \\approx 11{,}36$, donc $n = 12$.\n:::\n\n## IV. Contrôler et imbriquer\n\n| Instruction | Effet |\n|---|---|\n| `break` | sort immédiatement de la boucle |\n| `continue` | passe directement au tour suivant |\n| boucles imbriquées | $n$ tours à l'extérieur, $p$ à l'intérieur : bloc intérieur exécuté $n \\times p$ fois |\n\n## V. Les pièges à éviter\n\n::: attention Les 5 erreurs classiques\n1. Écrire `range(1, n)` pour aller jusqu'à $n$ : il faut `range(1, n + 1)`.\n2. Initialiser l'accumulateur dans la boucle : il est remis à zéro à chaque tour.\n3. Se tromper d'indentation : seul le bloc indenté est répété.\n4. Oublier les deux-points `:` après `for …` ou `while …`.\n5. Écrire une condition de `while` qui reste toujours vraie : boucle infinie.\n:::\n\n::: remarque Réflexe\nNombre de tours connu → `for`. Sinon → `while`, en vérifiant que la condition finira par devenir fausse.\n:::"
+  }
+ ],
+ "exercices": [
+  {
+   "id": 832,
+   "question": "<!-- optitab:1 -->\nLes programmes demandés utilisent une boucle `for` et un **accumulateur**.\n\n1. Calculer la somme des carrés $1^2 + 2^2 + 3^2 + 4^2 + 5^2$ à l'aide d'une boucle.\n2. Écrire un programme qui affiche la table de multiplication de $7$, de « 7 × 1 = 7 » à « 7 × 10 = 70 ».\n3. Calculer le produit $1 \\times 3 \\times 5 \\times 7 \\times 9$ à l'aide d'un accumulateur. Quelle doit être sa valeur initiale ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Somme des carrés de $1$ à $5$\n\n::: methode\nUn accumulateur `s`, initialisé à $0$, reçoit successivement $1^2$, $2^2$, …, $5^2$.\n:::\n\n::: etape Choisir la boucle\nLa variable `i` doit prendre les valeurs $1$ à $5$ : on utilise `range(1, 6)`, car la borne $6$ est exclue.\n:::\n\n::: etape Programme et affichage\n```python\ns = 0\nfor i in range(1, 6):\n    s = s + i**2\nprint(\"Somme :\", s)\n```\n\n```console\nSomme : 55\n```\n:::\n\n::: etape Tableau d'état\n| Tour | `i` | `i**2` | `s` |\n|---|---|---|---|\n| départ | — | — | $0$ |\n| 1 | $1$ | $1$ | $1$ |\n| 2 | $2$ | $4$ | $5$ |\n| 3 | $3$ | $9$ | $14$ |\n| 4 | $4$ | $16$ | $30$ |\n| 5 | $5$ | $25$ | $55$ |\n:::\n\n::: resultat\n$$1^2 + 2^2 + 3^2 + 4^2 + 5^2 = 55$$\n:::\n\n## Question 2 : Table de multiplication de $7$\n\n::: methode\nLa variable `i` prend les valeurs $1$ à $10$ ; à chaque tour, on affiche une ligne de la table.\n:::\n\n::: etape Programme et affichage\n```python\nfor i in range(1, 11):\n    print(\"7 ×\", i, \"=\", 7*i)\n```\n\n```console\n7 × 1 = 7\n7 × 2 = 14\n7 × 3 = 21\n7 × 4 = 28\n7 × 5 = 35\n7 × 6 = 42\n7 × 7 = 49\n7 × 8 = 56\n7 × 9 = 63\n7 × 10 = 70\n```\n\nAvec plusieurs arguments, `print` les affiche séparés par une espace.\n:::\n\n::: resultat\nLe programme affiche les $10$ lignes de la table, de « 7 × 1 = 7 » à « 7 × 10 = 70 ».\n:::\n\n## Question 3 : Produit $1 \\times 3 \\times 5 \\times 7 \\times 9$\n\n::: methode\nLes facteurs sont les entiers impairs de $1$ à $9$ : on les parcourt avec `range(1, 10, 2)` et on les multiplie dans un accumulateur `p`.\n:::\n\n::: etape Programme et affichage\n```python\np = 1\nfor k in range(1, 10, 2):\n    p = p * k\nprint(p)\n```\n\n```console\n945\n```\n:::\n\n::: etape Vérification\n$$\n\\begin{aligned}\n1 \\times 3 &= 3 \\\\\n3 \\times 5 &= 15 \\\\\n15 \\times 7 &= 105 \\\\\n105 \\times 9 &= 945\n\\end{aligned}\n$$\n:::\n\n::: attention\nAvec `p = 0` au départ, le produit resterait égal à $0$ à chaque tour : l'accumulateur d'un produit s'initialise à $1$.\n:::\n\n::: resultat\nValeur initiale : $1$. Le produit vaut $1 \\times 3 \\times 5 \\times 7 \\times 9 = 945$.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. Accumulateur initialisé à $0$ et boucle `for i in range(1, 6)` : $1^2 + 2^2 + 3^2 + 4^2 + 5^2 = 55$.\n2. `for i in range(1, 11):` puis `print(\"7 ×\", i, \"=\", 7*i)` : $10$ lignes, de « 7 × 1 = 7 » à « 7 × 10 = 70 ».\n3. Valeur initiale $1$ et `range(1, 10, 2)` : le produit vaut $945$.",
+   "titre": "Boucles FOR avec range() - Calculs et accumulations",
+   "difficulty": "easy",
+   "contenu": "<!-- optitab:1 -->\nLes programmes demandés utilisent une boucle `for` et un **accumulateur**.\n\n1. Calculer la somme des carrés $1^2 + 2^2 + 3^2 + 4^2 + 5^2$ à l'aide d'une boucle.\n2. Écrire un programme qui affiche la table de multiplication de $7$, de « 7 × 1 = 7 » à « 7 × 10 = 70 ».\n3. Calculer le produit $1 \\times 3 \\times 5 \\times 7 \\times 9$ à l'aide d'un accumulateur. Quelle doit être sa valeur initiale ?"
+  },
+  {
+   "id": 831,
+   "question": "<!-- optitab:1 -->\nÉcrire des programmes Python utilisant une boucle `for` et la fonction `range`.\n\n1. Écrire un programme qui affiche les nombres pairs de $2$ à $20$ sur une même ligne (on utilisera `print(i, end=\" \")`).\n2. Écrire un programme qui calcule et affiche la somme $1 + 2 + \\dots + 15$.\n3. Donner les valeurs produites par `range(3, 12, 4)` et par `range(5, 0, -1)`.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Nombres pairs de $2$ à $20$\n\n::: methode\nOn parcourt les entiers de $2$ à $20$ avec un pas de $2$.\n:::\n\n::: etape Choisir les arguments de `range`\n- départ : $2$ ;\n- borne de fin : $21$, car elle est exclue et l'on veut atteindre $20$ ;\n- pas : $2$.\n:::\n\n::: etape Programme et affichage\n```python\nfor i in range(2, 21, 2):\n    print(i, end=\" \")\n```\n\n```console\n2 4 6 8 10 12 14 16 18 20\n```\n:::\n\n::: attention\nAvec `range(2, 20, 2)`, la borne $20$ est exclue : le programme s'arrêterait à $18$.\n:::\n\n::: resultat\n`range(2, 21, 2)` produit les $10$ nombres pairs de $2$ à $20$.\n:::\n\n## Question 2 : Somme $1 + 2 + \\dots + 15$\n\n::: methode\nOn ajoute chaque entier de $1$ à $15$ à un accumulateur initialisé à $0$.\n:::\n\n::: etape Programme et affichage\n```python\nsomme = 0\nfor i in range(1, 16):\n    somme = somme + i\nprint(\"Somme :\", somme)\n```\n\n```console\nSomme : 120\n```\n:::\n\n::: etape Vérification avec la formule\n$1 + 2 + \\dots + n = \\dfrac{n(n+1)}{2}$, donc pour $n = 15$ :\n\n$$1 + 2 + \\dots + 15 = \\frac{15 \\times 16}{2} = 120$$\n:::\n\n::: resultat\n$$1 + 2 + \\dots + 15 = 120$$\n:::\n\n## Question 3 : Valeurs produites par `range`\n\n::: methode\nOn part de la première valeur et on ajoute le pas tant que l'on n'a pas atteint la borne de fin (exclue).\n:::\n\n::: etape `range(3, 12, 4)`\nOn obtient $3$, puis $3 + 4 = 7$, puis $7 + 4 = 11$ ; la valeur suivante, $15$, dépasse la borne $12$.\n:::\n\n::: etape `range(5, 0, -1)`\nLe pas $-1$ fait décompter : $5$, $4$, $3$, $2$, $1$ ; la borne $0$ est exclue.\n:::\n\n::: etape Vérification en Python\n```python\nprint(list(range(3, 12, 4)))\nprint(list(range(5, 0, -1)))\n```\n\n```console\n[3, 7, 11]\n[5, 4, 3, 2, 1]\n```\n:::\n\n::: resultat\n`range(3, 12, 4)` produit $3$, $7$, $11$ ; `range(5, 0, -1)` produit $5$, $4$, $3$, $2$, $1$.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. `for i in range(2, 21, 2):` puis `print(i, end=\" \")` : affiche 2 4 6 8 10 12 14 16 18 20.\n2. Accumulateur initialisé à $0$, `range(1, 16)` : la somme vaut $120$.\n3. `range(3, 12, 4)` : $3$, $7$, $11$ ; `range(5, 0, -1)` : $5$, $4$, $3$, $2$, $1$.",
+   "titre": "Boucles FOR avec range() - Exercices de Base",
+   "difficulty": "easy",
+   "contenu": "<!-- optitab:1 -->\nÉcrire des programmes Python utilisant une boucle `for` et la fonction `range`.\n\n1. Écrire un programme qui affiche les nombres pairs de $2$ à $20$ sur une même ligne (on utilisera `print(i, end=\" \")`).\n2. Écrire un programme qui calcule et affiche la somme $1 + 2 + \\dots + 15$.\n3. Donner les valeurs produites par `range(3, 12, 4)` et par `range(5, 0, -1)`."
+  },
+  {
+   "id": 835,
+   "question": "<!-- optitab:1 -->\nUne boucle peut être placée à l'intérieur d'une autre boucle.\n\n1. Écrire un programme qui affiche, sur $3$ lignes et $5$ colonnes, les produits `i * j` pour $i$ allant de $1$ à $3$ et $j$ allant de $1$ à $5$.\n2. Qu'affiche le programme suivant ? On rappelle que `print()` sans argument passe à la ligne.\n\n   ```python\n   for ligne in range(3, 0, -1):\n       for k in range(1, ligne + 1):\n           print(k, end=\" \")\n       print()\n   ```\n\n3. Combien de fois l'instruction `print(i * j, end=\" \")` de la question 1 est-elle exécutée ? Et si la boucle extérieure fait $n$ tours et la boucle intérieure $p$ tours ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Tableau des produits $i \\times j$\n\n::: methode\nLa boucle extérieure choisit la ligne `i` ; pour chaque ligne, la boucle intérieure parcourt les colonnes `j`, puis on passe à la ligne.\n:::\n\n::: etape Programme et affichage\n```python\nfor i in range(1, 4):\n    for j in range(1, 6):\n        print(i * j, end=\" \")\n    print()\n```\n\n```console\n1 2 3 4 5\n2 4 6 8 10\n3 6 9 12 15\n```\n:::\n\n::: etape Rôle de l'indentation\n- `print(i * j, end=\" \")` est dans la boucle intérieure : il affiche un produit à chaque tour de `j`, sur la même ligne ;\n- `print()` est dans la boucle extérieure seulement : il passe à la ligne une fois que les $5$ produits de la ligne sont affichés.\n:::\n\n::: resultat\nLe programme affiche $3$ lignes : 1 2 3 4 5, puis 2 4 6 8 10, puis 3 6 9 12 15.\n:::\n\n## Question 2 : Le triangle de nombres\n\n::: methode\nOn suit l'exécution : pour chaque valeur de `ligne`, la boucle intérieure affiche les entiers de $1$ à `ligne`.\n:::\n\n::: etape Valeurs de `ligne`\n`range(3, 0, -1)` produit $3$, $2$, $1$ : la boucle extérieure fait $3$ tours.\n:::\n\n::: etape Tableau d'état\n| `ligne` | valeurs de `k` | ligne affichée |\n|---|---|---|\n| $3$ | $1$, $2$, $3$ | 1 2 3 |\n| $2$ | $1$, $2$ | 1 2 |\n| $1$ | $1$ | 1 |\n:::\n\n::: etape Vérification en Python\n```python\nfor ligne in range(3, 0, -1):\n    for k in range(1, ligne + 1):\n        print(k, end=\" \")\n    print()\n```\n\n```console\n1 2 3\n1 2\n1\n```\n:::\n\n::: resultat\nLe programme affiche un triangle : 1 2 3, puis 1 2, puis 1.\n:::\n\n## Question 3 : Nombre d'exécutions\n\n::: methode\nLa boucle intérieure est exécutée entièrement à chaque tour de la boucle extérieure.\n:::\n\n::: etape Dans la question 1\nLa boucle extérieure fait $3$ tours ($i = 1$, $2$, $3$) et, à chacun d'eux, la boucle intérieure fait $5$ tours : l'instruction est exécutée $3 \\times 5 = 15$ fois, ce qui correspond aux $15$ nombres affichés.\n:::\n\n::: etape Cas général\nAvec $n$ tours à l'extérieur et $p$ tours à l'intérieur, le bloc intérieur est exécuté $n \\times p$ fois.\n:::\n\n::: resultat\n$15$ exécutions ; dans le cas général, $n \\times p$ exécutions.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. Deux boucles `for i in range(1, 4)` et `for j in range(1, 6)`, puis `print()` après la boucle intérieure : lignes 1 2 3 4 5 ; 2 4 6 8 10 ; 3 6 9 12 15.\n2. Le programme affiche le triangle 1 2 3 ; 1 2 ; 1.\n3. $3 \\times 5 = 15$ fois ; dans le cas général, $n \\times p$ fois.",
+   "titre": "Boucles imbriquées - Structures complexes",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nUne boucle peut être placée à l'intérieur d'une autre boucle.\n\n1. Écrire un programme qui affiche, sur $3$ lignes et $5$ colonnes, les produits `i * j` pour $i$ allant de $1$ à $3$ et $j$ allant de $1$ à $5$.\n2. Qu'affiche le programme suivant ? On rappelle que `print()` sans argument passe à la ligne.\n\n   ```python\n   for ligne in range(3, 0, -1):\n       for k in range(1, ligne + 1):\n           print(k, end=\" \")\n       print()\n   ```\n\n3. Combien de fois l'instruction `print(i * j, end=\" \")` de la question 1 est-elle exécutée ? Et si la boucle extérieure fait $n$ tours et la boucle intérieure $p$ tours ?"
+  },
+  {
+   "id": 833,
+   "question": "<!-- optitab:1 -->\nLes programmes suivants utilisent une boucle `while`.\n\n1. Écrire un programme qui affiche les entiers de $1$ à $5$ à l'aide d'une boucle `while`.\n2. Calculer $4! = 1 \\times 2 \\times 3 \\times 4$ à l'aide d'une boucle `while`.\n3. Qu'affiche le programme suivant ? Interpréter le résultat.\n\n   ```python\n   n = 0\n   s = 0\n   while s < 100:\n       n = n + 1\n       s = s + n\n   print(n, s)\n   ```",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Les entiers de $1$ à $5$\n\n::: methode\nUn compteur part de $1$ et augmente de $1$ à chaque tour ; on répète tant qu'il ne dépasse pas $5$.\n:::\n\n::: etape Programme et affichage\n```python\ncompteur = 1\nwhile compteur <= 5:\n    print(compteur)\n    compteur = compteur + 1\n```\n\n```console\n1\n2\n3\n4\n5\n```\n:::\n\n::: etape Arrêt de la boucle\nAprès l'affichage de $5$, le compteur vaut $6$ : le test `compteur <= 5` est faux et la boucle s'arrête.\n:::\n\n::: attention\nSans la ligne `compteur = compteur + 1`, la condition resterait toujours vraie : le programme afficherait $1$ indéfiniment (boucle infinie).\n:::\n\n::: resultat\nLe programme affiche $1$, $2$, $3$, $4$, $5$, un nombre par ligne.\n:::\n\n## Question 2 : Calcul de $4!$\n\n::: methode\nAccumulateur `f` initialisé à $1$, multiplié successivement par $1$, $2$, $3$ puis $4$ ; un compteur `i` gère l'arrêt.\n:::\n\n::: etape Programme et affichage\n```python\nn = 4\nf = 1\ni = 1\nwhile i <= n:\n    f = f * i\n    i = i + 1\nprint(f)\n```\n\n```console\n24\n```\n:::\n\n::: etape Tableau d'état\n| Tour | `i` utilisé | `f` |\n|---|---|---|\n| départ | — | $1$ |\n| 1 | $1$ | $1$ |\n| 2 | $2$ | $2$ |\n| 3 | $3$ | $6$ |\n| 4 | $4$ | $24$ |\n\nEnsuite `i` vaut $5$ : le test `i <= n` est faux et la boucle s'arrête.\n:::\n\n::: resultat\n$$4! = 1 \\times 2 \\times 3 \\times 4 = 24$$\n:::\n\n## Question 3 : Lire un programme\n\n::: methode\nOn dresse le tableau d'état : à chaque tour, `n` augmente de $1$ et on l'ajoute à `s`, donc $s = 1 + 2 + \\dots + n$.\n:::\n\n::: etape Tableau d'état (derniers tours)\n| `n` | `s` | test `s < 100` |\n|---|---|---|\n| $12$ | $78$ | vrai |\n| $13$ | $91$ | vrai |\n| $14$ | $105$ | faux : arrêt |\n:::\n\n::: etape Vérification en Python\n```python\nn = 0\ns = 0\nwhile s < 100:\n    n = n + 1\n    s = s + n\nprint(n, s)\n```\n\n```console\n14 105\n```\n:::\n\n::: etape Interprétation\nLa boucle s'arrête dès que $1 + 2 + \\dots + n \\ge 100$ : $n = 14$ est le **plus petit** entier tel que $1 + 2 + \\dots + n \\ge 100$. En effet, avec $1 + 2 + \\dots + n = \\dfrac{n(n+1)}{2}$ :\n\n$$\\frac{13 \\times 14}{2} = 91 \\lt 100 \\quad \\text{et} \\quad \\frac{14 \\times 15}{2} = 105 \\ge 100$$\n:::\n\n::: resultat\nLe programme affiche « 14 105 » : $14$ est le plus petit entier $n$ tel que $1 + 2 + \\dots + n \\ge 100$, et cette somme vaut alors $105$.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. `compteur = 1`, puis `while compteur <= 5:` avec affichage et `compteur = compteur + 1` : affiche $1$, $2$, $3$, $4$, $5$.\n2. `f = 1`, `i = 1`, `while i <= 4:` avec `f = f * i` et `i = i + 1` : $4! = 24$.\n3. Le programme affiche « 14 105 » : $n = 14$ est le plus petit entier tel que $1 + 2 + \\dots + n \\ge 100$ (la somme vaut $105$).",
+   "titre": "Boucles WHILE - Répétition conditionnelle",
+   "difficulty": "easy",
+   "contenu": "<!-- optitab:1 -->\nLes programmes suivants utilisent une boucle `while`.\n\n1. Écrire un programme qui affiche les entiers de $1$ à $5$ à l'aide d'une boucle `while`.\n2. Calculer $4! = 1 \\times 2 \\times 3 \\times 4$ à l'aide d'une boucle `while`.\n3. Qu'affiche le programme suivant ? Interpréter le résultat.\n\n   ```python\n   n = 0\n   s = 0\n   while s < 100:\n       n = n + 1\n       s = s + n\n   print(n, s)\n   ```"
+  },
+  {
+   "id": 834,
+   "question": "<!-- optitab:1 -->\nLes instructions `break` (sortir de la boucle) et `continue` (passer au tour suivant) modifient le déroulement d'une boucle.\n\n1. Qu'affichent les deux programmes suivants ?\n   - a) Premier programme :\n\n     ```python\n     for i in range(1, 21):\n         if i > 10:\n             print(\"Trouvé :\", i)\n             break\n     ```\n\n   - b) Second programme :\n\n     ```python\n     for i in range(1, 11):\n         if i % 3 == 0:\n             continue\n         print(i, end=\" \")\n     ```\n\n2. Réécrire le premier programme avec une boucle `while`, sans utiliser `break`.\n3. On considère le programme suivant.\n\n   ```python\n   n = 91\n   for d in range(2, n + 1):\n       if n % d == 0:\n           break\n   print(d)\n   ```\n\n   - a) Qu'affiche-t-il ? Que représente le nombre affiché ?\n   - b) Qu'afficherait-il avec `n = 97` ? Que peut-on en déduire sur $97$ ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Effet de `break` et de `continue`\n\n::: methode\n`break` arrête toute la boucle ; `continue` n'arrête que le tour en cours.\n:::\n\n::: etape a) Programme avec `break`\nPour `i` de $1$ à $10$, le test `i > 10` est faux : rien n'est affiché. Pour `i = 11`, le test est vrai : le programme affiche le message, puis `break` interrompt la boucle ; les valeurs $12$ à $20$ ne sont jamais parcourues.\n\n```console\nTrouvé : 11\n```\n:::\n\n::: etape b) Programme avec `continue`\nPour `i` égal à $3$, $6$ ou $9$, le reste `i % 3` est nul : `continue` fait passer au tour suivant sans afficher. Les autres valeurs sont affichées.\n\n```console\n1 2 4 5 7 8 10\n```\n:::\n\n::: resultat\na) « Trouvé : 11 » ; b) 1 2 4 5 7 8 10 (les multiples de $3$ sont sautés).\n:::\n\n## Question 2 : Sans `break`\n\n::: methode\nLa condition du `while` joue le rôle du test d'arrêt : on avance tant que `i` ne dépasse pas $10$.\n:::\n\n::: etape Programme et affichage\n```python\ni = 1\nwhile i <= 10:\n    i = i + 1\nprint(\"Trouvé :\", i)\n```\n\n```console\nTrouvé : 11\n```\n:::\n\n::: etape Explication\nLa boucle s'arrête quand le test `i <= 10` devient faux, c'est-à-dire pour `i = 11` : l'affichage est le même qu'avec `break`.\n:::\n\n::: resultat\nUne boucle `while i <= 10:` qui augmente `i` de $1$ remplace la boucle `for` et l'instruction `break`.\n:::\n\n## Question 3 : Plus petit diviseur\n\n::: methode\nLa boucle teste les diviseurs possibles $d = 2$, $3$, … dans l'ordre croissant et s'arrête au premier qui divise $n$.\n:::\n\n::: etape a) Cas $n = 91$\n$91$ n'est divisible ni par $2$, ni par $3$, ni par $4$, ni par $5$, ni par $6$ ; en revanche $91 = 7 \\times 13$. La boucle s'arrête donc pour $d = 7$ : le programme affiche le **plus petit diviseur de $91$ supérieur ou égal à $2$**.\n\n```console\n7\n```\n:::\n\n::: etape b) Cas $n = 97$\nAucun entier de $2$ à $96$ ne divise $97$ : la boucle va jusqu'à $d = 97$, qui divise $97$. On vérifie avec les deux valeurs :\n\n```python\nfor n in [91, 97]:\n    for d in range(2, n + 1):\n        if n % d == 0:\n            break\n    print(n, d)\n```\n\n```console\n91 7\n97 97\n```\n:::\n\n::: retenir\nLe plus petit diviseur $d \\ge 2$ d'un entier $n \\ge 2$ vaut $n$ lui-même exactement lorsque $n$ est **premier**.\n:::\n\n::: resultat\na) Le programme affiche $7$, plus petit diviseur de $91$ supérieur ou égal à $2$. b) Il afficherait $97$ : le seul diviseur de $97$ supérieur ou égal à $2$ est $97$, donc $97$ est un nombre premier.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. a) « Trouvé : 11 » ; b) 1 2 4 5 7 8 10.\n2. `i = 1`, puis `while i <= 10:` avec `i = i + 1`, puis `print(\"Trouvé :\", i)` : même affichage.\n3. a) $7$ : plus petit diviseur de $91$ supérieur ou égal à $2$ ($91 = 7 \\times 13$). b) $97$ : $97$ est premier.",
+   "titre": "Instructions break et continue - Contrôle de boucles",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nLes instructions `break` (sortir de la boucle) et `continue` (passer au tour suivant) modifient le déroulement d'une boucle.\n\n1. Qu'affichent les deux programmes suivants ?\n   - a) Premier programme :\n\n     ```python\n     for i in range(1, 21):\n         if i > 10:\n             print(\"Trouvé :\", i)\n             break\n     ```\n\n   - b) Second programme :\n\n     ```python\n     for i in range(1, 11):\n         if i % 3 == 0:\n             continue\n         print(i, end=\" \")\n     ```\n\n2. Réécrire le premier programme avec une boucle `while`, sans utiliser `break`.\n3. On considère le programme suivant.\n\n   ```python\n   n = 91\n   for d in range(2, n + 1):\n       if n % d == 0:\n           break\n   print(d)\n   ```\n\n   - a) Qu'affiche-t-il ? Que représente le nombre affiché ?\n   - b) Qu'afficherait-il avec `n = 97` ? Que peut-on en déduire sur $97$ ?"
+  }
+ ],
+ "images": [
+  {
+   "modele": "CoursImage",
+   "id": 804,
+   "proprietaire": 104,
+   "position": 1,
+   "image": "cours_images/v1_n100_co104_1_organigramme_while.png",
+   "legende": null,
+   "alt_text": "Organigramme d'une boucle while : la condition est testée avant chaque tour ; si elle est vraie, le bloc indenté est exécuté puis on revient au test, sinon le programme continue après la boucle",
+   "title_text": "",
+   "width": 377,
+   "height": 227
+  },
+  {
+   "modele": "CoursImage",
+   "id": 805,
+   "proprietaire": 104,
+   "position": 2,
+   "image": "cours_images/v1_n100_co104_2_seuil_puissances.png",
+   "legende": null,
+   "alt_text": "Nuage des points de coordonnées (n ; 1,5 puissance n) pour n de 0 à 13 et droite horizontale du seuil 100 : le premier point au-dessus du seuil est obtenu pour n = 12, avec 1,5 puissance 12 environ égal à 129,7",
+   "title_text": "",
+   "width": 416,
+   "height": 264
+  },
+  {
+   "modele": "CoursImage",
+   "id": 806,
+   "proprietaire": 104,
+   "position": 3,
+   "image": "cours_images/v1_n100_co104_3_grille_des.png",
+   "legende": null,
+   "alt_text": "Tableau 6 sur 6 des sommes d1 + d2 de deux dés, d1 en ligne (boucle extérieure) et d2 en colonne (boucle intérieure) ; les 6 cases de somme 7 sont surlignées en vert",
+   "title_text": "",
+   "width": 307,
+   "height": 304
+  },
+  {
+   "modele": "CoursImage",
+   "id": 807,
+   "proprietaire": 104,
+   "position": 4,
+   "image": "cours_images/v1_n100_co104_4_dichotomie.png",
+   "legende": null,
+   "alt_text": "Courbe de y = x au cube + x - 1 sur [0 ; 1] coupant l'axe des abscisses en alpha, et intervalles successifs de la dichotomie : [0 ; 1], puis [0,5 ; 1], [0,5 ; 0,75] et [0,625 ; 0,75], qui contiennent tous alpha",
+   "title_text": "",
+   "width": 410,
+   "height": 360
+  }
+ ],
+ "images_creees": [
+  {
+   "modele": "CoursImage",
+   "id": 1092
+  },
+  {
+   "modele": "CoursImage",
+   "id": 1093
+  },
+  {
+   "modele": "SynthesisImage",
+   "id": 451
+  },
+  {
+   "modele": "SynthesisImage",
+   "id": 452
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 4205
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 4206
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 4207
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 4208
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 4209
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 4210
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 4211
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 4212
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 4213
+  }
+ ],
+ "exercices_crees": [
+  {
+   "cle": "nouveau-1",
+   "id": 5540,
+   "titre": "Entraînement - Méthode de Newton"
+  },
+  {
+   "cle": "nouveau-2",
+   "id": 5541,
+   "titre": "Entraînement - Méthode des rectangles"
+  },
+  {
+   "cle": "nouveau-3",
+   "id": 5542,
+   "titre": "Découverte - Seuils avec l'exponentielle et le logarithme"
+  },
+  {
+   "cle": "nouveau-4",
+   "id": 5543,
+   "titre": "Problème - Surréservation et loi binomiale"
+  },
+  {
+   "cle": "nouveau-5",
+   "id": 5544,
+   "titre": "Entraînement - Simuler des échantillons et leurs moyennes"
+  },
+  {
+   "cle": "nouveau-6",
+   "id": 5545,
+   "titre": "Entraînement - Triangle de Pascal et parties d'un ensemble"
+  },
+  {
+   "cle": "nouveau-7",
+   "id": 5546,
+   "titre": "Type examen - Suite récurrente, fonction et algorithme"
+  }
+ ]
+}

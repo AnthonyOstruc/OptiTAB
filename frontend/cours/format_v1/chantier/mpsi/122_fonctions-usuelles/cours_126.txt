@@ -1,0 +1,986 @@
+Titre: Fonctions Usuelles
+
+<!-- optitab:1 -->
+## I. Fonction exponentielle
+
+### Fonction exponentielle $\displaystyle \exp(x) = e^x$
+
+::: definition
+La fonction exponentielle, notée $\exp$ ou $x \mapsto e^x$, est l'unique fonction dérivable sur $\mathbb{R}$ telle que :
+
+::: formule
+$\exp'(x) = \exp(x)$ et $\exp(0) = 1$
+:::
+
+Le nombre $e \approx 2,718$ est défini par $e = \exp(1)$.
+
+**Domaine de définition :** $\displaystyle \mathbb{R}$
+:::
+
+::: propriete
+Pour tous $\displaystyle x, y \in \mathbb{R}$ :
+
+- $\displaystyle e^{x+y} = e^x \times e^y$
+- $\displaystyle e^{-x} = \frac{1}{e^x}$
+- $\displaystyle e^{x-y} = \frac{e^x}{e^y}$
+- $(e^x)^n = e^{nx}$ pour tout $n \in \mathbb{Z}$
+- $\displaystyle e^0 = 1$
+:::
+
+::: remarque Dérivée et variations
+La fonction exponentielle est dérivable sur $\mathbb{R}$ et :
+
+::: formule
+$$(e^x)' = e^x$$
+:::
+
+Comme $e^x > 0$ pour tout $x$, la fonction exponentielle est **strictement croissante** sur $\mathbb{R}$.
+
+La fonction est **convexe** sur $\mathbb{R}$ (car $(e^x)'' = e^x > 0$).
+:::
+
+::: definition Tableau de variation de $\displaystyle \exp(x) = e^x$
+::: tableau
+x : -\infty, +\infty
+Signe de $\displaystyle (e^x)'$ : , +,
+Variation de $\displaystyle e^x$ : -/0, +/+\infty
+:::
+:::
+
+::: methode Limites aux bornes
+- $\displaystyle \lim_{x \to -\infty} e^x = 0$
+- $\displaystyle \lim_{x \to +\infty} e^x = +\infty$
+- $\displaystyle \lim_{x \to 0} \frac{e^x - 1}{x} = 1$ (limite fondamentale)
+:::
+
+::: demonstration Représentation graphique
+La courbe représentative de $\exp$ passe par le point $(0, 1)$, admet l'axe des abscisses comme asymptote horizontale en $-\infty$, et croît très rapidement vers $+\infty$.
+
+La fonction est **convexe** sur $\mathbb{R}$.
+:::
+
+[IMAGE_1]
+
+### Exponentielles en base $\displaystyle a$
+
+::: definition
+Pour $a > 0$ et $a \neq 1$, la fonction exponentielle en base $a$ est définie sur $\mathbb{R}$ par :
+
+::: formule
+$$a^x = e^{x \ln(a)}$$
+:::
+
+**Domaine de définition :** $\displaystyle \mathbb{R}$
+:::
+
+::: propriete
+Pour tous $\displaystyle x, y \in \mathbb{R}$ :
+
+- $\displaystyle a^{x+y} = a^x \times a^y$
+- $\displaystyle a^{-x} = \frac{1}{a^x}$
+- $\displaystyle a^{x-y} = \frac{a^x}{a^y}$
+- $(a^x)^n = a^{nx}$ pour tout $n \in \mathbb{Z}$
+:::
+
+::: remarque Dérivée et variations
+Pour $a > 0$ et $a \neq 1$, la fonction exponentielle en base $a$ est dérivable sur $\mathbb{R}$ et :
+
+::: formule
+$$(a^x)' = \ln(a) \cdot a^x$$
+:::
+
+Si $a > 1$ : la fonction $x \mapsto a^x$ est **strictement croissante** sur $\mathbb{R}$.
+
+Si $0 < a < 1$ : la fonction $x \mapsto a^x$ est **strictement décroissante** sur $\mathbb{R}$.
+:::
+
+::: definition Tableau de variation de $\displaystyle a^x$
+**Cas 1 : $\displaystyle a > 1$**
+
+::: tableau
+x : -\infty, +\infty
+Signe de $\displaystyle (a^x)'$ : , +,
+Variation de $\displaystyle a^x$ : -/0, +/+\infty
+:::
+
+**Cas 2 : $\displaystyle 0 < a < 1$**
+
+::: tableau
+x : -\infty, +\infty
+Signe de $\displaystyle (a^x)'$ : , -,
+Variation de $\displaystyle a^x$ : +/+\infty, -/0
+:::
+:::
+
+::: methode Limites aux bornes
+- Si $a > 1$ : $\lim_{x \to -\infty} a^x = 0$ et $\lim_{x \to +\infty} a^x = +\infty$
+- Si $0 < a < 1$ : $\lim_{x \to -\infty} a^x = +\infty$ et $\lim_{x \to +\infty} a^x = 0$
+:::
+
+::: demonstration Représentation graphique
+La courbe représentative de $x \mapsto a^x$ passe par le point $(0, 1)$.
+
+Si $a > 1$ : elle croît de $0$ vers $+\infty$.
+
+Si $0 < a < 1$ : elle décroît de $+\infty$ vers $0$.
+:::
+
+[IMAGE_2]
+
+## II. Fonction logarithme népérien
+
+### Fonction logarithme népérien $\displaystyle \ln(x)$
+
+::: definition
+La fonction logarithme népérien, notée $\ln$, est la fonction réciproque de la fonction exponentielle.
+
+Elle est définie sur $]0, +\infty[$ et vérifie :
+
+::: formule
+$$y = \ln(x) \Leftrightarrow x = e^y$$
+:::
+
+Pour tout $x > 0$ : $e^{\ln(x)} = x$ et pour tout $x \in \mathbb{R}$ : $\ln(e^x) = x$.
+
+**Domaine de définition :** $\displaystyle ]0, +\infty[$
+:::
+
+::: propriete
+Pour tous $x, y > 0$ et pour tout $n \in \mathbb{Z}$ :
+
+- $\displaystyle \ln(xy) = \ln(x) + \ln(y)$
+- $\displaystyle \ln\left(\frac{x}{y}\right) = \ln(x) - \ln(y)$
+- $\displaystyle \ln(x^n) = n \ln(x)$
+- $\displaystyle \ln\left(\frac{1}{x}\right) = -\ln(x)$
+- $\ln(1) = 0$ et $\ln(e) = 1$
+:::
+
+::: remarque Dérivée et variations
+La fonction logarithme népérien est dérivable sur $]0, +\infty[$ et :
+
+::: formule
+$$(\ln(x))' = \frac{1}{x}$$
+:::
+
+Comme $\frac{1}{x} > 0$ pour tout $x > 0$, la fonction logarithme népérien est **strictement croissante** sur $]0, +\infty[$.
+
+La fonction est **concave** sur $]0, +\infty[$ (car $(\ln(x))'' = -\frac{1}{x^2} < 0$).
+:::
+
+::: definition Tableau de variation de $\displaystyle \ln(x)$
+::: tableau
+x : 0^+, +\infty
+Signe de $\displaystyle (\ln(x))'$ : , +,
+Variation de $\displaystyle \ln(x)$ : -/-\infty, +/+\infty
+:::
+:::
+
+::: methode Limites aux bornes
+- $\displaystyle \lim_{x \to 0^+} \ln(x) = -\infty$
+- $\displaystyle \lim_{x \to +\infty} \ln(x) = +\infty$
+- $\displaystyle \lim_{x \to 0} \frac{\ln(1+x)}{x} = 1$ (limite fondamentale)
+:::
+
+::: demonstration Représentation graphique
+La courbe représentative de $\ln$ passe par le point $(1, 0)$, admet l'axe des ordonnées comme asymptote verticale en $0^+$, et croît lentement vers $+\infty$.
+
+Les courbes de $\exp$ et $\ln$ sont symétriques par rapport à la droite $y = x$.
+
+La fonction est **concave** sur $]0, +\infty[$.
+:::
+
+[IMAGE_3]
+
+## III. Fonctions puissances
+
+### Fonction puissance $\displaystyle x^\alpha$
+
+::: definition
+Pour $\alpha \in \mathbb{R}$, la fonction puissance d'exposant $\alpha$ est définie sur $]0, +\infty[$ par :
+
+::: formule
+$$x^\alpha = e^{\alpha \ln(x)}$$
+:::
+
+**Domaine de définition :** $]0, +\infty[$ (ou $\mathbb{R}$ si $\alpha \in \mathbb{N}$, ou $\mathbb{R}^{\ast}$ si $\alpha \in \mathbb{Z}^-$)
+:::
+
+::: propriete
+- Pour $x, y > 0$ et $\alpha, \beta \in \mathbb{R}$ : $(xy)^\alpha = x^\alpha y^\alpha$
+- $\displaystyle x^{\alpha+\beta} = x^\alpha x^\beta$
+- $\displaystyle (x^\alpha)^\beta = x^{\alpha\beta}$
+- **Cas particuliers :** Si $\alpha = \frac{1}{n}$ avec $n \in \mathbb{N}^{\ast}$ : $x^{1/n} = \sqrt[n]{x}$ (racine n-ième)
+:::
+
+::: remarque Dérivée et variations
+Pour $x > 0$ et $\alpha \in \mathbb{R}$, la fonction puissance est dérivable et :
+
+::: formule
+$$(x^\alpha)' = \alpha x^{\alpha-1}$$
+:::
+
+Si $\alpha > 0$ : la fonction $x \mapsto x^\alpha$ est **strictement croissante** sur $]0, +\infty[$.
+
+Si $\alpha < 0$ : la fonction $x \mapsto x^\alpha$ est **strictement décroissante** sur $]0, +\infty[$.
+:::
+
+::: definition Tableau de variation de $\displaystyle x^\alpha$
+**Cas 1 : $\displaystyle \alpha > 0$**
+
+::: tableau
+x : 0^+, +\infty
+Signe de $\displaystyle (x^\alpha)'$ : , +,
+Variation de $\displaystyle x^\alpha$ : -/0, +/+\infty
+:::
+
+**Cas 2 : $\displaystyle \alpha < 0$**
+
+::: tableau
+x : 0^+, +\infty
+Signe de $\displaystyle (x^\alpha)'$ : , -,
+Variation de $\displaystyle x^\alpha$ : +/+\infty, -/0
+:::
+:::
+
+::: methode Limites aux bornes
+- Si $\alpha > 0$ : $\lim_{x \to 0^+} x^\alpha = 0$ et $\lim_{x \to +\infty} x^\alpha = +\infty$
+- Si $\alpha < 0$ : $\lim_{x \to 0^+} x^\alpha = +\infty$ et $\lim_{x \to +\infty} x^\alpha = 0$
+:::
+
+::: demonstration Représentation graphique
+La courbe représentative de $x \mapsto x^\alpha$ passe par le point $(1, 1)$.
+
+Le comportement dépend du signe de $\alpha$ : croissante si $\alpha > 0$, décroissante si $\alpha < 0$.
+:::
+
+[IMAGE_4]
+
+## IV. Croissances comparées
+
+### Ordre de croissance à l'infini
+
+::: theoreme
+Pour tout $\alpha > 0$ et tout $\beta > 0$ :
+
+::: formule
+$$\lim_{x \to +\infty} \frac{\ln(x)}{x^\alpha} = 0$$
+:::
+
+::: formule
+$$\lim_{x \to +\infty} \frac{x^\beta}{e^x} = 0$$
+:::
+:::
+
+::: propriete Interprétation
+À l'infini, l'ordre de croissance est le suivant (du plus lent au plus rapide) :
+
+**Logarithme $\ll$ Puissances $\ll$ Exponentielle**
+
+Le logarithme croît plus lentement que toute puissance, et toute puissance croît plus lentement que l'exponentielle.
+:::
+
+::: exemple
+- $\displaystyle \lim_{x \to +\infty} \frac{\ln(x)}{x} = 0$
+- $\displaystyle \lim_{x \to +\infty} \frac{\ln(x)}{x^2} = 0$
+- $\displaystyle \lim_{x \to +\infty} \frac{x^{100}}{e^x} = 0$
+- $\displaystyle \lim_{x \to +\infty} \frac{x}{e^x} = 0$
+:::
+
+::: demonstration Représentation graphique
+Le graphique suivant illustre la comparaison des croissances des fonctions croissantes principales :
+
+On peut visualiser que le logarithme croît très lentement, les puissances croissent de manière polynomiale, et l'exponentielle croît de manière exponentielle (la plus rapide).
+:::
+
+[IMAGE_5]
+
+### Limites en 0
+
+::: definition Limites fondamentales
+- $\displaystyle \lim_{x \to 0^+} x \ln(x) = 0^-$
+- $\displaystyle \lim_{x \to 0} \frac{e^x - 1}{x} = 1$
+- $\displaystyle \lim_{x \to 0} \frac{\ln(1+x)}{x} = 1$
+:::
+
+::: conseil
+Ces limites fondamentales sont très utiles pour lever les formes indéterminées du type $\frac{0}{0}$.
+
+On peut s'en servir pour transformer des expressions et résoudre des limites qui semblent indéterminées.
+:::
+
+::: remarque Équivalents usuels quand $\displaystyle x \to 0$
+- $\displaystyle e^x - 1 \sim x$
+- $\displaystyle \ln(1+x) \sim x$
+- $\displaystyle \sin(x) \sim x$
+- $\displaystyle \tan(x) \sim x$
+- Plus fin : $e^x = 1 + x + \frac{x^2}{2} + o(x^2)$, $\quad \ln(1+x) = x - \frac{x^2}{2} + o(x^2)$, $\quad \sin(x) = x - \frac{x^3}{6} + o(x^3)$
+
+Très pratique pour lever des formes indéterminées $\frac{0}{0}$.
+:::
+
+## V. Fonctions circulaires directes
+
+### Fonction sinus $\displaystyle \sin(x)$
+
+::: definition
+La fonction sinus est définie sur $\mathbb{R}$ à partir du cercle trigonométrique.
+
+Pour tout $x \in \mathbb{R}$, si $M$ est le point du cercle trigonométrique associé à l'angle $x$, alors $\sin(x)$ est l'ordonnée de $M$.
+
+**Domaine de définition :** $\displaystyle \mathbb{R}$
+:::
+
+::: propriete
+- **Relation fondamentale :** $\cos^2(x) + \sin^2(x) = 1$ pour tout $x \in \mathbb{R}$
+- **Périodicité :** $\sin(x + 2\pi) = \sin(x)$ pour tout $x \in \mathbb{R}$ (période $2\pi$)
+- **Parité :** $\sin(-x) = -\sin(x)$ (fonction **impaire**)
+- **Bornes :** Pour tout $x \in \mathbb{R}$, $-1 \leq \sin(x) \leq 1$
+- **Décalage :** $\displaystyle \sin(x) = \cos\left(x - \frac{\pi}{2}\right)$
+:::
+
+::: remarque Dérivée et variations
+La fonction sinus est dérivable sur $\mathbb{R}$ et :
+
+::: formule
+$$(\sin(x))' = \cos(x)$$
+:::
+
+La fonction sinus est **périodique** de période $2\pi$ et n'est pas monotone sur $\mathbb{R}$.
+:::
+
+::: definition Tableau de variation de $\sin(x)$ sur $\left[-\frac{\pi}{2}, \frac{3\pi}{2}\right]$
+::: tableau
+x : -\frac{\pi}{2}, \frac{\pi}{2}, \frac{3\pi}{2}
+Signe de $\displaystyle (\sin(x))'$ : , +, z, -, z
+Variation de $\displaystyle \sin(x)$ : -/-1, +/1, -/-1
+:::
+:::
+
+::: methode Limites aux bornes
+- $\displaystyle \lim_{x \to 0} \frac{\sin(x)}{x} = 1$ (limite fondamentale)
+- Les fonctions trigonométriques n'ont pas de limites en $\pm\infty$ (elles oscillent)
+:::
+
+::: demonstration Représentation graphique
+La courbe représentative de $\sin$ passe par le point $(0, 0)$, est **impaire** et **périodique** de période $2\pi$.
+
+La fonction oscille entre $-1$ et $1$.
+:::
+
+[IMAGE_6]
+
+### Fonction cosinus $\displaystyle \cos(x)$
+
+::: definition
+La fonction cosinus est définie sur $\mathbb{R}$ à partir du cercle trigonométrique.
+
+Pour tout $x \in \mathbb{R}$, si $M$ est le point du cercle trigonométrique associé à l'angle $x$, alors $\cos(x)$ est l'abscisse de $M$.
+
+**Domaine de définition :** $\displaystyle \mathbb{R}$
+:::
+
+::: propriete
+- **Relation fondamentale :** $\cos^2(x) + \sin^2(x) = 1$ pour tout $x \in \mathbb{R}$
+- **Périodicité :** $\cos(x + 2\pi) = \cos(x)$ pour tout $x \in \mathbb{R}$ (période $2\pi$)
+- **Parité :** $\cos(-x) = \cos(x)$ (fonction **paire**)
+- **Bornes :** Pour tout $x \in \mathbb{R}$, $-1 \leq \cos(x) \leq 1$
+- **Décalage :** $\displaystyle \cos(x) = \sin\left(x + \frac{\pi}{2}\right)$
+:::
+
+::: remarque Dérivée et variations
+La fonction cosinus est dérivable sur $\mathbb{R}$ et :
+
+::: formule
+$$(\cos(x))' = -\sin(x)$$
+:::
+
+La fonction cosinus est **périodique** de période $2\pi$ et n'est pas monotone sur $\mathbb{R}$.
+:::
+
+::: definition Tableau de variation de $\cos(x)$ sur $[0, 2\pi]$
+::: tableau
+x : 0, \pi, 2\pi
+Signe de $\displaystyle (\cos(x))'$ : , -, z, +, z
+Variation de $\displaystyle \cos(x)$ : +/1, -/-1, +/1
+:::
+:::
+
+::: methode Limites aux bornes
+- $\displaystyle \lim_{x \to 0} \frac{1-\cos(x)}{x^2} = \frac{1}{2}$ (limite fondamentale)
+- Les fonctions trigonométriques n'ont pas de limites en $\pm\infty$ (elles oscillent)
+:::
+
+::: demonstration Représentation graphique
+La courbe représentative de $\cos$ passe par le point $(0, 1)$, est **paire** et **périodique** de période $2\pi$.
+
+La fonction oscille entre $-1$ et $1$.
+:::
+
+[IMAGE_7]
+
+::: exemple Valeurs remarquables
+| $\displaystyle x$ | $\displaystyle 0$ | $\displaystyle \frac{\pi}{6}$ | $\displaystyle \frac{\pi}{4}$ | $\displaystyle \frac{\pi}{3}$ | $\displaystyle \frac{\pi}{2}$ |
+|---|---|---|---|---|---|
+| $\displaystyle \sin(x)$ | $\displaystyle 0$ | $\displaystyle \frac{1}{2}$ | $\displaystyle \frac{\sqrt{2}}{2}$ | $\displaystyle \frac{\sqrt{3}}{2}$ | $\displaystyle 1$ |
+| $\displaystyle \cos(x)$ | $\displaystyle 1$ | $\displaystyle \frac{\sqrt{3}}{2}$ | $\displaystyle \frac{\sqrt{2}}{2}$ | $\displaystyle \frac{1}{2}$ | $\displaystyle 0$ |
+:::
+
+### Fonction tangente $\displaystyle \tan(x)$
+
+::: definition
+La fonction tangente est définie sur $\mathbb{R} \setminus \left\{\frac{\pi}{2} + k\pi, k \in \mathbb{Z}\right\}$ par :
+
+::: formule
+$$\tan(x) = \frac{\sin(x)}{\cos(x)}$$
+:::
+
+**Domaine de définition :** $\displaystyle \mathbb{R} \setminus \left\{\frac{\pi}{2} + k\pi, k \in \mathbb{Z}\right\}$
+:::
+
+::: propriete
+- **Périodicité :** $\tan(x + \pi) = \tan(x)$ pour tout $x$ dans le domaine de définition (période $\pi$)
+- **Parité :** $\tan(-x) = -\tan(x)$ (fonction **impaire**)
+- **Valeur remarquable :** $\displaystyle \tan(0) = 0$
+:::
+
+::: remarque Dérivée et variations
+La fonction tangente est dérivable sur son domaine de définition et :
+
+::: formule
+$$(\tan(x))' = \frac{1}{\cos^2(x)} = 1 + \tan^2(x)$$
+:::
+
+La fonction tangente est **strictement croissante** sur chaque intervalle de son domaine de définition.
+:::
+
+::: definition Tableau de variation de $\tan(x)$ sur $\left]-\frac{\pi}{2}, \frac{\pi}{2}\right[$
+::: tableau
+x : -\frac{\pi}{2}^+, \frac{\pi}{2}^-
+Signe de $\displaystyle (\tan(x))'$ : , +,
+Variation de $\displaystyle \tan(x)$ : -/-\infty, +/+\infty
+:::
+:::
+
+::: methode Limites aux bornes
+- $\lim_{x \to \frac{\pi}{2}^-} \tan(x) = +\infty$ et $\lim_{x \to \frac{\pi}{2}^+} \tan(x) = -\infty$
+- $\displaystyle \lim_{x \to 0} \frac{\tan(x)}{x} = 1$ (limite fondamentale)
+:::
+
+::: demonstration Représentation graphique
+La courbe représentative de $\tan$ passe par le point $(0, 0)$, est **impaire** et **périodique** de période $\pi$.
+
+Elle admet des asymptotes verticales aux points $x = \frac{\pi}{2} + k\pi$ avec $k \in \mathbb{Z}$.
+:::
+
+[IMAGE_8]
+
+::: exemple Valeurs remarquables
+- $\displaystyle \tan(0) = 0$
+- $\displaystyle \tan\left(\frac{\pi}{6}\right) = \frac{1}{\sqrt{3}}$
+- $\displaystyle \tan\left(\frac{\pi}{4}\right) = 1$
+- $\displaystyle \tan\left(\frac{\pi}{3}\right) = \sqrt{3}$
+:::
+
+## VI. Fonctions circulaires réciproques
+
+### Fonction arcsinus $\displaystyle \arcsin(x)$
+
+::: definition
+La fonction $\arcsin$ est la réciproque de la restriction de $\sin$ à $\left[-\frac{\pi}{2}, \frac{\pi}{2}\right]$.
+
+Elle est définie sur $[-1, 1]$ et à valeurs dans $\left[-\frac{\pi}{2}, \frac{\pi}{2}\right]$.
+
+::: formule
+$y = \arcsin(x) \Leftrightarrow x = \sin(y)$ avec $y \in \left[-\frac{\pi}{2}, \frac{\pi}{2}\right]$
+:::
+
+**Domaine de définition :** $\displaystyle [-1, 1]$
+:::
+
+::: propriete
+- **Parité :** Impaire : $\displaystyle \arcsin(-x) = -\arcsin(x)$
+- **Valeurs remarquables :** $\arcsin(0) = 0$, $\arcsin(1) = \frac{\pi}{2}$, $\arcsin(-1) = -\frac{\pi}{2}$
+- **Relation avec arccosinus :** $\arcsin(x) + \arccos(x) = \frac{\pi}{2}$ pour tout $x \in [-1, 1]$
+:::
+
+::: remarque Dérivée et variations
+La fonction arcsinus est dérivable sur $]-1, 1[$ et :
+
+::: formule
+$$(\arcsin(x))' = \frac{1}{\sqrt{1-x^2}}$$
+:::
+
+La fonction arcsinus est **strictement croissante** sur $[-1, 1]$.
+:::
+
+::: definition Tableau de variation de $\displaystyle \arcsin(x)$
+::: tableau
+x : -1, 1
+Signe de $\displaystyle (\arcsin(x))'$ : , +,
+Variation de $\displaystyle \arcsin(x)$ : -/-\frac{\pi}{2}, +/\frac{\pi}{2}
+:::
+:::
+
+::: methode Limites aux bornes
+- $\displaystyle \lim_{x \to -1^+} \arcsin(x) = -\frac{\pi}{2}$
+- $\displaystyle \lim_{x \to 1^-} \arcsin(x) = \frac{\pi}{2}$
+:::
+
+::: demonstration Représentation graphique
+La courbe représentative de $\arcsin$ passe par le point $(0, 0)$, est **impaire** et strictement croissante sur $[-1, 1]$.
+
+Elle admet des tangentes verticales aux points $x = -1$ et $x = 1$.
+:::
+
+[IMAGE_9]
+
+### Fonction arccosinus $\displaystyle \arccos(x)$
+
+::: definition
+La fonction $\arccos$ est la réciproque de la restriction de $\cos$ à $[0, \pi]$.
+
+Elle est définie sur $[-1, 1]$ et à valeurs dans $[0, \pi]$.
+
+::: formule
+$y = \arccos(x) \Leftrightarrow x = \cos(y)$ avec $y \in [0, \pi]$
+:::
+
+**Domaine de définition :** $\displaystyle [-1, 1]$
+:::
+
+::: propriete
+- **Relation avec arcsinus :** $\arccos(x) + \arcsin(x) = \frac{\pi}{2}$ pour tout $x \in [-1, 1]$
+- **Valeurs remarquables :** $\arccos(0) = \frac{\pi}{2}$, $\arccos(1) = 0$, $\arccos(-1) = \pi$
+- **Symétrie :** $\arccos(-x) = \pi - \arccos(x)$ pour tout $x \in [-1, 1]$
+:::
+
+::: remarque Dérivée et variations
+La fonction arccosinus est dérivable sur $]-1, 1[$ et :
+
+::: formule
+$$(\arccos(x))' = -\frac{1}{\sqrt{1-x^2}}$$
+:::
+
+La fonction arccosinus est **strictement décroissante** sur $[-1, 1]$.
+:::
+
+::: definition Tableau de variation de $\displaystyle \arccos(x)$
+::: tableau
+x : -1, 1
+Signe de $\displaystyle (\arccos(x))'$ : , -,
+Variation de $\displaystyle \arccos(x)$ : +/\pi, -/0
+:::
+:::
+
+::: methode Limites aux bornes
+- $\displaystyle \lim_{x \to -1^+} \arccos(x) = \pi$
+- $\displaystyle \lim_{x \to 1^-} \arccos(x) = 0$
+:::
+
+::: demonstration Représentation graphique
+La courbe représentative de $\arccos$ passe par le point $(1, 0)$, est strictement décroissante sur $[-1, 1]$.
+
+Elle admet des tangentes verticales aux points $x = -1$ et $x = 1$.
+:::
+
+[IMAGE_10]
+
+### Fonction arctangente $\displaystyle \arctan(x)$
+
+::: definition
+La fonction $\arctan$ est la réciproque de la restriction de $\tan$ à $\left]-\frac{\pi}{2}, \frac{\pi}{2}\right[$.
+
+Elle est définie sur $\mathbb{R}$ et à valeurs dans $\left]-\frac{\pi}{2}, \frac{\pi}{2}\right[$.
+
+::: formule
+$y = \arctan(x) \Leftrightarrow x = \tan(y)$ avec $y \in \left]-\frac{\pi}{2}, \frac{\pi}{2}\right[$
+:::
+
+**Domaine de définition :** $\displaystyle \mathbb{R}$
+:::
+
+::: propriete
+- **Parité :** Impaire : $\displaystyle \arctan(-x) = -\arctan(x)$
+- **Valeurs remarquables :** $\arctan(0) = 0$, $\arctan(1) = \frac{\pi}{4}$, $\arctan(-1) = -\frac{\pi}{4}$
+- **Relation avec arctangente :** $\arctan(x) + \arctan\left(\frac{1}{x}\right) = \frac{\pi}{2}$ pour tout $x > 0$
+:::
+
+::: remarque Dérivée et variations
+La fonction arctangente est dérivable sur $\mathbb{R}$ et :
+
+::: formule
+$$(\arctan(x))' = \frac{1}{1+x^2}$$
+:::
+
+La fonction arctangente est **strictement croissante** sur $\mathbb{R}$.
+:::
+
+::: definition Tableau de variation de $\displaystyle \arctan(x)$
+::: tableau
+x : -\infty, +\infty
+Signe de $\displaystyle (\arctan(x))'$ : , +,
+Variation de $\displaystyle \arctan(x)$ : -/-\frac{\pi}{2}, +/\frac{\pi}{2}
+:::
+:::
+
+::: methode Limites aux bornes
+- $\displaystyle \lim_{x \to -\infty} \arctan(x) = -\frac{\pi}{2}$
+- $\displaystyle \lim_{x \to +\infty} \arctan(x) = \frac{\pi}{2}$
+:::
+
+::: demonstration Représentation graphique
+La courbe représentative de $\arctan$ passe par le point $(0, 0)$, est **impaire** et strictement croissante sur $\mathbb{R}$.
+
+Elle admet deux asymptotes horizontales : $y = -\frac{\pi}{2}$ en $-\infty$ et $y = \frac{\pi}{2}$ en $+\infty$.
+:::
+
+[IMAGE_11]
+
+## VII. Fonctions hyperboliques
+
+### Fonction sinus hyperbolique $\displaystyle \text{sh}(x)$
+
+::: definition
+Pour tout $x \in \mathbb{R}$, le sinus hyperbolique est défini par :
+
+::: formule
+$$\text{sh}(x) = \frac{e^x - e^{-x}}{2}$$
+:::
+
+**Domaine de définition :** $\displaystyle \mathbb{R}$
+:::
+
+::: propriete
+- **Parité :** Impaire : $\displaystyle \text{sh}(-x) = -\text{sh}(x)$
+- **Valeur remarquable :** $\displaystyle \text{sh}(0) = 0$
+- **Relation fondamentale :** $\text{ch}^2(x) - \text{sh}^2(x) = 1$ pour tout $x \in \mathbb{R}$
+:::
+
+::: remarque Dérivée et variations
+La fonction sinus hyperbolique est dérivable sur $\mathbb{R}$ et :
+
+::: formule
+$$(\text{sh}(x))' = \text{ch}(x)$$
+:::
+
+La fonction sinus hyperbolique est **strictement croissante** sur $\mathbb{R}$.
+:::
+
+::: definition Tableau de variation de $\displaystyle \text{sh}(x)$
+::: tableau
+x : -\infty, +\infty
+Signe de $\displaystyle (\text{sh}(x))'$ : , +,
+Variation de $\displaystyle \text{sh}(x)$ : -/-\infty, +/+\infty
+:::
+:::
+
+::: methode Limites aux bornes
+- $\displaystyle \lim_{x \to -\infty} \text{sh}(x) = -\infty$
+- $\displaystyle \lim_{x \to +\infty} \text{sh}(x) = +\infty$
+:::
+
+::: demonstration Représentation graphique
+La courbe représentative de $\text{sh}$ passe par le point $(0, 0)$, est **impaire** et strictement croissante sur $\mathbb{R}$.
+
+Elle présente une croissance rapide vers $\pm\infty$.
+:::
+
+[IMAGE_12]
+
+### Fonction cosinus hyperbolique $\displaystyle \text{ch}(x)$
+
+::: definition
+Pour tout $x \in \mathbb{R}$, le cosinus hyperbolique est défini par :
+
+::: formule
+$$\text{ch}(x) = \frac{e^x + e^{-x}}{2}$$
+:::
+
+**Domaine de définition :** $\displaystyle \mathbb{R}$
+:::
+
+::: propriete
+- **Parité :** Paire : $\displaystyle \text{ch}(-x) = \text{ch}(x)$
+- **Valeur remarquable :** $\text{ch}(0) = 1$ (minimum global)
+- **Inégalité :** $\text{ch}(x) \geq 1$ pour tout $x \in \mathbb{R}$
+- **Relation fondamentale :** $\text{ch}^2(x) - \text{sh}^2(x) = 1$ pour tout $x \in \mathbb{R}$
+:::
+
+::: remarque Dérivée et variations
+La fonction cosinus hyperbolique est dérivable sur $\mathbb{R}$ et :
+
+::: formule
+$$(\text{ch}(x))' = \text{sh}(x)$$
+:::
+
+La fonction cosinus hyperbolique est **strictement décroissante** sur $]-\infty, 0]$ et **strictement croissante** sur $[0, +\infty[$.
+:::
+
+::: definition Tableau de variation de $\displaystyle \text{ch}(x)$
+::: tableau
+x : -\infty, 0, +\infty
+Signe de $\displaystyle (\text{ch}(x))'$ : , -, z, +,
+Variation de $\displaystyle \text{ch}(x)$ : +/+\infty, -/1, +/+\infty
+:::
+:::
+
+::: methode Limites aux bornes
+- $\displaystyle \lim_{x \to -\infty} \text{ch}(x) = +\infty$
+- $\displaystyle \lim_{x \to +\infty} \text{ch}(x) = +\infty$
+:::
+
+::: demonstration Représentation graphique
+La courbe représentative de $\text{ch}$ passe par le point $(0, 1)$, est **paire** et admet un minimum en $x = 0$.
+
+Elle présente une croissance rapide vers $+\infty$ en $\pm\infty$.
+:::
+
+[IMAGE_13]
+
+### Fonction tangente hyperbolique $\displaystyle \text{th}(x)$
+
+::: definition
+Pour tout $x \in \mathbb{R}$, la tangente hyperbolique est définie par :
+
+::: formule
+$$
+\begin{aligned}
+\text{th}(x) &= \frac{\text{sh}(x)}{\text{ch}(x)} \\
+&= \frac{e^x - e^{-x}}{e^x + e^{-x}}
+\end{aligned}
+$$
+:::
+
+**Domaine de définition :** $\displaystyle \mathbb{R}$
+:::
+
+::: propriete
+- **Parité :** Impaire : $\displaystyle \text{th}(-x) = -\text{th}(x)$
+- **Valeur remarquable :** $\displaystyle \text{th}(0) = 0$
+- **Encadrement :** $-1 < \text{th}(x) < 1$ pour tout $x \in \mathbb{R}$
+- **Relation utile :** $1 - \text{th}^2(x) = \frac{1}{\text{ch}^2(x)}$ pour tout $x \in \mathbb{R}$
+:::
+
+::: remarque Dérivée et variations
+La fonction tangente hyperbolique est dérivable sur $\mathbb{R}$ et :
+
+::: formule
+$$
+\begin{aligned}
+(\text{th}(x))' &= \frac{1}{\text{ch}^2(x)} \\
+&= 1 - \text{th}^2(x)
+\end{aligned}
+$$
+:::
+
+La fonction tangente hyperbolique est **strictement croissante** sur $\mathbb{R}$.
+:::
+
+::: definition Tableau de variation de $\displaystyle \text{th}(x)$
+::: tableau
+x : -\infty, +\infty
+Signe de $\displaystyle (\text{th}(x))'$ : , +,
+Variation de $\displaystyle \text{th}(x)$ : -/-1, +/1
+:::
+:::
+
+::: methode Limites aux bornes
+- $\displaystyle \lim_{x \to -\infty} \text{th}(x) = -1$
+- $\displaystyle \lim_{x \to +\infty} \text{th}(x) = 1$
+:::
+
+::: demonstration Représentation graphique
+La courbe représentative de $\text{th}$ passe par le point $(0, 0)$, est **impaire** et strictement croissante sur $\mathbb{R}$.
+
+Elle admet deux asymptotes horizontales : $y = -1$ en $-\infty$ et $y = 1$ en $+\infty$.
+:::
+
+[IMAGE_14]
+
+## VIII. Boîte à outils : dérivées de compositions usuelles
+
+### Dérivées de fonctions composées
+
+::: definition Dérivées des compositions usuelles
+Soit $u$ une fonction dérivable. Les dérivées suivantes sont très utiles :
+
+| Fonction | Dérivée |
+|---|---|
+| $\displaystyle e^{u(x)}$ | $\displaystyle u'(x) \cdot e^{u(x)}$ |
+| $\displaystyle \ln(u(x))$ | $\displaystyle \frac{u'(x)}{u(x)}$ (avec $\displaystyle u(x) > 0$) |
+| $\displaystyle a^{u(x)}$ | $\displaystyle u'(x) \ln(a) \cdot a^{u(x)}$ (avec $\displaystyle a > 0$, $\displaystyle a \neq 1$) |
+| $\displaystyle (u(x))^\alpha$ | $\displaystyle \alpha (u(x))^{\alpha-1} \cdot u'(x)$ (avec $\displaystyle u(x) > 0$) |
+| $\displaystyle \arcsin(u(x))$ | $\displaystyle \frac{u'(x)}{\sqrt{1-u(x)^2}}$ (avec $\displaystyle |u(x)| < 1$) |
+| $\displaystyle \arccos(u(x))$ | $\displaystyle -\frac{u'(x)}{\sqrt{1-u(x)^2}}$ (avec $\displaystyle |u(x)| < 1$) |
+| $\displaystyle \arctan(u(x))$ | $\displaystyle \frac{u'(x)}{1+u(x)^2}$ |
+| $\displaystyle \sin(u(x))$ | $\displaystyle u'(x) \cdot \cos(u(x))$ |
+| $\displaystyle \cos(u(x))$ | $\displaystyle -u'(x) \cdot \sin(u(x))$ |
+| $\displaystyle \tan(u(x))$ | $\displaystyle \frac{u'(x)}{\cos^2(u(x))} = u'(x)(1 + \tan^2(u(x)))$ (avec $\displaystyle \cos(u(x)) \neq 0$) |
+:::
+
+::: exemple
+- $\displaystyle (e^{x^2})' = 2x \cdot e^{x^2}$
+- $\displaystyle (\ln(x^2+1))' = \frac{2x}{x^2+1}$
+- $\displaystyle ((x^2+1)^3)' = 3(x^2+1)^2 \cdot 2x = 6x(x^2+1)^2$
+- $\displaystyle (\arctan(x^2))' = \frac{2x}{1+x^4}$
+:::
+
+## IX. Propriétés globales à vue d'œil
+
+### Résumé des propriétés principales
+
+::: definition Fonction exponentielle ($\displaystyle e^x$)
+- **Parité :** Aucune (ni paire, ni impaire)
+- **Monotonie :** Strictement croissante sur $\mathbb{R}$
+- **Convexité :** Strictement convexe sur $\mathbb{R}$
+:::
+
+::: definition Fonction logarithme népérien ($\ln(x)$)
+- **Parité :** Aucune
+- **Monotonie :** Strictement croissante sur $]0, +\infty[$
+- **Convexité :** Strictement concave sur $]0, +\infty[$
+:::
+
+::: definition Fonctions puissances ($x^\alpha$ sur $]0, +\infty[$)
+- **Monotonie :** Selon le signe de $\alpha$ (croissante si $\alpha > 0$, décroissante si $\alpha < 0$)
+- **Convexité :** Convexe si $\alpha \geq 1$ ou $\alpha \leq 0$, concave si $0 < \alpha \leq 1$
+:::
+
+::: definition Fonctions circulaires directes
+- **sin :** Impaire, périodique de période $2\pi$, bornée : $|\sin(x)| \leq 1$
+- **cos :** Paire, périodique de période $2\pi$, bornée : $|\cos(x)| \leq 1$
+- **tan :** Impaire, périodique de période $\pi$, définie sur $\mathbb{R} \setminus \left\{\frac{\pi}{2} + k\pi, k \in \mathbb{Z}\right\}$
+:::
+
+::: definition Fonctions hyperboliques
+- **sh :** Impaire, strictement croissante sur $\mathbb{R}$
+- **ch :** Paire, minimum en $0$ (valeur : $1$), strictement décroissante sur $]-\infty, 0]$ et strictement croissante sur $[0, +\infty[$
+- **th :** Impaire, strictement croissante sur $\mathbb{R}$, $|\text{th}(x)| < 1$ pour tout $x \in \mathbb{R}$
+:::
+
+## X. Encadrés équations et inéquations types
+
+### Règles de résolution pratiques
+
+::: definition Avec le logarithme népérien
+Pour $\displaystyle u, v > 0$ :
+
+::: formule
+$$\ln(u) \leq \ln(v) \Leftrightarrow u \leq v$$
+:::
+
+Le logarithme népérien étant strictement croissant, il conserve l'ordre.
+:::
+
+::: definition Avec l'exponentielle
+Pour tous $\displaystyle u, v \in \mathbb{R}$ :
+
+::: formule
+$$e^u \leq e^v \Leftrightarrow u \leq v$$
+:::
+
+L'exponentielle étant strictement croissante, elle conserve l'ordre.
+:::
+
+::: definition Avec les fonctions puissances (sur $]0, +\infty[$)
+Pour $\displaystyle u, v > 0$ :
+
+- Si $\alpha > 0$ : $u^\alpha \leq v^\alpha \Leftrightarrow u \leq v$
+- Si $\alpha < 0$ : $u^\alpha \leq v^\alpha \Leftrightarrow u \geq v$ (inversion de l'inégalité)
+
+L'ordre est conservé si l'exposant est positif, inversé si l'exposant est négatif.
+:::
+
+::: exemple
+- $\displaystyle \ln(x^2+1) \leq \ln(5) \Leftrightarrow x^2+1 \leq 5 \Leftrightarrow x^2 \leq 4 \Leftrightarrow |x| \leq 2$
+- $\displaystyle e^{2x} \leq e^6 \Leftrightarrow 2x \leq 6 \Leftrightarrow x \leq 3$
+- $x^3 \leq 8$ (avec $x > 0$) $\Leftrightarrow x \leq 2$
+- $x^{-2} \leq 4$ (avec $x > 0$) $\Leftrightarrow x^2 \geq \frac{1}{4} \Leftrightarrow x \geq \frac{1}{2}$ (inversion car exposant négatif)
+:::
+
+## XI. Primitives usuelles
+
+### Tableau des primitives fondamentales
+
+::: definition Primitives des fonctions usuelles
+Les primitives suivantes sont très utiles en calcul intégral :
+
+- $\displaystyle \int e^x \, dx = e^x + C$
+- $\int \frac{dx}{x} = \ln|x| + C$ (attention à la valeur absolue !)
+- $\displaystyle \int \sin(x) \, dx = -\cos(x) + C$
+- $\displaystyle \int \cos(x) \, dx = \sin(x) + C$
+- $\displaystyle \int \frac{dx}{1+x^2} = \arctan(x) + C$
+- $\displaystyle \int \frac{dx}{\sqrt{1-x^2}} = \arcsin(x) + C$
+:::
+
+::: attention
+Pour $\int \frac{dx}{x}$, il faut **absolument** mettre la valeur absolue : $\ln|x|$ et non $\ln(x)$.
+
+En effet, $\frac{1}{x}$ est définie sur $\mathbb{R}^{\ast}$, donc la primitive doit être définie sur $\mathbb{R}^{\ast}$ également.
+:::
+
+::: remarque Primitives hyperboliques utiles
+- $\displaystyle \int \text{ch}(x)\,dx = \text{sh}(x) + C$
+- $\displaystyle \int \text{sh}(x)\,dx = \text{ch}(x) + C$
+- $\displaystyle \int \frac{dx}{\text{ch}^2(x)} = \text{th}(x) + C$
+:::
+
+## XII. Tableaux récapitulatifs
+
+### Dérivées des fonctions usuelles
+
+| Fonction | Dérivée | Domaine de dérivabilité |
+|---|---|---|
+| $\displaystyle e^x$ | $\displaystyle e^x$ | $\displaystyle \mathbb{R}$ |
+| $\displaystyle \ln(x)$ | $\displaystyle \frac{1}{x}$ | $\displaystyle ]0, +\infty[$ |
+| $\displaystyle a^x$ ($\displaystyle a>0$, $\displaystyle a\neq1$) | $\displaystyle \ln(a)\,a^x$ | $\displaystyle \mathbb{R}$ |
+| $\displaystyle x^\alpha$ ($\displaystyle \alpha \in \mathbb{R}$) | $\displaystyle \alpha x^{\alpha-1}$ | $\displaystyle ]0, +\infty[$ |
+| $\displaystyle \sin(x)$ | $\displaystyle \cos(x)$ | $\displaystyle \mathbb{R}$ |
+| $\displaystyle \cos(x)$ | $\displaystyle -\sin(x)$ | $\displaystyle \mathbb{R}$ |
+| $\displaystyle \tan(x)$ | $\displaystyle \frac{1}{\cos^2(x)} = 1 + \tan^2(x)$ | $\displaystyle \mathbb{R} \setminus \left\{\frac{\pi}{2} + k\pi, k \in \mathbb{Z}\right\}$ |
+| $\displaystyle \arcsin(x)$ | $\displaystyle \frac{1}{\sqrt{1-x^2}}$ | $\displaystyle ]-1, 1[$ |
+| $\displaystyle \arccos(x)$ | $\displaystyle -\frac{1}{\sqrt{1-x^2}}$ | $\displaystyle ]-1, 1[$ |
+| $\displaystyle \arctan(x)$ | $\displaystyle \frac{1}{1+x^2}$ | $\displaystyle \mathbb{R}$ |
+| $\displaystyle \text{sh}(x)$ | $\displaystyle \text{ch}(x)$ | $\displaystyle \mathbb{R}$ |
+| $\displaystyle \text{ch}(x)$ | $\displaystyle \text{sh}(x)$ | $\displaystyle \mathbb{R}$ |
+| $\displaystyle \text{th}(x)$ | $\displaystyle \frac{1}{\text{ch}^2(x)}$ | $\displaystyle \mathbb{R}$ |
+
+### Limites fondamentales
+
+| Limite | Valeur |
+|---|---|
+| $\displaystyle \lim_{x \to 0} \frac{e^x - 1}{x}$ | $\displaystyle 1$ |
+| $\displaystyle \lim_{x \to 0} \frac{\ln(1+x)}{x}$ | $\displaystyle 1$ |
+| $\displaystyle \lim_{x \to +\infty} \frac{\ln(x)}{x^\alpha}$ ($\displaystyle \alpha > 0$) | $\displaystyle 0$ |
+| $\displaystyle \lim_{x \to +\infty} \frac{x^\beta}{e^x}$ ($\displaystyle \beta > 0$) | $\displaystyle 0$ |
+| $\displaystyle \lim_{x \to 0^+} x \ln(x)$ | $\displaystyle 0$ |
+
+## XIII. Conseils méthodologiques
+
+### Méthodes de calcul
+
+::: methode Calcul de dérivées avec fonctions usuelles
+1. **Identifier la fonction** : exponentielle, logarithme, puissance, trigonométrique réciproque, hyperbolique
+2. **Appliquer la formule de dérivée** correspondante
+3. **Si composée** : utiliser la règle de la chaîne
+4. **Simplifier** l'expression obtenue
+:::
+
+::: conseil
+- **Fonctions puissances :** Toujours vérifier le domaine de définition (surtout pour les exposants non entiers)
+- **Fonctions réciproques :** Vérifier que l'argument est dans le domaine de définition (ex: $\arcsin(x)$ nécessite $x \in [-1, 1]$)
+- **Croissances comparées :** Utiliser les limites fondamentales pour lever les formes indéterminées
+- **Relations entre fonctions :** Utiliser les propriétés algébriques pour simplifier les calculs
+- **Fonctions hyperboliques :** Se souvenir de la relation fondamentale $\text{ch}^2(x) - \text{sh}^2(x) = 1$
+:::
+
+::: attention
+- Ne pas écrire $\displaystyle \ln(u + v) = \ln(u) + \ln(v)$ (c'est faux !)
+- Confondre $\ln(xy)$ avec $\ln(x) \ln(y)$ (c'est $\ln(x) + \ln(y)$)
+- Confondre $(x^\alpha)^\beta$ avec $x^{\alpha+\beta}$ (c'est $x^{\alpha\beta}$)
+- Pour $x^\alpha$ : bien préciser le domaine (sur $\mathbb{R}$ si $\alpha \in \mathbb{N}$ ; sinon sur $]0, +\infty[$)
+- Oublier que $\arcsin$ et $\arccos$ sont définis seulement sur $[-1, 1]$
+- Confondre les dérivées de $\arcsin$ et $\arccos$ (signe opposé)
+- Ne pas vérifier les conditions d'existence avant d'appliquer les propriétés algébriques
+- **Notation :** En France, $\log$ désigne généralement $\log_{10}$ (logarithme décimal) sauf mention contraire, et $\ln$ désigne le logarithme népérien (base $e$)
+:::

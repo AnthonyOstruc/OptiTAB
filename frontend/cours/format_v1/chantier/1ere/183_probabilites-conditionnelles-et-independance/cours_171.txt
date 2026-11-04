@@ -1,0 +1,364 @@
+Titre: Probabilités conditionnelles et indépendance
+
+<!-- optitab:1 -->
+::: objectifs
+- Calculer une probabilité conditionnelle $P_A(B)$ à partir d’un tableau croisé ou d’un arbre.
+- Construire un arbre pondéré à partir d’un texte et en utiliser les règles.
+- Utiliser une partition de l’univers et la formule des probabilités totales.
+- Distinguer $P_A(B)$ et $P_B(A)$, notamment dans les tests (faux positifs).
+- Reconnaître deux événements indépendants ; modéliser deux épreuves indépendantes.
+- Simuler une expérience aléatoire en Python et comparer fréquences et probabilités.
+:::
+
+::: prerequis
+- Événements $A \cap B$ (« $A$ et $B$ »), $A \cup B$ (« $A$ ou $B$ »), contraire $\overline{A}$.
+- $P(\overline{A}) = 1 - P(A)$ ;
+- $P(A \cup B) = P(A) + P(B) - P(A \cap B)$
+- Situation d’équiprobabilité : $P(A) = \dfrac{\text{nombre d’issues de } A}{\text{nombre total d’issues}}$.
+:::
+
+## I. Probabilité conditionnelle
+
+### 1. Définition
+
+::: definition Probabilité de $B$ sachant $A$
+Soit $A$ un événement de probabilité non nulle et $B$ un événement. La **probabilité de $B$ sachant $A$** est le nombre
+
+$$P_A(B) = \frac{P(A \cap B)}{P(A)}$$
+
+C’est la probabilité que $B$ soit réalisé **lorsque l’on sait** que $A$ est réalisé : l’univers est « réduit » à $A$.
+:::
+
+::: exemple Tableau croisé d’effectifs
+Dans un lycée de $200$ élèves, on relève le sexe (fille $F$ ou garçon $G$) et l’inscription à l’atelier théâtre ($T$). On choisit un élève au hasard : tous les élèves ont la même probabilité d’être choisis.
+
+| | $T$ | $\overline{T}$ | Total |
+|---|---|---|---|
+| $F$ | $45$ | $75$ | $120$ |
+| $G$ | $30$ | $50$ | $80$ |
+| Total | $75$ | $125$ | $200$ |
+
+- Parmi les filles, la proportion d’inscrites au théâtre est $P_F(T) = \dfrac{45}{120} = 0{,}375$.
+- Parmi les inscrits au théâtre, la proportion de filles est $P_T(F) = \dfrac{45}{75} = 0{,}6$.
+- La probabilité que l’élève soit une fille inscrite au théâtre est $P(F \cap T) = \dfrac{45}{200} = 0{,}225$.
+:::
+
+::: methode Probabilité conditionnelle et tableau croisé
+Dans une situation d’équiprobabilité, $P_A(B)$ est la proportion des individus de $A$ qui sont aussi dans $B$ :
+
+$$P_A(B) = \frac{\text{effectif de } A \cap B}{\text{effectif de } A}$$
+
+On lit donc la ligne (ou la colonne) de $A$ **seulement**, et on divise par son total.
+:::
+
+::: attention Trois probabilités à ne pas confondre
+- $P_F(T) = 0{,}375$ : on se place **parmi les filles** (on divise par $120$) ;
+- $P_T(F) = 0{,}6$ : on se place **parmi les inscrits au théâtre** (on divise par $75$) ;
+- $P(F \cap T) = 0{,}225$ : on se place **parmi tous les élèves** (on divise par $200$).
+:::
+
+### 2. Propriétés
+
+::: propriete Probabilités composées
+Si $P(A) \neq 0$ :
+
+$$P(A \cap B) = P(A) \times P_A(B)$$
+
+De plus, $P_A$ est une probabilité : $0 \leqslant P_A(B) \leqslant 1$ et $P_A(\overline{B}) = 1 - P_A(B)$.
+:::
+
+::: exemple
+Avec le tableau précédent : $P_F(\overline{T}) = 1 - 0{,}375 = 0{,}625$, et l’on retrouve bien $\dfrac{75}{120} = 0{,}625$.
+:::
+
+### 3. Traduire un énoncé
+
+::: methode Passer du texte aux notations
+| Phrase de l’énoncé | Notation |
+|---|---|
+| « $30\,\%$ des clients sont des jeunes » | $P(J) = 0{,}3$ |
+| « **parmi** les jeunes, $60\,\%$ achètent » | $P_J(A) = 0{,}6$ |
+| « $18\,\%$ des clients sont des jeunes **qui** achètent » | $P(J \cap A) = 0{,}18$ |
+| « **sachant** qu’il achète, le client est jeune » | $P_A(J)$ |
+
+Les mots « parmi », « sachant que », « lorsque », « si » signalent une probabilité **conditionnelle** ; « et », « qui » signalent une **intersection**.
+:::
+
+## II. Arbres pondérés
+
+Une expérience en deux étapes se représente par un **arbre pondéré** : les branches du premier niveau portent $P(A)$ et $P(\overline{A})$, celles du second niveau portent des probabilités **conditionnelles**.
+
+[IMAGE_1]
+
+::: propriete Règles des arbres pondérés
+1. La somme des probabilités des branches issues d’un même nœud vaut $1$.
+2. La probabilité d’un **chemin** est le **produit** des probabilités de ses branches : c’est la formule $P(A \cap B) = P(A) \times P_A(B)$.
+3. La probabilité d’un événement est la **somme** des probabilités des chemins qui y mènent.
+:::
+
+::: exemple Le bus de Léa
+Il pleut un jour sur trois environ : on note $A$ : « il pleut », avec $P(A) = 0{,}3$. S’il pleut, Léa prend le bus ($B$) avec la probabilité $0{,}8$ ; s’il ne pleut pas, avec la probabilité $0{,}1$. Ainsi $P_A(B) = 0{,}8$ et $P_{\overline{A}}(B) = 0{,}1$.
+:::
+
+[IMAGE_2]
+
+- Règle 1 : $P(\overline{A}) = 1 - 0{,}3 = 0{,}7$, $P_A(\overline{B}) = 0{,}2$ et $P_{\overline{A}}(\overline{B}) = 0{,}9$.
+- Règle 2 : $P(A \cap B) = 0{,}3 \times 0{,}8 = 0{,}24$ : il pleut **et** Léa prend le bus.
+- Contrôle : la somme des quatre chemins vaut $0{,}24 + 0{,}06 + 0{,}07 + 0{,}63 = 1$.
+
+::: attention
+Sur une branche du second niveau, on lit $P_A(B)$, et non $P(B)$ ni $P(A \cap B)$. Ici $0{,}8$ n’est **pas** la probabilité que Léa prenne le bus.
+:::
+
+## III. Partition et probabilités totales
+
+::: definition Partition de l’univers
+Des événements $A_1, A_2, \ldots, A_n$ de probabilités non nulles forment une **partition** de l’univers $\Omega$ s’ils sont deux à deux incompatibles et si leur réunion est $\Omega$ : chaque issue est dans un et un seul $A_i$.
+
+Exemple : $A$ et $\overline{A}$ forment toujours une partition de $\Omega$.
+:::
+
+[IMAGE_3]
+
+::: theoreme Formule des probabilités totales
+Si $A_1, A_2, \ldots, A_n$ forment une partition de l’univers, alors pour tout événement $B$ :
+
+$$
+\begin{aligned}
+P(B) &= P(A_1 \cap B) + \cdots + P(A_n \cap B) \\
+&= P(A_1) P_{A_1}(B) + \cdots \\
+&\quad + P(A_n) P_{A_n}(B)
+\end{aligned}
+$$
+
+En particulier, avec la partition $\{A, \overline{A}\}$ :
+
+$$P(B) = P(A) P_A(B) + P(\overline{A}) P_{\overline{A}}(B)$$
+:::
+
+Dans l’arbre, c’est la règle 3 : on ajoute les chemins qui mènent à $B$ (en vert dans l’arbre du bus).
+
+::: exemple Le bus de Léa (suite)
+$$
+\begin{aligned}
+P(B) &= P(A \cap B) + P(\overline{A} \cap B) \\
+&= 0{,}3 \times 0{,}8 + 0{,}7 \times 0{,}1 \\
+&= 0{,}24 + 0{,}07 \\
+&= 0{,}31
+\end{aligned}
+$$
+
+Léa prend le bus environ un jour sur trois.
+:::
+
+## IV. Inverser un conditionnement : les tests
+
+::: methode Calculer $P_B(A)$ quand l’énoncé donne $P_A(B)$
+1. On construit l’arbre pondéré (premier niveau : $A$, $\overline{A}$).
+2. On calcule $P(A \cap B)$ avec un chemin.
+3. On calcule $P(B)$ avec la formule des probabilités totales.
+4. On conclut : $P_B(A) = \dfrac{P(A \cap B)}{P(B)}$.
+:::
+
+::: exemple Le bus de Léa (fin)
+Sachant que Léa a pris le bus, la probabilité qu’il ait plu est
+
+$$
+\begin{aligned}
+P_B(A) &= \frac{P(A \cap B)}{P(B)} = \frac{0{,}24}{0{,}31} \\
+&= \frac{24}{31} \approx 0{,}774
+\end{aligned}
+$$
+:::
+
+::: exemple Test de dépistage
+Une maladie touche $2\,\%$ de la population. Un test est positif chez $95\,\%$ des malades ; il est aussi positif chez $5\,\%$ des personnes saines : ce sont les **faux positifs**. On choisit une personne au hasard ; $M$ : « la personne est malade », $T$ : « le test est positif ».
+
+Données : $P(M) = 0{,}02$, $P_M(T) = 0{,}95$ et $P_{\overline{M}}(T) = 0{,}05$.
+:::
+
+[IMAGE_4]
+
+Probabilités totales (chemins verts) :
+
+$$
+\begin{aligned}
+P(T) &= P(M \cap T) + P(\overline{M} \cap T) \\
+&= 0{,}02 \times 0{,}95 + 0{,}98 \times 0{,}05 \\
+&= 0{,}019 + 0{,}049 \\
+&= 0{,}068
+\end{aligned}
+$$
+
+Inversion du conditionnement :
+
+$$
+\begin{aligned}
+P_T(M) &= \frac{P(M \cap T)}{P(T)} = \frac{0{,}019}{0{,}068} \\
+&= \frac{19}{68} \approx 0{,}279
+\end{aligned}
+$$
+
+::: remarque Le même calcul avec un tableau
+Sur $10\,000$ personnes, on attend $200$ malades et $9\,800$ personnes saines :
+
+| | $T$ | $\overline{T}$ | Total |
+|---|---|---|---|
+| $M$ | $190$ | $10$ | $200$ |
+| $\overline{M}$ | $490$ | $9\,310$ | $9\,800$ |
+| Total | $680$ | $9\,320$ | $10\,000$ |
+
+Parmi les $680$ tests positifs, seuls $190$ concernent des malades : $\dfrac{190}{680} = \dfrac{19}{68} \approx 0{,}279$.
+:::
+
+::: retenir Interprétation
+Le test est fiable chez les malades ($P_M(T) = 0{,}95$), et pourtant, avec un test positif, la probabilité d’être malade n’est que d’environ $28\,\%$ : la maladie est rare, donc la plupart des positifs sont des faux positifs ($490$ sur $680$). On confirme un résultat positif par un second examen.
+:::
+
+::: attention
+$P_M(T)$ et $P_T(M)$ sont deux nombres différents. Les confondre est l’erreur la plus fréquente du chapitre (on parle d’« inversion du conditionnement »).
+:::
+
+## V. Indépendance de deux événements
+
+::: definition Événements indépendants
+Deux événements $A$ et $B$ sont **indépendants** si
+
+$$P(A \cap B) = P(A) \times P(B)$$
+
+Lorsque $P(A) \neq 0$, cela équivaut à $P_A(B) = P(B)$ : savoir que $A$ est réalisé ne change pas la probabilité de $B$.
+:::
+
+::: exemple Le tableau du théâtre
+$$
+\begin{aligned}
+P(F) &= \frac{120}{200} = 0{,}6 \\
+P(T) &= \frac{75}{200} = 0{,}375
+\end{aligned}
+$$
+
+donc
+
+$$
+\begin{aligned}
+P(F) \times P(T) &= 0{,}6 \times 0{,}375 \\
+&= 0{,}225 = P(F \cap T)
+\end{aligned}
+$$
+
+$F$ et $T$ sont indépendants. On le voit aussi avec $P_F(T) = 0{,}375 = P(T)$ : la proportion d’inscrits au théâtre est la même chez les filles que dans tout le lycée.
+:::
+
+::: exemple Avec un dé équilibré
+$A$ : « obtenir un nombre pair », $B$ : « obtenir $1$ ou $2$ », $C$ : « obtenir au plus $3$ ».
+
+- $P(A \cap B) = P(\{2\}) = \dfrac{1}{6}$ et $P(A) \times P(B) = \dfrac{1}{2} \times \dfrac{1}{3} = \dfrac{1}{6}$ : $A$ et $B$ sont indépendants.
+- $P(A \cap C) = P(\{2\}) = \dfrac{1}{6}$ et $P(A) \times P(C) = \dfrac{1}{2} \times \dfrac{1}{2} = \dfrac{1}{4}$ : $A$ et $C$ ne sont pas indépendants.
+:::
+
+::: propriete Indépendance et événement contraire
+Si $A$ et $B$ sont indépendants, alors $A$ et $\overline{B}$ sont indépendants.
+:::
+
+::: demonstration
+$A$ est la réunion des deux événements incompatibles $A \cap B$ et $A \cap \overline{B}$, donc $P(A) = P(A \cap B) + P(A \cap \overline{B})$. Ainsi :
+
+$$
+\begin{aligned}
+P(A \cap \overline{B}) &= P(A) - P(A \cap B) \\
+&= P(A) - P(A) \times P(B) \\
+&= P(A) \times \big(1 - P(B)\big) \\
+&= P(A) \times P(\overline{B})
+\end{aligned}
+$$
+
+donc $A$ et $\overline{B}$ sont indépendants.
+:::
+
+En appliquant deux fois cette propriété, $\overline{A}$ et $\overline{B}$ sont aussi indépendants.
+
+::: attention Indépendants ou incompatibles ?
+Ce sont deux notions différentes. **Incompatibles** signifie $A \cap B = \varnothing$, donc $P(A \cap B) = 0$. Deux événements incompatibles de probabilités non nulles ne sont **jamais** indépendants, puisque $P(A) \times P(B) \neq 0$.
+
+Exemple : « obtenir un nombre pair » et « obtenir $3$ » sont incompatibles, donc pas indépendants.
+:::
+
+## VI. Succession de deux épreuves indépendantes
+
+::: propriete
+Deux épreuves sont **indépendantes** lorsque le résultat de la première ne modifie pas les probabilités des résultats de la seconde (lancers successifs, tirages **avec remise**…). La probabilité d’un couple de résultats $(x, y)$ est alors le produit :
+
+$$P\big((x\,;y)\big) = P(x) \times P(y)$$
+
+Dans l’arbre, les branches du second niveau portent les **mêmes** probabilités, quelle que soit la branche du premier niveau.
+:::
+
+::: exemple Deux tirages avec remise
+Une urne contient $3$ boules rouges et $2$ boules bleues. On tire une boule, on note sa couleur, on la **remet**, puis on tire une seconde boule. On note $R_1$ : « la première boule est rouge », $R_2$ : « la seconde est rouge », de même $B_1$ et $B_2$.
+:::
+
+[IMAGE_5]
+
+On peut aussi présenter les quatre issues dans un tableau à double entrée (produits des probabilités) :
+
+| 1er / 2e | $R_2$ : $\dfrac{3}{5}$ | $B_2$ : $\dfrac{2}{5}$ |
+|---|---|---|
+| $R_1$ : $\dfrac{3}{5}$ | $\dfrac{9}{25}$ | $\dfrac{6}{25}$ |
+| $B_1$ : $\dfrac{2}{5}$ | $\dfrac{6}{25}$ | $\dfrac{4}{25}$ |
+
+La probabilité d’obtenir deux boules de même couleur (chemins verts) est
+
+$$P = \frac{9}{25} + \frac{4}{25} = \frac{13}{25}$$
+
+::: attention Tirages sans remise
+Sans remise, la composition de l’urne change après le premier tirage : les deux épreuves ne sont **pas** indépendantes, et les probabilités du second niveau changent d’une branche à l’autre.
+:::
+
+## VII. Simulation en Python
+
+`random()` renvoie un nombre aléatoire de $[0\,;1[$ ; le test `random() < p` est vrai avec la probabilité $p$. On simule ainsi le test de dépistage du IV :
+
+```python
+from random import random
+
+def personne():
+    m = random() < 0.02
+    if m:
+        t = random() < 0.95
+    else:
+        t = random() < 0.05
+    return m, t
+
+def freq(n):
+    nb_t = 0
+    nb_mt = 0
+    for k in range(n):
+        m, t = personne()
+        if t:
+            nb_t = nb_t + 1
+            if m:
+                nb_mt = nb_mt + 1
+    return nb_mt / nb_t
+```
+
+- `personne()` suit l’arbre : on tire d’abord $M$, puis $T$ avec la probabilité **conditionnelle** qui convient.
+- `freq(n)` simule $n$ personnes et renvoie la **fréquence** des malades parmi les testés positifs.
+
+Une exécution de `freq(100000)` a renvoyé environ $0{,}284$. Le graphique montre la fréquence des malades parmi les positifs au fil des $100\,000$ personnes simulées : elle se stabilise près de $P_T(M) \approx 0{,}279$.
+
+[IMAGE_6]
+
+::: remarque
+Pour un petit nombre de personnes, la fréquence varie beaucoup d’une simulation à l’autre ; plus $n$ est grand, plus elle est proche de la probabilité.
+:::
+
+::: retenir
+- $P_A(B) = \dfrac{P(A \cap B)}{P(A)}$ et $P(A \cap B) = P(A) \times P_A(B)$.
+- Arbre : somme $1$ à chaque nœud ; chemin $=$ produit ; événement $=$ somme des chemins.
+- Probabilités totales : $P(B) = P(A)P_A(B) + P(\overline{A})P_{\overline{A}}(B)$.
+- Inversion : $P_B(A) = \dfrac{P(A \cap B)}{P(B)}$, avec $P(B)$ obtenu par les probabilités totales.
+- Indépendance : $P(A \cap B) = P(A) \times P(B)$ ; alors $A$ et $\overline{B}$ sont aussi indépendants.
+- Deux épreuves indépendantes : on multiplie les probabilités des deux résultats.
+
+Fiche de synthèse dans l’onglet Fiches !
+:::

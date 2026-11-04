@@ -210,104 +210,74 @@
       </div>
     </div>
 
-    <!-- Report Modal -->
-    <div v-if="showReportModal" class="report-modal-overlay" @click.self="closeReportModal">
-      <div class="report-modal">
-        <button class="report-close" type="button" @click="closeReportModal" aria-label="Fermer">
-          ×
+    <!-- Signaler un problème -->
+    <Modal
+      :is-open="showReportModal"
+      eyebrow="Merci de nous aider à corriger"
+      title="Signaler un problème"
+      subtitle="Décris le souci : un professeur vérifie l’exercice et le corrige si besoin."
+      :icon="FlagIcon"
+      :can-close="!sendingReport"
+      size="small"
+      @close="closeReportModal"
+    >
+      <div class="report-form">
+        <div class="om-field">
+          <label class="om-label" for="report-email">E-mail de contact</label>
+          <input id="report-email" v-model="reportEmail" type="email" class="om-input" placeholder="ton@email.com" autocomplete="email" />
+        </div>
+        <div class="report-names">
+          <div class="om-field">
+            <label class="om-label" for="report-prenom">Prénom</label>
+            <input id="report-prenom" v-model="reportFirstName" type="text" class="om-input" placeholder="Ton prénom" autocomplete="given-name" />
+          </div>
+          <div class="om-field">
+            <label class="om-label" for="report-nom">Nom</label>
+            <input id="report-nom" v-model="reportLastName" type="text" class="om-input" placeholder="Ton nom" autocomplete="family-name" />
+          </div>
+        </div>
+        <div class="om-field">
+          <label class="om-label" for="report-probleme">Problème rencontré</label>
+          <textarea id="report-probleme" v-model="reportDescription" rows="4" class="om-input" placeholder="Ex. : l’énoncé contient une faute, un résultat de la correction est faux…"></textarea>
+        </div>
+        <p class="om-alert om-alert--info">Un e-mail « ton message a bien été pris en compte » sera envoyé à l’adresse indiquée.</p>
+      </div>
+      <template #footer>
+        <button class="om-btn om-btn--ghost" type="button" :disabled="sendingReport" @click="closeReportModal">Annuler</button>
+        <button class="om-btn om-btn--primary" type="button" :disabled="sendingReport" @click="submitReport">
+          {{ sendingReport ? 'Envoi…' : 'Envoyer le signalement' }}
         </button>
-        <div class="report-modal-header">
-          <div class="report-icon">🚩</div>
-          <div class="report-headings">
-            <p class="report-kicker">Merci de nous aider à corriger</p>
-            <h4>Signaler un problème</h4>
-            <p class="report-subtitle">Décrivez le souci. Vous recevrez un email de confirmation immédiatement.</p>
-          </div>
-        </div>
-        <div class="report-modal-body">
-          <label class="report-label">
-            Email de contact
-            <input
-              v-model="reportEmail"
-              type="email"
-              class="report-input"
-              placeholder="vous@example.com"
-            />
-          </label>
-          <div class="report-names">
-            <label class="report-label">
-              Prénom
-              <input
-                v-model="reportFirstName"
-                type="text"
-                class="report-input"
-                placeholder="Votre prénom"
-              />
-            </label>
-            <label class="report-label">
-              Nom
-              <input
-                v-model="reportLastName"
-                type="text"
-                class="report-input"
-                placeholder="Votre nom"
-              />
-            </label>
-          </div>
-          <label class="report-label">
-            Problème rencontré
-            <textarea
-              v-model="reportDescription"
-              rows="4"
-              class="report-input"
-              placeholder="Ex: L'énoncé contient une faute ou un résultat incorrect..."
-            ></textarea>
-          </label>
-        </div>
-        <div class="report-modal-footer">
-          <div class="report-actions">
-            <button class="report-btn ghost" type="button" @click="closeReportModal" :disabled="sendingReport">
-              Annuler
-            </button>
-            <button class="report-btn primary" type="button" @click="submitReport" :disabled="sendingReport">
-              <span v-if="sendingReport" class="report-spinner" aria-hidden="true"></span>
-              {{ sendingReport ? 'Envoi...' : 'Envoyer le signalement' }}
-            </button>
-          </div>
-          <div class="report-footnote">
-            <span class="report-footnote-icon">✉️</span>
-            Un email “votre message a été pris en compte” sera envoyé à l’adresse indiquée.
-          </div>
-        </div>
-      </div>
-    </div>
+      </template>
+    </Modal>
 
-    <!-- Image Modal -->
-    <div v-if="showImageModal" class="image-modal-overlay" @click="closeImageModal">
-      <div class="image-modal" @click.stop>
-        <button class="modal-close-btn" @click="closeImageModal">×</button>
-        <img 
-          :src="getImageUrl(selectedImage.image)" 
+    <!-- Image agrandie -->
+    <Modal
+      :is-open="showImageModal && Boolean(selectedImage)"
+      :title="resolveImageCaption(selectedImage) || 'Figure'"
+      size="large"
+      @close="closeImageModal"
+    >
+      <figure v-if="selectedImage" class="zoom-figure">
+        <img
+          :src="getImageUrl(selectedImage.image)"
           :alt="resolveImageAlt(selectedImage, selectedImage?.position)"
-          :title="resolveImageTitle(selectedImage) || null"
-          class="modal-image"
+          class="zoom-image"
         />
-        <div class="modal-caption">
-          <span class="modal-image-type">{{ resolveImageCaption(selectedImage) || resolveImageTitle(selectedImage) || 'Illustration' }}</span>
-          <span v-if="selectedImage.position" class="modal-position">Position {{ selectedImage.position }}</span>
-        </div>
-      </div>
-    </div>
+        <figcaption v-if="!resolveImageCaption(selectedImage) && selectedImage.alt_text_resolved">{{ selectedImage.alt_text_resolved }}</figcaption>
+      </figure>
+    </Modal>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, computed, nextTick, watch } from 'vue'
+import { FlagIcon } from '@heroicons/vue/24/outline'
+import Modal from '@/components/common/Modal.vue'
 import { getExerciceImages } from '@/api'
 import { sendContactMessage } from '@/api/contact'
 import { useUserStore } from '@/stores/user'
 import { useToast } from '@/composables/useToast'
-import { tuneMathOverflow, isOptitabDoc, renderOptitabDoc } from '@/utils/scientificRenderer'
+import { typesetPageGroupe, isOptitabDoc, renderOptitabDoc } from '@/utils/scientificRenderer'
 
 // Props
 const props = defineProps({
@@ -787,10 +757,12 @@ function renderSolutionContent(solutionText) {
 
 function renderMath() {
   nextTick(() => {
+    // Demandes regroupées : le montage, le contenu et les images (et les autres
+    // exercices de la page) ne déclenchent qu'une mise en forme de la page.
     const doTypeset = () => {
       try {
         if (window.MathJax && window.MathJax.typesetPromise) {
-          return window.MathJax.typesetPromise().then(() => tuneMathOverflow())
+          return typesetPageGroupe().catch(() => {})
         }
       } catch (_) {}
       return Promise.resolve()
@@ -1061,12 +1033,6 @@ onMounted(() => {
   prefillReportFields()
 })
 
-watch(showReportModal, (val) => {
-  if (val && typeof window !== 'undefined') {
-    // S'assurer que le modal est visible en haut sur mobile
-    requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'auto' }))
-  }
-})
 
 // Watcher sur activeTab pour forcer le rendu quand on change d'onglet
 watch(activeTab, () => {
@@ -1117,7 +1083,6 @@ watch(activeTab, () => {
   box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.1), 0 2px 4px -1px rgba(239, 68, 68, 0.06);
 }
 
-
 /* Header Section */
 .exercice-header {
   background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
@@ -1126,7 +1091,6 @@ watch(activeTab, () => {
   flex-direction: column;
   height: auto;
 }
-
 
 .header-top {
   padding: 16px 28px;
@@ -1635,8 +1599,6 @@ watch(activeTab, () => {
   line-height: 1.5;
 }
 
-
-
 .assessment-content {
   text-align: center;
 }
@@ -2113,317 +2075,10 @@ watch(activeTab, () => {
   font-style: italic;
 }
 
-/* Modal styles */
-.report-modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.55);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 12010;
-  padding: 1rem;
-  backdrop-filter: blur(4px);
-}
-
-.report-modal {
-  background: #ffffff;
-  border-radius: 18px;
-  max-width: 520px;
-  width: 100%;
-  box-shadow: 0 16px 48px rgba(15, 23, 42, 0.16);
-  border: 1px solid #e2e8f0;
-  padding: 22px;
-  color: #0f172a;
-  position: relative;
-}
-
-.report-modal-header {
-  display: flex;
-  gap: 14px;
-  align-items: flex-start;
-  margin-bottom: 10px;
-}
-
-.report-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #fff7ed, #fffbeb);
-  color: #c2410c;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.3rem;
-  border: 1px solid #fed7aa;
-  box-shadow: 0 8px 20px rgba(249, 115, 22, 0.22);
-}
-
-.report-headings {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.report-modal-header h4 {
-  margin: 0;
-  font-size: 1.2rem;
-  font-weight: 800;
-}
-
-.report-kicker {
-  margin: 0 0 4px;
-  font-size: 0.8rem;
-  letter-spacing: 0.02em;
-  color: #0f172a;
-  text-transform: uppercase;
-  font-weight: 700;
-}
-
-.report-subtitle {
-  margin: 4px 0 0;
-  color: #475569;
-  font-size: 0.95rem;
-}
-
-.report-modal-body {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin: 14px 0 10px;
-}
-
-.report-label {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  color: #334155;
-  font-weight: 700;
-  font-size: 0.9rem;
-}
-
-.report-input {
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 11px 12px;
-  font-size: 0.95rem;
-  outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  background: #f8fafc;
-  color: #0f172a;
-}
-
-.report-input::placeholder {
-  color: #94a3b8;
-}
-
-.report-input:focus {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.18);
-  background: #fff;
-}
-
-.report-names {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-}
-
-.report-modal-footer {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 12px;
-}
-
-.report-actions {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-}
-
-.report-btn {
-  border: none;
-  border-radius: 12px;
-  padding: 11px 15px;
-  font-weight: 800;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 0.95rem;
-  min-width: 150px;
-}
-
-.report-btn.primary {
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
-  color: #fff;
-  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.35);
-}
-
-.report-btn.primary:hover {
-  filter: brightness(1.05);
-  transform: translateY(-1px);
-}
-
-.report-btn.ghost {
-  background: #f8fafc;
-  color: #0f172a;
-  border: 1px solid #e2e8f0;
-}
-
-.report-btn.ghost:hover {
-  background: #e2e8f0;
-}
-
-.report-btn:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-}
-
-.report-spinner {
-  width: 16px;
-  height: 16px;
-  border: 2px solid #e5e7eb;
-  border-top: 2px solid #fff;
-  border-radius: 50%;
-  display: inline-block;
-  margin-right: 8px;
-  animation: spin 1s linear infinite;
-  vertical-align: middle;
-}
-
-.report-close {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  border: 1px solid #e2e8f0;
-  background: #fff;
-  width: 32px;
-  height: 32px;
-  border-radius: 10px;
-  color: #475569;
-  cursor: pointer;
-  font-size: 1rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-}
-
-.report-close:hover {
-  background: #f8fafc;
-  color: #0f172a;
-}
-
-.report-footnote {
-  margin: 0;
-  color: #475569;
-  font-size: 0.86rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 10px 12px;
-}
-
-.report-footnote-icon {
-  font-size: 1rem;
-}
-
 @keyframes spin {
   to {
     transform: rotate(360deg);
   }
-}
-
-.report-footnote {
-  margin: 10px 0 0;
-  color: #475569;
-  font-size: 0.85rem;
-  text-align: center;
-}
-
-@media (max-width: 540px) {
-  .report-modal-overlay {
-    align-items: flex-start;
-    padding: 0.75rem;
-  }
-  .report-modal {
-    padding: 16px;
-    width: 100%;
-    max-width: none;
-    border-radius: 12px;
-    margin-top: calc(env(safe-area-inset-top, 12px));
-  }
-  .report-names {
-    grid-template-columns: 1fr;
-  }
-  .report-actions {
-    justify-content: flex-end;
-    flex-wrap: wrap;
-  }
-}
-
-.image-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  padding: 1rem;
-}
-
-.image-modal {
-  position: relative;
-  max-width: 90vw;
-  max-height: 90vh;
-  background: white;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-}
-
-.modal-close-btn {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
-  border: none;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 1.2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-}
-
-.modal-close-btn:hover {
-  background: rgba(0, 0, 0, 0.9);
-}
-
-.modal-image {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-.modal-caption {
-  padding: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  background: #f9fafb;
-  border-top: 1px solid #e5e7eb;
 }
 
 /* Styles pour les images inline dans l'énoncé */
@@ -2468,17 +2123,6 @@ watch(activeTab, () => {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.modal-image-type {
-  font-weight: 600;
-  color: #374151;
-  font-size: 0.9rem;
-}
-
-.modal-position {
-  color: #6b7280;
-  font-size: 0.8rem;
-}
-
 /* Responsive */
 @media (max-width: 768px) {
   .exercice-image {
@@ -2507,5 +2151,43 @@ watch(activeTab, () => {
   .exercice-image {
     max-height: 250px; /* Encore plus petit sur très petit écran */
   }
+}
+
+/* Fenêtres (cadre commun components/common/Modal.vue) */
+.report-form {
+  display: grid;
+  gap: 16px;
+}
+
+.report-names {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 480px) {
+  .report-names {
+    grid-template-columns: 1fr;
+  }
+}
+
+.zoom-figure {
+  margin: 0;
+}
+
+.zoom-image {
+  display: block;
+  max-width: 100%;
+  max-height: 72vh;
+  margin: 0 auto;
+  border-radius: 12px;
+}
+
+.zoom-figure figcaption {
+  margin-top: 14px;
+  color: var(--om-muted);
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
 }
 </style>

@@ -1,0 +1,401 @@
+Titre: Orthogonalité et distances dans l'espace
+
+<!-- optitab:1 -->
+## I. Définition du produit scalaire
+
+### Définition géométrique
+
+::: definition
+Soient $\vec{u}$ et $\vec{v}$ deux vecteurs non nuls. Le **produit scalaire** de $\vec{u}$ et $\vec{v}$, noté $\vec{u} \cdot \vec{v}$, est défini par :
+
+$$\vec{u} \cdot \vec{v} = \|\vec{u}\| \times \|\vec{v}\| \times \cos(\theta)$$
+
+où $\theta$ est l'angle orienté entre les vecteurs $\vec{u}$ et $\vec{v}$.
+:::
+
+::: remarque Cas particuliers
+- Si $\vec{u} \perp \vec{v}$ (orthogonaux) : $\vec{u} \cdot \vec{v} = 0$
+- Si $\vec{u}$ et $\vec{v}$ sont colinéaires de même sens : $\vec{u} \cdot \vec{v} = \|\vec{u}\| \times \|\vec{v}\|$
+- Si $\vec{u}$ et $\vec{v}$ sont colinéaires de sens opposés : $\vec{u} \cdot \vec{v} = -\|\vec{u}\| \times \|\vec{v}\|$
+:::
+
+[IMAGE_1]
+
+### Définition analytique
+
+::: definition
+Dans une base orthonormée, si $\vec{u} = \begin{pmatrix} x_1 \\ y_1 \end{pmatrix}$ et $\vec{v} = \begin{pmatrix} x_2 \\ y_2 \end{pmatrix}$, alors :
+
+$$\vec{u} \cdot \vec{v} = x_1x_2 + y_1y_2$$
+:::
+
+::: exemple
+$\vec{u} = \begin{pmatrix} 3 \\ 4 \end{pmatrix}$ et $\vec{v} = \begin{pmatrix} 2 \\ -1 \end{pmatrix}$
+
+$$
+\begin{aligned}
+\vec{u} \cdot \vec{v} &= 3 \times 2 + 4 \times (-1) \\
+&= 6 - 4 \\
+&= 2
+\end{aligned}
+$$
+:::
+
+## II. Propriétés du produit scalaire
+
+### Propriétés fondamentales
+
+| Propriété | Expression |
+|---|---|
+| Commutativité | $\vec{u} \cdot \vec{v} = \vec{v} \cdot \vec{u}$ |
+| Bilinéarité | $(k\vec{u}) \cdot \vec{v} = k(\vec{u} \cdot \vec{v})$ |
+| Distributivité | $\vec{u} \cdot (\vec{v} + \vec{w}) = \vec{u} \cdot \vec{v} + \vec{u} \cdot \vec{w}$ |
+| Carré scalaire | $\vec{u} \cdot \vec{u} = \|\vec{u}\|^2$ |
+
+::: remarque Conséquence importante
+$$\|\vec{u}\| = \sqrt{\vec{u} \cdot \vec{u}}$$
+:::
+
+## III. Orthogonalité
+
+### Définition
+
+::: definition
+Deux vecteurs $\vec{u}$ et $\vec{v}$ sont **orthogonaux** si et seulement si :
+
+$$\vec{u} \cdot \vec{v} = 0$$
+:::
+
+::: attention
+Le vecteur nul $\vec{0}$ est orthogonal à tout vecteur, mais on dit généralement que deux vecteurs non nuls sont orthogonaux.
+:::
+
+::: remarque
+- **Orthogonal** : terme mathématique général, s'applique même au vecteur nul
+- **Perpendiculaire** : terme géométrique, implique un angle de 90° entre deux droites ou vecteurs non nuls
+- En pratique, pour des vecteurs non nuls, « orthogonal » et « perpendiculaire » sont équivalents
+:::
+
+### Vérification de l'orthogonalité
+
+::: methode
+Calculer $\vec{u} \cdot \vec{v}$
+
+- Si $\vec{u} \cdot \vec{v} = 0$ : les vecteurs sont orthogonaux
+- Si $\vec{u} \cdot \vec{v} \neq 0$ : les vecteurs ne sont pas orthogonaux
+:::
+
+::: exemple
+Vérifier si $\vec{u} = \begin{pmatrix} 2 \\ 3 \end{pmatrix}$ et $\vec{v} = \begin{pmatrix} 3 \\ -2 \end{pmatrix}$ sont orthogonaux
+
+$$
+\begin{aligned}
+\vec{u} \cdot \vec{v} &= 2 \times 3 + 3 \times (-2) \\
+&= 6 - 6 \\
+&= 0
+\end{aligned}
+$$
+
+Les vecteurs sont orthogonaux
+:::
+
+[IMAGE_2]
+
+## IV. Norme d'un vecteur
+
+### Définition et calcul
+
+::: definition
+La **norme** d'un vecteur $\vec{u} = \begin{pmatrix} x \\ y \end{pmatrix}$ est :
+
+$$\|\vec{u}\| = \sqrt{x^2 + y^2}$$
+:::
+
+::: exemple
+$$\vec{u} = \begin{pmatrix} 3 \\ 4 \end{pmatrix}$$
+
+$$
+\begin{aligned}
+\|\vec{u}\| &= \sqrt{3^2 + 4^2} \\
+&= \sqrt{9 + 16} \\
+&= \sqrt{25} \\
+&= 5
+\end{aligned}
+$$
+:::
+
+::: propriete
+$$\|\vec{u}\|^2 = \vec{u} \cdot \vec{u} = x^2 + y^2$$
+:::
+
+## V. Projection orthogonale
+
+### Définition
+
+::: definition
+La **projection orthogonale** du vecteur $\vec{v}$ sur le vecteur $\vec{u}$ est :
+
+$$\text{proj}_{\vec{u}}(\vec{v}) = \dfrac{\vec{v} \cdot \vec{u}}{\|\vec{u}\|^2} \vec{u}$$
+:::
+
+::: remarque Application
+Utile pour calculer des distances et des angles. La projection donne la composante de $\vec{v}$ dans la direction de $\vec{u}$.
+:::
+
+::: exemple
+$\vec{u} = \begin{pmatrix} 3 \\ 4 \end{pmatrix}$ et $\vec{v} = \begin{pmatrix} 2 \\ 1 \end{pmatrix}$
+
+$$
+\begin{aligned}
+\vec{v} \cdot \vec{u} &= 2 \times 3 + 1 \times 4 \\
+&= 10, \quad \|\vec{u}\|^2 \\
+&= 25
+\end{aligned}
+$$
+
+$$\text{proj}_{\vec{u}}(\vec{v}) = \dfrac{10}{25} \begin{pmatrix} 3 \\ 4 \end{pmatrix} = \begin{pmatrix} \dfrac{6}{5} \\ \dfrac{8}{5} \end{pmatrix}$$
+:::
+
+[IMAGE_3]
+
+## VI. Applications géométriques
+
+### Distance entre deux points
+
+::: definition
+Soient $A(x_A, y_A)$ et $B(x_B, y_B)$ deux points du plan. La distance $AB$ est :
+
+$$
+\begin{aligned}
+AB &= \|\overrightarrow{AB}\| \\
+&= \sqrt{(x_B - x_A)^2 + (y_B - y_A)^2}
+\end{aligned}
+$$
+:::
+
+::: exemple
+$A(1, 2)$ et $B(4, 6)$
+
+$$
+\begin{aligned}
+AB &= \sqrt{(4-1)^2 + (6-2)^2} \\
+&= \sqrt{9 + 16} \\
+&= \sqrt{25} \\
+&= 5
+\end{aligned}
+$$
+:::
+
+### Angle entre deux vecteurs
+
+::: definition
+L'angle $\theta$ entre deux vecteurs non nuls $\vec{u}$ et $\vec{v}$ est donné par :
+
+$$\cos(\theta) = \dfrac{\vec{u} \cdot \vec{v}}{\|\vec{u}\| \times \|\vec{v}\|}$$
+:::
+
+::: exemple
+$\vec{u} = \begin{pmatrix} 1 \\ 0 \end{pmatrix}$ et $\vec{v} = \begin{pmatrix} 1 \\ 1 \end{pmatrix}$
+
+$$
+\begin{aligned}
+\vec{u} \cdot \vec{v} &= 1, \quad \|\vec{u}\| \\
+&= 1, \quad \|\vec{v}\| \\
+&= \sqrt{2}
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+\cos(\theta) &= \dfrac{1}{1 \times \sqrt{2}} \\
+&= \dfrac{1}{\sqrt{2}} \\
+&= \dfrac{\sqrt{2}}{2}
+\end{aligned}
+$$
+
+$$\theta = 45°$$
+:::
+
+## VI. Applications en 3D
+
+### Orthogonalité en 3D
+
+Un vecteur $\vec{v}$ est **orthogonal à un plan** si et seulement si il est orthogonal à tous les vecteurs de ce plan. Cela signifie que $\vec{v}$ est parallèle au vecteur normal $\vec{n}$ du plan.
+
+::: remarque Condition
+$\vec{v}$ est orthogonal au plan $\Leftrightarrow \vec{v} = k\vec{n}$ pour un réel $k \neq 0$.
+:::
+
+::: attention
+Si $\vec{n} \cdot \vec{v} = 0$, alors $\vec{v}$ est **parallèle au plan** (orthogonal au vecteur normal), pas orthogonal au plan !
+:::
+
+::: definition Distance d'un point à un plan
+Distance du point $A(x_0, y_0, z_0)$ au plan $ax + by + cz + d = 0$ :
+
+$$d(A, \text{plan}) = \dfrac{|ax_0 + by_0 + cz_0 + d|}{\sqrt{a^2 + b^2 + c^2}}$$
+:::
+
+[IMAGE_5]
+
+### Vecteurs unitaires
+
+::: definition
+Un **vecteur unitaire** $\vec{u}_0$ dans la direction de $\vec{u}$ est :
+
+$$\vec{u}_0 = \dfrac{\vec{u}}{\|\vec{u}\|}$$
+:::
+
+::: remarque Application
+Utile pour simplifier les projections et distances. Un vecteur unitaire a une norme égale à 1.
+:::
+
+::: exemple
+$$\vec{u} = \begin{pmatrix} 3 \\ 4 \end{pmatrix}$$
+
+$$\|\vec{u}\| = 5, \quad \vec{u}_0 = \dfrac{1}{5}\begin{pmatrix} 3 \\ 4 \end{pmatrix} = \begin{pmatrix} \dfrac{3}{5} \\ \dfrac{4}{5} \end{pmatrix}$$
+:::
+
+## VII. Équations de droites et plans
+
+### Équation cartésienne d'une droite
+
+::: definition
+Une droite de vecteur normal $\vec{n} = \begin{pmatrix} a \\ b \end{pmatrix}$ passant par $A(x_0, y_0)$ a pour équation :
+
+$$ax + by + c = 0 \quad \text{où } c = -ax_0 - by_0$$
+:::
+
+::: exemple
+Droite passant par $A(2, 1)$ avec vecteur normal $\vec{n} = \begin{pmatrix} 3 \\ -2 \end{pmatrix}$
+
+$$
+\begin{aligned}
+3x - 2y + c &= 0 \quad \text{avec } c \\
+&= -3 \times 2 - (-2) \times 1 \\
+&= -4
+\end{aligned}
+$$
+
+$$3x - 2y - 4 = 0$$
+:::
+
+### Distance d'un point à une droite
+
+::: definition
+La distance du point $A(x_0, y_0)$ à la droite $ax + by + c = 0$ est :
+
+$$d(A, \text{droite}) = \dfrac{|ax_0 + by_0 + c|}{\sqrt{a^2 + b^2}}$$
+:::
+
+::: exemple
+Distance de $A(2, 3)$ à la droite $3x - 4y + 5 = 0$
+
+$$
+\begin{aligned}
+d &= \dfrac{|3 \times 2 - 4 \times 3 + 5|}{\sqrt{3^2 + 4^2}} \\
+&= \dfrac{|6 - 12 + 5|}{\sqrt{25}} \\
+&= \dfrac{|-1|}{5} \\
+&= \dfrac{1}{5}
+\end{aligned}
+$$
+
+La distance est de $\dfrac{1}{5}$ unité
+:::
+
+[IMAGE_4]
+
+## VII. Calcul pratique des angles
+
+### Formule générale
+
+::: definition
+L'angle $\theta$ entre deux vecteurs $\vec{u}$ et $\vec{v}$ est donné par :
+
+$$\cos \theta = \dfrac{\vec{u} \cdot \vec{v}}{\|\vec{u}\| \|\vec{v}\|}$$
+:::
+
+::: remarque Application
+Permet de déterminer si un triangle est aigu, droit ou obtus selon la valeur de $\cos \theta$.
+:::
+
+### Produit scalaire et cercle
+
+::: definition
+Pour un cercle de centre $O$ et de rayon $R$, la condition d'orthogonalité entre le rayon et la tangente est :
+
+$$\overrightarrow{OM} \cdot \overrightarrow{MT} = 0$$
+
+où $M$ est un point du cercle et $T$ est le point de tangence.
+:::
+
+::: remarque Application
+Cette condition permet de déterminer l'équation de la tangente à un cercle en un point donné.
+:::
+
+## VIII. Exemples d'application
+
+### Exemple 1 : Triangle rectangle
+
+**Énoncé :** Montrer que le triangle $ABC$ avec $A(0, 0)$, $B(3, 0)$ et $C(0, 4)$ est rectangle.
+
+**Résolution :**
+
+::: exemple
+Calculons les vecteurs :
+
+$$\overrightarrow{AB} = \begin{pmatrix} 3 \\ 0 \end{pmatrix}, \quad \overrightarrow{AC} = \begin{pmatrix} 0 \\ 4 \end{pmatrix}$$
+
+Produit scalaire :
+
+$$
+\begin{aligned}
+\overrightarrow{AB} \cdot \overrightarrow{AC} &= 3 \times 0 + 0 \times 4 \\
+&= 0
+\end{aligned}
+$$
+:::
+
+::: resultat
+$\overrightarrow{AB} \cdot \overrightarrow{AC} = 0$ donc $\overrightarrow{AB} \perp \overrightarrow{AC}$. Le triangle est rectangle en A.
+:::
+
+### Exemple 2 : Cercle et tangente
+
+**Énoncé :** Déterminer l'équation de la tangente au cercle de centre $O(0, 0)$ et de rayon 5 au point $A(3, 4)$.
+
+**Résolution :**
+
+::: exemple
+Le vecteur $\overrightarrow{OA} = \begin{pmatrix} 3 \\ 4 \end{pmatrix}$ est normal à la tangente.
+
+Équation de la tangente : $3x + 4y + c = 0$
+
+Le point A appartient à la tangente : $3 \times 3 + 4 \times 4 + c = 0$
+
+$$9 + 16 + c = 0 \Rightarrow c = -25$$
+:::
+
+::: resultat
+$$3x + 4y - 25 = 0$$
+:::
+
+## IX. Erreurs fréquentes et conseils
+
+::: attention À éviter
+- Confondre produit scalaire et produit vectoriel : le produit scalaire donne un nombre, pas un vecteur
+- Oublier la valeur absolue dans la formule de distance d'un point à une droite
+- Confondre vecteur normal et vecteur directeur : un vecteur normal est orthogonal à la droite
+- Se tromper dans le calcul du produit scalaire : bien vérifier $x_1x_2 + y_1y_2$
+- Oublier de vérifier que les vecteurs sont non nuls avant de parler d'orthogonalité
+- Confondre orthogonalité et colinéarité : deux vecteurs orthogonaux ne sont pas colinéaires
+:::
+
+::: conseil
+- Toujours vérifier que les vecteurs sont non nuls avant d'étudier l'orthogonalité
+- Pour une droite, identifier clairement le vecteur normal (orthogonal à la droite)
+- Utiliser la définition analytique du produit scalaire pour les calculs
+- Vérifier les résultats en utilisant les deux définitions (géométrique et analytique)
+- Pour les distances, toujours utiliser la valeur absolue au numérateur
+- S'entraîner régulièrement sur les formules de base pour les avoir en réflexe
+:::

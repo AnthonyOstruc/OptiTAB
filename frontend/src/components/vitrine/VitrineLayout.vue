@@ -15,11 +15,33 @@
 </template>
 
 <script setup>
+import { onMounted, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import VitrineHeader from './VitrineHeader.vue'
 import VitrineFooter from './VitrineFooter.vue'
 import WhatsappChatButton from '@/components/home/WhatsappChatButton.vue'
 import { vitrineContact } from '@/config/vitrineContent'
+import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
 import '@/styles/vitrine.css'
+
+// Liens « Se connecter » et « Créer un compte » des pages statiques (ressources
+// gratuites) : /?compte=connexion ou /?compte=inscription ouvre la fenêtre.
+const route = useRoute()
+const router = useRouter()
+const { openModal } = useModalManager()
+const FENETRES = { connexion: MODAL_IDS.LOGIN, inscription: MODAL_IDS.REGISTER }
+
+function ouvrirCompte() {
+  const fenetre = FENETRES[route.query.compte]
+  if (!fenetre) return
+  openModal(fenetre)
+  const query = { ...route.query }
+  delete query.compte
+  router.replace({ query, hash: route.hash })
+}
+
+onMounted(ouvrirCompte)
+watch(() => route.query.compte, ouvrirCompte)
 
 defineProps({
   showWhatsapp: {

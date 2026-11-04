@@ -1,0 +1,188 @@
+Titre: Résumé : Probabilités Conditionnelles et Indépendance
+
+<!-- optitab:1 -->
+::: objectifs
+Maîtriser les probabilités conditionnelles : définition, arbres pondérés, indépendance, formule des probabilités totales.
+:::
+
+## I. Probabilité conditionnelle
+
+::: definition Probabilité conditionnelle
+Soit $A$ et $B$ deux événements avec $P(A) \neq 0$.
+
+La **probabilité conditionnelle de $B$ sachant $A$**, notée $P_A(B)$ ou $P(B|A)$, est :
+
+::: formule
+$$P_A(B) = \frac{P(A \cap B)}{P(A)}$$
+:::
+
+*Représente la probabilité que $B$ se réalise sachant que $A$ s'est réalisé*
+:::
+
+::: theoreme Propriétés
+Soit $A$ un événement tel que $P(A) > 0$. Alors $P_A$ est une probabilité qui vérifie :
+:::
+
+| Propriété | Formulation |
+|---|---|
+| Bornes | $\displaystyle 0 \leq P_A(B) \leq 1$ pour tout événement $\displaystyle B$ |
+| Probabilité certaine | $\displaystyle P_A(\Omega) = 1$ <br> $\displaystyle P_A(A) = 1$ |
+| Événement contraire | $\displaystyle P_A(\overline{B}) = 1 - P_A(B)$ |
+| Additivité | Si $\displaystyle B$ et $\displaystyle C$ incompatibles : $\displaystyle P_A(B \cup C) = P_A(B) + P_A(C)$ |
+
+| Notation | Signification |
+|---|---|
+| $\displaystyle P_A(B)$ | Probabilité de $\displaystyle B$ sachant $\displaystyle A$ |
+| $\displaystyle P_B(A)$ | Probabilité de $\displaystyle A$ sachant $\displaystyle B$ |
+| Relation | $\displaystyle P(A \cap B) = P(A) \times P_A(B)$ <br> $\displaystyle P(A \cap B) = P(B) \times P_B(A)$ |
+
+## II. Arbres pondérés
+
+::: definition Arbre pondéré
+Un **arbre pondéré** est une représentation graphique des étapes d'une expérience aléatoire.
+
+Sur chaque branche, on indique :
+
+- Les **probabilités** si c'est la première étape
+- Les **probabilités conditionnelles** si c'est une étape ultérieure
+:::
+
+[IMAGE_1]
+
+::: theoreme Règle du produit (des chemins)
+La probabilité d'un événement correspondant à un **chemin** dans l'arbre est égale au **produit des probabilités** le long de ce chemin :
+
+::: formule
+$$P(A \cap B) = P(A) \times P_A(B)$$
+:::
+:::
+
+::: theoreme Règle de la somme (des chemins disjoints)
+Si un événement $E$ peut se réaliser selon **plusieurs chemins disjoints**, alors :
+
+::: formule
+$$P(E) = P(A \cap B) + P(C \cap D)$$
+:::
+:::
+
+## III. Indépendance de deux événements
+
+::: definition Indépendance
+Deux événements $A$ et $B$ (avec $P(A) > 0$ et $P(B) > 0$) sont **indépendants** si et seulement si :
+
+::: formule
+$$P(A \cap B) = P(A) \times P(B)$$
+:::
+:::
+
+| Condition équivalente | Formulation |
+|---|---|
+| Produit | $\displaystyle P(A \cap B) = P(A) \times P(B)$ |
+| Conditionnelle | $\displaystyle P_A(B) = P(B)$ |
+| Conditionnelle inverse | $\displaystyle P_B(A) = P(A)$ |
+
+::: theoreme Propriétés de l'indépendance
+Si $A$ et $B$ sont indépendants, alors :
+
+- $A$ et $\overline{B}$ sont indépendants
+- $\overline{A}$ et $B$ sont indépendants
+- $\overline{A}$ et $\overline{B}$ sont indépendants
+:::
+
+| Situation | Indépendance |
+|---|---|
+| Lancer deux dés | Épreuves indépendantes |
+| Tirage avec remise | Épreuves indépendantes |
+| Tirage sans remise | Épreuves dépendantes |
+
+::: attention Formule de Bayes
+Dans un test médical, on note $M$ : « la personne est malade » et $T$ : « le test est positif ».
+
+La formule de Bayes permet de calculer la valeur prédictive positive :
+
+::: formule
+$$P_T(M) = \frac{P(M) \times P_M(T)}{P(M) \times P_M(T) + P(\overline{M}) \times P_{\overline{M}}(T)}$$
+:::
+
+*Utile pour interpréter les tests médicaux*
+:::
+
+## IV. Formule des probabilités totales
+
+::: definition Partition de l'univers
+Des événements $A_1, A_2, \ldots, A_n$ forment une **partition** de $\Omega$ si :
+
+- Ils sont **deux à deux incompatibles** : $A_i \cap A_j = \emptyset$ pour $i \neq j$
+- Leur **réunion est l'univers** : $A_1 \cup A_2 \cup \cdots \cup A_n = \Omega$
+:::
+
+::: theoreme Formule des probabilités totales
+Soit $A_1, A_2, \ldots, A_n$ une partition de $\Omega$ avec $P(A_i) > 0$ pour tout $i$.
+
+Pour tout événement $\displaystyle B$ :
+
+::: formule
+$$P(B) = P(A_1) \times P_{A_1}(B) + P(A_2) \times P_{A_2}(B) + \cdots + P(A_n) \times P_{A_n}(B)$$
+:::
+
+Cas particulier avec $A$ et $\overline{A}$ :
+
+::: formule
+$$P(B) = P(A) \times P_A(B) + P(\overline{A}) \times P_{\overline{A}}(B)$$
+:::
+:::
+
+## V. Succession d'épreuves indépendantes
+
+::: definition Épreuves indépendantes
+Deux **épreuves sont indépendantes** si le résultat de la première n'influence pas le résultat de la seconde.
+
+Si $A_1$ est un événement de la première épreuve et $A_2$ de la deuxième :
+
+::: formule
+$$P(A_1 \cap A_2) = P(A_1) \times P(A_2)$$
+:::
+:::
+
+::: definition Schéma de Bernoulli
+Un **schéma de Bernoulli** est une expérience répétée $n$ fois de manière indépendante, où chaque épreuve a **deux issues** :
+
+- **Succès** (S) avec probabilité $p$
+- **Échec** ($\overline{S}$) avec probabilité $1-p$
+:::
+
+## VI. Erreurs fréquentes
+
+| Piège fréquent | Correction |
+|---|---|
+| Confondre $\displaystyle P_A(B)$ et $\displaystyle P_B(A)$ | Ce sont des probabilités différentes ! $\displaystyle P_A(B) \neq P_B(A)$ en général |
+| Confondre incompatibilité et indépendance | Incompatibles : $\displaystyle A \cap B = \emptyset$. Indépendants : $\displaystyle P(A \cap B) = P(A) \times P(B)$ |
+| Oublier de vérifier l'indépendance | Ne pas supposer l'indépendance sans vérification |
+| Somme des probabilités sur un arbre | La somme des probabilités partant d'un nœud doit toujours valoir 1 |
+| Règle du produit mal appliquée | $\displaystyle P(A \cap B) = P(A) \times P_A(B)$, pas $\displaystyle P(A) \times P(B)$ si non indépendants |
+| Oublier la condition $\displaystyle P(A) \neq 0$ | La probabilité conditionnelle $\displaystyle P_A(B)$ n'existe que si $\displaystyle P(A) > 0$ |
+
+## VII. Formules essentielles — mémo rapide
+
+| Concept | Formule essentielle |
+|---|---|
+| Probabilité conditionnelle | $\displaystyle P_A(B) = \frac{P(A \cap B)}{P(A)}$ |
+| Règle du produit | $\displaystyle P(A \cap B) = P(A) \times P_A(B)$ |
+| Indépendance | $\displaystyle P(A \cap B) = P(A) \times P(B)$ |
+| Probabilités totales (cas général) | $\displaystyle P(B) = \sum_{i=1}^{n} P(A_i) \times P_{A_i}(B)$ |
+| Probabilités totales (cas particulier) | $\displaystyle P(B) = P(A) \times P_A(B) + P(\overline{A}) \times P_{\overline{A}}(B)$ |
+| Événement contraire | $\displaystyle P_A(\overline{B}) = 1 - P_A(B)$ |
+| Formule de Bayes | $\displaystyle P_T(M) = \frac{P(M) \times P_M(T)}{P(M) \times P_M(T) + P(\overline{M}) \times P_{\overline{M}}(T)}$ |
+| Relation symétrique | $\displaystyle P(A \cap B) = P(A) \times P_A(B) = P(B) \times P_B(A)$ |
+
+## VIII. Méthodologie — stratégie de résolution
+
+| Type de problème | Méthode recommandée |
+|---|---|
+| Calculer $\displaystyle P_A(B)$ | Utiliser : $\displaystyle P_A(B) = \frac{P(A \cap B)}{P(A)}$ avec $\displaystyle P(A) \neq 0$ |
+| Construire un arbre pondéré | Identifier les étapes, placer les probabilités (première étape) et probabilités conditionnelles (étapes suivantes) |
+| Calculer la probabilité d'un chemin | Utiliser la règle du produit : multiplier les probabilités le long du chemin |
+| Calculer la probabilité de plusieurs chemins | Utiliser la règle de la somme : additionner les probabilités de chaque chemin disjoint |
+| Vérifier l'indépendance | Vérifier : $\displaystyle P(A \cap B) = P(A) \times P(B)$ ou $\displaystyle P_A(B) = P(B)$ |
+| Calculer $\displaystyle P(B)$ avec une partition | Utiliser la formule des probabilités totales : $\displaystyle P(B) = \sum P(A_i) \times P_{A_i}(B)$ |
+| Traiter des épreuves successives | Construire un arbre, vérifier l'indépendance (avec ou sans remise), appliquer les règles du produit et de la somme |

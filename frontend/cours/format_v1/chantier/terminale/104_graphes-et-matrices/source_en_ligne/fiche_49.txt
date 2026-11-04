@@ -1,0 +1,58 @@
+Titre: Résumé : Matrices
+
+<!-- optitab:1 -->
+::: objectifs
+Retenir l’essentiel de « Graphes et matrices » : calcul matriciel, systèmes, suites, graphes et chaînes de Markov. Programme de Mathématiques expertes.
+:::
+
+## I. Calcul matriciel
+
+::: formule
+$(AB)_{ij} = \displaystyle\sum_{k} a_{ik}\,b_{kj}$ : ligne $i$ de $A$ par colonne $j$ de $B$
+:::
+
+1. $AB$ existe si le nombre de colonnes de $A$ est égal au nombre de lignes de $B$ ; en général $AB \neq BA$.
+2. $A$ est inversible si $AA^{-1} = A^{-1}A = I_n$. Ordre 2 : si $ad - bc \neq 0$, $\begin{pmatrix} a & b \\ c & d \end{pmatrix}^{-1} = \dfrac{1}{ad - bc}\begin{pmatrix} d & -b \\ -c & a \end{pmatrix}$.
+3. Système $AX = Y$ avec $A$ inversible : $X = A^{-1}Y$.
+4. Rotation de centre $O$ et d’angle $\theta$ : $\begin{pmatrix} \cos\theta & -\sin\theta \\ \sin\theta & \cos\theta \end{pmatrix}$ ; homothétie de rapport $k$ : $kI_2$.
+
+## II. Puissances et suites
+
+1. $A^0 = I$ et $A^{n+1} = A^nA$ ; pour une matrice diagonale, on élève les coefficients diagonaux à la puissance $n$.
+2. Méthode : calculer $A^2$, $A^3$, conjecturer $A^n$, puis démontrer par récurrence.
+3. $U_{n+1} = AU_n$ donne $U_n = A^nU_0$.
+4. $U_{n+1} = AU_n + C$ : on cherche $L$ tel que $L = AL + C$ ; alors $U_n = A^n(U_0 - L) + L$.
+
+## III. Graphes
+
+[IMAGE_1]
+
+1. Ordre : nombre de sommets ; degré d’un sommet : nombre d’arêtes issues de ce sommet ; somme des degrés $= 2 \times$ nombre d’arêtes.
+2. Graphe complet $K_n$ : $\dfrac{n(n - 1)}{2}$ arêtes. Graphe connexe : deux sommets quelconques sont reliés par une chaîne.
+3. Matrice d’adjacence : $m_{ij} = 1$ s’il y a une arête (un arc) de $i$ vers $j$, $0$ sinon ; elle est symétrique pour un graphe non orienté.
+
+::: theoreme
+$(M^n)_{ij}$ est le nombre de chemins (de chaînes) de longueur $n$ qui vont du sommet $i$ au sommet $j$.
+:::
+
+## IV. Chaînes de Markov
+
+[IMAGE_2]
+
+1. $p_{ij}$ : probabilité de passer de l’état $i$ à l’état $j$ ; chaque ligne de $P$ a pour somme $1$.
+2. $\pi_{n+1} = \pi_nP$ et $\pi_n = \pi_0P^n$ ; $(P^n)_{ij}$ est la probabilité d’aller de $i$ à $j$ en $n$ étapes.
+3. Distribution invariante : $\pi P = \pi$, coefficients positifs de somme $1$. Pour $P = \begin{pmatrix} 0{,}8 & 0{,}2 \\ 0{,}3 & 0{,}7 \end{pmatrix}$, on trouve $\pi = \begin{pmatrix} 0{,}6 & 0{,}4 \end{pmatrix}$.
+
+## V. Les pièges à éviter
+
+::: attention Les 5 erreurs classiques
+1. Calculer $BA$ au lieu de $AB$, ou un produit de tailles incompatibles.
+2. « Diviser » par une matrice : on multiplie par $A^{-1}$, du bon côté.
+3. Calculer $A^n$ coefficient par coefficient (juste seulement pour une matrice diagonale).
+4. Confondre lignes et colonnes : ligne $=$ départ, colonne $=$ arrivée.
+5. Écrire $P\pi_n$ au lieu de $\pi_nP$.
+:::
+
+::: remarque Réflexe
+Graphe → matrice d’adjacence → puissances pour compter les chemins. Chaîne de Markov → matrice de transition → $\pi_0P^n$ et $\pi P = \pi$.
+:::

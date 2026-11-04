@@ -1,0 +1,703 @@
+Titre: Raisonnement et Vocabulaire Ensembliste
+
+<!-- optitab:1 -->
+## I. Rudiments de logique
+
+### Connecteurs logiques et tables de vérité
+
+::: definition Connecteurs logiques
+Les principaux connecteurs logiques sont :
+
+- **non** ($\displaystyle \neg$) : négation
+- **et** ($\displaystyle \land$) : conjonction
+- **ou** ($\displaystyle \lor$) : disjonction
+- **implique** ($\displaystyle \Rightarrow$) : implication
+- **équivaut** ($\displaystyle \Leftrightarrow$) : équivalence
+:::
+
+::: definition Équivalences utiles
+$\displaystyle \neg(P \land Q) \Leftrightarrow (\neg P \lor \neg Q)$ (loi de De Morgan)
+
+$\displaystyle \neg(P \lor Q) \Leftrightarrow (\neg P \land \neg Q)$ (loi de De Morgan)
+
+$$(P \Rightarrow Q) \Leftrightarrow (\neg P \lor Q)$$
+:::
+
+| $\displaystyle P$ | $\displaystyle Q$ | $\displaystyle P \land Q$ | $\displaystyle P \lor Q$ | $\displaystyle P \Rightarrow Q$ |
+|---|---|---|---|---|
+| V | V | V | V | V |
+| V | F | F | V | F |
+| F | V | F | V | V |
+| F | F | F | F | V |
+
+### Quantificateurs
+
+::: definition
+Il existe trois quantificateurs essentiels en mathématiques :
+
+**$\forall$** (pour tout), **$\exists$** (il existe) et **$\exists!$** (il existe un unique)
+:::
+
+::: methode
+L'emploi de quantificateurs en guise d'abréviation est exclu. Les quantificateurs doivent être utilisés avec précision et clarté.
+:::
+
+::: exemple
+- $\forall x \in \mathbb{R}, \quad x^2 \geq 0$ : "Pour tout réel $x$, le carré de $x$ est positif ou nul"
+- $\exists n \in \mathbb{N}, \quad n^2 = 4$ : "Il existe un entier naturel $n$ tel que $n^2 = 4$"
+- $\exists! x \in \mathbb{R}, \quad x^2 = 0$ : "Il existe un unique réel $x$ tel que $x^2 = 0$" (c'est $x = 0$)
+- $\displaystyle \forall \varepsilon > 0, \quad \exists \delta > 0, \quad |x-a| < \delta \Rightarrow |f(x)-L| < \varepsilon$ : Définition de la limite
+:::
+
+::: attention
+L'ordre des quantificateurs est crucial. "$\forall x, \exists y$« n'est pas équivalent à »$\exists y, \forall x$".
+:::
+
+::: attention Portée des quantificateurs
+"$\forall x \in \mathbb{R}, \quad \exists y \in \mathbb{R}, \quad x < y$" est vraie (prendre $y = x + 1$).
+
+"$\exists y \in \mathbb{R}, \quad \forall x \in \mathbb{R}, \quad x < y$" est fausse (il n'existe pas de réel plus grand que tous).
+:::
+
+### Implication, contraposition, équivalence
+
+::: definition
+Soient $P$ et $Q$ deux propositions.
+
+**Implication :** $P \Rightarrow Q$ signifie "Si $P$ alors $Q$"
+
+**Équivalence :** $P \Leftrightarrow Q$ signifie "$P$ si et seulement si $Q$"
+:::
+
+::: methode Contraposition
+La proposition $P \Rightarrow Q$ est équivalente à sa contraposée : $\neg Q \Rightarrow \neg P$
+
+$$
+\begin{aligned}
+(P &\Rightarrow Q) \\
+&\Leftrightarrow (\neg Q \\
+&\Rightarrow \neg P)
+\end{aligned}
+$$
+:::
+
+::: exemple Contraposition
+Proposition : "Si $n^2$ est pair, alors $n$ est pair"
+
+Contraposée : "Si $n$ est impair, alors $n^2$ est impair"
+
+Ces deux propositions sont équivalentes et il est parfois plus simple de démontrer la contraposée.
+:::
+
+::: propriete
+- **Réflexivité :** $\displaystyle P \Leftrightarrow P$
+- **Symétrie :** Si $P \Leftrightarrow Q$, alors $Q \Leftrightarrow P$
+- **Transitivité :** Si $P \Leftrightarrow Q$ et $Q \Leftrightarrow R$, alors $P \Leftrightarrow R$
+- **Transitivité de l'implication :** Si $P \Rightarrow Q$ et $Q \Rightarrow R$, alors $P \Rightarrow R$
+:::
+
+### Négation d'une proposition
+
+::: methode Règles de négation
+- **Négation de $\forall$ :** $\neg(\forall x, P(x)) \Leftrightarrow \exists x, \neg P(x)$
+- **Négation de $\exists$ :** $\neg(\exists x, P(x)) \Leftrightarrow \forall x, \neg P(x)$
+- **Négation de $\exists!$ :** $\neg(\exists! x, P(x)) \Leftrightarrow (\forall x, \neg P(x)) \text{ ou } (\exists x, y, \quad x \neq y \text{ et } P(x) \text{ et } P(y))$
+- **Négation de $\Rightarrow$ :** $\neg(P \Rightarrow Q) \Leftrightarrow P \text{ et } \neg Q$
+- **Négation de $\Leftrightarrow$ :** $\neg(P \Leftrightarrow Q) \Leftrightarrow (P \text{ et } \neg Q) \text{ ou } (\neg P \text{ et } Q)$
+:::
+
+::: exemple
+- Proposition : "$\displaystyle \forall x \in \mathbb{R}, \quad x^2 > 0$"
+- Négation : "$\displaystyle \exists x \in \mathbb{R}, \quad x^2 \leq 0$"
+- Proposition : "$\displaystyle \forall \varepsilon > 0, \quad \exists \delta > 0, \quad |f(x)-L| < \varepsilon$"
+- Négation : "$\displaystyle \exists \varepsilon > 0, \quad \forall \delta > 0, \quad |f(x)-L| \geq \varepsilon$"
+:::
+
+### Modes de raisonnement
+
+::: methode 1. Raisonnement par disjonction des cas
+On démontre une propriété en considérant tous les cas possibles qui recouvrent la situation.
+
+::: exemple
+Montrer que $\displaystyle \forall n \in \mathbb{Z}, \quad n(n+1)$ est pair.
+
+- Cas 1 : $n$ pair $\Rightarrow n = 2k \Rightarrow n(n+1) = 2k(2k+1)$ pair
+- Cas 2 : $n$ impair $\Rightarrow n = 2k+1 \Rightarrow n+1 = 2(k+1) \Rightarrow n(n+1)$ pair
+:::
+:::
+
+::: methode 2. Raisonnement par contraposition
+Pour démontrer $P \Rightarrow Q$, on démontre $\neg Q \Rightarrow \neg P$.
+
+::: exemple
+Montrer que si $n^2$ est pair, alors $n$ est pair.
+
+On démontre la contraposée : si $n$ est impair, alors $n^2$ est impair.
+
+Si $n = 2k+1$, alors $n^2 = 4k^2 + 4k + 1 = 2(2k^2+2k) + 1$ est impair.
+:::
+:::
+
+::: methode 3. Raisonnement par l'absurde
+Pour démontrer $P$, on suppose $\neg P$ et on aboutit à une contradiction.
+
+::: exemple
+Montrer que $\displaystyle \sqrt{2}$ est irrationnel.
+
+Supposons $\sqrt{2} = \dfrac{p}{q}$ avec $p, q \in \mathbb{N}^{\ast}$ premiers entre eux.
+
+Alors $2q^2 = p^2$, donc $p^2$ est pair, donc $p$ est pair.
+
+Posons $p = 2k$, alors $2q^2 = 4k^2 \Rightarrow q^2 = 2k^2$, donc $q$ est pair.
+
+Contradiction avec $p$ et $q$ premiers entre eux. Donc $\sqrt{2}$ est irrationnel.
+:::
+:::
+
+::: methode 4. Raisonnement par analyse-synthèse
+Cette méthode permet de résoudre un problème en deux étapes :
+
+1. **Analyse :** On suppose que la solution existe et on détermine les conditions nécessaires qu'elle doit satisfaire
+2. **Synthèse :** On vérifie que les solutions trouvées lors de l'analyse sont bien solutions du problème
+
+::: exemple
+Résoudre dans $\mathbb{R}$ l'équation $x^2 = 4$.
+
+**Analyse :** Si $x^2 = 4$, alors $x = 2$ ou $x = -2$ (condition nécessaire).
+
+**Synthèse :** $2^2 = 4$ et $(-2)^2 = 4$, donc les solutions sont $x = 2$ et $x = -2$.
+:::
+:::
+
+::: definition Condition nécessaire et condition suffisante
+Dans $\displaystyle P \Rightarrow Q$ :
+
+$P$ est une **condition suffisante** pour $Q$
+
+$Q$ est une **condition nécessaire** pour $P$
+:::
+
+::: exemple
+Soit $P$ : « être un rectangle » et $Q$ : « être un quadrilatère ».
+
+On a $P \Rightarrow Q$ : « Si une figure est un rectangle, alors c'est un quadrilatère ».
+
+- **Être rectangle suffit** pour être quadrilatère (condition suffisante).
+- **Être quadrilatère est nécessaire** pour être rectangle (condition nécessaire).
+:::
+
+### Raisonnement par récurrence
+
+::: definition Récurrence simple
+Pour démontrer $\displaystyle \forall n \in \mathbb{N}, \quad P(n)$ :
+
+1. **Initialisation :** Démontrer $P(0)$ (ou $P(n_0)$)
+
+2. **Hérédité :** Démontrer $\displaystyle \forall n \in \mathbb{N}, \quad P(n) \Rightarrow P(n+1)$
+:::
+
+::: methode En 3 étapes
+1. **Initialisation :** Vérifier que la propriété est vraie au rang initial
+2. **Hypothèse de récurrence :** Supposer que la propriété est vraie au rang $n$
+3. **Conclusion :** Démontrer que la propriété est vraie au rang $n+1$
+:::
+
+::: exemple
+Montrer que $\displaystyle \forall n \in \mathbb{N}, \quad \sum_{k=0}^{n} k = \dfrac{n(n+1)}{2}$
+
+**Initialisation :** Pour $n = 0$ : $\sum_{k=0}^{0} k = 0 = \dfrac{0 \times 1}{2}$
+
+**Hérédité :** Supposons $\displaystyle \sum_{k=0}^{n} k = \dfrac{n(n+1)}{2}$
+
+Alors $\displaystyle \sum_{k=0}^{n+1} k = \sum_{k=0}^{n} k + (n+1) = \dfrac{n(n+1)}{2} + (n+1) = \dfrac{(n+1)(n+2)}{2}$
+:::
+
+::: definition Récurrence double
+Pour démontrer $\displaystyle \forall n \in \mathbb{N}, \quad P(n)$ :
+
+1. **Initialisation :** Démontrer $P(0)$ et $P(1)$
+
+2. **Hérédité :** Démontrer $\displaystyle \forall n \in \mathbb{N}, \quad (P(n) \text{ et } P(n+1)) \Rightarrow P(n+2)$
+:::
+
+::: definition Récurrence forte
+Pour démontrer $\displaystyle \forall n \in \mathbb{N}, \quad P(n)$ :
+
+1. **Initialisation :** Démontrer $P(0)$
+
+2. **Hérédité :** Démontrer $\displaystyle \forall n \in \mathbb{N}, \quad (\forall k \leq n, P(k)) \Rightarrow P(n+1)$
+:::
+
+::: remarque
+Le raisonnement par récurrence peut être relié au fait que toute partie non vide de $\mathbb{N}$ possède un plus petit élément (principe de bon ordre).
+:::
+
+## II. Ensembles
+
+### Notions de base
+
+::: definition Ensemble et appartenance
+Un ensemble est une collection d'objets appelés éléments.
+
+Notation : $x \in E$ signifie "$x$ appartient à $E$"
+
+$x \notin E$ signifie "$x$ n'appartient pas à $E$"
+:::
+
+::: definition Ensemble vide
+L'ensemble vide, noté $\emptyset$ ou $\{ \}$, ne contient aucun élément.
+:::
+
+::: exemple
+- $\mathbb{N} = \{0, 1, 2, 3, \ldots\}$ : ensemble des entiers naturels
+- $\mathbb{Z} = \{\ldots, -2, -1, 0, 1, 2, \ldots\}$ : ensemble des entiers relatifs
+- $\displaystyle \mathbb{R}$ : ensemble des nombres réels
+- $\{1, 2, 3\}$ : ensemble contenant les éléments 1, 2 et 3
+:::
+
+### Inclusion et parties
+
+::: definition Inclusion
+On dit que $A$ est inclus dans $B$ (noté $A \subset B$ ou $A \subseteq B$) si :
+
+$$\forall x \in A, \quad x \in B$$
+:::
+
+::: definition Partie (ou sous-ensemble)
+Si $A \subset E$, on dit que $A$ est une partie (ou sous-ensemble) de $E$.
+:::
+
+::: propriete
+- **Réflexivité :** $\displaystyle A \subset A$
+- **Transitivité :** Si $A \subset B$ et $B \subset C$, alors $A \subset C$
+- **Antisymétrie :** Si $A \subset B$ et $B \subset A$, alors $A = B$
+- **Ensemble vide :** $\emptyset \subset A$ pour tout ensemble $A$
+:::
+
+### Opérations sur les parties d'un ensemble
+
+::: definition
+Soient $A$ et $B$ deux parties d'un ensemble $E$.
+:::
+
+| Opération | Notation | Définition |
+|---|---|---|
+| Réunion | $\displaystyle A \cup B$ | $\displaystyle \{x \in E \mid x \in A \text{ ou } x \in B\}$ |
+| Intersection | $\displaystyle A \cap B$ | $\displaystyle \{x \in E \mid x \in A \text{ et } x \in B\}$ |
+| Différence | $\displaystyle A \setminus B$ | $\displaystyle \{x \in E \mid x \in A \text{ et } x \notin B\}$ |
+| Complémentaire | $\displaystyle \overline{A}$, $\displaystyle A^c$ ou $\displaystyle E \setminus A$ | $\displaystyle \{x \in E \mid x \notin A\}$ |
+
+::: notation En compréhension
+$\{x \in E \mid P(x)\}$ : ensemble des éléments $x$ de $E$ qui satisfont la propriété $P(x)$
+:::
+
+::: definition Différence symétrique
+La différence symétrique de $A$ et $B$, notée $A \triangle B$, est :
+
+$$A \triangle B = (A \setminus B) \cup (B \setminus A)$$
+:::
+
+::: exemple
+Soit $A = \{1, 2, 3, 4\}$ et $B = \{3, 4, 5\}$.
+
+- $A \setminus B = \{1, 2\}$ (éléments de $A$ qui ne sont pas dans $B$)
+- $B \setminus A = \{5\}$ (éléments de $B$ qui ne sont pas dans $A$)
+- $\displaystyle A \triangle B = (A \setminus B) \cup (B \setminus A) = \{1, 2\} \cup \{5\} = \{1, 2, 5\}$
+:::
+
+::: propriete
+- **Commutativité :** $A \cup B = B \cup A$ et $A \cap B = B \cap A$
+- **Associativité :** $(A \cup B) \cup C = A \cup (B \cup C)$ et $(A \cap B) \cap C = A \cap (B \cap C)$
+- **Distributivité :** $\displaystyle A \cap (B \cup C) = (A \cap B) \cup (A \cap C)$
+- **Lois de De Morgan :** $\overline{A \cup B} = \overline{A} \cap \overline{B}$ et $\overline{A \cap B} = \overline{A} \cup \overline{B}$
+- **Double complémentaire :** $\displaystyle \overline{\overline{A}} = A$
+:::
+
+### Produit cartésien
+
+::: definition Produit cartésien de deux ensembles
+Le produit cartésien de $E$ et $F$, noté $E \times F$, est l'ensemble :
+
+$$E \times F = \{(x, y) \mid x \in E \text{ et } y \in F\}$$
+:::
+
+::: definition Produit cartésien de $n$ ensembles
+$$E_1 \times E_2 \times \cdots \times E_n = \{(x_1, x_2, \ldots, x_n) \mid \forall i \in \{1, \ldots, n\}, x_i \in E_i\}$$
+:::
+
+::: exemple
+- $\displaystyle \mathbb{R} \times \mathbb{R} = \mathbb{R}^2$ : plan cartésien
+- $\displaystyle \{1, 2\} \times \{a, b\} = \{(1,a), (1,b), (2,a), (2,b)\}$
+- $\mathbb{R}^n = \underbrace{\mathbb{R} \times \mathbb{R} \times \cdots \times \mathbb{R}}_{n \text{ fois}}$ : espace vectoriel de dimension $n$
+:::
+
+### Ensemble des parties
+
+::: definition Ensemble des parties
+L'ensemble des parties de $E$, noté $\mathcal{P}(E)$ ou $2^E$, est :
+
+$$\mathcal{P}(E) = \{A \mid A \subset E\}$$
+:::
+
+::: exemple
+- Si $E = \{1, 2\}$, alors $\mathcal{P}(E) = \{\emptyset, \{1\}, \{2\}, \{1, 2\}\}$
+- Si $|E| = n$ (cardinal de $E$), alors $|\mathcal{P}(E)| = 2^n$
+- $\mathcal{P}(\emptyset) = \{\emptyset\}$ (contient un élément : l'ensemble vide)
+:::
+
+### Recouvrement et partition
+
+::: definition Recouvrement
+Une famille $(A_i)_{i \in I}$ de parties de $E$ forme un recouvrement de $E$ si :
+
+$$\bigcup_{i \in I} A_i = E$$
+:::
+
+::: definition Recouvrement disjoint
+Un recouvrement est dit disjoint si les parties sont deux à deux disjointes :
+
+$$
+\begin{aligned}
+\forall i, j \in I, \quad i \neq j &\Rightarrow A_i \cap A_j = \emptyset
+\end{aligned}
+$$
+:::
+
+::: definition Partition
+Une partition de $E$ est un recouvrement disjoint de $E$ où aucune partie n'est vide.
+:::
+
+::: exemple
+- **Ensemble fini :** Pour $E = \{1, 2, 3, 4, 5\}$, la partition $\{1, 2\}, \{3\}, \{4, 5\}$ (non vides, disjoints, union = $E$)
+- **Pairs / impairs :** Pour $E = \{1, 2, 3, 4, 5, 6\}$, la partition $\{1, 3, 5\}$ et $\{2, 4, 6\}$
+- **Sur $\mathbb{R}$ (par le signe) :** Partition de $\mathbb{R}$ : $(-\infty, 0)$, $\{0\}$, $(0, +\infty)$
+- **Intervalle découpé :** Pour $E = [0, 6)$, la partition $[0, 2)$, $[2, 4)$, $[4, 6)$
+- **Classes d'équivalence :** Les classes d'équivalence d'une relation d'équivalence forment une partition. Pour la congruence modulo 3 sur $\mathbb{Z}$ : $\overline{0}$, $\overline{1}$, $\overline{2}$ forment une partition de $\mathbb{Z}$.
+:::
+
+::: attention Contre-exemples (pas des partitions)
+- **Chevauchement (pas disjoint) :** Pour $E = \{1, 2, 3\}$, les parties $\{1, 2\}$ et $\{2, 3\}$ ne forment pas une partition car l'intersection n'est pas vide ($2 \in \{1,2\} \cap \{2,3\}$).
+- **Ne couvre pas tout $E$ :** Pour $E = \{1, 2, 3, 4\}$, les parties $\{1, 2\}$ et $\{3\}$ ne forment pas une partition car l'union vaut $\{1, 2, 3\} \neq E$ (il manque $4$).
+- **Partie vide :** Pour $E = \{1, 2, 3\}$, les parties $\{1\}$, $\emptyset$, $\{2, 3\}$ ne forment pas une partition car une partie est vide.
+:::
+
+## III. Applications et relations
+
+### Définition d'une application
+
+::: definition Application
+Une application $f$ de $E$ dans $F$ associe à tout élément de $E$ un unique élément de $F$.
+
+Notation : $f : E \to F$ ou $f : x \mapsto f(x)$
+:::
+
+::: remarque
+Le programme ne distingue pas les notions de fonction et d'application. Le point de vue est intuitif : une application de $E$ dans $F$ associe à tout élément de $E$ un unique élément de $F$.
+:::
+
+::: notation
+$\mathcal{F}(E, F)$ ou $F^E$ : ensemble des applications de $E$ dans $F$
+:::
+
+::: definition Graphe d'une application
+Le graphe de $\displaystyle f : E \to F$ est :
+
+$$\Gamma_f = \{(x, f(x)) \in E \times F \mid x \in E\}$$
+:::
+
+### Famille d'éléments et fonction indicatrice
+
+::: definition Famille d'éléments
+Une famille $(x_i)_{i \in I}$ d'éléments d'un ensemble $E$ est une application :
+
+$$I \to E, \quad i \mapsto x_i$$
+:::
+
+::: definition Fonction indicatrice
+La fonction indicatrice d'une partie $A$ de $E$, notée $\mathbf{1}_A$, est définie par :
+
+$$\mathbf{1}_A(x) = \begin{cases} 1 & \text{si } x \in A \\ 0 & \text{si } x \notin A \end{cases}$$
+:::
+
+::: exemple
+Si $E = \{1, 2, 3, 4\}$ et $A = \{1, 3\}$, alors :
+
+- $\mathbf{1}_A(1) = 1$, $\mathbf{1}_A(2) = 0$, $\mathbf{1}_A(3) = 1$, $\mathbf{1}_A(4) = 0$
+- $\mathbf{1}_A$ caractérise l'appartenance à $A$
+:::
+
+### Restriction et prolongement
+
+::: definition Restriction
+Soit $f : E \to F$ et $A \subset E$.
+
+La restriction de $f$ à $A$, notée $f|_A$, est l'application :
+
+$$f|_A : A \to F, \quad x \mapsto f(x)$$
+:::
+
+::: definition Prolongement
+Si $f : A \to F$ et $E \supset A$, alors $g : E \to F$ est un prolongement de $f$ si $g|_A = f$.
+:::
+
+### Image directe et image réciproque
+
+::: definition Image directe
+Soit $f : E \to F$ et $A \subset E$.
+
+L'image directe de $A$ par $f$, notée $f(A)$, est :
+
+$$f(A) = \{f(x) \in F \mid x \in A\}$$
+:::
+
+::: definition Image réciproque
+Soit $f : E \to F$ et $B \subset F$.
+
+L'image réciproque de $B$ par $f$, notée $f^{-1}(B)$, est :
+
+$$f^{-1}(B) = \{x \in E \mid f(x) \in B\}$$
+:::
+
+::: attention
+La notation $f^{-1}(B)$ pour l'image réciproque peut prêter à confusion avec la notation de la fonction réciproque. On peut provisoirement utiliser une autre notation si nécessaire.
+:::
+
+::: exemple
+Soit $\displaystyle f : \mathbb{R} \to \mathbb{R}, \quad x \mapsto x^2$.
+
+- $\displaystyle f([0, 2]) = [0, 4]$ : image directe
+- $\displaystyle f^{-1}([1, 4]) = [-2, -1] \cup [1, 2]$ : image réciproque
+- $f^{-1}(\{4\}) = \{-2, 2\}$ : image réciproque d'un singleton
+:::
+
+::: propriete
+- **Image directe :** $f(A \cup B) = f(A) \cup f(B)$ et $f(A \cap B) \subset f(A) \cap f(B)$ (égalité si $f$ est injective)
+- **Image réciproque :** $f^{-1}(B \cup C) = f^{-1}(B) \cup f^{-1}(C)$ et $f^{-1}(B \cap C) = f^{-1}(B) \cap f^{-1}(C)$
+- **Monotonie :** Si $A \subset B$, alors $f(A) \subset f(B)$
+- **Monotonie (image réciproque) :** Si $B \subset C$, alors $f^{-1}(B) \subset f^{-1}(C)$
+:::
+
+### Composition
+
+::: definition Composition
+Soient $f : E \to F$ et $g : F \to G$.
+
+La composée de $f$ et $g$, notée $g \circ f$, est l'application :
+
+$$g \circ f : E \to G, \quad x \mapsto g(f(x))$$
+:::
+
+::: propriete
+- **Associativité :** $\displaystyle (h \circ g) \circ f = h \circ (g \circ f)$
+- **Composée de deux injections :** Si $f$ et $g$ sont injectives, alors $g \circ f$ est injective
+- **Composée de deux surjections :** Si $f$ et $g$ sont surjectives, alors $g \circ f$ est surjective
+:::
+
+### Injection, surjection, bijection
+
+::: definition Injection
+Une application $f : E \to F$ est injective si :
+
+$$
+\begin{aligned}
+\forall x, y \in E, \quad f(x) = f(y) &\Rightarrow x = y
+\end{aligned}
+$$
+
+ou de manière équivalente :
+
+$$
+\begin{aligned}
+\forall x, y \in E, \quad x \neq y &\Rightarrow f(x) \neq f(y)
+\end{aligned}
+$$
+:::
+
+::: definition Surjection
+Une application $f : E \to F$ est surjective si :
+
+$$\forall y \in F, \quad \exists x \in E, \quad f(x) = y$$
+
+ou de manière équivalente :
+
+$$f(E) = F$$
+:::
+
+::: definition Bijection
+Une application $f : E \to F$ est bijective si elle est à la fois injective et surjective.
+
+Pour tout $y \in F$, il existe un unique $x \in E$ tel que $f(x) = y$.
+:::
+
+::: exemple
+- **$\displaystyle f : \mathbb{R} \to \mathbb{R}, \quad x \mapsto x^3$** est **bijective** :
+
+  - Injective : si $x^3 = y^3$, alors $x = y$ (la fonction cube est strictement croissante)
+  - Surjective : pour tout $y \in \mathbb{R}$, il existe $x = \sqrt[3]{y}$ tel que $x^3 = y$
+
+- **$g : \mathbb{R} \to \mathbb{R}, \quad x \mapsto x^2$** n'est **ni injective ni surjective** :
+
+  - Pas injective : $g(-1) = 1 = g(1)$, donc deux antécédents différents ont la même image
+  - Pas surjective : $-1 \in \mathbb{R}$ n'a pas d'antécédent (aucun $x$ tel que $x^2 = -1$)
+
+- **$\displaystyle h : \mathbb{R}_+ \to \mathbb{R}_+, \quad x \mapsto x^2$** est **bijective** :
+
+  - Injective : sur $\mathbb{R}_+$, la fonction carré est strictement croissante, donc $x \neq y \Rightarrow x^2 \neq y^2$
+  - Surjective : pour tout $y \in \mathbb{R}_+$, il existe $x = \sqrt{y}$ tel que $x^2 = y$
+
+- **$\displaystyle \exp : \mathbb{R} \to \mathbb{R}_+^{\ast}, \quad x \mapsto e^x$** est **bijective** :
+
+  - Injective : la fonction exponentielle est strictement croissante sur $\mathbb{R}$
+  - Surjective : l'image de $\exp$ est exactement $\mathbb{R}_+^{\ast}$ (tous les réels strictement positifs sont atteints)
+:::
+
+::: definition Fonction réciproque
+Si $f : E \to F$ est bijective, alors il existe une unique application $f^{-1} : F \to E$ telle que :
+
+$f^{-1} \circ f = \text{Id}_E$ et $f \circ f^{-1} = \text{Id}_F$
+
+où $\text{Id}_E$ est l'application identité sur $E$.
+:::
+
+::: propriete
+- **Composée de deux bijections :** Si $f$ et $g$ sont bijectives, alors $(g \circ f)^{-1} = f^{-1} \circ g^{-1}$
+- **Réciproque de la réciproque :** $(f^{-1})^{-1} = f$
+- **Compatibilité des notations :** Si $f$ est bijective, alors $f^{-1}(\{y\}) = \{f^{-1}(y)\}$ pour tout $y \in F$
+:::
+
+### Relations binaires
+
+::: definition Relation binaire
+Une relation binaire $\mathcal{R}$ sur un ensemble $E$ est une partie de $E \times E$.
+
+On note $x \mathcal{R} y$ pour signifier que $(x, y) \in \mathcal{R}$.
+:::
+
+::: exemple
+- Relation d'égalité : $\displaystyle x = y$
+- Relation d'ordre : $x \leq y$ sur $\mathbb{R}$
+- Relation de divisibilité : $a \mid b$ sur $\mathbb{Z}$
+:::
+
+### Relation d'équivalence
+
+::: definition Relation d'équivalence
+Une relation binaire $\mathcal{R}$ sur $E$ est une relation d'équivalence si elle est :
+
+**Réflexive :** $\displaystyle \forall x \in E, \quad x \mathcal{R} x$
+
+**Symétrique :** $\displaystyle \forall x, y \in E, \quad x \mathcal{R} y \Rightarrow y \mathcal{R} x$
+
+**Transitive :** $\displaystyle \forall x, y, z \in E, \quad (x \mathcal{R} y \text{ et } y \mathcal{R} z) \Rightarrow x \mathcal{R} z$
+:::
+
+::: definition Classe d'équivalence
+Pour $x \in E$, la classe d'équivalence de $x$ est :
+
+$$\overline{x} = \{y \in E \mid x \mathcal{R} y\}$$
+:::
+
+::: propriete
+Les classes d'équivalence forment une partition de l'ensemble sous-jacent. Deux classes d'équivalence sont soit disjointes, soit égales.
+:::
+
+::: exemple Congruence modulo $\displaystyle n$
+Sur $\mathbb{Z}$, la relation de congruence modulo $n$ (où $n \in \mathbb{N}^{\ast}$) est définie par :
+
+$$
+\begin{aligned}
+a \equiv b \pmod{n} \quad &\Leftrightarrow \quad n \mid (a-b)
+\end{aligned}
+$$
+
+C'est une relation d'équivalence. Les classes d'équivalence sont :
+
+- $\displaystyle \overline{0} = \{nk \mid k \in \mathbb{Z}\}$
+- $\displaystyle \overline{1} = \{nk+1 \mid k \in \mathbb{Z}\}$
+- $\displaystyle \ldots$
+- $\displaystyle \overline{n-1} = \{nk+(n-1) \mid k \in \mathbb{Z}\}$
+
+Ces $n$ classes forment une partition de $\mathbb{Z}$.
+:::
+
+::: exemple Congruences dans $\displaystyle \mathbb{R}$
+Sur $\mathbb{R}$, on peut définir la relation :
+
+$$
+\begin{aligned}
+x \equiv y \pmod{2\pi} \quad &\Leftrightarrow \quad \exists k \in \mathbb{Z}, \quad x = y + 2k\pi
+\end{aligned}
+$$
+
+Cette relation d'équivalence est fondamentale pour les fonctions trigonométriques.
+:::
+
+### Relation d'ordre
+
+::: definition Relation d'ordre
+Une relation binaire $\preceq$ sur $E$ est une relation d'ordre si elle est :
+
+**Réflexive :** $\displaystyle \forall x \in E, \quad x \preceq x$
+
+**Antisymétrique :** $\displaystyle \forall x, y \in E, \quad (x \preceq y \text{ et } y \preceq x) \Rightarrow x = y$
+
+**Transitive :** $\displaystyle \forall x, y, z \in E, \quad (x \preceq y \text{ et } y \preceq z) \Rightarrow x \preceq z$
+:::
+
+::: definition Ordre partiel et ordre total
+Une relation d'ordre est dite **totale** si :
+
+$$\forall x, y \in E, \quad x \preceq y \text{ ou } y \preceq x$$
+
+Sinon, elle est dite **partielle**.
+:::
+
+::: exemple
+- $\displaystyle (\mathbb{R}, \leq)$ : ordre total
+- $(\mathcal{P}(E), \subset)$ : ordre partiel (l'inclusion est un ordre partiel)
+- $\displaystyle (\mathbb{N}, \mid)$ : ordre partiel (divisibilité)
+- $(\mathbb{Z}^{\ast}, \mid)$ : ordre partiel (la divisibilité n'est pas totale sur $\mathbb{Z}^{\ast}$)
+:::
+
+::: propriete
+- **Élément maximal :** $x$ est maximal si $\forall y \in E, \quad x \leq y \Rightarrow x = y$
+- **Élément minimal :** $x$ est minimal si $\forall y \in E, \quad y \leq x \Rightarrow x = y$
+- **Plus grand élément :** $x$ est le plus grand élément si $\forall y \in E, \quad y \leq x$
+- **Plus petit élément :** $x$ est le plus petit élément si $\forall y \in E, \quad x \leq y$
+:::
+
+::: remarque Bornes et extrémums (définitions)
+- **Majorant :** Un élément $M \in E$ est un majorant de $A \subset E$ si $\forall x \in A, \quad x \leq M$
+- **Minorant :** Un élément $m \in E$ est un minorant de $A \subset E$ si $\forall x \in A, \quad m \leq x$
+- **Maximum :** $x_0 \in A$ est le maximum de $A$ si $\forall x \in A, \quad x \leq x_0$ (c'est un majorant qui appartient à $A$)
+- **Minimum :** $x_0 \in A$ est le minimum de $A$ si $\forall x \in A, \quad x_0 \leq x$ (c'est un minorant qui appartient à $A$)
+:::
+
+## IV. Conseils méthodologiques
+
+### Rédaction d'une démonstration
+
+::: methode Méthodo « prouver $\displaystyle P \Rightarrow Q$ »
+1. **Poser clairement $P$** (hypothèses) et $Q$ (but).
+2. **Choisir la voie :** directe / contraposée / absurde / récurrence.
+3. **Justifier chaque ligne** (définition, propriété, théorème).
+4. **Conclure explicitement :** « donc $Q$ ».
+:::
+
+::: conseil Pour une démonstration efficace
+- **Clarté :** Utiliser des notations précises et cohérentes
+- **Structure :** Organiser la démonstration en étapes logiques claires
+- **Justification :** Chaque étape doit être justifiée par une propriété connue
+- **Quantificateurs :** Utiliser les quantificateurs avec précision, pas comme abréviation
+- **Négation :** Savoir formuler correctement la négation d'une proposition
+- **Méthode :** Choisir la méthode de raisonnement appropriée (direct, contraposition, absurde, récurrence)
+:::
+
+::: attention
+- Confondre $\in$ (appartenance) et $\subset$ (inclusion)
+- Utiliser $f^{-1}$ sans vérifier que $f$ est bijective
+- Confondre image directe et image réciproque
+- Oublier de vérifier les conditions d'une relation d'équivalence ou d'ordre
+- Négliger l'initialisation dans un raisonnement par récurrence
+- Confondre condition nécessaire et condition suffisante
+:::

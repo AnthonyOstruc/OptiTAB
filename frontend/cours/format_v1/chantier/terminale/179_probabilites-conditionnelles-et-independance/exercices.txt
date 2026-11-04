@@ -1,0 +1,2313 @@
+=== DS - Devoir surveillé complet
+Id: 1283
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Ce devoir surveillé couvre l’ensemble du chapitre sur les probabilités conditionnelles.
+
+**Partie A : Probabilités conditionnelles de base**
+
+- **Question A1 :** on donne $P(A) = 0{,}5$, $P(B) = 0{,}4$ et $P(A \cap B) = 0{,}15$. Calculer $P_B(A)$ et $P_A(B)$.
+- **Question A2 :** on tire une carte d’un jeu de $52$ cartes. Sachant que c’est un cœur, quelle est la probabilité que ce soit un as ?
+
+**Partie B : Arbres pondérés**
+
+- **Question B1 :** une urne contient $4$ boules rouges et $6$ boules bleues. On tire deux boules successivement, sans remise. Construire l’arbre pondéré et calculer la probabilité d’obtenir deux boules de couleurs différentes.
+- **Question B2 :** on lance une pièce équilibrée trois fois de suite. Quelle est la probabilité d’obtenir exactement deux fois « face » ?
+
+**Partie C : Indépendance**
+
+- **Question C1 :** on lance deux dés équilibrés. Les événements « le premier dé montre un nombre pair » et « le second dé montre un nombre supérieur à $3$ » sont-ils indépendants ?
+- **Question C2 :** $A$ et $B$ sont indépendants, avec $P(A) = 0{,}6$ et $P(B) = 0{,}5$. Calculer $P(A \cup B)$.
+
+**Partie D : Formule des probabilités totales**
+
+- **Question D1 :** une usine a deux machines : $M_1$ fabrique $60\,\%$ de la production, dont $1\,\%$ de pièces défectueuses ; $M_2$ fabrique $40\,\%$ de la production, dont $3\,\%$ de pièces défectueuses. Quelle est la probabilité qu’une pièce prise au hasard soit défectueuse ?
+- **Question D2 :** dans une classe, $55\,\%$ des élèves sont des filles. Parmi les filles, $75\,\%$ aiment les sciences ; parmi les garçons, $60\,\%$. Quelle est la probabilité qu’un élève pris au hasard aime les sciences ?
+
+**Partie E : Inverser un conditionnement**
+
+- **Question E1 :** on reprend la question D1. Une pièce est défectueuse : quelle est la probabilité qu’elle provienne de $M_2$ ?
+- **Question E2 :** un test médical a une sensibilité de $97\,\%$ (il est positif chez $97\,\%$ des malades) et une spécificité de $92\,\%$ (il est négatif chez $92\,\%$ des personnes saines). La maladie touche $4\,\%$ de la population. Quelle est la probabilité qu’une personne soit malade sachant que son test est positif ?
+
+Étapes:
+<!-- optitab:1 -->
+## Partie A : Probabilités conditionnelles de base
+
+## Question A1 : Calculer $P_B(A)$ et $P_A(B)$
+
+::: methode
+Définition d’une probabilité conditionnelle : on divise par la probabilité de l’événement « sachant ».
+:::
+
+::: etape Calcul de $P_B(A)$
+$$
+\begin{aligned}
+P_B(A) &= \frac{P(A \cap B)}{P(B)} \\
+&= \frac{0{,}15}{0{,}4} \\
+&= 0{,}375
+\end{aligned}
+$$
+:::
+
+::: etape Calcul de $P_A(B)$
+$$
+\begin{aligned}
+P_A(B) &= \frac{P(A \cap B)}{P(A)} \\
+&= \frac{0{,}15}{0{,}5} \\
+&= 0{,}3
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P_B(A) = 0{,}375$ et $P_A(B) = 0{,}3$.
+:::
+
+::: attention
+$P_B(A)$ et $P_A(B)$ n’ont pas le même dénominateur : en général, elles sont différentes.
+:::
+
+## Question A2 : Probabilité d’un as sachant que la carte est un cœur
+
+::: methode
+Les cartes sont équiprobables : $P_C(\text{As}) = \dfrac{\text{nombre de cartes à la fois cœur et as}}{\text{nombre de cœurs}}$.
+:::
+
+::: etape Dénombrer
+- Le jeu compte $13$ cœurs.
+- Parmi eux, un seul as : l’as de cœur.
+:::
+
+::: etape Calculer
+$$P_C(\text{As}) = \frac{P(C \cap \text{As})}{P(C)} = \frac{\frac{1}{52}}{\frac{13}{52}} = \frac{1}{13}$$
+:::
+
+::: resultat
+$P_C(\text{As}) = \dfrac{1}{13}$.
+:::
+
+## Partie B : Arbres pondérés
+
+## Question B1 : Deux boules de couleurs différentes (sans remise)
+
+::: methode
+Arbre pondéré : sans remise, les probabilités du second tirage dépendent du premier.
+:::
+
+::: etape Construire l’arbre
+On note $R_i$ : « la $i$-ème boule est rouge » et $B_i$ : « la $i$-ème boule est bleue ».
+
+- Premier tirage : $10$ boules dont $4$ rouges, donc $P(R_1) = \dfrac{4}{10}$ et $P(B_1) = \dfrac{6}{10}$.
+- Après une rouge, il reste $3$ rouges et $6$ bleues : $P_{R_1}(R_2) = \dfrac{3}{9}$, $P_{R_1}(B_2) = \dfrac{6}{9}$.
+- Après une bleue, il reste $4$ rouges et $5$ bleues : $P_{B_1}(R_2) = \dfrac{4}{9}$, $P_{B_1}(B_2) = \dfrac{5}{9}$.
+:::
+
+[IMAGE_1]
+
+::: etape Probabilités des deux chemins favorables
+$$
+\begin{aligned}
+P(R_1 \cap B_2) &= \frac{4}{10} \times \frac{6}{9} = \frac{24}{90} = \frac{4}{15} \\
+P(B_1 \cap R_2) &= \frac{6}{10} \times \frac{4}{9} = \frac{24}{90} = \frac{4}{15}
+\end{aligned}
+$$
+:::
+
+::: etape Additionner les chemins (incompatibles)
+$$P(\text{couleurs différentes}) = \frac{4}{15} + \frac{4}{15} = \frac{8}{15}$$
+:::
+
+::: resultat
+$P(\text{couleurs différentes}) = \dfrac{8}{15}$.
+:::
+
+## Question B2 : Exactement deux « face » en trois lancers
+
+::: methode
+Succession de $3$ épreuves indépendantes : chaque chemin a pour probabilité le produit des probabilités, ici $\left(\frac{1}{2}\right)^3$.
+:::
+
+::: etape Arbre des trois lancers
+On note $F_i$ : « face au $i$-ème lancer » et $P_i$ : « pile au $i$-ème lancer ». Les lancers sont indépendants et la pièce est équilibrée : chaque branche porte $\frac{1}{2}$.
+:::
+
+[IMAGE_2]
+
+::: etape Chemins favorables
+« Exactement deux face » est réalisé par $3$ chemins : $FFP$, $FPF$ et $PFF$. Chacun a pour probabilité
+
+$$\frac{1}{2} \times \frac{1}{2} \times \frac{1}{2} = \frac{1}{8}$$
+:::
+
+::: etape Additionner
+$$P(\text{exactement 2 face}) = 3 \times \frac{1}{8} = \frac{3}{8}$$
+:::
+
+::: resultat
+$P(\text{exactement 2 face}) = \dfrac{3}{8}$.
+:::
+
+## Partie C : Indépendance
+
+## Question C1 : Indépendance de deux événements liés à deux dés
+
+::: methode
+On compare $P(A \cap B)$ et $P(A) \times P(B)$, en dénombrant les $36$ issues équiprobables.
+:::
+
+::: etape Définir et dénombrer
+On note $A$ : « le premier dé est pair » et $B$ : « le second dé est supérieur à $3$ », c’est-à-dire $4$, $5$ ou $6$.
+
+- $P(A) = \dfrac{3}{6} = \dfrac{1}{2}$ et $P(B) = \dfrac{3}{6} = \dfrac{1}{2}$.
+- $A \cap B$ : $3$ choix pour le premier dé et $3$ choix pour le second, soit $9$ issues sur $36$ : $P(A \cap B) = \dfrac{9}{36} = \dfrac{1}{4}$.
+:::
+
+::: etape Comparer
+$$P(A) \times P(B) = \frac{1}{2} \times \frac{1}{2} = \frac{1}{4} = P(A \cap B)$$
+:::
+
+::: resultat
+$P(A \cap B) = P(A) \times P(B)$ : les événements $A$ et $B$ sont indépendants.
+:::
+
+## Question C2 : Calculer $P(A \cup B)$
+
+::: methode
+Formule $P(A \cup B) = P(A) + P(B) - P(A \cap B)$, avec $P(A \cap B) = P(A) \times P(B)$ par indépendance.
+:::
+
+::: etape Intersection
+$A$ et $B$ sont indépendants, donc $P(A \cap B) = 0{,}6 \times 0{,}5 = 0{,}3$.
+:::
+
+::: etape Réunion
+$$
+\begin{aligned}
+P(A \cup B) &= P(A) + P(B) - P(A \cap B) \\
+&= 0{,}6 + 0{,}5 - 0{,}3 \\
+&= 0{,}8
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(A \cup B) = 0{,}8$.
+:::
+
+## Partie D : Formule des probabilités totales
+
+## Question D1 : Probabilité qu’une pièce soit défectueuse
+
+::: methode
+$M_1$ et $M_2$ forment une partition de l’univers : formule des probabilités totales.
+:::
+
+::: etape Données
+On note $D$ : « la pièce est défectueuse ».
+
+- $P(M_1) = 0{,}6$ et $P_{M_1}(D) = 0{,}01$ ;
+- $P(M_2) = 0{,}4$ et $P_{M_2}(D) = 0{,}03$.
+:::
+
+[IMAGE_3]
+
+::: etape Probabilités totales (chemins verts)
+$$
+\begin{aligned}
+P(D) &= P(M_1) \times P_{M_1}(D) + P(M_2) \times P_{M_2}(D) \\
+&= 0{,}6 \times 0{,}01 + 0{,}4 \times 0{,}03 \\
+&= 0{,}006 + 0{,}012 \\
+&= 0{,}018
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(D) = 0{,}018$, soit $1{,}8\,\%$.
+:::
+
+## Question D2 : Probabilité qu’un élève aime les sciences
+
+::: methode
+Partition {filles, garçons} : formule des probabilités totales.
+:::
+
+::: etape Données
+On note $F$ : « l’élève est une fille », $G = \overline{F}$ et $S$ : « l’élève aime les sciences ».
+
+- $P(F) = 0{,}55$ donc $P(G) = 1 - 0{,}55 = 0{,}45$ ;
+- $P_F(S) = 0{,}75$ et $P_G(S) = 0{,}6$.
+:::
+
+[IMAGE_4]
+
+::: etape Probabilités totales
+$$
+\begin{aligned}
+P(S) &= P(F) \times P_F(S) + P(G) \times P_G(S) \\
+&= 0{,}55 \times 0{,}75 + 0{,}45 \times 0{,}6 \\
+&= 0{,}4125 + 0{,}27 \\
+&= 0{,}6825
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(S) = 0{,}6825$, soit $68{,}25\,\%$.
+:::
+
+## Partie E : Inverser un conditionnement
+
+## Question E1 : Probabilité qu’une pièce défectueuse provienne de $M_2$
+
+::: methode
+On cherche $P_D(M_2)$ alors que l’énoncé donne $P_{M_2}(D)$ : on revient à la définition.
+:::
+
+::: etape Numérateur et dénominateur
+- $P(M_2 \cap D) = 0{,}4 \times 0{,}03 = 0{,}012$ (chemin $M_2 \to D$ de l’arbre de D1) ;
+- $P(D) = 0{,}018$ (question D1).
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+P_D(M_2) &= \frac{P(M_2 \cap D)}{P(D)} \\
+&= \frac{0{,}012}{0{,}018} \\
+&= \frac{2}{3} \approx 0{,}667
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P_D(M_2) = \dfrac{2}{3} \approx 66{,}7\,\%$.
+:::
+
+::: remarque
+$M_2$ ne fabrique que $40\,\%$ des pièces, mais elle est à l’origine des deux tiers des pièces défectueuses.
+:::
+
+## Question E2 : Probabilité d’être malade sachant que le test est positif
+
+::: methode
+Arbre, probabilités totales pour $P(T)$, puis $P_T(M) = \dfrac{P(M \cap T)}{P(T)}$.
+:::
+
+::: etape Données
+On note $M$ : « la personne est malade » et $T$ : « le test est positif ».
+
+- $P(M) = 0{,}04$ donc $P(\overline{M}) = 0{,}96$ ;
+- sensibilité : $P_M(T) = 0{,}97$ ;
+- spécificité : $P_{\overline{M}}(\overline{T}) = 0{,}92$, donc $P_{\overline{M}}(T) = 1 - 0{,}92 = 0{,}08$.
+:::
+
+[IMAGE_5]
+
+::: etape Calcul de $P(T)$
+$$
+\begin{aligned}
+P(T) &= P(M) \times P_M(T) + P(\overline{M}) \times P_{\overline{M}}(T) \\
+&= 0{,}04 \times 0{,}97 + 0{,}96 \times 0{,}08 \\
+&= 0{,}0388 + 0{,}0768 \\
+&= 0{,}1156
+\end{aligned}
+$$
+:::
+
+::: etape Inversion
+$$
+\begin{aligned}
+P_T(M) &= \frac{P(M \cap T)}{P(T)} \\
+&= \frac{0{,}0388}{0{,}1156} \\
+&= \frac{97}{289} \approx 0{,}336
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P_T(M) = \dfrac{97}{289} \approx 33{,}6\,\%$.
+:::
+
+::: attention
+Le test est « fiable à $97\,\%$ » chez les malades, mais une personne testée positive n’a qu’environ une chance sur trois d’être malade : il ne faut pas confondre $P_M(T)$ et $P_T(M)$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+- **A1.** $P_B(A) = 0{,}375$ et $P_A(B) = 0{,}3$.
+- **A2.** $P_C(\text{As}) = \dfrac{1}{13}$.
+- **B1.** $P(\text{couleurs différentes}) = \dfrac{8}{15}$.
+- **B2.** $P(\text{exactement 2 face}) = \dfrac{3}{8}$.
+- **C1.** $P(A \cap B) = \dfrac{1}{4} = P(A) \times P(B)$ : les événements sont indépendants.
+- **C2.** $P(A \cup B) = 0{,}8$.
+- **D1.** $P(D) = 0{,}018$, soit $1{,}8\,\%$.
+- **D2.** $P(S) = 0{,}6825$, soit $68{,}25\,\%$.
+- **E1.** $P_D(M_2) = \dfrac{2}{3} \approx 66{,}7\,\%$.
+- **E2.** $P_T(M) = \dfrac{97}{289} \approx 33{,}6\,\%$.
+
+===
+
+=== Entraînement - Arbres pondérés et tableau croisé
+Id: 1280
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Utiliser des arbres pondérés pour résoudre les problèmes suivants.
+
+1. Une urne contient $5$ boules rouges et $3$ boules vertes. On tire deux boules successivement, sans remise. Quelle est la probabilité d’obtenir une boule rouge puis une boule verte ?
+2. On lance deux fois un dé équilibré. Quelle est la probabilité d’avoir obtenu $6$ au premier lancer, sachant que la somme des deux résultats est égale à $10$ ?
+3. Une classe de $30$ élèves compte $18$ filles, dont $10$ font du sport, et $12$ garçons, dont $8$ font du sport. On choisit un élève au hasard. Construire un arbre pondéré et calculer la probabilité que cet élève fasse du sport.
+4. Un test de dépistage a une sensibilité de $98\,\%$ (il est positif chez $98\,\%$ des malades) et une spécificité de $95\,\%$ (il est négatif chez $95\,\%$ des personnes saines). La maladie touche $5\,\%$ de la population. Quelle est la probabilité que le test d’une personne prise au hasard soit positif ?
+5. On tire successivement deux cartes d’un jeu de $52$ cartes, sans remise. Quelle est la probabilité que la deuxième carte soit un as, sachant que la première en est un ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Une rouge puis une verte, sans remise
+
+::: methode
+Probabilité d’un chemin = produit des probabilités de ses branches.
+:::
+
+::: etape Construire l’arbre
+On note $R_i$ : « la $i$-ème boule est rouge » et $V_i$ : « la $i$-ème boule est verte ».
+
+- Premier tirage : $P(R_1) = \dfrac{5}{8}$ et $P(V_1) = \dfrac{3}{8}$.
+- Après une rouge, il reste $4$ rouges et $3$ vertes : $P_{R_1}(R_2) = \dfrac{4}{7}$ et $P_{R_1}(V_2) = \dfrac{3}{7}$.
+- Après une verte, il reste $5$ rouges et $2$ vertes : $P_{V_1}(R_2) = \dfrac{5}{7}$ et $P_{V_1}(V_2) = \dfrac{2}{7}$.
+:::
+
+[IMAGE_1]
+
+::: etape Probabilité du chemin vert
+$$
+\begin{aligned}
+P(R_1 \cap V_2) &= P(R_1) \times P_{R_1}(V_2) \\
+&= \frac{5}{8} \times \frac{3}{7} \\
+&= \frac{15}{56}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(R_1 \cap V_2) = \dfrac{15}{56}$.
+:::
+
+## Question 2 : Un $6$ au premier lancer sachant que la somme vaut $10$
+
+::: methode
+Les $36$ couples de résultats sont équiprobables : $P_S(A) = \dfrac{\text{nombre d’issues de } A \cap S}{\text{nombre d’issues de } S}$.
+:::
+
+::: etape Événement « somme égale à $10$ »
+On note $S$ : « la somme vaut $10$ » et $A$ : « le premier lancer donne $6$ ».
+
+$S = \{(4\,;6), (5\,;5), (6\,;4)\}$ : $3$ issues, donc $P(S) = \dfrac{3}{36} = \dfrac{1}{12}$.
+:::
+
+::: etape Événement $A \cap S$
+$A \cap S = \{(6\,;4)\}$ : $1$ issue, donc $P(A \cap S) = \dfrac{1}{36}$.
+:::
+
+::: etape Probabilité conditionnelle
+$$
+\begin{aligned}
+P_S(A) &= \frac{P(A \cap S)}{P(S)} \\
+&= \frac{1}{36} \times \frac{36}{3} \\
+&= \frac{1}{3}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P_S(A) = \dfrac{1}{3}$.
+:::
+
+## Question 3 : Probabilité qu’un élève fasse du sport
+
+::: methode
+Arbre pondéré construit à partir des effectifs, puis formule des probabilités totales.
+:::
+
+::: etape Construire l’arbre
+On note $F$ : « l’élève est une fille », $G$ : « l’élève est un garçon » et $S$ : « l’élève fait du sport ».
+
+- $P(F) = \dfrac{18}{30} = \dfrac{3}{5}$ et $P(G) = \dfrac{12}{30} = \dfrac{2}{5}$ ;
+- $P_F(S) = \dfrac{10}{18} = \dfrac{5}{9}$ et $P_G(S) = \dfrac{8}{12} = \dfrac{2}{3}$.
+:::
+
+[IMAGE_2]
+
+::: etape Probabilités des chemins verts
+$$
+\begin{aligned}
+P(F \cap S) &= \frac{3}{5} \times \frac{5}{9} = \frac{1}{3} \\
+P(G \cap S) &= \frac{2}{5} \times \frac{2}{3} = \frac{4}{15}
+\end{aligned}
+$$
+:::
+
+::: etape Probabilités totales
+$$
+\begin{aligned}
+P(S) &= P(F \cap S) + P(G \cap S) \\
+&= \frac{5}{15} + \frac{4}{15} \\
+&= \frac{9}{15} = \frac{3}{5}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(S) = \dfrac{3}{5}$.
+:::
+
+::: remarque Vérification avec le tableau croisé des effectifs
+| | $S$ (sport) | $\overline{S}$ | Total |
+|---|---|---|---|
+| $F$ (filles) | $10$ | $8$ | $18$ |
+| $G$ (garçons) | $8$ | $4$ | $12$ |
+| Total | $18$ | $12$ | $30$ |
+
+La colonne $S$ donne directement $P(S) = \dfrac{18}{30} = \dfrac{3}{5}$, et la ligne $F$ donne $P_F(S) = \dfrac{10}{18} = \dfrac{5}{9}$ : l’arbre et le tableau contiennent les mêmes informations.
+:::
+
+## Question 4 : Probabilité que le test soit positif
+
+::: methode
+$M$ et $\overline{M}$ forment une partition : formule des probabilités totales.
+:::
+
+::: etape Données
+On note $M$ : « la personne est malade » et $T$ : « le test est positif ».
+
+- $P(M) = 0{,}05$ donc $P(\overline{M}) = 0{,}95$ ;
+- sensibilité : $P_M(T) = 0{,}98$ ;
+- spécificité : $P_{\overline{M}}(\overline{T}) = 0{,}95$, donc $P_{\overline{M}}(T) = 1 - 0{,}95 = 0{,}05$.
+:::
+
+[IMAGE_3]
+
+::: etape Probabilités totales (chemins verts)
+$$
+\begin{aligned}
+P(T) &= P(M) \times P_M(T) + P(\overline{M}) \times P_{\overline{M}}(T) \\
+&= 0{,}05 \times 0{,}98 + 0{,}95 \times 0{,}05 \\
+&= 0{,}049 + 0{,}0475 \\
+&= 0{,}0965
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(T) = 0{,}0965$, soit $9{,}65\,\%$.
+:::
+
+::: attention
+La spécificité porte sur les personnes saines : elle donne $P_{\overline{M}}(\overline{T})$, et c’est son complément $P_{\overline{M}}(T)$ qui intervient dans $P(T)$.
+:::
+
+## Question 5 : Un deuxième as sachant que le premier est un as
+
+::: methode
+Sans remise : on raisonne sur le paquet qui reste après le premier tirage.
+:::
+
+::: etape Composition du paquet restant
+Après avoir tiré un as, il reste $51$ cartes, dont $3$ as.
+:::
+
+::: etape Probabilité conditionnelle
+$$P_{A_1}(A_2) = \frac{3}{51} = \frac{1}{17}$$
+:::
+
+::: resultat
+$P_{A_1}(A_2) = \dfrac{1}{17}$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $P(R_1 \cap V_2) = \dfrac{15}{56}$
+2. $P_S(A) = \dfrac{1}{3}$
+3. $P(S) = \dfrac{3}{5}$
+4. $P(T) = 0{,}0965$, soit $9{,}65\,\%$
+5. $P_{A_1}(A_2) = \dfrac{1}{17}$
+
+===
+
+=== Entraînement - Calculer une probabilité conditionnelle
+Id: 1273
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Calculer les probabilités conditionnelles suivantes.
+
+1. On donne $P(A) = 0{,}6$, $P(B) = 0{,}4$ et $P(A \cap B) = 0{,}2$. Calculer $P_B(A)$ et $P_A(B)$.
+2. On lance deux dés équilibrés. Sachant que la somme est supérieure à $9$, quelle est la probabilité que le premier dé montre $6$ ?
+3. Une urne contient $4$ boules rouges et $6$ boules bleues. On tire deux boules successivement, sans remise. Quelle est la probabilité que la deuxième soit rouge sachant que la première est rouge ?
+4. On donne $P_B(A) = 0{,}7$ et $P(B) = 0{,}3$. Calculer $P(A \cap B)$.
+5. On tire une carte d’un jeu de $52$ cartes. Sachant que c’est une figure (valet, dame ou roi), quelle est la probabilité que ce soit un cœur ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer $P_B(A)$ et $P_A(B)$
+
+::: methode
+Définition : $P_B(A) = \dfrac{P(A \cap B)}{P(B)}$ et $P_A(B) = \dfrac{P(A \cap B)}{P(A)}$.
+:::
+
+::: etape Calcul de $P_B(A)$
+$$
+\begin{aligned}
+P_B(A) &= \frac{P(A \cap B)}{P(B)} \\
+&= \frac{0{,}2}{0{,}4} \\
+&= 0{,}5
+\end{aligned}
+$$
+:::
+
+::: etape Calcul de $P_A(B)$
+$$
+\begin{aligned}
+P_A(B) &= \frac{P(A \cap B)}{P(A)} \\
+&= \frac{0{,}2}{0{,}6} \\
+&= \frac{1}{3} \approx 0{,}333
+\end{aligned}
+$$
+:::
+
+::: point Tableau croisé des probabilités
+On complète le tableau à partir de $P(A \cap B) = 0{,}2$, $P(A) = 0{,}6$ et $P(B) = 0{,}4$ (les totaux de chaque ligne et de chaque colonne sont connus) :
+
+| | $B$ | $\overline{B}$ | Total |
+|---|---|---|---|
+| $A$ | $0{,}2$ | $0{,}4$ | $0{,}6$ |
+| $\overline{A}$ | $0{,}2$ | $0{,}2$ | $0{,}4$ |
+| Total | $0{,}4$ | $0{,}6$ | $1$ |
+
+$P_B(A)$ se lit dans la colonne $B$ : $\dfrac{0{,}2}{0{,}4}$ ; $P_A(B)$ se lit dans la ligne $A$ : $\dfrac{0{,}2}{0{,}6}$.
+:::
+
+::: resultat
+$P_B(A) = 0{,}5$ et $P_A(B) = \dfrac{1}{3}$.
+:::
+
+## Question 2 : Premier dé égal à $6$ sachant que la somme dépasse $9$
+
+::: methode
+Issues équiprobables : $P_B(A) = \dfrac{\text{nombre d’issues de } A \cap B}{\text{nombre d’issues de } B}$.
+:::
+
+::: etape Formalisation
+On note $A$ : « le premier dé montre $6$ » et $B$ : « la somme est supérieure à $9$ », c’est-à-dire égale à $10$, $11$ ou $12$.
+:::
+
+::: etape Issues de $B$
+- Somme $10$ : $(4\,;6)$, $(5\,;5)$, $(6\,;4)$ ;
+- somme $11$ : $(5\,;6)$, $(6\,;5)$ ;
+- somme $12$ : $(6\,;6)$.
+
+$B$ compte $6$ issues.
+:::
+
+::: etape Issues de $A \cap B$
+$(6\,;4)$, $(6\,;5)$, $(6\,;6)$ : $3$ issues.
+
+Dans le tableau des $36$ sommes, les cases de $B$ sont colorées ; celles de $A \cap B$ (dernière ligne) sont en vert.
+
+[IMAGE_1]
+:::
+
+::: etape Probabilité conditionnelle
+$$P_B(A) = \frac{3}{6} = \frac{1}{2}$$
+:::
+
+::: resultat
+$P_B(A) = \dfrac{1}{2}$.
+:::
+
+## Question 3 : Deuxième boule rouge sachant que la première est rouge
+
+::: methode
+Sans remise : on raisonne sur le contenu de l’urne après le premier tirage.
+:::
+
+::: etape Contenu de l’urne après une rouge
+On note $R_1$ : « la première boule est rouge » et $R_2$ : « la deuxième boule est rouge ». Après avoir tiré une rouge, il reste $3$ rouges et $6$ bleues, soit $9$ boules.
+:::
+
+::: etape Probabilité conditionnelle
+$$P_{R_1}(R_2) = \frac{3}{9} = \frac{1}{3}$$
+:::
+
+::: resultat
+$P_{R_1}(R_2) = \dfrac{1}{3}$.
+:::
+
+## Question 4 : Calculer $P(A \cap B)$
+
+::: methode
+Formule des probabilités composées : $P(A \cap B) = P(B) \times P_B(A)$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+P(A \cap B) &= P(B) \times P_B(A) \\
+&= 0{,}3 \times 0{,}7 \\
+&= 0{,}21
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(A \cap B) = 0{,}21$.
+:::
+
+## Question 5 : Cœur sachant que la carte est une figure
+
+::: methode
+On restreint l’univers aux figures, qui sont équiprobables.
+:::
+
+::: etape Dénombrer
+On note $F$ : « la carte est une figure » et $C$ : « la carte est un cœur ».
+
+- Figures : $4$ valets, $4$ dames et $4$ rois, soit $12$ cartes.
+- Figures de cœur : valet, dame et roi de cœur, soit $3$ cartes.
+:::
+
+::: etape Calcul
+$$P_F(C) = \frac{3}{12} = \frac{1}{4}$$
+:::
+
+::: resultat
+$P_F(C) = \dfrac{1}{4}$.
+:::
+
+::: remarque
+$P(C) = \dfrac{13}{52} = \dfrac{1}{4}$ également : savoir que la carte est une figure ne change pas la probabilité qu’elle soit un cœur. Les événements $F$ et $C$ sont indépendants.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $P_B(A) = 0{,}5$ et $P_A(B) = \dfrac{1}{3}$
+2. $P_B(A) = \dfrac{1}{2}$
+3. $P_{R_1}(R_2) = \dfrac{1}{3}$
+4. $P(A \cap B) = 0{,}21$
+5. $P_F(C) = \dfrac{1}{4}$
+
+===
+
+=== Entraînement - Indépendance et épreuves successives
+Id: 1281
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Étudier l’indépendance et résoudre des problèmes utilisant l’indépendance.
+
+1. On lance deux dés équilibrés. Les événements « le premier dé montre un nombre pair » et « le second dé montre un nombre impair » sont-ils indépendants ?
+2. Une urne contient $6$ boules rouges et $4$ boules bleues. On tire deux boules successivement, avec remise. Calculer la probabilité d’obtenir deux boules rouges.
+3. On lance une pièce équilibrée $3$ fois de suite. Quelle est la probabilité d’obtenir exactement $2$ fois « pile » ?
+4. $A$ et $B$ sont deux événements indépendants, avec $P(A) = 0{,}4$ et $P(B) = 0{,}6$. Calculer $P(A \cup B)$.
+5. Un système électronique comporte deux composants qui fonctionnent indépendamment l’un de l’autre. Le premier fonctionne avec la probabilité $0{,}9$, le second avec la probabilité $0{,}8$. Le système fonctionne si les deux composants fonctionnent. Quelle est la probabilité que le système fonctionne ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Indépendance de deux événements liés à deux dés
+
+::: methode
+On compare $P(A \cap B)$ et $P(A) \times P(B)$ en dénombrant les $36$ issues équiprobables.
+:::
+
+::: etape Probabilités de $A$ et de $B$
+On note $A$ : « le premier dé est pair » et $B$ : « le second dé est impair ».
+
+$P(A) = \dfrac{3}{6} = \dfrac{1}{2}$ et $P(B) = \dfrac{3}{6} = \dfrac{1}{2}$.
+:::
+
+::: etape Probabilité de $A \cap B$
+Le premier dé est $2$, $4$ ou $6$ ($3$ choix) et le second est $1$, $3$ ou $5$ ($3$ choix) : $3 \times 3 = 9$ issues sur $36$.
+
+$$P(A \cap B) = \frac{9}{36} = \frac{1}{4}$$
+:::
+
+::: etape Comparer
+$$P(A) \times P(B) = \frac{1}{2} \times \frac{1}{2} = \frac{1}{4} = P(A \cap B)$$
+:::
+
+::: resultat
+$P(A \cap B) = P(A) \times P(B)$ : $A$ et $B$ sont indépendants.
+:::
+
+::: attention
+Pour **démontrer** l’indépendance, on ne peut pas calculer $P(A \cap B)$ en multipliant $P(A)$ par $P(B)$ : ce serait supposer ce que l’on veut prouver. On calcule $P(A \cap B)$ directement (ici par dénombrement).
+:::
+
+## Question 2 : Deux boules rouges avec remise
+
+::: methode
+Avec remise, l’urne est identique à chaque tirage : les deux tirages sont indépendants.
+:::
+
+::: etape Probabilités à chaque tirage
+On note $R_i$ : « la $i$-ème boule est rouge » et $B_i$ : « la $i$-ème boule est bleue ».
+
+$P(R_1) = P(R_2) = \dfrac{6}{10} = \dfrac{3}{5}$ et $P(B_1) = P(B_2) = \dfrac{4}{10} = \dfrac{2}{5}$.
+:::
+
+[IMAGE_1]
+
+::: etape Chemin vert
+$$
+\begin{aligned}
+P(R_1 \cap R_2) &= P(R_1) \times P(R_2) \\
+&= \frac{3}{5} \times \frac{3}{5} \\
+&= \frac{9}{25}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(\text{deux rouges}) = \dfrac{9}{25}$.
+:::
+
+## Question 3 : Exactement deux « pile » en trois lancers
+
+::: methode
+Épreuves indépendantes : chaque chemin vaut $\left(\frac{1}{2}\right)^3 = \frac{1}{8}$ ; on compte les chemins favorables.
+:::
+
+::: etape Arbre des trois lancers
+On note $P_i$ : « pile au $i$-ème lancer » et $F_i$ : « face au $i$-ème lancer ».
+:::
+
+[IMAGE_2]
+
+::: etape Chemins favorables
+« Exactement deux pile » est réalisé par $3$ chemins : $PPF$, $PFP$ et $FPP$, chacun de probabilité $\dfrac{1}{8}$.
+:::
+
+::: etape Additionner
+$$P(\text{exactement 2 pile}) = \frac{1}{8} + \frac{1}{8} + \frac{1}{8} = \frac{3}{8}$$
+:::
+
+::: resultat
+$P(\text{exactement 2 pile}) = \dfrac{3}{8}$.
+:::
+
+## Question 4 : Calculer $P(A \cup B)$
+
+::: methode
+$P(A \cup B) = P(A) + P(B) - P(A \cap B)$, avec $P(A \cap B) = P(A) \times P(B)$.
+:::
+
+::: etape Intersection
+Par indépendance : $P(A \cap B) = 0{,}4 \times 0{,}6 = 0{,}24$.
+:::
+
+::: etape Réunion
+$$
+\begin{aligned}
+P(A \cup B) &= P(A) + P(B) - P(A \cap B) \\
+&= 0{,}4 + 0{,}6 - 0{,}24 \\
+&= 0{,}76
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(A \cup B) = 0{,}76$.
+:::
+
+## Question 5 : Probabilité que le système fonctionne
+
+::: methode
+Composants indépendants : la probabilité que les deux fonctionnent est le produit.
+:::
+
+::: etape Événements
+On note $C_1$ : « le composant 1 fonctionne » et $C_2$ : « le composant 2 fonctionne ». $P(C_1) = 0{,}9$, $P(C_2) = 0{,}8$, et $C_1$, $C_2$ sont indépendants.
+:::
+
+[IMAGE_3]
+
+::: etape Calcul
+Le système fonctionne si $C_1 \cap C_2$ est réalisé (chemin vert) :
+
+$$P(C_1 \cap C_2) = P(C_1) \times P(C_2) = 0{,}9 \times 0{,}8 = 0{,}72$$
+:::
+
+::: resultat
+$P(\text{le système fonctionne}) = 0{,}72$, soit $72\,\%$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $P(A \cap B) = \dfrac{1}{4} = P(A) \times P(B)$ : les événements sont indépendants.
+2. $P(\text{deux rouges}) = \dfrac{9}{25}$
+3. $P(\text{exactement 2 pile}) = \dfrac{3}{8}$
+4. $P(A \cup B) = 0{,}76$
+5. $P(\text{le système fonctionne}) = 0{,}72$
+
+===
+
+=== Entraînement - Indépendance ou incompatibilité
+Id: 1274
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Étudier l’indépendance des événements suivants.
+
+1. On donne $P(A) = 0{,}4$, $P(B) = 0{,}5$ et $P(A \cap B) = 0{,}2$. Les événements $A$ et $B$ sont-ils indépendants ?
+2. On lance deux dés équilibrés. Les événements « le premier dé montre $3$ » et « le second dé montre $5$ » sont-ils indépendants ?
+3. $A$ et $B$ sont indépendants, avec $P(A) = 0{,}3$ et $P(A \cup B) = 0{,}58$. Calculer $P(B)$.
+4. On tire une carte d’un jeu de $52$ cartes, on note sa couleur, on la remet, puis on tire une seconde carte. Les deux tirages sont-ils indépendants ?
+5. $A$ et $B$ sont indépendants, avec $P(A) = 0{,}5$ et $P(B) = 0{,}4$. Calculer $P(A \cap \overline{B})$.
+6. On lance un dé équilibré. On note $A$ : « obtenir un nombre pair » et $B$ : « obtenir $3$ ». Les événements $A$ et $B$ sont-ils indépendants ? Sont-ils incompatibles ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Tester l’indépendance
+
+::: methode
+$A$ et $B$ sont indépendants si et seulement si $P(A \cap B) = P(A) \times P(B)$.
+:::
+
+::: etape Calculer le produit
+$$P(A) \times P(B) = 0{,}4 \times 0{,}5 = 0{,}2$$
+:::
+
+::: etape Comparer
+$P(A \cap B) = 0{,}2 = P(A) \times P(B)$.
+:::
+
+::: point Avec un tableau croisé
+| | $B$ | $\overline{B}$ | Total |
+|---|---|---|---|
+| $A$ | $0{,}2$ | $0{,}2$ | $0{,}4$ |
+| $\overline{A}$ | $0{,}3$ | $0{,}3$ | $0{,}6$ |
+| Total | $0{,}5$ | $0{,}5$ | $1$ |
+
+Dans la ligne $A$, $P_A(B) = \dfrac{0{,}2}{0{,}4} = 0{,}5 = P(B)$ : savoir que $A$ est réalisé ne change pas la probabilité de $B$.
+:::
+
+::: resultat
+$A$ et $B$ sont indépendants.
+:::
+
+## Question 2 : Indépendance de deux dés
+
+::: methode
+On calcule $P(A \cap B)$ par dénombrement sur les $36$ issues, puis on compare avec $P(A) \times P(B)$.
+:::
+
+::: etape Formalisation
+On note $A$ : « le premier dé montre $3$ » et $B$ : « le second dé montre $5$ ».
+:::
+
+::: etape Calculs
+- $P(A) = \dfrac{1}{6}$ et $P(B) = \dfrac{1}{6}$ ;
+- $A \cap B = \{(3\,;5)\}$, une issue sur $36$ : $P(A \cap B) = \dfrac{1}{36}$ ;
+- $P(A) \times P(B) = \dfrac{1}{6} \times \dfrac{1}{6} = \dfrac{1}{36}$.
+:::
+
+::: resultat
+$P(A \cap B) = P(A) \times P(B)$ : $A$ et $B$ sont indépendants. C’est conforme à l’intuition : le résultat d’un dé n’influence pas celui de l’autre.
+:::
+
+## Question 3 : Calculer $P(B)$ connaissant $P(A \cup B)$
+
+::: methode
+On écrit $P(A \cup B) = P(A) + P(B) - P(A \cap B)$, on remplace $P(A \cap B)$ par $P(A) \times P(B)$ (indépendance), puis on résout l’équation d’inconnue $x = P(B)$.
+:::
+
+::: etape Mettre en équation
+Avec $x = P(B)$ et $P(A \cap B) = 0{,}3x$ :
+$$0{,}58 = 0{,}3 + x - 0{,}3x$$
+:::
+
+::: etape Résoudre
+$$
+\begin{aligned}
+0{,}58 = 0{,}3 + 0{,}7x &\iff 0{,}7x = 0{,}28 \\
+&\iff x = \frac{0{,}28}{0{,}7} = 0{,}4
+\end{aligned}
+$$
+:::
+
+::: point Vérification
+$P(A \cap B) = 0{,}3 \times 0{,}4 = 0{,}12$ et $0{,}3 + 0{,}4 - 0{,}12 = 0{,}58$.
+:::
+
+::: attention
+Sans l’indépendance, on ne pourrait pas conclure : il faudrait connaître $P(A \cap B)$.
+:::
+
+::: resultat
+$P(B) = 0{,}4$.
+:::
+
+## Question 4 : Tirages avec remise
+
+::: methode
+Avec remise, le paquet est le même avant chaque tirage.
+:::
+
+::: etape Analyse
+- Après le premier tirage, la carte est remise : le paquet retrouve ses $52$ cartes.
+- La probabilité de chaque résultat du second tirage est donc la même, quel que soit le résultat du premier : pour tous événements $A$ (premier tirage) et $B$ (second tirage), $P_A(B) = P(B)$.
+:::
+
+::: resultat
+Oui, les deux tirages sont indépendants.
+:::
+
+::: remarque
+Sans remise, ils ne le seraient pas : par exemple, la probabilité de tirer un cœur au second tirage vaut $\dfrac{12}{51}$ si la première carte est un cœur, et $\dfrac{13}{51}$ sinon.
+:::
+
+## Question 5 : Calculer $P(A \cap \overline{B})$
+
+::: methode
+Si $A$ et $B$ sont indépendants, alors $A$ et $\overline{B}$ le sont aussi.
+:::
+
+::: etape Probabilité du contraire
+$$P(\overline{B}) = 1 - P(B) = 1 - 0{,}4 = 0{,}6$$
+:::
+
+::: etape Utiliser l’indépendance de $A$ et $\overline{B}$
+$$P(A \cap \overline{B}) = P(A) \times P(\overline{B}) = 0{,}5 \times 0{,}6 = 0{,}3$$
+:::
+
+::: resultat
+$P(A \cap \overline{B}) = 0{,}3$.
+:::
+
+::: remarque Vérification
+$P(A \cap \overline{B}) = P(A) - P(A \cap B) = 0{,}5 - 0{,}5 \times 0{,}4 = 0{,}3$.
+:::
+
+## Question 6 : Indépendance ou incompatibilité ?
+
+::: methode
+Incompatibles : $A \cap B = \varnothing$. Indépendants : $P(A \cap B) = P(A) \times P(B)$. On teste les deux.
+:::
+
+::: etape Les événements
+$A = \{2\,;4\,;6\}$, donc $P(A) = \dfrac{1}{2}$ ; $B = \{3\}$, donc $P(B) = \dfrac{1}{6}$.
+:::
+
+::: etape Incompatibilité
+$A$ et $B$ n’ont aucune issue commune : $A \cap B = \varnothing$. Ils sont incompatibles.
+
+[IMAGE_1]
+:::
+
+::: etape Indépendance
+$P(A \cap B) = P(\varnothing) = 0$, alors que
+
+$$P(A) \times P(B) = \frac{1}{2} \times \frac{1}{6} = \frac{1}{12} \neq 0$$
+
+$A$ et $B$ ne sont donc pas indépendants.
+:::
+
+::: resultat
+$A$ et $B$ sont incompatibles mais pas indépendants.
+:::
+
+::: retenir
+Deux événements incompatibles de probabilités non nulles ne sont jamais indépendants : savoir que $A$ est réalisé rend $B$ impossible.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $P(A \cap B) = 0{,}2 = P(A) \times P(B)$ : $A$ et $B$ sont indépendants.
+2. $P(A \cap B) = \dfrac{1}{36} = P(A) \times P(B)$ : les événements sont indépendants.
+3. $P(B) = 0{,}4$ (car $0{,}58 = 0{,}3 + 0{,}7\,P(B)$)
+4. Oui : avec remise, les deux tirages sont indépendants.
+5. $P(A \cap \overline{B}) = 0{,}3$
+6. $A$ et $B$ sont incompatibles mais pas indépendants.
+
+===
+
+=== Problème - Chaînes de production, cartes et dépistage
+Id: 1282
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Résoudre les problèmes suivants à l’aide des probabilités conditionnelles, des arbres pondérés et des formules du cours.
+
+1. Une usine produit des pièces sur trois chaînes de production. La chaîne A produit $50\,\%$ des pièces, dont $1\,\%$ sont défectueuses ; la chaîne B produit $30\,\%$ des pièces, dont $2\,\%$ sont défectueuses ; la chaîne C produit $20\,\%$ des pièces, dont $4\,\%$ sont défectueuses.
+   - a) Quelle est la probabilité qu’une pièce prise au hasard soit défectueuse ?
+   - b) Une pièce est défectueuse : quelle est la probabilité qu’elle provienne de la chaîne C ?
+2. On tire successivement trois cartes d’un jeu de $52$ cartes, sans remise. Quelle est la probabilité d’obtenir exactement deux as ?
+3. Un test de dépistage a une sensibilité de $96\,\%$ et une spécificité de $94\,\%$. La maladie touche $3\,\%$ de la population.
+   - a) Quelle est la probabilité que le test d’une personne prise au hasard soit positif ?
+   - b) Le test est positif : quelle est la probabilité que la personne soit réellement malade ?
+4. Une urne contient $8$ boules : $5$ rouges et $3$ bleues. On tire $3$ boules successivement, sans remise. Quelle est la probabilité d’obtenir au moins une boule bleue ?
+5. On lance un dé équilibré $4$ fois de suite. Quelle est la probabilité d’obtenir au moins un $6$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1a : Probabilité qu’une pièce soit défectueuse
+
+::: methode
+Les chaînes A, B, C forment une partition de l’univers : formule des probabilités totales.
+:::
+
+::: etape Données
+On note $A$, $B$, $C$ les événements « la pièce vient de la chaîne A » (resp. B, C) et $D$ : « la pièce est défectueuse ».
+
+- $P(A) = 0{,}5$ et $P_A(D) = 0{,}01$ ;
+- $P(B) = 0{,}3$ et $P_B(D) = 0{,}02$ ;
+- $P(C) = 0{,}2$ et $P_C(D) = 0{,}04$.
+:::
+
+[IMAGE_1]
+
+::: etape Probabilités totales (chemins verts)
+$$
+\begin{aligned}
+P(D) &= P(A)P_A(D) + P(B)P_B(D) + P(C)P_C(D) \\
+&= 0{,}5 \times 0{,}01 + 0{,}3 \times 0{,}02 + 0{,}2 \times 0{,}04 \\
+&= 0{,}005 + 0{,}006 + 0{,}008 \\
+&= 0{,}019
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(D) = 0{,}019$, soit $1{,}9\,\%$.
+:::
+
+## Question 1b : Probabilité qu’une pièce défectueuse vienne de C
+
+::: methode
+Inversion du conditionnement : $P_D(C) = \dfrac{P(C \cap D)}{P(D)}$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+P_D(C) &= \frac{P(C \cap D)}{P(D)} \\
+&= \frac{0{,}008}{0{,}019} \\
+&= \frac{8}{19} \approx 0{,}421
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P_D(C) = \dfrac{8}{19} \approx 42{,}1\,\%$.
+:::
+
+::: remarque
+La chaîne C ne produit que $20\,\%$ des pièces mais fournit plus de $40\,\%$ des pièces défectueuses.
+:::
+
+## Question 2 : Exactement deux as parmi trois cartes
+
+::: methode
+Tirages successifs sans remise : on additionne les chemins favorables, chacun calculé par produit de probabilités conditionnelles.
+:::
+
+::: etape Les chemins favorables
+On note $A$ : « la carte est un as » et $N$ : « la carte n’est pas un as ». Exactement deux as : $AAN$, $ANA$ ou $NAA$ ($3$ chemins).
+:::
+
+::: etape Probabilité du chemin $AAN$
+$$P(AAN) = \frac{4}{52} \times \frac{3}{51} \times \frac{48}{50} = \frac{576}{132\,600} = \frac{24}{5\,525}$$
+
+Les chemins $ANA$ et $NAA$ ont les mêmes facteurs dans un autre ordre ($\frac{4}{52} \times \frac{48}{51} \times \frac{3}{50}$ et $\frac{48}{52} \times \frac{4}{51} \times \frac{3}{50}$), donc la même probabilité.
+:::
+
+::: etape Additionner
+$$P(\text{exactement 2 as}) = 3 \times \frac{24}{5\,525} = \frac{72}{5\,525} \approx 0{,}0130$$
+:::
+
+::: resultat
+$P(\text{exactement 2 as}) = \dfrac{72}{5\,525} \approx 1{,}30\,\%$.
+:::
+
+::: remarque Vérification par dénombrement
+Il y a $\binom{52}{3} = 22\,100$ mains de $3$ cartes, dont $\binom{4}{2} \times \binom{48}{1} = 6 \times 48 = 288$ contiennent exactement deux as : $\dfrac{288}{22\,100} = \dfrac{72}{5\,525}$.
+:::
+
+## Question 3a : Probabilité que le test soit positif
+
+::: methode
+Arbre pondéré et formule des probabilités totales.
+:::
+
+::: etape Données
+On note $M$ : « la personne est malade » et $T$ : « le test est positif ».
+
+- $P(M) = 0{,}03$ donc $P(\overline{M}) = 0{,}97$ ;
+- sensibilité : $P_M(T) = 0{,}96$ ;
+- spécificité : $P_{\overline{M}}(\overline{T}) = 0{,}94$, donc $P_{\overline{M}}(T) = 0{,}06$.
+:::
+
+[IMAGE_2]
+
+::: etape Probabilités totales
+$$
+\begin{aligned}
+P(T) &= P(M)P_M(T) + P(\overline{M})P_{\overline{M}}(T) \\
+&= 0{,}03 \times 0{,}96 + 0{,}97 \times 0{,}06 \\
+&= 0{,}0288 + 0{,}0582 \\
+&= 0{,}087
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(T) = 0{,}087$, soit $8{,}7\,\%$.
+:::
+
+## Question 3b : Probabilité d’être malade sachant que le test est positif
+
+::: methode
+Inversion du conditionnement : $P_T(M) = \dfrac{P(M \cap T)}{P(T)}$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+P_T(M) &= \frac{P(M \cap T)}{P(T)} \\
+&= \frac{0{,}0288}{0{,}087} \\
+&= \frac{48}{145} \approx 0{,}331
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P_T(M) = \dfrac{48}{145} \approx 33{,}1\,\%$.
+:::
+
+## Question 4 : Au moins une boule bleue parmi trois
+
+::: methode
+« Au moins une » : on passe à l’événement contraire « aucune bleue », c’est-à-dire « trois rouges ».
+:::
+
+::: etape Arbre des trois tirages
+On note $R_i$ et $B_i$ : « la $i$-ème boule est rouge » (resp. bleue). Le chemin vert est le seul qui ne contient aucune bleue.
+:::
+
+[IMAGE_3]
+
+::: etape Probabilité de trois rouges
+$$
+\begin{aligned}
+P(R_1 \cap R_2 \cap R_3) &= \frac{5}{8} \times \frac{4}{7} \times \frac{3}{6} \\
+&= \frac{60}{336} \\
+&= \frac{5}{28}
+\end{aligned}
+$$
+:::
+
+::: etape Événement contraire
+$$P(\text{au moins une bleue}) = 1 - \frac{5}{28} = \frac{23}{28}$$
+:::
+
+::: resultat
+$P(\text{au moins une bleue}) = \dfrac{23}{28}$.
+:::
+
+## Question 5 : Au moins un $6$ en quatre lancers
+
+::: methode
+Événement contraire « aucun $6$ » et indépendance des lancers.
+:::
+
+::: etape Probabilité de n’obtenir aucun $6$
+À chaque lancer, $P(\text{pas de } 6) = \dfrac{5}{6}$. Les $4$ lancers sont indépendants :
+
+$$P(\text{aucun } 6) = \left(\frac{5}{6}\right)^4 = \frac{625}{1\,296}$$
+:::
+
+::: etape Événement contraire
+$$
+\begin{aligned}
+P(\text{au moins un } 6) &= 1 - \frac{625}{1\,296} \\
+&= \frac{671}{1\,296} \approx 0{,}518
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(\text{au moins un } 6) = \dfrac{671}{1\,296} \approx 51{,}8\,\%$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. a) $P(D) = 0{,}019$ ; b) $P_D(C) = \dfrac{8}{19} \approx 42{,}1\,\%$
+2. $P(\text{exactement 2 as}) = \dfrac{72}{5\,525} \approx 1{,}30\,\%$
+3. a) $P(T) = 0{,}087$ ; b) $P_T(M) = \dfrac{48}{145} \approx 33{,}1\,\%$
+4. $P(\text{au moins une bleue}) = \dfrac{23}{28}$
+5. $P(\text{au moins un } 6) = \dfrac{671}{1\,296} \approx 51{,}8\,\%$
+
+===
+
+=== Découverte - Construire des arbres pondérés
+Id: 1279
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Construire des arbres pondérés et calculer des probabilités à partir de ces arbres.
+
+::: rappel
+- Probabilité conditionnelle : $P_A(B) = \dfrac{P(A \cap B)}{P(A)}$, avec $P(A) \neq 0$.
+- Probabilité d’un chemin : $P(A \cap B) = P(A) \times P_A(B)$.
+- Probabilité d’un événement : somme des probabilités des chemins (incompatibles) qui y mènent.
+:::
+
+Pour la question 1, on pourra recopier et compléter l’arbre suivant.
+
+[IMAGE_6]
+
+1. Une urne contient $3$ boules rouges et $2$ boules bleues. On tire une boule, on note sa couleur, puis on tire une deuxième boule sans remise. Construire l’arbre pondéré et calculer la probabilité d’obtenir deux boules rouges.
+2. On lance une pièce équilibrée deux fois de suite. Construire l’arbre pondéré et calculer la probabilité d’obtenir exactement une fois « pile ».
+3. Une urne contient $4$ boules blanches et $6$ boules noires. On tire deux boules successivement, avec remise. Construire l’arbre pondéré et calculer la probabilité d’obtenir deux boules de couleurs différentes.
+4. Un sac contient $5$ jetons : $2$ verts, $2$ jaunes et $1$ rouge. On tire un jeton, on le remet, puis on tire un second jeton. Quelle est la probabilité d’obtenir deux jetons de la même couleur ?
+5. Une urne contient $4$ boules rouges et $6$ boules bleues. On tire $3$ boules successivement, sans remise. Quelle est la probabilité d’obtenir au moins une boule rouge ? On choisira la méthode la plus simple (calcul direct ou événement contraire).
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Deux boules rouges, sans remise
+
+::: methode
+Arbre pondéré, puis probabilité du chemin = produit des branches.
+:::
+
+::: etape Construire l’arbre
+On note $R_i$ : « la $i$-ème boule est rouge » et $B_i$ : « la $i$-ème boule est bleue ».
+
+- Premier tirage : $P(R_1) = \dfrac{3}{5}$ et $P(B_1) = \dfrac{2}{5}$.
+- Après une rouge (il reste $2$ rouges et $2$ bleues) : $P_{R_1}(R_2) = \dfrac{2}{4}$ et $P_{R_1}(B_2) = \dfrac{2}{4}$.
+- Après une bleue (il reste $3$ rouges et $1$ bleue) : $P_{B_1}(R_2) = \dfrac{3}{4}$ et $P_{B_1}(B_2) = \dfrac{1}{4}$.
+
+Les probabilités complétées sont en vert ; en bout de chemin, la probabilité de chaque issue.
+:::
+
+[IMAGE_1]
+
+::: etape Probabilité du chemin vert
+$$
+\begin{aligned}
+P(R_1 \cap R_2) &= P(R_1) \times P_{R_1}(R_2) \\
+&= \frac{3}{5} \times \frac{2}{4} \\
+&= \frac{6}{20} = \frac{3}{10}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(\text{deux rouges}) = \dfrac{3}{10}$.
+:::
+
+## Question 2 : Exactement un « pile » en deux lancers
+
+::: methode
+Lancers indépendants : chaque chemin vaut $\frac{1}{2} \times \frac{1}{2} = \frac{1}{4}$ ; on additionne les chemins favorables.
+:::
+
+::: etape Construire l’arbre
+On note $P_i$ : « pile au $i$-ème lancer » et $F_i$ : « face au $i$-ème lancer ». Chaque branche porte $\dfrac{1}{2}$.
+:::
+
+[IMAGE_2]
+
+::: etape Chemins favorables
+« Exactement un pile » est réalisé par les deux chemins verts $P_1 \cap F_2$ et $F_1 \cap P_2$, chacun de probabilité $\dfrac{1}{4}$.
+:::
+
+::: etape Additionner
+$$P(\text{exactement un pile}) = \frac{1}{4} + \frac{1}{4} = \frac{1}{2}$$
+:::
+
+::: resultat
+$P(\text{exactement un pile}) = \dfrac{1}{2}$.
+:::
+
+## Question 3 : Deux boules de couleurs différentes, avec remise
+
+::: methode
+Avec remise, les tirages sont indépendants : mêmes probabilités à chaque niveau de l’arbre.
+:::
+
+::: etape Construire l’arbre
+On note $B_i$ : « la $i$-ème boule est blanche » et $N_i$ : « la $i$-ème boule est noire ».
+
+$P(B_1) = P(B_2) = \dfrac{4}{10} = \dfrac{2}{5}$ et $P(N_1) = P(N_2) = \dfrac{6}{10} = \dfrac{3}{5}$.
+:::
+
+[IMAGE_3]
+
+::: etape Chemins favorables
+$$
+\begin{aligned}
+P(B_1 \cap N_2) &= \frac{2}{5} \times \frac{3}{5} = \frac{6}{25} \\
+P(N_1 \cap B_2) &= \frac{3}{5} \times \frac{2}{5} = \frac{6}{25}
+\end{aligned}
+$$
+:::
+
+::: etape Additionner
+$$P(\text{couleurs différentes}) = \frac{6}{25} + \frac{6}{25} = \frac{12}{25}$$
+:::
+
+::: resultat
+$P(\text{couleurs différentes}) = \dfrac{12}{25}$.
+:::
+
+## Question 4 : Deux jetons de la même couleur, avec remise
+
+::: methode
+Arbre à trois branches par nœud ; on additionne les trois chemins « même couleur ».
+:::
+
+::: etape Construire l’arbre
+On note $V_i$, $J_i$, $R_i$ : « le $i$-ème jeton est vert » (resp. jaune, rouge). Avec remise, à chaque tirage : $P(V) = \dfrac{2}{5}$, $P(J) = \dfrac{2}{5}$ et $P(R) = \dfrac{1}{5}$.
+:::
+
+[IMAGE_4]
+
+::: etape Chemins favorables (en vert)
+$$
+\begin{aligned}
+P(V_1 \cap V_2) &= \frac{2}{5} \times \frac{2}{5} = \frac{4}{25} \\
+P(J_1 \cap J_2) &= \frac{2}{5} \times \frac{2}{5} = \frac{4}{25} \\
+P(R_1 \cap R_2) &= \frac{1}{5} \times \frac{1}{5} = \frac{1}{25}
+\end{aligned}
+$$
+:::
+
+::: etape Additionner
+$$P(\text{même couleur}) = \frac{4}{25} + \frac{4}{25} + \frac{1}{25} = \frac{9}{25}$$
+:::
+
+::: resultat
+$P(\text{même couleur}) = \dfrac{9}{25}$.
+:::
+
+## Question 5 : Au moins une boule rouge parmi trois, sans remise
+
+::: methode
+« Au moins une rouge » regroupe de nombreux chemins ; son contraire « aucune rouge » = « trois bleues » n’en compte qu’un : on passe au contraire.
+:::
+
+::: etape Arbre des trois tirages
+On note $R_i$ et $B_i$ : « la $i$-ème boule est rouge » (resp. bleue). Le chemin vert $B_1 B_2 B_3$ est le seul sans boule rouge ; tous les autres contiennent au moins une rouge.
+:::
+
+[IMAGE_5]
+
+::: etape Probabilité de trois bleues
+Il y a successivement $6$ bleues sur $10$, puis $5$ sur $9$, puis $4$ sur $8$ :
+
+$$
+\begin{aligned}
+P(B_1 \cap B_2 \cap B_3) &= \frac{6}{10} \times \frac{5}{9} \times \frac{4}{8} \\
+&= \frac{120}{720} \\
+&= \frac{1}{6}
+\end{aligned}
+$$
+:::
+
+::: etape Événement contraire
+$$
+\begin{aligned}
+P(\text{au moins une rouge}) &= 1 - P(B_1 \cap B_2 \cap B_3) \\
+&= 1 - \frac{1}{6} \\
+&= \frac{5}{6}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(\text{au moins une rouge}) = \dfrac{5}{6}$.
+:::
+
+::: retenir
+« Au moins un » : on calcule presque toujours $1 - P(\text{aucun})$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $P(\text{deux rouges}) = \dfrac{3}{10}$
+2. $P(\text{exactement un pile}) = \dfrac{1}{2}$
+3. $P(\text{couleurs différentes}) = \dfrac{12}{25}$
+4. $P(\text{même couleur}) = \dfrac{9}{25}$
+5. $P(\text{au moins une rouge}) = \dfrac{5}{6}$ (par l’événement contraire)
+
+===
+
+=== Problème - Remonter de l’effet à la cause
+Id: 1276
+Difficulté: hard
+Image: prob_total_q1.png,prob_total_q3.png,prob_total_q4.png,prob_total_q5.png
+
+Énoncé:
+<!-- optitab:1 -->
+Dans chaque situation, on « inverse » le conditionnement : on connaît la probabilité d’un effet sachant sa cause, et on cherche la probabilité de la cause sachant l’effet.
+
+1. Une usine possède trois machines : $M_1$ fabrique $40\,\%$ de la production, dont $2\,\%$ de pièces défectueuses ; $M_2$ fabrique $35\,\%$ de la production, dont $3\,\%$ de pièces défectueuses ; $M_3$ fabrique $25\,\%$ de la production, dont $5\,\%$ de pièces défectueuses. On note $D$ : « la pièce est défectueuse ». Une pièce est défectueuse : quelle est la probabilité qu’elle provienne de $M_3$ ?
+
+[IMAGE_1]
+
+2. Une maladie touche $2\,\%$ de la population. Un test est positif chez $95\,\%$ des malades et chez $10\,\%$ des personnes saines. On note $M$ : « la personne est malade » et $T$ : « le test est positif ». Le test d’une personne est positif : quelle est la probabilité qu’elle soit réellement malade ?
+
+[IMAGE_2]
+
+3. Une boîte A contient $3$ boules rouges et $2$ bleues ; une boîte B contient $1$ boule rouge et $4$ bleues. On choisit une boîte au hasard, puis on y tire une boule. On note $R$ : « la boule est rouge ». On a tiré une boule rouge : quelle est la probabilité qu’elle provienne de la boîte A ?
+
+[IMAGE_3]
+
+4. Un élève révise avec la probabilité $0{,}7$. S’il révise, il réussit avec la probabilité $0{,}9$ ; sinon, avec la probabilité $0{,}3$. On note $R$ : « l’élève révise » et $S$ : « l’élève réussit ». L’élève a réussi : quelle est la probabilité qu’il ait révisé ?
+
+[IMAGE_4]
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Probabilité qu’une pièce défectueuse vienne de $M_3$
+
+::: methode
+On cherche $P_D(M_3)$ : définition $P_D(M_3) = \dfrac{P(M_3 \cap D)}{P(D)}$, avec $P(D)$ par les probabilités totales.
+:::
+
+::: etape Probabilité de $D$ (chemins verts)
+$$
+\begin{aligned}
+P(D) &= 0{,}4 \times 0{,}02 + 0{,}35 \times 0{,}03 + 0{,}25 \times 0{,}05 \\
+&= 0{,}008 + 0{,}0105 + 0{,}0125 \\
+&= 0{,}031
+\end{aligned}
+$$
+:::
+
+[IMAGE_5]
+
+::: etape Inversion
+$$
+\begin{aligned}
+P_D(M_3) &= \frac{P(M_3 \cap D)}{P(D)} \\
+&= \frac{0{,}0125}{0{,}031} \\
+&= \frac{25}{62} \approx 0{,}403
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P_D(M_3) = \dfrac{25}{62} \approx 40{,}3\,\%$.
+:::
+
+::: remarque Interprétation
+$M_3$ ne fabrique que $25\,\%$ des pièces, mais elle est à l’origine d’environ $40\,\%$ des défauts : c’est la machine à surveiller en priorité.
+:::
+
+## Question 2 : Probabilité d’être malade sachant que le test est positif
+
+::: methode
+$P_T(M) = \dfrac{P(M \cap T)}{P(T)}$, avec $P(T)$ par les probabilités totales.
+:::
+
+::: etape Probabilité de $T$ (chemins verts)
+$$
+\begin{aligned}
+P(T) &= 0{,}02 \times 0{,}95 + 0{,}98 \times 0{,}1 \\
+&= 0{,}019 + 0{,}098 \\
+&= 0{,}117
+\end{aligned}
+$$
+:::
+
+[IMAGE_6]
+
+::: etape Inversion
+$$
+\begin{aligned}
+P_T(M) &= \frac{P(M \cap T)}{P(T)} \\
+&= \frac{0{,}019}{0{,}117} \\
+&= \frac{19}{117} \approx 0{,}162
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P_T(M) = \dfrac{19}{117} \approx 16{,}2\,\%$.
+:::
+
+::: remarque Interprétation
+Même avec un test positif, la probabilité d’être malade reste faible, car la maladie est rare ($2\,\%$) : la plupart des tests positifs proviennent des $98\,\%$ de personnes saines.
+:::
+
+## Question 3 : Probabilité que la boule rouge vienne de la boîte A
+
+::: methode
+$P_R(A) = \dfrac{P(A \cap R)}{P(R)}$, avec $P(R)$ par les probabilités totales.
+:::
+
+::: etape Probabilité de $R$ (chemins verts)
+$P(A) = P(B) = \dfrac{1}{2}$, $P_A(R) = \dfrac{3}{5}$ et $P_B(R) = \dfrac{1}{5}$ :
+
+$$
+\begin{aligned}
+P(R) &= \frac{1}{2} \times \frac{3}{5} + \frac{1}{2} \times \frac{1}{5} \\
+&= \frac{3}{10} + \frac{1}{10} \\
+&= \frac{2}{5}
+\end{aligned}
+$$
+:::
+
+[IMAGE_7]
+
+::: etape Inversion
+$$
+\begin{aligned}
+P_R(A) &= \frac{P(A \cap R)}{P(R)} \\
+&= \frac{3}{10} \times \frac{5}{2} \\
+&= \frac{3}{4}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P_R(A) = \dfrac{3}{4} = 75\,\%$.
+:::
+
+## Question 4 : Probabilité d’avoir révisé sachant que l’élève a réussi
+
+::: methode
+$P_S(R) = \dfrac{P(R \cap S)}{P(S)}$, avec $P(S)$ par les probabilités totales.
+:::
+
+::: etape Probabilité de $S$ (chemins verts)
+$$
+\begin{aligned}
+P(S) &= 0{,}7 \times 0{,}9 + 0{,}3 \times 0{,}3 \\
+&= 0{,}63 + 0{,}09 \\
+&= 0{,}72
+\end{aligned}
+$$
+:::
+
+[IMAGE_8]
+
+::: etape Inversion
+$$
+\begin{aligned}
+P_S(R) &= \frac{P(R \cap S)}{P(S)} \\
+&= \frac{0{,}63}{0{,}72} \\
+&= 0{,}875
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P_S(R) = 0{,}875 = 87{,}5\,\%$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $P_D(M_3) = \dfrac{25}{62} \approx 40{,}3\,\%$
+2. $P_T(M) = \dfrac{19}{117} \approx 16{,}2\,\%$
+3. $P_R(A) = \dfrac{3}{4} = 75\,\%$
+4. $P_S(R) = 0{,}875 = 87{,}5\,\%$
+
+===
+
+=== Problème - Formule des probabilités totales
+Id: 1275
+Difficulté: hard
+Image: prob_total_q1.png,prob_total_q2.png,prob_total_q3.png,prob_total_q4.png,prob_total_q5.png
+
+Énoncé:
+<!-- optitab:1 -->
+Résoudre les problèmes suivants à l’aide de la formule des probabilités totales.
+
+1. Une usine possède trois machines : $M_1$ fabrique $40\,\%$ de la production, dont $2\,\%$ de pièces défectueuses ; $M_2$ fabrique $35\,\%$ de la production, dont $3\,\%$ de pièces défectueuses ; $M_3$ fabrique $25\,\%$ de la production, dont $5\,\%$ de pièces défectueuses. Quelle est la probabilité qu’une pièce prise au hasard soit défectueuse ?
+2. Dans une classe, $60\,\%$ des élèves sont des filles. Parmi les filles, $70\,\%$ aiment les maths ; parmi les garçons, $50\,\%$. Quelle est la probabilité qu’un élève pris au hasard aime les maths ?
+3. Un test médical a une sensibilité de $95\,\%$ (il est positif chez $95\,\%$ des malades) et une spécificité de $90\,\%$ (il est négatif chez $90\,\%$ des personnes saines). La maladie touche $2\,\%$ de la population. Quelle est la probabilité que le test d’une personne prise au hasard soit positif ?
+4. Une boîte A contient $3$ boules rouges et $2$ bleues ; une boîte B contient $1$ boule rouge et $4$ bleues. On choisit une boîte au hasard, puis on y tire une boule. Quelle est la probabilité de tirer une boule rouge ?
+5. Un élève révise avec la probabilité $0{,}7$. S’il révise, il réussit avec la probabilité $0{,}9$ ; s’il ne révise pas, il réussit avec la probabilité $0{,}3$. Quelle est la probabilité qu’il réussisse ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Probabilité qu’une pièce soit défectueuse
+
+::: methode
+On cherche $P(D)$ et l’on connaît $P_{M_1}(D)$, $P_{M_2}(D)$, $P_{M_3}(D)$ : $M_1$, $M_2$, $M_3$ forment une partition, on applique la formule des probabilités totales.
+:::
+
+::: etape Événements et données
+On note $M_i$ : « la pièce vient de la machine $M_i$ » et $D$ : « la pièce est défectueuse ».
+
+- $P(M_1) = 0{,}4$ et $P_{M_1}(D) = 0{,}02$ ;
+- $P(M_2) = 0{,}35$ et $P_{M_2}(D) = 0{,}03$ ;
+- $P(M_3) = 0{,}25$ et $P_{M_3}(D) = 0{,}05$.
+:::
+
+::: etape Arbre pondéré
+Trois chemins (en vert) mènent à $D$.
+:::
+
+[IMAGE_1]
+
+::: etape Probabilités totales
+$$
+\begin{aligned}
+P(D) &= P(M_1)P_{M_1}(D) + P(M_2)P_{M_2}(D) + P(M_3)P_{M_3}(D) \\
+&= 0{,}4 \times 0{,}02 + 0{,}35 \times 0{,}03 + 0{,}25 \times 0{,}05 \\
+&= 0{,}008 + 0{,}0105 + 0{,}0125 \\
+&= 0{,}031
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(D) = 0{,}031$, soit $3{,}1\,\%$.
+:::
+
+::: attention
+On n’additionne pas les pourcentages de défauts ($2 + 3 + 5 = 10\,\%$) : chacun doit être pondéré par la part de production de sa machine.
+:::
+
+## Question 2 : Probabilité qu’un élève aime les maths
+
+::: methode
+Partition {filles, garçons} : formule des probabilités totales.
+:::
+
+::: etape Événements et données
+On note $F$ : « l’élève est une fille », $G = \overline{F}$ et $M$ : « l’élève aime les maths ».
+
+- $P(F) = 0{,}6$ donc $P(G) = 0{,}4$ ;
+- $P_F(M) = 0{,}7$ et $P_G(M) = 0{,}5$.
+:::
+
+[IMAGE_2]
+
+::: etape Probabilités totales
+$$
+\begin{aligned}
+P(M) &= P(F)P_F(M) + P(G)P_G(M) \\
+&= 0{,}6 \times 0{,}7 + 0{,}4 \times 0{,}5 \\
+&= 0{,}42 + 0{,}2 \\
+&= 0{,}62
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(M) = 0{,}62$, soit $62\,\%$.
+:::
+
+## Question 3 : Probabilité que le test soit positif
+
+::: methode
+Partition {malade, sain} : formule des probabilités totales.
+:::
+
+::: etape Événements et données
+On note $M$ : « la personne est malade » et $T$ : « le test est positif ».
+
+- $P(M) = 0{,}02$ donc $P(\overline{M}) = 0{,}98$ ;
+- sensibilité : $P_M(T) = 0{,}95$ ;
+- spécificité : $P_{\overline{M}}(\overline{T}) = 0{,}9$, donc $P_{\overline{M}}(T) = 1 - 0{,}9 = 0{,}1$ (faux positifs).
+:::
+
+[IMAGE_3]
+
+::: etape Probabilités totales
+$$
+\begin{aligned}
+P(T) &= P(M)P_M(T) + P(\overline{M})P_{\overline{M}}(T) \\
+&= 0{,}02 \times 0{,}95 + 0{,}98 \times 0{,}1 \\
+&= 0{,}019 + 0{,}098 \\
+&= 0{,}117
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(T) = 0{,}117$, soit $11{,}7\,\%$.
+:::
+
+## Question 4 : Probabilité de tirer une boule rouge
+
+::: methode
+Le choix de la boîte forme une partition {A, B} : formule des probabilités totales.
+:::
+
+::: etape Événements et données
+On note $A$ : « on choisit la boîte A », $B$ : « on choisit la boîte B » et $R$ : « la boule est rouge ».
+
+- $P(A) = P(B) = \dfrac{1}{2}$ ;
+- boîte A : $3$ rouges sur $5$, donc $P_A(R) = \dfrac{3}{5}$ ;
+- boîte B : $1$ rouge sur $5$, donc $P_B(R) = \dfrac{1}{5}$.
+:::
+
+[IMAGE_4]
+
+::: etape Probabilités totales
+$$
+\begin{aligned}
+P(R) &= P(A)P_A(R) + P(B)P_B(R) \\
+&= \frac{1}{2} \times \frac{3}{5} + \frac{1}{2} \times \frac{1}{5} \\
+&= \frac{3}{10} + \frac{1}{10} \\
+&= \frac{2}{5}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(R) = \dfrac{2}{5}$.
+:::
+
+::: attention
+On ne peut pas dire « $4$ rouges sur $10$ boules » en mélangeant les deux boîtes : ici cela donne le même résultat parce que les deux boîtes ont le même nombre de boules et sont choisies avec la même probabilité, mais ce n’est pas vrai en général.
+:::
+
+## Question 5 : Probabilité que l’élève réussisse
+
+::: methode
+Partition {révise, ne révise pas} : formule des probabilités totales.
+:::
+
+::: etape Événements et données
+On note $R$ : « l’élève révise » et $S$ : « l’élève réussit ».
+
+- $P(R) = 0{,}7$ donc $P(\overline{R}) = 0{,}3$ ;
+- $P_R(S) = 0{,}9$ et $P_{\overline{R}}(S) = 0{,}3$.
+:::
+
+[IMAGE_5]
+
+::: etape Probabilités totales
+$$
+\begin{aligned}
+P(S) &= P(R)P_R(S) + P(\overline{R})P_{\overline{R}}(S) \\
+&= 0{,}7 \times 0{,}9 + 0{,}3 \times 0{,}3 \\
+&= 0{,}63 + 0{,}09 \\
+&= 0{,}72
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(S) = 0{,}72$, soit $72\,\%$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $P(D) = 0{,}031$, soit $3{,}1\,\%$
+2. $P(M) = 0{,}62$, soit $62\,\%$
+3. $P(T) = 0{,}117$, soit $11{,}7\,\%$
+4. $P(R) = \dfrac{2}{5}$
+5. $P(S) = 0{,}72$, soit $72\,\%$
+
+===
+
+=== Problème - Trois tirages sans remise
+Id: 1277
+Difficulté: hard
+Image: tirages_successifs_synthese1.png
+
+Énoncé:
+<!-- optitab:1 -->
+Une urne contient $5$ boules rouges et $3$ boules bleues. On effectue $3$ tirages successifs **sans remise**.
+
+1. Quelle est la probabilité d’obtenir $3$ boules rouges ?
+2. Quelle est la probabilité d’obtenir exactement $2$ boules rouges ?
+3. Quelle est la probabilité d’obtenir au moins une boule bleue ?
+4. Sachant que la première boule tirée est rouge, quelle est la probabilité que les deux suivantes soient bleues ?
+5. Quelle est la probabilité que la troisième boule tirée soit rouge ?
+
+Étapes:
+<!-- optitab:1 -->
+::: point Arbre des trois tirages
+On note $R_i$ : « la $i$-ème boule est rouge » et $B_i$ : « la $i$-ème boule est bleue ». Sur chaque branche figure la proportion de boules restantes ; à droite, l’issue et la probabilité du chemin.
+:::
+
+[IMAGE_1]
+
+## Question 1 : Probabilité de trois rouges
+
+::: methode
+Probabilité d’un chemin = produit des probabilités (conditionnelles) de ses branches.
+:::
+
+::: etape Les trois tirages
+- $P(R_1) = \dfrac{5}{8}$ ;
+- après une rouge, il reste $4$ rouges sur $7$ : $P_{R_1}(R_2) = \dfrac{4}{7}$ ;
+- après deux rouges, il reste $3$ rouges sur $6$ : $P_{R_1 \cap R_2}(R_3) = \dfrac{3}{6}$.
+:::
+
+::: etape Produit
+$$
+\begin{aligned}
+P(R_1 \cap R_2 \cap R_3) &= \frac{5}{8} \times \frac{4}{7} \times \frac{3}{6} \\
+&= \frac{60}{336} \\
+&= \frac{5}{28}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(\text{3 rouges}) = \dfrac{5}{28}$.
+:::
+
+## Question 2 : Exactement deux rouges
+
+::: methode
+On additionne les probabilités des trois chemins qui contiennent exactement deux rouges.
+:::
+
+::: etape Les trois chemins
+$$
+\begin{aligned}
+P(RRB) &= \frac{5}{8} \times \frac{4}{7} \times \frac{3}{6} = \frac{60}{336} \\
+P(RBR) &= \frac{5}{8} \times \frac{3}{7} \times \frac{4}{6} = \frac{60}{336} \\
+P(BRR) &= \frac{3}{8} \times \frac{5}{7} \times \frac{4}{6} = \frac{60}{336}
+\end{aligned}
+$$
+
+Les trois produits ont les mêmes facteurs au numérateur ($5$, $4$ et $3$) et au dénominateur ($8$, $7$ et $6$), dans un ordre différent.
+:::
+
+::: etape Additionner
+$$P(\text{exactement 2 rouges}) = 3 \times \frac{60}{336} = \frac{180}{336} = \frac{15}{28}$$
+:::
+
+::: resultat
+$P(\text{exactement 2 rouges}) = \dfrac{15}{28}$.
+:::
+
+## Question 3 : Au moins une bleue
+
+::: methode
+Événement contraire : « au moins une bleue » est le contraire de « trois rouges ».
+:::
+
+::: etape Utiliser la question 1
+$$
+\begin{aligned}
+P(\text{au moins une bleue}) &= 1 - P(\text{3 rouges}) \\
+&= 1 - \frac{5}{28} \\
+&= \frac{23}{28}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(\text{au moins une bleue}) = \dfrac{23}{28}$.
+:::
+
+## Question 4 : Deux bleues sachant que la première est rouge
+
+::: methode
+On se place sur la branche $R_1$ : il reste $4$ rouges et $3$ bleues, soit $7$ boules.
+:::
+
+::: etape Les deux tirages suivants
+- Deuxième boule bleue : $P_{R_1}(B_2) = \dfrac{3}{7}$ ;
+- troisième boule bleue (il reste $2$ bleues sur $6$) : $P_{R_1 \cap B_2}(B_3) = \dfrac{2}{6}$.
+:::
+
+::: etape Produit
+$$
+\begin{aligned}
+P_{R_1}(B_2 \cap B_3) &= \frac{3}{7} \times \frac{2}{6} \\
+&= \frac{6}{42} \\
+&= \frac{1}{7}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P_{R_1}(B_2 \cap B_3) = \dfrac{1}{7}$.
+:::
+
+::: remarque Vérification
+Par la définition : $\dfrac{P(RBB)}{P(R_1)} = \dfrac{5}{56} \times \dfrac{8}{5} = \dfrac{1}{7}$.
+:::
+
+## Question 5 : La troisième boule est rouge
+
+::: methode
+Formule des probabilités totales : on additionne les quatre chemins qui se terminent par $R_3$ (en vert).
+:::
+
+[IMAGE_2]
+
+::: etape Les quatre chemins
+$$
+\begin{aligned}
+P(RRR) &= \frac{5}{8} \times \frac{4}{7} \times \frac{3}{6} = \frac{60}{336} \\
+P(RBR) &= \frac{5}{8} \times \frac{3}{7} \times \frac{4}{6} = \frac{60}{336} \\
+P(BRR) &= \frac{3}{8} \times \frac{5}{7} \times \frac{4}{6} = \frac{60}{336} \\
+P(BBR) &= \frac{3}{8} \times \frac{2}{7} \times \frac{5}{6} = \frac{30}{336}
+\end{aligned}
+$$
+:::
+
+::: etape Additionner
+$$P(R_3) = \frac{60 + 60 + 60 + 30}{336} = \frac{210}{336} = \frac{5}{8}$$
+:::
+
+::: resultat
+$P(R_3) = \dfrac{5}{8}$.
+:::
+
+::: remarque
+On retrouve $P(R_1) = \dfrac{5}{8}$ : sans information sur les tirages précédents, chaque boule a la même chance d’être tirée en troisième position qu’en première.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $P(\text{3 rouges}) = \dfrac{5}{28}$
+2. $P(\text{exactement 2 rouges}) = \dfrac{15}{28}$
+3. $P(\text{au moins une bleue}) = \dfrac{23}{28}$
+4. $P_{R_1}(B_2 \cap B_3) = \dfrac{1}{7}$
+5. $P(R_3) = \dfrac{5}{8}$
+
+===
+
+=== Problème - Deux tirages avec remise dans un sac de jetons
+Id: 1278
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Un sac contient $4$ jetons numérotés $1$, $2$, $3$, $4$. On tire un jeton, on note son numéro, on le remet, puis on tire un second jeton.
+
+1. Combien y a-t-il de résultats possibles pour les deux tirages ?
+2. Quelle est la probabilité d’obtenir deux numéros identiques ?
+3. Quelle est la probabilité que la somme des deux numéros soit égale à $5$ ?
+4. Quelle est la probabilité que le produit des deux numéros soit pair ?
+5. Sachant que la somme est paire, quelle est la probabilité que les deux numéros soient pairs ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Nombre de résultats possibles
+
+::: methode
+Principe multiplicatif : un résultat est un couple (premier numéro ; second numéro).
+:::
+
+::: etape Compter
+- Premier tirage : $4$ numéros possibles.
+- Second tirage (avec remise) : à nouveau $4$ numéros possibles.
+
+Nombre de couples : $4 \times 4 = 16$. Avec remise et jetons indiscernables au toucher, ces $16$ résultats sont équiprobables, de probabilité $\dfrac{1}{4} \times \dfrac{1}{4} = \dfrac{1}{16}$ chacun.
+:::
+
+::: point Tableau des 16 résultats
+En ligne le premier numéro, en colonne le second ; chaque case est un couple $(\text{1er}\,;\text{2e})$. Les couples de numéros identiques sont en gras.
+
+| 1er \ 2e | $1$ | $2$ | $3$ | $4$ |
+|---|---|---|---|---|
+| $1$ | **$(1\,;1)$** | $(1\,;2)$ | $(1\,;3)$ | $(1\,;4)$ |
+| $2$ | $(2\,;1)$ | **$(2\,;2)$** | $(2\,;3)$ | $(2\,;4)$ |
+| $3$ | $(3\,;1)$ | $(3\,;2)$ | **$(3\,;3)$** | $(3\,;4)$ |
+| $4$ | $(4\,;1)$ | $(4\,;2)$ | $(4\,;3)$ | **$(4\,;4)$** |
+:::
+
+::: resultat
+Il y a $16$ résultats possibles, équiprobables.
+:::
+
+## Question 2 : Deux numéros identiques
+
+::: methode
+Probabilité = nombre de cas favorables ÷ $16$.
+:::
+
+::: etape Cas favorables
+Les couples identiques sont sur la diagonale du tableau (en gras) : $(1\,;1)$, $(2\,;2)$, $(3\,;3)$, $(4\,;4)$, soit $4$ cas.
+:::
+
+::: etape Probabilité
+$$P(\text{identiques}) = \frac{4}{16} = \frac{1}{4}$$
+:::
+
+::: resultat
+$P(\text{identiques}) = \dfrac{1}{4}$.
+:::
+
+## Question 3 : Somme égale à $5$
+
+::: methode
+On repère dans le tableau les cases de somme $5$.
+:::
+
+::: etape Cas favorables
+$(1\,;4)$, $(2\,;3)$, $(3\,;2)$, $(4\,;1)$ : $4$ cas.
+:::
+
+::: etape Probabilité
+$$P(\text{somme} = 5) = \frac{4}{16} = \frac{1}{4}$$
+:::
+
+::: resultat
+$P(\text{somme} = 5) = \dfrac{1}{4}$.
+:::
+
+## Question 4 : Produit pair
+
+::: methode
+Événement contraire : un produit est impair si et seulement si les deux facteurs sont impairs.
+:::
+
+::: etape Produit impair
+Les deux numéros sont dans $\{1\,;3\}$ : $(1\,;1)$, $(1\,;3)$, $(3\,;1)$, $(3\,;3)$, soit $4$ cas.
+
+$$P(\text{produit impair}) = \frac{4}{16} = \frac{1}{4}$$
+:::
+
+::: etape Événement contraire
+$$P(\text{produit pair}) = 1 - \frac{1}{4} = \frac{3}{4}$$
+:::
+
+::: resultat
+$P(\text{produit pair}) = \dfrac{3}{4}$.
+:::
+
+## Question 5 : Deux numéros pairs sachant que la somme est paire
+
+::: methode
+Issues équiprobables : $P_S(E) = \dfrac{\text{nombre de cas de } E \cap S}{\text{nombre de cas de } S}$.
+:::
+
+::: etape Événement $S$ : « la somme est paire »
+La somme est paire si les deux numéros ont la même parité :
+
+- deux pairs : $(2\,;2)$, $(2\,;4)$, $(4\,;2)$, $(4\,;4)$ ;
+- deux impairs : $(1\,;1)$, $(1\,;3)$, $(3\,;1)$, $(3\,;3)$.
+
+$S$ compte $8$ cas.
+:::
+
+::: etape Événement $E \cap S$
+On note $E$ : « les deux numéros sont pairs ». Deux numéros pairs ont toujours une somme paire, donc $E \cap S = E$ : $4$ cas.
+
+Dans le tableau des sommes, les $8$ cases de $S$ sont colorées ; les $4$ cases de $E$ sont en vert.
+
+[IMAGE_1]
+:::
+
+::: etape Probabilité conditionnelle
+$$P_S(E) = \frac{4}{8} = \frac{1}{2}$$
+:::
+
+::: resultat
+$P_S(E) = \dfrac{1}{2}$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $16$ résultats possibles (équiprobables)
+2. $P(\text{identiques}) = \dfrac{1}{4}$
+3. $P(\text{somme} = 5) = \dfrac{1}{4}$
+4. $P(\text{produit pair}) = \dfrac{3}{4}$
+5. $P_S(E) = \dfrac{1}{2}$
+
+===
+
+=== Type examen - Feux tricolores : épreuves indépendantes et loi binomiale
+Id: 5263
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Chaque matin, un livreur passe trois feux tricolores. On admet que les états des trois feux sont indépendants. Le premier feu est vert avec la probabilité $0{,}6$, le deuxième avec la probabilité $0{,}5$ et le troisième avec la probabilité $0{,}7$. Pour $i = 1$, $2$, $3$, on note $V_i$ l’événement « le $i$-ème feu est vert ».
+
+**Partie A : trois feux différents**
+
+[IMAGE_1]
+
+1. Recopier et compléter l’arbre pondéré ci-dessus.
+2. Calculer la probabilité que les trois feux soient verts.
+3. Calculer la probabilité qu’exactement deux feux soient verts.
+4. Calculer la probabilité qu’au moins un feu soit vert.
+5. On note $N$ le nombre de feux verts. Expliquer pourquoi $N$ ne suit pas une loi binomiale.
+
+**Partie B : quatre feux identiques**
+
+Sur un autre trajet, le livreur passe $4$ feux ; chacun est vert avec la probabilité $0{,}6$, indépendamment des autres. On note $X$ le nombre de feux verts.
+
+6. Justifier que $X$ suit une loi binomiale et préciser ses paramètres.
+7. Calculer $P(X = 2)$, puis $P(X \ge 1)$.
+
+Étapes:
+<!-- optitab:1 -->
+## Partie A : trois feux différents
+
+## Question 1 : Compléter l’arbre
+
+::: methode
+Après chaque nœud, on écrit la probabilité que le feu suivant soit vert et celle de l’événement contraire. Les feux étant indépendants, ces probabilités ne dépendent pas des feux précédents : elles sont les mêmes sur toutes les branches d’un même niveau.
+:::
+
+::: etape Les probabilités de chaque niveau
+- Deuxième feu : $P(V_2) = 0{,}5$ et $P(\overline{V_2}) = 1 - 0{,}5 = 0{,}5$.
+- Troisième feu : $P(V_3) = 0{,}7$ et $P(\overline{V_3}) = 1 - 0{,}7 = 0{,}3$.
+
+Les probabilités complétées sont en vert ; en bout de chemin, le nombre de feux verts et la probabilité du chemin (produit des probabilités des branches).
+
+[IMAGE_2]
+:::
+
+::: resultat
+Niveau $2$ : $0{,}5$ et $0{,}5$ ; niveau $3$ : $0{,}7$ et $0{,}3$, sur toutes les branches.
+:::
+
+## Question 2 : Trois feux verts
+
+::: methode
+Un seul chemin : $V_1 \cap V_2 \cap V_3$. Les épreuves sont indépendantes, on multiplie.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+P(V_1 \cap V_2 \cap V_3) &= 0{,}6 \times 0{,}5 \times 0{,}7 \\
+&= 0{,}21
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(\text{trois feux verts}) = 0{,}21$.
+:::
+
+## Question 3 : Exactement deux feux verts
+
+::: methode
+On repère les chemins à exactement deux feux verts (traits épais), on calcule chacun, puis on additionne : ces chemins sont incompatibles.
+:::
+
+::: etape Les trois chemins
+$$
+\begin{aligned}
+P(V_1 \cap V_2 \cap \overline{V_3}) &= 0{,}6 \times 0{,}5 \times 0{,}3 = 0{,}09 \\
+P(V_1 \cap \overline{V_2} \cap V_3) &= 0{,}6 \times 0{,}5 \times 0{,}7 = 0{,}21 \\
+P(\overline{V_1} \cap V_2 \cap V_3) &= 0{,}4 \times 0{,}5 \times 0{,}7 = 0{,}14
+\end{aligned}
+$$
+:::
+
+::: etape Additionner
+$$P(\text{exactement deux verts}) = 0{,}09 + 0{,}21 + 0{,}14 = 0{,}44$$
+:::
+
+::: resultat
+$P(\text{exactement deux feux verts}) = 0{,}44$.
+:::
+
+## Question 4 : Au moins un feu vert
+
+::: methode
+« Au moins un » : on passe à l’événement contraire, « aucun feu vert ».
+:::
+
+::: etape Aucun feu vert
+$$P(\overline{V_1} \cap \overline{V_2} \cap \overline{V_3}) = 0{,}4 \times 0{,}5 \times 0{,}3 = 0{,}06$$
+:::
+
+::: etape Événement contraire
+$$P(\text{au moins un vert}) = 1 - 0{,}06 = 0{,}94$$
+:::
+
+::: resultat
+$P(\text{au moins un feu vert}) = 0{,}94$.
+:::
+
+## Question 5 : $N$ ne suit pas une loi binomiale
+
+::: methode
+Une loi binomiale exige des épreuves indépendantes **et identiques** (même probabilité de succès).
+:::
+
+::: etape Constat
+Les trois épreuves sont indépendantes, mais la probabilité d’un feu vert change d’un feu à l’autre ($0{,}6$, $0{,}5$, $0{,}7$) : ce n’est pas un schéma de Bernoulli.
+:::
+
+::: etape Conséquence sur l’arbre
+Les trois chemins qui donnent $N = 2$ n’ont pas la même probabilité ($0{,}09$, $0{,}21$ et $0{,}14$). Pour une loi binomiale, ils auraient tous la probabilité $p^2(1 - p)$, et l’on aurait $P(N = 2) = 3p^2(1 - p)$.
+:::
+
+::: resultat
+Les épreuves ne sont pas identiques : $N$ ne suit pas une loi binomiale.
+:::
+
+## Partie B : quatre feux identiques
+
+## Question 6 : Loi de $X$
+
+::: methode
+Reconnaître un schéma de Bernoulli et rédiger la justification.
+:::
+
+::: etape Schéma de Bernoulli
+Chaque feu est une épreuve à deux issues : succès « vert », de probabilité $p = 0{,}6$, ou échec, de probabilité $0{,}4$. Les $4$ épreuves sont **identiques et indépendantes**, et $X$ compte le nombre de succès.
+:::
+
+::: resultat
+$X$ suit la loi binomiale $\mathcal{B}(4\,;0{,}6)$.
+:::
+
+## Question 7 : $P(X = 2)$ et $P(X \ge 1)$
+
+::: methode
+Formule $P(X = k) = \binom{n}{k}p^k(1 - p)^{n - k}$ ; pour « au moins un », l’événement contraire.
+:::
+
+::: etape Calcul de $P(X = 2)$
+$\binom{4}{2} = 6$ chemins de l’arbre comportent deux feux verts, chacun de probabilité $0{,}6^2 \times 0{,}4^2$ :
+$$
+\begin{aligned}
+P(X = 2) &= 6 \times 0{,}6^2 \times 0{,}4^2 \\
+&= 6 \times 0{,}36 \times 0{,}16 \\
+&= 0{,}3456
+\end{aligned}
+$$
+:::
+
+::: etape Calcul de $P(X \ge 1)$
+$$
+\begin{aligned}
+P(X \ge 1) &= 1 - P(X = 0) \\
+&= 1 - 0{,}4^4 \\
+&= 1 - 0{,}0256 = 0{,}9744
+\end{aligned}
+$$
+:::
+
+::: attention
+Écrire $P(X = 2) = 0{,}6^2 \times 0{,}4^2$ oublie le coefficient $\binom{4}{2} = 6$ : ce n’est que la probabilité d’**un** chemin.
+:::
+
+::: resultat
+$P(X = 2) = 0{,}3456$ et $P(X \ge 1) = 0{,}9744$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Niveau $2$ : $0{,}5$ et $0{,}5$ ; niveau $3$ : $0{,}7$ et $0{,}3$.
+2. $0{,}6 \times 0{,}5 \times 0{,}7 = 0{,}21$
+3. $0{,}09 + 0{,}21 + 0{,}14 = 0{,}44$
+4. $1 - 0{,}4 \times 0{,}5 \times 0{,}3 = 0{,}94$
+5. Épreuves indépendantes mais pas identiques : les chemins à deux verts n’ont pas la même probabilité, la loi de $N$ n’est pas binomiale.
+6. $X$ suit la loi binomiale $\mathcal{B}(4\,;0{,}6)$.
+7. $P(X = 2) = 6 \times 0{,}6^2 \times 0{,}4^2 = 0{,}3456$ ; $P(X \ge 1) = 1 - 0{,}4^4 = 0{,}9744$.
+
+===

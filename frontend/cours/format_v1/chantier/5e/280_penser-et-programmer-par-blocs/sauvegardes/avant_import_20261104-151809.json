@@ -1,0 +1,394 @@
+{
+ "notion": 280,
+ "dossier": "C:\\Users\\SWEELCO-AT\\Desktop\\SWINDER\\OptiTABV2\\frontend\\cours\\format_v1\\chantier\\5e\\280_penser-et-programmer-par-blocs",
+ "date": "2026-11-04T15:18:08",
+ "cours": [
+  {
+   "id": 275,
+   "contenu": "<!-- optitab:1 -->\n::: objectifs\nLire une suite d'instructions, prévoir une sortie et traduire une formule par des blocs. Comprendre une répétition et suivre un tracé.\n:::\n\n## I. Lire un programme dans l'ordre\n\n::: definition\nUn **programme** est une suite d'instructions exécutées dans un ordre précis. Une **entrée** est une donnée fournie ; une **sortie** est une information produite. Le bloc `réponse` contient ici la donnée saisie après une question.\n:::\n\n::: exemple Demander, calculer, afficher\nTranscription textuelle des blocs, dans leur ordre d'exécution :\n```console\ndemander « Nombre ? » et attendre\ndire ((3 × réponse) + 2)\n```\nPour l'entrée $4$, le programme affiche $3\\times4+2=14$.\n:::\n\n::: methode Prévoir une sortie\nRepérer le bloc qui demande une donnée. Remplacer `réponse` par cette donnée dans le calcul. Respecter les parenthèses et les priorités, puis donner ce qui est affiché.\n:::\n\n## II. Comprendre les blocs imbriqués\n\n::: exemple Deux organisations différentes\n| Expression décrite par les blocs | Pour l'entrée $4$ |\n|---|---|\n| $(3\\times\\text{réponse})+2$ | $3\\times4+2=14$ |\n| $3\\times(\\text{réponse}+2)$ | $3\\times(4+2)=18$ |\nLe bloc placé à l'intérieur est calculé en premier : les parenthèses traduisent cette imbrication.\n:::\n\n::: attention\nUne phrase affichée n'est pas une nouvelle entrée. La donnée saisie n'est pas modifiée par le simple affichage d'un calcul. Ne pas confondre « multiplier puis ajouter » avec « ajouter puis multiplier ».\n:::\n\n## III. Répéter une séquence\n\n::: definition\nUne **boucle de répétition** exécute un nombre fixé de fois la même suite d'instructions. Toutes les instructions placées à l'intérieur sont répétées, dans l'ordre.\n:::\n\n::: exemple Tracer un carré\nLe lutin commence au point $A$, dirigé vers la droite.\n```console\nstylo en position d'écriture\nrépéter 4 fois :\n    avancer de 60 pas\n    tourner à gauche de 90°\n```\nIl trace quatre segments de $60$ pas et effectue quatre quarts de tour. Il revient en $A$, orienté vers la droite.\n:::\n\n[IMAGE_1]\n\n::: methode Suivre une boucle\nFaire un tableau avec une ligne par répétition. Relever la direction de chaque déplacement, puis la direction obtenue après la rotation. Compter les déplacements et les rotations séparément.\n:::\n\n| Répétition | Déplacement | Direction après rotation |\n|---|---|---|\n| $1$ | Vers la droite | Vers le haut |\n| $2$ | Vers le haut | Vers la gauche |\n| $3$ | Vers la gauche | Vers le bas |\n| $4$ | Vers le bas | Vers la droite |\n\n## IV. Contrôler le résultat\n\n::: attention Dessin et état final\nUne rotation sans déplacement ne trace rien. Si on supprime uniquement la dernière rotation du carré, le dessin reste identique, mais le lutin termine orienté vers le bas.\n:::\n\n::: retenir\nVérifier le départ, la direction initiale, le stylo et le contenu exact de la boucle. Pour un triangle équilatéral, le changement de direction vaut $120^\\circ$, et non l'angle intérieur $60^\\circ$. Quatre déplacements quelconques ne suffisent pas à tracer un carré.\n:::"
+  }
+ ],
+ "fiches": [
+  {
+   "id": 195,
+   "summary": "<!-- optitab:1 -->\n::: objectifs\nPrévoir une sortie et suivre une boucle.\n:::\n\n## I. Lire un programme\n::: methode\nRepérer l'entrée, remplacer `réponse` par la valeur saisie, respecter les blocs imbriqués et calculer la sortie affichée.\n:::\nPour l'entrée $4$ : $3\\times4+2=14$, tandis que $3\\times(4+2)=18$.\n\n## II. Répéter et tracer\nUne boucle répète **tout son contenu**, dans l'ordre.\n```console\nrépéter 4 fois :\n    avancer de 60 pas\n    tourner à gauche de 90°\n```\nStylo baissé, départ vers la droite : carré de côté $60$ pas ; distance $240$ pas ; retour au départ avec la direction initiale.\n\n::: attention\nUne rotation change la direction, sans tracer. Sans la dernière rotation, le carré reste tracé mais la direction finale change. Pour un triangle équilatéral, tourner de $120^\\circ$.\n:::"
+  }
+ ],
+ "exercices": [
+  {
+   "id": 3114,
+   "question": "<!-- optitab:1 -->\nLe programme demande un nombre, puis affiche le résultat de « 3 × réponse + 6 ». Le bloc « réponse » lit la donnée saisie ; cette donnée n’est pas modifiée.\n\nTranscription textuelle des blocs :\n```console\ndemander « Nombre ? » et attendre\ndire ((3 × réponse) + 6)\n```\n\n1. Quelle est l’entrée du programme ? Quelle est sa sortie ?\n2. Quel calcul est effectué pour l’entrée 5 ?\n3. Prévoir le nombre affiché pour cette entrée.\n4. Quel nombre est affiché si on saisit 0 ?\n5. On imbrique autrement les blocs pour calculer 3 × (réponse + 6). Quel résultat obtient-on pour l’entrée 5 ?\n6. Les deux organisations de blocs représentent-elles la même formule ? Justifier.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Quelle est l’entrée du programme ? Quelle est sa sortie ?\n\n::: methode\nL’entrée est la donnée demandée ; la sortie est le résultat affiché après le calcul.\n:::\n\n::: etape Distinguer entrée et sortie\nL’instruction demander reçoit le nombre saisi ; l’instruction dire affiche le calcul effectué à partir de cette donnée.\n:::\n\n::: resultat\nEntrée : le nombre saisi. Sortie : 3 fois ce nombre, plus 6.\n:::\n\n## Question 2 : Quel calcul est effectué pour l’entrée 5 ?\n\n::: methode\nRemplacer le bloc réponse par la donnée saisie, sans changer les opérations.\n:::\n\n::: etape Remplacer réponse par la donnée\nLa réponse saisie vaut $5$ : remplacer uniquement le bloc réponse donne $3\\times5+6$.\n:::\n\n::: resultat\n$\\displaystyle 3\\times 5+6$.\n:::\n\n## Question 3 : Prévoir le nombre affiché pour cette entrée.\n\n::: methode\nEffectuer la multiplication avant l’addition ; la donnée saisie reste inchangée.\n:::\n\n::: etape Respecter les priorités opératoires\n$$\n 3\\times 5+6=21\n$$\n:::\n\n::: resultat\n21.\n:::\n\n## Question 4 : Quel nombre est affiché si on saisit 0 ?\n\n::: methode\nRemplacer réponse par zéro ; seul le terme ajouté subsiste.\n:::\n\n::: etape Tester la donnée zéro\n$$\n 3\\times0+6=6\n$$\n:::\n\n::: resultat\n6.\n:::\n\n## Question 5 : On imbrique autrement les blocs pour calculer 3 × (réponse + 6). Quel résultat obtient-on pour l’entrée 5 ?\n\n::: methode\nLes blocs imbriqués imposent les parenthèses : additionner avant de multiplier change le programme.\n:::\n\n::: etape Calculer d’abord les parenthèses\n$$\n 3(5+6)=33\n$$\n:::\n\n::: resultat\n33.\n:::\n\n## Question 6 : Les deux organisations de blocs représentent-elles la même formule ? Justifier.\n\n::: methode\nDévelopper la formule avec parenthèses : l’ajout est alors multiplié par le facteur. Un exemple de résultats différents suffit aussi à distinguer les programmes.\n:::\n\n::: etape Comparer deux sorties pour une même entrée\nPour la même entrée $5$, les sorties $21$ et $33$ sont différentes. Ce contre-exemple suffit à montrer que les deux formules ne sont pas identiques.\n:::\n\n::: resultat\nNon : le premier affiche 21, le second 33 pour la même entrée.\n:::\n\n\n\n::: retenir\nEn 5e, on lit une donnée saisie pour calculer une formule. Prévoir la sortie avant d’exécuter et contrôler l’imbrication des blocs.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. Entrée : le nombre saisi. Sortie : 3 fois ce nombre, plus 6.\n2. $\\displaystyle 3\\times 5+6$.\n3. 21.\n4. 6.\n5. 33.\n6. Non : le premier affiche 21, le second 33 pour la même entrée.",
+   "titre": "Découverte - Penser et programmer par blocs - 11. Lire une donnée et prévoir une sortie",
+   "difficulty": "easy",
+   "contenu": "<!-- optitab:1 -->\nLe programme demande un nombre, puis affiche le résultat de « 3 × réponse + 6 ». Le bloc « réponse » lit la donnée saisie ; cette donnée n’est pas modifiée.\n\nTranscription textuelle des blocs :\n```console\ndemander « Nombre ? » et attendre\ndire ((3 × réponse) + 6)\n```\n\n1. Quelle est l’entrée du programme ? Quelle est sa sortie ?\n2. Quel calcul est effectué pour l’entrée 5 ?\n3. Prévoir le nombre affiché pour cette entrée.\n4. Quel nombre est affiché si on saisit 0 ?\n5. On imbrique autrement les blocs pour calculer 3 × (réponse + 6). Quel résultat obtient-on pour l’entrée 5 ?\n6. Les deux organisations de blocs représentent-elles la même formule ? Justifier."
+  },
+  {
+   "id": 3104,
+   "question": "<!-- optitab:1 -->\nLe programme demande un nombre, puis affiche le résultat de « 2 × réponse + 3 ». Le bloc « réponse » lit la donnée saisie ; cette donnée n’est pas modifiée.\n\nTranscription textuelle des blocs :\n```console\ndemander « Nombre ? » et attendre\ndire ((2 × réponse) + 3)\n```\n\n1. Quelle est l’entrée du programme ? Quelle est sa sortie ?\n2. Quel calcul est effectué pour l’entrée 2 ?\n3. Prévoir le nombre affiché pour cette entrée.\n4. Quel nombre est affiché si on saisit 0 ?\n5. On imbrique autrement les blocs pour calculer 2 × (réponse + 3). Quel résultat obtient-on pour l’entrée 2 ?\n6. Les deux organisations de blocs représentent-elles la même formule ? Justifier.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Quelle est l’entrée du programme ? Quelle est sa sortie ?\n\n::: methode\nL’entrée est la donnée demandée ; la sortie est le résultat affiché après le calcul.\n:::\n\n::: etape Distinguer entrée et sortie\nL’instruction demander reçoit le nombre saisi ; l’instruction dire affiche le calcul effectué à partir de cette donnée.\n:::\n\n::: resultat\nEntrée : le nombre saisi. Sortie : 2 fois ce nombre, plus 3.\n:::\n\n## Question 2 : Quel calcul est effectué pour l’entrée 2 ?\n\n::: methode\nRemplacer le bloc réponse par la donnée saisie, sans changer les opérations.\n:::\n\n::: etape Remplacer réponse par la donnée\nLa réponse saisie vaut $2$ : remplacer uniquement le bloc réponse donne $2\\times2+3$.\n:::\n\n::: resultat\n$\\displaystyle 2\\times 2+3$.\n:::\n\n## Question 3 : Prévoir le nombre affiché pour cette entrée.\n\n::: methode\nEffectuer la multiplication avant l’addition ; la donnée saisie reste inchangée.\n:::\n\n::: etape Respecter les priorités opératoires\n$$\n 2\\times 2+3=7\n$$\n:::\n\n::: resultat\n7.\n:::\n\n## Question 4 : Quel nombre est affiché si on saisit 0 ?\n\n::: methode\nRemplacer réponse par zéro ; seul le terme ajouté subsiste.\n:::\n\n::: etape Tester la donnée zéro\n$$\n 2\\times0+3=3\n$$\n:::\n\n::: resultat\n3.\n:::\n\n## Question 5 : On imbrique autrement les blocs pour calculer 2 × (réponse + 3). Quel résultat obtient-on pour l’entrée 2 ?\n\n::: methode\nLes blocs imbriqués imposent les parenthèses : additionner avant de multiplier change le programme.\n:::\n\n::: etape Calculer d’abord les parenthèses\n$$\n 2(2+3)=10\n$$\n:::\n\n::: resultat\n10.\n:::\n\n## Question 6 : Les deux organisations de blocs représentent-elles la même formule ? Justifier.\n\n::: methode\nDévelopper la formule avec parenthèses : l’ajout est alors multiplié par le facteur. Un exemple de résultats différents suffit aussi à distinguer les programmes.\n:::\n\n::: etape Comparer deux sorties pour une même entrée\nPour la même entrée $2$, les sorties $7$ et $10$ sont différentes. Ce contre-exemple suffit à montrer que les deux formules ne sont pas identiques.\n:::\n\n::: resultat\nNon : le premier affiche 7, le second 10 pour la même entrée.\n:::\n\n\n\n::: retenir\nEn 5e, on lit une donnée saisie pour calculer une formule. Prévoir la sortie avant d’exécuter et contrôler l’imbrication des blocs.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. Entrée : le nombre saisi. Sortie : 2 fois ce nombre, plus 3.\n2. $\\displaystyle 2\\times 2+3$.\n3. 7.\n4. 3.\n5. 10.\n6. Non : le premier affiche 7, le second 10 pour la même entrée.",
+   "titre": "Découverte - Penser et programmer par blocs - 1. Lire une donnée et prévoir une sortie",
+   "difficulty": "easy",
+   "contenu": "<!-- optitab:1 -->\nLe programme demande un nombre, puis affiche le résultat de « 2 × réponse + 3 ». Le bloc « réponse » lit la donnée saisie ; cette donnée n’est pas modifiée.\n\nTranscription textuelle des blocs :\n```console\ndemander « Nombre ? » et attendre\ndire ((2 × réponse) + 3)\n```\n\n1. Quelle est l’entrée du programme ? Quelle est sa sortie ?\n2. Quel calcul est effectué pour l’entrée 2 ?\n3. Prévoir le nombre affiché pour cette entrée.\n4. Quel nombre est affiché si on saisit 0 ?\n5. On imbrique autrement les blocs pour calculer 2 × (réponse + 3). Quel résultat obtient-on pour l’entrée 2 ?\n6. Les deux organisations de blocs représentent-elles la même formule ? Justifier."
+  },
+  {
+   "id": 3105,
+   "question": "<!-- optitab:1 -->\nUn lutin part d’un point A, orienté vers la droite, stylo baissé. Il exécute : « répéter 4 fois : avancer de 10 pas ; tourner à gauche de 90° ». Un pas est une unité de longueur.\n\nTranscription textuelle des blocs :\n```console\nrépéter 4 fois :\n    avancer de 10 pas\n    tourner à gauche de 90°\n```\n\n1. Combien de déplacements le programme exécute-t-il ?\n2. Quelle distance totale le lutin parcourt-il ?\n3. Quel angle total a-t-il tourné ?\n4. Quelle figure obtient-on ? Justifier.\n5. Quelle est la position et l’orientation finales du lutin ?\n6. On enlève la dernière rotation seulement. Le dessin change-t-il ? L’état final change-t-il ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Combien de déplacements le programme exécute-t-il ?\n\n::: methode\nLa boucle répète son contenu quatre fois ; il y a une instruction avancer par tour.\n:::\n\n::: etape Compter les instructions répétées\nUne instruction avancer par répétition et quatre répétitions donnent 1 × 4 = 4 déplacements.\n:::\n\n::: resultat\n4 déplacements.\n:::\n\n## Question 2 : Quelle distance totale le lutin parcourt-il ?\n\n::: methode\nAdditionner les quatre déplacements de même longueur. Cette distance est le périmètre du tracé.\n:::\n\n::: etape Additionner les déplacements\n$$\n 4\\times 10=40\n$$\n:::\n\n::: resultat\n40 pas.\n:::\n\n## Question 3 : Quel angle total a-t-il tourné ?\n\n::: methode\nUne rotation de 90° est exécutée à chaque tour de boucle, y compris le dernier.\n:::\n\n::: etape Convertir une fréquence en angle\n$$\n 4\\times90=360\n$$\n:::\n\n::: resultat\n360°, soit un tour complet.\n:::\n\n## Question 4 : Quelle figure obtient-on ? Justifier.\n\n::: methode\nQuatre côtés égaux sont tracés avec quatre angles droits. Après quatre déplacements, le lutin revient au point de départ.\n:::\n\n::: etape Identifier les côtés et les angles\nLes quatre segments ont la même longueur. Chaque changement de direction de 90° crée un angle droit ; le quatrième segment ferme la figure.\n:::\n\n::: resultat\nUn carré de côté 10 pas.\n:::\n\n## Question 5 : Quelle est la position et l’orientation finales du lutin ?\n\n::: methode\nSuivre les déplacements droite, haut, gauche, bas ; la quatrième rotation ramène l’orientation initiale.\n:::\n\n::: etape Suivre position et orientation\nOn avance successivement à droite, vers le haut, à gauche et vers le bas. Les déplacements opposés se compensent ; les quatre rotations reconstituent un tour complet.\n:::\n\n::: resultat\nAu point A, orienté vers la droite.\n:::\n\n## Question 6 : On enlève la dernière rotation seulement. Le dessin change-t-il ? L’état final change-t-il ?\n\n::: methode\nUne rotation sans déplacement ne dessine pas de segment ; elle modifie seulement l’orientation du lutin.\n:::\n\n::: etape Distinguer tracé et direction\nLe quatrième segment a déjà ramené le lutin en A. Avant la dernière rotation il est dirigé vers le bas ; supprimer cette seule rotation conserve le tracé et la position, mais change la direction finale.\n:::\n\n::: resultat\nLe carré reste identique, mais le lutin termine orienté vers le bas : il lui manque le dernier quart de tour.\n:::\n\nLe schéma indique le sens du parcours ; $c$ désigne le côté du carré, ou $L$ et $\\ell$ les côtés du rectangle, dans les unités de l’énoncé.\n\n[IMAGE_2]\n\n::: retenir\nDistinguer le dessin, la position et l’orientation. Une boucle compacte plusieurs instructions, mais chaque instruction est exécutée dans l’ordre.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. 4 déplacements.\n2. 40 pas.\n3. 360°, soit un tour complet.\n4. Un carré de côté 10 pas.\n5. Au point A, orienté vers la droite.\n6. Le carré reste identique, mais le lutin termine orienté vers le bas : il lui manque le dernier quart de tour.",
+   "titre": "Découverte - Penser et programmer par blocs - 2. Programmer le tracé d’un carré",
+   "difficulty": "easy",
+   "contenu": "<!-- optitab:1 -->\nUn lutin part d’un point A, orienté vers la droite, stylo baissé. Il exécute : « répéter 4 fois : avancer de 10 pas ; tourner à gauche de 90° ». Un pas est une unité de longueur.\n\nTranscription textuelle des blocs :\n```console\nrépéter 4 fois :\n    avancer de 10 pas\n    tourner à gauche de 90°\n```\n\n1. Combien de déplacements le programme exécute-t-il ?\n2. Quelle distance totale le lutin parcourt-il ?\n3. Quel angle total a-t-il tourné ?\n4. Quelle figure obtient-on ? Justifier.\n5. Quelle est la position et l’orientation finales du lutin ?\n6. On enlève la dernière rotation seulement. Le dessin change-t-il ? L’état final change-t-il ?"
+  },
+  {
+   "id": 3106,
+   "question": "<!-- optitab:1 -->\nUn lutin part du point A vers la droite, stylo baissé. Il répète deux fois : « avancer de 40 pas ; tourner à gauche de 90° ; avancer de 15 pas ; tourner à gauche de 90° ».\n\nTranscription textuelle des blocs :\n```console\nrépéter 2 fois :\n    avancer de 40 pas\n    tourner à gauche de 90°\n    avancer de 15 pas\n    tourner à gauche de 90°\n```\n\n1. Combien d’instructions avancer contient la séquence répétée ?\n2. Combien de segments le programme complet trace-t-il ?\n3. Donner les longueurs des segments dans l’ordre.\n4. Quelle figure est tracée ? Justifier.\n5. Calculer la distance parcourue et donner la position finale.\n6. Comment modifier un seul paramètre pour obtenir un carré ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Combien d’instructions avancer contient la séquence répétée ?\n\n::: methode\nDistinguer le contenu d’un tour de boucle du programme complet.\n:::\n\n::: etape Compter les instructions de la séquence\nÀ l’intérieur de la boucle, on lit deux instructions avancer, séparées par des rotations.\n:::\n\n::: resultat\nDeux instructions avancer par tour.\n:::\n\n## Question 2 : Combien de segments le programme complet trace-t-il ?\n\n::: methode\nLe tour contenant deux déplacements est exécuté deux fois.\n:::\n\n::: etape Multiplier instructions et répétitions\n$$\n 2\\times2=4\n$$\n:::\n\n::: resultat\nQuatre segments.\n:::\n\n## Question 3 : Donner les longueurs des segments dans l’ordre.\n\n::: methode\nLire la séquence de haut en bas, puis recommencer la même séquence sans revenir au point de départ entre les deux tours.\n:::\n\n::: etape Dérouler les deux répétitions\nLe premier tour trace 40 puis 15 pas. Le second tour reproduit les mêmes longueurs, dans le même ordre.\n:::\n\n::: resultat\n40, 15, 40, 15 pas.\n:::\n\n## Question 4 : Quelle figure est tracée ? Justifier.\n\n::: methode\nLes côtés opposés ont les mêmes longueurs et les rotations successives donnent des angles droits.\n:::\n\n::: etape Reconnaître le rectangle\nLes quatre changements de direction sont des angles droits ; les côtés opposés ont la même longueur. Le tracé fermé est donc un rectangle.\n:::\n\n::: resultat\nUn rectangle de dimensions 40 et 15 pas.\n:::\n\n## Question 5 : Calculer la distance parcourue et donner la position finale.\n\n::: methode\nAdditionner les quatre côtés ; les déplacements opposés se compensent deux à deux.\n:::\n\n::: etape Additionner les déplacements\n$$\n 2(40+15)=110\n$$\n:::\n\n::: resultat\n110 pas ; le lutin revient au point A.\n:::\n\n## Question 6 : Comment modifier un seul paramètre pour obtenir un carré ?\n\n::: methode\nPour un carré, les quatre côtés doivent être égaux. Les rotations de 90° et les deux répétitions conviennent déjà.\n:::\n\n::: etape Égaliser les longueurs des côtés\nPour obtenir quatre côtés égaux, remplacer partout le paramètre 15 par 40 (ou remplacer 40 par 15). Modifier un bloc de la boucle agit lors des deux répétitions.\n:::\n\n::: resultat\nRemplacer la longueur 15 par 40 dans le second déplacement, ou inversement pour le premier.\n:::\n\nLe schéma indique le sens du parcours ; $c$ désigne le côté du carré, ou $L$ et $\\ell$ les côtés du rectangle, dans les unités de l’énoncé.\n\n[IMAGE_2]\n\n::: retenir\nUne boucle peut répéter une séquence de plusieurs instructions. Suivre l’ordre et la direction entre les déplacements pour prévoir la figure.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. Deux instructions avancer par tour.\n2. Quatre segments.\n3. 40, 15, 40, 15 pas.\n4. Un rectangle de dimensions 40 et 15 pas.\n5. 110 pas ; le lutin revient au point A.\n6. Remplacer la longueur 15 par 40 dans le second déplacement, ou inversement pour le premier.",
+   "titre": "Découverte - Penser et programmer par blocs - 3. Répéter une séquence pour tracer un rectangle",
+   "difficulty": "easy",
+   "contenu": "<!-- optitab:1 -->\nUn lutin part du point A vers la droite, stylo baissé. Il répète deux fois : « avancer de 40 pas ; tourner à gauche de 90° ; avancer de 15 pas ; tourner à gauche de 90° ».\n\nTranscription textuelle des blocs :\n```console\nrépéter 2 fois :\n    avancer de 40 pas\n    tourner à gauche de 90°\n    avancer de 15 pas\n    tourner à gauche de 90°\n```\n\n1. Combien d’instructions avancer contient la séquence répétée ?\n2. Combien de segments le programme complet trace-t-il ?\n3. Donner les longueurs des segments dans l’ordre.\n4. Quelle figure est tracée ? Justifier.\n5. Calculer la distance parcourue et donner la position finale.\n6. Comment modifier un seul paramètre pour obtenir un carré ?"
+  },
+  {
+   "id": 3110,
+   "question": "<!-- optitab:1 -->\nLe lutin part de $A$, orienté vers la droite, stylo baissé.\n```console\navancer de 30 pas\ntourner à gauche de 90°\navancer de 20 pas\n```\n\n1. Tracer le trajet et nommer $B$ puis $C$ les extrémités des deux déplacements.\n2. Donner la distance parcourue et la direction finale.\n3. Compléter le programme pour fermer le rectangle et revenir en $A$, orienté comme au départ.\n4. Calculer la distance totale de ce programme complété.",
+   "etapes": "<!-- optitab:1 -->\n\n## Question 1 : Représenter les déplacements\n\n::: methode\nSuivre l’ordre des instructions.\n:::\n\n::: etape Premier segment\nTracer $[AB]$ de 30 pas vers la droite.\n:::\n\n::: etape Deuxième segment\nTourner à gauche puis tracer $[BC]$ de 20 pas vers le haut.\n\n[IMAGE_1]\n:::\n\n::: resultat\nUn trajet en deux segments perpendiculaires, de $A$ à $C$.\n:::\n\n## Question 2 : Lire l’état final\n\n::: methode\nDistinguer déplacement et rotation.\n:::\n\n::: etape Distance\n$30+20=50$ pas.\n:::\n\n::: etape Direction\nLa seule rotation a placé le lutin vers le haut ; avancer ensuite ne change pas cette direction.\n:::\n\n::: resultat\n$50$ pas ; direction vers le haut.\n:::\n\n## Question 3 : Fermer le rectangle\n\n::: methode\nAjouter les deux côtés opposés, puis rétablir la direction.\n:::\n\n::: etape Écrire la suite\n```console\ntourner à gauche de 90°\navancer de 30 pas\ntourner à gauche de 90°\navancer de 20 pas\ntourner à gauche de 90°\n```\n:::\n\n::: etape Vérifier le tracé\nLes deux nouveaux déplacements reviennent en $A$. La dernière rotation dirige le lutin vers la droite.\n\n[IMAGE_2]\n:::\n\n::: resultat\nLe rectangle est fermé ; le lutin retrouve sa position et sa direction initiales.\n:::\n\n## Question 4 : Calculer la longueur totale\n\n::: methode\nAdditionner les quatre côtés.\n:::\n\n::: etape Calculer\n$30+20+30+20=100$ pas.\n:::\n\n::: resultat\n$100$ pas.\n:::\n\n::: retenir\nUne rotation seule ne trace aucun segment ; la dernière rotation change l’état final sans modifier le rectangle.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. Un trajet en deux segments perpendiculaires, de $A$ à $C$.\n2. $50$ pas ; direction vers le haut.\n3. Le rectangle est fermé ; le lutin retrouve sa position et sa direction initiales.\n4. $100$ pas.",
+   "titre": "Découverte - Penser et programmer par blocs - Compléter un trajet en rectangle",
+   "difficulty": "easy",
+   "contenu": "<!-- optitab:1 -->\nLe lutin part de $A$, orienté vers la droite, stylo baissé.\n```console\navancer de 30 pas\ntourner à gauche de 90°\navancer de 20 pas\n```\n\n1. Tracer le trajet et nommer $B$ puis $C$ les extrémités des deux déplacements.\n2. Donner la distance parcourue et la direction finale.\n3. Compléter le programme pour fermer le rectangle et revenir en $A$, orienté comme au départ.\n4. Calculer la distance totale de ce programme complété."
+  },
+  {
+   "id": 3108,
+   "question": "<!-- optitab:1 -->\nOn veut demander un nombre n puis afficher « quatre fois ce nombre, plus trois ». Le programme erroné est :\n```console\ndemander « n ? » et attendre\ndire (4 × (réponse + 3))\n```\n\n1. Pour l'entrée 2, calculer la sortie attendue et la sortie du programme erroné.\n2. Expliquer l'erreur d'imbrication.\n3. Écrire la transcription du programme corrigé.\n4. Vérifier le programme corrigé pour l'entrée 0.",
+   "etapes": "<!-- optitab:1 -->\n\n## Question 1 : Comparer deux sorties\n\n::: methode\nEffectuer les deux calculs en respectant les parenthèses.\n:::\n\n::: etape Sortie voulue\n$4\\times2+3=11$.\n:::\n\n::: etape Sortie du programme\n$4\\times(2+3)=4\\times5=20$.\n:::\n\n::: resultat\nAttendue : $11$ ; obtenue : $20$.\n:::\n\n## Question 2 : Localiser l’erreur\n\n::: methode\nIdentifier le calcul intérieur.\n:::\n\n::: etape Lire les blocs\nLe programme ajoute 3 à la réponse avant de multiplier le tout par 4.\n:::\n\n::: etape Comparer avec l’objectif\nL’objectif demande de multiplier d’abord la réponse par 4, puis d’ajouter seulement 3.\n:::\n\n::: resultat\nL’addition est placée à l’intérieur de la multiplication.\n:::\n\n## Question 3 : Corriger le programme\n\n::: methode\nPlacer la multiplication dans le bloc addition.\n:::\n\n::: etape Écrire les blocs dans l’ordre\n```console\ndemander « n ? » et attendre\ndire ((4 × réponse) + 3)\n```\n:::\n\n::: resultat\nAfficher $(4\\times\\text{réponse})+3$.\n:::\n\n## Question 4 : Tester l’entrée zéro\n\n::: methode\nRemplacer réponse par 0.\n:::\n\n::: etape Calculer\n$4\\times0+3=3$.\n:::\n\n::: etape Contrôler le sens\nLe terme multiplié disparaît, mais le 3 ajouté reste présent.\n:::\n\n::: resultat\nLe programme corrigé affiche $3$.\n:::\n\n::: retenir\nUn test qui donne deux sorties différentes permet de repérer une erreur, mais il faut encore corriger l’organisation des blocs.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. Attendue : $11$ ; obtenue : $20$.\n2. L’addition est placée à l’intérieur de la multiplication.\n3. Afficher $(4\\times\\text{réponse})+3$.\n4. Le programme corrigé affiche $3$.",
+   "titre": "Découverte - Penser et programmer par blocs - Déboguer des blocs imbriqués",
+   "difficulty": "easy",
+   "contenu": "<!-- optitab:1 -->\nOn veut demander un nombre n puis afficher « quatre fois ce nombre, plus trois ». Le programme erroné est :\n```console\ndemander « n ? » et attendre\ndire (4 × (réponse + 3))\n```\n\n1. Pour l'entrée 2, calculer la sortie attendue et la sortie du programme erroné.\n2. Expliquer l'erreur d'imbrication.\n3. Écrire la transcription du programme corrigé.\n4. Vérifier le programme corrigé pour l'entrée 0."
+  },
+  {
+   "id": 3117,
+   "question": "<!-- optitab:1 -->\nLe lutin part vers la droite, stylo baissé. Pour tracer un triangle équilatéral de côté 40 pas, un élève propose :\n```console\nrépéter 3 fois :\n    avancer de 40 pas\n    tourner à gauche de 60°\n```\n\n1. Quelle confusion l'élève fait-il sur l'angle de rotation ?\n2. Calculer l'angle correct du bloc tourner.\n3. Écrire le programme corrigé et représenter son tracé.\n4. Donner la distance et la rotation totale du programme corrigé.",
+   "etapes": "<!-- optitab:1 -->\n\n## Question 1 : Identifier la confusion\n\n::: methode\nDistinguer angle intérieur et changement de direction.\n:::\n\n::: etape Lire la mesure 60°\nUn triangle équilatéral a des angles intérieurs de 60°.\n:::\n\n::: etape Lire le bloc tourner\nLe bloc ne mesure pas l’angle intérieur : il mesure le changement de direction par rapport au déplacement précédent.\n:::\n\n::: resultat\nL’élève a utilisé l’angle intérieur au lieu de la rotation extérieure.\n:::\n\n## Question 2 : Calculer la rotation\n\n::: methode\nCompléter un angle plat.\n:::\n\n::: etape Utiliser les deux angles\n$180^\\circ-60^\\circ=120^\\circ$.\n:::\n\n::: etape Vérifier sur un tour\n$3\\times120^\\circ=360^\\circ$.\n:::\n\n::: resultat\nTourner à gauche de $120^\\circ$.\n:::\n\n## Question 3 : Tracer le triangle\n\n::: methode\nRépéter trois segments égaux avec la bonne rotation.\n:::\n\n::: etape Corriger les blocs\n```console\nrépéter 3 fois :\n    avancer de 40 pas\n    tourner à gauche de 120°\n```\n:::\n\n::: etape Lire le résultat\nLe troisième segment rejoint le départ.\n\n[IMAGE_1]\n:::\n\n::: resultat\nUn triangle équilatéral de côté 40 pas.\n:::\n\n## Question 4 : Contrôler les totaux\n\n::: methode\nCompter les trois répétitions.\n:::\n\n::: etape Longueur\n$3\\times40=120$ pas.\n:::\n\n::: etape Rotation\n$3\\times120=360^\\circ$.\n:::\n\n::: resultat\n$120$ pas ; $360^\\circ$ de rotation au total.\n:::\n\n::: retenir\nL’angle du bloc tourner est extérieur au polygone ; pour un triangle équilatéral, il vaut 120°, pas 60°.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. L’élève a utilisé l’angle intérieur au lieu de la rotation extérieure.\n2. Tourner à gauche de $120^\\circ$.\n3. Un triangle équilatéral de côté 40 pas.\n4. $120$ pas ; $360^\\circ$ de rotation au total.",
+   "titre": "Entraînement - Penser et programmer par blocs - Choisir l’angle pour un triangle",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nLe lutin part vers la droite, stylo baissé. Pour tracer un triangle équilatéral de côté 40 pas, un élève propose :\n```console\nrépéter 3 fois :\n    avancer de 40 pas\n    tourner à gauche de 60°\n```\n\n1. Quelle confusion l'élève fait-il sur l'angle de rotation ?\n2. Calculer l'angle correct du bloc tourner.\n3. Écrire le programme corrigé et représenter son tracé.\n4. Donner la distance et la rotation totale du programme corrigé."
+  },
+  {
+   "id": 3115,
+   "question": "<!-- optitab:1 -->\nLe lutin part de $A$, vers la droite, stylo baissé. Il veut tracer un carré de côté 20 pas, mais exécute :\n```console\nrépéter 3 fois :\n    avancer de 20 pas\n    tourner à gauche de 90°\n```\n\n1. Tracer la figure produite par ce programme.\n2. Calculer la distance parcourue et donner la direction finale.\n3. Corriger un seul nombre pour obtenir le carré.\n4. Avec le programme corrigé, donner la distance parcourue, la position et la direction finales.",
+   "etapes": "<!-- optitab:1 -->\n\n## Question 1 : Suivre les trois répétitions\n\n::: methode\nTracer un segment par répétition.\n:::\n\n::: etape Lister les directions\nLes déplacements vont vers la droite, vers le haut puis vers la gauche.\n:::\n\n::: etape Dessiner\nLe quatrième côté n’est pas tracé.\n\n[IMAGE_1]\n:::\n\n::: resultat\nTrois côtés d’un carré, sans fermeture.\n:::\n\n## Question 2 : Décrire l’état après trois tours\n\n::: methode\nCompter les déplacements et les rotations séparément.\n:::\n\n::: etape Distance\n$3\\times20=60$ pas.\n:::\n\n::: etape Direction\nLes trois rotations successives donnent haut, gauche, puis bas ; le lutin termine donc orienté vers le bas.\n:::\n\n::: resultat\n$60$ pas ; direction vers le bas.\n:::\n\n## Question 3 : Corriger le nombre de répétitions\n\n::: methode\nAssocier une répétition à chaque côté.\n:::\n\n::: etape Choisir le nombre\nIl faut quatre côtés : remplacer 3 par 4 dans le bloc répéter.\n:::\n\n::: etape Vérifier la fermeture\nLe quatrième déplacement descend de 20 pas jusqu’à $A$.\n\n[IMAGE_2]\n:::\n\n::: resultat\nRépéter $4$ fois.\n:::\n\n## Question 4 : Contrôler le programme réparé\n\n::: methode\nCompter quatre segments et quatre quarts de tour.\n:::\n\n::: etape Distance\n$4\\times20=80$ pas.\n:::\n\n::: etape État final\nLe déplacement ramène en A ; la quatrième rotation ramène la direction vers la droite.\n:::\n\n::: resultat\n$80$ pas ; en $A$, dirigé vers la droite.\n:::\n\n::: retenir\nLe contenu d’une boucle est répété entièrement : même la rotation du dernier tour est exécutée.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. Trois côtés d’un carré, sans fermeture.\n2. $60$ pas ; direction vers le bas.\n3. Répéter $4$ fois.\n4. $80$ pas ; en $A$, dirigé vers la droite.",
+   "titre": "Entraînement - Penser et programmer par blocs - Réparer une boucle trop courte",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nLe lutin part de $A$, vers la droite, stylo baissé. Il veut tracer un carré de côté 20 pas, mais exécute :\n```console\nrépéter 3 fois :\n    avancer de 20 pas\n    tourner à gauche de 90°\n```\n\n1. Tracer la figure produite par ce programme.\n2. Calculer la distance parcourue et donner la direction finale.\n3. Corriger un seul nombre pour obtenir le carré.\n4. Avec le programme corrigé, donner la distance parcourue, la position et la direction finales."
+  },
+  {
+   "id": 3124,
+   "question": "<!-- optitab:1 -->\nUn programme demande une longueur $L$ puis une largeur $\\ell$, en mètres. Il doit annoncer la longueur de clôture d'un rectangle. Les deux données restent inchangées pendant le calcul. Un élève propose d'afficher $L\\times\\ell$. On teste avec $L=8$ et $\\ell=5$.\n\n1. Expliquer ce que calcule la formule proposée et pourquoi elle ne répond pas au problème.\n2. Écrire la formule correcte puis calculer la sortie pour les données du test.\n3. Une clôture coûte $3\\,\\text{€}$ par mètre. Le budget de $90\\,\\text{€}$ suffit-il ?\n4. Un robot trace le rectangle. Écrire une boucle répétée deux fois et préciser son état final s'il part vers la droite.",
+   "etapes": "<!-- optitab:1 -->\n\n## Question 1 : Identifier la grandeur affichée\n\n::: methode\nAssocier la formule à sa signification.\n:::\n\n::: etape Calcul proposé\n$8\\times5=40$ correspond à l’aire du rectangle, en $\\mathrm m^2$.\n:::\n\n::: etape Lire l’objectif\nLa clôture longe les quatre côtés : on cherche une longueur, pas une surface.\n:::\n\n::: resultat\nLa formule calcule l’aire ; elle ne donne pas la longueur de clôture.\n:::\n\n## Question 2 : Corriger la sortie\n\n::: methode\nAdditionner deux longueurs et deux largeurs.\n:::\n\n::: etape Former la formule\n$P=2\\times(L+\\ell)$.\n:::\n\n::: etape Calculer\n$$\\begin{aligned}P&=2\\times(8+5)\\\\&=2\\times13=26\\,\\mathrm m.\\end{aligned}$$\n:::\n\n::: resultat\n$26\\,\\mathrm m$.\n:::\n\n## Question 3 : Tester le budget\n\n::: methode\nMultiplier le périmètre par le prix au mètre.\n:::\n\n::: etape Coût\n$26\\times3=78\\,\\text{€}$.\n:::\n\n::: etape Comparer\n$78\\lt90$ ; il reste $90-78=12\\,\\text{€}$.\n:::\n\n::: resultat\nOui : coût de $78\\,\\text{€}$, reste $12\\,\\text{€}$.\n:::\n\n## Question 4 : Écrire une boucle de tracé\n\n::: methode\nRépéter une longueur, une largeur et deux quarts de tour.\n:::\n\n::: etape Écrire les blocs\n```console\nrépéter 2 fois :\n    avancer de L\n    tourner à gauche de 90°\n    avancer de ℓ\n    tourner à gauche de 90°\n```\n:::\n\n::: etape Contrôler la figure et l’état\nPour le test, les déplacements valent 8, 5, 8 et 5 mètres. Le robot revient au départ et retrouve la direction vers la droite.\n\n[IMAGE_1]\n:::\n\n::: resultat\nDeux tours de boucle ; rectangle fermé, position et direction initiales retrouvées.\n:::\n\n::: retenir\nTester les unités de la sortie aide à détecter une erreur de formule : des m² ne peuvent pas représenter une longueur de clôture.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. La formule calcule l’aire ; elle ne donne pas la longueur de clôture.\n2. $26\\,\\mathrm m$.\n3. Oui : coût de $78\\,\\text{€}$, reste $12\\,\\text{€}$.\n4. Deux tours de boucle ; rectangle fermé, position et direction initiales retrouvées.",
+   "titre": "Problème - Penser et programmer par blocs - Programmer un projet de clôture",
+   "difficulty": "hard",
+   "contenu": "<!-- optitab:1 -->\nUn programme demande une longueur $L$ puis une largeur $\\ell$, en mètres. Il doit annoncer la longueur de clôture d'un rectangle. Les deux données restent inchangées pendant le calcul. Un élève propose d'afficher $L\\times\\ell$. On teste avec $L=8$ et $\\ell=5$.\n\n1. Expliquer ce que calcule la formule proposée et pourquoi elle ne répond pas au problème.\n2. Écrire la formule correcte puis calculer la sortie pour les données du test.\n3. Une clôture coûte $3\\,\\text{€}$ par mètre. Le budget de $90\\,\\text{€}$ suffit-il ?\n4. Un robot trace le rectangle. Écrire une boucle répétée deux fois et préciser son état final s'il part vers la droite."
+  },
+  {
+   "id": 3122,
+   "question": "<!-- optitab:1 -->\nLe lutin part de $A$, dirigé vers la droite, stylo baissé. Il exécute :\n```console\nrépéter 2 fois :\n    avancer de 50 pas\n    tourner à gauche de 90°\n    avancer de 20 pas\n    tourner à droite de 90°\n```\n\n1. Décrire les quatre déplacements et représenter le tracé.\n2. Calculer la distance parcourue et décrire la position finale par rapport à $A$.\n3. Corriger un seul bloc pour tracer un rectangle.\n4. Donner la distance, la position et la direction finales après correction.",
+   "etapes": "<!-- optitab:1 -->\n\n## Question 1 : Dérouler les deux tours\n\n::: methode\nAprès chaque tour, déterminer la nouvelle direction.\n:::\n\n::: etape Premier tour\nLe lutin avance de 50 pas à droite puis de 20 pas vers le haut. La rotation à droite le remet vers la droite.\n:::\n\n::: etape Second tour\nIl recommence les mêmes déplacements : 50 pas à droite puis 20 pas vers le haut.\n\n[IMAGE_1]\n:::\n\n::: resultat\nDroite 50, haut 20, droite 50, haut 20 : un escalier.\n:::\n\n## Question 2 : Distinguer longueur et position\n\n::: methode\nAdditionner les segments puis regrouper leurs directions.\n:::\n\n::: etape Longueur du trajet\n$50+20+50+20=140$ pas.\n:::\n\n::: etape Position par rapport au départ\nLe décalage est $50+50=100$ pas vers la droite et $20+20=40$ pas vers le haut.\n:::\n\n::: resultat\n$140$ pas ; 100 pas à droite et 40 pas au-dessus de $A$.\n:::\n\n## Question 3 : Réparer la rotation\n\n::: methode\nFaire tourner dans le même sens à chaque angle.\n:::\n\n::: etape Modifier un seul bloc\nRemplacer la dernière instruction par tourner à gauche de 90°. Le second tour partira alors vers la gauche.\n:::\n\n::: etape Vérifier le rectangle\nLes déplacements deviennent droite, haut, gauche, bas.\n\n[IMAGE_2]\n:::\n\n::: resultat\nRemplacer le dernier « droite » par « gauche ».\n:::\n\n## Question 4 : Contrôler le résultat réparé\n\n::: methode\nLa longueur des segments ne change pas.\n:::\n\n::: etape Distance\n$2\\times(50+20)=140$ pas.\n:::\n\n::: etape Position et direction\nLes déplacements opposés se compensent et les quatre rotations de 90° forment un tour complet.\n:::\n\n::: resultat\n$140$ pas ; retour en $A$, dirigé vers la droite.\n:::\n\n::: retenir\nUn programme peut parcourir la bonne distance sans tracer la bonne figure : contrôler aussi les rotations et la fermeture.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. Droite 50, haut 20, droite 50, haut 20 : un escalier.\n2. $140$ pas ; 100 pas à droite et 40 pas au-dessus de $A$.\n3. Remplacer le dernier « droite » par « gauche ».\n4. $140$ pas ; retour en $A$, dirigé vers la droite.",
+   "titre": "Problème - Penser et programmer par blocs - Une mauvaise rotation dans le rectangle",
+   "difficulty": "hard",
+   "contenu": "<!-- optitab:1 -->\nLe lutin part de $A$, dirigé vers la droite, stylo baissé. Il exécute :\n```console\nrépéter 2 fois :\n    avancer de 50 pas\n    tourner à gauche de 90°\n    avancer de 20 pas\n    tourner à droite de 90°\n```\n\n1. Décrire les quatre déplacements et représenter le tracé.\n2. Calculer la distance parcourue et décrire la position finale par rapport à $A$.\n3. Corriger un seul bloc pour tracer un rectangle.\n4. Donner la distance, la position et la direction finales après correction."
+  }
+ ],
+ "images": [
+  {
+   "modele": "CoursImage",
+   "id": 589,
+   "proprietaire": 275,
+   "position": 1,
+   "image": "cours_images/v1_n280_co275_1_carre.png",
+   "legende": null,
+   "alt_text": "Parcours du carré dans le sens contraire des aiguilles d’une montre, départ A",
+   "title_text": "",
+   "width": 216,
+   "height": 226
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 1797,
+   "proprietaire": 3105,
+   "position": 2,
+   "image": "exercice_images/v1_n280_ex3105_2_carre.png",
+   "legende": null,
+   "alt_text": "Sens du parcours fermé depuis A, avec côtés désignés par des lettres",
+   "title_text": "",
+   "width": 216,
+   "height": 226
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 1799,
+   "proprietaire": 3106,
+   "position": 2,
+   "image": "exercice_images/v1_n280_ex3106_2_rectangle.png",
+   "legende": null,
+   "alt_text": "Sens du parcours fermé depuis A, avec côtés désignés par des lettres",
+   "title_text": "",
+   "width": 286,
+   "height": 182
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 1806,
+   "proprietaire": 3110,
+   "position": 1,
+   "image": "exercice_images/v1_n280_ex3110_1_trajet_l.png",
+   "legende": null,
+   "alt_text": "Compléter un trajet en rectangle : schéma pédagogique de la question ou de sa correction",
+   "title_text": "",
+   "width": 258,
+   "height": 184
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 1807,
+   "proprietaire": 3110,
+   "position": 2,
+   "image": "exercice_images/v1_n280_ex3110_2_rectangle_30_20.png",
+   "legende": null,
+   "alt_text": "Compléter un trajet en rectangle : schéma pédagogique de la question ou de sa correction",
+   "title_text": "",
+   "width": 258,
+   "height": 184
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 1820,
+   "proprietaire": 3117,
+   "position": 1,
+   "image": "exercice_images/v1_n280_ex3117_1_triangle_40.png",
+   "legende": null,
+   "alt_text": "Choisir l’angle pour un triangle : schéma pédagogique de la question ou de sa correction",
+   "title_text": "",
+   "width": 312,
+   "height": 254
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 1816,
+   "proprietaire": 3115,
+   "position": 1,
+   "image": "exercice_images/v1_n280_ex3115_1_carre_incomplet.png",
+   "legende": null,
+   "alt_text": "Réparer une boucle trop courte : schéma pédagogique de la question ou de sa correction",
+   "title_text": "",
+   "width": 238,
+   "height": 212
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 1817,
+   "proprietaire": 3115,
+   "position": 2,
+   "image": "exercice_images/v1_n280_ex3115_2_carre_20.png",
+   "legende": null,
+   "alt_text": "Réparer une boucle trop courte : schéma pédagogique de la question ou de sa correction",
+   "title_text": "",
+   "width": 238,
+   "height": 212
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 1834,
+   "proprietaire": 3124,
+   "position": 1,
+   "image": "exercice_images/v1_n280_ex3124_1_rectangle_8_5.png",
+   "legende": null,
+   "alt_text": "Programmer un projet de clôture : schéma pédagogique de la question ou de sa correction",
+   "title_text": "",
+   "width": 286,
+   "height": 204
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 1830,
+   "proprietaire": 3122,
+   "position": 1,
+   "image": "exercice_images/v1_n280_ex3122_1_escalier.png",
+   "legende": null,
+   "alt_text": "Une mauvaise rotation dans le rectangle : schéma pédagogique de la question ou de sa correction",
+   "title_text": "",
+   "width": 360,
+   "height": 203
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 1831,
+   "proprietaire": 3122,
+   "position": 2,
+   "image": "exercice_images/v1_n280_ex3122_2_rectangle_50_20.png",
+   "legende": null,
+   "alt_text": "Une mauvaise rotation dans le rectangle : schéma pédagogique de la question ou de sa correction",
+   "title_text": "",
+   "width": 305,
+   "height": 166
+  }
+ ],
+ "images_creees": [
+  {
+   "modele": "CoursImage",
+   "id": 1300
+  },
+  {
+   "modele": "CoursImage",
+   "id": 1301
+  },
+  {
+   "modele": "CoursImage",
+   "id": 1302
+  },
+  {
+   "modele": "CoursImage",
+   "id": 1303
+  },
+  {
+   "modele": "CoursImage",
+   "id": 1304
+  },
+  {
+   "modele": "CoursImage",
+   "id": 1305
+  },
+  {
+   "modele": "CoursImage",
+   "id": 1306
+  },
+  {
+   "modele": "CoursImage",
+   "id": 1307
+  },
+  {
+   "modele": "CoursImage",
+   "id": 1308
+  },
+  {
+   "modele": "SynthesisImage",
+   "id": 517
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 5219
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 5220
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 5221
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 5222
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 5223
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 5224
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 5225
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 5226
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 5227
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 5228
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 5229
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 5230
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 5231
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 5232
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 5233
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 5234
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 5235
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 5236
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 5237
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 5238
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 5239
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 5240
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 5241
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 5242
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 5243
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 5244
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 5245
+  }
+ ],
+ "exercices_crees": []
+}

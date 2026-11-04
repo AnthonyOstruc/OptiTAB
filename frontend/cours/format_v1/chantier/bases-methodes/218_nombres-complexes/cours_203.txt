@@ -1,0 +1,658 @@
+Titre: Nombres Complexes
+
+<!-- optitab:1 -->
+## I. Définition générale d'un nombre complexe
+
+### Définition formelle
+
+Un **nombre complexe** est un nombre qui peut s'écrire sous la forme $z = x + y\,\mathrm{i}$ où $x$ et $y$ sont des nombres réels, et $\mathrm{i}$ est l'unité imaginaire définie par $\mathrm{i}^2 = -1$.
+
+::: definition
+On dit que $z$ est un **nombre complexe** si :
+
+$$z = x + y\,\mathrm{i} \quad \text{avec } x,y \in \mathbb{R}$$
+:::
+
+::: notation
+L'ensemble des nombres complexes est noté $\mathbb{C}$. Le nombre $x$ est appelé *partie réelle* et $y$ est appelé *partie imaginaire* de $z$.
+:::
+
+::: remarque Interprétation
+Les nombres complexes étendent l'ensemble des nombres réels en ajoutant une dimension « imaginaire ».
+:::
+
+## II. Forme algébrique et propriétés
+
+### Définition
+
+La **forme algébrique** d'un nombre complexe $z$ est l'écriture $z = x + y\,\mathrm{i}$ où $x = \Re(z)$ et $y = Im(z)$.
+
+::: definition
+On dit que $z$ est sous **forme algébrique** si :
+
+$$z = \Re(z) + Im(z)\,\mathrm{i}$$
+:::
+
+::: methode Égalité de nombres complexes
+Deux nombres complexes sont égaux si et seulement si ils ont la même partie réelle ET la même partie imaginaire :
+
+$$z_1 = z_2 \Leftrightarrow \begin{cases} \Re(z_1) = \Re(z_2) \\ Im(z_1) = Im(z_2) \end{cases}$$
+:::
+
+::: exemple
+- $z_1 = 3 + 4\mathrm{i}$ : partie réelle = 3, partie imaginaire = 4
+- $z_2 = -2 + 5\mathrm{i}$ : partie réelle = -2, partie imaginaire = 5
+- $z_3 = 7$ : partie réelle = 7, partie imaginaire = 0 (nombre réel)
+- $z_4 = 2\mathrm{i}$ : partie réelle = 0, partie imaginaire = 2 (imaginaire pur)
+:::
+
+::: propriete
+Un nombre complexe est réel si sa partie imaginaire est nulle, et imaginaire pur si sa partie réelle est nulle.
+:::
+
+## III. Opérations sur les nombres complexes
+
+### Addition et soustraction
+
+Pour deux nombres complexes $z_1 = x_1 + y_1\,\mathrm{i}$ et $z_2 = x_2 + y_2\,\mathrm{i}$ :
+
+::: definition Addition
+$$z_1 + z_2 = (x_1 + x_2) + (y_1 + y_2)\,\mathrm{i}$$
+
+**Soustraction :**
+
+$$z_1 - z_2 = (x_1 - x_2) + (y_1 - y_2)\,\mathrm{i}$$
+:::
+
+::: exemple
+$$
+\begin{aligned}
+(3 + 2\mathrm{i}) + (1 - 4\mathrm{i}) &= (3+1) + (2-4)\mathrm{i} \\
+&= 4 - 2\mathrm{i}
+\end{aligned}
+$$
+:::
+
+### Multiplication
+
+Pour multiplier deux nombres complexes, on développe en utilisant $\mathrm{i}^2 = -1$ :
+
+::: definition
+$$z_1 \cdot z_2 = (x_1x_2 - y_1y_2) + (x_1y_2 + x_2y_1)\,\mathrm{i}$$
+:::
+
+::: exemple
+$$
+\begin{aligned}
+(2 + 3\mathrm{i})(1 - 2\mathrm{i}) &= 2 - 4\mathrm{i} + 3\mathrm{i} - 6\mathrm{i}^2 \\
+&= 2 - \mathrm{i} + 6 \\
+&= 8 - \mathrm{i}
+\end{aligned}
+$$
+:::
+
+## IV. Conjugué et module
+
+### Conjugué d'un nombre complexe
+
+Le **conjugué** du nombre complexe $z = x + y\,\mathrm{i}$ est le nombre $\overline{z} = x - y\,\mathrm{i}$.
+
+::: definition
+$$\overline{z} = x - y\,\mathrm{i}$$
+:::
+
+::: propriete
+- $\displaystyle \overline{\overline{z}} = z$
+- $\displaystyle \overline{z_1 + z_2} = \overline{z_1} + \overline{z_2}$
+- $\displaystyle \overline{z_1 \cdot z_2} = \overline{z_1} \cdot \overline{z_2}$
+- $z$ est réel si et seulement si $\overline{z} = z$
+:::
+
+### Module d'un nombre complexe
+
+Le **module** du nombre complexe $z = x + y\,\mathrm{i}$ est le nombre réel positif $|z| = \sqrt{x^2 + y^2}$.
+
+::: definition
+$$|z| = \sqrt{x^2 + y^2}$$
+:::
+
+::: propriete
+- $\displaystyle |z|^2 = z \cdot \overline{z}$
+- $\displaystyle |z_1 \cdot z_2| = |z_1| \cdot |z_2|$
+- $\displaystyle |z_1 + z_2| \leq |z_1| + |z_2|$ (inégalité triangulaire)
+- $|z| = 0$ si et seulement si $z = 0$
+:::
+
+## V. Division et inverse
+
+### Inverse d'un nombre complexe
+
+Pour calculer l'inverse d'un nombre complexe non nul $z = x + y\,\mathrm{i}$, on utilise le conjugué :
+
+::: definition
+$$
+\begin{aligned}
+\dfrac{1}{z} &= \dfrac{\overline{z}}{|z|^2} \\
+&= \dfrac{x - y\,\mathrm{i}}{x^2 + y^2}
+\end{aligned}
+$$
+:::
+
+::: exemple
+$$
+\begin{aligned}
+\dfrac{1}{3 + 4\mathrm{i}} &= \dfrac{3 - 4\mathrm{i}}{3^2 + 4^2} \\
+&= \dfrac{3 - 4\mathrm{i}}{25} \\
+&= \dfrac{3}{25} - \dfrac{4}{25}\mathrm{i}
+\end{aligned}
+$$
+:::
+
+### Division de deux nombres complexes
+
+Pour diviser $z_1$ par $z_2 \neq 0$, on multiplie le numérateur et le dénominateur par le conjugué du dénominateur :
+
+::: definition
+$$\dfrac{z_1}{z_2} = \dfrac{z_1 \cdot \overline{z_2}}{|z_2|^2}$$
+:::
+
+::: exemple
+$$
+\begin{aligned}
+\dfrac{2 + \mathrm{i}}{1 - 3\mathrm{i}} &= \dfrac{(2 + \mathrm{i})(1 + 3\mathrm{i})}{(1 - 3\mathrm{i})(1 + 3\mathrm{i})} \\
+&= \dfrac{2 + 6\mathrm{i} + \mathrm{i} + 3\mathrm{i}^2}{1 + 9} \\
+&= \dfrac{2 + 7\mathrm{i} - 3}{10} \\
+&= \dfrac{-1 + 7\mathrm{i}}{10}
+\end{aligned}
+$$
+:::
+
+### Pourquoi multiplier par le conjugué ?
+
+Lorsqu'on divise deux nombres complexes, le dénominateur contient généralement une partie imaginaire. Pour obtenir un résultat sous forme algébrique (sans $\mathrm{i}$ au dénominateur), on utilise une **astuce** :
+
+::: methode Le principe
+Si $z = x + y\,\mathrm{i}$, alors $z \cdot \overline{z} = (x + y\,\mathrm{i})(x - y\,\mathrm{i}) = x^2 + y^2$ (nombre réel)
+:::
+
+::: exemple Explication détaillée
+- $\displaystyle (x + y\,\mathrm{i})(x - y\,\mathrm{i}) = x^2 - x \cdot y\,\mathrm{i} + x \cdot y\,\mathrm{i} - y^2\,\mathrm{i}^2$
+- $\displaystyle = x^2 - y^2\,\mathrm{i}^2 = x^2 - y^2(-1) = x^2 + y^2$
+
+**Résultat :** Le produit d'un nombre complexe par son conjugué donne toujours un nombre réel positif (le carré du module).
+:::
+
+::: remarque Application pratique
+- Multiplier le numérateur ET le dénominateur par le conjugué du dénominateur
+- Le dénominateur devient un nombre réel (carré du module)
+- On peut alors diviser normalement et obtenir une forme algébrique
+:::
+
+::: exemple
+Pour $\displaystyle \dfrac{1}{3 + 4\mathrm{i}}$
+
+- Conjugué de $(3 + 4\mathrm{i})$ : $(3 - 4\mathrm{i})$
+- $\displaystyle (3 + 4\mathrm{i})(3 - 4\mathrm{i}) = 3^2 + 4^2 = 9 + 16 = 25$ (réel !)
+- $\displaystyle \dfrac{1}{3 + 4\mathrm{i}} = \dfrac{3 - 4\mathrm{i}}{25} = \dfrac{3}{25} - \dfrac{4}{25}\mathrm{i}$
+:::
+
+::: methode À retenir
+Toujours multiplier par le conjugué du dénominateur pour « rationaliser » et éliminer la partie imaginaire du dénominateur.
+:::
+
+## VI. Représentation géométrique
+
+### Plan complexe
+
+À tout nombre complexe $z = x + y\,\mathrm{i}$, on associe le point $M(x, y)$ du plan muni d'un repère orthonormé.
+
+::: definition
+Le **plan complexe** associe :
+
+$$z = x + y\,\mathrm{i} \leftrightarrow M(x, y)$$
+:::
+
+[IMAGE_1]
+
+::: methode Interprétation
+- L'axe des abscisses représente les nombres réels
+- L'axe des ordonnées représente les imaginaires purs
+- Le module $|z|$ est la distance $OM$ à l'origine
+:::
+
+::: propriete
+Le conjugué $\overline{z}$ correspond au symétrique de $z$ par rapport à l'axe des abscisses.
+:::
+
+## VII. Argument et forme trigonométrique
+
+### Argument d'un nombre complexe
+
+Pour $z \neq 0$, un **argument** de $z$ est l'angle orienté $(\vec{u}, \vec{OM})$ où $\vec{u}$ est le vecteur unitaire de l'axe des abscisses.
+
+::: definition
+On note $\arg(z)$ l'argument principal :
+
+$$\arg(z) \in ]-\pi, \pi]$$
+:::
+
+[IMAGE_2]
+
+::: remarque Calcul de l'argument par quadrants
+- **Quadrant I** ($x > 0$, $y > 0$) : $\arg(z) = \arctan\left(\dfrac{y}{x}\right) = \theta \in \left]0, \dfrac{\pi}{2}\right[$
+- **Quadrant II** ($x < 0$, $y \geq 0$) : $\arg(z) = \arctan\left(\dfrac{y}{x}\right) + \pi = \pi - \theta \in \left]\dfrac{\pi}{2}, \pi\right]$
+- **Quadrant III** ($x < 0$, $y < 0$) : $\arg(z) = \arctan\left(\dfrac{y}{x}\right) - \pi = -\pi + \theta \in \left]-\pi, -\dfrac{\pi}{2}\right[$
+- **Quadrant IV** ($x > 0$, $y < 0$) : $\arg(z) = \arctan\left(\dfrac{y}{x}\right) = -\theta \in \left]-\dfrac{\pi}{2}, 0\right[$
+
+**Où :** $\displaystyle \theta = \arctan\left(\dfrac{|y|}{|x|}\right) \in \left]0, \dfrac{\pi}{2}\right[$
+:::
+
+::: remarque Cas particuliers sur les axes
+- **Axe réel positif** ($x > 0$, $y = 0$) : $\arg(z) = 0$
+- **Axe imaginaire positif** ($x = 0$, $y > 0$) : $\arg(z) = \dfrac{\pi}{2}$
+- **Axe réel négatif** ($x < 0$, $y = 0$) : $\arg(z) = \pi$
+- **Axe imaginaire négatif** ($x = 0$, $y < 0$) : $\arg(z) = -\dfrac{\pi}{2}$
+:::
+
+### Forme trigonométrique
+
+Tout nombre complexe $z \neq 0$ peut s'écrire sous forme trigonométrique :
+
+::: definition
+$$z = |z|(\cos\theta + \mathrm{i}\sin\theta)$$
+:::
+
+où $\displaystyle \theta = \arg(z)$.
+
+::: exemple
+$z = 1 + \mathrm{i}$ a pour module $|z| = \sqrt{2}$ et argument $\arg(z) = \dfrac{\pi}{4}$ Donc $z = \sqrt{2}\left(\cos\dfrac{\pi}{4} + \mathrm{i}\sin\dfrac{\pi}{4}\right)$
+:::
+
+## VIII. Formule de Moivre et puissances
+
+### Formule de Moivre
+
+Si $z = |z|(\cos\theta + \mathrm{i}\sin\theta)$, alors pour tout entier naturel $n$ :
+
+::: definition
+$$z^n = |z|^n(\cos(n\theta) + \mathrm{i}\sin(n\theta))$$
+:::
+
+::: propriete
+- $\displaystyle \arg(z_1 \cdot z_2) \equiv \arg(z_1) + \arg(z_2) \pmod{2\pi}$
+- $\displaystyle \arg\left(\dfrac{z_1}{z_2}\right) \equiv \arg(z_1) - \arg(z_2) \pmod{2\pi}$
+- $\displaystyle \arg(z^n) \equiv n \cdot \arg(z) \pmod{2\pi}$
+- $\displaystyle \arg(\overline{z}) \equiv -\arg(z) \pmod{2\pi}$
+:::
+
+### Exemple détaillé : Calcul de puissance
+
+**Énoncé :** Calculer $(1 + \mathrm{i})^8$.
+
+**Résolution :**
+
+::: exemple
+- **Étape 1 :** Calculer le module : $|1 + \mathrm{i}| = \sqrt{1^2 + 1^2} = \sqrt{2}$
+- **Étape 2 :** Calculer l'argument : $\arg(1 + \mathrm{i}) = \dfrac{\pi}{4}$
+- **Étape 3 :** Appliquer la formule de Moivre
+:::
+
+::: exemple Calcul
+- $\displaystyle (1 + \mathrm{i})^8 = (\sqrt{2})^8\left(\cos\left(8 \times \dfrac{\pi}{4}\right) + \mathrm{i}\sin\left(8 \times \dfrac{\pi}{4}\right)\right)$
+- $\displaystyle (1 + \mathrm{i})^8 = (\sqrt{2})^8(\cos(2\pi) + \mathrm{i}\sin(2\pi))$
+- $\displaystyle (1 + \mathrm{i})^8 = 16(1 + 0) = 16$
+:::
+
+::: resultat
+$$(1 + \mathrm{i})^8 = 16$$
+:::
+
+## IX. Forme exponentielle
+
+### Formule d'Euler
+
+La formule d'Euler permet d'écrire :
+
+::: definition
+$$e^{\mathrm{i}\theta} = \cos\theta + \mathrm{i}\sin\theta$$
+:::
+
+Donc tout nombre complexe $z \neq 0$ s'écrit sous **forme exponentielle** :
+
+::: definition
+$$z = |z| \cdot e^{\mathrm{i}\theta}$$
+:::
+
+::: exemple
+$$
+\begin{aligned}
+z &= 1 + \mathrm{i} \\
+&= \sqrt{2} \cdot e^{\mathrm{i}\dfrac{\pi}{4}}
+\end{aligned}
+$$
+:::
+
+::: remarque Formules d'Euler inversées (linéarisation)
+- $\displaystyle \cos\theta = \dfrac{e^{\mathrm{i}\theta} + e^{-\mathrm{i}\theta}}{2}$
+- $\displaystyle \sin\theta = \dfrac{e^{\mathrm{i}\theta} - e^{-\mathrm{i}\theta}}{2\mathrm{i}}$
+
+Ces formules permettent de linéariser des expressions trigonométriques et de calculer des puissances de cos et sin.
+:::
+
+## X. Formules de sommes et factorisations
+
+### Somme géométrique de raison complexe
+
+Pour tout nombre complexe $z \neq 1$ et tout entier naturel $n \geq 1$ :
+
+::: definition
+$$
+\begin{aligned}
+1 + z + z^2 + \cdots + z^{n-1} &= \sum_{k=0}^{n-1} z^k \\
+&= \dfrac{z^n - 1}{z - 1}
+\end{aligned}
+$$
+:::
+
+::: exemple
+Calculer $\displaystyle S = 1 + e^{\mathrm{i}\dfrac{\pi}{6}} + e^{\mathrm{i}\dfrac{\pi}{3}} + e^{\mathrm{i}\dfrac{\pi}{2}}$
+
+- On reconnaît une somme géométrique de premier terme $1$, de raison $q = e^{\mathrm{i}\dfrac{\pi}{6}}$ et de $4$ termes
+- Application de la formule : $\displaystyle S = \dfrac{e^{\mathrm{i}\dfrac{4\pi}{6}} - 1}{e^{\mathrm{i}\dfrac{\pi}{6}} - 1} = \dfrac{e^{\mathrm{i}\dfrac{2\pi}{3}} - 1}{e^{\mathrm{i}\dfrac{\pi}{6}} - 1}$
+:::
+
+::: remarque Cas particulier
+Pour les racines n-ièmes de l'unité ($z = e^{\mathrm{i}\dfrac{2k\pi}{n}}$), on a $z^n = 1$, donc :
+
+$$
+\begin{aligned}
+\sum_{k=0}^{n-1} e^{\mathrm{i}\dfrac{2k\pi}{n}} &= \dfrac{e^{\mathrm{i}2\pi} - 1}{e^{\mathrm{i}\dfrac{2\pi}{n}} - 1} \\
+&= \dfrac{1 - 1}{e^{\mathrm{i}\dfrac{2\pi}{n}} - 1} \\
+&= 0
+\end{aligned}
+$$
+:::
+
+### Factorisation $z^n - a^n$
+
+Pour tous nombres complexes $z$ et $a$, et tout entier naturel $n \geq 1$ :
+
+::: definition
+$$z^n - a^n = (z - a)(z^{n-1} + z^{n-2}a + z^{n-3}a^2 + \cdots + za^{n-2} + a^{n-1})$$
+:::
+
+Ou sous forme compacte avec le symbole somme :
+
+::: definition
+$$z^n - a^n = (z - a)\sum_{k=0}^{n-1} z^{n-1-k}a^k$$
+:::
+
+::: remarque
+Cette formule généralise les identités remarquables :
+
+- Pour $n = 2$ : $z^2 - a^2 = (z - a)(z + a)$
+- Pour $n = 3$ : $z^3 - a^3 = (z - a)(z^2 + za + a^2)$
+:::
+
+::: exemple
+Factoriser $\displaystyle z^5 - 1$
+
+- **Factorisation classique :** $z^5 - 1 = (z - 1)(z^4 + z^3 + z^2 + z + 1)$
+- **Avec les racines 5-ièmes de l'unité :**
+- $\displaystyle z^5 - 1 = (z - 1)(z - e^{\mathrm{i}\dfrac{2\pi}{5}})(z - e^{\mathrm{i}\dfrac{4\pi}{5}})(z - e^{-\mathrm{i}\dfrac{4\pi}{5}})(z - e^{-\mathrm{i}\dfrac{2\pi}{5}})$
+:::
+
+::: remarque Application
+Si $z$ est une racine n-ième de $a$ (c'est-à-dire $z^n = a$), alors $z$ est racine du polynôme $X^n - a$.
+:::
+
+### Factorisation $z^n + a^n$ (cas n impair)
+
+Pour $n$ impair, on peut aussi factoriser $z^n + a^n$ :
+
+::: definition
+$$z^n + a^n = (z + a)(z^{n-1} - z^{n-2}a + z^{n-3}a^2 - \cdots - za^{n-2} + a^{n-1})$$
+:::
+
+::: exemple
+$$z^3 + a^3 = (z + a)(z^2 - za + a^2)$$
+:::
+
+## XI. Équations complexes
+
+### Équations du second degré
+
+L'équation $az^2 + bz + c = 0$ ($a \neq 0$) admet toujours des solutions dans $\mathbb{C}$.
+
+::: methode
+1. **Calculer le discriminant :** $\Delta = b^2 - 4ac$
+2. **Si $\Delta \geq 0$ :** Solutions réelles classiques
+3. **Si $\Delta < 0$ :** Solutions complexes conjuguées
+:::
+
+::: exemple Cas $\Delta < 0$ (solutions complexes)
+$\Delta = -|\Delta| = -|\Delta| \times \mathrm{i}^2 = |\Delta| \mathrm{i}^2$ Donc $\sqrt{\Delta} = \mathrm{i}\sqrt{|\Delta|}$ Solutions : $z = \dfrac{-b \pm \mathrm{i}\sqrt{|\Delta|}}{2a}$
+:::
+
+::: exemple
+Résoudre $\displaystyle z^2 - 2z + 5 = 0$
+
+- **Étape 1 :** Calculer le discriminant : $\Delta = b^2 - 4ac = (-2)^2 - 4 \times 1 \times 5 = 4 - 20 = -16$
+- **Étape 2 :** Comme $\Delta < 0$, les solutions sont complexes : $\sqrt{\Delta} = \sqrt{-16} = \mathrm{i}\sqrt{16} = 4\mathrm{i}$
+- **Étape 3 :** Appliquer la formule : $z = \dfrac{-b \pm \sqrt{\Delta}}{2a} = \dfrac{-(-2) \pm 4\mathrm{i}}{2 \times 1} = \dfrac{2 \pm 4\mathrm{i}}{2}$
+- $\displaystyle z_1 = \dfrac{2 + 4\mathrm{i}}{2} = 1 + 2\mathrm{i}$
+- $\displaystyle z_2 = \dfrac{2 - 4\mathrm{i}}{2} = 1 - 2\mathrm{i}$
+:::
+
+::: propriete
+- Les solutions complexes d'une équation à coefficients réels sont conjuguées
+- Si $z_1$ est solution, alors $\overline{z_1}$ l'est aussi
+- Somme des racines : $\displaystyle z_1 + z_2 = -\dfrac{b}{a}$
+- Produit des racines : $\displaystyle z_1 \times z_2 = \dfrac{c}{a}$
+:::
+
+### Racines n-ièmes de l'unité
+
+Les solutions de $z^n = 1$ sont les racines n-ièmes de l'unité :
+
+::: definition
+$$
+\begin{aligned}
+z_k &= e^{\mathrm{i}\dfrac{2k\pi}{n}} \\
+&= \cos\dfrac{2k\pi}{n} + \mathrm{i}\sin\dfrac{2k\pi}{n}
+\end{aligned}
+$$
+:::
+
+pour $k = 0, 1, \ldots, n-1$. Elles forment les sommets d'un polygone régulier inscrit dans le cercle unité.
+
+::: exemple
+Les racines 6-ièmes de l'unité sont :
+
+- $\displaystyle z_0 = 1$
+- $\displaystyle z_1 = e^{\mathrm{i}\dfrac{\pi}{3}} = \dfrac{1}{2} + \mathrm{i}\dfrac{\sqrt{3}}{2}$
+- $\displaystyle z_2 = e^{\mathrm{i}\dfrac{2\pi}{3}} = -\dfrac{1}{2} + \mathrm{i}\dfrac{\sqrt{3}}{2}$
+- $\displaystyle z_3 = -1$
+- $\displaystyle z_4 = e^{\mathrm{i}\dfrac{4\pi}{3}} = -\dfrac{1}{2} - \mathrm{i}\dfrac{\sqrt{3}}{2}$
+- $\displaystyle z_5 = e^{\mathrm{i}\dfrac{5\pi}{3}} = \dfrac{1}{2} - \mathrm{i}\dfrac{\sqrt{3}}{2}$
+:::
+
+[IMAGE_3]
+
+::: propriete
+La somme des racines n-ièmes de l'unité est nulle :
+
+$$\sum_{k=0}^{n-1} e^{\mathrm{i}\dfrac{2k\pi}{n}} = 0$$
+:::
+
+### Racines n-ièmes d'un nombre complexe quelconque
+
+Pour résoudre l'équation $z^n = a$ où $a \neq 0$ est un nombre complexe donné :
+
+::: methode
+1. Écrire $a$ sous forme exponentielle : $a = |a| \cdot e^{\mathrm{i}\theta}$
+2. Une solution particulière est : $z_0 = \sqrt[n]{|a|} \cdot e^{\mathrm{i}\dfrac{\theta}{n}}$
+3. Les $n$ solutions sont : $z_k = z_0 \cdot e^{\mathrm{i}\dfrac{2k\pi}{n}}$ pour $k = 0, 1, \ldots, n-1$
+:::
+
+::: definition Formule générale
+$$
+\begin{aligned}
+z_k &= \sqrt[n]{|a|} \cdot e^{\mathrm{i}\dfrac{\theta + 2k\pi}{n}} \quad \text{pour } k \\
+&= 0, 1, \ldots, n-1
+\end{aligned}
+$$
+:::
+
+::: exemple
+Résoudre $\displaystyle z^3 = -8$
+
+- **Étape 1 :** Écrire $-8$ sous forme exponentielle : $-8 = 8 \cdot e^{\mathrm{i}\pi}$ (car $\arg(-8) = \pi$)
+- **Étape 2 :** Calculer les solutions : $z_k = \sqrt[3]{8} \cdot e^{\mathrm{i}\dfrac{\pi + 2k\pi}{3}} = 2 \cdot e^{\mathrm{i}\dfrac{\pi(1 + 2k)}{3}}$
+- Pour $k = 0$ : $z_0 = 2e^{\mathrm{i}\dfrac{\pi}{3}} = 2\left(\cos\dfrac{\pi}{3} + \mathrm{i}\sin\dfrac{\pi}{3}\right) = 2\left(\dfrac{1}{2} + \mathrm{i}\dfrac{\sqrt{3}}{2}\right) = 1 + \mathrm{i}\sqrt{3}$
+- Pour $k = 1$ : $z_1 = 2e^{\mathrm{i}\pi} = -2$
+- Pour $k = 2$ : $z_2 = 2e^{\mathrm{i}\dfrac{5\pi}{3}} = 1 - \mathrm{i}\sqrt{3}$
+:::
+
+## XI. Transformations géométriques
+
+### Transformations de base
+
+| Transformation | Effet géométrique |
+|---|---|
+| $\displaystyle z \mapsto z + z_0$ | Translation de vecteur $\displaystyle \overrightarrow{OO_0}$ |
+| $\displaystyle z \mapsto kz$ ($\displaystyle k \in \mathbb{R}^*$) | Homothétie de centre $O$, rapport $\displaystyle k$ |
+| $\displaystyle z \mapsto e^{\mathrm{i}\varphi}z$ | Rotation de centre $O$, angle $\displaystyle \varphi$ |
+| $\displaystyle z \mapsto \overline{z}$ | Symétrie par rapport à l'axe réel |
+
+::: exemple
+La transformation $f(z) = (1 + \mathrm{i})z$ $|1 + \mathrm{i}| = \sqrt{2}$ et $\arg(1 + \mathrm{i}) = \dfrac{\pi}{4}$ Donc $f$ = homothétie de rapport $\sqrt{2}$ + rotation d'angle $\dfrac{\pi}{4}$
+:::
+
+## XII. Affixes et applications géométriques
+
+### Notion d'affixe
+
+Dans le plan complexe muni d'un repère orthonormé direct $(O; \vec{u}, \vec{v})$ :
+
+::: definition
+- **Affixe d'un point :** Le nombre complexe $z$ tel que $M(x, y) \leftrightarrow z = x + y\,\mathrm{i}$
+- **Affixe d'un vecteur :** Si $\vec{w} = \overrightarrow{AB}$ avec $A(z_A)$ et $B(z_B)$, alors l'affixe de $\vec{w}$ est $z_{\vec{w}} = z_B - z_A$
+:::
+
+::: notation
+On note $z_M$ l'affixe du point $M$ et $z_{\overrightarrow{AB}}$ l'affixe du vecteur $\overrightarrow{AB}$
+
+$$z_{\overrightarrow{AB}} = z_B - z_A$$
+:::
+
+### Applications géométriques fondamentales
+
+| Propriété géométrique | Traduction complexe |
+|---|---|
+| Distance entre deux points $A$ et $B$ | $\displaystyle AB = |z_B - z_A|$ |
+| Milieu $I$ du segment $[AB]$ | $\displaystyle z_I = \dfrac{z_A + z_B}{2}$ |
+| Barycentre $G$ de $(A, \alpha)$ et $(B, \beta)$ | $\displaystyle z_G = \dfrac{\alpha z_A + \beta z_B}{\alpha + \beta}$ |
+| Addition vectorielle $\displaystyle \overrightarrow{AB} + \overrightarrow{CD}$ | $\displaystyle z_{\overrightarrow{AB} + \overrightarrow{CD}} = z_{\overrightarrow{AB}} + z_{\overrightarrow{CD}}$ |
+
+::: exemple
+Soit $A(2 + 3\mathrm{i})$ et $B(-1 + \mathrm{i})$
+
+- **Distance :** $\displaystyle AB = |(-1 + \mathrm{i}) - (2 + 3\mathrm{i})| = |-3 - 2\mathrm{i}|$
+- $\displaystyle AB = \sqrt{9 + 4} = \sqrt{13}$
+- **Milieu :** $\displaystyle z_I = \dfrac{(2 + 3\mathrm{i}) + (-1 + \mathrm{i})}{2}$
+- $\displaystyle z_I = \dfrac{1 + 4\mathrm{i}}{2}$
+- $\displaystyle z_I = \dfrac{1}{2} + 2\mathrm{i}$
+:::
+
+### Ensembles de points dans le plan complexe
+
+On peut caractériser des ensembles géométriques à l'aide d'équations complexes :
+
+| Équation complexe | Ensemble géométrique |
+|---|---|
+| $\displaystyle |z - a| = r$ ($r > 0$) | Cercle de centre $A(a)$ et de rayon $r$ |
+| $\displaystyle |z - a| < r$ | Disque ouvert de centre $A(a)$ et de rayon $r$ |
+| $\displaystyle |z - a| = |z - b|$ | Médiatrice du segment $[AB]$ |
+| $\displaystyle \arg(z - a) = \theta$ $\displaystyle [\pi]$ | Demi-droite d'origine $A(a)$ et d'angle $\theta$ |
+| $\displaystyle \arg\left(\dfrac{z - b}{z - a}\right) = \theta$ $\displaystyle [2\pi]$ | Arc de cercle passant par $A$ et $B$ avec angle orienté $\displaystyle (\overrightarrow{AM}, \overrightarrow{BM}) = \theta$ |
+| $\displaystyle z = z_0 + t \cdot w$ ($\displaystyle t \in \mathbb{R}$) | Droite passant par $A(z_0)$ de vecteur directeur d'affixe $w$ |
+
+::: exemple
+Déterminer l'ensemble des points $M$ tels que $|z - 2\mathrm{i}| = 3$
+
+C'est le cercle de centre $A(2\mathrm{i})$, c'est-à-dire $A(0, 2)$, et de rayon $3$.
+:::
+
+::: exemple
+Déterminer l'ensemble des points $M$ tels que $|z - 1| = |z + 1|$
+
+C'est la médiatrice du segment $[AB]$ où $A(-1)$ et $B(1)$. Cette médiatrice est l'axe des imaginaires purs (axe des ordonnées).
+:::
+
+::: methode
+Pour identifier un ensemble de points :
+
+1. Identifier la forme de l'équation (module, argument, etc.)
+2. Repérer les paramètres (centre, rayon, angle...)
+3. Conclure sur la nature géométrique de l'ensemble
+:::
+
+### Angles et rapports
+
+Pour trois points $A$, $B$ et $M$ distincts d'affixes respectives $z_A$, $z_B$ et $z$ :
+
+::: definition Angle orienté
+$$\left(\overrightarrow{MA}, \overrightarrow{MB}\right) = \arg\left(\dfrac{z_B - z}{z_A - z}\right) \quad [2\pi]$$
+:::
+
+::: definition Rapport de distances
+$$\dfrac{MB}{MA} = \left|\dfrac{z_B - z}{z_A - z}\right|$$
+:::
+
+::: exemple
+Soit $A(1)$, $B(\mathrm{i})$ et $M(1 + \mathrm{i})$
+
+$\dfrac{z_B - z_M}{z_A - z_M} = \dfrac{\mathrm{i} - (1 + \mathrm{i})}{1 - (1 + \mathrm{i})} = \dfrac{-1}{-\mathrm{i}} = \dfrac{1}{\mathrm{i}} = -\mathrm{i}$ Donc $\left(\overrightarrow{MA}, \overrightarrow{MB}\right) = \arg(-\mathrm{i}) = -\dfrac{\pi}{2} \quad [2\pi]$ Le triangle $MAB$ est rectangle en $M$.
+:::
+
+## XIII. Méthodes pratiques
+
+### Passage de la forme algébrique à la forme trigonométrique
+
+::: etape 1. Calculer le module : $\displaystyle r = |z| = \sqrt{x^2 + y^2}$
+2. Déterminer un argument : résoudre $\cos\theta = \dfrac{x}{r}$ et $\sin\theta = \dfrac{y}{r}$
+3. Vérifier le quadrant selon les signes de $x$ et $y$
+4. Conclure : $\displaystyle z = r(\cos\theta + \mathrm{i}\sin\theta)$
+:::
+
+::: exemple
+Convertir $\displaystyle z = -\sqrt{3} + \mathrm{i}$
+
+- Calcul du module : $\displaystyle r = \sqrt{(-\sqrt{3})^2 + 1^2} = 2$
+- Calcul de $\cos\theta$ et $\sin\theta$ : $\cos\theta = \dfrac{-\sqrt{3}}{2}$, $\sin\theta = \dfrac{1}{2}$
+- Détermination de l'argument : Quadrant II, donc $\theta = \dfrac{5\pi}{6}$
+- Forme polaire : $\displaystyle z = 2\left(\cos\dfrac{5\pi}{6} + \mathrm{i}\sin\dfrac{5\pi}{6}\right)$
+:::
+
+## XIV. Erreurs fréquentes et conseils
+
+::: attention À éviter
+- Oublier que $\mathrm{i}^2 = -1$ lors des développements
+- Confondre conjugué $\overline{z}$ et opposé $-z$
+- Mauvais quadrant pour l'argument (vérifier les signes de $x$ et $y$)
+- Écrire $\displaystyle |z_1 + z_2| = |z_1| + |z_2|$ (faux en général)
+- Oublier le facteur $r^n$ dans la formule de Moivre
+- Utiliser les formules de trigonométrie sans vérifier le quadrant
+- Confondre module et argument dans les calculs
+:::
+
+::: conseil
+- Utiliser le conjugué pour rationaliser les dénominateurs
+- Passer en trigonométrique pour produits/quotients/puissances
+- Vérifier systématiquement le quadrant pour l'argument
+- Utiliser l'inégalité triangulaire : $|z_1 + z_2| \leq |z_1| + |z_2|$
+- Penser géométriquement : module = distance, argument = angle
+- Mémoriser les valeurs trigonométriques des angles remarquables
+- Faire des calculs intermédiaires clairs pour éviter les erreurs
+:::

@@ -1,0 +1,210 @@
+Titre: Probabilités
+
+<!-- optitab:1 -->
+::: objectifs
+- Utiliser le vocabulaire : expérience aléatoire, issue, événement, événement certain, impossible, contraire.
+- Calculer une probabilité dans une situation d'équiprobabilité (dé, urne, roue, cartes).
+- Utiliser la relation entre la probabilité d'un événement et celle de son contraire.
+- Faire le lien entre fréquence et probabilité ; simuler une expérience avec un tableur ou avec Scratch.
+:::
+
+## I. Expérience aléatoire, issues, événements
+
+::: definition Expérience aléatoire, issue
+Une **expérience aléatoire** est une expérience dont on connaît tous les résultats possibles, mais dont on ne peut pas prévoir le résultat à l'avance.
+
+Chaque résultat possible est une **issue** de l'expérience.
+:::
+
+::: exemple Lancer un dé
+On lance un dé à six faces : on sait que le résultat sera $1$, $2$, $3$, $4$, $5$ ou $6$, mais on ne sait pas lequel. C'est une expérience aléatoire à $6$ issues.
+:::
+
+::: definition Événement
+Un **événement** est décrit par une phrase ; il est réalisé ou non selon l'issue obtenue. Les issues qui le réalisent sont les issues **favorables**.
+
+- Un événement **certain** est réalisé par toutes les issues.
+- Un événement **impossible** n'est réalisé par aucune issue.
+:::
+
+::: exemple Avec le dé
+- L'événement $A$ : « obtenir un nombre pair » a pour issues favorables $2$, $4$ et $6$.
+- « Obtenir $7$ » est un événement impossible.
+- « Obtenir un nombre inférieur ou égal à $6$ » est un événement certain.
+:::
+
+::: definition Événement contraire
+L'**événement contraire** d'un événement $A$, noté « non $A$ », est réalisé exactement quand $A$ ne l'est pas : ses issues sont toutes celles qui ne réalisent pas $A$.
+:::
+
+::: exemple
+Avec le dé, le contraire de « obtenir un nombre pair » est « obtenir un nombre impair » : issues $1$, $3$ et $5$.
+:::
+
+::: attention Bien décrire le contraire
+- Le contraire de « obtenir au moins $5$ » ($5$ ou $6$) est « obtenir au plus $4$ » ($1$, $2$, $3$ ou $4$).
+- Au football, le contraire de « gagner » n'est pas « perdre » : c'est « perdre ou faire match nul ».
+:::
+
+## II. Probabilité d'un événement
+
+::: definition Probabilité
+La **probabilité** d'un événement $A$, notée $P(A)$, est un nombre qui mesure la chance que $A$ se réalise. C'est toujours un nombre compris entre $0$ et $1$ :
+
+$$0 \leqslant P(A) \leqslant 1$$
+
+- un événement **impossible** a une probabilité égale à $0$ ;
+- un événement **certain** a une probabilité égale à $1$.
+:::
+
+[IMAGE_1]
+
+::: remarque
+Une probabilité s'écrit sous forme de fraction, de nombre décimal ou de pourcentage : $\dfrac{1}{4} = 0{,}25 = 25\ \%$.
+:::
+
+### 1. Situation d'équiprobabilité
+
+::: definition Équiprobabilité
+Quand toutes les issues ont la même chance de se produire, on dit qu'elles sont **équiprobables**.
+
+C'est le cas d'un dé équilibré, de boules indiscernables au toucher tirées au hasard, d'une roue partagée en secteurs de même angle, de cartes bien mélangées.
+:::
+
+::: propriete Calcul d'une probabilité
+Dans une situation d'équiprobabilité, pour tout événement $A$ :
+
+$$P(A) = \frac{\text{nombre d'issues favorables à } A}{\text{nombre total d'issues}}$$
+
+En particulier, s'il y a $n$ issues, chacune a pour probabilité $\dfrac{1}{n}$.
+:::
+
+::: methode Calculer une probabilité
+1. Décrire les issues et justifier qu'elles sont équiprobables.
+2. Compter toutes les issues, puis écrire la liste des issues favorables et les compter.
+3. Écrire le quotient « favorables sur possibles » et le simplifier.
+:::
+
+[IMAGE_2]
+
+::: exemple Tirer une boule dans une urne
+Une urne contient $5$ boules rouges, $3$ bleues et $2$ jaunes, indiscernables au toucher. On tire une boule au hasard : les $10$ boules sont équiprobables.
+
+- $P(\text{rouge}) = \dfrac{5}{10} = \dfrac{1}{2}$
+- $P(\text{bleue}) = \dfrac{3}{10}$
+- $P(\text{jaune}) = \dfrac{2}{10} = \dfrac{1}{5}$
+:::
+
+::: attention Compter les objets, pas les catégories
+Il y a trois couleurs, mais $P(\text{rouge}) \neq \dfrac{1}{3}$ : ce sont les **boules** qui sont équiprobables, pas les couleurs.
+:::
+
+### 2. Somme des probabilités
+
+::: propriete
+La somme des probabilités de toutes les issues d'une expérience est égale à $1$.
+:::
+
+::: exemple
+Pour l'urne : $\dfrac{5}{10} + \dfrac{3}{10} + \dfrac{2}{10} = \dfrac{10}{10} = 1$.
+:::
+
+### 3. Quand les issues ne sont pas équiprobables
+
+Sur une roue dont les secteurs n'ont pas le même angle, les secteurs ne sont pas équiprobables : la probabilité d'un secteur est proportionnelle à son angle.
+
+$$P(\text{secteur}) = \frac{\text{angle du secteur}}{360°}$$
+
+[IMAGE_3]
+
+::: exemple
+Sur cette roue : $P(1) = \dfrac{180}{360} = \dfrac{1}{2}$, $P(2) = \dfrac{120}{360} = \dfrac{1}{3}$ et $P(3) = \dfrac{60}{360} = \dfrac{1}{6}$.
+
+Contrôle : $\dfrac{1}{2} + \dfrac{1}{3} + \dfrac{1}{6} = \dfrac{3}{6} + \dfrac{2}{6} + \dfrac{1}{6} = 1$.
+:::
+
+## III. Événement contraire
+
+::: propriete Probabilité de l'événement contraire
+Un événement et son contraire se partagent toutes les issues, sans issue commune :
+
+$$P(\text{non } A) = 1 - P(A)$$
+:::
+
+::: exemple
+Avec un dé équilibré, $P(\text{obtenir } 6) = \dfrac{1}{6}$, donc :
+
+$$P(\text{ne pas obtenir } 6) = 1 - \frac{1}{6} = \frac{5}{6}$$
+:::
+
+::: methode Quand passer par le contraire ?
+Quand l'événement contraire est plus simple à compter : « ne pas… », « au moins… ».
+
+Dans un jeu de $32$ cartes, il y a $4$ as : $P(\text{ne pas tirer un as}) = 1 - \dfrac{4}{32} = \dfrac{28}{32} = \dfrac{7}{8}$.
+:::
+
+::: attention
+$P(A) + P(\text{non } A) = 1$ toujours : on ne peut pas avoir $P(A) = 0{,}4$ et $P(\text{non } A) = 0{,}5$.
+:::
+
+## IV. Fréquence et probabilité
+
+::: definition Fréquence
+On répète $n$ fois une expérience aléatoire. Si l'événement $A$ se réalise $k$ fois, sa **fréquence** est :
+
+$$f = \frac{k}{n}$$
+:::
+
+::: propriete Stabilisation des fréquences
+Quand on répète un **grand nombre** de fois une expérience aléatoire, dans les mêmes conditions, la fréquence d'un événement se stabilise autour de sa probabilité.
+:::
+
+[IMAGE_4]
+
+::: exemple
+Sur la figure, on a simulé $2\,000$ lancers d'un dé équilibré. Au début, la fréquence du $6$ varie beaucoup ; ensuite, elle reste proche de $\dfrac{1}{6} \approx 0{,}17$.
+:::
+
+::: methode Estimer une probabilité qu'on ne peut pas calculer
+Pour une punaise, un dé truqué, une pièce déformée, les issues ne sont pas équiprobables : on réalise (ou on simule) un grand nombre d'essais et on prend la fréquence observée comme **estimation** de la probabilité.
+:::
+
+### Simuler une expérience
+
+On peut faire « lancer » un dé des milliers de fois par un ordinateur.
+
+- **Tableur** : la formule `=ALEA.ENTRE.BORNES(1;6)` donne un nombre entier au hasard entre $1$ et $6$ ; on la recopie vers le bas sur $1\,000$ lignes, puis `=NB.SI(A1:A1000;6)` compte les $6$ obtenus.
+- **Scratch** : le script ci-dessous simule $1\,000$ lancers et donne la fréquence du $6$.
+
+[IMAGE_5]
+
+::: attention
+- Sur un petit nombre d'essais, la fréquence peut être loin de la probabilité : on ne conclut rien après $10$ lancers.
+- La fréquence change d'une série à l'autre ; la probabilité, elle, est fixe.
+- Le hasard n'a pas de mémoire : après cinq « pile », la probabilité d'obtenir « face » au lancer suivant reste $\dfrac{1}{2}$.
+:::
+
+## V. Découverte : expériences à deux épreuves
+
+Une expérience peut enchaîner deux épreuves : lancer deux pièces, lancer deux dés… Pour n'oublier aucune issue, on les organise dans un **arbre** (ou dans un tableau). Cette méthode sera approfondie en 3e.
+
+[IMAGE_6]
+
+::: exemple Lancer deux pièces
+Chaque chemin de l'arbre est une issue : $PP$, $PF$, $FP$ et $FF$. Ces $4$ issues sont équiprobables.
+
+« Obtenir exactement un pile » est réalisé par $PF$ et $FP$ (en vert) :
+
+$$P(\text{exactement un pile}) = \frac{2}{4} = \frac{1}{2}$$
+:::
+
+::: attention
+Les résultats « $0$ pile », « $1$ pile », « $2$ pile » ne sont **pas** équiprobables : « $1$ pile » correspond à deux issues.
+:::
+
+::: retenir
+- Une probabilité est un nombre entre $0$ (impossible) et $1$ (certain).
+- Équiprobabilité : $P(A) = \dfrac{\text{issues favorables}}{\text{issues possibles}}$ ; on compte les objets, pas les catégories.
+- La somme des probabilités de toutes les issues vaut $1$ ; $P(\text{non } A) = 1 - P(A)$.
+- Sur un grand nombre d'essais, la fréquence se stabilise autour de la probabilité : elle sert à l'estimer.
+:::

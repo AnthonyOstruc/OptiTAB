@@ -1,0 +1,291 @@
+Titre: Puissances et notation scientifique
+
+<!-- optitab:1 -->
+::: objectifs
+- Calculer une puissance d'un nombre relatif, avec un exposant positif ou négatif.
+- Connaître les puissances de $10$ et calculer avec elles : produit, quotient, puissance.
+- Utiliser les préfixes des unités, de nano à giga.
+- Écrire un nombre en notation scientifique, comparer et calculer avec cette écriture.
+- Utiliser des ordres de grandeur pour comparer des tailles et contrôler un calcul.
+:::
+
+## I. Puissances d'un nombre relatif
+
+### Exposant positif
+
+::: definition Puissance d'un nombre
+Soit $a$ un nombre relatif et $n$ un entier supérieur ou égal à $1$ :
+
+$$a^n = \underbrace{a \times a \times \cdots \times a}_{n \text{ facteurs}}$$
+
+On lit « $a$ puissance $n$ » ou « $a$ exposant $n$ » ; $n$ est l'**exposant**. $a^2$ se lit « $a$ au carré » et $a^3$ « $a$ au cube ».
+
+Par convention, $a^1 = a$ et, pour $a \neq 0$, $a^0 = 1$.
+:::
+
+::: exemple
+- $2^5 = 2 \times 2 \times 2 \times 2 \times 2 = 32$.
+- $(-3)^2 = (-3) \times (-3) = 9$.
+- $(-2)^3 = (-2) \times (-2) \times (-2) = -8$.
+- $0{,}1^3 = 0{,}1 \times 0{,}1 \times 0{,}1 = 0{,}001$.
+:::
+
+::: propriete Signe d'une puissance d'un nombre négatif
+On compte les facteurs négatifs, comme pour un produit de relatifs :
+- si l'exposant est **pair**, la puissance est **positive** : $(-2)^4 = 16$ ;
+- si l'exposant est **impair**, la puissance est **négative** : $(-2)^5 = -32$.
+:::
+
+::: attention Parenthèses et priorités
+- L'exposant ne porte que sur ce qui est écrit juste avant lui : $-3^2 = -(3 \times 3) = -9$, alors que $(-3)^2 = 9$.
+- L'exposant n'est pas un facteur : $2^3 = 8$, et non $2 \times 3 = 6$.
+- Les puissances se calculent **avant** les multiplications, divisions, additions et soustractions (après les parenthèses).
+:::
+
+::: exemple Calculer $A = 5 - 2 \times 3^2$
+$$
+\begin{aligned}
+A &= 5 - 2 \times 9 \\
+&= 5 - 18 \\
+&= -13
+\end{aligned}
+$$
+:::
+
+### Exposant négatif
+
+::: definition Puissance d'exposant négatif
+Soit $a$ un nombre relatif non nul et $n$ un entier supérieur ou égal à $1$. Le nombre $a^{-n}$ est l'**inverse** de $a^n$ :
+
+$$a^{-n} = \frac{1}{a^n}$$
+:::
+
+::: exemple
+- $2^{-3} = \dfrac{1}{2^3} = \dfrac{1}{8} = 0{,}125$.
+- $5^{-1} = \dfrac{1}{5} = 0{,}2$.
+- $(-4)^{-2} = \dfrac{1}{(-4)^2} = \dfrac{1}{16}$.
+:::
+
+::: attention
+Un exposant négatif ne rend pas le nombre négatif : $2^{-3} = 0{,}125$ est positif. Il indique un **inverse**.
+:::
+
+::: remarque Pour découvrir les règles
+Avec une même base, on peut compter les facteurs :
+$$
+\begin{aligned}
+2^3 \times 2^4 &= (2 \times 2 \times 2) \times (2 \times 2 \times 2 \times 2) \\
+&= 2^7
+\end{aligned}
+$$
+Les règles générales de calcul seront étudiées en 3e ; cette année, on les utilise avec les **puissances de $10$**.
+:::
+
+## II. Les puissances de 10
+
+::: propriete Écriture décimale d'une puissance de 10
+Pour un entier $n \geq 1$ :
+- $10^n = 1\underbrace{0 \ldots 0}_{n \text{ zéros}}$ : un $1$ suivi de $n$ zéros ;
+- $10^{-n} = \dfrac{1}{10^n} = 0{,}\underbrace{0 \ldots 0}_{n - 1 \text{ zéros}}1$ : le chiffre $1$ est au $n$-ième rang après la virgule.
+:::
+
+| Puissance | Écriture décimale | En lettres |
+|---|---|---|
+| $10^{9}$ | $1\,000\,000\,000$ | un milliard |
+| $10^{6}$ | $1\,000\,000$ | un million |
+| $10^{3}$ | $1\,000$ | mille |
+| $10^{0}$ | $1$ | un |
+| $10^{-3}$ | $0{,}001$ | un millième |
+| $10^{-6}$ | $0{,}000\,001$ | un millionième |
+| $10^{-9}$ | $0{,}000\,000\,001$ | un milliardième |
+
+::: propriete Multiplier par une puissance de 10
+- Multiplier par $10^n$ décale la virgule de $n$ rangs **vers la droite**.
+- Multiplier par $10^{-n}$ (c'est-à-dire diviser par $10^n$) décale la virgule de $n$ rangs **vers la gauche**.
+
+On complète par des zéros si nécessaire.
+:::
+
+[IMAGE_1]
+
+::: propriete Règles de calcul
+Pour tous entiers relatifs $n$ et $p$ :
+- **produit** : $10^n \times 10^p = 10^{n + p}$ ; par exemple, $10^5 \times 10^{-8} = 10^{-3}$ ;
+- **quotient** : $\dfrac{10^n}{10^p} = 10^{n - p}$ ; par exemple, $\dfrac{10^2}{10^{-4}} = 10^{6}$ ;
+- **puissance d'une puissance** : $\left(10^n\right)^p = 10^{n \times p}$ ; par exemple, $\left(10^{3}\right)^2 = 10^{6}$ ;
+- **inverse** : $\dfrac{1}{10^n} = 10^{-n}$ ; par exemple, $\dfrac{1}{10^{4}} = 10^{-4}$.
+:::
+
+::: demonstration Pourquoi additionne-t-on les exposants ?
+$10^2 \times 10^3 = (10 \times 10) \times (10 \times 10 \times 10)$ : on obtient $2 + 3 = 5$ facteurs égaux à $10$, donc $10^5$.
+
+De même, on simplifie $2$ facteurs $10$ :
+$$
+\begin{aligned}
+\frac{10^5}{10^2} &= \frac{10 \times 10 \times 10 \times 10 \times 10}{10 \times 10} \\
+&= 10 \times 10 \times 10 \\
+&= 10^3
+\end{aligned}
+$$
+et $5 - 2 = 3$.
+:::
+
+::: exemple Calculer $B = \dfrac{10^{4} \times 10^{-7}}{10^{-5}}$
+$$
+\begin{aligned}
+B &= \frac{10^{4 + (-7)}}{10^{-5}} \\
+&= \frac{10^{-3}}{10^{-5}} \\
+&= 10^{-3 - (-5)} \\
+&= 10^{2}
+\end{aligned}
+$$
+:::
+
+::: attention Erreurs fréquentes
+- Pour un produit, on **additionne** les exposants : $10^3 \times 10^4 = 10^7$, et non $10^{12}$.
+- Soustraire un exposant négatif revient à ajouter : $\dfrac{10^5}{10^{-2}} = 10^{5 + 2} = 10^7$.
+- Les règles concernent les produits et les quotients, jamais les sommes : $10^3 + 10^2 = 1\,000 + 100 = 1\,100$, ce n'est pas $10^5$.
+:::
+
+## III. Les préfixes de nano à giga
+
+Les préfixes placés devant une unité (mètre, gramme, watt, octet, hertz…) indiquent une puissance de $10$. D'un préfixe au suivant, on multiplie ou on divise par $1\,000 = 10^3$.
+
+::: propriete Préfixes à connaître
+| Préfixe | Valeur | Exemple |
+|---|---|---|
+| giga (G) | $10^{9}$ | $1$ Go $= 10^{9}$ octets |
+| méga (M) | $10^{6}$ | $1$ MW $= 10^{6}$ W |
+| kilo (k) | $10^{3}$ | $1$ km $= 10^{3}$ m |
+| milli (m) | $10^{-3}$ | $1$ mm $= 10^{-3}$ m |
+| micro (µ) | $10^{-6}$ | $1$ µm $= 10^{-6}$ m |
+| nano (n) | $10^{-9}$ | $1$ nm $= 10^{-9}$ m |
+:::
+
+[IMAGE_2]
+
+::: methode Convertir avec un préfixe
+On remplace le préfixe par la puissance de $10$ qui lui correspond, puis on calcule :
+- $45$ µm $= 45 \times 10^{-6}$ m ;
+- $3{,}2$ GHz $= 3{,}2 \times 10^{9}$ Hz ;
+- $250$ MW $= 250 \times 10^{6}$ W.
+:::
+
+## IV. La notation scientifique
+
+::: definition Notation scientifique
+Tout nombre décimal positif non nul peut s'écrire de façon unique sous la forme
+
+$$a \times 10^n$$
+
+où $a$ est un nombre décimal tel que $1 \leq a \lt 10$ (un seul chiffre non nul avant la virgule) et $n$ est un entier relatif. C'est sa **notation scientifique**.
+:::
+
+::: methode Écrire un nombre en notation scientifique
+1. Placer la virgule juste après le premier chiffre non nul : on obtient $a$.
+2. Compter de combien de rangs la virgule s'est déplacée : c'est la valeur de $n$, au signe près.
+3. Si le nombre est supérieur ou égal à $10$, $n$ est positif ; s'il est inférieur à $1$, $n$ est négatif.
+:::
+
+::: exemple
+- $45\,000 = 4{,}5 \times 10^4$ : la virgule passe de $45\,000$ à $4{,}5$ en reculant de $4$ rangs.
+- $0{,}000\,72 = 7{,}2 \times 10^{-4}$ : la virgule avance de $4$ rangs pour arriver après le $7$.
+- $6{,}1 = 6{,}1 \times 10^0$.
+:::
+
+::: methode Corriger un premier facteur qui ne convient pas
+On écrit le premier facteur lui-même en notation scientifique, puis on regroupe les puissances de $10$ :
+$$
+\begin{aligned}
+32 \times 10^{4} &= 3{,}2 \times 10^{1} \times 10^{4} \\
+&= 3{,}2 \times 10^{5}
+\end{aligned}
+$$
+$$
+\begin{aligned}
+0{,}8 \times 10^{3} &= 8 \times 10^{-1} \times 10^{3} \\
+&= 8 \times 10^{2}
+\end{aligned}
+$$
+:::
+
+::: methode Comparer deux nombres en notation scientifique
+1. On compare d'abord les **exposants** : le nombre qui a le plus grand exposant est le plus grand.
+2. À exposant égal, on compare les **premiers facteurs**.
+
+Exemples : $9{,}8 \times 10^{4} \lt 3{,}1 \times 10^{5}$ car $4 \lt 5$ ; $2{,}7 \times 10^{-3} \lt 6{,}5 \times 10^{-3}$ car $2{,}7 \lt 6{,}5$.
+:::
+
+::: methode Multiplier ou diviser en notation scientifique
+On regroupe les premiers facteurs d'un côté et les puissances de $10$ de l'autre, puis on corrige si nécessaire le premier facteur.
+
+Produit : $P = (4 \times 10^{3}) \times (5 \times 10^{-7})$.
+$$
+\begin{aligned}
+P &= (4 \times 5) \times 10^{3 + (-7)} \\
+&= 20 \times 10^{-4} \\
+&= 2 \times 10^{-3}
+\end{aligned}
+$$
+Quotient : $Q = \dfrac{1{,}2 \times 10^{8}}{4 \times 10^{-2}}$.
+$$
+\begin{aligned}
+Q &= \frac{1{,}2}{4} \times 10^{8 - (-2)} \\
+&= 0{,}3 \times 10^{10} \\
+&= 3 \times 10^{9}
+\end{aligned}
+$$
+:::
+
+::: attention
+- $20 \times 10^{-4}$ est juste mais n'est **pas** une notation scientifique, car $20 \geq 10$.
+- Pour une **somme**, on n'additionne pas les exposants : on revient à l'écriture décimale (ou à la même puissance de $10$). Par exemple :
+$$
+\begin{aligned}
+2 \times 10^{3} + 5 \times 10^{2} &= 2\,000 + 500 \\
+&= 2\,500 \\
+&= 2{,}5 \times 10^{3}
+\end{aligned}
+$$
+:::
+
+## V. Ordres de grandeur
+
+::: definition Ordre de grandeur
+L'**ordre de grandeur** d'un nombre est une puissance de $10$ proche de ce nombre. Pour un nombre écrit $a \times 10^n$ en notation scientifique, on choisit :
+- $10^n$ si $a \lt 5$ ;
+- $10^{n + 1}$ si $a \geq 5$.
+:::
+
+::: exemple
+- La tour Eiffel mesure environ $300$ m $= 3 \times 10^{2}$ m : ordre de grandeur $10^{2}$ m.
+- Un globule rouge mesure $7$ µm $= 7 \times 10^{-6}$ m : ordre de grandeur $10^{-5}$ m.
+- Le diamètre de la Terre vaut environ $1{,}3 \times 10^{7}$ m : ordre de grandeur $10^{7}$ m.
+:::
+
+Une échelle graduée en puissances de $10$ permet de représenter sur un même axe des objets de tailles très différentes : à chaque graduation, on multiplie la taille par $10$.
+
+[IMAGE_3]
+
+::: methode Comparer deux tailles grâce aux ordres de grandeur
+On divise les ordres de grandeur, en soustrayant les exposants : une cellule ($10^{-5}$ m) est environ $\dfrac{10^{0}}{10^{-5}} = 10^{5}$ fois plus petite qu'un être humain ($10^{0}$ m).
+:::
+
+::: methode Contrôler un calcul
+Avant de calculer précisément, on estime le résultat avec des valeurs arrondies :
+$$
+\begin{aligned}
+4{,}1 \times 10^{3} \times 2{,}9 \times 10^{-5} &\approx 4 \times 3 \times 10^{-2} \\
+&\approx 0{,}12
+\end{aligned}
+$$
+Le calcul exact donne $0{,}118\,9$ : le résultat est cohérent avec l'estimation.
+:::
+
+::: retenir
+- $a^n$ est le produit de $n$ facteurs égaux à $a$ ; $a^{-n} = \dfrac{1}{a^n}$ ; $a^0 = 1$ ; $(-a)^n$ est positif si $n$ est pair.
+- $10^n \times 10^p = 10^{n + p}$ ; $\dfrac{10^n}{10^p} = 10^{n - p}$ ; $\left(10^n\right)^p = 10^{n \times p}$.
+- Préfixes : giga $10^9$, méga $10^6$, kilo $10^3$, milli $10^{-3}$, micro $10^{-6}$, nano $10^{-9}$.
+- Notation scientifique : $a \times 10^n$ avec $1 \leq a \lt 10$ ; on compare d'abord les exposants.
+- Ordre de grandeur de $a \times 10^n$ : $10^n$ si $a \lt 5$, $10^{n+1}$ si $a \geq 5$ ; il sert à comparer et à contrôler.
+:::

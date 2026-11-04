@@ -1,0 +1,1054 @@
+=== Découverte - Équations Différentielles - Vérification de Solutions
+Id: 1132
+Difficulté: easy
+
+Énoncé: <!-- optitab:1 -->
+Dans chaque cas, vérifier que la fonction proposée est solution de l’équation différentielle indiquée.
+
+1. La fonction $y$ définie sur $\mathbb{R}$ par $y(x) = 3e^{2x} - 2$ et l’équation $y' = 2y + 4$.
+2. La fonction $T$ définie sur $[0\,;+\infty[$ par $T(t) = 20 + 80e^{-0{,}1t}$ et l’équation $T' = -0{,}1(T - 20)$.
+3. La fonction $P$ définie sur $[0\,;+\infty[$ par $P(t) = 100e^{0{,}05t}$ et l’équation $P' = 0{,}05P$.
+4. La fonction $z$ définie sur $\mathbb{R}$ par $z(x) = e^{2x} + 1$ est-elle solution de l’équation $y' = 2y + 4$ ? Justifier.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : $y(x) = 3e^{2x} - 2$ et $y' = 2y + 4$
+
+::: methode
+On calcule la dérivée, puis l’autre membre séparément, et on compare.
+:::
+
+::: etape Dérivée de $y$
+Comme $(e^{2x})' = 2e^{2x}$ :
+$$y'(x) = 3 \times 2e^{2x} = 6e^{2x}.$$
+:::
+
+::: etape Second membre
+$$
+\begin{aligned}
+2y(x) + 4 &= 2\left(3e^{2x} - 2\right) + 4 \\
+&= 6e^{2x} - 4 + 4 \\
+&= 6e^{2x}
+\end{aligned}
+$$
+:::
+
+::: resultat
+Pour tout réel $x$, $y'(x) = 2y(x) + 4$ : la fonction $y$ est solution de $y' = 2y + 4$.
+:::
+
+## Question 2 : $T(t) = 20 + 80e^{-0{,}1t}$ et $T' = -0{,}1(T - 20)$
+
+::: methode
+Même démarche : dérivée d’un côté, second membre de l’autre.
+:::
+
+::: etape Dérivée de $T$
+La constante $20$ a une dérivée nulle et $(e^{-0{,}1t})' = -0{,}1e^{-0{,}1t}$ :
+$$T'(t) = 80 \times (-0{,}1)e^{-0{,}1t} = -8e^{-0{,}1t}.$$
+:::
+
+::: etape Second membre
+$$
+\begin{aligned}
+-0{,}1\big(T(t) - 20\big) &= -0{,}1\left(20 + 80e^{-0{,}1t} - 20\right) \\
+&= -0{,}1 \times 80e^{-0{,}1t} \\
+&= -8e^{-0{,}1t}
+\end{aligned}
+$$
+:::
+
+::: resultat
+Pour tout $t \geq 0$, $T'(t) = -0{,}1\big(T(t) - 20\big)$ : la fonction $T$ est solution.
+:::
+
+## Question 3 : $P(t) = 100e^{0{,}05t}$ et $P' = 0{,}05P$
+
+::: methode
+Dérivée de $e^{kt}$ : $ke^{kt}$.
+:::
+
+::: etape Dérivée de $P$
+$$P'(t) = 100 \times 0{,}05e^{0{,}05t} = 5e^{0{,}05t}$$
+:::
+
+::: etape Second membre
+$$0{,}05P(t) = 0{,}05 \times 100e^{0{,}05t} = 5e^{0{,}05t}$$
+:::
+
+::: resultat
+Pour tout $t \geq 0$, $P'(t) = 0{,}05P(t)$ : la fonction $P$ est solution.
+:::
+
+## Question 4 : $z(x) = e^{2x} + 1$ est-elle solution de $y' = 2y + 4$ ?
+
+::: methode
+On compare les deux membres : il suffit d’une valeur de $x$ où ils diffèrent pour conclure que $z$ n’est pas solution.
+:::
+
+::: etape Dérivée de $z$
+$$z'(x) = 2e^{2x}$$
+:::
+
+::: etape Second membre
+$$2z(x) + 4 = 2\left(e^{2x} + 1\right) + 4 = 2e^{2x} + 6$$
+:::
+
+::: etape Comparaison
+Pour tout réel $x$, $2z(x) + 4 - z'(x) = 6 \neq 0$. Par exemple en $x = 0$ : $z'(0) = 2$ alors que $2z(0) + 4 = 8$.
+:::
+
+::: resultat
+La fonction $z$ n’est pas solution de l’équation $y' = 2y + 4$.
+:::
+
+::: retenir
+Les solutions de $y' = 2y + 4$ sont les fonctions $x \mapsto Ce^{2x} - 2$ (solution constante $-\frac{4}{2} = -2$). La fonction de la question 1 correspond à $C = 3$ ; $z$ n’est pas de cette forme.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $y'(x) = 6e^{2x}$ et $2y(x) + 4 = 6e^{2x}$ : $y$ est solution.
+2. $T'(t) = -8e^{-0{,}1t}$ et $-0{,}1\big(T(t) - 20\big) = -8e^{-0{,}1t}$ : $T$ est solution.
+3. $P'(t) = 5e^{0{,}05t} = 0{,}05P(t)$ : $P$ est solution.
+4. $z'(x) = 2e^{2x}$ mais $2z(x) + 4 = 2e^{2x} + 6$ : $z$ n’est pas solution.
+
+===
+
+=== Entraînement - Équations Différentielles - Circuit Électrique RC
+Id: 1128
+Difficulté: medium
+Image: v1_n90_ex1128_1_ex_rc.png
+
+Énoncé: <!-- optitab:1 -->
+Un circuit comporte une résistance $R = 1\,000\ \Omega$ et un condensateur de capacité $C = 10\ \mu\text{F}$, initialement déchargé. On applique une tension constante $E = 5$ V. La tension $u(t)$ aux bornes du condensateur, en volts, $t$ en secondes, vérifie
+$$RC\,u' + u = E \quad \text{et} \quad u(0) = 0.$$
+
+1. Calculer $RC$, puis montrer que l’équation s’écrit $u' = -100u + 500$. En déduire $u(t)$.
+2. Calculer la tension au bout de $0{,}02$ seconde.
+3. La constante de temps du circuit est $\tau = RC$. Calculer $u(5\tau)$ et le pourcentage de la tension $E$ atteint à cet instant.
+4. Étudier le comportement de $u(t)$ quand $t$ tend vers $+\infty$ et interpréter.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Résoudre l’équation avec $u(0) = 0$
+
+::: methode
+On met l’équation sous la forme $u' = au + b$, puis on applique le cours : $u(t) = Ke^{at} - \frac{b}{a}$.
+:::
+
+::: etape Calcul de $RC$
+Avec $C = 10\ \mu\text{F} = 10 \times 10^{-6}$ F :
+$$RC = 1\,000 \times 10 \times 10^{-6} = 10^{-2} = 0{,}01 \text{ s}.$$
+:::
+
+::: etape Forme $u' = au + b$
+L’équation s’écrit $0{,}01u' + u = 5$. On divise par $0{,}01$ :
+$$u' + 100u = 500 \iff u' = -100u + 500.$$
+Ainsi $a = -100$ et $b = 500$.
+:::
+
+::: etape Solutions de l’équation
+La solution constante est $-\frac{b}{a} = -\frac{500}{-100} = 5$. Les solutions sont les fonctions
+$$t \mapsto Ke^{-100t} + 5, \quad K \in \mathbb{R}.$$
+On note la constante $K$ pour ne pas la confondre avec la capacité $C$.
+:::
+
+::: etape Condition initiale
+$u(0) = Ke^{0} + 5 = K + 5 = 0$, donc $K = -5$.
+:::
+
+::: resultat
+$$u(t) = 5 - 5e^{-100t} = 5\left(1 - e^{-100t}\right)$$
+:::
+
+## Question 2 : Tension au bout de $0{,}02$ s
+
+::: methode
+On remplace $t$ par $0{,}02$ dans l’expression de $u(t)$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+u(0{,}02) &= 5\left(1 - e^{-100 \times 0{,}02}\right) \\
+&= 5\left(1 - e^{-2}\right) \\
+&\approx 4{,}32
+\end{aligned}
+$$
+:::
+
+::: resultat
+Au bout de $0{,}02$ s, la tension vaut environ $4{,}32$ V.
+:::
+
+## Question 3 : Constante de temps et $u(5\tau)$
+
+::: methode
+On calcule $5\tau$, puis $u(5\tau)$ et le rapport $\frac{u(5\tau)}{E}$.
+:::
+
+::: etape Constante de temps
+$\tau = RC = 0{,}01$ s, donc $5\tau = 0{,}05$ s.
+:::
+
+::: etape Tension à l’instant $5\tau$
+$$
+\begin{aligned}
+u(0{,}05) &= 5\left(1 - e^{-100 \times 0{,}05}\right) \\
+&= 5\left(1 - e^{-5}\right) \\
+&\approx 4{,}97
+\end{aligned}
+$$
+:::
+
+::: etape Pourcentage de $E$
+$$\frac{u(5\tau)}{E} = 1 - e^{-5} \approx 0{,}993$$
+:::
+
+::: resultat
+$\tau = 0{,}01$ s et $u(5\tau) \approx 4{,}97$ V : au bout de $5\tau$, le condensateur est chargé à environ $99{,}3$ % de $E$.
+:::
+
+## Question 4 : Comportement à long terme
+
+::: methode
+On calcule la limite de $u(t)$ en $+\infty$ grâce à la limite de l’exponentielle.
+:::
+
+::: etape Limite de l’exponentielle
+Quand $t$ tend vers $+\infty$, $-100t$ tend vers $-\infty$, donc $e^{-100t}$ tend vers $0$.
+:::
+
+::: etape Limite de $u$
+$$\lim_{t \to +\infty} u(t) = 5(1 - 0) = 5$$
+:::
+
+[IMAGE_1]
+
+::: resultat
+$\lim\limits_{t \to +\infty} u(t) = 5$ V $= E$ : la tension aux bornes du condensateur se rapproche de la tension appliquée, le condensateur se charge complètement. En pratique, il est chargé au bout de $5\tau$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $RC = 0{,}01$ s, $u' = -100u + 500$ et $u(t) = 5\left(1 - e^{-100t}\right)$.
+2. $u(0{,}02) = 5\left(1 - e^{-2}\right) \approx 4{,}32$ V.
+3. $\tau = 0{,}01$ s, $u(5\tau) = 5\left(1 - e^{-5}\right) \approx 4{,}97$ V, soit environ $99{,}3$ % de $E$.
+4. $\lim\limits_{t \to +\infty} u(t) = 5$ V : le condensateur se charge jusqu’à la tension $E$.
+
+===
+
+=== Entraînement - Équations Différentielles - Croissance Démographique
+Id: 1123
+Difficulté: medium
+
+Énoncé: <!-- optitab:1 -->
+L’effectif $P(t)$ d’une population, $t$ en années, a une vitesse de croissance proportionnelle à l’effectif : $P' = 0{,}03P$. Initialement, $P(0) = 5\,000$ habitants.
+
+1. Résoudre l’équation différentielle $P' = 0{,}03P$.
+2. En déduire $P(t)$, puis l’effectif au bout de $10$ ans, arrondi à l’unité.
+3. Au bout de combien d’années la population atteindra-t-elle $10\,000$ habitants ?
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Résoudre $P' = 0{,}03P$
+
+::: methode
+L’équation est de la forme $y' = ay$ : ses solutions sont les fonctions $Ce^{at}$.
+:::
+
+::: etape Identification
+$P' = aP$ avec $a = 0{,}03$.
+:::
+
+::: resultat
+Les solutions sont les fonctions $t \mapsto Ce^{0{,}03t}$, avec $C$ réel.
+:::
+
+## Question 2 : Expression de $P(t)$ et effectif au bout de $10$ ans
+
+::: methode
+La condition initiale $P(0) = 5\,000$ donne la valeur de $C$.
+:::
+
+::: etape Condition initiale
+$P(0) = Ce^{0} = C$, donc $C = 5\,000$ et $P(t) = 5\,000e^{0{,}03t}$.
+:::
+
+::: etape Effectif au bout de $10$ ans
+$$P(10) = 5\,000e^{0{,}03 \times 10} = 5\,000e^{0{,}3} \approx 6\,749{,}29$$
+:::
+
+::: resultat
+$P(t) = 5\,000e^{0{,}03t}$ et, au bout de $10$ ans, la population compte environ $6\,749$ habitants.
+:::
+
+## Question 3 : Quand la population atteint-elle $10\,000$ habitants ?
+
+::: methode
+On résout $P(t) = 10\,000$ en isolant l’exponentielle, puis on applique le logarithme népérien.
+:::
+
+::: etape Résolution
+$$
+\begin{aligned}
+5\,000e^{0{,}03t} = 10\,000 &\iff e^{0{,}03t} = 2 \\
+&\iff 0{,}03t = \ln 2 \\
+&\iff t = \frac{\ln 2}{0{,}03} \approx 23{,}1
+\end{aligned}
+$$
+:::
+
+::: resultat
+La population atteint $10\,000$ habitants au bout d’environ $23{,}1$ ans, c’est-à-dire au cours de la $24$e année.
+:::
+
+::: retenir
+La durée de doublement $\frac{\ln 2}{0{,}03}$ ne dépend pas de l’effectif initial : la population double tous les $23{,}1$ ans environ.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Les solutions sont les fonctions $t \mapsto Ce^{0{,}03t}$, $C \in \mathbb{R}$.
+2. $P(t) = 5\,000e^{0{,}03t}$ et $P(10) \approx 6\,749$ habitants.
+3. $t = \frac{\ln 2}{0{,}03} \approx 23{,}1$ ans.
+
+===
+
+=== Entraînement - Équations Différentielles - Croissance de Population
+Id: 1127
+Difficulté: medium
+
+Énoncé: <!-- optitab:1 -->
+Une population, $t$ en années, suit la loi $P' = 0{,}02P + 50$, où $50$ représente un apport constant de $50$ habitants par an (immigration). Initialement, $P(0) = 1\,000$.
+
+1. Déterminer les solutions de l’équation différentielle.
+2. En déduire $P(t)$, puis la population au bout de $5$ ans.
+3. Au bout de combien d’années la population atteindra-t-elle $2\,000$ habitants ?
+4. Étudier le comportement de la population à long terme.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Solutions de $P' = 0{,}02P + 50$
+
+::: methode
+L’équation est de la forme $y' = ay + b$ : ses solutions sont les fonctions $Ce^{at} - \frac{b}{a}$.
+:::
+
+::: etape Identification
+$a = 0{,}02$ et $b = 50$.
+:::
+
+::: etape Solution constante
+$$-\frac{b}{a} = -\frac{50}{0{,}02} = -2\,500$$
+:::
+
+::: resultat
+Les solutions sont les fonctions $t \mapsto Ce^{0{,}02t} - 2\,500$, avec $C$ réel.
+:::
+
+## Question 2 : Expression de $P(t)$ et population au bout de $5$ ans
+
+::: methode
+On utilise la condition initiale sur la solution complète.
+:::
+
+::: etape Condition initiale
+$P(0) = C - 2\,500 = 1\,000$, donc $C = 3\,500$ et $P(t) = 3\,500e^{0{,}02t} - 2\,500$.
+:::
+
+::: etape Population au bout de $5$ ans
+$$
+\begin{aligned}
+P(5) &= 3\,500e^{0{,}02 \times 5} - 2\,500 \\
+&= 3\,500e^{0{,}1} - 2\,500 \\
+&\approx 1\,368{,}1
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(t) = 3\,500e^{0{,}02t} - 2\,500$ et, au bout de $5$ ans, la population compte environ $1\,368$ habitants.
+:::
+
+## Question 3 : Quand la population atteint-elle $2\,000$ habitants ?
+
+::: methode
+On isole l’exponentielle, puis on applique le logarithme népérien.
+:::
+
+::: etape Résolution
+$$
+\begin{aligned}
+3\,500e^{0{,}02t} - 2\,500 = 2\,000 &\iff 3\,500e^{0{,}02t} = 4\,500 \\
+&\iff e^{0{,}02t} = \frac{9}{7} \\
+&\iff 0{,}02t = \ln\frac{9}{7} \\
+&\iff t = 50\ln\frac{9}{7} \approx 12{,}57
+\end{aligned}
+$$
+:::
+
+::: attention
+On garde la valeur exacte $\frac{9}{7}$ jusqu’au bout : arrondir trop tôt (par exemple à $1{,}2857$, puis le logarithme à $0{,}2518$) fausse le résultat.
+:::
+
+::: resultat
+La population atteint $2\,000$ habitants au bout d’environ $12{,}57$ ans.
+:::
+
+## Question 4 : Comportement à long terme
+
+::: methode
+On cherche la limite de $P(t)$ en $+\infty$.
+:::
+
+::: etape Limite
+Comme $0{,}02 \gt 0$, $e^{0{,}02t}$ tend vers $+\infty$ quand $t$ tend vers $+\infty$ ; donc $3\,500e^{0{,}02t} - 2\,500$ tend aussi vers $+\infty$.
+:::
+
+::: resultat
+$\lim\limits_{t \to +\infty} P(t) = +\infty$ : dans ce modèle, la population croît sans limite.
+:::
+
+::: remarque
+Ici $a \gt 0$ : les solutions s’éloignent de la solution constante $-2\,500$ (qui n’a d’ailleurs pas de sens pour une population) au lieu de s’en rapprocher.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Les solutions sont les fonctions $t \mapsto Ce^{0{,}02t} - 2\,500$, $C \in \mathbb{R}$.
+2. $P(t) = 3\,500e^{0{,}02t} - 2\,500$ et $P(5) \approx 1\,368$ habitants.
+3. $t = 50\ln\frac{9}{7} \approx 12{,}57$ ans.
+4. $\lim\limits_{t \to +\infty} P(t) = +\infty$ : la population croît sans limite.
+
+===
+
+=== Entraînement - Équations Différentielles - Décroissance Radioactive
+Id: 1126
+Difficulté: medium
+Image: v1_n90_ex1126_1_ex_radioactif.png
+
+Énoncé: <!-- optitab:1 -->
+Le nombre $N(t)$ de noyaux radioactifs d’un échantillon, $t$ en minutes, vérifie l’équation différentielle $N' = -\lambda N$ (notée aussi $\frac{dN}{dt} = -\lambda N$ en physique), avec $\lambda = 0{,}02\ \text{min}^{-1}$. Initialement, l’échantillon contient $N(0) = 1\,000$ noyaux.
+
+1. Résoudre l’équation différentielle $N' = -0{,}02N$.
+2. Déterminer $N(t)$.
+3. La demi-vie $T$ est la durée au bout de laquelle la moitié des noyaux initiaux s’est désintégrée. Calculer $T$.
+4. Au bout de combien de temps ne reste-t-il que $100$ noyaux ?
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Résoudre $N' = -0{,}02N$
+
+::: methode
+L’équation est de la forme $y' = ay$ avec $a = -0{,}02$ : on applique le théorème du cours.
+:::
+
+::: etape Identification
+$N' = aN$ avec $a = -\lambda = -0{,}02$.
+:::
+
+::: resultat
+Les solutions sont les fonctions $t \mapsto Ce^{-0{,}02t}$, avec $C$ réel.
+:::
+
+::: remarque
+En physique, on rencontre la « séparation des variables » ($\frac{dN}{N} = -\lambda\,dt$). Elle n’est pas au programme de mathématiques : le théorème sur $y' = ay$ donne directement toutes les solutions.
+:::
+
+## Question 2 : Expression de $N(t)$
+
+::: methode
+La condition initiale $N(0) = 1\,000$ donne $C$.
+:::
+
+::: etape Condition initiale
+$N(0) = Ce^{0} = C$, donc $C = 1\,000$.
+:::
+
+::: resultat
+$$N(t) = 1\,000e^{-0{,}02t}$$
+:::
+
+## Question 3 : Demi-vie
+
+::: methode
+On résout $N(T) = 500$, la moitié de $N(0)$.
+:::
+
+::: etape Résolution
+$$
+\begin{aligned}
+1\,000e^{-0{,}02T} = 500 &\iff e^{-0{,}02T} = \frac{1}{2} \\
+&\iff -0{,}02T = \ln\frac{1}{2} = -\ln 2 \\
+&\iff T = \frac{\ln 2}{0{,}02} = 50\ln 2 \approx 34{,}66
+\end{aligned}
+$$
+:::
+
+[IMAGE_1]
+
+::: resultat
+La demi-vie vaut $T = 50\ln 2 \approx 34{,}66$ minutes.
+:::
+
+::: retenir
+Pour $N' = -\lambda N$, la demi-vie vaut $\dfrac{\ln 2}{\lambda}$ : elle ne dépend pas du nombre initial de noyaux.
+:::
+
+## Question 4 : Temps pour qu’il ne reste que $100$ noyaux
+
+::: methode
+On résout $N(t) = 100$ avec le logarithme népérien.
+:::
+
+::: etape Résolution
+$$
+\begin{aligned}
+1\,000e^{-0{,}02t} = 100 &\iff e^{-0{,}02t} = \frac{1}{10} \\
+&\iff -0{,}02t = -\ln 10 \\
+&\iff t = 50\ln 10 \approx 115{,}13
+\end{aligned}
+$$
+:::
+
+::: resultat
+Il ne reste que $100$ noyaux au bout d’environ $115{,}13$ minutes.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Les solutions sont les fonctions $t \mapsto Ce^{-0{,}02t}$, $C \in \mathbb{R}$.
+2. $N(t) = 1\,000e^{-0{,}02t}$.
+3. $T = 50\ln 2 \approx 34{,}66$ minutes.
+4. $t = 50\ln 10 \approx 115{,}13$ minutes.
+
+===
+
+=== Entraînement - Équations Différentielles - Décroissance Radioactive (Uranium)
+Id: 1129
+Difficulté: medium
+
+Énoncé: <!-- optitab:1 -->
+Le nombre $N(t)$ de noyaux d’uranium 238 d’un échantillon, $t$ en secondes, vérifie l’équation différentielle $N' = -\lambda N$, avec $\lambda = 4{,}9 \times 10^{-18}\ \text{s}^{-1}$. On note $N_0 = N(0)$ le nombre initial de noyaux et l’on prend $1$ an $\approx 3{,}156 \times 10^{7}$ s.
+
+1. Résoudre l’équation différentielle, puis exprimer $N(t)$ en fonction de $N_0$ et de $t$.
+2. Quelle proportion des noyaux initiaux reste-t-il au bout d’un milliard d’années ?
+3. Calculer la demi-vie de l’uranium 238, c’est-à-dire la durée au bout de laquelle la moitié des noyaux s’est désintégrée, en milliards d’années.
+4. La demi-vie mesurée de l’uranium 238 est d’environ $4{,}47$ milliards d’années. Comparer avec la valeur trouvée.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Expression de $N(t)$
+
+::: methode
+L’équation est de la forme $y' = ay$ avec $a = -\lambda$.
+:::
+
+::: etape Solutions
+Les solutions sont les fonctions $t \mapsto Ce^{-\lambda t}$, avec $C$ réel.
+:::
+
+::: etape Condition initiale
+$N(0) = Ce^{0} = C$, donc $C = N_0$.
+:::
+
+::: resultat
+$$N(t) = N_0e^{-\lambda t}$$
+:::
+
+## Question 2 : Proportion restante au bout d’un milliard d’années
+
+::: methode
+On convertit la durée en secondes, puis on calcule $\frac{N(t)}{N_0} = e^{-\lambda t}$.
+:::
+
+::: etape Conversion en secondes
+$$t = 10^{9} \times 3{,}156 \times 10^{7} = 3{,}156 \times 10^{16} \text{ s}$$
+:::
+
+::: etape Calcul de $\lambda t$
+$$\lambda t = 4{,}9 \times 10^{-18} \times 3{,}156 \times 10^{16} \approx 0{,}1546$$
+:::
+
+::: etape Proportion restante
+$$\frac{N(t)}{N_0} = e^{-\lambda t} \approx e^{-0{,}1546} \approx 0{,}857$$
+:::
+
+::: resultat
+Au bout d’un milliard d’années, il reste environ $85{,}7$ % des noyaux initiaux.
+:::
+
+## Question 3 : Demi-vie
+
+::: methode
+On résout $N(T) = \frac{N_0}{2}$, puis on convertit en années.
+:::
+
+::: etape Résolution
+$$
+\begin{aligned}
+N_0e^{-\lambda T} = \frac{N_0}{2} &\iff e^{-\lambda T} = \frac{1}{2} \\
+&\iff -\lambda T = -\ln 2 \\
+&\iff T = \frac{\ln 2}{\lambda}
+\end{aligned}
+$$
+:::
+
+::: etape Valeur en secondes
+$$T = \frac{\ln 2}{4{,}9 \times 10^{-18}} \approx 1{,}415 \times 10^{17} \text{ s}$$
+:::
+
+::: etape Conversion en années
+$$\frac{1{,}415 \times 10^{17}}{3{,}156 \times 10^{7}} \approx 4{,}482 \times 10^{9} \text{ ans}$$
+:::
+
+::: resultat
+La demi-vie de l’uranium 238 vaut environ $4{,}48$ milliards d’années.
+:::
+
+## Question 4 : Comparaison avec la mesure
+
+::: methode
+On calcule l’écart relatif entre la valeur trouvée et la valeur mesurée.
+:::
+
+::: etape Écart relatif
+$$\frac{4{,}482 - 4{,}47}{4{,}47} \approx 0{,}003, \quad \text{soit environ } 0{,}3\ \%.$$
+:::
+
+::: resultat
+L’écart est inférieur à $1$ % : le modèle $N' = -\lambda N$ est en très bon accord avec la mesure. La petite différence vient de l’arrondi de $\lambda$, donné avec deux chiffres significatifs.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $N(t) = N_0e^{-\lambda t}$, avec $\lambda = 4{,}9 \times 10^{-18}\ \text{s}^{-1}$.
+2. $\frac{N(t)}{N_0} = e^{-\lambda t} \approx 0{,}857$ : il reste environ $85{,}7$ % des noyaux.
+3. $T = \frac{\ln 2}{\lambda} \approx 1{,}415 \times 10^{17}$ s, soit environ $4{,}48$ milliards d’années.
+4. Écart relatif d’environ $0{,}3$ % : très bon accord avec la valeur mesurée.
+
+===
+
+=== Entraînement - Équations Différentielles - Mélange de Solutions
+Id: 1124
+Difficulté: hard
+Image: v1_n90_ex1124_1_ex_melange.png
+
+Énoncé: <!-- optitab:1 -->
+Un réservoir contient $100$ L d’eau pure. On y verse une solution salée de concentration $0{,}5$ kg/L, au débit de $2$ L/min. Le mélange, agité en permanence, s’écoule au même débit de $2$ L/min : le volume reste donc égal à $100$ L. On note $Q(t)$ la masse de sel, en kg, présente dans le réservoir à l’instant $t$, en minutes, avec $Q(0) = 0$. On admet que $Q'(t)$ est égal à la masse de sel qui entre par minute, moins la masse de sel qui sort par minute.
+
+1. Montrer que $Q' = -\dfrac{1}{50}Q + 1$.
+2. Résoudre cette équation avec la condition $Q(0) = 0$.
+3. Calculer la masse de sel au bout de $30$ minutes.
+4. Étudier le comportement de $Q(t)$ à long terme. Quelle est la concentration limite dans le réservoir ?
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Établir l’équation différentielle
+
+::: methode
+Bilan : vitesse de variation de $Q$ $=$ sel entrant par minute $-$ sel sortant par minute.
+:::
+
+::: etape Sel qui entre
+Il entre $2$ L de solution par minute, à $0{,}5$ kg/L :
+$$2 \times 0{,}5 = 1 \text{ kg/min}.$$
+:::
+
+::: etape Sel qui sort
+La concentration dans le réservoir est $\frac{Q(t)}{100}$ kg/L et il en sort $2$ L par minute :
+$$2 \times \frac{Q(t)}{100} = \frac{Q(t)}{50} \text{ kg/min}.$$
+:::
+
+::: resultat
+$$Q'(t) = 1 - \frac{Q(t)}{50}, \quad \text{soit} \quad Q' = -\frac{1}{50}Q + 1.$$
+:::
+
+## Question 2 : Résoudre avec $Q(0) = 0$
+
+::: methode
+Équation $y' = ay + b$ : solution constante, puis $Ce^{at}$, puis condition initiale.
+:::
+
+::: etape Identification
+$a = -\frac{1}{50} = -0{,}02$ et $b = 1$.
+:::
+
+::: etape Solution constante
+$$-\frac{b}{a} = -\frac{1}{-0{,}02} = 50$$
+:::
+
+::: etape Solutions
+Les solutions sont les fonctions $t \mapsto Ce^{-0{,}02t} + 50$, avec $C$ réel.
+:::
+
+::: etape Condition initiale
+$Q(0) = C + 50 = 0$, donc $C = -50$.
+:::
+
+::: resultat
+$$Q(t) = 50 - 50e^{-0{,}02t} = 50\left(1 - e^{-0{,}02t}\right)$$
+:::
+
+## Question 3 : Masse de sel au bout de $30$ minutes
+
+::: methode
+On remplace $t$ par $30$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+Q(30) &= 50\left(1 - e^{-0{,}02 \times 30}\right) \\
+&= 50\left(1 - e^{-0{,}6}\right) \\
+&\approx 22{,}56
+\end{aligned}
+$$
+:::
+
+::: resultat
+Au bout de $30$ minutes, le réservoir contient environ $22{,}56$ kg de sel.
+:::
+
+## Question 4 : Comportement à long terme
+
+::: methode
+On calcule la limite de $Q(t)$ en $+\infty$, puis la concentration $\frac{Q(t)}{100}$.
+:::
+
+::: etape Limite
+Quand $t$ tend vers $+\infty$, $-0{,}02t$ tend vers $-\infty$, donc $e^{-0{,}02t}$ tend vers $0$ :
+$$\lim_{t \to +\infty} Q(t) = 50(1 - 0) = 50.$$
+:::
+
+::: etape Concentration limite
+$$\frac{50}{100} = 0{,}5 \text{ kg/L}$$
+:::
+
+[IMAGE_1]
+
+::: resultat
+La masse de sel tend vers $50$ kg : la concentration dans le réservoir tend vers $0{,}5$ kg/L, celle de la solution versée. À l’équilibre, il sort autant de sel qu’il en entre ($1$ kg/min).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Entrée : $2 \times 0{,}5 = 1$ kg/min ; sortie : $2 \times \frac{Q}{100} = \frac{Q}{50}$ kg/min ; donc $Q' = -\frac{1}{50}Q + 1$.
+2. $Q(t) = 50\left(1 - e^{-0{,}02t}\right)$.
+3. $Q(30) = 50\left(1 - e^{-0{,}6}\right) \approx 22{,}56$ kg.
+4. $\lim\limits_{t \to +\infty} Q(t) = 50$ kg : la concentration tend vers $0{,}5$ kg/L.
+
+===
+
+=== Entraînement - Équations Différentielles - Refroidissement de Newton
+Id: 1125
+Difficulté: hard
+Image: v1_n90_ex1125_1_ex_newton.png
+
+Énoncé: <!-- optitab:1 -->
+Un corps chaud à $80$ °C est placé dans une pièce à $20$ °C. D’après la loi de refroidissement de Newton, la vitesse de refroidissement est proportionnelle à l’écart de température avec la pièce : la température $T(t)$ du corps, en °C, $t$ en minutes, vérifie $T' = -k(T - 20)$. On prend $k = 0{,}1\ \text{min}^{-1}$.
+
+1. Résoudre l’équation différentielle $T' = -0{,}1(T - 20)$.
+2. Déterminer la constante d’intégration à l’aide de la condition initiale, puis l’expression de $T(t)$.
+3. Déterminer la température au bout de $10$ minutes.
+4. Au bout de combien de temps la température atteindra-t-elle $25$ °C ?
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Résoudre $T' = -0{,}1(T - 20)$
+
+::: methode
+On développe pour obtenir la forme $y' = ay + b$.
+:::
+
+::: etape Forme $y' = ay + b$
+$$T' = -0{,}1(T - 20) = -0{,}1T + 2$$
+Donc $a = -0{,}1$ et $b = 2$.
+:::
+
+::: etape Solution constante
+$$-\frac{b}{a} = -\frac{2}{-0{,}1} = 20$$
+C’est la température de la pièce.
+:::
+
+::: resultat
+Les solutions sont les fonctions $t \mapsto Ce^{-0{,}1t} + 20$, avec $C$ réel.
+:::
+
+## Question 2 : Constante d’intégration et expression de $T(t)$
+
+::: methode
+On traduit $T(0) = 80$ sur la solution complète.
+:::
+
+::: etape Condition initiale
+$T(0) = Ce^{0} + 20 = C + 20 = 80$, donc $C = 60$.
+:::
+
+::: resultat
+$$T(t) = 20 + 60e^{-0{,}1t}$$
+:::
+
+## Question 3 : Température au bout de $10$ minutes
+
+::: methode
+On remplace $t$ par $10$.
+:::
+
+::: etape Calcul
+$$T(10) = 20 + 60e^{-0{,}1 \times 10} = 20 + 60e^{-1} \approx 42{,}07$$
+:::
+
+::: resultat
+Au bout de $10$ minutes, la température est d’environ $42{,}07$ °C.
+:::
+
+## Question 4 : Quand la température atteint-elle $25$ °C ?
+
+::: methode
+On résout $T(t) = 25$ : on isole l’exponentielle, puis on applique le logarithme népérien.
+:::
+
+::: etape Résolution
+$$
+\begin{aligned}
+20 + 60e^{-0{,}1t} = 25 &\iff 60e^{-0{,}1t} = 5 \\
+&\iff e^{-0{,}1t} = \frac{1}{12} \\
+&\iff -0{,}1t = \ln\frac{1}{12} = -\ln 12 \\
+&\iff t = 10\ln 12 \approx 24{,}85
+\end{aligned}
+$$
+:::
+
+[IMAGE_1]
+
+::: resultat
+La température atteint $25$ °C au bout d’environ $24{,}85$ minutes.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Les solutions sont les fonctions $t \mapsto Ce^{-0{,}1t} + 20$, $C \in \mathbb{R}$.
+2. $T(0) = 80$ donne $C = 60$, donc $T(t) = 20 + 60e^{-0{,}1t}$.
+3. $T(10) = 20 + 60e^{-1} \approx 42{,}07$ °C.
+4. $t = 10\ln 12 \approx 24{,}85$ minutes.
+
+===
+
+=== Entraînement - Équations Différentielles - Séparation des Variables (Température)
+Id: 1130
+Difficulté: medium
+
+Énoncé: <!-- optitab:1 -->
+La température $T(t)$ d’un objet, en °C, $t$ en minutes, vérifie l’équation différentielle $T' = -k(T - T_a)$, où $T_a = 25$ °C est la température ambiante et $k = 0{,}02\ \text{min}^{-1}$. Initialement, $T(0) = 100$ °C.
+
+1. Résoudre l’équation différentielle $T' = -0{,}02(T - 25)$.
+2. Déterminer $T(t)$.
+3. Calculer la température au bout d’une heure.
+4. Au bout de combien de temps la température atteindra-t-elle $30$ °C ?
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Résoudre $T' = -0{,}02(T - 25)$
+
+::: methode
+On développe pour obtenir la forme $y' = ay + b$, puis on applique le théorème du cours.
+:::
+
+::: etape Forme $y' = ay + b$
+$$T' = -0{,}02(T - 25) = -0{,}02T + 0{,}5$$
+Donc $a = -0{,}02$ et $b = 0{,}5$.
+:::
+
+::: etape Solution constante
+$$-\frac{b}{a} = -\frac{0{,}5}{-0{,}02} = 25$$
+C’est la température ambiante.
+:::
+
+::: resultat
+Les solutions sont les fonctions $t \mapsto Ce^{-0{,}02t} + 25$, avec $C$ réel.
+:::
+
+::: remarque Pour aller plus loin : la « séparation des variables »
+En physique, on écrit parfois $\frac{dT}{T - 25} = -0{,}02\,dt$, puis on « intègre » les deux membres : $\ln|T - 25| = -0{,}02t + K$. Cette méthode n’est pas au programme de mathématiques de Terminale : le théorème sur $y' = ay + b$ donne directement toutes les solutions, avec une justification complète.
+:::
+
+## Question 2 : Expression de $T(t)$
+
+::: methode
+On traduit la condition initiale $T(0) = 100$.
+:::
+
+::: etape Condition initiale
+$T(0) = C + 25 = 100$, donc $C = 75$.
+:::
+
+::: resultat
+$$T(t) = 25 + 75e^{-0{,}02t}$$
+:::
+
+## Question 3 : Température au bout d’une heure
+
+::: methode
+Une heure, c’est $60$ minutes : on calcule $T(60)$.
+:::
+
+::: etape Calcul
+$$T(60) = 25 + 75e^{-0{,}02 \times 60} = 25 + 75e^{-1{,}2} \approx 47{,}59$$
+:::
+
+::: resultat
+Au bout d’une heure, la température est d’environ $47{,}59$ °C.
+:::
+
+## Question 4 : Quand la température atteint-elle $30$ °C ?
+
+::: methode
+On résout $T(t) = 30$ avec le logarithme népérien.
+:::
+
+::: etape Résolution
+$$
+\begin{aligned}
+25 + 75e^{-0{,}02t} = 30 &\iff 75e^{-0{,}02t} = 5 \\
+&\iff e^{-0{,}02t} = \frac{1}{15} \\
+&\iff -0{,}02t = -\ln 15 \\
+&\iff t = 50\ln 15 \approx 135{,}4
+\end{aligned}
+$$
+:::
+
+::: resultat
+La température atteint $30$ °C au bout d’environ $135{,}4$ minutes, soit environ $2$ h $15$ min.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Les solutions sont les fonctions $t \mapsto Ce^{-0{,}02t} + 25$, $C \in \mathbb{R}$.
+2. $T(t) = 25 + 75e^{-0{,}02t}$.
+3. $T(60) = 25 + 75e^{-1{,}2} \approx 47{,}59$ °C.
+4. $t = 50\ln 15 \approx 135{,}4$ minutes, soit environ $2$ h $15$ min.
+
+===
+
+=== Problème - Équations Différentielles - Croissance Logistique
+Id: 1131
+Difficulté: hard
+Image: v1_n90_ex1131_1_ex_logistique.png
+
+Énoncé: <!-- optitab:1 -->
+Une population d’effectif $P(t) \gt 0$, $t$ en années, suit le modèle logistique de Verhulst :
+$$P' = 0{,}1P\left(1 - \frac{P}{1\,000}\right) \quad \text{et} \quad P(0) = 100,$$
+où $1\,000$ est la capacité d’accueil du milieu. Cette équation n’est pas de la forme $y' = ay + b$ (elle contient $P^2$) : on s’y ramène par un changement de fonction.
+
+1. On pose $z = \dfrac{1}{P}$. Montrer que $z$ vérifie l’équation $z' = -0{,}1z + 0{,}000\,1$.
+2. Résoudre cette équation, puis en déduire que $P(t) = \dfrac{1\,000}{1 + 9e^{-0{,}1t}}$.
+3. Calculer la population au bout de $20$ ans.
+4. Étudier le comportement de $P(t)$ à long terme et interpréter.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Équation vérifiée par $z = \frac{1}{P}$
+
+::: methode
+On dérive $z = \frac{1}{P}$ avec $\left(\frac{1}{u}\right)' = -\frac{u'}{u^2}$, puis on remplace $P'$ grâce à l’équation.
+:::
+
+::: etape Dérivée de $z$
+$$z' = -\frac{P'}{P^2}$$
+:::
+
+::: etape On remplace $P'$
+$$
+\begin{aligned}
+z' &= -\frac{0{,}1P\left(1 - \frac{P}{1\,000}\right)}{P^2} \\
+&= -\frac{0{,}1}{P}\left(1 - \frac{P}{1\,000}\right) \\
+&= -\frac{0{,}1}{P} + \frac{0{,}1}{1\,000} \\
+&= -0{,}1z + 0{,}000\,1
+\end{aligned}
+$$
+:::
+
+::: resultat
+La fonction $z = \frac{1}{P}$ vérifie $z' = -0{,}1z + 0{,}000\,1$.
+:::
+
+## Question 2 : Résoudre, puis en déduire $P(t)$
+
+::: methode
+Équation $y' = ay + b$ pour $z$, condition initiale $z(0) = \frac{1}{P(0)}$, puis $P = \frac{1}{z}$.
+:::
+
+::: etape Solutions pour $z$
+$a = -0{,}1$ et $b = 0{,}000\,1$, donc $-\frac{b}{a} = \frac{0{,}000\,1}{0{,}1} = 0{,}001$ et
+$$z(t) = Ce^{-0{,}1t} + 0{,}001, \quad C \in \mathbb{R}.$$
+:::
+
+::: etape Condition initiale
+$z(0) = \frac{1}{P(0)} = \frac{1}{100} = 0{,}01$, donc $C + 0{,}001 = 0{,}01$ et $C = 0{,}009$.
+:::
+
+::: etape Retour à $P$
+On multiplie numérateur et dénominateur par $1\,000$ :
+$$P(t) = \frac{1}{z(t)} = \frac{1}{0{,}009e^{-0{,}1t} + 0{,}001} = \frac{1\,000}{9e^{-0{,}1t} + 1}.$$
+:::
+
+::: resultat
+$$P(t) = \frac{1\,000}{1 + 9e^{-0{,}1t}}$$
+:::
+
+## Question 3 : Population au bout de $20$ ans
+
+::: methode
+On remplace $t$ par $20$.
+:::
+
+::: etape Calcul
+$$P(20) = \frac{1\,000}{1 + 9e^{-0{,}1 \times 20}} = \frac{1\,000}{1 + 9e^{-2}} \approx 450{,}85$$
+:::
+
+::: resultat
+Au bout de $20$ ans, la population compte environ $451$ individus.
+:::
+
+## Question 4 : Comportement à long terme
+
+::: methode
+On calcule la limite de $P(t)$ en $+\infty$.
+:::
+
+::: etape Limite
+Quand $t$ tend vers $+\infty$, $e^{-0{,}1t}$ tend vers $0$, donc $1 + 9e^{-0{,}1t}$ tend vers $1$ et
+$$\lim_{t \to +\infty} P(t) = \frac{1\,000}{1} = 1\,000.$$
+:::
+
+::: etape Sens de variation
+$P(t) = \frac{1\,000}{1 + 9e^{-0{,}1t}}$ : quand $t$ augmente, $9e^{-0{,}1t}$ diminue, donc le dénominateur diminue et $P(t)$ augmente. La population croît donc vers $1\,000$ sans jamais l’atteindre.
+:::
+
+[IMAGE_1]
+
+::: resultat
+$\lim\limits_{t \to +\infty} P(t) = 1\,000$ : la population se stabilise à la capacité d’accueil du milieu. Sa courbe a une forme en « S » : croissance rapide, puis saturation.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $z' = -\frac{P'}{P^2} = -\frac{0{,}1}{P} + \frac{0{,}1}{1\,000} = -0{,}1z + 0{,}000\,1$.
+2. $z(t) = 0{,}009e^{-0{,}1t} + 0{,}001$, donc $P(t) = \dfrac{1\,000}{1 + 9e^{-0{,}1t}}$.
+3. $P(20) = \dfrac{1\,000}{1 + 9e^{-2}} \approx 451$ individus.
+4. $\lim\limits_{t \to +\infty} P(t) = 1\,000$ : la population tend vers la capacité d’accueil du milieu.
+
+===

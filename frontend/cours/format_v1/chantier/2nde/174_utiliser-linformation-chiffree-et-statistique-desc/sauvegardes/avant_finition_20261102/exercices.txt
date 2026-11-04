@@ -1,0 +1,2539 @@
+=== Algorithmique - Lire une fonction Python (moyenne, écart type, proportion)
+Id: 1991
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On considère la fonction Python suivante, où `L` est une liste de nombres.
+
+```python
+def stats(L):
+    n = len(L)
+    m = sum(L) / n
+    V = 0
+    for x in L:
+        V = V + (x - m)**2
+    V = V / n
+    s = V ** 0.5
+    a = m - 2*s
+    b = m + 2*s
+    c = 0
+    for x in L:
+        if a <= x <= b:
+            c = c + 1
+    prop = c / n
+    return m, s, prop
+```
+
+1. Que représentent les variables `n` et `m` ?
+2. Que représentent les variables `V` et `s` ?
+3. Que renvoie `stats([9, 9, 11, 11])` ?
+4. Que renvoie `stats([0, 0, 0, 0, 0, 10])` ? Donner des valeurs approchées au centième.
+5. Expliquer pourquoi `prop` est toujours compris entre $0$ et $1$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Interpréter `n` et `m`
+
+::: methode
+Lire chaque ligne et la traduire en langage mathématique.
+:::
+
+::: etape Ligne `n = len(L)`
+`len(L)` est la longueur de la liste : `n` est l’**effectif total** $N$ de la série.
+:::
+
+::: etape Ligne `m = sum(L) / n`
+`sum(L)` est la somme des valeurs ; divisée par l’effectif, elle donne la **moyenne** $\bar{x}$.
+:::
+
+::: resultat
+`n` est l’effectif total et `m` la moyenne de la série.
+:::
+
+## Question 2 : Interpréter `V` et `s`
+
+::: methode
+Suivre la boucle : elle additionne les carrés des écarts à la moyenne.
+:::
+
+::: etape Boucle sur `V`
+Après la boucle, `V` vaut $(x_1 - \bar{x})^2 + \cdots + (x_N - \bar{x})^2$. La ligne `V = V / n` divise cette somme par $N$ : `V` est la moyenne des carrés des écarts à la moyenne (appelée **variance**).
+:::
+
+::: etape Ligne `s = V ** 0.5`
+`** 0.5` signifie « puissance $\dfrac{1}{2}$ », c’est-à-dire racine carrée : $s = \sqrt{V}$, c’est l’**écart type** $\sigma$.
+:::
+
+::: resultat
+`V` est la variance et `s` l’écart type de la série.
+:::
+
+## Question 3 : Exécuter `stats([9, 9, 11, 11])`
+
+::: methode
+Calculer $m$, puis $s$, puis compter les valeurs de l’intervalle $[a\,;\,b]$.
+:::
+
+::: etape Moyenne
+$$m = \frac{9 + 9 + 11 + 11}{4} = \frac{40}{4} = 10$$
+:::
+
+::: etape Variance et écart type
+Les écarts à la moyenne valent $-1$, $-1$, $1$, $1$ ; leurs carrés valent tous $1$.
+
+$$V = \frac{1 + 1 + 1 + 1}{4} = 1 \qquad s = \sqrt{1} = 1$$
+:::
+
+::: etape Proportion
+$a = 10 - 2 \times 1 = 8$ et $b = 10 + 2 \times 1 = 12$. Les quatre valeurs sont dans $[8\,;\,12]$, donc `c` vaut $4$ et `prop` vaut $\dfrac{4}{4} = 1$.
+:::
+
+::: resultat
+La fonction renvoie `(10.0, 1.0, 1.0)`, c’est-à-dire $m = 10$, $s = 1$ et une proportion de $1$ ($100\,\%$).
+:::
+
+## Question 4 : Exécuter `stats([0, 0, 0, 0, 0, 10])`
+
+::: methode
+Même démarche ; les calculs se font en fractions puis on arrondit.
+:::
+
+::: etape Moyenne
+$$m = \frac{0 \times 5 + 10}{6} = \frac{10}{6} = \frac{5}{3} \approx 1{,}67$$
+:::
+
+::: etape Variance
+Pour chacune des cinq valeurs $0$ : $\left(0 - \dfrac{5}{3}\right)^2 = \dfrac{25}{9}$. Pour la valeur $10$ : $\left(10 - \dfrac{5}{3}\right)^2 = \left(\dfrac{25}{3}\right)^2 = \dfrac{625}{9}$.
+
+$$
+\begin{aligned}
+V &= \frac{1}{6}\left(5 \times \frac{25}{9} + \frac{625}{9}\right) \\
+&= \frac{1}{6} \times \frac{750}{9} \\
+&= \frac{125}{9}
+\end{aligned}
+$$
+:::
+
+::: etape Écart type
+$$s = \sqrt{\frac{125}{9}} = \frac{5\sqrt{5}}{3} \approx 3{,}73$$
+:::
+
+::: etape Intervalle et proportion
+$a = m - 2s \approx 1{,}67 - 7{,}45 \approx -5{,}79$ et $b = m + 2s \approx 1{,}67 + 7{,}45 \approx 9{,}12$.
+
+Les cinq valeurs $0$ sont dans $[-5{,}79\,;\,9{,}12]$ ; la valeur $10$ n’y est pas car $10 \gt 9{,}12$. Donc `c` vaut $5$ et `prop` vaut $\dfrac{5}{6}$.
+:::
+
+::: resultat
+La fonction renvoie environ $(1{,}67\,;\,3{,}73\,;\,0{,}83)$ : $m = \dfrac{5}{3}$, $s = \dfrac{5\sqrt{5}}{3}$ et $\mathrm{prop} = \dfrac{5}{6}$.
+:::
+
+::: attention
+Python écrit les nombres avec un point décimal : `1.67` se lit $1{,}67$.
+:::
+
+## Question 5 : Pourquoi $0 \leqslant$ `prop` $\leqslant 1$ ?
+
+::: methode
+`c` compte des éléments de la liste.
+:::
+
+::: etape Encadrer `c`
+`c` part de $0$ et augmente de $1$ au plus une fois par valeur de la liste : $0 \leqslant c \leqslant n$.
+:::
+
+::: etape Diviser par $n$
+Comme $n \gt 0$, on peut diviser l’encadrement par $n$ : $0 \leqslant \dfrac{c}{n} \leqslant 1$.
+:::
+
+::: resultat
+`prop` $= \dfrac{c}{n}$ est une proportion : elle est toujours comprise entre $0$ et $1$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. `n` est l’effectif total, `m` la moyenne.
+2. `V` est la variance (moyenne des carrés des écarts à la moyenne), `s` l’écart type.
+3. $m = 10$, $s = 1$, $\mathrm{prop} = 1$.
+4. $m = \dfrac{5}{3} \approx 1{,}67$, $s = \dfrac{5\sqrt{5}}{3} \approx 3{,}73$, $\mathrm{prop} = \dfrac{5}{6} \approx 0{,}83$.
+5. $0 \leqslant c \leqslant n$ donc $0 \leqslant \dfrac{c}{n} \leqslant 1$.
+
+===
+
+=== Découverte - Linéarité de la moyenne - Transformer une série
+Id: 1988
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Si une série est transformée par $y=ax+b$, alors la moyenne se transforme de la même façon : $\bar{y}=a\bar{x}+b$.
+
+1. Une classe a une moyenne $\bar{x}=11{,}8$. On ajoute $1{,}5$ à toutes les notes. Quelle est la nouvelle moyenne ?
+2. Une série a une moyenne $\bar{x}=6$. On multiplie toutes les valeurs par $3$. Quelle est la nouvelle moyenne ?
+3. La température est convertie de Celsius vers Fahrenheit par $F=1{,}8C+32$. Si la moyenne en Celsius vaut $18^\circ$C, quelle est la moyenne en Fahrenheit ?
+4. Une série transformée par $\displaystyle y=x-4$ a une moyenne $\displaystyle \bar{y}=9$. Quelle était la moyenne $\displaystyle \bar{x}$ ?
+5. Une série a une moyenne $\bar{x}=50$. On applique une baisse de $20\,\%$ à toutes les valeurs. Quelle est la nouvelle moyenne ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Ajouter $\displaystyle 1{,}5$
+
+::: methode
+$$\bar{y}=\bar{x}+1{,}5$$
+:::
+
+::: point Calcul
+$$\bar{y}=11{,}8+1{,}5=13{,}3$$
+:::
+
+::: resultat
+$$13{,}3$$
+:::
+
+## Question 2 : Multiplier par $\displaystyle 3$
+
+::: methode
+$$\bar{y}=3\bar{x}$$
+:::
+
+::: point Calcul
+$$\bar{y}=3\times 6=18$$
+:::
+
+::: resultat
+$$18$$
+:::
+
+## Question 3 : Conversion en Fahrenheit
+
+::: methode
+$$\overline{F}=1{,}8\overline{C}+32$$
+:::
+
+::: point Calcul
+$$\overline{F}=1{,}8\times 18+32=32{,}4+32=64{,}4$$
+:::
+
+::: resultat
+$\displaystyle 64{,}4^\circ$F
+:::
+
+## Question 4 : Retrouver $\displaystyle \bar{x}$
+
+::: methode
+$$\bar{y}=\bar{x}-4$$
+:::
+
+::: point Calcul
+$9=\bar{x}-4$ donc $\bar{x}=13$
+:::
+
+::: resultat
+$$\bar{x}=13$$
+:::
+
+## Question 5 : Baisse de $\displaystyle 20\,\%$
+
+::: methode
+Une baisse de $20\,\%$ correspond à $a=0{,}8$
+:::
+
+::: point Calcul
+$$\bar{y}=0{,}8\times 50=40$$
+:::
+
+::: resultat
+$$40$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle 13{,}3$
+2. $\displaystyle 18$
+3. $\displaystyle 64{,}4^\circ$F
+4. $\displaystyle \bar{x}=13$
+5. $\displaystyle 40$
+
+===
+
+=== Découverte - Pourcentages de pourcentages - Ensembles inclus
+Id: 1976
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Quand une sous-population est incluse dans une autre, on **multiplie** les proportions : $p_{\mathrm{global}}=p_1\times p_2$.
+
+**Attention – erreur fréquente :** beaucoup d'élèves *additionnent* les pourcentages au lieu de les multiplier. Si une sous-population B est incluse dans une population A, la proportion de B dans l'ensemble vaut $p_A\times p_B$, et **non** $p_A+p_B$.
+
+1. Dans un lycée, $40\,\%$ des élèves sont en seconde. Parmi eux, $25\,\%$ font Latin. Quel pourcentage d'élèves sont en seconde Latin ?
+2. Dans un magasin, $60\,\%$ des clients sont adultes. Parmi les adultes, $30\,\%$ payent par carte. Quel pourcentage de clients sont des adultes payant par carte ?
+3. Une entreprise compte $500$ salariés. $20\,\%$ sont cadres et, parmi les cadres, $15\,\%$ travaillent à temps partiel. Combien y a-t-il de cadres à temps partiel ?
+4. Dans une enquête, $55\,\%$ des personnes utilisent les transports en commun. Parmi elles, $40\,\%$ prennent le métro. Quelle proportion de l'ensemble prend le métro ?
+5. Dans un lycée, $40\,\%$ des élèves sont en seconde. On sait que $12\,\%$ de tous les élèves sont en seconde Latin. Quel pourcentage des élèves de seconde font Latin ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Pourcentage global
+
+::: methode
+Multiplier les proportions : $\displaystyle 0{,}40\times 0{,}25$
+:::
+
+::: etape Calculer la proportion globale
+- $\displaystyle p=0{,}40\times 0{,}25=0{,}10$
+:::
+
+::: etape Convertir en pourcentage
+- $\displaystyle 0{,}10\times 100=10\,\%$
+:::
+
+::: resultat
+$10\,\%$ des élèves sont en seconde Latin
+:::
+
+## Question 2 : Pourcentage global
+
+::: methode
+$$0{,}60\times 0{,}30$$
+:::
+
+::: point Calcul
+$0{,}60\times 0{,}30=0{,}18$ donc $18\,\%$
+:::
+
+::: resultat
+$$18\,\%$$
+:::
+
+## Question 3 : Effectif dans une sous-sous-population
+
+::: methode
+Calculer les cadres puis appliquer $15\,\%$
+:::
+
+::: etape Cadres
+- $20\,\%$ de $500$ : $0{,}20\times 500=100$
+:::
+
+::: etape Cadres à temps partiel
+- $15\,\%$ de $100$ : $0{,}15\times 100=15$
+:::
+
+::: resultat
+$\displaystyle 15$ cadres à temps partiel
+:::
+
+## Question 4 : Proportion globale métro
+
+::: methode
+$$0{,}55\times 0{,}40$$
+:::
+
+::: etape Proportion
+- $\displaystyle p=0{,}55\times 0{,}40=0{,}22$
+:::
+
+::: resultat
+$0{,}22$ (soit $22\,\%$) prennent le métro
+:::
+
+## Question 5 : Retrouver un pourcentage « interne »
+
+::: methode
+Proportion (seconde Latin) = proportion (seconde) × proportion (Latin parmi les secondes)
+:::
+
+::: etape Écrire l'égalité en proportion
+- $\displaystyle 0{,}12=0{,}40\times p$
+:::
+
+::: etape Calculer $\displaystyle p$
+- $\displaystyle p=\dfrac{0{,}12}{0{,}40}=0{,}30$
+:::
+
+::: resultat
+$0{,}30$ soit $30\,\%$ des élèves de seconde font Latin
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle 10\,\%$
+2. $\displaystyle 18\,\%$
+3. $\displaystyle 15$
+4. $0{,}22$ (soit $22\,\%$)
+5. $\displaystyle 30\,\%$
+
+===
+
+=== Découverte - Proportions, pourcentages et effectifs - Conversions
+Id: 1975
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Pour chaque situation, utiliser la relation $p=\dfrac{n}{N}$ et convertir si besoin en pourcentage.
+
+**Rappel :** Une proportion $p$ est toujours un nombre compris entre $0$ et $1$ (c'est-à-dire $0\le p\le 1$). Pour obtenir le pourcentage correspondant, on multiplie par $100$ : $\%=100\times p$.
+
+1. Dans une classe de $28$ élèves, $7$ portent des lunettes. Calculer la proportion $p$ puis le pourcentage
+2. Dans un club de $\displaystyle 250$ membres, $\displaystyle 18\,\%$ sont bénévoles. Combien y a-t-il de bénévoles ?
+3. Dans une ville de $1200$ habitants, $312$ sont mineurs. Quel est le pourcentage de mineurs ?
+4. Dans un sondage, la proportion de réponses « oui » est $p=0{,}075$. Sur $2000$ réponses, combien y a-t-il de « oui » ?
+5. Dans une entreprise de $80$ employés, $12$ sont en télétravail. Donner $p$ sous forme de fraction simplifiée puis le pourcentage
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Proportion et pourcentage
+
+::: methode
+$p=\dfrac{n}{N}$ puis $\%=100p$
+:::
+
+::: etape Calculer la proportion
+- $\displaystyle p=\dfrac{7}{28}=\dfrac{1}{4}=0{,}25$
+:::
+
+::: etape Convertir en pourcentage
+- $\displaystyle 0{,}25\times 100=25\,\%$
+:::
+
+::: resultat
+$p=0{,}25$ et $25\,\%$
+:::
+
+## Question 2 : Retrouver un effectif à partir d'un pourcentage
+
+::: methode
+$$n=\dfrac{\%}{100}\times N$$
+:::
+
+::: etape Passer en proportion
+- $\displaystyle 18\,\% = 0{,}18$
+:::
+
+::: etape Calculer l'effectif
+- $\displaystyle n=0{,}18\times 250=45$
+:::
+
+::: resultat
+$\displaystyle 45$ bénévoles
+:::
+
+## Question 3 : Retrouver un pourcentage à partir d'un effectif
+
+::: methode
+$p=\dfrac{n}{N}$ puis $\%=100p$
+:::
+
+::: etape Proportion
+- $\displaystyle p=\dfrac{312}{1200}=\dfrac{13}{50}=0{,}26$
+- (Simplification : $\dfrac{312}{1200}=\dfrac{13}{50}$ en divisant numérateur et dénominateur par $24$)
+:::
+
+::: etape Pourcentage
+- $\displaystyle 0{,}26\times 100=26\,\%$
+:::
+
+::: resultat
+$\displaystyle 26\,\%$ de mineurs
+:::
+
+## Question 4 : Retrouver un effectif à partir d'une proportion
+
+::: methode
+$$n=p\times N$$
+:::
+
+::: etape Calculer
+- $\displaystyle n=0{,}075\times 2000=150$
+:::
+
+::: resultat
+$\displaystyle 150$ réponses « oui »
+:::
+
+## Question 5 : Proportion (fraction) et pourcentage
+
+::: methode
+$\displaystyle p=\dfrac{n}{N}$ puis simplifier
+:::
+
+::: etape Proportion
+- $\displaystyle p=\dfrac{12}{80}$
+:::
+
+::: etape Simplifier la fraction
+- $\displaystyle \dfrac{12}{80}=\dfrac{3}{20}$
+:::
+
+::: etape Pourcentage
+- $\dfrac{3}{20}=0{,}15$ donc $15\,\%$
+:::
+
+::: resultat
+$p=\dfrac{3}{20}=0{,}15$ et $15\,\%$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $p=\dfrac{7}{28}=0{,}25$ donc $25\,\%$
+2. $\displaystyle 45$ bénévoles
+3. $\displaystyle 26\,\%$
+4. $\displaystyle 150$
+5. $p=\dfrac{3}{20}=0{,}15$ donc $15\,\%$
+
+===
+
+=== Entraînement - Fréquences données - Retrouver les effectifs
+Id: 1979
+Difficulté: easy
+Image: ex_appels_histogramme.png
+
+Énoncé:
+<!-- optitab:1 -->
+Un service client a relevé la durée (en minutes) de $50$ appels téléphoniques. Le tableau donne la fréquence de chaque classe de durées.
+
+| Durée (min) | $[0\,;2[$ | $[2\,;4[$ | $[4\,;6[$ | $[6\,;8[$ | $[8\,;10[$ |
+|---|---|---|---|---|---|
+| Fréquence | $0{,}12$ | $0{,}28$ | $0{,}30$ | $0{,}20$ | $0{,}10$ |
+
+1. Calculer l’effectif de chaque classe.
+2. Quel pourcentage des appels dure moins de $4$ minutes ? au moins $6$ minutes ?
+3. Estimer la durée moyenne d’un appel en utilisant le centre de chaque classe.
+4. Représenter la série par un histogramme des effectifs.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Effectifs
+
+::: methode
+Effectif d’une classe : $n_i = f_i \times N$, avec $N = 50$.
+:::
+
+::: etape Calculs
+- $[0\,;2[$ : $0{,}12 \times 50 = 6$
+- $[2\,;4[$ : $0{,}28 \times 50 = 14$
+- $[4\,;6[$ : $0{,}30 \times 50 = 15$
+- $[6\,;8[$ : $0{,}20 \times 50 = 10$
+- $[8\,;10[$ : $0{,}10 \times 50 = 5$
+:::
+
+::: point Vérification
+$6 + 14 + 15 + 10 + 5 = 50$ : on retrouve l’effectif total.
+:::
+
+::: resultat
+Effectifs : $6$, $14$, $15$, $10$ et $5$.
+:::
+
+## Question 2 : Pourcentages
+
+::: methode
+On additionne les fréquences des classes concernées.
+:::
+
+::: etape Moins de 4 minutes
+Classes $[0\,;2[$ et $[2\,;4[$ : $0{,}12 + 0{,}28 = 0{,}40$, soit $40\,\%$.
+:::
+
+::: etape Au moins 6 minutes
+Classes $[6\,;8[$ et $[8\,;10[$ : $0{,}20 + 0{,}10 = 0{,}30$, soit $30\,\%$.
+:::
+
+::: resultat
+$40\,\%$ des appels durent moins de $4$ min et $30\,\%$ au moins $6$ min.
+:::
+
+## Question 3 : Durée moyenne
+
+::: methode
+Dans chaque classe, on remplace les durées par le centre de la classe, puis on calcule une moyenne pondérée.
+:::
+
+::: etape Centres des classes
+$1$ ; $3$ ; $5$ ; $7$ ; $9$.
+:::
+
+::: etape Moyenne pondérée
+$$
+\begin{aligned}
+\bar{x} &\approx \frac{6 \times 1 + 14 \times 3 + 15 \times 5 + 10 \times 7 + 5 \times 9}{50} \\
+&= \frac{6 + 42 + 75 + 70 + 45}{50} \\
+&= \frac{238}{50} = 4{,}76
+\end{aligned}
+$$
+:::
+
+::: resultat
+Un appel dure en moyenne environ $4{,}76$ minutes (environ $4$ min $46$ s).
+:::
+
+::: attention
+Ce n’est qu’une **estimation** : on ne connaît pas les durées exactes à l’intérieur de chaque classe.
+:::
+
+## Question 4 : Histogramme
+
+::: methode
+Les classes ont toutes la même amplitude ($2$ min) : les rectangles, accolés, ont une hauteur égale à l’effectif.
+:::
+
+[IMAGE_1]
+
+::: resultat
+Cinq rectangles accolés de bases $[0\,;2[$, …, $[8\,;10[$ et de hauteurs $6$, $14$, $15$, $10$, $5$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Effectifs : $6$ ; $14$ ; $15$ ; $10$ ; $5$.
+2. Moins de $4$ min : $40\,\%$ ; au moins $6$ min : $30\,\%$.
+3. $\bar{x} \approx \dfrac{238}{50} = 4{,}76$ min.
+4. Histogramme : rectangles accolés de hauteurs $6$, $14$, $15$, $10$, $5$.
+
+===
+
+=== Entraînement - Médiane et écart interquartile - Plusieurs séries
+Id: 1981
+Difficulté: medium
+Image: Image_ex_quartiles_mediane_3_series.png
+
+Énoncé:
+<!-- optitab:1 -->
+On considère trois séries statistiques.
+
+- Série 1 : $3\,;\ 4\,;\ 6\,;\ 9\,;\ 12\,;\ 13\,;\ 18\,;\ 20$
+- Série 2 : $14\,;\ 2\,;\ 9\,;\ 5\,;\ 18\,;\ 11\,;\ 7\,;\ 3\,;\ 10$
+- Série 3 : $6\,;\ 7\,;\ 8\,;\ 9\,;\ 10\,;\ 10\,;\ 12\,;\ 13\,;\ 14\,;\ 15\,;\ 16\,;\ 17\,;\ 18\,;\ 19\,;\ 20$
+
+1. Déterminer la médiane, les quartiles $Q_1$ et $Q_3$ et l’écart interquartile de la série 1.
+2. Même question pour la série 2.
+3. Même question pour la série 3.
+4. Comparer les trois séries (position et dispersion).
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Série 1
+
+::: methode
+Vérifier que la série est rangée, compter les valeurs, puis appliquer les règles de rang.
+:::
+
+::: etape Série rangée et effectif
+La série est déjà rangée dans l’ordre croissant ; elle compte $N = 8$ valeurs.
+:::
+
+::: etape Médiane ($N$ pair)
+On prend la moyenne des valeurs de rangs $\dfrac{8}{2} = 4$ et $5$, c’est-à-dire $9$ et $12$ :
+
+$$\mathrm{Me} = \frac{9 + 12}{2} = 10{,}5$$
+:::
+
+::: etape Quartiles
+- $\dfrac{8}{4} = 2$ : $Q_1$ est la valeur de rang $2$, donc $Q_1 = 4$.
+- $\dfrac{3 \times 8}{4} = 6$ : $Q_3$ est la valeur de rang $6$, donc $Q_3 = 13$.
+:::
+
+::: resultat
+$\mathrm{Me} = 10{,}5$ ; $Q_1 = 4$ ; $Q_3 = 13$ ; écart interquartile $13 - 4 = 9$.
+:::
+
+## Question 2 : Série 2
+
+::: methode
+La série n’est pas rangée : on commence par la ranger.
+:::
+
+::: etape Ranger la série
+$2\,;\ 3\,;\ 5\,;\ 7\,;\ 9\,;\ 10\,;\ 11\,;\ 14\,;\ 18$ : $N = 9$ valeurs.
+:::
+
+::: etape Médiane ($N$ impair)
+Rang $\dfrac{9 + 1}{2} = 5$ : $\mathrm{Me} = 9$.
+:::
+
+::: etape Quartiles
+- $\dfrac{9}{4} = 2{,}25$ : le premier entier supérieur ou égal est $3$, donc $Q_1$ est la $3^{e}$ valeur : $Q_1 = 5$.
+- $\dfrac{3 \times 9}{4} = 6{,}75$ : on prend le rang $7$, donc $Q_3 = 11$.
+:::
+
+::: resultat
+$\mathrm{Me} = 9$ ; $Q_1 = 5$ ; $Q_3 = 11$ ; écart interquartile $11 - 5 = 6$.
+:::
+
+::: attention
+Sans ranger la série, on aurait pris la $5^{e}$ valeur donnée, $18$, comme médiane : c’est faux.
+:::
+
+## Question 3 : Série 3
+
+::: methode
+Série déjà rangée de $N = 15$ valeurs.
+:::
+
+::: etape Médiane ($N$ impair)
+Rang $\dfrac{15 + 1}{2} = 8$ : $\mathrm{Me} = 13$.
+:::
+
+::: etape Quartiles
+- $\dfrac{15}{4} = 3{,}75$ : rang $4$, donc $Q_1 = 9$.
+- $\dfrac{3 \times 15}{4} = 11{,}25$ : rang $12$, donc $Q_3 = 17$.
+:::
+
+::: resultat
+$\mathrm{Me} = 13$ ; $Q_1 = 9$ ; $Q_3 = 17$ ; écart interquartile $17 - 9 = 8$.
+:::
+
+## Question 4 : Comparer les trois séries
+
+::: methode
+On représente chaque série par une boîte (de $Q_1$ à $Q_3$, trait orange à la médiane, moustaches jusqu’au minimum et au maximum).
+:::
+
+[IMAGE_1]
+
+::: etape Position
+La série 3 a la plus grande médiane ($13$), puis la série 1 ($10{,}5$) et la série 2 ($9$).
+:::
+
+::: etape Dispersion
+La série 1 a le plus grand écart interquartile ($9$) : sa moitié centrale est la plus étalée. La série 2 est la plus concentrée autour de sa médiane (écart interquartile $6$).
+:::
+
+::: resultat
+Valeurs centrales les plus élevées : série 3 ; série la plus dispersée (au sens de l’écart interquartile) : série 1 ; la plus homogène : série 2.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Série 1 : $\mathrm{Me} = 10{,}5$ ; $Q_1 = 4$ ; $Q_3 = 13$ ; écart interquartile $9$.
+2. Série 2 (rangée : $2\,;\ 3\,;\ 5\,;\ 7\,;\ 9\,;\ 10\,;\ 11\,;\ 14\,;\ 18$) : $\mathrm{Me} = 9$ ; $Q_1 = 5$ ; $Q_3 = 11$ ; écart interquartile $6$.
+3. Série 3 : $\mathrm{Me} = 13$ ; $Q_1 = 9$ ; $Q_3 = 17$ ; écart interquartile $8$.
+4. Série 3 : position la plus élevée ; série 1 : la plus dispersée ; série 2 : la plus homogène.
+
+===
+
+=== Entraînement - Moyenne, médiane, quartiles - Deux séries
+Id: 1980
+Difficulté: medium
+Image: ex_quartiles_mediane.png
+
+Énoncé:
+<!-- optitab:1 -->
+**Série A** : nombre de SMS envoyés en une heure par $30$ personnes.
+
+- $0\,;\ 1\,;\ 2\,;\ 2\,;\ 3\,;\ 4\,;\ 1\,;\ 0\,;\ 5\,;\ 2$
+- $3\,;\ 2\,;\ 1\,;\ 4\,;\ 2\,;\ 3\,;\ 2\,;\ 4\,;\ 5\,;\ 1$
+- $4\,;\ 3\,;\ 1\,;\ 2\,;\ 0\,;\ 3\,;\ 2\,;\ 4\,;\ 5\,;\ 0$
+
+**Série B** : notes obtenues à un devoir par $50$ élèves.
+
+| Note | $8$ | $10$ | $12$ | $14$ | $16$ |
+|---|---|---|---|---|---|
+| Effectif | $5$ | $12$ | $16$ | $12$ | $5$ |
+
+1. Regrouper les données de la série A dans un tableau d’effectifs, avec les effectifs cumulés croissants.
+2. Calculer la moyenne, la médiane, les quartiles et l’étendue de la série A.
+3. Calculer la moyenne, la médiane, les quartiles et l’étendue de la série B.
+4. Représenter les deux séries par des diagrammes en boîte et comparer leurs dispersions.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Tableau d’effectifs de la série A
+
+::: methode
+Compter combien de fois apparaît chaque valeur, puis cumuler les effectifs de gauche à droite.
+:::
+
+::: etape Comptage
+| Valeur | $0$ | $1$ | $2$ | $3$ | $4$ | $5$ |
+|---|---|---|---|---|---|---|
+| Effectif | $4$ | $5$ | $8$ | $5$ | $5$ | $3$ |
+| Effectif cumulé | $4$ | $9$ | $17$ | $22$ | $27$ | $30$ |
+:::
+
+::: point Vérification
+$4 + 5 + 8 + 5 + 5 + 3 = 30$ : aucune valeur n’a été oubliée.
+:::
+
+::: resultat
+Effectifs : $4$, $5$, $8$, $5$, $5$, $3$ ; effectifs cumulés : $4$, $9$, $17$, $22$, $27$, $30$.
+:::
+
+## Question 2 : Indicateurs de la série A
+
+::: methode
+Moyenne pondérée à partir du tableau ; rangs lus dans la ligne des effectifs cumulés.
+:::
+
+::: etape Moyenne
+$$
+\begin{aligned}
+\bar{x}_A &= \frac{0 \times 4 + 1 \times 5 + 2 \times 8 + 3 \times 5 + 4 \times 5 + 5 \times 3}{30} \\
+&= \frac{71}{30} \approx 2{,}37
+\end{aligned}
+$$
+:::
+
+::: etape Médiane
+$N = 30$ est pair : la médiane est la moyenne des valeurs de rangs $15$ et $16$. Les rangs $10$ à $17$ correspondent à la valeur $2$ (cumul $9$ puis $17$), donc $\mathrm{Me} = 2$.
+:::
+
+::: etape Quartiles
+- $\dfrac{30}{4} = 7{,}5$ : rang $8$. Les rangs $5$ à $9$ valent $1$, donc $Q_1 = 1$.
+- $\dfrac{3 \times 30}{4} = 22{,}5$ : rang $23$. Les rangs $23$ à $27$ valent $4$, donc $Q_3 = 4$.
+:::
+
+::: etape Étendue
+$5 - 0 = 5$.
+:::
+
+::: resultat
+$\bar{x}_A \approx 2{,}37$ ; $\mathrm{Me} = 2$ ; $Q_1 = 1$ ; $Q_3 = 4$ ; étendue $5$.
+:::
+
+## Question 3 : Indicateurs de la série B
+
+::: methode
+Même démarche avec $N = 5 + 12 + 16 + 12 + 5 = 50$ et les effectifs cumulés $5$, $17$, $33$, $45$, $50$.
+:::
+
+::: etape Moyenne
+$$
+\begin{aligned}
+\bar{x}_B &= \frac{8 \times 5 + 10 \times 12 + 12 \times 16 + 14 \times 12 + 16 \times 5}{50} \\
+&= \frac{40 + 120 + 192 + 168 + 80}{50} \\
+&= \frac{600}{50} = 12
+\end{aligned}
+$$
+:::
+
+::: etape Médiane
+Moyenne des valeurs de rangs $25$ et $26$ ; les rangs $18$ à $33$ valent $12$, donc $\mathrm{Me} = 12$.
+:::
+
+::: etape Quartiles
+- $\dfrac{50}{4} = 12{,}5$ : rang $13$, compris entre $6$ et $17$, donc $Q_1 = 10$.
+- $\dfrac{150}{4} = 37{,}5$ : rang $38$, compris entre $34$ et $45$, donc $Q_3 = 14$.
+:::
+
+::: etape Étendue
+$16 - 8 = 8$.
+:::
+
+::: resultat
+$\bar{x}_B = 12$ ; $\mathrm{Me} = 12$ ; $Q_1 = 10$ ; $Q_3 = 14$ ; étendue $8$.
+:::
+
+## Question 4 : Diagrammes en boîte et comparaison
+
+::: methode
+Chaque boîte va de $Q_1$ à $Q_3$ (trait orange à la médiane) ; les moustaches vont du minimum au maximum.
+:::
+
+[IMAGE_1]
+
+::: etape Comparer les dispersions
+Écarts interquartiles : $4 - 1 = 3$ pour la série A et $14 - 10 = 4$ pour la série B. La moitié centrale de la série B est un peu plus étalée ; son étendue est aussi plus grande ($8$ contre $5$).
+:::
+
+::: resultat
+La série B est un peu plus dispersée que la série A (écart interquartile $4$ contre $3$).
+:::
+
+::: attention
+Les deux séries ne mesurent pas la même chose (SMS et notes) : on compare leurs dispersions, pas leurs valeurs.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Effectifs : $4$, $5$, $8$, $5$, $5$, $3$ ; cumulés : $4$, $9$, $17$, $22$, $27$, $30$.
+2. Série A : $\bar{x} = \dfrac{71}{30} \approx 2{,}37$ ; $\mathrm{Me} = 2$ ; $Q_1 = 1$ ; $Q_3 = 4$ ; étendue $5$.
+3. Série B : $\bar{x} = 12$ ; $\mathrm{Me} = 12$ ; $Q_1 = 10$ ; $Q_3 = 14$ ; étendue $8$.
+4. Écarts interquartiles $3$ (A) et $4$ (B) : la série B est un peu plus dispersée.
+
+===
+
+=== Entraînement - Moyenne pondérée - Tableaux d'effectifs et coefficients
+Id: 1987
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Calculer des moyennes pondérées.
+
+Rappel : si la valeur $\displaystyle x_i$ apparaît $\displaystyle n_i$ fois, alors $\displaystyle \bar{x}=\dfrac{\sum n_i x_i}{\sum n_i}$.
+
+1. Notes : $\displaystyle 8$ (2 élèves), $\displaystyle 10$ (6 élèves), $\displaystyle 12$ (7 élèves), $\displaystyle 15$ (5 élèves). Calculer la moyenne
+2. On achète $\displaystyle 3$ kg à 2 €/kg, $\displaystyle 5$ kg à 1,5 €/kg et $\displaystyle 2$ kg à 3 €/kg. Calculer le prix moyen au kg
+3. Moyenne avec coefficients : Math (coef 4) note 12 ; Français (coef 3) note 14 ; Anglais (coef 2) note 10. Calculer la moyenne
+4. Dans une classe, 5 élèves ont 10 et $\displaystyle x$ élèves ont 14. La moyenne est 12. Trouver $\displaystyle x$
+5. Nombre de frères/sœurs : 0 (12 élèves), 1 (15 élèves), 2 (8 élèves), 3 (5 élèves). Calculer la moyenne
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Moyenne pondérée des notes
+
+::: methode
+$$\bar{x}=\dfrac{\sum n_ix_i}{\sum n_i}$$
+:::
+
+::: etape Effectif total
+- $\displaystyle N=2+6+7+5=20$
+:::
+
+::: etape Somme pondérée
+- $\displaystyle S=2\times 8+6\times 10+7\times 12+5\times 15$
+- $\displaystyle S=16+60+84+75=235$
+:::
+
+::: etape Moyenne
+- $\displaystyle \bar{x}=\dfrac{235}{20}=11{,}75$
+:::
+
+::: resultat
+$$\bar{x}=11{,}75$$
+:::
+
+## Question 2 : Prix moyen au kg
+
+::: methode
+Prix moyen = coût total / masse totale
+:::
+
+::: etape Masse totale
+- $\displaystyle 3+5+2=10$ kg
+:::
+
+::: etape Coût total
+- $\displaystyle 3\times 2=6$
+- $\displaystyle 5\times 1{,}5=7{,}5$
+- $\displaystyle 2\times 3=6$
+- Total : $\displaystyle 19{,}5$
+:::
+
+::: etape Prix moyen
+- $\displaystyle \dfrac{19{,}5}{10}=1{,}95$
+:::
+
+::: resultat
+$\displaystyle 1{,}95$ €/kg
+:::
+
+## Question 3 : Moyenne avec coefficients
+
+::: methode
+$$\bar{x}=\dfrac{\sum c_ix_i}{\sum c_i}$$
+:::
+
+::: etape Somme pondérée
+- $\displaystyle S=4\times 12+3\times 14+2\times 10=48+42+20=110$
+:::
+
+::: etape Somme des coefficients
+- $\displaystyle 4+3+2=9$
+:::
+
+::: etape Moyenne
+- $\displaystyle \bar{x}=\dfrac{110}{9}\approx 12{,}22$
+:::
+
+::: resultat
+$$\bar{x}\approx 12{,}22$$
+:::
+
+## Question 4 : Retrouver un effectif
+
+::: methode
+Écrire l'égalité de moyenne puis résoudre
+:::
+
+::: etape Équation
+- $\displaystyle \dfrac{5\times 10 + x\times 14}{5+x}=12$
+:::
+
+::: etape Résoudre
+- $\displaystyle 50+14x=12(5+x)=60+12x$
+- $2x=10$ donc $x=5$
+:::
+
+::: resultat
+$$x=5$$
+:::
+
+## Question 5 : Moyenne du nombre de frères/sœurs
+
+::: methode
+Moyenne pondérée
+:::
+
+::: etape Effectif total
+- $\displaystyle N=12+15+8+5=40$
+:::
+
+::: etape Somme pondérée
+$$
+\begin{aligned}
+S &= 0\times 12+1\times 15+2\times 8+3\times 5 \\
+&= 0+15+16+15 \\
+&= 46
+\end{aligned}
+$$
+:::
+
+::: etape Moyenne
+- $\displaystyle \bar{x}=\dfrac{46}{40}=1{,}15$
+:::
+
+::: resultat
+$$\bar{x}=1{,}15$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle 11{,}75$
+2. $\displaystyle 1{,}95$ €/kg
+3. $\displaystyle \bar{x}=\dfrac{110}{9}\approx 12{,}22$
+4. $\displaystyle x=5$
+5. $\displaystyle 1{,}15$
+
+===
+
+=== Entraînement - Quartiles et écart interquartile - Dispersion
+Id: 1989
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Rappel : la série étant rangée dans l’ordre croissant et comptant $N$ valeurs, $Q_1$ est la valeur dont le rang est le premier entier supérieur ou égal à $\dfrac{N}{4}$, et $Q_3$ celle dont le rang est le premier entier supérieur ou égal à $\dfrac{3N}{4}$.
+
+1. Série rangée : $5\,;\ 7\,;\ 8\,;\ 9\,;\ 10\,;\ 10\,;\ 11\,;\ 12\,;\ 14\,;\ 15\,;\ 18\,;\ 20$. Calculer $Q_1$, $Q_3$ et l’écart interquartile.
+2. Série rangée : $2\,;\ 3\,;\ 3\,;\ 4\,;\ 5\,;\ 6\,;\ 7\,;\ 8\,;\ 8\,;\ 9$. Calculer $Q_1$, $Q_3$ et l’écart interquartile.
+3. Les tailles des élèves d’une classe ont pour quartiles $Q_1 = 160$ cm et $Q_3 = 172$ cm. Calculer l’écart interquartile et l’interpréter.
+4. Deux séries ont pour quartiles : série A, $Q_1 = 10$ et $Q_3 = 14$ ; série B, $Q_1 = 8$ et $Q_3 = 16$. Quelle série est la plus dispersée au sens de l’écart interquartile ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Série de 12 valeurs
+
+::: methode
+Calculer $\dfrac{N}{4}$ et $\dfrac{3N}{4}$, prendre le premier entier supérieur ou égal, puis lire la valeur de ce rang.
+:::
+
+::: etape Rang de $Q_1$
+$N = 12$ et $\dfrac{12}{4} = 3$ : $Q_1$ est la $3^{e}$ valeur, $Q_1 = 8$.
+:::
+
+::: etape Rang de $Q_3$
+$\dfrac{3 \times 12}{4} = 9$ : $Q_3$ est la $9^{e}$ valeur, $Q_3 = 14$.
+:::
+
+::: resultat
+$Q_1 = 8$ ; $Q_3 = 14$ ; écart interquartile $14 - 8 = 6$.
+:::
+
+## Question 2 : Série de 10 valeurs
+
+::: methode
+Même démarche ; ici $\dfrac{N}{4}$ n’est pas entier.
+:::
+
+::: etape Rang de $Q_1$
+$\dfrac{10}{4} = 2{,}5$ : le premier entier supérieur ou égal est $3$, donc $Q_1$ est la $3^{e}$ valeur, $Q_1 = 3$.
+:::
+
+::: etape Rang de $Q_3$
+$\dfrac{3 \times 10}{4} = 7{,}5$ : on prend le rang $8$, donc $Q_3 = 8$.
+:::
+
+::: resultat
+$Q_1 = 3$ ; $Q_3 = 8$ ; écart interquartile $8 - 3 = 5$.
+:::
+
+::: attention
+On n’arrondit pas au plus proche : $2{,}5$ donne le rang $3$, et $2{,}25$ donnerait aussi le rang $3$.
+:::
+
+## Question 3 : Interpréter un écart interquartile
+
+::: methode
+Entre $Q_1$ et $Q_3$ se trouve environ la moitié centrale des valeurs.
+:::
+
+::: etape Calcul
+$172 - 160 = 12$ cm.
+:::
+
+::: resultat
+L’écart interquartile vaut $12$ cm : environ la moitié des élèves (ceux du « milieu ») ont une taille comprise entre $160$ cm et $172$ cm, intervalle de $12$ cm.
+:::
+
+## Question 4 : Comparer deux dispersions
+
+::: methode
+Calculer l’écart interquartile de chaque série : le plus grand indique la série la plus dispersée.
+:::
+
+::: etape Série A
+$14 - 10 = 4$.
+:::
+
+::: etape Série B
+$16 - 8 = 8$.
+:::
+
+::: resultat
+$8 \gt 4$ : la série B est la plus dispersée (sa moitié centrale est deux fois plus étalée).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $Q_1 = 8$ ; $Q_3 = 14$ ; écart interquartile $6$.
+2. $Q_1 = 3$ ; $Q_3 = 8$ ; écart interquartile $5$.
+3. $12$ cm : environ la moitié centrale des tailles est comprise entre $160$ et $172$ cm.
+4. La série B (écart interquartile $8$ contre $4$).
+
+===
+
+=== Entraînement - Série groupée - Effectifs cumulés et moyenne approchée
+Id: 1978
+Difficulté: medium
+Image: ex_salle_sport_histogramme.png,ex_salle_sport_ogive.png
+
+Énoncé:
+<!-- optitab:1 -->
+Une salle de sport a relevé le temps d’entraînement hebdomadaire (en heures) de $180$ adhérents. Les résultats sont regroupés en classes.
+
+| Temps (h) | $[0\,;2[$ | $[2\,;4[$ | $[4\,;6[$ | $[6\,;8[$ | $[8\,;10[$ | $[10\,;12[$ |
+|---|---|---|---|---|---|---|
+| Effectif | $12$ | $28$ | $44$ | $50$ | $34$ | $12$ |
+
+1. Calculer les effectifs cumulés croissants.
+2. Quel pourcentage des adhérents s’entraîne moins de $4$ h par semaine ? au moins $8$ h ? (arrondir à $0{,}1\,\%$)
+3. Estimer le temps moyen d’entraînement hebdomadaire en utilisant les centres des classes.
+4. Dans quelle classe se trouve la médiane ?
+5. Représenter la série par un histogramme des effectifs.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Effectifs cumulés croissants
+
+::: methode
+Chaque effectif cumulé est la somme des effectifs de la classe et des classes précédentes.
+:::
+
+::: etape Calculs
+- $12$
+- $12 + 28 = 40$
+- $40 + 44 = 84$
+- $84 + 50 = 134$
+- $134 + 34 = 168$
+- $168 + 12 = 180$
+:::
+
+::: resultat
+| Temps (h) | $[0\,;2[$ | $[2\,;4[$ | $[4\,;6[$ | $[6\,;8[$ | $[8\,;10[$ | $[10\,;12[$ |
+|---|---|---|---|---|---|---|
+| Effectif cumulé | $12$ | $40$ | $84$ | $134$ | $168$ | $180$ |
+:::
+
+## Question 2 : Pourcentages
+
+::: methode
+Pourcentage $= \dfrac{\text{effectif concerné}}{180} \times 100$.
+:::
+
+::: etape Moins de 4 h
+D’après les effectifs cumulés, $40$ adhérents s’entraînent moins de $4$ h : $\dfrac{40}{180} \approx 0{,}2222$, soit environ $22{,}2\,\%$.
+:::
+
+::: etape Au moins 8 h
+Classes $[8\,;10[$ et $[10\,;12[$ : $34 + 12 = 46$ adhérents. $\dfrac{46}{180} \approx 0{,}2556$, soit environ $25{,}6\,\%$.
+:::
+
+::: resultat
+Environ $22{,}2\,\%$ s’entraînent moins de $4$ h et $25{,}6\,\%$ au moins $8$ h.
+:::
+
+## Question 3 : Moyenne approchée
+
+::: methode
+On remplace chaque classe par son centre ($1$, $3$, $5$, $7$, $9$, $11$), puis on calcule une moyenne pondérée.
+:::
+
+::: etape Somme pondérée
+$$
+\begin{aligned}
+S &= 12 \times 1 + 28 \times 3 + 44 \times 5 \\
+&\quad + 50 \times 7 + 34 \times 9 + 12 \times 11 \\
+&= 12 + 84 + 220 + 350 + 306 + 132 \\
+&= 1104
+\end{aligned}
+$$
+:::
+
+::: etape Moyenne
+$$\bar{x} \approx \frac{1104}{180} \approx 6{,}13$$
+:::
+
+::: resultat
+Le temps moyen d’entraînement est d’environ $6{,}13$ h par semaine (environ $6$ h $8$ min).
+:::
+
+## Question 4 : Classe de la médiane
+
+::: methode
+$N = 180$ est pair : la médiane est la moyenne des valeurs de rangs $90$ et $91$. On cherche la classe qui contient ces rangs grâce aux effectifs cumulés.
+:::
+
+::: etape Lecture des effectifs cumulés
+L’effectif cumulé vaut $84$ à la fin de la classe $[4\,;6[$ et $134$ à la fin de la classe $[6\,;8[$. Les rangs $85$ à $134$ sont donc dans la classe $[6\,;8[$, en particulier les rangs $90$ et $91$.
+:::
+
+::: resultat
+La médiane se trouve dans la classe $[6\,;8[$ : au moins la moitié des adhérents s’entraîne au moins $6$ h par semaine.
+:::
+
+## Question 5 : Histogramme
+
+::: methode
+Les classes ont la même amplitude ($2$ h) : les rectangles, accolés, ont pour hauteur l’effectif.
+:::
+
+[IMAGE_1]
+
+::: resultat
+Six rectangles accolés de hauteurs $12$, $28$, $44$, $50$, $34$, $12$ ; la classe la plus fréquente est $[6\,;8[$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Effectifs cumulés : $12$ ; $40$ ; $84$ ; $134$ ; $168$ ; $180$.
+2. Moins de $4$ h : $\dfrac{40}{180} \approx 22{,}2\,\%$ ; au moins $8$ h : $\dfrac{46}{180} \approx 25{,}6\,\%$.
+3. $\bar{x} \approx \dfrac{1104}{180} \approx 6{,}13$ h.
+4. La médiane est dans la classe $[6\,;8[$.
+5. Histogramme : rectangles accolés de hauteurs $12$, $28$, $44$, $50$, $34$, $12$.
+
+===
+
+=== Entraînement - Contrôle qualité - Fréquences, effectifs cumulés et indicateurs
+Id: 1977
+Difficulté: medium
+Image: ex_tableau_qualite_diagramme_batons.png
+
+Énoncé:
+<!-- optitab:1 -->
+Un contrôle qualité porte sur $200$ sachets de fruits secs annoncés à $250$ g. On a mesuré la masse de chaque sachet.
+
+| Masse (g) | Effectif |
+|---|---|
+| $248$ | $2$ |
+| $248{,}5$ | $8$ |
+| $249$ | $18$ |
+| $249{,}5$ | $34$ |
+| $250$ | $52$ |
+| $250{,}5$ | $40$ |
+| $251$ | $26$ |
+| $251{,}5$ | $14$ |
+| $252$ | $6$ |
+
+1. Calculer la fréquence de chaque masse, puis les effectifs cumulés croissants.
+2. Quel pourcentage des sachets pèse moins de $250$ g ? Quel pourcentage pèse entre $249$ g et $251$ g (bornes incluses) ?
+3. Déterminer la médiane et les quartiles de la série.
+4. Calculer la masse moyenne d’un sachet. On pourra d’abord calculer la moyenne des écarts $x - 250$.
+5. Représenter la série par un diagramme en bâtons.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Fréquences et effectifs cumulés
+
+::: methode
+Fréquence : $f_i = \dfrac{n_i}{N}$ avec $N = 200$ ; effectif cumulé : somme des effectifs jusqu’à la valeur.
+:::
+
+::: etape Exemples de calcul
+- Pour $248$ g : $f = \dfrac{2}{200} = 0{,}01$.
+- Pour $250$ g : $f = \dfrac{52}{200} = 0{,}26$ ; effectif cumulé $2 + 8 + 18 + 34 + 52 = 114$.
+:::
+
+::: resultat
+| Masse (g) | Fréquence | Effectif cumulé |
+|---|---|---|
+| $248$ | $0{,}01$ | $2$ |
+| $248{,}5$ | $0{,}04$ | $10$ |
+| $249$ | $0{,}09$ | $28$ |
+| $249{,}5$ | $0{,}17$ | $62$ |
+| $250$ | $0{,}26$ | $114$ |
+| $250{,}5$ | $0{,}20$ | $154$ |
+| $251$ | $0{,}13$ | $180$ |
+| $251{,}5$ | $0{,}07$ | $194$ |
+| $252$ | $0{,}03$ | $200$ |
+:::
+
+::: point Vérification
+La somme des fréquences vaut $1$ et le dernier effectif cumulé vaut $N = 200$.
+:::
+
+## Question 2 : Pourcentages
+
+::: methode
+On additionne les effectifs concernés (ou on lit un effectif cumulé), puis on divise par $200$.
+:::
+
+::: etape Moins de 250 g
+Masses $248$ à $249{,}5$ : effectif cumulé $62$. $\dfrac{62}{200} = 0{,}31$, soit $31\,\%$.
+:::
+
+::: etape Entre 249 g et 251 g
+$18 + 34 + 52 + 40 + 26 = 170$ sachets. $\dfrac{170}{200} = 0{,}85$, soit $85\,\%$.
+:::
+
+::: resultat
+$31\,\%$ des sachets pèsent moins de $250$ g ; $85\,\%$ pèsent entre $249$ et $251$ g.
+:::
+
+## Question 3 : Médiane et quartiles
+
+::: methode
+Repérer les rangs utiles, puis lire dans la colonne des effectifs cumulés la masse correspondante.
+:::
+
+::: etape Médiane
+$N = 200$ est pair : moyenne des valeurs de rangs $100$ et $101$. Les rangs $63$ à $114$ correspondent à $250$ g, donc $\mathrm{Me} = 250$ g.
+:::
+
+::: etape Quartiles
+- $\dfrac{200}{4} = 50$ : rang $50$, compris entre $29$ et $62$, donc $Q_1 = 249{,}5$ g.
+- $\dfrac{3 \times 200}{4} = 150$ : rang $150$, compris entre $115$ et $154$, donc $Q_3 = 250{,}5$ g.
+:::
+
+::: resultat
+$\mathrm{Me} = 250$ g ; $Q_1 = 249{,}5$ g ; $Q_3 = 250{,}5$ g (écart interquartile $1$ g).
+:::
+
+## Question 4 : Masse moyenne
+
+::: methode
+Linéarité de la moyenne : si $y = x - 250$, alors $\bar{y} = \bar{x} - 250$, donc $\bar{x} = \bar{y} + 250$. Les calculs sur les écarts sont beaucoup plus simples.
+:::
+
+::: etape Écarts à 250 g
+Les écarts $y = x - 250$ valent $-2$ ; $-1{,}5$ ; $-1$ ; $-0{,}5$ ; $0$ ; $0{,}5$ ; $1$ ; $1{,}5$ ; $2$.
+:::
+
+::: etape Moyenne des écarts
+$$
+\begin{aligned}
+\text{négatifs} &= 2 \times 2 + 1{,}5 \times 8 \\
+&\quad + 1 \times 18 + 0{,}5 \times 34 \\
+&= 4 + 12 + 18 + 17 = 51 \\
+\text{positifs} &= 0{,}5 \times 40 + 1 \times 26 \\
+&\quad + 1{,}5 \times 14 + 2 \times 6 \\
+&= 20 + 26 + 21 + 12 = 79
+\end{aligned}
+$$
+
+La somme des écarts (pondérés par les effectifs) vaut $79 - 51 = 28$,
+
+donc $\bar{y} = \dfrac{28}{200} = 0{,}14$.
+:::
+
+::: etape Retour aux masses
+$\bar{x} = \bar{y} + 250 = 250{,}14$ g.
+:::
+
+::: resultat
+La masse moyenne d’un sachet est $250{,}14$ g.
+:::
+
+## Question 5 : Diagramme en bâtons
+
+::: methode
+Les masses sont des valeurs isolées : un bâton par masse, de hauteur égale à l’effectif.
+:::
+
+[IMAGE_1]
+
+::: resultat
+La série est presque symétrique autour de $250$ g, où se trouve le plus grand effectif ($52$).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Fréquences : $0{,}01$ ; $0{,}04$ ; $0{,}09$ ; $0{,}17$ ; $0{,}26$ ; $0{,}20$ ; $0{,}13$ ; $0{,}07$ ; $0{,}03$. Effectifs cumulés : $2$ ; $10$ ; $28$ ; $62$ ; $114$ ; $154$ ; $180$ ; $194$ ; $200$.
+2. Moins de $250$ g : $31\,\%$ ; entre $249$ et $251$ g : $85\,\%$.
+3. $\mathrm{Me} = 250$ g ; $Q_1 = 249{,}5$ g ; $Q_3 = 250{,}5$ g.
+4. $\bar{x} = 250{,}14$ g.
+5. Diagramme en bâtons : un bâton par masse, de hauteur l’effectif.
+
+===
+
+=== Entraînement - Taux d'évolution - Variation relative et coefficient
+Id: 1984
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Pour une valeur initiale $\displaystyle V_0$ et une valeur finale $\displaystyle V_1$ :
+
+- Variation absolue : $V_1-V_0$ ;
+- Taux d'évolution : $t=\dfrac{V_1-V_0}{V_0}$ ;
+- Coefficient multiplicateur : $C=1+t$, et $V_1=C\times V_0$.
+
+1. Un prix passe de $80$ à $92$. Calculer la variation absolue, le taux $t$ et le coefficient $C$
+2. Une population passe de $1500$ à $1350$. Calculer la variation absolue, le taux $t$ et le coefficient $C$
+3. Une quantité diminue de $\displaystyle 12\,\%$. Donner le coefficient multiplicateur
+4. Une valeur est multipliée par $1{,}08$. Quel est le taux d'évolution correspondant ?
+5. Une valeur augmente de $\displaystyle 30\,\%$ et devient $\displaystyle 260$. Quelle était la valeur initiale ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : De $\displaystyle 80$ à $\displaystyle 92$
+
+::: methode
+$t=\dfrac{V_1-V_0}{V_0}$ et $C=1+t$
+:::
+
+::: etape Variation absolue
+- $\displaystyle 92-80=12$
+:::
+
+::: etape Taux
+- $t=\dfrac{12}{80}=0{,}15$ donc $15\,\%$
+:::
+
+::: etape Coefficient
+- $\displaystyle C=1+0{,}15=1{,}15$
+:::
+
+::: resultat
+Variation $+12$, $t=15\,\%$, $C=1{,}15$
+:::
+
+## Question 2 : De $\displaystyle 1500$ à $\displaystyle 1350$
+
+::: methode
+Même formule
+:::
+
+::: etape Variation absolue
+- $\displaystyle 1350-1500=-150$
+:::
+
+::: etape Taux
+- $t=\dfrac{-150}{1500}=-0{,}10$ donc $-10\,\%$
+:::
+
+::: etape Coefficient
+- $\displaystyle C=1-0{,}10=0{,}90$
+:::
+
+::: resultat
+Variation $-150$, $t=-10\,\%$, $C=0{,}90$
+:::
+
+## Question 3 : Baisse de $\displaystyle 12\,\%$
+
+::: methode
+$t=-0{,}12$ donc $C=1+t$
+:::
+
+::: point Calcul
+$$C=1-0{,}12=0{,}88$$
+:::
+
+::: resultat
+Coefficient multiplicateur $0{,}88$
+:::
+
+## Question 4 : Coefficient $\displaystyle 1{,}08$
+
+::: methode
+$$C=1+t \Rightarrow t=C-1$$
+:::
+
+::: point Calcul
+$t=1{,}08-1=0{,}08$ donc $8\,\%$
+:::
+
+::: resultat
+Hausse de $\displaystyle 8\,\%$
+:::
+
+## Question 5 : Retrouver la valeur initiale
+
+::: methode
+$V_1=CV_0$ avec $C=1{,}30$
+:::
+
+::: etape Coefficient
+- $\displaystyle C=1+0{,}30=1{,}30$
+:::
+
+::: etape Calculer $\displaystyle V_0$
+- $\displaystyle V_0=\dfrac{V_1}{C}=\dfrac{260}{1{,}30}=200$
+:::
+
+::: resultat
+$$V_0=200$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Variation $+12$, $t=15\,\%$, $C=1{,}15$
+2. Variation $-150$, $t=-10\,\%$, $C=0{,}90$
+3. $\displaystyle C=0{,}88$
+4. $\displaystyle t=8\,\%$
+5. $\displaystyle V_0=200$
+
+===
+
+=== Maîtrise - Écart type - Calculer et interpréter un écart type
+Id: 1990
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Pour une série $x_1, \ldots, x_N$ de moyenne $\bar{x}$, l’écart type est
+
+$$\sigma = \sqrt{\frac{(x_1 - \bar{x})^2 + \cdots + (x_N - \bar{x})^2}{N}}.$$
+
+1. Calculer la moyenne et l’écart type de la série $9\,;\ 9\,;\ 11\,;\ 11$.
+2. Sans calcul, donner l’écart type de la série $10\,;\ 10\,;\ 10\,;\ 10$. Justifier.
+3. Calculer l’écart type de la série $8\,;\ 8\,;\ 12\,;\ 12$, puis comparer la dispersion des séries des questions 1 et 3.
+4. Pour la série $0\,;\ 0\,;\ 0\,;\ 0\,;\ 0\,;\ 10$, calculer la moyenne $\bar{x}$ et l’écart type $\sigma$ (valeur exacte puis arrondi au centième).
+5. Pour la série de la question 4, quelle proportion des valeurs se trouve dans l’intervalle $[\bar{x} - 2\sigma\,;\,\bar{x} + 2\sigma]$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Série $9\,;\ 9\,;\ 11\,;\ 11$
+
+::: methode
+Calculer la moyenne, puis les carrés des écarts à la moyenne, leur moyenne, et enfin la racine carrée.
+:::
+
+::: etape Moyenne
+$$\bar{x} = \frac{9 + 9 + 11 + 11}{4} = \frac{40}{4} = 10$$
+:::
+
+::: etape Carrés des écarts
+Écarts : $-1$ ; $-1$ ; $1$ ; $1$. Carrés : $1$ ; $1$ ; $1$ ; $1$, de somme $4$.
+:::
+
+::: etape Écart type
+$$\sigma = \sqrt{\frac{4}{4}} = \sqrt{1} = 1$$
+:::
+
+::: resultat
+$\bar{x} = 10$ et $\sigma = 1$.
+:::
+
+## Question 2 : Série constante
+
+::: methode
+Si toutes les valeurs sont égales, elles sont toutes égales à la moyenne.
+:::
+
+::: etape Écarts
+$\bar{x} = 10$ et tous les écarts $x_i - 10$ sont nuls, donc la somme des carrés est nulle.
+:::
+
+::: resultat
+$\sigma = 0$ : une série sans dispersion a un écart type nul.
+:::
+
+## Question 3 : Série $8\,;\ 8\,;\ 12\,;\ 12$
+
+::: methode
+Même démarche qu’à la question 1.
+:::
+
+::: etape Moyenne et carrés des écarts
+$\bar{x} = \dfrac{40}{4} = 10$. Écarts : $-2$ ; $-2$ ; $2$ ; $2$ ; carrés : $4$ ; $4$ ; $4$ ; $4$, de somme $16$.
+:::
+
+::: etape Écart type
+$$\sigma = \sqrt{\frac{16}{4}} = \sqrt{4} = 2$$
+:::
+
+::: resultat
+$\sigma = 2 \gt 1$ : les deux séries ont la même moyenne $10$, mais la série $8\,;\ 8\,;\ 12\,;\ 12$ est deux fois plus dispersée autour de sa moyenne.
+:::
+
+## Question 4 : Série $0\,;\ 0\,;\ 0\,;\ 0\,;\ 0\,;\ 10$
+
+::: methode
+Travailler en fractions pour obtenir une valeur exacte.
+:::
+
+::: etape Moyenne
+$$\bar{x} = \frac{5 \times 0 + 10}{6} = \frac{10}{6} = \frac{5}{3} \approx 1{,}67$$
+:::
+
+::: etape Carrés des écarts
+- Pour chaque $0$ : $\left(0 - \dfrac{5}{3}\right)^2 = \dfrac{25}{9}$, cinq fois.
+- Pour $10$ : $\left(10 - \dfrac{5}{3}\right)^2 = \left(\dfrac{25}{3}\right)^2 = \dfrac{625}{9}$.
+
+$$5 \times \frac{25}{9} + \frac{625}{9} = \frac{750}{9}$$
+:::
+
+::: etape Écart type
+$$
+\begin{aligned}
+\sigma &= \sqrt{\frac{1}{6} \times \frac{750}{9}} = \sqrt{\frac{125}{9}} \\
+&= \frac{\sqrt{125}}{3} = \frac{5\sqrt{5}}{3} \approx 3{,}73
+\end{aligned}
+$$
+:::
+
+::: resultat
+$\bar{x} = \dfrac{5}{3} \approx 1{,}67$ et $\sigma = \dfrac{5\sqrt{5}}{3} \approx 3{,}73$.
+:::
+
+## Question 5 : Proportion dans $[\bar{x} - 2\sigma\,;\,\bar{x} + 2\sigma]$
+
+::: methode
+Calculer les bornes (valeurs approchées), puis compter les valeurs de la série comprises entre elles.
+:::
+
+::: etape Bornes
+$2\sigma \approx 7{,}45$, donc $\bar{x} - 2\sigma \approx 1{,}67 - 7{,}45 \approx -5{,}79$ et $\bar{x} + 2\sigma \approx 1{,}67 + 7{,}45 \approx 9{,}12$.
+:::
+
+::: etape Comptage
+Les cinq valeurs $0$ sont dans $[-5{,}79\,;\,9{,}12]$. La valeur $10$ n’y est pas, car $10 \gt 9{,}12$.
+:::
+
+::: resultat
+$5$ valeurs sur $6$ : la proportion est $\dfrac{5}{6} \approx 0{,}83$, soit environ $83\,\%$.
+:::
+
+::: attention
+Arrondir trop tôt fausse les bornes : on garde $\bar{x} = \dfrac{5}{3}$ et $\sigma = \dfrac{5\sqrt{5}}{3}$ jusqu’au calcul final.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\bar{x} = 10$ ; $\sigma = 1$.
+2. $\sigma = 0$ (tous les écarts à la moyenne sont nuls).
+3. $\sigma = 2$ : même moyenne, mais série deux fois plus dispersée.
+4. $\bar{x} = \dfrac{5}{3} \approx 1{,}67$ ; $\sigma = \dfrac{5\sqrt{5}}{3} \approx 3{,}73$.
+5. $\dfrac{5}{6} \approx 83\,\%$ des valeurs sont dans $[-5{,}79\,;\,9{,}12]$.
+
+===
+
+=== Maîtrise - Évolution réciproque - Revenir à la valeur initiale
+Id: 1986
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Si une évolution a pour coefficient $C$, l'évolution réciproque a pour coefficient $\dfrac{1}{C}$, et son taux vaut $t_{\mathrm{rec}}=\dfrac{1}{C}-1$.
+
+1. Après une hausse de $25\,\%$, quel taux faut-il appliquer pour revenir à la valeur initiale ?
+2. Après une baisse de $30\,\%$, quel taux faut-il appliquer pour revenir à la valeur initiale ?
+3. Après une hausse de $\displaystyle 12\,\%$, quel est le taux réciproque ?
+4. Une quantité passe de $500$ à $420$. (a) Calculer le taux d'évolution. (b) Calculer le taux réciproque
+5. Expliquer pourquoi appliquer une évolution puis son évolution réciproque ramène à la valeur de départ
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Hausse de $\displaystyle 25\,\%$
+
+::: methode
+$C=1{,}25$ puis $C_{\mathrm{rec}}=\dfrac{1}{1{,}25}$
+:::
+
+::: etape Coefficient réciproque
+- $\displaystyle \dfrac{1}{1{,}25}=\dfrac{100}{125}=0{,}8$
+:::
+
+::: etape Taux réciproque
+- $\displaystyle t_{\mathrm{rec}}=0{,}8-1=-0{,}2=-20\,\%$
+:::
+
+::: resultat
+Il faut baisser de $\displaystyle 20\,\%$
+:::
+
+## Question 2 : Baisse de $\displaystyle 30\,\%$
+
+::: methode
+$C=0{,}70$ puis $C_{\mathrm{rec}}=\dfrac{1}{0{,}70}$
+:::
+
+::: etape Coefficient réciproque
+- $\displaystyle \dfrac{1}{0{,}70}=\dfrac{10}{7}\approx 1{,}4286$
+:::
+
+::: etape Taux réciproque
+$$
+\begin{aligned}
+t_{\mathrm{rec}} &= \dfrac{10}{7}-1 \\
+&= \dfrac{3}{7}\approx 0{,}4286
+\end{aligned}
+$$
+:::
+
+::: resultat
+Il faut augmenter d'environ $\displaystyle 42{,}9\,\%$
+:::
+
+## Question 3 : Hausse de $\displaystyle 12\,\%$
+
+::: methode
+$C=1{,}12$ puis $\dfrac{1}{1{,}12}=\dfrac{100}{112}=\dfrac{25}{28}$
+:::
+
+::: etape Coefficient réciproque
+- $\displaystyle C_{\mathrm{rec}}=\dfrac{25}{28}\approx 0{,}892857$
+:::
+
+::: etape Taux réciproque
+$$
+\begin{aligned}
+t_{\mathrm{rec}} &= \dfrac{25}{28}-1 \\
+&= -\dfrac{3}{28}\approx -0{,}1071
+\end{aligned}
+$$
+:::
+
+::: resultat
+Baisse d'environ $\displaystyle 10{,}7\,\%$
+:::
+
+## Question 4 : De $\displaystyle 500$ à $\displaystyle 420$
+
+::: methode
+(a) $t=\dfrac{V_1-V_0}{V_0}$ ; (b) $C=\dfrac{V_1}{V_0}$ puis $t_{\mathrm{rec}}=\dfrac{1}{C}-1$
+:::
+
+::: etape Taux d'évolution
+$$
+\begin{aligned}
+t &= \dfrac{420-500}{500} \\
+&= \dfrac{-80}{500} \\
+&= -0{,}16 \\
+&= -16\,\%
+\end{aligned}
+$$
+:::
+
+::: etape Coefficient
+- $\displaystyle C=\dfrac{420}{500}=0{,}84$
+:::
+
+::: etape Taux réciproque
+$$
+\begin{aligned}
+t_{\mathrm{rec}} &= \dfrac{1}{0{,}84}-1 \\
+&= \dfrac{25}{21}-1 \\
+&= \dfrac{4}{21}\approx 0{,}1905
+\end{aligned}
+$$
+:::
+
+::: resultat
+$t=-16\,\%$ et $t_{\mathrm{rec}}\approx +19{,}0\,\%$
+:::
+
+## Question 5 : Pourquoi on revient à la valeur initiale ?
+
+::: methode
+Raisonner avec les coefficients
+:::
+
+::: etape Évolution puis réciproque
+- Après la 1re évolution : $\displaystyle V_1=CV_0$
+- Après l'évolution réciproque : $V_2=\dfrac{1}{C}V_1=\dfrac{1}{C}\times CV_0=V_0$
+:::
+
+::: resultat
+On retrouve bien la valeur initiale
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle -20\,\%$
+2. Environ $\displaystyle +42{,}9\,\%$
+3. Environ $\displaystyle -10{,}7\,\%$
+4. $t=-16\,\%$ et $t_{\mathrm{rec}}\approx +19{,}0\,\%$
+5. Car $C\times \dfrac{1}{C}=1$ donc on revient à $V_0$
+
+===
+
+=== Maîtrise - Évolutions successives - Coefficient et taux global
+Id: 1985
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Pour des évolutions successives de taux $t_1,t_2,\ldots$ on multiplie les coefficients : $C_{\mathrm{global}}=(1+t_1)(1+t_2)\cdots$. Puis $t_{\mathrm{global}}=C_{\mathrm{global}}-1$.
+
+1. Hausse de $\displaystyle 20\,\%$ puis baisse de $\displaystyle 15\,\%$ : calculer $\displaystyle C_{\mathrm{global}}$ puis $\displaystyle t_{\mathrm{global}}$
+2. Baisse de $\displaystyle 10\,\%$ puis hausse de $\displaystyle 10\,\%$ : calculer $\displaystyle t_{\mathrm{global}}$
+3. Un salaire de $1500$ augmente de $5\,\%$ par an pendant 3 ans. Calculer le coefficient global puis le salaire final
+4. Baisse de $\displaystyle 30\,\%$ puis baisse de $\displaystyle 20\,\%$ : calculer le taux global
+5. Hausse de $\displaystyle 8\,\%$ puis hausse de $\displaystyle 12\,\%$ : calculer le taux global
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $\displaystyle +20\,\%$ puis $\displaystyle -15\,\%$
+
+::: methode
+$$C_{\mathrm{global}}=1{,}20\times 0{,}85$$
+:::
+
+::: etape Coefficient global
+- $\displaystyle C_{\mathrm{global}}=1{,}20\times 0{,}85=1{,}02$
+:::
+
+::: etape Taux global
+- $\displaystyle t_{\mathrm{global}}=1{,}02-1=0{,}02=2\,\%$
+:::
+
+::: resultat
+$$t_{\mathrm{global}}=2\,\%$$
+:::
+
+## Question 2 : $\displaystyle -10\,\%$ puis $\displaystyle +10\,\%$
+
+::: methode
+$$C_{\mathrm{global}}=0{,}90\times 1{,}10$$
+:::
+
+::: point Calcul
+$C_{\mathrm{global}}=0{,}99$ donc $t_{\mathrm{global}}=-0{,}01=-1\,\%$
+:::
+
+::: resultat
+$$-1\,\%$$
+:::
+
+## Question 3 : $\displaystyle +5\,\%$ par an pendant 3 ans
+
+::: methode
+$C_{\mathrm{global}}=1{,}05^3$ puis $V_1=V_0\times C_{\mathrm{global}}$
+:::
+
+::: etape Coefficient global
+- $1{,}05^2=1{,}1025$ puis $1{,}05^3=1{,}1025\times 1{,}05=1{,}157625$
+:::
+
+::: etape Salaire final
+- $\displaystyle 1500\times 1{,}157625=1736{,}4375$
+:::
+
+::: resultat
+Salaire final $\approx 1736{,}44$ (arrondi au centime)
+:::
+
+## Question 4 : $\displaystyle -30\,\%$ puis $\displaystyle -20\,\%$
+
+::: methode
+$$C_{\mathrm{global}}=0{,}70\times 0{,}80$$
+:::
+
+::: etape Coefficient global
+- $\displaystyle C_{\mathrm{global}}=0{,}56$
+:::
+
+::: etape Taux global
+- $\displaystyle t_{\mathrm{global}}=0{,}56-1=-0{,}44=-44\,\%$
+:::
+
+::: resultat
+$$-44\,\%$$
+:::
+
+## Question 5 : $\displaystyle +8\,\%$ puis $\displaystyle +12\,\%$
+
+::: methode
+$$C_{\mathrm{global}}=1{,}08\times 1{,}12$$
+:::
+
+::: etape Coefficient global
+- $\displaystyle C_{\mathrm{global}}=1{,}08\times 1{,}12=1{,}2096$
+:::
+
+::: etape Taux global
+- $\displaystyle t_{\mathrm{global}}=1{,}2096-1=0{,}2096=20{,}96\,\%$
+:::
+
+::: resultat
+$$20{,}96\,\%$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $C_{\mathrm{global}}=1{,}02$ donc $t_{\mathrm{global}}=2\,\%$
+2. $\displaystyle t_{\mathrm{global}}=-1\,\%$
+3. $C_{\mathrm{global}}=1{,}157625$ et salaire final $\approx 1736{,}44$
+4. $\displaystyle t_{\mathrm{global}}=-44\,\%$
+5. $\displaystyle t_{\mathrm{global}}=20{,}96\,\%$
+
+===
+
+=== Maîtrise - Indicateurs statistiques - Vrai/Faux
+Id: 1982
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Un professeur a calculé quelques indicateurs sur les notes des $28$ élèves de sa classe.
+
+| Indicateur | Moyenne | Médiane | $Q_1$ | $Q_3$ | Minimum | Maximum |
+|---|---|---|---|---|---|---|
+| Valeur | $12{,}6$ | $13$ | $10$ | $15$ | $6$ | $19$ |
+
+Pour chaque affirmation, dire si elle est **vraie** (toujours vraie avec ces données) ou **fausse** (pas toujours vraie), en justifiant.
+
+1. La moitié des élèves a une note inférieure à $12{,}6$.
+2. Au moins un élève a obtenu exactement $13$.
+3. Au moins un élève a obtenu exactement $15$.
+4. Au moins la moitié des notes sont comprises entre $10$ et $15$ (bornes incluses).
+5. La médiane est la $14^{e}$ note de la série rangée dans l’ordre croissant.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : La moitié des notes sous la moyenne ?
+
+::: methode
+C’est la médiane, et non la moyenne, qui partage la série en deux moitiés.
+:::
+
+::: etape Raisonnement
+La moyenne $12{,}6$ dépend de toutes les valeurs, y compris des notes extrêmes ; elle ne partage pas la série en deux groupes de même effectif. La médiane vaut $13$ : au moins la moitié des notes sont inférieures ou égales à $13$, mais on ne sait pas combien sont inférieures à $12{,}6$.
+:::
+
+::: resultat
+Faux : on ne peut pas l’affirmer avec la moyenne.
+:::
+
+## Question 2 : Une note égale à 13 ?
+
+::: methode
+Avec $N = 28$ (pair), la médiane est la moyenne des notes de rangs $14$ et $15$.
+:::
+
+::: etape Contre-exemple
+Si les notes de rangs $14$ et $15$ sont $12$ et $14$, la médiane vaut $\dfrac{12 + 14}{2} = 13$ sans qu’aucun élève n’ait $13$.
+:::
+
+::: resultat
+Faux : la médiane n’est pas forcément une note de la série.
+:::
+
+## Question 3 : Une note égale à 15 ?
+
+::: methode
+Par définition, $Q_3$ est une **valeur de la série** (celle de rang $21$, car $\dfrac{3 \times 28}{4} = 21$).
+:::
+
+::: resultat
+Vrai : la $21^{e}$ note de la série rangée vaut $15$.
+:::
+
+## Question 4 : Au moins la moitié des notes dans $[10\,;\,15]$ ?
+
+::: methode
+Utiliser les rangs de $Q_1$ et de $Q_3$.
+:::
+
+::: etape Rangs
+$\dfrac{28}{4} = 7$ : $Q_1 = 10$ est la $7^{e}$ note ; $Q_3 = 15$ est la $21^{e}$ note.
+:::
+
+::: etape Comptage
+Toutes les notes de rang $7$ à $21$ sont comprises entre $10$ et $15$ : cela fait $21 - 7 + 1 = 15$ notes, et $15 \geqslant 14$, la moitié de $28$.
+:::
+
+::: resultat
+Vrai : au moins $15$ notes sur $28$ sont comprises entre $10$ et $15$.
+:::
+
+## Question 5 : La médiane est-elle la 14e note ?
+
+::: methode
+$N = 28$ est pair.
+:::
+
+::: resultat
+Faux : la médiane est la moyenne des $14^{e}$ et $15^{e}$ notes (elle n’est égale à la $14^{e}$ note que si ces deux notes sont égales).
+:::
+
+::: attention
+« Faux » signifie ici « pas toujours vrai » : un seul contre-exemple suffit à le montrer.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Faux (c’est la médiane qui partage la série en deux).
+2. Faux (la médiane peut être la moyenne de deux notes différentes).
+3. Vrai ($Q_3$ est la $21^{e}$ note).
+4. Vrai (les notes de rangs $7$ à $21$, soit $15$ notes, sont entre $10$ et $15$).
+5. Faux (moyenne des $14^{e}$ et $15^{e}$ notes).
+
+===
+
+=== Maîtrise - Tableau de notes - Pourcentages et moyenne de classes
+Id: 1983
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Le tableau suivant donne les notes (sur 20) d'une classe lors d'un contrôle :
+
+| **Note** | $\displaystyle 5$ | $\displaystyle 7$ | $\displaystyle 8$ | $\displaystyle 9$ | $\displaystyle 10$ | $\displaystyle 11$ | $\displaystyle 12$ | $\displaystyle 13$ | $\displaystyle 14$ | $\displaystyle 15$ | $\displaystyle 16$ |
+| **Effectif** | $\displaystyle 1$ | $\displaystyle 2$ | $\displaystyle 3$ | $\displaystyle 3$ | $\displaystyle 4$ | $\displaystyle 5$ | $\displaystyle 6$ | $\displaystyle 4$ | $\displaystyle 2$ | $\displaystyle 1$ | $\displaystyle 1$ |
+
+1. Quel est le pourcentage (à $0{,}1\,\%$ près) d'élèves ayant une note comprise entre $10$ et $14$ (valeurs incluses) ?
+2. Quel est le pourcentage (à $0{,}1\,\%$ près) d'élèves ayant une note strictement inférieure à $9$ ?
+3. Déterminer l'étendue, la médiane et les quartiles de cette série.
+4. Déterminer la moyenne de la classe sur ce contrôle.
+5. Dans une autre classe, il y a $15$ filles et $15$ garçons. La moyenne des filles est $12{,}5$ et celle des garçons $10{,}8$. Quelle est la moyenne de cette classe ?
+6. Ce contrôle était commun aux deux classes (32 élèves dans la première, 30 dans la seconde). La moyenne des $62$ élèves est $11{,}25$. Retrouver la moyenne de la première classe.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Pourcentage $\displaystyle [10;14]$
+
+::: methode
+Additionner les effectifs des notes $10,11,12,13,14$ puis diviser par $32$
+:::
+
+::: point Calcul
+$n=4+5+6+4+2=21$ donc $\dfrac{21}{32}=0{,}65625$
+:::
+
+::: resultat
+$$65{,}6\,\%$$
+:::
+
+## Question 2 : Pourcentage $\displaystyle <9$
+
+::: methode
+Notes $\displaystyle 5,7,8$
+:::
+
+::: point Calcul
+$n=1+2+3=6$ donc $\dfrac{6}{32}=0{,}1875$
+:::
+
+::: resultat
+$$18{,}8\,\%$$
+:::
+
+## Question 3 : Étendue, médiane, quartiles
+
+::: methode
+Série rangée ; $Q_1$ rang $\left\lceil \frac{n}{4}\right\rceil$, $Q_3$ rang $\left\lceil \frac{3n}{4}\right\rceil$, médiane selon $n$ pair/impair
+:::
+
+::: etape Étendue
+- $\displaystyle 16-5=11$
+:::
+
+::: etape Effectifs cumulés croissants
+| Note | $5$ | $7$ | $8$ | $9$ | $10$ | $11$ | $12$ | $13$ | $14$ | $15$ | $16$ |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Eff. cumulé | $1$ | $3$ | $6$ | $9$ | $13$ | $18$ | $24$ | $28$ | $30$ | $31$ | $32$ |
+:::
+
+::: etape Rangs
+- $N=32$ est pair : la médiane est la moyenne des notes de rangs $16$ et $17$. Les rangs $14$ à $18$ valent $11$, donc $\mathrm{Me}=11$.
+- $\dfrac{32}{4}=8$ : $Q_1$ est la $8^{e}$ note ; les rangs $7$ à $9$ valent $9$, donc $Q_1=9$.
+- $\dfrac{3\times 32}{4}=24$ : $Q_3$ est la $24^{e}$ note ; les rangs $19$ à $24$ valent $12$, donc $Q_3=12$.
+:::
+
+::: resultat
+Étendue $11$ ; $\mathrm{Me}=11$ ; $Q_1=9$ ; $Q_3=12$.
+:::
+
+## Question 4 : Moyenne
+
+::: methode
+$$\bar{x}=\dfrac{\sum n_i x_i}{N}$$
+:::
+
+::: point Calcul
+$$
+\begin{aligned}
+S &= 5\times 1+7\times 2+8\times 3+9\times 3 \\
+&\quad +10\times 4+11\times 5+12\times 6+13\times 4 \\
+&\quad +14\times 2+15\times 1+16\times 1 \\
+&= 5+14+24+27+40+55+72 \\
+&\quad +52+28+15+16 = 348 \\
+\bar{x} &= \dfrac{S}{32} = \dfrac{348}{32} \\
+&= 10{,}875
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$\bar{x}=10{,}875\approx 10{,}88$$
+:::
+
+## Question 5 : Moyenne d'une autre classe
+
+::: methode
+Moyenne pondérée
+:::
+
+::: point Calcul
+$$
+\begin{aligned}
+\bar{x} &= \dfrac{15\times 12{,}5+15\times 10{,}8}{30} \\
+&= \dfrac{349{,}5}{30} \\
+&= 11{,}65
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$11{,}65$$
+:::
+
+## Question 6 : Retrouver la moyenne de la 1re classe
+
+::: methode
+$$11{,}25=\dfrac{32\times \bar{x}_1+30\times 11{,}65}{62}$$
+:::
+
+::: point Calcul
+$$
+\begin{aligned}
+32\bar{x}_1 &= 62\times 11{,}25-30\times 11{,}65 \\
+&= 697{,}5-349{,}5 \\
+&= 348
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$\bar{x}_1=\dfrac{348}{32}=10{,}875\approx 10{,}88$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle 65{,}6\,\%$
+2. $\displaystyle 18{,}8\,\%$
+3. Étendue $11$ ; médiane $11$ ; $Q_1=9$ ; $Q_3=12$
+4. $\displaystyle \bar{x}=10{,}875\approx 10{,}88$
+5. Moyenne $\displaystyle 11{,}65$
+6. Moyenne de la 1re classe $\displaystyle 10{,}875\approx 10{,}88$
+
+===
+
+=== Problème - Cinéma - Proportions, remises et moyenne
+Id: 1992
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Un cinéma vend $\displaystyle 800$ tickets sur une journée.
+
+- $35\,\%$ des tickets sont des tickets « étudiant » (prix normal : $6$ €) ;
+- les autres tickets sont « plein tarif » (prix normal : $9$ €) ;
+- parmi les étudiants, $40\,\%$ achètent en ligne ;
+- parmi les clients plein tarif, $60\,\%$ achètent en ligne ;
+- l'achat en ligne donne une remise de $10\,\%$ (coefficient $0{,}9$).
+
+1. Calculer le nombre de tickets étudiants et le nombre de tickets plein tarif
+2. Calculer le nombre de tickets achetés en ligne dans chaque catégorie, puis le pourcentage total de tickets achetés en ligne
+3. Calculer la recette totale (en euros)
+4. Calculer le prix moyen d'un ticket sur la journée (recette totale / 800)
+5. Le mois suivant, tous les prix augmentent de $5\,\%$ (la remise en ligne reste). Quelle est la nouvelle recette totale ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Répartition étudiant / plein tarif
+
+::: methode
+Effectif = proportion × total
+:::
+
+::: etape Tickets étudiants
+- $35\,\%$ de $800$ : $0{,}35\times 800=280$
+:::
+
+::: etape Tickets plein tarif
+- $\displaystyle 800-280=520$
+:::
+
+::: resultat
+$280$ étudiants et $520$ plein tarif
+:::
+
+## Question 2 : Achats en ligne
+
+::: methode
+Pourcentage de pourcentage
+:::
+
+::: etape En ligne (étudiants)
+- $40\,\%$ de $280$ : $0{,}40\times 280=112$
+:::
+
+::: etape En ligne (plein tarif)
+- $60\,\%$ de $520$ : $0{,}60\times 520=312$
+:::
+
+::: etape Total en ligne
+- $\displaystyle 112+312=424$
+:::
+
+::: etape Pourcentage total en ligne
+- $\dfrac{424}{800}=0{,}53$ donc $53\,\%$
+:::
+
+::: resultat
+$424$ tickets en ligne, soit $53\,\%$
+:::
+
+## Question 3 : Recette totale
+
+::: methode
+Calculer catégorie par catégorie, avec la remise en ligne (coefficient $0{,}9$)
+:::
+
+::: etape Étudiants
+- En ligne : $\displaystyle 112\times 6\times 0{,}9=112\times 5{,}4=604{,}8$
+- Au guichet : $\displaystyle (280-112)\times 6=168\times 6=1008$
+:::
+
+::: etape Plein tarif
+- En ligne : $\displaystyle 312\times 9\times 0{,}9=312\times 8{,}1=2527{,}2$
+- Au guichet : $\displaystyle (520-312)\times 9=208\times 9=1872$
+:::
+
+::: etape Total
+- $\displaystyle 604{,}8+1008+2527{,}2+1872=6012$
+:::
+
+::: resultat
+Recette totale $\displaystyle 6012$ euros
+:::
+
+## Question 4 : Prix moyen d'un ticket
+
+::: methode
+Prix moyen = recette totale / nombre de tickets
+:::
+
+::: point Calcul
+$\dfrac{6012}{800}=7{,}515$ donc environ $7{,}52$ euros
+:::
+
+::: resultat
+Prix moyen $\displaystyle \approx 7{,}52$ euros
+:::
+
+## Question 5 : Augmentation de $\displaystyle 5\,\%$ des prix
+
+::: methode
+Si tous les prix sont multipliés par $1{,}05$, la recette totale est aussi multipliée par $1{,}05$
+:::
+
+::: point Calcul
+$$6012\times 1{,}05=6312{,}6$$
+:::
+
+::: resultat
+Nouvelle recette $\displaystyle 6312{,}6$ euros
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $280$ étudiants et $520$ plein tarif
+2. $424$ tickets en ligne soit $53\,\%$
+3. Recette $\displaystyle 6012$ euros
+4. Prix moyen $\displaystyle \approx 7{,}52$ euros
+5. Nouvelle recette $\displaystyle 6312{,}6$ euros
+
+===
+
+=== Problème - Salaires d’une entreprise - Moyenne ou médiane ?
+Id: 3758
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Voici les salaires mensuels nets (en euros) des $11$ personnes d’une petite entreprise, rangés dans l’ordre croissant ; le dernier est celui de la dirigeante.
+
+$1\,500\,;\ 1\,550\,;\ 1\,600\,;\ 1\,600\,;\ 1\,700\,;\ 1\,750\,;\ 1\,800\,;\ 1\,900\,;\ 2\,000\,;\ 2\,400\,;\ 6\,400$
+
+1. Calculer le salaire moyen et le salaire médian.
+2. Combien de salariés gagnent moins que le salaire moyen ?
+3. Calculer $Q_1$, $Q_3$ et l’écart interquartile.
+4. La dirigeante porte son salaire à $9\,700$ €, les autres salaires restant inchangés.
+   - a) Calculer le taux d’évolution du salaire de la dirigeante (à $0{,}1\,\%$ près).
+   - b) Calculer le nouveau salaire moyen, le nouveau salaire médian et le taux d’évolution du salaire moyen.
+5. Pour décrire le salaire « typique » dans cette entreprise, faut-il donner la moyenne ou la médiane ? Justifier.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Moyenne et médiane
+
+::: methode
+Moyenne : somme des salaires divisée par $11$. Médiane : $N = 11$ est impair, c’est la valeur de rang $\dfrac{11 + 1}{2} = 6$.
+:::
+
+::: etape Somme des salaires
+$$
+\begin{aligned}
+S &= 1\,500 + 1\,550 + 1\,600 + 1\,600 + 1\,700 + 1\,750 \\
+&\quad + 1\,800 + 1\,900 + 2\,000 + 2\,400 + 6\,400 \\
+&= 24\,200
+\end{aligned}
+$$
+:::
+
+::: etape Moyenne
+$$\bar{x} = \frac{24\,200}{11} = 2\,200$$
+:::
+
+::: etape Médiane
+La $6^{e}$ valeur est $1\,750$ : $\mathrm{Me} = 1\,750$.
+:::
+
+::: resultat
+Salaire moyen : $2\,200$ € ; salaire médian : $1\,750$ €.
+:::
+
+## Question 2 : Salariés sous la moyenne
+
+::: methode
+Compter les salaires strictement inférieurs à $2\,200$ €.
+:::
+
+::: etape Comptage
+Seuls $2\,400$ et $6\,400$ dépassent $2\,200$ : les $9$ autres salaires sont inférieurs.
+:::
+
+::: resultat
+$9$ personnes sur $11$ gagnent moins que le salaire moyen.
+:::
+
+## Question 3 : Quartiles
+
+::: methode
+$\dfrac{11}{4} = 2{,}75$ donne le rang $3$ ; $\dfrac{3 \times 11}{4} = 8{,}25$ donne le rang $9$.
+:::
+
+::: etape Lecture
+$Q_1$ est la $3^{e}$ valeur : $1\,600$ ; $Q_3$ est la $9^{e}$ valeur : $2\,000$.
+:::
+
+::: resultat
+$Q_1 = 1\,600$ € ; $Q_3 = 2\,000$ € ; écart interquartile $400$ €.
+:::
+
+## Question 4 : Hausse du salaire de la dirigeante
+
+::: methode
+Taux d’évolution $t = \dfrac{V_1 - V_0}{V_0}$ ; puis on recalcule les indicateurs avec la nouvelle valeur.
+:::
+
+::: etape a) Taux d’évolution du salaire de la dirigeante
+$$t = \frac{9\,700 - 6\,400}{6\,400} = \frac{3\,300}{6\,400} \approx 0{,}516$$
+
+soit une hausse d’environ $51{,}6\,\%$.
+:::
+
+::: etape b) Nouvelle moyenne
+La somme augmente de $3\,300$ : $S' = 24\,200 + 3\,300 = 27\,500$, donc $\bar{x}' = \dfrac{27\,500}{11} = 2\,500$.
+:::
+
+::: etape b) Nouvelle médiane
+La série rangée a toujours $1\,750$ en $6^{e}$ position : $\mathrm{Me}' = 1\,750$.
+:::
+
+::: etape b) Évolution du salaire moyen
+$$t' = \frac{2\,500 - 2\,200}{2\,200} \approx 0{,}136$$
+
+soit une hausse d’environ $13{,}6\,\%$, alors qu’aucun autre salarié n’a été augmenté.
+:::
+
+::: resultat
+a) $+51{,}6\,\%$ environ. b) Moyenne : $2\,500$ € ($+13{,}6\,\%$ environ) ; médiane inchangée : $1\,750$ €.
+:::
+
+## Question 5 : Quel indicateur choisir ?
+
+::: methode
+Se demander quel indicateur est influencé par la valeur extrême.
+:::
+
+::: etape Analyse
+La moyenne est tirée vers le haut par le salaire de la dirigeante : $9$ personnes sur $11$ gagnent moins que la moyenne, et la moyenne augmente de $13{,}6\,\%$ alors que $10$ salaires sur $11$ n’ont pas bougé. La médiane, elle, n’a pas changé.
+:::
+
+::: resultat
+La médiane ($1\,750$ €) décrit mieux le salaire typique : elle est peu sensible aux valeurs extrêmes. On l’accompagne de l’écart interquartile ($400$ €).
+:::
+
+::: retenir
+Quand une série contient des valeurs extrêmes, on préfère le couple médiane et écart interquartile au couple moyenne et écart type.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Moyenne $2\,200$ € ; médiane $1\,750$ €.
+2. $9$ personnes sur $11$.
+3. $Q_1 = 1\,600$ € ; $Q_3 = 2\,000$ € ; écart interquartile $400$ €.
+4. a) Environ $+51{,}6\,\%$. b) Moyenne $2\,500$ € (environ $+13{,}6\,\%$) ; médiane inchangée $1\,750$ €.
+5. La médiane, peu sensible au salaire extrême de la dirigeante.
+
+===
+
+=== Entraînement - Comparer deux séries - Position et dispersion
+Id: 3759
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Deux groupes de $10$ élèves ont passé le même devoir. Voici leurs notes.
+
+| Note (groupe A) | $8$ | $10$ | $12$ | $14$ |
+|---|---|---|---|---|
+| Effectif | $2$ | $3$ | $3$ | $2$ |
+
+| Note (groupe B) | $5$ | $8$ | $12$ | $14$ | $16$ |
+|---|---|---|---|---|---|
+| Effectif | $2$ | $2$ | $2$ | $2$ | $2$ |
+
+1. Calculer la moyenne de chaque groupe.
+2. Calculer l’écart type de chaque groupe (arrondi au centième).
+3. Déterminer la médiane, les quartiles et l’écart interquartile de chaque groupe.
+4. Rédiger une comparaison des deux groupes en quelques phrases.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Moyennes
+
+::: methode
+Moyenne pondérée : $\bar{x} = \dfrac{n_1x_1 + \cdots + n_px_p}{N}$ avec $N = 10$.
+:::
+
+::: etape Groupe A
+$$
+\begin{aligned}
+10\,\bar{x}_A &= 2 \times 8 + 3 \times 10 \\
+&\quad + 3 \times 12 + 2 \times 14 \\
+&= 16 + 30 + 36 + 28 = 110
+\end{aligned}
+$$
+
+donc $\bar{x}_A = \dfrac{110}{10} = 11$.
+:::
+
+::: etape Groupe B
+$$
+\begin{aligned}
+10\,\bar{x}_B &= 2 \times (5 + 8 + 12 + 14 + 16) \\
+&= 2 \times 55 = 110
+\end{aligned}
+$$
+
+donc $\bar{x}_B = \dfrac{110}{10} = 11$.
+:::
+
+::: resultat
+Les deux groupes ont la même moyenne : $\bar{x}_A = \bar{x}_B = 11$.
+:::
+
+## Question 2 : Écarts types
+
+::: methode
+Pour chaque valeur : écart à la moyenne $11$, carré, multiplié par l’effectif ; on divise la somme par $10$, puis on prend la racine carrée.
+:::
+
+::: etape Groupe A
+$$
+\begin{aligned}
+S_A &= 2 \times (-3)^2 + 3 \times (-1)^2 \\
+&\quad + 3 \times 1^2 + 2 \times 3^2 \\
+&= 18 + 3 + 3 + 18 = 42
+\end{aligned}
+$$
+
+donc $\sigma_A = \sqrt{\dfrac{42}{10}} = \sqrt{4{,}2} \approx 2{,}05$.
+:::
+
+::: etape Groupe B
+$$
+\begin{aligned}
+S_B &= 2 \times \left[(-6)^2 + (-3)^2\right. \\
+&\quad \left. + 1^2 + 3^2 + 5^2\right] \\
+&= 2 \times 80 = 160
+\end{aligned}
+$$
+
+donc $\sigma_B = \sqrt{\dfrac{160}{10}} = \sqrt{16} = 4$.
+:::
+
+::: resultat
+$\sigma_A \approx 2{,}05$ et $\sigma_B = 4$.
+:::
+
+::: attention
+On ne divise pas par le nombre de valeurs différentes ($4$ ou $5$) mais par l’effectif total $N = 10$.
+:::
+
+## Question 3 : Médianes et quartiles
+
+::: methode
+$N = 10$ : médiane = moyenne des valeurs de rangs $5$ et $6$ ; $\dfrac{10}{4} = 2{,}5$ donne le rang $3$ pour $Q_1$ ; $\dfrac{30}{4} = 7{,}5$ donne le rang $8$ pour $Q_3$.
+:::
+
+::: etape Groupe A
+Série rangée :
+
+$$8\,;\ 8\,;\ 10\,;\ 10\,;\ 10\,;\ 12\,;\ 12\,;\ 12\,;\ 14\,;\ 14$$
+
+$\mathrm{Me}_A = \dfrac{10 + 12}{2} = 11$ ; $Q_1 = 10$ ; $Q_3 = 12$ ; écart interquartile $2$.
+:::
+
+::: etape Groupe B
+Série rangée :
+
+$$5\,;\ 5\,;\ 8\,;\ 8\,;\ 12\,;\ 12\,;\ 14\,;\ 14\,;\ 16\,;\ 16$$
+
+$\mathrm{Me}_B = \dfrac{12 + 12}{2} = 12$ ; $Q_1 = 8$ ; $Q_3 = 14$ ; écart interquartile $6$.
+:::
+
+::: resultat
+Groupe A : $\mathrm{Me} = 11$, $Q_1 = 10$, $Q_3 = 12$, écart interquartile $2$. Groupe B : $\mathrm{Me} = 12$, $Q_1 = 8$, $Q_3 = 14$, écart interquartile $6$.
+:::
+
+## Question 4 : Comparaison
+
+::: methode
+Comparer d’abord la position (moyenne, médiane), puis la dispersion (écart type, écart interquartile), et conclure en contexte.
+:::
+
+[IMAGE_1]
+
+::: etape Position
+Les deux groupes ont la même moyenne ($11$) ; la médiane du groupe B est un peu plus élevée ($12$ contre $11$) : la moitié des élèves de B ont au moins $12$.
+:::
+
+::: etape Dispersion
+L’écart type de B est presque le double de celui de A ($4$ contre $2{,}05$) et son écart interquartile est trois fois plus grand ($6$ contre $2$).
+:::
+
+::: resultat
+Les deux groupes ont le même niveau moyen, mais le groupe A est beaucoup plus homogène ; le groupe B est plus hétérogène, avec à la fois de très bonnes et de très faibles notes.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\bar{x}_A = \bar{x}_B = 11$.
+2. $\sigma_A = \sqrt{4{,}2} \approx 2{,}05$ ; $\sigma_B = 4$.
+3. A : $\mathrm{Me} = 11$, $Q_1 = 10$, $Q_3 = 12$, écart interquartile $2$. B : $\mathrm{Me} = 12$, $Q_1 = 8$, $Q_3 = 14$, écart interquartile $6$.
+4. Même moyenne ; groupe A homogène, groupe B beaucoup plus dispersé.
+
+===

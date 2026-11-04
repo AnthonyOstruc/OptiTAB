@@ -1,0 +1,1607 @@
+=== Algorithmique - Écrire des fonctions pour des expériences aléatoires et des statistiques
+Id: 1942
+Difficulté: medium
+
+Énoncé: <!-- optitab:1 -->
+Dans un jeu, on mise une somme puis on lance un dé équilibré à six faces : si le dé donne $4$, $5$ ou $6$, on gagne la mise ; sinon, on la perd. On modélise ce jeu par la fonction suivante.
+
+```python
+from random import randint
+
+def gain_jeu(mise):
+    de = randint(1, 6)
+    if de >= 4:
+        return mise
+    else:
+        return -mise
+```
+
+1. Quel est l’argument de `gain_jeu` ? Que renvoie l’appel `gain_jeu(4)` si le dé donne $4$ ? si le dé donne $2$ ?
+2. Écrire une fonction `gain_total` qui prend une mise `mise` et un nombre de parties `n`, et renvoie la somme des gains obtenus sur les `n` parties.
+3. Compléter la fonction suivante pour qu’elle renvoie la moyenne de `n` lancers de dé, sans utiliser de liste.
+
+   ```python
+   def moyenne_des(n):
+       s = 0
+       for i in range(n):
+           ...
+       return ...
+   ```
+
+4. Cinq lancers donnent $3$, $1$, $6$, $2$, $3$. Calculer à la main la moyenne $m$, la variance $V$ et l’écart type $\sigma$ de cette série (arrondi au centième).
+
+   Rappel :
+
+   $$m = \frac{x_1 + \cdots + x_n}{n}$$
+
+   $$V = \frac{x_1^2 + \cdots + x_n^2}{n} - m^2$$
+
+5. Écrire une fonction `frequence_pair` qui prend un entier `n` et renvoie la **fréquence** d’apparition d’un nombre pair sur `n` lancers de dé.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Lire la fonction `gain_jeu`
+
+::: methode
+Repérer l’argument (entre parenthèses après `def`), puis suivre le test `if` pour savoir quel `return` est exécuté.
+:::
+
+::: etape Argument et valeur renvoyée
+L’argument est `mise`. La fonction tire un entier `de` entre $1$ et $6$, puis renvoie `mise` (gain) si `de >= 4`, et `-mise` (perte) sinon.
+:::
+
+::: etape Si le dé donne 4
+`mise` vaut $4$ et le test `4 >= 4` est **vrai** : la fonction exécute `return mise` et renvoie $4$.
+:::
+
+::: etape Si le dé donne 2
+Le test `2 >= 4` est **faux** : la fonction exécute `return -mise` et renvoie $-4$.
+:::
+
+::: resultat
+L’argument est `mise`. `gain_jeu(4)` renvoie $4$ si le dé donne $4$ (gain de $4$ €) et $-4$ si le dé donne $2$ (perte de $4$ €).
+:::
+
+::: attention
+`>=` signifie « supérieur **ou égal** » : le cas `de` égal à $4$ est bien un gain.
+:::
+
+## Question 2 : Écrire `gain_total`
+
+::: methode
+Répéter `n` fois la partie avec une boucle `for` et ajouter chaque gain à un total initialisé à $0$.
+:::
+
+::: etape Entrées et sortie
+Deux arguments : `mise` et `n`. Sortie : la somme des `n` gains.
+:::
+
+::: etape Accumuler les gains
+On crée `total = 0` **avant** la boucle ; à chaque tour, on appelle `gain_jeu(mise)` et on ajoute son résultat à `total`.
+:::
+
+::: resultat
+```python
+def gain_total(mise, n):
+    total = 0
+    for i in range(n):
+        g = gain_jeu(mise)
+        total = total + g
+    return total
+```
+:::
+
+::: attention
+Le `return total` est aligné avec le `for` : placé dans la boucle, il arrêterait la fonction après une seule partie.
+:::
+
+## Question 3 : Compléter `moyenne_des`
+
+::: methode
+Additionner les `n` lancers dans `s`, puis diviser par `n` après la boucle.
+:::
+
+::: etape Dans la boucle
+À chaque tour, on lance le dé et on ajoute le résultat : `s = s + randint(1, 6)`.
+:::
+
+::: etape Après la boucle
+La moyenne est la somme divisée par le nombre de lancers : `return s / n`.
+:::
+
+::: resultat
+```python
+def moyenne_des(n):
+    s = 0
+    for i in range(n):
+        s = s + randint(1, 6)
+    return s / n
+```
+:::
+
+## Question 4 : Moyenne, variance et écart type à la main
+
+::: methode
+Calculer la somme des valeurs et la somme de leurs carrés, puis appliquer les formules du rappel avec $n = 5$.
+:::
+
+::: etape Moyenne
+$$
+\begin{aligned}
+m &= \frac{3 + 1 + 6 + 2 + 3}{5} \\
+&= \frac{15}{5} \\
+&= 3
+\end{aligned}
+$$
+:::
+
+::: etape Somme des carrés
+$$
+\begin{aligned}
+3^2 + 1^2 + 6^2 + 2^2 + 3^2 &= 9 + 1 + 36 + 4 + 9 \\
+&= 59
+\end{aligned}
+$$
+:::
+
+::: etape Variance
+$$
+\begin{aligned}
+V &= \frac{59}{5} - 3^2 \\
+&= 11{,}8 - 9 \\
+&= 2{,}8
+\end{aligned}
+$$
+:::
+
+::: etape Écart type
+$$\sigma = \sqrt{2{,}8} \approx 1{,}67$$
+:::
+
+::: resultat
+$m = 3$, $V = 2{,}8$ et $\sigma \approx 1{,}67$.
+:::
+
+::: attention
+On soustrait le **carré de la moyenne** ($3^2 = 9$), pas la moyenne elle-même.
+:::
+
+## Question 5 : Écrire `frequence_pair`
+
+::: methode
+Compter les lancers pairs avec un compteur, puis diviser par `n`.
+:::
+
+::: etape Tester la parité
+Un entier `de` est pair lorsque le reste de sa division par $2$ est nul : `de % 2 == 0`.
+:::
+
+::: etape Compter puis diviser
+Compteur `k = 0` avant la boucle ; on ajoute $1$ à chaque lancer pair ; on renvoie `k / n`.
+:::
+
+::: resultat
+```python
+def frequence_pair(n):
+    k = 0
+    for i in range(n):
+        de = randint(1, 6)
+        if de % 2 == 0:
+            k = k + 1
+    return k / n
+```
+:::
+
+::: retenir
+La probabilité d’obtenir un nombre pair est $\frac{3}{6} = 0{,}5$ : pour $n$ grand, `frequence_pair(n)` renvoie une valeur proche de $0{,}5$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Argument : `mise`. `gain_jeu(4)` renvoie $4$ si le dé donne $4$, et $-4$ si le dé donne $2$.
+2. Boucle de `n` tours qui ajoute `gain_jeu(mise)` à `total` (initialisé à $0$), puis `return total`.
+3. Dans la boucle : `s = s + randint(1, 6)` ; après la boucle : `return s / n`.
+4. $m = 3$, $V = 2{,}8$, $\sigma \approx 1{,}67$.
+5. Compteur des lancers vérifiant `de % 2 == 0`, puis `return k / n`.
+
+===
+
+=== Découverte - Définir et appeler une fonction simple (1 argument)
+Id: 1936
+Difficulté: easy
+
+Énoncé: <!-- optitab:1 -->
+On écrit et on utilise des fonctions Python à un seul argument.
+
+1. Écrire une fonction `triple` qui prend un nombre `x` en argument et renvoie son triple.
+2. Que renvoie l’appel `triple(4)` ? Que vaut `y` après l’instruction `y = triple(4) + 1` ?
+3. Un élève écrit la fonction ci-dessous. Il exécute `y = triple_b(4)` : l’écran affiche `12`. Que contient la variable `y` ? Expliquer la différence entre `return` et `print`.
+
+   ```python
+   def triple_b(x):
+       print(3 * x)
+   ```
+
+4. On considère la fonction suivante. Que renvoie `suivant(10)` ?
+
+   ```python
+   def suivant(n):
+       return n + 1
+   ```
+
+5. Écrire une fonction `carre` qui prend un nombre `x` et renvoie $x^2$. Que renvoie `carre(-3)` ?
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Écrire la fonction `triple`
+
+::: methode
+En-tête `def nom(argument):`, puis un bloc indenté qui se termine par `return`.
+:::
+
+::: etape En-tête
+La fonction s’appelle `triple` et reçoit un nombre `x` : `def triple(x):`.
+:::
+
+::: etape Corps
+Le triple de `x` s’écrit `3 * x` ; on le renvoie avec `return`.
+:::
+
+::: resultat
+```python
+def triple(x):
+    return 3 * x
+```
+:::
+
+::: attention
+Le produit s’écrit avec `*` : `3x` provoque une erreur de syntaxe en Python.
+:::
+
+## Question 2 : Appeler `triple`
+
+::: methode
+Remplacer l’argument `x` par la valeur donnée dans l’appel.
+:::
+
+::: etape Appel triple(4)
+`x` prend la valeur $4$ ; la fonction renvoie $3 \times 4 = 12$.
+:::
+
+::: etape Réutiliser le résultat
+`triple(4) + 1` vaut $12 + 1 = 13$ : la valeur renvoyée s’utilise dans un calcul.
+:::
+
+::: resultat
+`triple(4)` renvoie $12$ et `y` vaut $13$.
+:::
+
+## Question 3 : `return` ou `print` ?
+
+::: methode
+Se demander si la fonction **renvoie** une valeur ou se contente de l’**afficher**.
+:::
+
+::: etape Ce que fait triple_b(4)
+L’instruction `print(3 * x)` affiche `12` à l’écran. La fonction ne contient aucun `return` : elle renvoie la valeur spéciale `None` (« rien »).
+:::
+
+::: etape Contenu de y
+`y` reçoit la valeur renvoyée, donc `None`. Le calcul `triple_b(4) + 1` provoquerait une erreur.
+:::
+
+::: resultat
+`y` contient `None`. `return` renvoie une valeur réutilisable (variable, calcul) ; `print` ne fait que l’afficher.
+:::
+
+::: retenir
+Une fonction qui calcule un résultat doit le **renvoyer** avec `return`.
+:::
+
+## Question 4 : Que renvoie `suivant(10)` ?
+
+::: methode
+Remplacer `n` par $10$ dans l’instruction `return`.
+:::
+
+::: etape Calcul
+`n + 1` devient $10 + 1 = 11$.
+:::
+
+::: resultat
+`suivant(10)` renvoie $11$.
+:::
+
+## Question 5 : Écrire la fonction `carre`
+
+::: methode
+Le carré de `x` s’écrit `x ** 2` (ou `x * x`).
+:::
+
+::: etape Écrire la fonction
+En-tête `def carre(x):`, puis `return x ** 2`.
+:::
+
+::: etape Tester avec −3
+$(-3)^2 = (-3) \times (-3) = 9$.
+:::
+
+::: resultat
+```python
+def carre(x):
+    return x ** 2
+```
+
+`carre(-3)` renvoie $9$.
+:::
+
+::: attention
+La puissance s’écrit `**` en Python ; le symbole `^` a un autre sens et donne un résultat faux.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. `def triple(x):` puis `return 3 * x`.
+2. `triple(4)` renvoie $12$ ; `y` vaut $13$.
+3. `y` contient `None` : `print` affiche seulement, `return` renvoie une valeur réutilisable.
+4. `suivant(10)` renvoie $11$.
+5. `def carre(x):` puis `return x ** 2` ; `carre(-3)` renvoie $9$.
+
+===
+
+=== Découverte - Fonctions à plusieurs arguments - Écrire et appeler
+Id: 1937
+Difficulté: easy
+
+Énoncé: <!-- optitab:1 -->
+On travaille avec des fonctions Python à plusieurs arguments.
+
+1. Écrire une fonction `somme` qui prend deux nombres `a` et `b` et renvoie leur somme. Que renvoie `somme(7, 5)` ?
+2. On considère la fonction suivante. Que renvoie `affine(3, -1, 4)` ?
+
+   ```python
+   def affine(a, b, x):
+       return a * x + b
+   ```
+
+3. Que renvoie `affine(-1, 4, 3)` ? Pourquoi le résultat est-il différent de celui de la question 2, alors que ce sont les mêmes nombres ?
+4. Écrire l’appel de `affine` qui calcule l’image de $5$ par la fonction $g : x \mapsto 2x - 7$, puis donner le résultat.
+5. Écrire une fonction `aire_rectangle` qui prend la longueur `L` et la largeur `l` d’un rectangle et renvoie son aire. Que renvoie `aire_rectangle(8, 2.5)` ?
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Écrire et appeler `somme`
+
+::: methode
+Les arguments sont séparés par des virgules, dans l’en-tête comme dans l’appel.
+:::
+
+::: etape Écrire la fonction
+```python
+def somme(a, b):
+    return a + b
+```
+:::
+
+::: etape Appel somme(7, 5)
+`a` prend la valeur $7$ et `b` la valeur $5$ : la fonction renvoie $7 + 5 = 12$.
+:::
+
+::: resultat
+`somme(7, 5)` renvoie $12$.
+:::
+
+## Question 2 : Appel `affine(3, -1, 4)`
+
+::: methode
+Affecter les valeurs aux arguments **dans l’ordre** : premier argument `a`, deuxième `b`, troisième `x`.
+:::
+
+::: etape Affectation des arguments
+`a` vaut $3$, `b` vaut $-1$ et `x` vaut $4$.
+:::
+
+::: etape Calcul
+$$3 \times 4 + (-1) = 12 - 1 = 11$$
+:::
+
+::: resultat
+`affine(3, -1, 4)` renvoie $11$.
+:::
+
+## Question 3 : Appel `affine(-1, 4, 3)`
+
+::: methode
+Même méthode : on affecte les valeurs dans l’ordre des arguments.
+:::
+
+::: etape Affectation des arguments
+Cette fois, `a` vaut $-1$, `b` vaut $4$ et `x` vaut $3$.
+:::
+
+::: etape Calcul
+$$(-1) \times 3 + 4 = -3 + 4 = 1$$
+:::
+
+::: resultat
+`affine(-1, 4, 3)` renvoie $1$, et non $11$ : chaque valeur va à l’argument de **même position**. En changeant l’ordre, on calcule une autre expression.
+:::
+
+::: attention
+Python ne « devine » pas quel nombre est `a`, `b` ou `x` : seule la position dans l’appel compte.
+:::
+
+## Question 4 : Image de 5 par $g$
+
+::: methode
+Identifier $a$ et $b$ dans l’écriture $g(x) = ax + b$, puis respecter l’ordre `affine(a, b, x)`.
+:::
+
+::: etape Identifier a et b
+$g(x) = 2x - 7 = 2x + (-7)$ : $a = 2$ et $b = -7$ ; on veut l’image de $x = 5$.
+:::
+
+::: etape Appel et calcul
+L’appel est `affine(2, -7, 5)`, qui calcule $2 \times 5 - 7 = 3$.
+:::
+
+::: resultat
+`affine(2, -7, 5)` renvoie $3$ : l’image de $5$ par $g$ est $3$.
+:::
+
+## Question 5 : Écrire `aire_rectangle`
+
+::: methode
+L’aire d’un rectangle est longueur $\times$ largeur.
+:::
+
+::: etape Écrire la fonction
+```python
+def aire_rectangle(L, l):
+    return L * l
+```
+:::
+
+::: etape Appel aire_rectangle(8, 2.5)
+$8 \times 2{,}5 = 20$ ; Python l’affiche `20.0` car $2{,}5$ s’écrit `2.5` (nombre décimal).
+:::
+
+::: resultat
+`aire_rectangle(8, 2.5)` renvoie $20$ (affiché `20.0`).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. `def somme(a, b):` puis `return a + b` ; `somme(7, 5)` renvoie $12$.
+2. `affine(3, -1, 4)` renvoie $3 \times 4 - 1 = 11$.
+3. `affine(-1, 4, 3)` renvoie $-3 + 4 = 1$ : les valeurs sont affectées aux arguments dans l’ordre, l’ordre compte.
+4. `affine(2, -7, 5)` renvoie $3$.
+5. `def aire_rectangle(L, l):` puis `return L * l` ; `aire_rectangle(8, 2.5)` renvoie `20.0`.
+
+===
+
+=== Découverte - Lire, comprendre et simuler l'exécution d'une fonction
+Id: 1938
+Difficulté: easy
+
+Énoncé: <!-- optitab:1 -->
+On exécute « à la main » des fonctions Python, ligne par ligne.
+
+1. On donne la fonction ci-dessous. Que renvoie `mystere(2)` ?
+
+   ```python
+   def mystere(x):
+       y = x + 5
+       y = y * 3
+       return y
+   ```
+
+2. Quelle fonction mathématique la fonction `mystere` programme-t-elle ? Donner son expression développée.
+3. On donne la fonction ci-dessous. Que renvoie `calcul(7, 3)` ?
+
+   ```python
+   def calcul(a, b):
+       s = a + b
+       d = a - b
+       return s * d
+   ```
+
+4. Quelle expression de $a$ et $b$ la fonction `calcul` renvoie-t-elle ? La simplifier et vérifier avec la question 3.
+5. On propose la fonction ci-dessous. Que renvoie `double_puis_ajoute(4, 10)` ?
+
+   ```python
+   def double_puis_ajoute(x, y):
+       x = x * 2
+       return x + y
+   ```
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Exécuter `mystere(2)`
+
+::: methode
+Suivre les instructions dans l’ordre en notant la valeur de chaque variable.
+:::
+
+::: etape Ligne y = x + 5
+`x` vaut $2$, donc `y` vaut $2 + 5 = 7$.
+:::
+
+::: etape Ligne y = y * 3
+La nouvelle valeur de `y` est l’ancienne multipliée par $3$ : $7 \times 3 = 21$.
+:::
+
+::: resultat
+`mystere(2)` renvoie $21$.
+:::
+
+## Question 2 : Expression mathématique de `mystere`
+
+::: methode
+Traduire chaque instruction en calcul, puis enchaîner les calculs.
+:::
+
+::: etape Enchaîner les opérations
+On ajoute $5$ à $x$, puis on multiplie le résultat par $3$ : on obtient $3(x + 5)$.
+:::
+
+::: etape Développer
+$$3(x + 5) = 3x + 15$$
+Vérification : pour $x = 2$, $3 \times 2 + 15 = 21$.
+:::
+
+::: resultat
+`mystere` programme la fonction $x \mapsto 3(x + 5) = 3x + 15$.
+:::
+
+::: attention
+L’ordre compte : « ajouter $5$ puis multiplier par $3$ » donne $3(x + 5)$, et non $3x + 5$.
+:::
+
+## Question 3 : Exécuter `calcul(7, 3)`
+
+::: methode
+Remplacer `a` par $7$ et `b` par $3$, puis suivre les lignes.
+:::
+
+::: etape Ligne s = a + b
+`s` vaut $7 + 3 = 10$.
+:::
+
+::: etape Ligne d = a - b
+`d` vaut $7 - 3 = 4$.
+:::
+
+::: etape Ligne return s * d
+La fonction renvoie $10 \times 4 = 40$.
+:::
+
+::: resultat
+`calcul(7, 3)` renvoie $40$.
+:::
+
+## Question 4 : Expression renvoyée par `calcul`
+
+::: methode
+Remplacer `s` et `d` par leurs expressions, puis reconnaître une identité remarquable.
+:::
+
+::: etape Expression renvoyée
+La fonction renvoie $(a + b)(a - b)$.
+:::
+
+::: etape Simplifier
+$$(a + b)(a - b) = a^2 - b^2$$
+:::
+
+::: etape Vérifier
+Pour $a = 7$ et $b = 3$ : $7^2 - 3^2 = 49 - 9 = 40$, comme à la question 3.
+:::
+
+::: resultat
+`calcul(a, b)` renvoie $(a + b)(a - b) = a^2 - b^2$.
+:::
+
+## Question 5 : Exécuter `double_puis_ajoute(4, 10)`
+
+::: methode
+Une affectation peut modifier un argument à l’intérieur de la fonction.
+:::
+
+::: etape Ligne x = x * 2
+`x` vaut d’abord $4$ ; après cette ligne, `x` vaut $4 \times 2 = 8$.
+:::
+
+::: etape Ligne return x + y
+`y` vaut $10$ : la fonction renvoie $8 + 10 = 18$.
+:::
+
+::: resultat
+`double_puis_ajoute(4, 10)` renvoie $18$.
+:::
+
+::: attention
+Erreur fréquente : utiliser l’ancienne valeur de `x` et répondre $4 + 10 = 14$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. `mystere(2)` renvoie $21$.
+2. $x \mapsto 3(x + 5) = 3x + 15$.
+3. `calcul(7, 3)` renvoie $40$.
+4. $(a + b)(a - b) = a^2 - b^2$ ; pour $a = 7$ et $b = 3$ : $49 - 9 = 40$.
+5. `double_puis_ajoute(4, 10)` renvoie $18$.
+
+===
+
+=== Découverte - Repérer et corriger les erreurs classiques
+Id: 3742
+Difficulté: easy
+
+Énoncé: <!-- optitab:1 -->
+Chacune des fonctions suivantes contient **une** erreur. Pour chacune, expliquer ce qui se passe lors de l’appel indiqué, puis corriger la fonction. On suppose que `randint` a été importée, sauf à la question 4.
+
+1. On exécute `y = double(5) + 1`.
+
+   ```python
+   def double(x):
+       print(2 * x)
+   ```
+
+2. On appelle `nb_six(600)` pour compter les $6$ obtenus en $600$ lancers.
+
+   ```python
+   def nb_six(n):
+       for i in range(n):
+           k = 0
+           if randint(1, 6) == 6:
+               k = k + 1
+       return k
+   ```
+
+3. On appelle `somme_des(10)` pour additionner $10$ lancers de dé.
+
+   ```python
+   def somme_des(n):
+       s = 0
+       for i in range(n):
+           s = s + randint(1, 6)
+           return s
+   ```
+
+4. Dans un fichier qui ne contient aucune ligne `import`, on appelle `de()`.
+
+   ```python
+   def de():
+       return randint(1, 6)
+   ```
+
+5. On appelle `moyenne(4, 6)`.
+
+   ```python
+   def moyenne(a, b):
+       return a + b / 2
+   ```
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : `print` au lieu de `return`
+
+::: methode
+Se demander ce que la fonction **renvoie**, pas ce qu’elle affiche.
+:::
+
+::: etape Ce qui se passe
+`double(5)` affiche `10`, mais ne renvoie rien (la valeur `None`). Le calcul `None + 1` provoque une erreur.
+:::
+
+::: resultat
+```python
+def double(x):
+    return 2 * x
+```
+
+Alors `y` vaut $11$.
+:::
+
+## Question 2 : Compteur dans la boucle
+
+::: methode
+Suivre la valeur de `k` d’un tour à l’autre.
+:::
+
+::: etape Ce qui se passe
+La ligne `k = 0` est exécutée **à chaque tour** : le compteur repart de $0$. À la fin, `k` vaut $1$ si le dernier lancer est un $6$, et $0$ sinon.
+:::
+
+::: resultat
+```python
+def nb_six(n):
+    k = 0
+    for i in range(n):
+        if randint(1, 6) == 6:
+            k = k + 1
+    return k
+```
+
+`k = 0` est placé **avant** la boucle ; `nb_six(600)` renvoie alors un entier proche de $100$.
+:::
+
+## Question 3 : `return` dans la boucle
+
+::: methode
+Regarder l’indentation du `return` : est-il dans la boucle ou après ?
+:::
+
+::: etape Ce qui se passe
+Le `return s` est indenté sous le `for` : il est exécuté dès le premier tour, et la fonction s’arrête. `somme_des(10)` renvoie le résultat d’**un seul** lancer.
+:::
+
+::: resultat
+```python
+def somme_des(n):
+    s = 0
+    for i in range(n):
+        s = s + randint(1, 6)
+    return s
+```
+
+Le `return` est aligné avec le `for` : il est exécuté une fois la boucle terminée.
+:::
+
+## Question 4 : Import oublié
+
+::: methode
+Toute fonction d’un module doit être importée avant d’être utilisée.
+:::
+
+::: etape Ce qui se passe
+Python ne connaît pas `randint` : l’appel `de()` provoque une erreur `NameError`, accompagnée du message « name 'randint' is not defined » (le nom `randint` n’est pas défini).
+:::
+
+::: resultat
+```python
+from random import randint
+
+def de():
+    return randint(1, 6)
+```
+:::
+
+## Question 5 : Priorités opératoires
+
+::: methode
+En Python comme en mathématiques, la division est prioritaire sur l’addition.
+:::
+
+::: etape Ce qui se passe
+`a + b / 2` calcule $a + \dfrac{b}{2}$ : `moyenne(4, 6)` renvoie $4 + 3 = 7$ au lieu de $\dfrac{4 + 6}{2} = 5$.
+:::
+
+::: resultat
+```python
+def moyenne(a, b):
+    return (a + b) / 2
+```
+
+`moyenne(4, 6)` renvoie alors `5.0`.
+:::
+
+::: retenir
+Toujours tester une fonction sur un cas simple dont on connaît la réponse : les cinq erreurs ci-dessus se repèrent ainsi immédiatement.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. `double` affiche mais renvoie `None` : remplacer `print(2 * x)` par `return 2 * x`.
+2. `k = 0` est dans la boucle : le placer avant le `for`.
+3. `return s` est dans la boucle : l’aligner avec le `for`.
+4. `randint` n’est pas importée : ajouter `from random import randint`.
+5. Priorité de la division : écrire `return (a + b) / 2`.
+
+===
+
+=== Entraînement - Compléter et modifier une fonction Python
+Id: 1939
+Difficulté: medium
+
+Énoncé: <!-- optitab:1 -->
+On complète, on corrige et on modifie des fonctions Python.
+
+1. Compléter la fonction suivante pour qu’elle renvoie le périmètre d’un cercle de rayon `r` ($P = 2\pi r$). La constante $\pi$ est fournie par le module `math`. Donner une valeur approchée de `perimetre(5)`.
+
+   ```python
+   from math import pi
+
+   def perimetre(r):
+       return ...
+   ```
+
+2. La fonction suivante doit renvoyer l’aire d’un triangle de base `b` et de hauteur `h`. Elle renvoie $12$ pour `aire_triangle(4, 3)`. Trouver l’erreur et la corriger.
+
+   ```python
+   def aire_triangle(b, h):
+       return b * h
+   ```
+
+3. On donne la fonction ci-dessous.
+
+   ```python
+   def f(x):
+       y = x ** 2
+       y = y - 4 * x
+       y = y + 3
+       return y
+   ```
+
+   - a) Que renvoie `f(1)` ? Que renvoie `f(3)` ?
+   - b) Quelle est l’expression mathématique de $f(x)$ ?
+
+4. Modifier la fonction `f` pour qu’elle programme $g(x) = x^2 - 4x + 7$. Que renvoie alors l’appel pour $x = 1$ ?
+5. Écrire une fonction `distance` qui prend quatre arguments `xA`, `yA`, `xB`, `yB` et renvoie la distance entre les points $A(x_A\,;y_A)$ et $B(x_B\,;y_B)$. Tester avec $A(0\,;0)$ et $B(3\,;4)$.
+
+   Rappel : $AB = \sqrt{(x_B - x_A)^2 + (y_B - y_A)^2}$.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Compléter `perimetre`
+
+::: methode
+Traduire la formule $P = 2\pi r$ avec `*` pour chaque produit.
+:::
+
+::: etape Écrire le return
+$2\pi r$ s’écrit `2 * pi * r` ; `pi` est disponible grâce à `from math import pi`.
+:::
+
+::: etape Tester avec r = 5
+$2 \times \pi \times 5 = 10\pi \approx 31{,}42$.
+:::
+
+::: resultat
+```python
+from math import pi
+
+def perimetre(r):
+    return 2 * pi * r
+```
+
+`perimetre(5)` renvoie environ $31{,}42$.
+:::
+
+## Question 2 : Corriger `aire_triangle`
+
+::: methode
+Comparer avec la formule $\mathcal{A} = \dfrac{b \times h}{2}$ et avec un cas connu.
+:::
+
+::: etape Repérer l’erreur
+Pour $b = 4$ et $h = 3$, l’aire vaut $\dfrac{4 \times 3}{2} = 6$, mais la fonction renvoie $12$ : la division par $2$ manque.
+:::
+
+::: resultat
+```python
+def aire_triangle(b, h):
+    return b * h / 2
+```
+
+`aire_triangle(4, 3)` renvoie alors `6.0`.
+:::
+
+::: attention
+Tester une fonction sur un cas dont on connaît la réponse permet de détecter ce type d’erreur.
+:::
+
+## Question 3 : Exécuter `f` et trouver son expression
+
+::: methode
+Remplacer `x` par la valeur et suivre les trois affectations de `y`.
+:::
+
+::: etape Appel f(1)
+- `y = 1 ** 2` : `y` vaut $1$ ;
+- `y = y - 4 * x` : `y` vaut $1 - 4 = -3$ ;
+- `y = y + 3` : `y` vaut $-3 + 3 = 0$.
+:::
+
+::: etape Appel f(3)
+- `y = 3 ** 2` : `y` vaut $9$ ;
+- `y = y - 4 * x` : `y` vaut $9 - 12 = -3$ ;
+- `y = y + 3` : `y` vaut $-3 + 3 = 0$.
+:::
+
+::: etape Expression de f(x)
+On part de $x^2$, on retranche $4x$, puis on ajoute $3$ : $f(x) = x^2 - 4x + 3$.
+:::
+
+::: resultat
+a) `f(1)` renvoie $0$ et `f(3)` renvoie $0$. b) $f(x) = x^2 - 4x + 3$.
+:::
+
+## Question 4 : Programmer $g(x) = x^2 - 4x + 7$
+
+::: methode
+Comparer $g(x)$ et $f(x)$ : seule la constante change ($7$ au lieu de $3$).
+:::
+
+::: etape Modifier une seule ligne
+On remplace `y = y + 3` par `y = y + 7`.
+:::
+
+::: etape Tester avec x = 1
+$1 - 4 + 7 = 4$.
+:::
+
+::: resultat
+```python
+def g(x):
+    y = x ** 2
+    y = y - 4 * x
+    y = y + 7
+    return y
+```
+
+`g(1)` renvoie $4$.
+:::
+
+## Question 5 : Écrire `distance`
+
+::: methode
+Calculer les écarts des abscisses et des ordonnées, puis appliquer la formule avec `sqrt` (module `math`).
+:::
+
+::: etape Écrire la fonction
+Deux variables intermédiaires `dx` et `dy` rendent le code lisible.
+
+```python
+from math import sqrt
+
+def distance(xA, yA, xB, yB):
+    dx = xB - xA
+    dy = yB - yA
+    return sqrt(dx**2 + dy**2)
+```
+:::
+
+::: etape Tester avec A(0 ; 0) et B(3 ; 4)
+$$\sqrt{(3 - 0)^2 + (4 - 0)^2} = \sqrt{9 + 16} = \sqrt{25} = 5$$
+:::
+
+::: resultat
+`distance(0, 0, 3, 4)` renvoie `5.0`.
+:::
+
+::: attention
+L’ordre des arguments doit être respecté à l’appel : `xA, yA, xB, yB`.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. `return 2 * pi * r` ; `perimetre(5)` $\approx 31{,}42$.
+2. La division par $2$ manque : `return b * h / 2`.
+3. a) `f(1)` renvoie $0$ et `f(3)` renvoie $0$ ; b) $f(x) = x^2 - 4x + 3$.
+4. Remplacer `y = y + 3` par `y = y + 7` ; l’appel pour $x = 1$ renvoie $4$.
+5. `dx = xB - xA`, `dy = yB - yA`, `return sqrt(dx**2 + dy**2)` ; `distance(0, 0, 3, 4)` renvoie `5.0`.
+
+===
+
+=== Entraînement - Fonctions aléatoires et simulation d'expériences
+Id: 1940
+Difficulté: medium
+
+Énoncé: <!-- optitab:1 -->
+On utilise la fonction `randint` du module `random` pour simuler des expériences aléatoires.
+
+1. On donne la fonction ci-dessous. Quelles sont les valeurs que peut renvoyer `lancer_de()` ? Pourquoi les parenthèses sont-elles vides ?
+
+   ```python
+   from random import randint
+
+   def lancer_de():
+       return randint(1, 6)
+   ```
+
+2. Écrire une fonction `deux_des`, sans argument, qui renvoie la **somme** de deux lancers de dé. Quelles sont ses valeurs possibles ?
+3. On considère les fonctions suivantes (`1` code « Pile », `0` code « Face »). Expliquer ce que renvoie `nombre_piles(100)`.
+
+   ```python
+   def piece():
+       return randint(0, 1)
+
+   def nombre_piles(n):
+       k = 0
+       for i in range(n):
+           if piece() == 1:
+               k = k + 1
+       return k
+   ```
+
+4. Écrire une fonction `freq_piles` qui prend un entier `n` et renvoie la **fréquence** de « Pile » sur `n` lancers, en utilisant `nombre_piles`. De quelle valeur cette fréquence est-elle proche quand `n` est grand ?
+5. Écrire une fonction `nombre_six` qui prend un entier `n` et renvoie le nombre de $6$ obtenus en `n` lancers d’un dé.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Valeurs renvoyées par `lancer_de()`
+
+::: methode
+`randint(a, b)` renvoie un entier au hasard entre `a` et `b`, **bornes incluses**.
+:::
+
+::: etape Valeurs possibles
+`randint(1, 6)` peut renvoyer $1$, $2$, $3$, $4$, $5$ ou $6$, chacun avec la probabilité $\frac{1}{6}$.
+:::
+
+::: etape Parenthèses vides
+La fonction n’a besoin d’aucune donnée d’entrée : elle n’a **pas d’argument**. On l’appelle quand même avec des parenthèses : `lancer_de()`.
+:::
+
+::: resultat
+`lancer_de()` renvoie un entier de $1$ à $6$ ; elle n’a pas d’argument.
+:::
+
+## Question 2 : Écrire `deux_des`
+
+::: methode
+Faire deux tirages **séparés** et renvoyer leur somme.
+:::
+
+::: etape Deux appels indépendants
+Chaque appel à `randint(1, 6)` donne un nouveau nombre au hasard.
+:::
+
+::: resultat
+```python
+def deux_des():
+    d1 = randint(1, 6)
+    d2 = randint(1, 6)
+    return d1 + d2
+```
+
+Valeurs possibles : les entiers de $2$ ($1 + 1$) à $12$ ($6 + 6$).
+:::
+
+::: attention
+`2 * randint(1, 6)` ne simule pas deux dés : ce calcul ne donne que des nombres pairs ($2$, $4$, …, $12$).
+:::
+
+## Question 3 : Que renvoie `nombre_piles(100)` ?
+
+::: methode
+Lire la fonction pas à pas : compteur, boucle, test.
+:::
+
+::: etape Le compteur
+`k` est initialisé à $0$ avant la boucle.
+:::
+
+::: etape La boucle
+`for i in range(100)` répète $100$ fois : on lance la pièce et, si elle donne `1` (Pile), on ajoute $1$ à `k`.
+:::
+
+::: resultat
+`nombre_piles(100)` renvoie le **nombre de « Pile »** obtenus sur $100$ lancers : un entier entre $0$ et $100$, le plus souvent assez proche de $50$.
+:::
+
+## Question 4 : Écrire `freq_piles`
+
+::: methode
+Fréquence = nombre de succès divisé par le nombre de répétitions.
+:::
+
+::: etape Écrire la fonction
+```python
+def freq_piles(n):
+    return nombre_piles(n) / n
+```
+:::
+
+::: etape Valeur attendue
+La probabilité d’obtenir Pile est $\frac{1}{2}$ : quand `n` est grand, la fréquence est en général proche de $0{,}5$.
+:::
+
+::: resultat
+`freq_piles(n)` renvoie `nombre_piles(n) / n`, un nombre entre $0$ et $1$, proche de $0{,}5$ pour `n` grand.
+:::
+
+## Question 5 : Écrire `nombre_six`
+
+::: methode
+Reprendre la structure de `nombre_piles` en changeant le test.
+:::
+
+::: etape Le test
+On lance le dé avec `randint(1, 6)` et on teste l’égalité avec `== 6` (deux signes égal).
+:::
+
+::: resultat
+```python
+def nombre_six(n):
+    k = 0
+    for i in range(n):
+        if randint(1, 6) == 6:
+            k = k + 1
+    return k
+```
+:::
+
+::: attention
+`=` affecte une valeur, `==` compare : écrire `if randint(1, 6) = 6:` provoque une erreur.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $1$, $2$, $3$, $4$, $5$ ou $6$ ; la fonction n’a pas d’argument.
+2. `d1 = randint(1, 6)`, `d2 = randint(1, 6)`, `return d1 + d2` ; valeurs de $2$ à $12$.
+3. Le nombre de « Pile » obtenus sur $100$ lancers (entier entre $0$ et $100$).
+4. `return nombre_piles(n) / n` ; proche de $0{,}5$ pour `n` grand.
+5. Compteur des lancers vérifiant `randint(1, 6) == 6`, puis `return k`.
+
+===
+
+=== Entraînement - Simuler un événement de probabilité p avec random()
+Id: 3741
+Difficulté: medium
+Image: v1_n178_ex3741_1_frequence_tir.png
+
+Énoncé: <!-- optitab:1 -->
+Une joueuse de basket réussit chaque lancer franc avec la probabilité $0{,}7$ ; les lancers sont indépendants. On rappelle que `random()` (module `random`) renvoie un nombre décimal au hasard dans ${[0\,;1[}$.
+
+1. Expliquer pourquoi la condition `random() < 0.7` est vraie avec la probabilité $0{,}7$.
+2. Écrire une fonction `lancer_franc`, sans argument, qui renvoie $1$ si le lancer est réussi et $0$ sinon.
+3. Écrire une fonction `nb_reussites` qui prend un entier `n` et renvoie le nombre de lancers réussis sur `n` lancers.
+4. Écrire une fonction `freq_reussite` qui prend un entier `n` et renvoie la fréquence de réussite sur `n` lancers. Quelle valeur peut-on attendre pour `n` égal à $3\,000$ ?
+5. Une autre joueuse réussit avec la probabilité $0{,}85$. Modifier `lancer_franc` et `nb_reussites` en ajoutant un argument `p` (probabilité de réussite), puis écrire l’appel qui simule $500$ lancers de cette joueuse.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Pourquoi `random() < 0.7` ?
+
+::: methode
+`random()` répartit ses valeurs uniformément dans ${[0\,;1[}$ : la probabilité de tomber dans un intervalle est égale à sa longueur.
+:::
+
+::: etape L’intervalle favorable
+`random() < 0.7` est vraie lorsque le nombre tiré est dans ${[0\,;0{,}7[}$.
+:::
+
+::: etape Longueur de l’intervalle
+Cet intervalle a pour longueur $0{,}7 - 0 = 0{,}7$, sur une longueur totale de $1$.
+:::
+
+::: resultat
+La condition `random() < 0.7` est vraie avec la probabilité $0{,}7$ : elle simule un lancer réussi.
+:::
+
+## Question 2 : Écrire `lancer_franc`
+
+::: methode
+Un test `if` sur `random() < 0.7` : $1$ si c’est vrai, $0$ sinon.
+:::
+
+::: resultat
+```python
+from random import random
+
+def lancer_franc():
+    if random() < 0.7:
+        return 1
+    return 0
+```
+:::
+
+::: remarque
+Le second `return 0` n’est exécuté que si le test est faux : le premier `return` a déjà arrêté la fonction sinon.
+:::
+
+## Question 3 : Écrire `nb_reussites`
+
+::: methode
+Répéter `n` lancers et **additionner** les résultats : chaque réussite vaut $1$, chaque échec $0$.
+:::
+
+::: etape Additionner des 0 et des 1
+La somme des résultats de `lancer_franc()` est exactement le nombre de réussites : pas besoin de test.
+:::
+
+::: resultat
+```python
+def nb_reussites(n):
+    k = 0
+    for i in range(n):
+        k = k + lancer_franc()
+    return k
+```
+:::
+
+## Question 4 : Fréquence de réussite
+
+::: methode
+Fréquence = nombre de réussites divisé par le nombre de lancers.
+:::
+
+::: etape Écrire la fonction
+```python
+def freq_reussite(n):
+    return nb_reussites(n) / n
+```
+:::
+
+::: etape Ce que montre une simulation
+La figure trace la fréquence de réussite obtenue pour $n$ allant de $10$ à $3\,000$ : elle varie beaucoup au début, puis se stabilise près de $0{,}7$.
+
+[IMAGE_1]
+:::
+
+::: resultat
+`freq_reussite(3000)` renvoie une valeur proche de $0{,}7$ (par exemple $0{,}707$), différente d’un appel à l’autre.
+:::
+
+::: attention
+La fréquence n’est pas **égale** à $0{,}7$ : elle en est seulement proche quand `n` est grand.
+:::
+
+## Question 5 : Ajouter un argument `p`
+
+::: methode
+Remplacer la valeur fixe $0{,}7$ par un argument `p`, et transmettre `p` d’une fonction à l’autre.
+:::
+
+::: etape Lancer de probabilité p
+```python
+def lancer_franc(p):
+    if random() < p:
+        return 1
+    return 0
+```
+:::
+
+::: etape Répétition
+```python
+def nb_reussites(n, p):
+    k = 0
+    for i in range(n):
+        r = lancer_franc(p)
+        k = k + r
+    return k
+```
+:::
+
+::: resultat
+L’appel `nb_reussites(500, 0.85)` simule $500$ lancers de la seconde joueuse ; il renvoie un entier proche de $500 \times 0{,}85 = 425$.
+:::
+
+::: attention
+Dans le code, la virgule décimale s’écrit avec un point : `0.85`. Avec `0,85`, Python verrait deux arguments `0` et `85`, et l’appel provoquerait une erreur.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. `random()` tombe dans ${[0\,;0{,}7[}$, de longueur $0{,}7$, avec la probabilité $0{,}7$.
+2. `if random() < 0.7:` `return 1`, sinon `return 0`.
+3. Boucle de `n` tours qui ajoute `lancer_franc()` à `k`, puis `return k`.
+4. `return nb_reussites(n) / n` ; pour `n` égal à $3\,000$, valeur proche de $0{,}7$.
+5. `lancer_franc(p)` teste `random() < p` ; `nb_reussites(n, p)` appelle `lancer_franc(p)` ; appel : `nb_reussites(500, 0.85)`.
+
+===
+
+=== Maîtrise - Lire et comprendre une fonction renvoyant une moyenne et un écart type
+Id: 1941
+Difficulté: medium
+
+Énoncé: <!-- optitab:1 -->
+La fonction suivante simule `n` lancers d’un dé et renvoie la moyenne et l’écart type des résultats, **sans utiliser de liste**.
+
+```python
+from random import randint
+
+def stats_des(n):
+    s = 0
+    s2 = 0
+    for i in range(n):
+        x = randint(1, 6)
+        s = s + x
+        s2 = s2 + x * x
+    m = s / n
+    v = s2 / n - m * m
+    e = v ** 0.5
+    return m, e
+```
+
+1. Quel est le rôle de chacune des variables `s`, `s2`, `x`, `m`, `v` et `e` ?
+2. Pourquoi n’a-t-on pas besoin de liste pour calculer la moyenne et l’écart type ?
+3. On suppose que `n` vaut $3$ et que les trois lancers donnent successivement $2$, $5$ et $2$. Exécuter la fonction à la main et donner les valeurs finales de `s`, `s2`, `m`, `v` et `e` (arrondi au millième).
+4. Un appel `stats_des(10000)` renvoie une moyenne égale à $3{,}475$ et un écart type d’environ $1{,}713$. Interpréter ces deux nombres. Un second appel renverra-t-il exactement le même couple ?
+5. Comment récupérer séparément la moyenne et l’écart type renvoyés par la fonction ?
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Rôle des variables
+
+::: methode
+Regarder où chaque variable est créée et comment elle est modifiée.
+:::
+
+::: etape Avant et pendant la boucle
+- `s` : somme des résultats, augmentée de `x` à chaque tour ;
+- `s2` : somme des carrés des résultats, augmentée de `x * x` ;
+- `x` : résultat du lancer en cours (entier de $1$ à $6$).
+:::
+
+::: etape Après la boucle
+- `m` : moyenne $\dfrac{s}{n}$ ;
+- `v` : variance $\dfrac{s_2}{n} - m^2$ ;
+- `e` : écart type $\sqrt{v}$ (`** 0.5` calcule une racine carrée).
+:::
+
+::: resultat
+`s` et `s2` accumulent la somme et la somme des carrés, `x` est le lancer, `m` la moyenne, `v` la variance, `e` l’écart type.
+:::
+
+## Question 2 : Pourquoi pas de liste ?
+
+::: methode
+Regarder de quoi ont besoin les formules de la moyenne et de la variance.
+:::
+
+::: etape Ce qu’utilisent les formules
+$$m = \frac{x_1 + \cdots + x_n}{n}$$
+
+$$V = \frac{x_1^2 + \cdots + x_n^2}{n} - m^2$$
+
+Ces formules n’utilisent que **deux sommes** et le nombre $n$.
+:::
+
+::: resultat
+Il suffit d’accumuler la somme et la somme des carrés au fil de la boucle : inutile de conserver chaque résultat dans une liste.
+:::
+
+## Question 3 : Exécution à la main avec 2, 5, 2
+
+::: methode
+Dresser un tableau de suivi : une ligne par tour de boucle.
+:::
+
+::: etape Tableau de suivi
+| Tour | `x` | `s` | `s2` |
+|---|---|---|---|
+| départ | | $0$ | $0$ |
+| $1$ | $2$ | $2$ | $4$ |
+| $2$ | $5$ | $7$ | $29$ |
+| $3$ | $2$ | $9$ | $33$ |
+:::
+
+::: etape Après la boucle
+$$
+\begin{aligned}
+m &= \frac{9}{3} = 3 \\
+v &= \frac{33}{3} - 3^2 = 11 - 9 = 2 \\
+e &= \sqrt{2} \approx 1{,}414
+\end{aligned}
+$$
+:::
+
+::: resultat
+`s` vaut $9$, `s2` vaut $33$, `m` vaut $3$, `v` vaut $2$ et `e` $\approx 1{,}414$.
+:::
+
+::: attention
+`s2` ajoute les **carrés** : au tour 2, on ajoute $5^2 = 25$, pas $5$.
+:::
+
+## Question 4 : Interpréter la moyenne et l’écart type
+
+::: methode
+La moyenne indique la valeur « centrale » ; l’écart type mesure la dispersion autour d’elle.
+:::
+
+::: etape La moyenne
+Sur $10\,000$ lancers, le résultat moyen est $3{,}475$, très proche de la moyenne des six faces :
+
+$$\frac{1 + 2 + 3 + 4 + 5 + 6}{6} = \frac{21}{6} = 3{,}5$$
+:::
+
+::: etape L’écart type
+Les résultats s’écartent en moyenne d’environ $1{,}7$ de la moyenne : ils sont assez dispersés (de $1$ à $6$).
+:::
+
+::: etape Un second appel
+Les lancers sont tirés au hasard : un second appel donne en général un couple **légèrement différent**, toujours proche de $(3{,}5\,;\,1{,}7)$. C’est la fluctuation d’échantillonnage.
+:::
+
+::: resultat
+Moyenne $3{,}475$ (proche de $3{,}5$), écart type $\approx 1{,}71$ ; un nouvel appel donne en général un résultat un peu différent.
+:::
+
+## Question 5 : Récupérer `m` et `e`
+
+::: methode
+La fonction renvoie un **couple** : on l’affecte à deux variables à la fois.
+:::
+
+::: resultat
+```python
+m, e = stats_des(1000)
+print(m)
+print(e)
+```
+
+On peut aussi écrire `r = stats_des(1000)`, puis utiliser `r[0]` (moyenne) et `r[1]` (écart type).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. `s` : somme ; `s2` : somme des carrés ; `x` : lancer ; `m` : moyenne ; `v` : variance ; `e` : écart type.
+2. Les formules n’utilisent que la somme et la somme des carrés, accumulées au fil de la boucle.
+3. `s` vaut $9$, `s2` vaut $33$, `m` vaut $3$, `v` vaut $2$, `e` $\approx 1{,}414$.
+4. Moyenne proche de $3{,}5$, écart type proche de $1{,}7$ ; un autre appel donne en général un couple légèrement différent.
+5. `m, e = stats_des(1000)`.
+
+===
+
+=== Problème - Jeu de la tombola : simuler, compter et analyser
+Id: 1943
+Difficulté: hard
+
+Énoncé: <!-- optitab:1 -->
+Lors d’une tombola, chaque participant tire au hasard un numéro entier de $1$ à $20$ (tous les numéros ont la même probabilité). Le gain dépend du numéro tiré :
+
+| Numéro tiré | Gain |
+|---|---|
+| $20$ | $50$ € |
+| $5$, $10$ ou $15$ | $10$ € |
+| autre numéro | $0$ € |
+
+1. Écrire une fonction `tirage`, sans argument, qui simule un tirage et renvoie le **gain** du participant.
+2. Écrire une fonction `nb_gagnants` qui prend un entier `n` (nombre de participants) et renvoie le nombre de participants ayant un gain strictement positif.
+3. Écrire une fonction `gains` qui prend un entier `n` et renvoie le couple `(total, moyenne)` : somme des gains distribués et gain moyen par participant.
+4. On suppose que les $5$ tirages de l’appel `gains(5)` donnent $7$, $10$, $20$, $3$ et $15$. Que renvoie cet appel ?
+5. Calculer la probabilité qu’un participant gagne un lot. Vers quelle valeur la fréquence `nb_gagnants(n) / n` devrait-elle se stabiliser pour un très grand nombre de participants ?
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Écrire `tirage`
+
+::: methode
+Tirer un numéro avec `randint(1, 20)`, puis tester les cas avec `if`, `elif`, `else`.
+:::
+
+::: etape Tirer le numéro
+`num = randint(1, 20)` donne un entier de $1$ à $20$.
+:::
+
+::: etape Ordre des tests
+On teste d’abord le cas particulier `num == 20`, puis le cas « multiple de $5$ » avec `num % 5 == 0`, et enfin tous les autres numéros.
+:::
+
+::: resultat
+```python
+from random import randint
+
+def tirage():
+    num = randint(1, 20)
+    if num == 20:
+        return 50
+    elif num % 5 == 0:
+        return 10
+    else:
+        return 0
+```
+:::
+
+::: attention
+Si l’on testait `num % 5 == 0` en premier, le numéro $20$ (multiple de $5$) rapporterait $10$ € au lieu de $50$ € : dans une suite `if` / `elif`, seul le **premier** test vrai est exécuté.
+:::
+
+## Question 2 : Écrire `nb_gagnants`
+
+::: methode
+Compteur initialisé à $0$, boucle de `n` tours, test `tirage() > 0`.
+:::
+
+::: resultat
+```python
+def nb_gagnants(n):
+    k = 0
+    for i in range(n):
+        if tirage() > 0:
+            k = k + 1
+    return k
+```
+:::
+
+## Question 3 : Écrire `gains`
+
+::: methode
+Accumuler les gains dans `total`, puis calculer la moyenne **après** la boucle et renvoyer un couple.
+:::
+
+::: etape Accumuler
+Le total `tot` vaut $0$ avant la boucle ; à chaque tour, `tot = tot + tirage()`.
+:::
+
+::: etape Moyenne et couple
+Après la boucle : `moy = tot / n`, puis `return tot, moy`.
+:::
+
+::: resultat
+```python
+def gains(n):
+    tot = 0
+    for i in range(n):
+        tot = tot + tirage()
+    moy = tot / n
+    return tot, moy
+```
+:::
+
+## Question 4 : Exécuter `gains(5)` à la main
+
+::: methode
+Déterminer le gain de chaque tirage, puis faire la somme et la moyenne.
+:::
+
+::: etape Gains de chaque tirage
+| Tirage | $7$ | $10$ | $20$ | $3$ | $15$ |
+|---|---|---|---|---|---|
+| Gain (€) | $0$ | $10$ | $50$ | $0$ | $10$ |
+:::
+
+::: etape Total
+$$0 + 10 + 50 + 0 + 10 = 70$$
+:::
+
+::: etape Moyenne
+$$\frac{70}{5} = 14$$
+:::
+
+::: resultat
+`gains(5)` renvoie `(70, 14.0)` : $70$ € distribués, soit $14$ € en moyenne par participant.
+:::
+
+## Question 5 : Probabilité de gagner un lot
+
+::: methode
+Les $20$ numéros sont équiprobables : probabilité = nombre de numéros gagnants divisé par $20$.
+:::
+
+::: etape Numéros gagnants
+Les numéros gagnants sont $5$, $10$, $15$ et $20$ : il y en a $4$.
+:::
+
+::: etape Probabilité
+$$
+\begin{aligned}
+P(\text{gagner}) &= \frac{4}{20} \\
+&= \frac{1}{5} \\
+&= 0{,}2
+\end{aligned}
+$$
+:::
+
+::: etape Fréquence pour un grand nombre de participants
+Quand `n` est très grand, la fréquence des gagnants se rapproche de la probabilité $0{,}2$.
+:::
+
+::: resultat
+La probabilité de gagner un lot est $0{,}2$ ; pour `n` très grand, `nb_gagnants(n) / n` est proche de $0{,}2$ (soit $20\,\%$ de gagnants).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. `num = randint(1, 20)` ; renvoie $50$ si `num == 20`, $10$ si `num % 5 == 0`, $0$ sinon (tests dans cet ordre).
+2. Compteur des appels vérifiant `tirage() > 0`.
+3. Boucle qui accumule `tirage()` dans `tot`, puis `return tot, tot / n`.
+4. `gains(5)` renvoie `(70, 14.0)`.
+5. $P(\text{gagner}) = \frac{4}{20} = 0{,}2$ ; la fréquence des gagnants se stabilise autour de $0{,}2$.
+
+===

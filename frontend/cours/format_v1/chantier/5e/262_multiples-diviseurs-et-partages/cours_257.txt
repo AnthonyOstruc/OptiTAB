@@ -1,0 +1,195 @@
+Titre: Multiples, diviseurs et partages
+
+<!-- optitab:1 -->
+::: objectifs
+- Effectuer une division euclidienne et nommer ses termes : dividende, diviseur, quotient, reste.
+- Reconnaître des multiples et des diviseurs ; trouver tous les diviseurs d'un nombre.
+- Utiliser les critères de divisibilité par $2$, $3$, $4$, $5$, $9$ et $10$.
+- Connaître la définition d'un nombre premier et reconnaître les premiers nombres premiers.
+- Résoudre des problèmes de partage et de regroupement.
+:::
+
+## I. La division euclidienne
+
+On range $23$ jetons par paquets de $5$ : on obtient $4$ paquets complets et il reste $3$ jetons, trop peu pour former un nouveau paquet.
+
+[IMAGE_1]
+
+::: definition Division euclidienne
+Effectuer la **division euclidienne** d'un nombre entier $a$ par un nombre entier $b$ non nul, c'est trouver deux nombres entiers $q$ et $r$ tels que :
+$$a = b \times q + r \quad \text{avec} \quad r < b$$
+- $a$ est le **dividende** et $b$ le **diviseur** ;
+- $q$ est le **quotient** (entier) et $r$ le **reste**.
+:::
+
+::: methode Poser une division euclidienne
+1. Prendre à gauche du dividende assez de chiffres pour obtenir un nombre supérieur ou égal au diviseur.
+2. Chercher combien de fois le diviseur y est contenu : c'est un chiffre du quotient. Soustraire le produit.
+3. Abaisser le chiffre suivant à côté du reste, puis recommencer.
+4. Quand tous les chiffres sont abaissés, le dernier nombre obtenu est le reste.
+:::
+
+::: exemple Diviser $158$ par $7$
+Dans $15$, il y a $2$ fois $7$ : $15 - 14 = 1$. On abaisse le $8$ : dans $18$, il y a $2$ fois $7$ : $18 - 14 = 4$.
+
+[IMAGE_2]
+
+Contrôle : $7 \times 22 + 4 = 154 + 4 = 158$, et le reste $4$ est bien inférieur à $7$.
+:::
+
+::: attention Le reste est toujours plus petit que le diviseur
+L'égalité $158 = 7 \times 21 + 11$ est juste, mais ce n'est pas la division euclidienne de $158$ par $7$ : le reste $11$ est plus grand que $7$, on peut encore faire un paquet de $7$.
+:::
+
+::: methode Encadrer pour trouver le quotient
+Le quotient $q$ est le nombre tel que $b \times q \le a < b \times (q + 1)$. Pour $158$ et $7$ :
+$$7 \times 22 = 154 \le 158 < 161 = 7 \times 23$$
+donc $q = 22$ et $r = 158 - 154 = 4$.
+:::
+
+## II. Multiples et diviseurs
+
+::: definition Multiple, diviseur
+$a$ et $b$ sont deux nombres entiers, avec $b$ non nul. Si $a = b \times k$ où $k$ est un nombre entier, on dit que :
+- $a$ est un **multiple** de $b$ ;
+- $b$ est un **diviseur** de $a$, ou encore $b$ **divise** $a$, ou $a$ est **divisible** par $b$.
+
+Autrement dit, $b$ divise $a$ lorsque le **reste** de la division euclidienne de $a$ par $b$ est **nul**.
+:::
+
+::: exemple
+- $56 = 8 \times 7$ : $56$ est un multiple de $8$ (et de $7$) ; $8$ est un diviseur de $56$.
+- $60 = 7 \times 8 + 4$ : le reste n'est pas nul, donc $7$ ne divise pas $60$ et $60$ n'est pas un multiple de $7$.
+- Les multiples de $9$ sont $0$, $9$, $18$, $27$, $36$… : on les obtient avec la table de $9$ et il y en a une infinité.
+:::
+
+::: remarque
+- $0$ est un multiple de tous les nombres : $0 = b \times 0$.
+- $1$ divise tous les nombres et tout nombre se divise lui-même : $a = 1 \times a$.
+:::
+
+::: methode Trouver tous les diviseurs d'un nombre
+Chercher les produits égaux à ce nombre **par paires**, en testant $1$, $2$, $3$… dans l'ordre. Chaque produit donne deux diviseurs. On s'arrête quand les paires recommencent dans l'autre sens.
+:::
+
+::: exemple Les diviseurs de $24$
+$$24 = 1 \times 24 = 2 \times 12 = 3 \times 8 = 4 \times 6$$
+$5$ ne divise pas $24$, et après $4 \times 6$ on retrouverait $6 \times 4$. Les diviseurs de $24$ sont : $1$ ; $2$ ; $3$ ; $4$ ; $6$ ; $8$ ; $12$ ; $24$. Chaque paire correspond à un rectangle de $24$ carreaux :
+
+[IMAGE_3]
+:::
+
+::: attention Ne pas inverser les mots
+$6$ est un **diviseur** de $24$ et $24$ est un **multiple** de $6$. Dire « $6$ est un multiple de $24$ » est faux : un multiple est en général plus grand, un diviseur plus petit.
+:::
+
+## III. Les critères de divisibilité
+
+::: propriete Critères de divisibilité
+| Divisible par | Critère |
+|---|---|
+| $2$ | son chiffre des unités est $0$, $2$, $4$, $6$ ou $8$ |
+| $5$ | son chiffre des unités est $0$ ou $5$ |
+| $10$ | son chiffre des unités est $0$ |
+| $4$ | le nombre formé par ses deux derniers chiffres est divisible par $4$ |
+| $3$ | la somme de ses chiffres est divisible par $3$ |
+| $9$ | la somme de ses chiffres est divisible par $9$ |
+:::
+
+::: exemple Le nombre $1\,548$
+- Le chiffre des unités est $8$ : $1\,548$ est divisible par $2$, mais pas par $5$ ni par $10$.
+- Les deux derniers chiffres forment $48 = 4 \times 12$ : $1\,548$ est divisible par $4$.
+- $1 + 5 + 4 + 8 = 18$ et $18 = 9 \times 2$ : $1\,548$ est divisible par $9$ et par $3$.
+
+Contrôle : $1\,548 = 9 \times 172$ et $1\,548 = 4 \times 387$.
+:::
+
+::: attention Erreurs fréquentes
+- Le critère de $4$ porte sur les **deux** derniers chiffres : $34$ se termine par $4$ mais n'est pas divisible par $4$ ($34 = 4 \times 8 + 2$).
+- Les critères de $3$ et de $9$ portent sur la **somme** des chiffres, pas sur le dernier chiffre : $23$ se termine par $3$ mais n'est pas divisible par $3$.
+:::
+
+::: remarque
+Un nombre divisible par $9$ est toujours divisible par $3$ (car $9 = 3 \times 3$). L'inverse est faux : $12$ est divisible par $3$, mais pas par $9$.
+:::
+
+## IV. Les nombres premiers
+
+::: definition Nombre premier
+Un **nombre premier** est un nombre entier qui a **exactement deux** diviseurs : $1$ et lui-même.
+:::
+
+::: exemple
+- $13$ est premier : ses seuls diviseurs sont $1$ et $13$.
+- $15$ n'est pas premier : il a quatre diviseurs, $1$, $3$, $5$ et $15$ ($15 = 3 \times 5$).
+- $1$ n'est pas premier : il n'a qu'un seul diviseur.
+:::
+
+::: methode Le crible d'Ératosthène
+Dans le tableau des nombres de $1$ à $50$, on raye $1$, puis on garde $2$ et on raye tous les autres multiples de $2$ ; on garde $3$ et on raye ses autres multiples ; puis de même avec $5$ et $7$. Les nombres qui restent sont les nombres premiers.
+:::
+
+[IMAGE_4]
+
+::: retenir Les nombres premiers inférieurs à $30$ (à connaître)
+$2$ ; $3$ ; $5$ ; $7$ ; $11$ ; $13$ ; $17$ ; $19$ ; $23$ ; $29$.
+:::
+
+::: methode Un nombre est-il premier ?
+- Pour prouver qu'il **n'est pas premier**, on trouve un diviseur autre que $1$ et lui-même (les critères aident) : $87$ n'est pas premier car $8 + 7 = 15$, donc $87 = 3 \times 29$.
+- Pour un nombre **inférieur à $100$**, s'il n'est divisible ni par $2$, ni par $3$, ni par $5$, ni par $7$, il est premier (et différent de $1$) : par exemple $89$.
+:::
+
+::: attention Erreurs fréquentes
+- $1$ n'est pas premier.
+- $2$ est premier : c'est le seul nombre premier pair.
+- Un nombre impair n'est pas forcément premier : $9 = 3 \times 3$, $21 = 3 \times 7$, $49 = 7 \times 7$.
+:::
+
+## V. Problèmes de partage et de regroupement
+
+::: methode Partager ou regrouper : la division euclidienne
+Quand on répartit $a$ objets par groupes de $b$ (ou en $b$ parts égales), on effectue la division euclidienne $a = b \times q + r$, puis on **interprète** le résultat selon la question :
+- $q$ donne le nombre de groupes **complets** (ou la taille de chaque part) ;
+- $r$ donne ce qui **reste** ;
+- pour **tout** ranger, il faut $q + 1$ contenants si le reste n'est pas nul.
+:::
+
+::: exemple
+Un fleuriste a $158$ roses et fait des bouquets de $7$ roses. Comme $158 = 7 \times 22 + 4$ : il fait $22$ bouquets et il reste $4$ roses. Pour mettre toutes les roses dans des vases de $7$ roses, il faut $22 + 1 = 23$ vases.
+:::
+
+::: methode Former des lots identiques sans reste
+Si l'on veut des lots **identiques** avec **tous** les objets, le nombre de lots doit **diviser chaque** quantité. On liste les diviseurs de chaque quantité et on garde les diviseurs **communs** ; le plus grand donne le nombre maximal de lots.
+:::
+
+::: exemple
+Avec $12$ billes et $18$ cubes : diviseurs de $12$ : $1$ ; $2$ ; $3$ ; $4$ ; $6$ ; $12$. Diviseurs de $18$ : $1$ ; $2$ ; $3$ ; $6$ ; $9$ ; $18$. Diviseurs communs : $1$ ; $2$ ; $3$ ; $6$. On peut faire au maximum $6$ lots, chacun de $12 \div 6 = 2$ billes et $18 \div 6 = 3$ cubes.
+
+[IMAGE_5]
+:::
+
+::: methode Des rendez-vous qui se répètent
+Deux événements qui se répètent toutes les $a$ minutes et toutes les $b$ minutes, partis ensemble, se reproduisent ensemble à un **multiple commun** de $a$ et de $b$. On écrit les multiples de chacun et on cherche le premier nombre commun.
+:::
+
+::: exemple
+Deux guirlandes s'allument ensemble, puis l'une toutes les $4$ secondes et l'autre toutes les $6$ secondes.
+- Multiples de $4$ : $4$ ; $8$ ; $12$ ; $16$ ; $20$ ; $24$…
+- Multiples de $6$ : $6$ ; $12$ ; $18$ ; $24$…
+
+Elles se rallument ensemble au bout de $12$ s, puis de $24$ s, de $36$ s…
+:::
+
+::: attention Diviseurs ou multiples ?
+- Un **partage** sans reste demande des **diviseurs** (le nombre de lots est plus petit que les quantités).
+- Un **rendez-vous** demande des **multiples** (la durée est plus grande que les périodes). Additionner les périodes ne marche pas : $4 + 6 = 10$ n'est un multiple ni de $4$ ni de $6$.
+:::
+
+::: retenir
+- Division euclidienne : $a = b \times q + r$ avec $r < b$ (dividende, diviseur, quotient, reste).
+- $b$ divise $a$ quand le reste est nul : $a$ est un multiple de $b$, $b$ est un diviseur de $a$.
+- Critères : $2$, $5$, $10$ (dernier chiffre) ; $4$ (deux derniers chiffres) ; $3$, $9$ (somme des chiffres).
+- Un nombre premier a exactement deux diviseurs, $1$ et lui-même ; $1$ n'est pas premier.
+- Partages sans reste → diviseurs communs ; rendez-vous → multiples communs.
+:::

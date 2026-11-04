@@ -25,9 +25,9 @@ const STATIC_INDEXABLE_PATHS = new Set([
   '/ressources-gratuites/syntheses'
 ])
 
-const GROUPED_COURSE_PATH_RE = /^\/ressources-gratuites\/cours\/[a-z0-9-]+\/(college|lycee|prepa)\/[a-z0-9-]+\/[a-z0-9-]+-\d+$/i
-const GROUPED_SUMMARY_PATH_RE = /^\/ressources-gratuites\/syntheses\/[a-z0-9-]+\/(college|lycee|prepa)\/[a-z0-9-]+\/[a-z0-9-]+-\d+$/i
-const GROUPED_EXERCISE_CHAPTER_PATH_RE = /^\/ressources-gratuites\/exercices\/[a-z0-9-]+\/(college|lycee|prepa)\/[a-z0-9-]+\/[a-z0-9-]+-\d+$/i
+const GROUPED_COURSE_PATH_RE = /^\/ressources-gratuites\/cours\/[a-z0-9-]+\/(primaire|college|lycee|prepa)\/[a-z0-9-]+\/[a-z0-9-]+-\d+$/i
+const GROUPED_SUMMARY_PATH_RE = /^\/ressources-gratuites\/syntheses\/[a-z0-9-]+\/(primaire|college|lycee|prepa)\/[a-z0-9-]+\/[a-z0-9-]+-\d+$/i
+const GROUPED_EXERCISE_CHAPTER_PATH_RE = /^\/ressources-gratuites\/exercices\/[a-z0-9-]+\/(primaire|college|lycee|prepa)\/[a-z0-9-]+\/[a-z0-9-]+-\d+$/i
 const EXERCISE_DETAIL_PATH_RE = /^\/ressources-gratuites\/exercices\/exercice-gratuit-[a-z0-9-]+$/i
 const BLOG_POST_PATH_RE = /^\/blog\/[a-z0-9-]+$/i
 
@@ -169,6 +169,7 @@ function formatMatiereSlug(value) {
 function formatNiveauGroupSlug(value) {
   const normalized = slugifyText(value || '')
   if (!normalized) return ''
+  if (/(^|-)(primaire|elementaire|cp|ce1|ce2|cm1|cm2)(-|$)/.test(normalized)) return 'primaire'
   if (normalized.includes('bases-methodes')) {
     return 'lycee'
   }

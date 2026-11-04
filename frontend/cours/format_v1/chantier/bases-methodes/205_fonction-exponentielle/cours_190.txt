@@ -1,0 +1,543 @@
+Titre: Fonction exponentielle
+
+<!-- optitab:1 -->
+::: remarque Sections principales
+Les sections **I à V** couvrent les concepts fondamentaux de la fonction exponentielle. Ces connaissances sont essentielles pour comprendre les applications pratiques.
+:::
+
+::: methode Approfondissements et culture
+Les sections **VI (algorithmes approfondis)** et **VII (démonstrations approfondies)** sont marquées comme **bonus** ou **approfondissement**. Elles enrichissent votre culture mathématique et vous offrent une vision plus complète.
+:::
+
+## I. Définition de la fonction exponentielle
+
+### Définition par l'équation différentielle
+
+::: theoreme Définition de la fonction exponentielle
+Il existe une unique fonction dérivable sur $\mathbb{R}$ notée $\exp$ et appelée **fonction exponentielle** telle que :
+
+- $\exp'(x) = \exp(x)$ pour tout $x \in \mathbb{R}$ (sa dérivée est égale à elle-même)
+- $\displaystyle \exp(0) = 1$
+
+**Notation :** On note $\exp(x)$ ou $e^x$ la valeur de la fonction exponentielle en $x$.
+:::
+
+::: demonstration Interprétation
+La fonction exponentielle est la seule fonction dont la dérivée est égale à la fonction elle-même. C'est une propriété remarquable qui caractérise complètement cette fonction.
+
+Cette définition permet de construire la fonction exponentielle de manière unique, en partant de la condition initiale $\exp(0) = 1$ et en utilisant l'équation différentielle $f' = f$.
+:::
+
+::: attention Important
+L'existence et l'unicité de la fonction exponentielle sont des résultats fondamentaux. Ces résultats seront démontrés dans les classes supérieures.
+:::
+
+### Le nombre e
+
+::: definition Le nombre e
+Le nombre $\displaystyle e$ est défini par :
+
+$$e = \exp(1)$$
+
+C'est un nombre irrationnel dont une valeur approchée est :
+
+$$e \approx 2,718281828459045...$$
+:::
+
+::: notation
+On note indifféremment :
+
+- $\displaystyle \exp(x)$ : notation fonctionnelle
+- $e^x$ : notation exponentielle (la plus courante)
+
+Ces deux notations représentent exactement la même fonction.
+:::
+
+## II. Propriétés algébriques
+
+### Règles de calcul
+
+::: theoreme Propriétés algébriques
+Pour tous réels $x$ et $y$ :
+
+- **Produit :** $\displaystyle e^{x+y} = e^x \times e^y$
+- **Quotient :** $e^{x-y} = \frac{e^x}{e^y}$ (pour $e^y \neq 0$)
+- **Puissance :** $(e^x)^n = e^{nx}$ pour tout entier $n$
+- **Inverse :** $e^{-x} = \frac{1}{e^x}$ (donc $e^x \times e^{-x} = 1$)
+- **Puissance fractionnaire :** $e^{\frac{x}{n}} = \sqrt[n]{e^x}$ pour tout entier $n > 0$
+:::
+
+::: exemple
+**Exemple 1 :** Simplifier $\displaystyle e^{2x+3} \times e^{-x}$
+
+$$
+\begin{aligned}
+e^{2x+3} \times e^{-x} &= e^{(2x+3)+(-x)} \\
+&= e^{2x+3-x} \\
+&= e^{x+3}
+\end{aligned}
+$$
+
+**Exemple 2 :** Simplifier $\displaystyle \frac{e^{3x}}{e^{2x+1}}$
+
+$$
+\begin{aligned}
+\frac{e^{3x}}{e^{2x+1}} &= e^{3x-(2x+1)} \\
+&= e^{3x-2x-1} \\
+&= e^{x-1}
+\end{aligned}
+$$
+
+**Exemple 3 :** Écrire $(e^x)^2 \times e^{-3x}$ sous la forme $e^{ax+b}$
+
+$$
+\begin{aligned}
+(e^x)^2 \times e^{-3x} &= e^{2x} \times e^{-3x} \\
+&= e^{2x+(-3x)} \\
+&= e^{-x}
+\end{aligned}
+$$
+
+**Exemple 4 :** Montrer que $\displaystyle e^x \times e^{-x} = 1$
+
+$$e^x \times e^{-x} = e^{x+(-x)} = e^0 = 1$$
+:::
+
+::: conseil
+- Pour multiplier : **additionner** les exposants : $e^a \times e^b = e^{a+b}$
+- Pour diviser : **soustraire** les exposants : $\frac{e^a}{e^b} = e^{a-b}$
+- Pour une puissance : **multiplier** l'exposant : $(e^x)^n = e^{nx}$
+- Penser à réduire les expressions avant de calculer : $e^{2x+1} = e^{2x} \times e = e \times e^{2x}$
+:::
+
+### Lien avec les suites géométriques
+
+::: propriete Suite géométrique
+Pour tout réel $a$, la suite $(e^{na})_{n \in \mathbb{N}}$ est une **suite géométrique** de raison $e^a$.
+
+En effet : $\displaystyle e^{(n+1)a} = e^{na + a} = e^{na} \times e^a = e^a \times e^{na}$
+:::
+
+::: exemple
+La suite $(e^{2n})_{n \in \mathbb{N}}$ définie par $u_n = e^{2n}$ est une suite géométrique de raison $e^2$.
+
+On a : $u_0 = e^0 = 1$, $u_1 = e^2$, $u_2 = e^4 = (e^2)^2$, $u_3 = e^6 = (e^2)^3$, ...
+:::
+
+## III. Étude de la fonction exponentielle
+
+### Signe et limites
+
+::: propriete Signe de la fonction exponentielle
+Pour tout réel $x$, on a : $e^x > 0$
+
+La fonction exponentielle est **strictement positive** sur $\mathbb{R}$.
+:::
+
+::: definition Limites
+- $\displaystyle \lim_{x \to -\infty} e^x = 0$
+- $\displaystyle \lim_{x \to +\infty} e^x = +\infty$
+- $\displaystyle \lim_{x \to 0} \frac{e^x - 1}{x} = 1$ (limite remarquable)
+:::
+
+### Sens de variation
+
+::: theoreme Variations de la fonction exponentielle
+La fonction exponentielle est **strictement croissante** sur $\mathbb{R}$.
+
+Pour tous réels $x$ et $y$ : si $x < y$, alors $e^x < e^y$.
+:::
+
+::: demonstration Justification
+On a : $(e^x)' = e^x > 0$ pour tout $x \in \mathbb{R}$.
+
+Comme la dérivée est strictement positive, la fonction exponentielle est strictement croissante sur $\mathbb{R}$.
+:::
+
+::: tableau
+x : -\infty, +\infty
+e^x : -/0, +/+\infty
+:::
+
+::: remarque Valeurs remarquables
+- $\displaystyle e^0 = 1$
+- $\displaystyle e^1 = e \approx 2,718$
+- $\displaystyle e^{-1} = \frac{1}{e} \approx 0,368$
+- $\lim_{x \to -\infty} e^x = 0$ et $\lim_{x \to +\infty} e^x = +\infty$
+:::
+
+### Courbe représentative
+
+::: definition Caractéristiques de la courbe de $x \mapsto e^x$
+- Passe par le point $\displaystyle (0, 1)$
+- Strictement croissante sur $\displaystyle \mathbb{R}$
+- Asymptote horizontale : $y = 0$ (axe des abscisses) en $-\infty$
+- Croissance très rapide vers $+\infty$ quand $x \to +\infty$
+- La tangente au point $(0, 1)$ a pour équation $y = x + 1$ (car $f'(0) = e^0 = 1$)
+:::
+
+::: remarque Culture (bonus)
+Pour $x > 0$, la fonction exponentielle croît beaucoup plus vite que toute fonction puissance : $\lim_{x \to +\infty} \frac{e^x}{x^n} = +\infty$ pour tout entier $n \geq 1$ . Cette propriété illustre la puissance de la croissance exponentielle.
+:::
+
+[IMAGE_1]
+
+### Équations et inéquations exponentielles
+
+::: propriete Résolution d'équations et inéquations exponentielles
+Pour tous réels $a$ et $b$ :
+
+- **Équation :** $\displaystyle e^a = e^b \Longleftrightarrow a = b$
+- **Inéquation :** $\displaystyle e^a < e^b \Longleftrightarrow a < b$
+
+Cette propriété découle de la croissance stricte de la fonction exponentielle.
+:::
+
+::: exemple
+Résoudre $\displaystyle e^{2x+1} = e^{x-3}$
+
+$$e^{2x+1} = e^{x-3} \Longleftrightarrow 2x + 1 = x - 3$$
+
+$$\Longleftrightarrow 2x - x = -3 - 1$$
+
+$$\Longleftrightarrow x = -4$$
+
+**Solution :** $\displaystyle S = \{-4\}$
+:::
+
+::: exemple
+Résoudre $\displaystyle e^{-3x+5} < e^{x-3}$
+
+$$
+\begin{aligned}
+e^{-3x+5} < e^{x-3} &\Longleftrightarrow -3x + 5 < x - 3
+\end{aligned}
+$$
+
+$$\Longleftrightarrow -3x - x < -3 - 5$$
+
+$$\Longleftrightarrow -4x < -8$$
+
+$\Longleftrightarrow x > 2$ (en divisant par $-4$, on change le sens de l'inégalité)
+
+**Solution :** $\displaystyle S = ]2, +\infty[$
+:::
+
+::: exemple
+Résoudre $\displaystyle e^{x^2-1} = e^{2x+3}$
+
+$$
+\begin{aligned}
+e^{x^2-1} = e^{2x+3} &\Longleftrightarrow x^2 - 1 = 2x + 3
+\end{aligned}
+$$
+
+$$\Longleftrightarrow x^2 - 2x - 4 = 0$$
+
+Le discriminant est : $\displaystyle \Delta = (-2)^2 - 4 \times 1 \times (-4) = 4 + 16 = 20$
+
+Les solutions sont : $x_1 = \frac{2 - \sqrt{20}}{2} = 1 - \sqrt{5}$ et $x_2 = \frac{2 + \sqrt{20}}{2} = 1 + \sqrt{5}$
+
+**Solution :** $\displaystyle S = \{1 - \sqrt{5}, 1 + \sqrt{5}\}$
+:::
+
+## IV. Fonctions exponentielles de base e : e$^{-kt}$ et e$^{kt}$
+
+### Fonction t ↦ e$^{kt}$ avec k > 0
+
+::: definition Étude de la fonction $t \mapsto e^{kt}$ avec $k > 0$
+Pour $k > 0$, la fonction $f(t) = e^{kt}$ est une **croissance exponentielle**.
+
+- **Dérivée :** $f'(t) = k e^{kt} > 0$ (strictement croissante)
+- **Limites :** $\lim_{t \to -\infty} e^{kt} = 0$ et $\lim_{t \to +\infty} e^{kt} = +\infty$
+- **Valeur initiale :** $\displaystyle f(0) = e^0 = 1$
+- **Courbe :** Croissance de plus en plus rapide quand $t$ augmente
+:::
+
+::: exemple
+Pour $k = 2$, la fonction $f(t) = e^{2t}$
+
+$f(0) = 1$, $f(1) = e^2 \approx 7,39$, $f(2) = e^4 \approx 54,60$, $f(3) = e^6 \approx 403,43$
+
+La croissance s'accélère de plus en plus.
+:::
+
+### Fonction t ↦ e$^{-kt}$ avec k > 0
+
+::: definition Étude de la fonction $t \mapsto e^{-kt}$ avec $k > 0$
+Pour $k > 0$, la fonction $f(t) = e^{-kt}$ est une **décroissance exponentielle**.
+
+- **Dérivée :** $f'(t) = -k e^{-kt} < 0$ (strictement décroissante)
+- **Limites :** $\lim_{t \to -\infty} e^{-kt} = +\infty$ et $\lim_{t \to +\infty} e^{-kt} = 0$
+- **Valeur initiale :** $\displaystyle f(0) = e^0 = 1$
+- **Courbe :** Décroissance rapide puis ralentit en s'approchant de $0$
+:::
+
+::: tableau
+t : 0, +\infty
+e^{-kt} : +/1, -/0
+:::
+
+::: exemple
+Pour $k = 0,5$, la fonction $f(t) = e^{-0,5t}$
+
+$f(0) = 1$, $f(1) = e^{-0,5} \approx 0,607$, $f(2) = e^{-1} \approx 0,368$, $f(3) = e^{-1,5} \approx 0,223$
+
+La décroissance est rapide au début puis ralentit.
+:::
+
+### Dérivée de la fonction x ↦ e$^{ax+b}$
+
+::: theoreme Dérivée de eax+b
+Pour $f(x) = e^{ax+b}$ avec $a$ et $b$ réels, on a :
+
+::: formule
+$$f'(x) = a e^{ax+b}$$
+:::
+
+Par conséquent :
+
+- Si $a > 0$ : $f'(x) > 0$ pour tout $x$, donc $f$ est **strictement croissante**
+- Si $a < 0$ : $f'(x) < 0$ pour tout $x$, donc $f$ est **strictement décroissante**
+:::
+
+::: exemple
+Dériver $\displaystyle f(x) = e^{3x-2}$
+
+On a : $a = 3$ et $b = -2$
+
+$$f'(x) = 3 e^{3x-2}$$
+
+Comme $a = 3 > 0$, la fonction $f$ est strictement croissante sur $\mathbb{R}$.
+:::
+
+::: exemple
+Dériver $\displaystyle g(x) = e^{-2x+1}$
+
+On a : $a = -2$ et $b = 1$
+
+$$g'(x) = -2 e^{-2x+1}$$
+
+Comme $a = -2 < 0$, la fonction $g$ est strictement décroissante sur $\mathbb{R}$.
+:::
+
+## V. Applications : modélisation
+
+### Croissance exponentielle
+
+::: exemple Évolution d'un capital à taux fixe
+Un capital de $C_0$ euros est placé à un taux d'intérêt composé de $r\%$ par an.
+
+Le capital au bout de $t$ années est modélisé par :
+
+$$C(t) = C_0 \left(1 + \frac{r}{100}\right)^t$$
+
+::: remarque
+On peut aussi écrire cette formule sous la forme $C(t) = C_0 e^{kt}$ où $k = \ln\left(1 + \frac{r}{100}\right)$. Le logarithme népérien $\ln$ offre une approche mathématique plus sophistiquée ; ici, on admet cette écriture.
+:::
+
+**Application numérique :** Si $C_0 = 1000$ € et $r = 5\%$, alors $k \approx 0,0488$ et $C(10) = 1000 \times e^{0,488} \approx 1628,89$ €
+:::
+
+### Décroissance exponentielle
+
+::: exemple Décroissance radioactive
+La quantité $N(t)$ d'un élément radioactif au temps $t$ (en années) suit une loi de décroissance exponentielle :
+
+$$N(t) = N_0 e^{-\lambda t}$$
+
+où $N_0$ est la quantité initiale et $\lambda > 0$ est la constante de désintégration.
+
+Le **demi-vie** $T$ est le temps au bout duquel la moitié de l'élément s'est désintégrée :
+
+$$
+\begin{aligned}
+N(T) = \frac{N_0}{2} &\Leftrightarrow e^{-\lambda T} = \frac{1}{2}
+\end{aligned}
+$$
+
+::: remarque
+On peut montrer que $T = \frac{\ln(2)}{\lambda}$, où $\ln$ est le logarithme népérien. Le logarithme népérien offre une approche mathématique plus sophistiquée ; ici, on admet cette formule.
+:::
+
+**Application :** Pour le carbone-14, $T \approx 5730$ ans. Si $N_0 = 100$, alors après 5730 ans, il reste environ $50$ unités.
+:::
+
+## VI. Algorithmes approfondis
+
+::: methode Approfondissement algorithmique (bonus)
+Les algorithmes suivants enrichissent votre culture mathématique et vous permettent d'explorer les fondements numériques.
+:::
+
+### Méthode d'Euler pour construire l'exponentielle
+
+::: exemple Algorithme - Construction de l'exponentielle par la méthode d'Euler
+**Principe :** On approche la fonction exponentielle en résolvant numériquement l'équation différentielle $y' = y$ avec $y(0) = 1$.
+
+On utilise la méthode d'Euler : $y(x + h) \approx y(x) + h \times y'(x) = y(x) + h \times y(x) = y(x)(1 + h)$
+
+**Code Python :**
+
+```python
+x = 0
+y = 1
+h = 0.1
+n = 10
+
+for i in range(n):
+    y = y * (1 + h)
+    x = x + h
+    print(f"x = {x:.1f}, e^x ≈ {y:.4f}")
+```
+
+**Dans un tableur Excel :**
+
+|  | A (x) | B (e^x ≈) |
+|---|---|---|
+| 1 | 0 | 1 |
+| 2 | =A1+0.1 | =B1*(1+0.1) |
+| 3 | =A2+0.1 | =B2*(1+0.1) |
+| 4 | ... | ... |
+
+*Les formules en rouge sont à recopier vers le bas. Pour $x = 1$, on obtient $e^1 \approx 2,594$ avec $h = 0,1$ et $n = 10$.*
+:::
+
+### Approximation de e par la suite (1 + 1/n)$^{n}$
+
+::: methode Approfondissement (bonus)
+La convergence de cette suite vers $e$ est une propriété intéressante qui illustre l'importance du nombre e.
+:::
+
+::: exemple Algorithme - Valeur approchée de e
+**Propriété :** La suite $u_n = \left(1 + \frac{1}{n}\right)^n$ converge vers $e$.
+
+On a : $\displaystyle e = \lim_{n \to +\infty} \left(1 + \frac{1}{n}\right)^n$
+
+**Code Python :**
+
+```python
+import math
+
+n = 1
+for i in range(1, 11):
+    n = n * 10
+    approx = (1 + 1/n) ** n
+    print(f"n = {n}, (1+1/n)^n ≈ {approx:.10f}, erreur = {abs(math.e - approx):.10f}")
+```
+
+**Dans un tableur Excel :**
+
+|  | A (n) | B ((1+1/n)^n) |
+|---|---|---|
+| 1 | 10 | =(1+1/A1)^A1 |
+| 2 | 100 | =(1+1/A2)^A2 |
+| 3 | 1000 | =(1+1/A3)^A3 |
+| 4 | 10000 | =(1+1/A4)^A4 |
+| 5 | 100000 | =(1+1/A5)^A5 |
+
+*Les formules en rouge sont à recopier. On observe que plus $n$ augmente, plus $(1 + 1/n)^n$ se rapproche de $e \approx 2,71828$.*
+:::
+
+## VII. Approfondissements possibles
+
+::: methode Approfondissement (bonus)
+Les démonstrations suivantes enrichissent votre culture mathématique et vous offrent une vision plus approfondie.
+:::
+
+### Unicité de la fonction exponentielle
+
+::: demonstration (bonus)
+Supposons qu'il existe deux fonctions $f$ et $g$ dérivables sur $\mathbb{R}$ telles que :
+
+- $f' = f$ et $f(0) = 1$
+- $g' = g$ et $g(0) = 1$
+
+Considérons la fonction $h(x) = \frac{f(x)}{g(x)}$ pour $x \in \mathbb{R}$ (remarque : $g(x) \neq 0$ car $g$ est solution de $y' = y$ avec $g(0) = 1$).
+
+On a : $\displaystyle h'(x) = \frac{f'(x)g(x) - f(x)g'(x)}{g(x)^2} = \frac{f(x)g(x) - f(x)g(x)}{g(x)^2} = 0$
+
+Donc $h$ est constante. Comme $h(0) = \frac{f(0)}{g(0)} = \frac{1}{1} = 1$, on a $h(x) = 1$ pour tout $x$.
+
+Ainsi : $\frac{f(x)}{g(x)} = 1$, donc $f(x) = g(x)$ pour tout $x \in \mathbb{R}$.
+
+La fonction exponentielle est donc unique.
+:::
+
+### Propriété exp(x + y) = exp(x) × exp(y)
+
+::: demonstration (bonus)
+Fixons $y \in \mathbb{R}$ et considérons la fonction $g(x) = \frac{\exp(x + y)}{\exp(x)}$.
+
+On a : $\displaystyle g'(x) = \frac{\exp'(x + y) \exp(x) - \exp(x + y) \exp'(x)}{\exp(x)^2}$
+
+$$= \frac{\exp(x + y) \exp(x) - \exp(x + y) \exp(x)}{\exp(x)^2} = 0$$
+
+Donc $g$ est constante. Comme $g(0) = \frac{\exp(y)}{\exp(0)} = \exp(y)$, on a $g(x) = \exp(y)$ pour tout $x$.
+
+Ainsi : $\frac{\exp(x + y)}{\exp(x)} = \exp(y)$, donc $\exp(x + y) = \exp(x) \times \exp(y)$.
+:::
+
+### La fonction exponentielle est strictement positive et croissante
+
+::: demonstration (bonus)
+**1. Strictement positive :**
+
+On a : $\displaystyle \exp(x) = \exp\left(\frac{x}{2} + \frac{x}{2}\right) = \exp\left(\frac{x}{2}\right) \times \exp\left(\frac{x}{2}\right) = \left(\exp\left(\frac{x}{2}\right)\right)^2 \geq 0$
+
+De plus, si $\exp(x) = 0$, alors en utilisant $\exp(x) \times \exp(-x) = 1$, on aurait $0 = 1$, ce qui est impossible.
+
+Donc $\exp(x) > 0$ pour tout $x \in \mathbb{R}$.
+
+**2. Strictement croissante :**
+
+Soit $x < y$. On a : $y = x + (y - x)$ avec $y - x > 0$.
+
+Donc : $\displaystyle \exp(y) = \exp(x + (y - x)) = \exp(x) \times \exp(y - x)$
+
+Comme $\exp(y - x) > 1$ (car $y - x > 0$ et $\exp(0) = 1$ avec $\exp' = \exp > 0$), on a :
+
+$$
+\begin{aligned}
+\exp(y) &= \exp(x) \times \exp(y - x) > \exp(x) \times 1 \\
+&= \exp(x)
+\end{aligned}
+$$
+
+Donc $\exp$ est strictement croissante sur $\mathbb{R}$.
+:::
+
+## VIII. Conseils méthodologiques
+
+### Méthodes générales
+
+::: conseil
+- **Simplifier des expressions :** Utiliser les propriétés $e^{a+b} = e^a \times e^b$ et $e^{a-b} = \frac{e^a}{e^b}$
+- **Calculer une puissance :** $(e^x)^n = e^{nx}$ pour tout entier $n$
+- **Signe :** Toujours se rappeler que $e^x > 0$ pour tout $x$
+- **Inégalités :** Utiliser la croissance stricte : $e^a < e^b \Leftrightarrow a < b$
+- **Modélisation :** Reconnaître les formes $e^{kt}$ (croissance) et $e^{-kt}$ (décroissance)
+- **Limites :** Retenir $\lim_{x \to -\infty} e^x = 0$ et $\lim_{x \to +\infty} e^x = +\infty$
+- **Valeur approchée :** Mémoriser $e \approx 2,718$
+:::
+
+::: attention
+- **Produit :** $e^a \times e^b \neq e^{ab}$ ! C'est $e^{a+b}$
+- **Puissance :** $(e^x)^n \neq e^{x^n}$ ! C'est $e^{nx}$
+- **Somme :** $e^a + e^b \neq e^{a+b}$ ! Il n'y a pas de simplification pour la somme
+- **Signe :** Ne jamais dire que $e^x$ peut être négatif, c'est toujours strictement positif
+- **Valeur en 0 :** $e^0 = 1$, pas $0$
+- **Exposant négatif :** $e^{-x} = \frac{1}{e^x}$, ne pas oublier que c'est l'inverse
+- **Limite en -∞ :** $\lim_{x \to -\infty} e^x = 0$, pas $-\infty$
+:::
+
+::: remarque Récapitulatif - Propriétés à retenir
+| Propriété | Formule |
+|---|---|
+| **Produit** | $\displaystyle e^{x+y} = e^x \times e^y$ |
+| **Quotient** | $\displaystyle e^{x-y} = \frac{e^x}{e^y}$ |
+| **Puissance** | $\displaystyle (e^x)^n = e^{nx}$ ($\displaystyle n \in \mathbb{Z}$) |
+| **Inverse** | $\displaystyle e^{-x} = \frac{1}{e^x}$ |
+| **Valeur en 0** | $\displaystyle e^0 = 1$ |
+| **Dérivée** | $\displaystyle (e^x)' = e^x$ |
+| **Limites** | $\displaystyle \lim_{x \to -\infty} e^x = 0$ et $\displaystyle \lim_{x \to +\infty} e^x = +\infty$ |
+:::

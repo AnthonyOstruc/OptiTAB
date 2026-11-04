@@ -65,6 +65,7 @@ function formatMatiereSlug(value) {
 function formatNiveauGroupSlug(value) {
   const normalized = slugifyText(value || '')
   if (!normalized) return ''
+  if (/(^|-)(primaire|elementaire|cp|ce1|ce2|cm1|cm2)(-|$)/.test(normalized)) return 'primaire'
   if (normalized.includes('bases-methodes')) return 'lycee'
   if (
     normalized.includes('lycee') ||

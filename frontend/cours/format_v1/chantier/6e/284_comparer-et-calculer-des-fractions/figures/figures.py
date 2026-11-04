@@ -1,0 +1,2 @@
+"""Figures TikZ originales ; textes séparés des traits."""
+FIGURES = {'fractions_egales': '\\begin{tikzpicture}[x=0.48cm,y=1cm]\n\\fill[otNavy!18] (0,1.2) rectangle (8,1.7);\n\\fill[otGreen!20] (0,0) rectangle (8,0.5);\n\\draw[geoTrait] (0,1.2) rectangle (12,1.7);\n\\foreach \\x in {4,8}{\\draw[geoAide] (\\x,1.2)--(\\x,1.7);}\n\\draw[geoTrait] (0,0) rectangle (12,0.5);\n\\foreach \\x in {1,...,11}{\\draw[geoAide] (\\x,0)--(\\x,0.5);}\n\\node[geoLabel,anchor=west] at (13,1.45) {$\\frac23$};\n\\node[geoLabel,anchor=west] at (13,0.25) {$\\frac8{12}$};\n\\end{tikzpicture}'}

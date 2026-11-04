@@ -1,0 +1,80 @@
+Titre: Algorithmique et programmation
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+    <div style="background:#e8f4fd; border:2px solid #3498db; border-radius:8px; padding:15px; margin-bottom:20px;">
+        <p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🎯 Objectifs du chapitre :</strong> lire, exécuter à la main, compléter et écrire un script par blocs ; utiliser variables, tests et boucles ; décomposer un problème en blocs personnalisés ; faire dialoguer plusieurs lutins ; écrire et recopier une formule de tableur.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Variables, entrées et sorties</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;">Un <strong>algorithme</strong> est une suite d'instructions précises, exécutées dans l'ordre. Une <strong>variable</strong> est une « boîte » qui mémorise une valeur que l'on peut modifier.</p>
+            <p style="margin:6px 0 0 0;">• « <strong>mettre x à 3</strong> » <strong>remplace</strong> le contenu de x par 3 ;</p>
+            <p style="margin:4px 0 0 0;">• « <strong>ajouter 3 à x</strong> » <strong>augmente</strong> la valeur actuelle de x de 3 ;</p>
+            <p style="margin:4px 0 0 0;">• « <strong>demander … et attendre</strong> » range la saisie de l'utilisateur dans <strong>réponse</strong> (entrée) ; « <strong>dire</strong> » affiche une valeur (sortie).</p>
+        </div>
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Exécuter à la main :</strong> faire un tableau avec une colonne par variable et une ligne par instruction (ou par tour de boucle), en utilisant toujours la <strong>dernière</strong> valeur obtenue.
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Les instructions conditionnelles</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <p style="font-size:1em;">Le bloc « <strong>si … alors … sinon</strong> » exécute une branche ou l'autre selon qu'un <strong>test</strong> (bloc hexagonal vert) est vrai ou faux.</p>
+        [IMAGE_1]
+        <p style="font-size:1em;">Ici, pour un âge de 17, le test $\displaystyle 17 > 17$ est faux : le lutin dit « Tu es mineur. » ; pour 18, il dit « Tu es majeur. ».</p>
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong> tester toujours la valeur <strong>frontière</strong>. Le bloc « $\displaystyle a$ modulo $\displaystyle b$ » donne le <strong>reste</strong> de la division euclidienne : « x modulo 2 = 0 » teste si x est pair.
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Les boucles</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        [IMAGE_2]
+        <p style="font-size:1em;">• <strong>Boucle bornée</strong> « répéter n fois » : le contenu est exécuté exactement n fois. Ci-dessus, x vaut 2, 4, 6, 8, 10 : le lutin dit 10.</p>
+        <p style="font-size:1em;">• <strong>Boucle conditionnelle</strong> « répéter jusqu'à » : le test est vérifié <strong>avant</strong> chaque tour, et la boucle s'arrête dès qu'il est vrai. Ci-dessus, x vaut 3, 9, 27, 81, 243 : le lutin dit 243.</p>
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong> si la variable ne progresse jamais vers la condition d'arrêt, la boucle ne s'arrête pas (<strong>boucle infinie</strong>). Une instruction placée <strong>après</strong> la boucle n'est exécutée qu'une fois.
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Le lutin, le stylo et les blocs personnalisés</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <p style="font-size:1em;">La scène est un repère : « aller à x : 0 y : 0 » place le lutin au centre. L'orientation 90 est vers la <strong>droite</strong>, 0 vers le <strong>haut</strong> ; « tourner ↺ » tourne dans le sens inverse des aiguilles d'une montre. Le stylo trace quand il est « en position d'écriture ».</p>
+        <p style="font-size:1em;">Un <strong>bloc personnalisé</strong> regroupe des instructions réutilisables ; ses <strong>paramètres</strong> (en rose) reçoivent une valeur à chaque appel.</p>
+        [IMAGE_3]
+        [IMAGE_4]
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 À retenir :</strong> pour un polygone régulier à $\displaystyle n$ côtés, répéter $\displaystyle n$ fois « avancer ; tourner de $\displaystyle \frac{360}{n}$ degrés » (angle <strong>extérieur</strong>) : 90° pour un carré, 120° pour un triangle équilatéral, 60° pour un hexagone.
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Événements, messages et hasard</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <p style="font-size:1em;">• Un <strong>événement</strong> (clic sur le drapeau, touche, réception d'un message) démarre un script. Plusieurs lutins peuvent agir <strong>en parallèle</strong>.</p>
+        <p style="font-size:1em;">• « <strong>envoyer à tous … et attendre</strong> » déclenche les scripts « quand je reçois … » et attend qu'ils soient <strong>terminés</strong> avant de continuer.</p>
+        <p style="font-size:1em;">• « <strong>nombre aléatoire entre 1 et 6</strong> » simule un dé équilibré. Pour estimer une probabilité : initialiser un compteur à 0 <strong>avant</strong> la boucle, l'augmenter à chaque succès, puis diviser par le nombre d'essais <strong>après</strong> la boucle.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Le tableur</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        [IMAGE_5]
+        <p style="font-size:1em;">• Une formule commence par <strong>=</strong>. Recopiée vers le bas, une référence <strong>relative</strong> comme A3 devient A4, A5…</p>
+        <p style="font-size:1em;">• Une référence <strong>absolue</strong> comme <strong>\$D\$2</strong> reste fixe lors de la recopie : ici le taux de TVA, utilisé par toutes les lignes.</p>
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Exemple :</strong> en B3, $\displaystyle 25 \times (1 + 0{,}2) = 30$ ; recopiée en B5, la formule devient =A5&#42;(1+\$D\$2) et donne 120.</p>
+        </div>
+    </div>
+
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:8px; padding:15px; margin:20px 0 0 0;">
+        <p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🏆 L'essentiel :</strong> une variable se remplace (« mettre ») ou se modifie (« ajouter ») ; un test choisit une branche ; « répéter n fois » fait n tours, « répéter jusqu'à » s'arrête quand le test devient vrai ; un polygone régulier à n côtés se trace en tournant de 360/n ; au tableur, une référence absolue comme \$D\$2 reste fixe à la recopie. Fiche de synthèse dans l'onglet Fiches !</p>
+    </div>
+
+</div>

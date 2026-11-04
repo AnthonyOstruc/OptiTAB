@@ -1,0 +1,546 @@
+Titre: Algorithmes du programme de Terminale
+
+<!-- optitab:1 -->
+::: objectifs
+Écrire, lire et utiliser en Python les algorithmes cités par le programme de Terminale : terme, somme et seuil d'une suite ; méthode de dichotomie et méthode de Newton ; méthode des rectangles ; seuils avec l'exponentielle et le logarithme ; simulation d'un schéma de Bernoulli, d'une loi binomiale et d'échantillons ; génération de listes en dénombrement.
+:::
+
+::: prerequis
+Programmes de Seconde et de Première : variables, fonctions `def`, instructions `if`, boucles `for` et `while`, listes (voir la notion « Notion de liste »). Terminale : suites et limites, continuité, logarithme, calcul intégral, loi binomiale, loi des grands nombres, dénombrement.
+:::
+
+## I. Les outils
+
+Le programme de Terminale n'introduit aucune instruction nouvelle : il applique les outils de Seconde et de Première à chaque partie du cours.
+
+::: rappel Rappel de Seconde et de Première
+- `def f(x):` puis `return …` définit une fonction qui renvoie un résultat.
+- `if condition:` … `else:` … exécute un bloc ou l'autre.
+- `for k in range(n):` répète un bloc $n$ fois ; `k` prend les valeurs $0$, $1$, …, $n-1$.
+- `while condition:` répète un bloc **tant que** la condition est vraie.
+- Un **accumulateur** s'initialise **avant** la boucle : $0$ pour une somme ou un compteur, $1$ pour un produit.
+- `L.append(x)` ajoute `x` à la fin de la liste `L`.
+:::
+
+| Algorithme | Boucle utilisée |
+|---|---|
+| terme $u_n$, somme, rectangles | `for` : nombre de tours connu |
+| seuil, dichotomie | `while` : tant que le but n'est pas atteint |
+| simulation de $N$ expériences | `for` et un compteur |
+
+::: remarque Simulations : la graine
+Le module `random` produit des nombres **pseudo-aléatoires** : ils sont calculés à partir d'un point de départ, la **graine**. L'instruction `seed(2026)` fixe cette graine : le programme donne alors toujours le même affichage, et c'est celui que l'on imprime ici. Sans `seed`, ou avec une autre graine, on obtient d'autres résultats, de même allure.
+:::
+
+## II. Suites numériques
+
+### 1. Terme de rang $n$ et somme de termes
+
+La suite $(u_n)$ est définie par $u_0 = 1$ et, pour tout entier naturel $n$, $u_{n+1} = 0{,}8\,u_n + 2$.
+
+::: methode Terme et somme
+- **Terme $u_n$** : on part de $u_0$ et on applique $n$ fois la relation de récurrence (boucle `for` de $n$ tours).
+- **Somme $u_0 + \dots + u_n$** : un accumulateur `s` et le terme `u` avancent **ensemble** ; il y a $n + 1$ termes, donc $n + 1$ tours.
+:::
+
+```python
+def terme(n):
+    u = 1
+    for k in range(n):
+        u = 0.8 * u + 2
+    return u
+
+def somme(n):
+    s = 0
+    u = 1
+    for k in range(n + 1):
+        s = s + u
+        u = 0.8 * u + 2
+    return s
+
+print(round(terme(3), 4))
+print(round(somme(3), 4))
+```
+
+```console
+5.392
+13.432
+```
+
+On vérifie : $u_1 = 2{,}8$, $u_2 = 4{,}24$, $u_3 = 5{,}392$ et $u_0 + u_1 + u_2 + u_3 = 1 + 2{,}8 + 4{,}24 + 5{,}392 = 13{,}432$.
+
+::: remarque La forme explicite
+La suite $v_n = u_n - 10$ vérifie $v_{n+1} = 0{,}8\,u_n + 2 - 10 = 0{,}8\,(u_n - 10) = 0{,}8\,v_n$ : elle est géométrique de raison $0{,}8$ et $v_0 = -9$. Donc $u_n = 10 - 9 \times 0{,}8^n$, et $(u_n)$ converge vers $10$ car $-1 \lt 0{,}8 \lt 1$.
+:::
+
+### 2. Algorithme de seuil
+
+::: methode Plus petit rang $n$ tel que $u_n \gt A$
+On calcule les termes un par un **tant que** le seuil n'est pas dépassé, en comptant les tours. La condition du `while` est le **contraire** de la condition cherchée : on veut $u_n \gt A$, on répète donc tant que $u \le A$. À la sortie, `n` est le rang cherché.
+:::
+
+```python
+def seuil(A):
+    n = 0
+    u = 1
+    while u <= A:
+        u = 0.8 * u + 2
+        n = n + 1
+    return n
+
+print(seuil(9))
+```
+
+```console
+10
+```
+
+[IMAGE_1]
+
+::: point Vérification par le logarithme
+$$
+\begin{aligned}
+u_n \gt 9 &\iff 10 - 9 \times 0{,}8^n \gt 9 \\
+&\iff 0{,}8^n \lt \frac{1}{9} \\
+&\iff n \ln(0{,}8) \lt -\ln(9) \\
+&\iff n \gt \frac{\ln(9)}{-\ln(0{,}8)}
+\end{aligned}
+$$
+
+On a divisé par $\ln(0{,}8) \lt 0$, ce qui change le sens de l'inégalité. Comme $\dfrac{\ln(9)}{-\ln(0{,}8)} \approx 9{,}85$, le plus petit entier est bien $n = 10$.
+:::
+
+### 3. Une suite majorée qui ne dépasse jamais le seuil
+
+Un algorithme de seuil ne s'arrête que si le seuil est **réellement dépassé** à partir d'un certain rang. Ici, l'appel `seuil(10)` ne se termine jamais.
+
+::: demonstration Pour tout $n$, $u_n \lt 10$
+Par récurrence. **Initialisation** : $u_0 = 1 \lt 10$. **Hérédité** : si $u_n \lt 10$, alors $0{,}8\,u_n \lt 8$, donc $u_{n+1} = 0{,}8\,u_n + 2 \lt 10$. La propriété est vraie pour tout entier naturel $n$.
+:::
+
+La condition `u <= 10` reste donc toujours vraie : la boucle est **infinie**. La suite converge vers $10$ sans jamais l'atteindre.
+
+::: conseil Un garde-fou
+On limite le nombre de tours avec un second paramètre `nmax`, puis on teste si le seuil a bien été dépassé. La fonction renvoie `None` (« rien ») sinon.
+
+```python
+def seuil2(A, nmax):
+    n = 0
+    u = 1
+    while u <= A and n < nmax:
+        u = 0.8 * u + 2
+        n = n + 1
+    if u > A:
+        return n
+    return None
+
+print(seuil2(9, 1000))
+print(seuil2(10, 1000))
+```
+
+```console
+10
+None
+```
+:::
+
+## III. Continuité : résoudre $f(x) = 0$
+
+La fonction $f : x \mapsto x^3 + x - 1$ est continue et strictement croissante sur $[0\,;1]$ (car $f'(x) = 3x^2 + 1 \gt 0$), avec $f(0) = -1 \lt 0$ et $f(1) = 1 \gt 0$. D'après le corollaire du théorème des valeurs intermédiaires, l'équation $f(x) = 0$ admet une **unique** solution $\alpha$ dans $[0\,;1]$.
+
+### 1. La méthode de dichotomie
+
+::: methode Dichotomie
+On part d'un intervalle $[a\,;b]$ qui contient $\alpha$. À chaque tour, on calcule le milieu $m = \dfrac{a + b}{2}$ :
+- si $f(a)$ et $f(m)$ sont de signes contraires, c'est-à-dire $f(a) \times f(m) \le 0$, la solution est dans $[a\,;m]$ : on remplace $b$ par $m$ ;
+- sinon, elle est dans $[m\,;b]$ : on remplace $a$ par $m$.
+
+On s'arrête quand l'amplitude $b - a$ est inférieure ou égale à la précision $e$.
+:::
+
+```python
+def f(x):
+    return x**3 + x - 1
+
+def dichotomie(a, b, e):
+    while b - a > e:
+        m = (a + b) / 2
+        if f(a) * f(m) <= 0:
+            b = m
+        else:
+            a = m
+    return a, b
+
+print(dichotomie(0, 1, 0.01))
+```
+
+```console
+(0.6796875, 0.6875)
+```
+
+| Tour | $m$ | signe de $f(m)$ | nouvel intervalle |
+|---|---|---|---|
+| 1 | $0{,}5$ | $-$ | $[0{,}5\,;1]$ |
+| 2 | $0{,}75$ | $+$ | $[0{,}5\,;0{,}75]$ |
+| 3 | $0{,}625$ | $-$ | $[0{,}625\,;0{,}75]$ |
+| 4 | $0{,}6875$ | $+$ | $[0{,}625\,;0{,}6875]$ |
+
+[IMAGE_2]
+
+L'amplitude est divisée par $2$ à chaque tour : après $n$ tours, elle vaut $\dfrac{1}{2^n}$. Comme $\dfrac{1}{2^6} \gt 0{,}01$ et $\dfrac{1}{2^7} = \dfrac{1}{128} \le 0{,}01$, la boucle fait $7$ tours : $0{,}6796 \lt \alpha \lt 0{,}6875$.
+
+### 2. La méthode de Newton
+
+::: methode Méthode de Newton
+On part d'une valeur $x_0$ proche de $\alpha$. La tangente à la courbe au point d'abscisse $x_n$ coupe l'axe des abscisses en $x_{n+1}$ :
+$$x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}$$
+Dans les cas favorables (comme ici), la suite $(x_n)$ converge très vite vers $\alpha$.
+:::
+
+::: demonstration D'où vient la formule
+La tangente au point d'abscisse $x_n$ a pour équation $y = f'(x_n)(x - x_n) + f(x_n)$. Elle coupe l'axe des abscisses quand $y = 0$, c'est-à-dire, si $f'(x_n) \neq 0$, pour $x = x_n - \dfrac{f(x_n)}{f'(x_n)}$.
+:::
+
+[IMAGE_3]
+
+```python
+def fp(x):
+    return 3 * x**2 + 1
+
+x = 1
+for k in range(4):
+    x = x - f(x) / fp(x)
+    print(k + 1, x)
+```
+
+```console
+1 0.75
+2 0.686046511627907
+3 0.6823395825973142
+4 0.6823278039465127
+```
+
+Après $4$ tours, les dix premières décimales ne bougent plus : $\alpha \approx 0{,}682\,327\,804$. La dichotomie, elle, gagne environ une décimale tous les $3$ ou $4$ tours.
+
+::: attention Les limites de la méthode de Newton
+Il faut connaître la dérivée $f'$, et la méthode échoue si $f'(x_n) = 0$ ; partie d'une valeur trop éloignée de $\alpha$, la suite peut même s'en écarter. La dichotomie est lente mais toujours sûre ; la méthode de Newton est rapide quand on part près de la solution.
+:::
+
+## IV. Calcul intégral : la méthode des rectangles
+
+Soit $f$ continue et positive sur $[a\,;b]$. On partage $[a\,;b]$ en $n$ intervalles de même largeur $h = \dfrac{b - a}{n}$, d'extrémités $x_k = a + kh$. Sur chaque petit intervalle, on remplace l'aire sous la courbe par l'aire d'un rectangle de largeur $h$.
+
+::: methode Rectangles à gauche, rectangles à droite
+- À gauche : hauteur $f(x_k)$, somme $S = h\,\big(f(x_0) + f(x_1) + \dots + f(x_{n-1})\big)$.
+- À droite : hauteur $f(x_{k+1})$, somme $s = h\,\big(f(x_1) + f(x_2) + \dots + f(x_n)\big)$.
+
+Si $f$ est **décroissante**, $s \le \displaystyle\int_a^b f(x)\,\mathrm{d}x \le S$ (inégalités inversées si $f$ est croissante).
+:::
+
+::: exemple Encadrer $\ln(2) = \displaystyle\int_1^2 \frac{1}{x}\,\mathrm{d}x$
+La fonction inverse est décroissante sur $[1\,;2]$.
+
+```python
+def f(x):
+    return 1 / x
+
+def gauche(a, b, n):
+    h = (b - a) / n
+    S = 0
+    for k in range(n):
+        S = S + h * f(a + k*h)
+    return S
+
+def droite(a, b, n):
+    h = (b - a) / n
+    s = 0
+    for k in range(1, n + 1):
+        s = s + h * f(a + k*h)
+    return s
+
+for n in [4, 10, 100]:
+    s = round(droite(1, 2, n), 4)
+    S = round(gauche(1, 2, n), 4)
+    print(n, s, S)
+```
+
+```console
+4 0.6345 0.7595
+10 0.6688 0.7188
+100 0.6907 0.6957
+```
+:::
+
+[IMAGE_4]
+
+Avec $n = 100$ : $0{,}6907 \le \ln(2) \le 0{,}6957$, et en effet $\ln(2) \approx 0{,}6931$. L'écart $S - s = h\,\big(f(1) - f(2)\big) = \dfrac{1}{n} \times \dfrac{1}{2}$ tend vers $0$ quand $n$ augmente.
+
+## V. Exponentielle et logarithme : seuils
+
+::: methode Deux façons de trouver un seuil
+- **Par un algorithme** : on teste $n = 0$, $1$, $2$, … avec une boucle `while` ; on obtient le plus petit entier qui convient.
+- **Par le calcul** : on résout l'inéquation avec la fonction $\ln$ (croissante) ou la fonction $\exp$. C'est le calcul qui **démontre** le résultat.
+:::
+
+::: exemple Un capital placé à $3\,\%$ par an
+Un capital de $1\,000$ € augmente de $3\,\%$ par an : au bout de $n$ années, il vaut $1\,000 \times 1{,}03^n$. Au bout de combien d'années aura-t-il doublé ?
+
+```python
+n = 0
+c = 1000
+while c <= 2000:
+    c = c * 1.03
+    n = n + 1
+print(n, round(c, 2))
+```
+
+```console
+24 2032.79
+```
+
+Par le calcul : $1{,}03^n \gt 2 \iff n \ln(1{,}03) \gt \ln(2) \iff n \gt \dfrac{\ln(2)}{\ln(1{,}03)} \approx 23{,}45$, car $\ln(1{,}03) \gt 0$. Le capital a doublé au bout de $24$ ans.
+:::
+
+::: exemple Une décroissance exponentielle
+La masse d'un produit radioactif vaut $m(t) = 100\,e^{-0{,}3t}$ grammes au bout de $t$ jours. On cherche à partir de quand elle est inférieure à $1$ gramme.
+
+```python
+from math import exp
+
+t = 0
+while 100 * exp(-0.3*t) >= 1:
+    t = t + 1
+print(t)
+```
+
+```console
+16
+```
+
+Par le calcul : $100\,e^{-0{,}3t} \lt 1 \iff e^{-0{,}3t} \lt 0{,}01 \iff -0{,}3t \lt \ln(0{,}01) \iff t \gt \dfrac{\ln(100)}{0{,}3} \approx 15{,}35$. Le premier nombre entier de jours est bien $16$.
+:::
+
+::: remarque Un pas plus fin
+En remplaçant `t = t + 1` par `t = round(t + 0.01, 2)`, la même boucle avance de $0{,}01$ en $0{,}01$ et affiche `15.36` : c'est une valeur approchée par excès, au centième, de $\dfrac{\ln(100)}{0{,}3}$. La fonction `round` efface les erreurs d'arrondi des décimaux en machine.
+:::
+
+## VI. Probabilités : simuler
+
+### 1. Schéma de Bernoulli et loi binomiale
+
+`random()` renvoie un nombre au hasard dans $[0\,;1[$ : le test `random() < p` est vrai avec la probabilité $p$. La fonction `bernoulli(p)` simule donc une épreuve de Bernoulli de paramètre $p$ (elle renvoie $1$ pour un succès, $0$ pour un échec). La somme de $n$ épreuves indépendantes suit la loi binomiale $\mathcal{B}(n\,;p)$.
+
+```python
+from random import random, seed
+
+def bernoulli(p):
+    if random() < p:
+        return 1
+    return 0
+
+def binomiale(n, p):
+    x = 0
+    for k in range(n):
+        x = x + bernoulli(p)
+    return x
+
+seed(2026)
+print([bernoulli(0.3) for k in range(10)])
+print(binomiale(10, 0.3))
+```
+
+```console
+[0, 1, 0, 0, 0, 0, 1, 0, 0, 0]
+3
+```
+
+### 2. Fréquences observées et probabilités
+
+On simule $N = 1\,000$ valeurs de $X$, qui suit $\mathcal{B}(10\,;0{,}3)$. La liste `E` compte combien de fois chaque valeur $k$ est obtenue : `E[k]` est l'effectif de $k$.
+
+```python
+seed(2026)
+N = 1000
+E = [0] * 11
+for i in range(N):
+    x = binomiale(10, 0.3)
+    E[x] = E[x] + 1
+print(E)
+```
+
+```console
+[29, 125, 238, 260, 191, 103, 41, 10, 3, 0, 0]
+```
+
+On compare les fréquences $\dfrac{E[k]}{N}$ aux probabilités $P(X = k) = \dbinom{10}{k}\,0{,}3^k\,0{,}7^{10-k}$, calculées avec la fonction `comb` du module `math`.
+
+```python
+from math import comb
+
+def p_binom(n, p, k):
+    q = 1 - p
+    c = comb(n, k)
+    return c * p**k * q**(n - k)
+
+for k in range(6):
+    pk = round(p_binom(10, 0.3, k), 3)
+    print(k, E[k] / N, pk)
+```
+
+```console
+0 0.029 0.028
+1 0.125 0.121
+2 0.238 0.233
+3 0.26 0.267
+4 0.191 0.2
+5 0.103 0.103
+```
+
+[IMAGE_5]
+
+### 3. Calculer un seuil pour une loi binomiale
+
+::: exemple Plus petit $k$ tel que $P(X \le k) \ge 0{,}95$
+On ajoute les probabilités $P(X = 0)$, $P(X = 1)$, … **tant que** leur somme est inférieure à $0{,}95$.
+
+```python
+def seuil_binom(n, p, a):
+    k = 0
+    s = p_binom(n, p, 0)
+    while s < a:
+        k = k + 1
+        s = s + p_binom(n, p, k)
+    return k, round(s, 4)
+
+print(seuil_binom(10, 0.3, 0.95))
+```
+
+```console
+(5, 0.9527)
+```
+
+Pour $X \sim \mathcal{B}(10\,;0{,}3)$ : $P(X \le 4) \approx 0{,}8497 \lt 0{,}95$ et $P(X \le 5) \approx 0{,}9527 \ge 0{,}95$, donc $k = 5$.
+:::
+
+### 4. Échantillons et loi des grands nombres
+
+La fréquence des succès dans un échantillon de taille $n$ est la moyenne de $n$ variables de Bernoulli indépendantes. D'après la loi des grands nombres, elle se rapproche de $p$ quand $n$ devient grand.
+
+```python
+seed(2026)
+for n in [10, 100, 1000, 10000]:
+    s = 0
+    for i in range(n):
+        s = s + bernoulli(0.3)
+    print(n, s / n)
+```
+
+```console
+10 0.2
+100 0.33
+1000 0.299
+10000 0.2988
+```
+
+Les fréquences fluctuent beaucoup pour de petits échantillons, puis se stabilisent autour de $p = 0{,}3$.
+
+## VII. Dénombrement : générer des listes
+
+### 1. Le triangle de Pascal
+
+::: methode Relation de Pascal
+Pour $1 \le k \le n$ : $\dbinom{n+1}{k} = \dbinom{n}{k-1} + \dbinom{n}{k}$. Chaque ligne du triangle se déduit de la précédente : elle commence et finit par $1$, et chaque autre nombre est la somme des **deux nombres voisins** de la ligne du dessus.
+:::
+
+[IMAGE_6]
+
+```python
+def suivante(L):
+    M = [1]
+    for k in range(len(L) - 1):
+        M.append(L[k] + L[k + 1])
+    M.append(1)
+    return M
+
+L = [1]
+for n in range(6):
+    print(L)
+    L = suivante(L)
+```
+
+```console
+[1]
+[1, 1]
+[1, 2, 1]
+[1, 3, 3, 1]
+[1, 4, 6, 4, 1]
+[1, 5, 10, 10, 5, 1]
+```
+
+La ligne $n$ contient les coefficients $\dbinom{n}{0}$, $\dbinom{n}{1}$, …, $\dbinom{n}{n}$ : par exemple $\dbinom{5}{2} = 10$.
+
+### 2. Les parties à $2$ éléments d'un ensemble
+
+::: exemple Parties à $2$ éléments de $\{a, b, c, d\}$
+Deux boucles imbriquées : pour chaque indice `i`, l'indice `j` parcourt les indices **suivants** ; chaque partie est ainsi obtenue une seule fois.
+
+```python
+E = ["a", "b", "c", "d"]
+P = []
+for i in range(len(E)):
+    for j in range(i + 1, len(E)):
+        P.append([E[i], E[j]])
+for c in P:
+    print(c)
+print(len(P))
+```
+
+```console
+['a', 'b']
+['a', 'c']
+['a', 'd']
+['b', 'c']
+['b', 'd']
+['c', 'd']
+6
+```
+
+On retrouve $\dbinom{4}{2} = \dfrac{4 \times 3}{2} = 6$. Écrire les listes en compréhension est étudié dans la notion « Notion de liste ».
+:::
+
+## VIII. Bilan
+
+| Partie du programme | Algorithme | Structure |
+|---|---|---|
+| Suites | terme $u_n$, somme | `for` |
+| Suites | seuil, suite majorée | `while` |
+| Continuité | dichotomie | `while` et `if` |
+| Continuité | méthode de Newton | `for` ou `while` |
+| Calcul intégral | rectangles | `for` et accumulateur |
+| Exp et ln | seuils | `while` puis $\ln$ |
+| Probabilités | Bernoulli, binomiale, échantillons | `random`, `for`, compteur |
+| Dénombrement | triangle de Pascal, parties | listes, boucles imbriquées |
+
+::: remarque Autres exemples cités par le programme
+Méthode de la sécante, algorithme de Briggs (logarithme), méthode d'Euler pour $y' = ay + b$, méthodes des milieux et des trapèzes, méthode de Monte-Carlo, planche de Galton, marche aléatoire : ils utilisent les mêmes outils.
+:::
+
+::: attention Pièges fréquents
+- Dans un algorithme de seuil, la condition du `while` est le **contraire** de la condition cherchée.
+- Avant de chercher un seuil, on vérifie qu'il sera dépassé (suite majorée : boucle infinie).
+- Diviser une inégalité par $\ln(q) \lt 0$ (quand $0 \lt q \lt 1$) change son sens.
+- Dichotomie : on garde la moitié où $f$ **change de signe**, et on s'arrête sur l'amplitude $b - a$, pas sur $f(m)$.
+- Rectangles : `range(n)` pour les rectangles à gauche ($x_0$ à $x_{n-1}$), `range(1, n + 1)` à droite.
+- Une simulation sans `seed` donne un résultat différent à chaque exécution.
+:::
+
+::: retenir
+- Seuil : `while u <= A:` et un compteur, puis vérification par le logarithme.
+- Dichotomie : l'amplitude est divisée par $2$ à chaque tour.
+- Newton : $x_{n+1} = x_n - \dfrac{f(x_n)}{f'(x_n)}$.
+- Rectangles : $h \times$ (somme des hauteurs), avec $h = \dfrac{b - a}{n}$.
+- Bernoulli : `random() < p` ; binomiale : somme de $n$ Bernoulli ; la fréquence tend vers $p$.
+- Pascal : chaque coefficient est la somme des deux nombres voisins de la ligne du dessus.
+
+Fiche de synthèse dans l'onglet Fiches !
+:::

@@ -1,0 +1,113 @@
+
+\documentclass[border=6pt]{standalone}
+\usepackage{amsmath}
+\usepackage{unicode-math}
+\setmainfont{LibertinusSerif}[Extension=.otf, UprightFont=*-Regular, ItalicFont=*-Italic,
+  BoldFont=*-Semibold, BoldItalicFont=*-SemiboldItalic]
+\setmathfont{LibertinusMath-Regular.otf}
+\newfontfamily\otRegular{Montserrat}[Extension=.otf, UprightFont=*-Regular, BoldFont=*-SemiBold]
+\newfontfamily\otMedium{Montserrat}[Extension=.otf, UprightFont=*-Medium, BoldFont=*-SemiBold]
+\usepackage{xcolor}
+\definecolor{otNavy}{HTML}{1B3C8E}
+\definecolor{otGreen}{HTML}{5FAC60}
+\definecolor{otGreenDark}{HTML}{3B8544}
+\definecolor{otInk}{HTML}{1C2130}
+\definecolor{otMuted}{HTML}{6B7385}
+\definecolor{otRule}{HTML}{D5DAE3}
+\definecolor{otOrange}{HTML}{F0A23B}
+\definecolor{otRed}{HTML}{E0574C}
+\definecolor{otSky}{HTML}{EAF0FA}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc,angles,quotes,decorations.pathreplacing,decorations.markings,patterns,positioning,shapes.geometric,3d,intersections}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepgfplotslibrary{fillbetween}
+% ---------------------------------------------------------------- repères
+\pgfplotsset{otWeb/.style={
+  axis lines=middle,
+  axis line style={otMuted,line width=0.6pt,-{Stealth[length=2.3mm]}},
+  tick style={otMuted,line width=0.5pt}, major tick length=3pt,
+  ticklabel style={font=\otRegular\fontsize{9}{10}\selectfont,text=otMuted,fill=white,inner sep=1pt},
+  grid=major, grid style={otRule!75,line width=0.35pt},
+  xlabel={$x$}, ylabel={$y$},
+  every axis x label/.style={at={(current axis.right of origin)},anchor=west,font=\normalsize,text=otMuted},
+  every axis y label/.style={at={(current axis.above origin)},anchor=south,font=\normalsize,text=otMuted},
+  clip=false, scale only axis, axis on top=false,
+  yticklabel style={anchor=south east,inner sep=1.2pt,xshift=-1pt,yshift=1pt},
+  xticklabel style={anchor=north,yshift=-2.5pt},
+  samples=240,
+  /pgf/number format/use comma, /pgf/number format/1000 sep={\,},
+}}
+\pgfplotsset{otTrig/.style={otWeb, trig format plots=rad}}
+% diagrammes en barres / statistiques
+\pgfplotsset{otBarres/.style={
+  axis lines*=left, ymajorgrids, grid style={otRule!75,line width=0.35pt},
+  axis line style={otMuted,line width=0.6pt}, tick style={otMuted,line width=0.5pt},
+  ticklabel style={font=\otRegular\fontsize{9}{10}\selectfont,text=otMuted},
+  label style={font=\otRegular\fontsize{9}{10}\selectfont,text=otMuted},
+  ybar, bar width=16pt, enlarge x limits=0.15, ymin=0,
+  cycle list={{fill=otNavy!60,draw=otNavy},{fill=otGreen!70,draw=otGreenDark},{fill=otOrange!75,draw=otOrange!80!black},{fill=otMuted!45,draw=otMuted}},
+  nodes near coords style={font=\otRegular\fontsize{8.5}{10}\selectfont,text=otInk},
+  scale only axis,
+  /pgf/number format/use comma, /pgf/number format/1000 sep={\,},
+}}
+\tikzset{
+  courbe/.style={otNavy,line width=1.35pt},
+  courbe2/.style={otGreen,line width=1.35pt},
+  pale/.style={otNavy!35,line width=1.1pt},
+  seuil/.style={otOrange,line width=0.9pt,dash pattern=on 4pt off 2.5pt},
+  asymptote/.style={otRed!85,line width=0.75pt,dash pattern=on 4pt off 2.5pt},
+  guide/.style={otMuted,line width=0.5pt,dash pattern=on 2pt off 1.6pt},
+  etiq/.style={fill=white,inner sep=1.4pt,font=\normalsize},
+  note/.style={font=\otRegular\fontsize{8.5}{10}\selectfont,text=otMuted,fill=white,inner sep=1.2pt},
+  % géométrie (styles des livres de collège)
+  geoTrait/.style={otNavy,line width=.9pt,line join=round},
+  geoAide/.style={otGreenDark,line width=.75pt,dashed},
+  geoVecteur/.style={otNavy,line width=.9pt,-{Stealth[length=2mm]}},
+  geoReponse/.style={otGreenDark,line width=1pt},
+  geoLabel/.style={fill=white,inner sep=1pt,text=otInk},
+  geoRemplissage/.style={fill=otSky},
+  geoPoint/.style={circle,fill=otNavy,inner sep=0pt,minimum size=3.6pt},
+  cote/.style={otMuted,line width=.55pt,{Stealth[length=1.6mm]}-{Stealth[length=1.6mm]}},
+  coteTexte/.style={fill=white,inner sep=1.2pt,text=otInk,font=\normalsize},
+}
+% points : plein, vide ; repères en pointillés ; solution sur l'axe des abscisses
+\newcommand{\pnt}[3][otNavy]{\fill[#1] (axis cs:#2,#3) circle (2.1pt);}
+\newcommand{\pntv}[3][otNavy]{\draw[#1,fill=white,line width=0.9pt] (axis cs:#2,#3) circle (2.3pt);}
+\newcommand{\guides}[2]{\draw[guide] (axis cs:#1,0) -- (axis cs:#1,#2) -- (axis cs:0,#2);}
+\newcommand{\guidev}[2]{\draw[guide] (axis cs:#1,0) -- (axis cs:#1,#2);}
+\newcommand{\sol}[2]{\draw[otGreen,line width=3pt,line cap=butt,opacity=0.9] (axis cs:#1,0) -- (axis cs:#2,0);}
+\newcommand{\borneF}[1]{\fill[otGreenDark] (axis cs:#1,0) circle (2.5pt);}
+\newcommand{\borneO}[1]{\draw[otGreenDark,fill=white,line width=1pt] (axis cs:#1,0) circle (2.5pt);}
+% \angledroit{A}{B}{C} : angle droit en B (coordonnées nommées)
+\newcommand{\angledroit}[4][0.22]{\draw[otNavy,line width=.6pt] ($(#3)!#1cm!(#2)$) -- ($($(#3)!#1cm!(#2)$)+($(#3)!#1cm!(#4)$)-(#3)$) -- ($(#3)!#1cm!(#4)$);}
+% \codage[n]{A}{B} : n petits traits au milieu de [AB] (longueurs égales)
+\newcommand{\codage}[3][1]{\path[postaction={decorate,decoration={markings,mark=at position 0.5 with
+  {\foreach \k in {1,...,#1}{\draw[otNavy,line width=.7pt] ({(\k-(#1+1)/2)*2.4pt},-3.2pt) -- ++(0,6.4pt);}}}}] (#2) -- (#3);}
+% \cote[décalage]{A}{B}{texte} : flèche de cote parallèle à [AB], décalée vers la gauche de A→B
+\newcommand{\cote}[4][0.35]{\draw[cote] ($(#2)!#1cm!90:(#3)$) -- ($(#3)!#1cm!-90:(#2)$) node[midway,coteTexte]{#4};
+  \draw[otMuted!70,line width=.4pt] (#2) -- ($(#2)!#1cm+2pt!90:(#3)$) (#3) -- ($(#3)!#1cm+2pt!-90:(#2)$);}
+\newif\ifotGeoCorrige
+\newcommand{\geoSolution}[1]{\ifotGeoCorrige #1\fi}
+\newcommand{\geoEnonce}[1]{\ifotGeoCorrige\else #1\fi}
+\newcommand{\stevin}[1]{\tikz[baseline=(s.base)]\node[circle,draw=otNavy,line width=.4pt,inner sep=.7pt,font=\scriptsize](s){#1};}
+
+\tikzset{every node/.append style={text opacity=0,fill opacity=0},
+  geoPoint/.append style={fill opacity=1}}
+\pgfplotsset{every axis/.append style={every tick label/.append style={text opacity=0,fill opacity=0},
+  every axis label/.append style={text opacity=0,fill opacity=0},
+  every axis title/.append style={text opacity=0,fill opacity=0},
+  every node near coord/.append style={text opacity=0}}}
+
+\begin{document}
+
+\begin{tikzpicture}
+\begin{scope}[x=0.65cm,y=0.65cm]\coordinate(B) at (0,0);\coordinate(C) at (8,0);\coordinate(A) at (2.6666666666666665,3);\coordinate(H) at (2.6666666666666665,0);\coordinate(M) at (4.0,0);\draw[geoTrait] (A)--(B)--(C)--cycle;\draw[geoAide] (A)--(H);\draw[geoReponse] (A)--(M);\angledroit{A}{H}{C}\codage{B}{M}\codage{M}{C}\node[anchor=north east,text=otInk,inner sep=4pt] at (0,0) {$ B $};
+\node[anchor=north west,text=otInk,inner sep=4pt] at (8,0) {$ C $};
+\node[anchor=south,text=otInk,inner sep=4pt] at (2.6666666666666665,3) {$ A $};
+\node[anchor=north,text=otInk,inner sep=4pt] at (2.6666666666666665,0) {$ H $};
+\node[anchor=north,text=otInk,inner sep=4pt] at (4.0,0) {$ M $};
+\end{scope}
+\end{tikzpicture}
+
+\end{document}

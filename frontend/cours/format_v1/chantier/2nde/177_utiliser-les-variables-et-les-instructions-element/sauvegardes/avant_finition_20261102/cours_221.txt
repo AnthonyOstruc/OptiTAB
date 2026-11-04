@@ -1,0 +1,276 @@
+Titre: Variables et instructions élémentaires (Python)
+
+<!-- optitab:1 -->
+::: objectifs
+- Choisir ou reconnaître le type d’une variable : entier, flottant, chaîne de caractères, booléen.
+- Écrire une affectation, une séquence d’instructions et une formule combinant des variables.
+- Programmer une instruction conditionnelle `if` / `elif` / `else`.
+- Programmer une boucle bornée `for` et une boucle non bornée `while`.
+- Lire, comprendre, compléter ou modifier un programme grâce à un tableau de suivi.
+:::
+
+## I. Variables et types
+
+::: definition Variable
+Une **variable** est une case de la mémoire de l’ordinateur, repérée par un **nom**, qui contient une **valeur**. Le **type** de la variable indique la nature de cette valeur.
+:::
+
+| Type | Nature de la valeur | Exemples |
+|---|---|---|
+| `int` | nombre entier | `7`, `-3`, `0` |
+| `float` | nombre flottant (décimal) | `2.5`, `-0.1`, `3.0` |
+| `str` | chaîne de caractères | `"bonjour"`, `"12"` |
+| `bool` | booléen | `True`, `False` |
+
+::: propriete Reconnaître et changer un type
+- La fonction `type` donne le type d’une valeur : `type(2.5)` donne `float`.
+- Une **comparaison** donne un booléen : `7 > 10` vaut `False`.
+- `int`, `float` et `str` convertissent : `int("12")` donne l’entier $12$, `str(5)` donne la chaîne `"5"`.
+:::
+
+::: attention Le point décimal et les guillemets
+- En Python, la virgule décimale s’écrit avec un **point** : `2.5` et non `2,5`.
+- `3` est un `int`, `3.0` un `float` : même valeur, types différents. Une division `/` donne toujours un `float` : `8 / 2` donne `4.0`.
+- `"12"` (entre guillemets) est un texte, pas un nombre : `"12" + 1` provoque une erreur.
+:::
+
+::: remarque Noms de variables
+Un nom commence par une lettre (ou `_`), ne contient ni espace ni accent, et n’est pas un mot réservé de Python (`for`, `if`, `while`…). On choisit des noms parlants : `prix`, `moyenne`, `compteur`.
+:::
+
+## II. Affectation et séquence d’instructions
+
+::: definition Affectation
+L’instruction `a = 5` **affecte** la valeur $5$ à la variable `a` : la valeur est rangée dans la case `a`, et l’ancienne valeur est **perdue**. Python calcule d’abord le membre de droite, puis range le résultat dans la variable de gauche.
+:::
+
+Une **séquence d’instructions** s’exécute ligne par ligne, de haut en bas. La figure montre la mémoire après chacune des trois instructions `a = 5`, `b = 2 * a`, `a = a + 3` (en vert : la case qui vient de changer).
+
+[IMAGE_1]
+
+::: attention Le signe = n’est pas une égalité
+`a = a + 3` signifie « la nouvelle valeur de `a` est l’ancienne valeur plus $3$ ». Pour **tester** une égalité, on écrit `==`. Après `b = 2 * a`, modifier `a` ne change plus `b`.
+:::
+
+::: exemple Échanger deux variables
+On passe par une variable auxiliaire `c`, sinon l’une des deux valeurs est perdue.
+
+```python
+a = 3
+b = 8
+c = a
+a = b
+b = c
+print(a, b)
+```
+
+```console
+8 3
+```
+
+Le **tableau de suivi** donne la valeur de chaque variable après chaque instruction (– : pas encore de valeur).
+
+| Instruction | `a` | `b` | `c` |
+|---|---|---|---|
+| `a = 3` | $3$ | – | – |
+| `b = 8` | $3$ | $8$ | – |
+| `c = a` | $3$ | $8$ | $3$ |
+| `a = b` | $8$ | $8$ | $3$ |
+| `b = c` | $8$ | $3$ | $3$ |
+:::
+
+## III. Écrire une formule combinant des variables
+
+| Opération | Python | Exemple | Résultat |
+|---|---|---|---|
+| somme, différence | `+`, `-` | `7 - 2` | `5` |
+| produit | `*` | `7 * 2` | `14` |
+| quotient | `/` | `7 / 2` | `3.5` |
+| quotient entier | `//` | `7 // 2` | `3` |
+| reste | `%` | `7 % 2` | `1` |
+| puissance | `**` | `2 ** 3` | `8` |
+
+::: propriete Priorités
+Python respecte les priorités des mathématiques : d’abord les parenthèses, puis les puissances `**`, puis `*`, `/`, `//`, `%`, enfin `+` et `-`.
+:::
+
+::: exemple Traduire une formule
+L’aire d’un disque $A = \pi r^2$ et la moyenne $E = \dfrac{a + b}{2}$ s’écrivent :
+
+```python
+from math import pi, sqrt
+r = 5
+A = pi * r ** 2
+a = 7
+b = 13
+E = (a + b) / 2
+print(A, E, sqrt(16))
+```
+
+```console
+78.53981633974483 10.0 4.0
+```
+
+La ligne `from math import pi, sqrt` donne accès à $\pi$ et à la racine carrée `sqrt`.
+:::
+
+::: attention Les parenthèses indispensables
+`a + b / 2` calcule $a + \dfrac{b}{2}$, soit $7 + 6{,}5 = 13{,}5$ : pour la moyenne, il faut écrire `(a + b) / 2`. De même, $2x$ s’écrit `2 * x` : le signe `*` ne s’omet jamais.
+:::
+
+::: conseil Parité et divisibilité
+`n % 2 == 0` est vrai lorsque $n$ est pair ; plus généralement, `n % d == 0` est vrai lorsque $d$ divise $n$.
+:::
+
+## IV. Instruction conditionnelle
+
+::: definition Syntaxe
+```python
+if condition:
+    instructions_1
+else:
+    instructions_2
+```
+
+Si la condition est vraie, Python exécute le bloc `instructions_1`, sinon le bloc `instructions_2`. Le bloc `else` est facultatif ; `elif` (« sinon si ») ajoute d’autres cas, testés dans l’ordre.
+:::
+
+[IMAGE_2]
+
+| Comparaison | Sens | Exemple vrai |
+|---|---|---|
+| `==` | égal à | `3 == 3` |
+| `!=` | différent de | `3 != 4` |
+| `<`, `<=` | $\lt$, $\leqslant$ | `2 <= 2` |
+| `>`, `>=` | $\gt$, $\geqslant$ | `5 > 1` |
+
+On combine des conditions avec `and` (et), `or` (ou), `not` (non) : `x >= 0 and x <= 10` est vrai lorsque $x \in [0\,;10]$.
+
+::: exemple Un tarif en trois cas
+```python
+age = 15
+if age < 12:
+    prix = 5
+elif age < 18:
+    prix = 8
+else:
+    prix = 11
+print(prix)
+```
+
+```console
+8
+```
+
+Le test `age < 12` est faux ; le test `age < 18` est vrai : Python exécute `prix = 8` et ignore la suite (le `else`).
+:::
+
+::: attention Deux-points et indentation
+La ligne `if …`, `elif …` ou `else` se termine par **deux-points**, et le bloc qui suit est **indenté** (décalé de quatre espaces) : c’est l’indentation qui délimite le bloc. Dans une condition, on compare avec `==`, jamais avec `=`.
+:::
+
+## V. Boucle bornée : for
+
+::: definition Syntaxe
+```python
+for i in range(n):
+    instructions
+```
+
+Le bloc indenté est répété $n$ fois ; la variable `i` prend successivement les valeurs $0, 1, \ldots, n - 1$. On utilise une boucle bornée quand on **connaît à l’avance** le nombre de répétitions.
+:::
+
+| Écriture | Valeurs prises par `i` |
+|---|---|
+| `range(5)` | $0, 1, 2, 3, 4$ |
+| `range(1, 5)` | $1, 2, 3, 4$ |
+| `range(2, 11, 3)` | $2, 5, 8$ (de $3$ en $3$) |
+
+::: attention La borne de fin est exclue
+`range(a, b)` s’arrête à $b - 1$ : pour aller de $1$ à $n$ **inclus**, on écrit `range(1, n + 1)`.
+:::
+
+::: methode Accumuler une somme
+1. Avant la boucle, on initialise un **accumulateur** : `s = 0` pour une somme, `p = 1` pour un produit.
+2. Dans la boucle, on ajoute (ou on multiplie) le terme du tour : `s = s + i`.
+3. Après la boucle (ligne non indentée), on affiche le résultat.
+:::
+
+::: exemple Somme des entiers de 1 à 4
+```python
+s = 0
+for i in range(1, 5):
+    s = s + i
+print(s)
+```
+
+```console
+10
+```
+
+| | début | tour 1 | tour 2 | tour 3 | tour 4 |
+|---|---|---|---|---|---|
+| `i` | – | $1$ | $2$ | $3$ | $4$ |
+| `s` | $0$ | $1$ | $3$ | $6$ | $10$ |
+
+Le programme calcule $1 + 2 + 3 + 4 = 10$.
+:::
+
+## VI. Boucle non bornée : while
+
+::: definition Syntaxe
+```python
+while condition:
+    instructions
+```
+
+Le bloc indenté est répété **tant que** la condition est vraie ; la condition est testée avant chaque tour. On utilise une boucle non bornée quand on **ne connaît pas à l’avance** le nombre de répétitions, par exemple pour chercher un seuil.
+:::
+
+::: exemple Plus petit entier n tel que 2 puissance n dépasse 1 000
+On cherche le plus petit entier $n$ tel que $2^n \gt 1\,000$. La variable `p` contient $2^n$.
+
+```python
+n = 0
+p = 1
+while p <= 1000:
+    p = 2 * p
+    n = n + 1
+print(n)
+```
+
+```console
+10
+```
+
+[IMAGE_3]
+
+| Après le tour | `n` | `p` | `p <= 1000` ? |
+|---|---|---|---|
+| début | $0$ | $1$ | Vrai |
+| 1 | $1$ | $2$ | Vrai |
+| 2 | $2$ | $4$ | Vrai |
+| … | … | … | … |
+| 9 | $9$ | $512$ | Vrai |
+| 10 | $10$ | $1\,024$ | Faux : on sort |
+
+Comme $2^9 = 512 \leqslant 1\,000$ et $2^{10} = 1\,024 \gt 1\,000$, le programme affiche $10$.
+:::
+
+::: attention Boucle infinie et condition d’arrêt
+- La condition doit finir par devenir fausse : une variable de la condition doit être modifiée dans la boucle (ici `p` double à chaque tour). Sinon, le programme ne s’arrête jamais.
+- La boucle s’arrête au **premier** tour où la condition est fausse : pour « dépasser $1\,000$ », on répète **tant que** `p <= 1000`.
+:::
+
+::: methode for ou while ?
+- Nombre de répétitions connu (« $10$ fois », « pour $i$ de $1$ à $n$ ») : boucle `for`.
+- Répétition jusqu’à ce qu’un seuil soit atteint (« à partir de quand… ? ») : boucle `while`, avec un **compteur** qui compte les tours.
+:::
+
+::: retenir
+- Une variable a un nom, un type (`int`, `float`, `str`, `bool`) et une valeur ; `=` affecte, `==` compare.
+- Une séquence d’instructions s’exécute de haut en bas ; une formule respecte les priorités et utilise les parenthèses.
+- `if` / `elif` / `else` pour choisir ; `for` quand on connaît le nombre de répétitions ; `while` pour atteindre un seuil.
+- Deux-points et indentation délimitent les blocs.
+- Pour comprendre un programme, on fait son **tableau de suivi**.
+:::

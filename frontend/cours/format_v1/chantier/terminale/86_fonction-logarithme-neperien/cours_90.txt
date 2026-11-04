@@ -1,0 +1,188 @@
+Titre: Fonction logarithme népérien
+
+<!-- optitab:1 -->
+::: objectifs
+Définir le logarithme népérien à partir de l’exponentielle, utiliser ses propriétés algébriques, connaître sa dérivée, ses variations, ses limites et les croissances comparées, et résoudre des équations, inéquations et problèmes de seuil.
+:::
+
+## I. Définition
+
+::: definition Logarithme népérien
+Pour tout réel $x \gt 0$, l’équation $e^y = x$ d’inconnue $y$ admet une unique solution réelle, notée $\ln x$. La fonction $\ln$, définie sur $]0\,;+\infty[$, est la **fonction logarithme népérien**. Pour $x \gt 0$ et $y$ réel :
+
+$$y = \ln x \iff e^y = x$$
+:::
+
+::: propriete Conséquences immédiates
+- $\ln 1 = 0$ et $\ln e = 1$ ;
+- $e^{\ln x} = x$ pour tout réel $x \gt 0$ ;
+- $\ln\left(e^{x}\right) = x$ pour tout réel $x$.
+:::
+
+::: remarque Courbes de $\exp$ et de $\ln$
+Les fonctions $\exp$ et $\ln$ sont **réciproques** l’une de l’autre : dans un repère orthonormé, leurs courbes sont symétriques par rapport à la droite d’équation $y = x$. Le point $(0\,;1)$ de la courbe de $\exp$ correspond au point $(1\,;0)$ de celle de $\ln$, et le point $(1\,;e)$ au point $(e\,;1)$.
+:::
+
+[IMAGE_1]
+
+## II. Propriétés algébriques
+
+::: theoreme Relation fonctionnelle
+Pour tous réels $a \gt 0$ et $b \gt 0$ :
+
+$$\ln(ab) = \ln a + \ln b$$
+:::
+
+::: demonstration
+$e^{\ln a + \ln b} = e^{\ln a} \times e^{\ln b} = ab$ et $e^{\ln(ab)} = ab$. Les deux nombres $\ln a + \ln b$ et $\ln(ab)$ ont la même exponentielle ; la fonction exponentielle étant strictement croissante, ils sont égaux.
+:::
+
+::: propriete Conséquences
+Pour tous réels $a \gt 0$, $b \gt 0$ et tout entier relatif $n$ :
+
+| Règle | Formule |
+|---|---|
+| Inverse | $\ln\dfrac{1}{a} = -\ln a$ |
+| Quotient | $\ln\dfrac{a}{b} = \ln a - \ln b$ |
+| Puissance | $\ln\left(a^n\right) = n\ln a$ |
+| Racine carrée | $\ln\sqrt{a} = \dfrac{1}{2}\ln a$ |
+:::
+
+::: exemple
+- Inverse : $\ln\dfrac{1}{8} = -\ln 8 = -3\ln 2$.
+- Quotient : $\ln\dfrac{5}{3} = \ln 5 - \ln 3$.
+- Puissance : $\ln 32 = \ln\left(2^5\right) = 5\ln 2$ ; $\ln 8 = \ln\left(2^3\right) = 3\ln 2$.
+- Racine carrée : $\ln\sqrt{e} = \dfrac{1}{2}\ln e = \dfrac{1}{2}$.
+- $\ln\dfrac{1}{9} = -\ln\left(3^2\right) = -2\ln 3$.
+:::
+
+::: attention
+$\ln(a + b) \neq \ln a + \ln b$ : c’est le logarithme d’un **produit** qui se décompose en somme. Et $\ln x$ n’existe que pour $x \gt 0$ : on commence toujours par déterminer l’ensemble de définition.
+:::
+
+## III. Étude de la fonction ln
+
+::: theoreme Dérivée et variations
+La fonction $\ln$ est dérivable sur $]0\,;+\infty[$ et
+
+$$(\ln x)' = \frac{1}{x}$$
+
+Comme $\frac{1}{x} \gt 0$ sur $]0\,;+\infty[$, la fonction $\ln$ est **strictement croissante** sur $]0\,;+\infty[$.
+:::
+
+::: demonstration Calcul de la dérivée (dérivabilité admise)
+Pour tout $x \gt 0$, $e^{\ln x} = x$. On dérive les deux membres ; la dérivée de $e^{u}$ est $u'e^{u}$, donc $(\ln x)' \times e^{\ln x} = 1$, c’est-à-dire $(\ln x)' \times x = 1$. D’où $(\ln x)' = \dfrac{1}{x}$.
+:::
+
+::: propriete Conséquences
+Pour tous réels $a \gt 0$ et $b \gt 0$ :
+- $\ln a = \ln b \iff a = b$ et $\ln a \lt \ln b \iff a \lt b$ ;
+- $\ln x \lt 0$ sur $]0\,;1[$, $\ln 1 = 0$ et $\ln x \gt 0$ sur $]1\,;+\infty[$.
+:::
+
+::: propriete Limites aux bornes
+$$\lim_{x \to 0^+} \ln x = -\infty \qquad \lim_{x \to +\infty} \ln x = +\infty$$
+
+L’axe des ordonnées (droite d’équation $x = 0$) est asymptote verticale à la courbe.
+:::
+
+::: tableau Variations de $\ln$ sur $]0\,;+\infty[$
+x : 0, 1, +\infty
+\ln'(x) = \frac{1}{x} : d, +, t, +,
+\ln x : D-/-\infty, =/0, +/+\infty
+:::
+
+[IMAGE_2]
+
+::: remarque Position par rapport à la tangente en 1
+La tangente en $1$ a pour équation $y = x - 1$ (car $\ln 1 = 0$ et $\ln'(1) = 1$). La courbe de $\ln$ est située sous cette tangente : $\ln x \le x - 1$ pour tout $x \gt 0$.
+:::
+
+::: theoreme Fonction $\ln u$
+Si $u$ est dérivable et strictement positive sur un intervalle $I$, alors $\ln u$ est dérivable sur $I$ et
+
+$$\big(\ln u\big)' = \frac{u'}{u}$$
+:::
+
+::: exemple
+$\big(\ln(x^2 + 1)\big)' = \dfrac{2x}{x^2 + 1}$ sur $\mathbb{R}$, car $x^2 + 1 \gt 0$ pour tout réel $x$.
+:::
+
+## IV. Limites et croissances comparées
+
+::: theoreme Croissances comparées
+$$\lim_{x \to +\infty} \frac{\ln x}{x} = 0 \qquad \lim_{x \to 0^+} x\ln x = 0$$
+
+Plus généralement, pour tout entier $n \ge 1$, $\lim\limits_{x \to +\infty} \dfrac{\ln x}{x^n} = 0$ et $\lim\limits_{x \to 0^+} x^n\ln x = 0$.
+:::
+
+::: demonstration Limite de $x\ln x$ en $0$
+On pose $X = \ln x$, soit $x = e^{X}$. Quand $x \to 0^+$, $X \to -\infty$, et $x\ln x = Xe^{X}$. Or $\lim\limits_{X \to -\infty} Xe^{X} = 0$ (croissances comparées de l’exponentielle). Donc $\lim\limits_{x \to 0^+} x\ln x = 0$.
+:::
+
+[IMAGE_3]
+
+::: propriete Une limite remarquable
+$$\lim_{x \to 0} \frac{\ln(1 + x)}{x} = 1$$
+
+C’est le nombre dérivé en $0$ de la fonction $x \mapsto \ln(1 + x)$, qui vaut $\dfrac{1}{1 + 0} = 1$.
+:::
+
+::: retenir
+En $+\infty$, toute puissance $x^n$ ($n \ge 1$) « l’emporte » sur $\ln x$ : la fonction $\ln$ tend vers $+\infty$, mais très lentement.
+:::
+
+## V. Équations, inéquations et seuils
+
+::: methode Résoudre une équation ou une inéquation avec $\ln$
+1. Déterminer l’ensemble des réels pour lesquels tous les logarithmes existent.
+2. Se ramener à $\ln A = \ln B$ (ou $\ln A \lt \ln B$), puis utiliser $A = B$ (ou $A \lt B$), car $\ln$ est strictement croissante.
+3. Garder seulement les solutions qui appartiennent à l’ensemble de l’étape 1.
+:::
+
+::: exemple
+- $e^{x} = 5 \iff x = \ln 5$.
+- $\ln x \le 2 \iff 0 \lt x \le e^2$ : $S = \left]0\,;e^2\right]$.
+- $\ln(2x - 1) = \ln(x + 3)$ : les deux logarithmes existent pour $x \gt \frac{1}{2}$. Alors $2x - 1 = x + 3$, d’où $x = 4$, qui convient : $S = \{4\}$.
+:::
+
+::: methode Déterminer un seuil
+Pour résoudre $q^n \gt A$ ou $q^n \lt A$ (avec $q \gt 0$ et $A \gt 0$), on applique $\ln$, qui conserve l’ordre, puis on utilise $\ln\left(q^n\right) = n\ln q$.
+:::
+
+::: exemple
+$$
+\begin{aligned}
+2^n \gt 1\,000 &\iff n\ln 2 \gt \ln 1\,000 \\
+&\iff n \gt \frac{\ln 1\,000}{\ln 2} \approx 9{,}97
+\end{aligned}
+$$
+
+donc $n \ge 10$. De même, comme $\ln 0{,}8 \lt 0$ :
+
+$$
+\begin{aligned}
+0{,}8^n \lt 0{,}001 &\iff n\ln 0{,}8 \lt \ln 0{,}001 \\
+&\iff n \gt \frac{\ln 0{,}001}{\ln 0{,}8} \approx 30{,}96
+\end{aligned}
+$$
+
+donc $n \ge 31$.
+:::
+
+::: attention
+Diviser par $\ln q$ change le sens de l’inégalité quand $0 \lt q \lt 1$, car alors $\ln q \lt 0$.
+:::
+
+::: exemple Demi-vie du carbone 14
+La quantité de carbone 14 d’un échantillon suit $N(t) = N_0\,e^{-\lambda t}$ ($t$ en années). Elle est divisée par deux au bout du temps $T$ tel que $e^{-\lambda T} = \frac{1}{2}$, soit $-\lambda T = -\ln 2$, donc $T = \dfrac{\ln 2}{\lambda}$. Avec $T = 5\,730$ ans : $\lambda = \dfrac{\ln 2}{5\,730} \approx 1{,}21 \times 10^{-4}$ par an.
+:::
+
+[IMAGE_4]
+
+::: retenir
+- $y = \ln x \iff e^y = x$ ($x \gt 0$) ; $\ln(ab) = \ln a + \ln b$ ; $\ln\left(a^n\right) = n\ln a$.
+- $(\ln x)' = \dfrac{1}{x}$ ; $(\ln u)' = \dfrac{u'}{u}$ ; $\ln$ est strictement croissante.
+- $\lim\limits_{x \to 0^+} \ln x = -\infty$ ; $\lim\limits_{x \to +\infty} \ln x = +\infty$ ; $\dfrac{\ln x}{x} \to 0$ en $+\infty$ ; $x\ln x \to 0$ en $0^+$.
+- On « prend le logarithme » pour résoudre $q^n \gt A$. Fiche de synthèse dans l’onglet Fiches !
+:::

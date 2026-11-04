@@ -1,0 +1,73 @@
+=== Listes en Python - Programme Première
+Images: 1er_algo_liste.png, 1er_algo_append.png
+Titre: Listes en Python
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+    <div style="background:#e8f4fd; border:2px solid #3498db; border-radius:8px; padding:15px; margin-bottom:20px;">
+        <p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🎯 Objectifs du chapitre :</strong> créer une liste (en extension, avec <code>range</code>, par ajouts successifs ou en compréhension), accéder à ses éléments par leurs indices, la modifier, la parcourir, et l’utiliser pour stocker les termes d’une suite ou une série statistique.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Créer une liste</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Définition :</strong> une <strong>liste</strong> est une suite ordonnée de valeurs, écrite entre crochets et séparées par des virgules. <code>len(L)</code> donne son nombre d’éléments.</p>
+            <p style="margin:6px 0 0 0;">• En extension : <code>L = [3, 7, 1, 9, 4]</code> ; liste vide : <code>[]</code>.</p>
+            <p style="margin:6px 0 0 0;">• Avec <code>range</code> : <code>list(range(5))</code> donne <code>[0, 1, 2, 3, 4]</code>.</p>
+            <p style="margin:6px 0 0 0;">• En compréhension : <code>[k &#42; k for k in range(6)]</code> donne <code>[0, 1, 4, 9, 16, 25]</code>.</p>
+        </div>
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Suite arithmétique :</strong> <code>[2 + 3 &#42; k for k in range(6)]</code> donne <code>[2, 5, 8, 11, 14, 17]</code>, les six premiers termes de $u_n = 2 + 3n$. On peut aussi filtrer : <code>[x for x in L if x % 2 == 0]</code> garde les valeurs paires.
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Indices</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Propriété :</strong> les éléments sont numérotés à partir de <strong>$0$</strong> : <code>L[0]</code> est le premier, <code>L[len(L) - 1]</code> le dernier, que l’on obtient aussi avec <code>L[-1]</code>. <code>L[1:3]</code> donne les éléments d’indices $1$ et $2$.</p>
+        </div>
+        [IMAGE_1]
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong> une liste de $5$ éléments a des indices de $0$ à $4$ : <code>L[5]</code> provoque une erreur <code>IndexError</code>.
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Modifier une liste</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;">• <code>L[2] = 10</code> remplace l’élément d’indice $2$ : <code>L</code> devient <code>[3, 7, 10, 9, 4]</code>.</p>
+            <p style="margin:6px 0 0 0;">• <code>L.append(5)</code> ajoute $5$ à la fin ; <code>L.pop()</code> retire et renvoie le dernier élément.</p>
+            <p style="margin:6px 0 0 0;">• <code>L.remove(9)</code> supprime la première occurrence de $9$.</p>
+        </div>
+        [IMAGE_2]
+        <div style="background:#2c3e50; color:#ecf0f1; padding:12px; border-radius:6px; margin:10px 0 0 0; font-family:monospace; white-space:pre; overflow-x:auto;">def termes(n):
+    u = [2]
+    for k in range(n - 1):
+        u.append(0.5 &#42; u[-1] + 2)
+    return u</div>
+        <p style="font-size:1em;"><code>termes(4)</code> renvoie <code>[2, 3.0, 3.5, 3.75]</code> : chaque nouveau terme est calculé à partir du dernier, <code>u[-1]</code>.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Parcourir une liste</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;">• Par les valeurs : <code>for x in L:</code> ; par les indices : <code>for i in range(len(L)):</code> puis <code>L[i]</code>.</p>
+            <p style="margin:6px 0 0 0;">• Fonctions utiles : <code>sum(L)</code>, <code>max(L)</code>, <code>min(L)</code>, <code>sorted(L)</code> (copie triée).</p>
+        </div>
+        <div style="background:#2c3e50; color:#ecf0f1; padding:12px; border-radius:6px; margin:10px 0 0 0; font-family:monospace; white-space:pre; overflow-x:auto;">def moyenne(L):
+    s = 0
+    for x in L:
+        s = s + x
+    return s / len(L)</div>
+        <p style="font-size:1em;"><code>moyenne([12, 15, 9, 14])</code> renvoie $12{,}5$ (on obtient le même résultat avec <code>sum(L) / len(L)</code>).</p>
+    </div>
+
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:8px; padding:15px; margin:20px 0 0 0;">
+        <p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🏆 L’essentiel :</strong> une liste s’écrit entre crochets ; les indices commencent à $0$ et <code>L[-1]</code> est le dernier élément ; <code>append</code> ajoute à la fin ; on crée une liste en compréhension avec <code>[expression for k in range(n)]</code> ; on la parcourt par valeurs ou par indices. Fiche de synthèse dans l’onglet Fiches !</p>
+    </div>
+
+</div>

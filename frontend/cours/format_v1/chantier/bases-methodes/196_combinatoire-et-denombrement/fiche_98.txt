@@ -1,0 +1,194 @@
+Titre: Résumé : Combinatoire et Dénombrement
+
+<!-- optitab:1 -->
+::: objectifs
+Maîtriser les outils de dénombrement : principes additif et multiplicatif, permutations, arrangements, combinaisons, coefficients binomiaux.
+:::
+
+## I. Principes fondamentaux
+
+::: theoreme Principe additif
+Si $A_1, A_2, \ldots, A_k$ sont des ensembles **deux à deux disjoints** :
+
+::: formule
+$$|A_1 \cup A_2 \cup \cdots \cup A_k| = |A_1| + |A_2| + \cdots + |A_k|$$
+:::
+
+* Condition : les ensembles doivent être disjoints*
+:::
+
+::: theoreme Principe multiplicatif
+Le nombre d'éléments du produit cartésien $A_1 \times A_2 \times \cdots \times A_k$ est :
+
+::: formule
+$$|A_1 \times A_2 \times \cdots \times A_k| = |A_1| \times |A_2| \times \cdots \times |A_k|$$
+:::
+
+Pour un ensemble $A$ à $n$ éléments : $|A^k| = n^k$
+:::
+
+::: theoreme Nombre de parties
+Un ensemble à $n$ éléments possède exactement $2^n$ parties.
+
+::: formule
+$$|\mathcal{P}(A)| = 2^n$$
+:::
+:::
+
+## II. Permutations et arrangements
+
+::: definition Permutation
+Une **permutation** d'un ensemble fini $A$ est un arrangement de **tous les éléments** de $A$ dans un certain ordre.
+:::
+
+::: definition Factorielle
+Pour un entier naturel $\displaystyle n$ :
+
+- $\displaystyle 0! = 1$
+- $n! = n \times (n-1) \times (n-2) \times \cdots \times 2 \times 1$ pour $n \geq 1$
+:::
+
+::: theoreme Nombre de permutations
+Le nombre de permutations d'un ensemble à $n$ éléments est :
+
+::: formule
+$$n!$$
+:::
+:::
+
+::: definition Arrangement
+Un **arrangement** de $k$ éléments d'un ensemble à $n$ éléments est un k-uplet d'éléments **distincts** (l'ordre compte).
+:::
+
+::: theoreme Nombre d'arrangements
+Le nombre d'arrangements de $k$ éléments parmi $n$ est :
+
+::: formule
+$$
+\begin{aligned}
+A_n^k &= \frac{n!}{(n-k)!} \\
+&= n \times (n-1) \times \cdots \times (n-k+1)
+\end{aligned}
+$$
+:::
+:::
+
+## III. Combinaisons et coefficients binomiaux
+
+::: definition Combinaison
+Une **combinaison** de $k$ éléments d'un ensemble à $n$ éléments est une **partie à $k$ éléments** (l'ordre n'a pas d'importance).
+:::
+
+::: definition Coefficient binomial
+Le **coefficient binomial** $\binom{n}{k}$ est le nombre de combinaisons de $k$ éléments parmi $n$ :
+
+::: formule
+$$\binom{n}{k} = \frac{n!}{k!(n-k)!}$$
+:::
+
+pour $\displaystyle 0 \leq k \leq n$
+:::
+
+| Propriété | Valeur |
+|---|---|
+| $\displaystyle \binom{n}{0}$ et $\displaystyle \binom{n}{n}$ | $\displaystyle 1$ |
+| $\displaystyle \binom{n}{1}$ et $\displaystyle \binom{n}{n-1}$ | $\displaystyle n$ |
+| $\displaystyle \binom{n}{2}$ | $\displaystyle \frac{n(n-1)}{2}$ |
+| Symétrie | $\displaystyle \binom{n}{k} = \binom{n}{n-k}$ |
+
+::: theoreme Relation arrangements / combinaisons
+Le nombre d'arrangements de $k$ éléments parmi $n$ est égal au nombre de combinaisons multiplié par le nombre de permutations de $k$ éléments :
+
+::: formule
+$$A_n^k = \binom{n}{k} \times k!$$
+:::
+:::
+
+## IV. Triangle de Pascal
+
+::: theoreme Relation de Pascal
+Pour $\displaystyle 1 \leq k \leq n-1$ :
+
+::: formule
+$$\binom{n}{k} = \binom{n-1}{k-1} + \binom{n-1}{k}$$
+:::
+:::
+
+::: theoreme Somme des coefficients binomiaux
+Pour tout entier naturel $\displaystyle n$ :
+
+::: formule
+$$\sum_{k=0}^{n} \binom{n}{k} = 2^n$$
+:::
+:::
+
+::: definition Triangle de Pascal
+Chaque ligne $n$ contient les coefficients $\binom{n}{0}, \binom{n}{1}, \ldots, \binom{n}{n}$. Chaque coefficient (sauf les bords) est la somme des deux coefficients situés au-dessus.
+:::
+
+::: definition
+Triangle de Pascal (premières lignes)
+
+| Ligne 0 : | $\displaystyle 1$ |
+| Ligne 1 : | $\displaystyle 1 \quad 1$ |
+| Ligne 2 : | $\displaystyle 1 \quad 2 \quad 1$ |
+| Ligne 3 : | $\displaystyle 1 \quad 3 \quad 3 \quad 1$ |
+| Ligne 4 : | $\displaystyle 1 \quad 4 \quad 6 \quad 4 \quad 1$ |
+| Ligne 5 : | $\displaystyle 1 \quad 5 \quad 10 \quad 10 \quad 5 \quad 1$ |
+
+*Exemple : $\displaystyle \binom{4}{2} = 6 = 3 + 3 = \binom{3}{1} + \binom{3}{2}$*
+:::
+
+## V. Quel outil utiliser ?
+
+::: methode Choisir l'outil adapté
+Pour déterminer quel outil utiliser, posez-vous deux questions :
+
+1. L'ordre est-il important ?
+2. Les répétitions sont-elles autorisées ?
+:::
+
+| Situation | Outil et formule |
+|---|---|
+| Ordre important, sans répétition | **Arrangement** : $\displaystyle A_n^k = \frac{n!}{(n-k)!}$ |
+| Ordre important, avec répétition | **k-uplet** : $\displaystyle n^k$ |
+| Ordre non important, sans répétition | **Combinaison** : $\displaystyle \binom{n}{k} = \frac{n!}{k!(n-k)!}$ |
+| Tous les éléments, ordre important | **Permutation** : $\displaystyle n!$ |
+
+## VI. Erreurs fréquentes
+
+| Piège fréquent | Correction |
+|---|---|
+| Confondre arrangement et combinaison | Arrangement : ordre important. Combinaison : ordre non important |
+| Oublier que le principe additif nécessite des ensembles disjoints | Vérifier que $\displaystyle A_i \cap A_j = \emptyset$ pour $\displaystyle i \neq j$ |
+| Confondre $\displaystyle \binom{n}{k}$ et $\displaystyle \binom{k}{n}$ | $\displaystyle \binom{n}{k}$ avec $\displaystyle n \geq k$ |
+| Oublier que $\displaystyle 0! = 1$ | Par convention : $\displaystyle 0! = 1$ |
+| Ne pas vérifier $\displaystyle 0 \leq k \leq n$ | Toujours vérifier que $\displaystyle 0 \leq k \leq n$ avant de calculer $\displaystyle \binom{n}{k}$ |
+
+## VII. Formules essentielles — mémo rapide
+
+| Notion | Formule essentielle |
+|---|---|
+| Principe additif | $\displaystyle |A_1 \cup \cdots \cup A_k| = |A_1| + \cdots + |A_k|$ (ensembles disjoints) |
+| Principe multiplicatif | $\displaystyle |A_1 \times \cdots \times A_k| = |A_1| \times \cdots \times |A_k|$ |
+| Nombre de parties | $\displaystyle |\mathcal{P}(A)| = 2^n$ |
+| Factorielle | $\displaystyle 0! = 1$, $\displaystyle n! = n \times (n-1) \times \cdots \times 2 \times 1$ |
+| Permutations | $\displaystyle n!$ |
+| Arrangements | $\displaystyle A_n^k = \frac{n!}{(n-k)!}$ |
+| Combinaisons | $\displaystyle \binom{n}{k} = \frac{n!}{k!(n-k)!}$ |
+| Symétrie | $\displaystyle \binom{n}{k} = \binom{n}{n-k}$ |
+| Relation de Pascal | $\displaystyle \binom{n}{k} = \binom{n-1}{k-1} + \binom{n-1}{k}$ |
+| Somme des coefficients | $\displaystyle \sum_{k=0}^{n} \binom{n}{k} = 2^n$ |
+| Relation arrangements / combinaisons | $\displaystyle A_n^k = \binom{n}{k} \times k!$ |
+
+## VIII. Méthodologie — stratégie de résolution
+
+| Type de problème | Méthode recommandée |
+|---|---|
+| Identifier l'outil de dénombrement | Se poser : ordre important ? répétitions autorisées ? |
+| Compter des unions d'ensembles | Vérifier la disjointure, puis utiliser le principe additif |
+| Compter des produits cartésiens | Utiliser le principe multiplicatif : $\displaystyle |A_1 \times \cdots \times A_k| = |A_1| \times \cdots \times |A_k|$ |
+| Arranger tous les éléments | Utiliser les permutations : $\displaystyle n!$ |
+| Choisir et ordonner $\displaystyle k$ éléments | Utiliser les arrangements : $\displaystyle A_n^k = \frac{n!}{(n-k)!}$ |
+| Choisir $\displaystyle k$ éléments sans ordre | Utiliser les combinaisons : $\displaystyle \binom{n}{k} = \frac{n!}{k!(n-k)!}$ |
+| Calculer un coefficient binomial | Vérifier $\displaystyle 0 \leq k \leq n$, puis utiliser la formule ou la relation de Pascal |

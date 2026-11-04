@@ -1,415 +1,215 @@
 <template>
   <DashboardLayout>
-    <div class="billing-zoom-clip">
-      <div class="billing-content-outer" :style="billingZoomStyle">
-        <div class="billing-page" ref="billingContentRef">
-      <!-- Header -->
-      <div class="page-header">
-        <div class="header-badge">
-          <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-            <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
-          </svg>
-          <span>Abonnement</span>
+    <div class="ab">
+      <header class="es-page-head ab-head">
+        <div>
+          <h1 class="es-h1">Abonnement</h1>
+          <p class="es-sub">Tous les cours, fiches et exercices corrigés de ta classe, avec le suivi de tes progrès. Sans engagement.</p>
         </div>
-        <h1>Choisissez votre formule</h1>
-        <p>Accès illimité aux cours, exercices et outils pour progresser en maths</p>
+        <router-link v-if="aUnAcces" to="/subscription" class="es-btn es-btn--ghost es-btn--sm">
+          Gérer mon abonnement
+        </router-link>
+      </header>
+
+      <!-- Accès déjà actif -->
+      <div v-if="aUnAcces" class="ab-statut" role="status">
+        <CheckCircleIcon aria-hidden="true" />
+        <p><strong>Ton accès est actif</strong><span>{{ resumeAcces }}</span></p>
       </div>
 
-      <!-- Level Selector -->
-      <div class="level-selector-card">
-        <div class="level-card-header">
-          <div>
-            <p class="level-eyebrow">Niveau d'accès</p>
-            <h2>Choisissez votre niveau</h2>
-            <p class="level-subtitle">{{ levelHelper }}</p>
-          </div>
-        </div>
-        <div class="level-select-group">
-          <label for="billing-level-select">Niveau disponible</label>
-          <div class="level-select-wrapper">
+      <!-- Classe à débloquer et bénéficiaire -->
+      <section class="es-card ab-reglages" aria-label="Classe et bénéficiaire">
+        <div class="ab-champ">
+          <label for="billing-level-select" class="ab-label">Classe à débloquer</label>
+          <div class="ab-select">
             <select
               id="billing-level-select"
               v-model.number="selectedNiveauId"
               :disabled="niveauxLoading || !niveaux.length"
             >
-              <option v-if="niveauxLoading" value="">Chargement...</option>
-              <option
-                v-for="niveau in niveaux"
-                :key="niveau.id"
-                :value="niveau.id"
-              >
+              <option v-if="niveauxLoading" value="">Chargement…</option>
+              <option v-for="niveau in niveaux" :key="niveau.id" :value="niveau.id">
                 {{ niveau.nom }}
-                <span v-if="niveau.pays?.nom"> — {{ niveau.pays.nom }}</span>
               </option>
             </select>
-            <p class="level-hint">
-              Choisissez le niveau que vous souhaitez débloquer avec cet abonnement.
-            </p>
           </div>
+          <p v-if="levelAlertMessage" class="ab-alerte">{{ levelAlertMessage }}</p>
+          <p v-else-if="levelAlreadyUnlocked && !subscribeForChild" class="ab-note ab-note--ok">
+            <CheckIcon aria-hidden="true" /> Cette classe est déjà débloquée sur ton compte.
+          </p>
+          <p v-else class="ab-note">L’abonnement donne accès à tout le programme de cette classe.</p>
         </div>
-        <p v-if="levelReady" class="level-selection-pill">
-          Accès prévu : {{ levelDisplay }}
-        </p>
-        <p v-else-if="levelAlertMessage" class="level-warning">
-          {{ levelAlertMessage }}
-        </p>
-        <div v-if="unlockedLevels.length" class="level-access-chips">
-          <span class="access-label">Niveaux déjà débloqués :</span>
-          <div class="chips">
-            <span v-for="level in unlockedLevels" :key="level.id" class="chip">
-              {{ level.nom }}
-              <span v-if="level.pays?.nom" class="chip-sub">{{ level.pays.nom }}</span>
+
+        <div class="ab-champ">
+          <label class="ab-switch">
+            <input v-model="subscribeForChild" type="checkbox" />
+            <span class="ab-switch__piste" aria-hidden="true"></span>
+            <span class="ab-switch__texte">
+              <strong>Offrir à quelqu’un d’autre</strong>
+              <small>Un enfant, un proche ou un élève</small>
             </span>
+          </label>
+          <div v-if="subscribeForChild" class="ab-offrir">
+            <label for="beneficiary-email" class="ab-label">E-mail du bénéficiaire</label>
+            <input
+              id="beneficiary-email"
+              v-model="beneficiaryEmail"
+              type="email"
+              class="ab-input"
+              placeholder="email@exemple.com"
+              :class="{ 'input-error': beneficiaryEmailError }"
+            />
+            <p v-if="beneficiaryEmailError" class="ab-alerte">{{ beneficiaryEmailError }}</p>
+            <p v-else class="ab-note">S’il n’a pas encore de compte OptiTAB, tu pourras le lui créer juste avant le paiement.</p>
           </div>
         </div>
-      </div>
+      </section>
 
-      <!-- Section pour offrir un abonnement -->
-      <div class="beneficiary-card">
-        <div class="beneficiary-toggle">
-          <label class="toggle-label">
-            <input 
-              type="checkbox" 
-              v-model="subscribeForChild"
-              class="toggle-input"
-            />
-            <span class="toggle-switch"></span>
-            <div class="toggle-content">
-              <span class="toggle-title">Offrir cet abonnement à quelqu'un d'autre</span>
-              <span class="toggle-subtitle">Souscrire pour un enfant, proche ou élève</span>
-            </div>
-          </label>
-        </div>
-        <div v-if="subscribeForChild" class="beneficiary-form">
-          <label for="beneficiary-email">Email du bénéficiaire</label>
-          <input
-            id="beneficiary-email"
-            type="email"
-            v-model="beneficiaryEmail"
-            placeholder="email@exemple.com"
-            :class="{ 'input-error': beneficiaryEmailError }"
-          />
-          <p v-if="beneficiaryEmailError" class="error-message">
-            {{ beneficiaryEmailError }}
-          </p>
-          <p v-else class="hint-message">
-            Le bénéficiaire doit avoir un compte OptiTAB. L'abonnement sera activé sur son compte.
-          </p>
-        </div>
-      </div>
-
-      <!-- Pricing Cards -->
-      <div class="pricing-container" id="plans">
-        <PricingCards 
+      <!-- Formules -->
+      <div id="plans" class="ab-formules">
+        <PricingCards
           :submitting="submitting"
           :show-current-plan="shouldBlockForSelf"
           :current-price-id="activePlanPriceId"
           :level-already-unlocked="levelAlreadyUnlocked"
           cta-location="billing"
-          :disabled-label="!levelReady ? 'Choisir un niveau' : 'Déjà souscrit'"
+          :disabled-label="!levelReady ? 'Choisir une classe' : 'Déjà souscrit'"
           already-subscribed-label="Déjà souscrit"
           @select="handlePlanClick"
         />
       </div>
 
-      <!-- Contact Section -->
-      <div class="contact-section">
-        <div class="contact-content">
-          <div class="contact-header">
-            <h3>Besoin d'aide ?</h3>
-            <p>Notre équipe est disponible pour répondre à vos questions</p>
-          </div>
-          <div class="contact-actions">
-            <a
-              class="contact-btn whatsapp"
-              data-cta-name="whatsapp"
-              data-cta-location="billing"
-              href="https://wa.me/33764040251"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <svg class="btn-icon whatsapp-icon" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-              </svg>
-              <span>WhatsApp</span>
-            </a>
-            <a
-              class="contact-btn email"
-              href="mailto:contact@optitab.net"
-            >
-              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="2" y="4" width="20" height="16" rx="2"/>
-                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
-              </svg>
-              <span>Email</span>
-            </a>
-          </div>
-        </div>
-        <div class="contact-badge">
-          <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"/>
-            <polyline points="12 6 12 12 16 14"/>
-          </svg>
-          <span>Réponse sous 24h</span>
-        </div>
-      </div>
+      <ul class="ab-garanties">
+        <li><LockClosedIcon aria-hidden="true" />Paiement sécurisé par Stripe</li>
+        <li><ArrowPathIcon aria-hidden="true" />Sans engagement, annulable en un clic</li>
+        <li><DocumentTextIcon aria-hidden="true" />Facture envoyée par e-mail</li>
+      </ul>
 
-      <!-- Trust Section -->
-      <div class="trust-section">
-        <div class="trust-content">
-          <span class="trust-text">Utilisé par des étudiants</span>
-          <div class="trust-divider"></div>
-          <div class="trust-badges">
-            <span class="trust-badge">Collège</span>
-            <span class="trust-badge">Lycée</span>
-            <span class="trust-badge">MPSI</span>
-            <span class="trust-badge">BUT</span>
-          </div>
-        </div>
-      </div>
+      <section class="es-card ab-faq" aria-labelledby="ab-faq-titre">
+        <h2 id="ab-faq-titre" class="es-h2">Questions fréquentes</h2>
+        <details v-for="item in billingFaq" :key="item.question" class="ab-faq__item">
+          <summary>{{ item.question }}<ChevronDownIcon aria-hidden="true" /></summary>
+          <p>{{ item.answer }}</p>
+        </details>
+      </section>
 
-      <!-- Benefits Section -->
-      <div class="benefits-section">
-        <h2>Pourquoi choisir OptiTAB ?</h2>
-        <div class="benefits-grid">
-          <div class="benefit-card">
-            <div class="benefit-icon">📚</div>
-            <h3>Cours complets</h3>
-            <p>Cours clairs et progressifs sur les notions essentielles du programme</p>
-          </div>
-          <div class="benefit-card">
-            <div class="benefit-icon">✍️</div>
-            <h3>Exercices corrigés</h3>
-            <p>Des centaines d'exercices avec corrections détaillées pour progresser rapidement</p>
-          </div>
-          <div class="benefit-card">
-            <div class="benefit-icon">📊</div>
-            <h3>Suivi personnalisé</h3>
-            <p>Analysez votre progression et identifiez vos points à améliorer</p>
-          </div>
-          <div class="benefit-card">
-            <div class="benefit-icon">🎯</div>
-            <h3>Accès illimité</h3>
-            <p>Tout le contenu accessible 24/7 sur ordinateur, tablette et mobile</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- FAQ -->
-      <div class="faq-section">
-        <FaqSection :faq="billingFaq" />
-      </div>
-        </div>
-      </div>
+      <p class="ab-aide">
+        Une question ? Écris-nous sur
+        <a href="https://wa.me/33764040251" target="_blank" rel="noopener noreferrer" data-cta-name="whatsapp" data-cta-location="billing">WhatsApp</a>
+        ou à <a href="mailto:contact@optitab.net">contact@optitab.net</a>. Réponse sous 24 h.
+      </p>
     </div>
 
-    <!-- Modal Message -->
-    <Teleport to="body">
-      <div v-if="showMessageModal" class="modal-overlay" @click.self="closeMessageModal">
-        <div class="modal-card">
-          <div class="modal-header">
-            <h3>{{ messageModalTitle }}</h3>
-            <button class="modal-close" @click="closeMessageModal">×</button>
-          </div>
-          <div class="modal-body">
-            <p>{{ messageModalText }}</p>
-          </div>
-          <div class="modal-actions">
-            <button class="confirm-btn" @click="closeMessageModal">OK</button>
-          </div>
-        </div>
-      </div>
-    </Teleport>
+    <!-- Message -->
+    <Modal
+      :is-open="showMessageModal"
+      :title="messageModalTitle"
+      :icon="InformationCircleIcon"
+      size="small"
+      @close="closeMessageModal"
+    >
+      <p class="billing-modal-text">{{ messageModalText }}</p>
+      <template #footer>
+        <button type="button" class="om-btn om-btn--primary" @click="closeMessageModal">OK</button>
+      </template>
+    </Modal>
 
-    <!-- Modal création de compte bénéficiaire -->
-    <Teleport to="body">
-      <div v-if="showCreateAccountModal" class="modal-overlay" @click.self="closeCreateAccountModal">
-        <div class="modal-card create-account-modal">
-          <div class="modal-header">
-            <h3>Créer un compte pour le bénéficiaire</h3>
-            <button class="modal-close" @click="closeCreateAccountModal">×</button>
+    <!-- Création du compte du bénéficiaire (cadeau) -->
+    <Modal
+      :is-open="showCreateAccountModal"
+      title="Créer un compte pour le bénéficiaire"
+      :icon="GiftIcon"
+      :can-close="!creatingAccount"
+      size="small"
+      @close="closeCreateAccountModal"
+    >
+      <p class="billing-modal-text">
+        L’adresse <strong>{{ beneficiaryEmail }}</strong> ne correspond à aucun compte OptiTAB.
+        Crée un compte pour ce bénéficiaire afin de lui offrir l’abonnement.
+      </p>
+      <div class="billing-create-form">
+        <div class="billing-create-row">
+          <div class="om-field">
+            <label class="om-label" for="create-first-name">Prénom</label>
+            <input
+              id="create-first-name"
+              v-model="createAccountForm.first_name"
+              type="text"
+              class="om-input"
+              :class="{ 'is-error': createAccountErrors.first_name }"
+              placeholder="Prénom"
+            />
+            <span v-if="createAccountErrors.first_name" class="billing-field-error">{{ createAccountErrors.first_name }}</span>
           </div>
-          <div class="modal-body">
-            <p class="create-account-intro">
-              L'email <strong>{{ beneficiaryEmail }}</strong> ne correspond à aucun compte OptiTAB.<br>
-              Créez un compte pour ce bénéficiaire afin de lui offrir l'abonnement.
-            </p>
-            <div class="create-form">
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="create-first-name">Prénom</label>
-                  <input 
-                    id="create-first-name"
-                    type="text" 
-                    v-model="createAccountForm.first_name" 
-                    placeholder="Prénom"
-                    :class="{ 'input-error': createAccountErrors.first_name }"
-                  />
-                  <span v-if="createAccountErrors.first_name" class="field-error">{{ createAccountErrors.first_name }}</span>
-                </div>
-                <div class="form-group">
-                  <label for="create-last-name">Nom</label>
-                  <input 
-                    id="create-last-name"
-                    type="text" 
-                    v-model="createAccountForm.last_name" 
-                    placeholder="Nom"
-                    :class="{ 'input-error': createAccountErrors.last_name }"
-                  />
-                  <span v-if="createAccountErrors.last_name" class="field-error">{{ createAccountErrors.last_name }}</span>
-                </div>
-              </div>
-              <div class="form-group">
-                <label>Email</label>
-                <input type="email" :value="beneficiaryEmail" disabled class="input-disabled" />
-              </div>
-              <p v-if="createAccountMessage" class="create-message" :class="{ success: createAccountSuccess, error: !createAccountSuccess }">
-                {{ createAccountMessage }}
-              </p>
-            </div>
-          </div>
-          <div class="modal-actions">
-            <button class="cancel-btn" @click="closeCreateAccountModal" :disabled="creatingAccount">Annuler</button>
-            <button class="confirm-btn" @click="handleCreateBeneficiaryAccount" :disabled="creatingAccount">
-              <span v-if="!creatingAccount">Créer le compte</span>
-              <span v-else>Création...</span>
-            </button>
+          <div class="om-field">
+            <label class="om-label" for="create-last-name">Nom</label>
+            <input
+              id="create-last-name"
+              v-model="createAccountForm.last_name"
+              type="text"
+              class="om-input"
+              :class="{ 'is-error': createAccountErrors.last_name }"
+              placeholder="Nom"
+            />
+            <span v-if="createAccountErrors.last_name" class="billing-field-error">{{ createAccountErrors.last_name }}</span>
           </div>
         </div>
+        <div class="om-field">
+          <label class="om-label" for="create-email">E-mail</label>
+          <input id="create-email" type="email" class="om-input" :value="beneficiaryEmail" disabled />
+        </div>
+        <p
+          v-if="createAccountMessage"
+          :class="['om-alert', createAccountSuccess ? 'om-alert--success' : 'om-alert--error']"
+        >
+          {{ createAccountMessage }}
+        </p>
       </div>
-    </Teleport>
+      <template #footer>
+        <button type="button" class="om-btn om-btn--ghost" :disabled="creatingAccount" @click="closeCreateAccountModal">Annuler</button>
+        <button type="button" class="om-btn om-btn--primary" :disabled="creatingAccount" @click="handleCreateBeneficiaryAccount">
+          {{ creatingAccount ? 'Création…' : 'Créer le compte' }}
+        </button>
+      </template>
+    </Modal>
   </DashboardLayout>
 </template>
 
 <script setup>
-import { onMounted, onUnmounted, ref, computed, watch, nextTick } from 'vue'
+import { onMounted, onUnmounted, ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { createCheckoutSession } from '@/api/subscriptions'
 import { checkEmailExists, createChildAccount } from '@/api/users'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import PricingCards from '@/components/shared/PricingCards.vue'
-import FaqSection from '@/components/home/FaqSection.vue'
+import Modal from '@/components/common/Modal.vue'
+import {
+  ArrowPathIcon,
+  CheckCircleIcon,
+  CheckIcon,
+  ChevronDownIcon,
+  DocumentTextIcon,
+  GiftIcon,
+  InformationCircleIcon,
+  LockClosedIcon
+} from '@heroicons/vue/24/outline'
 import { useSubscriptionStore } from '@/stores/subscription'
 import { getNiveauxByPays } from '@/api/niveaux'
 import { useUserStore } from '@/stores/user'
-import { useZoom } from '@/composables/useZoom'
 import * as analytics from '@/services/analytics'
 
-const loading = ref(false)
 const submitting = ref(false)
 const subscriptionStore = useSubscriptionStore()
 const userStore = useUserStore()
 const route = useRoute()
 
-// --- Zoom mobile ("dézoom") ---
-const billingContentRef = ref(null)
-
-function computeBillingZoom(width) {
-  if (width >= 1400) return 1
-  if (width >= 1200) return 0.95
-  if (width >= 1024) return 0.9
-  if (width >= 900) return 0.85
-  if (width >= 768) return 0.8
-  if (width >= 640) return 0.72
-  if (width >= 520) return 0.68
-  if (width >= 420) return 0.64
-  if (width >= 360) return 0.6
-  return 0.55
-}
-
-const {
-  contentHeight,
-  zoomLevel,
-  supportsNativeZoom,
-  detectMobileAndZoomSupport,
-  createZoomStyle,
-  updateViewportWidth,
-  measureContentHeight,
-  setupViewportListener,
-  cleanupViewportListener
-} = useZoom({ computeAutoZoom: computeBillingZoom })
-
-const baseBillingZoomStyle = createZoomStyle({
-  cssVar: '--billing-zoom',
-  heightVar: '--billing-content-height',
-  mobileZoomAdjustment: (z) => z
-})
-
-// En mode mobile (transform: scale), certains navigateurs peuvent sous-estimer la hauteur et bloquer le scroll.
-// On laisse la hauteur "auto" et on compense l'espace vide avec une marge négative.
-const billingZoomStyle = computed(() => {
-  const style = baseBillingZoomStyle.value
-  if (supportsNativeZoom.value) return style
-
-  const z = Number(zoomLevel.value || 1)
-  if (!contentHeight.value || !Number.isFinite(z) || z >= 1) {
-    return { ...style, height: 'auto', minHeight: 'auto', marginBottom: '' }
-  }
-
-  const marginBottom = -Math.round(contentHeight.value * (1 - z))
-  return { ...style, height: 'auto', minHeight: 'auto', marginBottom: `${marginBottom}px` }
-})
-
-let billingResizeObserver = null
-const measureBillingHeight = () => {
-  measureContentHeight(billingContentRef)
-}
-
-const handleViewportChange = async () => {
-  updateViewportWidth()
-  await nextTick()
-  measureBillingHeight()
-}
-
-const handleResize = () => {
-  void handleViewportChange()
-}
-
-const handleOrientationChange = () => {
-  setTimeout(() => {
-    void handleViewportChange()
-  }, 200)
-}
-
-onMounted(async () => {
-  detectMobileAndZoomSupport()
-  setupViewportListener()
-
-  await nextTick()
-  measureBillingHeight()
-
-  // Scroll vers la section plans si on arrive via un contenu verrouillé
+// Arrivée depuis un contenu verrouillé : on descend jusqu'aux formules.
+onMounted(() => {
   if (route.hash === '#plans' || route.query.reason === 'subscription_required') {
     setTimeout(() => {
-      const el = document.getElementById('plans')
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      document.getElementById('plans')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }, 300)
   }
-
-  if (typeof window !== 'undefined') {
-    window.addEventListener('resize', handleResize, { passive: true })
-    window.addEventListener('orientationchange', handleOrientationChange, { passive: true })
-
-    setTimeout(measureBillingHeight, 250)
-
-    if (window.ResizeObserver && billingContentRef.value) {
-      billingResizeObserver = new ResizeObserver(() => {
-        measureBillingHeight()
-      })
-      billingResizeObserver.observe(billingContentRef.value)
-    }
-  }
-})
-
-onUnmounted(() => {
-  cleanupViewportListener()
-  if (typeof window !== 'undefined') {
-    window.removeEventListener('resize', handleResize)
-    window.removeEventListener('orientationchange', handleOrientationChange)
-  }
-  billingResizeObserver?.disconnect?.()
-  billingResizeObserver = null
 })
 
 // Variables pour offrir un abonnement à quelqu'un d'autre
@@ -504,8 +304,6 @@ watch(
   }
 )
 
-const offersSectionId = 'billing-offers'
-const faqSectionId = 'billing-faq'
 
 const selectedNiveau = computed(() =>
   niveaux.value.find(n => n.id === selectedNiveauId.value) || null
@@ -523,7 +321,7 @@ const levelAlertMessage = computed(() => {
     return niveauxError.value
   }
   if (!levelReady.value && !niveauxLoading.value) {
-    return 'Sélectionnez un niveau avant de finaliser votre abonnement.'
+    return 'Choisis la classe à débloquer.'
   }
   return ''
 })
@@ -531,32 +329,24 @@ const levelAlertMessage = computed(() => {
 // Questions fréquentes adaptées à la facturation/abonnement
 const billingFaq = [
   {
-    question: "Qu'est-ce que j'obtiens avec OptiTAB ?",
-    answer: "Cours et fiches clairs, exercices guidés pas à pas, outils de calcul, et un suivi simple de ta progression."
+    question: 'Quelle formule choisir ?',
+    answer: 'Le pass 24 h dépanne avant un contrôle. L’abonnement hebdomadaire convient pour réviser quelques jours. Le mensuel est le plus avantageux dès que tu travailles plus de deux semaines. La formule Accompagné ajoute des questions illimitées à un professeur par WhatsApp ou e-mail.'
   },
   {
-    question: "Comment choisir mon plan ?",
-    answer: "Pass 24h (coup de boost) • Hebdo (avant un contrôle) • Mensuel (le plus rentable si tu révises > 2 semaines)."
+    question: 'Puis-je annuler à tout moment ?',
+    answer: 'Oui, depuis Mon abonnement. Tu gardes l’accès jusqu’à la fin de la période déjà payée. Les pass sont des paiements uniques, sans renouvellement.'
   },
   {
-    question: "Puis-je annuler à tout moment ?",
-    answer: "Oui, depuis Mon compte → Abonnement. Tu gardes l'accès jusqu'à la fin de la période payée."
+    question: 'Un abonnement couvre quelle classe ?',
+    answer: 'La classe choisie ci-dessus, avec tout son programme. Pour une autre classe ou un autre enfant, il suffit de souscrire une formule de plus.'
   },
   {
-    question: "Puis-je changer de formule (hebdo ⇄ mensuel) ?",
-    answer: "Oui, le changement prend effet à la prochaine échéance."
+    question: 'Le paiement est-il sécurisé ?',
+    answer: 'Oui. Le paiement passe par Stripe, leader du paiement en ligne. Aucune donnée de carte n’est stockée chez nous.'
   },
   {
-    question: "Le paiement est-il sécurisé ?",
-    answer: "Oui, via Stripe. Aucune donnée de carte n'est stockée chez nous."
-  },
-  {
-    question: "Factures disponibles ?",
-    answer: "Oui, une facture est envoyée par email après chaque règlement."
-  },
-  {
-    question: "OptiTAB fonctionne sur mobile ?",
-    answer: "Oui, le site est responsive (ordinateur, tablette, smartphone)."
+    question: 'Est-ce que je reçois une facture ?',
+    answer: 'Oui, une facture est envoyée par e-mail après chaque règlement. Tu la retrouves aussi dans Mon abonnement.'
   }
 ]
 
@@ -578,6 +368,13 @@ const levelAlreadyUnlocked = computed(() =>
     unlockedLevels.value.some(level => Number(level.id) === Number(selectedNiveauId.value))
   )
 )
+const aUnAcces = computed(() => subscriptionStore.hasAccess)
+const resumeAcces = computed(() => {
+  const classes = unlockedLevels.value.map((l) => l.nom).filter(Boolean)
+  const offre = subscriptionStore.status?.plan_name ? activePlanLabel.value : ''
+  return [offre, classes.length ? (classes.length > 1 ? `Classes : ${classes.join(', ')}` : `Classe : ${classes[0]}`) : '']
+    .filter(Boolean).join(' · ') || 'Tous les contenus de ta classe sont débloqués.'
+})
 const isGiftMode = computed(() => subscribeForChild.value)
 const shouldBlockForSelf = computed(() => !isGiftMode.value)
 const activePlanPriceId = computed(() => subscriptionStore.status?.plan_stripe_price_id || '')
@@ -632,7 +429,7 @@ async function loadNiveauxOptions() {
     }
   } catch (error) {
     console.error('Erreur chargement niveaux:', error)
-    niveauxError.value = 'Impossible de charger la liste des niveaux.'
+    niveauxError.value = 'Impossible de charger la liste des classes.'
   } finally {
     niveauxLoading.value = false
   }
@@ -641,11 +438,11 @@ async function loadNiveauxOptions() {
 async function subscribe(priceId) {
   try {
     if (!levelReady.value) {
-      showMessage('Merci de sélectionner un niveau avant de continuer.', 'Niveau requis')
+      showMessage('Choisis d’abord la classe à débloquer.', 'Classe à choisir')
       return
     }
     if (shouldBlockForSelf.value && levelAlreadyUnlocked.value) {
-      showMessage('Ce niveau est déjà débloqué. Sélectionnez un autre niveau pour souscrire.', 'Niveau déjà débloqué')
+      showMessage('Cette classe est déjà débloquée. Choisis une autre classe pour souscrire.', 'Classe déjà débloquée')
       return
     }
     
@@ -759,7 +556,7 @@ async function handleCreateBeneficiaryAccount() {
     
     await createChildAccount(payload)
     createAccountSuccess.value = true
-    createAccountMessage.value = '✅ Compte créé ! Redirection vers le paiement...'
+    createAccountMessage.value = 'Compte créé ! Redirection vers le paiement…'
     
     // Attendre un peu puis procéder au checkout
     setTimeout(async () => {
@@ -777,1921 +574,365 @@ async function handleCreateBeneficiaryAccount() {
 }
 </script>
 
-<style scoped lang="scss">
-/* Base Layout */
-.billing-zoom-clip {
-  width: 100%;
-  overflow-x: hidden;
-  overflow-y: visible;
+<style scoped>
+/* Page Abonnement : style de l'espace (variables --es-* posées par EspaceLayout). */
+.ab {
+  max-width: 1040px;
+  margin: 0 auto;
 }
 
-.billing-content-outer {
-  width: 100%;
-  transform-origin: top left;
-  transition: transform 0.2s ease, zoom 0.2s ease;
-  overflow: visible;
-  /* Les styles (zoom ou transform) sont appliqués dynamiquement via JS selon le support navigateur */
-}
-
-.billing-page {
-  min-height: 100vh;
-  padding: 2.25rem 1rem; /* dézoom global */
-  font-size: 0.96rem; /* lisibilité globale plus compacte */
-}
-
-/* Page Header */
-.page-header {
-  max-width: 800px;
-  margin: 0 auto 3rem; /* moins d'espace */
-  text-align: center;
-}
-
-.header-badge {
-  display: inline-flex;
+.ab-head {
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  background: linear-gradient(135deg, #eef1f8 0%, #f0f9ff 100%);
-  border: 1px solid #cfd8ec;
-  border-radius: 999px;
-  color: #122a66;
-  font-size: 0.875rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
 }
 
-.badge-icon {
+/* Accès actif */
+.ab-statut {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding: 14px 18px;
+  border: 1px solid #cfe7cf;
+  border-radius: var(--es-radius-sm);
+  background: var(--es-green-50);
+}
+
+.ab-statut svg {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  color: var(--es-green-700);
+}
+
+.ab-statut p {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  color: var(--es-ink-soft);
+}
+
+.ab-statut strong {
+  font-size: 15px;
+  color: var(--es-green-700);
+}
+
+/* Réglages */
+.ab-reglages {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  padding: 22px 24px;
+}
+
+.ab-champ {
+  min-width: 0;
+}
+
+.ab-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--es-ink);
+}
+
+.ab-select {
+  position: relative;
+}
+
+.ab-select select,
+.ab-input {
+  width: 100%;
+  height: 46px;
+  padding: 0 14px;
+  border: 1px solid var(--es-line-strong);
+  border-radius: 12px;
+  background: #fff;
+  font: 600 15px var(--es-font);
+  color: var(--es-ink);
+}
+
+.ab-select select {
+  padding-right: 40px;
+  appearance: none;
+  cursor: pointer;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23667085'%3E%3Cpath d='M5.3 7.3a1 1 0 0 1 1.4 0L10 10.6l3.3-3.3a1 1 0 1 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 0-1.4Z'/%3E%3C/svg%3E") no-repeat right 14px center / 18px;
+}
+
+.ab-input {
+  font-weight: 500;
+}
+
+.ab-select select:focus,
+.ab-input:focus {
+  border-color: var(--es-navy);
+  outline: 3px solid rgba(27, 60, 142, 0.12);
+}
+
+.ab-input.input-error {
+  border-color: var(--es-red-700);
+}
+
+.ab-note,
+.ab-alerte {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px !important;
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--es-muted);
+}
+
+.ab-note svg {
   width: 16px;
   height: 16px;
-  color: #1b3c8e;
+  flex-shrink: 0;
 }
 
-.page-header h1 {
-  font-size: 2.2rem; /* plus compact */
-  font-weight: 700;
-  color: #111827;
-  margin: 0 0 1rem;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
-}
-
-.page-header p {
-  font-size: 1rem; /* plus compact */
-  color: #6b7280;
-  margin: 0;
-  line-height: 1.6;
-}
-
-.level-selector-card {
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 16px;
-  padding: 1.75rem 2rem;
-  margin: 0 auto 2rem;
-  max-width: 1200px;
-  box-shadow: 0 15px 45px rgba(15, 23, 42, 0.08);
-}
-
-.level-card-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.level-eyebrow {
-  text-transform: uppercase;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  color: #122a66;
-  margin: 0 0 0.3rem;
-}
-
-.level-card-header h2 {
-  margin: 0;
-  font-size: 1.45rem;
-  color: #0f172a;
-}
-
-.level-subtitle {
-  margin: 0.2rem 0 0;
-  color: #475569;
-  font-size: 0.95rem;
-}
-
-.level-lock-chip {
-  background: #fee2e2;
-  color: #b91c1c;
-  font-weight: 600;
-  padding: 0.35rem 0.9rem;
-  border-radius: 999px;
-  font-size: 0.85rem;
-}
-
-.level-select-group {
-  margin-top: 1.5rem;
-}
-
-.level-select-group label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 0.4rem;
-  color: #0f172a;
-}
-
-.level-select-wrapper select {
-  width: 100%;
-  border: 1px solid #d1d5db;
-  border-radius: 10px;
-  padding: 0.85rem 1rem;
-  font-size: 1rem;
-  background: #f8fafc;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.level-select-wrapper select:focus {
-  outline: none;
-  border-color: #1b3c8e;
-  box-shadow: 0 0 0 3px rgba(27, 60, 142, 0.12);
-}
-
-.level-hint {
-  margin: 0.4rem 0 0;
-  font-size: 0.9rem;
-  color: #64748b;
-}
-
-.level-selection-pill {
-  margin-top: 1rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.45rem 1rem;
-  background: #eef1f8;
-  color: #122a66;
-  border-radius: 999px;
+.ab-note--ok {
+  color: var(--es-green-700);
   font-weight: 600;
 }
 
-.level-warning {
-  margin-top: 1rem;
-  color: #b91c1c;
+.ab-alerte {
+  color: var(--es-red-700);
   font-weight: 600;
 }
 
-.level-access-chips {
-  margin-top: 1.25rem;
-}
-
-.level-access-chips .access-label {
-  display: block;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #312e81;
-  margin-bottom: 0.4rem;
-}
-
-.level-access-chips .chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-}
-
-.level-access-chips .chip {
-  background: #f3f4ff;
-  color: #312e81;
-  border: 1px solid #cfd8ec;
-  border-radius: 999px;
-  padding: 0.35rem 0.75rem;
-  font-size: 0.85rem;
-  font-weight: 600;
-}
-
-.level-access-chips .chip-sub {
-  display: inline-block;
-  margin-left: 0.35rem;
-  font-weight: 400;
-  color: #1b3c8e;
-}
-
-/* Beneficiary Card (Offrir un abonnement) */
-.beneficiary-card {
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 16px;
-  padding: 1.75rem 2rem;
-  margin: 0 auto 2rem;
-  max-width: 1200px;
-  box-shadow: 0 15px 45px rgba(15, 23, 42, 0.08);
-}
-
-.beneficiary-toggle {
-  margin-bottom: 0;
-}
-
-.toggle-label {
+/* Interrupteur « Offrir » */
+.ab-switch {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 12px;
+  min-height: 46px;
+  margin-top: 26px;
   cursor: pointer;
-  user-select: none;
 }
 
-.toggle-input {
+.ab-switch input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ab-switch__piste {
+  position: relative;
+  width: 44px;
+  height: 26px;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: var(--es-line-strong);
+  transition: background-color 0.2s ease;
+}
+
+.ab-switch__piste::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(16, 24, 40, 0.2);
+  transition: transform 0.2s ease;
+}
+
+.ab-switch input:checked + .ab-switch__piste {
+  background: var(--es-navy);
+}
+
+.ab-switch input:checked + .ab-switch__piste::after {
+  transform: translateX(18px);
+}
+
+.ab-switch input:focus-visible + .ab-switch__piste {
+  outline: 3px solid rgba(95, 172, 96, 0.55);
+  outline-offset: 2px;
+}
+
+.ab-switch__texte {
+  display: flex;
+  flex-direction: column;
+  font-size: 15px;
+  color: var(--es-ink);
+}
+
+.ab-switch__texte small {
+  font-size: 13px;
+  color: var(--es-muted);
+}
+
+.ab-offrir {
+  margin-top: 14px;
+}
+
+/* Formules (composant PricingCards, identique à la page Tarifs) */
+.ab-formules {
+  margin-top: 28px;
+  scroll-margin-top: calc(var(--es-top) + 16px);
+}
+
+/* Ici, version plus légère que sur la page Tarifs : pas d'avis répétés dans
+   chaque carte ni de mention sous le bouton (garanties affichées en dessous). */
+.ab-formules :deep(.card-reviews),
+.ab-formules :deep(.card-note) {
   display: none;
 }
 
-.toggle-switch {
-  position: relative;
-  width: 44px;
-  height: 24px;
-  background: #e5e7eb;
-  border-radius: 999px;
-  transition: background-color 0.2s ease;
-  flex-shrink: 0;
+.ab-formules :deep(.pricing-tab) {
+  white-space: nowrap;
 }
 
-.toggle-switch::after {
-  content: '';
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 20px;
-  height: 20px;
-  background: white;
-  border-radius: 50%;
-  transition: transform 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+.ab-formules :deep(.card-features) {
+  margin-bottom: 20px;
 }
 
-.toggle-input:checked + .toggle-switch {
-  background: #1b3c8e;
-}
-
-.toggle-input:checked + .toggle-switch::after {
-  transform: translateX(20px);
-}
-
-.toggle-content {
+/* Garanties */
+.ab-garanties {
   display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-}
-
-.toggle-title {
-  font-weight: 600;
-  color: #0f172a;
-  font-size: 0.95rem;
-}
-
-.toggle-subtitle {
-  font-size: 0.875rem;
-  color: #6b7280;
-}
-
-.beneficiary-form {
-  margin-top: 1.25rem;
-  padding-top: 1.25rem;
-  border-top: 1px solid #f3f4f6;
-}
-
-.beneficiary-form label {
-  display: block;
-  font-weight: 600;
-  color: #0f172a;
-  margin-bottom: 0.5rem;
-  font-size: 0.9rem;
-}
-
-.beneficiary-form input[type="email"] {
-  width: 100%;
-  padding: 0.85rem 1rem;
-  border: 1px solid #d1d5db;
-  border-radius: 10px;
-  font-size: 1rem;
-  background: #f8fafc;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.beneficiary-form input[type="email"]:focus {
-  outline: none;
-  border-color: #1b3c8e;
-  box-shadow: 0 0 0 3px rgba(27, 60, 142, 0.12);
-}
-
-.beneficiary-form input[type="email"].input-error {
-  border-color: #dc2626;
-  background: #fef2f2;
-}
-
-.beneficiary-form input[type="email"]::placeholder {
-  color: #9ca3af;
-}
-
-.error-message {
-  margin: 0.5rem 0 0;
-  color: #dc2626;
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-
-.hint-message {
-  margin: 0.5rem 0 0;
-  color: #6b7280;
-  font-size: 0.875rem;
-  line-height: 1.4;
-}
-
-/* Pricing Container */
-.pricing-container {
-  max-width: 1200px;
-  margin: 0 auto 3rem; /* moins d'espace */
-}
-
-/* Pricing Tabs */
-.pricing-tabs {
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-bottom: 2rem;
-  background: #f1f5f9;
-  border-radius: 12px;
-  padding: 0.375rem;
-  max-width: 500px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.pricing-tab {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  border: none;
-  background: transparent;
-  color: #64748b;
-  font-size: 0.95rem;
-  font-weight: 600;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  flex: 1;
-}
-
-.pricing-tab:hover {
-  color: #334155;
-  background: rgba(255, 255, 255, 0.5);
-}
-
-.pricing-tab.active {
-  background: white;
-  color: #122a66;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
-
-.tab-icon {
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
-}
-
-/* Loading & Empty States */
-.loading-state,
-.empty-state {
-  text-align: center;
-  padding: 3rem 1.5rem; /* réduit */
-  color: #666;
-}
-
-.spinner {
-  width: 40px;
-  height: 40px;
-  border: 3px solid #e5e5e5;
-  border-top-color: #1b3c8e;
-  border-radius: 50%;
-  margin: 0 auto 1rem;
-  animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-/* Pricing Grid */
-.pricing-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 1.75rem; /* léger dézoom global */
-  align-items: start;
-}
-
-/* Pricing Grid 2 colonnes */
-.pricing-grid-2 {
-  grid-template-columns: repeat(2, 1fr);
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-@media (max-width: 768px) {
-  .pricing-grid-2 {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* Pricing Card */
-.pricing-card {
-  background: white;
-  border: 2px solid #e5e5e5;
-  border-radius: 16px;
-  padding: 1.75rem; /* léger dézoom */
-  display: flex;
-  flex-direction: column;
-  transition: all 0.3s ease;
-  height: 100%;
-}
-
-.pricing-card:hover {
-  border-color: #1b3c8e;
-  box-shadow: 0 8px 24px rgba(27, 60, 142, 0.12);
-  transform: translateY(-4px);
-}
-
-.pricing-card.is-popular {
-  border-color: #1b3c8e;
-  box-shadow: 0 8px 24px rgba(27, 60, 142, 0.15);
-  position: relative;
-}
-
-.pricing-card.is-current {
-  border-color: #3b8544;
-}
-
-/* Badge Area */
-.card-badge-area {
-  min-height: 32px;
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
-  justify-content: center;
   flex-wrap: wrap;
-}
-
-.badge {
-  display: inline-block;
-  padding: 0.375rem 0.875rem;
-  border-radius: 8px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.025em;
-}
-
-.badge-popular {
-  background: #fbbf24;
-  color: #78350f;
-}
-
-.badge-savings {
-  background: #3b8544;
-  color: white;
-}
-
-/* Card Header */
-.card-header {
-  text-align: center;
-  margin-bottom: 1.5rem;
-}
-
-.card-title {
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: #1a1a1a;
-  margin: 0 0 0.5rem;
-}
-
-.card-subtitle {
-  font-size: 0.84rem; /* plus fin */
-  color: #666;
-  margin: 0;
-}
-
-/* Card Price */
-.card-price {
-  text-align: center;
-  margin-bottom: 1.75rem; /* resserré */
-  padding-bottom: 1.75rem;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.price-amount {
-  font-size: 2.75rem; /* dézoom global */
-  font-weight: 700;
-  color: #1a1a1a;
-  line-height: 1;
-  margin-bottom: 0.25rem;
-}
-
-.price-period {
-  font-size: 1rem;
-  color: #999;
-  font-weight: 500;
-}
-
-/* Card Features */
-.card-features {
+  justify-content: center;
+  gap: 10px 28px;
+  margin: 28px 0 32px;
+  padding: 0;
   list-style: none;
-  padding: 0;
-  margin: 0 0 2rem;
-  flex: 1;
 }
 
-.card-features li {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.7rem;
-  padding: 0.55rem 0;
-  font-size: 0.9rem; /* plus compact */
-  color: #333;
-  line-height: 1.5;
-}
-
-.feature-icon {
-  width: 20px;
-  height: 20px;
-  color: #3b8544;
-  flex-shrink: 0;
-  margin-top: 0.125rem;
-}
-
-/* Card Reviews */
-.card-reviews {
-  margin-bottom: 1.5rem;
-}
-
-/* Card Button */
-.card-button {
-  width: 100%;
-  padding: 1rem;
-  background: #1b3c8e;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
+.ab-garanties li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
   font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  margin-bottom: 1rem;
+  color: var(--es-ink-soft);
 }
 
-.card-button:hover:not(:disabled) {
-  background: #122a66;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(27, 60, 142, 0.25);
+.ab-garanties svg {
+  width: 18px;
+  height: 18px;
+  color: var(--es-navy);
 }
 
-.card-button:disabled {
-  background: #e5e5e5;
-  color: #999;
-  cursor: not-allowed;
-  transform: none;
+/* Questions fréquentes */
+.ab-faq {
+  padding: 22px 24px 8px;
 }
 
-/* Card Note */
-.card-note {
-  font-size: 0.75rem;
-  color: #999;
-  text-align: center;
-  margin: 0;
-  line-height: 1.4;
+.ab-faq .es-h2 {
+  margin-bottom: 6px;
 }
 
-/* Contact Section */
-.contact-section {
-  max-width: 1200px;
-  margin: 0 auto 3rem; /* moins d'espace */
-  padding: 0;
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  overflow: hidden;
+.ab-faq__item {
+  border-bottom: 1px solid var(--es-line);
 }
 
-.contact-content {
-  padding: 2rem 2.25rem; /* dézoom */
+.ab-faq__item:last-child {
+  border-bottom: 0;
+}
+
+.ab-faq__item summary {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 2rem;
-}
-
-.contact-header h3 {
-  font-size: 1.375rem; /* plus compact */
-  font-weight: 700;
-  color: #111827;
-  margin: 0 0 0.5rem;
-  line-height: 1.3;
-}
-
-.contact-header p {
-  font-size: 0.95rem;
-  color: #6b7280;
-  margin: 0;
-  line-height: 1.5;
-}
-
-.contact-actions {
-  display: flex;
-  gap: 0.75rem;
-  flex-shrink: 0;
-}
-
-.contact-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center; /* centre icône + texte */
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
+  gap: 12px;
+  padding: 16px 0;
+  font-size: 15px;
   font-weight: 600;
-  font-size: 0.95rem;
-  text-decoration: none;
-  transition: all 0.2s ease;
-  border: 1px solid #d1d5db;
-  background: white;
-  color: #374151;
-  text-align: center;
+  color: var(--es-ink);
+  cursor: pointer;
+  list-style: none;
 }
 
-.contact-btn.whatsapp {
-  background: #25d366;
-  border-color: #25d366;
-  color: white;
+.ab-faq__item summary::-webkit-details-marker {
+  display: none;
 }
 
-.contact-btn.whatsapp:hover {
-  background: #20ba5a;
-  border-color: #20ba5a;
-  transform: translateY(-1px);
-}
-
-.contact-btn.email:hover {
-  border-color: #9ca3af;
-  background: #f9fafb;
-}
-
-.btn-icon {
+.ab-faq__item summary svg {
   width: 18px;
   height: 18px;
   flex-shrink: 0;
+  color: var(--es-muted);
+  transition: transform 0.2s ease;
 }
 
-.contact-badge {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.875rem 1.5rem;
-  background: #f3f4f6;
-  border-top: 1px solid #e5e7eb;
-  font-size: 0.875rem;
-  color: #4b5563;
-  font-weight: 500;
+.ab-faq__item[open] summary svg {
+  transform: rotate(180deg);
 }
 
-.badge-icon {
-  width: 16px;
-  height: 16px;
-  color: #6b7280;
+.ab-faq__item p {
+  margin: -4px 0 16px !important;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--es-ink-soft);
 }
 
-/* Trust Section */
-.trust-section {
-  max-width: 1200px;
-  margin: 0 auto 3.5rem; /* moins d'espace */
-  padding: 0 1rem;
-}
-
-.trust-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1.25rem; /* resserré */
-  flex-wrap: wrap;
-  padding: 1.5rem;
-  background: #fafbfc;
-  border-radius: 10px;
-  border: 1px solid #f0f1f3;
-}
-
-.trust-text {
-  font-size: 0.875rem;
-  color: #64748b;
-  font-weight: 500;
-  letter-spacing: 0.005em;
-}
-
-.trust-divider {
-  width: 1px;
-  height: 24px;
-  background: #e2e8f0;
-}
-
-.trust-badges {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-}
-
-.trust-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.45rem 1.1rem;
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  font-size: 0.84rem;
-  color: #1f2937;
-  font-weight: 600;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.trust-badge:hover {
-  border-color: #d1d5db;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-}
-
-/* Benefits Section */
-.benefits-section {
-  max-width: 1200px;
-  margin: 0 auto 3rem; /* moins d'espace */
-  padding: 0 1rem;
-}
-
-.benefits-section h2 {
+.ab-aide {
+  margin: 20px 0 8px !important;
+  font-size: 14px;
   text-align: center;
-  font-size: 1.75rem; /* dézoom */
-  font-weight: 700;
-  color: #1a1a1a;
-  margin: 0 0 2.25rem;
+  color: var(--es-muted);
 }
 
-.benefits-grid {
+.ab-aide a {
+  font-weight: 700;
+  color: var(--es-navy) !important;
+}
+
+/* Fenêtres (message, création du compte du bénéficiaire) */
+.billing-modal-text {
+  margin: 0 0 4px;
+  color: var(--om-ink-soft, #2c3550);
+  line-height: 1.55;
+}
+
+.billing-create-form {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* cartes un peu plus compactes */
-  gap: 1.5rem;
+  gap: 14px;
+  margin-top: 14px;
 }
 
-.benefit-card {
-  text-align: center;
-  padding: 1.5rem 1.25rem; /* réduit */
-  background: white;
-  border: 1px solid #e5e5e5;
-  border-radius: 16px;
-  transition: all 0.3s ease;
-}
-
-.benefit-card:hover {
-  border-color: #1b3c8e;
-  box-shadow: 0 4px 16px rgba(27, 60, 142, 0.1);
-  transform: translateY(-4px);
-}
-
-.benefit-icon {
-  font-size: 2.5rem; /* dézoom */
-  margin-bottom: 0.875rem;
-  display: block;
-}
-
-.benefit-card h3 {
-  font-size: 1.125rem; /* dézoom */
-  font-weight: 600;
-  color: #1a1a1a;
-  margin: 0 0 0.6rem;
-}
-
-.benefit-card p {
-  font-size: 0.9rem;
-  color: #666;
-  margin: 0;
-  line-height: 1.6;
-}
-
-/* FAQ Section */
-.faq-section {
-  max-width: 1200px;
-  margin: 0 auto 3rem;
-  padding: 0 1rem;
-}
-
-/* Footer - Full width */
-.billing-page :deep(.footer) {
-  width: 100%;
-  margin: 0;
-  border-radius: 0;
-}
-
-/* Manage Section */
-.manage-section {
-  max-width: 900px;
-  margin: 0 auto 4rem;
-  padding: 0 1rem;
-}
-
-.manage-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 2rem;
-  padding: 2rem 2.5rem;
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-}
-
-.manage-content h3 {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #111827;
-  margin: 0 0 0.5rem;
-  line-height: 1.3;
-}
-
-.manage-content p {
-  font-size: 0.9375rem;
-  color: #6b7280;
-  margin: 0;
-  line-height: 1.5;
-}
-
-.manage-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.875rem 1.5rem;
-  background: #111827;
-  color: white;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 0.9375rem;
-  text-decoration: none;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.manage-link:hover {
-  background: #1f2937;
-  transform: translateX(2px);
-}
-
-.manage-link svg {
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
-}
-
-/* Responsive */
-@media (max-width: 968px) {
-  .billing-page {
-    padding: 2.5rem 1.25rem;
-  }
-
-  .billing-page :deep(.footer) {
-    width: 100%;
-    margin: 0;
-    border-radius: 0;
-  }
-
-  .page-header {
-    margin-bottom: 3rem;
-  }
-
-  .header-badge {
-    font-size: 0.8125rem;
-    padding: 0.4375rem 0.875rem;
-    margin-bottom: 1.25rem;
-  }
-
-  .badge-icon {
-    width: 14px;
-    height: 14px;
-  }
-
-  .page-header h1 {
-    font-size: 2rem;
-    line-height: 1.3;
-  }
-
-  .page-header p {
-    font-size: 1.0625rem;
-  }
- 
-  .pricing-grid {
-    grid-template-columns: 1fr;
-    max-width: 520px;
-    margin: 0 auto;
-    gap: 1.25rem;
-  }
-
-  .pricing-card {
-    padding: 1.75rem 1.5rem;
-  }
- 
-  .contact-content {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 2rem 1.75rem;
-    gap: 1.75rem;
-  }
- 
-  .contact-actions {
-    flex-direction: row;
-    flex-wrap: wrap;
-    width: 100%;
-  }
- 
-  .contact-btn {
-    flex: 1 1 150px;
-  }
-
-  .trust-section {
-    margin-bottom: 3rem;
-  }
-
-  .trust-content {
-    gap: 1.25rem;
-    padding: 1.5rem 1.25rem;
-  }
-
-  .trust-text {
-    font-size: 0.8125rem;
-  }
-
-  .trust-divider {
-    display: none;
-  }
-
-  .trust-badges {
-    justify-content: center;
-    gap: 0.625rem;
-  }
-
-  .trust-badge {
-    padding: 0.4rem 1rem;
-    font-size: 0.8rem;
-  }
- 
-  .benefits-grid {
-    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-    gap: 1.25rem;
-  }
-
-  .benefit-card {
-    padding: 1.5rem;
-  }
- 
-  .benefits-section h2 {
-    font-size: 1.75rem;
-  }
-
-  .manage-card {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 1.75rem 2rem;
-  }
-
-  .manage-link {
-    width: 100%;
-    justify-content: center;
-  }
-}
- 
-@media (max-width: 480px) {
-  .page-header {
-    margin-bottom: 1.625rem;
-  }
-
-  .header-badge {
-    font-size: 0.75rem;
-    padding: 0.375rem 0.8125rem;
-    margin-bottom: 1rem;
-  }
-
-  .badge-icon {
-    width: 13px;
-    height: 13px;
-  }
-
-  .page-header h1 {
-    font-size: 1.5rem;
-  }
-
-  .page-header p {
-    font-size: 0.875rem;
-  }
-
-  .level-selector-card {
-    padding: 1.375rem 1.625rem;
-    margin-bottom: 1.625rem;
-  }
-
-  .level-eyebrow {
-    font-size: 0.6875rem;
-  }
-
-  .level-card-header h2 {
-    font-size: 1.3125rem;
-  }
-
-  .level-subtitle {
-    font-size: 0.875rem;
-  }
-
-  .level-select-wrapper select {
-    padding: 0.8125rem 0.9375rem;
-    font-size: 0.9375rem;
-  }
-
-  .level-hint {
-    font-size: 0.8125rem;
-  }
-
-  .level-selection-pill {
-    font-size: 0.8125rem;
-  }
-
-  .level-access-chips .chip {
-    font-size: 0.8125rem;
-  }
-
-  .trust-section {
-    margin-bottom: 2.25rem;
-    padding: 0 0.625rem;
-  }
-
-  .trust-content {
-    padding: 1.125rem 1rem;
-    gap: 0.875rem;
-  }
-
-  .trust-text {
-    font-size: 0.78125rem;
-  }
-
-  .trust-badges {
-    gap: 0.5rem;
-  }
-
-  .trust-badge {
-    padding: 0.4rem 0.8125rem;
-    font-size: 0.71875rem;
-  }
-
-}
-
-@media (max-width: 640px) {
-  .billing-page {
-    padding: 1.25rem 0.875rem;
-  }
-
-  .billing-page :deep(.footer) {
-    width: 100%;
-    margin: 0;
-    border-radius: 0;
-  }
-
-
-  .faq-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    width: calc(100% + 1.75rem);
-    margin-left: -0.875rem;
-    margin-right: -0.875rem;
-    padding-left: 0;
-    padding-right: 0;
-  }
-
-  .billing-page :deep(.faq-section) {
-    width: 100%;
-    max-width: 100%;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-  }
-
-  .billing-page :deep(.faq-list),
-  .billing-page :deep(.faq-item) {
-    width: 100%;
-  }
-
-  .page-header {
-    margin-bottom: 1.5rem;
-    padding: 0;
-  }
-
-  .header-badge {
-    font-size: 0.75rem;
-    padding: 0.375rem 0.75rem;
-    margin-bottom: 1rem;
-    gap: 0.375rem;
-  }
-
-  .badge-icon {
-    width: 13px;
-    height: 13px;
-  }
-
-  .page-header h1 {
-    font-size: 1.5rem;
-    line-height: 1.25;
-    margin-bottom: 0.625rem;
-  }
-
-  .page-header p {
-    font-size: 0.875rem;
-    line-height: 1.5;
-  }
-
-  .level-selector-card {
-    padding: 1.25rem 1.5rem;
-    margin-bottom: 1.5rem;
-    border-radius: 14px;
-  }
-
-  .level-eyebrow {
-    font-size: 0.6875rem;
-    margin-bottom: 0.25rem;
-  }
-
-  .level-card-header h2 {
-    font-size: 1.25rem;
-  }
-
-  .level-subtitle {
-    font-size: 0.875rem;
-    margin-top: 0.15rem;
-  }
-
-  .level-select-group {
-    margin-top: 1.25rem;
-  }
-
-  .level-select-group label {
-    font-size: 0.875rem;
-    margin-bottom: 0.375rem;
-  }
-
-  .level-select-wrapper select {
-    padding: 0.75rem 0.875rem;
-    font-size: 0.9375rem;
-    border-radius: 9px;
-  }
-
-  .level-hint {
-    font-size: 0.8125rem;
-    margin-top: 0.375rem;
-  }
-
-  .level-selection-pill {
-    margin-top: 0.875rem;
-    padding: 0.4rem 0.875rem;
-    font-size: 0.8125rem;
-  }
-
-  .level-warning {
-    margin-top: 0.875rem;
-    font-size: 0.8125rem;
-  }
-
-  .level-access-chips {
-    margin-top: 1.125rem;
-  }
-
-  .level-access-chips .access-label {
-    font-size: 0.8125rem;
-    margin-bottom: 0.375rem;
-  }
-
-  .level-access-chips .chip {
-    padding: 0.3125rem 0.6875rem;
-    font-size: 0.8rem;
-  }
-
-  .pricing-container {
-    margin-bottom: 2.5 rem;
-  }
-
-  .pricing-section {
-    padding: 0;
-    background: transparent;
-    border: none;
-    box-shadow: none;
-  }
-
-  .pricing-header {
-    padding: 0;
-    margin-bottom: 1.5rem;
-  }
-
-  .pricing-header h2 {
-    font-size: 1.375rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .pricing-header p {
-    font-size: 0.875rem;
-  }
-
-  .pricing-grid {
-    gap: 1rem;
-  }
-
-  .pricing-card {
-    padding: 1.25rem 1.125rem;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  }
-
-  .pricing-card.recommended {
-    border-width: 2px;
-    box-shadow: 0 4px 16px rgba(27, 60, 142, 0.15);
-  }
-
-  .pricing-badge-row {
-    min-height: 1.875rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .pricing-badge {
-    padding: 0.4375rem 0.875rem;
-    font-size: 0.75rem;
-    font-weight: 700;
-  }
-
-  .pricing-badge.popular {
-    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-  }
-
-  .pricing-badge.savings {
-    background: linear-gradient(135deg, #3b8544 0%, #2f6d37 100%);
-  }
-
-  .card-header {
-    margin-bottom: 0.875rem;
-  }
-
-  .card-title {
-    font-size: 1.25rem;
-    margin-bottom: 0.375rem;
-    font-weight: 700;
-  }
-
-  .card-subtitle {
-    font-size: 0.8125rem;
-    min-height: 1.25rem;
-  }
-
-  .card-price {
-    margin-bottom: 1rem;
-    padding-bottom: 1rem;
-  }
-
-  .price-amount {
-    font-size: 2.25rem;
-    font-weight: 700;
-  }
-
-  .price-period {
-    font-size: 0.875rem;
-    font-weight: 600;
-  }
-
-  .card-features {
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-  }
-
-  .card-features li {
-    font-size: 0.8125rem;
-    line-height: 1.4;
-    padding: 0.4375rem 0;
-  }
-
-  .feature-icon {
-    width: 13px;
-    height: 13px;
-  }
-
-  .card-reviews {
-    margin-bottom: 1rem;
-  }
-
-  .card-button {
-    padding: 0.875rem 1rem;
-    font-size: 0.9375rem;
-    font-weight: 700;
-    letter-spacing: 0.01em;
-    box-shadow: 0 4px 12px rgba(27, 60, 142, 0.2);
-  }
-
-  .card-button:not(:disabled):hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(27, 60, 142, 0.25);
-  }
-
-  .card-note {
-    font-size: 0.6875rem;
-    margin-top: 0.625rem;
-    opacity: 0.85;
-  }
-
-  .contact-section {
-    margin-bottom: 2.5rem;
-  }
-
-  .contact-content {
-    padding: 1.5rem 1.25rem;
-    gap: 1.25rem;
-  }
- 
-  .contact-header h3 {
-    font-size: 1.25rem;
-    line-height: 1.3;
-  }
-
-  .contact-header p {
-    font-size: 0.875rem;
-    line-height: 1.4;
-  }
-
-  .contact-actions {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.625rem;
-    width: 100%;
-  }
-
-  .contact-btn {
-    width: 100%;
-    padding: 0.8125rem 1rem;
-    font-size: 0.875rem;
-    font-weight: 600;
-  }
-
-  .contact-btn.whatsapp {
-    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.25);
-  }
-
-  .btn-icon {
-    width: 16px;
-    height: 16px;
-  }
-
-  .contact-badge {
-    padding: 0.625rem 1rem;
-    font-size: 0.75rem;
-  }
-
-  .badge-icon {
-    width: 14px;
-    height: 14px;
-  }
-
-  .trust-section {
-    margin-bottom: 2rem;
-    padding: 0 0.5rem;
-  }
-
-  .trust-content {
-    flex-direction: column;
-    gap: 0.75rem;
-    padding: 1rem 0.875rem;
-    text-align: center;
-    border-radius: 8px;
-  }
-
-  .trust-text {
-    font-size: 0.75rem;
-    line-height: 1.4;
-  }
-
-  .trust-badges {
-    gap: 0.4375rem;
-    justify-content: center;
-  }
-
-  .trust-badge {
-    padding: 0.375rem 0.75rem;
-    font-size: 0.6875rem;
-    border-radius: 6px;
-  }
-
-  .benefits-section {
-    margin-bottom: 2.5rem;
-  }
-
-  .benefits-section h2 {
-    font-size: 1.375rem;
-    margin-bottom: 1.5rem;
-    line-height: 1.3;
-  }
-
-  .benefits-grid {
-    gap: 1rem;
-    grid-template-columns: 1fr;
-  }
-
-  .benefit-card {
-    padding: 1.25rem;
-  }
-
-  .benefit-icon {
-    font-size: 2rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .benefit-card h3 {
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
-    line-height: 1.3;
-  }
-
-  .benefit-card p {
-    font-size: 0.8125rem;
-    line-height: 1.5;
-  }
-
-  .faq-section {
-    margin-bottom: 2rem;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .faq-section :deep(.faq-section) {
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .manage-section {
-    margin-bottom: 2rem;
-  }
-
-  .manage-card {
-    padding: 1.25rem;
-    gap: 1.25rem;
-  }
-
-  .manage-content h3 {
-    font-size: 1.125rem;
-  }
-
-  .manage-content p {
-    font-size: 0.8125rem;
-    line-height: 1.4;
-  }
-
-  .manage-link {
-    padding: 0.8125rem 1.25rem;
-    font-size: 0.875rem;
-  }
-
-  .manage-link svg {
-    width: 16px;
-    height: 16px;
-  }
-}
-
-@media (max-width: 380px) {
-  .billing-page {
-    padding: 1rem 0.75rem;
-  }
-
-  .billing-page :deep(.footer) {
-    width: 100%;
-    margin: 0;
-    border-radius: 0;
-  }
-
-
-  .faq-section {
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-left: 0.125rem;
-    padding-right: 0.125rem;
-  }
-
-  .billing-page :deep(.faq-section) {
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 0.125rem;
-    padding-right: 0.125rem;
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .page-header {
-    margin-bottom: 1.25rem;
-  }
-
-  .header-badge {
-    font-size: 0.6875rem;
-    padding: 0.3125rem 0.6875rem;
-    margin-bottom: 0.875rem;
-  }
-
-  .badge-icon {
-    width: 12px;
-    height: 12px;
-  }
-
-  .page-header h1 {
-    font-size: 1.375rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .page-header p {
-    font-size: 0.8125rem;
-  }
-
-  .level-selector-card {
-    padding: 1.125rem 1.25rem;
-    margin-bottom: 1.25rem;
-    border-radius: 12px;
-  }
-
-  .level-eyebrow {
-    font-size: 0.65rem;
-  }
-
-  .level-card-header h2 {
-    font-size: 1.125rem;
-  }
-
-  .level-subtitle {
-    font-size: 0.8125rem;
-  }
-
-  .level-select-group {
-    margin-top: 1.125rem;
-  }
-
-  .level-select-group label {
-    font-size: 0.8125rem;
-  }
-
-  .level-select-wrapper select {
-    padding: 0.6875rem 0.8125rem;
-    font-size: 0.875rem;
-    border-radius: 8px;
-  }
-
-  .level-hint {
-    font-size: 0.75rem;
-  }
-
-  .level-selection-pill {
-    padding: 0.375rem 0.8125rem;
-    font-size: 0.75rem;
-  }
-
-  .level-warning {
-    font-size: 0.75rem;
-  }
-
-  .level-access-chips .access-label {
-    font-size: 0.75rem;
-  }
-
-  .level-access-chips .chip {
-    padding: 0.3125rem 0.625rem;
-    font-size: 0.75rem;
-  }
-
-  .pricing-card {
-    padding: 1.125rem 1rem;
-  }
-
-  .card-title {
-    font-size: 1.1875rem;
-  }
-
-  .price-amount {
-    font-size: 2.125rem;
-  }
-
-  .card-features li {
-    font-size: 0.8125rem;
-  }
-
-  .contact-content {
-    padding: 1.25rem 1rem;
-  }
-
-  .trust-section {
-    margin-bottom: 1.75rem;
-    padding: 0 0.375rem;
-  }
-
-  .trust-content {
-    padding: 0.875rem 0.75rem;
-    gap: 0.625rem;
-    border-radius: 7px;
-  }
-
-  .trust-text {
-    font-size: 0.6875rem;
-  }
-
-  .trust-badges {
-    gap: 0.375rem;
-  }
-
-  .trust-badge {
-    padding: 0.3125rem 0.6875rem;
-    font-size: 0.625rem;
-    border-radius: 5px;
-  }
-
-  .benefit-card {
-    padding: 1.125rem 1rem;
-  }
-
-  .manage-card {
-    padding: 1.125rem 1rem;
-  }
-
-  .manage-content h3 {
-    font-size: 1.0625rem;
-  }
-
-  .manage-content p {
-    font-size: 0.8125rem;
-  }
-
-  .manage-link {
-    padding: 0.8125rem 1.125rem;
-    font-size: 0.8125rem;
-  }
-}
-
-/* Modal Styles */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  padding: 1rem;
-  animation: fadeIn 0.2s ease;
-}
-
-.modal-card {
-  background: white;
-  border-radius: 12px;
-  width: 100%;
-  max-width: 420px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
-  animation: slideUp 0.25s ease;
-}
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.modal-header h3 {
-  margin: 0;
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #111827;
-}
-
-.modal-close {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  color: #9ca3af;
-  cursor: pointer;
-  line-height: 1;
-  padding: 0;
-  transition: color 0.2s;
-}
-
-.modal-close:hover {
-  color: #374151;
-}
-
-.modal-body {
-  padding: 1.5rem;
-}
-
-.modal-body p {
-  margin: 0;
-  color: #4b5563;
-  font-size: 0.95rem;
-  line-height: 1.6;
-}
-
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.75rem;
-  padding: 1rem 1.5rem;
-  border-top: 1px solid #e5e7eb;
-}
-
-.confirm-btn {
-  padding: 0.625rem 1.5rem;
-  border: none;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-  background: linear-gradient(135deg, #1b3c8e, #122a66);
-  color: white;
-}
-
-.confirm-btn:hover {
-  background: linear-gradient(135deg, #1b3c8e, #122a66);
-  transform: translateY(-1px);
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@media (max-width: 480px) {
-  .modal-card {
-    max-width: 100%;
-    margin: 0 0.5rem;
-  }
-  
-  .modal-header {
-    padding: 1rem 1.25rem;
-  }
-  
-  .modal-body {
-    padding: 1.25rem;
-  }
-  
-  .modal-actions {
-    padding: 0.875rem 1.25rem;
-  }
-}
-
-/* Modal création de compte */
-.create-account-modal {
-  max-width: 500px;
-}
-
-.create-account-intro {
-  margin-bottom: 1.25rem !important;
-  color: #374151 !important;
-}
-
-.create-account-intro strong {
-  color: #122a66;
-}
-
-.create-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.form-row {
+.billing-create-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  gap: 12px;
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.375rem;
+.billing-field-error {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--om-red, #c0392b);
 }
 
-.form-group label {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #374151;
-}
-
-.form-group input {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 0.75rem 1rem;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.form-group input:focus {
-  outline: none;
-  border-color: #1b3c8e;
-  box-shadow: 0 0 0 3px rgba(27, 60, 142, 0.1);
-}
-
-.form-group input.input-error {
-  border-color: #ef4444;
-}
-
-.form-group input.input-disabled {
-  background: #f3f4f6;
-  color: #6b7280;
-  cursor: not-allowed;
-}
-
-.field-error {
-  font-size: 0.8rem;
-  color: #ef4444;
-}
-
-.create-message {
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  font-size: 0.875rem;
-  margin-top: 0.5rem;
-}
-
-.create-message.success {
-  background: #eaf4ea;
-  color: #2f6d37;
-  border: 1px solid #a7f3d0;
-}
-
-.create-message.error {
-  background: #fef2f2;
-  color: #b91c1c;
-  border: 1px solid #fecaca;
-}
-
-.cancel-btn {
-  padding: 0.625rem 1.25rem;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-  background: white;
-  color: #374151;
-}
-
-.cancel-btn:hover:not(:disabled) {
-  background: #f3f4f6;
-  border-color: #9ca3af;
-}
-
-.cancel-btn:disabled,
-.confirm-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-@media (max-width: 480px) {
-  .create-account-modal {
-    max-width: 100%;
+/* Téléphone */
+@media (max-width: 760px) {
+  .ab-reglages {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding: 18px;
   }
-  
-  .form-row {
+
+  .ab-switch {
+    margin-top: 0;
+  }
+
+  .ab-select select,
+  .ab-input {
+    font-size: 16px;
+  }
+
+  .ab-garanties {
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 22px 0 24px;
+  }
+
+  .ab-faq {
+    padding: 18px 18px 6px;
+  }
+
+  .billing-create-row {
     grid-template-columns: 1fr;
   }
 }

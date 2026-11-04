@@ -1,0 +1,229 @@
+Titre: Manipulation des vecteurs, des droites et des plans de l’espace
+
+<!-- optitab:1 -->
+::: objectifs
+- Calculer avec les vecteurs de l’espace : relation de Chasles, combinaisons linéaires.
+- Caractériser une droite par un point et un vecteur directeur, un plan par un point et deux vecteurs non colinéaires.
+- Reconnaître des vecteurs colinéaires ou coplanaires ; décomposer un vecteur dans une base.
+- Décrire les positions relatives de droites et de plans ; utiliser le théorème du toit ; construire une section.
+:::
+
+## I. Vecteurs de l’espace
+
+::: definition Vecteurs de l’espace
+Les notions de vecteur, de somme et de produit par un réel s’étendent à l’espace avec les **mêmes règles** que dans le plan :
+- à deux points $A$ et $B$ est associé le vecteur $\overrightarrow{AB}$, celui de la translation qui envoie $A$ sur $B$ ;
+- $\overrightarrow{AB} = \overrightarrow{DC}$ si et seulement si $ABCD$ est un parallélogramme (éventuellement aplati) ;
+- relation de Chasles : $\overrightarrow{AB} + \overrightarrow{BC} = \overrightarrow{AC}$ ;
+- $I$ est le milieu de $[AB]$ si et seulement si $\overrightarrow{AI} = \frac{1}{2}\overrightarrow{AB}$.
+:::
+
+::: definition Combinaison linéaire
+Une **combinaison linéaire** des vecteurs $\vec{u}$ et $\vec{v}$ est un vecteur de la forme $a\vec{u} + b\vec{v}$, où $a$ et $b$ sont des réels. De même, $a\vec{u} + b\vec{v} + c\vec{w}$ est une combinaison linéaire de $\vec{u}$, $\vec{v}$ et $\vec{w}$.
+:::
+
+::: propriete Colinéarité
+Deux vecteurs $\vec{u}$ et $\vec{v}$ sont **colinéaires** si l’un est le produit de l’autre par un réel ($\vec{v} = k\vec{u}$ ou $\vec{u} = k\vec{v}$). Par suite :
+- $A$, $B$, $C$ sont alignés si et seulement si $\overrightarrow{AB}$ et $\overrightarrow{AC}$ sont colinéaires ;
+- les droites $(AB)$ et $(CD)$ sont parallèles si et seulement si $\overrightarrow{AB}$ et $\overrightarrow{CD}$ sont colinéaires.
+:::
+
+::: exemple Décomposer un vecteur dans un cube
+Dans le cube $ABCDEFGH$ ci-dessous, $\overrightarrow{BC} = \overrightarrow{AD}$ et $\overrightarrow{CG} = \overrightarrow{AE}$ (arêtes parallèles, de même sens et de même longueur). Avec la relation de Chasles :
+
+$$
+\begin{aligned}
+\overrightarrow{AG} &= \overrightarrow{AB} + \overrightarrow{BC} + \overrightarrow{CG} \\
+&= \overrightarrow{AB} + \overrightarrow{AD} + \overrightarrow{AE}
+\end{aligned}
+$$
+:::
+
+[IMAGE_1]
+
+## II. Droites et plans de l’espace
+
+### 1. Droites
+
+::: definition Droite de l’espace
+Soit $A$ un point et $\vec{u}$ un vecteur **non nul**. La droite $d$ passant par $A$ et de **vecteur directeur** $\vec{u}$ est l’ensemble des points $M$ tels que
+
+$$\overrightarrow{AM} = t\,\vec{u}, \quad t \in \mathbb{R}$$
+:::
+
+::: propriete
+- Si $A$ et $B$ sont deux points distincts de $d$, alors $\overrightarrow{AB}$ est un vecteur directeur de $d$ ; tout vecteur non nul colinéaire à $\vec{u}$ dirige aussi $d$.
+- Deux droites sont parallèles si et seulement si leurs vecteurs directeurs sont colinéaires.
+:::
+
+### 2. Plans
+
+::: definition Plan de l’espace
+Soit $A$ un point, $\vec{u}$ et $\vec{v}$ deux vecteurs **non colinéaires**. Le plan $\mathcal{P}$ passant par $A$ et dirigé par $\vec{u}$ et $\vec{v}$ est l’ensemble des points $M$ tels que
+
+$$\overrightarrow{AM} = x\,\vec{u} + y\,\vec{v}, \quad x \in \mathbb{R},\ y \in \mathbb{R}$$
+
+Le couple $(\vec{u}, \vec{v})$ est un couple de vecteurs directeurs de $\mathcal{P}$ ; les vecteurs $x\vec{u} + y\vec{v}$ forment la **direction** du plan.
+:::
+
+[IMAGE_2]
+
+Sur la figure, $\overrightarrow{AM} = 2\vec{u} + 1{,}5\,\vec{v}$ : on construit $M$ en complétant le parallélogramme.
+
+::: remarque
+Trois points non alignés $A$, $B$, $C$ définissent un unique plan, noté $(ABC)$, dirigé par $\overrightarrow{AB}$ et $\overrightarrow{AC}$. Une droite et un point extérieur à cette droite, ou deux droites parallèles distinctes, définissent aussi un unique plan.
+:::
+
+### 3. Vecteurs coplanaires
+
+::: definition Vecteurs coplanaires
+Trois vecteurs $\vec{u}$, $\vec{v}$, $\vec{w}$ sont **coplanaires** si, en les représentant à partir d’un même point $O$ ($\vec{u} = \overrightarrow{OU}$, $\vec{v} = \overrightarrow{OV}$, $\vec{w} = \overrightarrow{OW}$), les quatre points $O$, $U$, $V$, $W$ sont dans un même plan.
+:::
+
+::: theoreme Caractérisation
+Si $\vec{u}$ et $\vec{v}$ ne sont pas colinéaires, les vecteurs $\vec{u}$, $\vec{v}$, $\vec{w}$ sont coplanaires si et seulement s’il existe deux réels $a$ et $b$ tels que
+
+$$\vec{w} = a\vec{u} + b\vec{v}$$
+
+En particulier, quatre points $A$, $B$, $C$, $D$ sont coplanaires si et seulement si $\overrightarrow{AB}$, $\overrightarrow{AC}$, $\overrightarrow{AD}$ sont coplanaires.
+:::
+
+[IMAGE_3]
+
+::: exemple Dans le cube
+$\overrightarrow{EG} = \overrightarrow{EF} + \overrightarrow{EH}$, donc $\overrightarrow{EF}$, $\overrightarrow{EH}$ et $\overrightarrow{EG}$ sont coplanaires : ils sont dans le plan $(EFG)$. En revanche, $\overrightarrow{EF}$, $\overrightarrow{EH}$ et $\overrightarrow{EA}$ ne sont pas coplanaires, car $A$ n’appartient pas au plan $(EFG)$.
+:::
+
+::: methode Démontrer que trois vecteurs sont (ou ne sont pas) coplanaires
+On cherche deux réels $a$ et $b$ tels que $\vec{w} = a\vec{u} + b\vec{v}$ :
+- sur une figure, par une décomposition avec la relation de Chasles ;
+- en coordonnées, par un système de **trois** équations à deux inconnues : on trouve $a$ et $b$ avec deux équations, puis on **vérifie** la troisième. Si elle est fausse, les vecteurs ne sont pas coplanaires.
+:::
+
+::: exemple
+Soit $\vec{u}\begin{pmatrix} 1 \\ 0 \\ 1 \end{pmatrix}$, $\vec{v}\begin{pmatrix} 0 \\ 1 \\ 1 \end{pmatrix}$, $\vec{w}\begin{pmatrix} 2 \\ 3 \\ 5 \end{pmatrix}$ et $\vec{t}\begin{pmatrix} 1 \\ 1 \\ 3 \end{pmatrix}$.
+- $\vec{w} = a\vec{u} + b\vec{v}$ : les deux premières coordonnées donnent $a = 2$ et $b = 3$ ; la troisième est vérifiée car $a + b = 5$. Donc $\vec{w} = 2\vec{u} + 3\vec{v}$ : $\vec{u}$, $\vec{v}$, $\vec{w}$ sont **coplanaires**.
+- $\vec{t} = a\vec{u} + b\vec{v}$ : on obtient $a = 1$ et $b = 1$, mais $a + b = 2 \neq 3$. Donc $\vec{u}$, $\vec{v}$, $\vec{t}$ ne sont **pas** coplanaires.
+:::
+
+## III. Bases et repères de l’espace
+
+::: definition Base de l’espace
+Trois vecteurs **non coplanaires** $\vec{\imath}$, $\vec{\jmath}$, $\vec{k}$ forment une **base** de l’espace.
+:::
+
+::: theoreme Décomposition dans une base
+Si $(\vec{\imath}, \vec{\jmath}, \vec{k})$ est une base, tout vecteur $\vec{u}$ s’écrit de **façon unique** $\vec{u} = x\vec{\imath} + y\vec{\jmath} + z\vec{k}$. Les réels $x$, $y$, $z$ sont les **coordonnées** de $\vec{u}$ dans cette base ; on note $\vec{u}\begin{pmatrix} x \\ y \\ z \end{pmatrix}$.
+:::
+
+::: definition Repère de l’espace
+Un **repère** $(O\,;\vec{\imath}, \vec{\jmath}, \vec{k})$ est formé d’un point $O$ (l’origine) et d’une base. Le point $M$ a pour coordonnées $(x\,;y\,;z)$ si et seulement si
+
+$$\overrightarrow{OM} = x\vec{\imath} + y\vec{\jmath} + z\vec{k}$$
+
+$x$ est l’abscisse, $y$ l’ordonnée et $z$ la cote de $M$. Le repère est **orthonormé** si $\vec{\imath}$, $\vec{\jmath}$, $\vec{k}$ sont deux à deux orthogonaux et de norme $1$.
+:::
+
+[IMAGE_4]
+
+Sur la figure, $M(2\,;3\,;2)$ : $\overrightarrow{OM} = 2\vec{\imath} + 3\vec{\jmath} + 2\vec{k}$.
+
+::: propriete Calculs en coordonnées
+Dans un repère, avec $A(x_A\,;y_A\,;z_A)$ et $B(x_B\,;y_B\,;z_B)$ :
+- $\overrightarrow{AB}\begin{pmatrix} x_B - x_A \\ y_B - y_A \\ z_B - z_A \end{pmatrix}$ ;
+- le milieu de $[AB]$ a pour coordonnées $\left(\dfrac{x_A + x_B}{2}\,;\dfrac{y_A + y_B}{2}\,;\dfrac{z_A + z_B}{2}\right)$ ;
+- les coordonnées de $\vec{u} + \vec{v}$ et de $k\vec{u}$ se calculent coordonnée par coordonnée ;
+- deux vecteurs sont colinéaires si et seulement si leurs coordonnées sont proportionnelles.
+:::
+
+::: exemple
+$A(1\,;0\,;2)$, $B(3\,;1\,;1)$ et $C(7\,;3\,;-1)$. On a $\overrightarrow{AB}\begin{pmatrix} 2 \\ 1 \\ -1 \end{pmatrix}$ et $\overrightarrow{AC}\begin{pmatrix} 6 \\ 3 \\ -3 \end{pmatrix}$, donc $\overrightarrow{AC} = 3\overrightarrow{AB}$ : les points $A$, $B$, $C$ sont alignés.
+:::
+
+::: methode Choisir un repère adapté à un solide
+Dans un cube $ABCDEFGH$, on prend le repère $(A\,;\overrightarrow{AB}, \overrightarrow{AD}, \overrightarrow{AE})$ : $A(0\,;0\,;0)$, $B(1\,;0\,;0)$, $C(1\,;1\,;0)$, $D(0\,;1\,;0)$, $E(0\,;0\,;1)$, $F(1\,;0\,;1)$, $G(1\,;1\,;1)$ et $H(0\,;1\,;1)$. Pour un pavé droit, les coordonnées dans ce repère sont les mêmes (le repère n’est alors pas orthonormé).
+:::
+
+## IV. Positions relatives de droites et de plans
+
+### 1. Deux droites
+
+::: propriete
+Deux droites de l’espace sont :
+- soit **coplanaires** : elles sont alors sécantes (en un point) ou parallèles (strictement parallèles ou confondues) ;
+- soit **non coplanaires** : elles ne sont ni sécantes, ni parallèles.
+:::
+
+[IMAGE_5]
+
+::: exemple
+Dans le cube : $(AB)$ et $(HG)$ sont parallèles (car $\overrightarrow{HG} = \overrightarrow{AB}$) ; $(AB)$ et $(BC)$ sont sécantes en $B$ ; $(AB)$ et $(CG)$ sont non coplanaires.
+:::
+
+::: attention
+Dans l’espace, deux droites non parallèles ne sont pas forcément sécantes. Sur une figure en perspective, deux droites qui semblent se couper ne se coupent pas forcément : $(AB)$ et $(CG)$ n’ont aucun point commun.
+:::
+
+### 2. Une droite et un plan
+
+::: propriete
+Soit $d$ une droite de vecteur directeur $\vec{w}$ et $\mathcal{P}$ un plan dirigé par $\vec{u}$ et $\vec{v}$.
+- Si $\vec{u}$, $\vec{v}$, $\vec{w}$ sont coplanaires, $d$ est **parallèle** à $\mathcal{P}$ : soit $d$ est incluse dans $\mathcal{P}$, soit $d$ et $\mathcal{P}$ n’ont aucun point commun (strictement parallèles).
+- Sinon, $d$ et $\mathcal{P}$ sont **sécants** en un point.
+:::
+
+[IMAGE_6]
+
+::: methode Étudier la position d’une droite et d’un plan
+1. On teste si $\vec{w}$ est une combinaison linéaire de $\vec{u}$ et $\vec{v}$ ; si ce n’est pas le cas, $d$ et $\mathcal{P}$ sont sécants.
+2. Sinon, on teste si un point de $d$ appartient à $\mathcal{P}$ : si oui, $d$ est incluse dans $\mathcal{P}$ ; si non, elle lui est strictement parallèle.
+:::
+
+### 3. Deux plans
+
+::: propriete
+- Deux plans de l’espace sont soit **sécants** suivant une droite, soit **parallèles** (strictement parallèles ou confondus).
+- Deux plans sont parallèles si et seulement si deux droites sécantes de l’un sont parallèles à l’autre.
+- Si deux plans sont parallèles, tout plan qui coupe l’un coupe l’autre, et les deux droites d’intersection sont parallèles.
+:::
+
+[IMAGE_7]
+
+### 4. Le théorème du toit
+
+::: theoreme Théorème du toit
+Si deux plans sécants $\mathcal{P}_1$ et $\mathcal{P}_2$ contiennent respectivement deux droites parallèles $d_1$ et $d_2$, alors leur droite d’intersection $\Delta$ est parallèle à $d_1$ et à $d_2$.
+:::
+
+[IMAGE_8]
+
+::: demonstration
+Soit $\vec{u}$ un vecteur directeur commun à $d_1$ et $d_2$, et $A$ un point de $\Delta$. Notons $\delta$ la droite passant par $A$ et dirigée par $\vec{u}$.
+- $A \in \mathcal{P}_1$ et $\vec{u}$ dirige $d_1 \subset \mathcal{P}_1$, donc $\delta \subset \mathcal{P}_1$.
+- De même, $A \in \mathcal{P}_2$ et $\vec{u}$ dirige $d_2 \subset \mathcal{P}_2$, donc $\delta \subset \mathcal{P}_2$.
+
+Ainsi $\delta$ est incluse dans $\mathcal{P}_1 \cap \mathcal{P}_2 = \Delta$ : les deux droites sont confondues, et $\Delta$, dirigée par $\vec{u}$, est parallèle à $d_1$ et à $d_2$.
+:::
+
+## V. Section d’un solide par un plan
+
+::: methode Construire la section d’un cube par un plan
+- Deux points du plan de coupe situés sur une même face se relient : on obtient un côté de la section.
+- Les côtés situés sur deux faces parallèles sont **parallèles** (propriété des plans parallèles).
+- Pour atteindre une autre face, on prolonge un côté jusqu’à une arête ou une droite de cette face.
+:::
+
+::: exemple
+$I$ et $J$ sont les milieux de $[AB]$ et $[BC]$. Le plan $(IJG)$ coupe la face $EFGH$, parallèle à $ABCD$, suivant la parallèle à $(IJ)$ passant par $G$, c’est-à-dire $(GE)$ (on a $\overrightarrow{EG} = 2\overrightarrow{IJ}$). La section est le trapèze $IJGE$.
+:::
+
+[IMAGE_9]
+
+::: retenir
+- Droite : $\overrightarrow{AM} = t\vec{u}$ ; plan : $\overrightarrow{AM} = x\vec{u} + y\vec{v}$ avec $\vec{u}$, $\vec{v}$ non colinéaires.
+- $\vec{u}$, $\vec{v}$ non colinéaires : $\vec{u}$, $\vec{v}$, $\vec{w}$ coplanaires $\iff \vec{w} = a\vec{u} + b\vec{v}$.
+- Une base de l’espace : trois vecteurs non coplanaires ; coordonnées à trois composantes.
+- Deux droites de l’espace peuvent être non coplanaires ; le théorème du toit donne la direction d’une intersection de plans.
+
+Fiche de synthèse dans l’onglet Fiches !
+:::

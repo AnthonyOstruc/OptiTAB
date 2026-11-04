@@ -460,9 +460,12 @@ export function renderInline(text) {
   }
 
   // 2) Mise en forme du texte, puis ponctuation collée aux formules en ligne
-  //    (jamais de « ) » ou de « , » orphelin en début de ligne)
+  //    (jamais de « ) » ou de « , » orphelin en début de ligne). Le navigateur
+  //    peut couper juste après une formule même devant une espace insécable :
+  //    « $x$ : » et « « $x$ » » sont donc aussi liés, ainsi qu'une unité écrite
+  //    après une espace insécable (« $1\,000$ L », « $12$ km/h »).
   let html = formatText(escapeHtml(plain).replace(/&lt;br\s*\/?&gt;/gi, '<br>'))
-  html = html.replace(/([(«[])?\u0000(\d+)\u0000([),.;:!?»\]]{1,3}|-[A-Za-zÀ-ÿ]+)?/g, (m, lead, k, trail) => {
+  html = html.replace(/(«[  ]?|[([])?\u0000(\d+)\u0000([  ]?[;:!?»][),.;:!?»\]]{0,2}| [^\s<\u0000\u0001]{1,8}|[),.;:!?»\]]{1,3}|-[A-Za-zÀ-ÿ]+)?/g, (m, lead, k, trail) => {
     const tex = maths[Number(k)]
     const math = escapeHtml(tex)
     if ((lead || trail) && !tex.startsWith('$$')) {

@@ -1,0 +1,190 @@
+Titre: Résumé : Suites Numériques
+
+<!-- optitab:1 -->
+::: objectifs
+Maîtriser les suites numériques : définitions, modes de génération, suites arithmétiques et géométriques, sens de variation, limites intuitives. Applications pratiques et modélisation.
+:::
+
+## I. Notations et définitions
+
+::: definition Suite numérique
+Une suite numérique $(u_n)$ est une fonction définie sur $\mathbb{N}$ (ou une partie de $\mathbb{N}$) à valeurs dans $\mathbb{R}$. À chaque entier naturel $n$, on associe un nombre réel $u_n$ appelé **terme de rang $n$**.
+:::
+
+| Notation | Signification |
+|---|---|
+| $\displaystyle u(n)$ | Notation fonctionnelle |
+| $\displaystyle u_n$ | Notation indicielle (la plus courante) |
+| $\displaystyle (u_n)_{n \in \mathbb{N}}$ | Notation complète avec ensemble d'indices |
+| Terme initial | Premier terme donné ($\displaystyle u_0$ ou $\displaystyle u_1$ selon les contextes) |
+
+::: methode Comment utiliser le graphique d'une suite explicite
+Pour une suite définie explicitement $u_n = f(n)$ :
+
+1. Tracer la courbe $C_f$ de la fonction $f$
+2. Pour chaque entier $n$, placer le point d'abscisse $n$ sur l'axe des abscisses
+3. Tracer une verticale jusqu'à $C_f$ : l'ordonnée est $u_n = f(n)$
+4. Projeter horizontalement sur l'axe des ordonnées pour lire $u_n$
+:::
+
+[IMAGE_1]
+
+::: methode Comment utiliser le graphique d'une suite par récurrence (méthode « toile d'araignée »)
+Pour une suite définie par récurrence $u_{n+1} = f(u_n)$ :
+
+1. Tracer la courbe $C_f$ et la droite $y = x$
+2. Placer $u_0$ sur l'axe des abscisses
+3. Monter verticalement jusqu'à $C_f$ → $u_1 = f(u_0)$
+4. Aller horizontalement jusqu'à $y = x$
+5. Descendre verticalement jusqu'à l'axe des abscisses → on obtient $u_1$ sur l'axe
+6. Répéter pour $u_2, u_3, \ldots$ pour visualiser la convergence et identifier les points fixes
+:::
+
+[IMAGE_2]
+
+## II. Modes de génération d'une suite
+
+| Type | Forme et exemple |
+|---|---|
+| **Explicite** | $\displaystyle u_n = f(n)$ <br> Exemple : $\displaystyle u_n = 3n + 2$ |
+| **Récurrence** | $\displaystyle u_{n+1} = f(u_n)$ avec $\displaystyle u_0$ donné <br> Exemple : $\displaystyle u_{n+1} = 2u_n + 3$, $\displaystyle u_0 = 1$ |
+| **Algorithme** | Procédure de calcul <br> Exemple : Factorielle : $\displaystyle n! = 1 \times 2 \times \cdots \times n$ |
+| **Motif géométrique** | Comptage d'objets dans une figure <br> Exemple : Nombre de carrés dans une grille $\displaystyle n \times n$ |
+
+## III. Suites arithmétiques
+
+::: definition Suite arithmétique
+Une suite $(u_n)$ est **arithmétique** s'il existe un nombre réel $r$ tel que :
+
+::: formule
+$$u_{n+1} = u_n + r$$
+:::
+
+Le nombre $r$ est appelé la **raison** de la suite arithmétique.
+:::
+
+| Formule | Expression |
+|---|---|
+| Terme général (commence à $\displaystyle u_0$) | $\displaystyle u_n = u_0 + nr$ |
+| Terme général (commence à $\displaystyle u_1$) | $\displaystyle u_n = u_1 + (n-1)r$ |
+| Terme général (connaît $\displaystyle u_p$) | $\displaystyle u_n = u_p + (n-p)r$ |
+| Somme des termes | $\displaystyle \sum_{k=0}^{n} u_k = (n+1) \times \frac{u_0 + u_n}{2}$ |
+| Somme $\displaystyle 1 + 2 + \cdots + n$ | $\displaystyle \frac{n(n+1)}{2}$ |
+
+::: remarque Interprétation
+Une suite arithmétique modélise une évolution à **accroissements constants**. Entre deux termes consécutifs, la différence est toujours la même (égale à la raison $r$).
+:::
+
+## IV. Suites géométriques
+
+::: definition Suite géométrique
+Une suite $(u_n)$ est **géométrique** s'il existe un nombre réel $q$ tel que :
+
+::: formule
+$$u_{n+1} = q \times u_n$$
+:::
+
+Le nombre $q$ est appelé la **raison** de la suite géométrique ($q \neq 0$).
+:::
+
+| Formule | Expression |
+|---|---|
+| Terme général (commence à $\displaystyle u_0$) | $\displaystyle u_n = u_0 \times q^n$ |
+| Terme général (commence à $\displaystyle u_1$) | $\displaystyle u_n = u_1 \times q^{n-1}$ |
+| Terme général (connaît $\displaystyle u_p$) | $\displaystyle u_n = u_p \times q^{n-p}$ |
+| Somme ($\displaystyle q \neq 1$) | $\displaystyle \sum_{k=0}^{n} u_k = u_0 \times \frac{1-q^{n+1}}{1-q}$ |
+| Somme ($\displaystyle q = 1$) | $\displaystyle \sum_{k=0}^{n} u_k = (n+1)u_0$ |
+| Somme $\displaystyle 1 + q + q^2 + \cdots + q^n$ ($\displaystyle q \neq 1$) | $\displaystyle \frac{1-q^{n+1}}{1-q}$ |
+
+::: remarque Interprétation
+Une suite géométrique modélise une évolution à **taux constant** (multiplicatif). Entre deux termes consécutifs, le rapport est toujours le même (égal à la raison $q$).
+:::
+
+## V. Sens de variation d'une suite
+
+| Type de variation | Condition |
+|---|---|
+| Strictement croissante | $\displaystyle u_{n+1} > u_n$ pour tout $\displaystyle n$ |
+| Strictement décroissante | $\displaystyle u_{n+1} < u_n$ pour tout $\displaystyle n$ |
+| Constante | $\displaystyle u_{n+1} = u_n$ pour tout $\displaystyle n$ |
+
+| Méthode | Procédure |
+|---|---|
+| **Méthode 1** <br> Différence | Calculer $\displaystyle u_{n+1} - u_n$ : <br> • Si $\displaystyle > 0$ : strictement croissante <br> • Si $\displaystyle < 0$ : strictement décroissante <br> • Si $\displaystyle = 0$ : constante |
+| **Méthode 2** <br> Quotient (si $\displaystyle u_n > 0$) | Calculer $\displaystyle \frac{u_{n+1}}{u_n}$ : <br> • Si $\displaystyle > 1$ : strictement croissante <br> • Si $\displaystyle < 1$ : strictement décroissante <br> • Si $\displaystyle = 1$ : constante |
+| **Méthode 3** <br> Fonction associée | Si $\displaystyle u_n = f(n)$ où $\displaystyle f$ est une fonction : <br> • Si $\displaystyle f$ croissante → $\displaystyle (u_n)$ croissante <br> • Si $\displaystyle f$ décroissante → $\displaystyle (u_n)$ décroissante |
+
+| Type de suite | Variation selon la raison |
+|---|---|
+| **Arithmétique** <br> raison $\displaystyle r$ | • $\displaystyle r > 0$ : strictement croissante <br> • $\displaystyle r < 0$ : strictement décroissante <br> • $\displaystyle r = 0$ : constante |
+| **Géométrique** <br> raison $\displaystyle q$, $\displaystyle u_0 > 0$ | • $\displaystyle q > 1$ : strictement croissante <br> • $\displaystyle 0 < q < 1$ : strictement décroissante <br> • $\displaystyle q = 1$ : constante |
+
+## VI. Notion de limite (introduction intuitive)
+
+::: definition Limite finie
+On dit qu'une suite $(u_n)$ tend vers un nombre réel $\ell$ lorsque $n$ tend vers $+\infty$ si les termes $u_n$ se rapprochent indéfiniment de $\ell$ quand $n$ devient très grand.
+
+On note : $\displaystyle \lim_{n \to +\infty} u_n = \ell$
+:::
+
+::: definition Limite infinie
+- $(u_n)$ tend vers $+\infty$ si les termes deviennent arbitrairement grands quand $n$ devient très grand.
+- $(u_n)$ tend vers $-\infty$ si les termes deviennent arbitrairement petits (négatifs) quand $n$ devient très grand.
+:::
+
+| Suite | Limite |
+|---|---|
+| $\displaystyle \frac{1}{n}$ | $\displaystyle \lim_{n \to +\infty} \frac{1}{n} = 0$ |
+| $\displaystyle \frac{1}{n^p}$ ($\displaystyle p > 0$) | $\displaystyle \lim_{n \to +\infty} \frac{1}{n^p} = 0$ |
+| $\displaystyle n$ | $\displaystyle \lim_{n \to +\infty} n = +\infty$ |
+| $\displaystyle q^n$ ($\displaystyle |q| > 1$) | $\displaystyle \lim_{n \to +\infty} q^n = +\infty$ (si $\displaystyle q > 1$) |
+| $\displaystyle q^n$ ($\displaystyle |q| < 1$) | $\displaystyle \lim_{n \to +\infty} q^n = 0$ |
+
+## VII. Applications et modélisation
+
+| Type de phénomène | Modèle et exemple |
+|---|---|
+| **Évolution linéaire** <br> Accroissement constant | Suite **arithmétique** <br> Exemple : Économies régulières : +50 €/mois |
+| **Évolution exponentielle** <br> Taux constant | Suite **géométrique** <br> Exemple : Intérêts composés : +3 %/an |
+| **Décroissance exponentielle** | Suite **géométrique** ($\displaystyle 0 < q < 1$) <br> Exemple : Désintégration radioactive : -10 %/an |
+
+## VIII. Erreurs fréquentes
+
+| Piège fréquent | Correction |
+|---|---|
+| Confondre arithmétique et géométrique | Arithmétique : **addition** constante ($\displaystyle +r$) <br> Géométrique : **multiplication** constante ($\displaystyle \times q$) |
+| Oublier le cas $\displaystyle q = 1$ dans la somme géométrique | Si $\displaystyle q = 1$ : $\displaystyle \sum_{k=0}^{n} u_k = (n+1)u_0$ <br> Ne pas utiliser $\displaystyle \frac{1-q^{n+1}}{1-q}$ qui est indéfini |
+| Erreur dans les bornes | Si la suite commence à $\displaystyle u_1$ : <br> • Arithmétique : $\displaystyle u_n = u_1 + (n-1)r$ (et non $\displaystyle nr$) <br> • Géométrique : $\displaystyle u_n = u_1 \times q^{n-1}$ (et non $\displaystyle q^n$) |
+| Confondre limite et valeur | $\displaystyle \lim_{n \to +\infty} q^n = 0$ (si $\displaystyle |q| < 1$) ne signifie pas $\displaystyle q = 0$ |
+| Sens de variation des suites géométriques | Attention au signe de $\displaystyle u_0$ ! <br> Si $\displaystyle u_0 < 0$ et $\displaystyle q > 1$, la suite est décroissante (négative) |
+| Nombre de termes dans une somme | De $\displaystyle u_0$ à $\displaystyle u_n$ : il y a $\displaystyle n+1$ termes (et non $\displaystyle n$) |
+
+## IX. Formules essentielles — mémo rapide
+
+| Type | Formules |
+|---|---|
+| **Arithmétique** <br> raison $\displaystyle r$ | **Terme général :** $\displaystyle u_n = u_0 + nr$ <br> **Somme :** $\displaystyle \sum_{k=0}^{n} u_k = (n+1) \times \frac{u_0 + u_n}{2}$ |
+| **Géométrique** <br> raison $\displaystyle q$ | **Terme général :** $\displaystyle u_n = u_0 \times q^n$ <br> **Somme :** $\displaystyle \sum_{k=0}^{n} u_k = u_0 \times \frac{1-q^{n+1}}{1-q}$ ($\displaystyle q \neq 1$) <br> Si $\displaystyle q = 1$ : $\displaystyle (n+1)u_0$ |
+
+| Formule spéciale | Expression |
+|---|---|
+| Somme des entiers | $\displaystyle 1 + 2 + \cdots + n = \frac{n(n+1)}{2}$ |
+| Somme géométrique de base | $\displaystyle 1 + q + q^2 + \cdots + q^n = \frac{1-q^{n+1}}{1-q}$ ($\displaystyle q \neq 1$) |
+
+## X. Méthodologie — stratégie de résolution
+
+| Type de problème | Méthode recommandée |
+|---|---|
+| Reconnaître une suite arithmétique | Calculer $\displaystyle u_{n+1} - u_n$ pour quelques valeurs. Si constant → arithmétique de raison $\displaystyle r$ |
+| Reconnaître une suite géométrique | Calculer $\displaystyle \frac{u_{n+1}}{u_n}$ pour quelques valeurs (si $\displaystyle u_n \neq 0$). Si constant → géométrique de raison $\displaystyle q$ |
+| Déterminer le sens de variation | 1. Calculer $\displaystyle u_{n+1} - u_n$ (ou $\displaystyle \frac{u_{n+1}}{u_n}$ si $\displaystyle u_n > 0$) <br> 2. Étudier le signe <br> 3. Conclure |
+| Calculer une somme | 1. Identifier le type de suite (arithmétique ou géométrique) <br> 2. Vérifier les bornes (nombre de termes) <br> 3. Appliquer la formule appropriée <br> 4. Attention au cas $\displaystyle q = 1$ pour les géométriques |
+| Conjecturer une limite | Calculer quelques termes avec de grandes valeurs de $\displaystyle n$ pour observer la tendance |
+| Modéliser un problème | 1. Identifier si l'évolution est linéaire (arithmétique) ou exponentielle (géométrique) <br> 2. Déterminer la raison $\displaystyle r$ ou $\displaystyle q$ <br> 3. Identifier le terme initial $\displaystyle u_0$ <br> 4. Écrire le terme général |
+
+::: remarque Points de vigilance
+- Toujours préciser l'ensemble des indices (commence-t-on à $n = 0$ ou $n = 1$ ?)
+- Pour les suites géométriques, vérifier que $q \neq 1$ avant d'utiliser la formule de somme
+- Compter correctement le nombre de termes dans une somme (de $u_0$ à $u_n$ : $n+1$ termes)
+- Utiliser des figures ou des calculs de premiers termes pour valider une modélisation
+:::

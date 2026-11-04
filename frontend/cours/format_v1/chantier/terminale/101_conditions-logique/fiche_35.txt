@@ -1,0 +1,70 @@
+Titre: Résumé : Structures Conditionnelles en Python
+
+<!-- optitab:1 -->
+::: objectifs
+Retenir l’essentiel : comparaisons, opérateurs logiques, structures `if`, `elif`, `else` et pièges classiques. Programme de Terminale.
+:::
+
+## I. Comparaisons et booléens
+
+| Python | Sens |
+|---|---|
+| `==`, `!=` | égal à, différent de |
+| `<`, `<=` | inférieur strict, inférieur ou égal |
+| `>`, `>=` | supérieur strict, supérieur ou égal |
+| `18 <= x <= 65` | encadrement : $18 \leqslant x \leqslant 65$ |
+
+Une comparaison vaut `True` ou `False`. Parité : `n % 2 == 0` est vraie si $n$ est pair.
+
+## II. Opérateurs logiques
+
+| `A` | `B` | `A and B` | `A or B` | `not A` |
+|---|---|---|---|---|
+| `True` | `True` | `True` | `True` | `False` |
+| `True` | `False` | `False` | `True` | `False` |
+| `False` | `True` | `False` | `True` | `True` |
+| `False` | `False` | `False` | `False` | `True` |
+
+::: formule
+`not (A and B)` ⟺ `not A or not B` ; `not (A or B)` ⟺ `not A and not B`
+:::
+
+## III. Structures conditionnelles
+
+```python
+note = 15
+if note >= 16:
+    m = "Très bien"
+elif note >= 14:
+    m = "Bien"
+else:
+    m = "Autre"
+print(m)
+```
+
+```console
+Bien
+```
+
+[IMAGE_1]
+
+::: methode Règles
+- Deux-points `:` après `if`, `elif`, `else` ; blocs indentés de quatre espaces.
+- Conditions testées dans l’ordre : le premier bloc dont la condition est vraie est exécuté, les autres sont ignorés.
+- Seuils « supérieur ou égal » : du plus grand au plus petit.
+- Tester chaque cas et chaque valeur frontière.
+:::
+
+## IV. Les pièges à éviter
+
+::: attention Les 5 erreurs classiques
+1. `=` (affectation) au lieu de `==` (comparaison).
+2. Oublier les deux-points ou l’indentation.
+3. `if x == 1 or 2:` est toujours vraie : écrire `x == 1 or x == 2`.
+4. Comparer deux flottants avec `==` : `0.1 + 0.2 == 0.3` vaut `False`.
+5. Écrire `true` au lieu de `True`.
+:::
+
+::: remarque Réflexe
+Plusieurs cas qui s’excluent → `if … elif … else` ; conditions indépendantes → plusieurs `if` successifs.
+:::

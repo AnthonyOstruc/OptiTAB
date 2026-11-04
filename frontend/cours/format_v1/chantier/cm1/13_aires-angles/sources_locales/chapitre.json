@@ -1,0 +1,178 @@
+{
+  "numero": 13,
+  "slug": "aires-angles",
+  "titre": "Aires et angles : comparer",
+  "partie": "3 · Grandeurs et mesures",
+  "sous_titre": "Surfaces · Pavages · Centimètre carré · Écartements",
+  "objectifs": [
+    "Comparer des aires par superposition, découpage ou pavage.",
+    "Mesurer une aire en carreaux ou en centimètres carrés.",
+    "Comparer des angles et repérer les angles droits."
+  ],
+  "prerequis": [
+    "Quadrillages et figures usuelles."
+  ],
+  "cours": [
+    "\\essSection{1}{Comparer et mesurer des aires}\n\\begin{definition}L’aire d’une figure est la mesure de l’étendue de sa surface. Deux figures peuvent être comparées en les superposant, ou en découpant l’une pour recouvrir l’autre, sans rien mesurer.\\end{definition}\n\\begin{savoirfaire}[Paver pour mesurer]Sur un quadrillage, on choisit un carreau comme unité d’aire : l’aire est le nombre de carreaux qui pavent la figure. Deux demi-carreaux comptent pour un carreau entier.\\end{savoirfaire}\n\\begin{definition}Le centimètre carré, noté $\\mathrm{cm}^2$, est l’aire d’un carré de 1 cm de côté. Une figure pavée par 12 de ces carrés a une aire de 12 $\\mathrm{cm}^2$.\\end{definition}\n\\begin{attention}Aire et périmètre sont deux grandeurs différentes : l’une mesure la surface, l’autre le contour. Deux figures de même périmètre peuvent avoir des aires différentes, et réciproquement.\\end{attention}",
+    "\\essSection{2}{Comparer des angles}\n\\begin{definition}Un angle est l’écartement entre deux côtés qui partent d’un même sommet. L’angle de sommet B, dont les côtés passent par A et C, se note $\\widehat{ABC}$ : la lettre du sommet est au milieu.\\end{definition}\n@FIG:cours-angles@\n\\begin{savoirfaire}[Comparer avec un calque]Pour comparer deux angles, décalquer l’un et le poser sur l’autre, sommet sur sommet et un côté sur l’autre : le plus ouvert est le plus grand. La longueur dessinée des côtés ne change pas l’angle.\\end{savoirfaire}\n\\begin{propriete}L’angle droit est l’angle du coin de l’équerre. Un angle peut être plus petit, égal ou plus grand qu’un angle droit : c’est le premier repère pour classer les angles.\\end{propriete}"
+  ],
+  "exercices": [
+    {
+      "titre": "Qui a la plus grande aire ?",
+      "enonce": "Comparer les aires des deux figures grisées du quadrillage.",
+      "corrige": "La première couvre 8 carreaux, la seconde 7 : la première a $\\res{\\text{la plus grande aire}}$.",
+      "methode": "Compter les carreaux de chaque figure.",
+      "controle": "assert 8>7",
+      "figure": "aa-1",
+      "conseil": "",
+      "difficulte": 1
+    },
+    {
+      "titre": "Mesurer en carreaux",
+      "enonce": "Donner l’aire de la figure en L, en carreaux.",
+      "corrige": "La figure se découpe en un rectangle de 4 carreaux et un carré de 3 carreaux au-dessous : $4+3=\\res7$ carreaux.",
+      "methode": "Découper la figure en morceaux simples.",
+      "controle": "assert 4+3==7",
+      "figure": "aa-2",
+      "conseil": "",
+      "difficulte": 1
+    },
+    {
+      "titre": "Formes différentes, aires égales",
+      "enonce": "Montrer que les deux figures ont la même aire.",
+      "corrige": "Chacune couvre $\\res6$ carreaux : même aire, formes différentes. Déplacer un carreau ne change pas l’aire.",
+      "methode": "Compter puis comparer.",
+      "controle": "assert 6==6",
+      "figure": "aa-3",
+      "conseil": "",
+      "difficulte": 1
+    },
+    {
+      "titre": "En centimètres carrés",
+      "enonce": "Chaque carreau du quadrillage est un carré de 1 cm de côté. Donner l’aire du rectangle.",
+      "corrige": "Le rectangle couvre 4 rangées de 3 carreaux : $4\\times3=\\res{12\\ \\mathrm{cm}^2}$.",
+      "methode": "Compter les carreaux rangée par rangée.",
+      "controle": "assert 4*3==12",
+      "figure": "aa-4",
+      "conseil": "",
+      "difficulte": 1
+    },
+    {
+      "titre": "Nommer un angle",
+      "enonce": "Nommer l’angle marqué sur la figure, préciser son sommet et ses côtés.",
+      "corrige": "C’est l’angle $\\widehat{ABC}$ : son sommet est $\\res B$, ses côtés passent par A et par C. La lettre du sommet s’écrit au milieu, sous le chapeau.",
+      "methode": "Repérer d’abord le sommet.",
+      "controle": "assert 1==1",
+      "figure": "aa-5",
+      "conseil": "",
+      "difficulte": 1
+    },
+    {
+      "titre": "Ranger des angles",
+      "enonce": "Ranger les trois angles dessinés du plus fermé au plus ouvert.",
+      "corrige": "En superposant un calque, l’ordre est $\\res{\\widehat{B}<\\widehat{A}<\\widehat{C}}$. Les longueurs des côtés dessinés ne comptent pas.",
+      "methode": "Comparer les écartements, pas les longueurs.",
+      "controle": "assert 1<2<3",
+      "figure": "aa-6",
+      "conseil": "",
+      "difficulte": 2
+    },
+    {
+      "titre": "Chercher les angles droits",
+      "enonce": "Avec une équerre, repérer les angles droits du quadrilatère dessiné.",
+      "corrige": "L’équerre s’ajuste exactement en A et en D : la figure possède $\\res2$ angles droits, marqués d’un petit carré.",
+      "methode": "Poser le coin de l’équerre sur chaque sommet.",
+      "controle": "assert 2<=4",
+      "figure": "aa-7",
+      "conseil": "",
+      "difficulte": 2
+    },
+    {
+      "titre": "Des moitiés de carreaux",
+      "enonce": "Donner l’aire de la figure, qui contient des carreaux entiers et des demi-carreaux.",
+      "corrige": "On compte 4 carreaux entiers et 2 demi-carreaux : $4+1=\\res5$ carreaux. Deux moitiés se réunissent en un carreau entier.",
+      "methode": "Associer les demi-carreaux deux par deux.",
+      "controle": "assert 4+1==5",
+      "figure": "aa-8",
+      "conseil": "",
+      "difficulte": 2
+    },
+    {
+      "titre": "Même tour, autre surface",
+      "enonce": "Vérifier que les deux rectangles ont le même périmètre, puis comparer leurs aires.",
+      "corrige": "Périmètres : $2\\times(5+1)=12$ et $2\\times(3+3)=12$ : égaux. Aires : $5\\times1=5$ carreaux contre $3\\times3=9$ carreaux : le carré a $\\res{\\text{la plus grande aire}}$. Même périmètre ne signifie pas même aire.",
+      "methode": "Calculer séparément contour et surface.",
+      "controle": "assert 2*(5+1)==12 and 2*(3+3)==12 and 5*1==5 and 3*3==9",
+      "figure": "aa-9",
+      "conseil": "",
+      "difficulte": 2
+    },
+    {
+      "titre": "L’angle du calque",
+      "enonce": "Un angle décalqué se superpose exactement sur un angle de la figure. Lequel ? Justifier.",
+      "corrige": "Le calque coïncide, sommet sur sommet et côtés sur côtés, avec l’angle $\\res{\\widehat{E}}$ : deux angles superposables sont égaux, même si leurs côtés dessinés ont des longueurs différentes.",
+      "methode": "Superposer sommet et un côté avant de conclure.",
+      "controle": "assert 1==1",
+      "figure": "aa-10",
+      "conseil": "",
+      "difficulte": 2
+    },
+    {
+      "titre": "Les deux parcelles",
+      "enonce": "Sur le plan, chaque carreau représente 1 $\\mathrm m^2$. Comparer les aires des parcelles P et Q, puis donner l’aire de la plus grande.",
+      "corrige": "P couvre 12 carreaux et Q en couvre 10, moitiés regroupées. P a la plus grande aire : $\\res{12\\ \\mathrm m^2}$ contre 10 $\\mathrm m^2$.",
+      "methode": "Compter carreaux entiers puis moitiés.",
+      "controle": "assert 12>10",
+      "figure": "aa-11",
+      "conseil": "",
+      "difficulte": 3
+    },
+    {
+      "titre": "La frise de triangles",
+      "enonce": "La frise est pavée de triangles tous identiques, chacun valant un demi-carreau. Donner son aire en carreaux.",
+      "corrige": "On compte 14 triangles ; deux triangles font un carreau : $14:2=\\res7$ carreaux.",
+      "methode": "Convertir les triangles en carreaux.",
+      "controle": "assert 14//2==7",
+      "figure": "aa-12",
+      "conseil": "",
+      "difficulte": 3
+    },
+    {
+      "titre": "Le côté qui double",
+      "enonce": "Un carré a 2 carreaux de côté. On double son côté.\\begin{questions}\n\\item Donner l’aire du petit et du grand carré.\n\\item L’aire a-t-elle doublé ?\n\\end{questions}",
+      "corrige": "Petit carré : $2\\times2=\\res4$ carreaux. Grand carré : $4\\times4=\\res{16}$ carreaux. L’aire est multipliée par $16:4=4$ : elle $\\res{\\text{a quadruplé}}$, et non doublé.",
+      "methode": "Compter les carreaux des deux carrés.",
+      "controle": "assert 2*2==4 and 4*4==16 and 16//4==4",
+      "figure": "aa-13",
+      "conseil": "",
+      "difficulte": 3
+    },
+    {
+      "titre": "Les angles du triangle",
+      "enonce": "Comparer chaque angle du triangle dessiné à l’angle droit de l’équerre.",
+      "corrige": "L’angle en A est $\\res{\\text{droit}}$ : l’équerre s’y ajuste. Les angles en B et en C sont $\\res{\\text{plus petits}}$ qu’un angle droit : l’équerre dépasse.",
+      "methode": "Tester chaque sommet avec l’équerre.",
+      "controle": "assert 1==1",
+      "figure": "aa-14",
+      "conseil": "",
+      "difficulte": 3
+    },
+    {
+      "titre": "Grand tour, petite aire",
+      "enonce": "Milan affirme : « Plus le périmètre d’une figure est grand, plus son aire est grande. » Comparer le serpentin et le carré dessinés, puis répondre.",
+      "corrige": "Le serpentin a un contour de $\\res{20}$ unités, le carré de $\\res{12}$ unités seulement. Pourtant chacun couvre $\\res9$ carreaux : même aire ! L’affirmation est $\\res{\\text{fausse}}$ : contour et surface sont des grandeurs indépendantes.",
+      "methode": "Mesurer les deux grandeurs sur chaque figure.",
+      "controle": "assert 20>12 and 9==9",
+      "figure": "aa-15",
+      "conseil": "",
+      "difficulte": 3
+    }
+  ],
+  "reperes": [
+    "Comparer des surfaces",
+    "Pavages et centimètre carré",
+    "Angles, sommet et notation",
+    "Angle droit et classements"
+  ],
+  "deco": "grandeurs"
+}

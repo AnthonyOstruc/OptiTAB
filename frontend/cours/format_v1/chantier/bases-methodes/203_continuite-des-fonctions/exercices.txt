@@ -1,0 +1,1051 @@
+=== Découverte - Continuité des Fonctions - Vérification de Continuité
+Id: 1584
+Difficulté: easy
+Image: continuite_question1.png,continuite_question2.png,continuite_question3.png,continuite_question4.png,continuite_question5.png
+
+Énoncé:
+<!-- optitab:1 -->
+Vérifier la continuité des fonctions suivantes aux points indiqués.
+
+1. Vérifier la continuité de $\displaystyle f(x) = \frac{x^2 - 4}{x - 2}$ en $\displaystyle x = 2$
+2. Vérifier la continuité de $\displaystyle g(x) = \begin{cases} x^2 & \text{si } x < 1 \\ 2x - 1 & \text{si } x \geq 1 \end{cases}$ en $\displaystyle x = 1$
+3. Vérifier la continuité de $\displaystyle h(x) = \frac{\sin x}{x}$ en $\displaystyle x = 0$
+4. Vérifier la continuité de $\displaystyle k(x) = \begin{cases} \frac{x^2 - 1}{x - 1} & \text{si } x \neq 1 \\ 2 & \text{si } x = 1 \end{cases}$ en $\displaystyle x = 1$
+5. Vérifier la continuité de $\displaystyle m(x) = |x - 3|$ en $\displaystyle x = 3$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Vérifier la continuité de $\displaystyle f(x) = \frac{x^2 - 4}{x - 2}$ en $\displaystyle x = 2$
+
+::: methode
+Vérification de la définition de continuité
+:::
+
+::: etape Vérifier si $\displaystyle f(2)$ est définie
+- $\displaystyle f(2) = \frac{2^2 - 4}{2 - 2} = \frac{0}{0}$ → **indéterminée**
+- $\displaystyle f(2)$ n'est pas définie
+:::
+
+::: etape Calculer $\displaystyle\lim_{x \to 2} f(x)$
+$$
+\begin{aligned}
+\lim_{x \to 2} \frac{x^2 - 4}{x - 2} &= \lim_{x \to 2} \frac{(x-2)(x+2)}{x-2} \\
+&= \lim_{x \to 2} (x+2) \\
+&= 4
+\end{aligned}
+$$
+:::
+
+::: etape Conclusion
+- La limite existe et vaut $\displaystyle 4$
+- Mais $\displaystyle f(2)$ n'est pas définie
+- **Type de discontinuité :** Discontinuité évitable
+:::
+
+::: resultat
+$f$ n'est pas continue en $x = 2$ (discontinuité évitable)
+:::
+
+[IMAGE_1]
+
+## Question 2 : Vérifier la continuité de $\displaystyle g(x) = \begin{cases} x^2 & \text{si } x < 1 \\ 2x - 1 & \text{si } x \geq 1 \end{cases}$ en $\displaystyle x = 1$
+
+::: methode
+Vérification de la continuité d'une fonction définie par morceaux
+:::
+
+::: etape Calculer $\displaystyle g(1)$
+- $g(1) = 2(1) - 1 = 1$ (car $x = 1 \geq 1$)
+:::
+
+::: etape Calculer les limites latérales
+- Limite à gauche : $\displaystyle\lim_{x \to 1^-} g(x) = \lim_{x \to 1^-} x^2 = 1^2 = 1$
+
+Limite à droite :
+
+$$
+\begin{aligned}
+\lim_{x \to 1^+} g(x) &= \lim_{x \to 1^+} (2x - 1) \\
+&= 2(1) - 1 \\
+&= 1
+\end{aligned}
+$$
+:::
+
+::: etape Vérifier la continuité
+- $\displaystyle\lim_{x \to 1^-} g(x) = \lim_{x \to 1^+} g(x) = 1$
+- Donc $\displaystyle\lim_{x \to 1} g(x) = 1$
+- Et $\displaystyle g(1) = 1$
+- Donc $\displaystyle\lim_{x \to 1} g(x) = g(1)$
+:::
+
+::: resultat
+$g$ est continue en $x = 1$
+:::
+
+[IMAGE_2]
+
+## Question 3 : Vérifier la continuité de $\displaystyle h(x) = \frac{\sin x}{x}$ en $\displaystyle x = 0$
+
+::: methode
+Vérification de la continuité avec limite trigonométrique
+:::
+
+::: etape Vérifier si $\displaystyle h(0)$ est définie
+- $\displaystyle h(0) = \frac{\sin 0}{0} = \frac{0}{0}$ → **indéterminée**
+- $\displaystyle h(0)$ n'est pas définie
+:::
+
+::: etape Calculer $\displaystyle\lim_{x \to 0} h(x)$
+- $\lim_{x \to 0} \frac{\sin x}{x} = 1$ (limite trigonométrique fondamentale)
+:::
+
+::: etape Conclusion
+- La limite existe et vaut $\displaystyle 1$
+- Mais $\displaystyle h(0)$ n'est pas définie
+- **Type de discontinuité :** Discontinuité évitable
+:::
+
+::: resultat
+$h$ n'est pas continue en $x = 0$ (discontinuité évitable)
+:::
+
+[IMAGE_3]
+
+## Question 4 : Vérifier la continuité de $\displaystyle k(x) = \begin{cases} \frac{x^2 - 1}{x - 1} & \text{si } x \neq 1 \\ 2 & \text{si } x = 1 \end{cases}$ en $\displaystyle x = 1$
+
+::: methode
+Vérification de la continuité avec prolongement par continuité
+:::
+
+::: etape Calculer $\displaystyle k(1)$
+- $\displaystyle k(1) = 2$ (défini par la fonction)
+:::
+
+::: etape Calculer $\displaystyle\lim_{x \to 1} k(x)$
+Pour $\displaystyle x \neq 1$ :
+
+$$
+\begin{aligned}
+\lim_{x \to 1} \frac{x^2 - 1}{x - 1} &= \lim_{x \to 1} \frac{(x-1)(x+1)}{x-1} \\
+&= \lim_{x \to 1} (x+1) \\
+&= 2
+\end{aligned}
+$$
+:::
+
+::: etape Vérifier la continuité
+- $\displaystyle\lim_{x \to 1} k(x) = 2$
+- Et $\displaystyle k(1) = 2$
+- Donc $\displaystyle\lim_{x \to 1} k(x) = k(1)$
+:::
+
+::: resultat
+$k$ est continue en $x = 1$
+:::
+
+[IMAGE_4]
+
+## Question 5 : Vérifier la continuité de $\displaystyle m(x) = |x - 3|$ en $\displaystyle x = 3$
+
+::: methode
+Vérification de la continuité d'une fonction valeur absolue
+:::
+
+::: etape Calculer $\displaystyle m(3)$
+- $\displaystyle m(3) = |3 - 3| = |0| = 0$
+:::
+
+::: etape Calculer $\displaystyle\lim_{x \to 3} m(x)$
+- $\displaystyle\lim_{x \to 3} |x - 3| = |3 - 3| = |0| = 0$
+:::
+
+::: etape Vérifier la continuité
+- $\displaystyle\lim_{x \to 3} m(x) = 0$
+- Et $\displaystyle m(3) = 0$
+- Donc $\displaystyle\lim_{x \to 3} m(x) = m(3)$
+:::
+
+::: resultat
+$m$ est continue en $x = 3$
+:::
+
+[IMAGE_5]
+
+Solution:
+<!-- optitab:1 -->
+1. $f$ n'est pas continue en $x = 2$ (discontinuité évitable)
+2. $g$ est continue en $x = 1$
+3. $h$ n'est pas continue en $x = 0$ (discontinuité évitable)
+4. $k$ est continue en $x = 1$
+5. $m$ est continue en $x = 3$
+
+===
+
+=== Entraînement - Continuité des Fonctions - Classification des Discontinuités
+Id: 1586
+Difficulté: medium
+Image: discontinuites_question1.png,discontinuites_question2.png,discontinuites_question3.png,discontinuites_question4.png,discontinuites_question5.png
+
+Énoncé:
+<!-- optitab:1 -->
+Classifier les discontinuités des fonctions suivantes.
+
+1. Classifier la discontinuité de $\displaystyle a(x) = \frac{1}{x - 1}$ en $x = 1$
+2. Classifier la discontinuité de $g(x) = \begin{cases} x + 1 & \text{si } x < 0 \\ x - 1 & \text{si } x \geq 0 \end{cases}$ en $x = 0$
+3. Classifier la discontinuité de $h(x) = \frac{1}{x^2}$ en $x = 0$
+4. Classifier la discontinuité de $\displaystyle k(x) = \begin{cases} \sin\!\left(\frac{1}{x}\right) & \text{si } x \neq 0 \\ 0 & \text{si } x = 0 \end{cases}$ en $x = 0$
+5. Classifier la discontinuité de $m(x) = \begin{cases} x^2 & \text{si } x < 1 \\ x + 1 & \text{si } x \geq 1 \end{cases}$ en $x = 1$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Classifier la discontinuité de $\displaystyle a(x) = \frac{1}{x - 1}$ en $x = 1$
+
+::: methode
+Analyse des limites latérales
+:::
+
+::: etape Vérifier si $\displaystyle a(1)$ est définie
+- $\displaystyle a(1) = \frac{1}{1 - 1} = \frac{1}{0}$ → **non définie**
+:::
+
+::: etape Calculer les limites latérales
+$$
+\begin{aligned}
+\lim_{x \to 1^-} a(x) &= \lim_{x \to 1^-} \frac{1}{x - 1} \\
+&= -\infty
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+\lim_{x \to 1^+} a(x) &= \lim_{x \to 1^+} \frac{1}{x - 1} \\
+&= +\infty
+\end{aligned}
+$$
+:::
+
+::: etape Classification
+- Les limites latérales sont infinies (et de signes opposés)
+- **Type :** Discontinuité infinie (asymptote verticale en $x = 1$)
+:::
+
+::: resultat
+Discontinuité infinie en $x = 1$ (asymptote verticale)
+:::
+
+[IMAGE_1]
+
+## Question 2 : Classifier la discontinuité de $g(x) = \begin{cases} x + 1 & \text{si } x < 0 \\ x - 1 & \text{si } x \geq 0 \end{cases}$ en $x = 0$
+
+::: methode
+Analyse des limites latérales
+:::
+
+::: etape Calculer $g(0)$
+- $g(0) = 0 - 1 = -1$ (car $x = 0 \geq 0$)
+:::
+
+::: etape Calculer les limites latérales
+Limite à gauche :
+
+$$
+\begin{aligned}
+\lim_{x \to 0^-} g(x) &= \lim_{x \to 0^-} (x + 1) \\
+&= 0 + 1 \\
+&= 1
+\end{aligned}
+$$
+
+Limite à droite :
+
+$$
+\begin{aligned}
+\lim_{x \to 0^+} g(x) &= \lim_{x \to 0^+} (x - 1) \\
+&= 0 - 1 \\
+&= -1
+\end{aligned}
+$$
+:::
+
+::: etape Classification
+- Les limites latérales existent mais sont différentes : $1 \neq -1$
+- **Amplitude du saut :** $1 - (-1) = 2$
+- **Type :** Saut fini d'amplitude 2
+:::
+
+::: resultat
+Saut fini d'amplitude 2 en $x = 0$
+:::
+
+[IMAGE_2]
+
+## Question 3 : Classifier la discontinuité de $h(x) = \frac{1}{x^2}$ en $x = 0$
+
+::: methode
+Analyse des limites latérales
+:::
+
+::: etape Vérifier si $h(0)$ est définie
+- $h(0) = \frac{1}{0^2} = \frac{1}{0}$ → **indéterminée**
+- $h(0)$ n'est pas définie
+:::
+
+::: etape Calculer les limites latérales
+- Limite à gauche : $\displaystyle\lim_{x \to 0^-} \frac{1}{x^2} = +\infty$
+- Limite à droite : $\displaystyle\lim_{x \to 0^+} \frac{1}{x^2} = +\infty$
+:::
+
+::: etape Classification
+- Les limites latérales sont infinies et égales : $\lim_{x \to 0} h(x) = +\infty$
+- **Type :** Discontinuité infinie (asymptote verticale)
+:::
+
+::: resultat
+Discontinuité infinie en $x = 0$ (asymptote verticale)
+:::
+
+[IMAGE_3]
+
+## Question 4 : Classifier la discontinuité de $\displaystyle k(x) = \begin{cases} \sin\!\left(\frac{1}{x}\right) & \text{si } x \neq 0 \\ 0 & \text{si } x = 0 \end{cases}$ en $x = 0$
+
+::: methode
+Analyse des limites latérales
+:::
+
+::: etape Calculer $\displaystyle k(0)$
+- $\displaystyle k(0) = 0$ (défini par la fonction)
+:::
+
+::: etape Étudier $\displaystyle\lim_{x \to 0} k(x)$
+- Quand $x \to 0$, $\frac{1}{x}$ oscille entre $-\infty$ et $+\infty$
+- Donc $\sin\!\left(\frac{1}{x}\right)$ n'admet pas de limite (oscillations)
+:::
+
+::: etape Classification
+- La limite en $\displaystyle 0$ n'existe pas
+- **Type :** Discontinuité essentielle (par oscillations)
+:::
+
+::: resultat
+Discontinuité essentielle en $x = 0$
+:::
+
+[IMAGE_4]
+
+## Question 5 : Classifier la discontinuité de $m(x) = \begin{cases} x^2 & \text{si } x < 1 \\ x + 1 & \text{si } x \geq 1 \end{cases}$ en $x = 1$
+
+::: methode
+Analyse des limites latérales
+:::
+
+::: etape Calculer $m(1)$
+- $m(1) = 1 + 1 = 2$ (car $x = 1 \geq 1$)
+:::
+
+::: etape Calculer les limites latérales
+- Limite à gauche : $\displaystyle\lim_{x \to 1^-} m(x) = \lim_{x \to 1^-} x^2 = 1^2 = 1$
+
+Limite à droite :
+
+$$
+\begin{aligned}
+\lim_{x \to 1^+} m(x) &= \lim_{x \to 1^+} (x + 1) \\
+&= 1 + 1 \\
+&= 2
+\end{aligned}
+$$
+:::
+
+::: etape Classification
+- Les limites latérales existent mais sont différentes : $1 \neq 2$
+- **Amplitude du saut :** $2 - 1 = 1$
+- **Type :** Saut fini d'amplitude 1
+:::
+
+::: resultat
+Saut fini d'amplitude 1 en $x = 1$
+:::
+
+[IMAGE_5]
+
+Solution:
+<!-- optitab:1 -->
+1. Discontinuité évitable en $x = 1$
+2. Saut fini d'amplitude 2 en $x = 0$
+3. Discontinuité infinie en $x = 0$ (asymptote verticale)
+4. Discontinuité évitable en $x = 0$
+5. Saut fini d'amplitude 1 en $x = 1$
+
+===
+
+=== Entraînement - Continuité des Fonctions - Prolongement par Continuité
+Id: 1588
+Difficulté: medium
+Image: prolongement_question1.png,prolongement_question2.png,prolongement_question3.png,prolongement_question4.png,prolongement_question5.png
+
+Énoncé:
+<!-- optitab:1 -->
+Étudier la continuité et les prolongements possibles des fonctions suivantes.
+
+1. Étudier la continuité de $\displaystyle f(x) = \frac{x^3 - 8}{x - 2}$ en $x = 2$
+2. Étudier la continuité de $\displaystyle g(x) = \frac{\sin(2x)}{x}$ en $x = 0$
+3. Étudier la continuité de $\displaystyle h(x) = \frac{\ln(1 + x)}{x}$ en $x = 0$
+4. Étudier la continuité de $\displaystyle k(x) = \frac{e^x - 1}{x}$ en $x = 0$
+5. Étudier la continuité de $\displaystyle m(x) = \frac{\sqrt{x + 1} - 1}{x}$ en $x = 0$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Étudier la continuité de $\displaystyle f(x) = \frac{x^3 - 8}{x - 2}$ en $x = 2$
+
+::: methode
+Analyse des limites et prolongement par continuité
+:::
+
+::: etape Vérifier si $f(2)$ est définie
+- $f(2) = \frac{2^3 - 8}{2 - 2} = \frac{0}{0}$ → **indéterminée**
+- $f(2)$ n'est pas définie
+:::
+
+::: etape Calculer $\displaystyle\lim_{x \to 2} f(x)$
+- Factorisation : $x^3 - 8 = (x - 2)(x^2 + 2x + 4)$
+
+$$
+\begin{aligned}
+\lim_{x \to 2} \frac{x^3 - 8}{x - 2} &= \lim_{x \to 2} \frac{(x-2)(x^2 + 2x + 4)}{x-2} \\
+&= \lim_{x \to 2} (x^2 + 2x + 4) \\
+&= 4 + 4 + 4 \\
+&= 12
+\end{aligned}
+$$
+:::
+
+::: etape Classification
+- La limite existe et vaut $12$
+- Mais $f(2)$ n'est pas définie
+- **Type :** Discontinuité évitable
+:::
+
+::: resultat
+Discontinuité évitable en $x = 2$ (prolongement possible en $f(2) = 12$)
+:::
+
+::: point Fonction prolongée
+$$\tilde f(x) = \begin{cases} \dfrac{x^3 - 8}{x - 2} & \text{si } x \neq 2 \\ 12 & \text{si } x = 2 \end{cases}$$
+:::
+
+[IMAGE_1]
+
+## Question 2 : Étudier la continuité de $\displaystyle g(x) = \frac{\sin(2x)}{x}$ en $x = 0$
+
+::: methode
+Utilisation de la limite trigonométrique fondamentale
+:::
+
+::: etape Vérifier si $g(0)$ est définie
+- $g(0) = \frac{\sin(0)}{0} = \frac{0}{0}$ → **indéterminée**
+- $g(0)$ n'est pas définie
+:::
+
+::: etape Calculer $\displaystyle\lim_{x \to 0} g(x)$
+Transformation :
+
+$$
+\begin{aligned}
+\frac{\sin(2x)}{x} &= \frac{2\sin(2x)}{2x} \\
+&= 2 \cdot \frac{\sin(2x)}{2x}
+\end{aligned}
+$$
+
+- Avec $u = 2x$, quand $x \to 0$, on a $u \to 0$ : $\frac{\sin(2x)}{2x} \to 1$
+- **Résultat :** $\displaystyle\lim_{x \to 0} g(x) = 2 \times 1 = 2$
+:::
+
+::: etape Classification
+- La limite existe et vaut $2$
+- Mais $g(0)$ n'est pas définie
+- **Type :** Discontinuité évitable
+:::
+
+::: resultat
+Discontinuité évitable en $x = 0$ (prolongement possible en $g(0) = 2$)
+:::
+
+::: point Fonction prolongée
+$$\tilde g(x) = \begin{cases} \dfrac{\sin(2x)}{x} & \text{si } x \neq 0 \\ 2 & \text{si } x = 0 \end{cases}$$
+:::
+
+[IMAGE_2]
+
+## Question 3 : Étudier la continuité de $\displaystyle h(x) = \frac{\ln(1 + x)}{x}$ en $x = 0$
+
+::: methode
+Utilisation de la limite logarithmique fondamentale
+:::
+
+::: etape Vérifier si $h(0)$ est définie
+- $h(0) = \frac{\ln(1 + 0)}{0} = \frac{\ln(1)}{0} = \frac{0}{0}$ → **indéterminée**
+- $h(0)$ n'est pas définie
+:::
+
+::: etape Calculer $\displaystyle\lim_{x \to 0} h(x)$
+- **Limite fondamentale :** $\displaystyle\lim_{x \to 0} \frac{\ln(1 + x)}{x} = 1$
+- **Résultat :** $\displaystyle\lim_{x \to 0} h(x) = 1$
+:::
+
+::: etape Classification
+- La limite existe et vaut $1$
+- Mais $h(0)$ n'est pas définie
+- **Type :** Discontinuité évitable
+:::
+
+::: resultat
+Discontinuité évitable en $x = 0$ (prolongement possible en $h(0) = 1$)
+:::
+
+::: point Fonction prolongée
+$$\tilde h(x) = \begin{cases} \dfrac{\ln(1 + x)}{x} & \text{si } x \neq 0 \\ 1 & \text{si } x = 0 \end{cases}$$
+:::
+
+[IMAGE_3]
+
+## Question 4 : Étudier la continuité de $\displaystyle k(x) = \frac{e^x - 1}{x}$ en $x = 0$
+
+::: methode
+Utilisation de la limite exponentielle fondamentale
+:::
+
+::: etape Vérifier si $k(0)$ est définie
+- $k(0) = \frac{e^0 - 1}{0} = \frac{1 - 1}{0} = \frac{0}{0}$ → **indéterminée**
+- $k(0)$ n'est pas définie
+:::
+
+::: etape Calculer $\displaystyle\lim_{x \to 0} k(x)$
+- **Limite fondamentale :** $\displaystyle\lim_{x \to 0} \frac{e^x - 1}{x} = 1$
+- **Résultat :** $\displaystyle\lim_{x \to 0} k(x) = 1$
+:::
+
+::: etape Classification
+- La limite existe et vaut $1$
+- Mais $k(0)$ n'est pas définie
+- **Type :** Discontinuité évitable
+:::
+
+::: resultat
+Discontinuité évitable en $x = 0$ (prolongement possible en $k(0) = 1$)
+:::
+
+::: point Fonction prolongée
+$$\tilde k(x) = \begin{cases} \dfrac{e^x - 1}{x} & \text{si } x \neq 0 \\ 1 & \text{si } x = 0 \end{cases}$$
+:::
+
+[IMAGE_4]
+
+## Question 5 : Étudier la continuité de $\displaystyle m(x) = \frac{\sqrt{x + 1} - 1}{x}$ en $x = 0$
+
+::: methode
+Multiplication par le conjugué
+:::
+
+::: etape Vérifier si $m(0)$ est définie
+- $m(0) = \frac{\sqrt{0 + 1} - 1}{0} = \frac{1 - 1}{0} = \frac{0}{0}$ → **indéterminée**
+- $m(0)$ n'est pas définie
+:::
+
+::: etape Calculer $\displaystyle\lim_{x \to 0} m(x)$
+- Multiplication par le conjugué : $\frac{\sqrt{x + 1} - 1}{x} \times \frac{\sqrt{x + 1} + 1}{\sqrt{x + 1} + 1}$
+
+Simplification :
+
+$$
+\begin{aligned}
+\frac{(\sqrt{x + 1})^2 - 1^2}{x(\sqrt{x + 1} + 1)} &= \frac{x + 1 - 1}{x(\sqrt{x + 1} + 1)} \\
+&= \frac{x}{x(\sqrt{x + 1} + 1)}
+\end{aligned}
+$$
+
+- Pour $x \neq 0$ : $\frac{1}{\sqrt{x + 1} + 1}$
+- **Résultat :** $\displaystyle\lim_{x \to 0} m(x) = \frac{1}{\sqrt{0 + 1} + 1} = \frac{1}{2}$
+:::
+
+::: etape Classification
+- La limite existe et vaut $\frac{1}{2}$
+- Mais $m(0)$ n'est pas définie
+- **Type :** Discontinuité évitable
+:::
+
+::: resultat
+Discontinuité évitable en $x = 0$ (prolongement possible en $m(0) = \frac{1}{2}$)
+:::
+
+::: point Fonction prolongée
+$$\tilde m(x) = \begin{cases} \dfrac{\sqrt{x + 1} - 1}{x} & \text{si } x \neq 0 \\ \dfrac{1}{2} & \text{si } x = 0 \end{cases}$$
+:::
+
+[IMAGE_5]
+
+Solution:
+<!-- optitab:1 -->
+1. Discontinuité évitable en $x = 2$ (prolongement en $f(2) = 12$)
+2. Discontinuité évitable en $x = 0$ (prolongement en $g(0) = 2$)
+3. Discontinuité évitable en $x = 0$ (prolongement en $h(0) = 1$)
+4. Discontinuité évitable en $x = 0$ (prolongement en $k(0) = 1$)
+5. Discontinuité évitable en $x = 0$ (prolongement en $m(0) = \frac{1}{2}$)
+
+===
+
+=== Entraînement - Continuité des Fonctions - Théorème des Valeurs Intermédiaires
+Id: 1585
+Difficulté: medium
+Image: tvi_question1.png,tvi_question2.png,tvi_question3.png,tvi_question4.png,tvi_question5.png
+
+Énoncé:
+<!-- optitab:1 -->
+Appliquer le théorème des valeurs intermédiaires pour résoudre les problèmes suivants.
+
+1. Montrer que l'équation $\displaystyle x^3 - 3x + 1 = 0$ admet au moins une solution dans $\displaystyle [0, 2]$
+2. L'équation $\displaystyle e^x = 2x$ admet-elle une solution dans $\displaystyle [0, 1]$ ?
+3. Montrer que l'équation $\displaystyle \ln x = 1 - x$ admet au moins une solution dans $\displaystyle ]0, 1]$
+4. Montrer que l'équation $\displaystyle \cos x = x$ admet au moins une solution dans $\displaystyle [0, \frac{\pi}{2}]$
+5. Montrer que l'équation $\displaystyle x^4 - 2x^2 + 1 = 0$ admet au moins une solution dans $\displaystyle [-2, 2]$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Montrer que l'équation $\displaystyle x^3 - 3x + 1 = 0$ admet au moins une solution dans $\displaystyle [0, 2]$
+
+::: methode
+Application du théorème des valeurs intermédiaires
+:::
+
+::: etape Définir la fonction $\displaystyle f(x) = x^3 - 3x + 1$
+:::
+
+::: etape Vérifier la continuité de $\displaystyle f$
+- $f$ est un polynôme, donc continue sur $\mathbb{R}$
+- En particulier, $f$ est continue sur $[0, 2]$
+:::
+
+::: etape Calculer $f(0)$ et $f(2)$
+- $\displaystyle f(0) = 0^3 - 3(0) + 1 = 1$
+- $\displaystyle f(2) = 2^3 - 3(2) + 1 = 8 - 6 + 1 = 3$
+:::
+
+::: etape Appliquer le TVI
+- $f(0) = 1 > 0$ et $f(2) = 3 > 0$
+- On cherche une solution de $\displaystyle f(x) = 0$
+- Calculons $\displaystyle f(1) = 1^3 - 3(1) + 1 = -1 < 0$
+- Donc $\displaystyle f(1) < 0 < f(2)$
+- Par TVI, il existe $c \in ]1, 2[$ tel que $f(c) = 0$
+:::
+
+::: resultat
+L'équation $x^3 - 3x + 1 = 0$ admet au moins une solution dans $[0, 2]$
+:::
+
+[IMAGE_1]
+
+## Question 2 : L'équation $\displaystyle e^x = 2x$ admet-elle une solution dans $\displaystyle [0, 1]$ ?
+
+::: methode
+Application du théorème des valeurs intermédiaires
+:::
+
+::: etape Définir la fonction $\displaystyle f(x) = e^x - 2x$
+:::
+
+::: etape Vérifier la continuité de $f$
+- $f$ est la différence de 2 fonctions continues, donc continue sur $\mathbb{R}$
+- En particulier, $f$ est continue sur $[0, 1]$
+:::
+
+::: etape Calculer $f(0)$ et $f(1)$
+- $\displaystyle f(0) = e^0 - 2(0) = 1 - 0 = 1 > 0$
+
+$$
+\begin{aligned}
+f(1) &= e^1 - 2(1) \\
+&= e - 2 \approx 2,718 - 2 \\
+&= 0,718 > 0
+\end{aligned}
+$$
+:::
+
+::: etape Chercher un point où $\displaystyle f(x) < 0$
+- Calculons $\displaystyle f(0,5) = e^{0,5} - 2(0,5) = \sqrt{e} - 1 \approx 1,649 - 1 = 0,649 > 0$
+- Calculons $\displaystyle f(0,1) = e^{0,1} - 2(0,1) \approx 1,105 - 0,2 = 0,905 > 0$
+- En fait, $f(x) > 0$ pour tout $x \in [0, 1]$
+- L'équation $e^x = 2x$ n'a pas de solution dans $[0, 1]$
+:::
+
+::: resultat
+L'équation $e^x = 2x$ n'admet pas de solution dans $[0, 1]$
+:::
+
+[IMAGE_2]
+
+## Question 3 : Montrer que l'équation $\displaystyle \ln x = 1 - x$ admet au moins une solution dans $\displaystyle ]0, 1]$
+
+::: methode
+Application du théorème des valeurs intermédiaires
+:::
+
+::: etape Définir la fonction $\displaystyle f(x) = \ln x - (1 - x) = \ln x + x - 1$
+:::
+
+::: etape Vérifier la continuité de $f$
+- $f$ est somme de fonctions continues sur $]0, +\infty[$
+- En particulier, $f$ est continue sur $]0, 1]$
+:::
+
+::: etape Calculer $\displaystyle f(1)$
+- $\displaystyle f(1) = \ln 1 + 1 - 1 = 0 + 1 - 1 = 0$
+- Donc $\displaystyle x = 1$ est une solution !
+:::
+
+::: etape Vérifier qu'il n'y a pas d'autre solution
+- Pour $x \in ]0, 1[$ : $\ln x < 0$ et $x - 1 < 0$
+- Donc $f(x) = \ln x + x - 1 < 0$ pour $x \in ]0, 1[$
+- La seule solution est $\displaystyle x = 1$
+:::
+
+::: resultat
+L'équation $\ln x = 1 - x$ admet exactement une solution dans $]0, 1]$ (qui est $x = 1$)
+:::
+
+[IMAGE_3]
+
+## Question 4 : Montrer que l'équation $\displaystyle \cos x = x$ admet au moins une solution dans $\displaystyle [0, \frac{\pi}{2}]$
+
+::: methode
+Application du théorème des valeurs intermédiaires
+:::
+
+::: etape Définir la fonction $\displaystyle f(x) = \cos x - x$
+:::
+
+::: etape Vérifier la continuité de $f$
+- $f$ est la différence de 2 fonctions continues, donc continue sur $\mathbb{R}$
+- En particulier, $f$ est continue sur $[0, \frac{\pi}{2}]$
+:::
+
+::: etape Calculer $f(0)$ et $f(\frac{\pi}{2})$
+- $\displaystyle f(0) = \cos 0 - 0 = 1 - 0 = 1 > 0$
+
+$$
+\begin{aligned}
+f(\frac{\pi}{2}) &= \cos(\frac{\pi}{2}) - \frac{\pi}{2} \\
+&= 0 - \frac{\pi}{2} \\
+&= -\frac{\pi}{2} < 0
+\end{aligned}
+$$
+:::
+
+::: etape Appliquer le TVI
+- $f(0) = 1 > 0$ et $f(\frac{\pi}{2}) = -\frac{\pi}{2} < 0$
+- Par TVI, il existe $c \in ]0, \frac{\pi}{2}[$ tel que $f(c) = 0$
+- Donc $\displaystyle\cos c = c$
+:::
+
+::: resultat
+L'équation $\cos x = x$ admet au moins une solution dans $[0, \frac{\pi}{2}]$
+:::
+
+[IMAGE_4]
+
+## Question 5 : Montrer que l'équation $\displaystyle x^4 - 2x^2 + 1 = 0$ admet au moins une solution dans $\displaystyle [-2, 2]$
+
+::: methode
+Application du théorème des valeurs intermédiaires
+:::
+
+::: etape Définir la fonction $\displaystyle f(x) = x^4 - 2x^2 + 1$
+:::
+
+::: etape Vérifier la continuité de $f$
+- $f$ est un polynôme, donc continue sur $\mathbb{R}$
+- En particulier, $f$ est continue sur $[-2, 2]$
+:::
+
+::: etape Calculer $f(-2)$ et $f(2)$
+- $\displaystyle f(-2) = (-2)^4 - 2(-2)^2 + 1 = 16 - 8 + 1 = 9 > 0$
+- $\displaystyle f(2) = 2^4 - 2(2)^2 + 1 = 16 - 8 + 1 = 9 > 0$
+:::
+
+::: etape Chercher un point où $\displaystyle f(x) = 0$
+- Factorisons : $\displaystyle f(x) = x^4 - 2x^2 + 1 = (x^2 - 1)^2$
+- Donc $\displaystyle f(x) = 0 \Leftrightarrow x^2 - 1 = 0 \Leftrightarrow x = \pm 1$
+- Vérifions : $f(1) = 1^4 - 2(1)^2 + 1 = 0$ et $f(-1) = (-1)^4 - 2(-1)^2 + 1 = 0$
+:::
+
+::: resultat
+L'équation $x^4 - 2x^2 + 1 = 0$ admet exactement deux solutions dans $[-2, 2]$ (qui sont $x = 1$ et $x = -1$)
+:::
+
+[IMAGE_5]
+
+Solution:
+<!-- optitab:1 -->
+1. L'équation $x^3 - 3x + 1 = 0$ admet au moins une solution dans $[0, 2]$
+2. L'équation $e^x = 2x$ n'admet pas de solution dans $[0, 1]$
+3. L'équation $\ln x = 1 - x$ admet exactement une solution dans $]0, 1]$ ($x = 1$)
+4. L'équation $\cos x = x$ admet au moins une solution dans $[0, \frac{\pi}{2}]$
+5. L'équation $x^4 - 2x^2 + 1 = 0$ admet exactement deux solutions dans $[-2, 2]$ ($x = \pm 1$)
+
+===
+
+=== Problème - Continuité des Fonctions - Applications Avancées
+Id: 1587
+Difficulté: hard
+Image: applications_continuite_question1.png,applications_continuite_question2.png,applications_continuite_question3.png,applications_continuite_question4.png,applications_continuite_question5.png
+
+Énoncé:
+<!-- optitab:1 -->
+Résoudre les problèmes avancés de continuité suivants.
+
+1. Déterminer la valeur de $a$ pour que $\displaystyle f(x) = \begin{cases} \frac{x^2 - 4}{x - 2} & \text{si } x \neq 2 \\ a & \text{si } x = 2 \end{cases}$ soit continue en $x = 2$
+2. Montrer que l'équation $x^5 - 5x + 1 = 0$ admet exactement 3 solutions réelles
+3. Déterminer les valeurs de $a$ et $b$ pour que $g(x) = \begin{cases} ax + b & \text{si } x < 1 \\ x^2 & \text{si } x \geq 1 \end{cases}$ soit continue sur $\mathbb{R}$
+4. Montrer que l'équation $e^x = x + 2$ admet exactement 2 solutions réelles
+5. Déterminer la valeur de $k$ pour que $h(x) = \begin{cases} \frac{\sin x}{x} & \text{si } x \neq 0 \\ k & \text{si } x = 0 \end{cases}$ soit continue en $x = 0$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Déterminer la valeur de $a$ pour que $\displaystyle f(x) = \begin{cases} \frac{x^2 - 4}{x - 2} & \text{si } x \neq 2 \\ a & \text{si } x = 2 \end{cases}$ soit continue en $x = 2$
+
+::: methode
+Prolongement par continuité
+:::
+
+::: etape Calculer $\displaystyle\lim_{x \to 2} f(x)$
+$$
+\begin{aligned}
+\lim_{x \to 2} \frac{x^2 - 4}{x - 2} &= \lim_{x \to 2} \frac{(x-2)(x+2)}{x-2} \\
+&= \lim_{x \to 2} (x+2) \\
+&= 4
+\end{aligned}
+$$
+:::
+
+::: etape Condition de continuité
+- Pour que $f$ soit continue en $x = 2$, il faut : $\lim_{x \to 2} f(x) = f(2)$
+- Donc $4 = a$
+:::
+
+::: resultat
+$$a = 4$$
+:::
+
+[IMAGE_1]
+
+## Question 2 : Montrer que l'équation $x^5 - 5x + 1 = 0$ admet exactement 3 solutions réelles
+
+::: methode
+Application du théorème des valeurs intermédiaires + analyse de la dérivée
+:::
+
+::: etape Définir $\displaystyle f(x) = x^5 - 5x + 1$
+:::
+
+::: etape Vérifier la continuité
+- $f$ est un polynôme, donc continue sur $\mathbb{R}$
+:::
+
+::: etape Analyser les limites
+$$
+\begin{aligned}
+\lim_{x \to -\infty} f(x) &= \lim_{x \to -\infty} x^5 \\
+&= -\infty
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+\lim_{x \to +\infty} f(x) &= \lim_{x \to +\infty} x^5 \\
+&= +\infty
+\end{aligned}
+$$
+:::
+
+::: etape Calculer la dérivée $f'(x) = 5x^4 - 5 = 5(x^4 - 1) = 5(x^2 - 1)(x^2 + 1) = 5(x-1)(x+1)(x^2+1)$
+- $f'(x) = 0 \Leftrightarrow x = \pm 1$
+:::
+
+::: point Tableau de signes de $f'(x)$
+::: tableau
+x : -\infty, -1, 1, +\infty
+(x+1) : , -, z, +, , +,
+(x-1) : , -, , -, z, +,
+(x^2+1) : , +, , +, , +,
+f'(x) : , +, z, -, z, +,
+f(x) : -/-\infty, +/5, -/-3, +/+\infty
+:::
+:::
+
+::: point Analyse du tableau
+$f'(x) > 0$ pour $x 1$ ; $f'(x) < 0$ pour $-1 < x < 1$
+:::
+
+::: etape Analyser les variations
+- $f(-1) = (-1)^5 - 5(-1) + 1 = -1 + 5 + 1 = 5 > 0$
+- $f(1) = 1^5 - 5(1) + 1 = 1 - 5 + 1 = -3 < 0$
+- $f(0) = 0^5 - 5(0) + 1 = 1 > 0$
+:::
+
+::: etape Appliquer le TVI
+- Sur $]-\infty, -1[$ : $f$ strictement croissante de $-\infty$ à $5$, donc une solution
+- Sur $]-1, 1[$ : $f$ strictement décroissante de $5$ à $-3$, donc une solution
+- Sur $]1, +\infty[$ : $f$ strictement croissante de $-3$ à $+\infty$, donc une solution
+:::
+
+::: resultat
+L'équation $x^5 - 5x + 1 = 0$ admet exactement 3 solutions réelles
+:::
+
+[IMAGE_2]
+
+## Question 3 : Déterminer les valeurs de $a$ et $b$ pour que $g(x) = \begin{cases} ax + b & \text{si } x < 1 \\ x^2 & \text{si } x \geq 1 \end{cases}$ soit continue sur $\mathbb{R}$
+
+::: methode
+Continuité d'une fonction définie par morceaux
+:::
+
+::: etape Condition de continuité en $x = 1$
+$$
+\begin{aligned}
+\lim_{x \to 1^-} g(x) &= \lim_{x \to 1^-} (ax + b) \\
+&= a + b
+\end{aligned}
+$$
+
+- $\displaystyle\lim_{x \to 1^+} g(x) = \lim_{x \to 1^+} x^2 = 1$
+- $g(1) = 1^2 = 1$
+:::
+
+::: etape Équation de continuité
+- Pour la continuité : $\displaystyle\lim_{x \to 1^-} g(x) = \lim_{x \to 1^+} g(x) = g(1)$
+- Donc $a + b = 1$
+:::
+
+::: etape Condition supplémentaire
+- Pour que $g$ soit continue sur $\mathbb{R}$, il faut aussi que $g$ soit continue en tout point
+- La fonction $ax + b$ est continue sur $]-\infty, 1[$
+- La fonction $x^2$ est continue sur $[1, +\infty[$
+- Il suffit donc que $a + b = 1$
+:::
+
+::: resultat
+$a + b = 1$ (une droite de solutions dans le plan $(a,b)$)
+:::
+
+[IMAGE_3]
+
+## Question 4 : Montrer que l'équation $e^x = x + 2$ admet exactement 2 solutions réelles
+
+::: methode
+Application du théorème des valeurs intermédiaires + analyse de la dérivée
+:::
+
+::: etape Définir $\displaystyle f(x) = e^x - x - 2$
+:::
+
+::: etape Vérifier la continuité
+- $f$ est la différence de 2 fonctions continues, donc continue sur $\mathbb{R}$
+:::
+
+::: etape Analyser les limites
+$$
+\begin{aligned}
+\lim_{x \to -\infty} f(x) &= \lim_{x \to -\infty} (e^x - x - 2) \\
+&= 0 - (-\infty) - 2 \\
+&= +\infty
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+\lim_{x \to +\infty} f(x) &= \lim_{x \to +\infty} (e^x - x - 2) \\
+&= +\infty - (+\infty) - 2 \\
+&= +\infty
+\end{aligned}
+$$
+:::
+
+::: etape Calculer la dérivée $f'(x) = e^x - 1$
+$$
+\begin{aligned}
+f'(x) = 0 &\Leftrightarrow e^x = 1 \\
+&\Leftrightarrow x = 0
+\end{aligned}
+$$
+:::
+
+::: point Tableau de signes de $f'(x)$
+::: tableau
+x : -\infty, 0, +\infty
+e^x : , +, 1, +,
+(e^x-1) : , -, z, +,
+f'(x) : , -, z, +,
+f(x) : +/+\infty, -/-1, +/+\infty
+:::
+:::
+
+::: point Analyse du tableau
+$f'(x) 0$ pour $x > 0$
+:::
+
+::: etape Analyser les variations
+- $f(0) = e^0 - 0 - 2 = 1 - 2 = -1 < 0$
+
+$$
+\begin{aligned}
+f(-1) &= e^{-1} - (-1) - 2 \\
+&= \frac{1}{e} + 1 - 2 \\
+&= \frac{1}{e} - 1 < 0
+\end{aligned}
+$$
+
+- $f(1) = e^1 - 1 - 2 = e - 3 \approx 2,718 - 3 < 0$
+- $f(2) = e^2 - 2 - 2 = e^2 - 4 \approx 7,389 - 4 > 0$
+:::
+
+::: etape Appliquer le TVI
+- Sur $]-\infty, 0[$ : $f$ strictement décroissante de $+\infty$ à $-1$, donc une solution
+- Sur $]0, +\infty[$ : $f$ strictement croissante de $-1$ à $+\infty$, donc une solution
+:::
+
+::: resultat
+L'équation $e^x = x + 2$ admet exactement 2 solutions réelles
+:::
+
+[IMAGE_4]
+
+## Question 5 : Déterminer la valeur de $k$ pour que $h(x) = \begin{cases} \frac{\sin x}{x} & \text{si } x \neq 0 \\ k & \text{si } x = 0 \end{cases}$ soit continue en $x = 0$
+
+::: methode
+Prolongement par continuité
+:::
+
+::: etape Calculer $\displaystyle\lim_{x \to 0} h(x)$
+- $\lim_{x \to 0} \frac{\sin x}{x} = 1$ (limite trigonométrique fondamentale)
+:::
+
+::: etape Condition de continuité
+- Pour que $h$ soit continue en $x = 0$, il faut : $\lim_{x \to 0} h(x) = h(0)$
+- Donc $1 = k$
+:::
+
+::: resultat
+$$k = 1$$
+:::
+
+[IMAGE_5]
+
+Solution:
+<!-- optitab:1 -->
+1. $a = 4$
+2. L'équation $x^5 - 5x + 1 = 0$ admet exactement 3 solutions réelles
+3. $a + b = 1$ (une droite de solutions dans le plan $(a,b)$)
+4. L'équation $e^x = x + 2$ admet exactement 2 solutions réelles
+5. $k = 1$
+
+===

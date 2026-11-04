@@ -16,10 +16,10 @@ Inventaire de toutes les pages du site (tiré du fichier des routes `frontend/sr
 
 | Espace | Pages | 🟢 Refaites | 🟡 Retouchées | ⚪ Inchangées | ↪ Anciennes adresses |
 |---|:---:|:---:|:---:|:---:|:---:|
-| Hors connexion | 39 | 13 | 25 | 1 | – |
+| Hors connexion | 36 | 18 | 17 | 1 | 4 |
 | Avec connexion (élève ou parent) | 15 | 4 | 11 | 0 | 16 |
 | Administration | 24 | 0 | 0 | 24 | – |
-| **Total** | **78** | **17** | **36** | **25** | **16** |
+| **Total** | **75** | **22** | **28** | **25** | **20** |
 
 Une même page peut avoir plusieurs adresses (anciens liens conservés) : elles sont regroupées sur une seule ligne.
 
@@ -27,7 +27,7 @@ Une même page peut avoir plusieurs adresses (anciens liens conservés) : elles 
 
 ## 1. Pages hors connexion
 
-Depuis le 3 novembre 2026, toutes les pages publiques ont l'en-tête et le pied de page de la vitrine (version épurée « logo + contact + action » pour les pages publicitaires et de paiement). Les pages 🟡 ci-dessous gardent leur contenu d'origine ; ressources gratuites : colonne de lecture centrée.
+Depuis le 3 novembre 2026, toutes les pages publiques ont l'en-tête et le pied de page de la vitrine (version épurée « logo + contact + action » pour les pages publicitaires et de paiement). Les pages 🟡 ci-dessous gardent leur contenu d'origine.
 
 ### Vitrine et présentation
 
@@ -46,14 +46,19 @@ Depuis le 3 novembre 2026, toutes les pages publiques ont l'en-tête et le pied 
 
 | État | Adresse | Page | Remarque |
 |:---:|---|---|---|
-| 🟡 | `/ressources-gratuites` | Accueil des ressources gratuites | |
-| 🟡 | `/ressources-gratuites/cours` | Liste des cours gratuits | Peut s'ouvrir directement sur une classe (`?niveau=6ème`) depuis « Choisis ta classe » de l'accueil |
-| 🟡 | `/ressources-gratuites/exercices` | Liste des exercices gratuits | Même ajout (même page technique) |
-| 🟡 | `/ressources-gratuites/syntheses` | Liste des fiches de synthèse | Même ajout (même page technique) |
-| 🟡 | `/ressources-gratuites/cours/…` (3 formats d'adresse) | Un cours gratuit | |
-| 🟡 | `/ressources-gratuites/exercices/notion/:id` | Exercices gratuits d'un chapitre | |
-| 🟡 | `/ressources-gratuites/exercices/…` (4 formats d'adresse) | Un exercice gratuit | |
-| 🟡 | `/ressources-gratuites/syntheses/…` (3 formats d'adresse) | Une fiche de synthèse gratuite | |
+Refaites de zéro le 3 novembre 2026 en **pages statiques** (générées à chaque construction du site par `frontend/scripts/ressources/`) : tout le texte, les formules et les schémas sont dans la page, lisibles par Google et les assistants d'IA. Gratuit : tous les cours et toutes les fiches du CP à la Terminale, et au moins 3 exercices corrigés par chapitre (820). Voir aussi `/llms.txt` et `/sitemap-ressources.xml`.
+
+| État | Adresse | Page | Remarque |
+|:---:|---|---|---|
+| 🟢 | `/ressources-gratuites/` | **Accueil des ressources gratuites** | Les 12 classes par cycle, mode d'emploi, abonnement et cours particuliers, FAQ |
+| 🟢 | `/ressources-gratuites/maths/<classe>/` | **Une classe** (12 pages : `cp` … `terminale`) | Chapitres par thème avec liens Cours · Fiche · Exercices |
+| 🟢 | `/ressources-gratuites/maths/<classe>/<chapitre>/` | **Cours d'un chapitre** (272 pages) | Sommaire, schémas décrits, chapitres voisins, version texte `index.md` |
+| 🟢 | `…/<chapitre>/fiche/` | **Fiche de révision** (272 pages) | Bouton « Imprimer la fiche » |
+| 🟢 | `…/<chapitre>/exercices/` | **Exercices corrigés** (272 pages) | Énoncés, corrections détaillées dépliables, réponses |
+| ↪ | `/ressources-gratuites/cours`, `/exercices`, `/syntheses` | Anciens accueils | Vers l'accueil des ressources |
+| ↪ | `/ressources-gratuites/cours/…` (3 formats d'adresse) | Ancien cours gratuit | Vers le cours du chapitre |
+| ↪ | `/ressources-gratuites/exercices/notion/:id`, `/exercices/…` (4 formats) | Anciens exercices gratuits | Vers les exercices corrigés du chapitre |
+| ↪ | `/ressources-gratuites/syntheses/…` (3 formats d'adresse) | Ancienne fiche gratuite | Vers la fiche du chapitre |
 
 ### Blog
 

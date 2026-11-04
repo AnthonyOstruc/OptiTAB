@@ -1,0 +1,670 @@
+[
+  {
+    "titre": "Reconnaître une instruction",
+    "contexte": "Une personne reçoit : « avancer d’une case ; tourner à gauche ; avancer de deux cases ».",
+    "questions": [
+      {
+        "question": "Combien d’instructions contient la séquence ?",
+        "methode": "Compter les ordres élémentaires dans l’ordre.",
+        "titre": "Décomposer la séquence",
+        "raisonnement": "Avancer, tourner et avancer sont trois ordres distincts.",
+        "resultat": "3."
+      },
+      {
+        "question": "Pourquoi faut-il respecter l’ordre ?",
+        "methode": "Chaque ordre agit sur la position ou l’orientation atteinte.",
+        "titre": "Comprendre la séquence",
+        "raisonnement": "Tourner avant ou après le déplacement peut changer la direction suivie.",
+        "resultat": "L’ordre peut changer le résultat."
+      }
+    ],
+    "retenir": "Une séquence est une liste ordonnée d’instructions.",
+    "calculs": [],
+    "images": []
+  },
+  {
+    "titre": "Entrée et sortie",
+    "contexte": "Un programme demande un nombre puis affiche le double de ce nombre.",
+    "questions": [
+      {
+        "question": "Identifier l’entrée et la sortie.",
+        "methode": "Distinguer la donnée fournie du résultat affiché.",
+        "titre": "Suivre les informations",
+        "raisonnement": "L’utilisateur fournit le nombre ; le programme calcule et affiche son double.",
+        "resultat": "Entrée : nombre saisi ; sortie : son double."
+      },
+      {
+        "question": "Quelle sortie donne l’entrée 7 ?",
+        "methode": "Exécuter le calcul indiqué.",
+        "titre": "Calculer la sortie",
+        "raisonnement": "$2\\times7=14$.",
+        "resultat": "14."
+      }
+    ],
+    "retenir": "Une entrée n’est pas déjà le résultat du programme.",
+    "calculs": [
+      [
+        "2*7",
+        14
+      ]
+    ],
+    "images": []
+  },
+  {
+    "titre": "Un programme en deux étapes",
+    "contexte": "Choisir 4 ; ajouter 3 ; multiplier le résultat par 2.",
+    "questions": [
+      {
+        "question": "Quel nombre obtient-on après l’addition ?",
+        "methode": "Exécuter la première opération. ",
+        "titre": "Calculer le résultat intermédiaire",
+        "raisonnement": "$4+3=7$.",
+        "resultat": "7."
+      },
+      {
+        "question": "Quel est le résultat final ?",
+        "methode": "Multiplier le résultat intermédiaire, pas le nombre initial.",
+        "titre": "Poursuivre avec le bon nombre",
+        "raisonnement": "$7\\times2=14$.",
+        "resultat": "14."
+      }
+    ],
+    "retenir": "Chaque instruction utilise le résultat obtenu à l’étape précédente.",
+    "calculs": [
+      [
+        "4+3",
+        7
+      ],
+      [
+        "7*2",
+        14
+      ]
+    ],
+    "images": []
+  },
+  {
+    "titre": "Coder un déplacement global",
+    "contexte": "Sur un quadrillage, on part de A1. Les colonnes A, B, C, D, E vont vers la droite ; les lignes 1, 2, 3, 4, 5 vont vers le haut. Exécuter : droite de 3 cases ; haut de 2 cases.",
+    "questions": [
+      {
+        "question": "Quel point atteint-on après le premier ordre ?",
+        "methode": "Changer de colonne sans changer de ligne.",
+        "titre": "Exécuter le déplacement horizontal",
+        "raisonnement": "Depuis A1, trois cases vers la droite mènent à D1.",
+        "resultat": "D1."
+      },
+      {
+        "question": "Où arrive-t-on à la fin ?",
+        "methode": "Garder la colonne puis changer de ligne.",
+        "titre": "Exécuter le déplacement vertical",
+        "raisonnement": "Depuis D1, deux cases vers le haut mènent à D3.",
+        "resultat": "D3."
+      }
+    ],
+    "retenir": "Dans ce codage global, « haut » désigne toujours le haut de la feuille.",
+    "calculs": [],
+    "images": [
+      "chemin_L_vide",
+      "chemin_L"
+    ]
+  },
+  {
+    "titre": "Répéter une addition",
+    "contexte": "On part de 2 et on répète trois fois « ajouter 4 au résultat courant ».",
+    "questions": [
+      {
+        "question": "Écrire les résultats successifs.",
+        "methode": "Reprendre chaque fois le dernier nombre obtenu.",
+        "titre": "Exécuter les trois passages",
+        "raisonnement": "$2+4=6$, puis $6+4=10$, puis $10+4=14$.",
+        "resultat": "6 ; 10 ; 14."
+      },
+      {
+        "question": "Combien d’additions ont été faites ?",
+        "methode": "Compter les passages dans le bloc.",
+        "titre": "Compter les répétitions",
+        "raisonnement": "L’instruction répétée est exécutée trois fois.",
+        "resultat": "3 additions."
+      }
+    ],
+    "retenir": "Le nombre de répétitions compte les passages, pas la valeur du résultat.",
+    "calculs": [
+      [
+        "2+4",
+        6
+      ],
+      [
+        "6+4",
+        10
+      ],
+      [
+        "10+4",
+        14
+      ]
+    ],
+    "images": []
+  },
+  {
+    "titre": "Tourner n’est pas avancer",
+    "contexte": "Un robot est orienté vers le haut. Il tourne d’un quart de tour à droite, sans avancer.",
+    "questions": [
+      {
+        "question": "Vers où regarde-t-il ?",
+        "methode": "Faire tourner l’orientation dans le sens indiqué.",
+        "titre": "Mettre à jour l’orientation",
+        "raisonnement": "Depuis le haut, un quart de tour à droite mène vers la droite de la feuille.",
+        "resultat": "Vers la droite."
+      },
+      {
+        "question": "A-t-il changé de case ?",
+        "methode": "Distinguer orientation et position.",
+        "titre": "Conserver la position",
+        "raisonnement": "Aucun ordre de déplacement n’a été exécuté.",
+        "resultat": "Non."
+      }
+    ],
+    "retenir": "Une rotation change l’orientation ; un déplacement change la position.",
+    "calculs": [],
+    "images": []
+  },
+  {
+    "titre": "Compresser une séquence",
+    "contexte": "Le programme exécute : avancer de 2 cases ; avancer de 2 cases ; avancer de 2 cases ; avancer de 2 cases, toujours dans le même sens.",
+    "questions": [
+      {
+        "question": "L’écrire avec une répétition.",
+        "methode": "Identifier le bloc identique et son nombre d’occurrences.",
+        "titre": "Repérer le bloc répété",
+        "raisonnement": "Le même ordre apparaît quatre fois.",
+        "resultat": "Répéter 4 fois : avancer de 2 cases."
+      },
+      {
+        "question": "Quelle distance est parcourue ?",
+        "methode": "Additionner les quatre déplacements identiques.",
+        "titre": "Calculer la distance totale",
+        "raisonnement": "$4\\times2=8$.",
+        "resultat": "8 cases."
+      }
+    ],
+    "retenir": "Une écriture plus courte doit conserver exactement les mêmes actions.",
+    "calculs": [
+      [
+        "4*2",
+        8
+      ]
+    ],
+    "images": []
+  },
+  {
+    "titre": "Dessiner un carré",
+    "contexte": "Un robot part orienté vers la droite, crayon baissé. Il répète 4 fois : avancer de 3 cases ; tourner d’un quart de tour à gauche.",
+    "questions": [
+      {
+        "question": "Quelle figure trace-t-il ?",
+        "methode": "Suivre les quatre côtés et les changements d’orientation.",
+        "titre": "Suivre les quatre côtés",
+        "raisonnement": "Il trace un côté vers la droite, puis vers le haut, puis vers la gauche, puis vers le bas.",
+        "resultat": "Un carré de côté 3 cases."
+      },
+      {
+        "question": "Quelle distance parcourt-il ?",
+        "methode": "Compter les quatre déplacements.",
+        "titre": "Mesurer le trajet",
+        "raisonnement": "$4\\times3=12$.",
+        "resultat": "12 cases ; il revient au départ."
+      }
+    ],
+    "retenir": "Le dernier quart de tour ne trace aucun côté supplémentaire.",
+    "calculs": [
+      [
+        "4*3",
+        12
+      ]
+    ],
+    "images": [
+      "carre_vide",
+      "carre"
+    ]
+  },
+  {
+    "titre": "Corriger un carré ouvert",
+    "contexte": "Un robot, orienté vers la droite, répète 3 fois : avancer de 3 cases ; tourner d’un quart de tour à gauche.",
+    "questions": [
+      {
+        "question": "Pourquoi le carré n’est-il pas fermé ?",
+        "methode": "Comparer le nombre de côtés tracés aux quatre côtés attendus.",
+        "titre": "Diagnostiquer la boucle",
+        "raisonnement": "Trois répétitions tracent seulement trois côtés.",
+        "resultat": "Il manque le quatrième côté."
+      },
+      {
+        "question": "Corriger le programme.",
+        "methode": "Modifier le nombre de répétitions.",
+        "titre": "Réparer la répétition",
+        "raisonnement": "Répéter quatre fois les mêmes deux instructions trace le dernier côté et ferme le carré.",
+        "resultat": "Remplacer 3 répétitions par 4."
+      }
+    ],
+    "retenir": "Un test du tracé permet de vérifier la fermeture de la figure.",
+    "calculs": [],
+    "images": [
+      "carre_ouvert",
+      "carre"
+    ]
+  },
+  {
+    "titre": "Un escalier régulier",
+    "contexte": "Sur le quadrillage, partir de A1 et répéter 3 fois : droite de 1 case ; haut de 1 case.",
+    "questions": [
+      {
+        "question": "Quel est le point d’arrivée ?",
+        "methode": "Cumuler séparément les déplacements horizontaux et verticaux.",
+        "titre": "Suivre les deux directions",
+        "raisonnement": "Trois cases à droite mènent de A à D ; trois cases vers le haut mènent de 1 à 4.",
+        "resultat": "D4."
+      },
+      {
+        "question": "Quelle distance a-t-on parcourue ?",
+        "methode": "Chaque répétition comporte deux pas.",
+        "titre": "Compter tous les pas",
+        "raisonnement": "$3\\times(1+1)=6$.",
+        "resultat": "6 cases."
+      }
+    ],
+    "retenir": "La longueur du trajet ne se lit pas sur le segment direct entre départ et arrivée.",
+    "calculs": [
+      [
+        "3*(1+1)",
+        6
+      ]
+    ],
+    "images": [
+      "escalier_vide",
+      "escalier"
+    ]
+  },
+  {
+    "titre": "Deux ordres de calcul",
+    "contexte": "A : ajouter 3 puis multiplier par 2. B : multiplier par 2 puis ajouter 3. L’entrée vaut 5.",
+    "questions": [
+      {
+        "question": "Calculer la sortie de A.",
+        "methode": "Respecter l’ordre annoncé.",
+        "titre": "Exécuter A",
+        "raisonnement": "$5+3=8$, puis $8\\times2=16$.",
+        "resultat": "16."
+      },
+      {
+        "question": "Calculer B puis comparer.",
+        "methode": "Refaire les opérations dans l’autre ordre.",
+        "titre": "Exécuter B",
+        "raisonnement": "$5\\times2=10$, puis $10+3=13$. Les sorties 16 et 13 diffèrent.",
+        "resultat": "13 ; les programmes ne sont pas équivalents."
+      }
+    ],
+    "retenir": "Changer l’ordre des mêmes opérations peut changer le résultat.",
+    "calculs": [
+      [
+        "5+3",
+        8
+      ],
+      [
+        "8*2",
+        16
+      ],
+      [
+        "5*2",
+        10
+      ],
+      [
+        "10+3",
+        13
+      ]
+    ],
+    "images": []
+  },
+  {
+    "titre": "Répéter un bloc entier",
+    "contexte": "On part de 1. Répéter 2 fois le bloc « ajouter 2 ; multiplier par 3 ».",
+    "questions": [
+      {
+        "question": "Quel résultat obtient-on à la fin du premier passage ?",
+        "methode": "Exécuter les deux instructions du bloc.",
+        "titre": "Exécuter le premier bloc",
+        "raisonnement": "$1+2=3$, puis $3\\times3=9$.",
+        "resultat": "9."
+      },
+      {
+        "question": "Quel est le résultat final ?",
+        "methode": "Repartir de 9 pour le deuxième bloc.",
+        "titre": "Exécuter le second bloc",
+        "raisonnement": "$9+2=11$, puis $11\\times3=33$.",
+        "resultat": "33."
+      }
+    ],
+    "retenir": "Une répétition porte sur toutes les instructions placées dans son bloc.",
+    "calculs": [
+      [
+        "1+2",
+        3
+      ],
+      [
+        "3*3",
+        9
+      ],
+      [
+        "9+2",
+        11
+      ],
+      [
+        "11*3",
+        33
+      ]
+    ],
+    "images": []
+  },
+  {
+    "titre": "Tester plusieurs entrées",
+    "contexte": "Un programme affiche « 3 × entrée + 1 ».",
+    "questions": [
+      {
+        "question": "Calculer les sorties pour les entrées 0 et 4.",
+        "methode": "Substituer chaque entrée séparément.",
+        "titre": "Tester deux valeurs",
+        "raisonnement": "$3\\times0+1=1$ ; $3\\times4+1=13$.",
+        "resultat": "1 et 13."
+      },
+      {
+        "question": "L’entrée 3 donne-t-elle la sortie 10 ?",
+        "methode": "Tester la proposition dans le programme.",
+        "titre": "Vérifier une paire entrée-sortie",
+        "raisonnement": "$3\\times3+1=10$.",
+        "resultat": "Oui."
+      }
+    ],
+    "retenir": "Tester plusieurs entrées aide à comprendre le rôle du calcul.",
+    "calculs": [
+      [
+        "3*0+1",
+        1
+      ],
+      [
+        "3*4+1",
+        13
+      ],
+      [
+        "3*3+1",
+        10
+      ]
+    ],
+    "images": []
+  },
+  {
+    "titre": "Une suite évolutive",
+    "contexte": "Une suite commence par 3. Pour obtenir chaque terme suivant, on ajoute 5.",
+    "questions": [
+      {
+        "question": "Donner les quatre termes suivants.",
+        "methode": "Appliquer la même instruction au dernier terme.",
+        "titre": "Répéter la règle",
+        "raisonnement": "$3+5=8$, puis 13, 18 et 23.",
+        "resultat": "8 ; 13 ; 18 ; 23."
+      },
+      {
+        "question": "Combien de fois a-t-on ajouté 5 pour atteindre 23 ?",
+        "methode": "Compter les passages de terme en terme.",
+        "titre": "Compter les transitions",
+        "raisonnement": "On passe de 3 à 8, puis 13, puis 18, puis 23.",
+        "resultat": "4 fois."
+      }
+    ],
+    "retenir": "Le premier terme est déjà présent avant la première répétition.",
+    "calculs": [
+      [
+        "3+5",
+        8
+      ],
+      [
+        "3+4*5",
+        23
+      ]
+    ],
+    "images": []
+  },
+  {
+    "titre": "Programmer un rectangle",
+    "contexte": "Un robot orienté vers la droite doit tracer un rectangle de 4 cases sur 2 cases et revenir au départ.",
+    "questions": [
+      {
+        "question": "Proposer un bloc à répéter deux fois.",
+        "methode": "Associer un long côté, un court côté et leurs deux rotations.",
+        "titre": "Construire le motif de deux côtés",
+        "raisonnement": "Avancer de 4 ; tourner d’un quart de tour à gauche ; avancer de 2 ; tourner d’un quart de tour à gauche. Répéter ce bloc 2 fois.",
+        "resultat": "Deux répétitions du bloc proposé."
+      },
+      {
+        "question": "Quelle distance est parcourue ?",
+        "methode": "Compter les deux longueurs et les deux largeurs.",
+        "titre": "Vérifier le périmètre",
+        "raisonnement": "$2\\times(4+2)=12$.",
+        "resultat": "12 cases."
+      }
+    ],
+    "retenir": "Le bloc répété doit contenir le second virage pour changer de côté correctement.",
+    "calculs": [
+      [
+        "2*(4+2)",
+        12
+      ]
+    ],
+    "images": [
+      "rectangle_vide",
+      "rectangle"
+    ]
+  },
+  {
+    "titre": "Un détour autour d’un obstacle",
+    "contexte": "Sur le quadrillage, on part de A1 vers D1. La case B1 est interdite. On propose : haut de 1 ; droite de 3 ; bas de 1.",
+    "questions": [
+      {
+        "question": "Ce chemin atteint-il D1 sans passer par B1 ?",
+        "methode": "Suivre tous les points intermédiaires.",
+        "titre": "Vérifier le détour",
+        "raisonnement": "Le chemin passe par A2, puis D2 et enfin D1. Il ne traverse pas B1.",
+        "resultat": "Oui."
+      },
+      {
+        "question": "Quelle distance supplémentaire parcourt-on par rapport au chemin direct de 3 cases ?",
+        "methode": "Comparer les longueurs des deux trajets.",
+        "titre": "Mesurer le coût du détour",
+        "raisonnement": "$1+3+1=5$ cases ; $5-3=2$.",
+        "resultat": "2 cases supplémentaires."
+      }
+    ],
+    "retenir": "Un programme de chemin doit respecter les obstacles, pas seulement l’arrivée.",
+    "calculs": [
+      [
+        "1+3+1",
+        5
+      ],
+      [
+        "5-3",
+        2
+      ]
+    ],
+    "images": [
+      "detour_vide",
+      "detour"
+    ]
+  },
+  {
+    "titre": "Déboguer une direction",
+    "contexte": "Un robot doit aller de A1 à C3. Le programme saisi est « droite de 2 ; bas de 2 ». Les lignes augmentent vers le haut.",
+    "questions": [
+      {
+        "question": "Quelle instruction contient l’erreur ?",
+        "methode": "Comparer le mouvement vertical à l’arrivée attendue.",
+        "titre": "Identifier la direction erronée",
+        "raisonnement": "Pour passer de la ligne 1 à la ligne 3, il faut monter et non descendre.",
+        "resultat": "« bas de 2 »."
+      },
+      {
+        "question": "Donner le programme corrigé.",
+        "methode": "Conserver le déplacement horizontal correct.",
+        "titre": "Corriger et tester",
+        "raisonnement": "Droite de 2 amène en C1 ; haut de 2 amène en C3.",
+        "resultat": "Droite de 2 ; haut de 2."
+      }
+    ],
+    "retenir": "Corriger la première instruction fautive, puis reprendre le test depuis le départ.",
+    "calculs": [],
+    "images": [
+      "bug_vide",
+      "bug_corrige"
+    ]
+  },
+  {
+    "titre": "Un compteur de motifs",
+    "contexte": "Un motif contient 2 triangles et 1 carré. On répète ce motif 5 fois, sans chevauchement.",
+    "questions": [
+      {
+        "question": "Combien de triangles et de carrés obtient-on ?",
+        "methode": "Multiplier chaque quantité du motif par le nombre de copies.",
+        "titre": "Dénombrer les copies",
+        "raisonnement": "$5\\times2=10$ triangles ; $5\\times1=5$ carrés.",
+        "resultat": "10 triangles et 5 carrés."
+      },
+      {
+        "question": "Combien de figures sont dessinées en tout ?",
+        "methode": "Additionner les deux familles.",
+        "titre": "Contrôler le total",
+        "raisonnement": "$10+5=15$.",
+        "resultat": "15 figures."
+      }
+    ],
+    "retenir": "Le bloc répété peut contenir plusieurs types d’objets.",
+    "calculs": [
+      [
+        "5*2",
+        10
+      ],
+      [
+        "5*1",
+        5
+      ],
+      [
+        "10+5",
+        15
+      ]
+    ],
+    "images": []
+  },
+  {
+    "titre": "Une donnée ne change pas toute seule",
+    "contexte": "Un programme demande une entrée, puis affiche entrée + 2 et ensuite entrée × 3. Il n’y a aucun ordre qui modifie l’entrée. On saisit 4.",
+    "questions": [
+      {
+        "question": "Qu’affiche-t-il en premier ?",
+        "methode": "Lire la valeur saisie.",
+        "titre": "Calculer le premier affichage",
+        "raisonnement": "$4+2=6$.",
+        "resultat": "6."
+      },
+      {
+        "question": "Qu’affiche-t-il ensuite : 12 ou 18 ?",
+        "methode": "Réutiliser l’entrée 4, qui n’a pas changé.",
+        "titre": "Distinguer affichage et modification",
+        "raisonnement": "$4\\times3=12$. Le premier affichage n’a pas remplacé la donnée.",
+        "resultat": "12."
+      }
+    ],
+    "retenir": "Afficher un calcul ne modifie pas automatiquement la donnée d’entrée.",
+    "calculs": [
+      [
+        "4+2",
+        6
+      ],
+      [
+        "4*3",
+        12
+      ]
+    ],
+    "images": []
+  },
+  {
+    "titre": "Limiter le nombre de pas",
+    "contexte": "Un escalier répète « droite de 2 cases ; haut de 1 case ». Le budget est de 12 cases parcourues.",
+    "questions": [
+      {
+        "question": "Combien de répétitions complètes peut-on effectuer ?",
+        "methode": "Calculer le coût d’un motif puis partager le budget.",
+        "titre": "Gérer le budget de déplacement",
+        "raisonnement": "$2+1=3$ cases par motif ; $12\\div3=4$.",
+        "resultat": "4 répétitions."
+      },
+      {
+        "question": "Depuis A1, où arrive-t-on ?",
+        "methode": "Cumuler les déplacements de quatre motifs.",
+        "titre": "Vérifier la position finale",
+        "raisonnement": "On avance de 8 colonnes, de A à I, et de 4 lignes, de 1 à 5.",
+        "resultat": "I5."
+      }
+    ],
+    "retenir": "La distance totale compte les pas horizontaux et verticaux.",
+    "calculs": [
+      [
+        "2+1",
+        3
+      ],
+      [
+        "12/3",
+        4
+      ],
+      [
+        "4*2",
+        8
+      ],
+      [
+        "4*1",
+        4
+      ]
+    ],
+    "images": []
+  },
+  {
+    "titre": "Un petit projet autonome",
+    "contexte": "On veut saisir un nombre, lui ajouter 2, doubler le résultat puis afficher la sortie.",
+    "questions": [
+      {
+        "question": "Écrire une séquence claire.",
+        "methode": "Séparer la lecture, les calculs et l’affichage.",
+        "titre": "Organiser le programme",
+        "raisonnement": "Demander un nombre ; ajouter 2 au nombre saisi ; multiplier ce résultat par 2 ; afficher le résultat final.",
+        "resultat": "Demander un nombre ; lui ajouter 2 ; doubler le résultat ; afficher ce résultat."
+      },
+      {
+        "question": "Tester avec l’entrée 6 et proposer une erreur possible si on obtient 14.",
+        "methode": "Comparer l’exécution attendue à une exécution dans le mauvais ordre.",
+        "titre": "Tester et diagnostiquer",
+        "raisonnement": "Attendu : $6+2=8$, puis $8\\times2=16$. La sortie 14 peut provenir d’un échange des deux calculs : $6\\times2+2=14$. Ce test seul ne permet pas d’identifier une erreur unique.",
+        "resultat": "16. Une erreur possible est de doubler 6 avant d’ajouter 2."
+      }
+    ],
+    "retenir": "Un programme est contrôlé avec des entrées choisies et des sorties attendues.",
+    "calculs": [
+      [
+        "6+2",
+        8
+      ],
+      [
+        "8*2",
+        16
+      ],
+      [
+        "6*2+2",
+        14
+      ]
+    ],
+    "images": []
+  }
+]

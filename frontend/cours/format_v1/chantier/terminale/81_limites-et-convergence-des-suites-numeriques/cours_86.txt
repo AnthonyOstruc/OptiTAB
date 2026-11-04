@@ -1,0 +1,284 @@
+Titre: Limites et convergence des suites
+
+<!-- optitab:1 -->
+::: objectifs
+Rédiger un raisonnement par récurrence, définir la limite d’une suite, calculer des limites (opérations, formes indéterminées), utiliser les théorèmes de comparaison et des gendarmes, connaître la limite de $q^n$ et le théorème de convergence monotone, étudier une suite définie par $u_{n+1} = f(u_n)$.
+:::
+
+## I. Raisonnement par récurrence
+
+::: theoreme Principe de récurrence
+Soit $P(n)$ une propriété qui dépend d’un entier naturel $n$, et $n_0$ un entier naturel. Si :
+
+- **initialisation** : $P(n_0)$ est vraie ;
+- **hérédité** : pour tout entier $k \ge n_0$, si $P(k)$ est vraie, alors $P(k + 1)$ est vraie ;
+
+alors $P(n)$ est vraie pour tout entier $n \ge n_0$.
+:::
+
+[IMAGE_1]
+
+::: methode Rédiger une récurrence
+1. Énoncer clairement la propriété $P(n)$.
+2. **Initialisation** : vérifier $P(n_0)$.
+3. **Hérédité** : supposer $P(k)$ vraie pour un entier $k \ge n_0$ fixé (hypothèse de récurrence) et s’en servir pour démontrer $P(k + 1)$.
+4. **Conclusion** : $P(n)$ est vraie pour tout entier $n \ge n_0$.
+:::
+
+::: exemple Encadrement et sens de variation
+Soit $(u_n)$ définie par $u_0 = 1$ et $u_{n+1} = 0{,}5\,u_n + 1$. Montrons que, pour tout entier naturel $n$, $P(n)$ : « $1 \le u_n \le u_{n+1} \le 2$ » est vraie.
+
+- **Initialisation** : $u_0 = 1$ et $u_1 = 0{,}5 \times 1 + 1 = 1{,}5$, donc $1 \le u_0 \le u_1 \le 2$ : $P(0)$ est vraie.
+- **Hérédité** : supposons $1 \le u_k \le u_{k+1} \le 2$. On multiplie par $0{,}5 \gt 0$ (l’ordre est conservé), puis on ajoute $1$ :
+
+$$
+\begin{aligned}
+0{,}5 \le 0{,}5\,u_k &\le 0{,}5\,u_{k+1} \le 1 \\
+1{,}5 \le 0{,}5\,u_k + 1 &\le 0{,}5\,u_{k+1} + 1 \le 2 \\
+1{,}5 \le u_{k+1} &\le u_{k+2} \le 2
+\end{aligned}
+$$
+
+Comme $1 \le 1{,}5$, on obtient $1 \le u_{k+1} \le u_{k+2} \le 2$ : $P(k + 1)$ est vraie.
+- **Conclusion** : pour tout $n$, $1 \le u_n \le u_{n+1} \le 2$. La suite est croissante et comprise entre $1$ et $2$.
+:::
+
+::: attention L’initialisation est indispensable
+La propriété « $4^n + 1$ est divisible par $3$ » est héréditaire, car $4^{k+1} + 1 = 4\,(4^k + 1) - 3$. Pourtant elle est fausse pour tout $n$ : $4^0 + 1 = 2$, $4^1 + 1 = 5$… L’initialisation n’est jamais vérifiée.
+:::
+
+::: propriete Inégalité de Bernoulli
+Pour tout réel $a \gt 0$ et tout entier naturel $n$ :
+
+$$(1 + a)^n \ge 1 + na$$
+:::
+
+::: demonstration Inégalité de Bernoulli (au programme)
+Par récurrence sur $n$, avec $P(n)$ : « $(1 + a)^n \ge 1 + na$ ».
+
+- **Initialisation** : $(1 + a)^0 = 1$ et $1 + 0 \times a = 1$, donc $P(0)$ est vraie.
+- **Hérédité** : supposons $(1 + a)^k \ge 1 + ka$. On multiplie par $1 + a \gt 0$ :
+
+$$
+\begin{aligned}
+(1 + a)^{k+1} &\ge (1 + ka)(1 + a) \\
+&= 1 + (k + 1)a + ka^2 \\
+&\ge 1 + (k + 1)a \quad \text{car } ka^2 \ge 0
+\end{aligned}
+$$
+
+Donc $P(k + 1)$ est vraie, et $P(n)$ est vraie pour tout entier naturel $n$.
+:::
+
+## II. Limite d’une suite
+
+::: definition Suite convergente
+La suite $(u_n)$ **converge** vers le réel $\ell$ si tout intervalle ouvert contenant $\ell$ contient tous les termes $u_n$ à partir d’un certain rang. On note $\lim\limits_{n \to +\infty} u_n = \ell$. Cette limite, quand elle existe, est unique.
+:::
+
+[IMAGE_2]
+
+::: definition Limite infinie
+$\lim\limits_{n \to +\infty} u_n = +\infty$ si tout intervalle $]A\,;+\infty[$ contient tous les termes $u_n$ à partir d’un certain rang. On définit de même $\lim\limits_{n \to +\infty} u_n = -\infty$ avec les intervalles $]-\infty\,;A[$.
+:::
+
+::: definition Suite divergente
+Une suite qui ne converge pas est dite **divergente** : soit elle tend vers $+\infty$ ou $-\infty$, soit elle n’a pas de limite (par exemple $u_n = (-1)^n$, qui vaut alternativement $1$ et $-1$).
+:::
+
+::: propriete Limites de référence
+| Suites | Limite quand $n \to +\infty$ |
+|---|---|
+| $\frac{1}{n}$, $\frac{1}{n^2}$, $\frac{1}{n^3}$, $\frac{1}{\sqrt{n}}$ | $0$ |
+| $n$, $n^2$, $n^3$, $\sqrt{n}$ | $+\infty$ |
+:::
+
+::: attention
+Tendre vers $+\infty$, ce n’est pas converger : une suite qui tend vers $+\infty$ est **divergente**.
+:::
+
+## III. Opérations sur les limites
+
+Dans les tableaux, $\ell$ et $\ell'$ désignent des réels ; $\pm\infty$ signifie $+\infty$ ou $-\infty$, le signe étant donné par la règle des signes ; « F.I. » signifie **forme indéterminée** : on ne peut pas conclure directement.
+
+::: propriete Somme
+| $\lim u_n$ | $\lim v_n$ | $\lim\,(u_n + v_n)$ |
+|---|---|---|
+| $\ell$ | $\ell'$ | $\ell + \ell'$ |
+| $\ell$ | $+\infty$ | $+\infty$ |
+| $\ell$ | $-\infty$ | $-\infty$ |
+| $+\infty$ | $+\infty$ | $+\infty$ |
+| $-\infty$ | $-\infty$ | $-\infty$ |
+| $+\infty$ | $-\infty$ | F.I. |
+:::
+
+::: propriete Produit
+| $\lim u_n$ | $\lim v_n$ | $\lim\,(u_n \times v_n)$ |
+|---|---|---|
+| $\ell$ | $\ell'$ | $\ell \times \ell'$ |
+| $\ell \neq 0$ | $\pm\infty$ | $\pm\infty$ |
+| $\pm\infty$ | $\pm\infty$ | $\pm\infty$ |
+| $0$ | $\pm\infty$ | F.I. |
+:::
+
+::: propriete Quotient
+| $\lim u_n$ | $\lim v_n$ | $\lim \dfrac{u_n}{v_n}$ |
+|---|---|---|
+| $\ell$ | $\ell' \neq 0$ | $\dfrac{\ell}{\ell'}$ |
+| $\ell$ | $\pm\infty$ | $0$ |
+| $\pm\infty$ | $\ell' \neq 0$ | $\pm\infty$ |
+| $\ell \neq 0$ ou $\pm\infty$ | $0$ (signe constant) | $\pm\infty$ |
+| $\pm\infty$ | $\pm\infty$ | F.I. |
+| $0$ | $0$ | F.I. |
+:::
+
+::: retenir Les quatre formes indéterminées
+$$\infty - \infty \qquad 0 \times \infty \qquad \frac{\infty}{\infty} \qquad \frac{0}{0}$$
+:::
+
+::: methode Lever une forme indéterminée
+- Somme de puissances de $n$, quotient de telles sommes : **factoriser par le terme de plus haut degré** (terme prépondérant).
+- Différence contenant des racines carrées : multiplier et diviser par la **quantité conjuguée**.
+- Expression simplifiable : simplifier **avant** de passer à la limite.
+:::
+
+::: exemple
+- $u_n = n^2 - 5n$ : forme $\infty - \infty$. On factorise par $n^2$ (pour $n \ge 1$) : $u_n = n^2\left(1 - \frac{5}{n}\right)$. Or $\lim\limits_{n \to +\infty} n^2 = +\infty$ et $\lim\limits_{n \to +\infty} \left(1 - \frac{5}{n}\right) = 1$, donc $\lim\limits_{n \to +\infty} u_n = +\infty$.
+- $v_n = \dfrac{3n^2 + 1}{n^2 - 5n}$ (pour $n \ge 6$) : forme $\frac{\infty}{\infty}$. On factorise par $n^2$ en haut et en bas :
+
+$$
+\begin{aligned}
+v_n &= \frac{n^2\left(3 + \frac{1}{n^2}\right)}{n^2\left(1 - \frac{5}{n}\right)} \\
+&= \frac{3 + \frac{1}{n^2}}{1 - \frac{5}{n}}
+\end{aligned}
+$$
+
+Le numérateur tend vers $3$ et le dénominateur vers $1$, donc $\lim\limits_{n \to +\infty} v_n = 3$.
+:::
+
+## IV. Comparaison et encadrement
+
+::: theoreme Théorème de comparaison
+Si, à partir d’un certain rang, $u_n \ge v_n$ et si $\lim\limits_{n \to +\infty} v_n = +\infty$, alors $\lim\limits_{n \to +\infty} u_n = +\infty$.
+
+De même, si, à partir d’un certain rang, $u_n \le v_n$ et si $\lim\limits_{n \to +\infty} v_n = -\infty$, alors $\lim\limits_{n \to +\infty} u_n = -\infty$.
+:::
+
+::: demonstration Premier cas (au programme)
+Soit $A$ un réel. Comme $\lim\limits_{n \to +\infty} v_n = +\infty$, il existe un rang $N_1$ à partir duquel $v_n \gt A$. Par hypothèse, il existe un rang $N_2$ à partir duquel $u_n \ge v_n$. Pour tout $n \ge \max(N_1, N_2)$, on a donc $u_n \ge v_n \gt A$ : l’intervalle $]A\,;+\infty[$ contient tous les $u_n$ à partir d’un certain rang, c’est-à-dire $\lim\limits_{n \to +\infty} u_n = +\infty$.
+:::
+
+::: theoreme Théorème des gendarmes (admis)
+Si, à partir d’un certain rang, $v_n \le u_n \le w_n$, et si $(v_n)$ et $(w_n)$ convergent vers **la même** limite $\ell$, alors $(u_n)$ converge vers $\ell$.
+:::
+
+[IMAGE_3]
+
+::: exemple
+- Pour tout $n \ge 1$, $-1 \le \sin n \le 1$, donc $1 - \frac{1}{n} \le 1 + \frac{\sin n}{n} \le 1 + \frac{1}{n}$. Les deux suites qui encadrent tendent vers $1$ : d’après le théorème des gendarmes, $\lim\limits_{n \to +\infty} \left(1 + \frac{\sin n}{n}\right) = 1$ (figure ci-dessus).
+- Pour tout $n$, $n + \sin n \ge n - 1$ et $\lim\limits_{n \to +\infty} (n - 1) = +\infty$ : par comparaison, $\lim\limits_{n \to +\infty} (n + \sin n) = +\infty$.
+:::
+
+::: attention
+Les deux suites qui encadrent doivent avoir **la même** limite. L’encadrement $-1 \le \sin n \le 1$ seul ne permet rien de conclure : la suite $(\sin n)$ n’a d’ailleurs pas de limite.
+:::
+
+## V. Suites géométriques
+
+::: propriete Limite de $q^n$
+| Raison $q$ | Comportement de $(q^n)$ |
+|---|---|
+| $q \gt 1$ | $\lim\limits_{n \to +\infty} q^n = +\infty$ |
+| $q = 1$ | suite constante égale à $1$ |
+| $-1 \lt q \lt 1$ | $\lim\limits_{n \to +\infty} q^n = 0$ |
+| $q \le -1$ | pas de limite |
+:::
+
+[IMAGE_4]
+
+::: demonstration Cas $q \gt 1$ (au programme)
+On pose $a = q - 1$, avec $a \gt 0$. D’après l’inégalité de Bernoulli, pour tout entier naturel $n$, $q^n = (1 + a)^n \ge 1 + na$. Comme $a \gt 0$, $\lim\limits_{n \to +\infty} (1 + na) = +\infty$ ; par comparaison, $\lim\limits_{n \to +\infty} q^n = +\infty$.
+:::
+
+::: exemple Somme des termes d’une suite géométrique
+Pour $q \neq 1$, $1 + q + q^2 + \cdots + q^n = \dfrac{1 - q^{n+1}}{1 - q}$. Avec $q = \frac{1}{2}$ :
+
+$$
+\begin{aligned}
+S_n = 1 + \frac{1}{2} + \cdots + \left(\frac{1}{2}\right)^n &= \frac{1 - \left(\frac{1}{2}\right)^{n+1}}{1 - \frac{1}{2}} \\
+&= 2\left(1 - \left(\frac{1}{2}\right)^{n+1}\right)
+\end{aligned}
+$$
+
+Comme $-1 \lt \frac{1}{2} \lt 1$, $\lim\limits_{n \to +\infty} \left(\frac{1}{2}\right)^{n+1} = 0$, donc $\lim\limits_{n \to +\infty} S_n = 2$.
+:::
+
+::: methode Algorithme de seuil
+Pour trouver le premier rang $n$ tel que $0{,}8^n \lt 0{,}001$, on calcule les puissances successives tant que le seuil n’est pas franchi. Dans le programme, la variable `p` contient $0{,}8^n$.
+:::
+
+```python
+def seuil(e):
+    n = 0
+    p = 1
+    while p >= e:
+        p = 0.8 * p
+        n = n + 1
+    return n
+```
+
+`seuil(0.001)` renvoie $31$ : $0{,}8^{30} \approx 0{,}001\,24 \ge 0{,}001$ et $0{,}8^{31} \approx 0{,}000\,99 \lt 0{,}001$.
+
+## VI. Suites monotones et suites $u_{n+1} = f(u_n)$
+
+::: definition Suite majorée, minorée, bornée
+$(u_n)$ est **majorée** par $M$ si $u_n \le M$ pour tout $n$ ; **minorée** par $m$ si $u_n \ge m$ pour tout $n$ ; **bornée** si elle est à la fois majorée et minorée.
+:::
+
+::: theoreme Convergence monotone (admis)
+- Toute suite croissante et majorée converge.
+- Toute suite décroissante et minorée converge.
+:::
+
+::: propriete
+Une suite croissante non majorée tend vers $+\infty$. Une suite décroissante non minorée tend vers $-\infty$.
+:::
+
+::: demonstration Suite croissante non majorée (au programme)
+Soit $(u_n)$ croissante et non majorée, et $A$ un réel. $A$ n’est pas un majorant de la suite : il existe un rang $N$ tel que $u_N \gt A$. La suite étant croissante, pour tout $n \ge N$, $u_n \ge u_N \gt A$. Ainsi $]A\,;+\infty[$ contient tous les termes à partir du rang $N$ : $\lim\limits_{n \to +\infty} u_n = +\infty$.
+:::
+
+::: attention Le majorant n’est pas forcément la limite
+Une suite croissante majorée par $M$ converge vers une limite $\ell \le M$, mais pas forcément vers $M$ : $u_n = 1 - \frac{1}{n + 1}$ est croissante, majorée par $5$, et converge vers $1$.
+:::
+
+::: propriete Limite d’une suite $u_{n+1} = f(u_n)$
+Si $(u_n)$ vérifie $u_{n+1} = f(u_n)$, converge vers $\ell$, et si $f$ est continue en $\ell$, alors $\ell$ vérifie $f(\ell) = \ell$ (voir le chapitre sur la continuité).
+:::
+
+::: exemple
+Reprenons $u_0 = 1$ et $u_{n+1} = 0{,}5\,u_n + 1$. D’après le I, $(u_n)$ est croissante et majorée par $2$ : elle converge vers un réel $\ell$. La fonction $f : x \mapsto 0{,}5x + 1$ est continue, donc $\ell = 0{,}5\,\ell + 1$, soit $0{,}5\,\ell = 1$ et $\ell = 2$.
+:::
+
+[IMAGE_5]
+
+::: remarque Lecture graphique (escalier)
+On place $u_0$ sur l’axe des abscisses, on rejoint verticalement la courbe de $f$ (on lit $u_1 = f(u_0)$), puis horizontalement la droite $y = x$, ce qui reporte $u_1$ en abscisse ; on recommence. L’escalier obtenu permet de conjecturer le sens de variation et la limite.
+:::
+
+::: methode Étudier une suite $u_{n+1} = f(u_n)$
+1. Encadrer $u_n$ par récurrence (souvent grâce au sens de variation de $f$).
+2. Étudier le sens de variation : signe de $u_{n+1} - u_n$, ou récurrence sur $u_n \le u_{n+1}$.
+3. Conclure à la convergence par le théorème de convergence monotone.
+4. Trouver $\ell$ en résolvant $f(\ell) = \ell$, et garder la solution compatible avec l’encadrement.
+:::
+
+::: retenir
+- Récurrence = initialisation + hérédité.
+- Formes indéterminées ($\infty - \infty$, $0 \times \infty$, $\frac{\infty}{\infty}$, $\frac{0}{0}$) : factoriser par le terme prépondérant ou utiliser la quantité conjuguée.
+- Comparaison et gendarmes pour obtenir une limite par encadrement.
+- $q^n \to +\infty$ si $q \gt 1$, $q^n \to 0$ si $-1 \lt q \lt 1$, pas de limite si $q \le -1$.
+- Croissante et majorée $\Rightarrow$ convergente ; la limite d’une suite $u_{n+1} = f(u_n)$ vérifie $f(\ell) = \ell$ ($f$ continue).
+
+Fiche de synthèse dans l’onglet Fiches !
+:::

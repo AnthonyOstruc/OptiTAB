@@ -61,7 +61,7 @@
       </div>
 
       <div class="vt-footer__bottom">
-        <p class="vt-footer__copy">© {{ year }} OptiTAB · SWEELCO. Tous droits réservés.</p>
+        <p class="vt-footer__copy">© {{ year }} OptiTAB. Tous droits réservés.</p>
         <nav class="vt-footer__legal" aria-label="Informations légales">
           <router-link v-for="lien in vitrineFooter.legal" :key="lien.lien" :to="lien.lien">{{ lien.texte }}</router-link>
           <button type="button" @click="openCookiePreferences">Gérer mes cookies</button>

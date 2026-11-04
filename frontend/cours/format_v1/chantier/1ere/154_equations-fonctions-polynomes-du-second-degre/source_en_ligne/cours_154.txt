@@ -1,0 +1,238 @@
+Titre: Équations et fonctions polynômes du second degré
+
+<!-- optitab:1 -->
+::: objectifs
+Passer d’une forme à l’autre (développée, canonique, factorisée) ; lire le sommet, l’axe de symétrie et les variations d’une parabole ; résoudre une équation du second degré avec le discriminant ; factoriser en diversifiant les stratégies (racine évidente, somme et produit, identité remarquable, formules) ; étudier le signe d’un trinôme et résoudre des inéquations ; choisir la forme adaptée pour résoudre un problème.
+:::
+
+## I. Fonctions polynômes du second degré
+
+::: definition Trinôme et parabole
+On appelle **fonction polynôme du second degré** (ou **trinôme**) toute fonction $f$ définie sur $\mathbb{R}$ par
+
+$$f(x) = ax^2 + bx + c$$
+
+où $a$, $b$, $c$ sont des réels et $a \neq 0$. C’est la **forme développée** de $f$. Sa courbe représentative est une **parabole**.
+:::
+
+::: propriete Forme canonique
+Tout trinôme $f(x) = ax^2 + bx + c$ s’écrit de façon unique sous **forme canonique** :
+
+$$f(x) = a(x - \alpha)^2 + \beta$$
+
+avec $\alpha = -\dfrac{b}{2a}$ et $\beta = f(\alpha)$. La parabole a pour **sommet** $S(\alpha\,;\beta)$ et pour **axe de symétrie** la droite d’équation $x = \alpha$.
+:::
+
+::: methode Obtenir la forme canonique
+1. Calculer $\alpha = -\dfrac{b}{2a}$.
+2. Calculer $\beta = f(\alpha)$.
+3. Écrire $f(x) = a(x - \alpha)^2 + \beta$, puis contrôler en développant.
+:::
+
+::: exemple
+$f(x) = 2x^2 + 4x - 6$ : $a = 2$, $b = 4$, $c = -6$.
+
+$$
+\begin{aligned}
+\alpha &= -\frac{4}{2 \times 2} = -1 \\
+\beta &= f(-1) = 2 - 4 - 6 = -8
+\end{aligned}
+$$
+
+Donc $f(x) = 2(x + 1)^2 - 8$ : le sommet est $S(-1\,;-8)$ et l’axe de symétrie est la droite $x = -1$.
+:::
+
+[IMAGE_1]
+
+::: propriete Variations
+- Si $a \gt 0$, $f$ est décroissante sur ${]-\infty\,;\alpha]}$ puis croissante sur ${[\alpha\,;+\infty[}$ : elle admet un **minimum** $\beta$, atteint en $\alpha$. La parabole est « tournée vers le haut ».
+- Si $a \lt 0$, $f$ est croissante puis décroissante : elle admet un **maximum** $\beta$, atteint en $\alpha$. La parabole est « tournée vers le bas ».
+:::
+
+::: tableau Cas $a \gt 0$
+x : -\infty, \alpha, +\infty
+f(x) : +/, -/\beta, +/
+:::
+
+::: tableau Cas $a \lt 0$
+x : -\infty, \alpha, +\infty
+f(x) : -/, +/\beta, -/
+:::
+
+[IMAGE_2]
+
+::: remarque Lien avec la fonction carré
+La parabole d’équation $y = a(x - \alpha)^2 + \beta$ est l’image de la parabole $y = ax^2$ par la translation de vecteur $\vec{u}\begin{pmatrix} \alpha \\ \beta \end{pmatrix}$. En particulier, la courbe de $x \mapsto f(x - m)$ se déduit de celle de $f$ par une translation horizontale de $m$ unités.
+:::
+
+## II. Équation du second degré
+
+::: definition Racine et discriminant
+On appelle **racine** du trinôme $f$ toute solution de l’équation $f(x) = 0$. Le nombre
+
+$$\Delta = b^2 - 4ac$$
+
+est le **discriminant** du trinôme.
+:::
+
+::: theoreme Résolution de $ax^2 + bx + c = 0$ ($a \neq 0$)
+- Si $\Delta \gt 0$, l’équation a **deux solutions** :
+
+$$x_1 = \frac{-b - \sqrt{\Delta}}{2a} \qquad x_2 = \frac{-b + \sqrt{\Delta}}{2a}$$
+
+- Si $\Delta = 0$, l’équation a **une seule solution** (racine double) : $x_0 = -\dfrac{b}{2a}$.
+- Si $\Delta \lt 0$, l’équation n’a **aucune solution réelle**.
+:::
+
+::: demonstration
+Comme $a \neq 0$, on factorise par $a$ et on complète le carré :
+
+$$
+\begin{aligned}
+ax^2 + bx + c &= a\left[x^2 + \frac{b}{a}x + \frac{c}{a}\right] \\
+&= a\left[\left(x + \frac{b}{2a}\right)^2 - \frac{b^2}{4a^2} + \frac{c}{a}\right] \\
+&= a\left[\left(x + \frac{b}{2a}\right)^2 - \frac{\Delta}{4a^2}\right]
+\end{aligned}
+$$
+
+Comme $a \neq 0$, l’équation équivaut à $\left(x + \dfrac{b}{2a}\right)^2 = \dfrac{\Delta}{4a^2}$.
+
+- Si $\Delta \lt 0$, le membre de droite est strictement négatif alors qu’un carré est positif : aucune solution.
+- Si $\Delta = 0$, l’équation devient $\left(x + \dfrac{b}{2a}\right)^2 = 0$, soit $x = -\dfrac{b}{2a}$.
+- Si $\Delta \gt 0$, $\dfrac{\Delta}{4a^2} = \left(\dfrac{\sqrt{\Delta}}{2a}\right)^2$, donc $x + \dfrac{b}{2a} = \pm\dfrac{\sqrt{\Delta}}{2a}$, ce qui donne :
+
+$$x = \frac{-b \pm \sqrt{\Delta}}{2a}$$
+:::
+
+[IMAGE_3]
+
+::: exemple Les trois cas
+- $2x^2 + 4x - 6 = 0$ : $\Delta = 4^2 - 4 \times 2 \times (-6) = 64 \gt 0$, donc $x_1 = \dfrac{-4 - 8}{4} = -3$ et $x_2 = \dfrac{-4 + 8}{4} = 1$.
+- $x^2 - 6x + 9 = 0$ : $\Delta = 36 - 36 = 0$, une seule solution $x_0 = \dfrac{6}{2} = 3$.
+- $x^2 + x + 1 = 0$ : $\Delta = 1 - 4 = -3 \lt 0$, aucune solution réelle.
+:::
+
+::: conseil Inutile de calculer $\Delta$ à chaque fois
+- Pas de terme en $x$ : $x^2 = 9$ donne $x = -3$ ou $x = 3$.
+- Pas de terme constant : $x^2 - 2x = 0$ s’écrit $x(x - 2) = 0$, donc $x = 0$ ou $x = 2$.
+- Identité remarquable : $x^2 - 10x + 25 = 0$ s’écrit $(x - 5)^2 = 0$, donc $x = 5$.
+:::
+
+## III. Factorisation, somme et produit des racines
+
+::: propriete Forme factorisée
+- Si $\Delta \gt 0$ : $f(x) = a(x - x_1)(x - x_2)$.
+- Si $\Delta = 0$ : $f(x) = a(x - x_0)^2$.
+- Si $\Delta \lt 0$ : $f(x)$ ne se factorise pas en produit de facteurs du premier degré.
+:::
+
+::: propriete Somme et produit des racines
+Si le trinôme $ax^2 + bx + c$ a deux racines $x_1$ et $x_2$ (éventuellement égales), alors
+
+$$x_1 + x_2 = -\frac{b}{a} \qquad x_1 x_2 = \frac{c}{a}$$
+:::
+
+::: demonstration
+On développe la forme factorisée :
+
+$$
+\begin{aligned}
+a(x - x_1)(x - x_2) &= ax^2 - a(x_1 + x_2)x \\
+&\quad + ax_1x_2
+\end{aligned}
+$$
+
+En identifiant avec $ax^2 + bx + c$ : $-a(x_1 + x_2) = b$ et $ax_1x_2 = c$, d’où les deux formules.
+:::
+
+::: methode Factoriser en diversifiant les stratégies
+1. **Identité remarquable** : $x^2 - 9 = (x - 3)(x + 3)$ ; $4x^2 - 12x + 9 = (2x - 3)^2$.
+2. **Racine évidente** : on teste $1$, $-1$, $2$… ; si $x_1$ est racine, l’autre s’obtient par $x_1x_2 = \dfrac{c}{a}$.
+3. **Somme et produit** : deux nombres de somme $S$ et de produit $P$ sont les racines de $x^2 - Sx + P$.
+4. **Cas général** : calcul de $\Delta$, puis des racines.
+:::
+
+::: exemple Racine évidente
+$f(x) = 3x^2 - 5x + 2$ : $f(1) = 3 - 5 + 2 = 0$, donc $1$ est racine. L’autre racine vérifie $1 \times x_2 = \dfrac{c}{a} = \dfrac{2}{3}$, donc $x_2 = \dfrac{2}{3}$ et
+
+$$f(x) = 3(x - 1)\left(x - \frac{2}{3}\right) = (x - 1)(3x - 2)$$
+:::
+
+::: exemple Somme et produit
+Deux nombres ont pour somme $7$ et pour produit $12$ : ce sont les racines de $x^2 - 7x + 12$. Comme $3 + 4 = 7$ et $3 \times 4 = 12$, ces nombres sont $3$ et $4$, et $x^2 - 7x + 12 = (x - 3)(x - 4)$.
+:::
+
+::: propriete Trinômes ayant deux racines données
+Les trinômes qui s’annulent en deux réels distincts $x_1$ et $x_2$ sont exactement les fonctions $x \mapsto a(x - x_1)(x - x_2)$ avec $a \neq 0$. Une condition supplémentaire (par exemple la valeur $f(0)$) permet de trouver $a$.
+:::
+
+## IV. Signe d’un trinôme et inéquations
+
+::: theoreme Signe de $ax^2 + bx + c$
+Le trinôme est **du signe de $a$** pour tout réel $x$, **sauf entre ses racines** (lorsqu’il en a deux), où il est du signe contraire.
+
+- $\Delta \gt 0$ : signe de $a$ à l’extérieur de $[x_1\,;x_2]$, signe de $-a$ sur ${]x_1\,;x_2[}$.
+- $\Delta = 0$ : signe de $a$ partout, nul en $x_0$.
+- $\Delta \lt 0$ : signe de $a$ sur tout $\mathbb{R}$.
+:::
+
+[IMAGE_4]
+
+::: exemple
+$f(x) = 2x^2 + 4x - 6 = 2(x + 3)(x - 1)$, avec $a = 2 \gt 0$ et les racines $-3$ et $1$.
+:::
+
+::: tableau Signe de $2x^2 + 4x - 6$
+x : -\infty, -3, 1, +\infty
+f(x) : , +, z, -, z, +,
+:::
+
+On en déduit :
+
+- $2x^2 + 4x - 6 \le 0$ pour $x \in [-3\,;1]$ ;
+- $2x^2 + 4x - 6 \gt 0$ pour $x \in {]-\infty\,;-3[} \cup {]1\,;+\infty[}$.
+
+::: methode Résoudre une inéquation du second degré
+1. Tout ramener dans un membre : $ax^2 + bx + c \gt 0$ (ou $\ge$, $\lt$, $\le$).
+2. Chercher les racines (discriminant ou factorisation).
+3. Dresser le tableau de signes (signe de $a$ à l’extérieur des racines).
+4. Lire l’ensemble des solutions en faisant attention aux crochets.
+:::
+
+::: attention Erreurs fréquentes
+- Oublier le coefficient $a$ : $2x^2 + 4x - 6 \neq (x + 3)(x - 1)$.
+- Mal calculer $b^2$ quand $b \lt 0$ : $(-6)^2 = 36$, et non $-36$.
+- Si $\Delta \lt 0$, l’inéquation n’est pas « impossible » d’office : le trinôme garde le signe de $a$, donc $x^2 + x + 1 \gt 0$ est vraie pour tout réel $x$.
+:::
+
+## V. Choisir la bonne forme pour résoudre un problème
+
+::: exemple Hauteur d’une balle
+Une balle lancée depuis une hauteur de $10$ m suit la loi $h(t) = -5(t - 2)^2 + 30$ ($t$ en secondes, $h$ en mètres), soit sous forme développée $h(t) = -5t^2 + 20t + 10$.
+
+- **Forme canonique** : $a = -5 \lt 0$, donc la hauteur est maximale au sommet : $30$ m, atteinte à $t = 2$ s.
+- **Forme développée** : $h(0) = 10$, hauteur de départ.
+- **Sol** : $h(t) = 0$ équivaut à $(t - 2)^2 = 6$, soit $t = 2 - \sqrt{6}$ ou $t = 2 + \sqrt{6}$. Seule la valeur positive convient : la balle touche le sol à $t = 2 + \sqrt{6} \approx 4{,}45$ s.
+:::
+
+[IMAGE_5]
+
+::: remarque Quelle forme pour quelle question ?
+| Question | Forme adaptée |
+|---|---|
+| Sommet, extremum, variations | canonique $a(x - \alpha)^2 + \beta$ |
+| Racines, signe, inéquation | factorisée $a(x - x_1)(x - x_2)$ |
+| Image de $0$, calcul de $\Delta$ | développée $ax^2 + bx + c$ |
+:::
+
+::: remarque Pour aller plus loin : changement de variable
+L’équation $x^4 - 5x^2 + 4 = 0$ n’est pas du second degré, mais en posant $X = x^2$ elle devient $X^2 - 5X + 4 = 0$, de racines $X = 1$ et $X = 4$. Puis $x^2 = 1$ ou $x^2 = 4$ : les solutions sont $-2$, $-1$, $1$ et $2$.
+:::
+
+::: retenir
+- Forme canonique : $f(x) = a(x - \alpha)^2 + \beta$ avec $\alpha = -\dfrac{b}{2a}$ et $\beta = f(\alpha)$ ; sommet $S(\alpha\,;\beta)$ ; extremum $\beta$ (minimum si $a \gt 0$, maximum si $a \lt 0$).
+- $\Delta = b^2 - 4ac$ ; si $\Delta \gt 0$, racines $\dfrac{-b \pm \sqrt{\Delta}}{2a}$ et $f(x) = a(x - x_1)(x - x_2)$.
+- Somme et produit des racines : $x_1 + x_2 = -\dfrac{b}{a}$ et $x_1x_2 = \dfrac{c}{a}$.
+- Signe de $a$ partout, sauf entre les racines.
+- Fiche de synthèse dans l’onglet Fiches !
+:::

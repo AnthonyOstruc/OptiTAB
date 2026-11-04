@@ -1,0 +1,56 @@
+Titre: Résumé : Calcul intégral
+
+<!-- optitab:1 -->
+::: objectifs
+Retenir l’essentiel : calcul d’intégrales, propriétés, aires, valeur moyenne, intégration par parties. Programme de Terminale.
+:::
+
+## I. Calculer une intégrale
+
+::: formule
+$\displaystyle\int_a^b f(x)\,\mathrm{d}x = \big[F(x)\big]_a^b = F(b) - F(a)$ avec $F' = f$
+:::
+
+[IMAGE_1]
+
+1. Si $f \ge 0$ sur $[a\,;b]$, l’intégrale est l’aire du domaine sous la courbe, en u.a.
+2. $x \mapsto \displaystyle\int_a^x f(t)\,\mathrm{d}t$ est la primitive de $f$ qui s’annule en $a$.
+3. Exemple : $\displaystyle\int_0^2 x^2\,\mathrm{d}x = \left[\frac{x^3}{3}\right]_0^2 = \frac{8}{3}$.
+
+## II. Propriétés
+
+1. **Linéarité :** $\displaystyle\int_a^b (\alpha f + \beta g) = \alpha\int_a^b f + \beta\int_a^b g$.
+2. **Chasles :** $\displaystyle\int_a^c f = \int_a^b f + \int_b^c f$ ; $\displaystyle\int_b^a f = -\int_a^b f$.
+3. **Positivité, croissance** (si $a \le b$) : $f \ge 0 \Rightarrow \displaystyle\int_a^b f \ge 0$ ; $f \le g \Rightarrow \displaystyle\int_a^b f \le \int_a^b g$.
+4. **Suite d’intégrales** $I_n = \displaystyle\int_a^b f_n$ : comparer $f_{n+1}$ et $f_n$ donne le sens de variation ; encadrer $f_n$ puis intégrer donne la limite (gendarmes).
+
+## III. Aires et valeur moyenne
+
+[IMAGE_2]
+
+1. Aire entre deux courbes ($g \le f$ sur $[a\,;b]$) : $\displaystyle\mathcal{A} = \int_a^b \big(f(x) - g(x)\big)\,\mathrm{d}x$ u.a.
+2. Si $f \le 0$ sur $[a\,;b]$, l’aire vaut $\displaystyle -\int_a^b f(x)\,\mathrm{d}x$ u.a.
+3. Valeur moyenne : $\displaystyle\mu = \frac{1}{b - a}\int_a^b f(x)\,\mathrm{d}x$. Si $f \ge 0$, le rectangle de base $[a\,;b]$ et de hauteur $\mu$ a la même aire que le domaine sous la courbe.
+
+[IMAGE_3]
+
+## IV. Intégration par parties
+
+::: formule
+$\displaystyle\int_a^b u\,v' = \big[u\,v\big]_a^b - \int_a^b u'\,v$
+:::
+
+$u$ : le facteur qui se simplifie en dérivant (polynôme, $\ln x$) ; $v'$ : un facteur dont on connaît une primitive ($e^x$, $\sin x$, $\cos x$).
+
+## V. Les pièges à éviter
+
+::: attention Les 4 erreurs classiques
+1. Calculer $F(a) - F(b)$ au lieu de $F(b) - F(a)$.
+2. Donner une aire négative : si $f \le 0$, l’aire vaut $\displaystyle -\int_a^b f$.
+3. Oublier l’ordre des courbes dans $\displaystyle\int_a^b (f - g)$ : la courbe du haut moins celle du bas.
+4. Oublier le crochet $[uv]_a^b$ ou le signe « $-$ » dans l’intégration par parties.
+:::
+
+::: remarque Réflexe
+Aire demandée → j’étudie d’abord le signe de $f$ (ou la position des courbes), je découpe l’intervalle si besoin, puis je calcule avec une primitive.
+:::

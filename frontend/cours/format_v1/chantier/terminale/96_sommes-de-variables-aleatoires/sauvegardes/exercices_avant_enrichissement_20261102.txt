@@ -1,0 +1,1028 @@
+=== Découverte - Variance d'une somme de variables indépendantes
+Id: 1285
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+::: rappel
+Si $X$ et $Y$ sont **indépendantes**, alors $V(X + Y) = V(X) + V(Y)$. Cette propriété est fausse en général pour des variables qui ne sont pas indépendantes.
+:::
+
+1. On lance deux dés équilibrés indépendants ; $X$ et $Y$ sont leurs résultats. On admet que $V(X) = V(Y) = \frac{35}{12}$. Calculer la variance et l’écart type de la somme $S = X + Y$.
+2. On lance deux fois une pièce équilibrée. $X_1$ et $X_2$ valent $1$ si le lancer correspondant donne pile, $0$ sinon. Calculer la variance de $S = X_1 + X_2$.
+3. Une urne contient $4$ boules rouges et $6$ boules bleues. On tire $2$ boules **avec remise** ; $X_1$ (resp. $X_2$) vaut $1$ si la première (resp. la deuxième) boule est rouge, $0$ sinon. Calculer la variance du nombre de boules rouges $S = X_1 + X_2$.
+4. On lance un dé équilibré ; $X$ est le résultat, de variance $\frac{35}{12}$. Calculer $V(3X)$.
+5. Démontrer que si $X$ suit la loi de Bernoulli de paramètre $p$, alors $V(X) = p(1 - p)$.
+
+Pour la question 2, la figure donne les lois de $X_1$ et de $X_2$.
+
+[IMAGE_1]
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Variance de la somme de deux dés
+
+::: methode
+Les dés sont lancés indépendamment : les variances s’ajoutent.
+:::
+
+::: etape Additivité de la variance
+$$
+\begin{aligned}
+V(S) &= V(X) + V(Y) \\
+&= \frac{35}{12} + \frac{35}{12} \\
+&= \frac{35}{6}
+\end{aligned}
+$$
+:::
+
+::: etape Écart type
+$$\sigma(S) = \sqrt{\frac{35}{6}} \approx 2{,}42$$
+:::
+
+::: resultat
+$V(S) = \frac{35}{6}$ et $\sigma(S) \approx 2{,}42$.
+:::
+
+::: attention
+On n’ajoute pas les écarts types : $\sigma(X) + \sigma(Y) = 2\sqrt{\frac{35}{12}} \approx 3{,}42$, ce qui est différent de $\sigma(S)$.
+:::
+
+## Question 2 : Deux lancers d’une pièce
+
+::: methode
+$X_1$ et $X_2$ sont des variables de Bernoulli indépendantes : $V(X_i) = p(1 - p)$ (voir la question 5).
+:::
+
+::: etape Variance de chaque lancer
+$X_1$ et $X_2$ suivent la loi de Bernoulli de paramètre $\frac{1}{2}$ :
+$$V(X_1) = V(X_2) = \frac{1}{2} \times \frac{1}{2} = \frac{1}{4}.$$
+:::
+
+::: etape Additivité
+Les lancers sont indépendants :
+$$V(S) = \frac{1}{4} + \frac{1}{4} = \frac{1}{2}.$$
+:::
+
+::: etape Vérification avec la loi de $S$
+$S = 0$ pour (face, face), $S = 2$ pour (pile, pile) et $S = 1$ dans les deux autres cas : $S$ prend les valeurs $0$, $1$, $2$ avec les probabilités $\frac{1}{4}$, $\frac{1}{2}$, $\frac{1}{4}$ (en vert). Son espérance vaut $1$, donc
+$$
+\begin{aligned}
+V(S) &= \frac{1}{4}(0 - 1)^2 + \frac{1}{2}(1 - 1)^2 \\
+&\quad + \frac{1}{4}(2 - 1)^2 \\
+&= \frac{1}{4} + 0 + \frac{1}{4} \\
+&= \frac{1}{2}
+\end{aligned}
+$$
+:::
+
+[IMAGE_2]
+
+::: resultat
+$V(S) = \frac{1}{2}$.
+:::
+
+## Question 3 : Nombre de boules rouges
+
+::: methode
+Avec remise, les deux tirages sont indépendants et ont la même loi.
+:::
+
+::: etape Variance d’un tirage
+$P(X_1 = 1) = \frac{4}{10} = \frac{2}{5}$, donc $X_1$ suit la loi de Bernoulli de paramètre $\frac{2}{5}$ :
+$$V(X_1) = \frac{2}{5} \times \frac{3}{5} = \frac{6}{25}.$$
+De même, $V(X_2) = \frac{6}{25}$.
+:::
+
+::: etape Additivité
+$$V(S) = \frac{6}{25} + \frac{6}{25} = \frac{12}{25}$$
+:::
+
+::: resultat
+$V(S) = \frac{12}{25} = 0{,}48$.
+:::
+
+## Question 4 : Variance de $3X$
+
+::: methode
+$V(aX) = a^2V(X)$ : le coefficient sort **au carré**.
+:::
+
+::: etape Calcul
+$$V(3X) = 3^2 \times \frac{35}{12} = \frac{315}{12} = \frac{105}{4}$$
+:::
+
+::: resultat
+$V(3X) = \frac{105}{4} = 26{,}25$.
+:::
+
+::: attention
+$3X$ (le triple d’un seul lancer) n’est pas la somme de trois lancers indépendants : $V(X_1 + X_2 + X_3) = 3 \times \frac{35}{12}$, alors que $V(3X) = 9 \times \frac{35}{12}$.
+:::
+
+## Question 5 : Variance d’une variable de Bernoulli
+
+::: methode
+On applique la définition de la variance : moyenne des carrés des écarts à l’espérance.
+:::
+
+::: etape Loi et espérance
+$P(X = 1) = p$ et $P(X = 0) = 1 - p$, donc $E(X) = 0 \times (1 - p) + 1 \times p = p$.
+:::
+
+::: etape Variance
+$$
+\begin{aligned}
+V(X) &= (1 - p)(0 - p)^2 + p(1 - p)^2 \\
+&= p(1 - p)\big(p + (1 - p)\big) \\
+&= p(1 - p)
+\end{aligned}
+$$
+:::
+
+::: resultat
+Si $X$ suit la loi de Bernoulli de paramètre $p$, alors $V(X) = p(1 - p)$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $V(S) = \frac{35}{6}$ et $\sigma(S) \approx 2{,}42$.
+2. $V(S) = \frac{1}{4} + \frac{1}{4} = \frac{1}{2}$.
+3. $V(S) = \frac{6}{25} + \frac{6}{25} = \frac{12}{25}$.
+4. $V(3X) = 9 \times \frac{35}{12} = \frac{105}{4}$.
+5. $V(X) = (1 - p)p^2 + p(1 - p)^2 = p(1 - p)$.
+
+===
+
+=== Découverte - Linéarité de l'espérance
+Id: 1284
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+::: rappel
+Pour toutes variables aléatoires $X$ et $Y$ et tous réels $a$ et $b$ : $E(X + Y) = E(X) + E(Y)$ et $E(aX + b) = aE(X) + b$.
+:::
+
+1. On lance deux dés équilibrés ; $X$ et $Y$ sont leurs résultats, avec $E(X) = E(Y) = 3{,}5$. Calculer l’espérance de la somme $S = X + Y$.
+2. On lance deux fois une pièce équilibrée. $X_1$ et $X_2$ valent $1$ si le lancer correspondant donne pile, $0$ sinon. Calculer l’espérance du nombre de piles $S = X_1 + X_2$.
+3. Une urne contient $5$ boules rouges et $3$ boules bleues. On tire $2$ boules avec remise ; $X_1$ (resp. $X_2$) vaut $1$ si la première (resp. la deuxième) boule est rouge, $0$ sinon. Calculer l’espérance du nombre de boules rouges $S = X_1 + X_2$.
+4. On lance un dé équilibré ; $X$ est le résultat. Calculer $E(3X + 2)$.
+5. Un jeu consiste à lancer deux dés : on gagne $10$ points si l’on obtient un double (deux résultats identiques), $2$ points sinon. La probabilité d’obtenir un double est $\frac{1}{6}$. Calculer l’espérance du gain $X$.
+
+Pour la question 4, la figure associe à chaque valeur de $X$ la valeur correspondante de $3X + 2$.
+
+[IMAGE_1]
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Espérance de la somme de deux dés
+
+::: methode
+Linéarité de l’espérance : on additionne les espérances, sans chercher la loi de $S$.
+:::
+
+::: etape Calcul
+$$E(S) = E(X) + E(Y) = 3{,}5 + 3{,}5 = 7$$
+:::
+
+::: resultat
+$E(S) = 7$ : en moyenne, la somme de deux dés vaut $7$.
+:::
+
+## Question 2 : Nombre de piles
+
+::: methode
+Chaque $X_i$ suit une loi de Bernoulli : son espérance est la probabilité de succès.
+:::
+
+::: etape Espérance de chaque lancer
+$E(X_1) = E(X_2) = \frac{1}{2}$.
+:::
+
+::: etape Linéarité
+$$E(S) = \frac{1}{2} + \frac{1}{2} = 1$$
+:::
+
+::: resultat
+$E(S) = 1$ : en moyenne, on obtient un pile sur deux lancers.
+:::
+
+## Question 3 : Nombre de boules rouges
+
+::: methode
+On calcule l’espérance de chaque tirage, puis on additionne.
+:::
+
+::: etape Espérance d’un tirage
+Il y a $5$ boules rouges sur $8$ : $P(X_1 = 1) = \frac{5}{8}$, donc $E(X_1) = \frac{5}{8}$. Avec remise, $E(X_2) = \frac{5}{8}$ aussi.
+:::
+
+::: etape Linéarité
+$$E(S) = \frac{5}{8} + \frac{5}{8} = \frac{10}{8} = \frac{5}{4}$$
+:::
+
+::: resultat
+$E(S) = \frac{5}{4} = 1{,}25$.
+:::
+
+## Question 4 : Espérance de $3X + 2$
+
+::: methode
+$E(aX + b) = aE(X) + b$, avec $E(X) = 3{,}5$ pour un dé équilibré.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+E(3X + 2) &= 3E(X) + 2 \\
+&= 3 \times 3{,}5 + 2 \\
+&= 12{,}5
+\end{aligned}
+$$
+:::
+
+[IMAGE_2]
+
+::: retenir
+Toutes les valeurs de $X$ subissent la même transformation : multiplier par $3$, puis ajouter $2$. Leur moyenne aussi : $3{,}5$ devient $3 \times 3{,}5 + 2 = 12{,}5$ (en vert). C’est la linéarité de l’espérance.
+:::
+
+::: resultat
+$E(3X + 2) = 12{,}5$.
+:::
+
+## Question 5 : Espérance du gain
+
+::: methode
+On écrit le gain à l’aide d’une variable de Bernoulli, puis on utilise la linéarité.
+:::
+
+::: etape Modéliser
+Soit $D$ la variable qui vaut $1$ si l’on obtient un double et $0$ sinon : $D$ suit la loi de Bernoulli de paramètre $\frac{1}{6}$. Le gain s’écrit
+$$X = 10D + 2(1 - D) = 8D + 2.$$
+:::
+
+::: etape Linéarité
+$$
+\begin{aligned}
+E(X) &= 8E(D) + 2 \\
+&= 8 \times \frac{1}{6} + 2 \\
+&= \frac{10}{3}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$E(X) = \frac{10}{3} \approx 3{,}33$ points.
+:::
+
+::: retenir
+Vérification avec la définition : $E(X) = 10 \times \frac{1}{6} + 2 \times \frac{5}{6} = \frac{20}{6} = \frac{10}{3}$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $E(S) = 3{,}5 + 3{,}5 = 7$.
+2. $E(S) = \frac{1}{2} + \frac{1}{2} = 1$.
+3. $E(S) = \frac{5}{8} + \frac{5}{8} = \frac{5}{4}$.
+4. $E(3X + 2) = 3 \times 3{,}5 + 2 = 12{,}5$.
+5. $X = 8D + 2$ avec $D$ de Bernoulli de paramètre $\frac{1}{6}$ : $E(X) = \frac{10}{3} \approx 3{,}33$ points.
+
+===
+
+=== DS - Devoir surveillé complet
+Id: 1288
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Ce devoir couvre l’ensemble du chapitre sur les sommes de variables aléatoires.
+
+**Partie A : Linéarité de l’espérance**
+
+**A1.** On lance trois dés équilibrés indépendants, de résultats $X$, $Y$ et $Z$, avec $E(X) = E(Y) = E(Z) = 3{,}5$. Calculer l’espérance de $S = X + Y + Z$.
+
+**A2.** $X$ et $Y$ sont deux variables aléatoires telles que $E(X) = 4$ et $E(Y) = 6$. Calculer $E(2X + 3Y - 1)$.
+
+**A3.** On lance $4$ fois une pièce équilibrée. À chaque lancer, on gagne $3$ points si l’on obtient pile et on perd $1$ point sinon. Soit $G$ le gain total. Calculer $E(G)$.
+
+**Partie B : Additivité de la variance**
+
+**B1.** On lance deux dés équilibrés indépendants, de résultats $X$ et $Y$, avec $V(X) = V(Y) = \frac{35}{12}$. Calculer la variance de $S = X + Y$.
+
+**B2.** $X$ et $Y$ sont deux variables aléatoires **indépendantes** telles que $V(X) = 5$ et $V(Y) = 3$. Calculer $V(2X - Y + 1)$.
+
+**B3.** On lance $6$ fois une pièce équilibrée. Soit $X$ le nombre de piles. Calculer $V(X)$.
+
+**Partie C : Loi binomiale**
+
+**C1.** On répète $20$ fois, de façon indépendante, une épreuve de Bernoulli de probabilité de succès $p = 0{,}4$. Soit $X$ le nombre de succès.
+- a) Donner la loi de $X$.
+- b) Écrire $X$ comme une somme de variables de Bernoulli.
+- c) Calculer $E(X)$ et $V(X)$.
+
+**C2.** Dans une urne contenant $8$ boules dont $5$ rouges, on effectue $15$ tirages avec remise. Soit $X$ le nombre de boules rouges obtenues.
+- a) Donner la loi de $X$.
+- b) Calculer $E(X)$ et $\sigma(X)$.
+
+**Partie D : Échantillons et fréquences**
+
+**D1.** On lance $100$ fois un dé équilibré. Chaque lancer a pour espérance $3{,}5$ et pour variance $\frac{35}{12}$.
+- a) Soit $S_{100}$ la somme des résultats. Calculer $E(S_{100})$ et $\sigma(S_{100})$.
+- b) Soit $M_{100} = \frac{S_{100}}{100}$ la moyenne. Calculer $E(M_{100})$ et $\sigma(M_{100})$.
+
+**D2.** Dans une population, $45$ % des individus ont une caractéristique. On prélève au hasard, avec remise, un échantillon de $80$ individus. Soit $F$ la fréquence de la caractéristique dans l’échantillon.
+- a) Calculer $E(F)$ et $V(F)$.
+- b) Calculer les bornes de l’intervalle $[E(F) - 2\sigma(F)\,;E(F) + 2\sigma(F)]$, arrondies au millième.
+
+**Partie E : Synthèse**
+
+**E1.** Un système comporte $4$ composants qui fonctionnent indépendamment les uns des autres, chacun avec la probabilité $0{,}85$. Soit $N$ le nombre de composants qui fonctionnent.
+- a) Donner la loi de $N$ et calculer $E(N)$ et $V(N)$.
+- b) Le système fonctionne si au moins $3$ composants fonctionnent. Calculer la probabilité que le système fonctionne.
+
+Étapes:
+<!-- optitab:1 -->
+## Partie A : Linéarité de l’espérance
+
+## Question A1 : Somme de trois dés
+
+::: methode
+Linéarité de l’espérance.
+:::
+
+::: etape Calcul
+$$E(S) = E(X) + E(Y) + E(Z) = 3 \times 3{,}5 = 10{,}5$$
+:::
+
+::: resultat
+$E(S) = 10{,}5$.
+:::
+
+## Question A2 : Espérance de $2X + 3Y - 1$
+
+::: methode
+$E(aX + bY + c) = aE(X) + bE(Y) + c$, sans hypothèse d’indépendance.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+E(2X + 3Y - 1) &= 2E(X) + 3E(Y) - 1 \\
+&= 2 \times 4 + 3 \times 6 - 1 \\
+&= 25
+\end{aligned}
+$$
+:::
+
+::: resultat
+$E(2X + 3Y - 1) = 25$.
+:::
+
+## Question A3 : Gain total sur $4$ lancers
+
+::: methode
+On écrit $G$ comme la somme des gains $G_1$, $G_2$, $G_3$, $G_4$ des quatre lancers.
+:::
+
+::: etape Gain d’un lancer
+$G_i$ vaut $3$ avec la probabilité $\frac{1}{2}$ et $-1$ avec la probabilité $\frac{1}{2}$ :
+$$E(G_i) = 3 \times \frac{1}{2} + (-1) \times \frac{1}{2} = 1.$$
+:::
+
+::: etape Linéarité
+$$E(G) = E(G_1) + E(G_2) + E(G_3) + E(G_4) = 4 \times 1 = 4$$
+:::
+
+::: resultat
+$E(G) = 4$ points.
+:::
+
+## Partie B : Additivité de la variance
+
+## Question B1 : Somme de deux dés
+
+::: methode
+Les dés sont indépendants : les variances s’ajoutent.
+:::
+
+::: etape Calcul
+$$V(S) = \frac{35}{12} + \frac{35}{12} = \frac{35}{6}$$
+:::
+
+::: resultat
+$V(S) = \frac{35}{6}$.
+:::
+
+## Question B2 : Variance de $2X - Y + 1$
+
+::: methode
+La constante ne change pas la variance ; $2X$ et $-Y$ sont indépendantes ; $V(aX) = a^2V(X)$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+V(2X - Y + 1) &= V(2X - Y) \\
+&= 2^2V(X) + (-1)^2V(Y) \\
+&= 4 \times 5 + 3 \\
+&= 23
+\end{aligned}
+$$
+:::
+
+::: resultat
+$V(2X - Y + 1) = 23$.
+:::
+
+::: attention
+Le signe moins disparaît dans le carré : on **ajoute** $V(Y)$, on ne le retranche pas.
+:::
+
+## Question B3 : Nombre de piles sur $6$ lancers
+
+::: methode
+$X$ suit une loi binomiale : $V(X) = np(1 - p)$.
+:::
+
+::: etape Calcul
+$X \sim \mathcal{B}\left(6\,;\frac{1}{2}\right)$, donc
+$$V(X) = 6 \times \frac{1}{2} \times \frac{1}{2} = \frac{3}{2}.$$
+:::
+
+::: resultat
+$V(X) = \frac{3}{2}$.
+:::
+
+## Partie C : Loi binomiale
+
+## Question C1 : Loi, décomposition, espérance et variance
+
+::: methode
+$20$ épreuves de Bernoulli identiques et indépendantes : schéma de Bernoulli.
+:::
+
+::: etape a) Loi de $X$
+$X$ compte les succès dans un schéma de Bernoulli de paramètres $n = 20$ et $p = 0{,}4$ : $X \sim \mathcal{B}(20\,;0{,}4)$.
+:::
+
+::: etape b) Décomposition
+$X = X_1 + X_2 + \cdots + X_{20}$, où $X_i$ vaut $1$ si la $i$-ème épreuve est un succès et $0$ sinon ; les $X_i$ sont indépendantes et suivent la loi de Bernoulli de paramètre $0{,}4$.
+:::
+
+::: etape c) Espérance et variance
+$$
+\begin{aligned}
+E(X) &= 20 \times 0{,}4 = 8 \\
+V(X) &= 20 \times 0{,}4 \times 0{,}6 = 4{,}8
+\end{aligned}
+$$
+:::
+
+::: resultat
+$X \sim \mathcal{B}(20\,;0{,}4)$, $E(X) = 8$ et $V(X) = 4{,}8$.
+:::
+
+## Question C2 : Boules rouges
+
+::: methode
+Tirages avec remise : épreuves indépendantes de même probabilité de succès.
+:::
+
+::: etape a) Loi de $X$
+À chaque tirage, $P(\text{rouge}) = \frac{5}{8}$ ; donc $X \sim \mathcal{B}\left(15\,;\frac{5}{8}\right)$.
+:::
+
+::: etape b) Espérance et écart type
+$$
+\begin{aligned}
+E(X) &= 15 \times \frac{5}{8} = \frac{75}{8} = 9{,}375 \\
+V(X) &= 15 \times \frac{5}{8} \times \frac{3}{8} = \frac{225}{64} \\
+\sigma(X) &= \sqrt{\frac{225}{64}} = \frac{15}{8} = 1{,}875
+\end{aligned}
+$$
+:::
+
+::: resultat
+$X \sim \mathcal{B}\left(15\,;\frac{5}{8}\right)$, $E(X) = \frac{75}{8}$ et $\sigma(X) = \frac{15}{8}$.
+:::
+
+## Partie D : Échantillons et fréquences
+
+## Question D1 : Somme et moyenne de $100$ lancers
+
+::: methode
+Échantillon de taille $n = 100$ : $E(S_n) = nE(X)$, $V(S_n) = nV(X)$, $E(M_n) = E(X)$, $V(M_n) = \frac{V(X)}{n}$.
+:::
+
+::: etape a) Somme $S_{100}$
+$$
+\begin{aligned}
+E(S_{100}) &= 100 \times 3{,}5 = 350 \\
+V(S_{100}) &= 100 \times \frac{35}{12} = \frac{875}{3} \\
+\sigma(S_{100}) &= \sqrt{\frac{875}{3}} \approx 17{,}08
+\end{aligned}
+$$
+:::
+
+::: etape b) Moyenne $M_{100}$
+$$
+\begin{aligned}
+E(M_{100}) &= 3{,}5 \\
+V(M_{100}) &= \frac{1}{100^2} \times \frac{875}{3} = \frac{7}{240} \\
+\sigma(M_{100}) &= \sqrt{\frac{7}{240}} \approx 0{,}171
+\end{aligned}
+$$
+:::
+
+::: resultat
+$E(S_{100}) = 350$, $\sigma(S_{100}) \approx 17{,}08$ ; $E(M_{100}) = 3{,}5$, $\sigma(M_{100}) \approx 0{,}171$.
+:::
+
+## Question D2 : Fréquence dans un échantillon
+
+::: methode
+$F = \frac{X}{80}$ où $X$, le nombre d’individus ayant la caractéristique, suit $\mathcal{B}(80\,;0{,}45)$.
+:::
+
+::: etape a) Espérance et variance de $F$
+$E(X) = 80 \times 0{,}45 = 36$ et $V(X) = 80 \times 0{,}45 \times 0{,}55 = 19{,}8$, donc
+$$
+\begin{aligned}
+E(F) &= \frac{36}{80} = 0{,}45 \\
+V(F) &= \frac{19{,}8}{80^2} = 0{,}003\,093\,75
+\end{aligned}
+$$
+:::
+
+::: etape b) Intervalle
+$\sigma(F) = \sqrt{0{,}003\,093\,75} \approx 0{,}0556$, donc
+$$
+\begin{aligned}
+E(F) - 2\sigma(F) &\approx 0{,}45 - 0{,}1112 \approx 0{,}339 \\
+E(F) + 2\sigma(F) &\approx 0{,}45 + 0{,}1112 \approx 0{,}561
+\end{aligned}
+$$
+:::
+
+::: resultat
+$E(F) = 0{,}45$, $V(F) = 0{,}003\,093\,75$ et l’intervalle est environ $[0{,}339\,;0{,}561]$.
+:::
+
+## Partie E : Synthèse
+
+## Question E1 : Système à $4$ composants
+
+::: methode
+$N$ compte les composants qui fonctionnent, de façon indépendante : loi binomiale.
+:::
+
+::: etape a) Loi, espérance et variance
+$N \sim \mathcal{B}(4\,;0{,}85)$, donc
+$$
+\begin{aligned}
+E(N) &= 4 \times 0{,}85 = 3{,}4 \\
+V(N) &= 4 \times 0{,}85 \times 0{,}15 = 0{,}51
+\end{aligned}
+$$
+:::
+
+::: etape b) Probabilité que le système fonctionne
+$$
+\begin{aligned}
+P(N = 3) &= \binom{4}{3} \times 0{,}85^3 \times 0{,}15 = 0{,}368\,475 \\
+P(N = 4) &= 0{,}85^4 = 0{,}522\,006\,25
+\end{aligned}
+$$
+Donc $P(N \geq 3) = 0{,}368\,475 + 0{,}522\,006\,25 \approx 0{,}890$.
+:::
+
+[IMAGE_1]
+
+::: resultat
+$N \sim \mathcal{B}(4\,;0{,}85)$, $E(N) = 3{,}4$, $V(N) = 0{,}51$ ; le système fonctionne avec une probabilité d’environ $0{,}890$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+**Partie A.** A1 : $E(S) = 10{,}5$. A2 : $E(2X + 3Y - 1) = 25$. A3 : $E(G) = 4$ points.
+
+**Partie B.** B1 : $V(S) = \frac{35}{6}$. B2 : $V(2X - Y + 1) = 23$. B3 : $V(X) = \frac{3}{2}$.
+
+**Partie C.** C1 : $X \sim \mathcal{B}(20\,;0{,}4)$, $X = X_1 + \cdots + X_{20}$, $E(X) = 8$, $V(X) = 4{,}8$. C2 : $X \sim \mathcal{B}\left(15\,;\frac{5}{8}\right)$, $E(X) = \frac{75}{8}$, $\sigma(X) = \frac{15}{8}$.
+
+**Partie D.** D1 : $E(S_{100}) = 350$, $\sigma(S_{100}) \approx 17{,}08$, $E(M_{100}) = 3{,}5$, $\sigma(M_{100}) \approx 0{,}171$. D2 : $E(F) = 0{,}45$, $V(F) = 0{,}003\,093\,75$, intervalle $[0{,}339\,;0{,}561]$.
+
+**Partie E.** E1 : $N \sim \mathcal{B}(4\,;0{,}85)$, $E(N) = 3{,}4$, $V(N) = 0{,}51$, $P(N \geq 3) \approx 0{,}890$.
+
+===
+
+=== Entraînement - Espérance et variance d'une somme
+Id: 1286
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Utiliser la linéarité de l’espérance et l’additivité de la variance dans différentes situations.
+
+1. On lance $10$ fois une pièce équilibrée. Soit $X$ le nombre de piles obtenus.
+   - a) Donner la loi de $X$.
+   - b) Écrire $X$ comme une somme de variables de Bernoulli indépendantes.
+   - c) Calculer $E(X)$ et $V(X)$ à l’aide de cette somme.
+2. Une urne contient $8$ boules : $3$ rouges, $4$ bleues et $1$ verte. On tire $5$ boules avec remise. Soit $X$ le nombre de boules rouges et $Y$ le nombre de boules bleues obtenues.
+   - a) Donner les lois de $X$ et de $Y$.
+   - b) Calculer $E(X)$, $V(X)$, $E(Y)$ et $V(Y)$.
+   - c) Soit $S = X + Y$ le nombre de boules rouges ou bleues. Calculer $E(S)$ et $V(S)$.
+3. On lance $3$ dés équilibrés indépendants ; $X_i$ est le résultat du $i$-ème dé, avec $E(X_i) = 3{,}5$ et $V(X_i) = \frac{35}{12}$.
+   - a) Calculer l’espérance de la somme $S = X_1 + X_2 + X_3$.
+   - b) Calculer la variance de $S$.
+   - c) Calculer l’espérance et la variance de la moyenne $M = \frac{S}{3}$.
+4. Un joueur lance $4$ fois un dé équilibré. À chaque lancer, il gagne $5$ points si le résultat est pair et perd $2$ points s’il est impair. Soit $G$ le gain total. Calculer l’espérance et la variance de $G$.
+5. On répète $25$ fois, de façon indépendante, une épreuve de Bernoulli de probabilité de succès $p = 0{,}6$. Soit $X$ le nombre de succès.
+   - a) Donner la loi de $X$.
+   - b) Calculer $E(X)$ et $V(X)$.
+   - c) Calculer l’espérance et la variance de la fréquence de succès $F = \frac{X}{25}$.
+
+Pour la question 2, la figure représente le contenu de l’urne.
+
+[IMAGE_1]
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Nombre de piles sur $10$ lancers
+
+::: methode
+On décompose $X$ en somme de variables de Bernoulli, puis linéarité et additivité.
+:::
+
+::: etape a) Loi de $X$
+$10$ lancers indépendants, succès « pile » de probabilité $\frac{1}{2}$ : $X \sim \mathcal{B}\left(10\,;\frac{1}{2}\right)$.
+:::
+
+::: etape b) Décomposition
+$X = X_1 + X_2 + \cdots + X_{10}$, où $X_i$ vaut $1$ si le $i$-ème lancer donne pile et $0$ sinon. Les $X_i$ sont indépendantes et suivent la loi de Bernoulli de paramètre $\frac{1}{2}$.
+:::
+
+::: etape c) Espérance et variance
+$E(X_i) = \frac{1}{2}$ et $V(X_i) = \frac{1}{2} \times \frac{1}{2} = \frac{1}{4}$, donc
+$$
+\begin{aligned}
+E(X) &= 10 \times \frac{1}{2} = 5 \\
+V(X) &= 10 \times \frac{1}{4} = \frac{5}{2}
+\end{aligned}
+$$
+(les variances s’ajoutent car les $X_i$ sont indépendantes).
+:::
+
+::: resultat
+$X \sim \mathcal{B}\left(10\,;\frac{1}{2}\right)$, $E(X) = 5$ et $V(X) = \frac{5}{2}$.
+:::
+
+## Question 2 : Boules rouges et boules bleues
+
+::: methode
+Linéarité pour l’espérance ; pour la variance, on vérifie d’abord l’indépendance.
+:::
+
+::: etape a) Lois de $X$ et de $Y$
+Tirages avec remise, donc indépendants : $X \sim \mathcal{B}\left(5\,;\frac{3}{8}\right)$ et $Y \sim \mathcal{B}\left(5\,;\frac{4}{8}\right) = \mathcal{B}\left(5\,;\frac{1}{2}\right)$.
+:::
+
+::: etape b) Espérances et variances
+$$
+\begin{aligned}
+E(X) &= 5 \times \frac{3}{8} = \frac{15}{8} \\
+V(X) &= 5 \times \frac{3}{8} \times \frac{5}{8} = \frac{75}{64} \\
+E(Y) &= 5 \times \frac{1}{2} = \frac{5}{2} \\
+V(Y) &= 5 \times \frac{1}{2} \times \frac{1}{2} = \frac{5}{4}
+\end{aligned}
+$$
+:::
+
+::: etape c) Espérance de $S$
+La linéarité s’applique toujours :
+$$E(S) = \frac{15}{8} + \frac{5}{2} = \frac{35}{8}.$$
+:::
+
+::: attention
+$X$ et $Y$ ne sont **pas** indépendantes : les deux comptages portent sur les mêmes tirages, et par exemple $X = 5$ impose $Y = 0$. On ne peut donc pas écrire $V(S) = V(X) + V(Y)$ (cela donnerait $\frac{155}{64}$, résultat faux).
+:::
+
+[IMAGE_2]
+
+::: etape c) Variance de $S$
+$S$ compte directement les tirages « rouge ou bleue ». Les tirages sont indépendants et, à chaque tirage, $P(\text{rouge ou bleue}) = \frac{7}{8}$ : $S \sim \mathcal{B}\left(5\,;\frac{7}{8}\right)$, donc
+$$V(S) = 5 \times \frac{7}{8} \times \frac{1}{8} = \frac{35}{64}.$$
+:::
+
+::: resultat
+$E(S) = \frac{35}{8}$ et $V(S) = \frac{35}{64}$.
+:::
+
+## Question 3 : Somme et moyenne de trois dés
+
+::: methode
+Linéarité, additivité (dés indépendants), puis $V(aS) = a^2V(S)$.
+:::
+
+::: etape a) Espérance de $S$
+$$E(S) = 3 \times 3{,}5 = 10{,}5$$
+:::
+
+::: etape b) Variance de $S$
+$$V(S) = 3 \times \frac{35}{12} = \frac{35}{4}$$
+:::
+
+::: etape c) Moyenne $M = \frac{S}{3}$
+$$
+\begin{aligned}
+E(M) &= \frac{1}{3} \times 10{,}5 = 3{,}5 \\
+V(M) &= \left(\frac{1}{3}\right)^2 \times \frac{35}{4} = \frac{35}{36}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$E(S) = 10{,}5$, $V(S) = \frac{35}{4}$, $E(M) = 3{,}5$ et $V(M) = \frac{35}{36}$.
+:::
+
+## Question 4 : Gain sur $4$ lancers
+
+::: methode
+$G = G_1 + G_2 + G_3 + G_4$, où $G_i$ est le gain du $i$-ème lancer ; les lancers sont indépendants.
+:::
+
+::: etape Gain d’un lancer
+Un dé a $3$ faces paires sur $6$ : $G_i$ vaut $5$ ou $-2$, chacun avec la probabilité $\frac{1}{2}$. Pour la variance, on utilise les écarts à l’espérance $\frac{3}{2} = 1{,}5$ : $5 - 1{,}5 = 3{,}5$ et $-2 - 1{,}5 = -3{,}5$.
+$$
+\begin{aligned}
+E(G_i) &= 5 \times \frac{1}{2} + (-2) \times \frac{1}{2} = \frac{3}{2} \\
+V(G_i) &= \frac{1}{2} \times 3{,}5^2 + \frac{1}{2} \times (-3{,}5)^2 \\
+&= \frac{49}{4}
+\end{aligned}
+$$
+:::
+
+::: etape Gain total
+$$
+\begin{aligned}
+E(G) &= 4 \times \frac{3}{2} = 6 \\
+V(G) &= 4 \times \frac{49}{4} = 49
+\end{aligned}
+$$
+(les variances s’ajoutent car les lancers sont indépendants).
+:::
+
+::: resultat
+$E(G) = 6$ points et $V(G) = 49$, soit $\sigma(G) = 7$ points.
+:::
+
+## Question 5 : Fréquence de succès
+
+::: methode
+Loi binomiale, puis $F = \frac{1}{25}X$ : $E(F) = \frac{E(X)}{25}$ et $V(F) = \frac{V(X)}{25^2}$.
+:::
+
+::: etape a) Loi de $X$
+$X \sim \mathcal{B}(25\,;0{,}6)$.
+:::
+
+::: etape b) Espérance et variance de $X$
+$E(X) = 25 \times 0{,}6 = 15$ et $V(X) = 25 \times 0{,}6 \times 0{,}4 = 6$.
+:::
+
+::: etape c) Espérance et variance de $F$
+$$
+\begin{aligned}
+E(F) &= \frac{15}{25} = 0{,}6 \\
+V(F) &= \frac{6}{625} = 0{,}009\,6
+\end{aligned}
+$$
+:::
+
+::: resultat
+$E(X) = 15$, $V(X) = 6$, $E(F) = 0{,}6$ et $V(F) = \frac{6}{625}$ : en moyenne, la fréquence observée est égale à la probabilité $p$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $X \sim \mathcal{B}\left(10\,;\frac{1}{2}\right)$, $X = X_1 + \cdots + X_{10}$, $E(X) = 5$, $V(X) = \frac{5}{2}$.
+2. $X \sim \mathcal{B}\left(5\,;\frac{3}{8}\right)$, $Y \sim \mathcal{B}\left(5\,;\frac{1}{2}\right)$ ; $E(X) = \frac{15}{8}$, $V(X) = \frac{75}{64}$, $E(Y) = \frac{5}{2}$, $V(Y) = \frac{5}{4}$ ; $E(S) = \frac{35}{8}$ et, $S$ suivant $\mathcal{B}\left(5\,;\frac{7}{8}\right)$, $V(S) = \frac{35}{64}$.
+3. $E(S) = 10{,}5$, $V(S) = \frac{35}{4}$, $E(M) = 3{,}5$, $V(M) = \frac{35}{36}$.
+4. $E(G) = 6$ points, $V(G) = 49$.
+5. $X \sim \mathcal{B}(25\,;0{,}6)$, $E(X) = 15$, $V(X) = 6$, $E(F) = 0{,}6$, $V(F) = \frac{6}{625}$.
+
+===
+
+=== Problème - Contrôle qualité, jeux et échantillons
+Id: 1287
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Résoudre des problèmes faisant intervenir sommes de variables aléatoires, espérance, variance et échantillons.
+
+1. Une usine produit des composants électroniques ; chacun est défectueux avec la probabilité $p = 0{,}05$, indépendamment des autres. On teste un lot de $100$ composants. Soit $X$ le nombre de composants défectueux du lot.
+   - a) Donner la loi de $X$ et calculer $E(X)$ et $V(X)$.
+   - b) Soit $F = \frac{X}{100}$ la fréquence de défauts. Calculer $E(F)$ et $V(F)$.
+   - c) Interpréter ces résultats.
+2. Un jeu consiste à lancer $5$ dés équilibrés ; on note $S$ la somme obtenue. Le joueur gagne $20$ points si $S \geq 25$, $10$ points si $20 \leq S \leq 24$, et $0$ point sinon. Un dénombrement des $6^5 = 7\,776$ résultats possibles donne $P(S \geq 25) \approx 0{,}0324$ et $P(20 \leq S \leq 24) \approx 0{,}2728$.
+   - a) Montrer que $E(S) = 17{,}5$ et $V(S) = \frac{175}{12}$, sachant qu’un dé a pour espérance $3{,}5$ et pour variance $\frac{35}{12}$.
+   - b) Soit $G$ le gain du joueur. Calculer $E(G)$.
+   - c) Le joueur mise $8$ points pour jouer. Soit $N = G - 8$ son gain net. Calculer $E(N)$ et interpréter.
+3. On effectue $50$ tirages avec remise dans une urne contenant $10$ boules : $7$ rouges et $3$ bleues. Soit $X$ le nombre de boules rouges et $Y$ le nombre de boules bleues obtenues.
+   - a) Donner les lois de $X$ et de $Y$, puis leurs espérances et leurs variances.
+   - b) Justifier que $X + Y = 50$, puis donner $E(X + Y)$ et $V(X + Y)$.
+   - c) Soit $F_X = \frac{X}{50}$ et $F_Y = \frac{Y}{50}$ les fréquences. Calculer $E(F_X + F_Y)$.
+4. Dans une population, $60$ % des individus ont une certaine caractéristique. On prélève au hasard, avec remise, un échantillon de $200$ individus. Soit $X$ le nombre d’individus de l’échantillon ayant cette caractéristique.
+   - a) Donner la loi de $X$ et calculer $E(X)$ et $\sigma(X)$.
+   - b) Soit $F = \frac{X}{200}$ la fréquence observée. Calculer $E(F)$ et $\sigma(F)$.
+   - c) Calculer les bornes de l’intervalle $I = [E(F) - 2\sigma(F)\,;E(F) + 2\sigma(F)]$, arrondies au millième.
+5. Un système comporte $3$ composants qui fonctionnent indépendamment, chacun avec la probabilité $0{,}9$. Le système fonctionne si au moins $2$ composants fonctionnent. On note $X_i$ la variable qui vaut $1$ si le $i$-ème composant fonctionne, $0$ sinon.
+   - a) Donner la loi de chaque $X_i$, puis $E(X_i)$ et $V(X_i)$.
+   - b) Soit $N = X_1 + X_2 + X_3$ le nombre de composants qui fonctionnent. Calculer $E(N)$ et $V(N)$.
+   - c) Donner la loi de $N$, retrouver $E(N)$, puis calculer la probabilité que le système fonctionne.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Contrôle qualité
+
+::: methode
+$100$ épreuves indépendantes « défectueux ou non » : loi binomiale ; puis $F = \frac{1}{100}X$.
+:::
+
+::: etape a) Loi de $X$, espérance et variance
+$X \sim \mathcal{B}(100\,;0{,}05)$, donc $E(X) = 100 \times 0{,}05 = 5$ et $V(X) = 100 \times 0{,}05 \times 0{,}95 = 4{,}75$.
+:::
+
+::: etape b) Fréquence $F$
+$$
+\begin{aligned}
+E(F) &= \frac{E(X)}{100} = 0{,}05 \\
+V(F) &= \frac{V(X)}{100^2} = \frac{4{,}75}{10\,000} = 0{,}000\,475
+\end{aligned}
+$$
+:::
+
+::: etape c) Interprétation
+En moyenne, un lot contient $5$ composants défectueux, soit une fréquence de défauts de $5$ %. L’écart type $\sigma(F) = \sqrt{0{,}000\,475} \approx 0{,}022$ mesure la dispersion de cette fréquence d’un lot à l’autre : environ $2{,}2$ points de pourcentage.
+:::
+
+::: resultat
+$X \sim \mathcal{B}(100\,;0{,}05)$, $E(X) = 5$, $V(X) = 4{,}75$ ; $E(F) = 0{,}05$ et $V(F) = 0{,}000\,475$.
+:::
+
+## Question 2 : Jeu avec cinq dés
+
+::: methode
+Linéarité et additivité pour $S$ ; définition de l’espérance pour $G$ ; linéarité pour $N$.
+:::
+
+::: etape a) Espérance et variance de $S$
+$S = D_1 + \cdots + D_5$, somme des résultats des $5$ dés, lancés indépendamment :
+$$
+\begin{aligned}
+E(S) &= 5 \times 3{,}5 = 17{,}5 \\
+V(S) &= 5 \times \frac{35}{12} = \frac{175}{12}
+\end{aligned}
+$$
+:::
+
+[IMAGE_1]
+
+::: etape b) Loi de $G$ et espérance
+$G$ prend les valeurs $20$, $10$ et $0$ avec les probabilités $0{,}0324$, $0{,}2728$ et $1 - 0{,}0324 - 0{,}2728 = 0{,}6948$ :
+$$
+\begin{aligned}
+E(G) &\approx 20 \times 0{,}0324 + 10 \times 0{,}2728 + 0 \times 0{,}6948 \\
+&\approx 0{,}648 + 2{,}728 \\
+&\approx 3{,}38
+\end{aligned}
+$$
+:::
+
+::: etape c) Gain net
+$$E(N) = E(G - 8) = E(G) - 8 \approx -4{,}62$$
+:::
+
+::: resultat
+$E(S) = 17{,}5$, $V(S) = \frac{175}{12}$, $E(G) \approx 3{,}38$ points et $E(N) \approx -4{,}62$ : en moyenne, le joueur perd environ $4{,}62$ points par partie, le jeu lui est défavorable.
+:::
+
+## Question 3 : Deux couleurs de boules
+
+::: methode
+Lois binomiales ; puis on remarque que $X + Y$ est constant.
+:::
+
+::: etape a) Lois, espérances et variances
+$X \sim \mathcal{B}(50\,;0{,}7)$ : $E(X) = 35$ et $V(X) = 50 \times 0{,}7 \times 0{,}3 = 10{,}5$.
+
+$Y \sim \mathcal{B}(50\,;0{,}3)$ : $E(Y) = 15$ et $V(Y) = 50 \times 0{,}3 \times 0{,}7 = 10{,}5$.
+:::
+
+::: etape b) Somme $X + Y$
+Chaque tirage donne une boule rouge ou une boule bleue : $X + Y = 50$, quel que soit le résultat. Donc
+$$E(X + Y) = 50 \quad \text{et} \quad V(X + Y) = 0,$$
+car une variable constante a une variance nulle. On retrouve $E(X) + E(Y) = 35 + 15 = 50$.
+:::
+
+::: attention
+Ici $V(X) + V(Y) = 21 \neq V(X + Y)$ : $X$ et $Y$ ne sont pas indépendantes, puisque $Y = 50 - X$.
+:::
+
+::: etape c) Somme des fréquences
+$F_X + F_Y = \frac{X + Y}{50} = 1$, donc $E(F_X + F_Y) = 1$.
+:::
+
+::: resultat
+$E(X) = 35$, $V(X) = 10{,}5$, $E(Y) = 15$, $V(Y) = 10{,}5$ ; $E(X + Y) = 50$, $V(X + Y) = 0$ ; $E(F_X + F_Y) = 1$.
+:::
+
+## Question 4 : Échantillon de taille $200$
+
+::: methode
+Loi binomiale pour $X$, puis $F = \frac{1}{200}X$ : $E(F) = \frac{E(X)}{200}$ et $\sigma(F) = \frac{\sigma(X)}{200}$.
+:::
+
+::: etape a) Loi de $X$, espérance et écart type
+$X \sim \mathcal{B}(200\,;0{,}6)$ : $E(X) = 120$, $V(X) = 200 \times 0{,}6 \times 0{,}4 = 48$ et $\sigma(X) = \sqrt{48} = 4\sqrt{3} \approx 6{,}93$.
+:::
+
+::: etape b) Fréquence $F$
+$$
+\begin{aligned}
+E(F) &= \frac{120}{200} = 0{,}6 \\
+\sigma(F) &= \frac{4\sqrt{3}}{200} = \frac{\sqrt{3}}{50} \approx 0{,}034\,6
+\end{aligned}
+$$
+:::
+
+::: etape c) Intervalle $I$
+$2\sigma(F) \approx 0{,}069\,3$, donc
+$$
+\begin{aligned}
+E(F) - 2\sigma(F) &\approx 0{,}6 - 0{,}069\,3 \approx 0{,}531 \\
+E(F) + 2\sigma(F) &\approx 0{,}6 + 0{,}069\,3 \approx 0{,}669
+\end{aligned}
+$$
+:::
+
+[IMAGE_2]
+
+::: resultat
+$E(X) = 120$, $\sigma(X) \approx 6{,}93$, $E(F) = 0{,}6$, $\sigma(F) \approx 0{,}034\,6$ et $I \approx [0{,}531\,;0{,}669]$.
+:::
+
+::: remarque Que représente cet intervalle ?
+$F \in I$ équivaut à $107 \leq X \leq 133$. Avec la loi binomiale (calculatrice), $P(107 \leq X \leq 133) \approx 0{,}949$ : environ $95$ % des échantillons de taille $200$ ont une fréquence dans $I$. L’inégalité de Bienaymé-Tchebychev (chapitre suivant) garantit, sans calcul, au moins $75$ %.
+:::
+
+## Question 5 : Système à $3$ composants
+
+::: methode
+Décomposition en variables de Bernoulli, puis loi binomiale.
+:::
+
+::: etape a) Loi de chaque $X_i$
+$X_i$ suit la loi de Bernoulli de paramètre $0{,}9$ : $E(X_i) = 0{,}9$ et $V(X_i) = 0{,}9 \times 0{,}1 = 0{,}09$.
+:::
+
+::: etape b) Espérance et variance de $N$
+Linéarité, puis indépendance des composants :
+$$
+\begin{aligned}
+E(N) &= 3 \times 0{,}9 = 2{,}7 \\
+V(N) &= 3 \times 0{,}09 = 0{,}27
+\end{aligned}
+$$
+:::
+
+::: etape c) Loi de $N$
+$N \sim \mathcal{B}(3\,;0{,}9)$ :
+
+| $k$ | $0$ | $1$ | $2$ | $3$ |
+|---|---|---|---|---|
+| $P(N = k)$ | $0{,}001$ | $0{,}027$ | $0{,}243$ | $0{,}729$ |
+
+On retrouve $E(N) = 0{,}027 + 2 \times 0{,}243 + 3 \times 0{,}729 = 2{,}7$.
+:::
+
+::: etape c) Le système fonctionne
+$$P(N \geq 2) = 0{,}243 + 0{,}729 = 0{,}972$$
+:::
+
+::: resultat
+$E(X_i) = 0{,}9$, $V(X_i) = 0{,}09$ ; $E(N) = 2{,}7$, $V(N) = 0{,}27$ ; $N \sim \mathcal{B}(3\,;0{,}9)$ et le système fonctionne avec la probabilité $0{,}972$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $X \sim \mathcal{B}(100\,;0{,}05)$, $E(X) = 5$, $V(X) = 4{,}75$ ; $E(F) = 0{,}05$, $V(F) = 0{,}000\,475$ : en moyenne $5$ % de défauts, avec un écart type d’environ $2{,}2$ points.
+2. $E(S) = 17{,}5$, $V(S) = \frac{175}{12}$ ; $E(G) \approx 3{,}38$ points ; $E(N) \approx -4{,}62$ : jeu défavorable au joueur.
+3. $X \sim \mathcal{B}(50\,;0{,}7)$, $Y \sim \mathcal{B}(50\,;0{,}3)$, $E(X) = 35$, $E(Y) = 15$, $V(X) = V(Y) = 10{,}5$ ; $E(X + Y) = 50$, $V(X + Y) = 0$ ; $E(F_X + F_Y) = 1$.
+4. $X \sim \mathcal{B}(200\,;0{,}6)$, $E(X) = 120$, $\sigma(X) \approx 6{,}93$ ; $E(F) = 0{,}6$, $\sigma(F) \approx 0{,}034\,6$ ; $I \approx [0{,}531\,;0{,}669]$.
+5. $X_i$ de Bernoulli de paramètre $0{,}9$ ; $E(N) = 2{,}7$, $V(N) = 0{,}27$ ; $N \sim \mathcal{B}(3\,;0{,}9)$ ; $P(N \geq 2) = 0{,}972$.
+
+===

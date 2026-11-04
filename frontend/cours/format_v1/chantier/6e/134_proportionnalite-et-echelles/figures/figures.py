@@ -1,0 +1,2 @@
+"""Figures TikZ originales ; textes séparés des traits."""
+FIGURES = {'carte': '\\begin{tikzpicture}[x=0.7cm,y=1cm]\n\\draw[geoTrait] (0,0)--(6.5,0);\n\\draw[geoTrait] (0,-0.12)--(0,0.12) (6.5,-0.12)--(6.5,0.12);\n\\node[geoLabel,above=9pt] at (3.25,0) {6,5 cm sur la carte};\n\\node[geoLabel,below=10pt] at (3.25,0) {325 m dans la réalité};\n\\node[geoLabel] at (3.25,-1.1) {1 cm représente 50 m};\n\\end{tikzpicture}'}

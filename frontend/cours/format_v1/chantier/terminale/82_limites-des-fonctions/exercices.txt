@@ -1,0 +1,1947 @@
+=== Découverte - Limites de référence
+Id: 1188
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Calculer les limites suivantes en utilisant les limites usuelles.
+
+::: rappel Limites usuelles
+- Pour tout entier $n \ge 1$ : $\lim\limits_{x \to +\infty} x^n = +\infty$ et $\lim\limits_{x \to +\infty} \dfrac{1}{x^n} = 0$.
+- $\lim\limits_{x \to +\infty} \sqrt{x} = +\infty$.
+- $\lim\limits_{x \to +\infty} e^x = +\infty$ et $\lim\limits_{x \to -\infty} e^x = 0$.
+:::
+
+1. Calculer $\displaystyle \lim_{x \to 2} (3x^2 - 2x + 1)$
+2. Calculer $\displaystyle \lim_{x \to +\infty} \frac{1}{x^3}$
+3. Calculer $\displaystyle \lim_{x \to +\infty} x^4$
+4. Calculer $\displaystyle \lim_{x \to +\infty} \sqrt{x + 1}$
+5. Calculer $\displaystyle \lim_{x \to -\infty} e^x$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer $\displaystyle \lim_{x \to 2} (3x^2 - 2x + 1)$
+
+::: methode
+Fonction polynôme en un réel : sa limite est sa valeur en ce réel.
+:::
+
+::: etape Limite de chaque terme
+Quand $x$ tend vers $2$ : $x^2 \to 4$, donc $3x^2 \to 12$, et $-2x \to -4$.
+:::
+
+::: etape Somme des limites
+$$
+\begin{aligned}
+\lim_{x \to 2} (3x^2 - 2x + 1) &= 3 \times 2^2 - 2 \times 2 + 1 \\
+&= 12 - 4 + 1 \\
+&= 9
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$\lim_{x \to 2} (3x^2 - 2x + 1) = 9$$
+:::
+
+## Question 2 : Calculer $\displaystyle \lim_{x \to +\infty} \frac{1}{x^3}$
+
+::: methode
+Limite usuelle de $\frac{1}{x^n}$ en $+\infty$, avec $n = 3$.
+:::
+
+::: etape Limite du dénominateur
+$\lim\limits_{x \to +\infty} x^3 = +\infty$.
+:::
+
+::: etape Inverse
+L’inverse d’une quantité qui tend vers $+\infty$ tend vers $0$.
+:::
+
+::: resultat
+$$\lim_{x \to +\infty} \frac{1}{x^3} = 0$$
+:::
+
+## Question 3 : Calculer $\displaystyle \lim_{x \to +\infty} x^4$
+
+::: methode
+Limite usuelle de $x^n$ en $+\infty$, avec $n = 4$.
+:::
+
+::: etape Limite usuelle
+Pour tout entier $n \ge 1$, $\lim\limits_{x \to +\infty} x^n = +\infty$ ; ici $n = 4$.
+:::
+
+::: resultat
+$$\lim_{x \to +\infty} x^4 = +\infty$$
+:::
+
+## Question 4 : Calculer $\displaystyle \lim_{x \to +\infty} \sqrt{x + 1}$
+
+::: methode
+Limite d’une fonction composée : $\sqrt{x + 1} = \sqrt{X}$ avec $X = x + 1$.
+:::
+
+::: etape Limite de l’intérieur
+$\lim\limits_{x \to +\infty} (x + 1) = +\infty$.
+:::
+
+::: etape Limite de la racine carrée
+$\lim\limits_{X \to +\infty} \sqrt{X} = +\infty$.
+:::
+
+::: etape Composition
+Par composition des deux limites précédentes, $\sqrt{x + 1}$ tend vers $+\infty$.
+:::
+
+::: resultat
+$$\lim_{x \to +\infty} \sqrt{x + 1} = +\infty$$
+:::
+
+## Question 5 : Calculer $\displaystyle \lim_{x \to -\infty} e^x$
+
+::: methode
+Limite usuelle de la fonction exponentielle.
+:::
+
+::: etape Limite du cours
+En $-\infty$, $e^x$ tend vers $0$ en restant strictement positif : la droite d’équation $y = 0$ est asymptote horizontale à la courbe de l’exponentielle en $-\infty$.
+:::
+
+::: resultat
+$$\lim_{x \to -\infty} e^x = 0$$
+:::
+
+[IMAGE_1]
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle \lim_{x \to 2} (3x^2 - 2x + 1) = 9$
+2. $\displaystyle \lim_{x \to +\infty} \frac{1}{x^3} = 0$
+3. $\displaystyle \lim_{x \to +\infty} x^4 = +\infty$
+4. $\displaystyle \lim_{x \to +\infty} \sqrt{x + 1} = +\infty$
+5. $\displaystyle \lim_{x \to -\infty} e^x = 0$
+
+===
+
+=== Découverte - Opérations sur les limites
+Id: 1189
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Calculer les limites suivantes à l’aide des opérations sur les limites.
+
+::: rappel Opérations sur les limites
+- Somme : $\lim (f + g) = \lim f + \lim g$, sauf la forme indéterminée $+\infty - \infty$.
+- Produit : $\lim (f \times g) = \lim f \times \lim g$, sauf la forme indéterminée $0 \times \infty$.
+- Quotient : si $\lim f = \ell$ et $\lim g = \ell' \neq 0$, alors $\lim \dfrac{f}{g} = \dfrac{\ell}{\ell'}$ ; les formes $\dfrac{\infty}{\infty}$ et $\dfrac{0}{0}$ sont indéterminées.
+:::
+
+1. Calculer $\displaystyle \lim_{x \to +\infty} \left(\frac{1}{x} + 3\right)$
+2. Calculer $\displaystyle \lim_{x \to 2} (x^2 \times 5)$
+3. Calculer $\displaystyle \lim_{x \to +\infty} \frac{2x + 1}{3x - 2}$
+4. Calculer $\displaystyle \lim_{x \to 3} \frac{x^2 + 1}{x - 1}$
+5. Calculer $\displaystyle \lim_{x \to +\infty} \left(x \times \frac{1}{x^2}\right)$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer $\displaystyle \lim_{x \to +\infty} \left(\frac{1}{x} + 3\right)$
+
+::: methode
+Limite d’une somme : on calcule la limite de chaque terme.
+:::
+
+::: etape Limite de chaque terme
+- $\lim\limits_{x \to +\infty} \dfrac{1}{x} = 0$ ;
+- $3$ est une constante : sa limite est $3$.
+:::
+
+::: etape Somme des limites
+$$\lim_{x \to +\infty} \left(\frac{1}{x} + 3\right) = 0 + 3 = 3$$
+:::
+
+::: resultat
+$$\lim_{x \to +\infty} \left(\frac{1}{x} + 3\right) = 3$$
+:::
+
+[IMAGE_1]
+
+::: retenir
+Graphiquement, la droite d’équation $y = 3$ est asymptote horizontale à la courbe en $+\infty$ : pour $x \gt 0$, $\dfrac{1}{x} \gt 0$, donc la courbe reste au-dessus de cette droite.
+:::
+
+## Question 2 : Calculer $\displaystyle \lim_{x \to 2} (x^2 \times 5)$
+
+::: methode
+Limite d’un produit : on calcule la limite de chaque facteur.
+:::
+
+::: etape Limite de chaque facteur
+- $\lim\limits_{x \to 2} x^2 = 2^2 = 4$ ;
+- $\lim\limits_{x \to 2} 5 = 5$.
+:::
+
+::: etape Produit des limites
+$$\lim_{x \to 2} (x^2 \times 5) = 4 \times 5 = 20$$
+:::
+
+::: resultat
+$$\lim_{x \to 2} (x^2 \times 5) = 20$$
+:::
+
+## Question 3 : Calculer $\displaystyle \lim_{x \to +\infty} \frac{2x + 1}{3x - 2}$
+
+::: methode
+Forme indéterminée $\frac{\infty}{\infty}$ : on factorise numérateur et dénominateur par le terme de plus haut degré, $x$.
+:::
+
+::: etape Repérer la forme indéterminée
+En $+\infty$, $2x + 1 \to +\infty$ et $3x - 2 \to +\infty$ : c’est la forme $\frac{\infty}{\infty}$, on ne peut pas conclure directement.
+:::
+
+::: etape Factoriser par $x$
+Pour $x \gt 1$ :
+$$
+\begin{aligned}
+\frac{2x + 1}{3x - 2} &= \frac{x\left(2 + \frac{1}{x}\right)}{x\left(3 - \frac{2}{x}\right)} \\
+&= \frac{2 + \frac{1}{x}}{3 - \frac{2}{x}}
+\end{aligned}
+$$
+:::
+
+::: etape Passer à la limite
+Comme $\frac{1}{x} \to 0$ et $\frac{2}{x} \to 0$, le numérateur tend vers $2$ et le dénominateur vers $3 \neq 0$.
+:::
+
+::: resultat
+$$\lim_{x \to +\infty} \frac{2x + 1}{3x - 2} = \frac{2}{3}$$
+:::
+
+::: retenir
+Pour un quotient de deux polynômes de même degré, la limite en $\pm\infty$ est le quotient des coefficients des termes de plus haut degré : ici $\frac{2}{3}$.
+:::
+
+## Question 4 : Calculer $\displaystyle \lim_{x \to 3} \frac{x^2 + 1}{x - 1}$
+
+::: methode
+Quotient en un réel où le dénominateur ne s’annule pas : on calcule les deux limites.
+:::
+
+::: etape Limite du dénominateur
+$\lim\limits_{x \to 3} (x - 1) = 2$, et $2 \neq 0$ : pas de forme indéterminée.
+:::
+
+::: etape Limite du numérateur
+$\lim\limits_{x \to 3} (x^2 + 1) = 3^2 + 1 = 10$.
+:::
+
+::: etape Quotient des limites
+$$\lim_{x \to 3} \frac{x^2 + 1}{x - 1} = \frac{10}{2} = 5$$
+:::
+
+::: resultat
+$$\lim_{x \to 3} \frac{x^2 + 1}{x - 1} = 5$$
+:::
+
+## Question 5 : Calculer $\displaystyle \lim_{x \to +\infty} \left(x \times \frac{1}{x^2}\right)$
+
+::: methode
+Forme indéterminée $\infty \times 0$ : on simplifie l’expression avant de passer à la limite.
+:::
+
+::: etape Repérer la forme indéterminée
+$x \to +\infty$ et $\frac{1}{x^2} \to 0$ : c’est la forme $\infty \times 0$.
+:::
+
+::: etape Simplifier
+Pour $x \neq 0$ :
+$$x \times \frac{1}{x^2} = \frac{x}{x^2} = \frac{1}{x}$$
+:::
+
+::: etape Passer à la limite
+$\lim\limits_{x \to +\infty} \dfrac{1}{x} = 0$.
+:::
+
+::: resultat
+$$\lim_{x \to +\infty} \left(x \times \frac{1}{x^2}\right) = 0$$
+:::
+
+::: attention
+« $\infty \times 0$ » ne vaut pas forcément $0$ : $x \times \frac{1}{x}$ tend vers $1$ et $x^2 \times \frac{1}{x} = x$ tend vers $+\infty$. Il faut toujours transformer l’expression.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle \lim_{x \to +\infty} \left(\frac{1}{x} + 3\right) = 3$
+2. $\displaystyle \lim_{x \to 2} (x^2 \times 5) = 20$
+3. $\displaystyle \lim_{x \to +\infty} \frac{2x + 1}{3x - 2} = \frac{2}{3}$
+4. $\displaystyle \lim_{x \to 3} \frac{x^2 + 1}{x - 1} = 5$
+5. $\displaystyle \lim_{x \to +\infty} \left(x \times \frac{1}{x^2}\right) = 0$
+
+===
+
+=== DS - Limites, asymptotes et croissances comparées
+Id: 1197
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Devoir surveillé sur les limites de fonctions. Les cinq parties sont indépendantes.
+
+## Partie A : Limites usuelles et opérations
+
+1. Calculer $\displaystyle \lim_{x \to 3} (2x^2 - 5x + 1)$.
+2. Calculer $\displaystyle \lim_{x \to +\infty} \frac{3x^2 + 2x - 1}{x^2 + 5}$.
+3. Calculer $\displaystyle \lim_{x \to +\infty} (x^3 - 2x^2)$.
+
+## Partie B : Formes indéterminées
+
+1. Calculer $\displaystyle \lim_{x \to 2} \frac{x^2 - 4}{x - 2}$.
+2. Calculer $\displaystyle \lim_{x \to +\infty} \frac{2x^2 - x + 1}{3x^2 + 4x - 2}$.
+3. Calculer $\displaystyle \lim_{x \to +\infty} \left(\sqrt{x^2 + 1} - x\right)$.
+
+## Partie C : Théorème des gendarmes
+
+1. Calculer $\displaystyle \lim_{x \to +\infty} \frac{2x + \sin x}{x + 1}$.
+2. Calculer $\displaystyle \lim_{x \to 0} x^2 \cos\left(\frac{1}{x}\right)$.
+
+## Partie D : Asymptotes
+
+1. Soit $f$ la fonction définie sur $\mathbb{R} \setminus \{1\}$ par $f(x) = \dfrac{3x + 2}{x - 1}$. Déterminer les asymptotes à sa courbe représentative $\mathcal{C}_f$.
+2. Soit $g$ la fonction définie sur $\mathbb{R} \setminus \{-2\}$ par $g(x) = \dfrac{x^2 - 1}{x + 2}$, de courbe $\mathcal{C}_g$.
+  - a) Déterminer l’asymptote verticale à $\mathcal{C}_g$.
+  - b) Vérifier que, pour tout $x \neq -2$, $g(x) = x - 2 + \dfrac{3}{x + 2}$. En déduire que la droite d’équation $y = x - 2$ est asymptote oblique à $\mathcal{C}_g$ en $+\infty$ et en $-\infty$.
+
+## Partie E : Limites trigonométriques, exponentielles et logarithmiques
+
+1. Calculer $\displaystyle \lim_{x \to 0} \frac{\sin(4x)}{x}$.
+2. Calculer $\displaystyle \lim_{x \to +\infty} \frac{e^x}{x^3}$.
+3. Calculer $\displaystyle \lim_{x \to +\infty} \frac{\ln(x^2)}{x}$.
+
+Étapes:
+<!-- optitab:1 -->
+## Partie A : Limites usuelles et opérations
+
+## Question A1 : Calculer $\displaystyle \lim_{x \to 3} (2x^2 - 5x + 1)$
+
+::: methode
+Fonction polynôme en un réel : on remplace $x$ par $3$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+\lim_{x \to 3} (2x^2 - 5x + 1) &= 2 \times 3^2 - 5 \times 3 + 1 \\
+&= 18 - 15 + 1 \\
+&= 4
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$\lim_{x \to 3} (2x^2 - 5x + 1) = 4$$
+:::
+
+## Question A2 : Calculer $\displaystyle \lim_{x \to +\infty} \frac{3x^2 + 2x - 1}{x^2 + 5}$
+
+::: methode
+Forme indéterminée $\frac{\infty}{\infty}$ : factorisation par le terme de plus haut degré, $x^2$.
+:::
+
+::: etape Factoriser par $x^2$
+Pour $x \neq 0$ :
+$$
+\begin{aligned}
+\frac{3x^2 + 2x - 1}{x^2 + 5} &= \frac{x^2\left(3 + \frac{2}{x} - \frac{1}{x^2}\right)}{x^2\left(1 + \frac{5}{x^2}\right)} \\
+&= \frac{3 + \frac{2}{x} - \frac{1}{x^2}}{1 + \frac{5}{x^2}}
+\end{aligned}
+$$
+:::
+
+::: etape Passer à la limite
+Le numérateur tend vers $3 + 0 - 0 = 3$ et le dénominateur vers $1 + 0 = 1$.
+:::
+
+::: resultat
+$$\lim_{x \to +\infty} \frac{3x^2 + 2x - 1}{x^2 + 5} = 3$$
+:::
+
+## Question A3 : Calculer $\displaystyle \lim_{x \to +\infty} (x^3 - 2x^2)$
+
+::: methode
+Forme indéterminée $\infty - \infty$ : factorisation par le terme de plus haut degré, $x^3$.
+:::
+
+::: etape Factoriser
+Pour $x \neq 0$ :
+$$x^3 - 2x^2 = x^3\left(1 - \frac{2}{x}\right)$$
+:::
+
+::: etape Passer à la limite
+$\lim\limits_{x \to +\infty} x^3 = +\infty$ et $\lim\limits_{x \to +\infty} \left(1 - \dfrac{2}{x}\right) = 1 \gt 0$ : le produit tend vers $+\infty$.
+:::
+
+::: resultat
+$$\lim_{x \to +\infty} (x^3 - 2x^2) = +\infty$$
+:::
+
+## Partie B : Formes indéterminées
+
+## Question B1 : Calculer $\displaystyle \lim_{x \to 2} \frac{x^2 - 4}{x - 2}$
+
+::: methode
+Forme indéterminée $\frac{0}{0}$ en $2$ : on factorise par $(x - 2)$ et on simplifie.
+:::
+
+::: etape Repérer la forme indéterminée
+En $2$, le numérateur vaut $2^2 - 4 = 0$ et le dénominateur $2 - 2 = 0$ : forme $\frac{0}{0}$.
+:::
+
+::: etape Factoriser et simplifier
+Pour $x \neq 2$ :
+$$\frac{x^2 - 4}{x - 2} = \frac{(x - 2)(x + 2)}{x - 2} = x + 2$$
+:::
+
+::: etape Passer à la limite
+$\lim\limits_{x \to 2} (x + 2) = 4$.
+:::
+
+::: resultat
+$$\lim_{x \to 2} \frac{x^2 - 4}{x - 2} = 4$$
+:::
+
+## Question B2 : Calculer $\displaystyle \lim_{x \to +\infty} \frac{2x^2 - x + 1}{3x^2 + 4x - 2}$
+
+::: methode
+Forme indéterminée $\frac{\infty}{\infty}$ : factorisation par $x^2$.
+:::
+
+::: etape Factoriser par $x^2$
+Pour $x$ assez grand :
+$$
+\begin{aligned}
+\frac{2x^2 - x + 1}{3x^2 + 4x - 2} &= \frac{x^2\left(2 - \frac{1}{x} + \frac{1}{x^2}\right)}{x^2\left(3 + \frac{4}{x} - \frac{2}{x^2}\right)} \\
+&= \frac{2 - \frac{1}{x} + \frac{1}{x^2}}{3 + \frac{4}{x} - \frac{2}{x^2}}
+\end{aligned}
+$$
+:::
+
+::: etape Passer à la limite
+Le numérateur tend vers $2$ et le dénominateur vers $3$.
+:::
+
+::: resultat
+$$\lim_{x \to +\infty} \frac{2x^2 - x + 1}{3x^2 + 4x - 2} = \frac{2}{3}$$
+:::
+
+## Question B3 : Calculer $\displaystyle \lim_{x \to +\infty} \left(\sqrt{x^2 + 1} - x\right)$
+
+::: methode
+Forme indéterminée $\infty - \infty$ avec une racine : quantité conjuguée.
+:::
+
+::: etape Multiplier par la quantité conjuguée
+Pour tout réel $x$, $\sqrt{x^2 + 1} + x \gt 0$ (car $\sqrt{x^2 + 1} \gt \sqrt{x^2} = |x|$), donc :
+$$
+\begin{aligned}
+\sqrt{x^2 + 1} - x &= \frac{\left(\sqrt{x^2 + 1} - x\right)\left(\sqrt{x^2 + 1} + x\right)}{\sqrt{x^2 + 1} + x} \\
+&= \frac{(x^2 + 1) - x^2}{\sqrt{x^2 + 1} + x} \\
+&= \frac{1}{\sqrt{x^2 + 1} + x}
+\end{aligned}
+$$
+:::
+
+::: etape Passer à la limite
+En $+\infty$, $\sqrt{x^2 + 1} \to +\infty$ et $x \to +\infty$ : le dénominateur tend vers $+\infty$, donc le quotient tend vers $0$.
+:::
+
+::: resultat
+$$\lim_{x \to +\infty} \left(\sqrt{x^2 + 1} - x\right) = 0$$
+:::
+
+## Partie C : Théorème des gendarmes
+
+## Question C1 : Calculer $\displaystyle \lim_{x \to +\infty} \frac{2x + \sin x}{x + 1}$
+
+::: methode
+Encadrer $\sin x$ entre $-1$ et $1$, puis appliquer le théorème des gendarmes.
+:::
+
+::: etape Encadrer le numérateur
+Pour tout réel $x$, $-1 \le \sin x \le 1$, donc $2x - 1 \le 2x + \sin x \le 2x + 1$.
+:::
+
+::: etape Diviser par $x + 1 \gt 0$
+Pour $x \gt 0$, $x + 1 \gt 0$ : l’ordre est conservé.
+$$\frac{2x - 1}{x + 1} \le \frac{2x + \sin x}{x + 1} \le \frac{2x + 1}{x + 1}$$
+:::
+
+::: etape Limites des deux gendarmes
+Ce sont des quotients de polynômes de degré $1$ : en factorisant par $x$, chacun tend vers $\frac{2}{1} = 2$ en $+\infty$.
+:::
+
+::: resultat
+$$\lim_{x \to +\infty} \frac{2x + \sin x}{x + 1} = 2$$
+:::
+
+[IMAGE_3]
+
+## Question C2 : Calculer $\displaystyle \lim_{x \to 0} x^2 \cos\left(\frac{1}{x}\right)$
+
+::: methode
+Encadrer $\cos\left(\frac{1}{x}\right)$, multiplier par $x^2 \ge 0$, puis appliquer le théorème des gendarmes.
+:::
+
+::: etape Encadrer
+Pour tout $x \neq 0$, $-1 \le \cos\left(\frac{1}{x}\right) \le 1$.
+:::
+
+::: etape Multiplier par $x^2 \gt 0$
+$$-x^2 \le x^2 \cos\left(\frac{1}{x}\right) \le x^2$$
+:::
+
+::: etape Limites des deux gendarmes
+$\lim\limits_{x \to 0} (-x^2) = 0$ et $\lim\limits_{x \to 0} x^2 = 0$.
+:::
+
+::: resultat
+$$\lim_{x \to 0} x^2 \cos\left(\frac{1}{x}\right) = 0$$
+:::
+
+::: attention
+$\cos\left(\frac{1}{x}\right)$ n’a pas de limite en $0$ : on ne peut pas utiliser la règle du produit. Seul l’encadrement permet de conclure.
+:::
+
+## Partie D : Asymptotes
+
+## Question D1 : Asymptotes de $\displaystyle f(x) = \frac{3x + 2}{x - 1}$
+
+::: methode
+Asymptote verticale là où le dénominateur s’annule (limites à gauche et à droite) ; asymptote horizontale si la limite en $\pm\infty$ est finie.
+:::
+
+::: etape Asymptote verticale en $x = 1$
+Le dénominateur s’annule en $1$ et le numérateur tend vers $3 \times 1 + 2 = 5 \gt 0$.
+- Si $x \gt 1$, $x - 1$ tend vers $0$ en restant positif : $\lim\limits_{x \to 1^+} f(x) = +\infty$.
+- Si $x \lt 1$, $x - 1$ tend vers $0$ en restant négatif : $\lim\limits_{x \to 1^-} f(x) = -\infty$.
+
+La droite d’équation $x = 1$ est asymptote verticale à $\mathcal{C}_f$.
+:::
+
+::: etape Asymptote horizontale
+Pour $x \neq 0$ :
+$$
+\begin{aligned}
+f(x) &= \frac{x\left(3 + \frac{2}{x}\right)}{x\left(1 - \frac{1}{x}\right)} \\
+&= \frac{3 + \frac{2}{x}}{1 - \frac{1}{x}}
+\end{aligned}
+$$
+qui tend vers $3$ en $+\infty$ et en $-\infty$. La droite d’équation $y = 3$ est asymptote horizontale à $\mathcal{C}_f$.
+:::
+
+::: resultat
+Asymptote verticale $x = 1$ ; asymptote horizontale $y = 3$ en $+\infty$ et en $-\infty$.
+:::
+
+[IMAGE_1]
+
+## Question D2 : Asymptotes de $\displaystyle g(x) = \frac{x^2 - 1}{x + 2}$
+
+::: methode
+Limites à gauche et à droite en $-2$ ; puis écriture $g(x) = x - 2 + r(x)$ avec $r(x) \to 0$ en $\pm\infty$.
+:::
+
+::: etape a) Asymptote verticale en $x = -2$
+Le numérateur tend vers $(-2)^2 - 1 = 3 \gt 0$.
+- Si $x \gt -2$, $x + 2$ tend vers $0$ en restant positif : $\lim\limits_{x \to -2^+} g(x) = +\infty$.
+- Si $x \lt -2$, $x + 2$ tend vers $0$ en restant négatif : $\lim\limits_{x \to -2^-} g(x) = -\infty$.
+
+La droite d’équation $x = -2$ est asymptote verticale à $\mathcal{C}_g$.
+:::
+
+::: etape b) Vérifier l’écriture de $g(x)$
+Pour $x \neq -2$, on réduit au même dénominateur :
+$$
+\begin{aligned}
+x - 2 + \frac{3}{x + 2} &= \frac{(x - 2)(x + 2) + 3}{x + 2} \\
+&= \frac{x^2 - 4 + 3}{x + 2} \\
+&= \frac{x^2 - 1}{x + 2} = g(x)
+\end{aligned}
+$$
+:::
+
+::: etape b) Asymptote oblique
+$g(x) - (x - 2) = \dfrac{3}{x + 2}$, et ce quotient tend vers $0$ en $+\infty$ et en $-\infty$ (numérateur constant, dénominateur qui tend vers $\pm\infty$). La droite d’équation $y = x - 2$ est donc asymptote oblique à $\mathcal{C}_g$ en $+\infty$ et en $-\infty$.
+:::
+
+::: resultat
+Asymptote verticale $x = -2$ ; asymptote oblique $y = x - 2$ en $+\infty$ et en $-\infty$.
+:::
+
+[IMAGE_2]
+
+## Partie E : Limites trigonométriques, exponentielles et logarithmiques
+
+## Question E1 : Calculer $\displaystyle \lim_{x \to 0} \frac{\sin(4x)}{x}$
+
+::: methode
+Faire apparaître $\dfrac{\sin X}{X}$ avec $X = 4x$, puis utiliser $\lim\limits_{X \to 0} \dfrac{\sin X}{X} = 1$.
+:::
+
+::: etape Transformer
+Pour $x \neq 0$ :
+$$\frac{\sin(4x)}{x} = 4 \times \frac{\sin(4x)}{4x}$$
+:::
+
+::: etape Composition
+Quand $x \to 0$, $X = 4x \to 0$ et $\dfrac{\sin X}{X} \to 1$, donc $\dfrac{\sin(4x)}{4x} \to 1$.
+:::
+
+::: resultat
+$$\lim_{x \to 0} \frac{\sin(4x)}{x} = 4 \times 1 = 4$$
+:::
+
+## Question E2 : Calculer $\displaystyle \lim_{x \to +\infty} \frac{e^x}{x^3}$
+
+::: methode
+Croissances comparées : $\lim\limits_{x \to +\infty} \dfrac{e^x}{x^n} = +\infty$ pour tout entier $n \ge 1$.
+:::
+
+::: etape Appliquer le théorème avec $n = 3$
+Le quotient $\dfrac{e^x}{x^3}$ est de la forme $\frac{\infty}{\infty}$, mais l’exponentielle l’emporte sur toute puissance de $x$.
+:::
+
+::: resultat
+$$\lim_{x \to +\infty} \frac{e^x}{x^3} = +\infty$$
+:::
+
+## Question E3 : Calculer $\displaystyle \lim_{x \to +\infty} \frac{\ln(x^2)}{x}$
+
+::: methode
+Simplifier avec $\ln(x^2) = 2\ln x$ (pour $x \gt 0$), puis croissances comparées : $\lim\limits_{x \to +\infty} \dfrac{\ln x}{x} = 0$.
+:::
+
+::: etape Simplifier
+Pour $x \gt 0$ :
+$$\frac{\ln(x^2)}{x} = \frac{2\ln x}{x} = 2 \times \frac{\ln x}{x}$$
+:::
+
+::: etape Passer à la limite
+$\lim\limits_{x \to +\infty} \dfrac{\ln x}{x} = 0$, donc le produit tend vers $2 \times 0 = 0$.
+:::
+
+::: resultat
+$$\lim_{x \to +\infty} \frac{\ln(x^2)}{x} = 0$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+- **A1.** $4$ ; **A2.** $3$ ; **A3.** $+\infty$
+- **B1.** $4$ ; **B2.** $\frac{2}{3}$ ; **B3.** $0$
+- **C1.** $2$ ; **C2.** $0$
+- **D1.** Asymptote verticale $x = 1$ ; asymptote horizontale $y = 3$ en $+\infty$ et en $-\infty$.
+- **D2.** Asymptote verticale $x = -2$ ; asymptote oblique $y = x - 2$ en $+\infty$ et en $-\infty$.
+- **E1.** $4$ ; **E2.** $+\infty$ ; **E3.** $0$
+
+===
+
+=== Entraînement - Asymptotes d’une courbe
+Id: 867
+Difficulté: medium
+Image: asymptotes_question1.png,asymptotes_question2.png,asymptotes_question3.png,asymptotes_question4.png,asymptotes_question5.png
+
+Énoncé:
+<!-- optitab:1 -->
+Pour chaque fonction, déterminer les asymptotes à sa courbe représentative : asymptotes verticales, horizontales et, le cas échéant, obliques.
+
+::: rappel Asymptote oblique (pour aller plus loin)
+Si $\lim\limits_{x \to \pm\infty} \big[f(x) - (ax + b)\big] = 0$, la droite d’équation $y = ax + b$ est asymptote oblique à la courbe de $f$. Pour la trouver, on écrit $f(x) = ax + b + r(x)$ avec $\lim r(x) = 0$ : l’écriture à utiliser est donnée.
+:::
+
+1. Déterminer les asymptotes de $f(x) = \dfrac{x^2 - 1}{x - 2}$, définie sur $\mathbb{R} \setminus \{2\}$ ; on vérifiera que $f(x) = x + 2 + \dfrac{3}{x - 2}$.
+2. Déterminer les asymptotes de $g(x) = \dfrac{2x + 1}{x + 3}$, définie sur $\mathbb{R} \setminus \{-3\}$.
+3. Déterminer les asymptotes de $h(x) = \dfrac{x^3 + 1}{x^2 - 1}$, définie sur $\mathbb{R} \setminus \{-1\,;1\}$ ; on vérifiera que $h(x) = x + \dfrac{1}{x - 1}$.
+4. Déterminer les asymptotes de $k(x) = \dfrac{x^2 + 2x}{x + 1}$, définie sur $\mathbb{R} \setminus \{-1\}$ ; on vérifiera que $k(x) = x + 1 - \dfrac{1}{x + 1}$.
+5. Déterminer les asymptotes de $m(x) = \dfrac{x^2 - 4}{x^2 + 1}$, définie sur $\mathbb{R}$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Déterminer les asymptotes de $\displaystyle f(x) = \frac{x^2 - 1}{x - 2}$
+
+::: methode
+Asymptote verticale là où le dénominateur s’annule (limites à gauche et à droite) ; en $\pm\infty$, écriture $f(x) = ax + b + r(x)$ avec $r(x) \to 0$.
+:::
+
+::: etape Asymptote verticale en $x = 2$
+Le dénominateur s’annule en $2$ et le numérateur tend vers $2^2 - 1 = 3 \gt 0$.
+- Si $x \gt 2$, $x - 2$ tend vers $0$ en restant positif : $\lim\limits_{x \to 2^+} f(x) = +\infty$.
+- Si $x \lt 2$, $x - 2$ tend vers $0$ en restant négatif : $\lim\limits_{x \to 2^-} f(x) = -\infty$.
+
+La droite d’équation $x = 2$ est asymptote verticale.
+:::
+
+::: etape Vérifier l’écriture de $f(x)$
+Pour $x \neq 2$ :
+$$
+\begin{aligned}
+x + 2 + \frac{3}{x - 2} &= \frac{(x + 2)(x - 2) + 3}{x - 2} \\
+&= \frac{x^2 - 4 + 3}{x - 2} \\
+&= \frac{x^2 - 1}{x - 2} = f(x)
+\end{aligned}
+$$
+:::
+
+::: etape Asymptote oblique
+$f(x) - (x + 2) = \dfrac{3}{x - 2}$ tend vers $0$ en $+\infty$ et en $-\infty$. La droite d’équation $y = x + 2$ est asymptote oblique. Comme $f(x) \to +\infty$ en $+\infty$ (et $-\infty$ en $-\infty$), il n’y a pas d’asymptote horizontale.
+:::
+
+::: resultat
+Asymptote verticale $x = 2$ ; asymptote oblique $y = x + 2$ en $+\infty$ et en $-\infty$.
+:::
+
+[IMAGE_1]
+
+## Question 2 : Déterminer les asymptotes de $\displaystyle g(x) = \frac{2x + 1}{x + 3}$
+
+::: methode
+Limites à gauche et à droite en $-3$, puis limite en $\pm\infty$ par factorisation.
+:::
+
+::: etape Asymptote verticale en $x = -3$
+Le numérateur tend vers $2 \times (-3) + 1 = -5 \lt 0$.
+- Si $x \gt -3$, $x + 3$ tend vers $0$ en restant positif : $\lim\limits_{x \to -3^+} g(x) = -\infty$.
+- Si $x \lt -3$, $x + 3$ tend vers $0$ en restant négatif : $\lim\limits_{x \to -3^-} g(x) = +\infty$.
+
+La droite d’équation $x = -3$ est asymptote verticale.
+:::
+
+::: etape Asymptote horizontale
+Pour $x \neq 0$ :
+$$
+\begin{aligned}
+g(x) &= \frac{x\left(2 + \frac{1}{x}\right)}{x\left(1 + \frac{3}{x}\right)} \\
+&= \frac{2 + \frac{1}{x}}{1 + \frac{3}{x}}
+\end{aligned}
+$$
+qui tend vers $2$ en $+\infty$ et en $-\infty$. La droite d’équation $y = 2$ est asymptote horizontale.
+:::
+
+::: resultat
+Asymptote verticale $x = -3$ ; asymptote horizontale $y = 2$ en $+\infty$ et en $-\infty$.
+:::
+
+::: attention
+Le numérateur est négatif près de $-3$ : la règle des signes donne $-\infty$ à droite et $+\infty$ à gauche.
+:::
+
+[IMAGE_2]
+
+## Question 3 : Déterminer les asymptotes de $\displaystyle h(x) = \frac{x^3 + 1}{x^2 - 1}$
+
+::: methode
+Simplifier d’abord la fraction : le facteur $(x + 1)$ est commun au numérateur et au dénominateur.
+:::
+
+::: etape Simplifier
+$x^3 + 1 = (x + 1)(x^2 - x + 1)$ (on le vérifie en développant) et $x^2 - 1 = (x + 1)(x - 1)$. Pour $x \neq -1$ et $x \neq 1$ :
+$$h(x) = \frac{(x + 1)(x^2 - x + 1)}{(x + 1)(x - 1)} = \frac{x^2 - x + 1}{x - 1}$$
+:::
+
+::: etape En $-1$ : pas d’asymptote
+$$\lim_{x \to -1} h(x) = \frac{(-1)^2 - (-1) + 1}{-1 - 1} = -\frac{3}{2}$$
+La limite est finie : la droite $x = -1$ n’est **pas** asymptote. La courbe s’approche du point $\left(-1\,;-\frac{3}{2}\right)$, qui en est exclu ($h$ n’est pas définie en $-1$).
+:::
+
+::: etape Asymptote verticale en $x = 1$
+Le numérateur $x^2 - x + 1$ tend vers $1 \gt 0$.
+- Si $x \gt 1$ : $\lim\limits_{x \to 1^+} h(x) = +\infty$.
+- Si $x \lt 1$ : $\lim\limits_{x \to 1^-} h(x) = -\infty$.
+
+La droite d’équation $x = 1$ est asymptote verticale.
+:::
+
+::: etape Asymptote oblique
+Pour $x \neq \pm 1$ :
+$$x + \frac{1}{x - 1} = \frac{x(x - 1) + 1}{x - 1} = \frac{x^2 - x + 1}{x - 1} = h(x)$$
+Donc $h(x) - x = \dfrac{1}{x - 1}$, qui tend vers $0$ en $\pm\infty$ : la droite $y = x$ est asymptote oblique.
+:::
+
+::: resultat
+Asymptote verticale $x = 1$ ; asymptote oblique $y = x$ en $+\infty$ et en $-\infty$ ; en $-1$, limite finie $-\frac{3}{2}$ (point exclu, pas d’asymptote).
+:::
+
+[IMAGE_3]
+
+## Question 4 : Déterminer les asymptotes de $\displaystyle k(x) = \frac{x^2 + 2x}{x + 1}$
+
+::: methode
+Limites à gauche et à droite en $-1$ (attention au signe du numérateur), puis écriture $k(x) = x + 1 + r(x)$.
+:::
+
+::: etape Asymptote verticale en $x = -1$
+Le numérateur tend vers $(-1)^2 + 2 \times (-1) = -1 \lt 0$.
+- Si $x \gt -1$, $x + 1$ tend vers $0$ en restant positif : $\lim\limits_{x \to -1^+} k(x) = -\infty$.
+- Si $x \lt -1$, $x + 1$ tend vers $0$ en restant négatif : $\lim\limits_{x \to -1^-} k(x) = +\infty$.
+
+La droite d’équation $x = -1$ est asymptote verticale.
+:::
+
+::: etape Vérifier l’écriture de $k(x)$
+Pour $x \neq -1$ :
+$$
+\begin{aligned}
+x + 1 - \frac{1}{x + 1} &= \frac{(x + 1)^2 - 1}{x + 1} \\
+&= \frac{x^2 + 2x + 1 - 1}{x + 1} \\
+&= \frac{x^2 + 2x}{x + 1} = k(x)
+\end{aligned}
+$$
+:::
+
+::: etape Asymptote oblique
+$k(x) - (x + 1) = -\dfrac{1}{x + 1}$ tend vers $0$ en $\pm\infty$ : la droite $y = x + 1$ est asymptote oblique.
+:::
+
+::: resultat
+Asymptote verticale $x = -1$ ; asymptote oblique $y = x + 1$ en $+\infty$ et en $-\infty$.
+:::
+
+::: attention
+Le numérateur est **négatif** près de $-1$ : la courbe part vers $-\infty$ à droite de $-1$ et vers $+\infty$ à gauche. Toujours déterminer le signe du numérateur avant de conclure.
+:::
+
+[IMAGE_4]
+
+## Question 5 : Déterminer les asymptotes de $\displaystyle m(x) = \frac{x^2 - 4}{x^2 + 1}$
+
+::: methode
+Pas d’asymptote verticale si le dénominateur ne s’annule jamais ; limite en $\pm\infty$ par factorisation.
+:::
+
+::: etape Asymptote verticale ?
+Pour tout réel $x$, $x^2 + 1 \ge 1 \gt 0$ : le dénominateur ne s’annule pas, $m$ est définie sur $\mathbb{R}$ et il n’y a aucune asymptote verticale.
+:::
+
+::: etape Asymptote horizontale
+Pour $x \neq 0$ :
+$$
+\begin{aligned}
+m(x) &= \frac{x^2\left(1 - \frac{4}{x^2}\right)}{x^2\left(1 + \frac{1}{x^2}\right)} \\
+&= \frac{1 - \frac{4}{x^2}}{1 + \frac{1}{x^2}}
+\end{aligned}
+$$
+qui tend vers $1$ en $+\infty$ et en $-\infty$. La droite d’équation $y = 1$ est asymptote horizontale.
+:::
+
+::: etape Position de la courbe
+$m(x) = 1 - \dfrac{5}{x^2 + 1} \lt 1$ : la courbe est toujours sous son asymptote, avec un minimum $m(0) = -4$.
+:::
+
+::: resultat
+Asymptote horizontale $y = 1$ en $+\infty$ et en $-\infty$ ; aucune autre asymptote.
+:::
+
+[IMAGE_5]
+
+Solution:
+<!-- optitab:1 -->
+1. Asymptote verticale $x = 2$ ; asymptote oblique $y = x + 2$ en $+\infty$ et en $-\infty$.
+2. Asymptote verticale $x = -3$ ; asymptote horizontale $y = 2$ en $+\infty$ et en $-\infty$.
+3. Asymptote verticale $x = 1$ ; asymptote oblique $y = x$ ; en $-1$, limite finie $-\frac{3}{2}$ : pas d’asymptote, point $\left(-1\,;-\frac{3}{2}\right)$ exclu.
+4. Asymptote verticale $x = -1$ ; asymptote oblique $y = x + 1$.
+5. Asymptote horizontale $y = 1$ uniquement.
+
+===
+
+=== Entraînement - Formes indéterminées
+Id: 1190
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Lever les formes indéterminées suivantes en transformant l’écriture de la fonction.
+
+::: rappel
+Les formes $\frac{0}{0}$, $\frac{\infty}{\infty}$, $\infty - \infty$ et $0 \times \infty$ ne sont pas des résultats : il faut transformer l’expression (factoriser, simplifier) avant d’appliquer les règles de calcul.
+:::
+
+1. Calculer $\displaystyle \lim_{x \to 1} \frac{x^2 - 1}{x - 1}$
+2. Calculer $\displaystyle \lim_{x \to 1} \frac{x^3 - 1}{x^2 - 1}$
+3. Calculer $\displaystyle \lim_{x \to +\infty} \frac{x^2 - 3x + 2}{2x^2 + x - 1}$
+4. Calculer $\displaystyle \lim_{x \to +\infty} (x^2 - x)$
+5. Calculer $\displaystyle \lim_{x \to +\infty} \frac{x^2 + 1}{x^3 - 2x}$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer $\displaystyle \lim_{x \to 1} \frac{x^2 - 1}{x - 1}$
+
+::: methode
+Forme $\frac{0}{0}$ en $1$ : factoriser par $(x - 1)$ et simplifier.
+:::
+
+::: etape Repérer la forme indéterminée
+En $1$ : $1^2 - 1 = 0$ et $1 - 1 = 0$, c’est la forme $\frac{0}{0}$ (ce n’est pas un résultat).
+:::
+
+::: etape Factoriser et simplifier
+Pour $x \neq 1$ :
+$$\frac{x^2 - 1}{x - 1} = \frac{(x - 1)(x + 1)}{x - 1} = x + 1$$
+:::
+
+::: etape Passer à la limite
+$\lim\limits_{x \to 1} (x + 1) = 1 + 1 = 2$.
+:::
+
+::: resultat
+$$\lim_{x \to 1} \frac{x^2 - 1}{x - 1} = 2$$
+:::
+
+[IMAGE_1]
+
+::: retenir
+La courbe est la droite d’équation $y = x + 1$ privée du point $(1\,;2)$ : la fonction n’est pas définie en $1$, mais sa limite en $1$ est l’ordonnée du « trou ».
+:::
+
+## Question 2 : Calculer $\displaystyle \lim_{x \to 1} \frac{x^3 - 1}{x^2 - 1}$
+
+::: methode
+Forme $\frac{0}{0}$ en $1$ : factoriser numérateur et dénominateur par $(x - 1)$.
+:::
+
+::: etape Repérer la forme indéterminée
+En $1$ : $1^3 - 1 = 0$ et $1^2 - 1 = 0$, c’est la forme $\frac{0}{0}$.
+:::
+
+::: etape Factoriser le numérateur
+$1$ est racine de $x^3 - 1$, qui se factorise par $(x - 1)$ :
+$$x^3 - 1 = (x - 1)(x^2 + x + 1)$$
+En effet, $(x - 1)(x^2 + x + 1) = x^3 + x^2 + x - x^2 - x - 1 = x^3 - 1$.
+:::
+
+::: etape Simplifier
+Avec $x^2 - 1 = (x - 1)(x + 1)$, pour $x \neq 1$ et $x \neq -1$ :
+$$\frac{x^3 - 1}{x^2 - 1} = \frac{(x - 1)(x^2 + x + 1)}{(x - 1)(x + 1)} = \frac{x^2 + x + 1}{x + 1}$$
+:::
+
+::: etape Passer à la limite
+$$\lim_{x \to 1} \frac{x^2 + x + 1}{x + 1} = \frac{1 + 1 + 1}{1 + 1} = \frac{3}{2}$$
+:::
+
+::: resultat
+$$\lim_{x \to 1} \frac{x^3 - 1}{x^2 - 1} = \frac{3}{2}$$
+:::
+
+## Question 3 : Calculer $\displaystyle \lim_{x \to +\infty} \frac{x^2 - 3x + 2}{2x^2 + x - 1}$
+
+::: methode
+Forme $\frac{\infty}{\infty}$ : factoriser par le terme de plus haut degré, $x^2$.
+:::
+
+::: etape Factoriser par $x^2$
+Pour $x$ assez grand :
+$$
+\begin{aligned}
+\frac{x^2 - 3x + 2}{2x^2 + x - 1} &= \frac{x^2\left(1 - \frac{3}{x} + \frac{2}{x^2}\right)}{x^2\left(2 + \frac{1}{x} - \frac{1}{x^2}\right)} \\
+&= \frac{1 - \frac{3}{x} + \frac{2}{x^2}}{2 + \frac{1}{x} - \frac{1}{x^2}}
+\end{aligned}
+$$
+:::
+
+::: etape Passer à la limite
+Le numérateur tend vers $1$ et le dénominateur vers $2$.
+:::
+
+::: resultat
+$$\lim_{x \to +\infty} \frac{x^2 - 3x + 2}{2x^2 + x - 1} = \frac{1}{2}$$
+:::
+
+## Question 4 : Calculer $\displaystyle \lim_{x \to +\infty} (x^2 - x)$
+
+::: methode
+Forme $\infty - \infty$ : factoriser par le terme de plus haut degré, $x^2$.
+:::
+
+::: etape Repérer la forme indéterminée
+$x^2 \to +\infty$ et $x \to +\infty$ : c’est la forme $\infty - \infty$.
+:::
+
+::: etape Factoriser
+Pour $x \neq 0$ :
+$$x^2 - x = x^2\left(1 - \frac{1}{x}\right)$$
+:::
+
+::: etape Passer à la limite
+$x^2 \to +\infty$ et $1 - \dfrac{1}{x} \to 1 \gt 0$ : le produit tend vers $+\infty$.
+:::
+
+::: resultat
+$$\lim_{x \to +\infty} (x^2 - x) = +\infty$$
+:::
+
+## Question 5 : Calculer $\displaystyle \lim_{x \to +\infty} \frac{x^2 + 1}{x^3 - 2x}$
+
+::: methode
+Forme $\frac{\infty}{\infty}$ : factoriser numérateur et dénominateur par leur terme de plus haut degré.
+:::
+
+::: etape Factoriser
+Pour $x \gt 2$ :
+$$
+\begin{aligned}
+\frac{x^2 + 1}{x^3 - 2x} &= \frac{x^2\left(1 + \frac{1}{x^2}\right)}{x^3\left(1 - \frac{2}{x^2}\right)} \\
+&= \frac{1}{x} \times \frac{1 + \frac{1}{x^2}}{1 - \frac{2}{x^2}}
+\end{aligned}
+$$
+:::
+
+::: etape Passer à la limite
+$\dfrac{1}{x} \to 0$ et le second facteur tend vers $\dfrac{1}{1} = 1$ : le produit tend vers $0 \times 1 = 0$.
+:::
+
+::: resultat
+$$\lim_{x \to +\infty} \frac{x^2 + 1}{x^3 - 2x} = 0$$
+:::
+
+::: retenir
+Quotient de polynômes en $\pm\infty$ : même degré → quotient des coefficients dominants ; degré du numérateur plus petit → $0$ ; degré du numérateur plus grand → $\pm\infty$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle \lim_{x \to 1} \frac{x^2 - 1}{x - 1} = 2$
+2. $\displaystyle \lim_{x \to 1} \frac{x^3 - 1}{x^2 - 1} = \frac{3}{2}$
+3. $\displaystyle \lim_{x \to +\infty} \frac{x^2 - 3x + 2}{2x^2 + x - 1} = \frac{1}{2}$
+4. $\displaystyle \lim_{x \to +\infty} (x^2 - x) = +\infty$
+5. $\displaystyle \lim_{x \to +\infty} \frac{x^2 + 1}{x^3 - 2x} = 0$
+
+===
+
+=== Entraînement - Limites à gauche et à droite
+Id: 1195
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Calculer les limites à droite et à gauche suivantes, puis conclure sur l’existence d’une limite.
+
+::: rappel Limites à gauche et à droite
+- $\lim\limits_{x \to a^+} f(x)$ : limite quand $x$ tend vers $a$ en restant supérieur à $a$ ($x \gt a$).
+- $\lim\limits_{x \to a^-} f(x)$ : limite quand $x$ tend vers $a$ en restant inférieur à $a$ ($x \lt a$).
+- Si $f$ n’est pas définie en $a$, elle a une limite en $a$ lorsque ces deux limites existent et sont égales.
+:::
+
+1. Calculer $\displaystyle \lim_{x \to 0^+} \frac{1}{x}$ et $\displaystyle \lim_{x \to 0^-} \frac{1}{x}$.
+2. Calculer $\displaystyle \lim_{x \to 0^+} \sqrt{x}$. La limite $\displaystyle \lim_{x \to 0^-} \sqrt{x}$ a-t-elle un sens ?
+3. Calculer $\displaystyle \lim_{x \to 2^+} \frac{x^2 - 4}{x - 2}$ et $\displaystyle \lim_{x \to 2^-} \frac{x^2 - 4}{x - 2}$.
+4. La fonction $f$ définie sur $\mathbb{R} \setminus \{0\}$ par $f(x) = \dfrac{|x|}{x}$ admet-elle une limite en $0$ ?
+5. Soit $g$ la fonction définie sur $\mathbb{R} \setminus \{1\}$ par $g(x) = \dfrac{2x + 1}{1 - x}$. Calculer $\displaystyle \lim_{x \to 1^+} g(x)$ et $\displaystyle \lim_{x \to 1^-} g(x)$, puis interpréter graphiquement.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Limites de $\displaystyle \frac{1}{x}$ à droite et à gauche de $0$
+
+::: methode
+Le numérateur vaut $1$ : le signe du dénominateur donne le signe de l’infini.
+:::
+
+::: point Limite à droite
+Si $x \gt 0$, $x$ tend vers $0$ en restant positif, et $\frac{1}{x} \gt 0$ devient aussi grand que l’on veut : $\lim\limits_{x \to 0^+} \dfrac{1}{x} = +\infty$.
+:::
+
+::: point Limite à gauche
+Si $x \lt 0$, $x$ tend vers $0$ en restant négatif, et $\frac{1}{x} \lt 0$ : $\lim\limits_{x \to 0^-} \dfrac{1}{x} = -\infty$.
+:::
+
+::: resultat
+$\lim\limits_{x \to 0^+} \dfrac{1}{x} = +\infty$ et $\lim\limits_{x \to 0^-} \dfrac{1}{x} = -\infty$ : les deux limites sont différentes, $\dfrac{1}{x}$ n’a pas de limite en $0$. La droite $x = 0$ est asymptote verticale.
+:::
+
+## Question 2 : Limite de $\sqrt{x}$ en $0$
+
+::: methode
+Regarder l’ensemble de définition avant de parler de limite.
+:::
+
+::: point Limite à droite
+La fonction racine carrée est définie sur $[0\,;+\infty[$ et $\sqrt{0} = 0$ : $\lim\limits_{x \to 0^+} \sqrt{x} = 0$.
+:::
+
+::: point Limite à gauche
+Pour $x \lt 0$, $\sqrt{x}$ n’est pas définie : la limite à gauche en $0$ n’a pas de sens.
+:::
+
+::: resultat
+$\lim\limits_{x \to 0^+} \sqrt{x} = 0$ ; la limite à gauche n’a pas de sens, car $\sqrt{x}$ n’est définie que pour $x \ge 0$.
+:::
+
+## Question 3 : Limites de $\displaystyle \frac{x^2 - 4}{x - 2}$ à droite et à gauche de $2$
+
+::: methode
+Forme $\frac{0}{0}$ : simplifier d’abord, puis calculer chaque limite.
+:::
+
+::: point Simplification
+Pour $x \neq 2$ :
+$$\frac{x^2 - 4}{x - 2} = \frac{(x - 2)(x + 2)}{x - 2} = x + 2$$
+:::
+
+::: point Limite à droite
+$\lim\limits_{x \to 2^+} (x + 2) = 2 + 2 = 4$.
+:::
+
+::: point Limite à gauche
+$\lim\limits_{x \to 2^-} (x + 2) = 2 + 2 = 4$.
+:::
+
+::: resultat
+Les deux limites valent $4$ : $\displaystyle \lim_{x \to 2} \frac{x^2 - 4}{x - 2} = 4$.
+:::
+
+## Question 4 : Limite de $\displaystyle \frac{|x|}{x}$ en $0$
+
+::: methode
+Enlever la valeur absolue selon le signe de $x$, puis comparer les deux limites.
+:::
+
+::: point Limite à droite
+Si $x \gt 0$, $|x| = x$, donc $\dfrac{|x|}{x} = \dfrac{x}{x} = 1$ : $\lim\limits_{x \to 0^+} \dfrac{|x|}{x} = 1$.
+:::
+
+::: point Limite à gauche
+Si $x \lt 0$, $|x| = -x$, donc $\dfrac{|x|}{x} = \dfrac{-x}{x} = -1$ : $\lim\limits_{x \to 0^-} \dfrac{|x|}{x} = -1$.
+:::
+
+::: resultat
+Les limites à droite ($1$) et à gauche ($-1$) sont différentes : $f$ n’a pas de limite en $0$.
+:::
+
+[IMAGE_1]
+
+## Question 5 : Limites de $\displaystyle g(x) = \frac{2x + 1}{1 - x}$ à droite et à gauche de $1$
+
+::: methode
+Le numérateur a une limite non nulle et le dénominateur tend vers $0$ : la limite est infinie, et son signe dépend du signe du dénominateur de chaque côté de $1$.
+:::
+
+::: point Limite du numérateur
+$\lim\limits_{x \to 1} (2x + 1) = 2 \times 1 + 1 = 3 \gt 0$.
+:::
+
+::: point Signe du dénominateur
+$1 - x \gt 0 \iff x \lt 1$ : le dénominateur est positif à gauche de $1$ et négatif à droite.
+:::
+
+::: point Limite à droite
+Si $x \gt 1$, $1 - x$ tend vers $0$ en restant négatif, et le numérateur tend vers $3 \gt 0$ : $\lim\limits_{x \to 1^+} g(x) = -\infty$.
+:::
+
+::: point Limite à gauche
+Si $x \lt 1$, $1 - x$ tend vers $0$ en restant positif : $\lim\limits_{x \to 1^-} g(x) = +\infty$.
+:::
+
+::: resultat
+$\lim\limits_{x \to 1^+} g(x) = -\infty$ et $\lim\limits_{x \to 1^-} g(x) = +\infty$ : $g$ n’a pas de limite en $1$, et la droite d’équation $x = 1$ est asymptote verticale à la courbe de $g$.
+:::
+
+[IMAGE_2]
+
+::: attention
+Le dénominateur est $1 - x$ et non $x - 1$ : à droite de $1$, il est **négatif**. Les signes sont donc inversés par rapport à $\dfrac{1}{x - 1}$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle \lim_{x \to 0^+} \frac{1}{x} = +\infty$ et $\displaystyle \lim_{x \to 0^-} \frac{1}{x} = -\infty$ : pas de limite en $0$.
+2. $\displaystyle \lim_{x \to 0^+} \sqrt{x} = 0$ ; la limite à gauche n’a pas de sens ($\sqrt{x}$ non définie pour $x \lt 0$).
+3. Les deux limites valent $4$, donc $\displaystyle \lim_{x \to 2} \frac{x^2 - 4}{x - 2} = 4$.
+4. $\displaystyle \lim_{x \to 0^+} \frac{|x|}{x} = 1$ et $\displaystyle \lim_{x \to 0^-} \frac{|x|}{x} = -1$ : pas de limite en $0$.
+5. $\displaystyle \lim_{x \to 1^+} g(x) = -\infty$ et $\displaystyle \lim_{x \to 1^-} g(x) = +\infty$ : asymptote verticale d’équation $x = 1$.
+
+===
+
+=== Entraînement - Racines carrées et quantité conjuguée
+Id: 1194
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Calculer les limites suivantes en utilisant, si besoin, la quantité conjuguée.
+
+::: rappel Quantité conjuguée
+Pour lever une forme indéterminée avec des racines, on multiplie et on divise par la quantité conjuguée : le conjugué de $\sqrt{a} - b$ est $\sqrt{a} + b$, et pour $a \ge 0$ :
+$$\left(\sqrt{a} - b\right)\left(\sqrt{a} + b\right) = a - b^2$$
+:::
+
+1. Calculer $\displaystyle \lim_{x \to 0} \frac{\sqrt{1 + x} - 1}{x}$
+2. Calculer $\displaystyle \lim_{x \to 1} \frac{\sqrt{x} - 1}{x - 1}$
+3. Calculer $\displaystyle \lim_{x \to +\infty} \left(\sqrt{x^2 + x} - x\right)$
+4. Calculer $\displaystyle \lim_{x \to +\infty} \left(\sqrt{x^2 + 2x + 1} - x\right)$
+5. Calculer $\displaystyle \lim_{x \to +\infty} \frac{\sqrt{x^2 + 1} - x}{x}$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer $\displaystyle \lim_{x \to 0} \frac{\sqrt{1 + x} - 1}{x}$
+
+::: methode
+Forme $\frac{0}{0}$ avec une racine : quantité conjuguée $\sqrt{1 + x} + 1$.
+:::
+
+::: etape Repérer la forme indéterminée
+En $0$ : $\sqrt{1 + 0} - 1 = 0$ et le dénominateur vaut $0$, c’est la forme $\frac{0}{0}$.
+:::
+
+::: etape Multiplier par la quantité conjuguée
+Pour $x \neq 0$ et $x \ge -1$ :
+$$
+\begin{aligned}
+\frac{\sqrt{1 + x} - 1}{x} &= \frac{\left(\sqrt{1 + x} - 1\right)\left(\sqrt{1 + x} + 1\right)}{x\left(\sqrt{1 + x} + 1\right)} \\
+&= \frac{(1 + x) - 1}{x\left(\sqrt{1 + x} + 1\right)} \\
+&= \frac{1}{\sqrt{1 + x} + 1}
+\end{aligned}
+$$
+:::
+
+::: etape Passer à la limite
+$$\lim_{x \to 0} \frac{1}{\sqrt{1 + x} + 1} = \frac{1}{\sqrt{1} + 1} = \frac{1}{2}$$
+:::
+
+::: resultat
+$$\lim_{x \to 0} \frac{\sqrt{1 + x} - 1}{x} = \frac{1}{2}$$
+:::
+
+## Question 2 : Calculer $\displaystyle \lim_{x \to 1} \frac{\sqrt{x} - 1}{x - 1}$
+
+::: methode
+Forme $\frac{0}{0}$ avec une racine : quantité conjuguée $\sqrt{x} + 1$.
+:::
+
+::: etape Repérer la forme indéterminée
+En $1$ : $\sqrt{1} - 1 = 0$ et $1 - 1 = 0$, c’est la forme $\frac{0}{0}$.
+:::
+
+::: etape Multiplier par la quantité conjuguée
+Pour $x \ge 0$ et $x \neq 1$ :
+$$
+\begin{aligned}
+\frac{\sqrt{x} - 1}{x - 1} &= \frac{\left(\sqrt{x} - 1\right)\left(\sqrt{x} + 1\right)}{(x - 1)\left(\sqrt{x} + 1\right)} \\
+&= \frac{x - 1}{(x - 1)\left(\sqrt{x} + 1\right)} \\
+&= \frac{1}{\sqrt{x} + 1}
+\end{aligned}
+$$
+:::
+
+::: etape Passer à la limite
+$$\lim_{x \to 1} \frac{1}{\sqrt{x} + 1} = \frac{1}{1 + 1} = \frac{1}{2}$$
+:::
+
+::: resultat
+$$\lim_{x \to 1} \frac{\sqrt{x} - 1}{x - 1} = \frac{1}{2}$$
+:::
+
+::: retenir
+Autre méthode : c’est le taux d’accroissement de $x \mapsto \sqrt{x}$ en $1$, qui tend vers la dérivée $\frac{1}{2\sqrt{1}} = \frac{1}{2}$.
+:::
+
+## Question 3 : Calculer $\displaystyle \lim_{x \to +\infty} \left(\sqrt{x^2 + x} - x\right)$
+
+::: methode
+Forme $\infty - \infty$ : quantité conjuguée, puis factorisation par $x$.
+:::
+
+::: etape Repérer la forme indéterminée
+$\sqrt{x^2 + x} \to +\infty$ et $x \to +\infty$ : c’est la forme $\infty - \infty$.
+:::
+
+::: etape Multiplier par la quantité conjuguée
+Pour $x \gt 0$ :
+$$
+\begin{aligned}
+\sqrt{x^2 + x} - x &= \frac{\left(\sqrt{x^2 + x} - x\right)\left(\sqrt{x^2 + x} + x\right)}{\sqrt{x^2 + x} + x} \\
+&= \frac{(x^2 + x) - x^2}{\sqrt{x^2 + x} + x} \\
+&= \frac{x}{\sqrt{x^2 + x} + x}
+\end{aligned}
+$$
+On obtient la forme $\frac{\infty}{\infty}$ : on factorise par $x$.
+:::
+
+::: etape Factoriser par $x$
+Pour $x \gt 0$, $\sqrt{x^2 + x} = \sqrt{x^2\left(1 + \frac{1}{x}\right)} = x\sqrt{1 + \frac{1}{x}}$, donc :
+$$
+\begin{aligned}
+\frac{x}{\sqrt{x^2 + x} + x} &= \frac{x}{x\left(\sqrt{1 + \frac{1}{x}} + 1\right)} \\
+&= \frac{1}{\sqrt{1 + \frac{1}{x}} + 1}
+\end{aligned}
+$$
+:::
+
+::: etape Passer à la limite
+$\sqrt{1 + \frac{1}{x}} \to \sqrt{1} = 1$, donc le quotient tend vers $\dfrac{1}{1 + 1} = \dfrac{1}{2}$.
+:::
+
+::: resultat
+$$\lim_{x \to +\infty} \left(\sqrt{x^2 + x} - x\right) = \frac{1}{2}$$
+:::
+
+[IMAGE_1]
+
+## Question 4 : Calculer $\displaystyle \lim_{x \to +\infty} \left(\sqrt{x^2 + 2x + 1} - x\right)$
+
+::: methode
+Reconnaître un carré sous la racine : pas besoin de quantité conjuguée.
+:::
+
+::: etape Simplifier la racine
+$x^2 + 2x + 1 = (x + 1)^2$, donc $\sqrt{x^2 + 2x + 1} = |x + 1|$. Pour $x \gt -1$, $x + 1 \gt 0$ et $|x + 1| = x + 1$.
+:::
+
+::: etape Calculer
+Pour $x \gt -1$ :
+$$\sqrt{x^2 + 2x + 1} - x = (x + 1) - x = 1$$
+La fonction est constante, égale à $1$, pour $x \gt -1$.
+:::
+
+::: resultat
+$$\lim_{x \to +\infty} \left(\sqrt{x^2 + 2x + 1} - x\right) = 1$$
+:::
+
+::: attention
+$\sqrt{X^2} = |X|$, et non $X$ : ici on peut enlever la valeur absolue car $x + 1 \gt 0$ au voisinage de $+\infty$.
+:::
+
+## Question 5 : Calculer $\displaystyle \lim_{x \to +\infty} \frac{\sqrt{x^2 + 1} - x}{x}$
+
+::: methode
+Quantité conjuguée au numérateur, puis limite du quotient.
+:::
+
+::: etape Multiplier par la quantité conjuguée
+Pour $x \gt 0$ :
+$$
+\begin{aligned}
+\sqrt{x^2 + 1} - x &= \frac{(x^2 + 1) - x^2}{\sqrt{x^2 + 1} + x} \\
+&= \frac{1}{\sqrt{x^2 + 1} + x}
+\end{aligned}
+$$
+:::
+
+::: etape Réécrire le quotient
+$$\frac{\sqrt{x^2 + 1} - x}{x} = \frac{1}{x\left(\sqrt{x^2 + 1} + x\right)}$$
+:::
+
+::: etape Passer à la limite
+$x \to +\infty$ et $\sqrt{x^2 + 1} + x \to +\infty$ : le dénominateur tend vers $+\infty$, donc le quotient tend vers $0$.
+:::
+
+::: resultat
+$$\lim_{x \to +\infty} \frac{\sqrt{x^2 + 1} - x}{x} = 0$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle \lim_{x \to 0} \frac{\sqrt{1 + x} - 1}{x} = \frac{1}{2}$
+2. $\displaystyle \lim_{x \to 1} \frac{\sqrt{x} - 1}{x - 1} = \frac{1}{2}$
+3. $\displaystyle \lim_{x \to +\infty} \left(\sqrt{x^2 + x} - x\right) = \frac{1}{2}$
+4. $\displaystyle \lim_{x \to +\infty} \left(\sqrt{x^2 + 2x + 1} - x\right) = 1$
+5. $\displaystyle \lim_{x \to +\infty} \frac{\sqrt{x^2 + 1} - x}{x} = 0$
+
+===
+
+=== Entraînement - Exponentielle, logarithme et croissances comparées
+Id: 1193
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Calculer les limites suivantes, qui font intervenir l’exponentielle et le logarithme népérien.
+
+::: rappel Limites fondamentales
+- $\displaystyle \lim_{x \to 0} \frac{e^x - 1}{x} = 1$ et $\displaystyle \lim_{x \to 0} \frac{\ln(1 + x)}{x} = 1$ (taux d’accroissement).
+- Croissances comparées, pour tout entier $n \ge 1$ : $\displaystyle \lim_{x \to +\infty} \frac{e^x}{x^n} = +\infty$, $\displaystyle \lim_{x \to +\infty} \frac{x^n}{e^x} = 0$ et $\displaystyle \lim_{x \to +\infty} \frac{\ln x}{x^n} = 0$.
+:::
+
+1. Calculer $\displaystyle \lim_{x \to 0} \frac{e^x - 1}{x}$
+2. Calculer $\displaystyle \lim_{x \to 0} \frac{\ln(1 + x)}{x}$
+3. Calculer $\displaystyle \lim_{x \to +\infty} \frac{e^x}{x^2}$
+4. Calculer $\displaystyle \lim_{x \to +\infty} \frac{\ln x}{x}$
+5. Calculer $\displaystyle \lim_{x \to 0} \frac{e^{2x} - e^x}{x}$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer $\displaystyle \lim_{x \to 0} \frac{e^x - 1}{x}$
+
+::: methode
+Reconnaître un taux d’accroissement de la fonction exponentielle en $0$.
+:::
+
+::: etape Taux d’accroissement
+Comme $e^0 = 1$ :
+$$\frac{e^x - 1}{x} = \frac{e^x - e^0}{x - 0}$$
+C’est le taux d’accroissement de $\exp$ entre $0$ et $x$.
+:::
+
+::: etape Nombre dérivé
+$\exp$ est dérivable en $0$, de nombre dérivé $\exp'(0) = e^0 = 1$ : le taux d’accroissement tend vers $1$.
+:::
+
+::: resultat
+$$\lim_{x \to 0} \frac{e^x - 1}{x} = 1$$
+:::
+
+## Question 2 : Calculer $\displaystyle \lim_{x \to 0} \frac{\ln(1 + x)}{x}$
+
+::: methode
+Reconnaître un taux d’accroissement de la fonction $\ln$ en $1$.
+:::
+
+::: etape Taux d’accroissement
+Comme $\ln 1 = 0$, en posant $X = 1 + x$ :
+$$\frac{\ln(1 + x)}{x} = \frac{\ln X - \ln 1}{X - 1}$$
+et $X \to 1$ quand $x \to 0$.
+:::
+
+::: etape Nombre dérivé
+$\ln$ est dérivable en $1$, de nombre dérivé $\ln'(1) = \frac{1}{1} = 1$.
+:::
+
+::: resultat
+$$\lim_{x \to 0} \frac{\ln(1 + x)}{x} = 1$$
+:::
+
+## Question 3 : Calculer $\displaystyle \lim_{x \to +\infty} \frac{e^x}{x^2}$
+
+::: methode
+Croissances comparées de l’exponentielle et des puissances de $x$.
+:::
+
+::: etape Appliquer le théorème avec $n = 2$
+Le quotient est de la forme $\frac{\infty}{\infty}$, mais pour tout entier $n \ge 1$, $\lim\limits_{x \to +\infty} \dfrac{e^x}{x^n} = +\infty$.
+:::
+
+::: resultat
+$$\lim_{x \to +\infty} \frac{e^x}{x^2} = +\infty$$
+:::
+
+::: retenir
+En $+\infty$, l’exponentielle l’emporte sur toute puissance de $x$.
+:::
+
+## Question 4 : Calculer $\displaystyle \lim_{x \to +\infty} \frac{\ln x}{x}$
+
+::: methode
+Croissances comparées du logarithme et des puissances de $x$.
+:::
+
+::: etape Appliquer le théorème avec $n = 1$
+Le quotient est de la forme $\frac{\infty}{\infty}$, mais $\lim\limits_{x \to +\infty} \dfrac{\ln x}{x^n} = 0$ pour tout entier $n \ge 1$.
+:::
+
+::: resultat
+$$\lim_{x \to +\infty} \frac{\ln x}{x} = 0$$
+:::
+
+::: retenir
+En $+\infty$, toute puissance de $x$ l’emporte sur $\ln x$ : le logarithme croît beaucoup plus lentement.
+:::
+
+[IMAGE_1]
+
+## Question 5 : Calculer $\displaystyle \lim_{x \to 0} \frac{e^{2x} - e^x}{x}$
+
+::: methode
+Factoriser par $e^x$ pour faire apparaître $\dfrac{e^x - 1}{x}$ (question 1).
+:::
+
+::: etape Factoriser
+Pour $x \neq 0$, comme $e^{2x} = e^x \times e^x$ :
+$$
+\begin{aligned}
+\frac{e^{2x} - e^x}{x} &= \frac{e^x\left(e^x - 1\right)}{x} \\
+&= e^x \times \frac{e^x - 1}{x}
+\end{aligned}
+$$
+:::
+
+::: etape Limite de chaque facteur
+$\lim\limits_{x \to 0} e^x = e^0 = 1$ et $\lim\limits_{x \to 0} \dfrac{e^x - 1}{x} = 1$ (question 1).
+:::
+
+::: resultat
+$$\lim_{x \to 0} \frac{e^{2x} - e^x}{x} = 1 \times 1 = 1$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle \lim_{x \to 0} \frac{e^x - 1}{x} = 1$
+2. $\displaystyle \lim_{x \to 0} \frac{\ln(1 + x)}{x} = 1$
+3. $\displaystyle \lim_{x \to +\infty} \frac{e^x}{x^2} = +\infty$
+4. $\displaystyle \lim_{x \to +\infty} \frac{\ln x}{x} = 0$
+5. $\displaystyle \lim_{x \to 0} \frac{e^{2x} - e^x}{x} = 1$
+
+===
+
+=== Entraînement - Limites avec sinus et cosinus
+Id: 1192
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Calculer les limites trigonométriques suivantes.
+
+::: rappel Taux d’accroissement et nombre dérivé
+- Si $f$ est dérivable en $a$ : $\displaystyle \lim_{x \to a} \frac{f(x) - f(a)}{x - a} = f'(a)$.
+- $\sin' = \cos$ et $\cos' = -\sin$. Par exemple, $\displaystyle \lim_{x \to 0} \frac{\sin x}{x} = \lim_{x \to 0} \frac{\sin x - \sin 0}{x - 0} = \cos 0 = 1$.
+:::
+
+1. Calculer $\displaystyle \lim_{x \to 0} \frac{\sin(2x)}{x}$
+2. Calculer $\displaystyle \lim_{x \to 0} \frac{\sin(3x)}{\sin(5x)}$
+3. Calculer $\displaystyle \lim_{x \to 0} \frac{\cos x - 1}{x}$
+4. Calculer $\displaystyle \lim_{x \to \pi} \frac{\sin x}{x - \pi}$, puis interpréter le résultat sur la courbe de la fonction sinus.
+5. Calculer $\displaystyle \lim_{x \to 0} \frac{\sin(x^2)}{x^2}$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer $\displaystyle \lim_{x \to 0} \frac{\sin(2x)}{x}$
+
+::: methode
+Faire apparaître $\dfrac{\sin X}{X}$ avec $X = 2x$.
+:::
+
+::: etape Transformer
+Pour $x \neq 0$ :
+$$\frac{\sin(2x)}{x} = 2 \times \frac{\sin(2x)}{2x}$$
+:::
+
+::: etape Composition
+Quand $x \to 0$, $X = 2x \to 0$ et $\dfrac{\sin X}{X} \to 1$ : donc $\dfrac{\sin(2x)}{2x} \to 1$.
+:::
+
+::: resultat
+$$\lim_{x \to 0} \frac{\sin(2x)}{x} = 2 \times 1 = 2$$
+:::
+
+## Question 2 : Calculer $\displaystyle \lim_{x \to 0} \frac{\sin(3x)}{\sin(5x)}$
+
+::: methode
+Faire apparaître $\dfrac{\sin(3x)}{3x}$ et $\dfrac{\sin(5x)}{5x}$, qui tendent tous deux vers $1$.
+:::
+
+::: etape Transformer
+Pour $x \neq 0$ proche de $0$ (de sorte que $\sin(5x) \neq 0$) :
+$$
+\begin{aligned}
+\frac{\sin(3x)}{\sin(5x)} &= \frac{\sin(3x)}{3x} \times \frac{5x}{\sin(5x)} \times \frac{3x}{5x} \\
+&= \frac{3}{5} \times \frac{\frac{\sin(3x)}{3x}}{\frac{\sin(5x)}{5x}}
+\end{aligned}
+$$
+:::
+
+::: etape Composition
+Avec $X = 3x \to 0$ puis $X = 5x \to 0$ : $\dfrac{\sin(3x)}{3x} \to 1$ et $\dfrac{\sin(5x)}{5x} \to 1$. Le quotient de ces deux expressions tend vers $\dfrac{1}{1} = 1$.
+:::
+
+::: resultat
+$$\lim_{x \to 0} \frac{\sin(3x)}{\sin(5x)} = \frac{3}{5}$$
+:::
+
+## Question 3 : Calculer $\displaystyle \lim_{x \to 0} \frac{\cos x - 1}{x}$
+
+::: methode
+Forme $\frac{0}{0}$ : reconnaître le taux d’accroissement de la fonction cosinus en $0$.
+:::
+
+::: etape Repérer la forme indéterminée
+En $0$ : $\cos 0 - 1 = 0$ et le dénominateur vaut $0$, c’est la forme $\frac{0}{0}$.
+:::
+
+::: etape Taux d’accroissement
+Comme $\cos 0 = 1$ :
+$$\frac{\cos x - 1}{x} = \frac{\cos x - \cos 0}{x - 0}$$
+C’est le taux d’accroissement de $\cos$ entre $0$ et $x$.
+:::
+
+::: etape Nombre dérivé
+$\cos$ est dérivable en $0$ et $\cos'(0) = -\sin 0 = 0$.
+:::
+
+::: resultat
+$$\lim_{x \to 0} \frac{\cos x - 1}{x} = 0$$
+:::
+
+::: retenir
+Graphiquement : la tangente à la courbe du cosinus au point d’abscisse $0$ est horizontale (pente $0$).
+:::
+
+## Question 4 : Calculer $\displaystyle \lim_{x \to \pi} \frac{\sin x}{x - \pi}$
+
+::: methode
+Forme $\frac{0}{0}$ en $\pi$ : comme $\sin \pi = 0$, c’est un taux d’accroissement de la fonction sinus en $\pi$.
+:::
+
+::: etape Taux d’accroissement
+Comme $\sin \pi = 0$ :
+$$\frac{\sin x}{x - \pi} = \frac{\sin x - \sin \pi}{x - \pi}$$
+:::
+
+::: etape Nombre dérivé
+$\sin$ est dérivable en $\pi$ et $\sin'(\pi) = \cos \pi = -1$.
+:::
+
+::: resultat
+$$\lim_{x \to \pi} \frac{\sin x}{x - \pi} = -1$$
+:::
+
+::: etape Interprétation graphique
+La limite est la pente de la tangente à la courbe de la fonction sinus au point $(\pi\,;0)$ : cette tangente a pour équation $y = -(x - \pi)$, soit $y = -x + \pi$.
+:::
+
+[IMAGE_1]
+
+::: attention
+Autre méthode : avec $X = x - \pi$, on a $\sin x = \sin(X + \pi) = -\sin X$, donc $\dfrac{\sin x}{x - \pi} = -\dfrac{\sin X}{X}$, qui tend vers $-1$. Oublier ce signe $-$ est l’erreur classique.
+:::
+
+## Question 5 : Calculer $\displaystyle \lim_{x \to 0} \frac{\sin(x^2)}{x^2}$
+
+::: methode
+Composition : poser $X = x^2$.
+:::
+
+::: etape Changement de variable
+Quand $x \to 0$, $X = x^2 \to 0$, et $\dfrac{\sin(x^2)}{x^2} = \dfrac{\sin X}{X}$.
+:::
+
+::: etape Limite de référence
+$\lim\limits_{X \to 0} \dfrac{\sin X}{X} = 1$.
+:::
+
+::: resultat
+$$\lim_{x \to 0} \frac{\sin(x^2)}{x^2} = 1$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle \lim_{x \to 0} \frac{\sin(2x)}{x} = 2$
+2. $\displaystyle \lim_{x \to 0} \frac{\sin(3x)}{\sin(5x)} = \frac{3}{5}$
+3. $\displaystyle \lim_{x \to 0} \frac{\cos x - 1}{x} = 0$ (car $\cos'(0) = 0$)
+4. $\displaystyle \lim_{x \to \pi} \frac{\sin x}{x - \pi} = -1$ : pente de la tangente à la courbe du sinus en $(\pi\,;0)$.
+5. $\displaystyle \lim_{x \to 0} \frac{\sin(x^2)}{x^2} = 1$
+
+===
+
+=== Entraînement - Théorème de comparaison
+Id: 1196
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Les fonctions $\sin$ et $\cos$ n’ont pas de limite en $+\infty$ ni en $-\infty$ : les règles d’opérations sur les limites ne s’appliquent donc pas aux expressions ci-dessous. Utiliser le théorème de comparaison pour démontrer chacune des limites.
+
+::: rappel Théorème de comparaison
+- Si $f(x) \ge g(x)$ pour $x$ assez grand et si $\lim\limits_{x \to +\infty} g(x) = +\infty$, alors $\lim\limits_{x \to +\infty} f(x) = +\infty$.
+- Si $f(x) \le h(x)$ pour $x$ assez petit (au voisinage de $-\infty$) et si $\lim\limits_{x \to -\infty} h(x) = -\infty$, alors $\lim\limits_{x \to -\infty} f(x) = -\infty$.
+:::
+
+1. Montrer que $\displaystyle \lim_{x \to +\infty} (x + \sin x) = +\infty$.
+2. Montrer que $\displaystyle \lim_{x \to -\infty} (x + 2\cos x) = -\infty$.
+3. Montrer que $\displaystyle \lim_{x \to +\infty} \sqrt{x^2 + x} = +\infty$.
+4. Montrer que $\displaystyle \lim_{x \to +\infty} \left(x^2 - x\sin x\right) = +\infty$.
+5. Montrer que $\displaystyle \lim_{x \to +\infty} \left(e^x + 3\cos x\right) = +\infty$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Montrer que $\displaystyle \lim_{x \to +\infty} (x + \sin x) = +\infty$
+
+::: methode
+Minorer $\sin x$ par $-1$ pour obtenir une fonction minorante de limite $+\infty$.
+:::
+
+::: etape Pourquoi pas les opérations ?
+$x \to +\infty$ mais $\sin x$ n’a pas de limite en $+\infty$ : la règle de la somme ne s’applique pas.
+:::
+
+::: etape Minorer
+Pour tout réel $x$, $\sin x \ge -1$, donc :
+$$x + \sin x \ge x - 1$$
+:::
+
+::: etape Limite de la minorante
+$\lim\limits_{x \to +\infty} (x - 1) = +\infty$.
+:::
+
+::: resultat
+Par le théorème de comparaison, $\displaystyle \lim_{x \to +\infty} (x + \sin x) = +\infty$.
+:::
+
+[IMAGE_1]
+
+::: retenir
+La courbe de $x \mapsto x + \sin x$ ondule entre les droites d’équations $y = x - 1$ et $y = x + 1$ : elle reste au-dessus de la droite $y = x - 1$, qui « monte » vers $+\infty$ et l’entraîne avec elle.
+:::
+
+## Question 2 : Montrer que $\displaystyle \lim_{x \to -\infty} (x + 2\cos x) = -\infty$
+
+::: methode
+En $-\infty$, on cherche une fonction **majorante** de limite $-\infty$.
+:::
+
+::: etape Majorer
+Pour tout réel $x$, $\cos x \le 1$, donc $2\cos x \le 2$ et :
+$$x + 2\cos x \le x + 2$$
+:::
+
+::: etape Limite de la majorante
+$\lim\limits_{x \to -\infty} (x + 2) = -\infty$.
+:::
+
+::: resultat
+Par le théorème de comparaison, $\displaystyle \lim_{x \to -\infty} (x + 2\cos x) = -\infty$.
+:::
+
+::: attention
+Pour une limite $-\infty$, il faut **majorer** (la fonction est « poussée vers le bas ») ; minorer par $x - 2$ ne permettrait pas de conclure.
+:::
+
+## Question 3 : Montrer que $\displaystyle \lim_{x \to +\infty} \sqrt{x^2 + x} = +\infty$
+
+::: methode
+Minorer l’expression sous la racine, puis utiliser la croissance de la fonction racine carrée.
+:::
+
+::: etape Minorer
+Pour $x \ge 0$, $x^2 + x \ge x^2$. La fonction racine carrée est croissante sur $[0\,;+\infty[$, donc :
+$$\sqrt{x^2 + x} \ge \sqrt{x^2} = x$$
+car $x \ge 0$.
+:::
+
+::: etape Limite de la minorante
+$\lim\limits_{x \to +\infty} x = +\infty$.
+:::
+
+::: resultat
+Par le théorème de comparaison, $\displaystyle \lim_{x \to +\infty} \sqrt{x^2 + x} = +\infty$.
+:::
+
+::: remarque
+On peut aussi conclure par composition ($x^2 + x \to +\infty$ et $\sqrt{X} \to +\infty$) : la comparaison donne ici une preuve très courte.
+:::
+
+## Question 4 : Montrer que $\displaystyle \lim_{x \to +\infty} \left(x^2 - x\sin x\right) = +\infty$
+
+::: methode
+Minorer $-x\sin x$ pour $x \gt 0$, en faisant attention au sens des inégalités.
+:::
+
+::: etape Minorer $-x\sin x$
+Pour tout réel $x$, $\sin x \le 1$. Pour $x \gt 0$, on multiplie par $-x \lt 0$, ce qui **change le sens** de l’inégalité :
+$$-x\sin x \ge -x$$
+:::
+
+::: etape Minorer la fonction
+Pour $x \gt 0$ :
+$$x^2 - x\sin x \ge x^2 - x = x(x - 1)$$
+:::
+
+::: etape Limite de la minorante
+$\lim\limits_{x \to +\infty} x = +\infty$ et $\lim\limits_{x \to +\infty} (x - 1) = +\infty$ : par produit, $\lim\limits_{x \to +\infty} x(x - 1) = +\infty$.
+:::
+
+::: resultat
+Par le théorème de comparaison, $\displaystyle \lim_{x \to +\infty} \left(x^2 - x\sin x\right) = +\infty$.
+:::
+
+::: attention
+Multiplier une inégalité par un nombre **négatif** change son sens : $\sin x \le 1$ devient $-x\sin x \ge -x$ pour $x \gt 0$.
+:::
+
+## Question 5 : Montrer que $\displaystyle \lim_{x \to +\infty} \left(e^x + 3\cos x\right) = +\infty$
+
+::: methode
+Minorer $3\cos x$ par $-3$.
+:::
+
+::: etape Minorer
+Pour tout réel $x$, $\cos x \ge -1$, donc $3\cos x \ge -3$ et :
+$$e^x + 3\cos x \ge e^x - 3$$
+:::
+
+::: etape Limite de la minorante
+$\lim\limits_{x \to +\infty} e^x = +\infty$, donc $\lim\limits_{x \to +\infty} \left(e^x - 3\right) = +\infty$.
+:::
+
+::: resultat
+Par le théorème de comparaison, $\displaystyle \lim_{x \to +\infty} \left(e^x + 3\cos x\right) = +\infty$.
+:::
+
+::: retenir
+Réflexe : une fonction bornée qui « oscille » ($\sin x$, $\cos x$) n’a pas de limite en l’infini. On la remplace par sa borne inférieure ($-1$) pour **minorer** quand on vise $+\infty$, par sa borne supérieure ($1$) pour **majorer** quand on vise $-\infty$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $x + \sin x \ge x - 1$ et $\lim\limits_{x \to +\infty} (x - 1) = +\infty$ : la limite est $+\infty$.
+2. $x + 2\cos x \le x + 2$ et $\lim\limits_{x \to -\infty} (x + 2) = -\infty$ : la limite est $-\infty$.
+3. $\sqrt{x^2 + x} \ge x$ pour $x \ge 0$ : la limite est $+\infty$.
+4. $x^2 - x\sin x \ge x(x - 1)$ pour $x \gt 0$ : la limite est $+\infty$.
+5. $e^x + 3\cos x \ge e^x - 3$ : la limite est $+\infty$.
+
+===
+
+=== Entraînement - Théorème des gendarmes
+Id: 1191
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Utiliser le théorème des gendarmes pour calculer les limites suivantes.
+
+::: rappel Théorème des gendarmes
+Si $g(x) \le f(x) \le h(x)$ au voisinage de $a$ (réel ou $\pm\infty$) et si $\lim\limits_{x \to a} g(x) = \lim\limits_{x \to a} h(x) = \ell$, alors $\lim\limits_{x \to a} f(x) = \ell$.
+:::
+
+1. Calculer $\displaystyle \lim_{x \to 0} x^2 \sin\left(\frac{1}{x}\right)$
+2. Calculer $\displaystyle \lim_{x \to +\infty} \frac{\sin x}{x}$
+3. Calculer $\displaystyle \lim_{x \to 0} x \cos\left(\frac{1}{x}\right)$
+4. Calculer $\displaystyle \lim_{x \to +\infty} \frac{x + \sin x}{x + \cos x}$
+5. Calculer $\displaystyle \lim_{x \to +\infty} \frac{x^2 + \cos x}{x^2 + 1}$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer $\displaystyle \lim_{x \to 0} x^2 \sin\left(\frac{1}{x}\right)$
+
+::: methode
+Encadrer $\sin\left(\frac{1}{x}\right)$ entre $-1$ et $1$, multiplier par $x^2$, puis gendarmes.
+:::
+
+::: etape Encadrer
+Pour tout $x \neq 0$, $-1 \le \sin\left(\frac{1}{x}\right) \le 1$.
+:::
+
+::: etape Multiplier par $x^2 \gt 0$
+$$-x^2 \le x^2 \sin\left(\frac{1}{x}\right) \le x^2$$
+:::
+
+::: etape Limites des deux gendarmes
+$\lim\limits_{x \to 0} (-x^2) = 0$ et $\lim\limits_{x \to 0} x^2 = 0$.
+:::
+
+::: resultat
+$$\lim_{x \to 0} x^2 \sin\left(\frac{1}{x}\right) = 0$$
+:::
+
+[IMAGE_1]
+
+## Question 2 : Calculer $\displaystyle \lim_{x \to +\infty} \frac{\sin x}{x}$
+
+::: methode
+Encadrer $\sin x$, diviser par $x \gt 0$, puis gendarmes.
+:::
+
+::: etape Encadrer
+Pour tout réel $x$, $-1 \le \sin x \le 1$.
+:::
+
+::: etape Diviser par $x \gt 0$
+Pour $x \gt 0$, l’ordre est conservé :
+$$-\frac{1}{x} \le \frac{\sin x}{x} \le \frac{1}{x}$$
+:::
+
+::: etape Limites des deux gendarmes
+$\lim\limits_{x \to +\infty} \left(-\dfrac{1}{x}\right) = 0$ et $\lim\limits_{x \to +\infty} \dfrac{1}{x} = 0$.
+:::
+
+::: resultat
+$$\lim_{x \to +\infty} \frac{\sin x}{x} = 0$$
+:::
+
+[IMAGE_2]
+
+## Question 3 : Calculer $\displaystyle \lim_{x \to 0} x \cos\left(\frac{1}{x}\right)$
+
+::: methode
+Encadrer la valeur absolue : $x$ peut être négatif, on travaille avec $|x|$.
+:::
+
+::: etape Majorer la valeur absolue
+Pour tout $x \neq 0$, $\left|\cos\left(\frac{1}{x}\right)\right| \le 1$, donc :
+$$\left|x \cos\left(\frac{1}{x}\right)\right| = |x| \times \left|\cos\left(\frac{1}{x}\right)\right| \le |x|$$
+:::
+
+::: etape Encadrer
+On en déduit, pour tout $x \neq 0$ :
+$$-|x| \le x \cos\left(\frac{1}{x}\right) \le |x|$$
+:::
+
+::: etape Limites des deux gendarmes
+$\lim\limits_{x \to 0} (-|x|) = 0$ et $\lim\limits_{x \to 0} |x| = 0$.
+:::
+
+::: resultat
+$$\lim_{x \to 0} x \cos\left(\frac{1}{x}\right) = 0$$
+:::
+
+::: attention
+Multiplier $-1 \le \cos\left(\frac{1}{x}\right) \le 1$ par $x$ ne conserve l’ordre que si $x \gt 0$ : la valeur absolue évite de distinguer les cas $x \gt 0$ et $x \lt 0$.
+:::
+
+## Question 4 : Calculer $\displaystyle \lim_{x \to +\infty} \frac{x + \sin x}{x + \cos x}$
+
+::: methode
+Factoriser par $x$, puis utiliser $\dfrac{\sin x}{x} \to 0$ et $\dfrac{\cos x}{x} \to 0$ (gendarmes).
+:::
+
+::: etape Factoriser par $x$
+Pour $x \gt 1$ (alors $x + \cos x \gt 0$) :
+$$
+\begin{aligned}
+\frac{x + \sin x}{x + \cos x} &= \frac{x\left(1 + \frac{\sin x}{x}\right)}{x\left(1 + \frac{\cos x}{x}\right)} \\
+&= \frac{1 + \frac{\sin x}{x}}{1 + \frac{\cos x}{x}}
+\end{aligned}
+$$
+:::
+
+::: etape Limites de $\frac{\sin x}{x}$ et de $\frac{\cos x}{x}$
+D’après la question 2, $\dfrac{\sin x}{x} \to 0$. De même, $-\dfrac{1}{x} \le \dfrac{\cos x}{x} \le \dfrac{1}{x}$ pour $x \gt 0$, donc $\dfrac{\cos x}{x} \to 0$ par le théorème des gendarmes.
+:::
+
+::: etape Passer à la limite
+Le numérateur tend vers $1 + 0 = 1$ et le dénominateur vers $1 + 0 = 1$.
+:::
+
+::: resultat
+$$\lim_{x \to +\infty} \frac{x + \sin x}{x + \cos x} = 1$$
+:::
+
+## Question 5 : Calculer $\displaystyle \lim_{x \to +\infty} \frac{x^2 + \cos x}{x^2 + 1}$
+
+::: methode
+Encadrer $\cos x$ au numérateur, diviser par $x^2 + 1 \gt 0$, puis gendarmes.
+:::
+
+::: etape Encadrer le numérateur
+Pour tout réel $x$, $-1 \le \cos x \le 1$, donc :
+$$x^2 - 1 \le x^2 + \cos x \le x^2 + 1$$
+:::
+
+::: etape Diviser par $x^2 + 1 \gt 0$
+Pour tout réel $x$, $x^2 + 1 \gt 0$ : l’ordre est conservé.
+$$\frac{x^2 - 1}{x^2 + 1} \le \frac{x^2 + \cos x}{x^2 + 1} \le 1$$
+:::
+
+::: etape Limites des deux gendarmes
+À droite, la constante $1$. À gauche, en factorisant par $x^2$ :
+$$\lim_{x \to +\infty} \frac{x^2 - 1}{x^2 + 1} = \lim_{x \to +\infty} \frac{1 - \frac{1}{x^2}}{1 + \frac{1}{x^2}} = 1$$
+:::
+
+::: resultat
+$$\lim_{x \to +\infty} \frac{x^2 + \cos x}{x^2 + 1} = 1$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle \lim_{x \to 0} x^2 \sin\left(\frac{1}{x}\right) = 0$
+2. $\displaystyle \lim_{x \to +\infty} \frac{\sin x}{x} = 0$
+3. $\displaystyle \lim_{x \to 0} x \cos\left(\frac{1}{x}\right) = 0$
+4. $\displaystyle \lim_{x \to +\infty} \frac{x + \sin x}{x + \cos x} = 1$
+5. $\displaystyle \lim_{x \to +\infty} \frac{x^2 + \cos x}{x^2 + 1} = 1$
+
+===

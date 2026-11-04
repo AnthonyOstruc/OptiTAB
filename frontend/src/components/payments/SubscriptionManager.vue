@@ -140,7 +140,6 @@
 
             <!-- Badge pass -->
             <div class="gifted-pass-badge">
-              <span class="pass-badge-icon">🎫</span>
               <span>Pass ponctuel</span>
             </div>
           </div>
@@ -149,7 +148,7 @@
 
       <div v-if="isCardLoading" class="loading-state">
         <div class="loading-spinner"></div>
-        <p>Mise à jour de votre abonnement…</p>
+        <p>Chargement de ton abonnement…</p>
       </div>
 
       <div v-else-if="hasSubscription" class="subscription-details">
@@ -159,11 +158,11 @@
             <h3>{{ subscription.plan_name || '—' }}</h3>
             <p v-if="planPriceLabel" class="plan-price">{{ planPriceLabel }}</p>
             <p v-else-if="planBillingLabel" class="plan-period">{{ planBillingLabel }}</p>
-            <p v-if="displayedSubscriptionTitle" class="plan-level-pill">
+            <p v-if="hasMultipleSubscriptionOptions && displayedSubscriptionTitle" class="plan-level-pill">
               <span class="pill-label">Affichage :</span> <span class="pill-value">{{ displayedSubscriptionTitle }}</span>
             </p>
             <div v-if="hasMultipleSubscriptionOptions" class="plan-level-switcher">
-              <label for="subscription-level-switch">Voir un autre niveau</label>
+              <label for="subscription-level-switch">Voir une autre classe</label>
               <div class="plan-level-switcher-control">
                 <select
                   id="subscription-level-switch"
@@ -178,7 +177,7 @@
                   </option>
                 </select>
                 <p class="plan-level-switcher-hint">
-                  Consultez vos autres abonnements sans changer de niveau.
+                  Tes autres abonnements, sans changer de classe.
                 </p>
               </div>
             </div>
@@ -195,9 +194,14 @@
               <span class="meta-hint">{{ renewalHint }}</span>
             </div>
             <div v-if="subscriptionLevelLabel" class="meta-item">
-              <span class="meta-label">Niveau inclus</span>
+              <span class="meta-label">Classe incluse</span>
               <span class="meta-value">{{ subscriptionLevelLabel }}</span>
-              <span class="meta-hint">Un abonnement = un seul niveau. Contactez-nous pour changer.</span>
+              <span class="meta-hint">Un abonnement couvre une classe.</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Abonné depuis</span>
+              <span class="meta-value">{{ subscriptionStartLabel }}</span>
+              <span v-if="subscriptionStartHint" class="meta-hint">{{ subscriptionStartHint }}</span>
             </div>
             <div v-if="subscription.trial_end" class="meta-item meta-item--trial">
               <span class="meta-label">Essai gratuit</span>
@@ -207,31 +211,8 @@
           </div>
         </div>
 
-        <div class="timeline-row">
-          <div class="timeline-card">
-            <span class="timeline-label">Début de l'abonnement</span>
-            <span class="timeline-date">{{ subscriptionStartLabel }}</span>
-            <span v-if="subscriptionStartHint" class="timeline-hint">{{ subscriptionStartHint }}</span>
-          </div>
-          <div class="timeline-card">
-            <span class="timeline-label">{{ timelineSecondaryLabel }}</span>
-            <span class="timeline-date">{{ renewalDateLabel }}</span>
-            <span class="timeline-hint">{{ periodEndHint }}</span>
-          </div>
-        </div>
-
-        <div class="features-section">
-          <h4 class="features-title">Fonctionnalités incluses :</h4>
-          <ul class="features-list">
-            <li v-for="feature in features" :key="feature" class="feature-item">
-              <CheckIcon class="feature-icon" />
-              {{ feature }}
-            </li>
-          </ul>
-        </div>
-
         <div v-if="unlockedLevelsWithSubscriptions.length" class="levels-access-section">
-          <h4 class="levels-title">Niveaux débloqués</h4>
+          <h4 class="levels-title">Classes débloquées</h4>
           <div class="levels-grid">
             <div v-for="level in unlockedLevelsWithSubscriptions" :key="level.id" class="level-card">
               <div class="level-info">
@@ -308,7 +289,7 @@
                 <ArrowPathIcon class="btn-icon" :class="{ spinning: invoicesLoading }" />
               </button>
             </div>
-            <p>Retrouvez vos factures et envoyez-les par email en un clic.</p>
+            <p>Télécharge tes factures ou reçois-les par e-mail.</p>
           </div>
 
           <div v-if="invoicesLoading" class="invoice-loading">
@@ -353,7 +334,7 @@
                   @click="sendInvoiceEmail(invoice.id)"
                 >
                   <EnvelopeIcon class="btn-icon" />
-                  {{ sendingInvoiceId === invoice.id ? 'Envoi...' : 'Envoyer par email' }}
+                  {{ sendingInvoiceId === invoice.id ? 'Envoi…' : 'Par e-mail' }}
                 </button>
               </div>
             </div>
@@ -385,7 +366,7 @@
           <div>
             <p class="eyebrow">Pass actif</p>
             <h3>{{ passPlanLabel }}</h3>
-            <p class="pass-subtitle">Accès temporaire à ton niveau actuel.</p>
+            <p class="pass-subtitle">Accès complet à ta classe, sans renouvellement.</p>
           </div>
           <div class="pass-chip">
             Expire {{ passEndDateLabel }}
@@ -398,9 +379,9 @@
             <span class="meta-hint">{{ passEndHint }}</span>
           </div>
           <div class="meta-item">
-            <span class="meta-label">Niveau en accès</span>
-            <span class="meta-value">{{ subscriptionLevelLabel || 'Votre niveau actuel' }}</span>
-            <span class="meta-hint">Le pass suit ton niveau sélectionné.</span>
+            <span class="meta-label">Classe en accès</span>
+            <span class="meta-value">{{ subscriptionLevelLabel || 'Ta classe actuelle' }}</span>
+            <span class="meta-hint">Le pass suit la classe choisie dans ton compte.</span>
           </div>
         </div>
         <div class="actions-section">
@@ -429,74 +410,54 @@
           <CreditCardIcon />
         </div>
         <h4>Aucun abonnement actif</h4>
-        <p>Choisissez un plan pour accéder à toutes les fonctionnalités premium.</p>
+        <p>Choisis une formule pour débloquer tous les cours, fiches et exercices corrigés de ta classe.</p>
         <router-link to="/billing" class="get-started-btn">
-          Voir les offres
+          Voir les formules
         </router-link>
       </div>
     </div>
 
-    <!-- Modal de confirmation de résiliation -->
-    <Teleport to="body">
-      <div v-if="showCancelModal" class="modal-overlay" @click.self="closeCancelModal">
-        <div class="modal-card" @click.stop>
-          <div class="modal-header">
-            <h3>Résilier l'abonnement</h3>
-            <button class="modal-close" @click="closeCancelModal">×</button>
-          </div>
-          <div class="modal-body">
-            <p>
-              Êtes-vous sûr de vouloir résilier l'abonnement
-              <strong v-if="cancelTargetLevel?.nom">« {{ cancelTargetLevel.nom }} »</strong> ?
-            </p>
-            <p class="modal-hint">
-              Vous conserverez l'accès à ce niveau jusqu'à la fin de la période en cours.
-            </p>
-          </div>
-          <div class="modal-actions">
-            <button class="cancel-btn" @click="closeCancelModal">Annuler</button>
-            <button 
-              class="confirm-btn confirm-btn--danger" 
-              :disabled="isConfirmingCancel"
-              @click="confirmCancel"
-            >
-              {{ isConfirmingCancel ? 'Résiliation...' : 'Confirmer' }}
-            </button>
-          </div>
-        </div>
-      </div>
-    </Teleport>
+    <!-- Confirmation de résiliation -->
+    <Modal
+      :is-open="showCancelModal"
+      title="Résilier l’abonnement ?"
+      :icon="ExclamationTriangleIcon"
+      :can-close="!isConfirmingCancel"
+      size="small"
+      @close="closeCancelModal"
+    >
+      <p class="cancel-text">
+        Tu vas résilier l’abonnement<template v-if="cancelTargetLevel?.nom"> <strong>« {{ cancelTargetLevel.nom }} »</strong></template>.
+      </p>
+      <p class="om-alert om-alert--info">L’accès reste ouvert jusqu’à la fin de la période en cours.</p>
+      <template #footer>
+        <button type="button" class="om-btn om-btn--ghost" :disabled="isConfirmingCancel" @click="closeCancelModal">Garder mon abonnement</button>
+        <button type="button" class="om-btn om-btn--danger" :disabled="isConfirmingCancel" @click="confirmCancel">
+          {{ isConfirmingCancel ? 'Résiliation…' : 'Confirmer la résiliation' }}
+        </button>
+      </template>
+    </Modal>
 
-    <!-- Modal de confirmation de résiliation pour enfant -->
-    <Teleport to="body">
-      <div v-if="showGiftCancelModal" class="modal-overlay" @click.self="closeGiftCancelModal">
-        <div class="modal-card" @click.stop>
-          <div class="modal-header">
-            <h3>Résilier l'abonnement</h3>
-            <button class="modal-close" @click="closeGiftCancelModal">×</button>
-          </div>
-          <div class="modal-body">
-            <p>
-              Êtes-vous sûr de vouloir résilier l'abonnement de
-              <strong>{{ giftBeneficiaryFullName(cancelTargetGift) }}</strong> ?
-            </p>
-            <p class="modal-hint">
-              Votre enfant conservera l'accès jusqu'à la fin de la période en cours.
-            </p>
-          </div>
-          <div class="modal-actions">
-            <button class="cancel-btn" @click="closeGiftCancelModal">Annuler</button>
-            <button 
-              class="confirm-btn confirm-btn--danger" 
-              :disabled="isConfirmingGiftCancel"
-              @click="confirmGiftCancel"
-            >
-              {{ isConfirmingGiftCancel ? 'Résiliation...' : 'Confirmer' }}
-            </button>
-          </div>
-        </div>
-      </div>
-    </Teleport>
+    <!-- Confirmation de résiliation (abonnement offert à un enfant) -->
+    <Modal
+      :is-open="showGiftCancelModal"
+      title="Résilier l’abonnement ?"
+      :icon="ExclamationTriangleIcon"
+      :can-close="!isConfirmingGiftCancel"
+      size="small"
+      @close="closeGiftCancelModal"
+    >
+      <p class="cancel-text">
+        Vous allez résilier l’abonnement de <strong>{{ giftBeneficiaryFullName(cancelTargetGift) }}</strong>.
+      </p>
+      <p class="om-alert om-alert--info">Votre enfant garde l’accès jusqu’à la fin de la période en cours.</p>
+      <template #footer>
+        <button type="button" class="om-btn om-btn--ghost" :disabled="isConfirmingGiftCancel" @click="closeGiftCancelModal">Garder l’abonnement</button>
+        <button type="button" class="om-btn om-btn--danger" :disabled="isConfirmingGiftCancel" @click="confirmGiftCancel">
+          {{ isConfirmingGiftCancel ? 'Résiliation…' : 'Confirmer la résiliation' }}
+        </button>
+      </template>
+    </Modal>
 
   </div>
 </template>
@@ -511,8 +472,10 @@ import {
   ArrowPathIcon,
   InformationCircleIcon,
   DocumentArrowDownIcon,
-  EnvelopeIcon
+  EnvelopeIcon,
+  ExclamationTriangleIcon
 } from '@heroicons/vue/24/outline'
+import Modal from '@/components/common/Modal.vue'
 import { cancelSubscription as cancelSubscriptionApi, reactivateSubscription as reactivateSubscriptionApi, getInvoices, emailInvoice } from '@/api/subscriptions'
 import { useSubscriptionStore } from '@/stores/subscription'
 import { usePaysNiveauStore } from '@/stores/paysNiveau'
@@ -1437,7 +1400,11 @@ const levelSubscriptionStatus = (subscriptionItem) => {
 const formatAmount = (value, currency = 'EUR') => {
   if (value === null || value === undefined) return '—'
   const amount = Number(value) || 0
-  return `${amount.toFixed(2)} ${currency}`
+  try {
+    return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: String(currency || 'EUR').toUpperCase() }).format(amount)
+  } catch {
+    return `${amount.toFixed(2).replace('.', ',')} €`
+  }
 }
 
 const formatPlanPriceValue = (value, currency = 'EUR') => {
@@ -1782,1913 +1749,760 @@ onMounted(() => {
 </script>
 
 <style scoped>
+/* Mon abonnement : style de l'espace (variables --es-*, avec repli). */
 .subscription-manager {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
+  --sm-navy: var(--es-navy, #1b3c8e);
+  --sm-ink: var(--es-ink, #172033);
+  --sm-soft: var(--es-ink-soft, #3a4357);
+  --sm-muted: var(--es-muted, #667085);
+  --sm-line: var(--es-line, #e3e7ef);
+  --sm-bg: var(--es-bg, #f5f7fb);
+  --sm-green: var(--es-green-700, #3b8544);
+  --sm-green-50: var(--es-green-50, #eaf4ea);
+  --sm-orange: var(--es-orange-700, #a8620f);
+  --sm-orange-50: var(--es-orange-50, #fdf3e6);
+  --sm-red: var(--es-red-700, #b42318);
+  font-family: var(--es-font, 'Montserrat', sans-serif);
+  color: var(--sm-ink);
 }
 
 .subscription-card {
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  overflow: hidden;
+  padding: 24px;
+  border: 1px solid var(--sm-line);
+  border-radius: var(--es-radius, 16px);
+  background: #fff;
+  box-shadow: var(--es-shadow, 0 4px 16px rgba(16, 24, 40, 0.05));
 }
 
 .card-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 1.5rem 2rem;
-  border-bottom: 1px solid #f3f4f6;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
 }
 
-.refresh-btn {
-  border: 1px solid #e2e8f0;
-  background: #fff;
+/* Pastilles d'état */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
   border-radius: 999px;
-  width: 36px;
-  height: 36px;
+  background: var(--sm-bg);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--sm-muted);
+}
+
+.status-badge::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.status-badge.status-active,
+.status-badge.status-manual {
+  background: var(--sm-green-50);
+  color: var(--sm-green);
+}
+
+.status-badge.status-trial {
+  background: var(--es-navy-50, #eef1f8);
+  color: var(--sm-navy);
+}
+
+.status-badge.status-warning {
+  background: var(--sm-orange-50);
+  color: var(--sm-orange);
+}
+
+.status-badge.status-canceled {
+  background: #fef3f2;
+  color: var(--sm-red);
+}
+
+.gifted-value.status-active { color: var(--sm-green); }
+.gifted-value.status-trial { color: var(--sm-navy); }
+.gifted-value.status-warning { color: var(--sm-orange); }
+.gifted-value.status-danger,
+.gifted-value.status-canceled,
+.gifted-value.status-expired { color: var(--sm-red); }
+
+/* Boutons */
+.refresh-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin-left: auto;
+  border: 1px solid var(--sm-line);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--sm-muted);
   cursor: pointer;
-  transition: all 0.2s ease;
+}
+
+.refresh-btn:hover {
+  color: var(--sm-navy);
+  border-color: var(--es-line-strong, #cfd6e3);
 }
 
 .refresh-btn:disabled {
+  cursor: default;
   opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.refresh-btn:not(:disabled):hover {
-  background: #f8fafc;
-  border-color: #cbd5f5;
 }
 
 .btn-icon {
-  width: 1.2rem;
-  height: 1.2rem;
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
 }
 
-.btn-icon.spinning {
-  animation: spin 1s linear infinite;
+.spinning {
+  animation: sm-tourne 0.9s linear infinite;
 }
 
-.status-badge {
-  padding: 0.5rem 1rem;
-  border-radius: 1rem;
-  font-size: 0.875rem;
+@keyframes sm-tourne {
+  to { transform: rotate(360deg); }
+}
+
+.upgrade-btn,
+.get-started-btn,
+.level-upgrade-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 20px;
+  border-radius: 12px;
+  background: var(--sm-navy);
+  font-size: 15px;
   font-weight: 600;
+  color: #fff !important;
+  text-decoration: none;
 }
 
-.status-active {
-  background: #dcefdc;
-  color: #065f46;
+.level-upgrade-btn {
+  min-height: 36px;
+  padding: 0 14px;
+  font-size: 14px;
 }
 
-.status-trial {
-  background: #e4e8f1;
-  color: #122a66;
+.upgrade-btn:hover,
+.get-started-btn:hover,
+.level-upgrade-btn:hover {
+  background: var(--es-navy-dark, #122a66);
 }
 
-.status-warning {
-  background: #fef3c7;
-  color: #92400e;
+.level-cancel-btn,
+.gifted-cancel-btn,
+.level-reactivate-btn,
+.gifted-reactivate-btn,
+.invoice-btn,
+.pagination-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 0 14px;
+  border: 1px solid var(--sm-line);
+  border-radius: 10px;
+  background: #fff;
+  font: 600 14px var(--es-font, sans-serif);
+  color: var(--sm-soft);
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
 }
 
-.status-canceled {
-  background: #fee2e2;
-  color: #991b1b;
+.level-cancel-btn:hover,
+.gifted-cancel-btn:hover {
+  border-color: #f4c7c3;
+  background: #fef3f2;
+  color: var(--sm-red);
 }
 
-.status-inactive {
-  background: #f3f4f6;
-  color: #6b7280;
+.level-reactivate-btn,
+.gifted-reactivate-btn {
+  border-color: transparent;
+  background: var(--sm-green-50);
+  color: var(--sm-green);
 }
 
-.status-manual {
-  background: #eaf4ea;
-  color: #2f6d37;
+.invoice-btn:hover,
+.pagination-btn:hover:not(:disabled) {
+  border-color: var(--sm-navy);
+  color: var(--sm-navy);
 }
 
+button:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+/* Message en ligne */
 .inline-message {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin: 0 2rem;
-  padding: 0.85rem 1rem;
-  border-radius: 0.75rem;
-  font-size: 0.9rem;
-}
-
-.inline-message .inline-icon {
-  width: 1.1rem;
-  height: 1.1rem;
+  gap: 10px;
+  margin-bottom: 18px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--sm-bg);
+  font-size: 14px;
+  color: var(--sm-soft);
 }
 
 .inline-message.msg-success {
-  background: #eaf4ea;
-  color: #065f46;
+  background: var(--sm-green-50);
+  color: var(--sm-green);
 }
 
 .inline-message.msg-error {
-  background: #fef2f2;
-  color: #991b1b;
+  background: #fef3f2;
+  color: var(--sm-red);
 }
 
-.inline-message.msg-neutral {
-  background: #f8fafc;
-  color: #0f172a;
+.inline-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
 }
 
-.loading-state {
-  padding: 2rem;
-  text-align: center;
+/* Chargement */
+.loading-state,
+.invoice-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 32px 0;
+  font-size: 14px;
+  color: var(--sm-muted);
 }
 
 .loading-spinner {
-  width: 2.5rem;
-  height: 2.5rem;
-  border: 3px solid #e2e8f0;
-  border-top-color: #1b3c8e;
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--sm-line);
+  border-top-color: var(--sm-navy);
   border-radius: 50%;
-  margin: 0 auto 1rem;
-  animation: spin 1s linear infinite;
+  animation: sm-tourne 0.8s linear infinite;
 }
 
 .loading-spinner.small {
-  width: 1.75rem;
-  height: 1.75rem;
+  width: 22px;
+  height: 22px;
+  border-width: 2px;
 }
 
-.subscription-details {
-  padding: 0;
-}
-
+/* Plan actuel */
 .plan-overview {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  padding: 2rem;
-  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 70%);
-  border-bottom: 1px solid #f1f5f9;
+  display: grid;
+  gap: 20px;
 }
 
-.plan-heading {
-  flex: 1 1 100%;
-  min-width: 0;
-}
-
-.plan-heading .eyebrow {
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #1b3c8e;
-  margin-bottom: 0.4rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-}
-
-.plan-heading h3 {
-  margin: 0 0 0.35rem;
-  font-size: 1.75rem;
-  color: #0f172a;
-  word-break: break-word;
-}
-
-.plan-price {
-  font-size: 1.5rem;
+.eyebrow {
+  margin: 0 0 4px;
+  font-size: 12px;
   font-weight: 700;
-  color: #0b6efb;
-  margin: 0;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sm-muted);
 }
 
-.plan-period {
+.plan-heading h3,
+.pass-header h3 {
   margin: 0;
-  color: #64748b;
-  font-weight: 500;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--sm-ink);
+}
+
+.plan-price,
+.plan-period {
+  margin: 4px 0 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--sm-navy);
 }
 
 .plan-level-pill {
   display: inline-flex;
-  gap: 0.25rem;
-  align-items: center;
-  margin: 0.75rem 0 0;
-  padding: 0.35rem 0.85rem;
-  background: #eef1f8;
+  gap: 4px;
+  margin: 10px 0 0;
+  padding: 4px 12px;
   border-radius: 999px;
-  font-size: 0.85rem;
-  color: #122a66;
-  font-weight: 500;
-  max-width: 100%;
-  word-break: break-word;
+  background: var(--es-navy-50, #eef1f8);
+  font-size: 13px;
+  color: var(--sm-navy);
 }
 
-.plan-level-pill .pill-label {
-  font-weight: 500;
-  color: #122a66;
-}
-
-.plan-level-pill .pill-value {
-  font-weight: 600;
-  color: #111827;
+.pill-value {
+  font-weight: 700;
 }
 
 .plan-level-switcher {
-  margin-top: 0.85rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  max-width: 100%;
+  margin-top: 14px;
 }
 
 .plan-level-switcher label {
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: #1b3c8e;
-}
-
-.plan-level-switcher-control {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--sm-ink);
 }
 
 .plan-level-switcher select {
-  border: 1px solid #d1d5db;
-  border-radius: 0.6rem;
-  padding: 0.55rem 0.75rem;
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: #0f172a;
-  background: #fff;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  width: 100%;
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.plan-level-switcher select:focus {
-  outline: none;
-  border-color: #1b3c8e;
-  box-shadow: 0 0 0 2px rgba(27, 60, 142, 0.15);
+  height: 40px;
+  min-width: 240px;
+  padding: 0 12px;
+  border: 1px solid var(--es-line-strong, #cfd6e3);
+  border-radius: 10px;
+  font: 600 14px var(--es-font, sans-serif);
 }
 
 .plan-level-switcher-hint {
-  margin: 0;
-  font-size: 0.78rem;
-  color: #6b7280;
-  line-height: 1.4;
+  margin: 6px 0 0;
+  font-size: 12.5px;
+  color: var(--sm-muted);
 }
 
-.plan-meta {
-  flex: 1 1 100%;
-  display: flex;
-  gap: 1rem;
-  justify-content: flex-start;
-  flex-wrap: wrap;
+.plan-meta,
+.pass-body {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 12px;
 }
 
 .meta-item {
-  flex: 1 1 calc(50% - 0.5rem);
-  min-width: 0;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 1rem;
-  padding: 1rem 1.25rem;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-}
-
-.meta-label {
-  display: block;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #94a3b8;
-  margin-bottom: 0.35rem;
-}
-
-.meta-value {
-  display: block;
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #0f172a;
-  word-break: break-word;
-}
-
-.meta-hint {
-  display: block;
-  margin-top: 0.35rem;
-  font-size: 0.85rem;
-  color: #6b7280;
-  line-height: 1.4;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--sm-bg);
 }
 
 .meta-item--trial {
-  background: #fff7ed;
-  border-color: #fed7aa;
+  background: var(--es-navy-50, #eef1f8);
 }
 
-.timeline-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 1rem;
-  padding: 1.5rem 2rem 0;
-  margin-bottom: 1rem;
+.meta-label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--sm-muted);
 }
 
-.timeline-card {
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 1rem;
-  padding: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  min-height: 135px;
-}
-
-.timeline-label {
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  color: #94a3b8;
-  letter-spacing: 0.08em;
-}
-
-.timeline-date {
-  font-size: 1.05rem;
+.meta-value {
+  font-size: 16px;
   font-weight: 700;
-  color: #0f172a;
+  color: var(--sm-ink);
 }
 
-.timeline-hint {
-  font-size: 0.9rem;
-  color: #6b7280;
+.meta-hint {
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--sm-muted);
 }
 
-.features-section {
-  padding: 2rem;
-  border-top: 1px solid #f3f4f6;
-  margin: 0;
-}
-
-.features-title {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #1f2937;
-  margin-bottom: 1rem;
-}
-
-.features-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.levels-access-section {
-  margin: 2rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 1rem;
-  padding: 1.25rem;
-  background: #f8fafc;
-}
-
-.levels-title {
-  margin: 0 0 1rem;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #0f172a;
-}
-
-.levels-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.level-card {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.75rem 1rem;
-  border-radius: 0.75rem;
-  background: #fff;
-  border: 1px solid #e5e7eb;
-}
-
-.level-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.level-name {
-  margin: 0;
-  font-weight: 600;
-  color: #111827;
-}
-
-.level-pays {
-  margin: 0.15rem 0 0;
-  color: #6b7280;
-  font-size: 0.9rem;
-}
-
-.level-status-text {
-  margin: 0.35rem 0 0;
-  font-size: 0.85rem;
-  color: #4b5563;
-}
-
-.level-actions {
-  display: flex;
-  gap: 0.75rem;
-  align-items: center;
-}
-
-.level-status {
-  font-size: 0.9rem;
-  color: #b45309;
-  font-weight: 600;
-}
-
-.level-gift-notice {
-  font-size: 0.85rem;
-  color: #6b7280;
-  font-style: italic;
-  padding: 0.4rem 0.75rem;
-  background: #f3f4f6;
-  border-radius: 0.5rem;
-}
-
-.level-cancel-btn,
-.level-upgrade-btn,
-.level-reactivate-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.45rem 0.9rem;
-  border-radius: 0.5rem;
-  font-size: 0.85rem;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  cursor: pointer;
-}
-
-.level-cancel-btn {
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  color: #b91c1c;
-}
-
-.level-cancel-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.level-reactivate-btn {
-  background: linear-gradient(135deg, #3b8544, #2f6d37);
-  border: none;
-  color: white;
-  box-shadow: 0 2px 4px rgba(59, 133, 68, 0.2);
-}
-
-.level-reactivate-btn:hover:not(:disabled) {
-  background: linear-gradient(135deg, #2f6d37, #2f6d37);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(59, 133, 68, 0.3);
-}
-
-.level-reactivate-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.level-upgrade-btn {
-  border: 1px solid #cfd8ec;
-  background: #eef1f8;
-  color: #122a66;
-  text-decoration: none;
-}
-
-.level-upgrade-btn:hover {
-  background: #dfe5f2;
-}
-
-.level-cancel-btn:hover:not(:disabled) {
-  background: #fee2e2;
-}
-
-
-.feature-item {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.5rem 0;
-  color: #374151;
-}
-
-.feature-icon {
-  width: 1.25rem;
-  height: 1.25rem;
-  color: #3b8544;
-  flex-shrink: 0;
-}
-
+/* Sections (classes, factures, abonnements offerts) */
+.levels-access-section,
+.invoices-section,
 .actions-section {
+  margin-top: 28px;
+  padding-top: 22px;
+  border-top: 1px solid var(--sm-line);
+}
+
+.levels-title,
+.invoices-header h4,
+.gifted-header h4 {
   margin: 0;
-  padding: 2rem;
-  border-top: 1px solid #f3f4f6;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--sm-ink);
 }
 
-.actions-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-}
-
-.invoices-section {
-  margin: 0;
-  padding: 2rem;
-  border-top: 1px solid #f3f4f6;
-}
-
-.invoices-header {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
+.invoices-header p,
+.gifted-header p {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: var(--sm-muted);
 }
 
 .invoices-header-content {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
+  gap: 12px;
 }
 
-.invoices-header h4 {
-  margin: 0;
-  font-size: 1.1rem;
-  color: #0f172a;
-  flex: 1;
+.levels-grid {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
 }
 
-.invoices-header p {
-  margin: 0;
-  color: #64748b;
-  font-size: 0.9rem;
-}
-
-.invoice-loading,
-.invoice-error,
-.invoice-empty {
-  padding: 1rem;
-  background: #f8fafc;
-  border-radius: 0.75rem;
-  text-align: center;
-  color: #475569;
-  font-size: 0.9rem;
-}
-
-.invoice-error {
-  background: #fef2f2;
-  color: #b91c1c;
-}
-
-.invoice-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.invoice-pagination {
-  margin-top: 1rem;
+.level-card {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 16px;
+  border: 1px solid var(--sm-line);
+  border-radius: 12px;
+}
+
+.level-name {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.level-pays,
+.level-status-text {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: var(--sm-muted);
+}
+
+.level-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.level-status {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--sm-orange);
+}
+
+.level-gift-notice {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--sm-green);
+}
+
+.actions-buttons {
+  display: flex;
   justify-content: center;
-  gap: 1rem;
 }
 
-.pagination-btn {
-  padding: 0.5rem 1rem;
-  border-radius: 999px;
-  border: 1px solid #e2e8f0;
-  background: #fff;
-  color: #0f172a;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.pagination-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.pagination-btn:not(:disabled):hover {
-  background: #f8fafc;
-  border-color: #cbd5f5;
-}
-
-.pagination-info {
-  color: #475569;
-  font-size: 0.9rem;
-  font-weight: 600;
+/* Factures */
+.invoice-list {
+  margin-top: 14px;
+  border: 1px solid var(--sm-line);
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 .invoice-row {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  background: #f9fafb;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.85rem;
-  padding: 1rem;
-  flex-wrap: wrap;
-  gap: 0.75rem;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 16px;
+}
+
+.invoice-row + .invoice-row {
+  border-top: 1px solid var(--sm-line);
 }
 
 .invoice-info {
-  flex: 1;
-  min-width: 180px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 14px;
+  align-items: baseline;
+  min-width: 0;
 }
 
 .invoice-label {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
+  grid-row: span 2;
+  min-width: 150px;
 }
 
 .invoice-date {
   margin: 0;
+  font-size: 13px;
   font-weight: 600;
-  color: #0f172a;
+  color: var(--sm-muted);
+  white-space: nowrap;
 }
 
 .invoice-amount {
-  margin: 0.35rem 0 0.15rem;
-  color: #0d9488;
-  font-weight: 600;
-}
-
-.invoice-desc {
   margin: 0;
-  color: #475569;
-  font-size: 0.9rem;
+  font-size: 15px;
+  font-weight: 700;
 }
 
-.invoice-level {
-  margin: 0.2rem 0 0;
-  color: #122a66;
-  font-size: 0.85rem;
-  font-weight: 600;
-}
-
-.invoice-period {
-  margin: 0.25rem 0 0;
-  font-size: 0.85rem;
-  color: #334155;
-}
-
+.invoice-desc,
+.invoice-level,
+.invoice-period,
 .invoice-note {
-  margin: 0.15rem 0 0;
-  color: #94a3b8;
-  font-size: 0.8rem;
+  grid-column: 2;
+  margin: 2px 0 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--sm-muted);
 }
 
 .invoice-actions {
   display: flex;
-  gap: 0.5rem;
-  align-items: center;
-}
-
-.invoice-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.55rem 0.9rem;
-  border-radius: 8px;
-  border: none;
-  background: #122a66;
-  color: white;
-  font-weight: 600;
-  font-size: 0.9rem;
-  text-decoration: none;
-  transition: opacity 0.2s ease;
+  flex-shrink: 0;
+  gap: 8px;
 }
 
 .invoice-btn.secondary {
-  background: #0f172a;
+  color: var(--sm-muted);
 }
 
-.invoice-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.upgrade-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  background: #1b3c8e;
-  color: white;
-  border-radius: 0.5rem;
-  font-weight: 500;
-  text-decoration: none;
-  transition: all 0.2s ease;
-  width: 100%;
-  justify-content: center;
-}
-
-.upgrade-btn:hover {
-  background: #122a66;
-}
-
-.pass-access {
-  padding: 2.5rem 2rem;
-  border-top: 1px solid #f3f4f6;
-  display: flex;
-  flex-direction: column;
-  gap: 1.75rem;
-}
-
-.pass-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 1.5rem;
-}
-
-.pass-subtitle {
-  margin: 0.25rem 0 0;
-  color: #6b7280;
-}
-
-.pass-chip {
-  background: #eef1f8;
-  color: #122a66;
-  padding: 0.5rem 1rem;
-  border-radius: 999px;
-  font-weight: 600;
-}
-
-.pass-body {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.25rem;
-}
-
-.manual-access,
-.no-subscription {
-  padding: 3rem 2rem;
+.invoice-empty,
+.invoice-error {
+  margin-top: 14px;
+  padding: 18px;
+  border: 1px dashed var(--es-line-strong, #cfd6e3);
+  border-radius: 12px;
+  font-size: 14px;
   text-align: center;
+  color: var(--sm-muted);
 }
 
-.manual-icon {
-  width: 4rem;
-  height: 4rem;
-  background: #eaf4ea;
-  border-radius: 50%;
+.invoice-error {
+  border-color: #f4c7c3;
+  color: var(--sm-red);
+}
+
+.invoice-pagination {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 1.5rem;
-  color: #2f6d37;
+  gap: 12px;
+  margin-top: 14px;
 }
 
-.manual-icon svg {
-  width: 2rem;
-  height: 2rem;
+.pagination-info {
+  font-size: 13px;
+  color: var(--sm-muted);
 }
 
-.no-sub-icon {
-  width: 4rem;
-  height: 4rem;
-  background: #f3f4f6;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 1.5rem;
-  color: #9ca3af;
-}
-
-.no-sub-icon svg {
-  width: 2rem;
-  height: 2rem;
-}
-
-.no-subscription h4 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #1f2937;
-  margin-bottom: 0.5rem;
-}
-
-.no-subscription p {
-  color: #6b7280;
-  margin-bottom: 2rem;
-}
-
+/* Abonnements et pass offerts aux enfants */
 .gifted-section {
-  margin-top: 2.5rem;
-  padding-top: 2rem;
-  border-top: 1px solid #e5e7eb;
-}
-
-.gifted-section--top {
-  margin-top: 0;
-  margin-bottom: 1.5rem;
-  padding: 1.5rem;
-  border-top: none;
-  border: 1px solid #e5e7eb;
-  border-radius: 16px;
-  background: #f9fafb;
-}
-
-.gifted-section--passes {
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
-  padding: 1.5rem;
-  border-top: none;
-  border: 1px solid #dfe5f2;
-  border-radius: 16px;
-  background: linear-gradient(135deg, #f4f6fb 0%, #eef1f8 100%);
-}
-
-.gifted-card--pass {
-  border-color: #cfd8ec;
-  background: linear-gradient(135deg, #ffffff 0%, #f4f6fb 100%);
-}
-
-.gifted-pass-badge {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-top: 1rem;
-  padding: 0.5rem 1rem;
-  background: linear-gradient(135deg, #2a4fa3 0%, #1b3c8e 100%);
-  border-radius: 8px;
-  color: white;
-  font-size: 0.85rem;
-  font-weight: 600;
-}
-
-.pass-badge-icon {
-  font-size: 1rem;
-}
-
-.gifted-value.status-expired {
-  color: #9ca3af;
-}
-
-.gifted-header h4 {
-  margin: 0 0 0.35rem;
-  font-size: 1.2rem;
-  color: #111827;
-}
-
-.gifted-header p {
-  margin: 0 0 1.25rem;
-  color: #6b7280;
-  font-size: 0.95rem;
+  margin-bottom: 24px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--sm-line);
 }
 
 .gifted-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+  margin-top: 14px;
 }
 
 .gifted-card {
-  border: 1px solid #e5e7eb;
-  border-radius: 16px;
-  padding: 1.25rem;
-  background: #ffffff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  transition: box-shadow 0.2s ease;
-}
-
-.gifted-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid var(--sm-line);
+  border-radius: 14px;
 }
 
 .gifted-child-header {
   display: flex;
   align-items: center;
-  gap: 0.875rem;
-  margin-bottom: 1rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #f3f4f6;
+  gap: 12px;
 }
 
 .gifted-child-avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #1b3c8e, #122a66);
-  color: white;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
-  font-size: 1rem;
+  width: 40px;
+  height: 40px;
   flex-shrink: 0;
-}
-
-.gifted-child-info {
-  flex: 1;
-  min-width: 0;
+  border-radius: 50%;
+  background: var(--sm-navy);
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
 }
 
 .gifted-child-name {
   margin: 0;
-  font-weight: 600;
-  color: #111827;
-  font-size: 1rem;
+  font-size: 15px;
+  font-weight: 700;
 }
 
 .gifted-child-email {
-  margin: 0.2rem 0 0;
-  color: #6b7280;
-  font-size: 0.85rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  margin: 0;
+  font-size: 13px;
+  color: var(--sm-muted);
 }
 
 .gifted-details {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
+  display: grid;
+  gap: 6px;
 }
 
 .gifted-detail-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  font-size: 0.9rem;
+  gap: 12px;
+  font-size: 13.5px;
 }
 
 .gifted-label {
-  color: #6b7280;
+  color: var(--sm-muted);
 }
 
 .gifted-value {
-  color: #111827;
-  font-weight: 500;
+  font-weight: 600;
   text-align: right;
-}
-
-.gifted-value.status-active {
-  color: #2f6d37;
-}
-
-.gifted-value.status-trial {
-  color: #1b3c8e;
-}
-
-.gifted-value.status-warning {
-  color: #d97706;
-}
-
-.gifted-value.status-danger {
-  color: #dc2626;
-}
-
-.gifted-value.status-canceled {
-  color: #6b7280;
 }
 
 .gifted-actions {
   display: flex;
-  gap: 0.75rem;
-  padding-top: 1rem;
-  border-top: 1px solid #f3f4f6;
+  justify-content: flex-end;
 }
 
-.gifted-cancel-btn,
-.gifted-reactivate-btn {
-  flex: 1;
+.gifted-pass-badge {
+  align-self: flex-start;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--sm-bg);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--sm-muted);
+}
+
+/* Pass, accès offert, aucun abonnement */
+.pass-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.pass-subtitle {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: var(--sm-muted);
+}
+
+.pass-chip {
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--sm-orange-50);
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--sm-orange);
+}
+
+.manual-access,
+.no-subscription {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 28px 12px 12px;
+  text-align: center;
+}
+
+.manual-icon,
+.no-sub-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.35rem;
-  padding: 0.6rem 1rem;
-  border-radius: 8px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 6px;
+  border-radius: 16px;
+  background: var(--es-navy-50, #eef1f8);
+  color: var(--sm-navy);
 }
 
-.gifted-cancel-btn {
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  color: #b91c1c;
+.manual-icon {
+  background: var(--sm-green-50);
+  color: var(--sm-green);
 }
 
-.gifted-cancel-btn:hover:not(:disabled) {
-  background: #fee2e2;
+.manual-icon svg,
+.no-sub-icon svg {
+  width: 28px;
+  height: 28px;
 }
 
-.gifted-cancel-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.gifted-reactivate-btn {
-  background: linear-gradient(135deg, #3b8544, #2f6d37);
-  border: none;
-  color: white;
-  box-shadow: 0 2px 4px rgba(59, 133, 68, 0.2);
-}
-
-.gifted-reactivate-btn:hover:not(:disabled) {
-  background: linear-gradient(135deg, #2f6d37, #2f6d37);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(59, 133, 68, 0.3);
-}
-
-.gifted-reactivate-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.gifted-title {
+.manual-access h4,
+.no-subscription h4 {
+  margin: 0;
+  font-size: 19px;
   font-weight: 700;
-  color: #111827;
-  margin-bottom: 0.6rem;
 }
 
-.gifted-meta {
-  margin: 0.25rem 0;
-  color: #4b5563;
-  font-size: 0.92rem;
+.manual-access p,
+.no-subscription p {
+  max-width: 420px;
+  margin: 0 0 12px;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--sm-muted);
 }
 
-.get-started-btn {
-  display: inline-block;
-  padding: 1rem 2rem;
-  background: #1b3c8e;
-  color: white;
-  border-radius: 0.5rem;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.2s ease;
+/* Fenêtres de résiliation */
+.cancel-text {
+  margin: 0 0 12px;
+  line-height: 1.55;
+  color: var(--om-ink-soft, #2c3550);
 }
 
-.get-started-btn:hover {
-  background: #122a66;
-  transform: translateY(-1px);
-}
-
-@media (max-width: 1050px) {
-  .subscription-manager {
-    padding: 0.75rem;
-    max-width: 100%;
-  }
-  
+/* Téléphone */
+@media (max-width: 640px) {
   .subscription-card {
-    border-radius: 0.875rem;
+    padding: 18px;
   }
 
-  .card-header {
-    padding: 1.125rem 1.25rem;
+  .plan-heading h3,
+  .pass-header h3 {
+    font-size: 21px;
   }
 
-  .status-badge {
-    font-size: 0.8125rem;
-    padding: 0.4rem 0.875rem;
-  }
-
-  .refresh-btn {
-    width: 32px;
-    height: 32px;
-  }
-
-  .btn-icon {
-    width: 1.1rem;
-    height: 1.1rem;
-  }
-
-  .inline-message {
-    margin: 0 1.25rem;
-    padding: 0.75rem 0.875rem;
-    font-size: 0.85rem;
-  }
-
-  .plan-overview {
-    padding: 1.5rem 1.25rem;
-    gap: 1.25rem;
-  }
-
-  .plan-heading h3 {
-    font-size: 1.5rem;
-  }
-
-  .plan-price {
-    font-size: 1.35rem;
-  }
-
-  .plan-level-pill {
-    font-size: 0.8rem;
-    padding: 0.3rem 0.75rem;
-  }
-
-  .plan-level-switcher select {
-    font-size: 0.85rem;
-    padding: 0.5rem 0.625rem;
-  }
-
-  .plan-level-switcher-hint {
-    font-size: 0.7rem;
-  }
-
-  .plan-meta {
-    justify-content: flex-start;
-    gap: 0.75rem;
-  }
-
-  .meta-item {
-    padding: 0.875rem 1rem;
-    min-width: 0;
-    flex: 1 1 calc(50% - 0.375rem);
-  }
-
-  .meta-label {
-    font-size: 0.75rem;
-  }
-
-  .meta-value {
-    font-size: 1.05rem;
-  }
-
-  .meta-hint {
-    font-size: 0.8rem;
-  }
-
-  .timeline-row {
-    padding: 1rem 1.25rem 0;
-    gap: 0.875rem;
-  }
-
-  .timeline-card {
-    padding: 1rem;
-    min-height: 120px;
-  }
-
-  .timeline-date {
-    font-size: 1rem;
-  }
-
-  .features-section,
-  .actions-section,
-  .invoices-section {
-    padding: 1.5rem 1.25rem;
-  }
-
-  .features-title {
-    font-size: 1.05rem;
-  }
-
-  .feature-item {
-    font-size: 0.9rem;
-    padding: 0.4rem 0;
-  }
-
-  .feature-icon {
-    width: 1.1rem;
-    height: 1.1rem;
-  }
-
-  .levels-access-section {
-    margin: 1.5rem 1.25rem;
-    padding: 1rem;
-  }
-
-  .levels-title {
-    font-size: 0.95rem;
-  }
-
-  .level-card {
-    padding: 0.875rem;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-  }
-
-  .level-info {
-    flex: 1;
-    min-width: 100%;
-  }
-
-  .level-actions {
-    width: 100%;
+  .level-card,
+  .invoice-row {
     flex-direction: column;
     align-items: stretch;
-    gap: 0.5rem;
   }
 
-  .level-status {
-    text-align: center;
-    padding: 0.5rem;
-    background: #fff7ed;
-    border-radius: 0.5rem;
-    font-size: 0.85rem;
-  }
-
-  .level-cancel-btn,
-  .level-upgrade-btn,
-  .level-reactivate-btn {
-    flex: 1;
-    justify-content: center;
-    padding: 0.5rem 0.75rem;
-    font-size: 0.8125rem;
-  }
-
-  .invoices-header-content {
-    gap: 0.875rem;
-  }
-
-  .invoices-header h4 {
-    font-size: 1.05rem;
-  }
-
-  .invoices-header p {
-    font-size: 0.85rem;
-  }
-
-  .invoices-header .refresh-btn {
-    width: 32px;
-    height: 32px;
-  }
-
-  .invoices-header .btn-icon {
-    width: 1.05rem;
-    height: 1.05rem;
-  }
-
-  .invoice-row {
-    padding: 0.875rem;
-    gap: 0.625rem;
-  }
-
-  .invoice-info {
-    min-width: 100%;
-  }
-
+  .level-actions,
   .invoice-actions {
-    width: 100%;
-    justify-content: stretch;
-    gap: 0.5rem;
+    justify-content: flex-start;
   }
 
-  .invoice-btn {
+  .invoice-actions .invoice-btn {
     flex: 1;
-    justify-content: center;
-    padding: 0.5rem 0.75rem;
-    font-size: 0.85rem;
-  }
-
-  .invoice-date {
-    font-size: 0.95rem;
-  }
-
-  .invoice-amount {
-    font-size: 0.95rem;
-  }
-
-  .invoice-desc {
-    font-size: 0.85rem;
-  }
-
-  .upgrade-btn {
-    padding: 0.875rem 1.25rem;
-    font-size: 0.95rem;
-  }
-}
-
-@media (max-width: 640px) {
-  .subscription-manager {
-    padding: 0.5rem;
-  }
-
-  .subscription-card {
-    border-radius: 0.75rem;
-  }
-
-  .card-header {
-    padding: 1rem;
-  }
-
-  .status-badge {
-    font-size: 0.75rem;
-    padding: 0.375rem 0.75rem;
-  }
-
-  .plan-overview {
-    padding: 1.25rem 1rem;
-    gap: 1rem;
-    flex-direction: column;
-  }
-
-  .plan-heading {
-    flex: 1 1 100%;
-    width: 100%;
-  }
-
-  .plan-heading .eyebrow {
-    font-size: 0.7rem;
-  }
-
-  .plan-heading h3 {
-    font-size: 1.375rem;
-    line-height: 1.3;
-  }
-
-  .plan-price {
-    font-size: 1.25rem;
-    margin-top: 0.25rem;
-  }
-
-  .plan-period {
-    font-size: 0.875rem;
-    margin-top: 0.15rem;
-  }
-
-  .plan-level-pill {
-    font-size: 0.7rem;
-    padding: 0.3rem 0.65rem;
-    margin-top: 0.5rem;
-    display: inline-block;
-    width: auto;
-    max-width: 100%;
-    word-wrap: break-word;
-  }
-
-  .plan-level-pill .pill-label {
-    display: none;
-  }
-
-  .plan-level-pill::before {
-    content: "📍 ";
-    font-size: 0.75rem;
-  }
-
-  .plan-level-switcher {
-    margin-top: 0.75rem;
-    width: 100%;
-  }
-
-  .plan-level-switcher label {
-    font-size: 0.7rem;
-  }
-
-  .plan-level-switcher select {
-    padding: 0.45rem 0.5rem;
-    font-size: 0.8rem;
-  }
-
-  .plan-level-switcher-hint {
-    font-size: 0.68rem;
-    line-height: 1.5;
-  }
-
-  .plan-meta {
-    flex-direction: column;
-    gap: 0.75rem;
-    width: 100%;
-  }
-
-  .meta-item {
-    flex: 1 1 100%;
-    padding: 0.875rem 1rem;
-    min-width: 0;
-  }
-
-  .meta-label {
-    font-size: 0.75rem;
-  }
-
-  .meta-value {
-    font-size: 1.05rem;
-  }
-
-  .meta-hint {
-    font-size: 0.8rem;
-  }
-
-  .timeline-row {
-    grid-template-columns: 1fr;
-    padding: 1rem 0;
-    gap: 0.75rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .timeline-card {
-    padding: 0.875rem;
-    min-height: auto;
-  }
-
-  .timeline-label {
-    font-size: 0.75rem;
-  }
-
-  .timeline-date {
-    font-size: 0.95rem;
-  }
-
-  .timeline-hint {
-    font-size: 0.85rem;
-  }
-
-  .features-section,
-  .actions-section,
-  .invoices-section {
-    padding: 1.25rem 1rem;
-  }
-
-  .features-title {
-    font-size: 1rem;
-    margin-bottom: 0.875rem;
-  }
-
-  .feature-item {
-    font-size: 0.875rem;
-    gap: 0.625rem;
-  }
-
-  .feature-icon {
-    width: 1rem;
-    height: 1rem;
-  }
-
-  .levels-access-section {
-    margin: 1.25rem 1rem;
-    padding: 0.875rem;
-  }
-
-  .levels-title {
-    font-size: 0.9rem;
-    margin-bottom: 0.875rem;
-  }
-
-  .levels-grid {
-    gap: 0.625rem;
-  }
-
-  .level-card {
-    padding: 0.75rem;
-  }
-
-  .level-name {
-    font-size: 0.9rem;
-  }
-
-  .level-pays {
-    font-size: 0.85rem;
-  }
-
-  .level-status-text {
-    font-size: 0.8rem;
-  }
-
-  .level-cancel-btn,
-  .level-upgrade-btn {
-    padding: 0.5rem 0.75rem;
-    font-size: 0.8rem;
-  }
-
-  .invoices-header {
-    gap: 0.5rem;
-  }
-
-  .invoices-header-content {
-    gap: 0.75rem;
-  }
-
-  .invoices-header h4 {
-    font-size: 1rem;
-  }
-
-  .invoices-header p {
-    font-size: 0.8125rem;
-  }
-
-  .invoices-header .refresh-btn {
-    width: 30px;
-    height: 30px;
-  }
-
-  .invoices-header .btn-icon {
-    width: 1rem;
-    height: 1rem;
-  }
-
-  .invoice-row {
-    padding: 0.75rem;
-    border-radius: 0.75rem;
-  }
-
-  .invoice-date {
-    font-size: 0.9rem;
-  }
-
-  .invoice-amount {
-    font-size: 0.9rem;
-    margin: 0.25rem 0 0.1rem;
-  }
-
-  .invoice-desc {
-    font-size: 0.8125rem;
-  }
-
-  .invoice-level {
-    font-size: 0.8rem;
-  }
-
-  .invoice-period {
-    font-size: 0.8rem;
-  }
-
-  .invoice-note {
-    font-size: 0.75rem;
-  }
-
-  .invoice-btn {
-    padding: 0.5rem 0.625rem;
-    font-size: 0.8125rem;
-  }
-
-  .upgrade-btn {
-    padding: 0.75rem 1rem;
-    font-size: 0.9rem;
-  }
-
-  .pass-access {
-    padding: 2rem 1.25rem;
-    gap: 1.5rem;
   }
 
   .pass-header {
     flex-direction: column;
-    gap: 1rem;
-  }
-
-  .pass-header h3 {
-    font-size: 1.375rem;
-  }
-
-  .pass-subtitle {
-    font-size: 0.9rem;
-  }
-
-  .pass-chip {
-    padding: 0.4rem 0.875rem;
-    font-size: 0.85rem;
-    align-self: flex-start;
-  }
-
-  .pass-body {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  .manual-access,
-  .no-subscription {
-    padding: 2.5rem 1.25rem;
-  }
-
-  .manual-access h4,
-  .no-subscription h4 {
-    font-size: 1.15rem;
-  }
-
-  .manual-access p,
-  .no-subscription p {
-    font-size: 0.9rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .get-started-btn {
-    padding: 0.875rem 1.75rem;
-    font-size: 0.95rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .subscription-manager {
-    padding: 0.25rem;
-  }
-
-  .card-header {
-    padding: 0.875rem;
-  }
-
-  .plan-overview {
-    padding: 1rem 0.875rem;
-    gap: 0.875rem;
-  }
-
-  .plan-heading .eyebrow {
-    font-size: 0.65rem;
-  }
-
-  .plan-heading h3 {
-    font-size: 1.25rem;
-  }
-
-  .plan-price {
-    font-size: 1.125rem;
-  }
-
-  .plan-period {
-    font-size: 0.8rem;
-  }
-
-  .plan-level-pill {
-    font-size: 0.675rem;
-    padding: 0.25rem 0.55rem;
-  }
-
-  .plan-level-pill .pill-label {
-    display: none;
-  }
-
-  .plan-level-pill::before {
-    content: "📍 ";
-    font-size: 0.7rem;
-  }
-
-  .plan-level-switcher label {
-    font-size: 0.625rem;
   }
 
   .plan-level-switcher select {
-    font-size: 0.75rem;
-    padding: 0.4rem 0.45rem;
-  }
-
-  .plan-level-switcher-hint {
-    font-size: 0.625rem;
-  }
-
-  .meta-item {
-    padding: 0.75rem 0.875rem;
-  }
-
-  .meta-label {
-    font-size: 0.7rem;
-  }
-
-  .meta-value {
-    font-size: 1rem;
-  }
-
-  .meta-hint {
-    font-size: 0.75rem;
-  }
-
-  .timeline-row {
-    padding: 0.875rem 0;
-  }
-
-  .features-section,
-  .actions-section,
-  .invoices-section {
-    padding: 1rem 0.875rem;
-  }
-
-  .levels-access-section {
-    margin: 1rem 0.875rem;
-  }
-
-  .invoices-header-content {
-    gap: 0.625rem;
-  }
-
-  .invoices-header h4 {
-    font-size: 0.95rem;
-  }
-
-  .invoices-header p {
-    font-size: 0.8rem;
-  }
-
-  .invoices-header .refresh-btn {
-    width: 28px;
-    height: 28px;
-  }
-
-  .invoices-header .btn-icon {
-    width: 0.95rem;
-    height: 0.95rem;
-  }
-
-  .invoice-actions {
-    flex-direction: column;
-  }
-
-  .invoice-btn {
     width: 100%;
-  }
-
-  .level-actions {
-    flex-direction: column;
-  }
-
-  .level-cancel-btn,
-  .level-upgrade-btn {
-    width: 100%;
-  }
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Modal de résiliation */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  z-index: 9999;
-  backdrop-filter: blur(4px);
-  animation: fadeIn 0.2s ease;
-  overflow-y: auto;
-  padding: 2rem 1rem;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.modal-card {
-  background: #ffffff;
-  border-radius: 20px;
-  width: min(90%, 420px);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  animation: slideUp 0.3s ease;
-}
-
-@keyframes slideUp {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-.modal-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1.5rem 1.5rem 1rem;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.modal-header h3 {
-  margin: 0;
-  color: #111827;
-  font-size: 1.125rem;
-  font-weight: 700;
-}
-
-.modal-close {
-  background: #f3f4f6;
-  border: none;
-  font-size: 1.5rem;
-  color: #6b7280;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  line-height: 1;
-  padding: 0;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.modal-close:hover {
-  background: #e5e7eb;
-  color: #374151;
-}
-
-.modal-body {
-  padding: 1.5rem;
-}
-
-.modal-body p {
-  margin: 0 0 0.75rem;
-  color: #374151;
-  font-size: 0.9375rem;
-  line-height: 1.5;
-}
-
-.modal-body p:last-child {
-  margin-bottom: 0;
-}
-
-.modal-body strong {
-  color: #111827;
-}
-
-.modal-hint {
-  color: #6b7280 !important;
-  font-size: 0.875rem !important;
-}
-
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.75rem;
-  padding: 1rem 1.5rem 1.5rem;
-  border-top: 1px solid #f3f4f6;
-}
-
-.cancel-btn {
-  background: #ffffff;
-  color: #374151;
-  border: 1.5px solid #d1d5db;
-  border-radius: 10px;
-  padding: 0.625rem 1.25rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.cancel-btn:hover {
-  background: #f9fafb;
-  border-color: #9ca3af;
-}
-
-.confirm-btn {
-  background: linear-gradient(135deg, #1b3c8e 0%, #122a66 100%);
-  color: #ffffff;
-  border: none;
-  border-radius: 10px;
-  padding: 0.625rem 1.25rem;
-  font-size: 0.875rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.confirm-btn:hover:not(:disabled) {
-  opacity: 0.9;
-}
-
-.confirm-btn--danger {
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-}
-
-.confirm-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-@media (max-width: 480px) {
-  .modal-overlay {
-    padding: 1rem;
-    align-items: center;
-  }
-
-  .modal-card {
-    width: 100%;
-  }
-
-  .modal-actions {
-    flex-direction: column;
-  }
-
-  .cancel-btn,
-  .confirm-btn {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .confirm-btn {
-    order: -1;
+    min-width: 0;
+    font-size: 16px;
   }
 }
 </style>

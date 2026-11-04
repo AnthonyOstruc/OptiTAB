@@ -1,0 +1,204 @@
+Titre: Étudier les variations et les extremums d’une fonction
+
+<!-- optitab:1 -->
+::: objectifs
+- Définir une fonction croissante, décroissante, monotone sur un intervalle.
+- Lire et dresser un tableau de variations ; relier courbe et tableau.
+- Déterminer un maximum, un minimum sur un intervalle.
+- Relier le signe du coefficient directeur d’une fonction affine à ses variations.
+- Démontrer les variations des fonctions carré, inverse et racine carrée.
+- Approcher un maximum avec Python (balayage).
+:::
+
+## I. Sens de variation
+
+::: definition Fonction croissante, décroissante
+Soit $f$ une fonction définie sur un intervalle $I$.
+
+- $f$ est **croissante** sur $I$ si, pour tous réels $u$ et $v$ de $I$ : $u \lt v \Rightarrow f(u) \le f(v)$.
+- $f$ est **décroissante** sur $I$ si, pour tous réels $u$ et $v$ de $I$ : $u \lt v \Rightarrow f(u) \ge f(v)$.
+
+Avec des inégalités strictes ($f(u) \lt f(v)$, $f(u) \gt f(v)$), on dit **strictement** croissante, **strictement** décroissante. Une fonction croissante sur $I$ ou décroissante sur $I$ est dite **monotone** sur $I$.
+:::
+
+[IMAGE_1]
+
+::: remarque Image mentale
+Une fonction croissante **conserve l’ordre** : sa courbe « monte » quand on la parcourt de gauche à droite. Une fonction décroissante **inverse l’ordre** : sa courbe « descend ».
+:::
+
+::: exemple
+La fonction $f$ définie par $f(x) = 3x - 1$ est strictement croissante sur $\mathbb{R}$ : si $u \lt v$, alors $3u \lt 3v$, donc $3u - 1 \lt 3v - 1$, c’est-à-dire $f(u) \lt f(v)$.
+:::
+
+## II. Tableau de variations et extremums
+
+::: definition Maximum, minimum
+Soit $f$ une fonction définie sur un intervalle $I$ et $a$ un réel de $I$.
+
+- $f(a)$ est le **maximum** de $f$ sur $I$ si, pour tout $x$ de $I$, $f(x) \le f(a)$.
+- $f(a)$ est le **minimum** de $f$ sur $I$ si, pour tout $x$ de $I$, $f(x) \ge f(a)$.
+
+Un maximum ou un minimum est un **extremum**. On dit qu’il est **atteint en** $a$.
+:::
+
+[IMAGE_2]
+
+Le **tableau de variations** résume la courbe : une flèche montante indique que la fonction est croissante, une flèche descendante qu’elle est décroissante ; au bout des flèches, on écrit les images des valeurs de $x$ de la première ligne.
+
+::: tableau
+x : -3, -1, 2, 5
+f(x) : +/2, -/-2, +/3, -/0
+:::
+
+::: exemple Lecture du tableau
+- $f$ est décroissante sur $[-3\,;-1]$, croissante sur $[-1\,;2]$, décroissante sur $[2\,;5]$.
+- Sur $[-3\,;5]$, le maximum de $f$ est $3$, atteint en $x = 2$ ; le minimum est $-2$, atteint en $x = -1$.
+- Pour tout $x$ de $[-3\,;5]$ : $-2 \le f(x) \le 3$.
+- $0 \lt 1$ et $f$ est croissante sur $[-1\,;2]$, donc $f(0) \le f(1)$.
+:::
+
+::: methode Comparer deux images avec un tableau de variations
+1. Vérifier que les deux nombres sont dans **un même intervalle** où $f$ est monotone.
+2. Croissante : les images sont rangées dans le même ordre ; décroissante : dans l’ordre contraire.
+3. Sinon, comparer chaque image à une valeur intermédiaire lue dans le tableau.
+:::
+
+::: attention Erreurs fréquentes
+- Un extremum **dépend de l’intervalle** : sur $[-3\,;0]$, le maximum de cette fonction est $2$, atteint en $-3$ (une borne), et non $3$.
+- Le maximum est une valeur de $f(x)$ ; l’endroit où il est atteint est une valeur de $x$.
+- Le tableau ne permet pas de comparer $f(-2)$ et $f(1)$ : $-2$ et $1$ ne sont pas dans un même intervalle où $f$ est monotone.
+:::
+
+## III. Fonctions affines
+
+::: propriete Variations d’une fonction affine
+Soit $f$ la fonction affine définie sur $\mathbb{R}$ par $f(x) = mx + p$.
+
+- Si $m \gt 0$, $f$ est strictement croissante sur $\mathbb{R}$.
+- Si $m \lt 0$, $f$ est strictement décroissante sur $\mathbb{R}$.
+- Si $m = 0$, $f$ est constante sur $\mathbb{R}$.
+:::
+
+::: demonstration
+Soient $u$ et $v$ deux réels avec $u \lt v$.
+
+$$
+\begin{aligned}
+f(v) - f(u) &= (mv + p) - (mu + p) \\
+&= m(v - u)
+\end{aligned}
+$$
+
+Comme $v - u \gt 0$, $f(v) - f(u)$ a le signe de $m$. Si $m \gt 0$, alors $f(u) \lt f(v)$ : $f$ est strictement croissante. Si $m \lt 0$, alors $f(u) \gt f(v)$ : $f$ est strictement décroissante. Si $m = 0$, alors $f(u) = f(v)$.
+:::
+
+::: propriete Taux d’accroissement
+Pour une fonction affine $f(x) = mx + p$ et deux réels distincts $u$ et $v$ :
+
+$$\frac{f(v) - f(u)}{v - u} = m$$
+
+Le coefficient directeur $m$ est le **taux d’accroissement** de $f$ : quand $x$ augmente de $1$, $f(x)$ varie de $m$. C’est aussi la pente de la droite qui représente $f$.
+:::
+
+::: exemple
+Pour $f(x) = -2x + 5$ : $m = -2 \lt 0$, donc $f$ est strictement décroissante sur $\mathbb{R}$. Sur $[0\,;3]$, son maximum est $f(0) = 5$ et son minimum est $f(3) = -1$.
+:::
+
+## IV. Variations des fonctions de référence
+
+Pour démontrer qu’une fonction est croissante (ou décroissante) sur un intervalle, on prend deux réels **quelconques** $u \lt v$ de cet intervalle et on étudie le **signe de** $f(v) - f(u)$.
+
+::: propriete Fonction carré
+La fonction carré est strictement décroissante sur ${]-\infty\,;0]}$ et strictement croissante sur $[0\,;+\infty[$. Son minimum sur $\mathbb{R}$ est $0$, atteint en $0$.
+
+::: tableau
+x : -\infty, 0, +\infty
+x^2 : +/, -/0, +/
+:::
+:::
+
+::: demonstration
+Soient $u \lt v$. On a $v^2 - u^2 = (v - u)(v + u)$, avec $v - u \gt 0$.
+
+- Si $0 \le u \lt v$ : $v + u \gt 0$, donc $v^2 - u^2 \gt 0$ et $u^2 \lt v^2$ : la fonction est strictement croissante sur $[0\,;+\infty[$.
+- Si $u \lt v \le 0$ : $v + u \lt 0$, donc $v^2 - u^2 \lt 0$ et $u^2 \gt v^2$ : elle est strictement décroissante sur ${]-\infty\,;0]}$.
+:::
+
+::: propriete Fonction inverse
+La fonction inverse est strictement décroissante sur ${]-\infty\,;0[}$ et strictement décroissante sur ${]0\,;+\infty[}$.
+
+::: tableau
+x : -\infty, 0, +\infty
+\frac{1}{x} : +/, -D+/{}/{}, -/
+:::
+:::
+
+::: demonstration
+Soient $u \lt v$, de même signe (tous deux dans ${]0\,;+\infty[}$ ou tous deux dans ${]-\infty\,;0[}$).
+
+$$
+\begin{aligned}
+\frac{1}{v} - \frac{1}{u} &= \frac{u - v}{uv}
+\end{aligned}
+$$
+
+On a $u - v \lt 0$ et $uv \gt 0$ (même signe), donc $\frac{1}{v} - \frac{1}{u} \lt 0$, soit $\frac{1}{u} \gt \frac{1}{v}$ : la fonction inverse est strictement décroissante sur chacun des deux intervalles.
+:::
+
+::: propriete Fonction racine carrée
+La fonction racine carrée est strictement croissante sur $[0\,;+\infty[$. Son minimum est $0$, atteint en $0$.
+
+::: tableau
+x : 0, +\infty
+\sqrt{x} : -/0, +/
+:::
+:::
+
+::: demonstration
+Soient $0 \le u \lt v$. Alors $\sqrt{v} + \sqrt{u} \gt 0$ (car $v \gt 0$) et :
+
+$$
+\begin{aligned}
+\sqrt{v} - \sqrt{u} &= \frac{(\sqrt{v} - \sqrt{u})(\sqrt{v} + \sqrt{u})}{\sqrt{v} + \sqrt{u}} \\
+&= \frac{v - u}{\sqrt{v} + \sqrt{u}}
+\end{aligned}
+$$
+
+Le numérateur et le dénominateur sont strictement positifs, donc $\sqrt{u} \lt \sqrt{v}$ : la fonction racine carrée est strictement croissante sur $[0\,;+\infty[$.
+:::
+
+::: attention
+- Deux ou trois exemples numériques ne prouvent pas qu’une fonction est croissante : il faut raisonner avec des réels $u \lt v$ **quelconques**.
+- La fonction inverse n’est pas décroissante sur ${]-\infty\,;0[} \cup {]0\,;+\infty[}$ : $-1 \lt 1$ et pourtant $\frac{1}{-1} \lt \frac{1}{1}$.
+:::
+
+## V. Approcher un maximum avec Python
+
+Méthode par **balayage** : on calcule les images de $n + 1$ valeurs régulièrement espacées de $[a\,;b]$, avec le pas $h = \frac{b - a}{n}$, et on garde la plus grande.
+
+```python
+def maximum(f, a, b, n):
+    h = (b - a) / n
+    m = f(a)
+    for k in range(1, n + 1):
+        x = a + k * h
+        if f(x) > m:
+            m = f(x)
+    return m
+```
+
+::: exemple
+Avec $f(x) = -x^2 + 4x$ sur $[0\,;5]$ et $n = 100$ (pas $h = 0{,}05$), la valeur $x = 2$ fait partie des valeurs testées : la fonction renvoie $4$, qui est bien le maximum de $f$, atteint en $x = 2$.
+:::
+
+::: remarque
+En général, le balayage donne une valeur **approchée par défaut** du maximum : le vrai maximum peut être atteint entre deux valeurs testées. Plus $n$ est grand, meilleure est l’approximation, mais plus il y a de calculs.
+:::
+
+::: retenir
+- Croissante : $u \lt v \Rightarrow f(u) \le f(v)$ (ordre conservé) ; décroissante : ordre inversé.
+- Le tableau de variations résume la courbe et donne les extremums ; un extremum dépend de l’intervalle.
+- Affine $mx + p$ : croissante si $m \gt 0$, décroissante si $m \lt 0$ ; $m$ est le taux d’accroissement.
+- Pour démontrer un sens de variation : signe de $f(v) - f(u)$ pour $u \lt v$ quelconques.
+:::

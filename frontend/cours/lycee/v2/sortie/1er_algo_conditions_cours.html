@@ -1,0 +1,68 @@
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+    <div style="background:#e8f4fd; border:2px solid #3498db; border-radius:8px; padding:15px; margin-bottom:20px;">
+        <p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🎯 Objectifs du chapitre :</strong> écrire des conditions avec les opérateurs de comparaison et les connecteurs logiques <code>and</code>, <code>or</code>, <code>not</code>, programmer des choix avec <code>if</code>, <code>elif</code>, <code>else</code>, et traduire en Python des situations mathématiques (discriminant, appartenance à un intervalle, divisibilité).</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Booléens et comparaisons</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Définition :</strong> une <strong>condition</strong> est une expression qui vaut <code>True</code> (vrai) ou <code>False</code> (faux) : c’est un <strong>booléen</strong>. On l’obtient avec les comparaisons <code>==</code> (égal), <code>!=</code> (différent), <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code>.</p>
+        </div>
+        <p style="font-size:1em;"><strong>Exemples :</strong> <code>3 &#42; 4 == 12</code> vaut <code>True</code> ; <code>7 % 2 == 0</code> vaut <code>False</code> ($\displaystyle 7$ n’est pas pair).</p>
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong> les nombres décimaux sont stockés de façon approchée : <code>0.1 + 0.2 == 0.3</code> vaut <code>False</code> ! Pour comparer deux flottants, on teste plutôt <code>abs(x - y) &lt; 1e-9</code>.
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Connecteurs logiques</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;">• <code>A and B</code> est vrai si <strong>les deux</strong> conditions sont vraies.</p>
+            <p style="margin:6px 0 0 0;">• <code>A or B</code> est vrai si <strong>au moins une</strong> des deux est vraie.</p>
+            <p style="margin:6px 0 0 0;">• <code>not A</code> est vrai si <code>A</code> est faux.</p>
+        </div>
+        [IMAGE_1]
+        <p style="font-size:1em;"><strong>Exemple :</strong> $\displaystyle x \in [2\,;5]$ se traduit par <code>2 &lt;= x and x &lt;= 5</code> (ou <code>2 &lt;= x &lt;= 5</code>) ; $\displaystyle x \notin [2\,;5]$ par <code>x &lt; 2 or x &gt; 5</code>.</p>
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Négation :</strong> le contraire de « A et B » est « non A ou non B » ; le contraire de « A ou B » est « non A et non B ».
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Instructions if, elif, else</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Syntaxe :</strong> Python teste les conditions dans l’ordre et exécute le <strong>premier</strong> bloc dont la condition est vraie ; <code>else</code> traite tous les autres cas. Chaque ligne <code>if</code>, <code>elif</code>, <code>else</code> se termine par deux-points, et les blocs sont indentés.</p>
+        </div>
+        [IMAGE_2]
+        <div style="background:#2c3e50; color:#ecf0f1; padding:12px; border-radius:6px; margin:10px 0 0 0; font-family:monospace; white-space:pre; overflow-x:auto;">def nb_solutions(a, b, c):
+    delta = b &#42; b - 4 &#42; a &#42; c
+    if delta &gt; 0:
+        return 2
+    elif delta == 0:
+        return 1
+    else:
+        return 0</div>
+        <p style="font-size:1em;"><strong>Tests :</strong> <code>nb_solutions(2, 4, -6)</code> renvoie $\displaystyle 2$ ($\displaystyle \Delta = 64$) ; <code>nb_solutions(1, -2, 1)</code> renvoie $\displaystyle 1$ ($\displaystyle \Delta = 0$) ; <code>nb_solutions(1, 1, 1)</code> renvoie $\displaystyle 0$ ($\displaystyle \Delta = -3$).</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Conditions composées</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <p style="font-size:1em;"><strong>Exemple :</strong> une année est bissextile si elle est divisible par $\displaystyle 4$ mais pas par $\displaystyle 100$, ou si elle est divisible par $\displaystyle 400$.</p>
+        <div style="background:#2c3e50; color:#ecf0f1; padding:12px; border-radius:6px; margin:10px 0 0 0; font-family:monospace; white-space:pre; overflow-x:auto;">def bissextile(a):
+    return (a % 4 == 0 and a % 100 != 0) or a % 400 == 0</div>
+        <p style="font-size:1em;"><code>bissextile(2024)</code> renvoie <code>True</code>, <code>bissextile(1900)</code> renvoie <code>False</code>, <code>bissextile(2000)</code> renvoie <code>True</code>.</p>
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong> l’ordre des tests compte dans une suite <code>if</code> / <code>elif</code> : on place d’abord les cas les plus particuliers. On utilise des parenthèses pour rendre claires les conditions qui mélangent <code>and</code> et <code>or</code>.
+        </div>
+    </div>
+
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:8px; padding:15px; margin:20px 0 0 0;">
+        <p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🏆 L’essentiel :</strong> une condition vaut <code>True</code> ou <code>False</code> ; <code>==</code> compare, <code>=</code> affecte ; <code>and</code> exige les deux, <code>or</code> au moins une ; <code>if</code> / <code>elif</code> / <code>else</code> exécute un seul bloc, le premier dont la condition est vraie ; on ne compare pas deux flottants avec <code>==</code>. Fiche de synthèse dans l’onglet Fiches !</p>
+    </div>
+
+</div>

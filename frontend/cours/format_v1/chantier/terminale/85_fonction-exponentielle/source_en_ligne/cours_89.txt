@@ -1,0 +1,207 @@
+Titre: Fonction exponentielle : limites et études
+
+<!-- optitab:1 -->
+::: objectifs
+Réinvestir les propriétés de l’exponentielle vues en Première, connaître ses limites et les croissances comparées, dériver $e^u$, mener l’étude complète d’une fonction et exploiter un modèle exponentiel.
+:::
+
+## I. Rappels de Première
+
+::: definition Fonction exponentielle
+Il existe une unique fonction $f$ dérivable sur $\mathbb{R}$ telle que $f' = f$ et $f(0) = 1$ : c’est la fonction **exponentielle**, notée $\exp$. Pour tout réel $x$, on note $\exp(x) = e^x$, avec $e = \exp(1) \approx 2{,}718$.
+:::
+
+::: propriete Règles de calcul
+Pour tous réels $a$ et $b$ et tout entier $n$ :
+
+$$e^{a + b} = e^a \times e^b \qquad e^{-a} = \frac{1}{e^a}$$
+
+$$e^{a - b} = \frac{e^a}{e^b} \qquad \left(e^a\right)^n = e^{na}$$
+:::
+
+::: propriete Signe, sens de variation, convexité
+- Pour tout réel $x$, $e^x \gt 0$ et $e^0 = 1$.
+- $\exp' = \exp \gt 0$ : la fonction $\exp$ est **strictement croissante** sur $\mathbb{R}$. Pour tous réels $a$ et $b$ : $e^a = e^b \iff a = b$ et $e^a \lt e^b \iff a \lt b$.
+- $\exp'' = \exp \gt 0$ : la fonction $\exp$ est **convexe** ; sa courbe est au-dessus de sa tangente en $0$, d’équation $y = x + 1$. Ainsi $e^x \ge 1 + x$ pour tout réel $x$.
+:::
+
+[IMAGE_1]
+
+::: exemple Résoudre une inéquation
+Comme $\exp$ est strictement croissante :
+
+$$
+\begin{aligned}
+e^{2x} \ge e^{1 - x} &\iff 2x \ge 1 - x \\
+&\iff 3x \ge 1 \\
+&\iff x \ge \frac{1}{3}
+\end{aligned}
+$$
+
+Donc $S = \left[\frac{1}{3}\,;+\infty\right[$.
+:::
+
+## II. Limites
+
+### 1. Limites aux bornes
+
+::: theoreme Limites en l’infini
+$$\lim_{x \to +\infty} e^x = +\infty \qquad \text{et} \qquad \lim_{x \to -\infty} e^x = 0$$
+
+Graphiquement, l’axe des abscisses (la droite d’équation $y = 0$) est asymptote horizontale à la courbe de $\exp$ en $-\infty$.
+:::
+
+::: demonstration
+- **En $+\infty$.** Pour tout réel $x$, $e^x \ge 1 + x$, et $\lim\limits_{x \to +\infty} (1 + x) = +\infty$. Par comparaison, $\lim\limits_{x \to +\infty} e^x = +\infty$.
+- **En $-\infty$.** Pour tout réel $x$, $e^x = \frac{1}{e^{-x}}$. Quand $x \to -\infty$, on a $-x \to +\infty$, donc $e^{-x} \to +\infty$ d’après le point précédent, et par quotient $e^x \to 0$.
+:::
+
+::: tableau Variations de la fonction exponentielle
+x : -\infty, 0, +\infty
+\exp'(x) : , +, t, +,
+\exp(x) : -/0, =/1, +/+\infty
+:::
+
+### 2. Une limite en 0
+
+::: theoreme Taux d’accroissement en 0
+$$\lim_{x \to 0} \frac{e^x - 1}{x} = 1$$
+:::
+
+::: demonstration
+Pour $x \ne 0$, $\frac{e^x - 1}{x} = \frac{e^x - e^0}{x - 0}$ est le taux d’accroissement de $\exp$ entre $0$ et $x$. Comme $\exp$ est dérivable en $0$, ce taux tend vers $\exp'(0) = e^0 = 1$ quand $x$ tend vers $0$.
+:::
+
+### 3. Croissances comparées
+
+::: theoreme Croissances comparées
+Pour tout entier naturel $n \ge 1$ :
+
+$$\lim_{x \to +\infty} \frac{e^x}{x^n} = +\infty$$
+
+$$\lim_{x \to +\infty} x^n e^{-x} = 0 \qquad \lim_{x \to -\infty} x^n e^x = 0$$
+
+En l’infini, l’exponentielle « l’emporte » sur toute puissance de $x$.
+:::
+
+::: demonstration Cas $n = 1$, puis cas général
+- **Cas $n = 1$.** Soit $\varphi(x) = e^x - \frac{x^2}{2}$ sur $\left[0\,;+\infty\right[$. Alors $\varphi'(x) = e^x - x \gt 0$, car $e^x \ge 1 + x \gt x$. La fonction $\varphi$ est donc croissante, et $\varphi(0) = 1$ : pour tout $x \ge 0$, $\varphi(x) \ge 1 \gt 0$, c’est-à-dire $e^x \gt \frac{x^2}{2}$. Pour $x \gt 0$, on en déduit $\frac{e^x}{x} \gt \frac{x}{2}$ ; or $\frac{x}{2} \to +\infty$, donc par comparaison $\lim\limits_{x \to +\infty} \frac{e^x}{x} = +\infty$.
+- **Cas général.** Pour $x \gt 0$ : $\frac{e^x}{x^n} = \frac{\left(e^{x/n}\right)^n}{x^n} = \frac{1}{n^n}\left(\frac{e^{x/n}}{x/n}\right)^n$. En posant $X = \frac{x}{n}$, qui tend vers $+\infty$, on a $\frac{e^X}{X} \to +\infty$, donc $\frac{e^x}{x^n} \to +\infty$.
+- **Les deux autres limites.** $x^n e^{-x} = \dfrac{1}{e^x / x^n} \to 0$ en $+\infty$. En $-\infty$, on pose $X = -x \to +\infty$ : $x^n e^x = (-1)^n X^n e^{-X} \to 0$.
+:::
+
+::: methode Lever une indétermination
+On factorise par le terme qui « l’emporte », puis on utilise les croissances comparées. En $+\infty$, $e^x - x^2$ est de la forme « $+\infty - \infty$ » ; on écrit
+
+$$e^x - x^2 = e^x\left(1 - \frac{x^2}{e^x}\right)$$
+
+Comme $\frac{x^2}{e^x} \to 0$, la parenthèse tend vers $1$, donc $\lim\limits_{x \to +\infty} \left(e^x - x^2\right) = +\infty$.
+:::
+
+::: exemple
+- $e^{2x} - e^x = e^x\left(e^x - 1\right)$ : produit de deux facteurs qui tendent vers $+\infty$, donc $\lim\limits_{x \to +\infty} \left(e^{2x} - e^x\right) = +\infty$.
+- $\frac{x + 1}{e^x} = \frac{x}{e^x} + \frac{1}{e^x}$ : somme de deux termes qui tendent vers $0$, donc $\lim\limits_{x \to +\infty} \frac{x + 1}{e^x} = 0$.
+- $\lim\limits_{x \to -\infty} x^2 e^x = 0$ (croissances comparées avec $n = 2$).
+:::
+
+::: attention
+« $\frac{\infty}{\infty}$ », « $0 \times \infty$ » et « $\infty - \infty$ » sont des formes indéterminées : on ne conclut jamais directement, on transforme d’abord l’écriture.
+:::
+
+## III. Fonctions de la forme $e^u$
+
+::: propriete Dérivée de $e^u$
+Si $u$ est dérivable sur un intervalle $I$, alors la fonction $x \mapsto e^{u(x)}$ est dérivable sur $I$ et
+
+$$\left(e^u\right)' = u' e^u$$
+
+En particulier, $\left(e^{ax + b}\right)' = a\,e^{ax + b}$. Comme $e^u \gt 0$, la dérivée $u' e^u$ a le signe de $u'$ : **$e^u$ a les mêmes variations que $u$** sur $I$.
+:::
+
+::: exemple Étude de $x \mapsto e^{-x^2}$
+- Dérivée : avec $u(x) = -x^2$, $u'(x) = -2x$, donc $\left(e^{-x^2}\right)' = -2x\,e^{-x^2}$, du signe de $-2x$ : la fonction est croissante sur $\left]-\infty\,;0\right]$ et décroissante sur $\left[0\,;+\infty\right[$, de maximum $e^0 = 1$.
+- Limites : $-x^2 \to -\infty$ quand $x \to \pm\infty$, et $\lim\limits_{X \to -\infty} e^X = 0$ ; par composition, $\lim\limits_{x \to \pm\infty} e^{-x^2} = 0$.
+:::
+
+::: attention
+- Ne pas oublier le facteur $u'$ : $\left(e^{x^2}\right)' = 2x\,e^{x^2}$, et non $e^{x^2}$.
+- $\left(e^x\right)^2 = e^{2x}$, et non $e^{x^2}$ ; $e^a \times e^b = e^{a + b}$, et non $e^{ab}$.
+:::
+
+## IV. Étude complète d’une fonction
+
+::: exemple Étude de $f(x) = x e^{-x}$ sur $\mathbb{R}$
+- **Limites.** En $-\infty$ : $x \to -\infty$ et $e^{-x} \to +\infty$, donc $f(x) \to -\infty$. En $+\infty$ : $f(x) = \frac{x}{e^x} \to 0$ (croissances comparées) ; la droite d’équation $y = 0$ est asymptote horizontale à la courbe en $+\infty$.
+- **Dérivée.** $f = uv$ avec $u(x) = x$ et $v(x) = e^{-x}$, donc $u'(x) = 1$ et $v'(x) = -e^{-x}$ :
+
+$$
+\begin{aligned}
+f'(x) &= 1 \times e^{-x} + x \times \left(-e^{-x}\right) \\
+&= (1 - x)\,e^{-x}
+\end{aligned}
+$$
+
+Comme $e^{-x} \gt 0$, $f'(x)$ a le signe de $1 - x$. Le maximum vaut $f(1) = e^{-1} = \frac{1}{e} \approx 0{,}37$.
+:::
+
+::: tableau Variations de $f$
+x : -\infty, 1, +\infty
+1 - x : , +, z, -,
+f'(x) : , +, z, -,
+f(x) : -/-\infty, +/\frac{1}{e}, -/0
+:::
+
+::: exemple Convexité de $f$
+En dérivant $f'(x) = (1 - x)\,e^{-x}$ de la même façon :
+
+$$
+\begin{aligned}
+f''(x) &= -e^{-x} - (1 - x)\,e^{-x} \\
+&= (x - 2)\,e^{-x}
+\end{aligned}
+$$
+
+Le signe de $f''(x)$ est celui de $x - 2$. La dérivée seconde s’annule en changeant de signe en $2$ : la courbe admet un **point d’inflexion** $I\left(2\,;\frac{2}{e^2}\right)$, avec $\frac{2}{e^2} \approx 0{,}27$.
+:::
+
+::: tableau Convexité de $f$
+x : -\infty, 2, +\infty
+f''(x) : , -, z, +,
+Convexité de $f$ : , concave, t, convexe,
+:::
+
+[IMAGE_3]
+
+::: methode Plan d’étude d’une fonction
+1. Ensemble de définition.
+2. Limites aux bornes, et asymptotes éventuelles.
+3. Dérivée, écrite sous forme factorisée.
+4. Signe de la dérivée : un facteur $e^{\ldots}$ est toujours strictement positif, le signe est celui des autres facteurs.
+5. Tableau de variations complet (extremums et limites).
+6. Éventuellement, convexité grâce à $f''$ et points d’inflexion.
+7. Tracé de la courbe.
+:::
+
+## V. Un modèle exponentiel
+
+La tension aux bornes d’un condensateur qui se charge vaut $u(t) = 5\left(1 - e^{-0{,}5t}\right)$ pour $t \ge 0$ ($t$ en secondes, $u$ en volts).
+
+::: exemple Étude du modèle
+- **Départ.** $u(0) = 5\left(1 - e^0\right) = 0$ : le condensateur est initialement déchargé.
+- **Variations.** $u'(t) = 5 \times 0{,}5\,e^{-0{,}5t} = 2{,}5\,e^{-0{,}5t} \gt 0$ : la tension augmente.
+- **Limite.** $-0{,}5t \to -\infty$ quand $t \to +\infty$, donc $e^{-0{,}5t} \to 0$ et $\lim\limits_{t \to +\infty} u(t) = 5$ : la tension se rapproche de $5$ V.
+- **Valeur.** $u(4) = 5\left(1 - e^{-2}\right) \approx 4{,}32$ V.
+:::
+
+[IMAGE_4]
+
+::: attention
+La valeur limite $5$ n’est jamais atteinte : $u(t) \lt 5$ pour tout $t$, car $e^{-0{,}5t} \gt 0$.
+:::
+
+::: retenir
+- $\lim\limits_{x \to +\infty} e^x = +\infty$, $\lim\limits_{x \to -\infty} e^x = 0$ et $\lim\limits_{x \to 0} \frac{e^x - 1}{x} = 1$.
+- Croissances comparées : en l’infini, l’exponentielle l’emporte sur toute puissance de $x$.
+- $\left(e^u\right)' = u' e^u$ ; dans $f'(x) = (\ldots)\,e^{\ldots}$, le signe est celui du facteur devant l’exponentielle.
+- Fiche de synthèse dans l’onglet Fiches !
+:::

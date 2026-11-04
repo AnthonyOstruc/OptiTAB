@@ -1,52 +1,26 @@
 <template>
   <Modal
     :is-open="isOpen"
-    title="Mot de passe oublié"
+    :title="isSuccess ? 'E-mail envoyé' : 'Mot de passe oublié'"
+    :subtitle="isSuccess ? '' : 'Indique ton adresse e-mail : tu recevras un lien pour choisir un nouveau mot de passe.'"
+    :icon="isSuccess ? EnvelopeOpenIcon : KeyIcon"
     size="small"
     @close="handleClose"
   >
-    <!-- Success State -->
+    <!-- E-mail envoyé -->
     <div v-if="isSuccess" class="success-state">
-      <div class="success-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-          <polyline points="22,4 12,14.01 9,11.01"/>
-        </svg>
-      </div>
-      
-      <h3 class="success-title">Email envoyé !</h3>
-      <p class="success-message">
-        Nous avons envoyé un lien de réinitialisation à <strong>{{ formData.email }}</strong>
+      <p class="om-alert om-alert--success">
+        Nous avons envoyé un lien de réinitialisation à <strong>{{ formData.email }}</strong>.
+        Pense à regarder dans les courriers indésirables.
       </p>
-      
       <div class="success-actions">
-        <button 
-          type="button"
-          class="btn btn-primary"
-          @click="handleClose"
-        >
-          Fermer
-        </button>
-        <button 
-          type="button"
-          class="btn btn-secondary"
-          @click="handleResend"
-        >
-          Renvoyer l'email
-        </button>
+        <button type="button" class="om-btn om-btn--primary" @click="handleClose">Fermer</button>
+        <button type="button" class="om-btn om-btn--ghost" @click="handleResend">Renvoyer l’e-mail</button>
       </div>
     </div>
 
-    <!-- Form State -->
+    <!-- Formulaire -->
     <div v-else>
-      <!-- Instructions -->
-      <div class="instructions">
-        <p class="instruction-text">
-          Entrez votre adresse email et nous vous enverrons un lien pour réinitialiser votre mot de passe.
-        </p>
-      </div>
-
-      <!-- Forgot Password Form -->
       <DynamicForm
         :field-names="fieldNames"
         :get-field-config="getFieldConfig"
@@ -58,19 +32,12 @@
         :submit-text="config.submitText"
         @submit="handleFormSubmit"
       />
-
-      <!-- Back to Login -->
-      <div class="back-to-login">
-        <p>
-          <button
-            type="button"
-            class="back-btn"
-            @click="handleBackToLogin"
-          >
-            ← Retour à la connexion
-          </button>
-        </p>
-      </div>
+      <p class="back-to-login">
+        <button type="button" class="om-link" @click="handleBackToLogin">
+          <ArrowLeftIcon aria-hidden="true" />
+          Retour à la connexion
+        </button>
+      </p>
     </div>
   </Modal>
 </template>
@@ -81,12 +48,14 @@ import { useAuthForm } from '@/composables/useAuthForms'
 import Modal from '@/components/common/Modal.vue'
 import DynamicForm from '@/components/forms/DynamicForm.vue'
 import { requestPasswordReset } from '@/api/auth'
+import { ArrowLeftIcon, EnvelopeOpenIcon, KeyIcon } from '@heroicons/vue/24/outline'
 
 export default {
   name: 'ForgotPasswordModal',
   components: {
     Modal,
-    DynamicForm
+    DynamicForm,
+    ArrowLeftIcon
   },
   props: {
     isOpen: {
@@ -155,6 +124,8 @@ export default {
     }
 
     return {
+      EnvelopeOpenIcon,
+      KeyIcon,
       // State
       isSuccess,
       
@@ -180,124 +151,33 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
-@use '@/assets/variables.scss' as *;
-
-// Instructions
-.instructions {
-  margin-bottom: 24px;
-  text-align: center;
-}
-
-.instruction-text {
-  color: #6b7280;
-  font-size: 14px;
-  line-height: 1.5;
-  margin: 0;
-}
-
-// Success state
-.success-state {
-  text-align: center;
-  padding: 20px 0;
-}
-
-.success-icon {
-  width: 64px;
-  height: 64px;
-  margin: 0 auto 20px;
-  background: #3b8544;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  
-  svg {
-    width: 32px;
-    height: 32px;
-  }
-}
-
-.success-title {
-  font-size: 24px;
-  font-weight: 700;
-  color: $text-color;
-  margin: 0 0 12px;
-}
-
-.success-message {
-  color: #6b7280;
-  font-size: 16px;
-  line-height: 1.5;
-  margin: 0 0 32px;
-  
-  strong {
-    color: $text-color;
-    font-weight: 600;
-  }
-}
-
+<style scoped>
+/* Éléments communs (.om-btn, .om-link, .om-alert) : components/common/Modal.vue */
 .success-actions {
   display: flex;
-  gap: 12px;
-  justify-content: center;
-  
-  .btn {
-    min-width: 120px;
-    justify-content: center;
-  }
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
 }
 
-// Back to login
+.success-actions .om-btn {
+  flex: 1 1 160px;
+}
+
 .back-to-login {
-  margin-top: 24px;
+  margin: 20px 0 0;
   text-align: center;
-  
-  p {
-    margin: 0;
-  }
+  font-size: 14.5px;
 }
 
-.back-btn {
-  background: none;
-  border: none;
-  color: $primary-color;
-  text-decoration: none;
-  font-weight: 500;
-  cursor: pointer;
-  font-size: 14px;
+.back-to-login .om-link {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-
-  &:hover {
-    text-decoration: underline;
-  }
+  gap: 6px;
 }
 
-// Responsive
-@media (max-width: 480px) {
-  .success-actions {
-    flex-direction: column;
-    
-    .btn {
-      width: 100%;
-    }
-  }
-  
-  .success-icon {
-    width: 56px;
-    height: 56px;
-    
-    svg {
-      width: 28px;
-      height: 28px;
-    }
-  }
-  
-  .success-title {
-    font-size: 20px;
-  }
+.back-to-login svg {
+  width: 18px;
+  height: 18px;
 }
-</style> 
+</style>

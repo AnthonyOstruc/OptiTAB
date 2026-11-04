@@ -1,0 +1,160 @@
+Titre: Échantillonnage
+
+<!-- optitab:1 -->
+::: objectifs
+- Savoir ce qu’est un échantillon de taille $n$ et calculer une fréquence $f = \frac{k}{n}$.
+- Observer la fluctuation d’échantillonnage et la loi des grands nombres.
+- Connaître l’écart $\frac{1}{\sqrt{n}}$ entre fréquence et probabilité, et l’utiliser pour juger un modèle.
+- Estimer une proportion inconnue à partir d’un échantillon.
+- Lire et écrire en Python une fonction de simulation.
+:::
+
+## I. Échantillon et fréquence
+
+On s’intéresse à une expérience aléatoire à **deux issues** : « succès » (de probabilité $p$) et « échec » (de probabilité $1 - p$).
+
+::: definition Échantillon, fréquence
+Un **échantillon de taille $n$** est la liste des résultats obtenus en répétant $n$ fois, de façon indépendante, la même expérience aléatoire.
+
+Si l’on obtient $k$ succès, la **fréquence** du succès dans l’échantillon est
+$$f = \frac{k}{n}.$$
+On a toujours $0 \le f \le 1$.
+:::
+
+::: exemple
+On lance $50$ fois une pièce et on obtient $27$ fois « pile ». La fréquence de « pile » est
+$$f = \frac{27}{50} = 0{,}54.$$
+:::
+
+::: definition Fluctuation d’échantillonnage
+Deux échantillons de même taille donnent en général des fréquences différentes : c’est la **fluctuation d’échantillonnage**.
+:::
+
+::: attention
+La fréquence $f$ est **observée** : elle change d’un échantillon à l’autre. La probabilité $p$ est **théorique** : elle est fixe. Ne pas confondre les deux.
+:::
+
+## II. Loi des grands nombres
+
+::: propriete Loi des grands nombres (admise)
+Lorsque la taille $n$ de l’échantillon devient grande, la fréquence $f$ du succès se rapproche de sa probabilité $p$.
+:::
+
+La figure montre trois simulations de $1\,000$ lancers d’une pièce équilibrée : la fréquence de « pile » varie beaucoup au début, puis se stabilise autour de $p = 0{,}5$.
+
+[IMAGE_1]
+
+::: methode Estimer une probabilité inconnue
+Quand $p$ est inconnue (punaise qui retombe pointe en haut, dé truqué…), on répète l’expérience un grand nombre de fois et on prend la fréquence observée comme **estimation** de $p$.
+:::
+
+::: attention
+Les lancers sont indépendants : après cinq « pile » de suite, « face » n’est pas plus probable. La loi des grands nombres ne « compense » pas les résultats passés ; elle décrit seulement ce qui se passe quand $n$ devient grand.
+:::
+
+## III. Écart entre fréquence et probabilité
+
+::: propriete Constat de simulation
+Pour des échantillons de taille $n$ assez grande (en pratique $n \ge 25$, et $p$ ni trop proche de $0$ ni de $1$), la fréquence $f$ vérifie, dans **au moins $95\,\%$ des cas environ** :
+$$|f - p| \le \frac{1}{\sqrt{n}}$$
+c’est-à-dire
+$$p - \frac{1}{\sqrt{n}} \le f \le p + \frac{1}{\sqrt{n}}.$$
+:::
+
+Ci-dessous, $100$ échantillons de taille $n = 100$ (pièce équilibrée, $p = 0{,}5$) : la bande verte va de $0{,}4$ à $0{,}6$. Seuls $4$ points (en orange) sont en dehors : la proportion des échantillons dans la bande est $\frac{96}{100} = 96\,\%$.
+
+[IMAGE_2]
+
+::: exemple
+Pour $n = 400$ : $\frac{1}{\sqrt{400}} = \frac{1}{20} = 0{,}05$. Dans au moins $95\,\%$ des échantillons environ, la fréquence est à moins de $0{,}05$ de $p$.
+
+Pour diviser cet écart par $2$, il faut multiplier la taille de l’échantillon par $4$ : avec $n = 1\,600$, l’écart devient $\frac{1}{40} = 0{,}025$.
+:::
+
+::: methode Juger si un résultat est compatible avec un modèle
+1. Calculer la fréquence observée $f = \frac{k}{n}$.
+2. Calculer $\frac{1}{\sqrt{n}}$.
+3. Comparer l’écart $|f - p|$ à $\frac{1}{\sqrt{n}}$ :
+   - si $|f - p| \le \frac{1}{\sqrt{n}}$, le résultat est **compatible** avec le modèle ;
+   - sinon, il est rare sous ce modèle : on peut **douter** du modèle.
+:::
+
+::: exemple Un dé est-il équilibré ?
+On lance $900$ fois un dé et le $6$ sort $200$ fois. Si le dé est équilibré, $p = \frac{1}{6}$.
+
+$$
+\begin{aligned}
+f &= \frac{200}{900} = \frac{2}{9} \approx 0{,}222 \\
+\frac{1}{\sqrt{900}} &= \frac{1}{30} \approx 0{,}033 \\
+|f - p| &= \frac{2}{9} - \frac{1}{6} = \frac{1}{18} \approx 0{,}056
+\end{aligned}
+$$
+
+Comme $0{,}056 \gt 0{,}033$, on peut douter que le dé soit équilibré.
+:::
+
+::: attention
+Ce n’est jamais une certitude. Même avec un dé équilibré, quelques échantillons sur cent s’écartent de plus de $\frac{1}{\sqrt{n}}$ : la conclusion comporte un **risque d’erreur** (de l’ordre de $5\,\%$ au plus). Et un résultat compatible ne **prouve** pas que le modèle est vrai.
+:::
+
+## IV. Estimer une proportion inconnue
+
+::: propriete Principe de l’estimation
+L’inégalité $|f - p| \le \frac{1}{\sqrt{n}}$ s’écrit aussi $f - \frac{1}{\sqrt{n}} \le p \le f + \frac{1}{\sqrt{n}}$.
+
+Donc, dans au moins $95\,\%$ des cas environ, la proportion inconnue $p$ appartient à l’intervalle
+$$\left[f - \frac{1}{\sqrt{n}}\,;\, f + \frac{1}{\sqrt{n}}\right].$$
+:::
+
+::: exemple Un sondage
+Sur $400$ personnes interrogées au hasard, $228$ connaissent une marque. Alors $f = \frac{228}{400} = 0{,}57$ et $\frac{1}{\sqrt{400}} = 0{,}05$.
+
+On estime que la proportion $p$ de personnes qui connaissent la marque dans toute la population est comprise entre $0{,}52$ et $0{,}62$, soit entre $52\,\%$ et $62\,\%$.
+:::
+
+::: remarque
+Plus l’échantillon est grand, plus l’intervalle est étroit : l’estimation est plus précise.
+:::
+
+## V. Simuler en Python
+
+L’instruction `random()` du module `random` renvoie un nombre au hasard dans $[0\,;1[$ : le test `random() < p` est donc vrai avec la probabilité $p$. Il simule un succès.
+
+La fonction `freq` simule un échantillon de taille `n` et renvoie la fréquence du succès :
+
+```python
+from random import random
+from math import sqrt
+
+def freq(n, p):
+    k = 0
+    for i in range(n):
+        if random() < p:
+            k = k + 1
+    return k / n
+```
+
+La fonction `proche` simule `N` échantillons de taille `n` et renvoie la proportion de ceux pour lesquels $|f - p| \le \frac{1}{\sqrt{n}}$ :
+
+```python
+def proche(N, n, p):
+    e = 1 / sqrt(n)
+    c = 0
+    for j in range(N):
+        f = freq(n, p)
+        if abs(f - p) <= e:
+            c = c + 1
+    return c / N
+```
+
+::: exemple
+Six appels de `proche(1000, 100, 0.5)` ont renvoyé : $0{,}973$ ; $0{,}969$ ; $0{,}966$ ; $0{,}975$ ; $0{,}959$ ; $0{,}964$. Le résultat change à chaque exécution (simulation), mais reste toujours au-dessus de $0{,}95$ environ : on retrouve le constat du III.
+:::
+
+::: retenir
+- Fréquence : $f = \frac{k}{n}$ ; elle varie d’un échantillon à l’autre (fluctuation).
+- Quand $n$ augmente, $f$ se rapproche de $p$ (loi des grands nombres).
+- Dans au moins $95\,\%$ des cas environ : $|f - p| \le \frac{1}{\sqrt{n}}$.
+- Si $|f - p| \gt \frac{1}{\sqrt{n}}$, on peut douter du modèle (avec un risque d’erreur).
+- Estimation : $p$ appartient à $\left[f - \frac{1}{\sqrt{n}}\,;\, f + \frac{1}{\sqrt{n}}\right]$ dans au moins $95\,\%$ des cas environ.
+:::

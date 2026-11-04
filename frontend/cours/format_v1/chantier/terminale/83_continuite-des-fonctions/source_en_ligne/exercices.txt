@@ -1,0 +1,1048 @@
+=== Découverte - Continuité en un point
+Id: 868
+Difficulté: easy
+Image: v1_n83_ex868_1_ex868_trou.png,v1_n83_ex868_2_ex868_raccord.png,v1_n83_ex868_3_ex868_sinx.png,v1_n83_ex868_5_ex868_abs.png
+
+Énoncé: <!-- optitab:1 -->
+Étudier la continuité de chacune des fonctions suivantes au point indiqué. Lorsque la fonction n’est pas définie en ce point, dire si elle y admet une limite finie.
+
+1. Vérifier la continuité de $\displaystyle f(x) = \frac{x^2 - 4}{x - 2}$ en $x = 2$.
+2. Vérifier la continuité de $\displaystyle g(x) = \begin{cases} x^2 & \text{si } x \lt 1 \\ 2x - 1 & \text{si } x \ge 1 \end{cases}$ en $x = 1$.
+3. Vérifier la continuité de $\displaystyle h(x) = \frac{\sin x}{x}$ en $x = 0$.
+4. Vérifier la continuité de $\displaystyle k(x) = \begin{cases} \dfrac{x^2 - 1}{x - 1} & \text{si } x \ne 1 \\ 2 & \text{si } x = 1 \end{cases}$ en $x = 1$.
+5. Vérifier la continuité de $m(x) = |x - 3|$ en $x = 3$.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Vérifier la continuité de $\displaystyle f(x) = \frac{x^2 - 4}{x - 2}$ en $x = 2$
+
+::: methode
+Une fonction ne peut être continue qu’en un point où elle est définie : on regarde d’abord si $f(2)$ existe, puis on calcule la limite.
+:::
+
+::: etape La fonction est-elle définie en $2$ ?
+Le dénominateur $x - 2$ s’annule en $x = 2$ : $f(2)$ n’existe pas. La fonction $f$ est définie sur $\mathbb{R} \setminus \{2\}$.
+:::
+
+::: etape Limite de $f$ en $2$
+Pour $x \ne 2$, on factorise le numérateur avec $a^2 - b^2 = (a - b)(a + b)$, puis on simplifie par $x - 2 \ne 0$ :
+
+$$
+\begin{aligned}
+f(x) &= \frac{(x - 2)(x + 2)}{x - 2} \\
+&= x + 2
+\end{aligned}
+$$
+
+donc $\lim\limits_{x \to 2} f(x) = \lim\limits_{x \to 2} (x + 2) = 4$.
+:::
+
+::: attention
+N’écrivez pas « $f(2) = \frac{0}{0}$ » : ce quotient n’existe pas. On dit que $f$ n’est pas définie en $2$ ; « $\frac{0}{0}$ » désigne seulement une forme indéterminée dans un calcul de limite.
+:::
+
+::: resultat
+$f$ n’est pas continue en $2$, car elle n’y est pas définie. Comme $\lim\limits_{x \to 2} f(x) = 4$, elle est **prolongeable par continuité** en $2$ en posant $f(2) = 4$.
+:::
+
+[IMAGE_1]
+
+## Question 2 : Vérifier la continuité de $g$ en $x = 1$
+
+::: methode
+Fonction définie par morceaux : on compare $g(1)$, la limite à gauche et la limite à droite en $1$.
+:::
+
+::: etape Valeur en $1$
+Comme $1 \ge 1$, on utilise la seconde formule : $g(1) = 2 \times 1 - 1 = 1$.
+:::
+
+::: etape Limite à gauche ($x \lt 1$)
+$$\lim_{x \to 1^-} g(x) = \lim_{x \to 1^-} x^2 = 1$$
+:::
+
+::: etape Limite à droite ($x \gt 1$)
+$$\lim_{x \to 1^+} g(x) = \lim_{x \to 1^+} (2x - 1) = 1$$
+:::
+
+::: etape Comparaison
+$\lim\limits_{x \to 1^-} g(x) = \lim\limits_{x \to 1^+} g(x) = g(1) = 1$, donc $\lim\limits_{x \to 1} g(x) = g(1)$.
+:::
+
+::: resultat
+$g$ est continue en $1$ : les deux morceaux de la courbe se raccordent au point $(1\,;1)$.
+:::
+
+[IMAGE_2]
+
+## Question 3 : Vérifier la continuité de $\displaystyle h(x) = \frac{\sin x}{x}$ en $x = 0$
+
+::: methode
+$h$ n’est pas définie en $0$ : on étudie sa limite en reconnaissant un taux d’accroissement.
+:::
+
+::: etape La fonction est-elle définie en $0$ ?
+Le dénominateur s’annule en $0$ : $h(0)$ n’existe pas, et $h$ est définie sur $\mathbb{R} \setminus \{0\}$.
+:::
+
+::: etape Limite en $0$
+Comme $\sin 0 = 0$, $\dfrac{\sin x}{x} = \dfrac{\sin x - \sin 0}{x - 0}$ est le taux d’accroissement de la fonction sinus entre $0$ et $x$. La fonction sinus est dérivable en $0$, donc
+
+$$\lim_{x \to 0} \frac{\sin x}{x} = \sin'(0) = \cos 0 = 1$$
+:::
+
+::: resultat
+$h$ n’est pas continue en $0$, car elle n’y est pas définie. Comme $\lim\limits_{x \to 0} h(x) = 1$, elle est **prolongeable par continuité** en $0$ en posant $h(0) = 1$.
+:::
+
+[IMAGE_3]
+
+## Question 4 : Vérifier la continuité de $k$ en $x = 1$
+
+::: methode
+$k$ est définie en $1$ par une formule à part : on compare $k(1)$ et la limite de $k$ en $1$.
+:::
+
+::: etape Valeur en $1$
+Par définition, $k(1) = 2$.
+:::
+
+::: etape Limite en $1$
+Pour $x \ne 1$, on factorise le numérateur et on simplifie par $x - 1 \ne 0$ :
+
+$$
+\begin{aligned}
+k(x) &= \frac{(x - 1)(x + 1)}{x - 1} \\
+&= x + 1
+\end{aligned}
+$$
+
+donc $\lim\limits_{x \to 1} k(x) = \lim\limits_{x \to 1} (x + 1) = 2$.
+:::
+
+::: etape Comparaison
+$\lim\limits_{x \to 1} k(x) = 2 = k(1)$.
+:::
+
+::: resultat
+$k$ est continue en $1$ (en fait, $k(x) = x + 1$ pour tout réel $x$).
+:::
+
+## Question 5 : Vérifier la continuité de $m(x) = |x - 3|$ en $x = 3$
+
+::: methode
+On écrit $m(x)$ sans valeur absolue de chaque côté de $3$, puis on compare les limites à gauche et à droite avec $m(3)$.
+:::
+
+::: etape Valeur en $3$
+$m(3) = |3 - 3| = 0$.
+:::
+
+::: etape Expression sans valeur absolue
+- Si $x \lt 3$ : $x - 3 \lt 0$, donc $m(x) = 3 - x$.
+- Si $x \ge 3$ : $x - 3 \ge 0$, donc $m(x) = x - 3$.
+:::
+
+::: etape Limites à gauche et à droite
+$$
+\begin{aligned}
+\lim_{x \to 3^-} m(x) &= \lim_{x \to 3^-} (3 - x) = 0 \\
+\lim_{x \to 3^+} m(x) &= \lim_{x \to 3^+} (x - 3) = 0
+\end{aligned}
+$$
+:::
+
+::: remarque
+La courbe de $m$ présente une pointe en $3$ : $m$ est continue en $3$ mais **pas dérivable** en $3$ (pente $-1$ à gauche, pente $1$ à droite).
+:::
+
+::: resultat
+$\lim\limits_{x \to 3} m(x) = 0 = m(3)$ : $m$ est continue en $3$.
+:::
+
+[IMAGE_5]
+
+Solution:
+<!-- optitab:1 -->
+1. $f$ n’est pas définie en $2$, donc pas continue en $2$ ; $\lim\limits_{x \to 2} f(x) = 4$ : elle est prolongeable par continuité en posant $f(2) = 4$.
+2. $g$ est continue en $1$ : $\lim\limits_{x \to 1^-} g(x) = \lim\limits_{x \to 1^+} g(x) = g(1) = 1$.
+3. $h$ n’est pas définie en $0$ ; $\lim\limits_{x \to 0} h(x) = 1$ : elle est prolongeable par continuité en posant $h(0) = 1$.
+4. $k$ est continue en $1$ : $\lim\limits_{x \to 1} k(x) = 2 = k(1)$.
+5. $m$ est continue en $3$ : $\lim\limits_{x \to 3} m(x) = 0 = m(3)$.
+
+===
+
+=== Entraînement - Fonctions non continues en un point
+Id: 870
+Difficulté: medium
+Image: v1_n83_ex870_1_ex870_inverse.png,v1_n83_ex870_2_ex870_saut2.png,v1_n83_ex870_3_ex870_inverse_carre.png,v1_n83_ex870_4_ex870_sin_inv.png,v1_n83_ex870_5_ex870_saut1.png
+
+Énoncé: <!-- optitab:1 -->
+Pour chacune des fonctions suivantes, étudier les limites à gauche et à droite au point indiqué, puis classer la discontinuité parmi les trois cas suivants :
+- **saut** : les limites à gauche et à droite sont finies mais différentes ;
+- **limite infinie** : la courbe admet une asymptote verticale ;
+- **absence de limite** : la fonction n’a pas de limite en ce point.
+
+1. Classifier la discontinuité de $\displaystyle a(x) = \frac{1}{x - 1}$ en $x = 1$.
+2. Classifier la discontinuité de $\displaystyle g(x) = \begin{cases} x + 1 & \text{si } x \lt 0 \\ x - 1 & \text{si } x \ge 0 \end{cases}$ en $x = 0$.
+3. Classifier la discontinuité de $\displaystyle h(x) = \frac{1}{x^2}$ en $x = 0$.
+4. Classifier la discontinuité de $\displaystyle k(x) = \begin{cases} \sin\left(\frac{1}{x}\right) & \text{si } x \ne 0 \\ 0 & \text{si } x = 0 \end{cases}$ en $x = 0$. On pourra étudier $k(x_n)$ et $k(y_n)$, avec $x_n = \dfrac{1}{\frac{\pi}{2} + 2n\pi}$ et $y_n = \dfrac{1}{-\frac{\pi}{2} + 2n\pi}$ pour $n \ge 1$.
+5. Classifier la discontinuité de $\displaystyle m(x) = \begin{cases} x^2 & \text{si } x \lt 1 \\ x + 1 & \text{si } x \ge 1 \end{cases}$ en $x = 1$.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Classifier la discontinuité de $\displaystyle a(x) = \frac{1}{x - 1}$ en $x = 1$
+
+::: methode
+On étudie le signe du dénominateur de chaque côté de $1$ pour obtenir les limites à gauche et à droite.
+:::
+
+::: etape La fonction est-elle définie en $1$ ?
+Le dénominateur s’annule en $1$ : $a(1)$ n’existe pas.
+:::
+
+::: etape Limite à gauche
+Si $x \lt 1$, alors $x - 1 \lt 0$ : quand $x \to 1^-$, $x - 1$ tend vers $0$ par valeurs négatives, donc
+
+$$\lim_{x \to 1^-} \frac{1}{x - 1} = -\infty$$
+:::
+
+::: etape Limite à droite
+Si $x \gt 1$, alors $x - 1 \gt 0$ : quand $x \to 1^+$, $x - 1$ tend vers $0$ par valeurs positives, donc
+
+$$\lim_{x \to 1^+} \frac{1}{x - 1} = +\infty$$
+:::
+
+::: resultat
+**Limite infinie** en $1$ ($-\infty$ à gauche, $+\infty$ à droite) : la droite d’équation $x = 1$ est asymptote verticale à la courbe. La fonction $a$ n’est pas prolongeable par continuité en $1$.
+:::
+
+[IMAGE_1]
+
+## Question 2 : Classifier la discontinuité de $g$ en $x = 0$
+
+::: methode
+On compare $g(0)$, la limite à gauche et la limite à droite en $0$.
+:::
+
+::: etape Valeur en $0$
+Comme $0 \ge 0$, on utilise la seconde formule : $g(0) = 0 - 1 = -1$.
+:::
+
+::: etape Limites à gauche et à droite
+$$
+\begin{aligned}
+\lim_{x \to 0^-} g(x) &= \lim_{x \to 0^-} (x + 1) = 1 \\
+\lim_{x \to 0^+} g(x) &= \lim_{x \to 0^+} (x - 1) = -1
+\end{aligned}
+$$
+:::
+
+::: etape Classification
+Les deux limites sont finies mais différentes ($1 \ne -1$) : la courbe « saute » de la hauteur $1$ à la hauteur $-1$. L’amplitude du saut est $1 - (-1) = 2$.
+:::
+
+::: resultat
+**Saut** d’amplitude $2$ en $0$ : $g$ n’est pas continue en $0$.
+:::
+
+[IMAGE_2]
+
+## Question 3 : Classifier la discontinuité de $\displaystyle h(x) = \frac{1}{x^2}$ en $x = 0$
+
+::: methode
+On étudie le signe du dénominateur au voisinage de $0$.
+:::
+
+::: etape La fonction est-elle définie en $0$ ?
+Le dénominateur $x^2$ s’annule en $0$ : $h(0)$ n’existe pas.
+:::
+
+::: etape Limites à gauche et à droite
+Pour tout $x \ne 0$, $x^2 \gt 0$, et $x^2$ tend vers $0$ quand $x$ tend vers $0$ : $x^2$ tend vers $0$ par valeurs positives des deux côtés, donc
+
+$$\lim_{x \to 0^-} \frac{1}{x^2} = \lim_{x \to 0^+} \frac{1}{x^2} = +\infty$$
+:::
+
+::: resultat
+**Limite infinie** en $0$ : $\lim\limits_{x \to 0} h(x) = +\infty$, et l’axe des ordonnées (droite d’équation $x = 0$) est asymptote verticale. La fonction $h$ n’est pas prolongeable par continuité en $0$.
+:::
+
+[IMAGE_3]
+
+## Question 4 : Classifier la discontinuité de $k$ en $x = 0$
+
+::: methode
+Pour montrer qu’une fonction n’a pas de limite en $0$, on trouve deux suites qui tendent vers $0$ et dont les images ont des limites différentes.
+:::
+
+::: etape Valeur en $0$
+Par définition, $k(0) = 0$.
+:::
+
+::: etape Première suite
+$x_n = \dfrac{1}{\frac{\pi}{2} + 2n\pi}$ tend vers $0$ (son dénominateur tend vers $+\infty$), et
+
+$$k(x_n) = \sin\left(\frac{\pi}{2} + 2n\pi\right) = \sin\left(\frac{\pi}{2}\right) = 1$$
+:::
+
+::: etape Seconde suite
+$y_n = \dfrac{1}{-\frac{\pi}{2} + 2n\pi}$ (avec $n \ge 1$, donc $y_n \gt 0$) tend aussi vers $0$, et
+
+$$k(y_n) = \sin\left(-\frac{\pi}{2} + 2n\pi\right) = \sin\left(-\frac{\pi}{2}\right) = -1$$
+:::
+
+::: etape Conclusion
+Si $k$ avait une limite $L$ en $0$, les suites $\big(k(x_n)\big)$ et $\big(k(y_n)\big)$ tendraient toutes les deux vers $L$ : on aurait $L = 1$ et $L = -1$, ce qui est impossible. Quand $x$ se rapproche de $0$, $\frac{1}{x}$ devient très grand en valeur absolue et $\sin\left(\frac{1}{x}\right)$ oscille sans cesse entre $-1$ et $1$.
+:::
+
+::: resultat
+**Absence de limite** en $0$ (oscillations) : $k$ n’est pas continue en $0$, et aucune valeur de $k(0)$ ne pourrait la rendre continue.
+:::
+
+[IMAGE_4]
+
+## Question 5 : Classifier la discontinuité de $m$ en $x = 1$
+
+::: methode
+On compare $m(1)$, la limite à gauche et la limite à droite en $1$.
+:::
+
+::: etape Valeur en $1$
+Comme $1 \ge 1$, on utilise la seconde formule : $m(1) = 1 + 1 = 2$.
+:::
+
+::: etape Limites à gauche et à droite
+$$
+\begin{aligned}
+\lim_{x \to 1^-} m(x) &= \lim_{x \to 1^-} x^2 = 1 \\
+\lim_{x \to 1^+} m(x) &= \lim_{x \to 1^+} (x + 1) = 2
+\end{aligned}
+$$
+:::
+
+::: etape Classification
+Les deux limites sont finies mais différentes ($1 \ne 2$) : l’amplitude du saut est $2 - 1 = 1$.
+:::
+
+::: resultat
+**Saut** d’amplitude $1$ en $1$ : $m$ n’est pas continue en $1$.
+:::
+
+[IMAGE_5]
+
+Solution:
+<!-- optitab:1 -->
+1. Limite infinie en $1$ ($-\infty$ à gauche, $+\infty$ à droite) : asymptote verticale d’équation $x = 1$.
+2. Saut d’amplitude $2$ en $0$ (limite $1$ à gauche, $-1$ à droite).
+3. Limite infinie en $0$ ($+\infty$ des deux côtés) : asymptote verticale d’équation $x = 0$.
+4. Absence de limite en $0$ (oscillations) : $k$ n’est pas continue en $0$.
+5. Saut d’amplitude $1$ en $1$ (limite $1$ à gauche, $2$ à droite).
+
+===
+
+=== Entraînement - Prolongement par continuité
+Id: 872
+Difficulté: medium
+Image: v1_n83_ex872_1_ex872_cube.png,v1_n83_ex872_2_ex872_sin2x.png,v1_n83_ex872_3_ex872_ln.png,v1_n83_ex872_4_ex872_exp.png,v1_n83_ex872_5_ex872_racine.png
+
+Énoncé: <!-- optitab:1 -->
+Chacune des fonctions suivantes n’est pas définie au point indiqué. Étudier sa limite en ce point, en déduire si elle est prolongeable par continuité et, si oui, donner son prolongement.
+
+1. Étudier la continuité de $\displaystyle f(x) = \frac{x^3 - 8}{x - 2}$ en $x = 2$.
+2. Étudier la continuité de $\displaystyle g(x) = \frac{\sin(2x)}{x}$ en $x = 0$.
+3. Étudier la continuité de $\displaystyle h(x) = \frac{\ln(1 + x)}{x}$ en $x = 0$.
+4. Étudier la continuité de $\displaystyle k(x) = \frac{e^x - 1}{x}$ en $x = 0$.
+5. Étudier la continuité de $\displaystyle m(x) = \frac{\sqrt{x + 1} - 1}{x}$ en $x = 0$.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Étudier la continuité de $\displaystyle f(x) = \frac{x^3 - 8}{x - 2}$ en $x = 2$
+
+::: methode
+Forme indéterminée « $\frac{0}{0}$ » : on factorise le numérateur par $x - 2$ pour simplifier.
+:::
+
+::: etape Ensemble de définition
+Le dénominateur s’annule en $2$ : $f$ est définie sur $\mathbb{R} \setminus \{2\}$, et $f(2)$ n’existe pas.
+:::
+
+::: etape Factorisation
+$2$ est racine du numérateur ($2^3 - 8 = 0$) : on peut le factoriser par $x - 2$, et l’on vérifie en développant que
+
+$$x^3 - 8 = (x - 2)(x^2 + 2x + 4)$$
+
+En effet, $(x - 2)(x^2 + 2x + 4) = x^3 + 2x^2 + 4x - 2x^2 - 4x - 8 = x^3 - 8$.
+:::
+
+::: etape Limite en $2$
+Pour $x \ne 2$ :
+
+$$
+\begin{aligned}
+f(x) &= \frac{(x - 2)(x^2 + 2x + 4)}{x - 2} \\
+&= x^2 + 2x + 4
+\end{aligned}
+$$
+
+donc $\lim\limits_{x \to 2} f(x) = 2^2 + 2 \times 2 + 4 = 12$.
+:::
+
+::: resultat
+$f$ admet la limite finie $12$ en $2$ : elle est prolongeable par continuité en $2$, par
+
+$$\tilde{f}(x) = \begin{cases} \dfrac{x^3 - 8}{x - 2} & \text{si } x \ne 2 \\ 12 & \text{si } x = 2 \end{cases}$$
+:::
+
+[IMAGE_1]
+
+## Question 2 : Étudier la continuité de $\displaystyle g(x) = \frac{\sin(2x)}{x}$ en $x = 0$
+
+::: methode
+On fait apparaître $2x$ au dénominateur pour utiliser la limite de référence $\lim\limits_{X \to 0} \dfrac{\sin X}{X} = 1$.
+:::
+
+::: etape Ensemble de définition
+$g$ est définie sur $\mathbb{R} \setminus \{0\}$ : $g(0)$ n’existe pas.
+:::
+
+::: etape Transformation
+Pour $x \ne 0$ :
+
+$$
+\begin{aligned}
+\frac{\sin(2x)}{x} &= \frac{2\sin(2x)}{2x} \\
+&= 2 \times \frac{\sin(2x)}{2x}
+\end{aligned}
+$$
+:::
+
+::: etape Limite en $0$
+On pose $X = 2x$ : quand $x \to 0$, $X \to 0$, et $\dfrac{\sin X}{X} \to 1$ (taux d’accroissement de $\sin$ en $0$). Donc
+
+$$\lim_{x \to 0} g(x) = 2 \times 1 = 2$$
+:::
+
+::: resultat
+$g$ est prolongeable par continuité en $0$, par
+
+$$\tilde{g}(x) = \begin{cases} \dfrac{\sin(2x)}{x} & \text{si } x \ne 0 \\ 2 & \text{si } x = 0 \end{cases}$$
+:::
+
+[IMAGE_2]
+
+## Question 3 : Étudier la continuité de $\displaystyle h(x) = \frac{\ln(1 + x)}{x}$ en $x = 0$
+
+::: methode
+On reconnaît un taux d’accroissement : la limite cherchée est un nombre dérivé.
+:::
+
+::: etape Ensemble de définition
+$\ln(1 + x)$ existe pour $x \gt -1$, et le dénominateur s’annule en $0$ : $h$ est définie sur $]-1\,;0[ \cup ]0\,;+\infty[$.
+:::
+
+::: etape Taux d’accroissement
+On pose $u(x) = \ln(1 + x)$ ; comme $u(0) = \ln 1 = 0$,
+
+$$\frac{\ln(1 + x)}{x} = \frac{u(x) - u(0)}{x - 0}$$
+
+C’est le taux d’accroissement de $u$ entre $0$ et $x$.
+:::
+
+::: etape Limite en $0$
+$u$ est dérivable en $0$, avec $u'(x) = \dfrac{1}{1 + x}$, donc
+
+$$\lim_{x \to 0} h(x) = u'(0) = \frac{1}{1 + 0} = 1$$
+:::
+
+::: resultat
+$h$ est prolongeable par continuité en $0$, par
+
+$$\tilde{h}(x) = \begin{cases} \dfrac{\ln(1 + x)}{x} & \text{si } x \ne 0 \\ 1 & \text{si } x = 0 \end{cases}$$
+:::
+
+[IMAGE_3]
+
+## Question 4 : Étudier la continuité de $\displaystyle k(x) = \frac{e^x - 1}{x}$ en $x = 0$
+
+::: methode
+On reconnaît le taux d’accroissement de la fonction exponentielle en $0$.
+:::
+
+::: etape Ensemble de définition
+$k$ est définie sur $\mathbb{R} \setminus \{0\}$ : $k(0)$ n’existe pas.
+:::
+
+::: etape Taux d’accroissement
+Comme $e^0 = 1$ :
+
+$$\frac{e^x - 1}{x} = \frac{e^x - e^0}{x - 0}$$
+:::
+
+::: etape Limite en $0$
+La fonction exponentielle est dérivable en $0$, de nombre dérivé $e^0 = 1$, donc
+
+$$\lim_{x \to 0} \frac{e^x - 1}{x} = 1$$
+:::
+
+::: resultat
+$k$ est prolongeable par continuité en $0$, par
+
+$$\tilde{k}(x) = \begin{cases} \dfrac{e^x - 1}{x} & \text{si } x \ne 0 \\ 1 & \text{si } x = 0 \end{cases}$$
+:::
+
+[IMAGE_4]
+
+## Question 5 : Étudier la continuité de $\displaystyle m(x) = \frac{\sqrt{x + 1} - 1}{x}$ en $x = 0$
+
+::: methode
+Forme indéterminée avec une racine carrée : on multiplie par la quantité conjuguée $\sqrt{x + 1} + 1$.
+:::
+
+::: etape Ensemble de définition
+$\sqrt{x + 1}$ existe pour $x \ge -1$, et le dénominateur s’annule en $0$ : $m$ est définie sur $[-1\,;0[ \cup ]0\,;+\infty[$.
+:::
+
+::: etape Quantité conjuguée
+Pour $x \ge -1$ et $x \ne 0$, comme $(\sqrt{x + 1} - 1)(\sqrt{x + 1} + 1) = (x + 1) - 1 = x$ :
+
+$$
+\begin{aligned}
+m(x) &= \frac{(\sqrt{x + 1} - 1)(\sqrt{x + 1} + 1)}{x(\sqrt{x + 1} + 1)} \\
+&= \frac{x}{x(\sqrt{x + 1} + 1)} \\
+&= \frac{1}{\sqrt{x + 1} + 1}
+\end{aligned}
+$$
+:::
+
+::: etape Limite en $0$
+La fonction $x \mapsto \sqrt{x + 1}$ est continue en $0$, donc
+
+$$\lim_{x \to 0} m(x) = \frac{1}{\sqrt{0 + 1} + 1} = \frac{1}{2}$$
+:::
+
+::: resultat
+$m$ est prolongeable par continuité en $0$, par
+
+$$\tilde{m}(x) = \begin{cases} \dfrac{\sqrt{x + 1} - 1}{x} & \text{si } x \ne 0 \\ \dfrac{1}{2} & \text{si } x = 0 \end{cases}$$
+:::
+
+[IMAGE_5]
+
+Solution:
+<!-- optitab:1 -->
+1. $\lim\limits_{x \to 2} f(x) = 12$ : $f$ est prolongeable par continuité en $2$ en posant $\tilde{f}(2) = 12$.
+2. $\lim\limits_{x \to 0} g(x) = 2$ : $g$ est prolongeable par continuité en $0$ en posant $\tilde{g}(0) = 2$.
+3. $\lim\limits_{x \to 0} h(x) = 1$ : $h$ est prolongeable par continuité en $0$ en posant $\tilde{h}(0) = 1$.
+4. $\lim\limits_{x \to 0} k(x) = 1$ : $k$ est prolongeable par continuité en $0$ en posant $\tilde{k}(0) = 1$.
+5. $\lim\limits_{x \to 0} m(x) = \frac{1}{2}$ : $m$ est prolongeable par continuité en $0$ en posant $\tilde{m}(0) = \frac{1}{2}$.
+
+===
+
+=== Entraînement - Théorème des valeurs intermédiaires
+Id: 869
+Difficulté: medium
+Image: v1_n83_ex869_1_ex869_cubique.png,v1_n83_ex869_2_ex869_exp_2x.png,v1_n83_ex869_3_ex869_ln.png,v1_n83_ex869_4_ex869_cos.png,v1_n83_ex869_5_ex869_double.png
+
+Énoncé: <!-- optitab:1 -->
+Appliquer le théorème des valeurs intermédiaires (ou expliquer pourquoi il ne suffit pas) pour répondre aux questions suivantes.
+
+1. Montrer que l’équation $x^3 - 3x + 1 = 0$ admet au moins une solution dans $[0\,;2]$.
+2. L’équation $e^x = 2x$ admet-elle une solution dans $[0\,;1]$ ?
+3. Montrer que l’équation $\ln x = 2 - x$ admet une unique solution $\alpha$ dans $[1\,;2]$, puis donner un encadrement de $\alpha$ d’amplitude $0{,}1$.
+4. Montrer que l’équation $\cos x = x$ admet au moins une solution dans $\left[0\,;\frac{\pi}{2}\right]$.
+5. Montrer que l’équation $x^4 - 2x^2 + 1 = 0$ admet au moins une solution dans $[-2\,;2]$.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Montrer que l’équation $x^3 - 3x + 1 = 0$ admet au moins une solution dans $[0\,;2]$
+
+::: methode
+On se ramène à $f(x) = 0$, puis on cherche deux réels où $f$ prend des valeurs de signes contraires.
+:::
+
+::: etape Fonction et continuité
+On pose $f(x) = x^3 - 3x + 1$. $f$ est un polynôme, donc elle est continue sur $\mathbb{R}$, en particulier sur $[0\,;2]$.
+:::
+
+::: etape Valeurs aux bornes
+$$
+\begin{aligned}
+f(0) &= 0 - 0 + 1 = 1 \\
+f(2) &= 8 - 6 + 1 = 3
+\end{aligned}
+$$
+
+$f(0)$ et $f(2)$ sont tous les deux positifs : le TVI ne s’applique pas directement sur $[0\,;2]$.
+:::
+
+::: etape Un point intermédiaire
+$f(1) = 1 - 3 + 1 = -1$. Sur $[0\,;1]$, $f$ est continue et $f(1) = -1 \lt 0 \lt 1 = f(0)$ : $0$ est compris entre $f(1)$ et $f(0)$.
+:::
+
+::: etape Application du TVI
+D’après le théorème des valeurs intermédiaires, il existe $c_1 \in\, ]0\,;1[$ tel que $f(c_1) = 0$. De même, sur $[1\,;2]$, $f(1) = -1 \lt 0 \lt 3 = f(2)$ : il existe $c_2 \in\, ]1\,;2[$ tel que $f(c_2) = 0$.
+:::
+
+::: attention
+Quand $f(a)$ et $f(b)$ ont le même signe, on ne peut rien conclure : il faut chercher un point intermédiaire où $f$ change de signe.
+:::
+
+::: resultat
+L’équation $x^3 - 3x + 1 = 0$ admet au moins une solution dans $[0\,;2]$, et même au moins deux : $c_1 \approx 0{,}347$ dans $]0\,;1[$ et $c_2 \approx 1{,}532$ dans $]1\,;2[$.
+:::
+
+[IMAGE_1]
+
+## Question 2 : L’équation $e^x = 2x$ admet-elle une solution dans $[0\,;1]$ ?
+
+::: methode
+Le TVI prouve l’existence de solutions, jamais leur absence : on étudie les variations de $f(x) = e^x - 2x$ pour trouver son minimum.
+:::
+
+::: etape Fonction et dérivée
+On pose $f(x) = e^x - 2x$, dérivable sur $\mathbb{R}$, avec $f'(x) = e^x - 2$. Alors
+
+$$f'(x) = 0 \iff e^x = 2 \iff x = \ln 2$$
+
+et $\ln 2 \approx 0{,}693$ appartient à $[0\,;1]$.
+:::
+
+::: etape Signe de $f'(x)$
+La fonction exponentielle est strictement croissante : $f'(x) \lt 0$ pour $x \lt \ln 2$ et $f'(x) \gt 0$ pour $x \gt \ln 2$.
+:::
+
+::: etape Minimum de $f$
+$$
+\begin{aligned}
+f(\ln 2) &= e^{\ln 2} - 2\ln 2 \\
+&= 2 - 2\ln 2 \\
+&= 2(1 - \ln 2)
+\end{aligned}
+$$
+
+Comme $2 \lt e$, on a $\ln 2 \lt \ln e = 1$, donc $f(\ln 2) \gt 0$ (environ $0{,}614$).
+:::
+
+::: point Tableau de variations
+::: tableau
+x : 0, \ln 2, 1
+f'(x) : , -, z, +,
+f(x) : +/1, -/2-2\ln 2, +/e-2
+:::
+:::
+
+::: attention
+Constater que $f(0) = 1$ et $f(1) = e - 2$ sont positifs ne prouve pas l’absence de solution (voir la question 5) : seule l’étude du minimum permet de conclure.
+:::
+
+::: resultat
+Pour tout $x \in [0\,;1]$, $f(x) \ge 2 - 2\ln 2 \gt 0$, donc $e^x \gt 2x$ : l’équation $e^x = 2x$ n’admet **aucune** solution dans $[0\,;1]$.
+:::
+
+[IMAGE_2]
+
+## Question 3 : Montrer que l’équation $\ln x = 2 - x$ admet une unique solution dans $[1\,;2]$
+
+::: methode
+Corollaire du TVI : on vérifie la continuité, la stricte monotonie, puis le changement de signe aux bornes.
+:::
+
+::: etape Fonction et continuité
+On pose $f(x) = \ln x - (2 - x) = \ln x + x - 2$. $f$ est continue sur $]0\,;+\infty[$ (somme de fonctions continues), en particulier sur $[1\,;2]$, et l’équation s’écrit $f(x) = 0$.
+:::
+
+::: etape Stricte monotonie
+$f$ est dérivable sur $]0\,;+\infty[$ et $f'(x) = \dfrac{1}{x} + 1 \gt 0$ : $f$ est strictement croissante sur $[1\,;2]$.
+:::
+
+::: etape Valeurs aux bornes
+$$
+\begin{aligned}
+f(1) &= \ln 1 + 1 - 2 = -1 \\
+f(2) &= \ln 2 + 2 - 2 = \ln 2
+\end{aligned}
+$$
+Comme $2 \gt 1$, $\ln 2 \gt 0$ : ainsi $f(1) \lt 0 \lt f(2)$.
+:::
+
+::: etape Corollaire du TVI
+$f$ est continue et strictement croissante sur $[1\,;2]$, et $0$ est compris entre $f(1)$ et $f(2)$ : l’équation $f(x) = 0$ admet une **unique** solution $\alpha$ dans $[1\,;2]$, et même dans $]1\,;2[$.
+:::
+
+::: etape Encadrement d’amplitude $0{,}1$
+À la calculatrice : $f(1{,}5) = \ln 1{,}5 - 0{,}5 \approx -0{,}095 \lt 0$ et $f(1{,}6) = \ln 1{,}6 - 0{,}4 \approx 0{,}070 \gt 0$. Comme $f$ est strictement croissante, $\alpha$ est entre ces deux valeurs.
+:::
+
+::: resultat
+L’équation $\ln x = 2 - x$ admet une unique solution $\alpha$ dans $[1\,;2]$, et $1{,}5 \lt \alpha \lt 1{,}6$ (en fait $\alpha \approx 1{,}557$).
+:::
+
+[IMAGE_3]
+
+## Question 4 : Montrer que l’équation $\cos x = x$ admet au moins une solution dans $\left[0\,;\frac{\pi}{2}\right]$
+
+::: methode
+On se ramène à $f(x) = 0$ avec $f(x) = \cos x - x$, puis on applique le TVI sur $\left[0\,;\frac{\pi}{2}\right]$.
+:::
+
+::: etape Fonction et continuité
+$f(x) = \cos x - x$ est continue sur $\mathbb{R}$ (différence de deux fonctions continues), en particulier sur $\left[0\,;\frac{\pi}{2}\right]$.
+:::
+
+::: etape Valeurs aux bornes
+$$
+\begin{aligned}
+f(0) &= \cos 0 - 0 = 1 \\
+f\left(\frac{\pi}{2}\right) &= \cos\left(\frac{\pi}{2}\right) - \frac{\pi}{2} = -\frac{\pi}{2}
+\end{aligned}
+$$
+
+Ainsi $f\left(\frac{\pi}{2}\right) \lt 0 \lt f(0)$.
+:::
+
+::: etape Application du TVI
+$f$ est continue sur $\left[0\,;\frac{\pi}{2}\right]$ et $0$ est compris entre $f\left(\frac{\pi}{2}\right)$ et $f(0)$ : d’après le théorème des valeurs intermédiaires, il existe $c \in \left]0\,;\frac{\pi}{2}\right[$ tel que $f(c) = 0$, c’est-à-dire $\cos c = c$.
+:::
+
+::: remarque
+Sur $\left[0\,;\frac{\pi}{2}\right]$, $\sin x \ge 0$, donc $f'(x) = -\sin x - 1 \lt 0$ : $f$ y est strictement décroissante, et la solution est unique : $c \approx 0{,}739$.
+:::
+
+::: resultat
+L’équation $\cos x = x$ admet au moins une solution dans $\left[0\,;\frac{\pi}{2}\right]$ (en fait une seule, $c \approx 0{,}739$).
+:::
+
+[IMAGE_4]
+
+## Question 5 : Montrer que l’équation $x^4 - 2x^2 + 1 = 0$ admet au moins une solution dans $[-2\,;2]$
+
+::: methode
+Avant d’appliquer le TVI, on regarde le signe de $f$ : si $f$ ne change jamais de signe, le TVI ne sert à rien, et l’on factorise.
+:::
+
+::: etape Valeurs aux bornes
+$f(x) = x^4 - 2x^2 + 1$ est un polynôme, continu sur $[-2\,;2]$, et
+
+$$
+\begin{aligned}
+f(-2) &= 16 - 8 + 1 = 9 \\
+f(2) &= 16 - 8 + 1 = 9
+\end{aligned}
+$$
+
+Les deux valeurs sont positives : le TVI ne permet pas de conclure.
+:::
+
+::: etape Factorisation
+En posant $X = x^2$, on reconnaît $X^2 - 2X + 1 = (X - 1)^2$, donc
+
+$$f(x) = (x^2 - 1)^2 \ge 0$$
+
+$f$ ne prend jamais de valeur négative : sa courbe touche l’axe des abscisses sans le traverser.
+:::
+
+::: etape Résolution
+$$
+\begin{aligned}
+f(x) = 0 &\iff x^2 - 1 = 0 \\
+&\iff x = -1 \text{ ou } x = 1
+\end{aligned}
+$$
+
+Les deux valeurs appartiennent à $[-2\,;2]$.
+:::
+
+::: attention
+Une solution en laquelle $f$ s’annule sans changer de signe (ici $-1$ et $1$) est invisible pour le TVI.
+:::
+
+::: resultat
+L’équation admet exactement deux solutions dans $[-2\,;2]$ : $x = -1$ et $x = 1$.
+:::
+
+[IMAGE_5]
+
+Solution:
+<!-- optitab:1 -->
+1. L’équation $x^3 - 3x + 1 = 0$ admet au moins une solution dans $[0\,;2]$ (TVI sur $[0\,;1]$, car $f(0) = 1 \gt 0$ et $f(1) = -1 \lt 0$) ; en fait au moins deux : $c_1 \approx 0{,}347$ et $c_2 \approx 1{,}532$.
+2. Non : $e^x - 2x$ a pour minimum $2 - 2\ln 2 \gt 0$ (atteint en $\ln 2$), donc l’équation $e^x = 2x$ n’a aucune solution dans $[0\,;1]$.
+3. $f(x) = \ln x + x - 2$ est continue, strictement croissante sur $[1\,;2]$, avec $f(1) = -1 \lt 0 \lt \ln 2 = f(2)$ : unique solution $\alpha$, et $1{,}5 \lt \alpha \lt 1{,}6$.
+4. TVI sur $\left[0\,;\frac{\pi}{2}\right]$ : $f(0) = 1 \gt 0$ et $f\left(\frac{\pi}{2}\right) = -\frac{\pi}{2} \lt 0$ ; la solution est unique, $c \approx 0{,}739$.
+5. $x^4 - 2x^2 + 1 = (x^2 - 1)^2$ : exactement deux solutions, $x = -1$ et $x = 1$ (le TVI ne s’applique pas, car la fonction ne change pas de signe).
+
+===
+
+=== Problème - Continuité, suites et équations
+Id: 871
+Difficulté: hard
+Image: v1_n83_ex871_1_ex871_heron.png,v1_n83_ex871_2_ex871_quintique.png,v1_n83_ex871_3_ex871_raccord_ab.png,v1_n83_ex871_4_ex871_exp_droite.png,v1_n83_ex871_5_ex871_dicho.png
+
+Énoncé: <!-- optitab:1 -->
+Ce problème mêle continuité, suites, variations et algorithmique. Les questions 1 à 4 sont indépendantes ; la question 5 utilise la question 4.
+
+1. **Méthode de Héron.** On considère la fonction $h$ définie sur $]0\,;+\infty[$ par $h(x) = \dfrac{1}{2}\left(x + \dfrac{2}{x}\right)$ et la suite $(u_n)$ définie par $u_0 = 1$ et, pour tout entier naturel $n$, $u_{n+1} = h(u_n)$. On admet que $u_n \ge 1$ pour tout $n$ et que la suite $(u_n)$ converge vers un réel $\ell$. Déterminer $\ell$.
+2. Montrer que l’équation $x^5 - 5x + 1 = 0$ admet exactement trois solutions réelles.
+3. Déterminer à quelle condition sur les réels $a$ et $b$ la fonction $\displaystyle g(x) = \begin{cases} ax + b & \text{si } x \lt 1 \\ x^2 & \text{si } x \ge 1 \end{cases}$ est continue sur $\mathbb{R}$.
+4. Montrer que l’équation $e^x = x + 2$ admet exactement deux solutions réelles.
+5. **Dichotomie.** On note $\beta$ la solution positive de l’équation de la question 4 ; on sait que $\beta \in\, ]1\,;2[$. Compléter la fonction Python ci-dessous (les deux `...`), puis donner le résultat de `dichotomie(1, 2, 0.01)` et en déduire un encadrement de $\beta$.
+
+```python
+from math import exp
+
+def f(x):
+    return exp(x) - x - 2
+
+def dichotomie(a, b, e):
+    while b - a > e:
+        m = (a + b) / 2
+        if f(a) * f(m) <= 0:
+            ...
+        else:
+            ...
+    return a, b
+```
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Limite de la suite de Héron
+
+::: methode
+Si $u_n \to \ell$ et si $h$ est continue en $\ell$, alors $h(u_n) \to h(\ell)$ ; en passant à la limite dans $u_{n+1} = h(u_n)$, on obtient l’équation $\ell = h(\ell)$.
+:::
+
+::: etape Signe de la limite
+Pour tout $n$, $u_n \ge 1$ ; par passage à la limite dans cette inégalité, $\ell \ge 1$. En particulier, $\ell$ appartient à $]0\,;+\infty[$, où $h$ est définie.
+:::
+
+::: etape Continuité de $h$
+$x \mapsto x$ et $x \mapsto \dfrac{2}{x}$ sont continues sur $]0\,;+\infty[$, donc $h$ aussi (somme et produit par $\dfrac{1}{2}$) ; en particulier, $h$ est continue en $\ell$.
+:::
+
+::: etape Équation vérifiée par $\ell$
+$u_{n+1} \to \ell$ et, par continuité, $h(u_n) \to h(\ell)$. Par unicité de la limite, $\ell = h(\ell)$ :
+
+$$
+\begin{aligned}
+\ell = \frac{1}{2}\left(\ell + \frac{2}{\ell}\right) &\iff 2\ell = \ell + \frac{2}{\ell} \\
+&\iff \ell = \frac{2}{\ell} \\
+&\iff \ell^2 = 2 \quad \text{car } \ell \ne 0
+\end{aligned}
+$$
+
+Les solutions sont $-\sqrt{2}$ et $\sqrt{2}$ ; comme $\ell \ge 1$, on garde $\ell = \sqrt{2}$.
+:::
+
+::: resultat
+$$\lim_{n \to +\infty} u_n = \sqrt{2}$$
+:::
+
+[IMAGE_1]
+
+::: retenir
+La convergence est très rapide : $u_1 = 1{,}5$, $u_2 = \dfrac{17}{12} \approx 1{,}416\,67$, $u_3 = \dfrac{577}{408} \approx 1{,}414\,216$, alors que $\sqrt{2} \approx 1{,}414\,214$. C’est la méthode de Héron d’Alexandrie pour calculer des racines carrées.
+:::
+
+## Question 2 : Montrer que l’équation $x^5 - 5x + 1 = 0$ admet exactement trois solutions réelles
+
+::: methode
+On dresse le tableau de variations, puis on applique le corollaire du TVI sur chaque intervalle où $f$ est strictement monotone.
+:::
+
+::: etape Fonction, continuité et limites
+On pose $f(x) = x^5 - 5x + 1$ : c’est un polynôme, donc il est dérivable et continu sur $\mathbb{R}$. En $\pm\infty$, un polynôme a la même limite que son terme de plus haut degré :
+
+$$
+\begin{aligned}
+\lim_{x \to -\infty} f(x) &= \lim_{x \to -\infty} x^5 = -\infty \\
+\lim_{x \to +\infty} f(x) &= \lim_{x \to +\infty} x^5 = +\infty
+\end{aligned}
+$$
+:::
+
+::: etape Dérivée et signe
+$$
+\begin{aligned}
+f'(x) &= 5x^4 - 5 \\
+&= 5(x^2 - 1)(x^2 + 1) \\
+&= 5(x - 1)(x + 1)(x^2 + 1)
+\end{aligned}
+$$
+
+Comme $x^2 + 1 \gt 0$, $f'(x)$ a le signe de $(x - 1)(x + 1)$ : positif à l’extérieur de $[-1\,;1]$, négatif entre $-1$ et $1$.
+:::
+
+::: etape Valeurs des extremums
+$$
+\begin{aligned}
+f(-1) &= -1 + 5 + 1 = 5 \\
+f(1) &= 1 - 5 + 1 = -3
+\end{aligned}
+$$
+:::
+
+::: point Tableau de variations
+::: tableau
+x : -\infty, -1, 1, +\infty
+f'(x) : , +, z, -, z, +,
+f(x) : -/-\infty, +/5, -/-3, +/+\infty
+:::
+:::
+
+::: etape Corollaire du TVI sur chaque intervalle
+- Sur $]-\infty\,;-1]$ : $f$ est continue et strictement croissante, de $-\infty$ à $5$ ; $0$ est compris entre ces valeurs, donc l’équation $f(x) = 0$ y a une unique solution $\alpha_1$.
+- Sur $[-1\,;1]$ : $f$ est continue et strictement décroissante, de $5$ à $-3$ ; $0 \in [-3\,;5]$, donc une unique solution $\alpha_2$.
+- Sur $[1\,;+\infty[$ : $f$ est continue et strictement croissante, de $-3$ à $+\infty$ ; donc une unique solution $\alpha_3$.
+
+Comme $f(-1) \ne 0$ et $f(1) \ne 0$, ces trois solutions sont distinctes.
+:::
+
+::: resultat
+L’équation $x^5 - 5x + 1 = 0$ admet exactement trois solutions réelles : $\alpha_1 \approx -1{,}542$, $\alpha_2 \approx 0{,}200$ et $\alpha_3 \approx 1{,}441$.
+:::
+
+[IMAGE_2]
+
+## Question 3 : Condition sur $a$ et $b$ pour que $g$ soit continue sur $\mathbb{R}$
+
+::: methode
+Chaque morceau est continu sur son intervalle : il reste à étudier le raccord en $1$.
+:::
+
+::: etape Continuité en dehors de $1$
+Sur $]-\infty\,;1[$, $g(x) = ax + b$ est affine, donc continue ; sur $]1\,;+\infty[$, $g(x) = x^2$ est continue. Ainsi, $g$ est continue sur $\mathbb{R}$ si et seulement si elle est continue en $1$.
+:::
+
+::: etape Valeur et limites en $1$
+- $g(1) = 1^2 = 1$ ;
+- $\lim\limits_{x \to 1^+} g(x) = \lim\limits_{x \to 1^+} x^2 = 1$ ;
+- $\lim\limits_{x \to 1^-} g(x) = \lim\limits_{x \to 1^-} (ax + b) = a + b$.
+:::
+
+::: etape Condition de continuité
+$g$ est continue en $1$ si et seulement si $\lim\limits_{x \to 1^-} g(x) = g(1)$, c’est-à-dire $a + b = 1$.
+:::
+
+::: resultat
+$g$ est continue sur $\mathbb{R}$ si et seulement si $a + b = 1$, soit $b = 1 - a$. Il y a une infinité de couples solutions, par exemple $(a\,;b) = (2\,;-1)$ ou $(a\,;b) = (0\,;1)$ : graphiquement, la droite d’équation $y = ax + b$ doit passer par le point $(1\,;1)$ de la parabole.
+:::
+
+[IMAGE_3]
+
+## Question 4 : Montrer que l’équation $e^x = x + 2$ admet exactement deux solutions réelles
+
+::: methode
+On étudie $f(x) = e^x - x - 2$ (limites, variations), puis on applique le corollaire du TVI sur chaque intervalle de monotonie.
+:::
+
+::: etape Fonction et continuité
+$f(x) = e^x - x - 2$ est dérivable, donc continue, sur $\mathbb{R}$.
+:::
+
+::: etape Limite en $-\infty$
+$\lim\limits_{x \to -\infty} e^x = 0$ et $\lim\limits_{x \to -\infty} (-x - 2) = +\infty$, donc $\lim\limits_{x \to -\infty} f(x) = +\infty$.
+:::
+
+::: etape Limite en $+\infty$
+On obtient la forme indéterminée « $+\infty - \infty$ » : on factorise par $x$ (pour $x \gt 0$).
+
+$$f(x) = x\left(\frac{e^x}{x} - 1 - \frac{2}{x}\right)$$
+
+Par croissances comparées, $\lim\limits_{x \to +\infty} \dfrac{e^x}{x} = +\infty$ : la parenthèse tend vers $+\infty$, donc $\lim\limits_{x \to +\infty} f(x) = +\infty$.
+:::
+
+::: attention
+Écrire « $+\infty - (+\infty) = +\infty$ » est faux : c’est une forme indéterminée, qu’il faut lever (ici par factorisation et croissances comparées).
+:::
+
+::: etape Dérivée et variations
+$f'(x) = e^x - 1$, et $f'(x) = 0 \iff e^x = 1 \iff x = 0$. La fonction exponentielle étant strictement croissante, $f'(x) \lt 0$ pour $x \lt 0$ et $f'(x) \gt 0$ pour $x \gt 0$. Le minimum vaut $f(0) = 1 - 0 - 2 = -1$.
+:::
+
+::: point Tableau de variations
+::: tableau
+x : -\infty, 0, +\infty
+f'(x) : , -, z, +,
+f(x) : +/+\infty, -/-1, +/+\infty
+:::
+:::
+
+::: etape Corollaire du TVI sur chaque intervalle
+- Sur $]-\infty\,;0]$ : $f$ est continue et strictement décroissante, de $+\infty$ à $-1$ ; $0$ est compris entre ces valeurs, donc l’équation $f(x) = 0$ y a une unique solution $\alpha$.
+- Sur $[0\,;+\infty[$ : $f$ est continue et strictement croissante, de $-1$ à $+\infty$ ; donc une unique solution $\beta$.
+
+Comme $f(0) = -1 \ne 0$, ces deux solutions sont distinctes.
+:::
+
+::: etape Localisation des solutions
+- $f(-2) = e^{-2} \gt 0$ et $f(-1) = e^{-1} - 1 \lt 0$, donc $\alpha \in\, ]-2\,;-1[$ ;
+- $f(1) = e - 3 \lt 0$ et $f(2) = e^2 - 4 \gt 0$, donc $\beta \in\, ]1\,;2[$.
+:::
+
+::: resultat
+L’équation $e^x = x + 2$ admet exactement deux solutions réelles : $\alpha \approx -1{,}841$ et $\beta \approx 1{,}146$.
+:::
+
+[IMAGE_4]
+
+## Question 5 : Encadrer $\beta$ par dichotomie
+
+::: methode
+À chaque étape, on coupe $[a\,;b]$ en son milieu $m$ et on garde la moitié où $f$ change de signe ; on s’arrête quand l’amplitude $b - a$ est inférieure ou égale à $e$.
+:::
+
+::: etape Compléter le programme
+Si $f(a) \times f(m) \le 0$, la fonction change de signe sur $[a\,;m]$ : $\beta$ y est, donc on remplace $b$ par $m$. Sinon, $\beta$ est dans $[m\,;b]$ et on remplace $a$ par $m$.
+
+```python
+def dichotomie(a, b, e):
+    while b - a > e:
+        m = (a + b) / 2
+        if f(a) * f(m) <= 0:
+            b = m
+        else:
+            a = m
+    return a, b
+```
+:::
+
+::: etape Déroulement de dichotomie(1, 2, 0.01)
+$f(1) = e - 3 \lt 0$ : à chaque étape, on garde la moitié dont l’extrémité droite a une image positive.
+
+| Étape | $[a\,;b]$ | $m$ | $f(m)$ |
+|---|---|---|---|
+| $1$ | $[1\,;2]$ | $1{,}5$ | $\approx 0{,}98 \gt 0$ |
+| $2$ | $[1\,;1{,}5]$ | $1{,}25$ | $\approx 0{,}24 \gt 0$ |
+| $3$ | $[1\,;1{,}25]$ | $1{,}125$ | $\approx -0{,}045 \lt 0$ |
+| $4$ | $[1{,}125\,;1{,}25]$ | $1{,}187\,5$ | $\approx 0{,}092 \gt 0$ |
+| $5$ | $[1{,}125\,;1{,}187\,5]$ | $1{,}156\,25$ | $\approx 0{,}022 \gt 0$ |
+| $6$ | $[1{,}125\,;1{,}156\,25]$ | $1{,}140\,625$ | $\approx -0{,}012 \lt 0$ |
+| $7$ | $[1{,}140\,625\,;1{,}156\,25]$ | $1{,}148\,437\,5$ | $\approx 0{,}004\,9 \gt 0$ |
+
+Après l’étape $7$, $b - a = 0{,}007\,812\,5 \le 0{,}01$ : la boucle s’arrête.
+:::
+
+::: resultat
+`dichotomie(1, 2, 0.01)` renvoie `(1.140625, 1.1484375)`, donc $1{,}140\,625 \le \beta \le 1{,}148\,437\,5$, et en particulier $1{,}14 \lt \beta \lt 1{,}15$.
+:::
+
+[IMAGE_5]
+
+::: retenir
+L’amplitude est divisée par $2$ à chaque étape : après $k$ étapes, elle vaut $\dfrac{1}{2^k}$. Il faut $7$ étapes pour passer sous $0{,}01$, car $\dfrac{1}{2^6} \approx 0{,}016$ et $\dfrac{1}{2^7} \approx 0{,}0078$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $h$ est continue en $\ell \ge 1$ et $\ell = h(\ell)$, d’où $\ell^2 = 2$ : $\ell = \sqrt{2}$.
+2. Exactement trois solutions réelles : $\alpha_1 \approx -1{,}542$, $\alpha_2 \approx 0{,}200$ et $\alpha_3 \approx 1{,}441$.
+3. $g$ est continue sur $\mathbb{R}$ si et seulement si $a + b = 1$ (par exemple $a = 2$ et $b = -1$).
+4. Exactement deux solutions réelles : $\alpha \approx -1{,}841$ et $\beta \approx 1{,}146$.
+5. Compléter par `b = m` puis `a = m` ; `dichotomie(1, 2, 0.01)` renvoie `(1.140625, 1.1484375)`, donc $1{,}14 \lt \beta \lt 1{,}15$.
+
+===

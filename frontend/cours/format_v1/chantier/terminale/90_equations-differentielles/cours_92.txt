@@ -1,0 +1,206 @@
+Titre: Équations différentielles
+
+<!-- optitab:1 -->
+::: objectifs
+Vérifier qu’une fonction est solution d’une équation différentielle, résoudre $y' = ay$ et $y' = ay + b$, trouver la solution qui vérifie une condition initiale, résoudre $y' = ay + f$ à l’aide d’une solution particulière, et modéliser des phénomènes d’évolution (refroidissement, charge d’un condensateur, population).
+:::
+
+::: prerequis
+Fonction exponentielle, fonction logarithme népérien, primitives.
+:::
+
+## I. Équations différentielles
+
+::: definition Équation différentielle, solution
+Une **équation différentielle** est une égalité qui relie une fonction inconnue $y$ (notée sans sa variable) et sa dérivée $y'$.
+
+Une **solution** de cette équation sur un intervalle $I$ est une fonction $f$ dérivable sur $I$ qui vérifie l’égalité pour tout $x$ de $I$ lorsqu’on remplace $y$ par $f$.
+:::
+
+::: methode Vérifier qu’une fonction est solution
+On calcule la dérivée $f'(x)$, puis on calcule **séparément** l’autre membre de l’équation et on compare les deux résultats.
+:::
+
+::: exemple
+La fonction $f$ définie sur $\mathbb{R}$ par $f(x) = 3e^{2x}$ est solution de $y' = 2y$ car, pour tout réel $x$ :
+$$
+\begin{aligned}
+f'(x) &= 3 \times 2e^{2x} = 6e^{2x} \\
+2f(x) &= 2 \times 3e^{2x} = 6e^{2x}
+\end{aligned}
+$$
+:::
+
+::: propriete L’équation $y' = f$
+Si $f$ est continue sur un intervalle $I$, les solutions sur $I$ de l’équation $y' = f$ sont exactement les **primitives** de $f$ sur $I$.
+:::
+
+::: exemple
+Les solutions sur $\mathbb{R}$ de $y' = 2x$ sont les fonctions $x \mapsto x^2 + C$, où $C$ est un réel quelconque.
+:::
+
+## II. L’équation $y' = ay$
+
+::: theoreme Solutions de $y' = ay$
+Soit $a$ un réel. Les solutions sur $\mathbb{R}$ de l’équation $y' = ay$ sont les fonctions
+$$x \mapsto Ce^{ax}, \quad C \in \mathbb{R}.$$
+Pour tous réels $x_0$ et $y_0$, il existe une **unique** solution qui vérifie la condition initiale $y(x_0) = y_0$.
+:::
+
+::: demonstration
+**Ces fonctions sont solutions.** La dérivée de $x \mapsto Ce^{ax}$ est $x \mapsto aCe^{ax}$, c’est-à-dire $a$ fois la fonction.
+
+**Ce sont les seules.** Soit $f$ une solution. La fonction $g$ définie sur $\mathbb{R}$ par $g(x) = f(x)e^{-ax}$ est dérivable et
+$$
+\begin{aligned}
+g'(x) &= f'(x)e^{-ax} - af(x)e^{-ax} \\
+&= \big(f'(x) - af(x)\big)e^{-ax} \\
+&= 0 \quad \text{car } f' = af.
+\end{aligned}
+$$
+La fonction $g$ est donc constante sur $\mathbb{R}$ : il existe un réel $C$ tel que $f(x)e^{-ax} = C$, c’est-à-dire $f(x) = Ce^{ax}$ pour tout réel $x$.
+
+**Condition initiale.** L’égalité $Ce^{ax_0} = y_0$ impose une seule valeur : $C = y_0e^{-ax_0}$.
+:::
+
+[IMAGE_1]
+
+::: exemple
+Résoudre $y' = 3y$ avec $y(0) = 2$. Les solutions sont les fonctions $x \mapsto Ce^{3x}$, et $y(0) = Ce^{0} = C = 2$. La solution cherchée est
+$$y(x) = 2e^{3x}.$$
+:::
+
+::: attention
+Le coefficient $a$ passe dans l’exponentielle **avec son signe** : les solutions de $y' = -2y$ sont les fonctions $x \mapsto Ce^{-2x}$, et non $Ce^{2x}$.
+:::
+
+## III. L’équation $y' = ay + b$
+
+::: theoreme Solutions de $y' = ay + b$
+Soit $a \neq 0$ et $b$ deux réels. L’équation $y' = ay + b$ admet une unique solution constante, la fonction $x \mapsto -\dfrac{b}{a}$, et ses solutions sur $\mathbb{R}$ sont les fonctions
+$$x \mapsto Ce^{ax} - \frac{b}{a}, \quad C \in \mathbb{R}.$$
+Pour tous réels $x_0$ et $y_0$, une seule solution vérifie $y(x_0) = y_0$.
+:::
+
+::: demonstration
+**Solution constante.** Une fonction constante égale à $k$ a une dérivée nulle : elle est solution si et seulement si $0 = ak + b$, soit $k = -\frac{b}{a}$.
+
+**Toutes les solutions.** Pour une fonction $f$ dérivable sur $\mathbb{R}$, on pose $u = f + \frac{b}{a}$. Alors $u' = f'$ et $au = af + b$, donc
+$$
+\begin{aligned}
+f' = af + b &\iff u' = au \\
+&\iff u(x) = Ce^{ax} \ (C \in \mathbb{R}) \\
+&\iff f(x) = Ce^{ax} - \frac{b}{a}.
+\end{aligned}
+$$
+La condition initiale se traite comme pour $y' = ay$.
+:::
+
+::: methode Résoudre $y' = ay + b$ avec une condition initiale
+1. Écrire l’équation sous la forme $y' = ay + b$ et lire $a$ et $b$ (par exemple, $2y' + y = 1$ s’écrit $y' = -\frac{1}{2}y + \frac{1}{2}$).
+2. Calculer la solution constante $-\frac{b}{a}$ : c’est la valeur qui annule $ay + b$.
+3. Écrire toutes les solutions : $y(x) = Ce^{ax} - \frac{b}{a}$.
+4. Traduire la condition initiale pour trouver $C$.
+:::
+
+::: exemple
+Résoudre $y' = -0{,}5y + 2$ avec $y(0) = 0$.
+
+Ici $a = -0{,}5$ et $b = 2$, donc $-\frac{b}{a} = \frac{2}{0{,}5} = 4$ et les solutions sont les fonctions $x \mapsto Ce^{-0{,}5x} + 4$. La condition $y(0) = C + 4 = 0$ donne $C = -4$ :
+$$y(x) = 4 - 4e^{-0{,}5x}.$$
+:::
+
+[IMAGE_2]
+
+::: remarque Si $a \lt 0$ : un état d’équilibre
+Lorsque $a \lt 0$, $e^{ax}$ tend vers $0$ quand $x$ tend vers $+\infty$ : **toutes** les solutions tendent vers la solution constante $-\frac{b}{a}$, quelle que soit la condition initiale. Sur la figure, toutes les courbes se rapprochent de la droite d’équation $y = 4$.
+:::
+
+::: attention
+La solution constante est $-\dfrac{b}{a}$, et non $\dfrac{b}{a}$. En cas de doute, on la retrouve en résolvant $ay + b = 0$.
+:::
+
+## IV. L’équation $y' = ay + f$
+
+::: propriete Solution particulière et solutions de $y' = ay$
+Soit $a$ un réel et $f$ une fonction définie sur un intervalle $I$. Si $y_p$ est une solution particulière de $y' = ay + f$, alors les solutions de cette équation sur $I$ sont les fonctions
+$$x \mapsto y_p(x) + Ce^{ax}, \quad C \in \mathbb{R}.$$
+Autrement dit : solutions $=$ une solution particulière $+$ les solutions de $y' = ay$.
+:::
+
+::: demonstration
+Soit $y$ une fonction dérivable sur $I$. Comme $y_p' - ay_p = f$ :
+$$
+\begin{aligned}
+(y - y_p)' - a(y - y_p) &= (y' - ay) - (y_p' - ay_p) \\
+&= y' - ay - f.
+\end{aligned}
+$$
+Donc $y' = ay + f$ si et seulement si $(y - y_p)' = a(y - y_p)$ : $y$ est solution si et seulement si $y - y_p$ est solution de $y' = ay$, c’est-à-dire $y - y_p = Ce^{ax}$ avec $C$ réel.
+:::
+
+::: exemple Chercher une solution particulière affine
+On veut résoudre $y' = 2y - 4x$ sur $\mathbb{R}$ avec $y(0) = 0$.
+
+On cherche une solution de la forme $y_p(x) = \alpha x + \beta$. Comme $y_p'(x) = \alpha$, la fonction $y_p$ est solution si, pour tout réel $x$ :
+$$\alpha = 2(\alpha x + \beta) - 4x,$$
+c’est-à-dire
+$$(2\alpha - 4)x + (2\beta - \alpha) = 0.$$
+Il suffit que $2\alpha - 4 = 0$ et $2\beta - \alpha = 0$, soit $\alpha = 2$ et $\beta = 1$ : $y_p(x) = 2x + 1$.
+
+Les solutions sont donc les fonctions $x \mapsto 2x + 1 + Ce^{2x}$. Enfin, $y(0) = 1 + C = 0$ donne $C = -1$ :
+$$y(x) = 2x + 1 - e^{2x}.$$
+:::
+
+[IMAGE_3]
+
+::: remarque Lecture de la figure
+La solution particulière $y_p$ est représentée par la droite d’équation $y = 2x + 1$. Les autres solutions s’en écartent du terme $Ce^{2x}$ : quand $x$ tend vers $-\infty$, $e^{2x}$ tend vers $0$ et toutes les courbes se rapprochent de cette droite. La solution qui vérifie $y(0) = 0$ est la seule dont la courbe passe par l’origine.
+:::
+
+::: attention
+On utilise la condition initiale **après** avoir écrit la solution générale complète $y_p + Ce^{ax}$, jamais sur la seule partie $Ce^{ax}$.
+:::
+
+## V. Modéliser une évolution
+
+::: methode Modéliser avec une équation différentielle
+1. Identifier la fonction inconnue, sa variable et les unités.
+2. Traduire l’énoncé : la « vitesse de variation » de $y$ est la dérivée $y'$ ; « proportionnelle à » fait apparaître une constante.
+3. Écrire l’équation sous la forme $y' = ay + b$, la résoudre et utiliser la condition initiale.
+4. Interpréter : limite en $+\infty$ (état d’équilibre) ; instant où un seuil est atteint, à l’aide du logarithme.
+:::
+
+::: remarque Modèles usuels
+- Croissance ou décroissance proportionnelle à la quantité : $N' = kN$, d’où $N(t) = N_0e^{kt}$.
+- Refroidissement dans une pièce à la température $T_a$ (loi de Newton) : $T' = -k(T - T_a)$, d’où $T(t) = T_a + (T_0 - T_a)e^{-kt}$.
+- Charge d’un condensateur initialement déchargé : $RC\,u' + u = E$, d’où $u(t) = E\left(1 - e^{-\frac{t}{RC}}\right)$.
+:::
+
+::: exemple Loi de refroidissement de Newton
+Un café à $90$ °C refroidit dans une pièce à $20$ °C. Sa température $T(t)$, en °C, $t$ en minutes, vérifie $T' = -0{,}1(T - 20)$, soit $T' = -0{,}1T + 2$.
+
+La solution constante est $-\frac{2}{-0{,}1} = 20$, donc $T(t) = Ce^{-0{,}1t} + 20$. La condition $T(0) = C + 20 = 90$ donne $C = 70$ :
+$$T(t) = 20 + 70e^{-0{,}1t}.$$
+Le café atteint $40$ °C lorsque
+$$
+\begin{aligned}
+20 + 70e^{-0{,}1t} = 40 &\iff e^{-0{,}1t} = \frac{2}{7} \\
+&\iff -0{,}1t = \ln\frac{2}{7} \\
+&\iff t = 10\ln 3{,}5 \approx 12{,}5
+\end{aligned}
+$$
+soit au bout d’environ $12{,}5$ minutes. Comme $e^{-0{,}1t}$ tend vers $0$, la température tend vers $20$ °C, celle de la pièce.
+:::
+
+[IMAGE_4]
+
+::: retenir
+- $y' = ay$ : solutions $x \mapsto Ce^{ax}$.
+- $y' = ay + b$ ($a \neq 0$) : solutions $x \mapsto Ce^{ax} - \frac{b}{a}$, où $-\frac{b}{a}$ est la solution constante.
+- $y' = ay + f$ : solutions $y_p + Ce^{ax}$, où $y_p$ est une solution particulière.
+- Une condition initiale détermine $C$, donc une unique solution.
+- Si $a \lt 0$, toutes les solutions tendent vers la solution constante.
+
+Fiche de synthèse dans l’onglet Fiches !
+:::

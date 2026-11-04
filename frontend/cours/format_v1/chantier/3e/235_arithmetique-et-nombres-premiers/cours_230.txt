@@ -1,0 +1,177 @@
+Titre: Arithmétique et nombres premiers
+
+<!-- optitab:1 -->
+::: objectifs
+- Reconnaître un multiple, un diviseur, utiliser la division euclidienne et les critères de divisibilité.
+- Connaître la définition d'un nombre premier et les nombres premiers inférieurs à 30.
+- Décomposer un entier en produit de facteurs premiers.
+- Rendre une fraction irréductible.
+- Résoudre des problèmes de partages et de rencontres périodiques.
+:::
+
+## I. Multiples, diviseurs et division euclidienne
+
+::: definition Multiple, diviseur
+Soient $a$ et $b$ deux nombres entiers, avec $b \neq 0$. On dit que $a$ est un **multiple** de $b$ lorsqu'il existe un entier $k$ tel que $a = b \times k$.
+
+On dit aussi que $b$ est un **diviseur** de $a$, ou que $a$ est **divisible** par $b$.
+:::
+
+::: exemple
+$84 = 14 \times 6$ : $84$ est un multiple de $14$ et de $6$ ; $14$ et $6$ sont des diviseurs de $84$.
+:::
+
+On trouve tous les diviseurs d'un nombre en cherchant tous les rectangles qu'on peut former avec ce nombre de carreaux : chaque rectangle donne une **paire** de diviseurs.
+
+[IMAGE_1]
+
+::: methode Lister tous les diviseurs d'un entier $n$
+Tester les entiers $1$, $2$, $3$… dans l'ordre : chaque diviseur $d$ trouvé donne son partenaire $n \div d$. On s'arrête quand les paires se croisent (dès que $d \times d$ dépasse $n$).
+:::
+
+::: propriete Division euclidienne
+Pour deux entiers positifs $a$ et $b$ (avec $b \neq 0$), il existe un unique couple d'entiers $q$ (le **quotient**) et $r$ (le **reste**) tels que :
+$$a = b \times q + r \quad \text{avec} \quad 0 \le r < b$$
+$b$ est un diviseur de $a$ si et seulement si le reste $r$ est nul.
+:::
+
+::: exemple
+$100 = 7 \times 14 + 2$ et $2 < 7$ : le reste vaut $2$, donc $7$ ne divise pas $100$.
+:::
+
+::: attention
+L'égalité $100 = 7 \times 13 + 9$ est vraie, mais ce n'est pas la division euclidienne : le reste doit être **strictement inférieur** au diviseur ($9 > 7$).
+:::
+
+### Critères de divisibilité
+
+| Divisible par… | Critère |
+|---|---|
+| $2$ | le chiffre des unités est pair ($0$, $2$, $4$, $6$, $8$) |
+| $5$ | le chiffre des unités est $0$ ou $5$ |
+| $10$ | le chiffre des unités est $0$ |
+| $3$ | la somme des chiffres est divisible par $3$ |
+| $9$ | la somme des chiffres est divisible par $9$ |
+
+::: exemple
+$2\,340$ est divisible par $2$, $5$ et $10$ (il se termine par $0$) et par $3$ et $9$ (car $2+3+4+0 = 9$).
+:::
+
+## II. Les nombres premiers
+
+::: definition Nombre premier
+Un **nombre premier** est un nombre entier qui admet **exactement deux** diviseurs positifs distincts : $1$ et lui-même.
+:::
+
+::: retenir Les nombres premiers inférieurs à 30 (à connaître)
+$2$, $3$, $5$, $7$, $11$, $13$, $17$, $19$, $23$, $29$.
+:::
+
+::: attention
+- $1$ **n'est pas premier** : il n'a qu'un seul diviseur positif.
+- $2$ est le seul nombre premier pair.
+- $51 = 3 \times 17$ et $91 = 7 \times 13$ ne sont pas premiers, même s'ils « en ont l'air ».
+:::
+
+Le crible d'Ératosthène permet de trouver les nombres premiers : on barre les multiples de $2$, puis de $3$, de $5$, de $7$… Les nombres qui restent sont premiers.
+
+[IMAGE_2]
+
+::: methode Prouver qu'un entier $n$ est premier ou non
+- Pour prouver que $n$ **n'est pas premier**, il suffit d'écrire $n$ comme produit de deux entiers plus grands que $1$ (exemple : $91 = 7 \times 13$).
+- Pour prouver que $n$ **est premier**, on vérifie qu'aucun nombre premier $p$ tel que $p \times p \le n$ ne divise $n$.
+:::
+
+::: exemple
+$43$ : $2$, $3$ et $5$ ne divisent pas $43$, et $7 \times 7 = 49 > 43$. Donc $43$ est premier.
+:::
+
+## III. La décomposition en produit de facteurs premiers
+
+::: theoreme
+Tout nombre entier supérieur ou égal à $2$ se décompose en produit de facteurs premiers. Cette décomposition est **unique** (à l'ordre des facteurs près).
+:::
+
+::: methode Décomposer un entier
+On divise par $2$ tant que c'est possible, puis par $3$, puis par $5$, par $7$… jusqu'à obtenir un quotient égal à un nombre premier. On regroupe ensuite les facteurs égaux avec des exposants.
+:::
+
+[IMAGE_3]
+
+::: exemple Décomposer $360$
+$$
+\begin{aligned}
+360 &= 2 \times 180 \\
+&= 2 \times 2 \times 90 \\
+&= 2 \times 2 \times 2 \times 45 \\
+&= 2 \times 2 \times 2 \times 3 \times 15 \\
+&= 2 \times 2 \times 2 \times 3 \times 3 \times 5 \\
+&= 2^3 \times 3^2 \times 5
+\end{aligned}
+$$
+Contrôle : $8 \times 9 \times 5 = 360$.
+:::
+
+::: attention
+Une décomposition ne contient que des nombres premiers : $360 = 2^3 \times 9 \times 5$ n'est pas terminée ($9 = 3^2$).
+:::
+
+## IV. Les fractions irréductibles
+
+::: definition
+Une fraction $\dfrac{a}{b}$ est **irréductible** lorsque $1$ est le seul diviseur positif commun à $a$ et $b$.
+:::
+
+::: methode Rendre une fraction irréductible
+1. Décomposer le numérateur et le dénominateur en facteurs premiers.
+2. Simplifier par **tous** les facteurs premiers communs.
+:::
+
+::: exemple Rendre $\dfrac{84}{150}$ irréductible
+$84 = 2^2 \times 3 \times 7$ et $150 = 2 \times 3 \times 5^2$ ont pour facteurs communs $2$ et $3$.
+$$
+\begin{aligned}
+\frac{84}{150} &= \frac{2 \times 2 \times 3 \times 7}{2 \times 3 \times 5 \times 5} \\
+&= \frac{2 \times 7}{5 \times 5} \\
+&= \frac{14}{25}
+\end{aligned}
+$$
+$14 = 2 \times 7$ et $25 = 5^2$ n'ont aucun facteur premier commun : $\dfrac{14}{25}$ est irréductible.
+:::
+
+## V. Problèmes de partages et de rencontres
+
+### Partager en lots identiques
+
+::: methode
+Pour répartir plusieurs stocks en lots identiques sans reste, le nombre de lots doit **diviser chaque stock**. Le plus grand nombre de lots possible est le **plus grand diviseur commun** des stocks : on prend les facteurs premiers communs, avec le plus petit exposant.
+:::
+
+::: exemple
+Avec $168$ feuilles bleues et $126$ feuilles blanches : $168 = 2^3 \times 3 \times 7$ et $126 = 2 \times 3^2 \times 7$. Le plus grand diviseur commun est $2 \times 3 \times 7 = 42$ : on forme au maximum $42$ carnets, chacun de $4$ feuilles bleues et $3$ feuilles blanches.
+:::
+
+### Rencontres de phénomènes périodiques
+
+::: methode
+Deux phénomènes qui se répètent toutes les $a$ et toutes les $b$ unités de temps se reproduisent ensemble au bout d'un **multiple commun** de $a$ et $b$. La première fois, c'est le **plus petit multiple commun** non nul : on prend tous les facteurs premiers, avec le plus grand exposant.
+:::
+
+::: exemple
+Deux voyants s'allument ensemble, puis toutes les $42$ s et toutes les $66$ s. $42 = 2 \times 3 \times 7$ et $66 = 2 \times 3 \times 11$, donc le plus petit multiple commun est $2 \times 3 \times 7 \times 11 = 462$. Ils se rallument ensemble au bout de $462$ s, soit $7$ min $42$ s.
+:::
+
+::: attention Justifier « le plus grand » ou « la première fois »
+Donner un partage possible ne suffit pas : il faut expliquer pourquoi on ne peut pas faire mieux (par exemple : les quotients obtenus n'ont plus aucun facteur commun).
+:::
+
+::: remarque Avec un tableur ou un programme
+Au tableur, **=MOD(84;A2)** donne le reste de la division euclidienne de $84$ par le nombre écrit en A2 : un reste nul signale un diviseur. En Python, `84 % d` donne ce même reste.
+:::
+
+::: retenir
+- Multiple, diviseur : $a = b \times k$ ; reste nul dans la division euclidienne.
+- Nombre premier : exactement deux diviseurs, $1$ et lui-même ; $1$ n'est pas premier.
+- Décomposition en facteurs premiers : unique ; elle sert à simplifier les fractions et à résoudre les problèmes.
+- Partages → plus grand diviseur commun ; rencontres → plus petit multiple commun.
+:::

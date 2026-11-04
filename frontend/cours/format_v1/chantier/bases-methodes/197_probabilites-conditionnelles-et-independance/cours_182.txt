@@ -1,0 +1,778 @@
+Titre: Probabilités conditionnelles et indépendance
+
+<!-- optitab:1 -->
+::: remarque Sections principales
+Les sections I à V couvrent les concepts fondamentaux des probabilités conditionnelles et de l'indépendance. Les encadrés marqués « **Bonus / Approfondissement (facultatif)** » sont des approfondissements utiles qui vous permettent d'explorer des thèmes avancés (démonstrations complètes, culture scientifique supplémentaire).
+:::
+
+::: methode Approfondissements et culture
+La section VI sur les algorithmes de Monte-Carlo enrichit votre culture mathématique. Les exemples de marches aléatoires et de successions de plusieurs épreuves sont des approfondissements possibles.
+:::
+
+## I. Probabilité conditionnelle
+
+### Situation et motivation
+
+::: remarque Situation introductive
+Dans une classe de 30 élèves, 18 sont des filles et 12 sont des garçons. Parmi les élèves, 10 pratiquent un sport : 7 filles et 3 garçons.
+
+On choisit un élève au hasard.
+
+- **Question 1 :** Quelle est la probabilité que cet élève pratique un sport ? Réponse : $P(\text{Sport}) = \frac{10}{30} = \frac{1}{3}$
+- **Question 2 :** Si on sait que l'élève choisi est une fille, quelle est la probabilité qu'elle pratique un sport ? Réponse : $\frac{7}{18}$
+
+Cette dernière probabilité est une **probabilité conditionnelle** : on calcule la probabilité d'un événement sachant qu'un autre événement est réalisé.
+:::
+
+::: definition Probabilité conditionnelle
+Soit $(\Omega, P)$ un espace probabilisé et $A$ et $B$ deux événements avec $P(A) \neq 0$.
+
+La **probabilité conditionnelle de $B$ sachant $A$**, notée $P_A(B)$ ou $P(B|A)$, est définie par :
+
+::: formule
+$$P_A(B) = \frac{P(A \cap B)}{P(A)}$$
+:::
+
+Cette probabilité représente la probabilité que $B$ se réalise **sachant que** $A$ s'est réalisé.
+:::
+
+::: remarque Interprétation
+Lorsqu'on sait que $A$ s'est réalisé, l'univers se **restreint** à $A$. La probabilité conditionnelle $P_A(B)$ est alors la proportion de $A \cap B$ dans $A$.
+
+On divise par $P(A)$ pour « renormaliser » les probabilités dans ce nouvel univers.
+:::
+
+::: exemple 1 - Reprise de l'exemple introductif
+Notons $F$ l'événement « l'élève est une fille » et $S$ l'événement « l'élève pratique un sport ».
+
+On a : $P(F) = \frac{18}{30} = \frac{3}{5}$ et $P(F \cap S) = \frac{7}{30}$ (7 filles sportives sur 30 élèves)
+
+Donc : $\displaystyle P_F(S) = \frac{P(F \cap S)}{P(F)} = \frac{\frac{7}{30}}{\frac{18}{30}} = \frac{7}{18}$
+
+On retrouve bien le résultat intuitif : parmi les 18 filles, 7 pratiquent un sport.
+:::
+
+::: exemple 2 - Tirage de cartes
+On tire une carte au hasard dans un jeu de 52 cartes.
+
+Soit $A$ l'événement « la carte est un cœur » et $B$ l'événement « la carte est un as ».
+
+On a : $P(A) = \frac{13}{52} = \frac{1}{4}$ et $P(A \cap B) = \frac{1}{52}$ (un seul as de cœur)
+
+Calculons $P_A(B)$ : $P_A(B) = \frac{P(A \cap B)}{P(A)} = \frac{\frac{1}{52}}{\frac{13}{52}} = \frac{1}{13}$
+
+Interprétation : sachant que la carte est un cœur, la probabilité que ce soit un as est $\frac{1}{13}$ (il y a 1 as parmi les 13 cœurs).
+:::
+
+### Propriétés des probabilités conditionnelles
+
+::: theoreme Propriétés
+Soit $A$ un événement tel que $P(A) > 0$. On définit $P_A$ sur l'ensemble des événements par $P_A(B) = \frac{P(A \cap B)}{P(A)}$.
+
+Alors $P_A$ est une **probabilité** sur $\Omega$, c'est-à-dire qu'elle vérifie :
+
+- $0 \leq P_A(B) \leq 1$ pour tout événement $B$
+- $\displaystyle P_A(\Omega) = 1$
+- $P_A(A) = 1$ (car si $A$ est réalisé, alors $A$ est certain)
+- $\displaystyle P_A(\overline{B}) = 1 - P_A(B)$
+- Si $B$ et $C$ sont incompatibles : $P_A(B \cup C) = P_A(B) + P_A(C)$
+:::
+
+::: attention Distinguer $P_A(B)$ et $P_B(A)$
+$P_A(B)$ et $P_B(A)$ sont **différents** en général !
+
+$P_A(B)$ : probabilité de $B$ sachant $A$
+
+$P_B(A)$ : probabilité de $A$ sachant $B$
+
+Cependant, on a toujours : $\displaystyle P(A \cap B) = P(A) \times P_A(B) = P(B) \times P_B(A)$
+:::
+
+### Tableaux croisés d'effectifs
+
+::: methode Calcul avec un tableau croisé
+Lorsque les données sont présentées sous forme de **tableau croisé d'effectifs**, on peut calculer directement les probabilités conditionnelles en situation d'équiprobabilité.
+
+**Exemple :** Étude sur 200 personnes
+
+|  | Pratique un sport | Ne pratique pas | Total |
+|---|---|---|---|
+| Femme | 50 | 70 | 120 |
+| Homme | 30 | 50 | 80 |
+| Total | 80 | 120 | 200 |
+
+On choisit une personne au hasard (équiprobabilité).
+
+Notons $F$ = « la personne est une femme » et $S$ = « la personne pratique un sport ».
+
+- $\displaystyle P(F) = \frac{120}{200} = 0.6$
+- $\displaystyle P(F \cap S) = \frac{50}{200} = 0.25$
+- $P_F(S) = \frac{50}{120} = \frac{5}{12} \approx 0.417$ (proportion de sportives parmi les femmes)
+- $P_S(F) = \frac{50}{80} = \frac{5}{8} = 0.625$ (proportion de femmes parmi les sportifs)
+
+On observe bien que $\displaystyle P_F(S) \neq P_S(F)$.
+:::
+
+## II. Arbres pondérés et calcul de probabilités
+
+### Construction d'un arbre pondéré
+
+::: definition Arbre pondéré
+Un **arbre pondéré** (ou arbre de probabilités) est une représentation graphique permettant de visualiser les différentes étapes d'une expérience aléatoire.
+
+Sur chaque branche, on indique :
+
+- Les **probabilités** des événements si c'est la première étape
+- Les **probabilités conditionnelles** si c'est une étape ultérieure
+:::
+
+::: exemple Construction d'un arbre
+Dans une urne, il y a 3 boules rouges et 2 boules bleues. On tire une boule, on note sa couleur, puis on tire une deuxième boule (sans remise).
+
+**Première étape :**
+
+- $\displaystyle P(R_1) = \frac{3}{5}$ (probabilité de tirer rouge)
+- $\displaystyle P(B_1) = \frac{2}{5}$ (probabilité de tirer bleu)
+
+**Deuxième étape :**
+
+- Si on a tiré rouge : $P_{R_1}(R_2) = \frac{2}{4} = \frac{1}{2}$ et $P_{R_1}(B_2) = \frac{2}{4} = \frac{1}{2}$
+- Si on a tiré bleu : $P_{B_1}(R_2) = \frac{3}{4}$ et $P_{B_1}(B_2) = \frac{1}{4}$
+:::
+
+[IMAGE_1]
+
+::: methode Pour construire un arbre
+1. Identifier les différentes **étapes** de l'expérience aléatoire
+2. À chaque nœud, faire partir autant de branches qu'il y a d'**issues possibles**
+3. Sur chaque branche de la **première étape**, noter la probabilité de l'événement
+4. Sur chaque branche des **étapes suivantes**, noter les probabilités conditionnelles
+5. Vérifier que la **somme des probabilités** partant d'un même nœud vaut 1
+:::
+
+### Règles de calcul dans un arbre pondéré
+
+::: theoreme Règle du produit (des chemins)
+La probabilité d'un événement correspondant à un **chemin** dans l'arbre est égale au **produit des probabilités** le long de ce chemin.
+
+Si un chemin passe par les événements $A$ puis $B$, alors :
+
+::: formule
+$$P(A \cap B) = P(A) \times P_A(B)$$
+:::
+:::
+
+::: demonstration Bonus / Approfondissement (facultatif) - Démonstration - Règle du produit
+*Pour les élèves curieux qui veulent comprendre la formule, cette démonstration complète peut être relue après avoir maîtrisé les calculs principaux.*
+
+Par définition de la probabilité conditionnelle, on a :
+
+$$P_A(B) = \frac{P(A \cap B)}{P(A)}$$
+
+En multipliant les deux membres par $P(A)$, on obtient :
+
+$$P(A \cap B) = P(A) \times P_A(B)$$
+:::
+
+::: exemple Application de la règle du produit
+Reprenons l'exemple des boules (3 rouges, 2 bleues, tirage sans remise).
+
+Calculons la probabilité de tirer deux boules rouges : $P(R_1 \cap R_2)$
+
+$$
+\begin{aligned}
+P(R_1 \cap R_2) &= P(R_1) \times P_{R_1}(R_2) \\
+&= \frac{3}{5} \times \frac{2}{4} \\
+&= \frac{6}{20} \\
+&= \frac{3}{10}
+\end{aligned}
+$$
+:::
+
+::: theoreme Règle de la somme (des chemins disjoints)
+Si un événement $E$ peut se réaliser selon **plusieurs chemins disjoints** dans l'arbre, alors la probabilité de $E$ est la **somme des probabilités** de chacun de ces chemins.
+
+Si $E = (A \cap B) \cup (C \cap D)$ avec les événements disjoints :
+
+::: formule
+$$P(E) = P(A \cap B) + P(C \cap D)$$
+:::
+:::
+
+::: exemple Application de la règle de la somme
+Calculons la probabilité de tirer deux boules de couleurs **différentes**.
+
+Cet événement se réalise selon deux chemins : $(R_1 \cap B_2)$ ou $(B_1 \cap R_2)$
+
+$$
+\begin{aligned}
+P(R_1 \cap B_2) &= P(R_1) \times P_{R_1}(B_2) \\
+&= \frac{3}{5} \times \frac{2}{4} \\
+&= \frac{6}{20} \\
+&= \frac{3}{10}
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+P(B_1 \cap R_2) &= P(B_1) \times P_{B_1}(R_2) \\
+&= \frac{2}{5} \times \frac{3}{4} \\
+&= \frac{6}{20} \\
+&= \frac{3}{10}
+\end{aligned}
+$$
+
+Donc : $\displaystyle P(\text{couleurs différentes}) = \frac{3}{10} + \frac{3}{10} = \frac{6}{10} = \frac{3}{5}$
+:::
+
+[IMAGE_2]
+
+### Du langage naturel au registre symbolique
+
+::: remarque Traduction langage naturel ↔ symbolique
+| Langage naturel | Notation symbolique |
+|---|---|
+| $\displaystyle A$ et $\displaystyle B$ se réalisent | $\displaystyle A \cap B$ |
+| $\displaystyle A$ ou $\displaystyle B$ se réalise | $\displaystyle A \cup B$ |
+| $\displaystyle A$ ne se réalise pas | $\displaystyle \overline{A}$ |
+| Probabilité de $\displaystyle B$ sachant $\displaystyle A$ | $\displaystyle P_A(B)$ ou $\displaystyle P(B|A)$ |
+| Sachant $\displaystyle A$, probabilité de non-$\displaystyle B$ | $\displaystyle P_A(\overline{B})$ |
+:::
+
+::: exemple Traduction
+**Énoncé :** « Sachant qu'un test médical est positif, quelle est la probabilité que la personne soit malade ? »
+
+**Traduction :** Notons $M$ = « la personne est malade » et $T$ = « le test est positif ».
+
+On cherche : $P_T(M)$ (probabilité d'être malade sachant que le test est positif)
+:::
+
+## III. Indépendance de deux événements
+
+### Définition de l'indépendance
+
+::: remarque Situation introductive
+On lance un dé équilibré à 6 faces deux fois de suite.
+
+Soit $A$ = « obtenir 6 au premier lancer » et $B$ = « obtenir 6 au deuxième lancer ».
+
+On a : $P(A) = \frac{1}{6}$ et $P(B) = \frac{1}{6}$
+
+Intuitivement, le résultat du premier lancer **n'influence pas** le résultat du deuxième lancer.
+
+On s'attend donc à ce que $\displaystyle P_A(B) = P(B) = \frac{1}{6}$
+
+Cela signifie que $A$ et $B$ sont **indépendants**.
+:::
+
+::: definition Indépendance de deux événements
+Deux événements $A$ et $B$ (avec $P(A) > 0$ et $P(B) > 0$) sont dits **indépendants** si et seulement si :
+
+::: formule
+$$P(A \cap B) = P(A) \times P(B)$$
+:::
+
+**Équivalences :** Les conditions suivantes sont équivalentes :
+
+- $\displaystyle P(A \cap B) = P(A) \times P(B)$
+- $P_A(B) = P(B)$ (la probabilité de $B$ ne dépend pas de $A$)
+- $P_B(A) = P(A)$ (la probabilité de $A$ ne dépend pas de $B$)
+:::
+
+::: remarque Interprétation
+Deux événements sont **indépendants** si la réalisation de l'un **n'influence pas** la probabilité de réalisation de l'autre.
+
+Autrement dit, savoir que $A$ s'est réalisé ne change pas la probabilité que $B$ se réalise.
+:::
+
+::: demonstration Bonus / Approfondissement (facultatif) - Démonstration de l'équivalence
+*La démonstration complète est proposée pour les élèves qui veulent approfondir la logique des équivalences ; elle n'a pas à être apprise par cœur.*
+
+Montrons que $P(A \cap B) = P(A) \times P(B)$ équivaut à $P_A(B) = P(B)$.
+
+**$\Rightarrow$ :** Si $P(A \cap B) = P(A) \times P(B)$, alors :
+
+$$
+\begin{aligned}
+P_A(B) &= \frac{P(A \cap B)}{P(A)} \\
+&= \frac{P(A) \times P(B)}{P(A)} \\
+&= P(B)
+\end{aligned}
+$$
+
+**$\Leftarrow$ :** Si $P_A(B) = P(B)$, alors :
+
+$$\frac{P(A \cap B)}{P(A)} = P(B)$$
+
+$$P(A \cap B) = P(A) \times P(B)$$
+:::
+
+::: attention Incompatibilité ≠ Indépendance
+Ne pas confondre **incompatibilité** et **indépendance** !
+
+- **Incompatibles :** $A \cap B = \emptyset$, donc $P(A \cap B) = 0$. Si $A$ se réalise, $B$ ne peut pas se réaliser.
+- **Indépendants :** $P(A \cap B) = P(A) \times P(B)$. La réalisation de $A$ n'influence pas celle de $B$.
+
+Si $A$ et $B$ sont incompatibles et ont des probabilités non nulles, alors ils ne sont **pas indépendants** !
+:::
+
+### Exemples d'événements indépendants et dépendants
+
+::: exemple 1 - Événements indépendants
+On lance deux dés équilibrés.
+
+Soit $A$ = « le premier dé donne 6 » et $B$ = « le deuxième dé donne un nombre pair ».
+
+On a : $P(A) = \frac{1}{6}$ et $P(B) = \frac{3}{6} = \frac{1}{2}$
+
+$P(A \cap B) = \frac{1}{6} \times \frac{1}{2} = \frac{1}{12}$ (le premier donne 6 ET le deuxième donne un nombre pair)
+
+On vérifie : $\displaystyle P(A) \times P(B) = \frac{1}{6} \times \frac{1}{2} = \frac{1}{12} = P(A \cap B)$
+
+Donc $A$ et $B$ sont **indépendants**.
+:::
+
+::: exemple 2 - Événements dépendants
+Dans une urne, il y a 3 boules rouges et 2 boules bleues. On tire deux boules sans remise.
+
+Soit $R_1$ = « la première boule est rouge » et $R_2$ = « la deuxième boule est rouge ».
+
+On a : $P(R_1) = \frac{3}{5}$ et $P(R_2) = \frac{3}{5}$ (par symétrie)
+
+$$
+\begin{aligned}
+P(R_1 \cap R_2) &= P(R_1) \times P_{R_1}(R_2) \\
+&= \frac{3}{5} \times \frac{2}{4} \\
+&= \frac{3}{10}
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+P(R_1) \times P(R_2) &= \frac{3}{5} \times \frac{3}{5} \\
+&= \frac{9}{25} \neq \frac{3}{10}
+\end{aligned}
+$$
+
+Donc $R_1$ et $R_2$ ne sont **pas indépendants** (le tirage est sans remise).
+:::
+
+### Propriétés de l'indépendance
+
+::: theoreme Propriétés
+Si $A$ et $B$ sont deux événements indépendants, alors :
+
+- $A$ et $\overline{B}$ sont indépendants
+- $\overline{A}$ et $B$ sont indépendants
+- $\overline{A}$ et $\overline{B}$ sont indépendants
+:::
+
+::: demonstration Bonus / Approfondissement (facultatif) - Démonstration - $A$ et $\overline{B}$ sont indépendants
+*Ce passage prolonge les propriétés et peut être consulté une fois la notion principale maîtrisée.*
+
+On doit montrer que $\displaystyle P(A \cap \overline{B}) = P(A) \times P(\overline{B})$.
+
+On a : $A = (A \cap B) \cup (A \cap \overline{B})$ avec les événements disjoints
+
+Donc : $\displaystyle P(A) = P(A \cap B) + P(A \cap \overline{B})$
+
+$$P(A \cap \overline{B}) = P(A) - P(A \cap B)$$
+
+$= P(A) - P(A) \times P(B)$ (car $A$ et $B$ indépendants)
+
+$$= P(A) \times (1 - P(B)) = P(A) \times P(\overline{B})$$
+
+Donc $A$ et $\overline{B}$ sont indépendants.
+:::
+
+::: remarque Bonus / Approfondissement (facultatif) - Formule de Bayes
+Dans un test médical, on note $M$ : « la personne est malade » et $T$ : « le test est positif ». On connaît $P(M)$, la sensibilité $P_M(T)$ et la probabilité de faux positif $P_{\overline{M}}(T)$.
+
+La formule de Bayes permet de retrouver la valeur prédictive positive :
+
+::: formule
+$$P_T(M) = \frac{P(M) \times P_M(T)}{P(M) \times P_M(T) + P(\overline{M}) \times P_{\overline{M}}(T)}$$
+:::
+
+*Très utile pour interpréter les tests médicaux, cette formule est un bonus sensible à garder en tête et enrichit grandement votre compréhension des probabilités.*
+:::
+
+## IV. Formule des probabilités totales
+
+### Partition de l'univers
+
+::: definition Partition de l'univers (système complet d'événements)
+Des événements $A_1, A_2, \ldots, A_n$ forment une **partition de l'univers** $\Omega$ (ou un **système complet d'événements**) si :
+
+- Ils sont **deux à deux incompatibles** : $A_i \cap A_j = \emptyset$ pour $i \neq j$
+- Leur **réunion est l'univers** : $A_1 \cup A_2 \cup \cdots \cup A_n = \Omega$
+
+Autrement dit, **un et un seul** des événements $A_i$ se réalise à chaque fois.
+:::
+
+::: exemple
+- Pour tout événement $A$ : $\{A, \overline{A}\}$ forme une partition de $\Omega$
+- Pour un dé : $\{1\}, \{2\}, \{3\}, \{4\}, \{5\}, \{6\}$ forme une partition
+- Dans une population : $\{\text{Enfant}, \text{Adulte}, \text{Senior}\}$ peut former une partition
+:::
+
+### Formule des probabilités totales
+
+::: theoreme Formule des probabilités totales
+Soit $A_1, A_2, \ldots, A_n$ une partition de l'univers $\Omega$ avec $P(A_i) > 0$ pour tout $i$.
+
+Pour tout événement $\displaystyle B$, on a :
+
+::: formule
+$$P(B) = P(A_1) \times P_{A_1}(B) + P(A_2) \times P_{A_2}(B) + \cdots + P(A_n) \times P_{A_n}(B)$$
+:::
+
+Cas particulier avec $A$ et $\overline{A}$ :
+
+::: formule
+$$P(B) = P(A) \times P_A(B) + P(\overline{A}) \times P_{\overline{A}}(B)$$
+:::
+:::
+
+::: demonstration Bonus / Approfondissement (facultatif) - Démonstration
+*Une démonstration complète pour les élèves curieux : à relire si vous voulez connecter les partitions à la formule.*
+
+Comme $A_1, \ldots, A_n$ forment une partition, on peut écrire :
+
+$$
+\begin{aligned}
+B &= B \cap \Omega \\
+&= B \cap (A_1 \cup A_2 \cup \cdots \cup A_n)
+\end{aligned}
+$$
+
+$$= (B \cap A_1) \cup (B \cap A_2) \cup \cdots \cup (B \cap A_n)$$
+
+Les événements $B \cap A_i$ sont deux à deux incompatibles (car les $A_i$ le sont), donc :
+
+$$P(B) = P(B \cap A_1) + P(B \cap A_2) + \cdots + P(B \cap A_n)$$
+
+En utilisant $\displaystyle P(B \cap A_i) = P(A_i) \times P_{A_i}(B)$ :
+
+$$P(B) = P(A_1) \times P_{A_1}(B) + P(A_2) \times P_{A_2}(B) + \cdots + P(A_n) \times P_{A_n}(B)$$
+:::
+
+::: exemple Application de la formule
+Une usine produit des pièces sur deux machines : $M_1$ (60% de la production) et $M_2$ (40% de la production).
+
+La machine $M_1$ produit 2% de pièces défectueuses, la machine $M_2$ en produit 5%.
+
+On prend une pièce au hasard. Quelle est la probabilité qu'elle soit défectueuse ?
+
+**Solution :**
+
+Notons $M_1$ = "la pièce vient de $M_1$", $M_2$ = "la pièce vient de $M_2$" et $D$ = « la pièce est défectueuse ».
+
+On a : $P(M_1) = 0.6$, $P(M_2) = 0.4$, $P_{M_1}(D) = 0.02$, $P_{M_2}(D) = 0.05$
+
+$\displaystyle \{M_1, M_2\}$ forme une partition, donc :
+
+$$
+\begin{aligned}
+P(D) &= P(M_1) \times P_{M_1}(D) + P(M_2) \times P_{M_2}(D) \\
+&= 0.6 \times 0.02 + 0.4 \times 0.05 \\
+&= 0.012 + 0.02 \\
+&= 0.032
+\end{aligned}
+$$
+
+La probabilité qu'une pièce soit défectueuse est de 3,2%.
+:::
+
+[IMAGE_3]
+
+## V. Succession de deux épreuves indépendantes
+
+### Répétition d'épreuves indépendantes
+
+::: definition Épreuves indépendantes
+On dit que deux **épreuves sont indépendantes** si le résultat de la première n'influence pas le résultat de la seconde.
+
+Si on note $A_1$ un événement de la première épreuve et $A_2$ un événement de la deuxième épreuve, alors :
+
+$$P(A_1 \cap A_2) = P(A_1) \times P(A_2)$$
+:::
+
+::: exemple
+- Lancer deux dés
+- Lancer deux pièces de monnaie
+- Tirer une carte, la remettre, puis tirer une autre carte (**tirage avec remise**)
+- Choisir deux personnes au hasard dans une grande population
+:::
+
+::: exemple
+- Tirer deux cartes d'un jeu **sans remise**
+- Tirer deux boules d'une urne sans remise
+:::
+
+### Représentation par un arbre
+
+::: remarque Arbre pour deux épreuves indépendantes
+Lorsque deux épreuves sont indépendantes, les probabilités sur les branches de la **deuxième étape** sont les **mêmes** quelle que soit l'issue de la première épreuve.
+:::
+
+::: exemple Lancer d'une pièce (deux fois)
+On lance une pièce équilibrée deux fois de suite.
+
+Soit $P$ = « obtenir pile » et $F$ = « obtenir face ».
+
+Les deux lancers sont indépendants, donc :
+
+On remarque que les probabilités de la deuxième étape sont toujours $\frac{1}{2}$, indépendamment du résultat du premier lancer.
+
+**Calculs de probabilités :**
+
+- $\displaystyle P(P_1 \cap P_2) = \frac{1}{2} \times \frac{1}{2} = \frac{1}{4}$ (deux piles)
+- $\displaystyle P(P_1 \cap F_2) = \frac{1}{2} \times \frac{1}{2} = \frac{1}{4}$ (pile puis face)
+- $\displaystyle P(F_1 \cap P_2) = \frac{1}{2} \times \frac{1}{2} = \frac{1}{4}$ (face puis pile)
+- $\displaystyle P(F_1 \cap F_2) = \frac{1}{2} \times \frac{1}{2} = \frac{1}{4}$ (deux faces)
+
+Vérification : $\displaystyle \frac{1}{4} + \frac{1}{4} + \frac{1}{4} + \frac{1}{4} = 1$
+:::
+
+### Représentation par un tableau
+
+::: remarque Tableau à double entrée
+Pour deux épreuves indépendantes, on peut également utiliser un **tableau à double entrée** pour visualiser toutes les issues possibles et leurs probabilités.
+:::
+
+::: exemple Deux lancers de dé
+On lance un dé équilibré deux fois. On s'intéresse aux issues « pair » (P) ou « impair » (I).
+
+| Dé 1 \ Dé 2 | $\displaystyle \text{Pair }\left(\frac{1}{2}\right)$ | $\displaystyle \text{Impair }\left(\frac{1}{2}\right)$ |
+|---|---|---|
+| $\displaystyle \text{Pair }\left(\frac{1}{2}\right)$ | $\displaystyle P(P_1 \cap P_2)=\frac{1}{4}$ | $\displaystyle P(P_1 \cap F_2)=\frac{1}{4}$ |
+| $\displaystyle \text{Impair }\left(\frac{1}{2}\right)$ | $\displaystyle P(F_1 \cap P_2)=\frac{1}{4}$ | $\displaystyle P(F_1 \cap F_2)=\frac{1}{4}$ |
+
+Chaque case du tableau donne la probabilité d'une issue, calculée par le produit des probabilités.
+
+Exemple : $\displaystyle P(\text{Pair au 1er ET Impair au 2e}) = \frac{1}{2} \times \frac{1}{2} = \frac{1}{4}$
+:::
+
+::: exemple Calcul d'une probabilité composée
+Quelle est la probabilité d'obtenir **exactement un nombre pair** ?
+
+Cela correspond aux issues : (Pair, Impair) ou (Impair, Pair)
+
+$$
+\begin{aligned}
+P(\text{exactement un pair}) &= P(P \cap I) + P(I \cap P) \\
+&= \frac{1}{4} + \frac{1}{4} \\
+&= \frac{1}{2}
+\end{aligned}
+$$
+:::
+
+### Schéma de Bernoulli
+
+::: definition Schéma de Bernoulli
+On appelle **schéma de Bernoulli** une expérience aléatoire répétée $n$ fois de manière indépendante, où chaque épreuve n'a que **deux issues possibles** :
+
+- **Succès** (noté $S$) avec probabilité $p$
+- **Échec** (noté $\overline{S}$) avec probabilité $1-p$
+:::
+
+::: exemple Lancer de pièce (n=2)
+On lance une pièce équilibrée 2 fois. On considère « pile » comme un succès.
+
+Ici : $p = \frac{1}{2}$ et $n = 2$
+
+Probabilité d'obtenir exactement 1 pile (1 succès) :
+
+$$
+\begin{aligned}
+P(\text{1 pile}) &= P(SF) + P(FS) \\
+&= p(1-p) + (1-p)p
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+= 2p(1-p) &= 2 \times \frac{1}{2} \times \frac{1}{2} \\
+&= \frac{1}{2}
+\end{aligned}
+$$
+:::
+
+## VI. Algorithmes et simulations
+
+::: methode Bonus / Approfondissement
+Les activités qui suivent sont très utiles pour aller plus loin (Monte-Carlo, marches aléatoires, simulations) et enrichissent votre compréhension des probabilités appliquées.
+
+Vous pouvez les utiliser pour enrichir votre culture scientifique ou vos projets, sans devoir les maîtriser pour un contrôle standard.
+:::
+
+### Méthode de Monte-Carlo (Bonus / Approfondissement)
+
+::: methode
+La **méthode de Monte-Carlo** est une technique qui utilise le **hasard** et la **répétition** pour estimer des valeurs difficiles à calculer directement.
+
+**Principe :**
+
+1. On simule une expérience aléatoire un grand nombre de fois
+2. On compte le nombre de fois où un événement se produit
+3. On estime la probabilité par la fréquence observée
+:::
+
+::: exemple Bonus / Approfondissement - Exemple 1 - Estimation de π
+*Cette application montre comment simuler la valeur de π et enrichit votre culture algorithmique.*
+
+**Principe :** On tire des points au hasard dans un carré de côté 2. On compte combien tombent dans le cercle de rayon 1 inscrit dans ce carré.
+
+Aire du carré : $\displaystyle 2 \times 2 = 4$
+
+Aire du cercle : $\displaystyle \pi \times 1^2 = \pi$
+
+Probabilité qu'un point tombe dans le cercle : $\frac{\pi}{4}$
+
+Donc : $\displaystyle \pi \approx 4 \times \frac{\text{nombre de points dans le cercle}}{\text{nombre total de points}}$
+
+**Code Python :**
+
+```python
+import random
+
+def estimer_pi(n):
+    dans_cercle = 0
+    for i in range(n):
+        x = random.uniform(-1, 1)
+        y = random.uniform(-1, 1)
+        if x**2 + y**2 <= 1:
+            dans_cercle += 1
+    return 4 * dans_cercle / n
+
+# Test avec 100000 points
+print(f"Estimation de π : {estimer_pi(100000)}")
+```
+
+*Résultat typique : π ≈ 3.14...*
+:::
+
+::: exemple Bonus / Approfondissement - Exemple 2 - Estimation de l'aire sous une courbe
+*Une autre façon de comprendre les probabilités via l'aire sous une fonction : utile pour les binômes de type projet de seconde partie.*
+
+**Objectif :** Estimer l'aire sous la parabole $y = x^2$ entre 0 et 1.
+
+**Principe :** On tire des points au hasard dans le rectangle $[0,1] \times [0,1]$. On compte combien de points sont sous la courbe (c'est-à-dire vérifient $y \leq x^2$).
+
+L'aire cherchée est environ : $\displaystyle \text{Aire} \approx 1 \times 1 \times \frac{\text{points sous la courbe}}{\text{total de points}}$
+
+**Code Python :**
+
+```python
+import random
+
+def aire_sous_parabole(n):
+    sous_courbe = 0
+    for i in range(n):
+        x = random.uniform(0, 1)
+        y = random.uniform(0, 1)
+        if y <= x**2:
+            sous_courbe += 1
+    return sous_courbe / n
+
+# Test avec 50000 points
+print(f"Aire estimée : {aire_sous_parabole(50000)}")
+```
+
+*Résultat typique : environ 0.33... (valeur exacte : 1/3)*
+:::
+
+### Simulation d'expériences aléatoires
+
+::: exemple Bonus / Approfondissement - Exemple - Simulation de lancers de dés
+*Une simulation rapide pour voir la loi des grands nombres en action : facultative pour la section bonus.*
+
+Simuler 1000 lancers d'un dé et estimer la probabilité d'obtenir un 6.
+
+```python
+import random
+
+n = 1000
+compte_six = 0
+
+for i in range(n):
+    resultat = random.randint(1, 6)
+    if resultat == 6:
+        compte_six += 1
+
+frequence = compte_six / n
+print(f"Fréquence observée : {frequence}")
+print(f"Probabilité théorique : {1/6:.4f}")
+```
+
+*Plus le nombre de simulations est grand, plus la fréquence se rapproche de 1/6.*
+:::
+
+::: exemple Bonus / Approfondissement - Exemple - Marche aléatoire simple
+*Ce graphique Python montre comment les marches aléatoires expliquent les phénomènes de fluctuation et enrichit votre compréhension des probabilités.*
+
+Une personne part de la position 0. À chaque étape, elle fait un pas de +1 ou -1 avec probabilité 1/2 chacun.
+
+On simule 100 pas et on trace la position au fil du temps.
+
+```python
+import random
+import matplotlib.pyplot as plt
+
+position = 0
+positions = [position]
+
+for i in range(100):
+    pas = random.choice([-1, 1])
+    position += pas
+    positions.append(position)
+
+plt.plot(positions)
+plt.xlabel("Nombre de pas")
+plt.ylabel("Position")
+plt.title("Marche aléatoire")
+plt.show()
+```
+
+*Les marches aléatoires modélisent de nombreux phénomènes : cours de bourse, mouvement brownien, etc.*
+:::
+
+## VII. Conseils méthodologiques
+
+### Méthodes générales
+
+::: conseil
+- **Probabilité conditionnelle :** Toujours utiliser $P_A(B) = \frac{P(A \cap B)}{P(A)}$ avec $P(A) \neq 0$
+- **Arbre pondéré :** Vérifier que la somme des probabilités partant d'un nœud vaut 1
+- **Règle du produit :** Pour calculer la probabilité d'un chemin, multiplier les probabilités le long du chemin
+- **Règle de la somme :** Pour des chemins disjoints, additionner les probabilités de chaque chemin
+- **Indépendance :** $A$ et $B$ indépendants ⇔ $P(A \cap B) = P(A) \times P(B)$
+- **Formule des probabilités totales :** Utiliser une partition de l'univers pour calculer $P(B)$
+- **Tableau croisé :** En équiprobabilité, diviser par l'effectif total pour obtenir les probabilités
+:::
+
+::: attention
+- **Confondre $P_A(B)$ et $P_B(A)$ :** Ce sont des probabilités différentes !
+- **Incompatibilité ≠ Indépendance :** Deux événements incompatibles de probabilité non nulle ne sont PAS indépendants
+- **Oublier de vérifier l'indépendance :** Ne pas supposer l'indépendance sans vérification
+- **Somme des probabilités :** Sur un arbre, la somme des probabilités partant d'un nœud doit toujours valoir 1
+- **Formule du produit mal appliquée :** $P(A \cap B) = P(A) \times P_A(B)$, pas $P(A) \times P(B)$ si non indépendants
+- **Faux positifs :** Dans un test médical, distinguer $P_M(T)$ (sensibilité) de $P_T(M)$ (valeur prédictive positive)
+:::
+
+::: remarque Récapitulatif - Formules à retenir
+| Concept | Formule |
+|---|---|
+| **Probabilité conditionnelle** | $\displaystyle P_A(B) = \frac{P(A \cap B)}{P(A)}$ |
+| **Règle du produit** | $\displaystyle P(A \cap B) = P(A) \times P_A(B)$ |
+| **Indépendance** | $\displaystyle P(A \cap B) = P(A) \times P(B)$ |
+| **Probabilités totales** | $\displaystyle P(B) = P(A) \times P_A(B) + P(\overline{A}) \times P_{\overline{A}}(B)$ |
+| **Événement contraire** | $\displaystyle P_A(\overline{B}) = 1 - P_A(B)$ |
+:::
+
+::: remarque À suivre dans le chapitre suivant
+Les variables aléatoires utilisent les schémas de Bernoulli vus ici pour modéliser le nombre de succès dans une succession d'épreuves indépendantes.
+
+Lorsque vous lirez ce chapitre, rappelez-vous que les partitions, probabilités conditionnelles et indépendances étudiées ici constituent la base des lois, espérances et variances à venir.
+:::

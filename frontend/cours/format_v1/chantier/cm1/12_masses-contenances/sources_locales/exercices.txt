@@ -1,0 +1,152 @@
+[
+  {
+    "titre": "La bonne unité",
+    "enonce": "Choisir l’unité adaptée (mg, g, kg, t ou mL, cL, L) : masse d’une gomme ; masse d’un camion chargé ; contenance d’une cuillère ; contenance d’une piscine.",
+    "corrige": "Gomme : $\\res{\\text g}$. Camion : $\\res{\\text t}$. Cuillère : $\\res{\\text{mL}}$. Piscine : des milliers de litres, donc $\\res{\\text L}$ (ou l’hectolitre).",
+    "methode": "Passer par des objets de référence.",
+    "controle": "assert 1000*1000==1000000",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 1
+  },
+  {
+    "titre": "Convertir des masses",
+    "enonce": "Convertir : 3 kg en g ; $2{,}5$ kg en g ; 500 g en kg.",
+    "corrige": "$3\\times1\\,000=\\res{3\\,000}$ g et $2{,}5\\times1\\,000=\\res{2\\,500}$ g. Pour 500 g : la moitié de $1\\,000$ g, soit $\\res{0{,}5}$ kg.",
+    "methode": "Utiliser 1 kg = 1 000 g dans les deux sens.",
+    "controle": "assert 3*1000==3000 and Rational(\"2.5\")*1000==2500 and Rational(500,1000)==Rational(\".5\")",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 1
+  },
+  {
+    "titre": "Convertir des contenances",
+    "enonce": "Convertir : 2 L en cL ; 350 cL en L ; 5 hL en L.",
+    "corrige": "$2\\times100=\\res{200}$ cL. $350$ cL $=\\res{3{,}50}$ L, car 100 cL font 1 L. $5\\times100=\\res{500}$ L.",
+    "methode": "Citer la relation utilisée pour chaque conversion.",
+    "controle": "assert 2*100==200 and Rational(350,100)==Rational(\"3.5\") and 5*100==500",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 1
+  },
+  {
+    "titre": "Comparer",
+    "enonce": "Comparer $1{,}2$ kg et 950 g, puis 75 cL et 1 L.",
+    "corrige": "$1{,}2$ kg $=1\\,200$ g et $1\\,200>950$ : $\\res{1{,}2\\ \\mathrm{kg}>950\\ \\mathrm g}$. $1$ L $=100$ cL et $75<100$ : $\\res{75\\ \\mathrm{cL}<1\\ \\mathrm L}$.",
+    "methode": "Convertir dans la plus petite unité.",
+    "controle": "assert Rational(\"1.2\")*1000==1200 and 1200>950 and 75<100",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 1
+  },
+  {
+    "titre": "Des estimations sensées",
+    "enonce": "Associer chaque objet à une mesure : une orange ; un cartable rempli ; une canette de soda ; une baignoire. Mesures proposées : 33 cL ; 150 L ; 200 g ; 7 kg.",
+    "corrige": "Orange : $\\res{200\\ \\mathrm g}$. Cartable : $\\res{7\\ \\mathrm{kg}}$. Canette : $\\res{33\\ \\mathrm{cL}}$. Baignoire : $\\res{150\\ \\mathrm L}$.",
+    "methode": "Éliminer les associations invraisemblables.",
+    "controle": "assert 200<7000 and 33<15000",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 1
+  },
+  {
+    "titre": "La balance à plateaux",
+    "enonce": "Une balance est en équilibre : à gauche, un sac de farine ; à droite, des masses de 500 g, 200 g et 50 g. Quelle est la masse du sac ?",
+    "corrige": "L’équilibre signifie l’égalité des masses : $500+200+50=\\res{750}$ g.",
+    "methode": "Additionner les masses marquées.",
+    "controle": "assert 500+200+50==750",
+    "figure": "mas-6",
+    "conseil": "",
+    "difficulte": 2
+  },
+  {
+    "titre": "Le colis complet",
+    "enonce": "Un colis contient un livre de $1{,}2$ kg et un jeu de 850 g. Calculer la masse totale, en grammes puis en kilogrammes.",
+    "corrige": "$1{,}2$ kg $=1\\,200$ g ; total : $1\\,200+850=\\res{2\\,050}$ g, soit $\\res{2{,}050}$ kg, c’est-à-dire $2{,}05$ kg.",
+    "methode": "Convertir avant d’additionner.",
+    "controle": "assert 1200+850==2050 and Rational(2050,1000)==Rational(\"2.05\")",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 2
+  },
+  {
+    "titre": "Des verres bien remplis",
+    "enonce": "Une carafe contient $1{,}5$ L de jus. Combien de verres de 25 cL peut-on remplir ?",
+    "corrige": "$1{,}5$ L $=150$ cL. On compte de 25 en 25 : $25\\times6=150$, donc $\\res6$ verres exactement.",
+    "methode": "Chercher combien de fois 25 tient dans 150.",
+    "controle": "assert Rational(\"1.5\")*100==150 and 25*6==150",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 2
+  },
+  {
+    "titre": "Le chargement du camion",
+    "enonce": "Un camion peut charger 1 t. On pose une palette de 850 kg puis une caisse de 325 kg. Le chargement est-il possible ?",
+    "corrige": "$850+325=1\\,175$ kg, or 1 t $=1\\,000$ kg. Le chargement dépasse de $1\\,175-1\\,000=\\res{175}$ kg : $\\res{\\text{impossible}}$.",
+    "methode": "Comparer le total à la tonne convertie.",
+    "controle": "assert 850+325==1175 and 1175-1000==175",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 2
+  },
+  {
+    "titre": "La recette doublée",
+    "enonce": "Une recette demande 250 g de farine. On double la recette, avec un paquet de 1 kg. Quelle masse de farine utilise-t-on et combien en reste-t-il ?",
+    "corrige": "Doubler : $250\\times2=\\res{500}$ g. Le paquet contient $1\\,000$ g : il reste $1\\,000-500=\\res{500}$ g, la moitié du paquet.",
+    "methode": "Convertir le paquet en grammes.",
+    "controle": "assert 250*2==500 and 1000-500==500",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 2
+  },
+  {
+    "titre": "Les briques de lait",
+    "enonce": "La cantine reçoit 3 packs de 6 briques de 1 L de lait. Elle utilise 15 L dans la semaine. Quelle contenance de lait reste-t-il ?",
+    "corrige": "Le stock vaut $3\\times6=18$ briques, soit 18 L. Il reste $18-15=\\res3$ L, trois briques pleines.",
+    "methode": "Calculer le stock avant la consommation.",
+    "controle": "assert 3*6==18 and 18-15==3",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 3
+  },
+  {
+    "titre": "L’ascenseur",
+    "enonce": "Un ascenseur accepte 300 kg au plus. Quatre personnes de 72 kg chacune y montent avec un colis de 15 kg. Est-ce autorisé ?",
+    "corrige": "Les personnes pèsent $4\\times72=288$ kg ; avec le colis : $288+15=\\res{303}$ kg. Comme $303>300$, c’est $\\res{\\text{interdit}}$, à 3 kg près.",
+    "methode": "Additionner toutes les masses embarquées.",
+    "controle": "assert 4*72==288 and 288+15==303 and 303>300",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 3
+  },
+  {
+    "titre": "La citerne de l’école",
+    "enonce": "Une citerne de récupération d’eau contient 5 hL. On en tire 120 L pour arroser. Quelle contenance d’eau reste-t-il, en litres ?",
+    "corrige": "$5$ hL $=500$ L. Il reste $500-120=\\res{380}$ L.",
+    "methode": "Convertir les hectolitres avant de soustraire.",
+    "controle": "assert 5*100==500 and 500-120==380",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 3
+  },
+  {
+    "titre": "Les pots de confiture",
+    "enonce": "Avec $2{,}4$ kg de confiture, combien de pots de 300 g peut-on remplir exactement ?",
+    "corrige": "$2{,}4$ kg $=2\\,400$ g. En comptant de 300 en 300 : $300\\times8=2\\,400$, donc $\\res8$ pots, sans reste.",
+    "methode": "Chercher le facteur qui complète 300.",
+    "controle": "assert Rational(\"2.4\")*1000==2400 and 300*8==2400",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 3
+  },
+  {
+    "titre": "Plumes ou plomb ?",
+    "enonce": "Sacha demande : « Qu’est-ce qui est le plus lourd : 1 kg de plumes ou 1 kg de plomb ? » Répondre, puis expliquer pourquoi un litre d’eau est une bonne référence de masse.",
+    "corrige": "Les deux pèsent $\\res{\\text{pareil}}$ : un kilogramme reste un kilogramme, seule la place occupée change. Un litre d’eau pèse environ $\\res{1\\ \\mathrm{kg}}$ : cette référence relie contenances et masses pour estimer.",
+    "methode": "Distinguer la masse de l’encombrement.",
+    "controle": "assert 1==1 and 1000*1==1000",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 3
+  }
+]

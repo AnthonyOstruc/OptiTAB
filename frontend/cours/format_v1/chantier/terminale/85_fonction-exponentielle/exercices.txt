@@ -1,0 +1,1910 @@
+=== Découverte - Dérivées de base
+Id: 1210
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Calculer la dérivée de chacune des fonctions suivantes, définies et dérivables sur $\mathbb{R}$.
+
+1. $f(x) = e^x$
+2. $g(x) = e^{3x}$
+3. $h(x) = e^{-2x + 1}$
+4. $k(x) = 5e^{2x}$
+5. $m(x) = e^{x^2}$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Dérivée de $f(x) = e^x$
+
+::: methode
+La fonction exponentielle est égale à sa propre dérivée.
+:::
+
+::: etape Dérivée de référence
+Par définition de la fonction exponentielle, $\exp' = \exp$ : pour tout réel $x$, $\left(e^x\right)' = e^x$.
+:::
+
+::: resultat
+$$f'(x) = e^x$$
+:::
+
+## Question 2 : Dérivée de $g(x) = e^{3x}$
+
+::: methode
+Dérivée d’une fonction de la forme $e^u$ : $\left(e^u\right)' = u' e^u$.
+:::
+
+::: etape Identifier $u$
+$g(x) = e^{u(x)}$ avec $u(x) = 3x$, donc $u'(x) = 3$.
+:::
+
+::: etape Appliquer la formule
+$$g'(x) = u'(x)\,e^{u(x)} = 3e^{3x}$$
+:::
+
+::: resultat
+$$g'(x) = 3e^{3x}$$
+:::
+
+## Question 3 : Dérivée de $h(x) = e^{-2x + 1}$
+
+::: methode
+Dérivée d’une fonction de la forme $e^u$ : $\left(e^u\right)' = u' e^u$.
+:::
+
+::: etape Identifier $u$
+$h(x) = e^{u(x)}$ avec $u(x) = -2x + 1$, donc $u'(x) = -2$.
+:::
+
+::: etape Appliquer la formule
+$$h'(x) = (-2) \times e^{-2x + 1} = -2e^{-2x + 1}$$
+:::
+
+::: resultat
+$$h'(x) = -2e^{-2x + 1}$$
+:::
+
+::: retenir
+Pour tous réels $a$ et $b$ : $\left(e^{ax + b}\right)' = a\,e^{ax + b}$. Ici $a = -2 \lt 0$, donc $h'(x) \lt 0$ : la fonction $h$ est décroissante.
+:::
+
+À l’inverse, $g'(x) = 3e^{3x} \gt 0$ : la fonction $g$ est croissante. Les courbes le confirment :
+
+[IMAGE_1]
+
+## Question 4 : Dérivée de $k(x) = 5e^{2x}$
+
+::: methode
+Dérivée du produit d’une fonction par une constante : $(c\,v)' = c\,v'$.
+:::
+
+::: etape Dérivée de $e^{2x}$
+Avec $u(x) = 2x$ et $u'(x) = 2$ : $\left(e^{2x}\right)' = 2e^{2x}$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+k'(x) &= 5 \times \left(e^{2x}\right)' \\
+&= 5 \times 2e^{2x} \\
+&= 10e^{2x}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$k'(x) = 10e^{2x}$$
+:::
+
+## Question 5 : Dérivée de $m(x) = e^{x^2}$
+
+::: methode
+Dérivée d’une fonction de la forme $e^u$ : $\left(e^u\right)' = u' e^u$.
+:::
+
+::: etape Identifier $u$
+$m(x) = e^{u(x)}$ avec $u(x) = x^2$, donc $u'(x) = 2x$.
+:::
+
+::: etape Appliquer la formule
+$$m'(x) = 2x \times e^{x^2} = 2x\,e^{x^2}$$
+:::
+
+::: resultat
+$$m'(x) = 2x\,e^{x^2}$$
+:::
+
+::: attention
+Erreurs fréquentes : écrire $m'(x) = e^{x^2}$ (le facteur $u'$ est oublié) ou $m'(x) = x^2 e^{x^2 - 1}$ (la règle des puissances ne s’applique pas à l’exponentielle).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $f'(x) = e^x$
+2. $g'(x) = 3e^{3x}$
+3. $h'(x) = -2e^{-2x + 1}$
+4. $k'(x) = 10e^{2x}$
+5. $m'(x) = 2x\,e^{x^2}$
+
+===
+
+=== Découverte - Limites et variations de base
+Id: 1209
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Questions de cours sur la fonction exponentielle : limites de référence, signe et sens de variation.
+
+1. Calculer $\lim\limits_{x \to +\infty} e^x$.
+2. Calculer $\lim\limits_{x \to -\infty} e^x$.
+3. Calculer $\lim\limits_{x \to 0} \frac{e^x - 1}{x}$.
+4. Étudier le signe de $e^x$ sur $\mathbb{R}$.
+5. Comparer $e^2$ et $e^3$ en justifiant.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer $\lim\limits_{x \to +\infty} e^x$
+
+::: methode
+Comparer $e^x$ à une fonction qui tend vers $+\infty$.
+:::
+
+::: etape Une inégalité de référence
+La fonction $\exp$ est convexe : sa courbe est au-dessus de sa tangente en $0$, d’équation $y = x + 1$. Donc $e^x \ge 1 + x$ pour tout réel $x$.
+:::
+
+::: etape Théorème de comparaison
+$\lim\limits_{x \to +\infty} (1 + x) = +\infty$ et $e^x \ge 1 + x$, donc $e^x$ tend aussi vers $+\infty$.
+:::
+
+::: resultat
+$$\lim_{x \to +\infty} e^x = +\infty$$
+:::
+
+## Question 2 : Calculer $\lim\limits_{x \to -\infty} e^x$
+
+::: methode
+Écrire $e^x = \frac{1}{e^{-x}}$ et se ramener à la limite en $+\infty$.
+:::
+
+::: etape Réécriture
+Pour tout réel $x$, $e^x \times e^{-x} = e^0 = 1$, donc $e^x = \frac{1}{e^{-x}}$.
+:::
+
+::: etape Passage à la limite
+Quand $x \to -\infty$, on a $-x \to +\infty$, donc $e^{-x} \to +\infty$ (question 1) et, par quotient, $\frac{1}{e^{-x}} \to 0$.
+:::
+
+::: resultat
+$$\lim_{x \to -\infty} e^x = 0$$
+Graphiquement, l’axe des abscisses est asymptote horizontale à la courbe de $\exp$ en $-\infty$.
+:::
+
+La courbe de $\exp$ est au-dessus de sa tangente $y = x + 1$ (question 1) et se rapproche de l’axe des abscisses en $-\infty$ (question 2) :
+
+[IMAGE_1]
+
+## Question 3 : Calculer $\lim\limits_{x \to 0} \frac{e^x - 1}{x}$
+
+::: methode
+Reconnaître un taux d’accroissement, qui tend vers un nombre dérivé.
+:::
+
+::: etape Forme indéterminée
+En $0$, le numérateur et le dénominateur tendent vers $0$ : c’est une forme indéterminée « $\frac{0}{0}$ ».
+:::
+
+::: etape Taux d’accroissement
+Pour $x \ne 0$ : $\frac{e^x - 1}{x} = \frac{e^x - e^0}{x - 0}$, taux d’accroissement de $\exp$ entre $0$ et $x$. Comme $\exp$ est dérivable en $0$, ce taux tend vers $\exp'(0) = e^0 = 1$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+$$\lim_{x \to 0} \frac{e^x - 1}{x} = 1$$
+:::
+
+::: retenir
+Graphiquement, $\dfrac{e^x - 1}{x}$ est la pente de la sécante $(AM)$, avec $A(0\,;1)$ et $M\left(x\,;e^x\right)$ (en orange). Quand $x$ tend vers $0$, cette sécante se rapproche de la tangente en $A$, de pente $1$ (en vert).
+:::
+
+## Question 4 : Étudier le signe de $e^x$ sur $\mathbb{R}$
+
+::: methode
+Écrire $e^x$ comme un carré et utiliser $e^x \times e^{-x} = 1$.
+:::
+
+::: etape Positivité
+Pour tout réel $x$, $e^x = e^{\frac{x}{2} + \frac{x}{2}} = \left(e^{\frac{x}{2}}\right)^2 \ge 0$.
+:::
+
+::: etape Non-nullité
+$e^x \times e^{-x} = 1$, donc $e^x \ne 0$.
+:::
+
+::: resultat
+Pour tout réel $x$, $e^x \gt 0$.
+:::
+
+::: retenir
+Dans un tableau de signes, un facteur $e^{\ldots}$ est toujours strictement positif : il ne change jamais le signe d’un produit.
+:::
+
+## Question 5 : Comparer $e^2$ et $e^3$ en justifiant
+
+::: methode
+Utiliser la stricte croissance de la fonction exponentielle.
+:::
+
+::: etape Comparaison
+$\exp' = \exp \gt 0$, donc $\exp$ est strictement croissante sur $\mathbb{R}$. Comme $2 \lt 3$, on obtient $e^2 \lt e^3$.
+:::
+
+::: point Vérification
+$e^2 \approx 7{,}39$ et $e^3 \approx 20{,}09$.
+:::
+
+::: resultat
+$$e^2 \lt e^3$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\lim\limits_{x \to +\infty} e^x = +\infty$
+2. $\lim\limits_{x \to -\infty} e^x = 0$
+3. $\lim\limits_{x \to 0} \frac{e^x - 1}{x} = 1$
+4. $e^x \gt 0$ pour tout réel $x$.
+5. $e^2 \lt e^3$, car $\exp$ est strictement croissante et $2 \lt 3$.
+
+===
+
+=== Découverte - Propriétés algébriques et calculs de base
+Id: 1208
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Simplifier les expressions suivantes à l’aide des propriétés algébriques de la fonction exponentielle ($x$ désigne un nombre réel).
+
+1. Simplifier $e^{2x + 3} \times e^{-x}$.
+2. Simplifier $\frac{e^{3x}}{e^{2x + 1}}$.
+3. Écrire $\left(e^x\right)^2 \times e^{-3x}$ sous la forme $e^{ax + b}$.
+4. Montrer que $e^x \times e^{-x} = 1$.
+5. Simplifier $\frac{e^{x + 2} \times e^{3x - 1}}{e^{2x}}$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Simplifier $e^{2x + 3} \times e^{-x}$
+
+::: methode
+Produit : $e^a \times e^b = e^{a + b}$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+e^{2x + 3} \times e^{-x} &= e^{(2x + 3) + (-x)} \\
+&= e^{x + 3}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$e^{2x + 3} \times e^{-x} = e^{x + 3}$$
+:::
+
+## Question 2 : Simplifier $\frac{e^{3x}}{e^{2x + 1}}$
+
+::: methode
+Quotient : $\frac{e^a}{e^b} = e^{a - b}$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+\frac{e^{3x}}{e^{2x + 1}} &= e^{3x - (2x + 1)} \\
+&= e^{3x - 2x - 1} \\
+&= e^{x - 1}
+\end{aligned}
+$$
+:::
+
+::: attention
+Les parenthèses sont indispensables : on soustrait tout l’exposant $2x + 1$, d’où $-1$ et non $+1$.
+:::
+
+::: resultat
+$$\frac{e^{3x}}{e^{2x + 1}} = e^{x - 1}$$
+:::
+
+## Question 3 : Écrire $\left(e^x\right)^2 \times e^{-3x}$ sous la forme $e^{ax + b}$
+
+::: methode
+Puissance : $\left(e^a\right)^n = e^{na}$, puis produit.
+:::
+
+::: etape Puissance
+$$\left(e^x\right)^2 = e^{2x}$$
+:::
+
+::: etape Produit
+$$e^{2x} \times e^{-3x} = e^{2x - 3x} = e^{-x}$$
+:::
+
+::: resultat
+$\left(e^x\right)^2 \times e^{-3x} = e^{-x}$, de la forme $e^{ax + b}$ avec $a = -1$ et $b = 0$.
+:::
+
+::: attention
+$\left(e^x\right)^2 = e^{2x}$, et non $e^{x^2}$.
+:::
+
+## Question 4 : Montrer que $e^x \times e^{-x} = 1$
+
+::: methode
+Produit, puis valeur en $0$ : $e^0 = 1$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+e^x \times e^{-x} &= e^{x + (-x)} \\
+&= e^0 \\
+&= 1
+\end{aligned}
+$$
+:::
+
+::: resultat
+Pour tout réel $x$, $e^x \times e^{-x} = 1$ : autrement dit, $e^{-x} = \frac{1}{e^x}$.
+:::
+
+## Question 5 : Simplifier $\frac{e^{x + 2} \times e^{3x - 1}}{e^{2x}}$
+
+::: methode
+Produit au numérateur, puis quotient.
+:::
+
+::: etape Numérateur
+$$e^{x + 2} \times e^{3x - 1} = e^{(x + 2) + (3x - 1)} = e^{4x + 1}$$
+:::
+
+::: etape Quotient
+$$\frac{e^{4x + 1}}{e^{2x}} = e^{(4x + 1) - 2x} = e^{2x + 1}$$
+:::
+
+::: resultat
+$$\frac{e^{x + 2} \times e^{3x - 1}}{e^{2x}} = e^{2x + 1}$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $e^{2x + 3} \times e^{-x} = e^{x + 3}$
+2. $\frac{e^{3x}}{e^{2x + 1}} = e^{x - 1}$
+3. $\left(e^x\right)^2 \times e^{-3x} = e^{-x}$ ($a = -1$, $b = 0$)
+4. $e^x \times e^{-x} = e^0 = 1$
+5. $\frac{e^{x + 2} \times e^{3x - 1}}{e^{2x}} = e^{2x + 1}$
+
+===
+
+=== Entraînement - Équations et inéquations
+Id: 1212
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Résoudre dans $\mathbb{R}$ les équations et inéquations suivantes.
+
+1. $e^{2x + 1} = e^{x - 3}$
+2. $e^x = 5$
+3. $e^{2x} - 4e^x + 3 = 0$
+4. $e^{x - 1} \lt e^{2x + 3}$
+5. $e^x \ge 7$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Résoudre $e^{2x + 1} = e^{x - 3}$
+
+::: methode
+Pour tous réels $a$ et $b$ : $e^a = e^b \iff a = b$.
+:::
+
+::: etape Égalité des exposants
+$$e^{2x + 1} = e^{x - 3} \iff 2x + 1 = x - 3$$
+:::
+
+::: etape Équation du premier degré
+$$
+\begin{aligned}
+2x + 1 = x - 3 &\iff 2x - x = -3 - 1 \\
+&\iff x = -4
+\end{aligned}
+$$
+:::
+
+::: point Vérification
+Pour $x = -4$ : $e^{2 \times (-4) + 1} = e^{-7}$ et $e^{-4 - 3} = e^{-7}$.
+:::
+
+::: resultat
+$$S = \{-4\}$$
+:::
+
+## Question 2 : Résoudre $e^x = 5$
+
+::: methode
+Pour $k \gt 0$, l’équation $e^x = k$ a une unique solution : $x = \ln k$.
+:::
+
+::: rappel Logarithme népérien
+La fonction $\exp$ est continue, strictement croissante, et prend toutes les valeurs de $\left]0\,;+\infty\right[$. Pour $k \gt 0$, l’unique solution de $e^x = k$ est notée $\ln k$.
+:::
+
+::: etape Résolution
+$5 \gt 0$, donc $e^x = 5 \iff x = \ln 5$, avec $\ln 5 \approx 1{,}609$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+$$S = \{\ln 5\}$$
+:::
+
+## Question 3 : Résoudre $e^{2x} - 4e^x + 3 = 0$
+
+::: methode
+Changement de variable $X = e^x$, avec $X \gt 0$, pour se ramener au second degré.
+:::
+
+::: etape Changement de variable
+$e^{2x} = \left(e^x\right)^2 = X^2$ : l’équation devient
+
+$$X^2 - 4X + 3 = 0, \quad X \gt 0$$
+:::
+
+::: etape Équation du second degré
+$$
+\begin{aligned}
+\Delta &= (-4)^2 - 4 \times 1 \times 3 \\
+&= 16 - 12 \\
+&= 4
+\end{aligned}
+$$
+
+$\Delta \gt 0$, deux racines : $X_1 = \frac{4 - 2}{2} = 1$ et $X_2 = \frac{4 + 2}{2} = 3$. Elles sont toutes deux strictement positives : on les garde.
+:::
+
+::: etape Retour à la variable $x$
+- $e^x = 1 \iff x = 0$ (car $e^0 = 1$) ;
+- $e^x = 3 \iff x = \ln 3 \approx 1{,}099$.
+:::
+
+[IMAGE_3]
+
+::: resultat
+$$S = \{0\,;\ln 3\}$$
+:::
+
+::: attention
+Après le changement de variable, une racine $X \le 0$ doit être rejetée : $e^x = X$ n’a alors aucune solution, car $e^x \gt 0$.
+:::
+
+## Question 4 : Résoudre $e^{x - 1} \lt e^{2x + 3}$
+
+::: methode
+$\exp$ est strictement croissante : $e^a \lt e^b \iff a \lt b$.
+:::
+
+::: etape Comparaison des exposants
+$$e^{x - 1} \lt e^{2x + 3} \iff x - 1 \lt 2x + 3$$
+:::
+
+::: etape Inéquation du premier degré
+$$
+\begin{aligned}
+x - 1 \lt 2x + 3 &\iff x - 2x \lt 3 + 1 \\
+&\iff -x \lt 4 \\
+&\iff x \gt -4
+\end{aligned}
+$$
+:::
+
+::: attention
+En multipliant les deux membres par $-1$, on change le sens de l’inégalité.
+:::
+
+::: resultat
+$$S = \left]-4\,;+\infty\right[$$
+:::
+
+## Question 5 : Résoudre $e^x \ge 7$
+
+::: methode
+Écrire $7 = e^{\ln 7}$, puis utiliser la croissance de $\exp$.
+:::
+
+::: etape Réécriture
+$7 \gt 0$, donc $7 = e^{\ln 7}$ et l’inéquation s’écrit $e^x \ge e^{\ln 7}$.
+:::
+
+::: etape Comparaison des exposants
+$\exp$ est strictement croissante, donc $e^x \ge e^{\ln 7} \iff x \ge \ln 7$, avec $\ln 7 \approx 1{,}946$.
+:::
+
+[IMAGE_5]
+
+::: resultat
+$$S = \left[\ln 7\,;+\infty\right[$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $S = \{-4\}$
+2. $S = \{\ln 5\}$
+3. $S = \{0\,;\ln 3\}$
+4. $S = \left]-4\,;+\infty\right[$
+5. $S = \left[\ln 7\,;+\infty\right[$
+
+===
+
+=== Entraînement - Limites et croissances comparées
+Id: 1217
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On considère les fonctions $f$ et $g$ définies par $f(x) = e^x - x$ sur $\mathbb{R}$ et $g(x) = \frac{e^x}{x}$ sur $\left]0\,;+\infty\right[$.
+
+1. Calculer les dérivées $f'(x)$ et $g'(x)$.
+2. Étudier les variations de $f$ et de $g$.
+3. Calculer les limites de $f$ en $+\infty$ et en $-\infty$.
+4. Calculer les limites de $g$ en $0^+$ et en $+\infty$.
+5. Dresser les tableaux de variations complets de $f$ et de $g$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer les dérivées $f'(x)$ et $g'(x)$
+
+::: methode
+Dérivée d’une somme pour $f$, formule du quotient $\left(\frac{u}{v}\right)' = \frac{u'v - uv'}{v^2}$ pour $g$.
+:::
+
+::: etape Dérivée de $f$
+$$f'(x) = e^x - 1$$
+:::
+
+::: etape Dérivée de $g$
+$u(x) = e^x$ et $v(x) = x$, donc $u'(x) = e^x$ et $v'(x) = 1$ :
+
+$$
+\begin{aligned}
+g'(x) &= \frac{e^x \times x - e^x \times 1}{x^2} \\
+&= \frac{e^x(x - 1)}{x^2}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$f'(x) = e^x - 1$ et $g'(x) = \dfrac{e^x(x - 1)}{x^2}$.
+:::
+
+## Question 2 : Étudier les variations de $f$ et de $g$
+
+::: methode
+Étudier le signe de chaque dérivée.
+:::
+
+::: etape Signe de $f'(x)$
+$e^x - 1 \gt 0 \iff e^x \gt e^0 \iff x \gt 0$. De même, $f'(x) \lt 0$ pour $x \lt 0$, et $f'(0) = 0$.
+:::
+
+::: etape Signe de $g'(x)$
+Sur $\left]0\,;+\infty\right[$, $e^x \gt 0$ et $x^2 \gt 0$ : $g'(x)$ a le signe de $x - 1$. Donc $g'(x) \lt 0$ sur $\left]0\,;1\right[$, $g'(1) = 0$ et $g'(x) \gt 0$ sur $\left]1\,;+\infty\right[$.
+:::
+
+::: resultat
+- $f$ est décroissante sur $\left]-\infty\,;0\right]$ et croissante sur $\left[0\,;+\infty\right[$.
+- $g$ est décroissante sur $\left]0\,;1\right]$ et croissante sur $\left[1\,;+\infty\right[$.
+:::
+
+## Question 3 : Calculer les limites de $f$ en $+\infty$ et en $-\infty$
+
+::: methode
+En $+\infty$, lever l’indétermination en factorisant par $e^x$.
+:::
+
+::: etape Limite en $+\infty$
+$e^x \to +\infty$ et $x \to +\infty$ : forme indéterminée « $+\infty - \infty$ ». On factorise :
+
+$$f(x) = e^x\left(1 - \frac{x}{e^x}\right)$$
+
+Par croissances comparées, $\frac{x}{e^x} \to 0$, donc la parenthèse tend vers $1$ et $f(x) \to +\infty$.
+:::
+
+::: etape Limite en $-\infty$
+$e^x \to 0$ et $-x \to +\infty$ : pas de forme indéterminée, $f(x) = e^x + (-x) \to +\infty$.
+:::
+
+::: resultat
+$$\lim_{x \to +\infty} f(x) = +\infty \qquad \lim_{x \to -\infty} f(x) = +\infty$$
+:::
+
+## Question 4 : Calculer les limites de $g$ en $0^+$ et en $+\infty$
+
+::: methode
+En $0^+$, limite d’un quotient ; en $+\infty$, croissances comparées.
+:::
+
+::: etape Limite en $0^+$
+$e^x \to e^0 = 1$ et $x \to 0$ en restant positif : le quotient tend vers $+\infty$. L’axe des ordonnées (droite d’équation $x = 0$) est asymptote verticale à la courbe de $g$.
+:::
+
+::: etape Limite en $+\infty$
+Forme indéterminée « $\frac{\infty}{\infty}$ », levée par les croissances comparées : $\lim\limits_{x \to +\infty} \frac{e^x}{x} = +\infty$.
+:::
+
+::: resultat
+$$\lim_{x \to 0^+} g(x) = +\infty \qquad \lim_{x \to +\infty} g(x) = +\infty$$
+:::
+
+## Question 5 : Dresser les tableaux de variations complets de $f$ et de $g$
+
+::: methode
+Rassembler les signes des dérivées (question 2), les extremums et les limites (questions 3 et 4).
+:::
+
+::: etape Extremums
+$f(0) = e^0 - 0 = 1$ et $g(1) = \frac{e^1}{1} = e$.
+:::
+
+::: point Tableau de variations de $f$
+::: tableau
+x : -\infty, 0, +\infty
+f'(x) : , -, z, +,
+f(x) : +/+\infty, -/1, +/+\infty
+:::
+:::
+
+[IMAGE_1]
+
+::: point Tableau de variations de $g$
+::: tableau
+x : 0, 1, +\infty
+g'(x) : d, -, z, +,
+g(x) : D+/+\infty, -/e, +/+\infty
+:::
+:::
+
+[IMAGE_2]
+
+::: resultat
+$f$ admet un minimum égal à $1$ en $0$ ; $g$ admet un minimum égal à $e$ en $1$.
+:::
+
+::: retenir
+Conséquence : pour tout réel $x$, $e^x - x \ge 1 \gt 0$, donc $e^x \gt x$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $f'(x) = e^x - 1$ et $g'(x) = \dfrac{e^x(x - 1)}{x^2}$.
+2. $f$ est décroissante sur $\left]-\infty\,;0\right]$ et croissante sur $\left[0\,;+\infty\right[$ ; $g$ est décroissante sur $\left]0\,;1\right]$ et croissante sur $\left[1\,;+\infty\right[$.
+3. $\lim\limits_{x \to +\infty} f(x) = +\infty$ et $\lim\limits_{x \to -\infty} f(x) = +\infty$.
+4. $\lim\limits_{x \to 0^+} g(x) = +\infty$ et $\lim\limits_{x \to +\infty} g(x) = +\infty$.
+5. Minimum de $f$ : $f(0) = 1$ ; minimum de $g$ : $g(1) = e$.
+
+===
+
+=== Problème - Dérivée, variations et tangente
+Id: 1213
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On considère la fonction $g$ définie sur $\mathbb{R}$ par $g(x) = x e^x$.
+
+1. Calculer la dérivée $g'(x)$.
+2. Étudier le signe de $g'(x)$.
+3. Déterminer les variations de $g$.
+4. Calculer les limites de $g$ en $+\infty$ et en $-\infty$.
+5. Déterminer une équation de la tangente à la courbe de $g$ au point d’abscisse $0$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer la dérivée $g'(x)$
+
+::: methode
+Dérivée d’un produit : $(uv)' = u'v + uv'$.
+:::
+
+::: etape Identification
+$u(x) = x$ et $v(x) = e^x$, donc $u'(x) = 1$ et $v'(x) = e^x$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+g'(x) &= 1 \times e^x + x \times e^x \\
+&= (1 + x)\,e^x
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$g'(x) = (1 + x)\,e^x$$
+:::
+
+## Question 2 : Étudier le signe de $g'(x)$
+
+::: methode
+$e^x \gt 0$ : $g'(x)$ a le signe de $1 + x$.
+:::
+
+::: etape Signe de $1 + x$
+$1 + x \gt 0 \iff x \gt -1$ ; $1 + x = 0 \iff x = -1$.
+:::
+
+::: point Tableau de signes
+::: tableau
+x : -\infty, -1, +\infty
+e^x : , +, t, +,
+1 + x : , -, z, +,
+g'(x) : , -, z, +,
+:::
+:::
+
+::: resultat
+$g'(x) \lt 0$ sur $\left]-\infty\,;-1\right[$, $g'(-1) = 0$ et $g'(x) \gt 0$ sur $\left]-1\,;+\infty\right[$.
+:::
+
+## Question 3 : Déterminer les variations de $g$
+
+::: methode
+Le signe de la dérivée donne le sens de variation.
+:::
+
+::: etape Sens de variation
+$g$ est décroissante sur $\left]-\infty\,;-1\right]$, puis croissante sur $\left[-1\,;+\infty\right[$ : elle admet un minimum en $-1$.
+:::
+
+::: etape Valeur du minimum
+$$g(-1) = (-1) \times e^{-1} = -\frac{1}{e} \approx -0{,}37$$
+:::
+
+::: resultat
+$g$ est décroissante sur $\left]-\infty\,;-1\right]$ et croissante sur $\left[-1\,;+\infty\right[$, de minimum $g(-1) = -\frac{1}{e}$.
+:::
+
+[IMAGE_1]
+
+## Question 4 : Calculer les limites de $g$ en $+\infty$ et en $-\infty$
+
+::: methode
+En $+\infty$, limite d’un produit ; en $-\infty$, croissances comparées.
+:::
+
+::: etape Limite en $+\infty$
+$x \to +\infty$ et $e^x \to +\infty$ : par produit, $g(x) \to +\infty$.
+:::
+
+::: etape Limite en $-\infty$
+$x \to -\infty$ et $e^x \to 0$ : forme indéterminée « $\infty \times 0$ ». Par croissances comparées, $\lim\limits_{x \to -\infty} x e^x = 0$ : l’axe des abscisses est asymptote horizontale à la courbe en $-\infty$.
+:::
+
+::: attention
+En $+\infty$, il n’y a aucune forme indéterminée : les croissances comparées ne servent qu’en $-\infty$.
+:::
+
+::: point Tableau de variations complet
+::: tableau
+x : -\infty, -1, +\infty
+g'(x) : , -, z, +,
+g(x) : +/0, -/-\frac{1}{e}, +/+\infty
+:::
+:::
+
+::: resultat
+$$\lim_{x \to +\infty} g(x) = +\infty \qquad \lim_{x \to -\infty} g(x) = 0$$
+:::
+
+## Question 5 : Déterminer une équation de la tangente au point d’abscisse $0$
+
+::: methode
+La tangente au point d’abscisse $a$ a pour équation $y = g'(a)(x - a) + g(a)$.
+:::
+
+::: etape Valeurs en $0$
+$g(0) = 0 \times e^0 = 0$ et $g'(0) = (1 + 0) \times e^0 = 1$.
+:::
+
+::: etape Équation
+$$y = 1 \times (x - 0) + 0 = x$$
+:::
+
+[IMAGE_2]
+
+::: resultat
+La tangente en $0$ a pour équation $y = x$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $g'(x) = (1 + x)\,e^x$
+2. $g'(x) \lt 0$ sur $\left]-\infty\,;-1\right[$, $g'(-1) = 0$, $g'(x) \gt 0$ sur $\left]-1\,;+\infty\right[$.
+3. $g$ est décroissante sur $\left]-\infty\,;-1\right]$ et croissante sur $\left[-1\,;+\infty\right[$ ; minimum $g(-1) = -\frac{1}{e}$.
+4. $\lim\limits_{x \to +\infty} g(x) = +\infty$ et $\lim\limits_{x \to -\infty} g(x) = 0$.
+5. Tangente en $0$ : $y = x$.
+
+===
+
+=== Problème - Équations et inéquations avancées
+Id: 1216
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Résoudre dans $\mathbb{R}$ les équations et inéquations suivantes.
+
+1. $e^{2x} - 5e^x + 6 = 0$
+2. $e^{x^2} = e^{3x - 2}$
+3. $e^{2x} - 3e^x + 2 \le 0$
+4. $e^{x + 1} \gt 2e^{x - 1}$
+5. $e^{x^2 - 4x + 3} \ge 1$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Résoudre $e^{2x} - 5e^x + 6 = 0$
+
+::: methode
+Changement de variable $X = e^x$, avec $X \gt 0$.
+:::
+
+::: etape Changement de variable
+$e^{2x} = \left(e^x\right)^2 = X^2$ : l’équation devient $X^2 - 5X + 6 = 0$, avec $X \gt 0$.
+:::
+
+::: etape Équation du second degré
+$\Delta = (-5)^2 - 4 \times 1 \times 6 = 25 - 24 = 1$, donc deux racines :
+
+$$X_1 = \frac{5 - 1}{2} = 2 \qquad X_2 = \frac{5 + 1}{2} = 3$$
+
+Elles sont strictement positives : on les garde.
+:::
+
+::: etape Retour à la variable $x$
+- $e^x = 2 \iff x = \ln 2 \approx 0{,}693$ ;
+- $e^x = 3 \iff x = \ln 3 \approx 1{,}099$.
+:::
+
+[IMAGE_1]
+
+::: resultat
+$$S = \{\ln 2\,;\ln 3\}$$
+:::
+
+## Question 2 : Résoudre $e^{x^2} = e^{3x - 2}$
+
+::: methode
+$e^a = e^b \iff a = b$.
+:::
+
+::: etape Égalité des exposants
+$$
+\begin{aligned}
+e^{x^2} = e^{3x - 2} &\iff x^2 = 3x - 2 \\
+&\iff x^2 - 3x + 2 = 0
+\end{aligned}
+$$
+:::
+
+::: etape Équation du second degré
+$\Delta = (-3)^2 - 4 \times 1 \times 2 = 9 - 8 = 1$, donc deux racines :
+
+$$x_1 = \frac{3 - 1}{2} = 1 \qquad x_2 = \frac{3 + 1}{2} = 2$$
+:::
+
+::: point Vérification
+Pour $x = 1$ : $e^{1} = e^{3 - 2}$ ; pour $x = 2$ : $e^{4} = e^{6 - 2}$.
+:::
+
+::: resultat
+$$S = \{1\,;2\}$$
+:::
+
+## Question 3 : Résoudre $e^{2x} - 3e^x + 2 \le 0$
+
+::: methode
+Changement de variable $X = e^x \gt 0$, puis signe d’un trinôme.
+:::
+
+::: etape Changement de variable
+L’inéquation devient $X^2 - 3X + 2 \le 0$, avec $X \gt 0$.
+:::
+
+::: etape Racines du trinôme
+$\Delta = (-3)^2 - 4 \times 1 \times 2 = 1$ : racines $X_1 = \frac{3 - 1}{2} = 1$ et $X_2 = \frac{3 + 1}{2} = 2$, d’où $X^2 - 3X + 2 = (X - 1)(X - 2)$.
+:::
+
+::: point Tableau de signes sur $\left]0\,;+\infty\right[$
+::: tableau
+X : 0, 1, 2, +\infty
+X - 1 : , -, z, +, t, +,
+X - 2 : , -, t, -, z, +,
+(X - 1)(X - 2) : , +, z, -, z, +,
+:::
+:::
+
+::: etape Retour à la variable $x$
+$(X - 1)(X - 2) \le 0 \iff 1 \le X \le 2$, c’est-à-dire $1 \le e^x \le 2$. Comme $\exp$ est strictement croissante et que $1 = e^0$, $2 = e^{\ln 2}$ :
+
+$$1 \le e^x \le 2 \iff 0 \le x \le \ln 2$$
+:::
+
+[IMAGE_3]
+
+::: resultat
+$$S = [0\,;\ln 2]$$
+:::
+
+## Question 4 : Résoudre $e^{x + 1} \gt 2e^{x - 1}$
+
+::: methode
+Faire apparaître le même facteur $e^{x - 1}$ des deux côtés, puis diviser par ce nombre strictement positif.
+:::
+
+::: etape Réécriture
+$e^{x + 1} = e^{(x - 1) + 2} = e^2 \times e^{x - 1}$. L’inéquation s’écrit :
+
+$$e^2 \times e^{x - 1} \gt 2 \times e^{x - 1}$$
+:::
+
+::: etape Division par $e^{x - 1} \gt 0$
+Le sens de l’inégalité est conservé : l’inéquation équivaut à $e^2 \gt 2$.
+:::
+
+::: etape Conclusion
+$e^2 \approx 7{,}39 \gt 2$ : l’inégalité est vraie quel que soit le réel $x$.
+:::
+
+[IMAGE_4]
+
+::: resultat
+$$S = \mathbb{R}$$
+:::
+
+## Question 5 : Résoudre $e^{x^2 - 4x + 3} \ge 1$
+
+::: methode
+$1 = e^0$, donc $e^a \ge 1 \iff a \ge 0$ ; puis signe d’un trinôme.
+:::
+
+::: etape Inéquation équivalente
+$$e^{x^2 - 4x + 3} \ge e^0 \iff x^2 - 4x + 3 \ge 0$$
+:::
+
+::: etape Racines du trinôme
+$\Delta = (-4)^2 - 4 \times 1 \times 3 = 16 - 12 = 4$ : racines $x_1 = \frac{4 - 2}{2} = 1$ et $x_2 = \frac{4 + 2}{2} = 3$, d’où $x^2 - 4x + 3 = (x - 1)(x - 3)$.
+:::
+
+::: point Tableau de signes
+::: tableau
+x : -\infty, 1, 3, +\infty
+x - 1 : , -, z, +, t, +,
+x - 3 : , -, t, -, z, +,
+x^2 - 4x + 3 : , +, z, -, z, +,
+:::
+:::
+
+[IMAGE_5]
+
+::: resultat
+$$S = \left]-\infty\,;1\right] \cup \left[3\,;+\infty\right[$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $S = \{\ln 2\,;\ln 3\}$
+2. $S = \{1\,;2\}$
+3. $S = [0\,;\ln 2]$
+4. $S = \mathbb{R}$
+5. $S = \left]-\infty\,;1\right] \cup \left[3\,;+\infty\right[$
+
+===
+
+=== Problème - Équations avec exponentielle et logarithme
+Id: 1218
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Résoudre les équations et inéquations suivantes, après avoir déterminé l’ensemble des réels $x$ pour lesquels elles ont un sens.
+
+1. $\ln\left(e^{2x} - 1\right) = 2$
+2. $e^{\ln(x + 1)} = 3$
+3. $\ln\left(x^2 - 1\right) = \ln(x + 1)$
+4. $e^{2\ln x} - 3e^{\ln x} + 2 = 0$
+5. $\ln\left(e^x - 1\right) \ge 1$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Résoudre $\ln\left(e^{2x} - 1\right) = 2$
+
+::: methode
+$\ln A$ existe si $A \gt 0$, et $\ln A = b \iff A = e^b$.
+:::
+
+::: etape Ensemble de définition
+$\ln\left(e^{2x} - 1\right)$ existe si et seulement si $e^{2x} - 1 \gt 0$. Comme $\exp$ est strictement croissante :
+
+$$
+\begin{aligned}
+e^{2x} - 1 \gt 0 &\iff e^{2x} \gt e^0 \\
+&\iff 2x \gt 0 \iff x \gt 0
+\end{aligned}
+$$
+
+L’équation a un sens sur $\left]0\,;+\infty\right[$.
+:::
+
+::: etape Résolution
+$$
+\begin{aligned}
+\ln\left(e^{2x} - 1\right) = 2 &\iff e^{2x} - 1 = e^2 \\
+&\iff e^{2x} = e^2 + 1 \\
+&\iff 2x = \ln\left(e^2 + 1\right) \\
+&\iff x = \frac{1}{2}\ln\left(e^2 + 1\right)
+\end{aligned}
+$$
+:::
+
+::: point Vérification
+$e^2 + 1 \gt 1$, donc $\ln\left(e^2 + 1\right) \gt 0$ : la solution est bien strictement positive ($x \approx 1{,}06$).
+:::
+
+::: resultat
+$$S = \left\{\frac{1}{2}\ln\left(e^2 + 1\right)\right\}$$
+:::
+
+## Question 2 : Résoudre $e^{\ln(x + 1)} = 3$
+
+::: methode
+Pour tout $a \gt 0$, $e^{\ln a} = a$.
+:::
+
+::: etape Ensemble de définition
+$\ln(x + 1)$ existe si $x + 1 \gt 0$, c’est-à-dire $x \gt -1$.
+:::
+
+::: etape Résolution
+Pour $x \gt -1$ : $e^{\ln(x + 1)} = x + 1$, donc l’équation s’écrit $x + 1 = 3$, soit $x = 2$.
+:::
+
+::: point Vérification
+$2 \gt -1$ : la solution convient.
+:::
+
+::: resultat
+$$S = \{2\}$$
+:::
+
+## Question 3 : Résoudre $\ln\left(x^2 - 1\right) = \ln(x + 1)$
+
+::: methode
+Pour $a \gt 0$ et $b \gt 0$ : $\ln a = \ln b \iff a = b$.
+:::
+
+::: etape Ensemble de définition
+Il faut $x + 1 \gt 0$ et $x^2 - 1 = (x - 1)(x + 1) \gt 0$. Comme $x + 1 \gt 0$, la seconde condition équivaut à $x - 1 \gt 0$. L’équation a un sens sur $\left]1\,;+\infty\right[$.
+:::
+
+::: etape Résolution
+$$x^2 - 1 = x + 1 \iff x^2 - x - 2 = 0$$
+
+Le discriminant vaut $\Delta = (-1)^2 - 4 \times 1 \times (-2) = 9$, d’où :
+
+$$x_1 = \frac{1 - 3}{2} = -1 \qquad x_2 = \frac{1 + 3}{2} = 2$$
+:::
+
+::: etape Tri des solutions
+$-1 \notin \left]1\,;+\infty\right[$ : cette valeur est rejetée (elle donnerait $\ln 0$, qui n’existe pas). $2 \in \left]1\,;+\infty\right[$ : elle convient.
+:::
+
+[IMAGE_3]
+
+::: resultat
+$$S = \{2\}$$
+:::
+
+::: attention
+Toujours confronter les solutions à l’ensemble de définition : $-1$ est solution de l’équation du second degré, mais pas de l’équation de départ.
+:::
+
+## Question 4 : Résoudre $e^{2\ln x} - 3e^{\ln x} + 2 = 0$
+
+::: methode
+Simplifier avec $e^{\ln x} = x$ pour $x \gt 0$.
+:::
+
+::: etape Ensemble de définition
+$\ln x$ existe si $x \gt 0$.
+:::
+
+::: etape Simplification
+Pour $x \gt 0$ : $e^{\ln x} = x$ et $e^{2\ln x} = \left(e^{\ln x}\right)^2 = x^2$. L’équation devient $x^2 - 3x + 2 = 0$.
+:::
+
+::: etape Résolution
+$\Delta = (-3)^2 - 4 \times 1 \times 2 = 1$, d’où $x_1 = \frac{3 - 1}{2} = 1$ et $x_2 = \frac{3 + 1}{2} = 2$. Les deux valeurs sont strictement positives : elles conviennent.
+:::
+
+::: resultat
+$$S = \{1\,;2\}$$
+:::
+
+## Question 5 : Résoudre $\ln\left(e^x - 1\right) \ge 1$
+
+::: methode
+$1 = \ln e$ et $\ln$ est strictement croissante sur $\left]0\,;+\infty\right[$.
+:::
+
+::: etape Ensemble de définition
+$e^x - 1 \gt 0 \iff e^x \gt e^0 \iff x \gt 0$.
+:::
+
+::: etape Résolution sur $\left]0\,;+\infty\right[$
+$$
+\begin{aligned}
+\ln\left(e^x - 1\right) \ge \ln e &\iff e^x - 1 \ge e \\
+&\iff e^x \ge e + 1 \\
+&\iff x \ge \ln(e + 1)
+\end{aligned}
+$$
+:::
+
+::: point Vérification
+$e + 1 \gt 1$, donc $\ln(e + 1) \gt 0$ : tous ces réels sont dans $\left]0\,;+\infty\right[$ ($\ln(e + 1) \approx 1{,}31$).
+:::
+
+[IMAGE_5]
+
+::: resultat
+$$S = \left[\ln(e + 1)\,;+\infty\right[$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $S = \left\{\frac{1}{2}\ln\left(e^2 + 1\right)\right\}$
+2. $S = \{2\}$
+3. $S = \{2\}$ ($-1$ est rejeté)
+4. $S = \{1\,;2\}$
+5. $S = \left[\ln(e + 1)\,;+\infty\right[$
+
+===
+
+=== Problème - Étude complète et applications
+Id: 1211
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On considère la fonction $f$ définie sur $\mathbb{R}$ par $f(x) = e^{2x} - 3e^x + 2$.
+
+1. Calculer la dérivée $f'(x)$.
+2. Étudier le signe de $f'(x)$ et en déduire les variations de $f$.
+3. Déterminer les extremums locaux de $f$ et calculer leurs valeurs.
+4. Résoudre l’équation $f(x) = 0$.
+5. Résoudre l’inéquation $f(x) \ge 0$.
+6. Calculer les limites de $f$ en $+\infty$ et en $-\infty$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer la dérivée $f'(x)$
+
+::: methode
+Dériver terme à terme, avec $\left(e^{ax}\right)' = a\,e^{ax}$.
+:::
+
+::: etape Dérivées des termes
+- $\left(e^{2x}\right)' = 2e^{2x}$ ;
+- $\left(-3e^x\right)' = -3e^x$ ;
+- la constante $2$ a pour dérivée $0$.
+:::
+
+::: resultat
+$$f'(x) = 2e^{2x} - 3e^x$$
+:::
+
+## Question 2 : Étudier le signe de $f'(x)$ et les variations de $f$
+
+::: methode
+Factoriser par $e^x \gt 0$, puis étudier le signe du facteur restant.
+:::
+
+::: etape Factorisation
+$$f'(x) = 2e^{2x} - 3e^x = e^x\left(2e^x - 3\right)$$
+:::
+
+::: etape Signe de $2e^x - 3$
+$$
+\begin{aligned}
+2e^x - 3 \gt 0 &\iff e^x \gt \frac{3}{2} \\
+&\iff x \gt \ln\left(\frac{3}{2}\right)
+\end{aligned}
+$$
+
+et $2e^x - 3 = 0 \iff x = \ln\left(\frac{3}{2}\right) \approx 0{,}405$.
+:::
+
+::: point Tableau de signes
+::: tableau
+x : -\infty, \ln\left(\frac{3}{2}\right), +\infty
+e^x : , +, t, +,
+2e^x - 3 : , -, z, +,
+f'(x) : , -, z, +,
+:::
+:::
+
+::: resultat
+$f$ est décroissante sur $\left]-\infty\,;\ln\left(\frac{3}{2}\right)\right]$ et croissante sur $\left[\ln\left(\frac{3}{2}\right)\,;+\infty\right[$.
+:::
+
+## Question 3 : Déterminer les extremums locaux de $f$ et calculer leurs valeurs
+
+::: methode
+La dérivée s’annule en changeant de signe (de $-$ à $+$) : c’est un minimum.
+:::
+
+::: etape Calcul de la valeur
+Avec $e^{\ln\left(\frac{3}{2}\right)} = \frac{3}{2}$ et $e^{2\ln\left(\frac{3}{2}\right)} = \left(\frac{3}{2}\right)^2 = \frac{9}{4}$ :
+
+$$
+\begin{aligned}
+f\left(\ln\left(\frac{3}{2}\right)\right) &= \frac{9}{4} - 3 \times \frac{3}{2} + 2 \\
+&= \frac{9}{4} - \frac{18}{4} + \frac{8}{4} \\
+&= -\frac{1}{4}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$f$ admet un unique extremum local : un minimum, égal à $-\frac{1}{4}$, atteint en $x = \ln\left(\frac{3}{2}\right)$.
+:::
+
+## Question 4 : Résoudre l’équation $f(x) = 0$
+
+::: methode
+Changement de variable $X = e^x \gt 0$.
+:::
+
+::: etape Équation en $X$
+$e^{2x} = X^2$, donc $f(x) = 0 \iff X^2 - 3X + 2 = 0$. Le discriminant vaut $\Delta = 9 - 8 = 1$, d’où les racines $X_1 = \frac{3 - 1}{2} = 1$ et $X_2 = \frac{3 + 1}{2} = 2$, toutes deux strictement positives.
+:::
+
+::: etape Retour à la variable $x$
+- $e^x = 1 \iff x = 0$ ;
+- $e^x = 2 \iff x = \ln 2 \approx 0{,}693$.
+:::
+
+::: resultat
+$$S = \{0\,;\ln 2\}$$
+:::
+
+## Question 5 : Résoudre l’inéquation $f(x) \ge 0$
+
+::: methode
+Avec $X = e^x \gt 0$ : $f(x) = (X - 1)(X - 2)$, dont on étudie le signe.
+:::
+
+::: point Tableau de signes sur $\left]0\,;+\infty\right[$
+::: tableau
+X : 0, 1, 2, +\infty
+X - 1 : , -, z, +, t, +,
+X - 2 : , -, t, -, z, +,
+(X - 1)(X - 2) : , +, z, -, z, +,
+:::
+:::
+
+::: etape Retour à la variable $x$
+$(X - 1)(X - 2) \ge 0 \iff 0 \lt X \le 1$ ou $X \ge 2$. Or $e^x \le 1 \iff x \le 0$ et $e^x \ge 2 \iff x \ge \ln 2$.
+:::
+
+[IMAGE_3]
+
+::: resultat
+$$S = \left]-\infty\,;0\right] \cup \left[\ln 2\,;+\infty\right[$$
+:::
+
+## Question 6 : Calculer les limites de $f$ en $+\infty$ et en $-\infty$
+
+::: methode
+En $+\infty$, factoriser par le terme dominant $e^{2x}$.
+:::
+
+::: etape Limite en $+\infty$
+Forme indéterminée « $+\infty - \infty$ ». Pour tout réel $x$ :
+
+$$f(x) = e^{2x}\left(1 - \frac{3}{e^x} + \frac{2}{e^{2x}}\right)$$
+
+La parenthèse tend vers $1$ et $e^{2x} \to +\infty$, donc $f(x) \to +\infty$.
+:::
+
+::: etape Limite en $-\infty$
+$e^{2x} \to 0$ et $e^x \to 0$, donc $f(x) \to 0 - 0 + 2 = 2$ : la droite d’équation $y = 2$ est asymptote horizontale à la courbe en $-\infty$.
+:::
+
+::: point Tableau de variations complet
+::: tableau
+x : -\infty, \ln\left(\frac{3}{2}\right), +\infty
+f'(x) : , -, z, +,
+f(x) : +/2, -/-\frac{1}{4}, +/+\infty
+:::
+:::
+
+[IMAGE_1]
+
+::: resultat
+$$\lim_{x \to +\infty} f(x) = +\infty \qquad \lim_{x \to -\infty} f(x) = 2$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $f'(x) = 2e^{2x} - 3e^x = e^x\left(2e^x - 3\right)$
+2. $f$ est décroissante sur $\left]-\infty\,;\ln\left(\frac{3}{2}\right)\right]$ et croissante sur $\left[\ln\left(\frac{3}{2}\right)\,;+\infty\right[$.
+3. Minimum local en $x = \ln\left(\frac{3}{2}\right)$ : $f\left(\ln\left(\frac{3}{2}\right)\right) = -\frac{1}{4}$.
+4. $S = \{0\,;\ln 2\}$
+5. $S = \left]-\infty\,;0\right] \cup \left[\ln 2\,;+\infty\right[$
+6. $\lim\limits_{x \to +\infty} f(x) = +\infty$ et $\lim\limits_{x \to -\infty} f(x) = 2$.
+
+===
+
+=== Problème - Étude de convexité
+Id: 1220
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+On considère la fonction $f$ définie sur $\mathbb{R}$ par $f(x) = e^{-x^2}$.
+
+1. Calculer $f'(x)$ et $f''(x)$.
+2. Étudier le signe de $f''(x)$.
+3. Déterminer les points d’inflexion de la courbe de $f$.
+4. Étudier la convexité de $f$.
+5. Calculer les limites de $f$ en $+\infty$ et en $-\infty$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer $f'(x)$ et $f''(x)$
+
+::: methode
+$\left(e^u\right)' = u' e^u$ pour $f'$, puis dérivée d’un produit pour $f''$.
+:::
+
+::: etape Calcul de $f'(x)$
+$u(x) = -x^2$, donc $u'(x) = -2x$ et
+
+$$f'(x) = -2x\,e^{-x^2}$$
+:::
+
+::: etape Calcul de $f''(x)$
+$f' = uv$ avec $u(x) = -2x$ et $v(x) = e^{-x^2}$ ; $u'(x) = -2$ et $v'(x) = -2x\,e^{-x^2}$ :
+
+$$
+\begin{aligned}
+f''(x) &= -2e^{-x^2} + (-2x) \times \left(-2x\,e^{-x^2}\right) \\
+&= \left(4x^2 - 2\right)e^{-x^2} \\
+&= 2\left(2x^2 - 1\right)e^{-x^2}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$f'(x) = -2x\,e^{-x^2}$ et $f''(x) = 2\left(2x^2 - 1\right)e^{-x^2}$.
+:::
+
+## Question 2 : Étudier le signe de $f''(x)$
+
+::: methode
+$2e^{-x^2} \gt 0$ : $f''(x)$ a le signe du trinôme $2x^2 - 1$.
+:::
+
+::: etape Racines du trinôme
+$$
+\begin{aligned}
+2x^2 - 1 = 0 &\iff x^2 = \frac{1}{2} \\
+&\iff x = -\frac{\sqrt{2}}{2} \text{ ou } x = \frac{\sqrt{2}}{2}
+\end{aligned}
+$$
+
+Le coefficient de $x^2$ est positif : le trinôme est positif à l’extérieur des racines, négatif entre elles.
+:::
+
+::: point Tableau de signes
+::: tableau
+x : -\infty, -\frac{\sqrt{2}}{2}, \frac{\sqrt{2}}{2}, +\infty
+2x^2 - 1 : , +, z, -, z, +,
+f''(x) : , +, z, -, z, +,
+:::
+:::
+
+::: resultat
+$f''(x) \gt 0$ sur $\left]-\infty\,;-\frac{\sqrt{2}}{2}\right[$ et sur $\left]\frac{\sqrt{2}}{2}\,;+\infty\right[$ ; $f''(x) \lt 0$ sur $\left]-\frac{\sqrt{2}}{2}\,;\frac{\sqrt{2}}{2}\right[$.
+:::
+
+## Question 3 : Déterminer les points d’inflexion de la courbe de $f$
+
+::: methode
+Un point d’inflexion correspond à une valeur où $f''$ s’annule **en changeant de signe**.
+:::
+
+::: etape Abscisses
+D’après la question 2, $f''$ s’annule en changeant de signe en $-\frac{\sqrt{2}}{2}$ et en $\frac{\sqrt{2}}{2}$.
+:::
+
+::: etape Ordonnées
+$$f\left(\frac{\sqrt{2}}{2}\right) = e^{-\frac{2}{4}} = e^{-\frac{1}{2}} = \frac{1}{\sqrt{e}} \approx 0{,}61$$
+
+et, comme $\left(-\frac{\sqrt{2}}{2}\right)^2 = \frac{1}{2}$ également, $f\left(-\frac{\sqrt{2}}{2}\right) = \frac{1}{\sqrt{e}}$.
+:::
+
+[IMAGE_1]
+
+::: resultat
+La courbe admet deux points d’inflexion : $I\left(-\frac{\sqrt{2}}{2}\,;\frac{1}{\sqrt{e}}\right)$ et $J\left(\frac{\sqrt{2}}{2}\,;\frac{1}{\sqrt{e}}\right)$.
+:::
+
+::: attention
+$f''(a) = 0$ ne suffit pas : il faut que $f''$ change de signe en $a$.
+:::
+
+## Question 4 : Étudier la convexité de $f$
+
+::: methode
+$f$ est convexe là où $f'' \ge 0$, concave là où $f'' \le 0$.
+:::
+
+::: point Tableau de convexité
+::: tableau
+x : -\infty, -\frac{\sqrt{2}}{2}, \frac{\sqrt{2}}{2}, +\infty
+f''(x) : , +, z, -, z, +,
+Convexité de $f$ : , convexe, t, concave, t, convexe,
+:::
+:::
+
+[IMAGE_2]
+
+::: resultat
+$f$ est convexe sur $\left]-\infty\,;-\frac{\sqrt{2}}{2}\right]$ et sur $\left[\frac{\sqrt{2}}{2}\,;+\infty\right[$, concave sur $\left[-\frac{\sqrt{2}}{2}\,;\frac{\sqrt{2}}{2}\right]$.
+:::
+
+## Question 5 : Calculer les limites de $f$ en $+\infty$ et en $-\infty$
+
+::: methode
+Limite d’une composée : on cherche d’abord la limite de l’exposant.
+:::
+
+::: etape Limite de l’exposant
+Quand $x \to +\infty$ ou $x \to -\infty$, $x^2 \to +\infty$, donc $-x^2 \to -\infty$.
+:::
+
+::: etape Composition
+$\lim\limits_{X \to -\infty} e^X = 0$, donc $e^{-x^2} \to 0$ en $+\infty$ comme en $-\infty$ : l’axe des abscisses est asymptote horizontale à la courbe des deux côtés.
+:::
+
+::: resultat
+$$\lim_{x \to +\infty} f(x) = 0 \qquad \lim_{x \to -\infty} f(x) = 0$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $f'(x) = -2x\,e^{-x^2}$ et $f''(x) = 2\left(2x^2 - 1\right)e^{-x^2}$.
+2. $f''(x) \gt 0$ pour $|x| \gt \frac{\sqrt{2}}{2}$ et $f''(x) \lt 0$ pour $|x| \lt \frac{\sqrt{2}}{2}$.
+3. Points d’inflexion $I\left(-\frac{\sqrt{2}}{2}\,;\frac{1}{\sqrt{e}}\right)$ et $J\left(\frac{\sqrt{2}}{2}\,;\frac{1}{\sqrt{e}}\right)$.
+4. $f$ est convexe sur $\left]-\infty\,;-\frac{\sqrt{2}}{2}\right]$ et sur $\left[\frac{\sqrt{2}}{2}\,;+\infty\right[$, concave sur $\left[-\frac{\sqrt{2}}{2}\,;\frac{\sqrt{2}}{2}\right]$.
+5. $\lim\limits_{x \to +\infty} f(x) = 0$ et $\lim\limits_{x \to -\infty} f(x) = 0$.
+
+===
+
+=== Problème - Étude d'une fonction composée
+Id: 1214
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+On considère la fonction $h$ définie sur $\mathbb{R}$ par $h(x) = e^{x^2 - 2x}$.
+
+1. Calculer la dérivée $h'(x)$.
+2. Étudier le signe de $h'(x)$ et les variations de $h$.
+3. Déterminer les extremums locaux de $h$ et calculer leurs valeurs.
+4. Calculer les limites de $h$ en $+\infty$ et en $-\infty$.
+5. Dresser le tableau de variations complet de $h$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer la dérivée $h'(x)$
+
+::: methode
+Dérivée d’une fonction de la forme $e^u$ : $\left(e^u\right)' = u' e^u$.
+:::
+
+::: etape Identifier $u$
+$u(x) = x^2 - 2x$, donc $u'(x) = 2x - 2 = 2(x - 1)$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+h'(x) &= (2x - 2)\,e^{x^2 - 2x} \\
+&= 2(x - 1)\,e^{x^2 - 2x}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$h'(x) = 2(x - 1)\,e^{x^2 - 2x}$$
+:::
+
+## Question 2 : Étudier le signe de $h'(x)$ et les variations de $h$
+
+::: methode
+$2e^{x^2 - 2x} \gt 0$ : $h'(x)$ a le signe de $x - 1$.
+:::
+
+::: point Tableau de signes
+::: tableau
+x : -\infty, 1, +\infty
+x - 1 : , -, z, +,
+h'(x) : , -, z, +,
+:::
+:::
+
+::: resultat
+$h$ est décroissante sur $\left]-\infty\,;1\right]$ et croissante sur $\left[1\,;+\infty\right[$.
+:::
+
+::: retenir
+$e^u$ a les mêmes variations que $u$ : ici $u(x) = x^2 - 2x$ est un trinôme dont le sommet a pour abscisse $1$.
+:::
+
+## Question 3 : Déterminer les extremums locaux de $h$ et calculer leurs valeurs
+
+::: methode
+$h'$ s’annule en changeant de signe (de $-$ à $+$) en $1$ : c’est un minimum.
+:::
+
+::: etape Calcul de $h(1)$
+$$
+\begin{aligned}
+h(1) &= e^{1^2 - 2 \times 1} \\
+&= e^{-1} \\
+&= \frac{1}{e} \approx 0{,}37
+\end{aligned}
+$$
+:::
+
+::: resultat
+$h$ admet un minimum égal à $\frac{1}{e}$, atteint en $x = 1$ ; c’est son unique extremum local.
+:::
+
+## Question 4 : Calculer les limites de $h$ en $+\infty$ et en $-\infty$
+
+::: methode
+Limite d’une composée : limite de l’exposant, puis limite de l’exponentielle.
+:::
+
+::: etape Limite de l’exposant
+$x^2 - 2x = x(x - 2)$. En $+\infty$, les deux facteurs tendent vers $+\infty$ ; en $-\infty$, ils tendent tous deux vers $-\infty$. Dans les deux cas, $x^2 - 2x \to +\infty$.
+:::
+
+::: etape Composition
+$\lim\limits_{X \to +\infty} e^X = +\infty$, donc $h(x) \to +\infty$ en $+\infty$ comme en $-\infty$.
+:::
+
+::: resultat
+$$\lim_{x \to +\infty} h(x) = +\infty \qquad \lim_{x \to -\infty} h(x) = +\infty$$
+:::
+
+## Question 5 : Dresser le tableau de variations complet de $h$
+
+::: methode
+Rassembler le signe de $h'$, le minimum et les limites.
+:::
+
+::: point Tableau de variations
+::: tableau
+x : -\infty, 1, +\infty
+h'(x) : , -, z, +,
+h(x) : +/+\infty, -/\frac{1}{e}, +/+\infty
+:::
+:::
+
+[IMAGE_1]
+
+::: resultat
+$h$ est décroissante sur $\left]-\infty\,;1\right]$, croissante sur $\left[1\,;+\infty\right[$ ; son minimum sur $\mathbb{R}$ est $h(1) = \frac{1}{e}$.
+:::
+
+::: remarque
+Pour tout réel $x$, $(2 - x)^2 - 2(2 - x) = x^2 - 2x$, donc $h(2 - x) = h(x)$ : la courbe est symétrique par rapport à la droite d’équation $x = 1$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $h'(x) = 2(x - 1)\,e^{x^2 - 2x}$
+2. $h$ est décroissante sur $\left]-\infty\,;1\right]$ et croissante sur $\left[1\,;+\infty\right[$.
+3. Minimum en $x = 1$ : $h(1) = \frac{1}{e}$.
+4. $\lim\limits_{x \to +\infty} h(x) = +\infty$ et $\lim\limits_{x \to -\infty} h(x) = +\infty$.
+5. Tableau : $+\infty$, décroissance jusqu’au minimum $\frac{1}{e}$ en $1$, puis croissance jusqu’à $+\infty$.
+
+===
+
+=== Problème - Modélisation d'une population de bactéries
+Id: 1219
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Une population de bactéries suit la loi $N(t) = N_0\,e^{kt}$, où $N_0$ est l’effectif initial, $k$ le taux de croissance et $t$ le temps en heures.
+
+1. Avec $N_0 = 1\,000$ et $k = 0{,}02$, exprimer $N(t)$.
+2. Calculer la population après $50$ heures.
+3. Déterminer le temps nécessaire pour que la population double.
+4. Calculer la dérivée $N'(t)$ et interpréter.
+5. Résoudre l’équation $N(t) = 10\,000$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Exprimer $N(t)$
+
+::: methode
+Remplacer $N_0$ et $k$ par leurs valeurs.
+:::
+
+::: etape Expression
+$$N(t) = 1\,000\,e^{0{,}02t}$$
+:::
+
+::: point Vérification
+$N(0) = 1\,000 \times e^0 = 1\,000$ : on retrouve l’effectif initial.
+:::
+
+::: resultat
+$$N(t) = 1\,000\,e^{0{,}02t}$$
+:::
+
+## Question 2 : Calculer la population après $50$ heures
+
+::: methode
+Calculer $N(50)$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+N(50) &= 1\,000 \times e^{0{,}02 \times 50} \\
+&= 1\,000\,e \\
+&\approx 2\,718{,}28
+\end{aligned}
+$$
+:::
+
+::: resultat
+Après $50$ heures, la population compte environ $2\,718$ bactéries.
+:::
+
+## Question 3 : Déterminer le temps de doublement
+
+::: methode
+Résoudre $N(t) = 2N_0 = 2\,000$ à l’aide du logarithme népérien.
+:::
+
+::: etape Résolution
+$$
+\begin{aligned}
+1\,000\,e^{0{,}02t} = 2\,000 &\iff e^{0{,}02t} = 2 \\
+&\iff 0{,}02t = \ln 2 \\
+&\iff t = \frac{\ln 2}{0{,}02} = 50\ln 2
+\end{aligned}
+$$
+:::
+
+::: etape Valeur approchée
+$50\ln 2 \approx 34{,}66$ h, soit environ $34$ h $39$ min.
+:::
+
+::: resultat
+La population double en $50\ln 2 \approx 34{,}7$ heures.
+:::
+
+::: remarque
+Le temps de doublement ne dépend pas de $N_0$ : la population double toutes les $34{,}7$ heures environ.
+:::
+
+## Question 4 : Calculer $N'(t)$ et interpréter
+
+::: methode
+$\left(e^{kt}\right)' = k\,e^{kt}$.
+:::
+
+::: etape Dérivée
+$$
+\begin{aligned}
+N'(t) &= 1\,000 \times 0{,}02\,e^{0{,}02t} \\
+&= 20\,e^{0{,}02t}
+\end{aligned}
+$$
+:::
+
+::: etape Lien avec $N(t)$
+$N'(t) = 0{,}02 \times 1\,000\,e^{0{,}02t} = 0{,}02\,N(t)$.
+:::
+
+::: etape Interprétation
+$N'(t)$ est la vitesse d’accroissement de la population (en bactéries par heure). Elle est strictement positive : la population augmente. Elle est proportionnelle à l’effectif : plus il y a de bactéries, plus la population croît vite ($N'(0) = 20$, $N'(50) \approx 54{,}4$ bactéries par heure).
+:::
+
+::: resultat
+$N'(t) = 20\,e^{0{,}02t} = 0{,}02\,N(t) \gt 0$.
+:::
+
+## Question 5 : Résoudre $N(t) = 10\,000$
+
+::: methode
+Isoler l’exponentielle, puis appliquer le logarithme népérien.
+:::
+
+::: etape Résolution
+$$
+\begin{aligned}
+1\,000\,e^{0{,}02t} = 10\,000 &\iff e^{0{,}02t} = 10 \\
+&\iff 0{,}02t = \ln 10 \\
+&\iff t = 50\ln 10
+\end{aligned}
+$$
+:::
+
+::: etape Valeur approchée
+$50\ln 10 \approx 115{,}13$ h.
+:::
+
+[IMAGE_1]
+
+::: resultat
+La population atteint $10\,000$ bactéries au bout de $50\ln 10 \approx 115{,}1$ heures.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $N(t) = 1\,000\,e^{0{,}02t}$
+2. $N(50) = 1\,000\,e \approx 2\,718$ bactéries.
+3. Temps de doublement : $t = 50\ln 2 \approx 34{,}7$ heures.
+4. $N'(t) = 20\,e^{0{,}02t} = 0{,}02\,N(t) \gt 0$ : la population croît d’autant plus vite qu’elle est nombreuse.
+5. $t = 50\ln 10 \approx 115{,}1$ heures.
+
+===
+
+=== Problème - Optimisation
+Id: 1215
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On considère la fonction $k$ définie sur $\left[0\,;+\infty\right[$ par $k(x) = x^2 e^{-x}$.
+
+1. Calculer la dérivée $k'(x)$.
+2. Étudier le signe de $k'(x)$ et les variations de $k$.
+3. Déterminer le maximum de $k$ sur $\left[0\,;+\infty\right[$.
+4. Calculer les limites de $k$ en $0$ et en $+\infty$.
+5. Dresser le tableau de variations complet de $k$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer la dérivée $k'(x)$
+
+::: methode
+Dérivée d’un produit : $(uv)' = u'v + uv'$.
+:::
+
+::: etape Identification
+$u(x) = x^2$ et $v(x) = e^{-x}$, donc $u'(x) = 2x$ et $v'(x) = -e^{-x}$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+k'(x) &= 2x\,e^{-x} + x^2 \times \left(-e^{-x}\right) \\
+&= \left(2x - x^2\right)e^{-x} \\
+&= x(2 - x)\,e^{-x}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$k'(x) = x(2 - x)\,e^{-x}$$
+:::
+
+## Question 2 : Étudier le signe de $k'(x)$ et les variations de $k$
+
+::: methode
+$e^{-x} \gt 0$ : $k'(x)$ a le signe du produit $x(2 - x)$ sur $\left[0\,;+\infty\right[$.
+:::
+
+::: point Tableau de signes
+::: tableau
+x : 0, 2, +\infty
+x : z, +, t, +,
+2 - x : , +, z, -,
+k'(x) : z, +, z, -,
+:::
+:::
+
+::: resultat
+$k$ est croissante sur $[0\,;2]$ et décroissante sur $\left[2\,;+\infty\right[$.
+:::
+
+## Question 3 : Déterminer le maximum de $k$ sur $\left[0\,;+\infty\right[$
+
+::: methode
+$k'$ s’annule en changeant de signe (de $+$ à $-$) en $2$ : c’est un maximum.
+:::
+
+::: etape Calcul de $k(2)$
+$$
+\begin{aligned}
+k(2) &= 2^2 \times e^{-2} \\
+&= \frac{4}{e^2} \approx 0{,}54
+\end{aligned}
+$$
+:::
+
+::: resultat
+Le maximum de $k$ sur $\left[0\,;+\infty\right[$ vaut $\frac{4}{e^2}$, atteint en $x = 2$.
+:::
+
+## Question 4 : Calculer les limites de $k$ en $0$ et en $+\infty$
+
+::: methode
+En $0$, $k$ est continue ; en $+\infty$, croissances comparées.
+:::
+
+::: etape En $0$
+$k$ est continue en $0$ (produit de fonctions continues), donc sa limite en $0$ est $k(0) = 0^2 \times e^0 = 0$.
+:::
+
+::: etape En $+\infty$
+Forme indéterminée « $\infty \times 0$ ». Par croissances comparées ($n = 2$), $\lim\limits_{x \to +\infty} x^2 e^{-x} = 0$ : l’axe des abscisses est asymptote horizontale à la courbe en $+\infty$.
+:::
+
+::: resultat
+$$\lim_{x \to 0} k(x) = 0 \qquad \lim_{x \to +\infty} k(x) = 0$$
+:::
+
+## Question 5 : Dresser le tableau de variations complet de $k$
+
+::: methode
+Rassembler le signe de $k'$, le maximum et les limites.
+:::
+
+::: point Tableau de variations
+::: tableau
+x : 0, 2, +\infty
+k'(x) : z, +, z, -,
+k(x) : -/0, +/\frac{4}{e^2}, -/0
+:::
+:::
+
+[IMAGE_1]
+
+::: resultat
+$k$ croît de $0$ à $\frac{4}{e^2}$ sur $[0\,;2]$, puis décroît vers $0$ sur $\left[2\,;+\infty\right[$ sans jamais l’atteindre.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $k'(x) = x(2 - x)\,e^{-x}$
+2. $k$ est croissante sur $[0\,;2]$ et décroissante sur $\left[2\,;+\infty\right[$.
+3. Maximum : $k(2) = \frac{4}{e^2} \approx 0{,}54$.
+4. $\lim\limits_{x \to 0} k(x) = k(0) = 0$ et $\lim\limits_{x \to +\infty} k(x) = 0$.
+5. Tableau : $0$, croissance jusqu’au maximum $\frac{4}{e^2}$ en $2$, puis décroissance vers $0$.
+
+===

@@ -1,0 +1,593 @@
+Titre: Manipulation des vecteurs, des droites et des plans de l'espace
+
+<!-- optitab:1 -->
+::: remarque Sections principales
+Les sections I à VI couvrent les concepts fondamentaux sur la manipulation des vecteurs, droites et plans dans l'espace. Les parties marquées **« Bonus »** sont des approfondissements utiles mais peuvent être explorées selon votre intérêt.
+:::
+
+## I. Vecteurs de l'espace et translations
+
+### Définition et notation
+
+::: definition Vecteur de l'espace
+Un **vecteur** de l'espace est un objet mathématique caractérisé par sa direction, son sens, sa norme et son point d'application.
+
+Un vecteur est défini par ses coordonnées dans une base donnée :
+
+$\displaystyle\vec{u} = \begin{pmatrix} x \\ y \\ z \end{pmatrix}$ dans l'espace
+:::
+
+::: notation
+- $\vec{u}$, $\vec{v}$, $\vec{w}$ ou $\overrightarrow{AB}$
+- $\displaystyle\vec{u} = \begin{pmatrix} x \\ y \\ z \end{pmatrix}$ dans l'espace
+- Le vecteur nul : $\displaystyle\vec{0} = \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix}$
+:::
+
+### Translation
+
+::: definition Translation
+La **translation** de vecteur $\vec{u}$ est la transformation qui à tout point $M$ associe le point $M'$ tel que $\overrightarrow{MM'} = \vec{u}$.
+
+On note : $\displaystyle M' = t_{\vec{u}}(M)$
+:::
+
+::: propriete Règles importantes
+- **Règle de Chasles :** $\displaystyle\overrightarrow{AB} + \overrightarrow{BC} = \overrightarrow{AC}$
+- **Règle du parallélogramme :** Dans un parallélogramme $ABCD$, on a $\overrightarrow{AB} + \overrightarrow{AD} = \overrightarrow{AC}$ où $\overrightarrow{AC}$ est la diagonale issue de $A$
+- **Relation fondamentale :** $\overrightarrow{AB} = \overrightarrow{OB} - \overrightarrow{OA}$ où $O$ est l'origine du repère
+- **Vecteurs opposés :** $\displaystyle\overrightarrow{AB} = -\overrightarrow{BA}$
+:::
+
+[IMAGE_1]
+
+::: exemple
+Soient $A(1, 2, 3)$ et $B(4, -1, 5)$ dans l'espace.
+
+$$\overrightarrow{AB} = \begin{pmatrix} 4 - 1 \\ -1 - 2 \\ 5 - 3 \end{pmatrix} = \begin{pmatrix} 3 \\ -3 \\ 2 \end{pmatrix}$$
+
+La translation de vecteur $\overrightarrow{AB}$ transforme le point $A$ en $B$.
+:::
+
+### Opérations sur les vecteurs
+
+| Opération | Définition | Exemple |
+|---|---|---|
+| Addition | $\displaystyle\vec{u} + \vec{v}$ | $\displaystyle\begin{pmatrix} x_1 \\ y_1 \\ z_1 \end{pmatrix} + \begin{pmatrix} x_2 \\ y_2 \\ z_2 \end{pmatrix} = \begin{pmatrix} x_1+x_2 \\ y_1+y_2 \\ z_1+z_2 \end{pmatrix}$ |
+| Différence | $\displaystyle\vec{u} - \vec{v}$ | $\displaystyle\begin{pmatrix} x_1 \\ y_1 \\ z_1 \end{pmatrix} - \begin{pmatrix} x_2 \\ y_2 \\ z_2 \end{pmatrix} = \begin{pmatrix} x_1-x_2 \\ y_1-y_2 \\ z_1-z_2 \end{pmatrix}$ |
+| Produit par scalaire | $\displaystyle k\vec{u}$ | $\displaystyle k\begin{pmatrix} x \\ y \\ z \end{pmatrix} = \begin{pmatrix} kx \\ ky \\ kz \end{pmatrix}$ |
+
+## II. Combinaisons linéaires de vecteurs
+
+### Définition
+
+::: definition Combinaison linéaire
+Soient $\vec{u_1}, \vec{u_2}, \ldots, \vec{u_n}$ des vecteurs de l'espace et $a_1, a_2, \ldots, a_n$ des scalaires.
+
+Le vecteur $\vec{v} = a_1\vec{u_1} + a_2\vec{u_2} + \ldots + a_n\vec{u_n}$ est appelé **combinaison linéaire** des vecteurs $\vec{u_1}, \vec{u_2}, \ldots, \vec{u_n}$.
+:::
+
+::: remarque Interprétation géométrique
+Une combinaison linéaire permet de construire un vecteur à partir d'autres vecteurs en utilisant des multiplications et des additions.
+
+Sur une figure, on peut représenter une combinaison linéaire en construisant le vecteur résultant étape par étape.
+:::
+
+[IMAGE_2]
+
+### Exemples concrets
+
+::: exemple
+Soient $\vec{u} = \begin{pmatrix} 1 \\ 0 \\ 2 \end{pmatrix}$, $\vec{v} = \begin{pmatrix} 0 \\ 1 \\ 1 \end{pmatrix}$ et $\vec{w} = \begin{pmatrix} 2 \\ 1 \\ 5 \end{pmatrix}$.
+
+Exprimer $\vec{w}$ comme combinaison linéaire de $\vec{u}$ et $\vec{v}$.
+
+**Résolution :**
+
+On cherche $a$ et $b$ tels que $\vec{w} = a\vec{u} + b\vec{v}$
+
+$$\begin{pmatrix} 2 \\ 1 \\ 5 \end{pmatrix} = a\begin{pmatrix} 1 \\ 0 \\ 2 \end{pmatrix} + b\begin{pmatrix} 0 \\ 1 \\ 1 \end{pmatrix} = \begin{pmatrix} a \\ b \\ 2a + b \end{pmatrix}$$
+
+On obtient le système :
+
+$$\begin{cases} a = 2 \\ b = 1 \\ 2a + b = 5 \end{cases}$$
+
+Vérification : $\displaystyle 2 \times 2 + 1 = 5$
+
+**Réponse :** $\displaystyle\vec{w} = 2\vec{u} + \vec{v}$
+:::
+
+::: methode Capacité attendue
+Exploiter une figure pour exprimer un vecteur comme combinaison linéaire de vecteurs.
+
+Sur une figure géométrique (cube, pavé, tétraèdre), identifier les relations vectorielles et les exprimer sous forme de combinaisons linéaires.
+:::
+
+### Indépendance linéaire
+
+::: definition Indépendance linéaire
+Des vecteurs $\vec{u_1}, \vec{u_2}, \ldots, \vec{u_n}$ sont dits **linéairement indépendants** si la seule combinaison linéaire qui donne le vecteur nul est celle où tous les coefficients sont nuls.
+
+$$
+\begin{aligned}
+a_1\vec{u_1} + a_2\vec{u_2} + \ldots + a_n\vec{u_n} = \vec{0} &\Rightarrow a_1 = a_2 = \ldots = a_n = 0
+\end{aligned}
+$$
+:::
+
+::: attention
+Si on peut trouver des coefficients non tous nuls tels que la combinaison linéaire donne le vecteur nul, alors les vecteurs sont **linéairement dépendants**.
+:::
+
+::: remarque Intérêt et interprétation de l'indépendance linéaire
+L'indépendance linéaire est fondamentale pour caractériser les objets géométriques :
+
+| Situation | Signification | Application |
+|---|---|---|
+| **2 vecteurs indépendants dans le plan** | Ils ne sont **pas colinéaires** | Ils forment une base du plan → caractérisent un plan |
+| **3 vecteurs indépendants dans l'espace** | Ils ne sont **pas coplanaires** | Ils forment une base de l'espace → caractérisent l'espace entier |
+| **3 vecteurs coplanaires** | Ils sont **linéairement dépendants** (non indépendants) | Ils sont tous dans un même plan |
+
+::: remarque Règle pratique à retenir
+- Pour caractériser un **plan** : besoin de 2 vecteurs **non colinéaires** (indépendants dans le plan)
+- Pour caractériser l'**espace** : besoin de 3 vecteurs **non coplanaires** (indépendants dans l'espace)
+:::
+:::
+
+### Coplanarité de vecteurs
+
+::: definition Coplanarité de vecteurs
+Trois vecteurs de l'espace sont dits **coplanaires** s'il existe un plan qui contient leurs représentants.
+
+**En algèbre :**
+
+$\vec{u}$, $\vec{v}$, $\vec{w}$ sont coplanaires $\Longleftrightarrow$ ils sont linéairement dépendants
+
+c'est-à-dire qu'il existe des réels $a$, $b$, $c$, non tous nuls, tels que :
+
+::: formule
+$$a\vec{u} + b\vec{v} + c\vec{w} = \vec{0}$$
+:::
+:::
+
+::: remarque Lien avec le plan
+Si deux vecteurs $\vec{u}$, $\vec{v}$ sont **non colinéaires**, ils définissent un plan.
+
+Un troisième vecteur $\vec{w}$ est coplanaire à $\vec{u}$ et $\vec{v}$ s'il peut s'écrire comme combinaison linéaire :
+
+::: formule
+$$\vec{w} = \alpha\vec{u} + \beta\vec{v}$$
+:::
+
+pour certains réels $\alpha$, $\beta$.
+:::
+
+## III. Droites de l'espace
+
+### Vecteurs directeurs et colinéarité
+
+::: definition Vecteur directeur d'une droite
+Un **vecteur directeur** d'une droite $(d)$ est un vecteur non nul qui a la même direction que la droite.
+
+Tous les vecteurs directeurs d'une même droite sont colinéaires entre eux.
+:::
+
+::: definition Colinéarité
+Deux vecteurs sont **colinéaires** si leurs coordonnées sont proportionnelles.
+
+$$
+\begin{aligned}
+\vec{u} \text{ et } \vec{v} \text{ sont colinéaires } &\Leftrightarrow \vec{u} = k\vec{v} \text{ pour un certain } k \in \mathbb{R}
+\end{aligned}
+$$
+:::
+
+::: propriete Interprétation géométrique
+Deux vecteurs colinéaires ont la même direction (parallèles).
+:::
+
+[IMAGE_3]
+
+::: exemple
+Vérifier si $\vec{u} = \begin{pmatrix} 2 \\ 1 \\ -1 \end{pmatrix}$ et $\vec{v} = \begin{pmatrix} 4 \\ 2 \\ -2 \end{pmatrix}$ sont colinéaires.
+
+On observe que $\vec{v} = 2\vec{u}$, donc les vecteurs sont colinéaires.
+:::
+
+## IV. Plans de l'espace
+
+### Direction d'un plan
+
+::: definition Direction d'un plan
+La **direction** d'un plan $\mathcal{P}$ est l'ensemble des vecteurs qui sont parallèles au plan.
+
+Un plan est déterminé par deux vecteurs non colinéaires de sa direction.
+:::
+
+::: remarque
+Deux vecteurs non colinéaires d'un plan forment une base de la direction du plan.
+:::
+
+[IMAGE_4]
+
+## V. Bases et repères de l'espace
+
+### Base de l'espace
+
+::: definition Base de l'espace
+Une **base** de l'espace est un triplet de vecteurs $(\vec{i}, \vec{j}, \vec{k})$ linéairement indépendants.
+
+Tout vecteur de l'espace peut s'écrire de manière unique comme combinaison linéaire des vecteurs de la base.
+:::
+
+::: propriete Base orthonormée
+Une base $(\vec{i}, \vec{j}, \vec{k})$ est dite **orthonormée** si :
+
+- Les vecteurs sont unitaires : $\displaystyle\|\vec{i}\| = \|\vec{j}\| = \|\vec{k}\| = 1$
+- Les vecteurs sont deux à deux orthogonaux : $\vec{i} \cdot \vec{j} = \vec{j} \cdot \vec{k} = \vec{k} \cdot \vec{i} = 0$
+:::
+
+[IMAGE_5]
+
+### Repère de l'espace
+
+::: definition Repère de l'espace
+Un **repère** de l'espace est constitué d'un point origine $O$ et d'une base $(\vec{i}, \vec{j}, \vec{k})$.
+
+On note : $\displaystyle\mathcal{R} = (O, \vec{i}, \vec{j}, \vec{k})$
+:::
+
+::: propriete Coordonnées d'un point
+Dans un repère $\mathcal{R} = (O, \vec{i}, \vec{j}, \vec{k})$, tout point $M$ admet des coordonnées uniques $(x, y, z)$ telles que :
+
+$$\overrightarrow{OM} = x\vec{i} + y\vec{j} + z\vec{k}$$
+:::
+
+### Décomposition d'un vecteur sur une base
+
+::: definition Décomposition d'un vecteur
+Soit $(\vec{i}, \vec{j}, \vec{k})$ une base de l'espace. Tout vecteur $\vec{u}$ s'écrit de manière unique :
+
+::: formule
+$$\vec{u} = x\vec{i} + y\vec{j} + z\vec{k}$$
+:::
+
+Les réels $x$, $y$, $z$ sont les **coordonnées** de $\vec{u}$ dans la base $(\vec{i}, \vec{j}, \vec{k})$.
+:::
+
+::: methode Capacité attendue
+Lire sur une figure si deux vecteurs d'un plan, trois vecteurs de l'espace, forment une base.
+
+Lire sur une figure la décomposition d'un vecteur dans une base.
+:::
+
+::: exemple
+Dans la base canonique $(\vec{i}, \vec{j}, \vec{k})$ de l'espace, le vecteur $\vec{u} = \begin{pmatrix} 3 \\ -2 \\ 5 \end{pmatrix}$ se décompose comme :
+
+$$\vec{u} = 3\vec{i} - 2\vec{j} + 5\vec{k}$$
+:::
+
+## VI. Positions relatives et configurations géométriques
+
+### Positions relatives de deux droites
+
+::: propriete Positions relatives de deux droites
+Soient $(d_1)$ et $(d_2)$ deux droites de vecteurs directeurs respectifs $\vec{u_1}$ et $\vec{u_2}$.
+
+- **Parallèles distinctes :** $\vec{u_1}$ et $\vec{u_2}$ colinéaires, aucun point commun
+- **Confondues :** $\vec{u_1}$ et $\vec{u_2}$ colinéaires, un point commun
+- **Sécantes :** $\vec{u_1}$ et $\vec{u_2}$ non colinéaires, un point commun
+- **Non coplanaires :** $\vec{u_1}$ et $\vec{u_2}$ non colinéaires, aucun point commun
+:::
+
+[IMAGE_6]
+
+### Position relative d'une droite et d'un plan
+
+::: propriete Positions relatives d'une droite et d'un plan
+Soit $(d)$ une droite de vecteur directeur $\vec{u}$ et $\mathcal{P}$ un plan de vecteurs directeurs $\vec{v_1}$ et $\vec{v_2}$ (non colinéaires).
+
+- **Parallèle au plan :** $\vec{u}$ est combinaison linéaire de $\vec{v_1}$ et $\vec{v_2}$, aucun point commun
+- **Incluse dans le plan :** $\vec{u}$ est combinaison linéaire de $\vec{v_1}$ et $\vec{v_2}$, un point commun
+- **Sécante :** $\vec{u}$ n'est pas combinaison linéaire de $\vec{v_1}$ et $\vec{v_2}$ (un point d'intersection)
+:::
+
+[IMAGE_7]
+
+### Position relative de deux plans
+
+::: propriete Positions relatives de deux plans
+Soient $\mathcal{P}_1$ et $\mathcal{P}_2$ deux plans de directions respectives engendrées par $(\vec{u_1}, \vec{v_1})$ et $(\vec{u_2}, \vec{v_2})$.
+
+- **Parallèles distincts :** les directions sont identiques, aucun point commun
+- **Confondus :** les directions sont identiques, un point commun
+- **Sécants :** les directions sont différentes (intersection = une droite)
+:::
+
+[IMAGE_8]
+
+### Loi des toits
+
+::: theoreme Loi des toits
+Soient $\mathcal{P}_1$ et $\mathcal{P}_2$ deux plans sécants selon une droite $(d)$.
+
+Si $(d_1)$ est une droite de $\mathcal{P}_1$ parallèle à $(d)$, et si $(d_2)$ est une droite de $\mathcal{P}_2$ parallèle à $(d)$, alors les droites $(d_1)$ et $(d_2)$ sont **parallèles** entre elles.
+:::
+
+[IMAGE_9]
+
+::: remarque Interprétation géométrique
+La loi des toits tire son nom de la configuration géométrique qui ressemble à un toit : deux plans sécants (les deux pans du toit) et des droites parallèles à la faîtière (la droite d'intersection des deux plans).
+
+Cette propriété est très utile pour démontrer le parallélisme de droites dans des configurations spatiales complexes, notamment dans des solides comme les cubes, pavés ou tétraèdres.
+:::
+
+::: propriete Caractérisation vectorielle
+Soient $\vec{u_1}$ et $\vec{u_2}$ les vecteurs directeurs respectifs de $(d_1)$ et $(d_2)$, et $\vec{u}$ un vecteur directeur de $(d)$.
+
+Si $\vec{u_1}$ et $\vec{u_2}$ sont tous les deux colinéaires à $\vec{u}$, alors $\vec{u_1}$ et $\vec{u_2}$ sont colinéaires entre eux, donc $(d_1)$ et $(d_2)$ sont parallèles.
+:::
+
+::: exemple
+Dans un cube $\displaystyle ABCDEFGH$ :
+
+- Les plans $(ABCD)$ et $(BCGF)$ sont **sécants** selon la droite $(BC)$
+- Dans le plan $(ABCD)$, la droite $(AD)$ est **parallèle** à $(BC)$
+- Dans le plan $(BCGF)$, la droite $(FG)$ est **parallèle** à $(BC)$
+
+**Conclusion :** Par la loi des toits, les droites $(AD)$ et $(FG)$ sont **parallèles** entre elles.
+
+En effet, puisque $(AD)$ et $(FG)$ sont toutes les deux parallèles à la droite d'intersection $(BC)$ des deux plans sécants, elles sont parallèles entre elles.
+:::
+
+[IMAGE_10]
+
+::: attention
+La loi des toits nécessite que les deux plans soient **sécants**. Si les plans sont parallèles, la propriété ne s'applique pas directement.
+
+De plus, il faut que les droites soient parallèles à la droite d'intersection des deux plans pour que la conclusion soit valable.
+:::
+
+### Étude géométrique de configurations simples
+
+::: definition Coplanarité
+**Pour les vecteurs :** Trois vecteurs $\vec{u}$, $\vec{v}$, $\vec{w}$ de l'espace sont dits **coplanaires** s'il existe un plan qui contient leurs représentants, c'est-à-dire s'ils sont linéairement dépendants :
+
+::: formule
+$a\vec{u} + b\vec{v} + c\vec{w} = \vec{0}$ avec $a$, $b$, $c$ non tous nuls
+:::
+
+**Pour les points :** Quatre points $A$, $B$, $C$, $D$ de l'espace sont dits **coplanaires** s'ils appartiennent à un même plan. Cela revient à vérifier que les vecteurs $\overrightarrow{AB}$, $\overrightarrow{AC}$ et $\overrightarrow{AD}$ (formés à partir d'un point de référence, par exemple $A$) sont coplanaires.
+:::
+
+::: methode Capacité attendue
+Étudier géométriquement des problèmes simples de configurations dans l'espace :
+
+- **Alignement :** trois points $A$, $B$, $C$ sont alignés si les vecteurs $\overrightarrow{AB}$ et $\overrightarrow{AC}$ sont colinéaires **et partagent un point commun** (ici le point $A$)
+- **Coplanarité de points :** quatre points $A$, $B$, $C$, $D$ sont coplanaires si les vecteurs $\overrightarrow{AB}$, $\overrightarrow{AC}$ et $\overrightarrow{AD}$ (qui partagent tous le point $A$) sont coplanaires, c'est-à-dire linéairement dépendants
+- **Colinéarité :** deux vecteurs sont colinéaires si leurs coordonnées sont proportionnelles
+- **Parallélisme :** deux droites sont parallèles si leurs vecteurs directeurs sont colinéaires
+- **Coplanarité de vecteurs :** trois vecteurs sont coplanaires s'ils sont linéairement dépendants
+:::
+
+::: exemple 1 : Alignement de trois points
+Soit $A(1, 2, 3)$, $B(2, 4, 5)$, $C(3, 6, 7)$.
+
+Les points $A$, $B$, $C$ sont alignés si et seulement si les vecteurs $\overrightarrow{AB}$ et $\overrightarrow{AC}$ sont colinéaires **et partagent le point commun $A$**.
+
+$\overrightarrow{AB} = \begin{pmatrix} 1 \\ 2 \\ 2 \end{pmatrix}$ et $\overrightarrow{AC} = \begin{pmatrix} 2 \\ 4 \\ 4 \end{pmatrix}$
+
+On observe que $\overrightarrow{AC} = 2\overrightarrow{AB}$, donc les vecteurs sont colinéaires. De plus, ils partagent tous les deux le point $A$ comme origine, donc les trois points sont alignés.
+:::
+
+::: exemple 2 : Coplanarité de trois vecteurs
+Soit $\vec{u} = \begin{pmatrix} 1 \\ 2 \\ 1 \end{pmatrix}$, $\vec{v} = \begin{pmatrix} 2 \\ -1 \\ 3 \end{pmatrix}$, $\vec{w} = \begin{pmatrix} 3 \\ 1 \\ 4 \end{pmatrix}$
+
+Les vecteurs sont coplanaires s'il existe des réels $a$, $b$, $c$ non tous nuls tels que $a\vec{u} + b\vec{v} + c\vec{w} = \vec{0}$.
+
+**Résolution :**
+
+On cherche $a$, $b$, $c$ tels que :
+
+$$a\begin{pmatrix} 1 \\ 2 \\ 1 \end{pmatrix} + b\begin{pmatrix} 2 \\ -1 \\ 3 \end{pmatrix} + c\begin{pmatrix} 3 \\ 1 \\ 4 \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix}$$
+
+En développant, on obtient le système :
+
+$$\begin{cases} a + 2b + 3c = 0 \quad (1) \\ 2a - b + c = 0 \quad (2) \\ a + 3b + 4c = 0 \quad (3) \end{cases}$$
+
+**Étape 1 :** De l'équation (1), on exprime $a$ en fonction de $b$ et $c$ :
+
+$$a = -2b - 3c$$
+
+**Étape 2 :** On substitue dans l'équation (2) :
+
+$$2(-2b - 3c) - b + c = 0$$
+
+$$-4b - 6c - b + c = 0$$
+
+$$-5b - 5c = 0$$
+
+$$b = -c$$
+
+**Étape 3 :** On substitue dans l'équation (3) :
+
+$$(-2b - 3c) + 3b + 4c = 0$$
+
+$$-2b - 3c + 3b + 4c = 0$$
+
+$$b + c = 0$$
+
+$\displaystyle b = -c$ (cohérent avec l'étape 2)
+
+**Étape 4 :** On détermine $a$ en fonction de $c$ :
+
+$$a = -2(-c) - 3c = 2c - 3c = -c$$
+
+**Étape 5 :** Vérification dans l'équation (1) :
+
+$$(-c) + 2(-c) + 3c = -c - 2c + 3c = 0$$
+
+**Conclusion :**
+
+On a trouvé une solution non triviale : $a = -c$, $b = -c$ pour tout $c \in \mathbb{R}$.
+
+Par exemple, pour $c = 1$, on a $a = -1$ et $b = -1$.
+
+Vérification : $\displaystyle -1 \times \begin{pmatrix} 1 \\ 2 \\ 1 \end{pmatrix} + (-1) \times \begin{pmatrix} 2 \\ -1 \\ 3 \end{pmatrix} + 1 \times \begin{pmatrix} 3 \\ 1 \\ 4 \end{pmatrix} = \begin{pmatrix} -1-2+3 \\ -2+1+1 \\ -1-3+4 \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix}$
+
+**Réponse :** Les trois vecteurs sont **coplanaires** car il existe une relation non triviale : $-\vec{u} - \vec{v} + \vec{w} = \vec{0}$.
+:::
+
+::: exemple 3 : Coplanarité de quatre points
+Vérifier si les points $A(1, 0, 0)$, $B(2, 1, 0)$, $C(0, 1, 1)$ et $D(3, 2, 1)$ sont coplanaires.
+
+**Méthode :** Quatre points $A$, $B$, $C$, $D$ sont coplanaires si et seulement si les trois vecteurs $\overrightarrow{AB}$, $\overrightarrow{AC}$ et $\overrightarrow{AD}$ (qui partagent tous le point $A$ comme origine) sont coplanaires, c'est-à-dire linéairement dépendants.
+
+**Étape 1 :** Calcul des vecteurs à partir du point de référence $A$ :
+
+$$\overrightarrow{AB} = \begin{pmatrix} 2-1 \\ 1-0 \\ 0-0 \end{pmatrix} = \begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix}$$
+
+$$\overrightarrow{AC} = \begin{pmatrix} 0-1 \\ 1-0 \\ 1-0 \end{pmatrix} = \begin{pmatrix} -1 \\ 1 \\ 1 \end{pmatrix}$$
+
+$$\overrightarrow{AD} = \begin{pmatrix} 3-1 \\ 2-0 \\ 1-0 \end{pmatrix} = \begin{pmatrix} 2 \\ 2 \\ 1 \end{pmatrix}$$
+
+**Étape 2 :** Vérification de la coplanarité des trois vecteurs
+
+Les vecteurs $\overrightarrow{AB}$, $\overrightarrow{AC}$ et $\overrightarrow{AD}$ sont coplanaires s'il existe des réels $a$, $b$, $c$ non tous nuls tels que :
+
+$$a\overrightarrow{AB} + b\overrightarrow{AC} + c\overrightarrow{AD} = \vec{0}$$
+
+$$a\begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix} + b\begin{pmatrix} -1 \\ 1 \\ 1 \end{pmatrix} + c\begin{pmatrix} 2 \\ 2 \\ 1 \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix}$$
+
+**Étape 3 :** Résolution du système linéaire
+
+En développant, on obtient le système :
+
+$$\begin{cases} a - b + 2c = 0 \quad (1) \\ a + b + 2c = 0 \quad (2) \\ b + c = 0 \quad (3) \end{cases}$$
+
+**Étape 4 :** De l'équation (3), on exprime $b$ en fonction de $c$ :
+
+$$b = -c$$
+
+**Étape 5 :** On substitue dans l'équation (1) :
+
+$$a - (-c) + 2c = 0$$
+
+$$a + c + 2c = 0$$
+
+$$a = -3c$$
+
+**Étape 6 :** Vérification dans l'équation (2) :
+
+$$(-3c) + (-c) + 2c = -3c - c + 2c = -2c$$
+
+Pour que l'équation (2) soit vérifiée, il faut $-2c = 0$, donc $c = 0$.
+
+Si $c = 0$, alors $a = 0$ et $b = 0$, ce qui donne la solution triviale.
+
+**Conclusion :**
+
+Le système n'admet que la solution triviale $a = b = c = 0$. Les trois vecteurs $\overrightarrow{AB}$, $\overrightarrow{AC}$ et $\overrightarrow{AD}$ (qui partagent tous le point $A$) sont donc **linéairement indépendants**, ce qui signifie qu'ils ne sont **pas coplanaires**.
+
+**Réponse :** Les quatre points $A$, $B$, $C$ et $D$ sont **non coplanaires** car les vecteurs $\overrightarrow{AB}$, $\overrightarrow{AC}$ et $\overrightarrow{AD}$ (formés à partir du point $A$) sont linéairement indépendants, donc les points ne peuvent pas tous appartenir à un même plan.
+:::
+
+## VII. Bonus - Approfondissements possibles
+
+::: methode Approfondissement
+Les sections suivantes enrichissent votre culture mathématique et vous permettent d'explorer des thèmes avancés.
+:::
+
+### Bonus - Barycentre d'un système pondéré
+
+::: attention Important
+Le barycentre est un concept important souvent vu en cours d'algèbre. Cette section est un approfondissement qui enrichit votre culture mathématique.
+:::
+
+::: definition Barycentre
+Soit $(A_1, \alpha_1), (A_2, \alpha_2), \ldots, (A_n, \alpha_n)$ un système de points pondérés avec $\alpha_1 + \alpha_2 + \ldots + \alpha_n \neq 0$.
+
+Le **barycentre** $G$ de ce système est l'unique point tel que :
+
+::: formule
+$$\alpha_1\overrightarrow{GA_1} + \alpha_2\overrightarrow{GA_2} + \ldots + \alpha_n\overrightarrow{GA_n} = \vec{0}$$
+:::
+:::
+
+::: propriete Associativité du barycentre
+Si on regroupe certains points en un barycentre partiel, le barycentre global reste inchangé.
+
+Cette propriété permet de simplifier les calculs dans des problèmes géométriques complexes.
+:::
+
+::: exemple
+Barycentre de deux points : $G$ est le barycentre de $(A, \alpha)$ et $(B, \beta)$ avec $\alpha + \beta \neq 0$.
+
+On a : $\displaystyle \alpha\overrightarrow{GA} + \beta\overrightarrow{GB} = \vec{0}$
+
+Si $\alpha = \beta = 1$, alors $G$ est le milieu de $[AB]$.
+:::
+
+### Bonus - Fonction vectorielle de Leibniz
+
+::: attention Important
+La fonction vectorielle de Leibniz n'apparaît pas dans tous les cursus de mathématiques. Cette section constitue un approfondissement culturel intéressant pour explorer des concepts avancés.
+:::
+
+::: definition Fonction vectorielle de Leibniz
+Soit $(A_1, \alpha_1), (A_2, \alpha_2), \ldots, (A_n, \alpha_n)$ un système de points pondérés avec $\alpha_1 + \alpha_2 + \ldots + \alpha_n \neq 0$.
+
+La **fonction vectorielle de Leibniz** associe à tout point $M$ le vecteur :
+
+::: formule
+$$f(M) = \alpha_1\overrightarrow{MA_1} + \alpha_2\overrightarrow{MA_2} + \ldots + \alpha_n\overrightarrow{MA_n}$$
+:::
+:::
+
+::: propriete Caractérisation du barycentre
+Le barycentre $G$ est l'unique point tel que $f(G) = \vec{0}$.
+
+Pour tout point $M$, on a : $f(M) = (\alpha_1 + \alpha_2 + \ldots + \alpha_n)\overrightarrow{MG}$
+:::
+
+::: exemple
+La fonction vectorielle de Leibniz permet de résoudre des problèmes de géométrie en utilisant des relations vectorielles.
+
+Elle est particulièrement utile pour démontrer des propriétés de configurations géométriques complexes.
+:::
+
+## VIII. Erreurs fréquentes et conseils
+
+::: attention
+- Confondre « colinéaires » et « égaux » : deux vecteurs colinéaires peuvent avoir des normes différentes
+- Oublier de vérifier que les vecteurs directeurs d'un plan sont non colinéaires
+- Négliger le cas particulier du vecteur nul (toujours dépendant avec n'importe quel autre vecteur)
+- Confondre « coplanaires » et « colinéaires » : la coplanarité concerne 3 vecteurs, la colinéarité 2 vecteurs
+- Oublier que dans l'espace, deux droites peuvent être non coplanaires (ni parallèles, ni sécantes)
+- Ne pas vérifier la cohérence des dimensions (on ne peut pas avoir plus de vecteurs indépendants que la dimension de l'espace)
+:::
+
+::: conseil
+- Utiliser des figures (cube, pavé, tétraèdre) pour visualiser les configurations
+- Toujours vérifier la non-colinéarité des vecteurs directeurs d'un plan
+- Pour les combinaisons linéaires, bien identifier les vecteurs de base
+- Sur une figure, repérer les relations vectorielles (règle de Chasles, parallélisme, etc.)
+- Pour les positions relatives, analyser d'abord les vecteurs directeurs, puis les points communs
+- S'entraîner sur des exemples concrets avec des solides usuels pour développer la vision dans l'espace
+:::
+
+## IX. Tableau récapitulatif
+
+::: methode Récapitulatif - Formules et méthodes à retenir
+| Notion | Définition / Caractérisation |
+|---|---|
+| **Vecteur de l'espace** | $\displaystyle\vec{u} = \begin{pmatrix} x \\ y \\ z \end{pmatrix}$ |
+| **Combinaison linéaire** | $\displaystyle\vec{v} = a_1\vec{u_1} + a_2\vec{u_2} + \ldots + a_n\vec{u_n}$ |
+| **Vecteurs colinéaires** | $\displaystyle\vec{u} = k\vec{v}$ pour un certain $\displaystyle k \in \mathbb{R}$ |
+| **Droite (point + vecteur directeur)** | Point $\displaystyle A(x_0, y_0, z_0)$, vecteur directeur $\displaystyle \vec{u} = \begin{pmatrix} a \\ b \\ c \end{pmatrix}$ <br> $\displaystyle \begin{cases} x = x_0 + at \\ y = y_0 + bt \\ z = z_0 + ct \end{cases} \quad , \quad t \in \mathbb{R}$ |
+| **Plan (point + 2 vecteurs non colinéaires)** | Point $\displaystyle A(x_0, y_0, z_0)$, vecteurs $\displaystyle \vec{u}$ et $\displaystyle \vec{v}$ non colinéaires <br> $\displaystyle \begin{cases} x = x_0 + a_1t + a_2s \\ y = y_0 + b_1t + b_2s \\ z = z_0 + c_1t + c_2s \end{cases} \quad , \quad t, s \in \mathbb{R}$ |
+| **Base de l'espace** | Trois vecteurs linéairement indépendants $\displaystyle(\vec{i}, \vec{j}, \vec{k})$ |
+| **Décomposition sur une base** | $\displaystyle\vec{u} = x\vec{i} + y\vec{j} + z\vec{k}$ |
+| **Droites parallèles** | Vecteurs directeurs colinéaires |
+| **Droite parallèle au plan** | Vecteur directeur combinaison linéaire des vecteurs directeurs du plan |
+| **Plans parallèles** | Directions identiques |
+:::

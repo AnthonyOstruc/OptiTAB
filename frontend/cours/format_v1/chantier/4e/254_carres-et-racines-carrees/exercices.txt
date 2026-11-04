@@ -1,0 +1,2598 @@
+=== Découverte - Reconnaître les carrés parfaits
+Id: 2558
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Un **carré parfait** est le carré d'un nombre entier : $n^2 = n \times n$. La figure montre des carrés dessinés sur un quadrillage.
+
+[IMAGE_1]
+
+1. Compter le nombre de petits carreaux de chacun des quatre carrés. Expliquer pourquoi on obtient à chaque fois un nombre de la forme $n \times n$.
+2. Recopier et compléter le tableau.
+
+| $n$ | $1$ | $2$ | $3$ | $4$ | $5$ |
+|---|---|---|---|---|---|
+| $n^2$ | $1$ | $4$ | $?$ | $16$ | $25$ |
+
+| $n$ | $6$ | $7$ | $8$ | $9$ | $10$ |
+|---|---|---|---|---|---|
+| $n^2$ | $?$ | $49$ | $64$ | $?$ | $100$ |
+
+| $n$ | $11$ | $12$ | $13$ | $14$ | $15$ |
+|---|---|---|---|---|---|
+| $n^2$ | $?$ | $144$ | $?$ | $196$ | $?$ |
+
+3. Donner tous les carrés parfaits compris entre $50$ et $150$.
+4. Le nombre $196$ est-il un carré parfait ? Et le nombre $200$ ?
+5. Le chiffre des unités d'un carré parfait peut-il être $2$, $3$, $7$ ou $8$ ? Justifier en étudiant les carrés de $0$ à $9$.
+6. Sans calculatrice, expliquer pourquoi $2\,027$ n'est pas un carré parfait.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Compter les carreaux
+
+::: methode
+Un carré de $n$ carreaux de côté contient $n$ rangées de $n$ carreaux.
+:::
+
+::: etape Compter rangée par rangée
+- Côté $1$ : $1$ rangée de $1$ carreau, soit $1 \times 1 = 1$ carreau.
+- Côté $2$ : $2$ rangées de $2$ carreaux, soit $2 \times 2 = 4$ carreaux.
+- Côté $3$ : $3$ rangées de $3$ carreaux, soit $3 \times 3 = 9$ carreaux.
+- Côté $4$ : $4$ rangées de $4$ carreaux, soit $4 \times 4 = 16$ carreaux.
+:::
+
+[IMAGE_2]
+
+::: resultat
+Les carrés contiennent $1$, $4$, $9$ et $16$ carreaux : ce sont $1^2$, $2^2$, $3^2$ et $4^2$. Un carré de côté $n$ contient $n \times n = n^2$ carreaux, d'où le nom de « carré ».
+:::
+
+## Question 2 : Compléter le tableau
+
+::: methode
+On multiplie chaque nombre par lui-même.
+:::
+
+::: etape Les cases manquantes
+- $3^2 = 3 \times 3 = 9$ et $6^2 = 6 \times 6 = 36$ ;
+- $9^2 = 9 \times 9 = 81$ et $11^2 = 11 \times 11 = 121$ ;
+- $13^2 = 13 \times 13 = 169$ et $15^2 = 15 \times 15 = 225$.
+:::
+
+::: resultat
+| $n$ | $3$ | $6$ | $9$ |
+|---|---|---|---|
+| $n^2$ | $9$ | $36$ | $81$ |
+
+| $n$ | $11$ | $13$ | $15$ |
+|---|---|---|---|
+| $n^2$ | $121$ | $169$ | $225$ |
+:::
+
+## Question 3 : Les carrés parfaits entre $50$ et $150$
+
+::: methode
+On lit le tableau dans l'ordre et on garde les carrés situés entre $50$ et $150$.
+:::
+
+::: etape Repérer les bornes
+$7^2 = 49$ est plus petit que $50$ et $13^2 = 169$ est plus grand que $150$ : on garde les carrés de $8$ à $12$.
+:::
+
+::: resultat
+Les carrés parfaits compris entre $50$ et $150$ sont $64$ ; $81$ ; $100$ ; $121$ ; $144$.
+:::
+
+## Question 4 : Les nombres $196$ et $200$
+
+::: etape Le nombre $196$
+$14^2 = 14 \times 14 = 196$.
+:::
+
+::: etape Le nombre $200$
+$200$ est entre deux carrés parfaits consécutifs :
+$$14^2 = 196 < 200 < 225 = 15^2$$
+Aucun entier n'est entre $14$ et $15$, donc aucun entier n'a pour carré $200$.
+:::
+
+::: resultat
+$196 = 14^2$ est un carré parfait ; $200$ n'est pas un carré parfait.
+:::
+
+## Question 5 : Le chiffre des unités
+
+::: methode
+Le chiffre des unités de $n^2$ ne dépend que du chiffre des unités de $n$ : il suffit d'étudier les carrés de $0$ à $9$.
+:::
+
+::: etape Les carrés de $0$ à $9$
+$0$ ; $1$ ; $4$ ; $9$ ; $16$ ; $25$ ; $36$ ; $49$ ; $64$ ; $81$.
+:::
+
+::: etape Leurs chiffres des unités
+$0$ ; $1$ ; $4$ ; $9$ ; $6$ ; $5$ ; $6$ ; $9$ ; $4$ ; $1$.
+:::
+
+::: resultat
+Non : un carré parfait se termine toujours par $0$, $1$, $4$, $5$, $6$ ou $9$, jamais par $2$, $3$, $7$ ou $8$.
+:::
+
+## Question 6 : Le nombre $2\,027$
+
+::: etape Le chiffre des unités
+$2\,027$ se termine par $7$.
+:::
+
+::: resultat
+D'après la question 5, aucun carré parfait ne se termine par $7$ : $2\,027$ n'est pas un carré parfait.
+:::
+
+::: attention Erreur fréquente
+La réciproque est fausse : un nombre qui se termine par $1$, $4$, $5$, $6$, $9$ ou $0$ n'est pas forcément un carré parfait. Par exemple, $200$ se termine par $0$ mais n'est pas un carré parfait.
+:::
+
+::: retenir
+Les carrés parfaits de $1$ à $144$ se connaissent par cœur : ils servent à calculer et à encadrer les racines carrées.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $1$ ; $4$ ; $9$ ; $16$ carreaux : un carré de côté $n$ contient $n$ rangées de $n$ carreaux.
+2. $3^2 = 9$ ; $6^2 = 36$ ; $9^2 = 81$ ; $11^2 = 121$ ; $13^2 = 169$ ; $15^2 = 225$
+3. $64$ ; $81$ ; $100$ ; $121$ ; $144$
+4. $196 = 14^2$ oui ; $200$ non ($196 < 200 < 225$)
+5. Non : un carré parfait se termine par $0$, $1$, $4$, $5$, $6$ ou $9$.
+6. $2\,027$ se termine par $7$.
+
+===
+
+=== Découverte - Passer du carré à la racine carrée
+Id: 2559
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Pour un nombre $a$ positif ou nul, la **racine carrée** de $a$, notée $\sqrt{a}$, est le nombre **positif** dont le carré est égal à $a$.
+
+[IMAGE_1]
+
+1. Le carré ci-dessus a une aire de $49$ cm². Quel nombre, multiplié par lui-même, donne $49$ ? En déduire le côté du carré et l'écrire avec une racine carrée.
+2. Calculer $\sqrt{81}$, $\sqrt{144}$, $\sqrt{1}$ et $\sqrt{0}$.
+3. Calculer $\sqrt{0{,}25}$, $\sqrt{0{,}01}$ et $\sqrt{\dfrac{4}{9}}$.
+4. Expliquer pourquoi $\sqrt{-4}$ n'existe pas.
+5. Calculer $\left(\sqrt{7}\right)^2$, $\sqrt{7^2}$ et $\sqrt{(-7)^2}$.
+6. Tom affirme : « $(-5)^2 = 25$, donc $\sqrt{25} = -5$ ». A-t-il raison ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Le côté du carré
+
+::: methode
+Le côté $c$ d'un carré d'aire $49$ cm² vérifie $c \times c = 49$ : c'est le nombre positif dont le carré vaut $49$, donc $c = \sqrt{49}$.
+:::
+
+::: etape Chercher dans les carrés parfaits
+$7 \times 7 = 49$, et $7$ est positif.
+:::
+
+[IMAGE_2]
+
+::: resultat
+Le côté du carré mesure $\sqrt{49} = 7$ cm.
+:::
+
+## Question 2 : Quatre racines entières
+
+::: methode
+On cherche le nombre positif dont le carré est le nombre sous le radical.
+:::
+
+::: etape Les carrés correspondants
+$9^2 = 81$ ; $12^2 = 144$ ; $1^2 = 1$ ; $0^2 = 0$.
+:::
+
+::: resultat
+$\sqrt{81} = 9$ ; $\sqrt{144} = 12$ ; $\sqrt{1} = 1$ ; $\sqrt{0} = 0$.
+:::
+
+## Question 3 : Racines d'un décimal et d'une fraction
+
+::: etape Les décimaux
+$0{,}5^2 = 0{,}5 \times 0{,}5 = 0{,}25$ et $0{,}1^2 = 0{,}1 \times 0{,}1 = 0{,}01$.
+:::
+
+::: etape La fraction
+$$\left(\dfrac{2}{3}\right)^2 = \dfrac{2 \times 2}{3 \times 3} = \dfrac{4}{9}$$
+:::
+
+::: resultat
+$$\sqrt{0{,}25} = 0{,}5 \qquad \sqrt{0{,}01} = 0{,}1$$
+$$\sqrt{\dfrac{4}{9}} = \dfrac{2}{3}$$
+:::
+
+::: attention Erreur fréquente
+Croire que la racine carrée est toujours plus petite que le nombre : $\sqrt{0{,}25} = 0{,}5$ est **plus grand** que $0{,}25$. Et $\sqrt{0{,}25}$ n'est pas $0{,}05$ : $0{,}05^2 = 0{,}002\,5$.
+:::
+
+## Question 4 : Une racine impossible
+
+::: etape Le signe d'un carré
+Pour tout nombre $x$, $x^2 = x \times x$ est un produit de deux nombres de même signe : il est positif ou nul.
+:::
+
+::: resultat
+Aucun nombre n'a pour carré $-4$ : $\sqrt{-4}$ n'existe pas.
+:::
+
+## Question 5 : Carré et racine se compensent
+
+::: etape Le carré d'une racine
+Par définition, $\sqrt{7}$ est le nombre positif dont le carré vaut $7$ : $\left(\sqrt{7}\right)^2 = 7$.
+:::
+
+::: etape La racine d'un carré
+$$\sqrt{7^2} = \sqrt{49} = 7$$
+$$\sqrt{(-7)^2} = \sqrt{49} = 7$$
+:::
+
+::: resultat
+Les trois nombres valent $7$.
+:::
+
+## Question 6 : L'affirmation de Tom
+
+::: etape Ce qui est juste
+$(-5)^2 = (-5) \times (-5) = 25$ : c'est exact.
+:::
+
+::: etape Ce qui est faux
+Par définition, une racine carrée est **positive**. Le nombre positif dont le carré vaut $25$ est $5$.
+:::
+
+::: resultat
+Tom a tort : $\sqrt{25} = 5$. Les nombres dont le carré vaut $25$ sont $5$ et $-5$, mais seul $5$ est la racine carrée de $25$.
+:::
+
+::: retenir
+$\sqrt{a}$ est toujours positif ou nul : $\sqrt{(-7)^2} = 7$, et non $-7$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $7 \times 7 = 49$ : le côté mesure $\sqrt{49} = 7$ cm.
+2. $9$ ; $12$ ; $1$ ; $0$
+3. $0{,}5$ ; $0{,}1$ ; $\dfrac{2}{3}$
+4. Un carré n'est jamais négatif.
+5. $7$ ; $7$ ; $7$
+6. Non : $\sqrt{25} = 5$, une racine carrée est positive.
+
+===
+
+=== Découverte - Trouver le côté de carrés d'aire donnée
+Id: 2560
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Voici trois carrés $A$, $B$ et $C$ dont on connaît l'aire.
+
+[IMAGE_1]
+
+1. Calculer le côté du carré $A$.
+2. Calculer le côté du carré $B$.
+3. Entre quels nombres entiers consécutifs le côté du carré $C$ est-il compris ?
+4. À l'aide de la calculatrice, donner le côté du carré $C$ arrondi au centième.
+5. Calculer le périmètre de chacun des trois carrés (arrondi au dixième pour $C$).
+6. Les carrés sont-ils rangés dans le même ordre selon leur aire et selon leur périmètre ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Le carré $A$
+
+::: methode
+Un carré d'aire $A$ a pour côté $\sqrt{A}$.
+:::
+
+::: etape Calculer $\sqrt{64}$
+$8^2 = 64$ et $8 \geq 0$, donc $\sqrt{64} = 8$.
+:::
+
+::: resultat
+Le côté du carré $A$ mesure $8$ cm.
+:::
+
+## Question 2 : Le carré $B$
+
+::: etape Calculer $\sqrt{2{,}25}$
+$1^2 = 1$ et $2^2 = 4$ : le côté est entre $1$ et $2$. On essaie $1{,}5$ : $1{,}5^2 = 1{,}5 \times 1{,}5 = 2{,}25$.
+:::
+
+::: resultat
+Le côté du carré $B$ mesure $\sqrt{2{,}25} = 1{,}5$ cm.
+:::
+
+## Question 3 : Encadrer le côté du carré $C$
+
+::: methode
+$30$ n'est pas un carré parfait : on cherche les deux carrés parfaits consécutifs qui l'entourent.
+:::
+
+::: etape Les carrés parfaits voisins
+$$5^2 = 25 < 30 < 36 = 6^2$$
+:::
+
+::: resultat
+$5 < \sqrt{30} < 6$ : le côté du carré $C$ est compris entre $5$ cm et $6$ cm.
+:::
+
+## Question 4 : La valeur approchée
+
+::: etape Lire la calculatrice
+La calculatrice affiche $\sqrt{30} \approx 5{,}477\,2$. Le chiffre des millièmes est $7$ : on arrondit au centième supérieur.
+:::
+
+::: resultat
+Le côté du carré $C$ mesure $\sqrt{30}$ cm $\approx 5{,}48$ cm.
+:::
+
+::: point Vérification
+$5{,}48^2 = 30{,}030\,4$ : c'est proche de $30$ sans être égal, car $5{,}48$ n'est qu'une valeur approchée. L'encadrement de la question 3 est respecté.
+:::
+
+[IMAGE_2]
+
+## Question 5 : Les périmètres
+
+::: methode
+Périmètre d'un carré $= 4 \times \text{côté}$. Pour $C$, on garde la valeur exacte $\sqrt{30}$ et on arrondit à la fin.
+:::
+
+::: etape Carrés $A$ et $B$
+$4 \times 8 = 32$ cm et $4 \times 1{,}5 = 6$ cm.
+:::
+
+::: etape Carré $C$
+$4 \times \sqrt{30} \approx 21{,}909$ cm, soit environ $21{,}9$ cm.
+:::
+
+::: resultat
+Périmètres : $32$ cm pour $A$, $6$ cm pour $B$ et environ $21{,}9$ cm pour $C$.
+:::
+
+## Question 6 : Comparer les classements
+
+::: etape Classement par aire
+$2{,}25 < 30 < 64$, donc $B$, puis $C$, puis $A$.
+:::
+
+::: etape Classement par périmètre
+$6 < 21{,}9 < 32$, donc $B$, puis $C$, puis $A$.
+:::
+
+::: resultat
+Oui : le classement est le même. Pour des carrés, plus l'aire est grande, plus le côté est grand, donc plus le périmètre est grand.
+:::
+
+::: attention Erreur fréquente
+Diviser l'aire par $4$ pour obtenir le côté : $64 \div 4 = 16$ n'est pas le côté du carré $A$ ($16 \times 16 = 256$). Le côté d'un carré s'obtient avec la **racine carrée** de l'aire ; c'est le **périmètre** qui vaut $4$ fois le côté.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\sqrt{64} = 8$ cm
+2. $\sqrt{2{,}25} = 1{,}5$ cm
+3. $5 < \sqrt{30} < 6$
+4. $\sqrt{30} \approx 5{,}48$ cm
+5. $32$ cm ; $6$ cm ; $\approx 21{,}9$ cm
+6. Oui, même classement : $B$, $C$, $A$.
+
+===
+
+=== Découverte - Encadrer une racine carrée entre deux entiers
+Id: 2561
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+On cherche à situer des racines carrées qui ne sont pas des nombres entiers.
+
+1. Encadrer $\sqrt{20}$ entre deux entiers consécutifs.
+2. Encadrer $\sqrt{50}$ entre deux entiers consécutifs.
+3. Encadrer $\sqrt{90}$ entre deux entiers consécutifs.
+4. Sans calculatrice, calculer $4{,}4^2$ et $4{,}5^2$, puis en déduire un encadrement de $\sqrt{20}$ au dixième.
+5. Donner l'arrondi de $\sqrt{20}$ au centième à l'aide de la calculatrice.
+6. Placer approximativement $\sqrt{20}$, $\sqrt{50}$ et $\sqrt{90}$ sur la droite graduée ci-dessous.
+
+[IMAGE_1]
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Encadrer $\sqrt{20}$
+
+::: methode
+On cherche les deux carrés parfaits consécutifs qui entourent le nombre sous le radical, puis on prend leurs racines.
+:::
+
+::: etape Les carrés parfaits voisins de $20$
+$$4^2 = 16 < 20 < 25 = 5^2$$
+:::
+
+::: resultat
+$$4 < \sqrt{20} < 5$$
+:::
+
+## Question 2 : Encadrer $\sqrt{50}$
+
+::: etape Les carrés parfaits voisins de $50$
+$$7^2 = 49 < 50 < 64 = 8^2$$
+:::
+
+::: resultat
+$7 < \sqrt{50} < 8$, et $\sqrt{50}$ est très proche de $7$ car $50$ est très proche de $49$.
+:::
+
+## Question 3 : Encadrer $\sqrt{90}$
+
+::: etape Les carrés parfaits voisins de $90$
+$$9^2 = 81 < 90 < 100 = 10^2$$
+:::
+
+::: resultat
+$$9 < \sqrt{90} < 10$$
+:::
+
+## Question 4 : Encadrer $\sqrt{20}$ au dixième
+
+::: methode
+Deux nombres positifs sont rangés dans le même ordre que leurs carrés : on compare $4{,}4^2$ et $4{,}5^2$ avec $20$.
+:::
+
+::: etape Calculer les carrés
+$$4{,}4^2 = 4{,}4 \times 4{,}4 = 19{,}36$$
+$$4{,}5^2 = 4{,}5 \times 4{,}5 = 20{,}25$$
+:::
+
+::: etape Comparer à $20$
+$$19{,}36 < 20 < 20{,}25$$
+:::
+
+::: resultat
+$$4{,}4 < \sqrt{20} < 4{,}5$$
+:::
+
+## Question 5 : L'arrondi au centième
+
+::: etape Lire la calculatrice
+La calculatrice affiche $4{,}472\,1\ldots$ Le chiffre des millièmes est $2$ : on garde $4{,}47$.
+:::
+
+::: resultat
+$$\sqrt{20} \approx 4{,}47$$
+:::
+
+## Question 6 : Placer les racines
+
+::: etape Valeurs approchées
+$\sqrt{20} \approx 4{,}47$ ; $\sqrt{50} \approx 7{,}07$ ; $\sqrt{90} \approx 9{,}49$.
+:::
+
+::: resultat
+Chaque point se place entre les entiers trouvés aux questions 1 à 3.
+:::
+
+[IMAGE_2]
+
+::: attention Erreur fréquente
+Placer $\sqrt{50}$ au milieu de $7$ et $8$ : $50$ est tout près de $49$, donc $\sqrt{50}$ est tout près de $7$. De même, $\sqrt{20}$ n'est pas $20 \div 2 = 10$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $4 < \sqrt{20} < 5$
+2. $7 < \sqrt{50} < 8$
+3. $9 < \sqrt{90} < 10$
+4. $4{,}4^2 = 19{,}36$ et $4{,}5^2 = 20{,}25$, donc $4{,}4 < \sqrt{20} < 4{,}5$
+5. $\sqrt{20} \approx 4{,}47$
+6. $\sqrt{20} \approx 4{,}47$ ; $\sqrt{50} \approx 7{,}07$ ; $\sqrt{90} \approx 9{,}49$ (voir la figure)
+
+===
+
+=== Découverte - Tester des égalités avec des racines carrées
+Id: 2562
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+On se demande si la racine carrée d'une somme est égale à la somme des racines carrées.
+
+1. Calculer $\sqrt{9} + \sqrt{16}$, puis $\sqrt{9 + 16}$. Ces deux nombres sont-ils égaux ?
+2. Calculer $\sqrt{100} - \sqrt{64}$, puis $\sqrt{100 - 64}$.
+3. Calculer $\sqrt{3^2 + 4^2}$ et comparer avec $3 + 4$.
+4. Calculer $\sqrt{6^2 + 8^2}$.
+5. Léo affirme : « Pour tous nombres positifs $a$ et $b$, on a $\sqrt{a + b} = \sqrt{a} + \sqrt{b}$. » A-t-il raison ?
+6. Trouver une valeur de $b$ pour laquelle $\sqrt{25 + b} = \sqrt{25} + \sqrt{b}$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Une somme
+
+::: methode
+Dans $\sqrt{9 + 16}$, on calcule d'abord ce qui est sous le radical, puis on prend la racine.
+:::
+
+::: etape Somme des racines
+$$\sqrt{9} + \sqrt{16} = 3 + 4 = 7$$
+:::
+
+::: etape Racine de la somme
+$$\sqrt{9 + 16} = \sqrt{25} = 5$$
+:::
+
+::: resultat
+$7 \neq 5$ : les deux nombres ne sont pas égaux.
+:::
+
+## Question 2 : Une différence
+
+::: etape Différence des racines
+$$\sqrt{100} - \sqrt{64} = 10 - 8 = 2$$
+:::
+
+::: etape Racine de la différence
+$$\sqrt{100 - 64} = \sqrt{36} = 6$$
+:::
+
+::: resultat
+$2 \neq 6$ : là encore, les deux nombres sont différents.
+:::
+
+## Question 3 : Une somme de carrés
+
+::: etape Sous le radical d'abord
+Priorités : les carrés, puis la somme.
+$$3^2 + 4^2 = 9 + 16 = 25$$
+:::
+
+::: resultat
+$\sqrt{3^2 + 4^2} = \sqrt{25} = 5$, alors que $3 + 4 = 7$ : $\sqrt{3^2 + 4^2} \neq 3 + 4$.
+:::
+
+## Question 4 : Une autre somme de carrés
+
+::: etape Sous le radical
+$$6^2 + 8^2 = 36 + 64 = 100$$
+:::
+
+::: resultat
+$$\sqrt{6^2 + 8^2} = \sqrt{100} = 10$$
+:::
+
+## Question 5 : L'affirmation de Léo
+
+::: methode
+Pour montrer qu'une affirmation générale est fausse, il suffit d'un seul **contre-exemple**.
+:::
+
+::: etape Un contre-exemple
+Avec $a = 9$ et $b = 16$ (question 1) : $\sqrt{9 + 16} = 5$ alors que $\sqrt{9} + \sqrt{16} = 7$.
+:::
+
+::: resultat
+Léo a tort : en général, $\sqrt{a + b} \neq \sqrt{a} + \sqrt{b}$.
+:::
+
+## Question 6 : Un cas d'égalité
+
+::: etape Essayer $b = 0$
+$$\sqrt{25 + 0} = \sqrt{25} = 5$$
+$$\sqrt{25} + \sqrt{0} = 5 + 0 = 5$$
+:::
+
+::: resultat
+Avec $b = 0$, l'égalité est vraie. Un exemple où l'égalité marche ne prouve donc pas qu'elle est toujours vraie.
+:::
+
+::: attention Erreur fréquente
+« Simplifier » $\sqrt{3^2 + 4^2}$ en $3 + 4$ : c'est faux. On calcule toujours ce qui est sous le radical **avant** de prendre la racine. Cette erreur reviendra avec le théorème de Pythagore.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\sqrt{9} + \sqrt{16} = 7$ et $\sqrt{9 + 16} = 5$ : non égaux.
+2. $2$ et $6$
+3. $\sqrt{3^2 + 4^2} = 5 \neq 7$
+4. $10$
+5. Non : contre-exemple $a = 9$, $b = 16$.
+6. $b = 0$
+
+===
+
+=== Découverte - Résoudre des équations du type x² = a
+Id: 2563
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+On cherche tous les nombres $x$ dont le carré $x^2$ est égal à un nombre donné.
+
+1. Quels nombres ont pour carré $49$ ?
+2. Résoudre l'équation $x^2 = 0{,}36$.
+3. Résoudre l'équation $x^2 = 0$.
+4. Résoudre l'équation $x^2 = -9$.
+5. Le côté $c$ d'un carré, en cm, vérifie $c^2 = 121$. Combien mesure le côté ?
+6. Résoudre l'équation $x^2 = 2$ et donner des valeurs approchées des solutions au millième.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les nombres de carré $49$
+
+::: methode
+Un nombre et son opposé ont le même carré : si $7^2 = 49$, alors $(-7)^2 = 49$ aussi.
+:::
+
+::: etape Les deux nombres
+$7^2 = 7 \times 7 = 49$ et $(-7)^2 = (-7) \times (-7) = 49$.
+:::
+
+::: resultat
+Les nombres dont le carré vaut $49$ sont $7$ et $-7$.
+:::
+
+::: attention Erreur fréquente
+Oublier $-7$ : un nombre négatif a aussi un carré positif.
+:::
+
+## Question 2 : L'équation $x^2 = 0{,}36$
+
+::: methode
+Pour $a > 0$, l'équation $x^2 = a$ a deux solutions : $\sqrt{a}$ et $-\sqrt{a}$.
+:::
+
+::: etape Calculer $\sqrt{0{,}36}$
+$0{,}6^2 = 0{,}6 \times 0{,}6 = 0{,}36$, donc $\sqrt{0{,}36} = 0{,}6$.
+:::
+
+::: resultat
+Deux solutions : $x = 0{,}6$ ou $x = -0{,}6$.
+:::
+
+## Question 3 : L'équation $x^2 = 0$
+
+::: etape Un produit nul
+$x \times x = 0$ seulement si $x = 0$.
+:::
+
+::: resultat
+Une seule solution : $x = 0$.
+:::
+
+## Question 4 : L'équation $x^2 = -9$
+
+::: etape Le signe d'un carré
+Un carré est toujours positif ou nul : il ne peut pas valoir $-9$.
+:::
+
+::: resultat
+L'équation $x^2 = -9$ n'a aucune solution.
+:::
+
+## Question 5 : Le côté du carré
+
+::: etape Résoudre $c^2 = 121$
+$11^2 = 121$ : l'équation a deux solutions, $c = 11$ ou $c = -11$.
+:::
+
+::: etape Choisir la solution
+Une longueur est positive : on ne garde que $11$.
+:::
+
+::: resultat
+Le côté du carré mesure $11$ cm.
+:::
+
+## Question 6 : L'équation $x^2 = 2$
+
+::: etape Les deux solutions
+$2 > 0$ : les solutions sont $\sqrt{2}$ et $-\sqrt{2}$. Ce sont les **valeurs exactes**.
+:::
+
+::: etape Valeurs approchées
+La calculatrice donne $\sqrt{2} \approx 1{,}414\,2$ : au millième, $\sqrt{2} \approx 1{,}414$.
+:::
+
+::: resultat
+$x = \sqrt{2} \approx 1{,}414$ ou $x = -\sqrt{2} \approx -1{,}414$.
+:::
+
+::: retenir
+$x^2 = a$ : deux solutions $\sqrt{a}$ et $-\sqrt{a}$ si $a > 0$ ; une seule, $0$, si $a = 0$ ; aucune si $a < 0$. Pour une longueur, on ne garde que la solution positive.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $7$ et $-7$
+2. $x = 0{,}6$ ou $x = -0{,}6$
+3. $x = 0$
+4. Aucune solution
+5. $11$ cm
+6. $x = \sqrt{2} \approx 1{,}414$ ou $x = -\sqrt{2} \approx -1{,}414$
+
+===
+
+=== Découverte - Calculer avec des carrés
+Id: 2564
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Calculer les expressions suivantes en respectant les priorités : d'abord les parenthèses, puis les carrés, puis les produits, enfin les sommes et les différences.
+
+1. $A = 3^2 + 4^2$ et $B = (3 + 4)^2$
+2. $C = 2 \times 3^2$ et $D = (2 \times 3)^2$
+3. $E = (-5)^2$ et $F = -5^2$
+4. $G = 0{,}3^2$ et $H = 1{,}2^2$
+5. $K = \left(\dfrac{2}{3}\right)^2$ et $L = \left(-\dfrac{1}{2}\right)^2$
+6. $M = 10^2 - 2 \times 6^2$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $A$ et $B$
+
+::: methode
+Dans $A$, on calcule les carrés avant la somme ; dans $B$, on calcule la parenthèse avant le carré.
+:::
+
+::: etape Calculer $A$
+$$A = 3^2 + 4^2 = 9 + 16 = 25$$
+:::
+
+::: etape Calculer $B$
+$$B = (3 + 4)^2 = 7^2 = 49$$
+:::
+
+::: resultat
+$A = 25$ et $B = 49$ : $A \neq B$.
+:::
+
+::: attention Erreur fréquente
+Écrire $(3 + 4)^2 = 3^2 + 4^2$ : c'est faux, car $49 \neq 25$.
+:::
+
+## Question 2 : $C$ et $D$
+
+::: etape Calculer $C$
+Le carré ne porte que sur $3$ :
+$$C = 2 \times 3^2 = 2 \times 9 = 18$$
+:::
+
+::: etape Calculer $D$
+$$D = (2 \times 3)^2 = 6^2 = 36$$
+:::
+
+::: resultat
+$C = 18$ et $D = 36$.
+:::
+
+## Question 3 : $E$ et $F$
+
+::: etape Calculer $E$
+Le carré porte sur $-5$ :
+$$E = (-5)^2 = (-5) \times (-5) = 25$$
+:::
+
+::: etape Calculer $F$
+Sans parenthèses, le carré ne porte que sur $5$ :
+$$F = -5^2 = -(5 \times 5) = -25$$
+:::
+
+::: resultat
+$E = 25$ et $F = -25$.
+:::
+
+::: attention Erreur fréquente
+Confondre $(-5)^2$ et $-5^2$. La calculatrice fait la même différence : il faut taper les parenthèses.
+:::
+
+## Question 4 : $G$ et $H$
+
+::: methode
+Le produit de deux décimaux a autant de chiffres après la virgule que les deux facteurs réunis.
+:::
+
+::: etape Calculer $G$
+$3 \times 3 = 9$, et il faut $1 + 1 = 2$ chiffres après la virgule :
+$$G = 0{,}3^2 = 0{,}3 \times 0{,}3 = 0{,}09$$
+:::
+
+::: etape Calculer $H$
+$12 \times 12 = 144$, avec $2$ chiffres après la virgule :
+$$H = 1{,}2^2 = 1{,}2 \times 1{,}2 = 1{,}44$$
+:::
+
+::: resultat
+$G = 0{,}09$ et $H = 1{,}44$.
+:::
+
+::: attention Erreur fréquente
+Écrire $0{,}3^2 = 0{,}9$ : le produit $0{,}3 \times 0{,}3$ a deux chiffres après la virgule, donc $0{,}09$.
+:::
+
+## Question 5 : $K$ et $L$
+
+::: methode
+On multiplie les numérateurs entre eux et les dénominateurs entre eux.
+:::
+
+::: etape Calculer $K$
+$$K = \left(\dfrac{2}{3}\right)^2 = \dfrac{2 \times 2}{3 \times 3} = \dfrac{4}{9}$$
+:::
+
+::: etape Calculer $L$
+Deux facteurs négatifs : le produit est positif.
+$$L = \left(-\dfrac{1}{2}\right)^2 = \left(-\dfrac{1}{2}\right) \times \left(-\dfrac{1}{2}\right) = \dfrac{1}{4}$$
+:::
+
+::: resultat
+$$K = \dfrac{4}{9} \qquad L = \dfrac{1}{4}$$
+:::
+
+## Question 6 : $M$
+
+::: methode
+D'abord les carrés, puis le produit, enfin la différence.
+:::
+
+::: etape Les carrés
+$10^2 = 100$ et $6^2 = 36$.
+:::
+
+::: etape Le produit puis la différence
+$$
+\begin{aligned}
+M &= 100 - 2 \times 36 \\
+&= 100 - 72 \\
+&= 28
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$M = 28$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $A = 25$ ; $B = 49$
+2. $C = 18$ ; $D = 36$
+3. $E = 25$ ; $F = -25$
+4. $G = 0{,}09$ ; $H = 1{,}44$
+5. $K = \dfrac{4}{9}$ ; $L = \dfrac{1}{4}$
+6. $M = 28$
+
+===
+
+=== Entraînement - Clôturer un potager carré
+Id: 2565
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Le potager de Nadia a la forme d'un carré d'aire $196$ m². Elle veut l'entourer d'un grillage vendu $12{,}50$ € le mètre. Son voisin a un potager carré de $200$ m².
+
+[IMAGE_1]
+
+1. Calculer la longueur du côté du potager de Nadia.
+2. Calculer la longueur de grillage nécessaire.
+3. Calculer le prix du grillage.
+4. Calculer le côté du potager du voisin, arrondi au centimètre.
+5. Le grillage ne se vend qu'au mètre entier. Combien de mètres le voisin doit-il acheter ?
+6. Combien paiera-t-il ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Le côté du potager de Nadia
+
+::: methode
+Un carré d'aire $A$ a pour côté $\sqrt{A}$.
+:::
+
+::: etape Calculer $\sqrt{196}$
+$14^2 = 14 \times 14 = 196$, donc $\sqrt{196} = 14$.
+:::
+
+::: resultat
+Le côté du potager mesure $14$ m.
+:::
+
+## Question 2 : La longueur de grillage
+
+::: methode
+On grillage tout le tour : la longueur nécessaire est le périmètre du carré.
+:::
+
+::: etape Calculer le périmètre
+$4 \times 14 = 56$ m.
+:::
+
+::: resultat
+Il faut $56$ m de grillage.
+:::
+
+## Question 3 : Le prix
+
+::: etape Multiplier par le prix au mètre
+$56 \times 12{,}50 = 700$ €.
+:::
+
+::: resultat
+Le grillage coûte $700$ €.
+:::
+
+## Question 4 : Le côté du potager du voisin
+
+::: etape Valeur exacte et encadrement
+Le côté mesure $\sqrt{200}$ m. Comme $14^2 = 196 < 200 < 225 = 15^2$, on a $14 < \sqrt{200} < 15$.
+:::
+
+::: etape Valeur approchée
+La calculatrice affiche $\sqrt{200} \approx 14{,}142\,1$. Arrondir au centimètre, c'est arrondir au centième de mètre : $14{,}14$ m.
+:::
+
+[IMAGE_2]
+
+::: resultat
+Le côté du potager du voisin mesure environ $14{,}14$ m.
+:::
+
+## Question 5 : La longueur à acheter
+
+::: methode
+On calcule le périmètre avec la valeur exacte $\sqrt{200}$, puis on arrondit selon la situation.
+:::
+
+::: etape Le périmètre
+$4 \times \sqrt{200} \approx 56{,}57$ m.
+:::
+
+::: etape Arrondir au mètre supérieur
+$56$ m ne suffisent pas : il manquerait plus d'un demi-mètre. Il faut acheter le mètre entier suivant.
+:::
+
+::: resultat
+Le voisin doit acheter $57$ m de grillage.
+:::
+
+## Question 6 : Le prix pour le voisin
+
+::: etape Multiplier
+$57 \times 12{,}50 = 712{,}50$ €.
+:::
+
+::: resultat
+Le voisin paiera $712{,}50$ €.
+:::
+
+::: attention Erreur fréquente
+Arrondir $56{,}57$ à $56$ m « parce que c'est l'arrondi à l'unité » : ici, on achète ce qu'il faut pour faire tout le tour, donc on arrondit toujours au mètre **supérieur**.
+:::
+
+::: retenir
+On garde la valeur exacte $\sqrt{200}$ jusqu'au dernier calcul, puis on arrondit selon le contexte.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\sqrt{196} = 14$ m
+2. $56$ m
+3. $700$ €
+4. $\sqrt{200} \approx 14{,}14$ m
+5. $4 \times \sqrt{200} \approx 56{,}57$ m : $57$ m
+6. $712{,}50$ €
+
+===
+
+=== Entraînement - Construire un carré de même aire qu'un rectangle
+Id: 2566
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On veut construire un carré ayant la même aire que le rectangle de $18$ cm sur $8$ cm ci-dessous.
+
+[IMAGE_1]
+
+1. Calculer l'aire du rectangle.
+2. En déduire le côté du carré.
+3. Comparer les périmètres du rectangle et du carré.
+4. Reprendre les questions 1 à 3 avec un rectangle de $5$ cm sur $20$ cm.
+5. Reprendre avec un rectangle de $6$ cm sur $15$ cm (côté du carré arrondi au centième).
+6. Que remarque-t-on sur les périmètres ? Formuler une conjecture.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : L'aire du rectangle
+
+::: etape Longueur fois largeur
+$18 \times 8 = 144$ cm².
+:::
+
+::: resultat
+L'aire du rectangle est $144$ cm².
+:::
+
+## Question 2 : Le côté du carré
+
+::: methode
+Le carré a la même aire, $144$ cm² : son côté est $\sqrt{144}$.
+:::
+
+::: etape Calculer $\sqrt{144}$
+$12^2 = 144$, donc $\sqrt{144} = 12$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+Le carré a pour côté $12$ cm.
+:::
+
+## Question 3 : Les périmètres
+
+::: etape Le rectangle
+$2 \times (18 + 8) = 2 \times 26 = 52$ cm.
+:::
+
+::: etape Le carré
+$4 \times 12 = 48$ cm.
+:::
+
+::: resultat
+Le carré a un périmètre plus petit que le rectangle : $48$ cm $< 52$ cm.
+:::
+
+## Question 4 : Un rectangle de $5$ cm sur $20$ cm
+
+::: etape Aire et côté du carré
+Aire : $5 \times 20 = 100$ cm² ; côté du carré : $\sqrt{100} = 10$ cm.
+:::
+
+::: etape Périmètres
+Rectangle : $2 \times (5 + 20) = 50$ cm ; carré : $4 \times 10 = 40$ cm.
+:::
+
+::: resultat
+Carré de côté $10$ cm ; périmètres $50$ cm et $40$ cm.
+:::
+
+## Question 5 : Un rectangle de $6$ cm sur $15$ cm
+
+::: etape Aire et côté du carré
+Aire : $6 \times 15 = 90$ cm². $90$ n'est pas un carré parfait ($81 < 90 < 100$) : le côté est $\sqrt{90} \approx 9{,}49$ cm.
+:::
+
+::: etape Périmètres
+Rectangle : $2 \times (6 + 15) = 42$ cm ; carré : $4 \times \sqrt{90} \approx 37{,}95$ cm.
+:::
+
+::: resultat
+Carré de côté $\sqrt{90} \approx 9{,}49$ cm ; périmètres $42$ cm et environ $37{,}95$ cm.
+:::
+
+## Question 6 : La conjecture
+
+::: etape Les trois cas
+$48 < 52$ ; $40 < 50$ ; $37{,}95 < 42$.
+:::
+
+::: resultat
+Conjecture : à aire égale, le carré a un périmètre plus petit que le rectangle. C'est la forme rectangulaire qui demande le moins de clôture.
+:::
+
+::: attention Erreur fréquente
+Chercher le côté du carré en faisant la moyenne des dimensions : $(18 + 8) \div 2 = 13$ cm donne un carré d'aire $169$ cm², et non $144$ cm². On passe par l'**aire**, puis par la racine carrée.
+:::
+
+::: retenir
+Quelques exemples permettent d'émettre une conjecture, mais ne la démontrent pas.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $144$ cm²
+2. $12$ cm
+3. $52$ cm pour le rectangle, $48$ cm pour le carré
+4. Côté $10$ cm ; périmètres $50$ cm et $40$ cm
+5. Côté $\sqrt{90} \approx 9{,}49$ cm ; périmètres $42$ cm et $\approx 37{,}95$ cm
+6. À aire égale, le carré a le plus petit périmètre.
+
+===
+
+=== Entraînement - Calculer une durée de chute libre
+Id: 2567
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Lorsqu'on lâche un objet sans vitesse, en négligeant la résistance de l'air, la distance $d$ (en m) parcourue en $t$ secondes est donnée par la formule :
+$$d = 4{,}9 \times t^2$$
+
+1. Calculer la distance parcourue au bout de $1$ s, de $2$ s et de $3$ s.
+2. Combien de temps faut-il pour tomber de $44{,}1$ m ?
+3. Combien de temps faut-il pour tomber de $122{,}5$ m ?
+4. Un objet tombe de $100$ m. Calculer la durée de la chute, arrondie au centième.
+5. La tour Eiffel mesure $324$ m. Combien de temps durerait une chute depuis le sommet (au centième) ?
+6. La hauteur passe de $44{,}1$ m à $88{,}2$ m : elle double. La durée de chute double-t-elle ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les premières secondes
+
+::: methode
+On remplace $t$ par sa valeur ; le carré est prioritaire sur la multiplication.
+:::
+
+::: etape Les trois calculs
+- $t = 1$ : $4{,}9 \times 1^2 = 4{,}9 \times 1 = 4{,}9$ m ;
+- $t = 2$ : $4{,}9 \times 2^2 = 4{,}9 \times 4 = 19{,}6$ m ;
+- $t = 3$ : $4{,}9 \times 3^2 = 4{,}9 \times 9 = 44{,}1$ m.
+:::
+
+::: resultat
+L'objet parcourt $4{,}9$ m en $1$ s, $19{,}6$ m en $2$ s et $44{,}1$ m en $3$ s.
+:::
+
+## Question 2 : Tomber de $44{,}1$ m
+
+::: methode
+On cherche $t$ positif tel que $4{,}9 \times t^2 = 44{,}1$ : on isole $t^2$, puis on prend la racine carrée.
+:::
+
+::: etape Isoler $t^2$
+$$t^2 = 44{,}1 \div 4{,}9 = 9$$
+:::
+
+::: etape Prendre la racine
+Une durée est positive : $t = \sqrt{9} = 3$.
+:::
+
+::: resultat
+Il faut $3$ s pour tomber de $44{,}1$ m (c'est cohérent avec la question 1).
+:::
+
+## Question 3 : Tomber de $122{,}5$ m
+
+::: etape Isoler $t^2$
+$$t^2 = 122{,}5 \div 4{,}9 = 25$$
+:::
+
+::: resultat
+$t = \sqrt{25} = 5$ : il faut $5$ s.
+:::
+
+## Question 4 : Tomber de $100$ m
+
+::: etape Isoler $t^2$
+$$t^2 = 100 \div 4{,}9 \approx 20{,}41$$
+:::
+
+::: etape Prendre la racine
+$t = \sqrt{100 \div 4{,}9} \approx 4{,}517\,5$ : la calculatrice permet de garder la valeur exacte jusqu'au bout.
+:::
+
+::: resultat
+La chute dure environ $4{,}52$ s.
+:::
+
+::: attention Erreur fréquente
+S'arrêter après la division $100 \div 4{,}9$ : on obtient $t^2$, pas $t$. Il faut encore prendre la racine carrée.
+:::
+
+## Question 5 : Depuis la tour Eiffel
+
+::: etape Isoler $t^2$
+$$t^2 = 324 \div 4{,}9 \approx 66{,}12$$
+:::
+
+::: etape Prendre la racine
+$t = \sqrt{324 \div 4{,}9} \approx 8{,}131\,6$.
+:::
+
+::: resultat
+La chute durerait environ $8{,}13$ s.
+:::
+
+## Question 6 : Doubler la hauteur
+
+::: etape La nouvelle durée
+$$t^2 = 88{,}2 \div 4{,}9 = 18$$
+$$t = \sqrt{18} \approx 4{,}24$$
+:::
+
+::: etape Comparer avec $3$ s
+Le double de $3$ s serait $6$ s. Or $4{,}24 \div 3 \approx 1{,}41$.
+:::
+
+[IMAGE_1]
+
+::: resultat
+Non : quand la hauteur double, la durée n'est multipliée que par environ $1{,}41$ (c'est $\sqrt{2}$). La courbe n'est pas une droite passant par l'origine : la distance n'est pas proportionnelle à la durée.
+:::
+
+::: retenir
+Quand une distance est proportionnelle au **carré** du temps, multiplier la distance par $2$ multiplie le temps par $\sqrt{2} \approx 1{,}41$ seulement.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $4{,}9$ m ; $19{,}6$ m ; $44{,}1$ m
+2. $t^2 = 9$, donc $t = 3$ s
+3. $t^2 = 25$, donc $t = 5$ s
+4. $t \approx 4{,}52$ s
+5. $t \approx 8{,}13$ s
+6. Non : $t = \sqrt{18} \approx 4{,}24$ s, la durée est multipliée par $\sqrt{2} \approx 1{,}41$.
+
+===
+
+=== Entraînement - Comparer et ranger des racines carrées
+Id: 2568
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Deux nombres **positifs** sont rangés dans le même ordre que leurs carrés. Pour comparer deux nombres positifs, on peut donc comparer leurs carrés.
+
+1. Comparer $\sqrt{45}$ et $6{,}7$.
+2. Comparer $\sqrt{50}$ et $7$.
+3. Ranger dans l'ordre croissant, sans calculatrice : $\sqrt{10}$ ; $3$ ; $\sqrt{8}$ ; $3{,}2$ ; $\sqrt{12}$.
+4. À l'aide de la calculatrice, placer ces cinq nombres sur une droite graduée.
+5. Combien de nombres entiers sont compris entre $\sqrt{20}$ et $\sqrt{70}$ ?
+6. Comparer $0{,}36$ et $\sqrt{0{,}36}$. L'affirmation « la racine carrée d'un nombre est toujours plus petite que ce nombre » est-elle vraie ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $\sqrt{45}$ et $6{,}7$
+
+::: methode
+Les deux nombres sont positifs : on compare leurs carrés.
+:::
+
+::: etape Les carrés
+$\left(\sqrt{45}\right)^2 = 45$ et $6{,}7^2 = 6{,}7 \times 6{,}7 = 44{,}89$.
+:::
+
+::: etape Comparer
+$44{,}89 < 45$, donc $6{,}7^2 < \left(\sqrt{45}\right)^2$.
+:::
+
+::: resultat
+$$6{,}7 < \sqrt{45}$$
+:::
+
+## Question 2 : $\sqrt{50}$ et $7$
+
+::: etape Les carrés
+$\left(\sqrt{50}\right)^2 = 50$ et $7^2 = 49$.
+:::
+
+::: resultat
+$49 < 50$, donc $7 < \sqrt{50}$.
+:::
+
+## Question 3 : Ranger cinq nombres
+
+::: methode
+On remplace chaque nombre par son carré, on range les carrés, puis on revient aux nombres.
+:::
+
+::: etape Les carrés
+| Nombre | Son carré |
+|---|---|
+| $\sqrt{10}$ | $10$ |
+| $3$ | $9$ |
+| $\sqrt{8}$ | $8$ |
+| $3{,}2$ | $10{,}24$ |
+| $\sqrt{12}$ | $12$ |
+:::
+
+::: etape Ranger les carrés
+$$8 < 9 < 10 < 10{,}24 < 12$$
+:::
+
+::: resultat
+$$\sqrt{8} < 3 < \sqrt{10} < 3{,}2 < \sqrt{12}$$
+:::
+
+::: attention Erreur fréquente
+Comparer $10$ et $3{,}2$ pour ranger $\sqrt{10}$ et $3{,}2$ : on doit comparer $10$ avec le **carré** de $3{,}2$, c'est-à-dire $10{,}24$.
+:::
+
+## Question 4 : Sur une droite graduée
+
+::: etape Valeurs approchées
+$\sqrt{8} \approx 2{,}83$ ; $\sqrt{10} \approx 3{,}16$ ; $\sqrt{12} \approx 3{,}46$.
+:::
+
+[IMAGE_1]
+
+::: resultat
+Les points se placent dans l'ordre trouvé à la question 3.
+:::
+
+## Question 5 : Les entiers entre $\sqrt{20}$ et $\sqrt{70}$
+
+::: methode
+Un entier positif $n$ est compris entre $\sqrt{20}$ et $\sqrt{70}$ lorsque son carré $n^2$ est compris entre $20$ et $70$.
+:::
+
+::: etape Les carrés parfaits entre $20$ et $70$
+$25$ ; $36$ ; $49$ ; $64$, c'est-à-dire $5^2$ ; $6^2$ ; $7^2$ ; $8^2$. En effet $4^2 = 16 < 20$ et $9^2 = 81 > 70$.
+:::
+
+::: resultat
+Il y a $4$ entiers entre $\sqrt{20}$ et $\sqrt{70}$ : $5$, $6$, $7$ et $8$.
+:::
+
+## Question 6 : $0{,}36$ et $\sqrt{0{,}36}$
+
+::: etape Calculer la racine
+$0{,}6^2 = 0{,}36$, donc $\sqrt{0{,}36} = 0{,}6$.
+:::
+
+::: etape Comparer
+$0{,}36 < 0{,}6$, donc $0{,}36 < \sqrt{0{,}36}$.
+:::
+
+::: resultat
+L'affirmation est fausse : pour un nombre compris entre $0$ et $1$, la racine carrée est plus **grande** que le nombre.
+:::
+
+::: retenir
+Pour comparer des nombres positifs écrits avec des racines carrées, on compare leurs carrés.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $6{,}7^2 = 44{,}89 < 45$ : $6{,}7 < \sqrt{45}$
+2. $7 < \sqrt{50}$
+3. $\sqrt{8} < 3 < \sqrt{10} < 3{,}2 < \sqrt{12}$
+4. $\sqrt{8} \approx 2{,}83$ ; $\sqrt{10} \approx 3{,}16$ ; $\sqrt{12} \approx 3{,}46$ (voir la figure)
+5. $4$ entiers : $5$, $6$, $7$, $8$
+6. $\sqrt{0{,}36} = 0{,}6 > 0{,}36$ : l'affirmation est fausse.
+
+===
+
+=== Entraînement - Approcher la racine carrée de 2 pas à pas
+Id: 2569
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+La racine carrée de $2$ n'est pas un nombre décimal. On va l'encadrer de plus en plus précisément, **sans calculatrice** pour les questions 1 à 4.
+
+1. Encadrer $\sqrt{2}$ entre deux entiers consécutifs.
+2. Calculer $1{,}4^2$ et $1{,}5^2$. En déduire un encadrement de $\sqrt{2}$ au dixième.
+3. Calculer $1{,}41^2$ et $1{,}42^2$. En déduire un encadrement de $\sqrt{2}$ au centième.
+4. Calculer $1{,}414^2$ et $1{,}415^2$. En déduire un encadrement de $\sqrt{2}$ au millième.
+5. Comparer avec la valeur affichée par la calculatrice.
+6. Avec la même méthode, encadrer $\sqrt{3}$ au dixième.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Entre deux entiers
+
+::: methode
+Deux nombres positifs sont rangés dans le même ordre que leurs carrés : on cherche des carrés qui encadrent $2$.
+:::
+
+::: etape Les carrés parfaits voisins
+$$1^2 = 1 < 2 < 4 = 2^2$$
+:::
+
+::: resultat
+$$1 < \sqrt{2} < 2$$
+:::
+
+## Question 2 : Au dixième
+
+::: etape Calculer les carrés
+$$1{,}4^2 = 1{,}96$$
+$$1{,}5^2 = 2{,}25$$
+:::
+
+::: etape Comparer à $2$
+$1{,}96 < 2 < 2{,}25$.
+:::
+
+::: resultat
+$$1{,}4 < \sqrt{2} < 1{,}5$$
+:::
+
+## Question 3 : Au centième
+
+::: etape Calculer les carrés
+$$1{,}41^2 = 1{,}988\,1$$
+$$1{,}42^2 = 2{,}016\,4$$
+:::
+
+::: etape Comparer à $2$
+$1{,}988\,1 < 2 < 2{,}016\,4$.
+:::
+
+::: resultat
+$$1{,}41 < \sqrt{2} < 1{,}42$$
+:::
+
+## Question 4 : Au millième
+
+::: etape Calculer les carrés
+$$1{,}414^2 = 1{,}999\,396$$
+$$1{,}415^2 = 2{,}002\,225$$
+:::
+
+::: etape Comparer à $2$
+$1{,}999\,396 < 2 < 2{,}002\,225$.
+:::
+
+::: resultat
+$$1{,}414 < \sqrt{2} < 1{,}415$$
+:::
+
+[IMAGE_1]
+
+## Question 5 : La calculatrice
+
+::: etape Lire l'affichage
+La calculatrice affiche $1{,}414\,213\,56\ldots$
+:::
+
+::: resultat
+Cette valeur est bien comprise entre $1{,}414$ et $1{,}415$ : les trois encadrements sont confirmés.
+:::
+
+## Question 6 : Encadrer $\sqrt{3}$ au dixième
+
+::: etape Entre deux entiers
+$1^2 = 1 < 3 < 4 = 2^2$, donc $1 < \sqrt{3} < 2$.
+:::
+
+::: etape Essayer les dixièmes
+$1{,}6^2 = 2{,}56 < 3$ ; $1{,}7^2 = 2{,}89 < 3$ ; $1{,}8^2 = 3{,}24 > 3$.
+:::
+
+::: resultat
+$$1{,}7 < \sqrt{3} < 1{,}8$$
+:::
+
+::: attention Erreur fréquente
+Penser que $\sqrt{3}$ est vers $1{,}5$ parce que $3$ est « au milieu » de $1$ et $4$ : $1{,}5^2 = 2{,}25$, on est encore loin de $3$. Il faut calculer les carrés.
+:::
+
+::: retenir
+À chaque étape de la méthode des encadrements successifs, on gagne une décimale.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $1 < \sqrt{2} < 2$
+2. $1{,}96 < 2 < 2{,}25$ : $1{,}4 < \sqrt{2} < 1{,}5$
+3. $1{,}988\,1 < 2 < 2{,}016\,4$ : $1{,}41 < \sqrt{2} < 1{,}42$
+4. $1{,}999\,396 < 2 < 2{,}002\,225$ : $1{,}414 < \sqrt{2} < 1{,}415$
+5. $\sqrt{2} \approx 1{,}414\,213$, compris entre $1{,}414$ et $1{,}415$
+6. $1{,}7 < \sqrt{3} < 1{,}8$
+
+===
+
+=== Entraînement - Doubler l'aire d'un carré
+Id: 2570
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Dans un texte de Platon, Socrate demande à un jeune garçon de construire un carré d'aire **double** de celle du carré $ABCD$ de côté $4$ cm.
+
+[IMAGE_1]
+
+1. Calculer l'aire du carré $ABCD$.
+2. Le garçon propose de doubler le côté. Quelle serait l'aire du nouveau carré ? Conclure.
+3. Quelle doit être l'aire du carré cherché ? En déduire son côté, sous la forme d'une racine carrée.
+4. Encadrer ce côté entre deux entiers, puis en donner une valeur approchée au centième.
+5. Socrate construit le carré $BDEF$ dont un côté est la diagonale $[BD]$ ; ses diagonales se coupent en $C$. Montrer, en découpant ce carré en triangles, que son aire vaut $32$ cm².
+6. En déduire la longueur exacte de la diagonale $[BD]$ du carré $ABCD$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : L'aire de $ABCD$
+
+::: etape Côté au carré
+$4^2 = 4 \times 4 = 16$ cm².
+:::
+
+::: resultat
+L'aire du carré $ABCD$ est $16$ cm².
+:::
+
+## Question 2 : Doubler le côté ?
+
+::: etape L'aire du carré de côté $8$ cm
+$8^2 = 64$ cm².
+:::
+
+::: etape Comparer avec $16$ cm²
+$64 = 4 \times 16$ : l'aire est multipliée par $4$.
+:::
+
+::: resultat
+La proposition ne convient pas : doubler le côté **quadruple** l'aire.
+:::
+
+## Question 3 : Le côté cherché
+
+::: etape L'aire voulue
+$2 \times 16 = 32$ cm².
+:::
+
+::: resultat
+Le carré cherché a une aire de $32$ cm² : son côté mesure $\sqrt{32}$ cm.
+:::
+
+## Question 4 : Encadrer le côté
+
+::: etape Entre deux entiers
+$5^2 = 25 < 32 < 36 = 6^2$, donc $5 < \sqrt{32} < 6$.
+:::
+
+::: etape Valeur approchée
+La calculatrice affiche $\sqrt{32} \approx 5{,}656\,9$.
+:::
+
+::: resultat
+Le côté mesure $\sqrt{32}$ cm $\approx 5{,}66$ cm.
+:::
+
+## Question 5 : Le carré construit sur la diagonale
+
+::: methode
+Les diagonales $[BE]$ et $[DF]$ du carré $BDEF$ se coupent en $C$ et le partagent en $4$ triangles superposables : $BCD$, $DCE$, $ECF$ et $FCB$.
+:::
+
+::: etape L'aire d'un triangle
+Le triangle $BCD$ est la moitié du carré $ABCD$, coupé par sa diagonale $[BD]$ : son aire est $16 \div 2 = 8$ cm².
+:::
+
+::: etape L'aire du carré $BDEF$
+$4 \times 8 = 32$ cm².
+:::
+
+[IMAGE_2]
+
+::: resultat
+Le carré $BDEF$ a une aire de $32$ cm² : c'est bien le double de l'aire de $ABCD$.
+:::
+
+## Question 6 : La diagonale
+
+::: etape Le côté de $BDEF$
+Le côté du carré $BDEF$ est la diagonale $[BD]$, et son aire est $32$ cm².
+:::
+
+::: resultat
+$BD = \sqrt{32}$ cm $\approx 5{,}66$ cm.
+:::
+
+::: attention Erreur fréquente
+Croire que doubler le côté double l'aire : l'aire est multipliée par $2 \times 2 = 4$. Pour doubler l'aire, il faut multiplier le côté par $\sqrt{2} \approx 1{,}41$.
+:::
+
+::: retenir
+Le carré construit sur la diagonale d'un carré a une aire double : c'est la solution de Socrate. Son côté, la diagonale, mesure $\sqrt{2}$ fois le côté du carré de départ.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $16$ cm²
+2. $64$ cm², soit $4$ fois l'aire de départ : cela ne convient pas.
+3. $32$ cm² ; côté $\sqrt{32}$ cm
+4. $5 < \sqrt{32} < 6$ ; $\sqrt{32} \approx 5{,}66$ cm
+5. $4$ triangles de $8$ cm² : $32$ cm²
+6. $BD = \sqrt{32}$ cm $\approx 5{,}66$ cm
+
+===
+
+=== Entraînement - Résoudre des énigmes avec des carrés
+Id: 2571
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Chaque énigme porte sur un nombre **positif**.
+
+1. Mon carré vaut $2{,}25$. Qui suis-je ?
+2. Si on ajoute $5$ à mon carré, on obtient $86$. Qui suis-je ?
+3. Le double de mon carré vaut $72$. Qui suis-je ?
+4. Le carré de mon successeur (le nombre plus $1$) vaut $64$. Qui suis-je ?
+5. Je suis le nombre entier $n$ tel que $n^2 < 300 < (n + 1)^2$. Qui suis-je ?
+6. Je suis le plus petit nombre entier dont le carré dépasse $10\,000$. Qui suis-je ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Mon carré vaut $2{,}25$
+
+::: methode
+Le nombre positif dont le carré vaut $2{,}25$ est $\sqrt{2{,}25}$.
+:::
+
+::: etape Chercher la racine
+$1^2 = 1 < 2{,}25 < 4 = 2^2$ ; on essaie $1{,}5$ : $1{,}5^2 = 2{,}25$.
+:::
+
+::: resultat
+Je suis $1{,}5$.
+:::
+
+## Question 2 : Mon carré plus $5$
+
+::: methode
+On « défait » les opérations dans l'ordre inverse : d'abord la soustraction, puis la racine carrée.
+:::
+
+::: etape Retrouver le carré
+Mon carré vaut $86 - 5 = 81$.
+:::
+
+::: resultat
+Je suis $\sqrt{81} = 9$. Vérification : $9^2 + 5 = 86$.
+:::
+
+## Question 3 : Le double de mon carré
+
+::: etape Retrouver le carré
+Mon carré vaut $72 \div 2 = 36$.
+:::
+
+::: resultat
+Je suis $\sqrt{36} = 6$. Vérification : $2 \times 6^2 = 72$.
+:::
+
+## Question 4 : Le carré de mon successeur
+
+::: etape Le successeur
+Mon successeur est positif et son carré vaut $64$ : il vaut $\sqrt{64} = 8$.
+:::
+
+::: resultat
+Je suis $8 - 1 = 7$.
+:::
+
+## Question 5 : Encadrer $300$
+
+::: methode
+On cherche deux carrés parfaits consécutifs qui entourent $300$.
+:::
+
+::: etape Essayer autour de $300$
+$17^2 = 289$ et $18^2 = 324$, donc $17^2 < 300 < 18^2$.
+:::
+
+::: resultat
+$$n = 17$$
+:::
+
+## Question 6 : Dépasser $10\,000$
+
+::: etape Essayer $100$
+$100^2 = 10\,000$ : il est **égal** à $10\,000$, il ne le dépasse pas.
+:::
+
+::: etape Essayer $101$
+$101^2 = 10\,201 > 10\,000$.
+:::
+
+::: resultat
+Je suis $101$.
+:::
+
+::: attention Erreur fréquente
+Répondre $100$ : son carré est égal à $10\,000$, il ne le **dépasse** pas. Et à la question 2, prendre la racine avant de retirer $5$ : $\sqrt{86}$ n'est pas la réponse.
+:::
+
+::: retenir
+Pour remonter une énigme, on effectue les opérations inverses dans l'ordre inverse ; la racine carrée défait le carré d'un nombre positif.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $1{,}5$
+2. $9$
+3. $6$
+4. $7$
+5. $17$
+6. $101$
+
+===
+
+=== Problème - Aménager une allée autour d'un terrain carré
+Id: 2572
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Un terrain carré a une aire de $2\,025$ m². On aménage tout autour, à l'intérieur du terrain, une allée de $1$ m de large ; le reste est en pelouse. La figure n'est pas à l'échelle.
+
+[IMAGE_1]
+
+1. Calculer le côté du terrain.
+2. Calculer le périmètre du terrain.
+3. Calculer le côté et l'aire de la pelouse.
+4. En déduire l'aire de l'allée.
+5. On recouvre l'allée de gravier : il faut $0{,}05$ m³ de gravier par m². Quel volume de gravier faut-il ?
+6. Le gravier coûte $35$ € le m³. Quel est le coût du gravier ?
+7. Retrouver l'aire de l'allée en la découpant en quatre rectangles identiques.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Le côté du terrain
+
+::: methode
+Le côté d'un carré d'aire $2\,025$ m² est $\sqrt{2\,025}$ m.
+:::
+
+::: etape Encadrer, puis essayer
+$40^2 = 1\,600$ et $50^2 = 2\,500$ : le côté est entre $40$ et $50$. Comme $2\,025$ se termine par $5$, on essaie $45$ : $45^2 = 45 \times 45 = 2\,025$.
+:::
+
+::: resultat
+Le côté du terrain mesure $\sqrt{2\,025} = 45$ m.
+:::
+
+## Question 2 : Le périmètre
+
+::: etape Quatre côtés
+$4 \times 45 = 180$ m.
+:::
+
+::: resultat
+Le périmètre du terrain est $180$ m.
+:::
+
+## Question 3 : La pelouse
+
+::: methode
+L'allée borde les **deux** extrémités de chaque côté : le côté de la pelouse est plus court de $2 \times 1 = 2$ m.
+:::
+
+::: etape Le côté
+$45 - 2 = 43$ m.
+:::
+
+::: etape L'aire
+$43^2 = 43 \times 43 = 1\,849$ m².
+:::
+
+[IMAGE_2]
+
+::: resultat
+La pelouse est un carré de $43$ m de côté et de $1\,849$ m² d'aire.
+:::
+
+::: attention Erreur fréquente
+Retirer seulement $1$ m au côté : l'allée est présente des deux côtés, à gauche et à droite, en haut et en bas.
+:::
+
+## Question 4 : L'aire de l'allée
+
+::: etape Grand carré moins petit carré
+$2\,025 - 1\,849 = 176$ m².
+:::
+
+::: resultat
+L'allée a une aire de $176$ m².
+:::
+
+## Question 5 : Le volume de gravier
+
+::: etape Multiplier par l'épaisseur au m²
+$176 \times 0{,}05 = 8{,}8$ m³.
+:::
+
+::: resultat
+Il faut $8{,}8$ m³ de gravier.
+:::
+
+## Question 6 : Le coût
+
+::: etape Multiplier par le prix au m³
+$8{,}8 \times 35 = 308$ €.
+:::
+
+::: resultat
+Le gravier coûte $308$ €.
+:::
+
+## Question 7 : Une autre méthode
+
+::: methode
+On découpe l'allée en $4$ rectangles identiques qui « tournent » autour de la pelouse, sans se chevaucher : chacun part d'un coin et s'arrête au coin suivant.
+:::
+
+::: etape Les dimensions d'un rectangle
+Chaque rectangle mesure $1$ m de large et $45 - 1 = 44$ m de long.
+:::
+
+::: etape L'aire totale
+$4 \times 44 \times 1 = 176$ m².
+:::
+
+::: resultat
+On retrouve une allée de $176$ m².
+:::
+
+::: retenir
+Aire d'une bordure $=$ aire du grand carré $-$ aire du petit carré. C'est souvent la méthode la plus sûre.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $45$ m
+2. $180$ m
+3. Côté $43$ m ; aire $1\,849$ m²
+4. $176$ m²
+5. $8{,}8$ m³
+6. $308$ €
+7. $4 \times 44 \times 1 = 176$ m²
+
+===
+
+=== Problème - Agrandir une photo carrée
+Id: 2573
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Une photo carrée a une aire de $36$ cm². On veut l'agrandir en gardant une forme carrée.
+
+1. Quel est le côté de la photo ?
+2. On double le côté. Quelle est la nouvelle aire ? Par combien l'aire a-t-elle été multipliée ?
+3. On veut maintenant une photo d'aire double, soit $72$ cm². Calculer son côté, arrondi au centième.
+4. Par combien le côté a-t-il été multiplié ? Comparer avec $\sqrt{2}$.
+5. Quel côté faut-il pour obtenir une aire $9$ fois plus grande que celle de la photo ?
+6. On veut un poster carré de $1$ m². Quel est son côté en cm ? Par combien a-t-on multiplié l'aire de la photo ? Et son côté ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Le côté de la photo
+
+::: etape Calculer $\sqrt{36}$
+$6^2 = 36$, donc $\sqrt{36} = 6$.
+:::
+
+::: resultat
+La photo a un côté de $6$ cm.
+:::
+
+## Question 2 : Doubler le côté
+
+::: etape La nouvelle aire
+Nouveau côté : $2 \times 6 = 12$ cm ; nouvelle aire : $12^2 = 144$ cm².
+:::
+
+::: etape Comparer les aires
+$144 \div 36 = 4$.
+:::
+
+[IMAGE_1]
+
+::: resultat
+La nouvelle aire est $144$ cm² : elle est multipliée par $4$. On voit sur la figure que la photo agrandie contient exactement $4$ fois la photo de départ.
+:::
+
+## Question 3 : Une aire double
+
+::: etape Le côté
+Le côté mesure $\sqrt{72}$ cm. Comme $8^2 = 64 < 72 < 81 = 9^2$, il est entre $8$ et $9$ cm.
+:::
+
+::: etape Valeur approchée
+La calculatrice affiche $\sqrt{72} \approx 8{,}485\,3$.
+:::
+
+::: resultat
+Le côté mesure $\sqrt{72}$ cm $\approx 8{,}49$ cm.
+:::
+
+## Question 4 : Le coefficient des côtés
+
+::: etape Le quotient des côtés
+$$\dfrac{\sqrt{72}}{6} \approx 1{,}414$$
+:::
+
+::: etape Le carré de ce quotient
+$$\left(\dfrac{\sqrt{72}}{6}\right)^2 = \dfrac{72}{36} = 2$$
+Ce coefficient est donc le nombre positif dont le carré vaut $2$ : c'est $\sqrt{2} \approx 1{,}414$.
+:::
+
+::: resultat
+Le côté a été multiplié par $\sqrt{2} \approx 1{,}414$.
+:::
+
+## Question 5 : Une aire $9$ fois plus grande
+
+::: methode
+Si l'aire est multipliée par $9$, le côté est multiplié par le nombre positif dont le carré vaut $9$, c'est-à-dire $\sqrt{9} = 3$.
+:::
+
+::: etape Le côté
+$6 \times 3 = 18$ cm.
+:::
+
+::: point Vérification
+$18^2 = 324$ et $9 \times 36 = 324$.
+:::
+
+::: resultat
+Il faut un côté de $18$ cm.
+:::
+
+## Question 6 : Le poster
+
+::: etape Convertir $1$ m² en cm²
+$1$ m² est l'aire d'un carré de $100$ cm de côté : $1$ m² $= 100 \times 100 = 10\,000$ cm².
+:::
+
+::: etape Le côté du poster
+$\sqrt{10\,000} = 100$ cm.
+:::
+
+::: etape Les coefficients
+- Aire : $10\,000 \div 36 \approx 277{,}8$.
+- Côté : $100 \div 6 \approx 16{,}7$. On vérifie que $16{,}7^2 \approx 278{,}9$ est proche de $277{,}8$ : le côté est multiplié par la racine carrée du coefficient des aires.
+:::
+
+::: resultat
+Le poster a un côté de $100$ cm. L'aire est multipliée par environ $277{,}8$ et le côté par environ $16{,}7$.
+:::
+
+::: attention Erreur fréquente
+Convertir $1$ m² en $100$ cm² : un mètre carré est un carré de $100$ cm sur $100$ cm, donc $10\,000$ cm².
+:::
+
+::: retenir
+Si l'aire d'un carré est multipliée par $k$, son côté est multiplié par $\sqrt{k}$ : aire $\times 4$, côté $\times 2$ ; aire $\times 9$, côté $\times 3$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $6$ cm
+2. $144$ cm² ; l'aire est multipliée par $4$.
+3. $\sqrt{72} \approx 8{,}49$ cm
+4. Par $\sqrt{2} \approx 1{,}414$
+5. $18$ cm
+6. $100$ cm ; aire $\times 277{,}8$ environ ; côté $\times 16{,}7$ environ
+
+===
+
+=== Problème - Construire une mosaïque carrée
+Id: 2574
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Léa fabrique des mosaïques carrées avec des carreaux carrés identiques. Une mosaïque de côté $n$ contient $n$ rangées de $n$ carreaux. La figure montre les mosaïques de côté $4$ et de côté $5$.
+
+[IMAGE_1]
+
+1. Combien de carreaux faut-il pour une mosaïque de côté $5$ ? De côté $12$ ?
+2. Une mosaïque carrée utilise $324$ carreaux. Combien a-t-elle de carreaux par côté ?
+3. Léa possède $500$ carreaux. Quelle est la plus grande mosaïque carrée qu'elle peut faire ? Combien de carreaux lui reste-t-il ?
+4. Combien de carreaux devrait-elle acheter en plus pour faire une mosaïque de côté $23$ ?
+5. En observant la figure, combien de carreaux faut-il ajouter pour passer du côté $4$ au côté $5$ ? Expliquer pourquoi, pour passer du côté $n$ au côté $n + 1$, on ajoute $2 \times n + 1$ carreaux, puis vérifier avec la question 4.
+6. Sur sa mosaïque de côté $22$, Léa pose des carreaux dorés sur tout le bord. Combien de carreaux dorés lui faut-il ? Calculer de deux façons.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Mosaïques de côté $5$ et $12$
+
+::: methode
+Une mosaïque de côté $n$ contient $n \times n = n^2$ carreaux.
+:::
+
+::: etape Les deux calculs
+$5^2 = 25$ et $12^2 = 144$.
+:::
+
+::: resultat
+Il faut $25$ carreaux pour la mosaïque de côté $5$ et $144$ carreaux pour celle de côté $12$.
+:::
+
+## Question 2 : Une mosaïque de $324$ carreaux
+
+::: methode
+On cherche l'entier positif $n$ tel que $n^2 = 324$ : c'est $\sqrt{324}$.
+:::
+
+::: etape Encadrer, puis essayer
+$17^2 = 289$ et $18^2 = 18 \times 18 = 324$.
+:::
+
+::: resultat
+La mosaïque a $\sqrt{324} = 18$ carreaux par côté.
+:::
+
+## Question 3 : Avec $500$ carreaux
+
+::: methode
+On cherche le plus grand entier $n$ tel que $n^2 \leq 500$ : on encadre $500$ entre deux carrés parfaits consécutifs.
+:::
+
+::: etape Encadrer $500$
+$22^2 = 484$ et $23^2 = 529$, donc $22^2 < 500 < 23^2$.
+:::
+
+::: etape Le reste
+$500 - 484 = 16$ carreaux.
+:::
+
+::: resultat
+La plus grande mosaïque possible a $22$ carreaux de côté ; il reste $16$ carreaux.
+:::
+
+## Question 4 : Passer au côté $23$
+
+::: etape Le nombre de carreaux nécessaires
+$23^2 = 529$.
+:::
+
+::: resultat
+Il faut acheter $529 - 500 = 29$ carreaux.
+:::
+
+## Question 5 : Passer d'un côté au suivant
+
+::: etape Lire la figure
+Pour passer du côté $4$ au côté $5$, on ajoute une colonne de $4$ carreaux, une rangée de $4$ carreaux et $1$ carreau dans le coin : $4 + 4 + 1 = 9$ carreaux. On vérifie : $5^2 - 4^2 = 25 - 16 = 9$.
+:::
+
+[IMAGE_2]
+
+::: etape Le cas général
+Pour passer du côté $n$ au côté $n + 1$, on ajoute de la même façon une colonne de $n$ carreaux, une rangée de $n$ carreaux et $1$ carreau dans le coin : $n + n + 1 = 2 \times n + 1$ carreaux.
+:::
+
+::: etape Vérifier avec la question 4
+De $22$ à $23$ : $2 \times 22 + 1 = 45$ carreaux, et $23^2 - 22^2 = 529 - 484 = 45$.
+:::
+
+::: resultat
+On ajoute $9$ carreaux pour passer du côté $4$ au côté $5$, et $2 \times n + 1$ carreaux pour passer du côté $n$ au côté $n + 1$.
+:::
+
+## Question 6 : Les carreaux dorés
+
+::: methode
+Un exemple plus petit aide à compter : sur une mosaïque de côté $6$, le bord compte $36 - 16 = 20$ carreaux.
+:::
+
+[IMAGE_3]
+
+::: etape Première façon : avec des carrés
+L'intérieur est une mosaïque de côté $22 - 2 = 20$. Le bord contient donc :
+$$22^2 - 20^2 = 484 - 400 = 84$$
+:::
+
+::: etape Deuxième façon : en comptant les côtés
+$4$ côtés de $22$ carreaux font $4 \times 22 = 88$, mais les $4$ carreaux des coins sont comptés deux fois : $88 - 4 = 84$.
+:::
+
+::: resultat
+Il faut $84$ carreaux dorés.
+:::
+
+::: attention Erreur fréquente
+Compter le bord comme $4 \times 22 = 88$ carreaux : chaque coin appartient à deux côtés, il ne faut le compter qu'une fois. Et l'intérieur a pour côté $22 - 2$, et non $22 - 1$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $25$ carreaux ; $144$ carreaux
+2. $\sqrt{324} = 18$ carreaux par côté
+3. Côté $22$ ($22^2 = 484$) ; il reste $16$ carreaux.
+4. $529 - 500 = 29$ carreaux
+5. $9$ carreaux ; une colonne de $n$, une rangée de $n$ et le coin : $2 \times n + 1$. De $22$ à $23$ : $45 = 529 - 484$.
+6. $84$ carreaux dorés : $22^2 - 20^2 = 84$ ou $4 \times 22 - 4 = 84$.
+
+===
+
+=== Problème - Assembler deux carrés en un seul
+Id: 2575
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+On découpe deux carrés et on réassemble tous les morceaux pour former un seul grand carré : son aire est la somme des aires des deux petits carrés.
+
+[IMAGE_1]
+
+1. Calculer les côtés des deux petits carrés de la figure.
+2. Calculer l'aire, puis le côté du grand carré.
+3. Le côté du grand carré est-il égal à la somme des côtés des petits ? Commenter.
+4. Reprendre les questions 2 et 3 avec deux carrés de côtés $6$ cm et $8$ cm.
+5. Reprendre avec deux carrés de côtés $5$ cm et $12$ cm.
+6. Reprendre avec deux carrés de côtés $1$ cm et $2$ cm (arrondir au centième).
+7. On construit un triangle dont les côtés mesurent $3$ cm, $4$ cm et $5$ cm. Que remarque-t-on sur les aires des carrés construits sur ses côtés ? Quelle est la nature de ce triangle ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les petits carrés
+
+::: methode
+Le côté d'un carré est la racine carrée de son aire.
+:::
+
+::: etape Les deux racines
+$\sqrt{9} = 3$ et $\sqrt{16} = 4$.
+:::
+
+::: resultat
+Les petits carrés ont pour côtés $3$ cm et $4$ cm.
+:::
+
+## Question 2 : Le grand carré
+
+::: etape Son aire
+$9 + 16 = 25$ cm².
+:::
+
+::: etape Son côté
+$\sqrt{25} = 5$ cm.
+:::
+
+::: resultat
+Le grand carré a une aire de $25$ cm² et un côté de $5$ cm.
+:::
+
+## Question 3 : Somme des côtés ?
+
+::: etape Comparer
+$3 + 4 = 7$ cm, alors que le grand côté mesure $5$ cm.
+:::
+
+::: resultat
+Non : ce sont les **aires** qui s'additionnent, pas les côtés. Le grand côté vaut $\sqrt{3^2 + 4^2} = 5$, et non $3 + 4 = 7$.
+:::
+
+::: attention Erreur fréquente
+Écrire $\sqrt{3^2 + 4^2} = 3 + 4$ : la racine carrée d'une somme n'est pas la somme des racines carrées.
+:::
+
+## Question 4 : Avec $6$ cm et $8$ cm
+
+::: etape L'aire du grand carré
+$6^2 + 8^2 = 36 + 64 = 100$ cm².
+:::
+
+::: resultat
+Le grand carré a pour côté $\sqrt{100} = 10$ cm, et non $6 + 8 = 14$ cm.
+:::
+
+## Question 5 : Avec $5$ cm et $12$ cm
+
+::: etape L'aire du grand carré
+$5^2 + 12^2 = 25 + 144 = 169$ cm².
+:::
+
+::: resultat
+Le grand carré a pour côté $\sqrt{169} = 13$ cm, et non $5 + 12 = 17$ cm.
+:::
+
+## Question 6 : Avec $1$ cm et $2$ cm
+
+::: etape L'aire du grand carré
+$1^2 + 2^2 = 1 + 4 = 5$ cm².
+:::
+
+::: etape Le côté
+$5$ n'est pas un carré parfait : le côté est $\sqrt{5}$ cm. Comme $2^2 = 4 < 5 < 9 = 3^2$, il est entre $2$ et $3$ cm ; la calculatrice donne $\sqrt{5} \approx 2{,}236$.
+:::
+
+::: resultat
+Le grand carré a pour côté $\sqrt{5}$ cm $\approx 2{,}24$ cm.
+:::
+
+## Question 7 : Le triangle de côtés $3$, $4$ et $5$
+
+::: etape Les aires des trois carrés
+$3^2 = 9$ cm², $4^2 = 16$ cm² et $5^2 = 25$ cm² : on a $9 + 16 = 25$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+L'aire du carré construit sur le plus grand côté est égale à la somme des aires des deux autres carrés. Le triangle est **rectangle** : c'est le théorème de Pythagore, étudié au chapitre suivant.
+:::
+
+::: retenir
+Les triplets $(3 ; 4 ; 5)$, $(6 ; 8 ; 10)$ et $(5 ; 12 ; 13)$ vérifient tous cette égalité : $a^2 + b^2 = c^2$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $3$ cm et $4$ cm
+2. $25$ cm² ; côté $5$ cm
+3. Non : $5 \neq 3 + 4 = 7$, ce sont les aires qui s'additionnent.
+4. $100$ cm² ; côté $10$ cm
+5. $169$ cm² ; côté $13$ cm
+6. $5$ cm² ; côté $\sqrt{5} \approx 2{,}24$ cm
+7. $9 + 16 = 25$ : le triangle est rectangle.
+
+===
+
+=== Type brevet - Carreler une pièce carrée
+Id: 2576
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Une pièce carrée a une surface de $20{,}25$ m². On la carrelle avec des carreaux carrés de $0{,}09$ m² chacun, posés sans découpe. Les carreaux sont vendus par boîtes de $12$, à $18{,}90$ € la boîte. On prévoit $10$ % de carreaux en plus pour la casse.
+
+1. Calculer le côté d'un carreau, en cm.
+2. Calculer le côté de la pièce.
+3. Combien de carreaux faut-il par rangée ? Combien de carreaux faut-il en tout ?
+4. Vérifier ce nombre à l'aide des aires.
+5. Combien de carreaux faut-il acheter en tenant compte des $10$ % supplémentaires ?
+6. Combien de boîtes faut-il acheter ? Quel est le prix total ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Le côté d'un carreau
+
+::: methode
+Le côté d'un carré d'aire $0{,}09$ m² est $\sqrt{0{,}09}$ m.
+:::
+
+::: etape Calculer $\sqrt{0{,}09}$
+$0{,}3^2 = 0{,}3 \times 0{,}3 = 0{,}09$, donc $\sqrt{0{,}09} = 0{,}3$.
+:::
+
+::: resultat
+Le côté d'un carreau mesure $0{,}3$ m, soit $30$ cm.
+:::
+
+## Question 2 : Le côté de la pièce
+
+::: etape Encadrer, puis essayer
+$4^2 = 16 < 20{,}25 < 25 = 5^2$ : le côté est entre $4$ et $5$ m. On essaie $4{,}5$ : $4{,}5^2 = 20{,}25$.
+:::
+
+::: resultat
+La pièce a un côté de $\sqrt{20{,}25} = 4{,}5$ m.
+:::
+
+## Question 3 : Le nombre de carreaux
+
+::: etape Par rangée
+$4{,}5 \div 0{,}3 = 45 \div 3 = 15$ carreaux.
+:::
+
+::: etape En tout
+La pièce est carrée : $15$ rangées de $15$ carreaux, soit $15^2 = 225$ carreaux.
+:::
+
+[IMAGE_1]
+
+::: resultat
+Il faut $15$ carreaux par rangée et $225$ carreaux en tout.
+:::
+
+## Question 4 : Vérification par les aires
+
+::: etape Diviser les aires
+$20{,}25 \div 0{,}09 = 2\,025 \div 9 = 225$.
+:::
+
+::: resultat
+On retrouve $225$ carreaux.
+:::
+
+## Question 5 : Les $10$ % supplémentaires
+
+::: methode
+Ajouter $10$ %, c'est multiplier par $1 + \dfrac{10}{100} = 1{,}10$.
+:::
+
+::: etape Calculer
+$225 \times 1{,}10 = 247{,}5$.
+:::
+
+::: resultat
+On ne peut pas acheter un demi-carreau : il faut acheter $248$ carreaux.
+:::
+
+## Question 6 : Les boîtes et le prix
+
+::: etape Le nombre de boîtes
+$248 \div 12 \approx 20{,}67$ : $20$ boîtes ne contiennent que $240$ carreaux, ce n'est pas assez. Il faut $21$ boîtes ($252$ carreaux).
+:::
+
+::: etape Le prix
+$21 \times 18{,}90 = 396{,}90$ €.
+:::
+
+::: resultat
+Il faut acheter $21$ boîtes, pour un prix total de $396{,}90$ €.
+:::
+
+::: attention Erreur fréquente
+Arrondir $20{,}67$ à $20$ boîtes : il manquerait $8$ carreaux. Quand on achète, on arrondit toujours à l'entier **supérieur**.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\sqrt{0{,}09} = 0{,}3$ m, soit $30$ cm
+2. $\sqrt{20{,}25} = 4{,}5$ m
+3. $15$ par rangée ; $225$ en tout
+4. $20{,}25 \div 0{,}09 = 225$
+5. $247{,}5$, donc $248$ carreaux
+6. $21$ boîtes ; $396{,}90$ €
+
+===
+
+=== Type brevet - La vitesse d'un tsunami
+Id: 2577
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+En pleine mer, une vague de tsunami se déplace à la vitesse $v$ (en m/s) donnée par la formule :
+$$v = \sqrt{9{,}8 \times h}$$
+où $h$ est la profondeur de l'océan, en mètres.
+
+1. Calculer la vitesse d'un tsunami là où l'océan est profond de $4\,000$ m. Arrondir à l'unité.
+2. Convertir cette vitesse en km/h.
+3. Calculer la vitesse près d'une côte où la profondeur n'est plus que de $10$ m, en m/s puis en km/h (arrondir au dixième).
+4. À quelle profondeur la vitesse est-elle de $49$ m/s ?
+5. Combien de temps ce tsunami met-il pour parcourir $3\,000$ km en haute mer, à $713$ km/h ? Donner le résultat en heures et minutes, arrondi à la minute.
+6. Expliquer pourquoi la vague ralentit en arrivant près des côtes.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : En haute mer
+
+::: methode
+On remplace $h$ par $4\,000$ ; on calcule ce qui est sous le radical avant la racine.
+:::
+
+::: etape Sous le radical
+$9{,}8 \times 4\,000 = 39\,200$.
+:::
+
+::: etape La racine
+$\sqrt{39\,200} \approx 197{,}99$. Comme $198^2 = 39\,204$, ce résultat est cohérent.
+:::
+
+::: resultat
+En haute mer, le tsunami avance à environ $198$ m/s.
+:::
+
+## Question 2 : En km/h
+
+::: methode
+$1$ m/s, c'est $1$ m par seconde, donc $3\,600$ m par heure, soit $3{,}6$ km/h.
+:::
+
+::: etape Multiplier par $3{,}6$
+$198 \times 3{,}6 = 712{,}8$ km/h.
+:::
+
+::: resultat
+Environ $713$ km/h : la vitesse d'un avion de ligne.
+:::
+
+## Question 3 : Près de la côte
+
+::: etape En m/s
+$v = \sqrt{9{,}8 \times 10} = \sqrt{98} \approx 9{,}9$ m/s.
+:::
+
+::: etape En km/h
+$\sqrt{98} \times 3{,}6 \approx 35{,}6$ km/h.
+:::
+
+::: resultat
+Près de la côte, la vague avance à environ $9{,}9$ m/s, soit $35{,}6$ km/h.
+:::
+
+## Question 4 : Retrouver la profondeur
+
+::: methode
+$\sqrt{9{,}8 \times h} = 49$ signifie que $9{,}8 \times h$ est le nombre dont la racine carrée vaut $49$ : c'est $49^2$.
+:::
+
+::: etape Élever au carré
+$9{,}8 \times h = 49^2 = 2\,401$.
+:::
+
+::: etape Diviser
+$h = 2\,401 \div 9{,}8 = 245$.
+:::
+
+::: point Vérification
+$\sqrt{9{,}8 \times 245} = \sqrt{2\,401} = 49$.
+:::
+
+::: resultat
+La vitesse est de $49$ m/s là où l'océan est profond de $245$ m.
+:::
+
+## Question 5 : La traversée
+
+::: methode
+Durée $=$ distance $\div$ vitesse ; puis on convertit la partie décimale des heures en minutes.
+:::
+
+::: etape En heures
+$3\,000 \div 713 \approx 4{,}208$ h.
+:::
+
+::: etape En heures et minutes
+En minutes : $3\,000 \div 713 \times 60 \approx 252{,}45$ min. Or $4$ h $= 240$ min et $252{,}45 - 240 = 12{,}45$ min.
+:::
+
+::: resultat
+La traversée dure environ $4$ h $12$ min.
+:::
+
+::: attention Erreur fréquente
+Lire $4{,}21$ h comme « $4$ h $21$ min » : une heure compte $60$ minutes, il faut convertir la partie décimale en minutes.
+:::
+
+## Question 6 : Le ralentissement
+
+::: etape Ce que dit la formule
+Quand $h$ diminue, $9{,}8 \times h$ diminue, donc sa racine carrée $v$ diminue aussi.
+:::
+
+::: resultat
+Près des côtes, l'océan est peu profond : la vague ralentit. L'eau qui arrive derrière s'accumule, et la vague devient très haute.
+:::
+
+::: retenir
+La profondeur est divisée par $4\,000 \div 10 = 400$, mais la vitesse n'est divisée que par $\sqrt{400} = 20$ : $198 \div 20 = 9{,}9$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\sqrt{39\,200} \approx 198$ m/s
+2. $\approx 713$ km/h
+3. $\sqrt{98} \approx 9{,}9$ m/s, soit $\approx 35{,}6$ km/h
+4. $245$ m
+5. Environ $4$ h $12$ min
+6. La profondeur diminue, donc $v$ diminue.
+
+===
+
+=== Type brevet - Comparer deux offres de pizzas
+Id: 2578
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Une pizzeria propose une grande pizza de $30$ cm de diamètre à $14$ €, ou deux pizzas moyennes de $20$ cm de diamètre à $9$ € chacune. On rappelle que l'aire d'un disque de rayon $r$ est $\pi \times r^2$.
+
+[IMAGE_1]
+
+1. Calculer l'aire de la grande pizza, arrondie au dixième.
+2. Calculer l'aire totale des deux pizzas moyennes, arrondie au dixième.
+3. Quelle offre donne le plus de pizza ?
+4. Calculer le prix au cm² de chaque offre, au millième d'euro. Quelle offre est la plus avantageuse ?
+5. Quel diamètre devrait avoir une pizza pour avoir la même aire que les deux pizzas moyennes réunies ? Arrondir au dixième.
+6. Le pizzaïolo veut une pizza de $1\,000$ cm². Quel diamètre doit-il lui donner ? Arrondir au dixième.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : La grande pizza
+
+::: etape Le rayon
+$30 \div 2 = 15$ cm.
+:::
+
+::: etape L'aire
+$$\pi \times 15^2 = 225\pi \approx 706{,}86$$
+:::
+
+::: resultat
+La grande pizza a une aire d'environ $706{,}9$ cm².
+:::
+
+## Question 2 : Les deux moyennes
+
+::: etape Une pizza moyenne
+Rayon : $20 \div 2 = 10$ cm ; aire : $\pi \times 10^2 = 100\pi$ cm².
+:::
+
+::: etape Les deux pizzas
+$$2 \times 100\pi = 200\pi \approx 628{,}32$$
+:::
+
+::: resultat
+Les deux pizzas moyennes ont une aire totale d'environ $628{,}3$ cm².
+:::
+
+## Question 3 : Le plus de pizza
+
+::: etape Comparer
+$706{,}9 > 628{,}3$.
+:::
+
+::: resultat
+La grande pizza seule donne plus de pizza que les deux moyennes réunies.
+:::
+
+::: attention Erreur fréquente
+Raisonner sur les diamètres ($30 < 20 + 20$) : ce sont les **aires** qu'il faut comparer, et elles dépendent du **carré** du rayon.
+:::
+
+## Question 4 : Le prix au cm²
+
+::: methode
+Prix au cm² $=$ prix $\div$ aire.
+:::
+
+::: etape La grande pizza
+$14 \div 706{,}86 \approx 0{,}020$ € par cm².
+:::
+
+::: etape Les deux moyennes
+Prix : $2 \times 9 = 18$ € ; $18 \div 628{,}32 \approx 0{,}029$ € par cm².
+:::
+
+::: resultat
+La grande pizza est la plus avantageuse : environ $0{,}020$ € par cm², contre $0{,}029$ € pour les deux moyennes.
+:::
+
+## Question 5 : La pizza équivalente
+
+::: methode
+On cherche le rayon $r$ positif tel que $\pi \times r^2 = 200\pi$ : on divise par $\pi$, puis on prend la racine carrée.
+:::
+
+::: etape Le rayon
+$r^2 = 200$, donc $r = \sqrt{200} \approx 14{,}14$ cm.
+:::
+
+::: etape Le diamètre
+$d = 2 \times \sqrt{200} \approx 28{,}28$ cm.
+:::
+
+::: resultat
+Il faudrait une pizza d'environ $28{,}3$ cm de diamètre.
+:::
+
+## Question 6 : Une pizza de $1\,000$ cm²
+
+::: etape Isoler $r^2$
+$$\pi \times r^2 = 1\,000 \qquad r^2 = \dfrac{1\,000}{\pi} \approx 318{,}31$$
+:::
+
+::: etape Le rayon, puis le diamètre
+$r = \sqrt{\dfrac{1\,000}{\pi}} \approx 17{,}84$ cm, donc $d = 2 \times r \approx 35{,}68$ cm.
+:::
+
+::: resultat
+Le pizzaïolo doit lui donner un diamètre d'environ $35{,}7$ cm.
+:::
+
+::: retenir
+Pour retrouver le rayon d'un disque à partir de son aire : on divise l'aire par $\pi$, puis on prend la racine carrée.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $225\pi \approx 706{,}9$ cm²
+2. $200\pi \approx 628{,}3$ cm²
+3. La grande pizza
+4. $\approx 0{,}020$ €/cm² contre $\approx 0{,}029$ €/cm² : la grande pizza
+5. $2 \times \sqrt{200} \approx 28{,}3$ cm
+6. $\approx 35{,}7$ cm
+
+===

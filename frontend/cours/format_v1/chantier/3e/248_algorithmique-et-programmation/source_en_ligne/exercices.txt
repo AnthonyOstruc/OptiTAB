@@ -1,0 +1,1582 @@
+=== Découverte - Algorithmique - 1. Suivre trois opérations
+Id: 2443
+Difficulté: easy
+Image: algo_3e_trois_operations.png
+
+Énoncé: On considère le script suivant.
+[IMAGE_1]
+$\\$
+**Question 1 : Donner la valeur de x après chacun des trois blocs orange.**
+$\\$
+**Question 2 : Quelle valeur le lutin dit-il ?**
+$\\$
+**Question 3 : On échange les blocs « ajouter 5 à x » et « mettre x à x × 2 ». Quelle valeur le lutin dit-il alors ?**
+$\\$
+**Question 4 : Dans le script de départ, on remplace 3 par un nombre $\displaystyle a$. Exprimer le résultat en fonction de $\displaystyle a$.**
+$\\$
+**Question 5 : Quelle valeur de départ faut-il pour que le lutin dise 30 ?**
+
+Étapes:
+
+**Question 1 : Les valeurs de x**
+
+    ● **Méthode :** On exécute les blocs dans l'ordre, en partant toujours de la dernière valeur.
+    $\\$
+
+    ● **Résultat :** x vaut 3, puis $\displaystyle 3 + 5 = 8$, puis $\displaystyle 8 \times 2 = 16$
+    $\\$
+
+**Question 2 : La valeur dite**
+
+    ● **Méthode :** Le bloc « dire x » affiche la valeur de x au moment où il est exécuté, c'est-à-dire après les trois blocs orange (question 1).
+    $\\$
+    
+    ● **Résultat :** 16
+    $\\$
+
+**Question 3 : Blocs échangés**
+
+    ● **Étape 1 :** $\displaystyle 3 \times 2 = 6$, puis $\displaystyle 6 + 5 = 11$
+    $\\$
+
+    ● **Résultat :** 11 : l'ordre des instructions change le résultat
+    $\\$
+
+**Question 4 : En fonction de $\displaystyle a$**
+
+    ● **Méthode :** On remplace 3 par $\displaystyle a$ et on suit les blocs dans l'ordre : « ajouter 5 » donne $\displaystyle a + 5$, puis « x × 2 » multiplie TOUT ce résultat par 2 (d'où les parenthèses).
+    $\\$
+    
+    ● **Résultat :** $\displaystyle (a + 5) \times 2 = 2a + 10$
+    $\\$
+
+**Question 5 : Obtenir 30**
+
+    ● **Étape 1 :** $\displaystyle 2a + 10 = 30$ donne $\displaystyle 2a = 20$
+    $\\$
+
+    ● **Résultat :** $\displaystyle a = 10$ (contrôle : $\displaystyle (10 + 5) \times 2 = 30$ ✔️)
+    $\\$
+
+    ● 💡 **À retenir :** Un script exécute ses blocs de HAUT en BAS : les parenthèses de l'expression traduisent cet ordre.
+
+Solution:
+1. 3 ; 8 ; 16
+$\\$
+2. 16
+$\\$
+3. 11
+$\\$
+4. $2a + 10$
+$\\$
+5. 10
+
+===
+
+=== Découverte - Algorithmique - 2. Un nombre demandé
+Id: 2444
+Difficulté: easy
+Image: algo_3e_nombre_demande.png
+
+Énoncé: Le script suivant demande un nombre à l'utilisateur.
+[IMAGE_1]
+$\\$
+**Question 1 : Quel résultat obtient-on si l'on répond 2 ?**
+$\\$
+**Question 2 : Et si l'on répond $\displaystyle -4$ ?**
+$\\$
+**Question 3 : Et si l'on répond 0,5 ?**
+$\\$
+**Question 4 : Exprimer le résultat en fonction du nombre $\displaystyle x$ choisi, puis développer.**
+$\\$
+**Question 5 : Quel nombre faut-il choisir pour obtenir 30 ?**
+
+Étapes:
+
+**Question 1 : Réponse 2**
+
+    ● **Méthode :** La réponse saisie est rangée dans x ; on applique ensuite les blocs dans l'ordre : ajouter 4, puis multiplier par 3.
+    $\\$
+    
+    ● **Résultat :** $\displaystyle 2 + 4 = 6$ puis $\displaystyle 6 \times 3 = 18$
+    $\\$
+
+**Question 2 : Réponse $\displaystyle -4$**
+
+    ● **Méthode :** Même chemin avec x = $\displaystyle -4$ : attention au calcul $\displaystyle -4 + 4$.
+    $\\$
+    
+    ● **Résultat :** $\displaystyle -4 + 4 = 0$ puis $\displaystyle 0 \times 3 = 0$
+    $\\$
+
+**Question 3 : Réponse 0,5**
+
+    ● **Méthode :** Même chemin avec x = 0,5.
+    $\\$
+    
+    ● **Résultat :** $\displaystyle 0{,}5 + 4 = 4{,}5$ puis $\displaystyle 4{,}5 \times 3 = 13{,}5$
+    $\\$
+
+**Question 4 : L'expression**
+
+    ● **Méthode :** On remplace la saisie par $\displaystyle x$ : « ajouter 4 » donne $\displaystyle x + 4$, puis on multiplie toute l'expression par 3 et on développe avec la distributivité.
+    $\\$
+    
+    ● **Résultat :** $\displaystyle 3(x + 4) = 3x + 12$
+    $\\$
+
+**Question 5 : Obtenir 30**
+
+    ● **Étape 1 :** $\displaystyle 3x + 12 = 30$, soit $\displaystyle 3x = 18$
+    $\\$
+
+    ● **Résultat :** $\displaystyle x = 6$
+    $\\$
+
+    ● 💡 **À retenir :** « demander … et attendre » range la saisie dans « réponse » : c'est l'ENTRÉE du programme ; « dire » est sa SORTIE.
+
+Solution:
+1. 18
+$\\$
+2. 0
+$\\$
+3. 13,5
+$\\$
+4. $3(x + 4) = 3x + 12$
+$\\$
+5. 6
+
+===
+
+=== Découverte - Algorithmique - 3. Une boucle bornée
+Id: 2445
+Difficulté: easy
+Image: algo_3e_boucle.png
+
+Énoncé: On considère le script suivant.
+[IMAGE_1]
+$\\$
+**Question 1 : Combien de fois le bloc « ajouter 3 à x » est-il exécuté ?**
+$\\$
+**Question 2 : Donner les valeurs successives de x pendant la boucle.**
+$\\$
+**Question 3 : Quelle valeur le lutin dit-il ?**
+$\\$
+**Question 4 : Combien de fois le bloc « dire » est-il exécuté ? Pourquoi ?**
+$\\$
+**Question 5 : Que faut-il modifier pour que le lutin dise 30 ?**
+
+Étapes:
+
+**Question 1 : Nombre d'exécutions**
+
+    ● **Méthode :** Le bloc « ajouter 3 à x » est À L'INTÉRIEUR de la boucle « répéter 4 fois » : il est exécuté une fois par tour.
+    $\\$
+    
+    ● **Résultat :** 4 fois (« répéter 4 fois »)
+    $\\$
+
+**Question 2 : Les valeurs successives**
+
+    ● **Méthode :** x part de 0 (« mettre x à 0 ») et augmente de 3 à chaque tour : on écrit la valeur après chacun des 4 tours.
+    $\\$
+    
+    ● **Résultat :** 3, 6, 9, 12
+    $\\$
+
+**Question 3 : La valeur dite**
+
+    ● **Méthode :** Le bloc « dire x » est exécuté après la boucle, avec la dernière valeur de x.
+    $\\$
+    
+    ● **Résultat :** 12
+    $\\$
+
+**Question 4 : Le bloc « dire »**
+
+    ● **Méthode :** On regarde où se trouve le bloc : il est placé sous la boucle (et non dans la mâchoire du bloc « répéter »).
+    $\\$
+    
+    ● **Résultat :** Une seule fois : il est placé APRÈS la boucle, pas à l'intérieur
+    $\\$
+
+**Question 5 : Obtenir 30**
+
+    ● **Méthode :** La valeur dite vaut « nombre de tours $\displaystyle \times$ 3 » ; pour obtenir 30, il faut $\displaystyle \frac{30}{3}$ tours.
+    $\\$
+    
+    ● **Résultat :** Remplacer « répéter 4 fois » par « répéter 10 fois » ($\displaystyle 10 \times 3 = 30$)
+    $\\$
+
+    ● ⚠️ **Erreur fréquente :** Confondre les blocs DANS la boucle (exécutés à chaque tour) et les blocs APRÈS la boucle (exécutés une fois).
+
+Solution:
+1. 4
+$\\$
+2. 3 ; 6 ; 9 ; 12
+$\\$
+3. 12
+$\\$
+4. Une fois
+$\\$
+5. Répéter 10 fois
+
+===
+
+=== Découverte - Algorithmique - 4. Un test et deux branches
+Id: 2446
+Difficulté: easy
+Image: algo_3e_test.png
+
+Énoncé: Le script suivant compare le nombre saisi à 10.
+[IMAGE_1]
+$\\$
+**Question 1 : Que dit le lutin si l'on saisit 9 ?**
+$\\$
+**Question 2 : Que dit-il si l'on saisit 10 ?**
+$\\$
+**Question 3 : Que dit-il si l'on saisit 14 ?**
+$\\$
+**Question 4 : Quel est le plus grand nombre entier pour lequel il dit « petit » ?**
+$\\$
+**Question 5 : Que dit-il pour 9,99 ? pour $\displaystyle -20$ ?**
+
+Étapes:
+
+**Question 1 : Saisie 9**
+
+    ● **Méthode :** On évalue le test « x < 10 » avec x = 9 : s'il est vrai, on exécute la branche « alors ».
+    $\\$
+    
+    ● **Résultat :** $\displaystyle 9 < 10$ est vrai : « petit »
+    $\\$
+
+**Question 2 : Saisie 10**
+
+    ● **Méthode :** On évalue le test avec la valeur frontière 10 : 10 n'est pas STRICTEMENT inférieur à 10.
+    $\\$
+    
+    ● **Résultat :** $\displaystyle 10 < 10$ est faux : on passe dans « sinon », il dit « grand »
+    $\\$
+
+**Question 3 : Saisie 14**
+
+    ● **Méthode :** On évalue le test avec x = 14.
+    $\\$
+    
+    ● **Résultat :** $\displaystyle 14 < 10$ est faux : « grand »
+    $\\$
+
+**Question 4 : Le plus grand entier « petit »**
+
+    ● **Méthode :** Le lutin dit « petit » lorsque x < 10 ; parmi les entiers, le plus grand qui vérifie cette condition est 9.
+    $\\$
+    
+    ● **Résultat :** 9
+    $\\$
+
+**Question 5 : 9,99 et $\displaystyle -20$**
+
+    ● **Méthode :** On évalue le test pour chaque nombre : 9,99 et $\displaystyle -20$ sont-ils strictement inférieurs à 10 ?
+    $\\$
+    
+    ● **Résultat :** « petit » dans les deux cas (les deux nombres sont inférieurs à 10)
+    $\\$
+
+    ● 💡 **À retenir :** Pour tester un script avec une condition, essayer TOUJOURS la valeur frontière (ici 10).
+
+Solution:
+1. petit
+$\\$
+2. grand
+$\\$
+3. grand
+$\\$
+4. 9
+$\\$
+5. petit ; petit
+
+===
+
+=== Découverte - Algorithmique - 5. Doubler plusieurs fois
+Id: 2447
+Difficulté: easy
+Image: algo_3e_doubler.png
+
+Énoncé: On considère le script suivant.
+[IMAGE_1]
+$\\$
+**Question 1 : Donner la valeur de x après chaque tour de boucle.**
+$\\$
+**Question 2 : Quelle valeur le lutin dit-il ?**
+$\\$
+**Question 3 : Un élève répond $\displaystyle 2 + 3 \times 2 = 8$. Expliquer son erreur.**
+$\\$
+**Question 4 : Écrire le résultat sous la forme d'une puissance de 2.**
+$\\$
+**Question 5 : Quelle valeur le lutin dirait-il avec « répéter 9 fois » ?**
+
+Étapes:
+
+**Question 1 : Après chaque tour**
+
+    ● **Méthode :** x part de 2 ; à chaque tour, « mettre x à x × 2 » remplace x par son double.
+    $\\$
+    
+    ● **Résultat :** 4, puis 8, puis 16
+    $\\$
+
+**Question 2 : La valeur dite**
+
+    ● **Méthode :** Le bloc « dire » est exécuté après les 3 tours, avec la dernière valeur de x.
+    $\\$
+    
+    ● **Résultat :** 16
+    $\\$
+
+**Question 3 : L'erreur**
+
+    ● **Méthode :** On relit le bloc de la boucle : il MULTIPLIE x par 2 ; l'élève a traduit la répétition par des additions.
+    $\\$
+    
+    ● **Résultat :** Le script MULTIPLIE x par 2 à chaque tour ; il n'ajoute pas 2 trois fois
+    $\\$
+
+**Question 4 : En puissance**
+
+    ● **Méthode :** Doubler 3 fois revient à multiplier par $\displaystyle 2 \times 2 \times 2 = 2^3$ ; on multiplie la valeur de départ 2 par $\displaystyle 2^3$.
+    $\\$
+    
+    ● **Résultat :** $\displaystyle 2 \times 2^3 = 2^4 = 16$
+    $\\$
+
+**Question 5 : 9 tours**
+
+    ● **Méthode :** Avec 9 tours, on multiplie la valeur de départ par $\displaystyle 2^9$.
+    $\\$
+    
+    ● **Résultat :** $\displaystyle 2 \times 2^9 = 2^{10} = 1\,024$
+    $\\$
+
+    ● 💡 **À retenir :** Répéter une multiplication fait apparaître une PUISSANCE : la croissance est très rapide.
+
+Solution:
+1. 4 ; 8 ; 16
+$\\$
+2. 16
+$\\$
+3. Il multiplie, il n'ajoute pas
+$\\$
+4. $2^4$
+$\\$
+5. 1 024
+
+===
+
+=== Découverte - Algorithmique - 6. Tracer un carré
+Id: 2448
+Difficulté: easy
+Image: algo_3e_carre.png,algo_3e_carre_sol.png
+
+Énoncé: Le lutin part du centre de la scène, orienté vers la droite (orientation 90). « Tourner ↺ » tourne dans le sens inverse des aiguilles d'une montre.
+[IMAGE_1]
+$\\$
+**Question 1 : Quelles sont les coordonnées du lutin après le premier « avancer de 40 » ?**
+$\\$
+**Question 2 : Dans quelle direction est-il orienté après le premier « tourner » ?**
+$\\$
+**Question 3 : Quelle figure est tracée ? Donner les coordonnées de ses sommets.**
+$\\$
+**Question 4 : Quelle est la longueur totale tracée ?**
+$\\$
+**Question 5 : Comment modifier le script pour tracer un triangle équilatéral de côté 40 ?**
+
+Étapes:
+
+**Question 1 : Après le premier déplacement**
+
+    ● **Méthode :** Le lutin part de $\displaystyle (0\ ;\ 0)$ orienté vers la droite (orientation 90) : avancer de 40 augmente l'abscisse de 40.
+    $\\$
+    
+    ● **Résultat :** $\displaystyle (40\ ;\ 0)$
+    $\\$
+
+**Question 2 : Après le premier quart de tour**
+
+    ● **Méthode :** « tourner ↺ de 90 degrés » fait un quart de tour dans le sens inverse des aiguilles d'une montre : la droite devient le haut.
+    $\\$
+    
+    ● **Résultat :** Vers le haut (orientation 0)
+    $\\$
+
+**Question 3 : La figure**
+
+    ● **Méthode :** On suit les 4 tours : chaque tour trace un côté de 40 puis tourne d'un quart de tour ; 4 côtés égaux et 4 angles droits donnent un carré.
+    $\\$
+    
+    ● **Résultat :** Un carré de côté 40, de sommets $\displaystyle (0\ ;\ 0)$, $\displaystyle (40\ ;\ 0)$, $\displaystyle (40\ ;\ 40)$ et $\displaystyle (0\ ;\ 40)$
+    $\\$
+[IMAGE_2]
+
+**Question 4 : La longueur tracée**
+
+    ● **Méthode :** Le stylo trace 4 segments de 40 unités.
+    $\\$
+    
+    ● **Résultat :** $\displaystyle 4 \times 40 = 160$
+    $\\$
+
+**Question 5 : Un triangle équilatéral**
+
+    ● **Méthode :** Pour revenir au départ, les rotations doivent totaliser 360°.
+    $\\$
+
+    ● **Résultat :** « répéter 3 fois », « avancer de 40 », « tourner ↺ de 120 degrés » ($\displaystyle 3 \times 120 = 360$)
+    $\\$
+
+    ● ⚠️ **Erreur fréquente :** Tourner de 60° (angle INTÉRIEUR du triangle) : le lutin tourne de l'angle EXTÉRIEUR, $\displaystyle 180 - 60 = 120^\circ$.
+
+Solution:
+1. $(40 ; 0)$
+$\\$
+2. Vers le haut
+$\\$
+3. Carré : $(0;0)$, $(40;0)$, $(40;40)$, $(0;40)$
+$\\$
+4. 160
+$\\$
+5. Répéter 3 fois, tourner de 120°
+
+===
+
+=== Découverte - Algorithmique - 7. Une somme cumulée
+Id: 2449
+Difficulté: easy
+Image: algo_3e_somme.png
+
+Énoncé: On considère le script suivant, qui utilise deux variables s et n.
+[IMAGE_1]
+$\\$
+**Question 1 : Donner les valeurs de s et de n à la fin de chacun des cinq tours.**
+$\\$
+**Question 2 : Quelle valeur le lutin dit-il ?**
+$\\$
+**Question 3 : Quelle est la valeur de n à la fin du script ?**
+$\\$
+**Question 4 : Quel calcul ce script effectue-t-il ?**
+$\\$
+**Question 5 : Quelle valeur dirait-il avec « répéter 10 fois » ?**
+
+Étapes:
+
+**Question 1 : Le tableau des valeurs**
+
+    ● **Méthode :** Au départ, $\displaystyle (s\ ;\ n) = (0\ ;\ 1)$. À chaque tour, on ajoute n à s, PUIS on augmente n.
+    $\\$
+
+    ● **Résultat :** $\displaystyle (1\ ;\ 2)$, $\displaystyle (3\ ;\ 3)$, $\displaystyle (6\ ;\ 4)$, $\displaystyle (10\ ;\ 5)$, $\displaystyle (15\ ;\ 6)$
+    $\\$
+
+**Question 2 : La valeur dite**
+
+    ● **Méthode :** Le bloc « dire s » est exécuté après la boucle : on lit la dernière valeur de s dans le tableau de la question 1.
+    $\\$
+    
+    ● **Résultat :** 15
+    $\\$
+
+**Question 3 : La valeur finale de n**
+
+    ● **Méthode :** n vaut 1 au départ et augmente de 1 à chaque tour : après 5 tours, $\displaystyle 1 + 5$.
+    $\\$
+    
+    ● **Résultat :** 6
+    $\\$
+
+**Question 4 : Le calcul**
+
+    ● **Méthode :** À chaque tour, on ajoute à s la valeur actuelle de n (1, puis 2, puis 3…) : s accumule la somme des entiers.
+    $\\$
+    
+    ● **Résultat :** La somme $\displaystyle 1 + 2 + 3 + 4 + 5 = 15$
+    $\\$
+
+**Question 5 : 10 tours**
+
+    ● **Méthode :** Avec 10 tours, s cumule les entiers de 1 à 10 ; on peut les grouper par paires : $\displaystyle (1 + 10) + (2 + 9) + \dots = 5 \times 11$.
+    $\\$
+    
+    ● **Résultat :** $\displaystyle 1 + 2 + \dots + 10 = 55$
+    $\\$
+
+    ● 💡 **À retenir :** Pour suivre plusieurs variables, faire un tableau : une colonne par variable, une ligne par tour.
+
+Solution:
+1. $(1;2)$, $(3;3)$, $(6;4)$, $(10;5)$, $(15;6)$
+$\\$
+2. 15
+$\\$
+3. 6
+$\\$
+4. $1 + 2 + 3 + 4 + 5$
+$\\$
+5. 55
+
+===
+
+=== Entraînement - Algorithmique - 1. Répéter jusqu'à
+Id: 2450
+Difficulté: medium
+Image: algo_3e_jusqua.png
+
+Énoncé: On considère le script suivant.
+[IMAGE_1]
+$\\$
+**Question 1 : Donner les valeurs successives de x.**
+$\\$
+**Question 2 : Combien de tours la boucle effectue-t-elle ?**
+$\\$
+**Question 3 : Quelle valeur le lutin dit-il ?**
+$\\$
+**Question 4 : On remplace « ajouter 6 à x » par « ajouter 5 à x ». Combien de tours, et quelle valeur dite ?**
+$\\$
+**Question 5 : On remplace par « ajouter 0 à x ». Que se passe-t-il ?**
+
+Étapes:
+
+**Question 1 : Les valeurs de x**
+
+    ● **Méthode :** Le test « x > 20 » est vérifié AVANT chaque tour ; la boucle s'arrête dès qu'il est vrai.
+    $\\$
+
+    ● **Résultat :** 0, puis 6, 12, 18, 24
+    $\\$
+
+**Question 2 : Le nombre de tours**
+
+    ● **Méthode :** Le test « x > 20 » est vérifié AVANT chaque tour : on compte les tours effectués jusqu'à ce qu'il devienne vrai.
+    $\\$
+    
+    ● **Résultat :** 4 tours ($\displaystyle 18 > 20$ est faux, $\displaystyle 24 > 20$ est vrai)
+    $\\$
+
+**Question 3 : La valeur dite**
+
+    ● **Méthode :** Le bloc « dire x » est exécuté à la sortie de la boucle, avec la première valeur qui a rendu le test vrai.
+    $\\$
+    
+    ● **Résultat :** 24
+    $\\$
+
+**Question 4 : Avec « ajouter 5 »**
+
+    ● **Étape 1 :** 5, 10, 15, 20, 25 : à 20 le test est encore faux ($\displaystyle 20 > 20$ est faux)
+    $\\$
+
+    ● **Résultat :** 5 tours, le lutin dit 25
+    $\\$
+
+**Question 5 : Avec « ajouter 0 »**
+
+    ● **Méthode :** Pour qu'une boucle « répéter jusqu'à » s'arrête, la variable doit progresser vers la condition ; avec « ajouter 0 », elle ne change jamais.
+    $\\$
+    
+    ● **Résultat :** x reste 0, le test n'est jamais vrai : la boucle ne s'arrête pas (boucle infinie)
+    $\\$
+
+    ● ⚠️ **Erreur fréquente :** Croire que la boucle s'arrête « à 20 » : elle s'arrête à la PREMIÈRE valeur qui rend le test vrai.
+
+Solution:
+1. 6 ; 12 ; 18 ; 24
+$\\$
+2. 4
+$\\$
+3. 24
+$\\$
+4. 5 tours ; 25
+$\\$
+5. Boucle infinie
+
+===
+
+=== Entraînement - Algorithmique - 2. Reconnaître un multiple
+Id: 2451
+Difficulté: medium
+Image: algo_3e_multiple.png
+
+Énoncé: Dans le script suivant, « a modulo b » donne le reste de la division euclidienne de a par b.
+[IMAGE_1]
+$\\$
+**Question 1 : Que dit le lutin si l'on saisit 18 ?**
+$\\$
+**Question 2 : Que dit-il si l'on saisit 19 ?**
+$\\$
+**Question 3 : Quels entiers ce script reconnaît-il (ceux pour lesquels il dit 1) ?**
+$\\$
+**Question 4 : Que dit-il pour 0 ? Est-ce cohérent ?**
+$\\$
+**Question 5 : Comment modifier le script pour qu'il reconnaisse les nombres pairs ? Que dirait-il alors pour 35 et pour 36 ?**
+
+Étapes:
+
+**Question 1 : Saisie 18**
+
+    ● **Méthode :** « 18 modulo 3 » est le reste de la division de 18 par 3 ; si ce reste vaut 0, le test « = 0 » est vrai et y passe à 1.
+    $\\$
+    
+    ● **Résultat :** $\displaystyle 18 = 3 \times 6 + 0$ : reste 0, le test est vrai, y prend la valeur 1 ; il dit 1
+    $\\$
+
+**Question 2 : Saisie 19**
+
+    ● **Méthode :** On calcule le reste de la division de 19 par 3 : s'il n'est pas nul, le test est faux et y garde sa valeur 0.
+    $\\$
+    
+    ● **Résultat :** $\displaystyle 19 = 3 \times 6 + 1$ : reste 1, y reste à 0 ; il dit 0
+    $\\$
+
+**Question 3 : Les entiers reconnus**
+
+    ● **Méthode :** Le lutin dit 1 exactement quand le reste de la division par 3 est nul, c'est-à-dire quand x est divisible par 3.
+    $\\$
+    
+    ● **Résultat :** Les multiples de 3 (reste nul dans la division par 3)
+    $\\$
+
+**Question 4 : Saisie 0**
+
+    ● **Méthode :** $\displaystyle 0 \div 3 = 0$ reste 0 : le test est vrai.
+    $\\$
+    
+    ● **Résultat :** Il dit 1 : c'est cohérent, car $\displaystyle 0 = 3 \times 0$ est un multiple de 3
+    $\\$
+
+**Question 5 : Les nombres pairs**
+
+    ● **Méthode :** Remplacer « x modulo 3 » par « x modulo 2 ».
+    $\\$
+
+    ● **Résultat :** Pour 35 (reste 1) il dit 0 ; pour 36 (reste 0) il dit 1
+    $\\$
+
+    ● 💡 **À retenir :** « n est divisible par d » se programme par le test « n modulo d = 0 ».
+
+Solution:
+1. 1
+$\\$
+2. 0
+$\\$
+3. Les multiples de 3
+$\\$
+4. 1 (0 est multiple de 3)
+$\\$
+5. Modulo 2 ; 0 et 1
+
+===
+
+=== Entraînement - Algorithmique - 3. Énumérer des diviseurs
+Id: 2452
+Difficulté: medium
+Image: algo_3e_diviseurs.png
+
+Énoncé: On considère le script suivant.
+[IMAGE_1]
+$\\$
+**Question 1 : Quelles valeurs de d sont testées ?**
+$\\$
+**Question 2 : Quelles valeurs le lutin dit-il, dans l'ordre ?**
+$\\$
+**Question 3 : Pourquoi commence-t-on avec d = 1 et non avec d = 0 ?**
+$\\$
+**Question 4 : Que représentent les nombres dits ? Combien y en a-t-il ?**
+$\\$
+**Question 5 : On remplace 12 par 13 dans les deux blocs. Que dit le lutin ? Que peut-on en conclure sur 13 ?**
+
+Étapes:
+
+**Question 1 : Les valeurs testées**
+
+    ● **Méthode :** d part de 1 (« mettre d à 1 ») et augmente de 1 à la fin de chacun des 12 tours.
+    $\\$
+    
+    ● **Résultat :** d prend les valeurs 1, 2, 3, …, 12 (12 tours, d augmente de 1 à chaque tour)
+    $\\$
+
+**Question 2 : Les valeurs dites**
+
+    ● **Méthode :** À chaque tour, le lutin dit d seulement si « n modulo d = 0 », c'est-à-dire si d divise 12 sans reste.
+    $\\$
+    
+    ● **Résultat :** 1, 2, 3, 4, 6, 12
+    $\\$
+
+**Question 3 : Pourquoi pas 0**
+
+    ● **Méthode :** Le bloc « modulo » calcule le reste d'une division ; une division par 0 n'est pas définie.
+    $\\$
+    
+    ● **Résultat :** On ne peut pas diviser par 0 : le reste « 12 modulo 0 » n'a pas de sens
+    $\\$
+
+**Question 4 : Les nombres dits**
+
+    ● **Méthode :** Les nombres dits sont exactement ceux qui divisent 12 sans reste : on les compte dans la liste de la question 2.
+    $\\$
+    
+    ● **Résultat :** Ce sont les diviseurs positifs de 12 ; il y en a 6
+    $\\$
+
+**Question 5 : Avec 13**
+
+    ● **Étape 1 :** Seuls 1 et 13 donnent un reste nul
+    $\\$
+
+    ● **Résultat :** Il dit 1 et 13 : 13 a exactement deux diviseurs, c'est un nombre premier
+    $\\$
+
+    ● 💡 **À retenir :** Une boucle + un test « modulo » permet d'énumérer les diviseurs d'un entier.
+
+Solution:
+1. 1 à 12
+$\\$
+2. 1 ; 2 ; 3 ; 4 ; 6 ; 12
+$\\$
+3. Division par 0 impossible
+$\\$
+4. Les 6 diviseurs de 12
+$\\$
+5. 1 et 13 : 13 est premier
+
+===
+
+=== Entraînement - Algorithmique - 4. Une boucle qui dépasse
+Id: 2453
+Difficulté: medium
+Image: algo_3e_depasse.png
+
+Énoncé: On considère le script suivant.
+[IMAGE_1]
+$\\$
+**Question 1 : Donner les valeurs successives de x.**
+$\\$
+**Question 2 : Combien de tours la boucle effectue-t-elle ?**
+$\\$
+**Question 3 : Quelle valeur le lutin dit-il ?**
+$\\$
+**Question 4 : On remplace 50 par 1 000. Quelle valeur est dite, et après combien de tours ?**
+$\\$
+**Question 5 : On remplace « x × 2 » par « x × 1 ». Le script se termine-t-il ? Justifier.**
+
+Étapes:
+
+**Question 1 : Les valeurs de x**
+
+    ● **Méthode :** x part de 1 et est doublé à chaque tour, tant que le test « x > 50 » est faux.
+    $\\$
+    
+    ● **Résultat :** 1, puis 2, 4, 8, 16, 32, 64
+    $\\$
+
+**Question 2 : Le nombre de tours**
+
+    ● **Méthode :** On compte les doublements effectués jusqu'à ce que x dépasse 50 (le test est vérifié avant chaque tour).
+    $\\$
+    
+    ● **Résultat :** 6 tours ($\displaystyle 32 > 50$ est faux, $\displaystyle 64 > 50$ est vrai)
+    $\\$
+
+**Question 3 : La valeur dite**
+
+    ● **Méthode :** Le bloc « dire x » est exécuté après la boucle, avec la première valeur supérieure à 50.
+    $\\$
+    
+    ● **Résultat :** 64
+    $\\$
+
+**Question 4 : Avec 1 000**
+
+    ● **Étape 1 :** $\displaystyle 2^9 = 512 \leq 1\,000$ et $\displaystyle 2^{10} = 1\,024 > 1\,000$
+    $\\$
+
+    ● **Résultat :** Il dit 1 024 après 10 tours
+    $\\$
+
+**Question 5 : Avec « x × 1 »**
+
+    ● **Méthode :** « x × 1 » laisse x inchangé : la variable ne progresse jamais vers la condition d'arrêt.
+    $\\$
+    
+    ● **Résultat :** Non : x reste égal à 1, le test « x > 50 » n'est jamais vrai ; la boucle est infinie
+    $\\$
+
+    ● 💡 **À retenir :** Une boucle « répéter jusqu'à » ne termine que si la variable PROGRESSE vers la condition d'arrêt.
+
+Solution:
+1. 2 ; 4 ; 8 ; 16 ; 32 ; 64
+$\\$
+2. 6
+$\\$
+3. 64
+$\\$
+4. 1 024 en 10 tours
+$\\$
+5. Non (boucle infinie)
+
+===
+
+=== Entraînement - Algorithmique - 5. Un bloc personnalisé
+Id: 2454
+Difficulté: medium
+Image: algo_3e_carres.png,algo_3e_carres_sol.png
+
+Énoncé: Le lutin part de $\displaystyle (0\ ;\ 0)$, orienté vers la droite. Il utilise le bloc personnalisé « carré » défini à gauche.
+[IMAGE_1]
+$\\$
+**Question 1 : Que trace « carré (30) » ? Dans quelle position le lutin se retrouve-t-il ensuite ?**
+$\\$
+**Question 2 : Quelles sont les abscisses des points de départ des trois carrés ?**
+$\\$
+**Question 3 : Quel espace sépare deux carrés voisins ? Pourquoi relève-t-on le stylo ?**
+$\\$
+**Question 4 : Quelle est la longueur totale tracée ?**
+$\\$
+**Question 5 : Où se trouve le lutin à la fin du script ?**
+
+Étapes:
+
+**Question 1 : Le bloc « carré (30) »**
+
+    ● **Méthode :** Dans le bloc « carré », on répète 4 fois « avancer de côté ; tourner de 90 degrés » : 4 côtés égaux, et un tour complet ($\displaystyle 4 \times 90^\circ = 360^\circ$).
+    $\\$
+    
+    ● **Résultat :** Un carré de côté 30 ; après 4 quarts de tour ($\displaystyle 4 \times 90 = 360^\circ$), le lutin revient à son point de départ avec la même orientation
+    $\\$
+
+**Question 2 : Les points de départ**
+
+    ● **Méthode :** Chaque carré ramène le lutin à son point de départ ; entre deux carrés, il avance de 40 (stylo relevé) : on ajoute 40 à chaque fois.
+    $\\$
+    
+    ● **Résultat :** $\displaystyle x = 0$, puis 40, puis 80 (on avance de 40 entre deux carrés)
+    $\\$
+[IMAGE_2]
+
+**Question 3 : L'espace entre les carrés**
+
+    ● **Méthode :** Un carré occupe 30 unités en largeur et le départ suivant est 40 unités plus loin : on soustrait.
+    $\\$
+    
+    ● **Résultat :** $\displaystyle 40 - 30 = 10$ ; le stylo est relevé pour que ce déplacement ne soit pas tracé
+    $\\$
+
+**Question 4 : La longueur tracée**
+
+    ● **Méthode :** Seuls les carrés sont tracés (stylo baissé) : 3 carrés de périmètre $\displaystyle 4 \times 30$.
+    $\\$
+    
+    ● **Résultat :** $\displaystyle 3 \times 4 \times 30 = 360$
+    $\\$
+
+**Question 5 : La position finale**
+
+    ● **Méthode :** Le lutin termine son 3ᵉ carré à $\displaystyle x = 80$, puis exécute encore le dernier « avancer de 40 ».
+    $\\$
+    
+    ● **Résultat :** $\displaystyle (120\ ;\ 0)$, après le troisième « avancer de 40 »
+    $\\$
+
+    ● 💡 **À retenir :** Un bloc personnalisé sépare le MOTIF (le carré) du DÉPLACEMENT entre les motifs.
+
+Solution:
+1. Un carré de côté 30, retour au départ
+$\\$
+2. 0 ; 40 ; 80
+$\\$
+3. 10 ; pour ne pas tracer le déplacement
+$\\$
+4. 360
+$\\$
+5. $(120 ; 0)$
+
+===
+
+=== Entraînement - Algorithmique - 6. Simuler un dé
+Id: 2455
+Difficulté: medium
+Image: algo_3e_de.png
+
+Énoncé: Le script suivant simule 600 lancers d'un dé équilibré à six faces.
+[IMAGE_1]
+$\\$
+**Question 1 : Pourquoi le bloc « mettre succès à 0 » est-il placé AVANT la boucle ?**
+$\\$
+**Question 2 : Que modélise le bloc « nombre aléatoire entre 1 et 6 » ?**
+$\\$
+**Question 3 : Que compte la variable succès ? Que représente la valeur dite ?**
+$\\$
+**Question 4 : Quelle est la probabilité d'obtenir 6 ? Combien de succès peut-on attendre environ ?**
+$\\$
+**Question 5 : Le lutin dit 0,18. Le dé est-il truqué ?**
+
+Étapes:
+
+**Question 1 : L'initialisation**
+
+    ● **Méthode :** Un compteur doit commencer à 0 une seule fois ; tout bloc placé dans la boucle est exécuté à chaque tour.
+    $\\$
+    
+    ● **Résultat :** Le compteur doit partir de 0 une seule fois ; placé dans la boucle, il serait remis à 0 à chaque lancer
+    $\\$
+
+**Question 2 : Le nombre aléatoire**
+
+    ● **Méthode :** « nombre aléatoire entre 1 et 6 » choisit un entier au hasard, chacun avec la même chance : c'est le modèle d'un dé équilibré.
+    $\\$
+    
+    ● **Résultat :** Le lancer d'un dé équilibré : chaque entier de 1 à 6 a la même chance d'être choisi
+    $\\$
+
+**Question 3 : La variable succès**
+
+    ● **Méthode :** On suit le script : succès augmente de 1 à chaque 6 ; à la fin, on divise par le nombre de lancers, 600.
+    $\\$
+    
+    ● **Résultat :** Le nombre de 6 obtenus ; la valeur dite est la FRÉQUENCE d'apparition du 6
+    $\\$
+
+**Question 4 : Probabilité et nombre attendu**
+
+    ● **Méthode :** Avec un dé équilibré, une issue sur 6 est favorable ; sur 600 lancers, on attend environ $\displaystyle 600 \times \frac{1}{6}$ succès.
+    $\\$
+    
+    ● **Résultat :** $\displaystyle \frac{1}{6}$, soit environ $\displaystyle \frac{600}{6} = 100$ succès
+    $\\$
+
+**Question 5 : Une fréquence de 0,18**
+
+    ● **Étape 1 :** $\displaystyle \frac{1}{6} \approx 0{,}167$ : l'écart est de 0,013 seulement
+    $\\$
+
+    ● **Résultat :** Non : c'est la fluctuation normale d'une simulation ; une fréquence n'est pas égale exactement à la probabilité
+    $\\$
+
+    ● 💡 **À retenir :** Simuler = INITIALISER le compteur, COMPTER à chaque tour, DIVISER à la fin.
+
+Solution:
+1. Pour ne pas le remettre à 0 à chaque tour
+$\\$
+2. Un dé équilibré
+$\\$
+3. Le nombre de 6 ; la fréquence du 6
+$\\$
+4. $\displaystyle \frac{1}{6}$ ; environ 100
+$\\$
+5. Non, simple fluctuation
+
+===
+
+=== Entraînement - Algorithmique - 7. Une formule de tableur recopiée
+Id: 2456
+Difficulté: medium
+Image: algo_3e_tableur.png,algo_3e_tableur_sol.png
+
+Énoncé: On a saisi en B2 la formule =3&#42;A2+\$D\$2, puis on l'a recopiée vers le bas jusqu'en B6.
+[IMAGE_1]
+$\\$
+**Question 1 : Expliquer le résultat affiché en B2.**
+$\\$
+**Question 2 : Quelle formule contient la cellule B3 ?**
+$\\$
+**Question 3 : Quelles valeurs s'affichent de B3 à B6 ?**
+$\\$
+**Question 4 : Un élève a saisi =3&#42;A2+D2 (sans les dollars). Quelle formule obtient-il en B3, et quelle valeur ?**
+$\\$
+**Question 5 : Quelle fonction la colonne B calcule-t-elle ? Quelle valeur afficherait-elle pour x = 10 ?**
+
+Étapes:
+
+**Question 1 : La cellule B2**
+
+    ● **Méthode :** On remplace les références de la formule =3&#42;A2+\$D\$2 par le contenu des cellules : A2 vaut 0 et D2 vaut 5.
+    $\\$
+    
+    ● **Résultat :** $\displaystyle 3 \times 0 + 5 = 5$ (A2 contient 0, D2 contient 5)
+    $\\$
+
+**Question 2 : La formule en B3**
+
+    ● **Méthode :** La référence relative A2 descend d'une ligne ; la référence absolue \$D\$2 reste fixe.
+    $\\$
+
+    ● **Résultat :** =3&#42;A3+\$D\$2
+    $\\$
+
+**Question 3 : Les valeurs**
+
+    ● **Méthode :** Chaque ligne calcule $\displaystyle 3 \times x + 5$ avec la valeur de la colonne A (1, 2, 3, 4).
+    $\\$
+    
+    ● **Résultat :** 8, 11, 14 et 17
+    $\\$
+[IMAGE_2]
+
+**Question 4 : Sans les dollars**
+
+    ● **Étape 1 :** La formule devient =3&#42;A3+D3 ; or D3 est vide (elle vaut 0)
+    $\\$
+
+    ● **Résultat :** B3 afficherait $\displaystyle 3 \times 1 + 0 = 3$ au lieu de 8 : résultat faux
+    $\\$
+
+**Question 5 : La fonction**
+
+    ● **Méthode :** La formule multiplie x par 3 puis ajoute 5 : c'est une fonction affine de la forme $\displaystyle ax + b$.
+    $\\$
+    
+    ● **Résultat :** La fonction affine $\displaystyle f(x) = 3x + 5$ ; pour x = 10 : $\displaystyle 3 \times 10 + 5 = 35$
+    $\\$
+
+    ● ⚠️ **Erreur fréquente :** Oublier les \$ devant une cellule qui doit rester FIXE lors de la recopie.
+
+Solution:
+1. $3 \times 0 + 5 = 5$
+$\\$
+2. =3&#42;A3+\$D\$2
+$\\$
+3. 8 ; 11 ; 14 ; 17
+$\\$
+4. =3&#42;A3+D3 ; 3 (faux)
+$\\$
+5. $f(x) = 3x + 5$ ; 35
+
+===
+
+=== Problème - Algorithmique - 1. Deux lutins coordonnés
+Id: 2457
+Difficulté: hard
+Image: algo_3e_lutins.png
+
+Énoncé: Un projet comporte deux lutins, Guide et Joueur, dont voici les scripts. La variable score est commune aux deux lutins.
+[IMAGE_1]
+$\\$
+**Question 1 : Quel événement démarre le script de chaque lutin ?**
+$\\$
+**Question 2 : Quelle valeur le lutin Guide dit-il ?**
+$\\$
+**Question 3 : Quel est le rôle de « et attendre » dans le bloc d'envoi du message ?**
+$\\$
+**Question 4 : Que pourrait-il se passer avec le simple bloc « envoyer à tous départ » ?**
+$\\$
+**Question 5 : On ajoute un troisième lutin ayant exactement le même script que Joueur. Quelle valeur Guide dit-il alors ?**
+
+Étapes:
+
+**Question 1 : Les événements**
+
+    ● **Méthode :** Chaque script commence par un bloc chapeau (en haut) qui indique son événement déclencheur.
+    $\\$
+    
+    ● **Résultat :** Guide démarre au clic sur le drapeau vert ; Joueur démarre quand il reçoit le message « départ »
+    $\\$
+
+**Question 2 : La valeur dite**
+
+    ● **Méthode :** On suit l'ordre : Guide met score à 0, envoie « départ » et attend ; Joueur ajoute alors 1 dix fois ; Guide dit ensuite score.
+    $\\$
+    
+    ● **Résultat :** score part de 0 et Joueur lui ajoute 1 dix fois : Guide dit 10
+    $\\$
+
+**Question 3 : Le rôle de « et attendre »**
+
+    ● **Méthode :** « envoyer à tous … et attendre » bloque le script de Guide jusqu'à la fin des scripts déclenchés par le message.
+    $\\$
+    
+    ● **Résultat :** Guide attend que le script déclenché chez Joueur soit TERMINÉ avant de passer au bloc « dire »
+    $\\$
+
+**Question 4 : Sans attente**
+
+    ● **Méthode :** Sans attente, Guide continue immédiatement après l'envoi : son bloc « dire » peut s'exécuter avant ou pendant le comptage du Joueur.
+    $\\$
+    
+    ● **Résultat :** Les deux scripts tourneraient en parallèle : Guide pourrait dire le score avant la fin du comptage (0 ou une valeur incomplète)
+    $\\$
+
+**Question 5 : Deux lutins Joueur**
+
+    ● **Méthode :** Le message déclenche les DEUX scripts identiques ; « et attendre » attend la fin des deux : chacun ajoute 10.
+    $\\$
+    
+    ● **Résultat :** Chacun ajoute 10 : Guide dit 20
+    $\\$
+
+    ● 💡 **À retenir :** Les messages servent à SYNCHRONISER plusieurs lutins ; « et attendre » garantit l'ordre des opérations.
+
+Solution:
+1. Drapeau vert ; réception de « départ »
+$\\$
+2. 10
+$\\$
+3. Attendre la fin du script de Joueur
+$\\$
+4. Affichage avant la fin du comptage
+$\\$
+5. 20
+
+===
+
+=== Problème - Algorithmique - 2. Un programme de calcul mystère
+Id: 2458
+Difficulté: hard
+Image: algo_3e_programme.png
+
+Énoncé: On considère le script suivant.
+[IMAGE_1]
+$\\$
+**Question 1 : Quel résultat obtient-on en choisissant 5 ?**
+$\\$
+**Question 2 : Et en choisissant $\displaystyle -3$ ?**
+$\\$
+**Question 3 : Et en choisissant 2,5 ? Quelle conjecture peut-on faire ?**
+$\\$
+**Question 4 : Démontrer cette conjecture pour un nombre $\displaystyle n$ quelconque.**
+$\\$
+**Question 5 : Par quel nombre faut-il remplacer 8 pour que le résultat soit toujours 5 ?**
+
+Étapes:
+
+**Question 1 : Avec 5**
+
+    ● **Méthode :** On suit les blocs dans l'ordre : r reçoit n × 4, puis on ajoute 8, on divise par 4 et on soustrait n.
+    $\\$
+    
+    ● **Résultat :** $\displaystyle 5 \times 4 = 20$ ; $\displaystyle 20 + 8 = 28$ ; $\displaystyle 28 \div 4 = 7$ ; $\displaystyle 7 - 5 = 2$
+    $\\$
+
+**Question 2 : Avec $\displaystyle -3$**
+
+    ● **Méthode :** Mêmes étapes avec n = $\displaystyle -3$ : à la fin, on soustrait $\displaystyle -3$, ce qui revient à ajouter 3.
+    $\\$
+    
+    ● **Résultat :** $\displaystyle -12$ ; $\displaystyle -4$ ; $\displaystyle -1$ ; $\displaystyle -1 - (-3) = 2$
+    $\\$
+
+**Question 3 : Avec 2,5**
+
+    ● **Étape 1 :** $\displaystyle 10$ ; $\displaystyle 18$ ; $\displaystyle 4{,}5$ ; $\displaystyle 4{,}5 - 2{,}5 = 2$
+    $\\$
+
+    ● **Résultat :** Conjecture : le résultat vaut toujours 2
+    $\\$
+
+**Question 4 : La démonstration**
+
+    ● **Étape 1 :** $\displaystyle r = \frac{4n + 8}{4} - n = n + 2 - n$
+    $\\$
+
+    ● **Résultat :** $\displaystyle r = 2$ pour tout nombre $\displaystyle n$
+    $\\$
+
+**Question 5 : Obtenir toujours 5**
+
+    ● **Étape 1 :** Avec $\displaystyle a$ à la place de 8 : $\displaystyle \frac{4n + a}{4} - n = \frac{a}{4}$
+    $\\$
+
+    ● **Résultat :** $\displaystyle \frac{a}{4} = 5$ donne $\displaystyle a = 20$
+    $\\$
+
+    ● ⚠️ **Erreur fréquente :** Considérer que trois exemples PROUVENT la conjecture : seul le calcul littéral la démontre pour tous les nombres.
+
+Solution:
+1. 2
+$\\$
+2. 2
+$\\$
+3. 2 ; résultat toujours égal à 2
+$\\$
+4. $\displaystyle \frac{4n+8}{4} - n = 2$
+$\\$
+5. 20
+
+===
+
+=== Problème - Algorithmique - 3. Un escalier
+Id: 2459
+Difficulté: hard
+Image: algo_3e_escalier.png,algo_3e_escalier_sol.png
+
+Énoncé: Le lutin part de $\displaystyle (0\ ;\ 0)$, orienté vers la droite. « Tourner ↺ » tourne dans le sens inverse des aiguilles d'une montre et « tourner ↻ » dans le sens des aiguilles d'une montre.
+[IMAGE_1]
+$\\$
+**Question 1 : Quelle est la position du lutin à la fin du premier tour de boucle ?**
+$\\$
+**Question 2 : Quelle est son orientation à la fin de chaque tour ?**
+$\\$
+**Question 3 : Quelle est sa position finale ?**
+$\\$
+**Question 4 : Quelle est la longueur totale tracée ?**
+$\\$
+**Question 5 : Sur quelle droite se trouvent les « nez de marche » $\displaystyle (20\ ;\ 20)$, $\displaystyle (40\ ;\ 40)$… ? Que faut-il modifier pour tracer 8 marches de 15 ?**
+
+Étapes:
+
+**Question 1 : Après un tour**
+
+    ● **Étape 1 :** Avancer de 20 vers la droite : $\displaystyle (20\ ;\ 0)$ ; tourner ↺ : vers le haut
+    $\\$
+
+    ● **Résultat :** Avancer de 20 vers le haut : $\displaystyle (20\ ;\ 20)$
+    $\\$
+
+**Question 2 : L'orientation**
+
+    ● **Méthode :** Dans chaque tour, le lutin tourne de 90° dans un sens (↺) puis de 90° dans l'autre (↻) : les deux rotations se compensent.
+    $\\$
+    
+    ● **Résultat :** Vers la droite (orientation 90) : le quart de tour ↺ est annulé par le quart de tour ↻
+    $\\$
+
+**Question 3 : La position finale**
+
+    ● **Méthode :** Chaque tour fait avancer de 20 vers la droite puis de 20 vers le haut ; on répète 5 fois à partir de $\displaystyle (0\ ;\ 0)$.
+    $\\$
+    
+    ● **Résultat :** Chaque tour ajoute 20 à x et 20 à y : $\displaystyle (100\ ;\ 100)$
+    $\\$
+[IMAGE_2]
+
+**Question 4 : La longueur tracée**
+
+    ● **Méthode :** Chaque tour trace deux segments de 20 (stylo baissé) ; on multiplie par le nombre de tours.
+    $\\$
+    
+    ● **Résultat :** $\displaystyle 5 \times (20 + 20) = 200$
+    $\\$
+
+**Question 5 : La droite et la modification**
+
+    ● **Étape 1 :** Les points $\displaystyle (20k\ ;\ 20k)$ ont une ordonnée égale à leur abscisse : ils sont sur la droite d'équation $\displaystyle y = x$
+    $\\$
+
+    ● **Résultat :** « répéter 8 fois » et « avancer de 15 » (deux fois) ; arrivée en $\displaystyle (120\ ;\ 120)$
+    $\\$
+
+    ● 💡 **À retenir :** Pour suivre un lutin, noter à chaque étape sa POSITION et son ORIENTATION.
+
+Solution:
+1. $(20 ; 20)$
+$\\$
+2. Vers la droite
+$\\$
+3. $(100 ; 100)$
+$\\$
+4. 200
+$\\$
+5. $y = x$ ; répéter 8 fois, avancer de 15
+
+===
+
+=== Problème - Algorithmique - 4. Des polygones réguliers
+Id: 2460
+Difficulté: hard
+Image: algo_3e_polygone.png,algo_3e_polygone_sol.png
+
+Énoncé: Le bloc personnalisé « polygone » a deux paramètres : le nombre de côtés n et la longueur d'un côté.
+[IMAGE_1]
+$\\$
+**Question 1 : Que trace « polygone (6 ; 30) » ? De quel angle le lutin tourne-t-il à chaque sommet ?**
+$\\$
+**Question 2 : Calculer le périmètre de la figure tracée.**
+$\\$
+**Question 3 : Quel appel faut-il écrire pour tracer un triangle équilatéral de côté 50 ? De quel angle le lutin tourne-t-il ?**
+$\\$
+**Question 4 : Un élève veut tracer un pentagone régulier et fait tourner son lutin de 108° à chaque sommet. Que se passe-t-il ? Quel angle faut-il ?**
+$\\$
+**Question 5 : Que trace « polygone (36 ; 5) » ? Calculer son périmètre.**
+
+Étapes:
+
+**Question 1 : « polygone (6 ; 30) »**
+
+    ● **Méthode :** Le bloc répète n fois « avancer ; tourner de $\displaystyle \frac{360}{n}$ » : n côtés égaux, et un tour complet à la fin. Avec n = 6, on obtient 6 côtés égaux.
+    $\\$
+    
+    ● **Résultat :** Un hexagone régulier de côté 30 ; le lutin tourne de $\displaystyle \frac{360}{6} = 60^\circ$ à chaque sommet
+    $\\$
+[IMAGE_2]
+
+**Question 2 : Le périmètre**
+
+    ● **Méthode :** Le périmètre d'un polygone régulier est « nombre de côtés $\displaystyle \times$ longueur d'un côté ».
+    $\\$
+    
+    ● **Résultat :** $\displaystyle 6 \times 30 = 180$
+    $\\$
+
+**Question 3 : Le triangle équilatéral**
+
+    ● **Méthode :** Un triangle équilatéral a 3 côtés égaux : on appelle le bloc avec n = 3 et côté = 50 ; l'angle de rotation est $\displaystyle \frac{360}{n}$.
+    $\\$
+    
+    ● **Résultat :** « polygone (3 ; 50) » : le lutin tourne de $\displaystyle \frac{360}{3} = 120^\circ$
+    $\\$
+
+**Question 4 : Le pentagone**
+
+    ● **Étape 1 :** 108° est l'angle INTÉRIEUR du pentagone ; après 5 rotations, le lutin a tourné de $\displaystyle 5 \times 108 = 540^\circ$ et ne revient pas à son point de départ : la figure ne se referme pas
+    $\\$
+
+    ● **Résultat :** Il faut tourner de l'angle extérieur $\displaystyle \frac{360}{5} = 72^\circ$ ($\displaystyle = 180 - 108$)
+    $\\$
+
+**Question 5 : « polygone (36 ; 5) »**
+
+    ● **Méthode :** Avec n = 36, l'angle de rotation vaut $\displaystyle \frac{360}{36} = 10^\circ$ : les côtés sont très courts et tournent peu, la figure s'approche d'un cercle.
+    $\\$
+    
+    ● **Résultat :** Un polygone régulier à 36 côtés (rotations de 10°), qui ressemble à un cercle ; périmètre $\displaystyle 36 \times 5 = 180$
+    $\\$
+
+    ● 💡 **À retenir :** Polygone régulier à $n$ côtés : tourner de $\displaystyle \frac{360}{n}$ degrés, l'angle EXTÉRIEUR.
+
+Solution:
+1. Hexagone régulier ; 60°
+$\\$
+2. 180
+$\\$
+3. polygone (3 ; 50) ; 120°
+$\\$
+4. Figure non fermée ; 72°
+$\\$
+5. Presque un cercle ; 180
+
+===
+
+=== Problème - Algorithmique - 5. Le jeu du nombre secret
+Id: 2461
+Difficulté: hard
+Image: algo_3e_devinette.png
+
+Énoncé: Voici un jeu : l'ordinateur choisit un nombre secret, que le joueur doit deviner.
+[IMAGE_1]
+$\\$
+**Question 1 : Quel est le rôle du premier bloc « mettre secret à … » ?**
+$\\$
+**Question 2 : Le nombre secret est 37. Le joueur propose 50, puis 25, puis 37. Quels messages le lutin dit-il ?**
+$\\$
+**Question 3 : Quelle valeur le lutin dit-il à la fin de cette partie ? Que représente-t-elle ?**
+$\\$
+**Question 4 : Un joueur propose un nombre au hasard entre 1 et 100. Quelle est sa probabilité de trouver du premier coup ?**
+$\\$
+**Question 5 : Un joueur propose toujours le milieu de l'intervalle restant. Expliquer pourquoi 7 essais lui suffisent toujours.**
+
+Étapes:
+
+**Question 1 : Le nombre secret**
+
+    ● **Méthode :** Ce bloc est exécuté une seule fois, avant la boucle : il fixe la valeur que le joueur devra trouver.
+    $\\$
+    
+    ● **Résultat :** Il choisit au hasard un entier entre 1 et 100 : c'est le nombre à deviner
+    $\\$
+
+**Question 2 : Les messages**
+
+    ● **Étape 1 :** 50 n'est pas inférieur à 37 mais lui est supérieur : « Plus petit ! »
+    $\\$
+
+    ● **Étape 2 :** 25 est inférieur à 37 : « Plus grand ! »
+    $\\$
+
+    ● **Résultat :** 37 : aucun des deux tests n'est vrai, aucun message ; la boucle s'arrête car la réponse est égale au secret
+    $\\$
+
+**Question 3 : La valeur finale**
+
+    ● **Méthode :** On suit la variable essais : elle part de 0 et augmente de 1 à chaque proposition (50, 25 puis 37).
+    $\\$
+    
+    ● **Résultat :** 3 : c'est le nombre d'essais (la variable essais augmente de 1 à chaque proposition)
+    $\\$
+
+**Question 4 : Du premier coup**
+
+    ● **Méthode :** Les 100 nombres de 1 à 100 ont la même chance ; un seul est le nombre secret.
+    $\\$
+    
+    ● **Résultat :** 100 nombres équiprobables, un seul gagnant : $\displaystyle \frac{1}{100}$
+    $\\$
+
+**Question 5 : La stratégie du milieu**
+
+    ● **Étape 1 :** Chaque essai coupe l'intervalle restant en deux : 100 → 50 → 25 → 13 → 7 → 4 → 2 → 1 nombre possible
+    $\\$
+
+    ● **Résultat :** Après 7 essais il reste au plus un nombre possible, car $\displaystyle 2^7 = 128 \geq 100$
+    $\\$
+
+    ● 💡 **À retenir :** Couper en deux à chaque étape (dichotomie) est la stratégie la plus rapide.
+
+Solution:
+1. Choisir le nombre secret
+$\\$
+2. Plus petit ! ; Plus grand ! ; aucun
+$\\$
+3. 3 (nombre d'essais)
+$\\$
+4. $\displaystyle \frac{1}{100}$
+$\\$
+5. $2^7 = 128 \geq 100$
+
+===
+
+=== Problème - Algorithmique - 6. Une épargne au tableur
+Id: 2462
+Difficulté: hard
+Image: algo_3e_epargne.png
+
+Énoncé: Léa possède 20 € et décide d'épargner chaque semaine la même somme. Elle utilise la feuille de calcul suivante, dont elle va recopier la formule de B3 vers le bas.
+[IMAGE_1]
+$\\$
+**Question 1 : Quelle somme Léa épargne-t-elle chaque semaine ? Justifier à l'aide de la formule.**
+$\\$
+**Question 2 : Quelle formule obtient-on en B7 après recopie ?**
+$\\$
+**Question 3 : Quelle valeur s'affiche en B12 ?**
+$\\$
+**Question 4 : Exprimer l'épargne en fonction du numéro de semaine $\displaystyle n$, puis écrire en B2 une formule utilisant A2 qui donne le même résultat une fois recopiée.**
+$\\$
+**Question 5 : À partir de quelle semaine l'épargne dépasse-t-elle 300 € ?**
+
+Étapes:
+
+**Question 1 : La somme hebdomadaire**
+
+    ● **Méthode :** On lit la formule de B3 : elle reprend la valeur de B2 et lui ajoute 15.
+    $\\$
+    
+    ● **Résultat :** 15 € : la formule =B2+15 ajoute 15 au montant de la semaine précédente
+    $\\$
+
+**Question 2 : La formule en B7**
+
+    ● **Méthode :** Lors d'une recopie vers le bas, chaque référence RELATIVE descend d'autant de lignes : B2 devient B6 en B7.
+    $\\$
+    
+    ● **Résultat :** =B6+15 (les références relatives descendent avec la recopie)
+    $\\$
+
+**Question 3 : La cellule B12**
+
+    ● **Méthode :** B12 correspond à la semaine 10 : on part de 20 € et on ajoute 15 € dix fois.
+    $\\$
+    
+    ● **Résultat :** Semaine 10 : $\displaystyle 20 + 15 \times 10 = 170$ €
+    $\\$
+
+**Question 4 : L'expression et la formule**
+
+    ● **Étape 1 :** $\displaystyle E(n) = 20 + 15n$
+    $\\$
+
+    ● **Résultat :** En B2 : =20+15&#42;A2, recopiée vers le bas
+    $\\$
+
+**Question 5 : Dépasser 300 €**
+
+    ● **Étape 1 :** $\displaystyle 20 + 15n > 300$ donne $\displaystyle 15n > 280$, soit $\displaystyle n > 18{,}6\ldots$
+    $\\$
+
+    ● **Résultat :** À partir de la semaine 19 ($\displaystyle 20 + 15 \times 19 = 305$ €)
+    $\\$
+
+    ● 💡 **À retenir :** Ajouter toujours la même somme donne une fonction AFFINE du nombre de semaines.
+
+Solution:
+1. 15 €
+$\\$
+2. =B6+15
+$\\$
+3. 170 €
+$\\$
+4. $20 + 15n$ ; =20+15&#42;A2
+$\\$
+5. Semaine 19
+
+===
+
+=== Problème - Algorithmique - 7. La somme de deux dés
+Id: 2463
+Difficulté: hard
+Image: algo_3e_deux_des.png
+
+Énoncé: Le script suivant simule 1 000 lancers de deux dés équilibrés et s'intéresse à la somme des deux faces.
+[IMAGE_1]
+$\\$
+**Question 1 : Quelles sont les valeurs possibles de la somme d1 + d2 ?**
+$\\$
+**Question 2 : Combien y a-t-il d'issues (d1 ; d2) équiprobables ? Lesquelles donnent une somme égale à 7 ?**
+$\\$
+**Question 3 : Calculer la probabilité d'obtenir une somme égale à 7.**
+$\\$
+**Question 4 : Autour de quelle valeur la fréquence dite par le lutin devrait-elle se situer ?**
+$\\$
+**Question 5 : On remplace 7 par 12 dans le test. Autour de combien de succès peut-on s'attendre ? Quelle somme est la plus probable ?**
+
+Étapes:
+
+**Question 1 : Les sommes possibles**
+
+    ● **Méthode :** Chaque dé donne un entier de 1 à 6 : la plus petite somme est $\displaystyle 1 + 1$, la plus grande $\displaystyle 6 + 6$, et toutes les valeurs intermédiaires sont possibles.
+    $\\$
+    
+    ● **Résultat :** Les entiers de 2 (1 + 1) à 12 (6 + 6), soit 11 valeurs
+    $\\$
+
+**Question 2 : Les issues**
+
+    ● **Étape 1 :** $\displaystyle 6 \times 6 = 36$ issues équiprobables
+    $\\$
+
+    ● **Résultat :** Somme 7 : (1 ; 6), (2 ; 5), (3 ; 4), (4 ; 3), (5 ; 2), (6 ; 1), soit 6 issues
+    $\\$
+
+**Question 3 : La probabilité**
+
+    ● **Méthode :** Les 36 couples (d1 ; d2) sont équiprobables ; 6 d'entre eux donnent 7 (question 2).
+    $\\$
+    
+    ● **Résultat :** $\displaystyle \frac{6}{36} = \frac{1}{6}$
+    $\\$
+
+**Question 4 : La fréquence attendue**
+
+    ● **Méthode :** Sur un grand nombre de lancers, la fréquence se rapproche de la probabilité : on attend environ $\displaystyle 1\,000 \times \frac{1}{6}$ succès.
+    $\\$
+    
+    ● **Résultat :** Environ $\displaystyle \frac{1}{6} \approx 0{,}167$, soit environ 167 succès sur 1 000
+    $\\$
+
+**Question 5 : La somme 12**
+
+    ● **Étape 1 :** Une seule issue, (6 ; 6) : probabilité $\displaystyle \frac{1}{36}$, soit environ 28 succès sur 1 000
+    $\\$
+
+    ● **Résultat :** La somme 7 est la plus probable : c'est elle qui a le plus d'issues favorables
+    $\\$
+
+    ● ⚠️ **Erreur fréquente :** Croire que les 11 sommes sont équiprobables : on raisonne sur les 36 COUPLES (d1 ; d2), qui eux le sont.
+
+Solution:
+1. De 2 à 12
+$\\$
+2. 36 ; 6 issues
+$\\$
+3. $\displaystyle \frac{1}{6}$
+$\\$
+4. $\approx 0{,}167$
+$\\$
+5. $\approx 28$ ; la somme 7
+
+===

@@ -1,0 +1,3164 @@
+=== Découverte - Tester si un nombre est solution
+Id: 2600
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Pour savoir si un nombre est solution d'une équation, on remplace l'inconnue par ce nombre et on calcule **séparément** les deux membres.
+
+1. Le nombre $4$ est-il solution de $3x + 5 = 20$ ? Et le nombre $5$ ?
+2. Le nombre $4$ est-il solution de $2x - 1 = x + 3$ ? Et le nombre $2$ ?
+3. Le nombre $5$ est-il solution de $5(x - 2) = 3x$ ?
+4. Le nombre $-2$ est-il solution de $7 - 2x = x + 13$ ?
+5. Les nombres $3$ et $-3$ sont-ils solutions de $x^2 = 9$ ?
+6. Parmi les nombres $-1$ ; $0$ ; $2$ et $3$, lequel est solution de $6x - 4 = 4x + 2$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Tester $4$ puis $5$ dans $3x + 5 = 20$
+
+::: methode
+On remplace $x$ par le nombre dans le membre de gauche, on calcule, puis on compare avec le membre de droite, qui vaut $20$.
+:::
+
+::: etape Pour $x = 4$
+$$3 \times 4 + 5 = 12 + 5 = 17$$
+Or $17 \neq 20$ : l'égalité est fausse.
+:::
+
+::: etape Pour $x = 5$
+$$3 \times 5 + 5 = 15 + 5 = 20$$
+L'égalité est vraie.
+:::
+
+::: resultat
+$4$ n'est pas solution de l'équation ; $5$ est solution.
+:::
+
+## Question 2 : Tester $4$ puis $2$ dans $2x - 1 = x + 3$
+
+::: methode
+L'inconnue apparaît dans les **deux** membres : on calcule chacun séparément, avec la même valeur de $x$.
+:::
+
+::: etape Pour $x = 4$
+- Membre de gauche : $2 \times 4 - 1 = 7$.
+- Membre de droite : $4 + 3 = 7$.
+
+Les deux membres sont égaux.
+:::
+
+::: etape Pour $x = 2$
+- Membre de gauche : $2 \times 2 - 1 = 3$.
+- Membre de droite : $2 + 3 = 5$.
+
+Or $3 \neq 5$.
+:::
+
+::: resultat
+$4$ est solution de l'équation ; $2$ ne l'est pas.
+:::
+
+::: attention Erreur fréquente
+Calculer seulement le membre de gauche : quand $x$ apparaît des deux côtés, il faut calculer les **deux** membres.
+:::
+
+## Question 3 : Tester $5$ dans $5(x - 2) = 3x$
+
+::: etape Membre de gauche
+On calcule d'abord la parenthèse : $5 \times (5 - 2) = 5 \times 3 = 15$.
+:::
+
+::: etape Membre de droite
+$3 \times 5 = 15$.
+:::
+
+::: resultat
+Les deux membres valent $15$ : $5$ est solution de l'équation.
+:::
+
+## Question 4 : Tester $-2$ dans $7 - 2x = x + 13$
+
+::: methode
+On remplace $x$ par $(-2)$ **entre parenthèses**, pour ne pas se tromper de signe.
+:::
+
+::: etape Membre de gauche
+$$7 - 2 \times (-2) = 7 + 4 = 11$$
+:::
+
+::: etape Membre de droite
+$$(-2) + 13 = 11$$
+:::
+
+::: resultat
+Les deux membres valent $11$ : $-2$ est solution de l'équation.
+:::
+
+::: attention Erreur fréquente
+Calculer $7 - 2 \times 2 = 3$ en oubliant le signe : $-2 \times (-2) = +4$, donc le membre de gauche vaut $11$.
+:::
+
+## Question 5 : Tester $3$ et $-3$ dans $x^2 = 9$
+
+::: etape Pour $x = 3$
+$3^2 = 3 \times 3 = 9$ : l'égalité est vraie.
+:::
+
+::: etape Pour $x = -3$
+$(-3)^2 = (-3) \times (-3) = 9$ : l'égalité est vraie aussi.
+:::
+
+::: resultat
+$3$ et $-3$ sont tous les deux solutions : une équation peut avoir plusieurs solutions.
+:::
+
+## Question 6 : Trouver la solution de $6x - 4 = 4x + 2$
+
+::: methode
+On teste chaque nombre et on range les calculs dans un tableau.
+:::
+
+::: etape Tableau des tests
+| $x$ | $6x - 4$ | $4x + 2$ | Égalité ? |
+|---|---|---|---|
+| $-1$ | $-10$ | $-2$ | non |
+| $0$ | $-4$ | $2$ | non |
+| $2$ | $8$ | $10$ | non |
+| $3$ | $14$ | $14$ | oui |
+:::
+
+::: resultat
+Parmi ces quatre nombres, seul $3$ est solution de l'équation.
+:::
+
+::: retenir
+Tester un nombre permet de **vérifier** une solution. Mais tester quelques nombres ne suffit pas pour trouver **toutes** les solutions : pour cela, on résout l'équation.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $4$ : non ($17 \neq 20$) ; $5$ : oui.
+2. $4$ : oui ($7 = 7$) ; $2$ : non ($3 \neq 5$).
+3. Oui ($15 = 15$).
+4. Oui ($11 = 11$).
+5. Oui, $3$ et $-3$ sont solutions.
+6. $3$ ($14 = 14$).
+
+===
+
+=== Découverte - Résoudre une équation avec une balance
+Id: 2601
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Les deux balances ci-dessous sont en équilibre. Sur chaque balance, toutes les boîtes ont la même masse $x$, en grammes ; les masses orange sont indiquées en grammes.
+
+**Balance 1**
+
+[IMAGE_1]
+
+1. Traduire l'équilibre de la balance 1 par une équation.
+2. Quelle masse peut-on enlever sur chaque plateau pour qu'il ne reste que des boîtes à gauche ? Écrire la nouvelle équation.
+3. En déduire la masse d'une boîte, puis vérifier.
+
+**Balance 2**
+
+[IMAGE_2]
+
+4. Traduire l'équilibre de la balance 2 par une équation.
+5. On enlève deux boîtes sur chaque plateau, puis $1$ g sur chaque plateau. Écrire les deux équations obtenues.
+6. En déduire la masse d'une boîte de la balance 2, puis vérifier.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Traduire la balance 1
+
+::: methode
+Chaque plateau donne un membre de l'équation ; l'équilibre se traduit par le signe $=$.
+:::
+
+::: etape Lire chaque plateau
+- À gauche : $3$ boîtes et $4$ g, soit $3x + 4$.
+- À droite : $19$ g.
+:::
+
+::: resultat
+$$3x + 4 = 19$$
+:::
+
+## Question 2 : Enlever $4$ g de chaque côté
+
+::: methode
+On peut enlever la même masse sur les deux plateaux : l'équilibre est conservé. Cela revient à soustraire le même nombre aux deux membres.
+:::
+
+::: etape Soustraire $4$ aux deux membres
+$$
+\begin{aligned}
+3x + 4 - 4 &= 19 - 4 \\
+3x &= 15
+\end{aligned}
+$$
+:::
+
+::: resultat
+On enlève $4$ g sur chaque plateau : $3x = 15$.
+:::
+
+## Question 3 : La masse d'une boîte de la balance 1
+
+::: etape Garder le tiers de chaque plateau
+Trois boîtes pèsent $15$ g, donc une boîte pèse le tiers de $15$ g : on divise les deux membres par $3$.
+$$x = \frac{15}{3} = 5$$
+:::
+
+[IMAGE_3]
+
+::: etape Vérification
+$3 \times 5 + 4 = 15 + 4 = 19$ : la balance de départ est bien en équilibre.
+:::
+
+::: resultat
+Une boîte de la balance 1 pèse $5$ g.
+:::
+
+## Question 4 : Traduire la balance 2
+
+::: etape Lire chaque plateau
+- À gauche : $2$ boîtes et $7$ g, soit $2x + 7$.
+- À droite : $5$ boîtes et $1$ g, soit $5x + 1$.
+:::
+
+::: resultat
+$$2x + 7 = 5x + 1$$
+:::
+
+## Question 5 : Simplifier la balance 2
+
+::: methode
+Enlever deux boîtes sur chaque plateau, c'est soustraire $2x$ aux deux membres ; enlever $1$ g, c'est soustraire $1$.
+:::
+
+::: etape Enlever deux boîtes de chaque côté
+$$
+\begin{aligned}
+2x + 7 - 2x &= 5x + 1 - 2x \\
+7 &= 3x + 1
+\end{aligned}
+$$
+:::
+
+::: etape Enlever $1$ g de chaque côté
+$$
+\begin{aligned}
+7 - 1 &= 3x + 1 - 1 \\
+6 &= 3x
+\end{aligned}
+$$
+:::
+
+::: resultat
+On obtient $7 = 3x + 1$, puis $6 = 3x$.
+:::
+
+::: attention Erreur fréquente
+Enlever deux boîtes d'un seul côté : la balance pencherait. Chaque opération se fait sur les **deux** plateaux à la fois.
+:::
+
+## Question 6 : La masse d'une boîte de la balance 2
+
+::: etape Diviser les deux membres par $3$
+$$x = \frac{6}{3} = 2$$
+:::
+
+[IMAGE_4]
+
+::: etape Vérification
+- Plateau de gauche : $2 \times 2 + 7 = 11$ g.
+- Plateau de droite : $5 \times 2 + 1 = 11$ g.
+:::
+
+::: resultat
+Une boîte de la balance 2 pèse $2$ g.
+:::
+
+::: retenir
+Enlever la même chose sur les deux plateaux, c'est soustraire le même nombre (ou la même expression) aux deux membres ; partager chaque plateau en parts égales, c'est diviser les deux membres par le même nombre.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $3x + 4 = 19$
+2. On enlève $4$ g : $3x = 15$.
+3. $x = 5$ : une boîte pèse $5$ g.
+4. $2x + 7 = 5x + 1$
+5. $7 = 3x + 1$, puis $6 = 3x$.
+6. $x = 2$ : une boîte pèse $2$ g ($11$ g sur chaque plateau).
+
+===
+
+=== Découverte - Résoudre en une ou deux opérations
+Id: 2602
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Résoudre chaque équation en appliquant la même opération aux deux membres, puis vérifier la solution.
+
+1. $x + 7 = 12$
+2. $x - 4 = -9$
+3. $5x = -35$
+4. $\dfrac{x}{3} = 6$
+5. $-2x = 9$
+6. $4x + 3 = 23$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $x + 7 = 12$
+
+::: methode
+Pour « défaire » l'addition de $7$, on soustrait $7$ aux deux membres.
+:::
+
+::: etape Soustraire $7$ aux deux membres
+$$
+\begin{aligned}
+x + 7 - 7 &= 12 - 7 \\
+x &= 5
+\end{aligned}
+$$
+:::
+
+::: etape Vérification
+$5 + 7 = 12$.
+:::
+
+::: resultat
+La solution est $5$.
+:::
+
+## Question 2 : $x - 4 = -9$
+
+::: methode
+Pour « défaire » la soustraction de $4$, on ajoute $4$ aux deux membres.
+:::
+
+::: etape Ajouter $4$ aux deux membres
+$$
+\begin{aligned}
+x - 4 + 4 &= -9 + 4 \\
+x &= -5
+\end{aligned}
+$$
+:::
+
+::: etape Vérification
+$-5 - 4 = -9$.
+:::
+
+::: resultat
+La solution est $-5$.
+:::
+
+## Question 3 : $5x = -35$
+
+::: methode
+$5x$ signifie $5 \times x$ : on divise les deux membres par $5$.
+:::
+
+::: etape Diviser les deux membres par $5$
+$$
+\begin{aligned}
+\frac{5x}{5} &= \frac{-35}{5} \\
+x &= -7
+\end{aligned}
+$$
+:::
+
+::: etape Vérification
+$5 \times (-7) = -35$.
+:::
+
+::: resultat
+La solution est $-7$.
+:::
+
+## Question 4 : $\dfrac{x}{3} = 6$
+
+::: methode
+$\dfrac{x}{3}$ signifie $x$ divisé par $3$ : on multiplie les deux membres par $3$.
+:::
+
+::: etape Multiplier les deux membres par $3$
+$$
+\begin{aligned}
+\frac{x}{3} \times 3 &= 6 \times 3 \\
+x &= 18
+\end{aligned}
+$$
+:::
+
+::: etape Vérification
+$18 \div 3 = 6$.
+:::
+
+::: resultat
+La solution est $18$.
+:::
+
+## Question 5 : $-2x = 9$
+
+::: methode
+Le coefficient de $x$ est $-2$, **signe compris** : on divise les deux membres par $-2$.
+:::
+
+::: etape Diviser les deux membres par $-2$
+$$
+\begin{aligned}
+\frac{-2x}{-2} &= \frac{9}{-2} \\
+x &= -4{,}5
+\end{aligned}
+$$
+:::
+
+::: etape Vérification
+$-2 \times (-4{,}5) = 9$.
+:::
+
+::: resultat
+La solution est $-4{,}5$.
+:::
+
+::: attention Erreur fréquente
+Diviser par $2$ et trouver $4{,}5$. La vérification le montre : $-2 \times 4{,}5 = -9$, et non $9$.
+:::
+
+## Question 6 : $4x + 3 = 23$
+
+::: methode
+Il y a deux opérations à défaire : d'abord l'addition de $3$, ensuite la multiplication par $4$.
+:::
+
+::: etape Soustraire $3$ aux deux membres
+$$
+\begin{aligned}
+4x + 3 - 3 &= 23 - 3 \\
+4x &= 20
+\end{aligned}
+$$
+:::
+
+::: etape Diviser les deux membres par $4$
+$$x = \frac{20}{4} = 5$$
+:::
+
+::: etape Vérification
+$4 \times 5 + 3 = 23$.
+:::
+
+::: resultat
+La solution est $5$.
+:::
+
+::: retenir
+On défait les opérations dans l'ordre inverse du calcul : on passe de $x$ à $4x$ puis à $4x + 3$ ; pour revenir à $x$, on soustrait d'abord $3$, puis on divise par $4$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $x = 5$
+2. $x = -5$
+3. $x = -7$
+4. $x = 18$
+5. $x = -4{,}5$
+6. $x = 5$
+
+===
+
+=== Découverte - L'inconnue dans les deux membres
+Id: 2603
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Résoudre chaque équation. On commence par regrouper les termes en $x$ dans un seul membre. Vérifier les solutions des questions 1 à 4.
+
+1. $5x - 3 = 2x + 9$
+2. $7x + 2 = 3x - 10$
+3. $2x + 5 = 6x - 7$
+4. $3 - x = 2x + 12$
+5. $4x + 1 = 4x + 3$
+6. $2(x + 1) = 2x + 2$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $5x - 3 = 2x + 9$
+
+::: methode
+On soustrait $2x$ aux deux membres pour n'avoir des $x$ qu'à gauche, puis on isole $x$.
+:::
+
+::: etape Regrouper les termes en $x$
+$$
+\begin{aligned}
+5x - 3 - 2x &= 2x + 9 - 2x \\
+3x - 3 &= 9
+\end{aligned}
+$$
+:::
+
+::: etape Isoler $x$
+On ajoute $3$ aux deux membres, puis on divise par $3$.
+$$
+\begin{aligned}
+3x &= 12 \\
+x &= \frac{12}{3} = 4
+\end{aligned}
+$$
+:::
+
+::: etape Vérification
+$5 \times 4 - 3 = 17$ et $2 \times 4 + 9 = 17$.
+:::
+
+::: resultat
+La solution est $4$.
+:::
+
+## Question 2 : $7x + 2 = 3x - 10$
+
+::: etape Soustraire $3x$ aux deux membres
+$$4x + 2 = -10$$
+:::
+
+::: etape Soustraire $2$, puis diviser par $4$
+$$
+\begin{aligned}
+4x &= -12 \\
+x &= \frac{-12}{4} = -3
+\end{aligned}
+$$
+:::
+
+::: etape Vérification
+$7 \times (-3) + 2 = -19$ et $3 \times (-3) - 10 = -19$.
+:::
+
+::: resultat
+La solution est $-3$.
+:::
+
+## Question 3 : $2x + 5 = 6x - 7$
+
+::: methode
+On regroupe les $x$ du côté où leur coefficient est le plus grand ($6x$) : on évite ainsi un coefficient négatif.
+:::
+
+::: etape Soustraire $2x$ aux deux membres
+$$5 = 4x - 7$$
+:::
+
+::: etape Ajouter $7$, puis diviser par $4$
+$$
+\begin{aligned}
+12 &= 4x \\
+x &= \frac{12}{4} = 3
+\end{aligned}
+$$
+:::
+
+::: etape Vérification
+$2 \times 3 + 5 = 11$ et $6 \times 3 - 7 = 11$.
+:::
+
+::: resultat
+La solution est $3$.
+:::
+
+## Question 4 : $3 - x = 2x + 12$
+
+::: methode
+Dans $3 - x$, le coefficient de $x$ est $-1$ : on ajoute $x$ aux deux membres pour le faire disparaître à gauche.
+:::
+
+::: etape Ajouter $x$ aux deux membres
+$$3 = 3x + 12$$
+:::
+
+::: etape Soustraire $12$, puis diviser par $3$
+$$
+\begin{aligned}
+-9 &= 3x \\
+x &= \frac{-9}{3} = -3
+\end{aligned}
+$$
+:::
+
+::: etape Vérification
+$3 - (-3) = 6$ et $2 \times (-3) + 12 = 6$.
+:::
+
+::: resultat
+La solution est $-3$.
+:::
+
+## Question 5 : $4x + 1 = 4x + 3$
+
+::: etape Soustraire $4x$ aux deux membres
+$$1 = 3$$
+Cette égalité est fausse, et elle ne dépend plus de $x$.
+:::
+
+::: etape Interpréter
+Quel que soit $x$, le nombre $4x + 1$ est toujours inférieur de $2$ au nombre $4x + 3$ : les deux membres ne sont jamais égaux.
+:::
+
+::: resultat
+L'équation n'a aucune solution.
+:::
+
+::: attention Erreur fréquente
+Écrire « $x = 0$ » parce que les $x$ ont disparu. Quand on aboutit à une égalité fausse, il n'y a **aucune** solution ; d'ailleurs, $4 \times 0 + 1 = 1$ et $4 \times 0 + 3 = 3$.
+:::
+
+## Question 6 : $2(x + 1) = 2x + 2$
+
+::: etape Développer le membre de gauche
+$$2x + 2 = 2x + 2$$
+:::
+
+::: etape Soustraire $2x$ aux deux membres
+$$2 = 2$$
+Cette égalité est toujours vraie.
+:::
+
+::: resultat
+Tous les nombres sont solutions de l'équation.
+:::
+
+::: retenir
+Une équation du premier degré peut avoir une seule solution, aucune solution, ou une infinité de solutions (tous les nombres).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $x = 4$
+2. $x = -3$
+3. $x = 3$
+4. $x = -3$
+5. Aucune solution ($1 = 3$ est faux).
+6. Tous les nombres sont solutions ($2 = 2$ est toujours vrai).
+
+===
+
+=== Découverte - Développer avant de résoudre
+Id: 2604
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Résoudre chaque équation en commençant par développer les parenthèses.
+
+1. $3(x + 2) = 21$
+2. $2(x - 4) = x + 1$
+3. $5(2x - 1) = 3(x + 4)$
+4. $-(x - 3) = 2x$
+5. $4(x + 1) - 2(x - 3) = 20$
+6. Vérifier la solution trouvée à la question 3.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $3(x + 2) = 21$
+
+::: methode
+On développe avec la distributivité, $k(a + b) = ka + kb$, puis on résout comme d'habitude.
+:::
+
+::: etape Développer
+$$3x + 6 = 21$$
+:::
+
+::: etape Résoudre
+$$
+\begin{aligned}
+3x &= 15 \\
+x &= 5
+\end{aligned}
+$$
+:::
+
+::: etape Vérification
+$3 \times (5 + 2) = 3 \times 7 = 21$.
+:::
+
+::: resultat
+La solution est $5$.
+:::
+
+## Question 2 : $2(x - 4) = x + 1$
+
+::: etape Développer
+$$2x - 8 = x + 1$$
+:::
+
+::: etape Regrouper et isoler
+On soustrait $x$, puis on ajoute $8$ aux deux membres.
+$$
+\begin{aligned}
+x - 8 &= 1 \\
+x &= 9
+\end{aligned}
+$$
+:::
+
+::: etape Vérification
+$2 \times (9 - 4) = 10$ et $9 + 1 = 10$.
+:::
+
+::: resultat
+La solution est $9$.
+:::
+
+## Question 3 : $5(2x - 1) = 3(x + 4)$
+
+::: etape Développer les deux membres
+$$10x - 5 = 3x + 12$$
+:::
+
+::: etape Regrouper et isoler
+$$
+\begin{aligned}
+7x - 5 &= 12 \\
+7x &= 17 \\
+x &= \frac{17}{7}
+\end{aligned}
+$$
+:::
+
+::: resultat
+La solution est $\dfrac{17}{7}$.
+:::
+
+::: retenir
+Une solution peut être une fraction : on donne la **valeur exacte** $\dfrac{17}{7}$, et non une valeur arrondie comme $2{,}43$.
+:::
+
+## Question 4 : $-(x - 3) = 2x$
+
+::: methode
+Un signe « $-$ » devant une parenthèse change le signe de **chaque** terme : $-(x - 3) = -x + 3$.
+:::
+
+::: etape Développer
+$$-x + 3 = 2x$$
+:::
+
+::: etape Ajouter $x$, puis diviser par $3$
+$$
+\begin{aligned}
+3 &= 3x \\
+x &= 1
+\end{aligned}
+$$
+:::
+
+::: etape Vérification
+$-(1 - 3) = -(-2) = 2$ et $2 \times 1 = 2$.
+:::
+
+::: resultat
+La solution est $1$.
+:::
+
+::: attention Erreur fréquente
+Développer $-(x - 3)$ en $-x - 3$ : le « $-$ » change aussi le signe de $-3$, qui devient $+3$.
+:::
+
+## Question 5 : $4(x + 1) - 2(x - 3) = 20$
+
+::: etape Développer chaque produit
+$4(x + 1) = 4x + 4$ et $-2(x - 3) = -2x + 6$, car $-2 \times (-3) = +6$.
+$$4x + 4 - 2x + 6 = 20$$
+:::
+
+::: etape Réduire, puis résoudre
+$$
+\begin{aligned}
+2x + 10 &= 20 \\
+2x &= 10 \\
+x &= 5
+\end{aligned}
+$$
+:::
+
+::: etape Vérification
+$4 \times 6 - 2 \times 2 = 24 - 4 = 20$.
+:::
+
+::: resultat
+La solution est $5$.
+:::
+
+::: attention Erreur fréquente
+Écrire $-2(x - 3) = -2x - 6$ : le produit de deux nombres négatifs est positif.
+:::
+
+## Question 6 : Vérifier la solution de la question 3
+
+::: methode
+On remplace $x$ par $\dfrac{17}{7}$ dans chaque membre de $5(2x - 1) = 3(x + 4)$, en écrivant les entiers avec le dénominateur $7$.
+:::
+
+::: etape Membre de gauche
+$$
+\begin{aligned}
+5\left(2 \times \frac{17}{7} - 1\right) &= 5\left(\frac{34}{7} - \frac{7}{7}\right) \\
+&= 5 \times \frac{27}{7} = \frac{135}{7}
+\end{aligned}
+$$
+:::
+
+::: etape Membre de droite
+$$
+\begin{aligned}
+3\left(\frac{17}{7} + 4\right) &= 3\left(\frac{17}{7} + \frac{28}{7}\right) \\
+&= 3 \times \frac{45}{7} = \frac{135}{7}
+\end{aligned}
+$$
+:::
+
+::: resultat
+Les deux membres valent $\dfrac{135}{7}$ : la solution $\dfrac{17}{7}$ est juste.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $x = 5$
+2. $x = 9$
+3. $x = \dfrac{17}{7}$
+4. $x = 1$
+5. $x = 5$
+6. Les deux membres valent $\dfrac{135}{7}$.
+
+===
+
+=== Découverte - Équations avec des décimaux ou des fractions
+Id: 2605
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Résoudre chaque équation et vérifier la solution.
+
+1. $\dfrac{x}{2} + 3 = 7$
+2. $0{,}5x - 1{,}2 = 2{,}3$
+3. $\dfrac{2}{3}x = 10$
+4. $\dfrac{x}{4} = \dfrac{x}{6} + 1$
+5. $1{,}2x + 0{,}8 = 0{,}4x + 4$
+6. $\dfrac{x + 1}{3} = 5$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $\dfrac{x}{2} + 3 = 7$
+
+::: etape Soustraire $3$ aux deux membres
+$$\frac{x}{2} = 4$$
+:::
+
+::: etape Multiplier les deux membres par $2$
+$$x = 4 \times 2 = 8$$
+:::
+
+::: etape Vérification
+$\dfrac{8}{2} + 3 = 4 + 3 = 7$.
+:::
+
+::: resultat
+La solution est $8$.
+:::
+
+## Question 2 : $0{,}5x - 1{,}2 = 2{,}3$
+
+::: etape Ajouter $1{,}2$ aux deux membres
+$$0{,}5x = 3{,}5$$
+:::
+
+::: etape Diviser les deux membres par $0{,}5$
+$$x = \frac{3{,}5}{0{,}5} = 7$$
+:::
+
+::: etape Vérification
+$0{,}5 \times 7 - 1{,}2 = 3{,}5 - 1{,}2 = 2{,}3$.
+:::
+
+::: resultat
+La solution est $7$.
+:::
+
+## Question 3 : $\dfrac{2}{3}x = 10$
+
+::: methode
+$\dfrac{2}{3}x$ signifie « $x$ multiplié par $2$, puis divisé par $3$ » : on multiplie par $3$, puis on divise par $2$.
+:::
+
+::: etape Multiplier les deux membres par $3$
+$$2x = 30$$
+:::
+
+::: etape Diviser les deux membres par $2$
+$$x = 15$$
+:::
+
+::: etape Vérification
+$\dfrac{2}{3} \times 15 = \dfrac{30}{3} = 10$.
+:::
+
+::: resultat
+La solution est $15$.
+:::
+
+## Question 4 : $\dfrac{x}{4} = \dfrac{x}{6} + 1$
+
+::: methode
+On multiplie les deux membres par $12$, multiple commun de $4$ et de $6$, pour supprimer les dénominateurs.
+:::
+
+::: etape Multiplier les deux membres par $12$
+$12 \times \dfrac{x}{4} = 3x$ et $12 \times \left(\dfrac{x}{6} + 1\right) = 2x + 12$.
+$$3x = 2x + 12$$
+:::
+
+::: etape Soustraire $2x$ aux deux membres
+$$x = 12$$
+:::
+
+::: etape Vérification
+$\dfrac{12}{4} = 3$ et $\dfrac{12}{6} + 1 = 2 + 1 = 3$.
+:::
+
+::: resultat
+La solution est $12$.
+:::
+
+::: attention Erreur fréquente
+Multiplier seulement $\dfrac{x}{6}$ par $12$ et oublier le $1$ : c'est **tout** le membre qui est multiplié, donc $12 \times 1 = 12$.
+:::
+
+## Question 5 : $1{,}2x + 0{,}8 = 0{,}4x + 4$
+
+::: methode
+On multiplie les deux membres par $10$ pour travailler avec des nombres entiers.
+:::
+
+::: etape Multiplier par $10$
+$$12x + 8 = 4x + 40$$
+:::
+
+::: etape Regrouper et isoler
+$$
+\begin{aligned}
+8x + 8 &= 40 \\
+8x &= 32 \\
+x &= 4
+\end{aligned}
+$$
+:::
+
+::: etape Vérification
+$1{,}2 \times 4 + 0{,}8 = 5{,}6$ et $0{,}4 \times 4 + 4 = 5{,}6$.
+:::
+
+::: resultat
+La solution est $4$.
+:::
+
+## Question 6 : $\dfrac{x + 1}{3} = 5$
+
+::: etape Multiplier les deux membres par $3$
+$$x + 1 = 15$$
+:::
+
+::: etape Soustraire $1$ aux deux membres
+$$x = 14$$
+:::
+
+::: etape Vérification
+$\dfrac{14 + 1}{3} = \dfrac{15}{3} = 5$.
+:::
+
+::: resultat
+La solution est $14$.
+:::
+
+::: retenir
+Une barre de fraction joue le rôle de parenthèses : $\dfrac{x + 1}{3}$ signifie $(x + 1) \div 3$. Pour supprimer un dénominateur, on multiplie les **deux membres entiers** par ce dénominateur.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $x = 8$
+2. $x = 7$
+3. $x = 15$
+4. $x = 12$
+5. $x = 4$
+6. $x = 14$
+
+===
+
+=== Découverte - Traduire une énigme par une équation
+Id: 2606
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Pour chaque énigme, choisir l'inconnue, écrire une équation, la résoudre, puis vérifier et répondre par une phrase.
+
+1. Je pense à un nombre. Je le multiplie par $4$, puis j'ajoute $7$ : j'obtiens $39$.
+2. Le triple d'un nombre, diminué de $5$, est égal au double de ce nombre augmenté de $9$.
+3. La somme de trois nombres entiers consécutifs est égale à $87$.
+4. Un nombre ajouté à son double donne $54$.
+5. La moitié d'un nombre, augmentée de $6$, vaut $17$.
+6. Si j'ajoute $10$ à un nombre, j'obtiens le triple de ce nombre.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Multiplier par $4$, puis ajouter $7$
+
+::: methode
+On appelle $x$ le nombre cherché et on traduit chaque opération dans l'ordre.
+:::
+
+::: etape Équation
+$x$ multiplié par $4$ donne $4x$, puis on ajoute $7$ :
+$$4x + 7 = 39$$
+:::
+
+::: etape Résolution
+$$
+\begin{aligned}
+4x &= 32 \\
+x &= 8
+\end{aligned}
+$$
+:::
+
+::: etape Vérification
+$8 \times 4 + 7 = 32 + 7 = 39$.
+:::
+
+::: resultat
+Le nombre pensé est $8$.
+:::
+
+## Question 2 : Triple et double
+
+::: etape Équation
+« Le triple d'un nombre, diminué de $5$ » donne $3x - 5$ ; « le double augmenté de $9$ » donne $2x + 9$.
+$$3x - 5 = 2x + 9$$
+:::
+
+::: etape Résolution
+On soustrait $2x$, puis on ajoute $5$ aux deux membres.
+$$
+\begin{aligned}
+x - 5 &= 9 \\
+x &= 14
+\end{aligned}
+$$
+:::
+
+::: etape Vérification
+$3 \times 14 - 5 = 37$ et $2 \times 14 + 9 = 37$.
+:::
+
+::: resultat
+Le nombre cherché est $14$.
+:::
+
+## Question 3 : Trois entiers consécutifs
+
+::: methode
+On appelle $n$ le plus petit des trois entiers : les deux suivants sont $n + 1$ et $n + 2$. Une seule inconnue suffit.
+:::
+
+::: etape Équation
+$$n + (n + 1) + (n + 2) = 87$$
+:::
+
+::: etape Résolution
+$$
+\begin{aligned}
+3n + 3 &= 87 \\
+3n &= 84 \\
+n &= 28
+\end{aligned}
+$$
+:::
+
+::: etape Vérification
+$28 + 29 + 30 = 87$.
+:::
+
+::: resultat
+Les trois entiers consécutifs sont $28$, $29$ et $30$.
+:::
+
+::: attention Erreur fréquente
+Choisir trois inconnues différentes $x$, $y$ et $z$ : on ne sait pas résoudre. On exprime les trois nombres avec la même inconnue $n$.
+:::
+
+## Question 4 : Un nombre et son double
+
+::: etape Équation et résolution
+$$
+\begin{aligned}
+x + 2x &= 54 \\
+3x &= 54 \\
+x &= 18
+\end{aligned}
+$$
+:::
+
+::: etape Vérification
+$18 + 2 \times 18 = 18 + 36 = 54$.
+:::
+
+::: resultat
+Le nombre cherché est $18$.
+:::
+
+## Question 5 : La moitié augmentée de $6$
+
+::: etape Équation
+$$\frac{x}{2} + 6 = 17$$
+:::
+
+::: etape Résolution
+On soustrait $6$, puis on multiplie par $2$.
+$$
+\begin{aligned}
+\frac{x}{2} &= 11 \\
+x &= 22
+\end{aligned}
+$$
+:::
+
+::: etape Vérification
+$\dfrac{22}{2} + 6 = 11 + 6 = 17$.
+:::
+
+::: resultat
+Le nombre cherché est $22$.
+:::
+
+## Question 6 : Ajouter $10$ donne le triple
+
+::: etape Équation
+$$x + 10 = 3x$$
+:::
+
+::: etape Résolution
+On soustrait $x$ aux deux membres, puis on divise par $2$.
+$$
+\begin{aligned}
+10 &= 2x \\
+x &= 5
+\end{aligned}
+$$
+:::
+
+::: etape Vérification
+$5 + 10 = 15$ et $3 \times 5 = 15$.
+:::
+
+::: resultat
+Le nombre cherché est $5$.
+:::
+
+::: retenir
+Les mots se traduisent : « double » donne $2x$, « triple » $3x$, « moitié » $\dfrac{x}{2}$, « augmenté de » $+$, « diminué de » $-$, « est égal à » ou « donne » $=$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $4x + 7 = 39$ : le nombre est $8$.
+2. $3x - 5 = 2x + 9$ : le nombre est $14$.
+3. $n + (n + 1) + (n + 2) = 87$ : $28$, $29$ et $30$.
+4. $x + 2x = 54$ : le nombre est $18$.
+5. $\dfrac{x}{2} + 6 = 17$ : le nombre est $22$.
+6. $x + 10 = 3x$ : le nombre est $5$.
+
+===
+
+=== Entraînement - Un problème d'âges
+Id: 2607
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Aujourd'hui, Léa a $12$ ans et son père a $40$ ans.
+
+[IMAGE_1]
+
+1. Quel âge auront-ils dans $5$ ans ? Le père aura-t-il alors le double de l'âge de Léa ?
+2. On note $x$ un nombre d'années. Exprimer, en fonction de $x$, l'âge de Léa et celui de son père dans $x$ années.
+3. Écrire une équation traduisant la phrase : « dans $x$ années, l'âge du père sera le double de celui de Léa ».
+4. Résoudre cette équation.
+5. Vérifier, puis répondre par une phrase.
+6. Le père a-t-il eu, dans le passé, cinq fois l'âge de Léa ? Si oui, il y a combien d'années ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Dans $5$ ans
+
+::: etape Les âges dans $5$ ans
+Léa aura $12 + 5 = 17$ ans et son père $40 + 5 = 45$ ans.
+:::
+
+::: etape Comparer avec le double
+Le double de l'âge de Léa serait $2 \times 17 = 34$ ans, or $45 \neq 34$.
+:::
+
+::: resultat
+Dans $5$ ans, Léa aura $17$ ans et son père $45$ ans : ce n'est pas le double.
+:::
+
+## Question 2 : Les âges dans $x$ années
+
+::: methode
+Le temps passe pour tout le monde : chacun a $x$ années de plus.
+:::
+
+::: resultat
+Dans $x$ années, Léa aura $12 + x$ ans et son père $40 + x$ ans.
+:::
+
+::: attention Erreur fréquente
+Ajouter $x$ seulement à l'âge de Léa : son père vieillit lui aussi de $x$ années.
+:::
+
+## Question 3 : L'équation
+
+::: etape Traduire « le double de l'âge de Léa »
+L'âge de Léa est $12 + x$ ; son double est $2 \times (12 + x)$, avec des parenthèses.
+:::
+
+::: resultat
+$$40 + x = 2(12 + x)$$
+:::
+
+## Question 4 : La résolution
+
+::: etape Développer le membre de droite
+$$40 + x = 24 + 2x$$
+:::
+
+::: etape Regrouper et isoler
+On soustrait $x$, puis $24$, aux deux membres.
+$$
+\begin{aligned}
+40 &= 24 + x \\
+16 &= x
+\end{aligned}
+$$
+:::
+
+::: resultat
+La solution de l'équation est $16$.
+:::
+
+## Question 5 : Vérification et conclusion
+
+::: etape Les âges dans $16$ ans
+Léa aura $12 + 16 = 28$ ans et son père $40 + 16 = 56$ ans.
+:::
+
+::: etape Vérification
+$2 \times 28 = 56$ : l'âge du père sera bien le double de celui de Léa.
+:::
+
+::: resultat
+Dans $16$ ans, Léa aura $28$ ans et son père $56$ ans, soit le double.
+:::
+
+## Question 6 : Cinq fois l'âge de Léa
+
+::: etape Équation
+$$40 + x = 5(12 + x)$$
+:::
+
+::: etape Résolution
+$$
+\begin{aligned}
+40 + x &= 60 + 5x \\
+40 - 60 &= 5x - x \\
+-20 &= 4x \\
+x &= -5
+\end{aligned}
+$$
+:::
+
+::: etape Interpréter la solution négative
+$x = -5$ désigne le passé : c'était il y a $5$ ans. Léa avait alors $12 - 5 = 7$ ans et son père $40 - 5 = 35$ ans, et $35 = 5 \times 7$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+Oui : il y a $5$ ans, le père ($35$ ans) avait cinq fois l'âge de Léa ($7$ ans).
+:::
+
+::: retenir
+Une solution négative a souvent un sens dans un problème : ici, elle désigne le passé.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $17$ ans et $45$ ans ; non, car $2 \times 17 = 34$.
+2. Léa : $12 + x$ ; son père : $40 + x$.
+3. $40 + x = 2(12 + x)$
+4. $x = 16$
+5. Dans $16$ ans : $28$ ans et $56$ ans.
+6. Oui, il y a $5$ ans ($7$ ans et $35$ ans).
+
+===
+
+=== Entraînement - Périmètres d'un triangle et d'un rectangle
+Id: 2608
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Les longueurs sont en centimètres.
+
+- Le triangle $ABC$ est isocèle en $A$ : $AB = AC = x$ et $BC = x + 3$. Son périmètre est $36$ cm.
+- Le rectangle $EFGH$ a pour largeur $\ell$, et sa longueur est le triple de sa largeur. Son périmètre est $56$ cm.
+
+[IMAGE_1]
+
+1. Exprimer le périmètre du triangle en fonction de $x$, sous forme réduite.
+2. Écrire et résoudre une équation pour trouver $x$.
+3. Donner les longueurs des trois côtés du triangle et vérifier.
+4. Exprimer la longueur du rectangle, puis son périmètre, en fonction de $\ell$.
+5. Trouver la largeur et la longueur du rectangle.
+6. Calculer l'aire du rectangle.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Le périmètre du triangle
+
+::: methode
+Le périmètre est la somme des longueurs des trois côtés ; on réduit ensuite l'expression.
+:::
+
+::: etape Additionner les côtés
+$$AB + AC + BC = x + x + (x + 3) = 3x + 3$$
+:::
+
+::: resultat
+Le périmètre du triangle est $3x + 3$.
+:::
+
+## Question 2 : L'équation du triangle
+
+::: etape Écrire l'équation
+Le périmètre vaut $36$ cm :
+$$3x + 3 = 36$$
+:::
+
+::: etape Résoudre
+$$
+\begin{aligned}
+3x &= 33 \\
+x &= 11
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$x = 11$$
+:::
+
+## Question 3 : Les côtés du triangle
+
+::: etape Calculer chaque côté
+$AB = AC = 11$ cm et $BC = 11 + 3 = 14$ cm.
+:::
+
+[IMAGE_2]
+
+::: etape Vérification
+$11 + 11 + 14 = 36$ : on retrouve bien le périmètre.
+:::
+
+::: resultat
+Les côtés du triangle mesurent $11$ cm, $11$ cm et $14$ cm.
+:::
+
+::: attention Erreur fréquente
+Répondre « $x = 11$ » sans revenir à la question : $x$ n'est la longueur que de deux côtés ; le troisième mesure $14$ cm.
+:::
+
+## Question 4 : Le périmètre du rectangle
+
+::: etape La longueur
+La longueur est le triple de la largeur : elle mesure $3\ell$.
+:::
+
+::: etape Le périmètre
+$$2 \times (\ell + 3\ell) = 2 \times 4\ell = 8\ell$$
+:::
+
+::: resultat
+La longueur est $3\ell$ et le périmètre est $8\ell$.
+:::
+
+::: attention Erreur fréquente
+Oublier le facteur $2$ : $\ell + 3\ell$ n'est que la moitié du tour du rectangle.
+:::
+
+## Question 5 : Les dimensions du rectangle
+
+::: etape Équation et résolution
+$$
+\begin{aligned}
+8\ell &= 56 \\
+\ell &= 7
+\end{aligned}
+$$
+:::
+
+::: etape La longueur
+$3 \times 7 = 21$ cm.
+:::
+
+::: etape Vérification
+$2 \times (7 + 21) = 2 \times 28 = 56$.
+:::
+
+::: resultat
+Le rectangle mesure $7$ cm de large et $21$ cm de long.
+:::
+
+## Question 6 : L'aire du rectangle
+
+::: etape Calcul
+$$7 \times 21 = 147$$
+:::
+
+::: resultat
+L'aire du rectangle est $147$ cm².
+:::
+
+::: retenir
+Une fois l'inconnue trouvée, on revient toujours à la question posée : ici, les longueurs des côtés, puis l'aire.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $3x + 3$
+2. $3x + 3 = 36$, donc $x = 11$.
+3. $11$ cm, $11$ cm et $14$ cm.
+4. Longueur $3\ell$ ; périmètre $8\ell$.
+5. $\ell = 7$ : $7$ cm sur $21$ cm.
+6. $147$ cm²
+
+===
+
+=== Entraînement - Deux programmes de calcul
+Id: 2609
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On considère les deux programmes de calcul suivants.
+
+**Programme A**
+- Choisir un nombre.
+- Lui ajouter $3$.
+- Multiplier le résultat par $4$.
+
+**Programme B**
+- Choisir un nombre.
+- Le multiplier par $6$.
+- Soustraire $2$ au résultat.
+
+1. Appliquer chaque programme au nombre $2$.
+2. Appliquer chaque programme au nombre $-1$.
+3. On choisit un nombre $x$. Montrer que le programme A donne $4x + 12$, puis exprimer le résultat du programme B en fonction de $x$.
+4. Quel nombre faut-il choisir pour que les deux programmes donnent le même résultat ? Vérifier.
+5. Quel nombre faut-il choisir pour obtenir $30$ avec le programme A ?
+6. Le programme C est : « choisir un nombre, le multiplier par $4$, puis ajouter $5$ ». Les programmes A et C peuvent-ils donner le même résultat ? Justifier.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Avec le nombre $2$
+
+::: etape Programme A
+$2 + 3 = 5$, puis $5 \times 4 = 20$.
+:::
+
+::: etape Programme B
+$2 \times 6 = 12$, puis $12 - 2 = 10$.
+:::
+
+::: resultat
+Avec $2$, le programme A donne $20$ et le programme B donne $10$.
+:::
+
+## Question 2 : Avec le nombre $-1$
+
+::: etape Programme A
+$-1 + 3 = 2$, puis $2 \times 4 = 8$.
+:::
+
+::: etape Programme B
+$-1 \times 6 = -6$, puis $-6 - 2 = -8$.
+:::
+
+::: resultat
+Avec $-1$, le programme A donne $8$ et le programme B donne $-8$.
+:::
+
+## Question 3 : Les expressions
+
+::: methode
+On applique les étapes à $x$ dans l'ordre ; le résultat d'une étape entière se met entre parenthèses avant d'être multiplié.
+:::
+
+::: etape Programme A
+$x$ devient $x + 3$, puis $(x + 3) \times 4 = 4(x + 3) = 4x + 12$.
+:::
+
+::: etape Programme B
+$x$ devient $6x$, puis $6x - 2$.
+:::
+
+::: resultat
+Le programme A donne $4x + 12$ et le programme B donne $6x - 2$.
+:::
+
+::: attention Erreur fréquente
+Écrire $x + 3 \times 4$ : sans parenthèses, seul le $3$ serait multiplié par $4$. C'est tout le résultat $x + 3$ qui est multiplié.
+:::
+
+## Question 4 : Le même résultat
+
+::: etape Équation
+$$4x + 12 = 6x - 2$$
+:::
+
+::: etape Résolution
+On soustrait $4x$, puis on ajoute $2$, puis on divise par $2$.
+$$
+\begin{aligned}
+12 &= 2x - 2 \\
+14 &= 2x \\
+x &= 7
+\end{aligned}
+$$
+:::
+
+::: etape Vérification
+- Programme A : $7 + 3 = 10$, puis $10 \times 4 = 40$.
+- Programme B : $7 \times 6 = 42$, puis $42 - 2 = 40$.
+:::
+
+::: resultat
+Il faut choisir $7$ : les deux programmes donnent alors $40$.
+:::
+
+## Question 5 : Obtenir $30$ avec le programme A
+
+::: etape Équation et résolution
+$$
+\begin{aligned}
+4x + 12 &= 30 \\
+4x &= 18 \\
+x &= 4{,}5
+\end{aligned}
+$$
+:::
+
+::: etape Vérification
+$4{,}5 + 3 = 7{,}5$, puis $7{,}5 \times 4 = 30$.
+:::
+
+::: resultat
+Il faut choisir $4{,}5$.
+:::
+
+## Question 6 : Les programmes A et C
+
+::: etape Équation
+Le programme C donne $4x + 5$ :
+$$4x + 12 = 4x + 5$$
+:::
+
+::: etape Soustraire $4x$ aux deux membres
+$$12 = 5$$
+Cette égalité est fausse : l'équation n'a aucune solution.
+:::
+
+::: resultat
+Non : quel que soit le nombre choisi, le programme A donne toujours $7$ de plus que le programme C.
+:::
+
+::: retenir
+Pour savoir si deux programmes peuvent donner le même résultat, on écrit l'égalité de leurs expressions et on résout l'équation obtenue.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. A : $20$ ; B : $10$.
+2. A : $8$ ; B : $-8$.
+3. A : $4(x + 3) = 4x + 12$ ; B : $6x - 2$.
+4. $4x + 12 = 6x - 2$ : $x = 7$ (résultat $40$).
+5. $4x + 12 = 30$ : $x = 4{,}5$.
+6. Non : $4x + 12 = 4x + 5$ conduit à $12 = 5$, impossible.
+
+===
+
+=== Entraînement - Partager une somme d'argent
+Id: 2610
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Quatre amis, Alice, Bastien, Chloé et David, se partagent un gain de $380$ € :
+- Bastien reçoit $30$ € de plus qu'Alice ;
+- Chloé reçoit le double de la part d'Alice ;
+- David reçoit $10$ € de moins que Chloé.
+
+1. On note $x$ la part d'Alice, en euros. Exprimer les parts de Bastien, de Chloé et de David en fonction de $x$.
+2. Montrer que la somme des quatre parts est égale à $6x + 20$.
+3. Écrire une équation traduisant le partage, puis la résoudre.
+4. Donner la part de chacun et vérifier.
+5. Avec les mêmes règles, quelle somme faudrait-il partager pour qu'Alice reçoive $100$ € ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les parts en fonction de $x$
+
+::: methode
+On exprime chaque part à partir de celle d'Alice, en suivant l'énoncé ; un schéma en barres aide à voir les parts.
+:::
+
+::: etape Bastien et Chloé
+Bastien : $x + 30$. Chloé : $2x$.
+:::
+
+::: etape David
+David reçoit $10$ € de moins que **Chloé** : $2x - 10$.
+:::
+
+[IMAGE_1]
+
+::: resultat
+Bastien reçoit $x + 30$, Chloé $2x$ et David $2x - 10$.
+:::
+
+## Question 2 : La somme des parts
+
+::: etape Additionner et réduire
+On regroupe les termes en $x$, puis les nombres.
+$$
+\begin{aligned}
+x + (x + 30) + 2x + (2x - 10) &= x + x + 2x + 2x + 30 - 10 \\
+&= 6x + 20
+\end{aligned}
+$$
+:::
+
+::: resultat
+La somme des quatre parts est bien égale à $6x + 20$.
+:::
+
+## Question 3 : L'équation du partage
+
+::: etape Équation
+La somme des parts est égale au gain de $380$ € :
+$$6x + 20 = 380$$
+:::
+
+::: etape Résolution
+$$
+\begin{aligned}
+6x &= 360 \\
+x &= 60
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$x = 60$$
+:::
+
+## Question 4 : La part de chacun
+
+::: etape Calculer chaque part
+- Alice : $60$ €.
+- Bastien : $60 + 30 = 90$ €.
+- Chloé : $2 \times 60 = 120$ €.
+- David : $120 - 10 = 110$ €.
+:::
+
+[IMAGE_2]
+
+::: etape Vérification
+$60 + 90 + 120 + 110 = 380$.
+:::
+
+::: resultat
+Alice reçoit $60$ €, Bastien $90$ €, Chloé $120$ € et David $110$ €.
+:::
+
+::: attention Erreur fréquente
+Répondre seulement « $x = 60$ » : la question demande la part de **chacun** des quatre amis.
+:::
+
+## Question 5 : Pour qu'Alice reçoive $100$ €
+
+::: methode
+La somme partagée est $6x + 20$ : on la calcule pour $x = 100$.
+:::
+
+::: etape Calcul
+$$6 \times 100 + 20 = 620$$
+:::
+
+::: etape Vérification
+Les parts seraient $100$ €, $130$ €, $200$ € et $190$ €, et $100 + 130 + 200 + 190 = 620$.
+:::
+
+::: resultat
+Il faudrait partager $620$ €.
+:::
+
+::: retenir
+On choisit pour inconnue la part à partir de laquelle toutes les autres s'expriment simplement : ici, celle d'Alice.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Bastien : $x + 30$ ; Chloé : $2x$ ; David : $2x - 10$.
+2. $x + (x + 30) + 2x + (2x - 10) = 6x + 20$
+3. $6x + 20 = 380$ : $x = 60$.
+4. $60$ €, $90$ €, $120$ € et $110$ €.
+5. $620$ €
+
+===
+
+=== Entraînement - Les angles d'un triangle
+Id: 2611
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Dans le triangle $ABC$, les angles mesurent, en degrés : $\widehat{A} = 2x$, $\widehat{B} = x$ et $\widehat{C} = x + 20$.
+
+[IMAGE_1]
+
+1. Rappeler la somme des mesures des angles d'un triangle.
+2. Écrire une équation vérifiée par $x$, puis la réduire.
+3. Résoudre cette équation.
+4. En déduire la mesure de chaque angle.
+5. Vérifier, puis dire si le triangle a un angle droit, un angle obtus ou trois angles aigus. Est-il isocèle ?
+6. Un autre triangle $DEF$ a deux angles de $x$ degrés et un angle de $3x$ degrés. Calculer ses angles et donner sa nature.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : La somme des angles
+
+::: resultat
+Dans tout triangle, la somme des mesures des trois angles est égale à $180°$.
+:::
+
+## Question 2 : L'équation
+
+::: etape Écrire la somme des angles
+$$2x + x + (x + 20) = 180$$
+:::
+
+::: etape Réduire
+$2x + x + x = 4x$, donc :
+$$4x + 20 = 180$$
+:::
+
+::: resultat
+$$4x + 20 = 180$$
+:::
+
+## Question 3 : La résolution
+
+::: etape Résoudre
+$$
+\begin{aligned}
+4x &= 160 \\
+x &= 40
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$x = 40$$
+:::
+
+## Question 4 : Les angles
+
+::: etape Remplacer $x$ par $40$
+- $\widehat{A} = 2 \times 40 = 80°$ ;
+- $\widehat{B} = 40°$ ;
+- $\widehat{C} = 40 + 20 = 60°$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+$\widehat{A} = 80°$, $\widehat{B} = 40°$ et $\widehat{C} = 60°$.
+:::
+
+::: attention Erreur fréquente
+S'arrêter à $x = 40$ : $x$ n'est que la mesure de l'angle $\widehat{B}$. Il faut calculer les trois angles.
+:::
+
+## Question 5 : Vérification et nature
+
+::: etape Vérification
+$80 + 40 + 60 = 180$.
+:::
+
+::: etape Nature du triangle
+Les trois angles sont inférieurs à $90°$ : ils sont aigus. Ils sont tous différents : aucun couple d'angles égaux.
+:::
+
+::: resultat
+Le triangle $ABC$ a trois angles aigus et n'est pas isocèle.
+:::
+
+## Question 6 : Le triangle $DEF$
+
+::: etape Équation et résolution
+$$
+\begin{aligned}
+x + x + 3x &= 180 \\
+5x &= 180 \\
+x &= 36
+\end{aligned}
+$$
+:::
+
+::: etape Les angles
+Deux angles de $36°$ et un angle de $3 \times 36 = 108°$. Vérification : $36 + 36 + 108 = 180$.
+:::
+
+::: resultat
+Les angles de $DEF$ mesurent $36°$, $36°$ et $108°$ : c'est un triangle isocèle, avec un angle obtus.
+:::
+
+::: retenir
+Un triangle qui a deux angles de même mesure est isocèle. Un angle de plus de $90°$ est obtus.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $180°$
+2. $2x + x + (x + 20) = 180$, soit $4x + 20 = 180$.
+3. $x = 40$
+4. $\widehat{A} = 80°$ ; $\widehat{B} = 40°$ ; $\widehat{C} = 60°$.
+5. Trois angles aigus ; triangle non isocèle.
+6. $36°$, $36°$ et $108°$ : isocèle avec un angle obtus.
+
+===
+
+=== Entraînement - Un carré et un rectangle de même aire
+Id: 2612
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On compare un carré de côté $x$ et un rectangle de dimensions $x + 4$ et $x - 2$. Les longueurs sont en centimètres, avec $x > 2$.
+
+[IMAGE_1]
+
+1. Pour $x = 5$, comparer les aires, puis les périmètres des deux figures.
+2. Exprimer les deux périmètres en fonction de $x$, sous forme réduite.
+3. Les deux figures peuvent-elles avoir le même périmètre ? Justifier.
+4. Exprimer les deux aires en fonction de $x$. Développer et réduire l'aire du rectangle.
+5. Pour quelle valeur de $x$ les deux aires sont-elles égales ?
+6. Vérifier en donnant les dimensions et l'aire des deux figures.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Pour $x = 5$
+
+::: etape Les aires
+- Carré : $5 \times 5 = 25$ cm².
+- Rectangle : $(5 + 4) \times (5 - 2) = 9 \times 3 = 27$ cm².
+:::
+
+::: etape Les périmètres
+- Carré : $4 \times 5 = 20$ cm.
+- Rectangle : $2 \times (9 + 3) = 24$ cm.
+:::
+
+::: resultat
+Pour $x = 5$, le rectangle a la plus grande aire ($27$ cm² contre $25$ cm²) et le plus grand périmètre ($24$ cm contre $20$ cm).
+:::
+
+## Question 2 : Les périmètres
+
+::: etape Carré
+$4 \times x = 4x$.
+:::
+
+::: etape Rectangle
+$$
+\begin{aligned}
+2 \times \big((x + 4) + (x - 2)\big) &= 2(2x + 2) \\
+&= 4x + 4
+\end{aligned}
+$$
+:::
+
+::: resultat
+Le périmètre du carré est $4x$, celui du rectangle est $4x + 4$.
+:::
+
+## Question 3 : Des périmètres égaux ?
+
+::: etape Équation
+$$4x = 4x + 4$$
+:::
+
+::: etape Soustraire $4x$ aux deux membres
+$0 = 4$ : cette égalité est fausse, l'équation n'a aucune solution.
+:::
+
+::: resultat
+Non : le périmètre du rectangle dépasse toujours celui du carré de $4$ cm.
+:::
+
+## Question 4 : Les aires
+
+::: etape Carré
+$x \times x = x^2$.
+:::
+
+::: etape Rectangle, par la double distributivité
+$$
+\begin{aligned}
+(x + 4)(x - 2) &= x^2 - 2x + 4x - 8 \\
+&= x^2 + 2x - 8
+\end{aligned}
+$$
+:::
+
+::: resultat
+L'aire du carré est $x^2$, celle du rectangle est $x^2 + 2x - 8$.
+:::
+
+## Question 5 : Des aires égales
+
+::: methode
+Les deux membres contiennent $x^2$ : en soustrayant $x^2$, on obtient une équation du premier degré.
+:::
+
+::: etape Équation
+$$x^2 = x^2 + 2x - 8$$
+:::
+
+::: etape Soustraire $x^2$, puis résoudre
+$$
+\begin{aligned}
+0 &= 2x - 8 \\
+8 &= 2x \\
+x &= 4
+\end{aligned}
+$$
+:::
+
+::: resultat
+Les deux aires sont égales pour $x = 4$ (qui vérifie bien $x > 2$).
+:::
+
+::: retenir
+Une équation qui contient $x^2$ dans ses deux membres peut se ramener au premier degré quand les termes en $x^2$ s'éliminent.
+:::
+
+## Question 6 : Vérification
+
+::: etape Les dimensions pour $x = 4$
+- Carré de côté $4$ cm : aire $4 \times 4 = 16$ cm².
+- Rectangle de $4 + 4 = 8$ cm sur $4 - 2 = 2$ cm : aire $8 \times 2 = 16$ cm².
+:::
+
+[IMAGE_2]
+
+::: resultat
+Le carré de $4$ cm de côté et le rectangle de $8$ cm sur $2$ cm ont la même aire : $16$ cm².
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Aires : $25$ cm² et $27$ cm² ; périmètres : $20$ cm et $24$ cm.
+2. $4x$ et $4x + 4$
+3. Non : $4x = 4x + 4$ conduit à $0 = 4$.
+4. $x^2$ et $x^2 + 2x - 8$
+5. $x = 4$
+6. Carré de $4$ cm, rectangle de $8$ cm sur $2$ cm : $16$ cm² chacun.
+
+===
+
+=== Entraînement - Trouver l'erreur dans une résolution
+Id: 2613
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Un élève a résolu les équations suivantes. Chaque résolution contient **une** erreur. Repérer l'erreur, l'expliquer, puis résoudre correctement l'équation.
+
+1. $3x - 7 = 5x + 1$, puis $3x - 5x = 1 - 7$, puis $-2x = -6$, donc $x = 3$.
+2. $4(x - 2) = 12$, puis $4x - 2 = 12$, puis $4x = 14$, donc $x = 3{,}5$.
+3. $-3x = 12$, donc $x = 4$.
+4. $\dfrac{x}{5} = 2$, donc $x = \dfrac{2}{5}$.
+5. $2x + 3 = 2x + 5$, puis $0 = 2$, donc $x = 0$.
+6. $7 - x = 10$, donc $x = 10 - 7 = 3$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $3x - 7 = 5x + 1$
+
+::: etape Repérer l'erreur
+Pour faire disparaître $-7$ à gauche, on **ajoute** $7$ aux deux membres : à droite, on obtient $1 + 7$, et non $1 - 7$.
+:::
+
+::: etape Résolution correcte
+$$
+\begin{aligned}
+3x - 5x &= 1 + 7 \\
+-2x &= 8 \\
+x &= \frac{8}{-2} = -4
+\end{aligned}
+$$
+:::
+
+::: etape Vérification
+$3 \times (-4) - 7 = -19$ et $5 \times (-4) + 1 = -19$.
+:::
+
+::: resultat
+La solution est $-4$.
+:::
+
+## Question 2 : $4(x - 2) = 12$
+
+::: etape Repérer l'erreur
+Le $4$ multiplie **chaque** terme de la parenthèse : $4(x - 2) = 4x - 8$, et non $4x - 2$.
+:::
+
+::: etape Résolution correcte
+$$
+\begin{aligned}
+4x - 8 &= 12 \\
+4x &= 20 \\
+x &= 5
+\end{aligned}
+$$
+:::
+
+::: etape Vérification
+$4 \times (5 - 2) = 4 \times 3 = 12$.
+:::
+
+::: resultat
+La solution est $5$.
+:::
+
+## Question 3 : $-3x = 12$
+
+::: etape Repérer l'erreur
+Le coefficient de $x$ est $-3$ : il faut diviser par $-3$, signe compris.
+$$x = \frac{12}{-3} = -4$$
+:::
+
+::: etape Vérification
+$-3 \times (-4) = 12$, alors que $-3 \times 4 = -12$.
+:::
+
+::: resultat
+La solution est $-4$.
+:::
+
+## Question 4 : $\dfrac{x}{5} = 2$
+
+::: etape Repérer l'erreur
+$\dfrac{x}{5}$, c'est $x$ divisé par $5$ : pour revenir à $x$, on **multiplie** les deux membres par $5$, on ne divise pas.
+$$x = 2 \times 5 = 10$$
+:::
+
+::: etape Vérification
+$\dfrac{10}{5} = 2$.
+:::
+
+::: resultat
+La solution est $10$.
+:::
+
+## Question 5 : $2x + 3 = 2x + 5$
+
+::: etape Repérer l'erreur
+L'égalité $0 = 2$ est fausse et ne contient plus $x$ : elle ne signifie pas que $x = 0$. D'ailleurs, pour $x = 0$, on obtient $3 = 5$, ce qui est faux.
+:::
+
+::: resultat
+L'équation n'a aucune solution.
+:::
+
+::: attention Erreur fréquente
+Conclure « $x = 0$ » quand les $x$ disparaissent : on regarde seulement si l'égalité obtenue est vraie (tous les nombres sont solutions) ou fausse (aucune solution).
+:::
+
+## Question 6 : $7 - x = 10$
+
+::: etape Repérer l'erreur
+On soustrait $7$ aux deux membres : $-x = 3$. Le coefficient de $x$ est $-1$, donc $x = -3$, et non $3$.
+:::
+
+::: etape Vérification
+$7 - (-3) = 7 + 3 = 10$, alors que $7 - 3 = 4$.
+:::
+
+::: resultat
+La solution est $-3$.
+:::
+
+::: retenir
+La vérification finale (remplacer $x$ dans l'équation de départ) détecte presque toutes les erreurs : c'est un réflexe à prendre.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Erreur de signe ($1 + 7$) : $x = -4$.
+2. Mauvais développement ($4x - 8$) : $x = 5$.
+3. Division par $-3$ : $x = -4$.
+4. On multiplie par $5$ : $x = 10$.
+5. $0 = 2$ est faux : aucune solution.
+6. $-x = 3$ : $x = -3$.
+
+===
+
+=== Problème - Choisir un forfait téléphonique
+Id: 2614
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Un opérateur propose trois forfaits mensuels :
+- forfait A : $0{,}25$ € par minute d'appel, sans abonnement ;
+- forfait B : $12$ € d'abonnement, puis $0{,}05$ € par minute ;
+- forfait C : $30$ € par mois, appels illimités.
+
+On note $x$ le nombre de minutes d'appel dans le mois.
+
+1. Calculer le prix de chaque forfait pour $100$ minutes.
+2. Calculer le prix de chaque forfait pour $300$ minutes.
+3. Exprimer le prix de chaque forfait en fonction de $x$.
+4. Pour combien de minutes les forfaits A et B coûtent-ils le même prix ? Quel est ce prix ?
+5. Pour combien de minutes les forfaits B et C coûtent-ils le même prix ?
+6. Pour combien de minutes les forfaits A et C coûtent-ils le même prix ? En déduire le forfait le moins cher selon la durée des appels.
+7. Inès téléphone $8$ heures par mois. Quel forfait doit-elle choisir ? Combien économise-t-elle par rapport au forfait le plus cher ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Pour $100$ minutes
+
+::: etape Calculer chaque prix
+- A : $100 \times 0{,}25 = 25$ €.
+- B : $12 + 100 \times 0{,}05 = 12 + 5 = 17$ €.
+- C : $30$ €.
+:::
+
+::: resultat
+Pour $100$ minutes : $25$ € avec A, $17$ € avec B et $30$ € avec C.
+:::
+
+## Question 2 : Pour $300$ minutes
+
+::: etape Calculer chaque prix
+- A : $300 \times 0{,}25 = 75$ €.
+- B : $12 + 300 \times 0{,}05 = 12 + 15 = 27$ €.
+- C : $30$ €.
+:::
+
+::: resultat
+Pour $300$ minutes : $75$ € avec A, $27$ € avec B et $30$ € avec C.
+:::
+
+## Question 3 : Les expressions
+
+::: methode
+Chaque prix est la somme d'une partie fixe (l'abonnement) et d'une partie qui dépend du nombre de minutes.
+:::
+
+::: resultat
+Prix avec A : $0{,}25x$ ; avec B : $12 + 0{,}05x$ ; avec C : $30$.
+:::
+
+## Question 4 : Les forfaits A et B
+
+::: etape Équation
+$$0{,}25x = 12 + 0{,}05x$$
+:::
+
+::: etape Résolution
+On soustrait $0{,}05x$ aux deux membres, puis on divise par $0{,}2$.
+$$
+\begin{aligned}
+0{,}2x &= 12 \\
+x &= \frac{12}{0{,}2} = 60
+\end{aligned}
+$$
+:::
+
+::: etape Vérification
+A : $60 \times 0{,}25 = 15$ € ; B : $12 + 60 \times 0{,}05 = 15$ €.
+:::
+
+::: resultat
+Les forfaits A et B coûtent le même prix, $15$ €, pour $60$ minutes.
+:::
+
+## Question 5 : Les forfaits B et C
+
+::: etape Équation et résolution
+$$
+\begin{aligned}
+12 + 0{,}05x &= 30 \\
+0{,}05x &= 18 \\
+x &= \frac{18}{0{,}05} = 360
+\end{aligned}
+$$
+:::
+
+::: etape Vérification
+B : $12 + 360 \times 0{,}05 = 12 + 18 = 30$ €.
+:::
+
+::: resultat
+Les forfaits B et C coûtent le même prix, $30$ €, pour $360$ minutes, soit $6$ heures.
+:::
+
+## Question 6 : Les forfaits A et C, puis le meilleur choix
+
+::: etape Les forfaits A et C
+$$
+\begin{aligned}
+0{,}25x &= 30 \\
+x &= \frac{30}{0{,}25} = 120
+\end{aligned}
+$$
+:::
+
+::: etape Comparer de part et d'autre des seuils
+- Moins de $60$ minutes : A est moins cher que B (à $0$ minute, A coûte $0$ € et B $12$ €) et moins cher que C (moins de $120$ minutes).
+- Entre $60$ et $360$ minutes : B est moins cher que A (pour $100$ minutes : $17$ € contre $25$ €) et que C (pour $300$ minutes : $27$ € contre $30$ €).
+- Plus de $360$ minutes : C est le moins cher, car B dépasse alors $30$ € et A aussi.
+:::
+
+[IMAGE_1]
+
+::: resultat
+Moins de $60$ minutes : forfait A. Entre $60$ et $360$ minutes : forfait B. Plus de $360$ minutes : forfait C. Aux seuils de $60$ et de $360$ minutes, deux forfaits sont à égalité.
+:::
+
+::: retenir
+Les solutions des équations donnent les « seuils » où deux offres coûtent autant ; on compare ensuite les offres entre ces seuils.
+:::
+
+## Question 7 : Le cas d'Inès
+
+::: etape Convertir en minutes
+$8$ h $= 8 \times 60 = 480$ minutes.
+:::
+
+::: etape Calculer chaque prix
+- A : $480 \times 0{,}25 = 120$ €.
+- B : $12 + 480 \times 0{,}05 = 12 + 24 = 36$ €.
+- C : $30$ €.
+:::
+
+::: etape Économie par rapport au plus cher
+Le plus cher est A : $120 - 30 = 90$ €.
+:::
+
+::: resultat
+Inès doit choisir le forfait C : elle économise $90$ € par mois par rapport au forfait A.
+:::
+
+::: attention Erreur fréquente
+Remplacer $x$ par $8$ : les expressions sont écrites en **minutes**, il faut d'abord convertir les heures en minutes.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. A : $25$ € ; B : $17$ € ; C : $30$ €.
+2. A : $75$ € ; B : $27$ € ; C : $30$ €.
+3. $0{,}25x$ ; $12 + 0{,}05x$ ; $30$.
+4. $60$ minutes ($15$ €).
+5. $360$ minutes ($30$ €).
+6. $120$ minutes ; A en dessous de $60$ min, B de $60$ à $360$ min, C au-delà de $360$ min.
+7. Forfait C ; $90$ € d'économie par rapport au forfait A.
+
+===
+
+=== Problème - Une course poursuite à vélo
+Id: 2615
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Léo part à vélo à $14$ h et roule à la vitesse constante de $15$ km/h. Mia part du même endroit à $14$ h $30$, sur la même route et dans le même sens, à la vitesse constante de $25$ km/h. On note $t$ le temps écoulé depuis $14$ h, en heures, avec $t \geqslant 0{,}5$.
+
+[IMAGE_1]
+
+1. Quelle distance Léo a-t-il parcourue à $14$ h $30$ ?
+2. Exprimer la distance parcourue par Léo en fonction de $t$.
+3. Expliquer pourquoi Mia a roulé pendant $t - 0{,}5$ heure, puis exprimer la distance qu'elle a parcourue.
+4. Écrire une équation traduisant le moment où Mia rattrape Léo, puis la résoudre.
+5. À quelle heure et à quelle distance du départ Mia rattrape-t-elle Léo ? Vérifier.
+6. Retrouver ce résultat autrement : de combien de kilomètres l'écart entre les deux cyclistes diminue-t-il chaque heure ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Léo à $14$ h $30$
+
+::: methode
+À vitesse constante : distance $=$ vitesse $\times$ durée.
+:::
+
+::: etape Calcul
+Léo a roulé $30$ min, soit $0{,}5$ h : $15 \times 0{,}5 = 7{,}5$ km.
+:::
+
+::: resultat
+À $14$ h $30$, Léo a parcouru $7{,}5$ km.
+:::
+
+## Question 2 : La distance de Léo
+
+::: etape Calcul
+Léo roule depuis $t$ heures à $15$ km/h.
+:::
+
+::: resultat
+Léo a parcouru $15t$ kilomètres.
+:::
+
+## Question 3 : La distance de Mia
+
+::: etape Durée de Mia
+Mia part une demi-heure après Léo : quand Léo a roulé $t$ heures, elle n'a roulé que $t - 0{,}5$ heure.
+:::
+
+::: resultat
+Mia a parcouru $25(t - 0{,}5)$ kilomètres.
+:::
+
+## Question 4 : L'équation du rattrapage
+
+::: etape Équation
+Mia rattrape Léo quand ils ont parcouru la même distance depuis le départ :
+$$15t = 25(t - 0{,}5)$$
+:::
+
+::: etape Résolution
+On développe, on soustrait $15t$, on ajoute $12{,}5$, puis on divise par $10$.
+$$
+\begin{aligned}
+15t &= 25t - 12{,}5 \\
+0 &= 10t - 12{,}5 \\
+12{,}5 &= 10t \\
+t &= 1{,}25
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$t = 1{,}25$$
+:::
+
+## Question 5 : L'heure et le lieu
+
+::: etape Convertir la durée
+$1{,}25$ h $= 1$ h $+ 0{,}25 \times 60$ min $= 1$ h $15$ min. Depuis $14$ h, on arrive à $15$ h $15$.
+:::
+
+::: etape Distances
+- Léo : $15 \times 1{,}25 = 18{,}75$ km.
+- Mia : elle a roulé $1{,}25 - 0{,}5 = 0{,}75$ h, soit $25 \times 0{,}75 = 18{,}75$ km.
+:::
+
+[IMAGE_2]
+
+::: resultat
+Mia rattrape Léo à $15$ h $15$, à $18{,}75$ km du départ.
+:::
+
+::: attention Erreur fréquente
+Convertir $1{,}25$ h en « $1$ h $25$ min » : $0{,}25$ h, c'est un quart d'heure, soit $15$ min.
+:::
+
+## Question 6 : Une autre méthode
+
+::: etape L'écart à $14$ h $30$
+Quand Mia part, Léo a $7{,}5$ km d'avance (question 1).
+:::
+
+::: etape L'écart diminue
+Chaque heure, Mia parcourt $25$ km et Léo $15$ km : l'écart diminue de $25 - 15 = 10$ km par heure.
+:::
+
+::: etape Durée du rattrapage
+$7{,}5 \div 10 = 0{,}75$ h, soit $45$ min après $14$ h $30$.
+:::
+
+::: resultat
+L'écart diminue de $10$ km par heure ; Mia rattrape Léo $45$ min après son départ, à $15$ h $15$ : on retrouve le même résultat.
+:::
+
+::: retenir
+Dans une poursuite, l'écart diminue chaque heure de la différence des vitesses.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $7{,}5$ km
+2. $15t$
+3. $25(t - 0{,}5)$
+4. $15t = 25(t - 0{,}5)$ : $t = 1{,}25$.
+5. À $15$ h $15$, à $18{,}75$ km du départ.
+6. $10$ km par heure ; $7{,}5 \div 10 = 0{,}75$ h après $14$ h $30$, soit $15$ h $15$.
+
+===
+
+=== Problème - Partager un terrain rectangulaire
+Id: 2616
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Un terrain rectangulaire mesure $120$ m de long et $80$ m de large. On le partage en deux parcelles rectangulaires par une clôture parallèle à la largeur, placée à $x$ mètres du bord gauche ($0 < x < 120$).
+
+[IMAGE_1]
+
+1. Calculer l'aire totale du terrain.
+2. Exprimer, en fonction de $x$, la longueur de la parcelle 2, puis l'aire de chaque parcelle.
+3. Où placer la clôture pour que l'aire de la parcelle 1 soit le double de celle de la parcelle 2 ?
+4. Vérifier en calculant les deux aires.
+5. Calculer alors le périmètre de chaque parcelle.
+6. Où placer la clôture pour que les deux parcelles aient le même périmètre ?
+7. Où placer la clôture pour que la parcelle 1 ait $1\,600$ m² de plus que la parcelle 2 ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : L'aire totale
+
+::: etape Calcul
+$$120 \times 80 = 9\,600$$
+:::
+
+::: resultat
+L'aire du terrain est $9\,600$ m².
+:::
+
+## Question 2 : Les aires des parcelles
+
+::: etape Les dimensions
+- Parcelle 1 : $x$ m sur $80$ m.
+- Parcelle 2 : $120 - x$ m sur $80$ m.
+:::
+
+::: resultat
+Aire de la parcelle 1 : $80x$. Aire de la parcelle 2 : $80(120 - x) = 9\,600 - 80x$.
+:::
+
+## Question 3 : Une aire double
+
+::: etape Équation
+$$80x = 2 \times 80(120 - x)$$
+:::
+
+::: etape Résolution
+$$
+\begin{aligned}
+80x &= 160(120 - x) \\
+80x &= 19\,200 - 160x \\
+240x &= 19\,200 \\
+x &= 80
+\end{aligned}
+$$
+:::
+
+[IMAGE_2]
+
+::: resultat
+Il faut placer la clôture à $80$ m du bord gauche.
+:::
+
+## Question 4 : Vérification
+
+::: etape Les deux aires
+- Parcelle 1 : $80 \times 80 = 6\,400$ m².
+- Parcelle 2 : $40 \times 80 = 3\,200$ m².
+:::
+
+::: resultat
+$6\,400 = 2 \times 3\,200$ : l'aire de la parcelle 1 est bien le double de celle de la parcelle 2.
+:::
+
+## Question 5 : Les périmètres
+
+::: etape Parcelle 1
+$2 \times (80 + 80) = 320$ m.
+:::
+
+::: etape Parcelle 2
+$2 \times (40 + 80) = 240$ m.
+:::
+
+::: resultat
+La parcelle 1 a un périmètre de $320$ m et la parcelle 2 de $240$ m.
+:::
+
+## Question 6 : Des périmètres égaux
+
+::: etape Équation
+$$2(x + 80) = 2(120 - x + 80)$$
+:::
+
+::: etape Résolution
+$$
+\begin{aligned}
+2x + 160 &= 400 - 2x \\
+4x &= 240 \\
+x &= 60
+\end{aligned}
+$$
+:::
+
+::: resultat
+Il faut placer la clôture à $60$ m du bord gauche, au milieu : les deux parcelles sont alors identiques ($60$ m sur $80$ m).
+:::
+
+## Question 7 : Une différence de $1\,600$ m²
+
+::: etape Équation
+L'aire de la parcelle 1 est égale à celle de la parcelle 2 augmentée de $1\,600$ :
+$$80x = 80(120 - x) + 1\,600$$
+:::
+
+::: etape Résolution
+$$
+\begin{aligned}
+80x &= 9\,600 - 80x + 1\,600 \\
+160x &= 11\,200 \\
+x &= 70
+\end{aligned}
+$$
+:::
+
+::: etape Vérification
+$80 \times 70 = 5\,600$ m² et $80 \times 50 = 4\,000$ m² ; $5\,600 - 4\,000 = 1\,600$.
+:::
+
+::: resultat
+Il faut placer la clôture à $70$ m du bord gauche.
+:::
+
+::: attention Erreur fréquente
+Écrire $80x + 1\,600 = 80(120 - x)$ : c'est la parcelle 2 qu'il faut augmenter de $1\,600$ m² pour obtenir la parcelle 1, la plus grande.
+:::
+
+::: retenir
+Une fois l'inconnue choisie, chaque nouvelle condition de l'énoncé se traduit par une nouvelle équation.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $9\,600$ m²
+2. $120 - x$ ; $80x$ et $80(120 - x)$.
+3. $x = 80$ m
+4. $6\,400$ m² et $3\,200$ m².
+5. $320$ m et $240$ m.
+6. $x = 60$ m
+7. $x = 70$ m
+
+===
+
+=== Problème - La note à obtenir pour une moyenne
+Id: 2617
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Inès a obtenu trois notes sur $20$, toutes de coefficient $1$. Il lui reste un dernier contrôle.
+
+| Contrôle | n° 1 | n° 2 | n° 3 | n° 4 |
+|---|---|---|---|---|
+| Note sur $20$ | $11$ | $14$ | $9$ | ? |
+
+1. Calculer la moyenne actuelle d'Inès, arrondie au dixième.
+2. Le dernier contrôle a un coefficient $1$. On note $x$ sa note. Exprimer la moyenne des quatre notes en fonction de $x$.
+3. Quelle note Inès doit-elle obtenir pour avoir exactement $12$ de moyenne ?
+4. Finalement, le dernier contrôle compte avec le coefficient $2$. Exprimer la nouvelle moyenne en fonction de $x$, puis trouver la note nécessaire pour avoir $12$ de moyenne.
+5. Avec ce coefficient $2$, Inès peut-elle obtenir $15$ de moyenne ? Justifier.
+6. Avec ce coefficient $2$, quelle est la meilleure moyenne qu'elle puisse obtenir ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : La moyenne actuelle
+
+::: etape Somme des notes
+$11 + 14 + 9 = 34$.
+:::
+
+::: etape Moyenne
+$$\frac{34}{3} \approx 11{,}33$$
+:::
+
+::: resultat
+La moyenne actuelle d'Inès est d'environ $11{,}3$.
+:::
+
+## Question 2 : La moyenne avec le quatrième contrôle
+
+::: methode
+Moyenne $=$ somme des notes $\div$ nombre de notes.
+:::
+
+::: resultat
+La moyenne des quatre notes est $\dfrac{34 + x}{4}$.
+:::
+
+## Question 3 : Avoir $12$ de moyenne
+
+::: etape Équation
+$$\frac{34 + x}{4} = 12$$
+:::
+
+::: etape Résolution
+On multiplie les deux membres par $4$, puis on soustrait $34$.
+$$
+\begin{aligned}
+34 + x &= 48 \\
+x &= 14
+\end{aligned}
+$$
+:::
+
+::: etape Vérification
+$\dfrac{34 + 14}{4} = \dfrac{48}{4} = 12$.
+:::
+
+::: resultat
+Inès doit obtenir $14$ au dernier contrôle.
+:::
+
+## Question 4 : Avec le coefficient $2$
+
+::: methode
+Une note de coefficient $2$ compte deux fois : on l'ajoute deux fois et on divise par la somme des coefficients, $1 + 1 + 1 + 2 = 5$.
+:::
+
+::: etape La nouvelle moyenne
+$$\frac{34 + 2x}{5}$$
+:::
+
+::: etape Équation et résolution
+$$
+\begin{aligned}
+\frac{34 + 2x}{5} &= 12 \\
+34 + 2x &= 60 \\
+2x &= 26 \\
+x &= 13
+\end{aligned}
+$$
+:::
+
+::: etape Vérification
+$\dfrac{34 + 2 \times 13}{5} = \dfrac{60}{5} = 12$.
+:::
+
+::: resultat
+Avec le coefficient $2$, la moyenne est $\dfrac{34 + 2x}{5}$ ; Inès doit obtenir $13$.
+:::
+
+::: attention Erreur fréquente
+Diviser par $4$ (le nombre de contrôles) au lieu de $5$ (la somme des coefficients).
+:::
+
+## Question 5 : Avoir $15$ de moyenne ?
+
+::: etape Équation et résolution
+$$
+\begin{aligned}
+\frac{34 + 2x}{5} &= 15 \\
+34 + 2x &= 75 \\
+2x &= 41 \\
+x &= 20{,}5
+\end{aligned}
+$$
+:::
+
+::: etape Interpréter
+Une note sur $20$ ne peut pas dépasser $20$ : la solution $20{,}5$ ne convient pas.
+:::
+
+::: resultat
+Non : il faudrait $20{,}5$ sur $20$, ce qui est impossible.
+:::
+
+## Question 6 : La meilleure moyenne possible
+
+::: etape Avec la note maximale $20$
+$$\frac{34 + 2 \times 20}{5} = \frac{74}{5} = 14{,}8$$
+:::
+
+::: resultat
+La meilleure moyenne possible est $14{,}8$, avec $20$ au dernier contrôle.
+:::
+
+::: retenir
+On vérifie toujours que la solution de l'équation a un sens dans le problème : ici, une note est comprise entre $0$ et $20$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Environ $11{,}3$.
+2. $\dfrac{34 + x}{4}$
+3. $14$
+4. $\dfrac{34 + 2x}{5}$ ; $13$.
+5. Non : il faudrait $x = 20{,}5$.
+6. $14{,}8$
+
+===
+
+=== Type brevet - La tirelire et le tableur
+Id: 2618
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Une tirelire contient $40$ pièces : uniquement des pièces de $2$ € et des pièces de $0{,}50$ €. Elle contient $50$ € en tout.
+
+Pour chercher la composition de la tirelire, Hugo a commencé une feuille de calcul.
+
+| | A | B | C |
+|---|---|---|---|
+| 1 | Pièces<br>de $2$ € | Pièces<br>de $0{,}50$ € | Somme<br>en € |
+| 2 | $10$ | $30$ | $35$ |
+| 3 | $12$ | $28$ | $38$ |
+| 4 | $14$ | $26$ | $41$ |
+| 5 | $16$ | $24$ | $44$ |
+
+1. Si la tirelire contenait $10$ pièces de $2$ €, quelle somme contiendrait-elle ?
+2. Les formules du tableur.
+   - a) Quelle formule Hugo a-t-il pu saisir dans la cellule B2, avant de l'étirer vers le bas ?
+   - b) Quelle formule a-t-il pu saisir dans la cellule C2 ?
+3. On note $x$ le nombre de pièces de $2$ €. Exprimer le nombre de pièces de $0{,}50$ € en fonction de $x$, puis montrer que la somme contenue dans la tirelire est égale à $1{,}5x + 20$.
+4. Écrire et résoudre une équation pour trouver la composition de la tirelire. Vérifier.
+5. Hugo affirme : « Avec $40$ pièces de ces deux sortes, on peut avoir exactement $62$ €, mais pas $81$ €. » A-t-il raison ? Justifier.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Un premier essai
+
+::: etape Les deux sortes de pièces
+Il y aurait $10$ pièces de $2$ € et $40 - 10 = 30$ pièces de $0{,}50$ €.
+:::
+
+::: etape La somme
+$10 \times 2 + 30 \times 0{,}50 = 20 + 15 = 35$ €.
+:::
+
+::: resultat
+La tirelire contiendrait $35$ € : c'est moins que $50$ €, il faut davantage de pièces de $2$ €.
+:::
+
+## Question 2 : Les formules du tableur
+
+::: methode
+Une formule de tableur commence par `=` ; elle utilise les cellules de la même ligne. Le produit s'écrit avec `*`.
+:::
+
+::: etape a) La cellule B2
+Le nombre de pièces de $0{,}50$ € est ce qui reste des $40$ pièces : `=40-A2`.
+:::
+
+::: etape b) La cellule C2
+On ajoute la valeur des pièces de $2$ € et celle des pièces de $0{,}50$ € : `=2*A2+0,5*B2`.
+:::
+
+::: resultat
+B2 : `=40-A2` ; C2 : `=2*A2+0,5*B2`.
+:::
+
+## Question 3 : La somme en fonction de $x$
+
+::: etape Le nombre de pièces de $0{,}50$ €
+Il y a $40$ pièces en tout : $40 - x$ pièces de $0{,}50$ €.
+:::
+
+::: etape La somme
+$$
+\begin{aligned}
+2x + 0{,}5(40 - x) &= 2x + 20 - 0{,}5x \\
+&= 1{,}5x + 20
+\end{aligned}
+$$
+:::
+
+::: resultat
+Il y a $40 - x$ pièces de $0{,}50$ €, et la somme est bien égale à $1{,}5x + 20$.
+:::
+
+## Question 4 : La composition de la tirelire
+
+::: etape Équation
+$$1{,}5x + 20 = 50$$
+:::
+
+::: etape Résolution
+$$
+\begin{aligned}
+1{,}5x &= 30 \\
+x &= \frac{30}{1{,}5} = 20
+\end{aligned}
+$$
+:::
+
+::: etape Vérification
+$20$ pièces de $2$ € et $40 - 20 = 20$ pièces de $0{,}50$ € : $20 \times 2 + 20 \times 0{,}50 = 40 + 10 = 50$ €.
+:::
+
+::: resultat
+La tirelire contient $20$ pièces de $2$ € et $20$ pièces de $0{,}50$ €.
+:::
+
+::: remarque
+En continuant le tableau du tableur ($18$ pièces, puis $20$ pièces de $2$ €), on aurait trouvé $47$ €, puis $50$ € : l'équation donne la réponse directement.
+:::
+
+## Question 5 : $62$ € ? $81$ € ?
+
+::: etape Avec $62$ €
+$$
+\begin{aligned}
+1{,}5x + 20 &= 62 \\
+1{,}5x &= 42 \\
+x &= 28
+\end{aligned}
+$$
+$28$ pièces de $2$ € et $12$ pièces de $0{,}50$ € : $56 + 6 = 62$ €. C'est possible.
+:::
+
+::: etape Avec $81$ €
+$$
+\begin{aligned}
+1{,}5x + 20 &= 81 \\
+1{,}5x &= 61 \\
+x &= \frac{61}{1{,}5} \approx 40{,}67
+\end{aligned}
+$$
+Ce n'est pas un nombre entier, et c'est plus que $40$ pièces : c'est impossible. D'ailleurs, même avec $40$ pièces de $2$ €, on n'aurait que $80$ €.
+:::
+
+::: resultat
+Hugo a raison : $62$ € est possible ($28$ pièces de $2$ € et $12$ de $0{,}50$ €), $81$ € ne l'est pas.
+:::
+
+::: attention Erreur fréquente
+Arrondir $40{,}67$ à $41$ et conclure que c'est possible : un nombre de pièces est un **entier**, compris ici entre $0$ et $40$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $35$ €
+2. a) `=40-A2` ; b) `=2*A2+0,5*B2`.
+3. $40 - x$ ; $2x + 0{,}5(40 - x) = 1{,}5x + 20$.
+4. $1{,}5x + 20 = 50$ : $x = 20$ ; $20$ pièces de chaque sorte.
+5. Oui : $62$ € avec $x = 28$ ; $81$ € donnerait $x \approx 40{,}67$, impossible.
+
+===
+
+=== Type brevet - Un carré et un triangle sur un segment
+Id: 2619
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Le segment $[AB]$ mesure $12$ cm. $M$ est un point du segment $[AB]$ ; on note $x$ la longueur $AM$, en centimètres ($0 < x < 12$). Du même côté de $[AB]$, on construit :
+- le carré $AMNP$ de côté $[AM]$ ;
+- le triangle équilatéral $MBQ$ de côté $[MB]$.
+
+[IMAGE_1]
+
+1. Dans cette question, $x = 3$. Calculer le périmètre du carré et celui du triangle.
+2. Exprimer la longueur $MB$ en fonction de $x$, puis le périmètre du carré et celui du triangle, sous forme développée.
+3. Pour quelle valeur de $x$ le carré et le triangle ont-ils le même périmètre ? Donner la valeur exacte, puis la valeur arrondie au millimètre.
+4. Vérifier le résultat de la question 3 en calculant les deux périmètres en valeur exacte.
+5. Pour quelle valeur de $x$ le périmètre du triangle est-il le double de celui du carré ? Donner la valeur exacte.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Pour $x = 3$
+
+::: etape Le carré
+Son côté mesure $3$ cm : périmètre $4 \times 3 = 12$ cm.
+:::
+
+::: etape Le triangle
+$MB = 12 - 3 = 9$ cm : périmètre $3 \times 9 = 27$ cm.
+:::
+
+::: resultat
+Pour $x = 3$, le carré a un périmètre de $12$ cm et le triangle de $27$ cm.
+:::
+
+## Question 2 : Les expressions
+
+::: etape La longueur $MB$
+$M$ est sur $[AB]$, donc $AM + MB = AB$, d'où $MB = 12 - x$.
+:::
+
+::: etape Les périmètres
+- Carré (4 côtés de longueur $x$) : $4x$.
+- Triangle équilatéral (3 côtés de longueur $12 - x$) : $3(12 - x) = 36 - 3x$.
+:::
+
+::: resultat
+$MB = 12 - x$ ; périmètre du carré : $4x$ ; périmètre du triangle : $36 - 3x$.
+:::
+
+## Question 3 : Des périmètres égaux
+
+::: etape Équation
+$$4x = 36 - 3x$$
+:::
+
+::: etape Résolution
+On ajoute $3x$ aux deux membres, puis on divise par $7$.
+$$
+\begin{aligned}
+7x &= 36 \\
+x &= \frac{36}{7}
+\end{aligned}
+$$
+:::
+
+::: etape Valeur approchée
+$\dfrac{36}{7} \approx 5{,}142$ : au millimètre près, c'est-à-dire au dixième de centimètre, $x \approx 5{,}1$ cm. Cette valeur est bien comprise entre $0$ et $12$.
+:::
+
+::: resultat
+Les périmètres sont égaux pour $x = \dfrac{36}{7}$ cm, soit environ $5{,}1$ cm.
+:::
+
+## Question 4 : Vérification
+
+::: etape Le carré
+$$4 \times \frac{36}{7} = \frac{144}{7}$$
+:::
+
+::: etape Le triangle
+$$
+\begin{aligned}
+MB &= 12 - \frac{36}{7} = \frac{84}{7} - \frac{36}{7} = \frac{48}{7} \\
+3 \times \frac{48}{7} &= \frac{144}{7}
+\end{aligned}
+$$
+:::
+
+[IMAGE_2]
+
+::: resultat
+Les deux périmètres valent $\dfrac{144}{7}$ cm, soit environ $20{,}6$ cm.
+:::
+
+::: attention Erreur fréquente
+Vérifier avec la valeur arrondie $5{,}1$ : on trouve $20{,}4$ cm et $20{,}7$ cm, deux nombres différents. On vérifie avec la **valeur exacte** $\dfrac{36}{7}$.
+:::
+
+## Question 5 : Un périmètre double
+
+::: etape Équation
+Le périmètre du triangle est égal au double de celui du carré :
+$$36 - 3x = 2 \times 4x$$
+:::
+
+::: etape Résolution
+$$
+\begin{aligned}
+36 - 3x &= 8x \\
+36 &= 11x \\
+x &= \frac{36}{11}
+\end{aligned}
+$$
+:::
+
+::: etape Vérification
+Carré : $4 \times \dfrac{36}{11} = \dfrac{144}{11}$. Triangle : $36 - 3 \times \dfrac{36}{11} = \dfrac{396 - 108}{11} = \dfrac{288}{11}$, qui est bien le double de $\dfrac{144}{11}$.
+:::
+
+::: resultat
+Le périmètre du triangle est le double de celui du carré pour $x = \dfrac{36}{11}$ cm, soit environ $3{,}3$ cm.
+:::
+
+::: retenir
+On garde la valeur exacte (une fraction) pour vérifier ; on n'arrondit qu'à la fin, pour répondre à la précision demandée.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Carré : $12$ cm ; triangle : $27$ cm.
+2. $MB = 12 - x$ ; $4x$ ; $36 - 3x$.
+3. $x = \dfrac{36}{7} \approx 5{,}1$ cm.
+4. Les deux périmètres valent $\dfrac{144}{7}$ cm.
+5. $x = \dfrac{36}{11}$ cm.
+
+===
+
+=== Type brevet - L'épitaphe de Diophante
+Id: 2620
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Le mathématicien grec Diophante d'Alexandrie (IIIe siècle) aurait eu cette épitaphe sur sa tombe :
+
+« Son enfance dura le sixième de sa vie ; sa jeunesse, un douzième de plus. Puis il se maria après un septième de sa vie. Cinq ans plus tard naquit son fils, qui vécut la moitié de l'âge final de son père. Le père mourut quatre ans après son fils. »
+
+On suppose que toutes ces durées sont des nombres entiers d'années, et on note $x$ l'âge de Diophante à sa mort.
+
+1. Expliquer pourquoi $x$ est un multiple de $6$, de $12$ et de $7$. Proposer une valeur raisonnable de $x$.
+2. Écrire une équation traduisant l'épitaphe : la somme des durées des étapes de sa vie est égale à $x$.
+3. Multiplier les deux membres par $84$ pour supprimer les dénominateurs, puis réduire.
+4. Résoudre l'équation.
+5. À quel âge Diophante s'est-il marié ? À quel âge a-t-il eu son fils ? Combien d'années son fils a-t-il vécu ?
+6. Vérifier que les étapes de sa vie font bien $x$ années.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Des multiples
+
+::: etape Pourquoi des multiples
+Les durées $\dfrac{x}{6}$, $\dfrac{x}{12}$ et $\dfrac{x}{7}$ sont des nombres entiers d'années : $x$ est donc divisible par $6$, par $12$ et par $7$.
+:::
+
+::: etape Les valeurs possibles
+Un multiple de $12$ est aussi un multiple de $6$. Les multiples de $12$ qui sont aussi multiples de $7$ sont $84$, $168$, $252$… Seul $84$ est un âge raisonnable.
+:::
+
+::: resultat
+$x$ est un multiple de $6$, de $12$ et de $7$ ; la seule valeur raisonnable est $84$.
+:::
+
+## Question 2 : L'équation
+
+::: etape Les étapes de la vie
+- enfance : $\dfrac{x}{6}$ ;
+- jeunesse : $\dfrac{x}{12}$ ;
+- jusqu'au mariage : $\dfrac{x}{7}$ ;
+- jusqu'à la naissance du fils : $5$ ;
+- vie du fils : $\dfrac{x}{2}$ ;
+- après la mort du fils : $4$.
+:::
+
+::: resultat
+$$\frac{x}{6} + \frac{x}{12} + \frac{x}{7} + 5 + \frac{x}{2} + 4 = x$$
+:::
+
+## Question 3 : Supprimer les dénominateurs
+
+::: methode
+$84$ est un multiple commun de $6$, $12$, $7$ et $2$ : on multiplie **chaque** terme des deux membres par $84$.
+:::
+
+::: etape Multiplier chaque terme par $84$
+$84 \times \dfrac{x}{6} = 14x$ ; $84 \times \dfrac{x}{12} = 7x$ ; $84 \times \dfrac{x}{7} = 12x$ ; $84 \times 5 = 420$ ; $84 \times \dfrac{x}{2} = 42x$ ; $84 \times 4 = 336$.
+$$14x + 7x + 12x + 420 + 42x + 336 = 84x$$
+:::
+
+::: etape Réduire
+$14x + 7x + 12x + 42x = 75x$ et $420 + 336 = 756$.
+:::
+
+::: resultat
+$$75x + 756 = 84x$$
+:::
+
+::: attention Erreur fréquente
+Oublier de multiplier les nombres $5$ et $4$ par $84$ : **tous** les termes des deux membres sont multipliés.
+:::
+
+## Question 4 : La résolution
+
+::: etape Soustraire $75x$ aux deux membres
+$$756 = 9x$$
+:::
+
+::: etape Diviser par $9$
+$$x = \frac{756}{9} = 84$$
+:::
+
+::: resultat
+Diophante est mort à $84$ ans, ce qui confirme la valeur proposée à la question 1.
+:::
+
+## Question 5 : Les grandes dates
+
+::: etape Le mariage
+Enfance $\dfrac{84}{6} = 14$ ans, jeunesse $\dfrac{84}{12} = 7$ ans, puis $\dfrac{84}{7} = 12$ ans : il se marie à $14 + 7 + 12 = 33$ ans.
+:::
+
+::: etape La naissance du fils
+Cinq ans plus tard : $33 + 5 = 38$ ans.
+:::
+
+::: etape La vie du fils
+Le fils vit $\dfrac{84}{2} = 42$ ans.
+:::
+
+::: resultat
+Diophante s'est marié à $33$ ans, il a eu son fils à $38$ ans, et son fils a vécu $42$ ans.
+:::
+
+## Question 6 : Vérification
+
+::: etape Somme des étapes
+$$14 + 7 + 12 + 5 + 42 + 4 = 84$$
+:::
+
+[IMAGE_1]
+
+::: resultat
+Les étapes de sa vie font bien $84$ ans : le fils meurt quand son père a $38 + 42 = 80$ ans, et le père meurt $4$ ans plus tard.
+:::
+
+::: retenir
+Pour résoudre une équation avec plusieurs fractions, on multiplie tous les termes par un multiple commun des dénominateurs.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Les durées sont entières ; $x = 84$ est la seule valeur raisonnable.
+2. $\dfrac{x}{6} + \dfrac{x}{12} + \dfrac{x}{7} + 5 + \dfrac{x}{2} + 4 = x$
+3. $75x + 756 = 84x$
+4. $x = 84$
+5. Marié à $33$ ans ; père à $38$ ans ; le fils a vécu $42$ ans.
+6. $14 + 7 + 12 + 5 + 42 + 4 = 84$
+
+===

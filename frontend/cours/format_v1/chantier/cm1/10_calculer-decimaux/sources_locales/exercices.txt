@@ -1,0 +1,152 @@
+[
+  {
+    "titre": "Une somme posée",
+    "enonce": "Poser et calculer $4{,}7+2{,}85$.",
+    "corrige": "En alignant les virgules : $4{,}70+2{,}85=\\res{7{,}55}$. L’estimation $5+3=8$ confirme l’ordre de grandeur.",
+    "methode": "Compléter $4{,}7$ en $4{,}70$.",
+    "controle": "assert Rational(\"4.7\")+Rational(\"2.85\")==Rational(\"7.55\")",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 1
+  },
+  {
+    "titre": "Une différence posée",
+    "enonce": "Poser et calculer $10-3{,}48$.",
+    "corrige": "On écrit $10{,}00-3{,}48=\\res{6{,}52}$. Contrôle : $6{,}52+3{,}48=10$.",
+    "methode": "Écrire 10 avec deux chiffres après la virgule.",
+    "controle": "assert 10-Rational(\"3.48\")==Rational(\"6.52\") and Rational(\"6.52\")+Rational(\"3.48\")==10",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 1
+  },
+  {
+    "titre": "De tête, sans retenue",
+    "enonce": "Calculer mentalement $5{,}34+2$, puis $5{,}34+0{,}2$, puis $7{,}89-4$.",
+    "corrige": "L’entier ne touche que la partie entière : $\\res{7{,}34}$. Les dixièmes s’ajoutent aux dixièmes : $\\res{5{,}54}$. Et $7{,}89-4=\\res{3{,}89}$.",
+    "methode": "Ajouter chaque nombre au bon rang.",
+    "controle": "assert Rational(\"5.34\")+2==Rational(\"7.34\") and Rational(\"5.34\")+Rational(\".2\")==Rational(\"5.54\") and Rational(\"7.89\")-4==Rational(\"3.89\")",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 1
+  },
+  {
+    "titre": "Par 10, dans les deux sens",
+    "enonce": "Calculer $3{,}7\\times10$ ; $0{,}85\\times10$ ; $45{,}2:10$.",
+    "corrige": "Chaque chiffre monte d’un rang : $\\res{37}$ et $\\res{8{,}5}$. Pour la division, chaque chiffre descend : $\\res{4{,}52}$.",
+    "methode": "Déplacer les chiffres d’un rang, pas « ajouter un zéro ».",
+    "controle": "assert Rational(\"3.7\")*10==37 and Rational(\".85\")*10==Rational(\"8.5\") and Rational(\"45.2\")/10==Rational(\"4.52\")",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 1
+  },
+  {
+    "titre": "Un produit en dixièmes",
+    "enonce": "Calculer $2{,}4\\times3$ en raisonnant en dixièmes.",
+    "corrige": "24 dixièmes $\\times\\,3=72$ dixièmes, soit $\\res{7{,}2}$. Contrôle : $2{,}4\\times3$ est proche de $2\\times3=6$ et dépasse 7 de peu.",
+    "methode": "Convertir en dixièmes, multiplier, reconvertir.",
+    "controle": "assert Rational(\"2.4\")*3==Rational(\"7.2\")",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 1
+  },
+  {
+    "titre": "Compléments utiles",
+    "enonce": "Compléter : $0{,}35+\\square=1$, puis $7{,}2+\\square=10$.",
+    "corrige": "$0{,}35+0{,}65=1$ : le complément est $\\res{0{,}65}$. $7{,}2+2{,}8=10$ : le complément est $\\res{2{,}8}$.",
+    "methode": "Compléter d’abord les centièmes, puis les unités.",
+    "controle": "assert Rational(\".35\")+Rational(\".65\")==1 and Rational(\"7.2\")+Rational(\"2.8\")==10",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 2
+  },
+  {
+    "titre": "Un produit posé",
+    "enonce": "Poser et calculer $3{,}45\\times6$.",
+    "corrige": "$345\\times6=2\\,070$, donc $3{,}45\\times6=\\res{20{,}70}$, c’est-à-dire $20{,}7$. L’estimation $3{,}5\\times6=21$ valide le résultat.",
+    "methode": "Compter les chiffres après la virgule du facteur décimal.",
+    "controle": "assert Rational(\"3.45\")*6==Rational(\"20.70\")",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 2
+  },
+  {
+    "titre": "Regrouper pour simplifier",
+    "enonce": "Calculer $2{,}6+4{,}85+0{,}4$ en regroupant deux termes bien choisis.",
+    "corrige": "$2{,}6+0{,}4=3$, puis $3+4{,}85=\\res{7{,}85}$. L’ordre des termes d’une somme peut changer.",
+    "methode": "Chercher un total rond.",
+    "controle": "assert Rational(\"2.6\")+Rational(\".4\")==3 and Rational(\"2.6\")+Rational(\"4.85\")+Rational(\".4\")==Rational(\"7.85\")",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 2
+  },
+  {
+    "titre": "Contrôler une soustraction",
+    "enonce": "Noé calcule $8-2{,}35=6{,}35$. Vérifier avec une addition et corriger si besoin.",
+    "corrige": "$6{,}35+2{,}35=8{,}70\\ne8$ : le résultat est faux. Le bon calcul : $8{,}00-2{,}35=\\res{5{,}65}$ ; contrôle : $5{,}65+2{,}35=8$.",
+    "methode": "Toujours vérifier une différence par la somme.",
+    "controle": "assert Rational(\"6.35\")+Rational(\"2.35\")==Rational(\"8.70\") and 8-Rational(\"2.35\")==Rational(\"5.65\")",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 2
+  },
+  {
+    "titre": "Rendre la monnaie",
+    "enonce": "Un achat coûte $7{,}45$ euros, payé avec un billet de 10 euros. Calculer la monnaie rendue en passant par des étapes simples.",
+    "corrige": "$7{,}45\\to7{,}50$ : 5 centimes ; $7{,}50\\to8$ : 50 centimes ; $8\\to10$ : 2 euros. La monnaie est $0{,}05+0{,}50+2=\\res{2{,}55}$ euros.",
+    "methode": "Avancer de palier en palier jusqu’au billet.",
+    "controle": "assert 10-Rational(\"7.45\")==Rational(\"2.55\") and Rational(\".05\")+Rational(\".50\")+2==Rational(\"2.55\")",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 2
+  },
+  {
+    "titre": "Le panier de courses",
+    "enonce": "Une baguette coûte $1{,}20$ euro, une plaquette de beurre $2{,}85$ euros et une brique de lait $1{,}15$ euro.\\begin{questions}\n\\item Calculer la dépense totale.\n\\item Quelle monnaie rend-on sur un billet de 10 euros ?\n\\end{questions}",
+    "corrige": "La dépense vaut $1{,}20+2{,}85+1{,}15=\\res{5{,}20}$ euros ; regrouper $1{,}20+1{,}15=2{,}35$ aide peu, mieux vaut $2{,}85+1{,}15=4$. La monnaie : $10-5{,}20=\\res{4{,}80}$ euros.",
+    "methode": "Chercher des paires qui font un compte rond.",
+    "controle": "assert Rational(\"1.20\")+Rational(\"2.85\")+Rational(\"1.15\")==Rational(\"5.20\") and 10-Rational(\"5.20\")==Rational(\"4.80\")",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 3
+  },
+  {
+    "titre": "Les sorties du coureur",
+    "enonce": "Un coureur parcourt $4{,}5$ km lundi, puis $1{,}8$ km de moins mardi. Quelle distance parcourt-il mardi ? Et sur les deux jours ?",
+    "corrige": "Mardi : $4{,}5-1{,}8=\\res{2{,}7}$ km. Total : $4{,}5+2{,}7=\\res{7{,}2}$ km. « De moins » conduit ici à une soustraction puis à une addition.",
+    "methode": "Calculer la donnée manquante avant le total.",
+    "controle": "assert Rational(\"4.5\")-Rational(\"1.8\")==Rational(\"2.7\") and Rational(\"4.5\")+Rational(\"2.7\")==Rational(\"7.2\")",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 3
+  },
+  {
+    "titre": "Trois carnets identiques",
+    "enonce": "Un carnet coûte $2{,}45$ euros. Calculer le prix de trois carnets, puis la monnaie rendue sur 10 euros.",
+    "corrige": "$2{,}45\\times3=\\res{7{,}35}$ euros. Monnaie : $10-7{,}35=\\res{2{,}65}$ euros. Estimation : $2{,}5\\times3=7{,}5$, proche du prix exact.",
+    "methode": "Multiplier avant de soustraire.",
+    "controle": "assert Rational(\"2.45\")*3==Rational(\"7.35\") and 10-Rational(\"7.35\")==Rational(\"2.65\")",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 3
+  },
+  {
+    "titre": "Le ruban coupé",
+    "enonce": "Dans un ruban de $2{,}75$ m, on coupe deux morceaux de $0{,}9$ m chacun. Quelle longueur de ruban reste-t-il ?",
+    "corrige": "Les morceaux prennent $0{,}9\\times2=1{,}8$ m. Il reste $2{,}75-1{,}8=\\res{0{,}95}$ m. Contrôle : $1{,}8+0{,}95=2{,}75$ m.",
+    "methode": "Calculer d’abord la longueur totale coupée.",
+    "controle": "assert Rational(\".9\")*2==Rational(\"1.8\") and Rational(\"2.75\")-Rational(\"1.8\")==Rational(\".95\")",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 3
+  },
+  {
+    "titre": "L’alignement fautif",
+    "enonce": "Tom pose $5{,}6+2{,}14$ en alignant les nombres à droite, comme des entiers, et trouve $2{,}70$. Expliquer son erreur et donner le bon résultat.",
+    "corrige": "Tom a ajouté des centièmes à des dixièmes : les rangs étaient décalés. En alignant les virgules : $5{,}60+2{,}14=\\res{7{,}74}$. L’estimation $6+2=8$ aurait signalé l’erreur.",
+    "methode": "Aligner les virgules, pas les derniers chiffres.",
+    "controle": "assert Rational(\"5.6\")+Rational(\"2.14\")==Rational(\"7.74\")",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 3
+  }
+]

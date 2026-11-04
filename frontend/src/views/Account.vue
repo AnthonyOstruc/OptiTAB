@@ -2,17 +2,12 @@
   <DashboardLayout>
     <div class="account-page">
       <!-- Header -->
-      <div class="page-header">
-        <div class="header-content">
-          <div class="header-icon">
-            <component :is="UserCircleIcon" />
-          </div>
-          <div class="header-text">
-            <h1 class="page-title">Mon Compte</h1>
-            <p class="page-subtitle">Gérez vos informations personnelles et paramètres de sécurité</p>
-          </div>
+      <header class="es-page-head account-head">
+        <div>
+          <h1 class="es-h1">Mon compte</h1>
+          <p class="es-sub">{{ sousTitre }}</p>
         </div>
-      </div>
+      </header>
 
       <!-- Configuration Pays/Niveau Card -->
       <section class="info-card">
@@ -250,43 +245,36 @@
   </DashboardLayout>
 
 
-  <!-- Modal pour modifier l'email -->
-  <div v-if="showEmailChangeModal" class="modal-overlay" @click="closeEmailChangeModal">
-    <div class="modal-card" @click.stop>
-      <div class="modal-header">
-        <h3>Modifier mon email</h3>
-        <button class="modal-close" @click="closeEmailChangeModal">×</button>
-      </div>
-      <div class="modal-body">
-        <label class="form-label" for="newEmail">
-          <component :is="EnvelopeIcon" class="label-icon" />
-          Nouvelle adresse email
-        </label>
-        <input
-          id="newEmail"
-          v-model="emailChangeForm.email"
-          type="email"
-          class="form-input"
-          placeholder="nouveau@mail.com"
-          autocomplete="email"
-        />
-        <div v-if="emailChangeError" class="error-message" style="margin-top: 0.5rem;">
-          <component :is="XCircleIcon" class="message-icon" />
-          <span>{{ emailChangeError }}</span>
-        </div>
-        <div v-if="emailChangeSuccess" class="success-message" style="margin-top: 0.5rem;">
-          <component :is="CheckCircleIcon" class="message-icon" />
-          <span>{{ emailChangeSuccess }}</span>
-        </div>
-      </div>
-      <div class="modal-actions">
-        <button class="resend-btn" type="button" @click="closeEmailChangeModal">Annuler</button>
-        <button class="confirm-btn" type="button" :disabled="isSubmittingEmailChange" @click="submitEmailChange">
-          {{ isSubmittingEmailChange ? 'Envoi...' : 'Envoyer le lien' }}
-        </button>
-      </div>
+  <!-- Modifier l'e-mail -->
+  <Modal
+    :is-open="showEmailChangeModal"
+    title="Modifier mon e-mail"
+    subtitle="Nous envoyons un lien de confirmation à la nouvelle adresse."
+    :icon="EnvelopeIcon"
+    :can-close="!isSubmittingEmailChange"
+    size="small"
+    @close="closeEmailChangeModal"
+  >
+    <div class="om-field">
+      <label class="om-label" for="newEmail">Nouvelle adresse e-mail</label>
+      <input
+        id="newEmail"
+        v-model="emailChangeForm.email"
+        type="email"
+        class="om-input"
+        placeholder="nouvelle@adresse.fr"
+        autocomplete="email"
+      />
     </div>
-  </div>
+    <p v-if="emailChangeError" class="om-alert om-alert--error email-change-message">{{ emailChangeError }}</p>
+    <p v-if="emailChangeSuccess" class="om-alert om-alert--success email-change-message">{{ emailChangeSuccess }}</p>
+    <template #footer>
+      <button class="om-btn om-btn--ghost" type="button" :disabled="isSubmittingEmailChange" @click="closeEmailChangeModal">Annuler</button>
+      <button class="om-btn om-btn--primary" type="button" :disabled="isSubmittingEmailChange" @click="submitEmailChange">
+        {{ isSubmittingEmailChange ? 'Envoi…' : 'Envoyer le lien' }}
+      </button>
+    </template>
+  </Modal>
 </template>
 
 <script setup>
@@ -294,9 +282,9 @@ import { ref, onMounted, computed, onBeforeUnmount, watch } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { updateUserProfile, fetchUserProfile, sendEmailVerificationLink, changeUserPassword, requestEmailChange } from '@/api'
 import FormInput from '@/components/forms/FormInput.vue'
+import Modal from '@/components/common/Modal.vue'
 import FormSelect from '@/components/forms/FormSelect.vue'
 import { 
-  UserCircleIcon, 
   UserIcon,
   LockClosedIcon, 
   GlobeAltIcon,
@@ -320,6 +308,9 @@ import '@vuepic/vue-datepicker/dist/main.css'
 import PasswordStrength from '@/components/forms/PasswordStrength.vue'
 import { useRoute, useRouter } from 'vue-router'
 const userStore = useUserStore()
+const sousTitre = computed(() => (userStore.role === 'parent'
+  ? 'Vos informations, votre classe et la sécurité de votre compte.'
+  : 'Tes informations, ta classe et la sécurité de ton compte.'))
 const route = useRoute()
 const router = useRouter()
 
@@ -752,61 +743,15 @@ onBeforeUnmount(() => {
   width: 100%;
   max-width: 1000px;
   margin: 0 auto;
-  padding: 2rem 1rem 4rem;
+  padding: 0 1rem 4rem;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
-/* ============================================
-   PAGE HEADER
-   ============================================ */
-
-.page-header {
-  margin-bottom: 1rem;
-}
-
-.header-content {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.header-icon {
-  width: 3.5rem;
-  height: 3.5rem;
-  background: linear-gradient(135deg, #1b3c8e 0%, #122a66 100%);
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ffffff;
-  flex-shrink: 0;
-  box-shadow: 0 4px 6px -1px rgba(27, 60, 142, 0.2);
-}
-
-.header-icon svg {
-  width: 2rem;
-  height: 2rem;
-}
-
-.header-text {
-  flex: 1;
-}
-
-.page-title {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #111827;
-  margin: 0 0 0.25rem 0;
-  line-height: 1.2;
-}
-
-.page-subtitle {
-  font-size: 0.9375rem;
-  color: #6b7280;
-  margin: 0;
-  line-height: 1.4;
+/* Titre au style de l'espace ; l'écart avec les cartes vient du `gap`. */
+.account-head {
+  margin-bottom: 0;
 }
 
 /* ============================================
@@ -1211,24 +1156,6 @@ onBeforeUnmount(() => {
   display: none !important;
 }
 
-/* ============================================
-   MODAL
-   ============================================ */
-
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  z-index: 9999;
-  backdrop-filter: blur(4px);
-  animation: fadeIn 0.2s ease;
-  overflow-y: auto;
-  padding: 2rem 1rem;
-}
-
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -1236,18 +1163,6 @@ onBeforeUnmount(() => {
   to {
     opacity: 1;
   }
-}
-
-.modal-card {
-  background: #ffffff;
-  border-radius: 20px;
-  width: min(90%, 480px);
-  max-width: 480px;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  animation: slideUp 0.3s ease;
-  max-height: calc(100vh - 4rem);
-  display: flex;
-  flex-direction: column;
 }
 
 @keyframes slideUp {
@@ -1261,135 +1176,14 @@ onBeforeUnmount(() => {
   }
 }
 
-.modal-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1.75rem 1.75rem 1.25rem 1.75rem;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.modal-header h3 {
-  margin: 0;
-  color: #111827;
-  font-size: 1.25rem;
-  font-weight: 700;
-}
-
-.modal-close {
-  background: #f3f4f6;
-  border: none;
-  font-size: 1.5rem;
-  color: #6b7280;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  line-height: 1;
-  padding: 0;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.modal-close:hover {
-  background: #e5e7eb;
-  color: #374151;
-}
-
-.modal-body {
-  padding: 1.75rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  flex: 1 1 auto;
-  overflow-y: auto;
-}
-
-.modal-body .form-label {
-  margin-bottom: 0.5rem;
-}
-
-.modal-body .form-input {
-  width: 100%;
-}
-
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.75rem;
-  padding: 1.25rem 1.75rem 1.75rem 1.75rem;
-  border-top: 1px solid #f3f4f6;
-}
-
-.resend-btn {
-  background: #ffffff;
-  color: #374151;
-  border: 1.5px solid #d1d5db;
-  border-radius: 10px;
-  padding: 0.625rem 1.25rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.resend-btn:hover:not(:disabled) {
-  background: #f9fafb;
-  border-color: #9ca3af;
-}
-
-.confirm-btn {
-  background: linear-gradient(135deg, #1b3c8e 0%, #122a66 100%);
-  color: #ffffff;
-  border: none;
-  border-radius: 10px;
-  padding: 0.625rem 1.25rem;
-  font-size: 0.875rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 1px 2px 0 rgba(27, 60, 142, 0.2);
-}
-
-.confirm-btn:hover:not(:disabled) {
-  background: linear-gradient(135deg, #122a66 0%, #4c5bc4 100%);
-  box-shadow: 0 4px 6px -1px rgba(27, 60, 142, 0.3);
-}
-
-.confirm-btn:disabled,
-.resend-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
 /* ============================================
    RESPONSIVE DESIGN
    ============================================ */
 
 @media (max-width: 768px) {
   .account-page {
-    padding: 1.5rem 1rem 3rem;
+    padding: 0 1rem 3rem;
     gap: 1.25rem;
-  }
-
-  .page-title {
-    font-size: 1.5rem;
-  }
-
-  .page-subtitle {
-    font-size: 0.875rem;
-  }
-
-  .header-icon {
-    width: 3rem;
-    height: 3rem;
-  }
-
-  .header-icon svg {
-    width: 1.75rem;
-    height: 1.75rem;
   }
 
   .card-header {
@@ -1498,27 +1292,8 @@ onBeforeUnmount(() => {
 
 @media (max-width: 640px) {
   .account-page {
-    padding: 1.25rem 0.875rem 2.5rem;
+    padding: 0 0.875rem 2.5rem;
     gap: 1rem;
-  }
-
-  .page-title {
-    font-size: 1.5rem;
-  }
-
-  .page-subtitle {
-    font-size: 0.8125rem;
-  }
-
-  .header-icon {
-    width: 2.75rem;
-    height: 2.75rem;
-    border-radius: 14px;
-  }
-
-  .header-icon svg {
-    width: 1.625rem;
-    height: 1.625rem;
   }
 
   .info-card {
@@ -1591,25 +1366,6 @@ onBeforeUnmount(() => {
   .account-page {
     padding: 1rem 0.75rem 2rem;
     gap: 0.875rem;
-  }
-
-  .page-title {
-    font-size: 1.375rem;
-  }
-
-  .page-subtitle {
-    font-size: 0.75rem;
-  }
-
-  .header-icon {
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 12px;
-  }
-
-  .header-icon svg {
-    width: 1.5rem;
-    height: 1.5rem;
   }
 
   .info-card {
@@ -1691,41 +1447,11 @@ onBeforeUnmount(() => {
     width: 1rem;
     height: 1rem;
   }
-
-  .modal-card {
-    width: 95%;
-  }
-
-  .modal-header h3 {
-    font-size: 1.0625rem;
-  }
-
-  .modal-body p {
-    font-size: 0.8125rem;
-  }
 }
 
 @media (max-width: 380px) {
   .account-page {
     padding: 0.875rem 0.625rem 1.75rem;
-  }
-
-  .page-title {
-    font-size: 1.25rem;
-  }
-
-  .page-subtitle {
-    font-size: 0.6875rem;
-  }
-
-  .header-icon {
-    width: 2.25rem;
-    height: 2.25rem;
-  }
-
-  .header-icon svg {
-    width: 1.375rem;
-    height: 1.375rem;
   }
 
   .card-header {
@@ -1761,5 +1487,10 @@ onBeforeUnmount(() => {
     padding: 0.5625rem 0.875rem;
     font-size: 0.75rem;
   }
+}
+
+/* Fenêtre « Modifier mon e-mail » (cadre commun components/common/Modal.vue) */
+.email-change-message {
+  margin-top: 14px;
 }
 </style> 

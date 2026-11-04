@@ -1,0 +1,79 @@
+Titre: Penser et programmer par blocs
+
+<!-- optitab:1 -->
+::: objectifs
+Lire une suite d'instructions, prévoir une sortie et traduire une formule par des blocs. Comprendre une répétition et suivre un tracé.
+:::
+
+## I. Lire un programme dans l'ordre
+
+::: definition
+Un **programme** est une suite d'instructions exécutées dans un ordre précis. Une **entrée** est une donnée fournie ; une **sortie** est une information produite. Le bloc `réponse` contient ici la donnée saisie après une question.
+:::
+
+::: exemple Demander, calculer, afficher
+Transcription textuelle des blocs, dans leur ordre d'exécution :
+```console
+demander « Nombre ? » et attendre
+dire ((3 × réponse) + 2)
+```
+Pour l'entrée $4$, le programme affiche $3\times4+2=14$.
+:::
+
+::: methode Prévoir une sortie
+Repérer le bloc qui demande une donnée. Remplacer `réponse` par cette donnée dans le calcul. Respecter les parenthèses et les priorités, puis donner ce qui est affiché.
+:::
+
+## II. Comprendre les blocs imbriqués
+
+::: exemple Deux organisations différentes
+| Expression décrite par les blocs | Pour l'entrée $4$ |
+|---|---|
+| $(3\times\text{réponse})+2$ | $3\times4+2=14$ |
+| $3\times(\text{réponse}+2)$ | $3\times(4+2)=18$ |
+Le bloc placé à l'intérieur est calculé en premier : les parenthèses traduisent cette imbrication.
+:::
+
+::: attention
+Une phrase affichée n'est pas une nouvelle entrée. La donnée saisie n'est pas modifiée par le simple affichage d'un calcul. Ne pas confondre « multiplier puis ajouter » avec « ajouter puis multiplier ».
+:::
+
+## III. Répéter une séquence
+
+::: definition
+Une **boucle de répétition** exécute un nombre fixé de fois la même suite d'instructions. Toutes les instructions placées à l'intérieur sont répétées, dans l'ordre.
+:::
+
+::: exemple Tracer un carré
+Le lutin commence au point $A$, dirigé vers la droite.
+```console
+stylo en position d'écriture
+répéter 4 fois :
+    avancer de 60 pas
+    tourner à gauche de 90°
+```
+Il trace quatre segments de $60$ pas et effectue quatre quarts de tour. Il revient en $A$, orienté vers la droite.
+:::
+
+[IMAGE_1]
+
+::: methode Suivre une boucle
+Faire un tableau avec une ligne par répétition. Relever la direction de chaque déplacement, puis la direction obtenue après la rotation. Compter les déplacements et les rotations séparément.
+:::
+
+| Répétition | Déplacement | Direction après rotation |
+|---|---|---|
+| $1$ | Vers la droite | Vers le haut |
+| $2$ | Vers le haut | Vers la gauche |
+| $3$ | Vers la gauche | Vers le bas |
+| $4$ | Vers le bas | Vers la droite |
+
+## IV. Contrôler le résultat
+
+::: attention Dessin et état final
+Une rotation sans déplacement ne trace rien. Si on supprime uniquement la dernière rotation du carré, le dessin reste identique, mais le lutin termine orienté vers le bas.
+:::
+
+::: retenir
+Vérifier le départ, la direction initiale, le stylo et le contenu exact de la boucle. Pour un triangle équilatéral, le changement de direction vaut $120^\circ$, et non l'angle intérieur $60^\circ$. Quatre déplacements quelconques ne suffisent pas à tracer un carré.
+:::

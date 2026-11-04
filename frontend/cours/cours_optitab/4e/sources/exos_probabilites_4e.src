@@ -1,0 +1,788 @@
+CHAPITRE: Probabilités
+
+%% ================================================================ DÉCOUVERTE
+
+@@ Découverte | 1. Tirer une boule dans une urne | easy | probabilites_4e_urne_ex.png
+Une urne contient des boules indiscernables au toucher. On en tire une au hasard.
+[IMAGE_1]
+?? Combien y a-t-il d'issues possibles ?
+?? Calculer la probabilité de tirer une boule rouge.
+?? Calculer la probabilité de tirer une boule bleue, puis une boule verte.
+?? Vérifier que la somme des trois probabilités vaut $1$.
+?? Quelle est la probabilité de ne pas tirer une boule rouge ? De tirer une boule jaune ?
+?? On ajoute $2$ boules vertes dans l'urne. Quelle est la nouvelle probabilité de tirer une boule verte ?
+## Les issues
+E> Chaque boule est une issue : $5 + 3 + 2 = 10$.
+R> $10$ issues, toutes équiprobables (on tire au hasard des boules indiscernables).
+S> $10$
+## Une boule rouge
+M> $P = \frac{\text{nombre d'issues favorables}}{\text{nombre d'issues possibles}}$.
+E> $5$ boules rouges sur $10$ : $\frac{5}{10}$.
+R> $\frac{1}{2}$
+S> $\frac{1}{2}$
+## Bleue et verte
+E> Bleue : $\frac{3}{10}$.
+E> Verte : $\frac{2}{10} = \frac{1}{5}$.
+R> $\frac{3}{10}$ et $\frac{1}{5}$.
+S> $\frac{3}{10}$ ; $\frac{1}{5}$
+## La somme
+E> $\frac{5}{10} + \frac{3}{10} + \frac{2}{10} = \frac{10}{10}$
+R> $1$ ✔️ : on est sûr de tirer une boule d'une de ces couleurs.
+S> $1$
+## Pas rouge, ou jaune
+E> Ne pas tirer une rouge : $1 - \frac{1}{2} = \frac{1}{2}$ (ou $\frac{5}{10}$ : les $5$ boules bleues ou vertes).
+E> Il n'y a aucune boule jaune : l'événement est impossible.
+R> $\frac{1}{2}$ et $0$.
+A> $P(\text{non } A) = 1 - P(A)$ ; un événement impossible a une probabilité nulle.
+S> $\frac{1}{2}$ ; $0$
+## Deux vertes de plus
+E> Il y a maintenant $12$ boules dont $4$ vertes.
+R> $\frac{4}{12} = \frac{1}{3}$
+F> Écrire $\frac{4}{10}$ : en ajoutant des boules, le nombre TOTAL d'issues change aussi.
+S> $\frac{1}{3}$
+
+@@ Découverte | 2. Lancer un dé | easy
+On lance un dé équilibré à six faces numérotées de $1$ à $6$.
+?? Donner toutes les issues possibles.
+?? Quelle est la probabilité d'obtenir $6$ ?
+?? Quelle est la probabilité d'obtenir un nombre pair ?
+?? Quelle est la probabilité d'obtenir un multiple de $3$ ?
+?? Quelle est la probabilité d'obtenir au moins $4$ ?
+?? Quelle est la probabilité d'obtenir $7$ ? Et d'obtenir un nombre inférieur ou égal à $6$ ?
+## Les issues
+R> $1$, $2$, $3$, $4$, $5$, $6$ : six issues équiprobables (le dé est équilibré).
+E> Chaque face a la même chance d'apparaître.
+S> $1, 2, 3, 4, 5, 6$
+## Obtenir 6
+E> Une seule issue favorable sur six.
+R> $\frac{1}{6}$
+S> $\frac{1}{6}$
+## Un nombre pair
+E> Issues favorables : $2$, $4$, $6$.
+R> $\frac{3}{6} = \frac{1}{2}$
+S> $\frac{1}{2}$
+## Un multiple de 3
+E> Issues favorables : $3$ et $6$.
+R> $\frac{2}{6} = \frac{1}{3}$
+S> $\frac{1}{3}$
+## Au moins 4
+M> « Au moins $4$ » signifie $4$ ou plus.
+E> Issues favorables : $4$, $5$, $6$.
+R> $\frac{3}{6} = \frac{1}{2}$
+F> Oublier le $4$ : « au moins $4$ » inclut $4$ (à ne pas confondre avec « plus que $4$ »).
+S> $\frac{1}{2}$
+## Deux cas extrêmes
+E> $7$ n'est sur aucune face : événement impossible.
+E> Toutes les faces sont inférieures ou égales à $6$ : événement certain.
+R> $P(7) = 0$ et $P(\leq 6) = 1$.
+A> Une probabilité est toujours comprise entre $0$ (impossible) et $1$ (certain).
+S> $0$ ; $1$
+
+@@ Découverte | 3. La roue de la fortune | easy | probabilites_4e_roue8.png
+Une roue est partagée en $8$ secteurs identiques, numérotés de $1$ à $8$ et coloriés comme sur la figure. On la fait tourner ; la flèche s'arrête au hasard sur un secteur.
+[IMAGE_1]
+?? Quelle est la probabilité d'obtenir le rouge ?
+?? Quelle est la probabilité d'obtenir le bleu ? Le jaune ? Le vert ?
+?? Quelle est la probabilité de ne pas obtenir le jaune ?
+?? Quelle est la probabilité d'obtenir un numéro pair ?
+?? Quelle est la probabilité d'obtenir un secteur rouge ET pair ?
+?? Quelle est la probabilité d'obtenir un secteur rouge OU pair ?
+## Le rouge
+E> Secteurs rouges : $1$, $3$ et $6$.
+R> $\frac{3}{8}$
+S> $\frac{3}{8}$
+## Bleu, jaune, vert
+E> Bleu : $2$ et $7$ ; jaune : $4$ et $8$ ; vert : $5$.
+R> $\frac{2}{8} = \frac{1}{4}$ ; $\frac{1}{4}$ ; $\frac{1}{8}$.
+V> $\frac{3}{8} + \frac{2}{8} + \frac{2}{8} + \frac{1}{8} = 1$ ✔️
+S> $\frac{1}{4}$ ; $\frac{1}{4}$ ; $\frac{1}{8}$
+## Pas jaune
+E> $1 - \frac{1}{4} = \frac{3}{4}$
+R> $\frac{3}{4}$
+S> $\frac{3}{4}$
+## Un numéro pair
+E> $2$, $4$, $6$, $8$ : $4$ secteurs sur $8$.
+R> $\frac{1}{2}$
+S> $\frac{1}{2}$
+## Rouge et pair
+M> « ET » : le secteur doit vérifier les deux conditions à la fois.
+E> Parmi les rouges ($1$, $3$, $6$), seul $6$ est pair.
+R> $\frac{1}{8}$
+S> $\frac{1}{8}$
+## Rouge ou pair
+M> « OU » : au moins une des deux conditions.
+E> Rouges : $1, 3, 6$ ; pairs : $2, 4, 6, 8$ ; en tout $1, 2, 3, 4, 6, 8$ (le $6$ n'est compté qu'une fois).
+R> $\frac{6}{8} = \frac{3}{4}$
+F> Additionner $\frac{3}{8} + \frac{4}{8} = \frac{7}{8}$ : le secteur $6$ serait compté deux fois.
+S> $\frac{3}{4}$
+
+@@ Découverte | 4. Un jeu de 32 cartes | easy
+Un jeu de $32$ cartes comporte $4$ couleurs (pique, cœur, carreau, trèfle) ; dans chaque couleur, il y a $8$ cartes : $7$, $8$, $9$, $10$, valet, dame, roi, as. Les cœurs et les carreaux sont rouges, les piques et les trèfles sont noirs. On tire une carte au hasard.
+?? Quelle est la probabilité de tirer un cœur ?
+?? Quelle est la probabilité de tirer un as ?
+?? Quelle est la probabilité de tirer l'as de cœur ?
+?? Quelle est la probabilité de tirer une carte rouge ?
+?? Les figures sont les valets, les dames et les rois. Quelle est la probabilité de tirer une figure ?
+?? Quelle est la probabilité de ne pas tirer une figure ?
+## Un cœur
+E> $8$ cœurs sur $32$ cartes.
+R> $\frac{8}{32} = \frac{1}{4}$
+S> $\frac{1}{4}$
+## Un as
+E> $4$ as (un par couleur).
+R> $\frac{4}{32} = \frac{1}{8}$
+S> $\frac{1}{8}$
+## L'as de cœur
+E> Une seule carte.
+R> $\frac{1}{32}$
+S> $\frac{1}{32}$
+## Une carte rouge
+E> Cœurs et carreaux : $16$ cartes.
+R> $\frac{16}{32} = \frac{1}{2}$
+S> $\frac{1}{2}$
+## Une figure
+E> $3$ figures par couleur, $4$ couleurs : $12$ figures.
+R> $\frac{12}{32} = \frac{3}{8}$
+S> $\frac{3}{8}$
+## Pas de figure
+E> $1 - \frac{3}{8}$
+R> $\frac{5}{8}$
+V> $32 - 12 = 20$ cartes, et $\frac{20}{32} = \frac{5}{8}$ ✔️
+A> Pour un événement « ne pas… », on passe souvent par l'événement contraire.
+S> $\frac{5}{8}$
+
+@@ Découverte | 5. Placer sur l'échelle des probabilités | easy | probabilites_4e_echelle_solution.png
+On lance un dé équilibré à six faces. On considère les événements : A « obtenir $7$ » ; B « obtenir un nombre pair » ; C « obtenir $6$ » ; D « obtenir un nombre inférieur à $7$ » ; E « obtenir au moins $2$ » ; F « obtenir $1$ ou $2$ ».
+?? Calculer $P(A)$ et $P(D)$. Comment qualifie-t-on ces événements ?
+?? Calculer $P(B)$.
+?? Calculer $P(C)$ et en donner une valeur approchée au centième.
+?? Calculer $P(E)$ (au centième).
+?? Calculer $P(F)$ (au centième).
+?? Placer les six événements sur l'échelle des probabilités, du moins probable au plus probable.
+## A et D
+E> Aucune face ne porte $7$ ; toutes les faces sont inférieures à $7$.
+R> $P(A) = 0$ (événement impossible) et $P(D) = 1$ (événement certain).
+S> $0$ (impossible) ; $1$ (certain)
+## B
+E> $2$, $4$, $6$ : $\frac{3}{6}$.
+R> $P(B) = \frac{1}{2}$
+S> $\frac{1}{2}$
+## C
+E> Une issue sur six.
+R> $P(C) = \frac{1}{6} \approx 0{,}17$
+S> $\frac{1}{6} \approx 0{,}17$
+## E
+E> « Au moins $2$ » est le contraire de « obtenir $1$ » : $1 - \frac{1}{6}$.
+R> $P(E) = \frac{5}{6} \approx 0{,}83$
+S> $\frac{5}{6} \approx 0{,}83$
+## F
+E> $\frac{2}{6}$
+R> $P(F) = \frac{1}{3} \approx 0{,}33$
+S> $\frac{1}{3} \approx 0{,}33$
+## L'échelle
+E> $0 < 0{,}17 < 0{,}33 < 0{,}5 < 0{,}83 < 1$
+R> A, C, F, B, E, D.
+[IMAGE_1]
+A> L'échelle va de $0$ (impossible) à $1$ (certain), en passant par $0{,}5$ (une chance sur deux).
+S> A < C < F < B < E < D
+
+@@ Découverte | 6. Utiliser l'événement contraire | easy
+Pour chaque situation, utiliser la relation $P(\text{non } A) = 1 - P(A)$.
+?? La probabilité qu'il pleuve demain est $0{,}35$. Quelle est la probabilité qu'il ne pleuve pas ?
+?? Avec un dé équilibré, quelle est la probabilité de ne pas obtenir $6$ ?
+?? Une équipe a $45$ % de chances de gagner un match et $30$ % de chances de le perdre. Quelle est la probabilité d'un match nul ?
+?? Quelle est la probabilité que l'équipe ne perde pas ?
+?? Quelle est la probabilité que l'équipe ne gagne pas ?
+?? Un élève affirme : « $P(A) = 0{,}4$ et $P(\text{non } A) = 0{,}5$ ». Est-ce possible ?
+## La pluie
+E> $1 - 0{,}35$
+R> $0{,}65$
+S> $0{,}65$
+## Pas de 6
+E> $1 - \frac{1}{6}$
+R> $\frac{5}{6}$
+S> $\frac{5}{6}$
+## Le match nul
+M> Gagner, perdre et faire match nul sont les trois issues : leurs probabilités ont pour somme $100$ %.
+E> $100 - 45 - 30 = 25$
+R> $25$ %
+S> $25$ %
+## Ne pas perdre
+E> Ne pas perdre $=$ gagner ou faire match nul : $45 + 25 = 70$ %, ou $100 - 30 = 70$ %.
+R> $70$ %
+S> $70$ %
+## Ne pas gagner
+E> $100 - 45 = 55$
+R> $55$ %
+S> $55$ %
+## Une affirmation impossible
+E> $0{,}4 + 0{,}5 = 0{,}9 \neq 1$
+R> Non : un événement et son contraire ont toujours des probabilités de somme $1$.
+A> Un événement et son contraire couvrent toutes les issues, sans se chevaucher.
+F> Croire que « ne pas gagner » veut dire « perdre » : il reste le match nul.
+S> Non ($0{,}4 + 0{,}5 \neq 1$)
+
+@@ Découverte | 7. Les lettres d'un mot | easy
+On écrit chaque lettre du mot PROBABILITE sur un carton, on mélange les cartons et on en tire un au hasard.
+?? Combien y a-t-il de cartons ?
+?? Quelle est la probabilité de tirer la lettre B ? La lettre P ?
+?? Quelle est la probabilité de tirer une voyelle ?
+?? Quelle est la probabilité de tirer une consonne ?
+?? Quelle est la probabilité de tirer une lettre du mot LIT ?
+?? Quelle est la probabilité de tirer la lettre Z ?
+## Le nombre de cartons
+E> P, R, O, B, A, B, I, L, I, T, E.
+R> $11$ cartons.
+S> $11$
+## B et P
+E> Il y a deux B et un seul P.
+R> $P(\text{B}) = \frac{2}{11}$ et $P(\text{P}) = \frac{1}{11}$.
+F> Compter les lettres DIFFÉRENTES ($9$) au lieu des cartons ($11$) : chaque carton est une issue.
+S> $\frac{2}{11}$ ; $\frac{1}{11}$
+## Une voyelle
+E> Voyelles : O, A, I, I, E.
+R> $\frac{5}{11}$
+S> $\frac{5}{11}$
+## Une consonne
+E> $1 - \frac{5}{11}$
+R> $\frac{6}{11}$
+S> $\frac{6}{11}$
+## Une lettre de LIT
+E> Cartons L, I, I, T : $4$ cartons.
+R> $\frac{4}{11}$
+S> $\frac{4}{11}$
+## La lettre Z
+R> $0$ : il n'y a pas de Z (événement impossible).
+E> Aucun carton ne porte la lettre Z.
+A> Les issues sont les CARTONS : une lettre présente deux fois a deux fois plus de chances d'être tirée.
+S> $0$
+
+%% ================================================================ ENTRAÎNEMENT
+
+@@ Entraînement | 1. La somme de deux dés | medium | probabilites_4e_deux_des_solution.png
+On lance deux dés équilibrés et on calcule la somme des deux nombres obtenus.
+?? Construire un tableau à double entrée donnant toutes les sommes. Combien y a-t-il d'issues ?
+?? Quelle est la probabilité d'obtenir une somme égale à $7$ ?
+?? Quelle est la probabilité d'obtenir $2$ ? Et $12$ ?
+?? Quelle somme a le plus de chances d'apparaître ?
+?? Quelle est la probabilité d'obtenir une somme au moins égale à $10$ ?
+?? Quelle est la probabilité d'obtenir un double ? Une somme paire ?
+## Le tableau
+M> On croise les $6$ résultats du premier dé avec les $6$ du second.
+E> $6 \times 6 = 36$ cases, toutes équiprobables.
+R> $36$ issues.
+[IMAGE_1]
+S> $36$ issues
+## La somme 7
+E> Cases où la somme vaut $7$ : $(1;6), (2;5), (3;4), (4;3), (5;2), (6;1)$.
+R> $\frac{6}{36} = \frac{1}{6}$
+S> $\frac{1}{6}$
+## Les sommes 2 et 12
+E> $2$ : seulement $(1;1)$ ; $12$ : seulement $(6;6)$.
+R> $\frac{1}{36}$ chacune.
+S> $\frac{1}{36}$ ; $\frac{1}{36}$
+## La somme la plus probable
+E> La somme $7$ apparaît $6$ fois : c'est le maximum dans le tableau.
+R> $7$
+F> Penser que toutes les sommes de $2$ à $12$ ont la même probabilité $\frac{1}{11}$ : ce sont les $36$ cases qui sont équiprobables, pas les $11$ sommes.
+S> $7$
+## Au moins 10
+E> Somme $10$ : $3$ cases ; $11$ : $2$ cases ; $12$ : $1$ case.
+R> $\frac{6}{36} = \frac{1}{6}$
+S> $\frac{1}{6}$
+## Double et somme paire
+E> Doubles : $(1;1), (2;2), \dots, (6;6)$, soit $6$ cases : $\frac{6}{36} = \frac{1}{6}$.
+E> Somme paire : $18$ cases sur $36$ (les deux dés de même parité).
+R> $\frac{1}{6}$ et $\frac{1}{2}$.
+A> Pour deux épreuves, le tableau à double entrée permet de n'oublier aucune issue.
+S> $\frac{1}{6}$ ; $\frac{1}{2}$
+
+@@ Entraînement | 2. Fréquence et probabilité | medium | probabilites_4e_piece.png
+Des élèves lancent une pièce équilibrée et notent le nombre de « pile ». Ils obtiennent $7$ « pile » sur $10$ lancers, $56$ sur $100$, $512$ sur $1\,000$ et $4\,985$ sur $10\,000$.
+[IMAGE_1]
+?? Quelle est la probabilité d'obtenir « pile » ?
+?? Calculer la fréquence de « pile » pour chaque série de lancers.
+?? Comment évolue l'écart entre la fréquence et la probabilité quand le nombre de lancers augmente ?
+?? Après $10$ lancers, Inès affirme que la pièce est truquée. A-t-elle raison ?
+?? Un élève a obtenu « pile » $5$ fois de suite. Quelle est la probabilité d'obtenir « pile » au lancer suivant ?
+?? Avec $10\,000$ lancers, environ combien de « pile » peut-on attendre ? Le résultat $4\,985$ est-il étonnant ?
+## La probabilité
+E> Deux issues équiprobables : pile et face.
+R> $\frac{1}{2} = 0{,}5$
+S> $0{,}5$
+## Les fréquences
+E> $\frac{7}{10} = 0{,}7$ ; $\frac{56}{100} = 0{,}56$.
+E> $\frac{512}{1\,000} = 0{,}512$ ; $\frac{4\,985}{10\,000} = 0{,}498\,5$.
+R> $0{,}7$ ; $0{,}56$ ; $0{,}512$ ; $0{,}498\,5$.
+S> $0{,}7$ ; $0{,}56$ ; $0{,}512$ ; $0{,}4985$
+## L'écart
+E> Écarts avec $0{,}5$ : $0{,}2$ ; $0{,}06$ ; $0{,}012$ ; $0{,}001\,5$.
+R> L'écart diminue : plus on fait de lancers, plus la fréquence se rapproche de la probabilité.
+S> Il diminue
+## Une conclusion hâtive
+E> Sur seulement $10$ lancers, obtenir $7$ « pile » arrive assez souvent avec une pièce équilibrée.
+R> Non : $10$ lancers ne suffisent pas pour conclure. Avec $10\,000$ lancers, la fréquence est très proche de $0{,}5$.
+F> Tirer une conclusion d'un petit nombre d'essais : les fréquences y varient beaucoup.
+S> Non (trop peu de lancers)
+## Après 5 « pile »
+E> La pièce n'a pas de mémoire : chaque lancer est indépendant des précédents.
+R> La probabilité reste $\frac{1}{2}$.
+S> $\frac{1}{2}$
+## Sur 10 000 lancers
+E> $10\,000 \times 0{,}5 = 5\,000$.
+R> Environ $5\,000$ ; $4\,985$ en est très proche : ce n'est pas étonnant.
+A> Une fréquence observée sur un GRAND nombre d'essais est une bonne estimation de la probabilité.
+S> $\approx 5\,000$ ; non
+
+@@ Entraînement | 3. Le sac de bonbons | medium
+Un sac contient $6$ bonbons à la fraise, $4$ au citron et des bonbons à la menthe. On prend un bonbon au hasard. La probabilité de prendre un bonbon à la fraise est $\frac{1}{3}$.
+?? Combien y a-t-il de bonbons dans le sac ?
+?? Combien y a-t-il de bonbons à la menthe ?
+?? Quelle est la probabilité de prendre un bonbon au citron ? À la menthe ?
+?? Vérifier que la somme des trois probabilités vaut $1$.
+?? On retire $2$ bonbons à la fraise du sac. Quelle est la nouvelle probabilité de prendre un bonbon à la fraise ?
+?? En partant du sac initial, combien de bonbons au citron faudrait-il ajouter pour que la probabilité de prendre un bonbon au citron soit $\frac{1}{2}$ ?
+## Le nombre total
+M> $\frac{6}{\text{total}} = \frac{1}{3}$ : le total est le triple de $6$.
+E> $6 \times 3 = 18$
+R> $18$ bonbons.
+S> $18$
+## La menthe
+E> $18 - 6 - 4 = 8$
+R> $8$ bonbons à la menthe.
+S> $8$
+## Citron et menthe
+E> Citron : $\frac{4}{18} = \frac{2}{9}$.
+E> Menthe : $\frac{8}{18} = \frac{4}{9}$.
+R> $\frac{2}{9}$ et $\frac{4}{9}$.
+S> $\frac{2}{9}$ ; $\frac{4}{9}$
+## La somme
+E> $\frac{3}{9} + \frac{2}{9} + \frac{4}{9} = \frac{9}{9}$
+R> $1$ ✔️
+S> $1$
+## Deux fraises en moins
+E> Il reste $4$ fraises sur $16$ bonbons.
+R> $\frac{4}{16} = \frac{1}{4}$
+F> Écrire $\frac{4}{18}$ : le nombre total de bonbons a aussi diminué.
+S> $\frac{1}{4}$
+## Viser 1/2 pour le citron
+M> On ajoute $y$ bonbons au citron : il y en a $4 + y$ sur $18 + y$.
+E> Il faut que le citron représente la moitié du sac : $4 + y = (18 + y) : 2$, soit $8 + 2y = 18 + y$.
+E> $y = 10$
+R> Il faut ajouter $10$ bonbons au citron.
+V> $14$ citrons sur $28$ bonbons : $\frac{14}{28} = \frac{1}{2}$ ✔️
+A> Ajouter ou retirer des éléments change à la fois le numérateur ET le dénominateur.
+S> $10$
+
+@@ Entraînement | 4. Une roue à secteurs inégaux | medium | probabilites_4e_roue_angles.png
+Une roue est partagée en quatre secteurs d'angles différents. La flèche s'arrête au hasard ; la probabilité de chaque couleur est proportionnelle à l'angle de son secteur.
+[IMAGE_1]
+?? Vérifier que la somme des angles vaut $360°$.
+?? Calculer la probabilité d'obtenir le rouge.
+?? Calculer les probabilités du bleu, du vert et du jaune.
+?? Quelle est la probabilité de ne pas obtenir le vert ?
+?? On fait tourner la roue $1\,200$ fois. Environ combien de fois devrait-on obtenir le jaune ?
+?? On veut une roue où le vert a une probabilité de $\frac{1}{4}$. Quel doit être l'angle de son secteur ?
+## La somme des angles
+E> $180 + 90 + 60 + 30 = 360$ ✔️
+R> $360°$ : un tour complet.
+S> $360°$
+## Le rouge
+M> $P = \frac{\text{angle du secteur}}{360°}$.
+E> $\frac{180}{360}$
+R> $\frac{1}{2}$
+S> $\frac{1}{2}$
+## Les autres couleurs
+E> Bleu : $\frac{90}{360} = \frac{1}{4}$ ; vert : $\frac{60}{360} = \frac{1}{6}$.
+E> Jaune : $\frac{30}{360} = \frac{1}{12}$.
+R> $\frac{1}{4}$ ; $\frac{1}{6}$ ; $\frac{1}{12}$.
+F> Croire que les quatre couleurs ont chacune la probabilité $\frac{1}{4}$ : les secteurs n'ont pas la même taille.
+S> $\frac{1}{4}$ ; $\frac{1}{6}$ ; $\frac{1}{12}$
+## Pas vert
+E> $1 - \frac{1}{6}$
+R> $\frac{5}{6}$
+S> $\frac{5}{6}$
+## Sur 1 200 tours
+E> $1\,200 \times \frac{1}{12} = 100$
+R> Environ $100$ fois.
+A> Sur un grand nombre d'essais, le nombre de réussites est proche de (nombre d'essais) $\times$ (probabilité).
+S> $\approx 100$
+## Un vert à 1/4
+E> $\frac{1}{4} \times 360 = 90$
+R> Un secteur de $90°$.
+S> $90°$
+
+@@ Entraînement | 5. Lancer deux pièces | medium | probabilites_4e_deux_pieces_solution.png
+On lance deux pièces équilibrées et on note le résultat de chacune.
+?? Faire la liste de toutes les issues à l'aide d'un tableau. Combien y en a-t-il ?
+?? Quelle est la probabilité d'obtenir deux « pile » ?
+?? Quelle est la probabilité d'obtenir exactement un « pile » ?
+?? Quelle est la probabilité d'obtenir au moins un « pile » ?
+?? Léo dit : « Il y a trois résultats possibles : $0$, $1$ ou $2$ pile. Chacun a donc une probabilité de $\frac{1}{3}$. » A-t-il raison ?
+?? On lance maintenant trois pièces. Combien y a-t-il d'issues ? Quelle est la probabilité d'obtenir trois « pile » ?
+## Les issues
+E> Première pièce P ou F, deuxième pièce P ou F : $2 \times 2$.
+R> $4$ issues équiprobables : PP, PF, FP, FF.
+[IMAGE_1]
+S> $4$ : PP, PF, FP, FF
+## Deux pile
+E> Une seule issue : PP.
+R> $\frac{1}{4}$
+S> $\frac{1}{4}$
+## Exactement un pile
+E> Issues PF et FP.
+R> $\frac{2}{4} = \frac{1}{2}$
+S> $\frac{1}{2}$
+## Au moins un pile
+E> Contraire : « aucun pile », c'est-à-dire FF, de probabilité $\frac{1}{4}$.
+R> $1 - \frac{1}{4} = \frac{3}{4}$
+S> $\frac{3}{4}$
+## L'erreur de Léo
+E> « $1$ pile » correspond à deux issues (PF et FP), « $0$ pile » et « $2$ pile » à une seule.
+R> Non : les probabilités sont $\frac{1}{4}$, $\frac{1}{2}$ et $\frac{1}{4}$.
+F> Compter les résultats (« nombre de pile ») au lieu des issues équiprobables.
+S> Non : $\frac{1}{4}$ ; $\frac{1}{2}$ ; $\frac{1}{4}$
+## Trois pièces
+E> $2 \times 2 \times 2 = 8$ issues.
+R> $P(\text{PPP}) = \frac{1}{8}$
+A> Chaque pièce supplémentaire double le nombre d'issues.
+S> $8$ issues ; $\frac{1}{8}$
+
+@@ Entraînement | 6. Le dé est-il équilibré ? | medium | probabilites_4e_lancers.png
+On a lancé un dé $600$ fois. Le tableau donne le nombre d'apparitions de chaque face.
+[IMAGE_1]
+?? Pour un dé équilibré, quelle est la probabilité d'obtenir chaque face ? Environ combien de fois chaque face devrait-elle sortir en $600$ lancers ?
+?? Calculer la fréquence d'apparition du $1$ et celle du $4$ (au millième).
+?? Quelle face a la fréquence la plus éloignée de $\frac{1}{6}$ ? Calculer l'écart (au millième).
+?? Le dé semble-t-il équilibré ? Justifier.
+?? Un autre dé, lancé $600$ fois, a donné $180$ fois le $6$. Calculer la fréquence du $6$. Que peut-on en penser ?
+?? Pour ce second dé, estimer la probabilité d'obtenir un $6$, puis celle de ne pas l'obtenir.
+## Ce qu'on attend
+E> $P = \frac{1}{6}$ pour chaque face.
+E> $600 \times \frac{1}{6} = 100$.
+R> $\frac{1}{6}$ ; environ $100$ fois chacune.
+S> $\frac{1}{6}$ ; $\approx 100$
+## Deux fréquences
+E> Face $1$ : $\frac{95}{600} \approx 0{,}158$.
+E> Face $4$ : $\frac{107}{600} \approx 0{,}178$.
+R> $\approx 0{,}158$ et $\approx 0{,}178$.
+S> $\approx 0{,}158$ ; $\approx 0{,}178$
+## La face la plus éloignée
+E> $\frac{1}{6} \approx 0{,}167$. Les effectifs les plus éloignés de $100$ sont $107$ (écart $7$) et $95$ (écart $5$).
+E> $\frac{107}{600} - \frac{1}{6} = \frac{107 - 100}{600} = \frac{7}{600} \approx 0{,}012$
+R> La face $4$, avec un écart d'environ $0{,}012$.
+S> Face $4$ ; $\approx 0{,}012$
+## Équilibré ?
+E> Toutes les fréquences sont proches de $0{,}167$ (entre $0{,}158$ et $0{,}178$).
+R> Oui, le dé semble équilibré : les petits écarts sont dus au hasard.
+S> Oui, semble équilibré
+## Le second dé
+E> $\frac{180}{600} = 0{,}3$, presque le double de $0{,}167$.
+R> Sur $600$ lancers, un tel écart est très important : ce dé est probablement truqué.
+F> Conclure qu'il est truqué après seulement quelques lancers : il faut un grand nombre d'essais.
+S> $0{,}3$ : probablement truqué
+## Estimer les probabilités
+E> On estime $P(6) \approx 0{,}3$ par la fréquence observée.
+R> $P(6) \approx 0{,}3$ et $P(\text{pas } 6) \approx 0{,}7$.
+A> Quand on ne peut pas calculer une probabilité, on l'estime par une fréquence sur un grand nombre d'essais.
+S> $\approx 0{,}3$ ; $\approx 0{,}7$
+
+@@ Entraînement | 7. Un jeu est-il équitable ? | medium
+Un jeu entre deux joueurs est équitable si chacun a la même probabilité de gagner.
+?? Ana gagne si un dé donne $1$ ou $2$ ; sinon Ben gagne. Calculer la probabilité de gagner de chacun. Le jeu est-il équitable ?
+?? Modifier la règle d'Ana pour rendre ce jeu équitable.
+?? Nouveau jeu avec deux dés : Ana gagne si la somme est paire, Ben si elle est impaire. Le jeu est-il équitable ?
+?? Dernier jeu : Ana gagne si le PRODUIT des deux dés est impair. Combien de cases du tableau donnent un produit impair ?
+?? Calculer les probabilités de gagner dans ce dernier jeu. Est-il équitable ?
+?? Sur $100$ parties de ce dernier jeu, combien de parties Ana peut-elle espérer gagner environ ?
+## Le premier jeu
+E> Ana : $\frac{2}{6} = \frac{1}{3}$ ; Ben : $\frac{4}{6} = \frac{2}{3}$.
+R> Non équitable : Ben a deux fois plus de chances de gagner.
+S> $\frac{1}{3}$ et $\frac{2}{3}$ : non
+## Rendre le jeu équitable
+E> Il faut $3$ issues favorables à chacun.
+R> Par exemple : Ana gagne avec $1$, $2$ ou $3$ ; Ben avec $4$, $5$ ou $6$.
+S> Ana gagne avec $1, 2, 3$
+## Somme paire ou impaire
+E> Dans le tableau des sommes, $18$ cases sont paires et $18$ impaires.
+R> $\frac{18}{36} = \frac{1}{2}$ pour chacun : le jeu est équitable.
+S> Équitable
+## Le produit impair
+M> Un produit est impair seulement si les deux facteurs sont impairs.
+E> Premier dé impair ($1$, $3$, $5$) et second dé impair ($1$, $3$, $5$) : $3 \times 3 = 9$ cases.
+R> $9$ cases sur $36$.
+S> $9$
+## Les probabilités du dernier jeu
+E> Ana : $\frac{9}{36} = \frac{1}{4}$ ; Ben : $1 - \frac{1}{4} = \frac{3}{4}$.
+R> Non équitable : Ben est très avantagé.
+F> Croire que « pair » et « impair » ont toujours la même probabilité : c'est vrai pour une somme, pas pour un produit.
+S> $\frac{1}{4}$ et $\frac{3}{4}$ : non
+## Sur 100 parties
+E> $100 \times \frac{1}{4} = 25$
+R> Environ $25$ parties.
+A> Pour juger un jeu, on calcule la probabilité de gagner de chaque joueur à l'aide de la liste complète des issues.
+S> $\approx 25$
+
+%% ================================================================ PROBLÈMES
+
+@@ Problème | 1. Le stand de la kermesse | hard | probabilites_4e_somme10_solution.png
+À la kermesse, une partie coûte $1$ €. Le joueur lance deux dés : si la somme est au moins égale à $10$, il reçoit $5$ €.
+?? Combien d'issues équiprobables l'expérience compte-t-elle ?
+?? Calculer la probabilité de gagner.
+?? Calculer la probabilité de perdre.
+?? Sur $360$ parties, combien de parties gagnantes peut-on attendre environ ?
+?? Sur ces $360$ parties, combien l'organisateur encaisse-t-il et combien reverse-t-il ? Quel est son bénéfice ?
+?? Quelle somme faudrait-il donner au gagnant pour que, sur un grand nombre de parties, l'organisateur ne gagne ni ne perde ?
+## Les issues
+E> Tableau à double entrée : $6 \times 6$.
+R> $36$ issues.
+S> $36$
+## Gagner
+E> Somme $10$ : $(4;6), (5;5), (6;4)$ ; somme $11$ : $(5;6), (6;5)$ ; somme $12$ : $(6;6)$.
+R> $\frac{6}{36} = \frac{1}{6}$
+[IMAGE_1]
+S> $\frac{1}{6}$
+## Perdre
+E> $1 - \frac{1}{6}$
+R> $\frac{5}{6}$
+S> $\frac{5}{6}$
+## Sur 360 parties
+E> $360 \times \frac{1}{6} = 60$
+R> Environ $60$ parties gagnantes.
+S> $\approx 60$
+## Le bilan de l'organisateur
+E> Il encaisse $360 \times 1 = 360$ € et reverse environ $60 \times 5 = 300$ €.
+R> Bénéfice d'environ $60$ €.
+S> $360$ € ; $300$ € ; $+60$ €
+## Un jeu équilibré
+E> Pour que les gains reversés égalent les mises : $60 \times g = 360$.
+R> $g = 6$ € par partie gagnée.
+A> Sur un grand nombre de parties, ce que l'on reverse vaut environ (nombre de parties) $\times$ (probabilité de gagner) $\times$ (gain).
+F> Raisonner sur une seule partie : le résultat d'une partie est imprévisible, seule une moyenne sur beaucoup de parties a du sens.
+S> $6$ €
+
+@@ Problème | 2. Choisir la meilleure urne | hard | probabilites_4e_urnes.png
+On gagne si l'on tire une boule rouge. On peut choisir l'urne dans laquelle on tire.
+[IMAGE_1]
+?? Calculer la probabilité de tirer une boule rouge dans l'urne A.
+?? Même question pour les urnes B et C (au millième).
+?? Quelle urne faut-il choisir ?
+?? On vide les urnes A et B dans une même urne. Quelle est alors la probabilité de tirer une rouge (au millième) ? Est-ce la moyenne des deux probabilités ?
+?? Combien de boules rouges faut-il ajouter dans l'urne B pour qu'elle soit aussi intéressante que l'urne A ?
+?? Combien de boules noires faut-il ajouter dans l'urne A pour que la probabilité de tirer une rouge soit $\frac{1}{2}$ ?
+## L'urne A
+E> $3$ rouges sur $5$ boules.
+R> $\frac{3}{5} = 0{,}6$
+S> $0{,}6$
+## Les urnes B et C
+E> B : $\frac{5}{9} \approx 0{,}556$.
+E> C : $\frac{8}{15} \approx 0{,}533$.
+R> $\approx 0{,}556$ et $\approx 0{,}533$.
+S> $\approx 0{,}556$ ; $\approx 0{,}533$
+## Le meilleur choix
+E> $0{,}6 > 0{,}556 > 0{,}533$
+R> L'urne A, bien qu'elle contienne le moins de boules rouges.
+F> Choisir l'urne qui a le plus de boules rouges (C) : ce qui compte est la PROPORTION de rouges.
+S> L'urne A
+## Réunir A et B
+E> $3 + 5 = 8$ rouges sur $5 + 9 = 14$ boules : $\frac{8}{14} = \frac{4}{7} \approx 0{,}571$.
+E> Moyenne des deux probabilités : $\frac{0{,}6 + 0{,}556}{2} \approx 0{,}578$.
+R> $\approx 0{,}571$ : ce n'est pas la moyenne des deux probabilités.
+S> $\frac{4}{7} \approx 0{,}571$ ; non
+## Améliorer l'urne B
+M> On ajoute $r$ rouges : $\frac{5 + r}{9 + r} = \frac{3}{5}$.
+E> $r = 1$ donne $\frac{6}{10} = \frac{3}{5}$ ✔️
+R> Il suffit d'ajouter $1$ boule rouge.
+S> $1$
+## Rééquilibrer l'urne A
+E> Pour $\frac{1}{2}$, il faut autant de noires que de rouges : $3$ noires.
+R> Ajouter $1$ boule noire ($3$ rouges et $3$ noires).
+A> Comparer des probabilités, c'est comparer des proportions, pas des effectifs.
+S> $1$
+
+@@ Problème | 3. Le code du cadenas | hard
+Un cadenas s'ouvre avec un code de $3$ chiffres, chacun pouvant aller de $0$ à $9$ (par exemple $047$).
+?? Combien de codes différents existe-t-il ?
+?? Quelle est la probabilité de trouver le code du premier coup, en choisissant un code au hasard ?
+?? On teste un code toutes les $5$ secondes. Combien de temps faut-il, au maximum, pour tester tous les codes ? Donner le résultat en heures, minutes et secondes.
+?? On sait que le premier chiffre est $7$. Combien reste-t-il de codes possibles ? Quelle est la probabilité de trouver le code au hasard ?
+?? On sait seulement que les trois chiffres sont tous différents. Combien de codes sont possibles ?
+?? Un cadenas à $4$ chiffres est-il beaucoup plus sûr ? Comparer les nombres de codes.
+## Le nombre de codes
+M> On a $10$ choix pour chaque chiffre, et les choix se combinent.
+E> $10 \times 10 \times 10 = 1\,000$ (de $000$ à $999$).
+R> $1\,000$ codes.
+S> $1\,000$
+## Du premier coup
+R> $\frac{1}{1\,000} = 0{,}001$
+E> Une seule issue favorable parmi $1\,000$ issues équiprobables.
+S> $\frac{1}{1\,000}$
+## Le temps maximal
+E> $1\,000 \times 5 = 5\,000$ s.
+E> $5\,000 = 3\,600 + 1\,400$ et $1\,400 = 23 \times 60 + 20$.
+R> $1$ h $23$ min $20$ s.
+S> $1$ h $23$ min $20$ s
+## Le premier chiffre est 7
+E> Il reste deux chiffres à trouver : $10 \times 10 = 100$ codes.
+R> $100$ codes ; probabilité $\frac{1}{100}$.
+S> $100$ ; $\frac{1}{100}$
+## Trois chiffres différents
+E> $10$ choix pour le premier, $9$ pour le deuxième (différent du premier), $8$ pour le troisième.
+R> $10 \times 9 \times 8 = 720$ codes.
+F> Répondre $10 + 9 + 8 = 27$ : les choix successifs se MULTIPLIENT.
+S> $720$
+## Un cadenas à 4 chiffres
+E> $10 \times 10 \times 10 \times 10 = 10\,000$ codes.
+R> $10$ fois plus de codes : il faudrait jusqu'à environ $13{,}9$ h au lieu de $1{,}39$ h pour tout essayer.
+A> Chaque chiffre supplémentaire multiplie par $10$ le nombre de codes.
+S> $10\,000$ codes ($\times 10$)
+
+@@ Problème | 4. Le dé truqué | hard | probabilites_4e_de_truque.png
+Pour savoir si un dé est truqué, on l'a lancé $500$ fois. Le diagramme donne les résultats.
+[IMAGE_1]
+?? Vérifier que le total des effectifs vaut $500$.
+?? Calculer la fréquence de chaque face.
+?? Ce dé semble-t-il équilibré ? Justifier.
+?? Estimer la probabilité d'obtenir un nombre pair avec ce dé.
+?? Avec un dé équilibré, quelle serait la probabilité d'obtenir un nombre pair ?
+?? Lors d'un jeu, on gagne si l'on obtient $6$. Sur $200$ lancers, combien de victoires peut-on attendre avec ce dé ? Et avec un dé équilibré (à l'unité) ?
+## Le total
+E> $60 + 65 + 70 + 75 + 80 + 150$
+R> $500$ ✔️
+S> $500$
+## Les fréquences
+E> $\frac{60}{500} = 0{,}12$ ; $0{,}13$ ; $0{,}14$ ; $0{,}15$ ; $0{,}16$.
+E> Face $6$ : $\frac{150}{500} = 0{,}3$.
+R> $0{,}12$ ; $0{,}13$ ; $0{,}14$ ; $0{,}15$ ; $0{,}16$ ; $0{,}30$.
+S> $0{,}12$ ; $0{,}13$ ; $0{,}14$ ; $0{,}15$ ; $0{,}16$ ; $0{,}3$
+## Équilibré ?
+E> Pour un dé équilibré, chaque fréquence devrait être proche de $\frac{1}{6} \approx 0{,}167$.
+R> Non : sur $500$ lancers, le $6$ sort près de deux fois plus souvent que prévu ($0{,}3$).
+S> Non
+## Un nombre pair avec ce dé
+M> On additionne les fréquences des faces paires.
+E> $0{,}13 + 0{,}15 + 0{,}3 = 0{,}58$
+R> Environ $0{,}58$.
+S> $\approx 0{,}58$
+## Avec un dé équilibré
+R> $\frac{3}{6} = 0{,}5$
+E> Trois faces paires sur six.
+S> $0{,}5$
+## Les victoires
+E> Avec ce dé : $200 \times 0{,}3 = 60$.
+E> Avec un dé équilibré : $200 \times \frac{1}{6} \approx 33$.
+R> Environ $60$ victoires contre environ $33$.
+A> La fréquence observée sur un grand nombre d'essais sert d'estimation de la probabilité.
+F> Utiliser $\frac{1}{6}$ pour un dé dont on vient de montrer qu'il est truqué.
+S> $\approx 60$ ; $\approx 33$
+
+@@ Problème | 5. Tirer un élève au hasard | hard | probabilites_4e_college.png
+Le tableau donne la répartition des $120$ élèves de 4e d'un collège. On tire au sort un élève.
+[IMAGE_1]
+?? Quelle est la probabilité que ce soit une fille ?
+?? Quelle est la probabilité que ce soit un demi-pensionnaire ?
+?? Quelle est la probabilité que ce soit une fille demi-pensionnaire ?
+?? Quelle est la probabilité que ce soit un garçon externe ?
+?? On tire au sort une fille. Quelle est la probabilité qu'elle soit demi-pensionnaire ?
+?? Quelle est la probabilité que l'élève tiré soit une fille ou un demi-pensionnaire ?
+## Une fille
+E> $64$ filles sur $120$ élèves.
+R> $\frac{64}{120} = \frac{8}{15}$
+S> $\frac{8}{15}$
+## Un demi-pensionnaire
+E> $75$ demi-pensionnaires sur $120$.
+R> $\frac{75}{120} = \frac{5}{8}$
+S> $\frac{5}{8}$
+## Une fille demi-pensionnaire
+E> $40$ élèves sur $120$.
+R> $\frac{40}{120} = \frac{1}{3}$
+S> $\frac{1}{3}$
+## Un garçon externe
+E> $21$ élèves sur $120$.
+R> $\frac{21}{120} = \frac{7}{40}$
+S> $\frac{7}{40}$
+## Parmi les filles
+M> Le tirage se fait seulement parmi les $64$ filles : ce sont les issues possibles.
+E> $40$ demi-pensionnaires parmi $64$ filles.
+R> $\frac{40}{64} = \frac{5}{8}$
+F> Diviser par $120$ : l'élève est tiré parmi les FILLES seulement.
+S> $\frac{5}{8}$
+## Fille ou demi-pensionnaire
+E> Filles ($64$) plus garçons demi-pensionnaires ($35$) : $99$ élèves (on ne compte pas deux fois les filles demi-pensionnaires).
+R> $\frac{99}{120} = \frac{33}{40}$
+V> Contraire : garçon externe, $\frac{21}{120}$ ; et $1 - \frac{21}{120} = \frac{99}{120}$ ✔️
+A> Un tableau croisé permet de lire directement les effectifs d'événements « et » ; pour « ou », on évite de compter deux fois.
+S> $\frac{33}{40}$
+
+@@ Problème | 6. Pierre, feuille, ciseaux | hard | probabilites_4e_pfc_solution.png
+Ana et Ben jouent à pierre-feuille-ciseaux : la pierre bat les ciseaux, les ciseaux battent la feuille, la feuille bat la pierre. Chacun choisit au hasard.
+?? Construire un tableau de toutes les issues. Combien y en a-t-il ?
+?? Quelle est la probabilité d'une égalité ?
+?? Quelle est la probabilité qu'Ana gagne ? Que Ben gagne ?
+?? Le jeu est-il équitable ?
+?? Ben joue toujours « pierre », Ana continue de choisir au hasard. Quelle est la probabilité qu'Ana gagne ?
+?? Ana a compris que Ben joue toujours « pierre ». Que doit-elle jouer ? Quelle est alors sa probabilité de gagner ?
+## Les issues
+E> $3$ choix pour Ana et $3$ pour Ben : $3 \times 3$.
+R> $9$ issues équiprobables.
+[IMAGE_1]
+S> $9$
+## L'égalité
+E> Mêmes choix : pierre-pierre, feuille-feuille, ciseaux-ciseaux.
+R> $\frac{3}{9} = \frac{1}{3}$
+S> $\frac{1}{3}$
+## Les victoires
+E> Ana gagne dans $3$ cases ; Ben aussi dans $3$ cases.
+R> $\frac{1}{3}$ chacun.
+S> $\frac{1}{3}$ ; $\frac{1}{3}$
+## Équitable ?
+R> Oui : les deux joueurs ont la même probabilité de gagner.
+E> $\frac{1}{3} = \frac{1}{3}$
+S> Oui
+## Ben joue toujours pierre
+E> Seule la ligne « Ben : pierre » compte ; Ana gagne seulement avec « feuille », $1$ cas sur $3$.
+R> $\frac{1}{3}$ : tant qu'Ana joue au hasard, rien ne change pour elle.
+S> $\frac{1}{3}$
+## Ana exploite la stratégie de Ben
+E> La feuille bat la pierre.
+R> Elle joue toujours « feuille » : elle gagne à coup sûr, probabilité $1$.
+A> Une probabilité dépend des hypothèses : quand un joueur n'est plus « au hasard », les calculs changent.
+F> Croire qu'une stratégie fixe est sans danger : un adversaire qui la repère gagne à tous les coups.
+S> Feuille ; probabilité $1$
+
+@@ Problème | 7. La cible | hard | probabilites_4e_cible.png
+Une cible carrée de $40$ cm de côté contient un disque rouge de rayon $10$ cm et un disque bleu de rayon $20$ cm, de même centre. Une fléchette se plante au hasard dans le carré : la probabilité d'atteindre une zone est égale à (aire de la zone) : (aire du carré).
+[IMAGE_1]
+?? Calculer l'aire du carré.
+?? Calculer l'aire exacte du disque rouge (en fonction de $\pi$).
+?? Calculer la probabilité d'atteindre le disque rouge (valeur exacte, puis au millième).
+?? Calculer la probabilité d'atteindre le grand disque (rouge et bleu), puis celle d'atteindre la couronne bleue seulement.
+?? Quelle est la probabilité de ne pas atteindre le grand disque (au millième) ?
+?? Sur $200$ lancers, combien de fléchettes peut-on attendre dans le disque rouge (à l'unité) ?
+## L'aire du carré
+E> $40 \times 40$
+R> $1\,600$ cm²
+S> $1\,600$ cm²
+## Le disque rouge
+E> $\pi \times 10^2 = 100\pi$
+R> $100\pi$ cm² (environ $314$ cm²)
+S> $100\pi$ cm²
+## La probabilité du rouge
+E> $\frac{100\pi}{1\,600} = \frac{\pi}{16}$
+R> $\frac{\pi}{16} \approx 0{,}196$
+S> $\frac{\pi}{16} \approx 0{,}196$
+## Le grand disque et la couronne
+E> Grand disque : $\frac{\pi \times 20^2}{1\,600} = \frac{400\pi}{1\,600} = \frac{\pi}{4} \approx 0{,}785$.
+E> Couronne : $\frac{\pi}{4} - \frac{\pi}{16} = \frac{4\pi - \pi}{16} = \frac{3\pi}{16} \approx 0{,}589$.
+R> $\frac{\pi}{4} \approx 0{,}785$ et $\frac{3\pi}{16} \approx 0{,}589$.
+F> Croire que doubler le rayon double la probabilité : l'aire est multipliée par $4$, donc la probabilité aussi.
+S> $\frac{\pi}{4}$ ; $\frac{3\pi}{16}$
+## Hors du grand disque
+E> $1 - \frac{\pi}{4} \approx 1 - 0{,}785$
+R> Environ $0{,}215$.
+S> $\approx 0{,}215$
+## Sur 200 lancers
+E> $200 \times \frac{\pi}{16} \approx 39{,}3$
+R> Environ $39$ fléchettes.
+A> Quand les issues ne se comptent pas (un point dans une zone), une probabilité peut se calculer comme un rapport d'aires.
+S> $\approx 39$

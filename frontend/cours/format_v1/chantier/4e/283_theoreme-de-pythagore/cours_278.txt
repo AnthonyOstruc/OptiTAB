@@ -1,0 +1,214 @@
+Titre: Théorème de Pythagore
+
+<!-- optitab:1 -->
+::: objectifs
+- Reconnaître l'hypoténuse d'un triangle rectangle et écrire l'égalité de Pythagore.
+- Calculer la longueur d'un côté d'un triangle rectangle : valeur exacte avec une racine carrée, puis valeur arrondie.
+- Démontrer qu'un triangle est rectangle (réciproque) ou qu'il ne l'est pas (contraposée).
+- Rédiger une démonstration complète et résoudre des problèmes concrets.
+:::
+
+::: prerequis
+- Calculer le carré d'un nombre : $7^2 = 49$, $1{,}5^2 = 2{,}25$.
+- Utiliser la racine carrée : $\sqrt{81} = 9$, $\sqrt{30} \approx 5{,}48$.
+:::
+
+## I. Le triangle rectangle
+
+::: definition Hypoténuse
+Dans un triangle rectangle, l'**hypoténuse** est le côté **opposé à l'angle droit**. Les deux autres côtés sont les **côtés de l'angle droit**.
+:::
+
+[IMAGE_1]
+
+::: propriete
+Dans un triangle rectangle, l'hypoténuse est le **plus long** des trois côtés.
+:::
+
+::: conseil Repérer l'hypoténuse
+L'hypoténuse est le seul côté qui ne passe pas par le sommet de l'angle droit. Si le triangle $DEF$ est rectangle en $E$, son hypoténuse est $[DF]$, quelle que soit la position du dessin.
+:::
+
+## II. Le théorème de Pythagore
+
+::: theoreme Théorème de Pythagore
+Si un triangle $ABC$ est **rectangle en $A$**, alors le carré de l'hypoténuse est égal à la somme des carrés des deux autres côtés :
+
+$$BC^2 = AB^2 + AC^2$$
+:::
+
+[IMAGE_2]
+
+::: remarque Avec des aires
+L'aire du carré construit sur l'hypoténuse est égale à la somme des aires des carrés construits sur les deux côtés de l'angle droit. Par exemple, avec des côtés de $3$, $4$ et $5$ : $9 + 16 = 25$.
+:::
+
+::: demonstration Une preuve par découpage
+On dispose quatre triangles rectangles identiques (côtés de l'angle droit $a$ et $b$, hypoténuse $c$) de deux façons dans le même carré de côté $a + b$.
+
+[IMAGE_3]
+
+- À gauche, la partie verte non couverte est un carré de côté $c$ : son aire est $c^2$.
+- À droite, la partie verte est formée de deux carrés, de côtés $a$ et $b$ : son aire est $a^2 + b^2$.
+
+Les deux grands carrés sont identiques et on y enlève les quatre mêmes triangles : les parties vertes ont la même aire. Donc $c^2 = a^2 + b^2$.
+:::
+
+## III. Calculer une longueur
+
+::: methode Calculer un côté d'un triangle rectangle
+1. Justifier que le triangle est rectangle et nommer son hypoténuse.
+2. Écrire l'égalité de Pythagore.
+3. Remplacer par les longueurs connues :
+   - on cherche l'hypoténuse : on **additionne** les carrés ;
+   - on cherche un côté de l'angle droit : on **soustrait** les carrés.
+4. Prendre la racine carrée (une longueur est positive) : valeur exacte, puis valeur arrondie si on la demande.
+:::
+
+::: exemple Calculer l'hypoténuse
+Le triangle $ABC$ est rectangle en $A$, avec $AB = 12$ cm et $AC = 16$ cm.
+
+[IMAGE_4]
+
+Le triangle $ABC$ est rectangle en $A$, son hypoténuse est $[BC]$. D'après le théorème de Pythagore :
+
+$$
+\begin{aligned}
+BC^2 &= AB^2 + AC^2 \\
+BC^2 &= 12^2 + 16^2 \\
+BC^2 &= 144 + 256 \\
+BC^2 &= 400
+\end{aligned}
+$$
+
+Donc $BC = \sqrt{400} = 20$ cm.
+:::
+
+::: exemple Calculer un côté de l'angle droit
+Le triangle $DEF$ est rectangle en $D$, avec $EF = 25$ cm et $DE = 7$ cm.
+
+[IMAGE_5]
+
+Le triangle $DEF$ est rectangle en $D$, son hypoténuse est $[EF]$. D'après le théorème de Pythagore :
+
+$$
+\begin{aligned}
+EF^2 &= DE^2 + DF^2 \\
+25^2 &= 7^2 + DF^2 \\
+625 &= 49 + DF^2 \\
+DF^2 &= 625 - 49 \\
+DF^2 &= 576
+\end{aligned}
+$$
+
+Donc $DF = \sqrt{576} = 24$ cm.
+:::
+
+::: exemple Valeur exacte et valeur arrondie
+Le triangle $RST$ est rectangle en $R$, avec $RS = 3$ cm et $RT = 5$ cm. D'après le théorème de Pythagore :
+
+$$ST^2 = RS^2 + RT^2 = 9 + 25 = 34$$
+
+$34$ n'est pas le carré d'un nombre entier : on garde la racine.
+
+- Valeur exacte : $ST = \sqrt{34}$ cm.
+- Valeur arrondie au dixième (calculatrice : $\sqrt{34} \approx 5{,}830\ldots$) : $ST \approx 5{,}8$ cm.
+:::
+
+::: attention Erreurs fréquentes
+- Utiliser le théorème sans angle droit donné ou démontré : l'aspect du dessin ne suffit pas.
+- Additionner les carrés alors qu'on cherche un côté de l'angle droit.
+- Additionner les longueurs : $\sqrt{3^2 + 4^2} = 5$ et non $3 + 4 = 7$.
+- Arrondir trop tôt : on garde la valeur exacte et on arrondit seulement le résultat final.
+:::
+
+::: remarque Contrôle du résultat
+L'hypoténuse doit être plus longue que chacun des deux autres côtés. Un côté de l'angle droit plus long que l'hypoténuse signale une erreur.
+:::
+
+## IV. Démontrer qu'un triangle est rectangle ou non
+
+::: theoreme Réciproque du théorème de Pythagore
+Dans un triangle $ABC$, si $BC^2 = AB^2 + AC^2$, alors le triangle $ABC$ est rectangle en $A$.
+:::
+
+L'angle droit est au sommet **opposé au plus long côté**.
+
+::: propriete Contraposée du théorème de Pythagore
+Dans un triangle, si le carré du plus long côté **n'est pas égal** à la somme des carrés des deux autres côtés, alors ce triangle **n'est pas rectangle**.
+:::
+
+En effet, s'il était rectangle, le théorème de Pythagore donnerait l'égalité.
+
+::: methode Le triangle est-il rectangle ?
+1. Repérer le plus long côté.
+2. Calculer **séparément** le carré du plus long côté et la somme des carrés des deux autres côtés.
+3. Comparer :
+   - égalité : le triangle est rectangle (réciproque), l'angle droit est en face du plus long côté ;
+   - pas d'égalité : le triangle n'est pas rectangle (contraposée).
+:::
+
+::: exemple Rédaction modèle : le triangle est rectangle
+Dans le triangle $MNP$, $MN = 4{,}5$ cm, $MP = 6$ cm et $NP = 7{,}5$ cm.
+
+[IMAGE_6]
+
+Le plus long côté est $[NP]$.
+
+D'une part : $NP^2 = 7{,}5^2 = 56{,}25$.
+
+D'autre part :
+
+$$
+\begin{aligned}
+MN^2 + MP^2 &= 4{,}5^2 + 6^2 \\
+&= 20{,}25 + 36 \\
+&= 56{,}25
+\end{aligned}
+$$
+
+On constate que $NP^2 = MN^2 + MP^2$. D'après la réciproque du théorème de Pythagore, le triangle $MNP$ est rectangle en $M$.
+:::
+
+::: exemple Rédaction modèle : le triangle n'est pas rectangle
+Dans le triangle $IJK$, $IJ = 5$ cm, $JK = 6$ cm et $IK = 8$ cm. Le plus long côté est $[IK]$.
+
+D'une part : $IK^2 = 8^2 = 64$.
+
+D'autre part :
+
+$$
+\begin{aligned}
+IJ^2 + JK^2 &= 5^2 + 6^2 \\
+&= 25 + 36 \\
+&= 61
+\end{aligned}
+$$
+
+On constate que $IK^2 \neq IJ^2 + JK^2$. D'après la contraposée du théorème de Pythagore, le triangle $IJK$ n'est pas rectangle.
+:::
+
+::: attention
+- Ne pas écrire $NP^2 = MN^2 + MP^2$ avant d'avoir fait les deux calculs : on calcule d'abord, on compare ensuite.
+- Citer la bonne propriété : on **calcule une longueur** avec le théorème ; on **démontre** qu'un triangle est rectangle avec la réciproque.
+- Placer l'angle droit en face du plus long côté (ici en $M$, et non en $N$ ou en $P$).
+:::
+
+## V. Dans les situations concrètes
+
+Pour utiliser le théorème dans un problème, on cherche un angle droit, on fait un schéma, on nomme les points et on repère l'hypoténuse.
+
+[IMAGE_7]
+
+- Un mur vertical et un sol horizontal sont perpendiculaires (échelle, rampe, toboggan).
+- Les côtés d'un rectangle sont perpendiculaires : la diagonale est l'hypoténuse (terrain, écran, porte).
+- La hauteur d'un triangle isocèle issue du sommet principal coupe la base en son milieu, à angle droit.
+- Les diagonales d'un losange sont perpendiculaires et se coupent en leur milieu.
+- Sur un quadrillage, un déplacement horizontal et un déplacement vertical sont perpendiculaires.
+
+::: retenir
+- Triangle rectangle : $\text{hypoténuse}^2 = \text{côté}_1^2 + \text{côté}_2^2$.
+- Hypoténuse cherchée : on additionne les carrés ; côté de l'angle droit cherché : on soustrait.
+- Valeur exacte avec $\sqrt{\ }$, puis arrondi demandé ; on arrondit seulement à la fin.
+- Égalité vérifiée : le triangle est rectangle (réciproque). Égalité fausse : il n'est pas rectangle (contraposée).
+:::

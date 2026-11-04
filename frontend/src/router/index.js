@@ -5,9 +5,10 @@ import { apiUtils } from '@/api/client'
 import * as analytics from '@/services/analytics'
 import { applyRouteSeo } from '@/services/seo'
 import { matiereMiddleware, quizMiddleware } from './middlewares/matiereMiddleware'
-import { buildCourseApiSlugFromRoute } from '@/utils/freeCourseSlug'
-import { buildSummaryApiSlugFromRoute } from '@/utils/freeSummarySlug'
+import { versBlog, versRessources } from './ressources'
 import { requireNiveau, routeRequiresNiveau } from './middlewares/niveauMiddleware'
+
+const RessourcesGratuites = () => import('@/views/RessourcesGratuites.vue')
 
 const ALWAYS_SCROLL_TO_TOP_ROUTES = [
   'CGV',
@@ -20,10 +21,7 @@ const ALWAYS_SCROLL_TO_TOP_ROUTES = [
   'FreeCourses',
   'FreeExercises',
   'FreeSummaries',
-  'HelpGraphe',
-  'BlogList',
-  'BlogCategory',
-  'BlogTag'
+  'HelpGraphe'
 ]
 
 // Anciennes adresses de l'espace connecté (listes de chapitres, cours, fiches,
@@ -102,103 +100,24 @@ const routes = [
     component: () => import('@/views/DiagnosticMerci.vue'),
     meta: { robots: 'noindex,nofollow' }
   },
-  { 
-    path: '/ressources-gratuites', 
-    name: 'FreeResourcesHome',
-    component: () => import('@/views/FreeResourcesHome.vue')
-  },
-  {
-    path: '/ressources-gratuites/cours',
-    name: 'FreeCourses',
-    component: () => import('@/views/FreeResourceNotions.vue'),
-    props: { resourceType: 'course' }
-  },
-  {
-    path: '/ressources-gratuites/cours/:pays/:niveauGroup/:matiere/:slug-:id(\\d+)',
-    name: 'FreeCourseSlugGrouped',
-    component: () => import('@/views/FreeCourseDetail.vue'),
-    props: (route) => ({
-      resourceType: 'course',
-      resolvedSlug: buildCourseApiSlugFromRoute(route.params)
-    })
-  },
-  {
-    path: '/ressources-gratuites/cours/:pays/:matiere/:slug-:id(\\d+)',
-    name: 'FreeCourseSlug',
-    component: () => import('@/views/FreeCourseDetail.vue'),
-    props: (route) => ({
-      resourceType: 'course',
-      resolvedSlug: buildCourseApiSlugFromRoute(route.params)
-    })
-  },
-  {
-    path: '/ressources-gratuites/cours/:slug',
-    name: 'FreeCourseDetail',
-    component: () => import('@/views/FreeCourseDetail.vue'),
-    props: { resourceType: 'course' }
-  },
-  {
-    path: '/ressources-gratuites/exercices',
-    name: 'FreeExercises',
-    component: () => import('@/views/FreeResourceNotions.vue'),
-    props: { resourceType: 'exercise' }
-  },
-  {
-    path: '/ressources-gratuites/exercices/notion/:notionId',
-    name: 'FreeExerciseChapter',
-    component: () => import('@/views/FreeExerciseChapter.vue'),
-    props: true
-  },
-  {
-    path: '/ressources-gratuites/exercices/:pays/:niveauGroup/:matiere/:slug-:id(\\d+)',
-    name: 'FreeExerciseChapterSlugGrouped',
-    component: () => import('@/views/FreeExerciseSlug.vue')
-  },
-  {
-    path: '/ressources-gratuites/exercices/:pays/:matiere/:slug-:id(\\d+)',
-    name: 'FreeExerciseChapterSlug',
-    component: () => import('@/views/FreeExerciseSlug.vue')
-  },
-  {
-    path: '/ressources-gratuites/exercices/:pays/:slug-:id(\\d+)',
-    name: 'FreeExerciseChapterSlugLegacy',
-    component: () => import('@/views/FreeExerciseSlug.vue')
-  },
-  {
-    path: '/ressources-gratuites/exercices/:slug',
-    name: 'FreeExerciseDetail',
-    component: () => import('@/views/FreeExerciseSlug.vue')
-  },
-  {
-    path: '/ressources-gratuites/syntheses',
-    name: 'FreeSummaries',
-    component: () => import('@/views/FreeResourceNotions.vue'),
-    props: { resourceType: 'summary' }
-  },
-  {
-    path: '/ressources-gratuites/syntheses/:pays/:niveauGroup/:matiere/:slug-:id(\\d+)',
-    name: 'FreeSummarySlugGrouped',
-    component: () => import('@/views/FreeCourseDetail.vue'),
-    props: (route) => ({
-      resourceType: 'summary',
-      resolvedSlug: buildSummaryApiSlugFromRoute(route.params)
-    })
-  },
-  {
-    path: '/ressources-gratuites/syntheses/:pays/:matiere/:slug-:id(\\d+)',
-    name: 'FreeSummarySlug',
-    component: () => import('@/views/FreeCourseDetail.vue'),
-    props: (route) => ({
-      resourceType: 'summary',
-      resolvedSlug: buildSummaryApiSlugFromRoute(route.params)
-    })
-  },
-  {
-    path: '/ressources-gratuites/syntheses/:slug',
-    name: 'FreeSummaryDetail',
-    component: () => import('@/views/FreeCourseDetail.vue'),
-    props: { resourceType: 'summary' }
-  },
+  // Ressources gratuites : pages statiques (scripts/ressources). Les anciennes
+  // adresses gardent leur nom de route et mènent à la page statique.
+  { path: '/ressources-gratuites/maths/:chemin(.*)*', name: 'RessourcesGratuitesPage', component: RessourcesGratuites, beforeEnter: versRessources },
+  { path: '/ressources-gratuites', name: 'FreeResourcesHome', component: RessourcesGratuites, beforeEnter: versRessources },
+  { path: '/ressources-gratuites/cours', name: 'FreeCourses', component: RessourcesGratuites, beforeEnter: versRessources },
+  { path: '/ressources-gratuites/cours/:pays/:niveauGroup/:matiere/:slug-:id(\\d+)', name: 'FreeCourseSlugGrouped', component: RessourcesGratuites, beforeEnter: versRessources },
+  { path: '/ressources-gratuites/cours/:pays/:matiere/:slug-:id(\\d+)', name: 'FreeCourseSlug', component: RessourcesGratuites, beforeEnter: versRessources },
+  { path: '/ressources-gratuites/cours/:slug', name: 'FreeCourseDetail', component: RessourcesGratuites, beforeEnter: versRessources },
+  { path: '/ressources-gratuites/exercices', name: 'FreeExercises', component: RessourcesGratuites, beforeEnter: versRessources },
+  { path: '/ressources-gratuites/exercices/notion/:notionId', name: 'FreeExerciseChapter', component: RessourcesGratuites, beforeEnter: versRessources },
+  { path: '/ressources-gratuites/exercices/:pays/:niveauGroup/:matiere/:slug-:id(\\d+)', name: 'FreeExerciseChapterSlugGrouped', component: RessourcesGratuites, beforeEnter: versRessources },
+  { path: '/ressources-gratuites/exercices/:pays/:matiere/:slug-:id(\\d+)', name: 'FreeExerciseChapterSlug', component: RessourcesGratuites, beforeEnter: versRessources },
+  { path: '/ressources-gratuites/exercices/:pays/:slug-:id(\\d+)', name: 'FreeExerciseChapterSlugLegacy', component: RessourcesGratuites, beforeEnter: versRessources },
+  { path: '/ressources-gratuites/exercices/:slug', name: 'FreeExerciseDetail', component: RessourcesGratuites, beforeEnter: versRessources },
+  { path: '/ressources-gratuites/syntheses', name: 'FreeSummaries', component: RessourcesGratuites, beforeEnter: versRessources },
+  { path: '/ressources-gratuites/syntheses/:pays/:niveauGroup/:matiere/:slug-:id(\\d+)', name: 'FreeSummarySlugGrouped', component: RessourcesGratuites, beforeEnter: versRessources },
+  { path: '/ressources-gratuites/syntheses/:pays/:matiere/:slug-:id(\\d+)', name: 'FreeSummarySlug', component: RessourcesGratuites, beforeEnter: versRessources },
+  { path: '/ressources-gratuites/syntheses/:slug', name: 'FreeSummaryDetail', component: RessourcesGratuites, beforeEnter: versRessources },
   // Espace connecté refait le 2026-11-03 (views/espace). Ancien tableau de bord
   // conservé hors route : views/Dashboard.vue, views/ChildOverview.vue.
   { path: '/dashboard', name: 'Dashboard', component: () => import('@/views/espace/EspaceAccueil.vue'), meta: { requiresAuth: true } },
@@ -243,10 +162,8 @@ const routes = [
   { path: '/about', name: 'About', component: () => import('@/views/About.vue') },
   { path: '/contact', name: 'Contact', component: () => import('@/views/Contact.vue') },
   // Blog public.
-  { path: '/blog', name: 'BlogList', component: () => import('@/views/BlogList.vue') },
-  { path: '/blog/categorie/:slug', name: 'BlogCategory', component: () => import('@/views/BlogCategory.vue') },
-  { path: '/blog/tag/:slug', name: 'BlogTag', component: () => import('@/views/BlogTag.vue') },
-  { path: '/blog/:slug', name: 'BlogDetail', component: () => import('@/views/BlogDetail.vue') },
+  // Pages statiques générées à la construction (scripts/ressources/blog.mjs).
+  { path: '/blog/:chemin(.*)*', name: 'Blog', component: RessourcesGratuites, beforeEnter: versBlog },
   { path: '/cours-particuliers', name: 'CoursParticuliers', component: () => import('@/views/CoursParticuliers.vue') },
   { path: '/password-reset', name: 'PasswordReset', component: () => import('@/views/PasswordReset.vue') },
   { path: '/cgv', name: 'CGV', component: () => import('@/views/CGV.vue') },
@@ -298,6 +215,8 @@ const routes = [
       { path: 'temoignages', name: 'AdminTestimonials', component: () => import('@/views/admin/AdminTestimonials.vue') },
     ]
   },
+  // Aperçu d'un quiz sans connexion, en local seulement (relecture et captures du chantier).
+  ...(import.meta.env.DEV ? [{ path: '/apercu/quiz/:notionId', name: 'ApercuQuiz', component: () => import('@/views/espace/ApercuQuiz.vue') }] : []),
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: () => import('@/views/NotFound.vue') }
 ]
 
@@ -311,12 +230,9 @@ const router = createRouter({
         return { top: 0, left: 0, behavior: 'auto' }
       }
 
-      // Nouvel espace : changer d'exercice (?ex=) dans un chapitre ne fait pas défiler,
-      // la page gère elle-même la position.
-      if (
-        to.name === 'Chapitre' && from.name === to.name &&
-        to.params.notionId === from.params.notionId && to.query.onglet === from.query.onglet
-      ) {
+      // Nouvel espace : changer d'onglet ou d'exercice dans un chapitre ne fait pas
+      // défiler ici, la page gère elle-même la position (reprise de lecture par onglet).
+      if (to.name === 'Chapitre' && from.name === to.name && to.params.notionId === from.params.notionId) {
         return false
       }
 
@@ -455,17 +371,26 @@ router.beforeEach(async (to, from, next) => {
   } 
   // Autres routes
   else {
-    if (isAuthenticated && to.meta.requiresSubscription && !isAdmin) {
+    // Même page (seuls l'onglet ou l'exercice changent) : l'accès vient d'être vérifié.
+    const memePage = from.name === to.name && from.path === to.path
+    if (isAuthenticated && to.meta.requiresSubscription && !isAdmin && !memePage) {
       // Bypass pour le chapitre démo de l'utilisateur
       const demoNotionId = userStore.niveau_pays?.demo_notion
       const routeNotionId = to.params.notionId
       const isDemoAccess = demoNotionId && routeNotionId && Number(routeNotionId) === Number(demoNotionId)
       if (!isDemoAccess) {
         const currentLevelId = userStore.niveau_pays?.id
-        await subscriptionStore.fetchStatus({ force: true })
+        // Statut gardé une minute : d'une page à l'autre, la vérification est immédiate.
+        await subscriptionStore.fetchStatus()
         if (!subscriptionStore.accessForLevel(currentLevelId)) {
-          const unlocked = await subscriptionStore.refreshUntilLevelAccess(currentLevelId, { attempts: 5, interval: 2000 })
-          if (!unlocked) {
+          // Pas d'accès d'après le statut connu : on redemande au serveur avant de conclure
+          // (deux fois seulement en cas de coupure réseau).
+          await subscriptionStore.fetchStatus({ force: true })
+          if (subscriptionStore.error) {
+            await new Promise((resolve) => setTimeout(resolve, 800))
+            await subscriptionStore.fetchStatus({ force: true })
+          }
+          if (!subscriptionStore.accessForLevel(currentLevelId)) {
             return next({ name: 'Billing', hash: '#plans', query: { redirect: to.fullPath, reason: 'subscription_required' } })
           }
         }

@@ -27,10 +27,10 @@ export const vitrineParcours = [
     etiquette: 'Je découvre',
     titre: 'Essayer gratuitement',
     texte:
-      'Une partie des cours, fiches et exercices corrigés en accès libre. Aucune inscription, aucune carte bancaire.',
-    points: ['Tous les niveaux, du CE2 à la Terminale', 'Accès immédiat'],
+      'Tous les cours et toutes les fiches de révision, et des exercices corrigés pour chaque chapitre, en accès libre. Aucune inscription, aucune carte bancaire.',
+    points: ['Toutes les classes, du CP à la Terminale', 'Accès immédiat'],
     cta: 'Voir les ressources gratuites',
-    lien: '/ressources-gratuites',
+    lien: '/ressources-gratuites/',
     ton: 'green'
   },
   {
@@ -159,7 +159,7 @@ export const vitrineFaq = [
   {
     question: 'Est-ce que je peux essayer gratuitement ?',
     answer:
-      'Oui, de deux façons. Sans inscription, une partie des cours, fiches et exercices est en libre accès dans les ressources gratuites. Avec un compte gratuit, tu débloques en plus un chapitre complet pour tester la méthode. Aucune carte bancaire n’est demandée.'
+      'Oui, de deux façons. Sans inscription, tous les cours et fiches de révision, et des exercices corrigés pour chaque chapitre, sont en libre accès dans les ressources gratuites. Avec un compte gratuit, tu débloques en plus un chapitre complet pour tester la méthode. Aucune carte bancaire n’est demandée.'
   },
   {
     question: 'Quelle formule choisir ?',
@@ -223,10 +223,10 @@ export const vitrineFooter = {
     {
       titre: 'Apprendre',
       liens: [
-        { texte: 'Ressources gratuites', lien: '/ressources-gratuites' },
-        { texte: 'Cours gratuits', lien: '/ressources-gratuites/cours' },
-        { texte: 'Exercices corrigés', lien: '/ressources-gratuites/exercices' },
-        { texte: 'Fiches de synthèse', lien: '/ressources-gratuites/syntheses' }
+        { texte: 'Ressources gratuites', lien: '/ressources-gratuites/' },
+        { texte: 'Maths 6e', lien: '/ressources-gratuites/maths/6e/' },
+        { texte: 'Maths 3e (brevet)', lien: '/ressources-gratuites/maths/3e/' },
+        { texte: 'Maths Terminale (bac)', lien: '/ressources-gratuites/maths/terminale/' }
       ]
     },
     {

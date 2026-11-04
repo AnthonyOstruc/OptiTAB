@@ -1,0 +1,460 @@
+Titre: Représentations Paramétriques et Équations Cartésiennes dans l'Espace
+
+<!-- optitab:1 -->
+::: remarque Sections principales
+Les sections I à III ainsi que les démonstrations (idée cartésienne du plan) couvrent les concepts fondamentaux. Ces connaissances permettent de résoudre les problèmes géométriques courants.
+:::
+
+::: methode Approfondissements et culture
+La section V (intersection de deux plans, équation d'une sphère, etc.) propose des approfondissements. Elle enrichit votre culture mathématique et votre compréhension approfondie.
+:::
+
+## Rappel - Équation cartésienne d'une droite dans le plan
+
+::: rappel
+Dans le plan, une droite peut être définie par une équation cartésienne.
+:::
+
+::: definition Équation cartésienne d'une droite
+Une droite dans le plan a pour équation :
+
+::: formule
+$$ax + by + c = 0$$
+:::
+
+où $\displaystyle (a, b) \neq (0, 0)$.
+:::
+
+::: attention Vecteur normal et vecteur directeur
+- **Vecteur normal** : $\vec{n} \begin{pmatrix} a \\ b \end{pmatrix}$ (perpendiculaire à la droite)
+- **Vecteur directeur** : $\vec{u} \begin{pmatrix} -b \\ a \end{pmatrix}$ (parallèle à la droite)
+- **Relation** : $\vec{u} \cdot \vec{n} = 0$ (orthogonalité)
+:::
+
+::: exemple
+La droite d'équation $\displaystyle 2x - 3y + 1 = 0$ a :
+
+- Vecteur normal : $\displaystyle \vec{n} \begin{pmatrix} 2 \\ -3 \end{pmatrix}$
+- Vecteur directeur : $\displaystyle \vec{u} \begin{pmatrix} 3 \\ 2 \end{pmatrix}$
+:::
+
+::: attention Dans l'espace 3D
+Une droite nécessite une **représentation paramétrique** (avec un paramètre $t$). Un plan dans l'espace a une équation cartésienne : $ax + by + cz + d = 0$.
+:::
+
+## I. Représentation paramétrique d'une droite
+
+### Définition et équation paramétrique
+
+::: definition Représentation paramétrique d'une droite
+Soit $\Delta$ une droite de l'espace passant par un point $A(x_A, y_A, z_A)$ et de vecteur directeur $\vec{u} \begin{pmatrix} a \\ b \\ c \end{pmatrix}$ (avec $\vec{u} \neq \vec{0}$).
+
+Un point $M(x, y, z)$ appartient à $\Delta$ si et seulement s'il existe un réel $t$ tel que :
+
+::: formule
+$\begin{cases} x = x_A + ta \\ y = y_A + tb \\ z = z_A + tc \end{cases}$ où $t \in \mathbb{R}$
+:::
+
+Cette écriture s'appelle une **représentation paramétrique** (ou **équation paramétrique**) de la droite $\Delta$.
+:::
+
+::: exemple
+Une représentation paramétrique de la droite passant par $A(1, 2, 3)$ et de vecteur directeur $\vec{u} \begin{pmatrix} 2 \\ -1 \\ 4 \end{pmatrix}$ est :
+
+::: formule
+$\begin{cases} x = 1 + 2t \\ y = 2 - t \\ z = 3 + 4t \end{cases}$ où $t \in \mathbb{R}$
+:::
+
+Par exemple, pour $t = 0$, on obtient le point $A(1, 2, 3)$. Pour $t = 1$, on obtient le point $(3, 1, 7)$.
+:::
+
+::: propriete Unicité du paramètre
+Pour tout point $M$ de la droite $\Delta$, il existe un unique réel $t$ tel que $\overrightarrow{AM} = t\vec{u}$.
+
+Le paramètre $t$ est appelé **abscisse curviligne** du point $M$ sur la droite $\Delta$ (avec origine en $A$).
+:::
+
+[IMAGE_1]
+
+::: remarque
+- Une droite admet une infinité de représentations paramétriques (en changeant le point de passage ou le vecteur directeur).
+- Si $\vec{u}$ est un vecteur directeur, alors $\lambda \vec{u}$ (avec $\lambda \neq 0$) est aussi un vecteur directeur.
+- Pour reconnaître une droite, il suffit de connaître un point et un vecteur directeur non nul.
+:::
+
+### Déterminer une représentation paramétrique
+
+::: methode
+1. Identifier un point $A$ de la droite et un vecteur directeur $\vec{u}$.
+2. Écrire $\overrightarrow{AM} = t\vec{u}$ où $t \in \mathbb{R}$.
+3. Traduire en coordonnées pour obtenir le système d'équations paramétriques.
+:::
+
+::: exemple 1 - Droite passant par deux points
+Déterminer une représentation paramétrique de la droite passant par $A(1, 0, 2)$ et $B(3, 2, -1)$.
+
+**Solution :**
+
+Un vecteur directeur est $\displaystyle \overrightarrow{AB} = \begin{pmatrix} 3-1 \\ 2-0 \\ -1-2 \end{pmatrix} = \begin{pmatrix} 2 \\ 2 \\ -3 \end{pmatrix}$.
+
+En prenant $A$ comme point de passage, une représentation paramétrique est :
+
+::: formule
+$\begin{cases} x = 1 + 2t \\ y = 2t \\ z = 2 - 3t \end{cases}$ où $t \in \mathbb{R}$
+:::
+:::
+
+::: exemple 2 - Droite définie par un système
+Reconnaître la droite définie par : $\begin{cases} x = 3 - t \\ y = 1 + 2t \\ z = -2 + 3t \end{cases}$ où $t \in \mathbb{R}$.
+
+**Solution :**
+
+C'est la droite passant par $A(3, 1, -2)$ et de vecteur directeur $\vec{u} \begin{pmatrix} -1 \\ 2 \\ 3 \end{pmatrix}$.
+:::
+
+### Reconnaître une droite donnée par représentation paramétrique
+
+::: methode Pour reconnaître
+À partir d'une représentation paramétrique $\begin{cases} x = x_0 + ta \\ y = y_0 + tb \\ z = z_0 + tc \end{cases}$ :
+
+- Le point de passage est $\displaystyle (x_0, y_0, z_0)$.
+- Le vecteur directeur est $\displaystyle \begin{pmatrix} a \\ b \\ c \end{pmatrix}$.
+:::
+
+::: exemple
+La droite $\begin{cases} x = 2t \\ y = -1 + t \\ z = 3 - 2t \end{cases}$ passe par $A(0, -1, 3)$ et a pour vecteur directeur $\vec{u} \begin{pmatrix} 2 \\ 1 \\ -2 \end{pmatrix}$.
+:::
+
+## II. Équation cartésienne d'un plan
+
+### Définition et équation cartésienne
+
+::: theoreme Équation cartésienne d'un plan
+Soit $\mathcal{P}$ un plan de l'espace et $\vec{n} \begin{pmatrix} a \\ b \\ c \end{pmatrix}$ un vecteur normal à $\mathcal{P}$ (non nul).
+
+Soit $A(x_A, y_A, z_A)$ un point de $\mathcal{P}$.
+
+Un point $M(x, y, z)$ appartient à $\mathcal{P}$ si et seulement si :
+
+::: formule
+$$ax + by + cz + d = 0$$
+:::
+
+où $\displaystyle d = -(ax_A + by_A + cz_A)$.
+
+Cette équation s'appelle une **équation cartésienne** du plan $\mathcal{P}$.
+:::
+
+::: demonstration
+Un point $M(x, y, z)$ appartient à $\mathcal{P}$ si et seulement si le vecteur $\overrightarrow{AM}$ est orthogonal au vecteur normal $\vec{n}$.
+
+C'est-à-dire : $\displaystyle \overrightarrow{AM} \cdot \vec{n} = 0$.
+
+Or $\displaystyle \overrightarrow{AM} = \begin{pmatrix} x - x_A \\ y - y_A \\ z - z_A \end{pmatrix}$, donc :
+
+$$a(x - x_A) + b(y - y_A) + c(z - z_A) = 0$$
+
+En développant : $\displaystyle ax + by + cz - (ax_A + by_A + cz_A) = 0$
+
+D'où : $ax + by + cz + d = 0$ avec $d = -(ax_A + by_A + cz_A)$.
+:::
+
+[IMAGE_2]
+
+::: exemple
+Déterminer l'équation cartésienne du plan $\mathcal{P}$ passant par $A(1, 2, 3)$ et de vecteur normal $\vec{n} \begin{pmatrix} 2 \\ -1 \\ 4 \end{pmatrix}$.
+
+**Solution :**
+
+On a $\displaystyle d = -(2 \times 1 + (-1) \times 2 + 4 \times 3) = -(2 - 2 + 12) = -12$.
+
+Une équation cartésienne de $\mathcal{P}$ est : $2x - y + 4z - 12 = 0$.
+:::
+
+::: remarque
+- Un plan admet une infinité d'équations cartésiennes (en multipliant par un réel non nul).
+- Si $\vec{n}$ est un vecteur normal, alors $\lambda \vec{n}$ (avec $\lambda \neq 0$) est aussi un vecteur normal.
+- Les coefficients $(a, b, c)$ dans l'équation $ax + by + cz + d = 0$ sont les coordonnées d'un vecteur normal au plan.
+:::
+
+### Reconnaître un plan donné par équation cartésienne
+
+::: methode
+À partir d'une équation cartésienne $ax + by + cz + d = 0$ :
+
+- Un vecteur normal au plan est $\displaystyle \vec{n} \begin{pmatrix} a \\ b \\ c \end{pmatrix}$.
+- Pour trouver un point du plan, on fixe deux coordonnées et on détermine la troisième.
+- Par exemple, si $a \neq 0$, on peut prendre $y = z = 0$ et résoudre pour trouver $x$.
+:::
+
+::: exemple
+Soit le plan d'équation $\displaystyle 3x - 2y + z - 5 = 0$.
+
+Un vecteur normal est $\displaystyle \vec{n} \begin{pmatrix} 3 \\ -2 \\ 1 \end{pmatrix}$.
+
+Pour trouver un point du plan, prenons $y = 0$ et $z = 0$. On obtient $3x - 5 = 0$, donc $x = \frac{5}{3}$.
+
+Le point $\displaystyle A\left(\frac{5}{3}, 0, 0\right)$ appartient au plan.
+:::
+
+## III. Systèmes d'équations et problèmes géométriques
+
+### Traduire des problèmes géométriques
+
+::: methode
+De nombreux problèmes géométriques dans l'espace peuvent être traduits par des systèmes d'équations linéaires :
+
+- **Trois vecteurs forment une base :** Ils sont non coplanaires (déterminant non nul).
+- **Coordonnées dans une base :** Écrire un vecteur comme combinaison linéaire des vecteurs de base.
+- **Alignement :** Deux vecteurs sont colinéaires.
+- **Coplanarité :** Trois vecteurs sont coplanaires.
+- **Intersection :** Résoudre les systèmes d'équations des droites/plans.
+- **Orthogonalité :** Produit scalaire nul.
+:::
+
+::: exemple 1 - Trois vecteurs forment-ils une base ?
+Les vecteurs $\vec{u} \begin{pmatrix} 1 \\ 2 \\ 1 \end{pmatrix}$, $\vec{v} \begin{pmatrix} -1 \\ 1 \\ 0 \end{pmatrix}$ et $\vec{w} \begin{pmatrix} 0 \\ 1 \\ 1 \end{pmatrix}$ forment-ils une base ?
+
+**Solution :**
+
+On cherche si ces trois vecteurs sont linéairement indépendants, c'est-à-dire si l'équation $\alpha\vec{u} + \beta\vec{v} + \gamma\vec{w} = \vec{0}$ n'admet que la solution triviale.
+
+Cela revient à résoudre le système :
+
+$$\begin{cases} \alpha - \beta = 0 \\ 2\alpha + \beta + \gamma = 0 \\ \alpha + \gamma = 0 \end{cases}$$
+
+La résolution montre que $\alpha = \beta = \gamma = 0$ est la seule solution. Les vecteurs forment donc une base.
+:::
+
+::: exemple 2 - Intersection de deux droites
+Déterminer l'intersection des droites :
+
+$\Delta_1 : \begin{cases} x = 1 + t \\ y = 2t \\ z = 3 - t \end{cases}$ et $\Delta_2 : \begin{cases} x = 2 + s \\ y = 2 + s \\ z = 2 + 2s \end{cases}$
+
+**Solution :**
+
+On cherche $\displaystyle t, s \in \mathbb{R}$ tels que :
+
+$$\begin{cases} 1 + t = 2 + s \\ 2t = 2 + s \\ 3 - t = 2 + 2s \end{cases}$$
+
+De la première équation : $t = 1 + s$. En substituant dans la deuxième : $2(1 + s) = 2 + s$, donc $2 + 2s = 2 + s$, soit $s = 0$.
+
+Ainsi $t = 1$ et $s = 0$. Le point d'intersection est $(2, 2, 2)$.
+
+Vérification : sur $\Delta_1$ pour $t = 1$ : $(2, 2, 2)$ ; sur $\Delta_2$ pour $s = 0$ : $(2, 2, 2)$
+:::
+
+::: exemple 3 - Déterminer les coordonnées d'un vecteur dans une base
+Soient $\vec{u} \begin{pmatrix} 1 \\ 0 \\ 1 \end{pmatrix}$, $\vec{v} \begin{pmatrix} 0 \\ 1 \\ 1 \end{pmatrix}$ et $\vec{w} \begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix}$.
+
+Montrer que $(\vec{u}, \vec{v}, \vec{w})$ est une base puis exprimer $\vec{a} \begin{pmatrix} 2 \\ 3 \\ 1 \end{pmatrix}$ dans cette base.
+
+**Solution :**
+
+On cherche d'abord si $(\vec{u}, \vec{v}, \vec{w})$ est une base. Les vecteurs sont linéairement indépendants si l'équation $\alpha\vec{u} + \beta\vec{v} + \gamma\vec{w} = \vec{0}$ n'admet que la solution triviale.
+
+Le système $\begin{cases} \alpha + \gamma = 0 \\ \beta + \gamma = 0 \\ \alpha + \beta = 0 \end{cases}$ donne $\alpha = \beta = \gamma = 0$. C'est donc une base.
+
+On cherche maintenant $x, y, z \in \mathbb{R}$ tels que $\vec{a} = x\vec{u} + y\vec{v} + z\vec{w}$.
+
+Cela donne le système : $\displaystyle \begin{cases} x + z = 2 \\ y + z = 3 \\ x + y = 1 \end{cases}$
+
+En résolvant : de la première équation, $z = 2 - x$. De la deuxième, $y = 3 - z = 3 - (2 - x) = 1 + x$.
+
+En substituant dans la troisième : $x + (1 + x) = 1$, donc $2x = 0$, soit $x = 0$.
+
+On obtient : $x = 0$, $y = 1$, $z = 2$.
+
+Donc : $\displaystyle \vec{a} = 0\vec{u} + 1\vec{v} + 2\vec{w} = \vec{v} + 2\vec{w}$.
+
+Vérification : $\displaystyle \begin{pmatrix} 0 \\ 1 \\ 1 \end{pmatrix} + 2\begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix} = \begin{pmatrix} 2 \\ 3 \\ 1 \end{pmatrix}$
+:::
+
+::: exemple 4 - Vérifier si des points sont alignés
+Les points $A(1, 2, 3)$, $B(2, 4, 5)$ et $C(3, 6, 7)$ sont-ils alignés ?
+
+**Solution :**
+
+On calcule $\overrightarrow{AB} = \begin{pmatrix} 1 \\ 2 \\ 2 \end{pmatrix}$ et $\overrightarrow{AC} = \begin{pmatrix} 2 \\ 4 \\ 4 \end{pmatrix}$.
+
+On a $\overrightarrow{AC} = 2\overrightarrow{AB}$, donc les vecteurs sont colinéaires. Les points sont alignés.
+:::
+
+::: exemple 6 - Orthogonalité de droites et plans via équations
+**a) Vérifier qu'une droite est orthogonale à un plan :**
+
+La droite $\Delta$ passant par $A(1, 0, 1)$ de vecteur directeur $\vec{u} \begin{pmatrix} 2 \\ -1 \\ 3 \end{pmatrix}$ est-elle orthogonale au plan $\mathcal{P}$ d'équation $2x - y + 3z - 1 = 0$ ?
+
+**Solution :**
+
+Un vecteur normal au plan $\mathcal{P}$ est $\vec{n} \begin{pmatrix} 2 \\ -1 \\ 3 \end{pmatrix}$.
+
+La droite $\Delta$ est orthogonale au plan $\mathcal{P}$ si et seulement si le vecteur directeur $\vec{u}$ de la droite est colinéaire au vecteur normal $\vec{n}$ du plan.
+
+On a $\vec{u} = \begin{pmatrix} 2 \\ -1 \\ 3 \end{pmatrix} = \vec{n}$, donc $\vec{u}$ et $\vec{n}$ sont colinéaires.
+
+Ainsi, la droite $\Delta$ est orthogonale au plan $\mathcal{P}$.
+
+**b) Vérifier que deux plans sont perpendiculaires :**
+
+Les plans $\mathcal{P}_1 : x + 2y - z + 1 = 0$ et $\mathcal{P}_2 : 2x - y + 3z - 2 = 0$ sont-ils perpendiculaires ?
+
+**Solution :**
+
+Un vecteur normal à $\mathcal{P}_1$ est $\vec{n}_1 \begin{pmatrix} 1 \\ 2 \\ -1 \end{pmatrix}$.
+
+Un vecteur normal à $\mathcal{P}_2$ est $\vec{n}_2 \begin{pmatrix} 2 \\ -1 \\ 3 \end{pmatrix}$.
+
+Deux plans sont perpendiculaires si et seulement si leurs vecteurs normaux sont orthogonaux, c'est-à-dire si $\vec{n}_1 \cdot \vec{n}_2 = 0$.
+
+On calcule : $\displaystyle \vec{n}_1 \cdot \vec{n}_2 = 1 \times 2 + 2 \times (-1) + (-1) \times 3 = 2 - 2 - 3 = -3 \neq 0$.
+
+Donc les plans ne sont pas perpendiculaires.
+:::
+
+## IV. Approfondissements possibles
+
+::: methode Approfondissement (bonus)
+Les résultats suivants enrichissent votre culture mathématique mais ne sont pas strictement exigibles pour les évaluations.
+:::
+
+### Intersection de deux plans
+
+::: theoreme Intersection de deux plans (bonus)
+Soient deux plans $\mathcal{P}_1$ et $\mathcal{P}_2$ d'équations respectives :
+
+$$\mathcal{P}_1 : a_1x + b_1y + c_1z + d_1 = 0$$
+
+$$\mathcal{P}_2 : a_2x + b_2y + c_2z + d_2 = 0$$
+
+L'intersection $\displaystyle \mathcal{P}_1 \cap \mathcal{P}_2$ est :
+
+- Une **droite** si les vecteurs normaux $\vec{n}_1$ et $\vec{n}_2$ ne sont pas colinéaires
+- Le **plan lui-même** si les plans sont confondus
+- **Vide** si les plans sont parallèles et distincts
+:::
+
+[IMAGE_3]
+
+::: exemple
+Déterminer l'intersection des plans :
+
+$$\mathcal{P}_1 : x + y + z - 3 = 0$$
+
+$$\mathcal{P}_2 : x - y + 2z - 1 = 0$$
+
+**Solution :**
+
+On résout le système : $\displaystyle \begin{cases} x + y + z = 3 \\ x - y + 2z = 1 \end{cases}$
+
+En paramétrant avec $z = t$, on obtient :
+
+$$\begin{cases} x + y = 3 - t \\ x - y = 1 - 2t \end{cases}$$
+
+En additionnant : $2x = 4 - 3t$, donc $x = 2 - \frac{3t}{2}$.
+
+En soustrayant : $2y = 2 + t$, donc $y = 1 + \frac{t}{2}$.
+
+Une représentation paramétrique de la droite d'intersection est :
+
+$\begin{cases} x = 2 - \frac{3t}{2} \\ y = 1 + \frac{t}{2} \\ z = t \end{cases}$ où $t \in \mathbb{R}$
+:::
+
+### Vecteur orthogonal à deux vecteurs non colinéaires
+
+::: methode Produit vectoriel (bonus)
+Pour trouver un vecteur orthogonal à deux vecteurs non colinéaires $\vec{u} \begin{pmatrix} a \\ b \\ c \end{pmatrix}$ et $\vec{v} \begin{pmatrix} d \\ e \\ f \end{pmatrix}$, on utilise le **produit vectoriel** :
+
+::: formule
+$$\vec{u} \wedge \vec{v} = \begin{pmatrix} bf - ce \\ cd - af \\ ae - bd \end{pmatrix}$$
+:::
+
+Ce vecteur est orthogonal à $\vec{u}$ et $\vec{v}$.
+:::
+
+::: exemple
+Trouver un vecteur orthogonal à $\vec{u} \begin{pmatrix} 1 \\ 2 \\ 1 \end{pmatrix}$ et $\vec{v} \begin{pmatrix} -1 \\ 1 \\ 0 \end{pmatrix}$.
+
+**Solution :**
+
+$$\vec{u} \wedge \vec{v} = \begin{pmatrix} 2 \times 0 - 1 \times 1 \\ 1 \times (-1) - 1 \times 0 \\ 1 \times 1 - 2 \times (-1) \end{pmatrix} = \begin{pmatrix} -1 \\ -1 \\ 3 \end{pmatrix}$$
+
+Vérification : $\displaystyle \vec{u} \cdot (\vec{u} \wedge \vec{v}) = 1 \times (-1) + 2 \times (-1) + 1 \times 3 = 0$
+:::
+
+### Équation d'une sphère
+
+::: theoreme Équation d'une sphère (bonus)
+Soit $\mathcal{S}$ la sphère de centre $\Omega(x_0, y_0, z_0)$ et de rayon $R > 0$.
+
+Un point $M(x, y, z)$ appartient à $\mathcal{S}$ si et seulement si :
+
+::: formule
+$$(x - x_0)^2 + (y - y_0)^2 + (z - z_0)^2 = R^2$$
+:::
+
+En développant, on obtient une équation de la forme :
+
+$$x^2 + y^2 + z^2 - 2x_0x - 2y_0y - 2z_0z + (x_0^2 + y_0^2 + z_0^2 - R^2) = 0$$
+:::
+
+::: exemple
+Déterminer l'équation de la sphère de centre $\Omega(1, -2, 3)$ et de rayon $R = 5$.
+
+**Solution :**
+
+$$(x - 1)^2 + (y + 2)^2 + (z - 3)^2 = 25$$
+
+En développant : $\displaystyle x^2 + y^2 + z^2 - 2x + 4y - 6z - 11 = 0$
+:::
+
+### Intersection d'une sphère et d'une droite
+
+::: methode (bonus)
+Pour déterminer l'intersection d'une sphère $\mathcal{S}$ de centre $\Omega$ et de rayon $R$ avec une droite $\Delta$ :
+
+1. Écrire une représentation paramétrique de $\Delta$ : $M(t) = A + t\vec{u}$
+2. Substituer dans l'équation de la sphère pour obtenir une équation du second degré en $t$
+3. Résoudre : selon le discriminant, il y a 0, 1 ou 2 points d'intersection
+:::
+
+::: exemple
+Déterminer l'intersection de la sphère $x^2 + y^2 + z^2 = 9$ avec la droite $\begin{cases} x = t \\ y = t \\ z = t \end{cases}$.
+
+**Solution :**
+
+En substituant : $t^2 + t^2 + t^2 = 9$, donc $3t^2 = 9$, soit $t = \pm \sqrt{3}$.
+
+Les points d'intersection sont $(\sqrt{3}, \sqrt{3}, \sqrt{3})$ et $(-\sqrt{3}, -\sqrt{3}, -\sqrt{3})$.
+:::
+
+## V. Conseils méthodologiques
+
+### Méthodes essentielles
+
+::: methode À maîtriser
+- **Représentation paramétrique d'une droite :** Identifier un point et un vecteur directeur non nul
+- **Équation cartésienne d'un plan :** Identifier un point et un vecteur normal non nul
+- **Projeté orthogonal :** Utiliser l'orthogonalité et la condition d'appartenance
+- **Intersection :** Résoudre les systèmes d'équations correspondants
+- **Problèmes géométriques :** Traduire en systèmes d'équations linéaires
+:::
+
+::: attention
+- **Vecteur directeur nul :** Vérifier que le vecteur directeur d'une droite est non nul
+- **Vecteur normal nul :** Vérifier que le vecteur normal d'un plan est non nul
+- **Confondre droite et plan :** Une droite nécessite 1 paramètre, un plan 2 paramètres
+- **Oublier le domaine du paramètre :** Le paramètre $t$ parcourt $\mathbb{R}$
+- **Multiplicité des équations :** Un plan peut avoir plusieurs équations cartésiennes équivalentes
+- **Interprétation géométrique :** Toujours vérifier l'interprétation géométrique des résultats
+:::
+
+::: remarque Récapitulatif - Formules à retenir
+| Situation | Formule |
+|---|---|
+| **Droite par A, vecteur directeur $\displaystyle \vec{u}$** | $\displaystyle \begin{cases} x = x_A + ta \\ y = y_A + tb \\ z = z_A + tc \end{cases}$, $\displaystyle t \in \mathbb{R}$ |
+| **Plan normal à $\displaystyle \vec{n}$, passant par A** | $\displaystyle ax + by + cz + d = 0$ avec $\displaystyle d = -(ax_A + by_A + cz_A)$ |
+| **Projeté de M sur plan $\displaystyle \mathcal{P}$** | $\displaystyle H \in \mathcal{P}$ et $\displaystyle \overrightarrow{MH} \parallel \vec{n}$ |
+| **Projeté de M sur droite $\displaystyle \Delta$** | $\displaystyle H \in \Delta$ et $\displaystyle \overrightarrow{MH} \cdot \vec{u} = 0$ |
+| **Sphère de centre $\displaystyle \Omega$, rayon R** | $\displaystyle (x - x_0)^2 + (y - y_0)^2 + (z - z_0)^2 = R^2$ |
+:::

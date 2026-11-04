@@ -1,0 +1,1122 @@
+[
+  {
+    "id": "nouveau-1",
+    "famille": "numération de position",
+    "niveau": 1,
+    "titre": "Lire trois unités et des millièmes",
+    "questions": [
+      {
+        "s": "Donner la partie entière de $3{,}205$ et nommer les trois rangs après la virgule.",
+        "m": "Séparer les unités entières des parts d’unité.",
+        "e": "Avant la virgule, on lit 3. Après viennent les dixièmes, centièmes et millièmes.",
+        "r": "Partie entière : 3 ; dixièmes, centièmes, millièmes.",
+        "check": [
+          [
+            "3205//1000",
+            3
+          ]
+        ]
+      },
+      {
+        "s": "Donner le chiffre de chaque rang décimal et sa contribution.",
+        "m": "Un chiffre indique combien de parts de son rang sont présentes.",
+        "e": "Les chiffres sont 2, 0, 5. Leurs contributions sont $\\frac{2}{10}$, $\\frac{0}{100}$ et $\\frac{5}{1000}$.",
+        "r": "2 dixièmes, 0 centièmes et 5 millièmes.",
+        "check": [
+          [
+            "3+Fraction(2,10)+Fraction(0,100)+Fraction(5,1000)",
+            [
+              641,
+              200
+            ]
+          ]
+        ]
+      },
+      {
+        "s": "Lire le nombre en unités et millièmes.",
+        "m": "Tout exprimer dans le rang des millièmes.",
+        "e": "La partie décimale compte 205 millièmes, en plus des 3 unités entières.",
+        "r": "3 unités et 205 millièmes.",
+        "check": [
+          [
+            "3*1000+205",
+            3205
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-2",
+    "famille": "passages entre écritures",
+    "niveau": 1,
+    "titre": "Des centièmes à la virgule",
+    "questions": [
+      {
+        "s": "Écrire $\\frac{237}{100}$ avec une virgule.",
+        "m": "Le dénominateur fixe le rang du dernier chiffre.",
+        "e": "Le dénominateur 100 impose deux chiffres décimaux. On place 2 unités avant la virgule.",
+        "r": "$2{,}37$.",
+        "check": [
+          [
+            "Fraction(237,100)",
+            [
+              237,
+              100
+            ]
+          ]
+        ]
+      },
+      {
+        "s": "Écrire le nombre comme entier plus une fraction décimale inférieure à 1.",
+        "m": "Séparer les groupes complets et le reste.",
+        "e": "$237=2\\times100+37$.",
+        "r": "$2+\\frac{37}{100}$.",
+        "check": [
+          [
+            "2+Fraction(37,100)",
+            [
+              237,
+              100
+            ]
+          ]
+        ]
+      },
+      {
+        "s": "Décomposer avec des dixièmes, centièmes et, si besoin, millièmes de numérateurs inférieurs à 10.",
+        "m": "Lire chaque rang et omettre les contributions nulles.",
+        "e": "Chaque chiffre occupe son rang : 2,37. Les zéros intérieurs ne changent pas la place des autres chiffres.",
+        "r": "$2+\\frac{3}{10}+\\frac{7}{100}$.",
+        "check": [
+          [
+            "2+Fraction(3,10)+Fraction(7,100)",
+            [
+              237,
+              100
+            ]
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-3",
+    "famille": "équivalences et zéros",
+    "niveau": 1,
+    "titre": "Le zéro final ou le zéro intérieur",
+    "questions": [
+      {
+        "s": "Comparer $\\frac{35}{10}$ et $\\frac{350}{100}$.",
+        "m": "Exprimer les deux nombres dans le même rang.",
+        "e": "$35\\times10=350$ et $10\\times10=100$. Les fractions ont la même valeur.",
+        "r": "$\\frac{35}{10}=\\frac{350}{100}$.",
+        "check": [
+          [
+            "Fraction(35,10)==Fraction(350,100)",
+            true
+          ]
+        ]
+      },
+      {
+        "s": "Écrire leur valeur commune avec une virgule.",
+        "m": "Placer les chiffres selon les rangs du dénominateur.",
+        "e": "$35$ parts de taille $\\frac{1}{10}$ donnent $3{,}5$.",
+        "r": "$3{,}5$.",
+        "check": [
+          [
+            "Fraction(35,10)",
+            [
+              7,
+              2
+            ]
+          ]
+        ]
+      },
+      {
+        "s": "Comparer cette valeur à $3{,}05$.",
+        "m": "Aligner les rangs avec un zéro final.",
+        "e": "La valeur commune est $3{,}50$. Au même rang, $350>305$.",
+        "r": "$3{,}5>3{,}05$.",
+        "check": [
+          [
+            "Fraction(35,10)>Fraction(305,100)",
+            true
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-4",
+    "famille": "comparaison et rangement",
+    "niveau": 1,
+    "titre": "Cinq étiquettes décimales",
+    "questions": [
+      {
+        "s": "Ranger les cinq nombres dans l’ordre croissant.",
+        "m": "Comparer rang par rang, avec trois décimales pour s’aider.",
+        "e": "Les parties entières sont d’abord comparées. À égalité, on compare les dixièmes, puis les centièmes, puis les millièmes.",
+        "r": "$5{,}080<5{,}780<5{,}790<5{,}800<5{,}805$.",
+        "check": [
+          [
+            "sorted([5800, 5790, 5080, 5780, 5805])",
+            [
+              5080,
+              5780,
+              5790,
+              5800,
+              5805
+            ]
+          ]
+        ]
+      },
+      {
+        "s": "Donner le plus grand nombre et sa partie entière.",
+        "m": "Lire la dernière valeur du rangement et ses unités entières.",
+        "e": "Le plus grand est $5{,}805$. Les chiffres avant la virgule donnent 5.",
+        "r": "$5{,}805$ ; partie entière 5.",
+        "check": [
+          [
+            "max([5800, 5790, 5080, 5780, 5805])//1000",
+            5
+          ]
+        ]
+      },
+      {
+        "s": "Un élève compare seulement les nombres formés après la virgule, sans aligner les rangs. Cette méthode est-elle fiable ?",
+        "m": "Les chiffres n’ont pas la même valeur selon leur rang.",
+        "e": "Par exemple $5{,}8=5{,}800$ dépasse $5{,}79=5{,}790$, bien que $8<79$. Il faut comparer des rangs identiques.",
+        "r": "Non : il faut aligner les rangs décimaux.",
+        "check": [
+          [
+            "Fraction(58,10)>Fraction(579,100)",
+            true
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-5",
+    "famille": "encadrement et intercalation",
+    "niveau": 1,
+    "titre": "Entre deux entiers et deux dixièmes",
+    "questions": [
+      {
+        "s": "Encadrer $4{,}207$ entre deux entiers consécutifs.",
+        "m": "Repérer la partie entière et l’entier suivant.",
+        "e": "La partie entière est 4 et la partie décimale est non nulle.",
+        "r": "$4<4{,}207<5$.",
+        "check": [
+          [
+            "4<Fraction(4207,1000)<5",
+            true
+          ]
+        ]
+      },
+      {
+        "s": "Encadrer le même nombre entre deux dixièmes consécutifs.",
+        "m": "Garder le rang des dixièmes puis avancer d’un dixième.",
+        "e": "Les dixièmes voisins sont $4{,}200$ et $4{,}300$.",
+        "r": "$4{,}200<4{,}207<4{,}300$.",
+        "check": [
+          [
+            "4200<4207<4300 and 4300-4200==100",
+            true
+          ]
+        ]
+      },
+      {
+        "s": "Donner un nombre avec au plus trois décimales, strictement entre $4{,}200$ et $4{,}210$, différent du nombre étudié.",
+        "m": "Choisir un autre millième à l’intérieur des deux bornes.",
+        "e": "Le nombre $4{,}201$ est un millième après la borne basse et reste avant la borne haute.",
+        "r": "Par exemple $4{,}201$.",
+        "check": [
+          [
+            "4200<4201<4210 and 4201!=4207",
+            true
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-6",
+    "famille": "graduations",
+    "niveau": 1,
+    "titre": "Le troisième centième",
+    "questions": [
+      {
+        "s": "Calculer la valeur d’un petit intervalle.",
+        "m": "Partager l’écart des bornes par les vingt intervalles.",
+        "e": "La différence des bornes vaut $0{,}200$. En partageant par 20, un pas vaut $0{,}010$.",
+        "r": "$0{,}010$.",
+        "check": [
+          [
+            "Fraction(200,1000)/20",
+            [
+              1,
+              100
+            ]
+          ]
+        ]
+      },
+      {
+        "s": "Un point est au 3e petit pas après la première borne. Donner son abscisse.",
+        "m": "Ajouter le nombre de pas au départ.",
+        "e": "En millièmes : $4200+3\\times10=4230$.",
+        "r": "$4{,}230$.",
+        "check": [
+          [
+            "4200+3*10",
+            4230
+          ]
+        ]
+      },
+      {
+        "s": "Écrire cette abscisse sous forme d’une fraction décimale.",
+        "m": "Compter les millièmes depuis zéro, même si la fenêtre commence plus loin.",
+        "e": "Le point est repéré par 4230 millièmes, et non seulement par les pas visibles dans la fenêtre.",
+        "r": "$\\frac{4\\,230}{1\\,000}$.",
+        "check": [
+          [
+            "Fraction(4230,1000)",
+            [
+              423,
+              100
+            ]
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-7",
+    "famille": "partie entière et arrondi",
+    "niveau": 1,
+    "titre": "Juste avant, au milieu, juste après",
+    "questions": [
+      {
+        "s": "Donner la partie entière et l’arrondi à l’entier de $7{,}499$.",
+        "m": "Distinguer la partie entière de l’entier le plus proche.",
+        "e": "La partie entière est 7. Le chiffre des dixièmes est 4 : il est inférieur à 5, on garde la partie entière.",
+        "r": "Partie entière : 7 ; arrondi : 7.",
+        "check": [
+          [
+            "[7499//1000,(7499+500)//1000]",
+            [
+              7,
+              7
+            ]
+          ]
+        ]
+      },
+      {
+        "s": "Donner la partie entière et l’arrondi à l’entier de $7{,}500$.",
+        "m": "Distinguer la partie entière de l’entier le plus proche.",
+        "e": "La partie entière est 7. Le chiffre des dixièmes est 5 : il est au moins égal à 5, on choisit l’entier suivant. À mi-chemin, on choisit aussi le supérieur.",
+        "r": "Partie entière : 7 ; arrondi : 8.",
+        "check": [
+          [
+            "[7500//1000,(7500+500)//1000]",
+            [
+              7,
+              8
+            ]
+          ]
+        ]
+      },
+      {
+        "s": "Donner la partie entière et l’arrondi à l’entier de $7{,}501$.",
+        "m": "Distinguer la partie entière de l’entier le plus proche.",
+        "e": "La partie entière est 7. Le chiffre des dixièmes est 5 : il est au moins égal à 5, on choisit l’entier suivant. À mi-chemin, on choisit aussi le supérieur.",
+        "r": "Partie entière : 7 ; arrondi : 8.",
+        "check": [
+          [
+            "[7501//1000,(7501+500)//1000]",
+            [
+              7,
+              8
+            ]
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-8",
+    "famille": "numération de position",
+    "niveau": 2,
+    "titre": "Un zéro au bon rang",
+    "questions": [
+      {
+        "s": "Donner la partie entière de $14{,}070$ et nommer les trois rangs après la virgule.",
+        "m": "Séparer les unités entières des parts d’unité.",
+        "e": "Avant la virgule, on lit 14. Après viennent les dixièmes, centièmes et millièmes.",
+        "r": "Partie entière : 14 ; dixièmes, centièmes, millièmes.",
+        "check": [
+          [
+            "14070//1000",
+            14
+          ]
+        ]
+      },
+      {
+        "s": "Donner le chiffre de chaque rang décimal et sa contribution.",
+        "m": "Un chiffre indique combien de parts de son rang sont présentes.",
+        "e": "Les chiffres sont 0, 7, 0. Leurs contributions sont $\\frac{0}{10}$, $\\frac{7}{100}$ et $\\frac{0}{1000}$.",
+        "r": "0 dixièmes, 7 centièmes et 0 millièmes.",
+        "check": [
+          [
+            "14+Fraction(0,10)+Fraction(7,100)+Fraction(0,1000)",
+            [
+              1407,
+              100
+            ]
+          ]
+        ]
+      },
+      {
+        "s": "Lire le nombre en unités et millièmes.",
+        "m": "Tout exprimer dans le rang des millièmes.",
+        "e": "La partie décimale compte 70 millièmes, en plus des 14 unités entières.",
+        "r": "14 unités et 70 millièmes.",
+        "check": [
+          [
+            "14*1000+70",
+            14070
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-9",
+    "famille": "passages entre écritures",
+    "niveau": 2,
+    "titre": "Les trois écritures de 4,207",
+    "questions": [
+      {
+        "s": "Écrire $\\frac{4\\,207}{1\\,000}$ avec une virgule.",
+        "m": "Le dénominateur fixe le rang du dernier chiffre.",
+        "e": "Le dénominateur 1000 impose trois chiffres décimaux. On place 4 unités avant la virgule.",
+        "r": "$4{,}207$.",
+        "check": [
+          [
+            "Fraction(4207,1000)",
+            [
+              4207,
+              1000
+            ]
+          ]
+        ]
+      },
+      {
+        "s": "Écrire le nombre comme entier plus une fraction décimale inférieure à 1.",
+        "m": "Séparer les groupes complets et le reste.",
+        "e": "$4\\,207=4\\times1\\,000+207$.",
+        "r": "$4+\\frac{207}{1\\,000}$.",
+        "check": [
+          [
+            "4+Fraction(207,1000)",
+            [
+              4207,
+              1000
+            ]
+          ]
+        ]
+      },
+      {
+        "s": "Décomposer avec des dixièmes, centièmes et, si besoin, millièmes de numérateurs inférieurs à 10.",
+        "m": "Lire chaque rang et omettre les contributions nulles.",
+        "e": "Chaque chiffre occupe son rang : 4,207. Les zéros intérieurs ne changent pas la place des autres chiffres.",
+        "r": "$4+\\frac{2}{10}+\\frac{7}{1000}$.",
+        "check": [
+          [
+            "4+Fraction(2,10)+Fraction(0,100)+Fraction(7,1000)",
+            [
+              4207,
+              1000
+            ]
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-10",
+    "famille": "équivalences et zéros",
+    "niveau": 2,
+    "titre": "Des écritures qui semblent différentes",
+    "questions": [
+      {
+        "s": "Comparer $\\frac{407}{100}$ et $\\frac{4070}{1000}$.",
+        "m": "Exprimer les deux nombres dans le même rang.",
+        "e": "$407\\times10=4070$ et $100\\times10=1000$. Les fractions ont la même valeur.",
+        "r": "$\\frac{407}{100}=\\frac{4070}{1000}$.",
+        "check": [
+          [
+            "Fraction(407,100)==Fraction(4070,1000)",
+            true
+          ]
+        ]
+      },
+      {
+        "s": "Écrire leur valeur commune avec une virgule.",
+        "m": "Placer les chiffres selon les rangs du dénominateur.",
+        "e": "$407$ parts de taille $\\frac{1}{100}$ donnent $4{,}07$.",
+        "r": "$4{,}07$.",
+        "check": [
+          [
+            "Fraction(407,100)",
+            [
+              407,
+              100
+            ]
+          ]
+        ]
+      },
+      {
+        "s": "Comparer cette valeur à $4{,}007$.",
+        "m": "Aligner les rangs avec un zéro final.",
+        "e": "La valeur commune est $4{,}070$. Au même rang, $4070>4007$.",
+        "r": "$4{,}07>4{,}007$.",
+        "check": [
+          [
+            "Fraction(407,100)>Fraction(4007,1000)",
+            true
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-11",
+    "famille": "comparaison et rangement",
+    "niveau": 2,
+    "titre": "Des millièmes pour ranger",
+    "questions": [
+      {
+        "s": "Ranger les cinq nombres dans l’ordre croissant.",
+        "m": "Comparer rang par rang, avec trois décimales pour s’aider.",
+        "e": "Les parties entières sont d’abord comparées. À égalité, on compare les dixièmes, puis les centièmes, puis les millièmes.",
+        "r": "$7{,}025<7{,}200<7{,}205<7{,}250<7{,}520$.",
+        "check": [
+          [
+            "sorted([7205, 7250, 7025, 7520, 7200])",
+            [
+              7025,
+              7200,
+              7205,
+              7250,
+              7520
+            ]
+          ]
+        ]
+      },
+      {
+        "s": "Donner le plus grand nombre et sa partie entière.",
+        "m": "Lire la dernière valeur du rangement et ses unités entières.",
+        "e": "Le plus grand est $7{,}520$. Les chiffres avant la virgule donnent 7.",
+        "r": "$7{,}520$ ; partie entière 7.",
+        "check": [
+          [
+            "max([7205, 7250, 7025, 7520, 7200])//1000",
+            7
+          ]
+        ]
+      },
+      {
+        "s": "Un élève compare seulement les nombres formés après la virgule, sans aligner les rangs. Cette méthode est-elle fiable ?",
+        "m": "Les chiffres n’ont pas la même valeur selon leur rang.",
+        "e": "Par exemple $5{,}8=5{,}800$ dépasse $5{,}79=5{,}790$, bien que $8<79$. Il faut comparer des rangs identiques.",
+        "r": "Non : il faut aligner les rangs décimaux.",
+        "check": [
+          [
+            "Fraction(58,10)>Fraction(579,100)",
+            true
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-12",
+    "famille": "encadrement et intercalation",
+    "niveau": 2,
+    "titre": "Au voisinage de 10",
+    "questions": [
+      {
+        "s": "Encadrer $9{,}995$ entre deux entiers consécutifs.",
+        "m": "Repérer la partie entière et l’entier suivant.",
+        "e": "La partie entière est 9 et la partie décimale est non nulle.",
+        "r": "$9<9{,}995<10$.",
+        "check": [
+          [
+            "9<Fraction(9995,1000)<10",
+            true
+          ]
+        ]
+      },
+      {
+        "s": "Encadrer le même nombre entre deux dixièmes consécutifs.",
+        "m": "Garder le rang des dixièmes puis avancer d’un dixième.",
+        "e": "Les dixièmes voisins sont $9{,}900$ et $10{,}000$.",
+        "r": "$9{,}900<9{,}995<10{,}000$.",
+        "check": [
+          [
+            "9900<9995<10000 and 10000-9900==100",
+            true
+          ]
+        ]
+      },
+      {
+        "s": "Donner un nombre avec au plus trois décimales, strictement entre $9{,}990$ et $10{,}000$, différent du nombre étudié.",
+        "m": "Choisir un autre millième à l’intérieur des deux bornes.",
+        "e": "Le nombre $9{,}991$ est un millième après la borne basse et reste avant la borne haute.",
+        "r": "Par exemple $9{,}991$.",
+        "check": [
+          [
+            "9990<9991<10000 and 9991!=9995",
+            true
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-13",
+    "famille": "graduations",
+    "niveau": 2,
+    "titre": "Une graduation de cinq millièmes",
+    "questions": [
+      {
+        "s": "Calculer la valeur d’un petit intervalle.",
+        "m": "Partager l’écart des bornes par les vingt intervalles.",
+        "e": "La différence des bornes vaut $0{,}100$. En partageant par 20, un pas vaut $0{,}005$.",
+        "r": "$0{,}005$.",
+        "check": [
+          [
+            "Fraction(100,1000)/20",
+            [
+              1,
+              200
+            ]
+          ]
+        ]
+      },
+      {
+        "s": "Un point est au 7e petit pas après la première borne. Donner son abscisse.",
+        "m": "Ajouter le nombre de pas au départ.",
+        "e": "En millièmes : $7200+7\\times5=7235$.",
+        "r": "$7{,}235$.",
+        "check": [
+          [
+            "7200+7*5",
+            7235
+          ]
+        ]
+      },
+      {
+        "s": "Écrire cette abscisse sous forme d’une fraction décimale.",
+        "m": "Compter les millièmes depuis zéro, même si la fenêtre commence plus loin.",
+        "e": "Le point est repéré par 7235 millièmes, et non seulement par les pas visibles dans la fenêtre.",
+        "r": "$\\frac{7\\,235}{1\\,000}$.",
+        "check": [
+          [
+            "Fraction(7235,1000)",
+            [
+              1447,
+              200
+            ]
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-14",
+    "famille": "partie entière et arrondi",
+    "niveau": 2,
+    "titre": "La frontière des douze unités",
+    "questions": [
+      {
+        "s": "Donner la partie entière et l’arrondi à l’entier de $12{,}499$.",
+        "m": "Distinguer la partie entière de l’entier le plus proche.",
+        "e": "La partie entière est 12. Le chiffre des dixièmes est 4 : il est inférieur à 5, on garde la partie entière.",
+        "r": "Partie entière : 12 ; arrondi : 12.",
+        "check": [
+          [
+            "[12499//1000,(12499+500)//1000]",
+            [
+              12,
+              12
+            ]
+          ]
+        ]
+      },
+      {
+        "s": "Donner la partie entière et l’arrondi à l’entier de $12{,}500$.",
+        "m": "Distinguer la partie entière de l’entier le plus proche.",
+        "e": "La partie entière est 12. Le chiffre des dixièmes est 5 : il est au moins égal à 5, on choisit l’entier suivant. À mi-chemin, on choisit aussi le supérieur.",
+        "r": "Partie entière : 12 ; arrondi : 13.",
+        "check": [
+          [
+            "[12500//1000,(12500+500)//1000]",
+            [
+              12,
+              13
+            ]
+          ]
+        ]
+      },
+      {
+        "s": "Donner la partie entière et l’arrondi à l’entier de $12{,}501$.",
+        "m": "Distinguer la partie entière de l’entier le plus proche.",
+        "e": "La partie entière est 12. Le chiffre des dixièmes est 5 : il est au moins égal à 5, on choisit l’entier suivant. À mi-chemin, on choisit aussi le supérieur.",
+        "r": "Partie entière : 12 ; arrondi : 13.",
+        "check": [
+          [
+            "[12501//1000,(12501+500)//1000]",
+            [
+              12,
+              13
+            ]
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-15",
+    "famille": "numération de position",
+    "niveau": 3,
+    "titre": "Les deux zéros de 208,007",
+    "questions": [
+      {
+        "s": "Donner la partie entière de $208{,}007$ et nommer les trois rangs après la virgule.",
+        "m": "Séparer les unités entières des parts d’unité.",
+        "e": "Avant la virgule, on lit 208. Après viennent les dixièmes, centièmes et millièmes.",
+        "r": "Partie entière : 208 ; dixièmes, centièmes, millièmes.",
+        "check": [
+          [
+            "208007//1000",
+            208
+          ]
+        ]
+      },
+      {
+        "s": "Donner le chiffre de chaque rang décimal et sa contribution.",
+        "m": "Un chiffre indique combien de parts de son rang sont présentes.",
+        "e": "Les chiffres sont 0, 0, 7. Leurs contributions sont $\\frac{0}{10}$, $\\frac{0}{100}$ et $\\frac{7}{1000}$.",
+        "r": "0 dixièmes, 0 centièmes et 7 millièmes.",
+        "check": [
+          [
+            "208+Fraction(0,10)+Fraction(0,100)+Fraction(7,1000)",
+            [
+              208007,
+              1000
+            ]
+          ]
+        ]
+      },
+      {
+        "s": "Lire le nombre en unités et millièmes.",
+        "m": "Tout exprimer dans le rang des millièmes.",
+        "e": "La partie décimale compte 7 millièmes, en plus des 208 unités entières.",
+        "r": "208 unités et 7 millièmes.",
+        "check": [
+          [
+            "208*1000+7",
+            208007
+          ]
+        ]
+      },
+      {
+        "s": "Dans $208{,}007$, combien de millièmes sont contenus au total, unités comprises ?",
+        "m": "Transformer aussi les unités en millièmes.",
+        "e": "208 unités donnent 208 000 millièmes, auxquels on ajoute 7 millièmes.",
+        "r": "208 007 millièmes.",
+        "check": [
+          [
+            "208*1000+7",
+            208007
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-16",
+    "famille": "passages entre écritures",
+    "niveau": 3,
+    "titre": "Une décomposition avec un zéro intérieur",
+    "questions": [
+      {
+        "s": "Écrire $\\frac{12\\,508}{1\\,000}$ avec une virgule.",
+        "m": "Le dénominateur fixe le rang du dernier chiffre.",
+        "e": "Le dénominateur 1000 impose trois chiffres décimaux. On place 12 unités avant la virgule.",
+        "r": "$12{,}508$.",
+        "check": [
+          [
+            "Fraction(12508,1000)",
+            [
+              3127,
+              250
+            ]
+          ]
+        ]
+      },
+      {
+        "s": "Écrire le nombre comme entier plus une fraction décimale inférieure à 1.",
+        "m": "Séparer les groupes complets et le reste.",
+        "e": "$12\\,508=12\\times1\\,000+508$.",
+        "r": "$12+\\frac{508}{1\\,000}$.",
+        "check": [
+          [
+            "12+Fraction(508,1000)",
+            [
+              3127,
+              250
+            ]
+          ]
+        ]
+      },
+      {
+        "s": "Décomposer avec des dixièmes, centièmes et, si besoin, millièmes de numérateurs inférieurs à 10.",
+        "m": "Lire chaque rang et omettre les contributions nulles.",
+        "e": "Chaque chiffre occupe son rang : 12,508. Les zéros intérieurs ne changent pas la place des autres chiffres.",
+        "r": "$12+\\frac{5}{10}+\\frac{8}{1000}$.",
+        "check": [
+          [
+            "12+Fraction(5,10)+Fraction(0,100)+Fraction(8,1000)",
+            [
+              3127,
+              250
+            ]
+          ]
+        ]
+      },
+      {
+        "s": "Un élève propose $12{,}508=12+\\frac5{100}+\\frac8{1\\,000}$. Corriger sans changer le nombre de départ.",
+        "m": "Le 5 est au rang des dixièmes.",
+        "e": "Il faut écrire $12+\\frac5{10}+\\frac8{1\\,000}$. L’écriture proposée vaut seulement $12{,}058$.",
+        "r": "$12{,}508=12+\\frac5{10}+\\frac8{1\\,000}$.",
+        "check": [
+          [
+            "12+Fraction(5,10)+Fraction(8,1000)",
+            [
+              3127,
+              250
+            ]
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-17",
+    "famille": "équivalences et zéros",
+    "niveau": 3,
+    "titre": "Les zéros que l’on peut retirer",
+    "questions": [
+      {
+        "s": "Les écritures $12{,}05$ et $12{,}050$ désignent-elles le même nombre ?",
+        "m": "Un zéro ajouté après le dernier chiffre décimal ne change aucun rang existant.",
+        "e": "Les 1 205 centièmes valent 12 050 millièmes. Le zéro final n’ajoute aucune quantité.",
+        "r": "Oui : $12{,}05=12{,}050$.",
+        "check": [
+          [
+            "Fraction(1205,100)==Fraction(12050,1000)",
+            true
+          ]
+        ]
+      },
+      {
+        "s": "Peut-on écrire $12{,}005=12{,}05$ ?",
+        "m": "Un zéro intérieur garde la place du rang.",
+        "e": "$12{,}005$ a 0 centième ; $12{,}05$ a 5 centièmes. En millièmes : $12\\,005\\ne12\\,050$.",
+        "r": "Non : $12{,}005<12{,}05$.",
+        "check": [
+          [
+            "Fraction(12005,1000)<Fraction(1205,100)",
+            true
+          ]
+        ]
+      },
+      {
+        "s": "Donner le nombre de centièmes entiers contenus dans $12{,}005$.",
+        "m": "Regrouper les millièmes par paquets de dix.",
+        "e": "$12\\,005=1\\,200\\times10+5$ millièmes. Il y a 1 200 centièmes entiers et encore 5 millièmes.",
+        "r": "1 200 centièmes entiers.",
+        "check": [
+          [
+            "12005//10",
+            1200
+          ]
+        ]
+      },
+      {
+        "s": "Trouver un nombre de trois décimales compris entre $12{,}005$ et $12{,}05$, dont le zéro final peut être retiré.",
+        "m": "Choisir un centième entier strictement entre les bornes.",
+        "e": "$12{,}020=12{,}02$ est plus grand que $12{,}005$ et plus petit que $12{,}050$.",
+        "r": "Par exemple $12{,}020$.",
+        "check": [
+          [
+            "Fraction(12005,1000)<Fraction(12020,1000)<Fraction(1205,100)",
+            true
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-18",
+    "famille": "comparaison et rangement",
+    "niveau": 3,
+    "titre": "Les zéros du classement",
+    "questions": [
+      {
+        "s": "Ranger les cinq nombres dans l’ordre croissant.",
+        "m": "Comparer rang par rang, avec trois décimales pour s’aider.",
+        "e": "Les parties entières sont d’abord comparées. À égalité, on compare les dixièmes, puis les centièmes, puis les millièmes.",
+        "r": "$12{,}005<12{,}009<12{,}050<12{,}090<12{,}500$.",
+        "check": [
+          [
+            "sorted([12005, 12050, 12500, 12009, 12090])",
+            [
+              12005,
+              12009,
+              12050,
+              12090,
+              12500
+            ]
+          ]
+        ]
+      },
+      {
+        "s": "Donner le plus grand nombre et sa partie entière.",
+        "m": "Lire la dernière valeur du rangement et ses unités entières.",
+        "e": "Le plus grand est $12{,}500$. Les chiffres avant la virgule donnent 12.",
+        "r": "$12{,}500$ ; partie entière 12.",
+        "check": [
+          [
+            "max([12005, 12050, 12500, 12009, 12090])//1000",
+            12
+          ]
+        ]
+      },
+      {
+        "s": "Un élève compare seulement les nombres formés après la virgule, sans aligner les rangs. Cette méthode est-elle fiable ?",
+        "m": "Les chiffres n’ont pas la même valeur selon leur rang.",
+        "e": "Par exemple $5{,}8=5{,}800$ dépasse $5{,}79=5{,}790$, bien que $8<79$. Il faut comparer des rangs identiques.",
+        "r": "Non : il faut aligner les rangs décimaux.",
+        "check": [
+          [
+            "Fraction(58,10)>Fraction(579,100)",
+            true
+          ]
+        ]
+      },
+      {
+        "s": "Combien de nombres ayant exactement trois chiffres après la virgule sont strictement entre les deux plus petits nombres de la liste ?",
+        "m": "Compter les millièmes intermédiaires.",
+        "e": "Les deux plus petits sont $12{,}005$ et $12{,}009$. Les millièmes intermédiaires sont $12{,}006$, $12{,}007$ et $12{,}008$.",
+        "r": "3 écritures à trois décimales.",
+        "check": [
+          [
+            "12009-12005-1",
+            3
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-19",
+    "famille": "encadrement et intercalation",
+    "niveau": 3,
+    "titre": "Intercaler sous trois contraintes",
+    "questions": [
+      {
+        "s": "Encadrer $17{,}009$ entre deux entiers consécutifs.",
+        "m": "Repérer la partie entière et l’entier suivant.",
+        "e": "La partie entière est 17 et la partie décimale est non nulle.",
+        "r": "$17<17{,}009<18$.",
+        "check": [
+          [
+            "17<Fraction(17009,1000)<18",
+            true
+          ]
+        ]
+      },
+      {
+        "s": "Encadrer le même nombre entre deux dixièmes consécutifs.",
+        "m": "Garder le rang des dixièmes puis avancer d’un dixième.",
+        "e": "Les dixièmes voisins sont $17{,}000$ et $17{,}100$.",
+        "r": "$17{,}000<17{,}009<17{,}100$.",
+        "check": [
+          [
+            "17000<17009<17100 and 17100-17000==100",
+            true
+          ]
+        ]
+      },
+      {
+        "s": "Donner un nombre avec au plus trois décimales, strictement entre $17{,}000$ et $17{,}010$, différent du nombre étudié.",
+        "m": "Choisir un autre millième à l’intérieur des deux bornes.",
+        "e": "Le nombre $17{,}001$ est un millième après la borne basse et reste avant la borne haute.",
+        "r": "Par exemple $17{,}001$.",
+        "check": [
+          [
+            "17000<17001<17010 and 17001!=17009",
+            true
+          ]
+        ]
+      },
+      {
+        "s": "Trouver un nombre strictement entre $17{,}009$ et $17{,}01$, avec au plus trois décimales, ou expliquer pourquoi c’est impossible.",
+        "m": "Traduire les deux bornes en millièmes.",
+        "e": "Les bornes sont deux millièmes consécutifs : 17 009 et 17 010 millièmes. Aucun entier de millièmes ne s’intercale.",
+        "r": "Impossible avec au plus trois décimales.",
+        "check": [
+          [
+            "17010-17009",
+            1
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-20",
+    "famille": "graduations",
+    "niveau": 3,
+    "titre": "Une loupe sur les millièmes",
+    "questions": [
+      {
+        "s": "Calculer la valeur d’un petit intervalle.",
+        "m": "Partager l’écart des bornes par les vingt intervalles.",
+        "e": "La différence des bornes vaut $0{,}020$. En partageant par 20, un pas vaut $0{,}001$.",
+        "r": "$0{,}001$.",
+        "check": [
+          [
+            "Fraction(20,1000)/20",
+            [
+              1,
+              1000
+            ]
+          ]
+        ]
+      },
+      {
+        "s": "Un point est au 13e petit pas après la première borne. Donner son abscisse.",
+        "m": "Ajouter le nombre de pas au départ.",
+        "e": "En millièmes : $12000+13\\times1=12013$.",
+        "r": "$12{,}013$.",
+        "check": [
+          [
+            "12000+13*1",
+            12013
+          ]
+        ]
+      },
+      {
+        "s": "Écrire cette abscisse sous forme d’une fraction décimale.",
+        "m": "Compter les millièmes depuis zéro, même si la fenêtre commence plus loin.",
+        "e": "Le point est repéré par 12013 millièmes, et non seulement par les pas visibles dans la fenêtre.",
+        "r": "$\\frac{12\\,013}{1\\,000}$.",
+        "check": [
+          [
+            "Fraction(12013,1000)",
+            [
+              12013,
+              1000
+            ]
+          ]
+        ]
+      },
+      {
+        "s": "La fenêtre est-elle suffisante pour placer $12{,}025$ ? Justifier.",
+        "m": "Comparer le nombre à la borne droite.",
+        "e": "Vingt pas de $0{,}001$ après 12 conduisent à $12{,}020$. Le point $12{,}025$ est au-delà de cette borne.",
+        "r": "Non : il est 5 millièmes après la borne droite.",
+        "check": [
+          [
+            "12025-(12000+20)",
+            5
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nouveau-21",
+    "famille": "partie entière et arrondi",
+    "niveau": 3,
+    "titre": "Un arrondi peut changer de dizaine",
+    "questions": [
+      {
+        "s": "Donner la partie entière et l’arrondi à l’entier de $99{,}499$.",
+        "m": "Distinguer la partie entière de l’entier le plus proche.",
+        "e": "La partie entière est 99. Le chiffre des dixièmes est 4 : il est inférieur à 5, on garde la partie entière.",
+        "r": "Partie entière : 99 ; arrondi : 99.",
+        "check": [
+          [
+            "[99499//1000,(99499+500)//1000]",
+            [
+              99,
+              99
+            ]
+          ]
+        ]
+      },
+      {
+        "s": "Donner la partie entière et l’arrondi à l’entier de $99{,}500$.",
+        "m": "Distinguer la partie entière de l’entier le plus proche.",
+        "e": "La partie entière est 99. Le chiffre des dixièmes est 5 : il est au moins égal à 5, on choisit l’entier suivant. À mi-chemin, on choisit aussi le supérieur.",
+        "r": "Partie entière : 99 ; arrondi : 100.",
+        "check": [
+          [
+            "[99500//1000,(99500+500)//1000]",
+            [
+              99,
+              100
+            ]
+          ]
+        ]
+      },
+      {
+        "s": "Donner la partie entière et l’arrondi à l’entier de $99{,}501$.",
+        "m": "Distinguer la partie entière de l’entier le plus proche.",
+        "e": "La partie entière est 99. Le chiffre des dixièmes est 5 : il est au moins égal à 5, on choisit l’entier suivant. À mi-chemin, on choisit aussi le supérieur.",
+        "r": "Partie entière : 99 ; arrondi : 100.",
+        "check": [
+          [
+            "[99501//1000,(99501+500)//1000]",
+            [
+              99,
+              100
+            ]
+          ]
+        ]
+      },
+      {
+        "s": "Quel est le plus petit nombre de partie entière 99, écrit au millième, dont l’arrondi à l’entier vaut 100 ?",
+        "m": "La frontière de l’arrondi est à mi-chemin de 99 et 100.",
+        "e": "La frontière est $99{,}500$. Tout millième inférieur a un chiffre des dixièmes inférieur à 5 ; à la frontière, on arrondit à 100.",
+        "r": "$99{,}500$.",
+        "check": [
+          [
+            "(99500+500)//1000",
+            100
+          ],
+          [
+            "(99499+500)//1000",
+            99
+          ]
+        ]
+      }
+    ]
+  }
+]

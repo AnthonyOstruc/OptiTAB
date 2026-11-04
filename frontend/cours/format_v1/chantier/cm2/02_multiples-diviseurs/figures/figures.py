@@ -1,0 +1,3 @@
+# -*- coding: utf-8 -*-
+"""Figures originales CM2, style livre, sans exception de chevauchement."""
+FIGURES = {'groupes_de_six': '\\begin{tikzpicture}[x=1cm,y=1cm]\n\\draw[otNavy,fill=otSky,line width=.65pt] (0.0,0) rectangle (1.2,.7);\n\\node[text=otInk] at (0.6,.35) {6};\n\\draw[otNavy,fill=otSky,line width=.65pt] (1.5,0) rectangle (2.7,.7);\n\\node[text=otInk] at (2.1,.35) {6};\n\\draw[otNavy,fill=otSky,line width=.65pt] (3.0,0) rectangle (4.2,.7);\n\\node[text=otInk] at (3.6,.35) {6};\n\\draw[otNavy,fill=otSky,line width=.65pt] (4.5,0) rectangle (5.7,.7);\n\\node[text=otInk] at (5.1,.35) {6};\n\\node[text=otNavy,above=8pt] at (2.85,.7) {4 groupes de 6 : 24 objets};\n\\end{tikzpicture}'}

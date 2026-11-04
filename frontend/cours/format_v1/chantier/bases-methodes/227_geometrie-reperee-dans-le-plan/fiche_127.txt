@@ -1,0 +1,220 @@
+Titre: Résumé : Géométrie Repérée
+
+<!-- optitab:1 -->
+::: objectifs
+Maîtriser la géométrie repérée : vecteur normal à une droite, équation cartésienne de droite, projeté orthogonal, équation de cercle, parabole (axe de symétrie, sommet) et applications géométriques.
+:::
+
+## I. Vecteur normal à une droite
+
+::: definition Vecteur normal à une droite
+Un vecteur $\vec{n}$ est **normal** à une droite $\Delta$ s'il est orthogonal à tout vecteur directeur de $\Delta$.
+
+Si $\vec{n}$ est normal à $\Delta$ et si $\vec{d}$ est un vecteur directeur de $\Delta$, alors :
+
+::: formule
+$$\vec{n} \cdot \vec{d} = 0$$
+:::
+:::
+
+::: theoreme Vecteur normal et équation cartésienne
+Une droite $\Delta$ a pour équation cartésienne $ax + by + c = 0$ (avec $(a, b) \neq (0, 0)$).
+
+Alors le vecteur $\vec{n}(a, b)$ est un **vecteur normal** à la droite $\Delta$.
+
+De plus, le vecteur $\vec{d}(-b, a)$ est un **vecteur directeur** de la droite $\Delta$.
+:::
+
+[IMAGE_1]
+
+::: theoreme Équation cartésienne avec point et vecteur normal
+Une droite passant par un point $A(x_A, y_A)$ et de vecteur normal $\vec{n}(a, b)$ (avec $(a, b) \neq (0, 0)$) a pour équation cartésienne :
+
+::: formule
+$$a(x - x_A) + b(y - y_A) = 0$$
+:::
+
+Ce qui s'écrit aussi : $ax + by + c = 0$ où $c = -(ax_A + by_A)$
+:::
+
+::: definition Vecteurs colinéaires
+Deux vecteurs $\vec{u}$ et $\vec{v}$ sont dits **colinéaires** s'il existe un réel $k$ (non nul) tel que :
+
+$$\vec{v} = k\vec{u}$$
+
+Cela signifie que les vecteurs ont la même direction (ils sont parallèles).
+
+Dans une base orthonormée, deux vecteurs $\vec{u}(x_1, y_1)$ et $\vec{v}(x_2, y_2)$ sont colinéaires si et seulement si :
+
+$\displaystyle x_1 y_2 - x_2 y_1 = 0$ (déterminant nul)
+:::
+
+::: propriete Position relative de deux droites
+Soient deux droites :
+
+$\Delta_1 : a_1 x + b_1 y + c_1 = 0$ et $\Delta_2 : a_2 x + b_2 y + c_2 = 0$
+
+Les vecteurs normaux sont respectivement $\vec{n_1}(a_1, b_1)$ et $\vec{n_2}(a_2, b_2)$.
+
+- Les droites sont **parallèles** si les vecteurs normaux $(a_1, b_1)$ et $(a_2, b_2)$ sont **colinéaires**
+- Les droites sont **sécantes** sinon
+- Les droites sont **confondues** si elles sont parallèles et qu'elles ont au moins un point commun
+:::
+
+[IMAGE_2]
+
+## II. Projeté orthogonal d'un point sur une droite
+
+::: definition Projeté orthogonal
+Soient $M$ un point et $\Delta$ une droite. Il existe un **unique** point $H$ de $\Delta$ tel que $\overrightarrow{MH} \perp \Delta$ : c'est le **projeté orthogonal** de $M$ sur $\Delta$.
+
+Le projeté orthogonal est le point de $\Delta$ le plus proche de $M$.
+:::
+
+[IMAGE_3]
+
+::: theoreme Distance d'un point à une droite
+Soient un point $M(x_M, y_M)$ et une droite $\Delta : ax + by + c = 0$, avec $(a, b) \neq (0, 0)$.
+
+La distance de $M$ à $\Delta$ est :
+
+::: formule
+$$d(M, \Delta) = \frac{|ax_M + by_M + c|}{\sqrt{a^2 + b^2}}$$
+:::
+:::
+
+::: methode Coordonnées du projeté orthogonal
+Pour déterminer les coordonnées du projeté orthogonal $H$ d'un point $M(x_M, y_M)$ sur une droite $\Delta : ax + by + c = 0$ :
+
+1. Le vecteur $\vec{n}(a, b)$ est normal à $\Delta$
+2. Le point $H$ appartient à $\Delta$ et $\overrightarrow{MH}$ est colinéaire à $\vec{n}$
+3. Il existe un réel $t$ tel que $\overrightarrow{MH} = t\vec{n}$
+4. On utilise que $H$ appartient à $\Delta$ pour déterminer $t$
+:::
+
+## III. Équation de cercle
+
+::: theoreme Équation d'un cercle
+Un cercle $\mathcal{C}$ de centre $\Omega(x_0, y_0)$ et de rayon $R$ (avec $R > 0$) a pour équation :
+
+::: formule
+$$(x - x_0)^2 + (y - y_0)^2 = R^2$$
+:::
+
+En développant, on obtient la forme développée :
+
+$$x^2 + y^2 - 2x_0 x - 2y_0 y + x_0^2 + y_0^2 - R^2 = 0$$
+:::
+
+[IMAGE_4]
+
+::: theoreme Forme générale d'une équation de cercle
+Toute équation de la forme :
+
+$$x^2 + y^2 + ax + by + c = 0$$
+
+peut représenter un cercle (ou un point, ou l'ensemble vide).
+
+Pour déterminer le centre et le rayon, on met l'équation sous forme canonique :
+
+::: formule
+$$\left(x + \frac{a}{2}\right)^2 + \left(y + \frac{b}{2}\right)^2 = \frac{a^2 + b^2 - 4c}{4}$$
+:::
+
+Le centre est $\Omega\left(-\frac{a}{2}, -\frac{b}{2}\right)$ et le rayon est $R = \frac{1}{2}\sqrt{a^2 + b^2 - 4c}$ (si $a^2 + b^2 - 4c > 0$).
+
+Si $a^2 + b^2 - 4c = 0$, c'est l'équation d'un point.
+
+Si $\displaystyle a^2 + b^2 - 4c < 0$, c'est l'ensemble vide.
+:::
+
+## IV. Parabole représentative d'une fonction polynôme du second degré
+
+::: theoreme Axe de symétrie d'une parabole
+La courbe représentative de la fonction $f(x) = ax^2 + bx + c$ (avec $a \neq 0$) est une **parabole**.
+
+Cette parabole admet pour **axe de symétrie** la droite verticale d'équation :
+
+::: formule
+$$x = -\frac{b}{2a}$$
+:::
+:::
+
+[IMAGE_5]
+
+::: theoreme Coordonnées du sommet
+Le **sommet** de la parabole d'équation $y = ax^2 + bx + c$ (avec $a \neq 0$) est le point d'intersection de la parabole avec son axe de symétrie.
+
+Ses coordonnées sont :
+
+::: formule
+$$S\left(-\frac{b}{2a}, f\left(-\frac{b}{2a}\right)\right)$$
+:::
+
+où $\displaystyle f(x) = ax^2 + bx + c$.
+
+En utilisant la forme canonique, le sommet est $S(\alpha, \beta)$ où :
+
+$\alpha = -\frac{b}{2a}$ et $\beta = f(\alpha) = c - \frac{b^2}{4a}$
+:::
+
+::: remarque Orientation de la parabole
+- Si $a > 0$ : la parabole est **tournée vers le haut** (elle admet un **minimum** au sommet)
+- Si $a < 0$ : la parabole est **tournée vers le bas** (elle admet un **maximum** au sommet)
+:::
+
+[IMAGE_6]
+
+## V. Utiliser un repère pour étudier une configuration
+
+::: methode Pour étudier une configuration
+1. **Choisir un repère adapté :** Placer l'origine et les axes de manière à simplifier les calculs (sur des points particuliers, des axes de symétrie, etc.)
+2. **Déterminer les coordonnées des points :** Dans le repère choisi, donner les coordonnées de tous les points de la configuration
+3. **Écrire les équations :** Utiliser les équations de droites, cercles, paraboles selon les besoins
+4. **Résoudre le problème :** Utiliser les outils de géométrie repérée (produit scalaire, distances, intersections, etc.)
+5. **Interpréter les résultats :** Donner une réponse géométrique claire
+:::
+
+## VI. Erreurs fréquentes
+
+| Piège fréquent | Correction |
+|---|---|
+| Confondre vecteur normal et vecteur directeur | Un **vecteur normal** est orthogonal à la droite <br> Un **vecteur directeur** est parallèle à la droite <br> Pour $\displaystyle ax + by + c = 0$ : normal = $\displaystyle (a, b)$, directeur = $\displaystyle (-b, a)$ |
+| Oublier la forme canonique pour un cercle | Pour reconnaître un cercle, toujours mettre sous forme canonique $\displaystyle (x - x_0)^2 + (y - y_0)^2 = R^2$ <br> Vérifier que $\displaystyle a^2 + b^2 - 4c > 0$ pour avoir un cercle |
+| Erreur sur le signe de l'axe de symétrie | Axe de symétrie : $\displaystyle x = -\frac{b}{2a}$ (attention au signe moins) <br> Ne pas oublier le signe moins devant la fraction |
+| Oublier l'ordonnée du sommet | Ne pas oublier de calculer l'ordonnée du sommet $\displaystyle f\left(-\frac{b}{2a}\right)$ <br> Le sommet a deux coordonnées : $\displaystyle S\left(-\frac{b}{2a}, f\left(-\frac{b}{2a}\right)\right)$ |
+| Repère non orthonormé | Vérifier que le repère est bien **orthonormé** avant d'utiliser les formules avec coordonnées <br> Les formules de distance et produit scalaire nécessitent un repère orthonormé |
+| Oublier les conditions d'existence | Pour les intersections : toujours vérifier les conditions d'existence <br> Discriminant pour parabole, distance pour cercle |
+| Projeté orthogonal non vérifié | Vérifier que le point trouvé appartient bien à la droite <br> Le projeté orthogonal doit vérifier l'équation de la droite |
+
+## VII. Formules essentielles — mémo rapide
+
+| Formule | Expression |
+|---|---|
+| Vecteurs colinéaires | $\displaystyle \vec{v} = k\vec{u}$ (même direction) <br> En base orthonormée : $\displaystyle x_1 y_2 - x_2 y_1 = 0$ |
+| Droite $\displaystyle ax + by + c = 0$ | Vecteur normal : $\displaystyle (a, b)$ <br> Vecteur directeur : $\displaystyle (-b, a)$ |
+| Droite avec point $\displaystyle A$ et vecteur normal $\displaystyle \vec{n}(a, b)$ | $\displaystyle a(x - x_A) + b(y - y_A) = 0$ |
+| Cercle de centre $\displaystyle \Omega(x_0, y_0)$ et rayon $\displaystyle R$ | $\displaystyle (x - x_0)^2 + (y - y_0)^2 = R^2$ |
+| Cercle (forme générale) | $\displaystyle x^2 + y^2 + ax + by + c = 0$ <br> Centre : $\displaystyle \left(-\frac{a}{2}, -\frac{b}{2}\right)$ <br> Rayon : $\displaystyle \frac{1}{2}\sqrt{a^2 + b^2 - 4c}$ (si $\displaystyle > 0$) |
+| Parabole $\displaystyle y = ax^2 + bx + c$ | Axe de symétrie : $\displaystyle x = -\frac{b}{2a}$ <br> Sommet : $\displaystyle S\left(-\frac{b}{2a}, f\left(-\frac{b}{2a}\right)\right)$ |
+| Distance d'un point à une droite | $\displaystyle d(M(x_M, y_M), \Delta : ax + by + c = 0) = \frac{|ax_M + by_M + c|}{\sqrt{a^2 + b^2}}$ |
+
+## VIII. Méthodologie — stratégie de résolution
+
+| Type de problème | Méthode recommandée |
+|---|---|
+| Déterminer une équation de droite | 1. Si point et vecteur normal : $\displaystyle a(x - x_A) + b(y - y_A) = 0$ <br> 2. Si point et vecteur directeur : utiliser l'équation paramétrique ou trouver un vecteur normal |
+| Déterminer le projeté orthogonal | 1. Utiliser que $\displaystyle \overrightarrow{MH}$ est colinéaire au vecteur normal <br> 2. Écrire $\displaystyle H = M + t\vec{n}$ <br> 3. Utiliser que $\displaystyle H$ appartient à la droite pour trouver $\displaystyle t$ |
+| Reconnaître une équation de cercle | 1. Mettre sous forme canonique : $\displaystyle (x - x_0)^2 + (y - y_0)^2 = R^2$ <br> 2. Vérifier que $\displaystyle a^2 + b^2 - 4c > 0$ <br> 3. Déterminer centre et rayon |
+| Déterminer l'axe de symétrie et le sommet d'une parabole | 1. Axe de symétrie : $\displaystyle x = -\frac{b}{2a}$ <br> 2. Sommet : calculer $\displaystyle f\left(-\frac{b}{2a}\right)$ <br> 3. Vérifier l'orientation selon le signe de $\displaystyle a$ |
+| Étudier une configuration géométrique | 1. Choisir un repère adapté (origine sur des points particuliers) <br> 2. Déterminer les coordonnées des points <br> 3. Utiliser les outils de géométrie repérée (produit scalaire, distances) |
+| Démontrer qu'un triangle est rectangle | Calculer les produits scalaires des vecteurs formés par les côtés <br> Si un produit scalaire est nul, le triangle est rectangle au sommet correspondant |
+
+::: remarque Points de vigilance
+- Toujours vérifier que le repère est orthonormé avant d'utiliser les formules avec coordonnées
+- Pour une droite $ax + by + c = 0$, ne pas confondre vecteur normal $(a, b)$ et vecteur directeur $(-b, a)$
+- Pour reconnaître un cercle, toujours mettre sous forme canonique et vérifier la condition $a^2 + b^2 - 4c > 0$
+- Pour l'axe de symétrie d'une parabole, attention au signe : $x = -\frac{b}{2a}$
+- Choisir un repère adapté qui simplifie les calculs (origine sur des points particuliers, axes sur des axes de symétrie)
+- Vérifier que les points trouvés (projeté orthogonal, intersections) appartiennent bien aux objets géométriques
+:::

@@ -1,0 +1,317 @@
+<!doctype html><html><head><meta charset="utf-8">
+<script>window.MathJax = {tex: {inlineMath: [['$','$']]}, svg: {fontCache: 'global'}};</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
+<style>body{max-width:860px;margin:20px auto;font-family:Arial,sans-serif} img{max-width:100%;display:block;margin:12px auto}</style>
+</head><body><div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
+<div style="background:#e8f4fd; border:2px solid #3498db; border-radius:8px; padding:15px; margin-bottom:20px;">
+<p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🎯 Objectifs du chapitre :</strong> situer un réel sur la droite numérique, lire et écrire des intervalles, utiliser la valeur absolue comme une distance, distinguer décimaux, rationnels et irrationnels, puis encadrer et arrondir un réel.</p>
+<ul style="margin:10px 0 0 0; padding-left:20px; line-height:1.6;">
+<li>Associer à chaque point de la droite graduée un <strong>unique</strong> nombre réel, et réciproquement.</li>
+<li>Représenter un <strong>intervalle</strong> ; déterminer si un réel <strong>appartient</strong> à un intervalle.</li>
+<li>Donner un <strong>encadrement</strong> (d’amplitude donnée) d’un réel par des décimaux.</li>
+<li>Dans un problème, <strong>arrondir</strong> avec un nombre de chiffres significatifs adapté.</li>
+</ul>
+</div>
+<div style="background:#ecfdf5; border:2px solid #10b981; border-radius:8px; padding:15px; margin-bottom:20px;">
+<p style="margin:0;"><strong>📚 Au programme de Seconde :</strong> l’ensemble $\displaystyle \mathbb{R}$ et la droite numérique ; les intervalles (notations, inégalités, $\displaystyle +\infty$ et $\displaystyle -\infty$) ; la valeur absolue $\displaystyle |x|$ et la distance $\displaystyle |x-a|$ ; l’intervalle centré $\displaystyle [a-r\,;\,a+r]$ et la condition $\displaystyle |x-a|\le r$ ; les décimaux $\displaystyle \mathbb{D}$ et l’encadrement à $\displaystyle 10^{-n}$ près ; les rationnels $\displaystyle \mathbb{Q}$ et les irrationnels ($\displaystyle \sqrt{2}$, $\displaystyle \pi$).</p>
+<p style="margin:8px 0 0 0;">🧠 <strong>Démonstrations à connaître</strong> (partie VII) : $\displaystyle \frac{1}{3}$ n’est pas décimal ; $\displaystyle \sqrt{2}$ est irrationnel.</p>
+<p style="margin:8px 0 0 0;">🤖 <strong>Algorithme</strong> (partie VIII) : encadrer $\displaystyle \sqrt{2}$ par balayage, avec une amplitude $\displaystyle \le 10^{-n}$.</p>
+<p style="margin:8px 0 0 0; color:#065f46;"><em>La valeur absolue est utilisée ici uniquement pour parler de <strong>distance</strong> (les autres usages sont hors programme).</em></p>
+</div>
+<p style="font-size:1em;">🌟 <strong>L’idée du chapitre :</strong> au cycle 4, tu as comparé des nombres avec des <strong>inégalités</strong>. En Seconde, on introduit la notion d’<strong>intervalle</strong> : c’est un ensemble de nombres qui vérifient une inégalité (par exemple « tous les réels entre 2 et 5 »). La valeur absolue sert à parler de <strong>distance</strong> sur la droite numérique.</p>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. La droite numérique et l’ensemble $\displaystyle \mathbb{R}$</h2>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#e8f4fd; border-left:6px solid #3498db; border-radius:6px; padding:15px; margin:12px 0;">
+<p style="margin:0; text-align:left; font-size:1em;"><strong>Nombres réels</strong></p>
+<p style="margin:8px 0; text-align:left; font-size:1em;">Les <strong>nombres réels</strong> (ensemble $\displaystyle \mathbb{R}$) sont tous les nombres qu’on peut placer sur une <strong>droite graduée</strong> : entiers, décimaux, fractions, mais aussi des nombres comme $\displaystyle \sqrt{2}$ ou $\displaystyle \pi$.</p>
+<p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Propriété importante :</strong> chaque point de la droite correspond à <strong>un seul</strong> réel, et chaque réel correspond à <strong>un seul</strong> point.</p>
+</div>
+<img src="file:///C:/Users/SWEELCO-AT/Desktop/SWINDER/OptiTABV2/frontend/cours/lycee/images/2nd_reels_droite.png">
+
+<div style="background:#e8f4fd; border-left:6px solid #3498db; border-radius:6px; padding:15px; margin:12px 0;">
+<p style="margin:0; text-align:left; font-size:1em;"><strong>Les ensembles à connaître</strong></p>
+<p style="margin:8px 0; text-align:left; font-size:1em;">On a la chaîne d’inclusions :</p>
+<div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:720px;">
+<p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle \mathbb{N}\subset \mathbb{Z}\subset \mathbb{D}\subset \mathbb{Q}\subset \mathbb{R}$</p>
+</div>
+<ul style="margin:10px 0 0 0; padding-left:20px; line-height:1.6; font-size:1em;">
+<li style="margin:0 0 10px 0; text-align:left;">$\displaystyle \mathbb{D}$ : nombres <strong>décimaux</strong> (écriture décimale finie), par exemple $\displaystyle 0{,}125$ ou $\displaystyle -3{,}4$.</li>
+<li style="margin:0; text-align:left;">$\displaystyle \mathbb{Q}$ : nombres <strong>rationnels</strong> (écriture sous forme de fraction), par exemple $\displaystyle \frac{7}{4}$ ou $\displaystyle -\frac{5}{3}$.</li>
+</ul>
+</div>
+<img src="file:///C:/Users/SWEELCO-AT/Desktop/SWINDER/OptiTABV2/frontend/cours/lycee/images/2nd_reels_ensembles.png">
+
+</div>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Intervalles de $\displaystyle \mathbb{R}$ : notations et lecture</h2>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#e8f4fd; border-left:6px solid #3498db; border-radius:6px; padding:15px; margin:12px 0;">
+<p style="margin:0; text-align:left; font-size:1em;"><strong>Définition</strong></p>
+<p style="margin:8px 0; text-align:left; font-size:1em;">Un <strong>intervalle</strong> est un ensemble de réels « sans trou » : si $\displaystyle x$ et $\displaystyle y$ sont dedans, alors tous les nombres entre $\displaystyle x$ et $\displaystyle y$ sont aussi dedans.</p>
+<p style="margin:8px 0; text-align:left; font-size:1em;">On note l’appartenance avec $\displaystyle \in$ : par exemple $\displaystyle 3\in[2;5]$ se lit « $\displaystyle 3$ appartient à l’intervalle $\displaystyle [2;5]$ ».</p>
+</div>
+<div style="background:#e8f4fd; border-left:6px solid #3498db; border-radius:6px; padding:15px; margin:12px 0;">
+<p style="margin:0; text-align:left; font-size:1em;"><strong>Traductions à connaître</strong></p>
+<div style="overflow-x:auto;">
+<table style="width:100%; border-collapse:collapse; font-size:1em;">
+<tr>
+<th style="text-align:left; padding:10px; border-bottom:1px solid #ddd;">Écriture en intervalle</th>
+<th style="text-align:left; padding:10px; border-bottom:1px solid #ddd;">Écriture en inégalités (équivalent)</th>
+</tr>
+<tr>
+<td style="padding:10px; border-bottom:1px solid #eee;">$\displaystyle x\in[a;b]$</td>
+<td style="padding:10px; border-bottom:1px solid #eee;">$\displaystyle a\le x\le b$</td>
+</tr>
+<tr>
+<td style="padding:10px; border-bottom:1px solid #eee;">$\displaystyle x\in]a;b[$</td>
+<td style="padding:10px; border-bottom:1px solid #eee;">$\displaystyle a\lt x\lt b$</td>
+</tr>
+<tr>
+<td style="padding:10px; border-bottom:1px solid #eee;">$\displaystyle x\in[a;b[$</td>
+<td style="padding:10px; border-bottom:1px solid #eee;">$\displaystyle a\le x\lt b$</td>
+</tr>
+<tr>
+<td style="padding:10px; border-bottom:1px solid #eee;">$\displaystyle x\in]a;b]$</td>
+<td style="padding:10px; border-bottom:1px solid #eee;">$\displaystyle a\lt x\le b$</td>
+</tr>
+<tr>
+<td style="padding:10px; border-bottom:1px solid #eee;">$\displaystyle x\in[a;+\infty[$</td>
+<td style="padding:10px; border-bottom:1px solid #eee;">$\displaystyle x\ge a$</td>
+</tr>
+<tr>
+<td style="padding:10px;">$\displaystyle x\in]-\infty;b]$</td>
+<td style="padding:10px;">$\displaystyle x\le b$</td>
+</tr>
+</table>
+</div>
+</div>
+<img src="file:///C:/Users/SWEELCO-AT/Desktop/SWINDER/OptiTABV2/frontend/cours/lycee/images/2nd_reels_intervalles.png">
+
+<div style="background:#fff8dc; border-left:6px solid #ffa500; border-radius:6px; padding:15px; margin:12px 0;">
+<strong>⚠️ Attention à $\displaystyle +\infty$ et $\displaystyle -\infty$</strong>
+<p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle +\infty$ et $\displaystyle -\infty$ ne sont <strong>pas</strong> des nombres : on ne peut pas les atteindre. C’est pour ça qu’on écrit par exemple $\displaystyle [2;+\infty[$ (on ne met jamais $\displaystyle +\infty$ « inclus »).</p>
+</div>
+<div style="background:#f8f9fa; border-left:6px solid #6c757d; border-radius:6px; padding:15px; margin:12px 0;">
+<strong>Exemples :</strong>
+<ul style="margin:10px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+<li style="margin:0 0 10px 0; text-align:left;">$\displaystyle 3{,}5\in[3;4]$ car $\displaystyle 3\le 3{,}5\le 4$.</li>
+<li style="margin:0 0 10px 0; text-align:left;">$\displaystyle -1\notin]0;2[$ car $\displaystyle -1$ n’est pas strictement entre $\displaystyle 0$ et $\displaystyle 2$.</li>
+<li style="margin:0; text-align:left;">$\displaystyle 12\in[10;+\infty[$ car $\displaystyle 12\ge 10$.</li>
+</ul>
+</div>
+</div>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Valeur absolue et distance</h2>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#e8f4fd; border-left:6px solid #3498db; border-radius:6px; padding:15px; margin:12px 0;">
+<p style="margin:0; text-align:left; font-size:1em;"><strong>Valeur absolue</strong></p>
+<p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout réel $\displaystyle x$, $\displaystyle |x|$ est la <strong>distance</strong> entre $\displaystyle x$ et $\displaystyle 0$ sur la droite numérique.</p>
+<div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:720px;">
+<p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle |x|\ge 0\quad\text{et}\quad |x|=|-x|$</p>
+</div>
+</div>
+<div style="background:#e8f4fd; border-left:6px solid #3498db; border-radius:6px; padding:15px; margin:12px 0;">
+<p style="margin:0; text-align:left; font-size:1em;"><strong>Distance entre deux réels</strong></p>
+<p style="margin:8px 0; text-align:left; font-size:1em;">La distance entre $\displaystyle a$ et $\displaystyle b$ est :</p>
+<div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:520px;">
+<p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle d(a,b)=|b-a|$</p>
+</div>
+</div>
+<img src="file:///C:/Users/SWEELCO-AT/Desktop/SWINDER/OptiTABV2/frontend/cours/lycee/images/2nd_reels_distance.png">
+
+<div style="background:#f8f9fa; border-left:6px solid #6c757d; border-radius:6px; padding:15px; margin:12px 0;">
+<strong>Exemples :</strong>
+<ul style="margin:10px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+<li style="margin:0 0 10px 0; text-align:left;">$\displaystyle |-7|=7$ (distance de $\displaystyle -7$ à $\displaystyle 0$).</li>
+<li style="margin:0; text-align:left;">Distance entre $\displaystyle -3$ et $\displaystyle 5$ : $\displaystyle |5-(-3)|=|8|=8$.</li>
+</ul>
+</div>
+<div style="background:#fff8dc; border-left:6px solid #ffa500; border-radius:6px; padding:15px; margin:12px 0;">
+<p style="margin:0;"><strong>⚠️ Erreurs fréquentes :</strong></p>
+<p style="margin:8px 0 0 0;">• Une valeur absolue n’est jamais négative : $\displaystyle |-7| = 7$, et non $\displaystyle -7$.</p>
+<p style="margin:8px 0 0 0;">• L’ordre ne compte pas dans une distance : $\displaystyle |5-(-3)| = |-3-5| = 8$.</p>
+<p style="margin:8px 0 0 0;">• En général $\displaystyle |a+b| \neq |a|+|b|$ : par exemple $\displaystyle |3+(-5)| = 2$ alors que $\displaystyle |3|+|-5| = 8$.</p>
+</div>
+
+</div>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Intervalles centrés et condition $\displaystyle |x-a|\le r$</h2>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#e8f4fd; border-left:6px solid #3498db; border-radius:6px; padding:15px; margin:12px 0;">
+<p style="margin:0; text-align:left; font-size:1em;"><strong>Intervalle de centre $\displaystyle a$ et de « rayon » $\displaystyle r$</strong></p>
+<p style="margin:8px 0; text-align:left; font-size:1em;">L’intervalle $\displaystyle [a-r\,;\,a+r]$ contient tous les réels dont la distance à $\displaystyle a$ est <strong>au plus</strong> $\displaystyle r$.</p>
+<div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:720px;">
+<p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle x\in[a-r\,;\,a+r]\iff |x-a|\le r$</p>
+</div>
+<p style="margin:8px 0; text-align:left; font-size:1em;"><em>De même, $\displaystyle x\in]a-r\,;\,a+r[\iff |x-a|\lt r$ (distance strictement inférieure).</em></p>
+</div>
+<div style="background:#f8f9fa; border-left:6px solid #6c757d; border-radius:6px; padding:15px; margin:12px 0;">
+<strong>Exemple :</strong>
+<p style="margin:10px 0; text-align:left; font-size:1em;">Centre $\displaystyle a=3$ et $\displaystyle r=2$ :</p>
+<ul style="margin:10px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+<li style="margin:0 0 10px 0; text-align:left;">Intervalle : $\displaystyle [3-2\,;\,3+2]=[1;5]$.</li>
+<li style="margin:0; text-align:left;">Condition équivalente : $\displaystyle |x-3|\le 2$.</li>
+</ul>
+</div>
+<img src="file:///C:/Users/SWEELCO-AT/Desktop/SWINDER/OptiTABV2/frontend/cours/lycee/images/2nd_reels_centre.png">
+
+<div style="background:#ecfdf5; border-left:6px solid #10b981; border-radius:6px; padding:15px; margin:12px 0;">
+<p style="margin:0; text-align:left; font-size:1em;"><strong>Méthode rapide</strong></p>
+<p style="margin:8px 0; text-align:left; font-size:1em;">Pour résoudre $\displaystyle |x-a|\le r$, on peut écrire directement :</p>
+<div style="background:#ecfdf5; border:3px solid #10b981; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:560px;">
+<p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle a-r\le x\le a+r$</p>
+</div>
+</div>
+</div>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Décimaux $\displaystyle \mathbb{D}$, rationnels $\displaystyle \mathbb{Q}$ et irrationnels</h2>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#e8f4fd; border-left:6px solid #3498db; border-radius:6px; padding:15px; margin:12px 0;">
+<p style="margin:0; text-align:left; font-size:1em;"><strong>Nombres décimaux $\displaystyle \mathbb{D}$</strong></p>
+<p style="margin:8px 0; text-align:left; font-size:1em;">Un nombre est <strong>décimal</strong> s’il a une écriture décimale <strong>finie</strong>. Il peut toujours s’écrire :</p>
+<div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:720px;">
+<p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle x=\frac{k}{10^n}\quad\text{avec}\quad k\in\mathbb{Z}\ \text{et}\ n\in\mathbb{N}$</p>
+</div>
+<p style="margin:8px 0; text-align:left; font-size:1em;">Exemples : $\displaystyle 12{,}3=\frac{123}{10}$ ; $\displaystyle 0{,}125=\frac{125}{1000}$.</p>
+</div>
+<div style="background:#e8f4fd; border-left:6px solid #3498db; border-radius:6px; padding:15px; margin:12px 0;">
+<p style="margin:0; text-align:left; font-size:1em;"><strong>Nombres rationnels $\displaystyle \mathbb{Q}$</strong></p>
+<p style="margin:8px 0; text-align:left; font-size:1em;">Un nombre est <strong>rationnel</strong> s’il s’écrit sous forme de fraction :</p>
+<div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:520px;">
+<p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle x=\frac{p}{q}\quad\text{avec}\quad p\in\mathbb{Z},\ q\in\mathbb{Z}\setminus\{0\}$</p>
+</div>
+<p style="margin:8px 0; text-align:left; font-size:1em;">Tous les décimaux sont rationnels, mais certains rationnels <strong>ne sont pas</strong> décimaux : par exemple $\displaystyle \frac{1}{3}=0{,}3333\ldots$ (écriture décimale infinie périodique).</p>
+</div>
+<div style="background:#e8f4fd; border-left:6px solid #3498db; border-radius:6px; padding:15px; margin:12px 0;">
+<p style="margin:0; text-align:left; font-size:1em;"><strong>Irrationnels</strong></p>
+<p style="margin:8px 0; text-align:left; font-size:1em;">Un nombre est <strong>irrationnel</strong> s’il n’est pas rationnel (il ne s’écrit pas comme une fraction). Son écriture décimale est <strong>infinie et non périodique</strong>.</p>
+<p style="margin:8px 0; text-align:left; font-size:1em;">Exemples : $\displaystyle \sqrt{2}$ (diagonale d’un carré de côté 1), $\displaystyle \pi$ (rapport circonférence/diamètre d’un cercle).</p>
+</div>
+<div style="background:#fff8dc; border-left:6px solid #ffa500; border-radius:6px; padding:15px; margin:12px 0;">
+<p style="margin:0;"><strong>⚠️ Attention :</strong> une racine carrée n’est pas toujours irrationnelle ($\displaystyle \sqrt{4} = 2$, $\displaystyle \sqrt{0{,}25} = 0{,}5$), et une calculatrice qui affiche beaucoup de décimales ne prouve rien : $\displaystyle \frac{1}{7} = 0{,}142857142857\ldots$ est rationnel (période $\displaystyle 142857$).</p>
+</div>
+
+</div>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Encadrement décimal et arrondis</h2>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#e8f4fd; border-left:6px solid #3498db; border-radius:6px; padding:15px; margin:12px 0;">
+<p style="margin:0; text-align:left; font-size:1em;"><strong>Encadrement d’amplitude donnée</strong></p>
+<p style="margin:8px 0; text-align:left; font-size:1em;">Un encadrement $\displaystyle a\le x\le b$ a pour <strong>amplitude</strong> $\displaystyle b-a$.</p>
+<p style="margin:8px 0; text-align:left; font-size:1em;">Encadrer à $\displaystyle 10^{-n}$ près signifie trouver deux <strong>décimaux</strong> $\displaystyle a$ et $\displaystyle b$ tels que :</p>
+<div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:720px;">
+<p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle a\le x\le b\quad\text{et}\quad b-a\le 10^{-n}$</p>
+</div>
+</div>
+<div style="background:#f8f9fa; border-left:6px solid #6c757d; border-radius:6px; padding:15px; margin:12px 0;">
+<strong>Exemples :</strong>
+<ul style="margin:10px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+<li style="margin:0 0 10px 0; text-align:left;">À $\displaystyle 10^{-2}$ près : $\displaystyle 3{,}14\le \pi\le 3{,}15$ (amplitude $\displaystyle 0{,}01$).</li>
+<li style="margin:0; text-align:left;">À $\displaystyle 10^{-2}$ près : $\displaystyle 1{,}41\le \sqrt{2}\le 1{,}42$ (car $\displaystyle 1{,}41^2\lt 2$ et $\displaystyle 1{,}42^2\gt 2$).</li>
+</ul>
+</div>
+<img src="file:///C:/Users/SWEELCO-AT/Desktop/SWINDER/OptiTABV2/frontend/cours/lycee/images/2nd_reels_encadrement.png">
+
+<div style="background:#e8f4fd; border-left:6px solid #3498db; border-radius:6px; padding:15px; margin:12px 0;">
+<p style="margin:0; text-align:left; font-size:1em;"><strong>Arrondir</strong></p>
+<p style="margin:8px 0; text-align:left; font-size:1em;">Pour arrondir à $\displaystyle n$ décimales, on regarde la décimale suivante :</p>
+<ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+<li style="margin:0 0 10px 0; text-align:left;">si elle est $\displaystyle 0,1,2,3$ ou $\displaystyle 4$, on ne change pas ;</li>
+<li style="margin:0; text-align:left;">si elle est $\displaystyle 5,6,7,8$ ou $\displaystyle 9$, on augmente la dernière décimale gardée de 1.</li>
+</ul>
+<p style="margin:8px 0 0 0; text-align:left; font-size:1em;"><strong>Exemple :</strong> $\displaystyle 3{,}14159$ arrondi au millième (3 décimales) donne $\displaystyle 3{,}142$.</p>
+</div>
+<div style="background:#ecfdf5; border-left:6px solid #10b981; border-radius:6px; padding:15px; margin:12px 0;">
+<p style="margin:0; text-align:left; font-size:1em;"><strong>Chiffres significatifs (idée)</strong></p>
+<p style="margin:8px 0; text-align:left; font-size:1em;">Dans un problème, on ne garde pas « trop » de chiffres : on arrondit selon la précision des données (mesures, contexte).</p>
+<p style="margin:8px 0 0 0; text-align:left; font-size:1em;"><strong>Exemple :</strong> si une longueur est donnée au centimètre près, un résultat au millimètre n’a pas de sens.</p>
+</div>
+</div>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Démonstrations à connaître</h2>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#e0f2f1; border-left:6px solid #00897b; border-radius:6px; padding:15px; margin:12px 0;">
+<p style="margin:0; text-align:left; font-size:1em;"><strong>1) $\displaystyle \frac{1}{3}$ n’est pas décimal</strong></p>
+<p style="margin:8px 0; text-align:left; font-size:1em;">Un nombre décimal s’écrit $\displaystyle \frac{k}{10^n}$. Supposons que $\displaystyle \frac{1}{3}$ soit décimal : il existerait $\displaystyle k$ et $\displaystyle n$ tels que :</p>
+<p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \frac{1}{3}=\frac{k}{10^n}\ \Rightarrow\ 10^n=3k$.</p>
+<p style="margin:8px 0; text-align:left; font-size:1em;">Mais $\displaystyle 10^n$ n’a comme facteurs premiers que $\displaystyle 2$ et $\displaystyle 5$ : il ne peut pas être multiple de $\displaystyle 3$. Contradiction. Donc $\displaystyle \frac{1}{3}$ n’est pas décimal.</p>
+</div>
+<div style="background:#e0f2f1; border-left:6px solid #00897b; border-radius:6px; padding:15px; margin:12px 0;">
+<p style="margin:0; text-align:left; font-size:1em;"><strong>2) $\displaystyle \sqrt{2}$ est irrationnel</strong></p>
+<p style="margin:8px 0; text-align:left; font-size:1em;">Supposons que $\displaystyle \sqrt{2}$ soit rationnel : $\displaystyle \sqrt{2}=\frac{p}{q}$ avec $\displaystyle p$ et $\displaystyle q$ entiers, et la fraction <strong>irréductible</strong> (PGCD = 1).</p>
+<p style="margin:8px 0; text-align:left; font-size:1em;">Alors $\displaystyle 2=\frac{p^2}{q^2}$ donc $\displaystyle p^2=2q^2$.</p>
+<p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle p^2$ est pair, donc $\displaystyle p$ est pair : $\displaystyle p=2k$. On remplace :</p>
+<p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle (2k)^2=2q^2\Rightarrow 4k^2=2q^2\Rightarrow q^2=2k^2$.</p>
+<p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle q^2$ est pair, donc $\displaystyle q$ est pair. Ainsi $\displaystyle p$ et $\displaystyle q$ sont tous les deux pairs, ce qui contredit le fait que la fraction était irréductible. Donc $\displaystyle \sqrt{2}$ est irrationnel.</p>
+</div>
+</div>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Algorithmique : encadrer $\displaystyle \sqrt{2}$ par balayage</h2>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#ecfdf5; border-left:6px solid #10b981; border-radius:6px; padding:15px; margin:12px 0;">
+<p style="margin:0; text-align:left; font-size:1em;"><strong>Principe</strong></p>
+<p style="margin:8px 0; text-align:left; font-size:1em;">On avance par petits pas $\displaystyle h=10^{-n}$ à partir de $\displaystyle 1$ jusqu’à dépasser $\displaystyle 2$ au carré.</p>
+<p style="margin:8px 0; text-align:left; font-size:1em;">À la fin, on obtient un encadrement $\displaystyle [a\,;\,a+h]$ d’amplitude $\displaystyle h$.</p>
+</div>
+<div style="background:#f8f9fa; border-left:6px solid #6c757d; border-radius:6px; padding:15px; margin:12px 0;">
+<strong>Version Python (balayage) :</strong>
+<div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+<span style="color:#ff79c6;">def</span> <span style="color:#50fa7b;">encadrement_sqrt2</span>(n):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#f8f8f2;">h</span> <span style="color:#ff79c6;">=</span> <span style="color:#bd93f9;">10</span> <span style="color:#ff79c6;">**</span> (<span style="color:#bd93f9;">-</span>n)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#f8f8f2;">a</span> <span style="color:#ff79c6;">=</span> <span style="color:#bd93f9;">1.0</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">while</span> (<span style="color:#f8f8f2;">a</span> <span style="color:#ff79c6;">+</span> <span style="color:#f8f8f2;">h</span>) <span style="color:#ff79c6;">**</span> <span style="color:#bd93f9;">2</span> <span style="color:#ff79c6;">&lt;=</span> <span style="color:#bd93f9;">2</span>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#f8f8f2;">a</span> <span style="color:#ff79c6;">=</span> <span style="color:#f8f8f2;">a</span> <span style="color:#ff79c6;">+</span> <span style="color:#f8f8f2;">h</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> <span style="color:#f8f8f2;">a</span>, <span style="color:#f8f8f2;">a</span> <span style="color:#ff79c6;">+</span> <span style="color:#f8f8f2;">h</span>
+</div>
+<p style="margin:8px 0 0 0; text-align:left; font-size:0.95em;"><em>La fonction renvoie deux nombres $\displaystyle a$ et $\displaystyle b$ tels que $\displaystyle a\le \sqrt{2}\le b$ et $\displaystyle b-a=10^{-n}$.</em></p>
+</div>
+</div>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IX. Approfondissements (facultatif)</h2>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#fef3c7; border-left:6px solid #f59e0b; border-radius:6px; padding:15px; margin:12px 0;">
+<p style="margin:0; text-align:left; font-size:1em;"><strong>Pour aller plus loin</strong></p>
+<p style="margin:8px 0; text-align:left; font-size:1em;">Tout nombre réel a une <strong>écriture décimale</strong> (avec une virgule). Cette écriture peut :</p>
+<ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+<li style="margin:0 0 10px 0; text-align:left;"><strong>se terminer</strong> (écriture finie) : c’est un <strong>décimal</strong> (ensemble $\displaystyle \mathbb{D}$) ;</li>
+<li style="margin:0 0 10px 0; text-align:left;"><strong>continuer à l’infini</strong> (écriture illimitée) : on écrit alors « $\displaystyle \ldots$ ».</li>
+</ul>
+<div style="overflow-x:auto; margin:10px 0;">
+<table style="width:100%; border-collapse:collapse; font-size:0.95em; background:#ffffff; border:1px solid #f3d08a; border-radius:6px; overflow:hidden;">
+<tr style="background:#fde68a;">
+<th style="text-align:left; padding:10px; border-bottom:1px solid #f3d08a;">Type d’écriture décimale</th>
+<th style="text-align:left; padding:10px; border-bottom:1px solid #f3d08a;">Exemple</th>
+<th style="text-align:left; padding:10px; border-bottom:1px solid #f3d08a;">Ce que ça indique</th>
+</tr>
+<tr>
+<td style="padding:10px; border-bottom:1px solid #f3d08a;">Finie</td>
+<td style="padding:10px; border-bottom:1px solid #f3d08a;">$\displaystyle 0{,}125$</td>
+<td style="padding:10px; border-bottom:1px solid #f3d08a;">Décimal : $\displaystyle 0{,}125\in\mathbb{D}$ (donc aussi $\displaystyle \in\mathbb{Q}$)</td>
+</tr>
+<tr>
+<td style="padding:10px; border-bottom:1px solid #f3d08a;">Infinie <strong>périodique</strong> (un bloc se répète)</td>
+<td style="padding:10px; border-bottom:1px solid #f3d08a;">$\displaystyle \frac{1}{6}=0{,}1666\ldots$</td>
+<td style="padding:10px; border-bottom:1px solid #f3d08a;">Rationnel mais pas décimal : $\displaystyle \in\mathbb{Q}\setminus\mathbb{D}$</td>
+</tr>
+<tr>
+<td style="padding:10px;">Infinie <strong>non périodique</strong> (ne se répète pas)</td>
+<td style="padding:10px;">$\displaystyle \sqrt{2}=1{,}41421\ldots$ ou $\displaystyle \pi=3{,}14159\ldots$</td>
+<td style="padding:10px;">Irrationnel : $\displaystyle \in\mathbb{R}\setminus\mathbb{Q}$</td>
+</tr>
+</table>
+</div>
+<p style="margin:10px 0 0 0; text-align:left; font-size:1em;"><strong>À retenir :</strong> un nombre est <strong>rationnel</strong> si son écriture décimale est <strong>finie</strong> ou <strong>périodique</strong> (le motif peut commencer après quelques chiffres).</p>
+<p style="margin:10px 0 0 0; text-align:left; font-size:1em;"><strong>Méthode : écrire un décimal périodique en fraction</strong></p>
+<ol style="margin:8px 0 0 0; padding-left:20px; line-height:1.6; font-size:1em;">
+<li style="margin:0 0 10px 0; text-align:left;">On pose $\displaystyle x$ égal au nombre.</li>
+<li style="margin:0 0 10px 0; text-align:left;">On multiplie par $\displaystyle 10^k$ pour faire apparaître le même bloc qui se répète (où $\displaystyle k$ est la longueur du bloc).</li>
+<li style="margin:0; text-align:left;">On soustrait pour éliminer la partie qui se répète, puis on résout.</li>
+</ol>
+<p style="margin:10px 0 0 0; text-align:left; font-size:0.95em;"><strong>Exemple 1 :</strong> $\displaystyle x=0{,}3333\ldots$ ⇒ $\displaystyle 10x=3{,}3333\ldots$ ⇒ $\displaystyle 10x-x=3$ ⇒ $\displaystyle 9x=3$ ⇒ $\displaystyle x=\frac{1}{3}$.</p>
+<p style="margin:6px 0 0 0; text-align:left; font-size:0.95em;"><strong>Exemple 2 :</strong> $\displaystyle x=0{,}272727\ldots$ ⇒ $\displaystyle 100x=27{,}272727\ldots$ ⇒ $\displaystyle 100x-x=27$ ⇒ $\displaystyle 99x=27$ ⇒ $\displaystyle x=\frac{27}{99}=\frac{3}{11}$.</p>
+<p style="margin:8px 0 0 0; text-align:left; font-size:0.95em; color:#7f8c8d;"><em>Ces points ne sont pas indispensables pour les exercices de base, mais ils aident à mieux comprendre $\displaystyle \mathbb{Q}$ et $\displaystyle \mathbb{R}$.</em></p>
+</div>
+</div>
+<div style="background:#ecfdf5; border-left:6px solid #10b981; border-radius:6px; padding:15px; margin:12px 0;">
+<p style="margin:0 0 8px 0; text-align:left; font-size:1em;"><strong>Mini-formulaire (à réviser) :</strong></p>
+<p style="margin:6px 0; text-align:left; font-size:0.95em;">$\displaystyle x\in[a;b]\iff a\le x\le b$ ; $\displaystyle x\in]a;b[\iff a\lt x\lt b$.</p>
+<p style="margin:6px 0; text-align:left; font-size:0.95em;">$\displaystyle |x-a|$ = distance entre $\displaystyle x$ et $\displaystyle a$.</p>
+<p style="margin:6px 0; text-align:left; font-size:0.95em;">$\displaystyle x\in[a-r;a+r]\iff |x-a|\le r$.</p>
+<p style="margin:6px 0; text-align:left; font-size:0.95em;">Décimal : écriture finie ; rationnel : fraction ; irrationnel : pas une fraction ($\displaystyle \sqrt{2}$, $\displaystyle \pi$...).</p>
+</div>
+<div style="background:#ecfdf5; border:2px solid #10b981; border-radius:8px; padding:15px; margin:20px 0 0 0;">
+<p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🏆 L’essentiel :</strong> $\displaystyle \mathbb{N}\subset\mathbb{Z}\subset\mathbb{D}\subset\mathbb{Q}\subset\mathbb{R}$ ; $\displaystyle x\in[a;b] \iff a\le x\le b$ (crochet ouvert = borne exclue, toujours ouvert du côté de $\displaystyle \pm\infty$) ; $\displaystyle |x-a|$ est la distance entre $\displaystyle x$ et $\displaystyle a$, et $\displaystyle x\in[a-r;a+r] \iff |x-a|\le r$ ; décimal = écriture finie, rationnel = finie ou périodique, irrationnel sinon ($\displaystyle \sqrt{2}$, $\displaystyle \pi$) ; encadrer à $\displaystyle 10^{-n}$ près = amplitude $\displaystyle \le 10^{-n}$. Fiche de synthèse dans l’onglet Fiches !</p>
+</div>
+</div></body></html>

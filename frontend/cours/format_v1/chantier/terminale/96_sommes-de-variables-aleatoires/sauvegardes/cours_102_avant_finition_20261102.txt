@@ -1,0 +1,137 @@
+Titre: Sommes de variables aléatoires
+
+<!-- optitab:1 -->
+::: objectifs
+Utiliser la linéarité de l’espérance, calculer la variance d’une somme de variables aléatoires indépendantes, retrouver l’espérance et la variance de la loi binomiale, et étudier la somme et la moyenne d’un échantillon.
+:::
+
+::: prerequis
+Variable aléatoire : loi, espérance, variance, écart type (Première) ; loi de Bernoulli, loi binomiale.
+:::
+
+## I. Somme de deux variables aléatoires
+
+::: definition Somme, indépendance
+Soit $X$ et $Y$ deux variables aléatoires définies sur le même univers et $a$, $b$ deux réels.
+- $X + Y$ est la variable aléatoire qui, à chaque issue, associe la somme des valeurs prises par $X$ et par $Y$ ; de même pour $aX + b$.
+- $X$ et $Y$ sont **indépendantes** si, pour toutes valeurs $x$ et $y$, les événements $\{X = x\}$ et $\{Y = y\}$ sont indépendants : $P(X = x \text{ et } Y = y) = P(X = x) \times P(Y = y)$.
+:::
+
+::: remarque
+En pratique, des variables associées à des expériences indépendantes (lancers successifs d’un dé, tirages **avec remise**) sont indépendantes.
+:::
+
+::: exemple Loi de la somme de deux dés
+On lance deux dés équilibrés ; $X$ et $Y$ sont leurs résultats et $S = X + Y$. Les $36$ couples de résultats sont équiprobables, donc $P(S = k)$ est le nombre de couples de somme $k$ divisé par $36$ :
+$$P(S = 2) = \frac{1}{36}, \quad P(S = 7) = \frac{6}{36} = \frac{1}{6}, \quad P(S = 12) = \frac{1}{36}.$$
+:::
+
+[IMAGE_1]
+
+## II. Espérance d’une somme
+
+::: propriete Linéarité de l’espérance
+Pour toutes variables aléatoires $X$ et $Y$ et tous réels $a$ et $b$ :
+$$E(X + Y) = E(X) + E(Y) \quad \text{et} \quad E(aX + b) = aE(X) + b.$$
+Ces égalités sont vraies **même si** $X$ et $Y$ ne sont pas indépendantes.
+:::
+
+::: exemple
+Pour un dé équilibré, $E(X) = 3{,}5$. La somme de deux dés a donc pour espérance $E(S) = 3{,}5 + 3{,}5 = 7$, sans avoir besoin de sa loi.
+:::
+
+::: methode Calculer une espérance en décomposant
+Pour une variable compliquée, on l’écrit comme une somme de variables simples (souvent des variables de Bernoulli), puis on additionne leurs espérances.
+:::
+
+## III. Variance d’une somme
+
+::: propriete Variance d’une somme, d’une transformation affine
+- Si $X$ et $Y$ sont **indépendantes** : $V(X + Y) = V(X) + V(Y)$.
+- Pour tous réels $a$ et $b$ : $V(aX + b) = a^2V(X)$ et $\sigma(aX + b) = |a|\,\sigma(X)$.
+:::
+
+::: exemple
+Un dé équilibré a pour variance $\frac{35}{12}$ ; la somme de deux dés lancés indépendamment a donc pour variance $\frac{35}{12} + \frac{35}{12} = \frac{35}{6} \approx 5{,}83$.
+:::
+
+::: exemple Une combinaison de deux variables
+$X$ et $Y$ sont indépendantes, avec $E(X) = 1$, $V(X) = 4$, $E(Y) = -0{,}5$ et $V(Y) = 1$. Alors $2X$ et $-3Y$ sont aussi indépendantes et
+$$
+\begin{aligned}
+E(2X - 3Y) &= 2E(X) - 3E(Y) \\
+&= 2 + 1{,}5 = 3{,}5 \\
+V(2X - 3Y) &= 2^2V(X) + (-3)^2V(Y) \\
+&= 16 + 9 = 25
+\end{aligned}
+$$
+:::
+
+::: attention
+- Les variances s’ajoutent, **même pour une différence** : $V(X - Y) = V(X) + V(Y)$, mais **seulement** si $X$ et $Y$ sont indépendantes. Contre-exemple : avec $Y = -X$, $X + Y = 0$ a une variance nulle, alors que $V(X) + V(Y) = 2V(X)$.
+- Les écarts types, eux, ne s’ajoutent pas : $\sigma(X + Y) = \sqrt{V(X) + V(Y)}$.
+:::
+
+## IV. Application à la loi binomiale
+
+::: theoreme Espérance et variance de la loi binomiale
+Si $X$ suit la loi binomiale $\mathcal{B}(n\,;p)$, alors
+$$E(X) = np \quad \text{et} \quad V(X) = np(1 - p),$$
+donc $\sigma(X) = \sqrt{np(1 - p)}$.
+:::
+
+::: demonstration
+On écrit $X = X_1 + X_2 + \cdots + X_n$, où $X_i$ vaut $1$ si la $i$-ème épreuve est un succès et $0$ sinon. Les $X_i$ suivent la loi de Bernoulli de paramètre $p$ et sont indépendantes (épreuves indépendantes).
+
+**Une épreuve.** $E(X_i) = 0 \times (1 - p) + 1 \times p = p$ et
+$$
+\begin{aligned}
+V(X_i) &= (1 - p)(0 - p)^2 + p(1 - p)^2 \\
+&= p(1 - p)\big(p + (1 - p)\big) \\
+&= p(1 - p).
+\end{aligned}
+$$
+**Les $n$ épreuves.** Par linéarité, $E(X) = p + \cdots + p = np$. Par indépendance, les variances s’ajoutent : $V(X) = np(1 - p)$.
+:::
+
+::: exemple
+Pour $X \sim \mathcal{B}(20\,;0{,}4)$ : $E(X) = 20 \times 0{,}4 = 8$, $V(X) = 20 \times 0{,}4 \times 0{,}6 = 4{,}8$ et $\sigma(X) = \sqrt{4{,}8} \approx 2{,}19$.
+:::
+
+## V. Échantillons
+
+::: definition Échantillon, somme et moyenne
+Un **échantillon de taille $n$** d’une loi de probabilité est une liste $(X_1, X_2, \ldots, X_n)$ de variables aléatoires **indépendantes** qui suivent toutes cette loi (celle d’une variable $X$). On note
+$$S_n = X_1 + X_2 + \cdots + X_n \quad \text{et} \quad M_n = \frac{S_n}{n}.$$
+:::
+
+::: propriete Somme et moyenne d’un échantillon
+- Somme : $E(S_n) = nE(X)$, $V(S_n) = nV(X)$ et $\sigma(S_n) = \sqrt{n}\,\sigma(X)$.
+- Moyenne : $E(M_n) = E(X)$, $V(M_n) = \dfrac{V(X)}{n}$ et
+$$\sigma(M_n) = \frac{\sigma(X)}{\sqrt{n}}.$$
+:::
+
+::: demonstration
+Par linéarité, $E(S_n) = nE(X)$ ; par indépendance, $V(S_n) = nV(X)$. Comme $M_n = \frac{1}{n}S_n$ : $E(M_n) = \frac{1}{n} \times nE(X) = E(X)$ et $V(M_n) = \frac{1}{n^2} \times nV(X) = \frac{V(X)}{n}$.
+:::
+
+::: exemple
+La moyenne $M_{100}$ de $100$ lancers d’un dé équilibré a pour espérance $3{,}5$ et pour écart type
+$$\sigma(M_{100}) = \frac{\sigma(X)}{\sqrt{100}} = \frac{1}{10}\sqrt{\frac{35}{12}} \approx 0{,}17 :$$
+elle est très concentrée autour de $3{,}5$.
+:::
+
+[IMAGE_2]
+
+::: remarque Concentration de la moyenne
+Quand la taille $n$ de l’échantillon est multipliée par $4$, l’écart type de la moyenne est divisé par $2$ : la moyenne se concentre autour de $E(X)$. C’est le point de départ de la loi des grands nombres (chapitre suivant).
+:::
+
+::: retenir
+- $E(X + Y) = E(X) + E(Y)$ toujours ; $E(aX + b) = aE(X) + b$.
+- $V(X + Y) = V(X) + V(Y)$ si $X$ et $Y$ sont indépendantes ; $V(aX + b) = a^2V(X)$.
+- Loi binomiale $\mathcal{B}(n\,;p)$ : $E = np$ et $V = np(1 - p)$.
+- Échantillon de taille $n$ : $E(M_n) = E(X)$ et $\sigma(M_n) = \dfrac{\sigma(X)}{\sqrt{n}}$.
+
+Fiche de synthèse dans l’onglet Fiches !
+:::

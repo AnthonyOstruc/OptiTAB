@@ -1,0 +1,195 @@
+Titre: Orthogonalité et distances dans l’espace
+
+<!-- optitab:1 -->
+::: objectifs
+- Calculer un produit scalaire dans l’espace, avec ou sans coordonnées, et en déduire une longueur ou un angle.
+- Démontrer l’orthogonalité de deux droites, d’une droite et d’un plan.
+- Déterminer un vecteur normal et une équation cartésienne d’un plan.
+- Déterminer le projeté orthogonal d’un point sur un plan ou sur une droite, et la distance correspondante.
+:::
+
+## I. Produit scalaire dans l’espace
+
+::: definition Produit scalaire
+Soit $\vec{u} = \overrightarrow{AB}$ et $\vec{v} = \overrightarrow{AC}$ deux vecteurs non nuls de l’espace. Les points $A$, $B$ et $C$ appartiennent toujours à un même plan : le produit scalaire $\vec{u} \cdot \vec{v}$ est celui que l’on calcule dans ce plan (comme en Première).
+
+$$\vec{u} \cdot \vec{v} = \|\vec{u}\| \times \|\vec{v}\| \times \cos\widehat{BAC}$$
+
+Si $\vec{u}$ ou $\vec{v}$ est nul, $\vec{u} \cdot \vec{v} = 0$.
+:::
+
+::: propriete Règles de calcul
+Pour tous vecteurs $\vec{u}$, $\vec{v}$, $\vec{w}$ et tout réel $k$ :
+- $\vec{u} \cdot \vec{v} = \vec{v} \cdot \vec{u}$ (symétrie) ;
+- $\vec{u} \cdot (\vec{v} + \vec{w}) = \vec{u} \cdot \vec{v} + \vec{u} \cdot \vec{w}$ et $(k\vec{u}) \cdot \vec{v} = k\,(\vec{u} \cdot \vec{v})$ (bilinéarité) ;
+- $\vec{u} \cdot \vec{u} = \|\vec{u}\|^2$ et $\vec{u} \cdot \vec{v} = \frac{1}{2}\left(\|\vec{u} + \vec{v}\|^2 - \|\vec{u}\|^2 - \|\vec{v}\|^2\right)$ ;
+- si $H$ est le projeté orthogonal de $C$ sur la droite $(AB)$, alors $\overrightarrow{AB} \cdot \overrightarrow{AC} = \overrightarrow{AB} \cdot \overrightarrow{AH}$.
+:::
+
+[IMAGE_1]
+
+::: propriete En repère orthonormé
+Une base $(\vec{i}, \vec{j}, \vec{k})$ est **orthonormée** si ses trois vecteurs sont deux à deux orthogonaux et de norme $1$. Dans une telle base, si $\vec{u}\,(x\,;y\,;z)$ et $\vec{v}\,(x'\,;y'\,;z')$ :
+
+$$\vec{u} \cdot \vec{v} = xx' + yy' + zz' \qquad \text{et} \qquad \|\vec{u}\| = \sqrt{x^2 + y^2 + z^2}$$
+
+Dans un repère orthonormé : $AB = \sqrt{(x_B - x_A)^2 + (y_B - y_A)^2 + (z_B - z_A)^2}$.
+:::
+
+::: exemple
+$\vec{u}\,(1\,;2\,;-1)$ et $\vec{v}\,(3\,;-1\,;1)$ : $\vec{u} \cdot \vec{v} = 1 \times 3 + 2 \times (-1) + (-1) \times 1 = 0$ et $\|\vec{u}\| = \sqrt{1 + 4 + 1} = \sqrt{6}$.
+:::
+
+::: methode Calculer un angle
+Si $\overrightarrow{AB}$ et $\overrightarrow{AC}$ sont non nuls :
+
+$$\cos\widehat{BAC} = \frac{\overrightarrow{AB} \cdot \overrightarrow{AC}}{AB \times AC}$$
+
+Dans le cube $ABCDEFGH$ d’arête $1$, avec le repère $(A\,;\overrightarrow{AB}, \overrightarrow{AD}, \overrightarrow{AE})$ : $\overrightarrow{AC}\,(1\,;1\,;0)$ et $\overrightarrow{AG}\,(1\,;1\,;1)$, donc $\cos\widehat{CAG} = \dfrac{2}{\sqrt{2} \times \sqrt{3}} = \dfrac{\sqrt{6}}{3}$ et $\widehat{CAG} \approx 35{,}3°$.
+:::
+
+## II. Orthogonalité
+
+::: definition Vecteurs et droites orthogonaux
+- Deux vecteurs $\vec{u}$ et $\vec{v}$ sont **orthogonaux** si et seulement si $\vec{u} \cdot \vec{v} = 0$ (le vecteur nul est orthogonal à tout vecteur).
+- Deux droites sont **orthogonales** si leurs vecteurs directeurs sont orthogonaux. Elles ne sont pas forcément sécantes : orthogonales **et** sécantes, elles sont dites **perpendiculaires**.
+:::
+
+[IMAGE_2]
+
+::: exemple
+Dans le cube $ABCDEFGH$, les droites $(AE)$ et $(HG)$ sont orthogonales, car $(HG)$ est parallèle à $(AB)$ et $(AE) \perp (AB)$. Elles ne sont pas sécantes : elles ne sont donc pas perpendiculaires.
+:::
+
+::: theoreme Droite orthogonale à un plan
+Une droite est **orthogonale à un plan** si elle est orthogonale à toutes les droites de ce plan. Il suffit pour cela qu’elle soit orthogonale à **deux droites sécantes** du plan.
+:::
+
+::: definition Vecteur normal
+Un vecteur $\vec{n}$ non nul est **normal** à un plan $\mathcal{P}$ s’il dirige une droite orthogonale à $\mathcal{P}$, c’est-à-dire s’il est orthogonal à deux vecteurs non colinéaires de $\mathcal{P}$.
+:::
+
+[IMAGE_3]
+
+::: exemple
+Cube d’arête $1$, repère $(A\,;\overrightarrow{AB}, \overrightarrow{AD}, \overrightarrow{AE})$ : $\overrightarrow{AG}\,(1\,;1\,;1)$, $\overrightarrow{BD}\,(-1\,;1\,;0)$ et $\overrightarrow{BE}\,(-1\,;0\,;1)$.
+
+$$\overrightarrow{AG} \cdot \overrightarrow{BD} = -1 + 1 + 0 = 0 \qquad \overrightarrow{AG} \cdot \overrightarrow{BE} = -1 + 0 + 1 = 0$$
+
+$\overrightarrow{BD}$ et $\overrightarrow{BE}$ ne sont pas colinéaires : $\overrightarrow{AG}$ est normal au plan $(BDE)$, et la droite $(AG)$ est orthogonale à ce plan.
+:::
+
+::: methode Montrer qu’une droite est orthogonale à un plan
+Choisir deux vecteurs non colinéaires du plan, puis vérifier que le produit scalaire du vecteur directeur de la droite avec chacun d’eux est nul.
+:::
+
+::: attention
+Une droite orthogonale à **une seule** droite d’un plan n’est pas forcément orthogonale à ce plan : il en faut **deux, sécantes**.
+:::
+
+## III. Équation cartésienne d’un plan
+
+::: theoreme Équation cartésienne
+L’espace est muni d’un repère orthonormé.
+- Le plan $\mathcal{P}$ passant par $A$ et de vecteur normal $\vec{n}\,(a\,;b\,;c)$ est l’ensemble des points $M$ tels que $\overrightarrow{AM} \cdot \vec{n} = 0$ ; il admet une équation de la forme $ax + by + cz + d = 0$.
+- Réciproquement, si $(a\,;b\,;c) \neq (0\,;0\,;0)$, l’ensemble des points $M(x\,;y\,;z)$ tels que $ax + by + cz + d = 0$ est un plan de vecteur normal $\vec{n}\,(a\,;b\,;c)$.
+:::
+
+[IMAGE_4]
+
+::: demonstration
+Avec $A(x_A\,;y_A\,;z_A)$ et $M(x\,;y\,;z)$ :
+
+$$
+\begin{aligned}
+M \in \mathcal{P} &\iff \overrightarrow{AM} \cdot \vec{n} = 0 \\
+&\iff a(x - x_A) + b(y - y_A) + c(z - z_A) = 0 \\
+&\iff ax + by + cz + d = 0
+\end{aligned}
+$$
+
+en posant $d = -(ax_A + by_A + cz_A)$.
+
+Réciproque : l’un des coefficients est non nul, par exemple $a$. Le point $A\left(-\frac{d}{a}\,;0\,;0\right)$ vérifie l’équation, et pour tout point $M(x\,;y\,;z)$, $ax + by + cz + d = a\left(x + \frac{d}{a}\right) + by + cz = \overrightarrow{AM} \cdot \vec{n}$. L’ensemble est donc le plan passant par $A$ et de vecteur normal $\vec{n}$.
+:::
+
+::: methode Déterminer une équation cartésienne d’un plan
+1. Trouver un vecteur normal $\vec{n}\,(a\,;b\,;c)$ ; s’il n’est pas donné, chercher un vecteur orthogonal à deux vecteurs non colinéaires du plan (système de deux équations).
+2. Écrire l’équation $ax + by + cz + d = 0$.
+3. Calculer $d$ avec les coordonnées d’un point du plan.
+:::
+
+::: exemple
+Plan passant par $A(1\,;2\,;0)$ et de vecteur normal $\vec{n}\,(2\,;-1\,;3)$ : une équation est $2x - y + 3z + d = 0$, et $A$ donne $2 - 2 + 0 + d = 0$, soit $d = 0$. Le plan a pour équation $2x - y + 3z = 0$.
+
+Dans le cube, $\overrightarrow{AG}\,(1\,;1\,;1)$ est normal à $(BDE)$ et $B(1\,;0\,;0)$ donne $1 + d = 0$ : le plan $(BDE)$ a pour équation $x + y + z - 1 = 0$.
+:::
+
+::: propriete Positions relatives
+Soit $\mathcal{P}_1$ et $\mathcal{P}_2$ deux plans de vecteurs normaux $\vec{n_1}$ et $\vec{n_2}$, et $d$ une droite de vecteur directeur $\vec{u}$.
+- $\mathcal{P}_1$ et $\mathcal{P}_2$ sont **parallèles** si et seulement si $\vec{n_1}$ et $\vec{n_2}$ sont colinéaires ; **perpendiculaires** si et seulement si $\vec{n_1} \cdot \vec{n_2} = 0$.
+- $d$ est orthogonale à $\mathcal{P}_1$ si et seulement si $\vec{u}$ est colinéaire à $\vec{n_1}$ ; $d$ est parallèle à $\mathcal{P}_1$ si et seulement si $\vec{u} \cdot \vec{n_1} = 0$.
+:::
+
+::: remarque Plan médiateur
+Le plan médiateur du segment $[AB]$ est l’ensemble des points équidistants de $A$ et de $B$. Si $I$ est le milieu de $[AB]$ :
+
+$$MA^2 - MB^2 = (\overrightarrow{MA} - \overrightarrow{MB}) \cdot (\overrightarrow{MA} + \overrightarrow{MB}) = \overrightarrow{BA} \cdot 2\overrightarrow{MI}$$
+
+Donc $MA = MB \iff \overrightarrow{IM} \cdot \overrightarrow{AB} = 0$ : c’est le plan passant par $I$ et de vecteur normal $\overrightarrow{AB}$.
+:::
+
+## IV. Projeté orthogonal et distance
+
+::: definition Projeté orthogonal
+- Le **projeté orthogonal** d’un point $M$ sur un plan $\mathcal{P}$ est le point d’intersection $H$ de $\mathcal{P}$ et de la droite passant par $M$ orthogonale à $\mathcal{P}$ : $H \in \mathcal{P}$ et $\overrightarrow{MH}$ est colinéaire à un vecteur normal $\vec{n}$.
+- Le projeté orthogonal de $M$ sur une droite $d$ de vecteur directeur $\vec{u}$ est le point $H$ de $d$ tel que $\overrightarrow{MH} \cdot \vec{u} = 0$.
+:::
+
+[IMAGE_5]
+
+::: theoreme Distance d’un point à un plan
+Le projeté orthogonal $H$ du point $M$ sur le plan $\mathcal{P}$ est le point de $\mathcal{P}$ le plus proche de $M$. La longueur $MH$ est la **distance** du point $M$ au plan $\mathcal{P}$.
+:::
+
+::: demonstration Démonstration au programme
+Soit $Q$ un point de $\mathcal{P}$. Comme $\overrightarrow{MH}$ est normal à $\mathcal{P}$ et que $\overrightarrow{HQ}$ est un vecteur du plan, $\overrightarrow{MH} \cdot \overrightarrow{HQ} = 0$. Alors :
+
+$$
+\begin{aligned}
+MQ^2 &= \left(\overrightarrow{MH} + \overrightarrow{HQ}\right) \cdot \left(\overrightarrow{MH} + \overrightarrow{HQ}\right) \\
+&= MH^2 + 2\,\overrightarrow{MH} \cdot \overrightarrow{HQ} + HQ^2 \\
+&= MH^2 + HQ^2
+\end{aligned}
+$$
+
+Donc $MQ^2 \geq MH^2$, soit $MQ \geq MH$, avec égalité si et seulement si $HQ = 0$, c’est-à-dire $Q = H$.
+:::
+
+::: methode Déterminer un projeté orthogonal et une distance
+- **Sur un plan** $\mathcal{P}$ de vecteur normal $\vec{n}$ : on cherche $H$ tel que $\overrightarrow{MH} = t\,\vec{n}$ ; on reporte ses coordonnées dans l’équation de $\mathcal{P}$ pour trouver $t$, puis $H$. La distance est $MH = |t| \times \|\vec{n}\|$.
+- **Sur une droite** passant par $B$ et dirigée par $\vec{u}$ : on cherche $H$ tel que $\overrightarrow{BH} = t\,\vec{u}$ et $\overrightarrow{MH} \cdot \vec{u} = 0$.
+:::
+
+::: exemple Projeté sur un plan
+Dans le cube d’arête $1$, projeté $K$ de $A(0\,;0\,;0)$ sur le plan $(BDE) : x + y + z - 1 = 0$, de vecteur normal $\vec{n}\,(1\,;1\,;1)$. Avec $\overrightarrow{AK} = t\,\vec{n}$, on a $K(t\,;t\,;t)$, et $K \in (BDE)$ donne $3t - 1 = 0$, soit $t = \frac{1}{3}$. Donc $K\left(\frac{1}{3}\,;\frac{1}{3}\,;\frac{1}{3}\right)$ (c’est le point $K$ de la figure du II) et la distance de $A$ au plan $(BDE)$ vaut $AK = \frac{1}{3} \times \sqrt{3} = \frac{\sqrt{3}}{3} \approx 0{,}58$.
+:::
+
+::: exemple Projeté sur une droite
+Soit $d$ la droite passant par $B(0\,;1\,;1)$ et dirigée par $\vec{u}\,(1\,;2\,;2)$, et $M(3\,;1\,;4)$. Avec $\overrightarrow{BH} = t\,\vec{u}$, on a $H(t\,;1 + 2t\,;1 + 2t)$, donc $\overrightarrow{MH}\,(t - 3\,;2t\,;2t - 3)$, et
+
+$$\overrightarrow{MH} \cdot \vec{u} = (t - 3) + 4t + (4t - 6) = 9t - 9 = 0 \iff t = 1$$
+
+Le projeté est $H(1\,;3\,;3)$ et la distance de $M$ à $d$ vaut $MH = \sqrt{(-2)^2 + 2^2 + (-1)^2} = 3$.
+:::
+
+::: attention Erreurs fréquentes
+- La formule $xx' + yy' + zz'$ n’est valable que dans un repère **orthonormé**.
+- « Perpendiculaires » signifie orthogonales **et** sécantes : deux droites de l’espace peuvent être orthogonales sans se couper.
+- Ne pas confondre un vecteur **normal** au plan (orthogonal au plan) et un vecteur **directeur** du plan (contenu dans le plan).
+- Un plan a une infinité d’équations cartésiennes, toutes proportionnelles.
+:::
+
+::: retenir
+$\vec{u} \cdot \vec{v} = xx' + yy' + zz'$ en repère orthonormé ; $\vec{u} \perp \vec{v} \iff \vec{u} \cdot \vec{v} = 0$ ; droite orthogonale à un plan $\iff$ orthogonale à deux droites sécantes du plan ; plan de vecteur normal $\vec{n}\,(a\,;b\,;c)$ : $ax + by + cz + d = 0$ ; projeté orthogonal $H$ de $M$ : $H \in \mathcal{P}$ et $\overrightarrow{MH}$ colinéaire à $\vec{n}$ ; distance de $M$ au plan $= MH$. Fiche de synthèse dans l’onglet Fiches !
+:::

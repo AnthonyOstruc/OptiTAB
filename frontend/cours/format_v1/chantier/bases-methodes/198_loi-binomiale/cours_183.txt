@@ -1,0 +1,309 @@
+Titre: Schéma de Bernoulli et Loi Binomiale
+
+<!-- optitab:1 -->
+## I. Schéma de Bernoulli
+
+### Définition
+
+::: definition
+Un **schéma de Bernoulli** est une expérience aléatoire qui ne peut avoir que **deux issues** :
+
+- **Succès** (S) avec une probabilité $p$
+- **Échec** (É) avec une probabilité $q = 1 - p$
+:::
+
+::: exemple
+- Lancer une pièce de monnaie : Pile (succès) ou Face (échec)
+- Interroger un élève : Réponse correcte (succès) ou incorrecte (échec)
+- Test d'un produit : Défectueux (succès) ou conforme (échec)
+:::
+
+::: retenir
+Dans un schéma de Bernoulli, $p + q = 1$ (probabilités complémentaires).
+:::
+
+## II. Loi binomiale
+
+### Définition
+
+On répète $n$ fois de manière **indépendante** un schéma de Bernoulli de paramètre $p$.
+
+La variable aléatoire $X$ qui compte le **nombre de succès** suit une **loi binomiale** de paramètres $n$ et $p$, notée $\mathcal{B}(n, p)$.
+
+::: definition
+$$X \sim \mathcal{B}(n, p)$$
+:::
+
+::: attention Conditions importantes
+- Les $n$ répétitions doivent être **indépendantes**
+- La probabilité $p$ doit être **identique** à chaque répétition
+- Chaque répétition ne peut avoir que deux issues
+:::
+
+### Valeurs possibles
+
+Si $X \sim \mathcal{B}(n, p)$, alors $X$ peut prendre toutes les valeurs entières de $0$ à $n$ :
+
+::: definition
+$$X \in \{0, 1, 2, \ldots, n\}$$
+:::
+
+::: remarque Interprétation
+- $X = 0$ : aucun succès sur les $n$ répétitions
+- $X = 1$ : exactement un succès sur les $n$ répétitions
+- $X = n$ : tous les $n$ essais sont des succès
+:::
+
+## III. Calcul des probabilités
+
+### Formule de la loi binomiale
+
+Pour $X \sim \mathcal{B}(n, p)$ et $k \in \{0, 1, 2, \ldots, n\}$ :
+
+::: definition
+$$P(X = k) = \binom{n}{k} \times p^k \times (1-p)^{n-k}$$
+:::
+
+**Notation alternative :**
+
+::: definition
+$$P(X = k) = \binom{n}{k} \times p^k \times q^{n-k}$$
+:::
+
+::: remarque Explication de la formule
+- $\binom{n}{k}$ : nombre de façons d'obtenir $k$ succès parmi $n$ essais
+- $p^k$ : probabilité d'avoir $k$ succès
+- $(1-p)^{n-k}$ : probabilité d'avoir $(n-k)$ échecs
+:::
+
+### Coefficient binomial
+
+Le coefficient binomial $\binom{n}{k}$ se calcule avec :
+
+::: definition
+$$\binom{n}{k} = \frac{n!}{k!(n-k)!}$$
+:::
+
+::: propriete
+- $\binom{n}{0} = 1$ et $\binom{n}{n} = 1$
+- $\displaystyle \binom{n}{k} = \binom{n}{n-k}$ (symétrie)
+- $\binom{n}{1} = n$ et $\binom{n}{n-1} = n$
+:::
+
+## IV. Exemples de calculs
+
+### Exemple 1 : Lancer de pièce
+
+**Énoncé :** On lance une pièce équilibrée 5 fois. Quelle est la probabilité d'obtenir exactement 3 piles ?
+
+**Résolution :**
+
+::: exemple
+On a un schéma de Bernoulli avec $p = \frac{1}{2}$ (pièce équilibrée)
+
+$X$ = nombre de piles suit $\mathcal{B}(5, \frac{1}{2})$
+
+On cherche $P(X = 3)$
+
+- $\displaystyle P(X = 3) = \binom{5}{3} \times \left(\dfrac{1}{2}\right)^3 \times \left(\dfrac{1}{2}\right)^{2}$
+- $\displaystyle P(X = 3) = 10 \times \dfrac{1}{8} \times \dfrac{1}{4} = \dfrac{10}{32} = \dfrac{5}{16}$
+:::
+
+::: resultat
+$$P(X = 3) = \frac{5}{16} = 0,3125$$
+:::
+
+### Exemple 2 : QCM
+
+**Énoncé :** Un élève répond au hasard à un QCM de 10 questions avec 4 choix par question. Quelle est la probabilité qu'il ait exactement 6 bonnes réponses ?
+
+**Résolution :**
+
+::: exemple
+Pour chaque question : $p = \frac{1}{4}$ (une seule bonne réponse sur 4)
+
+$X$ = nombre de bonnes réponses suit $\mathcal{B}(10, \frac{1}{4})$
+
+On cherche $P(X = 6)$
+
+- $\displaystyle P(X = 6) = \binom{10}{6} \times \left(\dfrac{1}{4}\right)^6 \times \left(\dfrac{3}{4}\right)^{4}$
+- $\displaystyle P(X = 6) = 210 \times \dfrac{1}{4096} \times \dfrac{81}{256} = \dfrac{210 \times 81}{4096 \times 256}$
+- $\displaystyle P(X = 6) = \dfrac{17010}{1048576} \approx 0,0162$
+:::
+
+::: resultat
+$P(X = 6) \approx 0,0162$ (environ 1,62%)
+:::
+
+## V. Probabilités cumulées
+
+### Probabilités « au plus » et « au moins »
+
+Pour $X \sim \mathcal{B}(n, p)$ :
+
+::: methode Probabilité "au plus $k$"
+$$P(X \leq k) = P(X = 0) + P(X = 1) + \ldots + P(X = k)$$
+:::
+
+::: methode Probabilité "au moins $k$"
+$$
+\begin{aligned}
+P(X \geq k) &= P(X \\
+&= k) + P(X \\
+&= k+1) + \ldots + P(X \\
+&= n)
+\end{aligned}
+$$
+:::
+
+::: remarque Relation utile
+$$P(X \geq k) = 1 - P(X \leq k-1)$$
+:::
+
+### Exemple : Probabilités cumulées
+
+**Énoncé :** Avec $X \sim \mathcal{B}(8, 0,3)$, calculer $P(X \leq 2)$ et $P(X \geq 6)$
+
+**Résolution :**
+
+::: exemple Calcul de $P(X \leq 2)$
+- $\displaystyle P(X \leq 2) = P(X = 0) + P(X = 1) + P(X = 2)$
+- $\displaystyle P(X = 0) = \binom{8}{0} \times 0,3^0 \times 0,7^8 = 1 \times 1 \times 0,7^8 \approx 0,0576$
+- $\displaystyle P(X = 1) = \binom{8}{1} \times 0,3^1 \times 0,7^7 = 8 \times 0,3 \times 0,7^7 \approx 0,1977$
+- $\displaystyle P(X = 2) = \binom{8}{2} \times 0,3^2 \times 0,7^6 = 28 \times 0,09 \times 0,7^6 \approx 0,2965$
+
+Donc $P(X \leq 2) \approx 0,0576 + 0,1977 + 0,2965 = 0,5518$
+:::
+
+::: exemple Calcul de $P(X \geq 6)$
+$$P(X \geq 6) = 1 - P(X \leq 5)$$
+
+(Calcul plus simple que de calculer $P(X = 6) + P(X = 7) + P(X = 8)$)
+:::
+
+::: resultat
+$P(X \leq 2) \approx 0,552$ et $P(X \geq 6) = 1 - P(X \leq 5)$
+:::
+
+## VI. Espérance et variance
+
+### Formules
+
+Pour $X \sim \mathcal{B}(n, p)$ :
+
+| Paramètre | Formule | Interprétation |
+|---|---|---|
+| Espérance | $E(X) = np$ | Nombre moyen de succès |
+| Variance | $V(X) = np(1-p)$ | Dispersion des résultats |
+| Écart-type | $\sigma(X) = \sqrt{np(1-p)}$ | Écart-type des résultats |
+
+::: remarque Interprétation de l'espérance
+Si on répète l'expérience un grand nombre de fois, le nombre moyen de succès sera proche de $np$.
+:::
+
+### Exemple de calcul
+
+**Énoncé :** Calculer l'espérance et l'écart-type de $X \sim \mathcal{B}(20, 0,4)$
+
+**Résolution :**
+
+::: exemple
+- $\displaystyle E(X) = np = 20 \times 0,4 = 8$
+- $\displaystyle V(X) = np(1-p) = 20 \times 0,4 \times 0,6 = 4,8$
+- $\displaystyle \sigma(X) = \sqrt{V(X)} = \sqrt{4,8} \approx 2,19$
+:::
+
+::: resultat
+$E(X) = 8$ et $\sigma(X) \approx 2,19$
+:::
+
+## VII. Applications pratiques
+
+### Exemple 1 : Contrôle qualité
+
+**Énoncé :** Une usine produit des pièces avec 5% de défauts. On prélève 50 pièces au hasard. Quelle est la probabilité d'avoir au plus 3 pièces défectueuses ?
+
+**Résolution :**
+
+::: exemple
+$X$ = nombre de pièces défectueuses suit $\mathcal{B}(50, 0,05)$
+
+On cherche $P(X \leq 3) = P(X = 0) + P(X = 1) + P(X = 2) + P(X = 3)$
+
+- $\displaystyle P(X = 0) = \binom{50}{0} \times 0,05^0 \times 0,95^{50} \approx 0,077$
+- $\displaystyle P(X = 1) = \binom{50}{1} \times 0,05^1 \times 0,95^{49} \approx 0,202$
+- $\displaystyle P(X = 2) = \binom{50}{2} \times 0,05^2 \times 0,95^{48} \approx 0,261$
+- $\displaystyle P(X = 3) = \binom{50}{3} \times 0,05^3 \times 0,95^{47} \approx 0,220$
+
+$$P(X \leq 3) \approx 0,077 + 0,202 + 0,261 + 0,220 = 0,760$$
+:::
+
+::: resultat
+$P(X \leq 3) \approx 0,760$ (76% de chances)
+:::
+
+### Exemple 2 : Sondage
+
+**Énoncé :** Un candidat a 45% d'intentions de vote. On interroge 100 personnes. Quelle est la probabilité qu'il obtienne la majorité (plus de 50 votes) ?
+
+**Résolution :**
+
+::: exemple
+$X$ = nombre de votes favorables suit $\mathcal{B}(100, 0,45)$
+
+On cherche $P(X \geq 51) = 1 - P(X \leq 50)$
+
+Espérance : $E(X) = 100 \times 0,45 = 45$
+
+Écart-type : $\sigma(X) = \sqrt{100 \times 0,45 \times 0,55} = \sqrt{24,75} \approx 4,97$
+:::
+
+::: resultat
+$P(X \geq 51) = 1 - P(X \leq 50) \approx 0,16$ (16% de chances)
+:::
+
+## VIII. Utilisation de la calculatrice
+
+### Calculatrices Casio
+
+::: exemple Pour calculer $P(X = k)$
+- Menu STAT → DIST → BINOMIAL
+- Bpd (Binomial Probability Distribution)
+- Data : Variable, x = k, Numtrial = n, p = p
+:::
+
+::: exemple Pour calculer $P(X \leq k)$
+- Menu STAT → DIST → BINOMIAL
+- Bcd (Binomial Cumulative Distribution)
+- Data : Variable, x = k, Numtrial = n, p = p
+:::
+
+### Calculatrices TI
+
+::: exemple Pour calculer $P(X = k)$
+- 2nd → DISTR → binompdf(n, p, k)
+:::
+
+::: exemple Pour calculer $P(X \leq k)$
+- 2nd → DISTR → binomcdf(n, p, k)
+:::
+
+## IX. Erreurs fréquentes et conseils
+
+::: attention À éviter
+- Confondre « exactement k » et « au plus k » : $P(X = k) \neq P(X \leq k)$
+- Oublier que les répétitions doivent être indépendantes
+- Se tromper dans l'identification du paramètre $p$ (succès vs échec)
+- Négliger les conditions d'approximation par la loi normale
+- Confondre $\binom{n}{k}$ et $\binom{k}{n}$
+- Oublier de vérifier que $0 \leq k \leq n$
+:::
+
+::: conseil
+- Bien identifier ce qui constitue un « succès » dans l'énoncé
+- Vérifier que les conditions d'indépendance sont respectées
+- Utiliser la calculatrice pour les calculs complexes
+- Pour les probabilités « au moins », utiliser $P(X \geq k) = 1 - P(X \leq k-1)$
+- Vérifier la cohérence des résultats (probabilités entre 0 et 1)
+- Interpréter les résultats dans le contexte de l'exercice
+:::

@@ -1,0 +1,3 @@
+# -*- coding: utf-8 -*-
+"""Figures originales CM2, style livre, sans exception de chevauchement."""
+FIGURES = {'trois_cinquiemes_40': '\\begin{tikzpicture}[x=1cm,y=1cm]\n\\fill[otNavy!24] (0,0.0) rectangle (3.6,0.38);\n\\draw[otNavy,line width=.65pt] (0,0.0) rectangle (6,0.38);\n\\draw[otNavy,line width=.45pt] (1.2,0.0)--(1.2,0.38);\n\\draw[otNavy,line width=.45pt] (2.4,0.0)--(2.4,0.38);\n\\draw[otNavy,line width=.45pt] (3.6,0.0)--(3.6,0.38);\n\\draw[otNavy,line width=.45pt] (4.8,0.0)--(4.8,0.38);\n\\node[above=6pt,text=otNavy] at (3,0.38) {40 jetons en 5 parts égales};\n\\end{tikzpicture}'}

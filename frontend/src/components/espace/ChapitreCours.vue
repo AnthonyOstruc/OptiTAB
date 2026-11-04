@@ -19,7 +19,7 @@
     </div>
 
     <div v-else class="cc-layout">
-      <article class="es-card cc-article">
+      <article ref="articleRef" class="es-card cc-article">
         <div class="cc-toolbar">
           <details v-if="titres.length" ref="tocMobileRef" class="cc-toc-mobile">
             <summary>
@@ -43,7 +43,7 @@
           </a>
         </div>
 
-        <EspaceDoc :html="html" :zoom="zoom" @ready="onReady" />
+        <EspaceDoc ref="docRef" :html="html" :zoom="zoom" :actif="actif" @ready="onReady" />
 
         <div v-if="cours.video_url" class="cc-video">
           <h2 class="es-h2">Vidéo explicative</h2>
@@ -88,12 +88,14 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { ArrowDownTrayIcon, ArrowRightIcon, CheckCircleIcon, ListBulletIcon } from '@heroicons/vue/24/outline'
 import EspaceDoc from './EspaceDoc.vue'
 import TextSize from './TextSize.vue'
-import { getCours } from '@/api/cours'
+import { chargerCours } from '@/utils/chapitreContenu'
 import { renderContentWithImages } from '@/utils/scientificRenderer'
 import { useTailleTexte } from '@/composables/useTailleTexte'
 
 const props = defineProps({
-  notionId: { type: [String, Number], required: true }
+  notionId: { type: [String, Number], required: true },
+  // Onglet affiché (sinon gardé dans la page, masqué).
+  actif: { type: Boolean, default: true }
 })
 defineEmits(['go', 'titre'])
 
@@ -103,6 +105,8 @@ const titres = ref([])
 const actif = ref('')
 const lecture = ref(0)
 const tocMobileRef = ref(null)
+const articleRef = ref(null)
+const docRef = ref(null)
 const zoom = useTailleTexte()
 
 const html = computed(() => (cours.value?.contenu ? renderContentWithImages(cours.value.contenu, cours.value.images || []) : ''))
@@ -112,8 +116,7 @@ async function charger() {
   loading.value = true
   titres.value = []
   try {
-    const { data } = await getCours(null, props.notionId, null)
-    cours.value = Array.isArray(data) ? data[0] || null : data || null
+    cours.value = await chargerCours(props.notionId)
   } catch {
     cours.value = null
   } finally {
@@ -137,32 +140,43 @@ function onReady(liste) {
   majLecture()
 }
 
-function aller(id, fermer = false) {
+async function aller(id, fermer = false) {
   if (fermer && tocMobileRef.value) tocMobileRef.value.open = false
+  const cible = document.getElementById(id)
+  // Formules calculées jusqu'à la section visée : on arrive sur une page stable.
+  await docRef.value?.preparerJusqua(cible)
   requestAnimationFrame(() => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    cible?.scrollIntoView({ behavior: 'smooth', block: 'start' })
     actif.value = id
   })
 }
 
 // Barre de lecture : part de l'article déjà parcourue.
 function majLecture() {
-  const article = document.querySelector('.cc-article')
+  const article = articleRef.value
   if (!article) return
   const r = article.getBoundingClientRect()
   const total = r.height - window.innerHeight * 0.6
   lecture.value = total > 0 ? Math.min(1, Math.max(0, -r.top / total)) : 0
 }
 
-onMounted(() => {
-  charger()
-  window.addEventListener('scroll', majLecture, { passive: true })
-})
+// La barre de lecture ne suit le défilement que lorsque le cours est affiché
+// (l'onglet reste dans la page, masqué, quand on passe à la fiche ou aux exercices).
+function suivreLecture(affiche) {
+  window.removeEventListener('scroll', majLecture)
+  if (affiche) {
+    window.addEventListener('scroll', majLecture, { passive: true })
+    majLecture()
+  }
+}
+
+onMounted(charger)
+watch(() => props.actif, suivreLecture, { immediate: true, flush: 'post' })
 
 watch(() => props.notionId, charger)
 
 onBeforeUnmount(() => {
-  window.removeEventListener('scroll', majLecture)
+  suivreLecture(false)
   if (observer) observer.disconnect()
 })
 </script>

@@ -1,0 +1,1520 @@
+=== Découverte - Indices et termes d'une suite
+Id: 836
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+La suite $(u_n)$ est définie par $u_0 = 100$ et, pour tout entier naturel $n$, $u_{n+1} = 0{,}5\,u_n + 20$. On exécute le programme suivant.
+
+```python
+u = [100]
+for k in range(4):
+    u.append(0.5 * u[-1] + 20)
+```
+
+1. Quelle est la liste `u` à la fin du programme ? Combien a-t-elle d'éléments ?
+2. Que valent `u[0]`, `u[2]` et `u[-1]` ? À quels termes de la suite correspondent-ils ?
+3. Que provoque l'instruction `print(u[5])` ? Écrire une instruction qui ajoute le terme $u_5$ à la liste.
+4. Écrire une instruction qui affiche le rang du dernier terme de `u`, quelle que soit la longueur de la liste.
+5. On admet que $u_n = 40 + 60 \times 0{,}5^n$. Construire en compréhension la liste `v` des termes $u_0$ à $u_5$ calculés avec cette formule, et vérifier qu'elle est égale à `u`.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Contenu de la liste
+
+::: methode
+La liste part de `[100]` ; chaque tour ajoute le terme suivant, calculé à partir du dernier, `u[-1]`.
+:::
+
+::: etape Calcul des termes
+$$
+\begin{aligned}
+u_1 &= 0{,}5 \times 100 + 20 = 70 \\
+u_2 &= 0{,}5 \times 70 + 20 = 55 \\
+u_3 &= 0{,}5 \times 55 + 20 = 47{,}5 \\
+u_4 &= 0{,}5 \times 47{,}5 + 20 = 43{,}75
+\end{aligned}
+$$
+:::
+
+Vérification par l'exécution :
+
+```python
+print(u)
+print(len(u))
+```
+
+```console
+[100, 70.0, 55.0, 47.5, 43.75]
+5
+```
+
+Python écrit `70.0` : le résultat d'un calcul avec un nombre décimal est un nombre décimal.
+
+::: resultat
+`u` contient les $5$ termes $u_0$ à $u_4$ : $100$ ; $70$ ; $55$ ; $47{,}5$ ; $43{,}75$. La boucle fait $4$ tours, mais $u_0$ était déjà dans la liste.
+:::
+
+## Question 2 : Lire des éléments
+
+::: methode
+L'indice est le rang : `u[n]` est $u_n$. `u[-1]` est le dernier élément.
+:::
+
+::: etape Exécution
+```python
+print(u[0], u[2], u[-1])
+```
+
+```console
+100 55.0 43.75
+```
+:::
+
+[IMAGE_1]
+
+::: resultat
+`u[0]` $= u_0 = 100$, `u[2]` $= u_2 = 55$ et `u[-1]` $= u_4 = 43{,}75$.
+:::
+
+## Question 3 : Indice hors de la liste, ajout de $u_5$
+
+::: etape L'erreur
+Les indices vont de $0$ à $4$ : `u[5]` n'existe pas, et Python s'arrête sur l'erreur `IndexError` (« list index out of range »).
+:::
+
+::: etape Ajouter $u_5$
+```python
+u.append(0.5 * u[-1] + 20)
+print(u[5])
+```
+
+```console
+41.875
+```
+:::
+
+::: resultat
+`print(u[5])` provoque une erreur `IndexError` ; l'instruction `u.append(0.5 * u[-1] + 20)` ajoute $u_5 = 41{,}875$.
+:::
+
+## Question 4 : Rang du dernier terme
+
+::: methode
+Une liste de $N$ éléments a pour indices $0$ à $N - 1$ : le dernier terme a pour rang `len(u) - 1`.
+:::
+
+::: etape Exécution
+```python
+print(len(u) - 1)
+```
+
+```console
+5
+```
+:::
+
+::: resultat
+`print(len(u) - 1)` affiche le rang du dernier terme ; ici $5$, puisque l'on a ajouté $u_5$.
+:::
+
+## Question 5 : Avec la formule explicite
+
+::: methode
+Pour une formule explicite $u_n = f(n)$, on écrit la liste en compréhension : `[f(n) for n in range(6)]`.
+:::
+
+::: etape Programme
+```python
+v = [40 + 60 * 0.5**n
+     for n in range(6)]
+print(v[5])
+print(v == u)
+```
+
+```console
+41.875
+True
+```
+:::
+
+::: etape Pourquoi la formule est juste
+La suite $w_n = u_n - 40$ vérifie $w_{n+1} = 0{,}5\,u_n + 20 - 40 = 0{,}5\,w_n$ : elle est géométrique de raison $0{,}5$ et $w_0 = 60$. Donc $u_n = 40 + 60 \times 0{,}5^n$.
+:::
+
+::: resultat
+Les deux listes sont égales (`True`) : on obtient les mêmes termes par ajouts successifs et en compréhension.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $100$ ; $70$ ; $55$ ; $47{,}5$ ; $43{,}75$ : $5$ éléments, $u_0$ à $u_4$.
+2. `u[0]` $= u_0 = 100$, `u[2]` $= u_2 = 55$, `u[-1]` $= u_4 = 43{,}75$.
+3. Erreur `IndexError` ; `u.append(0.5 * u[-1] + 20)` ajoute $u_5 = 41{,}875$.
+4. `print(len(u) - 1)`.
+5. Liste en compréhension des `40 + 60 * 0.5**n` ; `v == u` vaut `True`.
+
+===
+
+=== Entraînement - Listes en compréhension et ensembles
+Id: 838
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+On note $E = \{1, 2, …, 30\}$, $A$ l'ensemble des multiples de $3$ de $E$ et $B$ celui des multiples de $5$. En Python, `E = range(1, 31)` et le test `x % 3 == 0` est vrai quand $x$ est un multiple de $3$.
+
+[IMAGE_1]
+
+1. Écrire en compréhension les listes `A` et `B`. Combien ont-elles d'éléments ?
+2. Écrire en compréhension la liste `I` des éléments de $A \cap B$ et la liste `U` des éléments de $A \cup B$.
+3. Vérifier la formule
+$$
+\begin{aligned}
+\mathrm{card}(A \cup B) &= \mathrm{card}(A) + \mathrm{card}(B) \\
+&\quad - \mathrm{card}(A \cap B)
+\end{aligned}
+$$
+4. Que représente la liste `C` ci-dessous ? Combien a-t-elle d'éléments ?
+
+```python
+E = range(1, 31)
+C = [x for x in E
+     if not (x % 3 == 0
+             or x % 5 == 0)]
+```
+
+5. Écrire en compréhension la liste des diviseurs de $36$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les listes `A` et `B`
+
+::: methode
+On garde les éléments de `E` qui vérifient la propriété : `[x for x in E if …]`.
+:::
+
+::: etape Programme
+```python
+E = range(1, 31)
+A = [x for x in E
+     if x % 3 == 0]
+B = [x for x in E
+     if x % 5 == 0]
+print(len(A), len(B))
+```
+
+```console
+10 6
+```
+:::
+
+::: resultat
+$A = \{3, 6, 9, …, 30\}$ a $10$ éléments et $B = \{5, 10, 15, 20, 25, 30\}$ en a $6$.
+:::
+
+## Question 2 : Intersection et réunion
+
+::: methode
+« Et » (`and`) donne l'intersection, « ou » (`or`) donne la réunion.
+:::
+
+::: etape Programme
+```python
+I = [x for x in E
+     if x % 3 == 0
+     and x % 5 == 0]
+U = [x for x in E
+     if x % 3 == 0
+     or x % 5 == 0]
+print(I)
+print(len(U))
+```
+
+```console
+[15, 30]
+14
+```
+:::
+
+[IMAGE_2]
+
+::: resultat
+$A \cap B = \{15, 30\}$ (les multiples de $15$) et $A \cup B$ a $14$ éléments.
+:::
+
+## Question 3 : La formule du cardinal
+
+::: etape Vérification
+$$
+\begin{aligned}
+&\mathrm{card}(A) + \mathrm{card}(B) - \mathrm{card}(A \cap B) \\
+&= 10 + 6 - 2 = 14 = \mathrm{card}(A \cup B)
+\end{aligned}
+$$
+
+Les éléments $15$ et $30$ sont comptés deux fois dans $\mathrm{card}(A) + \mathrm{card}(B)$ : on les retire une fois.
+:::
+
+::: resultat
+La formule est vérifiée : $14 = 10 + 6 - 2$.
+:::
+
+## Question 4 : Le complémentaire
+
+::: methode
+`not (condition)` est vrai quand la condition est fausse : on obtient le complémentaire de $A \cup B$ dans $E$.
+:::
+
+::: etape Exécution
+```python
+C = [x for x in E
+     if not (x % 3 == 0
+             or x % 5 == 0)]
+print(len(C))
+```
+
+```console
+16
+```
+:::
+
+::: resultat
+C'est la liste des entiers de $1$ à $30$ qui ne sont multiples ni de $3$ ni de $5$, c'est-à-dire $\overline{A \cup B}$ : $30 - 14 = 16$ éléments.
+:::
+
+## Question 5 : Diviseurs de $36$
+
+::: methode
+$d$ divise $36$ quand le reste de la division de $36$ par $d$ est nul : `36 % d == 0`.
+:::
+
+```python
+D = [d for d in range(1, 37)
+     if 36 % d == 0]
+print(D)
+```
+
+```console
+[1, 2, 3, 4, 6, 9, 12, 18, 36]
+```
+
+::: resultat
+$36$ a $9$ diviseurs : $1$, $2$, $3$, $4$, $6$, $9$, $12$, $18$, $36$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Filtres `x % 3 == 0` pour `A` ($10$ éléments) et `x % 5 == 0` pour `B` ($6$ éléments).
+2. `and` pour `I = [15, 30]`, `or` pour `U` ($14$ éléments).
+3. $10 + 6 - 2 = 14$.
+4. Le complémentaire de $A \cup B$ : $16$ éléments.
+5. Filtre `36 % d == 0` sur `range(1, 37)` : $9$ diviseurs.
+
+===
+
+=== Entraînement - Ajouter et supprimer : tirages sans remise
+Id: 837
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Une urne contient cinq boules numérotées de $1$ à $5$. La fonction `tirer(n)` simule le tirage successif et sans remise de $n$ boules ; `choice(L)` choisit au hasard un élément de la liste `L`.
+
+```python
+from random import choice, seed
+
+def tirer(n):
+    urne = [1, 2, 3, 4, 5]
+    t = []
+    for k in range(n):
+        b = choice(urne)
+        urne.remove(b)
+        t.append(b)
+    return t
+```
+
+1. Expliquer le rôle des instructions `urne.remove(b)` et `t.append(b)`. Que contient `urne` à la fin de l'appel `tirer(2)` si l'on a tiré les boules $1$ puis $4$ ?
+2. Combien y a-t-il de tirages possibles de $2$ boules, l'ordre comptant ? Combien de parties à $2$ boules ?
+3. Écrire un programme qui simule $10\,000$ tirages de $2$ boules et calcule la fréquence des tirages dont la somme vaut $5$. Comparer avec la probabilité.
+4. Que se passe-t-il lors de l'appel `tirer(6)` ?
+5. Que devient l'expérience si l'on supprime la ligne `urne.remove(b)` ? Calculer alors la probabilité que la somme vaille $5$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Supprimer et ajouter
+
+::: methode
+`remove` **supprime** une valeur de la liste ; `append` **ajoute** une valeur à la fin d'une liste.
+:::
+
+::: etape Rôle des deux instructions
+- `urne.remove(b)` retire la boule tirée de l'urne : elle ne peut plus être tirée, c'est un tirage **sans remise**.
+- `t.append(b)` ajoute la boule tirée à la liste `t` des résultats, dans l'ordre des tirages.
+:::
+
+[IMAGE_1]
+
+::: resultat
+Après le tirage de $1$ puis de $4$ : `t` vaut `[1, 4]` et `urne` vaut `[2, 3, 5]`.
+:::
+
+## Question 2 : Dénombrement
+
+::: methode
+Ordre compté : $5$ choix pour la première boule, puis $4$ pour la seconde. Sans ordre : on compte les parties à $2$ éléments.
+:::
+
+::: etape Calculs
+- Tirages ordonnés : $5 \times 4 = 20$.
+- Parties à $2$ boules : $\dbinom{5}{2} = \dfrac{5 \times 4}{2} = 10$.
+:::
+
+::: resultat
+$20$ tirages ordonnés et $10$ parties.
+:::
+
+## Question 3 : Simulation
+
+::: methode
+Les tirages ordonnés sont équiprobables. La somme vaut $5$ pour $(1\,;4)$, $(4\,;1)$, $(2\,;3)$ et $(3\,;2)$ : la probabilité est $\dfrac{4}{20} = 0{,}2$.
+:::
+
+::: etape Programme
+```python
+seed(2026)
+N = 10000
+c = 0
+for i in range(N):
+    t = tirer(2)
+    if t[0] + t[1] == 5:
+        c = c + 1
+print(c / N)
+```
+
+```console
+0.1959
+```
+
+`seed(2026)` fixe la graine : le programme donne toujours ce résultat ; une autre graine donnerait une fréquence voisine.
+:::
+
+::: resultat
+La fréquence observée, $0{,}1959$, est proche de la probabilité $0{,}2$.
+:::
+
+## Question 4 : Appel `tirer(6)`
+
+::: etape Exécution pas à pas
+Après $5$ tirages, l'urne est vide : `urne` vaut `[]`. Au sixième tour, `choice([])` provoque une erreur `IndexError` : on ne peut pas choisir dans une liste vide.
+:::
+
+::: resultat
+`tirer(6)` provoque une erreur : on ne peut pas tirer $6$ boules sans remise dans une urne qui en contient $5$.
+:::
+
+## Question 5 : Tirage avec remise
+
+::: etape Nouvelle expérience
+Sans `remove`, la boule reste dans l'urne : c'est un tirage **avec remise**. Il y a $5 \times 5 = 25$ couples équiprobables, et la somme vaut $5$ pour les $4$ mêmes couples.
+:::
+
+::: resultat
+Avec remise, la probabilité que la somme vaille $5$ est $\dfrac{4}{25} = 0{,}16$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. `remove` retire la boule de l'urne (sans remise), `append` l'ajoute aux résultats ; `urne` vaut `[2, 3, 5]`.
+2. $20$ tirages ordonnés ; $10$ parties.
+3. Fréquence $0{,}1959$ ; probabilité $\dfrac{4}{20} = 0{,}2$.
+4. Erreur au sixième tirage : l'urne est vide.
+5. Tirage avec remise ; probabilité $\dfrac{4}{25} = 0{,}16$.
+
+===
+
+=== Entraînement - Termes d'une suite et seuil avec une liste
+Id: 840
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Le 1er janvier 2026, Léa place $1\,000$ € sur un compte rémunéré à $2\,\%$ par an ; chaque 1er janvier suivant, elle y ajoute $100$ €. On note $u_n$ le capital (en euros) au 1er janvier de l'année $2026 + n$ : $u_0 = 1\,000$ et $u_{n+1} = 1{,}02\,u_n + 100$.
+
+[IMAGE_1]
+
+1. Calculer $u_1$ et $u_2$.
+2. Compléter le programme pour qu'il affiche le rang $n$ à partir duquel le capital atteint au moins $2\,000$ €.
+
+```python
+u = [1000]
+while …:
+    u.append(…)
+print(len(u) - 1)
+```
+
+3. Le programme affiche $8$. Afficher les deux derniers termes de la liste et interpréter.
+4. On admet que $u_n = 6\,000 \times 1{,}02^n - 5\,000$. Retrouver le résultat par le calcul.
+5. Les intérêts de l'année $2026 + n$ valent $0{,}02\,u_n$. Construire la liste des intérêts des années 2026 à 2033, puis calculer leur somme.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Premiers termes
+
+::: etape Calculs
+$$
+\begin{aligned}
+u_1 &= 1{,}02 \times 1\,000 + 100 = 1\,120 \\
+u_2 &= 1{,}02 \times 1\,120 + 100 = 1\,242{,}4
+\end{aligned}
+$$
+:::
+
+::: resultat
+$u_1 = 1\,120$ € et $u_2 = 1\,242{,}40$ €.
+:::
+
+## Question 2 : Compléter le programme
+
+::: methode
+On ajoute des termes **tant que** le dernier, `u[-1]`, est inférieur à $2\,000$. À la sortie, `u[-1]` est le premier terme supérieur ou égal à $2\,000$.
+:::
+
+::: etape Programme complet
+```python
+u = [1000]
+while u[-1] < 2000:
+    x = 1.02 * u[-1] + 100
+    u.append(x)
+print(len(u) - 1)
+```
+
+```console
+8
+```
+:::
+
+::: attention
+Le rang du dernier terme est `len(u) - 1` et non `len(u)` : la liste contient $u_0$, …, $u_8$, soit $9$ éléments.
+:::
+
+::: resultat
+Les trous sont `u[-1] < 2000` et `1.02 * u[-1] + 100` (calculé ici dans la variable `x`).
+:::
+
+## Question 3 : Les deux derniers termes
+
+::: etape Exécution
+```python
+print(round(u[-2], 2))
+print(round(u[-1], 2))
+```
+
+```console
+1892.11
+2029.96
+```
+:::
+
+[IMAGE_2]
+
+::: resultat
+$u_7 \approx 1\,892{,}11 \lt 2\,000$ et $u_8 \approx 2\,029{,}96 \ge 2\,000$ : le capital atteint $2\,000$ € le 1er janvier $2026 + 8 = 2034$.
+:::
+
+## Question 4 : Par le calcul
+
+::: methode
+On isole $1{,}02^n$, puis on applique la fonction $\ln$, strictement croissante.
+:::
+
+::: etape Résolution
+$$
+\begin{aligned}
+u_n \ge 2\,000 &\iff 6\,000 \times 1{,}02^n \ge 7\,000 \\
+&\iff 1{,}02^n \ge \frac{7}{6} \\
+&\iff n \ge \frac{\ln(7/6)}{\ln(1{,}02)}
+\end{aligned}
+$$
+
+car $\ln(1{,}02) \gt 0$ ; et $\dfrac{\ln(7/6)}{\ln(1{,}02)} \approx 7{,}78$.
+:::
+
+::: resultat
+Le plus petit entier est $n = 8$ : on retrouve l'année 2034.
+:::
+
+## Question 5 : La liste des intérêts
+
+::: methode
+On parcourt les indices $0$ à $7$ de `u` (années 2026 à 2033) et l'on calcule $0{,}02\,u_n$ en compréhension.
+:::
+
+::: etape Programme
+```python
+I = [0.02 * u[n]
+     for n in range(8)]
+print(len(I))
+print(round(sum(I), 2))
+```
+
+```console
+8
+229.96
+```
+:::
+
+::: etape Contrôle
+Le capital est passé de $1\,000$ à $u_8$ grâce aux $8$ versements de $100$ € et aux intérêts : $u_8 - 1\,000 - 800 \approx 229{,}96$.
+:::
+
+::: resultat
+Les intérêts des années 2026 à 2033 s'élèvent à $229{,}96$ € au total.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $u_1 = 1\,120$ et $u_2 = 1\,242{,}4$.
+2. `while u[-1] < 2000:` et `u.append(x)`, avec `x = 1.02 * u[-1] + 100`.
+3. $u_7 \approx 1\,892{,}11$ et $u_8 \approx 2\,029{,}96$ : $2\,000$ € atteints en 2034.
+4. $n \ge \dfrac{\ln(7/6)}{\ln(1{,}02)} \approx 7{,}78$, donc $n = 8$.
+5. Liste en compréhension des `0.02 * u[n]` ; somme $\approx 229{,}96$ €.
+
+===
+
+=== Entraînement - Sommes partielles et limite
+Id: 839
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Pour tout entier naturel $n$, on pose $S_n = 1 + \dfrac{1}{2} + \dfrac{1}{2^2} + \dots + \dfrac{1}{2^n}$. Le programme suivant construit la liste `T` des termes $\dfrac{1}{2^k}$ et la liste `S` des sommes $S_0$ à $S_{10}$.
+
+```python
+T = [0.5**k for k in range(11)]
+S = [T[0]]
+for k in range(1, 11):
+    S.append(S[-1] + T[k])
+```
+
+[IMAGE_1]
+
+1. Calculer $S_0$, $S_1$, $S_2$ et $S_3$.
+2. Expliquer comment la liste `S` est construite. Que valent `S[3]` et `S[10]` ?
+3. Démontrer que $S_n = 2 - \dfrac{1}{2^n}$, puis déterminer la limite de $(S_n)$.
+4. Écrire un programme qui détermine le plus petit $n$ tel que $2 - S_n \lt 10^{-6}$. Retrouver ce résultat par le calcul.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Premières sommes
+
+::: etape Calculs
+$S_0 = 1$, $S_1 = 1 + 0{,}5 = 1{,}5$, $S_2 = 1{,}5 + 0{,}25 = 1{,}75$ et $S_3 = 1{,}75 + 0{,}125 = 1{,}875$.
+:::
+
+::: resultat
+$S_0 = 1$ ; $S_1 = 1{,}5$ ; $S_2 = 1{,}75$ ; $S_3 = 1{,}875$.
+:::
+
+## Question 2 : Construction de `S`
+
+::: methode
+$S_k = S_{k-1} + \dfrac{1}{2^k}$ : chaque somme est la précédente, `S[-1]`, augmentée du terme `T[k]`.
+:::
+
+::: etape Exécution
+```python
+print(S[3])
+print(S[10])
+```
+
+```console
+1.875
+1.9990234375
+```
+:::
+
+::: resultat
+`S` part de `[1]` et reçoit `S[-1] + T[k]` pour $k$ de $1$ à $10$ ; `S[3]` $= 1{,}875$ et `S[10]` $\approx 1{,}9990$.
+:::
+
+## Question 3 : Formule et limite
+
+::: methode
+$S_n$ est la somme des $n + 1$ premiers termes d'une suite géométrique de premier terme $1$ et de raison $q = \dfrac{1}{2}$.
+:::
+
+::: etape Somme géométrique
+$$
+\begin{aligned}
+S_n &= \frac{1 - q^{n+1}}{1 - q} = \frac{1 - \frac{1}{2^{n+1}}}{\frac{1}{2}} \\
+&= 2 - \frac{2}{2^{n+1}} = 2 - \frac{1}{2^n}
+\end{aligned}
+$$
+:::
+
+::: etape Limite
+Comme $-1 \lt \dfrac{1}{2} \lt 1$, $\lim\limits_{n \to +\infty} \dfrac{1}{2^n} = 0$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+$S_n = 2 - \dfrac{1}{2^n}$ et la suite $(S_n)$ converge vers $2$.
+:::
+
+## Question 4 : Seuil $10^{-6}$
+
+::: methode
+On ajoute des sommes à la liste **tant que** l'écart $2 - S_n$ est supérieur ou égal à $10^{-6}$.
+:::
+
+::: etape Programme
+```python
+S = [1]
+n = 0
+while 2 - S[-1] >= 1e-6:
+    n = n + 1
+    S.append(S[-1] + 0.5**n)
+print(n)
+```
+
+```console
+20
+```
+
+`1e-6` est l'écriture de $10^{-6}$ en Python.
+:::
+
+::: etape Par le calcul
+$$
+\begin{aligned}
+2 - S_n \lt 10^{-6} &\iff \frac{1}{2^n} \lt 10^{-6} \\
+&\iff 2^n \gt 10^6 \\
+&\iff n \gt \frac{6\ln(10)}{\ln(2)} \approx 19{,}93
+\end{aligned}
+$$
+:::
+
+::: resultat
+Le plus petit entier est $n = 20$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $S_0 = 1$, $S_1 = 1{,}5$, $S_2 = 1{,}75$, $S_3 = 1{,}875$.
+2. Ajouts successifs de `S[-1] + T[k]` ; `S[3]` $= 1{,}875$, `S[10]` $\approx 1{,}9990$.
+3. Somme géométrique : $S_n = 2 - \dfrac{1}{2^n}$, de limite $2$.
+4. $n = 20$, car $2^{20} \gt 10^6 \ge 2^{19}$.
+
+===
+
+=== Découverte - Lister les k-uplets d'un ensemble
+Id: 5534
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+On lance trois fois une pièce et on note P (pile) ou F (face). Un résultat est un triplet d'éléments de $E = \{P, F\}$.
+
+```python
+E = ["P", "F"]
+T = [[a, b, c] for a in E
+     for b in E for c in E]
+```
+
+[IMAGE_1]
+
+1. Combien la liste `T` a-t-elle d'éléments ? Justifier par un calcul.
+2. Que valent `T[0]`, `T[5]` et `T[5][1]` ?
+3. Écrire en compréhension la liste des triplets qui contiennent exactement deux P. En déduire la probabilité d'obtenir exactement deux piles.
+4. Combien de résultats aurait-on avec $10$ lancers ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Nombre de triplets
+
+::: methode
+Trois `for` imbriqués : $2$ choix pour `a`, puis $2$ pour `b`, puis $2$ pour `c`.
+:::
+
+::: etape Calcul et exécution
+Il y a $2 \times 2 \times 2 = 2^3 = 8$ triplets.
+
+```python
+print(len(T))
+for t in T:
+    print(t)
+```
+
+```console
+8
+['P', 'P', 'P']
+['P', 'P', 'F']
+['P', 'F', 'P']
+['P', 'F', 'F']
+['F', 'P', 'P']
+['F', 'P', 'F']
+['F', 'F', 'P']
+['F', 'F', 'F']
+```
+:::
+
+[IMAGE_2]
+
+::: resultat
+`T` a $2^3 = 8$ éléments : les $8$ issues de l'arbre.
+:::
+
+## Question 2 : Lire une liste de listes
+
+::: methode
+`T[5]` est une liste ; `T[5][1]` est l'élément d'indice $1$ de cette liste.
+:::
+
+::: etape Exécution
+```python
+print(T[0])
+print(T[5])
+print(T[5][1])
+```
+
+```console
+['P', 'P', 'P']
+['F', 'P', 'F']
+P
+```
+:::
+
+::: resultat
+`T[0]` est `['P', 'P', 'P']`, `T[5]` est `['F', 'P', 'F']` et `T[5][1]` vaut `'P'` : le deuxième lancer de ce triplet.
+:::
+
+## Question 3 : Exactement deux P
+
+::: methode
+`t.count("P")` compte les P du triplet `t` ; on filtre avec la condition `t.count("P") == 2`.
+:::
+
+::: etape Programme
+```python
+D = [t for t in T
+     if t.count("P") == 2]
+print(len(D))
+```
+
+```console
+3
+```
+:::
+
+::: etape Probabilité
+La pièce est équilibrée : les $8$ issues sont équiprobables, d'où $P = \dfrac{3}{8}$. On retrouve $\dbinom{3}{2} \times 0{,}5^3 = \dfrac{3}{8}$ (loi binomiale $\mathcal{B}(3\,;0{,}5)$).
+:::
+
+::: resultat
+$3$ triplets contiennent exactement deux P ; la probabilité est $\dfrac{3}{8} = 0{,}375$.
+:::
+
+## Question 4 : Dix lancers
+
+::: resultat
+Avec $10$ lancers, il y a $2^{10} = 1\,024$ résultats (des $10$-uplets d'éléments de $E$).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $2^3 = 8$ triplets.
+2. `['P', 'P', 'P']`, `['F', 'P', 'F']` et `'P'`.
+3. Filtre `t.count("P") == 2` : $3$ triplets, probabilité $\dfrac{3}{8}$.
+4. $2^{10} = 1\,024$.
+
+===
+
+=== Entraînement - Lister les combinaisons d'un petit ensemble
+Id: 5535
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On note $E = \{1, 2, 3, 4, 5\}$. Une partie à $2$ éléments $\{a, b\}$ s'écrit une seule fois si l'on impose $a \lt b$.
+
+[IMAGE_1]
+
+1. Écrire en compréhension la liste `C2` des parties à $2$ éléments de $E$, chacune écrite `[a, b]` avec $a \lt b$. Combien y en a-t-il ?
+2. Écrire de même la liste `C3` des parties à $3$ éléments. Expliquer pourquoi `C2` et `C3` ont le même nombre d'éléments.
+3. On choisit au hasard une partie à $2$ éléments. Construire la liste des parties qui contiennent $5$ et calculer la probabilité que la partie choisie contienne $5$.
+4. Construire la liste des sommes $a + b$ des parties de `C2`. Quelle est la probabilité que la somme vaille $7$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Parties à $2$ éléments
+
+::: methode
+Deux `for` imbriqués et la condition `a < b` : chaque partie n'est obtenue qu'une fois, dans l'ordre croissant.
+:::
+
+::: etape Programme
+```python
+E = [1, 2, 3, 4, 5]
+C2 = [[a, b] for a in E
+      for b in E if a < b]
+print(len(C2))
+print(C2[0], C2[9])
+```
+
+```console
+10
+[1, 2] [4, 5]
+```
+:::
+
+[IMAGE_2]
+
+::: resultat
+Il y a $10$ parties à $2$ éléments : on retrouve $\dbinom{5}{2} = \dfrac{5 \times 4}{2} = 10$.
+:::
+
+## Question 2 : Parties à $3$ éléments
+
+::: etape Programme
+```python
+C3 = [[a, b, c]
+      for a in E for b in E
+      for c in E
+      if a < b < c]
+print(len(C3))
+```
+
+```console
+10
+```
+:::
+
+::: etape Pourquoi le même nombre
+Choisir les $3$ éléments d'une partie revient à choisir les $2$ éléments qui n'y sont pas : $\dbinom{5}{3} = \dbinom{5}{2} = 10$.
+:::
+
+::: resultat
+`C3` a $10$ éléments, car $\dbinom{5}{3} = \dbinom{5}{5 - 3} = \dbinom{5}{2}$.
+:::
+
+## Question 3 : Parties qui contiennent $5$
+
+::: methode
+Le test `5 in p` est vrai si $5$ est un élément de la partie `p`.
+:::
+
+```python
+A = [p for p in C2 if 5 in p]
+print(A)
+```
+
+```console
+[[1, 5], [2, 5], [3, 5], [4, 5]]
+```
+
+::: resultat
+$4$ parties sur $10$ contiennent $5$ : la probabilité est $\dfrac{4}{10} = 0{,}4$.
+:::
+
+## Question 4 : Somme égale à $7$
+
+::: methode
+`p[0]` et `p[1]` sont les deux éléments de la partie `p`.
+:::
+
+```python
+S = [p[0] + p[1] for p in C2]
+print(S)
+print(S.count(7))
+```
+
+```console
+[3, 4, 5, 6, 5, 6, 7, 7, 8, 9]
+2
+```
+
+::: resultat
+Les parties $\{2, 5\}$ et $\{3, 4\}$ ont pour somme $7$ : la probabilité est $\dfrac{2}{10} = 0{,}2$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Deux `for` et le filtre `a < b` : $10 = \dbinom{5}{2}$ parties.
+2. Condition `a < b < c` : $10$ parties, car $\dbinom{5}{3} = \dbinom{5}{2}$.
+3. `[p for p in C2 if 5 in p]` : $4$ parties, probabilité $0{,}4$.
+4. `[p[0] + p[1] for p in C2]` : la somme $7$ apparaît $2$ fois, probabilité $0{,}2$.
+
+===
+
+=== Entraînement - Simuler une loi binomiale avec des listes
+Id: 5536
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Un QCM comporte $5$ questions ; un candidat répond au hasard et chaque réponse est juste avec la probabilité $0{,}4$, indépendamment des autres. $X$ est le nombre de réponses justes. Le programme suivant simule $10\,000$ candidats ; `seed(2026)` fixe la graine, pour que le programme donne toujours le même résultat.
+
+```python
+from random import random, seed
+
+seed(2026)
+R = []
+for i in range(10000):
+    x = 0
+    for k in range(5):
+        if random() < 0.4:
+            x = x + 1
+    R.append(x)
+```
+
+[IMAGE_1]
+
+1. Que contient la liste `R` ? Quelle est la loi de $X$ ?
+2. Construire la liste `E` des effectifs des valeurs $0$ à $5$, puis la liste `F` des fréquences.
+3. Construire la liste `P` des probabilités $P(X = k)$ et calculer le plus grand écart entre une fréquence et la probabilité correspondante.
+4. Calculer la moyenne des valeurs de `R` et la comparer à l'espérance de $X$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : La liste `R` et la loi de $X$
+
+::: etape Lecture du programme
+Chaque tour de la boucle intérieure simule une réponse, juste avec la probabilité $0{,}4$ ; `x` compte les réponses justes et la valeur est ajoutée à `R`. `R` contient donc $10\,000$ valeurs simulées de $X$.
+:::
+
+::: resultat
+$X$ compte les succès de $5$ épreuves de Bernoulli indépendantes de paramètre $0{,}4$ : $X$ suit la loi $\mathcal{B}(5\,;0{,}4)$.
+:::
+
+## Question 2 : Effectifs et fréquences
+
+::: methode
+`R.count(k)` donne le nombre de valeurs de `R` égales à `k` ; une fréquence est un effectif divisé par $10\,000$.
+:::
+
+::: etape Programme
+```python
+E = [R.count(k)
+     for k in range(6)]
+F = [e / 10000 for e in E]
+for k in range(6):
+    print(k, E[k], F[k])
+```
+
+```console
+0 811 0.0811
+1 2490 0.249
+2 3494 0.3494
+3 2304 0.2304
+4 799 0.0799
+5 102 0.0102
+```
+:::
+
+::: resultat
+La liste `F` contient les fréquences des valeurs $0$ à $5$ ; leur somme vaut $1$.
+:::
+
+## Question 3 : Probabilités et écart
+
+::: methode
+On utilise $P(X = k) = \dbinom{5}{k}\,0{,}4^k\,0{,}6^{5-k}$ ; on calcule la liste des écarts $|F[k] - P[k]|$ avec `abs`, puis son maximum.
+:::
+
+::: etape Programme
+```python
+from math import comb
+
+P = [comb(5, k) * 0.4**k
+     * 0.6**(5 - k)
+     for k in range(6)]
+d = [abs(F[k] - P[k])
+     for k in range(6)]
+print(round(max(d), 4))
+```
+
+```console
+0.0102
+```
+:::
+
+[IMAGE_2]
+
+::: resultat
+Les fréquences sont très proches des probabilités : le plus grand écart vaut environ $0{,}01$.
+:::
+
+## Question 4 : Moyenne et espérance
+
+::: etape Programme
+```python
+print(sum(R) / len(R))
+```
+
+```console
+2.0096
+```
+:::
+
+::: resultat
+La moyenne des valeurs simulées, $2{,}0096$, est proche de l'espérance $E(X) = 5 \times 0{,}4 = 2$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $10\,000$ valeurs simulées de $X$, qui suit $\mathcal{B}(5\,;0{,}4)$.
+2. Effectifs avec `R.count(k)`, fréquences `e / 10000`.
+3. Liste `P` des probabilités binomiales ; plus grand écart $\approx 0{,}01$.
+4. Moyenne proche de $E(X) = 2$.
+
+===
+
+=== Type examen - Sondage, échantillons et inégalité de Bienaymé-Tchebychev
+Id: 5537
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Dans une ville, $52\,\%$ des électeurs votent pour la candidate A. On interroge au hasard $n = 400$ électeurs (tirage assimilé à un tirage avec remise) et on calcule la fréquence $F$ de votes pour A dans l'échantillon. Le programme simule $200$ sondages ; `seed(2026)` fixe la graine.
+
+```python
+from random import random, seed
+
+def frequence(n, p):
+    c = 0
+    for i in range(n):
+        if random() < p:
+            c = c + 1
+    return c / n
+
+seed(2026)
+L = [frequence(400, 0.52)
+     for j in range(200)]
+```
+
+[IMAGE_1]
+
+**Partie A : simulation**
+
+1. Que contient la liste `L` ? Combien a-t-elle d'éléments ?
+2. Calculer la moyenne des éléments de `L`.
+3. Calculer la proportion des sondages dont la fréquence est dans l'intervalle $[0{,}47\,;0{,}57]$.
+
+**Partie B : inégalité de Bienaymé-Tchebychev**
+
+On note $F_n$ la fréquence de votes pour A dans un échantillon de taille $n$ ; $F_n = \dfrac{X_1 + \dots + X_n}{n}$ où les $X_i$ sont des variables de Bernoulli indépendantes de paramètre $p = 0{,}52$.
+
+4. Calculer $E(F_n)$ et $V(F_n)$.
+5. Montrer que, pour $n = 400$, $P\big(|F_n - 0{,}52| \lt 0{,}05\big) \ge 0{,}75$. Comparer avec la partie A.
+6. Écrire un programme qui détermine la plus petite taille $n$ pour laquelle l'inégalité garantit $P\big(|F_n - 0{,}52| \ge 0{,}05\big) \le 0{,}05$.
+
+Étapes:
+<!-- optitab:1 -->
+## Partie A : simulation
+
+## Question 1 : La liste `L`
+
+::: etape Lecture du programme
+`frequence(400, 0.52)` simule un sondage : $400$ réponses, chacune pour A avec la probabilité $0{,}52$, et renvoie la fréquence des réponses pour A. La liste en compréhension répète $200$ fois ce sondage.
+:::
+
+::: etape Exécution
+```python
+print(len(L))
+print(L[0], L[1])
+```
+
+```console
+200
+0.4975 0.5325
+```
+:::
+
+::: resultat
+`L` contient les $200$ fréquences de $200$ sondages simulés.
+:::
+
+## Question 2 : Moyenne des fréquences
+
+::: etape Exécution
+```python
+m = sum(L) / len(L)
+print(round(m, 4))
+```
+
+```console
+0.5214
+```
+:::
+
+::: resultat
+La moyenne des $200$ fréquences, environ $0{,}521$, est très proche de $p = 0{,}52$.
+:::
+
+## Question 3 : Proportion dans $[0{,}47\,;0{,}57]$
+
+::: methode
+On filtre les fréquences $x$ de la liste telles que $|x - 0{,}52| \le 0{,}05$, puis on divise leur nombre par $200$.
+:::
+
+::: etape Programme
+```python
+B = [x for x in L
+     if abs(x-0.52) <= 0.05]
+print(len(B) / len(L))
+```
+
+```console
+0.925
+```
+:::
+
+[IMAGE_2]
+
+::: resultat
+$92{,}5\,\%$ des sondages simulés donnent une fréquence dans $[0{,}47\,;0{,}57]$.
+:::
+
+## Partie B : inégalité de Bienaymé-Tchebychev
+
+## Question 4 : Espérance et variance
+
+::: methode
+Linéarité de l'espérance ; la variance d'une somme de variables **indépendantes** est la somme des variances, et $V(aX) = a^2V(X)$.
+:::
+
+::: etape Calculs
+$E(X_i) = p$ et $V(X_i) = p(1 - p)$, donc
+$$
+\begin{aligned}
+E(F_n) &= \frac{np}{n} = p = 0{,}52 \\
+V(F_n) &= \frac{n\,p(1 - p)}{n^2} = \frac{0{,}2496}{n}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$E(F_n) = 0{,}52$ et $V(F_n) = \dfrac{0{,}2496}{n}$.
+:::
+
+## Question 5 : Minoration pour $n = 400$
+
+::: methode
+Inégalité de Bienaymé-Tchebychev, pour $\delta \gt 0$ :
+$$P\big(|F_n - E(F_n)| \ge \delta\big) \le \frac{V(F_n)}{\delta^2}$$
+:::
+
+::: etape Application avec $\delta = 0{,}05$
+$$
+\begin{aligned}
+\frac{V(F_{400})}{0{,}05^2} &= \frac{0{,}2496}{400 \times 0{,}0025} \\
+&= 0{,}2496
+\end{aligned}
+$$
+
+Donc $P\big(|F_{400} - 0{,}52| \ge 0{,}05\big) \le 0{,}2496$. Par passage à l'événement contraire :
+$$P\big(|F_{400} - 0{,}52| \lt 0{,}05\big) \ge 0{,}7504$$
+:::
+
+::: resultat
+La probabilité est au moins $0{,}75$ ; la simulation donne $0{,}925$ : l'inégalité est vraie mais loin d'être précise.
+:::
+
+## Question 6 : Taille d'échantillon
+
+::: methode
+On augmente $n$ **tant que** le majorant $\dfrac{0{,}2496}{n \times 0{,}05^2}$ est strictement supérieur à $0{,}05$.
+:::
+
+::: etape Programme
+```python
+m = 0.2496 / 0.0025
+n = 1
+while m / n > 0.05:
+    n = n + 1
+print(n)
+```
+
+```console
+1997
+```
+:::
+
+::: etape Vérification par le calcul
+$$
+\begin{aligned}
+\frac{0{,}2496}{0{,}0025\,n} \le 0{,}05 &\iff n \ge \frac{0{,}2496}{0{,}05 \times 0{,}0025} \\
+&\iff n \ge 1\,996{,}8
+\end{aligned}
+$$
+:::
+
+::: resultat
+Il faut interroger au moins $1\,997$ électeurs.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Les $200$ fréquences de $200$ sondages simulés de taille $400$.
+2. Moyenne $\approx 0{,}521$.
+3. Proportion $0{,}925$.
+4. $E(F_n) = 0{,}52$ et $V(F_n) = \dfrac{0{,}2496}{n}$.
+5. Majorant $0{,}2496$, donc probabilité au moins $0{,}7504$ ; la simulation donne $0{,}925$.
+6. $n = 1\,997$.
+
+===
+
+=== Entraînement - Fréquences successives et loi des grands nombres
+Id: 5538
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On lance $2\,000$ fois un dé équilibré. Après chaque lancer, le programme ajoute à la liste `f` la fréquence des « 6 » obtenus depuis le début ; `seed(2026)` fixe la graine.
+
+```python
+from random import randint, seed
+
+seed(2026)
+c = 0
+f = []
+for n in range(1, 2001):
+    if randint(1, 6) == 6:
+        c = c + 1
+    f.append(c / n)
+```
+
+[IMAGE_1]
+
+1. Combien la liste `f` a-t-elle d'éléments ? Quel élément de `f` donne la fréquence après $n$ lancers ?
+2. Afficher la fréquence après $10$, $100$, $1\,000$ et $2\,000$ lancers.
+3. Quelle propriété du cours ces résultats illustrent-ils ?
+4. Construire la liste des nombres de lancers $n$, de $100$ à $2\,000$, pour lesquels la fréquence s'écarte de $\dfrac{1}{6}$ de plus de $0{,}05$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Indices et nombres de lancers
+
+::: methode
+La boucle fait $2\,000$ tours et ajoute une fréquence à chaque tour. La première fréquence, celle du lancer $1$, a l'indice $0$.
+:::
+
+::: resultat
+`f` a $2\,000$ éléments ; la fréquence après $n$ lancers est `f[n - 1]`.
+:::
+
+## Question 2 : Quatre fréquences
+
+::: etape Programme
+```python
+N = [10, 100, 1000, 2000]
+for n in N:
+    x = round(f[n - 1], 4)
+    print(n, x)
+```
+
+```console
+10 0.1
+100 0.17
+1000 0.177
+2000 0.165
+```
+:::
+
+::: attention
+Écrire `f[n]` décale tout d'un rang, et `f[2000]` provoque une erreur `IndexError` : le dernier indice est $1\,999$.
+:::
+
+::: resultat
+Après $10$, $100$, $1\,000$ et $2\,000$ lancers, les fréquences sont $0{,}1$ ; $0{,}17$ ; $0{,}177$ ; $0{,}165$.
+:::
+
+## Question 3 : Loi des grands nombres
+
+::: etape Interprétation
+La fréquence des « 6 » est la moyenne de $n$ variables de Bernoulli indépendantes de paramètre $p = \dfrac{1}{6} \approx 0{,}167$. D'après la loi des grands nombres, elle se rapproche de $p$ quand $n$ devient grand.
+:::
+
+[IMAGE_2]
+
+::: resultat
+Les fréquences fluctuent beaucoup au début, puis se stabilisent autour de $\dfrac{1}{6}$ : c'est la loi des grands nombres.
+:::
+
+## Question 4 : Les grands écarts
+
+::: methode
+On parcourt les nombres de lancers $n$ de $100$ à $2\,000$ et l'on garde ceux pour lesquels $\left|f_n - \frac{1}{6}\right| \gt 0{,}05$.
+:::
+
+::: etape Programme
+```python
+p = 1 / 6
+R = range(100, 2001)
+G = [n for n in R
+     if abs(f[n-1]-p) > 0.05]
+print(len(G))
+```
+
+```console
+0
+```
+:::
+
+::: resultat
+La liste est vide : à partir de $100$ lancers, la fréquence reste toujours à moins de $0{,}05$ de $\dfrac{1}{6}$ dans cette simulation.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $2\,000$ éléments ; la fréquence après $n$ lancers est `f[n - 1]`.
+2. $0{,}1$ ; $0{,}17$ ; $0{,}177$ ; $0{,}165$.
+3. La loi des grands nombres : la fréquence se rapproche de $\dfrac{1}{6}$.
+4. La liste est vide : aucun écart supérieur à $0{,}05$ à partir de $100$ lancers.
+
+===
+
+=== Problème - Marche aléatoire avec une liste des positions
+Id: 5539
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Un pion part de la position $0$ sur un axe gradué. À chaque étape, il avance de $1$ ou recule de $1$, avec la même probabilité $0{,}5$, indépendamment des étapes précédentes. Le programme range dans la liste `P` les positions successives au cours de $20$ étapes ; `seed(2026)` fixe la graine.
+
+```python
+from random import random, seed
+
+seed(2026)
+P = [0]
+for k in range(20):
+    if random() < 0.5:
+        P.append(P[-1] + 1)
+    else:
+        P.append(P[-1] - 1)
+```
+
+[IMAGE_1]
+
+1. Combien la liste `P` a-t-elle d'éléments ? Que représente `P[k]` ?
+2. Déterminer la position finale, la position la plus haute et la plus basse, et les étapes où le pion revient en $0$.
+3. Expliquer pourquoi le pion ne peut revenir en $0$ qu'après un nombre pair d'étapes.
+4. On note $S$ le nombre d'étapes où le pion avance et $X_{20}$ sa position finale. Exprimer $X_{20}$ en fonction de $S$ ; en déduire $E(X_{20})$ et $P(X_{20} = 0)$.
+5. Simuler $10\,000$ marches de $20$ étapes et calculer la fréquence des marches qui finissent en $0$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : La liste `P`
+
+::: etape Lecture du programme
+`P` part de `[0]` et reçoit une position à chacune des $20$ étapes : elle a $21$ éléments. `P[k]` est la position du pion après $k$ étapes ; `P[0]` $= 0$ est la position de départ.
+:::
+
+::: resultat
+`P` a $21$ éléments ; `P[k]` est la position après $k$ étapes.
+:::
+
+## Question 2 : Lire la marche
+
+::: methode
+On utilise `P[-1]`, `max`, `min`, et une liste en compréhension parcourue par les indices pour repérer les retours en $0$.
+:::
+
+::: etape Programme
+```python
+print(P[-1])
+print(max(P), min(P))
+Z = [k for k in range(1, 21)
+     if P[k] == 0]
+print(Z)
+```
+
+```console
+-8
+1 -8
+[2, 6]
+```
+:::
+
+[IMAGE_2]
+
+::: resultat
+La position finale est $-8$ ; le pion est monté jusqu'à $1$ et descendu jusqu'à $-8$ ; il est revenu en $0$ aux étapes $2$ et $6$.
+:::
+
+## Question 3 : Retours en $0$ et parité
+
+::: etape Raisonnement
+Après $k$ étapes, si le pion a avancé $a$ fois et reculé $r$ fois, alors $a + r = k$ et sa position vaut $a - r$. Il est en $0$ si $a = r$, et alors $k = 2a$ est pair.
+:::
+
+::: resultat
+Un retour en $0$ n'est possible qu'après un nombre pair d'étapes, ce que confirme la liste `[2, 6]`.
+:::
+
+## Question 4 : Loi de la position finale
+
+::: methode
+Les $20$ étapes sont des épreuves de Bernoulli indépendantes de succès « avancer », de probabilité $0{,}5$ : $S$ suit la loi $\mathcal{B}(20\,;0{,}5)$.
+:::
+
+::: etape Expression de $X_{20}$
+Le pion avance $S$ fois et recule $20 - S$ fois : $X_{20} = S - (20 - S) = 2S - 20$.
+:::
+
+::: etape Espérance et probabilité
+$E(S) = 20 \times 0{,}5 = 10$, donc $E(X_{20}) = 2 \times 10 - 20 = 0$.
+
+$X_{20} = 0 \iff S = 10$, donc
+$$P(X_{20} = 0) = \dbinom{20}{10} \times 0{,}5^{20} \approx 0{,}176$$
+:::
+
+::: resultat
+$X_{20} = 2S - 20$, $E(X_{20}) = 0$ et $P(X_{20} = 0) \approx 0{,}176$.
+:::
+
+## Question 5 : Simulation de $10\,000$ marches
+
+::: methode
+On n'a besoin que de la position finale : une fonction la calcule sans garder la liste.
+:::
+
+::: etape Programme
+```python
+def finale(n):
+    x = 0
+    for k in range(n):
+        if random() < 0.5:
+            x = x + 1
+        else:
+            x = x - 1
+    return x
+
+seed(2026)
+c = 0
+for j in range(10000):
+    if finale(20) == 0:
+        c = c + 1
+print(c / 10000)
+```
+
+```console
+0.1837
+```
+:::
+
+::: resultat
+La fréquence observée, $0{,}1837$, est proche de $P(X_{20} = 0) \approx 0{,}176$. La marche simulée dans l'énoncé, qui finit en $-8$, est un cas plus rare.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $21$ éléments ; `P[k]` est la position après $k$ étapes.
+2. Position finale $-8$ ; maximum $1$, minimum $-8$ ; retours en $0$ aux étapes $2$ et $6$.
+3. En $0$ après $k$ étapes : $a = r$, donc $k = 2a$ est pair.
+4. $X_{20} = 2S - 20$ avec $S \sim \mathcal{B}(20\,;0{,}5)$ ; $E(X_{20}) = 0$ ; $P(X_{20} = 0) \approx 0{,}176$.
+5. Fréquence observée proche de $0{,}176$.
+
+===

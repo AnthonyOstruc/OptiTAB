@@ -1,0 +1,1837 @@
+=== Découverte - Terme et somme d'une suite récurrente
+Id: 832
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+La suite $(u_n)$ est définie par $u_0 = 5$ et, pour tout entier naturel $n$, $u_{n+1} = 0{,}5\,u_n + 1$.
+
+1. Calculer $u_1$, $u_2$ et $u_3$.
+2. Compléter la fonction suivante pour qu'elle renvoie $u_n$.
+
+```python
+def terme(n):
+    u = …
+    for k in range(…):
+        u = …
+    return u
+```
+
+3. On considère la fonction suivante. Qu'affiche l'instruction `print(somme(3))` ? Que calcule cette fonction ?
+
+```python
+def somme(n):
+    s = 0
+    u = 5
+    for k in range(n + 1):
+        s = s + u
+        u = 0.5 * u + 1
+    return s
+```
+
+4. On pose $v_n = u_n - 2$. Montrer que la suite $(v_n)$ est géométrique, en déduire l'expression de $u_n$ en fonction de $n$, puis la limite de la suite $(u_n)$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Premiers termes
+
+::: methode
+On applique la relation de récurrence avec $n = 0$, puis $n = 1$, puis $n = 2$.
+:::
+
+::: etape Calculs
+$$
+\begin{aligned}
+u_1 &= 0{,}5 \times 5 + 1 = 3{,}5 \\
+u_2 &= 0{,}5 \times 3{,}5 + 1 = 2{,}75 \\
+u_3 &= 0{,}5 \times 2{,}75 + 1 = 2{,}375
+\end{aligned}
+$$
+:::
+
+::: resultat
+$u_1 = 3{,}5$, $u_2 = 2{,}75$ et $u_3 = 2{,}375$.
+:::
+
+## Question 2 : La fonction `terme`
+
+::: methode
+On part de $u_0 = 5$ et on applique $n$ fois la relation de récurrence : la boucle fait $n$ tours.
+:::
+
+::: etape Fonction complète
+```python
+def terme(n):
+    u = 5
+    for k in range(n):
+        u = 0.5 * u + 1
+    return u
+
+print(terme(3))
+```
+
+```console
+2.375
+```
+:::
+
+::: etape Tableau d'état de `terme(3)`
+| Étape | `u` |
+|---|---|
+| avant la boucle | $5$ |
+| tour 1 ($k = 0$) | $3{,}5$ |
+| tour 2 ($k = 1$) | $2{,}75$ |
+| tour 3 ($k = 2$) | $2{,}375$ |
+:::
+
+::: resultat
+Les trous sont `5`, `n` et `0.5 * u + 1`.
+:::
+
+## Question 3 : La fonction `somme`
+
+::: methode
+On suit les variables `s` et `u` tour par tour : `s` reçoit le terme courant **avant** que `u` passe au terme suivant.
+:::
+
+::: etape Tableau d'état de `somme(3)`
+| Tour | `s` à la fin du tour | `u` à la fin du tour |
+|---|---|---|
+| 1 | $5$ | $3{,}5$ |
+| 2 | $8{,}5$ | $2{,}75$ |
+| 3 | $11{,}25$ | $2{,}375$ |
+| 4 | $13{,}625$ | $2{,}1875$ |
+:::
+
+::: etape Vérification par l'exécution
+```python
+print(somme(3))
+```
+
+```console
+13.625
+```
+:::
+
+::: attention
+`range(n + 1)` fait $n + 1$ tours : de $u_0$ à $u_n$, il y a $n + 1$ termes. Avec `range(n)`, on oublierait $u_n$.
+:::
+
+::: resultat
+`somme(3)` affiche `13.625` : la fonction renvoie $u_0 + u_1 + \dots + u_n$, ici $5 + 3{,}5 + 2{,}75 + 2{,}375 = 13{,}625$.
+:::
+
+## Question 4 : Expression de $u_n$ et limite
+
+::: methode
+On exprime $v_{n+1}$ en fonction de $v_n$ ; une suite géométrique de raison $q$ avec $-1 \lt q \lt 1$ converge vers $0$.
+:::
+
+::: etape La suite $(v_n)$ est géométrique
+$$
+\begin{aligned}
+v_{n+1} &= u_{n+1} - 2 \\
+&= 0{,}5\,u_n + 1 - 2 \\
+&= 0{,}5\,(u_n - 2) \\
+&= 0{,}5\,v_n
+\end{aligned}
+$$
+
+$(v_n)$ est géométrique de raison $0{,}5$ et de premier terme $v_0 = 5 - 2 = 3$.
+:::
+
+::: etape Expression de $u_n$
+$v_n = 3 \times 0{,}5^n$, donc $u_n = v_n + 2 = 2 + 3 \times 0{,}5^n$. Vérification : $u_3 = 2 + 3 \times 0{,}125 = 2{,}375$.
+:::
+
+::: etape Limite
+Comme $-1 \lt 0{,}5 \lt 1$, $\lim\limits_{n \to +\infty} 0{,}5^n = 0$, donc $\lim\limits_{n \to +\infty} u_n = 2$.
+:::
+
+[IMAGE_1]
+
+::: resultat
+$u_n = 2 + 3 \times 0{,}5^n$ et la suite $(u_n)$ converge vers $2$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $u_1 = 3{,}5$, $u_2 = 2{,}75$, $u_3 = 2{,}375$.
+2. `u = 5`, `range(n)`, `u = 0.5 * u + 1`.
+3. `somme(3)` affiche `13.625` ; la fonction renvoie $u_0 + u_1 + \dots + u_n$.
+4. $v_{n+1} = 0{,}5\,v_n$, $v_0 = 3$ ; $u_n = 2 + 3 \times 0{,}5^n$ ; $(u_n)$ converge vers $2$.
+
+===
+
+=== Entraînement - Algorithme de seuil et logarithme
+Id: 831
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+On injecte à un patient $20$ mg d'un médicament. Chaque heure, son organisme en élimine $30\,\%$. On note $u_n$ la quantité de médicament (en mg) présente dans le sang au bout de $n$ heures : $u_0 = 20$.
+
+[IMAGE_1]
+
+1. Justifier que $u_{n+1} = 0{,}7\,u_n$, puis exprimer $u_n$ en fonction de $n$. Quelle est la limite de la suite $(u_n)$ ?
+2. Compléter la fonction suivante pour qu'elle renvoie le nombre d'heures au bout duquel la quantité devient strictement inférieure à $A$ mg.
+
+```python
+def seuil(A):
+    n = 0
+    u = 20
+    while …:
+        u = …
+        n = n + 1
+    return n
+```
+
+3. Que renvoie `seuil(1)` ? Interpréter.
+4. Retrouver ce résultat par le calcul, à l'aide du logarithme népérien.
+5. Sans programme, déterminer la valeur renvoyée par `seuil(0.1)`.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Relation de récurrence et limite
+
+::: methode
+Éliminer $30\,\%$ revient à multiplier par $1 - 0{,}3 = 0{,}7$.
+:::
+
+::: etape Suite géométrique
+D'une heure à la suivante, il reste $70\,\%$ du médicament : $u_{n+1} = 0{,}7\,u_n$. La suite $(u_n)$ est géométrique de raison $0{,}7$ et de premier terme $u_0 = 20$, donc $u_n = 20 \times 0{,}7^n$.
+:::
+
+::: etape Limite
+Comme $-1 \lt 0{,}7 \lt 1$, $\lim\limits_{n \to +\infty} 0{,}7^n = 0$.
+:::
+
+::: resultat
+$u_n = 20 \times 0{,}7^n$ et $\lim\limits_{n \to +\infty} u_n = 0$.
+:::
+
+## Question 2 : Compléter l'algorithme
+
+::: methode
+On veut s'arrêter dès que $u \lt A$ : on répète donc **tant que** $u \ge A$.
+:::
+
+::: etape Fonction complète
+```python
+def seuil(A):
+    n = 0
+    u = 20
+    while u >= A:
+        u = 0.7 * u
+        n = n + 1
+    return n
+
+print(seuil(1))
+```
+
+```console
+9
+```
+:::
+
+::: attention
+La condition du `while` est le **contraire** de la condition cherchée. Écrire `while u < A:` ferait sortir de la boucle dès le départ (car $20 \ge 1$) et la fonction renverrait $0$.
+:::
+
+::: resultat
+Les trous sont `u >= A` et `0.7 * u`.
+:::
+
+## Question 3 : Interpréter `seuil(1)`
+
+::: methode
+On vérifie que $u_8 \ge 1$ et $u_9 \lt 1$.
+:::
+
+::: etape Les termes autour du seuil
+$u_8 = 20 \times 0{,}7^8 \approx 1{,}153 \ge 1$ et $u_9 = 20 \times 0{,}7^9 \approx 0{,}807 \lt 1$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+`seuil(1)` renvoie $9$ : c'est au bout de $9$ heures que la quantité de médicament devient inférieure à $1$ mg.
+:::
+
+## Question 4 : Par le calcul
+
+::: methode
+On isole $0{,}7^n$, puis on applique la fonction $\ln$, strictement croissante sur $]0\,;+\infty[$.
+:::
+
+::: etape Résolution de $20 \times 0{,}7^n \lt 1$
+$$
+\begin{aligned}
+20 \times 0{,}7^n \lt 1 &\iff 0{,}7^n \lt 0{,}05 \\
+&\iff n \ln(0{,}7) \lt \ln(0{,}05) \\
+&\iff n \gt \frac{\ln(0{,}05)}{\ln(0{,}7)}
+\end{aligned}
+$$
+:::
+
+::: attention
+$\ln(0{,}7) \lt 0$ : diviser par $\ln(0{,}7)$ **change le sens** de l'inégalité.
+:::
+
+::: etape Conclusion
+$\dfrac{\ln(0{,}05)}{\ln(0{,}7)} \approx 8{,}40$, donc le plus petit entier $n$ est $9$.
+:::
+
+::: resultat
+On retrouve $n = 9$ : le calcul démontre le résultat donné par l'algorithme.
+:::
+
+## Question 5 : La valeur de `seuil(0.1)`
+
+::: methode
+Même calcul avec $20 \times 0{,}7^n \lt 0{,}1$, c'est-à-dire $0{,}7^n \lt 0{,}005$.
+:::
+
+::: etape Calcul
+$$n \gt \frac{\ln(0{,}005)}{\ln(0{,}7)} \approx 14{,}85$$
+:::
+
+::: resultat
+`seuil(0.1)` renvoie $15$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $u_{n+1} = 0{,}7\,u_n$ ; $u_n = 20 \times 0{,}7^n$ ; la limite est $0$.
+2. `while u >= A:` et `u = 0.7 * u`.
+3. `seuil(1)` renvoie $9$ : au bout de $9$ heures, il reste moins de $1$ mg.
+4. $n \gt \dfrac{\ln(0{,}05)}{\ln(0{,}7)} \approx 8{,}40$, donc $n = 9$.
+5. $n \gt \dfrac{\ln(0{,}005)}{\ln(0{,}7)} \approx 14{,}85$ : `seuil(0.1)` renvoie $15$.
+
+===
+
+=== Problème - Une suite majorée qui ne dépasse jamais un seuil
+Id: 835
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On reprend la situation d'un médicament dont l'organisme élimine $30\,\%$ chaque heure, mais on réinjecte $2$ mg au patient à la fin de chaque heure. On note $u_n$ la quantité (en mg) présente au bout de $n$ heures : $u_0 = 2$ et $u_{n+1} = 0{,}7\,u_n + 2$.
+
+[IMAGE_1]
+
+1. Calculer $u_1$ et $u_2$.
+2. Démontrer par récurrence que, pour tout entier naturel $n$, $0 \lt u_n \lt u_{n+1} \lt \dfrac{20}{3}$.
+3. En déduire que la suite $(u_n)$ converge, puis déterminer sa limite.
+4. On considère la fonction ci-dessous. Que renvoie `seuil(6)` ? Le vérifier par le calcul, sachant que $u_n = \dfrac{20}{3} - \dfrac{14}{3} \times 0{,}7^n$.
+
+```python
+def seuil(A):
+    n = 0
+    u = 2
+    while u <= A:
+        u = 0.7 * u + 2
+        n = n + 1
+    return n
+```
+
+5. Expliquer pourquoi l'appel `seuil(7)` ne se termine jamais. Modifier la fonction pour qu'elle s'arrête après au plus `N` tours et renvoie `None` si le seuil n'est pas dépassé.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Premiers termes
+
+::: etape Calculs
+$$
+\begin{aligned}
+u_1 &= 0{,}7 \times 2 + 2 = 3{,}4 \\
+u_2 &= 0{,}7 \times 3{,}4 + 2 = 4{,}38
+\end{aligned}
+$$
+:::
+
+::: resultat
+$u_1 = 3{,}4$ et $u_2 = 4{,}38$.
+:::
+
+## Question 2 : Démonstration par récurrence
+
+::: methode
+On note $P(n)$ la propriété « $0 \lt u_n \lt u_{n+1} \lt \frac{20}{3}$ ». On l'initialise, puis on montre qu'elle est héréditaire en appliquant la fonction croissante $x \mapsto 0{,}7x + 2$.
+:::
+
+::: etape Initialisation
+$u_0 = 2$ et $u_1 = 3{,}4$ : on a bien $0 \lt 2 \lt 3{,}4 \lt \dfrac{20}{3} \approx 6{,}67$. $P(0)$ est vraie.
+:::
+
+::: etape Hérédité
+On suppose $0 \lt u_n \lt u_{n+1} \lt \dfrac{20}{3}$. On multiplie par $0{,}7 \gt 0$, puis on ajoute $2$ :
+$$
+\begin{aligned}
+0{,}7 \times 0 + 2 &\lt 0{,}7\,u_n + 2 \\
+&\lt 0{,}7\,u_{n+1} + 2 \\
+&\lt 0{,}7 \times \frac{20}{3} + 2
+\end{aligned}
+$$
+
+soit $2 \lt u_{n+1} \lt u_{n+2} \lt \dfrac{14}{3} + 2 = \dfrac{20}{3}$. Donc $P(n+1)$ est vraie.
+:::
+
+::: resultat
+Pour tout entier naturel $n$, $0 \lt u_n \lt u_{n+1} \lt \dfrac{20}{3}$ : la suite est croissante et majorée par $\dfrac{20}{3}$.
+:::
+
+## Question 3 : Convergence et limite
+
+::: methode
+Une suite croissante et majorée converge. Sa limite $\ell$ vérifie $\ell = 0{,}7\,\ell + 2$, car $x \mapsto 0{,}7x + 2$ est continue.
+:::
+
+::: etape Calcul de la limite
+$$\ell = 0{,}7\,\ell + 2 \iff 0{,}3\,\ell = 2 \iff \ell = \frac{20}{3}$$
+:::
+
+::: resultat
+La suite $(u_n)$ converge vers $\dfrac{20}{3} \approx 6{,}67$ mg.
+:::
+
+## Question 4 : La valeur de `seuil(6)`
+
+::: methode
+On exécute la fonction, puis on résout $u_n \gt 6$ avec le logarithme.
+:::
+
+::: etape Exécution
+```python
+print(seuil(6))
+```
+
+```console
+6
+```
+:::
+
+::: etape Par le calcul
+$$
+\begin{aligned}
+u_n \gt 6 &\iff \frac{14}{3} \times 0{,}7^n \lt \frac{2}{3} \\
+&\iff 0{,}7^n \lt \frac{1}{7} \\
+&\iff n \gt \frac{\ln(7)}{-\ln(0{,}7)}
+\end{aligned}
+$$
+
+et $\dfrac{\ln(7)}{-\ln(0{,}7)} \approx 5{,}46$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+`seuil(6)` renvoie $6$ : la quantité dépasse $6$ mg à partir de $6$ heures ($u_5 \approx 5{,}88$ et $u_6 \approx 6{,}12$).
+:::
+
+## Question 5 : Le seuil $7$ et le garde-fou
+
+::: methode
+D'après la question 2, $u_n \lt \dfrac{20}{3} \lt 7$ pour tout $n$ : la condition `u <= 7` n'est jamais fausse.
+:::
+
+::: etape Pourquoi la boucle est infinie
+La boucle `while` ne s'arrête que lorsque $u \gt 7$. Or tous les termes sont inférieurs à $\dfrac{20}{3} \approx 6{,}67$ : la condition reste vraie à chaque tour et la boucle ne s'arrête jamais.
+:::
+
+::: etape Fonction avec garde-fou
+```python
+def seuil2(A, N):
+    n = 0
+    u = 2
+    while u <= A and n < N:
+        u = 0.7 * u + 2
+        n = n + 1
+    if u > A:
+        return n
+    return None
+
+print(seuil2(6, 1000))
+print(seuil2(7, 1000))
+```
+
+```console
+6
+None
+```
+:::
+
+::: attention
+Un algorithme de seuil ne doit être lancé que si l'on sait que le seuil sera dépassé. Ici, tout seuil supérieur ou égal à $\dfrac{20}{3}$ n'est jamais dépassé.
+:::
+
+::: resultat
+`seuil(7)` boucle sans fin car $u_n \lt \dfrac{20}{3} \lt 7$ ; la fonction `seuil2` s'arrête après au plus `N` tours et renvoie `None`.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $u_1 = 3{,}4$ et $u_2 = 4{,}38$.
+2. Initialisation : $0 \lt 2 \lt 3{,}4 \lt \frac{20}{3}$ ; hérédité en multipliant par $0{,}7$ puis en ajoutant $2$.
+3. Croissante et majorée, la suite converge ; $\ell = 0{,}7\,\ell + 2$ donne $\ell = \frac{20}{3}$.
+4. `seuil(6)` renvoie $6$ ; $n \gt \frac{\ln(7)}{-\ln(0{,}7)} \approx 5{,}46$.
+5. $u_n \lt \frac{20}{3} \lt 7$ : la condition `u <= 7` reste vraie, la boucle est infinie ; garde-fou `while u <= A and n < N:` puis `return None` si `u <= A`.
+
+===
+
+=== Entraînement - Méthode de dichotomie
+Id: 833
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On considère la fonction $f$ définie sur $[0\,;1]$ par $f(x) = e^x + x - 3$.
+
+[IMAGE_1]
+
+1. Démontrer que l'équation $f(x) = 0$ admet une unique solution $\alpha$ dans $[0\,;1]$.
+2. Appliquer à la main les trois premiers tours de la méthode de dichotomie à partir de l'intervalle $[0\,;1]$.
+3. Compléter la fonction suivante, qui renvoie un encadrement de $\alpha$ d'amplitude inférieure ou égale à `e`.
+
+```python
+from math import exp
+
+def f(x):
+    return exp(x) + x - 3
+
+def dichotomie(a, b, e):
+    while …:
+        m = (a + b) / 2
+        if f(a) * f(m) <= 0:
+            …
+        else:
+            …
+    return a, b
+```
+
+4. Combien de tours fait la boucle pour `dichotomie(0, 1, 0.001)` ? Quel encadrement obtient-on ?
+5. Combien de tours faudrait-il pour une précision de $10^{-6}$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Existence et unicité de $\alpha$
+
+::: methode
+Corollaire du théorème des valeurs intermédiaires : une fonction continue et strictement monotone sur $[a\,;b]$, avec $f(a)$ et $f(b)$ de signes contraires, s'annule une seule fois.
+:::
+
+::: etape Variations
+$f$ est dérivable sur $[0\,;1]$ et $f'(x) = e^x + 1 \gt 0$ : $f$ est continue et strictement croissante.
+:::
+
+::: etape Valeurs aux bornes
+$f(0) = 1 + 0 - 3 = -2 \lt 0$ et $f(1) = e - 2 \approx 0{,}72 \gt 0$.
+:::
+
+::: resultat
+L'équation $f(x) = 0$ admet une unique solution $\alpha$ dans $[0\,;1]$.
+:::
+
+## Question 2 : Trois tours à la main
+
+::: methode
+À chaque tour, on calcule le milieu $m$ et le signe de $f(m)$ ; $f(a) \lt 0$ tout au long de l'algorithme, donc on garde $[a\,;m]$ si $f(m) \ge 0$, et $[m\,;b]$ sinon.
+:::
+
+::: etape Tableau des tours
+| Tour | $m$ | $f(m)$ | Intervalle |
+|---|---|---|---|
+| 1 | $0{,}5$ | $\approx -0{,}85$ | $[0{,}5\,;1]$ |
+| 2 | $0{,}75$ | $\approx -0{,}13$ | $[0{,}75\,;1]$ |
+| 3 | $0{,}875$ | $\approx 0{,}27$ | $[0{,}75\,;0{,}875]$ |
+:::
+
+[IMAGE_2]
+
+::: resultat
+Après trois tours : $0{,}75 \lt \alpha \lt 0{,}875$.
+:::
+
+## Question 3 : Compléter la fonction
+
+::: methode
+On répète tant que l'amplitude $b - a$ dépasse $e$ ; si $f$ change de signe sur $[a\,;m]$, la solution y est : $b$ prend la valeur $m$.
+:::
+
+::: etape Fonction complète
+```python
+from math import exp
+
+def f(x):
+    return exp(x) + x - 3
+
+def dichotomie(a, b, e):
+    while b - a > e:
+        m = (a + b) / 2
+        if f(a) * f(m) <= 0:
+            b = m
+        else:
+            a = m
+    return a, b
+```
+:::
+
+::: resultat
+Les trous sont `b - a > e`, `b = m` et `a = m`.
+:::
+
+## Question 4 : Précision $0{,}001$
+
+::: methode
+Après $n$ tours, l'amplitude vaut $\dfrac{1}{2^n}$ ; on cherche le plus petit $n$ tel que $\dfrac{1}{2^n} \le 0{,}001$.
+:::
+
+::: etape Nombre de tours
+$2^9 = 512 \lt 1\,000$ et $2^{10} = 1\,024 \ge 1\,000$ : la boucle fait $10$ tours.
+:::
+
+::: etape Exécution
+```python
+r = dichotomie(0, 1, 0.001)
+print(r)
+```
+
+```console
+(0.7919921875, 0.79296875)
+```
+:::
+
+::: resultat
+$10$ tours ; $0{,}7919 \lt \alpha \lt 0{,}7930$.
+:::
+
+## Question 5 : Précision $10^{-6}$
+
+::: etape Nombre de tours
+On cherche le plus petit $n$ tel que $2^n \ge 10^6$ : $2^{19} = 524\,288$ et $2^{20} = 1\,048\,576$. Par le calcul : $n \ge \dfrac{6\ln(10)}{\ln(2)} \approx 19{,}9$.
+:::
+
+::: resultat
+Il faut $20$ tours.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $f'(x) = e^x + 1 \gt 0$, $f(0) = -2 \lt 0$, $f(1) = e - 2 \gt 0$ : solution unique par le corollaire du TVI.
+2. $[0{,}5\,;1]$, puis $[0{,}75\,;1]$, puis $[0{,}75\,;0{,}875]$.
+3. `while b - a > e:`, `b = m`, `a = m`.
+4. $10$ tours ; $0{,}7919 \lt \alpha \lt 0{,}7930$.
+5. $20$ tours.
+
+===
+
+=== Entraînement - Simuler un schéma de Bernoulli et une loi binomiale
+Id: 834
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Une joueuse de basket réussit chaque lancer franc avec la probabilité $0{,}7$, indépendamment des autres. Elle tire une série de $10$ lancers francs ; $X$ est le nombre de lancers réussis. Le programme suivant simule $1\,000$ séries ; `seed(2026)` fixe la graine du générateur, pour que le programme donne toujours le même résultat.
+
+```python
+from random import random, seed
+
+def lancer():
+    if random() < 0.7:
+        return 1
+    return 0
+
+def serie():
+    x = 0
+    for k in range(10):
+        x = x + lancer()
+    return x
+
+seed(2026)
+E = [0] * 11
+for i in range(1000):
+    x = serie()
+    E[x] = E[x] + 1
+```
+
+Les fréquences obtenues sont représentées ci-dessous.
+
+[IMAGE_1]
+
+1. Quelle est la loi de $X$ ?
+2. Que représentent `lancer()`, `serie()` et `E[k]` ?
+3. Écrire les instructions qui affichent la fréquence des séries d'au moins $8$ lancers réussis.
+4. Calculer $P(X \ge 8)$ et comparer avec la fréquence obtenue.
+5. Calculer la moyenne des $1\,000$ valeurs simulées et la comparer à l'espérance de $X$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Loi de $X$
+
+::: methode
+On reconnaît un schéma de Bernoulli : des épreuves identiques et indépendantes à deux issues.
+:::
+
+::: etape Schéma de Bernoulli
+Chaque lancer est une épreuve de Bernoulli de succès « le lancer est réussi », de probabilité $p = 0{,}7$. Les $10$ lancers sont identiques et indépendants, et $X$ compte les succès.
+:::
+
+::: resultat
+$X$ suit la loi binomiale $\mathcal{B}(10\,;0{,}7)$.
+:::
+
+## Question 2 : Rôle des fonctions et de la liste
+
+::: etape Lecture du programme
+- `random() < 0.7` est vrai avec la probabilité $0{,}7$ : `lancer()` renvoie $1$ (réussi) avec la probabilité $0{,}7$ et $0$ sinon.
+- `serie()` additionne $10$ résultats de `lancer()` : c'est une valeur simulée de $X$.
+- `E` contient $11$ compteurs, d'indices $0$ à $10$ : `E[k]` est le nombre de séries, parmi les $1\,000$, où la joueuse a réussi exactement $k$ lancers.
+:::
+
+::: resultat
+`lancer()` simule une épreuve de Bernoulli, `serie()` une valeur de $X$, et `E[k]` est l'effectif de la valeur $k$.
+:::
+
+## Question 3 : Fréquence de $X \ge 8$
+
+::: methode
+Les séries d'au moins $8$ réussites sont celles où $X$ vaut $8$, $9$ ou $10$ : on additionne leurs effectifs.
+:::
+
+::: etape Instructions
+```python
+c = E[8] + E[9] + E[10]
+print(c, c / 1000)
+```
+
+```console
+412 0.412
+```
+:::
+
+::: resultat
+La fréquence observée des séries d'au moins $8$ réussites est $0{,}412$ ($412$ séries sur $1\,000$).
+:::
+
+## Question 4 : Probabilité $P(X \ge 8)$
+
+::: methode
+On additionne trois probabilités binomiales :
+$$
+\begin{aligned}
+P(X = k) &= \dbinom{10}{k} \times 0{,}7^k \times 0{,}3^{10-k} \\
+P(X \ge 8) &= P(X = 8) + P(X = 9) + P(X = 10)
+\end{aligned}
+$$
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+P(X = 8) &= 45 \times 0{,}7^8 \times 0{,}3^2 \approx 0{,}2335 \\
+P(X = 9) &= 10 \times 0{,}7^9 \times 0{,}3 \approx 0{,}1211 \\
+P(X = 10) &= 0{,}7^{10} \approx 0{,}0282
+\end{aligned}
+$$
+
+donc $P(X \ge 8) \approx 0{,}383$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+$P(X \ge 8) \approx 0{,}383$ : la fréquence observée, $0{,}412$, est du même ordre. L'écart d'environ $0{,}03$ vient de la fluctuation d'échantillonnage : une autre graine donnerait une autre fréquence, et la fréquence se rapproche de $0{,}383$ quand le nombre de séries augmente.
+:::
+
+## Question 5 : Moyenne et espérance
+
+::: methode
+Chaque valeur $k$ est obtenue `E[k]` fois : la moyenne est la somme des produits $k \times E[k]$, divisée par $1\,000$.
+:::
+
+::: etape Calcul de la moyenne
+```python
+s = 0
+for k in range(11):
+    s = s + k * E[k]
+print(s / 1000)
+```
+
+```console
+7.081
+```
+:::
+
+::: resultat
+La moyenne observée, $7{,}081$, est proche de l'espérance $E(X) = np = 10 \times 0{,}7 = 7$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $X$ suit la loi binomiale $\mathcal{B}(10\,;0{,}7)$.
+2. `lancer()` : une épreuve de Bernoulli ; `serie()` : une valeur de $X$ ; `E[k]` : nombre de séries avec $k$ réussites.
+3. `c = E[8] + E[9] + E[10]` puis `print(c / 1000)` : fréquence $0{,}412$.
+4. $P(X \ge 8) \approx 0{,}383$, proche de la fréquence observée.
+5. Moyenne $7{,}081$, proche de $E(X) = 7$.
+
+===
+
+=== Entraînement - Méthode de Newton
+Id: 5540
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On cherche une valeur approchée de $\sqrt{2}$, solution positive de l'équation $x^2 - 2 = 0$. On note $f(x) = x^2 - 2$ et $\mathcal{C}$ sa courbe.
+
+[IMAGE_1]
+
+1. Soit $a \gt 0$. Déterminer l'équation de la tangente à $\mathcal{C}$ au point d'abscisse $a$, puis l'abscisse du point où elle coupe l'axe des abscisses. Montrer que cette abscisse vaut $\dfrac{1}{2}\left(a + \dfrac{2}{a}\right)$.
+2. On pose $x_0 = 2$ et $x_{n+1} = \dfrac{1}{2}\left(x_n + \dfrac{2}{x_n}\right)$. Calculer $x_1$ et $x_2$ sous forme de fractions.
+3. Écrire un programme qui affiche $x_1$, $x_2$, …, $x_5$. Combien de tours faut-il pour obtenir les quinze premières décimales de $\sqrt{2} \approx 1{,}414\,213\,562\,373\,095$ ?
+4. La méthode de dichotomie sur $[1\,;2]$ divise l'amplitude par $2$ à chaque tour. Combien de tours lui faut-il pour une amplitude inférieure ou égale à $10^{-9}$ ? Comparer.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Tangente et intersection avec l'axe
+
+::: methode
+La tangente au point d'abscisse $a$ a pour équation $y = f'(a)(x - a) + f(a)$ ; elle coupe l'axe des abscisses quand $y = 0$.
+:::
+
+::: etape Équation de la tangente
+$f'(x) = 2x$, donc $f'(a) = 2a$ et $f(a) = a^2 - 2$ : la tangente a pour équation $y = 2a(x - a) + a^2 - 2$.
+:::
+
+::: etape Intersection avec l'axe des abscisses
+$$
+\begin{aligned}
+2a(x - a) + a^2 - 2 = 0 &\iff x - a = \frac{2 - a^2}{2a} \\
+&\iff x = a + \frac{2 - a^2}{2a}
+\end{aligned}
+$$
+
+Or
+$$
+\begin{aligned}
+a + \frac{2 - a^2}{2a} &= \frac{2a^2 + 2 - a^2}{2a} \\
+&= \frac{a^2 + 2}{2a} = \frac{1}{2}\left(a + \frac{2}{a}\right)
+\end{aligned}
+$$
+:::
+
+::: resultat
+La tangente coupe l'axe des abscisses en $x = \dfrac{1}{2}\left(a + \dfrac{2}{a}\right)$ : c'est la formule de Newton $x - \dfrac{f(x)}{f'(x)}$ appliquée à $f$.
+:::
+
+## Question 2 : Les premiers termes
+
+::: etape Calculs
+$$
+\begin{aligned}
+x_1 &= \frac{1}{2}\left(2 + \frac{2}{2}\right) = \frac{3}{2} \\
+x_2 &= \frac{1}{2}\left(\frac{3}{2} + \frac{4}{3}\right) = \frac{17}{12}
+\end{aligned}
+$$
+:::
+
+[IMAGE_2]
+
+::: resultat
+$x_1 = \dfrac{3}{2} = 1{,}5$ et $x_2 = \dfrac{17}{12} \approx 1{,}4167$.
+:::
+
+## Question 3 : Programme
+
+::: methode
+Une boucle `for` de $5$ tours applique la formule ; on affiche `x` à chaque tour.
+:::
+
+::: etape Programme et affichage
+```python
+x = 2
+for k in range(5):
+    x = (x + 2 / x) / 2
+    print(k + 1, x)
+```
+
+```console
+1 1.5
+2 1.4166666666666665
+3 1.4142156862745097
+4 1.4142135623746899
+5 1.414213562373095
+```
+:::
+
+::: resultat
+Au $5^{\text{e}}$ tour, on lit `1.414213562373095` : les quinze décimales $1{,}414\,213\,562\,373\,095$ sont exactes. Il faut $5$ tours.
+:::
+
+## Question 4 : Comparaison avec la dichotomie
+
+::: methode
+Après $n$ tours, l'amplitude est $\dfrac{1}{2^n}$ ; on cherche le plus petit $n$ tel que $2^n \ge 10^9$.
+:::
+
+::: etape Nombre de tours
+$$n \ge \frac{9\ln(10)}{\ln(2)} \approx 29{,}9$$
+
+$2^{29} = 536\,870\,912 \lt 10^9$ et $2^{30} = 1\,073\,741\,824 \ge 10^9$.
+:::
+
+::: resultat
+La dichotomie fait $30$ tours pour $9$ décimales ; la méthode de Newton en donne $15$ en $5$ tours : elle est beaucoup plus rapide.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Tangente : $y = 2a(x - a) + a^2 - 2$ ; elle coupe l'axe en $x = \dfrac{1}{2}\left(a + \dfrac{2}{a}\right)$.
+2. $x_1 = \dfrac{3}{2}$ et $x_2 = \dfrac{17}{12}$.
+3. Boucle `for` avec `x = (x + 2 / x) / 2` ; $5$ tours suffisent.
+4. $30$ tours pour la dichotomie : Newton est beaucoup plus rapide.
+
+===
+
+=== Entraînement - Méthode des rectangles
+Id: 5541
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On veut calculer une valeur approchée de $I = \displaystyle\int_0^1 x^2\,\mathrm{d}x$. On partage $[0\,;1]$ en $n$ intervalles de largeur $h = \dfrac{1}{n}$. La figure montre les rectangles « à gauche » pour $n = 4$.
+
+[IMAGE_1]
+
+```python
+def f(x):
+    return x**2
+
+def gauche(n):
+    h = 1 / n
+    s = 0
+    for k in range(n):
+        s = s + h * f(k * h)
+    return s
+```
+
+1. Calculer à la main la somme $s_4$ des aires des $4$ rectangles à gauche, puis la somme $S_4$ des aires des $4$ rectangles « à droite » (de hauteur $f(x_{k+1})$).
+2. Écrire la fonction `droite(n)`, puis afficher les deux sommes pour $n = 10$ et $n = 100$.
+3. Justifier que $s_n \le I \le S_n$, puis calculer $I$ à l'aide d'une primitive.
+4. Montrer que $S_n - s_n = \dfrac{1}{n}$. Quelle valeur de $n$ faut-il choisir pour un encadrement d'amplitude $10^{-3}$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calcul à la main pour $n = 4$
+
+::: methode
+Avec $h = 0{,}25$, les abscisses sont $0$ ; $0{,}25$ ; $0{,}5$ ; $0{,}75$ ; $1$. À gauche, on prend les hauteurs en $0$, …, $0{,}75$ ; à droite, en $0{,}25$, …, $1$.
+:::
+
+::: etape Rectangles à gauche
+$$
+\begin{aligned}
+s_4 &= 0{,}25 \times (0 + 0{,}0625 + 0{,}25 + 0{,}5625) \\
+&= 0{,}25 \times 0{,}875 = 0{,}218\,75
+\end{aligned}
+$$
+:::
+
+::: etape Rectangles à droite
+$$
+\begin{aligned}
+S_4 &= 0{,}25 \times (0{,}0625 + 0{,}25 + 0{,}5625 + 1) \\
+&= 0{,}25 \times 1{,}875 = 0{,}468\,75
+\end{aligned}
+$$
+:::
+
+[IMAGE_2]
+
+::: resultat
+$s_4 = 0{,}218\,75$ et $S_4 = 0{,}468\,75$.
+:::
+
+## Question 2 : La fonction `droite` et l'exécution
+
+::: methode
+À droite, les hauteurs sont $f(h)$, $f(2h)$, …, $f(nh)$ : `k` va de $1$ à $n$, d'où `range(1, n + 1)`.
+:::
+
+::: etape Programme
+```python
+def droite(n):
+    h = 1 / n
+    S = 0
+    for k in range(1, n + 1):
+        S = S + h * f(k * h)
+    return S
+
+for n in [10, 100]:
+    s = round(gauche(n), 5)
+    S = round(droite(n), 5)
+    print(n, s, S)
+```
+
+```console
+10 0.285 0.385
+100 0.32835 0.33835
+```
+:::
+
+::: resultat
+$s_{10} = 0{,}285$ et $S_{10} = 0{,}385$ ; $s_{100} = 0{,}328\,35$ et $S_{100} = 0{,}338\,35$.
+:::
+
+## Question 3 : Encadrement et valeur exacte
+
+::: methode
+$f$ est croissante sur $[0\,;1]$ : sur chaque petit intervalle, le rectangle à gauche est sous la courbe et le rectangle à droite la contient.
+:::
+
+::: etape Encadrement
+Sur $[x_k\,;x_{k+1}]$, $f(x_k) \le f(x) \le f(x_{k+1})$. En intégrant puis en additionnant, $s_n \le I \le S_n$.
+:::
+
+::: etape Calcul exact
+Une primitive de $x \mapsto x^2$ est $x \mapsto \dfrac{x^3}{3}$ :
+$$I = \left[\frac{x^3}{3}\right]_0^1 = \frac{1}{3} - 0 = \frac{1}{3}$$
+:::
+
+::: resultat
+$I = \dfrac{1}{3} \approx 0{,}3333$, qui est bien compris entre $s_{100}$ et $S_{100}$.
+:::
+
+## Question 4 : Amplitude de l'encadrement
+
+::: methode
+Dans la différence $S_n - s_n$, les termes communs se simplifient.
+:::
+
+::: etape Calcul de $S_n - s_n$
+$$
+\begin{aligned}
+S_n - s_n &= h\big(f(x_n) - f(x_0)\big) \\
+&= \frac{1}{n}\,\big(f(1) - f(0)\big) = \frac{1}{n}
+\end{aligned}
+$$
+:::
+
+::: etape Choix de $n$
+$\dfrac{1}{n} \le 10^{-3} \iff n \ge 1\,000$.
+:::
+
+::: resultat
+Avec $n = 1\,000$, l'encadrement a pour amplitude $10^{-3}$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $s_4 = 0{,}218\,75$ et $S_4 = 0{,}468\,75$.
+2. `range(1, n + 1)` ; $n = 10$ : $0{,}285$ et $0{,}385$ ; $n = 100$ : $0{,}328\,35$ et $0{,}338\,35$.
+3. $f$ croissante, donc $s_n \le I \le S_n$ ; $I = \dfrac{1}{3}$.
+4. $S_n - s_n = \dfrac{1}{n}$ ; il faut $n = 1\,000$.
+
+===
+
+=== Découverte - Seuils avec l'exponentielle et le logarithme
+Id: 5542
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Un café est servi à $80$ °C dans une pièce à $20$ °C. Sa température, en °C, au bout de $t$ minutes est $T(t) = 20 + 60\,e^{-0{,}1t}$.
+
+[IMAGE_1]
+
+1. Étudier le sens de variation de $T$ sur $[0\,;+\infty[$ et sa limite en $+\infty$.
+2. Qu'affiche le programme ci-dessous ? Interpréter.
+
+```python
+from math import exp
+
+def T(t):
+    return 20 + 60 * exp(-0.1*t)
+
+t = 0
+while T(t) >= 30:
+    t = t + 1
+print(t)
+```
+
+3. Retrouver ce résultat en résolvant l'inéquation $T(t) \lt 30$.
+4. Que se passerait-il si l'on remplaçait `30` par `20` dans la condition du `while` ?
+5. Écrire un programme qui détermine le plus petit entier $n \ge 1$ tel que $\ln(n) \gt 5$, et vérifier le résultat par le calcul.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Variations et limite
+
+::: methode
+On dérive $e^{u(t)}$ en $u'(t)\,e^{u(t)}$.
+:::
+
+::: etape Dérivée
+$$
+\begin{aligned}
+T'(t) &= 60 \times (-0{,}1)\,e^{-0{,}1t} \\
+&= -6\,e^{-0{,}1t}
+\end{aligned}
+$$
+
+Une exponentielle est strictement positive, donc $T'(t) \lt 0$ : $T$ est strictement décroissante.
+:::
+
+::: etape Limite
+$\lim\limits_{t \to +\infty} -0{,}1t = -\infty$ et $\lim\limits_{X \to -\infty} e^X = 0$, donc $\lim\limits_{t \to +\infty} T(t) = 20$.
+:::
+
+::: resultat
+$T$ est strictement décroissante sur $[0\,;+\infty[$ et tend vers $20$ : le café refroidit jusqu'à la température de la pièce.
+:::
+
+## Question 2 : Exécution du programme
+
+::: methode
+La boucle avance minute par minute **tant que** $T(t) \ge 30$ ; elle s'arrête au premier entier $t$ tel que $T(t) \lt 30$.
+:::
+
+::: etape Affichage
+```console
+18
+```
+
+En effet $T(17) \approx 30{,}96 \ge 30$ et $T(18) \approx 29{,}92 \lt 30$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+Le programme affiche $18$ : la température du café passe sous $30$ °C au bout de $18$ minutes.
+:::
+
+## Question 3 : Par le calcul
+
+::: methode
+On isole l'exponentielle, puis on applique la fonction $\ln$, strictement croissante.
+:::
+
+::: etape Résolution
+$$
+\begin{aligned}
+T(t) \lt 30 &\iff 60\,e^{-0{,}1t} \lt 10 \\
+&\iff e^{-0{,}1t} \lt \frac{1}{6} \\
+&\iff -0{,}1t \lt -\ln(6) \\
+&\iff t \gt 10\ln(6)
+\end{aligned}
+$$
+
+et $10\ln(6) \approx 17{,}92$.
+:::
+
+::: attention
+En divisant par $-0{,}1 \lt 0$, on change le sens de l'inégalité.
+:::
+
+::: resultat
+$T(t) \lt 30 \iff t \gt 10\ln(6) \approx 17{,}92$ : le premier nombre entier de minutes est $18$.
+:::
+
+## Question 4 : Seuil $20$
+
+::: etape La boucle ne s'arrête pas
+Pour tout $t$, $60\,e^{-0{,}1t} \gt 0$, donc $T(t) \gt 20$ : la condition `T(t) >= 20` reste vraie et la boucle est infinie (en pratique, l'ordinateur finit par arrondir $e^{-0{,}1t}$ à $0$ et la condition reste vraie).
+:::
+
+::: resultat
+La boucle ne s'arrêterait jamais : la température tend vers $20$ °C sans jamais l'atteindre.
+:::
+
+## Question 5 : Seuil avec le logarithme
+
+::: methode
+On teste $n = 1$, $2$, $3$, … tant que $\ln(n) \le 5$.
+:::
+
+::: etape Programme
+```python
+from math import log
+
+n = 1
+while log(n) <= 5:
+    n = n + 1
+print(n)
+```
+
+```console
+149
+```
+
+En Python, `log` est le logarithme népérien $\ln$.
+:::
+
+::: etape Vérification
+$\ln(n) \gt 5 \iff n \gt e^5$, car $\exp$ est strictement croissante, et $e^5 \approx 148{,}41$.
+:::
+
+::: resultat
+Le plus petit entier est $n = 149$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $T'(t) = -6\,e^{-0{,}1t} \lt 0$ : $T$ décroît et tend vers $20$.
+2. Le programme affiche $18$ : le café passe sous $30$ °C au bout de $18$ minutes.
+3. $T(t) \lt 30 \iff t \gt 10\ln(6) \approx 17{,}92$.
+4. $T(t) \gt 20$ pour tout $t$ : la boucle serait infinie.
+5. $n = 149$, car $e^5 \approx 148{,}41$.
+
+===
+
+=== Problème - Surréservation et loi binomiale
+Id: 5543
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Un avion compte $200$ places. Chaque passager ayant réservé se présente à l'embarquement avec la probabilité $0{,}92$, indépendamment des autres. La compagnie vend $n$ billets ($n \ge 200$) ; on note $X_n$ le nombre de passagers qui se présentent. Il y a **surréservation** quand $X_n \gt 200$.
+
+[IMAGE_1]
+
+1. Quelle est la loi de $X_n$ ? Calculer l'espérance de $X_{210}$.
+2. La fonction `pb(n, k)` renvoie $P(X_n = k)$. Compléter la fonction `p_sur(n)`, qui renvoie $P(X_n \gt 200)$.
+
+```python
+from math import comb
+
+def pb(n, k):
+    c = comb(n, k)
+    q = 0.08**(n - k)
+    return c * 0.92**k * q
+```
+
+```python
+def p_sur(n):
+    s = 0
+    for k in range(…, …):
+        s = s + pb(n, k)
+    return s
+```
+
+3. La compagnie vend $210$ billets. Calculer la probabilité de surréservation.
+4. La compagnie accepte un risque de surréservation d'au plus $5\,\%$. Écrire un programme qui détermine le nombre maximal de billets qu'elle peut vendre.
+5. Pour $210$ billets vendus, déterminer le plus petit entier $k$ tel que $P(X_{210} \gt k) \le 0{,}05$. Interpréter.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Loi et espérance
+
+::: methode
+On reconnaît $n$ épreuves de Bernoulli identiques et indépendantes, de succès « le passager se présente ».
+:::
+
+::: etape Loi de $X_n$
+$X_n$ compte les succès parmi $n$ épreuves indépendantes de probabilité de succès $0{,}92$ : $X_n$ suit la loi $\mathcal{B}(n\,;0{,}92)$.
+:::
+
+::: etape Espérance
+$E(X_{210}) = 210 \times 0{,}92 = 193{,}2$.
+:::
+
+::: resultat
+$X_n \sim \mathcal{B}(n\,;0{,}92)$ et $E(X_{210}) = 193{,}2$ passagers en moyenne.
+:::
+
+## Question 2 : La fonction `p_sur`
+
+::: methode
+On additionne les probabilités $P(X_n = k)$ pour $k$ allant de $201$ à $n$ : la boucle utilise donc `range(201, n + 1)`.
+:::
+
+::: etape Fonction complète
+```python
+def p_sur(n):
+    s = 0
+    for k in range(201, n+1):
+        s = s + pb(n, k)
+    return s
+```
+:::
+
+::: resultat
+La boucle s'écrit `for k in range(201, n + 1):`.
+:::
+
+## Question 3 : Risque pour $210$ billets
+
+::: etape Exécution
+```python
+print(round(p_sur(210), 4))
+```
+
+```console
+0.0244
+```
+:::
+
+[IMAGE_2]
+
+::: resultat
+$P(X_{210} \gt 200) \approx 0{,}024$ : le risque de surréservation est d'environ $2{,}4\,\%$.
+:::
+
+## Question 4 : Nombre maximal de billets
+
+::: methode
+On augmente $n$ à partir de $200$ **tant que** le risque reste inférieur ou égal à $0{,}05$ ; à la sortie, `n` est le premier nombre qui dépasse le risque, et la réponse est `n - 1`.
+:::
+
+::: etape Programme
+```python
+n = 200
+while p_sur(n) <= 0.05:
+    n = n + 1
+print(n - 1)
+print(round(p_sur(n - 1), 4))
+print(round(p_sur(n), 4))
+```
+
+```console
+211
+0.0453
+0.0774
+```
+:::
+
+::: resultat
+La compagnie peut vendre au plus $211$ billets : $P(X_{211} \gt 200) \approx 0{,}045 \le 0{,}05$, alors que $P(X_{212} \gt 200) \approx 0{,}077$.
+:::
+
+## Question 5 : Plus petit $k$ tel que $P(X_{210} \gt k) \le 0{,}05$
+
+::: methode
+$P(X \gt k) = 1 - P(X \le k)$ : on cumule $P(X = 0)$, …, $P(X = k)$ tant que $1 - P(X \le k) \gt 0{,}05$.
+:::
+
+::: etape Programme
+```python
+k = 0
+c = pb(210, 0)
+while 1 - c > 0.05:
+    k = k + 1
+    c = c + pb(210, k)
+print(k, round(1 - c, 4))
+```
+
+```console
+199 0.0471
+```
+:::
+
+::: resultat
+$k = 199$ : avec $210$ billets vendus, il y a plus de $199$ passagers dans moins de $5\,\%$ des cas. Un avion de $199$ places suffirait avec un risque de surréservation d'au plus $5\,\%$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $X_n \sim \mathcal{B}(n\,;0{,}92)$ ; $E(X_{210}) = 193{,}2$.
+2. `for k in range(201, n + 1):`.
+3. $P(X_{210} \gt 200) \approx 0{,}024$.
+4. $211$ billets au plus ($0{,}045 \le 0{,}05 \lt 0{,}077$).
+5. $k = 199$.
+
+===
+
+=== Entraînement - Simuler des échantillons et leurs moyennes
+Id: 5544
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On lance un dé équilibré ; $X$ est le numéro obtenu. Son espérance est $\mu = 3{,}5$ et sa variance $V(X) = \dfrac{35}{12}$. Le programme suivant simule $1\,000$ échantillons de taille $n = 100$ et range leurs moyennes dans la liste `M`.
+
+```python
+from random import randint, seed
+
+def moyenne(n):
+    s = 0
+    for i in range(n):
+        s = s + randint(1, 6)
+    return s / n
+
+seed(2026)
+M = []
+for j in range(1000):
+    M.append(moyenne(100))
+```
+
+[IMAGE_1]
+
+1. Calculer l'écart type $\sigma$ de $X$, puis $\dfrac{\sigma}{\sqrt{n}}$ pour $n = 100$.
+2. Écrire les instructions qui calculent la moyenne $m$ des $1\,000$ moyennes, puis leur écart type $s$. Comparer $s$ à $\dfrac{\sigma}{\sqrt{n}}$.
+3. Calculer la proportion des échantillons dont la moyenne est dans l'intervalle $\left[\mu - \dfrac{2\sigma}{\sqrt{n}}\,;\mu + \dfrac{2\sigma}{\sqrt{n}}\right]$.
+4. À l'aide de l'inégalité de Bienaymé-Tchebychev, minorer la probabilité qu'une moyenne $M_n$ soit dans cet intervalle. Comparer avec la question 3.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Écart type
+
+::: etape Calcul
+$$
+\begin{aligned}
+\sigma &= \sqrt{\frac{35}{12}} \approx 1{,}7078 \\
+\frac{\sigma}{\sqrt{100}} &= \frac{\sigma}{10} \approx 0{,}1708
+\end{aligned}
+$$
+:::
+
+::: resultat
+$\sigma \approx 1{,}708$ et $\dfrac{\sigma}{\sqrt{100}} \approx 0{,}171$.
+:::
+
+## Question 2 : Moyenne et écart type des moyennes
+
+::: methode
+On parcourt la liste `M` avec deux accumulateurs : l'un pour la moyenne, l'autre pour la somme des carrés des écarts à la moyenne.
+:::
+
+::: etape Programme
+```python
+from math import sqrt
+
+m = sum(M) / len(M)
+v = 0
+for x in M:
+    v = v + (x - m)**2
+s = sqrt(v / len(M))
+print(round(m, 3))
+print(round(s, 3))
+```
+
+```console
+3.491
+0.175
+```
+:::
+
+::: resultat
+$m \approx 3{,}491$ est très proche de $\mu = 3{,}5$, et $s \approx 0{,}175$ est proche de $\dfrac{\sigma}{\sqrt{n}} \approx 0{,}171$ : l'écart type d'une moyenne d'échantillon est $\dfrac{\sigma}{\sqrt{n}}$.
+:::
+
+## Question 3 : Proportion dans l'intervalle
+
+::: methode
+Avec $\dfrac{2\sigma}{\sqrt{n}} \approx 0{,}342$, on compte les moyennes $x$ telles que $|x - 3{,}5| \le 0{,}342$, avec la fonction `abs` (valeur absolue).
+:::
+
+::: etape Programme
+```python
+d = 2 * sqrt(35 / 12) / 10
+c = 0
+for x in M:
+    if abs(x - 3.5) <= d:
+        c = c + 1
+print(c / len(M))
+```
+
+```console
+0.954
+```
+:::
+
+[IMAGE_2]
+
+::: resultat
+$95{,}4\,\%$ des moyennes simulées sont dans l'intervalle $[3{,}158\,;3{,}842]$.
+:::
+
+## Question 4 : Inégalité de Bienaymé-Tchebychev
+
+::: methode
+Pour la moyenne $M_n$ d'un échantillon de taille $n$ : $P\big(|M_n - \mu| \ge \delta\big) \le \dfrac{V(X)}{n\,\delta^2}$.
+:::
+
+::: etape Application avec $\delta = \dfrac{2\sigma}{\sqrt{n}}$
+$$
+\begin{aligned}
+\frac{V(X)}{n\,\delta^2} &= \frac{\sigma^2}{n \times \frac{4\sigma^2}{n}} = \frac{1}{4}
+\end{aligned}
+$$
+
+donc $P\big(|M_n - \mu| \ge \delta\big) \le 0{,}25$ et $P\big(|M_n - \mu| \lt \delta\big) \ge 0{,}75$.
+:::
+
+::: resultat
+La probabilité est au moins $0{,}75$ ; la proportion observée, $0{,}954$, respecte cette minoration, qui est loin d'être précise.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\sigma \approx 1{,}708$ et $\dfrac{\sigma}{\sqrt{100}} \approx 0{,}171$.
+2. $m \approx 3{,}491$ et $s \approx 0{,}175$, proche de $\dfrac{\sigma}{\sqrt{n}}$.
+3. Proportion observée : $0{,}954$.
+4. Minoration par $0{,}75$, bien respectée.
+
+===
+
+=== Entraînement - Triangle de Pascal et parties d'un ensemble
+Id: 5545
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Le triangle de Pascal donne les coefficients binomiaux $\dbinom{n}{k}$ : la ligne $n$ contient $\dbinom{n}{0}$, $\dbinom{n}{1}$, …, $\dbinom{n}{n}$.
+
+[IMAGE_1]
+
+1. Compléter à la main la ligne $6$, à l'aide de la relation de Pascal.
+2. Compléter la fonction `suivante`, qui reçoit la liste `L` d'une ligne et renvoie la ligne suivante.
+
+```python
+def suivante(L):
+    M = [1]
+    for k in range(…):
+        M.append(…)
+    M.append(1)
+    return M
+```
+
+3. Écrire un programme qui affiche la ligne $7$ et la somme de ses éléments. Quelle conjecture peut-on faire sur la somme des éléments de la ligne $n$ ?
+4. Le programme ci-dessous génère les parties à $3$ éléments de $E = \{1, 2, 3, 4, 5\}$. Combien de parties affiche-t-il ? Quel coefficient du triangle retrouve-t-on ?
+
+```python
+E = [1, 2, 3, 4, 5]
+P = []
+for i in range(5):
+    for j in range(i + 1, 5):
+        for k in range(j + 1, 5):
+            p = [E[i], E[j], E[k]]
+            P.append(p)
+print(len(P))
+```
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : La ligne $6$
+
+::: methode
+La ligne commence et finit par $1$ ; chaque autre nombre est la somme des deux nombres voisins de la ligne $5$ : $\dbinom{6}{k} = \dbinom{5}{k-1} + \dbinom{5}{k}$.
+:::
+
+::: etape Calculs
+À partir de la ligne $5$ : $1$, $5$, $10$, $10$, $5$, $1$.
+- $1 + 5 = 6$ ; $5 + 10 = 15$ ; $10 + 10 = 20$ ; $10 + 5 = 15$ ; $5 + 1 = 6$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+Ligne $6$ : $1$, $6$, $15$, $20$, $15$, $6$, $1$.
+:::
+
+## Question 2 : La fonction `suivante`
+
+::: methode
+Si `L` a $n + 1$ éléments, il y a $n$ paires de voisins `L[k]`, `L[k + 1]`, pour `k` de $0$ à $n - 1$ : `range(len(L) - 1)`.
+:::
+
+::: etape Fonction complète
+```python
+def suivante(L):
+    M = [1]
+    for k in range(len(L)-1):
+        v = L[k] + L[k+1]
+        M.append(v)
+    M.append(1)
+    return M
+```
+:::
+
+::: attention
+Avec `range(len(L))`, la dernière valeur de `k` serait `len(L) - 1` et `L[k + 1]` provoquerait une erreur `IndexError`.
+:::
+
+::: resultat
+Les trous sont `len(L) - 1` et `L[k] + L[k + 1]` (calculé ici dans la variable `v`).
+:::
+
+## Question 3 : Ligne $7$ et somme
+
+::: etape Programme
+```python
+L = [1]
+for n in range(7):
+    L = suivante(L)
+print(L)
+print(sum(L))
+```
+
+```console
+[1, 7, 21, 35, 35, 21, 7, 1]
+128
+```
+:::
+
+::: etape Conjecture
+Les sommes des lignes $0$ à $7$ valent $1$, $2$, $4$, $8$, $16$, $32$, $64$, $128$ : on conjecture que la somme de la ligne $n$ vaut $2^n$. C'est le nombre de parties d'un ensemble à $n$ éléments :
+$$\dbinom{n}{0} + \dbinom{n}{1} + \dots + \dbinom{n}{n} = 2^n$$
+:::
+
+::: resultat
+Ligne $7$ : $1$, $7$, $21$, $35$, $35$, $21$, $7$, $1$, de somme $128 = 2^7$.
+:::
+
+## Question 4 : Parties à $3$ éléments
+
+::: methode
+Les indices vérifient $i \lt j \lt k$ : chaque partie est écrite une seule fois, ses éléments dans l'ordre croissant.
+:::
+
+::: etape Exécution
+```python
+print(len(P))
+```
+
+```console
+10
+```
+
+Les dix parties sont $\{1, 2, 3\}$, $\{1, 2, 4\}$, $\{1, 2, 5\}$, $\{1, 3, 4\}$, $\{1, 3, 5\}$, $\{1, 4, 5\}$, $\{2, 3, 4\}$, $\{2, 3, 5\}$, $\{2, 4, 5\}$, $\{3, 4, 5\}$.
+:::
+
+::: resultat
+Le programme affiche $10$ : on retrouve $\dbinom{5}{3} = 10$, quatrième nombre de la ligne $5$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Ligne $6$ : $1$, $6$, $15$, $20$, $15$, $6$, $1$.
+2. `range(len(L) - 1)` et `L[k] + L[k + 1]`.
+3. `[1, 7, 21, 35, 35, 21, 7, 1]`, de somme $128 = 2^7$ ; conjecture : la somme de la ligne $n$ vaut $2^n$.
+4. $10$ parties : $\dbinom{5}{3} = 10$.
+
+===
+
+=== Type examen - Suite récurrente, fonction et algorithme
+Id: 5546
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+On considère la fonction $f$ définie sur $[0\,;+\infty[$ par $f(x) = \dfrac{4x}{x + 1}$, et la suite $(u_n)$ définie par $u_0 = 0{,}5$ et $u_{n+1} = f(u_n)$.
+
+[IMAGE_1]
+
+**Partie A : étude de $f$**
+
+1. Montrer que $f$ est strictement croissante sur $[0\,;+\infty[$.
+2. Résoudre l'équation $f(x) = x$ sur $[0\,;+\infty[$.
+
+**Partie B : étude de la suite**
+
+3. Démontrer par récurrence que, pour tout entier naturel $n$, $0 \lt u_n \lt u_{n+1} \lt 3$.
+4. En déduire que $(u_n)$ converge, puis déterminer sa limite.
+5. On pose $v_n = \dfrac{1}{u_n} - \dfrac{1}{3}$. Montrer que $(v_n)$ est géométrique de raison $\dfrac{1}{4}$, puis que $u_n = \dfrac{3}{1 + 5 \times 4^{-n}}$.
+
+**Partie C : algorithme**
+
+6. Compléter la fonction suivante pour qu'elle renvoie le plus petit entier $n$ tel que $3 - u_n \lt e$.
+
+```python
+def f(x):
+    return 4 * x / (x + 1)
+
+def rang(e):
+    n = 0
+    u = 0.5
+    while …:
+        u = …
+        n = n + 1
+    return n
+```
+
+7. Déterminer `rang(0.0001)` à l'aide de la question 5. Pourquoi ne faut-il pas écrire `while u < 3:` pour chercher le premier terme égal à $3$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Partie A : étude de $f$
+
+## Question 1 : Sens de variation
+
+::: methode
+On dérive le quotient $\dfrac{u}{v}$ en $\dfrac{u'v - uv'}{v^2}$.
+:::
+
+::: etape Dérivée
+$$
+\begin{aligned}
+f'(x) &= \frac{4(x + 1) - 4x \times 1}{(x + 1)^2} \\
+&= \frac{4}{(x + 1)^2}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$f'(x) \gt 0$ sur $[0\,;+\infty[$ : $f$ est strictement croissante.
+:::
+
+## Question 2 : Équation $f(x) = x$
+
+::: etape Résolution
+$$
+\begin{aligned}
+f(x) = x &\iff 4x = x(x + 1) \\
+&\iff x(x + 1) - 4x = 0 \\
+&\iff x(x - 3) = 0
+\end{aligned}
+$$
+:::
+
+::: resultat
+Les solutions sont $0$ et $3$ : ce sont les abscisses des points d'intersection de la courbe de $f$ et de la droite d'équation $y = x$.
+:::
+
+## Partie B : étude de la suite
+
+## Question 3 : Démonstration par récurrence
+
+::: methode
+On note $P(n)$ : « $0 \lt u_n \lt u_{n+1} \lt 3$ ». Pour l'hérédité, on applique la fonction $f$, **strictement croissante**, aux inégalités.
+:::
+
+::: etape Initialisation
+$u_0 = 0{,}5$ et $u_1 = f(0{,}5) = \dfrac{2}{1{,}5} = \dfrac{4}{3}$ : on a $0 \lt 0{,}5 \lt \dfrac{4}{3} \lt 3$.
+:::
+
+::: etape Hérédité
+Si $0 \lt u_n \lt u_{n+1} \lt 3$, alors, $f$ étant strictement croissante :
+$$f(0) \lt f(u_n) \lt f(u_{n+1}) \lt f(3)$$
+soit $0 \lt u_{n+1} \lt u_{n+2} \lt 3$, car $f(0) = 0$ et $f(3) = 3$.
+:::
+
+::: resultat
+Pour tout entier naturel $n$, $0 \lt u_n \lt u_{n+1} \lt 3$.
+:::
+
+## Question 4 : Convergence et limite
+
+::: etape Convergence
+La suite est croissante et majorée par $3$ : elle converge vers un réel $\ell$, avec $0{,}5 \le \ell \le 3$.
+:::
+
+::: etape Limite
+$f$ est continue sur $[0\,;+\infty[$, donc $\ell = f(\ell)$. D'après la question 2, $\ell = 0$ ou $\ell = 3$ ; comme $\ell \ge 0{,}5$, $\ell = 3$.
+:::
+
+[IMAGE_2]
+
+La construction en escalier entre la courbe de $f$ et la droite d'équation $y = x$ montre les termes $u_0$, $u_1$, $u_2$, … qui augmentent vers l'abscisse $3$ du point d'intersection.
+
+::: resultat
+La suite $(u_n)$ converge vers $3$.
+:::
+
+## Question 5 : Forme explicite
+
+::: methode
+On calcule $\dfrac{1}{u_{n+1}}$, puis on exprime $v_{n+1}$ en fonction de $v_n$.
+:::
+
+::: etape Calcul de $v_{n+1}$
+$$\frac{1}{u_{n+1}} = \frac{u_n + 1}{4u_n} = \frac{1}{4} + \frac{1}{4u_n}$$
+
+$$
+\begin{aligned}
+v_{n+1} &= \frac{1}{4} + \frac{1}{4u_n} - \frac{1}{3} \\
+&= \frac{1}{4u_n} - \frac{1}{12} \\
+&= \frac{1}{4}\left(\frac{1}{u_n} - \frac{1}{3}\right) = \frac{1}{4}\,v_n
+\end{aligned}
+$$
+:::
+
+::: etape Expression de $u_n$
+$v_0 = 2 - \dfrac{1}{3} = \dfrac{5}{3}$, donc $v_n = \dfrac{5}{3} \times 4^{-n}$ et
+$$
+\begin{aligned}
+\frac{1}{u_n} &= \frac{1}{3} + \frac{5}{3} \times 4^{-n} \\
+&= \frac{1 + 5 \times 4^{-n}}{3}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$(v_n)$ est géométrique de raison $\dfrac{1}{4}$ et $u_n = \dfrac{3}{1 + 5 \times 4^{-n}}$.
+:::
+
+## Partie C : algorithme
+
+## Question 6 : Compléter la fonction
+
+::: methode
+On veut s'arrêter dès que $3 - u_n \lt e$ : on répète tant que $3 - u \ge e$.
+:::
+
+::: etape Fonction complète
+```python
+def f(x):
+    return 4 * x / (x + 1)
+
+def rang(e):
+    n = 0
+    u = 0.5
+    while 3 - u >= e:
+        u = f(u)
+        n = n + 1
+    return n
+
+print(rang(0.0001))
+```
+
+```console
+9
+```
+:::
+
+::: resultat
+Les trous sont `3 - u >= e` et `f(u)`.
+:::
+
+## Question 7 : Calcul de `rang(0.0001)`
+
+::: methode
+On exprime $3 - u_n$ à l'aide de la question 5, puis on résout l'inéquation avec le logarithme.
+:::
+
+::: etape Résolution
+$$3 - u_n = \frac{3 \times 5 \times 4^{-n}}{1 + 5 \times 4^{-n}} = \frac{15}{4^n + 5}$$
+
+$$
+\begin{aligned}
+\frac{15}{4^n + 5} \lt 10^{-4} &\iff 4^n + 5 \gt 150\,000 \\
+&\iff 4^n \gt 149\,995 \\
+&\iff n \gt \frac{\ln(149\,995)}{\ln(4)}
+\end{aligned}
+$$
+
+et $\dfrac{\ln(149\,995)}{\ln(4)} \approx 8{,}60$.
+:::
+
+::: etape La condition `u < 3`
+D'après la question 3, $u_n \lt 3$ pour tout $n$ : avec `while u < 3:`, la boucle ne s'arrêterait jamais. On compare donc l'écart $3 - u_n$ à une précision $e \gt 0$.
+:::
+
+::: resultat
+`rang(0.0001)` renvoie $9$ ; la condition `u < 3` donnerait une boucle infinie, car la suite n'atteint jamais sa limite.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $f'(x) = \dfrac{4}{(x + 1)^2} \gt 0$.
+2. $f(x) = x \iff x(x - 3) = 0$ : $x = 0$ ou $x = 3$.
+3. Initialisation : $0 \lt 0{,}5 \lt \frac{4}{3} \lt 3$ ; hérédité en appliquant $f$, strictement croissante, avec $f(0) = 0$ et $f(3) = 3$.
+4. Croissante et majorée par $3$ : converge vers $\ell = 3$.
+5. $v_{n+1} = \frac{1}{4}v_n$, $v_0 = \frac{5}{3}$ ; $u_n = \dfrac{3}{1 + 5 \times 4^{-n}}$.
+6. `while 3 - u >= e:` et `u = f(u)`.
+7. $3 - u_n = \dfrac{15}{4^n + 5}$ ; $n \gt \dfrac{\ln(149\,995)}{\ln(4)} \approx 8{,}60$ : `rang(0.0001)` renvoie $9$ ; `while u < 3:` serait une boucle infinie.
+
+===

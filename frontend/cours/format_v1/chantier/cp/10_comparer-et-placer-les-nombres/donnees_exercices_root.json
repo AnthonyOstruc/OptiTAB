@@ -1,0 +1,913 @@
+[
+  {
+    "titre": "Découverte - Lire une ligne graduée",
+    "enonce": "Les traits sont régulièrement espacés. Chaque espace vaut un.\n\n[IMAGE_1]",
+    "questions": [
+      {
+        "question": "Quel nombre manque 2 intervalles après 30 ?",
+        "methode": "Compter les espaces entre les traits.",
+        "etapes": [
+          "Chaque intervalle vaut 1. Depuis 30, je fais 2 pas : j’arrive à 32.",
+          "[IMAGE_2]"
+        ],
+        "resultat": "32",
+        "controle": {
+          "operation": "sum",
+          "entrees": [
+            30,
+            2
+          ],
+          "attendu": 32
+        }
+      },
+      {
+        "question": "Quel nombre manque 5 intervalles après 30 ?",
+        "methode": "Compter les espaces entre les traits.",
+        "etapes": [
+          "Chaque intervalle vaut 1. Depuis 30, je fais 5 pas : j’arrive à 35."
+        ],
+        "resultat": "35",
+        "controle": {
+          "operation": "sum",
+          "entrees": [
+            30,
+            5
+          ],
+          "attendu": 35
+        }
+      },
+      {
+        "question": "Quel nombre manque 8 intervalles après 30 ?",
+        "methode": "Compter les espaces entre les traits.",
+        "etapes": [
+          "Chaque intervalle vaut 1. Depuis 30, je fais 8 pas : j’arrive à 38."
+        ],
+        "resultat": "38",
+        "controle": {
+          "operation": "sum",
+          "entrees": [
+            30,
+            8
+          ],
+          "attendu": 38
+        }
+      },
+      {
+        "question": "Combien vaut un intervalle sur cette ligne ?",
+        "methode": "Lire deux graduations voisines.",
+        "etapes": [
+          "Les deux premiers traits portent 30 et 31. L’écart est 1."
+        ],
+        "resultat": "1.",
+        "controle": {
+          "operation": "difference",
+          "entrees": [
+            31,
+            30
+          ],
+          "attendu": 1
+        }
+      },
+      {
+        "question": "Combien d’intervalles séparent 30 et 40 ?",
+        "methode": "Compter les espaces, sans compter le point de départ.",
+        "etapes": [
+          "Je fais dix pas de 1 pour aller de 30 à 40."
+        ],
+        "resultat": "10 intervalles.",
+        "controle": {
+          "operation": "difference",
+          "entrees": [
+            40,
+            30
+          ],
+          "attendu": 10
+        }
+      }
+    ],
+    "verifications": [],
+    "figures": {
+      "1": {
+        "fichier": "ex1_enonce.png",
+        "alt": "Ligne de trente à quarante : trois graduations sans nombre."
+      },
+      "2": {
+        "fichier": "ex1_corrige.png",
+        "alt": "Corrigé : Ligne de trente à quarante : trois graduations sans nombre."
+      }
+    },
+    "id": "nouveau-1"
+  },
+  {
+    "titre": "Découverte - Comparer les nombres",
+    "enonce": "Compare les dizaines. Si elles sont égales, compare les unités.",
+    "questions": [
+      {
+        "question": "Complète avec <, > ou = : 28 … 31.",
+        "methode": "Comparer les deux nombres.",
+        "etapes": [
+          "Je compare 2 dizaines et 3 dizaines."
+        ],
+        "resultat": "$28 < 31$.",
+        "controle": {
+          "operation": "compare",
+          "entrees": [
+            28,
+            31
+          ],
+          "attendu": "<"
+        }
+      },
+      {
+        "question": "Complète avec <, > ou = : 46 … 43.",
+        "methode": "Comparer les deux nombres.",
+        "etapes": [
+          "Les dizaines sont égales. Je compare 6 et 3 unités."
+        ],
+        "resultat": "$46 > 43$.",
+        "controle": {
+          "operation": "compare",
+          "entrees": [
+            46,
+            43
+          ],
+          "attendu": ">"
+        }
+      },
+      {
+        "question": "Complète avec <, > ou = : 50 … 50.",
+        "methode": "Comparer les deux nombres.",
+        "etapes": [
+          "Les dizaines sont égales. Je compare 0 et 0 unités."
+        ],
+        "resultat": "$50 = 50$.",
+        "controle": {
+          "operation": "compare",
+          "entrees": [
+            50,
+            50
+          ],
+          "attendu": "="
+        }
+      },
+      {
+        "question": "Complète avec <, > ou = : 39 … 40.",
+        "methode": "Comparer les deux nombres.",
+        "etapes": [
+          "Je compare 3 dizaines et 4 dizaines."
+        ],
+        "resultat": "$39 < 40$.",
+        "controle": {
+          "operation": "compare",
+          "entrees": [
+            39,
+            40
+          ],
+          "attendu": "<"
+        }
+      },
+      {
+        "question": "Complète avec <, > ou = : 52 … 49.",
+        "methode": "Comparer les deux nombres.",
+        "etapes": [
+          "Je compare 5 dizaines et 4 dizaines."
+        ],
+        "resultat": "$52 > 49$.",
+        "controle": {
+          "operation": "compare",
+          "entrees": [
+            52,
+            49
+          ],
+          "attendu": ">"
+        }
+      }
+    ],
+    "verifications": [],
+    "figures": {},
+    "id": "nouveau-2"
+  },
+  {
+    "titre": "Découverte - Ranger des nombres",
+    "enonce": "Range du plus petit au plus grand.",
+    "questions": [
+      {
+        "question": "Range du plus petit au plus grand : 41 ; 14 ; 39 ; 50 ; 28.",
+        "methode": "Choisir le plus petit, puis recommencer.",
+        "etapes": [
+          "Je place d’abord 14. Puis je compare les nombres qui restent. Je les place dans le même sens."
+        ],
+        "resultat": "$14 < 28 < 39 < 41 < 50$.",
+        "controle": {
+          "operation": "sort",
+          "entrees": [
+            [
+              41,
+              14,
+              39,
+              50,
+              28
+            ],
+            false
+          ],
+          "attendu": [
+            14,
+            28,
+            39,
+            41,
+            50
+          ]
+        }
+      },
+      {
+        "question": "Range du plus petit au plus grand : 32 ; 23 ; 45 ; 54 ; 19.",
+        "methode": "Choisir le plus petit, puis recommencer.",
+        "etapes": [
+          "Je place d’abord 19. Puis je compare les nombres qui restent. Je les place dans le même sens."
+        ],
+        "resultat": "$19 < 23 < 32 < 45 < 54$.",
+        "controle": {
+          "operation": "sort",
+          "entrees": [
+            [
+              32,
+              23,
+              45,
+              54,
+              19
+            ],
+            false
+          ],
+          "attendu": [
+            19,
+            23,
+            32,
+            45,
+            54
+          ]
+        }
+      },
+      {
+        "question": "Range du plus petit au plus grand : 17 ; 48 ; 36 ; 29 ; 50.",
+        "methode": "Choisir le plus petit, puis recommencer.",
+        "etapes": [
+          "Je place d’abord 17. Puis je compare les nombres qui restent. Je les place dans le même sens."
+        ],
+        "resultat": "$17 < 29 < 36 < 48 < 50$.",
+        "controle": {
+          "operation": "sort",
+          "entrees": [
+            [
+              17,
+              48,
+              36,
+              29,
+              50
+            ],
+            false
+          ],
+          "attendu": [
+            17,
+            29,
+            36,
+            48,
+            50
+          ]
+        }
+      },
+      {
+        "question": "Range du plus petit au plus grand : 40 ; 9 ; 27 ; 33 ; 51.",
+        "methode": "Choisir le plus petit, puis recommencer.",
+        "etapes": [
+          "Je place d’abord 9. Puis je compare les nombres qui restent. Je les place dans le même sens."
+        ],
+        "resultat": "$9 < 27 < 33 < 40 < 51$.",
+        "controle": {
+          "operation": "sort",
+          "entrees": [
+            [
+              40,
+              9,
+              27,
+              33,
+              51
+            ],
+            false
+          ],
+          "attendu": [
+            9,
+            27,
+            33,
+            40,
+            51
+          ]
+        }
+      },
+      {
+        "question": "Range du plus petit au plus grand : 46 ; 24 ; 57 ; 38 ; 15.",
+        "methode": "Choisir le plus petit, puis recommencer.",
+        "etapes": [
+          "Je place d’abord 15. Puis je compare les nombres qui restent. Je les place dans le même sens."
+        ],
+        "resultat": "$15 < 24 < 38 < 46 < 57$.",
+        "controle": {
+          "operation": "sort",
+          "entrees": [
+            [
+              46,
+              24,
+              57,
+              38,
+              15
+            ],
+            false
+          ],
+          "attendu": [
+            15,
+            24,
+            38,
+            46,
+            57
+          ]
+        }
+      }
+    ],
+    "verifications": [],
+    "figures": {},
+    "id": "nouveau-3"
+  },
+  {
+    "titre": "Entraînement - Avant et après une dizaine",
+    "enonce": "Récite la suite autour du nombre demandé.",
+    "questions": [
+      {
+        "question": "Écris le nombre juste avant 40.",
+        "methode": "Reculer d’un nombre.",
+        "etapes": [
+          "Dans la suite, je lis : 39 ; 40 ; 41."
+        ],
+        "resultat": "39",
+        "controle": {
+          "operation": "shift",
+          "entrees": [
+            40,
+            -1
+          ],
+          "attendu": 39
+        }
+      },
+      {
+        "question": "Écris le nombre juste après 40.",
+        "methode": "Avancer d’un nombre.",
+        "etapes": [
+          "Dans la suite, je lis : 39 ; 40 ; 41."
+        ],
+        "resultat": "41",
+        "controle": {
+          "operation": "shift",
+          "entrees": [
+            40,
+            1
+          ],
+          "attendu": 41
+        }
+      },
+      {
+        "question": "Écris le nombre juste avant 30.",
+        "methode": "Reculer d’un nombre.",
+        "etapes": [
+          "Dans la suite, je lis : 29 ; 30 ; 31."
+        ],
+        "resultat": "29",
+        "controle": {
+          "operation": "shift",
+          "entrees": [
+            30,
+            -1
+          ],
+          "attendu": 29
+        }
+      },
+      {
+        "question": "Écris le nombre juste après 30.",
+        "methode": "Avancer d’un nombre.",
+        "etapes": [
+          "Dans la suite, je lis : 29 ; 30 ; 31."
+        ],
+        "resultat": "31",
+        "controle": {
+          "operation": "shift",
+          "entrees": [
+            30,
+            1
+          ],
+          "attendu": 31
+        }
+      },
+      {
+        "question": "Écris le nombre juste avant 50.",
+        "methode": "Reculer d’un nombre.",
+        "etapes": [
+          "Dans la suite, je lis : 49 ; 50 ; 51."
+        ],
+        "resultat": "49",
+        "controle": {
+          "operation": "shift",
+          "entrees": [
+            50,
+            -1
+          ],
+          "attendu": 49
+        }
+      }
+    ],
+    "verifications": [],
+    "figures": {},
+    "id": "nouveau-4"
+  },
+  {
+    "titre": "Entraînement - Entre deux nombres",
+    "enonce": "Le nombre choisi ne doit être égal à aucune des deux bornes.\n\n[IMAGE_1]",
+    "questions": [
+      {
+        "question": "Donne un nombre strictement entre 36 et 39.",
+        "methode": "Choisir un nombre après le premier et avant le second.",
+        "etapes": [
+          "Après 36, je trouve 37. Il est encore plus petit que 39.",
+          "[IMAGE_2]"
+        ],
+        "resultat": "Par exemple 37. 38 convient aussi.",
+        "controle": {
+          "operation": "between",
+          "entrees": [
+            36,
+            39
+          ],
+          "attendu": 37
+        }
+      },
+      {
+        "question": "Donne un nombre strictement entre 31 et 34.",
+        "methode": "Choisir un nombre après le premier et avant le second.",
+        "etapes": [
+          "Après 31, je trouve 32. Il est encore plus petit que 34."
+        ],
+        "resultat": "Par exemple 32. 33 convient aussi.",
+        "controle": {
+          "operation": "between",
+          "entrees": [
+            31,
+            34
+          ],
+          "attendu": 32
+        }
+      },
+      {
+        "question": "Donne un nombre strictement entre 42 et 45.",
+        "methode": "Choisir un nombre après le premier et avant le second.",
+        "etapes": [
+          "Après 42, je trouve 43. Il est encore plus petit que 45."
+        ],
+        "resultat": "Par exemple 43. 44 convient aussi.",
+        "controle": {
+          "operation": "between",
+          "entrees": [
+            42,
+            45
+          ],
+          "attendu": 43
+        }
+      },
+      {
+        "question": "Donne un nombre strictement entre 26 et 29.",
+        "methode": "Choisir un nombre après le premier et avant le second.",
+        "etapes": [
+          "Après 26, je trouve 27. Il est encore plus petit que 29."
+        ],
+        "resultat": "Par exemple 27. 28 convient aussi.",
+        "controle": {
+          "operation": "between",
+          "entrees": [
+            26,
+            29
+          ],
+          "attendu": 27
+        }
+      },
+      {
+        "question": "Donne un nombre strictement entre 51 et 54.",
+        "methode": "Choisir un nombre après le premier et avant le second.",
+        "etapes": [
+          "Après 51, je trouve 52. Il est encore plus petit que 54."
+        ],
+        "resultat": "Par exemple 52. 53 convient aussi.",
+        "controle": {
+          "operation": "between",
+          "entrees": [
+            51,
+            54
+          ],
+          "attendu": 52
+        }
+      }
+    ],
+    "verifications": [],
+    "figures": {
+      "1": {
+        "fichier": "ex5_enonce.png",
+        "alt": "Ligne graduée de trente-cinq à quarante ; corrigé avec trente-sept repéré."
+      },
+      "2": {
+        "fichier": "ex5_corrige.png",
+        "alt": "Corrigé : Ligne graduée de trente-cinq à quarante ; corrigé avec trente-sept repéré."
+      }
+    },
+    "id": "nouveau-5"
+  },
+  {
+    "titre": "Entraînement - Entre deux dizaines",
+    "enonce": "Cherche la dizaine juste avant et celle juste après.",
+    "questions": [
+      {
+        "question": "Encadre 47 entre deux dizaines entières.",
+        "methode": "Repérer la famille de la dizaine.",
+        "etapes": [
+          "47 est plus grand que 40 et plus petit que 50."
+        ],
+        "resultat": "$40 < 47 < 50$.",
+        "controle": {
+          "operation": "bound",
+          "entrees": [
+            47
+          ],
+          "attendu": [
+            40,
+            50
+          ]
+        }
+      },
+      {
+        "question": "Encadre 32 entre deux dizaines entières.",
+        "methode": "Repérer la famille de la dizaine.",
+        "etapes": [
+          "32 est plus grand que 30 et plus petit que 40."
+        ],
+        "resultat": "$30 < 32 < 40$.",
+        "controle": {
+          "operation": "bound",
+          "entrees": [
+            32
+          ],
+          "attendu": [
+            30,
+            40
+          ]
+        }
+      },
+      {
+        "question": "Encadre 26 entre deux dizaines entières.",
+        "methode": "Repérer la famille de la dizaine.",
+        "etapes": [
+          "26 est plus grand que 20 et plus petit que 30."
+        ],
+        "resultat": "$20 < 26 < 30$.",
+        "controle": {
+          "operation": "bound",
+          "entrees": [
+            26
+          ],
+          "attendu": [
+            20,
+            30
+          ]
+        }
+      },
+      {
+        "question": "Encadre 58 entre deux dizaines entières.",
+        "methode": "Repérer la famille de la dizaine.",
+        "etapes": [
+          "58 est plus grand que 50 et plus petit que 60."
+        ],
+        "resultat": "$50 < 58 < 60$.",
+        "controle": {
+          "operation": "bound",
+          "entrees": [
+            58
+          ],
+          "attendu": [
+            50,
+            60
+          ]
+        }
+      },
+      {
+        "question": "Encadre 19 entre deux dizaines entières.",
+        "methode": "Repérer la famille de la dizaine.",
+        "etapes": [
+          "19 est plus grand que 10 et plus petit que 20."
+        ],
+        "resultat": "$10 < 19 < 20$.",
+        "controle": {
+          "operation": "bound",
+          "entrees": [
+            19
+          ],
+          "attendu": [
+            10,
+            20
+          ]
+        }
+      }
+    ],
+    "verifications": [],
+    "figures": {},
+    "id": "nouveau-6"
+  },
+  {
+    "titre": "Problème - Comparer des collections de cartes",
+    "enonce": "Mina et Adam comptent leurs cartes.",
+    "questions": [
+      {
+        "question": "Mina a 38 cartes. Adam en a 35. Qui en a le plus ?",
+        "methode": "Comparer les dizaines puis les unités.",
+        "etapes": [
+          "38 est plus grand que 35."
+        ],
+        "resultat": "Mina en a le plus.",
+        "controle": {
+          "operation": "more_owner",
+          "entrees": [
+            38,
+            35
+          ],
+          "attendu": "Mina"
+        }
+      },
+      {
+        "question": "Mina a 42 cartes. Adam en a 39. Qui en a le plus ?",
+        "methode": "Comparer les dizaines puis les unités.",
+        "etapes": [
+          "42 est plus grand que 39."
+        ],
+        "resultat": "Mina en a le plus.",
+        "controle": {
+          "operation": "more_owner",
+          "entrees": [
+            42,
+            39
+          ],
+          "attendu": "Mina"
+        }
+      },
+      {
+        "question": "Mina a 26 cartes. Adam en a 29. Qui en a le plus ?",
+        "methode": "Comparer les dizaines puis les unités.",
+        "etapes": [
+          "29 est plus grand que 26."
+        ],
+        "resultat": "Adam en a le plus.",
+        "controle": {
+          "operation": "more_owner",
+          "entrees": [
+            26,
+            29
+          ],
+          "attendu": "Adam"
+        }
+      },
+      {
+        "question": "Mina a 51 cartes. Adam en a 48. Qui en a le plus ?",
+        "methode": "Comparer les dizaines puis les unités.",
+        "etapes": [
+          "51 est plus grand que 48."
+        ],
+        "resultat": "Mina en a le plus.",
+        "controle": {
+          "operation": "more_owner",
+          "entrees": [
+            51,
+            48
+          ],
+          "attendu": "Mina"
+        }
+      },
+      {
+        "question": "Mina a 34 cartes. Adam en a 37. Qui en a le plus ?",
+        "methode": "Comparer les dizaines puis les unités.",
+        "etapes": [
+          "37 est plus grand que 34."
+        ],
+        "resultat": "Adam en a le plus.",
+        "controle": {
+          "operation": "more_owner",
+          "entrees": [
+            34,
+            37
+          ],
+          "attendu": "Adam"
+        }
+      }
+    ],
+    "verifications": [],
+    "figures": {},
+    "id": "nouveau-7"
+  },
+  {
+    "titre": "Problème - Avancer sur la ligne",
+    "enonce": "Chaque case vaut un. Pour chaque question, repars du nombre annoncé.\n\n[IMAGE_1]",
+    "questions": [
+      {
+        "question": "Le pion part de 32. Il avance de 2 cases. Où arrive-t-il ?",
+        "methode": "Compter deux espaces vers la droite.",
+        "etapes": [
+          "Premier pas : 33. Deuxième pas : 34.",
+          "[IMAGE_2]"
+        ],
+        "resultat": "34",
+        "controle": {
+          "operation": "sum",
+          "entrees": [
+            32,
+            2
+          ],
+          "attendu": 34
+        }
+      },
+      {
+        "question": "Le pion part de 34. Il avance de 2 cases. Où arrive-t-il ?",
+        "methode": "Compter deux espaces vers la droite.",
+        "etapes": [
+          "Premier pas : 35. Deuxième pas : 36."
+        ],
+        "resultat": "36",
+        "controle": {
+          "operation": "sum",
+          "entrees": [
+            34,
+            2
+          ],
+          "attendu": 36
+        }
+      },
+      {
+        "question": "Le pion part de 36. Il avance de 2 cases. Où arrive-t-il ?",
+        "methode": "Compter deux espaces vers la droite.",
+        "etapes": [
+          "Premier pas : 37. Deuxième pas : 38."
+        ],
+        "resultat": "38",
+        "controle": {
+          "operation": "sum",
+          "entrees": [
+            36,
+            2
+          ],
+          "attendu": 38
+        }
+      },
+      {
+        "question": "Le pion part de 31. Il avance de 2 cases. Où arrive-t-il ?",
+        "methode": "Compter deux espaces vers la droite.",
+        "etapes": [
+          "Premier pas : 32. Deuxième pas : 33."
+        ],
+        "resultat": "33",
+        "controle": {
+          "operation": "sum",
+          "entrees": [
+            31,
+            2
+          ],
+          "attendu": 33
+        }
+      },
+      {
+        "question": "Le pion part de 37. Il avance de 2 cases. Où arrive-t-il ?",
+        "methode": "Compter deux espaces vers la droite.",
+        "etapes": [
+          "Premier pas : 38. Deuxième pas : 39."
+        ],
+        "resultat": "39",
+        "controle": {
+          "operation": "sum",
+          "entrees": [
+            37,
+            2
+          ],
+          "attendu": 39
+        }
+      }
+    ],
+    "verifications": [],
+    "figures": {
+      "1": {
+        "fichier": "ex8_enonce.png",
+        "alt": "Ligne graduée de trente à quarante pour avancer un pion de deux cases."
+      },
+      "2": {
+        "fichier": "ex8_corrige.png",
+        "alt": "Corrigé : Ligne graduée de trente à quarante pour avancer un pion de deux cases."
+      }
+    },
+    "id": "nouveau-8"
+  },
+  {
+    "titre": "Problème - Vérifier les espaces",
+    "enonce": "Tous les espaces ont la même valeur : un.\n\n[IMAGE_1]",
+    "questions": [
+      {
+        "question": "Tom place 25 trois intervalles après 22. Est-ce correct ?",
+        "methode": "Compter les intervalles depuis 22.",
+        "etapes": [
+          "Depuis 22, je passe par 23, puis 24, puis 25. Cela fait trois pas.",
+          "[IMAGE_2]"
+        ],
+        "resultat": "Oui : 22 + 3 = 25.",
+        "controle": {
+          "operation": "sum",
+          "entrees": [
+            22,
+            3
+          ],
+          "attendu": 25
+        }
+      },
+      {
+        "question": "Où arrive-t-on 3 intervalles après 20 ?",
+        "methode": "Ne pas compter le départ comme un pas.",
+        "etapes": [
+          "J’avance de 3 espaces. $20+3=23$."
+        ],
+        "resultat": "23",
+        "controle": {
+          "operation": "sum",
+          "entrees": [
+            20,
+            3
+          ],
+          "attendu": 23
+        }
+      },
+      {
+        "question": "Où arrive-t-on 2 intervalles après 21 ?",
+        "methode": "Ne pas compter le départ comme un pas.",
+        "etapes": [
+          "J’avance de 2 espaces. $21+2=23$."
+        ],
+        "resultat": "23",
+        "controle": {
+          "operation": "sum",
+          "entrees": [
+            21,
+            2
+          ],
+          "attendu": 23
+        }
+      },
+      {
+        "question": "Où arrive-t-on 3 intervalles après 23 ?",
+        "methode": "Ne pas compter le départ comme un pas.",
+        "etapes": [
+          "J’avance de 3 espaces. $23+3=26$."
+        ],
+        "resultat": "26",
+        "controle": {
+          "operation": "sum",
+          "entrees": [
+            23,
+            3
+          ],
+          "attendu": 26
+        }
+      },
+      {
+        "question": "Où arrive-t-on 2 intervalles après 22 ?",
+        "methode": "Ne pas compter le départ comme un pas.",
+        "etapes": [
+          "J’avance de 2 espaces. $22+2=24$."
+        ],
+        "resultat": "24",
+        "controle": {
+          "operation": "sum",
+          "entrees": [
+            22,
+            2
+          ],
+          "attendu": 24
+        }
+      }
+    ],
+    "verifications": [],
+    "figures": {
+      "1": {
+        "fichier": "ex9_enonce.png",
+        "alt": "Ligne de vingt à vingt-six pour vérifier trois intervalles après vingt-deux."
+      },
+      "2": {
+        "fichier": "ex9_corrige.png",
+        "alt": "Corrigé : Ligne de vingt à vingt-six pour vérifier trois intervalles après vingt-deux."
+      }
+    },
+    "id": "nouveau-9"
+  }
+]

@@ -1,0 +1,3565 @@
+=== Découverte - Suites Numériques - Modes de Génération
+Id: 1715
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Identifier le mode de génération de chaque suite et, si possible, donner une expression explicite.
+
+1. Soit la suite $\displaystyle (u_n)$ définie par $\displaystyle u_0 = 10$ et $\displaystyle u_{n+1} = u_n - 3$ pour $\displaystyle n \geq 0$.
+
+   a) Calculer $\displaystyle u_1$, $\displaystyle u_2$, $\displaystyle u_3$.
+
+   b) Donner une expression explicite de $\displaystyle u_n$ en fonction de $\displaystyle n$.
+2. Soit la suite $\displaystyle (v_n)$ définie par $\displaystyle v_0 = 2$ et $\displaystyle v_{n+1} = 4v_n$ pour $\displaystyle n \geq 0$.
+
+   a) Calculer $\displaystyle v_1$, $\displaystyle v_2$, $\displaystyle v_3$.
+
+   b) Donner une expression explicite de $\displaystyle v_n$ en fonction de $\displaystyle n$.
+3. Soit la suite $\displaystyle (w_n)$ définie par $\displaystyle w_n = \frac{n+1}{n+2}$ pour $\displaystyle n \geq 0$.
+
+   a) Calculer $\displaystyle w_0$, $\displaystyle w_1$, $\displaystyle w_2$.
+
+   b) Cette suite est-elle arithmétique ? Géométrique ? Justifier.
+4. On considère l'algorithme suivant :
+
+   **Algorithme (pseudo-code) :**
+
+   Initialisation : $\displaystyle u \leftarrow 1$
+
+   Pour $\displaystyle i$ de 1 à 5 :
+
+   $\displaystyle u \leftarrow 2u + 1$
+
+   Fin Pour
+
+   **Code Python équivalent :**
+
+   **Code Python :**
+
+   
+   ```python
+   # Initialisation
+   u = 1
+   print(f"u_0 = {u}")
+   
+   # Boucle pour i de 1 à 5
+   for i in range(1, 6):
+       u = 2 * u + 1
+       print(f"u_{i} = {u}")
+   ```
+   
+
+   a) Calculer les valeurs successives de $\displaystyle u$ lors de l'exécution.
+
+   b) Si on note $u_n$ la valeur de $u$ après $n$ itérations, donner la relation de récurrence.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Suite arithmétique
+
+::: point a) Calcul des premiers termes
+- $\displaystyle u_0 = 10$
+- $\displaystyle u_1 = u_0 - 3 = 10 - 3 = 7$
+- $\displaystyle u_2 = u_1 - 3 = 7 - 3 = 4$
+- $\displaystyle u_3 = u_2 - 3 = 4 - 3 = 1$
+:::
+
+::: point b) Expression explicite
+- On observe que $u_{n+1} - u_n = -3$ (constante), donc c'est une suite arithmétique de raison $r = -3$.
+- D'après la formule : $\displaystyle u_n = u_0 + n \times r = 10 + n \times (-3) = 10 - 3n$
+- Vérification : $u_0 = 10 - 0 = 10$ , $u_1 = 10 - 3 = 7$ , $u_2 = 10 - 6 = 4$
+:::
+
+## Question 2 : Suite géométrique
+
+::: point a) Calcul des premiers termes
+- $\displaystyle v_0 = 2$
+- $\displaystyle v_1 = 4 \times v_0 = 4 \times 2 = 8$
+- $\displaystyle v_2 = 4 \times v_1 = 4 \times 8 = 32$
+- $\displaystyle v_3 = 4 \times v_2 = 4 \times 32 = 128$
+:::
+
+::: point b) Expression explicite
+- On observe que $\frac{v_{n+1}}{v_n} = 4$ (constante), donc c'est une suite géométrique de raison $q = 4$.
+- D'après la formule : $\displaystyle v_n = v_0 \times q^n = 2 \times 4^n$
+- Vérification : $v_0 = 2 \times 4^0 = 2$ , $v_1 = 2 \times 4^1 = 8$ , $v_2 = 2 \times 4^2 = 32$
+:::
+
+## Question 3 : Suite ni arithmétique ni géométrique
+
+::: point a) Calcul des premiers termes
+- $\displaystyle w_0 = \frac{0+1}{0+2} = \frac{1}{2} = 0{,}5$
+- $\displaystyle w_1 = \frac{1+1}{1+2} = \frac{2}{3} \approx 0{,}667$
+- $\displaystyle w_2 = \frac{2+1}{2+2} = \frac{3}{4} = 0{,}75$
+:::
+
+::: point b) Vérification
+- **Est-elle arithmétique ?**
+
+$\displaystyle w_1 - w_0 = \frac{2}{3} - \frac{1}{2} = \frac{4-3}{6} = \frac{1}{6}$
+
+$\displaystyle w_2 - w_1 = \frac{3}{4} - \frac{2}{3} = \frac{9-8}{12} = \frac{1}{12}$
+
+Les différences ne sont pas constantes, donc la suite n'est pas arithmétique.
+
+- **Est-elle géométrique ?**
+
+$\displaystyle \frac{w_1}{w_0} = \frac{2/3}{1/2} = \frac{4}{3}$
+
+$\displaystyle \frac{w_2}{w_1} = \frac{3/4}{2/3} = \frac{9}{8}$
+
+Les quotients ne sont pas constants, donc la suite n'est pas géométrique.
+
+- **Conclusion :** Cette suite n'est ni arithmétique ni géométrique. Elle est définie explicitement par $w_n = \frac{n+1}{n+2}$.
+:::
+
+## Question 4 : Suite définie par algorithme
+
+::: point a) Exécution de l'algorithme
+**Code Python équivalent :**
+
+**Code Python :**
+
+```python
+# Initialisation
+u = 1
+print(f"u_0 = {u}")
+
+# Boucle pour i de 1 à 5
+for i in range(1, 6):
+    u = 2 * u + 1
+    print(f"u_{i} = {u}")
+```
+
+**Exécution pas à pas :**
+
+- Initialisation : $\displaystyle u = 1$
+- Itération 1 : $\displaystyle u = 2 \times 1 + 1 = 3$
+- Itération 2 : $\displaystyle u = 2 \times 3 + 1 = 7$
+- Itération 3 : $\displaystyle u = 2 \times 7 + 1 = 15$
+- Itération 4 : $\displaystyle u = 2 \times 15 + 1 = 31$
+- Itération 5 : $\displaystyle u = 2 \times 31 + 1 = 63$
+:::
+
+::: point b) Relation de récurrence
+- Si on note $u_n$ la valeur après $n$ itérations, on a :
+
+$\displaystyle u_0 = 1$ (valeur initiale)
+
+$u_{n+1} = 2u_n + 1$ pour tout $n \geq 0$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. a) $u_1 = 7$, $u_2 = 4$, $u_3 = 1$
+
+   b) $u_n = 10 - 3n$ (suite arithmétique de raison $r = -3$)
+2. a) $v_1 = 8$, $v_2 = 32$, $v_3 = 128$
+
+   b) $v_n = 2 \times 4^n$ (suite géométrique de raison $q = 4$)
+3. a) $w_0 = 0{,}5$, $w_1 \approx 0{,}667$, $w_2 = 0{,}75$
+
+   b) La suite n'est ni arithmétique ni géométrique
+4. a) Valeurs successives : $\displaystyle 1, 3, 7, 15, 31, 63$
+
+   b) $u_0 = 1$ et $u_{n+1} = 2u_n + 1$ pour $n \geq 0$
+
+===
+
+=== Découverte - Suites Numériques - Notations et Définitions
+Id: 1714
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+On considère plusieurs suites numériques. Pour chacune, identifier le terme initial, calculer les premiers termes, et déterminer le mode de génération.
+
+1. Soit la suite $\displaystyle (u_n)$ définie par $\displaystyle u_n = 2n + 3$ pour $\displaystyle n \geq 0$.
+
+   a) Calculer $\displaystyle u_0$, $\displaystyle u_1$, $\displaystyle u_2$ et $\displaystyle u_3$.
+
+   b) Quel est le mode de génération de cette suite ?
+2. Soit la suite $\displaystyle (v_n)$ définie par $\displaystyle v_0 = 5$ et $\displaystyle v_{n+1} = v_n + 2$ pour $\displaystyle n \geq 0$.
+
+   a) Calculer $\displaystyle v_0$, $\displaystyle v_1$, $\displaystyle v_2$ et $\displaystyle v_3$.
+
+   b) Quel est le mode de génération de cette suite ?
+3. Soit la suite $\displaystyle (w_n)$ définie par $\displaystyle w_n = 3^n$ pour $\displaystyle n \geq 0$.
+
+   a) Calculer $\displaystyle w_0$, $\displaystyle w_1$, $\displaystyle w_2$ et $\displaystyle w_3$.
+
+   b) Quel est le mode de génération de cette suite ?
+4. Soit la suite $\displaystyle (t_n)$ définie par $\displaystyle t_0 = 1$ et $\displaystyle t_{n+1} = 2t_n$ pour $\displaystyle n \geq 0$.
+
+   a) Calculer $\displaystyle t_0$, $\displaystyle t_1$, $\displaystyle t_2$ et $\displaystyle t_3$.
+
+   b) Exprimer $\displaystyle t_n$ en fonction de $\displaystyle n$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Suite définie explicitement
+
+::: point a) Calcul des premiers termes
+- $\displaystyle u_0 = 2 \times 0 + 3 = 3$
+- $\displaystyle u_1 = 2 \times 1 + 3 = 5$
+- $\displaystyle u_2 = 2 \times 2 + 3 = 7$
+- $\displaystyle u_3 = 2 \times 3 + 3 = 9$
+:::
+
+::: point b) Mode de génération
+- Cette suite est définie **explicitement** car on peut calculer directement $u_n$ en fonction de $n$ sans avoir besoin des termes précédents.
+:::
+
+## Question 2 : Suite définie par récurrence
+
+::: point a) Calcul des premiers termes
+- $\displaystyle v_0 = 5$ (valeur initiale donnée)
+- $\displaystyle v_1 = v_0 + 2 = 5 + 2 = 7$
+- $\displaystyle v_2 = v_1 + 2 = 7 + 2 = 9$
+- $\displaystyle v_3 = v_2 + 2 = 9 + 2 = 11$
+:::
+
+::: point b) Mode de génération
+- Cette suite est définie par **récurrence** car chaque terme dépend du terme précédent.
+- On observe que $v_{n+1} - v_n = 2$ (constante), donc c'est une suite arithmétique de raison $r = 2$.
+:::
+
+## Question 3 : Suite définie explicitement (géométrique)
+
+::: point a) Calcul des premiers termes
+- $\displaystyle w_0 = 3^0 = 1$
+- $\displaystyle w_1 = 3^1 = 3$
+- $\displaystyle w_2 = 3^2 = 9$
+- $\displaystyle w_3 = 3^3 = 27$
+:::
+
+::: point b) Mode de génération
+- Cette suite est définie **explicitement** car on peut calculer directement $w_n$ en fonction de $n$.
+- On observe que $\frac{w_{n+1}}{w_n} = 3$ (constante), donc c'est aussi une suite géométrique de raison $q = 3$.
+:::
+
+## Question 4 : Suite définie par récurrence (géométrique)
+
+::: point a) Calcul des premiers termes
+- $\displaystyle t_0 = 1$ (valeur initiale donnée)
+- $\displaystyle t_1 = 2 \times t_0 = 2 \times 1 = 2$
+- $\displaystyle t_2 = 2 \times t_1 = 2 \times 2 = 4$
+- $\displaystyle t_3 = 2 \times t_2 = 2 \times 4 = 8$
+:::
+
+::: point b) Expression explicite
+- On observe que $t_n = 2^n$ pour tout $n \geq 0$.
+- Vérification : $t_0 = 2^0 = 1$ , $t_1 = 2^1 = 2$ , $t_2 = 2^2 = 4$ , $t_3 = 2^3 = 8$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. a) $u_0 = 3$, $u_1 = 5$, $u_2 = 7$, $u_3 = 9$
+
+   b) Suite définie explicitement
+2. a) $v_0 = 5$, $v_1 = 7$, $v_2 = 9$, $v_3 = 11$
+
+   b) Suite définie par récurrence (arithmétique de raison $r = 2$)
+3. a) $w_0 = 1$, $w_1 = 3$, $w_2 = 9$, $w_3 = 27$
+
+   b) Suite définie explicitement (géométrique de raison $q = 3$)
+4. a) $t_0 = 1$, $t_1 = 2$, $t_2 = 4$, $t_3 = 8$
+
+   b) $t_n = 2^n$ pour tout $n \geq 0$
+
+===
+
+=== Découverte - Suites Numériques - Suites Définies par Récurrence
+Id: 1707
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Étudier les suites définies par récurrence suivantes et calculer les termes demandés.
+
+1. Soit $\displaystyle (u_n)$ définie par $\displaystyle u_0 = 2$ et $\displaystyle u_{n+1} = 3u_n - 1$. Calculer $\displaystyle u_1$, $\displaystyle u_2$ et $\displaystyle u_3$.
+2. Soit $\displaystyle (v_n)$ définie par $\displaystyle v_0 = 1$ et $\displaystyle v_{n+1} = 2v_n + 3$. Calculer les 4 premiers termes.
+3. Soit $\displaystyle (w_n)$ définie par $\displaystyle w_0 = 5$ et $\displaystyle w_{n+1} = \displaystyle\frac{w_n}{2} + 1$. Calculer $\displaystyle w_1$, $\displaystyle w_2$ et $\displaystyle w_3$.
+4. Soit $\displaystyle (t_n)$ définie par $\displaystyle t_0 = 3$ et $\displaystyle t_{n+1} = t_n^2 - 2$. Calculer $\displaystyle t_1$ et $\displaystyle t_2$.
+5. Soit $\displaystyle (s_n)$ définie par $\displaystyle s_1 = 1$, $\displaystyle s_2 = 1$ et $\displaystyle s_{n+2} = s_{n+1} + s_n$ (suite de Fibonacci). Calculer $\displaystyle s_3$, $\displaystyle s_4$, $\displaystyle s_5$ et $\displaystyle s_6$.
+
+Étapes:
+<!-- optitab:1 -->
+**Méthode générale :** Suite définie par récurrence
+
+::: point Principe
+Chaque terme se calcule à partir du (ou des) terme(s) précédent(s)
+:::
+
+::: point Démarche
+Partir du terme initial et calculer successivement les termes suivants
+:::
+
+::: attention
+Il faut connaître le(s) terme(s) précédent(s) pour calculer un terme
+:::
+
+## Question 1 : Suite définie par $\displaystyle u_0 = 2$ et $\displaystyle u_{n+1} = 3u_n - 1$
+
+::: point Calcul de $\displaystyle u_1$
+$$u_1 = 3u_0 - 1 = 3 \times 2 - 1 = 5$$
+:::
+
+::: point Calcul de $\displaystyle u_2$
+$$u_2 = 3u_1 - 1 = 3 \times 5 - 1 = 14$$
+:::
+
+::: point Calcul de $\displaystyle u_3$
+$$u_3 = 3u_2 - 1 = 3 \times 14 - 1 = 41$$
+:::
+
+## Question 2 : Suite définie par $\displaystyle v_0 = 1$ et $\displaystyle v_{n+1} = 2v_n + 3$
+
+::: point Calcul de $\displaystyle v_1$
+$$v_1 = 2v_0 + 3 = 2 \times 1 + 3 = 5$$
+:::
+
+::: point Calcul de $\displaystyle v_2$
+$$v_2 = 2v_1 + 3 = 2 \times 5 + 3 = 13$$
+:::
+
+::: point Calcul de $\displaystyle v_3$
+$$v_3 = 2v_2 + 3 = 2 \times 13 + 3 = 29$$
+:::
+
+::: point Les 4 premiers termes
+$v_0 = 1$, $v_1 = 5$, $v_2 = 13$, $v_3 = 29$
+:::
+
+## Question 3 : Suite définie par $\displaystyle w_0 = 5$ et $\displaystyle w_{n+1} = \displaystyle\frac{w_n}{2} + 1$
+
+::: point Calcul de $\displaystyle w_1$
+$$
+\begin{aligned}
+w_1 &= \frac{w_0}{2} + 1 \\
+&= \frac{5}{2} + 1 \\
+&= \frac{7}{2}
+\end{aligned}
+$$
+:::
+
+::: point Calcul de $\displaystyle w_2$
+$$
+\begin{aligned}
+w_2 &= \frac{w_1}{2} + 1 \\
+&= \frac{7/2}{2} + 1 \\
+&= \frac{7}{4} + 1 \\
+&= \frac{11}{4}
+\end{aligned}
+$$
+:::
+
+::: point Calcul de $\displaystyle w_3$
+$$
+\begin{aligned}
+w_3 &= \frac{w_2}{2} + 1 \\
+&= \frac{11/4}{2} + 1 \\
+&= \frac{11}{8} + 1 \\
+&= \frac{19}{8}
+\end{aligned}
+$$
+:::
+
+## Question 4 : Suite définie par $\displaystyle t_0 = 3$ et $\displaystyle t_{n+1} = t_n^2 - 2$
+
+::: point Calcul de $\displaystyle t_1$
+$$t_1 = t_0^2 - 2 = 3^2 - 2 = 9 - 2 = 7$$
+:::
+
+::: point Calcul de $\displaystyle t_2$
+$$t_2 = t_1^2 - 2 = 7^2 - 2 = 49 - 2 = 47$$
+:::
+
+## Question 5 : Suite de Fibonacci : $\displaystyle s_1 = 1$, $\displaystyle s_2 = 1$ et $\displaystyle s_{n+2} = s_{n+1} + s_n$
+
+::: point Calcul de $\displaystyle s_3$
+$$s_3 = s_2 + s_1 = 1 + 1 = 2$$
+:::
+
+::: point Calcul de $\displaystyle s_4$
+$$s_4 = s_3 + s_2 = 2 + 1 = 3$$
+:::
+
+::: point Calcul de $\displaystyle s_5$
+$$s_5 = s_4 + s_3 = 3 + 2 = 5$$
+:::
+
+::: point Calcul de $\displaystyle s_6$
+$$s_6 = s_5 + s_4 = 5 + 3 = 8$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $u_1 = 5$, $u_2 = 14$, $u_3 = 41$
+2. $v_0 = 1$, $v_1 = 5$, $v_2 = 13$, $v_3 = 29$
+3. $w_1 = \frac{7}{2}$, $w_2 = \frac{11}{4}$, $w_3 = \frac{19}{8}$
+4. $t_1 = 7$, $t_2 = 47$
+5. $s_3 = 2$, $s_4 = 3$, $s_5 = 5$, $s_6 = 8$
+
+===
+
+=== Découverte - Suites Numériques - Termes de Suites Arithmétiques
+Id: 1703
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Calculer les termes demandés pour les suites arithmétiques suivantes.
+
+1. Soit $\displaystyle (u_n)$ une suite arithmétique telle que $\displaystyle u_0 = 5$ et $\displaystyle r = 3$. Calculer $\displaystyle u_{10}$.
+2. Soit $\displaystyle (v_n)$ une suite arithmétique telle que $\displaystyle v_1 = -2$ et $\displaystyle r = 4$. Calculer $\displaystyle v_{15}$.
+3. Soit $\displaystyle (w_n)$ une suite arithmétique telle que $\displaystyle w_0 = 12$ et $\displaystyle r = -2$. Calculer $\displaystyle w_{8}$.
+4. Soit $\displaystyle (t_n)$ une suite arithmétique telle que $\displaystyle t_3 = 7$ et $\displaystyle t_7 = 15$. Déterminer $\displaystyle t_0$ et $\displaystyle r$.
+5. Soit $\displaystyle (s_n)$ une suite arithmétique telle que $\displaystyle s_2 = 10$ et $\displaystyle r = -3$. Calculer $\displaystyle s_{20}$.
+
+Étapes:
+<!-- optitab:1 -->
+**Méthode générale :** Suite arithmétique
+
+::: point Formule du terme général
+$$u_n = u_0 + n \times r$$
+:::
+
+::: point Formule générale
+$$u_k - u_m = (k - m) \times r$$
+:::
+
+::: rappel Propriété
+La différence entre deux termes consécutifs est constante et égale à $r$
+:::
+
+## Question 1 : Calculer $\displaystyle u_{10}$ avec $\displaystyle u_0 = 5$ et $\displaystyle r = 3$
+
+::: point Application de la formule
+$$u_n = u_0 + n \times r$$
+:::
+
+::: point Calcul
+$$
+\begin{aligned}
+u_{10} &= u_0 + 10 \times r \\
+&= 5 + 10 \times 3 \\
+&= 5 + 30 \\
+&= 35
+\end{aligned}
+$$
+:::
+
+## Question 2 : Calculer $\displaystyle v_{15}$ avec $\displaystyle v_1 = -2$ et $\displaystyle r = 4$
+
+::: point D'abord trouver $\displaystyle v_0$
+$$v_0 = v_1 - r = -2 - 4 = -6$$
+:::
+
+::: point Application de la formule
+$$v_{15} = v_0 + 15 \times r$$
+:::
+
+::: point Calcul
+$$v_{15} = -6 + 15 \times 4 = -6 + 60 = 54$$
+:::
+
+## Question 3 : Calculer $\displaystyle w_8$ avec $\displaystyle w_0 = 12$ et $\displaystyle r = -2$
+
+::: point Application de la formule
+$$w_n = w_0 + n \times r$$
+:::
+
+::: point Calcul
+$$w_8 = 12 + 8 \times (-2) = 12 - 16 = -4$$
+:::
+
+## Question 4 : Déterminer $\displaystyle t_0$ et $\displaystyle r$ avec $\displaystyle t_3 = 7$ et $\displaystyle t_7 = 15$
+
+::: point Utiliser la formule générale
+$$t_7 - t_3 = (7 - 3) \times r$$
+:::
+
+::: point Calcul de $\displaystyle r$
+$$15 - 7 = 4r \Rightarrow r = 2$$
+:::
+
+::: point Calcul de $\displaystyle t_0$
+$$
+\begin{aligned}
+t_3 = t_0 + 3 \times r &\Rightarrow 7 = t_0 + 6 \\
+&\Rightarrow t_0 = 1
+\end{aligned}
+$$
+:::
+
+## Question 5 : Calculer $\displaystyle s_{20}$ avec $\displaystyle s_2 = 10$ et $\displaystyle r = -3$
+
+::: point Trouver $\displaystyle s_0$
+$$
+\begin{aligned}
+s_2 = s_0 + 2 \times r &\Rightarrow 10 = s_0 + 2 \times (-3) \\
+&\Rightarrow s_0 = 16
+\end{aligned}
+$$
+:::
+
+::: point Application de la formule
+$$s_{20} = s_0 + 20 \times r$$
+:::
+
+::: point Calcul
+$$s_{20} = 16 + 20 \times (-3) = 16 - 60 = -44$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle 35$
+2. $\displaystyle 54$
+3. $\displaystyle -4$
+4. $t_0 = 1$ et $r = 2$
+5. $\displaystyle -44$
+
+===
+
+=== Découverte - Suites Numériques - Termes de Suites Géométriques
+Id: 1704
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Calculer les termes demandés pour les suites géométriques suivantes.
+
+1. Soit $\displaystyle (u_n)$ une suite géométrique telle que $\displaystyle u_0 = 2$ et $\displaystyle q = 3$. Calculer $\displaystyle u_5$.
+2. Soit $\displaystyle (v_n)$ une suite géométrique telle que $\displaystyle v_0 = 5$ et $\displaystyle q = \displaystyle\frac{1}{2}$. Calculer $\displaystyle v_6$.
+3. Soit $\displaystyle (w_n)$ une suite géométrique telle que $\displaystyle w_1 = 8$ et $\displaystyle q = 2$. Calculer $\displaystyle w_0$ et $\displaystyle w_5$.
+4. Soit $\displaystyle (t_n)$ une suite géométrique telle que $\displaystyle t_2 = 12$ et $\displaystyle t_5 = 96$. Déterminer $\displaystyle q$ et $\displaystyle t_0$.
+5. Soit $\displaystyle (s_n)$ une suite géométrique telle que $\displaystyle s_0 = 1$ et $\displaystyle q = -2$. Calculer $\displaystyle s_4$ et $\displaystyle s_5$.
+
+Étapes:
+<!-- optitab:1 -->
+**Méthode générale :** Suite géométrique
+
+::: point Formule du terme général
+$$u_n = u_0 \times q^n$$
+:::
+
+::: point Formule générale
+$$u_k = u_m \times q^{k-m}$$
+:::
+
+::: rappel Propriété
+Le quotient entre deux termes consécutifs est constant et égal à $q$ (avec $q \neq 0$)
+:::
+
+## Question 1 : Calculer $\displaystyle u_5$ avec $\displaystyle u_0 = 2$ et $\displaystyle q = 3$
+
+::: point Application de la formule
+$$u_n = u_0 \times q^n$$
+:::
+
+::: point Calcul
+$$u_5 = 2 \times 3^5 = 2 \times 243 = 486$$
+:::
+
+## Question 2 : Calculer $\displaystyle v_6$ avec $\displaystyle v_0 = 5$ et $\displaystyle q = \displaystyle\frac{1}{2}$
+
+::: point Application de la formule
+$$v_n = v_0 \times q^n$$
+:::
+
+::: point Calcul
+$$
+\begin{aligned}
+v_6 &= 5 \times \left(\frac{1}{2}\right)^6 \\
+&= 5 \times \frac{1}{64} \\
+&= \frac{5}{64}
+\end{aligned}
+$$
+:::
+
+## Question 3 : Calculer $\displaystyle w_0$ et $\displaystyle w_5$ avec $\displaystyle w_1 = 8$ et $\displaystyle q = 2$
+
+::: point Calcul de $\displaystyle w_0$
+$$
+\begin{aligned}
+w_1 = w_0 \times q &\Rightarrow 8 = w_0 \times 2 \\
+&\Rightarrow w_0 = 4
+\end{aligned}
+$$
+:::
+
+::: point Calcul de $\displaystyle w_5$
+$$
+\begin{aligned}
+w_5 &= w_0 \times q^5 \\
+&= 4 \times 2^5 \\
+&= 4 \times 32 \\
+&= 128
+\end{aligned}
+$$
+:::
+
+## Question 4 : Déterminer $\displaystyle q$ et $\displaystyle t_0$ avec $\displaystyle t_2 = 12$ et $\displaystyle t_5 = 96$
+
+::: point Utiliser la formule générale
+$$t_5 = t_2 \times q^{5-2}$$
+:::
+
+::: point Calcul de $\displaystyle q$
+$$
+\begin{aligned}
+96 = 12 \times q^3 &\Rightarrow q^3 = 8 \\
+&\Rightarrow q = 2
+\end{aligned}
+$$
+:::
+
+::: point Calcul de $\displaystyle t_0$
+$$
+\begin{aligned}
+t_2 = t_0 \times q^2 &\Rightarrow 12 = t_0 \times 4 \\
+&\Rightarrow t_0 = 3
+\end{aligned}
+$$
+:::
+
+## Question 5 : Calculer $\displaystyle s_4$ et $\displaystyle s_5$ avec $\displaystyle s_0 = 1$ et $\displaystyle q = -2$
+
+::: point Application de la formule
+$$s_n = s_0 \times q^n$$
+:::
+
+::: point Calcul de $\displaystyle s_4$
+$$s_4 = 1 \times (-2)^4 = 16$$
+:::
+
+::: point Calcul de $\displaystyle s_5$
+$$s_5 = 1 \times (-2)^5 = -32$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle 486$
+2. $\displaystyle \frac{5}{64}$
+3. $w_0 = 4$ et $w_5 = 128$
+4. $q = 2$ et $t_0 = 3$
+5. $s_4 = 16$ et $s_5 = -32$
+
+===
+
+=== DS - Suites Numériques - Type 1
+Id: 1712
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Ce devoir surveillé couvre l'ensemble du chapitre sur les suites numériques.
+
+*Note : La partie A reprend un exercice déjà étudié en cours (Problème - Suites Numériques - Étude d'une Suite).*
+
+$\underline{\textbf{Partie A : Étude d'une Suite Arithmético-Géométrique}}$
+
+On considère la suite $\displaystyle (u_n)$ définie pour tout $\displaystyle n \in \mathbb{N}$ par $\displaystyle u_0 = 2$ et $\displaystyle u_{n+1} = \dfrac{1}{3}u_n + 4$.
+
+**Question A1 :** Calculer $u_1$, $u_2$ et $u_3$. La suite est-elle arithmétique ? géométrique ?
+
+**Question A2 :** On définit la suite $\displaystyle (v_n)$ par $\displaystyle v_n = u_n - 6$ pour tout $\displaystyle n \in \mathbb{N}$.
+
+a) Montrer que $(v_n)$ est une suite géométrique dont on précisera le premier terme et la raison
+
+b) En déduire l'expression de $\displaystyle v_n$ puis de $\displaystyle u_n$ en fonction de $\displaystyle n$
+
+$\underline{\textbf{Partie B : Sens de Variation et Limite}}$
+
+On considère toujours la suite $\displaystyle (u_n)$ de la partie A.
+
+**Question B1 :** Étudier le sens de variation de la suite $\displaystyle (u_n)$.
+
+**Question B2 :** Calculer $\displaystyle \lim\limits_{n \to +\infty} u_n$ et interpréter le résultat.
+
+$\underline{\textbf{Partie C : Somme des Termes}}$
+
+On considère toujours la suite $\displaystyle (u_n)$ de la partie A.
+
+**Question C1 :** Calculer $\displaystyle S_n = u_0 + u_1 + u_2 + \cdots + u_n$ en fonction de $\displaystyle n$.
+
+**Question C2 :** Déterminer $\displaystyle \lim\limits_{n \to +\infty} S_n$.
+
+Étapes:
+<!-- optitab:1 -->
+**Partie A : Étude d'une Suite Arithmético-Géométrique**
+
+**Question A1 :** Calcul des premiers termes et identification du type
+
+::: point Calcul de $\displaystyle u_1$
+$$
+\begin{aligned}
+u_1 &= \dfrac{1}{3}u_0 + 4 \\
+&= \dfrac{1}{3} \times 2 + 4 \\
+&= \dfrac{2}{3} + 4 \\
+&= \dfrac{14}{3}
+\end{aligned}
+$$
+:::
+
+::: point Calcul de $\displaystyle u_2$
+$$
+\begin{aligned}
+u_2 &= \dfrac{1}{3}u_1 + 4 \\
+&= \dfrac{1}{3} \times \dfrac{14}{3} + 4 \\
+&= \dfrac{14}{9} + 4 \\
+&= \dfrac{50}{9}
+\end{aligned}
+$$
+:::
+
+::: point Calcul de $\displaystyle u_3$
+$$
+\begin{aligned}
+u_3 &= \dfrac{1}{3}u_2 + 4 \\
+&= \dfrac{1}{3} \times \dfrac{50}{9} + 4 \\
+&= \dfrac{50}{27} + 4 \\
+&= \dfrac{158}{27}
+\end{aligned}
+$$
+:::
+
+::: point Suite arithmétique ?
+$\displaystyle u_1 - u_0 = \dfrac{14}{3} - 2 = \dfrac{8}{3}$
+
+$\displaystyle u_2 - u_1 = \dfrac{50}{9} - \dfrac{14}{3} = \dfrac{50}{9} - \dfrac{42}{9} = \dfrac{8}{9}$
+
+Les différences ne sont **pas constantes** → **NON**
+:::
+
+::: point Suite géométrique ?
+La relation $u_{n+1} = \dfrac{1}{3}u_n + 4$ contient un terme constant
+
+Ce n'est pas de la forme $u_{n+1} = q \times u_n$ → **NON**
+:::
+
+::: point Identification
+Suite **arithmético-géométrique** de la forme $u_{n+1} = au_n + b$
+
+avec $a = \dfrac{1}{3}$ et $b = 4$
+
+*Une suite vérifiant $u_{n+1} = a u_n + b$ (avec $a \neq 1$) est appelée suite arithmético-géométrique. On l'étudie souvent en introduisant une suite auxiliaire $v_n = u_n - L$ où $L$ est un point fixe.*
+
+**Question A2 :** Étude de la suite auxiliaire $v_n = u_n - 6$
+:::
+
+::: point a) Montrer que $(v_n)$ est géométrique
+- Calcul de $\displaystyle v_{n+1}$ :
+
+$\displaystyle v_{n+1} = u_{n+1} - 6 = \left(\dfrac{1}{3}u_n + 4\right) - 6$
+
+$\displaystyle = \dfrac{1}{3}u_n + 4 - 6 = \dfrac{1}{3}u_n - 2$
+
+$\displaystyle = \dfrac{1}{3}(u_n - 6) = \dfrac{1}{3}v_n$
+
+- Conclusion : $(v_n)$ est **géométrique** de raison $q = \dfrac{1}{3}$
+- Premier terme : $\displaystyle v_0 = u_0 - 6 = 2 - 6 = -4$
+:::
+
+::: point b) Expression explicite
+- Expression de $\displaystyle v_n$ :
+
+$\displaystyle v_n = v_0 \times q^n = -4 \times \left(\dfrac{1}{3}\right)^n$
+
+- Expression de $\displaystyle u_n$ :
+
+$\displaystyle u_n = v_n + 6 = 6 - 4 \times \left(\dfrac{1}{3}\right)^n$
+
+- Vérification pour $n = 0$ : $u_0 = 6 - 4 \times 1 = 2$
+
+**Partie B : Sens de Variation et Limite**
+
+**Question B1 :** Sens de variation de $(u_n)$
+:::
+
+::: methode
+Étudier le signe de $\displaystyle u_{n+1} - u_n$
+:::
+
+::: point Calcul
+$\displaystyle u_{n+1} - u_n = \left(\dfrac{1}{3}u_n + 4\right) - u_n = \dfrac{1}{3}u_n + 4 - u_n$
+
+$\displaystyle = 4 - \dfrac{2}{3}u_n = \dfrac{12 - 2u_n}{3}$
+:::
+
+::: point Étude du signe
+$\displaystyle u_{n+1} - u_n = \dfrac{12 - 2u_n}{3}$
+
+- Signe positif si $\displaystyle 12 - 2u_n > 0 \Leftrightarrow u_n < 6$
+- Signe négatif si $\displaystyle u_n > 6$
+:::
+
+::: point Analyse avec la formule explicite
+$\displaystyle u_n = 6 - 4 \times \left(\dfrac{1}{3}\right)^n$
+
+- Pour tout $n \geq 0$ : $\left(\dfrac{1}{3}\right)^n > 0$ donc $4 \times \left(\dfrac{1}{3}\right)^n > 0$
+- Donc $\displaystyle u_n = 6 - 4 \times \left(\dfrac{1}{3}\right)^n < 6$
+- De plus, $\displaystyle u_0 = 2 < 6$
+:::
+
+::: resultat
+Pour tout $n$, $u_n 0$
+
+La suite $(u_n)$ est **strictement croissante**
+
+**Question B2 :** Limite de la suite
+:::
+
+::: point Avec la formule explicite
+$$u_n = 6 - 4 \times \left(\dfrac{1}{3}\right)^n$$
+:::
+
+::: point Limite de référence
+$\lim\limits_{n \to +\infty} \left(\dfrac{1}{3}\right)^n = 0$ (car $0 < \dfrac{1}{3} < 1$)
+:::
+
+::: point Calcul de la limite
+$$\lim\limits_{n \to +\infty} u_n = 6 - 4 \times 0 = 6$$
+:::
+
+::: point Interprétation
+Comme $\left(\dfrac{1}{3}\right)^n \to 0$ quand $n \to +\infty$, on a $\lim\limits_{n \to +\infty} u_n = 6$.
+
+La suite $(u_n)$ est strictement croissante et converge vers $6$.
+
+Les termes se rapprochent de plus en plus de $6$ sans jamais l'atteindre.
+
+**Partie C : Somme des Termes**
+
+**Question C1 :** Expression de la somme
+:::
+
+::: point Expression de $\displaystyle S_n$
+$$
+\begin{aligned}
+S_n &= u_0 + u_1 + \cdots + u_n \\
+&= \sum_{k=0}^{n} u_k \\
+&= \sum_{k=0}^{n} \left[6 - 4 \times \left(\dfrac{1}{3}\right)^k\right]
+\end{aligned}
+$$
+:::
+
+::: point Décomposition
+$\displaystyle S_n = \sum_{k=0}^{n} 6 - 4\sum_{k=0}^{n} \left(\dfrac{1}{3}\right)^k$
+
+$\displaystyle = 6(n+1) - 4 \times \dfrac{1 - \left(\frac{1}{3}\right)^{n+1}}{1 - \frac{1}{3}}$
+
+$\displaystyle = 6(n+1) - 4 \times \dfrac{1 - \left(\frac{1}{3}\right)^{n+1}}{\frac{2}{3}}$
+
+$\displaystyle = 6(n+1) - 6 \times \left[1 - \left(\dfrac{1}{3}\right)^{n+1}\right]$
+
+$\displaystyle = 6(n+1) - 6 + 6\left(\dfrac{1}{3}\right)^{n+1}$
+
+$\displaystyle = 6n + 6\left(\dfrac{1}{3}\right)^{n+1}$
+:::
+
+::: point Limite de $\displaystyle S_n$
+Quand $n \to +\infty$ : $\left(\dfrac{1}{3}\right)^{n+1} \to 0$ et $n \to +\infty$
+
+Donc $\displaystyle \lim\limits_{n \to +\infty} S_n = +\infty$
+
+**Question C2 :** Limite de la somme
+:::
+
+::: point Calcul
+Quand $n \to +\infty$ : $\left(\dfrac{1}{3}\right)^{n+1} \to 0$ et $n \to +\infty$
+
+Donc $\displaystyle \lim\limits_{n \to +\infty} S_n = +\infty$
+:::
+
+Solution:
+<!-- optitab:1 -->
+**Partie A : Étude d'une Suite Arithmético-Géométrique**
+
+**A1.** $u_1 = \frac{14}{3}$, $u_2 = \frac{50}{9}$, $u_3 = \frac{158}{27}$ - Suite arithmético-géométrique
+
+**A2.**
+
+a) $(v_n)$ est géométrique : $v_0 = -4$, $q = \frac{1}{3}$
+
+b) $v_n = -4 \times \left(\frac{1}{3}\right)^n$ et $u_n = 6 - 4 \times \left(\frac{1}{3}\right)^n$
+
+---
+
+**Partie B : Sens de Variation et Limite**
+
+**B1.** Suite **strictement croissante** (car $u_n < 6$ pour tout $n$)
+
+**B2.** $\lim\limits_{n \to +\infty} u_n = 6$. On le démontre à partir de la formule explicite $u_n = 6 - 4 \times \left(\dfrac{1}{3}\right)^n$ et du fait que $\left(\dfrac{1}{3}\right)^n \to 0$ quand $n \to +\infty$.
+
+---
+
+**Partie C : Somme des Termes**
+
+**C1.** $\displaystyle S_n = 6n + 6\left(\displaystyle\frac{1}{3}\right)^{n+1}$
+
+**C2.** $\displaystyle \lim\limits_{n \to +\infty} S_n = +\infty$
+
+===
+
+=== DS - Suites Numériques - Type 2
+Id: 1713
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Ce devoir surveillé couvre l'ensemble du chapitre sur les suites numériques.
+
+$\underline{\textbf{Partie A : Modélisation et Relation de Récurrence}}$
+
+Une population de bactéries évolue selon un modèle où chaque jour, le nombre de bactéries est multiplié par $1,5$, mais $300$ bactéries meurent. On note $u_n$ le nombre de bactéries le jour $n$. On sait qu'au jour $0$, il y a $u_0 = 500$ bactéries.
+
+**Question A1 :** Écrire la relation de récurrence définissant $u_n$ et calculer $u_1$ et $u_2$.
+
+**Question A2 :** Quel est le type de cette suite ? Déterminer le nombre de bactéries à l'équilibre (point fixe).
+
+$\underline{\textbf{Partie B : Suite Auxiliaire et Expression Explicite}}$
+
+On définit $\displaystyle v_n = u_n - 600$ pour tout $\displaystyle n \in \mathbb{N}$.
+
+**Question B1 :** Montrer que $\displaystyle (v_n)$ est une suite géométrique.
+
+**Question B2 :** Exprimer $\displaystyle v_n$ puis $\displaystyle u_n$ en fonction de $\displaystyle n$.
+
+$\underline{\textbf{Partie C : Variation et Extinction}}$
+
+On considère toujours la suite $\displaystyle (u_n)$ de la partie A.
+
+**Question C1 :** Montrer que la suite $\displaystyle (u_n)$ est décroissante.
+
+**Question C2 :** À partir de quel jour la population s'éteint-elle (c'est-à-dire $u_n \leq 0$) ?
+
+**Question C3 :** Si on introduit $200$ bactéries supplémentaires au départ (donc $u_0 = 700$), la population peut-elle survivre indéfiniment ? Justifier mathématiquement.
+
+Étapes:
+<!-- optitab:1 -->
+**Partie A : Modélisation et Relation de Récurrence**
+
+**Question A1 :** Relation de récurrence et premiers termes
+
+::: point Modélisation
+- Multiplication par $1,5$ : on a $1,5 \times u_n$ bactéries
+- Puis $300$ meurent : il reste $1,5u_n - 300$ bactéries
+:::
+
+::: point Relation de récurrence
+$u_{n+1} = 1,5u_n - 300$ pour tout $n \geq 0$
+:::
+
+::: point Calcul de $\displaystyle u_1$
+$$u_1 = 1,5 \times 500 - 300 = 750 - 300 = 450$$
+:::
+
+::: point Calcul de $\displaystyle u_2$
+$\displaystyle u_2 = 1,5 \times 450 - 300 = 675 - 300 = 375$
+
+**Question A2 :** Type de suite et point fixe
+:::
+
+::: point Type de suite
+Relation de la forme $u_{n+1} = au_n + b$ avec $a = 1,5$ et $b = -300$
+
+C'est une suite **arithmético-géométrique**
+:::
+
+::: point Point fixe (équilibre)
+On cherche $\ell$ tel que $\ell = 1,5\ell - 300$
+
+$\displaystyle \ell - 1,5\ell = -300$
+
+$\displaystyle -0,5\ell = -300$
+
+$\displaystyle \ell = 600$
+:::
+
+::: point Interprétation
+Le nombre $600$ est un **point fixe** de la récurrence : si on commence exactement avec $u_0 = 600$, alors $u_n = 600$ pour tout $n$ (la population reste constante).
+
+Mais comme le coefficient $1,5$ est supérieur à $1$, dès qu'on est en dessous de $600$ la suite décroît et finit par devenir négative (extinction), et dès qu'on est au-dessus de $600$ elle augmente sans limite (explosion démographique).
+
+On parle alors d'équilibre **instable**.
+
+**Partie B : Suite Auxiliaire et Expression Explicite**
+
+**Question B1 :** Montrer que $(v_n)$ est géométrique
+:::
+
+::: point Calcul de $\displaystyle v_{n+1}$
+$\displaystyle v_{n+1} = u_{n+1} - 600 = (1,5u_n - 300) - 600$
+
+$\displaystyle = 1,5u_n - 900$
+
+$\displaystyle = 1,5(u_n - 600) = 1,5v_n$
+:::
+
+::: resultat
+$(v_n)$ est **géométrique** de raison $q = 1,5$ et $v_0 = u_0 - 600 = -100$
+
+**Question B2 :** Expressions explicites
+:::
+
+::: point Expression de $\displaystyle v_n$
+$$v_n = v_0 \times (1,5)^n = -100 \times (1,5)^n$$
+:::
+
+::: point Expression de $\displaystyle u_n$
+$\displaystyle u_n = v_n + 600 = 600 - 100 \times (1,5)^n$
+
+**Partie C : Variation et Extinction**
+
+**Question C1 :** Sens de variation
+:::
+
+::: point Sens de variation
+Avec $\displaystyle u_n = 600 - 100 \times (1,5)^n$ :
+
+- $(1,5)^n$ est croissante (car $1,5 > 1$)
+- Donc $\displaystyle -100 \times (1,5)^n$ est décroissante
+- Ainsi $u_n$ est **strictement décroissante**
+
+**Question C2 :** Extinction
+:::
+
+::: point Calcul
+On cherche le premier rang $n$ tel que $u_n \leq 0$.
+
+On calcule quelques valeurs :
+
+- $\displaystyle u_0 = 500$
+- $\displaystyle u_1 = 1,5 \times 500 - 300 = 450$
+- $\displaystyle u_2 = 1,5 \times 450 - 300 = 375$
+- $\displaystyle u_3 = 1,5 \times 375 - 300 = 262,5$
+- $u_4 = 1,5 \times 262,5 - 300 = 93,75$ ($> 0$)
+- $u_5 = 1,5 \times 93,75 - 300 = -159,375$ ($\leq 0$)
+
+On peut aussi utiliser la formule explicite : $u_n = 600 - 100 \times (1,5)^n$
+
+On cherche $n$ tel que $600 - 100 \times (1,5)^n \leq 0$, soit $(1,5)^n \geq 6$.
+
+Par calcul numérique : $(1,5)^4 = 5,0625 < 6$ et $(1,5)^5 = 7,59375 \geq 6$.
+:::
+
+::: resultat
+À partir du jour $n = 5$, la population s'éteint ($u_5 < 0$)
+
+**Question C3 :** Cas avec $\displaystyle u_0 = 700$
+:::
+
+::: point Nouvelle formule avec $\displaystyle u_0 = 700$
+$\displaystyle v_0 = 700 - 600 = 100$
+
+$\displaystyle v_n = 100 \times (1,5)^n$
+
+$\displaystyle u_n = 600 + 100 \times (1,5)^n$
+:::
+
+::: point Analyse de la positivité
+- Pour tout $n \geq 0$ : $(1,5)^n > 0$
+- Donc $\displaystyle u_n = 600 + 100 \times (1,5)^n > 600 > 0$
+- La population reste **toujours positive**
+:::
+
+::: point Sens de variation
+$\displaystyle u_{n+1} - u_n = [600 + 100(1,5)^{n+1}] - [600 + 100(1,5)^n]$
+
+$\displaystyle = 100(1,5)^n[1,5 - 1] = 50(1,5)^n > 0$
+
+- La suite est **strictement croissante**
+:::
+
+::: point Limite
+Puisque $1,5 > 1$ : $\lim\limits_{n \to +\infty} (1,5)^n = +\infty$
+
+Donc $\displaystyle \lim\limits_{n \to +\infty} u_n = +\infty$
+:::
+
+::: resultat
+**OUI**, avec $u_0 = 700$, la population survit et croît indéfiniment
+
+car elle dépasse le **seuil critique** de $600$ bactéries
+:::
+
+Solution:
+<!-- optitab:1 -->
+**Partie A : Modélisation et Relation de Récurrence**
+
+**A1.** $u_{n+1} = 1,5u_n - 300$ avec $u_1 = 450$ et $u_2 = 375$
+
+**A2.** Suite arithmético-géométrique - Point fixe : $\ell = 600$ bactéries
+
+---
+
+**Partie B : Suite Auxiliaire et Expression Explicite**
+
+**B1.** $(v_n)$ est géométrique de raison $q = 1,5$ et $v_0 = -100$
+
+**B2.**
+
+a) $\displaystyle v_n = -100 \times (1,5)^n$
+
+b) $\displaystyle u_n = 600 - 100 \times (1,5)^n$
+
+---
+
+**Partie C : Variation et Extinction**
+
+**C1.** Suite **strictement décroissante**
+
+**C2.** Extinction au jour $\displaystyle n = 5$
+
+**C3.** **OUI** - Avec $u_0 = 700$ : $u_n = 600 + 100(1,5)^n \to +\infty$ - Population survit et croît
+
+===
+
+=== DS - Suites Numériques - Type 3
+Id: 1721
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Ce devoir surveillé couvre l'ensemble du chapitre sur les suites numériques.
+
+$\underline{\textbf{Partie A : Modélisation et Calculs}}$
+
+Un étudiant économise de l'argent pour acheter un ordinateur. Le 1er janvier, il a 200 € sur son compte. Chaque mois, il dépose 50 € supplémentaires. De plus, son compte bancaire lui rapporte 2 % d'intérêts par mois (intérêts composés).
+
+On note $\displaystyle C_n$ le capital disponible après $\displaystyle n$ mois (avec $\displaystyle C_0 = 200$ le 1er janvier).
+
+**Question A1 :** Montrer que la relation de récurrence est :
+
+$\displaystyle C_{n+1} = 1{,}02 \times C_n + 50$ pour tout $\displaystyle n \geq 0$.
+
+**Question A2 :** Calculer $\displaystyle C_1$, $\displaystyle C_2$ et $\displaystyle C_3$ (arrondir au centime).
+
+$\underline{\textbf{Partie B : Algorithme et Résolution}}$
+
+On souhaite savoir au bout de combien de mois l'étudiant aura au moins 1000 €.
+
+**Question B1 :** Écrire un algorithme (en langage naturel ou Python) qui détermine le nombre de mois nécessaire.
+
+**Question B2 :** En utilisant un tableur ou en programmant, déterminer ce nombre de mois.
+
+$\underline{\textbf{Partie C : Comparaison avec et sans Intérêts}}$
+
+On suppose maintenant que l'étudiant dépose 50 € chaque mois mais sans intérêts. On note $D_n$ le capital après $n$ mois dans ce cas.
+
+**Question C1 :** Quelle est la nature de la suite $(D_n)$ ? Donner son expression explicite.
+
+**Question C2 :** Au bout de combien de mois aurait-il 1000 € dans ce cas (sans intérêts) ?
+
+Étapes:
+<!-- optitab:1 -->
+**Partie A : Modélisation et Calculs**
+
+**Question A1 : Relation de récurrence**
+
+**Méthode :** Modéliser l'évolution du capital
+
+- Après $n$ mois, le capital est $C_n$
+- Les intérêts de 2 % sont ajoutés : le capital devient $1{,}02 \times C_n$
+- L'étudiant dépose ensuite 50 € : le capital devient $1{,}02 \times C_n + 50$
+- Donc : $C_{n+1} = 1{,}02 \times C_n + 50$ pour tout $n \geq 0$
+
+**Question A2 : Calcul des premiers termes**
+
+**Méthode :** Application de la relation de récurrence
+
+- $\displaystyle C_0 = 200$ €
+- $\displaystyle C_1 = 1{,}02 \times 200 + 50 = 204 + 50 = 254$ €
+- $\displaystyle C_2 = 1{,}02 \times 254 + 50 = 259{,}08 + 50 = 309{,}08$ €
+- $\displaystyle C_3 = 1{,}02 \times 309{,}08 + 50 = 315{,}2616 + 50 = 365{,}26$ € (arrondi au centime)
+
+**Partie B : Algorithme et Résolution**
+
+**Question B1 : Algorithme**
+
+**En langage naturel :**
+
+Initialisation : $C \leftarrow 200$, $n \leftarrow 0$
+
+Tant que $\displaystyle C < 1000$ :
+
+$\displaystyle C \leftarrow 1{,}02 \times C + 50$
+
+$\displaystyle n \leftarrow n + 1$
+
+Fin Tant que
+
+Afficher $\displaystyle n$
+
+**Code Python équivalent :**
+
+**Code Python :**
+
+```python
+# Initialisation
+C = 200
+n = 0
+
+# Recherche du nombre de mois
+while C < 1000:
+    C = 1.02 * C + 50
+    n = n + 1
+    print(f"Mois {n} : C = {C:.2f} €")
+
+print(f"Nombre de mois nécessaire : {n}")
+```
+
+**Question B2 : Résolution**
+
+::: point Exécution (approximative)
+En programmant ou avec un tableur, on trouve que $C_{13} \approx 992{,}74$ € et $C_{14} \approx 1062{,}59$ €
+
+Donc l'étudiant atteint 1000 € au bout de **14 mois** (en mars de l'année suivante)
+
+**Partie C : Comparaison avec et sans Intérêts**
+
+**Question C1 : Nature de la suite**
+
+- Sans intérêts : $D_{n+1} = D_n + 50$ avec $D_0 = 200$
+- C'est une suite arithmétique de raison $r = 50$ et de premier terme $D_0 = 200$
+- Expression explicite : $D_n = 200 + 50n$ pour tout $n \geq 0$
+
+**Question C2 : Nombre de mois pour atteindre 1000 €**
+:::
+
+::: point Calcul
+- On cherche $n$ tel que $D_n \geq 1000$
+
+$$
+\begin{aligned}
+200 + 50n \geq 1000 &\Leftrightarrow 50n \geq 800 \\
+&\Leftrightarrow n \geq 16
+\end{aligned}
+$$
+
+- Donc il faut **16 mois** pour atteindre 1000 € sans intérêts
+- **Comparaison :** Avec les intérêts, il atteint 1000 € en 14 mois, donc les intérêts permettent d'économiser 2 mois !
+:::
+
+Solution:
+<!-- optitab:1 -->
+**Partie A : Modélisation et Calculs**
+
+**A1.** $C_{n+1} = 1{,}02 \times C_n + 50$ pour tout $n \geq 0$
+
+**A2.** $C_1 = 254$ €, $C_2 = 309{,}08$ €, $C_3 = 365{,}26$ €
+
+---
+
+**Partie B : Algorithme et Résolution**
+
+**B1.** Algorithme : Initialiser $C = 200$ et $n = 0$, puis tant que $C < 1000$, faire $C = 1{,}02 \times C + 50$ et $n = n + 1$
+
+**B2.** L'étudiant atteint 1000 € au bout de **14 mois**
+
+---
+
+**Partie C : Comparaison avec et sans Intérêts**
+
+**C1.** La suite $(D_n)$ est arithmétique : $D_n = 200 + 50n$
+
+**C2.** Sans intérêts, il faut **16 mois** pour atteindre 1000 €
+
+===
+
+=== Entraînement - Étude graphique d'une suite avec point fixe répulsif
+Id: 1723
+Difficulté: medium
+Image: suite_recurrence_toile_araignee_2.png
+
+Énoncé:
+<!-- optitab:1 -->
+On considère la suite $\displaystyle (u_n)$ définie par récurrence :
+
+$\displaystyle u_0 = 0,5$ et $\displaystyle u_{n+1} = 2u_n - 1$ pour tout $\displaystyle n \in \mathbb{N}$
+
+On note $\displaystyle f$ la fonction définie sur $\displaystyle \mathbb{R}$ par $\displaystyle f(x) = 2x - 1$.
+
+1. Calculs des premiers termes
+
+   Calculer $\displaystyle u_1$, $\displaystyle u_2$, $\displaystyle u_3$ et $\displaystyle u_4$.
+2. Point fixe
+
+   Déterminer le point fixe $\displaystyle \ell$ de la fonction $\displaystyle f$.
+3. Représentation graphique
+
+   À l'aide de la méthode de la toile d'araignée, représenter graphiquement les quatre premiers termes de la suite.
+4. Analyse du comportement
+
+   Que constate-t-on sur le comportement de la suite ? La suite converge-t-elle vers le point fixe ?
+5. Étude algébrique
+
+   a) Montrer que la suite $\displaystyle (v_n)$ définie par $\displaystyle v_n = u_n - 1$ est une suite géométrique.
+
+   b) En déduire l'expression de $\displaystyle u_n$ en fonction de $\displaystyle n$.
+
+   c) Déterminer le comportement de $\displaystyle (u_n)$ lorsque $\displaystyle n$ tend vers $\displaystyle +\infty$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculs des premiers termes
+
+::: point Calcul de $\displaystyle u_1$
+- $\displaystyle u_1 = f(u_0) = 2 \times 0,5 - 1 = 1 - 1 = 0$
+:::
+
+::: point Calcul de $\displaystyle u_2$
+- $\displaystyle u_2 = f(u_1) = 2 \times 0 - 1 = -1$
+:::
+
+::: point Calcul de $\displaystyle u_3$
+- $\displaystyle u_3 = f(u_2) = 2 \times (-1) - 1 = -2 - 1 = -3$
+:::
+
+::: point Calcul de $\displaystyle u_4$
+- $\displaystyle u_4 = f(u_3) = 2 \times (-3) - 1 = -6 - 1 = -7$
+:::
+
+::: point Observation
+- Les termes sont : $\displaystyle 0,5 \to 0 \to -1 \to -3 \to -7$
+- La suite semble décroître rapidement vers $-\infty$
+:::
+
+## Question 2 : Point fixe
+
+::: point Résolution de $\displaystyle f(\ell) = \ell$
+- $\displaystyle 2\ell - 1 = \ell$
+- $\displaystyle 2\ell - \ell = 1$
+- $\displaystyle \ell = 1$
+:::
+
+::: point Interprétation
+- Le point fixe est $\displaystyle \ell = 1$
+- Il correspond à l'intersection de la courbe $C_f$ et de la droite $y = x$ au point $(1, 1)$
+:::
+
+## Question 3 : Représentation graphique
+
+[IMAGE_1]
+
+::: point Construction de la toile d'araignée
+- **Étape 1 :** On place $u_0 = 0,5$ sur l'axe des abscisses
+- **Étape 2 :** On va verticalement jusqu'à la courbe $C_f$ → ordonnée $u_1 = 0$
+- **Étape 3 :** On va horizontalement vers la droite $y = x$ → point $(0, 0)$
+- **Étape 4 :** On descend verticalement vers $C_f$ → ordonnée $u_2 = -1$
+- **Étape 5 :** On va horizontalement vers $y = x$ → point $(-1, -1)$
+- On répète : $u_3 = -3$, puis $u_4 = -7$
+:::
+
+::: point Observation graphique
+- La toile d'araignée s'éloigne du point fixe $(1, 1)$
+- Les segments s'allongent de plus en plus vers le bas à gauche
+- La suite diverge en s'éloignant du point fixe
+:::
+
+## Question 4 : Analyse du comportement
+
+::: point Constatations
+- La suite part de $u_0 = 0,5$ (proche de $\ell = 1$)
+- Mais elle ne converge PAS vers le point fixe
+- Au contraire, elle s'en éloigne : $0,5 \to 0 \to -1 \to -3 \to -7$
+- La suite est strictement décroissante
+:::
+
+::: point Nature du point fixe
+- Le point fixe $\ell = 1$ est dit **« répulsif »**
+- Cela signifie que si $u_0 \neq \ell$, la suite s'éloigne du point fixe
+- Graphiquement : la pente de $f$ au point fixe est $f'(1) = 2 > 1$, ce qui explique le caractère répulsif
+:::
+
+::: resultat
+- La suite ne converge pas vers le point fixe
+- Elle diverge vers $\displaystyle -\infty$
+:::
+
+## Question 5 : Étude algébrique
+
+::: point a) Suite auxiliaire $\displaystyle (v_n)$
+- On pose $\displaystyle v_n = u_n - 1$
+- Calcul de $\displaystyle v_{n+1}$ :
+  - $\displaystyle v_{n+1} = u_{n+1} - 1 = (2u_n - 1) - 1 = 2u_n - 2 = 2(u_n - 1) = 2v_n$
+- Donc $(v_n)$ est géométrique de raison $q = 2$
+- Premier terme : $\displaystyle v_0 = u_0 - 1 = 0,5 - 1 = -0,5 = -\frac{1}{2}$
+:::
+
+::: point b) Expression de $\displaystyle u_n$
+$$
+\begin{aligned}
+v_n &= v_0 \times q^n \\
+&= -\frac{1}{2} \times 2^n \\
+&= -\frac{2^n}{2} \\
+&= -2^{n-1}
+\end{aligned}
+$$
+
+- Donc $\displaystyle u_n = v_n + 1 = 1 - 2^{n-1}$
+:::
+
+::: point Vérification
+- $\displaystyle u_0 = 1 - 2^{-1} = 1 - \frac{1}{2} = 0,5$
+- $\displaystyle u_1 = 1 - 2^0 = 1 - 1 = 0$
+- $\displaystyle u_2 = 1 - 2^1 = 1 - 2 = -1$
+- $\displaystyle u_3 = 1 - 2^2 = 1 - 4 = -3$
+:::
+
+::: point c) Comportement à l'infini
+- Lorsque $n \to +\infty$, on a $2^{n-1} \to +\infty$
+- Donc $\displaystyle u_n = 1 - 2^{n-1} \to -\infty$
+- **Conclusion :** $\displaystyle \lim_{n \to +\infty} u_n = -\infty$
+- La suite diverge vers $-\infty$ (confirme l'observation graphique)
+
+**Synthèse : Point fixe attractif vs répulsif**
+:::
+
+**Point fixe attractif :**
+
+- Si $|f'(\ell)| < 1$, le point fixe est attractif
+- La suite converge vers $\ell$ (exemple précédent : $f(x) = \frac{1}{2}x + 1$)
+
+**Point fixe répulsif :**
+
+- Si $\displaystyle |f'(\ell)| > 1$, le point fixe est répulsif
+- La suite s'éloigne de $\ell$ (cet exercice : $f(x) = 2x - 1$, avec $f'(1) = 2$)
+
+**Utilité de la méthode graphique :**
+
+- Elle permet de visualiser immédiatement si la suite converge ou diverge
+- La forme de la toile d'araignée (spirale convergente ou divergente) est très informative
+
+Solution:
+<!-- optitab:1 -->
+1. $u_1 = 0$ ; $u_2 = -1$ ; $u_3 = -3$ ; $u_4 = -7$
+2. Point fixe : $\displaystyle \ell = 1$
+3. Construction graphique : toile d'araignée qui s'éloigne du point fixe vers le bas à gauche
+4. La suite ne converge pas vers le point fixe ; elle diverge vers $-\infty$ (point fixe répulsif)
+5. a) $(v_n)$ est géométrique de raison $2$ ; b) $u_n = 1 - 2^{n-1}$ ; c) $\lim_{n \to +\infty} u_n = -\infty$
+
+===
+
+=== Entraînement - Représentation graphique d'une suite récurrente (toile d'araignée)
+Id: 1722
+Difficulté: medium
+Image: suite_recurrence_toile_araignee_1.png
+
+Énoncé:
+<!-- optitab:1 -->
+On considère la suite $\displaystyle (u_n)$ définie par récurrence :
+
+$\displaystyle u_0 = 1$ et $\displaystyle u_{n+1} = \frac{1}{2}u_n + 1$ pour tout $\displaystyle n \in \mathbb{N}$
+
+On note $\displaystyle f$ la fonction définie sur $\displaystyle \mathbb{R}$ par $\displaystyle f(x) = \frac{1}{2}x + 1$.
+
+1. Calculs des premiers termes
+
+   Calculer $\displaystyle u_1$, $\displaystyle u_2$ et $\displaystyle u_3$ à l'aide de la relation de récurrence.
+2. Méthode graphique (toile d'araignée)
+
+   En utilisant la représentation graphique fournie (courbe de $f$ et droite $y = x$), déterminer graphiquement les valeurs de $u_1$, $u_2$, $u_3$ et $u_4$ en partant de $u_0 = 1$.
+3. Point fixe
+
+   Résoudre l'équation $f(\ell) = \ell$ pour trouver le point fixe de la fonction $f$. Que représente ce point sur le graphique ?
+4. Sens de variation
+
+   En observant la construction graphique, que peut-on conjecturer sur le comportement de la suite $(u_n)$ ?
+5. Vérification algébrique
+
+   Montrer que la suite $(v_n)$ définie par $v_n = u_n - 2$ est une suite géométrique. En déduire l'expression de $u_n$ en fonction de $n$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculs des premiers termes
+
+::: point Calcul de $\displaystyle u_1$
+$$
+\begin{aligned}
+u_1 &= f(u_0) \\
+&= \frac{1}{2} \times 1 + 1 \\
+&= \frac{1}{2} + 1 \\
+&= \frac{3}{2} \\
+&= 1,5
+\end{aligned}
+$$
+:::
+
+::: point Calcul de $\displaystyle u_2$
+$$
+\begin{aligned}
+u_2 &= f(u_1) \\
+&= \frac{1}{2} \times \frac{3}{2} + 1 \\
+&= \frac{3}{4} + 1 \\
+&= \frac{7}{4} \\
+&= 1,75
+\end{aligned}
+$$
+:::
+
+::: point Calcul de $\displaystyle u_3$
+$$
+\begin{aligned}
+u_3 &= f(u_2) \\
+&= \frac{1}{2} \times \frac{7}{4} + 1 \\
+&= \frac{7}{8} + 1 \\
+&= \frac{15}{8} \\
+&= 1,875
+\end{aligned}
+$$
+:::
+
+## Question 2 : Méthode graphique (toile d'araignée)
+
+[IMAGE_1]
+
+::: point Principe de la construction
+- On dispose de la courbe $C_f$ de la fonction $f(x) = \frac{1}{2}x + 1$
+- On dispose de la droite $\Delta : y = x$ (première bissectrice)
+- La droite $y = x$ permet de « rabattre » l'ordonnée sur l'abscisse
+:::
+
+::: etape Déterminer $\displaystyle u_1$ graphiquement
+- On place $u_0 = 1$ sur l'axe des abscisses
+- On monte verticalement jusqu'à la courbe $C_f$ : on atteint le point de coordonnées $(u_0, f(u_0)) = (1, u_1)$
+- L'ordonnée de ce point est $\displaystyle u_1 = f(u_0) = 1,5$
+- On se déplace horizontalement vers la droite $y = x$ : on atteint le point $(u_1, u_1)$
+- La projection sur l'axe des abscisses donne $u_1 = 1,5$
+:::
+
+::: etape Déterminer $\displaystyle u_2$ graphiquement
+- Depuis le point $(u_1, u_1)$ sur la droite $y = x$
+- On monte (ou descend) verticalement jusqu'à la courbe $C_f$ : on atteint $(u_1, f(u_1)) = (u_1, u_2)$
+- L'ordonnée donne $\displaystyle u_2 = f(u_1) = 1,75$
+- On va horizontalement vers la droite $y = x$ pour « rabattre » $u_2$ sur l'axe des abscisses
+:::
+
+::: etape Répétition pour $u_3$ et $u_4$
+- On répète le processus : verticalement vers $C_f$, puis horizontalement vers $y = x$
+- Graphiquement, on obtient : $u_3 = \frac{15}{8} = 1,875$ et $u_4 = \frac{31}{16} = 1,9375$
+- Ces valeurs forment une « toile d'araignée » qui converge vers le point fixe
+:::
+
+::: point Visualisation sur le graphique
+- Les segments verticaux et horizontaux alternés créent un motif en « escalier » ou « toile »
+- La suite semble se rapprocher progressivement d'une valeur limite
+:::
+
+## Question 3 : Point fixe
+
+::: point Résolution de l'équation $\displaystyle f(\ell) = \ell$
+- $\displaystyle \frac{1}{2}\ell + 1 = \ell$
+- $\displaystyle 1 = \ell - \frac{1}{2}\ell$
+- $\displaystyle 1 = \frac{1}{2}\ell$
+- $\displaystyle \ell = 2$
+:::
+
+::: point Interprétation graphique
+- Le point fixe $\ell = 2$ correspond à l'intersection de la courbe $C_f$ et de la droite $y = x$
+- C'est le point de coordonnées $(2, 2)$
+- Sur le graphique, c'est vers ce point que la « toile d'araignée » converge
+- Si $u_n = 2$, alors $u_{n+1} = f(2) = 2$, donc la suite reste constante
+:::
+
+## Question 4 : Sens de variation
+
+::: point Observation graphique
+- La suite part de $\displaystyle u_0 = 1$
+- Les termes successifs sont : $\displaystyle 1 < 1,5 < 1,75 < 1,875 < ...$
+- La suite $(u_n)$ est **strictement croissante**
+- Les termes se rapprochent de plus en plus de la valeur $\ell = 2$ sans jamais l'atteindre
+:::
+
+::: point Conjecture
+- La suite $(u_n)$ est croissante et converge vers $2$
+- On peut écrire : $\displaystyle \lim_{n \to +\infty} u_n = 2$
+:::
+
+## Question 5 : Vérification algébrique
+
+::: point Étude de la suite auxiliaire $\displaystyle (v_n)$
+- On pose $v_n = u_n - 2$ pour tout $n \in \mathbb{N}$
+:::
+
+::: point Calcul de $\displaystyle v_{n+1}$
+- $\displaystyle v_{n+1} = u_{n+1} - 2$
+- $\displaystyle v_{n+1} = \left(\frac{1}{2}u_n + 1\right) - 2$
+- $\displaystyle v_{n+1} = \frac{1}{2}u_n - 1$
+- $\displaystyle v_{n+1} = \frac{1}{2}(u_n - 2)$
+- $\displaystyle v_{n+1} = \frac{1}{2}v_n$
+:::
+
+::: resultat
+- La suite $(v_n)$ est géométrique de raison $q = \frac{1}{2}$
+- Premier terme : $\displaystyle v_0 = u_0 - 2 = 1 - 2 = -1$
+:::
+
+::: point Expression de $\displaystyle v_n$
+$$
+\begin{aligned}
+v_n &= v_0 \times q^n \\
+&= -1 \times \left(\frac{1}{2}\right)^n \\
+&= -\frac{1}{2^n}
+\end{aligned}
+$$
+:::
+
+::: point Expression de $\displaystyle u_n$
+- $\displaystyle u_n = v_n + 2 = 2 - \frac{1}{2^n}$
+:::
+
+::: point Vérification avec les premiers termes
+- $\displaystyle u_0 = 2 - \frac{1}{2^0} = 2 - 1 = 1$
+
+$$
+\begin{aligned}
+u_1 &= 2 - \frac{1}{2^1} \\
+&= 2 - \frac{1}{2} \\
+&= \frac{3}{2}
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+u_2 &= 2 - \frac{1}{2^2} \\
+&= 2 - \frac{1}{4} \\
+&= \frac{7}{4}
+\end{aligned}
+$$
+:::
+
+::: point Comportement à l'infini
+- Lorsque $n \to +\infty$, on a $\frac{1}{2^n} \to 0$
+- Donc $\lim_{n \to +\infty} u_n = 2$ (confirme la conjecture graphique)
+
+**Synthèse des méthodes**
+:::
+
+**Méthode graphique (toile d'araignée) :**
+
+- Permet de visualiser rapidement le comportement de la suite
+- Indique la convergence vers le point fixe
+- Utile pour conjecturer sans calculs lourds
+
+**Méthode algébrique :**
+
+- Permet de prouver rigoureusement les conjectures
+- Donne l'expression exacte de $u_n$
+- Confirme la limite de la suite
+
+Solution:
+<!-- optitab:1 -->
+1. $u_1 = 1,5$ ; $u_2 = 1,75$ ; $u_3 = 1,875$
+2. Graphiquement : $u_1 = 1,5$, $u_2 = 1,75$, $u_3 = 1,875$, $u_4 \approx 1,9375$ (construction en toile d'araignée)
+3. Point fixe : $\ell = 2$ (intersection de $C_f$ et de la droite $y = x$)
+4. La suite est croissante et converge vers $2$
+5. $(v_n)$ est géométrique de raison $\frac{1}{2}$ ; $u_n = 2 - \frac{1}{2^n}$ ; $\lim_{n \to +\infty} u_n = 2$
+
+===
+
+=== Entraînement - Suites Numériques - Limites Intuitives
+Id: 1716
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Déterminer la limite (intuitive) des suites suivantes lorsque $n$ tend vers $+\infty$.
+
+1. $\displaystyle u_n = \frac{1}{n+1}$
+2. $\displaystyle v_n = 3n - 5$
+3. $\displaystyle w_n = 2 \times \left(\frac{1}{3}\right)^n$
+4. $\displaystyle t_n = \frac{2n+1}{n+3}$
+5. $\displaystyle s_n = 5 + \frac{1}{n^2}$
+6. $\displaystyle a_n = (-1)^n$
+7. $\displaystyle b_n = 3^n$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Limite nulle
+
+**Méthode :** Limite usuelle
+
+- $u_n = \frac{1}{n+1}$ : lorsque $n$ devient très grand, $n+1$ devient très grand, donc $\frac{1}{n+1}$ se rapproche de 0
+- D'après les limites usuelles : $\lim_{n \to +\infty} \frac{1}{n} = 0$
+
+**Conclusion :** $\displaystyle \lim_{n \to +\infty} u_n = 0$
+
+## Question 2 : Limite infinie
+
+**Méthode :** Suite arithmétique de raison positive
+
+- $v_n = 3n - 5$ : lorsque $n$ devient très grand, $3n$ domine et devient très grand
+- C'est une suite arithmétique de raison $r = 3 > 0$, donc elle diverge vers $+\infty$
+
+**Conclusion :** $\displaystyle \lim_{n \to +\infty} v_n = +\infty$
+
+## Question 3 : Limite nulle (suite géométrique)
+
+**Méthode :** Suite géométrique de raison entre -1 et 1
+
+- $w_n = 2 \times \left(\frac{1}{3}\right)^n$ : c'est une suite géométrique de raison $q = \frac{1}{3}$ et de premier terme $w_0 = 2$
+- Comme $|q| = \frac{1}{3} < 1$, on a $\lim_{n \to +\infty} q^n = 0$
+- Donc $\displaystyle \lim_{n \to +\infty} w_n = 2 \times 0 = 0$
+
+**Conclusion :** $\displaystyle \lim_{n \to +\infty} w_n = 0$
+
+## Question 4 : Limite finie (quotient de polynômes)
+
+**Méthode :** Factoriser par le terme dominant
+
+- $\displaystyle t_n = \frac{2n+1}{n+3} = \frac{n(2 + \frac{1}{n})}{n(1 + \frac{3}{n})} = \frac{2 + \frac{1}{n}}{1 + \frac{3}{n}}$
+- Lorsque $n \to +\infty$ : $\frac{1}{n} \to 0$ et $\frac{3}{n} \to 0$
+- Donc $\displaystyle t_n \to \frac{2 + 0}{1 + 0} = 2$
+
+**Conclusion :** $\displaystyle \lim_{n \to +\infty} t_n = 2$
+
+## Question 5 : Limite finie (somme)
+
+**Méthode :** Limite d'une somme
+
+- $\displaystyle s_n = 5 + \frac{1}{n^2}$
+- On a : $\lim_{n \to +\infty} 5 = 5$ et $\lim_{n \to +\infty} \frac{1}{n^2} = 0$
+- Par limite d'une somme : $\displaystyle \lim_{n \to +\infty} s_n = 5 + 0 = 5$
+
+**Conclusion :** $\displaystyle \lim_{n \to +\infty} s_n = 5$
+
+## Question 6 : Suite alternée (pas de limite)
+
+**Méthode :** Observer les valeurs
+
+- $\displaystyle a_0 = (-1)^0 = 1$
+- $\displaystyle a_1 = (-1)^1 = -1$
+- $\displaystyle a_2 = (-1)^2 = 1$
+- $\displaystyle a_3 = (-1)^3 = -1$
+- La suite alterne entre 1 et -1, elle ne se rapproche d'aucune valeur fixe
+
+**Conclusion :** La suite $(a_n)$ n'a pas de limite (elle diverge sans tendre vers $+\infty$ ou $-\infty$)
+
+## Question 7 : Limite infinie (suite géométrique)
+
+**Méthode :** Suite géométrique de raison supérieure à 1
+
+- $b_n = 3^n$ : c'est une suite géométrique de raison $q = 3 > 1$
+- Comme $q > 1$, on a $\lim_{n \to +\infty} 3^n = +\infty$
+
+**Conclusion :** $\displaystyle \lim_{n \to +\infty} b_n = +\infty$
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle \lim_{n \to +\infty} u_n = 0$
+2. $\displaystyle \lim_{n \to +\infty} v_n = +\infty$
+3. $\displaystyle \lim_{n \to +\infty} w_n = 0$
+4. $\displaystyle \lim_{n \to +\infty} t_n = 2$
+5. $\displaystyle \lim_{n \to +\infty} s_n = 5$
+6. La suite $(a_n)$ n'a pas de limite (elle diverge)
+7. $\displaystyle \lim_{n \to +\infty} b_n = +\infty$
+
+===
+
+=== Entraînement - Suites Numériques - Sens de Variation
+Id: 1709
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Étudier le sens de variation des suites suivantes.
+
+1. Soit $\displaystyle (u_n)$ définie par $\displaystyle u_n = 2n - 5$. Étudier le sens de variation.
+2. Soit $\displaystyle (v_n)$ définie par $\displaystyle v_n = -3n + 7$. Étudier le sens de variation.
+3. Soit $\displaystyle (w_n)$ définie par $\displaystyle w_n = n^2 - 4n$. Étudier le sens de variation.
+4. Soit $\displaystyle (t_n)$ définie par $\displaystyle t_n = \displaystyle\frac{1}{n+1}$ pour $\displaystyle n \geq 0$. Étudier le sens de variation.
+5. Soit $\displaystyle (s_n)$ définie par $\displaystyle s_0 = 1$ et $\displaystyle s_{n+1} = 2s_n$. Étudier le sens de variation.
+
+Étapes:
+<!-- optitab:1 -->
+**Méthode générale :** Étude du sens de variation
+
+::: methode
+Étudier le signe de $\displaystyle u_{n+1} - u_n$
+
+$\qquad$• Si $u_{n+1} - u_n \geq 0$ : suite croissante
+
+$\qquad$• Si $u_{n+1} - u_n \leq 0$ : suite décroissante
+:::
+
+::: methode
+Si $u_n > 0$, étudier le quotient $\dfrac{u_{n+1}}{u_n}$
+
+$\qquad$• Si $\dfrac{u_{n+1}}{u_n} \geq 1$ : suite croissante
+
+$\qquad$• Si $\dfrac{u_{n+1}}{u_n} \leq 1$ : suite décroissante
+:::
+
+::: methode
+Utiliser la dérivée de la fonction associée (si $u_n = f(n)$)
+:::
+
+## Question 1 : Étudier la variation de $\displaystyle u_n = 2n - 5$
+
+::: methode
+Étudier $\displaystyle u_{n+1} - u_n$
+:::
+
+::: point Calcul
+$\displaystyle u_{n+1} - u_n = [2(n+1) - 5] - [2n - 5]$
+
+$\qquad\qquad\quad$ $= 2n + 2 - 5 - 2n + 5 = 2$
+:::
+
+::: resultat
+$u_{n+1} - u_n = 2 > 0$ donc $(u_n)$ est **strictement croissante**
+:::
+
+::: remarque
+C'est une suite arithmétique de raison $r = 2 > 0$
+:::
+
+## Question 2 : Étudier la variation de $\displaystyle v_n = -3n + 7$
+
+::: methode
+Étudier $\displaystyle v_{n+1} - v_n$
+:::
+
+::: point Calcul
+$\displaystyle v_{n+1} - v_n = [-3(n+1) + 7] - [-3n + 7]$
+
+$\qquad\qquad\quad$ $= -3n - 3 + 7 + 3n - 7 = -3$
+:::
+
+::: resultat
+$v_{n+1} - v_n = -3 < 0$ donc $(v_n)$ est **strictement décroissante**
+:::
+
+::: remarque
+C'est une suite arithmétique de raison $r = -3 < 0$
+:::
+
+## Question 3 : Étudier la variation de $\displaystyle w_n = n^2 - 4n$
+
+::: methode
+Étudier $\displaystyle w_{n+1} - w_n$
+:::
+
+::: point Calcul
+$\displaystyle w_{n+1} - w_n = [(n+1)^2 - 4(n+1)] - [n^2 - 4n]$
+
+$\qquad\qquad\quad$ $= n^2 + 2n + 1 - 4n - 4 - n^2 + 4n$
+
+$\qquad\qquad\quad$ $= 2n - 3$
+:::
+
+::: point Étude du signe
+$\displaystyle w_{n+1} - w_n = 2n - 3$
+
+$\qquad$• $2n - 3 \geq 0 \Leftrightarrow n \geq \frac{3}{2}$
+:::
+
+::: resultat
+Puisque $\displaystyle n \in \mathbb{N}$ (entiers naturels) :
+
+$\qquad$• Pour $n = 0$ ou $n = 1$ : $(w_n)$ est **décroissante**
+
+$\qquad$• Pour $n \geq 2$ : $(w_n)$ est **croissante**
+:::
+
+## Question 4 : Étudier la variation de $\displaystyle t_n = \displaystyle\frac{1}{n+1}$ pour $\displaystyle n \geq 0$
+
+::: methode
+Étudier $\displaystyle t_{n+1} - t_n$
+:::
+
+::: point Calcul
+$\displaystyle t_{n+1} - t_n = \displaystyle\frac{1}{n+2} - \displaystyle\frac{1}{n+1}$
+
+$\qquad\qquad\quad$ $= \frac{(n+1) - (n+2)}{(n+1)(n+2)} = \frac{-1}{(n+1)(n+2)}$
+:::
+
+::: point Étude du signe
+Pour $n \geq 0$ : $(n+1)(n+2) > 0$
+
+$\qquad\qquad\qquad$ donc $t_{n+1} - t_n = \frac{-1}{(n+1)(n+2)} < 0$
+:::
+
+::: resultat
+$(t_n)$ est **strictement décroissante**
+:::
+
+## Question 5 : Étudier la variation de $\displaystyle s_0 = 1$ et $\displaystyle s_{n+1} = 2s_n$
+
+::: point Identification
+Suite géométrique avec $s_0 = 1 > 0$ et $q = 2 > 1$
+:::
+
+::: methode
+Étudier le quotient $\frac{s_{n+1}}{s_n}$ (car $s_n > 0$)
+:::
+
+::: point Calcul
+$$\frac{s_{n+1}}{s_n} = \frac{2s_n}{s_n} = 2$$
+:::
+
+::: point Étude
+$\frac{s_{n+1}}{s_n} = 2 > 1$ pour tout $n$
+:::
+
+::: resultat
+$(s_n)$ est **strictement croissante**
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Strictement croissante
+2. Strictement décroissante
+3. Décroissante pour $n = 0$ ou $n = 1$, croissante pour $n \geq 2$
+4. Strictement décroissante
+5. Strictement croissante
+
+===
+
+=== Entraînement - Suites Numériques - Sommes
+Id: 1717
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Calculer les sommes suivantes.
+
+1. Calculer $\displaystyle S_1 = 1 + 2 + 3 + \cdots + 20$
+2. Soit $\displaystyle (u_n)$ une suite arithmétique avec $\displaystyle u_0 = 5$ et $\displaystyle r = 3$. Calculer $\displaystyle S_2 = u_0 + u_1 + \cdots + u_{10}$.
+3. Calculer $\displaystyle S_3 = 1 + 2 + 4 + 8 + 16 + 32$
+4. Soit $\displaystyle (v_n)$ une suite géométrique avec $\displaystyle v_0 = 3$ et $\displaystyle q = 2$. Calculer $\displaystyle S_4 = v_0 + v_1 + \cdots + v_5$.
+5. Calculer $\displaystyle S_5 = 1 + \frac{1}{2} + \frac{1}{4} + \frac{1}{8} + \frac{1}{16}$
+
+Étapes:
+<!-- optitab:1 -->
+**Notation importante :** Dans ce qui suit, on note $S_n = u_0 + u_1 + \cdots + u_n$ la somme des termes de la suite de l'indice 0 à l'indice $n$. Cette somme contient donc **$(n+1)$ termes** (et non $n$ termes). Par exemple, $S_5 = u_0 + u_1 + u_2 + u_3 + u_4 + u_5$ contient 6 termes.
+
+## Question 1 : Somme des entiers de 1 à 20
+
+**Méthode :** Formule de Gauss
+
+- $\displaystyle S_1 = 1 + 2 + 3 + \cdots + 20 = \sum_{k=1}^{20} k$
+- D'après la formule : $\displaystyle \sum_{k=1}^{n} k = \frac{n(n+1)}{2}$
+- Donc : $\displaystyle S_1 = \frac{20 \times 21}{2} = \frac{420}{2} = 210$
+
+## Question 2 : Somme d'une suite arithmétique
+
+**Méthode :** Formule de la somme d'une suite arithmétique
+
+- Suite arithmétique : $\displaystyle u_n = u_0 + n \times r = 5 + 3n$
+- On calcule d'abord $\displaystyle u_{10} = 5 + 3 \times 10 = 35$
+- Formule : $\displaystyle \sum_{k=0}^{n} u_k = (n+1) \times \frac{u_0 + u_n}{2}$
+- Donc : $\displaystyle S_2 = 11 \times \frac{5 + 35}{2} = 11 \times \frac{40}{2} = 11 \times 20 = 220$
+
+## Question 3 : Somme géométrique (reconnaître le pattern)
+
+**Méthode :** Reconnaître une suite géométrique
+
+- On observe : $1, 2, 4, 8, 16, 32$ sont les puissances de 2
+- $\displaystyle S_3 = 2^0 + 2^1 + 2^2 + 2^3 + 2^4 + 2^5 = \sum_{k=0}^{5} 2^k$
+- C'est une somme géométrique de raison $q = 2$ et premier terme $1$
+- Formule : $\sum_{k=0}^{n} q^k = \frac{1 - q^{n+1}}{1 - q}$ (si $q \neq 1$)
+- Donc : $\displaystyle S_3 = \frac{1 - 2^6}{1 - 2} = \frac{1 - 64}{-1} = \frac{-63}{-1} = 63$
+
+## Question 4 : Somme d'une suite géométrique
+
+**Méthode :** Formule de la somme d'une suite géométrique
+
+- Suite géométrique : $\displaystyle v_n = v_0 \times q^n = 3 \times 2^n$
+- Formule : $\sum_{k=0}^{n} v_k = v_0 \times \frac{1 - q^{n+1}}{1 - q}$ (si $q \neq 1$)
+- Donc : $\displaystyle S_4 = 3 \times \frac{1 - 2^6}{1 - 2} = 3 \times \frac{1 - 64}{-1} = 3 \times 63 = 189$
+
+## Question 5 : Somme géométrique de raison inférieure à 1
+
+**Méthode :** Formule de la somme géométrique
+
+- On observe : $1, \frac{1}{2}, \frac{1}{4}, \frac{1}{8}, \frac{1}{16}$ sont les puissances de $\frac{1}{2}$
+- $\displaystyle S_5 = \left(\frac{1}{2}\right)^0 + \left(\frac{1}{2}\right)^1 + \left(\frac{1}{2}\right)^2 + \left(\frac{1}{2}\right)^3 + \left(\frac{1}{2}\right)^4 = \sum_{k=0}^{4} \left(\frac{1}{2}\right)^k$
+- Formule : $\sum_{k=0}^{n} q^k = \frac{1 - q^{n+1}}{1 - q}$ (si $q \neq 1$)
+- Donc : $\displaystyle S_5 = \frac{1 - \left(\frac{1}{2}\right)^5}{1 - \frac{1}{2}} = \frac{1 - \frac{1}{32}}{\frac{1}{2}} = \frac{\frac{31}{32}}{\frac{1}{2}} = \frac{31}{32} \times 2 = \frac{31}{16}$
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle S_1 = 210$
+2. $\displaystyle S_2 = 220$
+3. $\displaystyle S_3 = 63$
+4. $\displaystyle S_4 = 189$
+5. $\displaystyle S_5 = \frac{31}{16}$
+
+===
+
+=== Entraînement - Suites Numériques - Sommes de Suites Arithmétiques
+Id: 1705
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Calculer les sommes demandées pour les suites arithmétiques suivantes.
+
+1. Calculer $\displaystyle S = 1 + 2 + 3 + \cdots + 100$
+2. Soit $\displaystyle (u_n)$ arithmétique avec $\displaystyle u_0 = 3$ et $\displaystyle r = 5$. Calculer $\displaystyle S_{10} = u_0 + u_1 + \cdots + u_{10}$
+3. Calculer la somme $\displaystyle S = 2 + 5 + 8 + 11 + \cdots + 50$
+4. Soit $\displaystyle (v_n)$ arithmétique avec $\displaystyle v_0 = 10$ et $\displaystyle r = -2$. Calculer $\displaystyle S_{15} = v_0 + v_1 + \cdots + v_{15}$
+5. Calculer la somme des 30 premiers termes d'une suite arithmétique dont le premier terme est $-7$ et la raison est $4$
+
+Étapes:
+<!-- optitab:1 -->
+**Méthode générale :** Somme d'une suite arithmétique
+
+::: point Formule de la somme
+$$
+\begin{aligned}
+S_n &= u_0 + u_1 + \cdots + u_n \\
+&= \dfrac{(n+1)(u_0 + u_n)}{2}
+\end{aligned}
+$$
+:::
+
+::: point Formule alternative
+$$S_n = \dfrac{\text{(nombre de termes)} \times (\text{premier} + \text{dernier})}{2}$$
+:::
+
+::: rappel
+Pour une suite arithmétique : $\displaystyle u_n = u_0 + n \times r$
+:::
+
+## Question 1 : Calculer $\displaystyle S = 1 + 2 + 3 + \cdots + 100$
+
+::: point Identification
+Suite arithmétique avec $u_1 = 1$, $u_{100} = 100$, et 100 termes
+:::
+
+::: point Application de la formule
+$$S = \dfrac{100 \times (1 + 100)}{2}$$
+:::
+
+::: point Calcul
+$$S = \dfrac{100 \times 101}{2} = 50 \times 101 = 5050$$
+:::
+
+## Question 2 : Calculer $\displaystyle S_{10}$ avec $\displaystyle u_0 = 3$ et $\displaystyle r = 5$
+
+::: point Calcul de $\displaystyle u_{10}$
+$$u_{10} = u_0 + 10 \times r = 3 + 50 = 53$$
+:::
+
+::: point Nombre de termes
+De $u_0$ à $u_{10}$ : 11 termes
+:::
+
+::: point Application de la formule
+$$S_{10} = \dfrac{11 \times (3 + 53)}{2}$$
+:::
+
+::: point Calcul
+$$S_{10} = \dfrac{11 \times 56}{2} = 11 \times 28 = 308$$
+:::
+
+## Question 3 : Calculer $\displaystyle S = 2 + 5 + 8 + 11 + \cdots + 50$
+
+::: point Identification
+Suite arithmétique avec premier terme $a = 2$, raison $r = 3$, dernier terme $l = 50$
+:::
+
+::: point Nombre de termes
+$$
+\begin{aligned}
+50 = 2 + (n-1) \times 3 &\Rightarrow 48 = 3(n-1) \\
+&\Rightarrow n = 17
+\end{aligned}
+$$
+:::
+
+::: point Application de la formule
+$$S = \dfrac{17 \times (2 + 50)}{2}$$
+:::
+
+::: point Calcul
+$$S = \dfrac{17 \times 52}{2} = 17 \times 26 = 442$$
+:::
+
+## Question 4 : Calculer $\displaystyle S_{15}$ avec $\displaystyle v_0 = 10$ et $\displaystyle r = -2$
+
+::: point Calcul de $\displaystyle v_{15}$
+$$v_{15} = 10 + 15 \times (-2) = 10 - 30 = -20$$
+:::
+
+::: point Nombre de termes
+16 termes (de $v_0$ à $v_{15}$)
+:::
+
+::: point Application de la formule
+$$S_{15} = \dfrac{16 \times (10 + (-20))}{2}$$
+:::
+
+::: point Calcul
+$$S_{15} = \dfrac{16 \times (-10)}{2} = -80$$
+:::
+
+## Question 5 : Somme des 30 premiers termes avec $\displaystyle u_0 = -7$ et $\displaystyle r = 4$
+
+::: point Calcul de $\displaystyle u_{29}$
+$$u_{29} = -7 + 29 \times 4 = -7 + 116 = 109$$
+:::
+
+::: point Nombre de termes
+30 termes
+:::
+
+::: point Application de la formule
+$$S_{29} = \dfrac{30 \times (-7 + 109)}{2}$$
+:::
+
+::: point Calcul
+$$
+\begin{aligned}
+S_{29} &= \dfrac{30 \times 102}{2} \\
+&= 15 \times 102 \\
+&= 1530
+\end{aligned}
+$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle 5050$
+2. $\displaystyle 308$
+3. $\displaystyle 442$
+4. $\displaystyle -80$
+5. $\displaystyle 1530$
+
+===
+
+=== Entraînement - Suites Numériques - Sommes de Suites Géométriques
+Id: 1706
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Calculer les sommes demandées pour les suites géométriques suivantes.
+
+1. Soit $\displaystyle (u_n)$ géométrique avec $\displaystyle u_0 = 1$ et $\displaystyle q = 2$. Calculer $\displaystyle S_5 = u_0 + u_1 + \cdots + u_5$
+2. Calculer la somme $\displaystyle S = 1 + 3 + 9 + 27 + 81 + 243$
+3. Soit $\displaystyle (v_n)$ géométrique avec $\displaystyle v_0 = 4$ et $\displaystyle q = \displaystyle\frac{1}{2}$. Calculer $\displaystyle S_4 = v_0 + v_1 + \cdots + v_4$
+4. Calculer la somme des 8 premiers termes de la suite géométrique de premier terme $5$ et de raison $3$
+5. Soit $\displaystyle (w_n)$ géométrique avec $\displaystyle w_0 = 100$ et $\displaystyle q = 1$. Calculer $\displaystyle S_{10}$
+
+Étapes:
+<!-- optitab:1 -->
+**Méthode générale :** Somme d'une suite géométrique
+
+::: point Cas $\displaystyle q = 1$
+$$S_n = (n+1) \times u_0$$
+:::
+
+::: point Cas $\displaystyle q \neq 1$
+$$
+\begin{aligned}
+S_n &= u_0 + u_1 + \cdots + u_n \\
+&= u_0 \times \dfrac{1 - q^{n+1}}{1 - q}
+\end{aligned}
+$$
+:::
+
+::: point Formule alternative
+$S_n = u_0 \times \dfrac{q^{n+1} - 1}{q - 1}$ (quand $q \neq 1$)
+:::
+
+::: rappel
+Pour une suite géométrique : $\displaystyle u_n = u_0 \times q^n$
+:::
+
+## Question 1 : Calculer $\displaystyle S_5$ avec $\displaystyle u_0 = 1$ et $\displaystyle q = 2$
+
+::: point Vérification
+$q = 2 \neq 1$ donc on utilise la formule avec $q \neq 1$
+:::
+
+::: point Nombre de termes
+De $u_0$ à $u_5$ : 6 termes
+:::
+
+::: point Application de la formule
+$$
+\begin{aligned}
+S_5 &= 1 \times \dfrac{1 - 2^6}{1 - 2} \\
+&= \dfrac{1 - 64}{-1}
+\end{aligned}
+$$
+:::
+
+::: point Calcul
+$$S_5 = \dfrac{-63}{-1} = 63$$
+:::
+
+## Question 2 : Calculer $\displaystyle S = 1 + 3 + 9 + 27 + 81 + 243$
+
+::: point Identification
+Suite géométrique avec $u_0 = 1$, $q = 3$, 6 termes
+:::
+
+::: point Application de la formule
+$$S = 1 \times \dfrac{3^6 - 1}{3 - 1}$$
+:::
+
+::: point Calcul
+$$S = \dfrac{729 - 1}{2} = \dfrac{728}{2} = 364$$
+:::
+
+## Question 3 : Calculer $\displaystyle S_4$ avec $\displaystyle v_0 = 4$ et $\displaystyle q = \displaystyle\frac{1}{2}$
+
+::: point Vérification
+$q = \frac{1}{2} \neq 1$ donc on utilise la formule avec $q \neq 1$
+:::
+
+::: point Nombre de termes
+5 termes (de $v_0$ à $v_4$)
+:::
+
+::: point Application de la formule
+$$S_4 = 4 \times \dfrac{1 - \left(\frac{1}{2}\right)^5}{1 - \frac{1}{2}}$$
+:::
+
+::: point Calcul
+$$
+\begin{aligned}
+S_4 &= 4 \times \dfrac{1 - \frac{1}{32}}{\frac{1}{2}} \\
+&= 4 \times \dfrac{\frac{31}{32}}{\frac{1}{2}} \\
+&= 4 \times \dfrac{31}{16} \\
+&= \dfrac{31}{4}
+\end{aligned}
+$$
+:::
+
+## Question 4 : Somme des 8 premiers termes avec $\displaystyle u_0 = 5$ et $\displaystyle q = 3$
+
+::: point Vérification
+$$q = 3 \neq 1$$
+:::
+
+::: point Nombre de termes
+8 termes
+:::
+
+::: point Application de la formule
+$$S_7 = 5 \times \dfrac{3^8 - 1}{3 - 1}$$
+:::
+
+::: point Calcul
+$$
+\begin{aligned}
+S_7 &= 5 \times \dfrac{6561 - 1}{2} \\
+&= 5 \times \dfrac{6560}{2} \\
+&= 5 \times 3280 \\
+&= 16400
+\end{aligned}
+$$
+:::
+
+## Question 5 : Calculer $\displaystyle S_{10}$ avec $\displaystyle w_0 = 100$ et $\displaystyle q = 1$
+
+::: point Cas particulier
+$q = 1$ donc on utilise la formule $S_n = (n+1) \times u_0$
+:::
+
+::: point Justification
+Tous les termes sont égaux à $\displaystyle w_0 = 100$
+:::
+
+::: point Nombre de termes
+11 termes (de $w_0$ à $w_{10}$)
+:::
+
+::: point Calcul
+$$S_{10} = 11 \times 100 = 1100$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle 63$
+2. $\displaystyle 364$
+3. $\displaystyle \frac{31}{4}$
+4. $\displaystyle 16400$
+5. $\displaystyle 1100$
+
+===
+
+=== Entraînement - Suites Numériques - Suites Récurrentes et Programmation Python
+Id: 1708
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On considère la suite $\displaystyle (u_n)$ définie par $\displaystyle u_0 = 1$ et $\displaystyle u_{n+1} = \displaystyle\frac{2u_n + 3}{u_n + 2}$ pour tout $\displaystyle n \in \mathbb{N}$.
+
+1. Calculer à la main les termes $u_1$, $u_2$ et $u_3$ (donner les valeurs exactes sous forme de fractions).
+2. Écrire un programme Python qui calcule et affiche les 10 premiers termes de la suite. Que peut-on conjecturer sur le comportement de la suite ?
+3. Si la suite $(u_n)$ converge vers une limite $\ell$, déterminer cette limite en résolvant l'équation $\ell = \frac{2\ell + 3}{\ell + 2}$.
+4. Écrire un programme Python qui détermine le plus petit entier $n$ tel que $|u_n - \ell| < 10^{-6}$ (où $\ell$ est la limite trouvée).
+5. Étudier le sens de variation de la suite en calculant $u_{n+1} - u_n$ et en utilisant Python pour vérifier numériquement votre résultat.
+
+Étapes:
+<!-- optitab:1 -->
+**Méthode générale :** Suite récurrente et algorithme
+
+::: point Calcul manuel
+Appliquer la relation de récurrence pour les premiers termes
+:::
+
+::: point Programmation
+Utiliser une boucle `for` pour calculer les termes successifs
+:::
+
+::: point Limite (point fixe)
+Résoudre $\ell = f(\ell)$ où $f(x) = \frac{2x + 3}{x + 2}$
+:::
+
+::: point Convergence
+Tester la distance entre $u_n$ et $\ell$
+:::
+
+## Question 1 : Calcul manuel des premiers termes
+
+::: point Calcul de $\displaystyle u_1$
+$$
+\begin{aligned}
+u_1 &= \frac{2u_0 + 3}{u_0 + 2} \\
+&= \frac{2 \times 1 + 3}{1 + 2} \\
+&= \frac{5}{3}
+\end{aligned}
+$$
+:::
+
+::: point Calcul de $\displaystyle u_2$
+$$
+\begin{aligned}
+u_2 &= \frac{2u_1 + 3}{u_1 + 2} \\
+&= \frac{2 \times \frac{5}{3} + 3}{\frac{5}{3} + 2} \\
+&= \frac{\frac{10}{3} + \frac{9}{3}}{\frac{5}{3} + \frac{6}{3}} \\
+&= \frac{\frac{19}{3}}{\frac{11}{3}} \\
+&= \frac{19}{11}
+\end{aligned}
+$$
+:::
+
+::: point Calcul de $\displaystyle u_3$
+$$
+\begin{aligned}
+u_3 &= \frac{2u_2 + 3}{u_2 + 2} \\
+&= \frac{2 \times \frac{19}{11} + 3}{\frac{19}{11} + 2} \\
+&= \frac{\frac{38}{11} + \frac{33}{11}}{\frac{19}{11} + \frac{22}{11}} \\
+&= \frac{\frac{71}{11}}{\frac{41}{11}} \\
+&= \frac{71}{41}
+\end{aligned}
+$$
+:::
+
+## Question 2 : Programme Python pour calculer les 10 premiers termes
+
+**Code Python :**
+
+```python
+# Initialisation
+u = 1.0
+
+# Affichage de u_0
+print(f"u_0 = {u:.6f}")
+
+# Calcul et affichage des termes suivants
+for n in range(1, 11):
+    u = (2 * u + 3) / (u + 2)
+    print(f"u_{n} = {u:.6f}")
+```
+
+::: point Résultat du programme
+- $\displaystyle u_0 = 1.000000$
+- $u_1 = 1.666667$ (≈ $\frac{5}{3}$)
+- $u_2 = 1.727273$ (≈ $\frac{19}{11}$)
+- $u_3 = 1.731707$ (≈ $\frac{71}{41}$)
+- Les termes suivants : $u_4 \approx 1.732026$, $u_5 \approx 1.732049$, ...
+:::
+
+::: point Conjecture
+La suite semble converger vers une valeur proche de $1.732$ (qui ressemble à $\sqrt{3} \approx 1.732051$)
+:::
+
+## Question 3 : Détermination de la limite
+
+::: point Équation du point fixe
+$$\ell = \frac{2\ell + 3}{\ell + 2}$$
+:::
+
+::: point Résolution
+$\displaystyle \ell(\ell + 2) = 2\ell + 3$
+
+$\displaystyle \ell^2 + 2\ell = 2\ell + 3$
+
+$\displaystyle \ell^2 = 3$
+
+$\displaystyle \ell = \pm\sqrt{3}$
+:::
+
+::: point Choix de la solution
+Puisque $u_0 = 1 > 0$ et que la relation de récurrence préserve la positivité,
+
+on a $\ell = \sqrt{3}$ (on écarte $\ell = -\sqrt{3}$)
+:::
+
+::: resultat
+Si la suite $(u_n)$ converge vers une limite $\ell$, alors nécessairement $\ell = \sqrt{3}$.
+
+La valeur possible de la limite est donc $\sqrt{3}$.
+:::
+
+## Question 4 : Programme pour trouver le rang de convergence
+
+**Code Python :**
+
+```python
+import math
+
+# Initialisation
+u = 1.0
+limite = math.sqrt(3)
+epsilon = 1e-6
+n = 0
+
+# Recherche du rang
+while abs(u - limite) >= epsilon:
+    u = (2 * u + 3) / (u + 2)
+    n = n + 1
+
+print(f"n = {n}")
+print(f"u_{n} = {u:.10f}")
+print(f"Distance à la limite : {abs(u - limite):.2e}")
+```
+
+::: point Résultat du programme
+- $\displaystyle n = 8$
+- $\displaystyle u_8 \approx 1.7320507764$
+- Distance à la limite : $\displaystyle 9.24 \times 10^{-7} < 10^{-6}$
+:::
+
+::: resultat
+À partir du rang $n = 8$, la suite est à moins de $10^{-6}$ de $\sqrt{3}$
+:::
+
+## Question 5 : Étude du sens de variation
+
+::: point Calcul théorique de $\displaystyle u_{n+1} - u_n$
+$\displaystyle u_{n+1} - u_n = \displaystyle\frac{2u_n + 3}{u_n + 2} - u_n = \displaystyle\frac{2u_n + 3 - u_n(u_n + 2)}{u_n + 2}$
+
+$\displaystyle = \displaystyle\frac{2u_n + 3 - u_n^2 - 2u_n}{u_n + 2} = \displaystyle\frac{3 - u_n^2}{u_n + 2}$
+:::
+
+::: point Étude du signe
+- Si $u_n 0$ → $u_{n+1} - u_n > 0$ (croissante)
+- Si $u_n > \sqrt{3}$ : $u_n^2 > 3$ donc $3 - u_n^2 < 0$ → $u_{n+1} - u_n < 0$ (décroissante)
+:::
+
+::: point Vérification Python
+```python
+# Vérification numérique
+u = 1.0
+
+for n in range(10):
+    u_suivant = (2 * u + 3) / (u + 2)
+    variation = u_suivant - u
+    print(f"u_{n+1} - u_{n} = {variation:.6f}")
+    u = u_suivant
+```
+:::
+
+::: resultat
+Toutes les variations sont positives et décroissantes
+
+- $\displaystyle u_1 - u_0 \approx 0.666667$
+- $\displaystyle u_2 - u_1 \approx 0.060606$
+- $\displaystyle u_3 - u_2 \approx 0.004434$
+- Les variations tendent vers 0
+:::
+
+::: resultat
+Puisque $u_0 = 1 < \sqrt{3}$, la suite est **strictement croissante**.
+
+On peut montrer par récurrence que pour tout $n$, $u_n < \sqrt{3}$ (la suite reste en dessous de $\sqrt{3}$).
+
+La suite $(u_n)$ est donc strictement croissante et majorée par $\sqrt{3}$, donc convergente.
+
+D'après la Question 3, sa limite est nécessairement $\sqrt{3}$.
+
+**Conclusion rigoureuse :** $\displaystyle \lim\limits_{n \to +\infty} u_n = \sqrt{3}$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $u_1 = \frac{5}{3}$, $u_2 = \frac{19}{11}$, $u_3 = \frac{71}{41}$
+2. Programme Python fourni - Observation numérique : la suite semble se rapprocher de $\sqrt{3} \approx 1.732$
+3. Limite : $\ell = \sqrt{3}$ (point fixe de la relation de récurrence)
+4. Rang de convergence : $n = 8$ pour une précision de $10^{-6}$
+5. Suite **strictement croissante** (car $u_0 < \sqrt{3}$) et convergente vers $\sqrt{3}$
+
+===
+
+=== Problème - Suites Numériques - Étude d'une Suite
+Id: 1710
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+On considère la suite $\displaystyle (u_n)$ définie pour tout $\displaystyle n \in \mathbb{N}$ par $\displaystyle u_0 = 2$ et $\displaystyle u_{n+1} = \dfrac{1}{3}u_n + 4$.
+
+1. Calculer $\displaystyle u_1$, $\displaystyle u_2$ et $\displaystyle u_3$. La suite est-elle arithmétique ? géométrique ?
+2. On définit la suite $\displaystyle (v_n)$ par $\displaystyle v_n = u_n - 6$ pour tout $\displaystyle n \in \mathbb{N}$.
+
+   a) Montrer que $(v_n)$ est une suite géométrique dont on précisera le premier terme et la raison
+
+   b) En déduire l'expression de $\displaystyle v_n$ puis de $\displaystyle u_n$ en fonction de $\displaystyle n$
+3. Étudier le sens de variation de la suite $\displaystyle (u_n)$
+4. Calculer $\displaystyle \lim\limits_{n \to +\infty} u_n$ et interpréter le résultat
+5. Calculer $\displaystyle S_n = u_0 + u_1 + u_2 + \cdots + u_n$ en fonction de $\displaystyle n$, puis déterminer $\displaystyle \lim\limits_{n \to +\infty} S_n$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calcul des premiers termes et identification du type
+
+::: point Calcul de $\displaystyle u_1$
+$$
+\begin{aligned}
+u_1 &= \dfrac{1}{3}u_0 + 4 \\
+&= \dfrac{1}{3} \times 2 + 4 \\
+&= \dfrac{2}{3} + 4 \\
+&= \dfrac{14}{3}
+\end{aligned}
+$$
+:::
+
+::: point Calcul de $\displaystyle u_2$
+$$
+\begin{aligned}
+u_2 &= \dfrac{1}{3}u_1 + 4 \\
+&= \dfrac{1}{3} \times \dfrac{14}{3} + 4 \\
+&= \dfrac{14}{9} + 4 \\
+&= \dfrac{50}{9}
+\end{aligned}
+$$
+:::
+
+::: point Calcul de $\displaystyle u_3$
+$$
+\begin{aligned}
+u_3 &= \dfrac{1}{3}u_2 + 4 \\
+&= \dfrac{1}{3} \times \dfrac{50}{9} + 4 \\
+&= \dfrac{50}{27} + 4 \\
+&= \dfrac{158}{27}
+\end{aligned}
+$$
+:::
+
+::: point Suite arithmétique ?
+$\displaystyle u_1 - u_0 = \dfrac{14}{3} - 2 = \dfrac{8}{3}$
+
+$\displaystyle u_2 - u_1 = \dfrac{50}{9} - \dfrac{14}{3} = \dfrac{50}{9} - \dfrac{42}{9} = \dfrac{8}{9}$
+
+Les différences ne sont **pas constantes** → **NON**
+:::
+
+::: point Suite géométrique ?
+La relation $u_{n+1} = \dfrac{1}{3}u_n + 4$ contient un terme constant
+
+Ce n'est pas de la forme $u_{n+1} = q \times u_n$ → **NON**
+:::
+
+::: point Identification
+Suite **arithmético-géométrique** de la forme $u_{n+1} = au_n + b$
+
+avec $a = \dfrac{1}{3}$ et $b = 4$
+
+*Une suite vérifiant $u_{n+1} = a u_n + b$ (avec $a \neq 1$) est appelée suite arithmético-géométrique. On l'étudie souvent en introduisant une suite auxiliaire $v_n = u_n - L$ où $L$ est un point fixe.*
+:::
+
+## Question 2 : Étude de la suite auxiliaire $\displaystyle v_n = u_n - 6$
+
+**a) Montrer que $(v_n)$ est géométrique :**
+
+::: point Calcul de $\displaystyle v_{n+1}$
+$\displaystyle v_{n+1} = u_{n+1} - 6 = \left(\dfrac{1}{3}u_n + 4\right) - 6$
+
+$\displaystyle = \dfrac{1}{3}u_n + 4 - 6 = \dfrac{1}{3}u_n - 2$
+
+$\displaystyle = \dfrac{1}{3}(u_n - 6) = \dfrac{1}{3}v_n$
+:::
+
+::: resultat
+$(v_n)$ est **géométrique** de raison $q = \dfrac{1}{3}$
+:::
+
+::: point Premier terme
+$\displaystyle v_0 = u_0 - 6 = 2 - 6 = -4$
+
+**b) Expression explicite :**
+:::
+
+::: point Expression de $\displaystyle v_n$
+$$
+\begin{aligned}
+v_n &= v_0 \times q^n \\
+&= -4 \times \left(\dfrac{1}{3}\right)^n
+\end{aligned}
+$$
+:::
+
+::: point Expression de $\displaystyle u_n$
+$$
+\begin{aligned}
+u_n &= v_n + 6 \\
+&= 6 - 4 \times \left(\dfrac{1}{3}\right)^n
+\end{aligned}
+$$
+:::
+
+::: point Vérification pour $\displaystyle n = 0$
+$$u_0 = 6 - 4 \times 1 = 2$$
+:::
+
+## Question 3 : Sens de variation de $\displaystyle (u_n)$
+
+::: methode
+Étudier le signe de $\displaystyle u_{n+1} - u_n$
+:::
+
+::: point Calcul
+$\displaystyle u_{n+1} - u_n = \left(\dfrac{1}{3}u_n + 4\right) - u_n = \dfrac{1}{3}u_n + 4 - u_n$
+
+$\displaystyle = 4 - \dfrac{2}{3}u_n = \dfrac{12 - 2u_n}{3}$
+:::
+
+::: point Étude du signe
+$\displaystyle u_{n+1} - u_n = \dfrac{12 - 2u_n}{3}$
+
+- Signe positif si $\displaystyle 12 - 2u_n > 0 \Leftrightarrow u_n < 6$
+- Signe négatif si $\displaystyle u_n > 6$
+:::
+
+::: point Analyse avec la formule explicite
+$\displaystyle u_n = 6 - 4 \times \left(\dfrac{1}{3}\right)^n$
+
+- Pour tout $n \geq 0$ : $\left(\dfrac{1}{3}\right)^n > 0$ donc $4 \times \left(\dfrac{1}{3}\right)^n > 0$
+- Donc $\displaystyle u_n = 6 - 4 \times \left(\dfrac{1}{3}\right)^n < 6$
+- De plus, $\displaystyle u_0 = 2 < 6$
+:::
+
+::: resultat
+Pour tout $n$, $u_n 0$
+
+La suite $(u_n)$ est **strictement croissante**
+:::
+
+## Question 4 : Limite de la suite
+
+::: point Avec la formule explicite
+$$u_n = 6 - 4 \times \left(\dfrac{1}{3}\right)^n$$
+:::
+
+::: point Limite de référence
+$\lim\limits_{n \to +\infty} \left(\dfrac{1}{3}\right)^n = 0$ (car $0 < \dfrac{1}{3} < 1$)
+:::
+
+::: point Calcul de la limite
+$$\lim\limits_{n \to +\infty} u_n = 6 - 4 \times 0 = 6$$
+:::
+
+::: point Interprétation
+Comme $\left(\dfrac{1}{3}\right)^n \to 0$ quand $n \to +\infty$, on a $\lim\limits_{n \to +\infty} u_n = 6$.
+
+La suite $(u_n)$ est strictement croissante et converge vers $6$.
+
+Les termes se rapprochent de plus en plus de $6$ sans jamais l'atteindre.
+:::
+
+## Question 5 : Somme des termes
+
+::: point Expression de $\displaystyle S_n$
+$$
+\begin{aligned}
+S_n &= u_0 + u_1 + \cdots + u_n \\
+&= \sum_{k=0}^{n} u_k \\
+&= \sum_{k=0}^{n} \left[6 - 4 \times \left(\dfrac{1}{3}\right)^k\right]
+\end{aligned}
+$$
+:::
+
+::: point Décomposition
+$\displaystyle S_n = \sum_{k=0}^{n} 6 - 4\sum_{k=0}^{n} \left(\dfrac{1}{3}\right)^k$
+
+$\displaystyle = 6(n+1) - 4 \times \dfrac{1 - \left(\frac{1}{3}\right)^{n+1}}{1 - \frac{1}{3}}$
+
+$\displaystyle = 6(n+1) - 4 \times \dfrac{1 - \left(\frac{1}{3}\right)^{n+1}}{\frac{2}{3}}$
+
+$\displaystyle = 6(n+1) - 6 \times \left[1 - \left(\dfrac{1}{3}\right)^{n+1}\right]$
+
+$\displaystyle = 6(n+1) - 6 + 6\left(\dfrac{1}{3}\right)^{n+1}$
+
+$\displaystyle = 6n + 6\left(\dfrac{1}{3}\right)^{n+1}$
+:::
+
+::: point Limite de $\displaystyle S_n$
+Quand $n \to +\infty$ : $\left(\dfrac{1}{3}\right)^{n+1} \to 0$ et $n \to +\infty$
+
+Donc $\displaystyle \lim\limits_{n \to +\infty} S_n = +\infty$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $u_1 = \frac{14}{3}$, $u_2 = \frac{50}{9}$, $u_3 = \frac{158}{27}$ - Suite arithmético-géométrique
+2. a) $(v_n)$ est géométrique : $v_0 = -4$, $q = \frac{1}{3}$ | b) $v_n = -4 \times \left(\frac{1}{3}\right)^n$ et $u_n = 6 - 4 \times \left(\frac{1}{3}\right)^n$
+3. Suite **strictement croissante** (car $u_n < 6$ pour tout $n$)
+4. $\lim\limits_{n \to +\infty} u_n = 6$ - La suite converge vers le point fixe
+5. $S_n = 6n + 6\left(\frac{1}{3}\right)^{n+1}$ et $\lim\limits_{n \to +\infty} S_n = +\infty$
+
+===
+
+=== Problème - Suites Numériques - Population et Modélisation
+Id: 1711
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Une population de bactéries évolue selon un modèle où chaque jour, le nombre de bactéries est multiplié par $1,5$, mais $300$ bactéries meurent. On note $u_n$ le nombre de bactéries le jour $n$. On sait qu'au jour $0$, il y a $u_0 = 500$ bactéries.
+
+1. Écrire la relation de récurrence définissant $\displaystyle u_n$ et calculer $\displaystyle u_1$ et $\displaystyle u_2$
+2. Quel est le type de cette suite ? Déterminer le nombre de bactéries à l'équilibre (point fixe)
+3. On définit $\displaystyle v_n = u_n - 600$ pour tout $\displaystyle n \in \mathbb{N}$.
+
+   a) Montrer que $\displaystyle (v_n)$ est une suite géométrique
+
+   b) Exprimer $\displaystyle v_n$ puis $\displaystyle u_n$ en fonction de $\displaystyle n$
+4. Montrer que la suite $(u_n)$ est décroissante. À partir de quel jour la population s'éteint-elle (c'est-à-dire $u_n \leq 0$) ?
+5. Si on introduit $200$ bactéries supplémentaires au départ (donc $u_0 = 700$), la population peut-elle survivre indéfiniment ? Justifier mathématiquement.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Relation de récurrence et premiers termes
+
+::: point Modélisation
+- Multiplication par $1,5$ : on a $1,5 \times u_n$ bactéries
+- Puis $300$ meurent : il reste $1,5u_n - 300$ bactéries
+:::
+
+::: point Relation de récurrence
+$u_{n+1} = 1,5u_n - 300$ pour tout $n \geq 0$
+:::
+
+::: point Calcul de $\displaystyle u_1$
+$$u_1 = 1,5 \times 500 - 300 = 750 - 300 = 450$$
+:::
+
+::: point Calcul de $\displaystyle u_2$
+$$u_2 = 1,5 \times 450 - 300 = 675 - 300 = 375$$
+:::
+
+## Question 2 : Type de suite et point fixe
+
+::: point Type de suite
+Relation de la forme $u_{n+1} = au_n + b$ avec $a = 1,5$ et $b = -300$
+
+C'est une suite **arithmético-géométrique**
+:::
+
+::: point Point fixe (équilibre)
+On cherche $\ell$ tel que $\ell = 1,5\ell - 300$
+
+$\displaystyle \ell - 1,5\ell = -300$
+
+$\displaystyle -0,5\ell = -300$
+
+$\displaystyle \ell = 600$
+:::
+
+::: point Interprétation
+Le nombre $600$ est un **point fixe** de la récurrence : si on commence exactement avec $u_0 = 600$, alors $u_n = 600$ pour tout $n$ (la population reste constante).
+
+Mais comme le coefficient $1,5$ est supérieur à $1$, dès qu'on est en dessous de $600$ la suite décroît et finit par devenir négative (extinction), et dès qu'on est au-dessus de $600$ elle augmente sans limite (explosion démographique).
+
+**Justification mathématique :** En effet, $u_{n+1} - 600 = 1,5(u_n - 600)$, donc la distance à $600$ est multipliée par $1,5$ à chaque étape.
+
+On parle alors d'équilibre **instable**.
+:::
+
+## Question 3 : Suite auxiliaire $\displaystyle v_n = u_n - 600$
+
+**a) Montrer que $(v_n)$ est géométrique :**
+
+::: point Calcul de $\displaystyle v_{n+1}$
+$\displaystyle v_{n+1} = u_{n+1} - 600 = (1,5u_n - 300) - 600$
+
+$\displaystyle = 1,5u_n - 900$
+
+$\displaystyle = 1,5(u_n - 600) = 1,5v_n$
+:::
+
+::: resultat
+$(v_n)$ est **géométrique** de raison $q = 1,5$ et $v_0 = u_0 - 600 = -100$
+
+**b) Expressions explicites :**
+:::
+
+::: point Expression de $\displaystyle v_n$
+$$v_n = v_0 \times (1,5)^n = -100 \times (1,5)^n$$
+:::
+
+::: point Expression de $\displaystyle u_n$
+$$u_n = v_n + 600 = 600 - 100 \times (1,5)^n$$
+:::
+
+## Question 4 : Variation et extinction
+
+::: point Sens de variation
+Avec $\displaystyle u_n = 600 - 100 \times (1,5)^n$ :
+
+- $(1,5)^n$ est croissante (car $1,5 > 1$)
+- Donc $\displaystyle -100 \times (1,5)^n$ est décroissante
+- Ainsi $u_n$ est **strictement décroissante**
+:::
+
+::: point Extinction ($\displaystyle u_n \leq 0$)
+On cherche le premier rang $n$ tel que $u_n \leq 0$.
+
+On calcule quelques valeurs :
+
+- $\displaystyle u_0 = 500$
+- $\displaystyle u_1 = 1,5 \times 500 - 300 = 450$
+- $\displaystyle u_2 = 1,5 \times 450 - 300 = 375$
+- $\displaystyle u_3 = 1,5 \times 375 - 300 = 262,5$
+- $u_4 = 1,5 \times 262,5 - 300 = 93,75$ ($> 0$)
+- $u_5 = 1,5 \times 93,75 - 300 = -159,375$ ($\leq 0$)
+
+On peut aussi utiliser la formule explicite : $u_n = 600 - 100 \times (1,5)^n$
+
+On cherche $n$ tel que $600 - 100 \times (1,5)^n \leq 0$, soit $(1,5)^n \geq 6$.
+
+Par calcul numérique : $(1,5)^4 = 5,0625 < 6$ et $(1,5)^5 = 7,59375 \geq 6$.
+:::
+
+::: resultat
+À partir du jour $n = 5$, la population s'éteint ($u_5 < 0$)
+
+**Remarque importante :** Mathématiquement, le modèle n'est plus valide après le premier $n$ tel que $u_n \leq 0$. On s'arrête donc à $n = 5$, car une population négative n'a pas de sens physique.
+:::
+
+## Question 5 : Cas avec $\displaystyle u_0 = 700$
+
+::: point Nouvelle formule avec $\displaystyle u_0 = 700$
+$\displaystyle v_0 = 700 - 600 = 100$
+
+$\displaystyle v_n = 100 \times (1,5)^n$
+
+$\displaystyle u_n = 600 + 100 \times (1,5)^n$
+:::
+
+::: point Analyse de la positivité
+- Pour tout $n \geq 0$ : $(1,5)^n > 0$
+- Donc $\displaystyle u_n = 600 + 100 \times (1,5)^n > 600 > 0$
+- La population reste **toujours positive**
+:::
+
+::: point Sens de variation
+$\displaystyle u_{n+1} - u_n = [600 + 100(1,5)^{n+1}] - [600 + 100(1,5)^n]$
+
+$\displaystyle = 100(1,5)^n[1,5 - 1] = 50(1,5)^n > 0$
+
+- La suite est **strictement croissante**
+:::
+
+::: point Limite
+Puisque $1,5 > 1$ : $\lim\limits_{n \to +\infty} (1,5)^n = +\infty$
+
+Donc $\displaystyle \lim\limits_{n \to +\infty} u_n = +\infty$
+:::
+
+::: resultat
+**OUI**, avec $u_0 = 700$, la population survit et croît indéfiniment
+
+car elle dépasse le **seuil critique** de $600$ bactéries
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $u_{n+1} = 1,5u_n - 300$ avec $u_1 = 450$ et $u_2 = 375$
+2. Suite arithmético-géométrique - Point fixe : $\ell = 600$ bactéries
+3. a) $(v_n)$ géométrique de raison $1,5$ | b) $v_n = -100 \times (1,5)^n$ et $u_n = 600 - 100 \times (1,5)^n$
+4. Suite décroissante - Extinction au jour $n = 5$
+5. **OUI** - Avec $u_0 = 700$ : $u_n = 600 + 100(1,5)^n \to +\infty$ - Population survit et croît
+
+===
+
+=== Type examen - Suites Numériques - Type 1
+Id: 1718
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Cet examen couvre l'ensemble du chapitre sur les suites numériques.
+
+$\underline{\textbf{Exercice 1 : Questions de Cours et Applications}}$
+
+**Question 1.1 :** Donner la formule du terme général d'une suite arithmétique de premier terme $u_0$ et de raison $r$.
+
+**Question 1.2 :** Donner la formule du terme général d'une suite géométrique de premier terme $u_0$ et de raison $q$.
+
+**Question 1.3 :** Soit $\displaystyle (u_n)$ une suite arithmétique telle que $\displaystyle u_0 = 5$ et $\displaystyle r = 3$.
+
+a) Calculer $\displaystyle u_{10}$
+
+b) Calculer la somme $\displaystyle S = u_0 + u_1 + \cdots + u_{10}$
+
+$\underline{\textbf{Exercice 2 : Étude d'une Suite}}$
+
+On considère la suite $\displaystyle (v_n)$ définie par $\displaystyle v_0 = 2$ et $\displaystyle v_{n+1} = 3v_n - 4$ pour tout $\displaystyle n \in \mathbb{N}$.
+
+**Question 2.1 :** Calculer $\displaystyle v_1$, $\displaystyle v_2$ et $\displaystyle v_3$.
+
+**Question 2.2 :** On définit $\displaystyle w_n = v_n - 2$ pour tout $\displaystyle n \in \mathbb{N}$.
+
+a) Montrer que $(w_n)$ est une suite géométrique dont on précisera le premier terme et la raison
+
+b) En déduire l'expression de $\displaystyle w_n$ puis de $\displaystyle v_n$ en fonction de $\displaystyle n$
+
+**Question 2.3 :** Calculer $\displaystyle \lim\limits_{n \to +\infty} v_n$.
+
+$\underline{\textbf{Exercice 3 : Problème Concret}}$
+
+Une population de bactéries double chaque jour. Au jour 0, il y a 100 bactéries.
+
+**Question 3.1 :** On note $b_n$ le nombre de bactéries au jour $n$. Donner la relation de récurrence et l'expression explicite de $b_n$.
+
+**Question 3.2 :** Au bout de combien de jours la population dépasse-t-elle 10 000 bactéries ?
+
+Étapes:
+<!-- optitab:1 -->
+**Exercice 1 : Questions de Cours et Applications**
+
+**Question 1.1 :** Formule du terme général d'une suite arithmétique
+
+::: rappel Formule
+Pour une suite arithmétique de premier terme $u_0$ et de raison $r$ :
+
+$u_n = u_0 + n \times r$ pour tout $n \in \mathbb{N}$
+
+**Question 1.2 :** Formule du terme général d'une suite géométrique
+:::
+
+::: rappel Formule
+Pour une suite géométrique de premier terme $u_0$ et de raison $q$ :
+
+$u_n = u_0 \times q^n$ pour tout $n \in \mathbb{N}$
+
+**Question 1.3 :** Application
+:::
+
+::: point a) Calcul de $\displaystyle u_{10}$
+$$
+\begin{aligned}
+u_{10} &= u_0 + 10 \times r \\
+&= 5 + 10 \times 3 \\
+&= 5 + 30 \\
+&= 35
+\end{aligned}
+$$
+:::
+
+::: point b) Calcul de la somme
+$\displaystyle S = u_0 + u_1 + \cdots + u_{10} = \frac{(10+1)(u_0 + u_{10})}{2} = \frac{11 \times (5 + 35)}{2} = \frac{11 \times 40}{2} = 220$
+
+**Exercice 2 : Étude d'une Suite**
+
+**Question 2.1 :** Calcul des premiers termes
+:::
+
+::: point Calcul de $\displaystyle v_1$
+$$v_1 = 3v_0 - 4 = 3 \times 2 - 4 = 6 - 4 = 2$$
+:::
+
+::: point Calcul de $\displaystyle v_2$
+$$v_2 = 3v_1 - 4 = 3 \times 2 - 4 = 6 - 4 = 2$$
+:::
+
+::: point Calcul de $\displaystyle v_3$
+$$v_3 = 3v_2 - 4 = 3 \times 2 - 4 = 6 - 4 = 2$$
+:::
+
+::: point Observation
+La suite semble constante égale à 2
+
+**Question 2.2 :** Suite auxiliaire
+:::
+
+::: point a) Montrer que $(w_n)$ est géométrique
+$\displaystyle w_{n+1} = v_{n+1} - 2 = (3v_n - 4) - 2 = 3v_n - 6 = 3(v_n - 2) = 3w_n$
+
+Donc $(w_n)$ est géométrique de raison $q = 3$ et $w_0 = v_0 - 2 = 0$
+:::
+
+::: point b) Expression explicite
+$\displaystyle w_n = w_0 \times 3^n = 0 \times 3^n = 0$
+
+$\displaystyle v_n = w_n + 2 = 0 + 2 = 2$
+
+La suite $(v_n)$ est constante égale à 2
+
+**Question 2.3 :** Limite
+:::
+
+::: point Calcul
+$\displaystyle \lim\limits_{n \to +\infty} v_n = \lim\limits_{n \to +\infty} 2 = 2$
+
+**Exercice 3 : Problème Concret**
+
+**Question 3.1 :** Modélisation
+:::
+
+::: point Relation de récurrence
+$b_{n+1} = 2b_n$ avec $b_0 = 100$
+:::
+
+::: point Expression explicite
+$\displaystyle b_n = b_0 \times 2^n = 100 \times 2^n$
+
+**Question 3.2 :** Dépassement de 10 000
+:::
+
+::: point Résolution de l'inéquation
+$\displaystyle b_n > 10\,000 \Leftrightarrow 100 \times 2^n > 10\,000$
+
+$\displaystyle \Leftrightarrow 2^n > 100$
+
+$\displaystyle \Leftrightarrow n \times \ln(2) > \ln(100)$
+
+$\displaystyle \Leftrightarrow n > \frac{\ln(100)}{\ln(2)} \approx \frac{4,605}{0,693} \approx 6,64$
+:::
+
+::: resultat
+La population dépasse 10 000 bactéries au bout de 7 jours
+:::
+
+Solution:
+<!-- optitab:1 -->
+**Exercice 1 : Questions de Cours et Applications**
+
+**1.1.** $u_n = u_0 + n \times r$ pour tout $n \in \mathbb{N}$
+
+**1.2.** $u_n = u_0 \times q^n$ pour tout $n \in \mathbb{N}$
+
+**1.3.**
+
+a) $\displaystyle u_{10} = 35$
+
+b) $\displaystyle S = 220$
+
+---
+
+**Exercice 2 : Étude d'une Suite**
+
+**2.1.** $v_1 = 2$, $v_2 = 2$, $v_3 = 2$
+
+**2.2.**
+
+a) $(w_n)$ est géométrique : $w_0 = 0$, $q = 3$
+
+b) $w_n = 0$ et $v_n = 2$ (suite constante)
+
+**2.3.** $\displaystyle \lim\limits_{n \to +\infty} v_n = 2$
+
+---
+
+**Exercice 3 : Problème Concret**
+
+**3.1.** $b_{n+1} = 2b_n$ avec $b_0 = 100$ et $b_n = 100 \times 2^n$
+
+**3.2.** La population dépasse 10 000 bactéries au bout de 7 jours
+
+===
+
+=== Type examen - Suites Numériques - Type 2
+Id: 1719
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Cet examen couvre l'ensemble du chapitre sur les suites numériques.
+
+$\underline{\textbf{Partie A : Techniques Fondamentales}}$
+
+**Question A1 :** Résoudre l'équation $\displaystyle 3x^2 - 12x + 9 = 0$.
+
+**Question A2 :** Résoudre l'inéquation $\displaystyle x^2 - 4x + 3 < 0$.
+
+**Question A3 :** Factoriser le polynôme $\displaystyle 2x^2 - 10x + 12$.
+
+**Question A4 :** Soit $g(x) = -x^2 + 6x - 5$. Déterminer la forme canonique de $g$ et en déduire son maximum.
+
+$\underline{\textbf{Partie B : Étude d'une Suite}}$
+
+On considère la suite $\displaystyle (h_n)$ définie par $\displaystyle h_n = n^2 - 6n + 8$ pour tout $\displaystyle n \in \mathbb{N}$.
+
+**Question B1 :** Calculer le discriminant de $h(x) = x^2 - 6x + 8$ et déterminer ses racines.
+
+**Question B2 :** Factoriser $\displaystyle h(x)$.
+
+**Question B3 :** Déterminer la forme canonique de $\displaystyle h(x)$.
+
+**Question B4 :** Étudier le signe de $\displaystyle h(x)$.
+
+**Question B5 :** Résoudre l'inéquation $\displaystyle h(x) \leq 0$.
+
+$\underline{\textbf{Partie C : Application Concrète}}$
+
+Un projectile est lancé verticalement. Sa hauteur (en mètres) à l'instant $t$ (en secondes) est donnée par $h(t) = -5t^2 + 20t + 5$.
+
+**Question C1 :** Déterminer la forme canonique de $\displaystyle h(t)$.
+
+**Question C2 :** Quelle est la hauteur maximale atteinte par le projectile ?
+
+**Question C3 :** À quel instant le projectile atteint-il sa hauteur maximale ?
+
+**Question C4 :** À quel instant le projectile retombe-t-il au sol ?
+
+**Question C5 :** Pendant combien de temps le projectile reste-t-il au-dessus de 10 mètres ?
+
+Étapes:
+<!-- optitab:1 -->
+**Partie A : Techniques Fondamentales**
+
+**Question A1 :** Résolution d'équation
+
+::: point Calcul du discriminant
+$$
+\begin{aligned}
+\Delta &= (-12)^2 - 4 \times 3 \times 9 \\
+&= 144 - 108 \\
+&= 36
+\end{aligned}
+$$
+:::
+
+::: point Racines
+$\displaystyle x_1 = \frac{12 - \sqrt{36}}{2 \times 3} = \frac{12 - 6}{6} = 1$
+
+$\displaystyle x_2 = \frac{12 + \sqrt{36}}{2 \times 3} = \frac{12 + 6}{6} = 3$
+:::
+
+::: resultat
+$\displaystyle S = \{1, 3\}$
+
+**Question A2 :** Résolution d'inéquation
+:::
+
+::: point Racines de $\displaystyle x^2 - 4x + 3$
+$\displaystyle \Delta = 16 - 12 = 4$
+
+$x_1 = 1$ et $x_2 = 3$
+:::
+
+::: point Signe
+Le coefficient dominant est positif, donc
+
+- $x^2 - 4x + 3 < 0$ pour $x \in ]1, 3[$
+:::
+
+::: resultat
+$\displaystyle S = ]1, 3[$
+
+**Question A3 :** Factorisation
+:::
+
+::: point Calcul du discriminant
+$$\Delta = (-10)^2 - 4 \times 2 \times 12 = 100 - 96 = 4$$
+:::
+
+::: point Racines
+$x_1 = \frac{10 - 2}{4} = 2$ et $x_2 = \frac{10 + 2}{4} = 3$
+:::
+
+::: point Factorisation
+$\displaystyle 2x^2 - 10x + 12 = 2(x - 2)(x - 3)$
+
+**Question A4 :** Forme canonique et maximum
+:::
+
+::: point Forme canonique
+$$
+\begin{aligned}
+g(x) &= -x^2 + 6x - 5 \\
+&= -(x^2 - 6x) - 5 \\
+&= -(x - 3)^2 + 9 - 5 \\
+&= -(x - 3)^2 + 4
+\end{aligned}
+$$
+:::
+
+::: point Maximum
+Le maximum est atteint pour $x = 3$ et vaut $g(3) = 4$
+
+**Partie B : Étude d'une Suite**
+
+**Question B1 :** Discriminant et racines
+:::
+
+::: point Calcul du discriminant
+$$\Delta = (-6)^2 - 4 \times 1 \times 8 = 36 - 32 = 4$$
+:::
+
+::: point Racines
+$x_1 = \frac{6 - 2}{2} = 2$ et $x_2 = \frac{6 + 2}{2} = 4$
+
+On note $x_1 = 2$ et $x_2 = 4$ (avec $x_1 < x_2$)
+
+**Question B2 :** Factorisation
+:::
+
+::: point Forme factorisée
+$\displaystyle h(x) = (x - 2)(x - 4)$
+
+**Question B3 :** Forme canonique
+:::
+
+::: point Forme canonique
+$\displaystyle h(x) = x^2 - 6x + 8 = (x - 3)^2 - 9 + 8 = (x - 3)^2 - 1$
+
+**Question B4 :** Signe
+:::
+
+::: point Tableau de signes
+- $h(x) > 0$ pour $x 4$
+- $h(x) = 0$ pour $x = 2$ ou $x = 4$
+- $h(x) < 0$ pour $x \in ]2, 4[$
+
+**Question B5 :** Inéquation
+:::
+
+::: point Résolution
+$\displaystyle h(x) \leq 0 \Leftrightarrow x \in [2, 4]$
+
+**Partie C : Application Concrète**
+
+**Question C1 :** Forme canonique
+:::
+
+::: point Forme canonique
+$\displaystyle h(t) = -5t^2 + 20t + 5 = -5(t^2 - 4t) + 5 = -5[(t - 2)^2 - 4] + 5 = -5(t - 2)^2 + 25$
+
+**Question C2 :** Hauteur maximale
+:::
+
+::: point Maximum
+La hauteur maximale est atteinte pour $t = 2$ s et vaut $h(2) = 25$ m
+
+**Question C3 :** Instant du maximum
+:::
+
+::: resultat
+Le projectile atteint sa hauteur maximale à l'instant $t = 2$ s
+
+**Question C4 :** Retour au sol
+:::
+
+::: point Résolution de $\displaystyle h(t) = 0$
+$\displaystyle -5t^2 + 20t + 5 = 0 \Leftrightarrow t^2 - 4t - 1 = 0$
+
+$\displaystyle \Delta = 16 + 4 = 20$
+
+$\displaystyle t_1 = \frac{4 - \sqrt{20}}{2} = 2 - \sqrt{5} < 0$ (rejeté)
+
+$\displaystyle t_2 = \frac{4 + \sqrt{20}}{2} = 2 + \sqrt{5} \approx 4,24$ s
+:::
+
+::: resultat
+Le projectile retombe au sol à l'instant $t = 2 + \sqrt{5} \approx 4,24$ s
+
+**Question C5 :** Temps au-dessus de 10 mètres
+:::
+
+::: point Résolution de $\displaystyle h(t) > 10$
+$\displaystyle -5t^2 + 20t + 5 > 10 \Leftrightarrow -5t^2 + 20t - 5 > 0 \Leftrightarrow t^2 - 4t + 1 < 0$
+
+$\displaystyle \Delta = 16 - 4 = 12$
+
+$t_1 = 2 - \sqrt{3}$ et $t_2 = 2 + \sqrt{3}$
+
+$t^2 - 4t + 1 < 0$ pour $t \in ]2 - \sqrt{3}, 2 + \sqrt{3}[$
+:::
+
+::: point Durée
+$\displaystyle \Delta t = (2 + \sqrt{3}) - (2 - \sqrt{3}) = 2\sqrt{3} \approx 3,46$ s
+:::
+
+Solution:
+<!-- optitab:1 -->
+**Partie A : Techniques Fondamentales**
+
+**A1.** $\displaystyle S = \{1, 3\}$
+
+**A2.** $\displaystyle S = ]1, 3[$
+
+**A3.** $\displaystyle 2x^2 - 10x + 12 = 2(x - 2)(x - 3)$
+
+**A4.** Forme canonique : $g(x) = -(x - 3)^2 + 4$, maximum : $4$ pour $x = 3$
+
+---
+
+**Partie B : Étude d'une Suite**
+
+**B1.** $\Delta = 4$, racines : $x_1 = 2$ et $x_2 = 4$ (avec $x_1 < x_2$)
+
+**B2.** $\displaystyle h(x) = (x - 2)(x - 4)$
+
+**B3.** $\displaystyle h(x) = (x - 3)^2 - 1$
+
+**B4.** $h(x) > 0$ pour $x 4$, $h(x) < 0$ pour $x \in ]2, 4[$
+
+**B5.** $\displaystyle x \in [2, 4]$
+
+---
+
+**Partie C : Application Concrète**
+
+**C1.** $\displaystyle h(t) = -5(t - 2)^2 + 25$
+
+**C2.** Hauteur maximale : $\displaystyle 25$ m
+
+**C3.** Instant du maximum : $\displaystyle t = 2$ s
+
+**C4.** Retour au sol : $\displaystyle t = 2 + \sqrt{5} \approx 4,24$ s
+
+**C5.** Temps au-dessus de 10 m : $2\sqrt{3} \approx 3,46$ s
+
+===
+
+=== Type examen - Suites Numériques - Type 3
+Id: 1720
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Cet examen couvre l'ensemble du chapitre sur les suites numériques.
+
+$\underline{\textbf{Partie A : Exécution d'un Algorithme}}$
+
+On considère l'algorithme suivant :
+
+**Algorithme (pseudo-code) :**
+
+Entrée : un entier naturel $\displaystyle n$
+
+Initialisation :
+
+$\displaystyle u \leftarrow 1$
+
+$\displaystyle S \leftarrow 0$
+
+Traitement :
+
+Pour $\displaystyle i$ de 0 à $\displaystyle n$ :
+
+$\displaystyle S \leftarrow S + u$
+
+$\displaystyle u \leftarrow 2u + 1$
+
+Fin Pour
+
+Sortie : Afficher $\displaystyle S$
+
+**Code Python équivalent :**
+
+**Code Python :**
+
+```python
+# Entrée
+n = 5
+
+# Initialisation
+u = 1
+S = 0
+
+# Traitement
+for i in range(n + 1):
+    S = S + u
+    u = 2 * u + 1
+    print(f"i = {i}, u = {u}, S = {S}")
+
+# Sortie
+print(f"Résultat final : S = {S}")
+```
+
+**Question A1 :** Reproduire et compléter le tableau suivant pour $\displaystyle n = 5$ :
+
+$\begin{array}{|c|c|c|} \hline i & u & S \\ \hline 0 & & \\ \hline 1 & & \\ \hline 2 & & \\ \hline 3 & & \\ \hline 4 & & \\ \hline 5 & & \\ \hline \end{array}$
+
+$\underline{\textbf{Partie B : Étude de la Suite}}$
+
+On note $\displaystyle u_k$ la valeur de $\displaystyle u$ après $\displaystyle k$ itérations et $\displaystyle S_k$ la valeur de $\displaystyle S$ après $\displaystyle k$ itérations.
+
+**Question B1 :** Donner la relation de récurrence vérifiée par $\displaystyle (u_k)$.
+
+**Question B2 :** Exprimer $\displaystyle u_k$ en fonction de $\displaystyle k$.
+
+$\underline{\textbf{Partie C : Somme des Termes}}$
+
+On considère toujours les suites $\displaystyle (u_k)$ et $\displaystyle (S_k)$ de la partie B.
+
+**Question C1 :** Exprimer $\displaystyle S_n$ en fonction des termes $\displaystyle u_0, u_1, \ldots, u_n$.
+
+**Question C2 :** En déduire une expression de $S_n$ en fonction de $n$ uniquement.
+
+**Question C3 :** Vérifier que la formule trouvée à la question C2 donne bien le résultat de la question A1 pour $n = 5$.
+
+Étapes:
+<!-- optitab:1 -->
+**Partie A : Exécution d'un Algorithme**
+
+**Question A1 : Exécution de l'algorithme**
+
+**Méthode :** Exécuter pas à pas
+
+**Code Python équivalent :**
+
+**Code Python :**
+
+```python
+n = 5
+u = 1
+S = 0
+
+for i in range(n + 1):
+    S = S + u
+    u = 2 * u + 1
+    print(f"i = {i}, u = {u}, S = {S}")
+
+print(f"Résultat final : S = {S}")
+```
+
+**Exécution pas à pas :**
+
+- Initialisation : $u = 1$, $S = 0$
+- Itération $i = 0$ : $S = 0 + 1 = 1$, puis $u = 2 \times 1 + 1 = 3$
+- Itération $i = 1$ : $S = 1 + 3 = 4$, puis $u = 2 \times 3 + 1 = 7$
+- Itération $i = 2$ : $S = 4 + 7 = 11$, puis $u = 2 \times 7 + 1 = 15$
+- Itération $i = 3$ : $S = 11 + 15 = 26$, puis $u = 2 \times 15 + 1 = 31$
+- Itération $i = 4$ : $S = 26 + 31 = 57$, puis $u = 2 \times 31 + 1 = 63$
+- Itération $i = 5$ : $S = 57 + 63 = 120$, puis $u = 2 \times 63 + 1 = 127$
+
+**Tableau :** (Les valeurs de $u$ et $S$ sont celles **après** les instructions $S \leftarrow S + u$ et $u \leftarrow 2u + 1$ de chaque itération $i$)
+
+$\begin{array}{|c|c|c|} \hline i & u & S \\ \hline 0 & 1 & 1 \\ \hline 1 & 3 & 4 \\ \hline 2 & 7 & 11 \\ \hline 3 & 15 & 26 \\ \hline 4 & 31 & 57 \\ \hline 5 & 63 & 120 \\ \hline \end{array}$
+
+*Remarque : À chaque itération $i$, on calcule d'abord $S \leftarrow S + u$ (somme mise à jour), puis $u \leftarrow 2u + 1$ (valeur de $u$ mise à jour). Le tableau donne les valeurs finales après chaque itération complète.*
+
+**Partie B : Étude de la Suite**
+
+**Question B1 : Relation de récurrence**
+
+- D'après l'algorithme : $u_{k+1} = 2u_k + 1$ avec $u_0 = 1$
+
+**Question B2 : Expression explicite**
+
+::: methode
+Chercher une expression de $u_k$ en fonction de $k$
+:::
+
+::: point Observation
+- $\displaystyle u_0 = 1 = 2^1 - 1$
+- $\displaystyle u_1 = 3 = 2^2 - 1$
+- $\displaystyle u_2 = 7 = 2^3 - 1$
+- $\displaystyle u_3 = 15 = 2^4 - 1$
+:::
+
+::: point Conjecture
+$$u_k = 2^{k+1} - 1$$
+:::
+
+::: point Vérification par récurrence
+- Initialisation : $\displaystyle u_0 = 2^1 - 1 = 1$
+- Hérédité : Supposons $\displaystyle u_k = 2^{k+1} - 1$
+
+Alors $\displaystyle u_{k+1} = 2u_k + 1 = 2(2^{k+1} - 1) + 1 = 2^{k+2} - 2 + 1 = 2^{k+2} - 1$
+:::
+
+::: resultat
+$u_k = 2^{k+1} - 1$ pour tout $k \geq 0$
+
+**Partie C : Somme des Termes**
+
+**Question C1 : Expression en fonction des termes**
+
+- D'après l'algorithme, $S_n$ est la somme des valeurs de $u$ de l'itération 0 à $n$
+- Donc : $\displaystyle S_n = u_0 + u_1 + \cdots + u_n = \sum_{k=0}^{n} u_k$
+
+**Question C2 : Expression en fonction de $n$ uniquement**
+:::
+
+::: point Calcul
+On a :
+
+$$
+\begin{aligned}
+S_n &= \sum_{k=0}^{n} (2^{k+1} - 1) \\
+&= \sum_{k=0}^{n} 2^{k+1} - \sum_{k=0}^{n} 1
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+\sum_{k=0}^{n} 2^{k+1} &= 2 \sum_{k=0}^{n} 2^k \\
+&= 2 \times \frac{1 - 2^{n+1}}{1 - 2} \\
+&= 2 \times \frac{1 - 2^{n+1}}{-1} \\
+&= 2(2^{n+1} - 1) \\
+&= 2^{n+2} - 2
+\end{aligned}
+$$
+
+- $\displaystyle \sum_{k=0}^{n} 1 = n + 1$
+- Donc : $\displaystyle S_n = (2^{n+2} - 2) - (n + 1) = 2^{n+2} - n - 3$
+
+**Question C3 : Vérification**
+:::
+
+::: methode
+Appliquer la formule pour $\displaystyle n = 5$
+:::
+
+::: point Calcul
+- $\displaystyle S_5 = 2^{5+2} - 5 - 3 = 2^7 - 8 = 128 - 8 = 120$
+- Ce résultat correspond bien à celui trouvé dans le tableau de la question A1
+:::
+
+Solution:
+<!-- optitab:1 -->
+**Partie A : Exécution d'un Algorithme**
+
+**A1.** Tableau complété :
+
+$\begin{array}{|c|c|c|} \hline i & u & S \\ \hline 0 & 1 & 1 \\ \hline 1 & 3 & 4 \\ \hline 2 & 7 & 11 \\ \hline 3 & 15 & 26 \\ \hline 4 & 31 & 57 \\ \hline 5 & 63 & 120 \\ \hline \end{array}$
+
+---
+
+**Partie B : Étude de la Suite**
+
+**B1.** $u_{k+1} = 2u_k + 1$ avec $u_0 = 1$
+
+**B2.** $u_k = 2^{k+1} - 1$ pour tout $k \geq 0$
+
+---
+
+**Partie C : Somme des Termes**
+
+**C1.** $\displaystyle S_n = \sum_{k=0}^{n} u_k = u_0 + u_1 + \cdots + u_n$
+
+**C2.** $\displaystyle S_n = 2^{n+2} - n - 3$
+
+**C3.** Pour $n = 5$ : $S_5 = 2^7 - 5 - 3 = 128 - 8 = 120$
+
+===

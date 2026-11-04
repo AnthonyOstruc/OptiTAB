@@ -1,0 +1,191 @@
+Titre: Géométrie repérée dans le plan
+
+<!-- optitab:1 -->
+::: objectifs
+Déterminer une équation cartésienne de droite à l’aide d’un vecteur normal, calculer les coordonnées du projeté orthogonal d’un point sur une droite (et la distance du point à la droite), écrire et reconnaître l’équation d’un cercle, déterminer l’axe de symétrie et le sommet d’une parabole, et utiliser un repère pour étudier une configuration.
+:::
+
+::: prerequis
+Dans tout le chapitre, le plan est muni d’un repère **orthonormé** $(O\,;\vec{i},\vec{j})$. On utilise le produit scalaire en coordonnées : si $\vec{u}\,(x\,;y)$ et $\vec{v}\,(x'\,;y')$, alors $\vec{u} \cdot \vec{v} = xx' + yy'$, et $\vec{u} \perp \vec{v} \iff \vec{u} \cdot \vec{v} = 0$.
+:::
+
+## I. Vecteur normal et équation de droite
+
+::: definition Vecteur normal
+Un **vecteur normal** à une droite $d$ est un vecteur **non nul** orthogonal à un vecteur directeur de $d$.
+:::
+
+[IMAGE_1]
+
+::: propriete Caractérisation d’une droite par un vecteur normal
+Soit $A$ un point et $\vec{n}$ un vecteur non nul. La droite $d$ passant par $A$ et de vecteur normal $\vec{n}$ est l’ensemble des points $M$ tels que
+
+$$\overrightarrow{AM} \cdot \vec{n} = 0$$
+:::
+
+::: theoreme Équation cartésienne et vecteur normal
+1. Si $\vec{n}\,(a\,;b)$ est un vecteur normal à la droite $d$, alors $d$ a une équation de la forme $ax + by + c = 0$.
+2. Réciproquement, si $(a\,;b) \neq (0\,;0)$, l’ensemble des points $M(x\,;y)$ tels que $ax + by + c = 0$ est une droite, de vecteur normal $\vec{n}\,(a\,;b)$ et de vecteur directeur $\vec{u}\,(-b\,;a)$.
+:::
+
+::: demonstration
+**1.** Soit $A(x_A\,;y_A)$ un point de $d$. Pour $M(x\,;y)$, on a $\overrightarrow{AM}\,(x - x_A\,;y - y_A)$, donc $\overrightarrow{AM} \cdot \vec{n} = a(x - x_A) + b(y - y_A)$. Ainsi :
+
+$$
+\begin{aligned}
+M \in d &\iff a(x - x_A) + b(y - y_A) = 0 \\
+&\iff ax + by + c = 0
+\end{aligned}
+$$
+
+en posant $c = -ax_A - by_A$.
+
+**2.** On sait (classe de Seconde) que l’ensemble des points vérifiant $ax + by + c = 0$ est une droite de vecteur directeur $\vec{u}\,(-b\,;a)$. Comme $\vec{n} \cdot \vec{u} = a \times (-b) + b \times a = 0$ et $\vec{n} \neq \vec{0}$, le vecteur $\vec{n}\,(a\,;b)$ est normal à cette droite.
+:::
+
+::: methode Écrire l’équation d’une droite connaissant un point et un vecteur normal
+1. Écrire $a(x - x_A) + b(y - y_A) = 0$, avec $\vec{n}\,(a\,;b)$ et $A(x_A\,;y_A)$.
+2. Développer et réduire pour obtenir $ax + by + c = 0$.
+3. Contrôler : les coordonnées de $A$ vérifient l’équation.
+:::
+
+::: exemple
+La droite $d$ passant par $A(1\,;2)$ et de vecteur normal $\vec{n}\,(2\,;1)$ a pour équation $2(x - 1) + 1 \times (y - 2) = 0$, soit $2x + y - 4 = 0$. Contrôle : $2 \times 1 + 2 - 4 = 0$.
+:::
+
+::: propriete Droites perpendiculaires
+Deux droites sont perpendiculaires si et seulement si leurs vecteurs normaux sont orthogonaux. Autrement dit, un vecteur directeur de l’une est un vecteur normal de l’autre.
+:::
+
+::: exemple Hauteur d’un triangle
+Dans le triangle $A(0\,;0)$, $B(4\,;0)$, $C(1\,;3)$, la hauteur issue de $A$ est perpendiculaire à $(BC)$ : le vecteur $\overrightarrow{BC}\,(-3\,;3)$ en est un vecteur normal. Son équation est $-3(x - 0) + 3(y - 0) = 0$, soit $y = x$.
+:::
+
+::: attention
+Pour la droite $ax + by + c = 0$, le vecteur $(a\,;b)$ est **normal** et le vecteur $(-b\,;a)$ est **directeur** : ne pas les confondre. Un vecteur normal n’est pas unique : tout vecteur non nul colinéaire à $\vec{n}$ convient (par exemple $(4\,;2)$ ou $(-2\,;-1)$ pour $2x + y - 4 = 0$).
+:::
+
+## II. Projeté orthogonal d’un point sur une droite
+
+::: definition Projeté orthogonal
+Le **projeté orthogonal** d’un point $M$ sur une droite $d$ est le point $H$ d’intersection de $d$ et de la perpendiculaire à $d$ passant par $M$. Si $M \in d$, alors $H = M$.
+:::
+
+::: propriete Distance d’un point à une droite
+Pour tout point $P$ de $d$, $MP \ge MH$ : la distance $MH$ est la plus courte distance de $M$ à un point de $d$. On l’appelle **distance du point $M$ à la droite $d$**.
+:::
+
+::: demonstration
+Si $P \in d$, le triangle $MHP$ est rectangle en $H$ (ou aplati si $P = H$). D’après le théorème de Pythagore, $MP^2 = MH^2 + HP^2 \ge MH^2$, donc $MP \ge MH$.
+:::
+
+::: methode Calculer les coordonnées du projeté orthogonal $H$ de $M$ sur $d$
+1. Un vecteur directeur de $d$ est un vecteur **normal** à la perpendiculaire $\Delta$ : on écrit l’équation de $\Delta$ passant par $M$.
+2. On résout le système formé par les équations de $d$ et de $\Delta$ : sa solution donne $H$.
+3. On contrôle que $H \in d$ et que $\overrightarrow{MH}$ est orthogonal à un vecteur directeur de $d$ ; la distance de $M$ à $d$ est $MH$.
+:::
+
+::: exemple
+$M(4\,;3)$ et $d : 2x + y - 4 = 0$. Un vecteur directeur de $d$ est $\vec{u}\,(-1\,;2)$ : il est normal à la perpendiculaire $\Delta$ passant par $M$, d’où $\Delta : -(x - 4) + 2(y - 3) = 0$, soit $-x + 2y - 2 = 0$.
+
+On résout $2x + y - 4 = 0$ et $-x + 2y - 2 = 0$ : la seconde donne $x = 2y - 2$, puis $2(2y - 2) + y - 4 = 0$, soit $5y = 8$. Donc $y = \frac{8}{5}$, $x = \frac{6}{5}$ et $H\left(\frac{6}{5}\,;\frac{8}{5}\right)$.
+
+$$
+\begin{aligned}
+MH &= \sqrt{\left(4 - \frac{6}{5}\right)^2 + \left(3 - \frac{8}{5}\right)^2} \\
+&= \sqrt{\frac{196}{25} + \frac{49}{25}} \\
+&= \frac{\sqrt{245}}{5} = \frac{7\sqrt{5}}{5} \approx 3{,}13
+\end{aligned}
+$$
+:::
+
+[IMAGE_2]
+
+::: remarque Pour aller plus loin
+On démontre que la distance de $M(x_0\,;y_0)$ à la droite $ax + by + c = 0$ vaut $\frac{|ax_0 + by_0 + c|}{\sqrt{a^2 + b^2}}$. Cette formule n’est pas au programme de Première : on calcule la distance en passant par le projeté orthogonal.
+:::
+
+## III. Équation d’un cercle
+
+::: theoreme Équation d’un cercle
+Le cercle $\mathcal{C}$ de centre $\Omega(a\,;b)$ et de rayon $r$ ($r \gt 0$) a pour équation
+
+$$(x - a)^2 + (y - b)^2 = r^2$$
+:::
+
+::: demonstration
+Un point $M(x\,;y)$ appartient à $\mathcal{C}$ si et seulement si $\Omega M = r$, c’est-à-dire $\Omega M^2 = r^2$ (car $\Omega M$ et $r$ sont positifs), soit $(x - a)^2 + (y - b)^2 = r^2$.
+:::
+
+::: exemple
+Le cercle de centre $\Omega(1\,;-1)$ et de rayon $5$ a pour équation $(x - 1)^2 + (y + 1)^2 = 25$. En développant : $x^2 + y^2 - 2x + 2y - 23 = 0$.
+:::
+
+::: methode Reconnaître un cercle : compléter les carrés
+Pour une équation $x^2 + y^2 + px + qy + s = 0$ :
+1. Regrouper les termes en $x$ et en $y$, puis utiliser $x^2 + px = \left(x + \frac{p}{2}\right)^2 - \frac{p^2}{4}$ (de même en $y$).
+2. Se ramener à $(x - a)^2 + (y - b)^2 = k$.
+3. Conclure : si $k \gt 0$, cercle de centre $\Omega(a\,;b)$ et de rayon $\sqrt{k}$ ; si $k = 0$, le seul point $\Omega$ ; si $k \lt 0$, ensemble vide.
+:::
+
+::: exemple
+$x^2 + y^2 - 2x + 2y - 23 = 0$. On a $x^2 - 2x = (x - 1)^2 - 1$ et $y^2 + 2y = (y + 1)^2 - 1$, donc l’équation s’écrit $(x - 1)^2 - 1 + (y + 1)^2 - 1 - 23 = 0$, soit $(x - 1)^2 + (y + 1)^2 = 25$ : c’est le cercle de centre $\Omega(1\,;-1)$ et de rayon $5$.
+:::
+
+::: propriete Tangente à un cercle
+La tangente au cercle $\mathcal{C}$ de centre $\Omega$ en un point $A$ de $\mathcal{C}$ est la droite passant par $A$ et perpendiculaire au rayon $[\Omega A]$ : le vecteur $\overrightarrow{\Omega A}$ en est un **vecteur normal**.
+:::
+
+::: exemple
+Le point $A(4\,;3)$ est sur le cercle précédent : $(4 - 1)^2 + (3 + 1)^2 = 9 + 16 = 25$. Avec $\overrightarrow{\Omega A}\,(3\,;4)$, la tangente en $A$ a pour équation $3(x - 4) + 4(y - 3) = 0$, soit $T : 3x + 4y - 24 = 0$.
+:::
+
+[IMAGE_3]
+
+::: attention
+Le membre de droite est $r^2$, pas $r$ : $(x - 1)^2 + (y + 1)^2 = 25$ donne un rayon $5$. Attention aux signes : $(y + 1)^2 = \big(y - (-1)\big)^2$ correspond à $b = -1$.
+:::
+
+## IV. Parabole d’équation $y = ax^2 + bx + c$
+
+::: theoreme Axe de symétrie et sommet
+Soit $a \neq 0$. La parabole $\mathcal{P}$ d’équation $y = ax^2 + bx + c$ admet pour **axe de symétrie** la droite d’équation $x = \alpha$, avec $\alpha = -\frac{b}{2a}$. Son **sommet** est le point $S(\alpha\,;\beta)$, avec $\beta = a\alpha^2 + b\alpha + c$.
+
+Si $a \gt 0$, la parabole est tournée vers le haut et $\beta$ est le minimum ; si $a \lt 0$, elle est tournée vers le bas et $\beta$ est le maximum.
+:::
+
+::: demonstration
+On note $f(x) = ax^2 + bx + c$. La forme canonique s’écrit $f(x) = a(x - \alpha)^2 + \beta$. Pour tout réel $h$ :
+$$
+\begin{aligned}
+f(\alpha + h) &= ah^2 + \beta \\
+&= a(-h)^2 + \beta \\
+&= f(\alpha - h)
+\end{aligned}
+$$
+Les points de $\mathcal{P}$ d’abscisses $\alpha + h$ et $\alpha - h$ ont donc la même ordonnée : ils sont symétriques par rapport à la droite $x = \alpha$.
+:::
+
+::: methode Déterminer l’axe et le sommet
+1. Identifier $a$ et $b$, calculer $\alpha = -\frac{b}{2a}$ : l’axe est la droite $x = \alpha$.
+2. Calculer $\beta = f(\alpha)$ : le sommet est $S(\alpha\,;\beta)$.
+3. Si la parabole coupe l’axe des abscisses en $x_1$ et $x_2$, on peut aussi utiliser $\alpha = \frac{x_1 + x_2}{2}$.
+:::
+
+::: exemple
+$y = x^2 - 4x + 3$ : $\alpha = -\frac{-4}{2 \times 1} = 2$ et $\beta = 2^2 - 4 \times 2 + 3 = -1$. Axe $x = 2$, sommet $S(2\,;-1)$ (minimum, car $a = 1 \gt 0$). Forme canonique : $y = (x - 2)^2 - 1$. Les points d’intersection avec l’axe des abscisses, d’abscisses $1$ et $3$, sont bien symétriques par rapport à l’axe : $\frac{1 + 3}{2} = 2$.
+:::
+
+[IMAGE_4]
+
+::: attention
+L’axe de symétrie est une droite **verticale** : son équation est $x = \alpha$, et non $y = \alpha$. Dans $\alpha = -\frac{b}{2a}$, le signe « $-$ » est souvent oublié.
+:::
+
+::: retenir
+- $ax + by + c = 0$ : vecteur normal $\vec{n}\,(a\,;b)$, vecteur directeur $\vec{u}\,(-b\,;a)$.
+- Droite par $A$ de vecteur normal $\vec{n}\,(a\,;b)$ : $a(x - x_A) + b(y - y_A) = 0$.
+- Projeté orthogonal $H$ de $M$ sur $d$ : intersection de $d$ et de la perpendiculaire à $d$ passant par $M$ ; distance de $M$ à $d$ : $MH$.
+- Cercle de centre $\Omega(a\,;b)$ et de rayon $r$ : $(x - a)^2 + (y - b)^2 = r^2$ ; tangente en $A$ : vecteur normal $\overrightarrow{\Omega A}$.
+- Parabole $y = ax^2 + bx + c$ : axe $x = -\frac{b}{2a}$, sommet $S\left(-\frac{b}{2a}\,;f\left(-\frac{b}{2a}\right)\right)$.
+:::

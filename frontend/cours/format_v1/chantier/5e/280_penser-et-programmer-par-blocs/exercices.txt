@@ -1,0 +1,1162 @@
+=== Découverte - Exécuter un programme de calcul
+Id: 3104
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Voici un programme de calcul écrit avec Scratch. Le symbole « $\ast$ » est celui de la multiplication.
+
+[IMAGE_1]
+
+1. Quel bloc démarre le script ? Quel bloc permet de saisir un nombre ? Quelles sont les deux variables utilisées ?
+2. On choisit $5$. Présenter un tableau d'exécution et donner le nombre dit par le lutin.
+3. Quel nombre le lutin dit-il si l'on choisit $2{,}5$ ? Et si l'on choisit $0$ ?
+4. On choisit un nombre $x$. Exprimer en fonction de $x$ le nombre dit par le lutin.
+5. Quel nombre faut-il choisir pour que le lutin dise $50$ ?
+6. Remplacer le bloc « ajouter 6 à résultat » par un bloc « mettre résultat à … » qui fait exactement la même chose.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les blocs du script
+
+::: methode
+On regarde la couleur et le rôle de chaque bloc : jaune pour les événements, bleu clair pour les capteurs, orange pour les variables.
+:::
+
+::: etape Lecture du script
+- « quand le drapeau est cliqué » (jaune) démarre le script.
+- « demander Choisis un nombre et attendre » permet de saisir un nombre ; il est rangé dans **réponse**.
+- Les blocs orange utilisent deux variables : **nombre** et **résultat**.
+:::
+
+::: resultat
+Le script démarre avec le drapeau vert ; on saisit le nombre avec « demander » ; les variables sont nombre et résultat.
+:::
+
+## Question 2 : Avec le nombre 5
+
+::: methode
+On suit les blocs dans l'ordre et on note, après chaque bloc, la valeur des variables.
+:::
+
+::: etape Tableau d'exécution
+| Bloc exécuté | nombre | résultat |
+|---|---|---|
+| demander … (on tape $5$) | — | — |
+| mettre nombre à réponse | $5$ | — |
+| mettre résultat à nombre ∗ 4 | $5$ | $5 \times 4 = 20$ |
+| ajouter 6 à résultat | $5$ | $20 + 6 = 26$ |
+| dire résultat | $5$ | $26$ |
+:::
+
+::: resultat
+Le lutin dit $26$.
+:::
+
+## Question 3 : Avec 2,5 puis avec 0
+
+::: etape Avec $2{,}5$
+résultat vaut $2{,}5 \times 4 = 10$, puis $10 + 6 = 16$.
+:::
+
+::: etape Avec $0$
+résultat vaut $0 \times 4 = 0$, puis $0 + 6 = 6$.
+:::
+
+::: resultat
+Le lutin dit $16$, puis $6$.
+:::
+
+## Question 4 : L'expression en fonction de x
+
+::: methode
+On exécute le script avec la lettre $x$ à la place d'un nombre.
+:::
+
+::: etape
+résultat vaut d'abord $x \times 4 = 4x$, puis on lui ajoute $6$.
+:::
+
+::: resultat
+Le lutin dit $4x + 6$.
+:::
+
+## Question 5 : Pour obtenir 50
+
+::: methode
+On remonte le programme en faisant les opérations inverses, en partant de la fin.
+:::
+
+::: etape On remonte le calcul
+- Avant « ajouter 6 », résultat valait $50 - 6 = 44$.
+- Avant « ∗ 4 », le nombre valait $44 \div 4 = 11$.
+:::
+
+::: etape Vérification
+$11 \times 4 + 6 = 44 + 6 = 50$.
+:::
+
+::: resultat
+Il faut choisir $11$.
+:::
+
+## Question 6 : « mettre » à la place de « ajouter »
+
+::: etape
+« ajouter 6 à résultat » donne à résultat sa valeur **augmentée de 6**. Avec « mettre », il faut écrire ce calcul : nouvelle valeur $=$ ancienne valeur $+ 6$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+On écrit « mettre résultat à résultat + 6 » (bloc entouré de vert).
+:::
+
+::: attention Erreur fréquente
+Écrire « mettre résultat à 6 » : la valeur $20$ serait **remplacée** par $6$, et le lutin dirait $6$ quel que soit le nombre choisi.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Le drapeau vert ; « demander » ; les variables nombre et résultat
+2. $26$
+3. $16$ ; $6$
+4. $4x + 6$
+5. $11$
+6. « mettre résultat à résultat + 6 »
+
+===
+
+=== Découverte - Tracer un carré avec une boucle
+Id: 3105
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+L'orientation $90$ est vers la droite. « tourner ↻ » fait tourner le lutin dans le sens des aiguilles d'une montre.
+
+[IMAGE_1]
+
+1. Que font les cinq premiers blocs, avant la boucle ?
+2. Combien de fois le bloc « avancer de 50 pas » est-il exécuté ? Combien de segments sont tracés ?
+3. Donner, à la fin de chaque tour de boucle, la position et l'orientation du lutin. Quelle figure est tracée ?
+4. Quelle longueur le stylo a-t-il tracée ?
+5. Sans boucle, combien de blocs de mouvement faudrait-il écrire pour le même tracé ?
+6. On supprime le bloc « stylo en position d'écriture ». Que voit-on sur la scène ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Avant la boucle
+
+::: methode
+Un script s'exécute de haut en bas : on lit les blocs un par un.
+:::
+
+::: etape Les cinq premiers blocs
+- « quand le drapeau est cliqué » : le script démarre ;
+- « effacer tout » : les anciens dessins sont effacés ;
+- « aller à x : 0 y : 0 » : le lutin est placé au centre de la scène ;
+- « s'orienter à 90 » : il regarde vers la droite ;
+- « stylo en position d'écriture » : ses déplacements seront tracés.
+:::
+
+::: resultat
+Le lutin est prêt à dessiner : en $(0\ ;\ 0)$, tourné vers la droite, stylo baissé.
+:::
+
+## Question 2 : Le nombre d'exécutions
+
+::: etape
+Les blocs « avancer » et « tourner » sont **à l'intérieur** de « répéter 4 fois » : ils sont exécutés à chaque tour. Chaque « avancer » trace un segment.
+:::
+
+::: resultat
+« avancer de 50 pas » est exécuté $4$ fois : $4$ segments sont tracés.
+:::
+
+## Question 3 : La figure tracée
+
+::: methode
+À chaque tour : « avancer » déplace le lutin dans la direction où il regarde, puis « tourner ↻ de 90 » lui fait faire un quart de tour vers la droite.
+:::
+
+::: etape Tableau d'exécution, tour par tour
+| Tour | Position après « avancer » | Orientation après « tourner ↻ » |
+|---|---|---|
+| 1 | $(50\ ;\ 0)$ | $180$ (bas) |
+| 2 | $(50\ ;\ {-50})$ | $-90$ (gauche) |
+| 3 | $(0\ ;\ {-50})$ | $0$ (haut) |
+| 4 | $(0\ ;\ 0)$ | $90$ (droite) |
+:::
+
+[IMAGE_2]
+
+::: resultat
+Un carré de côté $50$, de sommets $(0\ ;\ 0)$, $(50\ ;\ 0)$, $(50\ ;\ {-50})$ et $(0\ ;\ {-50})$, situé **sous** l'axe des abscisses. Le lutin revient au départ, tourné vers la droite.
+:::
+
+## Question 4 : La longueur tracée
+
+::: etape Calcul
+$4$ segments de $50$ pas : $4 \times 50 = 200$.
+:::
+
+::: resultat
+Le stylo a tracé $200$ pas : c'est le périmètre du carré.
+:::
+
+## Question 5 : Sans boucle
+
+::: etape
+Il faudrait écrire les deux blocs « avancer de 50 pas » et « tourner ↻ de 90 degrés » quatre fois de suite : $4 \times 2 = 8$ blocs.
+:::
+
+::: resultat
+$8$ blocs de mouvement au lieu de $2$ : la boucle rend le script plus court et plus facile à modifier.
+:::
+
+## Question 6 : Sans le stylo
+
+::: etape
+Le lutin fait exactement les mêmes déplacements, mais son stylo n'est jamais baissé : aucun segment n'est dessiné.
+:::
+
+::: resultat
+La scène reste vide ; le lutin termine en $(0\ ;\ 0)$, tourné vers la droite.
+:::
+
+::: attention Erreur fréquente
+Croire que « tourner ↻ » trace un trait : une rotation change seulement la direction du lutin. Seul un déplacement, stylo baissé, trace un segment.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Efface la scène, place le lutin en $(0\ ;\ 0)$, l'oriente vers la droite, baisse le stylo
+2. $4$ fois ; $4$ segments
+3. $(50\ ;\ 0)$, $(50\ ;\ {-50})$, $(0\ ;\ {-50})$, $(0\ ;\ 0)$ : un carré de côté $50$
+4. $200$ pas
+5. $8$ blocs
+6. Rien n'est tracé
+
+===
+
+=== Découverte - Compléter une suite de déplacements
+Id: 3110
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Le lutin doit tracer un rectangle de $80$ pas sur $40$ pas. Il part de $(0\ ;\ 0)$, tourné vers la droite, et tourne toujours dans le sens inverse des aiguilles d'une montre (« tourner ↺ »).
+
+[IMAGE_1]
+
+1. Où se trouve le lutin après le bloc « avancer de 80 pas » ? Vers où regarde-t-il après le bloc « tourner ↺ de 90 degrés » qui suit ?
+2. Compléter les cases A, B, C et D pour que le lutin trace le rectangle et revienne en $(0\ ;\ 0)$.
+3. Donner les quatre sommets du rectangle dans l'ordre du tracé.
+4. Quelle longueur le stylo a-t-il tracée ? Vers où le lutin regarde-t-il à la fin ?
+5. Le script contient deux fois la même suite de quatre blocs. Écrire un script plus court avec une boucle.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Le premier déplacement
+
+::: methode
+« avancer » déplace le lutin dans la direction où il regarde ; « tourner ↺ de 90 » lui fait faire un quart de tour vers la gauche.
+:::
+
+::: etape
+Le lutin regarde vers la droite : il avance de $80$ pas horizontalement et arrive en $(80\ ;\ 0)$. Un quart de tour vers la gauche le fait ensuite regarder vers le **haut** (orientation $0$).
+:::
+
+::: resultat
+Le lutin est en $(80\ ;\ 0)$, puis il regarde vers le haut.
+:::
+
+## Question 2 : Compléter les cases
+
+::: methode
+Dans un rectangle, les côtés opposés ont la même longueur et tous les angles sont droits : chaque rotation est un quart de tour.
+:::
+
+::: etape
+- A : le 2e côté est une largeur : $40$ pas.
+- B : on tourne encore d'un quart de tour : $90$ degrés.
+- C : le 3e côté est opposé au 1er : $80$ pas.
+- D : le 4e côté est opposé au 2e : $40$ pas.
+:::
+
+[IMAGE_2]
+
+::: resultat
+A $= 40$, B $= 90$, C $= 80$, D $= 40$ (cases complétées en vert).
+:::
+
+## Question 3 : Les sommets
+
+::: etape Tableau d'exécution des déplacements
+| Bloc exécuté | Position | Orientation |
+|---|---|---|
+| avancer de 80 pas | $(80\ ;\ 0)$ | $90$ (droite) |
+| tourner ↺ de 90 degrés | $(80\ ;\ 0)$ | $0$ (haut) |
+| avancer de 40 pas | $(80\ ;\ 40)$ | $0$ (haut) |
+| tourner ↺ de 90 degrés | $(80\ ;\ 40)$ | $-90$ (gauche) |
+| avancer de 80 pas | $(0\ ;\ 40)$ | $-90$ (gauche) |
+| tourner ↺ de 90 degrés | $(0\ ;\ 40)$ | $180$ (bas) |
+| avancer de 40 pas | $(0\ ;\ 0)$ | $180$ (bas) |
+:::
+
+[IMAGE_3]
+
+::: resultat
+Les sommets sont $(0\ ;\ 0)$, $(80\ ;\ 0)$, $(80\ ;\ 40)$ et $(0\ ;\ 40)$.
+:::
+
+## Question 4 : Longueur et orientation finale
+
+::: etape Calcul
+$80 + 40 + 80 + 40 = 240$.
+:::
+
+::: resultat
+Le stylo a tracé $240$ pas (le périmètre du rectangle). Le lutin regarde vers le **bas** (orientation $180$).
+:::
+
+## Question 5 : Avec une boucle
+
+::: methode
+On repère la suite de blocs qui se répète : « avancer de 80 ; tourner ↺ de 90 ; avancer de 40 ; tourner ↺ de 90 ».
+:::
+
+::: etape
+On la place dans un bloc « répéter 2 fois ». Ce script exécute une rotation de plus que le script de départ : à la fin, le lutin regarde de nouveau vers la droite.
+:::
+
+[IMAGE_4]
+
+::: resultat
+« répéter 2 fois : avancer de 80 pas, tourner ↺ de 90 degrés, avancer de 40 pas, tourner ↺ de 90 degrés » trace le même rectangle.
+:::
+
+::: attention Erreur fréquente
+Mettre $80$ dans la case A : on tracerait un carré de côté $80$ incomplet. Les côtés **consécutifs** d'un rectangle sont une longueur et une largeur.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. En $(80\ ;\ 0)$ ; il regarde vers le haut
+2. A $= 40$, B $= 90$, C $= 80$, D $= 40$
+3. $(0\ ;\ 0)$, $(80\ ;\ 0)$, $(80\ ;\ 40)$, $(0\ ;\ 40)$
+4. $240$ pas ; vers le bas
+5. Répéter 2 fois : avancer de 80, tourner ↺ de 90, avancer de 40, tourner ↺ de 90
+
+===
+
+=== Entraînement - Des blocs opérateurs emboîtés
+Id: 3108
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Le professeur demande un script qui « multiplie le nombre choisi par $4$, puis ajoute $3$ au résultat ». Léa et Tom proposent :
+
+[IMAGE_1]
+
+1. On choisit $2$. Quel nombre dit le lutin avec le script de Léa ? Avec celui de Tom ?
+2. Écrire, avec des parenthèses, le calcul effectué par chaque script pour un nombre $n$.
+3. Quel script répond à la consigne ? Corriger l'autre.
+4. Montrer que, pour n'importe quel nombre $n$, le script de Tom dit toujours $9$ de plus que celui de Léa.
+5. Voici un script à trous. Quel bloc faut-il glisser dans la case A pour qu'il « ajoute $5$ au nombre choisi, puis multiplie par $2$ » ? Que dit le lutin si l'on choisit $4$ ?
+
+[IMAGE_2]
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Avec le nombre 2
+
+::: methode
+Dans des blocs emboîtés, on calcule d'abord le bloc **le plus à l'intérieur**.
+:::
+
+::: etape Script de Léa
+| Bloc exécuté | Valeur obtenue |
+|---|---|
+| mettre nombre à réponse | nombre $= 2$ |
+| bloc intérieur : nombre ∗ 4 | $2 \times 4 = 8$ |
+| mettre résultat à … + 3 | résultat $= 8 + 3 = 11$ |
+:::
+
+::: etape Script de Tom
+| Bloc exécuté | Valeur obtenue |
+|---|---|
+| mettre nombre à réponse | nombre $= 2$ |
+| bloc intérieur : nombre + 3 | $2 + 3 = 5$ |
+| mettre résultat à 4 ∗ … | résultat $= 4 \times 5 = 20$ |
+:::
+
+::: resultat
+Le lutin de Léa dit $11$ ; celui de Tom dit $20$.
+:::
+
+## Question 2 : Les calculs avec des parenthèses
+
+::: etape
+- Léa : le bloc intérieur est « nombre ∗ 4 » ; on lui ajoute $3$ : $(n \times 4) + 3$.
+- Tom : le bloc intérieur est « nombre + 3 » ; on multiplie $4$ par ce résultat : $4 \times (n + 3)$.
+:::
+
+::: resultat
+Léa : $(n \times 4) + 3$ ; Tom : $4 \times (n + 3)$.
+:::
+
+## Question 3 : Le bon script
+
+::: etape
+La consigne demande de **multiplier d'abord**, puis d'ajouter $3$ : c'est le calcul de Léa. Tom ajoute $3$ avant de multiplier.
+:::
+
+[IMAGE_3]
+
+::: resultat
+Le script de Léa est correct. Tom doit emboîter « 4 ∗ nombre » **dans** un bloc « … + 3 » (en vert).
+:::
+
+## Question 4 : Toujours 9 de plus
+
+::: methode
+On développe l'expression de Tom avec la distributivité.
+:::
+
+::: etape
+$$
+\begin{aligned}
+4 \times (n + 3) &= 4 \times n + 4 \times 3 \\
+&= 4n + 12
+\end{aligned}
+$$
+Léa obtient $4n + 3$. Or $12 = 3 + 9$ : le résultat de Tom est celui de Léa augmenté de $9$.
+:::
+
+::: etape Vérification avec $n = 2$
+$20 - 11 = 9$.
+:::
+
+::: resultat
+Pour tout nombre $n$, le script de Tom dit $9$ de plus que celui de Léa.
+:::
+
+## Question 5 : Le script à trous
+
+::: etape
+Il faut d'abord calculer « nombre + 5 », puis multiplier par $2$ : le bloc « nombre + 5 » doit être **à l'intérieur** du bloc « … ∗ 2 ».
+:::
+
+[IMAGE_4]
+
+::: etape Avec le nombre 4
+$(4 + 5) \times 2 = 9 \times 2 = 18$.
+:::
+
+::: resultat
+On glisse le bloc « nombre + 5 » dans la case A ; pour $4$, le lutin dit $18$.
+:::
+
+::: attention Erreur fréquente
+Lire les blocs de gauche à droite comme une phrase. C'est l'**emboîtement** qui décide de l'ordre des calculs : le bloc intérieur est calculé en premier.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Léa : $11$ ; Tom : $20$
+2. Léa : $(n \times 4) + 3$ ; Tom : $4 \times (n + 3)$
+3. Le script de Léa ; Tom doit calculer $(4 \times n) + 3$
+4. $4(n + 3) = 4n + 12 = (4n + 3) + 9$
+5. Le bloc « nombre + 5 » ; $18$
+
+===
+
+=== Entraînement - Polygones réguliers : choisir l'angle
+Id: 3117
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Pour tracer un triangle équilatéral de côté $80$ pas, Inès écrit le script ci-dessous. Elle pense : « un triangle équilatéral a des angles de $60^\circ$ ».
+
+[IMAGE_1]
+
+1. Exécuter le script : de combien de degrés le lutin a-t-il tourné en tout après chaque tour ? Le tracé est-il fermé ?
+2. De combien de degrés le lutin doit-il tourner en tout pour revenir à son point de départ dans la même direction ? En déduire l'angle à écrire dans le bloc « tourner ».
+3. Corriger le script et décrire le tracé obtenu.
+4. On veut tracer un hexagone régulier (six côtés égaux) de côté $50$ pas. Compléter les cases A et B du script ci-dessous.
+5. Quelle longueur le stylo trace-t-il pour l'hexagone ?
+
+[IMAGE_2]
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Le script d'Inès
+
+::: methode
+On suit la boucle tour par tour en additionnant les rotations.
+:::
+
+::: etape Tableau d'exécution
+À chaque tour, le lutin trace un côté de $80$ pas, puis tourne de $60^\circ$.
+
+| Tour | Rotation totale depuis le départ |
+|---|---|
+| 1 | $60^\circ$ |
+| 2 | $60^\circ + 60^\circ = 120^\circ$ |
+| 3 | $120^\circ + 60^\circ = 180^\circ$ |
+:::
+
+[IMAGE_3]
+
+::: resultat
+Après $3$ tours, le lutin n'a tourné que de $180^\circ$ : il regarde vers la gauche, loin de son départ. Le tracé (en vert) est une ligne de trois segments qui **ne se referme pas**.
+:::
+
+## Question 2 : L'angle de rotation
+
+::: methode
+Pour revenir à son point de départ dans la même direction, le lutin doit faire **un tour complet** : $360^\circ$, répartis sur les $3$ sommets.
+:::
+
+::: etape Calcul
+$$360 \div 3 = 120$$
+:::
+
+::: etape Lien avec l'angle du triangle
+En un sommet, l'angle du triangle et l'angle de rotation forment un angle plat : $60^\circ + 120^\circ = 180^\circ$. Le lutin tourne de l'angle qui **prolonge** sa direction, pas de l'angle intérieur.
+:::
+
+::: resultat
+Il faut écrire $120$ dans le bloc « tourner ↺ ».
+:::
+
+## Question 3 : Le script corrigé
+
+[IMAGE_4]
+
+::: etape Tableau d'exécution
+| Tour | Rotation totale | Direction du lutin à la fin du tour |
+|---|---|---|
+| 1 | $120^\circ$ | vers le haut à gauche |
+| 2 | $240^\circ$ | vers le bas à gauche |
+| 3 | $360^\circ$ | vers la droite, comme au départ |
+:::
+
+[IMAGE_5]
+
+::: resultat
+Le lutin trace un triangle équilatéral de côté $80$ (en vert) et revient en $(0\ ;\ 0)$, tourné vers la droite.
+:::
+
+## Question 4 : L'hexagone régulier
+
+::: methode
+Polygone régulier à $n$ côtés : on répète $n$ fois « avancer ; tourner de $360 \div n$ degrés ».
+:::
+
+::: etape
+- A : l'hexagone a $6$ côtés, donc $6$ répétitions.
+- B : $360 \div 6 = 60$ degrés.
+:::
+
+[IMAGE_6]
+
+[IMAGE_7]
+
+::: resultat
+A $= 6$ et B $= 60$ : le lutin trace l'hexagone régulier (en vert).
+:::
+
+## Question 5 : La longueur tracée
+
+::: etape Calcul
+$6 \times 50 = 300$.
+:::
+
+::: resultat
+Le stylo trace $300$ pas.
+:::
+
+::: attention Erreur fréquente
+Écrire l'angle intérieur du polygone dans le bloc « tourner ». Pour le triangle équilatéral, c'est $120^\circ$ et non $60^\circ$ ; pour l'hexagone régulier, c'est $60^\circ$ (et non $120^\circ$, son angle intérieur).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $60^\circ$, $120^\circ$, $180^\circ$ : le tracé n'est pas fermé
+2. $360^\circ$ en tout ; $360 \div 3 = 120^\circ$
+3. Tourner de $120$ degrés : triangle équilatéral de côté $80$
+4. A $= 6$, B $= 60$
+5. $300$ pas
+
+===
+
+=== Entraînement - Une condition : le tarif du cinéma
+Id: 3106
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Un cinéma affiche ses prix avec ce script : le lutin dit le prix de la place, en euros.
+
+[IMAGE_1]
+
+1. Une enfant de $10$ ans répond à la question. Présenter un tableau d'exécution et donner le prix dit par le lutin.
+2. Quel prix le lutin dit-il pour une personne de $15$ ans ?
+3. Quel prix dit-il pour un enfant de $12$ ans ? Expliquer.
+4. Le cinéma décide que le tarif réduit concerne les enfants de $12$ ans **ou moins**. Changer un seul nombre du script.
+5. On ajoute un tarif à $7$ € pour les personnes de plus de $64$ ans. Quel bloc faut-il ajouter, et où ?
+6. Avec le script complet, une famille a quatre membres âgés de $8$, $12$, $40$ et $70$ ans. Combien paie-t-elle ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Avec l'âge 10
+
+::: methode
+On suit les blocs dans l'ordre ; arrivé au « si », on teste la condition : les blocs intérieurs ne sont exécutés que si elle est vraie.
+:::
+
+::: etape Tableau d'exécution
+| Bloc exécuté | réponse | prix |
+|---|---|---|
+| demander … (on tape $10$) | $10$ | — |
+| mettre prix à 9 | $10$ | $9$ |
+| si réponse < 12 : $10 < 12$ est **vrai** | $10$ | $9$ |
+| mettre prix à 6 (dans le « si ») | $10$ | $6$ |
+| dire prix | $10$ | $6$ |
+:::
+
+::: resultat
+Le lutin dit $6$ : la place coûte $6$ €.
+:::
+
+## Question 2 : Avec l'âge 15
+
+::: etape
+prix vaut $9$ ; la condition $15 < 12$ est **fausse** : le bloc « mettre prix à 6 » n'est pas exécuté.
+:::
+
+::: resultat
+Le lutin dit $9$ : la place coûte $9$ €.
+:::
+
+## Question 3 : Avec l'âge 12
+
+::: etape
+La condition $12 < 12$ est **fausse** ($12$ n'est pas strictement inférieur à $12$) : prix reste à $9$.
+:::
+
+::: resultat
+Le lutin dit $9$ : avec ce script, un enfant de $12$ ans paie le plein tarif.
+:::
+
+## Question 4 : Inclure les enfants de 12 ans
+
+::: methode
+Les âges sont des nombres entiers : « $12$ ans ou moins » signifie « moins de $13$ ans ».
+:::
+
+[IMAGE_2]
+
+::: etape Vérification
+- $12 < 13$ est vrai : tarif réduit à $6$ €.
+- $13 < 13$ est faux : plein tarif à $9$ €.
+:::
+
+::: resultat
+On remplace $12$ par $13$ : la condition devient « réponse < 13 » (case en vert).
+:::
+
+## Question 5 : Le tarif à 7 €
+
+::: etape
+« plus de $64$ ans » se traduit par la condition « réponse > 64 ». On ajoute, **avant** le bloc « dire prix », un second bloc « si réponse > 64 alors mettre prix à 7 ». S'il était placé après « dire prix », le prix serait changé trop tard.
+:::
+
+[IMAGE_3]
+
+::: resultat
+On ajoute « si réponse > 64 alors mettre prix à 7 » juste avant « dire prix » (en vert).
+:::
+
+## Question 6 : La famille
+
+::: etape Tableau d'exécution pour chaque âge
+| Âge | réponse < 13 ? | réponse > 64 ? | Prix dit |
+|---|---|---|---|
+| $8$ | vrai | faux | $6$ |
+| $12$ | vrai | faux | $6$ |
+| $40$ | faux | faux | $9$ |
+| $70$ | faux | vrai | $7$ |
+:::
+
+::: etape Total
+$6 + 6 + 9 + 7 = 28$.
+:::
+
+::: resultat
+La famille paie $28$ €.
+:::
+
+::: attention Erreur fréquente
+Oublier la valeur frontière : « réponse < 12 » est **faux** pour $12$. Il faut toujours tester le script avec la valeur limite.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $6$ €
+2. $9$ €
+3. $9$ €, car $12 < 12$ est faux
+4. Condition « réponse < 13 »
+5. « si réponse > 64 alors mettre prix à 7 », avant « dire prix »
+6. $28$ €
+
+===
+
+=== Problème - Piloter le lutin au clavier
+Id: 3114
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Dans un jeu, le joueur déplace un lutin avec les flèches du clavier. Le lutin a les cinq scripts ci-dessous.
+
+[IMAGE_1]
+
+1. Quel script s'exécute quand on clique sur le drapeau ? Quand on appuie sur la flèche haut ?
+2. On clique sur le drapeau, puis on appuie dans l'ordre sur : droite, droite, haut, haut, haut, gauche. Présenter un tableau d'exécution, puis représenter le tracé.
+3. Quelle longueur le stylo a-t-il tracée ?
+4. Le joueur veut ramener le lutin en $(0\ ;\ 0)$ avec le moins d'appuis possible. Sur quelles touches doit-il appuyer ?
+5. On veut que la touche « espace » relève le stylo. Écrire ce sixième script.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les événements
+
+::: methode
+Chaque script commence par un événement : il ne s'exécute que lorsque cet événement se produit.
+:::
+
+::: etape
+- Le drapeau déclenche le script 1 : effacer tout, aller en $(0\ ;\ 0)$, baisser le stylo.
+- La flèche haut déclenche le script 3 : s'orienter vers le haut ($0$), puis avancer de $20$ pas.
+:::
+
+::: resultat
+Script 1 pour le drapeau ; script 3 pour la flèche haut.
+:::
+
+## Question 2 : Le trajet
+
+::: methode
+À chaque appui, le lutin s'oriente dans la direction de la flèche puis avance de $20$ pas : il se déplace d'une case de $20$.
+:::
+
+::: etape Tableau d'exécution
+| Touche | Orientation | Position |
+|---|---|---|
+| (drapeau) | — | $(0\ ;\ 0)$ |
+| flèche droite | $90$ | $(20\ ;\ 0)$ |
+| flèche droite | $90$ | $(40\ ;\ 0)$ |
+| flèche haut | $0$ | $(40\ ;\ 20)$ |
+| flèche haut | $0$ | $(40\ ;\ 40)$ |
+| flèche haut | $0$ | $(40\ ;\ 60)$ |
+| flèche gauche | $-90$ | $(20\ ;\ 60)$ |
+:::
+
+[IMAGE_2]
+
+::: resultat
+Le lutin termine en $(20\ ;\ 60)$, tourné vers la gauche. Le stylo étant baissé, il a tracé la ligne brisée en vert.
+:::
+
+## Question 3 : La longueur tracée
+
+::: etape
+$6$ appuis, chacun trace un segment de $20$ pas : $6 \times 20 = 120$.
+:::
+
+::: resultat
+Le stylo a tracé $120$ pas.
+:::
+
+## Question 4 : Revenir au départ
+
+::: methode
+Chaque appui déplace le lutin de $20$ pas, horizontalement ou verticalement : on compte les déplacements nécessaires dans chaque direction.
+:::
+
+::: etape
+Le lutin est en $(20\ ;\ 60)$.
+- Horizontalement : il faut aller de $20$ à $0$, soit $20 \div 20 = 1$ appui sur la flèche gauche.
+- Verticalement : il faut aller de $60$ à $0$, soit $60 \div 20 = 3$ appuis sur la flèche bas.
+:::
+
+::: resultat
+$4$ appuis : flèche gauche une fois, puis flèche bas trois fois (dans n'importe quel ordre). Le lutin arrive en $(0\ ;\ 0)$, tourné vers le bas.
+:::
+
+## Question 5 : La touche espace
+
+::: etape
+Le script commence par l'événement « quand la touche espace est pressée » et contient le bloc du stylo « relever le stylo ».
+:::
+
+[IMAGE_3]
+
+::: resultat
+« quand la touche espace est pressée ; relever le stylo » (en vert). Après un appui sur espace, le lutin se déplace sans tracer.
+:::
+
+::: attention Erreur fréquente
+Croire que les scripts s'exécutent tous les uns après les autres, de haut en bas. Un script qui commence par « quand la touche … est pressée » ne s'exécute **que** lorsqu'on appuie sur cette touche, et autant de fois qu'on appuie.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Script 1 ; script 3
+2. $(20\ ;\ 0)$, $(40\ ;\ 0)$, $(40\ ;\ 20)$, $(40\ ;\ 40)$, $(40\ ;\ 60)$, $(20\ ;\ 60)$
+3. $120$ pas
+4. Flèche gauche une fois et flèche bas trois fois
+5. « quand la touche espace est pressée ; relever le stylo »
+
+===
+
+=== Problème - Un escalier
+Id: 3122
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Le lutin trace un escalier. La scène va de $-240$ à $240$ en abscisse et de $-180$ à $180$ en ordonnée.
+
+[IMAGE_1]
+
+1. Exécuter pas à pas le premier tour de boucle : donner la position et l'orientation du lutin après chacun des quatre blocs.
+2. Donner la position du lutin à la fin de chaque tour, puis représenter le tracé.
+3. Quelle longueur le stylo a-t-il tracée ?
+4. On veut un escalier qui monte jusqu'à la hauteur $140$. Quel nombre faut-il écrire dans « répéter » ? Combien de marches peut-on tracer au plus sans sortir de la scène ?
+5. Un élève remplace le bloc « tourner ↻ de 90 degrés » par « tourner ↺ de 90 degrés ». Quel tracé obtient-il ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Le premier tour, pas à pas
+
+::: methode
+Le lutin part de $(0\ ;\ 0)$, tourné vers la droite (orientation $90$). On suit les quatre blocs de la boucle.
+:::
+
+::: etape Tableau d'exécution
+| Bloc exécuté | Position | Orientation |
+|---|---|---|
+| avancer de 30 pas | $(30\ ;\ 0)$ | $90$ (droite) |
+| tourner ↺ de 90 degrés | $(30\ ;\ 0)$ | $0$ (haut) |
+| avancer de 20 pas | $(30\ ;\ 20)$ | $0$ (haut) |
+| tourner ↻ de 90 degrés | $(30\ ;\ 20)$ | $90$ (droite) |
+:::
+
+::: resultat
+Après un tour, le lutin est en $(30\ ;\ 20)$ et regarde de nouveau vers la droite : il a tracé une marche.
+:::
+
+## Question 2 : Les quatre marches
+
+::: etape
+Chaque tour recommence dans la même direction : il ajoute $30$ à l'abscisse et $20$ à l'ordonnée.
+
+| Fin du tour | Position |
+|---|---|
+| 1 | $(30\ ;\ 20)$ |
+| 2 | $(60\ ;\ 40)$ |
+| 3 | $(90\ ;\ 60)$ |
+| 4 | $(120\ ;\ 80)$ |
+:::
+
+[IMAGE_2]
+
+::: resultat
+Un escalier de $4$ marches (en vert), de $(0\ ;\ 0)$ à $(120\ ;\ 80)$.
+:::
+
+## Question 3 : La longueur tracée
+
+::: etape Calcul
+Chaque marche mesure $30 + 20 = 50$ pas ; $4 \times 50 = 200$.
+:::
+
+::: resultat
+Le stylo a tracé $200$ pas.
+:::
+
+## Question 4 : Un escalier plus haut
+
+::: etape Hauteur 140
+Chaque marche monte de $20$ : $140 \div 20 = 7$ marches.
+:::
+
+[IMAGE_3]
+
+::: etape Sans sortir de la scène
+Après $n$ marches, le lutin est en $(30n\ ;\ 20n)$.
+- Abscisse : $30n \leqslant 240$ donne $n \leqslant 8$.
+- Ordonnée : $20n \leqslant 180$ donne $n \leqslant 9$.
+
+Avec $8$ marches, le lutin arrive en $(240\ ;\ 160)$, encore sur la scène ; avec $9$, il arriverait en $(270\ ;\ 180)$, hors de la scène.
+:::
+
+::: resultat
+Il faut écrire $7$ (case en vert). On peut tracer au plus $8$ marches.
+:::
+
+## Question 5 : Toujours tourner à gauche
+
+::: etape Tableau d'exécution (deux premiers tours)
+| Bloc exécuté | Position | Orientation |
+|---|---|---|
+| avancer de 30 pas | $(30\ ;\ 0)$ | $90$ (droite) |
+| tourner ↺ de 90 degrés | $(30\ ;\ 0)$ | $0$ (haut) |
+| avancer de 20 pas | $(30\ ;\ 20)$ | $0$ (haut) |
+| tourner ↺ de 90 degrés | $(30\ ;\ 20)$ | $-90$ (gauche) |
+| avancer de 30 pas | $(0\ ;\ 20)$ | $-90$ (gauche) |
+| tourner ↺ de 90 degrés | $(0\ ;\ 20)$ | $180$ (bas) |
+| avancer de 20 pas | $(0\ ;\ 0)$ | $180$ (bas) |
+| tourner ↺ de 90 degrés | $(0\ ;\ 0)$ | $90$ (droite) |
+:::
+
+[IMAGE_4]
+
+[IMAGE_5]
+
+::: resultat
+Après deux tours, le lutin est revenu au départ : il trace un rectangle de $30$ sur $20$ (en vert). Les tours 3 et 4 repassent sur ce même rectangle.
+:::
+
+::: attention Erreur fréquente
+Penser que les deux rotations d'un tour s'annulent toujours. Ici, « ↺ puis ↻ » laisse le lutin dans sa direction de départ (escalier), mais « ↺ puis ↺ » le fait tourner d'un demi-tour à chaque tour.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $(30\ ;\ 0)$ droite ; $(30\ ;\ 0)$ haut ; $(30\ ;\ 20)$ haut ; $(30\ ;\ 20)$ droite
+2. $(30\ ;\ 20)$, $(60\ ;\ 40)$, $(90\ ;\ 60)$, $(120\ ;\ 80)$
+3. $200$ pas
+4. $7$ ; au plus $8$ marches
+5. Un rectangle de $30$ sur $20$, parcouru deux fois
+
+===
+
+=== Synthèse - La tirelire de Lina
+Id: 3115
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Lina a $30$ € dans sa tirelire et y ajoute $15$ € chaque semaine. Elle simule ses économies avec ce script.
+
+[IMAGE_1]
+
+1. Présenter un tableau d'exécution de la boucle (valeurs de semaine et de tirelire à la fin de chaque tour).
+2. Que dit le lutin ? Lina a pourtant atteint son objectif de $150$ € : expliquer le problème et corriger la condition.
+3. Exprimer la somme contenue dans la tirelire après $n$ semaines.
+4. Lina veut acheter un vélo à $200$ €. Combien de semaines doit-elle économiser ? Modifier le script pour que le lutin annonce l'objectif atteint au bon moment.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Tableau d'exécution
+
+::: methode
+Avant la boucle : semaine $= 0$ et tirelire $= 30$. À chaque tour, semaine augmente de $1$ et tirelire de $15$.
+:::
+
+::: etape
+| Tour | semaine | tirelire |
+|---|---|---|
+| avant la boucle | $0$ | $30$ |
+| 1 | $1$ | $45$ |
+| 2 | $2$ | $60$ |
+| 3 | $3$ | $75$ |
+| 4 | $4$ | $90$ |
+| 5 | $5$ | $105$ |
+| 6 | $6$ | $120$ |
+| 7 | $7$ | $135$ |
+| 8 | $8$ | $150$ |
+:::
+
+::: resultat
+Après la boucle, semaine vaut $8$ et tirelire vaut $150$.
+:::
+
+## Question 2 : Ce que dit le lutin
+
+::: etape
+Le lutin dit $150$. Puis il teste la condition « tirelire > 150 » : $150 > 150$ est **faux**, donc il ne dit pas « Objectif atteint ! ».
+:::
+
+::: etape Correction
+L'objectif est atteint dès que tirelire vaut $150$ **ou plus**. Les sommes sont des nombres entiers d'euros : « tirelire > 149 » convient.
+:::
+
+[IMAGE_2]
+
+::: resultat
+Le lutin dit seulement $150$. Avec la condition « tirelire > 149 » (en vert), il dit $150$ puis « Objectif atteint ! ».
+:::
+
+## Question 3 : L'expression
+
+::: etape
+Au départ, $30$ € ; chaque semaine, $15$ € de plus. Après $n$ semaines, on a ajouté $n$ fois $15$ €.
+:::
+
+::: etape Vérification avec $n = 8$
+$30 + 15 \times 8 = 30 + 120 = 150$.
+:::
+
+::: resultat
+Après $n$ semaines, la tirelire contient $30 + 15 \times n$ euros.
+:::
+
+## Question 4 : Le vélo à 200 €
+
+::: methode
+On cherche le premier nombre de semaines pour lequel $30 + 15 \times n$ atteint $200$.
+:::
+
+::: etape Essais
+- $n = 11$ : $30 + 15 \times 11 = 30 + 165 = 195$, pas assez.
+- $n = 12$ : $30 + 15 \times 12 = 30 + 180 = 210$, c'est suffisant.
+:::
+
+::: etape Modification du script
+On répète $12$ fois et on teste « tirelire > 199 » (au moins $200$ €).
+:::
+
+[IMAGE_3]
+
+::: resultat
+Il faut $12$ semaines. Le lutin dit alors $210$, puis « Objectif atteint ! » (modifications en vert).
+:::
+
+::: attention Erreur fréquente
+Diviser $200$ par $15$ sans tenir compte des $30$ € de départ. Il faut d'abord calculer ce qui manque : $200 - 30 = 170$ €, puis $170 \div 15 \approx 11{,}3$, donc $12$ semaines entières.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. tirelire : $45$, $60$, $75$, $90$, $105$, $120$, $135$, $150$
+2. Il dit $150$ seulement, car $150 > 150$ est faux ; condition « tirelire > 149 »
+3. $30 + 15 \times n$
+4. $12$ semaines ; répéter 12 fois et condition « tirelire > 199 »
+
+===
+
+=== Synthèse - La clôture du potager
+Id: 3124
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Un jardinier utilise ce script pour son potager rectangulaire : le lutin calcule la longueur de clôture, puis dessine le potager à l'échelle (1 m est représenté par $10$ pas).
+
+[IMAGE_1]
+
+1. Le jardinier répond $12$ puis $8$. Présenter un tableau d'exécution des variables et donner le nombre dit par le lutin.
+2. Pourquoi « avancer de (longueur ∗ 10) pas » ? Donner les sommets du rectangle tracé.
+3. Le grillage coûte $4$ € le mètre et le jardinier dispose de $150$ €. Il ajoute les blocs ci-dessous après « dire clôture ». Compléter les cases A et B, puis dire ce qu'affiche le lutin pour ce potager.
+4. Que dit le lutin pour un potager de $15$ m sur $3$ m ?
+
+[IMAGE_2]
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les variables
+
+::: methode
+On suit les blocs dans l'ordre en notant, après chaque bloc, la valeur des variables.
+:::
+
+::: etape Tableau d'exécution
+| Bloc exécuté | Variable modifiée |
+|---|---|
+| mettre longueur à réponse | longueur $= 12$ |
+| mettre largeur à réponse | largeur $= 8$ |
+| mettre clôture à longueur + largeur | clôture $= 12 + 8 = 20$ |
+| mettre clôture à clôture ∗ 2 | clôture $= 20 \times 2 = 40$ |
+:::
+
+::: resultat
+Le lutin dit $40$ : il faut $40$ m de clôture (le périmètre du potager).
+:::
+
+## Question 2 : Le dessin à l'échelle
+
+::: etape
+$1$ m est représenté par $10$ pas : on multiplie chaque dimension par $10$. La longueur $12$ m donne $120$ pas et la largeur $8$ m donne $80$ pas.
+:::
+
+::: etape Tableau d'exécution de la boucle
+| Bloc exécuté | Position | Orientation |
+|---|---|---|
+| avancer de (longueur ∗ 10) pas | $(120\ ;\ 0)$ | $90$ (droite) |
+| tourner ↺ de 90 degrés | $(120\ ;\ 0)$ | $0$ (haut) |
+| avancer de (largeur ∗ 10) pas | $(120\ ;\ 80)$ | $0$ (haut) |
+| tourner ↺ de 90 degrés | $(120\ ;\ 80)$ | $-90$ (gauche) |
+| 2e tour : avancer, tourner | $(0\ ;\ 80)$ | $180$ (bas) |
+| 2e tour : avancer, tourner | $(0\ ;\ 0)$ | $90$ (droite) |
+:::
+
+[IMAGE_3]
+
+::: resultat
+Le rectangle (en vert) a pour sommets $(0\ ;\ 0)$, $(120\ ;\ 0)$, $(120\ ;\ 80)$ et $(0\ ;\ 80)$.
+:::
+
+## Question 3 : Le budget
+
+::: etape
+- A : le prix est la longueur de clôture multipliée par le prix d'un mètre : $4$.
+- B : le budget est dépassé quand le prix est supérieur à $150$.
+:::
+
+[IMAGE_4]
+
+::: etape Exécution pour ce potager
+| Bloc exécuté | clôture | prix |
+|---|---|---|
+| mettre prix à clôture ∗ 4 | $40$ | $40 \times 4 = 160$ |
+| si prix > 150 : $160 > 150$ est **vrai** | $40$ | $160$ |
+:::
+
+::: resultat
+A $= 4$, B $= 150$. Le lutin dit $40$, puis « Budget dépassé ! » : $160$ € de grillage pour $150$ € de budget.
+:::
+
+## Question 4 : Un potager de 15 m sur 3 m
+
+::: etape
+- clôture $= (15 + 3) \times 2 = 36$ ;
+- prix $= 36 \times 4 = 144$.
+
+La condition $144 > 150$ est **fausse** : le message n'est pas affiché.
+:::
+
+::: resultat
+Le lutin dit $36$, sans message : le budget suffit. Il dessine ensuite un rectangle de $150$ pas sur $30$ pas.
+:::
+
+::: attention Erreur fréquente
+Confondre périmètre et aire : la clôture fait le **tour** du potager, $(12 + 8) \times 2 = 40$ m, et non $12 \times 8 = 96$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. clôture $= 40$ ; le lutin dit $40$
+2. Échelle : 1 m pour $10$ pas ; sommets $(0\ ;\ 0)$, $(120\ ;\ 0)$, $(120\ ;\ 80)$, $(0\ ;\ 80)$
+3. A $= 4$, B $= 150$ ; « Budget dépassé ! » ($160$ €)
+4. $36$, sans message ($144$ €)
+
+===

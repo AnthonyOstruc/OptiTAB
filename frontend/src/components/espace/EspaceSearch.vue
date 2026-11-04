@@ -50,6 +50,7 @@ import { useRouter } from 'vue-router'
 import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
 import { useProgression } from '@/composables/useProgression'
 import { chapitreLink } from '@/config/espace'
+import { prechargerChapitre } from '@/utils/chapitreContenu'
 import { indexThemes, visuelTheme } from '@/utils/espaceTheme'
 
 const router = useRouter()
@@ -83,6 +84,13 @@ const resultats = computed(() => {
 })
 
 watch(q, () => { actif.value = 0 })
+
+// Le chapitre en surbrillance est préparé : Entrée ouvre une page déjà prête.
+let minuteurPrecharge = null
+watch(() => (ouvert.value ? resultats.value[actif.value]?.id : null), (id) => {
+  clearTimeout(minuteurPrecharge)
+  if (id) minuteurPrecharge = setTimeout(() => prechargerChapitre(id), 200)
+})
 
 function ouvrir() {
   ouvert.value = true

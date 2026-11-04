@@ -1,0 +1,109 @@
+Titre: Résumé : La Loi Binomiale
+
+<!-- optitab:1 -->
+::: objectifs
+Maîtriser la loi binomiale : schéma de Bernoulli, calcul de probabilités, espérance, variance, et applications pratiques.
+:::
+
+## I. Schéma de Bernoulli
+
+::: definition Schéma de Bernoulli
+Expérience aléatoire avec **deux issues** :
+
+- Succès (S) avec probabilité $\displaystyle p$
+- Échec (É) avec probabilité $\displaystyle q = 1 - p$
+
+*Relation : $\displaystyle p + q = 1$*
+:::
+
+## II. Loi binomiale
+
+::: definition Loi binomiale
+On répète $n$ fois de manière **indépendante** un schéma de Bernoulli de paramètre $p$.
+
+La variable aléatoire $X$ qui compte le **nombre de succès** suit une **loi binomiale** de paramètres $n$ et $p$.
+
+::: formule
+$$X \sim \mathcal{B}(n, p)$$
+:::
+:::
+
+| Condition | Exigence |
+|---|---|
+| Indépendance | Les $\displaystyle n$ répétitions doivent être indépendantes |
+| Probabilité constante | La probabilité $\displaystyle p$ est identique à chaque répétition |
+| Valeurs possibles | $\displaystyle X \in \{0, 1, 2, \ldots, n\}$ |
+
+## III. Calcul des probabilités
+
+::: theoreme Formule de la loi binomiale
+Pour $X \sim \mathcal{B}(n, p)$ et $k \in \{0, 1, 2, \ldots, n\}$ :
+
+::: formule
+$$P(X = k) = \binom{n}{k} \times p^k \times (1-p)^{n-k}$$
+:::
+:::
+
+::: definition Coefficient binomial
+::: formule
+$$\binom{n}{k} = \frac{n!}{k!(n-k)!}$$
+:::
+:::
+
+| Propriété | Valeur |
+|---|---|
+| $\displaystyle \binom{n}{0}$ et $\displaystyle \binom{n}{n}$ | $\displaystyle 1$ |
+| $\displaystyle \binom{n}{k}$ (symétrie) | $\displaystyle \binom{n}{k} = \binom{n}{n-k}$ |
+| $\displaystyle \binom{n}{1}$ et $\displaystyle \binom{n}{n-1}$ | $\displaystyle n$ |
+
+## IV. Probabilités cumulées
+
+| Probabilité | Formule |
+|---|---|
+| Au plus $\displaystyle k$ | $\displaystyle P(X \leq k) = \sum_{i=0}^{k} P(X = i)$ |
+| Au moins $\displaystyle k$ | $\displaystyle P(X \geq k) = \sum_{i=k}^{n} P(X = i)$ |
+| Relation utile | $\displaystyle P(X \geq k) = 1 - P(X \leq k-1)$ |
+
+## V. Espérance et variance
+
+::: theoreme Espérance et variance
+Pour $\displaystyle X \sim \mathcal{B}(n, p)$ :
+:::
+
+| Paramètre | Formule |
+|---|---|
+| Espérance | $\displaystyle E(X) = np$ |
+| Variance | $\displaystyle V(X) = np(1-p)$ |
+| Écart-type | $\displaystyle \sigma(X) = \sqrt{np(1-p)}$ |
+
+## VI. Erreurs fréquentes
+
+| Piège fréquent | Correction |
+|---|---|
+| Confondre "exactement $\displaystyle k$« et »au plus $\displaystyle k$" | $\displaystyle P(X = k) \neq P(X \leq k)$ |
+| Oublier l'indépendance | Les $\displaystyle n$ répétitions doivent être indépendantes |
+| Se tromper dans l'identification de $\displaystyle p$ | Bien identifier ce qui constitue un « succès » |
+| Confondre $\displaystyle \binom{n}{k}$ et $\displaystyle \binom{k}{n}$ | $\displaystyle \binom{n}{k} = \frac{n!}{k!(n-k)!}$ avec $\displaystyle n \geq k$ |
+| Oublier de vérifier $\displaystyle 0 \leq k \leq n$ | $\displaystyle k$ doit être entre $\displaystyle 0$ et $\displaystyle n$ |
+
+## VII. Formules essentielles — mémo rapide
+
+| Notion | Formule essentielle |
+|---|---|
+| Probabilité exacte | $\displaystyle P(X = k) = \binom{n}{k} \times p^k \times (1-p)^{n-k}$ |
+| Coefficient binomial | $\displaystyle \binom{n}{k} = \frac{n!}{k!(n-k)!}$ |
+| Probabilité au plus $\displaystyle k$ | $\displaystyle P(X \leq k) = \sum_{i=0}^{k} P(X = i)$ |
+| Probabilité au moins $\displaystyle k$ | $\displaystyle P(X \geq k) = 1 - P(X \leq k-1)$ |
+| Espérance | $\displaystyle E(X) = np$ |
+| Variance | $\displaystyle V(X) = np(1-p)$ |
+| Écart-type | $\displaystyle \sigma(X) = \sqrt{np(1-p)}$ |
+
+## VIII. Méthodologie — stratégie de résolution
+
+| Type de problème | Méthode recommandée |
+|---|---|
+| Identifier la loi | Vérifier : répétitions indépendantes, même probabilité $\displaystyle p$, deux issues |
+| Calculer $\displaystyle P(X = k)$ | Utiliser : $\displaystyle P(X = k) = \binom{n}{k} \times p^k \times (1-p)^{n-k}$ |
+| Calculer $\displaystyle P(X \leq k)$ | Sommer : $\displaystyle P(X = 0) + P(X = 1) + \ldots + P(X = k)$ ou utiliser la calculatrice |
+| Calculer $\displaystyle P(X \geq k)$ | Utiliser : $\displaystyle P(X \geq k) = 1 - P(X \leq k-1)$ |
+| Calculer espérance/variance | Utiliser : $\displaystyle E(X) = np$ et $\displaystyle V(X) = np(1-p)$ |

@@ -1,0 +1,260 @@
+Titre: Droites du plan et systèmes
+
+<!-- optitab:1 -->
+::: objectifs
+- Caractériser une droite par un point et un vecteur directeur.
+- Établir une équation cartésienne d'une droite et passer à son équation réduite.
+- Calculer une pente, la lire sur un graphique et tracer une droite connaissant son équation.
+- Reconnaître des droites parallèles ou sécantes ; tester l'alignement de trois points.
+- Résoudre un système de deux équations linéaires et trouver le point d'intersection de deux droites.
+:::
+
+Dans tout le chapitre, le plan est muni d'un repère $(O\,;\vec{i},\vec{j})$.
+
+## I. Vecteur directeur d'une droite
+
+::: rappel Colinéarité
+Le **déterminant** de $\vec{u}\,(x\,;y)$ et $\vec{v}\,(x'\,;y')$ est $\det(\vec{u}, \vec{v}) = xy' - x'y$. Deux vecteurs sont colinéaires si et seulement si leur déterminant est nul.
+:::
+
+::: definition Vecteur directeur
+Un **vecteur directeur** d'une droite $d$ est un vecteur non nul $\vec{u}$ qui a la même direction que $d$.
+
+- Si $A$ et $B$ sont deux points distincts de $d$, alors $\overrightarrow{AB}$ est un vecteur directeur de $d$.
+- Tout vecteur non nul colinéaire à $\vec{u}$ est aussi un vecteur directeur de $d$.
+:::
+
+::: propriete Caractérisation d'une droite
+Soit $A$ un point et $\vec{u}$ un vecteur non nul. La droite $d$ passant par $A$ et de vecteur directeur $\vec{u}$ est l'ensemble des points $M$ tels que $\overrightarrow{AM}$ et $\vec{u}$ sont colinéaires :
+
+$$M \in d \iff \det(\overrightarrow{AM}, \vec{u}) = 0$$
+:::
+
+[IMAGE_1]
+
+## II. Équation cartésienne
+
+::: theoreme Équation cartésienne
+1. Toute droite admet une équation de la forme $ax + by + c = 0$ avec $(a\,;b) \neq (0\,;0)$ : c'est une **équation cartésienne** de la droite.
+2. Le vecteur $\vec{u}\,(-b\,;a)$ est alors un vecteur directeur de cette droite.
+3. Réciproquement, si $(a\,;b) \neq (0\,;0)$, l'ensemble des points $M(x\,;y)$ tels que $ax + by + c = 0$ est une droite.
+:::
+
+::: demonstration Forme générale d'une équation de droite
+**Toute droite a une telle équation.** Soit $d$ la droite passant par $A(x_A\,;y_A)$ et de vecteur directeur $\vec{u}\,(\alpha\,;\beta)$ non nul. Pour un point $M(x\,;y)$, on a $\overrightarrow{AM}\,(x - x_A\,;y - y_A)$, donc :
+
+$$
+\begin{aligned}
+M \in d &\iff \det(\overrightarrow{AM}, \vec{u}) = 0 \\
+&\iff (x - x_A)\beta - (y - y_A)\alpha = 0 \\
+&\iff \beta x - \alpha y + (\alpha y_A - \beta x_A) = 0
+\end{aligned}
+$$
+
+En posant $a = \beta$, $b = -\alpha$ et $c = \alpha y_A - \beta x_A$, la droite $d$ a pour équation $ax + by + c = 0$, avec $(a\,;b) \neq (0\,;0)$ car $\vec{u} \neq \vec{0}$. De plus $(-b\,;a) = (\alpha\,;\beta)$ : on retrouve $\vec{u}$.
+
+**Réciproque.** Soit $(a\,;b) \neq (0\,;0)$ et $E$ l'ensemble des points $M(x\,;y)$ tels que $ax + by + c = 0$. Si $b \neq 0$, le point $A\left(0\,;-\frac{c}{b}\right)$ est dans $E$ ; si $b = 0$, alors $a \neq 0$ et $A\left(-\frac{c}{a}\,;0\right)$ est dans $E$. Dans les deux cas $c = -ax_A - by_A$, donc pour tout point $M(x\,;y)$ :
+
+$$
+\begin{aligned}
+ax + by + c &= a(x - x_A) + b(y - y_A) \\
+&= \det(\overrightarrow{AM}, \vec{u})
+\end{aligned}
+$$
+
+avec $\vec{u}\,(-b\,;a)$ non nul. Ainsi $M \in E \iff \det(\overrightarrow{AM}, \vec{u}) = 0$ : $E$ est la droite passant par $A$ et dirigée par $\vec{u}$.
+:::
+
+::: methode Déterminer une équation cartésienne
+1. Trouver un point $A$ de la droite et un vecteur directeur $\vec{u}$ (avec deux points $A$ et $B$ : $\vec{u} = \overrightarrow{AB}$).
+2. Pour $M(x\,;y)$, écrire $\det(\overrightarrow{AM}, \vec{u}) = 0$ et développer.
+3. Contrôler en remplaçant les coordonnées de $A$ dans l'équation obtenue.
+:::
+
+::: exemple
+Droite $d$ passant par $A(2\,;1)$ et dirigée par $\vec{u}\,(3\,;2)$. Pour $M(x\,;y)$, $\overrightarrow{AM}\,(x - 2\,;y - 1)$ et :
+
+$$
+\begin{aligned}
+\det(\overrightarrow{AM}, \vec{u}) = 0 &\iff 2(x - 2) - 3(y - 1) = 0 \\
+&\iff 2x - 3y - 1 = 0
+\end{aligned}
+$$
+
+Contrôle : $2 \times 2 - 3 \times 1 - 1 = 0$, donc $A \in d$.
+:::
+
+::: propriete Appartenance d'un point
+Un point appartient à une droite si et seulement si ses coordonnées vérifient une équation de cette droite.
+:::
+
+::: exemple
+Avec $d : 2x - 3y - 1 = 0$ : pour $M(8\,;5)$, $2 \times 8 - 3 \times 5 - 1 = 0$, donc $M \in d$ ; pour $N(1\,;1)$, $2 \times 1 - 3 \times 1 - 1 = -2 \neq 0$, donc $N \notin d$.
+:::
+
+::: attention
+- Une équation cartésienne n'est pas unique : $2x - 3y - 1 = 0$ et $4x - 6y - 2 = 0$ (multipliée par $2$) décrivent la même droite.
+- Un vecteur directeur de $ax + by + c = 0$ est $(-b\,;a)$, et non $(a\,;b)$.
+:::
+
+## III. Équation réduite et pente
+
+::: propriete Équation réduite
+- Toute droite **non parallèle à l'axe des ordonnées** a une unique équation de la forme $y = mx + p$ : c'est son **équation réduite**. Le réel $m$ est la **pente** (ou coefficient directeur) et $p$ est l'**ordonnée à l'origine** : la droite coupe l'axe des ordonnées au point $(0\,;p)$.
+- Toute droite **parallèle à l'axe des ordonnées** a une équation de la forme $x = k$ : elle n'a pas de pente.
+:::
+
+::: remarque Passer de l'équation cartésienne à l'équation réduite
+On isole $y$. Si $b \neq 0$ : $ax + by + c = 0 \iff y = -\frac{a}{b}x - \frac{c}{b}$. Si $b = 0$ : l'équation devient $x = -\frac{c}{a}$, la droite est parallèle à l'axe des ordonnées.
+:::
+
+::: propriete Calcul de la pente
+Si $A$ et $B$ sont deux points de la droite avec $x_A \neq x_B$ :
+
+$$m = \frac{y_B - y_A}{x_B - x_A}$$
+
+- Le vecteur $(1\,;m)$ est un vecteur directeur de la droite d'équation $y = mx + p$.
+- Si $\vec{u}\,(\alpha\,;\beta)$ est un vecteur directeur avec $\alpha \neq 0$, la pente vaut $m = \frac{\beta}{\alpha}$.
+:::
+
+[IMAGE_2]
+
+::: exemple
+$A(2\,;1)$ et $B(5\,;5)$ : $m = \frac{5 - 1}{5 - 2} = \frac{4}{3}$, donc $(AB) : y = \frac{4}{3}x + p$. Comme $A \in (AB)$, $1 = \frac{4}{3} \times 2 + p$, d'où $p = 1 - \frac{8}{3} = -\frac{5}{3}$.
+
+$$(AB) : y = \frac{4}{3}x - \frac{5}{3}$$
+:::
+
+::: methode Lire graphiquement $p$ et $m$
+1. $p$ est l'ordonnée du point d'intersection de la droite et de l'axe des ordonnées.
+2. À partir d'un point de la droite, on avance de $1$ en abscisse : on monte de $m$ si $m \gt 0$, on descend de $-m$ si $m \lt 0$.
+3. Plus généralement, quand on avance de $\Delta x$, on monte (ou on descend) de $\Delta y$ et $m = \frac{\Delta y}{\Delta x}$.
+:::
+
+[IMAGE_3]
+
+::: exemple Le signe de la pente
+- $d_1 : y = 2x + 1$ : pente $2$, positive, la droite monte.
+- $d_2 : y = -\frac{1}{2}x + 2$ : pente $-\frac{1}{2}$, négative, la droite descend.
+- $d_3 : y = -2$ : pente nulle, la droite est parallèle à l'axe des abscisses.
+- $d_4 : x = -3$ : droite parallèle à l'axe des ordonnées, sans pente.
+:::
+
+::: methode Tracer une droite connaissant son équation
+- $y = mx + p$ : placer le point $(0\,;p)$, puis un deuxième point en avançant de $1$ (ou d'un nombre donnant des coordonnées entières) et en montant de $m$ fois ce nombre.
+- $ax + by + c = 0$ : calculer les coordonnées de deux points, par exemple avec $x = 0$ puis $y = 0$, ou passer à l'équation réduite.
+- $x = k$ : tracer la parallèle à l'axe des ordonnées passant par le point $(k\,;0)$.
+:::
+
+::: attention
+- Dans $m = \frac{y_B - y_A}{x_B - x_A}$, les **ordonnées** sont au numérateur, et l'on garde le même ordre en haut et en bas.
+- Si $x_A = x_B$, la droite $(AB)$ a pour équation $x = x_A$ : elle n'a pas de pente.
+:::
+
+## IV. Droites parallèles, points alignés
+
+::: propriete Droites parallèles
+Deux droites sont **parallèles** si et seulement si leurs vecteurs directeurs sont colinéaires.
+
+- Pour $ax + by + c = 0$ et $a'x + b'y + c' = 0$ : parallèles $\iff ab' - a'b = 0$.
+- Pour $y = mx + p$ et $y = m'x + p'$ : parallèles $\iff m = m'$.
+
+Deux droites qui ne sont pas parallèles sont **sécantes** : elles ont un unique point commun.
+:::
+
+::: remarque Pourquoi $ab' - a'b$ ?
+Les vecteurs $(-b\,;a)$ et $(-b'\,;a')$ dirigent les deux droites, et leur déterminant vaut :
+
+$$
+\begin{aligned}
+\det\big((-b\,;a), (-b'\,;a')\big) &= -ba' + ab' \\
+&= ab' - a'b
+\end{aligned}
+$$
+:::
+
+::: exemple
+- $y = 2x + 1$ et $y = 2x - 3$ sont parallèles (même pente $2$).
+- $y = 2x + 1$ et $y = -x + 3$ sont sécantes, car $2 \neq -1$.
+- $2x - 3y + 1 = 0$ et $4x - 6y - 5 = 0$ : $2 \times (-6) - 4 \times (-3) = 0$, elles sont parallèles.
+:::
+
+::: propriete Points alignés
+Trois points $A$, $B$, $C$ sont **alignés** si et seulement si $\overrightarrow{AB}$ et $\overrightarrow{AC}$ sont colinéaires, c'est-à-dire si $\det(\overrightarrow{AB}, \overrightarrow{AC}) = 0$.
+:::
+
+::: exemple Algorithme : trois points sont-ils alignés ?
+Un point est représenté par le couple de ses coordonnées.
+
+```python
+def alignes(A, B, C):
+    ux = B[0] - A[0]
+    uy = B[1] - A[1]
+    vx = C[0] - A[0]
+    vy = C[1] - A[1]
+    return ux*vy - uy*vx == 0
+```
+
+`alignes((-1, 2), (2, 8), (5, 14))` renvoie `True` : $\det\big((3\,;6), (6\,;12)\big) = 36 - 36 = 0$.
+:::
+
+::: remarque
+Avec des coordonnées décimales, les arrondis de calcul peuvent fausser le test `== 0` : on teste alors si la valeur absolue du déterminant est très petite, par exemple `abs(d) < 1e-9`.
+:::
+
+## V. Systèmes de deux équations linéaires
+
+::: definition
+Un **système de deux équations linéaires à deux inconnues** $x$ et $y$ s'écrit $\begin{cases} ax + by = c \\ a'x + b'y = c' \end{cases}$. Une **solution** est un couple $(x\,;y)$ qui vérifie les deux équations à la fois.
+:::
+
+::: propriete Interprétation graphique
+Chaque équation est celle d'une droite : résoudre le système revient à chercher les points communs aux deux droites.
+
+- Si $ab' - a'b \neq 0$ : les droites sont sécantes, le système a **une unique solution**, les coordonnées du point d'intersection.
+- Si $ab' - a'b = 0$ : les droites sont parallèles, le système n'a **aucune solution** (droites distinctes) ou en a **une infinité** (droites confondues).
+:::
+
+[IMAGE_4]
+
+::: methode Résoudre par substitution
+On isole une inconnue dans l'une des équations, on la remplace dans l'autre, on résout l'équation obtenue, puis on calcule la seconde inconnue.
+:::
+
+::: exemple
+$\begin{cases} y = 2x - 1 \\ x + y = 5 \end{cases}$ : on remplace $y$ par $2x - 1$ dans la seconde équation.
+
+$$
+\begin{aligned}
+x + (2x - 1) = 5 &\iff 3x = 6 \\
+&\iff x = 2
+\end{aligned}
+$$
+
+Puis $y = 2 \times 2 - 1 = 3$. Les deux droites se coupent en $I(2\,;3)$ et $S = \{(2\,;3)\}$.
+:::
+
+[IMAGE_5]
+
+::: methode Résoudre par combinaison
+On multiplie les équations par des nombres bien choisis pour qu'en les additionnant (ou en les soustrayant) une inconnue disparaisse.
+:::
+
+::: exemple
+$\begin{cases} 2x + 3y = 12 \\ x - y = 1 \end{cases}$ : on multiplie la seconde équation par $3$, ce qui donne $3x - 3y = 3$. On l'additionne à la première : $5x = 15$, donc $x = 3$. Puis $y = x - 1 = 2$.
+
+Contrôle dans les **deux** équations : $2 \times 3 + 3 \times 2 = 12$ et $3 - 2 = 1$. Donc $S = \{(3\,;2)\}$.
+:::
+
+::: attention
+- On vérifie toujours la solution dans les **deux** équations.
+- On peut calculer $ab' - a'b$ avant de résoudre : s'il est nul, le système n'a pas une unique solution.
+:::
+
+::: retenir
+- Droite passant par $A$ et dirigée par $\vec{u}$ : $M \in d \iff \det(\overrightarrow{AM}, \vec{u}) = 0$.
+- Équation cartésienne $ax + by + c = 0$ ; vecteur directeur $(-b\,;a)$.
+- Droite non parallèle à l'axe des ordonnées : $y = mx + p$, avec $m = \frac{y_B - y_A}{x_B - x_A}$ ; sinon $x = k$.
+- Parallèles $\iff$ vecteurs directeurs colinéaires $\iff$ même pente.
+- Un système a une unique solution $\iff ab' - a'b \neq 0$ : c'est le point d'intersection des deux droites.
+:::

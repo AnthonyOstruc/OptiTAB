@@ -83,3 +83,23 @@ class QuizSubmission(BaseModel):
     
     def __str__(self):
         return f"{self.user.email} - {self.quiz.titre} - {self.get_status_display()}"
+
+class ResultatQuizChapitre(BaseModel):
+    """Note d'un élève à un quiz complet de chapitre (onglet « Quiz » du nouvel
+    espace). Le contenu du quiz est un fichier du site (frontend/src/data/quiz) :
+    on garde ici seulement le résultat de chaque passage complet."""
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='resultats_quiz_chapitre')
+    notion = models.ForeignKey('curriculum.Notion', on_delete=models.CASCADE, related_name='resultats_quiz')
+    bonnes = models.PositiveSmallIntegerField()
+    total = models.PositiveSmallIntegerField()
+    note = models.DecimalField(max_digits=4, decimal_places=1, help_text="Note sur 20")
+    parties = models.JSONField(default=list, blank=True, help_text="Bilan par partie du cours")
+
+    class Meta:
+        ordering = ['-date_creation']
+        verbose_name = "Résultat de quiz de chapitre"
+        verbose_name_plural = "Résultats de quiz de chapitre"
+        indexes = [models.Index(fields=['user', 'notion'])]
+
+    def __str__(self):
+        return f"{self.user.email} - {self.notion.titre} - {self.note}/20"

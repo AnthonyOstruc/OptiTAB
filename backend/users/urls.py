@@ -32,7 +32,7 @@ from users.views.profile_views import (
     UserListView,
     CheckEmailExistsView,
 )
-from users.views.progression_views import MyProgressionView, ChildProgressionView
+from users.views.progression_views import MyProgressionView, ChildProgressionView, MyQuizResultView
 from users.views.social_auth_views import GoogleLoginView, GoogleOAuthCodeExchangeView, GoogleOAuthAccessTokenView
 from rest_framework.routers import DefaultRouter
 from users.views.notifications_views import UserNotificationViewSet
@@ -77,6 +77,7 @@ urlpatterns = [
     path('me/overview/', MyOverviewView.as_view(), name='me_overview'),
     path('me/recommendations/', RecommendationsView.as_view(), name='me_recommendations'),
     path('me/progression/', MyProgressionView.as_view(), name='me_progression'),
+    path('me/quiz-resultats/', MyQuizResultView.as_view(), name='me_quiz_resultats'),
     # Notifications
     path('', include(router.urls)),
     path('leaderboard/', LeaderboardView.as_view(), name='leaderboard'),

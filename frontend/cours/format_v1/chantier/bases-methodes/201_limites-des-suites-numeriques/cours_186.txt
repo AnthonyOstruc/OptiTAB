@@ -1,0 +1,1106 @@
+Titre: Limites et Convergence des Suites Numériques
+
+<!-- optitab:1 -->
+::: remarque Sections principales
+Les sections **0 à VII** couvrent les concepts fondamentaux des limites de suites. La section **VIII** (Algorithmes) offre également des applications pratiques. La section **IX** (Approfondissements et Bonus) contient du contenu enrichissant pour approfondir votre compréhension.
+:::
+
+::: methode Approfondissements et culture
+Certaines sections (comme les suites adjacentes, les récurrences linéaires d'ordre 2, la méthode de Newton et de Héron) sont marquées comme **bonus** ou **approfondissement**. Elles enrichissent votre culture mathématique et vous offrent une vision plus approfondie.
+:::
+
+::: rappel Vocabulaire sur les suites
+Ce chapitre suppose connues les définitions suivantes. Si nécessaire, consultez le cours sur les suites numériques.
+
+**Suite majorée :** $(u_n)$ est majorée s'il existe un réel $M$ tel que pour tout $n$, on a $u_n \leq M$.
+
+**Suite minorée :** $(u_n)$ est minorée s'il existe un réel $m$ tel que pour tout $n$, on a $u_n \geq m$.
+
+**Suite bornée :** $(u_n)$ est bornée si elle est à la fois majorée et minorée.
+
+**Suite croissante :** $(u_n)$ est croissante si pour tout $n$, on a $u_{n+1} \geq u_n$.
+
+**Suite décroissante :** $(u_n)$ est décroissante si pour tout $n$, on a $u_{n+1} \leq u_n$.
+
+**Suite monotone :** $(u_n)$ est monotone si elle est croissante ou décroissante.
+:::
+
+## 0. Rappels sur les suites numériques
+
+### Définition d'une suite et notations
+
+::: definition
+Une **suite numérique** est une famille de nombres réels, notée **$(u_n)$**, indexée par les entiers naturels $n$.
+
+Le nombre $u_n$ est appelé le **terme de rang $n$** de la suite.
+:::
+
+::: remarque Deux façons de définir une suite
+- **Par une formule explicite :** $u_n$ est donné en fonction de $n$. Exemple : $u_n = 2n + 1$.
+- **Par récurrence :** on donne un **terme initial** (par exemple $u_0$) et une **relation de récurrence** qui relie $u_{n+1}$ à $u_n$ (et éventuellement à $n$). Exemple : $u_0 = 1$ et $u_{n+1} = 2u_n + 3$.
+:::
+
+### Suite arithmétique
+
+::: definition
+Une suite $(u_n)$ est dite **arithmétique** s'il existe un réel $r$ tel que, pour tout $n$,
+
+::: formule
+$$u_{n+1} = u_n + r$$
+:::
+
+Le nombre $r$ est appelé la **raison** de la suite.
+:::
+
+::: remarque Formule du terme général
+Pour tout entier $\displaystyle n$, on a :
+
+::: formule
+$$u_n = u_0 + n r$$
+
+(ou $u_n = u_p + (n-p)r$ pour un rang $p$ quelconque)
+:::
+:::
+
+::: remarque Somme des $\displaystyle n+1$ premiers termes
+Pour tout entier $n$, la somme des $n+1$ premiers termes est :
+
+::: formule
+$$
+\begin{aligned}
+S_n &= u_0 + u_1 + \cdots + u_n \\
+&= (n+1) \times \frac{u_0 + u_n}{2}
+\end{aligned}
+$$
+
+$$= (n+1) \times \frac{2u_0 + n r}{2}$$
+:::
+:::
+
+::: attention Monotonie
+- Si $r > 0$ : la suite est **strictement croissante**.
+- Si $r < 0$ : la suite est **strictement décroissante**.
+- Si $r = 0$ : la suite est **constante**.
+:::
+
+### Suite géométrique
+
+::: definition
+Une suite $(u_n)$ est dite **géométrique** s'il existe un réel $q$ tel que, pour tout $n$,
+
+::: formule
+$$u_{n+1} = q \, u_n$$
+:::
+
+Le nombre $q$ est appelé la **raison** de la suite.
+:::
+
+::: remarque Formule du terme général
+Pour tout entier $\displaystyle n$, on a :
+
+::: formule
+$$u_n = u_0 \, q^n$$
+
+(ou $u_n = u_p \, q^{n-p}$ pour un rang $p$ quelconque)
+:::
+:::
+
+::: remarque Somme des $\displaystyle n+1$ premiers termes
+Pour tout entier $n$ et si $q \neq 1$, la somme des $n+1$ premiers termes est :
+
+::: formule
+$$
+\begin{aligned}
+S_n &= u_0 + u_1 + \cdots + u_n \\
+&= u_0 \times \frac{1 - q^{n+1}}{1 - q}
+\end{aligned}
+$$
+:::
+
+Si $\displaystyle 0 < q < 1$, alors :
+
+::: formule
+$$\lim_{n \to +\infty} S_n = \frac{u_0}{1 - q}$$
+:::
+:::
+
+::: attention Comportement suivant $\displaystyle q$
+*Rappel : On considère ici une suite géométrique de la forme $u_n = u_0 \, q^n$.*
+
+- Si $q > 1$ et $u_0 > 0$ : la suite est croissante et diverge vers $+\infty$.
+- Si $0 < q < 1$ et $u_0 > 0$ : la suite est décroissante et converge vers $0$.
+- Si $-1 < q < 0$ : la suite alterne de signe et converge vers $0$.
+
+(Les cas $q = -1$ et $q < -1$ sont rappelés dans la section sur la limite de $q^n$.)
+:::
+
+### Suite arithmético-géométrique
+
+::: definition
+Une suite $(u_n)$ est dite **arithmético-géométrique** si elle vérifie une relation du type :
+
+::: formule
+$$u_{n+1} = a \, u_n + b$$
+:::
+
+où $a$ et $b$ sont des constantes réelles, avec généralement $|a| < 1$.
+:::
+
+::: methode Classique pour étudier $\displaystyle (u_n)$
+1. On cherche une limite éventuelle $\ell$ en supposant que la suite converge et en passant à la limite dans $u_{n+1} = a u_n + b$. On obtient : $\ell = a\ell + b \Rightarrow \ell = \dfrac{b}{1-a}$ (si $a \neq 1$).
+2. On pose alors $v_n = u_n - \ell$. On montre que $(v_n)$ est géométrique de raison $a$.
+3. On en déduit l'expression de $u_n$ et sa limite (si $|a| < 1$, alors $v_n \to 0$ et donc $u_n \to \ell$).
+:::
+
+## I. Raisonnement par récurrence
+
+### Principe du raisonnement par récurrence
+
+::: definition
+Le **raisonnement par récurrence** permet de montrer qu'une propriété $P(n)$ est vraie pour tout entier $n \geq n_0$.
+
+Il se décompose en deux étapes :
+
+1. **Initialisation :** montrer que $P(n_0)$ est vraie.
+2. **Hérédité :** supposer que $P(k)$ est vraie pour un entier $k \geq n_0$ (c'est l'**hypothèse de récurrence**), puis démontrer qu'alors $P(k+1)$ est vraie.
+
+Si ces deux étapes sont vérifiées, on peut conclure que $P(n)$ est vraie pour tout entier $n \geq n_0$.
+:::
+
+::: remarque Analogie
+Le raisonnement par récurrence est comme une suite de dominos : si on pousse le premier domino (initialisation) et si chaque domino fait tomber le suivant (hérédité), alors tous les dominos tombent.
+:::
+
+::: exemple 1 - Montrer qu'une suite est croissante
+Soit $(u_n)$ définie par $u_0 = 1$ et $u_{n+1} = 2u_n + 1$ pour tout $n$.
+
+Montrons par récurrence que $u_{n+1} \geq u_n$ pour tout $n \geq 0$.
+
+**Initialisation :** Pour $n = 0$, on a $u_1 = 2 \times 1 + 1 = 3$ et $u_0 = 1$, donc $u_1 \geq u_0$.
+
+**Hérédité :** Supposons que $u_{k+1} \geq u_k$ pour un entier $k \geq 0$ (hypothèse de récurrence).
+
+Montrons que $\displaystyle u_{k+2} \geq u_{k+1}$.
+
+On a : $u_{k+2} = 2u_{k+1} + 1$ et $u_{k+1} = 2u_k + 1$.
+
+Par hypothèse de récurrence : $u_{k+1} \geq u_k$, donc $2u_{k+1} \geq 2u_k$, donc $2u_{k+1} + 1 \geq 2u_k + 1$.
+
+Donc $\displaystyle u_{k+2} \geq u_{k+1}$.
+
+**Conclusion :** Par récurrence, $u_{n+1} \geq u_n$ pour tout $n \geq 0$. La suite est croissante.
+:::
+
+::: exemple 2 - Inégalité de Bernoulli
+Montrons que pour tout réel $x \geq -1$ et pour tout entier $n \geq 0$, on a :
+
+::: formule
+$$(1+x)^n \geq 1 + nx$$
+:::
+
+**Initialisation :** Pour $n = 0$, on a $(1+x)^0 = 1$ et $1 + 0 \times x = 1$, donc l'inégalité est vraie.
+
+**Hérédité :** Supposons que $(1+x)^k \geq 1 + kx$ pour un entier $k \geq 0$ (hypothèse de récurrence).
+
+Montrons que $\displaystyle (1+x)^{k+1} \geq 1 + (k+1)x$.
+
+On a : $\displaystyle (1+x)^{k+1} = (1+x)^k \times (1+x)$.
+
+Par hypothèse de récurrence : $\displaystyle (1+x)^k \geq 1 + kx$.
+
+Comme $1+x \geq 0$ (car $x \geq -1$), on peut multiplier l'inégalité :
+
+$\displaystyle (1+x)^{k+1} \geq (1+kx)(1+x) = 1 + x + kx + kx^2 = 1 + (k+1)x + kx^2$.
+
+Comme $kx^2 \geq 0$, on a $(1+x)^{k+1} \geq 1 + (k+1)x$.
+
+**Conclusion :** Par récurrence, l'inégalité de Bernoulli est vraie pour tout $n \geq 0$.
+:::
+
+::: attention
+- **Oublier l'initialisation :** Il faut toujours vérifier le cas de base.
+- **Ne pas utiliser l'hypothèse de récurrence :** Dans l'hérédité, il faut explicitement utiliser que $P(k)$ est vraie.
+- **Confondre $k$ et $n$ :** Dans l'hérédité, on suppose $P(k)$ vraie et on montre $P(k+1)$.
+- **Oublier la conclusion :** Il faut conclure en invoquant le principe de récurrence.
+:::
+
+## II. Limites usuelles à connaître
+
+### Boîte à outils de base
+
+::: remarque Limites usuelles fondamentales
+- $\lim_{n \to +\infty} \frac{1}{n^k} = 0$ pour tout $k > 0$
+- $\lim_{n \to +\infty} n^k = +\infty$ pour tout $k > 0$
+- $\displaystyle \lim_{n \to +\infty} \sqrt{n} = +\infty$
+- $\lim_{n \to +\infty} q^n$ selon la valeur de $q$ (voir section VI)
+
+*Note : Ces limites sont fondamentales et servent de base pour calculer des limites plus complexes.*
+:::
+
+::: exemple
+- $\lim_{n \to +\infty} \frac{1}{n^2} = 0$ (car $k = 2 > 0$)
+- $\lim_{n \to +\infty} n^3 = +\infty$ (car $k = 3 > 0$)
+- $\lim_{n \to +\infty} \frac{1}{\sqrt{n}} = 0$ (car $\frac{1}{\sqrt{n}} = n^{-1/2}$ avec $k = 1/2 > 0$)
+:::
+
+## III. Limite d'une suite : définitions intuitives
+
+### Suite tendant vers $\displaystyle +\infty$
+
+::: definition Suite tendant vers $\displaystyle +\infty$
+On dit que la suite $(u_n)$ **tend vers $+\infty$** si, à partir d'un certain rang, tous les termes de la suite deviennent aussi grands qu'on veut.
+
+Intuitivement : les valeurs $u_n$ « explosent » et dépassent n'importe quel nombre réel fixé à l'avance.
+
+::: formule
+$$\lim_{n \to +\infty} u_n = +\infty$$
+:::
+
+On dit alors que la suite **diverge vers $+\infty$**.
+:::
+
+::: exemple
+- $u_n = n$ : $\lim_{n \to +\infty} n = +\infty$
+- $u_n = n^2$ : $\lim_{n \to +\infty} n^2 = +\infty$
+- $u_n = 2n + 5$ : $\lim_{n \to +\infty} (2n + 5) = +\infty$
+:::
+
+::: theoreme Cas des suites croissantes non majorées
+Si une suite $(u_n)$ est **croissante** et **non majorée**, alors elle tend vers $+\infty$.
+
+Cette propriété sera démontrée dans la section VII.
+:::
+
+### Suite tendant vers $\displaystyle -\infty$
+
+::: definition Suite tendant vers $\displaystyle -\infty$
+On dit que la suite $(u_n)$ **tend vers $-\infty$** si, à partir d'un certain rang, tous les termes de la suite deviennent aussi petits (négatifs) qu'on veut.
+
+Intuitivement : les valeurs $u_n$ deviennent de plus en plus négatives et descendent en dessous de n'importe quel nombre réel fixé à l'avance.
+
+::: formule
+$$\lim_{n \to +\infty} u_n = -\infty$$
+:::
+
+On dit alors que la suite **diverge vers $-\infty$**.
+:::
+
+::: exemple
+- $u_n = -n$ : $\lim_{n \to +\infty} (-n) = -\infty$
+- $u_n = -n^2$ : $\lim_{n \to +\infty} (-n^2) = -\infty$
+- $u_n = 3 - 5n$ : $\lim_{n \to +\infty} (3 - 5n) = -\infty$
+:::
+
+### Suite convergente
+
+::: definition Suite convergente
+On dit que la suite $(u_n)$ **converge vers le nombre réel $\ell$** si, à partir d'un certain rang, tous les termes de la suite sont aussi proches qu'on veut de $\ell$.
+
+Intuitivement : les valeurs $u_n$ se « rapprochent » de $\ell$ et y restent proches.
+
+::: formule
+$$\lim_{n \to +\infty} u_n = \ell$$
+:::
+
+On dit alors que la suite est **convergente** et que $\ell$ est sa **limite**.
+:::
+
+::: remarque Interprétation
+Une suite converge vers $\ell$ si, à partir d'un certain rang, tous les termes de la suite sont aussi proches qu'on veut de $\ell$.
+
+Cela signifie que les termes se « rapprochent » de $\ell$ et y restent proches.
+:::
+
+::: exemple
+- $u_n = \frac{1}{n}$ : $\lim_{n \to +\infty} \frac{1}{n} = 0$
+- $u_n = \frac{n+1}{n}$ : $\lim_{n \to +\infty} \frac{n+1}{n} = 1$
+- $u_n = 3 + \frac{1}{n^2}$ : $\lim_{n \to +\infty} \left(3 + \frac{1}{n^2}\right) = 3$
+:::
+
+::: attention
+Une suite qui n'a pas de limite finie est dite **divergente**. Elle peut diverger vers $+\infty$, vers $-\infty$, ou ne pas avoir de limite du tout (comme $u_n = (-1)^n$ qui oscille entre $-1$ et $1$).
+:::
+
+### Propriétés générales des suites convergentes
+
+::: theoreme Unicité de la limite
+Si une suite converge, sa limite est **unique**.
+
+Autrement dit : si $\lim_{n \to +\infty} u_n = \ell$ et $\lim_{n \to +\infty} u_n = \ell'$, alors $\ell = \ell'$.
+
+*Note : La démonstration rigoureuse (par l'absurde avec $\varepsilon$) est donnée en bonus dans la section « Approfondissements ».*
+:::
+
+::: theoreme Convergence implique bornée
+Toute suite convergente est **bornée**.
+
+*Note : La démonstration rigoureuse est donnée en bonus dans la section « Approfondissements ».*
+:::
+
+::: remarque Conséquence importante
+Par contraposée : **si une suite n'est pas bornée, elle ne peut pas converger**.
+
+C'est un critère très utile pour montrer qu'une suite diverge.
+:::
+
+::: exemple
+La suite $u_n = n$ n'est pas bornée (elle n'est pas majorée), donc elle ne peut pas converger.
+
+En effet, on sait qu'elle diverge vers $+\infty$.
+:::
+
+## IV. Limites et comparaison
+
+### Théorème de comparaison
+
+::: theoreme Comparaison et limite $\displaystyle \infty$
+*Convention : On dit que $(u_n)$ est majorée par $(v_n)$ si $u_n \leq v_n$ à partir d'un certain rang. On dit que $(u_n)$ est minorée par $(v_n)$ si $u_n \geq v_n$ à partir d'un certain rang.*
+
+Soient $(u_n)$ et $(v_n)$ deux suites telles que, à partir d'un certain rang, on a :
+
+$$u_n \leq v_n$$
+
+- Si $\lim_{n \to +\infty} u_n = +\infty$, alors $\lim_{n \to +\infty} v_n = +\infty$
+- Si $\lim_{n \to +\infty} v_n = -\infty$, alors $\lim_{n \to +\infty} u_n = -\infty$
+:::
+
+::: exemple
+Pour tout $n \geq 1$, on a : $n^2 \leq n^2 + 3n + 1$
+
+Comme $\lim_{n \to +\infty} n^2 = +\infty$, on en déduit que $\lim_{n \to +\infty} (n^2 + 3n + 1) = +\infty$
+:::
+
+::: theoreme Divergence vers $+\infty$ d'une suite minorée
+Si une suite $(u_n)$ est minorée par une suite $(v_n)$ qui diverge vers $+\infty$, alors $(u_n)$ diverge aussi vers $+\infty$.
+
+Cette propriété sera démontrée dans la section VII.
+:::
+
+### Théorème des gendarmes
+
+::: theoreme
+Soient $(u_n)$, $(v_n)$ et $(w_n)$ trois suites telles que, à partir d'un certain rang :
+
+$$u_n \leq v_n \leq w_n$$
+
+Si $\lim_{n \to +\infty} u_n = \lim_{n \to +\infty} w_n = \ell$ (où $\ell \in \mathbb{R}$), alors :
+
+::: formule
+$$\lim_{n \to +\infty} v_n = \ell$$
+:::
+:::
+
+::: remarque Interprétation
+Si une suite est « coincée » entre deux suites qui convergent vers la même limite, alors elle converge aussi vers cette limite.
+
+C'est comme si deux gendarmes encadrent un suspect : ils le conduisent vers la même destination !
+:::
+
+::: exemple
+Déterminer la limite de $\displaystyle v_n = \frac{\sin(n)}{n}$
+
+On sait que : $-1 \leq \sin(n) \leq 1$ pour tout $n$
+
+Donc : $\displaystyle -\frac{1}{n} \leq \frac{\sin(n)}{n} \leq \frac{1}{n}$
+
+Comme $\lim_{n \to +\infty} \left(-\frac{1}{n}\right) = 0$ et $\lim_{n \to +\infty} \frac{1}{n} = 0$,
+
+par le théorème des gendarmes : $\lim_{n \to +\infty} \frac{\sin(n)}{n} = 0$
+:::
+
+::: exemple
+Déterminer la limite de $\displaystyle v_n = \frac{n^2 + \cos(n)}{n^2 + 1}$
+
+On a : $\displaystyle -1 \leq \cos(n) \leq 1$
+
+Donc : $\displaystyle \frac{n^2 - 1}{n^2 + 1} \leq \frac{n^2 + \cos(n)}{n^2 + 1} \leq \frac{n^2 + 1}{n^2 + 1} = 1$
+
+On montre que $\displaystyle \lim_{n \to +\infty} \frac{n^2 - 1}{n^2 + 1} = 1$
+
+Par le théorème des gendarmes : $\lim_{n \to +\infty} v_n = 1$
+:::
+
+### Monotonie et inégalité sur les limites
+
+::: theoreme Conservation de l'ordre par passage à la limite
+Soient $(u_n)$ et $(v_n)$ deux suites telles que, à partir d'un certain rang, on a :
+
+$$u_n \leq v_n$$
+
+Si $\lim_{n \to +\infty} u_n = \ell$ et $\lim_{n \to +\infty} v_n = \ell'$ (où $\ell, \ell' \in \mathbb{R}$), alors :
+
+::: formule
+$$\ell \leq \ell'$$
+:::
+:::
+
+*Note : La démonstration rigoureuse (par l'absurde avec $\varepsilon$) est donnée en bonus dans la section « Approfondissements ».*
+
+::: attention Corollaire - Limite d'une suite positive
+Si $u_n \geq 0$ pour tout $n$ (ou à partir d'un certain rang) et si $\lim_{n \to +\infty} u_n = \ell$, alors $\ell \geq 0$.
+:::
+
+::: remarque Application
+Cette propriété est très utile pour :
+
+- Montrer qu'on ne peut pas avoir une limite négative dans certains problèmes
+- Justifier certains encadrements ou inégalités
+:::
+
+::: exemple
+Soit $u_n = \frac{1}{n^2 + 1}$ pour tout $n$.
+
+On a $u_n > 0$ pour tout $n$ et $\lim_{n \to +\infty} u_n = 0$.
+
+Le corollaire confirme que $0 \geq 0$, ce qui est cohérent.
+
+Si on avait trouvé une limite négative, cela aurait été une erreur de calcul.
+:::
+
+## V. Opérations sur les limites
+
+### Limite d'une somme
+
+::: theoreme Limite d'une somme
+Soient $(u_n)$ et $(v_n)$ deux suites.
+
+Si $\lim_{n \to +\infty} u_n = \ell$ et $\lim_{n \to +\infty} v_n = \ell'$ (où $\ell, \ell' \in \mathbb{R} \cup \{+\infty, -\infty\}$), alors :
+
+::: formule
+$$\lim_{n \to +\infty} (u_n + v_n) = \ell + \ell'$$
+:::
+
+(sauf dans les cas de formes indéterminées : $+\infty - \infty$, $+\infty + (-\infty)$ ou $-\infty + (+\infty)$)
+:::
+
+::: exemple
+- $\displaystyle \lim_{n \to +\infty} (n + 5) = +\infty + 5 = +\infty$
+- $\displaystyle \lim_{n \to +\infty} \left(\frac{1}{n} + 3\right) = 0 + 3 = 3$
+- $\lim_{n \to +\infty} (n^2 - n)$ : forme indéterminée $+\infty - \infty$
+:::
+
+### Limite d'un produit
+
+::: theoreme Limite d'un produit
+Soient $(u_n)$ et $(v_n)$ deux suites.
+
+Si $\lim_{n \to +\infty} u_n = \ell$ et $\lim_{n \to +\infty} v_n = \ell'$ (où $\ell, \ell' \in \mathbb{R} \cup \{+\infty, -\infty\}$), alors :
+
+::: formule
+$$\lim_{n \to +\infty} (u_n \times v_n) = \ell \times \ell'$$
+:::
+
+(sauf dans le cas de la forme indéterminée $0 \times (+\infty)$ ou $0 \times (-\infty)$)
+:::
+
+::: exemple
+- $\displaystyle \lim_{n \to +\infty} (n \times 5) = +\infty \times 5 = +\infty$
+- $\lim_{n \to +\infty} \left(\frac{1}{n} \times n\right)$ : On pourrait croire qu'il s'agit d'une forme $0 \times \infty$, mais en réalité : $\frac{1}{n} \times n = 1$ pour tout $n$, donc la limite vaut $1$.
+- $\lim_{n \to +\infty} \left(n \times \frac{1}{n^2}\right)$ : On pourrait croire qu'il s'agit d'une forme $\infty \times 0$, mais en réalité : $n \times \frac{1}{n^2} = \frac{1}{n} \to 0$, après simplification.
+:::
+
+### Limite d'un quotient
+
+::: theoreme Limite d'un quotient
+Soient $(u_n)$ et $(v_n)$ deux suites avec $v_n \neq 0$ à partir d'un certain rang.
+
+Si $\lim_{n \to +\infty} u_n = \ell$ et $\lim_{n \to +\infty} v_n = \ell' \neq 0$ (où $\ell, \ell' \in \mathbb{R} \cup \{+\infty, -\infty\}$), alors :
+
+::: formule
+$$\lim_{n \to +\infty} \frac{u_n}{v_n} = \frac{\ell}{\ell'}$$
+:::
+
+(sauf dans les cas de formes indéterminées $\frac{0}{0}$ ou $\frac{\infty}{\infty}$)
+
+*Note : Si le dénominateur a pour limite 0 et le numérateur a une limite non nulle, la limite n'est pas définie (on ne la considère pas comme une limite finie : elle « explose » et on doit souvent conclure à $+\infty$, $-\infty$ ou « diverge » selon le contexte).*
+:::
+
+::: exemple
+- $\lim_{n \to +\infty} \frac{n+1}{n} = \frac{+\infty}{+\infty}$ : forme indéterminée (mais après simplification : $1 + \frac{1}{n} \to 1$)
+- $\lim_{n \to +\infty} \frac{3n^2 + 2}{n^2} = \frac{+\infty}{+\infty}$ : forme indéterminée (mais après factorisation : $3 + \frac{2}{n^2} \to 3$)
+- $\displaystyle \lim_{n \to +\infty} \frac{1}{n^2} = \frac{1}{+\infty} = 0$
+:::
+
+### Tableau récapitulatif des opérations
+
+| Limite de $\displaystyle u_n$ | Limite de $\displaystyle v_n$ | Limite de $\displaystyle u_n + v_n$ |
+|---|---|---|
+| $\displaystyle \ell$ (réel) | $\displaystyle \ell'$ (réel) | $\displaystyle \ell + \ell'$ |
+| $\displaystyle +\infty$ | $\displaystyle +\infty$ | $\displaystyle +\infty$ |
+| $\displaystyle +\infty$ | $\displaystyle \ell$ (réel) | $\displaystyle +\infty$ |
+| $\displaystyle +\infty$ | $\displaystyle -\infty$ | **FI** ($\displaystyle +\infty - \infty$) |
+
+::: attention Formes indéterminées (FI)
+**Message clé :** « Forme indéterminée » ne veut **pas** dire « la limite n'existe pas ».
+
+Cela signifie : **« on ne peut pas conclure directement, il faut transformer »**.
+
+Les formes indéterminées nécessitent une transformation avant d'appliquer les règles :
+
+- $+\infty - \infty$ : **factoriser** par le terme dominant
+- $0 \times \infty$ : **transformer** en quotient ou **simplifier** (comme $\frac{1}{n} \times n = 1$)
+- $\frac{0}{0}$ : **factoriser**, utiliser les identités remarquables, ou **simplifier**
+- $\frac{\infty}{\infty}$ : **factoriser** par le terme de plus haut degré
+:::
+
+## VI. Comportement d'une suite géométrique
+
+### Limite de $\displaystyle (q^n)$ selon la valeur de $\displaystyle q$
+
+::: theoreme Limite de $\displaystyle (q^n)$
+Soit $q$ un nombre réel. La limite de la suite $(q^n)$ dépend de la valeur de $q$ :
+
+| Valeur de $\displaystyle q$ | Limite de $\displaystyle (q^n)$ |
+|---|---|
+| $\displaystyle q > 1$ | $\displaystyle \lim_{n \to +\infty} q^n = +\infty$ |
+| $\displaystyle q = 1$ | $\displaystyle \lim_{n \to +\infty} q^n = 1$ |
+| $\displaystyle -1 < q < 1$ et $\displaystyle q \neq 0$ | $\displaystyle \lim_{n \to +\infty} q^n = 0$ |
+| $\displaystyle q = -1$ **(bonus)** | Pas de limite (oscille entre $\displaystyle -1$ et $\displaystyle 1$) <br> *Cas intéressant supplémentaire* |
+| $\displaystyle q < -1$ **(bonus)** | Pas de limite (diverge en valeur absolue) <br> *Cas intéressant supplémentaire* |
+| $\displaystyle q = 0$ | $\displaystyle \lim_{n \to +\infty} q^n = 0$ |
+
+*Note : Le cas $q > 0$ constitue la base standard considérée couramment.*
+:::
+
+::: demonstration Cas $\displaystyle q > 1$
+On utilise l'inégalité de Bernoulli : pour $q > 1$, on pose $q = 1 + h$ avec $h > 0$.
+
+Par l'inégalité de Bernoulli : $(1+h)^n \geq 1 + nh$
+
+Donc : $\displaystyle q^n = (1+h)^n \geq 1 + nh$
+
+Comme $\lim_{n \to +\infty} (1 + nh) = +\infty$, on en déduit que $\lim_{n \to +\infty} q^n = +\infty$.
+
+(La démonstration complète de l'inégalité de Bernoulli par récurrence est donnée dans le cours sur les suites numériques)
+:::
+
+::: demonstration Cas $\displaystyle 0 < q < 1$
+Si $0 < q < 1$, alors $\frac{1}{q} > 1$.
+
+On a : $\displaystyle q^n = \frac{1}{\left(\frac{1}{q}\right)^n}$
+
+Comme $\lim_{n \to +\infty} \left(\frac{1}{q}\right)^n = +\infty$ (car $\frac{1}{q} > 1$),
+
+on en déduit que $\displaystyle \lim_{n \to +\infty} q^n = 0$.
+:::
+
+::: exemple
+- $\lim_{n \to +\infty} 2^n = +\infty$ (car $2 > 1$)
+- $\lim_{n \to +\infty} \left(\frac{1}{2}\right)^n = 0$ (car $0 < \frac{1}{2} < 1$)
+- $\lim_{n \to +\infty} (-2)^n$ : pas de limite (car $-2 < -1$)
+- $\lim_{n \to +\infty} 1^n = 1$ (car $1 = 1$)
+:::
+
+### Somme des $\displaystyle n+1$ premiers termes d'une suite géométrique
+
+::: theoreme Somme des termes d'une suite géométrique
+Soit $(u_n)$ une suite géométrique de premier terme $u_0$ et de raison $q \neq 1$.
+
+Pour tout entier $n \geq 0$, la somme des $n+1$ premiers termes est :
+
+::: formule
+$$
+\begin{aligned}
+S_n &= u_0 + u_1 + \cdots + u_n \\
+&= u_0 \times \frac{1 - q^{n+1}}{1 - q}
+\end{aligned}
+$$
+:::
+:::
+
+::: demonstration
+On a : $\displaystyle S_n = u_0 + u_0 q + u_0 q^2 + \cdots + u_0 q^n = u_0 (1 + q + q^2 + \cdots + q^n)$
+
+Multiplions $S_n$ par $(1-q)$ :
+
+$$
+\begin{aligned}
+(1-q) S_n &= u_0 (1-q)(1 + q + q^2 + \cdots + q^n) \\
+&= u_0 (1 + q + q^2 + \cdots + q^n - q - q^2 - \cdots - q^n - q^{n+1}) \\
+&= u_0 (1 - q^{n+1})
+\end{aligned}
+$$
+
+Comme $q \neq 1$, on peut diviser par $(1-q)$ :
+
+$$S_n = u_0 \times \frac{1 - q^{n+1}}{1 - q}$$
+:::
+
+::: theoreme Limite de la somme d'une suite géométrique
+Si $\displaystyle 0 < q < 1$, alors :
+
+::: formule
+$$\lim_{n \to +\infty} S_n = \frac{u_0}{1 - q}$$
+:::
+:::
+
+::: demonstration
+On a : $\displaystyle S_n = u_0 \times \frac{1 - q^{n+1}}{1 - q} = u_0 \times \frac{1}{1-q} - u_0 \times \frac{q^{n+1}}{1-q}$
+
+Comme $0 < q < 1$, on a $\lim_{n \to +\infty} q^{n+1} = 0$.
+
+Donc : $\displaystyle \lim_{n \to +\infty} S_n = u_0 \times \frac{1}{1-q} - 0 = \frac{u_0}{1-q}$
+:::
+
+::: exemple
+Soit la suite géométrique définie par $u_0 = 1$ et $q = \frac{1}{2}$.
+
+On a : $\displaystyle S_n = 1 + \frac{1}{2} + \frac{1}{4} + \cdots + \frac{1}{2^n} = 1 \times \frac{1 - \left(\frac{1}{2}\right)^{n+1}}{1 - \frac{1}{2}} = 2 \left(1 - \frac{1}{2^{n+1}}\right)$
+
+Comme $\displaystyle 0 < \frac{1}{2} < 1$, on a :
+
+$$
+\begin{aligned}
+\lim_{n \to +\infty} S_n &= \lim_{n \to +\infty} 2 \left(1 - \frac{1}{2^{n+1}}\right) \\
+&= 2 \times (1 - 0) \\
+&= 2
+\end{aligned}
+$$
+
+On peut aussi utiliser directement la formule : $\lim_{n \to +\infty} S_n = \frac{1}{1 - \frac{1}{2}} = \frac{1}{\frac{1}{2}} = 2$
+:::
+
+## VII. Théorème de convergence des suites monotones
+
+### Théorème admis
+
+::: theoreme Convergence des suites monotones
+Toute suite **croissante majorée** converge.
+
+Toute suite **décroissante minorée** converge.
+
+Ce théorème est un résultat fondamental. Il est très utile dans les exercices pour établir la convergence d'une suite.
+:::
+
+::: remarque Interprétation
+Si une suite est croissante et qu'elle ne peut pas dépasser une certaine valeur (majorée), alors elle doit se stabiliser vers une limite finie.
+
+De même, si une suite est décroissante et qu'elle ne peut pas descendre en dessous d'une certaine valeur (minorée), alors elle converge.
+:::
+
+::: exemple
+Soit $(u_n)$ définie par $u_0 = 1$ et $u_{n+1} = \sqrt{u_n + 2}$
+
+On peut montrer que cette suite est croissante et majorée par $2$.
+
+Par le théorème, elle converge vers une limite $\ell$ qui vérifie $\ell = \sqrt{\ell + 2}$.
+
+En résolvant : $\ell^2 = \ell + 2$, on trouve $\ell = 2$ (car $\ell \geq 0$).
+:::
+
+### Démonstrations détaillées
+
+::: demonstration Toute suite croissante non majorée tend vers $+\infty$
+Soit $(u_n)$ une suite croissante non majorée.
+
+Montrons que $\displaystyle \lim_{n \to +\infty} u_n = +\infty$.
+
+Soit $\displaystyle A$ un réel quelconque.
+
+Comme $(u_n)$ n'est pas majorée, il existe un rang $N$ tel que $u_N \geq A$.
+
+Comme $(u_n)$ est croissante, pour tout $n \geq N$, on a : $u_n \geq u_N \geq A$.
+
+Donc, pour tout réel $A$, il existe un rang $N$ tel que pour tout $n \geq N$, on a $u_n \geq A$.
+
+Par définition, $\displaystyle \lim_{n \to +\infty} u_n = +\infty$.
+:::
+
+::: demonstration Divergence vers $+\infty$ d'une suite minorée par une suite divergeant vers $+\infty$
+Soient $(u_n)$ et $(v_n)$ deux suites telles que, à partir d'un certain rang, on a :
+
+$$v_n \leq u_n$$
+
+et $\displaystyle \lim_{n \to +\infty} v_n = +\infty$.
+
+Montrons que $\displaystyle \lim_{n \to +\infty} u_n = +\infty$.
+
+Soit $\displaystyle A$ un réel quelconque.
+
+Comme $\lim_{n \to +\infty} v_n = +\infty$, il existe un rang $N_1$ tel que pour tout $n \geq N_1$, on a $v_n \geq A$.
+
+Soit $N_2$ le rang à partir duquel $v_n \leq u_n$.
+
+Pour $N = \max(N_1, N_2)$ et pour tout $n \geq N$, on a :
+
+$$u_n \geq v_n \geq A$$
+
+Donc, pour tout réel $A$, il existe un rang $N$ tel que pour tout $n \geq N$, on a $u_n \geq A$.
+
+Par définition, $\displaystyle \lim_{n \to +\infty} u_n = +\infty$.
+:::
+
+## VIII. Algorithmes
+
+::: remarque Lien avec les fonctions
+Si une fonction $f$ a une limite $\ell$ quand $x \to +\infty$, alors la suite $(u_n)$ définie par $u_n = f(n)$ a aussi $\ell$ pour limite.
+
+Cette propriété est surtout utile pour faire le lien avec le chapitre sur les fonctions (notamment l'exponentielle). Les démonstrations détaillées sur $e^x$ sont plutôt dans le chapitre dédié à l'exponentielle.
+:::
+
+### Recherche de seuils
+
+::: exemple Algorithme - Recherche de seuil
+**Problème :** Déterminer le plus petit entier $n$ tel que $u_n \geq S$ (où $S$ est un seuil donné).
+
+*Note : En évaluation, l'algorithme pourra être donné en pseudo-code ou en français ; ici il est illustré en Python.*
+
+**Code Python :**
+
+```python
+def recherche_seuil(seuil):
+    n = 0
+    u = 1  # valeur initiale
+    while u < seuil:
+        n = n + 1
+        u = 2 * u + 1  # relation de récurrence
+    return n
+
+print(recherche_seuil(1000))
+```
+:::
+
+### Utiliser une suite pour approximer un nombre
+
+L'idée générale est d'utiliser une suite convergente pour obtenir des valeurs approchées d'un nombre réel.
+
+::: exemple
+La suite $u_n = 1 + \frac{1}{n}$ converge vers $1$.
+
+Pour $n = 100$, on obtient $u_{100} = 1.01$, qui est une approximation de $1$ à $0.01$ près.
+:::
+
+## IX. Approfondissements et Bonus
+
+::: methode Contenu bonus et approfondissements
+Les sections suivantes enrichissent votre culture mathématique et offrent des perspectives avancées. Elles sont destinées aux élèves passionnés ou qui souhaitent approfondir leurs connaissances.
+
+**Conseil :** On recommande de maîtriser d'abord les sections 0 à VII pour approfondir votre compréhension fondamentale.
+:::
+
+### Définitions rigoureuses avec $\displaystyle \varepsilon$ et $\displaystyle N$ - Bonus
+
+::: methode Bonus
+Les définitions rigoureuses ci-dessous utilisent la formalisation avec $\varepsilon$ et $N$. Elles offrent un fondement théorique plus solide pour comprendre les limites en détail.
+:::
+
+::: definition Rigoureuse - Suite tendant vers $+\infty$
+On dit que la suite $(u_n)$ **tend vers $+\infty$** si tout intervalle de la forme $[A;+\infty[$ contient toutes les valeurs $u_n$ à partir d'un certain rang.
+
+Formellement : pour tout réel $A$, il existe un rang $N$ tel que pour tout $n \geq N$, on a $u_n \geq A$.
+:::
+
+::: definition Rigoureuse - Suite convergente
+On dit que la suite $(u_n)$ **converge vers le nombre réel $\ell$** si tout intervalle ouvert contenant $\ell$ contient toutes les valeurs $u_n$ à partir d'un certain rang.
+
+Formellement : pour tout intervalle ouvert $]\ell - \varepsilon, \ell + \varepsilon[$ (avec $\varepsilon > 0$), il existe un rang $N$ tel que pour tout $n \geq N$, on a $u_n \in ]\ell - \varepsilon, \ell + \varepsilon[$.
+
+Autrement dit : pour tout $\varepsilon > 0$, il existe $N \in \mathbb{N}$ tel que pour tout $n \geq N$, on a $|u_n - \ell| < \varepsilon$.
+:::
+
+### Démonstrations rigoureuses détaillées - Bonus
+
+::: demonstration Rigoureuse - Unicité de la limite (par l'absurde avec $\varepsilon$) - Bonus
+Supposons que $\ell \neq \ell'$ et que la suite converge vers les deux limites.
+
+Soit $\displaystyle \varepsilon = \frac{|\ell - \ell'|}{2} > 0$.
+
+Comme $\lim_{n \to +\infty} u_n = \ell$, il existe $N_1$ tel que pour tout $n \geq N_1$, on a $|u_n - \ell| < \varepsilon$.
+
+Comme $\lim_{n \to +\infty} u_n = \ell'$, il existe $N_2$ tel que pour tout $n \geq N_2$, on a $|u_n - \ell'| < \varepsilon$.
+
+Pour $\displaystyle n \geq \max(N_1, N_2)$, on aurait :
+
+$$
+\begin{aligned}
+|\ell - \ell'| &= |\ell - u_n + u_n - \ell'| \leq |\ell - u_n| + |u_n - \ell'| < 2\varepsilon \\
+&= |\ell - \ell'|
+\end{aligned}
+$$
+
+Ce qui est absurde. Donc $\displaystyle \ell = \ell'$.
+:::
+
+::: demonstration Rigoureuse - Toute suite convergente est bornée (avec $|u_n - \ell| < 1$) - Bonus
+Soit $(u_n)$ une suite convergente vers $\ell$.
+
+Il existe un rang $N$ tel que pour tout $n \geq N$, on a $|u_n - \ell| < 1$, donc $|u_n| < |\ell| + 1$.
+
+Pour les termes avant le rang $N$, il y en a un nombre fini, donc ils sont tous majorés en valeur absolue par un réel $M_1$.
+
+En prenant $M = \max(M_1, |\ell| + 1)$, on a $|u_n| \leq M$ pour tout $n$.
+
+Donc la suite est bornée.
+:::
+
+::: demonstration Rigoureuse - Conservation de l'ordre par passage à la limite (par l'absurde avec $\varepsilon$) - Bonus
+Supposons par l'absurde que $\displaystyle \ell > \ell'$.
+
+Soit $\displaystyle \varepsilon = \frac{\ell - \ell'}{2} > 0$.
+
+Comme $\lim_{n \to +\infty} u_n = \ell$, il existe $N_1$ tel que pour tout $n \geq N_1$, on a $u_n > \ell - \varepsilon = \frac{\ell + \ell'}{2}$.
+
+Comme $\lim_{n \to +\infty} v_n = \ell'$, il existe $N_2$ tel que pour tout $n \geq N_2$, on a $v_n < \ell' + \varepsilon = \frac{\ell + \ell'}{2}$.
+
+Pour $n \geq \max(N_1, N_2)$, on aurait $u_n > \frac{\ell + \ell'}{2} > v_n$, ce qui contredit $u_n \leq v_n$.
+
+Donc $\displaystyle \ell \leq \ell'$.
+:::
+
+### Limites de fonctions et suites (détails) - Bonus
+
+::: theoreme Passage de la fonction à la suite
+Si une fonction $f$ a une limite $\ell$ quand $x \to +\infty$, alors la suite $(u_n)$ définie par $u_n = f(n)$ a aussi $\ell$ pour limite.
+
+::: formule
+Si $\lim_{x \to +\infty} f(x) = \ell$, alors $\lim_{n \to +\infty} f(n) = \ell$
+:::
+:::
+
+::: demonstration Limite en $+\infty$ et en $-\infty$ de la fonction exponentielle - Bonus
+On admet que : $\displaystyle \lim_{x \to +\infty} e^x = +\infty$
+
+Cette propriété peut être démontrée en utilisant l'inégalité de Bernoulli et le fait que $e > 1$.
+
+Pour la limite en $-\infty$ : on a $e^{-x} = \frac{1}{e^x}$.
+
+Quand $x \to -\infty$, on a $-x \to +\infty$, donc $e^{-x} \to +\infty$
+
+Donc : $\displaystyle \lim_{x \to -\infty} e^x = \lim_{x \to -\infty} \frac{1}{e^{-x}} = 0$
+
+*Note : Ces démonstrations sont plutôt à voir dans le chapitre sur l'exponentielle.*
+:::
+
+### Algorithmes avancés pour approximer des nombres
+
+::: exemple Algorithme - Valeur approchée de $\pi$ (série de Leibniz) - Bonus
+On peut utiliser la formule de Leibniz : $\frac{\pi}{4} = 1 - \frac{1}{3} + \frac{1}{5} - \frac{1}{7} + \cdots$
+
+** Bonus :** Cette méthode offre une approche avancée (séries numériques). Elle enrichit votre compréhension mathématique.
+
+**Code Python :**
+
+```python
+def approx_pi(n):
+    somme = 0
+    for k in range(n):
+        somme = somme + ((-1)**k) / (2*k + 1)
+    return 4 * somme
+
+print(approx_pi(10000))
+```
+:::
+
+::: exemple Algorithme - Valeur approchée de $e$
+On utilise : $\displaystyle e = \lim_{n \to +\infty} \left(1 + \frac{1}{n}\right)^n$
+
+*Note : La notion de limite est souvent admise pour cette formule.*
+
+**Code Python :**
+
+```python
+def approx_e(n):
+    return (1 + 1/n)**n
+
+print(approx_e(1000000))
+```
+:::
+
+### Suites adjacentes - Bonus
+
+::: methode Bonus
+Les suites adjacentes offrent une approche mathématique sophistiquée pour l'étude de la convergence. Cette section enrichit votre compréhension théorique.
+:::
+
+::: definition Suites adjacentes
+Deux suites $(u_n)$ et $(v_n)$ sont dites **adjacentes** si :
+
+- $(u_n)$ est croissante et $(v_n)$ est décroissante
+- Pour tout $n$, on a $u_n \leq v_n$
+- $\displaystyle \lim_{n \to +\infty} (v_n - u_n) = 0$
+:::
+
+::: theoreme Convergence des suites adjacentes
+Si deux suites sont adjacentes, alors elles convergent vers la même limite $\ell$.
+:::
+
+::: exemple
+Les suites $u_n = \sum_{k=0}^n \frac{1}{k!}$ et $v_n = u_n + \frac{1}{n!}$ sont adjacentes et convergent vers $e$.
+
+*Note : On admet que $(v_n)$ est décroissante à partir d'un certain rang. La vérification complète est plus technique.*
+:::
+
+### Récurrences linéaires d'ordre 2 - Bonus
+
+::: methode Bonus
+Les récurrences linéaires d'ordre 2 offrent une approche plus avancée pour l'étude des suites. Cette section enrichit votre compréhension théorique.
+:::
+
+::: definition Récurrence linéaire d'ordre 2
+Une suite $(u_n)$ vérifie une **relation de récurrence linéaire d'ordre 2 à coefficients constants** si :
+
+$$u_{n+2} = a \cdot u_{n+1} + b \cdot u_n$$
+
+où $a$ et $b$ sont des constantes réelles.
+:::
+
+::: exemple Suite de Fibonacci
+La suite de Fibonacci est définie par :
+
+$F_0 = 0$, $F_1 = 1$ et $F_{n+2} = F_{n+1} + F_n$
+
+C'est une récurrence linéaire d'ordre 2 avec $a = 1$ et $b = 1$.
+:::
+
+### Méthode de Newton - Bonus
+
+::: methode Bonus
+La méthode de Newton est une technique classique pour résoudre numériquement les équations. Elle offre une application pratique des suites récursives dans des contextes réels.
+:::
+
+::: methode
+Pour résoudre $f(x) = 0$, on part d'une valeur initiale $x_0$ proche de la solution.
+
+On construit la suite $(x_n)$ définie par :
+
+$$x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}$$
+
+Sous certaines conditions, cette suite converge vers une solution de $f(x) = 0$.
+
+**Code Python :**
+
+```python
+def newton(f, f_prime, x0, n):
+    x = x0
+    for i in range(n):
+        x = x - f(x) / f_prime(x)
+    return x
+```
+:::
+
+### Méthode de Héron - Bonus
+
+::: methode Bonus
+Très bon exemple de suite convergente, mais clairement bonus. Pas exigible au Bac.
+:::
+
+::: methode
+La méthode de Héron permet d'approcher $\sqrt{a}$ (avec $a > 0$) en utilisant la suite :
+
+$\displaystyle u_0 > 0$ (choisi arbitrairement)
+
+$$u_{n+1} = \frac{1}{2}\left(u_n + \frac{a}{u_n}\right)$$
+
+Cette suite converge vers $\displaystyle \sqrt{a}$.
+
+**Code Python :**
+
+```python
+def heron(a, n):
+    u = a / 2  # valeur initiale
+    for i in range(n):
+        u = 0.5 * (u + a / u)
+    return u
+
+print(heron(2, 10))  # Approximation de sqrt(2)
+```
+:::
+
+::: demonstration Étude de la convergence
+On peut montrer que la suite de Héron est décroissante et minorée par $\sqrt{a}$, donc elle converge.
+
+La limite $\ell$ vérifie : $\ell = \frac{1}{2}\left(\ell + \frac{a}{\ell}\right)$
+
+En résolvant : $2\ell^2 = \ell^2 + a$, on trouve $\ell^2 = a$, donc $\ell = \sqrt{a}$.
+:::
+
+## X. Conseils méthodologiques
+
+### Méthodes pour déterminer une limite
+
+::: methode Adaptées selon le contexte
+- **Par opérations directes :** Utiliser les règles de somme, produit, quotient quand les limites sont connues et qu'il n'y a pas de forme indéterminée
+- **Par factorisation :** Pour les formes indéterminées $\frac{\infty}{\infty}$ ou $+\infty - \infty$, factoriser par le terme dominant
+- **Par simplification :** Simplifier les fractions rationnelles en factorisant numérateur et dénominateur par le terme de plus haut degré
+- **Par théorème des gendarmes :** Encadrer la suite entre deux suites qui convergent vers la même limite (utile pour les suites avec $\sin$, $\cos$, etc.)
+- **Par théorème de convergence des suites monotones :** Montrer que la suite est monotone et majorée (ou minorée) pour établir la convergence
+- **Par comparaison :** Utiliser les théorèmes de comparaison pour établir une divergence vers $+\infty$ ou $-\infty$
+- **Par limite de suite géométrique :** Utiliser le tableau des limites de $(q^n)$ selon la valeur de $q$
+- **Par transformation algébrique :** Multiplier par la quantité conjuguée, mettre au même dénominateur, etc.
+:::
+
+::: attention
+- **Formes indéterminées :** Ne pas appliquer directement les règles d'opérations, il faut d'abord transformer (factoriser, simplifier, etc.)
+- **Théorème des gendarmes :** Vérifier que les deux suites « extrêmes » convergent vers la même limite avant d'appliquer le théorème
+- **Suite géométrique :** Attention au cas $q = -1$ et $q < -1$ qui n'ont pas de limite (oscillation ou divergence)
+- **Convergence :** Une suite croissante n'est pas forcément convergente (elle peut diverger vers $+\infty$ si elle n'est pas majorée)
+- **Majoration :** Une suite majorée n'est pas forcément convergente (elle doit aussi être monotone pour appliquer le théorème)
+- **Opérations sur limites :** Ne pas oublier de vérifier les conditions (dénominateur non nul, pas de forme indéterminée)
+- **Limite infinie :** Ne pas confondre "tend vers $+\infty$« et »converge" (une suite qui tend vers $+\infty$ diverge)
+- **Récurrence :** Ne pas oublier d'utiliser l'hypothèse de récurrence dans la démonstration de l'hérédité
+- **Algorithmes :** Vérifier que la condition d'arrêt est atteignable (pas de boucle infinie)
+:::
+
+::: remarque Recette pour les suites de type $\frac{P(n)}{Q(n)}$
+1. **Identifier les degrés** de $P$ et $Q$.
+2. **Factoriser** par $n^k$ (plus grand degré) en haut et en bas.
+3. **Simplifier** et utiliser les limites de $\frac{1}{n^k}$.
+
+::: exemple Typique Bac
+Déterminer la limite de $\displaystyle u_n = \frac{3n^2 + 2n + 1}{5n^2 - 4}$
+
+Les degrés sont $2$ en haut et en bas. On factorise par $n^2$ :
+
+$$
+\begin{aligned}
+u_n &= \frac{n^2(3 + \frac{2}{n} + \frac{1}{n^2})}{n^2(5 - \frac{4}{n^2})} \\
+&= \frac{3 + \frac{2}{n} + \frac{1}{n^2}}{5 - \frac{4}{n^2}}
+\end{aligned}
+$$
+
+Comme $\lim_{n \to +\infty} \frac{1}{n} = 0$ et $\lim_{n \to +\infty} \frac{1}{n^2} = 0$, on obtient :
+
+$$
+\begin{aligned}
+\lim_{n \to +\infty} u_n &= \frac{3 + 0 + 0}{5 - 0} \\
+&= \frac{3}{5}
+\end{aligned}
+$$
+:::
+:::
+
+::: remarque Résolution systématique des limites de suites définies par récurrence
+Pour déterminer la limite d'une suite $(u_n)$ définie par récurrence $u_{n+1} = f(u_n)$ :
+
+1. **Supposer** que la suite converge vers $\ell$.
+2. **Passer à la limite** dans la relation de récurrence : $\ell = f(\ell)$.
+3. **Résoudre** l'équation $\ell = f(\ell)$ pour trouver les valeurs possibles de $\ell$.
+4. **Vérifier** que la suite est monotone et bornée pour pouvoir conclure (théorème de convergence des suites monotones).
+
+::: exemple
+Soit $(u_n)$ définie par $u_0 = 1$ et $u_{n+1} = \sqrt{u_n + 2}$.
+
+On montre d'abord que la suite est croissante et majorée par $2$.
+
+Par le théorème, elle converge vers $\ell$ qui vérifie : $\ell = \sqrt{\ell + 2}$.
+
+En résolvant : $\ell^2 = \ell + 2$, soit $\ell^2 - \ell - 2 = 0$.
+
+On trouve $\ell = 2$ ou $\ell = -1$. Comme $u_n \geq 0$ pour tout $n$, on a $\ell = 2$.
+:::
+:::
+
+::: remarque Récapitulatif - Formules et théorèmes à retenir
+| Situation | Formule / Théorème |
+|---|---|
+| **Limite d'une somme** | $\displaystyle \lim_{n \to +\infty} (u_n + v_n) = \lim_{n \to +\infty} u_n + \lim_{n \to +\infty} v_n$ <br> (sauf FI : $\displaystyle +\infty - \infty$) |
+| **Limite d'un produit** | $\displaystyle \lim_{n \to +\infty} (u_n \times v_n) = \lim_{n \to +\infty} u_n \times \lim_{n \to +\infty} v_n$ <br> (sauf FI : $\displaystyle 0 \times \infty$) |
+| **Limite d'un quotient** | $\displaystyle \lim_{n \to +\infty} \frac{u_n}{v_n} = \frac{\lim_{n \to +\infty} u_n}{\lim_{n \to +\infty} v_n}$ <br> (si $\displaystyle \lim v_n \neq 0$, sauf FI : $\displaystyle \frac{0}{0}$ ou $\displaystyle \frac{\infty}{\infty}$) |
+| **Théorème des gendarmes** | Si $\displaystyle u_n \leq v_n \leq w_n$ et $\displaystyle \lim u_n = \lim w_n = \ell$, <br> alors $\displaystyle \lim v_n = \ell$ |
+| **Théorème de convergence** | Toute suite croissante majorée (ou décroissante minorée) converge |
+| **Suite croissante non majorée** | Toute suite croissante non majorée tend vers $\displaystyle +\infty$ |
+| **Limite de $\displaystyle (q^n)$** | $\displaystyle q > 1 \Rightarrow +\infty$ ; $\displaystyle q = 1 \Rightarrow 1$ ; $\displaystyle |q| < 1 \Rightarrow 0$ <br> $\displaystyle q = -1$ ou $\displaystyle q < -1 \Rightarrow$ pas de limite |
+| **Somme suite géométrique** | $\displaystyle S_n = u_0 \times \frac{1 - q^{n+1}}{1 - q}$ (si $\displaystyle q \neq 1$) <br> Si $\displaystyle 0 < q < 1$ : $\displaystyle \lim S_n = \frac{u_0}{1-q}$ |
+| **Limites usuelles** | $\displaystyle \lim n^k = +\infty$ ($\displaystyle k > 0$) ; $\displaystyle \lim \frac{1}{n^k} = 0$ ($\displaystyle k > 0$) <br> $\displaystyle \lim \sqrt{n} = +\infty$ |
+| **Comparaison** | Si $\displaystyle u_n \leq v_n$ et $\displaystyle \lim u_n = +\infty$, alors $\displaystyle \lim v_n = +\infty$ |
+:::

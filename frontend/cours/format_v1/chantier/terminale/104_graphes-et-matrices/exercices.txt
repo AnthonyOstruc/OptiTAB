@@ -1,0 +1,1789 @@
+=== Découverte - Déterminant et inverse d'une matrice
+Id: 1135
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On considère les matrices
+
+$$
+A = \begin{pmatrix} 3 & 2 \\ 1 & 4 \end{pmatrix}, \qquad C = \begin{pmatrix} 2 & 1 \\ 4 & 2 \end{pmatrix}
+$$
+
+$$
+B = \begin{pmatrix} 1 & 2 & 3 \\ 0 & 1 & 2 \\ 0 & 0 & 1 \end{pmatrix} \qquad \text{et} \qquad B' = \begin{pmatrix} 1 & -2 & 1 \\ 0 & 1 & -2 \\ 0 & 0 & 1 \end{pmatrix}
+$$
+
+1. Calculer le déterminant de $A$. La matrice $A$ est-elle inversible ?
+2. Calculer le produit $BB'$. Que peut-on en déduire pour la matrice $B$ ?
+3. Calculer le déterminant de $C$ et conclure sur l’inversibilité de $C$.
+4. Calculer l’inverse de $A$.
+5. Vérifier que $A \times A^{-1} = I_2$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Déterminant de $A$
+
+::: methode
+Pour $\begin{pmatrix} a & b \\ c & d \end{pmatrix}$, le déterminant est $ad - bc$ ; la matrice est inversible si et seulement s’il est non nul.
+:::
+
+::: etape Identifier les coefficients
+$a = 3$, $b = 2$, $c = 1$ et $d = 4$.
+:::
+
+::: etape Calculer
+$$\det(A) = 3 \times 4 - 2 \times 1 = 12 - 2 = 10$$
+:::
+
+::: resultat
+$\det(A) = 10 \neq 0$ : la matrice $A$ est inversible.
+:::
+
+## Question 2 : Produit $BB'$
+
+::: methode
+Calculer chaque coefficient « ligne de $B$ par colonne de $B'$ », puis utiliser la propriété : si $BB' = I_3$, alors $B$ est inversible et $B^{-1} = B'$.
+:::
+
+::: etape Ligne 1 de $B$ : $\begin{pmatrix} 1 & 2 & 3 \end{pmatrix}$
+$$
+\begin{aligned}
+(BB')_{11} &= 1 \times 1 + 2 \times 0 + 3 \times 0 = 1 \\
+(BB')_{12} &= 1 \times (-2) + 2 \times 1 + 3 \times 0 \\
+&= 0 \\
+(BB')_{13} &= 1 \times 1 + 2 \times (-2) + 3 \times 1 \\
+&= 0
+\end{aligned}
+$$
+:::
+
+::: etape Ligne 2 de $B$ : $\begin{pmatrix} 0 & 1 & 2 \end{pmatrix}$
+$$
+\begin{aligned}
+(BB')_{21} &= 0 \times 1 + 1 \times 0 + 2 \times 0 = 0 \\
+(BB')_{22} &= 0 \times (-2) + 1 \times 1 + 2 \times 0 \\
+&= 1 \\
+(BB')_{23} &= 0 \times 1 + 1 \times (-2) + 2 \times 1 \\
+&= 0
+\end{aligned}
+$$
+:::
+
+::: etape Ligne 3 de $B$ : $\begin{pmatrix} 0 & 0 & 1 \end{pmatrix}$
+$$
+\begin{aligned}
+(BB')_{31} &= 0 \times 1 + 0 \times 0 + 1 \times 0 = 0 \\
+(BB')_{32} &= 0 \times (-2) + 0 \times 1 + 1 \times 0 \\
+&= 0 \\
+(BB')_{33} &= 0 \times 1 + 0 \times (-2) + 1 \times 1 \\
+&= 1
+\end{aligned}
+$$
+:::
+
+::: etape Conclure
+$BB' = I_3$ ; comme $B$ et $B'$ sont carrées d’ordre $3$, la matrice $B$ est inversible et $B^{-1} = B'$.
+:::
+
+::: resultat
+$BB' = I_3$, donc $B$ est inversible et $B^{-1} = \begin{pmatrix} 1 & -2 & 1 \\ 0 & 1 & -2 \\ 0 & 0 & 1 \end{pmatrix}$.
+:::
+
+## Question 3 : Déterminant de $C$
+
+::: etape Calculer
+$$\det(C) = 2 \times 2 - 1 \times 4 = 4 - 4 = 0$$
+:::
+
+::: etape Interpréter
+Le déterminant est nul : $C$ n’est pas inversible. On le voit aussi sur les coefficients : la deuxième ligne est le double de la première, et $C\begin{pmatrix} 1 \\ -2 \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \end{pmatrix}$ avec une colonne non nulle, ce qui est impossible pour une matrice inversible.
+:::
+
+::: resultat
+$\det(C) = 0$ : la matrice $C$ n’est pas inversible.
+:::
+
+## Question 4 : Inverse de $A$
+
+::: methode
+$A^{-1} = \dfrac{1}{ad - bc}\begin{pmatrix} d & -b \\ -c & a \end{pmatrix}$ : on échange les coefficients diagonaux, on change le signe des deux autres, on divise par le déterminant.
+:::
+
+::: etape Appliquer la formule avec $\det(A) = 10$
+$$
+\begin{aligned}
+A^{-1} &= \frac{1}{10}\begin{pmatrix} 4 & -2 \\ -1 & 3 \end{pmatrix} \\
+&= \begin{pmatrix} \frac{4}{10} & -\frac{2}{10} \\ -\frac{1}{10} & \frac{3}{10} \end{pmatrix} \\
+&= \begin{pmatrix} \frac{2}{5} & -\frac{1}{5} \\ -\frac{1}{10} & \frac{3}{10} \end{pmatrix}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$A^{-1} = \frac{1}{10}\begin{pmatrix} 4 & -2 \\ -1 & 3 \end{pmatrix} = \begin{pmatrix} \frac{2}{5} & -\frac{1}{5} \\ -\frac{1}{10} & \frac{3}{10} \end{pmatrix}$$
+:::
+
+## Question 5 : Vérifier que $A \times A^{-1} = I_2$
+
+::: methode
+Garder le facteur $\dfrac{1}{10}$ en dehors du produit pour calculer avec des entiers.
+:::
+
+::: etape Calculer le produit
+$$
+\begin{aligned}
+A \times A^{-1} &= \frac{1}{10}\begin{pmatrix} 3 & 2 \\ 1 & 4 \end{pmatrix}\begin{pmatrix} 4 & -2 \\ -1 & 3 \end{pmatrix} \\
+&= \frac{1}{10}\begin{pmatrix} 10 & 0 \\ 0 & 10 \end{pmatrix}
+\end{aligned}
+$$
+
+avec les coefficients du produit des deux matrices entières :
+
+$$
+\begin{aligned}
+3 \times 4 + 2 \times (-1) &= 10 \\
+3 \times (-2) + 2 \times 3 &= 0 \\
+1 \times 4 + 4 \times (-1) &= 0 \\
+1 \times (-2) + 4 \times 3 &= 10
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$A \times A^{-1} = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix} = I_2$$
+:::
+
+::: retenir
+Pour contrôler un inverse, on calcule toujours le produit $AA^{-1}$ : il doit donner la matrice identité.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\det(A) = 10 \neq 0$ : $A$ est inversible.
+2. $BB' = I_3$, donc $B$ est inversible et $B^{-1} = B'$.
+3. $\det(C) = 0$ : $C$ n’est pas inversible.
+4. $A^{-1} = \dfrac{1}{10}\begin{pmatrix} 4 & -2 \\ -1 & 3 \end{pmatrix} = \begin{pmatrix} \frac{2}{5} & -\frac{1}{5} \\ -\frac{1}{10} & \frac{3}{10} \end{pmatrix}$.
+5. $A \times A^{-1} = \dfrac{1}{10}\begin{pmatrix} 10 & 0 \\ 0 & 10 \end{pmatrix} = I_2$.
+
+===
+
+=== Découverte - Opérations sur les matrices
+Id: 1134
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+On considère les matrices
+
+$$
+A = \begin{pmatrix} 2 & 3 \\ 1 & 4 \end{pmatrix}, \qquad B = \begin{pmatrix} 1 & -1 \\ 2 & 3 \end{pmatrix} \qquad \text{et} \qquad C = \begin{pmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{pmatrix}
+$$
+
+1. Calculer $A + B$.
+2. Calculer $3A$.
+3. Calculer $A \times B$.
+4. Calculer $B \times A$ et comparer avec $A \times B$.
+5. Le produit $A \times C$ est-il défini ? Si oui, le calculer.
+6. Vérifier que $A \times I_2 = A$, où $I_2 = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer $A + B$
+
+::: methode
+$A$ et $B$ ont la même taille ($2 \times 2$) : on additionne les coefficients situés à la même place.
+:::
+
+::: etape Additionner place par place
+$$A + B = \begin{pmatrix} 2 + 1 & 3 + (-1) \\ 1 + 2 & 4 + 3 \end{pmatrix}$$
+:::
+
+::: resultat
+$$A + B = \begin{pmatrix} 3 & 2 \\ 3 & 7 \end{pmatrix}$$
+:::
+
+## Question 2 : Calculer $3A$
+
+::: methode
+On multiplie chaque coefficient de $A$ par $3$.
+:::
+
+::: etape Multiplier chaque coefficient
+$$3A = \begin{pmatrix} 3 \times 2 & 3 \times 3 \\ 3 \times 1 & 3 \times 4 \end{pmatrix}$$
+:::
+
+::: resultat
+$$3A = \begin{pmatrix} 6 & 9 \\ 3 & 12 \end{pmatrix}$$
+:::
+
+## Question 3 : Calculer $A \times B$
+
+::: methode
+$(AB)_{ij}$ : ligne $i$ de $A$ par colonne $j$ de $B$. Tailles : $(2 \times 2) \times (2 \times 2)$ donne une matrice $2 \times 2$.
+:::
+
+[IMAGE_1]
+
+::: etape Calculer les quatre coefficients
+$$
+\begin{aligned}
+(AB)_{11} &= 2 \times 1 + 3 \times 2 = 8 \\
+(AB)_{12} &= 2 \times (-1) + 3 \times 3 = 7 \\
+(AB)_{21} &= 1 \times 1 + 4 \times 2 = 9 \\
+(AB)_{22} &= 1 \times (-1) + 4 \times 3 = 11
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$A \times B = \begin{pmatrix} 8 & 7 \\ 9 & 11 \end{pmatrix}$$
+:::
+
+## Question 4 : Calculer $B \times A$ et comparer
+
+::: methode
+Même méthode, mais avec les lignes de $B$ et les colonnes de $A$.
+:::
+
+::: etape Calculer les quatre coefficients
+$$
+\begin{aligned}
+(BA)_{11} &= 1 \times 2 + (-1) \times 1 = 1 \\
+(BA)_{12} &= 1 \times 3 + (-1) \times 4 = -1 \\
+(BA)_{21} &= 2 \times 2 + 3 \times 1 = 7 \\
+(BA)_{22} &= 2 \times 3 + 3 \times 4 = 18
+\end{aligned}
+$$
+:::
+
+::: etape Comparer
+$B \times A = \begin{pmatrix} 1 & -1 \\ 7 & 18 \end{pmatrix}$ alors que $A \times B = \begin{pmatrix} 8 & 7 \\ 9 & 11 \end{pmatrix}$ : les deux matrices sont différentes.
+:::
+
+::: resultat
+$B \times A = \begin{pmatrix} 1 & -1 \\ 7 & 18 \end{pmatrix} \neq A \times B$ : le produit matriciel n’est pas commutatif.
+:::
+
+::: attention
+Dans un produit de matrices, l’ordre des facteurs compte : on ne remplace jamais $AB$ par $BA$.
+:::
+
+## Question 5 : Le produit $A \times C$
+
+::: methode
+Le produit $A \times C$ existe si le nombre de colonnes de $A$ est égal au nombre de lignes de $C$.
+:::
+
+::: etape Comparer les tailles
+$A$ est de taille $2 \times 2$ et $C$ de taille $2 \times 3$ : $A$ a $2$ colonnes et $C$ a $2$ lignes. Le produit est défini et il est de taille $2 \times 3$.
+:::
+
+::: etape Calculer les six coefficients
+$$
+\begin{aligned}
+(AC)_{11} &= 2 \times 1 + 3 \times 4 = 14 \\
+(AC)_{12} &= 2 \times 2 + 3 \times 5 = 19 \\
+(AC)_{13} &= 2 \times 3 + 3 \times 6 = 24 \\
+(AC)_{21} &= 1 \times 1 + 4 \times 4 = 17 \\
+(AC)_{22} &= 1 \times 2 + 4 \times 5 = 22 \\
+(AC)_{23} &= 1 \times 3 + 4 \times 6 = 27
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$A \times C = \begin{pmatrix} 14 & 19 & 24 \\ 17 & 22 & 27 \end{pmatrix}$$
+:::
+
+::: remarque
+En revanche, $C \times A$ n’est pas défini : $C$ a $3$ colonnes alors que $A$ n’a que $2$ lignes.
+:::
+
+## Question 6 : Vérifier que $A \times I_2 = A$
+
+::: etape Calculer le produit
+$$
+\begin{aligned}
+A \times I_2 &= \begin{pmatrix} 2 \times 1 + 3 \times 0 & 2 \times 0 + 3 \times 1 \\ 1 \times 1 + 4 \times 0 & 1 \times 0 + 4 \times 1 \end{pmatrix} \\
+&= \begin{pmatrix} 2 & 3 \\ 1 & 4 \end{pmatrix}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$A \times I_2 = A$ : la matrice identité joue pour le produit le rôle du nombre $1$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $A + B = \begin{pmatrix} 3 & 2 \\ 3 & 7 \end{pmatrix}$
+2. $3A = \begin{pmatrix} 6 & 9 \\ 3 & 12 \end{pmatrix}$
+3. $A \times B = \begin{pmatrix} 8 & 7 \\ 9 & 11 \end{pmatrix}$
+4. $B \times A = \begin{pmatrix} 1 & -1 \\ 7 & 18 \end{pmatrix} \neq A \times B$ : le produit n’est pas commutatif.
+5. Le produit est défini (taille $2 \times 3$) : $A \times C = \begin{pmatrix} 14 & 19 & 24 \\ 17 & 22 & 27 \end{pmatrix}$.
+6. $A \times I_2 = A$.
+
+===
+
+=== Type examen - Graphe orienté et nombre de chemins
+Id: 1142
+Difficulté: medium
+Image: graphe_chemins.png
+
+Énoncé:
+<!-- optitab:1 -->
+On considère le graphe orienté ci-dessous, de sommets $A$, $B$, $C$, $D$, dont les arcs sont $A \to B$, $A \to C$, $B \to C$, $B \to D$, $C \to A$, $C \to D$ et $D \to A$.
+
+[IMAGE_1]
+
+1. Écrire la matrice d’adjacence $M$ de ce graphe (sommets rangés dans l’ordre $A$, $B$, $C$, $D$).
+2. Calculer $M^2$ et interpréter ses coefficients.
+3. Calculer $M^3$ et interpréter le coefficient situé ligne $A$, colonne $A$.
+4. Déterminer le nombre de chemins de longueur $2$ de $A$ vers $D$, puis les citer.
+5. Un graphe orienté est dit **fortement connexe** si, pour tous sommets distincts $X$ et $Y$, il existe un chemin de $X$ vers $Y$. Ce graphe est-il fortement connexe ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Matrice d’adjacence
+
+::: methode
+$m_{ij} = 1$ s’il existe un arc du sommet $i$ vers le sommet $j$, $0$ sinon ; la ligne correspond au départ, la colonne à l’arrivée.
+:::
+
+::: etape Lire les arcs sommet par sommet
+- Depuis $A$ : $A \to B$ et $A \to C$, donc ligne $A$ : $\begin{pmatrix} 0 & 1 & 1 & 0 \end{pmatrix}$.
+- Depuis $B$ : $B \to C$ et $B \to D$, donc ligne $B$ : $\begin{pmatrix} 0 & 0 & 1 & 1 \end{pmatrix}$.
+- Depuis $C$ : $C \to A$ et $C \to D$, donc ligne $C$ : $\begin{pmatrix} 1 & 0 & 0 & 1 \end{pmatrix}$.
+- Depuis $D$ : $D \to A$, donc ligne $D$ : $\begin{pmatrix} 1 & 0 & 0 & 0 \end{pmatrix}$.
+:::
+
+::: resultat
+$$M = \begin{pmatrix} 0 & 1 & 1 & 0 \\ 0 & 0 & 1 & 1 \\ 1 & 0 & 0 & 1 \\ 1 & 0 & 0 & 0 \end{pmatrix}$$
+:::
+
+## Question 2 : Calcul et interprétation de $M^2$
+
+::: methode
+Dans $M^2 = M \times M$, la ligne d’un sommet $X$ est la somme des lignes de $M$ des sommets atteints depuis $X$ par un arc (c’est le calcul « ligne par colonne » regroupé).
+:::
+
+::: etape Vérifier la méthode sur un coefficient
+$(M^2)_{AD} = 0 \times 0 + 1 \times 1 + 1 \times 1 + 0 \times 0 = 2$ (ligne $A$ de $M$ par colonne $D$ de $M$).
+:::
+
+::: etape Calculer les quatre lignes
+- Ligne $A$ (arcs vers $B$ et $C$) : $\begin{pmatrix} 0 & 0 & 1 & 1 \end{pmatrix} + \begin{pmatrix} 1 & 0 & 0 & 1 \end{pmatrix} = \begin{pmatrix} 1 & 0 & 1 & 2 \end{pmatrix}$.
+- Ligne $B$ (arcs vers $C$ et $D$) : $\begin{pmatrix} 1 & 0 & 0 & 1 \end{pmatrix} + \begin{pmatrix} 1 & 0 & 0 & 0 \end{pmatrix} = \begin{pmatrix} 2 & 0 & 0 & 1 \end{pmatrix}$.
+- Ligne $C$ (arcs vers $A$ et $D$) : $\begin{pmatrix} 0 & 1 & 1 & 0 \end{pmatrix} + \begin{pmatrix} 1 & 0 & 0 & 0 \end{pmatrix} = \begin{pmatrix} 1 & 1 & 1 & 0 \end{pmatrix}$.
+- Ligne $D$ (arc vers $A$) : $\begin{pmatrix} 0 & 1 & 1 & 0 \end{pmatrix}$.
+:::
+
+::: resultat
+$$M^2 = \begin{pmatrix} 1 & 0 & 1 & 2 \\ 2 & 0 & 0 & 1 \\ 1 & 1 & 1 & 0 \\ 0 & 1 & 1 & 0 \end{pmatrix}$$
+:::
+
+::: point Interprétation
+$(M^2)_{XY}$ est le nombre de chemins de longueur $2$ de $X$ vers $Y$. Par exemple :
+
+- $(M^2)_{AA} = 1$ : un seul chemin, $A \to C \to A$ ;
+- $(M^2)_{BA} = 2$ : $B \to C \to A$ et $B \to D \to A$ ;
+- $(M^2)_{CB} = 1$ : $C \to A \to B$ ;
+- $(M^2)_{BB} = 0$ : aucun chemin de longueur $2$ ne part de $B$ pour revenir en $B$.
+:::
+
+## Question 3 : Calcul de $M^3$
+
+::: methode
+$M^3 = M \times M^2$ : la ligne d’un sommet $X$ est la somme des lignes de $M^2$ des sommets atteints depuis $X$ par un arc.
+:::
+
+::: etape Calculer les quatre lignes
+- Ligne $A$ (vers $B$, $C$) : $\begin{pmatrix} 2 & 0 & 0 & 1 \end{pmatrix} + \begin{pmatrix} 1 & 1 & 1 & 0 \end{pmatrix} = \begin{pmatrix} 3 & 1 & 1 & 1 \end{pmatrix}$.
+- Ligne $B$ (vers $C$, $D$) : $\begin{pmatrix} 1 & 1 & 1 & 0 \end{pmatrix} + \begin{pmatrix} 0 & 1 & 1 & 0 \end{pmatrix} = \begin{pmatrix} 1 & 2 & 2 & 0 \end{pmatrix}$.
+- Ligne $C$ (vers $A$, $D$) : $\begin{pmatrix} 1 & 0 & 1 & 2 \end{pmatrix} + \begin{pmatrix} 0 & 1 & 1 & 0 \end{pmatrix} = \begin{pmatrix} 1 & 1 & 2 & 2 \end{pmatrix}$.
+- Ligne $D$ (vers $A$) : $\begin{pmatrix} 1 & 0 & 1 & 2 \end{pmatrix}$.
+:::
+
+::: resultat
+$$M^3 = \begin{pmatrix} 3 & 1 & 1 & 1 \\ 1 & 2 & 2 & 0 \\ 1 & 1 & 2 & 2 \\ 1 & 0 & 1 & 2 \end{pmatrix}$$
+:::
+
+::: point Interprétation de $(M^3)_{AA} = 3$
+Il y a trois chemins de longueur $3$ qui partent de $A$ et y reviennent : $A \to B \to C \to A$, $A \to B \to D \to A$ et $A \to C \to D \to A$.
+:::
+
+## Question 4 : Chemins de longueur 2 de $A$ vers $D$
+
+::: etape Lire le coefficient
+Le nombre cherché est $(M^2)_{AD}$, ligne $A$ et colonne $D$ de $M^2$ : il vaut $2$.
+:::
+
+::: etape Citer les chemins
+Un chemin de longueur $2$ de $A$ vers $D$ passe par un sommet intermédiaire $X$ avec $A \to X$ et $X \to D$. Depuis $A$, on peut aller en $B$ ou en $C$, et les deux arcs $B \to D$ et $C \to D$ existent.
+:::
+
+[IMAGE_2]
+
+::: resultat
+Il y a $2$ chemins de longueur $2$ de $A$ vers $D$ : $A \to B \to D$ et $A \to C \to D$.
+:::
+
+## Question 5 : Le graphe est-il fortement connexe ?
+
+::: methode
+Chercher un circuit (chemin fermé) qui passe par tous les sommets : en le suivant, on va de n’importe quel sommet à n’importe quel autre.
+:::
+
+::: etape Trouver un circuit passant par tous les sommets
+Les arcs $A \to B$, $B \to C$, $C \to D$ et $D \to A$ existent : $A \to B \to C \to D \to A$ est un circuit qui passe par les quatre sommets.
+:::
+
+::: etape Conclure
+Pour aller d’un sommet $X$ à un sommet $Y$, il suffit de suivre ce circuit depuis $X$ jusqu’à $Y$. Le graphe est donc fortement connexe.
+:::
+
+::: remarque Contrôle matriciel
+Tous les coefficients de $I_4 + M + M^2 + M^3 = \begin{pmatrix} 5 & 2 & 3 & 3 \\ 3 & 3 & 3 & 2 \\ 3 & 2 & 4 & 3 \\ 2 & 1 & 2 & 3 \end{pmatrix}$ sont non nuls : chaque sommet en atteint chaque autre par un chemin de longueur au plus $3$.
+:::
+
+::: resultat
+Le graphe est fortement connexe.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $M = \begin{pmatrix} 0 & 1 & 1 & 0 \\ 0 & 0 & 1 & 1 \\ 1 & 0 & 0 & 1 \\ 1 & 0 & 0 & 0 \end{pmatrix}$
+2. $M^2 = \begin{pmatrix} 1 & 0 & 1 & 2 \\ 2 & 0 & 0 & 1 \\ 1 & 1 & 1 & 0 \\ 0 & 1 & 1 & 0 \end{pmatrix}$ : $(M^2)_{XY}$ est le nombre de chemins de longueur $2$ de $X$ vers $Y$.
+3. $M^3 = \begin{pmatrix} 3 & 1 & 1 & 1 \\ 1 & 2 & 2 & 0 \\ 1 & 1 & 2 & 2 \\ 1 & 0 & 1 & 2 \end{pmatrix}$ ; $(M^3)_{AA} = 3$ : trois chemins de longueur $3$ de $A$ à $A$.
+4. $2$ chemins : $A \to B \to D$ et $A \to C \to D$.
+5. Oui : le circuit $A \to B \to C \to D \to A$ passe par tous les sommets.
+
+===
+
+=== Type examen - Puissances d'une matrice triangulaire et suite
+Id: 1141
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+On considère la matrice $A = \begin{pmatrix} 3 & 1 \\ 0 & 2 \end{pmatrix}$ et la suite de matrices colonnes $(M_n)$ définie par $M_0 = \begin{pmatrix} 1 \\ 1 \end{pmatrix}$ et, pour tout entier naturel $n$, $M_{n+1} = A \times M_n$.
+
+1. Calculer $M_1$, $M_2$ et $M_3$.
+2. Calculer $A^2$, $A^3$ et $A^4$.
+3. Conjecturer une formule pour $A^n$.
+4. Démontrer par récurrence la formule conjecturée.
+5. Exprimer $M_n$ en fonction de $n$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calcul de $M_1$, $M_2$, $M_3$
+
+::: methode
+On applique la relation $M_{n+1} = AM_n$ de proche en proche.
+:::
+
+::: etape Calculer $M_1$
+$$
+\begin{aligned}
+M_1 &= AM_0 \\
+&= \begin{pmatrix} 3 & 1 \\ 0 & 2 \end{pmatrix}\begin{pmatrix} 1 \\ 1 \end{pmatrix} \\
+&= \begin{pmatrix} 3 \times 1 + 1 \times 1 \\ 0 \times 1 + 2 \times 1 \end{pmatrix} \\
+&= \begin{pmatrix} 4 \\ 2 \end{pmatrix}
+\end{aligned}
+$$
+:::
+
+::: etape Calculer $M_2$
+$$M_2 = AM_1 = \begin{pmatrix} 3 \times 4 + 1 \times 2 \\ 0 \times 4 + 2 \times 2 \end{pmatrix} = \begin{pmatrix} 14 \\ 4 \end{pmatrix}$$
+:::
+
+::: etape Calculer $M_3$
+$$M_3 = AM_2 = \begin{pmatrix} 3 \times 14 + 1 \times 4 \\ 0 \times 14 + 2 \times 4 \end{pmatrix} = \begin{pmatrix} 46 \\ 8 \end{pmatrix}$$
+:::
+
+::: resultat
+$M_1 = \begin{pmatrix} 4 \\ 2 \end{pmatrix}$, $M_2 = \begin{pmatrix} 14 \\ 4 \end{pmatrix}$ et $M_3 = \begin{pmatrix} 46 \\ 8 \end{pmatrix}$.
+:::
+
+## Question 2 : Calcul de $A^2$, $A^3$, $A^4$
+
+::: etape Calculer $A^2$
+$$
+\begin{aligned}
+A^2 &= \begin{pmatrix} 3 & 1 \\ 0 & 2 \end{pmatrix}\begin{pmatrix} 3 & 1 \\ 0 & 2 \end{pmatrix} \\
+&= \begin{pmatrix} 3 \times 3 + 1 \times 0 & 3 \times 1 + 1 \times 2 \\ 0 \times 3 + 2 \times 0 & 0 \times 1 + 2 \times 2 \end{pmatrix} \\
+&= \begin{pmatrix} 9 & 5 \\ 0 & 4 \end{pmatrix}
+\end{aligned}
+$$
+:::
+
+::: etape Calculer $A^3 = A^2 \times A$
+$$
+\begin{aligned}
+A^3 &= \begin{pmatrix} 9 & 5 \\ 0 & 4 \end{pmatrix}\begin{pmatrix} 3 & 1 \\ 0 & 2 \end{pmatrix} \\
+&= \begin{pmatrix} 27 & 9 + 10 \\ 0 & 8 \end{pmatrix} \\
+&= \begin{pmatrix} 27 & 19 \\ 0 & 8 \end{pmatrix}
+\end{aligned}
+$$
+:::
+
+::: etape Calculer $A^4 = A^3 \times A$
+$$
+\begin{aligned}
+A^4 &= \begin{pmatrix} 27 & 19 \\ 0 & 8 \end{pmatrix}\begin{pmatrix} 3 & 1 \\ 0 & 2 \end{pmatrix} \\
+&= \begin{pmatrix} 81 & 27 + 38 \\ 0 & 16 \end{pmatrix} \\
+&= \begin{pmatrix} 81 & 65 \\ 0 & 16 \end{pmatrix}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$A^2 = \begin{pmatrix} 9 & 5 \\ 0 & 4 \end{pmatrix}$, $A^3 = \begin{pmatrix} 27 & 19 \\ 0 & 8 \end{pmatrix}$ et $A^4 = \begin{pmatrix} 81 & 65 \\ 0 & 16 \end{pmatrix}$.
+:::
+
+## Question 3 : Conjecture
+
+::: methode
+Reconnaître des puissances de $3$ et de $2$ dans les coefficients.
+:::
+
+::: etape Coefficients diagonaux
+Sur la diagonale, on lit $3^n$ et $2^n$ : $3, 9, 27, 81$ et $2, 4, 8, 16$.
+:::
+
+::: etape Coefficient en haut à droite
+| $n$ | $1$ | $2$ | $3$ | $4$ |
+|---|---|---|---|---|
+| Coefficient | $1$ | $5$ | $19$ | $65$ |
+| $3^n - 2^n$ | $3 - 2 = 1$ | $9 - 4 = 5$ | $27 - 8 = 19$ | $81 - 16 = 65$ |
+:::
+
+::: resultat
+Conjecture : pour tout entier $n \geq 1$, $A^n = \begin{pmatrix} 3^n & 3^n - 2^n \\ 0 & 2^n \end{pmatrix}$.
+:::
+
+## Question 4 : Démonstration par récurrence
+
+::: etape Énoncer la propriété
+Pour $n \geq 1$, on note $\mathcal{P}(n)$ : « $A^n = \begin{pmatrix} 3^n & 3^n - 2^n \\ 0 & 2^n \end{pmatrix}$ ».
+:::
+
+::: etape Initialisation
+Pour $n = 1$ : $\begin{pmatrix} 3^1 & 3^1 - 2^1 \\ 0 & 2^1 \end{pmatrix} = \begin{pmatrix} 3 & 1 \\ 0 & 2 \end{pmatrix} = A$. Donc $\mathcal{P}(1)$ est vraie.
+:::
+
+::: etape Hérédité
+Soit $k \geq 1$ tel que $\mathcal{P}(k)$ est vraie. Alors
+
+$$A^{k+1} = A^k \times A = \begin{pmatrix} 3^k & 3^k - 2^k \\ 0 & 2^k \end{pmatrix}\begin{pmatrix} 3 & 1 \\ 0 & 2 \end{pmatrix}$$
+
+Calculons les coefficients :
+
+$$
+\begin{aligned}
+(A^{k+1})_{11} &= 3^k \times 3 + (3^k - 2^k) \times 0 = 3^{k+1} \\
+(A^{k+1})_{12} &= 3^k \times 1 + (3^k - 2^k) \times 2 \\
+&=  3 \times 3^k - 2 \times 2^k \\
+&= 3^{k+1} - 2^{k+1} \\
+(A^{k+1})_{21} &= 0 \times 3 + 2^k \times 0 = 0 \\
+(A^{k+1})_{22} &= 0 \times 1 + 2^k \times 2 = 2^{k+1}
+\end{aligned}
+$$
+
+Donc $\mathcal{P}(k + 1)$ est vraie.
+:::
+
+::: resultat
+Par récurrence, pour tout entier $n \geq 1$, $A^n = \begin{pmatrix} 3^n & 3^n - 2^n \\ 0 & 2^n \end{pmatrix}$ (la formule donne aussi $I_2$ pour $n = 0$).
+:::
+
+## Question 5 : Expression de $M_n$
+
+::: methode
+Comme $M_{n+1} = AM_n$, on a $M_n = A^nM_0$ pour tout entier $n$ (propriété du cours, démontrée par récurrence).
+:::
+
+::: etape Calculer le produit
+$$
+\begin{aligned}
+M_n = A^nM_0 &= \begin{pmatrix} 3^n & 3^n - 2^n \\ 0 & 2^n \end{pmatrix}\begin{pmatrix} 1 \\ 1 \end{pmatrix} \\
+&= \begin{pmatrix} 3^n + 3^n - 2^n \\ 2^n \end{pmatrix} \\
+&= \begin{pmatrix} 2 \times 3^n - 2^n \\ 2^n \end{pmatrix}
+\end{aligned}
+$$
+:::
+
+::: point Vérification
+Pour $n = 3$ : $2 \times 27 - 8 = 46$ et $2^3 = 8$, on retrouve bien $M_3$.
+:::
+
+::: resultat
+$$M_n = \begin{pmatrix} 2 \times 3^n - 2^n \\ 2^n \end{pmatrix}$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $M_1 = \begin{pmatrix} 4 \\ 2 \end{pmatrix}$, $M_2 = \begin{pmatrix} 14 \\ 4 \end{pmatrix}$, $M_3 = \begin{pmatrix} 46 \\ 8 \end{pmatrix}$
+2. $A^2 = \begin{pmatrix} 9 & 5 \\ 0 & 4 \end{pmatrix}$, $A^3 = \begin{pmatrix} 27 & 19 \\ 0 & 8 \end{pmatrix}$, $A^4 = \begin{pmatrix} 81 & 65 \\ 0 & 16 \end{pmatrix}$
+3. Conjecture : $A^n = \begin{pmatrix} 3^n & 3^n - 2^n \\ 0 & 2^n \end{pmatrix}$
+4. Initialisation pour $n = 1$, hérédité par le calcul de $A^k \times A$.
+5. $M_n = \begin{pmatrix} 2 \times 3^n - 2^n \\ 2^n \end{pmatrix}$
+
+===
+
+=== Entraînement - Marche aléatoire et état stable
+Id: 1140
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Un randonneur passe chaque nuit dans l'un des trois refuges $A$, $B$, $C$ d'un massif ; les refuges $A$ et $C$ ne sont reliés que par l'intermédiaire de $B$. Chaque matin, il choisit sa prochaine étape ainsi :
+
+- s'il est en $A$, il y reste avec la probabilité $0{,}7$, sinon il va en $B$ ;
+- s'il est en $B$, il va en $A$ avec la probabilité $0{,}2$, reste en $B$ avec la probabilité $0{,}3$, sinon il va en $C$ ;
+- s'il est en $C$, il y reste avec la probabilité $0{,}7$, sinon il va en $B$.
+
+On note $X_n$ le refuge de la nuit $n$ et $\pi_n = \begin{pmatrix} P(X_n = A) & P(X_n = B) & P(X_n = C) \end{pmatrix}$. La nuit $0$, le randonneur dort en $A$.
+
+1. Représenter la situation par un graphe probabiliste, puis écrire la matrice de transition $P$ (états rangés dans l'ordre $A$, $B$, $C$).
+2. Donner $\pi_0$, puis calculer $\pi_1$ et $\pi_2$.
+3. Quelle est la probabilité que le randonneur dorme en $C$ la nuit $2$ ? Quel coefficient de $P^2$ cette probabilité représente-t-elle ?
+4. Montrer que, pour tout entier $n \geq 1$, $P(X_n = B) = 0{,}3$.
+5. Déterminer la distribution invariante $\pi = \begin{pmatrix} a & b & c \end{pmatrix}$ de cette chaîne de Markov.
+6. On admet que $\pi_n$ converge vers $\pi$. Interpréter ce résultat.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Graphe probabiliste et matrice de transition
+
+::: methode
+Un sommet par état ; un arc $i \to j$ portant la probabilité $p_{ij}$ de passer de $i$ à $j$ (une boucle pour rester sur place). La ligne $i$ de $P$ contient les probabilités des arcs qui partent de $i$.
+:::
+
+::: etape Le graphe
+Depuis $A$ : boucle $0{,}7$ et arc vers $B$ de poids $1 - 0{,}7 = 0{,}3$. Depuis $B$ : arcs vers $A$ ($0{,}2$), vers $C$ ($1 - 0{,}2 - 0{,}3 = 0{,}5$) et boucle $0{,}3$. Depuis $C$ : boucle $0{,}7$ et arc vers $B$ de poids $0{,}3$.
+:::
+
+[IMAGE_1]
+
+::: etape La matrice de transition
+$$P = \begin{pmatrix} 0{,}7 & 0{,}3 & 0 \\ 0{,}2 & 0{,}3 & 0{,}5 \\ 0 & 0{,}3 & 0{,}7 \end{pmatrix}$$
+Contrôle : la somme de chaque ligne vaut $1$ ($0{,}7 + 0{,}3$ ; $0{,}2 + 0{,}3 + 0{,}5$ ; $0{,}3 + 0{,}7$).
+:::
+
+::: resultat
+$$P = \begin{pmatrix} 0{,}7 & 0{,}3 & 0 \\ 0{,}2 & 0{,}3 & 0{,}5 \\ 0 & 0{,}3 & 0{,}7 \end{pmatrix}$$
+:::
+
+## Question 2 : $\pi_0$, $\pi_1$ et $\pi_2$
+
+::: methode
+$\pi_{n+1} = \pi_nP$ : la distribution est une matrice **ligne**, placée à gauche de $P$.
+:::
+
+::: etape Distribution initiale et $\pi_1$
+Le randonneur est en $A$ la nuit $0$ : $\pi_0 = \begin{pmatrix} 1 & 0 & 0 \end{pmatrix}$. Alors $\pi_1 = \pi_0P$ est la première ligne de $P$ :
+$$\pi_1 = \begin{pmatrix} 0{,}7 & 0{,}3 & 0 \end{pmatrix}$$
+:::
+
+::: etape Calcul de $\pi_2 = \pi_1P$, coefficient par coefficient
+$$
+\begin{aligned}
+0{,}7 \times 0{,}7 + 0{,}3 \times 0{,}2 + 0 \times 0 &= 0{,}55 \\
+0{,}7 \times 0{,}3 + 0{,}3 \times 0{,}3 + 0 \times 0{,}3 &= 0{,}3 \\
+0{,}7 \times 0 + 0{,}3 \times 0{,}5 + 0 \times 0{,}7 &= 0{,}15
+\end{aligned}
+$$
+Contrôle : $0{,}55 + 0{,}3 + 0{,}15 = 1$.
+:::
+
+::: resultat
+$\pi_0 = \begin{pmatrix} 1 & 0 & 0 \end{pmatrix}$, $\pi_1 = \begin{pmatrix} 0{,}7 & 0{,}3 & 0 \end{pmatrix}$ et $\pi_2 = \begin{pmatrix} 0{,}55 & 0{,}3 & 0{,}15 \end{pmatrix}$.
+:::
+
+::: attention Erreur fréquente
+Écrire $P\pi_n$ au lieu de $\pi_nP$ : avec des lignes de $P$ correspondant aux états de départ, la distribution se multiplie **à gauche**.
+:::
+
+## Question 3 : Probabilité d'être en $C$ la nuit $2$
+
+::: etape Lecture de $\pi_2$
+$P(X_2 = C)$ est le troisième coefficient de $\pi_2$ : $0{,}15$.
+:::
+
+::: etape Lien avec $P^2$
+$\pi_2 = \pi_0P^2$ et $\pi_0 = \begin{pmatrix} 1 & 0 & 0 \end{pmatrix}$ : $\pi_2$ est la première ligne de $P^2$. Donc $0{,}15 = (P^2)_{AC}$, la probabilité de passer de $A$ à $C$ en deux transitions.
+:::
+
+::: point Vérification sur le graphe
+Le seul chemin de longueur $2$ de $A$ à $C$ est $A \to B \to C$ (il n'y a pas d'arc $A \to C$) : sa probabilité est $0{,}3 \times 0{,}5 = 0{,}15$.
+:::
+
+::: resultat
+$P(X_2 = C) = 0{,}15$ : c'est le coefficient $(P^2)_{AC}$, ligne $A$ et colonne $C$ de $P^2$.
+:::
+
+## Question 4 : $P(X_n = B) = 0{,}3$ pour $n \geq 1$
+
+::: methode
+Écrire le deuxième coefficient de $\pi_{n+1} = \pi_nP$ et remarquer que la colonne $B$ de $P$ est constante.
+:::
+
+::: etape Deuxième coefficient de $\pi_{n+1}$
+Avec $\pi_n = \begin{pmatrix} a_n & b_n & c_n \end{pmatrix}$ :
+$$
+\begin{aligned}
+b_{n+1} &= 0{,}3a_n + 0{,}3b_n + 0{,}3c_n \\
+&= 0{,}3\left(a_n + b_n + c_n\right)
+\end{aligned}
+$$
+:::
+
+::: etape Conclure
+$a_n + b_n + c_n = 1$ (les trois états forment une partition), donc $b_{n+1} = 0{,}3$ pour tout entier $n \geq 0$.
+:::
+
+::: resultat
+Pour tout entier $n \geq 1$, $P(X_n = B) = 0{,}3$ : quel que soit le refuge de la veille, il va en $B$ avec la probabilité $0{,}3$.
+:::
+
+## Question 5 : Distribution invariante
+
+::: methode
+Écrire le système $\pi P = \pi$, puis ajouter la condition $a + b + c = 1$.
+:::
+
+::: etape Le système $\pi P = \pi$
+$$\begin{cases} 0{,}7a + 0{,}2b = a \\ 0{,}3a + 0{,}3b + 0{,}3c = b \\ 0{,}5b + 0{,}7c = c \end{cases}$$
+:::
+
+::: etape Résolution avec $a + b + c = 1$
+- Deuxième équation : $0{,}3(a + b + c) = b$, donc $b = 0{,}3$.
+- Première équation : $0{,}2b = 0{,}3a$, donc $a = \dfrac{0{,}2 \times 0{,}3}{0{,}3} = 0{,}2$.
+- Troisième équation : $0{,}5b = 0{,}3c$, donc $c = \dfrac{0{,}5 \times 0{,}3}{0{,}3} = 0{,}5$.
+:::
+
+::: point Vérification
+$0{,}2 + 0{,}3 + 0{,}5 = 1$. Première équation : $0{,}7 \times 0{,}2 + 0{,}2 \times 0{,}3 = 0{,}2$, c'est bien $a$.
+:::
+
+::: resultat
+La distribution invariante est $\pi = \begin{pmatrix} 0{,}2 & 0{,}3 & 0{,}5 \end{pmatrix}$.
+:::
+
+## Question 6 : Interprétation
+
+::: etape État stable
+Lorsque $n$ devient grand, $P(X_n = A)$, $P(X_n = B)$ et $P(X_n = C)$ se rapprochent de $0{,}2$, $0{,}3$ et $0{,}5$ : c'est l'état stable de la marche.
+:::
+
+[IMAGE_2]
+
+::: resultat
+À long terme, le randonneur dort en $C$ une nuit sur deux en moyenne, en $B$ $30\,\%$ des nuits et en $A$ $20\,\%$ des nuits, quel que soit son refuge de départ.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $P = \begin{pmatrix} 0{,}7 & 0{,}3 & 0 \\ 0{,}2 & 0{,}3 & 0{,}5 \\ 0 & 0{,}3 & 0{,}7 \end{pmatrix}$ ; graphe : boucles $0{,}7$ ($A$), $0{,}3$ ($B$), $0{,}7$ ($C$) ; arcs $A \to B$ ($0{,}3$), $B \to A$ ($0{,}2$), $B \to C$ ($0{,}5$), $C \to B$ ($0{,}3$).
+2. $\pi_0 = \begin{pmatrix} 1 & 0 & 0 \end{pmatrix}$, $\pi_1 = \begin{pmatrix} 0{,}7 & 0{,}3 & 0 \end{pmatrix}$, $\pi_2 = \begin{pmatrix} 0{,}55 & 0{,}3 & 0{,}15 \end{pmatrix}$.
+3. $P(X_2 = C) = 0{,}15 = (P^2)_{AC}$.
+4. $b_{n+1} = 0{,}3(a_n + b_n + c_n) = 0{,}3$.
+5. $\pi = \begin{pmatrix} 0{,}2 & 0{,}3 & 0{,}5 \end{pmatrix}$.
+6. À long terme : $20\,\%$ des nuits en $A$, $30\,\%$ en $B$, $50\,\%$ en $C$.
+
+===
+
+=== Entraînement - Systèmes linéaires et écriture matricielle
+Id: 1136
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Résoudre les systèmes linéaires suivants en utilisant l’écriture matricielle.
+
+1. $\begin{cases} 2x + 3y = 7 \\ x + 2y = 4 \end{cases}$
+2. $\begin{cases} 3x - y = 5 \\ 6x - 2y = 10 \end{cases}$
+3. $\begin{cases} x + 2y = 3 \\ 2x + 4y = 7 \end{cases}$
+4. Vérifier les solutions trouvées.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Système $\begin{cases} 2x + 3y = 7 \\ x + 2y = 4 \end{cases}$
+
+::: methode
+Écrire le système sous la forme $AX = Y$ ; si $A$ est inversible, l’unique solution est $X = A^{-1}Y$.
+:::
+
+::: etape Écriture matricielle
+$$\begin{pmatrix} 2 & 3 \\ 1 & 2 \end{pmatrix}\begin{pmatrix} x \\ y \end{pmatrix} = \begin{pmatrix} 7 \\ 4 \end{pmatrix}, \quad \text{soit } AX = Y$$
+:::
+
+::: etape Inverse de $A$
+$\det(A) = 2 \times 2 - 3 \times 1 = 1 \neq 0$, donc $A$ est inversible et
+
+$$A^{-1} = \frac{1}{1}\begin{pmatrix} 2 & -3 \\ -1 & 2 \end{pmatrix} = \begin{pmatrix} 2 & -3 \\ -1 & 2 \end{pmatrix}$$
+:::
+
+::: etape Calculer $X = A^{-1}Y$
+$$
+\begin{aligned}
+X &= \begin{pmatrix} 2 & -3 \\ -1 & 2 \end{pmatrix}\begin{pmatrix} 7 \\ 4 \end{pmatrix} \\
+&= \begin{pmatrix} 2 \times 7 + (-3) \times 4 \\ (-1) \times 7 + 2 \times 4 \end{pmatrix} \\
+&= \begin{pmatrix} 2 \\ 1 \end{pmatrix}
+\end{aligned}
+$$
+:::
+
+::: point Interprétation graphique
+Chaque équation est celle d’une droite : les deux droites sont sécantes au point de coordonnées $(2\,;1)$.
+:::
+
+[IMAGE_1]
+
+::: resultat
+Le système a une unique solution : $x = 2$ et $y = 1$.
+:::
+
+## Question 2 : Système $\begin{cases} 3x - y = 5 \\ 6x - 2y = 10 \end{cases}$
+
+::: etape Écriture matricielle et déterminant
+$A = \begin{pmatrix} 3 & -1 \\ 6 & -2 \end{pmatrix}$ et $\det(A) = 3 \times (-2) - (-1) \times 6 = -6 + 6 = 0$ : $A$ n’est pas inversible, la méthode $X = A^{-1}Y$ ne s’applique pas.
+:::
+
+::: etape Comparer les équations
+La deuxième équation est le double de la première : $2(3x - y) = 2 \times 5$. Le système se réduit donc à la seule équation $3x - y = 5$, c’est-à-dire $y = 3x - 5$.
+:::
+
+::: point Interprétation graphique
+Les deux équations définissent la même droite : tous ses points sont solutions.
+:::
+
+[IMAGE_2]
+
+::: resultat
+Le système a une infinité de solutions : les couples $(x\,;3x - 5)$, pour tout réel $x$.
+:::
+
+## Question 3 : Système $\begin{cases} x + 2y = 3 \\ 2x + 4y = 7 \end{cases}$
+
+::: etape Écriture matricielle et déterminant
+$A = \begin{pmatrix} 1 & 2 \\ 2 & 4 \end{pmatrix}$ et $\det(A) = 1 \times 4 - 2 \times 2 = 0$ : $A$ n’est pas inversible.
+:::
+
+::: etape Comparer les équations
+En multipliant la première équation par $2$, on obtient $2x + 4y = 6$. La deuxième impose $2x + 4y = 7$ : c’est impossible, car $6 \neq 7$.
+:::
+
+::: point Interprétation graphique
+Les deux droites sont parallèles et distinctes : elles n’ont aucun point commun.
+:::
+
+[IMAGE_3]
+
+::: resultat
+Le système n’a aucune solution.
+:::
+
+::: attention
+Un déterminant nul ne dit pas, à lui seul, s’il y a une infinité de solutions ou aucune : il faut comparer les équations.
+:::
+
+## Question 4 : Vérifications
+
+::: point Question 1, avec $x = 2$ et $y = 1$
+$2 \times 2 + 3 \times 1 = 7$ et $2 + 2 \times 1 = 4$ : les deux équations sont vérifiées.
+:::
+
+::: point Question 2, avec $y = 3x - 5$
+$3x - (3x - 5) = 5$ et $6x - 2(3x - 5) = 10$ pour tout réel $x$ ; par exemple, $(1\,;-2)$ convient : $3 + 2 = 5$ et $6 + 4 = 10$.
+:::
+
+::: point Question 3
+Il n’y a pas de solution, donc rien à vérifier.
+:::
+
+::: resultat
+Les solutions trouvées vérifient bien les équations.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Solution unique : $x = 2$ et $y = 1$.
+2. Infinité de solutions : les couples $(x\,;3x - 5)$, $x$ réel.
+3. Aucune solution (droites parallèles distinctes).
+4. Les vérifications par substitution sont correctes.
+
+===
+
+=== Entraînement - Transformations du plan et matrices
+Id: 1139
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Le plan est muni d’un repère orthonormé d’origine $O$. On représente le point $M(x\,;y)$ par la matrice colonne $\begin{pmatrix} x \\ y \end{pmatrix}$.
+
+1. Déterminer la matrice $R$ de la rotation de centre $O$ et d’angle $\dfrac{\pi}{2}$.
+2. Déterminer la matrice $S$ de la symétrie d’axe $(Ox)$.
+3. Déterminer la matrice $H$ de l’homothétie de centre $O$ et de rapport $3$.
+4. Calculer les coordonnées de l’image du point $M(2\,;3)$ par la rotation de la question 1.
+5. Calculer les coordonnées de l’image du point $N(1\,;-2)$ par la symétrie, suivie de l’homothétie.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Matrice de la rotation d’angle $\dfrac{\pi}{2}$
+
+::: methode
+La rotation de centre $O$ et d’angle $\theta$ a pour matrice $\begin{pmatrix} \cos\theta & -\sin\theta \\ \sin\theta & \cos\theta \end{pmatrix}$.
+:::
+
+::: etape Valeurs remarquables
+$\cos\dfrac{\pi}{2} = 0$ et $\sin\dfrac{\pi}{2} = 1$.
+:::
+
+::: resultat
+$$R = \begin{pmatrix} 0 & -1 \\ 1 & 0 \end{pmatrix}$$
+:::
+
+## Question 2 : Matrice de la symétrie d’axe $(Ox)$
+
+::: etape Effet sur un point
+Le symétrique de $M(x\,;y)$ par rapport à l’axe des abscisses est $M'(x\,;-y)$ : $x' = 1 \times x + 0 \times y$ et $y' = 0 \times x + (-1) \times y$.
+:::
+
+::: resultat
+$$S = \begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix}$$
+:::
+
+## Question 3 : Matrice de l’homothétie de rapport 3
+
+::: etape Effet sur un point
+L’homothétie de centre $O$ et de rapport $3$ envoie $M(x\,;y)$ sur $M'(3x\,;3y)$.
+:::
+
+::: resultat
+$$H = \begin{pmatrix} 3 & 0 \\ 0 & 3 \end{pmatrix} = 3I_2$$
+:::
+
+## Question 4 : Image de $M(2\,;3)$ par la rotation
+
+::: etape Calculer le produit $R\begin{pmatrix} 2 \\ 3 \end{pmatrix}$
+$$
+\begin{aligned}
+\begin{pmatrix} 0 & -1 \\ 1 & 0 \end{pmatrix}\begin{pmatrix} 2 \\ 3 \end{pmatrix} &= \begin{pmatrix} 0 \times 2 + (-1) \times 3 \\ 1 \times 2 + 0 \times 3 \end{pmatrix} \\
+&= \begin{pmatrix} -3 \\ 2 \end{pmatrix}
+\end{aligned}
+$$
+:::
+
+::: point Contrôle sur la figure
+$OM' = \sqrt{9 + 4} = \sqrt{13} = OM$ et les droites $(OM)$ et $(OM')$ sont perpendiculaires : on a bien tourné d’un quart de tour dans le sens direct.
+:::
+
+[IMAGE_1]
+
+::: resultat
+L’image de $M$ est $M'(-3\,;2)$.
+:::
+
+## Question 5 : Image de $N(1\,;-2)$ par la symétrie suivie de l’homothétie
+
+::: methode
+On applique d’abord $S$, puis $H$ : la transformation composée a pour matrice $HS$ (la matrice appliquée en premier est écrite à droite).
+:::
+
+::: etape Image par la symétrie
+$$
+\begin{aligned}
+S\begin{pmatrix} 1 \\ -2 \end{pmatrix} &= \begin{pmatrix} 1 \times 1 + 0 \times (-2) \\ 0 \times 1 + (-1) \times (-2) \end{pmatrix} \\
+&= \begin{pmatrix} 1 \\ 2 \end{pmatrix} : \text{ point } N_1(1\,;2)
+\end{aligned}
+$$
+:::
+
+::: etape Image par l’homothétie
+$$H\begin{pmatrix} 1 \\ 2 \end{pmatrix} = \begin{pmatrix} 3 \times 1 \\ 3 \times 2 \end{pmatrix} = \begin{pmatrix} 3 \\ 6 \end{pmatrix}$$
+:::
+
+::: point Avec la matrice composée
+$HS = \begin{pmatrix} 3 & 0 \\ 0 & 3 \end{pmatrix}\begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix} = \begin{pmatrix} 3 & 0 \\ 0 & -3 \end{pmatrix}$ et $\begin{pmatrix} 3 & 0 \\ 0 & -3 \end{pmatrix}\begin{pmatrix} 1 \\ -2 \end{pmatrix} = \begin{pmatrix} 3 \\ 6 \end{pmatrix}$ : même résultat.
+:::
+
+[IMAGE_2]
+
+::: resultat
+L’image de $N$ est $N'(3\,;6)$.
+:::
+
+::: remarque
+Ici $HS = SH$ car $H = 3I_2$ ; en général, l’ordre de composition des transformations compte, comme l’ordre d’un produit de matrices.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $R = \begin{pmatrix} 0 & -1 \\ 1 & 0 \end{pmatrix}$
+2. $S = \begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix}$
+3. $H = \begin{pmatrix} 3 & 0 \\ 0 & 3 \end{pmatrix}$
+4. $M'(-3\,;2)$
+5. $N_1(1\,;2)$ puis $N'(3\,;6)$ ; matrice composée $HS = \begin{pmatrix} 3 & 0 \\ 0 & -3 \end{pmatrix}$.
+
+===
+
+=== Problème - Matrice d'adjacence et chemins de longueur 3
+Id: 1138
+Difficulté: medium
+Image: graphe_adjacence.png
+
+Énoncé:
+<!-- optitab:1 -->
+On considère le graphe orienté ci-dessous, de sommets $A$, $B$, $C$, $D$, $E$, dont les arcs sont $A \to B$, $B \to C$, $C \to D$, $D \to E$, $E \to A$, $A \to C$ et $B \to D$.
+
+[IMAGE_1]
+
+1. Écrire la matrice d’adjacence $M$ de ce graphe (sommets rangés dans l’ordre $A$, $B$, $C$, $D$, $E$).
+2. Calculer $M^2$ et interpréter ses coefficients non nuls de la ligne $A$.
+3. Calculer $M^3$ et citer les chemins de longueur $3$ de $A$ vers $E$.
+4. Un graphe orienté est dit **fortement connexe** si, pour tous sommets distincts $X$ et $Y$, il existe un chemin de $X$ vers $Y$. Ce graphe est-il fortement connexe ?
+5. Combien y a-t-il de chemins de longueur $2$ de $A$ vers $E$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Matrice d’adjacence
+
+::: methode
+$m_{ij} = 1$ s’il existe un arc de $i$ vers $j$, $0$ sinon (ligne $=$ départ, colonne $=$ arrivée).
+:::
+
+::: etape Lire les arcs sommet par sommet
+- $A \to B$, $A \to C$ : ligne $A$ $= \begin{pmatrix} 0 & 1 & 1 & 0 & 0 \end{pmatrix}$.
+- $B \to C$, $B \to D$ : ligne $B$ $= \begin{pmatrix} 0 & 0 & 1 & 1 & 0 \end{pmatrix}$.
+- $C \to D$ : ligne $C$ $= \begin{pmatrix} 0 & 0 & 0 & 1 & 0 \end{pmatrix}$.
+- $D \to E$ : ligne $D$ $= \begin{pmatrix} 0 & 0 & 0 & 0 & 1 \end{pmatrix}$.
+- $E \to A$ : ligne $E$ $= \begin{pmatrix} 1 & 0 & 0 & 0 & 0 \end{pmatrix}$.
+:::
+
+::: resultat
+$$M = \begin{pmatrix} 0 & 1 & 1 & 0 & 0 \\ 0 & 0 & 1 & 1 & 0 \\ 0 & 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 0 & 1 \\ 1 & 0 & 0 & 0 & 0 \end{pmatrix}$$
+:::
+
+## Question 2 : Calcul et interprétation de $M^2$
+
+::: methode
+La ligne d’un sommet $X$ dans $M^2$ est la somme des lignes de $M$ des sommets atteints depuis $X$ par un arc.
+:::
+
+::: etape Calculer les cinq lignes
+- Ligne $A$ (vers $B$, $C$) : $\begin{pmatrix} 0 & 0 & 1 & 1 & 0 \end{pmatrix} + \begin{pmatrix} 0 & 0 & 0 & 1 & 0 \end{pmatrix} = \begin{pmatrix} 0 & 0 & 1 & 2 & 0 \end{pmatrix}$.
+- Ligne $B$ (vers $C$, $D$) : $\begin{pmatrix} 0 & 0 & 0 & 1 & 0 \end{pmatrix} + \begin{pmatrix} 0 & 0 & 0 & 0 & 1 \end{pmatrix} = \begin{pmatrix} 0 & 0 & 0 & 1 & 1 \end{pmatrix}$.
+- Ligne $C$ (vers $D$) : $\begin{pmatrix} 0 & 0 & 0 & 0 & 1 \end{pmatrix}$.
+- Ligne $D$ (vers $E$) : $\begin{pmatrix} 1 & 0 & 0 & 0 & 0 \end{pmatrix}$.
+- Ligne $E$ (vers $A$) : $\begin{pmatrix} 0 & 1 & 1 & 0 & 0 \end{pmatrix}$.
+:::
+
+::: resultat
+$$M^2 = \begin{pmatrix} 0 & 0 & 1 & 2 & 0 \\ 0 & 0 & 0 & 1 & 1 \\ 0 & 0 & 0 & 0 & 1 \\ 1 & 0 & 0 & 0 & 0 \\ 0 & 1 & 1 & 0 & 0 \end{pmatrix}$$
+:::
+
+::: point Interprétation de la ligne $A$
+- $(M^2)_{AC} = 1$ : un chemin de longueur $2$ de $A$ vers $C$, $A \to B \to C$.
+- $(M^2)_{AD} = 2$ : deux chemins de longueur $2$ de $A$ vers $D$, $A \to B \to D$ et $A \to C \to D$.
+:::
+
+## Question 3 : Calcul de $M^3$
+
+::: methode
+$M^3 = M \times M^2$ : la ligne de $X$ est la somme des lignes de $M^2$ des sommets atteints depuis $X$ par un arc.
+:::
+
+::: etape Calculer les cinq lignes
+- Ligne $A$ (vers $B$, $C$) : $\begin{pmatrix} 0 & 0 & 0 & 1 & 1 \end{pmatrix} + \begin{pmatrix} 0 & 0 & 0 & 0 & 1 \end{pmatrix} = \begin{pmatrix} 0 & 0 & 0 & 1 & 2 \end{pmatrix}$.
+- Ligne $B$ (vers $C$, $D$) : $\begin{pmatrix} 0 & 0 & 0 & 0 & 1 \end{pmatrix} + \begin{pmatrix} 1 & 0 & 0 & 0 & 0 \end{pmatrix} = \begin{pmatrix} 1 & 0 & 0 & 0 & 1 \end{pmatrix}$.
+- Ligne $C$ (vers $D$) : $\begin{pmatrix} 1 & 0 & 0 & 0 & 0 \end{pmatrix}$.
+- Ligne $D$ (vers $E$) : $\begin{pmatrix} 0 & 1 & 1 & 0 & 0 \end{pmatrix}$.
+- Ligne $E$ (vers $A$) : $\begin{pmatrix} 0 & 0 & 1 & 2 & 0 \end{pmatrix}$.
+:::
+
+::: resultat
+$$M^3 = \begin{pmatrix} 0 & 0 & 0 & 1 & 2 \\ 1 & 0 & 0 & 0 & 1 \\ 1 & 0 & 0 & 0 & 0 \\ 0 & 1 & 1 & 0 & 0 \\ 0 & 0 & 1 & 2 & 0 \end{pmatrix}$$
+:::
+
+::: point Chemins de longueur 3 de $A$ vers $E$
+$(M^3)_{AE} = 2$ : ce sont $A \to B \to D \to E$ et $A \to C \to D \to E$. De même, $(M^3)_{BA} = 1$ correspond au seul chemin $B \to D \to E \to A$.
+:::
+
+[IMAGE_2]
+
+## Question 4 : Le graphe est-il fortement connexe ?
+
+::: methode
+Chercher un circuit qui passe par tous les sommets.
+:::
+
+::: etape Trouver un circuit
+Les arcs $A \to B$, $B \to C$, $C \to D$, $D \to E$ et $E \to A$ existent : $A \to B \to C \to D \to E \to A$ passe par les cinq sommets.
+:::
+
+::: etape Conclure
+En suivant ce circuit depuis un sommet $X$, on atteint n’importe quel autre sommet $Y$ : il existe toujours un chemin de $X$ vers $Y$.
+:::
+
+::: resultat
+Le graphe est fortement connexe.
+:::
+
+## Question 5 : Chemins de longueur 2 de $A$ vers $E$
+
+::: etape Lire le coefficient
+$(M^2)_{AE} = 0$ (ligne $A$, colonne $E$ de $M^2$).
+:::
+
+::: etape Expliquer
+Le seul arc qui arrive en $E$ est $D \to E$ ; un chemin $A \to X \to E$ imposerait $X = D$, or il n’y a pas d’arc $A \to D$. Il faut au moins trois arcs pour aller de $A$ à $E$.
+:::
+
+::: resultat
+Il n’y a aucun chemin de longueur $2$ de $A$ vers $E$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $M = \begin{pmatrix} 0 & 1 & 1 & 0 & 0 \\ 0 & 0 & 1 & 1 & 0 \\ 0 & 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 0 & 1 \\ 1 & 0 & 0 & 0 & 0 \end{pmatrix}$
+2. $M^2 = \begin{pmatrix} 0 & 0 & 1 & 2 & 0 \\ 0 & 0 & 0 & 1 & 1 \\ 0 & 0 & 0 & 0 & 1 \\ 1 & 0 & 0 & 0 & 0 \\ 0 & 1 & 1 & 0 & 0 \end{pmatrix}$ : $A \to B \to C$ ; $A \to B \to D$ et $A \to C \to D$.
+3. $M^3 = \begin{pmatrix} 0 & 0 & 0 & 1 & 2 \\ 1 & 0 & 0 & 0 & 1 \\ 1 & 0 & 0 & 0 & 0 \\ 0 & 1 & 1 & 0 & 0 \\ 0 & 0 & 1 & 2 & 0 \end{pmatrix}$ ; $A \to B \to D \to E$ et $A \to C \to D \to E$.
+4. Oui : le circuit $A \to B \to C \to D \to E \to A$ passe par tous les sommets.
+5. Aucun : $(M^2)_{AE} = 0$.
+
+===
+
+=== Problème - Puissances d'une matrice et suite de matrices
+Id: 1137
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+On considère la matrice $A = \begin{pmatrix} 2 & 1 \\ 0 & 2 \end{pmatrix}$ et la suite de matrices colonnes $(M_n)$ définie par $M_0 = \begin{pmatrix} 1 \\ 1 \end{pmatrix}$ et, pour tout entier naturel $n$, $M_{n+1} = A \times M_n$.
+
+1. Calculer $A^2$, $A^3$ et $A^4$.
+2. Conjecturer une formule pour $A^n$, $n \geq 1$.
+3. Démontrer par récurrence la formule conjecturée.
+4. Calculer $M_1$, $M_2$, $M_3$ et $M_4$.
+5. Exprimer $M_n$ en fonction de $n$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calcul de $A^2$, $A^3$, $A^4$
+
+::: etape Calculer $A^2$
+$$
+\begin{aligned}
+A^2 &= \begin{pmatrix} 2 & 1 \\ 0 & 2 \end{pmatrix}\begin{pmatrix} 2 & 1 \\ 0 & 2 \end{pmatrix} \\
+&= \begin{pmatrix} 2 \times 2 + 1 \times 0 & 2 \times 1 + 1 \times 2 \\ 0 \times 2 + 2 \times 0 & 0 \times 1 + 2 \times 2 \end{pmatrix} \\
+&= \begin{pmatrix} 4 & 4 \\ 0 & 4 \end{pmatrix}
+\end{aligned}
+$$
+:::
+
+::: etape Calculer $A^3 = A^2 \times A$
+$$
+\begin{aligned}
+A^3 &= \begin{pmatrix} 4 & 4 \\ 0 & 4 \end{pmatrix}\begin{pmatrix} 2 & 1 \\ 0 & 2 \end{pmatrix} \\
+&= \begin{pmatrix} 8 & 4 + 8 \\ 0 & 8 \end{pmatrix} \\
+&= \begin{pmatrix} 8 & 12 \\ 0 & 8 \end{pmatrix}
+\end{aligned}
+$$
+:::
+
+::: etape Calculer $A^4 = A^3 \times A$
+$$
+\begin{aligned}
+A^4 &= \begin{pmatrix} 8 & 12 \\ 0 & 8 \end{pmatrix}\begin{pmatrix} 2 & 1 \\ 0 & 2 \end{pmatrix} \\
+&= \begin{pmatrix} 16 & 8 + 24 \\ 0 & 16 \end{pmatrix} \\
+&= \begin{pmatrix} 16 & 32 \\ 0 & 16 \end{pmatrix}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$A^2 = \begin{pmatrix} 4 & 4 \\ 0 & 4 \end{pmatrix}$, $A^3 = \begin{pmatrix} 8 & 12 \\ 0 & 8 \end{pmatrix}$ et $A^4 = \begin{pmatrix} 16 & 32 \\ 0 & 16 \end{pmatrix}$.
+:::
+
+## Question 2 : Conjecture
+
+::: etape Coefficients diagonaux
+On lit $2^n$ sur la diagonale : $2, 4, 8, 16$.
+:::
+
+::: etape Coefficient en haut à droite
+| $n$ | $1$ | $2$ | $3$ | $4$ |
+|---|---|---|---|---|
+| Coefficient | $1$ | $4$ | $12$ | $32$ |
+| $n \times 2^{n-1}$ | $1 \times 1$ | $2 \times 2$ | $3 \times 4$ | $4 \times 8$ |
+:::
+
+::: resultat
+Conjecture : pour tout entier $n \geq 1$, $A^n = \begin{pmatrix} 2^n & n \times 2^{n-1} \\ 0 & 2^n \end{pmatrix}$.
+:::
+
+## Question 3 : Démonstration par récurrence
+
+::: etape Énoncer la propriété
+Pour $n \geq 1$, on note $\mathcal{P}(n)$ : « $A^n = \begin{pmatrix} 2^n & n \times 2^{n-1} \\ 0 & 2^n \end{pmatrix}$ ».
+:::
+
+::: etape Initialisation
+Pour $n = 1$ : $\begin{pmatrix} 2^1 & 1 \times 2^0 \\ 0 & 2^1 \end{pmatrix} = \begin{pmatrix} 2 & 1 \\ 0 & 2 \end{pmatrix} = A$. Donc $\mathcal{P}(1)$ est vraie.
+:::
+
+::: etape Hérédité
+Soit $k \geq 1$ tel que $\mathcal{P}(k)$ est vraie. Alors $A^{k+1} = A^k \times A = \begin{pmatrix} 2^k & k \times 2^{k-1} \\ 0 & 2^k \end{pmatrix}\begin{pmatrix} 2 & 1 \\ 0 & 2 \end{pmatrix}$, d’où
+
+$$
+\begin{aligned}
+(A^{k+1})_{11} &= 2^k \times 2 + k \times 2^{k-1} \times 0 = 2^{k+1} \\
+(A^{k+1})_{12} &= 2^k \times 1 + k \times 2^{k-1} \times 2 \\
+&=  2^k + k \times 2^k \\
+&= (k + 1) \times 2^k \\
+(A^{k+1})_{21} &= 0 \times 2 + 2^k \times 0 = 0 \\
+(A^{k+1})_{22} &= 0 \times 1 + 2^k \times 2 = 2^{k+1}
+\end{aligned}
+$$
+
+C’est la formule au rang $k + 1$ : $\mathcal{P}(k + 1)$ est vraie.
+:::
+
+::: resultat
+Par récurrence, pour tout entier $n \geq 1$, $A^n = \begin{pmatrix} 2^n & n \times 2^{n-1} \\ 0 & 2^n \end{pmatrix}$.
+:::
+
+## Question 4 : Calcul de $M_1$ à $M_4$
+
+::: etape Appliquer $M_{n+1} = AM_n$
+$$
+\begin{aligned}
+M_1 &= \begin{pmatrix} 2 & 1 \\ 0 & 2 \end{pmatrix}\begin{pmatrix} 1 \\ 1 \end{pmatrix} = \begin{pmatrix} 2 + 1 \\ 2 \end{pmatrix} = \begin{pmatrix} 3 \\ 2 \end{pmatrix} \\
+M_2 &= \begin{pmatrix} 2 & 1 \\ 0 & 2 \end{pmatrix}\begin{pmatrix} 3 \\ 2 \end{pmatrix} = \begin{pmatrix} 6 + 2 \\ 4 \end{pmatrix} = \begin{pmatrix} 8 \\ 4 \end{pmatrix} \\
+M_3 &= \begin{pmatrix} 2 & 1 \\ 0 & 2 \end{pmatrix}\begin{pmatrix} 8 \\ 4 \end{pmatrix} \\
+&=  \begin{pmatrix} 16 + 4 \\ 8 \end{pmatrix} \\
+&= \begin{pmatrix} 20 \\ 8 \end{pmatrix} \\
+M_4 &= \begin{pmatrix} 2 & 1 \\ 0 & 2 \end{pmatrix}\begin{pmatrix} 20 \\ 8 \end{pmatrix} \\
+&=  \begin{pmatrix} 40 + 8 \\ 16 \end{pmatrix} \\
+&= \begin{pmatrix} 48 \\ 16 \end{pmatrix}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$M_1 = \begin{pmatrix} 3 \\ 2 \end{pmatrix}$, $M_2 = \begin{pmatrix} 8 \\ 4 \end{pmatrix}$, $M_3 = \begin{pmatrix} 20 \\ 8 \end{pmatrix}$ et $M_4 = \begin{pmatrix} 48 \\ 16 \end{pmatrix}$.
+:::
+
+## Question 5 : Expression de $M_n$
+
+::: methode
+Comme $M_{n+1} = AM_n$, on a $M_n = A^nM_0$ pour tout entier $n$ ; on utilise la formule de $A^n$.
+:::
+
+::: etape Calculer le produit
+$$
+\begin{aligned}
+M_n = A^nM_0 &= \begin{pmatrix} 2^n & n \times 2^{n-1} \\ 0 & 2^n \end{pmatrix}\begin{pmatrix} 1 \\ 1 \end{pmatrix} \\
+&= \begin{pmatrix} 2^n + n \times 2^{n-1} \\ 2^n \end{pmatrix} \\
+&= \begin{pmatrix} (n + 2) \times 2^{n-1} \\ 2^n \end{pmatrix}
+\end{aligned}
+$$
+
+car $2^n = 2 \times 2^{n-1}$.
+:::
+
+::: point Vérification
+Pour $n = 4$ : $6 \times 2^3 = 48$ et $2^4 = 16$, on retrouve $M_4$.
+:::
+
+::: resultat
+Pour tout entier $n \geq 1$ : $M_n = \begin{pmatrix} (n + 2) \times 2^{n-1} \\ 2^n \end{pmatrix}$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $A^2 = \begin{pmatrix} 4 & 4 \\ 0 & 4 \end{pmatrix}$, $A^3 = \begin{pmatrix} 8 & 12 \\ 0 & 8 \end{pmatrix}$, $A^4 = \begin{pmatrix} 16 & 32 \\ 0 & 16 \end{pmatrix}$
+2. Conjecture : $A^n = \begin{pmatrix} 2^n & n \times 2^{n-1} \\ 0 & 2^n \end{pmatrix}$
+3. Initialisation pour $n = 1$, hérédité par le calcul de $A^k \times A$.
+4. $M_1 = \begin{pmatrix} 3 \\ 2 \end{pmatrix}$, $M_2 = \begin{pmatrix} 8 \\ 4 \end{pmatrix}$, $M_3 = \begin{pmatrix} 20 \\ 8 \end{pmatrix}$, $M_4 = \begin{pmatrix} 48 \\ 16 \end{pmatrix}$
+5. $M_n = \begin{pmatrix} (n + 2) \times 2^{n-1} \\ 2^n \end{pmatrix}$
+
+===
+
+=== Découverte - Graphe probabiliste à deux états
+Id: 5547
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Dans une région, on classe chaque journée en « beau temps » ($B$) ou « mauvais temps » ($M$). On modélise l'évolution du temps par le graphe probabiliste ci-dessous : par exemple, après une journée de beau temps, le lendemain est beau avec la probabilité $0{,}9$.
+
+[IMAGE_1]
+
+On note $\pi_n = \begin{pmatrix} b_n & m_n \end{pmatrix}$ la distribution du jour $n$, où $b_n$ et $m_n$ sont les probabilités qu'il fasse beau et mauvais ce jour-là. Le jour $0$ (un lundi), il fait beau.
+
+1. Écrire la matrice de transition $P$ (états rangés dans l'ordre $B$, $M$) et vérifier que la somme de chaque ligne vaut $1$.
+2. Donner $\pi_0$, puis calculer $\pi_1$ et $\pi_2$.
+3. Calculer $P^2$. Quelle probabilité le coefficient $(P^2)_{MB}$ représente-t-il ?
+4. Déterminer la distribution invariante $\pi = \begin{pmatrix} p & q \end{pmatrix}$.
+5. On admet que $\pi_n$ converge vers $\pi$. Interpréter ce résultat.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Matrice de transition
+
+::: methode
+Le coefficient $p_{ij}$ (ligne $i$, colonne $j$) est le poids de l'arc $i \to j$ : la ligne correspond à l'état du jour, la colonne à l'état du lendemain.
+:::
+
+::: etape Lire le graphe
+- Ligne $B$ : boucle $B \to B$ de poids $0{,}9$, arc $B \to M$ de poids $0{,}1$.
+- Ligne $M$ : arc $M \to B$ de poids $0{,}4$, boucle $M \to M$ de poids $0{,}6$.
+:::
+
+::: resultat
+$$P = \begin{pmatrix} 0{,}9 & 0{,}1 \\ 0{,}4 & 0{,}6 \end{pmatrix}$$
+Chaque ligne a pour somme $1$ : $0{,}9 + 0{,}1 = 1$ et $0{,}4 + 0{,}6 = 1$.
+:::
+
+## Question 2 : $\pi_0$, $\pi_1$ et $\pi_2$
+
+::: methode
+$\pi_{n+1} = \pi_nP$, avec la distribution en ligne, à gauche de $P$.
+:::
+
+::: etape Distribution initiale
+Il fait beau le jour $0$ : $\pi_0 = \begin{pmatrix} 1 & 0 \end{pmatrix}$, et $\pi_1 = \pi_0P$ est la première ligne de $P$ : $\pi_1 = \begin{pmatrix} 0{,}9 & 0{,}1 \end{pmatrix}$.
+:::
+
+::: etape Calcul de $\pi_2 = \pi_1P$
+$$
+\begin{aligned}
+b_2 &= 0{,}9 \times 0{,}9 + 0{,}1 \times 0{,}4 = 0{,}85 \\
+m_2 &= 0{,}9 \times 0{,}1 + 0{,}1 \times 0{,}6 = 0{,}15
+\end{aligned}
+$$
+:::
+
+::: resultat
+$\pi_0 = \begin{pmatrix} 1 & 0 \end{pmatrix}$, $\pi_1 = \begin{pmatrix} 0{,}9 & 0{,}1 \end{pmatrix}$ et $\pi_2 = \begin{pmatrix} 0{,}85 & 0{,}15 \end{pmatrix}$ : mercredi, il fait beau avec la probabilité $0{,}85$.
+:::
+
+## Question 3 : $P^2$ et interprétation
+
+::: etape Calcul de $P^2 = P \times P$
+$$
+\begin{aligned}
+(P^2)_{BB} &= 0{,}9 \times 0{,}9 + 0{,}1 \times 0{,}4 = 0{,}85 \\
+(P^2)_{BM} &= 0{,}9 \times 0{,}1 + 0{,}1 \times 0{,}6 = 0{,}15 \\
+(P^2)_{MB} &= 0{,}4 \times 0{,}9 + 0{,}6 \times 0{,}4 = 0{,}6 \\
+(P^2)_{MM} &= 0{,}4 \times 0{,}1 + 0{,}6 \times 0{,}6 = 0{,}4
+\end{aligned}
+$$
+:::
+
+::: etape Interprétation
+$(P^2)_{MB}$ est la probabilité de passer de l'état $M$ à l'état $B$ en deux transitions : s'il fait mauvais un jour, il fait beau deux jours plus tard avec la probabilité $0{,}6$.
+:::
+
+::: point Vérification sur le graphe
+Deux chemins de $M$ à $B$ en deux étapes : $M \to B \to B$, de probabilité $0{,}4 \times 0{,}9 = 0{,}36$, et $M \to M \to B$, de probabilité $0{,}6 \times 0{,}4 = 0{,}24$. Total : $0{,}36 + 0{,}24 = 0{,}6$.
+:::
+
+::: resultat
+$$P^2 = \begin{pmatrix} 0{,}85 & 0{,}15 \\ 0{,}6 & 0{,}4 \end{pmatrix}$$
+$(P^2)_{MB} = 0{,}6$ : probabilité d'un beau temps deux jours après un jour de mauvais temps.
+:::
+
+## Question 4 : Distribution invariante
+
+::: methode
+Résoudre $\pi P = \pi$ avec la condition $p + q = 1$.
+:::
+
+::: etape Première équation de $\pi P = \pi$
+$$0{,}9p + 0{,}4q = p$$
+soit $0{,}4q = 0{,}1p$, c'est-à-dire $p = 4q$. La seconde équation, $0{,}1p + 0{,}6q = q$, donne la même condition.
+:::
+
+::: etape Condition $p + q = 1$
+$4q + q = 1$, donc $q = 0{,}2$ et $p = 0{,}8$.
+:::
+
+::: point Vérification
+Coefficients de $\begin{pmatrix} 0{,}8 & 0{,}2 \end{pmatrix}P$ :
+$$
+\begin{aligned}
+0{,}8 \times 0{,}9 + 0{,}2 \times 0{,}4 &= 0{,}8 \\
+0{,}8 \times 0{,}1 + 0{,}2 \times 0{,}6 &= 0{,}2
+\end{aligned}
+$$
+On retrouve bien $\begin{pmatrix} 0{,}8 & 0{,}2 \end{pmatrix}$.
+:::
+
+::: resultat
+La distribution invariante est $\pi = \begin{pmatrix} 0{,}8 & 0{,}2 \end{pmatrix}$.
+:::
+
+::: attention Erreur fréquente
+Oublier la condition $p + q = 1$ : les deux équations de $\pi P = \pi$ sont équivalentes et ne suffisent pas à trouver $p$ et $q$.
+:::
+
+## Question 5 : Interprétation
+
+::: resultat
+À long terme, la probabilité qu'il fasse beau un jour donné se rapproche de $0{,}8$ : dans ce modèle, environ $80\,\%$ des jours sont beaux, quel que soit le temps du jour $0$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $P = \begin{pmatrix} 0{,}9 & 0{,}1 \\ 0{,}4 & 0{,}6 \end{pmatrix}$.
+2. $\pi_0 = \begin{pmatrix} 1 & 0 \end{pmatrix}$, $\pi_1 = \begin{pmatrix} 0{,}9 & 0{,}1 \end{pmatrix}$, $\pi_2 = \begin{pmatrix} 0{,}85 & 0{,}15 \end{pmatrix}$.
+3. $P^2 = \begin{pmatrix} 0{,}85 & 0{,}15 \\ 0{,}6 & 0{,}4 \end{pmatrix}$ ; $(P^2)_{MB} = 0{,}6$ : probabilité de beau temps deux jours après un jour de mauvais temps.
+4. $\pi = \begin{pmatrix} 0{,}8 & 0{,}2 \end{pmatrix}$.
+5. À long terme, environ $80\,\%$ de jours de beau temps.
+
+===
+
+=== Entraînement - Graphe non orienté : degrés, connexité et chaînes
+Id: 5548
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Cinq villages $A$, $B$, $C$, $D$, $E$ sont reliés par des routes, représentées par les arêtes du graphe non orienté ci-dessous.
+
+[IMAGE_1]
+
+On note $M$ la matrice d'adjacence de ce graphe (question 3) et on admet que :
+$$M^2 = \begin{pmatrix} 2 & 1 & 1 & 2 & 0 \\ 1 & 3 & 2 & 1 & 1 \\ 1 & 2 & 3 & 1 & 1 \\ 2 & 1 & 1 & 3 & 0 \\ 0 & 1 & 1 & 0 & 1 \end{pmatrix}$$
+
+1. Donner l'ordre du graphe, le degré de chaque sommet et le nombre d'arêtes. Quelle relation relie la somme des degrés et le nombre d'arêtes ?
+2. Le graphe est-il complet ? Est-il connexe ?
+3. Écrire la matrice d'adjacence $M$ du graphe (sommets rangés dans l'ordre $A$, $B$, $C$, $D$, $E$). Pourquoi est-elle symétrique ?
+4. À l'aide de la matrice $M^2$ donnée ci-dessus :
+   - a) Combien y a-t-il de chaînes de longueur $2$ entre $A$ et $D$ ? Les citer.
+   - b) Que représentent les coefficients diagonaux de $M^2$ ?
+5. Calculer le coefficient de $M^3$ situé ligne $A$, colonne $E$, puis citer les chaînes de longueur $3$ entre $A$ et $E$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Ordre, degrés, nombre d'arêtes
+
+::: methode
+L'ordre est le nombre de sommets ; le degré d'un sommet est le nombre d'arêtes dont il est une extrémité.
+:::
+
+::: etape Lecture du graphe
+- Ordre : $5$ sommets.
+- Degrés : $A$ : $2$ ($AB$, $AC$) ; $B$ : $3$ ($BA$, $BC$, $BD$) ; $C$ : $3$ ($CA$, $CB$, $CD$) ; $D$ : $3$ ($DB$, $DC$, $DE$) ; $E$ : $1$ ($ED$).
+- Arêtes : $AB$, $AC$, $BC$, $BD$, $CD$, $DE$, soit $6$ arêtes.
+:::
+
+::: etape Somme des degrés
+$2 + 3 + 3 + 3 + 1 = 12 = 2 \times 6$ : chaque arête est comptée deux fois, une fois par extrémité.
+:::
+
+::: resultat
+Ordre $5$ ; degrés $2$, $3$, $3$, $3$, $1$ ; $6$ arêtes. La somme des degrés vaut le double du nombre d'arêtes.
+:::
+
+## Question 2 : Complet ? Connexe ?
+
+::: etape Complet
+Un graphe complet d'ordre $5$ a tous ses sommets adjacents deux à deux. Ici, $A$ et $D$ ne sont pas adjacents (de même $A$ et $E$…) : le graphe n'est pas complet. Il lui faudrait $\dfrac{5 \times 4}{2} = 10$ arêtes, il n'en a que $6$.
+:::
+
+::: etape Connexe
+La chaîne $E - D - B - A - C$ passe par les cinq sommets : deux sommets quelconques sont reliés par une partie de cette chaîne.
+:::
+
+::: resultat
+Le graphe n'est pas complet, mais il est connexe.
+:::
+
+## Question 3 : Matrice d'adjacence
+
+::: methode
+$m_{ij} = 1$ si les sommets $i$ et $j$ sont adjacents, $0$ sinon (pas de boucle : la diagonale est nulle).
+:::
+
+::: resultat
+$$M = \begin{pmatrix} 0 & 1 & 1 & 0 & 0 \\ 1 & 0 & 1 & 1 & 0 \\ 1 & 1 & 0 & 1 & 0 \\ 0 & 1 & 1 & 0 & 1 \\ 0 & 0 & 0 & 1 & 0 \end{pmatrix}$$
+Elle est symétrique ($m_{ij} = m_{ji}$) car le graphe n'est pas orienté : si $i$ est relié à $j$, alors $j$ est relié à $i$.
+:::
+
+::: point Contrôle
+La somme des coefficients de chaque ligne est le degré du sommet : $2$, $3$, $3$, $3$, $1$.
+:::
+
+## Question 4 : Lecture de $M^2$
+
+::: methode
+Le coefficient $(M^n)_{ij}$ est le nombre de chaînes de longueur $n$ entre les sommets $i$ et $j$.
+:::
+
+::: etape a) Chaînes de longueur $2$ entre $A$ et $D$
+$(M^2)_{AD} = 2$ (ligne $A$, colonne $D$). Une telle chaîne passe par un voisin commun de $A$ et de $D$ : les voisins de $A$ sont $B$ et $C$, et tous deux sont voisins de $D$. Ce sont $A - B - D$ et $A - C - D$.
+:::
+
+::: etape b) Coefficients diagonaux
+$(M^2)_{ii}$ compte les chaînes de longueur $2$ qui partent de $i$ et y reviennent : ce sont les allers-retours $i - j - i$ vers chaque voisin $j$. Il y en a autant que de voisins : c'est le **degré** de $i$ ($2$, $3$, $3$, $3$, $1$).
+:::
+
+::: resultat
+a) $2$ chaînes : $A - B - D$ et $A - C - D$. b) Les coefficients diagonaux de $M^2$ sont les degrés des sommets.
+:::
+
+## Question 5 : Chaînes de longueur $3$ entre $A$ et $E$
+
+::: methode
+$(M^3)_{AE}$ s'obtient en multipliant la ligne $A$ de $M^2$ par la colonne $E$ de $M$, puisque $M^3 = M^2 \times M$.
+:::
+
+::: etape Calcul du coefficient
+La ligne $A$ de $M^2$ est $\begin{pmatrix} 2 & 1 & 1 & 2 & 0 \end{pmatrix}$ et la colonne $E$ de $M$ contient $0, 0, 0, 1, 0$ :
+$$
+\begin{aligned}
+(M^3)_{AE} &= 2 \times 0 + 1 \times 0 + 1 \times 0 \\
+&\quad + 2 \times 1 + 0 \times 0 \\
+&= 2
+\end{aligned}
+$$
+:::
+
+::: etape Citer les chaînes
+Le seul voisin de $E$ est $D$ : une chaîne de longueur $3$ de $A$ à $E$ est une chaîne de longueur $2$ de $A$ à $D$, prolongée par l'arête $D - E$. D'après la question 4 :
+:::
+
+[IMAGE_2]
+
+::: resultat
+$(M^3)_{AE} = 2$ : les chaînes de longueur $3$ entre $A$ et $E$ sont $A - B - D - E$ et $A - C - D - E$.
+:::
+
+::: attention Erreur fréquente
+Confondre chaîne de longueur $3$ (trois arêtes) et chaîne passant par $3$ sommets : $A - B - D - E$ a quatre sommets et trois arêtes.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Ordre $5$ ; degrés : $A$ : $2$, $B$ : $3$, $C$ : $3$, $D$ : $3$, $E$ : $1$ ; $6$ arêtes ; $2 + 3 + 3 + 3 + 1 = 12 = 2 \times 6$.
+2. Pas complet ($A$ et $D$ ne sont pas adjacents) ; connexe (chaîne $E - D - B - A - C$).
+3. $M = \begin{pmatrix} 0 & 1 & 1 & 0 & 0 \\ 1 & 0 & 1 & 1 & 0 \\ 1 & 1 & 0 & 1 & 0 \\ 0 & 1 & 1 & 0 & 1 \\ 0 & 0 & 0 & 1 & 0 \end{pmatrix}$, symétrique car le graphe n'est pas orienté.
+4. a) $2$ chaînes : $A - B - D$ et $A - C - D$. b) Les degrés des sommets.
+5. $(M^3)_{AE} = 2$ : $A - B - D - E$ et $A - C - D - E$.
+
+===
+
+=== Problème - Suite de matrices colonnes et état stable
+Id: 5549
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Une association a deux antennes, à Lyon et à Lille. On note $a_n$ et $b_n$ les nombres d'adhérents, **en centaines**, des antennes de Lyon et de Lille l'année $2025 + n$. D'une année à l'autre :
+
+- dans chaque antenne, $60\,\%$ des adhérents restent, $20\,\%$ passent à l'autre antenne et $20\,\%$ quittent l'association ;
+- l'antenne de Lyon accueille $800$ nouveaux adhérents et celle de Lille $200$.
+
+En 2025, chaque antenne compte $1\,000$ adhérents : $a_0 = b_0 = 10$. On pose $U_n = \begin{pmatrix} a_n \\ b_n \end{pmatrix}$.
+
+1. Justifier que $a_{n+1} = 0{,}6a_n + 0{,}2b_n + 8$ et $b_{n+1} = 0{,}2a_n + 0{,}6b_n + 2$. En déduire deux matrices $A$ et $C$ telles que $U_{n+1} = AU_n + C$, puis calculer $U_1$.
+2. Déterminer la matrice colonne $L$ telle que $L = AL + C$.
+3. On pose $V_n = U_n - L$. Montrer que $V_{n+1} = AV_n$, puis que $V_n = A^nV_0$ pour tout entier naturel $n$.
+4. On considère $P = \begin{pmatrix} 1 & 1 \\ 1 & -1 \end{pmatrix}$ et $D = \begin{pmatrix} 0{,}8 & 0 \\ 0 & 0{,}4 \end{pmatrix}$.
+   - a) Calculer $P^2$. En déduire que $P$ est inversible et que $P^{-1} = \frac{1}{2}P$.
+   - b) Vérifier que $A = PDP^{-1}$.
+   - c) Démontrer par récurrence que $A^n = PD^nP^{-1}$ pour tout entier naturel $n$.
+5. En déduire que, pour tout entier naturel $n$, $a_n = 30 - 15 \times 0{,}8^n - 5 \times 0{,}4^n$ et $b_n = 20 - 15 \times 0{,}8^n + 5 \times 0{,}4^n$.
+6. Déterminer les limites de $(a_n)$ et de $(b_n)$, puis interpréter.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Écriture matricielle
+
+::: methode
+Compter, pour chaque antenne, les adhérents qui restent, ceux qui arrivent de l'autre antenne et les nouveaux.
+:::
+
+::: etape Les deux relations
+L'année $2025 + n + 1$, l'antenne de Lyon compte les $60\,\%$ de ses adhérents qui restent ($0{,}6a_n$), les $20\,\%$ de ceux de Lille qui la rejoignent ($0{,}2b_n$) et $8$ centaines de nouveaux : $a_{n+1} = 0{,}6a_n + 0{,}2b_n + 8$. De même, $b_{n+1} = 0{,}2a_n + 0{,}6b_n + 2$.
+:::
+
+::: etape Forme matricielle
+$$\begin{pmatrix} a_{n+1} \\ b_{n+1} \end{pmatrix} = \begin{pmatrix} 0{,}6 & 0{,}2 \\ 0{,}2 & 0{,}6 \end{pmatrix}\begin{pmatrix} a_n \\ b_n \end{pmatrix} + \begin{pmatrix} 8 \\ 2 \end{pmatrix}$$
+:::
+
+::: etape Calcul de $U_1$
+$$
+\begin{aligned}
+a_1 &= 0{,}6 \times 10 + 0{,}2 \times 10 + 8 = 16 \\
+b_1 &= 0{,}2 \times 10 + 0{,}6 \times 10 + 2 = 10
+\end{aligned}
+$$
+:::
+
+::: resultat
+$A = \begin{pmatrix} 0{,}6 & 0{,}2 \\ 0{,}2 & 0{,}6 \end{pmatrix}$, $C = \begin{pmatrix} 8 \\ 2 \end{pmatrix}$ et $U_1 = \begin{pmatrix} 16 \\ 10 \end{pmatrix}$ : en 2026, $1\,600$ adhérents à Lyon et $1\,000$ à Lille.
+:::
+
+## Question 2 : La matrice $L$
+
+::: methode
+L'égalité $L = AL + C$ s'écrit $L - AL = C$, c'est-à-dire $(I_2 - A)L = C$ : c'est un système de deux équations à deux inconnues.
+:::
+
+::: etape Le système
+Avec $L = \begin{pmatrix} \ell_1 \\ \ell_2 \end{pmatrix}$ et $I_2 - A = \begin{pmatrix} 0{,}4 & -0{,}2 \\ -0{,}2 & 0{,}4 \end{pmatrix}$ :
+$$\begin{cases} 0{,}4\ell_1 - 0{,}2\ell_2 = 8 \\ -0{,}2\ell_1 + 0{,}4\ell_2 = 2 \end{cases}$$
+En multipliant chaque équation par $5$, ce système équivaut à
+$$\begin{cases} 2\ell_1 - \ell_2 = 40 \\ -\ell_1 + 2\ell_2 = 10 \end{cases}$$
+:::
+
+::: etape Résolution
+La première équation donne $\ell_2 = 2\ell_1 - 40$. Dans la seconde : $-\ell_1 + 4\ell_1 - 80 = 10$, donc $3\ell_1 = 90$, $\ell_1 = 30$ et $\ell_2 = 20$.
+:::
+
+::: point Vérification
+$0{,}6 \times 30 + 0{,}2 \times 20 + 8 = 30$ et $0{,}2 \times 30 + 0{,}6 \times 20 + 2 = 20$.
+:::
+
+::: resultat
+$$L = \begin{pmatrix} 30 \\ 20 \end{pmatrix}$$
+:::
+
+## Question 3 : La suite $(V_n)$
+
+::: etape Relation de récurrence
+$$
+\begin{aligned}
+V_{n+1} &= U_{n+1} - L \\
+&= AU_n + C - (AL + C) \\
+&= AU_n - AL \\
+&= A(U_n - L) = AV_n
+\end{aligned}
+$$
+:::
+
+::: etape Expression de $V_n$
+$(V_n)$ vérifie $V_{n+1} = AV_n$ : d'après le cours (récurrence immédiate), $V_n = A^nV_0$ pour tout entier naturel $n$.
+:::
+
+::: resultat
+$V_{n+1} = AV_n$ et $V_n = A^nV_0$, avec $V_0 = U_0 - L = \begin{pmatrix} -20 \\ -10 \end{pmatrix}$.
+:::
+
+## Question 4 : Puissances de $A$
+
+::: etape a) Calcul de $P^2$
+Coefficient par coefficient :
+$$
+\begin{aligned}
+(P^2)_{11} &= 1 \times 1 + 1 \times 1 = 2 \\
+(P^2)_{12} &= 1 \times 1 + 1 \times (-1) = 0 \\
+(P^2)_{21} &= 1 \times 1 + (-1) \times 1 = 0 \\
+(P^2)_{22} &= 1 \times 1 + (-1) \times (-1) = 2
+\end{aligned}
+$$
+donc $P^2 = \begin{pmatrix} 2 & 0 \\ 0 & 2 \end{pmatrix} = 2I_2$.
+Donc $P \times \left(\frac{1}{2}P\right) = I_2$ : $P$ est inversible et $P^{-1} = \frac{1}{2}P = \begin{pmatrix} 0{,}5 & 0{,}5 \\ 0{,}5 & -0{,}5 \end{pmatrix}$.
+:::
+
+::: etape b) Vérifier que $A = PDP^{-1}$
+$$PD = \begin{pmatrix} 0{,}8 & 0{,}4 \\ 0{,}8 & -0{,}4 \end{pmatrix}$$
+puis
+$$
+\begin{aligned}
+(PD)P^{-1} &= \begin{pmatrix} 0{,}4 + 0{,}2 & 0{,}4 - 0{,}2 \\ 0{,}4 - 0{,}2 & 0{,}4 + 0{,}2 \end{pmatrix} \\
+&= \begin{pmatrix} 0{,}6 & 0{,}2 \\ 0{,}2 & 0{,}6 \end{pmatrix} = A
+\end{aligned}
+$$
+:::
+
+::: etape c) Récurrence
+- **Initialisation** : pour $n = 0$, $PD^0P^{-1} = PP^{-1} = I_2$, qui est bien $A^0$.
+- **Hérédité** : si $A^n = PD^nP^{-1}$ pour un entier $n$, alors
+$$
+\begin{aligned}
+A^{n+1} &= A^n \times A \\
+&= PD^nP^{-1} \times PDP^{-1} \\
+&= PD^n\left(P^{-1}P\right)DP^{-1} \\
+&= PD^{n+1}P^{-1}
+\end{aligned}
+$$
+car $P^{-1}P = I_2$.
+:::
+
+::: resultat
+$P^2 = 2I_2$, $P^{-1} = \frac{1}{2}P$, $A = PDP^{-1}$ et, pour tout entier naturel $n$, $A^n = PD^nP^{-1}$.
+:::
+
+::: attention Erreur fréquente
+Écrire $\left(PDP^{-1}\right)^n = P^nD^n\left(P^{-1}\right)^n$ : le produit de matrices n'est pas commutatif ; ce sont les produits $P^{-1}P$ « au milieu » qui se simplifient.
+:::
+
+## Question 5 : Expressions de $a_n$ et $b_n$
+
+::: etape Calcul de $A^n$
+$D$ est diagonale : $D^n = \begin{pmatrix} 0{,}8^n & 0 \\ 0 & 0{,}4^n \end{pmatrix}$. Alors $PD^n = \begin{pmatrix} 0{,}8^n & 0{,}4^n \\ 0{,}8^n & -0{,}4^n \end{pmatrix}$ et, avec $P^{-1} = \frac{1}{2}P$ :
+$$A^n = \frac{1}{2}\begin{pmatrix} 0{,}8^n + 0{,}4^n & 0{,}8^n - 0{,}4^n \\ 0{,}8^n - 0{,}4^n & 0{,}8^n + 0{,}4^n \end{pmatrix}$$
+:::
+
+::: etape Calcul de $V_n = A^nV_0$
+On multiplie $A^n$ par $V_0 = \begin{pmatrix} -20 \\ -10 \end{pmatrix}$. Première coordonnée :
+$$
+\begin{aligned}
+&\frac{1}{2}\left[-20\left(0{,}8^n + 0{,}4^n\right) - 10\left(0{,}8^n - 0{,}4^n\right)\right] \\
+&= \frac{1}{2}\left(-30 \times 0{,}8^n - 10 \times 0{,}4^n\right) \\
+&= -15 \times 0{,}8^n - 5 \times 0{,}4^n
+\end{aligned}
+$$
+Seconde coordonnée :
+$$
+\begin{aligned}
+&\frac{1}{2}\left[-20\left(0{,}8^n - 0{,}4^n\right) - 10\left(0{,}8^n + 0{,}4^n\right)\right] \\
+&= \frac{1}{2}\left(-30 \times 0{,}8^n + 10 \times 0{,}4^n\right) \\
+&= -15 \times 0{,}8^n + 5 \times 0{,}4^n
+\end{aligned}
+$$
+:::
+
+::: etape Retour à $U_n = V_n + L$
+On ajoute $30$ et $20$ aux coordonnées de $V_n$.
+:::
+
+::: point Vérification
+Pour $n = 1$ : $30 - 12 - 2 = 16$ et $20 - 12 + 2 = 10$ : on retrouve $U_1$.
+:::
+
+::: resultat
+$a_n = 30 - 15 \times 0{,}8^n - 5 \times 0{,}4^n$ et $b_n = 20 - 15 \times 0{,}8^n + 5 \times 0{,}4^n$.
+:::
+
+## Question 6 : Limites et interprétation
+
+::: etape Limites
+$0 \lt 0{,}8 \lt 1$ et $0 \lt 0{,}4 \lt 1$, donc $0{,}8^n$ et $0{,}4^n$ tendent vers $0$. Par somme, $a_n$ tend vers $30$ et $b_n$ vers $20$.
+:::
+
+[IMAGE_1]
+
+::: resultat
+$\lim a_n = 30$ et $\lim b_n = 20$ : à long terme, l'antenne de Lyon compte environ $3\,000$ adhérents et celle de Lille environ $2\,000$. La matrice $L$ est l'**état stable** du système : si $U_n = L$, alors $U_{n+1} = AL + C = L$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $A = \begin{pmatrix} 0{,}6 & 0{,}2 \\ 0{,}2 & 0{,}6 \end{pmatrix}$, $C = \begin{pmatrix} 8 \\ 2 \end{pmatrix}$, $U_1 = \begin{pmatrix} 16 \\ 10 \end{pmatrix}$.
+2. $L = \begin{pmatrix} 30 \\ 20 \end{pmatrix}$.
+3. $V_{n+1} = AU_n + C - (AL + C) = AV_n$, donc $V_n = A^nV_0$.
+4. a) $P^2 = 2I_2$, d'où $P^{-1} = \frac{1}{2}P$. b) Calcul direct. c) $A^{n+1} = PD^nP^{-1}PDP^{-1} = PD^{n+1}P^{-1}$.
+5. $a_n = 30 - 15 \times 0{,}8^n - 5 \times 0{,}4^n$, $b_n = 20 - 15 \times 0{,}8^n + 5 \times 0{,}4^n$.
+6. $a_n \to 30$, $b_n \to 20$ : environ $3\,000$ et $2\,000$ adhérents à long terme.
+
+===

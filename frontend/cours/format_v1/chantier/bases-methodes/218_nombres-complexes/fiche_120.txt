@@ -1,0 +1,234 @@
+Titre: Résumé : Nombres Complexes
+
+<!-- optitab:1 -->
+::: objectifs
+Maîtriser les nombres complexes, leurs calculs et leurs applications géométriques. Ce résumé couvre les notions fondamentales et leurs applications.
+:::
+
+## I. Notations et définitions fondamentales
+
+::: definition Nombre complexe
+$z = x + y\,\mathrm{i}$ où $x, y \in \mathbb{R}$ et $\mathrm{i}^2 = -1$
+
+*Notation :* $\displaystyle z \in \mathbb{C}$
+:::
+
+::: definition Partie réelle
+$$\Re(z) = x$$
+
+**Partie imaginaire :** $\displaystyle Im(z) = y$
+:::
+
+::: remarque Égalité
+$$z_1 = z_2 \Leftrightarrow \begin{cases} \Re(z_1) = \Re(z_2) \\ Im(z_1) = Im(z_2) \end{cases}$$
+:::
+
+::: retenir
+Un complexe est réel si $y = 0$, imaginaire pur si $x = 0$.
+:::
+
+## II. Formes d'écriture
+
+| Forme | Écriture |
+|---|---|
+| **Algébrique** | $\displaystyle z = x + y\,\mathrm{i}$ |
+| *Utilisation* | Addition, soustraction, égalité |
+| **Trigonométrique** | $\displaystyle z = |z|(\cos\theta + \mathrm{i}\sin\theta)$ |
+| *Utilisation* | Produits, quotients, puissances |
+| **Exponentielle** | $\displaystyle z = |z| \cdot e^{\mathrm{i}\theta}$ |
+| *Utilisation* | Calculs avec puissances, racines |
+
+## III. Opérations sur les nombres complexes
+
+| Opération | Formule |
+|---|---|
+| **Addition** | $\displaystyle z_1 + z_2 = (x_1 + x_2) + (y_1 + y_2)\,\mathrm{i}$ |
+| *Exemple* | $\displaystyle (3+2\mathrm{i}) + (1-4\mathrm{i}) = 4 - 2\mathrm{i}$ |
+| **Soustraction** | $\displaystyle z_1 - z_2 = (x_1 - x_2) + (y_1 - y_2)\,\mathrm{i}$ |
+| *Exemple* | $\displaystyle (3+2\mathrm{i}) - (1-4\mathrm{i}) = 2 + 6\mathrm{i}$ |
+| **Multiplication** | $\displaystyle z_1 \cdot z_2 = (x_1x_2 - y_1y_2) + (x_1y_2 + x_2y_1)\,\mathrm{i}$ |
+| *Méthode* | Développer en utilisant $\displaystyle \mathrm{i}^2 = -1$ |
+| **Division** | $\displaystyle \dfrac{z_1}{z_2} = \dfrac{z_1 \cdot \overline{z_2}}{|z_2|^2}$ |
+| *Méthode* | Multiplier par le conjugué du dénominateur |
+
+## IV. Conjugué et module
+
+::: definition Conjugué
+Si $z = x + y\,\mathrm{i}$, alors $\overline{z} = x - y\,\mathrm{i}$
+
+*Interprétation :* Symétrie par rapport à l'axe réel
+:::
+
+| Propriété | Formule |
+|---|---|
+| Double conjugué | $\displaystyle \overline{\overline{z}} = z$ |
+| Conjugué d'une somme | $\displaystyle \overline{z_1 + z_2} = \overline{z_1} + \overline{z_2}$ |
+| Conjugué d'un produit | $\displaystyle \overline{z_1 \cdot z_2} = \overline{z_1} \cdot \overline{z_2}$ |
+| Nombre réel | $\displaystyle z$ réel $\displaystyle \Leftrightarrow \overline{z} = z$ |
+
+::: definition Module
+$$|z| = \sqrt{x^2 + y^2}$$
+
+*Interprétation :* Distance à l'origine dans le plan complexe
+:::
+
+| Propriété | Formule |
+|---|---|
+| Relation fondamentale | $\displaystyle |z|^2 = z \cdot \overline{z}$ |
+| Module d'un produit | $\displaystyle |z_1 \cdot z_2| = |z_1| \cdot |z_2|$ |
+| Inégalité triangulaire | $\displaystyle |z_1 + z_2| \leq |z_1| + |z_2|$ |
+| Module nul | $\displaystyle |z| = 0 \Leftrightarrow z = 0$ |
+
+::: remarque Inverse
+$\dfrac{1}{z} = \dfrac{\overline{z}}{|z|^2} = \dfrac{x - y\,\mathrm{i}}{x^2 + y^2}$ (si $z \neq 0$)
+:::
+
+## V. Argument et calcul par quadrants
+
+::: definition
+Pour $z \neq 0$, l'argument principal vérifie $\arg(z) \in ]-\pi, \pi]$
+:::
+
+| Quadrant | Argument |
+|---|---|
+| **I** ($\displaystyle x > 0$, $\displaystyle y > 0$) | $\displaystyle \arg(z) = \arctan\left(\dfrac{y}{x}\right) \in \left]0, \dfrac{\pi}{2}\right[$ |
+| **II** ($\displaystyle x < 0$, $\displaystyle y \geq 0$) | $\displaystyle \arg(z) = \arctan\left(\dfrac{y}{x}\right) + \pi \in \left]\dfrac{\pi}{2}, \pi\right]$ |
+| **III** ($\displaystyle x < 0$, $\displaystyle y < 0$) | $\displaystyle \arg(z) = \arctan\left(\dfrac{y}{x}\right) - \pi \in \left]-\pi, -\dfrac{\pi}{2}\right[$ |
+| **IV** ($\displaystyle x > 0$, $\displaystyle y < 0$) | $\displaystyle \arg(z) = \arctan\left(\dfrac{y}{x}\right) \in \left]-\dfrac{\pi}{2}, 0\right[$ |
+
+| Cas particulier | Argument |
+|---|---|
+| Axe réel positif ($\displaystyle x > 0$, $\displaystyle y = 0$) | $\displaystyle \arg(z) = 0$ |
+| Axe imaginaire positif ($\displaystyle x = 0$, $\displaystyle y > 0$) | $\displaystyle \arg(z) = \dfrac{\pi}{2}$ |
+| Axe réel négatif ($\displaystyle x < 0$, $\displaystyle y = 0$) | $\displaystyle \arg(z) = \pi$ |
+| Axe imaginaire négatif ($\displaystyle x = 0$, $\displaystyle y < 0$) | $\displaystyle \arg(z) = -\dfrac{\pi}{2}$ |
+
+::: methode
+Toujours vérifier les signes de $x$ et $y$ pour identifier le quadrant avant de calculer l'argument.
+:::
+
+## VI. Formule de Moivre et puissances
+
+::: definition Formule de Moivre
+Si $\displaystyle z = |z|(\cos\theta + \mathrm{i}\sin\theta)$, alors :
+
+$$z^n = |z|^n(\cos(n\theta) + \mathrm{i}\sin(n\theta))$$
+:::
+
+::: remarque Formule d'Euler
+$$e^{\mathrm{i}\theta} = \cos\theta + \mathrm{i}\sin\theta$$
+
+Donc $\displaystyle z = |z| \cdot e^{\mathrm{i}\theta}$
+:::
+
+| Propriété | Formule |
+|---|---|
+| Argument d'un produit | $\displaystyle \arg(z_1 \cdot z_2) \equiv \arg(z_1) + \arg(z_2) \pmod{2\pi}$ |
+| Argument d'un quotient | $\displaystyle \arg\left(\dfrac{z_1}{z_2}\right) \equiv \arg(z_1) - \arg(z_2) \pmod{2\pi}$ |
+| Argument d'une puissance | $\displaystyle \arg(z^n) \equiv n \cdot \arg(z) \pmod{2\pi}$ |
+| Argument du conjugué | $\displaystyle \arg(\overline{z}) \equiv -\arg(z) \pmod{2\pi}$ |
+
+## VII. Équations complexes
+
+::: definition Équation du second degré
+$$az^2 + bz + c = 0$$
+:::
+
+| Étape | Méthode |
+|---|---|
+| **1. Discriminant** | $\displaystyle \Delta = b^2 - 4ac$ |
+| **2. Si $\displaystyle \Delta \geq 0$** | Solutions réelles classiques |
+| **3. Si $\displaystyle \Delta < 0$** | $\displaystyle \sqrt{\Delta} = \mathrm{i}\sqrt{|\Delta|}$ |
+| **Solutions** | $\displaystyle z = \dfrac{-b \pm \sqrt{\Delta}}{2a}$ |
+
+::: remarque Racines n-ièmes de l'unité
+$$z^n = 1$$
+
+**Solutions :** $z_k = e^{\mathrm{i}\dfrac{2k\pi}{n}}$ pour $k = 0, 1, \ldots, n-1$
+:::
+
+::: remarque Racines n-ièmes
+$z^n = a$ ($a \neq 0$)
+
+**Méthode :** Écrire $a = |a| \cdot e^{\mathrm{i}\theta}$, puis $z_0 = \sqrt[n]{|a|} \cdot e^{\mathrm{i}\dfrac{\theta}{n}}$
+
+**Solutions :** $z_k = z_0 \cdot e^{\mathrm{i}\dfrac{2k\pi}{n}}$ pour $k = 0, 1, \ldots, n-1$
+:::
+
+::: propriete
+Les solutions complexes d'une équation à coefficients réels sont conjuguées deux à deux.
+:::
+
+## VIII. Applications géométriques
+
+| Propriété géométrique | Traduction complexe |
+|---|---|
+| Distance entre deux points $A$ et $B$ | $\displaystyle AB = |z_B - z_A|$ |
+| Milieu $I$ du segment $[AB]$ | $\displaystyle z_I = \dfrac{z_A + z_B}{2}$ |
+| Barycentre $G$ de $(A, \alpha)$ et $(B, \beta)$ | $\displaystyle z_G = \dfrac{\alpha z_A + \beta z_B}{\alpha + \beta}$ |
+| Affixe d'un vecteur $\displaystyle \overrightarrow{AB}$ | $\displaystyle z_{\overrightarrow{AB}} = z_B - z_A$ |
+| Angle orienté $\displaystyle (\overrightarrow{MA}, \overrightarrow{MB})$ | $\displaystyle \arg\left(\dfrac{z_B - z}{z_A - z}\right) \quad [2\pi]$ |
+
+| Équation complexe | Ensemble géométrique |
+|---|---|
+| $\displaystyle |z - a| = r$ ($\displaystyle r > 0$) | Cercle de centre $A(a)$ et de rayon $r$ |
+| $\displaystyle |z - a| < r$ | Disque ouvert de centre $A(a)$ et de rayon $r$ |
+| $\displaystyle |z - a| = |z - b|$ | Médiatrice du segment $[AB]$ |
+| $\displaystyle \arg(z - a) = \theta$ $\displaystyle [\pi]$ | Demi-droite d'origine $A(a)$ et d'angle $\theta$ |
+
+## IX. Transformations géométriques
+
+| Transformation | Effet géométrique |
+|---|---|
+| $\displaystyle z \mapsto z + z_0$ | Translation de vecteur $\displaystyle \overrightarrow{OO_0}$ |
+| $\displaystyle z \mapsto kz$ ($\displaystyle k \in \mathbb{R}^*$) | Homothétie de centre $O$, rapport $k$ |
+| $\displaystyle z \mapsto e^{\mathrm{i}\varphi}z$ | Rotation de centre $O$, angle $\varphi$ |
+| $\displaystyle z \mapsto \overline{z}$ | Symétrie par rapport à l'axe réel |
+
+## X. Erreurs fréquentes
+
+| Piège fréquent | Correction |
+|---|---|
+| Oublier $\displaystyle \mathrm{i}^2 = -1$ | Toujours remplacer $\displaystyle \mathrm{i}^2$ par $-1$ lors des développements |
+| Confondre conjugué et opposé | Conjugué : $\displaystyle \overline{z} = x - y\,\mathrm{i}$ | Opposé : $\displaystyle -z = -x - y\,\mathrm{i}$ |
+| Mauvais quadrant pour l'argument | Toujours vérifier les signes de $x$ et $y$ avant de calculer l'argument |
+| Écrire $\displaystyle |z_1 + z_2| = |z_1| + |z_2|$ | C'est faux ! Utiliser l'inégalité triangulaire : $\displaystyle |z_1 + z_2| \leq |z_1| + |z_2|$ |
+| Oublier le facteur $\displaystyle |z|^n$ dans Moivre | $\displaystyle z^n = |z|^n(\cos(n\theta) + \mathrm{i}\sin(n\theta))$ - Ne pas oublier $\displaystyle |z|^n$ ! |
+| Ne pas rationaliser le dénominateur | Toujours multiplier par le conjugué du dénominateur : $\displaystyle \dfrac{z_1}{z_2} = \dfrac{z_1 \cdot \overline{z_2}}{|z_2|^2}$ |
+
+## XI. Formules essentielles — mémo rapide
+
+| Notion | Formule essentielle |
+|---|---|
+| **Forme algébrique** | $\displaystyle z = x + y\,\mathrm{i}$ |
+| **Module** | $\displaystyle |z| = \sqrt{x^2 + y^2}$ |
+| **Conjugué** | $\displaystyle \overline{z} = x - y\,\mathrm{i}$ |
+| **Relation fondamentale** | $\displaystyle |z|^2 = z \cdot \overline{z}$ |
+| **Forme trigonométrique** | $\displaystyle z = |z|(\cos\theta + \mathrm{i}\sin\theta)$ |
+| **Forme exponentielle** | $\displaystyle z = |z| \cdot e^{\mathrm{i}\theta}$ |
+| **Formule de Moivre** | $\displaystyle z^n = |z|^n(\cos(n\theta) + \mathrm{i}\sin(n\theta))$ |
+| **Formule d'Euler** | $\displaystyle e^{\mathrm{i}\theta} = \cos\theta + \mathrm{i}\sin\theta$ |
+| **Division** | $\displaystyle \dfrac{z_1}{z_2} = \dfrac{z_1 \cdot \overline{z_2}}{|z_2|^2}$ |
+| **Racines n-ièmes de l'unité** | $\displaystyle z_k = e^{\mathrm{i}\dfrac{2k\pi}{n}}$ pour $\displaystyle k = 0, 1, \ldots, n-1$ |
+| **Inégalité triangulaire** | $\displaystyle |z_1 + z_2| \leq |z_1| + |z_2|$ |
+| **Module d'un produit** | $\displaystyle |z_1 \cdot z_2| = |z_1| \cdot |z_2|$ |
+| **Argument d'un produit** | $\displaystyle \arg(z_1 \cdot z_2) \equiv \arg(z_1) + \arg(z_2) \pmod{2\pi}$ |
+| **Distance entre deux points** | $\displaystyle AB = |z_B - z_A|$ |
+| **Milieu d'un segment** | $\displaystyle z_I = \dfrac{z_A + z_B}{2}$ |
+
+## XII. Méthodologie — stratégie de résolution
+
+| Étape | Action |
+|---|---|
+| **1** | Identifier la forme de $z$ (algébrique, trigonométrique, exponentielle) |
+| **2** | Pour division : multiplier par le conjugué du dénominateur |
+| **3** | Pour puissances : passer en forme trigonométrique ou exponentielle |
+| **4** | Pour argument : identifier le quadrant selon les signes de $x$ et $y$ |
+| **5** | Pour équations : utiliser la méthode appropriée (discriminant, forme exponentielle) |
+
+| Type de calcul | Méthode recommandée |
+|---|---|
+| **Addition/Soustraction** | Forme algébrique |
+| **Multiplication/Division** | Forme algébrique (avec conjugué pour division) ou trigonométrique |
+| **Puissances** | Forme trigonométrique ou exponentielle (formule de Moivre) |
+| **Racines** | Forme exponentielle |

@@ -1,0 +1,231 @@
+Titre: Combinatoire et dénombrement
+
+<!-- optitab:1 -->
+::: objectifs
+- Utiliser les principes additif et multiplicatif pour dénombrer.
+- Dénombrer les $k$-uplets, les $k$-uplets d’éléments distincts (arrangements) et les permutations d’un ensemble fini.
+- Dénombrer les parties à $k$ éléments (combinaisons) à l’aide des coefficients binomiaux.
+- Démontrer le nombre de parties d’un ensemble et la relation de Pascal ; utiliser le triangle de Pascal.
+- Choisir le bon modèle (l’ordre compte-t-il ? les répétitions sont-elles possibles ?).
+:::
+
+## I. Principes de dénombrement
+
+::: definition Cardinal
+Le **cardinal** d’un ensemble fini $E$, noté $\mathrm{Card}(E)$, est son nombre d’éléments. Par exemple, $\mathrm{Card}(\{a\,;b\,;c\}) = 3$ et $\mathrm{Card}(\varnothing) = 0$.
+:::
+
+::: propriete Principe additif
+Si $A$ et $B$ sont deux ensembles finis **disjoints** ($A \cap B = \varnothing$), alors
+
+$$\mathrm{Card}(A \cup B) = \mathrm{Card}(A) + \mathrm{Card}(B).$$
+
+Plus généralement, le cardinal d’une réunion d’ensembles deux à deux disjoints est la somme de leurs cardinaux.
+:::
+
+::: propriete Principe multiplicatif
+Pour tous ensembles finis $A$ et $B$, le produit cartésien $A \times B$ (ensemble des couples $(a\,;b)$ avec $a \in A$ et $b \in B$) vérifie
+
+$$\mathrm{Card}(A \times B) = \mathrm{Card}(A) \times \mathrm{Card}(B).$$
+
+Concrètement : pour une suite de choix successifs, on **multiplie** les nombres de possibilités de chaque étape.
+:::
+
+::: exemple
+- Un menu propose $3$ entrées, $4$ plats et $2$ desserts : il y a $3 \times 4 \times 2 = 24$ menus complets.
+- Dans une classe, $12$ élèves font du sport et $8$ font de la musique, aucun ne faisant les deux : $12 + 8 = 20$ élèves font du sport ou de la musique.
+:::
+
+::: attention
+Le principe additif ne s’applique qu’à des ensembles **disjoints** : sinon, les éléments communs seraient comptés deux fois.
+:::
+
+## II. $k$-uplets et parties d’un ensemble
+
+::: definition $k$-uplet
+Soit $E$ un ensemble et $k \ge 1$ un entier. Un **$k$-uplet** (ou $k$-liste) d’éléments de $E$ est une liste **ordonnée** $(x_1\,;x_2\,;\ldots\,;x_k)$ d’éléments de $E$, distincts ou non. L’ensemble de ces $k$-uplets se note $E^k$.
+:::
+
+::: propriete Nombre de $k$-uplets
+Si $\mathrm{Card}(E) = n$, le nombre de $k$-uplets d’éléments de $E$ est
+
+$$\mathrm{Card}\left(E^k\right) = n^k.$$
+:::
+
+::: exemple
+Un code de carte bancaire est un $4$-uplet de chiffres de $0$ à $9$, les répétitions étant permises : il y a $10^4 = 10\,000$ codes.
+:::
+
+::: theoreme Nombre de parties
+Un ensemble à $n$ éléments possède $2^n$ parties (la partie vide $\varnothing$ et l’ensemble lui-même comprises).
+:::
+
+::: demonstration
+Notons $E = \{x_1\,;x_2\,;\ldots\,;x_n\}$. Construire une partie de $E$, c’est décider, pour chacun des éléments $x_1$, $x_2$, …, $x_n$, s’il est pris (« oui ») ou non (« non »). Une partie correspond ainsi à exactement un $n$-uplet d’éléments de l’ensemble $\{\text{oui}\,;\text{non}\}$, qui a $2$ éléments. Il y a $2^n$ tels $n$-uplets, donc $2^n$ parties.
+:::
+
+[IMAGE_1]
+
+## III. $k$-uplets d’éléments distincts et permutations
+
+::: definition Factorielle
+Pour tout entier $n \ge 1$, la **factorielle** de $n$ est $n! = 1 \times 2 \times \cdots \times n$. Par convention, $0! = 1$.
+
+Ainsi $2! = 2$, $3! = 6$, $4! = 24$, $5! = 120$, et $(n + 1)! = (n + 1) \times n!$.
+:::
+
+::: theoreme $k$-uplets d’éléments distincts
+Soit $E$ un ensemble à $n$ éléments et $k$ un entier avec $1 \le k \le n$. Le nombre de $k$-uplets d’éléments **distincts** de $E$ (appelés aussi **arrangements** de $k$ éléments parmi $n$, parfois notés $A_n^k$) est
+
+$$n(n - 1)\cdots(n - k + 1) = \frac{n!}{(n - k)!}.$$
+
+Pour $k = n$ : le nombre de **permutations** de $E$ (façons de ranger tous ses éléments dans un ordre) est $n!$.
+:::
+
+::: demonstration
+On construit le $k$-uplet terme à terme : $n$ choix pour le premier élément, puis $n - 1$ pour le deuxième (il doit être différent du premier), …, puis $n - k + 1$ pour le $k$-ième. Le principe multiplicatif donne le produit $n(n - 1)\cdots(n - k + 1)$.
+
+En multipliant et en divisant ce produit par $(n - k)! = (n - k) \times \cdots \times 1$, on fait apparaître $n!$ au numérateur :
+
+$$
+\begin{aligned}
+n(n - 1)\cdots(n - k + 1) &= \frac{n(n - 1)\cdots(n - k + 1) \times (n - k)!}{(n - k)!} \\
+&= \frac{n!}{(n - k)!}
+\end{aligned}
+$$
+:::
+
+[IMAGE_2]
+
+::: exemple
+- Podium (or, argent, bronze) parmi $10$ coureurs : $10 \times 9 \times 8 = 720$ podiums.
+- Anagrammes du mot « MATHS » (cinq lettres distinctes) : $5! = 120$.
+:::
+
+On peut présenter le calcul du podium par des **cases à remplir** : une case par place et, dans chaque case, le nombre de choix qui restent.
+
+[IMAGE_6]
+
+## IV. Combinaisons et coefficients binomiaux
+
+::: definition Combinaison
+Soit $E$ un ensemble à $n$ éléments et $k$ un entier avec $0 \le k \le n$. Une **combinaison** de $k$ éléments de $E$ est une **partie** de $E$ à $k$ éléments : l’ordre ne compte pas et il n’y a pas de répétition. Leur nombre se note $\binom{n}{k}$ et se lit « $k$ parmi $n$ ».
+:::
+
+::: theoreme Expression de $\binom{n}{k}$
+Pour tous entiers $n$ et $k$ avec $0 \le k \le n$ :
+
+$$\binom{n}{k} = \frac{n!}{k!\,(n - k)!} = \frac{n(n - 1)\cdots(n - k + 1)}{k!}.$$
+:::
+
+::: demonstration
+Pour $k = 0$, les deux membres valent $1$. Pour $k \ge 1$, comptons de deux façons les $k$-uplets d’éléments distincts de $E$. D’une part, il y en a $\frac{n!}{(n - k)!}$. D’autre part, on les obtient en choisissant d’abord une partie à $k$ éléments ($\binom{n}{k}$ choix), puis un ordre sur ces $k$ éléments ($k!$ choix). Donc $\binom{n}{k} \times k! = \frac{n!}{(n - k)!}$, d’où la formule.
+:::
+
+[IMAGE_7]
+
+::: propriete Valeurs particulières et symétrie
+- $\binom{n}{0} = \binom{n}{n} = 1$, $\binom{n}{1} = n$ et, pour $n \ge 2$, $\binom{n}{2} = \frac{n(n - 1)}{2}$.
+- **Symétrie :** $\binom{n}{k} = \binom{n}{n - k}$. Choisir les $k$ éléments que l’on prend revient à choisir les $n - k$ éléments que l’on laisse.
+:::
+
+::: theoreme Relation de Pascal
+Pour tous entiers $n \ge 2$ et $k$ avec $1 \le k \le n - 1$ :
+
+$$\binom{n}{k} = \binom{n - 1}{k - 1} + \binom{n - 1}{k}.$$
+:::
+
+::: demonstration
+Soit $E$ un ensemble à $n$ éléments et $a$ un élément fixé de $E$. Les parties de $E$ à $k$ éléments se répartissent en deux familles **disjointes** :
+
+- celles qui contiennent $a$ : on choisit les $k - 1$ autres éléments parmi les $n - 1$ éléments différents de $a$, d’où $\binom{n - 1}{k - 1}$ parties ;
+- celles qui ne contiennent pas $a$ : on choisit les $k$ éléments parmi les $n - 1$ éléments différents de $a$, d’où $\binom{n - 1}{k}$ parties.
+
+Le principe additif donne $\binom{n}{k} = \binom{n - 1}{k - 1} + \binom{n - 1}{k}$.
+:::
+
+::: propriete Triangle de Pascal
+On écrit les $\binom{n}{k}$ ligne par ligne ($n = 0, 1, 2, \ldots$ et, dans chaque ligne, $k = 0, 1, \ldots, n$). Chaque ligne commence et finit par $1$ ; chaque autre nombre est la **somme des deux nombres situés au-dessus de lui** (relation de Pascal).
+:::
+
+[IMAGE_3]
+
+::: propriete Somme d’une ligne
+Pour tout entier $n \ge 0$ :
+
+$$\sum_{k=0}^{n} \binom{n}{k} = \binom{n}{0} + \binom{n}{1} + \cdots + \binom{n}{n} = 2^n.$$
+
+Les deux membres comptent les parties d’un ensemble à $n$ éléments : à gauche, rangées selon leur nombre d’éléments.
+:::
+
+::: exemple
+- Mains de $5$ cartes dans un jeu de $32$ cartes : $\binom{32}{5} = 201\,376$.
+- Mains contenant exactement $2$ as : on choisit $2$ as parmi les $4$, puis $3$ cartes parmi les $28$ autres, soit $\binom{4}{2} \times \binom{28}{3} = 6 \times 3\,276 = 19\,656$.
+:::
+
+### Mots et chemins
+
+::: exemple Chemins sur un quadrillage
+On va de $O(0\,;0)$ à $A(4\,;3)$ par des pas d’une unité vers la droite (D) ou vers le haut (H). Un chemin est un **mot** de $7$ lettres formé de $4$ lettres D et de $3$ lettres H, par exemple DDHDHHD. Il est entièrement déterminé par les **positions** des $3$ lettres H parmi les $7$ : il y a donc $\binom{7}{3} = 35$ chemins.
+:::
+
+[IMAGE_4]
+
+::: methode Ranger des objets identiques
+Pour ranger en ligne des objets identiques par couleur (ou écrire les anagrammes d’un mot dont des lettres se répètent), on choisit les **positions** de chaque couleur. Par exemple, avec $2$ boules rouges et $3$ boules bleues, il suffit de choisir les $2$ places des rouges : $\binom{5}{2} = 10$ rangements.
+:::
+
+::: remarque Calculatrice et Python
+$\binom{n}{k}$ s’obtient avec la touche « nCr » (ou « Combinaison ») de la calculatrice. En Python, `comb(n, k)` donne $\binom{n}{k}$, `perm(n, k)` donne $\frac{n!}{(n-k)!}$ et `factorial(n)` donne $n!$ :
+
+```python
+from math import comb, perm
+from math import factorial
+print(comb(32, 5))   # 201376
+print(perm(10, 3))   # 720
+print(factorial(5))  # 120
+```
+:::
+
+## V. Choisir le bon modèle
+
+[IMAGE_5]
+
+::: exemple Quatre situations types
+- **Code de $4$ chiffres** : l’ordre compte, répétitions possibles ; $4$-uplets : $10^4 = 10\,000$.
+- **Podium parmi $10$ coureurs** : l’ordre compte, pas de répétition ; arrangements : $10 \times 9 \times 8 = 720$.
+- **Ranger $5$ livres** : on range tous les éléments ; permutations : $5! = 120$.
+- **Équipe de $3$ parmi $8$** : l’ordre ne compte pas ; combinaisons : $\binom{8}{3} = 56$.
+:::
+
+::: methode Tirages dans une urne
+- Tirage **simultané** de $k$ objets parmi $n$ : l’ordre ne compte pas, on compte des combinaisons, $\binom{n}{k}$.
+- Tirages **successifs sans remise** : l’ordre compte, sans répétition, on compte des $k$-uplets d’éléments distincts, $\frac{n!}{(n - k)!}$.
+- Tirages **successifs avec remise** : l’ordre compte, avec répétitions possibles, on compte des $k$-uplets, $n^k$.
+:::
+
+::: methode Contrainte « au moins »
+- On découpe en cas **disjoints** (exactement $1$, exactement $2$, …) que l’on additionne ;
+- ou on passe au **complémentaire** : on compte tous les cas, puis on retire ceux qui ne conviennent pas.
+
+Exemple : comités de $3$ personnes choisies parmi $5$ hommes et $4$ femmes comprenant au moins une femme : $\binom{9}{3} - \binom{5}{3} = 84 - 10 = 74$.
+:::
+
+::: methode Dénombrement et probabilités
+En situation d’équiprobabilité, $P(A) = \frac{\mathrm{Card}(A)}{\mathrm{Card}(\Omega)}$. On tire simultanément $4$ boules d’une urne contenant $5$ boules rouges et $3$ bleues ; la probabilité d’obtenir exactement $2$ rouges est
+
+$$\frac{\binom{5}{2} \times \binom{3}{2}}{\binom{8}{4}} = \frac{10 \times 3}{70} = \frac{3}{7}.$$
+:::
+
+::: attention
+- Une équipe, une main de cartes, un tirage simultané : l’ordre ne compte pas. Un podium, un code, un classement : l’ordre compte.
+- Pour répartir des personnes en deux équipes **non distinguées**, on divise par $2$ le nombre de choix de la première équipe.
+- $\binom{n}{k}$ n’a de sens que pour $0 \le k \le n$ ; et $0! = 1$.
+:::
+
+::: retenir
+- $k$-uplets : $n^k$ ; $k$-uplets d’éléments distincts : $\frac{n!}{(n - k)!}$ ; permutations : $n!$.
+- Combinaisons : $\binom{n}{k} = \frac{n!}{k!\,(n - k)!}$ ; symétrie : $\binom{n}{k} = \binom{n}{n - k}$ ; Pascal : $\binom{n}{k} = \binom{n - 1}{k - 1} + \binom{n - 1}{k}$.
+- Un ensemble à $n$ éléments a $2^n$ parties : $\sum_{k=0}^{n} \binom{n}{k} = 2^n$.
+- Réflexe : l’ordre compte-t-il ? les répétitions sont-elles possibles ? Fiche de synthèse dans l’onglet Fiches.
+:::

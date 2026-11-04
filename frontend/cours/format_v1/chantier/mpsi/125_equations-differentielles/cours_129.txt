@@ -1,0 +1,492 @@
+Titre: Équations Différentielles Linéaires
+
+<!-- optitab:1 -->
+## I. Introduction et vocabulaire
+
+### Définitions générales
+
+::: definition Équation différentielle
+Une **équation différentielle** est une équation dont l'inconnue est une fonction et qui fait intervenir cette fonction ainsi que ses dérivées.
+
+L'**ordre** d'une équation différentielle est l'ordre de la dérivée la plus élevée qui apparaît dans l'équation.
+:::
+
+::: resultat
+Une fonction $y : I \to \mathbb{R}$ (ou $\mathbb{C}$) définie sur un intervalle $I$ est une **solution** de l'équation différentielle si elle est suffisamment dérivable et vérifie l'équation en tout point de $I$.
+:::
+
+::: definition Problème de Cauchy
+Un **problème de Cauchy** (ou problème à conditions initiales) consiste à trouver une solution $y$ d'une équation différentielle vérifiant des conditions initiales de la forme :
+
+$$y(x_0) = y_0, \quad y'(x_0) = y_1, \quad \ldots$$
+
+où $x_0$ est un point de l'intervalle $I$ et $y_0, y_1, \ldots$ sont des valeurs données.
+:::
+
+::: exemple
+- L'équation $y' = 2x$ est une équation différentielle du premier ordre. Ses solutions sont $y(x) = x^2 + C$ où $C \in \mathbb{R}$
+- L'équation $y'' + y = 0$ est une équation différentielle du second ordre. Ses solutions sont $y(x) = C_1\cos(x) + C_2\sin(x)$ où $C_1, C_2 \in \mathbb{R}$
+- Le problème de Cauchy $y' = y, \quad y(0) = 1$ admet pour unique solution $y(x) = e^x$
+:::
+
+## II. Équations différentielles linéaires du premier ordre
+
+### II.A Forme générale et équation homogène
+
+::: definition Équation différentielle linéaire du premier ordre
+Une équation différentielle linéaire du premier ordre est de la forme :
+
+::: formule
+$$y' + a(x)y = b(x)$$
+:::
+
+où $a$ et $b$ sont des fonctions définies et continues sur un intervalle $I$ de $\mathbb{R}$, à valeurs dans $\mathbb{R}$ ou $\mathbb{C}$.
+
+La fonction $b$ est appelée le **second membre** de l'équation.
+:::
+
+::: definition Équation homogène associée
+L'**équation homogène** (ou équation sans second membre) associée à $y' + a(x)y = b(x)$ est :
+
+::: formule
+$$y' + a(x)y = 0$$
+:::
+
+On note souvent cette équation $(E_0)$.
+:::
+
+::: demonstration Interprétation
+L'équation homogène correspond au cas où le second membre est nul. Elle joue un rôle fondamental dans la résolution de l'équation complète.
+:::
+
+::: exemple
+Considérons $y' + \frac{1}{1+x^2}y = \sin x$ sur $\mathbb{R}$.
+
+Le coefficient $a(x) = \frac{1}{1+x^2}$ et le second membre $b(x) = \sin x$ sont continus sur tout $\mathbb{R}$ : l'équation est bien linéaire du premier ordre sur cet intervalle.
+
+L'équation homogène associée est $y' + \frac{1}{1+x^2}y = 0$, que l'on résout par variation de la constante ou facteur intégrant.
+:::
+
+### II.B Résolution de l'équation homogène
+
+::: theoreme Solutions de l'équation homogène
+Soit $a : I \to \mathbb{R}$ (ou $\mathbb{C}$) une fonction continue sur un intervalle $I$.
+
+L'ensemble des solutions de l'équation homogène $y' + a(x)y = 0$ sur $I$ est :
+
+::: formule
+$$\left\{x \mapsto Ce^{-A(x)} : C \in \mathbb{R} \text{ (ou } \mathbb{C}\text{)}\right\}$$
+:::
+
+où $A$ est une primitive de $a$ sur $I$.
+:::
+
+::: demonstration
+L'équation $y' + a(x)y = 0$ peut s'écrire $y' = -a(x)y$.
+
+En multipliant par $e^{A(x)}$ où $A$ est une primitive de $a$, on obtient :
+
+$$e^{A(x)}y'(x) + a(x)e^{A(x)}y(x) = 0$$
+
+ce qui s'écrit $\displaystyle \left(e^{A(x)}y(x)\right)' = 0$.
+
+Donc $e^{A(x)}y(x) = C$ (constante), d'où $y(x) = Ce^{-A(x)}$.
+:::
+
+::: exemple
+- Pour $y' + 2y = 0$, on a $a(x) = 2$. Une primitive est $A(x) = 2x$. Les solutions sont $y(x) = Ce^{-2x}$ où $C \in \mathbb{R}$
+- Pour $y' + \frac{1}{x}y = 0$ sur $]0, +\infty[$, on a $a(x) = \frac{1}{x}$. Une primitive est $A(x) = \ln(x)$. Les solutions sont $y(x) = Ce^{-\ln(x)} = \frac{C}{x}$ où $C \in \mathbb{R}$
+- Pour $y' - xy = 0$, on a $a(x) = -x$. Une primitive est $A(x) = -\frac{x^2}{2}$. Les solutions sont $y(x) = Ce^{\frac{x^2}{2}}$ où $C \in \mathbb{R}$
+:::
+
+### II.C Principe de superposition
+
+::: methode
+Soit $(E)$ l'équation $y' + a(x)y = b(x)$.
+
+Si $y_1$ et $y_2$ sont deux solutions de $(E)$, alors $y_1 - y_2$ est une solution de l'équation homogène associée $(E_0)$.
+
+Réciproquement, si $y_p$ est une solution particulière de $(E)$ et si $y_h$ est une solution de $(E_0)$, alors $y_p + y_h$ est une solution de $(E)$.
+:::
+
+::: remarque Conséquence fondamentale
+L'ensemble des solutions de $y' + a(x)y = b(x)$ est de la forme :
+
+::: formule
+$$\{y_p + y_h : y_h \text{ solution de }\, (E_0)\}$$
+:::
+
+où $y_p$ est une solution particulière de $(E)$.
+
+**Autrement dit :** la solution générale s'écrit **Solution particulière + Solution générale de l'homogène**, et l'ensemble des solutions de $(E)$ est un **sous-ensemble affine** de l'espace vectoriel des solutions de $(E_0)$.
+:::
+
+::: exemple
+Pour l'équation $y' + 2y = 4$, on vérifie que $y_p(x) = 2$ est une solution particulière.
+
+Les solutions de l'équation homogène sont $y_h(x) = Ce^{-2x}$.
+
+Donc la solution générale est $y(x) = 2 + Ce^{-2x}$ où $C \in \mathbb{R}$.
+:::
+
+### II.D Compléments : équations du premier ordre non linéaires
+
+::: remarque Compléments utiles
+Au-delà des équations linéaires, il est classique de rencontrer ces deux familles :
+
+- **Équations à variables séparables :** $y' = g(x) \, h(y)$, que l'on résout en intégrant $\frac{1}{h(y)}\,dy = g(x)\,dx$. *Exemple :* $y' = xy$ donne $\frac{1}{y}dy = xdx$, d'où $y(x) = Ce^{x^2/2}$.
+- **Équations de Bernoulli :** $y' + a(x)y = b(x) \, y^\alpha$ avec $\alpha \neq 1$, que l'on ramène à une équation linéaire via $z = y^{1-\alpha}$. *Exemple :* $y' + y = y^2$ : poser $z = 1/y$ conduit à $z' - z = -1$, donc $z(x) = Ce^{x} + 1$ et $y(x) = \frac{1}{Ce^{x} + 1}$.
+
+Ces situations se traitent naturellement après l'étude des équations linéaires du premier ordre et complètent l'arsenal de résolution.
+:::
+
+::: exemple
+- *Variables séparables* — Résoudre $y' = (1+x)y$. On écrit $\frac{y'}{y} = 1+x$ puis on intègre : $\ln|y| = x + \frac{x^2}{2} + C$. Ainsi $y(x) = C_1 \exp\!\left(x + \frac{x^2}{2}\right)$.
+- *Bernoulli* — Résoudre $y' - 2y = y^3$. Poser $z = y^{-2}$ donne $z' + 4z = -2$. On obtient $z(x) = Ce^{-4x} - \frac{1}{2}$ et donc $y(x) = \frac{1}{\sqrt{Ce^{-4x} - \frac{1}{2}}}$ (sur les intervalles où l'expression est définie).
+:::
+
+### II.E Méthode de la variation de la constante
+
+::: methode
+Pour résoudre $y' + a(x)y = b(x)$, on utilise la méthode suivante :
+
+1. Résoudre l'équation homogène $y' + a(x)y = 0$ pour obtenir les solutions $y_h(x) = Ce^{-A(x)}$
+2. Chercher une solution particulière sous la forme $y_p(x) = C(x)e^{-A(x)}$ où $C$ est maintenant une fonction à déterminer
+3. Injecter cette forme dans l'équation complète pour déterminer $C(x)$
+:::
+
+::: methode
+On pose $y_p(x) = C(x)e^{-A(x)}$ où $A$ est une primitive de $a$.
+
+En dérivant : $\displaystyle y_p'(x) = C'(x)e^{-A(x)} - C(x)a(x)e^{-A(x)}$
+
+En injectant dans $\displaystyle y' + a(x)y = b(x)$ :
+
+$$C'(x)e^{-A(x)} - C(x)a(x)e^{-A(x)} + a(x)C(x)e^{-A(x)} = b(x)$$
+
+ce qui simplifie en : $\displaystyle C'(x)e^{-A(x)} = b(x)$
+
+Donc : $\displaystyle C'(x) = b(x)e^{A(x)}$
+
+Une primitive de $b(x)e^{A(x)}$ donne $C(x)$, puis $y_p(x) = C(x)e^{-A(x)}$.
+:::
+
+::: demonstration Intégrant et formule explicite
+Le facteur intégrant est $\mu(x) = e^{A(x)}$ avec $A'(x) = a(x)$. En multipliant l'équation par $\mu(x)$, on obtient :
+
+::: formule
+$$\mu(x) y(x) = C + \int_{x_0}^{x} \mu(t) b(t) \, dt$$
+:::
+
+d'où la solution explicite : $\displaystyle y(x) = e^{-A(x)}\left(C + \int_{x_0}^{x} e^{A(t)} b(t) \, dt \right)$.
+:::
+
+::: definition Domaine de définition
+Il faut toujours préciser l'intervalle $I$ où $a$ et $b$ sont définies et continues. Par exemple, pour $y' + \frac{1}{x} y = 0$, on travaille séparément sur $]0,+\infty[$ et sur $]-\infty,0[$, d'où les solutions $y(x) = \frac{C}{x}$ sur chaque intervalle.
+
+Penser systématiquement à exclure les points où les coefficients se singularisent (par exemple $x = 0$ lorsque $a(x) = 1/x$).
+
+Pour une équation autonome $y' = f(y)$, ajouter aussi les solutions constantes correspondant aux racines de $f$.
+:::
+
+::: exemple
+Résoudre $\displaystyle y' + 2y = e^x$.
+
+**Étape 1 :** Solutions de l'homogène : $y_h(x) = Ce^{-2x}$
+
+**Étape 2 :** On cherche $\displaystyle y_p(x) = C(x)e^{-2x}$.
+
+On a $\displaystyle y_p'(x) = C'(x)e^{-2x} - 2C(x)e^{-2x}$.
+
+En injectant : $\displaystyle C'(x)e^{-2x} - 2C(x)e^{-2x} + 2C(x)e^{-2x} = e^x$
+
+Donc $C'(x) = e^{3x}$, d'où $C(x) = \frac{1}{3}e^{3x}$.
+
+Ainsi $\displaystyle y_p(x) = \frac{1}{3}e^{3x} \cdot e^{-2x} = \frac{1}{3}e^x$.
+
+**Solution générale :** $y(x) = \frac{1}{3}e^x + Ce^{-2x}$ où $C \in \mathbb{R}$.
+:::
+
+### II.F Cas particulier : coefficient constant
+
+::: definition Équation avec coefficient constant
+Si $a(x) = a$ est une constante, l'équation devient :
+
+::: formule
+$$y' + ay = b(x)$$
+:::
+
+Les solutions de l'équation homogène sont alors :
+
+::: formule
+$$y_h(x) = Ce^{-ax}$$
+:::
+
+où $C \in \mathbb{R}$ (ou $\mathbb{C}$).
+:::
+
+::: exemple
+- Pour $y' + 3y = 0$, les solutions sont $y(x) = Ce^{-3x}$
+- Pour $y' - y = 2$, on trouve $y_h(x) = Ce^x$ et on vérifie que $y_p(x) = -2$ est une solution particulière. Donc $y(x) = -2 + Ce^x$
+- Pour $y' + y = x$, les solutions de l'homogène sont $y_h(x) = Ce^{-x}$. Par variation de la constante, on trouve $y_p(x) = x - 1$, donc $y(x) = x - 1 + Ce^{-x}$
+:::
+
+### II.G Existence et unicité pour un problème de Cauchy
+
+::: theoreme
+Soit $a$ et $b$ deux fonctions continues sur un intervalle $I$, et soit $x_0 \in I$, $y_0 \in \mathbb{R}$ (ou $\mathbb{C}$).
+
+Le problème de Cauchy :
+
+::: formule
+$$\begin{cases} y' + a(x)y = b(x) \\ y(x_0) = y_0 \end{cases}$$
+:::
+
+admet une unique solution définie sur $I$.
+:::
+
+::: remarque
+On admet généralement que, pour chaque condition initiale, il existe exactement une solution.
+
+La solution s'exprime explicitement en utilisant la méthode de variation de la constante.
+:::
+
+::: exemple
+Résoudre le problème de Cauchy : $y' + 2y = 4, \quad y(0) = 1$.
+
+La solution générale est $\displaystyle y(x) = 2 + Ce^{-2x}$.
+
+La condition $y(0) = 1$ donne $2 + C = 1$, donc $C = -1$.
+
+L'unique solution est $\displaystyle y(x) = 2 - e^{-2x}$.
+:::
+
+## III. Équations différentielles linéaires du second ordre à coefficients constants
+
+### III.A Forme générale et équation homogène
+
+::: definition Équation différentielle linéaire à coefficients constants
+Elle s'écrit :
+
+::: formule
+$$y'' + ay' + by = f(x)$$
+:::
+
+où $a, b \in \mathbb{C}$ (souvent réels) et $f$ est continue sur un intervalle $I$.
+:::
+
+::: definition Équation homogène associée
+L'équation sans second membre est :
+
+::: formule
+$$y'' + ay' + by = 0$$
+:::
+
+Son espace de solutions est vectoriel de dimension 2 : deux solutions linéairement indépendantes suffisent pour engendrer toutes les autres.
+:::
+
+::: exemple
+L'équation de l'oscillateur amorti $y'' + 2\gamma y' + \omega_0^2 y = F_0 \cos(\omega t)$ rentre dans ce cadre avec $a = 2\gamma$ et $b = \omega_0^2$ constants.
+
+L'équation homogène associée $y'' + 2\gamma y' + \omega_0^2 y = 0$ est d'ordre 2 et admet donc deux constantes arbitraires $C_1, C_2$ dans sa solution générale.
+:::
+
+### III.B Résolution de l'homogène par l'équation caractéristique
+
+::: definition Équation caractéristique
+En cherchant des solutions de la forme $y(x) = e^{rx}$, on obtient :
+
+::: formule
+$$r^2 + ar + b = 0$$
+:::
+
+Le discriminant $\Delta = a^2 - 4b$ gouverne la forme des solutions.
+
+Dans tout ce qui suit, $C_1, C_2$ désignent des constantes réelles (ou complexes) déterminées par les conditions initiales.
+:::
+
+::: propriete Cas $\displaystyle \Delta > 0$
+Deux racines réelles distinctes $r_1, r_2$ :
+
+::: formule
+$$y(x) = C_1e^{r_1x} + C_2e^{r_2x}$$
+:::
+:::
+
+::: propriete Cas $\displaystyle \Delta = 0$
+Racine double $\displaystyle r_0$ :
+
+::: formule
+$$y(x) = (C_1 + C_2x)e^{r_0x}$$
+:::
+:::
+
+::: propriete Cas $\displaystyle \Delta < 0$
+Racines complexes conjuguées $r = \alpha \pm i\beta$ :
+
+::: formule
+$$y(x) = e^{\alpha x}(C_1\cos(\beta x) + C_2\sin(\beta x))$$
+:::
+
+Cette écriture reste réelle lorsque $a$ et $b$ sont réels.
+:::
+
+### III.C Solutions particulières et règle de résonance
+
+::: methode
+Toute solution de l'équation complète se présente sous la forme $y = y_h + y_p$, somme d'une solution homogène $y_h$ et d'une solution particulière $y_p$.
+:::
+
+::: methode Règle de résonance
+Si la forme proposée pour $y_p$ est déjà solution de l'homogène, multiplier par $x$ (racine simple), par $x^2$ (racine double), etc. Lorsqu'il y a plusieurs termes, on somme les solutions particulières associées : $y_p = \sum y_{p,i}$.
+:::
+
+::: exemple
+Pour $y'' - 3y' + 2y = e^{x}$, l'équation caractéristique $r^2 - 3r + 2 = 0$ admet $r = 1$ (racine simple).
+
+La forme naïve $y_p = Ke^{x}$ coïncide avec une solution homogène, on utilise donc $y_p = Kxe^{x}$.
+
+En injectant dans l'équation, on obtient $K = -1$, d'où $y_p = -xe^{x}$.
+:::
+
+| Second membre $\displaystyle f(x)$ | Ansatz rapide pour $\displaystyle y_p$ | Astuces |
+|---|---|---|
+| $\displaystyle P_n(x)$ polynomial | $\displaystyle y_p = \text{fonction polynomiale}$ | Adapter le degré selon $\displaystyle a, b$ (cf. règles ci-dessous). |
+| $\displaystyle Ae^{\lambda x}$ | $\displaystyle y_p = Ke^{\lambda x}$ | Multiplier par $\displaystyle x^m$ si $\displaystyle \lambda$ est racine de $\displaystyle r^2 + ar + b = 0$. |
+| $\displaystyle B\cos(\omega x)$ ou $\displaystyle B\sin(\omega x)$ | $\displaystyle y_p = C\cos(\omega x) + D\sin(\omega x)$ | Multiplier par $\displaystyle x^m$ si $\displaystyle i\omega$ est racine de l'équation caractéristique. |
+
+::: propriete Second membre polynomial
+On cherche $\displaystyle y_p$ polynomiale :
+
+- Si $b \neq 0$, prendre un polynomial du même degré que $P$.
+- Si $b = 0$ et $a \neq 0$, augmenter le degré d'un rang.
+- Si $a = b = 0$, intégrer deux fois : degré augmenté de deux.
+:::
+
+::: propriete Second membre exponentiel $\displaystyle Ae^{\lambda x}$
+Proposer $y_p = Ke^{\lambda x}$ lorsqu'il n'y a pas de résonance, puis ajuster par la règle ci-dessus si $\lambda$ est racine de l'équation caractéristique.
+:::
+
+::: propriete Second membre trigonométrique
+Pour $B\cos(\omega x)$ ou $B\sin(\omega x)$, chercher $y_p = C\cos(\omega x) + D\sin(\omega x)$ ou utiliser la forme complexe $Be^{i\omega x}$, puis gérer la résonance si $i\omega$ est racine.
+:::
+
+::: remarque Checklist express
+- Identifier la structure du second membre.
+- Proposer une forme adaptée et vérifier la résonance.
+- Déterminer les coefficients en injectant dans l'équation.
+- Ajouter les contributions si $f$ est une somme de termes.
+:::
+
+### III.D Problème de Cauchy
+
+::: definition Existence et unicité
+Le théorème de Cauchy-Lipschitz assure qu'avec des coefficients constants et un second membre continu, le problème :
+
+::: formule
+$$\begin{cases} y'' + ay' + by = f(x) \\ y(x_0) = y_0 \\ y'(x_0) = y_1 \end{cases}$$
+:::
+
+admet une unique solution sur l'intervalle de définition de $f$.
+:::
+
+::: methode
+1. Déterminer la solution générale $y = y_h + y_p$.
+2. Calculer la dérivée $\displaystyle y'$.
+3. Imposer $y(x_0) = y_0$ et $y'(x_0) = y_1$ pour trouver $C_1$ et $C_2$.
+4. Préciser l'intervalle de validité (continuité de $f$, absence de singularités des coefficients, points singuliers, équations autonomes...).
+:::
+
+::: exemple
+Résoudre $y'' - 3y' + 2y = 0$ avec $y(0)=1$ et $y'(0)=0$.
+
+L'équation caractéristique $r^2 - 3r + 2 = 0$ a pour racines $r_1 = 1$ et $r_2 = 2$.
+
+La solution générale est donc $y(x) = C_1 e^{x} + C_2 e^{2x}$ et $y'(x) = C_1 e^{x} + 2C_2 e^{2x}$.
+
+Les conditions initiales donnent $C_1 + C_2 = 1$ et $C_1 + 2C_2 = 0$, d'où $C_1 = 2$ et $C_2 = -1$.
+
+Ainsi $y(x) = 2e^{x} - e^{2x}$, définie sur tout $\mathbb{R}$.
+:::
+
+### III.E Remarques utiles
+
+::: resultat
+Si $a, b \in \mathbb{R}$, utiliser la forme réelle $e^{\alpha x}(C_1\cos(\beta x) + C_2\sin(\beta x))$ lorsque $\Delta < 0$.
+:::
+
+::: demonstration Wronskien et formule d'Abel
+Pour deux solutions $y_1, y_2$ de l'homogène, le Wronskien est le déterminant $W(x) = \begin{vmatrix} y_1(x) & y_2(x) \\ y_1'(x) & y_2'(x) \end{vmatrix} = y_1y_2' - y_1'y_2$. Il vérifie $W'(x) = -aW(x)$, donc $W(x) = W(x_0)e^{-a(x-x_0)}$.
+
+Ainsi, $W(x_0) = 0$ entraîne $W(x) = 0$ sur tout l'intervalle, et les solutions sont dépendantes. Inversement, $W(x_0) \neq 0$ (et donc $W(x) \neq 0$) garantit leur indépendance linéaire.
+
+Ici $a$ est précisément le coefficient de $y'$ dans l'équation $y'' + ay' + by = 0$.
+:::
+
+::: remarque Équations autonomes
+Lorsqu'une équation se ramène à $y' = f(y)$ (par exemple après réduction d'ordre), ajouter les solutions constantes issues des zéros de $f$ et analyser leur stabilité locale.
+:::
+
+::: exemple
+Pour l'équation homogène $y'' - y = 0$, on a $a = 0$ et $b = -1$.
+
+Deux solutions indépendantes sont $y_1(x) = e^{x}$ et $y_2(x) = e^{-x}$.
+
+Leur Wronskien vaut $W(x) = \begin{vmatrix} e^{x} & e^{-x} \\ e^{x} & -e^{-x} \end{vmatrix} = -2$, constant et non nul, confirmant l'indépendance linéaire.
+
+Pour l'équation autonome $y' = y(1-y)$, les solutions constantes $y = 0$ et $y = 1$ proviennent des racines de $f(y) = y(1-y)$ et doivent être ajoutées à l'étude qualitative.
+:::
+
+### III.F Exemples types
+
+::: exemple
+- **$\Delta > 0$ :** $y'' - 3y' + 2y = 0 \Rightarrow y = C_1e^x + C_2e^{2x}$.
+- **$\Delta = 0$ :** $y'' - 4y' + 4y = 0 \Rightarrow y = (C_1 + C_2x)e^{2x}$.
+- **$\Delta < 0$ :** $y'' + y = 0 \Rightarrow y = C_1\cos x + C_2\sin x$.
+- **Résonance :** $y'' - 3y' + 2y = e^x$. On cherche $y_p = Kxe^x$ (car $r = 1$ est racine), on trouve $y = C_1e^x + C_2e^{2x} - xe^x$.
+:::
+
+### IV. Conseils méthodologiques
+
+::: methode Résoudre une équation du premier ordre
+1. Identifier l'équation sous la forme $y' + a(x)y = b(x)$
+2. Résoudre l'équation homogène $y' + a(x)y = 0$ pour obtenir $y_h(x) = Ce^{-A(x)}$ où $A$ est une primitive de $a$
+3. Chercher une solution particulière par variation de la constante : $y_p(x) = C(x)e^{-A(x)}$
+4. Déterminer $C(x)$ en résolvant $C'(x) = b(x)e^{A(x)}$
+5. Écrire la solution générale : $\displaystyle y(x) = y_p(x) + y_h(x)$
+:::
+
+::: methode Résoudre une équation du second ordre
+1. Identifier l'équation sous la forme $y'' + ay' + by = f(x)$
+2. Résoudre l'équation homogène en utilisant l'équation caractéristique $r^2 + ar + b = 0$
+3. Déterminer les solutions de l'homogène selon le discriminant $\Delta$
+4. Chercher une solution particulière selon la forme du second membre $f(x)$
+5. Écrire la solution générale : $\displaystyle y(x) = y_p(x) + y_h(x)$
+:::
+
+::: methode Résoudre un problème de Cauchy
+1. Trouver la solution générale de l'équation différentielle
+2. Appliquer les conditions initiales pour déterminer les constantes
+3. Pour le premier ordre : une condition $y(x_0) = y_0$ détermine une constante
+4. Pour le second ordre : deux conditions $y(x_0) = y_0$ et $y'(x_0) = y_1$ déterminent deux constantes
+:::
+
+::: conseil
+- **Premier ordre :** Toujours commencer par résoudre l'équation homogène avant de chercher une solution particulière
+- **Variation de la constante :** Ne pas oublier de multiplier par $e^{-A(x)}$ à la fin
+- **Second ordre :** Bien identifier le discriminant de l'équation caractéristique pour choisir la bonne forme de solution
+- **Solutions particulières :** Adapter la forme selon que le second membre est polynomial, exponentiel ou trigonométrique
+- **Racines multiples :** Si une racine de l'équation caractéristique apparaît dans le second membre, multiplier par $x$ (ou $x^2$ si double racine)
+- **Solutions réelles :** Si les coefficients sont réels, utiliser la forme avec cosinus et sinus pour le cas $\Delta < 0$
+- **Vérification :** Toujours vérifier que la solution trouvée satisfait bien l'équation différentielle
+:::
+
+::: attention
+- **Premier ordre :** Oublier le signe moins dans $y_h(x) = Ce^{-A(x)}$
+- **Variation de la constante :** Confondre $C'(x)$ et $C(x)$
+- **Second ordre :** Confondre les trois cas selon le discriminant
+- **Racine double :** Oublier le facteur $x$ dans le cas $\Delta = 0$
+- **Solutions particulières :** Ne pas adapter la forme quand une racine apparaît dans le second membre
+- **Problème de Cauchy :** Oublier d'appliquer toutes les conditions initiales
+- **Solutions réelles :** Utiliser la forme complexe au lieu de la forme avec cosinus et sinus quand $\Delta < 0$
+:::

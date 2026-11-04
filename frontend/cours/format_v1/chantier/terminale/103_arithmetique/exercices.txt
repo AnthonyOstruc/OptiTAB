@@ -1,0 +1,2392 @@
+=== Découverte - Restes et tables de congruences
+Id: 1156
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On travaille avec les congruences modulo différents entiers.
+
+1. Déterminer le reste de la division euclidienne :
+   - a) par $6$ de $18$, $47$, $89$, $124$ et $203$ ;
+   - b) par $9$ de $27$, $64$, $91$ et $145$ ;
+   - c) par $11$ de $33$, $78$, $156$ et $234$.
+2. Compléter les tables de congruences suivantes en indiquant chaque fois le reste.
+   - a) Modulo $6$, reste de $3N^2 + 2N + 1$ :
+
+   | $N$ | $0$ | $1$ | $2$ | $3$ | $4$ | $5$ |
+   |---|---|---|---|---|---|---|
+   | Reste modulo $6$ | | | | | | |
+
+   - b) Modulo $8$, reste de $4N - 3$ :
+
+   | $N$ | $0$ | $1$ | $2$ | $3$ | $4$ | $5$ | $6$ | $7$ |
+   |---|---|---|---|---|---|---|---|---|
+   | Reste modulo $8$ | | | | | | | | |
+
+   - c) Modulo $5$, reste de $N^3 - N + 2$ :
+
+   | $N$ | $0$ | $1$ | $2$ | $3$ | $4$ |
+   |---|---|---|---|---|---|
+   | Reste modulo $5$ | | | | | |
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Restes de divisions euclidiennes
+
+::: methode
+Écrire la division euclidienne $a = nq + r$ avec $0 \le r \lt n$ : alors $a \equiv r \pmod{n}$.
+:::
+
+::: etape Division par $6$
+| Division euclidienne | Reste |
+|---|---|
+| $18 = 6 \times 3 + 0$ | $0$ |
+| $47 = 6 \times 7 + 5$ | $5$ |
+| $89 = 6 \times 14 + 5$ | $5$ |
+| $124 = 6 \times 20 + 4$ | $4$ |
+| $203 = 6 \times 33 + 5$ | $5$ |
+:::
+
+::: etape Division par $9$
+| Division euclidienne | Reste |
+|---|---|
+| $27 = 9 \times 3 + 0$ | $0$ |
+| $64 = 9 \times 7 + 1$ | $1$ |
+| $91 = 9 \times 10 + 1$ | $1$ |
+| $145 = 9 \times 16 + 1$ | $1$ |
+:::
+
+::: etape Division par $11$
+| Division euclidienne | Reste |
+|---|---|
+| $33 = 11 \times 3 + 0$ | $0$ |
+| $78 = 11 \times 7 + 1$ | $1$ |
+| $156 = 11 \times 14 + 2$ | $2$ |
+| $234 = 11 \times 21 + 3$ | $3$ |
+:::
+
+::: resultat
+- Modulo $6$ : $18 \equiv 0$, $47 \equiv 5$, $89 \equiv 5$, $124 \equiv 4$, $203 \equiv 5$.
+- Modulo $9$ : $27 \equiv 0$, $64 \equiv 1$, $91 \equiv 1$, $145 \equiv 1$.
+- Modulo $11$ : $33 \equiv 0$, $78 \equiv 1$, $156 \equiv 2$, $234 \equiv 3$.
+:::
+
+::: retenir
+Modulo $9$, le reste se lit aussi sur la somme des chiffres : $1 + 4 + 5 = 10 \equiv 1 \pmod{9}$, donc $145 \equiv 1 \pmod{9}$.
+:::
+
+## Question 2 : Tables de congruences
+
+::: methode
+Pour chaque valeur de $N$, calculer l'expression puis la réduire modulo $n$ ; un résultat négatif se ramène entre $0$ et $n - 1$ en ajoutant $n$.
+:::
+
+::: etape Modulo $6$ : $3N^2 + 2N + 1$
+| $N$ | $0$ | $1$ | $2$ | $3$ | $4$ | $5$ |
+|---|---|---|---|---|---|---|
+| $3N^2 + 2N + 1$ | $1$ | $6$ | $17$ | $34$ | $57$ | $86$ |
+| Reste modulo $6$ | $1$ | $0$ | $5$ | $4$ | $3$ | $2$ |
+:::
+
+::: etape Modulo $8$ : $4N - 3$
+| $N$ | $0$ | $1$ | $2$ | $3$ | $4$ | $5$ | $6$ | $7$ |
+|---|---|---|---|---|---|---|---|---|
+| $4N - 3$ | $-3$ | $1$ | $5$ | $9$ | $13$ | $17$ | $21$ | $25$ |
+| Reste modulo $8$ | $5$ | $1$ | $5$ | $1$ | $5$ | $1$ | $5$ | $1$ |
+
+Pour $N = 0$ : $-3 = 8 \times (-1) + 5$, le reste est $5$.
+:::
+
+::: etape Modulo $5$ : $N^3 - N + 2$
+| $N$ | $0$ | $1$ | $2$ | $3$ | $4$ |
+|---|---|---|---|---|---|
+| $N^3 - N + 2$ | $2$ | $2$ | $8$ | $26$ | $62$ |
+| Reste modulo $5$ | $2$ | $2$ | $3$ | $1$ | $2$ |
+:::
+
+::: resultat
+- a) Restes modulo $6$ : $1$, $0$, $5$, $4$, $3$, $2$.
+- b) Restes modulo $8$ : $5$, $1$, $5$, $1$, $5$, $1$, $5$, $1$ ($5$ si $N$ est pair, $1$ si $N$ est impair).
+- c) Restes modulo $5$ : $2$, $2$, $3$, $1$, $2$.
+:::
+
+::: retenir
+Une table de congruences étudie une expression pour **tous** les entiers : si $N \equiv r \pmod{n}$, l'expression en $N$ a le même reste que l'expression en $r$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Restes :
+   - a) modulo $6$ : $0$, $5$, $5$, $4$, $5$ ;
+   - b) modulo $9$ : $0$, $1$, $1$, $1$ ;
+   - c) modulo $11$ : $0$, $1$, $2$, $3$.
+2. Tables :
+   - a) $1$, $0$, $5$, $4$, $3$, $2$ pour $N = 0, \ldots, 5$ ;
+   - b) $5$, $1$, $5$, $1$, $5$, $1$, $5$, $1$ pour $N = 0, \ldots, 7$ ;
+   - c) $2$, $2$, $3$, $1$, $2$ pour $N = 0, \ldots, 4$.
+
+===
+
+=== Découverte - Premières congruences modulo 5
+Id: 1145
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+On travaille modulo $5$.
+
+1. Vérifier que $17 \equiv 2 \pmod{5}$.
+2. Calculer le reste de la division euclidienne de $23$ par $5$.
+3. Déterminer le reste de $7 + 9$ modulo $5$ en utilisant les congruences.
+4. Déterminer le reste de $7 \times 9$ modulo $5$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Vérifier que $17 \equiv 2 \pmod{5}$
+
+::: methode
+$a \equiv b \pmod{n}$ signifie que $n$ divise $a - b$.
+:::
+
+::: etape Calculer la différence
+$17 - 2 = 15 = 5 \times 3$ : $5$ divise $17 - 2$.
+:::
+
+::: point Lecture sur « l'horloge » modulo $5$
+On range les entiers sur un cercle à $5$ positions, en avançant d'une position à chaque fois. Deux entiers sont congrus modulo $5$ lorsqu'ils arrivent à la même position : $17$ arrive sur la position $2$, après trois tours complets ($15 = 3 \times 5$).
+:::
+
+[IMAGE_1]
+
+::: resultat
+$$17 \equiv 2 \pmod{5}$$
+:::
+
+## Question 2 : Reste de la division de $23$ par $5$
+
+::: methode
+Chercher le plus grand multiple de $5$ inférieur ou égal à $23$.
+:::
+
+::: etape Division euclidienne
+$23 = 5 \times 4 + 3$ avec $0 \le 3 \lt 5$.
+:::
+
+::: resultat
+Le reste est $3$ : $23 \equiv 3 \pmod{5}$.
+:::
+
+## Question 3 : Reste de $7 + 9$ modulo $5$
+
+::: methode
+Remplacer chaque terme par son reste (compatibilité avec l'addition).
+:::
+
+::: etape Réduire chaque terme
+$7 = 5 \times 1 + 2$ et $9 = 5 \times 1 + 4$, donc $7 \equiv 2 \pmod{5}$ et $9 \equiv 4 \pmod{5}$.
+:::
+
+::: etape Additionner
+$$7 + 9 \equiv 2 + 4 = 6 \equiv 1 \pmod{5}$$
+Vérification directe : $16 = 5 \times 3 + 1$.
+:::
+
+::: resultat
+$$7 + 9 \equiv 1 \pmod{5}$$
+:::
+
+## Question 4 : Reste de $7 \times 9$ modulo $5$
+
+::: methode
+Compatibilité avec la multiplication : on multiplie les restes.
+:::
+
+::: etape Multiplier les restes
+$$7 \times 9 \equiv 2 \times 4 = 8 \equiv 3 \pmod{5}$$
+Vérification directe : $63 = 5 \times 12 + 3$.
+:::
+
+::: resultat
+$$7 \times 9 \equiv 3 \pmod{5}$$
+:::
+
+::: retenir
+On peut remplacer un nombre par son reste **avant** de calculer : les calculs restent petits.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $17 - 2 = 15$ est un multiple de $5$, donc $17 \equiv 2 \pmod{5}$.
+2. $23 = 5 \times 4 + 3$ : le reste est $3$.
+3. $7 + 9 \equiv 1 \pmod{5}$.
+4. $7 \times 9 \equiv 3 \pmod{5}$.
+
+===
+
+=== Découverte - Diviseurs et division euclidienne
+Id: 1143
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+On considère les entiers $a = 84$ et $b = 60$.
+
+1. $84$ divise-t-il $60$ ? $60$ divise-t-il $84$ ?
+2. Effectuer la division euclidienne de $84$ par $60$.
+3. Déterminer tous les diviseurs positifs de $84$.
+4. Déterminer tous les diviseurs positifs de $60$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $84$ divise-t-il $60$ ? $60$ divise-t-il $84$ ?
+
+::: methode
+Un multiple non nul de $84$ est, en valeur absolue, au moins égal à $84$ ; $b$ divise $a$ si et seulement si le reste de la division de $a$ par $b$ est nul.
+:::
+
+::: etape $84$ divise-t-il $60$ ?
+Les multiples de $84$ sont $0$, $\pm 84$, $\pm 168$… et $0 \lt 60 \lt 84$ : $60$ n'en fait pas partie.
+:::
+
+::: etape $60$ divise-t-il $84$ ?
+$84 = 60 \times 1 + 24$ : le reste $24$ n'est pas nul.
+:::
+
+::: resultat
+$84$ ne divise pas $60$, et $60$ ne divise pas $84$.
+:::
+
+## Question 2 : Division euclidienne de $84$ par $60$
+
+::: methode
+Chercher $q$ et $r$ tels que $84 = 60q + r$ avec $0 \le r \lt 60$.
+:::
+
+::: etape Quotient et reste
+$60 \times 1 = 60 \le 84 \lt 120 = 60 \times 2$, donc $q = 1$ et $r = 84 - 60 = 24$, avec bien $0 \le 24 \lt 60$.
+:::
+
+[IMAGE_1]
+
+::: resultat
+$$84 = 60 \times 1 + 24$$
+:::
+
+## Question 3 : Diviseurs positifs de $84$
+
+::: methode
+Tester les entiers de $1$ à $\sqrt{84} \approx 9{,}2$ ; chaque diviseur $d$ en donne un second, $\dfrac{84}{d}$.
+:::
+
+::: etape Paires de diviseurs
+| Diviseur testé | $1$ | $2$ | $3$ | $4$ | $5$ | $6$ | $7$ | $8$ | $9$ |
+|---|---|---|---|---|---|---|---|---|---|
+| Divise $84$ ? | oui | oui | oui | oui | non | oui | oui | non | non |
+| Diviseur associé | $84$ | $42$ | $28$ | $21$ | | $14$ | $12$ | | |
+
+$84 = 5 \times 16 + 4$, $84 = 8 \times 10 + 4$ et $84 = 9 \times 9 + 3$ : $5$, $8$ et $9$ ne divisent pas $84$.
+:::
+
+::: resultat
+Les $12$ diviseurs positifs de $84$ sont $1, 2, 3, 4, 6, 7, 12, 14, 21, 28, 42, 84$.
+:::
+
+## Question 4 : Diviseurs positifs de $60$
+
+::: methode
+Même méthode, jusqu'à $\sqrt{60} \approx 7{,}7$.
+:::
+
+::: etape Paires de diviseurs
+$60 = 1 \times 60 = 2 \times 30 = 3 \times 20 = 4 \times 15 = 5 \times 12 = 6 \times 10$, et $7$ ne divise pas $60$ ($60 = 7 \times 8 + 4$).
+:::
+
+::: resultat
+Les $12$ diviseurs positifs de $60$ sont $1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60$.
+:::
+
+::: retenir
+Les diviseurs communs positifs de $84$ et $60$ sont $1, 2, 3, 4, 6, 12$ : le plus grand, $12$, est leur PGCD, que l'algorithme d'Euclide permet d'obtenir sans lister les diviseurs.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Non dans les deux cas : $0 \lt 60 \lt 84$, et $84 = 60 \times 1 + 24$ avec un reste non nul.
+2. $84 = 60 \times 1 + 24$ : quotient $1$, reste $24$.
+3. Diviseurs positifs de $84$ : $1, 2, 3, 4, 6, 7, 12, 14, 21, 28, 42, 84$.
+4. Diviseurs positifs de $60$ : $1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60$.
+
+===
+
+=== Découverte - PGCD par l'algorithme d'Euclide
+Id: 1144
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+On considère les entiers $a = 84$ et $b = 60$.
+
+1. Calculer $\mathrm{PGCD}(84, 60)$ par l'algorithme d'Euclide.
+2. En déduire la liste des diviseurs positifs communs à $84$ et $60$.
+3. Un artisan veut découper une plaque rectangulaire de $84$ cm sur $60$ cm en carreaux carrés tous identiques, sans aucune chute. Le côté d'un carreau doit mesurer un nombre entier de centimètres, le plus grand possible.
+   - a) Quelle doit être la longueur du côté d'un carreau ?
+   - b) Combien de carreaux obtient-il ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $\mathrm{PGCD}(84, 60)$ par l'algorithme d'Euclide
+
+::: methode
+Divisions euclidiennes successives : on divise le diviseur par le reste, jusqu'à obtenir un reste nul. Le dernier reste non nul est le PGCD.
+:::
+
+::: etape Divisions successives
+| Division euclidienne | Reste |
+|---|---|
+| $84 = 60 \times 1 + 24$ | $24$ |
+| $60 = 24 \times 2 + 12$ | $12$ |
+| $24 = 12 \times 2 + 0$ | $0$ |
+:::
+
+::: point Lecture géométrique
+Chaque division revient à retirer d'un rectangle le plus de carrés possible : un carré de côté $60$, puis deux carrés de côté $24$, puis deux carrés de côté $12$ qui remplissent exactement ce qui reste.
+:::
+
+[IMAGE_1]
+
+::: resultat
+Le dernier reste non nul est $12$ : $\mathrm{PGCD}(84, 60) = 12$.
+:::
+
+## Question 2 : Diviseurs positifs communs à $84$ et $60$
+
+::: methode
+Les diviseurs communs à $a$ et $b$ sont exactement les diviseurs de $\mathrm{PGCD}(a, b)$ (cours, partie IV).
+:::
+
+::: etape Diviseurs de $12$
+$12 = 1 \times 12 = 2 \times 6 = 3 \times 4$ : les diviseurs positifs de $12$ sont $1, 2, 3, 4, 6, 12$.
+:::
+
+::: point Vérification
+$84 = 12 \times 7$ et $60 = 12 \times 5$ : chaque diviseur de $12$ divise donc $84$ et $60$.
+:::
+
+::: resultat
+Les diviseurs positifs communs à $84$ et $60$ sont $1, 2, 3, 4, 6$ et $12$.
+:::
+
+## Question 3 : Découpage de la plaque
+
+::: methode
+Pour qu'il n'y ait pas de chute, le côté $c$ d'un carreau doit diviser à la fois $84$ et $60$ : c'est un diviseur commun.
+:::
+
+::: etape a) Côté du carreau
+Il faut un nombre entier $c$ de carreaux le long de chaque bord, donc $c \mid 84$ et $c \mid 60$. D'après la question 2, $c \in \{1, 2, 3, 4, 6, 12\}$. Le plus grand possible est $c = 12$ : c'est le PGCD.
+:::
+
+::: etape b) Nombre de carreaux
+$84 = 12 \times 7$ : $7$ carreaux sur la longueur ; $60 = 12 \times 5$ : $5$ carreaux sur la largeur. En tout :
+$$7 \times 5 = 35$$
+:::
+
+[IMAGE_2]
+
+::: point Vérification par l'aire
+$84 \times 60 = 5\,040$ cm² et $35 \times 12^2 = 35 \times 144 = 5\,040$ cm².
+:::
+
+::: resultat
+Les carreaux ont $12$ cm de côté, et l'artisan en obtient $35$.
+:::
+
+::: attention Erreur fréquente
+Diviser l'aire de la plaque par l'aire d'un carreau ne suffit pas à trouver le côté : il faut d'abord que le côté divise **chacune** des deux dimensions.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $84 = 60 \times 1 + 24$, $60 = 24 \times 2 + 12$, $24 = 12 \times 2 + 0$ : $\mathrm{PGCD}(84, 60) = 12$.
+2. Ce sont les diviseurs de $12$ : $1, 2, 3, 4, 6, 12$.
+3. a) $12$ cm (le PGCD de $84$ et $60$). b) $7 \times 5 = 35$ carreaux.
+
+===
+
+=== Type examen - Divisibilité, congruences et nombres premiers
+Id: 1155
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+**Partie A — Divisibilité et PGCD**
+
+**A1.** Montrer que, pour tout entier naturel $n$, $n(n+1)(n+2)$ est divisible par $6$.
+
+**A2.** Calculer $\mathrm{PGCD}(252, 180)$ par l'algorithme d'Euclide.
+
+**A3.** Déterminer une relation de Bézout pour $252$ et $180$.
+
+**Partie B — Congruences**
+
+**B1.** Déterminer le reste de la division euclidienne de $3^{2024}$ par $7$.
+
+**B2.** Résoudre dans $\mathbb{Z}$ la congruence $5x \equiv 7 \pmod{13}$.
+
+**B3.** Résoudre dans $\mathbb{Z}$ la congruence $12x \equiv 18 \pmod{30}$.
+
+**Partie C — Nombres premiers**
+
+**C1.** Décomposer $2\,024$ en produit de facteurs premiers.
+
+**C2.** Déterminer le nombre de diviseurs positifs de $2\,024$.
+
+**C3.** Montrer que si $p$ est un nombre premier avec $p \ge 5$, alors $p^2 \equiv 1 \pmod{24}$.
+
+**Partie D — Synthèse**
+
+**D1.** Montrer que, pour tout entier naturel $n$, $7^{2n} + 2 \times 7^n - 3$ est divisible par $6$.
+
+**D2.** Résoudre dans $\mathbb{Z}^2$ l'équation $8x + 15y = 1$.
+
+**D3.** Résoudre dans $\mathbb{Z}$ le système
+$$\begin{cases} x \equiv 1 \pmod{3} \\ x \equiv 2 \pmod{5} \\ x \equiv 4 \pmod{7} \end{cases}$$
+
+Étapes:
+<!-- optitab:1 -->
+## Partie A : Divisibilité et PGCD
+
+## Question A1 : Montrer que $6$ divise $n(n+1)(n+2)$
+
+::: methode
+Montrer la divisibilité par $2$ et par $3$, puis utiliser que $2$ et $3$ sont premiers entre eux.
+:::
+
+::: etape Divisibilité par $2$
+Parmi les deux entiers consécutifs $n$ et $n + 1$, l'un est pair : $2$ divise $N = n(n+1)(n+2)$.
+:::
+
+::: etape Divisibilité par $3$
+Disjonction des cas selon le reste de $n$ modulo $3$ :
+- si $n \equiv 0 \pmod{3}$, $3 \mid n$ ;
+- si $n \equiv 1 \pmod{3}$, $n + 2 \equiv 0 \pmod{3}$ ;
+- si $n \equiv 2 \pmod{3}$, $n + 1 \equiv 0 \pmod{3}$.
+
+Dans tous les cas, l'un des trois facteurs est multiple de $3$ : $3 \mid N$.
+:::
+
+::: etape Conclusion
+$2$ et $3$ sont premiers entre eux et divisent $N$, donc leur produit $6$ divise $N$ (corollaire du théorème de Gauss).
+:::
+
+::: resultat
+Pour tout entier naturel $n$, $6 \mid n(n+1)(n+2)$.
+:::
+
+## Question A2 : $\mathrm{PGCD}(252, 180)$
+
+::: methode
+Divisions euclidiennes successives : le dernier reste non nul est le PGCD.
+:::
+
+::: etape Algorithme d'Euclide
+| Division euclidienne | Reste |
+|---|---|
+| $252 = 180 \times 1 + 72$ | $72$ |
+| $180 = 72 \times 2 + 36$ | $36$ |
+| $72 = 36 \times 2 + 0$ | $0$ |
+:::
+
+::: resultat
+$$\mathrm{PGCD}(252, 180) = 36$$
+:::
+
+## Question A3 : Relation de Bézout pour $252$ et $180$
+
+::: methode
+Remonter l'algorithme d'Euclide en isolant les restes.
+:::
+
+::: etape Isoler les restes
+$72 = 252 - 180$ et $36 = 180 - 72 \times 2$.
+:::
+
+::: etape Remontée
+$$
+\begin{aligned}
+36 &= 180 - 2 \times (252 - 180) \\
+&= 180 \times 3 - 252 \times 2 \\
+&= 252 \times (-2) + 180 \times 3
+\end{aligned}
+$$
+Vérification : $-504 + 540 = 36$.
+:::
+
+::: resultat
+$$252 \times (-2) + 180 \times 3 = 36$$
+:::
+
+## Partie B : Congruences
+
+## Question B1 : Reste de $3^{2024}$ modulo $7$
+
+::: methode
+Chercher la période des restes de $3^k$ modulo $7$, puis diviser l'exposant par cette période.
+:::
+
+::: etape Premières puissances
+$3^1 \equiv 3$, $3^2 = 9 \equiv 2$, $3^3 \equiv 2 \times 3 = 6$, $3^4 \equiv 6 \times 3 = 18 \equiv 4$, $3^5 \equiv 4 \times 3 = 12 \equiv 5$, $3^6 \equiv 5 \times 3 = 15 \equiv 1 \pmod{7}$.
+:::
+
+[IMAGE_1]
+
+::: etape Utiliser la période $6$
+$2024 = 6 \times 337 + 2$, donc
+$$
+\begin{aligned}
+3^{2024} &= \left(3^6\right)^{337} \times 3^2 \\
+&\equiv 1^{337} \times 9 \pmod{7} \\
+&\equiv 2 \pmod{7}
+\end{aligned}
+$$
+:::
+
+::: resultat
+Le reste de la division de $3^{2024}$ par $7$ est $2$.
+:::
+
+## Question B2 : Résoudre $5x \equiv 7 \pmod{13}$
+
+::: methode
+$\mathrm{PGCD}(5, 13) = 1$ : multiplier par un inverse de $5$ modulo $13$.
+:::
+
+::: etape Inverse de $5$ modulo $13$
+Euclide : $13 = 5 \times 2 + 3$, $5 = 3 \times 1 + 2$, $3 = 2 \times 1 + 1$. En remontant :
+$$
+\begin{aligned}
+1 &= 3 - 2 = 3 - (5 - 3) = 3 \times 2 - 5 \\
+&= (13 - 5 \times 2) \times 2 - 5 \\
+&= 13 \times 2 - 5 \times 5
+\end{aligned}
+$$
+Donc $5 \times (-5) \equiv 1 \pmod{13}$, et $-5 \equiv 8$ : $8$ est un inverse de $5$ modulo $13$ ($5 \times 8 = 40 = 3 \times 13 + 1$).
+:::
+
+::: etape Résolution
+$$5x \equiv 7 \pmod{13} \iff x \equiv 8 \times 7 = 56 \equiv 4 \pmod{13}$$
+Vérification : $5 \times 4 = 20 = 13 + 7$.
+:::
+
+::: resultat
+Les solutions sont les entiers $x = 4 + 13k$, $k \in \mathbb{Z}$.
+:::
+
+## Question B3 : Résoudre $12x \equiv 18 \pmod{30}$
+
+::: methode
+$d = \mathrm{PGCD}(12, 30)$ ; s'il divise $18$, diviser $12$, $18$ et $30$ par $d$.
+:::
+
+::: etape Simplifier
+$d = \mathrm{PGCD}(12, 30) = 6$ divise $18$. Comme $30 \mid 12x - 18 \iff 5 \mid 2x - 3$ :
+$$12x \equiv 18 \pmod{30} \iff 2x \equiv 3 \pmod{5}$$
+:::
+
+::: etape Résoudre modulo $5$
+$2 \times 3 = 6 \equiv 1 \pmod{5}$ : $3$ est un inverse de $2$. Donc $x \equiv 3 \times 3 = 9 \equiv 4 \pmod{5}$.
+:::
+
+::: etape Revenir modulo $30$
+$x = 4 + 5k$ : modulo $30$, cela donne $4, 9, 14, 19, 24, 29$ (six solutions, autant que $d = 6$).
+:::
+
+::: resultat
+$x \equiv 4 \pmod{5}$, c'est-à-dire $x \equiv 4, 9, 14, 19, 24$ ou $29 \pmod{30}$.
+:::
+
+## Partie C : Nombres premiers
+
+## Question C1 : Décomposer $2\,024$
+
+::: methode
+Diviser par les plus petits nombres premiers possibles.
+:::
+
+::: etape Divisions successives
+$2\,024 = 2 \times 1\,012 = 2^2 \times 506 = 2^3 \times 253$, puis $253 = 11 \times 23$ ($253$ n'est divisible ni par $3$, ni par $5$, ni par $7$). $11$ et $23$ sont premiers.
+:::
+
+::: resultat
+$$2\,024 = 2^3 \times 11 \times 23$$
+:::
+
+## Question C2 : Nombre de diviseurs positifs de $2\,024$
+
+::: methode
+Si $n = p_1^{\alpha_1} \times \cdots \times p_k^{\alpha_k}$, le nombre de diviseurs positifs est $(\alpha_1 + 1) \cdots (\alpha_k + 1)$.
+:::
+
+::: etape Calcul
+Un diviseur positif s'écrit $2^{\beta_1} \times 11^{\beta_2} \times 23^{\beta_3}$ avec $0 \le \beta_1 \le 3$, $0 \le \beta_2 \le 1$, $0 \le \beta_3 \le 1$ :
+$$(3 + 1)(1 + 1)(1 + 1) = 16$$
+:::
+
+::: resultat
+$2\,024$ a $16$ diviseurs positifs.
+:::
+
+## Question C3 : $p^2 \equiv 1 \pmod{24}$ pour $p$ premier, $p \ge 5$
+
+::: methode
+$24 = 3 \times 8$ avec $3$ et $8$ premiers entre eux : montrer que $3$ et $8$ divisent $p^2 - 1$.
+:::
+
+::: etape Modulo $3$
+$p \ge 5$ est premier, donc non divisible par $3$ : $p \equiv 1$ ou $p \equiv 2 \pmod{3}$, et dans les deux cas $p^2 \equiv 1 \pmod{3}$ ($1^2 = 1$, $2^2 = 4 \equiv 1$).
+:::
+
+::: etape Modulo $8$
+$p$ est impair : $p \equiv 1, 3, 5$ ou $7 \pmod{8}$, et $1^2 = 1$, $3^2 = 9$, $5^2 = 25$, $7^2 = 49$ sont tous congrus à $1$ modulo $8$.
+:::
+
+::: etape Conclusion
+$3$ et $8$ divisent $p^2 - 1$ et sont premiers entre eux, donc $24 \mid p^2 - 1$.
+:::
+
+::: resultat
+$$p^2 \equiv 1 \pmod{24}$$
+:::
+
+## Partie D : Synthèse
+
+## Question D1 : $6$ divise $7^{2n} + 2 \times 7^n - 3$
+
+::: methode
+Travailler modulo $6$ : $7 \equiv 1 \pmod{6}$.
+:::
+
+::: etape Réduire modulo $6$
+$7 \equiv 1 \pmod{6}$, donc $7^n \equiv 1$ et $7^{2n} \equiv 1 \pmod{6}$ (compatibilité avec les puissances). Ainsi
+$$7^{2n} + 2 \times 7^n - 3 \equiv 1 + 2 - 3 = 0 \pmod{6}$$
+:::
+
+::: remarque Autre méthode : récurrence
+Avec $E_n = 7^{2n} + 2 \times 7^n - 3$ : $E_0 = 0$ et $E_{n+1} = 49 \times 7^{2n} + 14 \times 7^n - 3 = 6\left(8 \times 7^{2n} + 2 \times 7^n\right) + E_n$.
+:::
+
+::: resultat
+Pour tout entier naturel $n$, $6 \mid 7^{2n} + 2 \times 7^n - 3$.
+:::
+
+## Question D2 : Résoudre $8x + 15y = 1$
+
+::: methode
+Solution particulière par l'algorithme d'Euclide étendu, puis théorème de Gauss, puis réciproque.
+:::
+
+::: etape Solution particulière
+$15 = 8 \times 1 + 7$ et $8 = 7 \times 1 + 1$, donc $1 = 8 - 7 = 8 - (15 - 8) = 8 \times 2 - 15$ : le couple $(2, -1)$ est solution.
+:::
+
+::: etape Solutions générales
+Si $8x + 15y = 1$, en soustrayant $8 \times 2 + 15 \times (-1) = 1$ : $8(x - 2) = -15(y + 1)$. $15$ divise $8(x - 2)$ et est premier avec $8$, donc $15 \mid x - 2$ (Gauss) : $x = 2 + 15k$ avec $k \in \mathbb{Z}$. Alors $8 \times 15k = -15(y + 1)$, d'où $y = -1 - 8k$.
+:::
+
+::: etape Réciproque
+$8(2 + 15k) + 15(-1 - 8k) = 16 + 120k - 15 - 120k = 1$.
+:::
+
+::: resultat
+Les solutions sont les couples $(2 + 15k,\ -1 - 8k)$ avec $k \in \mathbb{Z}$.
+:::
+
+## Question D3 : Résoudre le système de congruences
+
+::: methode
+Exprimer $x$ à l'aide de la première congruence, puis reporter dans les suivantes.
+:::
+
+::: etape Les deux premières congruences
+$x \equiv 1 \pmod{3}$ s'écrit $x = 3k + 1$. Alors $3k + 1 \equiv 2 \pmod{5}$, soit $3k \equiv 1 \pmod{5}$. Comme $3 \times 2 = 6 \equiv 1 \pmod{5}$, $k \equiv 2 \pmod{5}$ : $k = 5m + 2$ et $x = 15m + 7$.
+:::
+
+::: etape La troisième congruence
+$15m + 7 \equiv 4 \pmod{7}$ ; or $15 \equiv 1$ et $7 \equiv 0 \pmod{7}$, donc $m \equiv 4 \pmod{7}$ : $m = 7j + 4$ et $x = 15(7j + 4) + 7 = 105j + 67$.
+:::
+
+::: etape Vérification
+$67 = 3 \times 22 + 1 = 5 \times 13 + 2 = 7 \times 9 + 4$. Réciproquement, ajouter $105 = 3 \times 5 \times 7$ ne change aucun des trois restes.
+:::
+
+::: resultat
+Les solutions sont les entiers $x = 67 + 105j$, $j \in \mathbb{Z}$ : $x \equiv 67 \pmod{105}$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+**Partie A.** A1 : $2$ et $3$ divisent $n(n+1)(n+2)$ et sont premiers entre eux, donc $6$ aussi. A2 : $\mathrm{PGCD}(252, 180) = 36$. A3 : $252 \times (-2) + 180 \times 3 = 36$.
+
+**Partie B.** B1 : $3^{2024} \equiv 2 \pmod{7}$. B2 : $x \equiv 4 \pmod{13}$. B3 : $x \equiv 4 \pmod{5}$, soit $x \equiv 4, 9, 14, 19, 24, 29 \pmod{30}$.
+
+**Partie C.** C1 : $2\,024 = 2^3 \times 11 \times 23$. C2 : $16$ diviseurs positifs. C3 : $3$ et $8$ divisent $p^2 - 1$, donc $24$ aussi.
+
+**Partie D.** D1 : $7 \equiv 1 \pmod{6}$ donne $7^{2n} + 2 \times 7^n - 3 \equiv 0 \pmod{6}$. D2 : $(2 + 15k,\ -1 - 8k)$, $k \in \mathbb{Z}$. D3 : $x \equiv 67 \pmod{105}$.
+
+===
+
+=== Entraînement - Grandes puissances et congruences linéaires
+Id: 1147
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Les questions sont indépendantes.
+
+1. Déterminer le reste de la division euclidienne de $2^{100}$ par $7$.
+2. Résoudre dans $\mathbb{Z}$ la congruence $5x \equiv 3 \pmod{11}$.
+3. Résoudre dans $\mathbb{Z}$ la congruence $6x \equiv 9 \pmod{15}$.
+4. Montrer que $n^3 - n$ est divisible par $6$ pour tout entier $n$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Reste de $2^{100}$ modulo $7$
+
+::: methode
+Trouver un exposant $p$ tel que $2^p \equiv 1 \pmod{7}$, puis diviser $100$ par $p$.
+:::
+
+::: etape Premières puissances
+$2^1 = 2$, $2^2 = 4$, $2^3 = 8 = 7 + 1 \equiv 1 \pmod{7}$.
+:::
+
+::: point Cycle des restes
+À chaque multiplication par $2$, on avance d'une case sur le cycle $1 \to 2 \to 4 \to 1$ : les restes se répètent tous les $3$ exposants.
+:::
+
+[IMAGE_1]
+
+::: etape Utiliser la période $3$
+$100 = 3 \times 33 + 1$, donc
+$$2^{100} = \left(2^3\right)^{33} \times 2 \equiv 1^{33} \times 2 = 2 \pmod{7}$$
+:::
+
+::: resultat
+Le reste de la division de $2^{100}$ par $7$ est $2$.
+:::
+
+## Question 2 : Résoudre $5x \equiv 3 \pmod{11}$
+
+::: methode
+$\mathrm{PGCD}(5, 11) = 1$ : multiplier par un inverse de $5$ modulo $11$.
+:::
+
+::: etape Inverse de $5$ modulo $11$
+$5 \times 9 = 45 = 4 \times 11 + 1$, donc $5 \times 9 \equiv 1 \pmod{11}$ : $9$ est un inverse de $5$.
+:::
+
+::: etape Résolution
+$$5x \equiv 3 \pmod{11} \iff x \equiv 9 \times 3 = 27 \equiv 5 \pmod{11}$$
+Vérification : $5 \times 5 = 25 = 2 \times 11 + 3$.
+:::
+
+::: resultat
+Les solutions sont les entiers $x = 5 + 11k$, $k \in \mathbb{Z}$.
+:::
+
+## Question 3 : Résoudre $6x \equiv 9 \pmod{15}$
+
+::: methode
+$d = \mathrm{PGCD}(6, 15) = 3$ divise $9$ : diviser $6$, $9$ et $15$ par $3$.
+:::
+
+::: etape Simplifier
+$15 \mid 6x - 9 \iff 5 \mid 2x - 3$, donc $6x \equiv 9 \pmod{15} \iff 2x \equiv 3 \pmod{5}$.
+:::
+
+::: etape Résoudre modulo $5$
+$2 \times 3 = 6 \equiv 1 \pmod{5}$ : $3$ est un inverse de $2$, et $x \equiv 3 \times 3 = 9 \equiv 4 \pmod{5}$.
+:::
+
+::: etape Revenir modulo $15$
+$x = 4 + 5k$ : modulo $15$, on obtient $4$, $9$ et $14$ (trois solutions, autant que $d = 3$).
+:::
+
+::: resultat
+$x \equiv 4, 9$ ou $14 \pmod{15}$, c'est-à-dire $x = 4 + 5k$ avec $k \in \mathbb{Z}$.
+:::
+
+## Question 4 : $6$ divise $n^3 - n$
+
+::: methode
+Factoriser pour faire apparaître trois entiers consécutifs, puis montrer la divisibilité par $2$ et par $3$.
+:::
+
+::: etape Factoriser
+$$n^3 - n = n\left(n^2 - 1\right) = (n - 1)n(n + 1)$$
+C'est le produit de trois entiers consécutifs.
+:::
+
+::: etape Divisibilité par $2$ et par $3$
+Parmi deux entiers consécutifs, l'un est pair. Parmi trois entiers consécutifs, les restes modulo $3$ sont $0$, $1$ et $2$ dans un certain ordre : l'un est multiple de $3$.
+:::
+
+::: etape Conclusion
+$2$ et $3$ sont premiers entre eux et divisent $n^3 - n$, donc $6 \mid n^3 - n$.
+:::
+
+::: resultat
+Pour tout entier $n$, $n^3 - n$ est divisible par $6$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $2^3 \equiv 1 \pmod{7}$ et $100 = 3 \times 33 + 1$ : le reste est $2$.
+2. $x \equiv 5 \pmod{11}$.
+3. $x \equiv 4, 9, 14 \pmod{15}$.
+4. $n^3 - n = (n - 1)n(n + 1)$ est divisible par $2$ et par $3$, donc par $6$.
+
+===
+
+=== Entraînement - Divisibilité par une écriture astucieuse
+Id: 1150
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Dans tout l'exercice, $n$ désigne un entier naturel et la divisibilité est entendue dans $\mathbb{Z}$.
+
+1. Déterminer les entiers naturels $n$ tels que $n - 4$ divise $n^2 + 5$.
+2. Déterminer les entiers naturels $n$ tels que $n - 4$ divise $n^2 - 7$.
+3. Déterminer les entiers naturels $n$ tels que $n + 3$ divise $n^2 + 2$.
+4. Déterminer les entiers naturels $n$ tels que $n - 5$ divise $n^2 + 3n - 10$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $n - 4$ divise $n^2 + 5$
+
+::: methode
+Écrire $n^2 + 5 = (n - 4) \times Q + R$ avec $R$ constant : alors $n - 4 \mid n^2 + 5 \iff n - 4 \mid R$.
+:::
+
+::: etape Écriture astucieuse
+$(n - 4)(n + 4) = n^2 - 16$, donc
+$$n^2 + 5 = (n - 4)(n + 4) + 21$$
+:::
+
+::: etape Équivalence
+- Si $n - 4 \mid n^2 + 5$, comme $n - 4 \mid (n - 4)(n + 4)$, alors $n - 4$ divise la différence $21$.
+- Réciproquement, si $n - 4 \mid 21$, alors $n - 4$ divise la somme $(n - 4)(n + 4) + 21 = n^2 + 5$.
+:::
+
+::: etape Diviseurs de $21$
+$n - 4$ est un diviseur de $21$, positif ou **négatif** : $n - 4 \in \{-21, -7, -3, -1, 1, 3, 7, 21\}$. Comme $n \ge 0$, $n - 4 \ge -4$, ce qui exclut $-21$ et $-7$. Il reste $n - 4 \in \{-3, -1, 1, 3, 7, 21\}$, soit $n \in \{1, 3, 5, 7, 11, 25\}$.
+:::
+
+::: etape Vérification
+| $n$ | $1$ | $3$ | $5$ | $7$ | $11$ | $25$ |
+|---|---|---|---|---|---|---|
+| $n - 4$ | $-3$ | $-1$ | $1$ | $3$ | $7$ | $21$ |
+| $n^2 + 5$ | $6$ | $14$ | $30$ | $54$ | $126$ | $630$ |
+
+Chaque valeur de $n^2 + 5$ est bien un multiple de $n - 4$.
+:::
+
+::: resultat
+$$n \in \{1, 3, 5, 7, 11, 25\}$$
+:::
+
+::: attention Erreur fréquente
+Oublier les diviseurs négatifs : $n = 1$ et $n = 3$ conviennent car $-3 \mid 6$ et $-1 \mid 14$.
+:::
+
+## Question 2 : $n - 4$ divise $n^2 - 7$
+
+::: methode
+Même méthode : faire apparaître $(n - 4)(n + 4) = n^2 - 16$.
+:::
+
+::: etape Écriture astucieuse
+$$n^2 - 7 = (n - 4)(n + 4) + 9$$
+donc $n - 4 \mid n^2 - 7 \iff n - 4 \mid 9$.
+:::
+
+::: etape Diviseurs de $9$
+$n - 4 \in \{-9, -3, -1, 1, 3, 9\}$ et $n - 4 \ge -4$ : $n - 4 \in \{-3, -1, 1, 3, 9\}$, soit $n \in \{1, 3, 5, 7, 13\}$.
+:::
+
+::: etape Vérification
+| $n$ | $1$ | $3$ | $5$ | $7$ | $13$ |
+|---|---|---|---|---|---|
+| $n - 4$ | $-3$ | $-1$ | $1$ | $3$ | $9$ |
+| $n^2 - 7$ | $-6$ | $2$ | $18$ | $42$ | $162$ |
+:::
+
+::: resultat
+$$n \in \{1, 3, 5, 7, 13\}$$
+:::
+
+## Question 3 : $n + 3$ divise $n^2 + 2$
+
+::: methode
+Faire apparaître $(n + 3)(n - 3) = n^2 - 9$.
+:::
+
+::: etape Écriture astucieuse
+$$n^2 + 2 = (n + 3)(n - 3) + 11$$
+donc $n + 3 \mid n^2 + 2 \iff n + 3 \mid 11$.
+:::
+
+::: etape Diviseurs de $11$
+Comme $n \ge 0$, $n + 3 \ge 3$ : parmi les diviseurs $\pm 1$, $\pm 11$ de $11$, seul $11$ convient. Donc $n + 3 = 11$, soit $n = 8$.
+:::
+
+::: etape Vérification
+$n = 8$ : $n + 3 = 11$ et $n^2 + 2 = 66 = 11 \times 6$.
+:::
+
+::: resultat
+$$n = 8$$
+:::
+
+## Question 4 : $n - 5$ divise $n^2 + 3n - 10$
+
+::: methode
+Écrire $n^2 + 3n - 10 = (n - 5)(n + a) + b$ et identifier $a$ et $b$.
+:::
+
+::: etape Écriture astucieuse
+$(n - 5)(n + a) = n^2 + (a - 5)n - 5a$. On veut $a - 5 = 3$, soit $a = 8$, puis $b = -10 + 5a = 30$ :
+$$n^2 + 3n - 10 = (n - 5)(n + 8) + 30$$
+donc $n - 5 \mid n^2 + 3n - 10 \iff n - 5 \mid 30$.
+:::
+
+::: etape Diviseurs de $30$
+Les diviseurs de $30$ sont $\pm 1, \pm 2, \pm 3, \pm 5, \pm 6, \pm 10, \pm 15, \pm 30$. Comme $n \ge 0$, $n - 5 \ge -5$ :
+$$n - 5 \in \{-5, -3, -2, -1, 1, 2, 3, 5, 6, 10, 15, 30\}$$
+soit $n \in \{0, 2, 3, 4, 6, 7, 8, 10, 11, 15, 20, 35\}$.
+:::
+
+::: etape Vérification sur deux valeurs
+- $n = 0$ : $n - 5 = -5$ et $n^2 + 3n - 10 = -10 = (-5) \times 2$.
+- $n = 35$ : $n - 5 = 30$ et $n^2 + 3n - 10 = 1\,320 = 30 \times 44$.
+:::
+
+::: resultat
+$$n \in \{0, 2, 3, 4, 6, 7, 8, 10, 11, 15, 20, 35\}$$
+:::
+
+::: retenir
+Pour savoir quand $n - a$ divise un polynôme $P(n)$, on écrit $P(n) = (n - a)Q(n) + R$ : la condition devient « $n - a$ divise la constante $R$ », et l'on n'oublie pas les diviseurs négatifs.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $n \in \{1, 3, 5, 7, 11, 25\}$ (car $n^2 + 5 = (n - 4)(n + 4) + 21$).
+2. $n \in \{1, 3, 5, 7, 13\}$ (car $n^2 - 7 = (n - 4)(n + 4) + 9$).
+3. $n = 8$ (car $n^2 + 2 = (n + 3)(n - 3) + 11$).
+4. $n \in \{0, 2, 3, 4, 6, 7, 8, 10, 11, 15, 20, 35\}$ (car $n^2 + 3n - 10 = (n - 5)(n + 8) + 30$).
+
+===
+
+=== Entraînement - Divisibilité par disjonction des cas
+Id: 1157
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On étudie des propriétés de divisibilité à l'aide des congruences.
+
+1. Montrer que, pour tout entier naturel $n$, $4n^3 + 2n$ est divisible par $6$.
+2. Montrer que si $n$ n'est pas un multiple de $5$, alors $n^4 - 1$ est un multiple de $5$.
+3. Montrer que, pour tout entier naturel $n$, $n^5 - n$ est divisible par $30$. On pourra factoriser $n^5 - n$ et utiliser la question 2.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $6$ divise $4n^3 + 2n$
+
+::: methode
+Montrer la divisibilité par $2$ et par $3$ ($6 = 2 \times 3$ avec $2$ et $3$ premiers entre eux).
+:::
+
+::: etape Divisibilité par $2$
+$4n^3 + 2n = 2\left(2n^3 + n\right)$ est pair.
+:::
+
+::: etape Divisibilité par $3$ : table de congruences
+| $n \equiv$ | $0$ | $1$ | $2$ |
+|---|---|---|---|
+| $4n^3 + 2n$ | $0$ | $6$ | $36$ |
+| Reste | $0$ | $0$ | $0$ |
+
+(On calcule $4n^3 + 2n$ avec $n$ remplacé par son reste : $4 + 2 = 6$ et $32 + 4 = 36$ ; dernière ligne : reste modulo $3$.)
+
+Dans tous les cas, $4n^3 + 2n \equiv 0 \pmod{3}$.
+:::
+
+::: etape Conclusion
+$2$ et $3$ divisent $4n^3 + 2n$ et sont premiers entre eux, donc $6$ aussi.
+:::
+
+::: resultat
+Pour tout entier naturel $n$, $6 \mid 4n^3 + 2n$.
+:::
+
+## Question 2 : $5$ divise $n^4 - 1$ si $5$ ne divise pas $n$
+
+::: methode
+Disjonction des cas sur le reste de $n$ modulo $5$, qui vaut $1$, $2$, $3$ ou $4$.
+:::
+
+::: etape Table de congruences
+| Reste de $n$ modulo $5$ | $1$ | $2$ | $3$ | $4$ |
+|---|---|---|---|---|
+| $n^4$ (avec ce reste) | $1$ | $16$ | $81$ | $256$ |
+| Reste de $n^4$ modulo $5$ | $1$ | $1$ | $1$ | $1$ |
+:::
+
+::: etape Conclusion
+Dans tous les cas, $n^4 \equiv 1 \pmod{5}$, donc $n^4 - 1 \equiv 0 \pmod{5}$.
+:::
+
+::: resultat
+Si $5$ ne divise pas $n$, alors $5 \mid n^4 - 1$.
+:::
+
+::: remarque
+C'est le petit théorème de Fermat pour $p = 5$ : $n^{5-1} \equiv 1 \pmod{5}$ dès que $5$ ne divise pas $n$.
+:::
+
+## Question 3 : $30$ divise $n^5 - n$
+
+::: methode
+$30 = 2 \times 3 \times 5$ : montrer que $2$, $3$ et $5$ divisent $n^5 - n$, puis utiliser que ces nombres sont premiers entre eux deux à deux.
+:::
+
+::: etape Factoriser
+$$
+\begin{aligned}
+n^5 - n &= n\left(n^4 - 1\right) \\
+&= n\left(n^2 - 1\right)\left(n^2 + 1\right) \\
+&= (n - 1)n(n + 1)\left(n^2 + 1\right)
+\end{aligned}
+$$
+:::
+
+::: etape Divisibilité par $2$ et par $3$
+$(n - 1)n(n + 1)$ est le produit de trois entiers consécutifs : l'un est pair et l'un est multiple de $3$ (leurs restes modulo $3$ sont $0$, $1$ et $2$). Donc $2$ et $3$ divisent $n^5 - n$.
+:::
+
+::: etape Divisibilité par $5$ : deux cas
+- Si $5$ divise $n$, alors $5$ divise $n\left(n^4 - 1\right) = n^5 - n$.
+- Sinon, d'après la question 2, $5$ divise $n^4 - 1$, donc aussi $n\left(n^4 - 1\right) = n^5 - n$.
+:::
+
+::: etape Conclusion
+$2$ et $3$ sont premiers entre eux et divisent $n^5 - n$, donc $6$ aussi. Puis $6$ et $5$ sont premiers entre eux et divisent $n^5 - n$, donc $30$ aussi.
+:::
+
+::: point Vérification
+Pour $n = 2$ : $2^5 - 2 = 30$ ; pour $n = 3$ : $3^5 - 3 = 240 = 30 \times 8$.
+:::
+
+::: resultat
+Pour tout entier naturel $n$, $n^5 - n$ est divisible par $30$.
+:::
+
+::: attention Erreur fréquente
+« $2$, $3$ et $5$ divisent $N$, donc $30$ divise $N$ » n'est vrai que parce que ces diviseurs sont premiers entre eux : $4$ et $6$ divisent $12$, mais $24$ ne divise pas $12$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $4n^3 + 2n$ est pair, et la table modulo $3$ donne toujours le reste $0$ : divisible par $6$.
+2. Pour $n \equiv 1, 2, 3, 4 \pmod{5}$, $n^4 \equiv 1 \pmod{5}$ : $5 \mid n^4 - 1$.
+3. $n^5 - n = (n - 1)n(n + 1)\left(n^2 + 1\right)$ est divisible par $2$ et $3$ ; par $5$ si $5 \mid n$, et grâce à la question 2 sinon. Donc $30 \mid n^5 - n$.
+
+===
+
+=== Entraînement - Identité de Bézout et inverses modulo n
+Id: 1148
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Les questions sont indépendantes, sauf la question 3 qui utilise la question 1.
+
+1. Trouver un couple d'entiers $(u, v)$ tel que $84u + 30v = \mathrm{PGCD}(84, 30)$.
+2. Trouver un couple d'entiers $(u, v)$ tel que $252u + 105v = \mathrm{PGCD}(252, 105)$.
+3. En déduire un couple d'entiers $(x, y)$ tel que $84x + 30y = 18$. Existe-t-il des entiers $x$ et $y$ tels que $84x + 30y = 20$ ?
+4. Déterminer un inverse de $15$ modulo $28$.
+5. Déterminer un inverse de $7$ modulo $26$ à l'aide de l'identité de Bézout.
+6. Démontrer le théorème de Gauss : si $\mathrm{PGCD}(a, b) = 1$ et $a \mid bc$, alors $a \mid c$.
+7. Trouver un couple d'entiers $(u, v)$ tel que $1071u + 462v = \mathrm{PGCD}(1071, 462)$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $84u + 30v = \mathrm{PGCD}(84, 30)$
+
+::: methode
+Algorithme d'Euclide, puis remontée des divisions.
+:::
+
+::: etape Algorithme d'Euclide
+$84 = 30 \times 2 + 24$, $30 = 24 \times 1 + 6$, $24 = 6 \times 4 + 0$ : $\mathrm{PGCD}(84, 30) = 6$.
+:::
+
+::: point Le tableau de l'algorithme
+D'une ligne à la suivante, le diviseur devient le dividende et le reste devient le diviseur. On s'arrête au reste nul : le reste précédent est le PGCD.
+:::
+
+[IMAGE_1]
+
+::: etape Remontée
+$$
+\begin{aligned}
+6 &= 30 - 24 \\
+&= 30 - (84 - 30 \times 2) \\
+&= 84 \times (-1) + 30 \times 3
+\end{aligned}
+$$
+Vérification : $-84 + 90 = 6$.
+:::
+
+::: resultat
+$(u, v) = (-1, 3)$ convient : $84 \times (-1) + 30 \times 3 = 6$.
+:::
+
+## Question 2 : $252u + 105v = \mathrm{PGCD}(252, 105)$
+
+::: methode
+Algorithme d'Euclide, puis remontée des divisions.
+:::
+
+::: etape Algorithme d'Euclide
+$252 = 105 \times 2 + 42$, $105 = 42 \times 2 + 21$, $42 = 21 \times 2 + 0$ : $\mathrm{PGCD}(252, 105) = 21$.
+:::
+
+::: etape Remontée
+$$
+\begin{aligned}
+21 &= 105 - 42 \times 2 \\
+&= 105 - (252 - 105 \times 2) \times 2 \\
+&= 252 \times (-2) + 105 \times 5
+\end{aligned}
+$$
+Vérification : $-504 + 525 = 21$.
+:::
+
+::: resultat
+$(u, v) = (-2, 5)$ convient : $252 \times (-2) + 105 \times 5 = 21$.
+:::
+
+## Question 3 : Les équations $84x + 30y = 18$ et $84x + 30y = 20$
+
+::: methode
+Multiplier la relation de Bézout de la question 1 ; pour la seconde équation, utiliser que $\mathrm{PGCD}(84, 30) = 6$ divise $84x + 30y$.
+:::
+
+::: etape Une solution de $84x + 30y = 18$
+$18 = 6 \times 3$ : on multiplie par $3$ la relation $84 \times (-1) + 30 \times 3 = 6$ :
+$$84 \times (-3) + 30 \times 9 = 18$$
+Vérification : $-252 + 270 = 18$.
+:::
+
+::: etape L'équation $84x + 30y = 20$
+$6$ divise $84$ et $30$, donc divise $84x + 30y$ pour tous entiers $x$ et $y$. Or $20 = 6 \times 3 + 2$ : $6$ ne divise pas $20$.
+:::
+
+::: resultat
+$(x, y) = (-3, 9)$ convient pour $84x + 30y = 18$ ; l'équation $84x + 30y = 20$ n'a aucune solution entière.
+:::
+
+::: retenir
+$ax + by = c$ admet des solutions entières si et seulement si $\mathrm{PGCD}(a, b)$ divise $c$.
+:::
+
+## Question 4 : Inverse de $15$ modulo $28$
+
+::: methode
+Trouver $u$ et $v$ tels que $15u + 28v = 1$ : alors $15u \equiv 1 \pmod{28}$.
+:::
+
+::: etape Algorithme d'Euclide
+$28 = 15 \times 1 + 13$, $15 = 13 \times 1 + 2$, $13 = 2 \times 6 + 1$ : $\mathrm{PGCD}(15, 28) = 1$, l'inverse existe.
+:::
+
+::: etape Remontée
+$$
+\begin{aligned}
+1 &= 13 - 2 \times 6 \\
+&= 13 - (15 - 13) \times 6 = 13 \times 7 - 15 \times 6 \\
+&= (28 - 15) \times 7 - 15 \times 6 \\
+&= 28 \times 7 + 15 \times (-13)
+\end{aligned}
+$$
+Donc $15 \times (-13) \equiv 1 \pmod{28}$, et $-13 \equiv 15 \pmod{28}$.
+:::
+
+::: etape Vérification
+$15 \times 15 = 225 = 28 \times 8 + 1$.
+:::
+
+::: resultat
+$15$ est son propre inverse modulo $28$ : $15 \times 15 \equiv 1 \pmod{28}$.
+:::
+
+## Question 5 : Inverse de $7$ modulo $26$
+
+::: methode
+Même méthode : écrire $7u + 26v = 1$.
+:::
+
+::: etape Algorithme d'Euclide
+$26 = 7 \times 3 + 5$, $7 = 5 \times 1 + 2$, $5 = 2 \times 2 + 1$.
+:::
+
+::: etape Remontée
+$$
+\begin{aligned}
+1 &= 5 - 2 \times 2 \\
+&= 5 - (7 - 5) \times 2 = 5 \times 3 - 7 \times 2 \\
+&= (26 - 7 \times 3) \times 3 - 7 \times 2 \\
+&= 26 \times 3 + 7 \times (-11)
+\end{aligned}
+$$
+Donc $7 \times (-11) \equiv 1 \pmod{26}$, et $-11 \equiv 15 \pmod{26}$.
+:::
+
+::: etape Vérification
+$7 \times 15 = 105 = 26 \times 4 + 1$.
+:::
+
+::: resultat
+$15$ est un inverse de $7$ modulo $26$.
+:::
+
+## Question 6 : Démontrer le théorème de Gauss
+
+::: methode
+Écrire une relation de Bézout, la multiplier par $c$, puis utiliser la stabilité de la divisibilité par somme.
+:::
+
+::: etape Relation de Bézout
+$\mathrm{PGCD}(a, b) = 1$, donc il existe des entiers $u$ et $v$ tels que $au + bv = 1$.
+:::
+
+::: etape Multiplier par $c$
+$$c = acu + bcv$$
+:::
+
+::: etape Conclusion
+$a$ divise $acu = a \times (cu)$. Comme $a \mid bc$, $a$ divise aussi $bcv$. Donc $a$ divise la somme $acu + bcv = c$.
+:::
+
+::: resultat
+Si $\mathrm{PGCD}(a, b) = 1$ et $a \mid bc$, alors $a \mid c$.
+:::
+
+## Question 7 : $1071u + 462v = \mathrm{PGCD}(1071, 462)$
+
+::: methode
+Algorithme d'Euclide, puis remontée des divisions.
+:::
+
+::: etape Algorithme d'Euclide
+$1\,071 = 462 \times 2 + 147$, $462 = 147 \times 3 + 21$, $147 = 21 \times 7 + 0$ : $\mathrm{PGCD}(1071, 462) = 21$.
+:::
+
+::: etape Remontée
+$$
+\begin{aligned}
+21 &= 462 - 147 \times 3 \\
+&= 462 - (1\,071 - 462 \times 2) \times 3 \\
+&= 1\,071 \times (-3) + 462 \times 7
+\end{aligned}
+$$
+Vérification : $-3\,213 + 3\,234 = 21$.
+:::
+
+::: resultat
+$(u, v) = (-3, 7)$ convient : $1\,071 \times (-3) + 462 \times 7 = 21$.
+:::
+
+::: retenir
+Un couple de Bézout n'est pas unique : $(u + 22k,\ v - 51k)$ convient aussi pour $1\,071$ et $462$. On donne celui que fournit la remontée.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $84 \times (-1) + 30 \times 3 = 6$ : $(u, v) = (-1, 3)$.
+2. $252 \times (-2) + 105 \times 5 = 21$ : $(u, v) = (-2, 5)$.
+3. $84 \times (-3) + 30 \times 9 = 18$ ; aucune solution pour $20$, car $6$ ne divise pas $20$.
+4. $15 \times 15 \equiv 1 \pmod{28}$ : $15$ est un inverse de $15$ modulo $28$.
+5. $7 \times 15 \equiv 1 \pmod{26}$ : $15$ est un inverse de $7$ modulo $26$.
+6. Bézout donne $au + bv = 1$, d'où $c = acu + bcv$, somme de deux multiples de $a$.
+7. $1\,071 \times (-3) + 462 \times 7 = 21$ : $(u, v) = (-3, 7)$.
+
+===
+
+=== Entraînement - Primalité et décomposition en facteurs premiers
+Id: 1149
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On considère les entiers $2\,023$ et $97$.
+
+1. Vérifier que $97$ est un nombre premier.
+2. Décomposer $2\,023$ en produit de facteurs premiers.
+3. Déterminer le nombre de diviseurs positifs de $2\,023$.
+4. Montrer que si un entier $n \ge 2$ est composé, alors $n$ admet un diviseur premier $p \le \sqrt{n}$.
+5. $2\,023$ est-il le carré d'un entier ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $97$ est premier
+
+::: methode
+Chercher un diviseur premier $p \le \sqrt{97}$ (question 4).
+:::
+
+::: etape Nombres premiers à tester
+$\sqrt{97} \approx 9{,}8$ : il suffit de tester $2$, $3$, $5$ et $7$.
+:::
+
+::: etape Tests
+- $97$ est impair : $2$ ne divise pas $97$.
+- $9 + 7 = 16$ n'est pas multiple de $3$ : $3$ ne divise pas $97$.
+- $97$ ne se termine ni par $0$ ni par $5$ : $5$ ne divise pas $97$.
+- $97 = 7 \times 13 + 6$ : $7$ ne divise pas $97$.
+:::
+
+::: resultat
+$97$ n'a aucun diviseur premier inférieur ou égal à $\sqrt{97}$ : $97$ est premier.
+:::
+
+## Question 2 : Décomposer $2\,023$
+
+::: methode
+Diviser par les nombres premiers successifs.
+:::
+
+::: etape Petits nombres premiers
+$2\,023$ est impair ; $2 + 0 + 2 + 3 = 7$ n'est pas multiple de $3$ ; il ne se termine ni par $0$ ni par $5$. En revanche $2\,023 = 7 \times 289$.
+:::
+
+::: etape Décomposer $289$
+$289 = 17^2$, et $17$ est premier.
+:::
+
+[IMAGE_1]
+
+::: resultat
+$$2\,023 = 7 \times 17^2$$
+:::
+
+## Question 3 : Nombre de diviseurs positifs de $2\,023$
+
+::: methode
+Les diviseurs positifs de $7^1 \times 17^2$ sont les $7^{\beta_1} \times 17^{\beta_2}$ avec $0 \le \beta_1 \le 1$ et $0 \le \beta_2 \le 2$.
+:::
+
+::: etape Calcul
+$(1 + 1)(2 + 1) = 6$.
+:::
+
+::: etape Liste
+$1$, $7$, $17$, $7 \times 17 = 119$, $17^2 = 289$, $7 \times 17^2 = 2\,023$.
+:::
+
+::: resultat
+$2\,023$ a $6$ diviseurs positifs.
+:::
+
+## Question 4 : Diviseur premier inférieur à $\sqrt{n}$
+
+::: methode
+Écrire $n = ab$ avec $a \le b$ et comparer $a$ à $\sqrt{n}$.
+:::
+
+::: etape Écriture de $n$
+$n$ est composé : $n = ab$ avec $2 \le a \le b \lt n$.
+:::
+
+::: etape Majorer $a$
+$a \le b$ donne $a^2 \le ab = n$, donc $a \le \sqrt{n}$.
+:::
+
+::: etape Diviseur premier
+$a \ge 2$ admet un diviseur premier $p$ (son plus petit diviseur supérieur ou égal à $2$). Alors $p \le a \le \sqrt{n}$ et $p$ divise $n$ (transitivité).
+:::
+
+::: resultat
+Tout entier composé $n$ admet un diviseur premier $p \le \sqrt{n}$.
+:::
+
+## Question 5 : $2\,023$ est-il un carré ?
+
+::: methode
+Dans la décomposition d'un carré $m^2$, tous les exposants sont pairs (on double ceux de $m$, et la décomposition est unique).
+:::
+
+::: etape Exposants
+$2\,023 = 7^1 \times 17^2$ : l'exposant de $7$ est impair.
+:::
+
+::: etape Contrôle
+$44^2 = 1\,936 \lt 2\,023 \lt 2\,025 = 45^2$.
+:::
+
+::: resultat
+$2\,023$ n'est pas le carré d'un entier.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Aucun des nombres premiers $2$, $3$, $5$, $7$ (inférieurs à $\sqrt{97}$) ne divise $97$ : $97$ est premier.
+2. $2\,023 = 7 \times 17^2$.
+3. $(1 + 1)(2 + 1) = 6$ diviseurs positifs : $1, 7, 17, 119, 289, 2\,023$.
+4. Si $n = ab$ avec $2 \le a \le b$, alors $a \le \sqrt{n}$, et un diviseur premier de $a$ convient.
+5. Non : l'exposant de $7$ dans $2\,023 = 7 \times 17^2$ est impair.
+
+===
+
+=== Entraînement - Entiers premiers entre eux
+Id: 1152
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Pour $n \in \mathbb{N}$, on considère les entiers $4n + 1$, $6n + 1$, $7n + 3$ et $5n + 2$.
+
+1. Démontrer que $\mathrm{PGCD}(4n + 1, 6n + 1) = 1$ pour tout $n \in \mathbb{N}$.
+2. Démontrer que $\mathrm{PGCD}(7n + 3, 5n + 2) = 1$ pour tout $n \in \mathbb{N}$.
+3. Vérifier ces résultats pour $n = 0$, $1$ et $2$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $\mathrm{PGCD}(4n + 1, 6n + 1) = 1$
+
+::: methode
+Chercher une combinaison à coefficients entiers qui élimine $n$ et vaut $1$, puis appliquer le théorème de Bézout.
+:::
+
+::: etape Éliminer $n$
+Les coefficients de $n$ sont $4$ et $6$ ; leur plus petit multiple commun est $12$. On multiplie donc $4n + 1$ par $3$ et $6n + 1$ par $2$ :
+$$
+\begin{aligned}
+3(4n + 1) - 2(6n + 1) &= 12n + 3 - 12n - 2 \\
+&= 1
+\end{aligned}
+$$
+:::
+
+::: etape Conclure
+On a trouvé $u = 3$ et $v = -2$ tels que $(4n + 1)u + (6n + 1)v = 1$ : d'après le théorème de Bézout, $4n + 1$ et $6n + 1$ sont premiers entre eux.
+:::
+
+::: resultat
+Pour tout $n \in \mathbb{N}$, $\mathrm{PGCD}(4n + 1, 6n + 1) = 1$.
+:::
+
+## Question 2 : $\mathrm{PGCD}(7n + 3, 5n + 2) = 1$
+
+::: methode
+Même méthode : éliminer $n$ avec les coefficients $5$ et $7$.
+:::
+
+::: etape Éliminer $n$
+$$
+\begin{aligned}
+5(7n + 3) - 7(5n + 2) &= 35n + 15 - 35n - 14 \\
+&= 1
+\end{aligned}
+$$
+:::
+
+::: etape Conclure
+$u = 5$ et $v = -7$ donnent $(7n + 3)u + (5n + 2)v = 1$ : les deux entiers sont premiers entre eux (Bézout).
+:::
+
+::: resultat
+Pour tout $n \in \mathbb{N}$, $\mathrm{PGCD}(7n + 3, 5n + 2) = 1$.
+:::
+
+## Question 3 : Vérification pour $n = 0$, $1$, $2$
+
+::: methode
+Calculer les entiers et leur PGCD.
+:::
+
+::: etape Tableau de vérification
+| $n$ | $(4n + 1,\ 6n + 1)$ | PGCD | $(7n + 3,\ 5n + 2)$ | PGCD |
+|---|---|---|---|---|
+| $0$ | $(1, 1)$ | $1$ | $(3, 2)$ | $1$ |
+| $1$ | $(5, 7)$ | $1$ | $(10, 7)$ | $1$ |
+| $2$ | $(9, 13)$ | $1$ | $(17, 12)$ | $1$ |
+:::
+
+::: resultat
+Les six PGCD valent bien $1$.
+:::
+
+::: retenir
+Pour montrer que deux expressions en $n$ sont premières entre elles, on cherche une combinaison entière qui élimine $n$ et donne $1$ (ou un diviseur commun qui divise une constante).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $3(4n + 1) - 2(6n + 1) = 1$ : $\mathrm{PGCD}(4n + 1, 6n + 1) = 1$ (Bézout).
+2. $5(7n + 3) - 7(5n + 2) = 1$ : $\mathrm{PGCD}(7n + 3, 5n + 2) = 1$ (Bézout).
+3. Pour $n = 0, 1, 2$ : $\mathrm{PGCD}(1, 1)$, $\mathrm{PGCD}(5, 7)$, $\mathrm{PGCD}(9, 13)$, $\mathrm{PGCD}(3, 2)$, $\mathrm{PGCD}(10, 7)$, $\mathrm{PGCD}(17, 12)$ valent tous $1$.
+
+===
+
+=== Entraînement - Divisibilité par 13 : récurrence ou congruences
+Id: 1159
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Pour tout entier naturel $n$, on pose $E_n = 4^{2n+1} + 3^{n+2}$. On veut montrer que $E_n$ est divisible par $13$.
+
+1. Le démontrer par récurrence.
+2. Retrouver ce résultat à l'aide des congruences, en remarquant que $16 \equiv 3 \pmod{13}$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Démonstration par récurrence
+
+::: methode
+Exprimer $E_{n+1}$ en fonction de $E_n$ et d'un multiple de $13$.
+:::
+
+::: etape Initialisation
+$E_0 = 4^1 + 3^2 = 4 + 9 = 13$ : $13 \mid E_0$.
+:::
+
+::: etape Hérédité
+Supposons $13 \mid E_n$ pour un entier naturel $n$ fixé. Alors
+$$
+\begin{aligned}
+E_{n+1} &= 4^{2n+3} + 3^{n+3} \\
+&= 16 \times 4^{2n+1} + 3 \times 3^{n+2} \\
+&= 13 \times 4^{2n+1} + 3 \times 4^{2n+1} + 3 \times 3^{n+2} \\
+&= 13 \times 4^{2n+1} + 3E_n
+\end{aligned}
+$$
+$13 \times 4^{2n+1}$ est un multiple de $13$, et $3E_n$ aussi par hypothèse de récurrence : leur somme $E_{n+1}$ est divisible par $13$.
+:::
+
+::: etape Conclusion
+La propriété est vraie pour $n = 0$ et héréditaire : elle est vraie pour tout entier naturel $n$.
+:::
+
+::: resultat
+Pour tout $n \in \mathbb{N}$, $13 \mid 4^{2n+1} + 3^{n+2}$.
+:::
+
+## Question 2 : Démonstration par les congruences
+
+::: methode
+Écrire les deux termes à l'aide de $16^n$ et $3^n$, puis remplacer $16$ par $3$ modulo $13$.
+:::
+
+::: etape Réécrire
+$4^{2n+1} = 4 \times \left(4^2\right)^n = 4 \times 16^n$ et $3^{n+2} = 9 \times 3^n$.
+:::
+
+::: etape Réduire modulo $13$
+$16 \equiv 3 \pmod{13}$, donc $16^n \equiv 3^n \pmod{13}$, et
+$$E_n \equiv 4 \times 3^n + 9 \times 3^n = 13 \times 3^n \equiv 0 \pmod{13}$$
+:::
+
+::: resultat
+On retrouve $E_n \equiv 0 \pmod{13}$ pour tout entier naturel $n$.
+:::
+
+::: retenir
+Les congruences évitent souvent la récurrence : on remplace chaque base par un entier congru plus simple, puis on factorise.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $E_0 = 13$ et $E_{n+1} = 13 \times 4^{2n+1} + 3E_n$ : par récurrence, $13 \mid E_n$ pour tout $n$.
+2. $E_n = 4 \times 16^n + 9 \times 3^n \equiv 4 \times 3^n + 9 \times 3^n = 13 \times 3^n \equiv 0 \pmod{13}$.
+
+===
+
+=== Entraînement - Récurrence et divisibilité par 8
+Id: 1151
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Pour tout entier $n \ge 1$, on considère la propriété $P(n)$ : « $3^{2n} + 4 \times 3^n - 5$ est divisible par $8$ ».
+
+1. Montrer par récurrence que $P(n)$ est vraie pour tout entier $n \ge 1$.
+2. Vérifier $P(4)$ et $P(5)$ par un calcul direct.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Démonstration par récurrence
+
+::: methode
+On pose $E_n = 3^{2n} + 4 \times 3^n - 5$ et on écrit $E_{n+1}$ comme la somme d'un multiple de $8$ et de $E_n$.
+:::
+
+::: etape Initialisation
+$E_1 = 3^2 + 4 \times 3 - 5 = 9 + 12 - 5 = 16 = 8 \times 2$ : $P(1)$ est vraie.
+:::
+
+::: etape Hérédité
+Supposons $P(n)$ vraie pour un entier $n \ge 1$ fixé. Alors, avec $9 = 8 + 1$ et $12 = 8 + 4$ :
+$$
+\begin{aligned}
+E_{n+1} &= 3^{2n+2} + 4 \times 3^{n+1} - 5 \\
+&= 9 \times 3^{2n} + 12 \times 3^n - 5 \\
+&= 8 \times 3^{2n} + 8 \times 3^n + \left(3^{2n} + 4 \times 3^n - 5\right) \\
+&= 8\left(3^{2n} + 3^n\right) + E_n
+\end{aligned}
+$$
+$8\left(3^{2n} + 3^n\right)$ est un multiple de $8$, et $E_n$ aussi par hypothèse : $E_{n+1}$ est divisible par $8$.
+:::
+
+::: etape Conclusion
+$P(1)$ est vraie et $P$ est héréditaire : $P(n)$ est vraie pour tout $n \ge 1$.
+:::
+
+::: resultat
+Pour tout entier $n \ge 1$, $8 \mid 3^{2n} + 4 \times 3^n - 5$.
+:::
+
+## Question 2 : Vérification de $P(4)$ et $P(5)$
+
+::: methode
+Calculer directement et diviser par $8$.
+:::
+
+::: etape $P(4)$
+$$3^8 + 4 \times 3^4 - 5 = 6\,561 + 324 - 5 = 6\,880 = 8 \times 860$$
+:::
+
+::: etape $P(5)$
+$$3^{10} + 4 \times 3^5 - 5 = 59\,049 + 972 - 5 = 60\,016 = 8 \times 7\,502$$
+:::
+
+::: resultat
+$P(4)$ et $P(5)$ sont vraies : $6\,880 = 8 \times 860$ et $60\,016 = 8 \times 7\,502$.
+:::
+
+::: retenir
+Dans l'hérédité, on « découpe » les coefficients ($9 = 8 + 1$, $12 = 8 + 4$) pour faire apparaître $E_n$ plus un multiple de $8$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $E_1 = 16$ et $E_{n+1} = 8\left(3^{2n} + 3^n\right) + E_n$ : par récurrence, $8 \mid E_n$ pour tout $n \ge 1$.
+2. $P(4)$ : $6\,880 = 8 \times 860$ ; $P(5)$ : $60\,016 = 8 \times 7\,502$.
+
+===
+
+=== Entraînement - Chiffrement affine
+Id: 1153
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On associe à chaque lettre de l'alphabet son rang $x$, de $A = 0$ à $Z = 25$ :
+
+| Lettre | A | B | C | D | E | F | G |
+|---|---|---|---|---|---|---|---|
+| Rang | $0$ | $1$ | $2$ | $3$ | $4$ | $5$ | $6$ |
+
+| Lettre | H | I | J | K | L | M | N |
+|---|---|---|---|---|---|---|---|
+| Rang | $7$ | $8$ | $9$ | $10$ | $11$ | $12$ | $13$ |
+
+| Lettre | O | P | Q | R | S | T | U |
+|---|---|---|---|---|---|---|---|
+| Rang | $14$ | $15$ | $16$ | $17$ | $18$ | $19$ | $20$ |
+
+| Lettre | V | W | X | Y | Z |
+|---|---|---|---|---|---|
+| Rang | $21$ | $22$ | $23$ | $24$ | $25$ |
+
+On chiffre la lettre de rang $x$ par la lettre de rang $y$, où $y$ est le reste de la division euclidienne de $5x + 8$ par $26$ :
+$$y \equiv 5x + 8 \pmod{26}, \qquad 0 \le y \le 25.$$
+
+1. Chiffrer le mot MATHS.
+2. Vérifier que $5 \times 21 \equiv 1 \pmod{26}$.
+3. Démontrer que, pour tous entiers $x$ et $y$, la congruence $y \equiv 5x + 8 \pmod{26}$ équivaut à $x \equiv 21y + 14 \pmod{26}$.
+4. Déchiffrer le mot NPIJA.
+5. On change de clé : $y \equiv 13x + 8 \pmod{26}$. Chiffrer les lettres A et C. Ce chiffrement est-il utilisable ? Expliquer à l'aide de $\mathrm{PGCD}(13, 26)$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Chiffrer MATHS
+
+::: methode
+Pour chaque lettre : lire son rang $x$, calculer $5x + 8$, prendre le reste $y$ de la division par $26$, puis lire la lettre de rang $y$.
+:::
+
+::: etape Exemple de la lettre M
+$M$ a pour rang $x = 12$ ; $5 \times 12 + 8 = 68 = 26 \times 2 + 16$, donc $y = 16$ : c'est la lettre $Q$.
+:::
+
+[IMAGE_1]
+
+::: etape Toutes les lettres
+| Lettre | M | A | T | H | S |
+|---|---|---|---|---|---|
+| Rang $x$ | $12$ | $0$ | $19$ | $7$ | $18$ |
+| $5x + 8$ | $68$ | $8$ | $103$ | $43$ | $98$ |
+| Rang $y$ | $16$ | $8$ | $25$ | $17$ | $20$ |
+| Lettre codée | Q | I | Z | R | U |
+
+Divisions utilisées : $103 = 26 \times 3 + 25$, $43 = 26 \times 1 + 17$, $98 = 26 \times 3 + 20$.
+:::
+
+::: resultat
+Le mot MATHS est chiffré en QIZRU.
+:::
+
+## Question 2 : $5 \times 21 \equiv 1 \pmod{26}$
+
+::: etape Division euclidienne
+$5 \times 21 = 105 = 26 \times 4 + 1$.
+:::
+
+::: resultat
+$5 \times 21 \equiv 1 \pmod{26}$ : $21$ est un inverse de $5$ modulo $26$.
+:::
+
+## Question 3 : Formule de déchiffrement
+
+::: methode
+Multiplier par l'inverse $21$ pour isoler $x$ (on ne divise jamais dans une congruence), puis vérifier l'implication réciproque.
+:::
+
+::: etape Sens direct
+Si $y \equiv 5x + 8 \pmod{26}$, on multiplie par $21$ :
+$$
+\begin{aligned}
+21y &\equiv 105x + 168 \pmod{26} \\
+21y &\equiv x + 168 \pmod{26}
+\end{aligned}
+$$
+car $105 \equiv 1 \pmod{26}$. Donc $x \equiv 21y - 168 \pmod{26}$. Or $-168 = 26 \times (-7) + 14$, donc $-168 \equiv 14 \pmod{26}$ et $x \equiv 21y + 14 \pmod{26}$.
+:::
+
+::: etape Sens réciproque
+Si $x \equiv 21y + 14 \pmod{26}$, on multiplie par $5$ :
+$$
+\begin{aligned}
+5x &\equiv 105y + 70 \pmod{26} \\
+5x &\equiv y + 18 \pmod{26}
+\end{aligned}
+$$
+car $105 \equiv 1$ et $70 = 26 \times 2 + 18$. Donc $5x + 8 \equiv y + 26 \equiv y \pmod{26}$.
+:::
+
+::: resultat
+Pour tous entiers $x$ et $y$, $y \equiv 5x + 8 \pmod{26}$ équivaut à $x \equiv 21y + 14 \pmod{26}$.
+:::
+
+## Question 4 : Déchiffrer NPIJA
+
+::: methode
+Pour chaque lettre codée de rang $y$ : calculer $21y + 14$, prendre le reste $x$ de la division par $26$, puis lire la lettre de rang $x$.
+:::
+
+::: etape Toutes les lettres
+| Lettre codée | N | P | I | J | A |
+|---|---|---|---|---|---|
+| Rang $y$ | $13$ | $15$ | $8$ | $9$ | $0$ |
+| $21y + 14$ | $287$ | $329$ | $182$ | $203$ | $14$ |
+| Rang $x$ | $1$ | $17$ | $0$ | $21$ | $14$ |
+| Lettre | B | R | A | V | O |
+
+Divisions utilisées : $287 = 26 \times 11 + 1$, $329 = 26 \times 12 + 17$, $182 = 26 \times 7$, $203 = 26 \times 7 + 21$.
+:::
+
+::: point Vérification
+On rechiffre la lettre B : $5 \times 1 + 8 = 13$, c'est bien la lettre N.
+:::
+
+::: resultat
+Le mot NPIJA se déchiffre en BRAVO.
+:::
+
+## Question 5 : La clé $y \equiv 13x + 8 \pmod{26}$
+
+::: etape Chiffrer A et C
+- $A$ : $x = 0$, $13 \times 0 + 8 = 8$, donc $y = 8$ : la lettre $I$.
+- $C$ : $x = 2$, $13 \times 2 + 8 = 34 = 26 + 8$, donc $y = 8$ : encore la lettre $I$.
+:::
+
+::: etape Conclusion
+Deux lettres différentes sont chiffrées par la même lettre : en recevant $I$, on ne peut pas savoir s'il s'agit de $A$ ou de $C$. Le chiffrement n'est pas utilisable.
+:::
+
+::: etape Explication par le PGCD
+$\mathrm{PGCD}(13, 26) = 13 \neq 1$ : $13$ n'a pas d'inverse modulo $26$ (une relation $13u + 26v = 1$ est impossible, car $13$ divise le membre de gauche mais pas $1$). Concrètement, $13 \times 2 = 26 \equiv 0 \pmod{26}$, donc $x$ et $x + 2$ ont toujours la même image.
+:::
+
+::: resultat
+A et C sont tous deux chiffrés en I : la clé $13x + 8$ ne permet pas de déchiffrer, car $\mathrm{PGCD}(13, 26) \neq 1$.
+:::
+
+::: retenir
+Le chiffrement affine $y \equiv ax + b \pmod{26}$ est utilisable si et seulement si $\mathrm{PGCD}(a, 26) = 1$ ; on déchiffre alors en multipliant par un inverse de $a$ modulo $26$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. MATHS est chiffré en QIZRU.
+2. $5 \times 21 = 105 = 26 \times 4 + 1$.
+3. On multiplie par $21$ (sens direct) ou par $5$ (réciproque), avec $105 \equiv 1$ et $-168 \equiv 14 \pmod{26}$.
+4. NPIJA se déchiffre en BRAVO.
+5. A et C donnent tous deux I : inutilisable, car $\mathrm{PGCD}(13, 26) = 13 \neq 1$.
+
+===
+
+=== Entraînement - Congruences linéaires
+Id: 1160
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On résout des congruences de la forme $ax \equiv b \pmod{n}$.
+
+1. Résoudre dans $\mathbb{Z}$ les congruences suivantes :
+   - a) $5x \equiv 8 \pmod{12}$ ;
+   - b) $6t \equiv 4 \pmod{10}$ ;
+   - c) $4y \equiv 12 \pmod{16}$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Résoudre les trois congruences
+
+::: methode
+Calculer $d = \mathrm{PGCD}(a, n)$. Si $d = 1$, multiplier par un inverse de $a$ ; si $d \gt 1$ et $d \mid b$, diviser $a$, $b$ et $n$ par $d$.
+:::
+
+::: etape a) $5x \equiv 8 \pmod{12}$
+$\mathrm{PGCD}(5, 12) = 1$. Euclide : $12 = 5 \times 2 + 2$ et $5 = 2 \times 2 + 1$, d'où
+$$
+\begin{aligned}
+1 &= 5 - 2 \times 2 \\
+&= 5 - (12 - 5 \times 2) \times 2 \\
+&= 5 \times 5 - 12 \times 2
+\end{aligned}
+$$
+$5$ est donc son propre inverse modulo $12$ ($25 = 2 \times 12 + 1$), et
+$$5x \equiv 8 \pmod{12} \iff x \equiv 5 \times 8 = 40 \equiv 4 \pmod{12}$$
+Vérification : $5 \times 4 = 20 = 12 + 8$.
+:::
+
+::: etape b) $6t \equiv 4 \pmod{10}$
+$d = \mathrm{PGCD}(6, 10) = 2$ divise $4$. Comme $10 \mid 6t - 4 \iff 5 \mid 3t - 2$, on se ramène à $3t \equiv 2 \pmod{5}$. $3 \times 2 = 6 \equiv 1 \pmod{5}$, donc $t \equiv 2 \times 2 = 4 \pmod{5}$. Modulo $10$ : $t \equiv 4$ ou $t \equiv 9$.
+
+Vérification : $6 \times 4 = 24 = 2 \times 10 + 4$ et $6 \times 9 = 54 = 5 \times 10 + 4$.
+:::
+
+::: etape c) $4y \equiv 12 \pmod{16}$
+$d = \mathrm{PGCD}(4, 16) = 4$ divise $12$. Comme $16 \mid 4y - 12 \iff 4 \mid y - 3$, on obtient $y \equiv 3 \pmod{4}$. Modulo $16$ : $y \equiv 3, 7, 11$ ou $15$.
+:::
+
+::: resultat
+- a) $x \equiv 4 \pmod{12}$.
+- b) $t \equiv 4 \pmod{5}$, c'est-à-dire $t \equiv 4$ ou $9 \pmod{10}$.
+- c) $y \equiv 3 \pmod{4}$, c'est-à-dire $y \equiv 3, 7, 11$ ou $15 \pmod{16}$.
+:::
+
+::: attention Erreur fréquente
+Diviser $6t \equiv 4 \pmod{10}$ par $2$ **sans** diviser le module : $3t \equiv 2 \pmod{10}$ est faux (il n'a d'ailleurs pas les mêmes solutions : $t = 9$ ne le vérifie pas).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Solutions :
+   - a) $x \equiv 4 \pmod{12}$ ;
+   - b) $t \equiv 4$ ou $9 \pmod{10}$ ;
+   - c) $y \equiv 3, 7, 11$ ou $15 \pmod{16}$.
+
+===
+
+=== Entraînement - Restes de grandes puissances
+Id: 1158
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On cherche les restes de divisions euclidiennes de grandes puissances.
+
+1. Déterminer le reste de la division euclidienne par $13$ de :
+   - a) $15^{20}$ ;
+   - b) $8^{15}$ ;
+   - c) $25^{18}$.
+2. Quel est le reste de la division euclidienne de $7^{2025}$ par $10$ ?
+3. Quel est le reste de la division euclidienne de $3^{1234}$ par $8$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Restes modulo $13$
+
+::: methode
+Réduire la base modulo $13$ (en pensant à $-1$), puis utiliser une puissance congrue à $1$.
+:::
+
+::: etape a) $15^{20}$
+$15 \equiv 2 \pmod{13}$. $13$ est premier et ne divise pas $2$ : le petit théorème de Fermat donne $2^{12} \equiv 1 \pmod{13}$. Comme $20 = 12 + 8$ :
+$$15^{20} \equiv 2^{20} = 2^{12} \times 2^{8} \equiv 2^8 = 256 \pmod{13}$$
+et $256 = 13 \times 19 + 9$, donc $15^{20} \equiv 9 \pmod{13}$.
+:::
+
+::: etape b) $8^{15}$
+$8^2 = 64 = 13 \times 5 - 1$, donc $8^2 \equiv -1$ et $8^4 \equiv 1 \pmod{13}$. Comme $15 = 4 \times 3 + 3$ :
+$$8^{15} = \left(8^4\right)^3 \times 8^2 \times 8 \equiv 1 \times (-1) \times 8 = -8 \equiv 5 \pmod{13}$$
+:::
+
+::: etape c) $25^{18}$
+$25 = 26 - 1 \equiv -1 \pmod{13}$, donc $25^{18} \equiv (-1)^{18} = 1 \pmod{13}$.
+:::
+
+::: resultat
+Les restes sont $9$ pour $15^{20}$, $5$ pour $8^{15}$ et $1$ pour $25^{18}$.
+:::
+
+## Question 2 : Reste de $7^{2025}$ modulo $10$
+
+::: methode
+Chercher le cycle des restes de $7^k$ modulo $10$ (c'est le chiffre des unités).
+:::
+
+::: etape Premières puissances
+$7^1 \equiv 7$, $7^2 = 49 \equiv 9$, $7^3 \equiv 9 \times 7 = 63 \equiv 3$, $7^4 \equiv 3 \times 7 = 21 \equiv 1 \pmod{10}$ : période $4$.
+:::
+
+[IMAGE_1]
+
+::: etape Utiliser la période
+$2025 = 4 \times 506 + 1$, donc $7^{2025} = \left(7^4\right)^{506} \times 7 \equiv 7 \pmod{10}$.
+:::
+
+::: resultat
+Le reste de la division de $7^{2025}$ par $10$ est $7$ : $7^{2025}$ se termine par $7$.
+:::
+
+## Question 3 : Reste de $3^{1234}$ modulo $8$
+
+::: methode
+Trouver une petite puissance de $3$ congrue à $1$ modulo $8$.
+:::
+
+::: etape Calcul
+$3^2 = 9 \equiv 1 \pmod{8}$ et $1234 = 2 \times 617$, donc $3^{1234} = \left(3^2\right)^{617} \equiv 1 \pmod{8}$.
+:::
+
+::: resultat
+Le reste de la division de $3^{1234}$ par $8$ est $1$.
+:::
+
+::: retenir
+Repérer une base congrue à $\pm 1$ ou une petite puissance congrue à $\pm 1$ raccourcit énormément les calculs.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Restes modulo $13$ :
+   - a) $15^{20} \equiv 9$ ;
+   - b) $8^{15} \equiv 5$ ;
+   - c) $25^{18} \equiv 1$.
+2. Le reste de $7^{2025}$ par $10$ est $7$.
+3. Le reste de $3^{1234}$ par $8$ est $1$.
+
+===
+
+=== Entraînement - Synthèse : PGCD, Bézout et équation diophantienne
+Id: 1146
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On considère les entiers $a = 504$ et $b = 420$.
+
+1. Décomposer $a$ et $b$ en produits de facteurs premiers. En déduire $\mathrm{PGCD}(a, b)$.
+2. Retrouver ce PGCD par l'algorithme d'Euclide.
+3. Déterminer une relation de Bézout pour $a$ et $b$, c'est-à-dire deux entiers $u$ et $v$ tels que $504u + 420v = \mathrm{PGCD}(504, 420)$.
+4. On considère l'équation $(E)$ : $504x + 420y = 168$, d'inconnues entières $x$ et $y$.
+   - a) Montrer que $(E)$ équivaut à l'équation $6x + 5y = 2$.
+   - b) À l'aide de la question 3, trouver une solution particulière de $(E)$.
+   - c) Résoudre $(E)$ dans $\mathbb{Z}^2$.
+5. Existe-t-il des entiers $x$ et $y$ tels que $504x + 420y = 100$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Décompositions et PGCD
+
+::: methode
+Diviser par les nombres premiers successifs $2$, $3$, $5$, $7$… Le PGCD s'obtient en prenant les facteurs premiers **communs** avec leur **plus petit** exposant.
+:::
+
+::: etape Décomposer $504$ et $420$
+$$
+\begin{aligned}
+504 &= 2 \times 252 = 2^2 \times 126 \\
+&= 2^3 \times 63 \\
+&= 2^3 \times 3^2 \times 7
+\end{aligned}
+$$
+$$
+\begin{aligned}
+420 &= 2 \times 210 = 2^2 \times 105 \\
+&= 2^2 \times 3 \times 35 \\
+&= 2^2 \times 3 \times 5 \times 7
+\end{aligned}
+$$
+:::
+
+::: etape Facteurs communs
+Les facteurs premiers communs sont $2$, $3$ et $7$, avec les plus petits exposants $2^2$, $3^1$ et $7^1$ :
+$$\mathrm{PGCD}(504, 420) = 2^2 \times 3 \times 7 = 84$$
+:::
+
+::: resultat
+$504 = 2^3 \times 3^2 \times 7$, $420 = 2^2 \times 3 \times 5 \times 7$ et $\mathrm{PGCD}(504, 420) = 84$.
+:::
+
+## Question 2 : Algorithme d'Euclide
+
+::: etape Divisions successives
+$504 = 420 \times 1 + 84$, puis $420 = 84 \times 5 + 0$.
+:::
+
+::: resultat
+Le dernier reste non nul est $84$ : on retrouve $\mathrm{PGCD}(504, 420) = 84$.
+:::
+
+## Question 3 : Relation de Bézout
+
+::: methode
+Isoler le dernier reste non nul dans les divisions de l'algorithme d'Euclide.
+:::
+
+::: etape Isoler le reste
+La première division donne directement $84 = 504 - 420 \times 1$.
+:::
+
+::: resultat
+$$504 \times 1 + 420 \times (-1) = 84$$
+Le couple $(u, v) = (1, -1)$ convient.
+:::
+
+## Question 4 : Résoudre $(E)$ : $504x + 420y = 168$
+
+::: methode
+Diviser par le PGCD, trouver une solution particulière, puis utiliser le théorème de Gauss et vérifier la réciproque.
+:::
+
+::: etape a) Simplifier par $84$
+$504 = 84 \times 6$, $420 = 84 \times 5$ et $168 = 84 \times 2$. En divisant les deux membres par $84 \neq 0$, l'équation $504x + 420y = 168$ équivaut à
+$$6x + 5y = 2$$
+:::
+
+::: etape b) Solution particulière
+On multiplie la relation de Bézout de la question 3 par $2$ :
+$$504 \times 2 + 420 \times (-2) = 168$$
+Le couple $(2, -2)$ est solution de $(E)$. Contrôle : $6 \times 2 + 5 \times (-2) = 12 - 10 = 2$.
+:::
+
+::: etape c) Analyse : forme des solutions
+Soit $(x, y)$ une solution. En soustrayant $6 \times 2 + 5 \times (-2) = 2$ à $6x + 5y = 2$ :
+$$6(x - 2) + 5(y + 2) = 0$$
+soit
+$$6(x - 2) = -5(y + 2)$$
+Donc $5$ divise $6(x - 2)$. Comme $\mathrm{PGCD}(5, 6) = 1$, le théorème de Gauss donne $5 \mid x - 2$ : $x = 2 + 5k$ avec $k \in \mathbb{Z}$. En reportant, $6 \times 5k = -5(y + 2)$, d'où $y + 2 = -6k$ et $y = -2 - 6k$.
+:::
+
+::: etape c) Synthèse : réciproque
+Pour tout $k \in \mathbb{Z}$ :
+$$
+\begin{aligned}
+6(2 + 5k) + 5(-2 - 6k) &= 12 + 30k - 10 - 30k \\
+&= 2
+\end{aligned}
+$$
+:::
+
+::: point Lecture graphique
+Les solutions sont les points à coordonnées entières de la droite d'équation $6x + 5y = 2$ : on passe de l'un au suivant en avançant de $5$ en abscisse et en descendant de $6$ en ordonnée.
+:::
+
+[IMAGE_1]
+
+::: resultat
+Les solutions de $(E)$ sont les couples $(2 + 5k\,;\ -2 - 6k)$ avec $k \in \mathbb{Z}$.
+:::
+
+::: attention Erreur fréquente
+Oublier la réciproque : l'analyse montre seulement que toute solution est de cette forme ; il faut vérifier que chaque couple de cette forme est bien solution.
+:::
+
+## Question 5 : L'équation $504x + 420y = 100$
+
+::: methode
+$84$ divise $504$ et $420$, donc divise $504x + 420y$ pour tous entiers $x$ et $y$.
+:::
+
+::: etape Divisibilité par $84$
+Si $504x + 420y = 100$, alors $84$ divise $100$. Or $100 = 84 \times 1 + 16$ : le reste n'est pas nul.
+:::
+
+::: resultat
+Il n'existe aucun couple d'entiers $(x, y)$ tel que $504x + 420y = 100$.
+:::
+
+::: retenir
+L'équation $ax + by = c$ a des solutions entières si et seulement si $\mathrm{PGCD}(a, b)$ divise $c$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $504 = 2^3 \times 3^2 \times 7$, $420 = 2^2 \times 3 \times 5 \times 7$, $\mathrm{PGCD}(504, 420) = 2^2 \times 3 \times 7 = 84$.
+2. $504 = 420 \times 1 + 84$ et $420 = 84 \times 5 + 0$ : le PGCD est $84$.
+3. $504 \times 1 + 420 \times (-1) = 84$.
+4. a) On divise par $84$. b) $(2, -2)$. c) $(2 + 5k\,;\ -2 - 6k)$, $k \in \mathbb{Z}$.
+5. Non, car $84$ ne divise pas $100$.
+
+===
+
+=== Problème - Périodicité des restes de puissances
+Id: 1161
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On étudie les restes de puissances en déterminant leur périodicité.
+
+1. Puissances de $3$ modulo $10$.
+   - a) Déterminer le reste de $3$, $3^2$, $3^3$, $3^4$, $3^5$ et $3^6$ dans la division euclidienne par $10$.
+   - b) En déduire le reste de $3^{4k}$, $3^{4k+1}$, $3^{4k+2}$ et $3^{4k+3}$ dans la division par $10$, pour tout entier naturel $k$.
+   - c) En déduire le reste de $3^{87}$ dans la division par $10$.
+2. Puissances de $7$ modulo $11$.
+   - a) En s'inspirant de la question 1, donner le reste de $7^n$ dans la division euclidienne par $11$ selon le reste de $n$ dans la division par $10$.
+   - b) En déduire le reste de $7^{456}$ dans la division euclidienne par $11$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Puissances de $3$ modulo $10$
+
+::: methode
+Chaque reste s'obtient en multipliant le précédent par $3$ puis en réduisant modulo $10$.
+:::
+
+::: etape a) Premières puissances
+| $k$ | $1$ | $2$ | $3$ | $4$ | $5$ | $6$ |
+|---|---|---|---|---|---|---|
+| $3^k$ | $3$ | $9$ | $27$ | $81$ | $243$ | $729$ |
+| Reste modulo $10$ | $3$ | $9$ | $7$ | $1$ | $3$ | $9$ |
+:::
+
+[IMAGE_1]
+
+::: etape b) Formule générale
+$3^4 \equiv 1 \pmod{10}$, donc $3^{4k} = \left(3^4\right)^k \equiv 1^k = 1 \pmod{10}$. En multipliant par $3$, $3^2$ et $3^3$ :
+- $3^{4k} \equiv 1 \pmod{10}$ ;
+- $3^{4k+1} \equiv 3 \pmod{10}$ ;
+- $3^{4k+2} \equiv 9 \pmod{10}$ ;
+- $3^{4k+3} \equiv 7 \pmod{10}$.
+:::
+
+::: etape c) Reste de $3^{87}$
+$87 = 4 \times 21 + 3$, donc $3^{87} \equiv 3^3 \equiv 7 \pmod{10}$.
+:::
+
+::: resultat
+Les restes de $3^n$ modulo $10$ se répètent avec la période $4$ : $1, 3, 9, 7$. Le reste de $3^{87}$ est $7$.
+:::
+
+## Question 2 : Puissances de $7$ modulo $11$
+
+::: methode
+$11$ est premier et ne divise pas $7$ : le petit théorème de Fermat donne $7^{10} \equiv 1 \pmod{11}$.
+:::
+
+::: etape a) Restes de $7^r$ pour $0 \le r \le 9$
+| $r$ | $0$ | $1$ | $2$ | $3$ | $4$ | $5$ | $6$ | $7$ | $8$ | $9$ |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Reste de $7^r$ | $1$ | $7$ | $5$ | $2$ | $3$ | $10$ | $4$ | $6$ | $9$ | $8$ |
+
+Par exemple $7^2 = 49 = 4 \times 11 + 5$, puis $5 \times 7 = 35 \equiv 2$, $2 \times 7 = 14 \equiv 3$, etc. Le reste $1$ ne réapparaît qu'à l'exposant $10$ : la période est $10$.
+:::
+
+[IMAGE_2]
+
+::: etape Formule générale
+Si $n = 10k + r$ avec $0 \le r \le 9$, alors $7^n = \left(7^{10}\right)^k \times 7^r \equiv 7^r \pmod{11}$ : le reste se lit dans le tableau à la colonne $r$.
+:::
+
+::: etape b) Reste de $7^{456}$
+$456 = 10 \times 45 + 6$, donc $7^{456} \equiv 7^6 \equiv 4 \pmod{11}$.
+:::
+
+::: resultat
+Le reste de $7^n$ modulo $11$ ne dépend que du reste de $n$ modulo $10$ ; le reste de $7^{456}$ est $4$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Puissances de $3$ :
+   - a) restes $3, 9, 7, 1, 3, 9$ ;
+   - b) $3^{4k} \equiv 1$, $3^{4k+1} \equiv 3$, $3^{4k+2} \equiv 9$, $3^{4k+3} \equiv 7 \pmod{10}$ ;
+   - c) le reste de $3^{87}$ est $7$.
+2. Puissances de $7$ :
+   - a) si $n = 10k + r$, $7^n \equiv 7^r \pmod{11}$, avec les restes $1, 7, 5, 2, 3, 10, 4, 6, 9, 8$ pour $r = 0, \ldots, 9$ ;
+   - b) le reste de $7^{456}$ est $4$.
+
+===
+
+=== Problème - Principe du chiffrement RSA
+Id: 1154
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+On étudie un système de codage fondé sur l'arithmétique modulaire (principe du chiffrement RSA). On choisit deux nombres premiers $p = 17$ et $q = 23$.
+
+1. Vérifier que $p$ et $q$ sont premiers et calculer $n = pq$.
+2. Calculer $(p - 1)(q - 1)$ et $\mathrm{PGCD}(p - 1, q - 1)$.
+3. Trouver un entier $e$ tel que $1 \lt e \lt (p - 1)(q - 1)$ et $\mathrm{PGCD}\big(e, (p - 1)(q - 1)\big) = 1$.
+4. Pour la valeur de $e$ trouvée, déterminer un inverse de $e$ modulo $(p - 1)(q - 1)$ à l'aide de l'identité de Bézout.
+5. Un message $m$ est codé par le reste $c$ de $m^e$ modulo $n$. Pour $m = 100$ et $e = 3$, calculer $c$.
+6. Montrer que si $\mathrm{PGCD}(m, p) = 1$, alors $m^{p-1} \equiv 1 \pmod{p}$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $p$ et $q$ sont premiers ; calcul de $n$
+
+::: methode
+Tester les nombres premiers inférieurs ou égaux à la racine carrée.
+:::
+
+::: etape $17$ est premier
+$\sqrt{17} \approx 4{,}1$ : on teste $2$ et $3$. $17$ est impair et $17 = 3 \times 5 + 2$ : aucun ne divise $17$.
+:::
+
+::: etape $23$ est premier
+$\sqrt{23} \approx 4{,}8$ : $23$ est impair et $23 = 3 \times 7 + 2$.
+:::
+
+::: etape Calcul de $n$
+$$n = 17 \times 23 = 391$$
+:::
+
+::: resultat
+$17$ et $23$ sont premiers et $n = 391$.
+:::
+
+## Question 2 : $(p - 1)(q - 1)$ et $\mathrm{PGCD}(16, 22)$
+
+::: methode
+Calcul direct, puis algorithme d'Euclide.
+:::
+
+::: etape Produit
+$(p - 1)(q - 1) = 16 \times 22 = 352$.
+:::
+
+::: etape PGCD
+$22 = 16 \times 1 + 6$, $16 = 6 \times 2 + 4$, $6 = 4 \times 1 + 2$, $4 = 2 \times 2 + 0$.
+:::
+
+::: resultat
+$(p - 1)(q - 1) = 352$ et $\mathrm{PGCD}(16, 22) = 2$.
+:::
+
+## Question 3 : Choix de $e$
+
+::: methode
+$352$ est pair : tester de petits entiers impairs.
+:::
+
+::: etape Tester $e = 3$
+$352 = 3 \times 117 + 1$ puis $3 = 1 \times 3 + 0$ : $\mathrm{PGCD}(3, 352) = 1$, et $1 \lt 3 \lt 352$.
+:::
+
+::: resultat
+$e = 3$ convient.
+:::
+
+## Question 4 : Inverse de $3$ modulo $352$
+
+::: methode
+Écrire une relation de Bézout $3u + 352v = 1$.
+:::
+
+::: etape Relation de Bézout
+$352 = 3 \times 117 + 1$ donne $1 = 352 - 3 \times 117$, soit $3 \times (-117) \equiv 1 \pmod{352}$.
+:::
+
+::: etape Inverse positif
+$-117 + 352 = 235$, donc $3 \times 235 \equiv 1 \pmod{352}$. Vérification : $3 \times 235 = 705 = 2 \times 352 + 1$.
+:::
+
+::: resultat
+$d = 235$ est un inverse de $3$ modulo $352$.
+:::
+
+## Question 5 : Coder $m = 100$
+
+::: methode
+Calculer $100^3$ modulo $391$ en réduisant après chaque multiplication.
+:::
+
+::: etape Carré
+$100^2 = 10\,000 = 391 \times 25 + 225$, donc $100^2 \equiv 225 \pmod{391}$.
+:::
+
+::: etape Cube
+$100^3 \equiv 225 \times 100 = 22\,500 \pmod{391}$, et $22\,500 = 391 \times 57 + 213$.
+:::
+
+::: resultat
+$$c = 213$$
+:::
+
+## Question 6 : $m^{p-1} \equiv 1 \pmod{p}$
+
+::: methode
+Appliquer le petit théorème de Fermat.
+:::
+
+::: etape Hypothèses
+$p = 17$ est premier et $\mathrm{PGCD}(m, 17) = 1$, donc $17$ ne divise pas $m$.
+:::
+
+::: etape Petit théorème de Fermat
+Pour $p$ premier ne divisant pas $m$ : $m^{p-1} \equiv 1 \pmod{p}$, ici $m^{16} \equiv 1 \pmod{17}$.
+:::
+
+::: resultat
+Si $\mathrm{PGCD}(m, p) = 1$, alors $m^{p-1} \equiv 1 \pmod{p}$.
+:::
+
+::: remarque Pour aller plus loin : le déchiffrement
+Grâce à ce théorème (appliqué modulo $17$ et modulo $23$), on montre que $c^{d} \equiv m \pmod{n}$ : le destinataire, qui connaît $d = 235$, retrouve le message. Ici, $213^{235} \equiv 100 \pmod{391}$ (calcul vérifiable avec `pow(213, 235, 391)` en Python).
+:::
+
+[IMAGE_1]
+
+Solution:
+<!-- optitab:1 -->
+1. $17$ et $23$ sont premiers (aucun diviseur premier inférieur à leur racine carrée) ; $n = 391$.
+2. $(p - 1)(q - 1) = 352$ et $\mathrm{PGCD}(16, 22) = 2$.
+3. $e = 3$ convient : $\mathrm{PGCD}(3, 352) = 1$.
+4. $3 \times 235 = 705 = 2 \times 352 + 1$ : $235$ est un inverse de $3$ modulo $352$.
+5. $c = 213$.
+6. Petit théorème de Fermat : $p$ premier et $p \nmid m$ donnent $m^{p-1} \equiv 1 \pmod{p}$.
+
+===

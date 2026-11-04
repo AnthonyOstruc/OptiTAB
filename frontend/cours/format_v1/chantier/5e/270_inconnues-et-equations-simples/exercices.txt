@@ -1,0 +1,1252 @@
+=== Découverte - Tester si un nombre est solution
+Id: 2897
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Pour chaque question, remplacer la lettre par le nombre proposé, puis conclure.
+
+1. Le nombre $6$ est-il solution de l'équation $x + 9 = 15$ ? Et le nombre $24$ ?
+2. Parmi les nombres $3$, $4$ et $5$, lequel est solution de l'équation $7x = 28$ ?
+3. Le nombre $2{,}5$ est-il solution de l'équation $4x - 1 = 9$ ?
+4. On considère l'équation $3x + 4 = 5x - 2$.
+   - a) Le nombre $2$ est-il solution ?
+   - b) Le nombre $3$ est-il solution ?
+5. Lucas affirme : « $0$ est solution de l'équation $6x = 0$, et aussi de l'équation $x + 6 = 0$. » A-t-il raison ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les nombres 6 et 24 dans $x + 9 = 15$
+
+::: methode
+On remplace $x$ par le nombre proposé, on calcule le membre de gauche, puis on le compare au membre de droite.
+:::
+
+::: etape Avec $x = 6$
+$$6 + 9 = 15$$
+On obtient bien $15$ : l'égalité est vraie.
+:::
+
+::: etape Avec $x = 24$
+$$24 + 9 = 33$$
+Or $33 \neq 15$ : l'égalité est fausse.
+:::
+
+::: resultat
+$6$ est solution de $x + 9 = 15$ ; $24$ n'est pas solution.
+:::
+
+## Question 2 : La solution de $7x = 28$ parmi 3, 4 et 5
+
+::: methode
+$7x$ signifie $7 \times x$. On teste chaque nombre.
+:::
+
+::: etape Les trois tests
+- $7 \times 3 = 21$ : différent de $28$.
+- $7 \times 4 = 28$ : égal à $28$.
+- $7 \times 5 = 35$ : différent de $28$.
+:::
+
+::: resultat
+Le nombre $4$ est solution de $7x = 28$.
+:::
+
+## Question 3 : Le nombre 2,5 dans $4x - 1 = 9$
+
+::: methode
+On remplace $x$ par $2{,}5$ et on respecte les priorités : la multiplication d'abord.
+:::
+
+::: etape Calcul du membre de gauche
+$$
+\begin{aligned}
+4 \times 2{,}5 - 1 &= 10 - 1 \\
+&= 9
+\end{aligned}
+$$
+Le membre de droite vaut $9$ : l'égalité est vraie.
+:::
+
+::: resultat
+$2{,}5$ est solution de $4x - 1 = 9$.
+:::
+
+## Question 4 : L'équation $3x + 4 = 5x - 2$
+
+::: methode
+La lettre apparaît dans les deux membres : on calcule **séparément** le membre de gauche et le membre de droite, puis on compare.
+:::
+
+::: etape a) Avec $x = 2$
+- Membre de gauche : $3 \times 2 + 4 = 6 + 4 = 10$.
+- Membre de droite : $5 \times 2 - 2 = 10 - 2 = 8$.
+
+Comme $10 \neq 8$, l'égalité est fausse.
+:::
+
+::: etape b) Avec $x = 3$
+- Membre de gauche : $3 \times 3 + 4 = 9 + 4 = 13$.
+- Membre de droite : $5 \times 3 - 2 = 15 - 2 = 13$.
+
+Les deux membres valent $13$ : l'égalité est vraie.
+:::
+
+::: resultat
+a) $2$ n'est pas solution. b) $3$ est solution de $3x + 4 = 5x - 2$.
+:::
+
+## Question 5 : L'affirmation de Lucas
+
+::: methode
+On teste $0$ dans chacune des deux équations.
+:::
+
+::: etape Dans $6x = 0$
+$6 \times 0 = 0$ : l'égalité est vraie, donc $0$ est solution.
+:::
+
+::: etape Dans $x + 6 = 0$
+$0 + 6 = 6$ et $6 \neq 0$ : l'égalité est fausse, donc $0$ n'est pas solution. La solution de cette équation est $-6$, car $-6 + 6 = 0$.
+:::
+
+::: resultat
+Lucas a raison pour $6x = 0$, mais il a tort pour $x + 6 = 0$ (sa solution est $-6$).
+:::
+
+::: attention Erreurs fréquentes
+- Écrire « $7x = 74$ » pour $x = 4$ : $7x$ est le **produit** $7 \times x$, donc $7 \times 4 = 28$.
+- Tester un seul membre quand la lettre est des deux côtés : il faut calculer les **deux** membres avec la même valeur.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $6 + 9 = 15$ : $6$ est solution ; $24 + 9 = 33 \neq 15$ : $24$ ne l'est pas.
+2. $7 \times 4 = 28$ : la solution est $4$.
+3. $4 \times 2{,}5 - 1 = 9$ : $2{,}5$ est solution.
+4. a) $10 \neq 8$ : $2$ n'est pas solution. b) $13 = 13$ : $3$ est solution.
+5. Vrai pour $6x = 0$ ; faux pour $x + 6 = 0$, dont la solution est $-6$.
+
+===
+
+=== Découverte - Additions à trou et balances
+Id: 2896
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Les balances A et B sont en équilibre. Sur chacune, la boîte marquée $x$ a une masse inconnue, en grammes ; les masses orange sont indiquées en grammes.
+
+[IMAGE_1]
+
+[IMAGE_2]
+
+1. Écrire l'égalité traduite par la balance A, puis trouver la masse $x$ de la boîte. Vérifier.
+2. Même question pour la balance B.
+3. Résoudre chaque équation, puis vérifier.
+   - a) $x + 13 = 41$
+   - b) $x + 0{,}7 = 2$
+   - c) $27 + x = 50$
+4. Résoudre l'équation $x + 11 = 4$. Une balance pourrait-elle représenter cette équation ? Pourquoi ?
+5. Résoudre l'équation $x - 8 = 15$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : La balance A
+
+::: methode
+Une balance en équilibre traduit une égalité : masse du plateau de gauche $=$ masse du plateau de droite. Si l'on enlève la même masse des deux côtés, l'équilibre est conservé.
+:::
+
+::: etape Traduire la balance
+À gauche : la boîte et $8$ g ; à droite : $23$ g. Donc :
+$$x + 8 = 23$$
+:::
+
+::: etape Enlever 8 g de chaque côté
+On cherche le nombre auquel on ajoute $8$ pour obtenir $23$ : on soustrait $8$.
+$$x = 23 - 8 = 15$$
+:::
+
+[IMAGE_3]
+
+::: etape Vérifier
+$15 + 8 = 23$ : l'égalité est vraie.
+:::
+
+::: resultat
+$x + 8 = 23$, donc la boîte pèse $x = 15$ g.
+:::
+
+## Question 2 : La balance B
+
+::: etape Traduire puis résoudre
+$$x + 4{,}5 = 12$$
+On enlève $4{,}5$ g de chaque côté :
+$$x = 12 - 4{,}5 = 7{,}5$$
+:::
+
+[IMAGE_4]
+
+::: etape Vérifier
+$7{,}5 + 4{,}5 = 12$ : l'égalité est vraie.
+:::
+
+::: resultat
+$x + 4{,}5 = 12$, donc la boîte pèse $x = 7{,}5$ g.
+:::
+
+## Question 3 : Trois additions à trou
+
+::: methode
+$x + b = c$ donne $x = c - b$ : on défait l'addition par une soustraction.
+:::
+
+::: etape a) $x + 13 = 41$
+$x = 41 - 13 = 28$. Vérification : $28 + 13 = 41$.
+:::
+
+::: etape b) $x + 0{,}7 = 2$
+$x = 2 - 0{,}7 = 1{,}3$. Vérification : $1{,}3 + 0{,}7 = 2$.
+:::
+
+::: etape c) $27 + x = 50$
+L'ordre des termes d'une addition ne change pas le résultat : $27 + x = x + 27$. Donc $x = 50 - 27 = 23$. Vérification : $27 + 23 = 50$.
+:::
+
+::: resultat
+a) $x = 28$ ; b) $x = 1{,}3$ ; c) $x = 23$.
+:::
+
+## Question 4 : L'équation $x + 11 = 4$
+
+::: etape Résoudre
+$$x = 4 - 11 = -7$$
+Vérification : $-7 + 11 = 4$. L'égalité est vraie.
+:::
+
+::: etape Et avec une balance ?
+Une masse ne peut pas être négative : aucune boîte ne peut peser $-7$ g. La balance ne convient pas ici, mais l'équation a bien une solution.
+:::
+
+::: resultat
+$x = -7$. Une balance ne peut pas représenter cette équation, car une masse n'est jamais négative.
+:::
+
+## Question 5 : L'équation $x - 8 = 15$
+
+::: methode
+On a **retiré** $8$ au nombre cherché : pour le retrouver, on **rajoute** $8$.
+:::
+
+::: etape Résoudre et vérifier
+$x = 15 + 8 = 23$. Vérification : $23 - 8 = 15$.
+:::
+
+::: resultat
+$x = 23$.
+:::
+
+::: attention Erreur fréquente
+Pour $x + 13 = 41$, ajouter $13$ au lieu de le soustraire donne $54$. La vérification le détecte : $54 + 13 = 67 \neq 41$. On défait une addition par une **soustraction**.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $x + 8 = 23$, donc $x = 15$ g.
+2. $x + 4{,}5 = 12$, donc $x = 7{,}5$ g.
+3. a) $x = 28$ ; b) $x = 1{,}3$ ; c) $x = 23$.
+4. $x = -7$ ; non, une masse ne peut pas être négative.
+5. $x = 23$.
+
+===
+
+=== Découverte - Multiplications et divisions à trou
+Id: 2898
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+La balance ci-dessous est en équilibre. Les quatre boîtes sont identiques ; chacune a une masse $x$, en grammes.
+
+[IMAGE_1]
+
+1. Écrire l'égalité traduite par la balance, puis trouver la masse $x$ d'une boîte. Vérifier.
+2. Résoudre chaque équation. Donner la solution sous forme décimale, sauf au d), où l'on donnera une fraction.
+   - a) $6x = 42$
+   - b) $5x = 13$
+   - c) $8x = 6$
+   - d) $7x = 3$
+3. Résoudre chaque équation.
+   - a) $\frac{x}{6} = 1$
+   - b) $\frac{x}{5} = 2{,}4$
+   - c) $\frac{x}{10} = 0{,}7$
+4. Résoudre les équations $9x = 0$ et $\frac{x}{7} = 0$.
+5. Pour résoudre $3x = 12$, Tom écrit : « $x = 12 - 3 = 9$ ». Montrer par une vérification qu'il se trompe, puis corriger.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : La balance
+
+::: methode
+Quatre boîtes identiques pèsent $4 \times x = 4x$. Si l'on garde le quart de chaque plateau, l'équilibre est conservé.
+:::
+
+::: etape Traduire la balance
+$$4x = 18$$
+:::
+
+::: etape Garder le quart de chaque plateau
+On cherche le nombre qui, multiplié par $4$, donne $18$ : on divise $18$ par $4$.
+$$x = 18 \div 4 = 4{,}5$$
+:::
+
+[IMAGE_2]
+
+::: etape Vérifier
+$4 \times 4{,}5 = 18$ : l'égalité est vraie.
+:::
+
+::: resultat
+$4x = 18$, donc une boîte pèse $x = 4{,}5$ g.
+:::
+
+## Question 2 : Quatre multiplications à trou
+
+::: methode
+$ax = c$ donne $x = c \div a = \frac{c}{a}$ : on défait la multiplication par une division.
+:::
+
+::: etape a) et b)
+- a) $x = 42 \div 6 = 7$. Vérification : $6 \times 7 = 42$.
+- b) $x = 13 \div 5 = 2{,}6$. Vérification : $5 \times 2{,}6 = 13$.
+:::
+
+::: etape c) $8x = 6$
+$x = 6 \div 8 = 0{,}75$. Vérification : $8 \times 0{,}75 = 6$.
+:::
+
+::: etape d) $7x = 3$
+La division $3 \div 7$ ne s'arrête pas. La solution est le **quotient** $\frac{3}{7}$ : c'est le nombre qui, multiplié par $7$, donne $3$.
+$$7 \times \frac{3}{7} = 3$$
+:::
+
+::: resultat
+a) $x = 7$ ; b) $x = 2{,}6$ ; c) $x = 0{,}75$ ; d) $x = \frac{3}{7}$.
+:::
+
+## Question 3 : Trois divisions à trou
+
+::: methode
+$\frac{x}{a} = c$ : le nombre $x$, partagé en $a$ parts égales, donne des parts égales à $c$. Donc $x = c \times a$.
+:::
+
+::: etape Les trois calculs
+- a) $x = 1 \times 6 = 6$. Vérification : $\frac{6}{6} = 1$.
+- b) $x = 2{,}4 \times 5 = 12$. Vérification : $12 \div 5 = 2{,}4$.
+- c) $x = 0{,}7 \times 10 = 7$. Vérification : $7 \div 10 = 0{,}7$.
+:::
+
+::: resultat
+a) $x = 6$ ; b) $x = 12$ ; c) $x = 7$.
+:::
+
+## Question 4 : Les cas avec zéro
+
+::: etape $9x = 0$
+$x = 0 \div 9 = 0$. Vérification : $9 \times 0 = 0$. Aucun autre nombre ne convient : $9$ fois un nombre non nul n'est jamais nul.
+:::
+
+::: etape $\frac{x}{7} = 0$
+$x = 0 \times 7 = 0$. Vérification : $\frac{0}{7} = 0$.
+:::
+
+::: resultat
+Les deux équations ont pour solution $0$.
+:::
+
+## Question 5 : L'erreur de Tom
+
+::: etape Tester la valeur de Tom
+$3 \times 9 = 27$ et $27 \neq 12$ : $9$ n'est pas solution.
+:::
+
+::: etape Trouver l'erreur
+$3x$ est un **produit** ($3 \times x$), pas une somme. Pour défaire une multiplication par $3$, il faut **diviser** par $3$, et non soustraire $3$.
+$$x = 12 \div 3 = 4$$
+Vérification : $3 \times 4 = 12$.
+:::
+
+::: resultat
+Tom se trompe ; la solution de $3x = 12$ est $x = 4$.
+:::
+
+::: attention Erreurs fréquentes
+- Soustraire au lieu de diviser, comme Tom.
+- Inverser le quotient : la solution de $7x = 3$ est $\frac{3}{7}$ (on partage $3$ en $7$), et non $\frac{7}{3}$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $4x = 18$, donc $x = 4{,}5$ g.
+2. a) $7$ ; b) $2{,}6$ ; c) $0{,}75$ ; d) $\frac{3}{7}$.
+3. a) $6$ ; b) $12$ ; c) $7$.
+4. Les deux solutions sont égales à $0$.
+5. $3 \times 9 = 27 \neq 12$ ; la solution est $x = 12 \div 3 = 4$.
+
+===
+
+=== Entraînement - Décimaux, relatifs et fractions
+Id: 2903
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Résoudre chaque équation, puis vérifier la solution.
+
+1. Additions et soustractions à trou :
+   - a) $x + 2{,}75 = 5$
+   - b) $x + 1{,}8 = 0{,}5$
+   - c) $x + 7 = -3$
+   - d) $x - 4{,}5 = -1$
+2. Multiplications à trou par un décimal :
+   - a) $2{,}5x = 10$
+   - b) $0{,}4x = 3$
+   - c) $1{,}2x = 0{,}6$
+3. Avec des fractions :
+   - a) $x + \frac{2}{5} = 1$
+   - b) $x + \frac{1}{4} = \frac{5}{6}$
+   - c) $3x = 7$ (donner la solution sous forme de fraction)
+4. Entre quels nombres entiers consécutifs se trouve la solution de $3x = 7$ ? Justifier par des essais, puis en donner une valeur approchée au centième.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Additions et soustractions à trou
+
+::: methode
+$x + b = c$ donne $x = c - b$ ; $x - b = c$ donne $x = c + b$. Les résultats peuvent être négatifs.
+:::
+
+::: etape a) et b)
+- a) $x = 5 - 2{,}75 = 2{,}25$. Vérification : $2{,}25 + 2{,}75 = 5$.
+- b) $x = 0{,}5 - 1{,}8 = -1{,}3$. Vérification : $-1{,}3 + 1{,}8 = 0{,}5$.
+:::
+
+::: etape c) et d)
+- c) $x = -3 - 7 = -10$. Vérification : $-10 + 7 = -3$.
+- d) $x = -1 + 4{,}5 = 3{,}5$. Vérification : $3{,}5 - 4{,}5 = -1$.
+:::
+
+::: resultat
+a) $2{,}25$ ; b) $-1{,}3$ ; c) $-10$ ; d) $3{,}5$.
+:::
+
+## Question 2 : Diviser par un décimal
+
+::: methode
+$ax = c$ donne $x = c \div a$. Pour diviser par un décimal, on multiplie le dividende et le diviseur par $10$ : le quotient ne change pas, et l'on divise par un entier.
+:::
+
+::: etape a) $2{,}5x = 10$
+$$x = 10 \div 2{,}5 = 100 \div 25 = 4$$
+Vérification : $2{,}5 \times 4 = 10$.
+:::
+
+::: etape b) $0{,}4x = 3$
+$$x = 3 \div 0{,}4 = 30 \div 4 = 7{,}5$$
+Vérification : $0{,}4 \times 7{,}5 = 3$.
+:::
+
+::: etape c) $1{,}2x = 0{,}6$
+$$x = 0{,}6 \div 1{,}2 = 6 \div 12 = 0{,}5$$
+Vérification : $1{,}2 \times 0{,}5 = 0{,}6$.
+:::
+
+::: resultat
+a) $4$ ; b) $7{,}5$ ; c) $0{,}5$.
+:::
+
+## Question 3 : Avec des fractions
+
+::: methode
+Pour soustraire des fractions, on les écrit d'abord avec le même dénominateur.
+:::
+
+::: etape a) $x + \frac{2}{5} = 1$
+$$x = 1 - \frac{2}{5} = \frac{5}{5} - \frac{2}{5} = \frac{3}{5}$$
+Vérification : $\frac{3}{5} + \frac{2}{5} = \frac{5}{5} = 1$.
+:::
+
+::: etape b) $x + \frac{1}{4} = \frac{5}{6}$
+Le dénominateur commun est $12$ :
+$$
+\begin{aligned}
+x &= \frac{5}{6} - \frac{1}{4} \\
+&= \frac{10}{12} - \frac{3}{12} \\
+&= \frac{7}{12}
+\end{aligned}
+$$
+Vérification : $\frac{7}{12} + \frac{3}{12} = \frac{10}{12} = \frac{5}{6}$.
+:::
+
+::: etape c) $3x = 7$
+La solution est le quotient de $7$ par $3$ :
+$$x = \frac{7}{3}$$
+Vérification : $\frac{7}{3}$ est le nombre qui, multiplié par $3$, donne $7$.
+:::
+
+::: resultat
+a) $\frac{3}{5}$ ; b) $\frac{7}{12}$ ; c) $\frac{7}{3}$.
+:::
+
+## Question 4 : Encadrer la solution de $3x = 7$
+
+::: etape Essais avec des entiers
+- $3 \times 2 = 6$ : trop petit.
+- $3 \times 3 = 9$ : trop grand.
+
+Comme $7$ est entre $6$ et $9$, la solution est entre $2$ et $3$.
+:::
+
+::: etape Valeur approchée
+$7 \div 3 = 2{,}333\ldots$ (le chiffre $3$ se répète sans fin). Au centième : $x \approx 2{,}33$.
+:::
+
+::: resultat
+$2 < \frac{7}{3} < 3$ et $\frac{7}{3} \approx 2{,}33$.
+:::
+
+::: attention Erreurs fréquentes
+- Pour $x + 1{,}8 = 0{,}5$, écrire $x = 1{,}8 - 0{,}5 = 1{,}3$ : c'est $0{,}5 - 1{,}8 = -1{,}3$ (on retire toujours $b$ à $c$).
+- Pour $0{,}4x = 3$, multiplier au lieu de diviser : $3 \times 0{,}4 = 1{,}2$ ne vérifie pas l'équation ($0{,}4 \times 1{,}2 = 0{,}48$).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. a) $2{,}25$ ; b) $-1{,}3$ ; c) $-10$ ; d) $3{,}5$.
+2. a) $4$ ; b) $7{,}5$ ; c) $0{,}5$.
+3. a) $\frac{3}{5}$ ; b) $\frac{7}{12}$ ; c) $\frac{7}{3}$.
+4. $3 \times 2 = 6 < 7 < 9 = 3 \times 3$, donc la solution est entre $2$ et $3$ ; $\frac{7}{3} \approx 2{,}33$.
+
+===
+
+=== Entraînement - Mettre en équation des situations simples
+Id: 2901
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Pour chaque situation : écrire ce que représente l'inconnue (avec son unité), écrire une équation, la résoudre, vérifier, puis répondre par une phrase.
+
+1. Une randonnée mesure $12{,}5$ km. Après la pause, on a parcouru $7{,}8$ km. On note $d$ la distance qui reste à parcourir.
+
+[IMAGE_1]
+
+2. Un ruban de $18$ m est découpé en $8$ morceaux de même longueur $\ell$.
+
+[IMAGE_2]
+
+3. Cinq stylos identiques coûtent $7{,}50$ €. On note $p$ le prix d'un stylo.
+4. Le matin, la température était de $t$ °C. À midi, elle a augmenté de $9$ °C et il fait $4$ °C.
+5. Quatre amis se partagent équitablement une somme $s$, en euros ; chacun reçoit $12{,}50$ €. Laquelle des trois équations suivantes traduit la situation ? Calculer $s$.
+   - $s + 4 = 12{,}50$
+   - $4s = 12{,}50$
+   - $\frac{s}{4} = 12{,}50$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : La randonnée
+
+::: methode
+Distance parcourue $+$ distance restante $=$ longueur totale : c'est une addition à trou.
+:::
+
+::: etape Traduire
+$d$ est la distance restante, en km. D'après le schéma :
+$$7{,}8 + d = 12{,}5$$
+:::
+
+::: etape Résoudre et vérifier
+$d = 12{,}5 - 7{,}8 = 4{,}7$. Vérification : $7{,}8 + 4{,}7 = 12{,}5$.
+:::
+
+[IMAGE_3]
+
+::: resultat
+Il reste $4{,}7$ km à parcourir.
+:::
+
+## Question 2 : Le ruban
+
+::: methode
+Huit morceaux identiques de longueur $\ell$ mesurent $8 \times \ell = 8\ell$ : c'est une multiplication à trou.
+:::
+
+::: etape Traduire
+$\ell$ est la longueur d'un morceau, en m :
+$$8\ell = 18$$
+:::
+
+::: etape Résoudre et vérifier
+$\ell = 18 \div 8 = 2{,}25$. Vérification : $8 \times 2{,}25 = 18$.
+:::
+
+[IMAGE_4]
+
+::: resultat
+Chaque morceau mesure $2{,}25$ m.
+:::
+
+## Question 3 : Les stylos
+
+::: etape Traduire
+$p$ est le prix d'un stylo, en euros. Cinq stylos coûtent $5p$ euros :
+$$5p = 7{,}50$$
+:::
+
+::: etape Résoudre et vérifier
+$p = 7{,}50 \div 5 = 1{,}50$. Vérification : $5 \times 1{,}50 = 7{,}50$.
+:::
+
+::: resultat
+Un stylo coûte $1{,}50$ €.
+:::
+
+## Question 4 : La température
+
+::: etape Traduire
+$t$ est la température du matin, en °C. Augmentée de $9$, elle donne $4$ :
+$$t + 9 = 4$$
+:::
+
+::: etape Résoudre et vérifier
+$t = 4 - 9 = -5$. Vérification : $-5 + 9 = 4$.
+
+Une température peut être négative : la réponse a un sens.
+:::
+
+::: resultat
+Le matin, il faisait $-5$ °C.
+:::
+
+## Question 5 : Le partage entre quatre amis
+
+::: methode
+Partager équitablement entre $4$ personnes, c'est diviser par $4$.
+:::
+
+::: etape Choisir la bonne équation
+La somme $s$ divisée par $4$ donne la part de chacun : $\frac{s}{4} = 12{,}50$.
+- $s + 4 = 12{,}50$ ajouterait $4$ € à la somme : ce n'est pas un partage.
+- $4s = 12{,}50$ signifierait que **quatre fois** la somme vaut $12{,}50$ € : c'est l'inverse de la situation.
+:::
+
+::: etape Résoudre et vérifier
+$s = 12{,}50 \times 4 = 50$. Vérification : $50 \div 4 = 12{,}50$.
+:::
+
+::: resultat
+L'équation est $\frac{s}{4} = 12{,}50$ ; la somme partagée est de $50$ €.
+:::
+
+::: retenir
+Avant d'écrire l'équation, on se demande quelle opération relie les nombres : un **reste** ou un **ajout** donne une addition à trou, des **parts égales** donnent une multiplication ou une division. Le schéma en barres aide à le voir.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $7{,}8 + d = 12{,}5$ ; il reste $4{,}7$ km.
+2. $8\ell = 18$ ; chaque morceau mesure $2{,}25$ m.
+3. $5p = 7{,}50$ ; un stylo coûte $1{,}50$ €.
+4. $t + 9 = 4$ ; il faisait $-5$ °C.
+5. $\frac{s}{4} = 12{,}50$ ; la somme est de $50$ €.
+
+===
+
+=== Entraînement - Vérifier et corriger des résolutions
+Id: 2908
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Six élèves ont résolu une équation. Pour chacun : tester la réponse proposée dans l'équation de départ ; si elle est fausse, expliquer l'erreur et donner la bonne solution.
+
+1. Ana : « $x + 15 = 41$, donc $x = 41 + 15 = 56$. »
+2. Bilal : « $6x = 33$ n'a pas de solution, car $33$ n'est pas dans la table de $6$. »
+3. Chloé : « $5x = 3$, donc $x = \frac{5}{3}$. »
+4. Dylan : « $\frac{x}{4} = 3$, donc $x = 3 \div 4 = 0{,}75$. »
+5. Emma : « $x + 7 = 5$ n'a pas de solution, car une solution est toujours positive. »
+6. Farid : « $x - 2{,}5 = 4$, donc $x = 4 - 2{,}5 = 1{,}5$. »
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Ana
+
+::: etape Tester
+$56 + 15 = 71$ et $71 \neq 41$ : la réponse est fausse.
+:::
+
+::: etape Corriger
+Ana a ajouté $15$ au lieu de le retirer. On défait une addition par une soustraction :
+$$x = 41 - 15 = 26$$
+Vérification : $26 + 15 = 41$.
+:::
+
+::: resultat
+La solution est $x = 26$.
+:::
+
+## Question 2 : Bilal
+
+::: etape Chercher la solution
+$x = 33 \div 6 = 5{,}5$. Vérification : $6 \times 5{,}5 = 33$.
+:::
+
+::: etape Conclure
+Aucun **entier** ne convient, mais le **décimal** $5{,}5$ convient. Une solution n'est pas forcément un nombre entier.
+:::
+
+::: resultat
+Bilal a tort : la solution est $x = 5{,}5$.
+:::
+
+## Question 3 : Chloé
+
+::: etape Tester
+$\frac{5}{3}$ est plus grand que $1$, donc $5 \times \frac{5}{3}$ est plus grand que $5$ : il ne peut pas être égal à $3$. La réponse est fausse.
+:::
+
+::: etape Corriger
+La solution de $5x = 3$ est le nombre qui, multiplié par $5$, donne $3$ : c'est le quotient de $3$ par $5$.
+$$x = \frac{3}{5} = 3 \div 5 = 0{,}6$$
+Vérification : $5 \times 0{,}6 = 3$.
+:::
+
+::: resultat
+Chloé a inversé le quotient : la solution est $x = \frac{3}{5} = 0{,}6$.
+:::
+
+## Question 4 : Dylan
+
+::: etape Tester
+$0{,}75 \div 4 = 0{,}1875$ et $0{,}1875 \neq 3$ : la réponse est fausse.
+:::
+
+::: etape Corriger
+$x$ partagé en $4$ parts égales donne des parts de $3$ : on défait la division par une **multiplication**.
+$$x = 3 \times 4 = 12$$
+Vérification : $\frac{12}{4} = 3$.
+:::
+
+::: resultat
+La solution est $x = 12$.
+:::
+
+## Question 5 : Emma
+
+::: etape Résoudre et tester
+$x = 5 - 7 = -2$. Vérification : $-2 + 7 = 5$ : l'égalité est vraie.
+:::
+
+::: etape Conclure
+Rien n'interdit une solution négative quand l'équation ne vient pas d'une situation qui l'exclut (comme une masse ou un prix).
+:::
+
+::: resultat
+Emma a tort : la solution est $x = -2$.
+:::
+
+## Question 6 : Farid
+
+::: etape Tester
+$1{,}5 - 2{,}5 = -1$ et $-1 \neq 4$ : la réponse est fausse.
+:::
+
+::: etape Corriger
+On a **retiré** $2{,}5$ au nombre cherché : pour le retrouver, on **rajoute** $2{,}5$.
+$$x = 4 + 2{,}5 = 6{,}5$$
+Vérification : $6{,}5 - 2{,}5 = 4$.
+:::
+
+::: resultat
+La solution est $x = 6{,}5$.
+:::
+
+::: retenir
+- Chaque opération se défait par son **opération inverse** : $+$ par $-$, $-$ par $+$, $\times$ par $\div$, $\div$ par $\times$.
+- La **vérification** dans l'équation de départ suffit à détecter une réponse fausse.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $56 + 15 = 71 \neq 41$ ; la solution est $26$.
+2. Faux : $x = 33 \div 6 = 5{,}5$.
+3. Faux : $x = \frac{3}{5} = 0{,}6$.
+4. $0{,}75 \div 4 \neq 3$ ; la solution est $12$.
+5. Faux : $x = -2$ convient, car $-2 + 7 = 5$.
+6. $1{,}5 - 2{,}5 = -1 \neq 4$ ; la solution est $6{,}5$.
+
+===
+
+=== Problème - Remplir des flacons
+Id: 2914
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Un bidon vide pèse $1{,}2$ kg. Rempli de savon liquide, il pèse $4{,}8$ kg. On répartit tout le savon de façon égale dans $8$ flacons. Chaque flacon vide pèse $50$ g.
+
+[IMAGE_1]
+
+1. On note $m$ la masse de savon contenue dans le bidon, en kg. Écrire une équation, puis calculer $m$.
+2. On note $x$ la masse de savon versée dans un flacon, en kg. Écrire une équation, puis calculer $x$.
+3. Exprimer cette masse en grammes.
+4. Combien pèse un flacon rempli, en grammes ?
+5. Combien de kilogrammes de savon faudrait-il pour remplir $10$ flacons de la même façon ? Le savon du bidon suffirait-il ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : La masse de savon
+
+::: methode
+La masse du bidon rempli est la somme de la masse du bidon vide et de celle du savon : c'est une addition à trou.
+:::
+
+::: etape Traduire
+$$m + 1{,}2 = 4{,}8$$
+:::
+
+::: etape Résoudre et vérifier
+$m = 4{,}8 - 1{,}2 = 3{,}6$. Vérification : $3{,}6 + 1{,}2 = 4{,}8$.
+:::
+
+::: resultat
+Le bidon contient $3{,}6$ kg de savon.
+:::
+
+## Question 2 : Le savon d'un flacon
+
+::: methode
+Les $8$ flacons reçoivent chacun la même masse $x$ : ensemble, ils reçoivent $8x$, c'est-à-dire tout le savon.
+:::
+
+::: etape Traduire
+$$8x = 3{,}6$$
+:::
+
+::: etape Résoudre et vérifier
+$x = 3{,}6 \div 8 = 0{,}45$. Vérification : $8 \times 0{,}45 = 3{,}6$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+Chaque flacon reçoit $0{,}45$ kg de savon.
+:::
+
+## Question 3 : Conversion
+
+::: etape Convertir
+$1$ kg $= 1\,000$ g, donc $0{,}45$ kg $= 0{,}45 \times 1\,000$ g $= 450$ g.
+:::
+
+::: resultat
+Un flacon reçoit $450$ g de savon.
+:::
+
+## Question 4 : Un flacon rempli
+
+::: methode
+On additionne des masses exprimées dans la **même unité**.
+:::
+
+::: etape Ajouter la masse du flacon vide
+$450 + 50 = 500$.
+:::
+
+::: resultat
+Un flacon rempli pèse $500$ g.
+:::
+
+## Question 5 : Dix flacons
+
+::: etape Savon nécessaire
+$10 \times 0{,}45 = 4{,}5$ kg.
+:::
+
+::: etape Comparer avec le bidon
+Le bidon contient $3{,}6$ kg et $3{,}6 < 4{,}5$. Il manquerait $4{,}5 - 3{,}6 = 0{,}9$ kg.
+:::
+
+::: resultat
+Il faudrait $4{,}5$ kg de savon : le bidon ne suffit pas, il manque $0{,}9$ kg.
+:::
+
+::: attention Erreurs fréquentes
+- Partager les $4{,}8$ kg entre les flacons : la masse du bidon vide ne se verse pas ! On retire d'abord $1{,}2$ kg.
+- Additionner $0{,}45$ et $50$ : les masses doivent être dans la même unité ($450$ g $+ 50$ g).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $m + 1{,}2 = 4{,}8$ ; $m = 3{,}6$ kg.
+2. $8x = 3{,}6$ ; $x = 0{,}45$ kg.
+3. $450$ g.
+4. $500$ g.
+5. $4{,}5$ kg ; le bidon ne suffit pas (il manque $0{,}9$ kg).
+
+===
+
+=== Problème - Billes et ruban en schémas
+Id: 2904
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+**Partie A : les billes.** Inès a trois fois plus de billes que Tom. À eux deux, ils ont $64$ billes. On note $t$ le nombre de billes de Tom.
+
+[IMAGE_1]
+
+1. Exprimer le nombre de billes d'Inès en fonction de $t$. Expliquer, à l'aide du schéma, pourquoi le nombre total de billes s'écrit $t + 3t = 4t$.
+2. Écrire une équation, puis trouver le nombre de billes de Tom et celui d'Inès.
+3. Vérifier les deux conditions de l'énoncé.
+
+**Partie B : le ruban.** Un ruban de $2{,}4$ m est coupé en deux morceaux. Le grand morceau mesure $0{,}6$ m de plus que le petit. On note $x$ la longueur du petit morceau, en mètres.
+
+[IMAGE_2]
+
+4. En s'aidant du schéma, calculer la longueur totale des deux parties marquées $x$.
+5. En déduire la longueur de chaque morceau, puis vérifier.
+
+Étapes:
+<!-- optitab:1 -->
+## Partie A : les billes
+
+## Question 1 : Le nombre total de billes
+
+::: etape Les billes d'Inès
+Inès a trois fois plus de billes que Tom : elle en a $3 \times t = 3t$.
+:::
+
+::: etape Lire le schéma
+La barre de Tom contient **une** case $t$, celle d'Inès **trois** cases $t$. En tout, il y a $1 + 3 = 4$ cases identiques :
+$$t + 3t = 4t$$
+:::
+
+::: resultat
+Inès a $3t$ billes ; à eux deux, ils ont $t + 3t = 4t$ billes.
+:::
+
+## Question 2 : Résoudre
+
+::: etape Traduire
+Le total est $64$ billes :
+$$4t = 64$$
+:::
+
+::: etape Résoudre
+$t = 64 \div 4 = 16$. Inès a $3 \times 16 = 48$ billes.
+:::
+
+[IMAGE_3]
+
+::: resultat
+Tom a $16$ billes et Inès en a $48$.
+:::
+
+## Question 3 : Vérifier
+
+::: etape Les deux conditions
+- Total : $16 + 48 = 64$.
+- Inès a trois fois plus de billes que Tom : $3 \times 16 = 48$.
+:::
+
+::: resultat
+Les deux conditions sont respectées.
+:::
+
+## Partie B : le ruban
+
+## Question 4 : Les deux parties marquées $x$
+
+::: methode
+On retire du ruban entier la partie de $0{,}6$ m que le grand morceau a en plus : il reste deux longueurs égales à $x$.
+:::
+
+::: etape Calculer
+$$2{,}4 - 0{,}6 = 1{,}8$$
+:::
+
+::: resultat
+Les deux parties marquées $x$ mesurent ensemble $1{,}8$ m, donc $2x = 1{,}8$.
+:::
+
+## Question 5 : Les deux morceaux
+
+::: etape Le petit morceau
+$x = 1{,}8 \div 2 = 0{,}9$ m.
+:::
+
+::: etape Le grand morceau
+$0{,}9 + 0{,}6 = 1{,}5$ m.
+:::
+
+[IMAGE_4]
+
+::: etape Vérifier
+- Longueur totale : $0{,}9 + 1{,}5 = 2{,}4$ m.
+- Différence : $1{,}5 - 0{,}9 = 0{,}6$ m.
+:::
+
+::: resultat
+Le petit morceau mesure $0{,}9$ m et le grand $1{,}5$ m.
+:::
+
+::: attention Erreurs fréquentes
+- Partie A : diviser $64$ par $3$. Il y a $4$ cases identiques en tout (une pour Tom, trois pour Inès), donc on divise par $4$.
+- Partie B : couper le ruban en deux moitiés de $1{,}2$ m. Les deux morceaux ne sont pas égaux : on retire d'abord les $0{,}6$ m en plus.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Inès a $3t$ billes ; il y a $4$ cases $t$ en tout : $t + 3t = 4t$.
+2. $4t = 64$ ; Tom a $16$ billes, Inès $48$.
+3. $16 + 48 = 64$ et $3 \times 16 = 48$.
+4. $2{,}4 - 0{,}6 = 1{,}8$ m.
+5. Petit morceau : $0{,}9$ m ; grand morceau : $1{,}5$ m.
+
+===
+
+=== Problème - Retrouver le nombre de départ d'un programme
+Id: 2900
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+On dispose de trois programmes de calcul.
+
+- **Programme A** : choisir un nombre ; le multiplier par $6$.
+- **Programme B** : choisir un nombre ; lui ajouter $2{,}5$.
+- **Programme C** : choisir un nombre ; le multiplier par $4$ ; ajouter $7$ au résultat.
+
+[IMAGE_1]
+
+1. Avec le programme A, Sami obtient $45$. En notant $x$ le nombre choisi, écrire une équation, puis trouver $x$.
+2. Avec le programme B, Léa obtient $1$. Écrire une équation, puis trouver le nombre choisi.
+3. On utilise le programme C.
+   - a) Quel résultat obtient-on en choisissant $5$ ?
+   - b) Noé obtient $43$. Essayer les nombres $8$, $9$ et $10$ : lequel Noé a-t-il choisi ?
+   - c) Retrouver ce nombre sans essais, en remontant le programme.
+4. Avec le programme C, Maé obtient $9$. Remonter le programme pour trouver son nombre, puis vérifier.
+5. Avec le programme C, quel nombre faut-il choisir pour obtenir $7$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Le programme A
+
+::: etape Traduire
+Le nombre $x$ multiplié par $6$ donne $45$ :
+$$6x = 45$$
+:::
+
+::: etape Résoudre et vérifier
+$x = 45 \div 6 = 7{,}5$. Vérification : $6 \times 7{,}5 = 45$.
+:::
+
+::: resultat
+$6x = 45$ ; Sami a choisi $7{,}5$.
+:::
+
+## Question 2 : Le programme B
+
+::: etape Traduire et résoudre
+$$x + 2{,}5 = 1$$
+$x = 1 - 2{,}5 = -1{,}5$. Vérification : $-1{,}5 + 2{,}5 = 1$.
+:::
+
+::: resultat
+$x + 2{,}5 = 1$ ; Léa a choisi $-1{,}5$.
+:::
+
+## Question 3 : Le programme C
+
+::: etape a) À l'endroit avec 5
+$5 \times 4 = 20$, puis $20 + 7 = 27$.
+:::
+
+::: etape b) Par essais
+| Nombre choisi | $8$ | $9$ | $10$ |
+|---|---|---|---|
+| Résultat | $39$ | $43$ | $47$ |
+
+Seul $9$ donne $43$.
+:::
+
+::: etape c) En remontant le programme
+On défait les opérations **en partant de la dernière**, avec les opérations inverses :
+- la dernière opération était $+ 7$ : on fait $43 - 7 = 36$ ;
+- avant, il y avait $\times 4$ : on fait $36 \div 4 = 9$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+a) $27$. b) et c) Noé a choisi $9$.
+:::
+
+## Question 4 : Maé obtient 9
+
+::: etape Remonter le programme
+- On défait $+ 7$ : $9 - 7 = 2$.
+- On défait $\times 4$ : $2 \div 4 = 0{,}5$.
+:::
+
+::: etape Vérifier
+$0{,}5 \times 4 = 2$, puis $2 + 7 = 9$. Les essais avec des entiers ne pouvaient pas réussir : $0 \times 4 + 7 = 7$ est trop petit, $1 \times 4 + 7 = 11$ est trop grand.
+:::
+
+::: resultat
+Maé a choisi $0{,}5$.
+:::
+
+## Question 5 : Obtenir 7
+
+::: etape Remonter le programme
+$7 - 7 = 0$, puis $0 \div 4 = 0$. Vérification : $0 \times 4 + 7 = 7$.
+:::
+
+::: resultat
+Il faut choisir $0$.
+:::
+
+::: attention Erreur fréquente
+Remonter le programme dans le mauvais ordre : $43 \div 4 = 10{,}75$, puis $10{,}75 - 7 = 3{,}75$ ne donne pas le bon nombre ($3{,}75 \times 4 + 7 = 22$). On défait **d'abord la dernière opération**.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $6x = 45$ ; $x = 7{,}5$.
+2. $x + 2{,}5 = 1$ ; $x = -1{,}5$.
+3. a) $27$ ; b) $9$ (car $8 \to 39$, $9 \to 43$, $10 \to 47$) ; c) $43 - 7 = 36$ et $36 \div 4 = 9$.
+4. $9 - 7 = 2$ et $2 \div 4 = 0{,}5$ : Maé a choisi $0{,}5$.
+5. $0$.
+
+===
+
+=== Synthèse - Organiser une sortie au musée
+Id: 2902
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Une classe de 5e prépare une sortie au musée.
+
+1. La location du car coûte $540$ €. Partagée équitablement entre les élèves, elle revient à $18$ € par élève. On note $n$ le nombre d'élèves.
+   - a) Écrire une équation traduisant la situation.
+   - b) Combien d'élèves participent à la sortie ?
+2. Un parent affirme : « Avec $6$ élèves de plus, le car ne coûterait que $15$ € par élève. » Écrire l'équation correspondante et tester si $36$ en est solution. Le parent a-t-il raison ?
+3. Pour tous les élèves de la question 1, le musée facture $165$ € d'entrées. On note $e$ le prix d'une entrée, en euros. Écrire une équation, puis calculer $e$.
+4. Chaque élève a déjà versé un acompte de $20$ €. Il doit encore verser une somme $r$, en euros, pour payer en tout sa part du car et son entrée. Écrire une équation, puis calculer $r$.
+5. Pour le goûter, le professeur veut donner $2$ barres de céréales à chaque élève. Les barres sont vendues par paquets de $8$. On note $p$ le nombre de paquets nécessaires.
+   - a) Résoudre l'équation $8p = 60$.
+   - b) Combien de paquets le professeur doit-il acheter ? Combien de barres restera-t-il ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Le nombre d'élèves
+
+::: methode
+$n$ élèves paient chacun $18$ € : ils paient ensemble $18 \times n = 18n$ euros, soit le prix du car.
+:::
+
+::: etape a) Traduire
+$$18n = 540$$
+:::
+
+::: etape b) Résoudre et vérifier
+$n = 540 \div 18 = 30$. Vérification : $18 \times 30 = 540$.
+:::
+
+::: resultat
+a) $18n = 540$. b) $30$ élèves participent à la sortie.
+:::
+
+## Question 2 : L'affirmation du parent
+
+::: etape Écrire l'équation
+Avec un prix de $15$ € par élève, le nombre d'élèves $n$ vérifierait $15n = 540$.
+:::
+
+::: etape Tester 36
+$30 + 6 = 36$ élèves. $15 \times 36 = 540$ : l'égalité est vraie.
+:::
+
+::: resultat
+$36$ est solution de $15n = 540$ : le parent a raison.
+:::
+
+## Question 3 : Le prix d'une entrée
+
+::: etape Traduire
+$30$ entrées coûtent $165$ € :
+$$30e = 165$$
+:::
+
+::: etape Résoudre et vérifier
+$e = 165 \div 30 = 5{,}5$. Vérification : $30 \times 5{,}5 = 165$.
+:::
+
+::: resultat
+Une entrée coûte $5{,}50$ €.
+:::
+
+## Question 4 : Ce qu'il reste à verser
+
+::: etape Ce que doit payer chaque élève
+Car et entrée : $18 + 5{,}5 = 23{,}5$ €.
+:::
+
+::: etape Traduire
+L'acompte et le reste à verser font $23{,}5$ € :
+$$r + 20 = 23{,}5$$
+:::
+
+::: etape Résoudre et vérifier
+$r = 23{,}5 - 20 = 3{,}5$. Vérification : $3{,}5 + 20 = 23{,}5$.
+:::
+
+::: resultat
+Chaque élève doit encore verser $3{,}50$ €.
+:::
+
+## Question 5 : Les barres de céréales
+
+::: etape a) Résoudre $8p = 60$
+Il faut $2 \times 30 = 60$ barres, d'où l'équation. $p = 60 \div 8 = 7{,}5$. Vérification : $8 \times 7{,}5 = 60$.
+:::
+
+::: etape b) Interpréter
+On ne peut pas acheter $7{,}5$ paquets : le nombre de paquets est un **entier**.
+- $7$ paquets donnent $7 \times 8 = 56$ barres : il en manque.
+- $8$ paquets donnent $8 \times 8 = 64$ barres : c'est suffisant.
+
+Il restera $64 - 60 = 4$ barres.
+:::
+
+::: resultat
+a) $p = 7{,}5$. b) Le professeur doit acheter $8$ paquets ; il restera $4$ barres.
+:::
+
+::: attention Erreur fréquente
+Répondre « $7{,}5$ paquets » ou arrondir à $7$ : la solution de l'équation doit être **interprétée** dans la situation. Avec $7$ paquets, il manquerait $4$ barres ; il faut donc $8$ paquets.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. a) $18n = 540$. b) $30$ élèves.
+2. $15n = 540$ ; $15 \times 36 = 540$ : $36$ est solution, le parent a raison.
+3. $30e = 165$ ; $e = 5{,}50$ €.
+4. $r + 20 = 23{,}5$ ; $r = 3{,}50$ €.
+5. a) $p = 7{,}5$. b) $8$ paquets ; il restera $4$ barres.
+
+===

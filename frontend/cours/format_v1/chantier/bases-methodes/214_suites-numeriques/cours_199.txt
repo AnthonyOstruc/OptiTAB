@@ -1,0 +1,996 @@
+Titre: Suites Numériques
+
+<!-- optitab:1 -->
+::: remarque Sections principales
+Les sections I à VII ainsi que les démonstrations et algorithmes de base couvrent les concepts fondamentaux des suites numériques. Ces connaissances sont essentielles pour comprendre les modèles discrets.
+:::
+
+::: methode Approfondissements et culture
+Certaines sections (comme les suites de Fibonacci, de Syracuse, et les approfondissements possibles) sont marquées comme **bonus** ou **approfondissement**. Elles enrichissent votre culture mathématique et vous offrent une vision plus profonde des suites.
+:::
+
+## I. Notations et définitions
+
+### Qu'est-ce qu'une suite numérique ?
+
+::: definition
+Une suite numérique associe à chaque entier naturel $n$ un réel noté $u_n$. Elle décrit l'évolution discrète d'une quantité d'un rang à l'autre.
+:::
+
+::: definition
+Une suite numérique $(u_n)$ est une fonction définie sur $\mathbb{N}$ (ou une partie de $\mathbb{N}$) à valeurs dans $\mathbb{R}$.
+
+À chaque entier naturel $n$, on associe un nombre réel $u_n$ appelé **terme de rang $n$** (ou terme d'indice $n$).
+:::
+
+::: notation
+- $\displaystyle u(n)$ — notation fonctionnelle
+- $u_n$ — notation indicielle (la plus courante)
+- $(u(n))_{n \in \mathbb{N}}$ — notation avec ensemble d'indices
+- $(u_n)_{n \in \mathbb{N}}$ — notation complète la plus fréquente
+
+On nomme **terme initial** le premier terme donné ($u_0$ ou $u_1$ selon les contextes).
+:::
+
+::: demonstration Changer de registre
+Dans le cadre de l'étude d'une suite, on peut utiliser différents registres :
+
+- **Langue naturelle** : un texte raconte l'évolution (ex. : « chaque mois on ajoute 50 € »).
+- **Algébrique** : on formalise par $u_n = f(n)$ ou $u_{n+1} = f(u_n)$.
+- **Graphique** : on trace les points $(n, u_n)$ pour visualiser la croissance.
+
+Savoir passer d'un registre à l'autre aide à valider une modélisation.
+:::
+
+::: definition Représentation graphique d'une suite
+Il existe deux méthodes principales pour représenter graphiquement une suite, selon la façon dont elle est définie.
+:::
+
+::: methode 1 – Suite définie explicitement : $u_n = f(n)$
+::: methode Procédure
+1. Tracer la courbe $C_f$ de la fonction $f$
+2. Pour chaque entier $n$, placer le point d'abscisse $n$ sur l'axe des abscisses
+3. Tracer une verticale jusqu'à $C_f$ : l'ordonnée est $u_n = f(n)$
+4. Projeter horizontalement sur l'axe des ordonnées pour lire $u_n$
+:::
+
+[IMAGE_1]
+:::
+
+::: methode 2 – Suite définie par récurrence : $u_{n+1} = f(u_n)$ (méthode « toile d'araignée »)
+::: methode Procédure
+1. Tracer la courbe $C_f$ et la droite $y = x$
+2. Placer $u_0$ sur l'axe des abscisses
+3. Monter verticalement jusqu'à $C_f$ → $u_1 = f(u_0)$
+4. Aller horizontalement jusqu'à $y = x$
+5. Descendre verticalement jusqu'à l'axe des abscisses → on obtient $u_1$ sur l'axe
+6. Répéter pour $\displaystyle u_2, u_3, \ldots$
+:::
+
+[IMAGE_2]
+
+::: demonstration Utilité
+Visualiser la convergence, identifier les points fixes (intersections $C_f \cap y = x$), observer les oscillations.
+:::
+:::
+
+::: demonstration Résumé des deux méthodes
+| Méthode 1 : $\displaystyle u_n = f(n)$ | Méthode 2 : $\displaystyle u_{n+1} = f(u_n)$ |
+|---|---|
+| **Utilisation :** Suite définie explicitement <br> **Outils :** Courbe $\displaystyle C_f$ uniquement <br> **Construction :** Points $\displaystyle (n, u_n)$ directement sur $\displaystyle C_f$ | **Utilisation :** Suite définie par récurrence <br> **Outils :** Courbe $\displaystyle C_f$ + droite $\displaystyle y = x$ <br> **Construction :** « Toile d'araignée » avec alternance verticale/horizontale |
+:::
+
+::: demonstration Modèles discrets à connaître
+- Population animale comptée chaque printemps
+- Épargne déposée à intervalles réguliers
+- Construction de figures géométriques par motifs répétés
+- Dénombrement de chemins ou de configurations (combinatoire)
+:::
+
+::: remarque
+Le premier terme peut être $u_0$ ou $u_1$ selon le contexte. Il faut toujours préciser l'ensemble des indices !
+
+Exemples : $(u_n)_{n \geq 0}$ commence à $u_0$, tandis que $(v_n)_{n \geq 1}$ commence à $v_1$.
+:::
+
+::: exemple
+- $u_n = n$ pour $n \geq 0$ donne : $(0, 1, 2, 3, 4, 5, \ldots)$
+- $v_n = 2n + 1$ pour $n \geq 0$ donne : $(1, 3, 5, 7, 9, 11, \ldots)$ (nombres impairs)
+- $w_n = \frac{1}{n+1}$ pour $n \geq 0$ donne : $(1, \frac{1}{2}, \frac{1}{3}, \frac{1}{4}, \frac{1}{5}, \ldots)$
+- $a_n = (-1)^n$ pour $n \geq 0$ donne : $(1, -1, 1, -1, 1, -1, \ldots)$ (suite alternée)
+:::
+
+## II. Modes de génération d'une suite
+
+### 1. Définition explicite
+
+::: definition Suite définie explicitement
+Une suite est définie **explicitement** si on peut calculer directement $u_n$ en fonction de $n$.
+
+Forme : $u_n = f(n)$ où $f$ est une fonction définie sur $\mathbb{N}$ (ou une partie de $\mathbb{N}$).
+:::
+
+::: exemple
+- $u_n = 3n + 2$ pour $n \geq 0$ : on calcule directement $u_5 = 3 \times 5 + 2 = 17$
+- $v_n = n^2 - 1$ pour $n \geq 1$ : $v_4 = 4^2 - 1 = 15$
+- $w_n = \frac{2n+1}{n+3}$ pour $n \geq 0$ : $w_2 = \frac{2 \times 2 + 1}{2 + 3} = \frac{5}{5} = 1$
+- $a_n = 2^n$ pour $n \geq 0$ : $a_5 = 2^5 = 32$
+:::
+
+::: remarque Avantage
+On peut calculer n'importe quel terme sans avoir besoin de calculer les termes précédents.
+:::
+
+### 2. Définition par récurrence
+
+::: definition Suite définie par récurrence
+Une suite est définie par **récurrence** si chaque terme dépend d'un ou plusieurs termes précédents.
+
+Forme générale : $u_{n+1} = f(u_n)$ avec une valeur initiale $u_0$ (ou $u_1$).
+:::
+
+::: exemple
+- **Suite arithmétique :** $u_0 = 5$ et $u_{n+1} = u_n + 3$ pour $n \geq 0$
+- Calcul : $u_0 = 5$, $u_1 = 5 + 3 = 8$, $u_2 = 8 + 3 = 11$, $u_3 = 11 + 3 = 14$, $\ldots$
+- **Suite géométrique :** $v_0 = 2$ et $v_{n+1} = 3v_n$ pour $n \geq 0$
+- Calcul : $v_0 = 2$, $v_1 = 3 \times 2 = 6$, $v_2 = 3 \times 6 = 18$, $v_3 = 3 \times 18 = 54$, $\ldots$
+- **Suite de Fibonacci :** bonus $F_0 = 0$, $F_1 = 1$ et $F_{n+1} = F_n + F_{n-1}$ pour $n \geq 1$
+- Calcul : $F_0 = 0$, $F_1 = 1$, $F_2 = 1 + 0 = 1$, $F_3 = 1 + 1 = 2$, $F_4 = 2 + 1 = 3$, $F_5 = 3 + 2 = 5$, $\ldots$
+:::
+
+::: attention
+Pour calculer $u_n$ avec une récurrence d'ordre 1, il faut calculer tous les termes précédents. Pour une récurrence d'ordre 2 (comme Fibonacci bonus), il faut deux valeurs initiales.
+:::
+
+### 3. Définition par algorithme
+
+::: definition Suite définie par algorithme
+Une suite peut être générée par un algorithme qui calcule les termes successifs selon une procédure précise.
+:::
+
+::: exemple Calcul de la factorielle
+**Code Python :**
+
+```python
+n = 5
+u = 1
+for i in range(1, n + 1):
+    u = u * i
+print(u)
+```
+
+Cet algorithme calcule $u = 1 \times 2 \times 3 \times 4 \times 5 = 120$ (factorielle de 5, notée $5!$).
+
+La suite factorielle est : $u_0 = 1$, $u_1 = 1$, $u_2 = 2$, $u_3 = 6$, $u_4 = 24$, $u_5 = 120$, $\ldots$
+:::
+
+::: exemple Suite de Syracuse
+Bonus
+
+**Code Python :**
+
+```python
+u = 7
+print(u)
+while u != 1:
+    if u % 2 == 0:
+        u = u // 2
+    else:
+        u = 3 * u + 1
+    print(u)
+```
+
+À partir de $u_0 = 7$ : $u_1 = 22$ (car 7 est impair, donc $3 \times 7 + 1 = 22$),
+
+$u_2 = 11$, $u_3 = 34$, $u_4 = 17$, $u_5 = 52$, $\ldots$
+
+**Conjecture de Syracuse :** On conjecture que toute suite de Syracuse finit par atteindre 1, mais cela n'a jamais été démontré !
+:::
+
+### 4. Définition par motif géométrique
+
+::: definition Suite définie par motif géométrique
+Une suite peut être définie en comptant des objets dans une figure géométrique qui se construit étape par étape.
+:::
+
+::: exemple Nombre de carrés dans une grille
+On considère une grille de $n \times n$ carreaux. On veut compter le nombre total de carrés (de toutes tailles) qu'on peut former.
+
+Pour $n = 1$ : $u_1 = 1$ (un seul carré)
+
+Pour $n = 2$ : $u_2 = 5$ (4 carrés de taille 1 + 1 carré de taille 2)
+
+Pour $n = 3$ : $u_3 = 14$ (9 carrés de taille 1 + 4 carrés de taille 2 + 1 carré de taille 3)
+
+On peut montrer que : $\displaystyle u_n = \sum_{k=1}^{n} k^2 = \frac{n(n+1)(2n+1)}{6}$
+:::
+
+::: exemple Nombre de segments dans une figure
+On trace une ligne brisée avec $n$ points alignés. Combien de segments peut-on tracer entre ces points ?
+
+Avec $n$ points, chaque segment relie 2 points. Le nombre de façons de choisir 2 points parmi $n$ est :
+
+$u_n = \binom{n}{2} = \frac{n(n-1)}{2}$ pour $n \geq 2$
+
+$u_2 = 1$, $u_3 = 3$, $u_4 = 6$, $u_5 = 10$, $\ldots$
+:::
+
+## III. Suites arithmétiques
+
+### Définition et exemples
+
+::: definition
+Une suite $(u_n)$ est dite **arithmétique** s'il existe un nombre réel $r$ tel que :
+
+$u_{n+1} = u_n + r$ pour tout $n$ dans l'ensemble des indices
+
+Le nombre réel $r$ est appelé la **raison** de la suite arithmétique.
+:::
+
+::: exemple
+- $u_0 = 5$ et $u_{n+1} = u_n + 3$ : suite arithmétique de raison $r = 3$
+- Premiers termes : $\displaystyle 5, 8, 11, 14, 17, 20, \ldots$
+- $v_1 = 10$ et $v_{n+1} = v_n - 2$ : suite arithmétique de raison $r = -2$
+- Premiers termes : $\displaystyle 10, 8, 6, 4, 2, 0, -2, \ldots$
+:::
+
+::: remarque Interprétation
+Une suite arithmétique modélise une évolution à **accroissements constants**. Entre deux termes consécutifs, la différence est toujours la même (égale à la raison $r$).
+:::
+
+::: demonstration Lien avec les fonctions affines
+Une suite arithmétique est la restriction d'une fonction affine à $\mathbb{N}$.
+
+Si $f(x) = ax + b$ est une fonction affine, alors la suite $u_n = f(n) = an + b$ est arithmétique de raison $r = a$.
+
+Réciproquement, toute suite arithmétique $(u_n)$ de raison $r$ et de premier terme $u_0$ vérifie : $u_n = rn + u_0$.
+:::
+
+### Calcul du terme général
+
+::: definition Formule du terme général
+Si $(u_n)$ est une suite arithmétique de raison $r$ et de premier terme $u_0$, alors :
+
+$u_n = u_0 + nr$ pour tout $n \in \mathbb{N}$
+:::
+
+::: definition Cas général
+Si la suite commence à $u_1$ : $u_n = u_1 + (n-1)r$ pour tout $n \geq 1$
+
+Plus généralement, si on connaît $u_p$ : $u_n = u_p + (n-p)r$ pour tout $n \geq p$
+:::
+
+::: demonstration
+On a : $\displaystyle u_1 = u_0 + r$
+
+$$u_2 = u_1 + r = (u_0 + r) + r = u_0 + 2r$$
+
+$$u_3 = u_2 + r = (u_0 + 2r) + r = u_0 + 3r$$
+
+Par récurrence, on montre que : $u_n = u_0 + nr$ pour tout $n \in \mathbb{N}$.
+:::
+
+::: exemple
+- Suite arithmétique de premier terme $u_0 = 5$ et de raison $r = 3$ :
+- $u_n = 5 + 3n$ pour tout $n \in \mathbb{N}$
+- Ainsi : $u_0 = 5$, $u_1 = 8$, $u_2 = 11$, $u_5 = 5 + 3 \times 5 = 20$
+- Suite arithmétique avec $u_3 = 10$ et $r = 2$ :
+- $u_n = u_3 + (n-3)r = 10 + 2(n-3) = 10 + 2n - 6 = 2n + 4$ pour tout $n \geq 3$
+:::
+
+### Somme des termes d'une suite arithmétique
+
+::: definition Calcul de $\displaystyle 1 + 2 + \cdots + n$
+Pour tout entier naturel $\displaystyle n \geq 1$ :
+
+$$
+\begin{aligned}
+\sum_{k=1}^{n} k &= 1 + 2 + \cdots + n \\
+&= \frac{n(n+1)}{2}
+\end{aligned}
+$$
+:::
+
+::: demonstration Méthode de Gauss
+Notons $\displaystyle S = 1 + 2 + 3 + \cdots + (n-1) + n$
+
+Écrivons aussi : $\displaystyle S = n + (n-1) + (n-2) + \cdots + 2 + 1$
+
+En additionnant ces deux égalités terme à terme :
+
+$$2S = (1+n) + (2+(n-1)) + (3+(n-2)) + \cdots + ((n-1)+2) + (n+1)$$
+
+Chaque paire donne : $\displaystyle (k + (n+1-k)) = n+1$
+
+Il y a $n$ paires, donc : $2S = n(n+1)$
+
+Finalement : $\displaystyle S = \frac{n(n+1)}{2}$
+:::
+
+::: definition Somme des termes d'une suite arithmétique
+Si $(u_n)$ est une suite arithmétique de raison $r$, alors :
+
+$$
+\begin{aligned}
+\sum_{k=0}^{n} u_k &= (n+1) \times \frac{u_0 + u_n}{2} \\
+&= (n+1) \times \frac{\text{premier terme} + \text{dernier terme}}{2}
+\end{aligned}
+$$
+:::
+
+::: exemple
+- $\displaystyle 1 + 2 + 3 + 4 + 5 = \frac{5 \times 6}{2} = 15$
+- $\displaystyle 3 + 6 + 9 + 12 + 15 + 18 = 6 \times \frac{3 + 18}{2} = 6 \times \frac{21}{2} = 63$
+- Calcul de $u_0 + u_1 + \cdots + u_{10}$ pour $u_0 = 5$ et $r = 3$ :
+- $u_{10} = 5 + 3 \times 10 = 35$, donc $S = 11 \times \frac{5 + 35}{2} = 11 \times 20 = 220$
+:::
+
+## IV. Suites géométriques
+
+### Définition et exemples
+
+::: definition
+Une suite $(u_n)$ est dite **géométrique** s'il existe un nombre réel $q$ tel que :
+
+$u_{n+1} = q \times u_n$ pour tout $n$ dans l'ensemble des indices
+
+Le nombre réel $q$ est appelé la **raison** de la suite géométrique.
+
+**Remarque importante :** On suppose $q \neq 0$ et généralement $u_0 \neq 0$ pour éviter des cas triviaux.
+:::
+
+::: exemple
+- $u_0 = 2$ et $u_{n+1} = 3u_n$ : suite géométrique de raison $q = 3$
+- Premiers termes : $\displaystyle 2, 6, 18, 54, 162, 486, \ldots$
+- $v_0 = 16$ et $v_{n+1} = \frac{1}{2}v_n$ : suite géométrique de raison $q = \frac{1}{2}$
+- Premiers termes : $\displaystyle 16, 8, 4, 2, 1, \frac{1}{2}, \frac{1}{4}, \ldots$
+:::
+
+::: remarque Interprétation
+Une suite géométrique modélise une évolution à **taux constant** (multiplicatif). Entre deux termes consécutifs, le rapport est toujours le même (égal à la raison $q$).
+:::
+
+::: demonstration Lien avec la fonction exponentielle
+Une suite géométrique est la restriction d'une fonction exponentielle à $\mathbb{N}$.
+
+Si $f(x) = a \times q^x$ est une fonction exponentielle (avec $q > 0$), alors la suite $u_n = f(n) = a \times q^n$ est géométrique de raison $q$ et de premier terme $u_0 = a$.
+
+Réciproquement, toute suite géométrique $(u_n)$ de raison $q$ et de premier terme $u_0$ vérifie : $u_n = u_0 \times q^n$.
+:::
+
+### Calcul du terme général
+
+::: definition Formule du terme général
+Si $(u_n)$ est une suite géométrique de raison $q$ et de premier terme $u_0$, alors :
+
+$u_n = u_0 \times q^n$ pour tout $n \in \mathbb{N}$
+:::
+
+::: definition Cas général
+Si la suite commence à $u_1$ : $u_n = u_1 \times q^{n-1}$ pour tout $n \geq 1$
+
+Plus généralement, si on connaît $u_p$ : $u_n = u_p \times q^{n-p}$ pour tout $n \geq p$
+:::
+
+::: demonstration
+On a : $\displaystyle u_1 = q \times u_0 = u_0 \times q$
+
+$$
+\begin{aligned}
+u_2 &= q \times u_1 \\
+&= q \times (u_0 \times q) \\
+&= u_0 \times q^2
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+u_3 &= q \times u_2 \\
+&= q \times (u_0 \times q^2) \\
+&= u_0 \times q^3
+\end{aligned}
+$$
+
+Par récurrence, on montre que : $u_n = u_0 \times q^n$ pour tout $n \in \mathbb{N}$.
+:::
+
+::: exemple
+- Suite géométrique de premier terme $u_0 = 2$ et de raison $q = 3$ :
+- $u_n = 2 \times 3^n$ pour tout $n \in \mathbb{N}$
+- Ainsi : $u_0 = 2$, $u_1 = 6$, $u_2 = 18$, $u_5 = 2 \times 3^5 = 2 \times 243 = 486$
+- Suite géométrique avec $u_3 = 16$ et $q = 2$ :
+- $u_n = u_3 \times q^{n-3} = 16 \times 2^{n-3}$ pour tout $n \geq 3$
+:::
+
+### Somme des termes d'une suite géométrique
+
+::: definition Calcul de $\displaystyle 1 + q + q^2 + \cdots + q^n$
+Pour tout entier naturel $n$ et tout nombre réel $q \neq 1$ :
+
+$$
+\begin{aligned}
+\sum_{k=0}^{n} q^k &= 1 + q + q^2 + \cdots + q^n \\
+&= \frac{1 - q^{n+1}}{1 - q}
+\end{aligned}
+$$
+
+Si $q = 1$, alors : $\sum_{k=0}^{n} 1^k = n + 1$
+:::
+
+::: demonstration
+Notons $\displaystyle S = 1 + q + q^2 + \cdots + q^n$
+
+Multiplions par $q$ : $qS = q + q^2 + q^3 + \cdots + q^{n+1}$
+
+En soustrayant $\displaystyle S - qS$ :
+
+$$
+\begin{aligned}
+S - qS &= (1 + q + q^2 + \cdots + q^n) - (q + q^2 + \cdots + q^{n+1}) \\
+&= 1 - q^{n+1}
+\end{aligned}
+$$
+
+Donc : $\displaystyle S(1 - q) = 1 - q^{n+1}$
+
+Si $q \neq 1$, alors : $S = \frac{1 - q^{n+1}}{1 - q}$
+:::
+
+::: definition Somme des termes d'une suite géométrique
+Si $(u_n)$ est une suite géométrique de raison $q \neq 1$ et de premier terme $u_0$, alors :
+
+$$\sum_{k=0}^{n} u_k = u_0 \times \frac{1 - q^{n+1}}{1 - q}$$
+
+Si $q = 1$, alors tous les termes sont égaux à $u_0$ et : $\sum_{k=0}^{n} u_k = (n+1)u_0$
+:::
+
+::: exemple
+- $\displaystyle 1 + 2 + 4 + 8 + 16 = \frac{1 - 2^5}{1 - 2} = \frac{1 - 32}{-1} = 31$
+- $\displaystyle 1 + \frac{1}{2} + \frac{1}{4} + \frac{1}{8} = \frac{1 - \left(\frac{1}{2}\right)^4}{1 - \frac{1}{2}} = \frac{1 - \frac{1}{16}}{\frac{1}{2}} = \frac{15}{16} \times 2 = \frac{15}{8}$
+- Calcul de $u_0 + u_1 + \cdots + u_{5}$ pour $u_0 = 3$ et $q = 2$ :
+- $\displaystyle S = 3 \times \frac{1 - 2^6}{1 - 2} = 3 \times \frac{1 - 64}{-1} = 3 \times 63 = 189$
+:::
+
+::: attention
+Ne jamais utiliser la formule $\frac{1 - q^{n+1}}{1 - q}$ lorsque $q = 1$ ! Dans ce cas, la somme vaut simplement $n + 1$.
+:::
+
+## V. Sens de variation d'une suite
+
+### Définition
+
+::: definition Sens de variation d'une suite
+Soit $\displaystyle (u_n)$ une suite numérique.
+
+- $(u_n)$ est **croissante** si $u_{n+1} \geq u_n$ pour tout $n$ dans l'ensemble des indices
+- $(u_n)$ est **strictement croissante** si $u_{n+1} > u_n$ pour tout $n$ dans l'ensemble des indices
+- $(u_n)$ est **décroissante** si $u_{n+1} \leq u_n$ pour tout $n$ dans l'ensemble des indices
+- $(u_n)$ est **strictement décroissante** si $u_{n+1} < u_n$ pour tout $n$ dans l'ensemble des indices
+- $(u_n)$ est **constante** si $u_{n+1} = u_n$ pour tout $n$ dans l'ensemble des indices
+:::
+
+::: exemple
+- La suite $u_n = n$ est strictement croissante : $u_{n+1} = n+1 > n = u_n$
+- La suite $v_n = -2n + 5$ est strictement décroissante : $v_{n+1} = -2(n+1) + 5 = -2n + 3 < -2n + 5 = v_n$
+- La suite arithmétique $u_n = 5 + 3n$ est strictement croissante (car $r = 3 > 0$)
+- La suite arithmétique $v_n = 10 - 2n$ est strictement décroissante (car $r = -2 < 0$)
+- La suite géométrique $w_n = 2 \times 3^n$ est strictement croissante (car $q = 3 > 1$ et $w_0 = 2 > 0$)
+:::
+
+### Méthodes pour déterminer le sens de variation
+
+::: methode 1 : Comparer $u_{n+1}$ et $u_n$
+Pour tout $n$, calculer la différence $u_{n+1} - u_n$ :
+
+- Si $u_{n+1} - u_n > 0$, alors la suite est strictement croissante
+- Si $u_{n+1} - u_n < 0$, alors la suite est strictement décroissante
+- Si $u_{n+1} - u_n = 0$, alors la suite est constante
+:::
+
+::: exemple Comparaison directe
+Soit $u_n = \frac{n+1}{n+2}$ pour $n \geq 0$.
+
+$$
+\begin{aligned}
+u_{n+1} - u_n &= \frac{(n+1)+1}{(n+1)+2} - \frac{n+1}{n+2} \\
+&= \frac{n+2}{n+3} - \frac{n+1}{n+2}
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+u_{n+1} - u_n &= \frac{(n+2)^2 - (n+1)(n+3)}{(n+2)(n+3)} \\
+&= \frac{(n^2+4n+4) - (n^2+4n+3)}{(n+2)(n+3)} \\
+&= \frac{1}{(n+2)(n+3)} > 0
+\end{aligned}
+$$
+
+Donc la suite est strictement croissante.
+:::
+
+::: methode 2 : Comparer le rapport $\frac{u_{n+1}}{u_n}$ (pour suites positives)
+Si tous les termes sont strictement positifs, comparer $\frac{u_{n+1}}{u_n}$ avec 1 :
+
+- Si $\frac{u_{n+1}}{u_n} > 1$, alors la suite est strictement croissante
+- Si $\frac{u_{n+1}}{u_n} < 1$, alors la suite est strictement décroissante
+- Si $\frac{u_{n+1}}{u_n} = 1$, alors la suite est constante
+:::
+
+::: exemple Comparaison par quotient
+Soit $u_n = 2^n$ pour $n \geq 0$ (tous les termes sont strictement positifs).
+
+$$\frac{u_{n+1}}{u_n} = \frac{2^{n+1}}{2^n} = 2 > 1$$
+
+Donc la suite est strictement croissante.
+:::
+
+::: methode 3 : Utiliser une fonction associée
+Si $u_n = f(n)$ où $f$ est une fonction définie sur $[0, +\infty[$ :
+
+Si $f$ est croissante, alors $(u_n)$ est croissante. Si $f$ est décroissante, alors $(u_n)$ est décroissante.
+:::
+
+::: propriete Cas particuliers - Suites arithmétiques et géométriques
+- **Suite arithmétique** de raison $r$ :
+
+  - Si $\displaystyle r > 0$ : strictement croissante
+  - Si $r < 0$ : strictement décroissante
+  - Si $\displaystyle r = 0$ : constante
+
+- **Suite géométrique** de raison $q$ et de premier terme $u_0 > 0$ :
+
+  - Si $\displaystyle q > 1$ : strictement croissante
+  - Si $0 < q < 1$ : strictement décroissante
+  - Si $\displaystyle q = 1$ : constante
+:::
+
+## VI. Notion de limite (introduction intuitive)
+
+### Limite finie
+
+::: definition Notion intuitive de limite finie
+On dit qu'une suite $(u_n)$ tend vers un nombre réel $\ell$ (ou admet $\ell$ comme limite) lorsque $n$ tend vers $+\infty$, si les termes $u_n$ se rapprochent indéfiniment de $\ell$ quand $n$ devient très grand.
+
+On note : $\lim_{n \to +\infty} u_n = \ell$ ou $u_n \xrightarrow[n \to +\infty]{} \ell$
+:::
+
+::: exemple
+- $u_n = \frac{1}{n+1}$ pour $n \geq 0$ : $\lim_{n \to +\infty} u_n = 0$
+- Premiers termes : $1, \frac{1}{2}, \frac{1}{3}, \frac{1}{4}, \frac{1}{5}, \ldots$ → se rapproche de $0$
+- $v_n = \frac{n+1}{n+2}$ pour $n \geq 0$ : $\lim_{n \to +\infty} v_n = 1$
+- Premiers termes : $\frac{1}{2}, \frac{2}{3}, \frac{3}{4}, \frac{4}{5}, \frac{5}{6}, \ldots$ → se rapproche de $1$
+:::
+
+::: remarque Interprétation graphique
+Si $\lim_{n \to +\infty} u_n = \ell$, alors les points $(n, u_n)$ sur un graphique se concentrent autour de la droite horizontale $y = \ell$ lorsque $n$ devient grand.
+:::
+
+### Limite infinie
+
+::: definition Notion intuitive de limite infinie
+- On dit que $(u_n)$ tend vers $+\infty$ si les termes deviennent arbitrairement grands quand $n$ devient très grand.
+- On dit que $(u_n)$ tend vers $-\infty$ si les termes deviennent arbitrairement petits (en valeur absolue, négatifs) quand $n$ devient très grand.
+
+On note : $\lim_{n \to +\infty} u_n = +\infty$ ou $\lim_{n \to +\infty} u_n = -\infty$
+:::
+
+::: exemple
+- $u_n = n$ : $\lim_{n \to +\infty} u_n = +\infty$
+- $v_n = n^2$ : $\lim_{n \to +\infty} v_n = +\infty$
+- $w_n = -2n + 5$ : $\lim_{n \to +\infty} w_n = -\infty$
+- $a_n = 2^n$ : $\lim_{n \to +\infty} a_n = +\infty$ (croissance exponentielle)
+- $b_n = \left(\frac{1}{2}\right)^n$ : $\lim_{n \to +\infty} b_n = 0$ (décroissance exponentielle vers 0)
+:::
+
+### Limites classiques à connaître
+
+::: propriete Limites usuelles
+- $\lim_{n \to +\infty} \frac{1}{n} = 0$ et plus généralement $\lim_{n \to +\infty} \frac{1}{n^p} = 0$ pour $p > 0$
+- $\lim_{n \to +\infty} n = +\infty$ et $\lim_{n \to +\infty} n^p = +\infty$ pour $p > 0$
+- **Suite géométrique :** Si $|q| > 1$, alors $\lim_{n \to +\infty} q^n = +\infty$ (si $q > 1$) ou la suite diverge (si $q < -1$)
+- Si $|q| < 1$, alors $\lim_{n \to +\infty} q^n = 0$
+- Si $q = 1$, alors $\lim_{n \to +\infty} q^n = 1$
+:::
+
+::: exemple Conjecturer la limite
+- $u_n = \frac{2n+1}{n+3}$ : on conjecture $\lim_{n \to +\infty} u_n = 2$ (le numérateur et dénominateur sont dominés par $n$)
+- $v_n = 3 \times \left(\frac{1}{2}\right)^n$ : $\lim_{n \to +\infty} v_n = 0$ (géométrique de raison $\frac{1}{2} < 1$)
+- $w_n = 2 \times 1.5^n$ : $\lim_{n \to +\infty} w_n = +\infty$ (géométrique de raison $1.5 > 1$)
+:::
+
+## VII. Applications et modélisation
+
+### Modélisation avec des suites arithmétiques
+
+::: definition Évolutions à accroissements constants
+Une suite arithmétique modélise un phénomène discret à **croissance linéaire**, c'est-à-dire où la variation entre deux instants consécutifs est constante.
+:::
+
+::: exemple 1 - Économies régulières
+Un étudiant économise 50 € chaque mois. Le 1er janvier, il a 200 € sur son compte.
+
+On note $u_n$ la somme sur son compte après $n$ mois (avec $u_0 = 200$ le 1er janvier).
+
+La suite est arithmétique : $u_{n+1} = u_n + 50$ avec $u_0 = 200$.
+
+Terme général : $u_n = 200 + 50n$ pour tout $n \in \mathbb{N}$.
+
+Après 12 mois : $\displaystyle u_{12} = 200 + 50 \times 12 = 800$ €
+:::
+
+::: exemple 2 - Décroissance linéaire
+Un réservoir d'eau se vide de 5 litres chaque jour. Il contient initialement 500 litres.
+
+On note $v_n$ la quantité d'eau restante après $n$ jours (avec $v_0 = 500$).
+
+La suite est arithmétique : $v_{n+1} = v_n - 5$ avec $v_0 = 500$ (raison $r = -5$).
+
+Terme général : $v_n = 500 - 5n$ pour tout $n \in \mathbb{N}$.
+
+Le réservoir est vide quand $v_n = 0$, soit $500 - 5n = 0$, donc $n = 100$ jours.
+:::
+
+### Modélisation avec des suites géométriques
+
+::: definition Évolutions à taux constant
+Une suite géométrique modélise un phénomène discret à **croissance exponentielle**, c'est-à-dire où le rapport entre deux instants consécutifs est constant.
+:::
+
+::: exemple 1 - Intérêts composés
+On place 1000 € sur un compte bancaire à 3 % d'intérêts par an. Les intérêts sont ajoutés au capital chaque année (intérêts composés).
+
+On note $C_n$ le capital après $n$ années (avec $C_0 = 1000$).
+
+Chaque année, le capital est multiplié par $1 + \frac{3}{100} = 1.03$.
+
+La suite est géométrique : $C_{n+1} = 1.03 \times C_n$ avec $C_0 = 1000$ (raison $q = 1.03$).
+
+Terme général : $C_n = 1000 \times 1.03^n$ pour tout $n \in \mathbb{N}$.
+
+Après 10 ans : $\displaystyle C_{10} = 1000 \times 1.03^{10} \approx 1343.92$ €
+:::
+
+::: exemple 2 - Décroissance exponentielle (désintégration radioactive)
+Un échantillon radioactif perd 10 % de sa masse chaque année. Initialement, il pèse 100 grammes.
+
+On note $m_n$ la masse après $n$ années (avec $m_0 = 100$).
+
+Chaque année, la masse est multipliée par $1 - \frac{10}{100} = 0.9$.
+
+La suite est géométrique : $m_{n+1} = 0.9 \times m_n$ avec $m_0 = 100$ (raison $q = 0.9$).
+
+Terme général : $m_n = 100 \times 0.9^n$ pour tout $n \in \mathbb{N}$.
+
+Après 5 ans : $\displaystyle m_5 = 100 \times 0.9^5 \approx 59.05$ grammes
+:::
+
+::: exemple 3 - Population avec taux de croissance
+Une population de bactéries double chaque heure. Initialement, il y a 500 bactéries.
+
+On note $P_n$ le nombre de bactéries après $n$ heures (avec $P_0 = 500$).
+
+La suite est géométrique : $P_{n+1} = 2 \times P_n$ avec $P_0 = 500$ (raison $q = 2$).
+
+Terme général : $P_n = 500 \times 2^n$ pour tout $n \in \mathbb{N}$.
+
+Après 6 heures : $\displaystyle P_6 = 500 \times 2^6 = 500 \times 64 = 32000$ bactéries
+:::
+
+## VIII. Algorithmes et exemples
+
+### Calcul de termes d'une suite
+
+::: exemple Algorithme - Calcul des termes d'une suite définie par récurrence
+**Exemple :** Suite définie par $u_0 = 1$ et $u_{n+1} = 2u_n + 3$
+
+**Code Python :**
+
+```python
+u = 1
+print(u)
+for i in range(1, 11):
+    u = 2 * u + 3
+    print(u)
+```
+
+**Dans un tableur Excel :**
+
+|  | A (indice n) | B (terme u_n) |
+|---|---|---|
+| 1 | 0 | 1 |
+| 2 | =A1+1 | =2*B1+3 |
+| 3 | =A2+1 | =2*B2+3 |
+| ... | (recopier) | (recopier) |
+
+*Les formules en rouge sont à recopier vers le bas.*
+
+Cet algorithme calcule et affiche les 11 premiers termes : $u_0 = 1$, $u_1 = 5$, $u_2 = 13$, $u_3 = 29$, $\ldots$
+:::
+
+### Calcul de sommes
+
+::: exemple Algorithme - Calcul de $\displaystyle \sum_{k=0}^{n} u_k$
+**Exemple :** Somme des termes d'une suite géométrique $u_k = 2^k$
+
+**Code Python :**
+
+```python
+n = 5
+S = 0
+u = 1
+for k in range(n + 1):
+    S = S + u
+    u = 2 * u
+print(S)
+```
+
+**Dans un tableur Excel :**
+
+|  | A (indice k) | B (terme u_k) | C (somme cumulée) |
+|---|---|---|---|
+| 1 | 0 | =2^A1 | =B1 |
+| 2 | =A1+1 | =2^A2 | =C1+B2 |
+| 3 | =A2+1 | =2^A3 | =C2+B3 |
+| ... | (recopier) | (recopier) | (recopier) |
+| 6 | 5 | 32 | 63 |
+
+*Les formules en rouge sont à recopier. La somme totale est en C6.*
+
+**Alternative :** Utiliser $=SOMME(B1:B6)$ dans une cellule pour calculer directement la somme.
+
+Cet algorithme calcule $\displaystyle 1 + 2 + 4 + 8 + 16 + 32 = 63$
+:::
+
+### Calcul de seuil
+
+::: exemple Algorithme - Déterminer le premier rang où une suite dépasse un seuil
+**Exemple :** Trouver le plus petit $n$ tel que $2^n > 1000$
+
+**Code Python :**
+
+```python
+n = 0
+u = 1
+seuil = 1000
+while u <= seuil:
+    n = n + 1
+    u = 2 * u
+print(n)
+```
+
+**Dans un tableur Excel :**
+
+|  | A (indice n) | B (terme 2^n) |
+|---|---|---|
+| 1 | 0 | =2^A1 |
+| 2 | =A1+1 | =2^A2 |
+| ... | (recopier) | (recopier) |
+| 11 | 10 | 1024 |
+
+*Les formules en rouge sont à recopier. La première ligne où B dépasse 1000 (ligne 11) donne $n = 10$.*
+
+Cet algorithme trouve que $2^{10} = 1024 > 1000$, donc $n = 10$
+:::
+
+### Calcul de factorielle
+
+::: exemple Algorithme - Calcul de $\displaystyle n!$
+**Code Python :**
+
+```python
+n = 5
+fact = 1
+for i in range(1, n + 1):
+    fact = fact * i
+print(fact)
+```
+
+**Dans un tableur Excel :**
+
+|  | A (indice n) | B (n!) |
+|---|---|---|
+| 1 | 0 | 1 |
+| 2 | =A1+1 | =B1*A2 |
+| 3 | =A2+1 | =B2*A3 |
+| ... | (recopier) | (recopier) |
+| 6 | 5 | 120 |
+
+*Les formules en rouge sont à recopier. La factorielle de $n$ est en B(n+1).*
+
+**Alternative :** Utiliser directement $=FACTORIELLE(5)$ pour calculer $5!$
+
+Cet algorithme calcule $\displaystyle 5! = 1 \times 2 \times 3 \times 4 \times 5 = 120$
+
+**Remarque :** La suite factorielle est définie par récurrence : $0! = 1$ et $(n+1)! = (n+1) \times n!$
+:::
+
+### Suites célèbres
+
+::: methode Approfondissement (bonus)
+Cette section présente des suites célèbres qui enrichissent votre culture mathématique et illustrent la diversité des suites possibles.
+:::
+
+::: exemple Suite de Fibonacci
+Définie par : $F_0 = 0$, $F_1 = 1$ et $F_{n+1} = F_n + F_{n-1}$ pour $n \geq 1$
+
+Premiers termes : $\displaystyle 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, \ldots$
+
+**Code Python :**
+
+```python
+F_0 = 0
+F_1 = 1
+print(F_0)
+print(F_1)
+for i in range(2, 11):
+    F = F_0 + F_1
+    print(F)
+    F_0 = F_1
+    F_1 = F
+```
+
+**Dans un tableur Excel :**
+
+|  | A (indice n) | B (terme F_n) |
+|---|---|---|
+| 1 | 0 | 0 |
+| 2 | 1 | 1 |
+| 3 | =A2+1 | =B1+B2 |
+| 4 | =A3+1 | =B2+B3 |
+| ... | (recopier) | (recopier) |
+
+*Les formules en rouge sont à recopier vers le bas pour obtenir les termes suivants.*
+:::
+
+::: exemple Suite de Syracuse
+Définie à partir d'un entier $\displaystyle u_0$ :
+
+- Si $u_n$ est pair : $u_{n+1} = \frac{u_n}{2}$
+
+- Si $u_n$ est impair : $u_{n+1} = 3u_n + 1$
+
+**Conjecture de Syracuse :** Toute suite finit par atteindre 1 (jamais démontrée !)
+
+**Code Python :**
+
+```python
+u = 7
+print(u)
+while u != 1:
+    if u % 2 == 0:
+        u = u // 2
+    else:
+        u = 3 * u + 1
+    print(u)
+```
+
+**Dans un tableur Excel :**
+
+|  | A (indice n) | B (terme u_n) |
+|---|---|---|
+| 1 | 0 | 7 |
+| 2 | =A1+1 | =SI(MOD(B1;2)=0;B1/2;3*B1+1) |
+| 3 | =A2+1 | =SI(MOD(B2;2)=0;B2/2;3*B2+1) |
+| ... | (recopier) | (recopier) |
+
+*Les formules en rouge sont à recopier vers le bas jusqu'à obtenir 1 dans la colonne B.*
+
+À partir de $u_0 = 7$ : $7, 22, 11, 34, 17, 52, 26, 13, 40, 20, 10, 5, 16, 8, 4, 2, 1$
+:::
+
+## IX. Conseils méthodologiques
+
+### Méthodes générales
+
+::: conseil
+- **Identifier le type de suite :** Commencer par reconnaître si c'est une suite arithmétique, géométrique, ou autre
+- **Vérifier les bornes :** Toujours préciser l'ensemble des indices (commence-t-on à $n = 0$ ou $n = 1$ ?)
+- **Calculer les premiers termes :** Dans les cas douteux, calculer $u_0, u_1, u_2, u_3$ pour observer un pattern
+- **Sens de variation :** Utiliser la méthode la plus simple (différence ou quotient selon le cas)
+- **Somme géométrique :** Ne jamais oublier le cas $q = 1$ (la formule change !)
+- **Limite intuitive :** Pour conjecturer, calculer quelques termes avec de grandes valeurs de $n$
+- **Modélisation :** Bien identifier si le phénomène a une évolution linéaire (arithmétique) ou exponentielle (géométrique)
+:::
+
+::: attention
+- **Confondre arithmétique et géométrique :** Addition constante (arithmétique) vs multiplication constante (géométrique)
+- **Oublier le cas $q = 1$** dans la formule de somme géométrique
+- **Erreur dans les bornes :** Si la suite commence à $u_1$, la formule devient $u_n = u_1 + (n-1)r$ (et non $nr$)
+- **Raison négative :** Pour les suites géométriques, bien faire attention au signe de la raison
+- **Calcul de limite :** Ne pas confondre $\lim_{n \to +\infty} q^n = 0$ (si $|q| < 1$) avec $q = 0$
+- **Sens de variation :** Pour les suites géométriques, le signe des termes importe ! Si $u_0 < 0$ et $q > 1$, la suite est décroissante (en valeur absolue, elle croît mais reste négative)
+- **Somme arithmétique :** Utiliser la formule avec le premier et dernier terme, attention au nombre de termes
+:::
+
+::: methode Comment reconnaître une suite arithmétique ?
+Pour vérifier si une suite est arithmétique, calculer $u_{n+1} - u_n$ pour quelques valeurs de $n$.
+
+Si cette différence est constante, alors la suite est arithmétique et cette constante est la raison.
+:::
+
+::: methode Comment reconnaître une suite géométrique ?
+Pour vérifier si une suite est géométrique (avec tous les termes non nuls), calculer $\frac{u_{n+1}}{u_n}$ pour quelques valeurs de $n$.
+
+Si ce rapport est constant, alors la suite est géométrique et cette constante est la raison.
+:::
+
+::: remarque Récapitulatif - Formules à retenir
+| Type | Terme général | Somme |
+|---|---|---|
+| **Arithmétique** <br> raison $\displaystyle r$ | $\displaystyle u_n = u_0 + nr$ | $\displaystyle \sum_{k=0}^{n} u_k = (n+1) \times \frac{u_0 + u_n}{2}$ |
+| **Géométrique** <br> raison $\displaystyle q$ | $\displaystyle u_n = u_0 \times q^n$ | $\displaystyle \sum_{k=0}^{n} u_k = u_0 \times \frac{1-q^{n+1}}{1-q}$ <br> ($\displaystyle q \neq 1$) |
+:::
+
+## X. Approfondissements possibles
+
+::: methode Approfondissements (bonus)
+Cette section présente des approfondissements qui offrent une vision approfondie des suites. Ces sujets enrichissent votre culture mathématique et vous permettent d'explorer des applications avancées.
+:::
+
+### 1. Tour de Hanoï
+
+::: exemple
+Le problème des tours de Hanoï consiste à déplacer $n$ disques empilés d'une tour à une autre, en respectant les règles suivantes :
+
+- On ne peut déplacer qu'un disque à la fois
+- On ne peut placer un disque que sur un disque plus grand ou sur une tour vide
+
+On note $H_n$ le nombre minimal de déplacements nécessaires pour déplacer $n$ disques.
+
+La suite $(H_n)$ vérifie la relation de récurrence : $H_{n+1} = 2H_n + 1$ avec $H_1 = 1$
+
+On peut montrer que : $H_n = 2^n - 1$ pour tout $n \geq 1$
+
+Premiers termes : $H_1 = 1$, $H_2 = 3$, $H_3 = 7$, $H_4 = 15$, $H_5 = 31$, $\ldots$
+:::
+
+### 2. Somme des $\displaystyle n$ premiers carrés et cubes
+
+::: definition Somme des $\displaystyle n$ premiers carrés
+Pour tout entier naturel $\displaystyle n \geq 1$ :
+
+$$
+\begin{aligned}
+\sum_{k=1}^{n} k^2 &= 1^2 + 2^2 + 3^2 + \cdots + n^2 \\
+&= \frac{n(n+1)(2n+1)}{6}
+\end{aligned}
+$$
+
+Exemple : $\displaystyle 1^2 + 2^2 + 3^2 + 4^2 = 1 + 4 + 9 + 16 = 30 = \frac{4 \times 5 \times 9}{6} = 30$
+:::
+
+::: definition Somme des $\displaystyle n$ premiers cubes
+Pour tout entier naturel $\displaystyle n \geq 1$ :
+
+$$
+\begin{aligned}
+\sum_{k=1}^{n} k^3 &= 1^3 + 2^3 + 3^3 + \cdots + n^3 \\
+&= \left(\frac{n(n+1)}{2}\right)^2 \\
+&= \left(\sum_{k=1}^{n} k\right)^2
+\end{aligned}
+$$
+
+Remarque : La somme des cubes est égale au carré de la somme des entiers !
+
+Exemple : $\displaystyle 1^3 + 2^3 + 3^3 + 4^3 = 1 + 8 + 27 + 64 = 100 = (1 + 2 + 3 + 4)^2 = 10^2 = 100$
+:::
+
+### 3. Remboursement d'un emprunt par annuités constantes
+
+::: exemple Modélisation
+On emprunte une somme $C_0$ à un taux d'intérêt annuel $t$ (exprimé en décimal, par exemple $t = 0.03$ pour 3 %).
+
+On rembourse chaque année une annuité constante $a$ jusqu'à rembourser complètement le capital et les intérêts.
+
+On note $C_n$ le capital restant dû après $n$ annuités (avec $C_0$ = capital initial).
+
+Relation de récurrence : $C_{n+1} = (1+t) \times C_n - a$ pour tout $n \geq 0$
+
+Cette relation modélise le fait que chaque année : le capital restant est augmenté des intérêts, puis on déduit l'annuité payée.
+
+Pour déterminer l'annuité constante permettant de rembourser en $n$ années, on résout $C_n = 0$, ce qui donne :
+
+$$a = C_0 \times \frac{t(1+t)^n}{(1+t)^n - 1}$$
+
+**Exemple :** Emprunt de 10000 € à 3 % sur 5 ans : $a = 10000 \times \frac{0.03 \times 1.03^5}{1.03^5 - 1} \approx 2183.55$ € par an
+:::

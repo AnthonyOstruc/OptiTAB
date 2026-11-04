@@ -1,0 +1,366 @@
+Titre: Les Structures Conditionnelles et la Logique en Python
+
+<!-- optitab:1 -->
+::: objectifs
+Écrire une condition avec les opérateurs de comparaison et les opérateurs logiques `and`, `or`, `not` ; utiliser les structures `if`, `if … else` et `if … elif … else`, y compris imbriquées ; écrire une fonction qui renvoie un booléen ; tester un programme sur les cas limites.
+:::
+
+::: prerequis
+Variables et affectation ; types `int`, `float`, `str` ; opérations `//` (quotient entier) et `%` (reste).
+:::
+
+## I. Booléens et comparaisons
+
+::: definition Booléen, condition
+Un **booléen** est une valeur de vérité : `True` (vrai) ou `False` (faux). Une **condition** est une expression dont la valeur est un booléen.
+:::
+
+| Python | En maths | Signification |
+|---|---|---|
+| `==` | $=$ | égal à |
+| `!=` | $\neq$ | différent de |
+| `<` | $\lt$ | strictement inférieur à |
+| `<=` | $\leqslant$ | inférieur ou égal à |
+| `>` | $\gt$ | strictement supérieur à |
+| `>=` | $\geqslant$ | supérieur ou égal à |
+
+```python
+x = 7
+print(x > 5, x == 7)
+print(x != 7, x <= 6)
+print(x % 2 == 1)
+```
+
+```console
+True True
+False False
+True
+```
+
+La dernière condition teste si le reste de la division de $x$ par $2$ vaut $1$, c’est-à-dire si $x$ est impair.
+
+::: attention Ne pas confondre = et ==
+`x = 5` est une **affectation** : la variable `x` reçoit la valeur $5$. `x == 5` est une **comparaison** : elle vaut `True` ou `False`. Écrire `if x = 5:` provoque une erreur de syntaxe.
+:::
+
+::: propriete Encadrement
+Python accepte les encadrements : `18 <= age <= 65` équivaut à `age >= 18 and age <= 65` et traduit $18 \leqslant \text{âge} \leqslant 65$.
+:::
+
+::: attention Comparer des nombres décimaux
+Les nombres décimaux (type `float`) sont stockés en binaire de façon approchée : une égalité entre deux résultats de calculs peut être fausse.
+
+```python
+print(0.1 + 0.2 == 0.3)
+d = 0.1 + 0.2 - 0.3
+print(abs(d) < 1e-9)
+```
+
+```console
+False
+True
+```
+
+On compare donc deux flottants à une **tolérance** près : `abs(a - b) < 1e-9`.
+:::
+
+## II. Opérateurs logiques
+
+::: definition and, or, not
+Pour deux conditions `A` et `B` :
+- `A and B` est vraie lorsque `A` et `B` sont **toutes les deux** vraies ;
+- `A or B` est vraie lorsque **au moins une** des deux est vraie (« ou » inclusif) ;
+- `not A` est vraie lorsque `A` est fausse.
+:::
+
+| `A` | `B` | `A and B` | `A or B` | `not A` |
+|---|---|---|---|---|
+| `True` | `True` | `True` | `True` | `False` |
+| `True` | `False` | `False` | `True` | `False` |
+| `False` | `True` | `False` | `True` | `True` |
+| `False` | `False` | `False` | `False` | `True` |
+
+::: exemple
+```python
+age = 23
+inscrit = True
+print(age < 26 and inscrit)
+jour = "Mardi"
+we = ["Samedi", "Dimanche"]
+print(jour in we or age > 60)
+```
+
+```console
+True
+False
+```
+:::
+
+::: propriete Négation d’une condition (lois de De Morgan)
+- `not (A and B)` équivaut à `(not A) or (not B)` ;
+- `not (A or B)` équivaut à `(not A) and (not B)`.
+
+Ainsi, la négation de `18 <= age <= 65` est `age < 18 or age > 65`.
+:::
+
+[IMAGE_1]
+
+::: remarque Pour aller plus loin : évaluation paresseuse
+Dans `A and B`, Python n’évalue `B` que si `A` est vraie ; dans `A or B`, seulement si `A` est fausse. La condition `x != 0 and 10 / x > 1` ne provoque donc jamais de division par zéro.
+:::
+
+## III. La structure if … else
+
+::: definition Syntaxe
+```python
+if condition:
+    bloc1
+else:
+    bloc2
+suite
+```
+
+Si la condition est vraie, `bloc1` est exécuté, sinon c’est `bloc2` ; un seul des deux blocs est exécuté, puis le programme continue avec `suite`.
+:::
+
+::: propriete Règles d’écriture
+- La ligne `if` (comme `elif` et `else`) se termine par deux-points `:`.
+- Les instructions d’un bloc sont **indentées** de quatre espaces ; la fin de l’indentation marque la fin du bloc.
+- Le bloc `else` est facultatif : sans lui, si la condition est fausse, le programme passe directement à la suite.
+:::
+
+```python
+age = 17
+if age >= 18:
+    print("Majeur")
+else:
+    print("Mineur")
+print("Fin")
+```
+
+```console
+Mineur
+Fin
+```
+
+La condition `17 >= 18` est fausse : seul le bloc `else` est exécuté. La ligne `print("Fin")` n’est pas indentée : elle est exécutée dans tous les cas.
+
+::: exemple Un if sans else
+Un magasin accorde une réduction de $10\,\%$ sur les achats de plus de $100$ €.
+
+```python
+montant = 120
+if montant > 100:
+    montant = montant * 0.9
+print(montant)
+```
+
+```console
+108.0
+```
+
+Comme $120 \gt 100$, le montant est multiplié par $0{,}9$ : $120 \times 0{,}9 = 108$.
+:::
+
+## IV. Plusieurs cas : if … elif … else
+
+::: definition Syntaxe
+```python
+if condition1:
+    bloc1
+elif condition2:
+    bloc2
+else:
+    bloc3
+```
+
+`elif` est l’abréviation de « else if » (sinon si). On peut écrire autant de `elif` que nécessaire.
+:::
+
+[IMAGE_2]
+
+::: propriete Fonctionnement
+Les conditions sont testées **dans l’ordre**. Dès qu’une condition est vraie, son bloc est exécuté et les suivantes ne sont pas examinées ; le bloc `else`, facultatif, traite tous les cas restants. Un seul bloc est donc exécuté.
+:::
+
+::: exemple Mention au baccalauréat
+```python
+moyenne = 14.5
+if moyenne >= 16:
+    mention = "Très bien"
+elif moyenne >= 14:
+    mention = "Bien"
+elif moyenne >= 12:
+    mention = "Assez bien"
+else:
+    mention = "Aucune"
+print(mention)
+```
+
+```console
+Bien
+```
+
+Le test `14.5 >= 16` est faux, le test `14.5 >= 14` est vrai : `mention` reçoit `"Bien"` et le test `moyenne >= 12` n’est même pas examiné.
+:::
+
+::: attention L’ordre des conditions compte
+Si l’on testait d’abord `moyenne >= 12`, une moyenne de $17$ obtiendrait « Assez bien », car ce premier test serait déjà vrai. Avec des seuils « supérieur ou égal », on teste du plus grand seuil au plus petit.
+:::
+
+## V. Conditions imbriquées
+
+Une structure conditionnelle peut être placée à l’intérieur d’un bloc d’une autre : on parle de conditions **imbriquées**. Chaque niveau ajoute quatre espaces d’indentation.
+
+::: exemple Accès à un parc d’attractions
+À partir de $12$ ans, on a accès à toutes les attractions ; les plus jeunes ont accès aux attractions moyennes s’ils mesurent au moins $140$ cm, sinon aux attractions pour enfants.
+
+```python
+age = 10
+taille = 145
+if age >= 12:
+    acces = "total"
+else:
+    if taille >= 140:
+        acces = "moyen"
+    else:
+        acces = "enfants"
+print(acces)
+```
+
+```console
+moyen
+```
+
+Le test `10 >= 12` est faux : on entre dans le bloc `else`, où le test imbriqué `145 >= 140` est vrai.
+:::
+
+::: remarque
+Un `else` qui ne contient qu’un `if` s’écrit plus simplement avec `elif` : `if age >= 12:` puis `elif taille >= 140:` puis `else:`.
+:::
+
+## VI. Fonctions et conditions
+
+Une **fonction** peut contenir des conditions ; l’instruction `return` renvoie le résultat et **termine** la fonction.
+
+::: exemple Une fonction qui renvoie un booléen
+```python
+def est_pair(n):
+    return n % 2 == 0
+
+print(est_pair(10))
+print(est_pair(7))
+```
+
+```console
+True
+False
+```
+:::
+
+::: exemple Année bissextile
+Une année est bissextile si elle est divisible par $4$ sans l’être par $100$, ou si elle est divisible par $400$.
+
+```python
+def bissextile(a):
+    if a % 400 == 0:
+        return True
+    elif a % 100 == 0:
+        return False
+    else:
+        return a % 4 == 0
+
+print(bissextile(2024))
+print(bissextile(1900))
+print(bissextile(2000))
+print(bissextile(2025))
+```
+
+```console
+True
+False
+True
+False
+```
+
+L’ordre des tests est essentiel : $2000$ est divisible par $100$, mais le test `a % 400 == 0`, placé avant, le déclare bissextile.
+:::
+
+## VII. Tester un programme : les cas limites
+
+::: methode Tester un programme à conditions
+1. Choisir au moins une valeur dans **chaque cas** prévu.
+2. Tester les **valeurs frontières** (par exemple $18$ pour la condition `age >= 18`) : c’est là que se cachent les erreurs entre `<` et `<=`.
+3. Comparer les affichages obtenus avec les résultats attendus.
+:::
+
+Une compagnie de transport applique les tarifs suivants.
+
+| Âge | Tarif |
+|---|---|
+| moins de 4 ans | gratuit |
+| de 4 à 11 ans | 5 € |
+| de 12 à 17 ans | 8 € |
+| de 18 à 64 ans | 12 € |
+| 65 ans et plus | 6 € |
+
+```python
+def tarif(age):
+    if age < 4:
+        return 0
+    elif age < 12:
+        return 5
+    elif age < 18:
+        return 8
+    elif age < 65:
+        return 12
+    else:
+        return 6
+
+for a in [3, 4, 17, 18, 65]:
+    print(a, tarif(a))
+```
+
+```console
+3 0
+4 5
+17 8
+18 12
+65 6
+```
+
+Chaque frontière donne le tarif attendu : $4$ ans paie $5$ €, $18$ ans paie $12$ €, $65$ ans paie $6$ €.
+
+## VIII. Erreurs fréquentes
+
+::: attention Les erreurs classiques
+1. Oublier les deux-points `:` ou l’indentation : erreur `SyntaxError` ou `IndentationError`.
+2. Confondre `=` (affectation) et `==` (comparaison).
+3. Mal ordonner les `elif` : un premier test trop large « capture » les cas suivants.
+4. Écrire `if x == 1 or 2:` : cette condition est **toujours vraie**, car `2` seul est considéré comme vrai. Il faut écrire `if x == 1 or x == 2:`.
+5. Écrire `true` ou `false` : en Python, les booléens prennent une majuscule, `True` et `False`.
+6. Tester l’égalité de deux flottants avec `==` : comparer à une tolérance près.
+7. Oublier que les chaînes distinguent majuscules et minuscules : `"Lundi" == "lundi"` vaut `False`.
+:::
+
+::: exemple Le piège du « or »
+```python
+x = 5
+if x == 1 or 2:
+    print("piège")
+print(x == 1 or x == 2)
+```
+
+```console
+piège
+False
+```
+:::
+
+::: retenir
+- Comparaisons : `==`, `!=`, `<`, `<=`, `>`, `>=` ; elles renvoient `True` ou `False`.
+- `and` : toutes vraies ; `or` : au moins une vraie ; `not` : contraire. Négation : `not (A and B)` équivaut à `not A or not B`.
+- `if` / `elif` / `else` : conditions testées dans l’ordre, un seul bloc exécuté ; deux-points et indentation obligatoires.
+- Tester chaque cas et chaque valeur frontière.
+- Fiche de synthèse dans l’onglet Fiches !
+:::

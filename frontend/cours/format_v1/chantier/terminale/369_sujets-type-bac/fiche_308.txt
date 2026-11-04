@@ -1,0 +1,139 @@
+Titre: Résumé : l'essentiel pour le jour du bac
+
+<!-- optitab:1 -->
+::: objectifs
+Les formules et les réflexes indispensables de la spécialité de Terminale, partie par partie, à relire la veille et le matin de l’épreuve.
+:::
+
+## I. Suites
+
+| Suite | À retenir |
+|---|---|
+| Arithmétique | $u_n = u_0 + nr$ |
+| Géométrique | $u_n = u_0 \times q^n$ |
+| $q^n$, $-1 \lt q \lt 1$ | limite $0$ |
+| $q^n$, $q \gt 1$ | limite $+\infty$ |
+
+- Somme géométrique ($q \neq 1$) : $1 + q + \cdots + q^n = \frac{1 - q^{n+1}}{1 - q}$.
+- Croissante majorée, ou décroissante minorée : la suite converge.
+- $u_{n+1} = f(u_n)$, $u_n \to \ell$ et $f$ continue en $\ell$ : alors $f(\ell) = \ell$.
+- Récurrence : initialisation, hérédité (on suppose $\mathcal{P}(k)$ pour **un** $k$), conclusion.
+- Comparaison : si $u_n \geqslant v_n$ et $v_n \to +\infty$, alors $u_n \to +\infty$ ; gendarmes pour une limite finie.
+
+## II. Limites et continuité
+
+::: formule Croissances comparées
+$$
+\begin{gathered}
+\lim\limits_{x \to +\infty} \frac{e^x}{x^n} = +\infty \\
+\lim\limits_{x \to +\infty} \frac{\ln x}{x} = 0 \\
+\lim\limits_{x \to 0^+} x\ln x = 0
+\end{gathered}
+$$
+:::
+
+1. Formes indéterminées : « $\infty - \infty$ », « $0 \times \infty$ », « $\frac{\infty}{\infty}$ », « $\frac{0}{0}$ » : factoriser, croissances comparées.
+2. Nombres dérivés : $\lim\limits_{x \to 0} \frac{e^x - 1}{x} = 1$ et $\lim\limits_{x \to 0} \frac{\ln(1 + x)}{x} = 1$.
+3. Asymptote horizontale : si $\lim\limits_{x \to +\infty} f(x) = b$, la droite $y = b$.
+4. Asymptote verticale : si $\lim\limits_{x \to a} f(x) = \pm\infty$, la droite $x = a$.
+5. Valeurs intermédiaires : $f$ **continue** et **strictement monotone** sur $[a\,;b]$, $k$ entre $f(a)$ et $f(b)$ : une **unique** solution de $f(x) = k$.
+
+## III. Dérivation et convexité
+
+| Fonction | Dérivée |
+|---|---|
+| $u^n$ | $nu'u^{n-1}$ |
+| $\sqrt{u}$ | $\frac{u'}{2\sqrt{u}}$ |
+| $e^u$ | $u'e^u$ |
+| $\ln u$ | $\frac{u'}{u}$ |
+| $\cos(ax + b)$ | $-a\sin(ax + b)$ |
+| $\sin(ax + b)$ | $a\cos(ax + b)$ |
+| $\frac{u}{v}$ | $\frac{u'v - uv'}{v^2}$ |
+
+- Tangente en $a$ : $y = f'(a)(x - a) + f(a)$.
+- $f'' \geqslant 0$ : convexe, courbe **au-dessus** de ses tangentes ; $f'' \leqslant 0$ : concave, courbe **au-dessous**.
+- Point d’inflexion : $f''$ s’annule **en changeant de signe**.
+
+[IMAGE_1]
+
+## IV. Exponentielle et logarithme
+
+| Exponentielle | Logarithme ($a \gt 0$, $b \gt 0$) |
+|---|---|
+| $e^{a + b} = e^ae^b$ | $\ln(ab) = \ln a + \ln b$ |
+| $e^{-a} = \frac{1}{e^a}$ | $\ln\left(\frac{a}{b}\right) = \ln a - \ln b$ |
+| $(e^a)^n = e^{na}$ | $\ln(a^n) = n\ln a$ |
+| $e^x \gt 0$ | $\ln(\sqrt{a}) = \frac{1}{2}\ln a$ |
+| $e^{\ln x} = x$ ($x \gt 0$) | $\ln(e^x) = x$ |
+
+- $\ln$ est définie sur $]0\,;+\infty[$, strictement croissante ; $\ln 1 = 0$, $\ln e = 1$ ; $\ln x \lt 0$ pour $0 \lt x \lt 1$.
+- Équation ou inéquation avec $\ln$ : **ensemble de définition d’abord**.
+
+## V. Primitives, équations différentielles, intégrales
+
+| $f$ | Une primitive $F$ |
+|---|---|
+| $x^n$ ($n \neq -1$) | $\frac{x^{n+1}}{n+1}$ |
+| $\frac{1}{x}$ ($x \gt 0$) | $\ln x$ |
+| $\frac{1}{x^2}$ | $-\frac{1}{x}$ |
+| $\frac{1}{\sqrt{x}}$ | $2\sqrt{x}$ |
+| $e^{ax}$ ($a \neq 0$) | $\frac{1}{a}e^{ax}$ |
+| $u'e^u$ | $e^u$ |
+| $\frac{u'}{u}$ ($u \gt 0$) | $\ln u$ |
+| $u'u^n$ ($n \neq -1$) | $\frac{u^{n+1}}{n+1}$ |
+| $\cos(ax + b)$ | $\frac{1}{a}\sin(ax + b)$ |
+| $\sin(ax + b)$ | $-\frac{1}{a}\cos(ax + b)$ |
+
+1. $y' = ay$ : $y = Ce^{ax}$ ; $y' = ay + b$ ($a \neq 0$) : $y = Ce^{ax} - \frac{b}{a}$.
+2. $\displaystyle\int_a^b f(x)\,\mathrm{d}x = F(b) - F(a)$ : c’est une aire si $f \geqslant 0$ sur $[a\,;b]$.
+3. Aire entre deux courbes : $\int_a^b (f - g)$, avec $f \geqslant g$ sur $[a\,;b]$.
+4. Par parties : $\displaystyle\int_a^b uv' = \big[uv\big]_a^b - \int_a^b u'v$.
+5. Valeur moyenne : $\mu = \frac{1}{b - a}\displaystyle\int_a^b f(x)\,\mathrm{d}x$.
+
+## VI. Dénombrement
+
+| Situation (ensemble à $n$ éléments) | Nombre |
+|---|---|
+| $k$-uplets (ordre, répétitions) | $n^k$ |
+| $k$-uplets d’éléments distincts | $\frac{n!}{(n - k)!}$ |
+| Permutations | $n!$ |
+| Parties à $k$ éléments (sans ordre) | $\binom{n}{k} = \frac{n!}{k!(n - k)!}$ |
+| Toutes les parties | $2^n$ |
+
+- $\binom{n}{k} = \binom{n}{n - k}$ ; Pascal : $\binom{n}{k} + \binom{n}{k + 1} = \binom{n + 1}{k + 1}$.
+- « Au moins un » : total moins « aucun ».
+
+## VII. Probabilités
+
+1. $P_A(B) = \frac{P(A \cap B)}{P(A)}$ ; probabilités totales : $P(B) = P(A \cap B) + P(\overline{A} \cap B)$.
+2. $A$ et $B$ indépendants : $P(A \cap B) = P(A) \times P(B)$.
+3. Loi binomiale $\mathcal{B}(n\,;p)$ : $P(X = k) = \binom{n}{k}p^k(1 - p)^{n - k}$, $E(X) = np$, $V(X) = np(1 - p)$.
+4. $P(X \geqslant 1) = 1 - (1 - p)^n$ ; $P(X \geqslant k + 1) = 1 - P(X \leqslant k)$.
+5. $E(aX + b) = aE(X) + b$ ; $V(aX + b) = a^2V(X)$ ; $E(X + Y) = E(X) + E(Y)$ ; $V(X + Y) = V(X) + V(Y)$ si indépendantes.
+6. Moyenne $M_n$ de $n$ variables indépendantes de même loi : $E(M_n) = \mu$ et $V(M_n) = \frac{V}{n}$.
+7. Concentration : $P\big(|M_n - \mu| \geqslant \delta\big) \leqslant \frac{V}{n\delta^2}$.
+
+[IMAGE_2]
+
+## VIII. Géométrie dans l’espace
+
+1. $\vec{u} \cdot \vec{v} = xx' + yy' + zz'$ ; $\|\vec{u}\| = \sqrt{x^2 + y^2 + z^2}$ ; orthogonaux si $\vec{u} \cdot \vec{v} = 0$.
+2. $\vec{n}$ normal à un plan : orthogonal à **deux** vecteurs non colinéaires du plan.
+3. Plan de vecteur normal $\vec{n}\,(a\,;b\,;c)$ : $ax + by + cz + d = 0$.
+4. Droite par $A$ dirigée par $\vec{u}$ : $M = A + t\vec{u}$, soit $x = x_A + \alpha t$, $y = y_A + \beta t$, $z = z_A + \gamma t$.
+5. Intersection droite-plan : remplacer dans l’équation du plan, trouver $t$.
+6. Projeté orthogonal $H$ de $M$ sur un plan : droite par $M$ dirigée par $\vec{n}$, coupée avec le plan ; distance $= MH$.
+7. Tétraèdre : $V = \frac{1}{3} \times \mathcal{B} \times h$.
+
+[IMAGE_3]
+
+## IX. Les réflexes de rédaction
+
+::: retenir
+- Annoncer le théorème ou la propriété, calculer, **conclure par une phrase**.
+- « Montrer que » : le résultat est donné, il se réutilise même non démontré.
+- Valeur exacte d’abord, valeur approchée ensuite, à l’arrondi demandé.
+- Diviser par un nombre négatif (par exemple $\ln(0{,}9)$) change le sens de l’inégalité.
+- Loi binomiale : les trois mots « identiques, indépendantes, deux issues » et les deux paramètres.
+- $2$ points de maîtrise de la langue : phrases complètes, vocabulaire juste, copie organisée.
+:::

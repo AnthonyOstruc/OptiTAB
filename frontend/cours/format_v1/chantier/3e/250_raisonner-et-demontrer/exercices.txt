@@ -1,0 +1,2321 @@
+=== Découverte - Vrai ou faux : chercher un contre-exemple
+Id: 2485
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Pour chaque affirmation, dire si elle est vraie ou fausse. Justifier par un contre-exemple ou par une démonstration.
+
+1. « Le carré d'un nombre est toujours supérieur ou égal à ce nombre. »
+2. « La somme de deux nombres premiers est toujours paire. »
+3. « Le double d'un nombre est toujours plus grand que ce nombre. »
+4. « Un nombre entier divisible par $4$ est divisible par $2$. »
+5. « Deux rectangles qui ont le même périmètre ont la même aire. »
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Le carré d'un nombre
+
+::: methode
+L'affirmation dit « toujours » : pour la réfuter, il suffit d'**un seul** nombre qui ne la vérifie pas. On essaie un cas piège : un nombre entre $0$ et $1$.
+:::
+
+::: etape Essai avec $0{,}5$
+$0{,}5^2 = 0{,}5 \times 0{,}5 = 0{,}25$ et $0{,}25 < 0{,}5$.
+:::
+
+::: resultat
+Faux : pour $x = 0{,}5$, le carré $0{,}25$ est plus petit que le nombre.
+:::
+
+## Question 2 : Deux nombres premiers
+
+::: methode
+On cherche un contre-exemple parmi les plus petits nombres premiers : $2$, $3$, $5$, $7$…
+:::
+
+::: etape Essais
+$3 + 5 = 8$ et $3 + 7 = 10$ sont pairs, mais $2$ est premier et pair : $2 + 3 = 5$ est impair.
+:::
+
+::: resultat
+Faux : $2$ et $3$ sont premiers et leur somme $5$ est impaire.
+:::
+
+## Question 3 : Le double d'un nombre
+
+::: methode
+On essaie un nombre négatif : doubler l'éloigne de $0$ vers la gauche.
+:::
+
+::: etape Essai avec $-3$
+Le double de $-3$ est $-6$, et $-6 < -3$.
+:::
+
+::: resultat
+Faux : pour $-3$, le double $-6$ est plus petit que le nombre (et pour $0$, le double est égal au nombre).
+:::
+
+## Question 4 : Divisible par $4$
+
+::: methode
+Ici, les essais ($8$, $12$, $100$…) marchent tous : on démontre l'affirmation dans le cas général, avec une lettre.
+:::
+
+::: etape Démonstration
+Un entier divisible par $4$ s'écrit $4k$, avec $k$ entier. Or :
+$$4k = 2 \times (2k)$$
+et $2k$ est un entier.
+:::
+
+::: resultat
+Vrai : $4k = 2 \times (2k)$ est un multiple de $2$.
+:::
+
+## Question 5 : Les rectangles
+
+::: methode
+On construit deux rectangles de même périmètre, de formes différentes, et on compare leurs aires.
+:::
+
+::: etape Deux rectangles de périmètre $20$ cm
+- Rectangle de $1$ cm sur $9$ cm : périmètre $2 \times (1 + 9) = 20$ cm, aire $1 \times 9 = 9$ cm².
+- Carré de $5$ cm de côté : périmètre $4 \times 5 = 20$ cm, aire $5 \times 5 = 25$ cm².
+:::
+
+[IMAGE_1]
+
+::: resultat
+Faux : ces deux rectangles ont le même périmètre ($20$ cm) mais des aires différentes ($9$ cm² et $25$ cm²).
+:::
+
+::: attention Erreur fréquente
+Répondre « vrai » parce que l'affirmation marche sur deux ou trois exemples. Des exemples ne prouvent rien ; en revanche **un seul** contre-exemple suffit pour prouver qu'une affirmation est fausse.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Faux : $0{,}5^2 = 0{,}25 < 0{,}5$.
+2. Faux : $2 + 3 = 5$ est impair.
+3. Faux : le double de $-3$ est $-6 < -3$.
+4. Vrai : $4k = 2 \times (2k)$.
+5. Faux : $1 \times 9$ et $5 \times 5$ ont un périmètre de $20$ cm, mais des aires de $9$ cm² et $25$ cm².
+
+===
+
+=== Découverte - Écrire un entier pair ou impair avec une lettre
+Id: 2486
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Dans cet exercice, $a$, $b$ et $n$ désignent des nombres entiers.
+
+1. Écrire $14$ sous la forme $2n$ et $15$ sous la forme $2n + 1$, en précisant $n$. Comment écrit-on un entier pair quelconque ? un entier impair quelconque ?
+2. Démontrer que la somme de deux entiers impairs est paire.
+3. Démontrer que la somme d'un entier pair et d'un entier impair est impaire.
+4. Démontrer que le produit de deux entiers impairs est impair.
+5. Démontrer que le carré d'un entier pair est un multiple de $4$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les écritures générales
+
+::: methode
+Un entier pair est un multiple de $2$ ; un entier impair est un entier pair augmenté de $1$.
+:::
+
+::: etape Deux exemples
+$14 = 2 \times 7$ (ici $n = 7$) et $15 = 2 \times 7 + 1$ (ici aussi $n = 7$).
+:::
+
+::: resultat
+Un entier pair s'écrit $2n$ et un entier impair s'écrit $2n + 1$, avec $n$ entier.
+:::
+
+## Question 2 : Impair + impair
+
+::: methode
+Deux impairs quelconques s'écrivent avec **deux lettres différentes** : $2a + 1$ et $2b + 1$. On additionne, puis on factorise par $2$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+(2a + 1) + (2b + 1) &= 2a + 2b + 2 \\
+&= 2(a + b + 1)
+\end{aligned}
+$$
+:::
+
+::: etape Conclusion
+$a + b + 1$ est un entier, donc $2(a + b + 1)$ est un multiple de $2$. La figure le montre avec des points : les deux points « en trop » forment une nouvelle paire.
+:::
+
+[IMAGE_1]
+
+::: resultat
+La somme de deux entiers impairs est paire.
+:::
+
+## Question 3 : Pair + impair
+
+::: methode
+On écrit le pair $2a$ et l'impair $2b + 1$, on additionne, puis on fait apparaître la forme $2 \times (\ldots) + 1$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+2a + (2b + 1) &= 2a + 2b + 1 \\
+&= 2(a + b) + 1
+\end{aligned}
+$$
+:::
+
+::: resultat
+$a + b$ est un entier, donc $2(a + b) + 1$ est impair : la somme d'un pair et d'un impair est impaire.
+:::
+
+## Question 4 : Impair $\times$ impair
+
+::: methode
+On développe $(2a + 1)(2b + 1)$, puis on met $2$ en facteur dans tous les termes sauf le $1$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+(2a + 1)(2b + 1) &= 4ab + 2a + 2b + 1 \\
+&= 2(2ab + a + b) + 1
+\end{aligned}
+$$
+:::
+
+::: resultat
+$2ab + a + b$ est un entier, donc le produit de deux entiers impairs est impair.
+:::
+
+## Question 5 : Le carré d'un entier pair
+
+::: methode
+Un entier pair s'écrit $2n$ : on l'élève au carré et on fait apparaître le facteur $4$.
+:::
+
+::: etape Calcul
+$$(2n)^2 = 2n \times 2n = 4n^2 = 4 \times n^2$$
+:::
+
+::: resultat
+$n^2$ est un entier, donc le carré d'un entier pair est un multiple de $4$.
+:::
+
+::: attention Erreur fréquente
+Écrire les deux impairs $2n + 1$ et $2n + 1$ avec la **même** lettre : on ne traite alors que deux nombres égaux ($7 + 7$, $9 + 9$…). Pour deux nombres quelconques, il faut deux lettres différentes.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $14 = 2 \times 7$ et $15 = 2 \times 7 + 1$ ; pair : $2n$, impair : $2n + 1$.
+2. $(2a + 1) + (2b + 1) = 2(a + b + 1)$ : pair.
+3. $2a + (2b + 1) = 2(a + b) + 1$ : impair.
+4. $(2a + 1)(2b + 1) = 2(2ab + a + b) + 1$ : impair.
+5. $(2n)^2 = 4n^2$ : multiple de $4$.
+
+===
+
+=== Découverte - Programme de calcul : tester puis démontrer
+Id: 2487
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+On considère le programme de calcul suivant.
+
+- Choisir un nombre.
+- Lui ajouter $5$.
+- Multiplier le résultat par $2$.
+- Soustraire le double du nombre de départ.
+
+1. Appliquer le programme au nombre $3$.
+2. Appliquer le programme au nombre $-7$.
+3. Appliquer le programme au nombre $0{,}5$.
+4. Ces trois essais prouvent-ils que le résultat est toujours le même ?
+5. Démontrer que le programme donne toujours $10$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Avec $3$
+
+::: methode
+On effectue les étapes dans l'ordre. Le double du nombre de départ est $2 \times 3 = 6$.
+:::
+
+::: etape Calculs
+$3 + 5 = 8$ ; $8 \times 2 = 16$ ; $16 - 6 = 10$.
+:::
+
+::: resultat
+Avec $3$, le programme donne $10$.
+:::
+
+## Question 2 : Avec $-7$
+
+::: methode
+Mêmes étapes. Le double de $-7$ est $-14$, et soustraire $-14$ revient à ajouter $14$.
+:::
+
+::: etape Calculs
+$-7 + 5 = -2$ ; $-2 \times 2 = -4$ ; $-4 - (-14) = -4 + 14 = 10$.
+:::
+
+::: resultat
+Avec $-7$, le programme donne $10$.
+:::
+
+## Question 3 : Avec $0{,}5$
+
+::: etape Calculs
+$0{,}5 + 5 = 5{,}5$ ; $5{,}5 \times 2 = 11$ ; le double de $0{,}5$ est $1$, et $11 - 1 = 10$.
+:::
+
+::: resultat
+Avec $0{,}5$, le programme donne $10$.
+:::
+
+## Question 4 : Une preuve ?
+
+::: methode
+Un essai ne vérifie la propriété que pour **un** nombre ; il y a une infinité de nombres possibles.
+:::
+
+::: resultat
+Non : trois essais permettent seulement de faire une **conjecture** (« le résultat est toujours $10$ »). Il reste à la démontrer.
+:::
+
+## Question 5 : La démonstration
+
+::: methode
+On applique le programme à un nombre quelconque, noté $x$, puis on réduit l'expression obtenue.
+:::
+
+::: etape Traduire le programme
+Ajouter $5$ : $x + 5$. Multiplier par $2$ : $2(x + 5)$. Soustraire le double de $x$ : $2(x + 5) - 2x$.
+:::
+
+::: etape Développer et réduire
+$$
+\begin{aligned}
+2(x + 5) - 2x &= 2x + 10 - 2x \\
+&= 10
+\end{aligned}
+$$
+:::
+
+::: resultat
+Pour tout nombre $x$, le résultat vaut $10$ : la conjecture est démontrée.
+:::
+
+::: attention Erreur fréquente
+Écrire $2x + 5$ au lieu de $2(x + 5)$ : la multiplication porte sur **tout** le résultat de l'étape précédente, d'où les parenthèses.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $10$
+2. $10$
+3. $10$
+4. Non : des essais donnent seulement une conjecture.
+5. $2(x + 5) - 2x = 2x + 10 - 2x = 10$ pour tout nombre $x$.
+
+===
+
+=== Découverte - Une conjecture qui tombe en défaut
+Id: 2488
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Tom a remarqué que l'expression $n^2 + n + 41$ semble toujours donner un nombre premier lorsque $n$ est un entier positif ou nul.
+
+1. Calculer $n^2 + n + 41$ pour $n = 0$, $1$, $2$, $3$ et $4$. Vérifier que $61$ est un nombre premier.
+2. Quelle conjecture Tom peut-il formuler ? Ces calculs la démontrent-ils ?
+3. Calculer $n^2 + n + 41$ pour $n = 40$, puis vérifier que le résultat est égal à $41 \times 41$.
+4. Que peut-on conclure au sujet de la conjecture de Tom ?
+5. Sans calculatrice, montrer que pour $n = 41$ le nombre obtenu est divisible par $41$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les premiers essais
+
+::: methode
+On remplace $n$ par chaque valeur, en calculant d'abord le carré.
+:::
+
+::: etape Calculs
+| $n$ | $0$ | $1$ | $2$ | $3$ | $4$ |
+|---|---|---|---|---|---|
+| $n^2 + n + 41$ | $41$ | $43$ | $47$ | $53$ | $61$ |
+:::
+
+::: etape $61$ est-il premier ?
+On teste les nombres premiers $p$ tels que $p \times p \le 61$ : $2$, $3$, $5$, $7$ ($11 \times 11 = 121 > 61$). $61$ est impair, la somme de ses chiffres $7$ n'est pas un multiple de $3$, il ne finit ni par $0$ ni par $5$, et $61 = 7 \times 8 + 5$.
+:::
+
+::: resultat
+On obtient $41$, $43$, $47$, $53$ et $61$, qui sont tous des nombres premiers.
+:::
+
+## Question 2 : La conjecture
+
+::: methode
+Une conjecture généralise ce que l'on a observé ; elle n'est pas prouvée pour autant.
+:::
+
+::: resultat
+Conjecture : « pour tout entier $n$ positif ou nul, $n^2 + n + 41$ est premier ». Cinq essais ne la démontrent pas.
+:::
+
+## Question 3 : Avec $n = 40$
+
+::: etape Calcul
+$$
+\begin{aligned}
+40^2 + 40 + 41 &= 1\,600 + 40 + 41 \\
+&= 1\,681
+\end{aligned}
+$$
+:::
+
+::: etape Comparaison
+$41 \times 41 = 1\,681$.
+:::
+
+::: resultat
+Pour $n = 40$, on obtient $1\,681 = 41 \times 41$.
+:::
+
+## Question 4 : Conclusion
+
+::: methode
+Un nombre qui s'écrit $41 \times 41$ a au moins trois diviseurs : $1$, $41$ et $1\,681$. Il n'est donc pas premier.
+:::
+
+::: resultat
+$n = 40$ est un contre-exemple : la conjecture de Tom est **fausse**, même si elle est vraie pour tous les entiers de $0$ à $39$.
+:::
+
+## Question 5 : Avec $n = 41$
+
+::: methode
+Chaque terme contient le facteur $41$ : on le met en facteur.
+:::
+
+::: etape Factorisation
+$$
+\begin{aligned}
+41^2 + 41 + 41 &= 41 \times 41 + 41 \times 1 + 41 \times 1 \\
+&= 41 \times (41 + 1 + 1) \\
+&= 41 \times 43
+\end{aligned}
+$$
+:::
+
+::: resultat
+Pour $n = 41$, le nombre vaut $41 \times 43$ : il est divisible par $41$, donc il n'est pas premier.
+:::
+
+::: retenir
+Une conjecture peut être vraie pour des dizaines de cas et fausse ensuite. Seule une démonstration prouve qu'une affirmation est vraie pour **tous** les nombres.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $41$ ; $43$ ; $47$ ; $53$ ; $61$, tous premiers ($61$ n'est divisible ni par $2$, ni par $3$, ni par $5$, ni par $7$).
+2. « $n^2 + n + 41$ est toujours premier » ; non, ce n'est pas démontré.
+3. $40^2 + 40 + 41 = 1\,681 = 41 \times 41$.
+4. La conjecture est fausse ($n = 40$ est un contre-exemple).
+5. $41^2 + 41 + 41 = 41 \times 43$.
+
+===
+
+=== Découverte - Contre-exemples en géométrie
+Id: 2489
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Pour chaque affirmation, dire si elle est vraie ou fausse. Si elle est fausse, dessiner un contre-exemple ; si elle est vraie, la justifier.
+
+1. « Un quadrilatère qui a ses quatre côtés de même longueur est un carré. »
+2. « Un quadrilatère dont les diagonales sont perpendiculaires est un losange. »
+3. « Un quadrilatère qui a trois angles droits est un rectangle. »
+4. « Un triangle qui a deux angles de $45^\circ$ est rectangle. »
+5. « Deux triangles qui ont les mêmes angles ont les mêmes longueurs de côtés. »
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Quatre côtés égaux
+
+::: methode
+On cherche un quadrilatère qui a quatre côtés égaux sans être un carré.
+:::
+
+::: etape Un contre-exemple
+Un losange dont les angles ne sont pas droits a quatre côtés de même longueur.
+:::
+
+[IMAGE_1]
+
+::: resultat
+Faux : le losange $ABCD$ a quatre côtés de $3$ cm mais aucun angle droit ; ce n'est pas un carré.
+:::
+
+## Question 2 : Diagonales perpendiculaires
+
+::: methode
+On cherche un quadrilatère à diagonales perpendiculaires dont les côtés ne sont pas tous égaux.
+:::
+
+::: etape Un contre-exemple
+On trace deux segments perpendiculaires $[EG]$ et $[FH]$ qui se coupent en $O$, avec $O$ milieu de $[FH]$ mais **pas** de $[EG]$ : on obtient un « cerf-volant ».
+:::
+
+[IMAGE_2]
+
+::: resultat
+Faux : dans le quadrilatère $EFGH$, les diagonales sont perpendiculaires, mais $EF = EH$ est différent de $GF = GH$ ; ce n'est pas un losange.
+:::
+
+## Question 3 : Trois angles droits
+
+::: methode
+Un quadrilatère se partage en deux triangles par une diagonale : la somme de ses angles vaut $2 \times 180^\circ = 360^\circ$.
+:::
+
+::: etape Le quatrième angle
+$$360^\circ - 3 \times 90^\circ = 360^\circ - 270^\circ = 90^\circ$$
+:::
+
+::: resultat
+Vrai : le quatrième angle est droit aussi ; un quadrilatère qui a quatre angles droits est un rectangle.
+:::
+
+## Question 4 : Deux angles de $45^\circ$
+
+::: methode
+La somme des angles d'un triangle vaut $180^\circ$.
+:::
+
+::: etape Le troisième angle
+$$180^\circ - 45^\circ - 45^\circ = 90^\circ$$
+:::
+
+::: resultat
+Vrai : le troisième angle mesure $90^\circ$, le triangle est rectangle (et isocèle).
+:::
+
+## Question 5 : Mêmes angles, mêmes côtés ?
+
+::: methode
+On pense à un agrandissement : il conserve les angles mais multiplie les longueurs.
+:::
+
+::: etape Un contre-exemple
+Un triangle équilatéral de côté $2$ cm et un triangle équilatéral de côté $4$ cm ont tous leurs angles égaux à $60^\circ$.
+:::
+
+[IMAGE_3]
+
+::: resultat
+Faux : ces deux triangles ont les mêmes angles mais pas les mêmes côtés (ils sont seulement semblables).
+:::
+
+::: attention Erreur fréquente
+Pour une affirmation fausse, écrire seulement « ça ne marche pas toujours ». Il faut **donner** le contre-exemple précis : la figure, ses mesures, et ce qui contredit l'affirmation.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Faux : un losange non carré.
+2. Faux : un cerf-volant (diagonales perpendiculaires, côtés non tous égaux).
+3. Vrai : le quatrième angle vaut $360^\circ - 270^\circ = 90^\circ$.
+4. Vrai : le troisième angle vaut $90^\circ$.
+5. Faux : deux triangles équilatéraux de côtés $2$ cm et $4$ cm.
+
+===
+
+=== Découverte - Hypothèse, conclusion, réciproque et contraposée
+Id: 2490
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+On considère les trois propriétés suivantes.
+
+- (P1) « Si un nombre entier est un multiple de $6$, alors c'est un multiple de $3$. »
+- (P2) « Si un triangle est équilatéral, alors il est isocèle. »
+- (P3) « Si deux nombres sont égaux, alors leurs carrés sont égaux. »
+
+1. Pour (P1), donner l'hypothèse et la conclusion, puis démontrer que (P1) est vraie.
+2. Écrire la réciproque de (P1). Est-elle vraie ?
+3. Écrire la contraposée de (P1), puis l'utiliser pour montrer, sans division, que $50$ n'est pas un multiple de $6$.
+4. Écrire la réciproque de (P2). Est-elle vraie ?
+5. Écrire la réciproque de (P3). Est-elle vraie ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Hypothèse, conclusion et preuve de (P1)
+
+::: methode
+L'hypothèse suit « si », la conclusion suit « alors ». Pour démontrer, on traduit l'hypothèse avec une lettre.
+:::
+
+::: etape Hypothèse et conclusion
+Hypothèse : « le nombre est un multiple de $6$ ». Conclusion : « c'est un multiple de $3$ ».
+:::
+
+::: etape Démonstration
+On sait que le nombre s'écrit $6k$, avec $k$ entier. Or $6k = 3 \times (2k)$ et $2k$ est un entier. Donc le nombre est un multiple de $3$.
+:::
+
+::: resultat
+(P1) est vraie.
+:::
+
+## Question 2 : Réciproque de (P1)
+
+::: methode
+On échange l'hypothèse et la conclusion, puis on cherche un contre-exemple.
+:::
+
+::: etape Énoncé de la réciproque
+« Si un nombre entier est un multiple de $3$, alors c'est un multiple de $6$. »
+:::
+
+::: etape Un contre-exemple
+$9 = 3 \times 3$ est un multiple de $3$, mais $9$ est impair, donc ce n'est pas un multiple de $6$.
+:::
+
+::: resultat
+La réciproque de (P1) est fausse ($9$ est un contre-exemple).
+:::
+
+## Question 3 : Contraposée de (P1)
+
+::: methode
+La contraposée dit : si la conclusion est fausse, l'hypothèse est fausse. Elle est vraie car (P1) est vraie.
+:::
+
+::: etape Énoncé de la contraposée
+« Si un nombre entier n'est pas un multiple de $3$, alors ce n'est pas un multiple de $6$. »
+:::
+
+::: etape Application à $50$
+La somme des chiffres de $50$ est $5 + 0 = 5$, qui n'est pas un multiple de $3$ : $50$ n'est pas un multiple de $3$.
+:::
+
+::: resultat
+D'après la contraposée de (P1), $50$ n'est pas un multiple de $6$.
+:::
+
+## Question 4 : Réciproque de (P2)
+
+::: etape Énoncé de la réciproque
+« Si un triangle est isocèle, alors il est équilatéral. »
+:::
+
+::: etape Un contre-exemple
+Le triangle $RST$ ci-dessous a deux côtés de $4$ cm et un côté de $3$ cm : il est isocèle en $R$, mais pas équilatéral.
+:::
+
+[IMAGE_1]
+
+::: resultat
+La réciproque de (P2) est fausse.
+:::
+
+## Question 5 : Réciproque de (P3)
+
+::: etape Énoncé de la réciproque
+« Si deux nombres ont des carrés égaux, alors ces nombres sont égaux. »
+:::
+
+::: etape Un contre-exemple
+$3^2 = 9$ et $(-3)^2 = 9$ : les carrés sont égaux, mais $3 \neq -3$.
+:::
+
+::: resultat
+La réciproque de (P3) est fausse.
+:::
+
+::: attention Erreur fréquente
+Croire qu'une propriété vraie a toujours une réciproque vraie. La réciproque doit être étudiée à part : elle peut être vraie (Pythagore, Thalès) ou fausse (les trois propriétés de cet exercice).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Hypothèse : multiple de $6$ ; conclusion : multiple de $3$ ; vraie car $6k = 3 \times (2k)$.
+2. « Si multiple de $3$, alors multiple de $6$ » : fausse ($9$).
+3. « Si pas multiple de $3$, alors pas multiple de $6$ » ; $5 + 0 = 5$, donc $50$ n'est pas multiple de $3$, donc pas multiple de $6$.
+4. « Si isocèle, alors équilatéral » : fausse (côtés $4$ cm, $4$ cm, $3$ cm).
+5. « Si carrés égaux, alors nombres égaux » : fausse ($3$ et $-3$).
+
+===
+
+=== Découverte - Vérifier les hypothèses du théorème de Pythagore
+Id: 2491
+Difficulté: easy
+Image: raisonner_3e_triangles.png
+
+Énoncé:
+<!-- optitab:1 -->
+Un élève affirme : « Dans le triangle $ABC$, on a $AB = 3$ cm et $AC = 4$ cm, donc $BC = 5$ cm. »
+
+[IMAGE_1]
+
+1. Quel théorème l'élève veut-il utiliser ? Quelle hypothèse manque pour pouvoir l'appliquer ?
+2. On suppose que le triangle $ABC$ est rectangle en $A$. Rédiger le calcul de $BC$.
+3. On suppose maintenant que $BC = 6$ cm. Le triangle $ABC$ est-il rectangle ?
+4. On suppose enfin que le triangle $ABC$ est rectangle en $B$. Calculer $BC$ ; donner la valeur exacte puis l'arrondi au dixième.
+5. Que peut-on conclure au sujet de l'affirmation de l'élève ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : L'hypothèse manquante
+
+::: methode
+On relit l'énoncé du théorème de Pythagore : « **Si** un triangle est rectangle, **alors** le carré de l'hypoténuse est égal à la somme des carrés des deux autres côtés ».
+:::
+
+::: resultat
+L'élève pense au théorème de Pythagore, mais rien ne dit que le triangle est rectangle, ni où se trouve l'angle droit. Il manque cette hypothèse.
+:::
+
+## Question 2 : Rectangle en $A$
+
+::: methode
+Si l'angle droit est en $A$, l'hypoténuse est le côté opposé, $[BC]$.
+:::
+
+::: etape Rédaction
+On sait que le triangle $ABC$ est rectangle en $A$. Or, d'après le théorème de Pythagore :
+$$
+\begin{aligned}
+BC^2 &= AB^2 + AC^2 \\
+&= 3^2 + 4^2 \\
+&= 9 + 16 = 25
+\end{aligned}
+$$
+Donc $BC = \sqrt{25} = 5$.
+:::
+
+::: resultat
+Si $ABC$ est rectangle en $A$, alors $BC = 5$ cm.
+:::
+
+## Question 3 : Avec $BC = 6$ cm
+
+::: methode
+On compare le carré du plus grand côté à la somme des carrés des deux autres. S'ils sont différents, on utilise la contraposée du théorème de Pythagore.
+:::
+
+::: etape Calculs séparés
+Le plus grand côté est $[BC]$ : $BC^2 = 6^2 = 36$ et $AB^2 + AC^2 = 9 + 16 = 25$.
+:::
+
+::: etape Rédaction
+On sait que $BC^2 \neq AB^2 + AC^2$. Or, si le triangle était rectangle, le carré de son plus grand côté serait égal à la somme des carrés des deux autres (théorème de Pythagore).
+:::
+
+::: resultat
+Donc, d'après la contraposée du théorème de Pythagore, le triangle $ABC$ n'est pas rectangle.
+:::
+
+## Question 4 : Rectangle en $B$
+
+::: methode
+L'angle droit est en $B$ : l'hypoténuse est maintenant $[AC]$, le côté opposé à $B$. On cherche un côté de l'angle droit : on soustrait les carrés.
+:::
+
+::: etape Rédaction
+On sait que le triangle $ABC$ est rectangle en $B$. D'après le théorème de Pythagore :
+$$
+\begin{aligned}
+AC^2 &= AB^2 + BC^2 \\
+4^2 &= 3^2 + BC^2 \\
+BC^2 &= 16 - 9 = 7
+\end{aligned}
+$$
+:::
+
+[IMAGE_2]
+
+::: resultat
+$BC = \sqrt{7}$ cm, soit environ $2{,}6$ cm.
+:::
+
+## Question 5 : Conclusion
+
+::: resultat
+L'affirmation de l'élève n'est pas justifiée : avec les mêmes longueurs $AB = 3$ cm et $AC = 4$ cm, on peut avoir $BC = 5$ cm, $BC = 6$ cm ou $BC = \sqrt{7}$ cm selon la position de l'angle droit (ou son absence).
+:::
+
+::: attention Erreur fréquente
+Appliquer le théorème de Pythagore sans savoir que le triangle est rectangle, ou sans repérer l'hypoténuse : c'est toujours le côté **opposé à l'angle droit**.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Le théorème de Pythagore ; il manque « le triangle est rectangle » (et en quel sommet).
+2. $BC^2 = 9 + 16 = 25$, $BC = 5$ cm.
+3. Non : $36 \neq 25$ (contraposée du théorème de Pythagore).
+4. $BC^2 = 16 - 9 = 7$, $BC = \sqrt{7} \approx 2{,}6$ cm.
+5. L'affirmation n'est pas justifiée : $BC$ dépend de l'angle droit.
+
+===
+
+=== Entraînement - Produit de deux entiers consécutifs
+Id: 2492
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On s'intéresse au produit $n(n + 1)$ de deux entiers consécutifs, où $n$ est un entier.
+
+1. Calculer ce produit pour $n = 1$, $2$, $3$, $4$ et $5$.
+2. Quelle conjecture peut-on formuler ?
+3. Démontrer la conjecture lorsque $n$ est pair.
+4. Démontrer la conjecture lorsque $n$ est impair.
+5. Conclure, puis en déduire que $n^2 + n$ est toujours pair.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les produits
+
+::: etape Calculs
+| $n$ | $1$ | $2$ | $3$ | $4$ | $5$ |
+|---|---|---|---|---|---|
+| $n(n + 1)$ | $1 \times 2 = 2$ | $2 \times 3 = 6$ | $3 \times 4 = 12$ | $4 \times 5 = 20$ | $5 \times 6 = 30$ |
+:::
+
+::: resultat
+On obtient $2$, $6$, $12$, $20$ et $30$.
+:::
+
+## Question 2 : La conjecture
+
+::: resultat
+Tous ces produits sont pairs. Conjecture : « le produit de deux entiers consécutifs est toujours pair ».
+:::
+
+## Question 3 : Cas où $n$ est pair
+
+::: methode
+Si $n$ est pair, on l'écrit $n = 2k$ avec $k$ entier : le produit contient alors le facteur $2$.
+:::
+
+::: etape Calcul
+$$n(n + 1) = 2k(n + 1) = 2 \times \big(k(n + 1)\big)$$
+:::
+
+::: resultat
+$k(n + 1)$ est un entier, donc $n(n + 1)$ est pair.
+:::
+
+## Question 4 : Cas où $n$ est impair
+
+::: methode
+Si $n$ est impair, c'est $n + 1$ qui est pair : on écrit $n = 2k + 1$, donc $n + 1 = 2k + 2 = 2(k + 1)$.
+:::
+
+::: etape Calcul
+$$n(n + 1) = n \times 2(k + 1) = 2 \times \big(n(k + 1)\big)$$
+:::
+
+::: resultat
+$n(k + 1)$ est un entier, donc $n(n + 1)$ est pair.
+:::
+
+## Question 5 : Conclusion
+
+::: etape Tous les cas sont traités
+Un entier est soit pair, soit impair : dans les deux cas, $n(n + 1)$ est pair. La conjecture est démontrée.
+:::
+
+::: etape Le lien avec $n^2 + n$
+En développant : $n(n + 1) = n^2 + n$.
+:::
+
+::: resultat
+$n^2 + n = n(n + 1)$ est le produit de deux entiers consécutifs : il est toujours pair.
+:::
+
+::: retenir
+Raisonner par cas : on traite séparément **tous** les cas possibles (ici $n$ pair, puis $n$ impair). Parmi deux entiers consécutifs, l'un des deux est toujours pair.
+:::
+
+::: attention Erreur fréquente
+Ne traiter que le cas « $n$ pair » : la démonstration est alors incomplète, car elle ne dit rien des entiers impairs.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $2$ ; $6$ ; $12$ ; $20$ ; $30$.
+2. Le produit de deux entiers consécutifs est toujours pair.
+3. $n = 2k$ : $n(n + 1) = 2 \times k(n + 1)$.
+4. $n = 2k + 1$ : $n(n + 1) = 2 \times n(k + 1)$.
+5. Pair dans tous les cas ; $n^2 + n = n(n + 1)$ est pair.
+
+===
+
+=== Entraînement - Somme de trois entiers consécutifs
+Id: 2493
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On additionne trois entiers consécutifs.
+
+1. Calculer $4 + 5 + 6$, $10 + 11 + 12$ et $99 + 100 + 101$.
+2. Formuler une conjecture.
+3. Démontrer cette conjecture en notant $n$ le plus petit des trois entiers.
+4. Démontrer que la somme est égale à trois fois l'entier du milieu.
+5. Trouver trois entiers consécutifs dont la somme vaut $2\,025$. Peut-on obtenir une somme égale à $100$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les sommes
+
+::: etape Calculs
+$4 + 5 + 6 = 15$ ; $10 + 11 + 12 = 33$ ; $99 + 100 + 101 = 300$.
+:::
+
+::: resultat
+On obtient $15$, $33$ et $300$.
+:::
+
+## Question 2 : La conjecture
+
+::: methode
+On cherche un point commun : $15 = 3 \times 5$, $33 = 3 \times 11$, $300 = 3 \times 100$.
+:::
+
+::: resultat
+Conjecture : « la somme de trois entiers consécutifs est un multiple de $3$ ».
+:::
+
+## Question 3 : La démonstration
+
+::: methode
+Les trois entiers s'écrivent $n$, $n + 1$ et $n + 2$. On additionne, on réduit, puis on factorise par $3$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+n + (n + 1) + (n + 2) &= 3n + 3 \\
+&= 3(n + 1)
+\end{aligned}
+$$
+:::
+
+::: resultat
+$n + 1$ est un entier, donc la somme $3(n + 1)$ est un multiple de $3$.
+:::
+
+## Question 4 : Trois fois l'entier du milieu
+
+::: etape Lecture du résultat
+L'entier du milieu est $n + 1$, et la somme vaut $3(n + 1)$.
+:::
+
+::: resultat
+La somme de trois entiers consécutifs est égale à $3$ fois l'entier du milieu (par exemple $4 + 5 + 6 = 3 \times 5$).
+:::
+
+## Question 5 : Somme $2\,025$, puis somme $100$
+
+::: methode
+La somme vaut $3(n + 1)$ : on divise par $3$ pour trouver l'entier du milieu.
+:::
+
+::: etape Somme $2\,025$
+$3(n + 1) = 2\,025$, donc $n + 1 = 2\,025 \div 3 = 675$. Les entiers sont $674$, $675$ et $676$. Contrôle : $674 + 675 + 676 = 2\,025$.
+:::
+
+::: etape Somme $100$
+La somme est toujours un multiple de $3$. Or $1 + 0 + 0 = 1$ : $100$ n'est pas un multiple de $3$.
+:::
+
+::: resultat
+$674 + 675 + 676 = 2\,025$ ; une somme égale à $100$ est impossible.
+:::
+
+::: attention Erreur fréquente
+S'arrêter à $3n + 3$ sans conclure : il faut factoriser, $3n + 3 = 3(n + 1)$, pour **voir** le multiple de $3$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $15$ ; $33$ ; $300$.
+2. La somme de trois entiers consécutifs est un multiple de $3$.
+3. $n + (n + 1) + (n + 2) = 3(n + 1)$.
+4. La somme vaut $3(n + 1)$, et $n + 1$ est l'entier du milieu.
+5. $674$, $675$, $676$ ; $100$ est impossible ($100$ n'est pas un multiple de $3$).
+
+===
+
+=== Entraînement - Prouver ou réfuter une égalité
+Id: 2494
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Pour chaque égalité, dire si elle est vraie pour **tout** nombre $x$. Justifier par un contre-exemple ou par un calcul littéral.
+
+1. $(x + 3)^2 = x^2 + 9$
+2. $(x + 1)^2 - (x - 1)^2 = 4x$
+3. $(x - 2)(x + 2) = x^2 - 4$
+4. $2x^2 = (2x)^2$
+5. $(x + 1)(x + 2) - x(x + 3) = 2$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $(x + 3)^2 = x^2 + 9$
+
+::: methode
+On teste une valeur simple, autre que $0$ : pour $x = 0$, l'égalité est vraie ($9 = 9$), ce qui ne prouve rien.
+:::
+
+::: etape Essai avec $x = 1$
+$(1 + 3)^2 = 4^2 = 16$ et $1^2 + 9 = 10$. Or $16 \neq 10$.
+:::
+
+::: resultat
+Fausse : $x = 1$ est un contre-exemple. En réalité, $(x + 3)^2 = x^2 + 6x + 9$.
+:::
+
+## Question 2 : $(x + 1)^2 - (x - 1)^2 = 4x$
+
+::: methode
+Les essais marchent ($x = 1$ : $4 - 0 = 4$) : on développe le membre de gauche avec les identités remarquables.
+:::
+
+::: etape Développement
+$$
+\begin{aligned}
+(x + 1)^2 - (x - 1)^2 &= (x^2 + 2x + 1) - (x^2 - 2x + 1) \\
+&= x^2 + 2x + 1 - x^2 + 2x - 1 \\
+&= 4x
+\end{aligned}
+$$
+:::
+
+::: resultat
+Vraie pour tout nombre $x$.
+:::
+
+## Question 3 : $(x - 2)(x + 2) = x^2 - 4$
+
+::: etape Développement
+$$
+\begin{aligned}
+(x - 2)(x + 2) &= x^2 + 2x - 2x - 4 \\
+&= x^2 - 4
+\end{aligned}
+$$
+:::
+
+::: resultat
+Vraie pour tout nombre $x$ (identité remarquable $(a - b)(a + b) = a^2 - b^2$).
+:::
+
+## Question 4 : $2x^2 = (2x)^2$
+
+::: etape Essai avec $x = 1$
+$2 \times 1^2 = 2$ et $(2 \times 1)^2 = 4$. Or $2 \neq 4$.
+:::
+
+::: resultat
+Fausse : $x = 1$ est un contre-exemple. En réalité, $(2x)^2 = 4x^2$.
+:::
+
+## Question 5 : $(x + 1)(x + 2) - x(x + 3) = 2$
+
+::: etape Développement
+$$
+\begin{aligned}
+(x + 1)(x + 2) - x(x + 3) &= (x^2 + 2x + x + 2) - (x^2 + 3x) \\
+&= x^2 + 3x + 2 - x^2 - 3x \\
+&= 2
+\end{aligned}
+$$
+:::
+
+::: resultat
+Vraie pour tout nombre $x$.
+:::
+
+::: attention Erreur fréquente
+Tester seulement $x = 0$ : dans la question 1, l'égalité est vraie pour $x = 0$ mais fausse pour presque toutes les autres valeurs. Une égalité vraie pour une valeur n'est pas forcément vraie pour toutes.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Fausse : pour $x = 1$, $16 \neq 10$.
+2. Vraie : $(x^2 + 2x + 1) - (x^2 - 2x + 1) = 4x$.
+3. Vraie : $(x - 2)(x + 2) = x^2 - 4$.
+4. Fausse : pour $x = 1$, $2 \neq 4$.
+5. Vraie : $x^2 + 3x + 2 - x^2 - 3x = 2$.
+
+===
+
+=== Entraînement - Moyenne et médiane : réfuter une affirmation
+Id: 2495
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Un élève affirme : « La moyenne de la classe est $12$ sur $20$, donc au moins la moitié des élèves ont $12$ ou plus. »
+
+1. Proposer quatre notes de moyenne $12$ dont une seule atteint $12$.
+2. Que peut-on en conclure au sujet de l'affirmation ?
+3. Calculer la médiane de ces quatre notes.
+4. Quel indicateur garantit qu'au moins la moitié des notes lui sont supérieures ou égales ?
+5. Proposer cinq notes de moyenne $10$ et de médiane $12$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Un contre-exemple
+
+::: methode
+On veut un total de $4 \times 12 = 48$ points, avec plusieurs notes sous $12$ compensées par une note très haute.
+:::
+
+::: etape Construction
+On choisit $10$, $10$, $10$ et $18$ : total $10 + 10 + 10 + 18 = 48$.
+$$\frac{48}{4} = 12$$
+:::
+
+::: resultat
+Les notes $10$ ; $10$ ; $10$ ; $18$ ont pour moyenne $12$, et une seule note atteint $12$.
+:::
+
+## Question 2 : Conclusion
+
+::: resultat
+L'affirmation est fausse : avec ces notes, la moyenne vaut $12$ mais seulement $1$ élève sur $4$ a $12$ ou plus. Ce contre-exemple suffit.
+:::
+
+## Question 3 : La médiane
+
+::: methode
+Avec $4$ notes rangées (effectif pair), la médiane est la moyenne des $2^{\text{e}}$ et $3^{\text{e}}$ notes.
+:::
+
+::: etape Calcul
+Notes rangées : $10$ ; $10$ ; $10$ ; $18$. Médiane : $\dfrac{10 + 10}{2} = 10$.
+:::
+
+::: resultat
+La médiane vaut $10$.
+:::
+
+## Question 4 : L'indicateur
+
+::: resultat
+C'est la médiane : elle partage la série rangée en deux moitiés, donc au moins la moitié des valeurs lui sont supérieures ou égales.
+:::
+
+## Question 5 : Moyenne $10$ et médiane $12$
+
+::: methode
+Il faut un total de $5 \times 10 = 50$ points et une note du milieu (la $3^{\text{e}}$ dans l'ordre) égale à $12$.
+:::
+
+::: etape Construction
+On prend $4$ ; $6$ ; $12$ ; $14$ ; $14$ (déjà rangées). Total : $4 + 6 + 12 + 14 + 14 = 50$, donc moyenne $\dfrac{50}{5} = 10$ ; la $3^{\text{e}}$ note vaut $12$.
+:::
+
+::: resultat
+Par exemple : $4$ ; $6$ ; $12$ ; $14$ ; $14$.
+:::
+
+::: attention Erreur fréquente
+Confondre moyenne et médiane : une note extrême déplace la moyenne mais pas la médiane. Seule la médiane renseigne sur « la moitié des élèves ».
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Par exemple $10$ ; $10$ ; $10$ ; $18$ (moyenne $12$).
+2. L'affirmation est fausse.
+3. La médiane vaut $10$.
+4. La médiane.
+5. Par exemple $4$ ; $6$ ; $12$ ; $14$ ; $14$.
+
+===
+
+=== Entraînement - Démontrer qu'un triangle est rectangle
+Id: 2496
+Difficulté: medium
+Image: raisonner_3e_pythagore.png
+
+Énoncé:
+<!-- optitab:1 -->
+Le triangle $ABC$ est tel que $AB = 4{,}8$ cm, $AC = 6{,}4$ cm et $BC = 8$ cm. La figure n'est pas en vraie grandeur.
+
+[IMAGE_1]
+
+1. Quel est le plus grand côté du triangle $ABC$ ?
+2. Calculer $BC^2$, puis $AB^2 + AC^2$.
+3. Rédiger la démonstration : le triangle $ABC$ est-il rectangle ? Si oui, en quel sommet ?
+4. Calculer l'aire du triangle $ABC$.
+5. $H$ est le pied de la hauteur issue de $A$. En calculant l'aire d'une autre façon, en déduire $AH$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Le plus grand côté
+
+::: methode
+Si le triangle est rectangle, l'hypoténuse est forcément le plus grand côté.
+:::
+
+::: resultat
+Le plus grand côté est $[BC]$, de longueur $8$ cm.
+:::
+
+## Question 2 : Les carrés
+
+::: methode
+On calcule **séparément** le carré du plus grand côté et la somme des carrés des deux autres.
+:::
+
+::: etape Calculs
+$$BC^2 = 8^2 = 64$$
+$$
+\begin{aligned}
+AB^2 + AC^2 &= 4{,}8^2 + 6{,}4^2 \\
+&= 23{,}04 + 40{,}96 \\
+&= 64
+\end{aligned}
+$$
+:::
+
+::: resultat
+$BC^2 = 64$ et $AB^2 + AC^2 = 64$.
+:::
+
+## Question 3 : La démonstration
+
+::: methode
+Égalité : on conclut avec la réciproque du théorème de Pythagore. L'angle droit est au sommet opposé au plus grand côté.
+:::
+
+::: etape On sait que
+$[BC]$ est le plus grand côté du triangle $ABC$ et $BC^2 = AB^2 + AC^2$.
+:::
+
+::: etape Or
+Si, dans un triangle, le carré du plus grand côté est égal à la somme des carrés des deux autres côtés, alors ce triangle est rectangle (réciproque du théorème de Pythagore).
+:::
+
+[IMAGE_2]
+
+::: resultat
+Donc le triangle $ABC$ est rectangle en $A$.
+:::
+
+## Question 4 : L'aire
+
+::: methode
+Le triangle est rectangle en $A$ : $[AB]$ et $[AC]$ sont perpendiculaires, l'un sert de base, l'autre de hauteur.
+:::
+
+::: etape Calcul
+$$\mathcal{A} = \frac{AB \times AC}{2} = \frac{4{,}8 \times 6{,}4}{2} = \frac{30{,}72}{2} = 15{,}36$$
+:::
+
+::: resultat
+L'aire du triangle $ABC$ est $15{,}36$ cm².
+:::
+
+## Question 5 : La hauteur $AH$
+
+::: methode
+Avec la base $[BC]$, la hauteur est $[AH]$ : l'aire vaut aussi $\dfrac{BC \times AH}{2}$.
+:::
+
+::: etape Équation
+$$\frac{8 \times AH}{2} = 15{,}36$$
+$$4 \times AH = 15{,}36$$
+$$AH = \frac{15{,}36}{4} = 3{,}84$$
+:::
+
+::: resultat
+$AH = 3{,}84$ cm.
+:::
+
+::: attention Erreur fréquente
+Écrire « d'après le théorème de Pythagore, le triangle est rectangle » : pour **prouver** un angle droit, c'est la **réciproque** qu'on utilise. Le théorème, lui, sert à calculer une longueur quand on sait déjà que le triangle est rectangle.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $[BC]$ ($8$ cm).
+2. $BC^2 = 64$ et $AB^2 + AC^2 = 23{,}04 + 40{,}96 = 64$.
+3. Oui : rectangle en $A$ (réciproque du théorème de Pythagore).
+4. $15{,}36$ cm².
+5. $AH = 3{,}84$ cm.
+
+===
+
+=== Entraînement - Réciproque et contraposée du théorème de Thalès
+Id: 2497
+Difficulté: medium
+Image: raisonner_3e_thales.png
+
+Énoncé:
+<!-- optitab:1 -->
+Sur la figure, $M$ appartient au segment $[AB]$ et $N$ au segment $[AC]$. On donne $AM = 3$ cm, $AB = 7{,}5$ cm, $AN = 4$ cm, $AC = 10$ cm et $BC = 12$ cm.
+
+[IMAGE_1]
+
+1. Calculer $\dfrac{AM}{AB}$ et $\dfrac{AN}{AC}$.
+2. Quelle autre condition la réciproque du théorème de Thalès exige-t-elle ? Est-elle remplie ?
+3. Démontrer que les droites $(MN)$ et $(BC)$ sont parallèles.
+4. Calculer $MN$.
+5. On place le point $P$ sur $[AC]$ tel que $AP = 5$ cm. Les droites $(MP)$ et $(BC)$ sont-elles parallèles ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les deux rapports
+
+::: methode
+On calcule chaque rapport **séparément**, avec des valeurs exactes.
+:::
+
+::: etape Calculs
+$$\frac{AM}{AB} = \frac{3}{7{,}5} = \frac{30}{75} = \frac{2}{5}$$
+$$\frac{AN}{AC} = \frac{4}{10} = \frac{2}{5}$$
+:::
+
+::: resultat
+$\dfrac{AM}{AB} = \dfrac{AN}{AC} = \dfrac{2}{5} = 0{,}4$.
+:::
+
+## Question 2 : L'ordre des points
+
+::: methode
+La réciproque exige aussi que les points soient alignés **dans le même ordre** sur les deux droites.
+:::
+
+::: resultat
+$M \in [AB]$ et $N \in [AC]$ : les points $A$, $M$, $B$ et $A$, $N$, $C$ sont alignés dans le même ordre. La condition est remplie.
+:::
+
+## Question 3 : Le parallélisme
+
+::: etape On sait que
+Les points $A$, $M$, $B$ et $A$, $N$, $C$ sont alignés dans le même ordre, et $\dfrac{AM}{AB} = \dfrac{AN}{AC}$.
+:::
+
+::: etape Or
+D'après la réciproque du théorème de Thalès, dans ce cas les droites $(MN)$ et $(BC)$ sont parallèles.
+:::
+
+::: resultat
+Donc $(MN) \parallel (BC)$.
+:::
+
+## Question 4 : Calculer $MN$
+
+::: methode
+Maintenant que le parallélisme est démontré, on peut appliquer le théorème de Thalès.
+:::
+
+::: etape Théorème de Thalès
+$A$, $M$, $B$ alignés ; $A$, $N$, $C$ alignés ; $(MN) \parallel (BC)$. Donc :
+$$\frac{AM}{AB} = \frac{AN}{AC} = \frac{MN}{BC}$$
+$$\frac{MN}{12} = \frac{2}{5}$$
+$$MN = \frac{2 \times 12}{5} = 4{,}8$$
+:::
+
+[IMAGE_2]
+
+::: resultat
+$MN = 4{,}8$ cm.
+:::
+
+## Question 5 : Le point $P$
+
+::: methode
+On compare les rapports. S'ils sont différents, on conclut avec la contraposée du théorème de Thalès.
+:::
+
+::: etape Comparaison
+$$\frac{AP}{AC} = \frac{5}{10} = \frac{1}{2}$$
+$$\frac{AM}{AB} = \frac{3}{7{,}5} = \frac{2}{5}$$
+Or $\dfrac{1}{2} = 0{,}5$ et $\dfrac{2}{5} = 0{,}4$. Donc $\dfrac{AP}{AC} \neq \dfrac{AM}{AB}$.
+:::
+
+::: etape Raisonnement
+Si les droites $(MP)$ et $(BC)$ étaient parallèles, le théorème de Thalès donnerait $\dfrac{AP}{AC} = \dfrac{AM}{AB}$. Ce n'est pas le cas.
+:::
+
+[IMAGE_3]
+
+::: resultat
+D'après la contraposée du théorème de Thalès, les droites $(MP)$ et $(BC)$ ne sont pas parallèles.
+:::
+
+::: retenir
+Rapports égaux et même ordre : parallèles (**réciproque**). Rapports différents : pas parallèles (**contraposée**). Parallèles connues : calcul de longueurs (**théorème**).
+:::
+
+::: attention Erreur fréquente
+Comparer des valeurs arrondies : deux rapports peuvent avoir le même arrondi sans être égaux. On compare des valeurs exactes (fractions simplifiées ou produits en croix).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\dfrac{AM}{AB} = \dfrac{AN}{AC} = \dfrac{2}{5} = 0{,}4$.
+2. Les points doivent être alignés dans le même ordre : oui.
+3. Réciproque du théorème de Thalès : $(MN) \parallel (BC)$.
+4. $MN = 4{,}8$ cm.
+5. Non : $\dfrac{5}{10} = 0{,}5 \neq 0{,}4$ (contraposée du théorème de Thalès).
+
+===
+
+=== Entraînement - Démontrer qu'un parallélogramme est un rectangle
+Id: 2498
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+$ABCD$ est un parallélogramme de centre $O$ tel que $AB = 6$ cm, $BC = 8$ cm et $AC = 10$ cm.
+
+[IMAGE_1]
+
+1. Démontrer que le triangle $ABC$ est rectangle en $B$.
+2. En déduire la nature du quadrilatère $ABCD$.
+3. En déduire la longueur $BD$, puis la longueur $OB$.
+4. Démontrer que le triangle $OAB$ est isocèle.
+5. Un parallélogramme $EFGH$ a pour côtés $EF = 5$ cm et $FG = 7$ cm, et pour diagonale $EG = 9$ cm. Est-ce un rectangle ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Le triangle $ABC$
+
+::: methode
+On compare le carré du plus grand côté $[AC]$ avec la somme des carrés des deux autres.
+:::
+
+::: etape Calculs
+$AC^2 = 10^2 = 100$ et $AB^2 + BC^2 = 6^2 + 8^2 = 36 + 64 = 100$.
+:::
+
+::: etape Rédaction
+On sait que $AC^2 = AB^2 + BC^2$, $[AC]$ étant le plus grand côté. Or, d'après la réciproque du théorème de Pythagore, un tel triangle est rectangle, au sommet opposé au plus grand côté.
+:::
+
+::: resultat
+Donc le triangle $ABC$ est rectangle en $B$.
+:::
+
+## Question 2 : La nature de $ABCD$
+
+::: etape On sait que
+$ABCD$ est un parallélogramme et $\widehat{ABC} = 90^\circ$ (question 1).
+:::
+
+::: etape Or
+Un parallélogramme qui a un angle droit est un rectangle.
+:::
+
+[IMAGE_2]
+
+::: resultat
+Donc $ABCD$ est un rectangle.
+:::
+
+## Question 3 : Les longueurs $BD$ et $OB$
+
+::: etape La diagonale $[BD]$
+On sait que $ABCD$ est un rectangle. Or les diagonales d'un rectangle ont la même longueur. Donc $BD = AC = 10$ cm.
+:::
+
+::: etape La longueur $OB$
+On sait que $O$ est le centre du parallélogramme. Or les diagonales d'un parallélogramme se coupent en leur milieu. Donc $O$ est le milieu de $[BD]$ et $OB = 10 \div 2 = 5$ cm.
+:::
+
+::: resultat
+$BD = 10$ cm et $OB = 5$ cm.
+:::
+
+## Question 4 : Le triangle $OAB$
+
+::: etape Calcul de $OA$
+$O$ est aussi le milieu de $[AC]$, donc $OA = 10 \div 2 = 5$ cm.
+:::
+
+::: resultat
+$OA = OB = 5$ cm : le triangle $OAB$ est isocèle en $O$.
+:::
+
+## Question 5 : Le parallélogramme $EFGH$
+
+::: methode
+$EFGH$ est un rectangle si et seulement si l'angle $\widehat{EFG}$ est droit. On teste le triangle $EFG$ avec la contraposée du théorème de Pythagore.
+:::
+
+::: etape Calculs
+$EG^2 = 9^2 = 81$ et $EF^2 + FG^2 = 25 + 49 = 74$. Donc $EG^2 \neq EF^2 + FG^2$.
+:::
+
+::: etape Rédaction
+D'après la contraposée du théorème de Pythagore, le triangle $EFG$ n'est pas rectangle : l'angle $\widehat{EFG}$ n'est pas droit. Or dans un rectangle, tous les angles sont droits.
+:::
+
+::: resultat
+$EFGH$ n'est pas un rectangle.
+:::
+
+::: attention Erreur fréquente
+Affirmer que $ABCD$ est un rectangle « parce que la figure en a l'air » : l'angle droit doit être **démontré** (ici par la réciproque du théorème de Pythagore).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $AC^2 = 100 = 36 + 64 = AB^2 + BC^2$ : rectangle en $B$ (réciproque du théorème de Pythagore).
+2. Parallélogramme avec un angle droit : $ABCD$ est un rectangle.
+3. $BD = AC = 10$ cm et $OB = 5$ cm.
+4. $OA = OB = 5$ cm : isocèle en $O$.
+5. Non : $81 \neq 74$, l'angle $\widehat{EFG}$ n'est pas droit.
+
+===
+
+=== Problème - Démontrer le théorème de Pythagore avec des aires
+Id: 2499
+Difficulté: hard
+Image: raisonner_3e_bassin.png
+
+Énoncé:
+<!-- optitab:1 -->
+Un grand carré de côté $a + b$ est découpé en quatre triangles rectangles identiques, de côtés de l'angle droit $a$ et $b$ et d'hypoténuse $c$, et en un quadrilatère central dont les quatre côtés mesurent $c$.
+
+[IMAGE_1]
+
+1. Exprimer l'aire du grand carré en fonction de $a$ et $b$.
+2. Exprimer l'aire totale des quatre triangles.
+3. Démontrer que le quadrilatère central est un carré, puis donner son aire.
+4. En calculant de deux façons l'aire du grand carré, démontrer que $a^2 + b^2 = c^2$.
+5. Vérifier l'égalité des aires avec $a = 3$ et $b = 4$, puis en déduire $c$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Le grand carré
+
+::: methode
+L'aire d'un carré est le carré de son côté.
+:::
+
+::: resultat
+L'aire du grand carré est $(a + b)^2$.
+:::
+
+## Question 2 : Les quatre triangles
+
+::: methode
+Un triangle rectangle de côtés de l'angle droit $a$ et $b$ a pour aire $\dfrac{a \times b}{2}$.
+:::
+
+::: etape Calcul
+$$4 \times \frac{ab}{2} = 2ab$$
+:::
+
+::: resultat
+Les quatre triangles ont une aire totale de $2ab$.
+:::
+
+## Question 3 : Le quadrilatère central
+
+::: methode
+Un quadrilatère qui a quatre côtés égaux est un losange ; un losange qui a un angle droit est un carré. Il reste à démontrer qu'un angle est droit.
+:::
+
+::: etape Un losange
+On sait que les quatre côtés du quadrilatère central mesurent $c$. Donc c'est un losange.
+:::
+
+::: etape Un angle droit
+Sur un côté du grand carré, en un sommet du losange, trois angles forment un angle plat : un angle aigu $\alpha$ d'un triangle, l'angle du losange, et l'autre angle aigu $\beta$ du triangle voisin (les triangles sont identiques).
+
+Dans un triangle rectangle, $\alpha + \beta = 180^\circ - 90^\circ = 90^\circ$. Donc l'angle du losange vaut :
+$$180^\circ - (\alpha + \beta) = 180^\circ - 90^\circ = 90^\circ$$
+:::
+
+[IMAGE_2]
+
+::: resultat
+Le losange a un angle droit : c'est un carré, d'aire $c^2$.
+:::
+
+## Question 4 : L'égalité de Pythagore
+
+::: methode
+Le grand carré est formé des quatre triangles et du carré central : on écrit son aire de deux façons, puis on simplifie.
+:::
+
+::: etape Deux expressions de la même aire
+$$
+\begin{aligned}
+(a + b)^2 &= 2ab + c^2 \\
+a^2 + 2ab + b^2 &= 2ab + c^2
+\end{aligned}
+$$
+:::
+
+::: etape Simplification
+On soustrait $2ab$ aux deux membres.
+:::
+
+::: resultat
+$$a^2 + b^2 = c^2$$
+:::
+
+## Question 5 : Avec $a = 3$ et $b = 4$
+
+::: etape Les deux aires
+Grand carré : $(3 + 4)^2 = 7^2 = 49$. Triangles et carré central : $2 \times 3 \times 4 + c^2 = 24 + c^2$.
+:::
+
+::: etape Calcul de $c$
+$24 + c^2 = 49$, donc $c^2 = 25$ et $c = 5$ (une longueur est positive). Contrôle : $3^2 + 4^2 = 9 + 16 = 25$.
+:::
+
+::: resultat
+$c = 5$.
+:::
+
+::: retenir
+Calculer une même aire de deux façons différentes est une méthode de démonstration très efficace.
+:::
+
+::: attention Erreur fréquente
+Développer $(a + b)^2$ en $a^2 + b^2$ : on oublie le double produit $2ab$, et la démonstration ne fonctionne plus.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $(a + b)^2$
+2. $4 \times \dfrac{ab}{2} = 2ab$
+3. Losange (quatre côtés $c$) avec un angle de $180^\circ - 90^\circ = 90^\circ$ : carré d'aire $c^2$.
+4. $a^2 + 2ab + b^2 = 2ab + c^2$, donc $a^2 + b^2 = c^2$.
+5. $49 = 24 + c^2$, donc $c = 5$.
+
+===
+
+=== Problème - Deux programmes de calcul
+Id: 2500
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+On considère deux programmes de calcul.
+
+| Programme A | Programme B |
+|---|---|
+| Choisir un nombre. | Choisir un nombre. |
+| Lui ajouter $3$. | Lui ajouter $6$. |
+| Élever le résultat au carré. | Multiplier le résultat par le nombre de départ. |
+| Soustraire $9$. | |
+
+1. Appliquer les deux programmes au nombre $2$.
+2. Appliquer les deux programmes au nombre $-5$.
+3. Quelle conjecture peut-on faire ? La démontrer.
+4. Quels nombres faut-il choisir pour obtenir $0$ avec le programme B ?
+5. Léa affirme qu'on peut obtenir $-10$ avec le programme A. A-t-elle raison ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Avec $2$
+
+::: etape Programme A
+$2 + 3 = 5$ ; $5^2 = 25$ ; $25 - 9 = 16$.
+:::
+
+::: etape Programme B
+$2 + 6 = 8$ ; $8 \times 2 = 16$.
+:::
+
+::: resultat
+Les deux programmes donnent $16$.
+:::
+
+## Question 2 : Avec $-5$
+
+::: etape Programme A
+$-5 + 3 = -2$ ; $(-2)^2 = 4$ ; $4 - 9 = -5$.
+:::
+
+::: etape Programme B
+$-5 + 6 = 1$ ; $1 \times (-5) = -5$.
+:::
+
+::: resultat
+Les deux programmes donnent $-5$.
+:::
+
+## Question 3 : La conjecture et sa démonstration
+
+::: methode
+On traduit chaque programme pour un nombre quelconque $x$, puis on développe les deux expressions.
+:::
+
+::: etape Conjecture
+Les deux programmes semblent toujours donner le même résultat.
+:::
+
+::: etape Programme A
+$$
+\begin{aligned}
+(x + 3)^2 - 9 &= x^2 + 6x + 9 - 9 \\
+&= x^2 + 6x
+\end{aligned}
+$$
+:::
+
+::: etape Programme B
+$$(x + 6) \times x = x^2 + 6x$$
+:::
+
+::: resultat
+Pour tout nombre $x$, les deux programmes donnent $x^2 + 6x$ : la conjecture est démontrée.
+:::
+
+## Question 4 : Obtenir $0$ avec le programme B
+
+::: methode
+On résout $x(x + 6) = 0$ : un produit est nul si et seulement si l'un de ses facteurs est nul.
+:::
+
+::: etape Équation produit nul
+$x = 0$ ou $x + 6 = 0$, c'est-à-dire $x = 0$ ou $x = -6$.
+:::
+
+::: etape Contrôle
+Avec $-6$ : $-6 + 6 = 0$ et $0 \times (-6) = 0$.
+:::
+
+::: resultat
+Il faut choisir $0$ ou $-6$.
+:::
+
+## Question 5 : Peut-on obtenir $-10$ ?
+
+::: methode
+Le résultat du programme A est $(x + 3)^2 - 9$. Un carré est toujours positif ou nul.
+:::
+
+::: etape Raisonnement
+On sait que $(x + 3)^2 \ge 0$ pour tout nombre $x$. Donc $(x + 3)^2 - 9 \ge -9$ : le résultat est toujours supérieur ou égal à $-9$.
+:::
+
+::: resultat
+Léa a tort : on ne peut pas obtenir $-10$, car $-10 < -9$.
+:::
+
+::: attention Erreur fréquente
+Conclure dès la question 2 que « les deux programmes donnent toujours le même résultat » : deux essais ne sont qu'une conjecture, seule la question 3 le démontre.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. A : $16$ ; B : $16$.
+2. A : $-5$ ; B : $-5$.
+3. Les programmes donnent le même résultat : $(x + 3)^2 - 9 = x^2 + 6x = (x + 6) \times x$.
+4. $x = 0$ ou $x = -6$.
+5. Non : $(x + 3)^2 - 9 \ge -9$.
+
+===
+
+=== Problème - Le rectangle d'aire maximale
+Id: 2501
+Difficulté: hard
+Image: raisonner_3e_aire_max.png
+
+Énoncé:
+<!-- optitab:1 -->
+Un rectangle a un périmètre de $40$ cm. On note $x$ la longueur d'un de ses côtés, en cm.
+
+[IMAGE_1]
+
+1. Exprimer la longueur de l'autre côté en fonction de $x$. Entre quelles valeurs $x$ peut-il varier ?
+2. Exprimer l'aire $A(x)$ du rectangle en fonction de $x$.
+3. Démontrer que $A(x) = 100 - (x - 10)^2$.
+4. En déduire que $A(x) \le 100$ pour toute valeur de $x$. Pour quelle valeur de $x$ a-t-on $A(x) = 100$ ?
+5. Quel est le rectangle d'aire maximale ? Vérifier avec $x = 7$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : L'autre côté
+
+::: methode
+Le périmètre compte deux fois chaque côté : un côté plus l'autre font la moitié du périmètre.
+:::
+
+::: etape Demi-périmètre
+$40 \div 2 = 20$ cm, donc l'autre côté mesure $20 - x$.
+:::
+
+::: etape Valeurs possibles
+Les deux côtés sont des longueurs strictement positives : $x > 0$ et $20 - x > 0$, c'est-à-dire $x < 20$.
+:::
+
+::: resultat
+L'autre côté mesure $20 - x$ cm, avec $0 < x < 20$.
+:::
+
+## Question 2 : L'aire
+
+::: resultat
+$$A(x) = x(20 - x) = 20x - x^2$$
+:::
+
+## Question 3 : Une autre écriture de $A(x)$
+
+::: methode
+On part de l'expression à démontrer et on la développe pour retrouver $20x - x^2$.
+:::
+
+::: etape Développement
+$$
+\begin{aligned}
+100 - (x - 10)^2 &= 100 - (x^2 - 20x + 100) \\
+&= 100 - x^2 + 20x - 100 \\
+&= 20x - x^2
+\end{aligned}
+$$
+:::
+
+::: resultat
+$100 - (x - 10)^2 = 20x - x^2 = A(x)$ pour tout $x$.
+:::
+
+## Question 4 : $A(x) \le 100$
+
+::: methode
+Un carré est toujours positif ou nul : on retranche donc à $100$ un nombre positif ou nul.
+:::
+
+::: etape Raisonnement
+On sait que $(x - 10)^2 \ge 0$. Donc $A(x) = 100 - (x - 10)^2 \le 100$.
+:::
+
+::: etape Cas d'égalité
+$A(x) = 100$ lorsque $(x - 10)^2 = 0$, c'est-à-dire $x - 10 = 0$, soit $x = 10$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+$A(x) \le 100$ pour tout $x$, avec égalité seulement pour $x = 10$.
+:::
+
+## Question 5 : Le rectangle optimal
+
+::: etape Pour $x = 10$
+L'autre côté mesure $20 - 10 = 10$ cm : les deux côtés sont égaux.
+:::
+
+::: etape Vérification avec $x = 7$
+$A(7) = 7 \times 13 = 91$ et $100 - (7 - 10)^2 = 100 - 9 = 91$ : on a bien $91 < 100$.
+:::
+
+::: resultat
+Le rectangle d'aire maximale est le carré de $10$ cm de côté, d'aire $100$ cm².
+:::
+
+::: retenir
+La courbe ou un tableau de valeurs **suggèrent** un maximum ; l'écriture « $100 -$ un carré » le **démontre**.
+:::
+
+::: attention Erreur fréquente
+Oublier que le signe $-$ devant la parenthèse change tous les signes : $100 - (x^2 - 20x + 100) = 100 - x^2 + 20x - 100$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $20 - x$, avec $0 < x < 20$.
+2. $A(x) = x(20 - x) = 20x - x^2$.
+3. $100 - (x^2 - 20x + 100) = 20x - x^2$.
+4. $(x - 10)^2 \ge 0$, donc $A(x) \le 100$ ; égalité pour $x = 10$.
+5. Le carré de côté $10$ cm (aire $100$ cm²) ; $A(7) = 91$.
+
+===
+
+=== Problème - Le triangle d'or : une chaîne de déductions
+Id: 2502
+Difficulté: hard
+Image: raisonner_3e_triangle_or.png
+
+Énoncé:
+<!-- optitab:1 -->
+Le triangle $ABC$ est isocèle en $A$, avec $\widehat{BAC} = 36^\circ$. La bissectrice de l'angle $\widehat{ABC}$ coupe le côté $[AC]$ en $D$.
+
+[IMAGE_1]
+
+1. Calculer les angles $\widehat{ABC}$ et $\widehat{ACB}$.
+2. Calculer les angles $\widehat{ABD}$ et $\widehat{DBC}$.
+3. Démontrer que le triangle $ABD$ est isocèle en $D$.
+4. Calculer l'angle $\widehat{BDC}$, puis démontrer que le triangle $BDC$ est isocèle en $B$.
+5. En déduire que $AD = BD = BC$. On donne $AB = 5$ cm et $BC \approx 3{,}09$ cm : calculer $DC$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les angles à la base
+
+::: etape On sait que
+$ABC$ est isocèle en $A$ et $\widehat{BAC} = 36^\circ$.
+:::
+
+::: etape Or
+Dans un triangle isocèle, les angles à la base sont égaux ; dans tout triangle, la somme des angles vaut $180^\circ$.
+:::
+
+::: etape Donc
+$$
+\begin{aligned}
+\widehat{ABC} = \widehat{ACB} &= \frac{180^\circ - 36^\circ}{2} \\
+&= \frac{144^\circ}{2} = 72^\circ
+\end{aligned}
+$$
+:::
+
+::: resultat
+$\widehat{ABC} = \widehat{ACB} = 72^\circ$.
+:::
+
+## Question 2 : La bissectrice
+
+::: etape On sait que
+$[BD)$ est la bissectrice de $\widehat{ABC}$ et $\widehat{ABC} = 72^\circ$.
+:::
+
+::: etape Or
+La bissectrice d'un angle le partage en deux angles égaux.
+:::
+
+::: resultat
+Donc $\widehat{ABD} = \widehat{DBC} = 72^\circ \div 2 = 36^\circ$.
+:::
+
+## Question 3 : Le triangle $ABD$
+
+::: etape On sait que
+Dans le triangle $ABD$ : $\widehat{DAB} = 36^\circ$ (donnée) et $\widehat{ABD} = 36^\circ$ (question 2).
+:::
+
+::: etape Or
+Un triangle qui a deux angles égaux est isocèle ; le sommet principal est le troisième sommet.
+:::
+
+::: resultat
+Donc le triangle $ABD$ est isocèle en $D$ : $DA = DB$.
+:::
+
+## Question 4 : Le triangle $BDC$
+
+::: etape L'angle $\widehat{BDC}$
+Dans le triangle $BDC$ : $\widehat{DBC} = 36^\circ$ et $\widehat{BCD} = \widehat{ACB} = 72^\circ$. Donc :
+$$\widehat{BDC} = 180^\circ - 36^\circ - 72^\circ = 72^\circ$$
+:::
+
+::: etape On sait que… Or… Donc…
+On sait que $\widehat{BDC} = \widehat{BCD} = 72^\circ$. Or un triangle qui a deux angles égaux est isocèle. Donc $BDC$ est isocèle en $B$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+$\widehat{BDC} = 72^\circ$ et le triangle $BDC$ est isocèle en $B$ : $BD = BC$.
+:::
+
+## Question 5 : Conclusion et calcul de $DC$
+
+::: etape Les longueurs égales
+D'après la question 3, $AD = BD$ ; d'après la question 4, $BD = BC$. Donc $AD = BD = BC$.
+:::
+
+::: etape Calcul de $DC$
+$ABC$ est isocèle en $A$, donc $AC = AB = 5$ cm. $D$ est sur $[AC]$ et $AD = BC \approx 3{,}09$ cm :
+$$DC = AC - AD \approx 5 - 3{,}09 = 1{,}91$$
+:::
+
+::: resultat
+$AD = BD = BC$ et $DC \approx 1{,}91$ cm.
+:::
+
+::: retenir
+Une démonstration est une chaîne : chaque conclusion (un angle, un triangle isocèle) devient une donnée de l'étape suivante.
+:::
+
+::: attention Erreur fréquente
+Se tromper de sommet principal : un triangle qui a deux angles égaux en $A$ et en $B$ est isocèle en $D$, le **troisième** sommet ; les côtés égaux sont $[DA]$ et $[DB]$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\widehat{ABC} = \widehat{ACB} = 72^\circ$.
+2. $\widehat{ABD} = \widehat{DBC} = 36^\circ$.
+3. Deux angles de $36^\circ$ : $ABD$ isocèle en $D$.
+4. $\widehat{BDC} = 72^\circ = \widehat{BCD}$ : $BDC$ isocèle en $B$.
+5. $AD = BD = BC$ ; $DC \approx 1{,}91$ cm.
+
+===
+
+=== Problème - Le carré d'un nombre impair
+Id: 2503
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+On étudie les nombres de la forme $k^2 - 1$, où $k$ est un entier positif.
+
+1. Calculer $k^2 - 1$ pour $k = 3$, $5$, $7$ et $9$. Que remarque-t-on ?
+2. Formuler une conjecture lorsque $k$ est impair.
+3. On pose $k = 2n + 1$, avec $n$ entier. Démontrer que $k^2 - 1 = 4n(n + 1)$.
+4. On admet que le produit $n(n + 1)$ de deux entiers consécutifs est pair. Démontrer la conjecture.
+5. Lorsque $k$ est pair, $k^2 - 1$ peut-il être un multiple de $8$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les essais
+
+::: etape Calculs
+$3^2 - 1 = 8$ ; $5^2 - 1 = 24$ ; $7^2 - 1 = 48$ ; $9^2 - 1 = 80$.
+:::
+
+::: resultat
+On obtient $8 = 8 \times 1$, $24 = 8 \times 3$, $48 = 8 \times 6$ et $80 = 8 \times 10$ : ce sont des multiples de $8$.
+:::
+
+## Question 2 : La conjecture
+
+::: resultat
+Conjecture : « si $k$ est un entier impair, alors $k^2 - 1$ est un multiple de $8$ ».
+:::
+
+## Question 3 : Le développement
+
+::: methode
+On remplace $k$ par $2n + 1$, on développe avec $(a + b)^2 = a^2 + 2ab + b^2$, puis on factorise par $4n$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+k^2 - 1 &= (2n + 1)^2 - 1 \\
+&= 4n^2 + 4n + 1 - 1 \\
+&= 4n^2 + 4n \\
+&= 4n(n + 1)
+\end{aligned}
+$$
+:::
+
+::: resultat
+$k^2 - 1 = 4n(n + 1)$.
+:::
+
+## Question 4 : La démonstration
+
+::: etape On sait que
+$n(n + 1)$ est le produit de deux entiers consécutifs : il est pair, donc il s'écrit $2m$ avec $m$ entier.
+:::
+
+::: etape Donc
+$$k^2 - 1 = 4 \times n(n + 1) = 4 \times 2m = 8m$$
+:::
+
+::: resultat
+$m$ est un entier, donc $k^2 - 1$ est un multiple de $8$ : la conjecture est démontrée.
+:::
+
+## Question 5 : Le cas où $k$ est pair
+
+::: methode
+On regarde la parité : un multiple de $8$ s'écrit $8m = 2 \times 4m$, il est donc pair.
+:::
+
+::: etape Un essai
+Pour $k = 10$ : $10^2 - 1 = 99$, qui est impair.
+:::
+
+::: etape Démonstration
+Si $k = 2n$, alors $k^2 - 1 = 4n^2 - 1 = 2(2n^2 - 1) + 1$ : c'est un nombre impair.
+:::
+
+::: resultat
+Non : si $k$ est pair, $k^2 - 1$ est impair, il ne peut donc pas être un multiple de $8$.
+:::
+
+::: retenir
+On peut réutiliser un résultat déjà démontré (ici « $n(n + 1)$ est pair ») comme une propriété dans une nouvelle démonstration.
+:::
+
+::: attention Erreur fréquente
+Développer $(2n + 1)^2$ en $4n^2 + 1$ : il manque le double produit $2 \times 2n \times 1 = 4n$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $8$ ; $24$ ; $48$ ; $80$ : des multiples de $8$.
+2. Si $k$ est impair, $k^2 - 1$ est un multiple de $8$.
+3. $(2n + 1)^2 - 1 = 4n^2 + 4n = 4n(n + 1)$.
+4. $n(n + 1) = 2m$, donc $k^2 - 1 = 8m$.
+5. Non : si $k$ est pair, $k^2 - 1$ est impair.
+
+===
+
+=== Type brevet - Vrai ou faux justifié
+Id: 2504
+Difficulté: hard
+Image: raisonner_3e_poignees.png
+
+Énoncé:
+<!-- optitab:1 -->
+Pour chaque affirmation, dire si elle est vraie ou fausse. On rappelle que toute réponse doit être justifiée.
+
+Pour l'affirmation 4, on utilise la figure ci-dessous, qui n'est pas en vraie grandeur : $M \in [AB]$, $N \in [AC]$, $AM = 2$ cm, $AB = 5$ cm, $AN = 3$ cm et $AC = 6$ cm.
+
+[IMAGE_1]
+
+1. « La somme de deux nombres impairs consécutifs est un multiple de $4$. »
+2. « Si on augmente un prix de $10\ \%$, puis qu'on baisse le nouveau prix de $10\ \%$, on retrouve le prix de départ. »
+3. « Le triangle dont les côtés mesurent $7$ cm, $24$ cm et $25$ cm est rectangle. »
+4. « Les droites $(MN)$ et $(BC)$ sont parallèles. »
+5. « La différence des carrés de deux entiers consécutifs est toujours un nombre impair. »
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Deux impairs consécutifs
+
+::: methode
+Deux nombres impairs consécutifs s'écrivent $2n + 1$ et $2n + 3$ ($n$ entier) : ils diffèrent de $2$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+(2n + 1) + (2n + 3) &= 4n + 4 \\
+&= 4(n + 1)
+\end{aligned}
+$$
+:::
+
+::: resultat
+Vrai : $n + 1$ est un entier, donc la somme est un multiple de $4$ (exemple : $7 + 9 = 16 = 4 \times 4$).
+:::
+
+## Question 2 : Hausse puis baisse de $10\ \%$
+
+::: methode
+On teste avec un prix simple : $100$ €. Augmenter de $10\ \%$ revient à multiplier par $1{,}1$ ; baisser de $10\ \%$, à multiplier par $0{,}9$.
+:::
+
+::: etape Contre-exemple
+$100 \times 1{,}1 = 110$ €, puis $110 \times 0{,}9 = 99$ €.
+:::
+
+::: resultat
+Faux : on obtient $99$ € et non $100$ €. La baisse porte sur $110$ €, pas sur $100$ €.
+:::
+
+## Question 3 : Le triangle $7$, $24$, $25$
+
+::: etape Calculs
+Plus grand côté : $25$ cm. $25^2 = 625$ et $7^2 + 24^2 = 49 + 576 = 625$.
+:::
+
+::: resultat
+Vrai : le carré du plus grand côté est égal à la somme des carrés des deux autres, donc, d'après la réciproque du théorème de Pythagore, le triangle est rectangle.
+:::
+
+## Question 4 : Les droites $(MN)$ et $(BC)$
+
+::: methode
+On compare $\dfrac{AM}{AB}$ et $\dfrac{AN}{AC}$ avec des valeurs exactes (produits en croix).
+:::
+
+::: etape Comparaison
+$\dfrac{AM}{AB} = \dfrac{2}{5}$ et $\dfrac{AN}{AC} = \dfrac{3}{6}$. Produits en croix : $2 \times 6 = 12$ et $3 \times 5 = 15$. Donc $\dfrac{2}{5} \neq \dfrac{3}{6}$.
+:::
+
+::: etape Ce que donnerait le parallélisme
+La parallèle à $(BC)$ passant par $M$ coupe $[AC]$ en un point $P$ tel que $\dfrac{AP}{AC} = \dfrac{2}{5}$, soit $AP = \dfrac{2}{5} \times 6 = 2{,}4$ cm. Or $AN = 3$ cm : $N$ n'est pas ce point.
+:::
+
+[IMAGE_2]
+
+::: resultat
+Faux : d'après la contraposée du théorème de Thalès, les droites $(MN)$ et $(BC)$ ne sont pas parallèles.
+:::
+
+## Question 5 : Différence des carrés de deux entiers consécutifs
+
+::: methode
+Deux entiers consécutifs s'écrivent $n$ et $n + 1$ : on développe $(n + 1)^2 - n^2$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+(n + 1)^2 - n^2 &= n^2 + 2n + 1 - n^2 \\
+&= 2n + 1
+\end{aligned}
+$$
+:::
+
+::: resultat
+Vrai : $2n + 1$ est un nombre impair (exemple : $6^2 - 5^2 = 36 - 25 = 11$).
+:::
+
+::: attention Erreur fréquente
+Répondre « faux » sans contre-exemple, ou « vrai » avec un seul exemple. Au brevet, faux = un contre-exemple précis ; vrai = une démonstration générale.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Vrai : $(2n + 1) + (2n + 3) = 4(n + 1)$.
+2. Faux : $100$ € devient $110$ € puis $99$ €.
+3. Vrai : $625 = 49 + 576$ (réciproque du théorème de Pythagore).
+4. Faux : $\dfrac{2}{5} \neq \dfrac{3}{6}$ (contraposée du théorème de Thalès).
+5. Vrai : $(n + 1)^2 - n^2 = 2n + 1$.
+
+===
+
+=== Type brevet - Une démonstration en géométrie
+Id: 2505
+Difficulté: hard
+Image: raisonner_3e_preuve_pythagore.png
+
+Énoncé:
+<!-- optitab:1 -->
+Sur la figure ci-dessous, qui n'est pas en vraie grandeur :
+
+- $AB = 9$ cm, $BC = 12$ cm et $AC = 15$ cm ;
+- $E$ est le point de $[AB]$ tel que $AE = 6$ cm ;
+- $F$ est le point de $[AC]$ tel que $AF = 10$ cm.
+
+[IMAGE_1]
+
+1. Démontrer que le triangle $ABC$ est rectangle en $B$.
+2. Démontrer que les droites $(EF)$ et $(BC)$ sont parallèles.
+3. En déduire que les droites $(EF)$ et $(AB)$ sont perpendiculaires.
+4. Calculer $EF$, puis l'aire du triangle $AEF$.
+5. $G$ est le point de $[AC]$ tel que $AG = 9$ cm. Les droites $(EG)$ et $(BC)$ sont-elles parallèles ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Le triangle $ABC$ est rectangle
+
+::: methode
+Réciproque du théorème de Pythagore : on compare le carré du plus grand côté $[AC]$ avec la somme des carrés des deux autres.
+:::
+
+::: etape Calculs
+$$AC^2 = 15^2 = 225$$
+$$
+\begin{aligned}
+AB^2 + BC^2 &= 9^2 + 12^2 \\
+&= 81 + 144 = 225
+\end{aligned}
+$$
+:::
+
+::: etape Rédaction
+On sait que, dans le triangle $ABC$, $AC^2 = AB^2 + BC^2$, où $[AC]$ est le plus grand côté. Or, d'après la réciproque du théorème de Pythagore, ce triangle est alors rectangle au sommet opposé à $[AC]$.
+:::
+
+::: resultat
+Donc le triangle $ABC$ est rectangle en $B$.
+:::
+
+## Question 2 : Les droites $(EF)$ et $(BC)$
+
+::: methode
+Réciproque du théorème de Thalès : rapports égaux et points dans le même ordre.
+:::
+
+::: etape Rapports
+$$\frac{AE}{AB} = \frac{6}{9} = \frac{2}{3}$$
+$$\frac{AF}{AC} = \frac{10}{15} = \frac{2}{3}$$
+:::
+
+::: etape Rédaction
+On sait que $A$, $E$, $B$ et $A$, $F$, $C$ sont alignés dans le même ordre et que $\dfrac{AE}{AB} = \dfrac{AF}{AC}$. Or, d'après la réciproque du théorème de Thalès, les droites $(EF)$ et $(BC)$ sont alors parallèles.
+:::
+
+::: resultat
+Donc $(EF) \parallel (BC)$.
+:::
+
+## Question 3 : Les droites $(EF)$ et $(AB)$
+
+::: etape On sait que
+$(EF) \parallel (BC)$ (question 2) et $(BC) \perp (AB)$, car $ABC$ est rectangle en $B$ (question 1).
+:::
+
+::: etape Or
+Si deux droites sont parallèles, toute droite perpendiculaire à l'une est perpendiculaire à l'autre.
+:::
+
+[IMAGE_2]
+
+::: resultat
+Donc $(EF) \perp (AB)$ : le triangle $AEF$ est rectangle en $E$.
+:::
+
+## Question 4 : $EF$ et l'aire de $AEF$
+
+::: etape Théorème de Thalès
+$A$, $E$, $B$ alignés ; $A$, $F$, $C$ alignés ; $(EF) \parallel (BC)$. D'après le théorème de Thalès :
+$$\frac{EF}{BC} = \frac{AE}{AB} = \frac{2}{3}$$
+$$EF = \frac{2}{3} \times 12 = 8$$
+:::
+
+::: etape Aire du triangle $AEF$
+Le triangle $AEF$ est rectangle en $E$ (question 3) :
+$$\mathcal{A} = \frac{AE \times EF}{2} = \frac{6 \times 8}{2} = 24$$
+:::
+
+::: resultat
+$EF = 8$ cm et l'aire du triangle $AEF$ est $24$ cm².
+:::
+
+## Question 5 : Les droites $(EG)$ et $(BC)$
+
+::: etape Comparaison
+$$\frac{AG}{AC} = \frac{9}{15} = \frac{3}{5}$$
+$$\frac{AE}{AB} = \frac{2}{3}$$
+Or $\dfrac{3}{5} = \dfrac{9}{15}$ et $\dfrac{2}{3} = \dfrac{10}{15}$ : les rapports sont différents.
+:::
+
+::: resultat
+D'après la contraposée du théorème de Thalès, les droites $(EG)$ et $(BC)$ ne sont pas parallèles.
+:::
+
+::: attention Erreur fréquente
+Utiliser $EF$ avant d'avoir démontré le parallélisme, ou citer « le théorème de Pythagore » à la question 1 : pour **prouver** un angle droit ou un parallélisme, on utilise les **réciproques**.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $225 = 81 + 144$ : rectangle en $B$ (réciproque du théorème de Pythagore).
+2. $\dfrac{AE}{AB} = \dfrac{AF}{AC} = \dfrac{2}{3}$ et même ordre : $(EF) \parallel (BC)$ (réciproque du théorème de Thalès).
+3. $(EF) \parallel (BC)$ et $(BC) \perp (AB)$, donc $(EF) \perp (AB)$.
+4. $EF = 8$ cm ; aire de $AEF$ : $24$ cm².
+5. Non : $\dfrac{3}{5} \neq \dfrac{2}{3}$ (contraposée du théorème de Thalès).
+
+===

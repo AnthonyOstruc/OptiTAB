@@ -1,0 +1,1586 @@
+=== Découverte - Calculer dans le bon ordre
+Id: 2709
+Difficulté: easy
+Image: v1_n261_ex2709_1_ex_ordre_arbre_enonce.png,v1_n261_ex2709_2_ex_ordre_arbre_corrige.png
+
+Énoncé: <!-- optitab:1 -->
+Calculer sans calculatrice, en écrivant une ligne par étape.
+
+1. $A = 15 + 5 \times 4$
+2. $B = 40 - 12 \div 4 \times 2$
+3. $C = 30 \div 5 \times 3$
+4. $D = 50 - 20 - 8 + 3$
+5. On veut calculer $E = 7 \times 8 - 6 \times 9 + 4$. Recopier et compléter l'arbre de calcul de $E$ ci-dessous, puis donner la valeur de $E$ et sa nature.
+6. Léa a trouvé $C = 2$. Retrouver son erreur.
+
+Arbre de calcul de $E$ (question 5) :
+
+[IMAGE_1]
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : $A = 15 + 5 \times 4$
+
+::: methode
+La multiplication est prioritaire sur l'addition.
+:::
+
+::: etape Effectuer la multiplication, puis l'addition
+$$
+\begin{aligned}
+A &= 15 + 20 \\
+&= 35
+\end{aligned}
+$$
+:::
+
+::: resultat
+$A = 35$
+:::
+
+::: attention Erreur fréquente
+Calculer dans l'ordre de lecture : $15 + 5 = 20$, puis $20 \times 4 = 80$. C'est faux : la multiplication passe avant l'addition.
+:::
+
+## Question 2 : $B = 40 - 12 \div 4 \times 2$
+
+::: methode
+On effectue d'abord la division et la multiplication, de gauche à droite, puis la soustraction.
+:::
+
+::: etape Les opérations prioritaires, de gauche à droite
+$12 \div 4 = 3$, puis $3 \times 2 = 6$.
+:::
+
+::: etape Rédiger le calcul
+$$
+\begin{aligned}
+B &= 40 - 3 \times 2 \\
+&= 40 - 6 \\
+&= 34
+\end{aligned}
+$$
+:::
+
+::: resultat
+$B = 34$
+:::
+
+## Question 3 : $C = 30 \div 5 \times 3$
+
+::: methode
+La division et la multiplication ont la même priorité : on calcule de gauche à droite.
+:::
+
+::: etape Calculer de gauche à droite
+$$
+\begin{aligned}
+C &= 6 \times 3 \\
+&= 18
+\end{aligned}
+$$
+:::
+
+::: resultat
+$C = 18$
+:::
+
+## Question 4 : $D = 50 - 20 - 8 + 3$
+
+::: methode
+Il n'y a que des additions et des soustractions : elles ont la même priorité, on calcule de gauche à droite.
+:::
+
+::: etape Calculer de gauche à droite
+$$
+\begin{aligned}
+D &= 30 - 8 + 3 \\
+&= 22 + 3 \\
+&= 25
+\end{aligned}
+$$
+:::
+
+::: resultat
+$D = 25$
+:::
+
+::: attention Erreur fréquente
+Commencer par $8 + 3 = 11$ donnerait $50 - 20 - 11 = 19$ : c'est faux. On ne change pas l'ordre des calculs dans une suite de soustractions.
+:::
+
+## Question 5 : L'arbre de calcul de $E$
+
+::: methode
+On complète l'arbre du bas vers le haut : chaque case reçoit le résultat de l'opération située juste en dessous.
+:::
+
+::: etape Les deux produits
+$7 \times 8 = 56$ et $6 \times 9 = 54$.
+:::
+
+::: etape La différence, puis la somme
+$56 - 54 = 2$, puis $2 + 4 = 6$.
+:::
+
+[IMAGE_2]
+
+::: etape Le même calcul, en ligne
+$$
+\begin{aligned}
+E &= 56 - 54 + 4 \\
+&= 2 + 4 \\
+&= 6
+\end{aligned}
+$$
+:::
+
+::: resultat
+$E = 6$. L'opération du sommet est une addition : $E$ est une **somme**.
+:::
+
+## Question 6 : L'erreur de Léa
+
+::: etape Retrouver le calcul de Léa
+Léa a commencé par $5 \times 3 = 15$, puis a calculé $30 \div 15 = 2$. Elle a calculé $30 \div (5 \times 3)$, avec des parenthèses qui n'existent pas.
+:::
+
+::: resultat
+Léa a fait passer la multiplication avant la division. À priorité égale, on calcule de gauche à droite : $C = 18$.
+:::
+
+::: retenir
+La multiplication et la division ont la même priorité ; l'addition et la soustraction aussi. Entre deux opérations de même priorité, on calcule toujours **de gauche à droite**.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $A = 35$
+2. $B = 34$
+3. $C = 18$
+4. $D = 25$
+5. Arbre : $56$ ; $54$ ; $2$ ; $6$. $E = 6$, c'est une somme.
+6. Elle a calculé $5 \times 3$ avant la division ; en fait $C = 18$.
+
+===
+
+=== Découverte - Le vocabulaire des opérations
+Id: 2716
+Difficulté: easy
+Image: v1_n261_ex2716_1_ex_vocabulaire_arbres_corrige.png
+
+Énoncé: <!-- optitab:1 -->
+Les mots somme, différence, produit, quotient, terme et facteur servent à lire et à écrire les calculs.
+
+1. Compléter avec le mot qui convient.
+   - a) Dans $12 + 30 = 42$, les nombres $12$ et $30$ sont les … ; $42$ est leur … .
+   - b) Dans $8 \times 7 = 56$, les nombres $8$ et $7$ sont les … ; $56$ est leur … .
+   - c) $27$ est la … de $45$ et de $18$.
+   - d) $9$ est le … de $36$ par $4$.
+2. Donner la nature (somme, différence, produit ou quotient) de chaque expression, puis la calculer : $F = 5 + 3 \times 6$ ; $G = (5 + 3) \times 6$ ; $H = 40 - 20 \div 4$ ; $K = (40 - 20) \div 4$.
+3. Traduire chaque phrase par un calcul, puis calculer.
+   - a) Le produit de $6$ par la somme de $4$ et de $5$.
+   - b) La somme de $6$ et du produit de $4$ par $5$.
+   - c) La différence entre $100$ et le quotient de $36$ par $4$.
+   - d) Le quotient de la différence de $50$ et de $14$ par $4$.
+4. Traduire chaque calcul par une phrase : $L = 3 \times (12 - 7)$ et $M = 20 \div 4 + 6$.
+5. Tom affirme : « $8 + 2 \times 5$, c'est le produit de la somme de $8$ et de $2$ par $5$. » A-t-il raison ?
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Le bon mot
+
+::: methode
+Addition : termes et somme. Soustraction : termes et différence. Multiplication : facteurs et produit. Division : quotient.
+:::
+
+::: etape Compléter
+- a) $12$ et $30$ sont les **termes** ; $42$ est leur **somme**.
+- b) $8$ et $7$ sont les **facteurs** ; $56$ est leur **produit**.
+- c) $45 - 18 = 27$ : $27$ est la **différence** de $45$ et de $18$.
+- d) $36 \div 4 = 9$ : $9$ est le **quotient** de $36$ par $4$.
+:::
+
+::: resultat
+a) termes, somme ; b) facteurs, produit ; c) différence ; d) quotient.
+:::
+
+## Question 2 : La nature d'une expression
+
+::: methode
+La nature d'une expression est donnée par la **dernière** opération effectuée.
+:::
+
+::: etape $F$ et $G$
+- $F = 5 + 3 \times 6 = 5 + 18 = 23$ : on finit par une addition, $F$ est une **somme**.
+- $G = (5 + 3) \times 6 = 8 \times 6 = 48$ : on finit par une multiplication, $G$ est un **produit**.
+:::
+
+::: etape $H$ et $K$
+- $H = 40 - 20 \div 4 = 40 - 5 = 35$ : on finit par une soustraction, $H$ est une **différence**.
+- $K = (40 - 20) \div 4 = 20 \div 4 = 5$ : on finit par une division, $K$ est un **quotient**.
+:::
+
+::: resultat
+$F = 23$ (somme) ; $G = 48$ (produit) ; $H = 35$ (différence) ; $K = 5$ (quotient).
+:::
+
+## Question 3 : De la phrase au calcul
+
+::: methode
+Le premier mot de la phrase donne la dernière opération. Un morceau qui doit être calculé avant une opération prioritaire se met entre parenthèses.
+:::
+
+::: etape a) Un produit
+Le second facteur est la somme $4 + 5$ : elle doit être calculée d'abord.
+$$6 \times (4 + 5) = 6 \times 9 = 54$$
+:::
+
+::: etape b) Une somme
+Le second terme est le produit $4 \times 5$, déjà prioritaire : pas de parenthèses.
+$$6 + 4 \times 5 = 6 + 20 = 26$$
+:::
+
+::: etape c) Une différence
+Le second terme est le quotient $36 \div 4$, déjà prioritaire.
+$$100 - 36 \div 4 = 100 - 9 = 91$$
+:::
+
+::: etape d) Un quotient
+Le dividende est la différence $50 - 14$ : elle doit être calculée d'abord.
+$$(50 - 14) \div 4 = 36 \div 4 = 9$$
+:::
+
+::: resultat
+a) $6 \times (4 + 5) = 54$ ; b) $6 + 4 \times 5 = 26$ ; c) $100 - 36 \div 4 = 91$ ; d) $(50 - 14) \div 4 = 9$.
+:::
+
+## Question 4 : Du calcul à la phrase
+
+::: methode
+On cherche la dernière opération, qui donne le premier mot de la phrase, puis on nomme ses deux morceaux.
+:::
+
+::: etape $L = 3 \times (12 - 7)$
+La dernière opération est la multiplication par $3$ ; l'autre facteur est la différence $12 - 7$.
+:::
+
+::: etape $M = 20 \div 4 + 6$
+La dernière opération est l'addition ; ses termes sont le quotient $20 \div 4$ et le nombre $6$.
+:::
+
+::: resultat
+- $L$ est le produit de $3$ par la différence de $12$ et de $7$ ($L = 15$).
+- $M$ est la somme du quotient de $20$ par $4$ et de $6$ ($M = 11$).
+:::
+
+## Question 5 : L'affirmation de Tom
+
+::: etape Chercher la dernière opération
+Dans $8 + 2 \times 5$, on calcule d'abord $2 \times 5 = 10$, puis $8 + 10 = 18$. La dernière opération est une addition : c'est une **somme**.
+:::
+
+::: etape Comparer avec la phrase de Tom
+« Le produit de la somme de $8$ et de $2$ par $5$ » s'écrit $(8 + 2) \times 5 = 10 \times 5 = 50$. Les deux arbres de calcul sont différents :
+:::
+
+[IMAGE_1]
+
+::: resultat
+Tom a tort : $8 + 2 \times 5$ est la somme de $8$ et du produit de $2$ par $5$ ; elle vaut $18$, et non $50$.
+:::
+
+::: attention Erreur fréquente
+Lire une expression dans l'ordre de l'écriture, sans tenir compte des priorités. On cherche toujours la **dernière** opération effectuée.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. a) termes, somme ; b) facteurs, produit ; c) différence ; d) quotient
+2. $F = 23$, somme ; $G = 48$, produit ; $H = 35$, différence ; $K = 5$, quotient
+3. a) $6 \times (4 + 5) = 54$ ; b) $6 + 4 \times 5 = 26$ ; c) $100 - 36 \div 4 = 91$ ; d) $(50 - 14) \div 4 = 9$
+4. $L$ : le produit de $3$ par la différence de $12$ et de $7$ ; $M$ : la somme du quotient de $20$ par $4$ et de $6$
+5. Non : c'est une somme, qui vaut $18$ ; sa phrase correspond à $(8 + 2) \times 5 = 50$.
+
+===
+
+=== Découverte - Utiliser des parenthèses et des crochets
+Id: 2710
+Difficulté: easy
+Image: v1_n261_ex2710_1_ex_parentheses_arbre_enonce.png,v1_n261_ex2710_2_ex_parentheses_arbre_corrige.png
+
+Énoncé: <!-- optitab:1 -->
+Calculer en écrivant une ligne par étape.
+
+1. Calculer $A = 3 \times (8 + 2)$ et $B = 3 \times 8 + 2$. Comparer.
+2. Calculer $C = (25 - 5) \div (6 - 2)$.
+3. Calculer $D = 2 \times \left[15 - (4 + 3)\right]$.
+4. Calculer $E = \left[(9 - 3) \times 4 + 6\right] \div 5$.
+5. Écrire l'expression qui correspond à l'arbre de calcul ci-dessous, avec les parenthèses nécessaires, puis la calculer.
+6. Placer des parenthèses dans $4 + 6 \times 5 - 2$ pour obtenir :
+   - a) $48$ ;
+   - b) $30$.
+
+Arbre de calcul de la question 5 :
+
+[IMAGE_1]
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : $A = 3 \times (8 + 2)$ et $B = 3 \times 8 + 2$
+
+::: methode
+On calcule d'abord ce qui est entre parenthèses ; sans parenthèses, la multiplication est prioritaire.
+:::
+
+::: etape Calculer $A$
+$$
+\begin{aligned}
+A &= 3 \times 10 \\
+&= 30
+\end{aligned}
+$$
+:::
+
+::: etape Calculer $B$
+$$
+\begin{aligned}
+B &= 24 + 2 \\
+&= 26
+\end{aligned}
+$$
+:::
+
+::: resultat
+$A = 30$ et $B = 26$ : avec les mêmes nombres, les parenthèses changent le résultat.
+:::
+
+## Question 2 : $C = (25 - 5) \div (6 - 2)$
+
+::: methode
+On calcule chaque parenthèse, puis on divise.
+:::
+
+::: etape Les parenthèses, puis la division
+$$
+\begin{aligned}
+C &= 20 \div 4 \\
+&= 5
+\end{aligned}
+$$
+:::
+
+::: resultat
+$C = 5$
+:::
+
+## Question 3 : $D = 2 \times \left[15 - (4 + 3)\right]$
+
+::: methode
+On commence par la parenthèse la plus intérieure, puis on calcule le crochet.
+:::
+
+::: etape De l'intérieur vers l'extérieur
+$$
+\begin{aligned}
+D &= 2 \times \left[15 - 7\right] \\
+&= 2 \times 8 \\
+&= 16
+\end{aligned}
+$$
+:::
+
+::: resultat
+$D = 16$
+:::
+
+::: attention Erreur fréquente
+Commencer par $2 \times 15$ : le crochet doit être entièrement calculé avant la multiplication par $2$.
+:::
+
+## Question 4 : $E = \left[(9 - 3) \times 4 + 6\right] \div 5$
+
+::: methode
+Dans le crochet : la parenthèse, puis la multiplication, puis l'addition. On divise ensuite par $5$.
+:::
+
+::: etape Calculer le crochet, puis diviser
+$$
+\begin{aligned}
+E &= \left[6 \times 4 + 6\right] \div 5 \\
+&= \left[24 + 6\right] \div 5 \\
+&= 30 \div 5 \\
+&= 6
+\end{aligned}
+$$
+:::
+
+::: resultat
+$E = 6$
+:::
+
+## Question 5 : De l'arbre à l'expression
+
+::: methode
+On lit l'arbre du bas vers le haut. Une opération qui doit être faite **avant** une opération prioritaire se met entre parenthèses.
+:::
+
+::: etape Lire l'arbre
+- On calcule d'abord $2 \times 3$ ;
+- puis on soustrait ce produit à $20$ : $20 - 2 \times 3$ ;
+- enfin, on divise **toute** cette différence par $7$.
+:::
+
+::: etape Écrire l'expression
+La différence doit être calculée avant la division : on la met entre parenthèses. Il n'en faut pas autour de $2 \times 3$, car la multiplication est déjà prioritaire.
+$$(20 - 2 \times 3) \div 7$$
+:::
+
+::: etape Calculer
+$$
+\begin{aligned}
+(20 - 2 \times 3) \div 7 &= (20 - 6) \div 7 \\
+&= 14 \div 7 \\
+&= 2
+\end{aligned}
+$$
+:::
+
+[IMAGE_2]
+
+::: resultat
+$(20 - 2 \times 3) \div 7 = 2$
+:::
+
+::: attention Erreur fréquente
+Oublier les parenthèses : $20 - 2 \times 3 \div 7$ ne correspond pas à l'arbre, car on ne diviserait que le produit $2 \times 3$ par $7$.
+:::
+
+## Question 6 : Placer des parenthèses
+
+::: methode
+Sans parenthèses, $4 + 6 \times 5 - 2 = 4 + 30 - 2 = 32$. On cherche quelle opération faire passer en premier.
+:::
+
+::: etape a) Obtenir $48$
+On fait d'abord l'addition :
+$$
+\begin{aligned}
+(4 + 6) \times 5 - 2 &= 10 \times 5 - 2 \\
+&= 50 - 2 \\
+&= 48
+\end{aligned}
+$$
+:::
+
+::: etape b) Obtenir $30$
+On fait d'abord l'addition et la soustraction, puis la multiplication :
+$$
+\begin{aligned}
+(4 + 6) \times (5 - 2) &= 10 \times 3 \\
+&= 30
+\end{aligned}
+$$
+:::
+
+::: resultat
+a) $(4 + 6) \times 5 - 2 = 48$ ; b) $(4 + 6) \times (5 - 2) = 30$.
+:::
+
+::: retenir
+Les parenthèses servent à imposer l'ordre des calculs. Quand il y en a plusieurs niveaux, on utilise des crochets et on commence par l'intérieur.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $A = 30$ et $B = 26$ : les résultats sont différents.
+2. $C = 5$
+3. $D = 16$
+4. $E = 6$
+5. $(20 - 2 \times 3) \div 7 = 2$
+6. a) $(4 + 6) \times 5 - 2 = 48$ ; b) $(4 + 6) \times (5 - 2) = 30$
+
+===
+
+=== Entraînement - Calculer mentalement avec des astuces
+Id: 2717
+Difficulté: medium
+Image: v1_n261_ex2717_1_ex_mental_aire_enonce.png,v1_n261_ex2717_2_ex_mental_aire_corrige.png
+
+Énoncé: <!-- optitab:1 -->
+Calculer mentalement, en écrivant l'astuce utilisée. Pour la question 2, on utilise le rectangle ci-dessous, de largeur $8$ et de longueur $100 + 5$ (les longueurs ne sont pas à l'échelle).
+
+[IMAGE_1]
+
+1. Regrouper astucieusement les nombres :
+   - a) $4 \times 17 \times 25$ ;
+   - b) $37 + 48 + 63 + 52$ ;
+   - c) $2{,}5 \times 13 \times 4$.
+2. Exprimer l'aire du rectangle de deux façons, puis en déduire $8 \times 105$.
+3. Utiliser la distributivité pour calculer :
+   - a) $23 \times 101$ ;
+   - b) $34 \times 99$ ;
+   - c) $15 \times 12$.
+4. Mettre le facteur commun en évidence pour calculer :
+   - a) $37 \times 8 + 37 \times 2$ ;
+   - b) $4{,}7 \times 13 - 4{,}7 \times 3$.
+5. Multiplier par $0{,}5$, c'est diviser par $2$ ; multiplier par $0{,}25$, c'est diviser par $4$. Calculer $18 \times 0{,}5$ et $46 \times 0{,}25$.
+6. Inès écrit : $46 \times 99 = 46 \times 100 - 1 = 4\,599$. Trouver son erreur et donner le bon résultat.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Regrouper les nombres
+
+::: methode
+Dans une suite de multiplications (ou d'additions), on peut changer l'ordre et regrouper les nombres qui donnent un résultat rond.
+:::
+
+::: etape a) $4 \times 17 \times 25$
+$$
+\begin{aligned}
+4 \times 17 \times 25 &= (4 \times 25) \times 17 \\
+&= 100 \times 17 \\
+&= 1\,700
+\end{aligned}
+$$
+:::
+
+::: etape b) $37 + 48 + 63 + 52$
+On regroupe $37$ avec $63$, et $48$ avec $52$ : on appelle $S$ cette somme.
+$$
+\begin{aligned}
+S &= (37 + 63) + (48 + 52) \\
+&= 100 + 100 \\
+&= 200
+\end{aligned}
+$$
+:::
+
+::: etape c) $2{,}5 \times 13 \times 4$
+$$
+\begin{aligned}
+2{,}5 \times 13 \times 4 &= (2{,}5 \times 4) \times 13 \\
+&= 10 \times 13 \\
+&= 130
+\end{aligned}
+$$
+:::
+
+::: resultat
+a) $1\,700$ ; b) $200$ ; c) $130$.
+:::
+
+## Question 2 : L'aire du rectangle
+
+::: etape Première façon
+Le grand rectangle mesure $8$ sur $105$ : son aire est $8 \times 105$.
+:::
+
+::: etape Seconde façon
+C'est la somme des aires des deux parties : $8 \times 100 + 8 \times 5 = 800 + 40 = 840$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+$8 \times 105 = 8 \times 100 + 8 \times 5 = 840$.
+:::
+
+## Question 3 : La distributivité
+
+::: methode
+On décompose un facteur en une somme ou une différence simple, puis on applique $k \times (a + b) = k \times a + k \times b$ ou $k \times (a - b) = k \times a - k \times b$.
+:::
+
+::: etape a) $23 \times 101$
+$$
+\begin{aligned}
+23 \times 101 &= 23 \times (100 + 1) \\
+&= 2\,300 + 23 \\
+&= 2\,323
+\end{aligned}
+$$
+:::
+
+::: etape b) $34 \times 99$
+$$
+\begin{aligned}
+34 \times 99 &= 34 \times (100 - 1) \\
+&= 3\,400 - 34 \\
+&= 3\,366
+\end{aligned}
+$$
+:::
+
+::: etape c) $15 \times 12$
+$$
+\begin{aligned}
+15 \times 12 &= 15 \times (10 + 2) \\
+&= 150 + 30 \\
+&= 180
+\end{aligned}
+$$
+:::
+
+::: resultat
+a) $2\,323$ ; b) $3\,366$ ; c) $180$.
+:::
+
+## Question 4 : Le facteur commun
+
+::: methode
+On lit la distributivité « à l'envers » : $k \times a + k \times b = k \times (a + b)$.
+:::
+
+::: etape a) Le facteur commun est $37$
+$$
+\begin{aligned}
+37 \times 8 + 37 \times 2 &= 37 \times (8 + 2) \\
+&= 37 \times 10 \\
+&= 370
+\end{aligned}
+$$
+:::
+
+::: etape b) Le facteur commun est $4{,}7$
+$$
+\begin{aligned}
+4{,}7 \times 13 - 4{,}7 \times 3 &= 4{,}7 \times (13 - 3) \\
+&= 4{,}7 \times 10 \\
+&= 47
+\end{aligned}
+$$
+:::
+
+::: resultat
+a) $370$ ; b) $47$.
+:::
+
+## Question 5 : Multiplier par $0{,}5$ et par $0{,}25$
+
+::: etape $18 \times 0{,}5$
+$0{,}5$ est la moitié de $1$ : $18 \times 0{,}5 = 18 \div 2 = 9$.
+:::
+
+::: etape $46 \times 0{,}25$
+$0{,}25$ est le quart de $1$ : $46 \times 0{,}25 = 46 \div 4 = 11{,}5$.
+:::
+
+::: point Vérification
+$9 \times 2 = 18$ et $11{,}5 \times 4 = 46$.
+:::
+
+::: resultat
+$18 \times 0{,}5 = 9$ et $46 \times 0{,}25 = 11{,}5$.
+:::
+
+## Question 6 : L'erreur d'Inès
+
+::: etape Le bon calcul
+$$
+\begin{aligned}
+46 \times 99 &= 46 \times (100 - 1) \\
+&= 46 \times 100 - 46 \times 1 \\
+&= 4\,600 - 46 \\
+&= 4\,554
+\end{aligned}
+$$
+:::
+
+::: etape L'erreur
+Inès a multiplié $100$ par $46$, mais pas $1$ : elle a retiré $1$ au lieu de $46$. Il lui manquait les parenthèses $46 \times (100 - 1)$.
+:::
+
+::: resultat
+$46 \times 99 = 4\,554$ (et non $4\,599$).
+:::
+
+::: attention Erreur fréquente
+Avec la distributivité, le facteur multiplie **chaque** terme de la parenthèse : $46 \times (100 - 1)$, c'est $46$ fois $100$, moins $46$ fois $1$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. a) $1\,700$ ; b) $200$ ; c) $130$
+2. $8 \times 105 = 8 \times 100 + 8 \times 5 = 840$
+3. a) $2\,323$ ; b) $3\,366$ ; c) $180$
+4. a) $370$ ; b) $47$
+5. $9$ et $11{,}5$
+6. Elle a retiré $1$ au lieu de $46$ : $46 \times 99 = 4\,554$.
+
+===
+
+=== Entraînement - Diviser par un nombre décimal
+Id: 2706
+Difficulté: medium
+Image: v1_n261_ex2706_1_ex_division_corrige.png,v1_n261_ex2706_2_ex_bouteilles_corrige.png
+
+Énoncé: <!-- optitab:1 -->
+Effectuer les calculs sans calculatrice.
+
+1. Expliquer pourquoi $8{,}4 \div 0{,}7 = 84 \div 7$, puis calculer ce quotient.
+2. Transformer la division $9{,}12 \div 2{,}4$ pour que le diviseur soit un nombre entier, puis la poser et l'effectuer. Contrôler le résultat par une multiplication.
+3. Calculer $5{,}4 \div 0{,}45$.
+
+On dispose de $2{,}35$ L de jus de pomme, que l'on verse dans des bouteilles de $0{,}25$ L.
+
+4. Calculer $2{,}35 \div 0{,}25$.
+5. Combien de bouteilles peut-on remplir entièrement ? Quel volume de jus reste-t-il alors ?
+6. Combien de bouteilles faut-il pour emporter tout le jus ?
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Pourquoi $8{,}4 \div 0{,}7 = 84 \div 7$ ?
+
+::: methode
+Un quotient ne change pas quand on multiplie le dividende et le diviseur par un même nombre non nul.
+:::
+
+::: etape Multiplier les deux nombres par $10$
+$8{,}4 \times 10 = 84$ et $0{,}7 \times 10 = 7$, donc $8{,}4 \div 0{,}7 = 84 \div 7$.
+:::
+
+::: etape Calculer
+$84 \div 7 = 12$, car $7 \times 12 = 84$.
+:::
+
+::: point Vérification
+$12 \times 0{,}7 = 8{,}4$.
+:::
+
+::: resultat
+$8{,}4 \div 0{,}7 = 84 \div 7 = 12$
+:::
+
+## Question 2 : Poser $9{,}12 \div 2{,}4$
+
+::: methode
+On rend le diviseur entier, puis on pose la division ; on place la virgule du quotient quand on abaisse le premier chiffre après la virgule.
+:::
+
+::: etape Rendre le diviseur entier
+$2{,}4$ a un chiffre après la virgule : on multiplie les deux nombres par $10$.
+$$9{,}12 \div 2{,}4 = 91{,}2 \div 24$$
+:::
+
+::: etape Poser la division
+- En $91$, combien de fois $24$ ? $3$ fois, car $3 \times 24 = 72$ ; il reste $91 - 72 = 19$.
+- On abaisse le $2$, premier chiffre après la virgule : on écrit la virgule au quotient.
+- En $192$, combien de fois $24$ ? $8$ fois, car $8 \times 24 = 192$ ; il reste $0$.
+:::
+
+[IMAGE_1]
+
+::: point Vérification
+$3{,}8 \times 2{,}4 = 9{,}12$.
+:::
+
+::: resultat
+$9{,}12 \div 2{,}4 = 3{,}8$
+:::
+
+## Question 3 : $5{,}4 \div 0{,}45$
+
+::: etape Rendre le diviseur entier
+$0{,}45$ a deux chiffres après la virgule : on multiplie les deux nombres par $100$.
+$$5{,}4 \div 0{,}45 = 540 \div 45$$
+:::
+
+::: etape Calculer
+$540 \div 45 = 12$, car $45 \times 12 = 450 + 90 = 540$.
+:::
+
+::: resultat
+$5{,}4 \div 0{,}45 = 12$
+:::
+
+::: attention Erreur fréquente
+Multiplier seulement le diviseur, ou multiplier le dividende par $10$ et le diviseur par $100$ : il faut multiplier **les deux nombres par le même nombre**. Ici, $5{,}4 \times 100 = 540$, et non $54$.
+:::
+
+## Question 4 : $2{,}35 \div 0{,}25$
+
+::: etape Rendre le diviseur entier
+On multiplie les deux nombres par $100$ : $2{,}35 \div 0{,}25 = 235 \div 25$.
+:::
+
+::: etape Calculer
+En $235$, il y a $9$ fois $25$ ($9 \times 25 = 225$), il reste $10$. On abaisse un $0$ après la virgule : $100 \div 25 = 4$.
+$$235 \div 25 = 9{,}4$$
+:::
+
+::: resultat
+$2{,}35 \div 0{,}25 = 9{,}4$
+:::
+
+## Question 5 : Les bouteilles pleines
+
+::: methode
+Le quotient $9{,}4$ n'est pas entier : on ne peut remplir entièrement que $9$ bouteilles.
+:::
+
+::: etape Le volume versé et le reste
+$9 \times 0{,}25 = 2{,}25$ L sont versés dans les bouteilles pleines. Il reste :
+$$2{,}35 - 2{,}25 = 0{,}1 \text{ L}$$
+:::
+
+[IMAGE_2]
+
+::: resultat
+On remplit entièrement $9$ bouteilles ; il reste $0{,}1$ L de jus.
+:::
+
+## Question 6 : Emporter tout le jus
+
+::: etape Conclure
+Les $9$ bouteilles pleines ne suffisent pas : il faut une bouteille de plus pour les $0{,}1$ L restants.
+:::
+
+::: resultat
+Il faut $10$ bouteilles.
+:::
+
+::: retenir
+Dans un problème, on interprète le quotient : $9{,}4$ donne $9$ bouteilles **pleines**, mais $10$ bouteilles **nécessaires**.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. On multiplie les deux nombres par $10$ ; $84 \div 7 = 12$.
+2. $9{,}12 \div 2{,}4 = 91{,}2 \div 24 = 3{,}8$ ; contrôle : $3{,}8 \times 2{,}4 = 9{,}12$.
+3. $5{,}4 \div 0{,}45 = 540 \div 45 = 12$
+4. $2{,}35 \div 0{,}25 = 235 \div 25 = 9{,}4$
+5. $9$ bouteilles pleines ; il reste $0{,}1$ L.
+6. $10$ bouteilles.
+
+===
+
+=== Entraînement - Ordres de grandeur et calculatrice
+Id: 2714
+Difficulté: medium
+Image: v1_n261_ex2714_1_ex_calculatrice_enonce.png,v1_n261_ex2714_2_ex_calculatrice_corrige.png
+
+Énoncé: <!-- optitab:1 -->
+1. Sans poser les calculs, choisir le bon résultat à l'aide d'un ordre de grandeur.
+   - a) $49{,}7 \times 3{,}1$ : $15{,}407$ ; $154{,}07$ ; $1\,540{,}7$.
+   - b) $798 \div 3{,}8$ : $2{,}1$ ; $21$ ; $210$.
+   - c) $19{,}8 + 0{,}98 \times 102$ : $119{,}76$ ; $2\,119{,}56$.
+2. Au marché, Nora achète $3$ pots de miel à $4{,}95$ € et $2$ fromages à $12{,}10$ €. Estimer sa dépense, puis la calculer exactement.
+3. Hugo veut calculer le quotient de la somme de $36$ et de $24$ par la somme de $4$ et de $2$. Voici ce qu'il a tapé sur sa calculatrice (écran ci-dessous). Expliquer pourquoi le résultat $44$ est faux, puis indiquer la bonne saisie et le bon résultat.
+4. Écrire ce qu'il faut taper à la calculatrice pour calculer $\dfrac{12{,}6 + 5{,}4}{3 \times 1{,}5}$, puis donner le résultat.
+5. Maëlle a obtenu $7{,}6 \times 5{,}2 = 395{,}2$. Sans calculatrice, montrer qu'elle s'est trompée, puis corriger.
+
+Écran de la calculatrice de Hugo (question 3) :
+
+[IMAGE_1]
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Choisir grâce à un ordre de grandeur
+
+::: methode
+On remplace chaque nombre par un nombre simple et proche, puis on calcule mentalement en respectant les priorités.
+:::
+
+::: etape a) $49{,}7 \times 3{,}1$
+$49{,}7 \approx 50$ et $3{,}1 \approx 3$ : $50 \times 3 = 150$. Le seul résultat proche de $150$ est $154{,}07$.
+:::
+
+::: etape b) $798 \div 3{,}8$
+$798 \approx 800$ et $3{,}8 \approx 4$ : $800 \div 4 = 200$. Le résultat est $210$.
+:::
+
+::: etape c) $19{,}8 + 0{,}98 \times 102$
+La multiplication est prioritaire : $0{,}98 \times 102 \approx 1 \times 100 = 100$, puis $20 + 100 = 120$. Le résultat est $119{,}76$.
+:::
+
+::: resultat
+a) $154{,}07$ ; b) $210$ ; c) $119{,}76$.
+:::
+
+::: attention Erreur fréquente
+Le nombre $2\,119{,}56$ est le résultat de $(19{,}8 + 0{,}98) \times 102$ : il correspond à un calcul fait de gauche à droite, sans respecter la priorité de la multiplication.
+:::
+
+## Question 2 : Les achats de Nora
+
+::: etape Estimer
+$4{,}95 \approx 5$ et $12{,}10 \approx 12$ : $3 \times 5 + 2 \times 12 = 15 + 24 = 39$. Nora va dépenser environ $39$ €.
+:::
+
+::: etape Calculer exactement
+$$
+\begin{aligned}
+3 \times 4{,}95 + 2 \times 12{,}1 &= 14{,}85 + 24{,}2 \\
+&= 39{,}05
+\end{aligned}
+$$
+:::
+
+::: resultat
+Nora dépense $39{,}05$ €, ce qui est cohérent avec l'estimation de $39$ €.
+:::
+
+## Question 3 : La saisie de Hugo
+
+::: methode
+La calculatrice respecte les priorités : elle effectue la division avant les additions.
+:::
+
+::: etape Ce que la calculatrice a calculé
+$36 + 24 \div 4 + 2 = 36 + 6 + 2 = 44$ : elle n'a divisé que $24$ par $4$.
+:::
+
+::: etape La bonne saisie
+Les deux sommes doivent être calculées avant la division : on les met entre parenthèses.
+$$(36 + 24) \div (4 + 2) = 60 \div 6 = 10$$
+:::
+
+[IMAGE_2]
+
+::: resultat
+Il faut taper $(36 + 24) \div (4 + 2)$ ; le résultat est $10$.
+:::
+
+## Question 4 : Un trait de fraction
+
+::: methode
+Le trait de fraction regroupe tout le numérateur et tout le dénominateur : à la calculatrice, chacun se met entre parenthèses.
+:::
+
+::: etape La saisie
+$$(12{,}6 + 5{,}4) \div (3 \times 1{,}5)$$
+:::
+
+::: etape Le résultat
+$12{,}6 + 5{,}4 = 18$ et $3 \times 1{,}5 = 4{,}5$, donc $18 \div 4{,}5 = 4$.
+:::
+
+::: resultat
+On tape $(12{,}6 + 5{,}4) \div (3 \times 1{,}5)$ et on obtient $4$.
+:::
+
+::: attention Erreur fréquente
+Oublier les parenthèses du dénominateur : $(12{,}6 + 5{,}4) \div 3 \times 1{,}5 = 6 \times 1{,}5 = 9$, car la calculatrice divise par $3$, puis multiplie par $1{,}5$.
+:::
+
+## Question 5 : Le calcul de Maëlle
+
+::: etape Un ordre de grandeur
+$7{,}6 \approx 8$ et $5{,}2 \approx 5$ : $8 \times 5 = 40$. Le résultat $395{,}2$ est environ $10$ fois trop grand : la virgule est mal placée.
+:::
+
+::: etape Le calcul exact
+$76 \times 52 = 3\,952$. Les deux facteurs ont en tout $2$ chiffres après la virgule, donc le produit aussi :
+$$7{,}6 \times 5{,}2 = 39{,}52$$
+:::
+
+::: resultat
+$7{,}6 \times 5{,}2 = 39{,}52$, proche de l'estimation $40$.
+:::
+
+::: retenir
+Avant de faire confiance à un résultat, même obtenu à la calculatrice, on le compare à un ordre de grandeur.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. a) $154{,}07$ ; b) $210$ ; c) $119{,}76$
+2. Environ $39$ € ; exactement $39{,}05$ €.
+3. La calculatrice a calculé $36 + 6 + 2$ ; il faut taper $(36 + 24) \div (4 + 2)$, qui donne $10$.
+4. $(12{,}6 + 5{,}4) \div (3 \times 1{,}5) = 4$
+5. L'ordre de grandeur est $40$ ; $7{,}6 \times 5{,}2 = 39{,}52$.
+
+===
+
+=== Problème - Comparer deux tarifs de sortie
+Id: 2723
+Difficulté: hard
+
+Énoncé: <!-- optitab:1 -->
+Pour une sortie en bateau, une compagnie propose deux tarifs :
+- **tarif A** : un forfait de $28$ € pour le groupe, plus $3{,}50$ € par personne ;
+- **tarif B** : un forfait de $15$ € pour le groupe, plus $4{,}20$ € par personne.
+
+1. Écrire le calcul du prix à payer avec chaque tarif pour un groupe de $18$ personnes, puis calculer. Quel tarif est le moins cher, et de combien ?
+2. Même question pour un groupe de $20$ personnes.
+3. Recopier et compléter le tableau.
+
+| Nombre de personnes | Tarif A (€) | Tarif B (€) |
+|---|---|---|
+| $17$ | … | … |
+| $18$ | … | … |
+| $19$ | … | … |
+| $20$ | … | … |
+
+4. À partir de combien de personnes le tarif A est-il le moins cher ? Expliquer.
+5. Le groupe dispose de $95$ €. Combien de personnes au maximum peuvent partir avec le tarif A ? Justifier.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Pour $18$ personnes
+
+::: methode
+Prix $=$ forfait $+$ nombre de personnes $\times$ prix par personne : la multiplication est prioritaire, pas besoin de parenthèses.
+:::
+
+::: etape Les deux prix
+- Tarif A : $28 + 18 \times 3{,}5 = 28 + 63 = 91$ ;
+- tarif B : $15 + 18 \times 4{,}2 = 15 + 75{,}6 = 90{,}6$.
+:::
+
+::: etape Comparer
+$91 - 90{,}6 = 0{,}4$.
+:::
+
+::: resultat
+Pour $18$ personnes, le tarif B est le moins cher, de $0{,}40$ €.
+:::
+
+## Question 2 : Pour $20$ personnes
+
+::: etape Les deux prix
+- Tarif A : $28 + 20 \times 3{,}5 = 28 + 70 = 98$ ;
+- tarif B : $15 + 20 \times 4{,}2 = 15 + 84 = 99$.
+:::
+
+::: resultat
+Pour $20$ personnes, c'est le tarif A le moins cher, de $1$ €.
+:::
+
+## Question 3 : Le tableau
+
+::: etape Les deux lignes manquantes
+Les lignes $18$ et $20$ viennent des questions 1 et 2.
+- $17$ personnes, tarif A : $28 + 17 \times 3{,}5 = 28 + 59{,}5 = 87{,}5$ ;
+- $17$ personnes, tarif B : $15 + 17 \times 4{,}2 = 15 + 71{,}4 = 86{,}4$ ;
+- $19$ personnes, tarif A : $28 + 19 \times 3{,}5 = 28 + 66{,}5 = 94{,}5$ ;
+- $19$ personnes, tarif B : $15 + 19 \times 4{,}2 = 15 + 79{,}8 = 94{,}8$.
+:::
+
+::: resultat
+| Nombre de personnes | Tarif A (€) | Tarif B (€) |
+|---|---|---|
+| $17$ | $87{,}50$ | $86{,}40$ |
+| $18$ | $91$ | $90{,}60$ |
+| $19$ | $94{,}50$ | $94{,}80$ |
+| $20$ | $98$ | $99$ |
+:::
+
+## Question 4 : À partir de combien de personnes ?
+
+::: methode
+On compare ce que chaque tarif fait gagner ou perdre.
+:::
+
+::: etape Les deux écarts
+- Le forfait B est moins cher de $28 - 15 = 13$ €.
+- Mais chaque personne coûte $4{,}20 - 3{,}50 = 0{,}70$ € de plus avec le tarif B.
+:::
+
+::: etape Comparer les deux écarts
+- Pour $18$ personnes : $18 \times 0{,}7 = 12{,}6 < 13$, le tarif B reste moins cher.
+- Pour $19$ personnes : $19 \times 0{,}7 = 13{,}3 > 13$, le tarif A devient moins cher.
+
+Ensuite, chaque personne de plus augmente l'avantage du tarif A de $0{,}70$ €.
+:::
+
+::: resultat
+Le tarif A est le moins cher à partir de $19$ personnes (le tableau le confirme : $94{,}50 < 94{,}80$).
+:::
+
+## Question 5 : Avec $95$ €
+
+::: etape Ce qui reste après le forfait
+$95 - 28 = 67$ € pour payer les personnes, à $3{,}50$ € chacune.
+:::
+
+::: etape Encadrer
+- $19 \times 3{,}5 = 66{,}5$ et $66{,}5 \leq 67$ : $19$ personnes, c'est possible ;
+- $20 \times 3{,}5 = 70$ et $70 > 67$ : $20$ personnes, c'est trop.
+:::
+
+::: resultat
+$19$ personnes au maximum peuvent partir (pour $94{,}50$ €) ; une vingtième ferait dépasser le budget.
+:::
+
+::: attention Erreur fréquente
+Le prix n'est pas proportionnel au nombre de personnes, à cause du forfait. Avec le tarif A, $10$ personnes paient $28 + 10 \times 3{,}5 = 63$ €, mais $20$ personnes ne paient pas $2 \times 63 = 126$ € : elles paient $28 + 20 \times 3{,}5 = 98$ €, car le forfait n'est compté qu'une fois.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. A : $28 + 18 \times 3{,}5 = 91$ € ; B : $15 + 18 \times 4{,}2 = 90{,}60$ €. B est moins cher de $0{,}40$ €.
+2. A : $98$ € ; B : $99$ €. A est moins cher de $1$ €.
+3. $17$ : $87{,}50$ et $86{,}40$ ; $18$ : $91$ et $90{,}60$ ; $19$ : $94{,}50$ et $94{,}80$ ; $20$ : $98$ et $99$.
+4. À partir de $19$ personnes.
+5. $19$ personnes ($94{,}50$ €).
+
+===
+
+=== Problème - Les fournitures des ateliers
+Id: 2705
+Difficulté: hard
+Image: v1_n261_ex2705_1_ex_ateliers_enonce.png,v1_n261_ex2705_2_ex_ateliers_corrige.png
+
+Énoncé: <!-- optitab:1 -->
+Un club prépare $4$ ateliers. Chaque atelier reçoit $3$ carnets bleus et $2$ carnets verts, à $2{,}50$ € le carnet, ainsi qu'une boîte de feutres à $4{,}60$ €. La livraison coûte $6$ € pour toute la commande. Le club dispose d'un budget de $80$ €.
+
+[IMAGE_1]
+
+1. Combien de carnets faut-il en tout ?
+2. Calculer le coût du matériel d'un atelier.
+3. Écrire une seule expression donnant le coût total de la commande, puis la calculer.
+4. Contrôler ce résultat à l'aide d'un ordre de grandeur.
+5. Un élève propose le calcul $4 \times (3 + 2) \times 2{,}5 + 4{,}6 + 6$. Quelle erreur a-t-il commise ? De combien se trompe-t-il ?
+6. Le club peut-il préparer un cinquième atelier identique, sans frais de livraison supplémentaires, en respectant son budget ?
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Le nombre de carnets
+
+::: methode
+On compte les carnets d'un atelier, puis on multiplie par le nombre d'ateliers.
+:::
+
+::: etape Calculer
+$$4 \times (3 + 2) = 4 \times 5 = 20$$
+:::
+
+::: resultat
+Il faut $20$ carnets en tout.
+:::
+
+## Question 2 : Le matériel d'un atelier
+
+::: etape Les carnets, puis les feutres
+$$
+\begin{aligned}
+(3 + 2) \times 2{,}5 + 4{,}6 &= 5 \times 2{,}5 + 4{,}6 \\
+&= 12{,}5 + 4{,}6 \\
+&= 17{,}1
+\end{aligned}
+$$
+:::
+
+::: resultat
+Le matériel d'un atelier coûte $17{,}10$ €.
+:::
+
+## Question 3 : Une seule expression
+
+::: methode
+Ce qui se répète pour chaque atelier (carnets et feutres) est multiplié par $4$ : on le regroupe entre crochets. La livraison ne compte qu'une fois : elle s'ajoute à la fin.
+:::
+
+::: etape Écrire l'expression
+On appelle $T$ le coût total :
+$$T = 4 \times \left[(3 + 2) \times 2{,}5 + 4{,}6\right] + 6$$
+:::
+
+::: etape Calculer
+$$
+\begin{aligned}
+T &= 4 \times \left[5 \times 2{,}5 + 4{,}6\right] + 6 \\
+&= 4 \times \left[12{,}5 + 4{,}6\right] + 6 \\
+&= 4 \times 17{,}1 + 6 \\
+&= 68{,}4 + 6 \\
+&= 74{,}4
+\end{aligned}
+$$
+:::
+
+[IMAGE_2]
+
+::: resultat
+La commande coûte $74{,}40$ €.
+:::
+
+## Question 4 : Un ordre de grandeur
+
+::: etape Estimer chaque partie
+- Carnets : $20 \times 2{,}5 = 50$ € ;
+- feutres : $4{,}60 \approx 5$, donc environ $4 \times 5 = 20$ € ;
+- livraison : $6$ €.
+:::
+
+::: resultat
+Environ $50 + 20 + 6 = 76$ € : le résultat $74{,}40$ € est cohérent.
+:::
+
+## Question 5 : Le calcul de l'élève
+
+::: etape Calculer sa proposition
+On appelle $P$ sa proposition : $P = 4 \times (3 + 2) \times 2{,}5 + 4{,}6 + 6$.
+$$
+\begin{aligned}
+P &= 4 \times 5 \times 2{,}5 + 4{,}6 + 6 \\
+&= 50 + 4{,}6 + 6 \\
+&= 60{,}6
+\end{aligned}
+$$
+:::
+
+::: etape Trouver l'erreur
+Il a bien compté les $20$ carnets, mais **une seule** boîte de feutres au lieu de $4$ : il en manque $3$.
+- Écart : $74{,}4 - 60{,}6 = 13{,}8$ ;
+- prix de $3$ boîtes de feutres : $3 \times 4{,}6 = 13{,}8$.
+:::
+
+::: resultat
+L'élève a compté une seule boîte de feutres ; il sous-estime la dépense de $13{,}80$ €.
+:::
+
+::: attention Erreur fréquente
+Tout ce qui est fourni **à chaque atelier** doit être dans le crochet multiplié par $4$ ; seuls les frais **globaux**, comme la livraison, sont comptés une seule fois.
+:::
+
+## Question 6 : Un cinquième atelier ?
+
+::: etape Le nouveau coût
+On ajoute le matériel d'un atelier, sans nouvelle livraison :
+$$74{,}4 + 17{,}1 = 91{,}5$$
+:::
+
+::: etape Comparer au budget
+$91{,}5 > 80$ : il manquerait $91{,}5 - 80 = 11{,}5$ €. Avec $4$ ateliers, il ne reste que $80 - 74{,}4 = 5{,}6$ €, moins que les $17{,}10$ € d'un atelier.
+:::
+
+::: resultat
+Non : un cinquième atelier porterait la dépense à $91{,}50$ €, soit $11{,}50$ € de plus que le budget.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $20$ carnets
+2. $17{,}10$ €
+3. $4 \times \left[(3 + 2) \times 2{,}5 + 4{,}6\right] + 6 = 74{,}4$ : la commande coûte $74{,}40$ €.
+4. Environ $50 + 20 + 6 = 76$ € : c'est cohérent.
+5. Une seule boîte de feutres comptée ; erreur de $13{,}80$ €.
+6. Non : il faudrait $91{,}50$ €, soit $11{,}50$ € de trop.
+
+===
+
+=== Synthèse - Organiser une sortie de fin d'année
+Id: 2707
+Difficulté: hard
+Image: v1_n261_ex2707_1_ex_sortie_corrige.png
+
+Énoncé: <!-- optitab:1 -->
+Un collège organise une sortie dans un parc de loisirs pour trois classes de 5e : deux classes de $26$ élèves et une classe de $24$ élèves. Elles sont accompagnées par $6$ adultes.
+
+| Dépense | Tarif |
+|---|---|
+| Car (aller et retour) | $420$ € pour tout le groupe |
+| Entrée au parc | $12{,}50$ € par élève, gratuite pour les adultes |
+| Repas | $6{,}50$ € par personne |
+
+1. Combien d'élèves participent à la sortie ? Combien de personnes en tout ?
+2. Donner un ordre de grandeur du prix des entrées, puis le calculer exactement.
+3. Écrire une seule expression donnant le coût total de la sortie, puis la calculer.
+4. Traduire par une phrase le calcul $76 \times 12{,}5 + 82 \times 6{,}5$. Que représente-t-il ?
+5. Le foyer du collège verse $725$ € ; le reste est partagé à parts égales entre les élèves. Calculer la somme payée par chaque élève.
+6. Zoé tape directement $420 + 76 \times 12{,}5 + 82 \times 6{,}5 - 725 \div 76$ sur sa calculatrice. Sans faire le calcul, expliquer pourquoi elle n'obtient pas la somme payée par un élève, puis écrire la bonne saisie.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Le nombre de participants
+
+::: etape Les élèves, puis les personnes
+- Élèves : $2 \times 26 + 24 = 52 + 24 = 76$ ;
+- personnes : $76 + 6 = 82$.
+:::
+
+::: resultat
+$76$ élèves participent ; avec les adultes, cela fait $82$ personnes.
+:::
+
+## Question 2 : Le prix des entrées
+
+::: etape Un ordre de grandeur
+$76 \approx 80$ : $80 \times 12{,}5 = 1\,000$. Les entrées coûtent un peu moins de $1\,000$ €.
+:::
+
+::: etape Le calcul exact, avec la distributivité
+$$
+\begin{aligned}
+76 \times 12{,}5 &= 76 \times 12 + 76 \times 0{,}5 \\
+&= 912 + 38 \\
+&= 950
+\end{aligned}
+$$
+:::
+
+::: resultat
+Les entrées coûtent $950$ €, ce qui est cohérent avec l'ordre de grandeur.
+:::
+
+## Question 3 : Le coût total
+
+::: methode
+Le car est payé une seule fois ; les entrées concernent les $76$ élèves, les repas les $82$ personnes.
+:::
+
+::: etape Le prix des repas
+$$
+\begin{aligned}
+82 \times 6{,}5 &= 82 \times 6 + 82 \times 0{,}5 \\
+&= 492 + 41 \\
+&= 533
+\end{aligned}
+$$
+:::
+
+::: etape L'expression et son calcul
+On appelle $T$ le coût total : $T = 420 + 76 \times 12{,}5 + 82 \times 6{,}5$.
+$$
+\begin{aligned}
+T &= 420 + 950 + 533 \\
+&= 1\,903
+\end{aligned}
+$$
+:::
+
+::: resultat
+La sortie coûte $1\,903$ €.
+:::
+
+## Question 4 : Traduire un calcul
+
+::: etape La dernière opération
+On effectue les deux multiplications, puis l'addition : c'est une **somme** de deux produits.
+:::
+
+::: resultat
+C'est la somme du produit de $76$ par $12{,}5$ et du produit de $82$ par $6{,}5$. Elle représente le prix des entrées et des repas, sans le car : $950 + 533 = 1\,483$ €.
+:::
+
+## Question 5 : La part de chaque élève
+
+::: methode
+On retire d'abord la participation du foyer, puis on partage le reste : la différence se met entre parenthèses.
+:::
+
+::: etape Le calcul
+$$
+\begin{aligned}
+(1\,903 - 725) \div 76 &= 1\,178 \div 76 \\
+&= 15{,}5
+\end{aligned}
+$$
+:::
+
+[IMAGE_1]
+
+::: point Vérification
+$76 \times 15{,}5 = 1\,178$ et $1\,178 + 725 = 1\,903$.
+:::
+
+::: resultat
+Chaque élève paie $15{,}50$ €.
+:::
+
+## Question 6 : La saisie de Zoé
+
+::: etape Ce que calcule la calculatrice
+La calculatrice respecte les priorités : elle ne divise que $725$ par $76$ (environ $10$), puis soustrait ce petit nombre au coût total. Elle affiche donc un nombre proche de $1\,903 - 10$, soit environ $1\,893$ : c'est beaucoup trop pour la part d'un élève.
+:::
+
+::: etape La bonne saisie
+Tout le reste à payer doit être calculé avant la division : on le met entre parenthèses.
+$$
+\begin{aligned}
+&(420 + 76 \times 12{,}5 + 82 \times 6{,}5 - 725) \\
+&\div 76
+\end{aligned}
+$$
+La calculatrice affiche alors $15{,}5$.
+:::
+
+::: resultat
+Il faut mettre entre parenthèses tout ce qui précède la division par $76$ ; on obtient bien $15{,}50$ € par élève.
+:::
+
+::: retenir
+Un ordre de grandeur permet de repérer immédiatement un résultat absurde : la part d'un élève ne peut pas dépasser le coût de toute la sortie.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $76$ élèves ; $82$ personnes.
+2. Environ $1\,000$ € ; exactement $76 \times 12{,}5 = 950$ €.
+3. $420 + 76 \times 12{,}5 + 82 \times 6{,}5 = 1\,903$ €
+4. La somme du produit de $76$ par $12{,}5$ et du produit de $82$ par $6{,}5$ : le prix des entrées et des repas ($1\,483$ €).
+5. $(1\,903 - 725) \div 76 = 15{,}50$ € par élève.
+6. La calculatrice ne divise que $725$ par $76$. Bonne saisie : $(420 + 76 \times 12{,}5 + 82 \times 6{,}5 - 725) \div 76$.
+
+===
+
+=== Synthèse - Vérifier une facture
+Id: 2724
+Difficulté: hard
+Image: v1_n261_ex2724_1_ex_facture_arbre_enonce.png,v1_n261_ex2724_2_ex_facture_arbre_corrige.png
+
+Énoncé: <!-- optitab:1 -->
+Une association commande $4$ boîtes de $6$ cahiers. Un cahier coûte $1{,}75$ €. Le fournisseur accorde une remise de $3$ € sur l'ensemble de la commande, et la livraison coûte $5$ €. L'association dispose de $50$ €.
+
+1. Calculer le prix d'une boîte de $6$ cahiers.
+2. Écrire une seule expression du montant à payer, puis la calculer.
+3. L'arbre de calcul de l'expression $4 \times 6 \times 1{,}75 - 3 + 5$ a été commencé ci-dessous. Le recopier et le compléter.
+4. Le vendeur a tapé $4 \times (6 \times 1{,}75 - 3) + 5$ et annonce $35$ €. Pourquoi sa facture est-elle fausse ? Quel est l'écart avec le bon montant ?
+5. Montrer que l'association ne peut pas commander une cinquième boîte, avec la même remise et la même livraison.
+6. Quel devrait être le prix maximal d'un cahier pour que $5$ boîtes respectent le budget ?
+
+Arbre de calcul de la question 3 :
+
+[IMAGE_1]
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Le prix d'une boîte
+
+::: etape Calculer mentalement
+On écrit $1{,}75 = 1 + 0{,}75$ et on utilise la distributivité :
+$$
+\begin{aligned}
+6 \times 1{,}75 &= 6 \times 1 + 6 \times 0{,}75 \\
+&= 6 + 4{,}5 \\
+&= 10{,}5
+\end{aligned}
+$$
+:::
+
+::: resultat
+Une boîte coûte $10{,}50$ €.
+:::
+
+## Question 2 : Le montant à payer
+
+::: methode
+Le prix des cahiers se répète ; la remise et la livraison ne comptent qu'une fois.
+:::
+
+::: etape L'expression et son calcul
+On appelle $M$ le montant à payer : $M = 4 \times 6 \times 1{,}75 - 3 + 5$.
+$$
+\begin{aligned}
+M &= 24 \times 1{,}75 - 3 + 5 \\
+&= 42 - 3 + 5 \\
+&= 39 + 5 \\
+&= 44
+\end{aligned}
+$$
+:::
+
+::: point Ordre de grandeur
+$24$ cahiers à environ $2$ € : environ $48$ €, moins $3$ €, plus $5$ € : environ $50$ €. Le résultat $44$ € est cohérent (on a arrondi $1{,}75$ au-dessus).
+:::
+
+::: resultat
+L'association doit payer $44$ €.
+:::
+
+## Question 3 : L'arbre de calcul
+
+::: methode
+On complète du bas vers le haut, en suivant l'ordre des calculs : les deux multiplications, puis la soustraction, puis l'addition (de gauche à droite).
+:::
+
+::: etape Les résultats intermédiaires
+$4 \times 6 = 24$ ; $24 \times 1{,}75 = 42$ ; $42 - 3 = 39$ ; $39 + 5 = 44$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+Cases de bas en haut : $24$ ; $42$ ; $39$ ; $44$.
+:::
+
+## Question 4 : La facture du vendeur
+
+::: etape Refaire son calcul
+On appelle $V$ le calcul du vendeur : $V = 4 \times (6 \times 1{,}75 - 3) + 5$.
+$$
+\begin{aligned}
+V &= 4 \times (10{,}5 - 3) + 5 \\
+&= 4 \times 7{,}5 + 5 \\
+&= 30 + 5 \\
+&= 35
+\end{aligned}
+$$
+:::
+
+::: etape Trouver l'erreur
+La remise est dans la parenthèse multipliée par $4$ : le vendeur l'a retirée **pour chaque boîte**, soit $4 \times 3 = 12$ € au lieu de $3$ €.
+- Écart : $44 - 35 = 9$ ;
+- remise retirée en trop : $12 - 3 = 9$.
+:::
+
+::: resultat
+La facture est fausse car la remise globale a été comptée $4$ fois. Elle est trop basse de $9$ €.
+:::
+
+::: attention Erreur fréquente
+Une remise ou des frais **globaux** ne se placent jamais dans une parenthèse qui est multipliée par le nombre d'objets.
+:::
+
+## Question 5 : Une cinquième boîte ?
+
+::: etape Calculer le nouveau montant
+On appelle $N$ le nouveau montant : $N = 5 \times 6 \times 1{,}75 - 3 + 5$.
+$$
+\begin{aligned}
+N &= 30 \times 1{,}75 - 3 + 5 \\
+&= 52{,}5 - 3 + 5 \\
+&= 54{,}5
+\end{aligned}
+$$
+:::
+
+::: resultat
+$54{,}5 > 50$ : il manquerait $4{,}50$ €. L'association ne peut pas commander une cinquième boîte.
+:::
+
+## Question 6 : Le prix maximal d'un cahier
+
+::: methode
+On « remonte » les calculs : on cherche d'abord le prix maximal des $30$ cahiers, puis celui d'un cahier.
+:::
+
+::: etape Le prix maximal des $30$ cahiers
+Montant à payer $=$ prix des cahiers $- 3 + 5$. Pour payer au plus $50$ €, le prix des cahiers doit valoir au plus :
+$$50 - 5 + 3 = 48 \text{ €}$$
+:::
+
+::: etape Le prix maximal d'un cahier
+$$48 \div 30 = 1{,}6$$
+:::
+
+::: point Vérification
+$30 \times 1{,}6 - 3 + 5 = 48 - 3 + 5 = 50$.
+:::
+
+::: resultat
+Un cahier devrait coûter au plus $1{,}60$ €.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $10{,}50$ €
+2. $4 \times 6 \times 1{,}75 - 3 + 5 = 44$ €
+3. Cases de bas en haut : $24$ ; $42$ ; $39$ ; $44$.
+4. La remise a été retirée $4$ fois ; la facture est trop basse de $9$ € ($35$ € au lieu de $44$ €).
+5. $5 \times 6 \times 1{,}75 - 3 + 5 = 54{,}50$ €, plus que $50$ €.
+6. $1{,}60$ € au maximum.
+
+===

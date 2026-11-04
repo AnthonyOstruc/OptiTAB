@@ -1,0 +1,60 @@
+Titre: Résumé : Limites et convergence des suites
+
+<!-- optitab:1 -->
+::: objectifs
+Retenir l’essentiel : récurrence, limites, formes indéterminées, comparaison, suites géométriques et suites monotones. Programme de Terminale.
+:::
+
+## I. Récurrence
+
+::: formule
+Initialisation : $P(n_0)$ vraie ; hérédité : $P(k) \Rightarrow P(k + 1)$ pour tout $k \ge n_0$
+:::
+
+Alors $P(n)$ est vraie pour tout $n \ge n_0$. Inégalité de Bernoulli : $(1 + a)^n \ge 1 + na$ pour $a \gt 0$.
+
+## II. Calcul de limites
+
+1. Limites de référence : $\frac{1}{n}$, $\frac{1}{n^2}$, $\frac{1}{\sqrt{n}}$ tendent vers $0$ ; $n$, $n^2$, $\sqrt{n}$ tendent vers $+\infty$.
+2. Formes indéterminées : $\infty - \infty$, $0 \times \infty$, $\frac{\infty}{\infty}$, $\frac{0}{0}$.
+3. Les lever : factoriser par le terme prépondérant, ou multiplier par la quantité conjuguée.
+
+::: exemple
+$\dfrac{3n^2 + 1}{n^2 - 5n} = \dfrac{3 + \frac{1}{n^2}}{1 - \frac{5}{n}}$, qui tend vers $3$.
+:::
+
+## III. Comparaison et gendarmes
+
+1. Comparaison : si $u_n \ge v_n$ et $\lim\limits_{n \to +\infty} v_n = +\infty$, alors $\lim\limits_{n \to +\infty} u_n = +\infty$.
+2. Gendarmes : si $v_n \le u_n \le w_n$ et si $(v_n)$ et $(w_n)$ tendent vers **le même** $\ell$, alors $\lim\limits_{n \to +\infty} u_n = \ell$.
+3. Réflexe : $-1 \le \sin n \le 1$, $-1 \le \cos n \le 1$, $-1 \le (-1)^n \le 1$.
+
+## IV. Suites géométriques
+
+| Raison $q$ | $(q^n)$ |
+|---|---|
+| $q \gt 1$ | tend vers $+\infty$ |
+| $q = 1$ | constante égale à $1$ |
+| $-1 \lt q \lt 1$ | tend vers $0$ |
+| $q \le -1$ | pas de limite |
+
+[IMAGE_2]
+
+## V. Suites monotones et $u_{n+1} = f(u_n)$
+
+1. Croissante et majorée (ou décroissante et minorée) $\Rightarrow$ convergente.
+2. Croissante et non majorée $\Rightarrow$ limite $+\infty$.
+3. Si $u_{n+1} = f(u_n)$ converge vers $\ell$ et si $f$ est continue en $\ell$, alors $f(\ell) = \ell$.
+
+## VI. Les pièges à éviter
+
+::: attention Les 4 erreurs classiques
+1. Oublier l’initialisation, ou utiliser $P(k + 1)$ pour démontrer l’hérédité.
+2. Écrire « $\infty - \infty = 0$ » ou « $\frac{\infty}{\infty} = 1$ » : ce sont des formes indéterminées.
+3. Croire que le majorant est forcément la limite.
+4. Appliquer les gendarmes avec deux suites de limites différentes.
+:::
+
+::: remarque Réflexe
+Suite $u_{n+1} = f(u_n)$ : récurrence pour l’encadrement et la monotonie, convergence monotone, puis résolution de $f(\ell) = \ell$.
+:::

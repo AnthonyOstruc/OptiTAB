@@ -1,0 +1,65 @@
+Titre: Résumé : Statistiques et diagrammes
+
+<!-- optitab:1 -->
+::: objectifs
+Retenir l'essentiel : effectifs et fréquences, moyenne simple et pondérée, médiane, étendue, diagrammes, tableur et comparaison de deux séries.
+:::
+
+## I. Les indicateurs
+
+| Indicateur | Comment le calculer |
+|---|---|
+| **Fréquence** | effectif $\div$ effectif total (en $\%$ : $\times 100$) ; somme des fréquences $= 100\ \%$ |
+| **Moyenne** | somme des valeurs $\div$ effectif total |
+| **Moyenne pondérée** | somme des (valeur $\times$ effectif) $\div$ effectif total |
+| **Médiane** | série **rangée** : valeur du milieu ($N$ impair) ou moyenne des deux valeurs du milieu ($N$ pair) |
+| **Étendue** | plus grande valeur $-$ plus petite valeur (dispersion) |
+
+::: exemple
+| Nombre de livres | $0$ | $1$ | $2$ | $3$ | $4$ |
+|---|---|---|---|---|---|
+| Effectif | $2$ | $6$ | $9$ | $5$ | $3$ |
+
+Effectif total $25$ ; moyenne $\dfrac{51}{25} = 2{,}04$ ; médiane : 13ᵉ valeur, $2$ ; étendue $4 - 0 = 4$.
+:::
+
+## II. La médiane en pratique
+
+[IMAGE_1]
+
+::: methode
+1. Ranger la série dans l'ordre croissant.
+2. $N$ impair : valeur de rang $\dfrac{N+1}{2}$.
+3. $N$ pair : moyenne des valeurs de rangs $\dfrac{N}{2}$ et $\dfrac{N}{2} + 1$.
+4. Avec un tableau : compter les rangs en ajoutant les effectifs.
+:::
+
+## III. Les diagrammes
+
+- **Bâtons ou barres** : hauteur $=$ effectif ; axe vertical gradué à partir de $0$.
+- **Circulaire** : angle $=$ fréquence $\times 360^\circ$ ; somme des angles $= 360^\circ$ ; $1\ \% \to 3{,}6^\circ$.
+- **Histogramme** : classes de même largeur, rectangles accolés ; médiane seulement **située** dans une classe, moyenne seulement **estimée** (centres des classes).
+- **Courbe** : évolution d'une grandeur ; points reliés par des segments.
+
+[IMAGE_2]
+
+[IMAGE_3]
+
+## IV. Tableur et comparaison
+
+- `=SOMME(A2:A20)`, `=MOYENNE(A2:A20)`, `=MEDIANE(A2:A20)`, `=MAX(A2:A20)-MIN(A2:A20)`.
+- Tableau d'effectifs : produits `=A2*B2` en colonne C, puis `=SOMME(C2:C6)/SOMME(B2:B6)`.
+- Comparer deux séries : position (moyenne, médiane) **et** dispersion (étendue).
+- Groupes de tailles différentes : comparer les **fréquences**, pas les effectifs.
+
+::: attention Les erreurs classiques
+1. Chercher la médiane sans avoir rangé la série.
+2. Oublier les effectifs dans une moyenne (ou diviser par le nombre de valeurs différentes).
+3. Faire la moyenne de deux moyennes de groupes de tailles différentes.
+4. Se laisser tromper par un axe vertical qui ne commence pas à $0$.
+5. Écrire « moins de $14$ » en comptant aussi $14$.
+:::
+
+::: remarque Réflexe
+Je contrôle mes résultats : moyenne et médiane sont comprises entre la plus petite et la plus grande valeur ; les fréquences font $100\ \%$ ; les angles font $360^\circ$.
+:::

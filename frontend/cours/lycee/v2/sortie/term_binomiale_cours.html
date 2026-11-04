@@ -1,0 +1,62 @@
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+    <div style="background:#e8f4fd; border:2px solid #3498db; border-radius:8px; padding:15px; margin-bottom:20px;">
+        <p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🎯 Objectifs du chapitre :</strong> reconnaître une épreuve et un schéma de Bernoulli, connaître la loi binomiale (formule, espérance, variance), calculer des probabilités du type $\displaystyle P(X = k)$, $\displaystyle P(X \le k)$, $\displaystyle P(X \ge k)$ à la calculatrice ou en Python, et déterminer un seuil.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Épreuve et schéma de Bernoulli</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Définitions :</strong> une <strong>épreuve de Bernoulli</strong> a deux issues : succès (probabilité $\displaystyle p$) et échec ($\displaystyle 1 - p$). La variable qui vaut $\displaystyle 1$ en cas de succès et $\displaystyle 0$ sinon suit la <strong>loi de Bernoulli</strong> : $\displaystyle E = p$ et $\displaystyle V = p(1 - p)$.</p>
+            <p style="margin:6px 0 0 0;">Un <strong>schéma de Bernoulli</strong> est la répétition de $\displaystyle n$ épreuves de Bernoulli identiques et indépendantes.</p>
+        </div>
+        [IMAGE_1]
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Loi binomiale</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Théorème (démonstration au programme) :</strong> le nombre $\displaystyle X$ de succès dans un schéma de Bernoulli de paramètres $\displaystyle n$ et $\displaystyle p$ suit la <strong>loi binomiale</strong> $\displaystyle \mathcal{B}(n\,;p)$ : pour $\displaystyle 0 \le k \le n$,</p>
+            <div style="text-align:center; margin:10px 0 0 0;">$\displaystyle P(X = k) = \binom{n}{k}\,p^k\,(1 - p)^{n - k}$</div>
+            <p style="margin:6px 0 0 0;"><em>Preuve :</em> chaque chemin de l’arbre comportant $\displaystyle k$ succès et $\displaystyle n - k$ échecs a pour probabilité $\displaystyle p^k(1 - p)^{n - k}$, et il y a $\displaystyle \binom{n}{k}$ tels chemins (choix des $\displaystyle k$ rangs des succès).</p>
+            <p style="margin:6px 0 0 0;"><strong>Espérance et variance :</strong> $\displaystyle E(X) = np$, $\displaystyle V(X) = np(1 - p)$, $\displaystyle \sigma(X) = \sqrt{np(1 - p)}$.</p>
+        </div>
+        [IMAGE_2]
+        <p style="font-size:1em;"><strong>Exemple :</strong> un QCM de $\displaystyle 10$ questions à $\displaystyle 4$ choix, répondu au hasard. Le nombre $\displaystyle X$ de bonnes réponses suit $\displaystyle \mathcal{B}(10\,;0{,}25)$ : $\displaystyle P(X = 5) = \binom{10}{5}\,0{,}25^5\,0{,}75^5 \approx 0{,}058$, $\displaystyle E(X) = 2{,}5$ et $\displaystyle \sigma(X) \approx 1{,}37$.</p>
+        [IMAGE_3]
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Rédaction type :</strong> « On répète $\displaystyle n$ fois, de façon identique et indépendante, une épreuve à deux issues dont le succès a la probabilité $\displaystyle p$. $\displaystyle X$ compte les succès, donc $\displaystyle X$ suit $\displaystyle \mathcal{B}(n\,;p)$. »
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Probabilités cumulées et seuils</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Méthodes :</strong> $\displaystyle P(X \le k)$ s’obtient avec la fonction de répartition de la calculatrice (« binomFRép » ou « BinomialCD ») ; $\displaystyle P(X \ge k) = 1 - P(X \le k - 1)$ ; $\displaystyle P(a \le X \le b) = P(X \le b) - P(X \le a - 1)$.</p>
+        </div>
+        <p style="font-size:1em;"><strong>Exemple :</strong> pour le QCM, $\displaystyle P(X \ge 5) = 1 - P(X \le 4) \approx 0{,}078$ : obtenir la moyenne au hasard est peu probable.</p>
+        [IMAGE_4]
+        <div style="background:#2c3e50; color:#ecf0f1; padding:12px; border-radius:6px; margin:10px 0 0 0; font-family:monospace; white-space:pre; overflow-x:auto;">from math import comb
+
+def binom_cumul(n, p, k):
+    return sum(comb(n, i) &#42; p &#42;&#42; i &#42; (1 - p) &#42;&#42; (n - i) for i in range(k + 1))
+
+def seuil(n, p, alpha):
+    k = 0
+    while binom_cumul(n, p, k) &lt; 1 - alpha:
+        k = k + 1
+    return k</div>
+        <p style="font-size:1em;"><code>seuil(10, 0.3, 0.05)</code> renvoie $\displaystyle 5$ : c’est le plus petit $\displaystyle k$ tel que $\displaystyle P(X \le k) \ge 0{,}95$.</p>
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong> $\displaystyle P(X \ge 5) \neq 1 - P(X \le 5)$ ; c’est $\displaystyle 1 - P(X \le 4)$. Et les épreuves doivent être <strong>indépendantes</strong> (tirages avec remise, ou population très grande).
+        </div>
+    </div>
+
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:8px; padding:15px; margin:20px 0 0 0;">
+        <p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🏆 L’essentiel :</strong> $\displaystyle n$ épreuves de Bernoulli identiques et indépendantes, $\displaystyle X$ = nombre de succès : $\displaystyle X \sim \mathcal{B}(n\,;p)$ ; $\displaystyle P(X = k) = \binom{n}{k}p^k(1 - p)^{n - k}$ ; $\displaystyle E(X) = np$ ; $\displaystyle V(X) = np(1 - p)$ ; $\displaystyle P(X \ge k) = 1 - P(X \le k - 1)$. Fiche de synthèse dans l’onglet Fiches !</p>
+    </div>
+
+</div>

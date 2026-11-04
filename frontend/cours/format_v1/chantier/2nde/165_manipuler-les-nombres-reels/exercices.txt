@@ -1,0 +1,1412 @@
+=== Entraînement - Encadrer racine de 2 par balayage en Python
+Id: 1934
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On considère la fonction Python suivante, qui cherche un encadrement de $\sqrt{2}$ d’amplitude $10^{-n}$.
+
+```python
+def encadrement_sqrt2(n):
+    h = 10 ** (-n)
+    a = 1.0
+    while (a + h)**2 <= 2:
+        a = a + h
+    return a, a + h
+```
+
+1. Pour $n = 2$, quelle est la valeur de `h` ?
+2. Que signifie la condition de boucle $(a + h)^2 \le 2$ ?
+3. Quand la boucle s’arrête, que peut-on dire de $a$ et de $a + h$ par rapport à $\sqrt{2}$ ?
+4. Sans exécuter le programme, donner l’encadrement renvoyé pour $n = 2$.
+5. Que faut-il changer dans le code pour encadrer $\sqrt{3}$ au lieu de $\sqrt{2}$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Valeur de $h$
+
+::: methode
+La ligne `h = 10 ** (-n)` calcule $h = 10^{-n}$.
+:::
+
+::: etape Remplacer $n$ par $2$
+$$h = 10^{-2} = \dfrac{1}{100} = 0{,}01$$
+:::
+
+::: resultat
+Pour $n = 2$, $h = 0{,}01$ : le programme avance de centième en centième.
+:::
+
+## Question 2 : Sens de la condition $(a + h)^2 \le 2$
+
+::: methode
+Comparer des carrés de nombres positifs revient à comparer les nombres.
+:::
+
+::: etape Traduire la condition
+$a + h$ est positif. Or, pour deux nombres positifs, $u^2 \le v^2 \iff u \le v$. Donc :
+
+$$(a + h)^2 \le 2 \iff a + h \le \sqrt{2}$$
+:::
+
+::: resultat
+La condition teste si le nombre suivant $a + h$ est encore inférieur ou égal à $\sqrt{2}$ : tant que c’est le cas, on avance d’un pas.
+:::
+
+## Question 3 : À l’arrêt de la boucle
+
+::: methode
+La boucle s’arrête dès que la condition devient fausse.
+:::
+
+::: etape Ce que l’on sait de $a$
+Au départ $a = 1 \le \sqrt{2}$, et $a$ ne reçoit une nouvelle valeur $a + h$ que si $a + h \le \sqrt{2}$. Donc on a toujours $a \le \sqrt{2}$.
+:::
+
+::: etape Ce que l’on sait de $a + h$
+À l’arrêt, la condition est fausse : $(a + h)^2 \gt 2$, donc $a + h \gt \sqrt{2}$.
+:::
+
+::: resultat
+$$a \le \sqrt{2} \lt a + h$$
+:::
+
+## Question 4 : Encadrement pour $n = 2$
+
+::: methode
+Chercher les deux centièmes consécutifs qui entourent $\sqrt{2}$, à l’aide de leurs carrés.
+:::
+
+::: etape Calculer deux carrés
+- $1{,}41^2 = 1{,}9881 \le 2$ : la boucle avance encore jusqu’à $a = 1{,}41$.
+- $1{,}42^2 = 2{,}0164 \gt 2$ : la boucle s’arrête avec $a = 1{,}41$.
+:::
+
+[IMAGE_1]
+
+::: resultat
+La fonction renvoie $(1{,}41\,;\ 1{,}42)$, c’est-à-dire $1{,}41 \le \sqrt{2} \lt 1{,}42$.
+:::
+
+::: remarque
+En pratique, Python affiche `1.4100000000000004` : les calculs sur les nombres à virgule sont arrondis en machine. Le résultat reste l’encadrement $[1{,}41\,;1{,}42]$.
+:::
+
+## Question 5 : Encadrer $\sqrt{3}$
+
+::: methode
+Seul le nombre comparé au carré change.
+:::
+
+::: etape Modifier la condition
+On remplace la ligne de la boucle par `while (a + h)**2 <= 3:`. Le départ $a = 1$ convient encore, car $1 \le \sqrt{3}$.
+:::
+
+::: resultat
+Il suffit de remplacer $2$ par $3$ dans la condition : $(a + h)^2 \le 3$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $h = 10^{-2} = 0{,}01$.
+2. $(a + h)^2 \le 2$ signifie $a + h \le \sqrt{2}$ : on peut encore avancer.
+3. $a \le \sqrt{2} \lt a + h$.
+4. $(1{,}41\,;\ 1{,}42)$, soit $1{,}41 \le \sqrt{2} \lt 1{,}42$.
+5. Remplacer la condition par $(a + h)^2 \le 3$.
+
+===
+
+=== Entraînement - Écriture décimale périodique et fraction
+Id: 1927
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Écrire chaque nombre sous forme de fraction irréductible (les points de suspension indiquent que le bloc de chiffres se répète indéfiniment).
+
+::: rappel Méthode
+- On appelle $x$ le nombre.
+- On multiplie $x$ par une puissance de $10$ pour décaler la virgule jusqu’à retrouver le même bloc qui se répète.
+- On soustrait pour faire disparaître la partie qui se répète, puis on résout.
+:::
+
+1. $x = 0{,}333\ldots$
+2. $x = 0{,}2727\ldots$
+3. $x = 0{,}1666\ldots$
+4. $x = 1{,}08333\ldots$
+5. $x = 2{,}4545\ldots$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $x = 0{,}333\ldots$
+
+::: methode
+Le bloc qui se répète ($3$) a $1$ chiffre : on multiplie par $10$.
+:::
+
+::: etape Décaler et soustraire
+$$
+\begin{aligned}
+10x &= 3{,}333\ldots \\
+x &= 0{,}333\ldots \\
+10x - x &= 3
+\end{aligned}
+$$
+:::
+
+::: etape Résoudre
+$9x = 3$, donc $x = \dfrac{3}{9} = \dfrac{1}{3}$.
+:::
+
+::: resultat
+$$0{,}333\ldots = \dfrac{1}{3}$$
+:::
+
+## Question 2 : $x = 0{,}2727\ldots$
+
+::: methode
+Le bloc qui se répète ($27$) a $2$ chiffres : on multiplie par $100$.
+:::
+
+::: etape Décaler et soustraire
+$$
+\begin{aligned}
+100x &= 27{,}2727\ldots \\
+x &= 0{,}2727\ldots \\
+100x - x &= 27
+\end{aligned}
+$$
+:::
+
+::: etape Résoudre et simplifier
+$99x = 27$, donc $x = \dfrac{27}{99} = \dfrac{9 \times 3}{9 \times 11} = \dfrac{3}{11}$.
+:::
+
+::: resultat
+$$0{,}2727\ldots = \dfrac{3}{11}$$
+:::
+
+## Question 3 : $x = 0{,}1666\ldots$
+
+::: methode
+Le $6$ ne se répète qu’à partir de la deuxième décimale : on aligne les parties qui se répètent avec $10x$ et $100x$.
+:::
+
+::: etape Décaler
+$$
+\begin{aligned}
+100x &= 16{,}666\ldots \\
+10x &= 1{,}666\ldots
+\end{aligned}
+$$
+:::
+
+::: etape Soustraire et résoudre
+$100x - 10x = 16 - 1 = 15$, donc $90x = 15$ et $x = \dfrac{15}{90} = \dfrac{1}{6}$.
+:::
+
+::: resultat
+$$0{,}1666\ldots = \dfrac{1}{6}$$
+:::
+
+## Question 4 : $x = 1{,}08333\ldots$
+
+::: methode
+Le bloc $3$ se répète à partir de la troisième décimale : on aligne avec $100x$ et $1\,000x$.
+:::
+
+::: etape Décaler
+$$
+\begin{aligned}
+1\,000x &= 1\,083{,}333\ldots \\
+100x &= 108{,}333\ldots
+\end{aligned}
+$$
+:::
+
+::: etape Soustraire et résoudre
+$1\,000x - 100x = 1\,083 - 108 = 975$, donc $900x = 975$ et :
+
+$$x = \dfrac{975}{900} = \dfrac{75 \times 13}{75 \times 12} = \dfrac{13}{12}$$
+:::
+
+::: resultat
+$$1{,}08333\ldots = \dfrac{13}{12}$$
+:::
+
+## Question 5 : $x = 2{,}4545\ldots$
+
+::: methode
+Le bloc qui se répète ($45$) a $2$ chiffres : on multiplie par $100$.
+:::
+
+::: etape Décaler et soustraire
+$$
+\begin{aligned}
+100x &= 245{,}4545\ldots \\
+x &= 2{,}4545\ldots \\
+100x - x &= 243
+\end{aligned}
+$$
+:::
+
+::: etape Résoudre et simplifier
+$99x = 243$, donc $x = \dfrac{243}{99} = \dfrac{9 \times 27}{9 \times 11} = \dfrac{27}{11}$.
+:::
+
+::: resultat
+$$2{,}4545\ldots = \dfrac{27}{11}$$
+:::
+
+::: retenir
+Un nombre dont l’écriture décimale est périodique est toujours rationnel.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $0{,}333\ldots = \dfrac{1}{3}$
+2. $0{,}2727\ldots = \dfrac{3}{11}$
+3. $0{,}1666\ldots = \dfrac{1}{6}$
+4. $1{,}08333\ldots = \dfrac{13}{12}$
+5. $2{,}4545\ldots = \dfrac{27}{11}$
+
+===
+
+=== Découverte - Dire si un nombre appartient à un intervalle
+Id: 1926
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Pour chaque question, dire si le nombre appartient à l’intervalle donné.
+
+::: rappel
+- $x \in [a\,;b] \iff a \le x \le b$ (bornes incluses).
+- $x \in {]a\,;b[} \iff a \lt x \lt b$ (bornes exclues).
+:::
+
+1. Le nombre $-2$ appartient-il à $[-2\,;5]$ ?
+2. Le nombre $-2$ appartient-il à ${]{-2}\,;5]}$ ?
+3. Le nombre $0$ appartient-il à ${]{-\infty}\,;0[}$ ?
+4. Parmi les nombres $-1$ ; $0$ ; $2$, lesquels appartiennent à ${[0\,;+\infty[}$ ?
+5. Parmi les nombres $3{,}5$ ; $4$ ; $4{,}1$, lesquels appartiennent à ${]3{,}5\,;4]}$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $-2 \in [-2\,;5]$ ?
+
+::: methode
+$$x \in [a\,;b] \iff a \le x \le b$$
+:::
+
+::: etape Traduire
+$-2 \in [-2\,;5] \iff -2 \le -2 \le 5$
+:::
+
+::: etape Vérifier les deux inégalités
+- $-2 \le -2$ : vrai (l’égalité est autorisée, la borne est incluse).
+- $-2 \le 5$ : vrai.
+:::
+
+::: resultat
+Oui : $-2 \in [-2\,;5]$.
+:::
+
+## Question 2 : $-2 \in {]{-2}\,;5]}$ ?
+
+::: methode
+$$x \in {]a\,;b]} \iff a \lt x \le b$$
+:::
+
+::: etape Traduire
+$-2 \in {]{-2}\,;5]} \iff -2 \lt -2 \le 5$
+:::
+
+::: etape Vérifier l’inégalité stricte
+$-2 \lt -2$ est faux : l’inégalité est stricte, l’égalité est interdite.
+:::
+
+::: resultat
+Non : $-2 \notin {]{-2}\,;5]}$.
+:::
+
+::: attention
+Le crochet tourné vers l’extérieur exclut la borne : $-2$ est la borne de ${]{-2}\,;5]}$, mais il n’en fait pas partie.
+:::
+
+## Question 3 : $0 \in {]{-\infty}\,;0[}$ ?
+
+::: methode
+$$x \in {]{-\infty}\,;b[} \iff x \lt b$$
+:::
+
+::: etape Traduire et vérifier
+$0 \in {]{-\infty}\,;0[} \iff 0 \lt 0$, ce qui est faux.
+:::
+
+::: resultat
+Non : $0 \notin {]{-\infty}\,;0[}$.
+:::
+
+## Question 4 : Appartenance à ${[0\,;+\infty[}$
+
+::: methode
+$$x \in {[0\,;+\infty[} \iff x \ge 0$$
+:::
+
+::: etape Tester chaque nombre
+- $-1 \lt 0$, donc $-1 \notin {[0\,;+\infty[}$.
+- $0 \ge 0$, donc $0 \in {[0\,;+\infty[}$.
+- $2 \ge 0$, donc $2 \in {[0\,;+\infty[}$.
+:::
+
+::: resultat
+$0$ et $2$ appartiennent à ${[0\,;+\infty[}$ ; $-1$ n’y appartient pas.
+:::
+
+## Question 5 : Appartenance à ${]3{,}5\,;4]}$
+
+::: methode
+$$x \in {]a\,;b]} \iff a \lt x \le b$$
+:::
+
+::: etape Tester chaque nombre
+- $3{,}5$ : il faudrait $3{,}5 \lt 3{,}5$, faux, donc $3{,}5 \notin {]3{,}5\,;4]}$.
+- $4$ : $3{,}5 \lt 4 \le 4$ est vrai, donc $4 \in {]3{,}5\,;4]}$.
+- $4{,}1$ : il faudrait $4{,}1 \le 4$, faux, donc $4{,}1 \notin {]3{,}5\,;4]}$.
+:::
+
+[IMAGE_1]
+
+::: resultat
+Seul $4$ appartient à ${]3{,}5\,;4]}$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Oui : $-2 \in [-2\,;5]$.
+2. Non : $-2 \notin {]{-2}\,;5]}$.
+3. Non : $0 \notin {]{-\infty}\,;0[}$.
+4. $0$ et $2$.
+5. Seulement $4$.
+
+===
+
+=== Découverte - Passer d’une inégalité à un intervalle
+Id: 1928
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Traduire chaque écriture en intervalle par des inégalités, et inversement.
+
+1. Écrire avec des inégalités : $x \in [-1\,;3]$.
+2. Écrire avec des inégalités : $x \in {]0\,;5[}$.
+3. Écrire avec un intervalle : $-2 \le x \lt 4$.
+4. Écrire avec un intervalle : $x \ge 7$.
+5. Écrire avec un intervalle : $x \lt -3$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $x \in [-1\,;3]$
+
+::: methode
+Un crochet tourné vers le nombre signifie « borne incluse » : on utilise $\le$.
+:::
+
+::: resultat
+$$-1 \le x \le 3$$
+:::
+
+## Question 2 : $x \in {]0\,;5[}$
+
+::: methode
+Un crochet tourné vers l’extérieur signifie « borne exclue » : on utilise $\lt$.
+:::
+
+::: resultat
+$$0 \lt x \lt 5$$
+:::
+
+## Question 3 : $-2 \le x \lt 4$
+
+::: methode
+$\le$ donne un crochet fermé, $\lt$ donne un crochet ouvert.
+:::
+
+::: etape Chaque borne
+- $-2 \le x$ : $-2$ est inclus, on écrit $[-2$.
+- $x \lt 4$ : $4$ est exclu, on écrit $4[$.
+:::
+
+::: resultat
+$$x \in {[-2\,;4[}$$
+:::
+
+## Question 4 : $x \ge 7$
+
+::: methode
+$$x \ge a \iff x \in {[a\,;+\infty[}$$
+:::
+
+::: resultat
+$$x \in {[7\,;+\infty[}$$
+:::
+
+## Question 5 : $x \lt -3$
+
+::: methode
+$$x \lt b \iff x \in {]{-\infty}\,;b[}$$
+:::
+
+::: resultat
+$$x \in {]{-\infty}\,;-3[}$$
+:::
+
+::: attention
+Du côté de $-\infty$ ou de $+\infty$, le crochet est toujours ouvert.
+:::
+
+::: point Les trois ensembles sur la droite graduée
+Crochet tourné vers le nombre : borne incluse ; crochet tourné vers l’extérieur : borne exclue. Du côté de l’infini, la bande va jusqu’au bout de la droite.
+:::
+
+[IMAGE_1]
+
+Solution:
+<!-- optitab:1 -->
+1. $-1 \le x \le 3$
+2. $0 \lt x \lt 5$
+3. $x \in {[-2\,;4[}$
+4. $x \in {[7\,;+\infty[}$
+5. $x \in {]{-\infty}\,;-3[}$
+
+===
+
+=== Entraînement - Décimal, rationnel ou irrationnel
+Id: 1932
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+::: rappel
+- $\mathbb{D}$ : nombres décimaux (écriture décimale **finie**).
+- $\mathbb{Q}$ : nombres rationnels (quotients $\dfrac{p}{q}$ d’entiers, $q \neq 0$).
+- $\mathbb{R} \setminus \mathbb{Q}$ : nombres irrationnels (par exemple $\sqrt{2}$, $\pi$).
+:::
+
+1. Écrire $12{,}3$ sous forme de fraction, puis dire si $12{,}3 \in \mathbb{D}$ et si $12{,}3 \in \mathbb{Q}$.
+2. Écrire $0{,}04$ sous forme de fraction irréductible.
+3. Dire si $\dfrac{7}{4}$ est décimal, puis donner son écriture décimale.
+4. On veut démontrer que $\dfrac{1}{3}$ n’est pas un nombre décimal. On suppose le contraire : $\dfrac{1}{3} = \dfrac{k}{10^n}$ avec $k$ entier et $n$ entier naturel.
+   - a) Montrer que $10^n = 3k$.
+   - b) En utilisant le critère de divisibilité par $3$, aboutir à une contradiction et conclure.
+5. Classer les nombres $-2{,}5$ ; $\dfrac{5}{2}$ ; $\dfrac{1}{3}$ ; $\sqrt{2}$ ; $\pi$ dans $\mathbb{D}$, dans $\mathbb{Q} \setminus \mathbb{D}$ ou dans $\mathbb{R} \setminus \mathbb{Q}$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $12{,}3$
+
+::: methode
+Un chiffre après la virgule : on écrit des dixièmes.
+:::
+
+::: etape Écrire la fraction
+$$12{,}3 = \dfrac{123}{10}$$
+:::
+
+::: resultat
+$12{,}3 = \dfrac{123}{10}$ : c’est un décimal, donc aussi un rationnel. $12{,}3 \in \mathbb{D}$ et $12{,}3 \in \mathbb{Q}$.
+:::
+
+## Question 2 : $0{,}04$
+
+::: methode
+Deux chiffres après la virgule : on écrit des centièmes, puis on simplifie.
+:::
+
+::: etape Écrire et simplifier
+$$0{,}04 = \dfrac{4}{100} = \dfrac{4 \times 1}{4 \times 25} = \dfrac{1}{25}$$
+:::
+
+::: resultat
+$$0{,}04 = \dfrac{1}{25}$$
+:::
+
+## Question 3 : $\dfrac{7}{4}$
+
+::: methode
+Effectuer la division de $7$ par $4$.
+:::
+
+::: etape Division
+$7 \div 4 = 1{,}75$ : la division s’arrête.
+:::
+
+::: resultat
+Oui : $\dfrac{7}{4} = 1{,}75 = \dfrac{175}{100}$, donc $\dfrac{7}{4} \in \mathbb{D}$.
+:::
+
+## Question 4 : $\dfrac{1}{3}$ n’est pas décimal
+
+::: methode
+Raisonnement par l’absurde : on suppose le contraire et on aboutit à une impossibilité.
+:::
+
+::: etape a) Faire disparaître les quotients
+On part de $\dfrac{1}{3} = \dfrac{k}{10^n}$ et on multiplie les deux membres par $3 \times 10^n$ :
+$$10^n = 3k$$
+:::
+
+::: etape b) Contradiction
+- $10^n = 3k$ avec $k$ entier : $10^n$ serait un multiple de $3$.
+- Or $10^n$ s’écrit avec un $1$ suivi de $n$ zéros : la somme de ses chiffres vaut $1$, qui n’est pas divisible par $3$. Donc $10^n$ n’est **pas** divisible par $3$.
+:::
+
+::: resultat
+L’hypothèse mène à une contradiction : $\dfrac{1}{3}$ n’est pas un nombre décimal. Il est pourtant rationnel (quotient de deux entiers) : $\dfrac{1}{3} \in \mathbb{Q} \setminus \mathbb{D}$.
+:::
+
+::: attention
+Voir « $0{,}333\ldots$ » à la calculatrice ne prouve rien : l’écran n’affiche qu’un nombre fini de chiffres. Seule la démonstration permet d’affirmer que l’écriture décimale ne s’arrête jamais.
+:::
+
+## Question 5 : Classer
+
+::: methode
+- Écriture décimale finie : décimal.
+- Quotient d’entiers non décimal : rationnel non décimal.
+- $\sqrt{2}$ et $\pi$ sont irrationnels (cours).
+:::
+
+::: etape Chaque nombre
+- $-2{,}5 = -\dfrac{25}{10}$ : décimal.
+- $\dfrac{5}{2} = 2{,}5$ : décimal.
+- $\dfrac{1}{3}$ : rationnel non décimal (question 4).
+- $\sqrt{2}$ et $\pi$ : irrationnels.
+:::
+
+[IMAGE_1]
+
+::: resultat
+| Ensemble | Nombres |
+|---|---|
+| $\mathbb{D}$ | $-2{,}5$ ; $\dfrac{5}{2}$ |
+| $\mathbb{Q} \setminus \mathbb{D}$ | $\dfrac{1}{3}$ |
+| $\mathbb{R} \setminus \mathbb{Q}$ | $\sqrt{2}$ ; $\pi$ |
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $12{,}3 = \dfrac{123}{10}$ : $12{,}3 \in \mathbb{D}$ et $12{,}3 \in \mathbb{Q}$.
+2. $0{,}04 = \dfrac{1}{25}$.
+3. Oui : $\dfrac{7}{4} = 1{,}75$.
+4. a) $10^n = 3k$ ; b) la somme des chiffres de $10^n$ vaut $1$, donc $10^n$ n’est pas multiple de $3$ : contradiction, $\dfrac{1}{3}$ n’est pas décimal.
+5. $\mathbb{D}$ : $-2{,}5$ et $\dfrac{5}{2}$ ; $\mathbb{Q} \setminus \mathbb{D}$ : $\dfrac{1}{3}$ ; $\mathbb{R} \setminus \mathbb{Q}$ : $\sqrt{2}$ et $\pi$.
+
+===
+
+=== Entraînement - Intervalle centré et valeur absolue
+Id: 1931
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+L’intervalle de centre $a$ et de rayon $r$ ($r \gt 0$) est caractérisé par :
+
+$$x \in [a - r\,;a + r] \iff |x - a| \le r$$
+
+1. Écrire $[2\,;8]$ sous la forme $[a - r\,;a + r]$, puis traduire $x \in [2\,;8]$ par une inégalité $|x - a| \le r$.
+2. Pour $a = -1$ et $r = 4$, écrire l’intervalle $[a - r\,;a + r]$ et l’inégalité $|x - a| \le r$.
+3. Résoudre $|x - 3| \le 2$.
+4. Résoudre $|x + 2| \lt 3$.
+5. Le nombre $x = -4$ est-il solution de $|x - 1| \le 5$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : L’intervalle $[2\,;8]$
+
+::: methode
+Le centre est le milieu des bornes, le rayon est la moitié de la longueur.
+:::
+
+::: etape Calculer $a$ et $r$
+$$a = \dfrac{2 + 8}{2} = 5 \qquad r = \dfrac{8 - 2}{2} = 3$$
+:::
+
+::: resultat
+$[2\,;8] = [5 - 3\,;5 + 3]$, donc $x \in [2\,;8] \iff |x - 5| \le 3$.
+:::
+
+## Question 2 : $a = -1$ et $r = 4$
+
+::: methode
+Calculer les bornes $a - r$ et $a + r$.
+:::
+
+::: etape Bornes
+- $a - r = -1 - 4 = -5$
+- $a + r = -1 + 4 = 3$
+:::
+
+::: etape Inégalité
+$|x - (-1)| \le 4$, c’est-à-dire $|x + 1| \le 4$.
+:::
+
+::: resultat
+L’intervalle est $[-5\,;3]$ et l’inégalité est $|x + 1| \le 4$.
+:::
+
+## Question 3 : Résoudre $|x - 3| \le 2$
+
+::: methode
+$$|x - a| \le r \iff a - r \le x \le a + r$$
+:::
+
+::: etape Appliquer avec $a = 3$ et $r = 2$
+$$3 - 2 \le x \le 3 + 2 \iff 1 \le x \le 5$$
+:::
+
+::: resultat
+L’ensemble des solutions est $[1\,;5]$.
+:::
+
+## Question 4 : Résoudre $|x + 2| \lt 3$
+
+::: methode
+Écrire $|x + 2|$ sous la forme $|x - a|$ pour lire le centre.
+:::
+
+::: etape Reconnaître le centre
+$|x + 2| = |x - (-2)|$ : c’est la distance entre $x$ et $-2$. Le centre est $a = -2$ et le rayon $r = 3$.
+:::
+
+::: etape Appliquer
+$$-2 - 3 \lt x \lt -2 + 3 \iff -5 \lt x \lt 1$$
+:::
+
+[IMAGE_1]
+
+::: resultat
+L’ensemble des solutions est ${]{-5}\,;1[}$ (bornes exclues car l’inégalité est stricte).
+:::
+
+::: attention
+$|x + 2|$ est la distance de $x$ à $-2$, et non à $2$.
+:::
+
+## Question 5 : $x = -4$ et $|x - 1| \le 5$
+
+::: methode
+Remplacer $x$ par $-4$ et tester l’inégalité.
+:::
+
+::: etape Calcul
+$$\lvert -4 - 1\rvert = \lvert -5\rvert = 5$$
+:::
+
+::: resultat
+$5 \le 5$ est vrai : $x = -4$ est solution (c’est une borne de l’intervalle $[-4\,;6]$).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $a = 5$, $r = 3$ : $x \in [2\,;8] \iff |x - 5| \le 3$.
+2. $[-5\,;3]$ et $|x + 1| \le 4$.
+3. $x \in [1\,;5]$.
+4. $x \in {]{-5}\,;1[}$.
+5. Oui, car $\lvert -4 - 1\rvert = 5 \le 5$.
+
+===
+
+=== Entraînement - Intersection de deux intervalles
+Id: 1929
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+L’**intersection** $A \cap B$ est l’ensemble des nombres qui appartiennent à $A$ **et** à $B$.
+
+1. Déterminer $[-1\,;4] \cap {]2\,;6[}$.
+2. Déterminer ${]{-\infty}\,;3]} \cap {[1\,;+\infty[}$.
+3. Résoudre : $x \gt -2$ et $x \le 5$ (donner la solution sous forme d’intervalle).
+4. Parmi les nombres $-3$ ; $-2$ ; $0$ ; $4$ ; $6$, lesquels appartiennent à $[-1\,;4] \cap {]2\,;6[}$ ?
+5. Déterminer $[0\,;1] \cap {]1\,;2[}$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $[-1\,;4] \cap {]2\,;6[}$
+
+::: methode
+Représenter les deux intervalles sur une même droite et garder la partie commune.
+:::
+
+[IMAGE_1]
+
+::: etape Comparer les bornes
+- À gauche, on garde la plus grande des deux bornes : $2$.
+- À droite, on garde la plus petite : $4$.
+:::
+
+::: etape Crochets
+- $2$ est exclu de ${]2\,;6[}$, donc exclu de l’intersection : $]2$.
+- $4$ appartient aux deux intervalles ($4 \in [-1\,;4]$ et $4 \in {]2\,;6[}$) : $4]$.
+:::
+
+::: resultat
+$$[-1\,;4] \cap {]2\,;6[} = {]2\,;4]}$$
+:::
+
+## Question 2 : ${]{-\infty}\,;3]} \cap {[1\,;+\infty[}$
+
+::: methode
+Traduire chaque intervalle par une inégalité.
+:::
+
+::: etape Traduire
+$x \le 3$ et $x \ge 1$, c’est-à-dire $1 \le x \le 3$.
+:::
+
+::: resultat
+$${]{-\infty}\,;3]} \cap {[1\,;+\infty[} = [1\,;3]$$
+:::
+
+## Question 3 : $x \gt -2$ et $x \le 5$
+
+::: methode
+Écrire chaque condition en intervalle, puis prendre l’intersection.
+:::
+
+::: etape Intervalles
+- $x \gt -2 \iff x \in {]{-2}\,;+\infty[}$
+- $x \le 5 \iff x \in {]{-\infty}\,;5]}$
+:::
+
+::: resultat
+$-2 \lt x \le 5$, donc $x \in {]{-2}\,;5]}$.
+:::
+
+## Question 4 : Appartenance à l’intersection
+
+::: methode
+D’après la question 1, l’intersection est ${]2\,;4]}$ : on teste $2 \lt x \le 4$.
+:::
+
+::: etape Tester chaque nombre
+- $-3$, $-2$ et $0$ sont inférieurs à $2$ : ils n’appartiennent pas à ${]2\,;4]}$.
+- $2 \lt 4 \le 4$ : $4 \in {]2\,;4]}$.
+- $6 \gt 4$ : $6 \notin {]2\,;4]}$.
+:::
+
+::: resultat
+Seul $4$ appartient à $[-1\,;4] \cap {]2\,;6[}$.
+:::
+
+## Question 5 : $[0\,;1] \cap {]1\,;2[}$
+
+::: methode
+Chercher un nombre qui vérifie à la fois $x \le 1$ et $x \gt 1$.
+:::
+
+::: etape Conclure
+Aucun nombre ne peut être à la fois inférieur ou égal à $1$ et strictement supérieur à $1$.
+:::
+
+::: resultat
+$[0\,;1] \cap {]1\,;2[} = \varnothing$ : l’intersection est vide.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. ${]2\,;4]}$
+2. $[1\,;3]$
+3. ${]{-2}\,;5]}$
+4. Seulement $4$.
+5. $\varnothing$ (intersection vide).
+
+===
+
+=== Découverte - Valeur absolue et distance entre deux réels
+Id: 1930
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+::: rappel
+- $|x|$ est la distance entre $x$ et $0$.
+- La distance entre $a$ et $b$ est $|b - a|$.
+:::
+
+1. Calculer $\lvert -7\rvert$.
+2. Calculer $|3 - 8|$.
+3. Calculer la distance entre $-4$ et $9$.
+4. Donner la distance entre $2{,}5$ et $0$.
+5. La distance entre $x$ et $3$ vaut $2$ : donner les deux valeurs possibles de $x$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $\lvert -7\rvert$
+
+::: methode
+La valeur absolue d’un nombre négatif est son opposé.
+:::
+
+::: resultat
+$$\lvert -7\rvert = 7$$
+:::
+
+## Question 2 : $|3 - 8|$
+
+::: methode
+Calculer d’abord ce qui est à l’intérieur de la valeur absolue.
+:::
+
+::: etape Calcul
+$$|3 - 8| = \lvert -5\rvert = 5$$
+:::
+
+::: resultat
+$$|3 - 8| = 5$$
+:::
+
+## Question 3 : Distance entre $-4$ et $9$
+
+::: methode
+$$\text{distance entre } a \text{ et } b = |b - a|$$
+:::
+
+::: etape Calcul
+$$|9 - (-4)| = |9 + 4| = |13| = 13$$
+:::
+
+::: resultat
+La distance entre $-4$ et $9$ vaut $13$.
+:::
+
+## Question 4 : Distance entre $2{,}5$ et $0$
+
+::: methode
+La distance à $0$ est la valeur absolue.
+:::
+
+::: resultat
+$$|2{,}5| = 2{,}5$$
+:::
+
+## Question 5 : Distance $2$ entre $x$ et $3$
+
+::: methode
+« La distance entre $x$ et $3$ vaut $2$ » se traduit par $|x - 3| = 2$.
+:::
+
+::: etape Résoudre
+$x - 3 = 2$ ou $x - 3 = -2$, donc $x = 5$ ou $x = 1$.
+:::
+
+[IMAGE_1]
+
+::: resultat
+$x = 1$ ou $x = 5$ : ce sont les deux réels situés à $2$ unités de $3$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\lvert -7\rvert = 7$
+2. $|3 - 8| = 5$
+3. $13$
+4. $2{,}5$
+5. $x = 1$ ou $x = 5$
+
+===
+
+=== Entraînement - Encadrer et arrondir un nombre réel
+Id: 1933
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+::: rappel
+- Un encadrement $a \le x \le b$ a pour **amplitude** $b - a$.
+- Encadrer à $10^{-n}$ près, c’est donner un encadrement d’amplitude $10^{-n}$.
+:::
+
+1. On admet que $\pi \approx 3{,}1415926$. Donner un encadrement de $\pi$ d’amplitude $10^{-2}$.
+2. Vérifier que $1{,}41^2 \lt 2$ et $1{,}42^2 \gt 2$, puis encadrer $\sqrt{2}$ avec une amplitude de $0{,}01$.
+3. Donner un encadrement de $\dfrac{5}{7}$ d’amplitude $0{,}1$.
+4. Arrondir $3{,}14159$ au centième, puis au millième.
+5. Un disque a pour rayon $r = 4{,}8$ cm. En prenant $\pi \approx 3{,}14$, calculer son aire $A = \pi r^2$ et l’arrondir au dixième de cm².
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Encadrer $\pi$ à $10^{-2}$ près
+
+::: methode
+À $10^{-2}$ près, c’est au centième : on garde $2$ décimales.
+:::
+
+::: etape Encadrer
+$3{,}14 \le 3{,}1415926\ldots \le 3{,}15$ et $3{,}15 - 3{,}14 = 0{,}01$.
+:::
+
+::: resultat
+$3{,}14 \le \pi \le 3{,}15$ (amplitude $0{,}01$).
+:::
+
+## Question 2 : Encadrer $\sqrt{2}$
+
+::: methode
+Pour des nombres positifs, si $a^2 \lt 2 \lt b^2$, alors $a \lt \sqrt{2} \lt b$.
+:::
+
+::: etape Calculer les carrés
+- $1{,}41^2 = 1{,}9881 \lt 2$
+- $1{,}42^2 = 2{,}0164 \gt 2$
+:::
+
+::: resultat
+$1{,}41 \lt \sqrt{2} \lt 1{,}42$ (amplitude $0{,}01$).
+:::
+
+## Question 3 : Encadrer $\dfrac{5}{7}$ à $0{,}1$ près
+
+::: methode
+Calculer une valeur approchée, puis garder une décimale.
+:::
+
+::: etape Valeur approchée
+$5 \div 7 \approx 0{,}714$ : $\dfrac{5}{7}$ est entre les deux dixièmes consécutifs $0{,}7$ et $0{,}8$.
+:::
+
+[IMAGE_1]
+
+::: resultat
+$0{,}7 \le \dfrac{5}{7} \le 0{,}8$ (amplitude $0{,}1$).
+:::
+
+## Question 4 : Arrondir $3{,}14159$
+
+::: methode
+Regarder le chiffre qui suit la dernière décimale gardée : de $0$ à $4$ on garde, de $5$ à $9$ on augmente de $1$.
+:::
+
+::: etape Au centième
+On garde $3{,}14$ ; le chiffre suivant est $1$ (moins de $5$) : on garde $3{,}14$.
+:::
+
+::: etape Au millième
+On garde $3{,}141$ ; le chiffre suivant est $5$ : le dernier chiffre $1$ devient $2$.
+:::
+
+::: resultat
+$3{,}14159 \approx 3{,}14$ au centième et $3{,}14159 \approx 3{,}142$ au millième.
+:::
+
+## Question 5 : Aire du disque
+
+::: methode
+Calculer $r^2$, multiplier par $3{,}14$, puis arrondir.
+:::
+
+::: etape Calculer
+$$
+\begin{aligned}
+r^2 &= 4{,}8^2 = 23{,}04 \\
+A &\approx 3{,}14 \times 23{,}04 = 72{,}3456
+\end{aligned}
+$$
+:::
+
+::: etape Arrondir au dixième
+Le chiffre des centièmes est $4$ (moins de $5$) : $72{,}3456 \approx 72{,}3$.
+:::
+
+::: resultat
+$$A \approx 72{,}3 \text{ cm}^2$$
+:::
+
+::: attention
+Avec la touche $\pi$ de la calculatrice, on obtient $A \approx 72{,}38$, soit $72{,}4$ cm² au dixième : la valeur approchée $3{,}14$ choisie dans l’énoncé change ici le dernier chiffre.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $3{,}14 \le \pi \le 3{,}15$
+2. $1{,}41 \lt \sqrt{2} \lt 1{,}42$
+3. $0{,}7 \le \dfrac{5}{7} \le 0{,}8$
+4. $3{,}14$ au centième ; $3{,}142$ au millième.
+5. $A \approx 72{,}3$ cm² (avec $\pi \approx 3{,}14$).
+
+===
+
+=== Problème - Tolérance de fabrication et valeur absolue
+Id: 1935
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Une usine fabrique des tiges de longueur théorique $30{,}0$ cm. Une tige est **acceptée** si sa longueur $L$ (en cm) est comprise entre $29{,}7$ cm et $30{,}3$ cm, bornes incluses.
+
+1. Écrire la condition d’acceptation sous forme d’intervalle.
+2. Écrire la même condition avec une valeur absolue, sous la forme $|L - a| \le r$.
+3. On mesure $L_1 = 29{,}65$ cm, $L_2 = 29{,}90$ cm et $L_3 = 30{,}31$ cm. Quelles tiges sont acceptées ?
+4. Quel est l’écart maximal autorisé par rapport à $30{,}0$ cm ?
+5. Le technicien arrondit chaque mesure au dixième avant de décider. Une tige mesure $30{,}34$ cm. Est-elle acceptée après arrondi ? Et si l’on garde la mesure exacte ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Condition en intervalle
+
+::: methode
+« Entre $29{,}7$ et $30{,}3$, bornes incluses » donne un intervalle fermé.
+:::
+
+::: resultat
+$$L \in [29{,}7\,;30{,}3]$$
+:::
+
+## Question 2 : Condition en valeur absolue
+
+::: methode
+Pour un intervalle $[a - r\,;a + r]$, le centre $a$ est le milieu des bornes et le rayon $r$ la moitié de la longueur.
+:::
+
+::: etape Calculer $a$ et $r$
+- Centre : $a = \dfrac{29{,}7 + 30{,}3}{2} = 30$
+- Rayon : $r = \dfrac{30{,}3 - 29{,}7}{2} = 0{,}3$
+:::
+
+[IMAGE_1]
+
+::: resultat
+$$L \in [29{,}7\,;30{,}3] \iff |L - 30| \le 0{,}3$$
+:::
+
+## Question 3 : Tiges acceptées
+
+::: methode
+Tester l’appartenance de chaque mesure à $[29{,}7\,;30{,}3]$.
+:::
+
+::: etape Comparer
+- $29{,}65 \lt 29{,}7$ : $L_1$ est refusée.
+- $29{,}7 \le 29{,}90 \le 30{,}3$ : $L_2$ est acceptée.
+- $30{,}31 \gt 30{,}3$ : $L_3$ est refusée.
+:::
+
+::: resultat
+Seule la tige $L_2$ est acceptée.
+:::
+
+## Question 4 : Écart maximal
+
+::: methode
+L’écart maximal au centre est le rayon $r$ de l’intervalle.
+:::
+
+::: resultat
+L’écart maximal autorisé est $0{,}3$ cm (en plus ou en moins).
+:::
+
+## Question 5 : Effet de l’arrondi
+
+::: methode
+Comparer la décision prise avec la mesure arrondie et avec la mesure exacte.
+:::
+
+::: etape Arrondir $30{,}34$ au dixième
+Le chiffre des centièmes est $4$ : $30{,}34 \approx 30{,}3$.
+:::
+
+::: etape Décision avec l’arrondi
+$30{,}3 \in [29{,}7\,;30{,}3]$ : la tige est **acceptée**.
+:::
+
+::: etape Décision avec la mesure exacte
+$|30{,}34 - 30| = 0{,}34 \gt 0{,}3$ : la tige est **refusée**.
+:::
+
+::: resultat
+Acceptée après arrondi, refusée avec la mesure exacte : arrondir avant de décider peut faire accepter une tige hors tolérance.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $L \in [29{,}7\,;30{,}3]$
+2. $|L - 30| \le 0{,}3$
+3. Seule $L_2$ est acceptée.
+4. $0{,}3$ cm.
+5. Avec l’arrondi : acceptée ; avec la mesure exacte : refusée.
+
+===
+
+=== Découverte - Lire et placer des réels sur une droite graduée
+Id: 5562
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Sur la droite graduée ci-dessous, chaque unité est partagée en $4$ parts égales.
+
+[IMAGE_1]
+
+1. Lire les abscisses des points $A$, $B$, $C$ et $D$ (en écriture décimale).
+2. Placer le point $E$ d’abscisse $-\dfrac{3}{4}$ et le point $F$ d’abscisse $2{,}5$.
+3. Placer approximativement le point $G$ d’abscisse $\sqrt{2}$, en justifiant entre quelles graduations il se trouve.
+4. Quels points, parmi $A$, $B$, $C$, $D$, $E$, $F$ et $G$, ont une abscisse dans l’intervalle $[-1\,;1]$ ?
+5. Calculer la distance entre les points $A$ et $D$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Lire les abscisses de $A$, $B$, $C$ et $D$
+
+::: methode
+Une petite graduation vaut $\dfrac{1}{4} = 0{,}25$ : on compte les petites graduations à partir de l’entier le plus proche.
+:::
+
+::: etape Compter les graduations
+- $A$ est $2$ petites graduations à gauche de $-1$ : $-1 - 2 \times 0{,}25 = -1{,}5$.
+- $B$ est $1$ petite graduation à gauche de $0$ : $-0{,}25$.
+- $C$ est $3$ petites graduations à droite de $0$ : $3 \times 0{,}25 = 0{,}75$.
+- $D$ est $3$ petites graduations à droite de $1$ : $1 + 0{,}75 = 1{,}75$.
+:::
+
+::: resultat
+$A(-1{,}5)$, $B(-0{,}25)$, $C(0{,}75)$ et $D(1{,}75)$.
+:::
+
+::: attention
+À gauche de $0$, on compte vers les négatifs : $B$ a pour abscisse $-0{,}25$ et non $0{,}25$.
+:::
+
+## Question 2 : Placer $E$ et $F$
+
+::: methode
+Écrire chaque abscisse en nombre de quarts d’unité.
+:::
+
+::: etape Le point $E$
+$-\dfrac{3}{4} = -0{,}75$ : on compte $3$ petites graduations à gauche de $0$.
+:::
+
+::: etape Le point $F$
+$2{,}5 = 2 + \dfrac{2}{4}$ : on compte $2$ petites graduations à droite de $2$ (c’est le milieu entre $2$ et $3$).
+:::
+
+::: resultat
+$E$ et $F$ sont placés en vert sur la figure complétée (question 4).
+:::
+
+## Question 3 : Placer $G$ d’abscisse $\sqrt{2}$
+
+::: methode
+Encadrer $\sqrt{2}$ entre deux graduations en comparant les carrés (nombres positifs).
+:::
+
+::: etape Comparer les carrés
+- $1{,}25^2 = 1{,}5625 \lt 2$
+- $1{,}5^2 = 2{,}25 \gt 2$
+
+Donc $1{,}25 \lt \sqrt{2} \lt 1{,}5$.
+:::
+
+::: resultat
+$G$ se trouve entre les graduations $1{,}25$ et $1{,}5$, un peu avant le milieu ($\sqrt{2} \approx 1{,}41$).
+:::
+
+::: retenir
+Tout réel, même irrationnel comme $\sqrt{2}$, est l’abscisse d’un unique point de la droite graduée.
+:::
+
+## Question 4 : Points d’abscisse dans $[-1\,;1]$
+
+::: methode
+$x \in [-1\,;1] \iff -1 \le x \le 1$ : on garde les points situés entre les graduations $-1$ et $1$, bornes comprises. La figure complétée (points $E$, $F$, $G$ en vert, intervalle en vert) permet de lire la réponse.
+:::
+
+[IMAGE_2]
+
+::: etape Lire sur la figure complétée
+- $A(-1{,}5)$ : $-1{,}5 \lt -1$, en dehors.
+- $E(-0{,}75)$, $B(-0{,}25)$ et $C(0{,}75)$ : entre $-1$ et $1$.
+- $G(\sqrt{2})$, $D(1{,}75)$ et $F(2{,}5)$ : supérieurs à $1$, en dehors.
+:::
+
+::: resultat
+Les points $B$, $C$ et $E$ ont une abscisse dans $[-1\,;1]$.
+:::
+
+## Question 5 : Distance entre $A$ et $D$
+
+::: methode
+La distance entre deux points d’abscisses $a$ et $b$ est $|b - a|$.
+:::
+
+::: etape Calculer
+$$
+\begin{aligned}
+AD &= |1{,}75 - (-1{,}5)| \\
+&= |1{,}75 + 1{,}5| \\
+&= 3{,}25
+\end{aligned}
+$$
+:::
+
+::: resultat
+$AD = 3{,}25$ unités, soit $13$ petites graduations.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $A(-1{,}5)$, $B(-0{,}25)$, $C(0{,}75)$, $D(1{,}75)$.
+2. $E$ : $3$ petites graduations à gauche de $0$ ; $F$ : au milieu entre $2$ et $3$.
+3. $1{,}25^2 \lt 2 \lt 1{,}5^2$, donc $G$ est entre $1{,}25$ et $1{,}5$.
+4. $B$, $C$ et $E$.
+5. $AD = 3{,}25$.
+
+===
+
+=== Problème - Arrondir avec le bon nombre de chiffres significatifs
+Id: 5563
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Un terrain rectangulaire a été mesuré au décimètre près : longueur $L = 23{,}4$ m et largeur $\ell = 15{,}7$ m.
+
+[IMAGE_1]
+
+::: rappel Chiffres significatifs
+Les chiffres significatifs d’un nombre sont tous ses chiffres à partir du premier chiffre non nul en partant de la gauche. Par exemple, $0{,}0520$ a trois chiffres significatifs : $5$, $2$ et $0$.
+:::
+
+1. Combien de chiffres significatifs ont les nombres $23{,}4$ ; $0{,}052$ ; $4{,}80$ ?
+2. La calculatrice affiche pour l’aire : $L \times \ell = 367{,}38$. Arrondir cette aire à trois chiffres significatifs.
+3. Les mesures sont justes à $0{,}05$ m près : $23{,}35 \le L \le 23{,}45$ et $15{,}65 \le \ell \le 15{,}75$. Encadrer l’aire $A$ du terrain. Pourquoi est-il trompeur d’annoncer une aire de « $367{,}38$ m² » ?
+4. Calculer la longueur $d$ de la diagonale et l’arrondir avec un nombre de chiffres significatifs adapté aux données.
+5. On veut clôturer le terrain avec un grillage vendu par mètre entier. Quelle longueur de grillage faut-il acheter ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Compter les chiffres significatifs
+
+::: methode
+On part du premier chiffre non nul et on compte tous les chiffres jusqu’au dernier écrit, zéros compris.
+:::
+
+::: etape Chaque nombre
+- $23{,}4$ : chiffres $2$, $3$, $4$, soit $3$ chiffres significatifs.
+- $0{,}052$ : les zéros de tête ne comptent pas ; chiffres $5$ et $2$, soit $2$ chiffres significatifs.
+- $4{,}80$ : chiffres $4$, $8$ et $0$, soit $3$ chiffres significatifs.
+:::
+
+::: resultat
+$23{,}4$ : $3$ ; $0{,}052$ : $2$ ; $4{,}80$ : $3$.
+:::
+
+::: attention
+Le zéro final de $4{,}80$ compte : écrire $4{,}80$ plutôt que $4{,}8$ signifie que la mesure est connue au centième près.
+:::
+
+## Question 2 : Arrondir l’aire à trois chiffres significatifs
+
+::: methode
+On garde les trois premiers chiffres significatifs et on regarde le chiffre suivant pour arrondir.
+:::
+
+::: etape Arrondir
+$367{,}38$ : les trois premiers chiffres sont $3$, $6$, $7$ ; le chiffre suivant est $3$ (moins de $5$) : on garde $367$.
+:::
+
+::: resultat
+$$A \approx 367 \text{ m}^2$$
+:::
+
+## Question 3 : Encadrer l’aire
+
+::: methode
+Toutes les longueurs sont positives : on peut multiplier membre à membre les deux encadrements.
+:::
+
+::: etape Bornes de l’aire
+$$
+\begin{aligned}
+23{,}35 \times 15{,}65 &= 365{,}4275 \\
+23{,}45 \times 15{,}75 &= 369{,}3375
+\end{aligned}
+$$
+Donc $365{,}4275 \le A \le 369{,}3375$, et en arrondissant vers l’extérieur : $365{,}4 \le A \le 369{,}4$.
+:::
+
+::: etape Interpréter
+L’aire réelle peut valoir aussi bien $365{,}5$ que $369$ m² : même le chiffre des unités n’est pas sûr. Les décimales $0{,}38$ de « $367{,}38$ » n’ont donc aucun sens.
+:::
+
+::: resultat
+$365{,}4 \le A \le 369{,}4$ (en m²) : annoncer $367{,}38$ m² ferait croire à une précision que les mesures n’ont pas. On annonce $A \approx 367$ m².
+:::
+
+::: retenir
+Un résultat calculé à partir de mesures se donne avec autant de chiffres significatifs que la donnée la moins précise (ici $3$).
+:::
+
+## Question 4 : Longueur de la diagonale
+
+::: methode
+Le triangle formé par deux côtés et la diagonale est rectangle : théorème de Pythagore.
+:::
+
+::: etape Calculer $d^2$
+$$
+\begin{aligned}
+d^2 &= 23{,}4^2 + 15{,}7^2 \\
+&= 547{,}56 + 246{,}49 \\
+&= 794{,}05
+\end{aligned}
+$$
+:::
+
+::: etape Calculer et arrondir $d$
+$d = \sqrt{794{,}05} \approx 28{,}179$. Les données ont $3$ chiffres significatifs : on arrondit à $3$ chiffres significatifs, le chiffre suivant étant $7$.
+:::
+
+::: resultat
+$$d \approx 28{,}2 \text{ m}$$
+:::
+
+## Question 5 : Longueur de grillage
+
+::: methode
+Calculer le périmètre, puis arrondir dans le sens imposé par la situation.
+:::
+
+::: etape Périmètre
+$$
+\begin{aligned}
+P &= 2 \times (23{,}4 + 15{,}7) \\
+&= 2 \times 39{,}1 \\
+&= 78{,}2 \text{ m}
+\end{aligned}
+$$
+:::
+
+::: etape Arrondir selon la situation
+Avec $78$ m de grillage, il manquerait $0{,}2$ m : il faut arrondir **par excès** au mètre, même si la décimale est inférieure à $5$.
+:::
+
+::: resultat
+Il faut acheter $79$ m de grillage.
+:::
+
+::: attention
+L’arrondi « au plus proche » donnerait $78$ m, ce qui ne suffit pas : dans un problème, c’est la situation qui décide du sens de l’arrondi.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $23{,}4$ : $3$ chiffres significatifs ; $0{,}052$ : $2$ ; $4{,}80$ : $3$.
+2. $A \approx 367$ m².
+3. $365{,}4 \le A \le 369{,}4$ : le chiffre des unités est déjà incertain, les décimales de $367{,}38$ n’ont pas de sens.
+4. $d = \sqrt{794{,}05} \approx 28{,}2$ m.
+5. $P = 78{,}2$ m : il faut acheter $79$ m de grillage.
+
+===

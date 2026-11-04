@@ -1,0 +1,43 @@
+Titre: Résumé : Combinatoire et dénombrement
+
+<!-- optitab:1 -->
+::: objectifs
+Retenir l’essentiel : $k$-uplets, arrangements, permutations, combinaisons et triangle de Pascal. Programme de Terminale.
+:::
+
+## I. Quel modèle ?
+
+[IMAGE_1]
+
+| Modèle | Ordre | Répétitions | Nombre |
+|---|---|---|---|
+| $k$-uplets | oui | oui | $n^k$ |
+| Arrangements | oui | non | $\frac{n!}{(n - k)!}$ |
+| Permutations ($k = n$) | oui | non | $n!$ |
+| Combinaisons | non | non | $\binom{n}{k}$ |
+
+## II. Coefficients binomiaux
+
+::: formule
+$$\binom{n}{k} = \frac{n!}{k!\,(n - k)!} = \frac{n(n - 1)\cdots(n - k + 1)}{k!}$$
+:::
+
+- $\binom{n}{0} = \binom{n}{n} = 1$ ; $\binom{n}{1} = n$ ; $\binom{n}{2} = \frac{n(n - 1)}{2}$.
+- Symétrie : $\binom{n}{k} = \binom{n}{n - k}$.
+- Relation de Pascal : $\binom{n}{k} = \binom{n - 1}{k - 1} + \binom{n - 1}{k}$ pour $1 \le k \le n - 1$.
+- Nombre de parties d’un ensemble à $n$ éléments : $\sum_{k=0}^{n} \binom{n}{k} = 2^n$.
+
+[IMAGE_2]
+
+## III. Les pièges à éviter
+
+::: attention Les 4 erreurs classiques
+1. Utiliser des combinaisons quand l’ordre compte (podium, code, classement).
+2. Additionner au lieu de multiplier les choix successifs (on n’additionne que des cas disjoints).
+3. Oublier que $0! = 1$, ou diviser par $2$ pour des équipes qui sont distinguées (équipe A, équipe B).
+4. « Au moins un » : compter tous les cas puis retirer ceux où il n’y en a aucun.
+:::
+
+::: remarque Réflexe
+Je me pose deux questions : l’ordre compte-t-il ? les répétitions sont-elles possibles ?
+:::

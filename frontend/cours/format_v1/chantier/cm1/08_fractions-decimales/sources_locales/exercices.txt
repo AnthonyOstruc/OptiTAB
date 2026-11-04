@@ -1,0 +1,152 @@
+[
+  {
+    "titre": "Des dixièmes à lire",
+    "enonce": "Écrire $\\frac7{10}$ puis $\\frac{23}{10}$ en toutes lettres, puis écrire $\\frac{23}{10}$ avec un entier et une fraction.",
+    "corrige": "« $\\res{\\text{sept dixièmes}}$ » et « $\\res{\\text{vingt-trois dixièmes}}$ ». Comme $\\frac{20}{10}=2$ : $\\res{\\frac{23}{10}=2+\\frac3{10}}$.",
+    "methode": "Chercher les unités entières dans les dixièmes.",
+    "controle": "assert Rational(23,10)==2+Rational(3,10)",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 1
+  },
+  {
+    "titre": "Sur la demi-droite",
+    "enonce": "L’unité est partagée en dixièmes. Lire les nombres repérés par A et B, en écriture fractionnaire.",
+    "corrige": "A est 4 pas après 2 : $\\res{A\\left(\\frac{24}{10}\\right)}$. B est 8 pas après 2 : $\\res{B\\left(\\frac{28}{10}\\right)}$.",
+    "methode": "Compter les pas de un dixième.",
+    "controle": "assert 2+Rational(4,10)==Rational(24,10) and 2+Rational(8,10)==Rational(28,10)",
+    "figure": "dec-2",
+    "conseil": "",
+    "difficulte": 1
+  },
+  {
+    "titre": "Unités, dixièmes, centièmes",
+    "enonce": "Compléter : $1=\\frac{\\square}{100}$ ; $\\frac3{10}=\\frac{\\square}{100}$ ; $\\frac{50}{100}=\\frac{\\square}{10}$.",
+    "corrige": "Une unité vaut $\\res{100}$ centièmes. Trois dixièmes font $\\res{30}$ centièmes. Cinquante centièmes font $\\res5$ dixièmes.",
+    "methode": "Un dixième vaut dix centièmes.",
+    "controle": "assert Rational(100,100)==1 and Rational(3,10)==Rational(30,100) and Rational(50,100)==Rational(5,10)",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 1
+  },
+  {
+    "titre": "Vers la virgule",
+    "enonce": "Écrire avec une virgule : $35+\\frac7{10}+\\frac8{100}$, puis $\\frac4{10}+\\frac2{100}$.",
+    "corrige": "La partie entière est 35, puis 7 dixièmes et 8 centièmes : $\\res{35{,}78}$. Le second nombre n’a pas d’unité entière : $\\res{0{,}42}$.",
+    "methode": "Placer chaque chiffre à son rang.",
+    "controle": "assert 35+Rational(7,10)+Rational(8,100)==Rational(\"35.78\") and Rational(4,10)+Rational(2,100)==Rational(\".42\")",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 1
+  },
+  {
+    "titre": "Depuis la virgule",
+    "enonce": "Décomposer $6{,}09$ puis $14{,}3$ avec des fractions décimales.",
+    "corrige": "$6{,}09=\\res{6+\\frac9{100}}$ : le zéro des dixièmes ne s’écrit pas dans la somme. $14{,}3=\\res{14+\\frac3{10}}$.",
+    "methode": "Lire chaque chiffre avec son rang.",
+    "controle": "assert Rational(\"6.09\")==6+Rational(9,100) and Rational(\"14.3\")==14+Rational(3,10)",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 1
+  },
+  {
+    "titre": "Fractions en virgule",
+    "enonce": "Écrire avec une virgule : $\\frac{45}{10}$ ; $\\frac{307}{100}$ ; $\\frac8{100}$.",
+    "corrige": "$\\frac{45}{10}=4+\\frac5{10}=\\res{4{,}5}$. $\\frac{307}{100}=3+\\frac7{100}=\\res{3{,}07}$. $\\frac8{100}=\\res{0{,}08}$.",
+    "methode": "Extraire d’abord la partie entière.",
+    "controle": "assert Rational(45,10)==Rational(\"4.5\") and Rational(307,100)==Rational(\"3.07\") and Rational(8,100)==Rational(\".08\")",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 2
+  },
+  {
+    "titre": "Le rang de chaque chiffre",
+    "enonce": "Dans $58{,}36$, donner le chiffre des dixièmes, le chiffre des centièmes, puis la valeur du chiffre 3.",
+    "corrige": "Le chiffre des dixièmes est $\\res3$, celui des centièmes $\\res6$. Le 3 est au rang des dixièmes : il vaut $\\res{\\frac3{10}}$.",
+    "methode": "Repérer la virgule puis compter les rangs.",
+    "controle": "assert Rational(\"58.36\")==58+Rational(3,10)+Rational(6,100)",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 2
+  },
+  {
+    "titre": "Deux écritures, un nombre",
+    "enonce": "Recopier et compléter le tableau : fraction décimale et écriture à virgule de « quatre unités et sept centièmes » et de « douze dixièmes ».",
+    "corrige": "Quatre unités et sept centièmes : $\\res{\\frac{407}{100}=4{,}07}$. Douze dixièmes : $\\res{\\frac{12}{10}=1{,}2}$ , soit une unité et deux dixièmes.",
+    "methode": "Passer par la décomposition en rangs.",
+    "controle": "assert Rational(407,100)==Rational(\"4.07\") and Rational(12,10)==Rational(\"1.2\")",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 2
+  },
+  {
+    "titre": "Avec la monnaie",
+    "enonce": "Un centime est un centième d’euro. Écrire en euros, avec une virgule : 3 euros et 45 centimes ; 275 centimes ; 8 centimes.",
+    "corrige": "$3+\\frac{45}{100}=\\res{3{,}45}$ euro. $275$ centimes font $\\frac{275}{100}=\\res{2{,}75}$ euros. Huit centimes : $\\res{0{,}08}$ euro.",
+    "methode": "Compter les centièmes d’euro.",
+    "controle": "assert 3+Rational(45,100)==Rational(\"3.45\") and Rational(275,100)==Rational(\"2.75\") and Rational(8,100)==Rational(\".08\")",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 2
+  },
+  {
+    "titre": "Des zéros qui comptent",
+    "enonce": "Écrire avec une virgule : cinq centièmes, puis cinq dixièmes. Ces deux nombres sont-ils égaux ?",
+    "corrige": "Cinq centièmes : $\\res{0{,}05}$. Cinq dixièmes : $\\res{0{,}5}$. Ils sont $\\res{\\text{différents}}$ : $\\frac5{10}=\\frac{50}{100}$, dix fois plus que $\\frac5{100}$.",
+    "methode": "Associer chaque chiffre à son rang.",
+    "controle": "assert Rational(5,100)!=Rational(5,10) and Rational(5,10)==Rational(50,100)",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 2
+  },
+  {
+    "titre": "La grille aux cent cases",
+    "enonce": "Une grille compte 100 cases égales ; 37 sont colorées. Écrire la fraction de la grille colorée, puis ce nombre avec une virgule. Et si on colore 3 cases de plus ?",
+    "corrige": "$\\res{\\frac{37}{100}=0{,}37}$ de la grille. Avec 3 cases de plus : $\\frac{40}{100}=\\res{0{,}40}$, c’est-à-dire $0{,}4$ : quatre dixièmes, soit quatre colonnes entières.",
+    "methode": "Lire les centièmes directement sur la grille.",
+    "controle": "assert Rational(37,100)==Rational(\".37\") and Rational(40,100)==Rational(\".4\")",
+    "figure": "dec-13",
+    "conseil": "",
+    "difficulte": 3
+  },
+  {
+    "titre": "Le compteur en dixièmes",
+    "enonce": "Un compteur affiche $45{,}8$ et augmente d’un dixième à chaque pas. Quels nombres affiche-t-il après un pas, puis après deux pas ?",
+    "corrige": "$45{,}8$ puis $\\res{45{,}9}$ puis $\\res{46}$ : neuf dixièmes plus un dixième font dix dixièmes, une unité entière. Le compteur ne passe pas par « $45{,}10$ ».",
+    "methode": "Compter de dixième en dixième avec les échanges.",
+    "controle": "assert Rational(\"45.8\")+Rational(1,10)==Rational(\"45.9\") and Rational(\"45.9\")+Rational(1,10)==46",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 3
+  },
+  {
+    "titre": "Les sauts mesurés",
+    "enonce": "Trois sauts mesurent $3{,}45$ m, $3{,}5$ m et $3{,}09$ m. Décomposer chaque mesure avec des fractions décimales, puis donner le chiffre des dixièmes de chacune.",
+    "corrige": "$3{,}45=3+\\frac4{10}+\\frac5{100}$ ; $3{,}5=3+\\frac5{10}$ ; $3{,}09=3+\\frac9{100}$. Les chiffres des dixièmes sont $\\res4$, $\\res5$ et $\\res0$.",
+    "methode": "Décomposer rang par rang, sans oublier les zéros.",
+    "controle": "assert Rational(\"3.45\")==3+Rational(4,10)+Rational(5,100) and Rational(\"3.5\")==3+Rational(5,10) and Rational(\"3.09\")==3+Rational(9,100)",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 3
+  },
+  {
+    "titre": "Fractions bien connues",
+    "enonce": "Écrire $\\frac12$, $\\frac14$ et $\\frac34$ avec une virgule, en passant par des centièmes.",
+    "corrige": "$\\frac12=\\frac{50}{100}=\\res{0{,}5}$ ; $\\frac14=\\frac{25}{100}=\\res{0{,}25}$ ; $\\frac34=\\frac{75}{100}=\\res{0{,}75}$. Ces écritures servent très souvent en calcul mental.",
+    "methode": "Convertir en centièmes avant de coder.",
+    "controle": "assert Rational(1,2)==Rational(\".5\") and Rational(1,4)==Rational(\".25\") and Rational(3,4)==Rational(\".75\")",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 3
+  },
+  {
+    "titre": "Vrai ou faux ?",
+    "enonce": "Milo affirme : « $0{,}7$, c’est 7 centièmes. » Sara affirme : « $2{,}30$ et $2{,}3$ sont égaux. » Qui a raison ? Justifier avec des fractions décimales.",
+    "corrige": "Milo se trompe : $0{,}7=\\frac7{10}=\\frac{70}{100}$, soit $\\res{70}$ centièmes. Sara a raison : $2{,}30=2+\\frac{30}{100}=2+\\frac3{10}=\\res{2{,}3}$. Un zéro final à droite ne change pas le nombre ; un zéro entre deux chiffres, si.",
+    "methode": "Traduire chaque écriture en fractions décimales.",
+    "controle": "assert Rational(\".7\")==Rational(70,100) and Rational(\"2.30\")==Rational(\"2.3\")",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 3
+  }
+]

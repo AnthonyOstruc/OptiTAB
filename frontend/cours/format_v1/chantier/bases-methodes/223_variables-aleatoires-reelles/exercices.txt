@@ -1,0 +1,3034 @@
+=== Découverte - Variables Aléatoires - Introduction
+Id: 1835
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Découverte des variables aléatoires à travers des situations simples.
+
+1. On lance un dé équilibré à 6 faces. On note $\displaystyle X$ le numéro obtenu.
+
+   a) Quelles sont les valeurs possibles de $\displaystyle X$ ?
+
+   b) Quelle est la probabilité que $\displaystyle X = 3$ ?
+
+   c) Quelle est la probabilité que $\displaystyle X \leq 4$ ?
+
+   d) Quelle est la probabilité que $\displaystyle X \geq 5$ ?
+2. On lance deux dés équilibrés et on note $\displaystyle Y$ la somme des deux résultats.
+
+   a) Quelles sont les valeurs possibles de $\displaystyle Y$ ?
+
+   b) Combien y a-t-il de façons d'obtenir $\displaystyle Y = 7$ ?
+
+   c) Calculer $\displaystyle P(Y = 7)$
+
+   d) Calculer $\displaystyle P(Y \leq 5)$
+3. On lance une pièce équilibrée 3 fois. On note $\displaystyle Z$ le nombre de piles obtenues.
+
+   a) Quelles sont les valeurs possibles de $\displaystyle Z$ ?
+
+   b) Calculer $\displaystyle P(Z = 0)$, $\displaystyle P(Z = 1)$, $\displaystyle P(Z = 2)$ et $\displaystyle P(Z = 3)$
+
+   c) Vérifier que la somme de toutes les probabilités vaut 1
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Lancer d'un dé
+
+::: point a) Valeurs possibles
+- $X$ peut prendre les valeurs : $\{1, 2, 3, 4, 5, 6\}$
+:::
+
+::: point b) Probabilité $\displaystyle P(X = 3)$
+- Le dé est équilibré, donc chaque face a la même probabilité
+- $\displaystyle P(X = 3) = \frac{1}{6}$
+:::
+
+::: point c) Probabilité $\displaystyle P(X \leq 4)$
+$$
+\begin{aligned}
+P(X \leq 4) &= P(X \\
+&= 1) + P(X \\
+&= 2) + P(X \\
+&= 3) + P(X \\
+&= 4)
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+P(X \leq 4) &= \frac{1}{6} + \frac{1}{6} + \frac{1}{6} + \frac{1}{6} \\
+&= \frac{4}{6} \\
+&= \frac{2}{3}
+\end{aligned}
+$$
+:::
+
+::: point d) Probabilité $\displaystyle P(X \geq 5)$
+$$
+\begin{aligned}
+P(X \geq 5) &= P(X \\
+&= 5) + P(X \\
+&= 6) \\
+&= \frac{1}{6} + \frac{1}{6} \\
+&= \frac{2}{6} \\
+&= \frac{1}{3}
+\end{aligned}
+$$
+:::
+
+## Question 2 : Somme de deux dés
+
+::: point a) Valeurs possibles
+- La somme minimale est $\displaystyle 1 + 1 = 2$
+- La somme maximale est $\displaystyle 6 + 6 = 12$
+- $Y$ peut prendre les valeurs : $\{2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12\}$
+:::
+
+::: point b) Nombre de façons d'obtenir $\displaystyle Y = 7$
+- Les couples possibles : $\displaystyle (1,6), (2,5), (3,4), (4,3), (5,2), (6,1)$
+- Il y a $6$ façons d'obtenir une somme de $7$
+:::
+
+::: point c) Probabilité $\displaystyle P(Y = 7)$
+- Il y a $36$ issues possibles au total (6 × 6)
+- $\displaystyle P(Y = 7) = \frac{6}{36} = \frac{1}{6}$
+:::
+
+::: point d) Probabilité $\displaystyle P(Y \leq 5)$
+- $\displaystyle P(Y = 2) = \frac{1}{36}$ (un seul cas : (1,1))
+- $\displaystyle P(Y = 3) = \frac{2}{36}$ (deux cas : (1,2), (2,1))
+- $\displaystyle P(Y = 4) = \frac{3}{36}$ (trois cas : (1,3), (2,2), (3,1))
+- $\displaystyle P(Y = 5) = \frac{4}{36}$ (quatre cas : (1,4), (2,3), (3,2), (4,1))
+
+$$
+\begin{aligned}
+P(Y \leq 5) &= \frac{1 + 2 + 3 + 4}{36} \\
+&= \frac{10}{36} \\
+&= \frac{5}{18}
+\end{aligned}
+$$
+:::
+
+## Question 3 : Nombre de piles en 3 lancers
+
+::: point a) Valeurs possibles
+- On peut obtenir $0, 1, 2$ ou $3$ piles
+- $Z$ peut prendre les valeurs : $\{0, 1, 2, 3\}$
+:::
+
+::: point b) Calcul des probabilités
+- Il y a $2^3 = 8$ issues possibles au total
+- $\displaystyle P(Z = 0) = \frac{1}{8}$ (un seul cas : FFF)
+- $\displaystyle P(Z = 1) = \frac{3}{8}$ (trois cas : PFF, FPF, FFP)
+- $\displaystyle P(Z = 2) = \frac{3}{8}$ (trois cas : PPF, PFP, FPP)
+- $\displaystyle P(Z = 3) = \frac{1}{8}$ (un seul cas : PPP)
+- **Loi de probabilité de $\displaystyle Z$ :**
+
+| $\displaystyle z_i$ | $\displaystyle 0$ | $\displaystyle 1$ | $\displaystyle 2$ | $\displaystyle 3$ |
+| $\displaystyle P(Z = z_i)$ | $\displaystyle \frac{1}{8}$ | $\displaystyle \frac{3}{8}$ | $\displaystyle \frac{3}{8}$ | $\displaystyle \frac{1}{8}$ |
+:::
+
+::: point c) Vérification
+$$
+\begin{aligned}
+P(Z &= 0) + P(Z \\
+&= 1) + P(Z \\
+&= 2) + P(Z \\
+&= 3) \\
+&= \frac{1}{8} + \frac{3}{8} + \frac{3}{8} + \frac{1}{8} \\
+&= \frac{8}{8} \\
+&= 1
+\end{aligned}
+$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. a) $\displaystyle \{1, 2, 3, 4, 5, 6\}$
+
+   b) $\displaystyle \frac{1}{6}$
+
+c) $\displaystyle \frac{2}{3}$
+
+d) $\displaystyle \frac{1}{3}$
+2. a) $\displaystyle \{2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12\}$
+
+   b) $\displaystyle 6$ façons
+
+c) $\displaystyle \frac{1}{6}$
+
+d) $\displaystyle \frac{5}{18}$
+3. a) $\displaystyle \{0, 1, 2, 3\}$
+
+   b) $P(Z = 0) = \frac{1}{8}$, $P(Z = 1) = \frac{3}{8}$, $P(Z = 2) = \frac{3}{8}$, $P(Z = 3) = \frac{1}{8}$
+
+c) Vérifié : la somme vaut 1
+
+===
+
+=== DS - Variables Aléatoires - Type 1
+Id: 1839
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Ce devoir surveillé couvre l'ensemble du chapitre sur les variables aléatoires.
+
+$\underline{\textbf{Partie A : Loi de Probabilité et Calculs de Probabilités}}$
+
+On lance deux dés équilibrés et on note $\displaystyle X$ la somme des deux résultats.
+
+**Question A1 :** Déterminer toutes les valeurs possibles de $\displaystyle X$.
+
+**Question A2 :** Calculer $\displaystyle P(X = 7)$.
+
+**Question A3 :** Calculer $\displaystyle P(X \leq 5)$.
+
+**Question A4 :** Calculer $\displaystyle P(X \geq 10)$.
+
+**Question A5 :** Déterminer la loi de probabilité complète de $X$ sous forme de tableau.
+
+$\underline{\textbf{Partie B : Espérance et Variance}}$
+
+On considère une variable aléatoire $Y$ dont la loi de probabilité est donnée par :
+
+| $\displaystyle y_i$ | $\displaystyle -2$ | $\displaystyle 0$ | $\displaystyle 3$ | $\displaystyle 5$ |
+| $\displaystyle P(Y = y_i)$ | $\displaystyle 0,2$ | $\displaystyle 0,3$ | $\displaystyle 0,4$ | $\displaystyle 0,1$ |
+
+**Question B1 :** Vérifier que cette loi est bien une loi de probabilité.
+
+**Question B2 :** Calculer l'espérance $\displaystyle E(Y)$.
+
+**Question B3 :** Calculer $\displaystyle E(Y^2)$.
+
+**Question B4 :** En déduire :
+
+a) La variance $\displaystyle V(Y)$
+
+b) L'écart type $\displaystyle \sigma(Y)$
+
+$\underline{\textbf{Partie C : Application - Jeu}}$
+
+Un jeu consiste à lancer un dé équilibré. Les règles sont les suivantes :
+
+• Si on obtient 6 : on gagne 8€
+
+• Si on obtient un nombre pair (2 ou 4) : on gagne 2€
+
+• Sinon : on perd 3€
+
+**Question C1 :** Déterminer la loi de probabilité du gain brut $\displaystyle G$.
+
+**Question C2 :** Calculer l'espérance du gain brut $\displaystyle E(G)$.
+
+**Question C3 :** Si on doit payer une mise de $m$ euros pour jouer, déterminer la mise $m$ pour que le jeu soit équitable.
+
+Étapes:
+<!-- optitab:1 -->
+**Partie A : Loi de Probabilité et Calculs de Probabilités**
+
+**Question A1 :** Valeurs possibles
+
+::: methode
+Identifier les sommes minimales et maximales
+:::
+
+::: point Calcul
+- Somme minimale : $\displaystyle 1 + 1 = 2$
+- Somme maximale : $\displaystyle 6 + 6 = 12$
+- $\displaystyle X \in \{2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12\}$
+
+**Question A2 :** Probabilité $P(X = 7)$
+:::
+
+::: methode
+Dénombrer les couples donnant une somme de 7
+:::
+
+::: point Calcul
+- Couples possibles : $\displaystyle (1,6), (2,5), (3,4), (4,3), (5,2), (6,1)$
+- Il y a $6$ façons d'obtenir une somme de 7
+- Total d'issues : $\displaystyle 36$
+- $\displaystyle P(X = 7) = \frac{6}{36} = \frac{1}{6}$
+
+**Question A3 :** Probabilité $P(X \leq 5)$
+:::
+
+::: methode
+Somme des probabilités pour $\displaystyle X = 2, 3, 4, 5$
+:::
+
+::: point Calcul
+- $\displaystyle P(X = 2) = \frac{1}{36}$ (un seul cas : (1,1))
+- $\displaystyle P(X = 3) = \frac{2}{36}$ (deux cas : (1,2), (2,1))
+- $\displaystyle P(X = 4) = \frac{3}{36}$ (trois cas : (1,3), (2,2), (3,1))
+- $\displaystyle P(X = 5) = \frac{4}{36}$ (quatre cas : (1,4), (2,3), (3,2), (4,1))
+
+$$
+\begin{aligned}
+P(X \leq 5) &= \frac{1 + 2 + 3 + 4}{36} \\
+&= \frac{10}{36} \\
+&= \frac{5}{18}
+\end{aligned}
+$$
+
+**Question A4 :** Probabilité $P(X \geq 10)$
+:::
+
+::: methode
+Somme des probabilités pour $\displaystyle X = 10, 11, 12$
+:::
+
+::: point Calcul
+- $\displaystyle P(X = 10) = \frac{3}{36}$ (trois cas : (4,6), (5,5), (6,4))
+- $\displaystyle P(X = 11) = \frac{2}{36}$ (deux cas : (5,6), (6,5))
+- $\displaystyle P(X = 12) = \frac{1}{36}$ (un seul cas : (6,6))
+
+$$
+\begin{aligned}
+P(X \geq 10) &= \frac{3 + 2 + 1}{36} \\
+&= \frac{6}{36} \\
+&= \frac{1}{6}
+\end{aligned}
+$$
+
+**Question A5 :** Loi de probabilité complète
+:::
+
+::: methode
+Calculer toutes les probabilités
+:::
+
+::: point Loi de probabilité
+| $\displaystyle x_i$ | $\displaystyle 2$ | $\displaystyle 3$ | $\displaystyle 4$ | $\displaystyle 5$ | $\displaystyle 6$ | $\displaystyle 7$ | $\displaystyle 8$ | $\displaystyle 9$ | $\displaystyle 10$ | $\displaystyle 11$ | $\displaystyle 12$ |
+| $\displaystyle P(X = x_i)$ | $\displaystyle \frac{1}{36}$ | $\displaystyle \frac{2}{36}$ | $\displaystyle \frac{3}{36}$ | $\displaystyle \frac{4}{36}$ | $\displaystyle \frac{5}{36}$ | $\displaystyle \frac{6}{36}$ | $\displaystyle \frac{5}{36}$ | $\displaystyle \frac{4}{36}$ | $\displaystyle \frac{3}{36}$ | $\displaystyle \frac{2}{36}$ | $\displaystyle \frac{1}{36}$ |
+
+- Vérification : $\displaystyle 1 + 2 + 3 + 4 + 5 + 6 + 5 + 4 + 3 + 2 + 1 = 36$
+
+**Partie B : Espérance et Variance**
+
+**Question B1 :** Vérification de la loi
+:::
+
+::: methode
+Vérifier que la somme des probabilités vaut 1
+:::
+
+::: point Calcul
+- $\displaystyle 0,2 + 0,3 + 0,4 + 0,1 = 1$
+- Toutes les probabilités sont entre 0 et 1
+- C'est bien une loi de probabilité
+
+**Question B2 :** Espérance
+:::
+
+::: methode
+Utiliser la définition de l'espérance
+:::
+
+::: point Calcul
+- $\displaystyle E(Y) = (-2) \times 0,2 + 0 \times 0,3 + 3 \times 0,4 + 5 \times 0,1$
+- $\displaystyle E(Y) = -0,4 + 0 + 1,2 + 0,5 = 1,3$
+
+**Question B3 :** Espérance de $Y^2$
+:::
+
+::: methode
+Calculer $E(Y^2)$ pour utiliser la formule de la variance
+:::
+
+::: point Calcul
+- $\displaystyle E(Y^2) = (-2)^2 \times 0,2 + 0^2 \times 0,3 + 3^2 \times 0,4 + 5^2 \times 0,1$
+- $\displaystyle E(Y^2) = 4 \times 0,2 + 0 + 9 \times 0,4 + 25 \times 0,1$
+- $\displaystyle E(Y^2) = 0,8 + 0 + 3,6 + 2,5 = 6,9$
+
+**Question B4 :** Variance et écart type
+:::
+
+::: point a) Variance
+$$
+\begin{aligned}
+V(Y) &= E(Y^2) - [E(Y)]^2 \\
+&= 6,9 - (1,3)^2 \\
+&= 6,9 - 1,69 \\
+&= 5,21
+\end{aligned}
+$$
+:::
+
+::: point b) Écart type
+- $\displaystyle \sigma(Y) = \sqrt{V(Y)} = \sqrt{5,21} \approx 2,28$
+
+**Partie C : Application - Jeu**
+
+**Question C1 :** Loi de probabilité du gain brut
+:::
+
+::: methode
+Identifier les gains selon les résultats du dé
+:::
+
+::: point Loi de probabilité
+- $\displaystyle P(G = 8) = \frac{1}{6}$ (un seul cas : résultat 6)
+- $\displaystyle P(G = 2) = \frac{2}{6} = \frac{1}{3}$ (deux cas : résultats 2 et 4)
+- $\displaystyle P(G = -3) = \frac{3}{6} = \frac{1}{2}$ (trois cas : résultats 1, 3 et 5)
+- **Loi de probabilité de $\displaystyle G$ :**
+
+| $\displaystyle g_i$ | $\displaystyle -3$ | $\displaystyle 2$ | $\displaystyle 8$ |
+| $\displaystyle P(G = g_i)$ | $\displaystyle \frac{1}{2}$ | $\displaystyle \frac{1}{3}$ | $\displaystyle \frac{1}{6}$ |
+
+**Question C2 :** Espérance du gain brut
+:::
+
+::: methode
+Calculer l'espérance à partir de la loi
+:::
+
+::: point Calcul
+- $\displaystyle E(G) = (-3) \times \frac{1}{2} + 2 \times \frac{1}{3} + 8 \times \frac{1}{6}$
+- $\displaystyle E(G) = -\frac{3}{2} + \frac{2}{3} + \frac{8}{6} = -\frac{9}{6} + \frac{4}{6} + \frac{8}{6} = \frac{3}{6} = \frac{1}{2} = 0,5$ €
+
+**Question C3 :** Mise pour un jeu équitable
+:::
+
+::: methode
+Le jeu est équitable si $\displaystyle E(\text{gain net}) = 0$
+:::
+
+::: point Calcul
+- Gain net : $\displaystyle X = G - m$
+- $\displaystyle E(X) = E(G - m) = E(G) - m = 0,5 - m$
+- On cherche donc la valeur de $m$ telle que : $E(X) = 0$
+- $0,5 - m = 0$ ⟺ $m = 0,5$ €
+- **Conclusion :** Il faut payer une mise de $0,5$ € pour que le jeu soit équitable
+:::
+
+Solution:
+<!-- optitab:1 -->
+**Partie A :**
+
+A1. $\displaystyle X \in \{2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12\}$
+
+A2. $\displaystyle P(X = 7) = \frac{1}{6}$
+
+A3. $\displaystyle P(X \leq 5) = \frac{5}{18}$
+
+A4. $\displaystyle P(X \geq 10) = \frac{1}{6}$
+
+A5. Loi complète (voir étapes)
+
+**Partie B :**
+
+B1. Vérifié : somme = 1
+
+B2. $\displaystyle E(Y) = 1,3$
+
+B3. $\displaystyle E(Y^2) = 6,9$
+
+B4. a) $\displaystyle V(Y) = 5,21$
+
+b) $\displaystyle \sigma(Y) \approx 2,28$
+
+**Partie C :**
+
+C1.
+
+$\displaystyle g_i$
+
+$\displaystyle -3$
+
+$\displaystyle 2$
+
+$\displaystyle 8$
+
+$\displaystyle P(G = g_i)$
+
+$\displaystyle \frac{1}{2}$
+
+$\displaystyle \frac{1}{3}$
+
+$\displaystyle \frac{1}{6}$
+
+C2. $\displaystyle E(G) = 0,5$ €
+
+C3. $\displaystyle m = 0,5$ €
+
+===
+
+=== DS - Variables Aléatoires - Type 2
+Id: 1840
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Ce devoir surveillé couvre l'ensemble du chapitre sur les variables aléatoires.
+
+$\underline{\textbf{Partie A : Variable Aléatoire et Loi de Probabilité}}$
+
+On lance une pièce équilibrée 4 fois de suite. On note $X$ le nombre de piles obtenues.
+
+**Question A1 :** Quelles sont les valeurs possibles de $\displaystyle X$ ?
+
+**Question A2 :**
+
+a) Calculer $\displaystyle P(X = 0)$
+
+b) Calculer $\displaystyle P(X = 1)$
+
+c) Calculer $\displaystyle P(X = 2)$
+
+d) Calculer $\displaystyle P(X = 3)$
+
+e) Calculer $\displaystyle P(X = 4)$
+
+**Question A3 :** Vérifier que la somme de toutes les probabilités vaut 1.
+
+**Question A4 :** Calculer $\displaystyle P(X \geq 2)$.
+
+$\underline{\textbf{Partie B : Espérance, Variance et Écart Type}}$
+
+On considère une variable aléatoire $\displaystyle Y$ dont la loi de probabilité est :
+
+| $\displaystyle y_i$ | $\displaystyle -1$ | $\displaystyle 2$ | $\displaystyle 5$ |
+| $\displaystyle P(Y = y_i)$ | $\displaystyle \frac{1}{3}$ | $\displaystyle \frac{1}{2}$ | $\displaystyle \frac{1}{6}$ |
+
+**Question B1 :** Calculer l'espérance $\displaystyle E(Y)$.
+
+**Question B2 :**
+
+a) Calculer $\displaystyle E(Y^2)$
+
+b) En déduire $\displaystyle V(Y)$ en utilisant la formule $\displaystyle V(Y) = E(Y^2) - [E(Y)]^2$
+
+**Question B3 :** Calculer l'écart type $\displaystyle \sigma(Y)$.
+
+**Question B4 :** On définit $\displaystyle Z = 2Y + 3$.
+
+a) Calculer $\displaystyle E(Z)$
+
+b) Calculer $\displaystyle V(Z)$
+
+$\underline{\textbf{Partie C : Problème Concret}}$
+
+Un jeu de hasard propose de lancer deux dés. Les règles sont :
+
+• Si la somme est 7 ou 11 : gain de 10€
+
+• Si la somme est 2, 3 ou 12 : perte de 5€
+
+• Sinon : gain de 1€
+
+**Question C1 :** Déterminer la loi de probabilité du gain brut $\displaystyle G$.
+
+**Question C2 :** Calculer l'espérance du gain brut $\displaystyle E(G)$.
+
+**Question C3 :** Le jeu est-il favorable au joueur ou à l'organisateur ?
+
+**Question C5 :** Quelle mise $m$ faut-il payer pour que le jeu soit équitable ?
+
+Étapes:
+<!-- optitab:1 -->
+**Partie A : Variable Aléatoire et Loi de Probabilité**
+
+**Question A1 :** Valeurs possibles
+
+::: methode
+Identifier le nombre minimal et maximal de piles
+:::
+
+::: point Calcul
+- On peut obtenir entre 0 et 4 piles
+- $\displaystyle X \in \{0, 1, 2, 3, 4\}$
+
+**Question A2 :** Calcul des probabilités
+:::
+
+::: methode
+Dénombrer les issues favorables
+:::
+
+::: point Calcul
+- Total d'issues : $\displaystyle 2^4 = 16$
+- $\displaystyle P(X = 0) = \frac{1}{16}$ (un seul cas : FFFF)
+- $P(X = 1) = \frac{4}{16} = \frac{1}{4}$ (quatre cas : PFFF, FPFF, FFPF, FFFP)
+- $P(X = 2) = \frac{6}{16} = \frac{3}{8}$ (six cas : PPFF, PFPF, PFFP, FPPF, FPFP, FFPP)
+- $P(X = 3) = \frac{4}{16} = \frac{1}{4}$ (quatre cas : PPPF, PPFP, PFPP, FPPP)
+- $\displaystyle P(X = 4) = \frac{1}{16}$ (un seul cas : PPPP)
+
+**Question A3 :** Vérification
+:::
+
+::: methode
+Somme des probabilités
+:::
+
+::: point Calcul
+$$
+\begin{aligned}
+\frac{1}{16} + \frac{4}{16} + \frac{6}{16} + \frac{4}{16} + \frac{1}{16} &= \frac{16}{16} \\
+&= 1
+\end{aligned}
+$$
+
+**Question A4 :** Probabilité $P(X \geq 2)$
+:::
+
+::: methode
+Somme des probabilités pour $\displaystyle X \geq 2$
+:::
+
+::: point Calcul
+- $\displaystyle P(X \geq 2) = P(X = 2) + P(X = 3) + P(X = 4)$
+
+$$
+\begin{aligned}
+P(X \geq 2) &= \frac{6}{16} + \frac{4}{16} + \frac{1}{16} \\
+&= \frac{11}{16}
+\end{aligned}
+$$
+
+**Partie B : Espérance, Variance et Écart Type**
+
+**Question B1 :** Espérance
+:::
+
+::: methode
+Utiliser la définition
+:::
+
+::: point Calcul
+- $\displaystyle E(Y) = (-1) \times \frac{1}{3} + 2 \times \frac{1}{2} + 5 \times \frac{1}{6}$
+
+$$
+\begin{aligned}
+E(Y) &= -\frac{1}{3} + 1 + \frac{5}{6} \\
+&= -\frac{2}{6} + \frac{6}{6} + \frac{5}{6} \\
+&= \frac{9}{6} \\
+&= \frac{3}{2} \\
+&= 1,5
+\end{aligned}
+$$
+
+**Question B2 :** Variance
+:::
+
+::: point a) Calculer $\displaystyle E(Y^2)$
+- $\displaystyle E(Y^2) = (-1)^2 \times \frac{1}{3} + 2^2 \times \frac{1}{2} + 5^2 \times \frac{1}{6}$
+
+$$
+\begin{aligned}
+E(Y^2) &= 1 \times \frac{1}{3} + 4 \times \frac{1}{2} + 25 \times \frac{1}{6} \\
+&= \frac{1}{3} + 2 + \frac{25}{6}
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+E(Y^2) &= \frac{2}{6} + \frac{12}{6} + \frac{25}{6} \\
+&= \frac{39}{6} \\
+&= \frac{13}{2} \\
+&= 6,5
+\end{aligned}
+$$
+:::
+
+::: point b) En déduire $\displaystyle V(Y)$
+$$
+\begin{aligned}
+V(Y) &= E(Y^2) - [E(Y)]^2 \\
+&= 6,5 - (1,5)^2 \\
+&= 6,5 - 2,25 \\
+&= 4,25
+\end{aligned}
+$$
+
+**Question B3 :** Écart type
+:::
+
+::: methode
+Racine carrée de la variance
+:::
+
+::: point Calcul
+$$
+\begin{aligned}
+\sigma(Y) &= \sqrt{V(Y)} \\
+&= \sqrt{4,25} \\
+&= \frac{\sqrt{17}}{2} \approx 2,06
+\end{aligned}
+$$
+
+**Question B4 :** Transformation linéaire
+:::
+
+::: point a) Espérance de $\displaystyle Z$
+$$
+\begin{aligned}
+E(Z) &= E(2Y + 3) \\
+&= 2E(Y) + 3 \\
+&= 2 \times 1,5 + 3 \\
+&= 3 + 3 \\
+&= 6
+\end{aligned}
+$$
+:::
+
+::: point b) Variance de $\displaystyle Z$
+$$
+\begin{aligned}
+V(Z) &= V(2Y + 3) \\
+&= 2^2 \times V(Y) \\
+&= 4 \times 4,25 \\
+&= 17
+\end{aligned}
+$$
+
+**Partie C : Problème Concret**
+
+**Question C1 :** Loi de probabilité du gain brut
+:::
+
+::: methode
+Calculer les probabilités pour chaque cas
+:::
+
+::: point Calcul
+- Total d'issues : $\displaystyle 36$
+- $\displaystyle P(G = 10) = P(\text{somme} = 7) + P(\text{somme} = 11)$
+- $P(\text{somme} = 7) = \frac{6}{36}$ et $P(\text{somme} = 11) = \frac{2}{36}$
+
+$$
+\begin{aligned}
+P(G &= 10) \\
+&= \frac{6 + 2}{36} \\
+&= \frac{8}{36} \\
+&= \frac{2}{9}
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+P(G &= -5) \\
+&= P(\text{somme} \\
+&= 2) + P(\text{somme} \\
+&= 3) + P(\text{somme} \\
+&= 12)
+\end{aligned}
+$$
+
+- $P(\text{somme} = 2) = \frac{1}{36}$, $P(\text{somme} = 3) = \frac{2}{36}$, $P(\text{somme} = 12) = \frac{1}{36}$
+
+$$
+\begin{aligned}
+P(G &= -5) \\
+&= \frac{1 + 2 + 1}{36} \\
+&= \frac{4}{36} \\
+&= \frac{1}{9}
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+P(G &= 1) \\
+&= 1 - \frac{2}{9} - \frac{1}{9} \\
+&= \frac{6}{9} \\
+&= \frac{2}{3}
+\end{aligned}
+$$
+
+- **Loi de probabilité de $\displaystyle G$ :**
+
+| $\displaystyle g_i$ | $\displaystyle -5$ | $\displaystyle 1$ | $\displaystyle 10$ |
+| $\displaystyle P(G = g_i)$ | $\displaystyle \frac{1}{9}$ | $\displaystyle \frac{2}{3}$ | $\displaystyle \frac{2}{9}$ |
+
+**Question C2 :** Espérance du gain brut
+:::
+
+::: methode
+Calculer à partir de la loi
+:::
+
+::: point Calcul
+- $\displaystyle E(G) = (-5) \times \frac{1}{9} + 1 \times \frac{2}{3} + 10 \times \frac{2}{9}$
+- $\displaystyle E(G) = -\frac{5}{9} + \frac{6}{9} + \frac{20}{9} = \frac{21}{9} = \frac{7}{3} \approx 2,33$ €
+
+**Question C3 :** Favorable au joueur ou à l'organisateur ?
+:::
+
+::: methode
+L'espérance est positive
+:::
+
+::: resultat
+- $\displaystyle E(G) = \frac{7}{3} > 0$
+- Le jeu est favorable au joueur (sans mise)
+
+**Question C4 :** Mise pour un jeu équitable
+:::
+
+::: methode
+Le jeu est équitable si $\displaystyle E(\text{gain net}) = 0$
+:::
+
+::: point Calcul
+- Gain net : $\displaystyle X = G - m$
+- $\displaystyle E(X) = E(G - m) = E(G) - m = \frac{7}{3} - m$
+- On cherche donc la valeur de $m$ telle que : $E(X) = 0$
+- $\frac{7}{3} - m = 0$ ⟺ $m = \frac{7}{3} \approx 2,33$ €
+- **Conclusion :** Il faut payer une mise de $\frac{7}{3}$ € (environ 2,33 €) pour que le jeu soit équitable
+:::
+
+Solution:
+<!-- optitab:1 -->
+**Partie A : Variable Aléatoire et Loi de Probabilité**
+
+**A1.** $\displaystyle X \in \{0, 1, 2, 3, 4\}$
+
+**A2.**
+
+a) $\displaystyle P(X = 0) = \frac{1}{16}$
+
+b) $\displaystyle P(X = 1) = \frac{1}{4}$
+
+c) $\displaystyle P(X = 2) = \frac{3}{8}$
+
+d) $\displaystyle P(X = 3) = \frac{1}{4}$
+
+e) $\displaystyle P(X = 4) = \frac{1}{16}$
+
+**A3.** Vérifié : somme = 1
+
+**A4.** $\displaystyle P(X \geq 2) = \frac{11}{16}$
+
+---
+
+**Partie B : Espérance, Variance et Écart Type**
+
+**B1.** $\displaystyle E(Y) = 1,5$
+
+**B2.**
+
+a) $\displaystyle E(Y^2) = 6,5$
+
+b) $\displaystyle V(Y) = 4,25$
+
+**B3.** $\displaystyle \sigma(Y) \approx 2,06$
+
+**B4.**
+
+a) $\displaystyle E(Z) = 6$
+
+b) $\displaystyle V(Z) = 17$
+
+---
+
+**Partie C : Problème Concret**
+
+**C1.**
+
+$\displaystyle g_i$
+
+$\displaystyle -5$
+
+$\displaystyle 1$
+
+$\displaystyle 10$
+
+$\displaystyle P(G = g_i)$
+
+$\displaystyle \frac{1}{9}$
+
+$\displaystyle \frac{2}{3}$
+
+$\displaystyle \frac{2}{9}$
+
+**C2.** $\displaystyle E(G) = \frac{7}{3} \approx 2,33$ €
+
+**C3.** Favorable au joueur
+
+**C4.** $\displaystyle m = \frac{7}{3} \approx 2,33$ €
+
+===
+
+=== DS - Variables Aléatoires - Type 3
+Id: 1843
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Ce devoir surveillé couvre l'ensemble du chapitre sur les variables aléatoires.
+
+$\underline{\textbf{Partie A : Techniques Fondamentales}}$
+
+**Question A1 :** On lance deux dés équilibrés. On note $X$ le maximum des deux résultats.
+
+a) Quelles sont les valeurs possibles de $\displaystyle X$ ?
+
+b) Calculer $\displaystyle P(X = 1)$, $\displaystyle P(X = 3)$ et $\displaystyle P(X = 6)$
+
+c) Déterminer la loi de probabilité complète de $\displaystyle X$
+
+**Question A2 :** Soit $\displaystyle Y$ une variable aléatoire de loi :
+
+| $\displaystyle y_i$ | $\displaystyle -2$ | $\displaystyle 0$ | $\displaystyle 1$ | $\displaystyle 4$ |
+| $\displaystyle P(Y = y_i)$ | $\displaystyle 0,1$ | $\displaystyle 0,4$ | $\displaystyle 0,3$ | $\displaystyle 0,2$ |
+
+a) Vérifier que c'est une loi de probabilité
+
+b) Calculer $\displaystyle P(Y \leq 0)$
+
+c) Calculer $\displaystyle P(Y > 1)$
+
+$\underline{\textbf{Partie B : Espérance et Variance}}$
+
+On considère la variable aléatoire $\displaystyle Y$ de la partie A.
+
+**Question B1 :** Calculer l'espérance $\displaystyle E(Y)$.
+
+**Question B2 :** Calculer $\displaystyle E(Y^2)$.
+
+**Question B3 :** En déduire :
+
+a) La variance $\displaystyle V(Y)$
+
+b) L'écart type $\displaystyle \sigma(Y)$
+
+**Question B4 :** On définit $\displaystyle Z = -Y + 2$.
+
+a) Calculer $\displaystyle E(Z)$
+
+b) Calculer $\displaystyle V(Z)$
+
+$\underline{\textbf{Partie C : Application Concrète}}$
+
+Un jeu consiste à lancer un dé équilibré. Les règles sont :
+
+• Si on obtient 6 : gain de 8€
+
+• Si on obtient 4 ou 5 : gain de 2€
+
+• Sinon : perte de 1€
+
+**Question C1 :** Déterminer la loi de probabilité du gain brut $\displaystyle G$.
+
+**Question C2 :** Calculer l'espérance du gain brut $\displaystyle E(G)$.
+
+**Question C3 :** Calculer la variance $\displaystyle V(G)$.
+
+**Question C4 :** Calculer l'écart type $\displaystyle \sigma(G)$.
+
+**Question C5 :** Quelle mise $m$ faut-il payer pour que le jeu soit équitable ?
+
+Étapes:
+<!-- optitab:1 -->
+**Partie A : Techniques Fondamentales**
+
+**Question A1 :** Maximum de deux dés
+
+::: point a) Valeurs possibles
+- Le maximum peut aller de 1 à 6
+- $\displaystyle X \in \{1, 2, 3, 4, 5, 6\}$
+:::
+
+::: point b) Calculs de probabilités
+- Total d'issues : $\displaystyle 36$
+- $\displaystyle P(X = 1) = \frac{1}{36}$ (un seul cas : (1,1))
+- $\displaystyle P(X = 3) = \frac{5}{36}$ (5 cas : (1,3), (2,3), (3,1), (3,2), (3,3))
+- $P(X = 6) = \frac{11}{36}$ (11 cas : tous les couples contenant au moins un 6)
+:::
+
+::: point c) Loi de probabilité complète
+- $\displaystyle P(X = 1) = \frac{1}{36}$
+- $\displaystyle P(X = 2) = \frac{3}{36}$ (3 cas : (1,2), (2,1), (2,2))
+- $\displaystyle P(X = 3) = \frac{5}{36}$
+- $P(X = 4) = \frac{7}{36}$ (7 cas : tous les couples contenant au moins un 4, sauf ceux déjà comptés)
+- $P(X = 5) = \frac{9}{36}$ (9 cas : tous les couples contenant au moins un 5, sauf ceux déjà comptés)
+- $\displaystyle P(X = 6) = \frac{11}{36}$
+- Vérification : $\displaystyle 1 + 3 + 5 + 7 + 9 + 11 = 36$
+- **Loi de probabilité de $\displaystyle X$ :**
+
+| $\displaystyle x_i$ | $\displaystyle 1$ | $\displaystyle 2$ | $\displaystyle 3$ | $\displaystyle 4$ | $\displaystyle 5$ | $\displaystyle 6$ |
+| $\displaystyle P(X = x_i)$ | $\displaystyle \frac{1}{36}$ | $\displaystyle \frac{3}{36}$ | $\displaystyle \frac{5}{36}$ | $\displaystyle \frac{7}{36}$ | $\displaystyle \frac{9}{36}$ | $\displaystyle \frac{11}{36}$ |
+
+**Question A2 :** Calculs de probabilités
+:::
+
+::: point a) Vérification
+- **Loi de probabilité de $\displaystyle Y$ :**
+
+| $\displaystyle y_i$ | $\displaystyle -2$ | $\displaystyle 0$ | $\displaystyle 1$ | $\displaystyle 4$ |
+| $\displaystyle P(Y = y_i)$ | $\displaystyle 0,1$ | $\displaystyle 0,4$ | $\displaystyle 0,3$ | $\displaystyle 0,2$ |
+
+- Vérification : $\displaystyle 0,1 + 0,4 + 0,3 + 0,2 = 1$
+- Toutes les probabilités sont entre 0 et 1
+:::
+
+::: point b) Probabilité $\displaystyle P(Y \leq 0)$
+- $\displaystyle P(Y \leq 0) = P(Y = -2) + P(Y = 0) = 0,1 + 0,4 = 0,5$
+:::
+
+::: point c) Probabilité $\displaystyle P(Y > 1)$
+- $\displaystyle P(Y > 1) = P(Y = 4) = 0,2$
+
+**Partie B : Espérance et Variance**
+
+**Question B1 :** Espérance
+:::
+
+::: methode
+Utiliser la définition
+:::
+
+::: point Calcul
+- $\displaystyle E(Y) = (-2) \times 0,1 + 0 \times 0,4 + 1 \times 0,3 + 4 \times 0,2$
+- $\displaystyle E(Y) = -0,2 + 0 + 0,3 + 0,8 = 0,9$
+
+**Question B2 :** Espérance de $Y^2$
+:::
+
+::: methode
+Calculer pour utiliser la formule de la variance
+:::
+
+::: point Calcul
+- $\displaystyle E(Y^2) = (-2)^2 \times 0,1 + 0^2 \times 0,4 + 1^2 \times 0,3 + 4^2 \times 0,2$
+- $\displaystyle E(Y^2) = 4 \times 0,1 + 0 + 1 \times 0,3 + 16 \times 0,2$
+- $\displaystyle E(Y^2) = 0,4 + 0 + 0,3 + 3,2 = 3,9$
+
+**Question B3 :** Variance et écart type
+:::
+
+::: point a) Variance
+$$
+\begin{aligned}
+V(Y) &= E(Y^2) - [E(Y)]^2 \\
+&= 3,9 - (0,9)^2 \\
+&= 3,9 - 0,81 \\
+&= 3,09
+\end{aligned}
+$$
+:::
+
+::: point b) Écart type
+- $\displaystyle \sigma(Y) = \sqrt{V(Y)} = \sqrt{3,09} \approx 1,76$
+
+**Question B4 :** Transformation linéaire
+:::
+
+::: point a) Espérance de $\displaystyle Z$
+- $\displaystyle E(Z) = E(-Y + 2) = -E(Y) + 2 = -0,9 + 2 = 1,1$
+:::
+
+::: point b) Variance de $\displaystyle Z$
+$$
+\begin{aligned}
+V(Z) &= V(-Y + 2) \\
+&= (-1)^2 \times V(Y) \\
+&= 1 \times 3,09 \\
+&= 3,09
+\end{aligned}
+$$
+
+**Partie C : Application Concrète**
+
+**Question C1 :** Loi de probabilité du gain brut
+:::
+
+::: methode
+Identifier les gains selon les résultats
+:::
+
+::: point Loi de probabilité
+- $\displaystyle P(G = 8) = \frac{1}{6}$ (un seul cas : résultat 6)
+- $\displaystyle P(G = 2) = \frac{2}{6} = \frac{1}{3}$ (deux cas : résultats 4 et 5)
+- $\displaystyle P(G = -1) = \frac{3}{6} = \frac{1}{2}$ (trois cas : résultats 1, 2 et 3)
+- **Loi de probabilité de $\displaystyle G$ :**
+
+| $\displaystyle g_i$ | $\displaystyle -1$ | $\displaystyle 2$ | $\displaystyle 8$ |
+| $\displaystyle P(G = g_i)$ | $\displaystyle \frac{1}{2}$ | $\displaystyle \frac{1}{3}$ | $\displaystyle \frac{1}{6}$ |
+
+**Question C2 :** Espérance du gain brut
+:::
+
+::: methode
+Calculer à partir de la loi
+:::
+
+::: point Calcul
+- $\displaystyle E(G) = (-1) \times \frac{1}{2} + 2 \times \frac{1}{3} + 8 \times \frac{1}{6}$
+- $\displaystyle E(G) = -\frac{1}{2} + \frac{2}{3} + \frac{8}{6} = -\frac{3}{6} + \frac{4}{6} + \frac{8}{6} = \frac{9}{6} = \frac{3}{2} = 1,5$ €
+
+**Question C3 :** Variance
+:::
+
+::: methode
+Utiliser la formule pratique
+:::
+
+::: point Calcul
+- $\displaystyle E(G^2) = (-1)^2 \times \frac{1}{2} + 2^2 \times \frac{1}{3} + 8^2 \times \frac{1}{6}$
+
+$$
+\begin{aligned}
+E(G^2) &= 1 \times \frac{1}{2} + 4 \times \frac{1}{3} + 64 \times \frac{1}{6} \\
+&= \frac{1}{2} + \frac{4}{3} + \frac{64}{6}
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+E(G^2) &= \frac{3}{6} + \frac{8}{6} + \frac{64}{6} \\
+&= \frac{75}{6} \\
+&= 12,5
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+V(G) &= E(G^2) - [E(G)]^2 \\
+&= 12,5 - (1,5)^2 \\
+&= 12,5 - 2,25 \\
+&= 10,25
+\end{aligned}
+$$
+
+**Question C4 :** Écart type
+:::
+
+::: methode
+Racine carrée de la variance
+:::
+
+::: point Calcul
+- $\displaystyle \sigma(G) = \sqrt{10,25} = 3,2$ €
+
+**Question C4 :** Mise pour un jeu équitable
+:::
+
+::: methode
+Le jeu est équitable si $\displaystyle E(\text{gain net}) = 0$
+:::
+
+::: point Calcul
+- Gain net : $\displaystyle X = G - m$
+- $\displaystyle E(X) = E(G - m) = E(G) - m = 1,5 - m$
+- On cherche donc la valeur de $m$ telle que : $E(X) = 0$
+- $1,5 - m = 0$ ⟺ $m = 1,5$ €
+- **Conclusion :** Il faut payer une mise de $1,5$ € pour que le jeu soit équitable
+:::
+
+Solution:
+<!-- optitab:1 -->
+**Partie A : Étude de Variable Aléatoire**
+
+**A1.**
+
+a) $\displaystyle X \in \{1, 2, 3, 4, 5, 6\}$
+
+b) $P(X = 1) = \frac{1}{36}$, $P(X = 3) = \frac{5}{36}$, $P(X = 6) = \frac{11}{36}$
+
+c) Loi complète (voir étapes)
+
+**A2.**
+
+a) Vérifié : somme = 1
+
+b) $\displaystyle P(Y \leq 0) = 0,5$
+
+c) $\displaystyle P(Y > 1) = 0,2$
+
+---
+
+**Partie B : Espérance et Variance**
+
+**B1.** $\displaystyle E(Y) = 0,9$
+
+**B2.**
+
+a) $\displaystyle E(Y^2) = 3,9$
+
+b) $\displaystyle V(Y) = 3,09$
+
+**B3.** $\displaystyle \sigma(Y) \approx 1,76$
+
+**B4.**
+
+a) $\displaystyle E(Z) = 1,1$
+
+b) $\displaystyle V(Z) = 3,09$
+
+---
+
+**Partie C : Application Concrète**
+
+**C1.**
+
+$\displaystyle g_i$
+
+$\displaystyle -1$
+
+$\displaystyle 2$
+
+$\displaystyle 8$
+
+$\displaystyle P(G = g_i)$
+
+$\displaystyle \frac{1}{2}$
+
+$\displaystyle \frac{1}{3}$
+
+$\displaystyle \frac{1}{6}$
+
+**C2.** $\displaystyle E(G) = 1,5$ €
+
+**C3.** $\displaystyle V(G) = 10,25$
+
+**C4.** $\displaystyle \sigma(G) = 3,2$ €
+
+**C5.** $\displaystyle m = 1,5$ €
+
+===
+
+=== Entraînement - Variables Aléatoires - Espérance
+Id: 1837
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Calcul et interprétation de l'espérance d'une variable aléatoire.
+
+1. On lance un dé équilibré. On définit $\displaystyle X$ par :
+
+   • Si le résultat est 6 : $\displaystyle X = 10$
+
+   • Si le résultat est pair (2 ou 4) : $\displaystyle X = 3$
+
+   • Sinon : $\displaystyle X = -2$
+
+   a) Déterminer la loi de probabilité de $\displaystyle X$
+
+   b) Calculer l'espérance $\displaystyle E(X)$
+
+   c) Interpréter le résultat
+2. Une urne contient 4 boules blanches et 6 boules noires. On tire 2 boules simultanément. On note $Y$ le nombre de boules blanches obtenues.
+
+   a) Déterminer la loi de probabilité de $\displaystyle Y$
+
+   b) Calculer l'espérance $\displaystyle E(Y)$
+3. Un jeu consiste à lancer deux dés. Le gain (en euros) est égal au produit des deux résultats.
+
+   a) Quelle est l'espérance du gain ?
+
+   b) Si on doit payer une mise de 10€ pour jouer, le jeu est-il équitable ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Espérance d'une variable aléatoire
+
+::: point a) Loi de probabilité
+- $\displaystyle P(X = 10) = \frac{1}{6}$ (un seul cas : résultat 6)
+- $\displaystyle P(X = 3) = \frac{2}{6} = \frac{1}{3}$ (deux cas : résultats 2 et 4)
+- $\displaystyle P(X = -2) = \frac{3}{6} = \frac{1}{2}$ (trois cas : résultats 1, 3 et 5)
+- **Loi de probabilité de $\displaystyle X$ :**
+
+| $\displaystyle x_i$ | $\displaystyle -2$ | $\displaystyle 3$ | $\displaystyle 10$ |
+| $\displaystyle P(X = x_i)$ | $\displaystyle \frac{1}{2}$ | $\displaystyle \frac{1}{3}$ | $\displaystyle \frac{1}{6}$ |
+:::
+
+::: point b) Calcul de l'espérance
+- $\displaystyle E(X) = (-2) \times \frac{1}{2} + 3 \times \frac{1}{3} + 10 \times \frac{1}{6}$
+
+$$
+\begin{aligned}
+E(X) &= -1 + 1 + \frac{10}{6} \\
+&= \frac{10}{6} \\
+&= \frac{5}{3} \approx 1,67
+\end{aligned}
+$$
+:::
+
+::: point c) Interprétation
+- En moyenne, sur un grand nombre de lancers, la valeur de $X$ sera proche de $\frac{5}{3}$
+- L'espérance est positive, donc le jeu est favorable au joueur
+:::
+
+## Question 2 : Nombre de boules blanches
+
+::: point a) Loi de probabilité
+- Total de boules : $\displaystyle 4 + 6 = 10$
+- Nombre de façons de tirer 2 boules : $\binom{10}{2} = 45$
+- $\displaystyle P(Y = 0) = \frac{\binom{6}{2}}{\binom{10}{2}} = \frac{15}{45} = \frac{1}{3}$ (2 boules noires)
+- $\displaystyle P(Y = 1) = \frac{\binom{4}{1} \times \binom{6}{1}}{\binom{10}{2}} = \frac{4 \times 6}{45} = \frac{24}{45} = \frac{8}{15}$ (1 blanche et 1 noire)
+- $\displaystyle P(Y = 2) = \frac{\binom{4}{2}}{\binom{10}{2}} = \frac{6}{45} = \frac{2}{15}$ (2 boules blanches)
+
+Vérification :
+
+$$
+\begin{aligned}
+\frac{1}{3} + \frac{8}{15} + \frac{2}{15} &= \frac{5}{15} + \frac{8}{15} + \frac{2}{15} \\
+&= \frac{15}{15} \\
+&= 1
+\end{aligned}
+$$
+
+- **Loi de probabilité de $\displaystyle Y$ :**
+
+| $\displaystyle y_i$ | $\displaystyle 0$ | $\displaystyle 1$ | $\displaystyle 2$ |
+| $\displaystyle P(Y = y_i)$ | $\displaystyle \frac{1}{3}$ | $\displaystyle \frac{8}{15}$ | $\displaystyle \frac{2}{15}$ |
+:::
+
+::: point b) Calcul de l'espérance
+- $\displaystyle E(Y) = 0 \times \frac{1}{3} + 1 \times \frac{8}{15} + 2 \times \frac{2}{15}$
+
+$$
+\begin{aligned}
+E(Y) &= 0 + \frac{8}{15} + \frac{4}{15} \\
+&= \frac{12}{15} \\
+&= \frac{4}{5} \\
+&= 0,8
+\end{aligned}
+$$
+
+- Interprétation : En moyenne, on obtient 0,8 boule blanche par tirage
+:::
+
+## Question 3 : Produit de deux dés
+
+::: point a) Espérance du gain
+- On note $G$ le gain (produit des deux dés)
+- Il y a $\displaystyle 36$ issues possibles
+- Calcul de $\displaystyle E(G)$ :
+- $\displaystyle E(G) = \frac{1}{36} \sum_{i=1}^{6} \sum_{j=1}^{6} (i \times j)$
+- $\displaystyle E(G) = \frac{1}{36} \left( \sum_{i=1}^{6} i \right) \times \left( \sum_{j=1}^{6} j \right)$
+- $\displaystyle E(G) = \frac{1}{36} \times 21 \times 21 = \frac{441}{36} = \frac{49}{4} = 12,25$ €
+:::
+
+::: point b) Jeu équitable ?
+- Gain net : $\displaystyle X = G - 10$
+- $\displaystyle E(X) = E(G - 10) = E(G) - 10 = 12,25 - 10 = 2,25$ €
+- L'espérance du gain net est positive, donc le jeu n'est pas équitable : il est favorable au joueur
+- Pour rendre le jeu équitable, il faudrait une mise de $12,25$ €
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. a)
+
+   $\displaystyle x_i$
+
+$\displaystyle -2$
+
+$\displaystyle 3$
+
+$\displaystyle 10$
+
+$\displaystyle P(X = x_i)$
+
+$\displaystyle \frac{1}{2}$
+
+$\displaystyle \frac{1}{3}$
+
+$\displaystyle \frac{1}{6}$
+
+b) $\displaystyle E(X) = \frac{5}{3} \approx 1,67$
+
+c) Le jeu est favorable au joueur
+2. a)
+
+   $\displaystyle y_i$
+
+$\displaystyle 0$
+
+$\displaystyle 1$
+
+$\displaystyle 2$
+
+$\displaystyle P(Y = y_i)$
+
+$\displaystyle \frac{1}{3}$
+
+$\displaystyle \frac{8}{15}$
+
+$\displaystyle \frac{2}{15}$
+
+b) $\displaystyle E(Y) = 0,8$
+3. a) $\displaystyle E(G) = 12,25$ €
+
+   b) Non, le jeu est favorable au joueur (gain net moyen = 2,25 €)
+
+===
+
+=== Entraînement - Variables Aléatoires - Loi de Probabilité
+Id: 1836
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Exercices d'entraînement sur la détermination et l'utilisation des lois de probabilité.
+
+1. On lance un dé équilibré. On définit la variable aléatoire $\displaystyle X$ par :
+
+   • Si le résultat est pair : $\displaystyle X = 2$
+
+   • Si le résultat est impair : $\displaystyle X = -1$
+
+   a) Déterminer la loi de probabilité de $\displaystyle X$
+
+   b) Calculer $\displaystyle P(X \geq 0)$
+
+   c) Calculer $\displaystyle P(X < 1)$
+2. Une urne contient 3 boules rouges, 2 boules bleues et 1 boule verte. On tire une boule au hasard. On note $Y$ le gain (en euros) :
+
+   • Rouge : gain de 5€
+
+   • Bleue : gain de 2€
+
+   • Verte : gain de 10€
+
+   a) Déterminer la loi de probabilité de $\displaystyle Y$
+
+   b) Vérifier que la somme des probabilités vaut 1
+
+   c) Calculer $\displaystyle P(Y \geq 5)$
+3. On lance deux dés équilibrés. On note $Z$ la différence (en valeur absolue) entre les deux résultats.
+
+   a) Quelles sont les valeurs possibles de $\displaystyle Z$ ?
+
+   b) Déterminer la loi de probabilité de $\displaystyle Z$
+
+   c) Calculer $\displaystyle P(Z \leq 2)$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Variable aléatoire sur un dé
+
+::: point a) Loi de probabilité
+- Valeurs possibles : $\displaystyle X \in \{-1, 2\}$
+- Résultats pairs : $\{2, 4, 6\}$ → $P(X = 2) = \frac{3}{6} = \frac{1}{2}$
+- Résultats impairs : $\{1, 3, 5\}$ → $P(X = -1) = \frac{3}{6} = \frac{1}{2}$
+- **Loi de probabilité de $\displaystyle X$ :**
+
+| $\displaystyle x_i$ | $\displaystyle -1$ | $\displaystyle 2$ |
+| $\displaystyle P(X = x_i)$ | $\displaystyle \frac{1}{2}$ | $\displaystyle \frac{1}{2}$ |
+:::
+
+::: point b) Probabilité $\displaystyle P(X \geq 0)$
+- $\displaystyle P(X \geq 0) = P(X = 2) = \frac{1}{2}$
+:::
+
+::: point c) Probabilité $\displaystyle P(X < 1)$
+- $\displaystyle P(X < 1) = P(X = -1) = \frac{1}{2}$
+:::
+
+## Question 2 : Gain dans un tirage
+
+::: point a) Loi de probabilité
+- Total de boules : $\displaystyle 3 + 2 + 1 = 6$
+- $\displaystyle P(Y = 5) = \frac{3}{6} = \frac{1}{2}$ (3 boules rouges)
+- $\displaystyle P(Y = 2) = \frac{2}{6} = \frac{1}{3}$ (2 boules bleues)
+- $\displaystyle P(Y = 10) = \frac{1}{6}$ (1 boule verte)
+- **Loi de probabilité de $\displaystyle Y$ :**
+
+| $\displaystyle y_i$ | $\displaystyle 2$ | $\displaystyle 5$ | $\displaystyle 10$ |
+| $\displaystyle P(Y = y_i)$ | $\displaystyle \frac{1}{3}$ | $\displaystyle \frac{1}{2}$ | $\displaystyle \frac{1}{6}$ |
+:::
+
+::: point b) Vérification
+$$
+\begin{aligned}
+\frac{1}{3} + \frac{1}{2} + \frac{1}{6} &= \frac{2}{6} + \frac{3}{6} + \frac{1}{6} \\
+&= \frac{6}{6} \\
+&= 1
+\end{aligned}
+$$
+:::
+
+::: point c) Probabilité $\displaystyle P(Y \geq 5)$
+$$
+\begin{aligned}
+P(Y \geq 5) &= P(Y \\
+&= 5) + P(Y \\
+&= 10) \\
+&= \frac{1}{2} + \frac{1}{6} \\
+&= \frac{3}{6} + \frac{1}{6} \\
+&= \frac{4}{6} \\
+&= \frac{2}{3}
+\end{aligned}
+$$
+:::
+
+## Question 3 : Différence absolue entre deux dés
+
+::: point a) Valeurs possibles
+- La différence absolue peut aller de $0$ (même résultat) à $5$ (1 et 6)
+- $\displaystyle Z \in \{0, 1, 2, 3, 4, 5\}$
+:::
+
+::: point b) Loi de probabilité
+- Il y a $36$ issues possibles au total
+- $\displaystyle P(Z = 0) = \frac{6}{36} = \frac{1}{6}$ (6 couples identiques : (1,1), (2,2), ..., (6,6))
+- $P(Z = 1) = \frac{10}{36} = \frac{5}{18}$ (10 couples : (1,2), (2,1), (2,3), (3,2), (3,4), (4,3), (4,5), (5,4), (5,6), (6,5))
+- $\displaystyle P(Z = 2) = \frac{8}{36} = \frac{2}{9}$ (8 couples : (1,3), (3,1), (2,4), (4,2), (3,5), (5,3), (4,6), (6,4))
+- $\displaystyle P(Z = 3) = \frac{6}{36} = \frac{1}{6}$ (6 couples : (1,4), (4,1), (2,5), (5,2), (3,6), (6,3))
+- $\displaystyle P(Z = 4) = \frac{4}{36} = \frac{1}{9}$ (4 couples : (1,5), (5,1), (2,6), (6,2))
+- $\displaystyle P(Z = 5) = \frac{2}{36} = \frac{1}{18}$ (2 couples : (1,6), (6,1))
+- Vérification : $\displaystyle 6 + 10 + 8 + 6 + 4 + 2 = 36$
+- **Loi de probabilité de $\displaystyle Z$ :**
+
+| $\displaystyle z_i$ | $\displaystyle 0$ | $\displaystyle 1$ | $\displaystyle 2$ | $\displaystyle 3$ | $\displaystyle 4$ | $\displaystyle 5$ |
+| $\displaystyle P(Z = z_i)$ | $\displaystyle \frac{1}{6}$ | $\displaystyle \frac{5}{18}$ | $\displaystyle \frac{2}{9}$ | $\displaystyle \frac{1}{6}$ | $\displaystyle \frac{1}{9}$ | $\displaystyle \frac{1}{18}$ |
+:::
+
+::: point c) Probabilité $\displaystyle P(Z \leq 2)$
+- $\displaystyle P(Z \leq 2) = P(Z = 0) + P(Z = 1) + P(Z = 2)$
+
+$$
+\begin{aligned}
+P(Z \leq 2) &= \frac{6}{36} + \frac{10}{36} + \frac{8}{36} \\
+&= \frac{24}{36} \\
+&= \frac{2}{3}
+\end{aligned}
+$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. a)
+
+   $\displaystyle x_i$
+
+$\displaystyle -1$
+
+$\displaystyle 2$
+
+$\displaystyle P(X = x_i)$
+
+$\displaystyle \frac{1}{2}$
+
+$\displaystyle \frac{1}{2}$
+
+b) $\displaystyle \frac{1}{2}$
+
+c) $\displaystyle \frac{1}{2}$
+2. a)
+
+   $\displaystyle y_i$
+
+$\displaystyle 2$
+
+$\displaystyle 5$
+
+$\displaystyle 10$
+
+$\displaystyle P(Y = y_i)$
+
+$\displaystyle \frac{1}{3}$
+
+$\displaystyle \frac{1}{2}$
+
+$\displaystyle \frac{1}{6}$
+
+b) Vérifié : somme = 1
+
+c) $\displaystyle \frac{2}{3}$
+3. a) $\displaystyle \{0, 1, 2, 3, 4, 5\}$
+
+   b)
+
+$\displaystyle z_i$
+
+$\displaystyle 0$
+
+$\displaystyle 1$
+
+$\displaystyle 2$
+
+$\displaystyle 3$
+
+$\displaystyle 4$
+
+$\displaystyle 5$
+
+$\displaystyle P(Z = z_i)$
+
+$\displaystyle \frac{1}{6}$
+
+$\displaystyle \frac{5}{18}$
+
+$\displaystyle \frac{2}{9}$
+
+$\displaystyle \frac{1}{6}$
+
+$\displaystyle \frac{1}{9}$
+
+$\displaystyle \frac{1}{18}$
+
+c) $\displaystyle \frac{2}{3}$
+
+===
+
+=== Problème - Variables Aléatoires - Jeu Équitable
+Id: 1838
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Problème d'optimisation et de jeu équitable.
+
+1. Un jeu consiste à lancer un dé équilibré. Les gains sont les suivants :
+
+   • Si on obtient 6 : gain de $\displaystyle a$ euros
+
+   • Si on obtient un nombre pair (2 ou 4) : gain de 3 euros
+
+   • Sinon : perte de 2 euros
+
+   a) Déterminer la loi de probabilité du gain brut $\displaystyle G$
+
+   b) Calculer $\displaystyle E(G)$ en fonction de $\displaystyle a$
+
+   c) Pour quelle valeur de $\displaystyle a$ le jeu est-il équitable (sans mise) ?
+
+   d) Si on doit payer une mise de 1€, pour quelle valeur de $a$ le jeu est-il équitable ?
+2. Une loterie propose trois types de tickets :
+
+   • Ticket A : coût 2€, probabilité de gagner 10€ = 0,1
+
+   • Ticket B : coût 3€, probabilité de gagner 15€ = 0,15
+
+   • Ticket C : coût 5€, probabilité de gagner 30€ = 0,2
+
+   a) Pour chaque type de ticket, calculer l'espérance du gain net
+
+   b) Quel type de ticket est le plus avantageux pour le joueur ?
+
+   c) Quel type de ticket est le plus avantageux pour l'organisateur ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Jeu avec paramètre
+
+::: point a) Loi de probabilité du gain brut
+- $\displaystyle P(G = a) = \frac{1}{6}$ (un seul cas : résultat 6)
+- $\displaystyle P(G = 3) = \frac{2}{6} = \frac{1}{3}$ (deux cas : résultats 2 et 4)
+- $\displaystyle P(G = -2) = \frac{3}{6} = \frac{1}{2}$ (trois cas : résultats 1, 3 et 5)
+- **Loi de probabilité de $\displaystyle G$ :**
+
+| $\displaystyle g_i$ | $\displaystyle -2$ | $\displaystyle 3$ | $\displaystyle a$ |
+| $\displaystyle P(G = g_i)$ | $\displaystyle \frac{1}{2}$ | $\displaystyle \frac{1}{3}$ | $\displaystyle \frac{1}{6}$ |
+:::
+
+::: point b) Espérance en fonction de $\displaystyle a$
+- $\displaystyle E(G) = (-2) \times \frac{1}{2} + 3 \times \frac{1}{3} + a \times \frac{1}{6}$
+- $\displaystyle E(G) = -1 + 1 + \frac{a}{6} = \frac{a}{6}$
+:::
+
+::: point c) Jeu équitable sans mise
+- **Condition d'équité :** Le jeu est équitable si $E(\text{gain net}) = 0$
+- Ici, il n'y a pas de mise, donc le gain net est égal au gain brut $G$
+- On cherche donc la valeur de $a$ telle que : $E(G) = 0$
+- $\frac{a}{6} = 0$ ⟺ $a = 0$
+- **Conclusion :** Le jeu est équitable pour $a = 0$ €
+:::
+
+::: point d) Jeu équitable avec mise de 1€
+- **Condition d'équité :** Le jeu est équitable si $E(\text{gain net}) = 0$
+- Gain net : $\displaystyle X = G - 1$
+- $\displaystyle E(X) = E(G - 1) = E(G) - 1 = \frac{a}{6} - 1$
+- On cherche donc la valeur de $a$ telle que : $E(X) = 0$
+- $\frac{a}{6} - 1 = 0$ ⟺ $a = 6$
+- **Conclusion :** Le jeu est équitable pour $a = 6$ €
+:::
+
+## Question 2 : Comparaison de tickets de loterie
+
+::: point a) Espérance du gain net pour chaque ticket
+- **Ticket A :**
+- Gain net : $X_A = G_A - 2$ où $G_A \in \{0, 10\}$
+- $P(G_A = 10) = 0,1$ et $P(G_A = 0) = 0,9$
+- $\displaystyle E(G_A) = 0 \times 0,9 + 10 \times 0,1 = 1$ €
+- $\displaystyle E(X_A) = E(G_A) - 2 = 1 - 2 = -1$ €
+- **Ticket B :**
+- Gain net : $X_B = G_B - 3$ où $G_B \in \{0, 15\}$
+- $P(G_B = 15) = 0,15$ et $P(G_B = 0) = 0,85$
+- $\displaystyle E(G_B) = 0 \times 0,85 + 15 \times 0,15 = 2,25$ €
+- $\displaystyle E(X_B) = E(G_B) - 3 = 2,25 - 3 = -0,75$ €
+- **Ticket C :**
+- Gain net : $X_C = G_C - 5$ où $G_C \in \{0, 30\}$
+- $P(G_C = 30) = 0,2$ et $P(G_C = 0) = 0,8$
+- $\displaystyle E(G_C) = 0 \times 0,8 + 30 \times 0,2 = 6$ €
+- $\displaystyle E(X_C) = E(G_C) - 5 = 6 - 5 = 1$ €
+:::
+
+::: point b) Ticket le plus avantageux pour le joueur
+- $E(X_A) = -1$ €, $E(X_B) = -0,75$ €, $E(X_C) = 1$ €
+- Le ticket C est le plus avantageux car son espérance de gain net est positive
+:::
+
+::: point c) Ticket le plus avantageux pour l'organisateur
+- L'organisateur gagne en moyenne l'opposé du gain net du joueur
+- Gain moyen de l'organisateur : $-E(X_A) = 1$ €, $-E(X_B) = 0,75$ €, $-E(X_C) = -1$ €
+- Le ticket A est le plus avantageux pour l'organisateur (gain moyen de 1€ par ticket)
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. a)
+
+   $\displaystyle g_i$
+
+$\displaystyle -2$
+
+$\displaystyle 3$
+
+$\displaystyle a$
+
+$\displaystyle P(G = g_i)$
+
+$\displaystyle \frac{1}{2}$
+
+$\displaystyle \frac{1}{3}$
+
+$\displaystyle \frac{1}{6}$
+
+b) $\displaystyle E(G) = \frac{a}{6}$
+
+c) $\displaystyle a = 0$ €
+
+d) $\displaystyle a = 6$ €
+2. a) $E(X_A) = -1$ €, $E(X_B) = -0,75$ €, $E(X_C) = 1$ €
+
+   b) Ticket C (espérance positive)
+
+c) Ticket A (gain moyen de 1€ pour l'organisateur)
+
+===
+
+=== Type examen - Variables Aléatoires - Type 1
+Id: 1841
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Cet examen couvre l'ensemble du chapitre sur les variables aléatoires.
+
+$\underline{\textbf{Exercice 1 : Questions de Cours et Applications}}$
+
+**Question 1.1 :** Donner la définition de l'espérance d'une variable aléatoire $X$ prenant les valeurs $x_1, x_2, \ldots, x_n$ avec les probabilités $p_1, p_2, \ldots, p_n$.
+
+**Question 1.2 :** Soit $\displaystyle X$ une variable aléatoire de loi :
+
+| $\displaystyle x_i$ | $\displaystyle 0$ | $\displaystyle 2$ | $\displaystyle 5$ |
+| $\displaystyle P(X = x_i)$ | $\displaystyle 0,4$ | $\displaystyle 0,3$ | $\displaystyle 0,3$ |
+
+a) Calculer $\displaystyle E(X)$
+
+b) Calculer $\displaystyle E(X^2)$
+
+c) En déduire $\displaystyle V(X)$
+
+d) En déduire $\displaystyle \sigma(X)$
+
+**Question 1.3 :**
+
+a) Énoncer la propriété de linéarité de l'espérance
+
+b) Calculer $\displaystyle E(3X - 2)$
+
+$\underline{\textbf{Exercice 2 : Problème de Jeu}}$
+
+Un jeu consiste à lancer deux dés équilibrés. Les règles sont :
+
+• Si la somme est 7 : gain de 12€
+
+• Si la somme est un double (même nombre sur les deux dés) : gain de 5€
+
+• Sinon : perte de 2€
+
+**Question 2.1 :** Déterminer la loi de probabilité du gain brut $\displaystyle G$.
+
+**Question 2.2 :** Calculer l'espérance du gain brut $\displaystyle E(G)$.
+
+**Question 2.3 :** Si on doit payer une mise de 2€, le jeu est-il équitable ?
+
+**Question 2.4 :** Si le jeu n'est pas équitable avec une mise de 2€, quelle mise $m$ faut-il payer pour que le jeu soit équitable ?
+
+$\underline{\textbf{Exercice 3 : Transformation de Variable}}$
+
+On considère une variable aléatoire $\displaystyle Y$ telle que $\displaystyle E(Y) = 4$ et $\displaystyle V(Y) = 9$.
+
+**Question 3.1 :** Calculer $\displaystyle E(2Y + 1)$.
+
+**Question 3.2 :** Calculer $\displaystyle V(2Y + 1)$.
+
+**Question 3.3 :** Calculer $\displaystyle \sigma(2Y + 1)$.
+
+Étapes:
+<!-- optitab:1 -->
+**Exercice 1 : Questions de Cours et Applications**
+
+**Question 1.1 :** Définition de l'espérance
+
+::: rappel Définition
+- L'espérance de $X$ est : $E(X) = x_1 \times p_1 + x_2 \times p_2 + \cdots + x_n \times p_n$
+- $\displaystyle E(X) = \sum_{i=1}^{n} x_i \times P(X = x_i)$
+
+**Question 1.2 :** Calculs sur une variable aléatoire
+:::
+
+::: point a) Espérance
+- $\displaystyle E(X) = 0 \times 0,4 + 2 \times 0,3 + 5 \times 0,3$
+- $\displaystyle E(X) = 0 + 0,6 + 1,5 = 2,1$
+:::
+
+::: point b) Espérance de $\displaystyle X^2$
+- $\displaystyle E(X^2) = 0^2 \times 0,4 + 2^2 \times 0,3 + 5^2 \times 0,3$
+
+$$
+\begin{aligned}
+E(X^2) &= 0 + 4 \times 0,3 + 25 \times 0,3 \\
+&= 1,2 + 7,5 \\
+&= 8,7
+\end{aligned}
+$$
+:::
+
+::: point c) Variance
+$$
+\begin{aligned}
+V(X) &= E(X^2) - [E(X)]^2 \\
+&= 8,7 - (2,1)^2 \\
+&= 8,7 - 4,41 \\
+&= 4,29
+\end{aligned}
+$$
+:::
+
+::: point d) Écart type
+- $\displaystyle \sigma(X) = \sqrt{V(X)} = \sqrt{4,29} \approx 2,07$
+
+**Question 1.3 :** Linéarité de l'espérance
+:::
+
+::: point a) Propriété
+- Pour toute variable aléatoire $X$ et réels $a$ et $b$ : $E(aX + b) = aE(X) + b$
+:::
+
+::: point b) Application
+$$
+\begin{aligned}
+E(3X - 2) &= 3E(X) - 2 \\
+&= 3 \times 2,1 - 2 \\
+&= 6,3 - 2 \\
+&= 4,3
+\end{aligned}
+$$
+
+**Exercice 2 : Problème de Jeu**
+
+**Question 2.1 :** Loi de probabilité du gain brut
+:::
+
+::: methode
+Calculer les probabilités pour chaque cas
+:::
+
+::: point Calcul
+- Total d'issues : $\displaystyle 36$
+
+$$
+\begin{aligned}
+P(G &= 12) \\
+&= P(\text{somme} \\
+&= 7) \\
+&= \frac{6}{36} \\
+&= \frac{1}{6}
+\end{aligned}
+$$
+
+- Doubles possibles : $\displaystyle (1,1), (2,2), (3,3), (4,4), (5,5), (6,6)$
+
+$$
+\begin{aligned}
+P(G &= 5) \\
+&= P(\text{double}) \\
+&= \frac{6}{36} \\
+&= \frac{1}{6}
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+P(G &= -2) \\
+&= 1 - \frac{1}{6} - \frac{1}{6} \\
+&= \frac{4}{6} \\
+&= \frac{2}{3}
+\end{aligned}
+$$
+
+- **Loi de probabilité de $\displaystyle G$ :**
+
+| $\displaystyle g_i$ | $\displaystyle -2$ | $\displaystyle 5$ | $\displaystyle 12$ |
+| $\displaystyle P(G = g_i)$ | $\displaystyle \frac{2}{3}$ | $\displaystyle \frac{1}{6}$ | $\displaystyle \frac{1}{6}$ |
+
+**Question 2.2 :** Espérance du gain brut
+:::
+
+::: methode
+Calculer à partir de la loi
+:::
+
+::: point Calcul
+- $\displaystyle E(G) = (-2) \times \frac{2}{3} + 5 \times \frac{1}{6} + 12 \times \frac{1}{6}$
+- $\displaystyle E(G) = -\frac{4}{3} + \frac{5}{6} + \frac{12}{6} = -\frac{8}{6} + \frac{5}{6} + \frac{12}{6} = \frac{9}{6} = \frac{3}{2} = 1,5$ €
+
+**Question 2.3 :** Jeu équitable avec mise de 2€
+:::
+
+::: methode
+Comparer l'espérance du gain net avec 0
+:::
+
+::: point Calcul
+- Gain net : $\displaystyle X = G - 2$
+- $\displaystyle E(X) = E(G) - 2 = 1,5 - 2 = -0,5$ €
+- L'espérance est négative, donc le jeu n'est pas équitable avec une mise de 2€
+
+**Question 2.4 :** Mise pour jeu équitable
+:::
+
+::: methode
+Le jeu est équitable si $\displaystyle E(\text{gain net}) = 0$
+:::
+
+::: point Calcul
+- Gain net : $\displaystyle X = G - m$
+- $\displaystyle E(X) = E(G - m) = E(G) - m = 1,5 - m$
+- On cherche donc la valeur de $m$ telle que : $E(X) = 0$
+- $1,5 - m = 0$ ⟺ $m = 1,5$ €
+- **Conclusion :** Il faut payer une mise de $1,5$ € pour que le jeu soit équitable
+
+**Exercice 3 : Transformation de Variable**
+
+**Question 3.1 :** Espérance de $2Y + 1$
+:::
+
+::: methode
+Utiliser la linéarité
+:::
+
+::: point Calcul
+- $\displaystyle E(2Y + 1) = 2E(Y) + 1 = 2 \times 4 + 1 = 8 + 1 = 9$
+
+**Question 3.2 :** Variance de $\displaystyle 2Y + 1$
+:::
+
+::: methode
+Utiliser la propriété de la variance
+:::
+
+::: point Calcul
+- $\displaystyle V(2Y + 1) = 2^2 \times V(Y) = 4 \times 9 = 36$
+
+**Question 3.3 :** Écart type de $2Y + 1$
+:::
+
+::: methode
+Racine carrée de la variance
+:::
+
+::: point Calcul
+- $\displaystyle \sigma(2Y + 1) = \sqrt{V(2Y + 1)} = \sqrt{36} = 6$
+:::
+
+Solution:
+<!-- optitab:1 -->
+**Exercice 1 :**
+1. 1. $\displaystyle E(X) = \sum_{i=1}^{n} x_i \times P(X = x_i)$
+1. 2. a) $\displaystyle E(X) = 2,1$
+
+   b) $\displaystyle E(X^2) = 8,7$
+
+c) $\displaystyle V(X) = 4,29$
+
+d) $\displaystyle \sigma(X) \approx 2,07$
+1. 3. a) Propriété : $\displaystyle E(aX + b) = aE(X) + b$
+
+   b) $\displaystyle E(3X - 2) = 4,3$
+
+**Exercice 2 :**
+2. 1.
+
+   $\displaystyle g_i$
+
+$\displaystyle -2$
+
+$\displaystyle 5$
+
+$\displaystyle 12$
+
+$\displaystyle P(G = g_i)$
+
+$\displaystyle \frac{2}{3}$
+
+$\displaystyle \frac{1}{6}$
+
+$\displaystyle \frac{1}{6}$
+2. 2. $\displaystyle E(G) = 1,5$ €
+2. 3. Non, le jeu n'est pas équitable avec une mise de 2€
+2. 4. Mise équitable : $\displaystyle m = 1,5$ €
+
+   **Exercice 3 :**
+3. 1. $\displaystyle E(2Y + 1) = 9$
+3. 2. $\displaystyle V(2Y + 1) = 36$
+3. 3. $\displaystyle \sigma(2Y + 1) = 6$
+
+===
+
+=== Type examen - Variables Aléatoires - Type 2
+Id: 1842
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Cet examen couvre l'ensemble du chapitre sur les variables aléatoires.
+
+$\underline{\textbf{Partie A : Maîtrise des Techniques}}$
+
+**Question A1 :** On lance un dé équilibré. On définit $\displaystyle X$ par :
+
+• Si le résultat est 1 ou 2 : $\displaystyle X = -3$
+
+• Si le résultat est 3 ou 4 : $\displaystyle X = 1$
+
+• Si le résultat est 5 ou 6 : $\displaystyle X = 4$
+
+a) Déterminer la loi de probabilité de $\displaystyle X$
+
+b) Calculer $\displaystyle E(X)$
+
+c) Calculer $\displaystyle V(X)$
+
+d) Calculer $\displaystyle \sigma(X)$
+
+**Question A2 :** Soit $\displaystyle Y$ une variable aléatoire telle que $\displaystyle E(Y) = 5$ et $\displaystyle V(Y) = 16$.
+
+a) Calculer $\displaystyle E(-2Y + 3)$
+
+b) Calculer $\displaystyle V(-2Y + 3)$
+
+c) En déduire $\displaystyle \sigma(-2Y + 3)$
+
+$\underline{\textbf{Partie B : Problème Concret}}$
+
+Une urne contient 5 boules rouges, 3 boules bleues et 2 boules vertes. On tire 2 boules simultanément. On note $Z$ le nombre de boules rouges obtenues.
+
+**Question B1 :** Déterminer la loi de probabilité de $\displaystyle Z$.
+
+**Question B2 :** Calculer l'espérance $\displaystyle E(Z)$.
+
+**Question B3 :** Calculer la variance $\displaystyle V(Z)$.
+
+**Question B4 :** Calculer l'écart type $\displaystyle \sigma(Z)$.
+
+**Question B5 :** Interpréter les résultats obtenus.
+
+Étapes:
+<!-- optitab:1 -->
+**Partie A : Maîtrise des Techniques**
+
+**Question A1 :** Variable aléatoire sur un dé
+
+::: point a) Loi de probabilité
+- $\displaystyle P(X = -3) = \frac{2}{6} = \frac{1}{3}$ (résultats 1 et 2)
+- $\displaystyle P(X = 1) = \frac{2}{6} = \frac{1}{3}$ (résultats 3 et 4)
+- $\displaystyle P(X = 4) = \frac{2}{6} = \frac{1}{3}$ (résultats 5 et 6)
+- **Loi de probabilité de $\displaystyle X$ :**
+
+| $\displaystyle x_i$ | $\displaystyle -3$ | $\displaystyle 1$ | $\displaystyle 4$ |
+| $\displaystyle P(X = x_i)$ | $\displaystyle \frac{1}{3}$ | $\displaystyle \frac{1}{3}$ | $\displaystyle \frac{1}{3}$ |
+:::
+
+::: point b) Espérance
+- $\displaystyle E(X) = (-3) \times \frac{1}{3} + 1 \times \frac{1}{3} + 4 \times \frac{1}{3}$
+- $\displaystyle E(X) = -1 + \frac{1}{3} + \frac{4}{3} = \frac{2}{3}$
+:::
+
+::: point c) Variance
+- $\displaystyle E(X^2) = (-3)^2 \times \frac{1}{3} + 1^2 \times \frac{1}{3} + 4^2 \times \frac{1}{3}$
+
+$$
+\begin{aligned}
+E(X^2) &= 9 \times \frac{1}{3} + 1 \times \frac{1}{3} + 16 \times \frac{1}{3} \\
+&= 3 + \frac{1}{3} + \frac{16}{3} \\
+&= \frac{26}{3}
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+V(X) &= E(X^2) - [E(X)]^2 \\
+&= \frac{26}{3} - \left(\frac{2}{3}\right)^2 \\
+&= \frac{26}{3} - \frac{4}{9} \\
+&= \frac{78 - 4}{9} \\
+&= \frac{74}{9}
+\end{aligned}
+$$
+:::
+
+::: point d) Écart type
+$$
+\begin{aligned}
+\sigma(X) &= \sqrt{\frac{74}{9}} \\
+&= \frac{\sqrt{74}}{3} \approx 2,87
+\end{aligned}
+$$
+
+**Question A2 :** Transformation linéaire
+:::
+
+::: point a) Espérance
+$$
+\begin{aligned}
+E(-2Y + 3) &= -2E(Y) + 3 \\
+&= -2 \times 5 + 3 \\
+&= -10 + 3 \\
+&= -7
+\end{aligned}
+$$
+:::
+
+::: point b) Variance
+- $\displaystyle V(-2Y + 3) = (-2)^2 \times V(Y) = 4 \times 16 = 64$
+:::
+
+::: point c) Écart type
+- $\displaystyle \sigma(-2Y + 3) = \sqrt{64} = 8$
+
+**Partie B : Problème Concret**
+
+**Question B1 :** Loi de probabilité
+:::
+
+::: methode
+Utiliser les combinaisons
+:::
+
+::: point Calcul
+- Total de boules : $\displaystyle 5 + 3 + 2 = 10$
+- Nombre de façons de tirer 2 boules : $\binom{10}{2} = 45$
+- $\displaystyle P(Z = 0) = \frac{\binom{5}{0} \times \binom{5}{2}}{\binom{10}{2}} = \frac{1 \times 10}{45} = \frac{10}{45} = \frac{2}{9}$ (0 rouge, 2 parmi les 5 autres)
+- $\displaystyle P(Z = 1) = \frac{\binom{5}{1} \times \binom{5}{1}}{\binom{10}{2}} = \frac{5 \times 5}{45} = \frac{25}{45} = \frac{5}{9}$ (1 rouge, 1 autre)
+- $\displaystyle P(Z = 2) = \frac{\binom{5}{2} \times \binom{5}{0}}{\binom{10}{2}} = \frac{10 \times 1}{45} = \frac{10}{45} = \frac{2}{9}$ (2 rouges)
+- Vérification : $\displaystyle \frac{2}{9} + \frac{5}{9} + \frac{2}{9} = 1$
+- **Loi de probabilité de $\displaystyle Z$ :**
+
+| $\displaystyle z_i$ | $\displaystyle 0$ | $\displaystyle 1$ | $\displaystyle 2$ |
+| $\displaystyle P(Z = z_i)$ | $\displaystyle \frac{2}{9}$ | $\displaystyle \frac{5}{9}$ | $\displaystyle \frac{2}{9}$ |
+
+**Question B2 :** Espérance
+:::
+
+::: methode
+Calculer à partir de la loi
+:::
+
+::: point Calcul
+- $\displaystyle E(Z) = 0 \times \frac{2}{9} + 1 \times \frac{5}{9} + 2 \times \frac{2}{9}$
+- $\displaystyle E(Z) = 0 + \frac{5}{9} + \frac{4}{9} = \frac{9}{9} = 1$
+- Interprétation : En moyenne, on obtient 1 boule rouge par tirage
+
+**Question B3 :** Variance et écart type
+:::
+
+::: methode
+Utiliser la formule pratique
+:::
+
+::: point Calcul
+- $\displaystyle E(Z^2) = 0^2 \times \frac{2}{9} + 1^2 \times \frac{5}{9} + 2^2 \times \frac{2}{9}$
+- $\displaystyle E(Z^2) = 0 + \frac{5}{9} + \frac{8}{9} = \frac{13}{9}$
+
+$$
+\begin{aligned}
+V(Z) &= E(Z^2) - [E(Z)]^2 \\
+&= \frac{13}{9} - 1^2 \\
+&= \frac{13}{9} - \frac{9}{9} \\
+&= \frac{4}{9}
+\end{aligned}
+$$
+
+**Question B4 :** Écart type
+:::
+
+::: methode
+Racine carrée de la variance
+:::
+
+::: point Calcul
+$$
+\begin{aligned}
+\sigma(Z) &= \sqrt{\frac{4}{9}} \\
+&= \frac{2}{3} \approx 0,67
+\end{aligned}
+$$
+
+**Question B5 :** Interprétation
+:::
+
+::: point Espérance
+- $E(Z) = 1$ signifie qu'en moyenne, sur un grand nombre de tirages, on obtient 1 boule rouge
+- C'est cohérent car il y a 5 boules rouges sur 10, soit la moitié
+:::
+
+::: point Écart type
+- $\sigma(Z) \approx 0,67$ indique que les valeurs de $Z$ sont relativement proches de l'espérance
+- La dispersion est modérée
+:::
+
+Solution:
+<!-- optitab:1 -->
+**Partie A : Maîtrise des Techniques**
+
+**A1.**
+
+a)
+
+$\displaystyle x_i$
+
+$\displaystyle -3$
+
+$\displaystyle 1$
+
+$\displaystyle 4$
+
+$\displaystyle P(X = x_i)$
+
+$\displaystyle \frac{1}{3}$
+
+$\displaystyle \frac{1}{3}$
+
+$\displaystyle \frac{1}{3}$
+
+b) $\displaystyle E(X) = \frac{2}{3}$
+
+c) $\displaystyle V(X) = \frac{74}{9}$
+
+d) $\displaystyle \sigma(X) \approx 2,87$
+
+**A2.**
+
+a) $\displaystyle E(-2Y + 3) = -7$
+
+b) $\displaystyle V(-2Y + 3) = 64$
+
+c) $\displaystyle \sigma(-2Y + 3) = 8$
+
+---
+
+**Partie B : Problème Concret**
+
+**B1.**
+
+$\displaystyle z_i$
+
+$\displaystyle 0$
+
+$\displaystyle 1$
+
+$\displaystyle 2$
+
+$\displaystyle P(Z = z_i)$
+
+$\displaystyle \frac{2}{9}$
+
+$\displaystyle \frac{5}{9}$
+
+$\displaystyle \frac{2}{9}$
+
+**B2.** $\displaystyle E(Z) = 1$
+
+**B3.** $\displaystyle V(Z) = \frac{4}{9}$
+
+**B4.** $\displaystyle \sigma(Z) = \frac{2}{3} \approx 0,67$
+
+**B5.** En moyenne, on obtient 1 boule rouge par tirage. La dispersion est modérée.
+
+===
+
+=== Type examen - Variables Aléatoires - Type 3
+Id: 1844
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Cet examen couvre l'ensemble du chapitre sur les variables aléatoires.
+
+$\underline{\textbf{Partie A : Questions de Cours et Applications}}$
+
+**Question A1 :** Donner la définition de la variance d'une variable aléatoire $X$ d'espérance $E(X) = \mu$.
+
+**Question A2 :** Soit $\displaystyle X$ une variable aléatoire de loi :
+
+| $\displaystyle x_i$ | $\displaystyle -1$ | $\displaystyle 2$ | $\displaystyle 4$ |
+| $\displaystyle P(X = x_i)$ | $\displaystyle \frac{1}{4}$ | $\displaystyle \frac{1}{2}$ | $\displaystyle \frac{1}{4}$ |
+
+a) Calculer $\displaystyle E(X)$
+
+b) Calculer $\displaystyle E(X^2)$
+
+c) En déduire $\displaystyle V(X)$ en utilisant la formule $\displaystyle V(X) = E(X^2) - [E(X)]^2$
+
+d) Calculer $\displaystyle \sigma(X)$
+
+**Question A3 :**
+
+a) Énoncer la propriété de la variance pour une transformation linéaire
+
+b) Calculer $\displaystyle V(3X - 1)$
+
+$\underline{\textbf{Partie B : Étude Complète d'une Variable Aléatoire}}$
+
+On lance une pièce équilibrée 5 fois de suite. On note $Y$ le nombre de piles obtenues.
+
+**Question B1 :** Quelles sont les valeurs possibles de $\displaystyle Y$ ?
+
+**Question B2 :**
+
+a) Calculer $\displaystyle P(Y = 0)$
+
+b) Calculer $\displaystyle P(Y = 2)$
+
+c) Calculer $\displaystyle P(Y = 5)$
+
+**Question B3 :** Calculer l'espérance $\displaystyle E(Y)$.
+
+**Question B4 :** Calculer la variance $\displaystyle V(Y)$.
+
+**Question B5 :** Calculer l'écart type $\displaystyle \sigma(Y)$.
+
+$\underline{\textbf{Partie C : Problème Concret}}$
+
+Un jeu de hasard propose de tirer une carte au hasard dans un jeu de 52 cartes. Les règles sont :
+
+• Cœur ou Carreau (cartes rouges) : gain de 3€
+
+• Roi, Dame ou Valet : gain de 10€
+
+• As : gain de 20€
+
+• Autre carte noire : perte de 1€
+
+**Question C1 :** Déterminer la loi de probabilité du gain brut $\displaystyle G$.
+
+**Question C2 :** Calculer l'espérance du gain brut $\displaystyle E(G)$.
+
+**Question C3 :** Le jeu est-il favorable au joueur ou à l'organisateur ?
+
+**Question C5 :** Quelle mise $m$ faut-il payer pour que le jeu soit équitable ?
+
+Étapes:
+<!-- optitab:1 -->
+**Partie A : Questions de Cours et Applications**
+
+**Question A1 :** Définition de la variance
+
+::: rappel Définition
+- La variance de $X$ est : $V(X) = E\left((X - \mu)^2\right)$ où $\mu = E(X)$
+- $\displaystyle V(X) = \sum_{i=1}^{n} (x_i - \mu)^2 \times P(X = x_i)$
+
+**Question A2 :** Calculs sur une variable aléatoire
+:::
+
+::: point a) Espérance
+- $\displaystyle E(X) = (-1) \times \frac{1}{4} + 2 \times \frac{1}{2} + 4 \times \frac{1}{4}$
+- $\displaystyle E(X) = -\frac{1}{4} + 1 + 1 = \frac{7}{4} = 1,75$
+:::
+
+::: point b) Variance
+- $\displaystyle E(X^2) = (-1)^2 \times \frac{1}{4} + 2^2 \times \frac{1}{2} + 4^2 \times \frac{1}{4}$
+
+$$
+\begin{aligned}
+E(X^2) &= 1 \times \frac{1}{4} + 4 \times \frac{1}{2} + 16 \times \frac{1}{4} \\
+&= \frac{1}{4} + 2 + 4 \\
+&= \frac{25}{4} \\
+&= 6,25
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+V(X) &= E(X^2) - [E(X)]^2 \\
+&= 6,25 - (1,75)^2 \\
+&= 6,25 - 3,0625 \\
+&= 3,1875
+\end{aligned}
+$$
+:::
+
+::: point c) Écart type
+- $\displaystyle \sigma(X) = \sqrt{V(X)} = \sqrt{3,1875} \approx 1,79$
+
+**Question A3 :** Propriété de la variance
+:::
+
+::: point a) Propriété
+- Pour toute variable aléatoire $X$ et réels $a$ et $b$ : $V(aX + b) = a^2 V(X)$
+:::
+
+::: point b) Application
+$$
+\begin{aligned}
+V(3X - 1) &= 3^2 \times V(X) \\
+&= 9 \times 3,1875 \\
+&= 28,6875
+\end{aligned}
+$$
+
+**Partie B : Étude Complète d'une Variable Aléatoire**
+
+**Question B1 :** Valeurs possibles
+:::
+
+::: methode
+Identifier le nombre minimal et maximal de piles
+:::
+
+::: point Calcul
+- On peut obtenir entre 0 et 5 piles
+- $\displaystyle Y \in \{0, 1, 2, 3, 4, 5\}$
+
+**Question B2 :** Calculs de probabilités
+:::
+
+::: methode
+Dénombrer les issues favorables
+:::
+
+::: point Calcul
+- Total d'issues : $\displaystyle 2^5 = 32$
+- $\displaystyle P(Y = 0) = \frac{1}{32}$ (un seul cas : FFFFF)
+- $P(Y = 1) = \frac{5}{32}$ (5 façons de choisir 1 position parmi 5)
+- $P(Y = 2) = \frac{\binom{5}{2}}{32} = \frac{10}{32} = \frac{5}{16}$ (10 façons de choisir 2 positions parmi 5)
+- $P(Y = 3) = \frac{10}{32} = \frac{5}{16}$ (10 façons de choisir 3 positions parmi 5)
+- $P(Y = 4) = \frac{5}{32}$ (5 façons de choisir 4 positions parmi 5)
+- $\displaystyle P(Y = 5) = \frac{1}{32}$ (un seul cas : PPPPP)
+- **Loi de probabilité de $\displaystyle Y$ :**
+
+| $\displaystyle y_i$ | $\displaystyle 0$ | $\displaystyle 1$ | $\displaystyle 2$ | $\displaystyle 3$ | $\displaystyle 4$ | $\displaystyle 5$ |
+| $\displaystyle P(Y = y_i)$ | $\displaystyle \frac{1}{32}$ | $\displaystyle \frac{5}{32}$ | $\displaystyle \frac{5}{16}$ | $\displaystyle \frac{5}{16}$ | $\displaystyle \frac{5}{32}$ | $\displaystyle \frac{1}{32}$ |
+
+**Question B3 :** Espérance
+:::
+
+::: methode
+Utiliser la symétrie ou calculer directement
+:::
+
+::: point Calcul
+- Par symétrie, l'espérance est la moitié du nombre de lancers
+- $\displaystyle E(Y) = \frac{5}{2} = 2,5$
+- Vérification par calcul direct :
+- $\displaystyle E(Y) = 0 \times \frac{1}{32} + 1 \times \frac{5}{32} + 2 \times \frac{10}{32} + 3 \times \frac{10}{32} + 4 \times \frac{5}{32} + 5 \times \frac{1}{32}$
+
+$$
+\begin{aligned}
+E(Y) &= \frac{0 + 5 + 20 + 30 + 20 + 5}{32} \\
+&= \frac{80}{32} \\
+&= 2,5
+\end{aligned}
+$$
+
+**Question B4 :** Variance
+:::
+
+::: methode
+Utiliser la formule pratique
+:::
+
+::: point Calcul
+- $\displaystyle E(Y^2) = 0^2 \times \frac{1}{32} + 1^2 \times \frac{5}{32} + 2^2 \times \frac{10}{32} + 3^2 \times \frac{10}{32} + 4^2 \times \frac{5}{32} + 5^2 \times \frac{1}{32}$
+
+$$
+\begin{aligned}
+E(Y^2) &= \frac{0 + 5 + 40 + 90 + 80 + 25}{32} \\
+&= \frac{240}{32} \\
+&= 7,5
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+V(Y) &= E(Y^2) - [E(Y)]^2 \\
+&= 7,5 - (2,5)^2 \\
+&= 7,5 - 6,25 \\
+&= 1,25
+\end{aligned}
+$$
+
+**Question B5 :** Écart type
+:::
+
+::: methode
+Racine carrée de la variance
+:::
+
+::: point Calcul
+$$
+\begin{aligned}
+\sigma(Y) &= \sqrt{1,25} \\
+&= \frac{\sqrt{5}}{2} \approx 1,12
+\end{aligned}
+$$
+
+**Partie C : Problème Concret**
+
+**Question C1 :** Loi de probabilité du gain brut
+:::
+
+::: methode
+Calculer les probabilités pour chaque cas
+:::
+
+::: methode
+Décomposer directement en catégories disjointes selon les règles du jeu
+:::
+
+::: point Calcul
+- Total de cartes : $\displaystyle 52$
+- **Catégorie 1 : As (toutes couleurs)**
+
+Il y a $4$ As dans un jeu de 52 cartes → gain de 20€
+
+$\displaystyle P(G = 20) = \frac{4}{52} = \frac{1}{13}$
+
+- **Catégorie 2 : Figures (Roi, Dame, Valet, toutes couleurs)**
+
+Il y a $\displaystyle 3 \times 4 = 12$ figures → gain de 10€
+
+$\displaystyle P(G = 10) = \frac{12}{52} = \frac{3}{13}$
+
+- **Catégorie 3 : Cartes rouges simples (ni figure ni As)**
+
+Cartes rouges totales : $26$ (Cœur + Carreau)
+
+Moins les figures rouges : $26 - 6 = 20$ (il y a 6 figures rouges)
+
+Moins les As rouges : $20 - 2 = 18$ (il y a 2 As rouges)
+
+$\displaystyle P(G = 3) = \frac{18}{52} = \frac{9}{26}$
+
+- **Catégorie 4 : Cartes noires simples (ni figure ni As)**
+
+Cartes noires totales : $26$ (Trèfle + Pique)
+
+Moins les figures noires : $26 - 6 = 20$ (il y a 6 figures noires)
+
+Moins les As noirs : $20 - 2 = 18$ (il y a 2 As noirs)
+
+$\displaystyle P(G = -1) = \frac{18}{52} = \frac{9}{26}$
+
+- **Vérification :**
+
+Total : $\displaystyle 4 + 12 + 18 + 18 = 52$
+
+Somme des probabilités : $\displaystyle \frac{1}{13} + \frac{3}{13} + \frac{9}{26} + \frac{9}{26} = \frac{2 + 6 + 9 + 9}{26} = \frac{26}{26} = 1$
+
+- **Loi de probabilité de $\displaystyle G$ :**
+
+| $\displaystyle g_i$ | $\displaystyle -1$ | $\displaystyle 3$ | $\displaystyle 10$ | $\displaystyle 20$ |
+| $\displaystyle P(G = g_i)$ | $\displaystyle \frac{9}{26}$ | $\displaystyle \frac{9}{26}$ | $\displaystyle \frac{3}{13}$ | $\displaystyle \frac{1}{13}$ |
+
+**Question C2 :** Espérance du gain brut
+:::
+
+::: methode
+Calculer à partir de la loi
+:::
+
+::: point Calcul
+- $\displaystyle E(G) = (-1) \times \frac{9}{26} + 3 \times \frac{9}{26} + 10 \times \frac{3}{13} + 20 \times \frac{1}{13}$
+
+$$
+\begin{aligned}
+E(G) &= -\frac{9}{26} + \frac{27}{26} + \frac{30}{13} + \frac{20}{13} \\
+&= \frac{18}{26} + \frac{50}{13}
+\end{aligned}
+$$
+
+- $\displaystyle E(G) = \frac{9}{13} + \frac{50}{13} = \frac{59}{13} \approx 4,54$ €
+
+**Question C3 :** Favorable au joueur ou à l'organisateur ?
+:::
+
+::: methode
+L'espérance est positive
+:::
+
+::: resultat
+- $\displaystyle E(G) = \frac{59}{13} > 0$
+- Le jeu est favorable au joueur (sans mise)
+
+**Question C4 :** Mise pour un jeu équitable
+:::
+
+::: methode
+Le jeu est équitable si $\displaystyle E(\text{gain net}) = 0$
+:::
+
+::: point Calcul
+- Gain net : $\displaystyle X = G - m$
+- $\displaystyle E(X) = E(G - m) = E(G) - m = \frac{59}{13} - m$
+- On cherche donc la valeur de $m$ telle que : $E(X) = 0$
+- $\frac{59}{13} - m = 0$ ⟺ $m = \frac{59}{13} \approx 4,54$ €
+- **Conclusion :** Il faut payer une mise de $\frac{59}{13}$ € (environ 4,54 €) pour que le jeu soit équitable
+:::
+
+Solution:
+<!-- optitab:1 -->
+**Partie A : Questions de Cours et Applications**
+
+**A1.** $V(X) = E\left((X - \mu)^2\right)$ où $\mu = E(X)$
+
+**A2.**
+
+a) $\displaystyle E(X) = 1,75$
+
+b) $\displaystyle V(X) = 3,1875$
+
+c) $\displaystyle \sigma(X) \approx 1,79$
+
+**A3.**
+
+a) Propriété : $\displaystyle V(aX + b) = a^2 V(X)$
+
+b) $\displaystyle V(3X - 1) = 28,6875$
+
+---
+
+**Partie B : Étude Complète d'une Variable Aléatoire**
+
+**B1.** $\displaystyle Y \in \{0, 1, 2, 3, 4, 5\}$
+
+**B2.**
+
+a) $\displaystyle P(Y = 0) = \frac{1}{32}$
+
+b) $\displaystyle P(Y = 2) = \frac{5}{16}$
+
+c) $\displaystyle P(Y = 5) = \frac{1}{32}$
+
+**B3.** $\displaystyle E(Y) = 2,5$
+
+**B4.** $\displaystyle V(Y) = 1,25$
+
+**B5.** $\displaystyle \sigma(Y) \approx 1,12$
+
+---
+
+**Partie C : Problème Concret**
+
+**C1.**
+
+$\displaystyle g_i$
+
+$\displaystyle -1$
+
+$\displaystyle 3$
+
+$\displaystyle 10$
+
+$\displaystyle 20$
+
+$\displaystyle P(G = g_i)$
+
+$\displaystyle \frac{9}{26}$
+
+$\displaystyle \frac{9}{26}$
+
+$\displaystyle \frac{3}{13}$
+
+$\displaystyle \frac{1}{13}$
+
+**C2.** $\displaystyle E(G) = \frac{59}{13} \approx 4,54$ €
+
+**C3.** Favorable au joueur
+
+**C4.** $\displaystyle m = \frac{59}{13} \approx 4,54$ €
+
+===
+
+=== Type examen - Variables Aléatoires - Type 4
+Id: 1845
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Cet examen couvre l'ensemble du chapitre sur les variables aléatoires.
+
+$\underline{\textbf{Partie A : Questions de Cours et Applications}}$
+
+**Question A1 :** Donner la définition de l'espérance d'une variable aléatoire.
+
+**Question A2 :** Soit $\displaystyle X$ une variable aléatoire de loi :
+
+| $\displaystyle x_i$ | $\displaystyle 0$ | $\displaystyle 3$ | $\displaystyle 6$ |
+| $\displaystyle P(X = x_i)$ | $\displaystyle 0,2$ | $\displaystyle 0,5$ | $\displaystyle 0,3$ |
+
+a) Calculer $\displaystyle E(X)$
+
+b) Calculer $\displaystyle E(X^2)$
+
+c) En déduire $\displaystyle V(X)$ et $\displaystyle \sigma(X)$
+
+**Question A3 :**
+
+a) Énoncer la propriété de linéarité de l'espérance
+
+b) Calculer $\displaystyle E(4X - 5)$
+
+$\underline{\textbf{Partie B : Étude de Fonction et Applications}}$
+
+On considère une variable aléatoire $\displaystyle Y$ telle que $\displaystyle E(Y) = 3$ et $\displaystyle V(Y) = 25$.
+
+**Question B1 :** Calculer $\displaystyle E(2Y + 1)$.
+
+**Question B2 :** Calculer $\displaystyle V(2Y + 1)$.
+
+**Question B3 :** Calculer $\displaystyle \sigma(2Y + 1)$.
+
+**Question B4 :** On définit $\displaystyle Z = -Y + 6$.
+
+a) Calculer $\displaystyle E(Z)$
+
+b) Calculer $\displaystyle V(Z)$
+
+$\underline{\textbf{Partie C : Problème Concret}}$
+
+Un jeu consiste à lancer deux dés équilibrés. Les règles sont :
+
+• Si la somme est 7 : gain de 15€
+
+• Si la somme est paire : gain de 2€
+
+• Sinon : perte de 3€
+
+**Question C1 :** Déterminer la loi de probabilité du gain brut $\displaystyle G$.
+
+**Question C2 :** Calculer l'espérance du gain brut $\displaystyle E(G)$.
+
+**Question C3 :** Calculer la variance $\displaystyle V(G)$.
+
+**Question C4 :** Calculer l'écart type $\displaystyle \sigma(G)$.
+
+**Question C5 :** Quelle mise $m$ faut-il payer pour que le jeu soit équitable ?
+
+Étapes:
+<!-- optitab:1 -->
+**Partie A : Questions de Cours et Applications**
+
+**Question A1 :** Définition de l'espérance
+
+::: rappel Définition
+- L'espérance de $X$ est : $E(X) = \sum_{i=1}^{n} x_i \times P(X = x_i)$
+- C'est la moyenne pondérée des valeurs de $X$ par leurs probabilités
+
+**Question A2 :** Calculs sur une variable aléatoire
+:::
+
+::: point a) Espérance
+- $\displaystyle E(X) = 0 \times 0,2 + 3 \times 0,5 + 6 \times 0,3$
+- $\displaystyle E(X) = 0 + 1,5 + 1,8 = 3,3$
+:::
+
+::: point b) Espérance de $\displaystyle X^2$
+- $\displaystyle E(X^2) = 0^2 \times 0,2 + 3^2 \times 0,5 + 6^2 \times 0,3$
+
+$$
+\begin{aligned}
+E(X^2) &= 0 + 9 \times 0,5 + 36 \times 0,3 \\
+&= 0 + 4,5 + 10,8 \\
+&= 15,3
+\end{aligned}
+$$
+:::
+
+::: point c) Variance
+$$
+\begin{aligned}
+V(X) &= E(X^2) - [E(X)]^2 \\
+&= 15,3 - (3,3)^2 \\
+&= 15,3 - 10,89 \\
+&= 4,41
+\end{aligned}
+$$
+:::
+
+::: point d) Écart type
+- $\displaystyle \sigma(X) = \sqrt{V(X)} = \sqrt{4,41} = 2,1$
+
+**Question A3 :** Linéarité de l'espérance
+:::
+
+::: point a) Propriété
+- Pour toute variable aléatoire $X$ et réels $a$ et $b$ : $E(aX + b) = aE(X) + b$
+:::
+
+::: point b) Application
+$$
+\begin{aligned}
+E(4X - 5) &= 4E(X) - 5 \\
+&= 4 \times 3,3 - 5 \\
+&= 13,2 - 5 \\
+&= 8,2
+\end{aligned}
+$$
+
+**Partie B : Étude de Fonction et Applications**
+
+**Question B1 :** Espérance de $2Y + 1$
+:::
+
+::: methode
+Utiliser la linéarité
+:::
+
+::: point Calcul
+- $\displaystyle E(2Y + 1) = 2E(Y) + 1 = 2 \times 3 + 1 = 6 + 1 = 7$
+
+**Question B2 :** Variance de $\displaystyle 2Y + 1$
+:::
+
+::: methode
+Utiliser la propriété de la variance
+:::
+
+::: point Calcul
+- $\displaystyle V(2Y + 1) = 2^2 \times V(Y) = 4 \times 25 = 100$
+
+**Question B3 :** Écart type de $2Y + 1$
+:::
+
+::: methode
+Racine carrée de la variance
+:::
+
+::: point Calcul
+- $\displaystyle \sigma(2Y + 1) = \sqrt{V(2Y + 1)} = \sqrt{100} = 10$
+
+**Question B4 :** Transformation $Z = -Y + 6$
+:::
+
+::: point a) Espérance de $\displaystyle Z$
+- $\displaystyle E(Z) = E(-Y + 6) = -E(Y) + 6 = -3 + 6 = 3$
+:::
+
+::: point b) Variance de $\displaystyle Z$
+$$
+\begin{aligned}
+V(Z) &= V(-Y + 6) \\
+&= (-1)^2 \times V(Y) \\
+&= 1 \times 25 \\
+&= 25
+\end{aligned}
+$$
+
+**Partie C : Problème Concret**
+
+**Question C1 :** Loi de probabilité du gain brut
+:::
+
+::: methode
+Calculer les probabilités pour chaque cas
+:::
+
+::: point Calcul
+- Total d'issues : $\displaystyle 36$
+
+$$
+\begin{aligned}
+P(G &= 15) \\
+&= P(\text{somme} \\
+&= 7) \\
+&= \frac{6}{36} \\
+&= \frac{1}{6}
+\end{aligned}
+$$
+
+- Sommes paires possibles : $\displaystyle 2, 4, 6, 8, 10, 12$
+- $P(\text{somme} = 2) = \frac{1}{36}$, $P(\text{somme} = 4) = \frac{3}{36}$, $P(\text{somme} = 6) = \frac{5}{36}$
+- $P(\text{somme} = 8) = \frac{5}{36}$, $P(\text{somme} = 10) = \frac{3}{36}$, $P(\text{somme} = 12) = \frac{1}{36}$
+
+$$
+\begin{aligned}
+P(\text{somme paire}) &= \frac{1 + 3 + 5 + 5 + 3 + 1}{36} \\
+&= \frac{18}{36} \\
+&= \frac{1}{2}
+\end{aligned}
+$$
+
+- Mais attention : la somme 7 est impaire, donc les sommes paires (hors 7) sont : $\frac{18}{36} = \frac{1}{2}$
+- $\displaystyle P(G = 2) = \frac{1}{2}$ (somme paire)
+- Sommes impaires (hors 7) : $\displaystyle 3, 5, 9, 11$
+- $P(\text{somme} = 3) = \frac{2}{36}$, $P(\text{somme} = 5) = \frac{4}{36}$, $P(\text{somme} = 9) = \frac{4}{36}$, $P(\text{somme} = 11) = \frac{2}{36}$
+
+$$
+\begin{aligned}
+P(\text{somme impaire, hors 7}) &= \frac{2 + 4 + 4 + 2}{36} \\
+&= \frac{12}{36} \\
+&= \frac{1}{3}
+\end{aligned}
+$$
+
+- $\displaystyle P(G = -3) = \frac{1}{3}$ (somme impaire, hors 7)
+
+Vérification :
+
+$$
+\begin{aligned}
+\frac{1}{6} + \frac{1}{2} + \frac{1}{3} &= \frac{1}{6} + \frac{3}{6} + \frac{2}{6} \\
+&= 1
+\end{aligned}
+$$
+
+- **Loi de probabilité de $\displaystyle G$ :**
+
+| $\displaystyle g_i$ | $\displaystyle -3$ | $\displaystyle 2$ | $\displaystyle 15$ |
+| $\displaystyle P(G = g_i)$ | $\displaystyle \frac{1}{3}$ | $\displaystyle \frac{1}{2}$ | $\displaystyle \frac{1}{6}$ |
+
+**Question C2 :** Espérance du gain brut
+:::
+
+::: methode
+Calculer à partir de la loi
+:::
+
+::: point Calcul
+- $\displaystyle E(G) = (-3) \times \frac{1}{3} + 2 \times \frac{1}{2} + 15 \times \frac{1}{6}$
+- $\displaystyle E(G) = -1 + 1 + \frac{15}{6} = \frac{15}{6} = \frac{5}{2} = 2,5$ €
+
+**Question C3 :** Variance
+:::
+
+::: methode
+Utiliser la formule pratique
+:::
+
+::: point Calcul
+- $\displaystyle E(G^2) = (-3)^2 \times \frac{1}{3} + 2^2 \times \frac{1}{2} + 15^2 \times \frac{1}{6}$
+
+$$
+\begin{aligned}
+E(G^2) &= 9 \times \frac{1}{3} + 4 \times \frac{1}{2} + 225 \times \frac{1}{6} \\
+&= 3 + 2 + \frac{225}{6} \\
+&= 5 + 37,5 \\
+&= 42,5
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+V(G) &= E(G^2) - [E(G)]^2 \\
+&= 42,5 - (2,5)^2 \\
+&= 42,5 - 6,25 \\
+&= 36,25
+\end{aligned}
+$$
+
+**Question C4 :** Écart type
+:::
+
+::: methode
+Racine carrée de la variance
+:::
+
+::: point Calcul
+- $\displaystyle \sigma(G) = \sqrt{36,25} = 6,02$ €
+
+**Question C4 :** Mise pour un jeu équitable
+:::
+
+::: methode
+Le jeu est équitable si $\displaystyle E(\text{gain net}) = 0$
+:::
+
+::: point Calcul
+- Gain net : $\displaystyle X = G - m$
+- $\displaystyle E(X) = E(G - m) = E(G) - m = 2,5 - m$
+- On cherche donc la valeur de $m$ telle que : $E(X) = 0$
+- $2,5 - m = 0$ ⟺ $m = 2,5$ €
+- **Conclusion :** Il faut payer une mise de $2,5$ € pour que le jeu soit équitable
+:::
+
+Solution:
+<!-- optitab:1 -->
+**Partie A : Questions de Cours et Applications**
+
+**A1.** $\displaystyle E(X) = \sum_{i=1}^{n} x_i \times P(X = x_i)$
+
+**A2.**
+
+a) $\displaystyle E(X) = 3,3$
+
+b) $\displaystyle E(X^2) = 15,3$
+
+c) $\displaystyle V(X) = 4,41$
+
+d) $\displaystyle \sigma(X) = 2,1$
+
+**A3.**
+
+a) Propriété : $\displaystyle E(aX + b) = aE(X) + b$
+
+b) $\displaystyle E(4X - 5) = 8,2$
+
+---
+
+**Partie B : Étude de Fonction et Applications**
+
+**B1.** $\displaystyle E(2Y + 1) = 7$
+
+**B2.** $\displaystyle V(2Y + 1) = 100$
+
+**B3.** $\displaystyle \sigma(2Y + 1) = 10$
+
+**B4.**
+
+a) $\displaystyle E(Z) = 3$
+
+b) $\displaystyle V(Z) = 25$
+
+---
+
+**Partie C : Problème Concret**
+
+**C1.**
+
+$\displaystyle g_i$
+
+$\displaystyle -3$
+
+$\displaystyle 2$
+
+$\displaystyle 15$
+
+$\displaystyle P(G = g_i)$
+
+$\displaystyle \frac{1}{3}$
+
+$\displaystyle \frac{1}{2}$
+
+$\displaystyle \frac{1}{6}$
+
+**C2.** $\displaystyle E(G) = 2,5$ €
+
+**C3.** $\displaystyle V(G) = 36,25$
+
+**C4.** $\displaystyle \sigma(G) = 6,02$ €
+
+**C5.** $\displaystyle m = 2,5$ €
+
+===

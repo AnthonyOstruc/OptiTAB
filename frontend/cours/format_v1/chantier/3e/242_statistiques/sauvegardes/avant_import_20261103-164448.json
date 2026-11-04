@@ -1,0 +1,457 @@
+{
+ "notion": 242,
+ "dossier": "C:\\Users\\SWEELCO-AT\\Desktop\\SWINDER\\OptiTABV2\\frontend\\cours\\format_v1\\chantier\\3e\\242_statistiques",
+ "date": "2026-11-03T16:44:46",
+ "cours": [
+  {
+   "id": 237,
+   "contenu": "<!-- optitab:1 -->\n::: objectifs\n- Organiser une série statistique : effectifs, fréquences, effectifs cumulés.\n- Calculer et interpréter la moyenne (simple et pondérée), la médiane et l'étendue.\n- Lire et construire un diagramme en bâtons, un histogramme, un diagramme circulaire.\n- Utiliser un tableur et comparer deux séries de façon critique.\n:::\n\n## I. Effectifs et fréquences\n\n::: definition Vocabulaire\n- La **population** est l'ensemble étudié ; le **caractère** est ce que l'on observe (note, taille, moyen de transport…).\n- L'**effectif** d'une valeur est le nombre de fois où elle apparaît ; l'**effectif total** $N$ est le nombre total d'observations.\n- La **fréquence** d'une valeur est le quotient de son effectif par l'effectif total.\n:::\n\n$$\\text{fréquence} = \\frac{\\text{effectif de la valeur}}{\\text{effectif total}}$$\n\n::: propriete\nUne fréquence est comprise entre $0$ et $1$ ; on l'exprime souvent en pourcentage. La somme de toutes les fréquences vaut $1$, soit $100\\ \\%$.\n:::\n\n::: exemple\nDans un groupe de $30$ élèves, $12$ viennent à vélo : fréquence $\\dfrac{12}{30} = 0{,}4$, soit $40\\ \\%$.\n:::\n\n::: definition Effectif cumulé\nL'**effectif cumulé** d'une valeur est le nombre d'observations inférieures ou égales à cette valeur. Il se calcule en additionnant les effectifs de gauche à droite.\n:::\n\n## II. La moyenne\n\n::: definition Moyenne simple\nLa **moyenne** d'une série est la somme des valeurs divisée par le nombre de valeurs.\n:::\n\n::: definition Moyenne pondérée\nQuand les données sont dans un tableau d'effectifs, on multiplie chaque valeur par son effectif, on additionne ces produits, puis on divise par l'effectif total :\n\n$$\\bar{x} = \\frac{x_1 \\times n_1 + x_2 \\times n_2 + \\dots + x_p \\times n_p}{n_1 + n_2 + \\dots + n_p}$$\n:::\n\n[IMAGE_1]\n\n::: exemple Notes d'une classe (diagramme ci-dessus)\n| Note | $6$ | $8$ | $10$ | $12$ | $16$ |\n|---|---|---|---|---|---|\n| Effectif | $2$ | $3$ | $6$ | $5$ | $4$ |\n\n$$\n\\begin{aligned}\n\\bar{x} &= \\frac{6 \\times 2 + 8 \\times 3 + 10 \\times 6 + 12 \\times 5 + 16 \\times 4}{20} \\\\\n&= \\frac{12 + 24 + 60 + 60 + 64}{20} = \\frac{220}{20} = 11\n\\end{aligned}\n$$\n:::\n\n::: attention\nPour réunir deux groupes, on n'effectue pas la moyenne des deux moyennes (sauf si les groupes ont le même effectif) : on additionne les **sommes** des deux groupes et on divise par l'effectif total.\n:::\n\n## III. La médiane et l'étendue\n\n::: definition Médiane\nLa **médiane** d'une série **rangée dans l'ordre croissant** est un nombre qui partage la série en deux groupes de même effectif : au moins la moitié des valeurs lui sont inférieures ou égales, et au moins la moitié lui sont supérieures ou égales.\n:::\n\n::: methode Déterminer une médiane\n1. Ranger la série dans l'ordre croissant.\n2. Si l'effectif $N$ est **impair**, la médiane est la valeur de rang $\\dfrac{N+1}{2}$.\n3. Si l'effectif $N$ est **pair**, la médiane est la moyenne des valeurs de rangs $\\dfrac{N}{2}$ et $\\dfrac{N}{2} + 1$.\n4. Avec un tableau d'effectifs, les **effectifs cumulés** donnent directement les rangs.\n:::\n\n[IMAGE_2]\n\n::: exemple\nSérie de $8$ valeurs : $2\\ ;\\ 3\\ ;\\ 5\\ ;\\ 6\\ ;\\ 6\\ ;\\ 9\\ ;\\ 11\\ ;\\ 12$. L'effectif est pair : on prend les 4ᵉ et 5ᵉ valeurs, $6$ et $6$. La médiane vaut $6$.\n:::\n\n::: definition Étendue\nL'**étendue** est la différence entre la plus grande et la plus petite valeur de la série. Elle mesure la **dispersion** des valeurs.\n:::\n\n::: exemple\nPour la série $2\\ ;\\ 3\\ ;\\ 3\\ ;\\ 8$ : moyenne $4$, médiane $3$, étendue $8 - 2 = 6$. Trois nombres, trois informations différentes.\n:::\n\n::: attention Erreurs fréquentes\n- Chercher la médiane sans avoir **rangé** la série.\n- Calculer l'étendue avec les effectifs au lieu des valeurs.\n- Une valeur extrême déplace fortement la moyenne, mais presque pas la médiane.\n:::\n\n## IV. Représenter une série\n\n### Diagramme en bâtons et histogramme\n\nLe **diagramme en bâtons** convient aux valeurs isolées (notes, nombre de frères et sœurs…) : la hauteur de chaque bâton est l'effectif de la valeur (voir le diagramme du II).\n\nL'**histogramme** représente des données regroupées en **classes** : des rectangles accolés, dont la hauteur donne l'effectif quand les classes ont la même largeur.\n\n[IMAGE_3]\n\n::: attention Données en classes\nLe regroupement fait perdre les valeurs exactes. On peut repérer la **classe** qui contient la médiane, pas sa valeur exacte ; les centres des classes ne donnent qu'une **estimation** de la moyenne. La classe $[10\\ ;\\ 20[$ contient $10$ et exclut $20$.\n:::\n\n### Diagramme circulaire\n\n::: methode Construire un diagramme circulaire\nChaque secteur a un angle proportionnel à l'effectif :\n\n$$\\text{angle} = 360^\\circ \\times \\text{fréquence} = \\frac{\\text{effectif}}{\\text{effectif total}} \\times 360^\\circ$$\n\nOn vérifie que la somme des angles vaut $360^\\circ$.\n:::\n\n[IMAGE_4]\n\n::: exemple\nSur $40$ réponses, $18$ choisissent B : fréquence $\\dfrac{18}{40} = 0{,}45 = 45\\ \\%$ et angle $0{,}45 \\times 360^\\circ = 162^\\circ$.\n:::\n\n## V. Tableur et comparaison de séries\n\n::: methode Avec un tableur\n- Moyenne simple d'une plage : `=MOYENNE(A2:A10)` ; médiane : `=MEDIANE(A2:A10)`.\n- Étendue : `=MAX(A2:A10)-MIN(A2:A10)`.\n- Moyenne pondérée (valeurs en A, effectifs en B) : la somme pondérée `=SOMMEPROD(A2:A4;B2:B4)` divisée par l'effectif total `=SOMME(B2:B4)`.\n:::\n\n::: attention\n`=MOYENNE(A2:A4)` fait la moyenne des valeurs **sans tenir compte des effectifs** : elle est fausse pour un tableau d'effectifs.\n:::\n\n::: methode Comparer deux séries\nOn compare un indicateur de **position** (moyenne ou médiane) **et** un indicateur de **dispersion** (étendue).\n:::\n\n[IMAGE_5]\n\n::: exemple\nSérie A : $10\\ ;\\ 10\\ ;\\ 11\\ ;\\ 12\\ ;\\ 12$. Série B : $4\\ ;\\ 8\\ ;\\ 12\\ ;\\ 14\\ ;\\ 17$. Les deux moyennes valent $11$, mais l'étendue de A est $2$ et celle de B est $13$ : les résultats de B sont beaucoup plus dispersés.\n:::\n\n::: remarque Lecture critique d'un graphique\nVérifier les unités, la taille des groupes et surtout l'**origine de l'axe vertical** : un axe qui ne commence pas à $0$ peut exagérer visuellement une petite différence.\n:::\n\n::: retenir\n- Fréquence = effectif ÷ effectif total ; somme des fréquences = $1$.\n- Moyenne pondérée = somme des (valeur × effectif) ÷ effectif total.\n- Médiane = valeur centrale de la série **rangée** ; étendue = max − min.\n- Même moyenne n'implique ni même médiane ni même dispersion.\n:::"
+  }
+ ],
+ "fiches": [
+  {
+   "id": 157,
+   "summary": "<!-- optitab:1 -->\n::: objectifs\nRetenir l'essentiel : effectifs et fréquences, moyenne simple et pondérée, médiane, étendue, diagrammes, tableur et comparaison de séries.\n:::\n\n## I. Les indicateurs\n\n| Indicateur | Calcul |\n|---|---|\n| **Fréquence** | effectif ÷ effectif total (somme des fréquences = 1) |\n| **Moyenne pondérée** | somme des (valeur × effectif) ÷ effectif total |\n| **Médiane** | valeur centrale de la série **rangée** (effectif pair : moyenne des 2 valeurs centrales) |\n| **Étendue** | plus grande valeur − plus petite valeur (dispersion) |\n\n[IMAGE_1]\n\n::: exemple\nNotes $6\\ (\\times 2)$, $8\\ (\\times 3)$, $10\\ (\\times 6)$, $12\\ (\\times 5)$, $16\\ (\\times 4)$ : effectif $20$, moyenne $\\dfrac{220}{20} = 11$, médiane $10$ (10ᵉ et 11ᵉ valeurs), étendue $16 - 6 = 10$.\n:::\n\n## II. La médiane en pratique\n\n[IMAGE_2]\n\n::: methode\nRanger la série. $N$ impair : rang $\\dfrac{N+1}{2}$. $N$ pair : moyenne des valeurs de rangs $\\dfrac{N}{2}$ et $\\dfrac{N}{2}+1$. Avec un tableau : effectifs cumulés.\n:::\n\n## III. Les graphiques\n\n- **Bâtons** : valeurs isolées, hauteur = effectif.\n- **Histogramme** : classes, rectangles accolés ; médiane seulement **localisée**, moyenne seulement **estimée** (centres des classes).\n- **Circulaire** : angle $= 360^\\circ \\times$ fréquence ; somme des angles $= 360^\\circ$.\n\n[IMAGE_3]\n\n## IV. Tableur et comparaison\n\n- `=MOYENNE(A2:A10)`, `=MEDIANE(A2:A10)`, `=MAX(…)-MIN(…)`.\n- Moyenne pondérée : `=SOMMEPROD(A2:A4;B2:B4)` divisé par `=SOMME(B2:B4)`.\n- Comparer deux séries : position (moyenne, médiane) **et** dispersion (étendue).\n\n::: attention Les erreurs classiques\n1. Chercher la médiane sans avoir rangé la série.\n2. Faire la moyenne de deux moyennes de groupes de tailles différentes.\n3. Oublier les effectifs (`=MOYENNE` au lieu d'une moyenne pondérée).\n4. Se laisser tromper par un axe vertical qui ne commence pas à $0$.\n:::"
+  }
+ ],
+ "exercices": [
+  {
+   "id": 2317,
+   "question": "<!-- optitab:1 -->\nOn considère la série : $\\displaystyle 2\\ ;\\ 4\\ ;\\ 4\\ ;\\ 5\\ ;\\ 7\\ ;\\ 8$.\n\n1. Donner l'effectif total de la série.\n2. Donner l'effectif de la valeur 4.\n3. Calculer la fréquence de la valeur 4, en fraction puis en pourcentage arrondi à l'unité.\n4. Calculer la fréquence des valeurs strictement supérieures à 4.\n5. Vérifier que la somme des fréquences de toutes les valeurs vaut 1.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : L'effectif total\n\n::: methode\nL'effectif total est le nombre d'observations : on compte toutes les valeurs, y compris les répétitions.\n:::\n\n::: resultat\nL'effectif total est $6$.\n:::\n\n## Question 2 : L'effectif de la valeur 4\n\n::: methode\nL'effectif d'une valeur est le nombre de fois où elle apparaît.\n:::\n\n::: resultat\nLa valeur $4$ apparaît $2$ fois : son effectif est $2$.\n:::\n\n## Question 3 : La fréquence de 4\n\n::: methode\nFréquence = effectif de la valeur ÷ effectif total.\n:::\n\n::: etape En fraction\n$$\\frac{2}{6} = \\frac{1}{3}$$\n:::\n\n::: etape En pourcentage\n$$\\frac{1}{3} \\approx 0{,}333 \\approx 33\\ \\%$$\n:::\n\n::: resultat\nLa fréquence de $4$ est $\\dfrac{1}{3}$, soit environ $33\\ \\%$.\n:::\n\n## Question 4 : Valeurs strictement supérieures à 4\n\n::: etape Compter\n« Strictement supérieures à $4$ » : $5$, $7$ et $8$, soit $3$ valeurs ($4$ est exclu).\n:::\n\n::: etape Calculer la fréquence\n$$\\frac{3}{6} = \\frac{1}{2} = 0{,}5$$\n:::\n\n::: resultat\nLa fréquence est $\\dfrac{1}{2}$, soit $50\\ \\%$.\n:::\n\n## Question 5 : La somme des fréquences\n\n::: etape Fréquence de chaque valeur\n$2$ : $\\dfrac{1}{6}$ ; $4$ : $\\dfrac{2}{6}$ ; $5$ : $\\dfrac{1}{6}$ ; $7$ : $\\dfrac{1}{6}$ ; $8$ : $\\dfrac{1}{6}$.\n:::\n\n::: etape Additionner\n$$\\frac{1 + 2 + 1 + 1 + 1}{6} = \\frac{6}{6} = 1$$\n:::\n\n::: resultat\nLa somme des fréquences vaut $1$, soit $100\\ \\%$.\n:::\n\n::: attention Erreur fréquente\nDiviser par le nombre de valeurs **différentes** ($5$) au lieu de l'effectif total ($6$) : la fréquence de $4$ n'est pas $\\dfrac{2}{5}$ mais $\\dfrac{2}{6}$.\n:::\n\n::: retenir\nFréquence = effectif ÷ effectif total ; la somme des fréquences vaut toujours $1$.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $6$\n2. $2$\n3. $\\dfrac{1}{3} \\approx 33\\ \\%$\n4. $\\dfrac{1}{2} = 50\\ \\%$\n5. $\\dfrac{6}{6} = 1$",
+   "titre": "Découverte - Compter et calculer des fréquences",
+   "difficulty": "easy",
+   "contenu": "<!-- optitab:1 -->\nOn considère la série : $\\displaystyle 2\\ ;\\ 4\\ ;\\ 4\\ ;\\ 5\\ ;\\ 7\\ ;\\ 8$.\n\n1. Donner l'effectif total de la série.\n2. Donner l'effectif de la valeur 4.\n3. Calculer la fréquence de la valeur 4, en fraction puis en pourcentage arrondi à l'unité.\n4. Calculer la fréquence des valeurs strictement supérieures à 4.\n5. Vérifier que la somme des fréquences de toutes les valeurs vaut 1."
+  },
+  {
+   "id": 2321,
+   "question": "<!-- optitab:1 -->\nLes températures relevées une semaine d'hiver sont : $\\displaystyle -3\\ ;\\ 2\\ ;\\ 5\\ ;\\ -1\\ ;\\ 8\\ ;\\ 0\\ ;\\ 3$ (en °C).\n\n1. Donner la température maximale et la température minimale.\n2. Calculer l'étendue de la série.\n3. Calculer la moyenne des températures (arrondir au dixième).\n4. Déterminer la médiane.\n5. Que mesure l'étendue ? Que ne dit-elle pas ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Maximum et minimum\n\n::: methode\nOn parcourt **toute** la série ; pour les nombres négatifs, le plus petit est celui qui est le plus loin de $0$.\n:::\n\n::: resultat\nMaximum : $8$ °C ; minimum : $-3$ °C.\n:::\n\n## Question 2 : L'étendue\n\n::: methode\nÉtendue = plus grande valeur − plus petite valeur.\n:::\n\n::: etape Calculer\n$$8 - (-3) = 8 + 3 = 11$$\n:::\n\n::: resultat\nL'étendue est $11$ °C.\n:::\n\n## Question 3 : La moyenne\n\n::: etape Additionner (en tenant compte des signes)\n$$-3 + 2 + 5 + (-1) + 8 + 0 + 3 = 14$$\n:::\n\n::: etape Diviser par le nombre de valeurs\n$7$ relevés : $\\dfrac{14}{7} = 2$.\n:::\n\n::: resultat\nLa moyenne est $2$ °C (valeur exacte, $2{,}0$ au dixième).\n:::\n\n## Question 4 : La médiane\n\n::: etape Ranger la série\n$-3\\ ;\\ -1\\ ;\\ 0\\ ;\\ 2\\ ;\\ 3\\ ;\\ 5\\ ;\\ 8$\n:::\n\n::: etape Valeur centrale\n$7$ valeurs : rang $\\dfrac{7 + 1}{2} = 4$, la 4ᵉ valeur est $2$.\n:::\n\n::: resultat\nLa médiane est $2$ °C.\n:::\n\n## Question 5 : Ce que mesure l'étendue\n\n::: resultat\nL'étendue mesure l'écart entre les deux températures extrêmes. Elle ne dit rien de la répartition des autres valeurs, ni du niveau moyen des températures.\n:::\n\n::: attention Erreur fréquente\nÉcrire $8 - 3 = 5$ : on oublie le signe de $-3$. Soustraire un nombre négatif revient à ajouter son opposé : $8 - (-3) = 11$.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $8$ °C et $-3$ °C\n2. $11$ °C\n3. $2$ °C\n4. $2$ °C\n5. L'écart entre les extrêmes, pas la répartition des valeurs",
+   "titre": "Découverte - Des étendues",
+   "difficulty": "easy",
+   "contenu": "<!-- optitab:1 -->\nLes températures relevées une semaine d'hiver sont : $\\displaystyle -3\\ ;\\ 2\\ ;\\ 5\\ ;\\ -1\\ ;\\ 8\\ ;\\ 0\\ ;\\ 3$ (en °C).\n\n1. Donner la température maximale et la température minimale.\n2. Calculer l'étendue de la série.\n3. Calculer la moyenne des températures (arrondir au dixième).\n4. Déterminer la médiane.\n5. Que mesure l'étendue ? Que ne dit-elle pas ?"
+  },
+  {
+   "id": 2320,
+   "question": "<!-- optitab:1 -->\n1. Ranger la série $\\displaystyle 13\\ ;\\ 4\\ ;\\ 9\\ ;\\ 7\\ ;\\ 11$ dans l'ordre croissant.\n2. En déduire sa médiane.\n3. Déterminer la médiane de $\\displaystyle 1\\ ;\\ 3\\ ;\\ 6\\ ;\\ 8\\ ;\\ 10\\ ;\\ 20$ (effectif pair).\n4. Calculer la moyenne de cette dernière série.\n5. Pourquoi la moyenne est-elle supérieure à la médiane dans la question 4 ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Ranger la série\n\n::: methode\nOn repère la plus petite valeur, puis la suivante, et ainsi de suite, en vérifiant à la fin qu'on a toujours $5$ valeurs.\n:::\n\n::: resultat\n$$4\\ ;\\ 7\\ ;\\ 9\\ ;\\ 11\\ ;\\ 13$$\n:::\n\n## Question 2 : La médiane (effectif impair)\n\n::: methode\nEffectif $N$ impair : la médiane est la valeur de rang $\\dfrac{N+1}{2}$ de la série rangée.\n:::\n\n::: etape Trouver le rang\n$N = 5$, donc le rang central est $\\dfrac{5 + 1}{2} = 3$.\n:::\n\n::: etape Lire la 3ᵉ valeur\nDans $4\\ ;\\ 7\\ ;\\ 9\\ ;\\ 11\\ ;\\ 13$, la 3ᵉ valeur est $9$ : deux valeurs avant, deux après.\n:::\n\n::: resultat\nLa médiane est $9$.\n:::\n\n## Question 3 : La médiane (effectif pair)\n\n::: methode\nEffectif $N$ pair : la médiane est la moyenne des valeurs de rangs $\\dfrac{N}{2}$ et $\\dfrac{N}{2} + 1$.\n:::\n\n::: etape Trouver les rangs\nLa série est déjà rangée et $N = 6$ : rangs $3$ et $4$, valeurs $6$ et $8$.\n:::\n\n::: etape Calculer\n$$\\frac{6 + 8}{2} = 7$$\n:::\n\n::: resultat\nLa médiane est $7$.\n:::\n\n## Question 4 : La moyenne\n\n::: etape Somme puis quotient\n$$\\frac{1 + 3 + 6 + 8 + 10 + 20}{6} = \\frac{48}{6} = 8$$\n:::\n\n::: resultat\nLa moyenne est $8$.\n:::\n\n## Question 5 : Pourquoi moyenne > médiane ?\n\n::: methode\nLa moyenne utilise **toutes** les valeurs ; la médiane ne dépend que des valeurs centrales.\n:::\n\n::: etape Repérer la valeur extrême\nLa valeur $20$ est très éloignée des autres : elle augmente beaucoup la somme, donc la moyenne ($8$), mais ne change pas les valeurs centrales $6$ et $8$, donc la médiane ($7$).\n:::\n\n::: resultat\nLa valeur extrême $20$ « tire » la moyenne vers le haut, alors que la médiane reste au milieu de la série.\n:::\n\n::: attention Erreur fréquente\nPrendre la valeur du milieu de la série **non rangée** : pour $13\\ ;\\ 4\\ ;\\ 9\\ ;\\ 7\\ ;\\ 11$, la 3ᵉ valeur écrite est $9$ par hasard, mais en général ce n'est pas la médiane. On range toujours d'abord.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $4\\ ;\\ 7\\ ;\\ 9\\ ;\\ 11\\ ;\\ 13$\n2. $9$\n3. $7$\n4. $8$\n5. La valeur extrême $20$ tire la moyenne vers le haut",
+   "titre": "Découverte - Des médianes",
+   "difficulty": "easy",
+   "contenu": "<!-- optitab:1 -->\n1. Ranger la série $\\displaystyle 13\\ ;\\ 4\\ ;\\ 9\\ ;\\ 7\\ ;\\ 11$ dans l'ordre croissant.\n2. En déduire sa médiane.\n3. Déterminer la médiane de $\\displaystyle 1\\ ;\\ 3\\ ;\\ 6\\ ;\\ 8\\ ;\\ 10\\ ;\\ 20$ (effectif pair).\n4. Calculer la moyenne de cette dernière série.\n5. Pourquoi la moyenne est-elle supérieure à la médiane dans la question 4 ?"
+  },
+  {
+   "id": 2319,
+   "question": "<!-- optitab:1 -->\n1. Calculer la moyenne de $\\displaystyle 7\\ ;\\ 9\\ ;\\ 10\\ ;\\ 14$.\n2. Calculer la moyenne de $\\displaystyle 12\\ ;\\ 15\\ ;\\ 8\\ ;\\ 11\\ ;\\ 9$.\n3. Calculer la moyenne de $\\displaystyle -3\\ ;\\ 5\\ ;\\ 0\\ ;\\ 2$.\n4. La moyenne d'une série est-elle forcément l'une de ses valeurs ? Justifier avec la question 3.\n5. Si on ajoute 2 à chaque valeur de la première série, que devient la moyenne ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Première série\n\n::: methode\nMoyenne = somme des valeurs ÷ nombre de valeurs.\n:::\n\n::: etape Additionner les valeurs\n$$7 + 9 + 10 + 14 = 40$$\n:::\n\n::: etape Diviser par le nombre de valeurs\nLa série compte $4$ valeurs : $\\dfrac{40}{4} = 10$.\n:::\n\n::: resultat\nLa moyenne de la première série est $10$.\n:::\n\n## Question 2 : Deuxième série\n\n::: etape Additionner les valeurs\n$$12 + 15 + 8 + 11 + 9 = 55$$\n:::\n\n::: etape Diviser par le nombre de valeurs\nLa série compte $5$ valeurs : $\\dfrac{55}{5} = 11$.\n:::\n\n::: resultat\nLa moyenne de la deuxième série est $11$.\n:::\n\n## Question 3 : Troisième série\n\n::: etape Additionner en tenant compte du signe\n$$-3 + 5 + 0 + 2 = 4$$\n:::\n\n::: etape Diviser par le nombre de valeurs\nLa valeur $0$ compte comme une valeur : il y en a $4$, donc $\\dfrac{4}{4} = 1$.\n:::\n\n::: resultat\nLa moyenne de la troisième série est $1$.\n:::\n\n## Question 4 : La moyenne est-elle une valeur de la série ?\n\n::: methode\nUn seul contre-exemple suffit pour répondre « non ».\n:::\n\n::: etape Comparer\nLa moyenne $1$ n'est égale à aucune des valeurs $-3$, $5$, $0$ et $2$.\n:::\n\n::: resultat\nNon : la moyenne n'est pas forcément une valeur de la série.\n:::\n\n## Question 5 : Ajouter 2 à chaque valeur\n\n::: etape Nouvelle série\n$9\\ ;\\ 11\\ ;\\ 12\\ ;\\ 16$, de somme $9 + 11 + 12 + 16 = 48$.\n:::\n\n::: etape Nouvelle moyenne\n$$\\frac{48}{4} = 12 = 10 + 2$$\nLa somme a augmenté de $4 \\times 2 = 8$, donc la moyenne de $\\dfrac{8}{4} = 2$.\n:::\n\n::: resultat\nLa moyenne augmente aussi de $2$ : elle passe de $10$ à $12$.\n:::\n\n::: attention Erreur fréquente\nOublier la valeur $0$ en comptant les valeurs (question 3) : diviser $4$ par $3$ donnerait un résultat faux. On compte les valeurs **avant** de diviser.\n:::\n\n::: retenir\nMoyenne = somme ÷ nombre de valeurs ; elle n'est pas forcément une valeur de la série.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $10$\n2. $11$\n3. $1$\n4. Non ($1$ n'est pas dans la série)\n5. Elle augmente de $2$ : $12$",
+   "titre": "Découverte - Des moyennes simples",
+   "difficulty": "easy",
+   "contenu": "<!-- optitab:1 -->\n1. Calculer la moyenne de $\\displaystyle 7\\ ;\\ 9\\ ;\\ 10\\ ;\\ 14$.\n2. Calculer la moyenne de $\\displaystyle 12\\ ;\\ 15\\ ;\\ 8\\ ;\\ 11\\ ;\\ 9$.\n3. Calculer la moyenne de $\\displaystyle -3\\ ;\\ 5\\ ;\\ 0\\ ;\\ 2$.\n4. La moyenne d'une série est-elle forcément l'une de ses valeurs ? Justifier avec la question 3.\n5. Si on ajoute 2 à chaque valeur de la première série, que devient la moyenne ?"
+  },
+  {
+   "id": 2322,
+   "question": "<!-- optitab:1 -->\nLe diagramme ci-dessous représente les notes obtenues par une classe à un contrôle.\n\n[IMAGE_1]\n\n1. Combien d'élèves ont obtenu 10 ?\n2. Quel est l'effectif total de la classe ?\n3. Quelle est la note la plus fréquente ?\n4. Combien d'élèves ont obtenu au moins 12 ?\n5. Quel pourcentage de la classe a obtenu au moins 12 ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Les élèves qui ont eu 10\n\n::: methode\nDans un diagramme en bâtons, la hauteur du bâton placé au-dessus d'une valeur donne son effectif.\n:::\n\n::: etape Lire le diagramme\nLe bâton de la note $10$ monte jusqu'à la graduation $6$.\n:::\n\n::: resultat\n$6$ élèves ont obtenu $10$.\n:::\n\n## Question 2 : L'effectif total\n\n::: etape Lire chaque bâton\nNotes $6$, $8$, $10$, $12$, $16$ : effectifs $2$, $3$, $6$, $5$, $4$.\n:::\n\n::: etape Additionner\n$$2 + 3 + 6 + 5 + 4 = 20$$\n:::\n\n::: resultat\nLa classe compte $20$ élèves.\n:::\n\n## Question 3 : La note la plus fréquente\n\n::: methode\nLa valeur la plus fréquente est celle qui a le plus grand effectif, donc le bâton le plus haut.\n:::\n\n::: resultat\nLa note la plus fréquente est $10$ ($6$ élèves).\n:::\n\n## Question 4 : Au moins 12\n\n::: methode\n« Au moins $12$ » signifie « $12$ ou plus » : on additionne les effectifs des notes $12$ et $16$.\n:::\n\n[IMAGE_2]\n\n::: etape Additionner\n$$5 + 4 = 9$$\n:::\n\n::: resultat\n$9$ élèves ont obtenu au moins $12$.\n:::\n\n## Question 5 : En pourcentage\n\n::: etape Fréquence\n$$\\frac{9}{20} = 0{,}45 = \\frac{45}{100}$$\n:::\n\n::: resultat\n$45\\ \\%$ de la classe a obtenu au moins $12$.\n:::\n\n::: attention Erreur fréquente\nConfondre la valeur (la note, lue sous l'axe horizontal) et l'effectif (la hauteur du bâton) ; ou oublier la note $12$ elle-même dans « au moins $12$ ».\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $6$\n2. $20$\n3. $10$\n4. $9$\n5. $45\\ \\%$",
+   "titre": "Découverte - Lire un diagramme en bâtons",
+   "difficulty": "easy",
+   "contenu": "<!-- optitab:1 -->\nLe diagramme ci-dessous représente les notes obtenues par une classe à un contrôle.\n\n[IMAGE_1]\n\n1. Combien d'élèves ont obtenu 10 ?\n2. Quel est l'effectif total de la classe ?\n3. Quelle est la note la plus fréquente ?\n4. Combien d'élèves ont obtenu au moins 12 ?\n5. Quel pourcentage de la classe a obtenu au moins 12 ?"
+  },
+  {
+   "id": 2318,
+   "question": "<!-- optitab:1 -->\nDans un groupe de 30 élèves, 12 viennent à vélo, 9 en bus et les autres à pied.\n\n1. Combien d'élèves viennent à pied ?\n2. Calculer la fréquence des élèves venant à vélo, en décimal et en pourcentage.\n3. Calculer la fréquence des élèves venant en bus.\n4. Calculer la fréquence des élèves venant à pied.\n5. Vérifier que la somme des trois pourcentages vaut 100 %.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Les élèves à pied\n\n::: methode\nLes trois catégories se partagent les $30$ élèves : on retire les effectifs connus.\n:::\n\n::: etape Calculer\n$$30 - 12 - 9 = 9$$\n:::\n\n::: resultat\n$9$ élèves viennent à pied.\n:::\n\n## Question 2 : Le vélo\n\n::: methode\nFréquence = effectif de la catégorie ÷ effectif total ($30$) ; pour un pourcentage, on multiplie par $100$.\n:::\n\n::: etape Calculer\n$$\\frac{12}{30} = 0{,}4 = \\frac{40}{100}$$\n:::\n\n::: resultat\nFréquence du vélo : $0{,}4$, soit $40\\ \\%$.\n:::\n\n## Question 3 : Le bus\n\n::: etape Calculer\n$$\\frac{9}{30} = 0{,}3$$\n:::\n\n::: resultat\nFréquence du bus : $0{,}3$, soit $30\\ \\%$.\n:::\n\n## Question 4 : À pied\n\n::: etape Calculer avec l'effectif de la question 1\n$$\\frac{9}{30} = 0{,}3$$\n:::\n\n::: resultat\nFréquence de la marche : $0{,}3$, soit $30\\ \\%$.\n:::\n\n## Question 5 : La vérification\n\n::: etape Additionner les pourcentages\n$$40\\ \\% + 30\\ \\% + 30\\ \\% = 100\\ \\%$$\n:::\n\n::: resultat\nLa somme vaut bien $100\\ \\%$ : chaque élève est compté une fois et une seule.\n:::\n\n::: attention Erreur fréquente\nDiviser par un effectif partiel (par exemple $12 + 9 = 21$) : le dénominateur d'une fréquence est toujours l'effectif du groupe entier, ici $30$.\n:::\n\n::: retenir\nLe dénominateur d'une fréquence est TOUJOURS l'effectif total.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $9$\n2. $0{,}4 = 40\\ \\%$\n3. $0{,}3 = 30\\ \\%$\n4. $0{,}3 = 30\\ \\%$\n5. $40 + 30 + 30 = 100$",
+   "titre": "Découverte - Une fréquence dans un groupe",
+   "difficulty": "easy",
+   "contenu": "<!-- optitab:1 -->\nDans un groupe de 30 élèves, 12 viennent à vélo, 9 en bus et les autres à pied.\n\n1. Combien d'élèves viennent à pied ?\n2. Calculer la fréquence des élèves venant à vélo, en décimal et en pourcentage.\n3. Calculer la fréquence des élèves venant en bus.\n4. Calculer la fréquence des élèves venant à pied.\n5. Vérifier que la somme des trois pourcentages vaut 100 %."
+  },
+  {
+   "id": 2323,
+   "question": "<!-- optitab:1 -->\nLe tableau donne les notes obtenues par les élèves d'une classe à un contrôle.\n\n[IMAGE_1]\n\n1. Calculer l'effectif total.\n2. Calculer la somme pondérée des notes.\n3. En déduire la moyenne de la classe.\n4. Déterminer la médiane (utiliser les effectifs cumulés).\n5. Calculer l'étendue.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : L'effectif total\n\n::: methode\nL'effectif total est la somme des effectifs (deuxième ligne du tableau).\n:::\n\n::: etape Additionner\n$$2 + 3 + 6 + 5 + 4 = 20$$\n:::\n\n::: resultat\nL'effectif total est $20$ élèves.\n:::\n\n## Question 2 : La somme pondérée\n\n::: methode\nOn multiplie chaque note par son effectif, puis on additionne les produits.\n:::\n\n::: etape Produits\n$$6 \\times 2 + 8 \\times 3 + 10 \\times 6 + 12 \\times 5 + 16 \\times 4$$\n:::\n\n::: etape Additionner\n$$12 + 24 + 60 + 60 + 64 = 220$$\n:::\n\n::: resultat\nLa somme pondérée vaut $220$.\n:::\n\n## Question 3 : La moyenne\n\n::: methode\nMoyenne pondérée = somme pondérée ÷ effectif total.\n:::\n\n::: etape Diviser\n$$\\frac{220}{20} = 11$$\n:::\n\n::: resultat\nLa moyenne de la classe est $11$.\n:::\n\n## Question 4 : La médiane\n\n::: methode\nEffectif $20$ (pair) : la médiane est la moyenne des valeurs de rangs $10$ et $11$. Les effectifs cumulés donnent les rangs sans écrire toute la série.\n:::\n\n::: etape Effectifs cumulés\nOn ajoute une ligne : chaque case donne le nombre d'élèves ayant une note inférieure ou égale à celle de la colonne.\n:::\n\n[IMAGE_2]\n\n::: etape Lire les rangs 10 et 11\n$5$ élèves ont $8$ ou moins et $11$ élèves ont $10$ ou moins : les rangs $6$ à $11$ portent la note $10$. Les 10ᵉ et 11ᵉ valeurs valent donc $10$.\n:::\n\n::: resultat\nLa médiane est $\\dfrac{10 + 10}{2} = 10$.\n:::\n\n## Question 5 : L'étendue\n\n::: methode\nÉtendue = plus grande note − plus petite note (première ligne du tableau).\n:::\n\n::: etape Calculer\n$$16 - 6 = 10$$\n:::\n\n::: resultat\nL'étendue est $10$ points.\n:::\n\n::: attention Erreur fréquente\nCalculer la moyenne des notes sans les effectifs : $\\dfrac{6 + 8 + 10 + 12 + 16}{5} = 10{,}4$ est faux ; la bonne moyenne pondérée est $11$. De même, l'étendue se calcule avec les notes, pas avec les effectifs.\n:::\n\n::: retenir\nLes effectifs cumulés permettent de trouver les rangs centraux sans écrire toute la série.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $20$\n2. $220$\n3. $11$\n4. $10$\n5. $10$",
+   "titre": "Découverte - Un tableau complet",
+   "difficulty": "easy",
+   "contenu": "<!-- optitab:1 -->\nLe tableau donne les notes obtenues par les élèves d'une classe à un contrôle.\n\n[IMAGE_1]\n\n1. Calculer l'effectif total.\n2. Calculer la somme pondérée des notes.\n3. En déduire la moyenne de la classe.\n4. Déterminer la médiane (utiliser les effectifs cumulés).\n5. Calculer l'étendue."
+  },
+  {
+   "id": 2329,
+   "question": "<!-- optitab:1 -->\nOn compare deux séries : A : $\\displaystyle 9\\ ;\\ 10\\ ;\\ 10\\ ;\\ 11$ et B : $\\displaystyle 2\\ ;\\ 10\\ ;\\ 10\\ ;\\ 18$.\n\n1. Calculer les moyennes des deux séries.\n2. Calculer leurs médianes.\n3. Calculer leurs étendues.\n4. Quelle série est la plus dispersée ?\n5. Que montre cet exemple sur l'usage de la seule moyenne ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Les moyennes\n\n::: methode\nMoyenne = somme des valeurs ÷ nombre de valeurs ($4$ pour chaque série).\n:::\n\n::: etape Série A\n$$\\frac{9 + 10 + 10 + 11}{4} = \\frac{40}{4} = 10$$\n:::\n\n::: etape Série B\n$$\\frac{2 + 10 + 10 + 18}{4} = \\frac{40}{4} = 10$$\n:::\n\n::: resultat\nLes deux séries ont la même moyenne : $10$.\n:::\n\n## Question 2 : Les médianes\n\n::: methode\nLes séries sont déjà rangées ; effectif $4$ (pair) : médiane = moyenne des 2ᵉ et 3ᵉ valeurs.\n:::\n\n::: etape Calculer\n- A : $\\dfrac{10 + 10}{2} = 10$ ;\n- B : $\\dfrac{10 + 10}{2} = 10$.\n:::\n\n::: resultat\nLes deux séries ont la même médiane : $10$.\n:::\n\n## Question 3 : Les étendues\n\n::: methode\nÉtendue = plus grande valeur − plus petite valeur.\n:::\n\n::: etape Calculer\n- A : $11 - 9 = 2$ ;\n- B : $18 - 2 = 16$.\n:::\n\n::: resultat\nÉtendue de A : $2$ ; étendue de B : $16$.\n:::\n\n## Question 4 : La série la plus dispersée\n\n::: methode\nL'étendue mesure la dispersion : plus elle est grande, plus les valeurs sont écartées.\n:::\n\n::: resultat\nLa série B est la plus dispersée (étendue $16$ contre $2$).\n:::\n\n## Question 5 : La leçon\n\n::: etape Bilan\nMême moyenne ($10$), même médiane ($10$), mais des étendues très différentes ($2$ et $16$).\n:::\n\n::: resultat\nLa moyenne seule ne suffit pas : il faut un indicateur de **position** et un indicateur de **dispersion**.\n:::\n\n::: attention Erreur fréquente\nConclure que deux séries de même moyenne se ressemblent : il faut aussi comparer la médiane et l'étendue.\n:::\n\n::: retenir\nPour comparer deux séries : position (moyenne, médiane) ET dispersion (étendue).\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $10$ et $10$\n2. $10$ et $10$\n3. $2$ et $16$\n4. B\n5. Il faut aussi un indicateur de dispersion",
+   "titre": "Entraînement - Même moyenne, mêmes résultats ?",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nOn compare deux séries : A : $\\displaystyle 9\\ ;\\ 10\\ ;\\ 10\\ ;\\ 11$ et B : $\\displaystyle 2\\ ;\\ 10\\ ;\\ 10\\ ;\\ 18$.\n\n1. Calculer les moyennes des deux séries.\n2. Calculer leurs médianes.\n3. Calculer leurs étendues.\n4. Quelle série est la plus dispersée ?\n5. Que montre cet exemple sur l'usage de la seule moyenne ?"
+  },
+  {
+   "id": 2327,
+   "question": "<!-- optitab:1 -->\nUn groupe de 12 élèves a une moyenne de 13 ; un autre groupe de 18 élèves a une moyenne de 11.\n\n1. Calculer la somme des notes du premier groupe.\n2. Calculer la somme des notes du second groupe.\n3. Calculer la moyenne des 30 élèves réunis.\n4. Pourquoi la réponse n'est-elle pas $\\displaystyle \\frac{13 + 11}{2} = 12$ ?\n5. Dans quel cas la moyenne des deux moyennes serait-elle correcte ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Le premier groupe\n\n::: methode\nSi la moyenne de 12 notes vaut 13, leur somme vaut $12 \\times 13$ : somme = effectif $\\times$ moyenne.\n:::\n\n::: resultat\n$$12 \\times 13 = 156$$\n:::\n\n## Question 2 : Le second groupe\n\n::: methode\nMême méthode pour le second groupe : effectif 18, moyenne 11.\n:::\n\n::: resultat\n$$18 \\times 11 = 198$$\n:::\n\n## Question 3 : La moyenne commune\n\n::: methode\nMoyenne des $30$ élèves = somme de toutes les notes ÷ effectif total.\n:::\n\n::: etape Somme de toutes les notes\n$$156 + 198 = 354$$\n:::\n\n::: etape Effectif total\n$$12 + 18 = 30$$\n:::\n\n::: etape Diviser\n$$\\frac{354}{30} = 11{,}8$$\n:::\n\n::: resultat\nLa moyenne des $30$ élèves réunis est $11{,}8$.\n:::\n\n## Question 4 : Pourquoi pas 12 ?\n\n::: methode\nLa moyenne de deux moyennes donne le même poids aux deux groupes, alors qu'ils n'ont pas le même nombre d'élèves.\n:::\n\n::: resultat\nLes deux groupes n'ont pas la même taille : le second (18 élèves) doit peser plus que le premier (12 élèves)\n:::\n\n## Question 5 : Quand la moyenne des moyennes marche\n\n::: methode\nOn compare avec la moyenne pondérée : les deux calculs coïncident lorsque les deux groupes comptent autant d'élèves, car ils ont alors le même poids.\n:::\n\n::: resultat\nUniquement si les deux groupes ont le MÊME effectif\n:::\n\n::: attention Erreur fréquente\nFaire la moyenne des deux moyennes : c'est faux dès que les deux groupes n'ont pas le même effectif. On additionne les **sommes**.\n:::\n\n::: retenir\nPour réunir des groupes : reconstituer les SOMMES, puis diviser par l'effectif total.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. 156\n2. 198\n3. 11,8\n4. Groupes de tailles différentes\n5. Si les effectifs sont égaux",
+   "titre": "Entraînement - Réunir deux groupes",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nUn groupe de 12 élèves a une moyenne de 13 ; un autre groupe de 18 élèves a une moyenne de 11.\n\n1. Calculer la somme des notes du premier groupe.\n2. Calculer la somme des notes du second groupe.\n3. Calculer la moyenne des 30 élèves réunis.\n4. Pourquoi la réponse n'est-elle pas $\\displaystyle \\frac{13 + 11}{2} = 12$ ?\n5. Dans quel cas la moyenne des deux moyennes serait-elle correcte ?"
+  },
+  {
+   "id": 2324,
+   "question": "<!-- optitab:1 -->\nSur 40 réponses à un sondage : 10 choisissent A, 18 choisissent B et 12 choisissent C. On veut représenter ces résultats par un diagramme circulaire.\n\n1. Quel angle représente une réponse dans le diagramme circulaire ?\n2. Calculer les trois angles du diagramme.\n3. Vérifier que leur somme vaut 360°.\n4. Calculer la fréquence de la réponse B en pourcentage.\n5. Retrouver l'angle de B à partir de sa fréquence.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : L'angle d'une réponse\n\n::: methode\nLes $40$ réponses se partagent le disque entier, soit $360^\\circ$.\n:::\n\n::: etape Partager $360^\\circ$\n$$\\frac{360^\\circ}{40} = 9^\\circ$$\n:::\n\n::: resultat\nUne réponse est représentée par un angle de $9^\\circ$.\n:::\n\n## Question 2 : Les trois angles\n\n::: methode\nAngle d'un secteur = effectif × angle d'une réponse.\n:::\n\n::: etape Calculer chaque angle\n- A : $10 \\times 9^\\circ = 90^\\circ$ ;\n- B : $18 \\times 9^\\circ = 162^\\circ$ ;\n- C : $12 \\times 9^\\circ = 108^\\circ$.\n:::\n\n::: resultat\nLes angles sont $90^\\circ$ (A), $162^\\circ$ (B) et $108^\\circ$ (C).\n:::\n\n## Question 3 : La vérification\n\n::: methode\nLes secteurs remplissent tout le disque : la somme des angles doit faire un tour complet.\n:::\n\n::: etape Additionner\n$$90 + 162 + 108 = 360$$\n:::\n\n[IMAGE_1]\n\n::: resultat\nLa somme vaut bien $360^\\circ$ : le diagramme est complet.\n:::\n\n## Question 4 : La fréquence de B\n\n::: etape Effectif de B ÷ effectif total\n$$\\frac{18}{40} = 0{,}45 = \\frac{45}{100}$$\n:::\n\n::: resultat\nLa fréquence de B est $45\\ \\%$.\n:::\n\n## Question 5 : L'angle à partir de la fréquence\n\n::: methode\nAngle = $360^\\circ \\times$ fréquence.\n:::\n\n::: etape Calculer\n$$360^\\circ \\times 0{,}45 = 162^\\circ$$\n:::\n\n::: resultat\nOn retrouve l'angle de B : $162^\\circ$, comme à la question 2.\n:::\n\n::: attention Erreur fréquente\nPrendre l'effectif ou le pourcentage comme angle : l'angle de B n'est ni $18^\\circ$ ni $45^\\circ$, mais $18 \\times 9^\\circ = 162^\\circ$.\n:::\n\n::: retenir\nAngle $= 360^\\circ \\times$ fréquence ; la somme des angles vaut $360^\\circ$.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $9^\\circ$\n2. $90^\\circ$, $162^\\circ$, $108^\\circ$\n3. $90 + 162 + 108 = 360$\n4. $45\\ \\%$\n5. $360^\\circ \\times 0{,}45 = 162^\\circ$",
+   "titre": "Entraînement - Un diagramme circulaire",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nSur 40 réponses à un sondage : 10 choisissent A, 18 choisissent B et 12 choisissent C. On veut représenter ces résultats par un diagramme circulaire.\n\n1. Quel angle représente une réponse dans le diagramme circulaire ?\n2. Calculer les trois angles du diagramme.\n3. Vérifier que leur somme vaut 360°.\n4. Calculer la fréquence de la réponse B en pourcentage.\n5. Retrouver l'angle de B à partir de sa fréquence."
+  },
+  {
+   "id": 2326,
+   "question": "<!-- optitab:1 -->\nDans une feuille de calcul, les valeurs 4, 7 et 12 sont en A2:A4 et leurs effectifs 3, 5 et 2 en B2:B4.\n\n[IMAGE_1]\n\n1. Écrire une formule donnant la somme pondérée.\n2. Calculer cette somme pondérée.\n3. Écrire une formule donnant l'effectif total, puis le calculer.\n4. En déduire la moyenne.\n5. Pourquoi la formule =MOYENNE(A2:A4) donnerait-elle un résultat faux ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : La formule de somme pondérée\n\n::: methode\nOn multiplie chaque valeur (colonne A) par son effectif (colonne B), ligne par ligne, puis on additionne.\n:::\n\n::: etape Écrire la formule\nUne formule de tableur commence par `=`. Le produit s'écrit avec `*`.\n\n```console\n=A2*B2+A3*B3+A4*B4\n```\n:::\n\n::: resultat\n`=A2*B2+A3*B3+A4*B4`, ou plus court : `=SOMMEPROD(A2:A4;B2:B4)`.\n:::\n\n## Question 2 : La somme pondérée\n\n::: etape Calculer chaque produit\n$4 \\times 3 = 12$ ; $7 \\times 5 = 35$ ; $12 \\times 2 = 24$.\n:::\n\n::: etape Additionner\n$$12 + 35 + 24 = 71$$\n:::\n\n::: resultat\nLa somme pondérée vaut $71$.\n:::\n\n## Question 3 : L'effectif total\n\n::: etape Formule\n`=SOMME(B2:B4)` additionne les effectifs.\n:::\n\n::: etape Calcul\n$$3 + 5 + 2 = 10$$\n:::\n\n::: resultat\nL'effectif total est $10$.\n:::\n\n## Question 4 : La moyenne\n\n::: methode\nMoyenne pondérée = somme pondérée ÷ effectif total.\n:::\n\n::: etape Calculer\n$$\\frac{71}{10} = 7{,}1$$\n:::\n\n::: resultat\nLa moyenne est $7{,}1$.\n:::\n\n## Question 5 : L'erreur de =MOYENNE(A2:A4)\n\n::: etape Ce que calcule cette formule\nElle fait la moyenne des trois nombres écrits : $\\dfrac{4 + 7 + 12}{3} = \\dfrac{23}{3} \\approx 7{,}67$.\n:::\n\n::: resultat\nElle ignore les effectifs : chaque valeur compte une seule fois, alors que $7$ apparaît $5$ fois et $12$ seulement $2$ fois.\n:::\n\n::: attention Erreur fréquente\nUtiliser `=MOYENNE(A2:A4)` pour un tableau d'effectifs : le résultat $7{,}67$ est faux, la bonne moyenne pondérée est $7{,}1$.\n:::\n\n::: retenir\nAvec des effectifs, on pondère toujours avant de diviser.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. `=A2*B2+A3*B3+A4*B4`\n2. $71$\n3. `=SOMME(B2:B4)`, soit $10$\n4. $7{,}1$\n5. Elle ignore les effectifs ($\\approx 7{,}67$ au lieu de $7{,}1$)",
+   "titre": "Entraînement - Une formule de tableur",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nDans une feuille de calcul, les valeurs 4, 7 et 12 sont en A2:A4 et leurs effectifs 3, 5 et 2 en B2:B4.\n\n[IMAGE_1]\n\n1. Écrire une formule donnant la somme pondérée.\n2. Calculer cette somme pondérée.\n3. Écrire une formule donnant l'effectif total, puis le calculer.\n4. En déduire la moyenne.\n5. Pourquoi la formule =MOYENNE(A2:A4) donnerait-elle un résultat faux ?"
+  },
+  {
+   "id": 2328,
+   "question": "<!-- optitab:1 -->\nQuatre notes sont 8, 12, 14 et $\\displaystyle x$. Leur moyenne est 12,5.\n\n1. Calculer la somme des quatre notes.\n2. En déduire $\\displaystyle x$.\n3. Vérifier le résultat.\n4. Quelle note faudrait-il pour obtenir une moyenne de 13 ?\n5. Peut-on obtenir une moyenne de 15 si les notes sont sur 20 ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : La somme des quatre notes\n\n::: methode\nSi la moyenne de $4$ notes vaut $12{,}5$, alors somme = nombre de notes × moyenne.\n:::\n\n::: etape Calculer\n$$4 \\times 12{,}5 = 50$$\n:::\n\n::: resultat\nLa somme des quatre notes vaut $50$.\n:::\n\n## Question 2 : La note $x$\n\n::: etape Écrire l'égalité des sommes\n$$8 + 12 + 14 + x = 50$$\n:::\n\n::: etape Résoudre\n$$\n\\begin{aligned}\n34 + x &= 50 \\\\\nx &= 50 - 34 = 16\n\\end{aligned}\n$$\n:::\n\n::: resultat\nLa note manquante est $x = 16$.\n:::\n\n## Question 3 : La vérification\n\n::: etape Recalculer la moyenne\n$$\\frac{8 + 12 + 14 + 16}{4} = \\frac{50}{4} = 12{,}5$$\n:::\n\n::: resultat\nOn retrouve bien la moyenne $12{,}5$ : $x = 16$ est correct.\n:::\n\n## Question 4 : Pour une moyenne de 13\n\n::: etape Somme nécessaire\n$$4 \\times 13 = 52$$\n:::\n\n::: etape Note nécessaire\n$$x = 52 - 34 = 18$$\n:::\n\n::: resultat\nIl faudrait la note $18$.\n:::\n\n## Question 5 : Pour une moyenne de 15\n\n::: etape Somme nécessaire\n$$4 \\times 15 = 60$$\n:::\n\n::: etape Note nécessaire\n$$x = 60 - 34 = 26$$\n:::\n\n::: resultat\nImpossible : il faudrait $26$, alors que la note maximale est $20$.\n:::\n\n::: attention Erreur fréquente\nRaisonner directement sur les moyennes (par exemple « il manque $0{,}5$ point ») : on passe toujours par les **sommes** (somme = moyenne × nombre de notes).\n:::\n\n::: retenir\nUne moyenne connue se traduit en SOMME : c'est la clé des problèmes de note manquante.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $50$\n2. $x = 16$\n3. $\\dfrac{50}{4} = 12{,}5$\n4. $18$\n5. Non : il faudrait $26 > 20$",
+   "titre": "Entraînement - Une note manquante",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nQuatre notes sont 8, 12, 14 et $\\displaystyle x$. Leur moyenne est 12,5.\n\n1. Calculer la somme des quatre notes.\n2. En déduire $\\displaystyle x$.\n3. Vérifier le résultat.\n4. Quelle note faudrait-il pour obtenir une moyenne de 13 ?\n5. Peut-on obtenir une moyenne de 15 si les notes sont sur 20 ?"
+  },
+  {
+   "id": 2330,
+   "question": "<!-- optitab:1 -->\nLes salaires mensuels (en €) de 5 employés d'une petite entreprise sont : 1 800 ; 1 900 ; 2 000 ; 2 100 ; 2 200.\n\n1. Calculer la moyenne et la médiane des salaires.\n2. On ajoute le salaire du directeur : 9 000 €. Calculer la nouvelle moyenne.\n3. Calculer la nouvelle médiane.\n4. Quel indicateur a le plus changé ?\n5. Pour décrire le salaire « typique », lequel est le plus représentatif ? Pourquoi ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Moyenne et médiane initiales\n\n::: methode\nMoyenne = somme ÷ nombre de valeurs ; la série est déjà rangée, avec $5$ valeurs (effectif impair).\n:::\n\n::: etape La moyenne\n$$\\frac{1\\,800 + 1\\,900 + 2\\,000 + 2\\,100 + 2\\,200}{5} = \\frac{10\\,000}{5} = 2\\,000$$\n:::\n\n::: etape La médiane\nRang $\\dfrac{5 + 1}{2} = 3$ : la 3ᵉ valeur est $2\\,000$.\n:::\n\n::: resultat\nMoyenne : $2\\,000$ € ; médiane : $2\\,000$ €.\n:::\n\n## Question 2 : La nouvelle moyenne\n\n::: etape Nouvelle somme, nouvel effectif\nSomme : $10\\,000 + 9\\,000 = 19\\,000$ ; effectif : $6$.\n:::\n\n::: etape Diviser\n$$\\frac{19\\,000}{6} \\approx 3\\,166{,}67$$\n:::\n\n::: resultat\nLa nouvelle moyenne est d'environ $3\\,167$ €.\n:::\n\n## Question 3 : La nouvelle médiane\n\n::: etape Série rangée de 6 valeurs\n$1\\,800\\ ;\\ 1\\,900\\ ;\\ 2\\,000\\ ;\\ 2\\,100\\ ;\\ 2\\,200\\ ;\\ 9\\,000$\n:::\n\n::: etape Valeurs centrales (rangs 3 et 4)\n$$\\frac{2\\,000 + 2\\,100}{2} = 2\\,050$$\n:::\n\n::: resultat\nLa nouvelle médiane est $2\\,050$ €.\n:::\n\n## Question 4 : L'indicateur qui a le plus changé\n\n::: etape Comparer les variations\n- Moyenne : $3\\,167 - 2\\,000 = 1\\,167$ € de plus environ ;\n- Médiane : $2\\,050 - 2\\,000 = 50$ € de plus.\n:::\n\n::: resultat\nC'est la moyenne qui a le plus changé (environ $+1\\,167$ € contre $+50$ €).\n:::\n\n## Question 5 : Le salaire « typique »\n\n::: methode\nUn indicateur « typique » doit ressembler à la plupart des valeurs.\n:::\n\n::: etape Comparer à la moyenne\n$5$ salariés sur $6$ gagnent moins de $3\\,167$ € : la moyenne ne ressemble à presque personne.\n:::\n\n::: resultat\nLa médiane ($2\\,050$ €) est la plus représentative : une valeur extrême déforme la moyenne mais presque pas la médiane.\n:::\n\n::: attention Erreur fréquente\nCroire que la médiane bouge autant que la moyenne : une valeur extrême déplace beaucoup la moyenne, mais très peu la médiane.\n:::\n\n::: retenir\nFace à des valeurs extrêmes, la médiane décrit mieux la situation « typique ».\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $2\\,000$ € et $2\\,000$ €\n2. Environ $3\\,167$ €\n3. $2\\,050$ €\n4. La moyenne\n5. La médiane (peu sensible aux valeurs extrêmes)",
+   "titre": "Entraînement - Une valeur extrême",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nLes salaires mensuels (en €) de 5 employés d'une petite entreprise sont : 1 800 ; 1 900 ; 2 000 ; 2 100 ; 2 200.\n\n1. Calculer la moyenne et la médiane des salaires.\n2. On ajoute le salaire du directeur : 9 000 €. Calculer la nouvelle moyenne.\n3. Calculer la nouvelle médiane.\n4. Quel indicateur a le plus changé ?\n5. Pour décrire le salaire « typique », lequel est le plus représentatif ? Pourquoi ?"
+  },
+  {
+   "id": 2325,
+   "question": "<!-- optitab:1 -->\nDes durées de trajet (en minutes) ont été regroupées en classes de 10 minutes : $[0\\ ;\\ 10[$, $[10\\ ;\\ 20[$, $[20\\ ;\\ 30[$, $[30\\ ;\\ 40[$.\n\n[IMAGE_1]\n\n1. Lire l'effectif de chaque classe.\n2. Calculer l'effectif total.\n3. Dans quelle classe se trouve la médiane ? Justifier avec les effectifs cumulés.\n4. Estimer la moyenne en utilisant les centres des classes.\n5. Peut-on connaître la médiane exacte ? Pourquoi ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Les effectifs\n\n::: methode\nLes classes ont la même largeur : la hauteur de chaque rectangle donne l'effectif de la classe.\n:::\n\n::: resultat\n| Classe | $[0\\ ;\\ 10[$ | $[10\\ ;\\ 20[$ | $[20\\ ;\\ 30[$ | $[30\\ ;\\ 40[$ |\n|---|---|---|---|---|\n| Effectif | $4$ | $8$ | $6$ | $2$ |\n:::\n\n## Question 2 : L'effectif total\n\n::: etape Additionner les effectifs\n$$4 + 8 + 6 + 2 = 20$$\n:::\n\n::: resultat\nL'effectif total est $20$ trajets.\n:::\n\n## Question 3 : La classe médiane\n\n::: methode\nEffectif pair $20$ : la médiane se situe entre les valeurs de rangs $10$ et $11$. Les effectifs cumulés indiquent dans quelle classe elles tombent.\n:::\n\n::: etape Effectifs cumulés\n$4$ ; $4 + 8 = 12$ ; $12 + 6 = 18$ ; $18 + 2 = 20$.\n:::\n\n::: etape Placer les rangs 10 et 11\nLa 1ʳᵉ classe contient les rangs $1$ à $4$, la 2ᵉ les rangs $5$ à $12$ : les rangs $10$ et $11$ sont dans la 2ᵉ classe.\n:::\n\n::: resultat\nLa médiane se trouve dans la classe $[10\\ ;\\ 20[$.\n:::\n\n## Question 4 : L'estimation de la moyenne\n\n::: methode\nOn remplace chaque classe par son centre, puis on calcule une moyenne pondérée par les effectifs.\n:::\n\n::: etape Centres des classes\n$\\dfrac{0 + 10}{2} = 5$ ; puis $15$ ; $25$ ; $35$.\n:::\n\n::: etape Moyenne pondérée\n$$\n\\begin{aligned}\n\\bar{x} &\\approx \\frac{5 \\times 4 + 15 \\times 8 + 25 \\times 6 + 35 \\times 2}{20} \\\\\n&= \\frac{20 + 120 + 150 + 70}{20} = \\frac{360}{20} = 18\n\\end{aligned}\n$$\n:::\n\n::: resultat\nLa durée moyenne est d'environ $18$ minutes (estimation).\n:::\n\n## Question 5 : La médiane exacte ?\n\n::: methode\nLa médiane exacte demande de connaître les valeurs de rangs $10$ et $11$.\n:::\n\n::: resultat\nNon : le regroupement en classes a fait perdre les valeurs exactes ; on sait seulement que la médiane est entre $10$ et $20$ minutes.\n:::\n\n::: attention Erreur fréquente\nEstimer la moyenne avec les bornes des classes ($0$, $10$, $20$…) au lieu de leurs **centres** ($5$, $15$, $25$, $35$).\n:::\n\n::: retenir\nDonnées en classes : médiane localisée dans une classe, moyenne seulement estimée.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $4$ ; $8$ ; $6$ ; $2$\n2. $20$\n3. $[10\\ ;\\ 20[$ (rangs $10$ et $11$)\n4. Environ $18$ min\n5. Non : les valeurs exactes sont perdues",
+   "titre": "Entraînement - Un histogramme",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nDes durées de trajet (en minutes) ont été regroupées en classes de 10 minutes : $[0\\ ;\\ 10[$, $[10\\ ;\\ 20[$, $[20\\ ;\\ 30[$, $[30\\ ;\\ 40[$.\n\n[IMAGE_1]\n\n1. Lire l'effectif de chaque classe.\n2. Calculer l'effectif total.\n3. Dans quelle classe se trouve la médiane ? Justifier avec les effectifs cumulés.\n4. Estimer la moyenne en utilisant les centres des classes.\n5. Peut-on connaître la médiane exacte ? Pourquoi ?"
+  },
+  {
+   "id": 2331,
+   "question": "<!-- optitab:1 -->\nUne série de 9 valeurs a une moyenne de 14. On ajoute une dixième valeur, 24.\n\n1. Calculer la somme des 9 valeurs initiales.\n2. Calculer la nouvelle moyenne.\n3. Quelle valeur aurait-il fallu ajouter pour que la moyenne reste 14 ?\n4. Peut-on calculer la nouvelle médiane ? Justifier.\n5. Donner deux séries de 9 valeurs de moyenne 14 qui, après ajout de 24, ont des médianes différentes.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : La somme initiale\n\n::: methode\nSomme = nombre de valeurs × moyenne.\n:::\n\n::: etape Calculer\n$$9 \\times 14 = 126$$\n:::\n\n::: resultat\nLa somme des $9$ valeurs initiales est $126$.\n:::\n\n## Question 2 : La nouvelle moyenne\n\n::: etape Nouvelle somme\n$$126 + 24 = 150$$\n:::\n\n::: etape Nouvel effectif et moyenne\nIl y a maintenant $10$ valeurs : $\\dfrac{150}{10} = 15$.\n:::\n\n::: resultat\nLa nouvelle moyenne est $15$.\n:::\n\n## Question 3 : Garder une moyenne de 14\n\n::: methode\nAvec $10$ valeurs de moyenne $14$, la somme doit valoir $10 \\times 14 = 140$.\n:::\n\n::: etape Valeur à ajouter\n$$140 - 126 = 14$$\n:::\n\n::: etape Vérification\n$$\\frac{126 + 14}{10} = \\frac{140}{10} = 14$$\n:::\n\n::: resultat\nIl faut ajouter $14$, c'est-à-dire la moyenne elle-même.\n:::\n\n## Question 4 : La nouvelle médiane ?\n\n::: methode\nLa médiane dépend de l'**ordre** des valeurs ; la moyenne ne donne que leur somme.\n:::\n\n::: resultat\nNon : connaître la somme ne permet pas de connaître les valeurs centrales de la série rangée.\n:::\n\n## Question 5 : Deux séries de même moyenne, médianes différentes\n\n::: etape Série 1 : neuf fois 14\nSomme $9 \\times 14 = 126$. Avec $24$ : dix valeurs rangées, les 5ᵉ et 6ᵉ valent $14$, donc médiane $14$.\n:::\n\n::: etape Série 2 : huit fois 13 et une fois 22\nSomme $8 \\times 13 + 22 = 104 + 22 = 126$ : moyenne $14$. Avec $24$ : $13$ (huit fois) ; $22$ ; $24$. Les 5ᵉ et 6ᵉ valeurs valent $13$, donc médiane $13$.\n:::\n\n::: resultat\nMédianes $14$ et $13$ : la même moyenne peut donner des médianes différentes.\n:::\n\n::: attention Erreur fréquente\nCalculer la nouvelle moyenne par $\\dfrac{14 + 24}{2} = 19$ : il faut repartir de la somme des $10$ valeurs, $\\dfrac{126 + 24}{10} = 15$.\n:::\n\n::: retenir\nLa moyenne dépend de la somme ; la médiane dépend de l'ORDRE.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $126$\n2. $15$\n3. $14$\n4. Non\n5. Neuf fois $14$ (médiane $14$) ; huit fois $13$ et $22$ (médiane $13$)",
+   "titre": "Problème - Ajouter une observation",
+   "difficulty": "hard",
+   "contenu": "<!-- optitab:1 -->\nUne série de 9 valeurs a une moyenne de 14. On ajoute une dixième valeur, 24.\n\n1. Calculer la somme des 9 valeurs initiales.\n2. Calculer la nouvelle moyenne.\n3. Quelle valeur aurait-il fallu ajouter pour que la moyenne reste 14 ?\n4. Peut-on calculer la nouvelle médiane ? Justifier.\n5. Donner deux séries de 9 valeurs de moyenne 14 qui, après ajout de 24, ont des médianes différentes."
+  },
+  {
+   "id": 2333,
+   "question": "<!-- optitab:1 -->\nNotes de deux classes à un même contrôle :\n\nClasse A : 8 ; 9 ; 10 ; 11 ; 11 ; 12 ; 13 ; 14 ; 15 (9 élèves)\n\nClasse B : 4 ; 6 ; 9 ; 12 ; 13 ; 14 ; 16 ; 17 ; 19 ; 20 (10 élèves)\n\n1. Calculer la moyenne de chaque classe (arrondir au dixième).\n2. Calculer la médiane de chaque classe.\n3. Calculer l'étendue de chaque classe.\n4. Quelle classe a les résultats les plus homogènes ?\n5. Dans quelle classe plus de la moitié des élèves ont-ils au moins 12 ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Les moyennes\n\n::: methode\nMoyenne = somme des notes ÷ nombre d'élèves de la classe.\n:::\n\n::: etape Classe A (9 élèves)\n$$\\frac{8 + 9 + 10 + 11 + 11 + 12 + 13 + 14 + 15}{9} = \\frac{103}{9} \\approx 11{,}4$$\n:::\n\n::: etape Classe B (10 élèves)\n$$\\frac{4 + 6 + 9 + 12 + 13 + 14 + 16 + 17 + 19 + 20}{10} = \\frac{130}{10} = 13$$\n:::\n\n::: resultat\nMoyenne de A : environ $11{,}4$ ; moyenne de B : $13$.\n:::\n\n## Question 2 : Les médianes\n\n::: methode\nLes séries sont déjà rangées. Effectif impair : rang $\\dfrac{N+1}{2}$ ; effectif pair : moyenne des deux valeurs centrales.\n:::\n\n::: etape Classe A\n$N = 9$ : rang $\\dfrac{9 + 1}{2} = 5$, la 5ᵉ note est $11$.\n:::\n\n::: etape Classe B\n$N = 10$ : rangs $5$ et $6$, notes $13$ et $14$, donc $\\dfrac{13 + 14}{2} = 13{,}5$.\n:::\n\n::: resultat\nMédiane de A : $11$ ; médiane de B : $13{,}5$.\n:::\n\n## Question 3 : Les étendues\n\n::: methode\nÉtendue = plus grande note − plus petite note.\n:::\n\n::: etape Calculer\n- A : $15 - 8 = 7$ ;\n- B : $20 - 4 = 16$.\n:::\n\n::: resultat\nÉtendue de A : $7$ ; étendue de B : $16$.\n:::\n\n## Question 4 : La classe la plus homogène\n\n::: methode\nDes résultats homogènes sont des notes proches les unes des autres : la plus petite étendue.\n:::\n\n::: resultat\nLa classe A est la plus homogène (étendue $7$ contre $16$).\n:::\n\n## Question 5 : Au moins 12 pour plus de la moitié\n\n::: etape Compter les notes supérieures ou égales à 12\n- A : $12$, $13$, $14$, $15$, soit $4$ élèves sur $9$ (moins de la moitié) ;\n- B : $12$, $13$, $14$, $16$, $17$, $19$, $20$, soit $7$ élèves sur $10$ ($70\\ \\%$).\n:::\n\n::: etape Lien avec la médiane\nLa médiane de B ($13{,}5$) est supérieure à $12$ : au moins la moitié des élèves de B ont donc au moins $12$. Celle de A ($11$) est inférieure à $12$.\n:::\n\n::: resultat\nC'est dans la classe B que plus de la moitié des élèves ont au moins $12$.\n:::\n\n::: attention Erreur fréquente\nComparer seulement les moyennes : sans la médiane et l'étendue, on ne voit ni la répartition ni la dispersion des notes.\n:::\n\n::: retenir\nB a de meilleurs résultats mais plus dispersés ; A est plus homogène. Il faut un indicateur de position et un de dispersion pour conclure.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. Environ $11{,}4$ et $13$\n2. $11$ et $13{,}5$\n3. $7$ et $16$\n4. A\n5. B ($7$ élèves sur $10$)",
+   "titre": "Problème - Comparer deux classes",
+   "difficulty": "hard",
+   "contenu": "<!-- optitab:1 -->\nNotes de deux classes à un même contrôle :\n\nClasse A : 8 ; 9 ; 10 ; 11 ; 11 ; 12 ; 13 ; 14 ; 15 (9 élèves)\n\nClasse B : 4 ; 6 ; 9 ; 12 ; 13 ; 14 ; 16 ; 17 ; 19 ; 20 (10 élèves)\n\n1. Calculer la moyenne de chaque classe (arrondir au dixième).\n2. Calculer la médiane de chaque classe.\n3. Calculer l'étendue de chaque classe.\n4. Quelle classe a les résultats les plus homogènes ?\n5. Dans quelle classe plus de la moitié des élèves ont-ils au moins 12 ?"
+  },
+  {
+   "id": 2335,
+   "question": "<!-- optitab:1 -->\nAprès 4 contrôles, Lina a une moyenne de 11. Il reste 2 contrôles dans le trimestre, de même coefficient.\n\n1. Calculer la somme de ses 4 premières notes.\n2. Elle vise une moyenne de 12 sur les 6 contrôles. Quelle somme totale doit-elle atteindre ?\n3. Quelle somme doit-elle obtenir sur les 2 derniers contrôles ?\n4. Si elle obtient 13 au 5ᵉ contrôle, quelle note lui faut-il au 6ᵉ ?\n5. Peut-elle viser une moyenne de 14 (notes sur 20) ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : La somme actuelle\n\n::: methode\nSomme = nombre de notes × moyenne.\n:::\n\n::: etape Calculer\n$4$ contrôles de moyenne $11$ : $4 \\times 11 = 44$.\n:::\n\n::: resultat\nLa somme des $4$ premières notes est $44$.\n:::\n\n## Question 2 : L'objectif total\n\n::: etape Somme visée\nMoyenne $12$ sur $6$ contrôles : $6 \\times 12 = 72$.\n:::\n\n::: resultat\nLina doit atteindre une somme totale de $72$ points.\n:::\n\n## Question 3 : Les deux derniers contrôles\n\n::: etape Ce qui manque\n$$72 - 44 = 28$$\n:::\n\n::: etape Interpréter\n$28$ points sur $2$ contrôles, soit $\\dfrac{28}{2} = 14$ de moyenne sur ces deux contrôles.\n:::\n\n::: resultat\nElle doit obtenir $28$ points sur les $2$ derniers contrôles.\n:::\n\n## Question 4 : La note du 6ᵉ contrôle\n\n::: etape Retirer la note du 5ᵉ contrôle\n$$28 - 13 = 15$$\n:::\n\n::: etape Vérification\n$$\\frac{44 + 13 + 15}{6} = \\frac{72}{6} = 12$$\n:::\n\n::: resultat\nIl lui faut $15$ au 6ᵉ contrôle.\n:::\n\n## Question 5 : Une moyenne de 14 ?\n\n::: etape Somme nécessaire\n$6 \\times 14 = 84$, donc il manque $84 - 44 = 40$ points sur $2$ contrôles.\n:::\n\n::: etape Comparer au maximum\nDeux notes sur $20$ font au plus $20 + 20 = 40$.\n:::\n\n::: resultat\nC'est possible, mais seulement avec $20$ et $20$, la note maximale aux deux contrôles.\n:::\n\n::: attention Erreur fréquente\nChercher la note en faisant la moyenne entre la moyenne actuelle et la moyenne visée : on raisonne sur les **sommes** de notes.\n:::\n\n::: retenir\nLes problèmes de moyenne « à atteindre » se résolvent avec les SOMMES.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $44$\n2. $72$\n3. $28$\n4. $15$\n5. Oui, avec $20$ et $20$ uniquement",
+   "titre": "Problème - La moyenne qui doit progresser",
+   "difficulty": "hard",
+   "contenu": "<!-- optitab:1 -->\nAprès 4 contrôles, Lina a une moyenne de 11. Il reste 2 contrôles dans le trimestre, de même coefficient.\n\n1. Calculer la somme de ses 4 premières notes.\n2. Elle vise une moyenne de 12 sur les 6 contrôles. Quelle somme totale doit-elle atteindre ?\n3. Quelle somme doit-elle obtenir sur les 2 derniers contrôles ?\n4. Si elle obtient 13 au 5ᵉ contrôle, quelle note lui faut-il au 6ᵉ ?\n5. Peut-elle viser une moyenne de 14 (notes sur 20) ?"
+  },
+  {
+   "id": 2334,
+   "question": "<!-- optitab:1 -->\nLe tableau donne les précipitations mensuelles (en mm) d'une ville sur une année.\n\n| Mois | janv. | févr. | mars | avr. | mai | juin |\n|---|---|---|---|---|---|---|\n| Pluie (mm) | $62$ | $55$ | $48$ | $51$ | $66$ | $38$ |\n\n| Mois | juil. | août | sept. | oct. | nov. | déc. |\n|---|---|---|---|---|---|---|\n| Pluie (mm) | $22$ | $30$ | $54$ | $70$ | $78$ | $72$ |\n\n1. Calculer le total annuel des précipitations.\n2. Calculer la moyenne mensuelle.\n3. Ranger la série et déterminer la médiane.\n4. Calculer l'étendue.\n5. Quelle proportion des mois a reçu plus de 60 mm ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Le total\n\n::: methode\nOn additionne les douze valeurs du tableau, en groupant les mois par semestre.\n:::\n\n::: etape Premier semestre (janvier à juin)\n$$62 + 55 + 48 + 51 + 66 + 38 = 320$$\n:::\n\n::: etape Second semestre (juillet à décembre)\n$$22 + 30 + 54 + 70 + 78 + 72 = 326$$\n:::\n\n::: resultat\nTotal annuel : $320 + 326 = 646$ mm.\n:::\n\n## Question 2 : La moyenne\n\n::: etape $\\displaystyle \\frac{646}{12} \\approx 53{,}8$\n:::\n\n::: resultat\nEnviron 53,8 mm par mois\n:::\n\n## Question 3 : La médiane\n\n::: methode\nRanger les douze valeurs dans l'ordre croissant, puis repérer les deux valeurs centrales (effectif pair).\n:::\n\n::: etape Ranger la série\n$22\\ ;\\ 30\\ ;\\ 38\\ ;\\ 48\\ ;\\ 51\\ ;\\ 54\\ ;$\n\n$55\\ ;\\ 62\\ ;\\ 66\\ ;\\ 70\\ ;\\ 72\\ ;\\ 78$\n:::\n\n::: etape Repérer les rangs centraux\nL'effectif $12$ est pair : les valeurs centrales sont celles de rangs $\\dfrac{12}{2} = 6$ et $7$, soit $54$ et $55$.\n\n$$\\text{médiane} = \\frac{54 + 55}{2} = 54{,}5$$\n:::\n\n[IMAGE_1]\n\n::: resultat\nLa médiane vaut $54{,}5$ mm : la moitié des mois a reçu moins de $54{,}5$ mm, l'autre moitié plus.\n:::\n\n::: attention\nPrendre la moyenne des 6ᵉ et 7ᵉ valeurs du tableau **non rangé** ($38$ et $22$) donnerait $30$ : un résultat faux.\n:::\n\n## Question 4 : L'étendue\n\n::: methode\nOn repère dans le tableau le mois le plus pluvieux (78 mm) et le moins pluvieux (22 mm).\n:::\n\n::: resultat\n$\\displaystyle 78 - 22 = 56$ mm\n:::\n\n## Question 5 : Plus de 60 mm\n\n::: etape 62, 66, 70, 72, 78\n5 mois\n:::\n\n::: resultat\n$$\\frac{5}{12} \\approx 42\\ \\%$$\n:::\n\n::: retenir\nRanger une série de 12 valeurs : les deux valeurs centrales sont les 6ᵉ et 7ᵉ.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. 646 mm\n2. $\\approx 53{,}8$ mm\n3. 54,5 mm\n4. 56 mm\n5. $\\frac{5}{12} \\approx 42\\ \\%$",
+   "titre": "Problème - Le relevé de pluie",
+   "difficulty": "hard",
+   "contenu": "<!-- optitab:1 -->\nLe tableau donne les précipitations mensuelles (en mm) d'une ville sur une année.\n\n| Mois | janv. | févr. | mars | avr. | mai | juin |\n|---|---|---|---|---|---|---|\n| Pluie (mm) | $62$ | $55$ | $48$ | $51$ | $66$ | $38$ |\n\n| Mois | juil. | août | sept. | oct. | nov. | déc. |\n|---|---|---|---|---|---|---|\n| Pluie (mm) | $22$ | $30$ | $54$ | $70$ | $78$ | $72$ |\n\n1. Calculer le total annuel des précipitations.\n2. Calculer la moyenne mensuelle.\n3. Ranger la série et déterminer la médiane.\n4. Calculer l'étendue.\n5. Quelle proportion des mois a reçu plus de 60 mm ?"
+  },
+  {
+   "id": 2332,
+   "question": "<!-- optitab:1 -->\nUn club a eu 80 inscrits en 2025 et 84 en 2026. Deux graphiques présentent ces données : l'un avec un axe vertical commençant à 78, l'autre à 0.\n\n[IMAGE_1]\n\n1. Calculer le taux d'évolution réel des inscriptions.\n2. Sur le graphique de gauche, quelles hauteurs visibles ont les barres (à partir de 78) ?\n3. Quel rapport visuel suggère ce graphique ?\n4. Quel graphique donne une impression fidèle ? Pourquoi ?\n5. Quelle précaution prendre avant de comparer des barres ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Le taux réel\n\n::: etape $\\displaystyle \\frac{84 - 80}{80} = \\frac{4}{80}$\n:::\n\n::: resultat\n+5 %\n:::\n\n## Question 2 : Les hauteurs visibles\n\n::: methode\nL'axe commence à 78 : la partie visible d'une barre est sa valeur diminuée de 78.\n:::\n\n::: resultat\n$80 - 78 = 2$ et $84 - 78 = 6$\n:::\n\n## Question 3 : Le rapport visuel\n\n::: etape $\\displaystyle \\frac{6}{2} = 3$\n:::\n\n::: resultat\nLa barre semble 3 fois plus haute : on croirait à un triplement !\n:::\n\n## Question 4 : Le graphique fidèle\n\n::: methode\nPour que la comparaison visuelle soit honnête, les longueurs des barres doivent être proportionnelles aux valeurs, ce qui exige un axe qui commence à 0.\n:::\n\n::: resultat\nCelui de droite (axe à 0) : les hauteurs sont proportionnelles aux effectifs, la hausse de 5 % apparaît modeste\n:::\n\n## Question 5 : La précaution\n\n::: methode\nOn tire la leçon des questions précédentes : un axe tronqué amplifie visuellement les écarts.\n:::\n\n::: resultat\nLire l'ORIGINE de l'axe vertical et les graduations avant toute comparaison visuelle\n:::\n\n::: attention Erreur fréquente\nComparer les hauteurs des barres sans regarder où commence l'axe vertical : un axe tronqué est une technique de communication trompeuse fréquente.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. +5 %\n2. 2 et 6\n3. Rapport 3 (faux triplement)\n4. Celui de droite (axe à 0)\n5. Vérifier l'origine de l'axe",
+   "titre": "Problème - Un graphique trompeur",
+   "difficulty": "hard",
+   "contenu": "<!-- optitab:1 -->\nUn club a eu 80 inscrits en 2025 et 84 en 2026. Deux graphiques présentent ces données : l'un avec un axe vertical commençant à 78, l'autre à 0.\n\n[IMAGE_1]\n\n1. Calculer le taux d'évolution réel des inscriptions.\n2. Sur le graphique de gauche, quelles hauteurs visibles ont les barres (à partir de 78) ?\n3. Quel rapport visuel suggère ce graphique ?\n4. Quel graphique donne une impression fidèle ? Pourquoi ?\n5. Quelle précaution prendre avant de comparer des barres ?"
+  },
+  {
+   "id": 2336,
+   "question": "<!-- optitab:1 -->\nOn a demandé à 200 élèves leur temps d'écran quotidien. Les résultats sont regroupés dans le tableau ci-dessous ; l'effectif de la dernière catégorie est à retrouver.\n\n[IMAGE_1]\n\n1. Combien d'élèves passent 3 h ou plus devant un écran ?\n2. Calculer la fréquence de chaque catégorie en pourcentage.\n3. Calculer l'angle de chaque secteur d'un diagramme circulaire.\n4. Quel pourcentage des élèves passe au moins 2 h devant un écran ?\n5. Dans quelle catégorie se trouve la médiane ? Justifier.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : 3 h ou plus\n\n::: methode\nLes quatre catégories regroupent les $200$ élèves : on retire de $200$ les effectifs connus.\n:::\n\n::: etape Calculer\n$$200 - 30 - 70 - 60 = 40$$\n:::\n\n::: resultat\n$40$ élèves passent $3$ h ou plus devant un écran.\n:::\n\n## Question 2 : Les fréquences\n\n::: methode\nFréquence = effectif ÷ $200$ ; en pourcentage, on multiplie par $100$, ce qui revient à diviser l'effectif par $2$.\n:::\n\n::: etape Calculer chaque fréquence\n- Moins de 1 h : $\\dfrac{30}{200} = 0{,}15 = 15\\ \\%$ ;\n- 1 h à 2 h : $\\dfrac{70}{200} = 0{,}35 = 35\\ \\%$ ;\n- 2 h à 3 h : $\\dfrac{60}{200} = 0{,}3 = 30\\ \\%$ ;\n- 3 h ou plus : $\\dfrac{40}{200} = 0{,}2 = 20\\ \\%$.\n:::\n\n::: resultat\n$15\\ \\%$ ; $35\\ \\%$ ; $30\\ \\%$ ; $20\\ \\%$ (total $100\\ \\%$).\n:::\n\n## Question 3 : Les angles\n\n::: methode\nAngle = $360^\\circ \\times$ fréquence.\n:::\n\n::: etape Calculer chaque angle\n- $360 \\times 0{,}15 = 54^\\circ$ ;\n- $360 \\times 0{,}35 = 126^\\circ$ ;\n- $360 \\times 0{,}3 = 108^\\circ$ ;\n- $360 \\times 0{,}2 = 72^\\circ$.\n:::\n\n::: etape Vérifier\n$$54 + 126 + 108 + 72 = 360$$\n:::\n\n[IMAGE_2]\n\n::: resultat\nAngles : $54^\\circ$ ; $126^\\circ$ ; $108^\\circ$ ; $72^\\circ$.\n:::\n\n## Question 4 : Au moins 2 h\n\n::: methode\n« Au moins $2$ h » regroupe les catégories « 2 h à 3 h » et « 3 h ou plus ».\n:::\n\n::: etape Additionner les fréquences\n$$30\\ \\% + 20\\ \\% = 50\\ \\%$$\n:::\n\n::: resultat\n$50\\ \\%$ des élèves passent au moins $2$ h par jour devant un écran.\n:::\n\n## Question 5 : La catégorie de la médiane\n\n::: methode\nEffectif $200$ (pair) : la médiane est entre les valeurs de rangs $100$ et $101$. Les effectifs cumulés situent ces rangs.\n:::\n\n::: etape Effectifs cumulés\n$30$ ; $30 + 70 = 100$ ; $100 + 60 = 160$ ; $160 + 40 = 200$.\n:::\n\n::: etape Placer les rangs 100 et 101\nLe 100ᵉ élève est le dernier de la catégorie « 1 h à 2 h » ; le 101ᵉ est le premier de « 2 h à 3 h ».\n:::\n\n::: resultat\nLa médiane se situe à la frontière des deux catégories, autour de $2$ h : la moitié des élèves passe moins de $2$ h devant un écran, l'autre moitié au moins $2$ h.\n:::\n\n::: attention Erreur fréquente\nDiviser par le nombre de catégories ($4$) au lieu de l'effectif total ($200$) pour calculer une fréquence.\n:::\n\n::: retenir\nLes effectifs cumulés localisent la médiane même dans des données regroupées.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $40$\n2. $15\\ \\%$ ; $35\\ \\%$ ; $30\\ \\%$ ; $20\\ \\%$\n3. $54^\\circ$ ; $126^\\circ$ ; $108^\\circ$ ; $72^\\circ$\n4. $50\\ \\%$\n5. À la frontière de « 1 h à 2 h » et « 2 h à 3 h », vers $2$ h",
+   "titre": "Type brevet - Le sondage du collège",
+   "difficulty": "hard",
+   "contenu": "<!-- optitab:1 -->\nOn a demandé à 200 élèves leur temps d'écran quotidien. Les résultats sont regroupés dans le tableau ci-dessous ; l'effectif de la dernière catégorie est à retrouver.\n\n[IMAGE_1]\n\n1. Combien d'élèves passent 3 h ou plus devant un écran ?\n2. Calculer la fréquence de chaque catégorie en pourcentage.\n3. Calculer l'angle de chaque secteur d'un diagramme circulaire.\n4. Quel pourcentage des élèves passe au moins 2 h devant un écran ?\n5. Dans quelle catégorie se trouve la médiane ? Justifier."
+  },
+  {
+   "id": 2337,
+   "question": "<!-- optitab:1 -->\nUn entraîneur de basket hésite entre deux joueurs pour un match décisif. Voici les points marqués par chacun lors des 6 derniers matchs.\n\n| Match | 1 | 2 | 3 | 4 | 5 | 6 |\n|---|---|---|---|---|---|---|\n| Joueur A | $12$ | $14$ | $15$ | $13$ | $16$ | $14$ |\n| Joueur B | $5$ | $25$ | $8$ | $22$ | $6$ | $24$ |\n\n1. Calculer la moyenne de points de chaque joueur.\n2. Déterminer la médiane de chaque série.\n3. Calculer l'étendue de chaque série.\n4. Quel joueur est le plus régulier ? Justifier.\n5. L'entraîneur veut un joueur sur lequel il peut compter. Lequel lui conseiller ? Argumenter avec les indicateurs.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Les moyennes\n\n::: methode\nMoyenne = somme des points ÷ nombre de matchs ($6$).\n:::\n\n::: etape Joueur A\n$$\\frac{12 + 14 + 15 + 13 + 16 + 14}{6} = \\frac{84}{6} = 14$$\n:::\n\n::: etape Joueur B\n$$\\frac{5 + 25 + 8 + 22 + 6 + 24}{6} = \\frac{90}{6} = 15$$\n:::\n\n::: resultat\nMoyenne de A : $14$ points ; moyenne de B : $15$ points.\n:::\n\n## Question 2 : Les médianes\n\n::: methode\nRanger chaque série ; l'effectif $6$ est pair : la médiane est la moyenne des 3ᵉ et 4ᵉ valeurs.\n:::\n\n::: etape Joueur A rangé\n$12\\ ;\\ 13\\ ;\\ 14\\ ;\\ 14\\ ;\\ 15\\ ;\\ 16$, donc médiane $= \\dfrac{14 + 14}{2} = 14$.\n:::\n\n::: etape Joueur B rangé\n$5\\ ;\\ 6\\ ;\\ 8\\ ;\\ 22\\ ;\\ 24\\ ;\\ 25$, donc médiane $= \\dfrac{8 + 22}{2} = 15$.\n:::\n\n::: resultat\nMédiane de A : $14$ ; médiane de B : $15$.\n:::\n\n::: attention\nPour B, la médiane $15$ n'est le score d'aucun match : avec un effectif pair, la médiane peut ne pas être une valeur de la série.\n:::\n\n## Question 3 : Les étendues\n\n::: methode\nÉtendue = plus grand score − plus petit score.\n:::\n\n::: etape Calculs\n- Joueur A : $16 - 12 = 4$.\n- Joueur B : $25 - 5 = 20$.\n:::\n\n[IMAGE_1]\n\n::: resultat\nÉtendue de A : $4$ points ; étendue de B : $20$ points.\n:::\n\n## Question 4 : Le joueur le plus régulier\n\n::: methode\nLa régularité se mesure par la dispersion : plus l'étendue est petite, plus les scores sont proches.\n:::\n\n::: resultat\nLe joueur A est le plus régulier : son étendue ($4$) est cinq fois plus petite que celle de B ($20$).\n:::\n\n## Question 5 : Le conseil à l'entraîneur\n\n::: etape Comparer la position\nB a une moyenne et une médiane légèrement supérieures ($15$ contre $14$) : un seul point d'écart.\n:::\n\n::: etape Comparer la dispersion\nB a marqué moins de $10$ points dans $3$ matchs sur $6$, alors que A a toujours marqué entre $12$ et $16$ points.\n:::\n\n::: resultat\nPour un match décisif, il vaut mieux choisir **A** : presque le même niveau moyen, mais beaucoup plus fiable. B est un pari plus risqué.\n:::\n\n::: retenir\nPour comparer deux séries, on utilise un indicateur de position (moyenne, médiane) **et** un indicateur de dispersion (étendue).\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. A : $14$ ; B : $15$\n2. A : $14$ ; B : $15$\n3. A : $4$ ; B : $20$\n4. A (étendue plus petite)\n5. A : niveau presque égal mais bien plus régulier",
+   "titre": "Type brevet - Quel joueur sélectionner ?",
+   "difficulty": "hard",
+   "contenu": "<!-- optitab:1 -->\nUn entraîneur de basket hésite entre deux joueurs pour un match décisif. Voici les points marqués par chacun lors des 6 derniers matchs.\n\n| Match | 1 | 2 | 3 | 4 | 5 | 6 |\n|---|---|---|---|---|---|---|\n| Joueur A | $12$ | $14$ | $15$ | $13$ | $16$ | $14$ |\n| Joueur B | $5$ | $25$ | $8$ | $22$ | $6$ | $24$ |\n\n1. Calculer la moyenne de points de chaque joueur.\n2. Déterminer la médiane de chaque série.\n3. Calculer l'étendue de chaque série.\n4. Quel joueur est le plus régulier ? Justifier.\n5. L'entraîneur veut un joueur sur lequel il peut compter. Lequel lui conseiller ? Argumenter avec les indicateurs."
+  }
+ ],
+ "images": [
+  {
+   "modele": "CoursImage",
+   "id": 515,
+   "proprietaire": 237,
+   "position": 1,
+   "image": "cours_images/v1_n242_co237_1_cours_batons.png",
+   "legende": null,
+   "alt_text": "Diagramme en bâtons des notes d'une classe : note 6 pour 2 élèves, 8 pour 3, 10 pour 6, 12 pour 5 et 16 pour 4.",
+   "title_text": "",
+   "width": 310,
+   "height": 198
+  },
+  {
+   "modele": "CoursImage",
+   "id": 1129,
+   "proprietaire": 237,
+   "position": 2,
+   "image": "cours_images/v1_n242_co237_2_cours_mediane.png",
+   "legende": null,
+   "alt_text": "Série rangée de 8 valeurs (2, 3, 5, 6, 6, 9, 11, 12) avec les rangs ; les 4e et 5e valeurs sont en vert et la médiane vaut (6 + 6) / 2 = 6.",
+   "title_text": "",
+   "width": 312,
+   "height": 137
+  },
+  {
+   "modele": "CoursImage",
+   "id": 1130,
+   "proprietaire": 237,
+   "position": 3,
+   "image": "cours_images/v1_n242_co237_3_cours_histo.png",
+   "legende": null,
+   "alt_text": "Histogramme des durées de trajet : classes de 0 à 10, 10 à 20, 20 à 30 et 30 à 40 minutes, d'effectifs 4, 8, 6 et 2.",
+   "title_text": "",
+   "width": 364,
+   "height": 244
+  },
+  {
+   "modele": "CoursImage",
+   "id": 1131,
+   "proprietaire": 237,
+   "position": 4,
+   "image": "cours_images/v1_n242_co237_4_cours_circulaire.png",
+   "legende": null,
+   "alt_text": "Diagramme circulaire en trois secteurs : A 25 %, B 45 % et C 30 %.",
+   "title_text": "",
+   "width": 256,
+   "height": 202
+  },
+  {
+   "modele": "CoursImage",
+   "id": 1132,
+   "proprietaire": 237,
+   "position": 5,
+   "image": "cours_images/v1_n242_co237_5_cours_comparaison.png",
+   "legende": null,
+   "alt_text": "Deux séries de même moyenne 11 placées sur une droite graduée : la série A, groupée entre 10 et 12 (étendue 2), et la série B, dispersée de 4 à 17 (étendue 13).",
+   "title_text": "",
+   "width": 390,
+   "height": 156
+  },
+  {
+   "modele": "SynthesisImage",
+   "id": 197,
+   "proprietaire": 157,
+   "position": 1,
+   "image": "synthesis_images/v1_n242_fi157_1_cours_batons.png",
+   "legende": null,
+   "alt_text": "Diagramme en bâtons des notes : 6 (2 élèves), 8 (3), 10 (6), 12 (5) et 16 (4).",
+   "title_text": "",
+   "width": 310,
+   "height": 198
+  },
+  {
+   "modele": "SynthesisImage",
+   "id": 461,
+   "proprietaire": 157,
+   "position": 2,
+   "image": "synthesis_images/v1_n242_fi157_2_cours_mediane.png",
+   "legende": null,
+   "alt_text": "Série rangée de 8 valeurs avec les rangs ; les deux valeurs centrales en vert donnent la médiane 6.",
+   "title_text": "",
+   "width": 312,
+   "height": 137
+  },
+  {
+   "modele": "SynthesisImage",
+   "id": 462,
+   "proprietaire": 157,
+   "position": 3,
+   "image": "synthesis_images/v1_n242_fi157_3_cours_circulaire.png",
+   "legende": null,
+   "alt_text": "Diagramme circulaire en trois secteurs : A 25 %, B 45 % et C 30 %.",
+   "title_text": "",
+   "width": 256,
+   "height": 202
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 788,
+   "proprietaire": 2322,
+   "position": 1,
+   "image": "exercice_images/v1_n242_ex2322_1_cours_batons.png",
+   "legende": null,
+   "alt_text": "Diagramme en bâtons des notes d'un contrôle : notes 6, 8, 10, 12 et 16 en abscisse, effectif en ordonnée.",
+   "title_text": "",
+   "width": 310,
+   "height": 198
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 4539,
+   "proprietaire": 2322,
+   "position": 2,
+   "image": "exercice_images/v1_n242_ex2322_2_ex2322_corrige.png",
+   "legende": null,
+   "alt_text": "Diagramme en bâtons avec les effectifs écrits au-dessus des bâtons (2, 3, 6, 5, 4) ; les bâtons des notes 12 et 16 sont en vert : 5 + 4 = 9 élèves.",
+   "title_text": "",
+   "width": 310,
+   "height": 198
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 984,
+   "proprietaire": 2323,
+   "position": 1,
+   "image": "exercice_images/v1_n242_ex2323_1_ex2323_enonce.png",
+   "legende": null,
+   "alt_text": "Tableau des notes 6, 8, 10, 12, 16 avec les effectifs 2, 3, 6, 5, 4.",
+   "title_text": "",
+   "width": 416,
+   "height": 80
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 985,
+   "proprietaire": 2323,
+   "position": 2,
+   "image": "exercice_images/v1_n242_ex2323_2_ex2323_corrige.png",
+   "legende": null,
+   "alt_text": "Tableau des notes complété en vert par la ligne des effectifs cumulés 2, 5, 11, 16, 20 ; la note 10, qui contient les 10e et 11e valeurs, est surlignée.",
+   "title_text": "",
+   "width": 434,
+   "height": 109
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 789,
+   "proprietaire": 2324,
+   "position": 1,
+   "image": "exercice_images/v1_n242_ex2324_1_ex2324_corrige.png",
+   "legende": null,
+   "alt_text": "Diagramme circulaire des 40 réponses : secteur A de 90°, secteur B de 162° et secteur C de 108°, angles écrits en vert.",
+   "title_text": "",
+   "width": 248,
+   "height": 202
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 986,
+   "proprietaire": 2326,
+   "position": 1,
+   "image": "exercice_images/v1_n242_ex2326_1_ex2326_enonce.png",
+   "legende": null,
+   "alt_text": "Feuille de tableur : en A1 « Valeur », en B1 « Effectif » ; valeurs 4, 7, 12 en A2 à A4 et effectifs 3, 5, 2 en B2 à B4.",
+   "title_text": "",
+   "width": 361,
+   "height": 177
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 790,
+   "proprietaire": 2325,
+   "position": 1,
+   "image": "exercice_images/v1_n242_ex2325_1_ex2325_enonce.png",
+   "legende": null,
+   "alt_text": "Histogramme des durées de trajet : classes de 0 à 10, 10 à 20, 20 à 30 et 30 à 40 minutes, d'effectifs 4, 8, 6 et 2.",
+   "title_text": "",
+   "width": 364,
+   "height": 244
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 987,
+   "proprietaire": 2334,
+   "position": 1,
+   "image": "exercice_images/v1_n242_ex2334_1_ex2334_corrige.png",
+   "legende": null,
+   "alt_text": "Les 12 relevés de pluie rangés de 22 à 78 mm avec leurs rangs ; les 6e et 7e valeurs, 54 et 55, sont en vert et la médiane vaut 54,5 mm.",
+   "title_text": "",
+   "width": 436,
+   "height": 137
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 791,
+   "proprietaire": 2332,
+   "position": 1,
+   "image": "exercice_images/v1_n242_ex2332_1_ex2332_enonce.png",
+   "legende": null,
+   "alt_text": "Deux diagrammes en barres des inscrits (80 en 2025, 84 en 2026) : le graphique 1 a un axe vertical qui commence à 78, le graphique 2 un axe qui commence à 0.",
+   "title_text": "",
+   "width": 378,
+   "height": 256
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 988,
+   "proprietaire": 2336,
+   "position": 1,
+   "image": "exercice_images/v1_n242_ex2336_1_ex2336_enonce.png",
+   "legende": null,
+   "alt_text": "Tableau du temps d'écran de 200 élèves : moins de 1 h (30), 1 h à 2 h (70), 2 h à 3 h (60), 3 h ou plus (effectif inconnu).",
+   "title_text": "",
+   "width": 418,
+   "height": 106
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 989,
+   "proprietaire": 2336,
+   "position": 2,
+   "image": "exercice_images/v1_n242_ex2336_2_ex2336_corrige.png",
+   "legende": null,
+   "alt_text": "Diagramme circulaire du temps d'écran : moins de 1 h 54°, 1 h à 2 h 126°, 2 h à 3 h 108°, 3 h ou plus 72°, angles en vert.",
+   "title_text": "",
+   "width": 374,
+   "height": 194
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 4540,
+   "proprietaire": 2337,
+   "position": 1,
+   "image": "exercice_images/v1_n242_ex2337_1_ex2337_corrige.png",
+   "legende": null,
+   "alt_text": "Points des joueurs A et B placés sur une droite graduée de 0 à 25 : les scores de A sont groupés entre 12 et 16 (étendue 4), ceux de B dispersés de 5 à 25 (étendue 20), étendues en vert.",
+   "title_text": "",
+   "width": 382,
+   "height": 181
+  }
+ ],
+ "images_creees": [
+  {
+   "modele": "ExerciceImage",
+   "id": 4686
+  }
+ ],
+ "exercices_crees": []
+}

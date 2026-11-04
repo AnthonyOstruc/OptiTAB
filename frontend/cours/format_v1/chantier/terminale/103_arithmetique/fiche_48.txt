@@ -1,0 +1,58 @@
+Titre: Résumé : Arithmétique
+
+<!-- optitab:1 -->
+::: objectifs
+Retenir l'essentiel : divisibilité, congruences, PGCD, Bézout, Gauss, nombres premiers et petit théorème de Fermat. Programme de Maths expertes.
+:::
+
+## I. Divisibilité et division euclidienne
+
+1. $b \mid a \iff a = kb$ avec $k \in \mathbb{Z}$ ; si $d \mid a$ et $d \mid b$, alors $d \mid au + bv$ pour tous $u, v \in \mathbb{Z}$.
+2. Division euclidienne de $a \in \mathbb{Z}$ par $b \in \mathbb{N}^{\ast}$ : un unique couple $(q, r)$ avec $a = bq + r$ et $0 \le r \lt b$.
+
+[IMAGE_1]
+
+## II. Congruences
+
+::: formule
+$a \equiv b \pmod{n} \iff n \mid a - b \iff$ $a$ et $b$ ont le même reste modulo $n$
+:::
+
+1. Compatible avec $+$, $-$, $\times$ et les puissances : $a \equiv b \Rightarrow a^k \equiv b^k \pmod{n}$.
+2. Grande puissance : trouver $p$ tel que $a^p \equiv 1 \pmod{n}$, écrire $k = pm + s$, alors $a^k \equiv a^s \pmod{n}$.
+3. Critères : $N \equiv$ somme des chiffres $\pmod{9}$ ; $N \equiv$ somme alternée des chiffres $\pmod{11}$.
+
+## III. PGCD, Bézout, Gauss
+
+1. Euclide : $a = bq + r \Rightarrow \mathrm{PGCD}(a, b) = \mathrm{PGCD}(b, r)$ ; le dernier reste non nul est le PGCD.
+2. Bézout : il existe $u, v$ avec $au + bv = \mathrm{PGCD}(a, b)$ ; $a$ et $b$ premiers entre eux $\iff$ il existe $u, v$ avec $au + bv = 1$.
+3. Gauss : $a \mid bc$ et $\mathrm{PGCD}(a, b) = 1 \Rightarrow a \mid c$.
+4. Si $a$ et $b$ sont premiers entre eux et divisent $n$, alors $ab \mid n$.
+
+[IMAGE_2]
+
+## IV. Résoudre en nombres entiers
+
+| Problème | Méthode |
+|---|---|
+| Inverse de $a$ modulo $n$ | existe $\iff \mathrm{PGCD}(a, n) = 1$ ; Bézout $au + nv = 1$ donne $u$ |
+| $ax \equiv b \pmod{n}$ | $d = \mathrm{PGCD}(a, n)$ ; $d \nmid b$ : aucune solution ; sinon diviser $a$, $b$, $n$ par $d$, puis multiplier par l'inverse |
+| $ax + by = c$ | solutions $\iff \mathrm{PGCD}(a, b) \mid c$ ; solution particulière, puis Gauss, puis réciproque |
+
+## V. Nombres premiers et Fermat
+
+1. $n \ge 2$ composé $\Rightarrow$ $n$ a un diviseur premier $p \le \sqrt{n}$ ; il y a une infinité de nombres premiers.
+2. Décomposition unique $n = p_1^{\alpha_1} \cdots p_k^{\alpha_k}$ ; nombre de diviseurs positifs : $(\alpha_1 + 1) \cdots (\alpha_k + 1)$.
+3. Fermat : $p$ premier, $p \nmid a \Rightarrow a^{p-1} \equiv 1 \pmod{p}$ ; pour tout $a$, $a^p \equiv a \pmod{p}$.
+
+::: attention Les pièges classiques
+1. Un reste négatif : $-17 = 4 \times (-5) + 3$, et non $4 \times (-4) - 1$.
+2. Diviser une congruence : $2 \equiv 8 \pmod{6}$ mais $1 \not\equiv 4 \pmod{6}$.
+3. Oublier les diviseurs négatifs ($n - 4 \mid 21$ autorise $n - 4 = -3$).
+4. Appliquer Gauss sans vérifier $\mathrm{PGCD}(a, b) = 1$, ou oublier la réciproque d'une équation.
+5. Croire que $1$ est premier, ou que la réciproque de Fermat est vraie.
+:::
+
+::: remarque Réflexe
+Expression qui dépend de $n$ → raisonner modulo $m$ par disjonction des cas sur le reste de $n$, ou éliminer $n$ par une combinaison.
+:::

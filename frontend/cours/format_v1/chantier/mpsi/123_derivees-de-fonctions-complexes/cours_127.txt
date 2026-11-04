@@ -1,0 +1,600 @@
+Titre: Dérivation d'une Fonction Complexe d'une Variable Réelle
+
+<!-- optitab:1 -->
+## I. Définition de la dérivée d'une fonction à valeurs complexes
+
+### Fonction complexe d'une variable réelle
+
+::: definition
+Une fonction **complexe d'une variable réelle** est une fonction $f : I \to \mathbb{C}$ où $I$ est un intervalle de $\mathbb{R}$.
+
+Pour tout $x \in I$, on peut écrire $f(x)$ sous la forme :
+
+::: formule
+$$f(x) = u(x) + i v(x)$$
+:::
+
+où $u : I \to \mathbb{R}$ et $v : I \to \mathbb{R}$ sont les **parties réelle et imaginaire** de $f$.
+
+Notation : $u = \text{Re}(f)$ et $v = \text{Im}(f)$.
+:::
+
+::: exemple
+- $f(x) = e^{ix} = \cos(x) + i\sin(x)$ : partie réelle $u(x) = \cos(x)$, partie imaginaire $v(x) = \sin(x)$
+- $g(x) = x^2 + i x$ : partie réelle $u(x) = x^2$, partie imaginaire $v(x) = x$
+- $h(x) = (1+i)x^3$ : partie réelle $u(x) = x^3$, partie imaginaire $v(x) = x^3$
+:::
+
+### Dérivée d'une fonction complexe
+
+::: definition
+Soit $f : I \to \mathbb{C}$ une fonction complexe d'une variable réelle, avec $f(x) = u(x) + i v(x)$ où $u$ et $v$ sont des fonctions réelles.
+
+On dit que $f$ est **dérivable en $a \in I$** si la limite suivante existe dans $\mathbb{C}$ :
+
+::: formule
+$$f'(a) = \lim_{h \to 0} \frac{f(a+h) - f(a)}{h}$$
+:::
+
+Cette limite, notée $f'(a)$, est appelée **dérivée de $f$ en $a$**.
+:::
+
+::: definition Caractérisation par les parties réelle et imaginaire
+La dérivée est définie par les parties réelle et imaginaire :
+
+$f$ est dérivable en $a$ si et seulement si $u$ et $v$ sont dérivables en $a$.
+
+Dans ce cas, on a :
+
+::: formule
+$$f'(a) = u'(a) + i v'(a)$$
+:::
+
+Autrement dit : $\text{Re}(f') = (\text{Re}(f))'$ et $\text{Im}(f') = (\text{Im}(f))'$.
+:::
+
+::: demonstration
+On a :
+
+$$\frac{f(a+h) - f(a)}{h} = \frac{u(a+h) - u(a)}{h} + i \frac{v(a+h) - v(a)}{h}$$
+
+Cette expression tend vers $u'(a) + i v'(a)$ lorsque $h \to 0$ si et seulement si $u$ et $v$ sont dérivables en $a$.
+
+Réciproquement, si $f$ est dérivable en $a$, alors en prenant les parties réelle et imaginaire de la limite, on obtient que $u$ et $v$ sont dérivables.
+:::
+
+::: exemple
+Pour $\displaystyle f(x) = e^{ix} = \cos(x) + i\sin(x)$ :
+
+Les parties réelle et imaginaire sont $u(x) = \cos(x)$ et $v(x) = \sin(x)$.
+
+On a $u'(x) = -\sin(x)$ et $v'(x) = \cos(x)$.
+
+Donc : $\displaystyle f'(x) = -\sin(x) + i\cos(x) = i(\cos(x) + i\sin(x)) = i e^{ix}$
+
+On retrouve ainsi la formule classique : $(e^{ix})' = i e^{ix}$.
+:::
+
+::: definition Fonction dérivable sur un intervalle
+On dit que $f$ est **dérivable sur $I$** si $f$ est dérivable en tout point de $I$.
+
+La fonction $f' : x \mapsto f'(x)$ est appelée **fonction dérivée** de $f$.
+
+On a alors : $f'(x) = u'(x) + i v'(x)$ pour tout $x \in I$.
+:::
+
+## II. Règles de dérivation
+
+### Dérivée d'une combinaison linéaire
+
+::: definition Linéarité de la dérivation
+Soient $f$ et $g$ deux fonctions complexes dérivables sur $I$, et $\lambda, \mu \in \mathbb{C}$.
+
+Alors $\lambda f + \mu g$ est dérivable sur $I$ et :
+
+::: formule
+$$(\lambda f + \mu g)' = \lambda f' + \mu g'$$
+:::
+:::
+
+::: demonstration
+Écrivons $f = u + iv$ et $g = w + iz$ où $u, v, w, z$ sont des fonctions réelles.
+
+Alors $\displaystyle \lambda f + \mu g = (\lambda u + \mu w) + i(\lambda v + \mu z)$.
+
+Par linéarité de la dérivation pour les fonctions réelles :
+
+$$
+\begin{aligned}
+(\lambda f + \mu g)' &= (\lambda u + \mu w)' + i(\lambda v + \mu z)' \\
+&= \lambda u' + \mu w' + i(\lambda v' + \mu z')
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+\phantom{(\lambda f + \mu g)'} &= \lambda(u' + iv') + \mu(w' + iz') \\
+&= \lambda f' + \mu g'
+\end{aligned}
+$$
+:::
+
+::: exemple
+Si $\displaystyle f(x) = (1+i)x^2 + (2-i)x$, alors :
+
+$$
+\begin{aligned}
+f'(x) &= (1+i)(x^2)' + (2-i)(x)' \\
+&= (1+i) \times 2x + (2-i) \times 1 \\
+&= 2(1+i)x + (2-i)
+\end{aligned}
+$$
+
+On peut aussi développer : $\displaystyle f'(x) = 2x + 2ix + 2 - i = (2x + 2) + i(2x - 1)$
+:::
+
+### Dérivée d'un produit
+
+::: definition Règle du produit
+Soient $f$ et $g$ deux fonctions complexes dérivables sur $I$.
+
+Alors $fg$ est dérivable sur $I$ et :
+
+::: formule
+$$(fg)' = f'g + fg'$$
+:::
+:::
+
+::: demonstration
+Écrivons $f = u + iv$ et $g = w + iz$.
+
+Alors $\displaystyle fg = (u + iv)(w + iz) = (uw - vz) + i(uz + vw)$.
+
+En dérivant les parties réelle et imaginaire :
+
+$$(fg)' = (uw - vz)' + i(uz + vw)'$$
+
+$$\phantom{(fg)'} = (u'w + uw' - v'z - vz') + i(u'z + uz' + v'w + vw')$$
+
+En réorganisant et en utilisant $f' = u' + iv'$ et $g' = w' + iz'$ :
+
+$$
+\begin{aligned}
+(fg)' &= (u' + iv')(w + iz) + (u + iv)(w' + iz') \\
+&= f'g + fg'
+\end{aligned}
+$$
+:::
+
+::: exemple
+Pour $f(x) = e^{ix}$ et $g(x) = x^2$ :
+
+$$
+\begin{aligned}
+(f(x)g(x))' &= (e^{ix} x^2)' \\
+&= (e^{ix})' x^2 + e^{ix} (x^2)' \\
+&= i e^{ix} x^2 + e^{ix} \times 2x \\
+&= e^{ix}(ix^2 + 2x)
+\end{aligned}
+$$
+:::
+
+### Dérivée d'un quotient
+
+::: definition Règle du quotient
+Soient $f$ et $g$ deux fonctions complexes dérivables sur $I$ avec $g(x) \neq 0$ pour tout $x \in I$.
+
+Alors $\frac{f}{g}$ est dérivable sur $I$ et :
+
+::: formule
+$$\left(\frac{f}{g}\right)' = \frac{f'g - fg'}{g^2}$$
+:::
+:::
+
+::: demonstration
+On peut démontrer cette formule en utilisant la règle du produit et la dérivée de l'inverse.
+
+On a $\displaystyle \frac{f}{g} = f \times \frac{1}{g}$.
+
+En dérivant $\frac{1}{g}$ (en utilisant la même méthode que pour les fonctions réelles), on obtient $\left(\frac{1}{g}\right)' = -\frac{g'}{g^2}$.
+
+Donc : $\displaystyle \left(\frac{f}{g}\right)' = f' \times \frac{1}{g} + f \times \left(-\frac{g'}{g^2}\right) = \frac{f'g - fg'}{g^2}$
+:::
+
+::: exemple
+Pour $f(x) = \frac{e^{ix}}{x}$ (avec $x \neq 0$) :
+
+$$
+\begin{aligned}
+f'(x) &= \frac{(e^{ix})' \times x - e^{ix} \times x'}{x^2} \\
+&= \frac{i e^{ix} \times x - e^{ix} \times 1}{x^2} \\
+&= \frac{e^{ix}(ix - 1)}{x^2}
+\end{aligned}
+$$
+:::
+
+## III. Rappels trigonométriques via $\displaystyle e^{ix}$
+
+### Formules d'Euler et dérivées trigonométriques
+
+::: definition Formules d'Euler
+À partir de la formule d'Euler $e^{ix} = \cos(x) + i\sin(x)$, on peut exprimer les fonctions trigonométriques en fonction de l'exponentielle complexe :
+
+::: formule
+$$\cos(x) = \frac{e^{ix} + e^{-ix}}{2}$$
+
+$$\sin(x) = \frac{e^{ix} - e^{-ix}}{2i}$$
+:::
+:::
+
+::: definition Dérivées des fonctions trigonométriques
+Les dérivées des fonctions trigonométriques sont :
+
+::: formule
+$$(\cos x)' = -\sin x$$
+
+$$(\sin x)' = \cos x$$
+
+$$(\tan x)' = \frac{1}{\cos^2 x}$$
+:::
+:::
+
+::: exemple Vérification via l'exponentielle
+On peut vérifier ces formules en utilisant $e^{ix} = \cos(x) + i\sin(x)$ et $(e^{ix})' = i e^{ix}$ :
+
+$$
+\begin{aligned}
+(e^{ix})' &= i e^{ix} \\
+&= i(\cos(x) + i\sin(x)) \\
+&= i\cos(x) - \sin(x) \\
+&= -\sin(x) + i\cos(x)
+\end{aligned}
+$$
+
+En identifiant les parties réelle et imaginaire : $(\cos(x))' = -\sin(x)$ et $(\sin(x))' = \cos(x)$.
+:::
+
+## IV. Dérivée de l'exponentielle complexe
+
+### Dérivée de $\displaystyle \exp(\varphi)$ où $\displaystyle \varphi$ est complexe
+
+::: theoreme
+Soit $\varphi : I \to \mathbb{C}$ une fonction complexe dérivable sur $I$.
+
+Alors la fonction $x \mapsto e^{\varphi(x)}$ est dérivable sur $I$ et :
+
+::: formule
+$$(e^{\varphi(x)})' = \varphi'(x) \cdot e^{\varphi(x)}$$
+:::
+:::
+
+::: demonstration (cas particulier $\displaystyle \varphi(x) = u(x) + iv(x)$)
+On a $\displaystyle e^{\varphi(x)} = e^{u(x) + iv(x)} = e^{u(x)} e^{iv(x)} = e^{u(x)}(\cos(v(x)) + i\sin(v(x)))$.
+
+En dérivant les parties réelle et imaginaire :
+
+Partie réelle : $\displaystyle (e^{u(x)}\cos(v(x)))' = e^{u(x)}u'(x)\cos(v(x)) - e^{u(x)}\sin(v(x))v'(x)$
+
+Partie imaginaire : $\displaystyle (e^{u(x)}\sin(v(x)))' = e^{u(x)}u'(x)\sin(v(x)) + e^{u(x)}\cos(v(x))v'(x)$
+
+En factorisant $e^{u(x)}$ et en utilisant $\varphi'(x) = u'(x) + iv'(x)$ :
+
+$$
+\begin{aligned}
+(e^{\varphi(x)})' &= e^{u(x)}[(u'(x) + iv'(x))(\cos(v(x)) + i\sin(v(x)))] \\
+&= \varphi'(x) e^{\varphi(x)}
+\end{aligned}
+$$
+:::
+
+::: exemple 1 - Exponentielle imaginaire pure
+Pour $\displaystyle f(x) = e^{ix}$ :
+
+On a $\varphi(x) = ix$, donc $\varphi'(x) = i$.
+
+Donc : $\displaystyle (e^{ix})' = i \cdot e^{ix}$
+
+Ce qui confirme le résultat obtenu précédemment.
+:::
+
+::: exemple 2 - Exponentielle avec partie réelle et imaginaire
+Pour $\displaystyle f(x) = e^{(1+i)x} = e^{x + ix} = e^x e^{ix}$ :
+
+On a $\varphi(x) = (1+i)x$, donc $\varphi'(x) = 1+i$.
+
+Donc : $\displaystyle (e^{(1+i)x})' = (1+i) e^{(1+i)x}$
+
+On peut aussi vérifier en utilisant le produit : $(e^x e^{ix})' = e^x e^{ix} + e^x (i e^{ix}) = (1+i)e^x e^{ix}$
+:::
+
+::: exemple 3 - Fonction plus générale
+Pour $\displaystyle f(x) = e^{x^2 + ix^3}$ :
+
+On a $\varphi(x) = x^2 + ix^3$, donc $\varphi'(x) = 2x + 3ix^2$.
+
+Donc : $\displaystyle f'(x) = (2x + 3ix^2) e^{x^2 + ix^3}$
+:::
+
+## V. Conjuguée, partie réelle et partie imaginaire
+
+### Dérivée de la conjuguée et des parties réelle et imaginaire
+
+::: propriete
+Soit $f = u + iv$ une fonction complexe dérivable sur $I$.
+
+Alors on a les propriétés suivantes :
+
+::: formule
+$$(\overline{f})' = \overline{f'}$$
+
+$$(\text{Re}(f))' = \text{Re}(f')$$
+
+$$(\text{Im}(f))' = \text{Im}(f')$$
+:::
+:::
+
+::: demonstration
+Si $f = u + iv$, alors $\overline{f} = u - iv$.
+
+En dérivant : $\displaystyle (\overline{f})' = u' - iv' = \overline{u' + iv'} = \overline{f'}$.
+
+De même, $\text{Re}(f) = u$ donc $(\text{Re}(f))' = u' = \text{Re}(f')$.
+
+Et $\text{Im}(f) = v$ donc $(\text{Im}(f))' = v' = \text{Im}(f')$.
+:::
+
+::: exemple
+Pour $\displaystyle f(x) = e^{ix} = \cos(x) + i\sin(x)$ :
+
+$$\overline{f}(x) = e^{-ix} = \cos(x) - i\sin(x)$$
+
+$$
+\begin{aligned}
+(\overline{f})'(x) &= -i e^{-ix} \\
+&= \overline{i e^{ix}} \\
+&= \overline{f'(x)}
+\end{aligned}
+$$
+:::
+
+## VI. Module et argument (très utile en exercices)
+
+### Dérivée du module au carré
+
+::: definition Dérivée de $\displaystyle |f|^2$
+Soit $f$ une fonction complexe dérivable sur $I$.
+
+Alors on a toujours :
+
+::: formule
+$$(|f|^2)' = 2\text{Re}(\overline{f} f')$$
+:::
+:::
+
+::: demonstration
+On a $\displaystyle |f|^2 = f \overline{f}$.
+
+En dérivant avec la règle du produit :
+
+$$
+\begin{aligned}
+(|f|^2)' &= (f \overline{f})' \\
+&= f' \overline{f} + f \overline{f'}
+\end{aligned}
+$$
+
+Or $\displaystyle f \overline{f'} = \overline{\overline{f} f'}$, donc :
+
+$$
+\begin{aligned}
+(|f|^2)' &= f' \overline{f} + \overline{\overline{f} f'} \\
+&= 2\text{Re}(\overline{f} f')
+\end{aligned}
+$$
+:::
+
+::: exemple
+Pour $\displaystyle f(x) = e^{ix}$ :
+
+On a $f'(x) = i e^{ix}$ et $\overline{f}(x) = e^{-ix}$.
+
+Donc $\displaystyle \overline{f}(x) f'(x) = e^{-ix} \cdot i e^{ix} = i$.
+
+Par la formule : $\displaystyle (|e^{ix}|^2)' = 2\text{Re}(i) = 2 \times 0 = 0$.
+
+Ce qui est cohérent car $|e^{ix}|^2 = 1$ (constante), donc sa dérivée est bien nulle.
+:::
+
+### Dérivée de l'argument et du logarithme du module
+
+::: definition Conditions et formules
+Soit $f$ une fonction complexe de classe $C^1$ sur $I$ telle que $f(x) \neq 0$ pour tout $x \in I$.
+
+Alors on a :
+
+::: formule
+$$(\arg f)' = \text{Im}\left(\frac{f'}{f}\right)$$
+
+$$(\ln |f|)' = \text{Re}\left(\frac{f'}{f}\right)$$
+:::
+:::
+
+::: demonstration Justification
+Si $f(x) = |f(x)| e^{i\arg(f(x))}$, alors en dérivant et en utilisant la formule de l'exponentielle :
+
+$$f'(x) = (|f|)' e^{i\arg(f)} + |f| \cdot i(\arg(f))' e^{i\arg(f)}$$
+
+En divisant par $\displaystyle f(x)$ :
+
+$$\frac{f'}{f} = \frac{(|f|)'}{|f|} + i(\arg(f))'$$
+
+D'où : $(\arg f)' = \text{Im}\left(\frac{f'}{f}\right)$ et $(\ln |f|)' = \text{Re}\left(\frac{f'}{f}\right)$.
+:::
+
+::: exemple
+Pour $\displaystyle f(x) = e^{ix}$ :
+
+$$\frac{f'}{f} = \frac{i e^{ix}}{e^{ix}} = i$$
+
+Donc $(\arg(e^{ix}))' = \text{Im}(i) = 1$ et $(\ln |e^{ix}|)' = \text{Re}(i) = 0$.
+
+Ce qui est cohérent car $|e^{ix}| = 1$ (donc $\ln |e^{ix}| = 0$) et $\arg(e^{ix}) = x$.
+:::
+
+## VII. Dérivées d'ordre supérieur et formule de Leibniz
+
+### Formule de Leibniz pour les dérivées d'ordre supérieur
+
+::: definition Formule de Leibniz
+Soient $f$ et $g$ deux fonctions complexes $n$ fois dérivables sur $I$.
+
+Alors le produit $fg$ est $n$ fois dérivable et :
+
+::: formule
+$$(fg)^{(n)} = \sum_{k=0}^{n} \binom{n}{k} f^{(k)} g^{(n-k)}$$
+:::
+
+Cette formule est valable composante par composante (pour les parties réelle et imaginaire).
+:::
+
+::: demonstration
+La démonstration se fait par récurrence sur $n$.
+
+Pour $n = 1$, on retrouve la règle du produit : $(fg)' = f'g + fg'$.
+
+En supposant la formule vraie au rang $n$, on montre qu'elle est vraie au rang $n+1$ en dérivant une fois de plus et en utilisant la relation de Pascal sur les coefficients binomiaux.
+
+Comme la dérivation se fait composante par composante, la formule s'applique également aux fonctions complexes.
+:::
+
+::: exemple
+Pour $f(x) = x$ et $g(x) = e^{ix}$ :
+
+On a $f'(x) = 1$, $f''(x) = 0$, et $g^{(k)}(x) = i^k e^{ix}$ pour tout $k \in \mathbb{N}$.
+
+Pour $\displaystyle n = 2$ :
+
+$$(x e^{ix})'' = \binom{2}{0} x \cdot (i^2 e^{ix}) + \binom{2}{1} 1 \cdot (i e^{ix}) + \binom{2}{2} 0 \cdot e^{ix}$$
+
+$$
+\begin{aligned}
+\phantom{(x e^{ix})''} &= -x e^{ix} + 2i e^{ix} \\
+&= e^{ix}(-x + 2i)
+\end{aligned}
+$$
+:::
+
+## VIII. Extension des résultats classiques
+
+### Brève extension des résultats sur les fonctions à valeurs réelles
+
+::: methode
+La plupart des règles de dérivation valables pour les fonctions réelles s'étendent naturellement aux fonctions complexes d'une variable réelle.
+
+Cela s'explique par le fait que la dérivation se fait « composante par composante » (partie réelle et partie imaginaire).
+:::
+
+::: definition Dérivée d'une composée (rappel clair)
+Soient $u : \mathbb{R} \to \mathbb{R}$ une fonction réelle dérivable et $g : \mathbb{R} \to \mathbb{C}$ une fonction complexe dérivable.
+
+Alors $g \circ u$ est dérivable sur $I$ et :
+
+::: formule
+$$(g \circ u)' = (g' \circ u) \cdot u'$$
+:::
+
+Cette formule reste valable car elle découle directement de la règle de la chaîne appliquée aux parties réelle et imaginaire.
+:::
+
+::: definition Cas particulier : exponentielle d'une fonction complexe
+Soit $\varphi : \mathbb{R} \to \mathbb{C}$ une fonction complexe dérivable.
+
+Alors :
+
+::: formule
+$$(e^{\varphi})' = \varphi' e^{\varphi}$$
+:::
+
+Cette formule est un cas particulier de la règle de la chaîne pour l'exponentielle.
+:::
+
+::: definition Dérivée d'une puissance
+Soit $f : I \to \mathbb{C}$ une fonction complexe dérivable et $n \in \mathbb{N}$.
+
+Alors $\displaystyle f^n$ est dérivable et :
+
+::: formule
+$$(f^n)' = n f^{n-1} f'$$
+:::
+
+Cette formule se démontre par récurrence en utilisant la règle du produit.
+:::
+
+::: exemple
+Pour $\displaystyle f(x) = (e^{ix})^3 = e^{3ix}$ :
+
+En utilisant la formule de la puissance : $f'(x) = 3(e^{ix})^2 \times (e^{ix})' = 3(e^{ix})^2 \times i e^{ix} = 3i e^{3ix}$
+
+En utilisant directement l'exponentielle : $f'(x) = (e^{3ix})' = 3i e^{3ix}$
+
+Les deux méthodes donnent le même résultat.
+:::
+
+::: definition Dérivée d'une fonction constante
+Si $f(x) = c$ où $c \in \mathbb{C}$ est une constante complexe, alors $f'(x) = 0$.
+
+En effet, $f(x) = \text{Re}(c) + i \text{Im}(c)$ où les parties réelle et imaginaire sont constantes.
+:::
+
+::: definition Dérivée d'un polynôme complexe
+Soit $P(x) = a_n x^n + a_{n-1} x^{n-1} + \cdots + a_1 x + a_0$ où les $a_k \in \mathbb{C}$.
+
+Alors $\displaystyle P'(x) = n a_n x^{n-1} + (n-1) a_{n-1} x^{n-2} + \cdots + a_1$.
+
+La formule de dérivation d'un polynôme reste identique, même avec des coefficients complexes.
+:::
+
+## IX. Conseils méthodologiques
+
+### Méthodes de calcul
+
+::: methode Calculer la dérivée d'une fonction complexe
+1. **Identifier la structure** : combinaison linéaire, produit, quotient, composée, exponentielle
+2. **Appliquer la règle appropriée** : linéarité, produit, quotient, chaîne, exponentielle
+3. **Vérifier via les parties réelle et imaginaire** si nécessaire
+4. **Simplifier** l'expression obtenue
+:::
+
+::: methode Vérifier un calcul via les parties réelle et imaginaire
+Pour vérifier un calcul de dérivée complexe :
+
+1. Écrire $\displaystyle f(x) = u(x) + iv(x)$
+2. Calculer $u'(x)$ et $v'(x)$ séparément
+3. Vérifier que $\displaystyle f'(x) = u'(x) + iv'(x)$
+:::
+
+::: conseil
+- **Dérivée par parties réelle et imaginaire :** Toujours vérifier que $f'(x) = u'(x) + iv'(x)$
+- **Exponentielle complexe :** Utiliser la formule $(e^{\varphi})' = \varphi' e^{\varphi}$
+- **Produit et quotient :** Les formules sont identiques aux fonctions réelles
+- **Linéarité :** La dérivation est linéaire même avec des coefficients complexes
+- **Composée :** La règle de la chaîne s'applique également
+- **Vérification :** Toujours vérifier les calculs en développant les parties réelle et imaginaire
+:::
+
+::: attention
+- Oublier que la dérivée se fait composante par composante
+- Confondre $(e^{ix})'$ avec $e^{ix'}$ (la dérivée de $e^{ix}$ est $i e^{ix}$, pas $e^{i}$)
+- Oublier de multiplier par $\varphi'(x)$ dans la formule $(e^{\varphi})' = \varphi' e^{\varphi}$
+- Ne pas simplifier les expressions complexes après dérivation
+- Oublier que les règles de dérivation (produit, quotient) restent valables
+- Confondre la dérivée d'une fonction complexe avec la dérivée d'une fonction de variable complexe (analyse complexe)
+:::
+
+::: remarque
+La dérivation d'une fonction complexe d'une variable réelle est différente de la dérivation d'une fonction de variable complexe (fonction holomorphe).
+
+Ici, on dérive par rapport à une variable réelle $x$, et la fonction prend des valeurs complexes.
+
+En analyse complexe, on dérive par rapport à une variable complexe $z$, ce qui nécessite des conditions supplémentaires (équations de Cauchy-Riemann).
+:::

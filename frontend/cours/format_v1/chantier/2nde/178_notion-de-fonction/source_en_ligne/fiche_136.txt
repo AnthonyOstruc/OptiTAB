@@ -1,0 +1,58 @@
+Titre: Résumé : Notion de fonction en Python
+
+<!-- optitab:1 -->
+::: objectifs
+L’essentiel pour écrire, appeler et lire une fonction Python, simuler le hasard et répéter une expérience. Programme de Seconde.
+:::
+
+## I. Écrire et appeler une fonction
+
+```python
+def f(x):
+    return 3 * x + 2
+```
+
+[IMAGE_1]
+
+- `def nom(arguments):` puis un bloc indenté de quatre espaces.
+- `return` renvoie le résultat **et arrête** la fonction ; `print` ne fait qu’afficher.
+- Appel : `nom(valeurs)`, valeurs dans **l’ordre** des arguments.
+
+## II. Simuler le hasard
+
+::: definition Le module random
+Après `from random import randint, random` :
+
+- `randint(a, b)` : entier au hasard entre $a$ et $b$, bornes incluses.
+- `random()` : décimal au hasard dans ${[0\,;1[}$ ; `random() < p` est vrai avec la probabilité $p$.
+:::
+
+## III. Répéter une expérience
+
+```python
+def frequence_six(n):
+    k = 0
+    for i in range(n):
+        if randint(1, 6) == 6:
+            k = k + 1
+    return k / n
+```
+
+- Compteur `k` à $0$ **avant** la boucle ; fréquence = `k / n`.
+- Quand $n$ est grand, la fréquence se rapproche de la probabilité (ici $\frac{1}{6}$).
+- Moyenne et écart type sans liste : accumuler `s` (somme) et `s2` (somme des carrés), puis $m = \frac{s}{n}$, $V = \frac{s_2}{n} - m^2$, $\sigma = \sqrt{V}$.
+
+[IMAGE_2]
+
+## IV. Les pièges à éviter
+
+::: attention Les 4 erreurs classiques
+1. `print` au lieu de `return` : le résultat n’est pas réutilisable.
+2. Oublier l’import de `randint`, `random` ou `sqrt`.
+3. Initialiser un compteur **dans** la boucle : il repart à $0$ à chaque tour.
+4. Placer le `return` **dans** la boucle : la fonction s’arrête dès le premier tour.
+:::
+
+::: conseil Réflexe
+Entrée → arguments, sortie → `return`. Toujours tester la fonction sur un cas dont on connaît la réponse.
+:::

@@ -1,783 +1,985 @@
 <template>
-  <DashboardLayout>
-    <div class="history-page">
-      <h2 class="page-title">Historique complet des exercices</h2>
+  <EspaceLayout title="Historique">
+    <header class="es-page-head">
+      <div>
+        <h1 class="es-h1">Historique</h1>
+        <p class="es-sub">Tous les exercices que tu as faits, chapitre par chapitre.</p>
+      </div>
+    </header>
 
-      <BaseHistory
-        title="🧭 Historique des Exercices"
-        list-title="📝 Tous mes exercices"
-        loading-text="Chargement de l'historique..."
-        api-endpoint="/api/suivis/exercices/stats/"
-        :items-per-page="20"
-        :navigation-handler="navigateToExercice"
-      >
-        <!-- Tableau résumé matière/notion (identique au dashboard, avec tri + détails chapitres) -->
-        <template #matiere-notion-stats="{ stats }">
-          <!-- Version Desktop : Tableau -->
-          <div class="summary-table desktop-only">
-            <div class="summary-header">
-              <div>Matière</div>
-              <div>Notion</div>
-              <div class="sortable-header" @click="sortBy('exercice_count')">
-                Faits
-                <span class="sort-icon" :class="{ active: sortField === 'exercice_count' }">{{ sortField === 'exercice_count' && sortDirection === 'asc' ? '↑' : '↓' }}</span>
-              </div>
-              <div class="sortable-header" @click="sortBy('correct_count')">
-                Réussis
-                <span class="sort-icon" :class="{ active: sortField === 'correct_count' }">{{ sortField === 'correct_count' && sortDirection === 'asc' ? '↑' : '↓' }}</span>
-              </div>
-              <div class="sortable-header" @click="sortBy('incorrect_count')">
-                Ratés
-                <span class="sort-icon" :class="{ active: sortField === 'incorrect_count' }">{{ sortField === 'incorrect_count' && sortDirection === 'asc' ? '↑' : '↓' }}</span>
-              </div>
-              <div class="sortable-header" @click="sortBy('average')">
-                Moyenne
-                <span class="sort-icon" :class="{ active: sortField === 'average' }">{{ sortField === 'average' && sortDirection === 'asc' ? '↑' : '↓' }}</span>
-              </div>
-            </div>
+    <!-- Chargement -->
+    <div v-if="etat === 'chargement'" aria-busy="true" aria-label="Chargement de l’historique">
+      <div class="hi-stats">
+        <div v-for="i in 4" :key="i" class="es-skeleton hi-skel hi-skel--stat"></div>
+      </div>
+      <div class="es-skeleton hi-skel hi-skel--card"></div>
+    </div>
 
-            <template v-for="row in sortStats(stats)" :key="`${row.matiere.id}-${row.notion.id}`">
-              <div class="summary-row">
-                <div class="cell matiere">{{ row.matiere.titre }}</div>
-                <div class="cell notion">
-                  <button class="notion-toggle" @click="toggleNotionDetails(row)">
-                    <span class="notion-label">{{ row.notion.titre }}</span>
-                  </button>
-                </div>
-                <div class="cell count">{{ row.exercice_count }}</div>
-                <div class="cell correct">{{ row.correct_count }}</div>
-                <div class="cell incorrect">{{ row.incorrect_count }}</div>
-                <div class="cell average" :class="getAverageClass(row.average)">{{ formatAverage(row.average) }}</div>
-              </div>
+    <!-- Erreur -->
+    <div v-else-if="etat === 'erreur'" class="es-empty hi-message">
+      <strong>Impossible de charger ton historique</strong>
+      Vérifie ta connexion, puis réessaie.
+      <button type="button" class="es-btn es-btn--ghost es-btn--sm" @click="charger(true)">Réessayer</button>
+    </div>
 
-              <div v-if="isNotionExpanded(row)" class="summary-details-row">
-                <div class="details-cell">
-                  <div class="chapter-table">
-                    <div class="chapter-header">
-                      <div>Chapitre</div>
-                      <div>Faits</div>
-                      <div>Réussis</div>
-                      <div>Ratés</div>
-                      <div>Réussite</div>
-                      <div>Moyenne</div>
-                    </div>
-                    <div v-if="getNotionDetails(row).loading" class="chapter-loading">Chargement des détails...</div>
-                    <div v-else-if="getNotionDetails(row).error" class="chapter-error">{{ getNotionDetails(row).error }}</div>
-                    <div v-else>
-                      <div v-for="ch in getNotionDetails(row).chapters" :key="ch.chapitre.id" class="chapter-row">
-                        <div class="cell chapitre">{{ ch.chapitre.titre }}</div>
-                        <div class="cell count">{{ ch.exercice_count }}</div>
-                        <div class="cell correct">{{ ch.correct_count }}</div>
-                        <div class="cell incorrect">{{ ch.incorrect_count }}</div>
-                        <div class="cell ratio">{{ Math.round(ch.ratio_percent) }}%</div>
-                        <div class="cell average" :class="getAverageClass(ch.average_10 * 10)">{{ ch.average_10 }}/10</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </template>
-          </div>
+    <!-- Aucun exercice -->
+    <div v-else-if="!exercices.length" class="es-card hi-vide">
+      <span class="hi-vide__ico" aria-hidden="true"><ClockIcon /></span>
+      <h2 class="es-h2">Aucun exercice pour l’instant</h2>
+      <p>Dès que tu indiques « J’ai compris » ou « À revoir » sur un exercice, il apparaît ici.</p>
+      <router-link :to="ESPACE_ROUTES.chapitres" class="es-btn">Voir mes chapitres</router-link>
+    </div>
 
-          <!-- Version Mobile : Cartes -->
-          <div class="summary-cards mobile-only">
-            <div class="sort-controls">
-              <span class="sort-label">Trier par :</span>
-              <select v-model="sortField" @change="sortDirection = 'desc'" class="sort-select">
-                <option value="exercice_count">Faits</option>
-                <option value="correct_count">Réussis</option>
-                <option value="incorrect_count">Ratés</option>
-                <option value="average">Moyenne</option>
-              </select>
-              <button class="sort-direction-btn" @click="sortDirection = sortDirection === 'asc' ? 'desc' : 'asc'" :title="sortDirection === 'asc' ? 'Croissant' : 'Décroissant'">
-                {{ sortDirection === 'asc' ? '↑' : '↓' }}
+    <template v-else>
+      <!-- Chiffres clés -->
+      <section class="hi-stats" aria-label="En résumé">
+        <div class="es-card hi-stat">
+          <span class="hi-stat__label">Exercices faits</span>
+          <strong class="hi-stat__value">{{ total }}</strong>
+          <span class="hi-stat__hint">dans {{ pluriel(chapitres.length, 'chapitre') }}</span>
+        </div>
+        <div class="es-card hi-stat hi-stat--ok">
+          <span class="hi-stat__label"><i aria-hidden="true"></i>Compris</span>
+          <strong class="hi-stat__value">{{ compris }}</strong>
+          <span class="hi-stat__hint">{{ pourcent(compris, total) }}&nbsp;% de tes exercices</span>
+        </div>
+        <div class="es-card hi-stat hi-stat--review">
+          <span class="hi-stat__label"><i aria-hidden="true"></i>À revoir</span>
+          <strong class="hi-stat__value">{{ aRevoir }}</strong>
+          <span class="hi-stat__hint">{{ aRevoir ? 'à retravailler' : 'rien à reprendre' }}</span>
+        </div>
+        <div class="es-card hi-stat">
+          <span class="hi-stat__label">Cette semaine</span>
+          <strong class="hi-stat__value">{{ cetteSemaine }}</strong>
+          <span class="hi-stat__hint">{{ cetteSemaine > 1 ? 'exercices' : 'exercice' }} sur 7 jours</span>
+        </div>
+      </section>
+
+      <!-- Par chapitre -->
+      <section class="es-card hi-card" aria-labelledby="hi-chapitres-titre">
+        <div class="hi-card__head">
+          <h2 id="hi-chapitres-titre" class="es-h2">Par chapitre</h2>
+          <label class="hi-select">
+            <span class="es-sr-only">Trier les chapitres</span>
+            <ArrowsUpDownIcon aria-hidden="true" />
+            <select v-model="tri">
+              <option value="recent">Activité récente</option>
+              <option value="faits">Les plus travaillés</option>
+              <option value="revoir">À revoir d’abord</option>
+              <option value="programme">Ordre du programme</option>
+            </select>
+          </label>
+        </div>
+
+        <ul class="hi-chaps">
+          <li v-for="c in chapitresAffiches" :key="c.cle">
+            <component :is="c.lien ? 'router-link' : 'div'" :to="c.lien || undefined" :class="['hi-chap', { 'hi-chap--lien': c.lien }]">
+              <span class="es-theme-ico es-theme-ico--sm" :style="c.visuel.style" aria-hidden="true">
+                <component :is="c.visuel.icone" />
+              </span>
+              <span class="hi-chap__main">
+                <span class="hi-chap__titre">{{ c.titre }}</span>
+                <span class="hi-chap__meta">{{ c.meta }}</span>
+              </span>
+              <span class="hi-chap__prog">
+                <span class="es-bar" aria-hidden="true">
+                  <span class="es-bar__ok" :style="{ width: pourcent(c.compris, c.faits) + '%' }"></span>
+                  <span class="es-bar__review" :style="{ width: pourcent(c.aRevoir, c.faits) + '%' }"></span>
+                </span>
+                <span class="hi-chap__compte">
+                  <span class="hi-dot hi-dot--ok" aria-hidden="true"></span>{{ c.compris }} compris
+                  <span class="hi-dot hi-dot--review" aria-hidden="true"></span>{{ c.aRevoir }} à revoir
+                </span>
+              </span>
+              <span :class="['hi-pct', `hi-pct--${niveauReussite(c.compris, c.faits)}`]" :title="`${c.compris} compris sur ${c.faits}`">
+                {{ pourcent(c.compris, c.faits) }}&nbsp;%
+              </span>
+              <ChevronRightIcon v-if="c.lien" class="hi-chap__chev" aria-hidden="true" />
+              <span v-else class="hi-chap__chev" aria-hidden="true"></span>
+            </component>
+          </li>
+        </ul>
+
+        <button v-if="chapitres.length > CHAPITRES_VISIBLES" type="button" class="hi-plus" @click="tousLesChapitres = !tousLesChapitres">
+          {{ tousLesChapitres ? 'Réduire la liste' : chapitres.length - CHAPITRES_VISIBLES > 1 ? `Afficher les ${chapitres.length - CHAPITRES_VISIBLES} autres chapitres` : 'Afficher l’autre chapitre' }}
+          <ChevronDownIcon :class="{ 'is-up': tousLesChapitres }" aria-hidden="true" />
+        </button>
+      </section>
+
+      <!-- Tous les exercices -->
+      <section class="es-card hi-card" aria-labelledby="hi-exercices-titre">
+        <div class="hi-card__head hi-card__head--wrap">
+          <h2 id="hi-exercices-titre" class="es-h2">Tous mes exercices</h2>
+          <div class="hi-filtres">
+            <div class="hi-seg" role="group" aria-label="Afficher">
+              <button
+                v-for="f in FILTRES"
+                :key="f.cle"
+                type="button"
+                :class="['hi-seg__btn', { 'is-active': filtre === f.cle }]"
+                :aria-pressed="filtre === f.cle"
+                @click="filtre = f.cle"
+              >
+                {{ f.label }} <span class="hi-seg__n">{{ compte(f.cle) }}</span>
               </button>
             </div>
-            <template v-for="row in sortStats(stats)" :key="`${row.matiere.id}-${row.notion.id}`">
-              <div class="summary-card">
-                <div class="card-header">
-                  <div class="card-title">{{ row.notion.titre }}</div>
-                  <div class="card-subtitle">{{ row.matiere.titre }}</div>
-                </div>
-                <div class="card-stats">
-                  <div class="stat-item">
-                    <span class="stat-label">Faits</span>
-                    <span class="stat-value">{{ row.exercice_count }}</span>
-                  </div>
-                  <div class="stat-item">
-                    <span class="stat-label">Réussis</span>
-                    <span class="stat-value success">{{ row.correct_count }}</span>
-                  </div>
-                  <div class="stat-item">
-                    <span class="stat-label">Ratés</span>
-                    <span class="stat-value error">{{ row.incorrect_count }}</span>
-                  </div>
-                  <div class="stat-item highlight" :class="getAverageClass(row.average)">
-                    <span class="stat-label">Moyenne</span>
-                    <span class="stat-value">{{ formatAverage(row.average) }}</span>
-                  </div>
-                </div>
-              </div>
-            </template>
+            <label v-if="chapitres.length > 1" class="hi-select hi-select--chap">
+              <span class="es-sr-only">Chapitre</span>
+              <select v-model="filtreChapitre">
+                <option value="">Tous les chapitres</option>
+                <option v-for="c in chapitresParTitre" :key="c.cle" :value="c.cle">{{ c.titre }}</option>
+              </select>
+            </label>
           </div>
-        </template>
+        </div>
 
-        <!-- Liste des items (même rendu que dashboard) -->
-        <template #items-list="{ items, toggleDetails, isExpanded, navigateToItem }">
-          <div v-for="exercice in items" :key="exercice.id" class="exercice-card" :class="{ 'correct': exercice.est_correct, 'incorrect': !exercice.est_correct }">
-            <div class="exercice-card-header" @click="toggleDetails(exercice.id)">
-              <div class="exercice-card-title-section">
-                <h5 class="exercice-card-title clickable-title" @click.stop="navigateToExercice(exercice)" :title="'Accéder à l\'exercice: ' + exercice.exercice_titre">
-                  {{ exercice.exercice_titre }}
-                  <svg class="navigation-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M7 17l9.2-9.2M17 17V7H7"></path>
-                  </svg>
-                </h5>
-                <div class="exercice-breadcrumb-compact">
-                  {{ exercice.matiere.titre }} → {{ exercice.notion.titre }}
-                </div>
-              </div>
-              <div class="exercice-card-actions">
-                <div class="exercice-status" :class="getStatusClass(exercice.est_correct)">
-                  {{ exercice.est_correct ? '✅' : '❌' }}
-                </div>
-                <button class="expand-toggle" :class="{ expanded: isExpanded(exercice.id) }">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="6,9 12,15 18,9"></polyline>
-                  </svg>
-                </button>
-              </div>
-            </div>
+        <p v-if="!exercicesFiltres.length" class="hi-aucun">Aucun exercice avec ces filtres.</p>
 
-            <div v-if="isExpanded(exercice.id)" class="exercice-card-details">
-              <div class="exercice-breadcrumb">
-                <span class="breadcrumb-item">{{ exercice.matiere.titre }}</span>
-                <span class="breadcrumb-separator">→</span>
-                <span class="breadcrumb-item">{{ exercice.notion.titre }}</span>
-                <span class="breadcrumb-separator">→</span>
-                <span class="breadcrumb-item">{{ exercice.chapitre.titre }}</span>
-              </div>
-              <div class="exercice-meta">
-                <span class="exercice-date">{{ formatDate(exercice.date_creation) }}</span>
-                <span class="exercice-time" v-if="exercice.temps_seconde">{{ formatTime(exercice.temps_seconde) }}</span>
-                <span class="exercice-points" v-if="exercice.points_obtenus">{{ exercice.points_obtenus }} points</span>
-              </div>
-            </div>
-          </div>
-        </template>
-      </BaseHistory>
-    </div>
-  </DashboardLayout>
-  
+        <div v-for="g in groupes" :key="g.cle" class="hi-jour">
+          <h3 class="hi-jour__titre">{{ g.titre }}</h3>
+          <ul class="hi-exs">
+            <li v-for="e in g.items" :key="e.id">
+              <router-link :to="lienExercice(e)" class="hi-ex">
+                <span :class="['hi-ex__etat', e.est_correct ? 'is-ok' : 'is-review']" aria-hidden="true">
+                  <CheckIcon v-if="e.est_correct" />
+                  <ArrowPathIcon v-else />
+                </span>
+                <span class="hi-ex__main">
+                  <span class="hi-ex__titre">
+                    <span v-if="e.type" class="hi-ex__type">{{ e.type }}</span>{{ e.nom }}
+                  </span>
+                  <span class="hi-ex__meta">{{ e.notion?.titre }}</span>
+                </span>
+                <span :class="['es-pill', e.est_correct ? 'es-pill--done' : 'es-pill--review', 'hi-ex__pill']" aria-hidden="true">
+                  {{ e.est_correct ? 'Compris' : 'À revoir' }}
+                </span>
+                <span class="es-sr-only">{{ e.est_correct ? 'Compris' : 'À revoir' }}</span>
+                <time class="hi-ex__heure" :datetime="e.date_creation">{{ heure(e.date_creation) }}</time>
+              </router-link>
+            </li>
+          </ul>
+        </div>
+
+        <button v-if="restants > 0" type="button" class="hi-plus" @click="limite += PAR_PAGE">
+          Afficher {{ Math.min(restants, PAR_PAGE) }} exercices de plus
+          <ChevronDownIcon aria-hidden="true" />
+        </button>
+      </section>
+    </template>
+  </EspaceLayout>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
-import BaseHistory from '@/components/dashboard/BaseHistory.vue'
-import apiClient from '@/api/client'
+// Historique des exercices (espace élève) : chiffres clés, progression par
+// chapitre et liste datée de tous les exercices marqués « compris » ou « à revoir ».
+import { computed, onMounted, ref, watch } from 'vue'
+import {
+  ArrowPathIcon,
+  ArrowsUpDownIcon,
+  CheckIcon,
+  ChevronDownIcon,
+  ChevronRightIcon,
+  ClockIcon
+} from '@heroicons/vue/24/outline'
+import EspaceLayout from '@/components/espace/EspaceLayout.vue'
+import apiClient, { apiUtils } from '@/api/client'
+import { useProgression } from '@/composables/useProgression'
+import { ESPACE_ROUTES, chapitreLink } from '@/config/espace'
+import { pluriel, pourcent } from '@/utils/espaceFormat'
+import { indexThemes, visuelTheme } from '@/utils/espaceTheme'
 
-const router = useRouter()
+const URL_STATS = '/api/suivis/exercices/stats/'
+const CHAPITRES_VISIBLES = 8
+const PAR_PAGE = 20
+const FILTRES = [
+  { cle: 'tous', label: 'Tous' },
+  { cle: 'compris', label: 'Compris' },
+  { cle: 'revoir', label: 'À revoir' }
+]
 
-const navigateToExercice = (exercice) => {
-  router.push({ name: 'ExerciceDetail', params: { exerciceId: String(exercice.exercice_id) } })
-}
+const { progression, charger: chargerProgression } = useProgression()
 
-// Tri et détails pour le tableau résumé (identique au dashboard)
-const sortField = ref('exercice_count')
-const sortDirection = ref('desc')
-const expandedNotions = ref(new Set())
-const notionDetails = ref({})
+const etat = ref('chargement')
+const brut = ref([])
+const tri = ref('recent')
+const tousLesChapitres = ref(false)
+const filtre = ref('tous')
+const filtreChapitre = ref('')
+const limite = ref(PAR_PAGE)
 
-const sortStats = (statsArray) => {
-  const rows = Array.isArray(statsArray) ? statsArray : []
-  const withAverage = rows.map(r => ({
-    ...r,
-    average: r.exercice_count > 0 ? (r.correct_count / r.exercice_count) * 100 : 0
-  }))
-  return [...withAverage].sort((a, b) => {
-    const aValue = a[sortField.value] || 0
-    const bValue = b[sortField.value] || 0
-    return sortDirection.value === 'asc' ? aValue - bValue : bValue - aValue
-  })
-}
-
-const formatAverage = (average) => {
-  if (average === 0) return '0%'
-  return `${Math.round(average)}%`
-}
-
-const getAverageClass = (average) => {
-  if (average >= 90) return 'excellent'
-  if (average >= 75) return 'good'
-  if (average >= 50) return 'average'
-  return 'poor'
-}
-
-const sortBy = (field) => {
-  if (sortField.value === field) {
-    sortDirection.value = sortDirection.value === 'asc' ? 'desc' : 'asc'
-  } else {
-    sortField.value = field
-    sortDirection.value = 'desc'
-  }
-}
-
-const buildNotionKey = (row) => `${row.matiere.id}-${row.notion.id}`
-const isNotionExpanded = (row) => expandedNotions.value.has(buildNotionKey(row))
-const getNotionDetails = (row) => {
-  const key = buildNotionKey(row)
-  if (!notionDetails.value[key]) {
-    notionDetails.value[key] = { loading: false, error: '', chapters: [] }
-  }
-  return notionDetails.value[key]
-}
-const toggleNotionDetails = async (row) => {
-  const key = buildNotionKey(row)
-  if (expandedNotions.value.has(key)) {
-    expandedNotions.value.delete(key)
-    return
-  }
-  expandedNotions.value.add(key)
-  const details = getNotionDetails(row)
-  if (details.chapters && details.chapters.length > 0) return
-  await fetchNotionChapterDetails(row.matiere.id, row.notion.id)
-}
-const fetchNotionChapterDetails = async (matiereId, notionId) => {
-  const key = `${matiereId}-${notionId}`
-  notionDetails.value[key] = { loading: true, error: '', chapters: [] }
+async function charger(force = false) {
+  if (!brut.value.length) etat.value = 'chargement'
   try {
-    const response = await apiClient.get('/api/suivis/exercices/stats/', { params: { matiere: matiereId, notion: notionId } })
-    const list = Array.isArray(response?.data?.exercice_list) ? response.data.exercice_list : []
-    const chapters = computeChapterStats(list)
-    notionDetails.value[key] = { loading: false, error: '', chapters }
-  } catch (error) {
-    const message = (error?.response?.data?.error) || 'Erreur lors du chargement des détails'
-    notionDetails.value[key] = { loading: false, error: message, chapters: [] }
+    const [res] = await Promise.all([
+      force ? apiClient.get(URL_STATS) : apiUtils.cachedGet(URL_STATS, { ttl: 30000 }),
+      chargerProgression().catch(() => null)
+    ])
+    brut.value = Array.isArray(res?.data?.exercice_list) ? res.data.exercice_list : []
+    etat.value = 'pret'
+  } catch (_) {
+    etat.value = 'erreur'
   }
 }
 
-const computeChapterStats = (exerciceList) => {
-  const map = new Map()
-  for (const item of exerciceList) {
-    const chap = item?.chapitre || {}
-    const chapId = chap?.id
-    if (!chapId) continue
-    if (!map.has(chapId)) {
-      map.set(chapId, { chapitre: { id: chapId, titre: chap?.titre || 'Chapitre' }, exercice_count: 0, correct_count: 0, incorrect_count: 0 })
+onMounted(() => charger())
+
+// « Découverte - Lire graphiquement… » → type « Découverte » + nom.
+function decouperTitre(titre = '') {
+  const m = String(titre).match(/^([\p{Lu}][\p{L}’' ]{2,24}?)\s+[-–]\s+(.+)$/u)
+  return m ? { type: m[1], nom: m[2] } : { type: '', nom: titre }
+}
+
+const exercices = computed(() => brut.value
+  .map((e) => ({ ...e, ...decouperTitre(e.exercice_titre) }))
+  .sort((a, b) => new Date(b.date_creation) - new Date(a.date_creation)))
+
+const total = computed(() => exercices.value.length)
+const compris = computed(() => exercices.value.filter((e) => e.est_correct).length)
+const aRevoir = computed(() => total.value - compris.value)
+const cetteSemaine = computed(() => {
+  const depuis = Date.now() - 7 * 86400000
+  return exercices.value.filter((e) => new Date(e.date_creation).getTime() >= depuis).length
+})
+
+// Chapitres de la classe actuelle (ordre du programme, couleurs des thèmes).
+const chapitresClasse = computed(() => progression.value?.chapitres || [])
+const ordreClasse = computed(() => new Map(chapitresClasse.value.map((c, i) => [String(c.id), i])))
+const themesClasse = computed(() => indexThemes(chapitresClasse.value))
+const plusieursMatieres = computed(() => new Set(exercices.value.map((e) => e.matiere?.id)).size > 1)
+
+const chapitres = computed(() => {
+  const parNotion = new Map()
+  const themesHorsClasse = new Map()
+  for (const e of exercices.value) {
+    const cle = String(e.notion?.id ?? '')
+    if (!parNotion.has(cle)) {
+      const dansLaClasse = ordreClasse.value.has(cle)
+      const themeId = e.theme?.id
+      let indexTheme = themesClasse.value.get(themeId)
+      if (indexTheme === undefined) {
+        if (!themesHorsClasse.has(themeId)) themesHorsClasse.set(themeId, themesClasse.value.size + themesHorsClasse.size)
+        indexTheme = themesHorsClasse.get(themeId)
+      }
+      const meta = [plusieursMatieres.value ? e.matiere?.titre : '', e.theme?.titre, dansLaClasse ? '' : 'autre classe']
+        .filter(Boolean).join(' · ')
+      parNotion.set(cle, {
+        cle,
+        titre: e.notion?.titre || 'Chapitre',
+        meta,
+        visuel: visuelTheme(e.theme?.titre || '', indexTheme),
+        lien: cle ? chapitreLink(cle, 'exercices') : null,
+        ordre: dansLaClasse ? ordreClasse.value.get(cle) : Infinity,
+        faits: 0,
+        compris: 0,
+        aRevoir: 0,
+        derniere: 0
+      })
     }
-    const agg = map.get(chapId)
-    agg.exercice_count += 1
-    if (item.est_correct) agg.correct_count += 1
-    else agg.incorrect_count += 1
+    const c = parNotion.get(cle)
+    c.faits += 1
+    if (e.est_correct) c.compris += 1
+    else c.aRevoir += 1
+    c.derniere = Math.max(c.derniere, new Date(e.date_creation).getTime())
   }
-  const chapters = Array.from(map.values()).map(ch => {
-    const ratio = ch.exercice_count > 0 ? (ch.correct_count / ch.exercice_count) : 0
-    const average10 = Math.round(ratio * 10 * 10) / 10
-    return { ...ch, ratio_percent: ratio * 100, average_10: average10 }
-  })
-  chapters.sort((a, b) => String(a.chapitre.titre).localeCompare(String(b.chapitre.titre), 'fr', { sensitivity: 'base' }))
-  return chapters
+  return [...parNotion.values()]
+})
+
+const TRIS = {
+  recent: (a, b) => b.derniere - a.derniere,
+  faits: (a, b) => b.faits - a.faits || b.derniere - a.derniere,
+  revoir: (a, b) => b.aRevoir - a.aRevoir || pourcent(a.compris, a.faits) - pourcent(b.compris, b.faits),
+  programme: (a, b) => a.ordre - b.ordre || a.titre.localeCompare(b.titre, 'fr')
+}
+const chapitresTries = computed(() => [...chapitres.value].sort(TRIS[tri.value]))
+const chapitresAffiches = computed(() => (tousLesChapitres.value ? chapitresTries.value : chapitresTries.value.slice(0, CHAPITRES_VISIBLES)))
+const chapitresParTitre = computed(() => [...chapitres.value].sort((a, b) => a.titre.localeCompare(b.titre, 'fr')))
+
+function niveauReussite(part, totalFaits) {
+  const p = pourcent(part, totalFaits)
+  if (p >= 80) return 'ok'
+  if (p >= 50) return 'mid'
+  return 'low'
 }
 
-const getStatusClass = (estCorrect) => (estCorrect ? 'status-correct' : 'status-incorrect')
-
-// Utils copied from base for the details panel
-const formatDate = (dateString) => {
-  const date = new Date(dateString)
-  return date.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+// Liste des exercices : filtres, regroupement par jour, « afficher plus ».
+function compte(cle) {
+  const base = filtreChapitre.value ? exercices.value.filter((e) => String(e.notion?.id) === filtreChapitre.value) : exercices.value
+  if (cle === 'compris') return base.filter((e) => e.est_correct).length
+  if (cle === 'revoir') return base.filter((e) => !e.est_correct).length
+  return base.length
 }
-const formatTime = (seconds) => {
-  const minutes = Math.floor(seconds / 60)
-  const remainingSeconds = seconds % 60
-  return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`
+
+const exercicesFiltres = computed(() => exercices.value.filter((e) => {
+  if (filtreChapitre.value && String(e.notion?.id) !== filtreChapitre.value) return false
+  if (filtre.value === 'compris') return e.est_correct
+  if (filtre.value === 'revoir') return !e.est_correct
+  return true
+}))
+
+watch([filtre, filtreChapitre], () => { limite.value = PAR_PAGE })
+
+const restants = computed(() => Math.max(0, exercicesFiltres.value.length - limite.value))
+
+const cleJour = (d) => `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`
+
+function titreJour(d) {
+  const aujourdHui = new Date()
+  const hier = new Date(Date.now() - 86400000)
+  if (cleJour(d) === cleJour(aujourdHui)) return 'Aujourd’hui'
+  if (cleJour(d) === cleJour(hier)) return 'Hier'
+  const options = { weekday: 'long', day: 'numeric', month: 'long' }
+  if (d.getFullYear() !== aujourdHui.getFullYear()) options.year = 'numeric'
+  const texte = d.toLocaleDateString('fr-FR', options)
+  return texte.charAt(0).toUpperCase() + texte.slice(1)
+}
+
+const groupes = computed(() => {
+  const liste = []
+  for (const e of exercicesFiltres.value.slice(0, limite.value)) {
+    const d = new Date(e.date_creation)
+    const cle = cleJour(d)
+    if (!liste.length || liste[liste.length - 1].cle !== cle) liste.push({ cle, titre: titreJour(d), items: [] })
+    liste[liste.length - 1].items.push(e)
+  }
+  return liste
+})
+
+const heure = (iso) => new Date(iso).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
+
+// L'exercice s'ouvre toujours dans la page de son chapitre (nouvel affichage),
+// même quand le chapitre appartient à une autre classe.
+function lienExercice(e) {
+  const notionId = e.notion?.id
+  if (notionId) return chapitreLink(String(notionId), 'exercices', e.exercice_id)
+  return { name: 'ExerciceDetail', params: { exerciceId: String(e.exercice_id) } }
 }
 </script>
 
 <style scoped>
-.history-page { padding: 1rem 0; }
-.page-title { font-weight: 800; margin-bottom: 1rem; }
+/* ---------- Chargement, erreur, vide ---------- */
 
-/* Utilitaires responsive */
-.desktop-only {
-  display: block;
+.hi-skel--stat {
+  height: 108px;
+  border-radius: var(--es-radius);
 }
 
-.mobile-only {
-  display: none;
+.hi-skel--card {
+  height: 420px;
+  margin-top: 20px;
+  border-radius: var(--es-radius);
 }
 
-/* Desktop : afficher uniquement le tableau */
-@media (min-width: 769px) {
-  .desktop-only {
-    display: block !important;
-  }
-
-  .mobile-only {
-    display: none !important;
-  }
-}
-
-/* Résumé matière/notion (comme dashboard) */
-.summary-table {
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  overflow: hidden;
-  background: #fff;
-  margin-bottom: 1.25rem;
-}
-.summary-header,
-.summary-row {
-  display: grid;
-  grid-template-columns: 1.5fr 2fr 0.8fr 0.8fr 0.8fr 0.8fr;
-  gap: 0.5rem;
-  padding: 0.75rem 1rem;
-  align-items: center;
-}
-.summary-header { background: #f9fafb; font-weight: 700; color: #374151; }
-.summary-row:not(:last-child) { border-bottom: 1px solid #f3f4f6; }
-.summary-row .cell { font-size: 0.875rem; color: #374151; }
-.summary-row .cell.count,
-.summary-row .cell.correct,
-.summary-row .cell.incorrect { text-align: center; font-weight: 600; }
-.summary-row .cell.correct { color: #3b8544; }
-.summary-row .cell.incorrect { color: #dc2626; }
-.summary-row .cell.average { font-weight: 600; text-align: center; padding: 0.25rem 0.5rem; border-radius: 4px; }
-.summary-row .cell.average.excellent { color: #3b8544; background: #eaf4ea; }
-.summary-row .cell.average.good { color: #1b3c8e; background: #e4e8f1; }
-.summary-row .cell.average.average { color: #d97706; background: #fef3c7; }
-.summary-row .cell.average.poor { color: #dc2626; background: #fee2e2; }
-
-.sortable-header { display: flex; align-items: center; justify-content: center; cursor: pointer; user-select: none; padding: 0.25rem; border-radius: 4px; gap: 0.35rem; }
-.sortable-header:hover { background-color: #f3f4f6; }
-.sort-icon { font-size: 1rem; color: #6b7280; font-weight: 700; }
-.sort-icon.active { color: #1b3c8e; font-weight: 700; }
-
-@media (max-width: 768px) {
-  /* Masquer tableau desktop, afficher cartes mobile */
-  .desktop-only {
-    display: none !important;
-  }
-
-  .mobile-only {
-    display: block !important;
-  }
-
-  .summary-header, .summary-row { grid-template-columns: 1fr 1fr 0.7fr 0.7fr 0.7fr 0.7fr; padding: 0.5rem 0.75rem; }
-}
-
-/* Détails sous notion */
-.notion-toggle { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.15rem 0.4rem; border: 1px solid transparent; border-radius: 6px; background: transparent; cursor: pointer; color: #1f2937; }
-.notion-toggle:hover { background: #f3f4f6; }
-.summary-details-row { display: block; padding: 0 0.5rem 0.75rem 0.5rem; border-bottom: 1px solid #f3f4f6; }
-.summary-details-row .details-cell { grid-column: 1 / -1; }
-.chapter-table { border: 1px solid #e5e7eb; border-radius: 8px; background: #f9fafb; overflow: hidden; }
-.chapter-header, .chapter-row { display: grid; grid-template-columns: 2fr 0.8fr 0.8fr 0.8fr 0.8fr 0.8fr; gap: 0.75rem; padding: 0.5rem 0.75rem; align-items: center; }
-.chapter-header { background: #eef2f7; font-weight: 600; color: #374151; }
-.chapter-row { background: #fff; border-top: 1px solid #f3f4f6; }
-.chapter-loading { padding: 0.75rem; color: #6b7280; font-size: 0.85rem; }
-.chapter-error { padding: 0.75rem; color: #dc2626; font-size: 0.85rem; }
-.chapter-row .cell { font-size: 0.85rem; }
-.chapter-row .cell.count, .chapter-row .cell.correct, .chapter-row .cell.incorrect, .chapter-row .cell.ratio, .chapter-row .cell.average { text-align: center; font-weight: 600; }
-.chapter-row .cell.correct { color: #3b8544; }
-.chapter-row .cell.incorrect { color: #dc2626; }
-
-/* Cartes d'exercices (liste) */
-.exercice-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; transition: all 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-.exercice-card:hover { box-shadow: 0 4px 6px rgba(0,0,0,0.1); transform: translateY(-1px); }
-.exercice-card.correct { border-color: #3b8544; }
-.exercice-card.incorrect { border-color: #ef4444; }
-.exercice-card-header { display: flex; justify-content: space-between; align-items: flex-start; padding: 1rem; cursor: pointer; transition: background-color 0.2s; }
-.exercice-card-header:hover { background-color: #f9fafb; }
-.exercice-card-title-section { flex: 1; min-width: 0; }
-.exercice-card-title { font-size: 0.875rem; font-weight: 600; color: #1f2937; margin: 0 0 0.25rem 0; line-height: 1.4; }
-.clickable-title { cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: color 0.2s; }
-.clickable-title:hover { color: #1b3c8e; }
-.navigation-icon { flex-shrink: 0; color: #6b7280; transition: color 0.2s; }
-.clickable-title:hover .navigation-icon { color: #1b3c8e; }
-.exercice-breadcrumb-compact { font-size: 0.75rem; color: #6b7280; line-height: 1.3; }
-.exercice-card-actions { display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; }
-.exercice-status { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; font-size: 1rem; font-weight: 600; }
-.status-correct { background: #dcefdc; color: #2f6d37; }
-.status-incorrect { background: #fee2e2; color: #dc2626; }
-.expand-toggle { background: none; border: 1px solid #e5e7eb; border-radius: 6px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #6b7280; transition: all 0.2s; }
-.expand-toggle:hover { background-color: #f9fafb; border-color: #d1d5db; color: #374151; }
-.expand-toggle svg { transition: transform 0.2s; }
-.expand-toggle.expanded svg { transform: rotate(180deg); }
-.exercice-card-details { padding: 1rem; border-top: 1px solid #e5e7eb; background-color: #f9fafb; }
-.exercice-breadcrumb { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; font-size: 0.75rem; flex-wrap: wrap; }
-.breadcrumb-item { color: #374151; font-weight: 500; }
-.breadcrumb-separator { color: #9ca3af; }
-.exercice-meta { display: flex; gap: 1rem; font-size: 0.75rem; color: #6b7280; flex-wrap: wrap; }
-.exercice-date, .exercice-time, .exercice-points { display: flex; align-items: center; gap: 0.25rem; }
-
-/* Version Mobile : Cartes - Design professionnel et épuré */
-.summary-cards {
-  margin-top: 1rem;
-  margin-bottom: 1.5rem;
+.hi-message {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  align-items: center;
+  gap: 6px;
 }
 
-.sort-controls {
+.hi-message .es-btn {
+  margin-top: 10px;
+}
+
+.hi-vide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 48px 24px;
+  text-align: center;
+}
+
+.hi-vide__ico {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 6px;
+  border-radius: 16px;
+  background: var(--es-navy-50);
+  color: var(--es-navy);
+}
+
+.hi-vide__ico svg {
+  width: 28px;
+  height: 28px;
+}
+
+.hi-vide p {
+  max-width: 420px;
+  margin-bottom: 12px !important;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--es-muted);
+}
+
+/* ---------- Chiffres clés ---------- */
+
+.hi-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.hi-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 18px 20px;
+}
+
+.hi-stat__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--es-muted);
+}
+
+.hi-stat__label i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.hi-stat--ok .hi-stat__label i {
+  background: var(--es-green);
+}
+
+.hi-stat--review .hi-stat__label i {
+  background: var(--es-orange);
+}
+
+.hi-stat__value {
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--es-ink);
+}
+
+.hi-stat--ok .hi-stat__value {
+  color: var(--es-green-700);
+}
+
+.hi-stat--review .hi-stat__value {
+  color: var(--es-orange-700);
+}
+
+.hi-stat__hint {
+  font-size: 13px;
+  color: var(--es-muted);
+}
+
+/* ---------- Cartes ---------- */
+
+.hi-card {
+  margin-top: 20px;
+  padding-bottom: 8px;
+}
+
+.hi-card__head {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 0.75rem;
-  padding: 0.875rem 1rem;
-  background: linear-gradient(to right, #f8fafc, #f1f5f9);
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid var(--es-line);
 }
 
-.sort-label {
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: #475569;
+.hi-card__head--wrap {
+  flex-wrap: wrap;
+}
+
+.hi-card__head h2 {
   white-space: nowrap;
-  letter-spacing: -0.01em;
 }
 
-.sort-select {
-  flex: 1;
-  padding: 0.625rem 1rem;
-  border: 1px solid #cbd5e1;
+.hi-select {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.hi-select svg {
+  position: absolute;
+  left: 11px;
+  width: 16px;
+  height: 16px;
+  color: var(--es-muted);
+  pointer-events: none;
+}
+
+.hi-select select {
+  height: 38px;
+  padding: 0 34px 0 34px;
+  border: 1px solid var(--es-line-strong);
   border-radius: 10px;
-  background: #ffffff;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #1e293b;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23667085'%3E%3Cpath d='M5.3 7.3a1 1 0 0 1 1.4 0L10 10.6l3.3-3.3a1 1 0 1 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 0-1.4Z'/%3E%3C/svg%3E") no-repeat right 10px center / 16px;
+  font: 600 14px var(--es-font);
+  color: var(--es-ink-soft);
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  appearance: none;
 }
 
-.sort-select:focus {
-  outline: none;
-  border-color: #1b3c8e;
-  box-shadow: 0 0 0 3px rgba(27, 60, 142, 0.1);
+.hi-select--chap select {
+  max-width: 260px;
+  padding-left: 12px;
+  text-overflow: ellipsis;
 }
 
-.sort-direction-btn {
-  padding: 0.625rem 0.875rem;
-  border: 1px solid #cbd5e1;
-  border-radius: 10px;
-  background: #ffffff;
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #1b3c8e;
-  cursor: pointer;
-  min-width: 48px;
-  height: 42px;
+.hi-select select:hover {
+  border-color: var(--es-navy);
+}
+
+.hi-plus {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  gap: 6px;
+  width: calc(100% - 24px);
+  min-height: 42px;
+  margin: 6px 12px 4px;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  font: 600 14px var(--es-font);
+  color: var(--es-navy);
+  cursor: pointer;
 }
 
-.sort-direction-btn:hover {
-  background: #f8fafc;
-  border-color: #94a3b8;
-  transform: scale(1.02);
+.hi-plus:hover {
+  background: var(--es-navy-50);
 }
 
-.sort-direction-btn:active {
-  transform: scale(0.98);
+.hi-plus svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.2s ease;
 }
 
-.summary-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 16px;
-  padding: 1.25rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
+.hi-plus svg.is-up {
+  transform: rotate(180deg);
 }
 
-.summary-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(to right, #1b3c8e, #2a4fa3, #ec4899);
-  opacity: 0;
-  transition: opacity 0.25s ease;
+/* ---------- Par chapitre ---------- */
+
+.hi-chaps,
+.hi-exs {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-.summary-card:hover {
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  transform: translateY(-2px);
-  border-color: #cbd5e1;
+.hi-chaps {
+  padding: 6px 8px 0;
 }
 
-.summary-card:hover::before {
-  opacity: 1;
-}
-
-.card-header {
-  margin-bottom: 1.25rem;
-  padding-bottom: 1rem;
-  border-bottom: 2px solid #f1f5f9;
-  position: relative;
-}
-
-.card-title {
-  font-size: 1.0625rem;
-  font-weight: 700;
-  color: #0f172a;
-  margin-bottom: 0.375rem;
-  line-height: 1.5;
-  letter-spacing: -0.02em;
-}
-
-.card-subtitle {
-  font-size: 0.8125rem;
-  color: #64748b;
-  font-weight: 500;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.375rem;
-  padding: 0.25rem 0.625rem;
-  background: #f8fafc;
-  border-radius: 6px;
-  width: fit-content;
-}
-
-.card-stats {
+.hi-chap {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0.375rem;
-  min-width: 0;
+  grid-template-columns: 32px minmax(0, 1fr) minmax(180px, 240px) 64px 18px;
+  align-items: center;
+  gap: 16px;
+  padding: 12px;
+  border-radius: 12px;
+  color: inherit;
+  text-decoration: none;
 }
 
-.stat-item {
+.hi-chaps li + li .hi-chap {
+  box-shadow: 0 -1px 0 var(--es-line);
+}
+
+.hi-chap--lien {
+  transition: background-color 0.15s ease;
+}
+
+.hi-chap--lien:hover {
+  background: var(--es-bg);
+}
+
+.hi-chaps li + li .hi-chap--lien:hover,
+.hi-chaps li:hover + li .hi-chap {
+  box-shadow: none;
+}
+
+.hi-chap__main {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
-  padding: 0.625rem 0.375rem;
-  background: #fafbfc;
-  border-radius: 8px;
-  border: 1px solid #f1f5f9;
-  transition: all 0.2s ease;
-  align-items: center;
-  text-align: center;
+  gap: 2px;
   min-width: 0;
-  overflow: hidden;
 }
 
-.stat-item:hover {
-  background: #f8fafc;
-  border-color: #e2e8f0;
-  transform: translateY(-1px);
-}
-
-.stat-item.highlight {
-  grid-column: auto;
-  padding: 0.75rem 0.5rem;
-  background: linear-gradient(135deg, #fafbfc 0%, #f8fafc 100%);
-  border-radius: 10px;
-  border: 2px solid #e2e8f0;
-}
-
-.stat-item.highlight.excellent {
-  background: linear-gradient(135deg, #f0fdf4 0%, #eaf4ea 100%);
-  border-color: #86efac;
-}
-
-.stat-item.highlight.good {
-  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
-  border-color: #fcd34d;
-}
-
-.stat-item.highlight.average {
-  background: linear-gradient(135deg, #eef1f8 0%, #e4e8f1 100%);
-  border-color: #98a7cc;
-}
-
-.stat-item.highlight.poor {
-  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-  border-color: #fca5a5;
-}
-
-.stat-label {
-  font-size: 0.5625rem;
-  color: #64748b;
+.hi-chap__titre {
+  font-size: 15px;
   font-weight: 600;
+  line-height: 1.35;
+  color: var(--es-ink);
+}
+
+.hi-chap__meta {
+  font-size: 13px;
+  color: var(--es-muted);
+}
+
+.hi-chap__prog {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.hi-chap__compte {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2px 6px;
+  font-size: 12.5px;
+  color: var(--es-muted);
+}
+
+.hi-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.hi-dot--ok {
+  background: var(--es-green);
+}
+
+.hi-dot--review {
+  margin-left: 6px;
+  background: var(--es-orange);
+}
+
+.hi-pct {
+  justify-self: end;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.hi-pct--ok {
+  background: var(--es-green-50);
+  color: var(--es-green-700);
+}
+
+.hi-pct--mid {
+  background: var(--es-navy-50);
+  color: var(--es-navy);
+}
+
+.hi-pct--low {
+  background: var(--es-orange-50);
+  color: var(--es-orange-700);
+}
+
+.hi-chap__chev {
+  width: 18px;
+  height: 18px;
+  color: #98a2b3;
+}
+
+.hi-chap--lien:hover .hi-chap__chev {
+  color: var(--es-navy);
+}
+
+/* ---------- Tous les exercices ---------- */
+
+.hi-filtres {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.hi-seg {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 12px;
+  background: var(--es-bg);
+  box-shadow: inset 0 0 0 1px var(--es-line);
+}
+
+.hi-seg__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 9px;
+  background: none;
+  font: 600 13.5px var(--es-font);
+  color: var(--es-muted);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.hi-seg__btn:hover {
+  color: var(--es-ink);
+}
+
+.hi-seg__btn.is-active {
+  background: #fff;
+  color: var(--es-navy);
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.08), 0 0 0 1px var(--es-line);
+}
+
+.hi-seg__n {
+  min-width: 20px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: rgba(16, 24, 40, 0.06);
+  font-size: 12px;
+  text-align: center;
+}
+
+.hi-seg__btn.is-active .hi-seg__n {
+  background: var(--es-navy-50);
+}
+
+.hi-aucun {
+  padding: 32px 20px;
+  font-size: 14px;
+  color: var(--es-muted);
+  text-align: center;
+}
+
+.hi-jour {
+  padding: 0 8px;
+}
+
+.hi-jour__titre {
+  margin: 0;
+  padding: 18px 12px 8px;
+  font-size: 12px !important;
+  font-weight: 700;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
-  margin-bottom: 0.1875rem;
-  line-height: 1.2;
-  white-space: nowrap;
+  color: var(--es-muted) !important;
+}
+
+.hi-ex {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr) auto 48px;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  color: inherit;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+.hi-ex:hover {
+  background: var(--es-bg);
+}
+
+.hi-ex__etat {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.hi-ex__etat svg {
+  width: 17px;
+  height: 17px;
+  stroke-width: 2.2;
+}
+
+.hi-ex__etat.is-ok {
+  background: var(--es-green-50);
+  color: var(--es-green-700);
+}
+
+.hi-ex__etat.is-review {
+  background: var(--es-orange-50);
+  color: var(--es-orange-700);
+}
+
+.hi-ex__main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.hi-ex__titre {
   overflow: hidden;
+  font-size: 14.5px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--es-ink);
+  white-space: nowrap;
   text-overflow: ellipsis;
-  width: 100%;
 }
 
-.stat-value {
-  font-size: 1.125rem;
-  font-weight: 800;
-  color: #0f172a;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
+.hi-ex:hover .hi-ex__titre {
+  color: var(--es-navy);
+}
+
+.hi-ex__type {
+  margin-right: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--es-muted);
+}
+
+.hi-ex__meta {
+  overflow: hidden;
+  font-size: 13px;
+  color: var(--es-muted);
   white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
-.stat-value.success {
-  color: #2f6d37;
+.hi-ex__heure {
+  font-size: 13px;
+  color: var(--es-muted);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
 }
 
-.stat-value.error {
-  color: #dc2626;
+/* ---------- Tablette ---------- */
+
+@media (max-width: 1100px) {
+  .hi-chap {
+    grid-template-columns: 32px minmax(0, 1fr) 160px 60px 18px;
+    gap: 12px;
+  }
 }
 
-.stat-item.highlight .stat-value {
-  font-size: 1rem;
-  font-weight: 800;
-  padding: 0.1875rem 0.25rem;
-  border-radius: 6px;
-  display: inline-block;
-  line-height: 1;
-  letter-spacing: -0.02em;
-  white-space: nowrap;
-}
+/* ---------- Téléphone ---------- */
 
-.stat-item.highlight.excellent .stat-value {
-  color: #2f6d37;
-  background: rgba(59, 133, 68, 0.1);
-}
-
-.stat-item.highlight.good .stat-value {
-  color: #d97706;
-  background: rgba(251, 191, 36, 0.15);
-}
-
-.stat-item.highlight.average .stat-value {
-  color: #1b3c8e;
-  background: rgba(27, 60, 142, 0.1);
-}
-
-.stat-item.highlight.poor .stat-value {
-  color: #b91c1c;
-  background: rgba(239, 68, 68, 0.1);
-}
-
-/* Très petits écrans */
-@media (max-width: 480px) {
-  .card-stats {
-    display: grid !important;
-    grid-template-columns: repeat(4, 1fr) !important;
-    gap: 0.375rem !important;
+@media (max-width: 760px) {
+  .hi-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
   }
 
-  .stat-item.highlight {
-    grid-column: auto !important;
+  .hi-stat {
+    padding: 14px 16px;
   }
 
-  .sort-controls {
-    flex-wrap: wrap;
-    padding: 0.75rem;
-    gap: 0.5rem;
+  .hi-stat__value {
+    font-size: 26px;
   }
 
-  .sort-label {
-    width: 100%;
-    font-size: 0.75rem;
+  .hi-stat__hint {
+    font-size: 12px;
   }
 
-  .sort-select {
-    flex: 1;
+  .hi-card {
+    margin-top: 14px;
+  }
+
+  .hi-card__head {
+    padding: 16px 16px 12px;
+  }
+
+  /* Menus en 16 px sur téléphone (pas de zoom automatique) : sans icône,
+     ils peuvent rétrécir pour tenir à côté du titre. */
+  .hi-card__head > .hi-select {
+    flex: 0 1 auto;
     min-width: 0;
-    font-size: 0.8125rem;
-    padding: 0.5625rem 0.875rem;
   }
 
-  .sort-direction-btn {
-    min-width: 44px;
+  .hi-select svg {
+    display: none;
+  }
+
+  .hi-select select {
+    width: 100%;
+    min-width: 0;
     height: 38px;
-    font-size: 1rem;
+    padding: 0 30px 0 12px;
+    font-size: 16px;
+    text-overflow: ellipsis;
   }
 
-  .summary-card {
-    padding: 1rem;
-    border-radius: 14px;
+  .hi-chaps {
+    padding: 4px 4px 0;
   }
 
-  .card-title {
-    font-size: 1rem;
+  .hi-chap {
+    grid-template-columns: 32px minmax(0, 1fr) auto;
+    grid-template-areas:
+      'ico main pct'
+      'prog prog prog';
+    gap: 10px 12px;
+    padding: 12px;
   }
 
-  .card-subtitle {
-    font-size: 0.75rem;
-    padding: 0.1875rem 0.5rem;
+  .hi-chap .es-theme-ico {
+    grid-area: ico;
   }
 
-  .stat-item {
-    padding: 0.625rem 0.375rem;
-    border-radius: 8px;
+  .hi-chap__main {
+    grid-area: main;
   }
 
-  .stat-item.highlight {
-    grid-column: auto !important;
-    padding: 0.625rem 0.375rem;
-    border-radius: 8px;
+  .hi-chap__prog {
+    grid-area: prog;
   }
 
-  .stat-label {
-    font-size: 0.5625rem;
+  .hi-pct {
+    grid-area: pct;
   }
 
-  .stat-value {
-    font-size: 1.0625rem;
+  .hi-chap__chev {
+    display: none;
   }
 
-  .stat-item.highlight .stat-value {
-    font-size: 0.9375rem;
-    padding: 0.1875rem 0.25rem;
-  }
-}
-
-/* Petits écrans (jusqu'à 350px inclus) - grille 2x2 */
-@media screen and (max-width: 350px) {
-  .card-stats {
-    display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important;
-    grid-template-rows: repeat(2, auto) !important;
-    gap: 0.5rem !important;
-    min-width: 0 !important;
+  .hi-chap__titre {
+    font-size: 14.5px;
   }
 
-  .stat-item {
-    padding: 0.625rem 0.375rem !important;
-    border-radius: 8px !important;
-    min-width: 0 !important;
+  .hi-filtres,
+  .hi-seg {
+    width: 100%;
   }
 
-  .stat-item.highlight {
-    grid-column: auto !important;
-    grid-row: auto !important;
-    padding: 0.625rem 0.375rem !important;
+  .hi-seg__btn {
+    flex: 1;
+    justify-content: center;
+    padding: 0 6px;
   }
 
-  .stat-label {
-    font-size: 0.5625rem !important;
-    letter-spacing: 0.03em !important;
+  .hi-select--chap,
+  .hi-select--chap select {
+    width: 100%;
+    max-width: none;
   }
 
-  .stat-value {
-    font-size: 1rem !important;
+  .hi-jour {
+    padding: 0 4px;
   }
 
-  .stat-item.highlight .stat-value {
-    font-size: 0.9375rem !important;
-    padding: 0.1875rem 0.25rem !important;
+  .hi-ex {
+    grid-template-columns: 32px minmax(0, 1fr) auto;
+    gap: 12px;
+    padding: 10px 12px;
+  }
+
+  .hi-ex__pill {
+    display: none;
+  }
+
+  .hi-ex__titre {
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
 }
 </style>

@@ -1,0 +1,432 @@
+Titre: Continuité des Fonctions
+
+<!-- optitab:1 -->
+::: remarque Sections principales
+Les sections I à V couvrent les concepts fondamentaux de la continuité. La section VI (Algorithmes) et les encadrés marqués **« Bonus »** sont des approfondissements utiles qui enrichissent votre compréhension.
+:::
+
+## I. Définition de la continuité
+
+### Continuité en un point
+
+::: definition Continuité en un point
+Une fonction $f$ est **continue en un point $a$** si :
+
+::: formule
+$$\lim_{x \to a} f(x) = f(a)$$
+:::
+
+Cette définition utilise la notion de limite vue dans le chapitre précédent.
+:::
+
+::: remarque Interprétation intuitive
+- La limite existe et égale $\displaystyle f(a)$
+- La fonction ne présente pas de « trou » ou de « saut » en $a$
+- La courbe peut être tracée sans lever le crayon en $a$
+:::
+
+[IMAGE_1]
+
+::: exemple
+- $f(x) = x^2$ est continue en $2$ car $\lim_{x \to 2} x^2 = 4 = f(2)$
+- $f(x) = \frac{1}{x}$ n'est pas continue en $0$ car $f(0)$ n'est pas définie
+- $f(x) = \begin{cases} x+1 & \text{si } x \neq 1 \\ 3 & \text{si } x = 1 \end{cases}$ n'est pas continue en $1$ car $\lim_{x \to 1} f(x) = 2 \neq f(1) = 3$
+:::
+
+### Continuité sur un intervalle
+
+::: definition Continuité sur un intervalle
+- **Sur un intervalle ouvert $]a, b[$ :** $f$ est continue sur $]a, b[$ si elle est continue en tout point de $]a, b[$
+- **Sur un intervalle fermé $[a, b]$ :** $f$ est continue sur $[a, b]$ si elle est continue sur $]a, b[$ et si $\lim_{x \to a^+} f(x) = f(a)$ et $\lim_{x \to b^-} f(x) = f(b)$
+- **Sur un intervalle semi-ouvert :** $f$ est continue sur $[a, b[$ si elle est continue sur $]a, b[$ et si $\lim_{x \to a^+} f(x) = f(a)$
+:::
+
+::: exemple
+- $f(x) = x^2$ est continue sur $\mathbb{R}$
+- $f(x) = \frac{1}{x}$ est continue sur $]0, +\infty[$
+- $f(x) = \sqrt{x}$ est continue sur $[0, +\infty[$
+:::
+
+### Opérations sur les fonctions continues
+
+::: theoreme Opérations sur les fonctions continues
+Si $f$ et $g$ sont continues en $a$, alors :
+
+- $f + g$ est continue en $a$
+- $f \times g$ est continue en $a$
+- Si $g(a) \neq 0$, alors $\frac{f}{g}$ est continue en $a$
+- Si $g$ est continue en $a$ et $f$ est continue en $g(a)$, alors $f \circ g$ est continue en $a$
+:::
+
+::: exemple
+- $f(x) = x^2 + e^x$ est continue sur $\mathbb{R}$ (somme de fonctions continues)
+- $f(x) = x \times \ln(x)$ est continue sur $]0, +\infty[$ (produit de fonctions continues)
+- $f(x) = \frac{x^2 + 1}{x - 1}$ est continue sur $\mathbb{R} \setminus \{1\}$ (quotient de fonctions continues)
+- $f(x) = e^{x^2}$ est continue sur $\mathbb{R}$ (composition de fonctions continues)
+:::
+
+### Fonctions usuelles continues
+
+::: definition Tableau récapitulatif - Fonctions continues sur leur domaine de définition
+| Fonction | Domaine de continuité |
+|---|---|
+| Polynômes : $\displaystyle x \mapsto ax^n + \cdots + b$ | $\displaystyle \mathbb{R}$ |
+| Fonctions rationnelles : $\displaystyle \frac{P(x)}{Q(x)}$ | $\displaystyle \{x \mid Q(x) \neq 0\}$ |
+| $\displaystyle x \mapsto \sqrt{x}$ | $\displaystyle [0, +\infty[$ |
+| $\displaystyle x \mapsto e^x$ | $\displaystyle \mathbb{R}$ |
+| $\displaystyle x \mapsto \ln(x)$ | $\displaystyle ]0, +\infty[$ |
+| $\displaystyle x \mapsto \sin(x)$ et $\displaystyle x \mapsto \cos(x)$ | $\displaystyle \mathbb{R}$ |
+
+*Règle générale : Les fonctions de référence sont continues sur leur domaine de définition.*
+:::
+
+### Prolongement par continuité
+
+::: definition Prolongement par continuité
+Si $\lim_{x \to a} f(x)$ existe et si $f(a)$ n'est pas définie (ou différente de cette limite), on peut définir une nouvelle fonction :
+
+::: formule
+$$g(x) = \begin{cases} f(x) & \text{si } x \neq a \\ \lim_{x \to a} f(x) & \text{si } x = a \end{cases}$$
+:::
+
+Alors $g$ est continue en $a$ : on dit que $g$ est un **prolongement par continuité** de $f$.
+:::
+
+::: exemple
+La fonction $f(x) = \frac{\sin(x)}{x}$ n'est pas définie en $0$.
+
+Comme $\displaystyle \lim_{x \to 0} \frac{\sin(x)}{x} = 1$, on peut définir :
+
+$$g(x) = \begin{cases} \frac{\sin(x)}{x} & \text{si } x \neq 0 \\ 1 & \text{si } x = 0 \end{cases}$$
+
+La fonction $g$ est alors continue sur $\mathbb{R}$ : c'est le prolongement par continuité de $f$.
+:::
+
+## II. Lien entre continuité et dérivabilité
+
+### Théorème fondamental
+
+::: theoreme Toute fonction dérivable est continue
+Si une fonction $f$ est **dérivable en un point $a$**, alors elle est **continue en $a$**.
+
+::: formule
+$f$ dérivable en $a \quad \Rightarrow \quad f$ continue en $a$
+:::
+
+*Note : La réciproque est fausse. Une fonction peut être continue sans être dérivable (exemple : $f(x) = |x|$ en $0$).*
+:::
+
+::: exemple
+- $f(x) = x^2$ est dérivable sur $\mathbb{R}$, donc continue sur $\mathbb{R}$
+- $f(x) = e^x$ est dérivable sur $\mathbb{R}$, donc continue sur $\mathbb{R}$
+- $f(x) = |x|$ est continue en $0$ mais n'est pas dérivable en $0$
+:::
+
+## III. Image d'une suite convergente par une fonction continue
+
+### Théorème
+
+::: theoreme Image d'une suite convergente
+Si $(u_n)$ est une suite convergente vers $\ell$ et si $f$ est une fonction continue en $\ell$, alors :
+
+::: formule
+$$
+\begin{aligned}
+\lim_{n \to +\infty} f(u_n) &= f(\ell) \\
+&= f\left(\lim_{n \to +\infty} u_n\right)
+\end{aligned}
+$$
+:::
+
+Autrement dit : **on peut « passer la limite à l'intérieur » d'une fonction continue**.
+:::
+
+::: remarque Application importante
+Ce théorème est particulièrement utile pour étudier les suites définies par récurrence $u_{n+1} = f(u_n)$ où $f$ est continue.
+:::
+
+::: exemple
+Soit $(u_n)$ une suite convergente vers $2$.
+
+Comme $f(x) = x^2 + 1$ est continue en $2$, on a :
+
+$$
+\begin{aligned}
+\lim_{n \to +\infty} (u_n^2 + 1) &= \left(\lim_{n \to +\infty} u_n\right)^2 + 1 \\
+&= 2^2 + 1 \\
+&= 5
+\end{aligned}
+$$
+:::
+
+## IV. Théorème des valeurs intermédiaires
+
+### Énoncé du théorème
+
+::: theoreme
+Soit $f$ une fonction continue sur un intervalle $[a, b]$.
+
+Pour tout réel $k$ compris entre $f(a)$ et $f(b)$ (c'est-à-dire $f(a) \leq k \leq f(b)$ ou $f(b) \leq k \leq f(a)$), il existe au moins un réel $c \in [a, b]$ tel que :
+
+::: formule
+$$f(c) = k$$
+:::
+:::
+
+::: remarque Interprétation intuitive
+Une fonction continue sur un intervalle fermé prend **toutes les valeurs intermédiaires** entre $f(a)$ et $f(b)$.
+
+La courbe représentative de $f$ « ne peut pas sauter » de $f(a)$ à $f(b)$ sans passer par toutes les valeurs entre les deux.
+:::
+
+::: exemple
+Soit $f(x) = x^2$ sur $[-2, 3]$.
+
+On a $f(-2) = 4$ et $f(3) = 9$.
+
+Pour tout $k \in [4, 9]$, il existe $c \in [-2, 3]$ tel que $c^2 = k$.
+
+Par exemple, pour $k = 6$, on peut trouver $c = \sqrt{6}$ ou $c = -\sqrt{6}$.
+:::
+
+### Cas particulier : fonctions strictement monotones
+
+::: theoreme TVI avec unicité
+Si $f$ est **continue et strictement monotone** sur un intervalle $[a, b]$, alors :
+
+- Pour tout réel $k$ compris entre $f(a)$ et $f(b)$, il existe **un unique** réel $c \in [a, b]$ tel que $f(c) = k$
+- L'équation $f(x) = k$ admet donc **une unique solution** dans $[a, b]$
+:::
+
+::: exemple
+Soit $f(x) = x^3 + x$ sur $[0, 2]$.
+
+$f$ est continue et strictement croissante (car $f'(x) = 3x^2 + 1 > 0$).
+
+On a $f(0) = 0$ et $f(2) = 10$.
+
+Pour tout $k \in [0, 10]$, l'équation $x^3 + x = k$ admet une **unique solution** dans $[0, 2]$.
+:::
+
+### Bonus - Fonction continue sur un segment : bornée et bornes atteintes
+
+::: theoreme Bornée et bornes atteintes
+Si $f$ est continue sur un segment $[a, b]$, alors :
+
+- $f$ est **bornée** sur $[a, b]$
+- $f$ atteint un **minimum** et un **maximum** sur $[a, b]$
+
+*Autrement dit : il existe $m, M \in \mathbb{R}$ et $x_m, x_M \in [a, b]$ tels que $f(x_m) = m = \min_{x \in [a,b]} f(x)$ et $f(x_M) = M = \max_{x \in [a,b]} f(x)$.*
+:::
+
+::: remarque Interprétation graphique
+Sur un segment, la courbe d'une fonction continue reste dans une **bande verticale** (la fonction est bornée) et touche au moins une fois la **borne inférieure** et une fois la **borne supérieure** (les bornes sont atteintes).
+:::
+
+::: exemple
+Soit $f(x) = x^2 - 2x + 1$ sur $[0, 3]$.
+
+$f$ est continue sur $[0, 3]$ (polynôme).
+
+On a $f(0) = 1$, $f(1) = 0$ et $f(3) = 4$.
+
+Le minimum est $0$ (atteint en $x = 1$) et le maximum est $4$ (atteint en $x = 3$).
+
+La fonction est donc bornée : $0 \leq f(x) \leq 4$ pour tout $x \in [0, 3]$.
+:::
+
+## V. Applications : étude des solutions d'une équation
+
+### Méthode pour étudier l'équation $\displaystyle f(x) = k$
+
+::: methode Existence, unicité, encadrement
+1. **Vérifier la continuité** de $f$ sur l'intervalle considéré
+2. **Calculer les valeurs** de $f$ aux bornes de l'intervalle
+3. **Vérifier que $k$ est entre ces valeurs** pour appliquer le TVI
+4. **Étudier la monotonie** de $f$ pour obtenir l'unicité
+5. **Encadrer la solution** si nécessaire (par dichotomie ou autre méthode)
+:::
+
+::: exemple
+Étudier l'équation $x^3 - 3x + 1 = 0$ sur $[0, 2]$.
+
+**Étape 1 - Continuité :** $f(x) = x^3 - 3x + 1$ est continue sur $[0, 2]$ (polynôme).
+
+**Étape 2 - Valeurs aux bornes :**
+
+- $\displaystyle f(0) = 1 > 0$
+- $\displaystyle f(2) = 8 - 6 + 1 = 3 > 0$
+
+**Étape 3 - Recherche d'un changement de signe :**
+
+$$f(1) = 1 - 3 + 1 = -1 < 0$$
+
+On a donc $f(0) > 0$, $f(1) < 0$ et $f(2) > 0$.
+
+**Étape 4 - Application du TVI :**
+
+Sur $[0, 1]$ : $f(0) > 0$ et $f(1) < 0$, donc il existe $c_1 \in ]0, 1[$ tel que $f(c_1) = 0$.
+
+Sur $[1, 2]$ : $f(1) < 0$ et $f(2) > 0$, donc il existe $c_2 \in ]1, 2[$ tel que $f(c_2) = 0$.
+
+**Étape 5 - Unicité :**
+
+$\displaystyle f'(x) = 3x^2 - 3 = 3(x^2 - 1)$.
+
+Sur $[0, 1]$ : $f'(x) < 0$ donc $f$ est strictement décroissante → solution unique $c_1$.
+
+Sur $[1, 2]$ : $f'(x) > 0$ donc $f$ est strictement croissante → solution unique $c_2$.
+
+**Conclusion :** L'équation $x^3 - 3x + 1 = 0$ admet exactement **deux solutions** dans $[0, 2]$.
+:::
+
+### Suites définies par récurrence $\displaystyle u_{n+1} = f(u_n)$
+
+::: definition Application du théorème de l'image d'une suite convergente
+Pour une fonction continue $f$ d'un intervalle $I$ dans lui-même, on peut étudier une suite définie par :
+
+::: formule
+$$u_{n+1} = f(u_n)$$
+:::
+
+Si la suite $(u_n)$ converge vers $\ell$ et si $f$ est continue en $\ell$, alors :
+
+$$
+\begin{aligned}
+\ell &= \lim_{n \to +\infty} u_{n+1} \\
+&= \lim_{n \to +\infty} f(u_n) \\
+&= f\left(\lim_{n \to +\infty} u_n\right) \\
+&= f(\ell)
+\end{aligned}
+$$
+
+Donc $\ell$ est un **point fixe** de $f$ : $f(\ell) = \ell$.
+:::
+
+::: exemple
+Soit $(u_n)$ définie par $u_0 = 1$ et $u_{n+1} = \sqrt{u_n + 2}$.
+
+On montre que la suite est croissante et majorée par $2$, donc elle converge vers $\ell$.
+
+Comme $\displaystyle f(x) = \sqrt{x + 2}$ est continue, on a :
+
+$$\ell = f(\ell) = \sqrt{\ell + 2}$$
+
+En résolvant : $\ell^2 = \ell + 2$, soit $\ell^2 - \ell - 2 = 0$.
+
+On trouve $\ell = 2$ ou $\ell = -1$. Comme $u_n \geq 0$ pour tout $n$, on a $\ell = 2$.
+:::
+
+## VI. Algorithmes de recherche de solutions - Approfondissement
+
+::: methode Approfondissement
+Les algorithmes de recherche de solutions offrent une perspective précieuse sur les applications pratiques. Ils enrichissent votre culture mathématique et vous permettent d'explorer des implémentations numériques.
+:::
+
+### Méthode de dichotomie
+
+::: methode
+Pour résoudre $f(x) = 0$ sur $[a, b]$ où $f(a)$ et $f(b)$ sont de signes opposés :
+
+1. Calculer $m = \frac{a + b}{2}$ (milieu de l'intervalle)
+2. Évaluer $\displaystyle f(m)$
+3. Si $f(m)$ a le même signe que $f(a)$, remplacer $a$ par $m$
+4. Sinon, remplacer $b$ par $m$
+5. Répéter jusqu'à obtenir la précision souhaitée
+:::
+
+::: exemple En Python
+```python
+def dichotomie(f, a, b, epsilon):
+    while b - a > epsilon:
+        m = (a + b) / 2
+        if f(a) * f(m) < 0:
+            b = m
+        else:
+            a = m
+    return (a + b) / 2
+```
+:::
+
+### Bonus - Méthode de Newton
+
+::: methode
+Pour résoudre $f(x) = 0$, on utilise la récurrence :
+
+::: formule
+$$x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}$$
+:::
+
+*Cette méthode nécessite que $f$ soit dérivable et converge généralement plus vite que la dichotomie.*
+:::
+
+### Bonus - Méthode de la sécante
+
+::: methode
+Pour résoudre $f(x) = 0$, on utilise la récurrence :
+
+::: formule
+$$x_{n+1} = x_n - f(x_n) \times \frac{x_n - x_{n-1}}{f(x_n) - f(x_{n-1})}$$
+:::
+
+*Cette méthode ne nécessite pas le calcul de la dérivée, mais nécessite deux valeurs initiales.*
+:::
+
+## VII. Points de discontinuité - Approfondissement
+
+::: methode Approfondissement
+La classification des discontinuités enrichit votre culture mathématique et vous offre une vision plus complète de la continuité.
+:::
+
+### Classification des discontinuités
+
+::: propriete Types de discontinuités
+- **Discontinuité évitable :** $\lim_{x \to a} f(x)$ existe mais $f(a) \neq \lim_{x \to a} f(x)$ ou $f(a)$ n'est pas définie
+- **Saut fini :** $\lim_{x \to a^-} f(x)$ et $\lim_{x \to a^+} f(x)$ existent mais sont différents
+- **Saut infini :** Une des limites latérales est infinie (asymptote verticale)
+- **Discontinuité essentielle :** Aucune limite n'existe en $a$
+:::
+
+::: exemple 1 - Discontinuité évitable
+$f(x) = \frac{\sin(x)}{x}$ en $x = 0$
+
+$\lim_{x \to 0} \frac{\sin(x)}{x} = 1$ existe, mais $f(0)$ n'est pas définie.
+
+On peut « réparer » en définissant $f(0) = 1$.
+
+[IMAGE_2]
+:::
+
+::: exemple 2 - Saut fini
+$f(x) = \begin{cases} x & \text{si } x < 1 \\ x+1 & \text{si } x \geq 1 \end{cases}$ en $x = 1$
+
+$\lim_{x \to 1^-} f(x) = 1$ et $\lim_{x \to 1^+} f(x) = 2$ (saut d'amplitude 1).
+
+[IMAGE_3]
+:::
+
+::: exemple 3 - Saut infini (asymptote verticale)
+$f(x) = \frac{1}{x-1}$ en $x = 1$
+
+$\lim_{x \to 1^-} f(x) = -\infty$ et $\lim_{x \to 1^+} f(x) = +\infty$.
+
+[IMAGE_4]
+:::
+
+## VIII. Conseils méthodologiques
+
+::: attention
+- **Confondre continuité et dérivabilité :** Une fonction continue n'est pas forcément dérivable
+- **Oublier de vérifier la continuité aux bornes** d'un intervalle fermé
+- **Penser qu'une fonction définie par morceaux est discontinue** (elle peut être continue si les morceaux se « rejoignent » bien)
+- **Oublier les hypothèses du TVI :** La fonction doit être continue sur un intervalle fermé
+- **Confondre existence et unicité :** Le TVI donne l'existence, la monotonie donne l'unicité
+:::
+
+::: conseil
+- **Pour vérifier la continuité en un point :** Calculer la limite et vérifier qu'elle égale la valeur de la fonction
+- **Pour appliquer le TVI :** Vérifier la continuité sur un intervalle fermé et que $k$ est entre les valeurs aux bornes
+- **Pour obtenir l'unicité :** Étudier la monotonie de la fonction (via le signe de la dérivée)
+- **Pour les suites récurrentes :** Utiliser le théorème de l'image d'une suite convergente pour trouver le point fixe
+- **Pour encadrer une solution :** Utiliser la méthode de dichotomie ou des valeurs de test
+:::

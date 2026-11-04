@@ -1,0 +1,3533 @@
+=== Découverte - Modes de génération
+Id: 1354
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Pour chaque suite, calculer les premiers termes, puis répondre à la question posée.
+
+1. $(u_n)$ est définie par $u_0 = 10$ et $u_{n+1} = u_n - 3$ pour tout entier naturel $n$.
+   - a) Calculer $u_1$, $u_2$ et $u_3$.
+   - b) Donner une expression de $u_n$ en fonction de $n$.
+2. $(v_n)$ est définie par $v_0 = 2$ et $v_{n+1} = 4v_n$ pour tout entier naturel $n$.
+   - a) Calculer $v_1$, $v_2$ et $v_3$.
+   - b) Donner une expression de $v_n$ en fonction de $n$.
+3. $(w_n)$ est définie par $w_n = \dfrac{n + 1}{n + 2}$ pour tout entier naturel $n$.
+   - a) Calculer $w_0$, $w_1$ et $w_2$.
+   - b) Cette suite est-elle arithmétique ? géométrique ?
+4. On exécute le programme Python ci-dessous.
+   - a) Quelles valeurs le programme affiche-t-il ?
+   - b) On note $u_0 = 1$ et $u_n$ la valeur de `u` après $n$ passages dans la boucle. Donner une relation de récurrence vérifiée par $(u_n)$.
+
+```python
+u = 1
+for i in range(1, 6):
+    u = 2 * u + 1
+    print(u)
+```
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $u_0 = 10$ et $u_{n+1} = u_n - 3$
+
+::: methode
+On applique la relation de proche en proche, puis on reconnaît une suite arithmétique.
+:::
+
+::: etape a) Premiers termes
+$$
+\begin{aligned}
+u_1 &= u_0 - 3 = 10 - 3 = 7 \\
+u_2 &= u_1 - 3 = 7 - 3 = 4 \\
+u_3 &= u_2 - 3 = 4 - 3 = 1
+\end{aligned}
+$$
+:::
+
+::: etape b) Expression explicite
+Pour tout $n$, $u_{n+1} - u_n = -3$ : la suite est arithmétique de raison $r = -3$ et de premier terme $u_0 = 10$. Donc $u_n = u_0 + nr = 10 - 3n$.
+
+Vérification : $u_3 = 10 - 3 \times 3 = 1$.
+:::
+
+::: resultat
+$u_1 = 7$, $u_2 = 4$, $u_3 = 1$ et $u_n = 10 - 3n$.
+:::
+
+## Question 2 : $v_0 = 2$ et $v_{n+1} = 4v_n$
+
+::: methode
+On multiplie chaque fois par $4$ : on reconnaît une suite géométrique.
+:::
+
+::: etape a) Premiers termes
+$$
+\begin{aligned}
+v_1 &= 4 \times 2 = 8 \\
+v_2 &= 4 \times 8 = 32 \\
+v_3 &= 4 \times 32 = 128
+\end{aligned}
+$$
+:::
+
+::: etape b) Expression explicite
+La suite est géométrique de raison $q = 4$ et de premier terme $v_0 = 2$, donc $v_n = v_0 \times q^n = 2 \times 4^n$.
+
+Vérification : $v_3 = 2 \times 4^3 = 2 \times 64 = 128$.
+:::
+
+::: resultat
+$v_1 = 8$, $v_2 = 32$, $v_3 = 128$ et $v_n = 2 \times 4^n$.
+:::
+
+## Question 3 : $w_n = \dfrac{n + 1}{n + 2}$
+
+::: methode
+Forme explicite : on remplace $n$ par sa valeur. Pour tester la nature, on compare les différences puis les quotients de termes consécutifs.
+:::
+
+::: etape a) Premiers termes
+$w_0 = \dfrac{1}{2}$, $w_1 = \dfrac{2}{3}$ et $w_2 = \dfrac{3}{4}$.
+:::
+
+::: etape b) Arithmétique ?
+$$
+\begin{aligned}
+w_1 - w_0 &= \frac{2}{3} - \frac{1}{2} = \frac{1}{6} \\
+w_2 - w_1 &= \frac{3}{4} - \frac{2}{3} = \frac{1}{12}
+\end{aligned}
+$$
+Les deux différences sont distinctes : la suite n’est pas arithmétique.
+:::
+
+::: etape b) Géométrique ?
+$$
+\begin{aligned}
+\frac{w_1}{w_0} &= \frac{2}{3} \times 2 = \frac{4}{3} \\
+\frac{w_2}{w_1} &= \frac{3}{4} \times \frac{3}{2} = \frac{9}{8}
+\end{aligned}
+$$
+Les deux quotients sont distincts : la suite n’est pas géométrique.
+:::
+
+::: resultat
+$w_0 = \frac{1}{2}$, $w_1 = \frac{2}{3}$, $w_2 = \frac{3}{4}$ ; la suite n’est ni arithmétique ni géométrique.
+:::
+
+::: attention
+Pour prouver qu’une suite **n’est pas** arithmétique, un contre-exemple suffit (deux différences distinctes). Pour prouver qu’elle **l’est**, il faut un calcul valable pour tout $n$.
+:::
+
+## Question 4 : Suite définie par un programme
+
+::: methode
+On exécute le programme à la main, ligne par ligne, en notant la valeur de `u` à chaque passage.
+:::
+
+::: etape a) Exécution pas à pas
+| Passage $i$ | Calcul | Valeur affichée |
+|---|---|---|
+| $1$ | $2 \times 1 + 1$ | $3$ |
+| $2$ | $2 \times 3 + 1$ | $7$ |
+| $3$ | $2 \times 7 + 1$ | $15$ |
+| $4$ | $2 \times 15 + 1$ | $31$ |
+| $5$ | $2 \times 31 + 1$ | $63$ |
+:::
+
+::: etape b) Relation de récurrence
+L’instruction `u = 2 * u + 1` remplace la valeur de `u` par le double augmenté de $1$ : $u_0 = 1$ et $u_{n+1} = 2u_n + 1$ pour tout $n$.
+:::
+
+::: resultat
+Le programme affiche $3$ ; $7$ ; $15$ ; $31$ ; $63$, et $u_{n+1} = 2u_n + 1$ avec $u_0 = 1$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. a) $u_1 = 7$, $u_2 = 4$, $u_3 = 1$ ; b) $u_n = 10 - 3n$ (arithmétique de raison $-3$).
+2. a) $v_1 = 8$, $v_2 = 32$, $v_3 = 128$ ; b) $v_n = 2 \times 4^n$ (géométrique de raison $4$).
+3. a) $w_0 = \frac{1}{2}$, $w_1 = \frac{2}{3}$, $w_2 = \frac{3}{4}$ ; b) ni arithmétique ni géométrique.
+4. a) $3$ ; $7$ ; $15$ ; $31$ ; $63$ ; b) $u_0 = 1$ et $u_{n+1} = 2u_n + 1$.
+
+===
+
+=== Découverte - Notations et définitions
+Id: 1353
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Cet exercice travaille les notations $u_n$, $u_{n+1}$, $u_n + 1$ et les définitions des suites arithmétiques et géométriques.
+
+1. Soit $(u_n)$ définie par $u_n = n^2 + 1$ pour tout entier naturel $n$.
+   - a) Calculer $u_0$, $u_1$ et $u_2$.
+   - b) Exprimer $u_{n+1}$, $u_n + 1$ et $u_{2n}$ en fonction de $n$.
+2. Soit $(v_n)$ définie par $v_n = 4n - 7$. Montrer que $(v_n)$ est arithmétique ; préciser sa raison et son premier terme.
+3. Soit $(w_n)$ définie par $w_n = 5 \times 2^{n+1}$. Montrer que $(w_n)$ est géométrique ; préciser sa raison et son premier terme.
+4. Soit $(t_n)$ définie par $t_n = n^2$. La suite $(t_n)$ est-elle arithmétique ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Notations avec $u_n = n^2 + 1$
+
+::: methode
+$u_{n+1}$ : on remplace $n$ par $n + 1$ dans la formule ; $u_n + 1$ : on ajoute $1$ au terme $u_n$.
+:::
+
+::: etape a) Premiers termes
+$u_0 = 0^2 + 1 = 1$, $u_1 = 1^2 + 1 = 2$ et $u_2 = 2^2 + 1 = 5$.
+:::
+
+::: etape b) Trois expressions à ne pas confondre
+$$
+\begin{aligned}
+u_{n+1} &= (n + 1)^2 + 1 = n^2 + 2n + 2 \\
+u_n + 1 &= (n^2 + 1) + 1 = n^2 + 2 \\
+u_{2n} &= (2n)^2 + 1 = 4n^2 + 1
+\end{aligned}
+$$
+:::
+
+::: resultat
+$u_0 = 1$, $u_1 = 2$, $u_2 = 5$ ; $u_{n+1} = n^2 + 2n + 2$, $u_n + 1 = n^2 + 2$, $u_{2n} = 4n^2 + 1$.
+:::
+
+::: attention
+$u_{n+1}$ est le terme **suivant** : il ne vaut pas $u_n + 1$. Ici, pour $n = 1$ : $u_2 = 5$ alors que $u_1 + 1 = 3$.
+:::
+
+## Question 2 : $(v_n)$ est-elle arithmétique ?
+
+::: methode
+On calcule $u_{n+1} - u_n$ pour $n$ quelconque : s’il ne dépend pas de $n$, c’est la raison.
+:::
+
+::: etape Différence de deux termes consécutifs
+$$
+\begin{aligned}
+v_{n+1} - v_n &= 4(n + 1) - 7 - (4n - 7) \\
+&= 4n + 4 - 7 - 4n + 7 \\
+&= 4
+\end{aligned}
+$$
+:::
+
+::: resultat
+$(v_n)$ est arithmétique de raison $r = 4$ et de premier terme $v_0 = -7$.
+:::
+
+## Question 3 : $(w_n)$ est-elle géométrique ?
+
+::: methode
+On exprime $w_{n+1}$ en fonction de $w_n$ à l’aide de $2^{n+2} = 2 \times 2^{n+1}$.
+:::
+
+::: etape Lien entre $w_{n+1}$ et $w_n$
+$$
+\begin{aligned}
+w_{n+1} &= 5 \times 2^{n+2} \\
+&= 2 \times \left(5 \times 2^{n+1}\right) \\
+&= 2w_n
+\end{aligned}
+$$
+:::
+
+::: etape Premier terme
+$w_0 = 5 \times 2^1 = 10$.
+:::
+
+::: resultat
+$(w_n)$ est géométrique de raison $q = 2$ et de premier terme $w_0 = 10$.
+:::
+
+## Question 4 : $(t_n)$ est-elle arithmétique ?
+
+::: methode
+Un contre-exemple suffit : deux différences consécutives distinctes.
+:::
+
+::: etape Deux différences
+$t_0 = 0$, $t_1 = 1$, $t_2 = 4$, donc $t_1 - t_0 = 1$ et $t_2 - t_1 = 3$.
+:::
+
+::: resultat
+Les différences ne sont pas constantes : $(t_n)$ n’est pas arithmétique.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. a) $u_0 = 1$, $u_1 = 2$, $u_2 = 5$ ; b) $u_{n+1} = n^2 + 2n + 2$, $u_n + 1 = n^2 + 2$, $u_{2n} = 4n^2 + 1$.
+2. $v_{n+1} - v_n = 4$ : arithmétique de raison $4$, $v_0 = -7$.
+3. $w_{n+1} = 2w_n$ : géométrique de raison $2$, $w_0 = 10$.
+4. $t_1 - t_0 = 1 \neq t_2 - t_1 = 3$ : $(t_n)$ n’est pas arithmétique.
+
+===
+
+=== Découverte - Suites définies par récurrence
+Id: 1346
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Calculer les termes demandés pour chacune des suites définies par récurrence.
+
+1. $u_0 = 2$ et $u_{n+1} = 3u_n - 1$ : calculer $u_1$, $u_2$ et $u_3$.
+2. $v_0 = 1$ et $v_{n+1} = 2v_n + 3$ : calculer les quatre premiers termes.
+3. $w_0 = 5$ et $w_{n+1} = \dfrac{w_n}{2} + 1$ : calculer $w_1$, $w_2$ et $w_3$ (valeurs exactes).
+4. $t_0 = 3$ et $t_{n+1} = t_n^2 - 2$ : calculer $t_1$ et $t_2$.
+5. Suite de Fibonacci : $s_1 = 1$, $s_2 = 1$ et $s_{n+2} = s_{n+1} + s_n$ pour tout $n \ge 1$. Calculer $s_3$, $s_4$, $s_5$ et $s_6$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $u_0 = 2$ et $u_{n+1} = 3u_n - 1$
+
+::: methode
+Chaque terme se calcule à partir du précédent : on avance de proche en proche.
+:::
+
+::: etape Calculs successifs
+$$
+\begin{aligned}
+u_1 &= 3u_0 - 1 = 3 \times 2 - 1 = 5 \\
+u_2 &= 3u_1 - 1 = 3 \times 5 - 1 = 14 \\
+u_3 &= 3u_2 - 1 = 3 \times 14 - 1 = 41
+\end{aligned}
+$$
+:::
+
+::: resultat
+$u_1 = 5$, $u_2 = 14$, $u_3 = 41$.
+:::
+
+## Question 2 : $v_0 = 1$ et $v_{n+1} = 2v_n + 3$
+
+::: methode
+Les quatre premiers termes sont $v_0$, $v_1$, $v_2$ et $v_3$ (on commence au rang $0$).
+:::
+
+::: etape Calculs successifs
+$$
+\begin{aligned}
+v_1 &= 2 \times 1 + 3 = 5 \\
+v_2 &= 2 \times 5 + 3 = 13 \\
+v_3 &= 2 \times 13 + 3 = 29
+\end{aligned}
+$$
+:::
+
+::: resultat
+$v_0 = 1$, $v_1 = 5$, $v_2 = 13$, $v_3 = 29$.
+:::
+
+## Question 3 : $w_0 = 5$ et $w_{n+1} = \dfrac{w_n}{2} + 1$
+
+::: methode
+On garde des fractions pour obtenir des valeurs exactes.
+:::
+
+::: etape Calculs successifs
+$$
+\begin{aligned}
+w_1 &= \frac{5}{2} + 1 = \frac{7}{2} \\
+w_2 &= \frac{7}{4} + 1 = \frac{11}{4} \\
+w_3 &= \frac{11}{8} + 1 = \frac{19}{8}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$w_1 = \frac{7}{2}$, $w_2 = \frac{11}{4}$, $w_3 = \frac{19}{8}$.
+:::
+
+## Question 4 : $t_0 = 3$ et $t_{n+1} = t_n^2 - 2$
+
+::: methode
+On élève le terme précédent au carré, puis on retranche $2$.
+:::
+
+::: etape Calculs successifs
+$$
+\begin{aligned}
+t_1 &= 3^2 - 2 = 7 \\
+t_2 &= 7^2 - 2 = 47
+\end{aligned}
+$$
+:::
+
+::: resultat
+$t_1 = 7$, $t_2 = 47$.
+:::
+
+## Question 5 : Suite de Fibonacci
+
+::: methode
+Chaque terme est la somme des **deux** termes précédents : il faut deux termes initiaux.
+:::
+
+::: etape Calculs successifs
+$$
+\begin{aligned}
+s_3 &= s_2 + s_1 = 1 + 1 = 2 \\
+s_4 &= s_3 + s_2 = 2 + 1 = 3 \\
+s_5 &= s_4 + s_3 = 3 + 2 = 5 \\
+s_6 &= s_5 + s_4 = 5 + 3 = 8
+\end{aligned}
+$$
+:::
+
+::: resultat
+$s_3 = 2$, $s_4 = 3$, $s_5 = 5$, $s_6 = 8$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $u_1 = 5$, $u_2 = 14$, $u_3 = 41$.
+2. $v_0 = 1$, $v_1 = 5$, $v_2 = 13$, $v_3 = 29$.
+3. $w_1 = \frac{7}{2}$, $w_2 = \frac{11}{4}$, $w_3 = \frac{19}{8}$.
+4. $t_1 = 7$, $t_2 = 47$.
+5. $s_3 = 2$, $s_4 = 3$, $s_5 = 5$, $s_6 = 8$.
+
+===
+
+=== Découverte - Termes d'une suite arithmétique
+Id: 1342
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Calculer les termes demandés pour les suites arithmétiques suivantes.
+
+1. $(u_n)$ arithmétique avec $u_0 = 5$ et $r = 3$ : calculer $u_{10}$.
+2. $(v_n)$ arithmétique avec $v_1 = -2$ et $r = 4$ : calculer $v_{15}$.
+3. $(w_n)$ arithmétique avec $w_0 = 12$ et $r = -2$ : calculer $w_8$.
+4. $(t_n)$ arithmétique avec $t_3 = 7$ et $t_7 = 15$ : déterminer $r$ et $t_0$.
+5. $(s_n)$ arithmétique avec $s_2 = 10$ et $r = -3$ : calculer $s_{20}$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $u_{10}$ avec $u_0 = 5$ et $r = 3$
+
+::: methode
+Terme général : $u_n = u_0 + nr$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+u_{10} &= u_0 + 10r \\
+&= 5 + 10 \times 3 \\
+&= 35
+\end{aligned}
+$$
+:::
+
+::: resultat
+$u_{10} = 35$.
+:::
+
+## Question 2 : $v_{15}$ avec $v_1 = -2$ et $r = 4$
+
+::: methode
+Le terme connu est $v_1$ : on utilise $v_n = v_p + (n - p)r$ avec $p = 1$.
+:::
+
+::: etape Calcul
+De $v_1$ à $v_{15}$, on ajoute $14$ fois la raison :
+$$
+\begin{aligned}
+v_{15} &= v_1 + 14r \\
+&= -2 + 14 \times 4 \\
+&= 54
+\end{aligned}
+$$
+:::
+
+::: resultat
+$v_{15} = 54$.
+:::
+
+::: attention
+Écrire $v_{15} = v_1 + 15r$ est une erreur classique : de $v_1$ à $v_{15}$, il y a $15 - 1 = 14$ « pas ».
+:::
+
+## Question 3 : $w_8$ avec $w_0 = 12$ et $r = -2$
+
+::: methode
+Terme général $w_n = w_0 + nr$, avec une raison négative.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+w_8 &= 12 + 8 \times (-2) \\
+&= 12 - 16 \\
+&= -4
+\end{aligned}
+$$
+:::
+
+::: resultat
+$w_8 = -4$.
+:::
+
+## Question 4 : $r$ et $t_0$ avec $t_3 = 7$ et $t_7 = 15$
+
+::: methode
+Entre $t_3$ et $t_7$, on ajoute $4$ fois la raison : $t_7 = t_3 + 4r$.
+:::
+
+::: etape Raison
+$$
+\begin{aligned}
+15 &= 7 + 4r \\
+4r &= 8 \\
+r &= 2
+\end{aligned}
+$$
+:::
+
+::: etape Premier terme
+$t_3 = t_0 + 3r$, donc $t_0 = t_3 - 3r = 7 - 6 = 1$.
+
+Vérification : $t_7 = 1 + 7 \times 2 = 15$.
+:::
+
+Sur le nuage de points, on passe de $t_3$ à $t_7$ en quatre « marches » de hauteur $r$ :
+
+[IMAGE_1]
+
+::: resultat
+$r = 2$ et $t_0 = 1$.
+:::
+
+## Question 5 : $s_{20}$ avec $s_2 = 10$ et $r = -3$
+
+::: methode
+On part du terme connu $s_2$ : $s_{20} = s_2 + (20 - 2)r$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+s_{20} &= s_2 + 18r \\
+&= 10 + 18 \times (-3) \\
+&= -44
+\end{aligned}
+$$
+:::
+
+::: resultat
+$s_{20} = -44$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $u_{10} = 35$.
+2. $v_{15} = 54$.
+3. $w_8 = -4$.
+4. $r = 2$ et $t_0 = 1$.
+5. $s_{20} = -44$.
+
+===
+
+=== Découverte - Termes d'une suite géométrique
+Id: 1343
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Calculer les termes demandés pour les suites géométriques suivantes.
+
+1. $(u_n)$ géométrique avec $u_0 = 2$ et $q = 3$ : calculer $u_5$.
+2. $(v_n)$ géométrique avec $v_0 = 5$ et $q = \dfrac{1}{2}$ : calculer $v_6$.
+3. $(w_n)$ géométrique avec $w_1 = 8$ et $q = 2$ : calculer $w_0$ et $w_5$.
+4. $(t_n)$ géométrique avec $t_2 = 12$ et $t_5 = 96$ : déterminer $q$ et $t_0$.
+5. $(s_n)$ géométrique avec $s_0 = 1$ et $q = -2$ : calculer $s_4$ et $s_5$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $u_5$ avec $u_0 = 2$ et $q = 3$
+
+::: methode
+Terme général : $u_n = u_0 \times q^n$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+u_5 &= 2 \times 3^5 \\
+&= 2 \times 243 \\
+&= 486
+\end{aligned}
+$$
+:::
+
+::: resultat
+$u_5 = 486$.
+:::
+
+## Question 2 : $v_6$ avec $v_0 = 5$ et $q = \frac{1}{2}$
+
+::: methode
+Terme général $v_n = v_0 \times q^n$, avec $\left(\frac{1}{2}\right)^6 = \frac{1}{2^6}$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+v_6 &= 5 \times \left(\frac{1}{2}\right)^6 \\
+&= 5 \times \frac{1}{64} \\
+&= \frac{5}{64}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$v_6 = \frac{5}{64}$.
+:::
+
+## Question 3 : $w_0$ et $w_5$ avec $w_1 = 8$ et $q = 2$
+
+::: methode
+On « remonte » d’un rang en divisant par $q$, puis on applique le terme général.
+:::
+
+::: etape Premier terme
+$w_1 = w_0 \times 2$, donc $w_0 = \frac{8}{2} = 4$.
+:::
+
+::: etape Calcul de $w_5$
+$$
+\begin{aligned}
+w_5 &= 4 \times 2^5 \\
+&= 4 \times 32 \\
+&= 128
+\end{aligned}
+$$
+:::
+
+::: resultat
+$w_0 = 4$ et $w_5 = 128$.
+:::
+
+## Question 4 : $q$ et $t_0$ avec $t_2 = 12$ et $t_5 = 96$
+
+::: methode
+De $t_2$ à $t_5$, on multiplie $3$ fois par $q$ : $t_5 = t_2 \times q^3$.
+:::
+
+::: etape Raison
+$$
+\begin{aligned}
+96 &= 12 \times q^3 \\
+q^3 &= 8 \\
+q &= 2
+\end{aligned}
+$$
+(le seul réel dont le cube vaut $8$ est $2$).
+:::
+
+::: etape Premier terme
+$t_2 = t_0 \times q^2$, donc $12 = t_0 \times 4$ et $t_0 = 3$.
+
+Vérification : $t_5 = 3 \times 2^5 = 96$.
+:::
+
+::: resultat
+$q = 2$ et $t_0 = 3$.
+:::
+
+## Question 5 : $s_4$ et $s_5$ avec $s_0 = 1$ et $q = -2$
+
+::: methode
+Une puissance d’un nombre négatif est positive pour un exposant pair, négative pour un exposant impair.
+:::
+
+::: etape Calculs
+$s_4 = (-2)^4 = 16$ et $s_5 = (-2)^5 = -32$.
+:::
+
+[IMAGE_1]
+
+::: resultat
+$s_4 = 16$ et $s_5 = -32$ : les termes changent de signe à chaque rang.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $u_5 = 486$.
+2. $v_6 = \frac{5}{64}$.
+3. $w_0 = 4$ et $w_5 = 128$.
+4. $q = 2$ et $t_0 = 3$.
+5. $s_4 = 16$ et $s_5 = -32$.
+
+===
+
+=== DS - Variations, rebonds d'une balle et seuil
+Id: 1351
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Ce devoir porte sur l’ensemble du chapitre : sens de variation, suites géométriques, sommes et algorithme de seuil.
+
+**Partie A — Une suite définie explicitement**
+
+On considère la suite $(u_n)$ définie pour tout entier naturel $n$ par $u_n = n^2 - 6n + 5$.
+
+**A1.** Calculer $u_0$, $u_1$, $u_2$, $u_3$ et $u_4$.
+
+**A2.** Montrer que, pour tout entier naturel $n$, $u_{n+1} - u_n = 2n - 5$.
+
+**A3.** En déduire le sens de variation de la suite $(u_n)$.
+
+**Partie B — Les rebonds d’une balle**
+
+On lâche une balle d’une hauteur de $2$ m. À chaque rebond, elle remonte à $80\,\%$ de la hauteur d’où elle est tombée. On note $h_0 = 2$ et $h_n$ la hauteur, en mètres, atteinte après le $n$-ième rebond.
+
+[IMAGE_1]
+
+**B1.** Calculer $h_1$ et $h_2$.
+
+**B2.** Justifier que la suite $(h_n)$ est géométrique, puis exprimer $h_n$ en fonction de $n$.
+
+**B3.** Déterminer le sens de variation de la suite $(h_n)$.
+
+**B4.** Calculer la distance totale parcourue par la balle entre le lâcher et le moment où elle touche le sol pour la sixième fois. Arrondir au centimètre.
+
+**Partie C — Algorithme de seuil**
+
+On souhaite connaître le premier rebond après lequel la balle remonte à moins de $10$ cm.
+
+**C1.** Compléter la fonction Python suivante pour qu’elle renvoie ce numéro de rebond.
+
+```python
+def seuil():
+    n = 0
+    h = 2
+    while ...:
+        h = ...
+        n = n + 1
+    return n
+```
+
+**C2.** Quelle valeur la fonction renvoie-t-elle ? Justifier par un calcul.
+
+Étapes:
+<!-- optitab:1 -->
+## Partie A : Une suite définie explicitement
+
+## Question A1 : Premiers termes
+
+::: methode
+Forme explicite : on remplace $n$ par sa valeur dans $n^2 - 6n + 5$.
+:::
+
+::: etape Calculs
+| $n$ | $0$ | $1$ | $2$ | $3$ | $4$ |
+|---|---|---|---|---|---|
+| $u_n$ | $5$ | $0$ | $-3$ | $-4$ | $-3$ |
+
+Par exemple, $u_3 = 9 - 18 + 5 = -4$.
+:::
+
+::: resultat
+$u_0 = 5$, $u_1 = 0$, $u_2 = -3$, $u_3 = -4$, $u_4 = -3$.
+:::
+
+## Question A2 : Calcul de $u_{n+1} - u_n$
+
+::: methode
+On remplace $n$ par $n + 1$ dans la formule, puis on développe et on réduit.
+:::
+
+::: etape Développement
+$$
+\begin{aligned}
+u_{n+1} &= (n + 1)^2 - 6(n + 1) + 5 \\
+&= n^2 + 2n + 1 - 6n - 6 + 5 \\
+&= n^2 - 4n \\
+u_{n+1} - u_n &= n^2 - 4n - (n^2 - 6n + 5) \\
+&= 2n - 5
+\end{aligned}
+$$
+:::
+
+::: resultat
+Pour tout entier naturel $n$, $u_{n+1} - u_n = 2n - 5$.
+:::
+
+## Question A3 : Sens de variation
+
+::: methode
+On étudie le signe de $2n - 5$ pour $n$ **entier**.
+:::
+
+::: etape Signe de $2n - 5$
+$2n - 5 \gt 0 \iff n \gt 2{,}5 \iff n \ge 3$ (car $n$ est entier).
+- Pour $n \in \{0\,;1\,;2\}$ : $u_{n+1} - u_n \lt 0$, donc $u_0 \gt u_1 \gt u_2 \gt u_3$.
+- Pour $n \ge 3$ : $u_{n+1} - u_n \gt 0$, donc $u_3 \lt u_4 \lt u_5 \lt \cdots$
+:::
+
+[IMAGE_2]
+
+::: resultat
+La suite $(u_n)$ est strictement décroissante jusqu’au rang $3$, puis strictement croissante à partir du rang $3$ : elle n’est pas monotone, et son plus petit terme est $u_3 = -4$.
+:::
+
+## Partie B : Les rebonds d’une balle
+
+## Question B1 : Premières hauteurs
+
+::: methode
+Remonter à $80\,\%$ de la hauteur, c’est multiplier cette hauteur par $0{,}8$.
+:::
+
+::: etape Calculs
+$h_1 = 0{,}8 \times 2 = 1{,}6$ et $h_2 = 0{,}8 \times 1{,}6 = 1{,}28$.
+:::
+
+::: resultat
+$h_1 = 1{,}6$ m et $h_2 = 1{,}28$ m.
+:::
+
+## Question B2 : Nature de la suite
+
+::: methode
+Une suite géométrique s’obtient en multipliant toujours par le même nombre.
+:::
+
+::: etape Relation de récurrence
+Pour tout $n$, $h_{n+1} = 0{,}8 \times h_n$ : la suite $(h_n)$ est géométrique de raison $q = 0{,}8$ et de premier terme $h_0 = 2$.
+:::
+
+::: resultat
+$$h_n = 2 \times 0{,}8^n$$
+:::
+
+## Question B3 : Sens de variation
+
+::: methode
+Suite géométrique de premier terme positif : on compare la raison à $1$.
+:::
+
+::: etape Justification
+$$
+\begin{aligned}
+h_{n+1} - h_n &= 2 \times 0{,}8^n \times (0{,}8 - 1) \\
+&= -0{,}4 \times 0{,}8^n
+\end{aligned}
+$$
+Ce nombre est strictement négatif pour tout $n$.
+:::
+
+::: resultat
+La suite $(h_n)$ est strictement décroissante ($h_0 \gt 0$ et $0 \lt q \lt 1$).
+:::
+
+## Question B4 : Distance totale parcourue
+
+::: methode
+On décompose le trajet : la chute initiale, puis, pour chaque rebond, une montée et une descente de même hauteur.
+:::
+
+::: etape Décomposition du trajet
+- Chute initiale : $2$ m ; la balle touche le sol pour la 1re fois.
+- Rebond numéro $k$ : montée de $h_k$ puis descente de $h_k$ ; la balle touche le sol pour la $(k + 1)$-ième fois.
+
+La sixième arrivée au sol a lieu à la fin du 5e rebond :
+$$D = 2 + 2(h_1 + h_2 + h_3 + h_4 + h_5)$$
+:::
+
+[IMAGE_3]
+
+::: etape Somme géométrique
+$h_1 + \cdots + h_5$ compte $5$ termes, de premier terme $h_1 = 1{,}6$ et de raison $0{,}8$ :
+$$
+\begin{aligned}
+h_1 + \cdots + h_5 &= 1{,}6 \times \frac{1 - 0{,}8^5}{1 - 0{,}8} \\
+&= 1{,}6 \times \frac{0{,}67232}{0{,}2} \\
+&= 5{,}37856
+\end{aligned}
+$$
+:::
+
+::: etape Distance
+$D = 2 + 2 \times 5{,}37856 = 12{,}75712$.
+:::
+
+::: resultat
+La balle parcourt environ $12{,}76$ m.
+:::
+
+::: attention
+La somme commence à $h_1$ et non à $h_0$ : la hauteur de départ $2$ m n’est parcourue qu’une fois (en descente).
+:::
+
+## Partie C : Algorithme de seuil
+
+## Question C1 : Compléter la fonction
+
+::: methode
+La boucle `while` continue **tant que** la condition d’arrêt n’est pas atteinte, c’est-à-dire tant que $h \ge 0{,}1$.
+:::
+
+::: etape Programme complété
+```python
+def seuil():
+    n = 0
+    h = 2
+    while h >= 0.1:
+        h = 0.8 * h
+        n = n + 1
+    return n
+```
+:::
+
+::: resultat
+Condition `h >= 0.1` et mise à jour `h = 0.8 * h`.
+:::
+
+## Question C2 : Valeur renvoyée
+
+::: methode
+On cherche le premier entier $n$ tel que $2 \times 0{,}8^n \lt 0{,}1$, à l’aide de la calculatrice.
+:::
+
+::: etape Encadrement
+$h_{13} = 2 \times 0{,}8^{13} \approx 0{,}110 \ge 0{,}1$ et $h_{14} = 2 \times 0{,}8^{14} \approx 0{,}088 \lt 0{,}1$.
+:::
+
+::: resultat
+La fonction renvoie $14$ : c’est après le 14e rebond que la balle remonte pour la première fois à moins de $10$ cm.
+:::
+
+Solution:
+<!-- optitab:1 -->
+**A1.** $u_0 = 5$, $u_1 = 0$, $u_2 = -3$, $u_3 = -4$, $u_4 = -3$.
+
+**A2.** $u_{n+1} - u_n = 2n - 5$.
+
+**A3.** Strictement décroissante jusqu’au rang $3$, strictement croissante à partir du rang $3$.
+
+**B1.** $h_1 = 1{,}6$ m, $h_2 = 1{,}28$ m.
+
+**B2.** Géométrique de raison $0{,}8$ : $h_n = 2 \times 0{,}8^n$.
+
+**B3.** Strictement décroissante.
+
+**B4.** $D = 2 + 2(h_1 + \cdots + h_5) \approx 12{,}76$ m.
+
+**C1.** `while h >= 0.1:` et `h = 0.8 * h`.
+
+**C2.** $14$.
+
+===
+
+=== DS - Amphithéâtre et populations de deux villes
+Id: 1352
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Ce devoir porte sur la modélisation par des suites arithmétiques (croissance linéaire) et géométriques (évolution à taux constant).
+
+**Partie A — Un amphithéâtre**
+
+Le premier rang d’un amphithéâtre compte $20$ places ; chaque rang compte $2$ places de plus que le précédent ; il y a $25$ rangs. On note $a_n$ le nombre de places du rang numéro $n$ (donc $a_1 = 20$).
+
+**A1.** Quelle est la nature de la suite $(a_n)$ ? Exprimer $a_n$ en fonction de $n$.
+
+**A2.** Combien de places compte le dernier rang ?
+
+**A3.** Quel rang compte exactement $50$ places ?
+
+**A4.** Calculer le nombre total de places de l’amphithéâtre.
+
+**Partie B — Une ville qui perd des habitants**
+
+En 2025, une ville compte $50\,000$ habitants. On suppose que sa population baisse de $2\,\%$ par an. On note $p_n$ la population en $2025 + n$ (donc $p_0 = 50\,000$).
+
+**B1.** Calculer $p_1$ et $p_2$.
+
+**B2.** Justifier que $(p_n)$ est géométrique ; exprimer $p_n$ en fonction de $n$ et donner son sens de variation.
+
+**B3.** En quelle année la population passera-t-elle pour la première fois sous les $40\,000$ habitants ?
+
+**Partie C — Comparaison avec une ville voisine**
+
+Une ville voisine compte $30\,000$ habitants en 2025 et gagne $600$ habitants par an. On note $v_n$ sa population en $2025 + n$.
+
+**C1.** Exprimer $v_n$ en fonction de $n$.
+
+**C2.** À l’aide de la calculatrice, déterminer la première année où la ville voisine sera la plus peuplée.
+
+Étapes:
+<!-- optitab:1 -->
+## Partie A : Un amphithéâtre
+
+## Question A1 : Nature de $(a_n)$
+
+::: methode
+On ajoute toujours le même nombre de places : suite arithmétique. Attention, le premier terme est $a_1$.
+:::
+
+::: etape Terme général
+$a_{n+1} = a_n + 2$ : $(a_n)$ est arithmétique de raison $r = 2$ et de premier terme $a_1 = 20$. Depuis le rang $1$ :
+$$
+\begin{aligned}
+a_n &= a_1 + (n - 1)r \\
+&= 20 + 2(n - 1) \\
+&= 2n + 18
+\end{aligned}
+$$
+:::
+
+::: resultat
+$(a_n)$ est arithmétique de raison $2$ et $a_n = 2n + 18$.
+:::
+
+::: attention
+Écrire $a_n = 20 + 2n$ serait faux : cette formule donnerait $a_1 = 22$.
+:::
+
+## Question A2 : Dernier rang
+
+::: methode
+Le dernier rang est le rang $25$.
+:::
+
+::: etape Calcul
+$a_{25} = 2 \times 25 + 18 = 68$.
+:::
+
+::: resultat
+Le dernier rang compte $68$ places.
+:::
+
+## Question A3 : Rang de $50$ places
+
+::: methode
+On résout l’équation $a_n = 50$ d’inconnue l’entier $n$.
+:::
+
+::: etape Résolution
+$2n + 18 = 50 \iff 2n = 32 \iff n = 16$.
+:::
+
+::: resultat
+C’est le rang numéro $16$.
+:::
+
+## Question A4 : Nombre total de places
+
+::: methode
+Somme de termes consécutifs d’une suite arithmétique : $N \times \frac{\text{premier} + \text{dernier}}{2}$.
+:::
+
+::: etape Calcul
+Il y a $25$ termes, de $a_1 = 20$ à $a_{25} = 68$ :
+$$
+\begin{aligned}
+a_1 + \cdots + a_{25} &= 25 \times \frac{20 + 68}{2} \\
+&= 25 \times 44 \\
+&= 1\,100
+\end{aligned}
+$$
+:::
+
+::: resultat
+L’amphithéâtre compte $1\,100$ places.
+:::
+
+## Partie B : Une ville qui perd des habitants
+
+## Question B1 : Premiers termes
+
+::: methode
+Baisser de $2\,\%$, c’est multiplier par $1 - \frac{2}{100} = 0{,}98$.
+:::
+
+::: etape Calculs
+$p_1 = 50\,000 \times 0{,}98 = 49\,000$ et $p_2 = 49\,000 \times 0{,}98 = 48\,020$.
+:::
+
+::: resultat
+$p_1 = 49\,000$ et $p_2 = 48\,020$ habitants.
+:::
+
+## Question B2 : Nature, terme général, variations
+
+::: methode
+Évolution à taux constant : suite géométrique de raison $q = 0{,}98$.
+:::
+
+::: etape Terme général
+Pour tout $n$, $p_{n+1} = 0{,}98 \, p_n$ : $(p_n)$ est géométrique de raison $0{,}98$ et de premier terme $50\,000$, donc
+$$p_n = 50\,000 \times 0{,}98^n$$
+:::
+
+::: etape Sens de variation
+$p_0 \gt 0$ et $0 \lt 0{,}98 \lt 1$ : la suite est strictement décroissante.
+:::
+
+::: resultat
+$p_n = 50\,000 \times 0{,}98^n$ ; la suite $(p_n)$ est strictement décroissante.
+:::
+
+## Question B3 : Passage sous $40\,000$ habitants
+
+::: methode
+La suite étant décroissante, on cherche le premier $n$ tel que $p_n \lt 40\,000$ (tableau de valeurs de la calculatrice).
+:::
+
+::: etape Tableau de valeurs
+| $n$ | $10$ | $11$ | $12$ |
+|---|---|---|---|
+| $p_n$ (arrondi) | $40\,854$ | $40\,037$ | $39\,236$ |
+:::
+
+::: resultat
+$p_{11} \gt 40\,000$ et $p_{12} \lt 40\,000$ : la population passe sous $40\,000$ habitants en $2025 + 12 = 2037$.
+:::
+
+## Partie C : Comparaison avec une ville voisine
+
+## Question C1 : Expression de $v_n$
+
+::: methode
+Gain constant de $600$ habitants par an : suite arithmétique (croissance linéaire).
+:::
+
+::: etape Terme général
+$(v_n)$ est arithmétique de raison $600$ et de premier terme $v_0 = 30\,000$.
+:::
+
+::: resultat
+$v_n = 30\,000 + 600n$.
+:::
+
+## Question C2 : Première année où la ville voisine est plus peuplée
+
+::: methode
+On compare $v_n$ et $p_n$ dans un tableau de valeurs.
+:::
+
+::: etape Tableau comparatif
+| $n$ | $12$ | $13$ | $14$ |
+|---|---|---|---|
+| $p_n$ (arrondi) | $39\,236$ | $38\,451$ | $37\,682$ |
+| $v_n$ | $37\,200$ | $37\,800$ | $38\,400$ |
+:::
+
+Le graphique résume les parties B et C : $p_n$ passe sous le seuil de $40\,000$ au rang $12$, et les deux nuages se croisent entre les rangs $13$ et $14$.
+
+[IMAGE_1]
+
+::: resultat
+$v_{13} \lt p_{13}$ mais $v_{14} \gt p_{14}$ : la ville voisine devient la plus peuplée en $2025 + 14 = 2039$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+**A1.** Arithmétique de raison $2$ : $a_n = 2n + 18$.
+
+**A2.** $68$ places.
+
+**A3.** Le rang $16$.
+
+**A4.** $1\,100$ places.
+
+**B1.** $p_1 = 49\,000$, $p_2 = 48\,020$.
+
+**B2.** $p_n = 50\,000 \times 0{,}98^n$, strictement décroissante.
+
+**B3.** En 2037 ($n = 12$).
+
+**C1.** $v_n = 30\,000 + 600n$.
+
+**C2.** En 2039 ($n = 14$).
+
+===
+
+=== DS - Épargne mensuelle et algorithme de seuil
+Id: 1364
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Ce devoir porte sur la modélisation d’une épargne, l’algorithme de seuil et la comparaison avec une suite arithmétique.
+
+**Partie A — Modélisation**
+
+Un étudiant économise pour acheter un ordinateur. Le 1er janvier, il a $200$ € sur son compte. À la fin de chaque mois, la banque ajoute $2\,\%$ d’intérêts au capital, puis l’étudiant dépose $50$ €. On note $C_n$ le capital, en euros, après $n$ mois ($C_0 = 200$).
+
+**A1.** Justifier que, pour tout entier naturel $n$, $C_{n+1} = 1{,}02\,C_n + 50$.
+
+**A2.** Calculer $C_1$, $C_2$ et $C_3$ (arrondir au centime).
+
+**A3.** La suite $(C_n)$ est-elle arithmétique ? géométrique ?
+
+**Partie B — Algorithme**
+
+On cherche au bout de combien de mois le capital atteint au moins $1\,000$ €.
+
+**B1.** Écrire une fonction Python qui renvoie ce nombre de mois.
+
+**B2.** À l’aide de la calculatrice ou du programme, déterminer ce nombre de mois.
+
+**Partie C — Sans intérêts**
+
+On suppose maintenant que le compte ne rapporte aucun intérêt (dépôt de $50$ € par mois). On note $D_n$ le capital après $n$ mois ($D_0 = 200$).
+
+**C1.** Quelle est la nature de la suite $(D_n)$ ? Exprimer $D_n$ en fonction de $n$.
+
+**C2.** Au bout de combien de mois le capital atteint-il $1\,000$ € ? Comparer avec la partie B.
+
+Étapes:
+<!-- optitab:1 -->
+## Partie A : Modélisation
+
+## Question A1 : Relation de récurrence
+
+::: methode
+On traduit les deux opérations du mois, dans l’ordre : intérêts, puis dépôt.
+:::
+
+::: etape Traduction
+- Ajouter $2\,\%$ d’intérêts, c’est multiplier le capital $C_n$ par $1{,}02$.
+- Le dépôt ajoute ensuite $50$ €.
+:::
+
+::: resultat
+$$C_{n+1} = 1{,}02\,C_n + 50$$
+:::
+
+## Question A2 : Premiers termes
+
+::: methode
+On applique la relation de proche en proche, en gardant les valeurs exactes avant d’arrondir.
+:::
+
+::: etape Calculs
+$$
+\begin{aligned}
+C_1 &= 1{,}02 \times 200 + 50 = 254 \\
+C_2 &= 1{,}02 \times 254 + 50 = 309{,}08 \\
+C_3 &= 1{,}02 \times 309{,}08 + 50 = 365{,}2616
+\end{aligned}
+$$
+:::
+
+::: resultat
+$C_1 = 254$ €, $C_2 = 309{,}08$ € et $C_3 \approx 365{,}26$ €.
+:::
+
+## Question A3 : Nature de la suite
+
+::: methode
+On teste les différences et les quotients de termes consécutifs.
+:::
+
+::: etape Différences
+$C_1 - C_0 = 54$ et $C_2 - C_1 = 55{,}08$ : la suite n’est pas arithmétique.
+:::
+
+::: etape Quotients
+$\dfrac{C_1}{C_0} = 1{,}27$ et $\dfrac{C_2}{C_1} \approx 1{,}217$ : la suite n’est pas géométrique.
+:::
+
+::: resultat
+$(C_n)$ n’est ni arithmétique ni géométrique.
+:::
+
+## Partie B : Algorithme
+
+## Question B1 : Fonction Python
+
+::: methode
+Algorithme de seuil : tant que le capital est inférieur à $1\,000$, on calcule le mois suivant et on compte les mois.
+:::
+
+::: etape Programme
+```python
+def mois():
+    n = 0
+    C = 200
+    while C < 1000:
+        C = 1.02 * C + 50
+        n = n + 1
+    return n
+```
+:::
+
+::: resultat
+La fonction `mois()` renvoie le premier rang $n$ tel que $C_n \ge 1\,000$.
+:::
+
+## Question B2 : Nombre de mois
+
+::: methode
+On encadre à l’aide du tableau de valeurs de la suite.
+:::
+
+::: etape Tableau de valeurs
+| $n$ | $C_n$ (arrondi) |
+|---|---|
+| $12$ | $924{,}25$ |
+| $13$ | $992{,}74$ |
+| $14$ | $1\,062{,}59$ |
+:::
+
+::: resultat
+$C_{13} \lt 1\,000 \le C_{14}$ : le capital atteint $1\,000$ € au bout de $14$ mois.
+:::
+
+## Partie C : Sans intérêts
+
+## Question C1 : Nature de $(D_n)$
+
+::: methode
+Sans intérêts, on ajoute $50$ € chaque mois : suite arithmétique.
+:::
+
+::: etape Terme général
+$D_{n+1} = D_n + 50$ : $(D_n)$ est arithmétique de raison $50$ et de premier terme $200$.
+:::
+
+::: resultat
+$D_n = 200 + 50n$.
+:::
+
+## Question C2 : Nombre de mois sans intérêts
+
+::: methode
+On résout l’inéquation $D_n \ge 1\,000$.
+:::
+
+::: etape Résolution
+$$
+\begin{aligned}
+200 + 50n &\ge 1\,000 \\
+50n &\ge 800 \\
+n &\ge 16
+\end{aligned}
+$$
+:::
+
+[IMAGE_1]
+
+::: resultat
+Sans intérêts, il faut $16$ mois : les intérêts font gagner $2$ mois.
+:::
+
+Solution:
+<!-- optitab:1 -->
+**A1.** Intérêts : $\times 1{,}02$, puis dépôt : $+50$, d’où $C_{n+1} = 1{,}02\,C_n + 50$.
+
+**A2.** $C_1 = 254$ €, $C_2 = 309{,}08$ €, $C_3 \approx 365{,}26$ €.
+
+**A3.** Ni arithmétique ni géométrique.
+
+**B1.** Boucle `while C < 1000:` avec `C = 1.02 * C + 50` et un compteur `n`.
+
+**B2.** $14$ mois.
+
+**C1.** Arithmétique de raison $50$ : $D_n = 200 + 50n$.
+
+**C2.** $16$ mois, soit $2$ mois de plus qu’avec les intérêts.
+
+===
+
+=== Entraînement - Construction en escalier : une suite qui s'éloigne
+Id: 1425
+Difficulté: medium
+Image: suite_recurrence_toile_araignee_2.png
+
+Énoncé:
+<!-- optitab:1 -->
+On considère la suite $(u_n)$ définie par $u_0 = 1{,}5$ et $u_{n+1} = 2u_n - 1$ pour tout entier naturel $n$, ainsi que la fonction $f$ définie sur $\mathbb{R}$ par $f(x) = 2x - 1$ (ainsi $u_{n+1} = f(u_n)$). La figure montre la courbe de $f$ et la droite d’équation $y = x$.
+
+[IMAGE_1]
+
+1. Calculer $u_1$, $u_2$, $u_3$ et $u_4$.
+2. Résoudre l’équation $f(x) = x$. Que se passe-t-il si l’on part de $u_0 = 1$ ?
+3. Sur la figure, représenter les premiers termes de la suite par la construction en « escalier ».
+4. Quelle conjecture peut-on faire sur le comportement de la suite quand $n$ devient grand ?
+5. On pose $v_n = u_n - 1$ pour tout entier naturel $n$.
+   - a) Montrer que $(v_n)$ est une suite géométrique.
+   - b) En déduire $u_n$ en fonction de $n$, puis le sens de variation de $(u_n)$.
+   - c) Déterminer le premier rang $n$ tel que $u_n \gt 1\,000$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Premiers termes
+
+::: methode
+On applique $u_{n+1} = 2u_n - 1$ de proche en proche.
+:::
+
+::: etape Calculs
+$$
+\begin{aligned}
+u_1 &= 2 \times 1{,}5 - 1 = 2 \\
+u_2 &= 2 \times 2 - 1 = 3 \\
+u_3 &= 2 \times 3 - 1 = 5 \\
+u_4 &= 2 \times 5 - 1 = 9
+\end{aligned}
+$$
+:::
+
+::: resultat
+$u_1 = 2$, $u_2 = 3$, $u_3 = 5$, $u_4 = 9$.
+:::
+
+## Question 2 : Équation $f(x) = x$
+
+::: methode
+Les solutions de $f(x) = x$ sont les abscisses des points d’intersection de la courbe de $f$ et de la droite $y = x$.
+:::
+
+::: etape Résolution
+$2x - 1 = x \iff x = 1$.
+:::
+
+::: etape Cas $u_0 = 1$
+$u_1 = f(1) = 1$, puis $u_2 = f(1) = 1$, etc. : la suite est constante, égale à $1$.
+:::
+
+::: resultat
+L’unique solution est $x = 1$ ; en partant de $u_0 = 1$, la suite est constante égale à $1$.
+:::
+
+## Question 3 : Construction en escalier
+
+::: methode
+On part de $u_0$ sur l’axe des abscisses ; on rejoint verticalement la courbe de $f$ (ordonnée $u_1$), puis horizontalement la droite $y = x$ (abscisse $u_1$), et on recommence.
+:::
+
+[IMAGE_2]
+
+::: etape Lecture de la figure
+Les abscisses obtenues successivement sont $1{,}5$ ; $2$ ; $3$ ; $5$ : on retrouve $u_0$, $u_1$, $u_2$, $u_3$. Les marches de l’escalier s’allongent et s’éloignent du point d’intersection $(1\,;1)$.
+:::
+
+::: resultat
+L’escalier monte vers la droite en s’éloignant de plus en plus du point $(1\,;1)$.
+:::
+
+## Question 4 : Conjecture
+
+::: methode
+On s’appuie sur les valeurs calculées et sur la figure.
+:::
+
+::: etape Observation
+Les termes $1{,}5$ ; $2$ ; $3$ ; $5$ ; $9$ augmentent, et l’écart avec $1$ double à chaque rang : $0{,}5$ ; $1$ ; $2$ ; $4$ ; $8$.
+:::
+
+::: resultat
+On conjecture que la suite est croissante et que ses termes deviennent aussi grands que l’on veut : elle s’éloigne de $1$ bien qu’elle parte tout près.
+:::
+
+## Question 5 : Étude algébrique
+
+::: methode
+On exprime $v_{n+1}$ en fonction de $v_n$ en remplaçant $u_{n+1}$ par $2u_n - 1$.
+:::
+
+::: etape a) Suite géométrique
+$$
+\begin{aligned}
+v_{n+1} &= u_{n+1} - 1 \\
+&= 2u_n - 1 - 1 \\
+&= 2(u_n - 1) \\
+&= 2v_n
+\end{aligned}
+$$
+$(v_n)$ est géométrique de raison $2$ et de premier terme $v_0 = 1{,}5 - 1 = 0{,}5$.
+:::
+
+::: etape b) Expression de $u_n$
+$v_n = 0{,}5 \times 2^n$, donc $u_n = v_n + 1 = 1 + 0{,}5 \times 2^n$.
+
+Vérification : $u_3 = 1 + 0{,}5 \times 8 = 5$.
+:::
+
+::: etape b) Sens de variation
+$$
+\begin{aligned}
+u_{n+1} - u_n &= 0{,}5 \times 2^{n+1} - 0{,}5 \times 2^n \\
+&= 0{,}5 \times 2^n \times (2 - 1) \\
+&= 0{,}5 \times 2^n
+\end{aligned}
+$$
+Ce nombre est strictement positif : la suite est strictement croissante.
+:::
+
+::: etape c) Seuil
+$u_n \gt 1\,000 \iff 0{,}5 \times 2^n \gt 999 \iff 2^n \gt 1\,998$. Or $2^{10} = 1\,024$ et $2^{11} = 2\,048$.
+:::
+
+::: resultat
+$u_n = 1 + 0{,}5 \times 2^n$ ; $(u_n)$ est strictement croissante ; $u_{10} = 513$ et $u_{11} = 1\,025$ : le premier rang est $n = 11$.
+:::
+
+::: retenir
+Si $f(x) = x$, le point de la courbe d’abscisse $x$ est sur la droite $y = x$ : une suite qui part exactement de cette valeur reste constante. Mais une suite qui part à côté peut s’en éloigner, comme ici.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $u_1 = 2$, $u_2 = 3$, $u_3 = 5$, $u_4 = 9$.
+2. $x = 1$ ; avec $u_0 = 1$, la suite est constante égale à $1$.
+3. Escalier qui monte en s’éloignant du point $(1\,;1)$.
+4. Conjecture : suite croissante, dont les termes deviennent aussi grands que l’on veut.
+5. a) $v_{n+1} = 2v_n$, $v_0 = 0{,}5$ ; b) $u_n = 1 + 0{,}5 \times 2^n$, strictement croissante ; c) $n = 11$.
+
+===
+
+=== Entraînement - Construction en escalier : une suite qui se rapproche
+Id: 1424
+Difficulté: medium
+Image: suite_recurrence_toile_araignee_1.png
+
+Énoncé:
+<!-- optitab:1 -->
+On considère la suite $(u_n)$ définie par $u_0 = 1$ et $u_{n+1} = \frac{1}{2}u_n + 1$ pour tout entier naturel $n$. On note $f$ la fonction définie par $f(x) = \frac{1}{2}x + 1$, de sorte que $u_{n+1} = f(u_n)$. La figure montre la courbe de $f$ et la droite $\Delta$ d’équation $y = x$.
+
+[IMAGE_1]
+
+1. Calculer $u_1$, $u_2$ et $u_3$ (valeurs exactes).
+2. Sur la figure, construire les premiers termes de la suite par la méthode de l’escalier et vérifier les valeurs trouvées.
+3. Résoudre l’équation $f(x) = x$. Que représente la solution sur la figure ?
+4. Quelle conjecture peut-on faire sur le sens de variation de la suite et sur son comportement quand $n$ devient grand ?
+5. On pose $v_n = u_n - 2$ pour tout entier naturel $n$.
+   - a) Montrer que $(v_n)$ est géométrique ; en déduire $u_n$ en fonction de $n$.
+   - b) Démontrer les conjectures de la question 4.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Premiers termes
+
+::: methode
+On applique la relation de proche en proche, en gardant des fractions.
+:::
+
+::: etape Calculs
+$$
+\begin{aligned}
+u_1 &= \frac{1}{2} \times 1 + 1 = \frac{3}{2} \\
+u_2 &= \frac{1}{2} \times \frac{3}{2} + 1 = \frac{7}{4} \\
+u_3 &= \frac{1}{2} \times \frac{7}{4} + 1 = \frac{15}{8}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$u_1 = \frac{3}{2} = 1{,}5$, $u_2 = \frac{7}{4} = 1{,}75$, $u_3 = \frac{15}{8} = 1{,}875$.
+:::
+
+## Question 2 : Construction en escalier
+
+::: methode
+Verticalement jusqu’à la courbe de $f$ (on lit $u_{n+1} = f(u_n)$), puis horizontalement jusqu’à $\Delta$ (on reporte $u_{n+1}$ en abscisse).
+:::
+
+[IMAGE_2]
+
+::: etape Construction
+- On part de $u_0 = 1$ sur l’axe des abscisses et on monte jusqu’à la courbe : ordonnée $f(1) = 1{,}5 = u_1$.
+- On se déplace horizontalement jusqu’à $\Delta$ : on arrive au point $(1{,}5\,;1{,}5)$, d’abscisse $u_1$.
+- On recommence : on obtient $u_2 = 1{,}75$, puis $u_3 = 1{,}875$.
+:::
+
+::: resultat
+Les abscisses lues sur la figure, $1$ ; $1{,}5$ ; $1{,}75$ ; $1{,}875$, confirment les calculs.
+:::
+
+## Question 3 : Équation $f(x) = x$
+
+::: methode
+Les solutions de $f(x) = x$ sont les abscisses des points communs à la courbe de $f$ et à $\Delta$.
+:::
+
+::: etape Résolution
+$$
+\begin{aligned}
+\frac{1}{2}x + 1 &= x \\
+1 &= \frac{1}{2}x \\
+x &= 2
+\end{aligned}
+$$
+:::
+
+::: resultat
+$x = 2$ : c’est l’abscisse du point d’intersection $(2\,;2)$ de la courbe de $f$ et de $\Delta$, vers lequel l’escalier se dirige.
+:::
+
+## Question 4 : Conjectures
+
+::: methode
+On observe les valeurs et la forme de l’escalier.
+:::
+
+::: etape Observation
+Les termes augmentent : $1 \lt 1{,}5 \lt 1{,}75 \lt 1{,}875$, et l’écart avec $2$ est divisé par $2$ à chaque rang : $1$ ; $0{,}5$ ; $0{,}25$ ; $0{,}125$.
+:::
+
+::: resultat
+On conjecture que $(u_n)$ est croissante et que ses termes se rapprochent de $2$ autant qu’on le veut, tout en restant inférieurs à $2$.
+:::
+
+## Question 5 : Étude algébrique
+
+::: methode
+On exprime $v_{n+1}$ en fonction de $v_n$, puis on revient à $u_n = v_n + 2$.
+:::
+
+::: etape a) Suite géométrique
+$$
+\begin{aligned}
+v_{n+1} &= u_{n+1} - 2 \\
+&= \frac{1}{2}u_n + 1 - 2 \\
+&= \frac{1}{2}(u_n - 2) \\
+&= \frac{1}{2}v_n
+\end{aligned}
+$$
+$(v_n)$ est géométrique de raison $\frac{1}{2}$ et de premier terme $v_0 = 1 - 2 = -1$.
+:::
+
+::: etape a) Expression de $u_n$
+$v_n = -\left(\frac{1}{2}\right)^n$, donc $u_n = 2 - \left(\frac{1}{2}\right)^n$.
+
+Vérification : $u_3 = 2 - \frac{1}{8} = \frac{15}{8}$.
+:::
+
+::: etape b) Sens de variation
+$$
+\begin{aligned}
+u_{n+1} - u_n &= -\left(\frac{1}{2}\right)^{n+1} + \left(\frac{1}{2}\right)^n \\
+&= \left(\frac{1}{2}\right)^n \left(1 - \frac{1}{2}\right) \\
+&= \left(\frac{1}{2}\right)^{n+1} \gt 0
+\end{aligned}
+$$
+La suite est strictement croissante.
+:::
+
+::: etape b) Écart avec $2$
+$2 - u_n = \left(\frac{1}{2}\right)^n \gt 0$, donc $u_n \lt 2$ pour tout $n$ ; et $\left(\frac{1}{2}\right)^n$ se rapproche de $0$ (raison comprise entre $0$ et $1$) : par exemple $2 - u_{10} = \frac{1}{1\,024} \lt 0{,}001$.
+:::
+
+::: resultat
+$u_n = 2 - \left(\frac{1}{2}\right)^n$ : la suite est strictement croissante, ses termes restent inférieurs à $2$ et s’en rapprochent autant qu’on le veut.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $u_1 = \frac{3}{2}$, $u_2 = \frac{7}{4}$, $u_3 = \frac{15}{8}$.
+2. Escalier : abscisses $1$ ; $1{,}5$ ; $1{,}75$ ; $1{,}875$.
+3. $x = 2$ : abscisse du point d’intersection de la courbe de $f$ et de $\Delta$.
+4. Suite croissante, dont les termes se rapprochent de $2$.
+5. a) $v_{n+1} = \frac{1}{2}v_n$, $v_0 = -1$, $u_n = 2 - \left(\frac{1}{2}\right)^n$ ; b) $u_{n+1} - u_n = \left(\frac{1}{2}\right)^{n+1} \gt 0$ et $2 - u_n = \left(\frac{1}{2}\right)^n$.
+
+===
+
+=== Entraînement - Comportement quand n devient grand
+Id: 1355
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Pour chaque suite, calculer quelques termes de rang élevé (calculatrice ou tableur), puis conjecturer son comportement quand $n$ devient grand : les termes se rapprochent-ils d’un nombre ? deviennent-ils aussi grands que l’on veut ? ni l’un ni l’autre ?
+
+1. $u_n = \dfrac{1}{n + 1}$
+2. $v_n = 3n - 5$ ; à partir de quel rang a-t-on $v_n \gt 1\,000$ ?
+3. $w_n = 2 \times \left(\dfrac{1}{3}\right)^n$
+4. $t_n = \dfrac{2n + 1}{n + 3}$ ; vérifier ensuite que $t_n = 2 - \dfrac{5}{n + 3}$.
+5. $a_n = (-1)^n$
+6. $b_n = 3^n$ ; à partir de quel rang a-t-on $b_n \gt 10^6$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $u_n = \frac{1}{n + 1}$
+
+::: methode
+On calcule des termes de rangs de plus en plus grands et on observe.
+:::
+
+::: etape Tableau de valeurs
+| $n$ | $9$ | $99$ | $999$ |
+|---|---|---|---|
+| $u_n$ | $0{,}1$ | $0{,}01$ | $0{,}001$ |
+
+Le dénominateur $n + 1$ devient très grand, donc le quotient devient très petit, tout en restant positif.
+:::
+
+::: resultat
+Conjecture : les termes se rapprochent de $0$.
+:::
+
+## Question 2 : $v_n = 3n - 5$
+
+::: methode
+Suite arithmétique de raison $3 \gt 0$ : on ajoute $3$ à chaque rang.
+:::
+
+::: etape Seuil
+$3n - 5 \gt 1\,000 \iff 3n \gt 1\,005 \iff n \gt 335$. Vérification : $v_{335} = 1\,000$ et $v_{336} = 1\,003$.
+:::
+
+::: resultat
+Conjecture : les termes deviennent aussi grands que l’on veut ; $v_n \gt 1\,000$ à partir du rang $336$.
+:::
+
+## Question 3 : $w_n = 2 \times \left(\frac{1}{3}\right)^n$
+
+::: methode
+Suite géométrique de raison $\frac{1}{3}$, comprise entre $0$ et $1$.
+:::
+
+::: etape Valeurs
+$w_5 = \frac{2}{243} \approx 0{,}008$ et $w_{10} = \frac{2}{59\,049} \approx 0{,}000\,03$ : on divise par $3$ à chaque rang.
+:::
+
+::: resultat
+Conjecture : les termes se rapprochent de $0$.
+:::
+
+## Question 4 : $t_n = \frac{2n + 1}{n + 3}$
+
+::: methode
+Tableau de valeurs, puis écriture de $t_n$ sous une forme qui explique ce que l’on voit.
+:::
+
+::: etape Tableau de valeurs
+| $n$ | $10$ | $100$ | $1\,000$ |
+|---|---|---|---|
+| $t_n$ (arrondi) | $1{,}615$ | $1{,}951$ | $1{,}995$ |
+:::
+
+::: etape Autre écriture
+$$
+\begin{aligned}
+2 - \frac{5}{n + 3} &= \frac{2(n + 3) - 5}{n + 3} \\
+&= \frac{2n + 1}{n + 3} \\
+&= t_n
+\end{aligned}
+$$
+Quand $n$ devient grand, $\frac{5}{n + 3}$ devient très petit : $t_n$ est un peu inférieur à $2$.
+:::
+
+::: resultat
+Conjecture : les termes se rapprochent de $2$ (en restant inférieurs à $2$).
+:::
+
+::: attention
+Un tableau de valeurs ne prouve rien : il permet seulement de **conjecturer**. Ici, l’écriture $t_n = 2 - \frac{5}{n + 3}$ explique ce que l’on observe.
+:::
+
+## Question 5 : $a_n = (-1)^n$
+
+::: methode
+On regarde la parité de $n$.
+:::
+
+::: etape Valeurs
+$a_n = 1$ si $n$ est pair, $a_n = -1$ si $n$ est impair : la suite prend alternativement ces deux valeurs.
+:::
+
+Les nuages de points de $(t_n)$ (question 4) et de $(a_n)$ montrent bien les deux comportements :
+
+[IMAGE_1]
+
+::: resultat
+Ni l’un ni l’autre : les termes ne se rapprochent d’aucun nombre et restent entre $-1$ et $1$.
+:::
+
+## Question 6 : $b_n = 3^n$
+
+::: methode
+Suite géométrique de raison $3 \gt 1$ : on multiplie par $3$ à chaque rang.
+:::
+
+::: etape Seuil
+$3^{12} = 531\,441 \lt 10^6$ et $3^{13} = 1\,594\,323 \gt 10^6$.
+:::
+
+::: resultat
+Conjecture : les termes deviennent aussi grands que l’on veut ; $b_n \gt 10^6$ à partir du rang $13$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Les termes se rapprochent de $0$.
+2. Les termes deviennent aussi grands que l’on veut ; $v_n \gt 1\,000$ dès $n = 336$.
+3. Les termes se rapprochent de $0$.
+4. Les termes se rapprochent de $2$ ; $t_n = 2 - \frac{5}{n + 3}$.
+5. Ni l’un ni l’autre : alternance entre $1$ et $-1$.
+6. Les termes deviennent aussi grands que l’on veut ; $b_n \gt 10^6$ dès $n = 13$.
+
+===
+
+=== Entraînement - Sens de variation
+Id: 1348
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Étudier le sens de variation de chacune des suites suivantes.
+
+1. $u_n = 2n - 5$
+2. $v_n = -3n + 7$
+3. $w_n = n^2 - 4n$
+4. $t_n = \dfrac{1}{n + 1}$
+5. $s_0 = 1$ et $s_{n+1} = 2s_n$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $u_n = 2n - 5$
+
+::: methode
+On étudie le signe de $u_{n+1} - u_n$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+u_{n+1} - u_n &= 2(n + 1) - 5 - (2n - 5) \\
+&= 2
+\end{aligned}
+$$
+:::
+
+::: resultat
+$u_{n+1} - u_n = 2 \gt 0$ : $(u_n)$ est strictement croissante (arithmétique de raison $2$).
+:::
+
+## Question 2 : $v_n = -3n + 7$
+
+::: methode
+On étudie le signe de $v_{n+1} - v_n$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+v_{n+1} - v_n &= -3(n + 1) + 7 - (-3n + 7) \\
+&= -3
+\end{aligned}
+$$
+:::
+
+::: resultat
+$v_{n+1} - v_n = -3 \lt 0$ : $(v_n)$ est strictement décroissante (arithmétique de raison $-3$).
+:::
+
+## Question 3 : $w_n = n^2 - 4n$
+
+::: methode
+La différence dépend de $n$ : on étudie son signe selon les valeurs entières de $n$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+w_{n+1} - w_n &= (n + 1)^2 - 4(n + 1) - (n^2 - 4n) \\
+&= n^2 + 2n + 1 - 4n - 4 - n^2 + 4n \\
+&= 2n - 3
+\end{aligned}
+$$
+:::
+
+::: etape Signe
+$2n - 3 \gt 0 \iff n \gt 1{,}5 \iff n \ge 2$ ($n$ entier).
+- Pour $n = 0$ et $n = 1$ : $w_{n+1} - w_n \lt 0$, donc $w_0 \gt w_1 \gt w_2$ ($0 \gt -3 \gt -4$).
+- Pour $n \ge 2$ : $w_{n+1} - w_n \gt 0$, donc $w_2 \lt w_3 \lt w_4 \lt \cdots$
+:::
+
+[IMAGE_1]
+
+::: resultat
+$(w_n)$ est strictement décroissante jusqu’au rang $2$, puis strictement croissante à partir du rang $2$.
+:::
+
+## Question 4 : $t_n = \frac{1}{n + 1}$
+
+::: methode
+On réduit $t_{n+1} - t_n$ au même dénominateur.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+t_{n+1} - t_n &= \frac{1}{n + 2} - \frac{1}{n + 1} \\
+&= \frac{(n + 1) - (n + 2)}{(n + 1)(n + 2)} \\
+&= \frac{-1}{(n + 1)(n + 2)}
+\end{aligned}
+$$
+:::
+
+::: etape Signe
+Le dénominateur est strictement positif et le numérateur vaut $-1$ : $t_{n+1} - t_n \lt 0$.
+
+Autre méthode : $t_n = f(n)$ avec $f(x) = \frac{1}{x + 1}$, décroissante sur $[0\,;+\infty[$.
+:::
+
+::: resultat
+$(t_n)$ est strictement décroissante.
+:::
+
+## Question 5 : $s_0 = 1$ et $s_{n+1} = 2s_n$
+
+::: methode
+Suite géométrique à termes strictement positifs : on compare $\frac{s_{n+1}}{s_n}$ à $1$.
+:::
+
+::: etape Quotient
+$s_n = 2^n \gt 0$ pour tout $n$, et $\dfrac{s_{n+1}}{s_n} = 2 \gt 1$.
+:::
+
+::: resultat
+$(s_n)$ est strictement croissante.
+:::
+
+::: attention
+La comparaison du quotient à $1$ n’est valable que si les termes sont **strictement positifs**.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Strictement croissante ($u_{n+1} - u_n = 2$).
+2. Strictement décroissante ($v_{n+1} - v_n = -3$).
+3. Strictement décroissante jusqu’au rang $2$, puis strictement croissante ($w_{n+1} - w_n = 2n - 3$).
+4. Strictement décroissante.
+5. Strictement croissante ($\frac{s_{n+1}}{s_n} = 2$).
+
+===
+
+=== Entraînement - Sommes de termes consécutifs
+Id: 1356
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Calculer les sommes suivantes.
+
+1. $S_1 = 1 + 2 + 3 + \cdots + 20$
+2. $(u_n)$ est arithmétique avec $u_0 = 5$ et $r = 3$ : $S_2 = u_0 + u_1 + \cdots + u_{10}$.
+3. $S_3 = 1 + 2 + 4 + 8 + 16 + 32$
+4. $(v_n)$ est géométrique avec $v_0 = 3$ et $q = 2$ : $S_4 = v_0 + v_1 + \cdots + v_5$.
+5. $S_5 = 1 + \dfrac{1}{2} + \dfrac{1}{4} + \dfrac{1}{8} + \dfrac{1}{16}$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $1 + 2 + \cdots + 20$
+
+::: methode
+Formule $1 + 2 + \cdots + n = \frac{n(n + 1)}{2}$ avec $n = 20$.
+:::
+
+::: etape Calcul
+$$S_1 = \frac{20 \times 21}{2} = 210$$
+:::
+
+::: resultat
+$S_1 = 210$.
+:::
+
+## Question 2 : Somme de termes d’une suite arithmétique
+
+::: methode
+Nombre de termes $\times$ (premier $+$ dernier) $\div 2$.
+:::
+
+::: etape Dernier terme et nombre de termes
+$u_{10} = 5 + 10 \times 3 = 35$ ; de $u_0$ à $u_{10}$, il y a $11$ termes.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+S_2 &= 11 \times \frac{5 + 35}{2} \\
+&= 11 \times 20 \\
+&= 220
+\end{aligned}
+$$
+:::
+
+::: resultat
+$S_2 = 220$.
+:::
+
+## Question 3 : $1 + 2 + 4 + \cdots + 32$
+
+::: methode
+On reconnaît $1 + q + \cdots + q^n$ avec $q = 2$ et $32 = 2^5$, donc $n = 5$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+S_3 &= \frac{1 - 2^6}{1 - 2} \\
+&= \frac{-63}{-1} \\
+&= 63
+\end{aligned}
+$$
+:::
+
+::: resultat
+$S_3 = 63$.
+:::
+
+## Question 4 : Somme de termes d’une suite géométrique
+
+::: methode
+$v_0 + \cdots + v_n = v_0 \times \frac{1 - q^{n+1}}{1 - q}$, ici avec $6$ termes.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+S_4 &= 3 \times \frac{1 - 2^6}{1 - 2} \\
+&= 3 \times 63 \\
+&= 189
+\end{aligned}
+$$
+:::
+
+::: resultat
+$S_4 = 189$.
+:::
+
+## Question 5 : Somme de puissances de $\frac{1}{2}$
+
+::: methode
+$1 + q + \cdots + q^4$ avec $q = \frac{1}{2}$ : $5$ termes, donc l’exposant $5$ apparaît dans la formule.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+S_5 &= \frac{1 - \left(\frac{1}{2}\right)^5}{1 - \frac{1}{2}} \\
+&= \frac{31}{32} \times 2 \\
+&= \frac{31}{16}
+\end{aligned}
+$$
+:::
+
+::: etape Vérification sur une figure
+Dans un rectangle d’aire $2$, on colorie successivement $1$, $\frac{1}{2}$, $\frac{1}{4}$, $\frac{1}{8}$, $\frac{1}{16}$ : chaque morceau est la moitié du précédent, et il reste exactement un morceau d’aire $\frac{1}{16}$.
+:::
+
+[IMAGE_1]
+
+::: resultat
+$S_5 = \frac{31}{16} = 1{,}937\,5$.
+:::
+
+::: attention
+La somme $1 + q + \cdots + q^n$ contient $n + 1$ termes : l’exposant dans la formule est $n + 1$, pas $n$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $S_1 = 210$.
+2. $S_2 = 220$.
+3. $S_3 = 63$.
+4. $S_4 = 189$.
+5. $S_5 = \frac{31}{16}$.
+
+===
+
+=== Entraînement - Sommes de suites arithmétiques
+Id: 1344
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Calculer les sommes suivantes, formées de termes consécutifs de suites arithmétiques.
+
+1. $S = 1 + 2 + 3 + \cdots + 100$
+2. $(u_n)$ est arithmétique avec $u_0 = 3$ et $r = 5$ : $S_{10} = u_0 + u_1 + \cdots + u_{10}$.
+3. $S = 2 + 5 + 8 + 11 + \cdots + 50$
+4. $(v_n)$ est arithmétique avec $v_0 = 10$ et $r = -2$ : $S_{15} = v_0 + v_1 + \cdots + v_{15}$.
+5. La somme des $30$ premiers termes de la suite arithmétique de premier terme $u_0 = -7$ et de raison $4$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $1 + 2 + \cdots + 100$
+
+::: methode
+Formule $1 + 2 + \cdots + n = \frac{n(n + 1)}{2}$ avec $n = 100$.
+:::
+
+::: etape Calcul
+$$S = \frac{100 \times 101}{2} = 5\,050$$
+:::
+
+Cette formule se lit sur la figure du cours (ici avec $n = 6$) : deux escaliers identiques forment un rectangle de $n$ colonnes sur $n + 1$ lignes, donc $2S = n(n + 1)$.
+
+[IMAGE_1]
+
+::: resultat
+$S = 5\,050$.
+:::
+
+## Question 2 : $u_0 + \cdots + u_{10}$ avec $u_0 = 3$ et $r = 5$
+
+::: methode
+$S = N \times \frac{\text{premier} + \text{dernier}}{2}$ : il faut le dernier terme et le nombre de termes.
+:::
+
+::: etape Dernier terme et nombre de termes
+$u_{10} = 3 + 10 \times 5 = 53$ ; de $u_0$ à $u_{10}$, il y a $11$ termes.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+S_{10} &= 11 \times \frac{3 + 53}{2} \\
+&= 11 \times 28 \\
+&= 308
+\end{aligned}
+$$
+:::
+
+::: resultat
+$S_{10} = 308$.
+:::
+
+## Question 3 : $2 + 5 + 8 + \cdots + 50$
+
+::: methode
+On reconnaît une suite arithmétique de raison $3$ ; on compte les termes avant d’appliquer la formule.
+:::
+
+::: etape Nombre de termes
+Les termes s’écrivent $2 + 3k$ ; le dernier vérifie $2 + 3k = 50$, soit $k = 16$. Comme $k$ va de $0$ à $16$, il y a $17$ termes.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+S &= 17 \times \frac{2 + 50}{2} \\
+&= 17 \times 26 \\
+&= 442
+\end{aligned}
+$$
+:::
+
+::: resultat
+$S = 442$.
+:::
+
+::: attention
+De $k = 0$ à $k = 16$, il y a $16 + 1 = 17$ valeurs, et non $16$.
+:::
+
+## Question 4 : $v_0 + \cdots + v_{15}$ avec $v_0 = 10$ et $r = -2$
+
+::: methode
+Même méthode : dernier terme, nombre de termes, puis formule.
+:::
+
+::: etape Dernier terme et nombre de termes
+$v_{15} = 10 + 15 \times (-2) = -20$ ; de $v_0$ à $v_{15}$, il y a $16$ termes.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+S_{15} &= 16 \times \frac{10 + (-20)}{2} \\
+&= 16 \times (-5) \\
+&= -80
+\end{aligned}
+$$
+:::
+
+::: resultat
+$S_{15} = -80$.
+:::
+
+## Question 5 : Les $30$ premiers termes
+
+::: methode
+Les $30$ premiers termes vont de $u_0$ à $u_{29}$.
+:::
+
+::: etape Dernier terme
+$u_{29} = -7 + 29 \times 4 = 109$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+S &= 30 \times \frac{-7 + 109}{2} \\
+&= 30 \times 51 \\
+&= 1\,530
+\end{aligned}
+$$
+:::
+
+::: resultat
+La somme vaut $1\,530$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $5\,050$.
+2. $308$.
+3. $442$ ($17$ termes).
+4. $-80$.
+5. $1\,530$.
+
+===
+
+=== Entraînement - Sommes de suites géométriques
+Id: 1345
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Calculer les sommes suivantes, formées de termes consécutifs de suites géométriques.
+
+1. $(u_n)$ est géométrique avec $u_0 = 1$ et $q = 2$ : $S_5 = u_0 + u_1 + \cdots + u_5$.
+2. $S = 1 + 3 + 9 + 27 + 81 + 243$
+3. $(v_n)$ est géométrique avec $v_0 = 4$ et $q = \dfrac{1}{2}$ : $S_4 = v_0 + v_1 + \cdots + v_4$.
+4. La somme des $8$ premiers termes de la suite géométrique de premier terme $5$ et de raison $3$.
+5. $(w_n)$ est géométrique avec $w_0 = 100$ et $q = 1$ : $S_{10} = w_0 + w_1 + \cdots + w_{10}$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $u_0 + \cdots + u_5$ avec $u_0 = 1$ et $q = 2$
+
+::: methode
+Pour $q \neq 1$ : $u_0 + \cdots + u_n = u_0 \times \frac{1 - q^{n+1}}{1 - q}$ ; ici $6$ termes.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+S_5 &= 1 \times \frac{1 - 2^6}{1 - 2} \\
+&= \frac{-63}{-1} \\
+&= 63
+\end{aligned}
+$$
+:::
+
+::: resultat
+$S_5 = 63$.
+:::
+
+## Question 2 : $1 + 3 + \cdots + 243$
+
+::: methode
+On reconnaît les puissances de $3$ : $243 = 3^5$, donc $6$ termes de $3^0$ à $3^5$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+S &= \frac{1 - 3^6}{1 - 3} \\
+&= \frac{-728}{-2} \\
+&= 364
+\end{aligned}
+$$
+:::
+
+::: resultat
+$S = 364$.
+:::
+
+## Question 3 : $v_0 + \cdots + v_4$ avec $v_0 = 4$ et $q = \frac{1}{2}$
+
+::: methode
+Même formule avec $5$ termes et $q = \frac{1}{2}$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+S_4 &= 4 \times \frac{1 - \left(\frac{1}{2}\right)^5}{1 - \frac{1}{2}} \\
+&= 4 \times \frac{31}{32} \times 2 \\
+&= \frac{31}{4}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$S_4 = \frac{31}{4} = 7{,}75$.
+:::
+
+## Question 4 : Les $8$ premiers termes ($5$ et raison $3$)
+
+::: methode
+Les $8$ premiers termes vont de $u_0$ à $u_7$ : l’exposant dans la formule est $8$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+S &= 5 \times \frac{1 - 3^8}{1 - 3} \\
+&= 5 \times \frac{-6\,560}{-2} \\
+&= 5 \times 3\,280 \\
+&= 16\,400
+\end{aligned}
+$$
+:::
+
+::: resultat
+La somme vaut $16\,400$.
+:::
+
+## Question 5 : Cas $q = 1$
+
+::: methode
+Si $q = 1$, la formule ne s’applique pas (division par $0$) : tous les termes sont égaux.
+:::
+
+::: etape Calcul
+$w_n = 100$ pour tout $n$ ; de $w_0$ à $w_{10}$ il y a $11$ termes : $S_{10} = 11 \times 100 = 1\,100$.
+:::
+
+::: resultat
+$S_{10} = 1\,100$.
+:::
+
+::: attention
+La formule $\frac{1 - q^{n+1}}{1 - q}$ exige $q \neq 1$ : toujours vérifier la raison avant de l’utiliser.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $63$.
+2. $364$.
+3. $\frac{31}{4}$.
+4. $16\,400$.
+5. $1\,100$.
+
+===
+
+=== Entraînement - Suites récurrentes et programmation en Python
+Id: 1347
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Un club compte $100$ adhérents en 2025. Chaque année, $20\,\%$ des adhérents ne renouvellent pas leur inscription et $40$ nouveaux adhérents s’inscrivent. On note $u_n$ le nombre d’adhérents en $2025 + n$ (modèle : les valeurs ne sont pas forcément entières).
+
+On utilisera la fonction Python suivante :
+
+```python
+def terme(n):
+    u = 100
+    for k in range(n):
+        u = 0.8 * u + 40
+    return u
+```
+
+1. Justifier que $u_{n+1} = 0{,}8u_n + 40$, puis calculer $u_1$, $u_2$ et $u_3$.
+2. Que renvoie `terme(3)` ?
+3. Écrire une fonction `liste(n)` qui renvoie la liste $[u_0, u_1, \ldots, u_n]$. Avec `liste(15)`, conjecturer le comportement de la suite quand $n$ devient grand.
+4. Écrire une fonction `seuil(A)` qui renvoie le premier rang $n$ tel que $u_n \ge A$. En quelle année le club atteindra-t-il $190$ adhérents ?
+5. (Indépendante) La **factorielle** de $n$ est $n! = 1 \times 2 \times \cdots \times n$, avec $0! = 1$ ; ainsi $(n + 1)! = (n + 1) \times n!$. Écrire une fonction `fact(n)` et calculer $10!$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Relation de récurrence
+
+::: methode
+Garder $80\,\%$ des adhérents, c’est multiplier par $0{,}8$ ; on ajoute ensuite les $40$ nouveaux.
+:::
+
+::: etape Calculs
+$$
+\begin{aligned}
+u_1 &= 0{,}8 \times 100 + 40 = 120 \\
+u_2 &= 0{,}8 \times 120 + 40 = 136 \\
+u_3 &= 0{,}8 \times 136 + 40 = 148{,}8
+\end{aligned}
+$$
+:::
+
+::: resultat
+$u_{n+1} = 0{,}8u_n + 40$ ; $u_1 = 120$, $u_2 = 136$, $u_3 = 148{,}8$.
+:::
+
+## Question 2 : Lecture d’une fonction
+
+::: methode
+La boucle `for k in range(n)` s’exécute $n$ fois : elle applique $n$ fois la relation de récurrence à partir de $u_0 = 100$.
+:::
+
+::: etape Exécution pour $n = 3$
+La variable `u` prend successivement les valeurs $100$, $120$, $136$, $148{,}8$.
+:::
+
+::: resultat
+`terme(3)` renvoie $u_3 = 148{,}8$.
+:::
+
+## Question 3 : Liste des termes
+
+::: methode
+On part d’une liste contenant $u_0$ et on ajoute chaque nouveau terme avec `append`.
+:::
+
+::: etape Programme
+```python
+def liste(n):
+    u = 100
+    L = [u]
+    for k in range(n):
+        u = 0.8 * u + 40
+        L.append(u)
+    return L
+```
+:::
+
+::: etape Valeurs obtenues (arrondies)
+| $n$ | $5$ | $10$ | $15$ |
+|---|---|---|---|
+| $u_n$ | $167{,}2$ | $189{,}3$ | $196{,}5$ |
+:::
+
+::: resultat
+Conjecture : la suite est croissante et ses termes se rapprochent de $200$ (solution de $0{,}8x + 40 = x$).
+:::
+
+## Question 4 : Algorithme de seuil
+
+::: methode
+Boucle `while` : tant que $u \lt A$, on calcule le terme suivant et on compte les rangs.
+:::
+
+::: etape Programme
+```python
+def seuil(A):
+    n = 0
+    u = 100
+    while u < A:
+        u = 0.8 * u + 40
+        n = n + 1
+    return n
+```
+:::
+
+::: etape Valeur pour $A = 190$
+$u_{10} \approx 189{,}26 \lt 190$ et $u_{11} \approx 191{,}41 \ge 190$ : `seuil(190)` renvoie $11$.
+:::
+
+[IMAGE_1]
+
+::: resultat
+Le club atteint $190$ adhérents en $2025 + 11 = 2036$.
+:::
+
+## Question 5 : Factorielle
+
+::: methode
+On multiplie successivement par $1$, $2$, …, $n$ en partant de $1$.
+:::
+
+::: etape Programme
+```python
+def fact(n):
+    f = 1
+    for k in range(1, n + 1):
+        f = f * k
+    return f
+```
+:::
+
+::: resultat
+`fact(10)` renvoie $10! = 3\,628\,800$.
+:::
+
+::: attention
+`range(1, n + 1)` parcourt les entiers de $1$ à $n$ inclus : avec `range(1, n)`, on oublierait le facteur $n$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $u_{n+1} = 0{,}8u_n + 40$ ; $u_1 = 120$, $u_2 = 136$, $u_3 = 148{,}8$.
+2. `terme(3)` renvoie $148{,}8$.
+3. Fonction `liste` avec `append` ; les termes semblent croître et se rapprocher de $200$.
+4. `seuil(190)` renvoie $11$ : en 2036.
+5. $10! = 3\,628\,800$.
+
+===
+
+=== Problème - Étude d'une suite à l'aide d'une suite auxiliaire
+Id: 1349
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+On considère la suite $(u_n)$ définie par $u_0 = 2$ et $u_{n+1} = \dfrac{1}{3}u_n + 4$ pour tout entier naturel $n$.
+
+1. Calculer $u_1$, $u_2$ et $u_3$. La suite est-elle arithmétique ? géométrique ?
+2. On pose $v_n = u_n - 6$ pour tout entier naturel $n$.
+   - a) Montrer que $(v_n)$ est géométrique ; préciser sa raison et son premier terme.
+   - b) En déduire $v_n$, puis $u_n$, en fonction de $n$.
+3. Étudier le sens de variation de la suite $(u_n)$.
+4. Conjecturer le comportement de $u_n$ quand $n$ devient grand ; justifier à l’aide de l’écart $6 - u_n$.
+5. Calculer $S_n = u_0 + u_1 + \cdots + u_n$ en fonction de $n$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Premiers termes et nature
+
+::: methode
+On calcule de proche en proche, puis on teste différences et quotients.
+:::
+
+::: etape Calculs
+$$
+\begin{aligned}
+u_1 &= \frac{2}{3} + 4 = \frac{14}{3} \\
+u_2 &= \frac{14}{9} + 4 = \frac{50}{9} \\
+u_3 &= \frac{50}{27} + 4 = \frac{158}{27}
+\end{aligned}
+$$
+:::
+
+::: etape Tests
+- $u_1 - u_0 = \frac{8}{3}$ et $u_2 - u_1 = \frac{8}{9}$ : pas arithmétique.
+- $\frac{u_1}{u_0} = \frac{7}{3}$ et $\frac{u_2}{u_1} = \frac{50}{9} \times \frac{3}{14} = \frac{25}{21}$ : pas géométrique.
+:::
+
+::: resultat
+$u_1 = \frac{14}{3}$, $u_2 = \frac{50}{9}$, $u_3 = \frac{158}{27}$ ; la suite n’est ni arithmétique ni géométrique.
+:::
+
+## Question 2 : Suite auxiliaire $v_n = u_n - 6$
+
+::: methode
+On exprime $v_{n+1}$ en fonction de $v_n$ en remplaçant $u_{n+1}$ par $\frac{1}{3}u_n + 4$.
+:::
+
+::: etape a) Suite géométrique
+$$
+\begin{aligned}
+v_{n+1} &= u_{n+1} - 6 \\
+&= \frac{1}{3}u_n + 4 - 6 \\
+&= \frac{1}{3}u_n - 2 \\
+&= \frac{1}{3}(u_n - 6) \\
+&= \frac{1}{3}v_n
+\end{aligned}
+$$
+$(v_n)$ est géométrique de raison $\frac{1}{3}$ et de premier terme $v_0 = 2 - 6 = -4$.
+:::
+
+::: etape b) Expressions explicites
+$v_n = -4 \times \left(\frac{1}{3}\right)^n$, donc $u_n = v_n + 6 = 6 - 4 \times \left(\frac{1}{3}\right)^n$.
+
+Vérification : $u_1 = 6 - \frac{4}{3} = \frac{14}{3}$.
+:::
+
+::: resultat
+$v_n = -4 \times \left(\frac{1}{3}\right)^n$ et $u_n = 6 - 4 \times \left(\frac{1}{3}\right)^n$.
+:::
+
+::: attention
+Pour factoriser $\frac{1}{3}u_n - 2$ par $\frac{1}{3}$, on écrit $2 = \frac{1}{3} \times 6$ : c’est ce qui fait apparaître $u_n - 6$.
+:::
+
+## Question 3 : Sens de variation
+
+::: methode
+On étudie le signe de $u_{n+1} - u_n$ à l’aide de la forme explicite.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+u_{n+1} - u_n &= -4\left(\frac{1}{3}\right)^{n+1} + 4\left(\frac{1}{3}\right)^n \\
+&= 4\left(\frac{1}{3}\right)^n \left(1 - \frac{1}{3}\right) \\
+&= \frac{8}{3}\left(\frac{1}{3}\right)^n
+\end{aligned}
+$$
+:::
+
+::: resultat
+$u_{n+1} - u_n \gt 0$ pour tout $n$ : la suite $(u_n)$ est strictement croissante.
+:::
+
+## Question 4 : Comportement quand $n$ devient grand
+
+::: methode
+On observe le nuage de points, puis on étudie l’écart $6 - u_n$.
+:::
+
+[IMAGE_1]
+
+::: etape Écart avec $6$
+$6 - u_n = 4 \times \left(\frac{1}{3}\right)^n \gt 0$ : les termes restent inférieurs à $6$. Cet écart est divisé par $3$ à chaque rang : $6 - u_{10} = \frac{4}{59\,049} \approx 0{,}000\,07$.
+:::
+
+::: resultat
+Conjecture : les termes se rapprochent de $6$ autant qu’on le veut, en restant inférieurs à $6$.
+:::
+
+## Question 5 : Somme $S_n$
+
+::: methode
+On sépare $u_k = 6 - 4\left(\frac{1}{3}\right)^k$ en une somme de $n + 1$ termes égaux à $6$ et une somme géométrique.
+:::
+
+::: etape Décomposition
+$$
+\begin{aligned}
+S_n &= 6(n + 1) - 4\left(1 + \frac{1}{3} + \cdots + \left(\frac{1}{3}\right)^n\right) \\
+&= 6(n + 1) - 4 \times \frac{1 - \left(\frac{1}{3}\right)^{n+1}}{1 - \frac{1}{3}}
+\end{aligned}
+$$
+:::
+
+::: etape Simplification
+$4 \div \frac{2}{3} = 6$, donc
+$$
+\begin{aligned}
+S_n &= 6(n + 1) - 6 + 6\left(\frac{1}{3}\right)^{n+1} \\
+&= 6n + 2\left(\frac{1}{3}\right)^n
+\end{aligned}
+$$
+Vérification : $S_0 = 0 + 2 = 2 = u_0$ et $S_1 = 6 + \frac{2}{3} = \frac{20}{3} = u_0 + u_1$.
+:::
+
+::: resultat
+$$S_n = 6n + 2\left(\frac{1}{3}\right)^n$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $u_1 = \frac{14}{3}$, $u_2 = \frac{50}{9}$, $u_3 = \frac{158}{27}$ ; ni arithmétique ni géométrique.
+2. a) $v_{n+1} = \frac{1}{3}v_n$, $v_0 = -4$ ; b) $v_n = -4\left(\frac{1}{3}\right)^n$ et $u_n = 6 - 4\left(\frac{1}{3}\right)^n$.
+3. Strictement croissante.
+4. Les termes se rapprochent de $6$ par valeurs inférieures ($6 - u_n = 4\left(\frac{1}{3}\right)^n$).
+5. $S_n = 6n + 2\left(\frac{1}{3}\right)^n$.
+
+===
+
+=== Problème - Culture de bactéries et valeur d'équilibre
+Id: 1350
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Dans une culture, le nombre de bactéries est multiplié par $1{,}5$ chaque jour, puis $300$ bactéries sont retirées pour des analyses. Au jour $0$, il y a $u_0 = 500$ bactéries ; on note $u_n$ le nombre de bactéries au jour $n$.
+
+1. Écrire la relation de récurrence vérifiée par $(u_n)$ et calculer $u_1$ et $u_2$.
+2. Résoudre l’équation $x = 1{,}5x - 300$. Que se passerait-il si l’on partait de $600$ bactéries ?
+3. On pose $v_n = u_n - 600$.
+   - a) Montrer que $(v_n)$ est géométrique.
+   - b) Exprimer $v_n$, puis $u_n$, en fonction de $n$.
+4. Montrer que $(u_n)$ est décroissante. À partir de quel jour la culture est-elle épuisée ($u_n \le 0$) ?
+5. On recommence avec $u_0 = 700$. Exprimer $u_n$, étudier les variations, puis déterminer à partir de quel jour la culture dépasse $10\,000$ bactéries.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Relation de récurrence
+
+::: methode
+On traduit les opérations du jour dans l’ordre : multiplication par $1{,}5$, puis retrait de $300$.
+:::
+
+::: etape Calculs
+$$
+\begin{aligned}
+u_1 &= 1{,}5 \times 500 - 300 = 450 \\
+u_2 &= 1{,}5 \times 450 - 300 = 375
+\end{aligned}
+$$
+:::
+
+::: resultat
+$u_{n+1} = 1{,}5u_n - 300$ ; $u_1 = 450$ et $u_2 = 375$.
+:::
+
+## Question 2 : Valeur d’équilibre
+
+::: methode
+Si $u_n = x$ avec $x = 1{,}5x - 300$, alors $u_{n+1} = x$ : la population ne change plus.
+:::
+
+::: etape Résolution
+$x = 1{,}5x - 300 \iff 300 = 0{,}5x \iff x = 600$.
+:::
+
+::: resultat
+$x = 600$ : en partant de $600$ bactéries, on en aurait $600$ chaque jour (suite constante).
+:::
+
+## Question 3 : Suite auxiliaire
+
+::: methode
+On exprime $v_{n+1}$ en fonction de $v_n$, en écrivant $900 = 1{,}5 \times 600$.
+:::
+
+::: etape a) Suite géométrique
+$$
+\begin{aligned}
+v_{n+1} &= u_{n+1} - 600 \\
+&= 1{,}5u_n - 900 \\
+&= 1{,}5(u_n - 600) \\
+&= 1{,}5v_n
+\end{aligned}
+$$
+$(v_n)$ est géométrique de raison $1{,}5$ et de premier terme $v_0 = 500 - 600 = -100$.
+:::
+
+::: etape b) Expressions explicites
+$v_n = -100 \times 1{,}5^n$, donc $u_n = 600 - 100 \times 1{,}5^n$.
+:::
+
+::: resultat
+$u_n = 600 - 100 \times 1{,}5^n$.
+:::
+
+## Question 4 : Décroissance et épuisement
+
+::: methode
+On étudie le signe de $u_{n+1} - u_n$, puis on cherche le premier $n$ tel que $u_n \le 0$.
+:::
+
+::: etape Sens de variation
+$$
+\begin{aligned}
+u_{n+1} - u_n &= -100 \times 1{,}5^{n+1} + 100 \times 1{,}5^n \\
+&= 100 \times 1{,}5^n \times (1 - 1{,}5) \\
+&= -50 \times 1{,}5^n \lt 0
+\end{aligned}
+$$
+La suite est strictement décroissante.
+:::
+
+::: etape Épuisement
+$u_n \le 0 \iff 1{,}5^n \ge 6$. Or $1{,}5^4 = 5{,}0625$ et $1{,}5^5 \approx 7{,}59$ : $u_4 = 93{,}75 \gt 0$ et $u_5 \approx -159{,}4 \le 0$.
+:::
+
+::: resultat
+La suite est strictement décroissante et la culture est épuisée au jour $5$ (le modèle n’a plus de sens ensuite).
+:::
+
+## Question 5 : Départ avec $700$ bactéries
+
+::: methode
+Même suite auxiliaire, avec un nouveau premier terme $v_0 = 700 - 600 = 100$.
+:::
+
+::: etape Expression et variations
+$v_n = 100 \times 1{,}5^n$, donc $u_n = 600 + 100 \times 1{,}5^n$. Alors $u_{n+1} - u_n = 50 \times 1{,}5^n \gt 0$ : la suite est strictement croissante.
+:::
+
+::: etape Seuil de $10\,000$
+$u_n \gt 10\,000 \iff 1{,}5^n \gt 94$. Or $1{,}5^{11} \approx 86{,}5$ et $1{,}5^{12} \approx 129{,}7$, d’où $u_{11} \approx 9\,250$ et $u_{12} \approx 13\,575$.
+:::
+
+[IMAGE_1]
+
+::: resultat
+Avec $700$ bactéries au départ, la culture croît et dépasse $10\,000$ bactéries à partir du jour $12$ : la valeur $600$ sépare l’épuisement de la croissance.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $u_{n+1} = 1{,}5u_n - 300$ ; $u_1 = 450$, $u_2 = 375$.
+2. $x = 600$ : suite constante égale à $600$.
+3. a) $v_{n+1} = 1{,}5v_n$, $v_0 = -100$ ; b) $u_n = 600 - 100 \times 1{,}5^n$.
+4. $u_{n+1} - u_n = -50 \times 1{,}5^n \lt 0$ ; épuisement au jour $5$.
+5. $u_n = 600 + 100 \times 1{,}5^n$, strictement croissante ; plus de $10\,000$ bactéries dès le jour $12$.
+
+===
+
+=== Type examen - Formules, suite auxiliaire et croissance de bactéries
+Id: 1361
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Ce sujet porte sur l’ensemble du chapitre.
+
+**Exercice 1 — Questions de cours**
+
+**1.1.** Donner le terme général d’une suite arithmétique de premier terme $u_0$ et de raison $r$, puis celui d’une suite géométrique de premier terme $u_0$ et de raison $q$.
+
+**1.2.** $(u_n)$ est une suite arithmétique telle que $u_1 = 4$ et $u_6 = 19$. Déterminer sa raison, calculer $u_{20}$, puis $S = u_1 + u_2 + \cdots + u_{20}$.
+
+**Exercice 2 — Étude d’une suite**
+
+On considère la suite $(v_n)$ définie par $v_0 = 1$ et $v_{n+1} = 3v_n - 4$.
+
+**2.1.** Calculer $v_1$, $v_2$ et $v_3$.
+
+**2.2.** On pose $w_n = v_n - 2$. Montrer que $(w_n)$ est géométrique ; en déduire $w_n$, puis $v_n$, en fonction de $n$.
+
+**2.3.** Étudier le sens de variation de $(v_n)$.
+
+**Exercice 3 — Croissance d’une population**
+
+Une population de bactéries double chaque jour ; au jour $0$, il y a $100$ bactéries. On note $b_n$ leur nombre au jour $n$.
+
+**3.1.** Donner la relation de récurrence et l’expression de $b_n$ en fonction de $n$.
+
+**3.2.** Au bout de combien de jours la population dépasse-t-elle $10\,000$ bactéries ?
+
+**3.3.** Écrire une fonction Python qui répond à la question 3.2.
+
+Étapes:
+<!-- optitab:1 -->
+## Partie A : Exercice 1, questions de cours
+
+## Question 1.1 : Termes généraux
+
+::: methode
+Arithmétique : on ajoute $n$ fois $r$ ; géométrique : on multiplie $n$ fois par $q$.
+:::
+
+::: etape Formules
+$$u_n = u_0 + nr \qquad u_n = u_0 \times q^n$$
+:::
+
+::: resultat
+Arithmétique : $u_n = u_0 + nr$ ; géométrique : $u_n = u_0 \times q^n$.
+:::
+
+## Question 1.2 : Raison, terme et somme
+
+::: methode
+De $u_1$ à $u_6$, on ajoute $5$ fois la raison ; puis somme $= N \times \frac{\text{premier} + \text{dernier}}{2}$.
+:::
+
+::: etape Raison
+$$
+\begin{aligned}
+u_6 &= u_1 + 5r \\
+19 &= 4 + 5r \\
+r &= 3
+\end{aligned}
+$$
+:::
+
+::: etape Terme de rang $20$
+$u_{20} = u_1 + 19r = 4 + 19 \times 3 = 61$.
+:::
+
+::: etape Somme
+De $u_1$ à $u_{20}$, il y a $20$ termes :
+$$S = 20 \times \frac{4 + 61}{2} = 650$$
+:::
+
+::: resultat
+$r = 3$, $u_{20} = 61$ et $S = 650$.
+:::
+
+::: attention
+De $u_1$ à $u_6$, il y a $5$ « pas », et non $6$ : $u_6 = u_1 + 5r$.
+:::
+
+## Partie B : Exercice 2, étude d’une suite
+
+## Question 2.1 : Premiers termes
+
+::: methode
+On applique $v_{n+1} = 3v_n - 4$ de proche en proche.
+:::
+
+::: etape Calculs
+$$
+\begin{aligned}
+v_1 &= 3 \times 1 - 4 = -1 \\
+v_2 &= 3 \times (-1) - 4 = -7 \\
+v_3 &= 3 \times (-7) - 4 = -25
+\end{aligned}
+$$
+:::
+
+::: resultat
+$v_1 = -1$, $v_2 = -7$, $v_3 = -25$.
+:::
+
+## Question 2.2 : Suite auxiliaire
+
+::: methode
+On exprime $w_{n+1}$ en fonction de $w_n$, en écrivant $6 = 3 \times 2$.
+:::
+
+::: etape Suite géométrique
+$$
+\begin{aligned}
+w_{n+1} &= v_{n+1} - 2 \\
+&= 3v_n - 6 \\
+&= 3(v_n - 2) \\
+&= 3w_n
+\end{aligned}
+$$
+$(w_n)$ est géométrique de raison $3$ et de premier terme $w_0 = 1 - 2 = -1$.
+:::
+
+::: etape Expressions explicites
+$w_n = -3^n$, donc $v_n = 2 - 3^n$. Vérification : $v_3 = 2 - 27 = -25$.
+:::
+
+::: resultat
+$w_n = -3^n$ et $v_n = 2 - 3^n$.
+:::
+
+## Question 2.3 : Sens de variation
+
+::: methode
+Signe de $v_{n+1} - v_n$ à partir de la forme explicite.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+v_{n+1} - v_n &= -3^{n+1} + 3^n \\
+&= 3^n(1 - 3) \\
+&= -2 \times 3^n
+\end{aligned}
+$$
+:::
+
+::: resultat
+$v_{n+1} - v_n \lt 0$ : la suite $(v_n)$ est strictement décroissante.
+:::
+
+## Partie C : Exercice 3, croissance d’une population
+
+## Question 3.1 : Modélisation
+
+::: methode
+« Doubler » revient à multiplier par $2$ : suite géométrique de raison $2$.
+:::
+
+::: etape Relation et terme général
+$b_0 = 100$ et $b_{n+1} = 2b_n$, donc $b_n = 100 \times 2^n$.
+:::
+
+::: resultat
+$b_{n+1} = 2b_n$ et $b_n = 100 \times 2^n$.
+:::
+
+## Question 3.2 : Dépassement de $10\,000$
+
+::: methode
+On cherche le premier entier $n$ tel que $2^n \gt 100$, en calculant les puissances de $2$.
+:::
+
+::: etape Encadrement
+$100 \times 2^n \gt 10\,000 \iff 2^n \gt 100$. Or $2^6 = 64$ et $2^7 = 128$ : $b_6 = 6\,400$ et $b_7 = 12\,800$.
+:::
+
+[IMAGE_1]
+
+::: resultat
+La population dépasse $10\,000$ bactéries au bout de $7$ jours.
+:::
+
+## Question 3.3 : Fonction Python
+
+::: methode
+Algorithme de seuil : boucle `while` tant que la population ne dépasse pas $10\,000$.
+:::
+
+::: etape Programme
+```python
+def jours():
+    n = 0
+    b = 100
+    while b <= 10000:
+        b = 2 * b
+        n = n + 1
+    return n
+```
+:::
+
+::: resultat
+`jours()` renvoie $7$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+**1.1.** $u_n = u_0 + nr$ ; $u_n = u_0 \times q^n$.
+
+**1.2.** $r = 3$, $u_{20} = 61$ et $S = 650$.
+
+**2.1.** $v_1 = -1$, $v_2 = -7$, $v_3 = -25$.
+
+**2.2.** $(w_n)$ géométrique de raison $3$, $w_0 = -1$ : $w_n = -3^n$ et $v_n = 2 - 3^n$.
+
+**2.3.** Strictement décroissante ($v_{n+1} - v_n = -2 \times 3^n$).
+
+**3.1.** $b_{n+1} = 2b_n$, $b_n = 100 \times 2^n$.
+
+**3.2.** $7$ jours.
+
+**3.3.** Boucle `while b <= 10000:` qui double `b` et compte les jours ; renvoie $7$.
+
+===
+
+=== Type examen - Deux contrats de salaire
+Id: 1362
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Une entreprise propose deux contrats à un nouveau salarié, avec un salaire annuel de $24\,000$ € la première année.
+
+- **Contrat A** : le salaire annuel augmente de $1\,000$ € chaque année.
+- **Contrat B** : le salaire annuel augmente de $4\,\%$ chaque année.
+
+On note $a_n$ et $b_n$ les salaires annuels (en euros) de l’année numéro $n + 1$ ; ainsi $a_0 = b_0 = 24\,000$.
+
+**Partie A — Modélisation**
+
+**A1.** Déterminer la nature des suites $(a_n)$ et $(b_n)$, puis exprimer $a_n$ et $b_n$ en fonction de $n$.
+
+**A2.** Calculer $a_n$ et $b_n$ pour $n$ allant de $0$ à $6$ (arrondir à l’euro). À partir de quelle année le contrat B offre-t-il le meilleur salaire annuel ?
+
+**A3.** Calculer, pour chaque contrat, le total des salaires perçus sur les $10$ premières années. Quel contrat est le plus avantageux sur cette durée ?
+
+**Partie B — Algorithme**
+
+**B1.** Écrire une fonction Python `annee(A)` qui renvoie le premier rang $n$ tel que $b_n \ge A$.
+
+**B2.** Que renvoie `annee(40000)` ? Comparer avec le contrat A.
+
+Étapes:
+<!-- optitab:1 -->
+## Partie A : Modélisation
+
+## Question A1 : Nature des suites
+
+::: methode
+Augmentation fixe : suite arithmétique ; augmentation en pourcentage : suite géométrique de raison $1 + \frac{t}{100}$.
+:::
+
+::: etape Contrat A
+$a_{n+1} = a_n + 1\,000$ : $(a_n)$ est arithmétique de raison $1\,000$, donc $a_n = 24\,000 + 1\,000n$.
+:::
+
+::: etape Contrat B
+$b_{n+1} = 1{,}04\,b_n$ : $(b_n)$ est géométrique de raison $1{,}04$, donc $b_n = 24\,000 \times 1{,}04^n$.
+:::
+
+::: resultat
+$a_n = 24\,000 + 1\,000n$ (croissance linéaire) et $b_n = 24\,000 \times 1{,}04^n$ (croissance exponentielle).
+:::
+
+## Question A2 : Comparaison année par année
+
+::: methode
+On calcule les termes à la calculatrice, puis on compare colonne par colonne.
+:::
+
+::: etape Tableau de valeurs
+| $n$ | $a_n$ | $b_n$ (arrondi) |
+|---|---|---|
+| $0$ | $24\,000$ | $24\,000$ |
+| $1$ | $25\,000$ | $24\,960$ |
+| $2$ | $26\,000$ | $25\,958$ |
+| $3$ | $27\,000$ | $26\,997$ |
+| $4$ | $28\,000$ | $28\,077$ |
+| $5$ | $29\,000$ | $29\,200$ |
+| $6$ | $30\,000$ | $30\,368$ |
+:::
+
+[IMAGE_1]
+
+::: etape Lecture
+$b_3 \lt a_3$ mais $b_4 \gt a_4$ : le rang $n = 4$ correspond à la cinquième année.
+:::
+
+::: resultat
+Le contrat B offre le meilleur salaire annuel à partir de la cinquième année ($n = 4$).
+:::
+
+## Question A3 : Total sur $10$ ans
+
+::: methode
+Les $10$ premières années correspondent aux rangs $0$ à $9$ : on utilise les formules de somme.
+:::
+
+::: etape Contrat A
+$a_9 = 33\,000$, donc
+$$a_0 + \cdots + a_9 = 10 \times \frac{24\,000 + 33\,000}{2} = 285\,000$$
+:::
+
+::: etape Contrat B
+$$
+\begin{aligned}
+b_0 + \cdots + b_9 &= 24\,000 \times \frac{1 - 1{,}04^{10}}{1 - 1{,}04} \\
+&\approx 288\,147
+\end{aligned}
+$$
+:::
+
+::: resultat
+Sur $10$ ans : environ $285\,000$ € avec le contrat A et $288\,147$ € avec le contrat B, qui est le plus avantageux.
+:::
+
+::: attention
+Il y a $10$ années, donc $10$ termes : on s’arrête à $a_9$ et $b_9$, d’où l’exposant $10$ dans la formule.
+:::
+
+## Partie B : Algorithme
+
+## Question B1 : Fonction de seuil
+
+::: methode
+Tant que $b \lt A$, on multiplie par $1{,}04$ et on compte les années.
+:::
+
+::: etape Programme
+```python
+def annee(A):
+    n = 0
+    b = 24000
+    while b < A:
+        b = 1.04 * b
+        n = n + 1
+    return n
+```
+:::
+
+::: resultat
+`annee(A)` renvoie le premier rang $n$ tel que $b_n \ge A$.
+:::
+
+## Question B2 : Seuil de $40\,000$ €
+
+::: methode
+On encadre avec la calculatrice, puis on résout l’inéquation pour le contrat A.
+:::
+
+::: etape Contrat B
+$b_{13} \approx 39\,962 \lt 40\,000$ et $b_{14} \approx 41\,560 \ge 40\,000$ : `annee(40000)` renvoie $14$.
+:::
+
+::: etape Contrat A
+$24\,000 + 1\,000n \ge 40\,000 \iff n \ge 16$.
+:::
+
+::: resultat
+Le contrat B atteint $40\,000$ € au rang $14$ (15e année), le contrat A au rang $16$ (17e année).
+:::
+
+Solution:
+<!-- optitab:1 -->
+**A1.** $a_n = 24\,000 + 1\,000n$ (arithmétique) ; $b_n = 24\,000 \times 1{,}04^n$ (géométrique).
+
+**A2.** Le contrat B est meilleur à partir de $n = 4$ (cinquième année).
+
+**A3.** $285\,000$ € (A) contre environ $288\,147$ € (B) : B est plus avantageux.
+
+**B1.** Boucle `while b < A:` avec `b = 1.04 * b` et un compteur.
+
+**B2.** `annee(40000)` renvoie $14$ ; le contrat A n’atteint $40\,000$ € qu’au rang $16$.
+
+===
+
+=== Type examen - Programme Python et somme des termes
+Id: 1363
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+On considère le programme Python suivant.
+
+```python
+n = 5
+u = 1
+S = 0
+for i in range(n + 1):
+    S = S + u
+    u = 2 * u + 1
+print(S)
+```
+
+**Partie A — Exécution**
+
+**A1.** Recopier et compléter le tableau ci-dessous, qui donne, pour chaque passage dans la boucle, la valeur de `u` au début du passage et la valeur de `S` à la fin du passage. Quelle valeur le programme affiche-t-il ?
+
+| $i$ | `u` (début) | `S` (fin) |
+|---|---|---|
+| $0$ | $1$ | $1$ |
+| $1$ | | |
+| $2$ | | |
+| $3$ | | |
+| $4$ | | |
+| $5$ | | |
+
+**Partie B — Étude de la suite**
+
+On note $u_k$ la valeur de `u` au début du passage numéro $k$ : $u_0 = 1$.
+
+**B1.** Donner la relation de récurrence vérifiée par $(u_k)$.
+
+**B2.** On pose $v_k = u_k + 1$. Montrer que $(v_k)$ est géométrique, puis en déduire que $u_k = 2^{k+1} - 1$.
+
+**Partie C — Somme des termes**
+
+**C1.** Que représente la valeur affichée par le programme en fonction des termes $u_k$ ?
+
+**C2.** En déduire que $S_n = u_0 + u_1 + \cdots + u_n = 2^{n+2} - n - 3$.
+
+**C3.** Vérifier ce résultat pour $n = 5$.
+
+Étapes:
+<!-- optitab:1 -->
+## Partie A : Exécution
+
+## Question A1 : Tableau d’exécution
+
+::: methode
+À chaque passage : on ajoute d’abord `u` à `S`, puis on remplace `u` par `2 * u + 1`.
+:::
+
+::: etape Tableau complété
+| $i$ | `u` (début) | `S` (fin) |
+|---|---|---|
+| $0$ | $1$ | $1$ |
+| $1$ | $3$ | $4$ |
+| $2$ | $7$ | $11$ |
+| $3$ | $15$ | $26$ |
+| $4$ | $31$ | $57$ |
+| $5$ | $63$ | $120$ |
+
+Par exemple, au passage $i = 2$ : `S` devient $4 + 7 = 11$, puis `u` devient $2 \times 7 + 1 = 15$.
+:::
+
+::: resultat
+Le programme affiche $120$.
+:::
+
+## Partie B : Étude de la suite
+
+## Question B1 : Relation de récurrence
+
+::: methode
+L’instruction `u = 2 * u + 1` fait passer d’un terme au suivant.
+:::
+
+::: etape Traduction
+$u_0 = 1$ et, pour tout entier $k$, $u_{k+1} = 2u_k + 1$.
+:::
+
+::: resultat
+$u_{k+1} = 2u_k + 1$ avec $u_0 = 1$.
+:::
+
+## Question B2 : Suite auxiliaire
+
+::: methode
+On exprime $v_{k+1}$ en fonction de $v_k$.
+:::
+
+::: etape Suite géométrique
+$$
+\begin{aligned}
+v_{k+1} &= u_{k+1} + 1 \\
+&= 2u_k + 2 \\
+&= 2(u_k + 1) \\
+&= 2v_k
+\end{aligned}
+$$
+$(v_k)$ est géométrique de raison $2$ et de premier terme $v_0 = 2$.
+:::
+
+::: etape Expression de $u_k$
+$v_k = 2 \times 2^k = 2^{k+1}$, donc $u_k = v_k - 1 = 2^{k+1} - 1$. Vérification : $u_3 = 2^4 - 1 = 15$.
+:::
+
+::: resultat
+$u_k = 2^{k+1} - 1$ pour tout entier $k$.
+:::
+
+## Partie C : Somme des termes
+
+## Question C1 : Valeur affichée
+
+::: methode
+On suit le rôle de la variable `S` dans la boucle.
+:::
+
+::: etape Interprétation
+`S` part de $0$ et reçoit $u_0$, puis $u_1$, …, puis $u_n$ : elle contient leur somme.
+:::
+
+::: resultat
+Le programme affiche $S_n = u_0 + u_1 + \cdots + u_n$ (ici avec $n = 5$).
+:::
+
+## Question C2 : Expression de $S_n$
+
+::: methode
+On sépare la somme des $2^{k+1}$ et la somme des $-1$, puis on utilise $1 + 2 + \cdots + 2^n = \frac{1 - 2^{n+1}}{1 - 2}$.
+:::
+
+::: etape Séparation
+$$S_n = (2 + 4 + \cdots + 2^{n+1}) - (n + 1)$$
+car il y a $n + 1$ termes, chacun contenant $-1$.
+:::
+
+::: etape Somme géométrique
+$$
+\begin{aligned}
+2 + 4 + \cdots + 2^{n+1} &= 2(1 + 2 + \cdots + 2^n) \\
+&= 2 \times \frac{1 - 2^{n+1}}{1 - 2} \\
+&= 2(2^{n+1} - 1) \\
+&= 2^{n+2} - 2
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$S_n = 2^{n+2} - 2 - (n + 1) = 2^{n+2} - n - 3$$
+:::
+
+## Question C3 : Vérification pour $n = 5$
+
+::: methode
+On remplace $n$ par $5$ et on compare avec le tableau.
+:::
+
+::: etape Calcul
+$S_5 = 2^7 - 5 - 3 = 128 - 8 = 120$.
+:::
+
+::: resultat
+On retrouve bien la valeur $120$ affichée par le programme.
+:::
+
+Solution:
+<!-- optitab:1 -->
+**A1.** `u` : $1$, $3$, $7$, $15$, $31$, $63$ ; `S` : $1$, $4$, $11$, $26$, $57$, $120$ ; affichage : $120$.
+
+**B1.** $u_{k+1} = 2u_k + 1$, $u_0 = 1$.
+
+**B2.** $v_{k+1} = 2v_k$, $v_0 = 2$ : $v_k = 2^{k+1}$ et $u_k = 2^{k+1} - 1$.
+
+**C1.** La somme $u_0 + u_1 + \cdots + u_n$.
+
+**C2.** $S_n = 2^{n+2} - n - 3$.
+
+**C3.** $S_5 = 120$.
+
+===
+
+=== Découverte - Motifs et dénombrement
+Id: 4602
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+**Partie A — Un motif d’allumettes**
+
+On aligne des carrés construits avec des allumettes : le motif numéro $n$ compte $n$ carrés côte à côte. On note $a_n$ le nombre d’allumettes du motif numéro $n$.
+
+[IMAGE_1]
+
+**A1.** Donner $a_1$, $a_2$ et $a_3$.
+
+**A2.** Expliquer pourquoi $a_{n+1} = a_n + 3$ pour tout $n \ge 1$.
+
+**A3.** En déduire la nature de la suite $(a_n)$ et l’expression de $a_n$ en fonction de $n$.
+
+**A4.** Combien faut-il d’allumettes pour le motif numéro $50$ ?
+
+**A5.** On dispose de $2\,026$ allumettes. Quel est le plus grand motif que l’on peut construire ?
+
+**Partie B — Des poignées de main**
+
+Dans un groupe de $n$ personnes, chacune serre une fois la main de toutes les autres. On note $p_n$ le nombre total de poignées de main ($p_1 = 0$).
+
+**B1.** Calculer $p_2$ et $p_3$.
+
+**B2.** Une nouvelle personne rejoint un groupe de $n$ personnes. Expliquer pourquoi $p_{n+1} = p_n + n$.
+
+**B3.** En déduire que $p_n = 1 + 2 + \cdots + (n - 1)$, puis que $p_n = \dfrac{n(n - 1)}{2}$.
+
+**B4.** Combien de poignées de main y a-t-il dans une classe de $30$ élèves ?
+
+Étapes:
+<!-- optitab:1 -->
+## Partie A : Un motif d’allumettes
+
+## Question A1 : Premiers termes
+
+::: methode
+On compte les allumettes sur la figure, motif par motif.
+:::
+
+::: etape Comptage
+Un carré seul utilise $4$ allumettes ; deux carrés côte à côte en utilisent $7$ (le côté commun n’est compté qu’une fois) ; trois carrés en utilisent $10$.
+:::
+
+::: resultat
+$a_1 = 4$, $a_2 = 7$, $a_3 = 10$.
+:::
+
+## Question A2 : Relation de récurrence
+
+::: methode
+On regarde ce qu’il faut ajouter pour passer d’un motif au suivant.
+:::
+
+::: etape Ajout d’un carré
+Pour ajouter un carré à droite du motif, le côté gauche du nouveau carré existe déjà : il suffit d’ajouter $3$ allumettes (le haut, le bas et le côté droit, en vert ci-dessous).
+:::
+
+[IMAGE_2]
+
+::: resultat
+Pour tout $n \ge 1$, $a_{n+1} = a_n + 3$.
+:::
+
+## Question A3 : Nature et terme général
+
+::: methode
+On ajoute toujours $3$ : suite arithmétique, de premier terme $a_1$ (le rang $0$ n’existe pas ici).
+:::
+
+::: etape Terme général
+$(a_n)$ est arithmétique de raison $3$ et de premier terme $a_1 = 4$ :
+$$
+\begin{aligned}
+a_n &= a_1 + (n - 1) \times 3 \\
+&= 4 + 3n - 3 \\
+&= 3n + 1
+\end{aligned}
+$$
+Vérification : $a_3 = 3 \times 3 + 1 = 10$.
+:::
+
+::: resultat
+$(a_n)$ est arithmétique de raison $3$ et $a_n = 3n + 1$.
+:::
+
+## Question A4 : Motif numéro $50$
+
+::: methode
+On remplace $n$ par $50$ dans la forme explicite.
+:::
+
+::: etape Calcul
+$a_{50} = 3 \times 50 + 1 = 151$.
+:::
+
+::: resultat
+Il faut $151$ allumettes.
+:::
+
+## Question A5 : Plus grand motif avec $2\,026$ allumettes
+
+::: methode
+On cherche le plus grand entier $n$ tel que $a_n \le 2\,026$.
+:::
+
+::: etape Inéquation
+$3n + 1 \le 2\,026 \iff 3n \le 2\,025 \iff n \le 675$.
+:::
+
+::: resultat
+Le plus grand motif est le numéro $675$ ; il utilise exactement $3 \times 675 + 1 = 2\,026$ allumettes.
+:::
+
+## Partie B : Des poignées de main
+
+## Question B1 : Petits groupes
+
+::: methode
+On dénombre les paires de personnes.
+:::
+
+::: etape Comptage
+- Avec $2$ personnes $A$ et $B$ : une poignée de main.
+- Avec $3$ personnes $A$, $B$, $C$ : les paires $AB$, $AC$, $BC$.
+:::
+
+::: resultat
+$p_2 = 1$ et $p_3 = 3$.
+:::
+
+## Question B2 : Arrivée d’une nouvelle personne
+
+::: methode
+On sépare les poignées de main déjà échangées et les nouvelles.
+:::
+
+::: etape Raisonnement
+Les $n$ personnes du groupe ont déjà échangé $p_n$ poignées de main. Le nouvel arrivant serre la main de chacune d’elles : cela fait $n$ poignées de main de plus.
+
+Exemple avec $n = 4$ : chaque segment représente une poignée de main.
+:::
+
+[IMAGE_3]
+
+::: resultat
+$p_{n+1} = p_n + n$.
+:::
+
+## Question B3 : Expression de $p_n$
+
+::: methode
+On applique la relation de proche en proche depuis $p_1 = 0$, puis on utilise la somme des premiers entiers.
+:::
+
+::: etape De proche en proche
+$p_2 = p_1 + 1$, $p_3 = p_2 + 2$, …, $p_n = p_{n-1} + (n - 1)$. En partant de $p_1 = 0$ :
+$$p_n = 1 + 2 + \cdots + (n - 1)$$
+:::
+
+::: etape Somme des premiers entiers
+On applique $1 + 2 + \cdots + m = \frac{m(m + 1)}{2}$ avec $m = n - 1$ :
+$$p_n = \frac{(n - 1)n}{2}$$
+:::
+
+::: resultat
+$$p_n = \frac{n(n - 1)}{2}$$
+:::
+
+::: attention
+La somme s’arrête à $n - 1$ et non à $n$ : la formule s’applique avec $m = n - 1$.
+:::
+
+## Question B4 : Classe de $30$ élèves
+
+::: methode
+On remplace $n$ par $30$.
+:::
+
+::: etape Calcul
+$p_{30} = \dfrac{30 \times 29}{2} = 435$.
+:::
+
+::: resultat
+Il y a $435$ poignées de main.
+:::
+
+Solution:
+<!-- optitab:1 -->
+**A1.** $a_1 = 4$, $a_2 = 7$, $a_3 = 10$.
+
+**A2.** Chaque nouveau carré ajoute $3$ allumettes.
+
+**A3.** Arithmétique de raison $3$ : $a_n = 3n + 1$.
+
+**A4.** $151$ allumettes.
+
+**A5.** Le motif numéro $675$.
+
+**B1.** $p_2 = 1$, $p_3 = 3$.
+
+**B2.** Le nouvel arrivant serre $n$ mains : $p_{n+1} = p_n + n$.
+
+**B3.** $p_n = 1 + 2 + \cdots + (n - 1) = \frac{n(n - 1)}{2}$.
+
+**B4.** $435$ poignées de main.
+
+===

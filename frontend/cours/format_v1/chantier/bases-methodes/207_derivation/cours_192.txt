@@ -1,0 +1,491 @@
+Titre: La Dérivation
+
+<!-- optitab:1 -->
+::: remarque Structure du cours
+Les sections I à IV couvrent les cœurs de l'étude des compléments sur la dérivation. Les parties marquées **« Bonus »** ainsi que la section VI sont des approfondissements utiles pour aller plus loin.
+:::
+
+## 0. Rappels - Dérivées à connaître par cœur
+
+::: rappel
+Les tableaux et formules ci-dessous sont des rappels des bases de la dérivation. Ils doivent être maîtrisés avant d'aborder les compléments sur la dérivation.
+:::
+
+### Dérivées des fonctions usuelles (Rappels)
+
+::: definition Tableau des dérivées fondamentales
+| Fonction $\displaystyle f(x)$ | Dérivée $\displaystyle f'(x)$ | Domaine de dérivabilité |
+|---|---|---|
+| $\displaystyle k$ (constante) | $\displaystyle 0$ | $\displaystyle \mathbb{R}$ |
+| $\displaystyle x$ | $\displaystyle 1$ | $\displaystyle \mathbb{R}$ |
+| $\displaystyle x^n$ avec $\displaystyle n \geq 1$ | $\displaystyle nx^{n-1}$ | $\displaystyle \mathbb{R}$ |
+| $\displaystyle \frac{1}{x}$ | $\displaystyle -\frac{1}{x^2}$ | $\displaystyle \mathbb{R}^{\ast}$ |
+| $\displaystyle \sqrt{x}$ | $\displaystyle \frac{1}{2\sqrt{x}}$ | $\displaystyle ]0, +\infty[$ |
+| $\displaystyle e^x$ | $\displaystyle e^x$ | $\displaystyle \mathbb{R}$ |
+| $\displaystyle \ln(x)$ | $\displaystyle \frac{1}{x}$ | $\displaystyle ]0, +\infty[$ |
+| $\displaystyle \sin(x)$ | $\displaystyle \cos(x)$ | $\displaystyle \mathbb{R}$ |
+| $\displaystyle \cos(x)$ | $\displaystyle -\sin(x)$ | $\displaystyle \mathbb{R}$ |
+:::
+
+::: retenir
+- $(e^x)' = e^x$ : l'exponentielle est sa propre dérivée !
+- $(\ln x)' = \frac{1}{x}$ : le logarithme népérien a pour dérivée l'inverse
+- $(\sin x)' = \cos x$ et $(\cos x)' = -\sin x$ : attention au signe négatif pour le cosinus
+:::
+
+### Opérations sur les dérivées (Rappels)
+
+::: theoreme Opérations sur les dérivées
+Soient $u$ et $v$ deux fonctions dérivables sur un intervalle $I$, et $k$ une constante réelle.
+
+| Fonction | Dérivée |
+|---|---|
+| $\displaystyle k \times u$ | $\displaystyle k \times u'$ |
+| $\displaystyle u + v$ | $\displaystyle u' + v'$ |
+| $\displaystyle u - v$ | $\displaystyle u' - v'$ |
+| $\displaystyle u \times v$ | $\displaystyle u' \times v + u \times v'$ |
+| $\displaystyle \frac{1}{v}$ (si $\displaystyle v \neq 0$) | $\displaystyle -\frac{v'}{v^2}$ |
+| $\displaystyle \frac{u}{v}$ (si $\displaystyle v \neq 0$) | $\displaystyle \frac{u' \times v - u \times v'}{v^2}$ |
+:::
+
+::: attention Erreurs fréquentes
+- Pour la dérivée d'un **produit**, ce n'est **PAS** $(u \times v)' = u' \times v'$ !
+- C'est : $\displaystyle (u \times v)' = u' \times v + u \times v'$ (formule de Leibniz)
+- Pour la dérivée d'un **quotient**, ne pas oublier le **carré** au dénominateur : $\left(\frac{u}{v}\right)' = \frac{u'v - uv'}{v^2}$
+:::
+
+::: exemple
+- $\displaystyle (3x^2 + 5x)' = 6x + 5$ (somme)
+- $\displaystyle (x \times e^x)' = 1 \times e^x + x \times e^x = e^x(1 + x)$ (produit)
+- $\displaystyle \left(\frac{x^2 + 1}{x}\right)' = \frac{2x \times x - (x^2 + 1) \times 1}{x^2} = \frac{x^2 - 1}{x^2}$ (quotient)
+- $\displaystyle \left(\frac{1}{x^2 + 1}\right)' = -\frac{2x}{(x^2 + 1)^2}$ (inverse)
+:::
+
+### Rappel - Équation de la tangente (Rappels)
+
+::: rappel Tangente à une courbe
+Si $f$ est dérivable en $a$, la **tangente** à la courbe représentative de $f$ au point $A(a, f(a))$ a pour équation :
+
+::: formule
+$$y = f'(a)(x - a) + f(a)$$
+:::
+
+Le coefficient directeur de la tangente est $f'(a)$.
+:::
+
+::: remarque Utilisation dans ce chapitre
+Dans l'étude de la convexité, on compare la position de la courbe par rapport à ses tangentes :
+
+- **Convexe** : la courbe est **au-dessus** de toutes ses tangentes
+- **Concave** : la courbe est **en-dessous** de toutes ses tangentes
+:::
+
+::: attention 🆕 Sections principales
+Les sections I à IV couvrent les notions clés : dérivée d'une composée (formule générale), dérivée seconde, convexité/concavité et points d'inflexion.
+:::
+
+## I. Dérivée d'une fonction composée
+
+### Notation et définition
+
+::: definition Composée de deux fonctions
+Soient $u$ et $v$ deux fonctions telles que l'image de $u$ est incluse dans le domaine de définition de $v$.
+
+La **composée** de $v$ par $u$, notée $v \circ u$ (lue "$v$ rond $u$"), est la fonction définie par :
+
+::: formule
+$$(v \circ u)(x) = v(u(x))$$
+:::
+:::
+
+::: exemple
+- Si $u(x) = x^2 + 1$ et $v(x) = \sqrt{x}$, alors $(v \circ u)(x) = \sqrt{x^2 + 1}$
+- Si $u(x) = 2x + 3$ et $v(x) = e^x$, alors $(v \circ u)(x) = e^{2x + 3}$
+- Si $u(x) = \sin(x)$ et $v(x) = x^2$, alors $(v \circ u)(x) = \sin^2(x)$
+:::
+
+### Théorème de dérivation d'une composée
+
+::: theoreme Dérivée d'une fonction composée
+Si $u$ est dérivable sur un intervalle $I$ et si $v$ est dérivable sur $u(I)$, alors la fonction composée $v \circ u$ est dérivable sur $I$ et :
+
+::: formule
+$$(v \circ u)'(x) = (v' \circ u)(x) \times u'(x)$$
+:::
+
+Autrement dit : $\displaystyle (v(u(x)))' = v'(u(x)) \times u'(x)$
+:::
+
+::: propriete Dérivées composées à connaître
+Soit $u$ une fonction dérivable sur un intervalle $I$.
+
+| Fonction | Dérivée |
+|---|---|
+| $\displaystyle u^n$ avec $\displaystyle n \geq 1$ | $\displaystyle n u^{n-1} u'$ |
+| $\displaystyle \frac{1}{u}$ (si $\displaystyle u \neq 0$) | $\displaystyle -\frac{u'}{u^2}$ |
+| $\displaystyle \sqrt{u}$ (si $\displaystyle u > 0$) | $\displaystyle \frac{u'}{2\sqrt{u}}$ |
+| $\displaystyle e^{u}$ | $\displaystyle u' e^{u}$ |
+| $\displaystyle \ln(u)$ (si $\displaystyle u > 0$) | $\displaystyle \frac{u'}{u}$ |
+| $\displaystyle \sin(u)$ | $\displaystyle u' \cos(u)$ |
+| $\displaystyle \cos(u)$ | $\displaystyle -u' \sin(u)$ |
+:::
+
+::: exemple
+- $\displaystyle ((x^2 + 1)^3)' = 3 \times 2x \times (x^2 + 1)^2 = 6x(x^2 + 1)^2$
+- $\displaystyle (e^{2x + 1})' = 2 \times e^{2x + 1} = 2e^{2x + 1}$
+- $\displaystyle (\ln(x^2 + 3))' = \frac{2x}{x^2 + 3}$
+- $\displaystyle (\sin(3x))' = 3 \times \cos(3x) = 3\cos(3x)$
+:::
+
+::: methode
+Pour dériver $\displaystyle v(u(x))$ :
+
+1. On dérive la fonction **extérieure** $v$ en laissant $u(x)$ tel quel
+2. On multiplie par la dérivée de la fonction **intérieure** $u$
+:::
+
+::: exemple
+**Exemple 1 :** Dériver $\displaystyle f(x) = e^{x^2 + 1}$
+
+On identifie : $u(x) = x^2 + 1$ et $v(x) = e^x$
+
+$u'(x) = 2x$ et $v'(x) = e^x$
+
+Donc : $\displaystyle f'(x) = v'(u(x)) \times u'(x) = e^{x^2 + 1} \times 2x = 2x e^{x^2 + 1}$
+
+**Exemple 2 :** Dériver $\displaystyle f(x) = \ln(x^2 + 3x)$
+
+On identifie : $u(x) = x^2 + 3x$ et $v(x) = \ln(x)$
+
+$u'(x) = 2x + 3$ et $v'(x) = \frac{1}{x}$
+
+Donc : $\displaystyle f'(x) = v'(u(x)) \times u'(x) = \frac{1}{x^2 + 3x} \times (2x + 3) = \frac{2x + 3}{x^2 + 3x}$
+:::
+
+## II. Dérivée seconde
+
+### Définition
+
+::: definition Dérivée seconde
+Soit $f$ une fonction dérivable sur un intervalle $I$.
+
+Si la fonction dérivée $f'$ est elle-même dérivable sur $I$, alors on appelle **dérivée seconde** de $f$ la dérivée de $f'$, notée $f''$.
+
+::: formule
+$$f'' = (f')'$$
+:::
+:::
+
+::: exemple
+- Si $f(x) = x^3$, alors $f'(x) = 3x^2$ et $f''(x) = 6x$
+- Si $f(x) = e^x$, alors $f'(x) = e^x$ et $f''(x) = e^x$
+- Si $f(x) = \sin(x)$, alors $f'(x) = \cos(x)$ et $f''(x) = -\sin(x)$
+- Si $f(x) = x^4 - 2x^2 + 1$, alors $f'(x) = 4x^3 - 4x$ et $f''(x) = 12x^2 - 4$
+:::
+
+::: remarque Interprétation
+La dérivée seconde mesure la **variation de la pente** de la courbe. Elle indique comment la dérivée première change.
+
+Si $f''(x) > 0$, la pente augmente (la courbe « accélère » vers le haut).
+
+Si $f''(x) < 0$, la pente diminue (la courbe « ralentit » vers le bas).
+:::
+
+## III. Fonctions convexes et concaves
+
+### Définition géométrique
+
+::: definition Fonction convexe
+Une fonction $f$ est dite **convexe** sur un intervalle $I$ si, pour tous points $A$ et $B$ de la courbe représentative de $f$, le segment $[AB]$ est situé **au-dessus** de la courbe.
+
+Autrement dit : la courbe est située **en-dessous** de toutes ses sécantes.
+:::
+
+::: definition Fonction concave
+Une fonction $f$ est dite **concave** sur un intervalle $I$ si, pour tous points $A$ et $B$ de la courbe représentative de $f$, le segment $[AB]$ est situé **en-dessous** de la courbe.
+
+Autrement dit : la courbe est située **au-dessus** de toutes ses sécantes.
+:::
+
+[IMAGE_1]
+
+### Caractérisation pour les fonctions deux fois dérivables
+
+::: theoreme Caractérisation de la convexité
+Soit $f$ une fonction deux fois dérivable sur un intervalle $I$.
+
+Les propriétés suivantes sont **équivalentes** (admis) :
+
+- $f$ est **convexe** sur $I$
+- La courbe représentative de $f$ est située **au-dessus** de toutes ses tangentes
+- La fonction dérivée $f'$ est **croissante** sur $I$
+- La dérivée seconde $f''$ est **positive** sur $I$ : $f''(x) \geq 0$ pour tout $x \in I$
+:::
+
+::: theoreme Caractérisation de la concavité
+Soit $f$ une fonction deux fois dérivable sur un intervalle $I$.
+
+Les propriétés suivantes sont **équivalentes** (admis) :
+
+- $f$ est **concave** sur $I$
+- La courbe représentative de $f$ est située **en-dessous** de toutes ses tangentes
+- La fonction dérivée $f'$ est **décroissante** sur $I$
+- La dérivée seconde $f''$ est **négative** sur $I$ : $f''(x) \leq 0$ pour tout $x \in I$
+:::
+
+::: propriete Tableau récapitulatif
+| Signe de $\displaystyle f''(x)$ | Variation de $\displaystyle f'$ | Convexité de $\displaystyle f$ | Position courbe/tangentes |
+|---|---|---|---|
+| $\displaystyle f''(x) > 0$ | $\displaystyle f'$ croissante ↗ | **Convexe** (forme U) | Courbe au-dessus des tangentes |
+| $\displaystyle f''(x) < 0$ | $\displaystyle f'$ décroissante ↘ | **Concave** (forme ∩) | Courbe en-dessous des tangentes |
+:::
+
+::: exemple
+- $f(x) = x^2$ : $f''(x) = 2 > 0$ donc $f$ est **convexe** sur $\mathbb{R}$
+- $f(x) = -x^2$ : $f''(x) = -2 < 0$ donc $f$ est **concave** sur $\mathbb{R}$
+- $f(x) = e^x$ : $f''(x) = e^x > 0$ donc $f$ est **convexe** sur $\mathbb{R}$
+- $f(x) = \ln(x)$ : $f''(x) = -\frac{1}{x^2} < 0$ pour $x > 0$ donc $f$ est **concave** sur $]0, +\infty[$
+- $f(x) = x^3$ : $f''(x) = 6x$ change de signe en $0$, donc $f$ n'est ni convexe ni concave sur $\mathbb{R}$
+:::
+
+### Pour aller plus loin - Démonstration : Si $\displaystyle f''$ est positive, alors la courbe est au-dessus de ses tangentes
+
+::: demonstration
+Cette démonstration est donnée pour la culture mathématique et pour mieux comprendre les concepts. Elle approfondit la théorie mathématique derrière la convexité.
+:::
+
+::: demonstration
+Soit $f$ une fonction deux fois dérivable sur un intervalle $I$ telle que $f''(x) \geq 0$ pour tout $x \in I$.
+
+On veut montrer que la courbe représentative de $f$ est au-dessus de toutes ses tangentes.
+
+Soit $a \in I$ et $T_a$ la tangente à la courbe au point d'abscisse $a$ :
+
+$$T_a(x) = f'(a)(x - a) + f(a)$$
+
+On considère la fonction $\displaystyle g(x) = f(x) - T_a(x) = f(x) - f'(a)(x - a) - f(a)$.
+
+On a :
+
+- $\displaystyle g(a) = f(a) - f(a) = 0$
+- $g'(x) = f'(x) - f'(a)$ donc $g'(a) = 0$
+- $g''(x) = f''(x) \geq 0$ pour tout $x \in I$
+
+Comme $g''(x) \geq 0$, la fonction $g'$ est croissante.
+
+Pour $x > a$ : $g'(x) \geq g'(a) = 0$, donc $g$ est croissante sur $[a, +\infty[ \cap I$.
+
+Comme $g(a) = 0$ et $g$ est croissante, on a $g(x) \geq 0$ pour $x \geq a$.
+
+Pour $x < a$ : $g'(x) \leq g'(a) = 0$, donc $g$ est décroissante sur $]-\infty, a] \cap I$.
+
+Comme $g(a) = 0$ et $g$ est décroissante, on a $g(x) \geq 0$ pour $x \leq a$.
+
+Ainsi, $g(x) \geq 0$ pour tout $x \in I$, c'est-à-dire $f(x) \geq T_a(x)$.
+
+La courbe est donc au-dessus de toutes ses tangentes.
+:::
+
+## IV. Points d'inflexion
+
+### Définition
+
+::: definition Point d'inflexion
+Un point $A(a, f(a))$ est un **point d'inflexion** de la courbe représentative de $f$ si la courbe traverse sa tangente en ce point.
+
+Autrement dit : la courbe change de « côté » par rapport à sa tangente en $a$.
+:::
+
+::: theoreme Condition pour un point d'inflexion
+Soit $f$ une fonction deux fois dérivable sur un intervalle $I$ contenant $a$.
+
+Si $A(a, f(a))$ est un point d'inflexion, alors :
+
+- $\displaystyle f''(a) = 0$
+- $f''$ change de signe en $a$
+
+Le point d'inflexion marque le passage d'une zone **convexe** à une zone **concave** (ou inversement).
+:::
+
+::: exemple
+- $f(x) = x^3$ : $f''(x) = 6x$ s'annule en $0$ et change de signe. Le point $(0, 0)$ est un point d'inflexion.
+- $f(x) = x^4$ : $f''(x) = 12x^2$ s'annule en $0$ mais ne change pas de signe. Le point $(0, 0)$ n'est **pas** un point d'inflexion.
+- $f(x) = x^3 - 3x$ : $f''(x) = 6x$ s'annule en $0$ et change de signe. Le point $(0, 0)$ est un point d'inflexion.
+:::
+
+### Méthode pour déterminer les points d'inflexion
+
+::: methode
+1. Calculer $\displaystyle f''(x)$
+2. Résoudre $f''(x) = 0$ pour trouver les valeurs candidates
+3. Étudier le signe de $f''(x)$ autour de chaque valeur candidate
+4. Si $f''$ change de signe en $a$, alors $(a, f(a))$ est un point d'inflexion
+5. Calculer $f(a)$ pour obtenir les coordonnées du point d'inflexion
+:::
+
+::: exemple
+Étudier les points d'inflexion de $f(x) = x^4 - 6x^2 + 4$
+
+**Étape 1 :** Calculer $\displaystyle f''(x)$
+
+$$f'(x) = 4x^3 - 12x$$
+
+$$f''(x) = 12x^2 - 12 = 12(x^2 - 1) = 12(x - 1)(x + 1)$$
+
+**Étape 2 :** Résoudre $\displaystyle f''(x) = 0$
+
+$f''(x) = 0 \Leftrightarrow x = -1$ ou $x = 1$
+
+**Étape 3 :** Étudier le signe de $f''(x)$
+
+- Pour $x < -1$ : $f''(x) > 0$ (convexe)
+- Pour $-1 < x < 1$ : $f''(x) < 0$ (concave)
+- Pour $x > 1$ : $f''(x) > 0$ (convexe)
+
+**Étape 4 :** Calculer les ordonnées
+
+$$f(-1) = 1 - 6 + 4 = -1$$
+
+$$f(1) = 1 - 6 + 4 = -1$$
+
+**Conclusion :** La courbe admet deux points d'inflexion : $I_1(-1, -1)$ et $I_2(1, -1)$.
+:::
+
+## V. Applications de la convexité
+
+### Bonus - Démontrer des inégalités avec la convexité
+
+::: attention Approfondissement
+L'utilisation de la convexité pour démontrer des inégalités est un approfondissement. Cette technique n'est pas strictement exigible au Bac mais peut apparaître dans certains exercices plus poussés.
+:::
+
+::: methode Utiliser la convexité pour démontrer des inégalités
+Si $f$ est convexe sur un intervalle $I$, alors pour tous $a, b \in I$ et pour tout $t \in [0, 1]$ :
+
+::: formule
+$$f(ta + (1-t)b) \leq tf(a) + (1-t)f(b)$$
+:::
+
+Cette inégalité traduit le fait que la courbe est en-dessous de la sécante.
+
+*Pour $t = \frac{1}{2}$, on obtient : $f\left(\frac{a + b}{2}\right) \leq \frac{f(a) + f(b)}{2}$ (inégalité de Jensen simple).*
+:::
+
+::: exemple
+Démontrer que pour tous réels positifs $a$ et $b$ :
+
+$\frac{a + b}{2} \geq \sqrt{ab}$ (moyenne arithmétique $\geq$ moyenne géométrique)
+
+**Solution :**
+
+On considère la fonction $f(x) = x^2$ sur $[0, +\infty[$.
+
+$f'(x) = 2x$ et $f''(x) = 2 > 0$ pour tout $x > 0$.
+
+Donc $f$ est **convexe** sur $[0, +\infty[$.
+
+Par la propriété de convexité avec $t = \frac{1}{2}$ :
+
+$$f\left(\frac{\sqrt{a} + \sqrt{b}}{2}\right) \leq \frac{f(\sqrt{a}) + f(\sqrt{b})}{2}$$
+
+C'est-à-dire : $\displaystyle \left(\frac{\sqrt{a} + \sqrt{b}}{2}\right)^2 \leq \frac{a + b}{2}$
+
+En développant le membre de gauche :
+
+$$\frac{a + 2\sqrt{ab} + b}{4} \leq \frac{a + b}{2}$$
+
+En multipliant par 4 : $\displaystyle a + 2\sqrt{ab} + b \leq 2(a + b)$
+
+Soit : $\displaystyle 2\sqrt{ab} \leq a + b$
+
+En divisant par 2 : $\displaystyle \sqrt{ab} \leq \frac{a + b}{2}$
+
+Ce qui est équivalent à : $\displaystyle \frac{a + b}{2} \geq \sqrt{ab}$
+:::
+
+### Esquisser l'allure d'une courbe à partir des tableaux de variations
+
+::: methode
+Pour esquisser l'allure de la courbe représentative de $f$ :
+
+1. Utiliser le tableau de variations de $f$ pour connaître les variations et les extremums
+2. Utiliser le tableau de variations de $f'$ (ou le signe de $f''$) pour déterminer les zones de convexité/concavité
+3. Repérer les points d'inflexion (où $f''$ change de signe)
+4. Tracer la courbe en respectant : variations, convexité/concavité, et points d'inflexion
+:::
+
+::: exemple
+Soit $\displaystyle f$ une fonction telle que :
+
+- $f$ est croissante sur $]-\infty, 0]$ et décroissante sur $[0, +\infty[$
+- $f''(x) < 0$ sur $]-\infty, 0[$ (concave) et $f''(x) > 0$ sur $]0, +\infty[$ (convexe)
+- $f''(0) = 0$ et $f''$ change de signe en $0$ (point d'inflexion)
+
+La courbe a donc : un maximum en $0$, est concave avant $0$, convexe après $0$, avec un point d'inflexion en $0$.
+:::
+
+## VI. Bonus - Approfondissements
+
+::: methode Approfondissement
+Les sections suivantes enrichissent votre culture mathématique mais ne sont pas strictement exigibles pour le Bac.
+:::
+
+### Bonus - Courbe de Lorenz
+
+::: attention Application de la convexité en économie
+La **courbe de Lorenz** est utilisée en économie pour mesurer l'inégalité de répartition des richesses.
+
+Si $L(x)$ représente la proportion de richesses détenue par les $x\%$ les plus pauvres, alors :
+
+- $L(0) = 0$ et $L(100) = 100$
+- $L$ est croissante et **convexe**
+- Plus la courbe est « proche » de la droite $y = x$, plus la répartition est équitable
+
+*L'étude de la convexité permet d'analyser le degré d'inégalité dans une société.*
+:::
+
+### Bonus - Dérivée n-ième
+
+::: definition Dérivée n-ième
+On définit par récurrence la **dérivée n-ième** d'une fonction $f$ :
+
+- $\displaystyle f^{(0)} = f$ (dérivée d'ordre 0)
+- $\displaystyle f^{(1)} = f'$ (dérivée première)
+- $\displaystyle f^{(2)} = f''$ (dérivée seconde)
+- $f^{(n+1)} = (f^{(n)})'$ pour tout $n \geq 0$
+
+*Exemple : Pour $f(x) = e^x$, on a $f^{(n)}(x) = e^x$ pour tout $n$.*
+:::
+
+### Bonus - Inégalité arithmético-géométrique
+
+::: attention Inégalité arithmético-géométrique
+Pour tous réels positifs $\displaystyle a_1, a_2, \ldots, a_n$ :
+
+::: formule
+$$\sqrt[n]{a_1 a_2 \cdots a_n} \leq \frac{a_1 + a_2 + \cdots + a_n}{n}$$
+:::
+
+Cette inégalité peut être démontrée en utilisant la convexité de la fonction $x \mapsto -\ln(x)$ sur $]0, +\infty[$.
+
+*L'égalité a lieu si et seulement si tous les $a_i$ sont égaux.*
+:::
+
+## VII. Conseils méthodologiques
+
+::: attention
+- **Oublier de multiplier par $u'$** dans la dérivée d'une composée : $(v(u(x)))' = v'(u(x)) \times u'(x)$
+- **Confondre convexité et croissance :** Une fonction peut être convexe et décroissante
+- **Penser que $f''(a) = 0$ implique un point d'inflexion :** Il faut aussi que $f''$ change de signe
+- **Oublier de vérifier le signe de $f''$** pour déterminer la convexité
+- **Confondre « au-dessus » et « en-dessous »** : Convexe = courbe au-dessus des tangentes, Concave = courbe en-dessous des tangentes
+:::
+
+::: conseil
+- **Pour dériver une composée :** Identifier clairement la fonction intérieure $u$ et la fonction extérieure $v$
+- **Pour étudier la convexité :** Calculer $f''(x)$ et étudier son signe
+- **Pour trouver les points d'inflexion :** Résoudre $f''(x) = 0$ puis vérifier le changement de signe
+- **Pour esquisser une courbe :** Utiliser les tableaux de variations de $f$, $f'$ et le signe de $f''$
+- **Pour démontrer des inégalités :** Utiliser la propriété de convexité ou de concavité avec l'inégalité des sécantes
+- **Mémoire visuelle :** Convexe = forme U (bol), Concave = forme ∩ (chapeau)
+:::

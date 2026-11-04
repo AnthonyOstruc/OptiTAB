@@ -1,76 +1,51 @@
 <template>
-  <div class="billing-success">
-    <!-- Success State -->
+  <PaiementCadre>
+    <!-- Accès activé (ou cadeau activé) -->
     <template v-if="isSuccess">
-      <div class="success-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <circle cx="12" cy="12" r="10" />
-          <path d="M8 12l3 3 5-6" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-      </div>
-      <h1 class="headline success">{{ headline }}</h1>
-      <p class="status success-text">{{ statusMessage }}</p>
-      <p v-if="accountCreated" class="status account-created-hint">
-        Un email vous a été envoyé pour définir votre mot de passe et accéder à votre compte.
+      <span class="pc-icone" aria-hidden="true"><CheckIcon /></span>
+      <h1>{{ headline }}</h1>
+      <p class="pc-texte">{{ texteSucces }}</p>
+      <ul v-if="!isGiftPayer" class="bs-recap">
+        <li><BookOpenIcon aria-hidden="true" />Tous les chapitres de ta classe sont débloqués</li>
+        <li><EnvelopeIcon aria-hidden="true" />Ta facture t’est envoyée par e-mail</li>
+        <li><CreditCardIcon aria-hidden="true" />Tu gères ton abonnement depuis « Mon abonnement »</li>
+      </ul>
+      <p v-if="accountCreated" class="bs-info">
+        Un e-mail t’a été envoyé pour choisir ton mot de passe.
       </p>
-      <router-link class="btn btn-primary" to="/dashboard">
+      <router-link class="pc-btn" :to="isGiftPayer ? '/subscription' : '/chapitres'">
         {{ primaryLabel }}
+        <ArrowRightIcon aria-hidden="true" />
       </router-link>
+      <router-link class="pc-lien" to="/dashboard">Aller à l’accueil</router-link>
     </template>
 
-    <!-- Failure State -->
+    <!-- Paiement non confirmé -->
     <template v-else-if="isFailure">
-      <div class="error-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <circle cx="12" cy="12" r="10" />
-          <path d="M8 8l8 8M16 8l-8 8" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-      </div>
-      <h1 class="headline error">Paiement non confirmé</h1>
-      <p class="status">{{ statusMessage }}</p>
-      <div class="buttons-row">
-        <router-link class="btn btn-primary" to="/billing">
-          Réessayer le paiement
-        </router-link>
-      </div>
+      <span class="pc-icone pc-icone--alerte" aria-hidden="true"><ExclamationTriangleIcon /></span>
+      <h1>Paiement non confirmé</h1>
+      <p class="pc-texte">
+        Nous n’avons pas encore reçu la confirmation de ton paiement. Si ton compte a été débité,
+        écris-nous : nous réglons ça rapidement.
+      </p>
+      <router-link class="pc-btn" to="/billing">Réessayer</router-link>
+      <router-link class="pc-lien" to="/dashboard">Aller à l’accueil</router-link>
     </template>
 
-    <!-- Loading State -->
+    <!-- Activation en cours -->
     <template v-else>
-      <div class="loading-container">
-        <div class="progress-ring">
-          <svg viewBox="0 0 100 100">
-            <circle class="progress-bg" cx="50" cy="50" r="42" />
-            <circle class="progress-bar" cx="50" cy="50" r="42" :style="progressStyle" />
-          </svg>
-          <div class="progress-text">{{ progressPercent }}%</div>
-        </div>
-        <h1 class="headline">Activation en cours</h1>
-        <p class="status">{{ statusMessage }}</p>
-        <div class="steps-indicator">
-          <div class="step" :class="{ done: step >= 1, active: step === 1 }">
-            <span class="step-icon">&#10003;</span>
-            <span class="step-label">Paiement recu</span>
-          </div>
-          <div class="step-line" :class="{ done: step >= 2 }"></div>
-          <div class="step" :class="{ done: step >= 2, active: step === 2 }">
-            <span class="step-icon">&#10003;</span>
-            <span class="step-label">Verification</span>
-          </div>
-          <div class="step-line" :class="{ done: step >= 3 }"></div>
-          <div class="step" :class="{ done: step >= 3, active: step === 3 }">
-            <span class="step-icon">&#10003;</span>
-            <span class="step-label">Activation</span>
-          </div>
-        </div>
-      </div>
-      <div class="buttons-row">
-        <router-link class="btn btn-secondary" to="/dashboard">
-          Retour au tableau de bord
-        </router-link>
-      </div>
+      <span class="bs-attente" aria-hidden="true"></span>
+      <h1>Activation de ton accès</h1>
+      <p class="pc-texte">{{ statusMessage }}</p>
+      <ol class="bs-etapes" aria-label="Étapes">
+        <li v-for="(nom, i) in ETAPES" :key="nom" :class="{ 'is-fait': i + 1 < etapeVisible || etapeVisible === 3, 'is-encours': i + 1 === etapeVisible && etapeVisible < 3 }">
+          <span class="bs-etapes__point" aria-hidden="true"><CheckIcon /></span>
+          {{ nom }}
+        </li>
+      </ol>
+      <p class="bs-patience">Cela prend quelques secondes, ne ferme pas cette page.</p>
     </template>
-  </div>
+  </PaiementCadre>
 </template>
 
 <script setup>
@@ -80,12 +55,18 @@ import { useSubscriptionStore } from '@/stores/subscription'
 import { useUserStore } from '@/stores/user'
 import { finalizeCheckoutSession, finalizeGuestCheckoutSession } from '@/api/subscriptions'
 import * as analytics from '@/services/analytics'
+import PaiementCadre from '@/components/payments/PaiementCadre.vue'
+import { ArrowRightIcon, BookOpenIcon, CheckIcon, CreditCardIcon, EnvelopeIcon, ExclamationTriangleIcon } from '@heroicons/vue/24/outline'
+
+const ETAPES = ['Paiement reçu', 'Vérification', 'Accès activé']
+// De retour du paiement, il est forcément reçu : on affiche au moins l'étape 2.
+const etapeVisible = computed(() => Math.max(2, step.value))
 
 const route = useRoute()
 const subscriptionStore = useSubscriptionStore()
 const userStore = useUserStore()
 
-const statusMessage = ref('Connexion avec Stripe...')
+const statusMessage = ref('Connexion au service de paiement…')
 const hasAccess = ref(false)
 const isGiftPayer = ref(false)
 const beneficiaryLabel = ref('')
@@ -98,21 +79,20 @@ const paymentFailed = ref(false)
 const sessionId = computed(() => route.query.session_id || '')
 const isSuccess = computed(() => hasAccess.value || isGiftPayer.value)
 const isFailure = computed(() => paymentFailed.value && !isSuccess.value)
-const progressPercent = computed(() => Math.min(100, progress.value))
-const progressStyle = computed(() => {
-  const circumference = 2 * Math.PI * 42
-  const offset = circumference - (progressPercent.value / 100) * circumference
-  return { strokeDasharray: `${circumference}`, strokeDashoffset: `${offset}` }
-})
-
 const headline = computed(() => {
-  if (accountCreated.value) return 'Compte cree et acces active !'
-  if (isGiftPayer.value) return 'Cadeau active !'
-  return hasAccess.value ? 'Acces active !' : 'Activation en cours'
+  if (accountCreated.value) return 'Bienvenue sur OptiTAB !'
+  if (isGiftPayer.value) return 'Ton cadeau est activé'
+  return 'Ton accès est activé'
 })
-const primaryLabel = computed(() => {
-  if (isGiftPayer.value) return 'Retour au tableau de bord'
-  return 'Acceder au tableau de bord'
+const primaryLabel = computed(() => (isGiftPayer.value ? 'Voir mon abonnement' : 'Commencer mes chapitres'))
+const texteSucces = computed(() => {
+  if (isGiftPayer.value) {
+    return beneficiaryLabel.value
+      ? `${beneficiaryLabel.value} a maintenant accès à tout OptiTAB. Tu retrouves cet abonnement dans « Mon abonnement ».`
+      : 'Le bénéficiaire a maintenant accès à tout OptiTAB. Tu retrouves cet abonnement dans « Mon abonnement ».'
+  }
+  if (accountCreated.value) return 'Ton compte est créé et ton accès est activé. Merci de ta confiance !'
+  return 'Merci de ta confiance ! Tout le programme de ta classe t’attend.'
 })
 
 const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms))
@@ -189,12 +169,12 @@ function loginFromGuestResponse(data) {
 
 async function finalizeSessionIfNeeded() {
   if (!sessionId.value) {
-    updateProgress(1, 100, 'Redirection vers le tableau de bord...')
+    updateProgress(3, 100, 'Accès activé !')
     hasAccess.value = true
     return
   }
 
-  updateProgress(1, 20, 'Verification du paiement...')
+  updateProgress(1, 20, 'Vérification du paiement…')
 
   const isGuest = !userStore.isAuthenticated
   const maxAttempts = 12
@@ -218,7 +198,7 @@ async function finalizeSessionIfNeeded() {
 
         // Progression fluide en une seule montee
         const pct = Math.min(90, 20 + Math.floor((attempt / maxAttempts) * 70))
-        updateProgress(2, pct, 'Paiement confirme, activation...')
+        updateProgress(2, pct, 'Paiement confirmé, activation de ton accès…')
 
         // Si guest checkout, auto-login avec les tokens retournes
         if (isGuest && data?.auth) {
@@ -239,11 +219,11 @@ async function finalizeSessionIfNeeded() {
         if (data?.has_access || isGiftPayer.value) {
           if (isGiftPayer.value) {
             const name = beneficiaryLabel.value ? ` pour ${beneficiaryLabel.value}` : ''
-            updateProgress(3, 100, `Cadeau active${name} !`)
+            updateProgress(3, 100, `Cadeau activé${name} !`)
           } else {
             const msg = accountCreated.value
-              ? 'Compte cree et acces active !'
-              : 'Acces active avec succes !'
+              ? 'Compte créé et accès activé !'
+              : 'Accès activé !'
             updateProgress(3, 100, msg)
           }
           await wait(400)
@@ -260,7 +240,7 @@ async function finalizeSessionIfNeeded() {
   // Aucun acces confirme apres toutes les tentatives
   paymentFailed.value = true
   progress.value = 100
-  statusMessage.value = "Le paiement n'a pas ete confirme. Veuillez contacter le support."
+  statusMessage.value = "Le paiement n'a pas été confirmé."
 }
 
 onMounted(() => {
@@ -269,215 +249,125 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.billing-success {
-  text-align: center;
-  padding: 3rem 1.5rem;
-  max-width: 480px;
-  margin: 0 auto;
-  min-height: 60vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Success / Error icons */
-.success-icon {
-  width: 80px;
-  height: 80px;
-  margin-bottom: 1.5rem;
-  color: #3b8544;
-  animation: scaleIn 0.4s ease-out;
-}
-.error-icon {
-  width: 80px;
-  height: 80px;
-  margin-bottom: 1.5rem;
-  color: #ef4444;
-  animation: scaleIn 0.4s ease-out;
-}
-.success-icon svg,
-.error-icon svg {
+/* Cadre, titres, boutons : components/payments/PaiementCadre.vue */
+.bs-recap {
+  display: grid;
+  gap: 10px;
   width: 100%;
-  height: 100%;
+  margin: 0 0 24px;
+  padding: 18px 20px;
+  border-radius: 16px;
+  background: #f5f7fb;
+  list-style: none;
+  text-align: left;
 }
 
-.headline {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #1f2937;
-  margin-bottom: 0.75rem;
-}
-.headline.success {
-  color: #2f6d37;
-}
-.headline.error {
-  color: #b91c1c;
-}
-.status {
-  font-size: 1.1rem;
-  color: #6b7280;
-  margin-bottom: 2rem;
-  line-height: 1.5;
-}
-.success-text {
-  color: #374151;
-}
-.account-created-hint {
-  color: #2f6d37;
-  font-size: 0.95rem;
-  margin-top: -0.5rem;
-  margin-bottom: 1.5rem;
-}
-
-/* Loading State */
-.loading-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-}
-.progress-ring {
-  position: relative;
-  width: 120px;
-  height: 120px;
-  margin-bottom: 1rem;
-}
-.progress-ring svg {
-  width: 100%;
-  height: 100%;
-  transform: rotate(-90deg);
-}
-.progress-bg {
-  fill: none;
-  stroke: #e5e7eb;
-  stroke-width: 8;
-}
-.progress-bar {
-  fill: none;
-  stroke: #3b8544;
-  stroke-width: 8;
-  stroke-linecap: round;
-  transition: stroke-dashoffset 0.4s ease;
-}
-.progress-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #3b8544;
-}
-
-/* Steps Indicator */
-.steps-indicator {
+.bs-recap li {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0;
-  margin-top: 1.5rem;
-  margin-bottom: 2rem;
-}
-.step {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-}
-.step-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: #e5e7eb;
-  color: #9ca3af;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.875rem;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-.step.done .step-icon {
-  background: #3b8544;
-  color: white;
-}
-.step.active .step-icon {
-  background: #3b8544;
-  color: white;
-  box-shadow: 0 0 0 4px rgba(59, 133, 68, 0.2);
-  animation: pulse 1.5s infinite;
-}
-.step-label {
-  font-size: 0.75rem;
-  color: #9ca3af;
-  white-space: nowrap;
-  transition: color 0.3s ease;
-}
-.step.done .step-label,
-.step.active .step-label {
-  color: #374151;
-}
-.step-line {
-  width: 40px;
-  height: 3px;
-  background: #e5e7eb;
-  margin: 0 0.5rem;
-  margin-bottom: 1.5rem;
-  border-radius: 2px;
-  transition: background 0.3s ease;
-}
-.step-line.done {
-  background: #3b8544;
-}
-
-/* Buttons */
-.buttons-row {
-  display: flex;
-  flex-direction: column;
   gap: 12px;
-  align-items: center;
-  margin-top: 1rem;
-  width: 100%;
-}
-.btn {
-  display: inline-block;
-  padding: 14px 28px;
-  border-radius: 10px;
-  text-decoration: none;
-  transition: all 0.2s ease;
+  font-size: 15px;
   font-weight: 600;
-  font-size: 1rem;
-}
-.btn-primary {
-  background: linear-gradient(135deg, #3b8544 0%, #2f6d37 100%);
-  color: white;
-  box-shadow: 0 4px 14px rgba(59, 133, 68, 0.35);
-}
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(59, 133, 68, 0.4);
-}
-.btn-secondary {
-  background: #f9fafb;
-  color: #6b7280;
-  border: 1px solid #e5e7eb;
-  padding: 10px 20px;
-  font-size: 0.875rem;
-}
-.btn-secondary:hover {
-  background: #f3f4f6;
-  color: #374151;
+  line-height: 1.4;
+  color: #172033;
 }
 
-/* Animations */
-@keyframes scaleIn {
-  0% { transform: scale(0); opacity: 0; }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); opacity: 1; }
+.bs-recap svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  color: #1b3c8e;
 }
-@keyframes pulse {
-  0%, 100% { box-shadow: 0 0 0 4px rgba(59, 133, 68, 0.2); }
-  50% { box-shadow: 0 0 0 8px rgba(59, 133, 68, 0.1); }
+
+.bs-info {
+  margin: -8px 0 20px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: #eef1f8;
+  font-size: 14px;
+  color: #1b3c8e;
+}
+
+/* Activation en cours */
+.bs-attente {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 22px;
+  border: 5px solid #e3e7ef;
+  border-top-color: #1b3c8e;
+  border-radius: 50%;
+  animation: bs-tourne 0.9s linear infinite;
+}
+
+@keyframes bs-tourne {
+  to { transform: rotate(360deg); }
+}
+
+.bs-etapes {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+  max-width: 280px;
+  margin: 0 0 22px;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+
+.bs-etapes li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #98a2b3;
+}
+
+.bs-etapes__point {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: 2px solid #e3e7ef;
+  border-radius: 50%;
+  color: transparent;
+}
+
+.bs-etapes__point svg {
+  width: 14px;
+  height: 14px;
+  stroke-width: 3;
+}
+
+.bs-etapes li.is-encours {
+  color: #172033;
+}
+
+.bs-etapes li.is-encours .bs-etapes__point {
+  border-color: #1b3c8e;
+  box-shadow: 0 0 0 4px rgba(27, 60, 142, 0.12);
+}
+
+.bs-etapes li.is-fait {
+  color: #3b8544;
+}
+
+.bs-etapes li.is-fait .bs-etapes__point {
+  border-color: #3b8544;
+  background: #3b8544;
+  color: #fff;
+}
+
+.bs-patience {
+  margin: 0;
+  font-size: 13.5px;
+  color: #667085;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bs-attente {
+    animation-duration: 2.5s;
+  }
 }
 </style>

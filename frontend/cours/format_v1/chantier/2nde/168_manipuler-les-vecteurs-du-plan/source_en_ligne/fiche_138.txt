@@ -1,0 +1,58 @@
+Titre: Résumé : Manipuler les vecteurs du plan
+
+<!-- optitab:1 -->
+::: objectifs
+- Égalité, somme et produit de vecteurs.
+- Coordonnées, norme, distance et milieu.
+- Déterminant : colinéarité, parallélisme, alignement.
+:::
+
+## I. Calcul vectoriel
+
+::: formule
+$$\overrightarrow{AB} + \overrightarrow{BC} = \overrightarrow{AC}$$
+:::
+
+[IMAGE_1]
+
+- $\overrightarrow{AB} = \overrightarrow{CD} \iff ABDC$ est un parallélogramme (diagonales $[AD]$ et $[BC]$ de même milieu).
+- $-\overrightarrow{AB} = \overrightarrow{BA}$ et $\vec{u} - \vec{v} = \vec{u} + (-\vec{v})$.
+- $k\vec{u}$ : même direction que $\vec{u}$, norme multipliée par $|k|$, sens contraire si $k \lt 0$.
+- $I$ milieu de $[AB] \iff \overrightarrow{AI} = \overrightarrow{IB}$.
+
+## II. Avec des coordonnées (repère orthonormé)
+
+[IMAGE_2]
+
+- Vecteur : $\overrightarrow{AB}\,(x_B - x_A\,;\,y_B - y_A)$.
+- Somme : $\vec{u} + \vec{v}\,(x + x'\,;\,y + y')$ ; produit : $k\vec{u}\,(kx\,;\,ky)$.
+- Norme : $\|\vec{u}\| = \sqrt{x^2 + y^2}$.
+- Milieu de $[AB]$ : $\left(\dfrac{x_A + x_B}{2}\,;\,\dfrac{y_A + y_B}{2}\right)$.
+- Distance :
+
+$$AB = \sqrt{(x_B - x_A)^2 + (y_B - y_A)^2}$$
+
+## III. Déterminant
+
+::: formule
+$$\det(\vec{u}, \vec{v}) = xy' - x'y$$
+:::
+
+- $\det(\vec{u}, \vec{v}) = 0 \iff \vec{u}$ et $\vec{v}$ colinéaires.
+- $A$, $B$, $C$ alignés $\iff \det(\overrightarrow{AB}, \overrightarrow{AC}) = 0$.
+- $(AB) \parallel (CD) \iff \det(\overrightarrow{AB}, \overrightarrow{CD}) = 0$.
+
+## IV. Les pièges à éviter
+
+::: attention Les 4 erreurs classiques
+1. Calculer « départ moins arrivée » : c’est $x_B - x_A$ pour $\overrightarrow{AB}$.
+2. Écrire $ABCD$ au lieu de $ABDC$ pour traduire $\overrightarrow{AB} = \overrightarrow{CD}$.
+3. Additionner des longueurs : en général $\|\vec{u} + \vec{v}\| \neq \|\vec{u}\| + \|\vec{v}\|$.
+4. Se tromper dans le déterminant : c’est $xy' - x'y$ (produits « en croix »).
+:::
+
+::: conseil Réflexes
+- Parallèles ou alignés ? Je calcule deux vecteurs et leur déterminant.
+- Parallélogramme ? Égalité de vecteurs, ou diagonales de même milieu.
+- Simplifier une somme ? J’enchaîne les lettres avec Chasles.
+:::

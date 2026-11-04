@@ -2,7 +2,7 @@ export const footerLinks = [
   // Navigation essentielle
   { label: 'Cours particuliers', href: '/cours-particuliers' },
   { label: 'Tarifs', href: '/tarifs' },
-  { label: 'Ressources gratuites', href: '/ressources-gratuites' },
+  { label: 'Ressources gratuites', href: '/ressources-gratuites/' },
   { label: 'À propos', href: '/about' },
   { label: 'Blog', href: '/blog' },
   // Légal

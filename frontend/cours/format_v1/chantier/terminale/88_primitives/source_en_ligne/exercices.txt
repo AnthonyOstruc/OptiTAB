@@ -1,0 +1,1663 @@
+=== Découverte - Primitives - Calculs de Base
+Id: 1221
+Difficulté: easy
+Image: v1_n88_ex1221_1_ex_famille_cubique.png
+
+Énoncé: <!-- optitab:1 -->
+Pour chacune des fonctions $f$ suivantes, définies sur $\mathbb{R}$, déterminer la primitive $F$ de $f$ sur $\mathbb{R}$ qui vérifie la condition indiquée.
+
+1. $f(x) = 3x^2 + 2$, avec $F(0) = 3$
+2. $f(x) = 5x^4$, avec $F(1) = 2$
+3. $f(x) = 7 - 4x$, avec $F(0) = 5$
+4. $f(x) = e^x$, avec $F(0) = 1$
+5. $f(x) = \cos x$, avec $F(0) = 0$
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : $f(x) = 3x^2 + 2$, avec $F(0) = 3$
+
+::: methode
+Primitives usuelles et linéarité donnent toutes les primitives ; la condition $F(0) = 3$ fixe ensuite la constante.
+:::
+
+::: etape Toutes les primitives de $f$
+- une primitive de $x^2$ est $\dfrac{x^3}{3}$, donc une primitive de $3x^2$ est $3 \times \dfrac{x^3}{3} = x^3$ ;
+- une primitive de la constante $2$ est $2x$.
+
+Les primitives de $f$ sur $\mathbb{R}$ sont donc les fonctions $F(x) = x^3 + 2x + C$, avec $C \in \mathbb{R}$.
+:::
+
+::: etape Calcul de la constante
+$$
+\begin{aligned}
+F(0) = 3 &\iff 0^3 + 2 \times 0 + C = 3 \\
+&\iff C = 3
+\end{aligned}
+$$
+
+Parmi toutes les courbes des primitives de $f$, une seule passe par le point de coordonnées $(0\,;3)$ : celle de $F$, en vert.
+
+[IMAGE_1]
+:::
+
+::: point Vérification
+$F'(x) = 3x^2 + 2 = f(x)$ et $F(0) = 3$.
+:::
+
+::: attention
+Écrire la constante $C$ **avant** d’utiliser la condition : sans elle, on ne peut pas ajuster la primitive.
+:::
+
+::: resultat
+$$F(x) = x^3 + 2x + 3$$
+:::
+
+## Question 2 : $f(x) = 5x^4$, avec $F(1) = 2$
+
+::: methode
+Une primitive de $x^n$ est $\dfrac{x^{n+1}}{n + 1}$ ; la condition $F(1) = 2$ fixe la constante.
+:::
+
+::: etape Toutes les primitives de $f$
+Une primitive de $x^4$ est $\dfrac{x^5}{5}$, donc une primitive de $5x^4$ est $5 \times \dfrac{x^5}{5} = x^5$.
+
+Les primitives de $f$ sur $\mathbb{R}$ sont les fonctions $F(x) = x^5 + C$, avec $C \in \mathbb{R}$.
+:::
+
+::: etape Calcul de la constante
+$$
+\begin{aligned}
+F(1) = 2 &\iff 1^5 + C = 2 \\
+&\iff C = 1
+\end{aligned}
+$$
+:::
+
+::: point Vérification
+$F'(x) = 5x^4 = f(x)$ et $F(1) = 1 + 1 = 2$.
+:::
+
+::: resultat
+$$F(x) = x^5 + 1$$
+:::
+
+## Question 3 : $f(x) = 7 - 4x$, avec $F(0) = 5$
+
+::: methode
+Linéarité : on primitive chaque terme en gardant son coefficient.
+:::
+
+::: etape Toutes les primitives de $f$
+- une primitive de la constante $7$ est $7x$ ;
+- une primitive de $x$ est $\dfrac{x^2}{2}$, donc une primitive de $-4x$ est $-4 \times \dfrac{x^2}{2} = -2x^2$.
+
+Les primitives de $f$ sur $\mathbb{R}$ sont les fonctions $F(x) = -2x^2 + 7x + C$, avec $C \in \mathbb{R}$.
+:::
+
+::: etape Calcul de la constante
+$$
+\begin{aligned}
+F(0) = 5 &\iff -2 \times 0^2 + 7 \times 0 + C = 5 \\
+&\iff C = 5
+\end{aligned}
+$$
+:::
+
+::: point Vérification
+$F'(x) = -4x + 7 = f(x)$ et $F(0) = 5$.
+:::
+
+::: resultat
+$$F(x) = -2x^2 + 7x + 5$$
+:::
+
+## Question 4 : $f(x) = e^x$, avec $F(0) = 1$
+
+::: methode
+La fonction exponentielle est sa propre dérivée, donc sa propre primitive.
+:::
+
+::: etape Toutes les primitives de $f$
+Les primitives de $f$ sur $\mathbb{R}$ sont les fonctions $F(x) = e^x + C$, avec $C \in \mathbb{R}$.
+:::
+
+::: etape Calcul de la constante
+$$
+\begin{aligned}
+F(0) = 1 &\iff e^0 + C = 1 \\
+&\iff 1 + C = 1 \\
+&\iff C = 0
+\end{aligned}
+$$
+:::
+
+::: attention
+$e^0 = 1$, et non $0$ : c’est l’erreur la plus fréquente dans ce type de calcul.
+:::
+
+::: resultat
+$$F(x) = e^x$$
+:::
+
+## Question 5 : $f(x) = \cos x$, avec $F(0) = 0$
+
+::: methode
+La dérivée de $\sin$ est $\cos$ : une primitive de $\cos x$ est $\sin x$.
+:::
+
+::: etape Toutes les primitives de $f$
+Les primitives de $f$ sur $\mathbb{R}$ sont les fonctions $F(x) = \sin x + C$, avec $C \in \mathbb{R}$.
+:::
+
+::: etape Calcul de la constante
+$$
+\begin{aligned}
+F(0) = 0 &\iff \sin 0 + C = 0 \\
+&\iff C = 0
+\end{aligned}
+$$
+:::
+
+::: point Vérification
+$F'(x) = \cos x = f(x)$ et $F(0) = \sin 0 = 0$.
+:::
+
+::: resultat
+$$F(x) = \sin x$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $F(x) = x^3 + 2x + 3$
+2. $F(x) = x^5 + 1$
+3. $F(x) = -2x^2 + 7x + 5$
+4. $F(x) = e^x$
+5. $F(x) = \sin x$
+
+===
+
+=== Découverte - Primitives - Linéarité et Combinaisons
+Id: 1222
+Difficulté: easy
+
+Énoncé: <!-- optitab:1 -->
+Utiliser la linéarité pour déterminer la primitive $F$ de $f$ qui vérifie la condition indiquée.
+
+1. $f(x) = 2x^3 - 5x + 4$ sur $\mathbb{R}$, avec $F(0) = 1$
+2. $f(x) = x^2 + 3x + 1$ sur $\mathbb{R}$, avec $F(0) = 2$
+3. $f(x) = 6e^x - 3$ sur $\mathbb{R}$, avec $F(0) = 0$
+4. $f(x) = 4\cos x - 2\sin x$ sur $\mathbb{R}$, avec $F(0) = 1$
+5. $f(x) = \sqrt{x} + \dfrac{1}{\sqrt{x}}$ sur $]0\,;+\infty[$, avec $F(1) = 3$ (on pourra dériver la fonction $x \mapsto x\sqrt{x}$)
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : $f(x) = 2x^3 - 5x + 4$, avec $F(0) = 1$
+
+::: methode
+Linéarité : une primitive de $af + bg$ est $aF + bG$ ; on primitive terme à terme.
+:::
+
+::: etape Primitive terme à terme
+- $2x^3$ a pour primitive $2 \times \dfrac{x^4}{4} = \dfrac{x^4}{2}$ ;
+- $-5x$ a pour primitive $-5 \times \dfrac{x^2}{2} = -\dfrac{5x^2}{2}$ ;
+- $4$ a pour primitive $4x$.
+
+Les primitives de $f$ sont les fonctions $F(x) = \dfrac{x^4}{2} - \dfrac{5x^2}{2} + 4x + C$, avec $C \in \mathbb{R}$.
+:::
+
+::: etape Calcul de la constante
+$F(0) = 0 - 0 + 0 + C = C$, donc $F(0) = 1 \iff C = 1$.
+:::
+
+::: point Vérification
+$F'(x) = \dfrac{4x^3}{2} - \dfrac{10x}{2} + 4 = 2x^3 - 5x + 4 = f(x)$.
+:::
+
+::: resultat
+$$F(x) = \frac{x^4}{2} - \frac{5x^2}{2} + 4x + 1$$
+:::
+
+## Question 2 : $f(x) = x^2 + 3x + 1$, avec $F(0) = 2$
+
+::: methode
+Linéarité et primitives des puissances de $x$.
+:::
+
+::: etape Primitive terme à terme
+- $x^2$ a pour primitive $\dfrac{x^3}{3}$ ;
+- $3x$ a pour primitive $3 \times \dfrac{x^2}{2} = \dfrac{3x^2}{2}$ ;
+- $1$ a pour primitive $x$.
+
+Les primitives de $f$ sont les fonctions $F(x) = \dfrac{x^3}{3} + \dfrac{3x^2}{2} + x + C$, avec $C \in \mathbb{R}$.
+:::
+
+::: etape Calcul de la constante
+$F(0) = C$, donc $F(0) = 2 \iff C = 2$.
+:::
+
+::: point Vérification
+$F'(x) = x^2 + 3x + 1 = f(x)$.
+:::
+
+::: resultat
+$$F(x) = \frac{x^3}{3} + \frac{3x^2}{2} + x + 2$$
+:::
+
+## Question 3 : $f(x) = 6e^x - 3$, avec $F(0) = 0$
+
+::: methode
+Linéarité, avec $e^x \to e^x$ et $1 \to x$.
+:::
+
+::: etape Primitive terme à terme
+- $6e^x$ a pour primitive $6e^x$ ;
+- $-3$ a pour primitive $-3x$.
+
+Les primitives de $f$ sont les fonctions $F(x) = 6e^x - 3x + C$, avec $C \in \mathbb{R}$.
+:::
+
+::: etape Calcul de la constante
+$$
+\begin{aligned}
+F(0) = 0 &\iff 6e^0 - 3 \times 0 + C = 0 \\
+&\iff 6 + C = 0 \\
+&\iff C = -6
+\end{aligned}
+$$
+:::
+
+::: attention
+$e^0 = 1$ : le terme $6e^0$ vaut $6$, et non $0$.
+:::
+
+::: resultat
+$$F(x) = 6e^x - 3x - 6$$
+:::
+
+## Question 4 : $f(x) = 4\cos x - 2\sin x$, avec $F(0) = 1$
+
+::: methode
+Linéarité, avec $\cos x \to \sin x$ et $\sin x \to -\cos x$.
+:::
+
+::: etape Primitive terme à terme
+- $4\cos x$ a pour primitive $4\sin x$ ;
+- $-2\sin x$ a pour primitive $-2 \times (-\cos x) = 2\cos x$.
+
+Les primitives de $f$ sont les fonctions $F(x) = 4\sin x + 2\cos x + C$, avec $C \in \mathbb{R}$.
+:::
+
+::: etape Calcul de la constante
+$$
+\begin{aligned}
+F(0) = 1 &\iff 4\sin 0 + 2\cos 0 + C = 1 \\
+&\iff 0 + 2 + C = 1 \\
+&\iff C = -1
+\end{aligned}
+$$
+:::
+
+::: point Vérification
+$F'(x) = 4\cos x - 2\sin x = f(x)$ et $F(0) = 2 - 1 = 1$.
+:::
+
+::: resultat
+$$F(x) = 4\sin x + 2\cos x - 1$$
+:::
+
+## Question 5 : $f(x) = \sqrt{x} + \dfrac{1}{\sqrt{x}}$ sur $]0\,;+\infty[$, avec $F(1) = 3$
+
+::: methode
+On obtient une primitive de $\sqrt{x}$ en dérivant $x\sqrt{x}$ ; celle de $\dfrac{1}{\sqrt{x}}$ est dans le tableau.
+:::
+
+::: etape Une primitive de $\sqrt{x}$
+Pour $x \gt 0$, avec la dérivée d’un produit et $x = \sqrt{x} \times \sqrt{x}$ :
+$$
+\begin{aligned}
+\big(x\sqrt{x}\big)' &= 1 \times \sqrt{x} + x \times \frac{1}{2\sqrt{x}} \\
+&= \sqrt{x} + \frac{\sqrt{x}}{2} \\
+&= \frac{3}{2}\sqrt{x}
+\end{aligned}
+$$
+
+Donc $\dfrac{2}{3}x\sqrt{x}$ a pour dérivée $\sqrt{x}$ : c’est une primitive de $\sqrt{x}$ sur $]0\,;+\infty[$.
+:::
+
+::: etape Toutes les primitives de $f$
+Une primitive de $\dfrac{1}{\sqrt{x}}$ est $2\sqrt{x}$. Les primitives de $f$ sur $]0\,;+\infty[$ sont donc les fonctions
+$$F(x) = \frac{2}{3}x\sqrt{x} + 2\sqrt{x} + C, \quad C \in \mathbb{R}$$
+:::
+
+::: etape Calcul de la constante
+$$
+\begin{aligned}
+F(1) = 3 &\iff \frac{2}{3} + 2 + C = 3 \\
+&\iff C = 3 - \frac{8}{3} = \frac{1}{3}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$F(x) = \frac{2}{3}x\sqrt{x} + 2\sqrt{x} + \frac{1}{3}$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $F(x) = \dfrac{x^4}{2} - \dfrac{5x^2}{2} + 4x + 1$
+2. $F(x) = \dfrac{x^3}{3} + \dfrac{3x^2}{2} + x + 2$
+3. $F(x) = 6e^x - 3x - 6$
+4. $F(x) = 4\sin x + 2\cos x - 1$
+5. $F(x) = \dfrac{2}{3}x\sqrt{x} + 2\sqrt{x} + \dfrac{1}{3}$
+
+===
+
+=== Entraînement - Primitives - Exponentielles et Trigonométriques
+Id: 1223
+Difficulté: medium
+
+Énoncé: <!-- optitab:1 -->
+Déterminer la primitive $F$ sur $\mathbb{R}$ de chacune des fonctions suivantes qui vérifie la condition indiquée.
+
+::: rappel
+Pour $a \neq 0$ : $\big(e^{ax+b}\big)' = ae^{ax+b}$, $\big(\sin(ax + b)\big)' = a\cos(ax + b)$ et $\big(\cos(ax + b)\big)' = -a\sin(ax + b)$. Donc, sur $\mathbb{R}$ :
+- une primitive de $e^{ax+b}$ est $\dfrac{1}{a}e^{ax+b}$ ;
+- une primitive de $\cos(ax + b)$ est $\dfrac{1}{a}\sin(ax + b)$ ;
+- une primitive de $\sin(ax + b)$ est $-\dfrac{1}{a}\cos(ax + b)$.
+:::
+
+1. $f(x) = e^{3x}$, avec $F(0) = \dfrac{1}{3}$
+2. $f(x) = e^{2x+1}$, avec $F(0) = \dfrac{e}{2}$
+3. $f(x) = \sin(2x)$, avec $F(0) = 0$
+4. $f(x) = \cos(5x)$, avec $F(0) = \dfrac{1}{5}$
+5. $f(x) = 3e^x - 2\cos(2x)$, avec $F(0) = 2$
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : $f(x) = e^{3x}$, avec $F(0) = \dfrac{1}{3}$
+
+::: methode
+Forme $e^{ax+b}$ avec $a = 3$ et $b = 0$ : une primitive est $\dfrac{1}{a}e^{ax+b}$.
+:::
+
+::: etape Toutes les primitives de $f$
+Une primitive de $e^{3x}$ est $\dfrac{1}{3}e^{3x}$ ; en effet $\left(\dfrac{1}{3}e^{3x}\right)' = \dfrac{1}{3} \times 3e^{3x} = e^{3x}$.
+
+Les primitives de $f$ sont les fonctions $F(x) = \dfrac{1}{3}e^{3x} + C$, avec $C \in \mathbb{R}$.
+:::
+
+::: etape Calcul de la constante
+$$
+\begin{aligned}
+F(0) = \frac{1}{3} &\iff \frac{1}{3}e^0 + C = \frac{1}{3} \\
+&\iff \frac{1}{3} + C = \frac{1}{3} \\
+&\iff C = 0
+\end{aligned}
+$$
+:::
+
+::: attention
+Une primitive de $e^{3x}$ est $\dfrac{1}{3}e^{3x}$, et non $3e^{3x}$ (qui est sa dérivée).
+:::
+
+::: resultat
+$$F(x) = \frac{1}{3}e^{3x}$$
+:::
+
+## Question 2 : $f(x) = e^{2x+1}$, avec $F(0) = \dfrac{e}{2}$
+
+::: methode
+Forme $e^{ax+b}$ avec $a = 2$ et $b = 1$.
+:::
+
+::: etape Toutes les primitives de $f$
+Les primitives de $f$ sont les fonctions $F(x) = \dfrac{1}{2}e^{2x+1} + C$, avec $C \in \mathbb{R}$.
+:::
+
+::: etape Calcul de la constante
+$$
+\begin{aligned}
+F(0) = \frac{e}{2} &\iff \frac{1}{2}e^{1} + C = \frac{e}{2} \\
+&\iff C = 0
+\end{aligned}
+$$
+:::
+
+::: point Vérification
+$F'(x) = \dfrac{1}{2} \times 2e^{2x+1} = e^{2x+1} = f(x)$.
+:::
+
+::: resultat
+$$F(x) = \frac{1}{2}e^{2x+1}$$
+:::
+
+## Question 3 : $f(x) = \sin(2x)$, avec $F(0) = 0$
+
+::: methode
+Forme $\sin(ax + b)$ avec $a = 2$ et $b = 0$ : une primitive est $-\dfrac{1}{a}\cos(ax + b)$.
+:::
+
+::: etape Toutes les primitives de $f$
+Les primitives de $f$ sont les fonctions $F(x) = -\dfrac{1}{2}\cos(2x) + C$, avec $C \in \mathbb{R}$.
+:::
+
+::: etape Calcul de la constante
+$$
+\begin{aligned}
+F(0) = 0 &\iff -\frac{1}{2}\cos 0 + C = 0 \\
+&\iff -\frac{1}{2} + C = 0 \\
+&\iff C = \frac{1}{2}
+\end{aligned}
+$$
+:::
+
+::: point Vérification
+$F'(x) = -\dfrac{1}{2} \times \big(-2\sin(2x)\big) = \sin(2x) = f(x)$ et $F(0) = -\dfrac{1}{2} + \dfrac{1}{2} = 0$.
+:::
+
+::: attention
+$\cos 0 = 1$ : la constante n’est donc pas nulle ici, contrairement à ce que l’on pourrait croire.
+:::
+
+::: resultat
+$$F(x) = -\frac{1}{2}\cos(2x) + \frac{1}{2}$$
+:::
+
+## Question 4 : $f(x) = \cos(5x)$, avec $F(0) = \dfrac{1}{5}$
+
+::: methode
+Forme $\cos(ax + b)$ avec $a = 5$ et $b = 0$ : une primitive est $\dfrac{1}{a}\sin(ax + b)$.
+:::
+
+::: etape Toutes les primitives de $f$
+Les primitives de $f$ sont les fonctions $F(x) = \dfrac{1}{5}\sin(5x) + C$, avec $C \in \mathbb{R}$.
+:::
+
+::: etape Calcul de la constante
+$$
+\begin{aligned}
+F(0) = \frac{1}{5} &\iff \frac{1}{5}\sin 0 + C = \frac{1}{5} \\
+&\iff C = \frac{1}{5}
+\end{aligned}
+$$
+:::
+
+::: point Vérification
+$F'(x) = \dfrac{1}{5} \times 5\cos(5x) = \cos(5x) = f(x)$.
+:::
+
+::: resultat
+$$F(x) = \frac{1}{5}\sin(5x) + \frac{1}{5}$$
+:::
+
+## Question 5 : $f(x) = 3e^x - 2\cos(2x)$, avec $F(0) = 2$
+
+::: methode
+Linéarité, puis forme $\cos(ax + b)$ pour le second terme.
+:::
+
+::: etape Primitive terme à terme
+- $3e^x$ a pour primitive $3e^x$ ;
+- $\cos(2x)$ a pour primitive $\dfrac{1}{2}\sin(2x)$, donc $-2\cos(2x)$ a pour primitive $-2 \times \dfrac{1}{2}\sin(2x) = -\sin(2x)$.
+
+Les primitives de $f$ sont les fonctions $F(x) = 3e^x - \sin(2x) + C$, avec $C \in \mathbb{R}$.
+:::
+
+::: etape Calcul de la constante
+$$
+\begin{aligned}
+F(0) = 2 &\iff 3e^0 - \sin 0 + C = 2 \\
+&\iff 3 + C = 2 \\
+&\iff C = -1
+\end{aligned}
+$$
+:::
+
+::: point Vérification
+$F'(x) = 3e^x - 2\cos(2x) = f(x)$ et $F(0) = 3 - 0 - 1 = 2$.
+:::
+
+::: resultat
+$$F(x) = 3e^x - \sin(2x) - 1$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $F(x) = \dfrac{1}{3}e^{3x}$
+2. $F(x) = \dfrac{1}{2}e^{2x+1}$
+3. $F(x) = -\dfrac{1}{2}\cos(2x) + \dfrac{1}{2}$
+4. $F(x) = \dfrac{1}{5}\sin(5x) + \dfrac{1}{5}$
+5. $F(x) = 3e^x - \sin(2x) - 1$
+
+===
+
+=== Entraînement - Primitives - Fonctions Rationnelles Simples
+Id: 1224
+Difficulté: medium
+
+Énoncé: <!-- optitab:1 -->
+Déterminer une primitive de chacune des fonctions suivantes sur l’intervalle indiqué.
+
+1. $f(x) = \dfrac{1}{x}$ sur $]-\infty\,;0[$ (on pourra dériver la fonction $x \mapsto \ln(-x)$)
+2. $f(x) = \dfrac{2x}{x^2 + 1}$ sur $\mathbb{R}$
+3. $f(x) = \dfrac{1}{(3x + 1)^3}$ sur $\left]-\dfrac{1}{3}\,;+\infty\right[$
+4. $f(x) = \dfrac{x - 1}{x^2}$ sur $]0\,;+\infty[$
+5. $f(x) = \dfrac{5}{2x - 3}$ sur $\left]\dfrac{3}{2}\,;+\infty\right[$
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : $f(x) = \dfrac{1}{x}$ sur $]-\infty\,;0[$
+
+::: methode
+Sur $]-\infty\,;0[$, $\ln x$ n’est pas défini : on utilise la forme $\dfrac{u'}{u}$ avec $u(x) = -x \gt 0$.
+:::
+
+::: etape Faire apparaître la forme $\dfrac{u'}{u}$
+Pour $x \lt 0$, on pose $u(x) = -x$ : $u(x) \gt 0$ et $u'(x) = -1$. Alors
+$$\frac{u'(x)}{u(x)} = \frac{-1}{-x} = \frac{1}{x} = f(x)$$
+:::
+
+::: etape Une primitive
+Une primitive de $\dfrac{u'}{u}$ (avec $u \gt 0$) est $\ln u$, donc $F(x) = \ln(-x)$.
+:::
+
+::: point Vérification
+$F'(x) = \dfrac{-1}{-x} = \dfrac{1}{x} = f(x)$ pour tout $x \lt 0$.
+:::
+
+::: attention
+Sur $]0\,;+\infty[$, une primitive de $\dfrac{1}{x}$ est $\ln x$ ; sur $]-\infty\,;0[$, $\ln x$ n’existe pas : on prend $\ln(-x)$.
+:::
+
+::: resultat
+$$F(x) = \ln(-x)$$
+:::
+
+## Question 2 : $f(x) = \dfrac{2x}{x^2 + 1}$ sur $\mathbb{R}$
+
+::: methode
+Le numérateur est la dérivée du dénominateur : forme $\dfrac{u'}{u}$.
+:::
+
+::: etape Identification
+$u(x) = x^2 + 1$ et $u'(x) = 2x$, donc $f = \dfrac{u'}{u}$. De plus $u(x) \ge 1 \gt 0$ pour tout réel $x$.
+:::
+
+::: etape Une primitive
+$F(x) = \ln(x^2 + 1)$.
+:::
+
+::: point Vérification
+$F'(x) = \dfrac{2x}{x^2 + 1} = f(x)$.
+:::
+
+::: resultat
+$$F(x) = \ln(x^2 + 1)$$
+:::
+
+## Question 3 : $f(x) = \dfrac{1}{(3x + 1)^3}$ sur $\left]-\dfrac{1}{3}\,;+\infty\right[$
+
+::: methode
+Forme $\dfrac{u'}{u^n}$ avec $u(x) = 3x + 1$, après ajustement de la constante : une primitive est $-\dfrac{1}{(n - 1)u^{n-1}}$.
+:::
+
+::: etape Faire apparaître $u'$
+$u(x) = 3x + 1$, $u'(x) = 3$, et $u(x) \gt 0$ sur l’intervalle. On écrit
+$$f(x) = \frac{1}{3} \times \frac{3}{(3x + 1)^3} = \frac{1}{3} \times \frac{u'(x)}{u(x)^3}$$
+:::
+
+::: etape Une primitive
+Avec $n = 3$, une primitive de $\dfrac{u'}{u^3}$ est $-\dfrac{1}{2u^2}$. Donc
+$$
+\begin{aligned}
+F(x) &= \frac{1}{3} \times \left(-\frac{1}{2(3x + 1)^2}\right) \\
+&= -\frac{1}{6(3x + 1)^2}
+\end{aligned}
+$$
+:::
+
+::: point Vérification
+$\left(\dfrac{1}{u^2}\right)' = -\dfrac{2u'}{u^3}$, donc $F'(x) = -\dfrac{1}{6} \times \dfrac{-2 \times 3}{(3x + 1)^3} = \dfrac{1}{(3x + 1)^3} = f(x)$.
+:::
+
+::: resultat
+$$F(x) = -\frac{1}{6(3x + 1)^2}$$
+:::
+
+## Question 4 : $f(x) = \dfrac{x - 1}{x^2}$ sur $]0\,;+\infty[$
+
+::: methode
+On sépare la fraction en deux termes de référence, puis linéarité.
+:::
+
+::: etape Décomposition
+Pour $x \gt 0$ :
+$$
+\begin{aligned}
+\frac{x - 1}{x^2} &= \frac{x}{x^2} - \frac{1}{x^2} \\
+&= \frac{1}{x} - \frac{1}{x^2}
+\end{aligned}
+$$
+:::
+
+::: etape Primitive terme à terme
+- $\dfrac{1}{x}$ a pour primitive $\ln x$ sur $]0\,;+\infty[$ ;
+- $\dfrac{1}{x^2}$ a pour primitive $-\dfrac{1}{x}$, donc $-\dfrac{1}{x^2}$ a pour primitive $+\dfrac{1}{x}$.
+:::
+
+::: point Vérification
+$F'(x) = \dfrac{1}{x} - \dfrac{1}{x^2} = f(x)$.
+:::
+
+::: attention
+Deux signes moins se compensent : une primitive de $-\dfrac{1}{x^2}$ est $+\dfrac{1}{x}$.
+:::
+
+::: resultat
+$$F(x) = \ln x + \frac{1}{x}$$
+:::
+
+## Question 5 : $f(x) = \dfrac{5}{2x - 3}$ sur $\left]\dfrac{3}{2}\,;+\infty\right[$
+
+::: methode
+Forme $\dfrac{u'}{u}$ avec $u(x) = 2x - 3$, après ajustement de la constante.
+:::
+
+::: etape Faire apparaître $u'$
+$u(x) = 2x - 3$, $u'(x) = 2$, et $u(x) \gt 0$ pour $x \gt \dfrac{3}{2}$. On écrit
+$$f(x) = \frac{5}{2} \times \frac{2}{2x - 3} = \frac{5}{2} \times \frac{u'(x)}{u(x)}$$
+:::
+
+::: etape Une primitive
+$F(x) = \dfrac{5}{2}\ln(2x - 3)$.
+:::
+
+::: point Vérification
+$F'(x) = \dfrac{5}{2} \times \dfrac{2}{2x - 3} = \dfrac{5}{2x - 3} = f(x)$.
+:::
+
+::: resultat
+$$F(x) = \frac{5}{2}\ln(2x - 3)$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $F(x) = \ln(-x)$
+2. $F(x) = \ln(x^2 + 1)$
+3. $F(x) = -\dfrac{1}{6(3x + 1)^2}$
+4. $F(x) = \ln x + \dfrac{1}{x}$
+5. $F(x) = \dfrac{5}{2}\ln(2x - 3)$
+
+===
+
+=== Entraînement - Primitives - Formes Composées
+Id: 1228
+Difficulté: medium
+
+Énoncé: <!-- optitab:1 -->
+Déterminer une primitive de chacune des fonctions suivantes sur l’intervalle indiqué.
+
+::: rappel
+Si $F$ est une primitive de $f$ et si $a \neq 0$, alors $x \mapsto \dfrac{1}{a}F(ax + b)$ est une primitive de $x \mapsto f(ax + b)$. Ainsi :
+- une primitive de $(ax + b)^n$ ($n$ entier naturel) est $\dfrac{1}{a} \times \dfrac{(ax + b)^{n+1}}{n + 1}$ ;
+- une primitive de $\dfrac{1}{ax + b}$ est $\dfrac{1}{a}\ln(ax + b)$ là où $ax + b \gt 0$ ;
+- une primitive de $e^{ax+b}$ est $\dfrac{1}{a}e^{ax+b}$ ;
+- une primitive de $\cos(ax + b)$ est $\dfrac{1}{a}\sin(ax + b)$ et une primitive de $\sin(ax + b)$ est $-\dfrac{1}{a}\cos(ax + b)$.
+:::
+
+1. $f(x) = (3x - 2)^4$ sur $\mathbb{R}$
+2. $f(x) = \dfrac{1}{2x + 5}$ sur $\left]-\dfrac{5}{2}\,;+\infty\right[$
+3. $f(x) = \sin(3x - 1)$ sur $\mathbb{R}$
+4. $f(x) = \cos(4x + 2)$ sur $\mathbb{R}$
+5. $f(x) = e^{5x-3}$ sur $\mathbb{R}$
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : $f(x) = (3x - 2)^4$ sur $\mathbb{R}$
+
+::: methode
+Forme $(ax + b)^n$ avec $a = 3$, $b = -2$ et $n = 4$.
+:::
+
+::: etape Une primitive
+Une primitive de $X^4$ est $\dfrac{X^5}{5}$ ; on remplace $X$ par $3x - 2$ et on divise par $a = 3$ :
+$$
+\begin{aligned}
+F(x) &= \frac{1}{3} \times \frac{(3x - 2)^5}{5} \\
+&= \frac{(3x - 2)^5}{15}
+\end{aligned}
+$$
+:::
+
+::: point Vérification
+$F'(x) = \dfrac{5 \times 3(3x - 2)^4}{15} = (3x - 2)^4 = f(x)$.
+:::
+
+::: attention
+Développer $(3x - 2)^4$ avant de primitiver est possible mais long : la forme composée donne le résultat en une ligne.
+:::
+
+::: resultat
+$$F(x) = \frac{(3x - 2)^5}{15}$$
+:::
+
+## Question 2 : $f(x) = \dfrac{1}{2x + 5}$ sur $\left]-\dfrac{5}{2}\,;+\infty\right[$
+
+::: methode
+Forme $\dfrac{u'}{u}$ avec $u(x) = 2x + 5$, après ajustement de la constante.
+:::
+
+::: etape Faire apparaître $u'$
+$u(x) = 2x + 5$, $u'(x) = 2$, et $u(x) \gt 0$ pour $x \gt -\dfrac{5}{2}$. On écrit $f(x) = \dfrac{1}{2} \times \dfrac{2}{2x + 5} = \dfrac{1}{2} \times \dfrac{u'(x)}{u(x)}$.
+:::
+
+::: etape Une primitive
+$F(x) = \dfrac{1}{2}\ln(2x + 5)$.
+:::
+
+::: point Vérification
+$F'(x) = \dfrac{1}{2} \times \dfrac{2}{2x + 5} = \dfrac{1}{2x + 5} = f(x)$.
+:::
+
+::: resultat
+$$F(x) = \frac{1}{2}\ln(2x + 5)$$
+:::
+
+## Question 3 : $f(x) = \sin(3x - 1)$ sur $\mathbb{R}$
+
+::: methode
+Forme $\sin(ax + b)$ avec $a = 3$ et $b = -1$.
+:::
+
+::: etape Une primitive
+$F(x) = -\dfrac{1}{3}\cos(3x - 1)$.
+:::
+
+::: point Vérification
+$F'(x) = -\dfrac{1}{3} \times \big(-3\sin(3x - 1)\big) = \sin(3x - 1) = f(x)$.
+:::
+
+::: resultat
+$$F(x) = -\frac{1}{3}\cos(3x - 1)$$
+:::
+
+## Question 4 : $f(x) = \cos(4x + 2)$ sur $\mathbb{R}$
+
+::: methode
+Forme $\cos(ax + b)$ avec $a = 4$ et $b = 2$.
+:::
+
+::: etape Une primitive
+$F(x) = \dfrac{1}{4}\sin(4x + 2)$.
+:::
+
+::: point Vérification
+$F'(x) = \dfrac{1}{4} \times 4\cos(4x + 2) = \cos(4x + 2) = f(x)$.
+:::
+
+::: resultat
+$$F(x) = \frac{1}{4}\sin(4x + 2)$$
+:::
+
+## Question 5 : $f(x) = e^{5x-3}$ sur $\mathbb{R}$
+
+::: methode
+Forme $e^{ax+b}$ avec $a = 5$ et $b = -3$.
+:::
+
+::: etape Une primitive
+$F(x) = \dfrac{1}{5}e^{5x-3}$.
+:::
+
+::: point Vérification
+$F'(x) = \dfrac{1}{5} \times 5e^{5x-3} = e^{5x-3} = f(x)$.
+:::
+
+::: resultat
+$$F(x) = \frac{1}{5}e^{5x-3}$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $F(x) = \dfrac{(3x - 2)^5}{15}$
+2. $F(x) = \dfrac{1}{2}\ln(2x + 5)$
+3. $F(x) = -\dfrac{1}{3}\cos(3x - 1)$
+4. $F(x) = \dfrac{1}{4}\sin(4x + 2)$
+5. $F(x) = \dfrac{1}{5}e^{5x-3}$
+
+===
+
+=== Entraînement - Primitives - Intégration par Parties
+Id: 1226
+Difficulté: medium
+
+Énoncé: <!-- optitab:1 -->
+À l’aide d’une intégration par parties, déterminer une primitive de chacune des fonctions suivantes sur l’intervalle indiqué.
+
+::: rappel Intégration par parties
+Si $u$ et $v$ sont dérivables sur $I$, de dérivées continues, et si $G$ est une primitive de $u'v$ sur $I$, alors $uv - G$ est une primitive de $uv'$ sur $I$, car $(uv - G)' = u'v + uv' - u'v = uv'$.
+:::
+
+1. $f(x) = xe^x$ sur $\mathbb{R}$
+2. $f(x) = x\cos x$ sur $\mathbb{R}$
+3. $f(x) = \ln x$ sur $]0\,;+\infty[$ (écrire $\ln x = 1 \times \ln x$)
+4. $f(x) = x^2\sin x$ sur $\mathbb{R}$ (deux intégrations par parties ; on pourra utiliser la question 2)
+5. $f(x) = xe^{2x}$ sur $\mathbb{R}$
+
+Étapes:
+
+<!-- optitab:1 -->
+::: conseil Choisir $u$ et $v'$
+On écrit $f = uv'$ en prenant pour $u$ le facteur que la dérivation simplifie (un polynôme, ou $\ln x$) et pour $v'$ le facteur dont on connaît une primitive ($e^x$, $\cos x$, $\sin x$, $1$…).
+:::
+
+## Question 1 : $f(x) = xe^x$ sur $\mathbb{R}$
+
+::: methode
+Intégration par parties avec $u(x) = x$, que la dérivation simplifie, et $v'(x) = e^x$.
+:::
+
+::: etape Choix de $u$ et $v'$
+- $u(x) = x$, donc $u'(x) = 1$ ;
+- $v'(x) = e^x$, donc $v(x) = e^x$.
+:::
+
+::: etape Une primitive $G$ de $u'v$
+$u'(x)v(x) = 1 \times e^x = e^x$ : on prend $G(x) = e^x$.
+:::
+
+::: etape Application de la formule
+$$
+\begin{aligned}
+F(x) &= u(x)v(x) - G(x) \\
+&= xe^x - e^x \\
+&= (x - 1)e^x
+\end{aligned}
+$$
+:::
+
+::: point Vérification
+$F'(x) = e^x + (x - 1)e^x = xe^x = f(x)$.
+:::
+
+::: resultat
+$$F(x) = (x - 1)e^x$$
+:::
+
+## Question 2 : $f(x) = x\cos x$ sur $\mathbb{R}$
+
+::: methode
+Intégration par parties avec $u(x) = x$ et $v'(x) = \cos x$.
+:::
+
+::: etape Choix de $u$ et $v'$
+- $u(x) = x$, donc $u'(x) = 1$ ;
+- $v'(x) = \cos x$, donc $v(x) = \sin x$.
+:::
+
+::: etape Une primitive $G$ de $u'v$
+$u'(x)v(x) = \sin x$ : on prend $G(x) = -\cos x$.
+:::
+
+::: etape Application de la formule
+$$
+\begin{aligned}
+F(x) &= u(x)v(x) - G(x) \\
+&= x\sin x - (-\cos x) \\
+&= x\sin x + \cos x
+\end{aligned}
+$$
+:::
+
+::: point Vérification
+$F'(x) = \sin x + x\cos x - \sin x = x\cos x = f(x)$.
+:::
+
+::: attention
+$G(x) = -\cos x$ : en le soustrayant, on obtient $+\cos x$. Attention aux deux signes moins.
+:::
+
+::: resultat
+$$F(x) = x\sin x + \cos x$$
+:::
+
+## Question 3 : $f(x) = \ln x$ sur $]0\,;+\infty[$
+
+::: methode
+On écrit $\ln x = 1 \times \ln x$ : on dérive $\ln x$ (qui devient $\frac{1}{x}$) et on primitive $1$.
+:::
+
+::: etape Choix de $u$ et $v'$
+- $u(x) = \ln x$, donc $u'(x) = \dfrac{1}{x}$ ;
+- $v'(x) = 1$, donc $v(x) = x$.
+:::
+
+::: etape Une primitive $G$ de $u'v$
+$u'(x)v(x) = \dfrac{1}{x} \times x = 1$ : on prend $G(x) = x$.
+:::
+
+::: etape Application de la formule
+$$F(x) = u(x)v(x) - G(x) = x\ln x - x$$
+:::
+
+::: point Vérification
+$F'(x) = 1 \times \ln x + x \times \dfrac{1}{x} - 1 = \ln x = f(x)$.
+:::
+
+::: retenir
+Une primitive de $\ln x$ sur $]0\,;+\infty[$ est $x\ln x - x$ : résultat classique à connaître.
+:::
+
+::: resultat
+$$F(x) = x\ln x - x$$
+:::
+
+## Question 4 : $f(x) = x^2\sin x$ sur $\mathbb{R}$
+
+::: methode
+Une première intégration par parties fait baisser le degré du polynôme ; la seconde est celle de la question 2.
+:::
+
+::: etape Première intégration par parties
+- $u(x) = x^2$, donc $u'(x) = 2x$ ;
+- $v'(x) = \sin x$, donc $v(x) = -\cos x$.
+
+Alors $u'(x)v(x) = -2x\cos x$ et $F(x) = -x^2\cos x - G(x)$, où $G$ est une primitive de $-2x\cos x$.
+:::
+
+::: etape Une primitive $G$ de $-2x\cos x$
+D’après la question 2, une primitive de $x\cos x$ est $x\sin x + \cos x$. Donc
+$$G(x) = -2(x\sin x + \cos x)$$
+:::
+
+::: etape Conclusion
+$$
+\begin{aligned}
+F(x) &= -x^2\cos x - G(x) \\
+&= -x^2\cos x + 2(x\sin x + \cos x) \\
+&= -x^2\cos x + 2x\sin x + 2\cos x
+\end{aligned}
+$$
+:::
+
+::: point Vérification
+$F'(x) = -2x\cos x + x^2\sin x + 2\sin x + 2x\cos x - 2\sin x = x^2\sin x = f(x)$.
+:::
+
+::: resultat
+$$F(x) = -x^2\cos x + 2x\sin x + 2\cos x$$
+:::
+
+## Question 5 : $f(x) = xe^{2x}$ sur $\mathbb{R}$
+
+::: methode
+Intégration par parties avec $u(x) = x$ et $v'(x) = e^{2x}$.
+:::
+
+::: etape Choix de $u$ et $v'$
+- $u(x) = x$, donc $u'(x) = 1$ ;
+- $v'(x) = e^{2x}$, donc $v(x) = \dfrac{1}{2}e^{2x}$.
+:::
+
+::: etape Une primitive $G$ de $u'v$
+$u'(x)v(x) = \dfrac{1}{2}e^{2x}$ : on prend $G(x) = \dfrac{1}{2} \times \dfrac{1}{2}e^{2x} = \dfrac{1}{4}e^{2x}$.
+:::
+
+::: etape Application de la formule
+$$
+\begin{aligned}
+F(x) &= x \times \frac{1}{2}e^{2x} - \frac{1}{4}e^{2x} \\
+&= \frac{2x - 1}{4}e^{2x}
+\end{aligned}
+$$
+:::
+
+::: point Vérification
+$F'(x) = \dfrac{2}{4}e^{2x} + \dfrac{2x - 1}{4} \times 2e^{2x} = \left(\dfrac{1}{2} + x - \dfrac{1}{2}\right)e^{2x} = xe^{2x} = f(x)$.
+:::
+
+::: resultat
+$$F(x) = \frac{2x - 1}{4}e^{2x}$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $F(x) = (x - 1)e^x$
+2. $F(x) = x\sin x + \cos x$
+3. $F(x) = x\ln x - x$
+4. $F(x) = -x^2\cos x + 2x\sin x + 2\cos x$
+5. $F(x) = \dfrac{2x - 1}{4}e^{2x}$
+
+===
+
+=== Entraînement - Primitives - Intégration par Parties Avancée
+Id: 1227
+Difficulté: hard
+
+Énoncé: <!-- optitab:1 -->
+À l’aide d’intégrations par parties, déterminer une primitive de chacune des fonctions suivantes sur l’intervalle indiqué.
+
+::: rappel Intégration par parties
+Si $u$ et $v$ sont dérivables sur $I$, de dérivées continues, et si $G$ est une primitive de $u'v$ sur $I$, alors $uv - G$ est une primitive de $uv'$ sur $I$.
+:::
+
+1. $f(x) = x^2e^x$ sur $\mathbb{R}$ (deux intégrations par parties)
+2. $f(x) = x\ln x$ sur $]0\,;+\infty[$
+3. $f(x) = x\sin(2x)$ sur $\mathbb{R}$
+4. $f(x) = (x + 1)e^x$ sur $\mathbb{R}$
+5. $f(x) = x^2\cos x$ sur $\mathbb{R}$ (deux intégrations par parties)
+
+Étapes:
+
+<!-- optitab:1 -->
+::: conseil Choisir $u$ et $v'$
+On prend pour $u$ le facteur que la dérivation simplifie (un polynôme, ou $\ln x$) et pour $v'$ le facteur dont on connaît une primitive.
+:::
+
+## Question 1 : $f(x) = x^2e^x$ sur $\mathbb{R}$
+
+::: methode
+Deux intégrations par parties : chacune fait baisser de $1$ le degré du polynôme.
+:::
+
+::: etape Première intégration par parties
+- $u(x) = x^2$, donc $u'(x) = 2x$ ;
+- $v'(x) = e^x$, donc $v(x) = e^x$.
+
+Alors $F(x) = x^2e^x - G(x)$, où $G$ est une primitive de $u'v = 2xe^x$.
+:::
+
+::: etape Seconde intégration par parties : une primitive de $xe^x$
+Avec $u(x) = x$ et $v'(x) = e^x$ : $u'(x) = 1$, $v(x) = e^x$, et une primitive de $u'v = e^x$ est $e^x$. Une primitive de $xe^x$ est donc $xe^x - e^x = (x - 1)e^x$, d’où
+$$G(x) = 2(x - 1)e^x$$
+:::
+
+::: etape Conclusion
+$$
+\begin{aligned}
+F(x) &= x^2e^x - 2(x - 1)e^x \\
+&= (x^2 - 2x + 2)e^x
+\end{aligned}
+$$
+:::
+
+::: point Vérification
+$F'(x) = (2x - 2)e^x + (x^2 - 2x + 2)e^x = x^2e^x = f(x)$.
+:::
+
+::: resultat
+$$F(x) = (x^2 - 2x + 2)e^x$$
+:::
+
+## Question 2 : $f(x) = x\ln x$ sur $]0\,;+\infty[$
+
+::: methode
+On dérive $\ln x$ et on primitive $x$ : $u(x) = \ln x$ et $v'(x) = x$.
+:::
+
+::: etape Choix de $u$ et $v'$
+- $u(x) = \ln x$, donc $u'(x) = \dfrac{1}{x}$ ;
+- $v'(x) = x$, donc $v(x) = \dfrac{x^2}{2}$.
+:::
+
+::: etape Une primitive $G$ de $u'v$
+$u'(x)v(x) = \dfrac{1}{x} \times \dfrac{x^2}{2} = \dfrac{x}{2}$ : on prend $G(x) = \dfrac{x^2}{4}$.
+:::
+
+::: etape Application de la formule
+$$F(x) = \frac{x^2}{2}\ln x - \frac{x^2}{4}$$
+:::
+
+::: point Vérification
+$F'(x) = x\ln x + \dfrac{x^2}{2} \times \dfrac{1}{x} - \dfrac{x}{2} = x\ln x = f(x)$.
+:::
+
+::: attention
+Le choix $u(x) = x$, $v'(x) = \ln x$ mènerait à une primitive de $x\ln x - x$, plus compliquée que $f$ : on dérive le logarithme.
+:::
+
+::: resultat
+$$F(x) = \frac{x^2}{2}\ln x - \frac{x^2}{4}$$
+:::
+
+## Question 3 : $f(x) = x\sin(2x)$ sur $\mathbb{R}$
+
+::: methode
+Intégration par parties avec $u(x) = x$ et $v'(x) = \sin(2x)$.
+:::
+
+::: etape Choix de $u$ et $v'$
+- $u(x) = x$, donc $u'(x) = 1$ ;
+- $v'(x) = \sin(2x)$, donc $v(x) = -\dfrac{1}{2}\cos(2x)$.
+:::
+
+::: etape Une primitive $G$ de $u'v$
+$u'(x)v(x) = -\dfrac{1}{2}\cos(2x)$ : on prend $G(x) = -\dfrac{1}{2} \times \dfrac{1}{2}\sin(2x) = -\dfrac{1}{4}\sin(2x)$.
+:::
+
+::: etape Application de la formule
+$$
+\begin{aligned}
+F(x) &= -\frac{x}{2}\cos(2x) - \left(-\frac{1}{4}\sin(2x)\right) \\
+&= -\frac{x}{2}\cos(2x) + \frac{1}{4}\sin(2x)
+\end{aligned}
+$$
+:::
+
+::: point Vérification
+$F'(x) = -\dfrac{1}{2}\cos(2x) + x\sin(2x) + \dfrac{1}{2}\cos(2x) = x\sin(2x) = f(x)$.
+:::
+
+::: resultat
+$$F(x) = -\frac{x}{2}\cos(2x) + \frac{1}{4}\sin(2x)$$
+:::
+
+## Question 4 : $f(x) = (x + 1)e^x$ sur $\mathbb{R}$
+
+::: methode
+Intégration par parties avec $u(x) = x + 1$ et $v'(x) = e^x$.
+:::
+
+::: etape Choix de $u$ et $v'$
+- $u(x) = x + 1$, donc $u'(x) = 1$ ;
+- $v'(x) = e^x$, donc $v(x) = e^x$.
+:::
+
+::: etape Application de la formule
+Une primitive de $u'v = e^x$ est $G(x) = e^x$, donc
+$$
+\begin{aligned}
+F(x) &= (x + 1)e^x - e^x \\
+&= xe^x
+\end{aligned}
+$$
+:::
+
+::: point Vérification
+$F'(x) = e^x + xe^x = (x + 1)e^x = f(x)$.
+:::
+
+::: remarque
+La vérification montre que $f$ est la dérivée du produit $xe^x$ : reconnaître une dérivée de produit donne parfois la primitive immédiatement.
+:::
+
+::: resultat
+$$F(x) = xe^x$$
+:::
+
+## Question 5 : $f(x) = x^2\cos x$ sur $\mathbb{R}$
+
+::: methode
+Deux intégrations par parties, comme à la question 1.
+:::
+
+::: etape Première intégration par parties
+- $u(x) = x^2$, donc $u'(x) = 2x$ ;
+- $v'(x) = \cos x$, donc $v(x) = \sin x$.
+
+Alors $F(x) = x^2\sin x - G(x)$, où $G$ est une primitive de $u'v = 2x\sin x$.
+:::
+
+::: etape Seconde intégration par parties : une primitive de $x\sin x$
+Avec $u(x) = x$ et $v'(x) = \sin x$ : $u'(x) = 1$, $v(x) = -\cos x$, et une primitive de $u'v = -\cos x$ est $-\sin x$. Une primitive de $x\sin x$ est donc
+$$-x\cos x - (-\sin x) = -x\cos x + \sin x$$
+d’où $G(x) = 2(-x\cos x + \sin x)$.
+:::
+
+::: etape Conclusion
+$$
+\begin{aligned}
+F(x) &= x^2\sin x - 2(-x\cos x + \sin x) \\
+&= x^2\sin x + 2x\cos x - 2\sin x
+\end{aligned}
+$$
+:::
+
+::: point Vérification
+$F'(x) = 2x\sin x + x^2\cos x + 2\cos x - 2x\sin x - 2\cos x = x^2\cos x = f(x)$.
+:::
+
+::: resultat
+$$F(x) = x^2\sin x + 2x\cos x - 2\sin x$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $F(x) = (x^2 - 2x + 2)e^x$
+2. $F(x) = \dfrac{x^2}{2}\ln x - \dfrac{x^2}{4}$
+3. $F(x) = -\dfrac{x}{2}\cos(2x) + \dfrac{1}{4}\sin(2x)$
+4. $F(x) = xe^x$
+5. $F(x) = x^2\sin x + 2x\cos x - 2\sin x$
+
+===
+
+=== Entraînement - Primitives - Mélanges Classiques
+Id: 1230
+Difficulté: medium
+
+Énoncé: <!-- optitab:1 -->
+Déterminer une primitive de chacune des fonctions suivantes sur l’intervalle indiqué, en choisissant la méthode adaptée : primitives usuelles, linéarité, identification ou intégration par parties. Certaines ont déjà été rencontrées : c’est l’occasion de comparer les méthodes.
+
+1. $f(x) = xe^x$ sur $\mathbb{R}$ (par identification : chercher $F$ de la forme $F(x) = (ax + b)e^x$)
+2. $f(x) = x\sin x$ sur $\mathbb{R}$
+3. $f(x) = e^x + \cos x$ sur $\mathbb{R}$
+4. $f(x) = x^2 + e^{2x}$ sur $\mathbb{R}$
+5. $f(x) = \dfrac{1}{x} + \dfrac{1}{x^2}$ sur $]0\,;+\infty[$
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : $f(x) = xe^x$ sur $\mathbb{R}$, par identification
+
+::: methode
+On dérive la forme proposée $F(x) = (ax + b)e^x$, puis on identifie $F'(x)$ avec $f(x)$.
+:::
+
+::: etape Dérivée de la forme proposée
+$$
+\begin{aligned}
+F'(x) &= a \times e^x + (ax + b)e^x \\
+&= (ax + a + b)e^x
+\end{aligned}
+$$
+:::
+
+::: etape Identification
+$F'(x) = xe^x$ pour tout réel $x$ dès que $ax + a + b = x$, c’est-à-dire $a = 1$ et $a + b = 0$, soit $b = -1$.
+:::
+
+::: point Vérification
+$F(x) = (x - 1)e^x$ : $F'(x) = e^x + (x - 1)e^x = xe^x = f(x)$.
+:::
+
+::: remarque
+On retrouve le résultat obtenu par intégration par parties : les deux méthodes conduisent à la même primitive.
+:::
+
+::: resultat
+$$F(x) = (x - 1)e^x$$
+:::
+
+## Question 2 : $f(x) = x\sin x$ sur $\mathbb{R}$
+
+::: methode
+Intégration par parties avec $u(x) = x$ et $v'(x) = \sin x$.
+:::
+
+::: etape Choix de $u$ et $v'$
+- $u(x) = x$, donc $u'(x) = 1$ ;
+- $v'(x) = \sin x$, donc $v(x) = -\cos x$.
+:::
+
+::: etape Application de la formule
+Une primitive de $u'v = -\cos x$ est $G(x) = -\sin x$, donc
+$$
+\begin{aligned}
+F(x) &= -x\cos x - (-\sin x) \\
+&= -x\cos x + \sin x
+\end{aligned}
+$$
+:::
+
+::: point Vérification
+$F'(x) = -\cos x + x\sin x + \cos x = x\sin x = f(x)$.
+:::
+
+::: resultat
+$$F(x) = -x\cos x + \sin x$$
+:::
+
+## Question 3 : $f(x) = e^x + \cos x$ sur $\mathbb{R}$
+
+::: methode
+Linéarité : somme de deux fonctions de référence.
+:::
+
+::: etape Primitive terme à terme
+- $e^x$ a pour primitive $e^x$ ;
+- $\cos x$ a pour primitive $\sin x$.
+:::
+
+::: resultat
+$$F(x) = e^x + \sin x$$
+:::
+
+## Question 4 : $f(x) = x^2 + e^{2x}$ sur $\mathbb{R}$
+
+::: methode
+Linéarité, avec la forme $e^{ax+b}$ pour le second terme.
+:::
+
+::: etape Primitive terme à terme
+- $x^2$ a pour primitive $\dfrac{x^3}{3}$ ;
+- $e^{2x}$ a pour primitive $\dfrac{1}{2}e^{2x}$.
+:::
+
+::: point Vérification
+$F'(x) = x^2 + \dfrac{1}{2} \times 2e^{2x} = x^2 + e^{2x} = f(x)$.
+:::
+
+::: resultat
+$$F(x) = \frac{x^3}{3} + \frac{1}{2}e^{2x}$$
+:::
+
+## Question 5 : $f(x) = \dfrac{1}{x} + \dfrac{1}{x^2}$ sur $]0\,;+\infty[$
+
+::: methode
+Linéarité, avec deux primitives du tableau.
+:::
+
+::: etape Primitive terme à terme
+- $\dfrac{1}{x}$ a pour primitive $\ln x$ sur $]0\,;+\infty[$ ;
+- $\dfrac{1}{x^2}$ a pour primitive $-\dfrac{1}{x}$.
+:::
+
+::: point Vérification
+$F'(x) = \dfrac{1}{x} + \dfrac{1}{x^2} = f(x)$.
+:::
+
+::: attention
+Une primitive de $\dfrac{1}{x^2}$ n’est pas $\ln(x^2)$ : c’est $-\dfrac{1}{x}$.
+:::
+
+::: resultat
+$$F(x) = \ln x - \frac{1}{x}$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $F(x) = (x - 1)e^x$
+2. $F(x) = -x\cos x + \sin x$
+3. $F(x) = e^x + \sin x$
+4. $F(x) = \dfrac{x^3}{3} + \dfrac{1}{2}e^{2x}$
+5. $F(x) = \ln x - \dfrac{1}{x}$
+
+===
+
+=== Entraînement - Primitives - Racines, Puissances et Inverses
+Id: 1229
+Difficulté: medium
+
+Énoncé: <!-- optitab:1 -->
+Déterminer une primitive de chacune des fonctions suivantes sur l’intervalle indiqué.
+
+1. $f(x) = x\sqrt{x}$ sur $]0\,;+\infty[$ (on pourra dériver la fonction $x \mapsto x^2\sqrt{x}$)
+2. $f(x) = \dfrac{1}{\sqrt{x}}$ sur $]0\,;+\infty[$
+3. $f(x) = \dfrac{x}{\sqrt{x + 1}}$ sur $]-1\,;+\infty[$ (on pourra écrire $x = (x + 1) - 1$)
+4. $f(x) = \dfrac{1}{(x + 2)^2}$ sur $]-2\,;+\infty[$
+5. $f(x) = \dfrac{1}{\sqrt{2x + 1}}$ sur $\left]-\dfrac{1}{2}\,;+\infty\right[$
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : $f(x) = x\sqrt{x}$ sur $]0\,;+\infty[$
+
+::: methode
+On dérive $x^2\sqrt{x}$ : on obtient un multiple de $x\sqrt{x}$, qu’il suffit d’ajuster.
+:::
+
+::: etape Dérivée de $x^2\sqrt{x}$
+Pour $x \gt 0$, avec la dérivée d’un produit et $\dfrac{x^2}{\sqrt{x}} = x\sqrt{x}$ :
+$$
+\begin{aligned}
+\big(x^2\sqrt{x}\big)' &= 2x\sqrt{x} + x^2 \times \frac{1}{2\sqrt{x}} \\
+&= 2x\sqrt{x} + \frac{x\sqrt{x}}{2} \\
+&= \frac{5}{2}x\sqrt{x}
+\end{aligned}
+$$
+:::
+
+::: etape Ajustement de la constante
+La fonction $\dfrac{2}{5}x^2\sqrt{x}$ a pour dérivée $\dfrac{2}{5} \times \dfrac{5}{2}x\sqrt{x} = x\sqrt{x}$.
+:::
+
+::: resultat
+$$F(x) = \frac{2}{5}x^2\sqrt{x}$$
+:::
+
+## Question 2 : $f(x) = \dfrac{1}{\sqrt{x}}$ sur $]0\,;+\infty[$
+
+::: methode
+Primitive de référence : $\dfrac{1}{\sqrt{x}} \to 2\sqrt{x}$.
+:::
+
+::: point Vérification
+$\big(2\sqrt{x}\big)' = 2 \times \dfrac{1}{2\sqrt{x}} = \dfrac{1}{\sqrt{x}}$.
+:::
+
+::: resultat
+$$F(x) = 2\sqrt{x}$$
+:::
+
+## Question 3 : $f(x) = \dfrac{x}{\sqrt{x + 1}}$ sur $]-1\,;+\infty[$
+
+::: methode
+On écrit $x = (x + 1) - 1$ pour séparer $f$ en deux termes dont on sait trouver une primitive.
+:::
+
+::: etape Décomposition
+Pour $x \gt -1$, comme $\dfrac{x + 1}{\sqrt{x + 1}} = \sqrt{x + 1}$ :
+$$
+\begin{aligned}
+f(x) &= \frac{(x + 1) - 1}{\sqrt{x + 1}} \\
+&= \sqrt{x + 1} - \frac{1}{\sqrt{x + 1}}
+\end{aligned}
+$$
+:::
+
+::: etape Une primitive de chaque terme
+- $\dfrac{1}{\sqrt{x + 1}}$ est de la forme $\dfrac{u'}{\sqrt{u}}$ avec $u(x) = x + 1 \gt 0$ : une primitive est $2\sqrt{x + 1}$ ;
+- $\big((x + 1)\sqrt{x + 1}\big)' = \sqrt{x + 1} + \dfrac{x + 1}{2\sqrt{x + 1}} = \dfrac{3}{2}\sqrt{x + 1}$, donc une primitive de $\sqrt{x + 1}$ est $\dfrac{2}{3}(x + 1)\sqrt{x + 1}$.
+:::
+
+::: etape Conclusion
+$$
+\begin{aligned}
+F(x) &= \frac{2}{3}(x + 1)\sqrt{x + 1} - 2\sqrt{x + 1} \\
+&= \sqrt{x + 1}\left(\frac{2x + 2}{3} - \frac{6}{3}\right) \\
+&= \frac{2}{3}(x - 2)\sqrt{x + 1}
+\end{aligned}
+$$
+:::
+
+::: point Vérification
+$F'(x) = \dfrac{2}{3}\left(\sqrt{x + 1} + \dfrac{x - 2}{2\sqrt{x + 1}}\right) = \dfrac{2}{3} \times \dfrac{2(x + 1) + x - 2}{2\sqrt{x + 1}} = \dfrac{x}{\sqrt{x + 1}} = f(x)$.
+:::
+
+::: resultat
+$$F(x) = \frac{2}{3}(x - 2)\sqrt{x + 1}$$
+:::
+
+## Question 4 : $f(x) = \dfrac{1}{(x + 2)^2}$ sur $]-2\,;+\infty[$
+
+::: methode
+Forme $\dfrac{u'}{u^2}$ avec $u(x) = x + 2$ : une primitive est $-\dfrac{1}{u}$.
+:::
+
+::: etape Identification
+$u(x) = x + 2$, $u'(x) = 1$, et $u$ ne s’annule pas sur $]-2\,;+\infty[$ : $f = \dfrac{u'}{u^2}$.
+:::
+
+::: point Vérification
+$\left(-\dfrac{1}{x + 2}\right)' = \dfrac{1}{(x + 2)^2} = f(x)$.
+:::
+
+::: resultat
+$$F(x) = -\frac{1}{x + 2}$$
+:::
+
+## Question 5 : $f(x) = \dfrac{1}{\sqrt{2x + 1}}$ sur $\left]-\dfrac{1}{2}\,;+\infty\right[$
+
+::: methode
+Forme $\dfrac{u'}{\sqrt{u}}$ avec $u(x) = 2x + 1$, après ajustement de la constante.
+:::
+
+::: etape Faire apparaître $u'$
+$u(x) = 2x + 1$, $u'(x) = 2$, et $u(x) \gt 0$ pour $x \gt -\dfrac{1}{2}$. On écrit
+$$f(x) = \frac{1}{2} \times \frac{2}{\sqrt{2x + 1}} = \frac{1}{2} \times \frac{u'(x)}{\sqrt{u(x)}}$$
+:::
+
+::: etape Une primitive
+$$F(x) = \frac{1}{2} \times 2\sqrt{2x + 1} = \sqrt{2x + 1}$$
+:::
+
+::: point Vérification
+$F'(x) = \dfrac{2}{2\sqrt{2x + 1}} = \dfrac{1}{\sqrt{2x + 1}} = f(x)$.
+:::
+
+::: resultat
+$$F(x) = \sqrt{2x + 1}$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $F(x) = \dfrac{2}{5}x^2\sqrt{x}$
+2. $F(x) = 2\sqrt{x}$
+3. $F(x) = \dfrac{2}{3}(x - 2)\sqrt{x + 1}$
+4. $F(x) = -\dfrac{1}{x + 2}$
+5. $F(x) = \sqrt{2x + 1}$
+
+===
+
+=== Entraînement - Primitives - Substitution (Changement de variable)
+Id: 1225
+Difficulté: medium
+
+Énoncé: <!-- optitab:1 -->
+Pour chaque fonction, repérer une fonction $u$ dont la dérivée $u'$ apparaît dans l’expression (c’est le « changement de variable » du lycée), reconnaître la forme ($u'u^n$, $\dfrac{u'}{u}$, $u'e^u$, $\dfrac{u'}{\sqrt{u}}$, $\dfrac{u'}{u^2}$), puis déterminer une primitive de $f$ sur l’intervalle indiqué.
+
+1. $f(x) = 2x(x^2 + 1)^3$ sur $\mathbb{R}$
+2. $f(x) = \dfrac{2x}{x^2 + 1}$ sur $\mathbb{R}$
+3. $f(x) = xe^{x^2}$ sur $\mathbb{R}$
+4. $f(x) = \dfrac{1}{\sqrt{2x + 3}}$ sur $\left]-\dfrac{3}{2}\,;+\infty\right[$
+5. $f(x) = \dfrac{1}{(x + 1)^2}$ sur $]-1\,;+\infty[$
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : $f(x) = 2x(x^2 + 1)^3$ sur $\mathbb{R}$
+
+::: methode
+Forme $u'u^n$ avec $u(x) = x^2 + 1$ : une primitive est $\dfrac{u^{n+1}}{n + 1}$.
+:::
+
+::: etape Identification
+$u(x) = x^2 + 1$ et $u'(x) = 2x$, donc $f = u'u^3$.
+:::
+
+::: etape Une primitive
+$$F(x) = \frac{u(x)^4}{4} = \frac{(x^2 + 1)^4}{4}$$
+:::
+
+::: point Vérification
+$F'(x) = \dfrac{4 \times 2x(x^2 + 1)^3}{4} = 2x(x^2 + 1)^3 = f(x)$.
+:::
+
+::: remarque Lien avec le changement de variable
+Tout se passe comme si l’on posait $X = x^2 + 1$ : on primitive $X^3$ en $\dfrac{X^4}{4}$, puis on remplace $X$ par $x^2 + 1$. Le facteur $u'(x) = 2x$ doit être présent (à une constante près).
+:::
+
+::: resultat
+$$F(x) = \frac{(x^2 + 1)^4}{4}$$
+:::
+
+## Question 2 : $f(x) = \dfrac{2x}{x^2 + 1}$ sur $\mathbb{R}$
+
+::: methode
+Forme $\dfrac{u'}{u}$ avec $u(x) = x^2 + 1 \gt 0$ : une primitive est $\ln u$.
+:::
+
+::: etape Identification
+$u(x) = x^2 + 1$, $u'(x) = 2x$, et $u(x) \ge 1 \gt 0$ sur $\mathbb{R}$ : $f = \dfrac{u'}{u}$.
+:::
+
+::: point Vérification
+$\big(\ln(x^2 + 1)\big)' = \dfrac{2x}{x^2 + 1} = f(x)$.
+:::
+
+::: resultat
+$$F(x) = \ln(x^2 + 1)$$
+:::
+
+## Question 3 : $f(x) = xe^{x^2}$ sur $\mathbb{R}$
+
+::: methode
+Forme $u'e^u$ avec $u(x) = x^2$, après ajustement de la constante.
+:::
+
+::: etape Faire apparaître $u'$
+$u(x) = x^2$ et $u'(x) = 2x$ : il manque un facteur $2$. On écrit
+$$f(x) = \frac{1}{2} \times 2xe^{x^2} = \frac{1}{2}u'(x)e^{u(x)}$$
+:::
+
+::: etape Une primitive
+$F(x) = \dfrac{1}{2}e^{x^2}$.
+:::
+
+::: point Vérification
+$F'(x) = \dfrac{1}{2} \times 2xe^{x^2} = xe^{x^2} = f(x)$.
+:::
+
+::: attention
+Oublier le facteur $\dfrac{1}{2}$ donne $e^{x^2}$, dont la dérivée est $2xe^{x^2}$ : le double de $f$.
+:::
+
+::: resultat
+$$F(x) = \frac{1}{2}e^{x^2}$$
+:::
+
+## Question 4 : $f(x) = \dfrac{1}{\sqrt{2x + 3}}$ sur $\left]-\dfrac{3}{2}\,;+\infty\right[$
+
+::: methode
+Forme $\dfrac{u'}{\sqrt{u}}$ avec $u(x) = 2x + 3$, après ajustement de la constante.
+:::
+
+::: etape Faire apparaître $u'$
+$u(x) = 2x + 3$, $u'(x) = 2$, et $u(x) \gt 0$ pour $x \gt -\dfrac{3}{2}$. On écrit
+$$f(x) = \frac{1}{2} \times \frac{2}{\sqrt{2x + 3}} = \frac{1}{2} \times \frac{u'(x)}{\sqrt{u(x)}}$$
+:::
+
+::: etape Une primitive
+$$F(x) = \frac{1}{2} \times 2\sqrt{2x + 3} = \sqrt{2x + 3}$$
+:::
+
+::: point Vérification
+$F'(x) = \dfrac{2}{2\sqrt{2x + 3}} = \dfrac{1}{\sqrt{2x + 3}} = f(x)$.
+:::
+
+::: resultat
+$$F(x) = \sqrt{2x + 3}$$
+:::
+
+## Question 5 : $f(x) = \dfrac{1}{(x + 1)^2}$ sur $]-1\,;+\infty[$
+
+::: methode
+Forme $\dfrac{u'}{u^2}$ avec $u(x) = x + 1$ : une primitive est $-\dfrac{1}{u}$.
+:::
+
+::: etape Identification
+$u(x) = x + 1$, $u'(x) = 1$, et $u$ ne s’annule pas sur $]-1\,;+\infty[$ : $f = \dfrac{u'}{u^2}$.
+:::
+
+::: point Vérification
+$\left(-\dfrac{1}{x + 1}\right)' = \dfrac{1}{(x + 1)^2} = f(x)$.
+:::
+
+::: resultat
+$$F(x) = -\frac{1}{x + 1}$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $F(x) = \dfrac{(x^2 + 1)^4}{4}$
+2. $F(x) = \ln(x^2 + 1)$
+3. $F(x) = \dfrac{1}{2}e^{x^2}$
+4. $F(x) = \sqrt{2x + 3}$
+5. $F(x) = -\dfrac{1}{x + 1}$
+
+===

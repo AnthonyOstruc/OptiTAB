@@ -1,0 +1,552 @@
+Titre: Sommes et Produits
+
+<!-- optitab:1 -->
+## I. Notations et définitions
+
+### Somme et produit d'une famille finie
+
+::: definition Somme d'une famille finie
+Soit $I$ un ensemble fini et $(a_i)_{i \in I}$ une famille de nombres réels.
+
+La somme de cette famille est notée : $\sum_{i \in I} a_i$
+
+Si $I = \{1, 2, \ldots, n\}$, on note aussi : $\sum_{i=1}^{n} a_i = a_1 + a_2 + \cdots + a_n$
+:::
+
+::: definition Produit d'une famille finie
+Le produit de la famille $(a_i)_{i \in I}$ est noté : $\prod_{i \in I} a_i$
+
+Si $I = \{1, 2, \ldots, n\}$, on note aussi : $\prod_{i=1}^{n} a_i = a_1 \times a_2 \times \cdots \times a_n$
+:::
+
+::: definition Cas où $\displaystyle I$ est vide
+Par convention :
+
+$\sum_{i \in \emptyset} a_i = 0$ (élément neutre de l'addition)
+
+$\prod_{i \in \emptyset} a_i = 1$ (élément neutre de la multiplication)
+:::
+
+::: remarque
+Dans la pratique, on est libre de présenter les calculs avec des points de suspension (par exemple : $a_1 + a_2 + \cdots + a_n$).
+:::
+
+::: exemple
+- $\displaystyle \sum_{i=1}^{5} i = 1 + 2 + 3 + 4 + 5 = 15$
+- $\displaystyle \prod_{i=1}^{4} i = 1 \times 2 \times 3 \times 4 = 24$
+- $\displaystyle \sum_{i \in \{2, 5, 7\}} a_i = a_2 + a_5 + a_7$
+- $\sum_{i \in \emptyset} a_i = 0$ et $\prod_{i \in \emptyset} a_i = 1$
+:::
+
+## II. Propriétés des sommes et produits
+
+### Propriétés algébriques
+
+::: propriete
+- **Linéarité :** $\sum_{i \in I} (\lambda a_i + \mu b_i) = \lambda \sum_{i \in I} a_i + \mu \sum_{i \in I} b_i$ où $\lambda, \mu \in \mathbb{R}$
+- **Décomposition :** Si $I = J \cup K$ avec $J \cap K = \emptyset$, alors $\sum_{i \in I} a_i = \sum_{i \in J} a_i + \sum_{i \in K} a_i$
+- **Changement d'indice :** Si $\varphi : I \to J$ est une bijection, alors $\sum_{i \in I} a_i = \sum_{j \in J} a_{\varphi^{-1}(j)}$
+- **Produit de deux sommes :** $\displaystyle \left(\sum_{i=1}^{n} a_i\right) \times \left(\sum_{j=1}^{m} b_j\right) = \sum_{i=1}^{n} \sum_{j=1}^{m} a_i b_j$
+:::
+
+::: exemple Propriétés des sommes
+- **Linéarité :** $\displaystyle \sum_{i=1}^{3} (2i + 3i^2) = 2\sum_{i=1}^{3} i + 3\sum_{i=1}^{3} i^2 = 2 \times 6 + 3 \times 14 = 12 + 42 = 54$
+- **Décomposition :** $\displaystyle \sum_{i=1}^{5} i = \sum_{i=1}^{3} i + \sum_{i=4}^{5} i = 6 + 9 = 15$
+- **Changement d'indice :** $\sum_{i=2}^{4} a_i = \sum_{j=0}^{2} a_{j+2}$ (en posant $j = i-2$)
+- **Produit de deux sommes :** $\displaystyle \left(\sum_{i=1}^{2} i\right) \times \left(\sum_{j=1}^{2} j^2\right) = (1+2) \times (1+4) = 3 \times 5 = 15 = \sum_{i=1}^{2}\sum_{j=1}^{2} i \cdot j^2$
+:::
+
+::: attention
+En général, $\sum_{k} a_k b_k \neq \left(\sum_{k} a_k\right) \times \left(\sum_{k} b_k\right)$. Le produit de deux sommes est différent de la somme des produits.
+
+Par exemple : $\sum_{k=1}^{2} k \times k = 1 + 4 = 5$ mais $\left(\sum_{k=1}^{2} k\right) \times \left(\sum_{k=1}^{2} k\right) = 3 \times 3 = 9$
+:::
+
+::: propriete
+- **Homogénéité :** $\prod_{i \in I} (\lambda a_i) = \lambda^{|I|} \prod_{i \in I} a_i$ où $|I|$ est le cardinal de $I$
+- **Décomposition :** Si $I = J \cup K$ avec $J \cap K = \emptyset$, alors $\prod_{i \in I} a_i = \left(\prod_{i \in J} a_i\right) \times \left(\prod_{i \in K} a_i\right)$
+- **Produit de deux produits :** $\left(\prod_{i=1}^{n} a_i\right) \times \left(\prod_{j=1}^{m} b_j\right) = \prod_{i=1}^{n} a_i \times \prod_{j=1}^{m} b_j$
+:::
+
+::: exemple Propriétés des produits
+- **Homogénéité :** $\displaystyle \prod_{i=1}^{3} (2i) = 2 \times 4 \times 6 = 2^3 \times (1 \times 2 \times 3) = 8 \times 6 = 48$
+- **Décomposition :** $\displaystyle \prod_{i=1}^{5} i = \left(\prod_{i=1}^{3} i\right) \times \left(\prod_{i=4}^{5} i\right) = (1 \times 2 \times 3) \times (4 \times 5) = 6 \times 20 = 120$
+- **Changement d'indice :** $\prod_{i=3}^{5} a_i = \prod_{j=0}^{2} a_{j+3}$ (en posant $j = i-3$)
+:::
+
+## III. Sommes et produits télescopiques
+
+### Sommes télescopiques
+
+::: definition Somme télescopique
+Une somme télescopique est une somme de la forme :
+
+$$\sum_{k=1}^{n} (u_{k+1} - u_k) = u_{n+1} - u_1$$
+
+ou de la forme :
+
+$$\sum_{k=1}^{n} (u_k - u_{k+1}) = u_1 - u_{n+1}$$
+:::
+
+::: exemple
+$$
+\begin{aligned}
+\sum_{k=1}^{n} \frac{1}{k(k+1)} &= \sum_{k=1}^{n} \left(\frac{1}{k} - \frac{1}{k+1}\right) \\
+&= 1 - \frac{1}{n+1} \\
+&= \frac{n}{n+1}
+\end{aligned}
+$$
+
+En effet : $\frac{1}{k(k+1)} = \frac{1}{k} - \frac{1}{k+1}$ (décomposition en éléments simples).
+:::
+
+### Produits télescopiques
+
+::: definition Produit télescopique
+Un produit télescopique est un produit de la forme :
+
+$$\prod_{k=1}^{n} \frac{u_{k+1}}{u_k} = \frac{u_{n+1}}{u_1}$$
+
+(sous réserve que tous les $u_k$ soient non nuls)
+:::
+
+::: exemple
+$$
+\begin{aligned}
+\prod_{k=1}^{n} \frac{k+1}{k} &= \frac{2}{1} \times \frac{3}{2} \times \cdots \times \frac{n+1}{n} \\
+&= \frac{n+1}{1} \\
+&= n+1
+\end{aligned}
+$$
+:::
+
+::: conseil Passage au logarithme
+Quand $a_k > 0$ pour tout $k$, on a : $\ln\left(\prod_{k} a_k\right) = \sum_{k} \ln(a_k)$
+
+Cette astuce permet de transformer un produit en somme, facilitant ainsi les calculs.
+:::
+
+### Changements d'indices et regroupements
+
+::: methode Changement d'indice pour les sommes
+Pour effectuer un changement d'indice $j = i + k$ dans une somme :
+
+$$\sum_{i=p}^{q} a_i = \sum_{j=p+k}^{q+k} a_{j-k}$$
+:::
+
+::: methode Changement d'indice pour les produits
+Même idée que pour les sommes : si $j = i + k$, alors :
+
+$$\prod_{i=p}^{q} a_i = \prod_{j=p+k}^{q+k} a_{j-k}$$
+:::
+
+::: exemple Changement d'indice
+$\sum_{i=3}^{7} a_i = \sum_{j=0}^{4} a_{j+3}$ (en posant $j = i - 3$)
+
+$\prod_{i=2}^{5} a_i = \prod_{j=0}^{3} a_{j+2}$ (en posant $j = i - 2$)
+:::
+
+::: methode Regroupement de termes
+On peut regrouper les termes d'une somme en considérant des sous-ensembles de l'ensemble d'indices.
+:::
+
+::: exemple Regroupement
+Calculons $\displaystyle \sum_{k=1}^{2n} (-1)^k k$.
+
+On sépare explicitement les termes pairs et impairs :
+
+$$\sum_{k=1}^{2n} (-1)^k k = \underbrace{-1 + 2 - 3 + 4 - \cdots + (-1)^{2n-1}(2n-1) + (-1)^{2n}(2n)}_{\text{2n termes}}$$
+
+$$
+\begin{aligned}
+= \underbrace{(-1 + 2) + (-3 + 4) + \cdots + (-(2n-1) + 2n)}_{\text{n paires}} &= \underbrace{1 + 1 + \cdots + 1}_{\text{n fois}} \\
+&= n
+\end{aligned}
+$$
+
+Méthode formelle : on regroupe par parité avec changement d'indice :
+
+$$\sum_{k=1}^{2n} (-1)^k k = \underbrace{\sum_{\text{k impair}} (-1)^k k}_{\text{termes impairs}} + \underbrace{\sum_{\text{k pair}} (-1)^k k}_{\text{termes pairs}}$$
+
+Pour $k$ impair : $k = 2j-1$ avec $j$ de $1$ à $n$, donc $(-1)^k = (-1)^{2j-1} = -1$
+
+Pour $k$ pair : $k = 2j$ avec $j$ de $1$ à $n$, donc $(-1)^k = (-1)^{2j} = 1$
+
+D'où : $\displaystyle \sum_{k=1}^{2n} (-1)^k k = \underbrace{\sum_{j=1}^{n} (-(2j-1))}_{\text{termes impairs}} + \underbrace{\sum_{j=1}^{n} (2j)}_{\text{termes pairs}} = -\sum_{j=1}^{n} (2j-1) + \sum_{j=1}^{n} 2j$
+
+En combinant : $\displaystyle = \sum_{j=1}^{n} \left(-(2j-1) + 2j\right) = \sum_{j=1}^{n} 1 = n$
+:::
+
+## IV. Formules classiques
+
+### Sommes de puissances
+
+::: definition Somme des entiers de 1 à $\displaystyle n$
+$$\sum_{k=1}^{n} k = \frac{n(n+1)}{2}$$
+:::
+
+::: definition Somme arithmétique (généralisation)
+Si $(a_k)$ est une suite arithmétique, alors :
+
+$$\sum_{k=m}^{n} a_k = (n - m + 1) \times \frac{a_m + a_n}{2}$$
+:::
+
+::: demonstration
+On écrit : $S = 1 + 2 + \cdots + n$ et $S = n + (n-1) + \cdots + 1$
+
+En additionnant : $\displaystyle 2S = (n+1) + (n+1) + \cdots + (n+1) = n(n+1)$
+
+Donc : $\displaystyle S = \frac{n(n+1)}{2}$
+:::
+
+::: definition Somme des carrés de 1 à $\displaystyle n$
+$$\sum_{k=1}^{n} k^2 = \frac{n(n+1)(2n+1)}{6}$$
+:::
+
+::: definition Somme des puissances de $\displaystyle x$
+Pour $\displaystyle x \neq 1$ :
+
+$$
+\begin{aligned}
+\sum_{k=0}^{n} x^k &= 1 + x + x^2 + \cdots + x^n \\
+&= \frac{1 - x^{n+1}}{1 - x}
+\end{aligned}
+$$
+
+Pour $x = 1$ : $\sum_{k=0}^{n} 1^k = n+1$
+:::
+
+::: demonstration Somme géométrique
+Soit $\displaystyle S = 1 + x + x^2 + \cdots + x^n$
+
+Alors $\displaystyle xS = x + x^2 + \cdots + x^{n+1}$
+
+Donc $S - xS = 1 - x^{n+1}$, soit $S(1-x) = 1 - x^{n+1}$
+
+Si $x \neq 1$, alors $S = \frac{1 - x^{n+1}}{1 - x}$
+:::
+
+::: definition Séries arithmético-géométriques (formules fermées)
+Pour $\displaystyle x \neq 1$ :
+
+$$\sum_{k=0}^{n} kx^k = \frac{x(1 - (n+1)x^n + nx^{n+1})}{(1-x)^2}$$
+
+Pour $x = 1$ : $\sum_{k=0}^{n} k = \frac{n(n+1)}{2}$
+:::
+
+### Récapitulatif des formules classiques
+
+| Somme | Formule |
+|---|---|
+| **$\displaystyle \sum_{k=1}^{n} k$** | $\displaystyle \frac{n(n+1)}{2}$ |
+| **$\displaystyle \sum_{k=1}^{n} k^2$** | $\displaystyle \frac{n(n+1)(2n+1)}{6}$ |
+| **$\displaystyle \sum_{k=1}^{n} k^3$** | $\displaystyle \left(\frac{n(n+1)}{2}\right)^2$ |
+| **$\displaystyle \sum_{k=0}^{n} x^k$** ($\displaystyle x \neq 1$) | $\displaystyle \frac{1 - x^{n+1}}{1 - x}$ |
+| **$\displaystyle \sum_{k=0}^{n} kx^k$** ($\displaystyle x \neq 1$) | $\displaystyle \frac{x(1 - (n+1)x^n + nx^{n+1})}{(1-x)^2}$ |
+
+### Factorisation de $\displaystyle a^n - b^n$
+
+::: definition Factorisation par $\displaystyle a - b$
+Pour tout $\displaystyle n \in \mathbb{N}^{\ast}$ :
+
+$$
+\begin{aligned}
+a^n - b^n &= (a - b) \sum_{k=0}^{n-1} a^{n-1-k} b^k \\
+&= (a - b)(a^{n-1} + a^{n-2}b + \cdots + ab^{n-2} + b^{n-1})
+\end{aligned}
+$$
+:::
+
+::: exemple
+- $\displaystyle a^2 - b^2 = (a - b)(a + b)$
+- $\displaystyle a^3 - b^3 = (a - b)(a^2 + ab + b^2)$
+- $\displaystyle a^5 - b^5 = (a - b)(a^4 + a^3b + a^2b^2 + ab^3 + b^4)$
+:::
+
+## V. Sommes doubles et sommes triangulaires
+
+### Sommes doubles
+
+::: definition Somme double
+Une somme double est une somme de la forme :
+
+$$\sum_{i=1}^{n} \sum_{j=1}^{m} a_{i,j} = \sum_{j=1}^{m} \sum_{i=1}^{n} a_{i,j}$$
+
+(l'ordre des sommations peut être interverti si la somme est finie)
+:::
+
+::: exemple
+$$
+\begin{aligned}
+\sum_{i=1}^{3} \sum_{j=1}^{2} (i + j) &= \sum_{i=1}^{3} (2i + 3) \\
+&= 2(1+2+3) + 3 \times 3 \\
+&= 12 + 9 \\
+&= 21
+\end{aligned}
+$$
+:::
+
+### Sommes triangulaires
+
+::: definition Somme triangulaire
+Une somme triangulaire est une somme double où les indices sont liés :
+
+$\sum_{i=1}^{n} \sum_{j=1}^{i} a_{i,j}$ ou $\sum_{1 \leq i \leq j \leq n} a_{i,j}$
+:::
+
+::: exemple 1 - Compter les couples
+$$
+\begin{aligned}
+\sum_{i=1}^{n} \sum_{j=1}^{i} 1 &= \sum_{i=1}^{n} i \\
+&= \frac{n(n+1)}{2}
+\end{aligned}
+$$
+
+Cette somme compte le nombre de couples $(i,j)$ avec $1 \leq j \leq i \leq n$.
+
+Par exemple, pour $n=4$ : $\sum_{i=1}^{4} \sum_{j=1}^{i} 1 = 1 + 2 + 3 + 4 = 10$ couples.
+:::
+
+::: exemple 2 - Calcul d'une somme triangulaire
+Calculons $\displaystyle \sum_{i=1}^{n} \sum_{j=1}^{i} j$
+
+Méthode : On calcule d'abord la somme intérieure : $\sum_{j=1}^{i} j = \frac{i(i+1)}{2}$
+
+Donc : $\displaystyle \sum_{i=1}^{n} \sum_{j=1}^{i} j = \sum_{i=1}^{n} \frac{i(i+1)}{2} = \frac{1}{2} \sum_{i=1}^{n} (i^2 + i) = \frac{1}{2}\left(\frac{n(n+1)(2n+1)}{6} + \frac{n(n+1)}{2}\right)$
+
+Après simplification : $\displaystyle \sum_{i=1}^{n} \sum_{j=1}^{i} j = \frac{n(n+1)(n+2)}{6}$
+:::
+
+::: definition Changement d'ordre pour les sommes triangulaires
+On peut intervertir l'ordre des sommations :
+
+$$\sum_{i=1}^{n} \sum_{j=1}^{i} a_{i,j} = \sum_{j=1}^{n} \sum_{i=j}^{n} a_{i,j}$$
+
+Cette équivalence correspond à sommer les mêmes couples $(i,j)$ dans un ordre différent (d'abord par $j$, puis par $i$).
+:::
+
+::: exemple 3 - Changement d'ordre avec des valeurs numériques
+Calculons $\sum_{i=1}^{3} \sum_{j=1}^{i} (i \times j)$ de deux façons différentes.
+
+**Premier ordre** (d'abord $i$, puis $j$) :
+
+$$\sum_{i=1}^{3} \sum_{j=1}^{i} (i \times j)$$
+
+Pour $i=1$ : $1 \times 1 = 1$
+
+Pour $i=2$ : $2 \times 1 + 2 \times 2 = 2 + 4 = 6$
+
+Pour $i=3$ : $3 \times 1 + 3 \times 2 + 3 \times 3 = 3 + 6 + 9 = 18$
+
+Total : $\displaystyle 1 + 6 + 18 = 25$
+
+**Deuxième ordre** (d'abord $j$, puis $i$) :
+
+$$\sum_{j=1}^{3} \sum_{i=j}^{3} (i \times j)$$
+
+Pour $j=1$ : $1 \times 1 + 2 \times 1 + 3 \times 1 = 1 + 2 + 3 = 6$
+
+Pour $j=2$ : $2 \times 2 + 3 \times 2 = 4 + 6 = 10$
+
+Pour $j=3$ : $3 \times 3 = 9$
+
+Total : $\displaystyle 6 + 10 + 9 = 25$
+
+On obtient bien le même résultat avec les deux ordres !
+:::
+
+::: exemple Produit de deux sommes
+$$\left(\sum_{i=1}^{n} a_i\right) \times \left(\sum_{j=1}^{m} b_j\right) = \sum_{i=1}^{n} \sum_{j=1}^{m} a_i b_j$$
+
+C'est la somme de tous les produits $a_i b_j$ pour $i \in \{1, \ldots, n\}$ et $j \in \{1, \ldots, m\}$.
+:::
+
+## VI. Factorielle et coefficients binomiaux
+
+### Factorielle
+
+::: definition Factorielle
+Pour tout $n \in \mathbb{N}$, la factorielle de $n$, notée $n!$, est définie par :
+
+$$n! = \begin{cases} 1 & \text{si } n = 0 \\ \prod_{k=1}^{n} k = 1 \times 2 \times \cdots \times n & \text{si } n \geq 1 \end{cases}$$
+:::
+
+::: propriete
+- **Relation de récurrence :** $(n+1)! = (n+1) \times n!$ pour tout $n \in \mathbb{N}$
+- **Valeurs :** $0! = 1$, $1! = 1$, $2! = 2$, $3! = 6$, $4! = 24$, $5! = 120$
+- **Croissance :** La suite $(n!)_{n \in \mathbb{N}}$ croît très rapidement
+:::
+
+::: definition Double factorielle
+La double factorielle, notée $n!!$, est définie par :
+
+$$n!! = n(n-2)(n-4)\cdots$$
+
+Pour $\displaystyle m \in \mathbb{N}$ :
+
+$(2m)!! = 2^m m!$ et $(2m-1)!! = \frac{(2m)!}{2^m m!}$
+:::
+
+### Coefficients binomiaux
+
+::: definition Coefficient binomial
+Pour $n \in \mathbb{N}$ et $k \in \mathbb{Z}$, le coefficient binomial $\binom{n}{k}$ est défini par :
+
+$$\binom{n}{k} = \begin{cases} \frac{n!}{k!(n-k)!} & \text{si } 0 \leq k \leq n \\ 0 & \text{si } k < 0 \text{ ou } k > n \end{cases}$$
+:::
+
+::: attention Convention
+Par convention, $\binom{n}{k} = 0$ pour $k < 0$ et pour $k > n$.
+:::
+
+::: propriete
+- **Symétrie :** $\binom{n}{k} = \binom{n}{n-k}$ pour $0 \leq k \leq n$
+- **Relation de Pascal :** $\binom{n+1}{k} = \binom{n}{k} + \binom{n}{k-1}$ pour $1 \leq k \leq n$
+- **Valeurs particulières :** $\binom{n}{0} = 1$, $\binom{n}{1} = n$, $\binom{n}{n} = 1$
+- **Formule alternative :** $\binom{n}{k} = \frac{n(n-1)\cdots(n-k+1)}{k!}$ pour $0 \leq k \leq n$
+- **Somme des coefficients :** $\displaystyle \sum_{k=0}^{n} \binom{n}{k} = 2^n$
+:::
+
+::: remarque Triangle de Pascal - Interprétation combinatoire
+La relation de Pascal $\binom{n+1}{k} = \binom{n}{k} + \binom{n}{k-1}$ s'interprète ainsi :
+
+Pour choisir $k$ personnes parmi $n+1$ : soit on choisit la première personne et $k-1$ parmi les $n$ restantes ($\binom{n}{k-1}$), soit on ne choisit pas la première et $k$ parmi les $n$ restantes ($\binom{n}{k}$).
+:::
+
+::: definition Le Triangle de Pascal
+Chaque ligne $n$ contient les coefficients binomiaux $\binom{n}{0}, \binom{n}{1}, \binom{n}{2}, \ldots, \binom{n}{n}$
+
+$\displaystyle n=0$ :
+
+$\displaystyle n=1$ :
+
+$\displaystyle n=2$ :
+
+$\displaystyle n=3$ :
+
+$\displaystyle n=4$ :
+
+$\displaystyle n=5$ :
+
+$\displaystyle n=6$ :
+
+```python
+1
+
+1   1
+
+1   2   1
+
+1   3   3   1
+
+1   4   6   4   1
+
+1   5  10  10   5   1
+
+1   6  15  20  15   6   1
+```
+
+**Propriété :** Chaque nombre est obtenu en additionnant les deux nombres situés juste au-dessus de lui.
+
+Par exemple : $6 = 3 + 3$ (ligne $n=4$) et $15 = 5 + 10$ (ligne $n=6$)
+:::
+
+::: exemple Concret - Développement de $(a+b)^4$ avec le Triangle de Pascal
+La ligne $n=4$ du triangle de Pascal donne : $1, 4, 6, 4, 1$
+
+Ces nombres sont les coefficients de $(a+b)^4$ :
+
+$$(a+b)^4 = \binom{4}{0}a^4 + \binom{4}{1}a^3b + \binom{4}{2}a^2b^2 + \binom{4}{3}ab^3 + \binom{4}{4}b^4$$
+
+$$(a+b)^4 = 1 \cdot a^4 + 4 \cdot a^3b + 6 \cdot a^2b^2 + 4 \cdot ab^3 + 1 \cdot b^4$$
+
+Application numérique avec $a=1$ et $b=1$ :
+
+$$(1+1)^4 = 1 + 4 + 6 + 4 + 1 = 16 = 2^4$$
+
+La somme des coefficients de la ligne $n=4$ vaut bien $2^4$ !
+:::
+
+::: exemple
+- $\displaystyle \binom{5}{2} = \frac{5!}{2!3!} = \frac{120}{2 \times 6} = 10$
+- $\displaystyle \binom{6}{3} = \frac{6!}{3!3!} = \frac{720}{6 \times 6} = 20$
+- $\binom{n}{0} = 1$, $\binom{n}{1} = n$, $\binom{n}{n-1} = n$, $\binom{n}{n} = 1$
+- $\binom{4}{-1} = 0$ et $\binom{4}{5} = 0$ (par convention)
+:::
+
+## VII. Formule du binôme
+
+### Formule du binôme de Newton
+
+::: definition Formule du binôme dans $\displaystyle \mathbb{R}$
+Pour tout $a, b \in \mathbb{R}$ et tout $n \in \mathbb{N}$ :
+
+$$
+\begin{aligned}
+(a + b)^n &= \sum_{k=0}^{n} \binom{n}{k} a^{n-k} b^k \\
+&= \sum_{k=0}^{n} \binom{n}{k} a^k b^{n-k}
+\end{aligned}
+$$
+:::
+
+::: exemple
+- $\displaystyle (a + b)^2 = \binom{2}{0} a^2 + \binom{2}{1} ab + \binom{2}{2} b^2 = a^2 + 2ab + b^2$
+- $\displaystyle (a + b)^3 = a^3 + 3a^2b + 3ab^2 + b^3$
+- $\displaystyle (a + b)^4 = a^4 + 4a^3b + 6a^2b^2 + 4ab^3 + b^4$
+- $(1 + x)^n = \sum_{k=0}^{n} \binom{n}{k} x^k$ (cas particulier $a = 1$, $b = x$)
+:::
+
+::: propriete
+- **Pour $a = b = 1$ :** $2^n = \sum_{k=0}^{n} \binom{n}{k}$
+- **Pour $a = 1$, $b = -1$ :** $0 = \sum_{k=0}^{n} (-1)^k \binom{n}{k}$
+- **Identité de Vandermonde :** $\sum_{k=0}^{n} \binom{n}{k}^2 = \binom{2n}{n}$
+:::
+
+### Conséquences du binôme
+
+::: propriete Identités binomiales utiles
+- **Formule du bâton de hockey :** $\sum_{i=r}^{n} \binom{i}{r} = \binom{n+1}{r+1}$ pour $0 \leq r \leq n$
+- **Somme pondérée :** $\displaystyle \sum_{k=0}^{n} k \binom{n}{k} = n2^{n-1}$
+- **Somme pondérée au carré :** $\displaystyle \sum_{k=0}^{n} k^2 \binom{n}{k} = n(n+1)2^{n-2}$
+:::
+
+::: methode SF : Méthode par dérivation pour des sommes binomiales
+Pour calculer $\sum_{k=1}^{n} k \binom{n}{k} = n2^{n-1}$, on peut dériver $(1+x)^n = \sum_{k=0}^{n} \binom{n}{k} x^k$ et évaluer en $x = 1$.
+
+En effet : $n(1+x)^{n-1} = \sum_{k=1}^{n} k \binom{n}{k} x^{k-1}$, donc pour $x = 1$ : $n2^{n-1} = \sum_{k=1}^{n} k \binom{n}{k}$
+:::
+
+## VIII. Conseils méthodologiques
+
+### Méthodes de calcul
+
+::: methode Pour calculer une somme
+1. **Reconnaître une somme télescopique** : chercher une décomposition en différence
+2. **Changer l'indice** : pour simplifier les bornes ou la forme du terme général
+3. **Regrouper les termes** : par parité, par classes de congruence, etc.
+4. **Utiliser les formules classiques** : somme des entiers, somme géométrique, etc.
+:::
+
+::: conseil
+- **Vérifier les bornes :** Attention aux indices lors d'un changement d'indice
+- **Cas particuliers :** Vérifier les cas $x = 1$ pour les sommes géométriques
+- **Convention vide :** Se rappeler que $\sum_{\emptyset} = 0$ et $\prod_{\emptyset} = 1$
+- **Coefficients binomiaux :** Utiliser la convention $\binom{n}{k} = 0$ si $k < 0$ ou $k > n$
+- **Factorisation :** Penser à factoriser $a^n - b^n$ par $a - b$
+- **Sommes doubles :** Intervertir l'ordre des sommations peut simplifier le calcul
+:::
+
+::: methode SF : Majorer une somme
+Pour majorer une somme $\sum_{k} a_k$, on peut majorer terme à terme chaque $a_k$, puis sommer (utile en exercices).
+:::
+
+::: attention
+- **Pièges spécifiques aux binômes :** Bien distinguer $\sum_{k=0}^{n} x^k$ et $\sum_{k=1}^{n} x^k$
+- Ne pas utiliser la formule géométrique à $x = 1$ (utiliser $\sum_{k=0}^{n} 1 = n+1$)
+- Rappeler que $\binom{n}{k} = 0$ hors $0 \leq k \leq n$ (convention)
+- Oublier de vérifier les bornes après un changement d'indice
+- Appliquer la formule de la somme géométrique pour $x = 1$ sans vérification
+- Oublier le cas $I = \emptyset$ dans les sommes et produits
+- Mauvaise utilisation de la convention sur les coefficients binomiaux
+- Erreur dans l'ordre des indices dans une somme double
+:::

@@ -89,6 +89,8 @@
           <p v-else class="ee-muted">Rien à revoir : tous les exercices faits sont compris.</p>
         </section>
 
+        <QuizNotes :chapitres="chapitres" parent />
+
         <section class="es-card ee-card" aria-labelledby="ee-act">
           <h2 id="ee-act" class="ee-title">Activité récente</h2>
           <ul v-if="activites.length" class="ee-list">
@@ -114,12 +116,30 @@
       </section>
 
       <div class="ee-remove">
-        <button type="button" class="ee-remove__btn" :disabled="retrait" @click="retirer">
+        <button type="button" class="ee-remove__btn" :disabled="retrait" @click="confirmerRetrait = true">
           Ne plus suivre {{ enfant.first_name }}
         </button>
         <span>Le compte de l’élève reste actif ; seul votre accès à son suivi est retiré.</span>
       </div>
     </template>
+
+    <Modal
+      :is-open="confirmerRetrait"
+      :title="`Ne plus suivre ${enfant?.first_name || 'cet élève'} ?`"
+      subtitle="Son compte reste actif. Vous pourrez lui renvoyer une demande de suivi plus tard."
+      :icon="UserMinusIcon"
+      :can-close="!retrait"
+      size="small"
+      @close="confirmerRetrait = false"
+    >
+      <p v-if="erreurRetrait" class="om-alert om-alert--error">{{ erreurRetrait }}</p>
+      <template #footer>
+        <button type="button" class="om-btn om-btn--ghost" :disabled="retrait" @click="confirmerRetrait = false">Annuler</button>
+        <button type="button" class="om-btn om-btn--danger" :disabled="retrait" @click="retirer">
+          {{ retrait ? 'Retrait…' : 'Ne plus suivre' }}
+        </button>
+      </template>
+    </Modal>
   </EspaceLayout>
 </template>
 
@@ -131,11 +151,14 @@ import {
   CheckBadgeIcon,
   ChevronLeftIcon,
   ExclamationTriangleIcon,
-  LightBulbIcon
+  LightBulbIcon,
+  UserMinusIcon
 } from '@heroicons/vue/24/outline'
 import EspaceLayout from '@/components/espace/EspaceLayout.vue'
 import ProgressRing from '@/components/espace/ProgressRing.vue'
 import WeekBars from '@/components/espace/WeekBars.vue'
+import QuizNotes from '@/components/espace/QuizNotes.vue'
+import Modal from '@/components/common/Modal.vue'
 import { getChildOverview, getChildProgression } from '@/api/progression'
 import { removeChild } from '@/api/users'
 import { ESPACE_ROUTES, OBJECTIF_SEMAINE } from '@/config/espace'
@@ -186,17 +209,20 @@ const synthese = computed(() => {
   }
 })
 
+// « Ne plus suivre » : confirmation dans une fenêtre, puis retrait du suivi.
 const retrait = ref(false)
+const confirmerRetrait = ref(false)
+const erreurRetrait = ref('')
 async function retirer() {
-  const prenom = enfant.value?.first_name || 'cet élève'
-  if (!window.confirm(`Ne plus suivre ${prenom} ? Vous pourrez lui renvoyer une demande plus tard.`)) return
+  erreurRetrait.value = ''
   retrait.value = true
   try {
     await removeChild(route.params.childId)
+    confirmerRetrait.value = false
     router.push(ESPACE_ROUTES.accueil)
   } catch {
     retrait.value = false
-    window.alert('Impossible de retirer le suivi pour le moment. Réessayez dans un instant.')
+    erreurRetrait.value = 'Impossible de retirer le suivi pour le moment. Réessayez dans un instant.'
   }
 }
 

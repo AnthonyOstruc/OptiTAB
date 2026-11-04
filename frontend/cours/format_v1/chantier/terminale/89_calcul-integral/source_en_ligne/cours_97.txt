@@ -1,0 +1,204 @@
+Titre: Le calcul intégral
+
+<!-- optitab:1 -->
+::: objectifs
+Interpréter une intégrale comme une aire, la calculer à l’aide d’une primitive, utiliser ses propriétés (linéarité, Chasles, positivité, croissance), calculer une aire entre deux courbes et une valeur moyenne, intégrer par parties, encadrer une intégrale et l’approcher par la méthode des rectangles.
+:::
+
+::: prerequis
+Primitives des fonctions usuelles ; fonctions exponentielle, logarithme, sinus et cosinus.
+:::
+
+## I. Intégrale d’une fonction continue positive
+
+::: definition Intégrale et aire
+Le plan est muni d’un repère orthogonal ; l’**unité d’aire** (u.a.) est l’aire du rectangle construit sur les deux vecteurs unités.
+
+Soit $f$ une fonction continue et positive sur $[a\,;b]$ et $\mathcal{D}$ le domaine compris entre la courbe de $f$, l’axe des abscisses et les droites d’équations $x = a$ et $x = b$. L’**intégrale** de $f$ de $a$ à $b$, notée $\displaystyle\int_a^b f(x)\,\mathrm{d}x$, est l’aire de $\mathcal{D}$ en unités d’aire.
+:::
+
+[IMAGE_1]
+
+::: remarque
+La variable d’intégration est muette : $\displaystyle\int_a^b f(x)\,\mathrm{d}x = \int_a^b f(t)\,\mathrm{d}t$.
+:::
+
+## II. Intégrale et primitive
+
+::: theoreme Théorème fondamental
+Si $f$ est continue et positive sur $[a\,;b]$, la fonction $F$ définie sur $[a\,;b]$ par
+$$F(x) = \int_a^x f(t)\,\mathrm{d}t$$
+est dérivable sur $[a\,;b]$ et $F' = f$ : c’est la primitive de $f$ qui s’annule en $a$.
+:::
+
+::: demonstration Cas où $f$ est croissante
+Soit $x$ dans $[a\,;b[$ et $h \gt 0$ tel que $x + h \le b$. Le nombre $F(x + h) - F(x)$ est l’aire du domaine situé sous la courbe entre $x$ et $x + h$. Comme $f$ est croissante, ce domaine contient le rectangle de hauteur $f(x)$ et il est contenu dans le rectangle de hauteur $f(x + h)$, tous deux de largeur $h$ :
+$$h\,f(x) \le F(x + h) - F(x) \le h\,f(x + h)$$
+En divisant par $h \gt 0$ :
+$$f(x) \le \frac{F(x + h) - F(x)}{h} \le f(x + h)$$
+Comme $f$ est continue, $f(x + h)$ tend vers $f(x)$ quand $h$ tend vers $0$ : par encadrement, le taux d’accroissement tend vers $f(x)$. On raisonne de même pour $h \lt 0$. Donc $F$ est dérivable en $x$ et $F'(x) = f(x)$.
+:::
+
+[IMAGE_2]
+
+::: theoreme Calcul d’une intégrale
+Toute fonction continue sur un intervalle admet des primitives. Si $f$ est continue sur un intervalle $I$, de signe quelconque, et si $F$ est une primitive de $f$ sur $I$, alors pour tous réels $a$ et $b$ de $I$ :
+$$\int_a^b f(x)\,\mathrm{d}x = \big[F(x)\big]_a^b = F(b) - F(a)$$
+:::
+
+::: remarque
+Le résultat ne dépend pas de la primitive choisie : deux primitives de $f$ diffèrent d’une constante, qui disparaît dans la différence $F(b) - F(a)$.
+:::
+
+::: exemple
+- $\displaystyle\int_0^2 x^2\,\mathrm{d}x = \left[\frac{x^3}{3}\right]_0^2 = \frac{8}{3} - 0 = \frac{8}{3}$
+- $\displaystyle\int_1^e \frac{1}{x}\,\mathrm{d}x = \big[\ln x\big]_1^e = \ln e - \ln 1 = 1$
+- $\displaystyle\int_0^1 e^{2x}\,\mathrm{d}x = \left[\frac{1}{2}e^{2x}\right]_0^1 = \frac{e^2 - 1}{2}$
+:::
+
+::: attention
+On calcule $F(b) - F(a)$, dans cet ordre : la borne du haut moins la borne du bas.
+:::
+
+## III. Propriétés de l’intégrale
+
+::: propriete
+Soit $f$ et $g$ continues sur un intervalle $I$, $a$, $b$, $c$ des réels de $I$ et $\lambda$ un réel.
+- **Linéarité :** $\displaystyle\int_a^b \big(f(x) + g(x)\big)\,\mathrm{d}x = \int_a^b f(x)\,\mathrm{d}x + \int_a^b g(x)\,\mathrm{d}x$ et $\displaystyle\int_a^b \lambda f(x)\,\mathrm{d}x = \lambda\int_a^b f(x)\,\mathrm{d}x$.
+- **Relation de Chasles :** $\displaystyle\int_a^c f(x)\,\mathrm{d}x = \int_a^b f(x)\,\mathrm{d}x + \int_b^c f(x)\,\mathrm{d}x$ ; en particulier $\displaystyle\int_a^a f(x)\,\mathrm{d}x = 0$ et $\displaystyle\int_b^a f(x)\,\mathrm{d}x = -\int_a^b f(x)\,\mathrm{d}x$.
+- **Positivité :** si $a \le b$ et $f \ge 0$ sur $[a\,;b]$, alors $\displaystyle\int_a^b f(x)\,\mathrm{d}x \ge 0$.
+- **Croissance :** si $a \le b$ et $f \le g$ sur $[a\,;b]$, alors $\displaystyle\int_a^b f(x)\,\mathrm{d}x \le \int_a^b g(x)\,\mathrm{d}x$.
+:::
+
+::: exemple Encadrer une intégrale
+On ne connaît pas de primitive de $x \mapsto e^{-x^2}$ s’écrivant avec les fonctions usuelles. Pour tout réel $u$, $e^u \ge 1 + u$ ; avec $u = -x^2 \le 0$, on obtient, pour $x$ dans $[0\,;1]$ :
+$$1 - x^2 \le e^{-x^2} \le 1$$
+Par croissance de l’intégrale ($0 \le 1$) :
+$$\int_0^1 (1 - x^2)\,\mathrm{d}x \le \int_0^1 e^{-x^2}\,\mathrm{d}x \le \int_0^1 1\,\mathrm{d}x$$
+d’où $\displaystyle\frac{2}{3} \le \int_0^1 e^{-x^2}\,\mathrm{d}x \le 1$.
+:::
+
+::: attention
+On n’intègre une inégalité que si les bornes sont dans l’ordre croissant ($a \le b$).
+:::
+
+## IV. Aires
+
+::: propriete Fonction de signe quelconque
+L’intégrale est une **aire algébrique** : les parties du domaine situées au-dessus de l’axe des abscisses comptent positivement, celles situées en dessous comptent négativement. Si $f \le 0$ sur $[a\,;b]$, l’aire du domaine vaut $\displaystyle -\int_a^b f(x)\,\mathrm{d}x$ u.a.
+:::
+
+[IMAGE_3]
+
+::: exemple
+$\displaystyle\int_0^{2\pi} \sin x\,\mathrm{d}x = \big[-\cos x\big]_0^{2\pi} = -1 + 1 = 0$, alors que l’aire colorée vaut $2 + 2 = 4$ u.a. : les deux arches se compensent dans l’intégrale.
+:::
+
+::: propriete Aire entre deux courbes
+Si $f$ et $g$ sont continues et $g \le f$ sur $[a\,;b]$, l’aire du domaine compris entre les deux courbes et les droites d’équations $x = a$ et $x = b$ vaut
+$$\int_a^b \big(f(x) - g(x)\big)\,\mathrm{d}x \text{ u.a.}$$
+:::
+
+[IMAGE_4]
+
+::: exemple
+Sur $[0\,;1]$, $x - x^2 = x(1 - x) \ge 0$, donc la droite $y = x$ est au-dessus de la parabole $y = x^2$ :
+$$
+\begin{aligned}
+\mathcal{A} &= \int_0^1 (x - x^2)\,\mathrm{d}x \\
+&= \left[\frac{x^2}{2} - \frac{x^3}{3}\right]_0^1 \\
+&= \frac{1}{2} - \frac{1}{3} = \frac{1}{6} \text{ u.a.}
+\end{aligned}
+$$
+:::
+
+::: methode Calculer une aire
+1. Étudier le signe de $f$ (ou de $f - g$ pour deux courbes) sur $[a\,;b]$ : chercher où elle s’annule.
+2. Découper l’intervalle aux points où le signe change (relation de Chasles).
+3. Sur chaque morceau, intégrer la fonction si elle est positive, son opposée si elle est négative, puis additionner.
+:::
+
+## V. Valeur moyenne
+
+::: definition Valeur moyenne
+Soit $f$ continue sur $[a\,;b]$, avec $a \lt b$. La **valeur moyenne** de $f$ sur $[a\,;b]$ est le réel
+$$\mu = \frac{1}{b - a}\int_a^b f(x)\,\mathrm{d}x$$
+Si $f$ est positive, le rectangle de base $[a\,;b]$ et de hauteur $\mu$ a la même aire que le domaine situé sous la courbe.
+:::
+
+[IMAGE_5]
+
+::: exemple
+Pour $f(x) = x^2$ sur $[0\,;3]$ :
+$$\mu = \frac{1}{3}\int_0^3 x^2\,\mathrm{d}x = \frac{1}{3}\left[\frac{x^3}{3}\right]_0^3 = \frac{1}{3} \times 9 = 3$$
+:::
+
+::: attention
+En général, la valeur moyenne n’est ni $f\left(\frac{a + b}{2}\right)$ ni $\frac{f(a) + f(b)}{2}$ : dans l’exemple, $f\left(\frac{3}{2}\right) = \frac{9}{4}$ et $\frac{f(0) + f(3)}{2} = \frac{9}{2}$, alors que $\mu = 3$.
+:::
+
+## VI. Intégration par parties
+
+::: theoreme Intégration par parties
+Si $u$ et $v$ sont dérivables sur $[a\,;b]$, à dérivées continues, alors
+$$\int_a^b u(x)\,v'(x)\,\mathrm{d}x = \big[u(x)\,v(x)\big]_a^b - \int_a^b u'(x)\,v(x)\,\mathrm{d}x$$
+:::
+
+::: demonstration
+La fonction $uv$ est dérivable et $(uv)' = u'v + uv'$, qui est continue : $uv$ est une primitive de $u'v + uv'$. Donc, par linéarité :
+$$\big[u(x)\,v(x)\big]_a^b = \int_a^b u'(x)\,v(x)\,\mathrm{d}x + \int_a^b u(x)\,v'(x)\,\mathrm{d}x$$
+ce qui donne la formule.
+:::
+
+::: methode Choisir $u$ et $v'$
+On choisit pour $u$ le facteur qui se simplifie quand on le dérive (un polynôme, $\ln x$) et pour $v'$ un facteur dont on connaît une primitive ($e^x$, $\sin x$, $\cos x$). Pour intégrer $\ln x$, on écrit $\ln x = 1 \times \ln x$, avec $u(x) = \ln x$ et $v'(x) = 1$.
+:::
+
+::: exemple
+Pour $\displaystyle\int_0^1 xe^x\,\mathrm{d}x$, on pose $u(x) = x$ et $v'(x) = e^x$, donc $u'(x) = 1$ et $v(x) = e^x$ :
+$$
+\begin{aligned}
+\int_0^1 xe^x\,\mathrm{d}x &= \big[xe^x\big]_0^1 - \int_0^1 e^x\,\mathrm{d}x \\
+&= e - \big[e^x\big]_0^1 \\
+&= e - (e - 1) = 1
+\end{aligned}
+$$
+:::
+
+::: attention
+Ne pas oublier le crochet $\big[u(x)\,v(x)\big]_a^b$, ni le signe « $-$ » devant la seconde intégrale.
+:::
+
+## VII. Méthode des rectangles
+
+On partage $[a\,;b]$ en $n$ intervalles de même largeur $h = \frac{b - a}{n}$ et on additionne les aires des rectangles construits sur chacun d’eux. Si $f$ est croissante, les rectangles dont la hauteur est la valeur de $f$ à **gauche** de chaque intervalle donnent une valeur approchée **par défaut** de l’intégrale ; ceux dont la hauteur est la valeur à **droite** donnent une valeur approchée **par excès**. L’encadrement se resserre quand $n$ augmente.
+
+[IMAGE_6]
+
+::: exemple
+Pour $f(x) = x^2$ sur $[0\,;2]$ avec $n = 8$ ($h = 0{,}25$) :
+$$2{,}1875 \le \int_0^2 x^2\,\mathrm{d}x \le 3{,}1875$$
+:::
+
+La fonction Python ci-dessous calcule la somme des rectangles à gauche :
+
+```python
+def rectangles(f, a, b, n):
+    h = (b - a) / n
+    s = 0
+    for k in range(n):
+        s = s + f(a + k * h) * h
+    return s
+```
+
+Avec $f(x) = x^2$, $a = 0$, $b = 2$ et $n = 100$, elle renvoie $2{,}6268$, proche de la valeur exacte $\frac{8}{3} \approx 2{,}6667$.
+
+::: retenir
+- $\displaystyle\int_a^b f(x)\,\mathrm{d}x = F(b) - F(a)$ pour toute primitive $F$ de $f$ ; $x \mapsto \int_a^x f(t)\,\mathrm{d}t$ est la primitive de $f$ qui s’annule en $a$.
+- Linéarité, relation de Chasles, positivité et croissance (bornes dans l’ordre croissant).
+- Une intégrale est une aire algébrique ; une aire se calcule après l’étude du signe de $f$ (ou de $f - g$).
+- Valeur moyenne : $\displaystyle\mu = \frac{1}{b - a}\int_a^b f(x)\,\mathrm{d}x$.
+- Intégration par parties : $\displaystyle\int_a^b uv' = \big[uv\big]_a^b - \int_a^b u'v$.
+
+Fiche de synthèse dans l’onglet Fiches !
+:::

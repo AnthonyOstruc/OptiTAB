@@ -1,0 +1,64 @@
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+    <div style="background:#e8f4fd; border:2px solid #3498db; border-radius:8px; padding:15px; margin-bottom:20px;">
+        <p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🎯 Objectifs du chapitre :</strong> utiliser un vecteur normal pour écrire l’équation d’une droite, déterminer un projeté orthogonal et une distance, écrire et reconnaître l’équation d’un cercle, et utiliser l’axe de symétrie d’une parabole. Le repère est toujours orthonormé.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Vecteur normal à une droite</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Définition :</strong> un <strong>vecteur normal</strong> à une droite $\displaystyle d$ est un vecteur non nul orthogonal à un vecteur directeur de $\displaystyle d$.</p>
+            <p style="margin:6px 0 0 0;"><strong>Propriété (démonstration au programme) :</strong> la droite passant par $\displaystyle A$ et de vecteur normal $\displaystyle \vec{n}\,(a\,;b)$ a une équation de la forme $\displaystyle ax + by + c = 0$. Réciproquement, $\displaystyle \vec{n}\,(a\,;b)$ est normal à la droite d’équation $\displaystyle ax + by + c = 0$.</p>
+            <p style="margin:6px 0 0 0;"><em>Preuve :</em> $\displaystyle M(x\,;y) \in d \iff \overrightarrow{AM} \cdot \vec{n} = 0 \iff a(x - x_A) + b(y - y_A) = 0$, qui est bien de la forme $\displaystyle ax + by + c = 0$.</p>
+        </div>
+        [IMAGE_1]
+        <p style="font-size:1em;"><strong>Exemple :</strong> la droite passant par $\displaystyle A(1\,;2)$ de vecteur normal $\displaystyle \vec{n}\,(2\,;1)$ a pour équation $\displaystyle 2(x - 1) + (y - 2) = 0$, soit $\displaystyle 2x + y - 4 = 0$.</p>
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Normal ou directeur ?</strong> Pour $\displaystyle ax + by + c = 0$ : $\displaystyle \vec{n}\,(a\,;b)$ est normal et $\displaystyle \vec{u}\,(-b\,;a)$ est directeur. Deux droites sont perpendiculaires si et seulement si leurs vecteurs normaux sont orthogonaux ; pour des droites non verticales, cela revient à $\displaystyle mm' = -1$.
+        </div>
+        <p style="font-size:1em;"><strong>Application (hauteur) :</strong> dans le triangle $\displaystyle A(0\,;0)$, $\displaystyle B(4\,;0)$, $\displaystyle C(1\,;3)$, la hauteur issue de $\displaystyle A$ est perpendiculaire à $\displaystyle (BC)$, donc $\displaystyle \overrightarrow{BC}\,(-3\,;3)$ lui est normal : $\displaystyle -3x + 3y = 0$, soit $\displaystyle y = x$.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Projeté orthogonal et distance</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Méthode :</strong> pour trouver le projeté orthogonal $\displaystyle H$ de $\displaystyle M$ sur $\displaystyle d$, on écrit la perpendiculaire à $\displaystyle d$ passant par $\displaystyle M$, puis on cherche son intersection avec $\displaystyle d$. La distance de $\displaystyle M$ à $\displaystyle d$ est $\displaystyle MH$.
+        </div>
+        <p style="font-size:1em;"><strong>Exemple :</strong> $\displaystyle M(4\,;3)$ et $\displaystyle d : y = -2x + 4$ (pente $\displaystyle -2$). La perpendiculaire passant par $\displaystyle M$ a pour pente $\displaystyle \frac{1}{2}$ : $\displaystyle y = \frac{1}{2}x + 1$. On résout $\displaystyle -2x + 4 = \frac{1}{2}x + 1$ : $\displaystyle x = \frac{6}{5}$ et $\displaystyle y = \frac{8}{5}$.</p>
+        [IMAGE_2]
+        <div style="text-align:center; margin:15px 0; padding:12px; background:#e8f4fd; border-radius:4px; border-left:6px solid #3498db;">
+            $\displaystyle MH = \sqrt{\left(4 - \frac{6}{5}\right)^2 + \left(3 - \frac{8}{5}\right)^2} = \sqrt{\frac{196 + 49}{25}} = \frac{7\sqrt{5}}{5} \approx 3{,}13$
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Équation d’un cercle</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Propriété (démonstration au programme) :</strong> le cercle de centre $\displaystyle \Omega(a\,;b)$ et de rayon $\displaystyle r$ a pour équation $\displaystyle (x - a)^2 + (y - b)^2 = r^2$.</p>
+            <p style="margin:6px 0 0 0;"><em>Preuve :</em> $\displaystyle M(x\,;y)$ est sur le cercle $\displaystyle \iff \Omega M = r \iff \Omega M^2 = r^2 \iff (x - a)^2 + (y - b)^2 = r^2$.</p>
+        </div>
+        [IMAGE_3]
+        <p style="font-size:1em;"><strong>Reconnaître un cercle :</strong> $\displaystyle x^2 + y^2 - 4x + 6y - 3 = 0$. On complète les carrés : $\displaystyle (x - 2)^2 - 4 + (y + 3)^2 - 9 - 3 = 0$, soit $\displaystyle (x - 2)^2 + (y + 3)^2 = 16$ : cercle de centre $\displaystyle (2\,;-3)$ et de rayon $\displaystyle 4$.</p>
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong> le membre de droite est $\displaystyle r^2$, pas $\displaystyle r$. Et les signes s’inversent : $\displaystyle (y + 3)^2$ correspond à $\displaystyle b = -3$. Si le membre de droite obtenu est négatif, l’ensemble est vide.
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Parabole et axe de symétrie</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Propriété :</strong> la parabole d’équation $\displaystyle y = ax^2 + bx + c$ ($\displaystyle a \neq 0$) admet pour axe de symétrie la droite d’équation $\displaystyle x = -\frac{b}{2a}$, qui passe par son sommet.</p>
+        </div>
+        [IMAGE_4]
+        <p style="font-size:1em;"><strong>Exemple :</strong> $\displaystyle y = x^2 - 4x + 3 = (x - 2)^2 - 1$ : axe $\displaystyle x = 2$, sommet $\displaystyle S(2\,;-1)$ ; les points d’intersection avec l’axe des abscisses, $\displaystyle 1$ et $\displaystyle 3$, sont symétriques par rapport à $\displaystyle 2$.</p>
+    </div>
+
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:8px; padding:15px; margin:20px 0 0 0;">
+        <p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🏆 L’essentiel :</strong> $\displaystyle ax + by + c = 0$ a pour vecteur normal $\displaystyle \vec{n}\,(a\,;b)$ ; $\displaystyle M \in d \iff \overrightarrow{AM} \cdot \vec{n} = 0$ ; projeté orthogonal = intersection avec la perpendiculaire ; cercle : $\displaystyle (x - a)^2 + (y - b)^2 = r^2$ ; parabole $\displaystyle y = ax^2 + bx + c$ : axe $\displaystyle x = -\frac{b}{2a}$. Fiche de synthèse dans l’onglet Fiches !</p>
+    </div>
+
+</div>

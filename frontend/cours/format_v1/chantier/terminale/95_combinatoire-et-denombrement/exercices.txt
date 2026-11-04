@@ -1,0 +1,1945 @@
+=== Découverte - Arrangements : podiums, codes et bureaux
+Id: 1265
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Calculer les nombres d’arrangements suivants.
+
+::: rappel
+Un **arrangement** de $k$ éléments parmi $n$ ($1 \le k \le n$) est un $k$-uplet d’éléments distincts : l’ordre compte et il n’y a pas de répétition. Leur nombre est
+$$A_n^k = n(n - 1)\cdots(n - k + 1) = \frac{n!}{(n - k)!}.$$
+:::
+
+1. De combien de façons peut-on attribuer les médailles d’or, d’argent et de bronze à $3$ des $10$ concurrents d’une course ?
+2. Calculer $A_{12}^3$.
+3. Un code secret est formé de $4$ chiffres **distincts** (de $0$ à $9$). Combien y a-t-il de codes possibles ?
+4. Simplifier $\dfrac{A_n^p}{A_n^{p-1}}$ pour $1 \le p \le n$.
+5. De combien de façons peut-on choisir un président, un vice-président et un secrétaire parmi les $15$ membres d’un club ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Attribuer $3$ médailles à $10$ concurrents
+
+::: methode
+L’ordre compte et un concurrent ne reçoit qu’une médaille : on compte des arrangements.
+:::
+
+::: etape Identifier le modèle
+- On choisit $3$ concurrents parmi $10$.
+- L’ordre compte : être médaillé d’or ou de bronze, ce n’est pas pareil.
+- Pas de répétition : un concurrent ne peut pas recevoir deux médailles.
+:::
+
+::: etape Calculer
+On remplit trois cases, de l’or au bronze : $10$ choix pour l’or, puis $9$ pour l’argent (le médaillé d’or est écarté), puis $8$ pour le bronze.
+
+[IMAGE_1]
+
+$$A_{10}^3 = \frac{10!}{7!} = 10 \times 9 \times 8 = 720$$
+:::
+
+::: resultat
+Il y a $720$ façons d’attribuer les trois médailles.
+:::
+
+## Question 2 : Calculer $A_{12}^3$
+
+::: methode
+On applique la formule, en simplifiant les factorielles.
+:::
+
+::: etape Appliquer la formule
+$$
+\begin{aligned}
+A_{12}^3 &= \frac{12!}{(12 - 3)!} = \frac{12!}{9!} \\
+&= \frac{12 \times 11 \times 10 \times 9!}{9!} \\
+&= 12 \times 11 \times 10 \\
+&= 1\,320
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$A_{12}^3 = 1\,320$$
+:::
+
+## Question 3 : Codes de $4$ chiffres distincts
+
+::: methode
+Un code est un $4$-uplet de chiffres distincts : l’ordre compte (1234 et 4321 sont deux codes différents), sans répétition.
+:::
+
+::: etape Calculer
+On choisit $4$ chiffres distincts parmi les $10$ chiffres, dans l’ordre :
+$$A_{10}^4 = 10 \times 9 \times 8 \times 7 = 5\,040$$
+:::
+
+::: resultat
+Il y a $5\,040$ codes possibles.
+:::
+
+## Question 4 : Simplifier $\dfrac{A_n^p}{A_n^{p-1}}$
+
+::: methode
+On écrit les deux arrangements avec des factorielles, puis on simplifie.
+:::
+
+::: etape Écrire les deux termes
+$$A_n^p = \frac{n!}{(n - p)!} \qquad \text{et} \qquad A_n^{p-1} = \frac{n!}{(n - p + 1)!}$$
+:::
+
+::: etape Simplifier le quotient
+Diviser par une fraction, c’est multiplier par son inverse :
+$$
+\begin{aligned}
+\frac{A_n^p}{A_n^{p-1}} &= \frac{n!}{(n - p)!} \times \frac{(n - p + 1)!}{n!} \\
+&= \frac{(n - p + 1)!}{(n - p)!} \\
+&= \frac{(n - p + 1) \times (n - p)!}{(n - p)!} \\
+&= n - p + 1
+\end{aligned}
+$$
+:::
+
+::: retenir
+Interprétation : pour passer d’un $(p-1)$-uplet d’éléments distincts à un $p$-uplet, il reste $n - (p - 1) = n - p + 1$ choix pour le dernier élément.
+:::
+
+::: resultat
+$$\frac{A_n^p}{A_n^{p-1}} = n - p + 1$$
+:::
+
+## Question 5 : Président, vice-président et secrétaire parmi $15$
+
+::: methode
+Les trois rôles sont différents et une personne n’occupe qu’un poste : on compte des arrangements.
+:::
+
+::: etape Calculer
+$15$ choix pour le président, puis $14$ pour le vice-président, puis $13$ pour le secrétaire :
+$$A_{15}^3 = 15 \times 14 \times 13 = 2\,730$$
+:::
+
+::: resultat
+Il y a $2\,730$ façons de pourvoir les trois postes.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $A_{10}^3 = 720$ façons
+2. $A_{12}^3 = 1\,320$
+3. $A_{10}^4 = 5\,040$ codes
+4. $\dfrac{A_n^p}{A_n^{p-1}} = n - p + 1$
+5. $A_{15}^3 = 2\,730$ façons
+
+===
+
+=== Découverte - Combinaisons et symétrie
+Id: 1266
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Calculer les nombres de combinaisons suivants.
+
+::: rappel
+Une **combinaison** de $k$ éléments parmi $n$ est une partie à $k$ éléments : l’ordre ne compte pas et il n’y a pas de répétition. Leur nombre est
+$$\binom{n}{k} = \frac{n!}{k!\,(n - k)!} = \frac{n(n - 1)\cdots(n - k + 1)}{k!}.$$
+:::
+
+1. De combien de façons peut-on former une équipe de $3$ personnes parmi $8$ ?
+2. Calculer $\dbinom{10}{3}$ et $\dbinom{10}{7}$. Que remarque-t-on ?
+3. Combien de mains de $5$ cartes peut-on former avec un jeu de $52$ cartes ?
+4. Vérifier que $\dbinom{7}{3} = \dbinom{7}{4}$.
+5. Exprimer $\dbinom{n}{2}$ en fonction de l’entier $n \ge 2$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Une équipe de $3$ personnes parmi $8$
+
+::: methode
+Une équipe est un groupe sans hiérarchie : l’ordre ne compte pas, on compte des combinaisons.
+:::
+
+::: etape Identifier le modèle
+- On choisit $3$ personnes parmi $8$, sans répétition.
+- L’ordre ne compte pas : l’équipe $\{A\,;B\,;C\}$ est la même que $\{C\,;B\,;A\}$.
+:::
+
+::: etape Compter d’abord dans l’ordre
+Si l’on choisissait les $3$ personnes **dans l’ordre**, il y aurait $8 \times 7 \times 6 = 336$ triplets. Mais une même équipe, par exemple $\{A\,;B\,;C\}$, correspond à $3! = 6$ triplets : chaque équipe est comptée $6$ fois.
+
+[IMAGE_1]
+:::
+
+::: etape Calculer
+$$
+\begin{aligned}
+\binom{8}{3} &= \frac{8 \times 7 \times 6}{3 \times 2 \times 1} \\
+&= \frac{336}{6} \\
+&= 56
+\end{aligned}
+$$
+:::
+
+::: resultat
+Il y a $56$ équipes possibles.
+:::
+
+## Question 2 : Calculer $\dbinom{10}{3}$ et $\dbinom{10}{7}$
+
+::: methode
+On utilise la forme $\dfrac{n(n-1)\cdots(n-k+1)}{k!}$, plus rapide à calculer.
+:::
+
+::: etape Calcul de $\dbinom{10}{3}$
+$$\binom{10}{3} = \frac{10 \times 9 \times 8}{3 \times 2 \times 1} = \frac{720}{6} = 120$$
+:::
+
+::: etape Calcul de $\dbinom{10}{7}$
+$$\binom{10}{7} = \frac{10!}{7!\,3!} = \frac{10 \times 9 \times 8 \times 7!}{7! \times 3!} = \frac{720}{6} = 120$$
+:::
+
+::: etape Remarque
+On obtient le même nombre : c’est la **symétrie** $\binom{n}{k} = \binom{n}{n-k}$. Choisir les $3$ éléments que l’on prend parmi $10$, c’est choisir les $7$ que l’on laisse.
+
+[IMAGE_2]
+:::
+
+::: resultat
+$$\binom{10}{3} = \binom{10}{7} = 120$$
+:::
+
+## Question 3 : Mains de $5$ cartes parmi $52$
+
+::: methode
+Une main est un ensemble de cartes : l’ordre dans lequel on les reçoit ne compte pas.
+:::
+
+::: etape Calculer
+$$
+\begin{aligned}
+\binom{52}{5} &= \frac{52 \times 51 \times 50 \times 49 \times 48}{5 \times 4 \times 3 \times 2 \times 1} \\
+&= \frac{311\,875\,200}{120} \\
+&= 2\,598\,960
+\end{aligned}
+$$
+:::
+
+::: resultat
+Il y a $2\,598\,960$ mains de $5$ cartes.
+:::
+
+## Question 4 : Vérifier que $\dbinom{7}{3} = \dbinom{7}{4}$
+
+::: methode
+On calcule les deux nombres et on compare.
+:::
+
+::: etape Calcul de $\dbinom{7}{3}$
+$$\binom{7}{3} = \frac{7 \times 6 \times 5}{3 \times 2 \times 1} = \frac{210}{6} = 35$$
+:::
+
+::: etape Calcul de $\dbinom{7}{4}$
+$$\binom{7}{4} = \frac{7 \times 6 \times 5 \times 4}{4 \times 3 \times 2 \times 1} = \frac{840}{24} = 35$$
+:::
+
+::: retenir
+C’est un cas de la symétrie $\binom{n}{k} = \binom{n}{n-k}$ avec $n = 7$ et $k = 3$ : choisir $3$ éléments parmi $7$ revient à choisir les $4$ que l’on écarte.
+:::
+
+::: resultat
+$$\binom{7}{3} = \binom{7}{4} = 35$$
+:::
+
+## Question 5 : Exprimer $\dbinom{n}{2}$ en fonction de $n$
+
+::: methode
+On écrit la formule avec les factorielles et on simplifie par $(n - 2)!$.
+:::
+
+::: etape Simplifier
+Comme $n! = n \times (n - 1) \times (n - 2)!$ et $2! = 2$ :
+$$
+\begin{aligned}
+\binom{n}{2} &= \frac{n!}{2!\,(n - 2)!} \\
+&= \frac{n \times (n - 1) \times (n - 2)!}{2 \times (n - 2)!} \\
+&= \frac{n(n - 1)}{2}
+\end{aligned}
+$$
+:::
+
+::: etape Vérification
+Pour $n = 8$ : $\frac{8 \times 7}{2} = 28$, et l’on trouve bien $\binom{8}{2} = 28$.
+:::
+
+::: resultat
+$$\binom{n}{2} = \frac{n(n - 1)}{2}$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\binom{8}{3} = 56$ équipes
+2. $\binom{10}{3} = \binom{10}{7} = 120$ (symétrie)
+3. $\binom{52}{5} = 2\,598\,960$ mains
+4. $\binom{7}{3} = \binom{7}{4} = 35$
+5. $\binom{n}{2} = \dfrac{n(n - 1)}{2}$
+
+===
+
+=== Découverte - Permutations et factorielles
+Id: 1264
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Calculer les nombres de permutations suivants.
+
+::: rappel
+Une **permutation** d’un ensemble à $n$ éléments est une façon de ranger **tous** ses éléments dans un ordre. Il y en a $n! = n \times (n - 1) \times \cdots \times 2 \times 1$.
+:::
+
+1. De combien de façons peut-on ranger $5$ livres différents sur une étagère ?
+2. Combien de classements à l’arrivée sont possibles pour $8$ coureurs (sans ex æquo) ?
+3. Calculer $6!$ et $7!$.
+4. Simplifier $\dfrac{8!}{6!}$.
+5. De combien de façons peut-on placer $4$ personnes autour d’une table ronde, si deux placements qui se déduisent l’un de l’autre par une rotation sont considérés comme identiques ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Ranger $5$ livres différents
+
+::: methode
+On range tous les livres, dans un ordre : on compte des permutations.
+:::
+
+::: etape Calculer
+$5$ choix pour la première place, puis $4$, puis $3$, puis $2$, puis $1$ :
+$$5! = 5 \times 4 \times 3 \times 2 \times 1 = 120$$
+:::
+
+::: resultat
+Il y a $120$ façons de ranger les $5$ livres.
+:::
+
+## Question 2 : Classements de $8$ coureurs
+
+::: methode
+Un classement range les $8$ coureurs du premier au dernier : c’est une permutation des $8$ coureurs.
+:::
+
+::: etape Calculer
+$$
+\begin{aligned}
+8! &= 8 \times 7 \times 6 \times 5 \times 4 \times 3 \times 2 \times 1 \\
+&= 40\,320
+\end{aligned}
+$$
+:::
+
+::: resultat
+Il y a $40\,320$ classements possibles.
+:::
+
+## Question 3 : Calculer $6!$ et $7!$
+
+::: methode
+On utilise $(n + 1)! = (n + 1) \times n!$ pour ne pas tout recalculer.
+:::
+
+::: etape Calcul de $6!$
+$$6! = 6 \times 5 \times 4 \times 3 \times 2 \times 1 = 720$$
+:::
+
+::: etape Calcul de $7!$
+$$7! = 7 \times 6! = 7 \times 720 = 5\,040$$
+:::
+
+::: resultat
+$6! = 720$ et $7! = 5\,040$.
+:::
+
+## Question 4 : Simplifier $\dfrac{8!}{6!}$
+
+::: methode
+On fait apparaître $6!$ dans $8!$ pour simplifier, sans calculer les factorielles.
+:::
+
+::: etape Simplifier
+$$
+\begin{aligned}
+\frac{8!}{6!} &= \frac{8 \times 7 \times 6!}{6!} \\
+&= 8 \times 7 \\
+&= 56
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$\frac{8!}{6!} = 56$$
+:::
+
+## Question 5 : Quatre personnes autour d’une table ronde
+
+::: methode
+On compte les placements sur des chaises numérotées, puis on regroupe ceux qui se déduisent l’un de l’autre par une rotation.
+:::
+
+::: etape Chaises numérotées
+Si les $4$ chaises sont numérotées, un placement est une permutation des $4$ personnes : il y en a $4! = 24$.
+:::
+
+::: etape Regrouper par rotation
+Faire tourner tout le monde d’une place ne change pas le placement autour de la table : chacun garde les mêmes voisins.
+
+[IMAGE_1]
+
+Chaque placement autour de la table correspond à $4$ placements sur chaises numérotées (rotations d’un quart, d’un demi et de trois quarts de tour, et position de départ). Il est donc compté $4$ fois :
+$$\frac{4!}{4} = \frac{24}{4} = 6$$
+:::
+
+::: etape Autre méthode
+On fixe la place de la personne $A$ (cela supprime les rotations), puis on place les $3$ autres personnes sur les $3$ chaises restantes : $3! = 6$ façons.
+:::
+
+::: retenir
+$n$ personnes autour d’une table ronde (à rotation près) : $\frac{n!}{n} = (n - 1)!$ placements.
+:::
+
+::: resultat
+Il y a $6$ façons de placer $4$ personnes autour d’une table ronde.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $5! = 120$ façons
+2. $8! = 40\,320$ classements
+3. $6! = 720$ et $7! = 5\,040$
+4. $\dfrac{8!}{6!} = 56$
+5. $3! = 6$ façons
+
+===
+
+=== Découverte - Principes additif et multiplicatif
+Id: 1263
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Résoudre les problèmes suivants en utilisant les principes additif et multiplicatif.
+
+::: rappel
+- **Principe multiplicatif :** si l’on fait $k$ choix successifs ayant respectivement $n_1$, $n_2$, …, $n_k$ possibilités, le nombre total de résultats est $n_1 \times n_2 \times \cdots \times n_k$.
+- **Principe additif :** si des ensembles sont deux à deux **disjoints**, le nombre d’éléments de leur réunion est la somme de leurs nombres d’éléments.
+:::
+
+1. Un restaurant propose $3$ entrées, $5$ plats et $4$ desserts. Combien de menus complets (entrée, plat, dessert) différents peut-on composer ?
+2. On lance deux dés équilibrés à six faces, l’un rouge et l’autre bleu. Combien de résultats possibles obtient-on ?
+3. Un code d’accès est composé de $4$ chiffres (de $0$ à $9$), les répétitions étant autorisées. Combien de codes différents peut-on former ?
+4. Dans une classe, $12$ élèves font du sport et $8$ élèves font de la musique ; aucun élève ne fait les deux. Combien d’élèves font du sport ou de la musique ?
+5. On forme un mot de passe de $6$ lettres majuscules (de A à Z), les répétitions étant autorisées. Combien de mots de passe différents peut-on former ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Menus complets
+
+::: methode
+Composer un menu, c’est faire trois choix successifs : on applique le principe multiplicatif.
+:::
+
+::: etape Les trois choix
+- $3$ choix pour l’entrée ;
+- $5$ choix pour le plat ;
+- $4$ choix pour le dessert.
+:::
+
+::: etape Multiplier
+Chaque entrée peut être suivie de chacun des $5$ plats, puis de chacun des $4$ desserts : on remplit trois cases et on multiplie.
+
+[IMAGE_1]
+
+$$3 \times 5 \times 4 = 60$$
+:::
+
+::: resultat
+Il y a $60$ menus différents.
+:::
+
+## Question 2 : Deux dés
+
+::: methode
+Un résultat est un couple (dé rouge ; dé bleu) : principe multiplicatif.
+:::
+
+::: etape Compter les couples
+- Dé rouge : $6$ résultats possibles ($1$ à $6$).
+- Dé bleu : $6$ résultats possibles.
+- Les dés étant distingués, $(2\,;5)$ et $(5\,;2)$ sont deux résultats différents.
+
+Le tableau à double entrée a $6$ lignes (dé rouge) et $6$ colonnes (dé bleu) : une case par résultat.
+
+[IMAGE_2]
+
+$$6 \times 6 = 36$$
+:::
+
+::: resultat
+Il y a $36$ résultats possibles.
+:::
+
+## Question 3 : Code de $4$ chiffres avec répétitions
+
+::: methode
+Un code est un $4$-uplet de chiffres, répétitions permises : $n^k$ avec $n = 10$ et $k = 4$.
+:::
+
+::: etape Calculer
+Chacune des $4$ positions peut recevoir l’un des $10$ chiffres :
+$$10 \times 10 \times 10 \times 10 = 10^4 = 10\,000$$
+:::
+
+::: resultat
+Il y a $10\,000$ codes différents.
+:::
+
+## Question 4 : Sport ou musique
+
+::: methode
+Les deux groupes n’ont aucun élève en commun : principe additif.
+:::
+
+::: etape Vérifier que les ensembles sont disjoints
+Notons $S$ l’ensemble des élèves sportifs ($12$ élèves) et $M$ celui des musiciens ($8$ élèves). Aucun élève ne fait les deux : $S \cap M = \varnothing$.
+:::
+
+::: etape Additionner
+$$\mathrm{Card}(S \cup M) = \mathrm{Card}(S) + \mathrm{Card}(M) = 12 + 8 = 20$$
+:::
+
+::: attention
+Si certains élèves faisaient les deux activités, ils seraient comptés deux fois : on ne pourrait plus simplement additionner.
+:::
+
+::: resultat
+$20$ élèves font du sport ou de la musique.
+:::
+
+## Question 5 : Mot de passe de $6$ lettres
+
+::: methode
+Un mot de passe est un $6$-uplet de lettres, répétitions permises : $26^6$.
+:::
+
+::: etape Calculer
+Chacune des $6$ positions peut recevoir l’une des $26$ lettres :
+$$26^6 = 308\,915\,776$$
+:::
+
+::: resultat
+Il y a $308\,915\,776$ mots de passe différents.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $3 \times 5 \times 4 = 60$ menus
+2. $6 \times 6 = 36$ résultats
+3. $10^4 = 10\,000$ codes
+4. $12 + 8 = 20$ élèves
+5. $26^6 = 308\,915\,776$ mots de passe
+
+===
+
+=== DS - Devoir surveillé complet
+Id: 1272
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Ce devoir surveillé couvre l’ensemble du chapitre sur la combinatoire et le dénombrement.
+
+**Partie A : Principes fondamentaux**
+
+- **Question A1 :** un restaurant propose $4$ entrées, $6$ plats et $5$ desserts. Combien de menus complets (entrée, plat, dessert) différents peut-on composer ?
+- **Question A2 :** de combien de façons peut-on ranger $7$ livres différents sur une étagère ?
+
+**Partie B : Arrangements et combinaisons**
+
+- **Question B1 :** on attribue les médailles d’or, d’argent et de bronze à $3$ des $12$ concurrents d’une épreuve. Combien de podiums différents peut-on former ?
+- **Question B2 :** dans une classe de $15$ élèves, on forme un groupe de $5$ délégués. Combien de groupes sont possibles ?
+
+**Partie C : Dénombrement avec répétitions**
+
+- **Question C1 :** un code d’accès est formé de $2$ lettres majuscules **distinctes** (de A à Z) suivies de $3$ chiffres (de $0$ à $9$), les chiffres pouvant se répéter. Combien de codes différents peut-on former ?
+- **Question C2 :** on dispose de $9$ boules : $4$ rouges identiques, $3$ bleues identiques et $2$ vertes identiques. De combien de façons peut-on les ranger en ligne ?
+
+**Partie D : Problèmes avec contraintes**
+
+- **Question D1 :** un club de $20$ membres ($12$ hommes et $8$ femmes) forme un comité de $4$ personnes. Combien de comités contiennent au moins $2$ femmes ?
+- **Question D2 :** un mot de passe de $7$ caractères contient exactement $3$ lettres majuscules **distinctes** (de A à Z) et $4$ chiffres (de $0$ à $9$, répétitions autorisées), placés dans un ordre quelconque. Combien y a-t-il de mots de passe ?
+
+**Partie E : Démonstration et application**
+
+- **Question E1 :** démontrer la relation de Pascal $\dbinom{n}{k} = \dbinom{n-1}{k-1} + \dbinom{n-1}{k}$, pour $1 \le k \le n - 1$, à l’aide d’une interprétation combinatoire.
+- **Question E2 :** un tournoi de football réunit $16$ équipes.
+  - a) Combien y a-t-il de groupes possibles de $8$ équipes qualifiées pour le deuxième tour ?
+  - b) Ces $8$ équipes sont réparties en $4$ matchs (paires d’équipes qui s’affrontent). Combien de répartitions sont possibles ?
+  - c) Combien y a-t-il de groupes possibles de $4$ demi-finalistes parmi ces $8$ équipes ?
+
+Étapes:
+<!-- optitab:1 -->
+## Partie A : Principes fondamentaux
+
+## Question A1 : Menus complets
+
+::: methode
+Trois choix successifs : principe multiplicatif.
+:::
+
+::: etape Multiplier les possibilités
+$4$ choix d’entrée, $6$ choix de plat et $5$ choix de dessert :
+$$4 \times 6 \times 5 = 120$$
+:::
+
+::: resultat
+Il y a $120$ menus différents.
+:::
+
+## Question A2 : Ranger $7$ livres
+
+::: methode
+On range tous les livres dans un ordre : permutations.
+:::
+
+::: etape Calculer
+$$7! = 7 \times 6 \times 5 \times 4 \times 3 \times 2 \times 1 = 5\,040$$
+:::
+
+::: resultat
+Il y a $5\,040$ façons de ranger les $7$ livres.
+:::
+
+## Partie B : Arrangements et combinaisons
+
+## Question B1 : Podiums parmi $12$ concurrents
+
+::: methode
+L’ordre compte (or, argent, bronze) et un concurrent ne reçoit qu’une médaille : arrangements.
+:::
+
+::: etape Calculer
+$$A_{12}^3 = 12 \times 11 \times 10 = 1\,320$$
+:::
+
+::: resultat
+Il y a $1\,320$ podiums différents.
+:::
+
+## Question B2 : Groupes de $5$ délégués parmi $15$
+
+::: methode
+Un groupe n’a pas de hiérarchie : l’ordre ne compte pas, combinaisons.
+:::
+
+::: etape Calculer
+$$
+\begin{aligned}
+\binom{15}{5} &= \frac{15 \times 14 \times 13 \times 12 \times 11}{5 \times 4 \times 3 \times 2 \times 1} \\
+&= \frac{360\,360}{120} \\
+&= 3\,003
+\end{aligned}
+$$
+:::
+
+::: resultat
+Il y a $3\,003$ groupes possibles.
+:::
+
+## Partie C : Dénombrement avec répétitions
+
+## Question C1 : Code de $2$ lettres distinctes et $3$ chiffres
+
+::: methode
+On découpe le code en deux parties et on applique le principe multiplicatif.
+:::
+
+::: etape Les lettres
+Deux lettres distinctes, dans l’ordre : $A_{26}^2 = 26 \times 25 = 650$ possibilités.
+:::
+
+::: etape Les chiffres
+Trois chiffres, répétitions permises : $10^3 = 1\,000$ possibilités ($3$-uplets).
+:::
+
+::: etape Multiplier
+$$650 \times 1\,000 = 650\,000$$
+:::
+
+::: resultat
+Il y a $650\,000$ codes différents.
+:::
+
+## Question C2 : Ranger $9$ boules identiques par couleur
+
+::: methode
+Les boules de même couleur sont identiques : un rangement est déterminé par les **positions** de chaque couleur.
+:::
+
+::: etape Choisir les positions
+- On choisit les $4$ places des rouges parmi les $9$ : $\binom{9}{4} = 126$ façons.
+- On choisit les $3$ places des bleues parmi les $5$ restantes : $\binom{5}{3} = 10$ façons.
+- Les vertes occupent les $2$ places restantes : $1$ façon.
+
+[IMAGE_1]
+:::
+
+::: etape Multiplier
+$$\binom{9}{4} \times \binom{5}{3} \times 1 = 126 \times 10 = 1\,260$$
+:::
+
+::: point Vérification
+On retrouve ce nombre avec $\dfrac{9!}{4!\,3!\,2!} = \dfrac{362\,880}{24 \times 6 \times 2} = \dfrac{362\,880}{288} = 1\,260$ : parmi les $9!$ rangements de boules numérotées, on ne distingue pas les $4!$ ordres des rouges, les $3!$ des bleues et les $2!$ des vertes.
+:::
+
+::: resultat
+Il y a $1\,260$ rangements possibles.
+:::
+
+## Partie D : Problèmes avec contraintes
+
+## Question D1 : Comités avec au moins $2$ femmes
+
+::: methode
+« Au moins $2$ » : on découpe en cas disjoints selon le nombre exact de femmes, puis on additionne.
+:::
+
+::: etape Les cas possibles
+Le comité a $4$ membres : il contient exactement $2$, $3$ ou $4$ femmes.
+:::
+
+::: etape Calculer chaque cas
+On choisit les femmes parmi les $8$ et les hommes parmi les $12$ :
+- $2$ femmes et $2$ hommes : $\binom{8}{2} \times \binom{12}{2} = 28 \times 66 = 1\,848$ ;
+- $3$ femmes et $1$ homme : $\binom{8}{3} \times \binom{12}{1} = 56 \times 12 = 672$ ;
+- $4$ femmes : $\binom{8}{4} \times \binom{12}{0} = 70 \times 1 = 70$.
+:::
+
+::: etape Additionner (cas disjoints)
+$$1\,848 + 672 + 70 = 2\,590$$
+:::
+
+::: point Vérification par le complémentaire
+$\binom{20}{4} - \binom{12}{4} - \binom{8}{1}\binom{12}{3} = 4\,845 - 495 - 1\,760 = 2\,590$ (on retire les comités sans femme et ceux avec une seule femme).
+:::
+
+::: resultat
+Il y a $2\,590$ comités contenant au moins $2$ femmes.
+:::
+
+## Question D2 : Mot de passe de $7$ caractères
+
+::: methode
+On choisit d’abord les positions des lettres, puis on remplit ces positions, puis celles des chiffres.
+:::
+
+::: etape Positions des lettres
+On choisit les $3$ positions des lettres parmi les $7$ (l’ordre de ces positions ne compte pas) :
+$$\binom{7}{3} = \frac{7 \times 6 \times 5}{3 \times 2 \times 1} = 35$$
+:::
+
+::: etape Les lettres
+On place, de gauche à droite, $3$ lettres distinctes : $A_{26}^3 = 26 \times 25 \times 24 = 15\,600$ façons.
+:::
+
+::: etape Les chiffres
+Les $4$ autres positions reçoivent des chiffres, répétitions permises : $10^4 = 10\,000$ façons.
+:::
+
+::: etape Multiplier
+$$35 \times 15\,600 \times 10\,000 = 5\,460\,000\,000$$
+:::
+
+::: resultat
+Il y a $5\,460\,000\,000$ mots de passe, soit $5{,}46 \times 10^9$.
+:::
+
+## Partie E : Démonstration et application
+
+## Question E1 : Relation de Pascal
+
+::: methode
+On compte de deux façons les parties à $k$ éléments d’un ensemble à $n$ éléments.
+:::
+
+::: etape Interprétation
+Soit $E$ un ensemble à $n$ éléments. $\binom{n}{k}$ est le nombre de parties de $E$ à $k$ éléments. On fixe un élément $a$ de $E$.
+:::
+
+::: etape Deux familles disjointes
+- Parties qui **contiennent** $a$ : il reste à choisir $k - 1$ éléments parmi les $n - 1$ autres, d’où $\binom{n-1}{k-1}$ parties.
+- Parties qui **ne contiennent pas** $a$ : on choisit les $k$ éléments parmi les $n - 1$ autres, d’où $\binom{n-1}{k}$ parties.
+:::
+
+::: etape Conclure
+Toute partie à $k$ éléments est dans une et une seule de ces deux familles. Le principe additif donne :
+$$\binom{n}{k} = \binom{n-1}{k-1} + \binom{n-1}{k}$$
+:::
+
+::: resultat
+La relation de Pascal est démontrée pour $1 \le k \le n - 1$.
+:::
+
+## Question E2 : Le tournoi
+
+::: point a) Les $8$ qualifiés
+On choisit $8$ équipes parmi $16$, sans ordre :
+$$\binom{16}{8} = \frac{16!}{8!\,8!} = 12\,870$$
+:::
+
+::: point b) Les $4$ matchs
+On prend l’équipe la première dans l’ordre alphabétique : elle a $7$ adversaires possibles. Parmi les $6$ équipes restantes, la première dans l’ordre alphabétique a $5$ adversaires possibles, puis $3$, puis $1$ :
+$$7 \times 5 \times 3 \times 1 = 105$$
+Autre calcul : $\binom{8}{2} \times \binom{6}{2} \times \binom{4}{2} \times \binom{2}{2} = 28 \times 15 \times 6 \times 1 = 2\,520$ compte les paires dans un ordre (1er match, 2e match…) ; les $4$ matchs n’étant pas ordonnés, on divise par $4! = 24$ : $\frac{2\,520}{24} = 105$.
+:::
+
+::: point c) Les $4$ demi-finalistes
+On choisit $4$ équipes parmi les $8$, sans ordre :
+$$\binom{8}{4} = \frac{8 \times 7 \times 6 \times 5}{4 \times 3 \times 2 \times 1} = 70$$
+:::
+
+::: remarque
+Si l’on tient compte des $4$ matchs fixés au b), les demi-finalistes sont les vainqueurs de ces matchs : il n’y a plus que $2^4 = 16$ groupes possibles.
+:::
+
+::: resultat
+a) $12\,870$ groupes ; b) $105$ répartitions ; c) $70$ groupes.
+:::
+
+Solution:
+<!-- optitab:1 -->
+**Partie A**
+
+- A1. $4 \times 6 \times 5 = 120$ menus
+- A2. $7! = 5\,040$ façons
+
+**Partie B**
+
+- B1. $A_{12}^3 = 1\,320$ podiums
+- B2. $\binom{15}{5} = 3\,003$ groupes
+
+**Partie C**
+
+- C1. $26 \times 25 \times 10^3 = 650\,000$ codes
+- C2. $\binom{9}{4} \times \binom{5}{3} = 1\,260$ rangements
+
+**Partie D**
+
+- D1. $1\,848 + 672 + 70 = 2\,590$ comités
+- D2. $\binom{7}{3} \times A_{26}^3 \times 10^4 = 5\,460\,000\,000$ mots de passe
+
+**Partie E**
+
+- E1. Relation de Pascal démontrée (parties contenant ou non un élément fixé).
+- E2. a) $\binom{16}{8} = 12\,870$ ; b) $7 \times 5 \times 3 \times 1 = 105$ ; c) $\binom{8}{4} = 70$.
+
+===
+
+=== Entraînement - Tirages, nombres et mots de passe
+Id: 1268
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Résoudre les problèmes de dénombrement suivants.
+
+1. Une urne contient $5$ boules rouges et $3$ boules bleues. On tire simultanément $4$ boules. Combien de tirages contiennent exactement $2$ boules rouges ?
+2. Combien de nombres de $4$ chiffres peut-on écrire avec les chiffres $1$, $2$, $3$, $4$, $5$, les répétitions étant autorisées ?
+3. De combien de façons peut-on choisir $3$ hommes et $2$ femmes parmi $8$ hommes et $6$ femmes ?
+4. Résoudre l’équation $\dbinom{n}{2} = 45$, d’inconnue l’entier $n \ge 2$.
+5. Un mot de passe de $6$ caractères comporte exactement $3$ lettres majuscules (de A à Z) et $3$ chiffres (de $0$ à $9$), placés dans un ordre quelconque, les répétitions étant autorisées. Combien y a-t-il de mots de passe ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Exactement $2$ boules rouges
+
+::: methode
+Tirage simultané : on choisit séparément les rouges et les bleues, puis on multiplie.
+:::
+
+::: etape Décomposer le tirage
+Un tirage de $4$ boules avec exactement $2$ rouges contient $2$ rouges et $2$ bleues :
+- $2$ rouges parmi $5$ : $\binom{5}{2} = \frac{5 \times 4}{2} = 10$ ;
+- $2$ bleues parmi $3$ : $\binom{3}{2} = 3$.
+
+[IMAGE_1]
+:::
+
+::: etape Multiplier
+$$\binom{5}{2} \times \binom{3}{2} = 10 \times 3 = 30$$
+:::
+
+::: resultat
+$30$ tirages contiennent exactement $2$ boules rouges.
+:::
+
+## Question 2 : Nombres de $4$ chiffres écrits avec $1$, $2$, $3$, $4$, $5$
+
+::: methode
+Un tel nombre est un $4$-uplet de chiffres pris parmi $5$, répétitions permises : $5^4$.
+:::
+
+::: etape Calculer
+$5$ choix pour chacune des $4$ positions :
+$$5 \times 5 \times 5 \times 5 = 5^4 = 625$$
+:::
+
+::: resultat
+On peut écrire $625$ nombres.
+:::
+
+## Question 3 : $3$ hommes et $2$ femmes
+
+::: methode
+Deux choix indépendants sans ordre : combinaisons, puis principe multiplicatif.
+:::
+
+::: etape Calculer chaque choix
+- $3$ hommes parmi $8$ : $\binom{8}{3} = \frac{8 \times 7 \times 6}{3 \times 2 \times 1} = 56$ ;
+- $2$ femmes parmi $6$ : $\binom{6}{2} = \frac{6 \times 5}{2} = 15$.
+:::
+
+::: etape Multiplier
+$$56 \times 15 = 840$$
+:::
+
+::: resultat
+Il y a $840$ façons de choisir.
+:::
+
+## Question 4 : Résoudre $\dbinom{n}{2} = 45$
+
+::: methode
+On remplace $\binom{n}{2}$ par $\frac{n(n-1)}{2}$ et on résout l’équation du second degré obtenue.
+:::
+
+::: etape Mettre en équation
+$$\frac{n(n - 1)}{2} = 45 \iff n(n - 1) = 90 \iff n^2 - n - 90 = 0$$
+:::
+
+::: etape Résoudre
+Discriminant : $\Delta = (-1)^2 - 4 \times 1 \times (-90) = 361 = 19^2$. Les racines sont
+$$n_1 = \frac{1 + 19}{2} = 10 \qquad \text{et} \qquad n_2 = \frac{1 - 19}{2} = -9$$
+:::
+
+::: etape Conclure et vérifier
+$n$ est un entier supérieur ou égal à $2$ : seule la valeur $n = 10$ convient. Vérification : $\binom{10}{2} = \frac{10 \times 9}{2} = 45$.
+:::
+
+::: resultat
+$$n = 10$$
+:::
+
+## Question 5 : Mot de passe de $3$ lettres et $3$ chiffres
+
+::: methode
+On choisit les positions des lettres, puis on remplit les positions.
+:::
+
+::: etape Positions des lettres
+On choisit les $3$ positions des lettres parmi les $6$ : $\binom{6}{3} = \frac{6 \times 5 \times 4}{3 \times 2 \times 1} = 20$.
+:::
+
+::: etape Remplir les positions
+- Lettres, répétitions permises : $26^3 = 17\,576$ façons.
+- Chiffres, répétitions permises : $10^3 = 1\,000$ façons.
+
+Sur l’exemple ci-dessous, les lettres (L) occupent les positions $1$, $3$ et $4$ ; chaque case reçoit ensuite l’un de ses $26$ ou $10$ caractères possibles.
+
+[IMAGE_2]
+:::
+
+::: etape Multiplier
+$$20 \times 17\,576 \times 1\,000 = 351\,520\,000$$
+:::
+
+::: attention
+Oublier le choix des positions revient à imposer « $3$ lettres puis $3$ chiffres » : on ne trouverait que $17\,576\,000$ mots de passe.
+:::
+
+::: resultat
+Il y a $351\,520\,000$ mots de passe.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\binom{5}{2} \times \binom{3}{2} = 30$ tirages
+2. $5^4 = 625$ nombres
+3. $\binom{8}{3} \times \binom{6}{2} = 840$ façons
+4. $n = 10$
+5. $\binom{6}{3} \times 26^3 \times 10^3 = 351\,520\,000$ mots de passe
+
+===
+
+=== Entraînement - Délégués, anagrammes, nombres et diagonales
+Id: 1267
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Résoudre les problèmes de dénombrement suivants.
+
+1. Dans une classe de $12$ élèves, on forme un groupe de $4$ délégués. Combien de groupes sont possibles ?
+2. Combien de mots de $5$ lettres peut-on former avec les lettres du mot « MATHS », chaque lettre étant utilisée une fois ?
+3. Combien de nombres de $3$ chiffres, tous **distincts**, peut-on écrire ? (Le premier chiffre d’un nombre de $3$ chiffres n’est jamais $0$.)
+4. De combien de façons peut-on répartir $10$ personnes en $2$ équipes de $5$, les deux équipes n’étant pas distinguées ?
+5. Combien de diagonales possède un polygone convexe à $n$ côtés ($n \ge 3$) ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Groupe de $4$ délégués parmi $12$
+
+::: methode
+Un groupe n’a pas de hiérarchie : l’ordre ne compte pas, combinaisons.
+:::
+
+::: etape Calculer
+$$
+\begin{aligned}
+\binom{12}{4} &= \frac{12 \times 11 \times 10 \times 9}{4 \times 3 \times 2 \times 1} \\
+&= \frac{11\,880}{24} \\
+&= 495
+\end{aligned}
+$$
+:::
+
+::: resultat
+Il y a $495$ groupes possibles.
+:::
+
+## Question 2 : Mots formés avec les lettres de « MATHS »
+
+::: methode
+Les $5$ lettres sont distinctes et toutes utilisées : permutations.
+:::
+
+::: etape Calculer
+On range les lettres M, A, T, H, S dans un ordre (MATHS et THAMS sont deux mots différents) :
+$$5! = 5 \times 4 \times 3 \times 2 \times 1 = 120$$
+:::
+
+::: resultat
+On peut former $120$ mots.
+:::
+
+## Question 3 : Nombres de $3$ chiffres distincts
+
+::: methode
+On remplit trois cases (centaines, dizaines, unités) en **commençant par la case la plus contrainte** : celle des centaines, qui ne peut pas recevoir $0$.
+:::
+
+::: etape Remplir les cases
+- Centaines : un chiffre de $1$ à $9$, soit $9$ choix.
+- Dizaines : n’importe quel chiffre de $0$ à $9$ sauf celui des centaines, soit $10 - 1 = 9$ choix ($0$ est de nouveau permis).
+- Unités : n’importe quel chiffre sauf les deux déjà utilisés, soit $8$ choix.
+
+[IMAGE_2]
+:::
+
+::: etape Multiplier
+$$9 \times 9 \times 8 = 648$$
+:::
+
+::: point Vérification par le complémentaire
+Il y a $10 \times 9 \times 8 = 720$ suites de $3$ chiffres distincts ; celles qui commencent par $0$ sont au nombre de $9 \times 8 = 72$. On retrouve $720 - 72 = 648$.
+:::
+
+::: attention
+Commencer par les unités ($10$ choix) puis les dizaines ($9$ choix) bloque au moment des centaines : le nombre de choix restants ($7$ ou $8$) dépend de la présence du $0$ parmi les chiffres déjà placés. On traite toujours la contrainte en premier.
+:::
+
+::: resultat
+On peut écrire $648$ nombres de $3$ chiffres distincts.
+:::
+
+## Question 4 : Deux équipes de $5$ non distinguées
+
+::: methode
+On choisit une équipe ; les $5$ autres personnes forment l’autre. Comme les équipes ne sont pas distinguées, chaque répartition est comptée deux fois.
+:::
+
+::: etape Choisir une équipe de $5$
+$$\binom{10}{5} = \frac{10 \times 9 \times 8 \times 7 \times 6}{5 \times 4 \times 3 \times 2 \times 1} = \frac{30\,240}{120} = 252$$
+:::
+
+::: etape Repérer le double comptage
+Avec $10$ personnes A, B, …, J, choisir $\{A\,;B\,;C\,;D\,;E\}$ (l’autre équipe étant $\{F\,;G\,;H\,;I\,;J\}$) ou choisir $\{F\,;G\,;H\,;I\,;J\}$ donne la **même** répartition. Chaque répartition est donc comptée $2$ fois dans $\binom{10}{5}$.
+:::
+
+::: etape Diviser par $2$
+$$\frac{252}{2} = 126$$
+:::
+
+::: attention
+Si les équipes étaient distinguées (équipe A et équipe B), on ne diviserait pas par $2$ : il y aurait $252$ répartitions.
+:::
+
+::: resultat
+Il y a $126$ répartitions possibles.
+:::
+
+## Question 5 : Diagonales d’un polygone à $n$ côtés
+
+::: methode
+Une diagonale relie deux sommets **non consécutifs** : on compte tous les segments joignant deux sommets, puis on retire les côtés.
+:::
+
+::: etape Compter les segments
+Un segment est déterminé par $2$ sommets parmi $n$, sans ordre : $\binom{n}{2} = \frac{n(n - 1)}{2}$ segments.
+:::
+
+::: etape Retirer les côtés
+Parmi ces segments, $n$ sont des côtés ; les autres sont les diagonales.
+
+[IMAGE_1]
+
+$$
+\begin{aligned}
+D &= \frac{n(n - 1)}{2} - n \\
+&= \frac{n(n - 1) - 2n}{2} \\
+&= \frac{n(n - 3)}{2}
+\end{aligned}
+$$
+:::
+
+::: point Vérification
+Pour l’hexagone ($n = 6$) : $\frac{6 \times 3}{2} = 9$ diagonales, et $9 + 6 = 15 = \binom{6}{2}$ segments.
+:::
+
+::: resultat
+Un polygone convexe à $n$ côtés possède $\dfrac{n(n - 3)}{2}$ diagonales.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\binom{12}{4} = 495$ groupes
+2. $5! = 120$ mots
+3. $9 \times 9 \times 8 = 648$ nombres
+4. $\dfrac{1}{2}\dbinom{10}{5} = 126$ répartitions
+5. $\dfrac{n(n - 3)}{2}$ diagonales
+
+===
+
+=== Problème - Comités mixtes, rangements et nombre de parties
+Id: 1270
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Résoudre les problèmes de dénombrement suivants.
+
+1. Un club compte $15$ hommes et $10$ femmes. Combien de comités de $5$ personnes contiennent au moins un homme et au moins une femme ?
+2. On dispose de $10$ boules : $4$ rouges identiques, $3$ bleues identiques et $3$ vertes identiques. De combien de façons peut-on les ranger en ligne ?
+3. Un code d’accès est formé de $3$ lettres majuscules **distinctes** (de A à Z) suivies de $3$ chiffres (de $0$ à $9$), les chiffres pouvant se répéter. Combien de codes différents peut-on former ?
+4. $16$ joueurs participent à un tournoi de tennis. Combien y a-t-il de groupes possibles de $4$ demi-finalistes ?
+5. En interprétant $\displaystyle\sum_{k=0}^{n} \binom{n}{k}$ comme un nombre de parties, démontrer que cette somme vaut $2^n$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Comités mixtes
+
+::: methode
+On passe au complémentaire : on compte tous les comités, puis on retire ceux qui ne sont pas mixtes.
+:::
+
+::: etape Tous les comités
+On choisit $5$ personnes parmi $25$ :
+$$\binom{25}{5} = \frac{25 \times 24 \times 23 \times 22 \times 21}{5 \times 4 \times 3 \times 2 \times 1} = 53\,130$$
+:::
+
+::: etape Comités à retirer
+- Uniquement des hommes : $\binom{15}{5} = \frac{15 \times 14 \times 13 \times 12 \times 11}{120} = 3\,003$.
+- Uniquement des femmes : $\binom{10}{5} = \frac{10 \times 9 \times 8 \times 7 \times 6}{120} = 252$.
+:::
+
+::: etape Soustraire
+Un comité non mixte ne contient que des hommes ou que des femmes : ces deux cas sont disjoints, on les retire tous les deux.
+
+[IMAGE_2]
+
+$$53\,130 - 3\,003 - 252 = 49\,875$$
+:::
+
+::: resultat
+Il y a $49\,875$ comités contenant au moins un homme et au moins une femme.
+:::
+
+## Question 2 : Ranger $10$ boules identiques par couleur
+
+::: methode
+Un rangement est déterminé par les positions de chaque couleur.
+:::
+
+::: etape Choisir les positions
+- Les $4$ places des rouges parmi les $10$ : $\binom{10}{4} = 210$.
+- Les $3$ places des bleues parmi les $6$ restantes : $\binom{6}{3} = 20$.
+- Les vertes occupent les $3$ dernières places : $1$ façon.
+:::
+
+::: etape Multiplier
+$$210 \times 20 \times 1 = 4\,200$$
+:::
+
+::: point Vérification
+$\dfrac{10!}{4!\,3!\,3!} = \dfrac{3\,628\,800}{24 \times 6 \times 6} = \dfrac{3\,628\,800}{864} = 4\,200$.
+:::
+
+::: resultat
+Il y a $4\,200$ rangements possibles.
+:::
+
+## Question 3 : Code de $3$ lettres distinctes et $3$ chiffres
+
+::: methode
+Deux parties successives : principe multiplicatif.
+:::
+
+::: etape Les lettres
+$3$ lettres distinctes, dans l’ordre : $A_{26}^3 = 26 \times 25 \times 24 = 15\,600$.
+:::
+
+::: etape Les chiffres
+$3$ chiffres, répétitions permises : ce sont des $3$-uplets, au nombre de $10^3 = 1\,000$.
+:::
+
+::: etape Multiplier
+$$15\,600 \times 1\,000 = 15\,600\,000$$
+:::
+
+::: resultat
+Il y a $15\,600\,000$ codes différents.
+:::
+
+## Question 4 : Les $4$ demi-finalistes parmi $16$
+
+::: methode
+On cherche un groupe de $4$ joueurs, sans classement : combinaisons.
+:::
+
+::: etape Calculer
+$$
+\begin{aligned}
+\binom{16}{4} &= \frac{16 \times 15 \times 14 \times 13}{4 \times 3 \times 2 \times 1} \\
+&= \frac{43\,680}{24} \\
+&= 1\,820
+\end{aligned}
+$$
+:::
+
+::: resultat
+Il y a $1\,820$ groupes de demi-finalistes possibles.
+:::
+
+## Question 5 : Démontrer que $\displaystyle\sum_{k=0}^{n} \binom{n}{k} = 2^n$
+
+::: methode
+On compte de deux façons les parties d’un ensemble $E$ à $n$ éléments.
+:::
+
+::: etape Ranger les parties selon leur taille
+Une partie de $E$ a $0$, $1$, …, ou $n$ éléments, et il y a $\binom{n}{k}$ parties à $k$ éléments. Ces familles sont disjointes, donc (principe additif) :
+$$\text{nombre de parties de } E = \binom{n}{0} + \binom{n}{1} + \cdots + \binom{n}{n} = \sum_{k=0}^{n} \binom{n}{k}$$
+:::
+
+::: etape Compter les parties autrement
+Construire une partie, c’est décider pour chacun des $n$ éléments s’il est pris ou non : $2$ choix par élément, donc $2 \times 2 \times \cdots \times 2 = 2^n$ parties. Ci-dessous, l’arbre de ces choix pour $E = \{a\,;b\,;c\}$.
+
+[IMAGE_1]
+:::
+
+::: etape Conclure
+Les deux calculs comptent le même ensemble :
+$$\sum_{k=0}^{n} \binom{n}{k} = 2^n$$
+Pour $n = 3$ : $1 + 3 + 3 + 1 = 8 = 2^3$.
+:::
+
+::: resultat
+Pour tout entier $n \ge 0$, $\displaystyle\sum_{k=0}^{n} \binom{n}{k} = 2^n$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\binom{25}{5} - \binom{15}{5} - \binom{10}{5} = 49\,875$ comités
+2. $\binom{10}{4} \times \binom{6}{3} = 4\,200$ rangements
+3. $A_{26}^3 \times 10^3 = 15\,600\,000$ codes
+4. $\binom{16}{4} = 1\,820$ groupes
+5. Les deux membres comptent les parties d’un ensemble à $n$ éléments : $\displaystyle\sum_{k=0}^{n} \binom{n}{k} = 2^n$.
+
+===
+
+=== Problème - Chemins sur un quadrillage, bureaux et symétrie
+Id: 1271
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Résoudre les problèmes de dénombrement suivants. La figure sert à la question 1.
+
+[IMAGE_1]
+
+1. Sur le quadrillage ci-dessus, on va du point $O(0\,;0)$ au point $B(5\,;4)$ par des pas d’une unité vers la droite (D) ou vers le haut (H).
+  - a) Combien y a-t-il de chemins de $O$ à $B$ ?
+  - b) Combien de ces chemins passent par le point $C(2\,;2)$ ?
+  - c) Combien de chemins de $O$ à $B$ évitent le point $C$ ?
+2. Une classe de $30$ élèves élit un bureau formé d’un président, d’un vice-président, d’un secrétaire et d’un trésorier ($4$ personnes distinctes). Combien de bureaux sont possibles ?
+3. Un sac contient $12$ boules : $5$ rouges, $4$ bleues et $3$ vertes, identiques par couleur. On en prend $6$, et seul compte le nombre de boules de chaque couleur. Combien de choix différents sont possibles ?
+4. On répartit $20$ personnes en une équipe A et une équipe B de $10$ personnes chacune. Combien de répartitions sont possibles ?
+5. En associant à chaque partie à $k$ éléments son complémentaire, démontrer que $\dbinom{n}{k} = \dbinom{n}{n-k}$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Chemins sur un quadrillage
+
+::: methode
+Un chemin est un **mot** formé de lettres D et H : il est entièrement déterminé par les positions des lettres H.
+:::
+
+::: point a) Chemins de $O$ à $B$
+Pour aller de $O(0\,;0)$ à $B(5\,;4)$, il faut $5$ pas D et $4$ pas H, soit $9$ pas en tout. Choisir un chemin, c’est choisir les $4$ positions des H parmi les $9$ pas :
+$$\binom{9}{4} = \frac{9 \times 8 \times 7 \times 6}{4 \times 3 \times 2 \times 1} = \frac{3\,024}{24} = 126$$
+:::
+
+::: point b) Chemins passant par $C$
+Un chemin passant par $C(2\,;2)$ se découpe en deux morceaux :
+- de $O$ à $C$ : $2$ pas D et $2$ pas H, soit $\binom{4}{2} = 6$ chemins ;
+- de $C$ à $B(5\,;4)$ : $3$ pas D et $2$ pas H, soit $\binom{5}{2} = 10$ chemins.
+
+Chaque premier morceau peut être suivi de chacun des seconds (principe multiplicatif) :
+$$6 \times 10 = 60$$
+
+Ci-dessous, un de ces chemins : les zones colorées sont les rectangles dans lesquels se trouve chaque morceau.
+
+[IMAGE_2]
+:::
+
+::: point c) Chemins évitant $C$
+On passe au complémentaire : $126 - 60 = 66$.
+:::
+
+::: attention
+Additionner $6 + 10$ serait faux : on enchaîne deux choix successifs, on **multiplie**.
+:::
+
+::: resultat
+a) $126$ chemins ; b) $60$ chemins passent par $C$ ; c) $66$ chemins évitent $C$.
+:::
+
+## Question 2 : Bureau de $4$ postes distincts
+
+::: methode
+Les postes sont différents et une personne n’en occupe qu’un : arrangements.
+:::
+
+::: etape Calculer
+$$A_{30}^4 = 30 \times 29 \times 28 \times 27 = 657\,720$$
+:::
+
+::: resultat
+Il y a $657\,720$ bureaux possibles.
+:::
+
+## Question 3 : Choisir $6$ boules parmi $12$
+
+::: methode
+Un choix est déterminé par le triplet $(r\,;b\,;v)$ des nombres de boules rouges, bleues et vertes : on dénombre ces triplets, de façon organisée.
+:::
+
+::: etape Mettre en équations
+On cherche les triplets d’entiers $(r\,;b\,;v)$ tels que :
+- $r + b + v = 6$ (on prend $6$ boules) ;
+- $0 \le r \le 5$, $0 \le b \le 4$ et $0 \le v \le 3$ (stock de chaque couleur).
+:::
+
+::: etape Lister selon le nombre de rouges
+Pour chaque valeur de $r$, on cherche les couples $(b\,;v)$ avec $b + v = 6 - r$, $b \le 4$ et $v \le 3$.
+
+| $r$ | $b + v$ | Couples $(b\,;v)$ possibles | Nombre |
+|---|---|---|---|
+| $5$ | $1$ | $(1\,;0)$, $(0\,;1)$ | $2$ |
+| $4$ | $2$ | $(2\,;0)$, $(1\,;1)$, $(0\,;2)$ | $3$ |
+| $3$ | $3$ | $(3\,;0)$, $(2\,;1)$, $(1\,;2)$, $(0\,;3)$ | $4$ |
+| $2$ | $4$ | $(4\,;0)$, $(3\,;1)$, $(2\,;2)$, $(1\,;3)$ | $4$ |
+| $1$ | $5$ | $(4\,;1)$, $(3\,;2)$, $(2\,;3)$ | $3$ |
+| $0$ | $6$ | $(4\,;2)$, $(3\,;3)$ | $2$ |
+:::
+
+::: etape Additionner
+$$2 + 3 + 4 + 4 + 3 + 2 = 18$$
+:::
+
+::: attention
+Les boules étant identiques par couleur, on ne calcule pas $\binom{12}{6}$ : ce nombre compterait des choix de boules numérotées.
+:::
+
+::: resultat
+Il y a $18$ choix différents.
+:::
+
+## Question 4 : Équipe A et équipe B
+
+::: methode
+Il suffit de choisir l’équipe A : les $10$ autres personnes forment l’équipe B.
+:::
+
+::: etape Calculer
+$$\binom{20}{10} = \frac{20!}{10!\,10!} = 184\,756$$
+:::
+
+::: remarque
+Contrairement à la question 4 de l’exercice « Délégués, anagrammes, nombres et diagonales », on ne divise pas par $2$ : les équipes A et B sont distinguées, donc échanger les deux équipes donne une répartition différente.
+:::
+
+::: resultat
+Il y a $184\,756$ répartitions possibles.
+:::
+
+## Question 5 : Démontrer que $\dbinom{n}{k} = \dbinom{n}{n-k}$
+
+::: methode
+On associe à chaque partie à $k$ éléments son complémentaire, qui a $n - k$ éléments.
+:::
+
+::: etape Une correspondance
+Soit $E$ un ensemble à $n$ éléments. À une partie $X$ de $E$ à $k$ éléments, on associe son complémentaire $\overline{X}$ (les éléments de $E$ qui ne sont pas dans $X$), qui a $n - k$ éléments.
+:::
+
+::: etape Elle est réversible
+- Deux parties différentes ont des complémentaires différents.
+- Toute partie $Y$ à $n - k$ éléments est le complémentaire d’une partie à $k$ éléments : $Y = \overline{X}$ avec $X = \overline{Y}$.
+
+Les parties à $k$ éléments et les parties à $n - k$ éléments se correspondent donc une à une : elles sont aussi nombreuses.
+:::
+
+::: point Vérification par le calcul
+$$
+\begin{aligned}
+\binom{n}{n-k} &= \frac{n!}{(n - k)!\,\big(n - (n - k)\big)!} \\
+&= \frac{n!}{(n - k)!\,k!} \\
+&= \binom{n}{k}
+\end{aligned}
+$$
+:::
+
+::: resultat
+Pour tous entiers $0 \le k \le n$, $\binom{n}{k} = \binom{n}{n-k}$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. a) $\binom{9}{4} = 126$ chemins ; b) $\binom{4}{2} \times \binom{5}{2} = 60$ chemins ; c) $126 - 60 = 66$ chemins
+2. $A_{30}^4 = 657\,720$ bureaux
+3. $18$ choix
+4. $\binom{20}{10} = 184\,756$ répartitions
+5. Une partie et son complémentaire se correspondent une à une : $\binom{n}{k} = \binom{n}{n-k}$.
+
+===
+
+=== Problème - Parties d’un ensemble, anagrammes et relation de Pascal
+Id: 1269
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Résoudre les problèmes de dénombrement suivants.
+
+1. Combien de parties possède un ensemble à $n$ éléments ? Vérifier en les écrivant toutes pour $n = 4$.
+2. On forme un comité de $5$ personnes parmi $7$ hommes et $5$ femmes. Combien de comités contiennent au moins $2$ femmes ?
+3. Un club de $20$ membres élit un bureau formé d’un président, d’un secrétaire et d’un trésorier ($3$ personnes distinctes). Combien de bureaux sont possibles ?
+4. Combien d’anagrammes (mots de $6$ lettres, ayant un sens ou non) peut-on former avec toutes les lettres du mot « BANANE » ?
+5. Démontrer par le calcul la relation de Pascal : $\dbinom{n}{k} = \dbinom{n-1}{k-1} + \dbinom{n-1}{k}$ pour $1 \le k \le n - 1$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Nombre de parties d’un ensemble
+
+::: methode
+On applique le résultat du cours, puis on vérifie en classant les parties selon leur nombre d’éléments.
+:::
+
+::: etape Résultat général
+Un ensemble à $n$ éléments possède $2^n$ parties : pour chaque élément, on décide s’il est pris ou non ($2$ choix), d’où $2 \times 2 \times \cdots \times 2 = 2^n$. Ce compte inclut la partie vide $\varnothing$ et l’ensemble lui-même.
+:::
+
+::: etape Vérification pour $A = \{a\,;b\,;c\,;d\}$
+| Nombre d’éléments | Parties | Nombre |
+|---|---|---|
+| $0$ | $\varnothing$ | $1$ |
+| $1$ | $\{a\}$, $\{b\}$, $\{c\}$, $\{d\}$ | $4$ |
+| $2$ | $\{a\,;b\}$, $\{a\,;c\}$, $\{a\,;d\}$, $\{b\,;c\}$, $\{b\,;d\}$, $\{c\,;d\}$ | $6$ |
+| $3$ | $\{a\,;b\,;c\}$, $\{a\,;b\,;d\}$, $\{a\,;c\,;d\}$, $\{b\,;c\,;d\}$ | $4$ |
+| $4$ | $\{a\,;b\,;c\,;d\}$ | $1$ |
+
+Total : $1 + 4 + 6 + 4 + 1 = 16 = 2^4$.
+:::
+
+::: attention
+La partie vide s’écrit $\varnothing$ (ensemble sans élément), et non $\{\varnothing\}$, qui est un ensemble à un élément.
+:::
+
+::: resultat
+Un ensemble à $n$ éléments possède $2^n$ parties ; pour $n = 4$, on en compte bien $16$.
+:::
+
+## Question 2 : Comités avec au moins $2$ femmes
+
+::: methode
+« Au moins $2$ femmes » : on découpe selon le nombre exact de femmes ($2$, $3$, $4$ ou $5$), puis on additionne.
+:::
+
+::: etape Calculer chaque cas
+On choisit les femmes parmi $5$ et les hommes parmi $7$ :
+- $2$ femmes et $3$ hommes : $\binom{5}{2} \times \binom{7}{3} = 10 \times 35 = 350$ ;
+- $3$ femmes et $2$ hommes : $\binom{5}{3} \times \binom{7}{2} = 10 \times 21 = 210$ ;
+- $4$ femmes et $1$ homme : $\binom{5}{4} \times \binom{7}{1} = 5 \times 7 = 35$ ;
+- $5$ femmes : $\binom{5}{5} \times \binom{7}{0} = 1$.
+:::
+
+::: etape Additionner (cas disjoints)
+$$350 + 210 + 35 + 1 = 596$$
+:::
+
+::: point Vérification par le complémentaire
+$\binom{12}{5} - \binom{7}{5} - \binom{5}{1}\binom{7}{4} = 792 - 21 - 175 = 596$ (on retire les comités sans femme et ceux avec une seule femme).
+:::
+
+::: resultat
+Il y a $596$ comités contenant au moins $2$ femmes.
+:::
+
+## Question 3 : Bureau de $3$ postes distincts
+
+::: methode
+Les trois postes sont différents : arrangements de $3$ personnes parmi $20$.
+:::
+
+::: etape Calculer
+$$A_{20}^3 = 20 \times 19 \times 18 = 6\,840$$
+:::
+
+::: resultat
+Il y a $6\,840$ bureaux possibles.
+:::
+
+## Question 4 : Anagrammes du mot « BANANE »
+
+::: methode
+Les lettres répétées (deux A, deux N) sont indiscernables : on choisit les **positions** de chaque lettre répétée, puis on place les lettres restantes.
+:::
+
+::: etape Les lettres du mot
+« BANANE » a $6$ lettres : B, E (une fois chacune), A (deux fois) et N (deux fois).
+:::
+
+::: etape Choisir les positions
+- Les $2$ places des A parmi les $6$ : $\binom{6}{2} = 15$ façons.
+- Les $2$ places des N parmi les $4$ restantes : $\binom{4}{2} = 6$ façons.
+- B et E, lettres distinctes, se rangent dans les $2$ dernières places : $2! = 2$ façons.
+
+[IMAGE_1]
+:::
+
+::: etape Multiplier
+$$15 \times 6 \times 2 = 180$$
+:::
+
+::: point Vérification
+Si les lettres étaient toutes distinctes ($\mathrm{A}_1$, $\mathrm{A}_2$, $\mathrm{N}_1$, $\mathrm{N}_2$), il y aurait $6! = 720$ mots ; échanger les deux A ou les deux N ne change pas le mot, donc chaque anagramme est comptée $2! \times 2! = 4$ fois : $\dfrac{720}{4} = 180$.
+:::
+
+::: attention
+Répondre $6! = 720$ revient à distinguer les deux A et les deux N : on compterait plusieurs fois le même mot (par exemple BANANE en échangeant les deux A).
+:::
+
+::: resultat
+On peut former $180$ anagrammes du mot « BANANE ».
+:::
+
+## Question 5 : Relation de Pascal par le calcul
+
+::: methode
+On écrit les deux coefficients avec des factorielles, puis on les réduit au même dénominateur $k!\,(n - k)!$.
+:::
+
+::: etape Écrire les deux termes
+$$\binom{n-1}{k-1} = \frac{(n - 1)!}{(k - 1)!\,(n - k)!} \qquad \text{et} \qquad \binom{n-1}{k} = \frac{(n - 1)!}{k!\,(n - 1 - k)!}$$
+:::
+
+::: etape Même dénominateur
+Comme $k! = k \times (k - 1)!$ et $(n - k)! = (n - k) \times (n - k - 1)!$ :
+$$\binom{n-1}{k-1} = \frac{k \times (n - 1)!}{k!\,(n - k)!} \qquad \text{et} \qquad \binom{n-1}{k} = \frac{(n - k) \times (n - 1)!}{k!\,(n - k)!}$$
+:::
+
+::: etape Additionner
+$$
+\begin{aligned}
+\binom{n-1}{k-1} + \binom{n-1}{k} &= \frac{(n - 1)! \times \big(k + (n - k)\big)}{k!\,(n - k)!} \\
+&= \frac{n \times (n - 1)!}{k!\,(n - k)!} \\
+&= \frac{n!}{k!\,(n - k)!} \\
+&= \binom{n}{k}
+\end{aligned}
+$$
+:::
+
+::: retenir
+La même relation se démontre aussi par dénombrement : on sépare les parties à $k$ éléments qui contiennent un élément fixé $a$ de celles qui ne le contiennent pas.
+:::
+
+::: resultat
+Pour $1 \le k \le n - 1$ : $\binom{n}{k} = \binom{n-1}{k-1} + \binom{n-1}{k}$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $2^n$ parties ; pour $n = 4$ : $1 + 4 + 6 + 4 + 1 = 16 = 2^4$
+2. $350 + 210 + 35 + 1 = 596$ comités
+3. $A_{20}^3 = 6\,840$ bureaux
+4. $\binom{6}{2} \times \binom{4}{2} \times 2! = 180$ anagrammes
+5. Réduction au même dénominateur $k!\,(n - k)!$ : $\binom{n-1}{k-1} + \binom{n-1}{k} = \binom{n}{k}$.
+
+===
+
+=== Type examen - Prélèvements simultanés ou successifs
+Id: 5260
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Un lot contient $20$ composants électroniques, dont $4$ sont défectueux et $16$ sont bons.
+
+**Partie A : prélèvement simultané**
+
+On prélève simultanément $3$ composants du lot ; tous les prélèvements sont équiprobables.
+
+1. Combien y a-t-il de prélèvements possibles ?
+2. Prélèvements contenant exactement un composant défectueux.
+  - a) Combien y en a-t-il ?
+  - b) En déduire la probabilité qu’un prélèvement contienne exactement un composant défectueux.
+3. Calculer la probabilité qu’un prélèvement contienne au moins un composant défectueux.
+
+**Partie B : prélèvements successifs avec remise**
+
+On prélève maintenant $3$ composants l’un après l’autre, en remettant chaque composant dans le lot avant le prélèvement suivant. Un résultat est la liste ordonnée des $3$ composants obtenus ; tous les résultats sont équiprobables.
+
+4. Combien y a-t-il de résultats possibles ?
+5. Résultats comportant exactement un composant défectueux.
+  - a) Combien y en a-t-il ?
+  - b) En déduire la probabilité d’obtenir exactement un composant défectueux, puis vérifier qu’elle est égale à $\dbinom{3}{1} \times 0{,}2 \times 0{,}8^2$.
+6. Calculer la probabilité d’obtenir au moins un composant défectueux, puis comparer avec la question 3.
+
+Étapes:
+<!-- optitab:1 -->
+## Partie A : prélèvement simultané
+
+## Question 1 : Nombre de prélèvements
+
+::: methode
+Un prélèvement simultané est une **partie** à $3$ éléments du lot : l’ordre ne compte pas, on compte des combinaisons.
+:::
+
+::: etape Calculer
+$$
+\begin{aligned}
+\binom{20}{3} &= \frac{20 \times 19 \times 18}{3 \times 2 \times 1} \\
+&= \frac{6\,840}{6} \\
+&= 1\,140
+\end{aligned}
+$$
+:::
+
+::: resultat
+Il y a $1\,140$ prélèvements possibles.
+:::
+
+## Question 2 : Exactement un composant défectueux
+
+::: methode
+On choisit séparément le composant défectueux et les deux bons, puis on multiplie.
+:::
+
+::: etape Compter les prélèvements favorables
+- $1$ défectueux parmi les $4$ : $\binom{4}{1} = 4$ choix ;
+- $2$ bons parmi les $16$ : $\binom{16}{2} = \frac{16 \times 15}{2} = 120$ choix.
+
+[IMAGE_1]
+
+$$4 \times 120 = 480$$
+:::
+
+::: etape Calculer la probabilité
+Les prélèvements sont équiprobables :
+$$
+\begin{aligned}
+P &= \frac{480}{1\,140} \\
+&= \frac{8}{19} \approx 0{,}421
+\end{aligned}
+$$
+:::
+
+::: resultat
+a) $480$ prélèvements ; b) $P = \dfrac{8}{19} \approx 0{,}421$.
+:::
+
+## Question 3 : Au moins un composant défectueux
+
+::: methode
+« Au moins un » : on passe à l’événement contraire, « aucun composant défectueux ».
+:::
+
+::: etape Aucun défectueux
+Les $3$ composants sont pris parmi les $16$ bons :
+$$\binom{16}{3} = \frac{16 \times 15 \times 14}{6} = 560$$
+donc la probabilité de n’avoir aucun défectueux est $\dfrac{560}{1\,140} = \dfrac{28}{57}$.
+:::
+
+::: etape Événement contraire
+$$
+\begin{aligned}
+P(\text{au moins un}) &= 1 - \frac{28}{57} \\
+&= \frac{29}{57} \approx 0{,}509
+\end{aligned}
+$$
+:::
+
+::: attention
+Découper en « exactement $1$, $2$ ou $3$ défectueux » marche aussi, mais demande trois calculs ; l’événement contraire n’en demande qu’un.
+:::
+
+::: resultat
+$$P(\text{au moins un défectueux}) = \frac{29}{57} \approx 0{,}509$$
+:::
+
+## Partie B : prélèvements successifs avec remise
+
+## Question 4 : Nombre de résultats
+
+::: methode
+Avec remise, l’ordre compte et un même composant peut revenir : un résultat est un $3$-uplet d’éléments du lot.
+:::
+
+::: etape Calculer
+$20$ choix à chacun des $3$ prélèvements :
+$$20^3 = 8\,000$$
+:::
+
+::: resultat
+Il y a $8\,000$ résultats possibles.
+:::
+
+## Question 5 : Exactement un composant défectueux
+
+::: methode
+On choisit d’abord le **rang** du composant défectueux, puis on remplit les trois cases.
+:::
+
+::: etape Le rang du défectueux
+Le composant défectueux peut être obtenu au $1^{\text{er}}$, au $2^{\text{e}}$ ou au $3^{\text{e}}$ prélèvement : $3$ cas disjoints. Dans chaque cas, on a $4$ choix pour le défectueux (D) et $16$ choix pour chacun des deux bons (B).
+
+[IMAGE_2]
+
+$$3 \times 4 \times 16^2 = 3 \times 1\,024 = 3\,072$$
+:::
+
+::: etape Calculer la probabilité
+$$P = \frac{3\,072}{8\,000} = 0{,}384$$
+:::
+
+::: etape Lien avec la loi binomiale
+La proportion de composants défectueux est $\dfrac{4}{20} = 0{,}2$ ; celle des bons, $0{,}8$. Or
+$$\binom{3}{1} \times 0{,}2 \times 0{,}8^2 = 3 \times 0{,}2 \times 0{,}64 = 0{,}384.$$
+On retrouve la même valeur : $\binom{3}{1}$ compte les rangs possibles du défectueux, et $0{,}2 \times 0{,}8^2$ est la probabilité de chacun de ces cas.
+:::
+
+::: retenir
+Des tirages **avec remise** sont des épreuves identiques et indépendantes : le nombre de composants défectueux suit la loi binomiale $\mathcal{B}(3\,;0{,}2)$ (voir la notion « Schéma de Bernoulli et loi binomiale »).
+:::
+
+::: resultat
+a) $3\,072$ résultats ; b) $P = 0{,}384 = \dbinom{3}{1} \times 0{,}2 \times 0{,}8^2$.
+:::
+
+## Question 6 : Au moins un défectueux et comparaison
+
+::: methode
+On passe encore à l’événement contraire : les $3$ composants sont bons.
+:::
+
+::: etape Aucun défectueux
+$16$ choix à chaque prélèvement, soit $16^3 = 4\,096$ résultats, donc
+$$P(\text{aucun}) = \frac{4\,096}{8\,000} = 0{,}512 = 0{,}8^3.$$
+:::
+
+::: etape Au moins un
+$$P(\text{au moins un}) = 1 - 0{,}512 = 0{,}488$$
+:::
+
+::: etape Comparer
+Sans remise (partie A), on trouvait $\dfrac{29}{57} \approx 0{,}509$ ; avec remise, $0{,}488$. Les deux valeurs sont proches mais différentes : sans remise, chaque composant bon tiré est retiré du lot, ce qui augmente un peu la proportion de défectueux pour les tirages suivants.
+:::
+
+::: resultat
+Avec remise, $P(\text{au moins un défectueux}) = 0{,}488$, un peu moins que $\dfrac{29}{57} \approx 0{,}509$ sans remise.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\binom{20}{3} = 1\,140$ prélèvements
+2. a) $\binom{4}{1} \times \binom{16}{2} = 480$ ; b) $\dfrac{480}{1\,140} = \dfrac{8}{19} \approx 0{,}421$
+3. $1 - \dfrac{560}{1\,140} = \dfrac{29}{57} \approx 0{,}509$
+4. $20^3 = 8\,000$ résultats
+5. a) $3 \times 4 \times 16^2 = 3\,072$ ; b) $\dfrac{3\,072}{8\,000} = 0{,}384 = \dbinom{3}{1} \times 0{,}2 \times 0{,}8^2$
+6. $1 - 0{,}8^3 = 0{,}488$, un peu moins que $0{,}509$ sans remise
+
+===
+
+=== Problème - Triangle de Pascal en Python
+Id: 5261
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On rappelle la relation de Pascal : pour $1 \le k \le n - 1$, $\dbinom{n}{k} = \dbinom{n-1}{k-1} + \dbinom{n-1}{k}$.
+
+[IMAGE_1]
+
+1. Compléter la ligne $n = 7$ du triangle de Pascal ci-dessus. En déduire $\dbinom{7}{3}$.
+2. En Python, on représente une ligne du triangle par une liste, par exemple `[1, 3, 3, 1]` pour $n = 3$. On considère la fonction `suivante` ci-dessous.
+  - a) Que renvoie `suivante([1, 3, 3, 1])` ? Détailler les passages dans la boucle.
+  - b) Expliquer le rôle de la boucle à l’aide de la relation de Pascal.
+3. Compléter la fonction `ligne` ci-dessous pour qu’elle renvoie la ligne $n$ du triangle.
+4. L’instruction `print(ligne(10))` affiche la liste des nombres $1$, $10$, $45$, $120$, $210$, $252$, $210$, $120$, $45$, $10$, $1$.
+  - a) Que vaut `sum(ligne(10))` ? Justifier sans additionner les termes.
+  - b) Un QCM comporte $10$ questions. De combien de façons un élève peut-il avoir exactement $3$ bonnes réponses (on ne regarde que la liste des questions réussies) ? Quel terme de `ligne(10)` donne ce nombre ?
+
+```python
+def suivante(L):
+    M = [1]
+    for k in range(1, len(L)):
+        M.append(L[k-1] + L[k])
+    M.append(1)
+    return M
+
+def ligne(n):
+    L = [1]
+    for i in range(...):
+        L = suivante(L)
+    return L
+```
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Compléter la ligne $n = 7$
+
+::: methode
+Chaque ligne commence et finit par $1$ ; chaque autre nombre est la somme des deux nombres situés au-dessus de lui.
+:::
+
+::: etape Additionner deux à deux la ligne $n = 6$
+La ligne $n = 6$ est $1$, $6$, $15$, $20$, $15$, $6$, $1$. On obtient :
+- $1 + 6 = 7$ ; $6 + 15 = 21$ ; $15 + 20 = 35$ ;
+- $20 + 15 = 35$ ; $15 + 6 = 21$ ; $6 + 1 = 7$.
+
+[IMAGE_2]
+:::
+
+::: etape Lire $\dbinom{7}{3}$
+Dans la ligne $n = 7$, le terme de rang $k = 3$ est le **quatrième** (on commence à $k = 0$) : c’est $15 + 20 = 35$.
+:::
+
+::: resultat
+Ligne $7$ : $1$, $7$, $21$, $35$, $35$, $21$, $7$, $1$ ; $\dbinom{7}{3} = 35$.
+:::
+
+## Question 2 : La fonction suivante
+
+::: methode
+On exécute la fonction « à la main », en suivant la valeur de `k` et le contenu de `M`.
+:::
+
+::: point a) Exécution pour L = [1, 3, 3, 1]
+`len(L)` vaut $4$, donc `k` prend les valeurs $1$, $2$ et $3$. À chaque passage, on ajoute à `M` la somme `L[k-1] + L[k]`.
+
+| `k` | Somme | `M` |
+|---|---|---|
+| départ | | `[1]` |
+| $1$ | $1 + 3 = 4$ | `[1, 4]` |
+| $2$ | $3 + 3 = 6$ | `[1, 4, 6]` |
+| $3$ | $3 + 1 = 4$ | `[1, 4, 6, 4]` |
+
+Après la boucle, on ajoute le $1$ final : la fonction renvoie `[1, 4, 6, 4, 1]`, la ligne $n = 4$.
+:::
+
+::: point b) Rôle de la boucle
+Si `L` est la ligne $n - 1$, alors `L[k-1]` vaut $\binom{n-1}{k-1}$ et `L[k]` vaut $\binom{n-1}{k}$. La boucle calcule donc, pour $k$ allant de $1$ à $n - 1$,
+$$\binom{n-1}{k-1} + \binom{n-1}{k} = \binom{n}{k}.$$
+Les deux $1$ ajoutés au début et à la fin sont $\binom{n}{0}$ et $\binom{n}{n}$.
+:::
+
+::: resultat
+`suivante([1, 3, 3, 1])` renvoie `[1, 4, 6, 4, 1]` ; la boucle applique la relation de Pascal à chaque terme intérieur de la nouvelle ligne.
+:::
+
+## Question 3 : La fonction ligne
+
+::: methode
+On part de la ligne $n = 0$, c’est-à-dire `[1]`, et on applique `suivante` autant de fois qu’il faut pour arriver à la ligne $n$.
+:::
+
+::: etape Compter les passages
+Après $1$ passage, on a la ligne $1$ ; après $2$ passages, la ligne $2$ ; … ; après $n$ passages, la ligne $n$. Il faut donc $n$ passages : `range(n)`.
+
+```python
+def ligne(n):
+    L = [1]
+    for i in range(n):
+        L = suivante(L)
+    return L
+```
+:::
+
+::: point Vérification
+`ligne(0)` ne fait aucun passage et renvoie `[1]` ; `ligne(3)` renvoie `[1, 3, 3, 1]`.
+:::
+
+::: resultat
+On complète par `range(n)`.
+:::
+
+## Question 4 : Utiliser la ligne $n = 10$
+
+::: methode
+La somme d’une ligne compte toutes les parties d’un ensemble ; un terme de la ligne compte les parties d’une taille donnée.
+:::
+
+::: point a) Somme de la ligne
+`sum(ligne(10))` est la somme $\displaystyle\sum_{k=0}^{10} \binom{10}{k}$, c’est-à-dire le nombre de parties d’un ensemble à $10$ éléments :
+$$\sum_{k=0}^{10} \binom{10}{k} = 2^{10} = 1\,024$$
+:::
+
+::: point b) Le QCM
+Avoir exactement $3$ bonnes réponses, c’est choisir les $3$ questions réussies parmi les $10$ (l’ordre ne compte pas) : $\binom{10}{3}$ façons. C’est le terme d’indice $3$ de la liste, `ligne(10)[3]`, qui vaut $120$.
+:::
+
+::: attention
+En Python, les indices commencent à $0$ : `ligne(10)[3]` est le **quatrième** terme de la liste, celui de rang $k = 3$.
+:::
+
+::: resultat
+a) `sum(ligne(10))` vaut $2^{10} = 1\,024$ ; b) $\dbinom{10}{3} = 120$ façons, donné par `ligne(10)[3]`.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Ligne $7$ : $1$, $7$, $21$, $35$, $35$, $21$, $7$, $1$ ; $\dbinom{7}{3} = 35$
+2. a) `[1, 4, 6, 4, 1]` ; b) la boucle calcule $\dbinom{n-1}{k-1} + \dbinom{n-1}{k} = \dbinom{n}{k}$ (relation de Pascal)
+3. `for i in range(n):`
+4. a) $2^{10} = 1\,024$ ; b) $\dbinom{10}{3} = 120$, c’est `ligne(10)[3]`
+
+===

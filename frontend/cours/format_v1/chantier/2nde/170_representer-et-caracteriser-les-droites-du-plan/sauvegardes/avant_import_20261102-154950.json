@@ -1,0 +1,503 @@
+{
+ "notion": 170,
+ "dossier": "C:\\Users\\SWEELCO-AT\\Desktop\\SWINDER\\OptiTABV2\\frontend\\cours\\format_v1\\chantier\\2nde\\170_representer-et-caracteriser-les-droites-du-plan",
+ "date": "2026-11-02T15:49:49",
+ "cours": [
+  {
+   "id": 226,
+   "contenu": "<!-- optitab:1 -->\n::: objectifs\n- Caractériser une droite par un point et un vecteur directeur.\n- Établir une équation cartésienne d'une droite et passer à son équation réduite.\n- Calculer une pente, la lire sur un graphique et tracer une droite connaissant son équation.\n- Reconnaître des droites parallèles ou sécantes ; tester l'alignement de trois points.\n- Résoudre un système de deux équations linéaires et trouver le point d'intersection de deux droites.\n:::\n\nDans tout le chapitre, le plan est muni d'un repère $(O\\,;\\vec{i},\\vec{j})$.\n\n## I. Vecteur directeur d'une droite\n\n::: rappel Colinéarité\nLe **déterminant** de $\\vec{u}\\,(x\\,;y)$ et $\\vec{v}\\,(x'\\,;y')$ est $\\det(\\vec{u}, \\vec{v}) = xy' - x'y$. Deux vecteurs sont colinéaires si et seulement si leur déterminant est nul.\n:::\n\n::: definition Vecteur directeur\nUn **vecteur directeur** d'une droite $d$ est un vecteur non nul $\\vec{u}$ qui a la même direction que $d$.\n\n- Si $A$ et $B$ sont deux points distincts de $d$, alors $\\overrightarrow{AB}$ est un vecteur directeur de $d$.\n- Tout vecteur non nul colinéaire à $\\vec{u}$ est aussi un vecteur directeur de $d$.\n:::\n\n::: propriete Caractérisation d'une droite\nSoit $A$ un point et $\\vec{u}$ un vecteur non nul. La droite $d$ passant par $A$ et de vecteur directeur $\\vec{u}$ est l'ensemble des points $M$ tels que $\\overrightarrow{AM}$ et $\\vec{u}$ sont colinéaires :\n\n$$M \\in d \\iff \\det(\\overrightarrow{AM}, \\vec{u}) = 0$$\n:::\n\n[IMAGE_1]\n\n## II. Équation cartésienne\n\n::: theoreme Équation cartésienne\n1. Toute droite admet une équation de la forme $ax + by + c = 0$ avec $(a\\,;b) \\neq (0\\,;0)$ : c'est une **équation cartésienne** de la droite.\n2. Le vecteur $\\vec{u}\\,(-b\\,;a)$ est alors un vecteur directeur de cette droite.\n3. Réciproquement, si $(a\\,;b) \\neq (0\\,;0)$, l'ensemble des points $M(x\\,;y)$ tels que $ax + by + c = 0$ est une droite.\n:::\n\n::: demonstration Forme générale d'une équation de droite\n**Toute droite a une telle équation.** Soit $d$ la droite passant par $A(x_A\\,;y_A)$ et de vecteur directeur $\\vec{u}\\,(\\alpha\\,;\\beta)$ non nul. Pour un point $M(x\\,;y)$, on a $\\overrightarrow{AM}\\,(x - x_A\\,;y - y_A)$, donc :\n\n$$\n\\begin{aligned}\nM \\in d &\\iff \\det(\\overrightarrow{AM}, \\vec{u}) = 0 \\\\\n&\\iff (x - x_A)\\beta - (y - y_A)\\alpha = 0 \\\\\n&\\iff \\beta x - \\alpha y + (\\alpha y_A - \\beta x_A) = 0\n\\end{aligned}\n$$\n\nEn posant $a = \\beta$, $b = -\\alpha$ et $c = \\alpha y_A - \\beta x_A$, la droite $d$ a pour équation $ax + by + c = 0$, avec $(a\\,;b) \\neq (0\\,;0)$ car $\\vec{u} \\neq \\vec{0}$. De plus $(-b\\,;a) = (\\alpha\\,;\\beta)$ : on retrouve $\\vec{u}$.\n\n**Réciproque.** Soit $(a\\,;b) \\neq (0\\,;0)$ et $E$ l'ensemble des points $M(x\\,;y)$ tels que $ax + by + c = 0$. Si $b \\neq 0$, le point $A\\left(0\\,;-\\frac{c}{b}\\right)$ est dans $E$ ; si $b = 0$, alors $a \\neq 0$ et $A\\left(-\\frac{c}{a}\\,;0\\right)$ est dans $E$. Dans les deux cas $c = -ax_A - by_A$, donc pour tout point $M(x\\,;y)$ :\n\n$$\n\\begin{aligned}\nax + by + c &= a(x - x_A) + b(y - y_A) \\\\\n&= \\det(\\overrightarrow{AM}, \\vec{u})\n\\end{aligned}\n$$\n\navec $\\vec{u}\\,(-b\\,;a)$ non nul. Ainsi $M \\in E \\iff \\det(\\overrightarrow{AM}, \\vec{u}) = 0$ : $E$ est la droite passant par $A$ et dirigée par $\\vec{u}$.\n:::\n\n::: methode Déterminer une équation cartésienne\n1. Trouver un point $A$ de la droite et un vecteur directeur $\\vec{u}$ (avec deux points $A$ et $B$ : $\\vec{u} = \\overrightarrow{AB}$).\n2. Pour $M(x\\,;y)$, écrire $\\det(\\overrightarrow{AM}, \\vec{u}) = 0$ et développer.\n3. Contrôler en remplaçant les coordonnées de $A$ dans l'équation obtenue.\n:::\n\n::: exemple\nDroite $d$ passant par $A(2\\,;1)$ et dirigée par $\\vec{u}\\,(3\\,;2)$. Pour $M(x\\,;y)$, $\\overrightarrow{AM}\\,(x - 2\\,;y - 1)$ et :\n\n$$\n\\begin{aligned}\n\\det(\\overrightarrow{AM}, \\vec{u}) = 0 &\\iff 2(x - 2) - 3(y - 1) = 0 \\\\\n&\\iff 2x - 3y - 1 = 0\n\\end{aligned}\n$$\n\nContrôle : $2 \\times 2 - 3 \\times 1 - 1 = 0$, donc $A \\in d$.\n:::\n\n::: propriete Appartenance d'un point\nUn point appartient à une droite si et seulement si ses coordonnées vérifient une équation de cette droite.\n:::\n\n::: exemple\nAvec $d : 2x - 3y - 1 = 0$ : pour $M(8\\,;5)$, $2 \\times 8 - 3 \\times 5 - 1 = 0$, donc $M \\in d$ ; pour $N(1\\,;1)$, $2 \\times 1 - 3 \\times 1 - 1 = -2 \\neq 0$, donc $N \\notin d$.\n:::\n\n::: attention\n- Une équation cartésienne n'est pas unique : $2x - 3y - 1 = 0$ et $4x - 6y - 2 = 0$ (multipliée par $2$) décrivent la même droite.\n- Un vecteur directeur de $ax + by + c = 0$ est $(-b\\,;a)$, et non $(a\\,;b)$.\n:::\n\n## III. Équation réduite et pente\n\n::: propriete Équation réduite\n- Toute droite **non parallèle à l'axe des ordonnées** a une unique équation de la forme $y = mx + p$ : c'est son **équation réduite**. Le réel $m$ est la **pente** (ou coefficient directeur) et $p$ est l'**ordonnée à l'origine** : la droite coupe l'axe des ordonnées au point $(0\\,;p)$.\n- Toute droite **parallèle à l'axe des ordonnées** a une équation de la forme $x = k$ : elle n'a pas de pente.\n:::\n\n::: remarque Passer de l'équation cartésienne à l'équation réduite\nOn isole $y$. Si $b \\neq 0$ : $ax + by + c = 0 \\iff y = -\\frac{a}{b}x - \\frac{c}{b}$. Si $b = 0$ : l'équation devient $x = -\\frac{c}{a}$, la droite est parallèle à l'axe des ordonnées.\n:::\n\n::: propriete Calcul de la pente\nSi $A$ et $B$ sont deux points de la droite avec $x_A \\neq x_B$ :\n\n$$m = \\frac{y_B - y_A}{x_B - x_A}$$\n\n- Le vecteur $(1\\,;m)$ est un vecteur directeur de la droite d'équation $y = mx + p$.\n- Si $\\vec{u}\\,(\\alpha\\,;\\beta)$ est un vecteur directeur avec $\\alpha \\neq 0$, la pente vaut $m = \\frac{\\beta}{\\alpha}$.\n:::\n\n[IMAGE_2]\n\n::: exemple\n$A(2\\,;1)$ et $B(5\\,;5)$ : $m = \\frac{5 - 1}{5 - 2} = \\frac{4}{3}$, donc $(AB) : y = \\frac{4}{3}x + p$. Comme $A \\in (AB)$, $1 = \\frac{4}{3} \\times 2 + p$, d'où $p = 1 - \\frac{8}{3} = -\\frac{5}{3}$.\n\n$$(AB) : y = \\frac{4}{3}x - \\frac{5}{3}$$\n:::\n\n::: methode Lire graphiquement $p$ et $m$\n1. $p$ est l'ordonnée du point d'intersection de la droite et de l'axe des ordonnées.\n2. À partir d'un point de la droite, on avance de $1$ en abscisse : on monte de $m$ si $m \\gt 0$, on descend de $-m$ si $m \\lt 0$.\n3. Plus généralement, quand on avance de $\\Delta x$, on monte (ou on descend) de $\\Delta y$ et $m = \\frac{\\Delta y}{\\Delta x}$.\n:::\n\n[IMAGE_3]\n\n::: exemple Le signe de la pente\n- $d_1 : y = 2x + 1$ : pente $2$, positive, la droite monte.\n- $d_2 : y = -\\frac{1}{2}x + 2$ : pente $-\\frac{1}{2}$, négative, la droite descend.\n- $d_3 : y = -2$ : pente nulle, la droite est parallèle à l'axe des abscisses.\n- $d_4 : x = -3$ : droite parallèle à l'axe des ordonnées, sans pente.\n:::\n\n::: methode Tracer une droite connaissant son équation\n- $y = mx + p$ : placer le point $(0\\,;p)$, puis un deuxième point en avançant de $1$ (ou d'un nombre donnant des coordonnées entières) et en montant de $m$ fois ce nombre.\n- $ax + by + c = 0$ : calculer les coordonnées de deux points, par exemple avec $x = 0$ puis $y = 0$, ou passer à l'équation réduite.\n- $x = k$ : tracer la parallèle à l'axe des ordonnées passant par le point $(k\\,;0)$.\n:::\n\n::: attention\n- Dans $m = \\frac{y_B - y_A}{x_B - x_A}$, les **ordonnées** sont au numérateur, et l'on garde le même ordre en haut et en bas.\n- Si $x_A = x_B$, la droite $(AB)$ a pour équation $x = x_A$ : elle n'a pas de pente.\n:::\n\n## IV. Droites parallèles, points alignés\n\n::: propriete Droites parallèles\nDeux droites sont **parallèles** si et seulement si leurs vecteurs directeurs sont colinéaires.\n\n- Pour $ax + by + c = 0$ et $a'x + b'y + c' = 0$ : parallèles $\\iff ab' - a'b = 0$.\n- Pour $y = mx + p$ et $y = m'x + p'$ : parallèles $\\iff m = m'$.\n\nDeux droites qui ne sont pas parallèles sont **sécantes** : elles ont un unique point commun.\n:::\n\n::: remarque Pourquoi $ab' - a'b$ ?\nLes vecteurs $(-b\\,;a)$ et $(-b'\\,;a')$ dirigent les deux droites, et leur déterminant vaut :\n\n$$\n\\begin{aligned}\n\\det\\big((-b\\,;a), (-b'\\,;a')\\big) &= -ba' + ab' \\\\\n&= ab' - a'b\n\\end{aligned}\n$$\n:::\n\n::: exemple\n- $y = 2x + 1$ et $y = 2x - 3$ sont parallèles (même pente $2$).\n- $y = 2x + 1$ et $y = -x + 3$ sont sécantes, car $2 \\neq -1$.\n- $2x - 3y + 1 = 0$ et $4x - 6y - 5 = 0$ : $2 \\times (-6) - 4 \\times (-3) = 0$, elles sont parallèles.\n:::\n\n::: propriete Points alignés\nTrois points $A$, $B$, $C$ sont **alignés** si et seulement si $\\overrightarrow{AB}$ et $\\overrightarrow{AC}$ sont colinéaires, c'est-à-dire si $\\det(\\overrightarrow{AB}, \\overrightarrow{AC}) = 0$.\n:::\n\n::: exemple Algorithme : trois points sont-ils alignés ?\nUn point est représenté par le couple de ses coordonnées.\n\n```python\ndef alignes(A, B, C):\n    ux = B[0] - A[0]\n    uy = B[1] - A[1]\n    vx = C[0] - A[0]\n    vy = C[1] - A[1]\n    return ux*vy - uy*vx == 0\n```\n\n`alignes((-1, 2), (2, 8), (5, 14))` renvoie `True` : $\\det\\big((3\\,;6), (6\\,;12)\\big) = 36 - 36 = 0$.\n:::\n\n::: remarque\nAvec des coordonnées décimales, les arrondis de calcul peuvent fausser le test `== 0` : on teste alors si la valeur absolue du déterminant est très petite, par exemple `abs(d) < 1e-9`.\n:::\n\n## V. Systèmes de deux équations linéaires\n\n::: definition\nUn **système de deux équations linéaires à deux inconnues** $x$ et $y$ s'écrit $\\begin{cases} ax + by = c \\\\ a'x + b'y = c' \\end{cases}$. Une **solution** est un couple $(x\\,;y)$ qui vérifie les deux équations à la fois.\n:::\n\n::: propriete Interprétation graphique\nChaque équation est celle d'une droite : résoudre le système revient à chercher les points communs aux deux droites.\n\n- Si $ab' - a'b \\neq 0$ : les droites sont sécantes, le système a **une unique solution**, les coordonnées du point d'intersection.\n- Si $ab' - a'b = 0$ : les droites sont parallèles, le système n'a **aucune solution** (droites distinctes) ou en a **une infinité** (droites confondues).\n:::\n\n[IMAGE_4]\n\n::: methode Résoudre par substitution\nOn isole une inconnue dans l'une des équations, on la remplace dans l'autre, on résout l'équation obtenue, puis on calcule la seconde inconnue.\n:::\n\n::: exemple\n$\\begin{cases} y = 2x - 1 \\\\ x + y = 5 \\end{cases}$ : on remplace $y$ par $2x - 1$ dans la seconde équation.\n\n$$\n\\begin{aligned}\nx + (2x - 1) = 5 &\\iff 3x = 6 \\\\\n&\\iff x = 2\n\\end{aligned}\n$$\n\nPuis $y = 2 \\times 2 - 1 = 3$. Les deux droites se coupent en $I(2\\,;3)$ et $S = \\{(2\\,;3)\\}$.\n:::\n\n[IMAGE_5]\n\n::: methode Résoudre par combinaison\nOn multiplie les équations par des nombres bien choisis pour qu'en les additionnant (ou en les soustrayant) une inconnue disparaisse.\n:::\n\n::: exemple\n$\\begin{cases} 2x + 3y = 12 \\\\ x - y = 1 \\end{cases}$ : on multiplie la seconde équation par $3$, ce qui donne $3x - 3y = 3$. On l'additionne à la première : $5x = 15$, donc $x = 3$. Puis $y = x - 1 = 2$.\n\nContrôle dans les **deux** équations : $2 \\times 3 + 3 \\times 2 = 12$ et $3 - 2 = 1$. Donc $S = \\{(3\\,;2)\\}$.\n:::\n\n::: attention\n- On vérifie toujours la solution dans les **deux** équations.\n- On peut calculer $ab' - a'b$ avant de résoudre : s'il est nul, le système n'a pas une unique solution.\n:::\n\n::: retenir\n- Droite passant par $A$ et dirigée par $\\vec{u}$ : $M \\in d \\iff \\det(\\overrightarrow{AM}, \\vec{u}) = 0$.\n- Équation cartésienne $ax + by + c = 0$ ; vecteur directeur $(-b\\,;a)$.\n- Droite non parallèle à l'axe des ordonnées : $y = mx + p$, avec $m = \\frac{y_B - y_A}{x_B - x_A}$ ; sinon $x = k$.\n- Parallèles $\\iff$ vecteurs directeurs colinéaires $\\iff$ même pente.\n- Un système a une unique solution $\\iff ab' - a'b \\neq 0$ : c'est le point d'intersection des deux droites.\n:::"
+  }
+ ],
+ "fiches": [
+  {
+   "id": 140,
+   "summary": "<!-- optitab:1 -->\n::: objectifs\nL'essentiel sur les droites du plan : vecteur directeur, équations, pente, parallélisme, alignement et systèmes.\n:::\n\n## I. Équations d'une droite\n\n::: formule\n$M \\in d \\iff \\det(\\overrightarrow{AM}, \\vec{u}) = 0$\n:::\n\n- Équation cartésienne : $ax + by + c = 0$, vecteur directeur $(-b\\,;a)$.\n- Équation réduite (droite non parallèle à l'axe des ordonnées) : $y = mx + p$, vecteur directeur $(1\\,;m)$.\n- Droite parallèle à l'axe des ordonnées : $x = k$, pas de pente.\n- $M$ appartient à la droite $\\iff$ ses coordonnées vérifient l'équation.\n\n## II. Pente et ordonnée à l'origine\n\n::: formule\n$m = \\dfrac{y_B - y_A}{x_B - x_A}$\n:::\n\n[IMAGE_1]\n\n- Calcul de $p$ : on remplace les coordonnées d'un point dans $y = mx + p$.\n- Lecture graphique : $p$ se lit sur l'axe des ordonnées ; on avance de $1$, on monte de $m$.\n- Si $\\vec{u}\\,(\\alpha\\,;\\beta)$ dirige la droite, avec $\\alpha \\neq 0$ : $m = \\frac{\\beta}{\\alpha}$.\n\n## III. Parallélisme et alignement\n\n- Parallèles $\\iff ab' - a'b = 0 \\iff m = m'$.\n- $A$, $B$, $C$ alignés $\\iff \\det(\\overrightarrow{AB}, \\overrightarrow{AC}) = 0$.\n\n## IV. Systèmes et intersection\n\n[IMAGE_2]\n\n- Unique solution $\\iff ab' - a'b \\neq 0$ : c'est le point d'intersection des deux droites.\n- Résolution par substitution ou par combinaison, puis vérification dans les deux équations.\n\n::: attention Les erreurs classiques\n1. Inverser la pente : c'est $\\frac{\\Delta y}{\\Delta x}$, pas $\\frac{\\Delta x}{\\Delta y}$.\n2. Oublier le cas $x_A = x_B$ : la droite a pour équation $x = x_A$.\n3. Prendre $(a\\,;b)$ comme vecteur directeur de $ax + by + c = 0$ : c'est $(-b\\,;a)$.\n4. Ne pas vérifier la solution d'un système dans les deux équations.\n:::"
+  }
+ ],
+ "exercices": [
+  {
+   "id": 2054,
+   "question": "<!-- optitab:1 -->\nUn point est représenté par le couple de ses coordonnées, par exemple `A = (-1, 0)`. On considère les deux fonctions Python suivantes.\n\n```python\ndef alignes(A, B, C):\n    xA, yA = A\n    xB, yB = B\n    xC, yC = C\n    ux, uy = xB - xA, yB - yA\n    vx, vy = xC - xA, yC - yA\n    det = ux*vy - uy*vx\n    return det == 0\n```\n\n```python\ndef equation_droite(A, B):\n    if A == B:\n        return None\n    xA, yA = A\n    xB, yB = B\n    a = yA - yB\n    b = xB - xA\n    c = xA*yB - xB*yA\n    return (a, b, c)\n```\n\nLa fonction `equation_droite` renvoie les coefficients $a$, $b$, $c$ d'une équation $ax + by + c = 0$ de la droite $(AB)$.\n\n1. Que renvoie `alignes((-1, 0), (2, 3), (5, 6))` ?\n2. Que renvoie `alignes((0, 1), (2, 2), (4, 6))` ?\n3. Que renvoie `equation_droite((-1, 0), (5, 6))` ? En déduire une équation cartésienne simple, puis l'équation réduite de cette droite.\n4. Que renvoie `equation_droite((2, 3), (2, 3))` ? Pourquoi ce cas est-il prévu ?\n5. Que renvoie `equation_droite((2, -1), (2, 5))` ? Interpréter le résultat.\n6. Justifier que, pour deux points distincts $A$ et $B$, l'équation renvoyée est bien une équation de la droite $(AB)$.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Résultat de `alignes((-1, 0), (2, 3), (5, 6))`\n\n::: methode\nLa fonction calcule $\\det(\\overrightarrow{AB}, \\overrightarrow{AC})$ et teste s'il est nul.\n:::\n\n::: etape Coordonnées des vecteurs\n- $\\overrightarrow{AB}\\,(2 - (-1)\\,;3 - 0)$, soit $\\overrightarrow{AB}\\,(3\\,;3)$ : `ux = 3`, `uy = 3`.\n- $\\overrightarrow{AC}\\,(5 - (-1)\\,;6 - 0)$, soit $\\overrightarrow{AC}\\,(6\\,;6)$ : `vx = 6`, `vy = 6`.\n:::\n\n::: etape Déterminant\n$$\\det(\\overrightarrow{AB}, \\overrightarrow{AC}) = 3 \\times 6 - 3 \\times 6 = 0$$\n:::\n\n::: resultat\nLe déterminant est nul : la fonction renvoie `True`, les trois points sont alignés.\n:::\n\n## Question 2 : Résultat de `alignes((0, 1), (2, 2), (4, 6))`\n\n::: methode\nMême calcul : coordonnées des vecteurs, puis déterminant.\n:::\n\n::: etape Coordonnées des vecteurs\n- $\\overrightarrow{AB}\\,(2 - 0\\,;2 - 1)$, soit $(2\\,;1)$.\n- $\\overrightarrow{AC}\\,(4 - 0\\,;6 - 1)$, soit $(4\\,;5)$.\n:::\n\n::: etape Déterminant\n$$\\det(\\overrightarrow{AB}, \\overrightarrow{AC}) = 2 \\times 5 - 1 \\times 4 = 6$$\n:::\n\n::: resultat\n$6 \\neq 0$ : la fonction renvoie `False`, les points ne sont pas alignés.\n:::\n\n## Question 3 : Résultat de `equation_droite((-1, 0), (5, 6))`\n\n::: methode\nOn suit le programme ligne par ligne avec $x_A = -1$, $y_A = 0$, $x_B = 5$, $y_B = 6$.\n:::\n\n::: etape Coefficients\n- $a = y_A - y_B = 0 - 6 = -6$\n- $b = x_B - x_A = 5 - (-1) = 6$\n- $c = x_A y_B - x_B y_A$, soit $c = (-1) \\times 6 - 5 \\times 0 = -6$\n:::\n\n::: etape Équation cartésienne simplifiée\nLa fonction renvoie `(-6, 6, -6)`, c'est-à-dire l'équation $-6x + 6y - 6 = 0$. En divisant par $-6$ : $x - y + 1 = 0$.\n:::\n\n::: etape Équation réduite\n$$x - y + 1 = 0 \\iff y = x + 1$$\n:::\n\n::: resultat\n`(-6, 6, -6)` ; la droite a pour équation $x - y + 1 = 0$, soit $y = x + 1$.\n:::\n\n::: remarque\nLe point $(2\\,;3)$ de la question 1 vérifie $2 - 3 + 1 = 0$ : il est sur cette droite, ce qui confirme que les trois points de la question 1 sont alignés.\n:::\n\n## Question 4 : Cas où les deux points sont égaux\n\n::: methode\nOn lit la première instruction de la fonction.\n:::\n\n::: etape Lecture du test\nIci `A == B` est vrai : la fonction s'arrête et renvoie `None`.\n:::\n\n::: etape Pourquoi ce test ?\nPar un seul point passent une infinité de droites : deux points égaux ne définissent pas une droite. Sans ce test, on obtiendrait $a = b = c = 0$, et $0x + 0y + 0 = 0$ n'est pas une équation de droite.\n:::\n\n::: resultat\nLa fonction renvoie `None`.\n:::\n\n## Question 5 : Résultat de `equation_droite((2, -1), (2, 5))`\n\n::: methode\nOn applique les mêmes formules avec $x_A = 2$, $y_A = -1$, $x_B = 2$, $y_B = 5$.\n:::\n\n::: etape Coefficients\n- $a = -1 - 5 = -6$\n- $b = 2 - 2 = 0$\n- $c = 2 \\times 5 - 2 \\times (-1) = 12$\n:::\n\n::: etape Équation\n$$-6x + 12 = 0 \\iff x = 2$$\n:::\n\n::: resultat\n`(-6, 0, 12)` : la droite a pour équation $x = 2$, elle est parallèle à l'axe des ordonnées (les deux points ont la même abscisse).\n:::\n\n## Question 6 : Pourquoi l'équation est-elle correcte ?\n\n::: methode\nIl suffit de vérifier que $A$ appartient à la droite d'équation $ax + by + c = 0$ et que son vecteur directeur $(-b\\,;a)$ est colinéaire à $\\overrightarrow{AB}$.\n:::\n\n::: etape Le point $A$ vérifie l'équation\nOn développe chaque terme :\n\n- $ax_A = (y_A - y_B)x_A = x_A y_A - x_A y_B$\n- $by_A = (x_B - x_A)y_A = x_B y_A - x_A y_A$\n- $c = x_A y_B - x_B y_A$\n\nEn additionnant, les termes s'éliminent deux à deux : $ax_A + by_A + c = 0$.\n:::\n\n::: etape Le vecteur directeur\n$(-b\\,;a) = (x_A - x_B\\,;y_A - y_B)$, c'est le vecteur $-\\overrightarrow{AB}$ : il est colinéaire à $\\overrightarrow{AB}$ et non nul car $A \\neq B$.\n:::\n\n::: resultat\nL'équation renvoyée est celle de la droite passant par $A$ et dirigée par $\\overrightarrow{AB}$ : c'est bien la droite $(AB)$.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. `True` (déterminant nul)\n2. `False` (déterminant égal à $6$)\n3. `(-6, 6, -6)`, soit $x - y + 1 = 0$, c'est-à-dire $y = x + 1$\n4. `None` : deux points égaux ne définissent pas une droite\n5. `(-6, 0, 12)`, soit $x = 2$ : droite parallèle à l'axe des ordonnées\n6. $A$ vérifie l'équation et $(-b\\,;a) = -\\overrightarrow{AB}$ dirige la droite",
+   "titre": "Algorithmique - Fonctions Python : alignement et équation de droite",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nUn point est représenté par le couple de ses coordonnées, par exemple `A = (-1, 0)`. On considère les deux fonctions Python suivantes.\n\n```python\ndef alignes(A, B, C):\n    xA, yA = A\n    xB, yB = B\n    xC, yC = C\n    ux, uy = xB - xA, yB - yA\n    vx, vy = xC - xA, yC - yA\n    det = ux*vy - uy*vx\n    return det == 0\n```\n\n```python\ndef equation_droite(A, B):\n    if A == B:\n        return None\n    xA, yA = A\n    xB, yB = B\n    a = yA - yB\n    b = xB - xA\n    c = xA*yB - xB*yA\n    return (a, b, c)\n```\n\nLa fonction `equation_droite` renvoie les coefficients $a$, $b$, $c$ d'une équation $ax + by + c = 0$ de la droite $(AB)$.\n\n1. Que renvoie `alignes((-1, 0), (2, 3), (5, 6))` ?\n2. Que renvoie `alignes((0, 1), (2, 2), (4, 6))` ?\n3. Que renvoie `equation_droite((-1, 0), (5, 6))` ? En déduire une équation cartésienne simple, puis l'équation réduite de cette droite.\n4. Que renvoie `equation_droite((2, 3), (2, 3))` ? Pourquoi ce cas est-il prévu ?\n5. Que renvoie `equation_droite((2, -1), (2, 5))` ? Interpréter le résultat.\n6. Justifier que, pour deux points distincts $A$ et $B$, l'équation renvoyée est bien une équation de la droite $(AB)$."
+  },
+  {
+   "id": 2046,
+   "question": "<!-- optitab:1 -->\nLes droites $d_1$, $d_2$ et $d_3$ sont tracées dans un repère orthonormé.\n\n[IMAGE_1]\n\n1. Lire l'ordonnée à l'origine de $d_1$ et celle de $d_2$.\n2. Lire la pente de $d_1$ et celle de $d_2$.\n3. En déduire les équations réduites de $d_1$ et de $d_2$.\n4. Donner une équation de $d_3$. Cette droite a-t-elle une pente ?\n5. Donner un vecteur directeur de chacune des trois droites.",
+   "etapes": "<!-- optitab:1 -->\n[IMAGE_2]\n\n## Question 1 : Ordonnées à l'origine\n\n::: methode\nL'ordonnée à l'origine $p$ est l'ordonnée du point où la droite coupe l'axe des ordonnées.\n:::\n\n::: etape Lecture\n- $d_1$ coupe l'axe des ordonnées au point $(0\\,;-3)$.\n- $d_2$ coupe l'axe des ordonnées au point $(0\\,;2)$.\n:::\n\n::: resultat\n$p_1 = -3$ et $p_2 = 2$.\n:::\n\n## Question 2 : Pentes\n\n::: methode\nOn part d'un point de la droite, on avance horizontalement de $\\Delta x$, puis on monte ou on descend de $\\Delta y$ pour retrouver la droite : $m = \\frac{\\Delta y}{\\Delta x}$.\n:::\n\n::: etape Pente de $d_1$\nEn partant de $(0\\,;-3)$, on avance de $1$ puis on monte de $2$ : on arrive au point $(1\\,;-1)$, qui est sur $d_1$. Donc $m_1 = \\frac{2}{1} = 2$.\n:::\n\n::: etape Pente de $d_2$\nEn partant de $(0\\,;2)$, on avance de $3$ puis on descend de $2$ : on arrive au point $(3\\,;0)$, qui est sur $d_2$. Donc $m_2 = \\frac{-2}{3} = -\\frac{2}{3}$.\n:::\n\n::: resultat\n$m_1 = 2$ et $m_2 = -\\frac{2}{3}$.\n:::\n\n::: attention\nQuand la droite descend, $\\Delta y$ est négatif et la pente aussi. On choisit des déplacements qui arrivent sur un nœud du quadrillage, pour lire des valeurs exactes.\n:::\n\n## Question 3 : Équations réduites\n\n::: methode\nOn remplace $m$ et $p$ dans $y = mx + p$, puis on contrôle avec un point lu sur le graphique.\n:::\n\n::: etape Écriture\n- $d_1 : y = 2x - 3$\n- $d_2 : y = -\\frac{2}{3}x + 2$\n:::\n\n::: etape Contrôle\n- $(1\\,;-1)$ : $2 \\times 1 - 3 = -1$, il est bien sur $d_1$.\n- $(3\\,;0)$ : $-\\frac{2}{3} \\times 3 + 2 = 0$, il est bien sur $d_2$.\n:::\n\n::: resultat\n$d_1 : y = 2x - 3$ et $d_2 : y = -\\frac{2}{3}x + 2$.\n:::\n\n## Question 4 : La droite $d_3$\n\n::: methode\nUne droite parallèle à l'axe des ordonnées a une équation de la forme $x = k$.\n:::\n\n::: etape Lecture\nTous les points de $d_3$ ont pour abscisse $-3$.\n:::\n\n::: resultat\n$d_3 : x = -3$. Elle est parallèle à l'axe des ordonnées : elle n'a pas de pente.\n:::\n\n## Question 5 : Vecteurs directeurs\n\n::: methode\nPour une droite de pente $m$, le vecteur $(1\\,;m)$ est un vecteur directeur ; on peut le multiplier par un réel non nul pour avoir des coordonnées entières.\n:::\n\n::: etape Calcul\n- $d_1$ : $(1\\,;2)$.\n- $d_2$ : $\\left(1\\,;-\\frac{2}{3}\\right)$, ou, en multipliant par $3$, $(3\\,;-2)$ : c'est le déplacement lu à la question 2.\n- $d_3$ : un vecteur parallèle à l'axe des ordonnées, par exemple $(0\\,;1)$.\n:::\n\n::: resultat\n$(1\\,;2)$ pour $d_1$, $(3\\,;-2)$ pour $d_2$, $(0\\,;1)$ pour $d_3$.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $p_1 = -3$ et $p_2 = 2$\n2. $m_1 = 2$ et $m_2 = -\\frac{2}{3}$\n3. $d_1 : y = 2x - 3$ et $d_2 : y = -\\frac{2}{3}x + 2$\n4. $d_3 : x = -3$, pas de pente\n5. Par exemple $(1\\,;2)$, $(3\\,;-2)$ et $(0\\,;1)$",
+   "titre": "Découverte - Lire graphiquement pente et ordonnée à l'origine",
+   "difficulty": "easy",
+   "contenu": "<!-- optitab:1 -->\nLes droites $d_1$, $d_2$ et $d_3$ sont tracées dans un repère orthonormé.\n\n[IMAGE_1]\n\n1. Lire l'ordonnée à l'origine de $d_1$ et celle de $d_2$.\n2. Lire la pente de $d_1$ et celle de $d_2$.\n3. En déduire les équations réduites de $d_1$ et de $d_2$.\n4. Donner une équation de $d_3$. Cette droite a-t-elle une pente ?\n5. Donner un vecteur directeur de chacune des trois droites."
+  },
+  {
+   "id": 2045,
+   "question": "<!-- optitab:1 -->\nDans un repère orthonormé, on considère les points $A(-2\\,;3)$, $B(4\\,;-1)$, $C(2\\,;-5)$ et $D(2\\,;4)$.\n\n1. Calculer les coordonnées du vecteur $\\overrightarrow{AB}$, puis donner un vecteur directeur de $(AB)$ à coordonnées plus simples.\n2. Calculer la pente $m$ de la droite $(AB)$.\n3. La droite $(CD)$ est-elle parallèle à l'axe des ordonnées ? Donner son équation.\n4. Une droite $\\Delta$ a pour vecteur directeur $\\vec{v}\\,(5\\,;-2)$. Déterminer sa pente.\n5. Les droites $(AB)$ et $\\Delta$ sont-elles parallèles ? Justifier.",
+   "etapes": "<!-- optitab:1 -->\n[IMAGE_1]\n\n## Question 1 : Vecteur directeur de $(AB)$\n\n::: methode\nCoordonnées d'un vecteur : « arrivée moins départ », $\\overrightarrow{AB}\\,(x_B - x_A\\,;y_B - y_A)$.\n:::\n\n::: etape Calcul de $\\overrightarrow{AB}$\n$$\\overrightarrow{AB}\\,\\big(4 - (-2)\\,;-1 - 3\\big), \\text{ soit } \\overrightarrow{AB}\\,(6\\,;-4)$$\n:::\n\n::: etape Simplification\n$(6\\,;-4) = 2 \\times (3\\,;-2)$ : le vecteur $\\vec{u}\\,(3\\,;-2)$ est colinéaire à $\\overrightarrow{AB}$ et non nul, c'est donc aussi un vecteur directeur de $(AB)$.\n:::\n\n::: resultat\n$\\overrightarrow{AB}\\,(6\\,;-4)$ ; un vecteur directeur plus simple est $\\vec{u}\\,(3\\,;-2)$.\n:::\n\n::: rappel\nUn vecteur directeur n'est pas unique : tout vecteur non nul colinéaire convient.\n:::\n\n## Question 2 : Pente de $(AB)$\n\n::: methode\nSi $x_A \\neq x_B$, alors $m = \\frac{y_B - y_A}{x_B - x_A}$.\n:::\n\n::: etape Calcul\n$$m = \\frac{-1 - 3}{4 - (-2)} = \\frac{-4}{6} = -\\frac{2}{3}$$\n:::\n\n::: resultat\n$m = -\\frac{2}{3}$\n:::\n\n## Question 3 : La droite $(CD)$\n\n::: methode\nSi deux points ont la même abscisse $k$, la droite qui les joint a pour équation $x = k$.\n:::\n\n::: etape Comparer les abscisses\n$x_C = 2$ et $x_D = 2$ : les deux points ont la même abscisse.\n:::\n\n::: resultat\n$(CD)$ est parallèle à l'axe des ordonnées ; son équation est $x = 2$ (elle n'a pas de pente).\n:::\n\n## Question 4 : Pente à partir d'un vecteur directeur\n\n::: methode\nSi $\\vec{v}\\,(\\alpha\\,;\\beta)$ dirige la droite avec $\\alpha \\neq 0$, alors $m = \\frac{\\beta}{\\alpha}$.\n:::\n\n::: etape Calcul\nIci $\\alpha = 5$ et $\\beta = -2$, donc $m = \\frac{-2}{5} = -0{,}4$.\n:::\n\n::: resultat\nLa pente de $\\Delta$ est $-\\frac{2}{5}$.\n:::\n\n## Question 5 : $(AB)$ et $\\Delta$ sont-elles parallèles ?\n\n::: methode\nDeux droites non parallèles à l'axe des ordonnées sont parallèles si et seulement si elles ont la même pente.\n:::\n\n::: etape Comparer les pentes\n$m_{(AB)} = -\\frac{2}{3}$ et $m_{\\Delta} = -\\frac{2}{5}$ : ces nombres sont différents.\n:::\n\n::: point Autre méthode\n$\\det(\\vec{u}, \\vec{v}) = 3 \\times (-2) - (-2) \\times 5 = -6 + 10 = 4 \\neq 0$ : les vecteurs directeurs ne sont pas colinéaires.\n:::\n\n::: resultat\nLes droites $(AB)$ et $\\Delta$ ne sont pas parallèles : elles sont sécantes.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $\\overrightarrow{AB}\\,(6\\,;-4)$ ; vecteur directeur possible : $(3\\,;-2)$\n2. $m = -\\frac{2}{3}$\n3. Oui, $x_C = x_D = 2$ : $(CD) : x = 2$\n4. $m = -\\frac{2}{5} = -0{,}4$\n5. Non, car $-\\frac{2}{3} \\neq -\\frac{2}{5}$ : les droites sont sécantes",
+   "titre": "Découverte - Vecteur directeur et pente : calculs de base",
+   "difficulty": "easy",
+   "contenu": "<!-- optitab:1 -->\nDans un repère orthonormé, on considère les points $A(-2\\,;3)$, $B(4\\,;-1)$, $C(2\\,;-5)$ et $D(2\\,;4)$.\n\n1. Calculer les coordonnées du vecteur $\\overrightarrow{AB}$, puis donner un vecteur directeur de $(AB)$ à coordonnées plus simples.\n2. Calculer la pente $m$ de la droite $(AB)$.\n3. La droite $(CD)$ est-elle parallèle à l'axe des ordonnées ? Donner son équation.\n4. Une droite $\\Delta$ a pour vecteur directeur $\\vec{v}\\,(5\\,;-2)$. Déterminer sa pente.\n5. Les droites $(AB)$ et $\\Delta$ sont-elles parallèles ? Justifier."
+  },
+  {
+   "id": 2051,
+   "question": "<!-- optitab:1 -->\nOn rappelle que trois points $A$, $B$, $C$ sont alignés si et seulement si $\\det(\\overrightarrow{AB}, \\overrightarrow{AC}) = 0$, c'est-à-dire :\n\n$$(x_B - x_A)(y_C - y_A) - (y_B - y_A)(x_C - x_A) = 0$$\n\n1. Les points $A(-1\\,;2)$, $B(2\\,;8)$ et $C(5\\,;14)$ sont-ils alignés ?\n2. Les points $D(0\\,;1)$, $E(2\\,;3)$ et $F(4\\,;6)$ sont-ils alignés ?\n3. On considère $G(1\\,;-2)$, $H(4\\,;1)$ et $K(t\\,;3)$, où $t$ est un réel. Déterminer $t$ pour que $G$, $H$, $K$ soient alignés.\n4. Déterminer l'équation réduite de la droite $(AB)$ de la question 1 et vérifier que $C$ appartient à cette droite.\n5. Donner les coordonnées du point $L$ de la droite $(AB)$ d'abscisse $7$.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : $A$, $B$, $C$ sont-ils alignés ?\n\n::: methode\nOn calcule $\\overrightarrow{AB}$ et $\\overrightarrow{AC}$, puis leur déterminant.\n:::\n\n::: etape Vecteurs\n- $\\overrightarrow{AB}\\,\\big(2 - (-1)\\,;8 - 2\\big)$, soit $(3\\,;6)$.\n- $\\overrightarrow{AC}\\,\\big(5 - (-1)\\,;14 - 2\\big)$, soit $(6\\,;12)$.\n:::\n\n::: etape Déterminant\n$$\n\\begin{aligned}\n\\det(\\overrightarrow{AB}, \\overrightarrow{AC}) &= 3 \\times 12 - 6 \\times 6 \\\\\n&= 36 - 36 \\\\\n&= 0\n\\end{aligned}\n$$\n:::\n\n::: resultat\nLe déterminant est nul : $A$, $B$, $C$ sont alignés.\n:::\n\n[IMAGE_1]\n\n## Question 2 : $D$, $E$, $F$ sont-ils alignés ?\n\n::: methode\nMême critère : le déterminant.\n:::\n\n::: etape Vecteurs\n- $\\overrightarrow{DE}\\,(2 - 0\\,;3 - 1)$, soit $(2\\,;2)$.\n- $\\overrightarrow{DF}\\,(4 - 0\\,;6 - 1)$, soit $(4\\,;5)$.\n:::\n\n::: etape Déterminant\n$$\n\\begin{aligned}\n\\det(\\overrightarrow{DE}, \\overrightarrow{DF}) &= 2 \\times 5 - 2 \\times 4 \\\\\n&= 10 - 8 \\\\\n&= 2\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$2 \\neq 0$ : les points $D$, $E$, $F$ ne sont pas alignés.\n:::\n\n[IMAGE_2]\n\n::: attention\nSur un dessin, $F$ semble presque sur la droite $(DE)$ : seul le calcul permet de conclure.\n:::\n\n## Question 3 : Valeur de $t$ pour l'alignement\n\n::: methode\nOn écrit $\\det(\\overrightarrow{GH}, \\overrightarrow{GK}) = 0$ et on résout l'équation d'inconnue $t$.\n:::\n\n::: etape Vecteurs\n- $\\overrightarrow{GH}\\,\\big(4 - 1\\,;1 - (-2)\\big)$, soit $(3\\,;3)$.\n- $\\overrightarrow{GK}\\,\\big(t - 1\\,;3 - (-2)\\big)$, soit $(t - 1\\,;5)$.\n:::\n\n::: etape Déterminant\n$$\n\\begin{aligned}\n\\det(\\overrightarrow{GH}, \\overrightarrow{GK}) &= 3 \\times 5 - 3 \\times (t - 1) \\\\\n&= 15 - 3t + 3 \\\\\n&= 18 - 3t\n\\end{aligned}\n$$\n:::\n\n::: etape Résolution\n$$18 - 3t = 0 \\iff t = 6$$\n:::\n\n::: resultat\n$G$, $H$, $K$ sont alignés si et seulement si $t = 6$, c'est-à-dire $K(6\\,;3)$.\n:::\n\n[IMAGE_3]\n\n## Question 4 : Équation réduite de $(AB)$\n\n::: methode\nOn calcule la pente $m$, puis l'ordonnée à l'origine $p$ grâce au point $A$.\n:::\n\n::: etape Pente\n$$m = \\frac{8 - 2}{2 - (-1)} = \\frac{6}{3} = 2$$\n:::\n\n::: etape Ordonnée à l'origine\n$A(-1\\,;2)$ est sur la droite $y = 2x + p$ : $2 = 2 \\times (-1) + p$, donc $p = 4$.\n:::\n\n::: etape Contrôle avec $C(5\\,;14)$\n$2 \\times 5 + 4 = 14$ : les coordonnées de $C$ vérifient l'équation.\n:::\n\n::: resultat\n$(AB) : y = 2x + 4$ et $C \\in (AB)$, ce qui confirme la question 1.\n:::\n\n## Question 5 : Point de $(AB)$ d'abscisse $7$\n\n::: methode\nOn remplace $x$ par $7$ dans l'équation réduite.\n:::\n\n::: etape Calcul\n$y = 2 \\times 7 + 4 = 18$\n:::\n\n::: resultat\n$L(7\\,;18)$\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. Oui : $\\det(\\overrightarrow{AB}, \\overrightarrow{AC}) = 0$\n2. Non : $\\det(\\overrightarrow{DE}, \\overrightarrow{DF}) = 2 \\neq 0$\n3. $t = 6$\n4. $(AB) : y = 2x + 4$ ; $2 \\times 5 + 4 = 14$, donc $C \\in (AB)$\n5. $L(7\\,;18)$",
+   "titre": "Entraînement - Alignement de trois points (déterminant)",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nOn rappelle que trois points $A$, $B$, $C$ sont alignés si et seulement si $\\det(\\overrightarrow{AB}, \\overrightarrow{AC}) = 0$, c'est-à-dire :\n\n$$(x_B - x_A)(y_C - y_A) - (y_B - y_A)(x_C - x_A) = 0$$\n\n1. Les points $A(-1\\,;2)$, $B(2\\,;8)$ et $C(5\\,;14)$ sont-ils alignés ?\n2. Les points $D(0\\,;1)$, $E(2\\,;3)$ et $F(4\\,;6)$ sont-ils alignés ?\n3. On considère $G(1\\,;-2)$, $H(4\\,;1)$ et $K(t\\,;3)$, où $t$ est un réel. Déterminer $t$ pour que $G$, $H$, $K$ soient alignés.\n4. Déterminer l'équation réduite de la droite $(AB)$ de la question 1 et vérifier que $C$ appartient à cette droite.\n5. Donner les coordonnées du point $L$ de la droite $(AB)$ d'abscisse $7$."
+  },
+  {
+   "id": 2049,
+   "question": "<!-- optitab:1 -->\nDans un repère orthonormé, déterminer une équation de chacune des droites suivantes.\n\n1. La droite passant par $A(1\\,;2)$ et $B(5\\,;4)$ : équation réduite, puis équation cartésienne à coefficients entiers.\n2. La droite de pente $-3$ passant par $C(-3\\,;1)$.\n3. La droite passant par $D(2\\,;-1)$ et de vecteur directeur $\\vec{u}\\,(4\\,;-2)$ : équation cartésienne, avec le déterminant.\n4. La droite passant par $E(-5\\,;3)$ et $F(-5\\,;-2)$.\n5. La droite $(IJ)$, avec $I(-2\\,;4)$ et $J(3\\,;-1)$ : équation cartésienne, avec le déterminant.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Droite passant par deux points\n\n::: methode\nOn calcule la pente $m$, puis l'ordonnée à l'origine $p$ avec un des deux points.\n:::\n\n::: etape Pente\n$$m = \\frac{4 - 2}{5 - 1} = \\frac{2}{4} = \\frac{1}{2}$$\n:::\n\n::: etape Ordonnée à l'origine\n$A(1\\,;2)$ est sur la droite $y = \\frac{1}{2}x + p$ : $2 = \\frac{1}{2} \\times 1 + p$, donc $p = \\frac{3}{2}$.\n:::\n\n::: etape Équation cartésienne\n$$\n\\begin{aligned}\ny = \\frac{1}{2}x + \\frac{3}{2} &\\iff 2y = x + 3 \\\\\n&\\iff x - 2y + 3 = 0\n\\end{aligned}\n$$\n:::\n\n::: point Contrôle\n$B(5\\,;4)$ : $5 - 2 \\times 4 + 3 = 0$.\n:::\n\n::: resultat\n$(AB) : y = \\frac{1}{2}x + \\frac{3}{2}$, soit $x - 2y + 3 = 0$.\n:::\n\n[IMAGE_1]\n\n## Question 2 : Un point et la pente\n\n::: methode\nOn connaît $m = -3$ : on cherche $p$ dans $y = -3x + p$ avec les coordonnées de $C$.\n:::\n\n::: etape Ordonnée à l'origine\n$1 = -3 \\times (-3) + p$, soit $1 = 9 + p$, donc $p = -8$.\n:::\n\n::: resultat\n$y = -3x - 8$ (ou $3x + y + 8 = 0$).\n:::\n\n[IMAGE_2]\n\n## Question 3 : Un point et un vecteur directeur\n\n::: methode\n$M(x\\,;y)$ appartient à la droite si et seulement si $\\det(\\overrightarrow{DM}, \\vec{u}) = 0$.\n:::\n\n::: etape Coordonnées de $\\overrightarrow{DM}$\n$\\overrightarrow{DM}\\,\\big(x - 2\\,;y - (-1)\\big)$, soit $(x - 2\\,;y + 1)$.\n:::\n\n::: etape Déterminant\n$$\n\\begin{aligned}\n\\det(\\overrightarrow{DM}, \\vec{u}) = 0 &\\iff (x - 2) \\times (-2) - (y + 1) \\times 4 = 0 \\\\\n&\\iff -2x + 4 - 4y - 4 = 0 \\\\\n&\\iff -2x - 4y = 0 \\\\\n&\\iff x + 2y = 0\n\\end{aligned}\n$$\n:::\n\n::: point Contrôle\n$D(2\\,;-1)$ : $2 + 2 \\times (-1) = 0$.\n:::\n\n::: resultat\n$x + 2y = 0$ (soit $y = -\\frac{1}{2}x$).\n:::\n\n[IMAGE_3]\n\n## Question 4 : Deux points de même abscisse\n\n::: methode\nSi $x_E = x_F$, la droite $(EF)$ a pour équation $x = x_E$.\n:::\n\n::: etape Comparer les abscisses\n$x_E = x_F = -5$.\n:::\n\n::: resultat\n$(EF) : x = -5$ (droite parallèle à l'axe des ordonnées, sans pente).\n:::\n\n[IMAGE_4]\n\n::: attention\nIci la formule de la pente est inutilisable : elle donnerait une division par $x_F - x_E = 0$.\n:::\n\n## Question 5 : Équation cartésienne de $(IJ)$\n\n::: methode\nOn prend $\\overrightarrow{IJ}$ comme vecteur directeur et on écrit $\\det(\\overrightarrow{IM}, \\overrightarrow{IJ}) = 0$.\n:::\n\n::: etape Vecteurs\n- $\\overrightarrow{IJ}\\,\\big(3 - (-2)\\,;-1 - 4\\big)$, soit $(5\\,;-5)$.\n- $\\overrightarrow{IM}\\,(x + 2\\,;y - 4)$.\n:::\n\n::: etape Déterminant\n$$\n\\begin{aligned}\n\\det(\\overrightarrow{IM}, \\overrightarrow{IJ}) = 0 &\\iff (x + 2) \\times (-5) - (y - 4) \\times 5 = 0 \\\\\n&\\iff -5x - 10 - 5y + 20 = 0 \\\\\n&\\iff -5x - 5y + 10 = 0 \\\\\n&\\iff x + y - 2 = 0\n\\end{aligned}\n$$\n:::\n\n::: point Contrôle\n$J(3\\,;-1)$ : $3 + (-1) - 2 = 0$.\n:::\n\n::: resultat\n$(IJ) : x + y - 2 = 0$ (soit $y = -x + 2$).\n:::\n\n[IMAGE_5]",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $y = \\frac{1}{2}x + \\frac{3}{2}$, soit $x - 2y + 3 = 0$\n2. $y = -3x - 8$\n3. $x + 2y = 0$\n4. $x = -5$\n5. $x + y - 2 = 0$",
+   "titre": "Entraînement - Déterminer une équation de droite dans chaque situation",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nDans un repère orthonormé, déterminer une équation de chacune des droites suivantes.\n\n1. La droite passant par $A(1\\,;2)$ et $B(5\\,;4)$ : équation réduite, puis équation cartésienne à coefficients entiers.\n2. La droite de pente $-3$ passant par $C(-3\\,;1)$.\n3. La droite passant par $D(2\\,;-1)$ et de vecteur directeur $\\vec{u}\\,(4\\,;-2)$ : équation cartésienne, avec le déterminant.\n4. La droite passant par $E(-5\\,;3)$ et $F(-5\\,;-2)$.\n5. La droite $(IJ)$, avec $I(-2\\,;4)$ et $J(3\\,;-1)$ : équation cartésienne, avec le déterminant."
+  },
+  {
+   "id": 2047,
+   "question": "<!-- optitab:1 -->\nOn considère la droite $d : y = -3x + 2$ et le point $B(0\\,;5)$.\n\n1. Déterminer l'équation réduite de la droite $d'$ parallèle à $d$ passant par $B$.\n2. Le point $C(3\\,;-4)$ appartient-il à $d'$ ?",
+   "etapes": "<!-- optitab:1 -->\n[IMAGE_1]\n\n## Question 1 : Droite parallèle passant par $B$\n\n::: methode\nDeux droites parallèles ont la même pente : $d'$ a une équation de la forme $y = -3x + p$.\n:::\n\n::: etape Calcul de $p$\n$B(0\\,;5)$ est sur $d'$ : $5 = -3 \\times 0 + p$, donc $p = 5$.\n:::\n\n::: etape $B$ n'est pas sur $d$\n$-3 \\times 0 + 2 = 2 \\neq 5$ : $B \\notin d$, donc $d'$ et $d$ sont parallèles et distinctes.\n:::\n\n::: resultat\n$d' : y = -3x + 5$\n:::\n\n## Question 2 : Le point $C(3\\,;-4)$\n\n::: methode\nOn remplace $x$ par $x_C$ dans l'équation de $d'$ et on compare avec $y_C$.\n:::\n\n::: etape Calcul\n$-3 \\times 3 + 5 = -9 + 5 = -4$, et $y_C = -4$.\n:::\n\n::: resultat\nLes coordonnées de $C$ vérifient l'équation : $C \\in d'$.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $d' : y = -3x + 5$\n2. Oui, car $-3 \\times 3 + 5 = -4$",
+   "titre": "Entraînement - Droite passant par un point et parallèle",
+   "difficulty": "easy",
+   "contenu": "<!-- optitab:1 -->\nOn considère la droite $d : y = -3x + 2$ et le point $B(0\\,;5)$.\n\n1. Déterminer l'équation réduite de la droite $d'$ parallèle à $d$ passant par $B$.\n2. Le point $C(3\\,;-4)$ appartient-il à $d'$ ?"
+  },
+  {
+   "id": 2052,
+   "question": "<!-- optitab:1 -->\nPour chaque question, étudier la position relative des droites (parallèles distinctes, confondues ou sécantes).\n\n1. $d_1 : 2x - 3y + 1 = 0$ et $d_2 : 4x - 6y - 5 = 0$.\n2. $d_3 : y = \\frac{1}{2}x - 1$ et $d_4 : x - 2y - 2 = 0$.\n3. $d_5 : x = -3$ et $d_6 : 2x - 1 = 0$.\n4. Donner une équation cartésienne de la droite parallèle à $d_7 : 3x + y - 4 = 0$ passant par $P(2\\,;-1)$.\n5. $d_8 : y = -x + 4$ et $d_9 : y = 2x - 2$. Si elles sont sécantes, donner leur point d'intersection.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : $d_1$ et $d_2$\n\n::: methode\nOn calcule $ab' - a'b$ : il est nul si et seulement si les droites sont parallèles. On teste ensuite un point.\n:::\n\n::: etape Critère de parallélisme\nAvec $a = 2$, $b = -3$, $a' = 4$, $b' = -6$ :\n\n$$ab' - a'b = 2 \\times (-6) - 4 \\times (-3) = -12 + 12 = 0$$\n\nLes droites sont parallèles.\n:::\n\n::: etape Distinctes ou confondues ?\nLe point $(1\\,;1)$ est sur $d_1$ car $2 - 3 + 1 = 0$. Pour $d_2$ : $4 \\times 1 - 6 \\times 1 - 5 = -7 \\neq 0$, donc ce point n'est pas sur $d_2$.\n:::\n\n::: resultat\n$d_1$ et $d_2$ sont parallèles et distinctes.\n:::\n\n[IMAGE_1]\n\n## Question 2 : $d_3$ et $d_4$\n\n::: methode\nOn met $d_4$ sous forme réduite pour comparer avec $d_3$.\n:::\n\n::: etape Équation réduite de $d_4$\n$$\n\\begin{aligned}\nx - 2y - 2 = 0 &\\iff 2y = x - 2 \\\\\n&\\iff y = \\frac{1}{2}x - 1\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$d_4$ a la même équation réduite que $d_3$ : les droites sont confondues.\n:::\n\n[IMAGE_2]\n\n## Question 3 : $d_5$ et $d_6$\n\n::: methode\nUne droite d'équation $x = k$ est parallèle à l'axe des ordonnées.\n:::\n\n::: etape Équation de $d_6$\n$2x - 1 = 0 \\iff x = \\frac{1}{2}$\n:::\n\n::: etape Comparaison\n$d_5 : x = -3$ et $d_6 : x = \\frac{1}{2}$ sont toutes deux parallèles à l'axe des ordonnées, et $-3 \\neq \\frac{1}{2}$.\n:::\n\n::: resultat\n$d_5$ et $d_6$ sont parallèles et distinctes.\n:::\n\n[IMAGE_3]\n\n## Question 4 : Parallèle à $d_7$ passant par $P$\n\n::: methode\nUne droite parallèle à $3x + y - 4 = 0$ a le même vecteur directeur $(-1\\,;3)$ : elle a une équation de la forme $3x + y + c = 0$.\n:::\n\n::: etape Calcul de $c$\n$P(2\\,;-1)$ est sur la droite : $3 \\times 2 + (-1) + c = 0$, soit $5 + c = 0$, donc $c = -5$.\n:::\n\n::: resultat\n$3x + y - 5 = 0$ (soit $y = -3x + 5$).\n:::\n\n[IMAGE_4]\n\n## Question 5 : $d_8$ et $d_9$\n\n::: methode\nPentes différentes : droites sécantes. Le point d'intersection a des coordonnées qui vérifient les deux équations.\n:::\n\n::: etape Comparer les pentes\n$-1 \\neq 2$ : les droites sont sécantes.\n:::\n\n::: etape Abscisse du point d'intersection\n$$\n\\begin{aligned}\n-x + 4 = 2x - 2 &\\iff 6 = 3x \\\\\n&\\iff x = 2\n\\end{aligned}\n$$\n:::\n\n::: etape Ordonnée\n$y = -2 + 4 = 2$ ; contrôle avec $d_9$ : $2 \\times 2 - 2 = 2$.\n:::\n\n::: resultat\n$d_8$ et $d_9$ sont sécantes au point $(2\\,;2)$.\n:::\n\n[IMAGE_5]",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. Parallèles distinctes\n2. Confondues\n3. Parallèles distinctes (toutes deux parallèles à l'axe des ordonnées)\n4. $3x + y - 5 = 0$\n5. Sécantes au point $(2\\,;2)$",
+   "titre": "Entraînement - Droites parallèles, confondues ou sécantes",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nPour chaque question, étudier la position relative des droites (parallèles distinctes, confondues ou sécantes).\n\n1. $d_1 : 2x - 3y + 1 = 0$ et $d_2 : 4x - 6y - 5 = 0$.\n2. $d_3 : y = \\frac{1}{2}x - 1$ et $d_4 : x - 2y - 2 = 0$.\n3. $d_5 : x = -3$ et $d_6 : 2x - 1 = 0$.\n4. Donner une équation cartésienne de la droite parallèle à $d_7 : 3x + y - 4 = 0$ passant par $P(2\\,;-1)$.\n5. $d_8 : y = -x + 4$ et $d_9 : y = 2x - 2$. Si elles sont sécantes, donner leur point d'intersection."
+  },
+  {
+   "id": 2048,
+   "question": "<!-- optitab:1 -->\nPour chaque droite, donner la pente $m$ et l'ordonnée à l'origine $p$ lorsqu'elles existent, ainsi qu'un vecteur directeur.\n\n1. $d_1 : y = -2x + 3$\n2. $d_2 : 3x - 2y + 6 = 0$\n3. $d_3 : 5x + 10y - 15 = 0$\n4. $d_4 : x = -4$\n5. Parmi les équations suivantes, lesquelles sont des équations de droites ?\n   - a) $y = \\frac{3}{2}x - 1$\n   - b) $x^2 + y = 2$\n   - c) $2x - 6 = 0$\n   - d) $y = \\frac{1}{x + 1}$",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : $d_1 : y = -2x + 3$\n\n::: methode\nDans $y = mx + p$, on lit directement $m$ et $p$ ; le vecteur $(1\\,;m)$ est un vecteur directeur.\n:::\n\n::: etape Lecture\n$m = -2$ et $p = 3$ ; vecteur directeur $(1\\,;-2)$.\n:::\n\n::: resultat\n$m = -2$, $p = 3$, vecteur directeur $(1\\,;-2)$.\n:::\n\n## Question 2 : $d_2 : 3x - 2y + 6 = 0$\n\n::: methode\nOn isole $y$ pour obtenir l'équation réduite.\n:::\n\n::: etape Équation réduite\n$$\n\\begin{aligned}\n3x - 2y + 6 = 0 &\\iff 2y = 3x + 6 \\\\\n&\\iff y = \\frac{3}{2}x + 3\n\\end{aligned}\n$$\n:::\n\n::: etape Vecteur directeur\n$\\left(1\\,;\\frac{3}{2}\\right)$, ou, en multipliant par $2$, $(2\\,;3)$. On retrouve aussi $(-b\\,;a) = (2\\,;3)$.\n:::\n\n::: resultat\n$m = \\frac{3}{2}$, $p = 3$, vecteur directeur $(2\\,;3)$.\n:::\n\n## Question 3 : $d_3 : 5x + 10y - 15 = 0$\n\n::: methode\nOn isole $y$.\n:::\n\n::: etape Équation réduite\n$$\n\\begin{aligned}\n5x + 10y - 15 = 0 &\\iff 10y = -5x + 15 \\\\\n&\\iff y = -\\frac{1}{2}x + \\frac{3}{2}\n\\end{aligned}\n$$\n:::\n\n::: etape Vecteur directeur\n$\\left(1\\,;-\\frac{1}{2}\\right)$, ou, en multipliant par $2$, $(2\\,;-1)$.\n:::\n\n::: resultat\n$m = -\\frac{1}{2}$, $p = \\frac{3}{2}$, vecteur directeur $(2\\,;-1)$.\n:::\n\n## Question 4 : $d_4 : x = -4$\n\n::: methode\nUne droite d'équation $x = k$ est parallèle à l'axe des ordonnées.\n:::\n\n::: etape Conséquences\nElle n'a ni pente ni ordonnée à l'origine (elle ne coupe pas l'axe des ordonnées). Un vecteur directeur est $(0\\,;1)$.\n:::\n\n::: resultat\nPas de pente, pas d'ordonnée à l'origine ; vecteur directeur $(0\\,;1)$.\n:::\n\n## Question 5 : Reconnaître une équation de droite\n\n::: methode\nUne équation de droite peut s'écrire $ax + by + c = 0$ avec $(a\\,;b) \\neq (0\\,;0)$. Pour montrer qu'une courbe n'est pas une droite, il suffit de trouver trois de ses points non alignés.\n:::\n\n::: etape Cas a) et c)\n- a) $y = \\frac{3}{2}x - 1$ est une équation réduite : c'est une droite.\n- c) $2x - 6 = 0 \\iff x = 3$ : c'est une droite parallèle à l'axe des ordonnées.\n:::\n\n::: etape Cas b)\nLes points $(0\\,;2)$, $(1\\,;1)$ et $(-1\\,;1)$ vérifient $x^2 + y = 2$. Avec $\\overrightarrow{AB}\\,(1\\,;-1)$ et $\\overrightarrow{AC}\\,(-1\\,;-1)$ : $\\det = 1 \\times (-1) - (-1) \\times (-1) = -2 \\neq 0$. Ces trois points ne sont pas alignés.\n:::\n\n::: etape Cas d)\nLes points $(0\\,;1)$, $\\left(1\\,;\\frac{1}{2}\\right)$ et $\\left(3\\,;\\frac{1}{4}\\right)$ vérifient $y = \\frac{1}{x + 1}$. Avec $\\left(1\\,;-\\frac{1}{2}\\right)$ et $\\left(3\\,;-\\frac{3}{4}\\right)$ : $\\det = -\\frac{3}{4} + \\frac{3}{2} = \\frac{3}{4} \\neq 0$. Ces trois points ne sont pas alignés.\n:::\n\n::: resultat\na) et c) sont des équations de droites ; b) et d) n'en sont pas.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $m = -2$, $p = 3$, vecteur directeur $(1\\,;-2)$\n2. $y = \\frac{3}{2}x + 3$ : $m = \\frac{3}{2}$, $p = 3$, vecteur directeur $(2\\,;3)$\n3. $y = -\\frac{1}{2}x + \\frac{3}{2}$ : $m = -\\frac{1}{2}$, $p = \\frac{3}{2}$, vecteur directeur $(2\\,;-1)$\n4. Pas de pente ni d'ordonnée à l'origine ; vecteur directeur $(0\\,;1)$\n5. a) et c)",
+   "titre": "Entraînement - Lire une droite à partir de son équation",
+   "difficulty": "easy",
+   "contenu": "<!-- optitab:1 -->\nPour chaque droite, donner la pente $m$ et l'ordonnée à l'origine $p$ lorsqu'elles existent, ainsi qu'un vecteur directeur.\n\n1. $d_1 : y = -2x + 3$\n2. $d_2 : 3x - 2y + 6 = 0$\n3. $d_3 : 5x + 10y - 15 = 0$\n4. $d_4 : x = -4$\n5. Parmi les équations suivantes, lesquelles sont des équations de droites ?\n   - a) $y = \\frac{3}{2}x - 1$\n   - b) $x^2 + y = 2$\n   - c) $2x - 6 = 0$\n   - d) $y = \\frac{1}{x + 1}$"
+  },
+  {
+   "id": 2050,
+   "question": "<!-- optitab:1 -->\nPour tracer une droite, il suffit d'en connaître deux points : on choisit des valeurs simples (souvent $x = 0$ ou $y = 0$). Pour savoir si un point est sur une droite, on remplace ses coordonnées dans l'équation.\n\n1. Donner deux points à coordonnées entières de la droite $d_1 : y = \\frac{3}{2}x - 1$, puis la tracer.\n2. Déterminer les points d'intersection de $d_2 : 4x + 2y - 8 = 0$ avec les axes du repère, puis tracer $d_2$.\n3. Donner deux points de la droite $d_3 : x = 3$, puis la tracer.\n4. Le point $P(4\\,;1)$ appartient-il à la droite $d_4 : y = -x + 5$ ?\n5. Pour $d_5 : x - 2y + 6 = 0$, calculer $y$ pour $x = 0$ puis pour $x = 4$, et tracer $d_5$.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Deux points de $d_1 : y = \\frac{3}{2}x - 1$\n\n::: methode\nOn choisit des abscisses paires pour que $\\frac{3}{2}x$ soit un entier.\n:::\n\n::: etape Pour $x = 0$\n$y = \\frac{3}{2} \\times 0 - 1 = -1$ : point $(0\\,;-1)$.\n:::\n\n::: etape Pour $x = 2$\n$y = \\frac{3}{2} \\times 2 - 1 = 3 - 1 = 2$ : point $(2\\,;2)$.\n:::\n\n::: resultat\nDeux points possibles : $(0\\,;-1)$ et $(2\\,;2)$.\n:::\n\n[IMAGE_1]\n\n## Question 2 : Intersections de $d_2$ avec les axes\n\n::: methode\nSur l'axe des abscisses, $y = 0$ ; sur l'axe des ordonnées, $x = 0$.\n:::\n\n::: etape Avec l'axe des abscisses ($y = 0$)\n$4x - 8 = 0 \\iff x = 2$ : point $(2\\,;0)$.\n:::\n\n::: etape Avec l'axe des ordonnées ($x = 0$)\n$2y - 8 = 0 \\iff y = 4$ : point $(0\\,;4)$.\n:::\n\n::: resultat\n$d_2$ coupe les axes en $(2\\,;0)$ et en $(0\\,;4)$.\n:::\n\n[IMAGE_2]\n\n## Question 3 : Deux points de $d_3 : x = 3$\n\n::: methode\nSur la droite $x = 3$, l'abscisse vaut toujours $3$ et l'ordonnée est quelconque.\n:::\n\n::: etape Choix de deux ordonnées\n$y = 0$ donne $(3\\,;0)$ et $y = 2$ donne $(3\\,;2)$.\n:::\n\n::: resultat\nPar exemple $(3\\,;0)$ et $(3\\,;2)$.\n:::\n\n[IMAGE_3]\n\n## Question 4 : $P(4\\,;1)$ est-il sur $d_4$ ?\n\n::: methode\nOn calcule $-x_P + 5$ et on compare avec $y_P$.\n:::\n\n::: etape Calcul\n$-4 + 5 = 1$ et $y_P = 1$.\n:::\n\n::: resultat\nLes coordonnées de $P$ vérifient l'équation : $P \\in d_4$.\n:::\n\n[IMAGE_4]\n\n## Question 5 : Deux points de $d_5 : x - 2y + 6 = 0$\n\n::: methode\nOn remplace $x$ par la valeur donnée et on résout l'équation d'inconnue $y$.\n:::\n\n::: etape Pour $x = 0$\n$0 - 2y + 6 = 0 \\iff y = 3$ : point $(0\\,;3)$.\n:::\n\n::: etape Pour $x = 4$\n$4 - 2y + 6 = 0 \\iff 2y = 10 \\iff y = 5$ : point $(4\\,;5)$.\n:::\n\n::: resultat\n$d_5$ passe par $(0\\,;3)$ et $(4\\,;5)$ ; son équation réduite est $y = \\frac{1}{2}x + 3$.\n:::\n\n[IMAGE_5]",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. Par exemple $(0\\,;-1)$ et $(2\\,;2)$\n2. $(2\\,;0)$ et $(0\\,;4)$\n3. Par exemple $(3\\,;0)$ et $(3\\,;2)$\n4. Oui, car $-4 + 5 = 1$\n5. $(0\\,;3)$ et $(4\\,;5)$",
+   "titre": "Entraînement - Tracer une droite et tester l'appartenance d'un point",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nPour tracer une droite, il suffit d'en connaître deux points : on choisit des valeurs simples (souvent $x = 0$ ou $y = 0$). Pour savoir si un point est sur une droite, on remplace ses coordonnées dans l'équation.\n\n1. Donner deux points à coordonnées entières de la droite $d_1 : y = \\frac{3}{2}x - 1$, puis la tracer.\n2. Déterminer les points d'intersection de $d_2 : 4x + 2y - 8 = 0$ avec les axes du repère, puis tracer $d_2$.\n3. Donner deux points de la droite $d_3 : x = 3$, puis la tracer.\n4. Le point $P(4\\,;1)$ appartient-il à la droite $d_4 : y = -x + 5$ ?\n5. Pour $d_5 : x - 2y + 6 = 0$, calculer $y$ pour $x = 0$ puis pour $x = 4$, et tracer $d_5$."
+  },
+  {
+   "id": 2053,
+   "question": "<!-- optitab:1 -->\nLe point d'intersection de deux droites sécantes a pour coordonnées la solution du système formé par leurs équations. Préciser à chaque fois le nombre de solutions (aucune, une ou une infinité).\n\n1. Résoudre le système $(S_1) : \\begin{cases} 2x + y = 8 \\\\ x - y = 1 \\end{cases}$\n2. Les droites $y = -2x + 3$ et $4x + 2y - 10 = 0$ se coupent-elles ? Justifier.\n3. Résoudre le système $(S_2) : \\begin{cases} 3x - y + 6 = 0 \\\\ 6x - 2y + 12 = 0 \\end{cases}$\n4. Résoudre le système $(S_3) : \\begin{cases} y = x - 2 \\\\ y = \\frac{1}{2}x + 1 \\end{cases}$\n5. Déterminer le point d'intersection des droites $d_1 : x + 2y - 4 = 0$ et $d_2 : 3x - y - 5 = 0$.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Résoudre $(S_1)$\n\n::: methode\nCombinaison : en additionnant les deux équations, $y$ disparaît.\n:::\n\n::: etape Addition des deux équations\n$$\n\\begin{aligned}\n(2x + y) + (x - y) = 8 + 1 &\\iff 3x = 9 \\\\\n&\\iff x = 3\n\\end{aligned}\n$$\n:::\n\n::: etape Calcul de $y$\nDans $x - y = 1$ : $3 - y = 1$, donc $y = 2$.\n:::\n\n::: point Contrôle\n$2 \\times 3 + 2 = 8$ et $3 - 2 = 1$.\n:::\n\n::: resultat\nUne unique solution : $S = \\{(3\\,;2)\\}$.\n:::\n\n## Question 2 : Les droites se coupent-elles ?\n\n::: methode\nOn met la seconde équation sous forme réduite et on compare les pentes.\n:::\n\n::: etape Équation réduite\n$$\n\\begin{aligned}\n4x + 2y - 10 = 0 &\\iff 2y = -4x + 10 \\\\\n&\\iff y = -2x + 5\n\\end{aligned}\n$$\n:::\n\n::: etape Comparaison\nLes deux droites ont la même pente $-2$, mais des ordonnées à l'origine différentes ($3 \\neq 5$).\n:::\n\n::: resultat\nElles sont parallèles et distinctes : elles ne se coupent pas, le système n'a aucune solution.\n:::\n\n## Question 3 : Résoudre $(S_2)$\n\n::: methode\nOn compare les deux équations : sont-elles proportionnelles ?\n:::\n\n::: etape Comparaison\nEn multipliant la première équation par $2$, on obtient exactement la seconde : $2(3x - y + 6) = 6x - 2y + 12$.\n:::\n\n::: resultat\nLes deux équations décrivent la même droite $y = 3x + 6$ : le système a une infinité de solutions, tous les couples $(x\\,;3x + 6)$ avec $x$ réel.\n:::\n\n## Question 4 : Résoudre $(S_3)$\n\n::: methode\nSubstitution : les deux équations donnent $y$, on égale les deux expressions.\n:::\n\n::: etape Équation en $x$\n$$\n\\begin{aligned}\nx - 2 = \\frac{1}{2}x + 1 &\\iff x - \\frac{1}{2}x = 3 \\\\\n&\\iff \\frac{1}{2}x = 3 \\\\\n&\\iff x = 6\n\\end{aligned}\n$$\n:::\n\n::: etape Calcul de $y$\n$y = 6 - 2 = 4$ ; contrôle : $\\frac{1}{2} \\times 6 + 1 = 4$.\n:::\n\n::: resultat\nUne unique solution : $S = \\{(6\\,;4)\\}$.\n:::\n\n## Question 5 : Intersection de $d_1$ et $d_2$\n\n::: methode\nSubstitution : on isole $y$ dans l'équation de $d_2$, puis on remplace dans celle de $d_1$.\n:::\n\n::: etape Isoler $y$\n$3x - y - 5 = 0 \\iff y = 3x - 5$\n:::\n\n::: etape Remplacer dans $d_1$\n$$\n\\begin{aligned}\nx + 2(3x - 5) - 4 = 0 &\\iff 7x - 14 = 0 \\\\\n&\\iff x = 2\n\\end{aligned}\n$$\n:::\n\n::: etape Calcul de $y$\n$y = 3 \\times 2 - 5 = 1$ ; contrôle dans $d_1$ : $2 + 2 \\times 1 - 4 = 0$.\n:::\n\n::: resultat\n$d_1$ et $d_2$ se coupent au point $(2\\,;1)$.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. Une solution : $(3\\,;2)$\n2. Non : droites parallèles distinctes, aucune solution\n3. Infinité de solutions : les couples $(x\\,;3x + 6)$\n4. Une solution : $(6\\,;4)$\n5. $(2\\,;1)$",
+   "titre": "Maîtrise - Point d'intersection : résoudre des systèmes de droites",
+   "difficulty": "hard",
+   "contenu": "<!-- optitab:1 -->\nLe point d'intersection de deux droites sécantes a pour coordonnées la solution du système formé par leurs équations. Préciser à chaque fois le nombre de solutions (aucune, une ou une infinité).\n\n1. Résoudre le système $(S_1) : \\begin{cases} 2x + y = 8 \\\\ x - y = 1 \\end{cases}$\n2. Les droites $y = -2x + 3$ et $4x + 2y - 10 = 0$ se coupent-elles ? Justifier.\n3. Résoudre le système $(S_2) : \\begin{cases} 3x - y + 6 = 0 \\\\ 6x - 2y + 12 = 0 \\end{cases}$\n4. Résoudre le système $(S_3) : \\begin{cases} y = x - 2 \\\\ y = \\frac{1}{2}x + 1 \\end{cases}$\n5. Déterminer le point d'intersection des droites $d_1 : x + 2y - 4 = 0$ et $d_2 : 3x - y - 5 = 0$."
+  },
+  {
+   "id": 3740,
+   "question": "<!-- optitab:1 -->\nUne agence loue des vélos électriques avec deux tarifs.\n\n- Tarif A : le prix est une fonction affine de la durée ; un client a payé $15$ € pour $2$ h, un autre $21$ € pour $6$ h.\n- Tarif B : $3$ € par heure, sans autres frais.\n\nDans un repère, on représente le prix $y$ (en euros) en fonction de la durée $x$ (en heures) : le tarif A par une droite $d_A$, le tarif B par une droite $d_B$.\n\n1. Déterminer l'équation réduite de $d_A$, qui passe par les points $(2\\,;15)$ et $(6\\,;21)$.\n2. Interpréter la pente et l'ordonnée à l'origine de $d_A$.\n3. Donner l'équation réduite de $d_B$. Les droites $d_A$ et $d_B$ sont-elles parallèles ?\n4. Calculer les coordonnées du point d'intersection de $d_A$ et $d_B$.\n5. Quel tarif est le plus avantageux, selon la durée de location ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Équation de $d_A$\n\n::: methode\nOn calcule la pente avec les deux points, puis l'ordonnée à l'origine avec l'un d'eux.\n:::\n\n::: etape Pente\n$$m = \\frac{21 - 15}{6 - 2} = \\frac{6}{4} = 1{,}5$$\n:::\n\n::: etape Ordonnée à l'origine\n$(2\\,;15)$ est sur $d_A$ : $15 = 1{,}5 \\times 2 + p$, soit $15 = 3 + p$, donc $p = 12$.\n:::\n\n::: point Contrôle\n$1{,}5 \\times 6 + 12 = 9 + 12 = 21$.\n:::\n\n::: resultat\n$d_A : y = 1{,}5x + 12$\n:::\n\n## Question 2 : Interprétation\n\n::: methode\nLa pente est l'augmentation de $y$ quand $x$ augmente de $1$ ; l'ordonnée à l'origine est la valeur de $y$ pour $x = 0$.\n:::\n\n::: etape Pente\nQuand la durée augmente de $1$ h, le prix augmente de $1{,}50$ € : c'est le prix de chaque heure.\n:::\n\n::: etape Ordonnée à l'origine\nPour $0$ h, le prix serait de $12$ € : ce sont des frais fixes.\n:::\n\n::: resultat\nTarif A : $12$ € de frais fixes, puis $1{,}50$ € par heure.\n:::\n\n## Question 3 : La droite $d_B$\n\n::: methode\nPour $x$ heures, le tarif B coûte $3x$ euros : pas de frais fixes, donc $p = 0$.\n:::\n\n::: etape Équation\n$d_B : y = 3x$, de pente $3$.\n:::\n\n::: resultat\n$d_B : y = 3x$. Les pentes $1{,}5$ et $3$ sont différentes : $d_A$ et $d_B$ ne sont pas parallèles, elles sont sécantes.\n:::\n\n## Question 4 : Point d'intersection\n\n::: methode\nOn résout l'équation obtenue en égalant les deux expressions de $y$.\n:::\n\n::: etape Abscisse\n$$\n\\begin{aligned}\n1{,}5x + 12 = 3x &\\iff 12 = 1{,}5x \\\\\n&\\iff x = 8\n\\end{aligned}\n$$\n:::\n\n::: etape Ordonnée\n$y = 3 \\times 8 = 24$ ; contrôle : $1{,}5 \\times 8 + 12 = 24$.\n:::\n\n::: resultat\n$d_A$ et $d_B$ se coupent au point $(8\\,;24)$ : pour $8$ h, les deux tarifs coûtent $24$ €.\n:::\n\n## Question 5 : Le tarif le plus avantageux\n\n::: methode\nOn compare les deux prix : le tarif le plus avantageux correspond à la droite située en dessous de l'autre.\n:::\n\n[IMAGE_1]\n\n::: etape Comparaison\n$$\n\\begin{aligned}\n3x \\lt 1{,}5x + 12 &\\iff 1{,}5x \\lt 12 \\\\\n&\\iff x \\lt 8\n\\end{aligned}\n$$\nDonc le tarif B est moins cher pour une durée inférieure à $8$ h, et plus cher au-delà.\n:::\n\n::: resultat\nMoins de $8$ h : tarif B ; exactement $8$ h : même prix ($24$ €) ; plus de $8$ h : tarif A.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $d_A : y = 1{,}5x + 12$\n2. $1{,}50$ € par heure et $12$ € de frais fixes\n3. $d_B : y = 3x$ ; pentes différentes, droites sécantes\n4. $(8\\,;24)$\n5. Tarif B pour moins de $8$ h, tarif A pour plus de $8$ h, égalité à $8$ h ($24$ €)",
+   "titre": "Problème - Location de vélos : interpréter une pente",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nUne agence loue des vélos électriques avec deux tarifs.\n\n- Tarif A : le prix est une fonction affine de la durée ; un client a payé $15$ € pour $2$ h, un autre $21$ € pour $6$ h.\n- Tarif B : $3$ € par heure, sans autres frais.\n\nDans un repère, on représente le prix $y$ (en euros) en fonction de la durée $x$ (en heures) : le tarif A par une droite $d_A$, le tarif B par une droite $d_B$.\n\n1. Déterminer l'équation réduite de $d_A$, qui passe par les points $(2\\,;15)$ et $(6\\,;21)$.\n2. Interpréter la pente et l'ordonnée à l'origine de $d_A$.\n3. Donner l'équation réduite de $d_B$. Les droites $d_A$ et $d_B$ sont-elles parallèles ?\n4. Calculer les coordonnées du point d'intersection de $d_A$ et $d_B$.\n5. Quel tarif est le plus avantageux, selon la durée de location ?"
+  },
+  {
+   "id": 3739,
+   "question": "<!-- optitab:1 -->\nUn musée pratique un tarif adulte et un tarif enfant. Un groupe de $5$ adultes et $3$ enfants a payé $63$ € ; un autre groupe de $2$ adultes et $4$ enfants a payé $42$ €. On note $a$ le prix d'un billet adulte et $e$ le prix d'un billet enfant, en euros.\n\n1. Traduire l'énoncé par un système de deux équations d'inconnues $a$ et $e$.\n2. Justifier, sans le résoudre, que ce système a une unique solution.\n3. Résoudre le système par combinaison.\n4. Interpréter graphiquement la solution.\n5. Le musée propose un « pass famille » à $33$ € pour $2$ adultes et $3$ enfants. Est-il avantageux ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Mise en équations\n\n::: methode\nChaque groupe donne une équation : prix total = nombre d'adultes × $a$ + nombre d'enfants × $e$.\n:::\n\n::: etape Traduction\n- Premier groupe : $5a + 3e = 63$.\n- Second groupe : $2a + 4e = 42$.\n:::\n\n::: resultat\n$$\\begin{cases} 5a + 3e = 63 \\\\ 2a + 4e = 42 \\end{cases}$$\n:::\n\n## Question 2 : Une unique solution\n\n::: methode\nLe système a une unique solution si et seulement si $ab' - a'b \\neq 0$, avec les coefficients des inconnues.\n:::\n\n::: etape Calcul\n$5 \\times 4 - 2 \\times 3 = 20 - 6 = 14 \\neq 0$\n:::\n\n::: resultat\nLe nombre $14$ n'est pas nul : le système a une unique solution.\n:::\n\n## Question 3 : Résolution par combinaison\n\n::: methode\nOn multiplie la première équation par $2$ et la seconde par $5$ pour obtenir le même coefficient devant $a$, puis on soustrait.\n:::\n\n::: etape Mêmes coefficients devant $a$\n- $2 \\times (5a + 3e) = 2 \\times 63$, soit $10a + 6e = 126$.\n- $5 \\times (2a + 4e) = 5 \\times 42$, soit $10a + 20e = 210$.\n:::\n\n::: etape Soustraction\n$$\n\\begin{aligned}\n(10a + 20e) - (10a + 6e) = 210 - 126 &\\iff 14e = 84 \\\\\n&\\iff e = 6\n\\end{aligned}\n$$\n:::\n\n::: etape Calcul de $a$\nDans $5a + 3e = 63$ : $5a + 18 = 63$, donc $5a = 45$ et $a = 9$.\n:::\n\n::: point Contrôle\n$5 \\times 9 + 3 \\times 6 = 45 + 18 = 63$ et $2 \\times 9 + 4 \\times 6 = 18 + 24 = 42$.\n:::\n\n::: resultat\n$S = \\{(9\\,;6)\\}$ : un billet adulte coûte $9$ € et un billet enfant $6$ €.\n:::\n\n::: attention\nConclure par une phrase qui répond au problème, avec l'unité : un couple $(9\\,;6)$ seul ne suffit pas.\n:::\n\n## Question 4 : Interprétation graphique\n\n::: methode\nChaque équation est celle d'une droite dans un repère où $a$ est en abscisse et $e$ en ordonnée.\n:::\n\n::: etape Lecture\nLes droites d'équations $5a + 3e = 63$ et $2a + 4e = 42$ sont sécantes ; leur point d'intersection a pour coordonnées $(9\\,;6)$.\n:::\n\n[IMAGE_1]\n\n::: resultat\nLa solution du système est le couple des coordonnées du point d'intersection des deux droites.\n:::\n\n## Question 5 : Le pass famille\n\n::: methode\nOn calcule le prix normal pour $2$ adultes et $3$ enfants, puis on compare avec $33$ €.\n:::\n\n::: etape Prix normal\n$2 \\times 9 + 3 \\times 6 = 18 + 18 = 36$ €\n:::\n\n::: resultat\n$33 \\lt 36$ : le pass famille est avantageux, il fait économiser $3$ €.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $5a + 3e = 63$ et $2a + 4e = 42$\n2. $5 \\times 4 - 2 \\times 3 = 14 \\neq 0$ : une unique solution\n3. $a = 9$ et $e = 6$ : billet adulte $9$ €, billet enfant $6$ €\n4. Les deux droites se coupent au point $(9\\,;6)$\n5. Oui : $36$ € au tarif normal, soit $3$ € d'économie",
+   "titre": "Problème - Tarifs d'un musée : mettre en équations un système",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nUn musée pratique un tarif adulte et un tarif enfant. Un groupe de $5$ adultes et $3$ enfants a payé $63$ € ; un autre groupe de $2$ adultes et $4$ enfants a payé $42$ €. On note $a$ le prix d'un billet adulte et $e$ le prix d'un billet enfant, en euros.\n\n1. Traduire l'énoncé par un système de deux équations d'inconnues $a$ et $e$.\n2. Justifier, sans le résoudre, que ce système a une unique solution.\n3. Résoudre le système par combinaison.\n4. Interpréter graphiquement la solution.\n5. Le musée propose un « pass famille » à $33$ € pour $2$ adultes et $3$ enfants. Est-il avantageux ?"
+  }
+ ],
+ "images": [
+  {
+   "modele": "CoursImage",
+   "id": 678,
+   "proprietaire": 226,
+   "position": 1,
+   "image": "cours_images/v1_n170_co226_1_cours_vecteur_directeur.png",
+   "legende": null,
+   "alt_text": "Droite d passant par A(2 ; 1), point M(x ; y) de d, vecteur AM porté par d et vecteur directeur u(3 ; 2) parallèle à d",
+   "title_text": "",
+   "width": 445,
+   "height": 330
+  },
+  {
+   "modele": "CoursImage",
+   "id": 679,
+   "proprietaire": 226,
+   "position": 2,
+   "image": "cours_images/v1_n170_co226_2_cours_pente.png",
+   "legende": null,
+   "alt_text": "Droite (AB) passant par A(2 ; 1) et B(5 ; 5), avec le déplacement horizontal Δx = 3 et le déplacement vertical Δy = 4",
+   "title_text": "",
+   "width": 350,
+   "height": 344
+  },
+  {
+   "modele": "CoursImage",
+   "id": 680,
+   "proprietaire": 226,
+   "position": 3,
+   "image": "cours_images/v1_n170_co226_3_cours_panorama.png",
+   "legende": null,
+   "alt_text": "Quatre droites : d1 de pente positive, d2 de pente négative, d3 parallèle à l'axe des abscisses et d4 parallèle à l'axe des ordonnées",
+   "title_text": "",
+   "width": 398,
+   "height": 396
+  },
+  {
+   "modele": "CoursImage",
+   "id": 681,
+   "proprietaire": 226,
+   "position": 4,
+   "image": "cours_images/v1_n170_co226_4_cours_trois_cas.png",
+   "legende": null,
+   "alt_text": "Trois positions de deux droites : sécantes (une seule solution), parallèles (aucune solution), confondues (une infinité de solutions)",
+   "title_text": "",
+   "width": 364,
+   "height": 196
+  },
+  {
+   "modele": "CoursImage",
+   "id": 682,
+   "proprietaire": 226,
+   "position": 5,
+   "image": "cours_images/v1_n170_co226_5_cours_intersection.png",
+   "legende": null,
+   "alt_text": "Droites d'équations y = 2x − 1 et x + y = 5 sécantes au point I(2 ; 3)",
+   "title_text": "",
+   "width": 290,
+   "height": 325
+  },
+  {
+   "modele": "SynthesisImage",
+   "id": 290,
+   "proprietaire": 140,
+   "position": 1,
+   "image": "synthesis_images/v1_n170_fi140_1_cours_pente.png",
+   "legende": null,
+   "alt_text": "Pente de la droite (AB) : déplacement horizontal Δx = 3 et déplacement vertical Δy = 4 entre A(2 ; 1) et B(5 ; 5)",
+   "title_text": "",
+   "width": 350,
+   "height": 344
+  },
+  {
+   "modele": "SynthesisImage",
+   "id": 291,
+   "proprietaire": 140,
+   "position": 2,
+   "image": "synthesis_images/v1_n170_fi140_2_cours_trois_cas.png",
+   "legende": null,
+   "alt_text": "Trois positions de deux droites : sécantes (une seule solution), parallèles (aucune solution), confondues (une infinité de solutions)",
+   "title_text": "",
+   "width": 364,
+   "height": 196
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 706,
+   "proprietaire": 2046,
+   "position": 1,
+   "image": "exercice_images/v1_n170_ex2046_1_ex_lecture_enonce.png",
+   "legende": null,
+   "alt_text": "Repère avec trois droites : d1 qui monte, d2 qui descend et d3 parallèle à l'axe des ordonnées",
+   "title_text": "",
+   "width": 364,
+   "height": 358
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3023,
+   "proprietaire": 2046,
+   "position": 2,
+   "image": "exercice_images/v1_n170_ex2046_2_ex_lecture_corrige.png",
+   "legende": null,
+   "alt_text": "Lecture des pentes : sur d1, on avance de 1 et on monte de 2 depuis (0 ; −3) ; sur d2, on avance de 3 et on descend de 2 depuis (0 ; 2)",
+   "title_text": "",
+   "width": 364,
+   "height": 358
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 705,
+   "proprietaire": 2045,
+   "position": 1,
+   "image": "exercice_images/v1_n170_ex2045_1_ex_vecteur_pente.png",
+   "legende": null,
+   "alt_text": "Droite (AB) avec A(−2 ; 3), B(4 ; −1) et vecteur directeur u issu de A ; droite (CD) parallèle à l'axe des ordonnées d'équation x = 2",
+   "title_text": "",
+   "width": 294,
+   "height": 378
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 718,
+   "proprietaire": 2051,
+   "position": 1,
+   "image": "exercice_images/v1_n170_ex2051_1_ex_align_q1.png",
+   "legende": null,
+   "alt_text": "Points A(−1 ; 2), B(2 ; 8) et C(5 ; 14) alignés sur la droite y = 2x + 4",
+   "title_text": "",
+   "width": 370,
+   "height": 366
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 719,
+   "proprietaire": 2051,
+   "position": 2,
+   "image": "exercice_images/v1_n170_ex2051_2_ex_align_q2.png",
+   "legende": null,
+   "alt_text": "Points D(0 ; 1), E(2 ; 3) et F(4 ; 6) : F n'est pas sur la droite (DE), la droite (DF) est différente",
+   "title_text": "",
+   "width": 271,
+   "height": 349
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 720,
+   "proprietaire": 2051,
+   "position": 3,
+   "image": "exercice_images/v1_n170_ex2051_3_ex_align_q3.png",
+   "legende": null,
+   "alt_text": "Points G(1 ; −2), H(4 ; 1) et K(6 ; 3) alignés sur une même droite",
+   "title_text": "",
+   "width": 350,
+   "height": 308
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 708,
+   "proprietaire": 2049,
+   "position": 1,
+   "image": "exercice_images/v1_n170_ex2049_1_ex_eq_q1.png",
+   "legende": null,
+   "alt_text": "Droite (AB) passant par A(1 ; 2) et B(5 ; 4), avec un déplacement de +4 en abscisse et de +2 en ordonnée",
+   "title_text": "",
+   "width": 407,
+   "height": 270
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 709,
+   "proprietaire": 2049,
+   "position": 2,
+   "image": "exercice_images/v1_n170_ex2049_2_ex_eq_q2.png",
+   "legende": null,
+   "alt_text": "Droite y = −3x − 8 passant par C(−3 ; 1) : on avance de 1 et on descend de 3",
+   "title_text": "",
+   "width": 271,
+   "height": 372
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 710,
+   "proprietaire": 2049,
+   "position": 3,
+   "image": "exercice_images/v1_n170_ex2049_3_ex_eq_q3.png",
+   "legende": null,
+   "alt_text": "Droite x + 2y = 0 passant par D(2 ; −1), avec le vecteur directeur u(4 ; −2) issu de D",
+   "title_text": "",
+   "width": 386,
+   "height": 278
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 711,
+   "proprietaire": 2049,
+   "position": 4,
+   "image": "exercice_images/v1_n170_ex2049_4_ex_eq_q4.png",
+   "legende": null,
+   "alt_text": "Droite x = −5 parallèle à l'axe des ordonnées, passant par E(−5 ; 3) et F(−5 ; −2)",
+   "title_text": "",
+   "width": 315,
+   "height": 314
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 712,
+   "proprietaire": 2049,
+   "position": 5,
+   "image": "exercice_images/v1_n170_ex2049_5_ex_eq_q5.png",
+   "legende": null,
+   "alt_text": "Droite x + y − 2 = 0 passant par I(−2 ; 4) et J(3 ; −1)",
+   "title_text": "",
+   "width": 315,
+   "height": 314
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 707,
+   "proprietaire": 2047,
+   "position": 1,
+   "image": "exercice_images/v1_n170_ex2047_1_ex_parallele.png",
+   "legende": null,
+   "alt_text": "Droite d : y = −3x + 2 et sa parallèle d' : y = −3x + 5 passant par B(0 ; 5) et par C(3 ; −4)",
+   "title_text": "",
+   "width": 242,
+   "height": 388
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 721,
+   "proprietaire": 2052,
+   "position": 1,
+   "image": "exercice_images/v1_n170_ex2052_1_ex_pos_q1.png",
+   "legende": null,
+   "alt_text": "Droites d1 : 2x − 3y + 1 = 0 et d2 : 4x − 6y − 5 = 0, parallèles et distinctes",
+   "title_text": "",
+   "width": 350,
+   "height": 314
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 722,
+   "proprietaire": 2052,
+   "position": 2,
+   "image": "exercice_images/v1_n170_ex2052_2_ex_pos_q2.png",
+   "legende": null,
+   "alt_text": "Droites d3 et d4 confondues : un seul tracé pour l'équation y = x/2 − 1",
+   "title_text": "",
+   "width": 350,
+   "height": 278
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 723,
+   "proprietaire": 2052,
+   "position": 3,
+   "image": "exercice_images/v1_n170_ex2052_3_ex_pos_q3.png",
+   "legende": null,
+   "alt_text": "Droites d5 : x = −3 et d6 : x = 1/2, toutes deux parallèles à l'axe des ordonnées",
+   "title_text": "",
+   "width": 294,
+   "height": 254
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 724,
+   "proprietaire": 2052,
+   "position": 4,
+   "image": "exercice_images/v1_n170_ex2052_4_ex_pos_q4.png",
+   "legende": null,
+   "alt_text": "Droite d7 : 3x + y − 4 = 0 et sa parallèle 3x + y − 5 = 0 passant par P(2 ; −1)",
+   "title_text": "",
+   "width": 266,
+   "height": 364
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 725,
+   "proprietaire": 2052,
+   "position": 5,
+   "image": "exercice_images/v1_n170_ex2052_5_ex_pos_q5.png",
+   "legende": null,
+   "alt_text": "Droites d8 : y = −x + 4 et d9 : y = 2x − 2 sécantes au point (2 ; 2)",
+   "title_text": "",
+   "width": 271,
+   "height": 333
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 713,
+   "proprietaire": 2050,
+   "position": 1,
+   "image": "exercice_images/v1_n170_ex2050_1_ex_trace_q1.png",
+   "legende": null,
+   "alt_text": "Tracé de d1 : y = 3x/2 − 1 à partir des points (0 ; −1) et (2 ; 2)",
+   "title_text": "",
+   "width": 280,
+   "height": 314
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 714,
+   "proprietaire": 2050,
+   "position": 2,
+   "image": "exercice_images/v1_n170_ex2050_2_ex_trace_q2.png",
+   "legende": null,
+   "alt_text": "Tracé de d2 : 4x + 2y − 8 = 0 à partir de ses intersections avec les axes, (2 ; 0) et (0 ; 4)",
+   "title_text": "",
+   "width": 244,
+   "height": 318
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 715,
+   "proprietaire": 2050,
+   "position": 3,
+   "image": "exercice_images/v1_n170_ex2050_3_ex_trace_q3.png",
+   "legende": null,
+   "alt_text": "Tracé de la droite d3 : x = 3, passant par (3 ; 0) et (3 ; 2)",
+   "title_text": "",
+   "width": 280,
+   "height": 278
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 716,
+   "proprietaire": 2050,
+   "position": 4,
+   "image": "exercice_images/v1_n170_ex2050_4_ex_trace_q4.png",
+   "legende": null,
+   "alt_text": "Droite d4 : y = −x + 5 passant par le point P(4 ; 1)",
+   "title_text": "",
+   "width": 305,
+   "height": 304
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 717,
+   "proprietaire": 2050,
+   "position": 5,
+   "image": "exercice_images/v1_n170_ex2050_5_ex_trace_q5.png",
+   "legende": null,
+   "alt_text": "Tracé de d5 : x − 2y + 6 = 0 à partir des points (0 ; 3) et (4 ; 5)",
+   "title_text": "",
+   "width": 373,
+   "height": 304
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3022,
+   "proprietaire": 3740,
+   "position": 1,
+   "image": "exercice_images/v1_n170_ex3740_1_ex_location.png",
+   "legende": null,
+   "alt_text": "Prix des tarifs A et B en fonction de la durée : les deux droites se coupent au point (8 ; 24), le tarif B est en dessous avant 8 heures",
+   "title_text": "",
+   "width": 430,
+   "height": 352
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3021,
+   "proprietaire": 3739,
+   "position": 1,
+   "image": "exercice_images/v1_n170_ex3739_1_ex_systeme_tarifs.png",
+   "legende": null,
+   "alt_text": "Droites d'équations 5a + 3e = 63 et 2a + 4e = 42 sécantes au point (9 ; 6)",
+   "title_text": "",
+   "width": 422,
+   "height": 368
+  }
+ ],
+ "images_creees": [],
+ "exercices_crees": []
+}

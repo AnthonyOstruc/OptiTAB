@@ -1,0 +1,64 @@
+=== Orthogonalité et distances dans l'espace - Programme Terminale
+Images: term_ps_cube.png, term_ps_normal.png, term_ps_projete.png
+Titre: Orthogonalité et distances dans l’espace
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+    <div style="background:#e8f4fd; border:2px solid #3498db; border-radius:8px; padding:15px; margin-bottom:20px;">
+        <p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🎯 Objectifs du chapitre :</strong> calculer un produit scalaire dans l’espace, caractériser l’orthogonalité de droites et de plans, utiliser un vecteur normal pour écrire l’équation cartésienne d’un plan, et déterminer un projeté orthogonal et une distance.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Produit scalaire dans l’espace</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Définition et propriétés :</strong> deux vecteurs de l’espace sont toujours dans un même plan, où l’on calcule leur produit scalaire comme en Première ($\vec{u} \cdot \vec{v} = \|\vec{u}\|\|\vec{v}\|\cos(\vec{u}, \vec{v})$) ; les règles de calcul sont les mêmes.</p>
+            <p style="margin:6px 0 0 0;"><strong>En repère orthonormé :</strong> si $\vec{u}\,(x\,;y\,;z)$ et $\vec{v}\,(x'\,;y'\,;z')$, alors $\vec{u} \cdot \vec{v} = xx' + yy' + zz'$ et $\|\vec{u}\| = \sqrt{x^2 + y^2 + z^2}$.</p>
+        </div>
+        <p style="font-size:1em;"><strong>Exemple :</strong> $\vec{u}\,(1\,;2\,;-1)$ et $\vec{v}\,(3\,;-1\,;1)$ : $\vec{u} \cdot \vec{v} = 3 - 2 - 1 = 0$, donc $\vec{u}$ et $\vec{v}$ sont orthogonaux ; $\|\vec{u}\| = \sqrt{6}$.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Orthogonalité</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;">• Deux droites sont <strong>orthogonales</strong> si leurs vecteurs directeurs sont orthogonaux (elles ne sont pas forcément sécantes).</p>
+            <p style="margin:6px 0 0 0;">• Une droite est <strong>orthogonale à un plan</strong> si et seulement si elle est orthogonale à <strong>deux droites sécantes</strong> de ce plan ; elle est alors orthogonale à toutes les droites du plan.</p>
+            <p style="margin:6px 0 0 0;">• Un <strong>vecteur normal</strong> à un plan est un vecteur directeur d’une droite orthogonale à ce plan.</p>
+        </div>
+        [IMAGE_1]
+        <p style="font-size:1em;"><strong>Exemple :</strong> dans le cube de côté $1$, repère $(A\,;\overrightarrow{AB}, \overrightarrow{AD}, \overrightarrow{AE})$ : $\overrightarrow{AG}\,(1\,;1\,;1)$, $\overrightarrow{BD}\,(-1\,;1\,;0)$, $\overrightarrow{BE}\,(-1\,;0\,;1)$. Les deux produits scalaires sont nuls, donc $(AG)$ est orthogonale au plan $(BDE)$.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Équation cartésienne d’un plan</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Théorème (démonstration au programme) :</strong> le plan passant par $A$ et de vecteur normal $\vec{n}\,(a\,;b\,;c)$ a une équation de la forme $ax + by + cz + d = 0$. Réciproquement, une telle équation (avec $(a\,;b\,;c) \neq (0\,;0\,;0)$) est celle d’un plan de vecteur normal $\vec{n}\,(a\,;b\,;c)$.</p>
+            <p style="margin:6px 0 0 0;"><em>Preuve :</em> $M(x\,;y\,;z) \in \mathcal{P} \iff \overrightarrow{AM} \cdot \vec{n} = 0 \iff a(x - x_A) + b(y - y_A) + c(z - z_A) = 0$.</p>
+        </div>
+        [IMAGE_2]
+        <p style="font-size:1em;"><strong>Exemples :</strong> le plan passant par $A(1\,;2\,;0)$ de vecteur normal $\vec{n}\,(2\,;-1\,;3)$ a pour équation $2(x - 1) - (y - 2) + 3z = 0$, soit $2x - y + 3z = 0$. Dans le cube, le plan $(BDE)$ a pour équation $x + y + z - 1 = 0$.</p>
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Positions de deux plans :</strong> ils sont parallèles si et seulement si leurs vecteurs normaux sont colinéaires, perpendiculaires si et seulement si leurs vecteurs normaux sont orthogonaux.
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Projeté orthogonal et distance</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Définition et propriété :</strong> le <strong>projeté orthogonal</strong> de $M$ sur un plan $\mathcal{P}$ est le point $H$ de $\mathcal{P}$ tel que $\overrightarrow{MH}$ soit normal à $\mathcal{P}$. C’est le point de $\mathcal{P}$ le plus proche de $M$, et $MH$ est la <strong>distance</strong> de $M$ au plan.</p>
+        </div>
+        [IMAGE_3]
+        <p style="font-size:1em;"><strong>Exemple :</strong> projeté de $A(0\,;0\,;0)$ sur $(BDE) : x + y + z - 1 = 0$. On cherche $H$ tel que $\overrightarrow{AH} = t\,\vec{n} = (t\,;t\,;t)$ : $3t - 1 = 0$ donne $t = \frac{1}{3}$, donc $H\left(\frac{1}{3}\,;\frac{1}{3}\,;\frac{1}{3}\right)$ et $AH = \sqrt{3 \times \frac{1}{9}} = \frac{\sqrt{3}}{3}$.</p>
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong> une droite orthogonale à <strong>une seule</strong> droite d’un plan n’est pas forcément orthogonale au plan : il en faut deux, sécantes.
+        </div>
+    </div>
+
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:8px; padding:15px; margin:20px 0 0 0;">
+        <p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🏆 L’essentiel :</strong> $\vec{u} \cdot \vec{v} = xx' + yy' + zz'$ ; droite orthogonale à un plan $\iff$ orthogonale à deux droites sécantes du plan ; plan de vecteur normal $\vec{n}\,(a\,;b\,;c)$ : $ax + by + cz + d = 0$ ; projeté orthogonal $H$ : $\overrightarrow{MH}$ colinéaire à $\vec{n}$ et $H \in \mathcal{P}$ ; distance $= MH$. Fiche de synthèse dans l’onglet Fiches !</p>
+    </div>
+
+</div>

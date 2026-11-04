@@ -1,0 +1,1908 @@
+=== Découverte - Matrices - Déterminants et Inverses
+Id: 1808
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On considère les matrices suivantes :
+
+$\displaystyle A = \begin{pmatrix} 3 & 2 \\ 1 & 4 \end{pmatrix}$, $\displaystyle B = \begin{pmatrix} 1 & 2 & 3 \\ 0 & 1 & 2 \\ 0 & 0 & 1 \end{pmatrix}$ et $\displaystyle C = \begin{pmatrix} 2 & 1 \\ 4 & 2 \end{pmatrix}$
+
+1. Calculer le déterminant de $\displaystyle A$
+2. Calculer le déterminant de $\displaystyle B$
+3. Calculer le déterminant de $\displaystyle C$ et conclure sur l'inversibilité
+4. Calculer l'inverse de $\displaystyle A$ si elle existe
+5. Vérifier que $\displaystyle A \times A^{-1} = I_2$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer le déterminant de $\displaystyle A$
+
+::: methode
+Formule du déterminant 2×2
+:::
+
+::: etape Appliquer la formule $\displaystyle \det(A) = ad - bc$
+- $a = 3$, $b = 2$, $c = 1$, $d = 4$
+:::
+
+::: etape Calculer
+- $\displaystyle \det(A) = 3 \times 4 - 2 \times 1 = 12 - 2 = 10$
+:::
+
+::: resultat
+$\det(A) = 10 \neq 0$ → $A$ est inversible
+:::
+
+## Question 2 : Calculer le déterminant de $\displaystyle B$
+
+::: methode
+Développement selon la première ligne (matrice triangulaire supérieure)
+:::
+
+::: etape $B$ est une matrice triangulaire supérieure
+:::
+
+::: etape
+Pour une matrice triangulaire, le déterminant est le produit des éléments diagonaux
+
+- $\displaystyle \det(B) = 1 \times 1 \times 1 = 1$
+:::
+
+::: resultat
+$\det(B) = 1 \neq 0$ → $B$ est inversible
+:::
+
+## Question 3 : Calculer le déterminant de $\displaystyle C$ et conclure sur l'inversibilité
+
+::: methode
+Formule du déterminant 2×2
+:::
+
+::: etape Appliquer la formule $\displaystyle \det(C) = ad - bc$
+- $a = 2$, $b = 1$, $c = 4$, $d = 2$
+:::
+
+::: etape Calculer
+- $\displaystyle \det(C) = 2 \times 2 - 1 \times 4 = 4 - 4 = 0$
+:::
+
+::: resultat
+$\det(C) = 0$ → $C$ n'est pas inversible
+:::
+
+## Question 4 : Calculer l'inverse de $\displaystyle A$ si elle existe
+
+::: methode
+Formule de l'inverse d'une matrice 2×2
+:::
+
+::: etape Vérifier que $\displaystyle \det(A) \neq 0$ (déjà fait
+$\displaystyle \det(A) = 10$)
+:::
+
+::: etape Appliquer la formule $\displaystyle A^{-1} = \frac{1}{\det(A)} \begin{pmatrix} d & -b \\ -c & a \end{pmatrix}$
+- $\displaystyle A^{-1} = \frac{1}{10} \begin{pmatrix} 4 & -2 \\ -1 & 3 \end{pmatrix}$
+:::
+
+::: etape Simplifier
+$$A^{-1} = \begin{pmatrix} \frac{4}{10} & \frac{-2}{10} \\ \frac{-1}{10} & \frac{3}{10} \end{pmatrix} = \begin{pmatrix} \frac{2}{5} & -\frac{1}{5} \\ -\frac{1}{10} & \frac{3}{10} \end{pmatrix}$$
+:::
+
+::: resultat
+$$A^{-1} = \begin{pmatrix} \frac{2}{5} & -\frac{1}{5} \\ -\frac{1}{10} & \frac{3}{10} \end{pmatrix}$$
+:::
+
+## Question 5 : Vérifier que $\displaystyle A \times A^{-1} = I_2$
+
+::: methode
+Vérification par calcul matriciel
+:::
+
+::: etape Calculer $\displaystyle A \times A^{-1}$
+- $\displaystyle A \times A^{-1} = \begin{pmatrix} 3 & 2 \\ 1 & 4 \end{pmatrix} \begin{pmatrix} \frac{2}{5} & -\frac{1}{5} \\ -\frac{1}{10} & \frac{3}{10} \end{pmatrix}$
+:::
+
+::: etape Calculer chaque coefficient
+$$
+\begin{aligned}
+(AA^{-1})_{11} &= 3 \times \frac{2}{5} + 2 \times (-\frac{1}{10}) \\
+&= \frac{6}{5} - \frac{2}{10} \\
+&= \frac{6}{5} - \frac{1}{5} \\
+&= 1
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(AA^{-1})_{12} &= 3 \times (-\frac{1}{5}) + 2 \times \frac{3}{10} \\
+&= -\frac{3}{5} + \frac{6}{10} \\
+&= -\frac{3}{5} + \frac{3}{5} \\
+&= 0
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(AA^{-1})_{21} &= 1 \times \frac{2}{5} + 4 \times (-\frac{1}{10}) \\
+&= \frac{2}{5} - \frac{4}{10} \\
+&= \frac{2}{5} - \frac{2}{5} \\
+&= 0
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(AA^{-1})_{22} &= 1 \times (-\frac{1}{5}) + 4 \times \frac{3}{10} \\
+&= -\frac{1}{5} + \frac{12}{10} \\
+&= -\frac{1}{5} + \frac{6}{5} \\
+&= 1
+\end{aligned}
+$$
+:::
+
+::: etape Écrire le résultat complet
+$$A \times A^{-1} = \begin{pmatrix} 3 \times \frac{2}{5} + 2 \times (-\frac{1}{10}) & 3 \times (-\frac{1}{5}) + 2 \times \frac{3}{10} \\ 1 \times \frac{2}{5} + 4 \times (-\frac{1}{10}) & 1 \times (-\frac{1}{5}) + 4 \times \frac{3}{10} \end{pmatrix} = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}$$
+:::
+
+::: resultat
+$$A \times A^{-1} = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix} = I_2$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle \det(A) = 10$ (inversible)
+2. $\displaystyle \det(B) = 1$ (inversible)
+3. $\displaystyle \det(C) = 0$ (non inversible)
+4. $\displaystyle A^{-1} = \begin{pmatrix} \frac{2}{5} & -\frac{1}{5} \\ -\frac{1}{10} & \frac{3}{10} \end{pmatrix}$
+5. $\displaystyle A \times A^{-1} = I_2$
+
+===
+
+=== Découverte - Matrices - Opérations Fondamentales
+Id: 1807
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+On considère les matrices suivantes :
+
+$\displaystyle A = \begin{pmatrix} 2 & 3 \\ 1 & 4 \end{pmatrix}$, $\displaystyle B = \begin{pmatrix} 1 & -1 \\ 2 & 3 \end{pmatrix}$ et $\displaystyle C = \begin{pmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{pmatrix}$
+
+1. Calculer $\displaystyle A + B$
+2. Calculer $\displaystyle 3A$
+3. Calculer $\displaystyle A \times B$
+4. Calculer $\displaystyle B \times A$ et comparer avec $\displaystyle A \times B$
+5. Calculer $\displaystyle A \times C$ (si possible)
+6. Vérifier que $\displaystyle A \times I_2 = A$ où $\displaystyle I_2 = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer $\displaystyle A + B$
+
+::: methode
+Addition terme à terme de matrices de même taille
+:::
+
+::: etape Identifier les coefficients des matrices
+$$A = \begin{pmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{pmatrix} = \begin{pmatrix} 2 & 3 \\ 1 & 4 \end{pmatrix}$$
+
+$$B = \begin{pmatrix} b_{11} & b_{12} \\ b_{21} & b_{22} \end{pmatrix} = \begin{pmatrix} 1 & -1 \\ 2 & 3 \end{pmatrix}$$
+:::
+
+::: etape Vérifier que $A$ et $B$ ont la même taille (2×2)
+:::
+
+::: etape Additionner les coefficients correspondants
+- $\displaystyle (A + B)_{11} = a_{11} + b_{11} = 2 + 1 = 3$
+- $\displaystyle (A + B)_{12} = a_{12} + b_{12} = 3 + (-1) = 2$
+- $\displaystyle (A + B)_{21} = a_{21} + b_{21} = 1 + 2 = 3$
+- $\displaystyle (A + B)_{22} = a_{22} + b_{22} = 4 + 3 = 7$
+:::
+
+::: etape Écrire le résultat complet
+$$A + B = \begin{pmatrix} 2+1 & 3+(-1) \\ 1+2 & 4+3 \end{pmatrix} = \begin{pmatrix} 3 & 2 \\ 3 & 7 \end{pmatrix}$$
+:::
+
+::: resultat
+$$A + B = \begin{pmatrix} 3 & 2 \\ 3 & 7 \end{pmatrix}$$
+:::
+
+## Question 2 : Calculer $\displaystyle 3A$
+
+::: methode
+Multiplication par un scalaire
+:::
+
+::: etape Identifier les coefficients de la matrice $A$
+$$A = \begin{pmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{pmatrix} = \begin{pmatrix} 2 & 3 \\ 1 & 4 \end{pmatrix}$$
+:::
+
+::: etape Multiplier chaque coefficient de $A$ par 3
+- $\displaystyle (3A)_{11} = 3 \times a_{11} = 3 \times 2 = 6$
+- $\displaystyle (3A)_{12} = 3 \times a_{12} = 3 \times 3 = 9$
+- $\displaystyle (3A)_{21} = 3 \times a_{21} = 3 \times 1 = 3$
+- $\displaystyle (3A)_{22} = 3 \times a_{22} = 3 \times 4 = 12$
+:::
+
+::: etape Écrire le résultat complet
+$$3A = \begin{pmatrix} 3 \times 2 & 3 \times 3 \\ 3 \times 1 & 3 \times 4 \end{pmatrix} = \begin{pmatrix} 6 & 9 \\ 3 & 12 \end{pmatrix}$$
+:::
+
+::: resultat
+$$3A = \begin{pmatrix} 6 & 9 \\ 3 & 12 \end{pmatrix}$$
+:::
+
+## Question 3 : Calculer $\displaystyle A \times B$
+
+::: methode
+Produit matriciel (ligne × colonne)
+:::
+
+::: etape Identifier les coefficients des matrices
+$$A = \begin{pmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{pmatrix} = \begin{pmatrix} 2 & 3 \\ 1 & 4 \end{pmatrix}$$
+
+$$B = \begin{pmatrix} b_{11} & b_{12} \\ b_{21} & b_{22} \end{pmatrix} = \begin{pmatrix} 1 & -1 \\ 2 & 3 \end{pmatrix}$$
+:::
+
+::: etape Vérifier la compatibilité des tailles (2×2) × (2×2) = (2×2)
+:::
+
+::: etape Calculer chaque coefficient
+$$
+\begin{aligned}
+(AB)_{11} &= a_{11}b_{11} + a_{12}b_{21} \\
+&= 2 \times 1 + 3 \times 2 \\
+&= 2 + 6 \\
+&= 8
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(AB)_{12} &= a_{11}b_{12} + a_{12}b_{22} \\
+&= 2 \times (-1) + 3 \times 3 \\
+&= -2 + 9 \\
+&= 7
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(AB)_{21} &= a_{21}b_{11} + a_{22}b_{21} \\
+&= 1 \times 1 + 4 \times 2 \\
+&= 1 + 8 \\
+&= 9
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(AB)_{22} &= a_{21}b_{12} + a_{22}b_{22} \\
+&= 1 \times (-1) + 4 \times 3 \\
+&= -1 + 12 \\
+&= 11
+\end{aligned}
+$$
+:::
+
+::: etape Écrire le résultat complet
+$$A \times B = \begin{pmatrix} 2 \times 1 + 3 \times 2 & 2 \times (-1) + 3 \times 3 \\ 1 \times 1 + 4 \times 2 & 1 \times (-1) + 4 \times 3 \end{pmatrix} = \begin{pmatrix} 8 & 7 \\ 9 & 11 \end{pmatrix}$$
+:::
+
+::: resultat
+$$A \times B = \begin{pmatrix} 8 & 7 \\ 9 & 11 \end{pmatrix}$$
+:::
+
+## Question 4 : Calculer $\displaystyle B \times A$ et comparer avec $\displaystyle A \times B$
+
+::: methode
+Produit matriciel dans l'ordre inverse
+:::
+
+::: etape Identifier les coefficients des matrices
+$$A = \begin{pmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{pmatrix} = \begin{pmatrix} 2 & 3 \\ 1 & 4 \end{pmatrix}$$
+
+$$B = \begin{pmatrix} b_{11} & b_{12} \\ b_{21} & b_{22} \end{pmatrix} = \begin{pmatrix} 1 & -1 \\ 2 & 3 \end{pmatrix}$$
+:::
+
+::: etape Calculer $\displaystyle B \times A$
+$$
+\begin{aligned}
+(BA)_{11} &= b_{11}a_{11} + b_{12}a_{21} \\
+&= 1 \times 2 + (-1) \times 1 \\
+&= 2 - 1 \\
+&= 1
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(BA)_{12} &= b_{11}a_{12} + b_{12}a_{22} \\
+&= 1 \times 3 + (-1) \times 4 \\
+&= 3 - 4 \\
+&= -1
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(BA)_{21} &= b_{21}a_{11} + b_{22}a_{21} \\
+&= 2 \times 2 + 3 \times 1 \\
+&= 4 + 3 \\
+&= 7
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(BA)_{22} &= b_{21}a_{12} + b_{22}a_{22} \\
+&= 2 \times 3 + 3 \times 4 \\
+&= 6 + 12 \\
+&= 18
+\end{aligned}
+$$
+:::
+
+::: etape bis
+$$B \times A = \begin{pmatrix} 1 \times 2 + (-1) \times 1 & 1 \times 3 + (-1) \times 4 \\ 2 \times 2 + 3 \times 1 & 2 \times 3 + 3 \times 4 \end{pmatrix} = \begin{pmatrix} 1 & -1 \\ 7 & 18 \end{pmatrix}$$
+:::
+
+::: etape Comparer avec $\displaystyle A \times B$
+- $\displaystyle A \times B = \begin{pmatrix} 8 & 7 \\ 9 & 11 \end{pmatrix}$
+- $\displaystyle B \times A = \begin{pmatrix} 1 & -1 \\ 7 & 18 \end{pmatrix}$
+- Les matrices sont différentes : $A \times B \neq B \times A$
+:::
+
+::: resultat
+Le produit matriciel n'est pas commutatif
+:::
+
+## Question 5 : Calculer $\displaystyle A \times C$ (si possible)
+
+::: methode
+Vérification de la compatibilité des tailles pour le produit matriciel
+:::
+
+::: etape Identifier les tailles des matrices
+- $\displaystyle A$ est de taille 2×2
+- $\displaystyle C = \begin{pmatrix} c_{11} & c_{12} & c_{13} \\ c_{21} & c_{22} & c_{23} \end{pmatrix} = \begin{pmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{pmatrix}$ est de taille 2×3
+:::
+
+::: etape Vérifier la compatibilité
+- Pour calculer $A \times C$, il faut que le nombre de colonnes de $A$ = nombre de lignes de $C$
+- Nombre de colonnes de $\displaystyle A$ : 2
+- Nombre de lignes de $\displaystyle C$ : 2
+- 2 = 2 → Le produit est possible
+:::
+
+::: etape Calculer $\displaystyle A \times C$ (taille résultante
+2×3)
+
+$$A = \begin{pmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{pmatrix} = \begin{pmatrix} 2 & 3 \\ 1 & 4 \end{pmatrix}$$
+
+$$C = \begin{pmatrix} c_{11} & c_{12} & c_{13} \\ c_{21} & c_{22} & c_{23} \end{pmatrix} = \begin{pmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{pmatrix}$$
+:::
+
+::: etape Calculer chaque coefficient
+$$
+\begin{aligned}
+(AC)_{11} &= a_{11}c_{11} + a_{12}c_{21} \\
+&= 2 \times 1 + 3 \times 4 \\
+&= 2 + 12 \\
+&= 14
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(AC)_{12} &= a_{11}c_{12} + a_{12}c_{22} \\
+&= 2 \times 2 + 3 \times 5 \\
+&= 4 + 15 \\
+&= 19
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(AC)_{13} &= a_{11}c_{13} + a_{12}c_{23} \\
+&= 2 \times 3 + 3 \times 6 \\
+&= 6 + 18 \\
+&= 24
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(AC)_{21} &= a_{21}c_{11} + a_{22}c_{21} \\
+&= 1 \times 1 + 4 \times 4 \\
+&= 1 + 16 \\
+&= 17
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(AC)_{22} &= a_{21}c_{12} + a_{22}c_{22} \\
+&= 1 \times 2 + 4 \times 5 \\
+&= 2 + 20 \\
+&= 22
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(AC)_{23} &= a_{21}c_{13} + a_{22}c_{23} \\
+&= 1 \times 3 + 4 \times 6 \\
+&= 3 + 24 \\
+&= 27
+\end{aligned}
+$$
+:::
+
+::: etape Écrire le résultat complet
+$$A \times C = \begin{pmatrix} 2 \times 1 + 3 \times 4 & 2 \times 2 + 3 \times 5 & 2 \times 3 + 3 \times 6 \\ 1 \times 1 + 4 \times 4 & 1 \times 2 + 4 \times 5 & 1 \times 3 + 4 \times 6 \end{pmatrix} = \begin{pmatrix} 14 & 19 & 24 \\ 17 & 22 & 27 \end{pmatrix}$$
+:::
+
+::: resultat
+$$A \times C = \begin{pmatrix} 14 & 19 & 24 \\ 17 & 22 & 27 \end{pmatrix}$$
+:::
+
+## Question 6 : Vérifier que $\displaystyle A \times I_2 = A$ où $\displaystyle I_2 = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}$
+
+::: methode
+Vérification de la propriété de l'élément neutre
+:::
+
+::: etape Identifier les coefficients des matrices
+$$A = \begin{pmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{pmatrix} = \begin{pmatrix} 2 & 3 \\ 1 & 4 \end{pmatrix}$$
+
+- $\displaystyle I_2 = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}$
+:::
+
+::: etape Calculer $\displaystyle A \times I_2$
+$$
+\begin{aligned}
+(AI_2)_{11} &= a_{11} \times 1 + a_{12} \times 0 \\
+&= 2 \times 1 + 3 \times 0 \\
+&= 2
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(AI_2)_{12} &= a_{11} \times 0 + a_{12} \times 1 \\
+&= 2 \times 0 + 3 \times 1 \\
+&= 3
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(AI_2)_{21} &= a_{21} \times 1 + a_{22} \times 0 \\
+&= 1 \times 1 + 4 \times 0 \\
+&= 1
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(AI_2)_{22} &= a_{21} \times 0 + a_{22} \times 1 \\
+&= 1 \times 0 + 4 \times 1 \\
+&= 4
+\end{aligned}
+$$
+:::
+
+::: etape bis
+$$A \times I_2 = \begin{pmatrix} 2 \times 1 + 3 \times 0 & 2 \times 0 + 3 \times 1 \\ 1 \times 1 + 4 \times 0 & 1 \times 0 + 4 \times 1 \end{pmatrix} = \begin{pmatrix} 2 & 3 \\ 1 & 4 \end{pmatrix}$$
+:::
+
+::: etape Comparer avec $\displaystyle A$
+$$A \times I_2 = \begin{pmatrix} 2 & 3 \\ 1 & 4 \end{pmatrix} = A$$
+:::
+
+::: resultat
+La matrice identité est l'élément neutre pour la multiplication matricielle
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle A + B = \begin{pmatrix} 3 & 2 \\ 3 & 7 \end{pmatrix}$
+2. $\displaystyle 3A = \begin{pmatrix} 6 & 9 \\ 3 & 12 \end{pmatrix}$
+3. $\displaystyle A \times B = \begin{pmatrix} 8 & 7 \\ 9 & 11 \end{pmatrix}$
+4. $\displaystyle B \times A = \begin{pmatrix} 1 & -1 \\ 7 & 18 \end{pmatrix} \neq A \times B$ (non commutatif)
+5. $\displaystyle A \times C = \begin{pmatrix} 14 & 19 & 24 \\ 17 & 22 & 27 \end{pmatrix}$ (matrice 2×3)
+6. $\displaystyle A \times I_2 = A$ (élément neutre)
+
+===
+
+=== DS - Matrices - Graphes et Chemins
+Id: 1815
+Difficulté: medium
+Image: graphe_chemins.png
+
+Énoncé:
+<!-- optitab:1 -->
+On considère le graphe orienté suivant avec les sommets A, B, C, D et les arcs : A→B, A→C, B→C, B→D, C→A, C→D, D→A.
+
+[IMAGE_1]
+
+1. Construire la matrice d'adjacence $\displaystyle M$ de ce graphe
+2. Calculer $\displaystyle M^2$ et interpréter le résultat
+3. Calculer $\displaystyle M^3$ et interpréter le résultat
+4. Déterminer le nombre de chemins de longueur 2 de A vers D
+5. Déterminer si le graphe est fortement connexe
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Construire la matrice d'adjacence $\displaystyle M$ de ce graphe
+
+::: methode
+Construction de la matrice d'adjacence
+:::
+
+::: etape Numéroter les sommets
+A=1, B=2, C=3, D=4
+:::
+
+::: etape Identifier les arcs
+- A→B : arc de 1 vers 2
+- A→C : arc de 1 vers 3
+- B→C : arc de 2 vers 3
+- B→D : arc de 2 vers 4
+- C→A : arc de 3 vers 1
+- C→D : arc de 3 vers 4
+- D→A : arc de 4 vers 1
+:::
+
+::: etape Construire la matrice 4×4
+- $m_{ij} = 1$ s'il y a un arc de $i$ vers $j$, 0 sinon
+- $\displaystyle M = \begin{pmatrix} 0 & 1 & 1 & 0 \\ 0 & 0 & 1 & 1 \\ 1 & 0 & 0 & 1 \\ 1 & 0 & 0 & 0 \end{pmatrix}$
+:::
+
+::: resultat
+$$M = \begin{pmatrix} 0 & 1 & 1 & 0 \\ 0 & 0 & 1 & 1 \\ 1 & 0 & 0 & 1 \\ 1 & 0 & 0 & 0 \end{pmatrix}$$
+:::
+
+## Question 2 : Calculer $\displaystyle M^2$ et interpréter le résultat
+
+::: methode
+Calcul du produit matriciel
+:::
+
+::: etape Calculer $\displaystyle M^2 = M \times M$
+$$
+\begin{aligned}
+(M^2)_{11} &= 0 \times 0 + 1 \times 0 + 1 \times 1 + 0 \times 1 \\
+&= 1
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(M^2)_{12} &= 0 \times 1 + 1 \times 0 + 1 \times 0 + 0 \times 0 \\
+&= 0
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(M^2)_{13} &= 0 \times 1 + 1 \times 1 + 1 \times 0 + 0 \times 0 \\
+&= 1
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(M^2)_{14} &= 0 \times 0 + 1 \times 1 + 1 \times 1 + 0 \times 0 \\
+&= 2
+\end{aligned}
+$$
+
+- (Calculs similaires pour les autres lignes...)
+:::
+
+::: resultat
+$$M^2 = \begin{pmatrix} 1 & 0 & 1 & 2 \\ 2 & 0 & 0 & 1 \\ 1 & 1 & 1 & 0 \\ 0 & 1 & 1 & 0 \end{pmatrix}$$
+:::
+
+::: point Interprétation détaillée
+Comment lire les cases de $\displaystyle M^2$
+
+- **Ligne A → [1, 0, 1, 2] :**
+- $(A, A) = 1$ : un chemin de longueur 2 de A vers A : **A → C → A**
+- $(A, C) = 1$ : un chemin de longueur 2 de A vers C : **A → B → C**
+- $(A, D) = 2$ : deux chemins de longueur 2 de A vers D : **A → B → D** et **A → C → D**
+- **Ligne B → [2, 0, 0, 1] :**
+- $(B, A) = 2$ : deux chemins de longueur 2 de B vers A : **B → C → A** et **B → D → A**
+- $(B, D) = 1$ : un chemin de longueur 2 de B vers D : **B → C → D**
+- **Ligne C → [1, 1, 1, 0] :**
+- $(C, A) = 1$ : un chemin de longueur 2 de C vers A : **C → D → A**
+- $(C, B) = 1$ : un chemin de longueur 2 de C vers B : **C → A → B**
+- $(C, C) = 1$ : un chemin de longueur 2 de C vers C : **C → A → C**
+:::
+
+## Question 3 : Calculer $\displaystyle M^3$ et interpréter le résultat
+
+::: methode
+Calcul du produit matriciel
+:::
+
+::: etape Calculer $\displaystyle M^3 = M^2 \times M$
+- **Calculs détaillés :**
+
+$$
+\begin{aligned}
+(M^3)_{11} &= 1 \times 0 + 0 \times 0 + 1 \times 1 + 2 \times 1 \\
+&= 0 + 0 + 1 + 2 \\
+&= 3
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(M^3)_{12} &= 1 \times 1 + 0 \times 0 + 1 \times 0 + 2 \times 0 \\
+&= 1 + 0 + 0 + 0 \\
+&= 1
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(M^3)_{13} &= 1 \times 1 + 0 \times 1 + 1 \times 0 + 2 \times 0 \\
+&= 1 + 0 + 0 + 0 \\
+&= 1
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(M^3)_{14} &= 1 \times 0 + 0 \times 1 + 1 \times 1 + 2 \times 0 \\
+&= 0 + 0 + 1 + 0 \\
+&= 1
+\end{aligned}
+$$
+
+- (Calculs similaires pour les autres lignes...)
+:::
+
+::: resultat
+$$M^3 = \begin{pmatrix} 3 & 1 & 1 & 1 \\ 1 & 2 & 2 & 0 \\ 1 & 1 & 2 & 2 \\ 1 & 0 & 1 & 2 \end{pmatrix}$$
+:::
+
+::: point Interprétation détaillée
+Comment lire les cases de $\displaystyle M^3$
+
+- **Ligne A → [3, 1, 1, 1] :**
+- $(A, A) = 3$ : trois chemins de longueur 3 de A vers A : **A → B → C → A**, **A → C → D → A** et **A → B → D → A**
+- $(A, B) = 1$ : un chemin de longueur 3 de A vers B : **A → C → A → B**
+- $(A, C) = 1$ : un chemin de longueur 3 de A vers C : **A → C → A → C**
+- $(A, D) = 1$ : un chemin de longueur 3 de A vers D : **A → B → C → D**
+- **Ligne B → [1, 2, 2, 0] :**
+- $(B, A) = 1$ : un chemin de longueur 3 de B vers A : **B → C → D → A**
+- $(B, B) = 2$ : deux chemins de longueur 3 de B vers B : **B → C → A → B** et **B → D → A → B**
+- $(B, C) = 2$ : deux chemins de longueur 3 de B vers C : **B → D → A → C** et **B → C → A → C**
+- **Ligne C → [1, 1, 2, 2] :**
+- $(C, A) = 1$ : un chemin de longueur 3 de C vers A : **C → A → C → A**
+- $(C, B) = 1$ : un chemin de longueur 3 de C vers B : **C → D → A → B**
+- $(C, C) = 2$ : deux chemins de longueur 3 de C vers C : **C → A → B → C** et **C → D → A → C**
+- $(C, D) = 2$ : deux chemins de longueur 3 de C vers D : **C → A → B → D** et **C → A → C → D**
+:::
+
+## Question 4 : Déterminer le nombre de chemins de longueur 2 de A vers D
+
+::: methode
+Utilisation de $\displaystyle M^2$
+:::
+
+::: etape Identifier la position de A (ligne 1) et D (colonne 4)
+- Dans $M^2$, on cherche le coefficient $(M^2)_{14}$
+:::
+
+::: etape Lire le coefficient dans la matrice $M^2$
+- $\displaystyle M^2 = \begin{pmatrix} 1 & 0 & 1 & \mathbf{2} \\ 2 & 0 & 0 & 1 \\ 1 & 1 & 1 & 0 \\ 0 & 1 & 1 & 0 \end{pmatrix}$
+- $\displaystyle (M^2)_{14} = 2$ (coefficient en gras)
+:::
+
+::: etape Interprétation et vérification
+- **Interprétation :** Il y a 2 chemins de longueur exactement 2 de A vers D
+- **Vérification par énumération :**
+- **Premier chemin :** A → B → D
+- Vérification : A→B (existe) et B→D (existe)
+- **Deuxième chemin :** A → C → D
+- Vérification : A→C (existe) et C→D (existe)
+- **Autres possibilités :** A→A→D (impossible, pas d'arc A→A)
+- A→D→D (impossible, pas d'arc A→D)
+:::
+
+::: resultat
+Il y a exactement 2 chemins de longueur 2 de A vers D
+:::
+
+## Question 5 : Déterminer si le graphe est fortement connexe
+
+::: methode
+Critère matriciel de forte connexité
+:::
+
+::: etape Calculer $\displaystyle M + M^2 + M^3 + M^4$
+- On calcule successivement $\displaystyle M^4 = M^3 \times M$
+- On additionne ensuite toutes les matrices : $M + M^2 + M^3 + M^4$
+- **Vérification (par calcul ou à l'aide d'un logiciel) :** Tous les coefficients de cette somme sont strictement positifs (non nuls)
+:::
+
+::: etape Interprétation
+- Si tous les coefficients de $M + M^2 + M^3 + M^4$ sont non nuls, cela signifie qu'il existe au moins un chemin orienté entre chaque paire de sommets
+- Le graphe est donc fortement connexe
+:::
+
+::: resultat
+Le graphe est fortement connexe (tous les coefficients de la somme sont non nuls)
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle M = \begin{pmatrix} 0 & 1 & 1 & 0 \\ 0 & 0 & 1 & 1 \\ 1 & 0 & 0 & 1 \\ 1 & 0 & 0 & 0 \end{pmatrix}$
+2. $M^2$ compte les chemins de longueur 2
+3. $M^3$ compte les chemins de longueur 3
+4. 2 chemins de longueur 2 de A vers D
+5. Le graphe est fortement connexe
+
+===
+
+=== DS - Matrices - Suites Matricielles et Récurrence
+Id: 1814
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+On considère la matrice $\displaystyle A = \begin{pmatrix} 3 & 1 \\ 0 & 2 \end{pmatrix}$ et la suite de matrices $\displaystyle (M_n)$ définie par $\displaystyle M_0 = \begin{pmatrix} 1 \\ 1 \end{pmatrix}$ et $\displaystyle M_{n+1} = A \times M_n$.
+
+1. Calculer $\displaystyle M_1$, $\displaystyle M_2$ et $\displaystyle M_3$
+2. Calculer $\displaystyle A^2$, $\displaystyle A^3$ et $\displaystyle A^4$
+3. Conjecturer une formule pour $\displaystyle A^n$
+4. Démontrer par récurrence la formule conjecturée
+5. Exprimer $\displaystyle M_n$ en fonction de $\displaystyle n$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer $\displaystyle M_1$, $\displaystyle M_2$ et $\displaystyle M_3$
+
+::: methode
+Calculs successifs de la suite récurrente
+:::
+
+::: etape Calculer $\displaystyle M_1$
+$$M_1 = A \times M_0 = \begin{pmatrix} 3 & 1 \\ 0 & 2 \end{pmatrix} \begin{pmatrix} 1 \\ 1 \end{pmatrix}$$
+
+$$M_1 = \begin{pmatrix} 3 \times 1 + 1 \times 1 \\ 0 \times 1 + 2 \times 1 \end{pmatrix} = \begin{pmatrix} 4 \\ 2 \end{pmatrix}$$
+:::
+
+::: etape Calculer $\displaystyle M_2$
+$$M_2 = A \times M_1 = \begin{pmatrix} 3 & 1 \\ 0 & 2 \end{pmatrix} \begin{pmatrix} 4 \\ 2 \end{pmatrix}$$
+
+$$M_2 = \begin{pmatrix} 3 \times 4 + 1 \times 2 \\ 0 \times 4 + 2 \times 2 \end{pmatrix} = \begin{pmatrix} 14 \\ 4 \end{pmatrix}$$
+:::
+
+::: etape Calculer $\displaystyle M_3$
+$$M_3 = A \times M_2 = \begin{pmatrix} 3 & 1 \\ 0 & 2 \end{pmatrix} \begin{pmatrix} 14 \\ 4 \end{pmatrix}$$
+
+$$M_3 = \begin{pmatrix} 3 \times 14 + 1 \times 4 \\ 0 \times 14 + 2 \times 4 \end{pmatrix} = \begin{pmatrix} 46 \\ 8 \end{pmatrix}$$
+:::
+
+::: resultat
+$M_1 = \begin{pmatrix} 4 \\ 2 \end{pmatrix}$, $M_2 = \begin{pmatrix} 14 \\ 4 \end{pmatrix}$, $M_3 = \begin{pmatrix} 46 \\ 8 \end{pmatrix}$
+:::
+
+## Question 2 : Calculer $\displaystyle A^2$, $\displaystyle A^3$ et $\displaystyle A^4$
+
+::: methode
+Calculs successifs de puissances
+:::
+
+::: point Calcul de $\displaystyle A^2$
+$$A^2 = A \times A = \begin{pmatrix} 3 & 1 \\ 0 & 2 \end{pmatrix} \begin{pmatrix} 3 & 1 \\ 0 & 2 \end{pmatrix}$$
+
+$$A^2 = \begin{pmatrix} 3 \times 3 + 1 \times 0 & 3 \times 1 + 1 \times 2 \\ 0 \times 3 + 2 \times 0 & 0 \times 1 + 2 \times 2 \end{pmatrix} = \begin{pmatrix} 9 & 5 \\ 0 & 4 \end{pmatrix}$$
+:::
+
+::: point Calcul de $\displaystyle A^3$
+$$A^3 = A^2 \times A = \begin{pmatrix} 9 & 5 \\ 0 & 4 \end{pmatrix} \begin{pmatrix} 3 & 1 \\ 0 & 2 \end{pmatrix}$$
+
+$$A^3 = \begin{pmatrix} 9 \times 3 + 5 \times 0 & 9 \times 1 + 5 \times 2 \\ 0 \times 3 + 4 \times 0 & 0 \times 1 + 4 \times 2 \end{pmatrix} = \begin{pmatrix} 27 & 19 \\ 0 & 8 \end{pmatrix}$$
+:::
+
+::: point Calcul de $\displaystyle A^4$
+$$A^4 = A^3 \times A = \begin{pmatrix} 27 & 19 \\ 0 & 8 \end{pmatrix} \begin{pmatrix} 3 & 1 \\ 0 & 2 \end{pmatrix}$$
+
+$$A^4 = \begin{pmatrix} 27 \times 3 + 19 \times 0 & 27 \times 1 + 19 \times 2 \\ 0 \times 3 + 8 \times 0 & 0 \times 1 + 8 \times 2 \end{pmatrix} = \begin{pmatrix} 81 & 65 \\ 0 & 16 \end{pmatrix}$$
+:::
+
+::: resultat
+$A^2 = \begin{pmatrix} 9 & 5 \\ 0 & 4 \end{pmatrix}$, $A^3 = \begin{pmatrix} 27 & 19 \\ 0 & 8 \end{pmatrix}$, $A^4 = \begin{pmatrix} 81 & 65 \\ 0 & 16 \end{pmatrix}$
+:::
+
+## Question 3 : Conjecturer une formule pour $\displaystyle A^n$
+
+::: methode
+Observation des patterns
+:::
+
+::: point Analyse des résultats
+- $\displaystyle A^1 = \begin{pmatrix} 3^1 & ? \\ 0 & 2^1 \end{pmatrix}$
+- $\displaystyle A^2 = \begin{pmatrix} 3^2 & 5 \\ 0 & 2^2 \end{pmatrix}$
+- $\displaystyle A^3 = \begin{pmatrix} 3^3 & 19 \\ 0 & 2^3 \end{pmatrix}$
+- $\displaystyle A^4 = \begin{pmatrix} 3^4 & 65 \\ 0 & 2^4 \end{pmatrix}$
+:::
+
+::: point Analyse du coefficient $\displaystyle a_{12}$
+- $n = 1$ : $a_{12} = 1 = 3^1 - 2^1$
+- $n = 2$ : $a_{12} = 5 = 3^2 - 2^2 = 9 - 4$
+- $n = 3$ : $a_{12} = 19 = 3^3 - 2^3 = 27 - 8$
+- $n = 4$ : $a_{12} = 65 = 3^4 - 2^4 = 81 - 16$
+:::
+
+::: point Conjecture
+$$A^n = \begin{pmatrix} 3^n & 3^n - 2^n \\ 0 & 2^n \end{pmatrix}$$
+:::
+
+## Question 4 : Démontrer par récurrence la formule conjecturée
+
+::: methode
+Preuve par récurrence
+:::
+
+::: point Initialisation ($\displaystyle n = 1$)
+$$A^1 = \begin{pmatrix} 3^1 & 3^1 - 2^1 \\ 0 & 2^1 \end{pmatrix} = \begin{pmatrix} 3 & 1 \\ 0 & 2 \end{pmatrix}$$
+:::
+
+::: point Hérédité
+Supposons $\displaystyle A^k = \begin{pmatrix} 3^k & 3^k - 2^k \\ 0 & 2^k \end{pmatrix}$
+:::
+
+::: point Calcul de $\displaystyle A^{k+1}$
+$$A^{k+1} = A^k \times A = \begin{pmatrix} 3^k & 3^k - 2^k \\ 0 & 2^k \end{pmatrix} \begin{pmatrix} 3 & 1 \\ 0 & 2 \end{pmatrix}$$
+
+$$
+\begin{aligned}
+(A^{k+1})_{11} &= 3^k \times 3 + (3^k - 2^k) \times 0 \\
+&= 3^{k+1}
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(A^{k+1})_{12} &= 3^k \times 1 + (3^k - 2^k) \times 2 \\
+&= 3^k + 2 \times 3^k - 2 \times 2^k \\
+&= 3^{k+1} - 2^{k+1}
+\end{aligned}
+$$
+
+- $\displaystyle (A^{k+1})_{21} = 0 \times 3 + 2^k \times 0 = 0$
+- $\displaystyle (A^{k+1})_{22} = 0 \times 1 + 2^k \times 2 = 2^{k+1}$
+- $\displaystyle A^{k+1} = \begin{pmatrix} 3^{k+1} & 3^{k+1} - 2^{k+1} \\ 0 & 2^{k+1} \end{pmatrix}$
+:::
+
+::: resultat
+La formule est vraie pour tout $n \geq 1$
+:::
+
+## Question 5 : Exprimer $\displaystyle M_n$ en fonction de $\displaystyle n$
+
+::: methode
+Utilisation de la formule $\displaystyle M_n = A^n \times M_0$
+:::
+
+::: etape $\displaystyle M_n = A^n \times M_0 = A^n \begin{pmatrix} 1 \\ 1 \end{pmatrix}$
+:::
+
+::: etape Utiliser la formule de $A^n$ trouvée
+- $\displaystyle M_n = \begin{pmatrix} 3^n & 3^n - 2^n \\ 0 & 2^n \end{pmatrix} \begin{pmatrix} 1 \\ 1 \end{pmatrix}$
+:::
+
+::: etape Calculer le produit
+- $\displaystyle M_n = \begin{pmatrix} 3^n \times 1 + (3^n - 2^n) \times 1 \\ 0 \times 1 + 2^n \times 1 \end{pmatrix}$
+
+$$M_n = \begin{pmatrix} 3^n + 3^n - 2^n \\ 2^n \end{pmatrix} = \begin{pmatrix} 2 \times 3^n - 2^n \\ 2^n \end{pmatrix}$$
+:::
+
+::: resultat
+$$M_n = \begin{pmatrix} 2 \times 3^n - 2^n \\ 2^n \end{pmatrix}$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $M_1 = \begin{pmatrix} 4 \\ 2 \end{pmatrix}$, $M_2 = \begin{pmatrix} 14 \\ 4 \end{pmatrix}$, $M_3 = \begin{pmatrix} 46 \\ 8 \end{pmatrix}$
+2. $A^2 = \begin{pmatrix} 9 & 5 \\ 0 & 4 \end{pmatrix}$, $A^3 = \begin{pmatrix} 27 & 19 \\ 0 & 8 \end{pmatrix}$, $A^4 = \begin{pmatrix} 81 & 65 \\ 0 & 16 \end{pmatrix}$
+3. Conjecture : $\displaystyle A^n = \begin{pmatrix} 3^n & 3^n - 2^n \\ 0 & 2^n \end{pmatrix}$
+4. Démontré par récurrence
+5. $\displaystyle M_n = \begin{pmatrix} 2 \times 3^n - 2^n \\ 2^n \end{pmatrix}$
+
+===
+
+=== Entraînement - Matrices - Déterminants 3×3 et Règle de Sarrus
+Id: 1813
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On considère les matrices suivantes :
+
+$\displaystyle A = \begin{pmatrix} 1 & 2 & 3 \\ 0 & 1 & 4 \\ 5 & 6 & 0 \end{pmatrix}$, $\displaystyle B = \begin{pmatrix} 2 & 1 & 0 \\ 3 & 0 & 2 \\ 1 & 2 & 1 \end{pmatrix}$ et $\displaystyle C = \begin{pmatrix} 1 & 0 & 0 \\ 2 & 3 & 0 \\ 4 & 5 & 6 \end{pmatrix}$
+
+1. Calculer le déterminant de $\displaystyle A$ en utilisant la règle de Sarrus
+2. Calculer le déterminant de $B$ en utilisant le développement selon la première ligne
+3. Calculer le déterminant de $\displaystyle C$ et expliquer pourquoi le calcul est simple
+4. Déterminer si les matrices $\displaystyle A$, $\displaystyle B$ et $\displaystyle C$ sont inversibles
+5. Vérifier que $\displaystyle \det(A \times B) = \det(A) \times \det(B)$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer le déterminant de $\displaystyle A$ en utilisant la règle de Sarrus
+
+::: methode
+Règle de Sarrus pour les matrices 3×3
+:::
+
+::: etape Identifier les coefficients de la matrice $A$
+$$A = \begin{pmatrix} a_{11} & a_{12} & a_{13} \\ a_{21} & a_{22} & a_{23} \\ a_{31} & a_{32} & a_{33} \end{pmatrix} = \begin{pmatrix} 1 & 2 & 3 \\ 0 & 1 & 4 \\ 5 & 6 & 0 \end{pmatrix}$$
+:::
+
+::: etape Recopier les deux premières colonnes à droite
+- **Méthode :** On répète les 2 premières colonnes à droite de la matrice
+- Matrice originale : $\displaystyle A = \begin{pmatrix} 1 & 2 & 3 \\ 0 & 1 & 4 \\ 5 & 6 & 0 \end{pmatrix}$
+- Avec colonnes répétées :
+- $\displaystyle \begin{pmatrix} 1 & 2 & 3 & | & 1 & 2 \\ 0 & 1 & 4 & | & 0 & 1 \\ 5 & 6 & 0 & | & 5 & 6 \end{pmatrix}$
+- **Explication :** Cette écriture permet de visualiser les 6 diagonales nécessaires
+:::
+
+::: etape Calculer la somme des diagonales descendantes (↘) - de gauche à droite
+- **Produit 1** (diagonale principale ↘) : $a_{11} \times a_{22} \times a_{33} = 1 \times 1 \times 0 = 0$
+
+**Produit 2** (diagonale ↘) :
+
+$$
+\begin{aligned}
+a_{12} \times a_{23} \times a_{31} &= 2 \times 4 \times 5 \\
+&= 40
+\end{aligned}
+$$
+
+**Produit 3** (diagonale ↘) :
+
+$$
+\begin{aligned}
+a_{13} \times a_{21} \times a_{32} &= 3 \times 0 \times 6 \\
+&= 0
+\end{aligned}
+$$
+
+- **Somme des produits principaux (descendants)** : $0 + 40 + 0 = 40$
+:::
+
+::: etape Calculer la somme des diagonales montantes (↗) - de droite à gauche
+- **Produit 1** (diagonale secondaire ↗) : $a_{13} \times a_{22} \times a_{31} = 3 \times 1 \times 5 = 15$
+
+**Produit 2** (diagonale ↗) :
+
+$$
+\begin{aligned}
+a_{11} \times a_{23} \times a_{32} &= 1 \times 4 \times 6 \\
+&= 24
+\end{aligned}
+$$
+
+**Produit 3** (diagonale ↗) :
+
+$$
+\begin{aligned}
+a_{12} \times a_{21} \times a_{33} &= 2 \times 0 \times 0 \\
+&= 0
+\end{aligned}
+$$
+
+- **Somme des produits secondaires (montants)** : $15 + 24 + 0 = 39$
+:::
+
+::: etape Calculer le déterminant
+- **Formule de Sarrus :** $\displaystyle \det(A) = \text{(somme des produits descendants)} - \text{(somme des produits montants)}$
+- $\displaystyle \det(A) = 40 - 39 = 1$
+:::
+
+::: resultat
+$$\det(A) = 1$$
+:::
+
+## Question 2 : Calculer le déterminant de $B$ en utilisant le développement selon la première ligne
+
+::: methode
+Développement par cofacteurs selon la première ligne
+:::
+
+::: etape Identifier les coefficients de la matrice $B$
+$$B = \begin{pmatrix} b_{11} & b_{12} & b_{13} \\ b_{21} & b_{22} & b_{23} \\ b_{31} & b_{32} & b_{33} \end{pmatrix} = \begin{pmatrix} 2 & 1 & 0 \\ 3 & 0 & 2 \\ 1 & 2 & 1 \end{pmatrix}$$
+:::
+
+::: etape Appliquer la formule de développement
+- $\displaystyle \det(B) = b_{11} \begin{vmatrix} b_{22} & b_{23} \\ b_{32} & b_{33} \end{vmatrix} - b_{12} \begin{vmatrix} b_{21} & b_{23} \\ b_{31} & b_{33} \end{vmatrix} + b_{13} \begin{vmatrix} b_{21} & b_{22} \\ b_{31} & b_{32} \end{vmatrix}$
+:::
+
+::: etape Calculer les déterminants 2×2
+$$\begin{vmatrix} 0 & 2 \\ 2 & 1 \end{vmatrix} = 0 \times 1 - 2 \times 2 = -4$$
+
+$$\begin{vmatrix} 3 & 2 \\ 1 & 1 \end{vmatrix} = 3 \times 1 - 2 \times 1 = 1$$
+
+$$\begin{vmatrix} 3 & 0 \\ 1 & 2 \end{vmatrix} = 3 \times 2 - 0 \times 1 = 6$$
+:::
+
+::: etape Calculer le déterminant
+$$
+\begin{aligned}
+\det(B) &= 2 \times (-4) - 1 \times 1 + 0 \times 6 \\
+&= -8 - 1 + 0 \\
+&= -9
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$\det(B) = -9$$
+:::
+
+## Question 3 : Calculer le déterminant de $\displaystyle C$ et expliquer pourquoi le calcul est simple
+
+::: methode
+Propriété des matrices triangulaires
+:::
+
+::: etape Identifier la structure de la matrice $C$
+$$C = \begin{pmatrix} c_{11} & c_{12} & c_{13} \\ c_{21} & c_{22} & c_{23} \\ c_{31} & c_{32} & c_{33} \end{pmatrix} = \begin{pmatrix} 1 & 0 & 0 \\ 2 & 3 & 0 \\ 4 & 5 & 6 \end{pmatrix}$$
+:::
+
+::: etape Reconnaître que $C$ est triangulaire inférieure
+- Tous les coefficients au-dessus de la diagonale sont nuls
+:::
+
+::: etape Appliquer la propriété des matrices triangulaires
+- Pour une matrice triangulaire, le déterminant est le produit des éléments diagonaux
+
+$$
+\begin{aligned}
+\det(C) &= c_{11} \times c_{22} \times c_{33} \\
+&= 1 \times 3 \times 6 \\
+&= 18
+\end{aligned}
+$$
+:::
+
+::: remarque
+Le calcul est simple car on utilise une propriété spéciale des matrices triangulaires
+:::
+
+::: resultat
+$$\det(C) = 18$$
+:::
+
+## Question 4 : Déterminer si les matrices $\displaystyle A$, $\displaystyle B$ et $\displaystyle C$ sont inversibles
+
+::: methode
+Critère d'inversibilité (déterminant non nul)
+:::
+
+::: etape Rappeler les déterminants calculés
+- $\displaystyle \det(A) = 1 \neq 0$
+- $\displaystyle \det(B) = -9 \neq 0$
+- $\displaystyle \det(C) = 18 \neq 0$
+:::
+
+::: etape Appliquer le critère d'inversibilité
+- Une matrice carrée est inversible si et seulement si son déterminant est non nul
+:::
+
+::: resultat
+Les trois matrices $A$, $B$ et $C$ sont inversibles
+:::
+
+## Question 5 : Vérifier que $\displaystyle \det(A \times B) = \det(A) \times \det(B)$
+
+::: methode
+Vérification de la propriété du déterminant d'un produit
+:::
+
+::: etape Calculer $\displaystyle A \times B$
+- $\displaystyle A \times B = \begin{pmatrix} 1 & 2 & 3 \\ 0 & 1 & 4 \\ 5 & 6 & 0 \end{pmatrix} \begin{pmatrix} 2 & 1 & 0 \\ 3 & 0 & 2 \\ 1 & 2 & 1 \end{pmatrix}$
+- **Calculs détaillés :**
+
+$$
+\begin{aligned}
+(AB)_{11} &= 1 \times 2 + 2 \times 3 + 3 \times 1 \\
+&= 2 + 6 + 3 \\
+&= 11
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(AB)_{12} &= 1 \times 1 + 2 \times 0 + 3 \times 2 \\
+&= 1 + 0 + 6 \\
+&= 7
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(AB)_{13} &= 1 \times 0 + 2 \times 2 + 3 \times 1 \\
+&= 0 + 4 + 3 \\
+&= 7
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(AB)_{21} &= 0 \times 2 + 1 \times 3 + 4 \times 1 \\
+&= 0 + 3 + 4 \\
+&= 7
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(AB)_{22} &= 0 \times 1 + 1 \times 0 + 4 \times 2 \\
+&= 0 + 0 + 8 \\
+&= 8
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(AB)_{23} &= 0 \times 0 + 1 \times 2 + 4 \times 1 \\
+&= 0 + 2 + 4 \\
+&= 6
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(AB)_{31} &= 5 \times 2 + 6 \times 3 + 0 \times 1 \\
+&= 10 + 18 + 0 \\
+&= 28
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(AB)_{32} &= 5 \times 1 + 6 \times 0 + 0 \times 2 \\
+&= 5 + 0 + 0 \\
+&= 5
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(AB)_{33} &= 5 \times 0 + 6 \times 2 + 0 \times 1 \\
+&= 0 + 12 + 0 \\
+&= 12
+\end{aligned}
+$$
+
+$$A \times B = \begin{pmatrix} 1 \times 2 + 2 \times 3 + 3 \times 1 & 1 \times 1 + 2 \times 0 + 3 \times 2 & 1 \times 0 + 2 \times 2 + 3 \times 1 \\ 0 \times 2 + 1 \times 3 + 4 \times 1 & 0 \times 1 + 1 \times 0 + 4 \times 2 & 0 \times 0 + 1 \times 2 + 4 \times 1 \\ 5 \times 2 + 6 \times 3 + 0 \times 1 & 5 \times 1 + 6 \times 0 + 0 \times 2 & 5 \times 0 + 6 \times 2 + 0 \times 1 \end{pmatrix} = \begin{pmatrix} 11 & 7 & 7 \\ 7 & 8 & 6 \\ 28 & 5 & 12 \end{pmatrix}$$
+:::
+
+::: etape Calculer $\displaystyle \det(A \times B)$ par Sarrus
+- **Méthode de Sarrus (pour une matrice 3×3) :**
+- **Étape 2a :** Écrire la matrice avec les 2 premières colonnes répétées
+- $\displaystyle A \times B = \begin{pmatrix} 11 & 7 & 7 \\ 7 & 8 & 6 \\ 28 & 5 & 12 \end{pmatrix}$
+- On répète les 2 premières colonnes à droite :
+- $\displaystyle \begin{pmatrix} 11 & 7 & 7 & | & 11 & 7 \\ 7 & 8 & 6 & | & 7 & 8 \\ 28 & 5 & 12 & | & 28 & 5 \end{pmatrix}$
+- **Étape 2b :** Calculer les 3 produits de gauche à droite (diagonales principales)
+- **Produit 1** (diagonale principale) : $11 \times 8 \times 12 = 1056$
+- **Produit 2** (diagonale \ ) : $\displaystyle 7 \times 6 \times 28 = 1176$
+- **Produit 3** (diagonale \ ) : $\displaystyle 7 \times 7 \times 5 = 245$
+- **Somme des produits principaux** : $1056 + 1176 + 245 = 2477$
+- **Étape 2c :** Calculer les 3 produits de droite à gauche (diagonales secondaires)
+- **Produit 1** (diagonale secondaire) : $7 \times 8 \times 28 = 1568$
+- **Produit 2** (diagonale / ) : $\displaystyle 11 \times 6 \times 5 = 330$
+- **Produit 3** (diagonale / ) : $\displaystyle 7 \times 7 \times 12 = 588$
+- **Somme des produits secondaires** : $1568 + 330 + 588 = 2486$
+- **Étape 2d :** Calculer le déterminant
+- $\displaystyle \det(A \times B) = \text{(somme des produits principaux)} - \text{(somme des produits secondaires)}$
+- $\displaystyle \det(A \times B) = 2477 - 2486 = -9$
+:::
+
+::: etape Vérifier la propriété
+- $\displaystyle \det(A) \times \det(B) = 1 \times (-9) = -9$
+- $\displaystyle \det(A \times B) = -9$
+- $\displaystyle -9 = -9$
+:::
+
+::: resultat
+La propriété $\displaystyle \det(A \times B) = \det(A) \times \det(B)$ est vérifiée
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle \det(A) = 1$ (règle de Sarrus)
+2. $\det(B) = -9$ (développement par cofacteurs)
+3. $\displaystyle \det(C) = 18$ (matrice triangulaire)
+4. Les trois matrices sont inversibles (déterminants non nuls)
+5. $\displaystyle \det(A \times B) = \det(A) \times \det(B) = -9$
+
+===
+
+=== Entraînement - Matrices - Systèmes Linéaires
+Id: 1809
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Résoudre les systèmes linéaires suivants en utilisant les matrices.
+
+1. Résoudre le système $\displaystyle \begin{cases} 2x + 3y = 7 \\ x + 2y = 4 \end{cases}$
+2. Résoudre le système $\displaystyle \begin{cases} 3x - y = 5 \\ 6x - 2y = 10 \end{cases}$
+3. Résoudre le système $\displaystyle \begin{cases} x + 2y = 3 \\ 2x + 4y = 7 \end{cases}$
+4. Vérifier les solutions trouvées
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Résoudre le système $\displaystyle \begin{cases} 2x + 3y = 7 \\ x + 2y = 4 \end{cases}$
+
+::: methode
+Résolution par inversion de matrice
+:::
+
+::: etape Écrire sous forme matricielle $AX = B$
+- $\displaystyle \begin{pmatrix} 2 & 3 \\ 1 & 2 \end{pmatrix} \begin{pmatrix} x \\ y \end{pmatrix} = \begin{pmatrix} 7 \\ 4 \end{pmatrix}$
+:::
+
+::: etape Calculer le déterminant de $\displaystyle A$
+- $\displaystyle \det(A) = 2 \times 2 - 3 \times 1 = 4 - 3 = 1 \neq 0$
+:::
+
+::: etape Calculer l'inverse de $\displaystyle A$
+$$A^{-1} = \frac{1}{1} \begin{pmatrix} 2 & -3 \\ -1 & 2 \end{pmatrix} = \begin{pmatrix} 2 & -3 \\ -1 & 2 \end{pmatrix}$$
+:::
+
+::: etape Calculer la solution $\displaystyle X = A^{-1}B$
+- $\displaystyle \begin{pmatrix} x \\ y \end{pmatrix} = \begin{pmatrix} 2 & -3 \\ -1 & 2 \end{pmatrix} \begin{pmatrix} 7 \\ 4 \end{pmatrix}$
+- $\displaystyle x = 2 \times 7 + (-3) \times 4 = 14 - 12 = 2$
+- $\displaystyle y = (-1) \times 7 + 2 \times 4 = -7 + 8 = 1$
+:::
+
+::: etape bis
+$$\begin{pmatrix} x \\ y \end{pmatrix} = \begin{pmatrix} 2 \times 7 + (-3) \times 4 \\ (-1) \times 7 + 2 \times 4 \end{pmatrix} = \begin{pmatrix} 2 \\ 1 \end{pmatrix}$$
+:::
+
+::: resultat
+$x = 2$ et $y = 1$
+:::
+
+## Question 2 : Résoudre le système $\displaystyle \begin{cases} 3x - y = 5 \\ 6x - 2y = 10 \end{cases}$
+
+::: methode
+Analyse du déterminant
+:::
+
+::: etape Écrire sous forme matricielle
+- $\displaystyle \begin{pmatrix} 3 & -1 \\ 6 & -2 \end{pmatrix} \begin{pmatrix} x \\ y \end{pmatrix} = \begin{pmatrix} 5 \\ 10 \end{pmatrix}$
+:::
+
+::: etape Calculer le déterminant
+- $\displaystyle \det(A) = 3 \times (-2) - (-1) \times 6 = -6 + 6 = 0$
+:::
+
+::: etape Analyser le système
+- La deuxième équation est le double de la première : $2(3x - y) = 2 \times 5$
+- Le système a une infinité de solutions
+:::
+
+::: etape Exprimer les solutions
+- De la première équation : $\displaystyle y = 3x - 5$
+- Solutions : $(x, 3x - 5)$ pour tout $x \in \mathbb{R}$
+:::
+
+::: resultat
+Infinité de solutions de la forme $(x, 3x - 5)$
+:::
+
+## Question 3 : Résoudre le système $\displaystyle \begin{cases} x + 2y = 3 \\ 2x + 4y = 7 \end{cases}$
+
+::: methode
+Analyse du déterminant
+:::
+
+::: etape Écrire sous forme matricielle
+- $\displaystyle \begin{pmatrix} 1 & 2 \\ 2 & 4 \end{pmatrix} \begin{pmatrix} x \\ y \end{pmatrix} = \begin{pmatrix} 3 \\ 7 \end{pmatrix}$
+:::
+
+::: etape Calculer le déterminant
+- $\displaystyle \det(A) = 1 \times 4 - 2 \times 2 = 4 - 4 = 0$
+:::
+
+::: etape Analyser le système
+- La deuxième équation devrait être $2(x + 2y) = 2 \times 3 = 6$
+- Mais on a $\displaystyle 2x + 4y = 7 \neq 6$
+- Le système est incompatible
+:::
+
+::: resultat
+Aucune solution
+:::
+
+## Question 4 : Vérifier les solutions trouvées
+
+::: methode
+Substitution dans les équations originales
+:::
+
+::: point Vérification Question 1
+$x = 2$, $y = 1$
+
+- $\displaystyle 2(2) + 3(1) = 4 + 3 = 7$
+- $\displaystyle 1(2) + 2(1) = 2 + 2 = 4$
+:::
+
+::: point Vérification Question 2
+$x = 1$, $y = -2$ (exemple)
+
+- $\displaystyle 3(1) - (-2) = 3 + 2 = 5$
+- $\displaystyle 6(1) - 2(-2) = 6 + 4 = 10$
+:::
+
+::: point Vérification Question 3
+Aucune solution à vérifier
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Solution unique : $x = 2$, $y = 1$
+2. Infinité de solutions : $(x, 3x - 5)$ pour tout $x \in \mathbb{R}$
+3. Aucune solution (système incompatible)
+4. Vérifications effectuées
+
+===
+
+=== Entraînement - Matrices - Transformations Géométriques
+Id: 1812
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On considère les transformations géométriques suivantes du plan.
+
+1. Déterminer la matrice de la rotation d'angle $\displaystyle \frac{\pi}{2}$ (90°)
+2. Déterminer la matrice de la symétrie par rapport à l'axe des abscisses
+3. Déterminer la matrice de l'homothétie de rapport 3
+4. Calculer l'image du point $\displaystyle M(2, 3)$ par la rotation d'angle $\displaystyle \frac{\pi}{2}$
+5. Calculer l'image du point $N(1, -2)$ par la composition de la symétrie puis de l'homothétie
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Déterminer la matrice de la rotation d'angle $\displaystyle \frac{\pi}{2}$ (90°)
+
+::: methode
+Formule de la matrice de rotation
+:::
+
+::: etape Formule générale
+$$R_\theta = \begin{pmatrix} \cos\theta & -\sin\theta \\ \sin\theta & \cos\theta \end{pmatrix}$$
+:::
+
+::: etape Calculer $\cos\frac{\pi}{2}$ et $\sin\frac{\pi}{2}$
+- $\displaystyle \cos\frac{\pi}{2} = 0$
+- $\displaystyle \sin\frac{\pi}{2} = 1$
+:::
+
+::: etape Construire la matrice
+- $\displaystyle R_{\frac{\pi}{2}} = \begin{pmatrix} 0 & -1 \\ 1 & 0 \end{pmatrix}$
+:::
+
+::: resultat
+$$R_{\frac{\pi}{2}} = \begin{pmatrix} 0 & -1 \\ 1 & 0 \end{pmatrix}$$
+:::
+
+## Question 2 : Déterminer la matrice de la symétrie par rapport à l'axe des abscisses
+
+::: methode
+Analyse de l'effet de la transformation
+:::
+
+::: etape Analyser l'effet sur les vecteurs de base
+- $\displaystyle (1, 0) \mapsto (1, 0)$ (invariant)
+- $\displaystyle (0, 1) \mapsto (0, -1)$ (changement de signe)
+:::
+
+::: etape Construire la matrice
+- $\displaystyle S_{Ox} = \begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix}$
+:::
+
+::: resultat
+$$S_{Ox} = \begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix}$$
+:::
+
+## Question 3 : Déterminer la matrice de l'homothétie de rapport 3
+
+::: methode
+Formule de l'homothétie
+:::
+
+::: etape Formule générale
+$$H_k = \begin{pmatrix} k & 0 \\ 0 & k \end{pmatrix}$$
+:::
+
+::: etape Appliquer avec $\displaystyle k = 3$
+- $\displaystyle H_3 = \begin{pmatrix} 3 & 0 \\ 0 & 3 \end{pmatrix}$
+:::
+
+::: resultat
+$$H_3 = \begin{pmatrix} 3 & 0 \\ 0 & 3 \end{pmatrix}$$
+:::
+
+## Question 4 : Calculer l'image du point $\displaystyle M(2, 3)$ par la rotation d'angle $\displaystyle \frac{\pi}{2}$
+
+::: methode
+Application de la transformation matricielle
+:::
+
+::: etape Écrire le point sous forme de vecteur colonne
+- $\displaystyle M = \begin{pmatrix} 2 \\ 3 \end{pmatrix}$
+:::
+
+::: etape Appliquer la rotation
+$$M' = R_{\frac{\pi}{2}} \times M = \begin{pmatrix} 0 & -1 \\ 1 & 0 \end{pmatrix} \begin{pmatrix} 2 \\ 3 \end{pmatrix}$$
+:::
+
+::: etape Calculer le produit
+$$M' = \begin{pmatrix} 0 \times 2 + (-1) \times 3 \\ 1 \times 2 + 0 \times 3 \end{pmatrix} = \begin{pmatrix} -3 \\ 2 \end{pmatrix}$$
+:::
+
+::: etape bis
+$$M' = R_{\frac{\pi}{2}} \times M = \begin{pmatrix} 0 \times 2 + (-1) \times 3 \\ 1 \times 2 + 0 \times 3 \end{pmatrix} = \begin{pmatrix} -3 \\ 2 \end{pmatrix}$$
+:::
+
+::: resultat
+$$M'(-3, 2)$$
+:::
+
+## Question 5 : Calculer l'image du point $N(1, -2)$ par la composition de la symétrie puis de l'homothétie
+
+::: methode
+Composition de transformations
+:::
+
+::: etape L'ordre des transformations
+symétrie puis homothétie
+
+- Matrice de composition : $\displaystyle H_3 \times S_{Ox}$
+:::
+
+::: etape Calculer la matrice de composition
+$$H_3 \times S_{Ox} = \begin{pmatrix} 3 & 0 \\ 0 & 3 \end{pmatrix} \begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix} = \begin{pmatrix} 3 \times 1 + 0 \times 0 & 3 \times 0 + 0 \times (-1) \\ 0 \times 1 + 3 \times 0 & 0 \times 0 + 3 \times (-1) \end{pmatrix} = \begin{pmatrix} 3 & 0 \\ 0 & -3 \end{pmatrix}$$
+:::
+
+::: etape bis
+$$H_3 \times S_{Ox} = \begin{pmatrix} 3 \times 1 + 0 \times 0 & 3 \times 0 + 0 \times (-1) \\ 0 \times 1 + 3 \times 0 & 0 \times 0 + 3 \times (-1) \end{pmatrix} = \begin{pmatrix} 3 & 0 \\ 0 & -3 \end{pmatrix}$$
+:::
+
+::: etape Appliquer au point $\displaystyle N(1, -2)$
+$$N' = \begin{pmatrix} 3 & 0 \\ 0 & -3 \end{pmatrix} \begin{pmatrix} 1 \\ -2 \end{pmatrix} = \begin{pmatrix} 3 \times 1 + 0 \times (-2) \\ 0 \times 1 + (-3) \times (-2) \end{pmatrix} = \begin{pmatrix} 3 \\ 6 \end{pmatrix}$$
+:::
+
+::: etape bis
+$$N' = \begin{pmatrix} 3 \times 1 + 0 \times (-2) \\ 0 \times 1 + (-3) \times (-2) \end{pmatrix} = \begin{pmatrix} 3 \\ 6 \end{pmatrix}$$
+:::
+
+::: resultat
+$$N'(3, 6)$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle R_{\frac{\pi}{2}} = \begin{pmatrix} 0 & -1 \\ 1 & 0 \end{pmatrix}$
+2. $\displaystyle S_{Ox} = \begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix}$
+3. $\displaystyle H_3 = \begin{pmatrix} 3 & 0 \\ 0 & 3 \end{pmatrix}$
+4. $\displaystyle M'(-3, 2)$
+5. $\displaystyle N'(3, 6)$
+
+===
+
+=== Problème - Matrices - Graphes et Matrices d'Adjacence
+Id: 1811
+Difficulté: medium
+Image: graphe_adjacence.png
+
+Énoncé:
+<!-- optitab:1 -->
+On considère le graphe orienté suivant avec les sommets A, B, C, D, E et les arcs : A→B, B→C, C→D, D→E, E→A, A→C, B→D.
+
+[IMAGE_1]
+
+1. Construire la matrice d'adjacence $\displaystyle M$ de ce graphe
+2. Calculer $\displaystyle M^2$ et interpréter le résultat
+3. Calculer $\displaystyle M^3$ et interpréter le résultat
+4. Déterminer si le graphe est fortement connexe
+5. Compter le nombre de chemins de longueur 2 de A vers E
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Construire la matrice d'adjacence $\displaystyle M$ de ce graphe
+
+::: methode
+Construction de la matrice d'adjacence
+:::
+
+::: etape Numéroter les sommets
+A=1, B=2, C=3, D=4, E=5
+:::
+
+::: etape Construire la matrice 5×5
+- $m_{ij} = 1$ s'il y a un arc de $i$ vers $j$, 0 sinon
+:::
+
+::: etape Remplir la matrice selon les arcs donnés
+- A→B : $\displaystyle m_{12} = 1$
+- B→C : $\displaystyle m_{23} = 1$
+- C→D : $\displaystyle m_{34} = 1$
+- D→E : $\displaystyle m_{45} = 1$
+- E→A : $\displaystyle m_{51} = 1$
+- A→C : $\displaystyle m_{13} = 1$
+- B→D : $\displaystyle m_{24} = 1$
+:::
+
+::: resultat
+$$M = \begin{pmatrix} 0 & 1 & 1 & 0 & 0 \\ 0 & 0 & 1 & 1 & 0 \\ 0 & 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 0 & 1 \\ 1 & 0 & 0 & 0 & 0 \end{pmatrix}$$
+:::
+
+## Question 2 : Calculer $\displaystyle M^2$ et interpréter le résultat
+
+::: methode
+Calcul du produit matriciel
+:::
+
+::: etape Calculer $\displaystyle M^2 = M \times M$
+$$
+\begin{aligned}
+(M^2)_{11} &= 0 \times 0 + 1 \times 0 + 1 \times 0 + 0 \times 0 + 0 \times 1 \\
+&= 0
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(M^2)_{12} &= 0 \times 1 + 1 \times 0 + 1 \times 0 + 0 \times 0 + 0 \times 0 \\
+&= 0
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(M^2)_{13} &= 0 \times 1 + 1 \times 1 + 1 \times 0 + 0 \times 0 + 0 \times 0 \\
+&= 1
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(M^2)_{14} &= 0 \times 0 + 1 \times 1 + 1 \times 1 + 0 \times 0 + 0 \times 0 \\
+&= 2
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(M^2)_{15} &= 0 \times 0 + 1 \times 0 + 1 \times 0 + 0 \times 1 + 0 \times 0 \\
+&= 0
+\end{aligned}
+$$
+
+- (Calculs similaires pour les autres lignes...)
+:::
+
+::: resultat
+$$M^2 = \begin{pmatrix} 0 & 0 & 1 & 2 & 0 \\ 0 & 0 & 0 & 1 & 1 \\ 0 & 0 & 0 & 0 & 1 \\ 1 & 0 & 0 & 0 & 0 \\ 0 & 1 & 1 & 0 & 0 \end{pmatrix}$$
+:::
+
+::: point Interprétation détaillée
+Comment lire les cases de $\displaystyle M^2$
+
+- **Ligne A → [0, 0, 1, 2, 0] :**
+- $(A, C) = 1$ : un seul chemin de longueur 2 de A vers C : **A → B → C**
+- $(A, D) = 2$ : deux chemins de longueur 2 de A vers D : **A → B → D** et **A → C → D**
+- **Ligne E → [0, 1, 1, 0, 0] :**
+- $(E, B) = 1$ : un chemin de longueur 2 de E vers B : **E → A → B**
+- $(E, C) = 1$ : un chemin de longueur 2 de E vers C : **E → A → C**
+- **Ligne D → [1, 0, 0, 0, 0] :**
+- $(D, A) = 1$ : un chemin de longueur 2 de D vers A : **D → E → A**
+:::
+
+## Question 3 : Calculer $\displaystyle M^3$ et interpréter le résultat
+
+::: methode
+Calcul du produit matriciel
+:::
+
+::: etape Calculer $\displaystyle M^3 = M^2 \times M$
+- **Calculs détaillés :**
+
+$$
+\begin{aligned}
+(M^3)_{11} &= 0 \times 0 + 0 \times 0 + 1 \times 0 + 2 \times 0 + 0 \times 1 \\
+&= 0
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(M^3)_{12} &= 0 \times 1 + 0 \times 0 + 1 \times 0 + 2 \times 0 + 0 \times 0 \\
+&= 0
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(M^3)_{13} &= 0 \times 1 + 0 \times 0 + 1 \times 0 + 2 \times 0 + 0 \times 0 \\
+&= 0
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(M^3)_{14} &= 0 \times 0 + 0 \times 1 + 1 \times 1 + 2 \times 0 + 0 \times 0 \\
+&= 1
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(M^3)_{15} &= 0 \times 0 + 0 \times 1 + 1 \times 0 + 2 \times 1 + 0 \times 0 \\
+&= 2
+\end{aligned}
+$$
+
+- (Calculs similaires pour les autres lignes...)
+:::
+
+::: resultat
+$$M^3 = \begin{pmatrix} 0 & 0 & 0 & 1 & 2 \\ 1 & 0 & 0 & 0 & 1 \\ 1 & 0 & 0 & 0 & 0 \\ 0 & 1 & 1 & 0 & 0 \\ 0 & 0 & 1 & 2 & 0 \end{pmatrix}$$
+:::
+
+::: point Interprétation détaillée
+Comment lire les cases de $\displaystyle M^3$
+
+- **Ligne A → [0, 0, 0, 1, 2] :**
+- $(A, D) = 1$ : un chemin de longueur 3 de A vers D : **A → B → C → D**
+- $(A, E) = 2$ : deux chemins de longueur 3 de A vers E : **A → B → D → E** et **A → C → D → E**
+- **Ligne B → [1, 0, 0, 0, 1] :**
+- $(B, A) = 1$ : un chemin de longueur 3 de B vers A : **B → C → D → E → A**
+- $(B, E) = 1$ : un chemin de longueur 3 de B vers E : **B → C → D → E**
+- **Ligne E → [0, 0, 1, 2, 0] :**
+- $(E, C) = 1$ : un chemin de longueur 3 de E vers C : **E → A → B → C**
+- $(E, D) = 2$ : deux chemins de longueur 3 de E vers D : **E → A → B → D** et **E → A → C → D**
+:::
+
+## Question 4 : Déterminer si le graphe est fortement connexe
+
+::: methode
+Critère matriciel de forte connexité
+:::
+
+::: etape Calculer $\displaystyle M + M^2 + M^3 + M^4 + M^5$
+- On calcule successivement $M^4 = M^3 \times M$ et $M^5 = M^4 \times M$
+- On additionne ensuite toutes les matrices : $M + M^2 + M^3 + M^4 + M^5$
+- **Vérification (par calcul ou à l'aide d'un logiciel) :** Tous les coefficients de cette somme sont strictement positifs (non nuls)
+:::
+
+::: etape Interprétation
+- Si tous les coefficients de $M + M^2 + M^3 + M^4 + M^5$ sont non nuls, cela signifie qu'il existe au moins un chemin orienté entre chaque paire de sommets
+- Le graphe est donc fortement connexe
+:::
+
+::: resultat
+Le graphe est fortement connexe (tous les coefficients de la somme sont non nuls)
+:::
+
+## Question 5 : Compter le nombre de chemins de longueur 2 de A vers E
+
+::: methode
+Utilisation de $\displaystyle M^2$
+:::
+
+::: etape Identifier la position de A (ligne 1) et E (colonne 5)
+- Dans $M^2$, on cherche le coefficient $(M^2)_{15}$
+:::
+
+::: etape Lire le coefficient dans la matrice $M^2$
+- $\displaystyle M^2 = \begin{pmatrix} 0 & 0 & 1 & 2 & \mathbf{0} \\ 0 & 0 & 0 & 1 & 1 \\ 0 & 0 & 0 & 0 & 1 \\ 1 & 0 & 0 & 0 & 0 \\ 0 & 1 & 1 & 0 & 0 \end{pmatrix}$
+- $\displaystyle (M^2)_{15} = 0$ (coefficient en gras)
+:::
+
+::: etape Interprétation et vérification
+- **Interprétation :** Il y a 0 chemins de longueur exactement 2 de A vers E
+- **Vérification par énumération :**
+- Chemins possibles de A : A→B, A→C
+- De B : B→C, B→D
+- De C : C→D
+- Chemins de longueur 2 de A : A→B→C, A→B→D, A→C→D
+- Aucun ne mène à E (qui n'est accessible qu'en 3 étapes minimum)
+:::
+
+::: resultat
+0 chemins de longueur 2 de A vers E
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle M = \begin{pmatrix} 0 & 1 & 1 & 0 & 0 \\ 0 & 0 & 1 & 1 & 0 \\ 0 & 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 0 & 1 \\ 1 & 0 & 0 & 0 & 0 \end{pmatrix}$
+2. $M^2$ compte les chemins de longueur 2
+3. $M^3$ compte les chemins de longueur 3
+4. Le graphe est fortement connexe
+5. 0 chemins de longueur 2 de A vers E
+
+===
+
+=== Problème - Matrices - Puissances et Suites
+Id: 1810
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+On considère la matrice $\displaystyle A = \begin{pmatrix} 2 & 1 \\ 0 & 2 \end{pmatrix}$ et la suite de matrices $\displaystyle (M_n)$ définie par $\displaystyle M_0 = \begin{pmatrix} 1 \\ 0 \end{pmatrix}$ et $\displaystyle M_{n+1} = A \times M_n$.
+
+1. Calculer $\displaystyle A^2$, $\displaystyle A^3$ et $\displaystyle A^4$
+2. Conjecturer une formule pour $\displaystyle A^n$
+3. Démontrer par récurrence la formule conjecturée
+4. Calculer $\displaystyle M_1$, $\displaystyle M_2$, $\displaystyle M_3$ et $\displaystyle M_4$
+5. Exprimer $\displaystyle M_n$ en fonction de $\displaystyle n$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer $\displaystyle A^2$, $\displaystyle A^3$ et $\displaystyle A^4$
+
+::: methode
+Calculs successifs de puissances
+:::
+
+::: point Calcul de $\displaystyle A^2$
+$$A^2 = A \times A = \begin{pmatrix} 2 & 1 \\ 0 & 2 \end{pmatrix} \begin{pmatrix} 2 & 1 \\ 0 & 2 \end{pmatrix}$$
+
+- $\displaystyle (A^2)_{11} = 2 \times 2 + 1 \times 0 = 4$
+- $\displaystyle (A^2)_{12} = 2 \times 1 + 1 \times 2 = 4$
+- $\displaystyle (A^2)_{21} = 0 \times 2 + 2 \times 0 = 0$
+- $\displaystyle (A^2)_{22} = 0 \times 1 + 2 \times 2 = 4$
+
+$$A^2 = \begin{pmatrix} 2 \times 2 + 1 \times 0 & 2 \times 1 + 1 \times 2 \\ 0 \times 2 + 2 \times 0 & 0 \times 1 + 2 \times 2 \end{pmatrix} = \begin{pmatrix} 4 & 4 \\ 0 & 4 \end{pmatrix}$$
+:::
+
+::: point Calcul de $\displaystyle A^3$
+$$A^3 = A^2 \times A = \begin{pmatrix} 4 & 4 \\ 0 & 4 \end{pmatrix} \begin{pmatrix} 2 & 1 \\ 0 & 2 \end{pmatrix}$$
+
+- $\displaystyle (A^3)_{11} = 4 \times 2 + 4 \times 0 = 8$
+- $\displaystyle (A^3)_{12} = 4 \times 1 + 4 \times 2 = 12$
+- $\displaystyle (A^3)_{21} = 0 \times 2 + 4 \times 0 = 0$
+- $\displaystyle (A^3)_{22} = 0 \times 1 + 4 \times 2 = 8$
+
+$$A^3 = \begin{pmatrix} 4 \times 2 + 4 \times 0 & 4 \times 1 + 4 \times 2 \\ 0 \times 2 + 4 \times 0 & 0 \times 1 + 4 \times 2 \end{pmatrix} = \begin{pmatrix} 8 & 12 \\ 0 & 8 \end{pmatrix}$$
+:::
+
+::: point Calcul de $\displaystyle A^4$
+$$A^4 = A^3 \times A = \begin{pmatrix} 8 & 12 \\ 0 & 8 \end{pmatrix} \begin{pmatrix} 2 & 1 \\ 0 & 2 \end{pmatrix}$$
+
+- $\displaystyle (A^4)_{11} = 8 \times 2 + 12 \times 0 = 16$
+- $\displaystyle (A^4)_{12} = 8 \times 1 + 12 \times 2 = 32$
+- $\displaystyle (A^4)_{21} = 0 \times 2 + 8 \times 0 = 0$
+- $\displaystyle (A^4)_{22} = 0 \times 1 + 8 \times 2 = 16$
+
+$$A^4 = \begin{pmatrix} 8 \times 2 + 12 \times 0 & 8 \times 1 + 12 \times 2 \\ 0 \times 2 + 8 \times 0 & 0 \times 1 + 8 \times 2 \end{pmatrix} = \begin{pmatrix} 16 & 32 \\ 0 & 16 \end{pmatrix}$$
+:::
+
+## Question 2 : Conjecturer une formule pour $\displaystyle A^n$
+
+::: methode
+Observation des patterns
+:::
+
+::: point Analyse des résultats
+- $\displaystyle A^1 = \begin{pmatrix} 2^1 & 1 \times 1 \\ 0 & 2^1 \end{pmatrix}$
+- $\displaystyle A^2 = \begin{pmatrix} 2^2 & 4 \times 1 \\ 0 & 2^2 \end{pmatrix}$
+- $\displaystyle A^3 = \begin{pmatrix} 2^3 & 12 \times 1 \\ 0 & 2^3 \end{pmatrix}$
+- $\displaystyle A^4 = \begin{pmatrix} 2^4 & 32 \times 1 \\ 0 & 2^4 \end{pmatrix}$
+:::
+
+::: point Conjecture
+$$A^n = \begin{pmatrix} 2^n & n \times 2^{n-1} \\ 0 & 2^n \end{pmatrix}$$
+:::
+
+## Question 3 : Démontrer par récurrence la formule conjecturée
+
+::: methode
+Preuve par récurrence
+:::
+
+::: point Initialisation ($\displaystyle n = 1$)
+$$A^1 = \begin{pmatrix} 2^1 & 1 \times 2^0 \\ 0 & 2^1 \end{pmatrix} = \begin{pmatrix} 2 & 1 \\ 0 & 2 \end{pmatrix}$$
+:::
+
+::: point Hérédité
+Supposons $\displaystyle A^k = \begin{pmatrix} 2^k & k \times 2^{k-1} \\ 0 & 2^k \end{pmatrix}$
+:::
+
+::: point Calcul de $\displaystyle A^{k+1}$
+$$A^{k+1} = A^k \times A = \begin{pmatrix} 2^k & k \times 2^{k-1} \\ 0 & 2^k \end{pmatrix} \begin{pmatrix} 2 & 1 \\ 0 & 2 \end{pmatrix}$$
+
+$$
+\begin{aligned}
+(A^{k+1})_{11} &= 2^k \times 2 + (k \times 2^{k-1}) \times 0 \\
+&= 2^{k+1}
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(A^{k+1})_{12} &= 2^k \times 1 + (k \times 2^{k-1}) \times 2 \\
+&= 2^k + k \times 2^k \\
+&= 2^k(1 + k) \\
+&= (k+1) \times 2^k
+\end{aligned}
+$$
+
+- $\displaystyle (A^{k+1})_{21} = 0 \times 2 + 2^k \times 0 = 0$
+- $\displaystyle (A^{k+1})_{22} = 0 \times 1 + 2^k \times 2 = 2^{k+1}$
+- $\displaystyle A^{k+1} = \begin{pmatrix} 2^{k+1} & (k+1) \times 2^k \\ 0 & 2^{k+1} \end{pmatrix}$
+:::
+
+::: resultat
+La formule est vraie pour tout $n \geq 1$
+:::
+
+## Question 4 : Calculer $\displaystyle M_1$, $\displaystyle M_2$, $\displaystyle M_3$ et $\displaystyle M_4$
+
+::: methode
+Calculs successifs
+:::
+
+::: point Calcul de $\displaystyle M_1$
+$$M_1 = A \times M_0 = \begin{pmatrix} 2 & 1 \\ 0 & 2 \end{pmatrix} \begin{pmatrix} 1 \\ 0 \end{pmatrix} = \begin{pmatrix} 2 \times 1 + 1 \times 0 \\ 0 \times 1 + 2 \times 0 \end{pmatrix} = \begin{pmatrix} 2 \\ 0 \end{pmatrix}$$
+:::
+
+::: point Calcul de $\displaystyle M_2$
+$$M_2 = A \times M_1 = \begin{pmatrix} 2 & 1 \\ 0 & 2 \end{pmatrix} \begin{pmatrix} 2 \\ 0 \end{pmatrix} = \begin{pmatrix} 4 \\ 0 \end{pmatrix}$$
+:::
+
+::: point Calcul de $\displaystyle M_3$
+$$M_3 = A \times M_2 = \begin{pmatrix} 2 & 1 \\ 0 & 2 \end{pmatrix} \begin{pmatrix} 4 \\ 0 \end{pmatrix} = \begin{pmatrix} 8 \\ 0 \end{pmatrix}$$
+:::
+
+::: point Calcul de $\displaystyle M_4$
+$$M_4 = A \times M_3 = \begin{pmatrix} 2 & 1 \\ 0 & 2 \end{pmatrix} \begin{pmatrix} 8 \\ 0 \end{pmatrix} = \begin{pmatrix} 16 \\ 0 \end{pmatrix}$$
+:::
+
+## Question 5 : Exprimer $\displaystyle M_n$ en fonction de $\displaystyle n$
+
+::: methode
+Utilisation de la formule $\displaystyle M_n = A^n \times M_0$
+:::
+
+::: etape $\displaystyle M_n = A^n \times M_0 = A^n \begin{pmatrix} 1 \\ 0 \end{pmatrix}$
+:::
+
+::: etape Utiliser la formule de $A^n$ trouvée
+- $\displaystyle M_n = \begin{pmatrix} 2^n & n \times 2^{n-1} \\ 0 & 2^n \end{pmatrix} \begin{pmatrix} 1 \\ 0 \end{pmatrix}$
+:::
+
+::: etape Calculer le produit
+$$M_n = \begin{pmatrix} 2^n \times 1 + (n \times 2^{n-1}) \times 0 \\ 0 \times 1 + 2^n \times 0 \end{pmatrix} = \begin{pmatrix} 2^n \\ 0 \end{pmatrix}$$
+:::
+
+::: resultat
+$$M_n = \begin{pmatrix} 2^n \\ 0 \end{pmatrix}$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $A^2 = \begin{pmatrix} 4 & 4 \\ 0 & 4 \end{pmatrix}$, $A^3 = \begin{pmatrix} 8 & 12 \\ 0 & 8 \end{pmatrix}$, $A^4 = \begin{pmatrix} 16 & 32 \\ 0 & 16 \end{pmatrix}$
+2. Conjecture : $\displaystyle A^n = \begin{pmatrix} 2^n & n \times 2^{n-1} \\ 0 & 2^n \end{pmatrix}$
+3. Démontré par récurrence
+4. $M_1 = \begin{pmatrix} 2 \\ 0 \end{pmatrix}$, $M_2 = \begin{pmatrix} 4 \\ 0 \end{pmatrix}$, $M_3 = \begin{pmatrix} 8 \\ 0 \end{pmatrix}$, $M_4 = \begin{pmatrix} 16 \\ 0 \end{pmatrix}$
+5. $\displaystyle M_n = \begin{pmatrix} 2^n \\ 0 \end{pmatrix}$
+
+===

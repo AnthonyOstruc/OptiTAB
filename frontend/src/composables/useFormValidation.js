@@ -1,4 +1,31 @@
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, watch } from 'vue'
+
+// Quand on quitte un champ en cliquant ailleurs (case à cocher, bouton), le
+// message d'erreur qui apparaît décale la fenêtre pendant le clic : le bouton
+// est relâché à côté et le clic est perdu. Pendant un appui (souris ou doigt),
+// l'erreur n'est donc affichée qu'une fois le clic terminé.
+let appuiEnCours = false
+if (typeof window !== 'undefined') {
+  window.addEventListener('pointerdown', () => { appuiEnCours = true }, true)
+  window.addEventListener('pointercancel', () => { appuiEnCours = false }, true)
+  window.addEventListener('keydown', () => { appuiEnCours = false }, true)
+}
+
+const apresLeClic = (action) => {
+  if (!appuiEnCours) return action()
+  let fait = false
+  const lancer = () => {
+    if (fait) return
+    fait = true
+    appuiEnCours = false
+    window.removeEventListener('click', surClic, true)
+    clearTimeout(minuteur)
+    action()
+  }
+  const surClic = () => setTimeout(lancer, 0)
+  window.addEventListener('click', surClic, true)
+  const minuteur = setTimeout(lancer, 800)
+}
 
 // Validation rules
 export const validationRules = {
@@ -101,9 +128,19 @@ export function useFormValidation(initialData = {}, validationSchema = {}) {
   }
 
   const setFieldTouched = (fieldName) => {
-    touched[fieldName] = true
-    validateField(fieldName, formData[fieldName])
+    apresLeClic(() => {
+      touched[fieldName] = true
+      validateField(fieldName, formData[fieldName])
+    })
   }
+
+  // Un champ déjà vérifié l'est de nouveau à chaque frappe : l'erreur disparaît
+  // dès qu'elle est corrigée (et le bouton d'envoi redevient actif aussitôt).
+  watch(formData, () => {
+    Object.keys(touched).forEach(fieldName => {
+      if (touched[fieldName]) validateField(fieldName, formData[fieldName])
+    })
+  }, { deep: true })
 
   const resetForm = () => {
     Object.keys(formData).forEach(key => {

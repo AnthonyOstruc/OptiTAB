@@ -1,0 +1,397 @@
+Titre: Le Calcul Intégral
+
+<!-- optitab:1 -->
+::: remarque Sections principales
+Les sections I à VI couvrent les concepts fondamentaux du calcul intégral. Les parties marquées **« Bonus »** sont des approfondissements utiles qui vous permettent d'explorer des thèmes avancés.
+:::
+
+## I. Définition de l'intégrale définie
+
+### Définition comme aire sous la courbe
+
+::: definition Intégrale d'une fonction continue positive
+Soit $f$ une fonction **continue et positive** sur un segment $[a, b]$.
+
+L'**intégrale définie** de $f$ de $a$ à $b$, notée :
+
+::: formule
+$$\int_a^b f(x) \, dx$$
+:::
+
+est définie comme l'**aire** de la région délimitée par :
+
+- La courbe représentative de $\displaystyle f$
+- L'axe des abscisses ($\displaystyle y = 0$)
+- Les droites verticales $x = a$ et $x = b$
+:::
+
+::: remarque Vision graphique
+L'intégrale représente l'aire « sous la courbe » de $f$ entre $a$ et $b$.
+
+On peut l'approcher par la méthode des rectangles : $\int_a^b f(x) \, dx \approx \sum_{i=1}^n \Delta x_i \times f(x_i)$
+:::
+
+[IMAGE_3]
+
+### Extension aux fonctions de signe quelconque
+
+::: definition Intégrale par les primitives
+Si $f$ est une fonction **continue** sur un intervalle contenant $a$ et $b$, et si $F$ est une primitive de $f$, alors :
+
+::: formule
+$$\int_a^b f(x) \, dx = F(b) - F(a) = [F(x)]_a^b$$
+:::
+
+Cette définition étend l'intégrale aux fonctions de **signe quelconque**.
+:::
+
+::: remarque Interprétation géométrique
+- Si $f(x) \geq 0$ sur $[a, b]$ : l'intégrale donne l'aire sous la courbe
+- Si $f(x) \leq 0$ sur $[a, b]$ : l'intégrale donne l'opposé de l'aire
+- Si $f$ change de signe : l'intégrale donne l'aire algébrique (positive - négative)
+:::
+
+## II. Théorème fondamental du calcul intégral
+
+### Primitive qui s'annule en a
+
+::: theoreme Primitive définie par une intégrale
+Si $f$ est une fonction continue positive sur $[a, b]$, alors la fonction $F_a$ définie sur $[a, b]$ par :
+
+::: formule
+$$F_a(x) = \int_a^x f(t) \, dt$$
+:::
+
+est la **primitive de $f$ qui s'annule en $a$**.
+:::
+
+::: demonstration
+Pour une fonction positive croissante $f$ sur $[a, b]$, on montre que la fonction $x \mapsto \int_a^x f(t) \, dt$ est une primitive de $f$.
+
+Par définition, $\displaystyle F_a(a) = \int_a^a f(t) \, dt = 0$.
+
+On admet que $F_a'(x) = f(x)$ pour tout $x \in [a, b]$.
+:::
+
+### Relation avec les primitives
+
+::: theoreme Calcul de l'intégrale par les primitives
+Pour toute primitive $F$ de $f$ :
+
+::: formule
+$$\int_a^b f(x) \, dx = F(b) - F(a) = [F(x)]_a^b$$
+:::
+:::
+
+::: theoreme Existence de primitives
+**Toute fonction continue sur un intervalle admet des primitives**.
+:::
+
+::: methode
+1. On trouve une primitive $F$ de $f$
+2. On calcule $\displaystyle F(b) - F(a)$
+3. Le résultat est l'intégrale définie
+:::
+
+::: exemple
+Calculer $\displaystyle\int_0^2 (3x^2 - 2x + 1) \, dx$
+
+**Résolution :**
+
+Une primitive de $f(x) = 3x^2 - 2x + 1$ est $F(x) = x^3 - x^2 + x$
+
+$$
+\begin{aligned}
+\int_0^2 (3x^2 - 2x + 1) \, dx &= [x^3 - x^2 + x]_0^2 \\
+&= (8 - 4 + 2) - 0 \\
+&= 6
+\end{aligned}
+$$
+:::
+
+### Tableau récapitulatif des primitives usuelles
+
+**Pour le calcul des intégrales définies, voici les primitives les plus courantes :**
+
+| Fonction $\displaystyle f(x)$ | Primitive $\displaystyle F(x)$ | Domaine |
+|---|---|---|
+| $\displaystyle k$ (constante) | $\displaystyle kx$ | $\displaystyle\mathbb{R}$ |
+| $\displaystyle x^n$ ($\displaystyle n \neq -1$) | $\displaystyle\frac{x^{n+1}}{n+1}$ | $\displaystyle\mathbb{R}$ si $\displaystyle n \geq 0$ |
+| $\displaystyle\frac{1}{x}$ | $\displaystyle\ln|x|$ | $\displaystyle\mathbb{R} \setminus \{0\}$ |
+| $\displaystyle\frac{1}{\sqrt{x}}$ | $\displaystyle 2\sqrt{x}$ | $\displaystyle]0, +\infty[$ |
+| $\displaystyle e^x$ | $\displaystyle e^x$ | $\displaystyle\mathbb{R}$ |
+| $\displaystyle e^{ax}$ ($\displaystyle a \neq 0$) | $\displaystyle\frac{e^{ax}}{a}$ | $\displaystyle\mathbb{R}$ |
+| $\displaystyle\sin(x)$ | $\displaystyle -\cos(x)$ | $\displaystyle\mathbb{R}$ |
+| $\displaystyle\cos(x)$ | $\displaystyle\sin(x)$ | $\displaystyle\mathbb{R}$ |
+| $\displaystyle\frac{1}{x^2}$ | $\displaystyle -\frac{1}{x}$ | $\displaystyle\mathbb{R} \setminus \{0\}$ |
+
+::: rappel
+Pour calculer une intégrale définie, on utilise une primitive $F$ et on applique : $\int_a^b f(x) \, dx = F(b) - F(a)$
+
+Pour les fonctions composées (par exemple $(ax+b)^n$, $e^{ax+b}$, etc.), consultez le cours sur les **primitives**.
+:::
+
+## III. Propriétés des intégrales définies
+
+### Linéarité, positivité et relation de Chasles
+
+::: theoreme Linéarité de l'intégrale
+Pour toutes fonctions continues $f$ et $g$ sur $[a, b]$ et tous réels $\lambda, \mu$ :
+
+::: formule
+$$\int_a^b (\lambda f(x) + \mu g(x)) \, dx = \lambda \int_a^b f(x) \, dx + \mu \int_a^b g(x) \, dx$$
+:::
+:::
+
+::: theoreme Positivité et intégration des inégalités
+- **Positivité :** Si $f(x) \geq 0$ sur $[a, b]$, alors $\int_a^b f(x) \, dx \geq 0$
+- **Intégration des inégalités :** Si $f(x) \leq g(x)$ sur $[a, b]$, alors $\int_a^b f(x) \, dx \leq \int_a^b g(x) \, dx$
+:::
+
+::: theoreme Relation de Chasles
+Pour toute fonction continue $f$ et pour tous réels $a, b, c$ :
+
+::: formule
+$$\int_a^b f(x) \, dx + \int_b^c f(x) \, dx = \int_a^c f(x) \, dx$$
+:::
+:::
+
+::: propriete Inversion des bornes
+$$\int_a^b f(x) \, dx = -\int_b^a f(x) \, dx$$
+
+En particulier : $\displaystyle\int_a^a f(x) \, dx = 0$
+:::
+
+::: remarque Applications pratiques
+- **Linéarité :** On peut « sortir » les constantes et séparer les sommes
+- **Relation de Chasles :** Permet de découper l'intervalle d'intégration
+- **Positivité :** Permet de majorer ou minorer une intégrale
+:::
+
+## IV. Intégration par parties
+
+### Formule d'intégration par parties
+
+::: theoreme Intégration par parties
+Si $u$ et $v$ sont des fonctions dérivables sur $[a, b]$ avec $u'$ et $v'$ continues, alors :
+
+::: formule
+$$\int_a^b u(x) v'(x) \, dx = [u(x) v(x)]_a^b - \int_a^b u'(x) v(x) \, dx$$
+:::
+:::
+
+::: demonstration
+On utilise la formule de dérivation d'un produit : $(uv)' = u'v + uv'$
+
+Donc : $\displaystyle uv' = (uv)' - u'v$
+
+En intégrant de $a$ à $b$ :
+
+$$\int_a^b uv' \, dx = [uv]_a^b - \int_a^b u'v \, dx$$
+:::
+
+::: attention Choix de $\displaystyle u$
+Mnémonique « ILATE » - Inverse, Logarithme, Algébrique, Trigonométrique, Exponentielle (ordre de priorité pour choisir $u$)
+:::
+
+::: exemple
+Calculer $\displaystyle\int_0^1 x e^x \, dx$
+
+**Résolution :**
+
+On pose $u(x) = x$ et $v'(x) = e^x$, donc $u'(x) = 1$ et $v(x) = e^x$
+
+$$
+\begin{aligned}
+\int_0^1 x e^x \, dx &= [x e^x]_0^1 - \int_0^1 e^x \, dx \\
+&= e - [e^x]_0^1 \\
+&= e - (e - 1) \\
+&= 1
+\end{aligned}
+$$
+:::
+
+## V. Valeur moyenne d'une fonction
+
+### Définition et interprétation
+
+::: definition Valeur moyenne
+La **valeur moyenne** d'une fonction $f$ continue sur $[a, b]$ est :
+
+::: formule
+$$\mu = \frac{1}{b-a} \int_a^b f(x) \, dx$$
+:::
+:::
+
+::: remarque Interprétation géométrique
+La valeur moyenne est la hauteur d'un rectangle de base $[a, b]$ ayant la même aire que la région sous la courbe de $f$.
+:::
+
+::: exemple
+Calculer la valeur moyenne de $f(x) = x^2$ sur $[0, 3]$
+
+**Résolution :**
+
+$$
+\begin{aligned}
+\mu &= \frac{1}{3-0} \int_0^3 x^2 \, dx \\
+&= \frac{1}{3} \left[\frac{x^3}{3}\right]_0^3 \\
+&= \frac{1}{3} \times 9 \\
+&= 3
+\end{aligned}
+$$
+:::
+
+## VI. Applications géométriques : Calcul d'aires
+
+### Aire sous la courbe d'une fonction
+
+::: propriete Aire algébrique
+L'intégrale définie $\int_a^b f(x) \, dx$ représente l'**aire algébrique** de la région délimitée par la courbe de $f$, l'axe des abscisses et les droites $x = a$ et $x = b$.
+:::
+
+::: exemple
+Calculer l'aire de la région délimitée par la courbe $y = x^2$, l'axe des abscisses et les droites $x = 0$ et $x = 2$.
+
+**Résolution :**
+
+Comme $x^2 \geq 0$ sur $[0, 2]$, l'aire est :
+
+$\displaystyle\mathcal{A} = \int_0^2 x^2 \, dx = \left[\frac{x^3}{3}\right]_0^2 = \frac{8}{3}$ unités d'aire
+:::
+
+[IMAGE_1]
+
+### Aire entre deux courbes
+
+::: theoreme Aire entre deux courbes
+Soient $f$ et $g$ deux fonctions continues sur $[a, b]$ avec $f(x) \geq g(x)$ sur cet intervalle.
+
+L'aire de la région comprise entre les deux courbes est :
+
+::: formule
+$$\mathcal{A} = \int_a^b [f(x) - g(x)] \, dx$$
+:::
+:::
+
+::: methode
+1. **Déterminer les points d'intersection** : résoudre $f(x) = g(x)$
+2. **Étudier les positions relatives** : déterminer sur quels intervalles $f(x) \geq g(x)$
+3. **Découper l'intervalle** si nécessaire selon les points d'intersection
+4. **Calculer l'intégrale** : $\displaystyle\int_a^b |f(x) - g(x)| \, dx$
+5. **Interpréter le résultat** en unités d'aire
+:::
+
+::: exemple
+Calculer l'aire de la région délimitée par les courbes $y = x^2$ et $y = 2x$ sur l'intervalle $[0, 2]$.
+
+**Résolution :**
+
+Les courbes se coupent en $x = 0$ et $x = 2$ (car $x^2 = 2x \Leftrightarrow x(x-2) = 0$)
+
+Pour $x \in [0, 2]$ : $2x \geq x^2$
+
+$\displaystyle\mathcal{A} = \int_0^2 (2x - x^2) \, dx = \left[x^2 - \frac{x^3}{3}\right]_0^2 = 4 - \frac{8}{3} = \frac{4}{3}$ unités d'aire
+:::
+
+[IMAGE_2]
+
+## VII. Bonus - Algorithmes d'approximation
+
+::: methode Approfondissement
+Les sections suivantes enrichissent votre culture mathématique et vous permettent d'explorer des thèmes avancés.
+:::
+
+### Méthode des rectangles
+
+::: methode
+On découpe l'intervalle $[a, b]$ en $n$ sous-intervalles de même largeur $\Delta x = \frac{b-a}{n}$.
+
+On approche l'intégrale par : $\displaystyle\int_a^b f(x) \, dx \approx \sum_{i=1}^n f(x_i) \Delta x$
+:::
+
+```python
+def rectangles(f, a, b, n):
+    dx = (b - a) / n
+    somme = 0
+    for i in range(n):
+        x = a + i * dx
+        somme += f(x) * dx
+    return somme
+```
+
+### Méthode des milieux
+
+::: methode
+On utilise la valeur de la fonction au milieu de chaque sous-intervalle :
+
+$$\int_a^b f(x) \, dx \approx \sum_{i=1}^n f\left(\frac{x_{i-1} + x_i}{2}\right) \Delta x$$
+:::
+
+### Méthode des trapèzes
+
+::: methode
+On approche la courbe par des segments de droite (trapèzes) :
+
+$$\int_a^b f(x) \, dx \approx \frac{\Delta x}{2} \left[f(a) + 2\sum_{i=1}^{n-1} f(x_i) + f(b)\right]$$
+:::
+
+### Bonus - Méthode de Monte-Carlo
+
+::: methode
+On génère des points aléatoirement dans un rectangle contenant la région sous la courbe et on compte ceux qui sont sous la courbe.
+:::
+
+### Bonus - Algorithme de Brouncker pour $\displaystyle \ln(2)$
+
+::: methode
+L'algorithme de Brouncker utilise une série pour approcher $\ln(2) = \int_1^2 \frac{1}{x} \, dx$.
+:::
+
+::: exemple Note
+En évaluation, l'algorithme pourra être donné en pseudo-code ou en français ; ici il est illustré en Python.
+:::
+
+## VIII. Bonus - Approfondissements possibles
+
+::: methode Approfondissement
+Les sections suivantes enrichissent votre culture mathématique et vous permettent d'explorer des thèmes avancés.
+:::
+
+### Bonus - Approximation d'une aire par suites adjacentes
+
+::: methode
+On peut construire deux suites adjacentes qui encadrent l'aire sous la courbe, permettant de démontrer rigoureusement l'existence de l'intégrale.
+:::
+
+### Bonus - Encadrement de la série harmonique
+
+::: attention Application
+On peut encadrer la série harmonique $H_n = \sum_{k=1}^n \frac{1}{k}$ par des intégrales :
+
+$$\int_1^{n+1} \frac{1}{x} \, dx \leq H_n \leq 1 + \int_1^n \frac{1}{x} \, dx$$
+:::
+
+## IX. Erreurs fréquentes et conseils
+
+::: attention
+- Confondre aire et intégrale : l'intégrale peut être négative, pas l'aire
+- Oublier de vérifier la continuité de la fonction sur l'intervalle d'intégration
+- Se tromper dans l'ordre des bornes : $\int_a^b f \, dx = -\int_b^a f \, dx$
+- Négliger le signe de la fonction pour le calcul d'aires
+- Oublier de simplifier l'expression avant d'intégrer
+- Confondre valeur moyenne et valeur de la fonction au milieu de l'intervalle
+- Mauvais choix de $u$ dans l'intégration par parties
+- Oublier le terme $[u(x) v(x)]_a^b$ dans l'intégration par parties
+:::
+
+::: conseil
+- Pour les intégrales définies, vérifier que la fonction est continue sur l'intervalle
+- Simplifier l'expression avant d'intégrer si possible
+- Pour les aires, faire attention au signe de la fonction et utiliser $|f(x) - g(x)|$ si nécessaire
+- Utiliser la relation de Chasles pour découper l'intervalle si nécessaire
+- Vérifier ses résultats en dérivant la primitive trouvée
+- Pour l'intégration par parties, bien choisir $u$ selon « ILATE »
+- Estimer graphiquement une intégrale pour vérifier la cohérence du résultat
+- S'entraîner régulièrement sur les formules de base et les méthodes d'approximation
+:::

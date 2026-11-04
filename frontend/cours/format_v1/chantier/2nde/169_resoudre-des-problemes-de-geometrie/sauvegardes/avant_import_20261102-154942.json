@@ -1,0 +1,539 @@
+{
+ "notion": 169,
+ "dossier": "C:\\Users\\SWEELCO-AT\\Desktop\\SWINDER\\OptiTABV2\\frontend\\cours\\format_v1\\chantier\\2nde\\169_resoudre-des-problemes-de-geometrie",
+ "date": "2026-11-02T15:49:41",
+ "cours": [
+  {
+   "id": 223,
+   "contenu": "<!-- optitab:1 -->\n::: objectifs\n- Connaître le projeté orthogonal d’un point sur une droite et calculer la distance d’un point à une droite.\n- Calculer des longueurs et des angles dans un triangle rectangle : Pythagore, cosinus, sinus, tangente.\n- Démontrer et utiliser la relation $\\cos^2\\alpha + \\sin^2\\alpha = 1$.\n- Résoudre des problèmes sur des triangles, des quadrilatères et des cercles, avec ou sans repère.\n- Calculer des aires et des volumes, et traiter un problème d’optimisation.\n:::\n\n## I. Projeté orthogonal et distance d’un point à une droite\n\n::: definition Projeté orthogonal\nSoit $d$ une droite et $M$ un point du plan. Le **projeté orthogonal** de $M$ sur $d$ est le point $H$ de $d$ tel que la droite $(MH)$ soit perpendiculaire à $d$.\n\nSi $M$ appartient à $d$, son projeté orthogonal est $M$ lui-même.\n:::\n\n[IMAGE_1]\n\n::: theoreme Le point le plus proche\nLe projeté orthogonal $H$ du point $M$ sur la droite $d$ est le point de $d$ le plus proche de $M$ : pour tout point $N$ de $d$, $MN \\geq MH$.\n:::\n\n::: demonstration\nSoit $N$ un point de $d$, distinct de $H$. Les points $H$ et $N$ sont sur $d$ et $(MH) \\perp d$, donc le triangle $MHN$ est rectangle en $H$.\n\nD’après le théorème de Pythagore :\n$$MN^2 = MH^2 + HN^2$$\n\nComme $N \\neq H$, on a $HN^2 \\gt 0$, donc $MN^2 \\gt MH^2$. Les longueurs étant positives, on en déduit $MN \\gt MH$.\n\nSi $N = H$, alors $MN = MH$. Dans tous les cas, $MN \\geq MH$ : $H$ est le point de $d$ le plus proche de $M$.\n:::\n\n::: definition Distance d’un point à une droite\nLa **distance du point $M$ à la droite $d$** est la longueur $MH$, où $H$ est le projeté orthogonal de $M$ sur $d$.\n:::\n\n::: remarque\nDans un triangle $ABC$, la hauteur issue de $C$ est le segment $[CH]$, où $H$ est le projeté orthogonal de $C$ sur $(AB)$. Sa longueur $CH$ est la distance de $C$ à la droite $(AB)$.\n:::\n\n::: methode Calculer une distance avec deux calculs d’aire\nOn calcule l’aire du triangle de deux façons, avec deux bases différentes, puis on isole la hauteur cherchée.\n:::\n\n::: exemple\nLe triangle $ABC$ est rectangle en $A$ avec $AB = 6$, $AC = 8$ et $BC = 10$. On cherche la distance $AH$ de $A$ à la droite $(BC)$.\n\nAvec la base $[AB]$ :\n$$\\mathcal{A} = \\frac{AB \\times AC}{2} = \\frac{6 \\times 8}{2} = 24$$\n\nAvec la base $[BC]$ :\n$$\\mathcal{A} = \\frac{BC \\times AH}{2} = \\frac{10 \\times AH}{2} = 5\\,AH$$\n\nDonc $5\\,AH = 24$ et $AH = 4{,}8$.\n:::\n\n## II. Le triangle rectangle\n\n### 1. Théorème de Pythagore et réciproque\n\n::: theoreme Théorème de Pythagore\nSi le triangle $ABC$ est rectangle en $B$, alors $AC^2 = AB^2 + BC^2$.\n\n**Réciproque :** si $AC^2 = AB^2 + BC^2$, alors le triangle $ABC$ est rectangle en $B$.\n:::\n\n::: attention\nPour utiliser la réciproque, on compare le carré du **plus grand côté** à la somme des carrés des deux autres. Si l’égalité est fausse, le triangle n’est pas rectangle.\n:::\n\n### 2. Cosinus, sinus et tangente d’un angle aigu\n\n::: definition\nDans un triangle rectangle, pour un angle aigu $\\alpha$ :\n\n$$\\cos\\alpha = \\frac{\\text{côté adjacent}}{\\text{hypoténuse}}$$\n\n$$\\sin\\alpha = \\frac{\\text{côté opposé}}{\\text{hypoténuse}}$$\n\n$$\\tan\\alpha = \\frac{\\text{côté opposé}}{\\text{côté adjacent}}$$\n:::\n\n[IMAGE_2]\n\n::: exemple\nSur la figure, le triangle $ABC$ est rectangle en $B$ : $\\cos\\alpha = \\dfrac{AB}{AC}$, $\\sin\\alpha = \\dfrac{BC}{AC}$ et $\\tan\\alpha = \\dfrac{BC}{AB}$.\n:::\n\n::: propriete Relations entre cosinus et sinus\nPour tout angle aigu $\\alpha$ :\n$$\\cos^2\\alpha + \\sin^2\\alpha = 1 \\qquad \\tan\\alpha = \\frac{\\sin\\alpha}{\\cos\\alpha}$$\n\nDe plus $0 \\lt \\cos\\alpha \\lt 1$ et $0 \\lt \\sin\\alpha \\lt 1$.\n:::\n\n::: demonstration\nAvec les notations de la figure, le triangle $ABC$ est rectangle en $B$ :\n$$\n\\begin{aligned}\n\\cos^2\\alpha + \\sin^2\\alpha &= \\frac{AB^2}{AC^2} + \\frac{BC^2}{AC^2} \\\\\n&= \\frac{AB^2 + BC^2}{AC^2} \\\\\n&= \\frac{AC^2}{AC^2} = 1\n\\end{aligned}\n$$\ncar $AB^2 + BC^2 = AC^2$ d’après le théorème de Pythagore.\n\nDe même, $\\dfrac{\\sin\\alpha}{\\cos\\alpha} = \\dfrac{BC}{AC} \\times \\dfrac{AC}{AB} = \\dfrac{BC}{AB} = \\tan\\alpha$.\n:::\n\n::: propriete Valeurs remarquables\n| Angle $\\alpha$ | $30°$ | $45°$ | $60°$ |\n|---|---|---|---|\n| $\\cos\\alpha$ | $\\frac{\\sqrt{3}}{2}$ | $\\frac{\\sqrt{2}}{2}$ | $\\frac{1}{2}$ |\n| $\\sin\\alpha$ | $\\frac{1}{2}$ | $\\frac{\\sqrt{2}}{2}$ | $\\frac{\\sqrt{3}}{2}$ |\n| $\\tan\\alpha$ | $\\frac{\\sqrt{3}}{3}$ | $1$ | $\\sqrt{3}$ |\n:::\n\n::: methode Calculer une longueur ou un angle\n1. Repérer le triangle **rectangle** et l’angle utilisé.\n2. Nommer l’hypoténuse, le côté opposé et le côté adjacent **à cet angle**.\n3. Choisir la formule qui relie ce que l’on connaît à ce que l’on cherche.\n4. Pour un angle, utiliser les touches $\\cos^{-1}$, $\\sin^{-1}$ ou $\\tan^{-1}$ de la calculatrice (mode degrés).\n:::\n\n::: exemple Une hauteur inaccessible\nD’un point $O$ situé à $20$ m du pied $H$ d’un arbre, on voit son sommet $S$ sous un angle de $35°$. Le triangle $OHS$ est rectangle en $H$. Pour l’angle en $O$, $[HS]$ est le côté opposé et $[OH]$ le côté adjacent :\n$$\\tan 35° = \\frac{HS}{20} \\quad\\text{donc}\\quad HS = 20 \\tan 35° \\approx 14 \\text{ m}$$\n:::\n\n[IMAGE_3]\n\n::: exemple Calculer un angle\nDans un triangle rectangle, le côté opposé à l’angle $\\alpha$ mesure $3$ cm et le côté adjacent $4$ cm. Alors $\\tan\\alpha = \\dfrac{3}{4} = 0{,}75$ et la calculatrice donne $\\alpha \\approx 36{,}9°$.\n:::\n\n::: attention\n- La trigonométrie ne s’utilise que dans un triangle **rectangle**.\n- Le côté adjacent et le côté opposé dépendent de l’angle choisi : les nommer à chaque fois.\n- La calculatrice doit être en mode **degrés**.\n:::\n\n## III. Configurations utiles\n\n::: rappel Triangles et cercles\n- Si un triangle $ABC$ est rectangle en $C$, alors $C$ est sur le cercle de diamètre $[AB]$ : le centre du cercle circonscrit est le milieu de l’hypoténuse.\n- Réciproquement, si $C$ est un point du cercle de diamètre $[AB]$, distinct de $A$ et de $B$, alors le triangle $ABC$ est rectangle en $C$.\n- Dans un cercle de centre $O$, la droite qui joint $O$ au milieu d’une corde $[AB]$ est perpendiculaire à cette corde : c’est la médiatrice de $[AB]$.\n:::\n\n::: rappel Quadrilatères\n| Quadrilatère | Caractérisation |\n|---|---|\n| Parallélogramme | diagonales de même milieu |\n| Rectangle | parallélogramme avec un angle droit, ou diagonales de même longueur |\n| Losange | parallélogramme avec deux côtés consécutifs égaux |\n| Carré | rectangle et losange à la fois |\n:::\n\n::: rappel Théorème de Thalès\nSi $D$ est sur $[AB]$, $E$ sur $[AC]$ et $(DE) \\parallel (BC)$, alors\n$$\\frac{AD}{AB} = \\frac{AE}{AC} = \\frac{DE}{BC}$$\n:::\n\n::: rappel Dans un repère orthonormé\nPour $A(x_A\\,;y_A)$ et $B(x_B\\,;y_B)$ :\n$$AB = \\sqrt{(x_B - x_A)^2 + (y_B - y_A)^2}$$\n\net le milieu de $[AB]$ a pour coordonnées\n$$\\left(\\frac{x_A + x_B}{2}\\,;\\frac{y_A + y_B}{2}\\right)$$\n:::\n\n::: exemple Prouver qu’un triangle est rectangle avec des coordonnées\nDans un repère orthonormé, $A(0\\,;0)$, $B(4\\,;2)$ et $C(1\\,;3)$. On calcule les carrés des longueurs :\n$$\n\\begin{aligned}\nAB^2 &= 4^2 + 2^2 = 20 \\\\\nAC^2 &= 1^2 + 3^2 = 10 \\\\\nBC^2 &= (-3)^2 + 1^2 = 10\n\\end{aligned}\n$$\n\nLe plus grand côté est $[AB]$ et $AC^2 + BC^2 = 20 = AB^2$ : le triangle $ABC$ est rectangle en $C$ (et isocèle en $C$). Son aire vaut $\\dfrac{AC \\times BC}{2} = \\dfrac{\\sqrt{10} \\times \\sqrt{10}}{2} = 5$.\n:::\n\n## IV. Aires et volumes\n\n::: propriete Aires usuelles\n| Figure | Aire |\n|---|---|\n| Triangle | $\\dfrac{\\text{base} \\times \\text{hauteur}}{2}$ |\n| Parallélogramme | $\\text{base} \\times \\text{hauteur}$ |\n| Trapèze | $\\dfrac{(B + b) \\times h}{2}$ |\n| Disque de rayon $r$ | $\\pi r^2$ |\n:::\n\n::: propriete Volumes usuels\n| Solide | Volume |\n|---|---|\n| Pavé droit | $L \\times \\ell \\times h$ |\n| Prisme droit, cylindre | $\\mathcal{B} \\times h$ |\n| Pyramide, cône | $\\dfrac{1}{3} \\times \\mathcal{B} \\times h$ |\n| Boule de rayon $r$ | $\\dfrac{4}{3}\\pi r^3$ |\n\n$\\mathcal{B}$ désigne l’aire de la base et $h$ la hauteur du solide.\n:::\n\n[IMAGE_4]\n\n::: exemple\nUn cône a pour base un disque de rayon $3$ cm et pour hauteur $4$ cm :\n$$V = \\frac{1}{3} \\times \\pi \\times 3^2 \\times 4 = 12\\pi \\approx 37{,}7 \\text{ cm}^3$$\n:::\n\n::: remarque Unités\nUne aire s’exprime en unités carrées (cm², m²), un volume en unités cubes (cm³, m³). On retient : $1$ L $= 1$ dm³ $= 1\\,000$ cm³, et $1$ mL $= 1$ cm³.\n:::\n\n::: attention\nNe pas oublier le facteur $\\dfrac{1}{3}$ pour une pyramide ou un cône : un cône a le tiers du volume du cylindre de même base et de même hauteur.\n:::\n\n## V. Problèmes d’optimisation\n\n::: methode Optimiser une grandeur\n1. Choisir la variable $x$ (souvent une longueur) et préciser les valeurs possibles de $x$.\n2. Exprimer la grandeur à optimiser (aire, longueur…) en fonction de $x$.\n3. Écrire cette expression sous une forme qui montre le maximum ou le minimum, par exemple $a - k(x - b)^2$ avec $k \\gt 0$.\n4. Conclure dans le contexte : valeur de $x$, dimensions, valeur optimale.\n:::\n\n::: exemple Le plus grand enclos\nAvec $40$ m de grillage, on veut clôturer un enclos rectangulaire le long d’un mur (le mur forme un côté). On note $x$ la largeur, en mètres, avec $0 \\lt x \\lt 20$ : la longueur vaut $40 - 2x$.\n\n[IMAGE_5]\n\nL’aire vaut $\\mathcal{A}(x) = x(40 - 2x) = 40x - 2x^2$. On vérifie en développant que\n$$\\mathcal{A}(x) = 200 - 2(x - 10)^2$$\n\nComme $(x - 10)^2 \\geq 0$, on a $\\mathcal{A}(x) \\leq 200$, avec égalité pour $x = 10$. L’aire maximale est $200$ m², pour un enclos de $10$ m sur $20$ m.\n:::\n\n::: attention\nL’étude se fait sur les valeurs **possibles** de $x$ : une longueur est positive, et un point placé sur un segment ne peut pas en sortir.\n:::\n\n## VI. Démarche de résolution\n\n::: methode Résoudre un problème de géométrie\n1. Faire une figure soignée et la coder (angles droits, longueurs égales, données).\n2. Repérer les configurations : triangle rectangle, projeté orthogonal, parallélogramme, cercle, droites parallèles.\n3. Choisir l’outil : Pythagore, trigonométrie, Thalès, aires, coordonnées ou vecteurs.\n4. Rédiger en citant à chaque étape la propriété utilisée, puis vérifier la vraisemblance du résultat sur la figure.\n:::\n\n::: retenir\n- Le projeté orthogonal $H$ de $M$ sur $d$ est le point de $d$ le plus proche de $M$ ; $MH$ est la distance de $M$ à $d$.\n- Triangle rectangle en $B$ : $AC^2 = AB^2 + BC^2$.\n- $\\cos = \\frac{\\text{adj}}{\\text{hyp}}$, $\\sin = \\frac{\\text{opp}}{\\text{hyp}}$, $\\tan = \\frac{\\text{opp}}{\\text{adj}}$ et $\\cos^2\\alpha + \\sin^2\\alpha = 1$.\n- Volumes : $\\mathcal{B}h$ pour un prisme ou un cylindre, $\\frac{1}{3}\\mathcal{B}h$ pour une pyramide ou un cône, $\\frac{4}{3}\\pi r^3$ pour une boule.\n- Optimisation : variable, valeurs possibles, expression, forme qui montre l’extremum, conclusion.\n:::"
+  }
+ ],
+ "fiches": [
+  {
+   "id": 139,
+   "summary": "<!-- optitab:1 -->\n::: objectifs\nL’essentiel pour résoudre un problème de géométrie en Seconde : projeté orthogonal, triangle rectangle, aires, volumes et optimisation.\n:::\n\n## I. Projeté orthogonal\n\n::: definition\nLe projeté orthogonal de $M$ sur $d$ est le point $H$ de $d$ tel que $(MH) \\perp d$. C’est le point de $d$ **le plus proche** de $M$ : $MN \\geq MH$ pour tout $N$ de $d$. La distance de $M$ à $d$ est $MH$.\n:::\n\n[IMAGE_3]\n\n## II. Triangle rectangle\n\n[IMAGE_1]\n\n::: formule\n$$AC^2 = AB^2 + BC^2$$\n:::\n\n$$\\cos\\alpha = \\frac{\\text{adj}}{\\text{hyp}} \\qquad \\sin\\alpha = \\frac{\\text{opp}}{\\text{hyp}}$$\n\n$$\\tan\\alpha = \\frac{\\text{opp}}{\\text{adj}} = \\frac{\\sin\\alpha}{\\cos\\alpha}$$\n\n::: formule\n$$\\cos^2\\alpha + \\sin^2\\alpha = 1$$\n:::\n\n| $\\alpha$ | $30°$ | $45°$ | $60°$ |\n|---|---|---|---|\n| $\\cos\\alpha$ | $\\frac{\\sqrt{3}}{2}$ | $\\frac{\\sqrt{2}}{2}$ | $\\frac{1}{2}$ |\n| $\\sin\\alpha$ | $\\frac{1}{2}$ | $\\frac{\\sqrt{2}}{2}$ | $\\frac{\\sqrt{3}}{2}$ |\n\n## III. Aires et volumes\n\n| Figure | Aire |\n|---|---|\n| Triangle | $\\dfrac{b \\times h}{2}$ |\n| Parallélogramme | $b \\times h$ |\n| Trapèze | $\\dfrac{(B + b) \\times h}{2}$ |\n| Disque | $\\pi r^2$ |\n\n| Solide | Volume |\n|---|---|\n| Prisme, cylindre | $\\mathcal{B} \\times h$ |\n| Pyramide, cône | $\\dfrac{1}{3} \\times \\mathcal{B} \\times h$ |\n| Boule | $\\dfrac{4}{3}\\pi r^3$ |\n\n$1$ L $= 1$ dm³ $= 1\\,000$ cm³.\n\n[IMAGE_2]\n\n## IV. Optimisation\n\n::: methode\nVariable $x$ et valeurs possibles → grandeur en fonction de $x$ → forme $a - k(x - b)^2$ (maximum $a$ en $x = b$) ou $a + k(x - b)^2$ (minimum $a$ en $x = b$), avec $k \\gt 0$ → conclusion dans le contexte.\n:::\n\n## V. Les pièges à éviter\n\n::: attention Les 5 erreurs classiques\n1. Utiliser la trigonométrie dans un triangle qui n’est pas rectangle.\n2. Confondre côté adjacent et côté opposé : ils dépendent de l’angle choisi.\n3. Oublier le mode degrés de la calculatrice.\n4. Dans la réciproque de Pythagore, ne pas prendre le plus grand côté.\n5. Oublier le $\\dfrac{1}{3}$ dans le volume d’une pyramide ou d’un cône.\n:::\n\n::: conseil Réflexe\nUne longueur ou un angle → je cherche un triangle rectangle (au besoin, je trace une hauteur). Une figure dans un repère → je calcule des distances, des milieux ou des vecteurs.\n:::"
+  }
+ ],
+ "exercices": [
+  {
+   "id": 2057,
+   "question": "<!-- optitab:1 -->\nDans un repère orthonormé $(O\\,;I,J)$, on place les points $A(-1\\,;1)$, $B(3\\,;5)$ et $C(3\\,;1)$.\n\n1. Calculer les longueurs $AC$, $BC$ et $AB$.\n2. En déduire la nature du triangle $ABC$.\n3. Calculer les coordonnées du milieu $M$ de $[AB]$.\n4. Le point $D$ est le symétrique de $C$ par rapport à $M$. Déterminer les coordonnées de $D$.\n5. Démontrer que le quadrilatère $ACBD$ est un carré.\n6. Calculer le périmètre et l’aire de ce carré.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Calculer $AC$, $BC$ et $AB$\n\n::: methode\nDans un repère orthonormé, $AB = \\sqrt{(x_B - x_A)^2 + (y_B - y_A)^2}$.\n:::\n\n::: etape Longueur $AC$\n$$\n\\begin{aligned}\nAC &= \\sqrt{(3 - (-1))^2 + (1 - 1)^2} \\\\\n&= \\sqrt{4^2 + 0^2} = 4\n\\end{aligned}\n$$\n:::\n\n::: etape Longueur $BC$\n$$\n\\begin{aligned}\nBC &= \\sqrt{(3 - 3)^2 + (1 - 5)^2} \\\\\n&= \\sqrt{0^2 + (-4)^2} = 4\n\\end{aligned}\n$$\n:::\n\n::: etape Longueur $AB$\n$$\n\\begin{aligned}\nAB &= \\sqrt{(3 - (-1))^2 + (5 - 1)^2} \\\\\n&= \\sqrt{16 + 16} = \\sqrt{32} \\\\\n&= \\sqrt{16 \\times 2} = 4\\sqrt{2}\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$AC = 4$, $BC = 4$ et $AB = 4\\sqrt{2}$.\n:::\n\n## Question 2 : Nature du triangle $ABC$\n\n::: methode\nOn compare le carré du plus grand côté, $[AB]$, à la somme des carrés des deux autres (réciproque de Pythagore).\n:::\n\n::: etape Comparer les carrés\n$$AB^2 = 32 \\qquad AC^2 + BC^2 = 16 + 16 = 32$$\n:::\n\n::: etape Conclure\n$AC^2 + BC^2 = AB^2$, donc le triangle $ABC$ est rectangle en $C$. De plus $AC = BC$ : il est aussi isocèle en $C$.\n:::\n\n::: resultat\n$ABC$ est un triangle rectangle isocèle en $C$.\n:::\n\n## Question 3 : Milieu $M$ de $[AB]$\n\n::: methode\nLes coordonnées du milieu sont les moyennes des coordonnées des extrémités.\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\nx_M &= \\frac{-1 + 3}{2} = 1 \\\\\ny_M &= \\frac{1 + 5}{2} = 3\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$$M(1\\,;3)$$\n:::\n\n## Question 4 : Symétrique $D$ de $C$ par rapport à $M$\n\n::: methode\n$D$ est le symétrique de $C$ par rapport à $M$ signifie que $M$ est le milieu de $[CD]$.\n:::\n\n::: etape Traduire avec les coordonnées\n$$\\frac{3 + x_D}{2} = 1 \\qquad \\frac{1 + y_D}{2} = 3$$\n:::\n\n::: etape Résoudre\n$3 + x_D = 2$ donne $x_D = -1$ ; $1 + y_D = 6$ donne $y_D = 5$.\n:::\n\n::: resultat\n$$D(-1\\,;5)$$\n:::\n\n[IMAGE_1]\n\n## Question 5 : $ACBD$ est un carré\n\n::: methode\nOn montre successivement : parallélogramme, puis rectangle, puis carré.\n:::\n\n::: etape Parallélogramme\nLes diagonales $[AB]$ et $[CD]$ ont le même milieu $M$ (questions 3 et 4) : $ACBD$ est un parallélogramme.\n:::\n\n::: etape Rectangle\nL’angle $\\widehat{ACB}$ est droit (question 2). Un parallélogramme qui a un angle droit est un rectangle.\n:::\n\n::: etape Carré\nDans ce rectangle, les côtés consécutifs $[AC]$ et $[CB]$ ont la même longueur $4$. Un rectangle qui a deux côtés consécutifs égaux est un carré.\n:::\n\n::: resultat\n$ACBD$ est un carré de côté $4$.\n:::\n\n::: attention\nL’ordre des lettres compte : les diagonales de $ACBD$ sont $[AB]$ et $[CD]$, pas $[AC]$ et $[BD]$.\n:::\n\n## Question 6 : Périmètre et aire\n\n::: etape Calcul\nLe côté du carré mesure $4$ : $P = 4 \\times 4 = 16$ et $\\mathcal{A} = 4^2 = 16$.\n:::\n\n::: resultat\nPérimètre : $16$ unités ; aire : $16$ unités d’aire.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $AC = 4$, $BC = 4$ et $AB = 4\\sqrt{2}$\n2. Triangle rectangle isocèle en $C$\n3. $M(1\\,;3)$\n4. $D(-1\\,;5)$\n5. Diagonales de même milieu, un angle droit, deux côtés consécutifs égaux : $ACBD$ est un carré.\n6. Périmètre $16$ ; aire $16$",
+   "titre": "Application - Distances - Triangle rectangle, symétrie et carré",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nDans un repère orthonormé $(O\\,;I,J)$, on place les points $A(-1\\,;1)$, $B(3\\,;5)$ et $C(3\\,;1)$.\n\n1. Calculer les longueurs $AC$, $BC$ et $AB$.\n2. En déduire la nature du triangle $ABC$.\n3. Calculer les coordonnées du milieu $M$ de $[AB]$.\n4. Le point $D$ est le symétrique de $C$ par rapport à $M$. Déterminer les coordonnées de $D$.\n5. Démontrer que le quadrilatère $ACBD$ est un carré.\n6. Calculer le périmètre et l’aire de ce carré."
+  },
+  {
+   "id": 2069,
+   "question": "<!-- optitab:1 -->\nUn rectangle a un périmètre de $40$ cm. On note $x$ sa longueur et $y$ sa largeur, en cm.\n\n1. Exprimer $y$ en fonction de $x$.\n2. Exprimer l’aire $\\mathcal{A}(x)$ du rectangle en fonction de $x$.\n3. Quelles sont les valeurs possibles de $x$ ?\n4. Démontrer que $\\mathcal{A}(x) = 100 - (x - 10)^2$.\n5. En déduire l’aire maximale et les dimensions du rectangle correspondant.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Exprimer $y$ en fonction de $x$\n\n::: methode\nLe périmètre d’un rectangle vaut $2(x + y)$.\n:::\n\n::: etape Calcul\n$$2(x + y) = 40 \\iff x + y = 20 \\iff y = 20 - x$$\n:::\n\n::: resultat\n$$y = 20 - x$$\n:::\n\n## Question 2 : Aire en fonction de $x$\n\n::: etape Calcul\n$$\\mathcal{A}(x) = x \\times y = x(20 - x)$$\n:::\n\n::: resultat\n$$\\mathcal{A}(x) = x(20 - x) = 20x - x^2$$\n:::\n\n## Question 3 : Valeurs possibles de $x$\n\n::: methode\nLes deux dimensions doivent être strictement positives.\n:::\n\n::: etape Contraintes\n$x \\gt 0$ et $y = 20 - x \\gt 0$, c’est-à-dire $x \\lt 20$.\n:::\n\n::: resultat\n$x$ appartient à l’intervalle $]0\\,;20[$.\n:::\n\n## Question 4 : Démontrer que $\\mathcal{A}(x) = 100 - (x - 10)^2$\n\n::: methode\nOn développe l’expression proposée et on retrouve celle de la question 2.\n:::\n\n::: etape Développer le carré\n$$(x - 10)^2 = x^2 - 20x + 100$$\n:::\n\n::: etape En déduire l’expression\n$$\n\\begin{aligned}\n100 - (x - 10)^2 &= 100 - x^2 + 20x - 100 \\\\\n&= 20x - x^2\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$100 - (x - 10)^2 = 20x - x^2 = \\mathcal{A}(x)$.\n:::\n\n::: attention\nLe signe moins devant la parenthèse change **tous** les signes : $-(x^2 - 20x + 100) = -x^2 + 20x - 100$.\n:::\n\n## Question 5 : Aire maximale\n\n::: methode\nUn carré est toujours positif ou nul : $(x - 10)^2 \\geq 0$.\n:::\n\n::: etape Majorer l’aire\nPour tout $x$ de $]0\\,;20[$, $(x - 10)^2 \\geq 0$, donc $\\mathcal{A}(x) = 100 - (x - 10)^2 \\leq 100$.\n:::\n\n::: etape Atteindre le maximum\n$\\mathcal{A}(10) = 100 - 0 = 100$. Pour $x = 10$, $y = 20 - 10 = 10$.\n:::\n\n[IMAGE_1]\n\n::: resultat\nL’aire maximale vaut $100$ cm² ; elle est obtenue pour le carré de côté $10$ cm.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $y = 20 - x$\n2. $\\mathcal{A}(x) = x(20 - x)$\n3. $x \\in\\, ]0\\,;20[$\n4. En développant : $100 - (x - 10)^2 = 20x - x^2 = \\mathcal{A}(x)$.\n5. Aire maximale $100$ cm², pour le carré de côté $10$ cm.",
+   "titre": "Application - Optimisation - Aire maximale d’un rectangle de périmètre fixé",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nUn rectangle a un périmètre de $40$ cm. On note $x$ sa longueur et $y$ sa largeur, en cm.\n\n1. Exprimer $y$ en fonction de $x$.\n2. Exprimer l’aire $\\mathcal{A}(x)$ du rectangle en fonction de $x$.\n3. Quelles sont les valeurs possibles de $x$ ?\n4. Démontrer que $\\mathcal{A}(x) = 100 - (x - 10)^2$.\n5. En déduire l’aire maximale et les dimensions du rectangle correspondant."
+  },
+  {
+   "id": 2056,
+   "question": "<!-- optitab:1 -->\nDans un repère orthonormé, on donne les points $A(-2\\,;1)$, $B(2\\,;1)$ et $D(-1\\,;4)$. On veut placer le point $C$ pour que $ABCD$ soit un parallélogramme.\n\n1. Calculer les coordonnées des vecteurs $\\overrightarrow{AB}$ et $\\overrightarrow{AD}$.\n2. Déterminer les coordonnées du point $C$.\n3. Calculer $AB$ et $AD$. Le parallélogramme $ABCD$ est-il un losange ?\n4. On note $K$ le point d’intersection des diagonales. Calculer les coordonnées de $K$.\n5. On note $E$ le projeté orthogonal de $D$ sur la droite $(AB)$. Donner les coordonnées de $E$, puis calculer l’aire de $ABCD$.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Vecteurs $\\overrightarrow{AB}$ et $\\overrightarrow{AD}$\n\n::: methode\nCoordonnées de $\\overrightarrow{AB}$ : $(x_B - x_A\\,;y_B - y_A)$, « arrivée moins départ ».\n:::\n\n::: etape Calculs\n$$\\overrightarrow{AB}\\,(2 - (-2)\\,;1 - 1) = (4\\,;0)$$\n\n$$\\overrightarrow{AD}\\,(-1 - (-2)\\,;4 - 1) = (1\\,;3)$$\n:::\n\n::: resultat\n$\\overrightarrow{AB}\\,(4\\,;0)$ et $\\overrightarrow{AD}\\,(1\\,;3)$.\n:::\n\n## Question 2 : Coordonnées de $C$\n\n::: methode\n$ABCD$ est un parallélogramme si et seulement si $\\overrightarrow{AB} = \\overrightarrow{DC}$.\n:::\n\n::: etape Traduire l’égalité\n$$x_C - (-1) = 4 \\qquad y_C - 4 = 0$$\n:::\n\n::: etape Résoudre\n$x_C = 3$ et $y_C = 4$.\n:::\n\n::: resultat\n$$C(3\\,;4)$$\n:::\n\n::: attention\nAvec $ABCD$, l’égalité est $\\overrightarrow{AB} = \\overrightarrow{DC}$ et non $\\overrightarrow{AB} = \\overrightarrow{CD}$ : les deux vecteurs doivent avoir le même sens.\n:::\n\n## Question 3 : Est-ce un losange ?\n\n::: etape Longueurs\n$$\n\\begin{aligned}\nAB &= \\sqrt{4^2 + 0^2} = 4 \\\\\nAD &= \\sqrt{1^2 + 3^2} = \\sqrt{10}\n\\end{aligned}\n$$\n:::\n\n::: etape Conclure\nUn losange a ses côtés consécutifs de même longueur. Ici $AB \\neq AD$.\n:::\n\n::: resultat\n$AB = 4$ et $AD = \\sqrt{10}$ : $ABCD$ n’est pas un losange.\n:::\n\n## Question 4 : Centre $K$\n\n::: methode\nLes diagonales d’un parallélogramme se coupent en leur milieu : $K$ est le milieu de $[AC]$.\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\nx_K &= \\frac{-2 + 3}{2} = \\frac{1}{2} \\\\\ny_K &= \\frac{1 + 4}{2} = \\frac{5}{2}\n\\end{aligned}\n$$\n:::\n\n::: point Vérification\nLe milieu de $[BD]$ est $\\left(\\dfrac{2 - 1}{2}\\,;\\dfrac{1 + 4}{2}\\right) = \\left(\\dfrac{1}{2}\\,;\\dfrac{5}{2}\\right)$ : c’est bien le même point.\n:::\n\n::: resultat\n$$K\\left(\\frac{1}{2}\\,;\\frac{5}{2}\\right)$$\n:::\n\n## Question 5 : Projeté $E$ et aire\n\n::: methode\nAire d’un parallélogramme : base $\\times$ hauteur. Avec la base $[AB]$, la hauteur est la distance de $D$ à $(AB)$, c’est-à-dire $DE$.\n:::\n\n::: etape Le projeté $E$\nLa droite $(AB)$ est horizontale ($y_A = y_B = 1$). La perpendiculaire à $(AB)$ passant par $D$ est verticale : $E$ a la même abscisse que $D$ et l’ordonnée $1$. Donc $E(-1\\,;1)$.\n:::\n\n::: etape Hauteur\n$$DE = 4 - 1 = 3$$\n:::\n\n[IMAGE_1]\n\n::: etape Aire\n$$\\mathcal{A} = AB \\times DE = 4 \\times 3 = 12$$\n:::\n\n::: resultat\n$E(-1\\,;1)$ et l’aire de $ABCD$ vaut $12$ unités d’aire.\n:::\n\n::: attention\nLa hauteur n’est pas le côté $[AD]$ : $AD = \\sqrt{10} \\approx 3{,}16$, alors que la hauteur vaut $3$.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $\\overrightarrow{AB}\\,(4\\,;0)$ et $\\overrightarrow{AD}\\,(1\\,;3)$\n2. $C(3\\,;4)$\n3. $AB = 4$ et $AD = \\sqrt{10}$ : ce n’est pas un losange.\n4. $K\\left(\\dfrac{1}{2}\\,;\\dfrac{5}{2}\\right)$\n5. $E(-1\\,;1)$ ; aire $= 4 \\times 3 = 12$",
+   "titre": "Application - Parallélogramme - Sommet manquant, diagonales et aire",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nDans un repère orthonormé, on donne les points $A(-2\\,;1)$, $B(2\\,;1)$ et $D(-1\\,;4)$. On veut placer le point $C$ pour que $ABCD$ soit un parallélogramme.\n\n1. Calculer les coordonnées des vecteurs $\\overrightarrow{AB}$ et $\\overrightarrow{AD}$.\n2. Déterminer les coordonnées du point $C$.\n3. Calculer $AB$ et $AD$. Le parallélogramme $ABCD$ est-il un losange ?\n4. On note $K$ le point d’intersection des diagonales. Calculer les coordonnées de $K$.\n5. On note $E$ le projeté orthogonal de $D$ sur la droite $(AB)$. Donner les coordonnées de $E$, puis calculer l’aire de $ABCD$."
+  },
+  {
+   "id": 2058,
+   "question": "<!-- optitab:1 -->\nDans un repère orthonormé, on donne les points $P(-2\\,;4)$, $Q(4\\,;1)$, $M(4\\,;6)$ et $H(2\\,;2)$.\n\n[IMAGE_1]\n\n1. Calculer les coordonnées des vecteurs $\\overrightarrow{PH}$ et $\\overrightarrow{PQ}$. En déduire que $H$ appartient à la droite $(PQ)$.\n2. Calculer $MH^2$, $PH^2$ et $MP^2$.\n3. En déduire que $H$ est le projeté orthogonal de $M$ sur la droite $(PQ)$.\n4. Donner la distance du point $M$ à la droite $(PQ)$ : valeur exacte, puis valeur approchée au centième.\n5. Calculer $MQ$. Ce résultat est-il cohérent avec la question 4 ?\n6. Calculer l’aire du triangle $MPQ$.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : $H$ appartient à $(PQ)$\n\n::: methode\nSi $\\overrightarrow{PH}$ et $\\overrightarrow{PQ}$ sont colinéaires, les points $P$, $H$ et $Q$ sont alignés.\n:::\n\n::: etape Coordonnées des vecteurs\n$$\\overrightarrow{PH}\\,(2 - (-2)\\,;2 - 4) = (4\\,;-2)$$\n\n$$\\overrightarrow{PQ}\\,(4 - (-2)\\,;1 - 4) = (6\\,;-3)$$\n:::\n\n::: etape Colinéarité\n$\\dfrac{3}{2} \\times 4 = 6$ et $\\dfrac{3}{2} \\times (-2) = -3$, donc $\\overrightarrow{PQ} = \\dfrac{3}{2}\\overrightarrow{PH}$.\n:::\n\n::: resultat\nLes vecteurs sont colinéaires : $P$, $H$, $Q$ sont alignés et $H$ appartient à $(PQ)$.\n:::\n\n## Question 2 : Calculer $MH^2$, $PH^2$ et $MP^2$\n\n::: methode\n$AB^2 = (x_B - x_A)^2 + (y_B - y_A)^2$ : on garde les carrés, sans racine.\n:::\n\n::: etape Écarts de coordonnées\nDe $M$ à $H$ : $2 - 4 = -2$ et $2 - 6 = -4$. De $P$ à $H$ : $4$ et $-2$ (question 1). De $M$ à $P$ : $-2 - 4 = -6$ et $4 - 6 = -2$.\n:::\n\n::: etape Les trois calculs\n$$\n\\begin{aligned}\nMH^2 &= (-2)^2 + (-4)^2 = 20 \\\\\nPH^2 &= 4^2 + (-2)^2 = 20 \\\\\nMP^2 &= (-6)^2 + (-2)^2 = 40\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$MH^2 = 20$, $PH^2 = 20$ et $MP^2 = 40$.\n:::\n\n## Question 3 : $H$ est le projeté orthogonal de $M$ sur $(PQ)$\n\n::: methode\nRéciproque de Pythagore dans le triangle $MHP$ : le plus grand côté est $[MP]$.\n:::\n\n::: etape Comparer\n$$MH^2 + PH^2 = 20 + 20 = 40 = MP^2$$\n\nL’égalité de Pythagore est vérifiée : le triangle $MHP$ est rectangle en $H$.\n:::\n\n::: etape Conclure\n$(MH) \\perp (HP)$, c’est-à-dire $(MH) \\perp (PQ)$, et $H$ est sur $(PQ)$ (question 1).\n:::\n\n::: resultat\n$H$ est le projeté orthogonal de $M$ sur la droite $(PQ)$.\n:::\n\n[IMAGE_2]\n\n## Question 4 : Distance de $M$ à $(PQ)$\n\n::: methode\nLa distance d’un point à une droite est la distance entre ce point et son projeté orthogonal sur la droite.\n:::\n\n::: etape Calcul\n$$MH = \\sqrt{20} = \\sqrt{4 \\times 5} = 2\\sqrt{5}$$\n:::\n\n::: resultat\nLa distance de $M$ à $(PQ)$ vaut $2\\sqrt{5} \\approx 4{,}47$.\n:::\n\n## Question 5 : Calculer $MQ$\n\n::: etape Calcul\n$$\n\\begin{aligned}\nMQ^2 &= (4 - 4)^2 + (1 - 6)^2 \\\\\n&= 0 + 25 = 25\n\\end{aligned}\n$$\n\nDonc $MQ = 5$.\n:::\n\n::: etape Comparer\n$MQ = 5 \\gt 4{,}47 \\approx MH$ : c’est cohérent, car $H$ est le point de $(PQ)$ le plus proche de $M$.\n:::\n\n::: resultat\n$MQ = 5$, plus grand que $MH$ : c’est cohérent.\n:::\n\n## Question 6 : Aire du triangle $MPQ$\n\n::: methode\nOn prend $[PQ]$ comme base : la hauteur correspondante est $MH$.\n:::\n\n::: etape Longueur de la base\n$$PQ = \\sqrt{6^2 + (-3)^2} = \\sqrt{45} = 3\\sqrt{5}$$\n:::\n\n::: etape Aire\n$$\n\\begin{aligned}\n\\mathcal{A} &= \\frac{PQ \\times MH}{2} \\\\\n&= \\frac{3\\sqrt{5} \\times 2\\sqrt{5}}{2} \\\\\n&= \\frac{6 \\times 5}{2} = 15\n\\end{aligned}\n$$\n:::\n\n::: resultat\nL’aire du triangle $MPQ$ vaut $15$ unités d’aire.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $\\overrightarrow{PH}\\,(4\\,;-2)$ et $\\overrightarrow{PQ}\\,(6\\,;-3) = \\dfrac{3}{2}\\overrightarrow{PH}$ : $H \\in (PQ)$.\n2. $MH^2 = 20$, $PH^2 = 20$, $MP^2 = 40$\n3. $MH^2 + PH^2 = MP^2$ : $MHP$ est rectangle en $H$, donc $H$ est le projeté orthogonal de $M$ sur $(PQ)$.\n4. $MH = 2\\sqrt{5} \\approx 4{,}47$\n5. $MQ = 5 \\gt MH$ : cohérent.\n6. $\\mathcal{A} = 15$",
+   "titre": "Application - Projeté orthogonal - Distance d’un point à une droite dans un repère",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nDans un repère orthonormé, on donne les points $P(-2\\,;4)$, $Q(4\\,;1)$, $M(4\\,;6)$ et $H(2\\,;2)$.\n\n[IMAGE_1]\n\n1. Calculer les coordonnées des vecteurs $\\overrightarrow{PH}$ et $\\overrightarrow{PQ}$. En déduire que $H$ appartient à la droite $(PQ)$.\n2. Calculer $MH^2$, $PH^2$ et $MP^2$.\n3. En déduire que $H$ est le projeté orthogonal de $M$ sur la droite $(PQ)$.\n4. Donner la distance du point $M$ à la droite $(PQ)$ : valeur exacte, puis valeur approchée au centième.\n5. Calculer $MQ$. Ce résultat est-il cohérent avec la question 4 ?\n6. Calculer l’aire du triangle $MPQ$."
+  },
+  {
+   "id": 2060,
+   "question": "<!-- optitab:1 -->\nDans un repère orthonormé, on donne les points $A(-2\\,;1)$ et $B(4\\,;3)$. On note $\\mathcal{C}$ le cercle de diamètre $[AB]$. On donne aussi $C(4\\,;1)$, $D(-2\\,;3)$ et $E(1\\,;5)$.\n\n1. Déterminer les coordonnées du centre $M$ du cercle $\\mathcal{C}$.\n2. Calculer le rayon $r$ du cercle $\\mathcal{C}$.\n3. Parmi les points $C$, $D$ et $E$, lesquels appartiennent au cercle $\\mathcal{C}$ ?\n4. Démontrer que les triangles $ACB$ et $ADB$ sont rectangles, en précisant l’angle droit.\n5. Démontrer que $ACBD$ est un rectangle et calculer son aire.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Centre $M$\n\n::: methode\nLe centre d’un cercle est le milieu de n’importe lequel de ses diamètres.\n:::\n\n::: etape Milieu de $[AB]$\n$$\n\\begin{aligned}\nx_M &= \\frac{-2 + 4}{2} = 1 \\\\\ny_M &= \\frac{1 + 3}{2} = 2\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$$M(1\\,;2)$$\n:::\n\n## Question 2 : Rayon\n\n::: methode\nLe rayon est la moitié du diamètre : $r = \\dfrac{AB}{2}$.\n:::\n\n::: etape Longueur $AB$\n$$\n\\begin{aligned}\nAB &= \\sqrt{(4 - (-2))^2 + (3 - 1)^2} \\\\\n&= \\sqrt{36 + 4} = \\sqrt{40} = 2\\sqrt{10}\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$r = \\sqrt{10}$, donc $r^2 = 10$.\n:::\n\n## Question 3 : Points du cercle\n\n::: methode\nUn point $X$ appartient au cercle si et seulement si $MX = r$, c’est-à-dire $MX^2 = 10$.\n:::\n\n::: etape Les trois calculs\n$$\n\\begin{aligned}\nMC^2 &= (4 - 1)^2 + (1 - 2)^2 \\\\\n&= 9 + 1 = 10 \\\\\nMD^2 &= (-2 - 1)^2 + (3 - 2)^2 \\\\\n&= 9 + 1 = 10 \\\\\nME^2 &= (1 - 1)^2 + (5 - 2)^2 \\\\\n&= 0 + 9 = 9\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$C$ et $D$ appartiennent au cercle ; $E$ n’y appartient pas ($ME = 3 \\lt \\sqrt{10}$ : $E$ est à l’intérieur).\n:::\n\n## Question 4 : Triangles rectangles\n\n::: methode\nRéciproque de Pythagore : on compare $AB^2 = 40$ à la somme des carrés des deux autres côtés.\n:::\n\n::: etape Triangle $ACB$\n$$\n\\begin{aligned}\nAC^2 &= 6^2 + 0^2 = 36 \\\\\nCB^2 &= 0^2 + 2^2 = 4\n\\end{aligned}\n$$\n\n$AC^2 + CB^2 = 40 = AB^2$ : le triangle $ACB$ est rectangle en $C$.\n:::\n\n::: etape Triangle $ADB$\n$$\n\\begin{aligned}\nAD^2 &= 0^2 + 2^2 = 4 \\\\\nDB^2 &= 6^2 + 0^2 = 36\n\\end{aligned}\n$$\n\n$AD^2 + DB^2 = 40 = AB^2$ : le triangle $ADB$ est rectangle en $D$.\n:::\n\n::: resultat\n$ACB$ est rectangle en $C$ et $ADB$ est rectangle en $D$.\n:::\n\n::: retenir\nC’est la propriété du cercle : un point du cercle de diamètre $[AB]$, autre que $A$ et $B$, « voit » le diamètre sous un angle droit.\n:::\n\n## Question 5 : $ACBD$ est un rectangle\n\n::: methode\nUn quadrilatère dont les diagonales ont le même milieu et la même longueur est un rectangle.\n:::\n\n::: etape Les diagonales\nLes diagonales de $ACBD$ sont $[AB]$ et $[CD]$. Ce sont deux diamètres du cercle : $C$ et $D$ sont sur $\\mathcal{C}$ et le milieu de $[CD]$ est $\\left(\\dfrac{4 - 2}{2}\\,;\\dfrac{1 + 3}{2}\\right) = (1\\,;2)$, c’est-à-dire $M$.\n:::\n\n::: etape Conclure\nLes diagonales ont le même milieu $M$ et la même longueur $2r$ : $ACBD$ est un rectangle.\n:::\n\n[IMAGE_1]\n\n::: etape Aire\n$$\\mathcal{A} = AC \\times CB = 6 \\times 2 = 12$$\n:::\n\n::: resultat\n$ACBD$ est un rectangle d’aire $12$ unités d’aire.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $M(1\\,;2)$\n2. $r = \\sqrt{10}$\n3. $C$ et $D$ sont sur le cercle ; $E$ non ($ME^2 = 9 \\neq 10$).\n4. $ACB$ rectangle en $C$ ; $ADB$ rectangle en $D$.\n5. Diagonales de même milieu et de même longueur : rectangle ; aire $12$.",
+   "titre": "Approfondissement - Cercle de diamètre [AB] - Centre, rayon, vérifications",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nDans un repère orthonormé, on donne les points $A(-2\\,;1)$ et $B(4\\,;3)$. On note $\\mathcal{C}$ le cercle de diamètre $[AB]$. On donne aussi $C(4\\,;1)$, $D(-2\\,;3)$ et $E(1\\,;5)$.\n\n1. Déterminer les coordonnées du centre $M$ du cercle $\\mathcal{C}$.\n2. Calculer le rayon $r$ du cercle $\\mathcal{C}$.\n3. Parmi les points $C$, $D$ et $E$, lesquels appartiennent au cercle $\\mathcal{C}$ ?\n4. Démontrer que les triangles $ACB$ et $ADB$ sont rectangles, en précisant l’angle droit.\n5. Démontrer que $ACBD$ est un rectangle et calculer son aire."
+  },
+  {
+   "id": 2072,
+   "question": "<!-- optitab:1 -->\nLe triangle $ABC$ est rectangle en $A$, avec $AB = 6$ cm et $AC = 8$ cm. On note $O$ le milieu de $[BC]$ et $D$ le symétrique de $A$ par rapport à $O$.\n\n1. Calculer $BC$.\n2. Démontrer que $ABDC$ est un rectangle.\n3. En déduire que $OA = OB = OC$, puis le rayon du cercle circonscrit au triangle $ABC$.\n4. Quel est l’orthocentre du triangle $ABC$ ? Justifier.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Calculer $BC$\n\n::: methode\nThéorème de Pythagore dans le triangle $ABC$ rectangle en $A$ : $[BC]$ est l’hypoténuse.\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\nBC^2 &= AB^2 + AC^2 \\\\\n&= 36 + 64 = 100\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$BC = 10$ cm.\n:::\n\n## Question 2 : $ABDC$ est un rectangle\n\n::: etape Parallélogramme\n$O$ est le milieu de $[BC]$ (énoncé) et de $[AD]$ ($D$ symétrique de $A$ par rapport à $O$). Les diagonales $[AD]$ et $[BC]$ de $ABDC$ ont le même milieu : c’est un parallélogramme.\n:::\n\n::: etape Rectangle\nL’angle $\\widehat{BAC}$ est droit. Un parallélogramme qui a un angle droit est un rectangle.\n:::\n\n::: resultat\n$ABDC$ est un rectangle.\n:::\n\n[IMAGE_1]\n\n## Question 3 : $OA = OB = OC$ et rayon\n\n::: methode\nLes diagonales d’un rectangle ont la même longueur et se coupent en leur milieu.\n:::\n\n::: etape Diagonales du rectangle\n$AD = BC = 10$ cm. Comme $O$ est le milieu des deux diagonales :\n$$OA = \\frac{AD}{2} = 5 \\qquad OB = OC = \\frac{BC}{2} = 5$$\n:::\n\n::: etape Cercle circonscrit\n$O$ est à la même distance $5$ cm des trois sommets : c’est le centre du cercle circonscrit.\n:::\n\n::: resultat\n$OA = OB = OC = 5$ cm : le cercle circonscrit a pour centre $O$, milieu de l’hypoténuse, et pour rayon $5$ cm.\n:::\n\n::: retenir\nLe centre du cercle circonscrit à un triangle rectangle est le milieu de son hypoténuse.\n:::\n\n## Question 4 : Orthocentre\n\n::: methode\nL’orthocentre est le point de concours des trois hauteurs.\n:::\n\n::: etape Deux hauteurs\n$(AB) \\perp (AC)$ : la hauteur issue de $B$ est la droite $(BA)$, et la hauteur issue de $C$ est la droite $(CA)$.\n:::\n\n::: resultat\nCes deux hauteurs se coupent en $A$ : l’orthocentre du triangle est le sommet de l’angle droit, $A$.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $BC = 10$ cm\n2. Diagonales $[AD]$ et $[BC]$ de même milieu $O$, et un angle droit : $ABDC$ est un rectangle.\n3. $OA = OB = OC = 5$ cm ; rayon du cercle circonscrit : $5$ cm.\n4. L’orthocentre est $A$.",
+   "titre": "Bonus - Droites remarquables - Cercle circonscrit et orthocentre d’un triangle rectangle",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nLe triangle $ABC$ est rectangle en $A$, avec $AB = 6$ cm et $AC = 8$ cm. On note $O$ le milieu de $[BC]$ et $D$ le symétrique de $A$ par rapport à $O$.\n\n1. Calculer $BC$.\n2. Démontrer que $ABDC$ est un rectangle.\n3. En déduire que $OA = OB = OC$, puis le rayon du cercle circonscrit au triangle $ABC$.\n4. Quel est l’orthocentre du triangle $ABC$ ? Justifier."
+  },
+  {
+   "id": 2061,
+   "question": "<!-- optitab:1 -->\nLe triangle $AMB$ est rectangle en $M$, avec $AM = 5$ cm, $BM = 12$ cm et $AB = 13$ cm. On note $H$ le projeté orthogonal de $M$ sur la droite $(AB)$.\n\n[IMAGE_1]\n\n1. Calculer l’aire du triangle $AMB$.\n2. En prenant $[AB]$ comme base, en déduire la distance $MH$ du point $M$ à la droite $(AB)$.\n3. Calculer $AH$ et $BH$.\n4. Vérifier que $AH + BH = AB$.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Aire du triangle $AMB$\n\n::: methode\nDans un triangle rectangle, les deux côtés de l’angle droit sont une base et la hauteur associée.\n:::\n\n::: etape Calcul\n$$\\mathcal{A} = \\frac{AM \\times BM}{2} = \\frac{5 \\times 12}{2} = 30$$\n:::\n\n::: resultat\n$\\mathcal{A} = 30$ cm².\n:::\n\n## Question 2 : Distance $MH$\n\n::: methode\nAvec la base $[AB]$, la hauteur associée est $[MH]$ : on écrit l’aire une deuxième fois.\n:::\n\n::: etape Deuxième expression de l’aire\n$$\\mathcal{A} = \\frac{AB \\times MH}{2} = \\frac{13 \\times MH}{2}$$\n:::\n\n::: etape Isoler $MH$\n$$\\frac{13 \\times MH}{2} = 30 \\iff MH = \\frac{60}{13}$$\n:::\n\n::: resultat\n$MH = \\dfrac{60}{13} \\approx 4{,}62$ cm.\n:::\n\n## Question 3 : Calculer $AH$ et $BH$\n\n::: methode\nLes triangles $AHM$ et $BHM$ sont rectangles en $H$ : on applique Pythagore dans chacun.\n:::\n\n::: etape Dans le triangle $AHM$\n$$\n\\begin{aligned}\nAH^2 &= AM^2 - MH^2 \\\\\n&= 25 - \\frac{3\\,600}{169} \\\\\n&= \\frac{4\\,225 - 3\\,600}{169} = \\frac{625}{169}\n\\end{aligned}\n$$\n\nDonc $AH = \\dfrac{25}{13}$.\n:::\n\n::: etape Dans le triangle $BHM$\n$$\n\\begin{aligned}\nBH^2 &= BM^2 - MH^2 \\\\\n&= 144 - \\frac{3\\,600}{169} \\\\\n&= \\frac{24\\,336 - 3\\,600}{169} = \\frac{20\\,736}{169}\n\\end{aligned}\n$$\n\nDonc $BH = \\dfrac{144}{13}$.\n:::\n\n::: resultat\n$AH = \\dfrac{25}{13} \\approx 1{,}92$ cm et $BH = \\dfrac{144}{13} \\approx 11{,}08$ cm.\n:::\n\n::: attention\nOn garde les valeurs exactes jusqu’au bout : arrondir $MH$ à $4{,}62$ avant de calculer $AH$ fausserait les décimales.\n:::\n\n## Question 4 : Vérifier $AH + BH = AB$\n\n::: etape Calcul\n$$AH + BH = \\frac{25}{13} + \\frac{144}{13} = \\frac{169}{13} = 13$$\n:::\n\n::: resultat\n$AH + BH = 13 = AB$ : $H$ est bien sur le segment $[AB]$.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $\\mathcal{A} = 30$ cm²\n2. $MH = \\dfrac{60}{13} \\approx 4{,}62$ cm\n3. $AH = \\dfrac{25}{13} \\approx 1{,}92$ cm et $BH = \\dfrac{144}{13} \\approx 11{,}08$ cm\n4. $AH + BH = \\dfrac{169}{13} = 13 = AB$",
+   "titre": "Découverte - Projeté orthogonal - Distance d’un point à une droite",
+   "difficulty": "easy",
+   "contenu": "<!-- optitab:1 -->\nLe triangle $AMB$ est rectangle en $M$, avec $AM = 5$ cm, $BM = 12$ cm et $AB = 13$ cm. On note $H$ le projeté orthogonal de $M$ sur la droite $(AB)$.\n\n[IMAGE_1]\n\n1. Calculer l’aire du triangle $AMB$.\n2. En prenant $[AB]$ comme base, en déduire la distance $MH$ du point $M$ à la droite $(AB)$.\n3. Calculer $AH$ et $BH$.\n4. Vérifier que $AH + BH = AB$."
+  },
+  {
+   "id": 2055,
+   "question": "<!-- optitab:1 -->\nDans un repère orthonormé d’origine $O$, on donne les points $A(-3\\,;1)$ et $B(1\\,;5)$.\n\n1. Calculer les coordonnées du milieu $M$ du segment $[AB]$.\n2. Le point $A'$ est le symétrique de $A$ par rapport à $B$. Déterminer les coordonnées de $A'$.\n3. Le point $C$ est le symétrique de $O$ par rapport à $M$. Déterminer les coordonnées de $C$.\n4. Démontrer que $OACB$ est un parallélogramme.\n5. Calculer la distance $AB$, puis en déduire la distance $AA'$.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Milieu de $[AB]$\n\n::: methode\n$x_M = \\dfrac{x_A + x_B}{2}$ et $y_M = \\dfrac{y_A + y_B}{2}$.\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\nx_M &= \\frac{-3 + 1}{2} = -1 \\\\\ny_M &= \\frac{1 + 5}{2} = 3\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$$M(-1\\,;3)$$\n:::\n\n## Question 2 : Symétrique de $A$ par rapport à $B$\n\n::: methode\n$A'$ symétrique de $A$ par rapport à $B$ signifie : $B$ est le milieu de $[AA']$.\n:::\n\n::: etape Traduire\n$$\\frac{-3 + x_{A'}}{2} = 1 \\qquad \\frac{1 + y_{A'}}{2} = 5$$\n:::\n\n::: etape Résoudre\n$-3 + x_{A'} = 2$ donne $x_{A'} = 5$ ; $1 + y_{A'} = 10$ donne $y_{A'} = 9$.\n:::\n\n::: resultat\n$$A'(5\\,;9)$$\n:::\n\n::: attention\nLe centre de symétrie est le **milieu**, ici $B$ : il ne faut pas calculer le milieu de $[AB]$.\n:::\n\n## Question 3 : Symétrique de $O$ par rapport à $M$\n\n::: etape Traduire\n$M$ est le milieu de $[OC]$ :\n$$\\frac{0 + x_C}{2} = -1 \\qquad \\frac{0 + y_C}{2} = 3$$\n:::\n\n::: resultat\n$$C(-2\\,;6)$$\n:::\n\n[IMAGE_1]\n\n## Question 4 : $OACB$ est un parallélogramme\n\n::: methode\nUn quadrilatère dont les diagonales ont le même milieu est un parallélogramme.\n:::\n\n::: etape Les diagonales\nLes diagonales de $OACB$ sont $[OC]$ et $[AB]$. Par construction, $M$ est le milieu de $[OC]$ ; d’après la question 1, $M$ est aussi le milieu de $[AB]$.\n:::\n\n::: resultat\n$[OC]$ et $[AB]$ ont le même milieu $M$ : $OACB$ est un parallélogramme.\n:::\n\n## Question 5 : Distances $AB$ et $AA'$\n\n::: etape Distance $AB$\n$$\n\\begin{aligned}\nAB &= \\sqrt{(1 - (-3))^2 + (5 - 1)^2} \\\\\n&= \\sqrt{16 + 16} = \\sqrt{32} = 4\\sqrt{2}\n\\end{aligned}\n$$\n:::\n\n::: etape Distance $AA'$\n$B$ est le milieu de $[AA']$, donc $AA' = 2 \\times AB = 8\\sqrt{2}$.\n:::\n\n::: resultat\n$AB = 4\\sqrt{2}$ et $AA' = 8\\sqrt{2} \\approx 11{,}31$.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $M(-1\\,;3)$\n2. $A'(5\\,;9)$\n3. $C(-2\\,;6)$\n4. Les diagonales $[OC]$ et $[AB]$ ont le même milieu $M$ : parallélogramme.\n5. $AB = 4\\sqrt{2}$ et $AA' = 8\\sqrt{2}$",
+   "titre": "Découverte - Repère et coordonnées - Milieu et symétrie centrale",
+   "difficulty": "easy",
+   "contenu": "<!-- optitab:1 -->\nDans un repère orthonormé d’origine $O$, on donne les points $A(-3\\,;1)$ et $B(1\\,;5)$.\n\n1. Calculer les coordonnées du milieu $M$ du segment $[AB]$.\n2. Le point $A'$ est le symétrique de $A$ par rapport à $B$. Déterminer les coordonnées de $A'$.\n3. Le point $C$ est le symétrique de $O$ par rapport à $M$. Déterminer les coordonnées de $C$.\n4. Démontrer que $OACB$ est un parallélogramme.\n5. Calculer la distance $AB$, puis en déduire la distance $AA'$."
+  },
+  {
+   "id": 2063,
+   "question": "<!-- optitab:1 -->\nUne échelle de $8$ m est appuyée contre un mur vertical. Elle fait un angle de $30°$ avec le sol horizontal. On note $h$ la hauteur atteinte sur le mur et $d$ la distance entre le pied de l’échelle et le mur.\n\n[IMAGE_1]\n\n1. Dans le triangle rectangle formé, nommer l’hypoténuse, le côté opposé et le côté adjacent à l’angle de $30°$.\n2. Calculer $h$.\n3. Calculer $d$ : valeur exacte, puis valeur approchée au centimètre.\n4. On place maintenant le pied de l’échelle à $2$ m du mur. Calculer l’angle entre l’échelle et le sol, arrondi au degré.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Nommer les côtés\n\n::: methode\nL’hypoténuse est en face de l’angle droit ; le côté opposé est en face de l’angle étudié ; le côté adjacent touche l’angle étudié.\n:::\n\n::: etape Identification\n- Hypoténuse : l’échelle, de longueur $8$ m.\n- Côté opposé à l’angle de $30°$ : le mur, de hauteur $h$.\n- Côté adjacent à l’angle de $30°$ : le sol, de longueur $d$.\n:::\n\n## Question 2 : Calculer $h$\n\n::: methode\nOn connaît l’hypoténuse et on cherche le côté opposé : on utilise le sinus.\n:::\n\n::: etape Calcul\n$$\\sin 30° = \\frac{h}{8} \\quad\\text{donc}\\quad h = 8 \\times \\sin 30° = 8 \\times \\frac{1}{2} = 4$$\n:::\n\n::: resultat\n$h = 4$ m.\n:::\n\n## Question 3 : Calculer $d$\n\n::: methode\nOn connaît l’hypoténuse et on cherche le côté adjacent : on utilise le cosinus.\n:::\n\n::: etape Calcul exact\n$$\\cos 30° = \\frac{d}{8} \\quad\\text{donc}\\quad d = 8 \\times \\frac{\\sqrt{3}}{2} = 4\\sqrt{3}$$\n:::\n\n::: etape Valeur approchée\n$4\\sqrt{3} \\approx 6{,}928$, soit $6{,}93$ m au centimètre.\n:::\n\n::: resultat\n$d = 4\\sqrt{3} \\approx 6{,}93$ m.\n:::\n\n::: point Vérification\n$h^2 + d^2 = 16 + 48 = 64 = 8^2$ : Pythagore est bien vérifié.\n:::\n\n## Question 4 : Nouvel angle\n\n::: methode\nOn connaît le côté adjacent ($2$ m) et l’hypoténuse ($8$ m) : on calcule le cosinus de l’angle, puis l’angle avec la touche $\\cos^{-1}$.\n:::\n\n::: etape Cosinus de l’angle\n$$\\cos\\theta = \\frac{2}{8} = 0{,}25$$\n:::\n\n::: etape Angle\nLa calculatrice, en mode degrés, donne $\\theta = \\cos^{-1}(0{,}25) \\approx 75{,}5°$.\n:::\n\n::: resultat\nL’échelle fait un angle d’environ $76°$ avec le sol.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. Hypoténuse : l’échelle ($8$ m) ; opposé : $h$ ; adjacent : $d$.\n2. $h = 8\\sin 30° = 4$ m\n3. $d = 8\\cos 30° = 4\\sqrt{3} \\approx 6{,}93$ m\n4. $\\cos\\theta = 0{,}25$, donc $\\theta \\approx 76°$.",
+   "titre": "Découverte - Trigonométrie - Échelle contre un mur",
+   "difficulty": "easy",
+   "contenu": "<!-- optitab:1 -->\nUne échelle de $8$ m est appuyée contre un mur vertical. Elle fait un angle de $30°$ avec le sol horizontal. On note $h$ la hauteur atteinte sur le mur et $d$ la distance entre le pied de l’échelle et le mur.\n\n[IMAGE_1]\n\n1. Dans le triangle rectangle formé, nommer l’hypoténuse, le côté opposé et le côté adjacent à l’angle de $30°$.\n2. Calculer $h$.\n3. Calculer $d$ : valeur exacte, puis valeur approchée au centimètre.\n4. On place maintenant le pied de l’échelle à $2$ m du mur. Calculer l’angle entre l’échelle et le sol, arrondi au degré."
+  },
+  {
+   "id": 2065,
+   "question": "<!-- optitab:1 -->\nDans le triangle $ABC$, on a $AB = 14$ cm et $AC = 15$ cm. Le point $H$ est le projeté orthogonal de $C$ sur la droite $(AB)$, et $AH = 9$ cm.\n\n[IMAGE_1]\n\n1. Calculer $CH$.\n2. Calculer $BC$.\n3. En déduire l’aire du triangle $ABC$.\n4. Calculer le périmètre du triangle $ABC$.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Calculer $CH$\n\n::: methode\n$H$ est le projeté orthogonal de $C$ sur $(AB)$ : le triangle $AHC$ est rectangle en $H$, d’hypoténuse $[AC]$.\n:::\n\n::: etape Pythagore dans $AHC$\n$$\n\\begin{aligned}\nCH^2 &= AC^2 - AH^2 \\\\\n&= 225 - 81 = 144\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$CH = 12$ cm.\n:::\n\n## Question 2 : Calculer $BC$\n\n::: methode\nLe triangle $BHC$ est rectangle en $H$ : il faut d’abord $BH$.\n:::\n\n::: etape Longueur $BH$\n$H$ est entre $A$ et $B$ : $BH = AB - AH = 14 - 9 = 5$ cm.\n:::\n\n::: etape Pythagore dans $BHC$\n$$\n\\begin{aligned}\nBC^2 &= BH^2 + CH^2 \\\\\n&= 25 + 144 = 169\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$BC = 13$ cm.\n:::\n\n## Question 3 : Aire du triangle $ABC$\n\n::: methode\nAvec la base $[AB]$, la hauteur associée est $[CH]$.\n:::\n\n::: etape Calcul\n$$\\mathcal{A} = \\frac{AB \\times CH}{2} = \\frac{14 \\times 12}{2} = 84$$\n:::\n\n::: resultat\n$\\mathcal{A} = 84$ cm².\n:::\n\n::: attention\nLa hauteur est $CH = 12$ cm, pas le côté $AC = 15$ cm : la hauteur est toujours **perpendiculaire** à la base.\n:::\n\n## Question 4 : Périmètre\n\n::: etape Calcul\n$$P = AB + BC + CA = 14 + 13 + 15 = 42$$\n:::\n\n::: resultat\n$P = 42$ cm.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $CH = 12$ cm\n2. $BH = 5$ cm, donc $BC = 13$ cm\n3. $\\mathcal{A} = 84$ cm²\n4. $P = 42$ cm",
+   "titre": "Entraînement - Aire d’un triangle - Trouver une hauteur grâce au projeté",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nDans le triangle $ABC$, on a $AB = 14$ cm et $AC = 15$ cm. Le point $H$ est le projeté orthogonal de $C$ sur la droite $(AB)$, et $AH = 9$ cm.\n\n[IMAGE_1]\n\n1. Calculer $CH$.\n2. Calculer $BC$.\n3. En déduire l’aire du triangle $ABC$.\n4. Calculer le périmètre du triangle $ABC$."
+  },
+  {
+   "id": 2066,
+   "question": "<!-- optitab:1 -->\nUn cercle a pour centre $O$ et pour rayon $5$ cm. $[AB]$ est une corde de ce cercle, de longueur $8$ cm, et $H$ est le milieu de $[AB]$.\n\n1. Justifier que la droite $(OH)$ est perpendiculaire à $(AB)$.\n2. Calculer $OH$, distance du centre $O$ à la droite $(AB)$.\n3. Calculer l’aire du triangle $OAB$.\n4. Calculer l’angle $\\widehat{AOB}$, arrondi au degré.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : $(OH) \\perp (AB)$\n\n::: methode\nUn point à égale distance des extrémités d’un segment est sur la médiatrice de ce segment.\n:::\n\n::: etape Deux points de la médiatrice\n$OA = OB = 5$ cm (rayons) : $O$ est sur la médiatrice de $[AB]$. $H$ est le milieu de $[AB]$ : il est aussi sur cette médiatrice.\n:::\n\n::: resultat\n$(OH)$ est la médiatrice de $[AB]$, donc $(OH) \\perp (AB)$ : $H$ est le projeté orthogonal de $O$ sur $(AB)$.\n:::\n\n[IMAGE_1]\n\n## Question 2 : Calculer $OH$\n\n::: methode\nPythagore dans le triangle $OHA$, rectangle en $H$, d’hypoténuse $[OA]$.\n:::\n\n::: etape Longueur $AH$\n$$AH = \\frac{AB}{2} = 4 \\text{ cm}$$\n:::\n\n::: etape Pythagore\n$$\n\\begin{aligned}\nOH^2 &= OA^2 - AH^2 \\\\\n&= 25 - 16 = 9\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$OH = 3$ cm.\n:::\n\n## Question 3 : Aire du triangle $OAB$\n\n::: etape Calcul\nBase $[AB]$, hauteur $[OH]$ :\n$$\\mathcal{A} = \\frac{AB \\times OH}{2} = \\frac{8 \\times 3}{2} = 12$$\n:::\n\n::: resultat\n$\\mathcal{A} = 12$ cm².\n:::\n\n## Question 4 : Angle $\\widehat{AOB}$\n\n::: methode\nDans le triangle $OHA$ rectangle en $H$, on calcule l’angle $\\widehat{AOH}$, puis on utilise la symétrie de la figure.\n:::\n\n::: etape Angle $\\widehat{AOH}$\n$[OH]$ est adjacent à l’angle et $[OA]$ est l’hypoténuse :\n$$\\cos\\widehat{AOH} = \\frac{OH}{OA} = \\frac{3}{5} = 0{,}6$$\n\nLa calculatrice donne $\\widehat{AOH} \\approx 53{,}13°$.\n:::\n\n::: etape Angle $\\widehat{AOB}$\nLa médiatrice $(OH)$ est un axe de symétrie du triangle isocèle $OAB$ : $\\widehat{AOB} = 2 \\times \\widehat{AOH} \\approx 106{,}26°$.\n:::\n\n::: resultat\n$\\widehat{AOB} \\approx 106°$.\n:::\n\n::: attention\nOn double l’angle **avant** d’arrondir : $2 \\times 53° = 106°$ tombe juste ici, mais ce n’est pas toujours le cas.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $OA = OB$ et $HA = HB$ : $(OH)$ est la médiatrice de $[AB]$, donc $(OH) \\perp (AB)$.\n2. $OH = 3$ cm\n3. $\\mathcal{A} = 12$ cm²\n4. $\\widehat{AOB} \\approx 106°$",
+   "titre": "Entraînement - Cercle - Distance du centre à une corde",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nUn cercle a pour centre $O$ et pour rayon $5$ cm. $[AB]$ est une corde de ce cercle, de longueur $8$ cm, et $H$ est le milieu de $[AB]$.\n\n1. Justifier que la droite $(OH)$ est perpendiculaire à $(AB)$.\n2. Calculer $OH$, distance du centre $O$ à la droite $(AB)$.\n3. Calculer l’aire du triangle $OAB$.\n4. Calculer l’angle $\\widehat{AOB}$, arrondi au degré."
+  },
+  {
+   "id": 2067,
+   "question": "<!-- optitab:1 -->\nDans le triangle $ABC$, on a $AB = 12$ cm, $AC = 18$ cm et $BC = 15$ cm. Le point $D$ est sur le segment $[AB]$ avec $AD = 8$ cm. La parallèle à $(BC)$ passant par $D$ coupe $[AC]$ en $E$.\n\n[IMAGE_1]\n\n1. Calculer $AE$.\n2. Calculer $DE$.\n3. Calculer $EC$ et $BD$.\n4. Quel est le rapport $\\dfrac{\\mathcal{A}_{ADE}}{\\mathcal{A}_{ABC}}$ des aires des triangles $ADE$ et $ABC$ ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Calculer $AE$\n\n::: methode\nThéorème de Thalès : $D \\in [AB]$, $E \\in [AC]$ et $(DE) \\parallel (BC)$.\n:::\n\n::: etape Égalité des rapports\n$$\\frac{AD}{AB} = \\frac{AE}{AC} = \\frac{DE}{BC}$$\n:::\n\n::: etape Calcul\n$$\\frac{AD}{AB} = \\frac{8}{12} = \\frac{2}{3} \\quad\\text{donc}\\quad AE = \\frac{2}{3} \\times 18 = 12$$\n:::\n\n::: resultat\n$AE = 12$ cm.\n:::\n\n## Question 2 : Calculer $DE$\n\n::: etape Calcul\n$$\\frac{DE}{BC} = \\frac{2}{3} \\quad\\text{donc}\\quad DE = \\frac{2}{3} \\times 15 = 10$$\n:::\n\n::: resultat\n$DE = 10$ cm.\n:::\n\n## Question 3 : Calculer $EC$ et $BD$\n\n::: etape Différences de longueurs\n$E$ est sur $[AC]$ et $D$ sur $[AB]$ :\n$$EC = 18 - 12 = 6 \\qquad BD = 12 - 8 = 4$$\n:::\n\n::: resultat\n$EC = 6$ cm et $BD = 4$ cm.\n:::\n\n## Question 4 : Rapport des aires\n\n::: methode\nLe triangle $ADE$ est une réduction du triangle $ABC$ de rapport $k = \\dfrac{2}{3}$ : les aires sont multipliées par $k^2$.\n:::\n\n::: etape Calcul\n$$\\frac{\\mathcal{A}_{ADE}}{\\mathcal{A}_{ABC}} = \\left(\\frac{2}{3}\\right)^2 = \\frac{4}{9}$$\n:::\n\n::: resultat\nLe rapport des aires vaut $\\dfrac{4}{9}$.\n:::\n\n::: attention\nLes longueurs sont multipliées par $k$, les aires par $k^2$ (et les volumes par $k^3$) : le rapport des aires n’est pas $\\dfrac{2}{3}$.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $AE = 12$ cm\n2. $DE = 10$ cm\n3. $EC = 6$ cm et $BD = 4$ cm\n4. $\\dfrac{\\mathcal{A}_{ADE}}{\\mathcal{A}_{ABC}} = \\left(\\dfrac{2}{3}\\right)^2 = \\dfrac{4}{9}$",
+   "titre": "Entraînement - Thalès - Segment parallèle",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nDans le triangle $ABC$, on a $AB = 12$ cm, $AC = 18$ cm et $BC = 15$ cm. Le point $D$ est sur le segment $[AB]$ avec $AD = 8$ cm. La parallèle à $(BC)$ passant par $D$ coupe $[AC]$ en $E$.\n\n[IMAGE_1]\n\n1. Calculer $AE$.\n2. Calculer $DE$.\n3. Calculer $EC$ et $BD$.\n4. Quel est le rapport $\\dfrac{\\mathcal{A}_{ADE}}{\\mathcal{A}_{ABC}}$ des aires des triangles $ADE$ et $ABC$ ?"
+  },
+  {
+   "id": 2064,
+   "question": "<!-- optitab:1 -->\nSoit $\\alpha$ un angle aigu tel que $\\sin\\alpha = 0{,}6$.\n\n1. Calculer $\\cos\\alpha$.\n2. En déduire $\\tan\\alpha$.\n3. Un triangle rectangle a une hypoténuse de $15$ cm et un angle aigu égal à $\\alpha$. Calculer le côté opposé à $\\alpha$, puis le côté adjacent.\n4. Vérifier ces longueurs avec le théorème de Pythagore.\n5. Donner une valeur approchée de $\\alpha$ au dixième de degré.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Calculer $\\cos\\alpha$\n\n::: methode\nOn utilise $\\cos^2\\alpha + \\sin^2\\alpha = 1$, puis le signe de $\\cos\\alpha$.\n:::\n\n::: etape Calculer $\\cos^2\\alpha$\n$$\n\\begin{aligned}\n\\cos^2\\alpha &= 1 - \\sin^2\\alpha \\\\\n&= 1 - 0{,}36 = 0{,}64\n\\end{aligned}\n$$\n:::\n\n::: etape Choisir la racine\n$\\alpha$ est un angle aigu, donc $\\cos\\alpha \\gt 0$ : $\\cos\\alpha = \\sqrt{0{,}64} = 0{,}8$.\n:::\n\n::: resultat\n$$\\cos\\alpha = 0{,}8$$\n:::\n\n::: attention\n$\\cos^2\\alpha$ signifie $(\\cos\\alpha)^2$ : on calcule $0{,}6^2 = 0{,}36$, et non $0{,}6 \\times 2$.\n:::\n\n## Question 2 : Calculer $\\tan\\alpha$\n\n::: etape Calcul\n$$\\tan\\alpha = \\frac{\\sin\\alpha}{\\cos\\alpha} = \\frac{0{,}6}{0{,}8} = 0{,}75$$\n:::\n\n::: resultat\n$$\\tan\\alpha = 0{,}75$$\n:::\n\n## Question 3 : Longueurs dans le triangle\n\n::: methode\nCôté opposé $=$ hypoténuse $\\times \\sin\\alpha$ ; côté adjacent $=$ hypoténuse $\\times \\cos\\alpha$.\n:::\n\n::: etape Côté opposé\n$$15 \\times 0{,}6 = 9$$\n:::\n\n::: etape Côté adjacent\n$$15 \\times 0{,}8 = 12$$\n:::\n\n[IMAGE_1]\n\n::: resultat\nLe côté opposé à $\\alpha$ mesure $9$ cm et le côté adjacent $12$ cm.\n:::\n\n## Question 4 : Vérification\n\n::: etape Pythagore\n$$9^2 + 12^2 = 81 + 144 = 225 = 15^2$$\n:::\n\n::: resultat\nL’égalité de Pythagore est vérifiée : les longueurs sont cohérentes.\n:::\n\n## Question 5 : Valeur de $\\alpha$\n\n::: etape Calculatrice\nEn mode degrés, $\\sin^{-1}(0{,}6) \\approx 36{,}87°$.\n:::\n\n::: resultat\n$\\alpha \\approx 36{,}9°$.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $\\cos\\alpha = 0{,}8$\n2. $\\tan\\alpha = 0{,}75$\n3. Côté opposé $9$ cm ; côté adjacent $12$ cm\n4. $9^2 + 12^2 = 225 = 15^2$\n5. $\\alpha \\approx 36{,}9°$",
+   "titre": "Entraînement - Trigonométrie - Utiliser $\\cos^2+\\sin^2=1$",
+   "difficulty": "easy",
+   "contenu": "<!-- optitab:1 -->\nSoit $\\alpha$ un angle aigu tel que $\\sin\\alpha = 0{,}6$.\n\n1. Calculer $\\cos\\alpha$.\n2. En déduire $\\tan\\alpha$.\n3. Un triangle rectangle a une hypoténuse de $15$ cm et un angle aigu égal à $\\alpha$. Calculer le côté opposé à $\\alpha$, puis le côté adjacent.\n4. Vérifier ces longueurs avec le théorème de Pythagore.\n5. Donner une valeur approchée de $\\alpha$ au dixième de degré."
+  },
+  {
+   "id": 2068,
+   "question": "<!-- optitab:1 -->\nUn cylindre et un cône ont la même base, un disque de rayon $r = 6$ cm, et la même hauteur $h = 15$ cm.\n\n[IMAGE_1]\n\n1. Calculer le volume exact du cylindre.\n2. Calculer le volume exact du cône.\n3. Combien de cônes remplis d’eau faut-il verser pour remplir le cylindre ?\n4. Donner une valeur approchée de chaque volume au cm³ près, puis en litres.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Volume du cylindre\n\n::: methode\nVolume d’un cylindre : aire de la base $\\times$ hauteur, soit $\\pi r^2 h$.\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\nV_{\\text{cyl}} &= \\pi \\times 6^2 \\times 15 \\\\\n&= \\pi \\times 36 \\times 15 = 540\\pi\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$V_{\\text{cyl}} = 540\\pi$ cm³.\n:::\n\n## Question 2 : Volume du cône\n\n::: methode\nVolume d’un cône : $\\dfrac{1}{3} \\times$ aire de la base $\\times$ hauteur.\n:::\n\n::: etape Calcul\n$$V_{\\text{cône}} = \\frac{1}{3} \\times 540\\pi = 180\\pi$$\n:::\n\n::: resultat\n$V_{\\text{cône}} = 180\\pi$ cm³.\n:::\n\n## Question 3 : Nombre de cônes\n\n::: etape Rapport des volumes\n$$\\frac{V_{\\text{cyl}}}{V_{\\text{cône}}} = \\frac{540\\pi}{180\\pi} = 3$$\n:::\n\n::: resultat\nIl faut $3$ cônes pour remplir le cylindre.\n:::\n\n## Question 4 : Valeurs approchées\n\n::: etape Au cm³ près\n$540\\pi \\approx 1\\,696{,}5$ et $180\\pi \\approx 565{,}5$.\n:::\n\n::: etape En litres\n$1$ L $= 1\\,000$ cm³ : $1\\,696$ cm³ $\\approx 1{,}7$ L et $565$ cm³ $\\approx 0{,}57$ L.\n:::\n\n::: resultat\n$V_{\\text{cyl}} \\approx 1\\,696$ cm³ $\\approx 1{,}7$ L et $V_{\\text{cône}} \\approx 565$ cm³ $\\approx 0{,}57$ L.\n:::\n\n::: attention\nOn arrondit à la fin seulement : $\\pi$ reste exact pendant les calculs.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $V_{\\text{cyl}} = 540\\pi$ cm³\n2. $V_{\\text{cône}} = 180\\pi$ cm³\n3. $3$ cônes\n4. $V_{\\text{cyl}} \\approx 1\\,696$ cm³ $\\approx 1{,}7$ L ; $V_{\\text{cône}} \\approx 565$ cm³ $\\approx 0{,}57$ L",
+   "titre": "Entraînement - Volumes - Cylindre et cône de même base",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nUn cylindre et un cône ont la même base, un disque de rayon $r = 6$ cm, et la même hauteur $h = 15$ cm.\n\n[IMAGE_1]\n\n1. Calculer le volume exact du cylindre.\n2. Calculer le volume exact du cône.\n3. Combien de cônes remplis d’eau faut-il verser pour remplir le cylindre ?\n4. Donner une valeur approchée de chaque volume au cm³ près, puis en litres."
+  },
+  {
+   "id": 3750,
+   "question": "<!-- optitab:1 -->\nUn flacon de parfum a la forme d’une pyramide régulière $SABCD$ : sa base $ABCD$ est un carré de côté $6$ cm, de centre $O$, et ses arêtes latérales mesurent $SA = SB = SC = SD = 9$ cm. La hauteur de la pyramide est $[SO]$ : la droite $(SO)$ est perpendiculaire à la base.\n\n[IMAGE_1]\n\n1. Calculer la longueur $AC$ de la diagonale de la base, puis $OA$.\n2. Justifier que le triangle $SOA$ est rectangle, puis calculer la hauteur $SO$ : valeur exacte, puis valeur approchée au millimètre.\n3. Calculer le volume exact de la pyramide.\n4. Quelle est la contenance du flacon, arrondie au mL ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Diagonale $AC$ et longueur $OA$\n\n::: methode\nLe triangle $ABC$ est rectangle en $B$ (angle d’un carré) : Pythagore donne la diagonale.\n:::\n\n::: etape Diagonale\n$$\n\\begin{aligned}\nAC^2 &= AB^2 + BC^2 \\\\\n&= 36 + 36 = 72\n\\end{aligned}\n$$\n\n$AC = \\sqrt{72} = \\sqrt{36 \\times 2} = 6\\sqrt{2}$.\n:::\n\n::: etape Demi-diagonale\nLes diagonales d’un carré se coupent en leur milieu $O$ : $OA = \\dfrac{AC}{2} = 3\\sqrt{2}$.\n:::\n\n::: resultat\n$AC = 6\\sqrt{2} \\approx 8{,}49$ cm et $OA = 3\\sqrt{2} \\approx 4{,}24$ cm.\n:::\n\n## Question 2 : Hauteur $SO$\n\n::: methode\n$(SO)$ est perpendiculaire à la base, donc à toute droite de la base passant par $O$, en particulier à $(OA)$.\n:::\n\n::: etape Triangle rectangle\n$(SO) \\perp (OA)$ : le triangle $SOA$ est rectangle en $O$, d’hypoténuse $[SA]$.\n:::\n\n::: etape Pythagore dans $SOA$\n$$\n\\begin{aligned}\nSO^2 &= SA^2 - OA^2 \\\\\n&= 81 - 18 = 63\n\\end{aligned}\n$$\n\n$SO = \\sqrt{63} = \\sqrt{9 \\times 7} = 3\\sqrt{7}$.\n:::\n\n::: resultat\n$SO = 3\\sqrt{7} \\approx 7{,}9$ cm.\n:::\n\n::: attention\n$OA^2 = \\left(3\\sqrt{2}\\right)^2 = 9 \\times 2 = 18$ : on élève au carré le $3$ **et** la racine.\n:::\n\n## Question 3 : Volume\n\n::: methode\nVolume d’une pyramide : $\\dfrac{1}{3} \\times$ aire de la base $\\times$ hauteur.\n:::\n\n::: etape Aire de la base\n$\\mathcal{B} = 6^2 = 36$ cm².\n:::\n\n::: etape Volume\n$$\n\\begin{aligned}\nV &= \\frac{1}{3} \\times 36 \\times 3\\sqrt{7} \\\\\n&= 36\\sqrt{7}\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$V = 36\\sqrt{7}$ cm³.\n:::\n\n## Question 4 : Contenance\n\n::: etape Valeur approchée\n$36\\sqrt{7} \\approx 95{,}25$ cm³.\n:::\n\n::: etape Conversion\n$1$ cm³ $= 1$ mL.\n:::\n\n::: resultat\nLe flacon contient environ $95$ mL.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $AC = 6\\sqrt{2}$ cm et $OA = 3\\sqrt{2}$ cm\n2. $SOA$ est rectangle en $O$ ; $SO = 3\\sqrt{7} \\approx 7{,}9$ cm\n3. $V = 36\\sqrt{7}$ cm³\n4. Environ $95$ mL",
+   "titre": "Entraînement - Volumes - Pyramide régulière à base carrée",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nUn flacon de parfum a la forme d’une pyramide régulière $SABCD$ : sa base $ABCD$ est un carré de côté $6$ cm, de centre $O$, et ses arêtes latérales mesurent $SA = SB = SC = SD = 9$ cm. La hauteur de la pyramide est $[SO]$ : la droite $(SO)$ est perpendiculaire à la base.\n\n[IMAGE_1]\n\n1. Calculer la longueur $AC$ de la diagonale de la base, puis $OA$.\n2. Justifier que le triangle $SOA$ est rectangle, puis calculer la hauteur $SO$ : valeur exacte, puis valeur approchée au millimètre.\n3. Calculer le volume exact de la pyramide.\n4. Quelle est la contenance du flacon, arrondie au mL ?"
+  },
+  {
+   "id": 2070,
+   "question": "<!-- optitab:1 -->\nDire si chaque affirmation est **vraie** ou **fausse**, et justifier en une phrase.\n\n1. La distance d’un point $M$ à une droite $d$ est la longueur de n’importe quel segment qui relie $M$ à un point de $d$.\n2. Dans un triangle rectangle, $\\sin\\alpha = \\dfrac{\\text{côté adjacent}}{\\text{hypoténuse}}$.\n3. Si $\\alpha$ est un angle aigu et $\\sin\\alpha = 0{,}8$, alors $\\cos\\alpha = 0{,}6$.\n4. Dans un problème d’optimisation, on peut donner à $x$ n’importe quelle valeur réelle.\n5. Le volume d’un cône de rayon $r$ et de hauteur $h$ est $\\pi r^2 h$.\n6. Un triangle dont les côtés mesurent $5$ cm, $12$ cm et $13$ cm est rectangle.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Distance d’un point à une droite\n\n::: etape Justification\nLa distance de $M$ à $d$ est la longueur $MH$, où $H$ est le projeté orthogonal de $M$ sur $d$ : c’est la **plus courte** des longueurs $MN$, avec $N$ sur $d$.\n:::\n\n::: resultat\nFaux.\n:::\n\n## Question 2 : Formule du sinus\n\n::: etape Justification\n$\\sin\\alpha = \\dfrac{\\text{côté opposé}}{\\text{hypoténuse}}$ ; c’est le cosinus qui utilise le côté adjacent.\n:::\n\n::: resultat\nFaux.\n:::\n\n## Question 3 : Cosinus à partir du sinus\n\n::: etape Justification\n$\\cos^2\\alpha = 1 - 0{,}8^2 = 1 - 0{,}64 = 0{,}36$, et $\\cos\\alpha \\gt 0$ car $\\alpha$ est aigu, donc $\\cos\\alpha = 0{,}6$.\n:::\n\n::: resultat\nVrai.\n:::\n\n## Question 4 : Valeurs de $x$\n\n::: etape Justification\n$x$ représente une grandeur concrète (une longueur, par exemple) : elle doit être positive et respecter les contraintes de la figure. On cherche d’abord l’ensemble des valeurs possibles.\n:::\n\n::: resultat\nFaux.\n:::\n\n## Question 5 : Volume d’un cône\n\n::: etape Justification\n$V = \\dfrac{1}{3}\\pi r^2 h$ : $\\pi r^2 h$ est le volume du cylindre de même base et de même hauteur.\n:::\n\n::: resultat\nFaux.\n:::\n\n## Question 6 : Triangle $5$ – $12$ – $13$\n\n::: etape Justification\nLe plus grand côté mesure $13$ cm : $5^2 + 12^2 = 25 + 144 = 169 = 13^2$. D’après la réciproque de Pythagore, le triangle est rectangle.\n:::\n\n::: resultat\nVrai.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. Faux : c’est la plus courte distance, obtenue avec le projeté orthogonal.\n2. Faux : $\\sin\\alpha = \\dfrac{\\text{opposé}}{\\text{hypoténuse}}$.\n3. Vrai : $\\cos^2\\alpha = 0{,}36$ et $\\cos\\alpha \\gt 0$.\n4. Faux : $x$ doit respecter les contraintes du problème.\n5. Faux : il manque le facteur $\\dfrac{1}{3}$.\n6. Vrai : $5^2 + 12^2 = 13^2$.",
+   "titre": "Maîtrise - Synthèse - Pièges classiques (Vrai/Faux)",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nDire si chaque affirmation est **vraie** ou **fausse**, et justifier en une phrase.\n\n1. La distance d’un point $M$ à une droite $d$ est la longueur de n’importe quel segment qui relie $M$ à un point de $d$.\n2. Dans un triangle rectangle, $\\sin\\alpha = \\dfrac{\\text{côté adjacent}}{\\text{hypoténuse}}$.\n3. Si $\\alpha$ est un angle aigu et $\\sin\\alpha = 0{,}8$, alors $\\cos\\alpha = 0{,}6$.\n4. Dans un problème d’optimisation, on peut donner à $x$ n’importe quelle valeur réelle.\n5. Le volume d’un cône de rayon $r$ et de hauteur $h$ est $\\pi r^2 h$.\n6. Un triangle dont les côtés mesurent $5$ cm, $12$ cm et $13$ cm est rectangle."
+  },
+  {
+   "id": 3751,
+   "question": "<!-- optitab:1 -->\n$ABCD$ est un carré de côté $10$ cm. On place les points $M$ sur $[AB]$, $N$ sur $[BC]$, $P$ sur $[CD]$ et $Q$ sur $[DA]$ tels que $AM = BN = CP = DQ = x$, en cm. On admet que $MNPQ$ est un carré. On cherche la position de $M$ pour laquelle l’aire de $MNPQ$ est la plus petite possible.\n\n[IMAGE_1]\n\n1. Quelles sont les valeurs possibles de $x$ ?\n2. Exprimer $AQ$ en fonction de $x$, puis démontrer que l’aire de $MNPQ$ vaut $f(x) = x^2 + (10 - x)^2$.\n3. Retrouver ce résultat en retirant à l’aire de $ABCD$ celle des quatre triangles des coins.\n4. Démontrer que $f(x) = 2(x - 5)^2 + 50$.\n5. En déduire l’aire minimale de $MNPQ$ et la position de $M$ correspondante.\n6. Pour quelles valeurs de $x$ l’aire de $MNPQ$ vaut-elle $58$ cm² ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Valeurs possibles de $x$\n\n::: etape Contrainte\n$M$ est sur le segment $[AB]$, de longueur $10$ : $0 \\leq x \\leq 10$.\n:::\n\n::: resultat\n$x$ appartient à l’intervalle $[0\\,;10]$.\n:::\n\n## Question 2 : Aire de $MNPQ$ avec Pythagore\n\n::: methode\nL’aire d’un carré est le carré de son côté : on calcule $MQ^2$ dans le triangle $AMQ$, rectangle en $A$.\n:::\n\n::: etape Longueur $AQ$\n$Q$ est sur $[DA]$ avec $DQ = x$ : $AQ = DA - DQ = 10 - x$.\n:::\n\n::: etape Pythagore dans $AMQ$\n$$\n\\begin{aligned}\nMQ^2 &= AM^2 + AQ^2 \\\\\n&= x^2 + (10 - x)^2\n\\end{aligned}\n$$\n:::\n\n::: resultat\nL’aire de $MNPQ$ est $MQ^2 = x^2 + (10 - x)^2 = f(x)$.\n:::\n\n## Question 3 : Avec les quatre triangles\n\n::: methode\nLes quatre triangles des coins sont rectangles, de côtés de l’angle droit $x$ et $10 - x$.\n:::\n\n::: etape Aire d’un triangle\n$$\\frac{x(10 - x)}{2}$$\n:::\n\n::: etape Aire de $MNPQ$\n$$\n\\begin{aligned}\nf(x) &= 100 - 4 \\times \\frac{x(10 - x)}{2} \\\\\n&= 100 - 20x + 2x^2\n\\end{aligned}\n$$\n:::\n\n::: etape Comparer avec la question 2\n$$\n\\begin{aligned}\nx^2 + (10 - x)^2 &= x^2 + 100 - 20x + x^2 \\\\\n&= 2x^2 - 20x + 100\n\\end{aligned}\n$$\n\nOn trouve la même expression.\n:::\n\n::: resultat\nLes deux méthodes donnent $f(x) = 2x^2 - 20x + 100$.\n:::\n\n## Question 4 : Forme $2(x - 5)^2 + 50$\n\n::: etape Développer le carré\n$$(x - 5)^2 = x^2 - 10x + 25$$\n:::\n\n::: etape En déduire l’expression\n$$\n\\begin{aligned}\n2(x - 5)^2 + 50 &= 2x^2 - 20x + 50 + 50 \\\\\n&= 2x^2 - 20x + 100\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$f(x) = 2(x - 5)^2 + 50$.\n:::\n\n## Question 5 : Aire minimale\n\n::: methode\nUn carré est positif ou nul : $(x - 5)^2 \\geq 0$.\n:::\n\n::: etape Minorer\nPour tout $x$ de $[0\\,;10]$, $2(x - 5)^2 \\geq 0$, donc $f(x) \\geq 50$.\n:::\n\n::: etape Atteindre le minimum\n$f(5) = 2 \\times 0 + 50 = 50$.\n:::\n\n::: resultat\nL’aire minimale vaut $50$ cm², pour $x = 5$ : $M$, $N$, $P$, $Q$ sont les milieux des côtés.\n:::\n\n::: attention\nLa forme $2(x - 5)^2 + 50$ montre un **minimum** (on ajoute un carré positif) ; la forme $a - k(x - b)^2$ montrerait un maximum.\n:::\n\n## Question 6 : Aire égale à $58$ cm²\n\n::: etape Équation\n$$\n\\begin{aligned}\n2(x - 5)^2 + 50 = 58 &\\iff 2(x - 5)^2 = 8 \\\\\n&\\iff (x - 5)^2 = 4\n\\end{aligned}\n$$\n:::\n\n::: etape Résoudre\n$(x - 5)^2 = 4$ équivaut à $x - 5 = 2$ ou $x - 5 = -2$, soit $x = 7$ ou $x = 3$.\n:::\n\n::: point Vérification\n$f(3) = 9 + 49 = 58$ et $f(7) = 49 + 9 = 58$ ; $3$ et $7$ sont bien dans $[0\\,;10]$.\n:::\n\n::: resultat\nL’aire vaut $58$ cm² pour $x = 3$ ou $x = 7$.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $x \\in [0\\,;10]$\n2. $AQ = 10 - x$ et $MQ^2 = x^2 + (10 - x)^2$\n3. Aire $= 100 - 4 \\times \\dfrac{x(10 - x)}{2}$, soit $f(x) = 2x^2 - 20x + 100$.\n4. En développant : $2(x - 5)^2 + 50 = 2x^2 - 20x + 100$.\n5. Aire minimale $50$ cm², pour $x = 5$ (milieux des côtés).\n6. $x = 3$ ou $x = 7$",
+   "titre": "Problème - Optimisation - Carré inscrit dans un carré",
+   "difficulty": "hard",
+   "contenu": "<!-- optitab:1 -->\n$ABCD$ est un carré de côté $10$ cm. On place les points $M$ sur $[AB]$, $N$ sur $[BC]$, $P$ sur $[CD]$ et $Q$ sur $[DA]$ tels que $AM = BN = CP = DQ = x$, en cm. On admet que $MNPQ$ est un carré. On cherche la position de $M$ pour laquelle l’aire de $MNPQ$ est la plus petite possible.\n\n[IMAGE_1]\n\n1. Quelles sont les valeurs possibles de $x$ ?\n2. Exprimer $AQ$ en fonction de $x$, puis démontrer que l’aire de $MNPQ$ vaut $f(x) = x^2 + (10 - x)^2$.\n3. Retrouver ce résultat en retirant à l’aire de $ABCD$ celle des quatre triangles des coins.\n4. Démontrer que $f(x) = 2(x - 5)^2 + 50$.\n5. En déduire l’aire minimale de $MNPQ$ et la position de $M$ correspondante.\n6. Pour quelles valeurs de $x$ l’aire de $MNPQ$ vaut-elle $58$ cm² ?"
+  },
+  {
+   "id": 2062,
+   "question": "<!-- optitab:1 -->\nSoit $\\Delta$ une droite, $M$ un point qui n’est pas sur $\\Delta$ et $H$ le projeté orthogonal de $M$ sur $\\Delta$. Soit $P$ un point de $\\Delta$, distinct de $H$.\n\n[IMAGE_1]\n\n1. Expliquer pourquoi le triangle $MHP$ est rectangle en $H$.\n2. Écrire l’égalité de Pythagore dans le triangle $MHP$.\n3. En déduire que $MP^2 \\gt MH^2$, puis que $MP \\gt MH$.\n4. Conclure : quel est le point de $\\Delta$ le plus proche de $M$ ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Le triangle $MHP$ est rectangle en $H$\n\n::: etape Les droites\n$H$ et $P$ sont deux points distincts de $\\Delta$, donc la droite $(HP)$ est la droite $\\Delta$.\n:::\n\n::: etape L’angle droit\nPar définition du projeté orthogonal, $(MH) \\perp \\Delta$, c’est-à-dire $(MH) \\perp (HP)$.\n:::\n\n::: resultat\nLe triangle $MHP$ est rectangle en $H$.\n:::\n\n## Question 2 : Égalité de Pythagore\n\n::: methode\nL’hypoténuse est le côté opposé à l’angle droit : ici $[MP]$.\n:::\n\n::: resultat\n$$MP^2 = MH^2 + HP^2$$\n:::\n\n## Question 3 : Comparer $MP$ et $MH$\n\n::: etape Signe de $HP^2$\n$P \\neq H$, donc $HP \\gt 0$ et $HP^2 \\gt 0$.\n:::\n\n::: etape Comparer les carrés\n$$MP^2 = MH^2 + HP^2 \\gt MH^2$$\n:::\n\n::: etape Revenir aux longueurs\n$MP$ et $MH$ sont positives ; deux nombres positifs sont rangés dans le même ordre que leurs carrés : $MP \\gt MH$.\n:::\n\n::: resultat\n$MP^2 \\gt MH^2$, donc $MP \\gt MH$.\n:::\n\n## Question 4 : Conclusion\n\n::: etape Tous les points de $\\Delta$\nPour tout point $P$ de $\\Delta$ distinct de $H$, on a $MP \\gt MH$.\n:::\n\n::: resultat\n$H$ est le point de $\\Delta$ le plus proche de $M$ : la distance de $M$ à $\\Delta$ est $MH$.\n:::\n\n::: retenir\nC’est la démonstration au programme : le projeté orthogonal réalise la plus courte distance d’un point à une droite.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $H$ et $P$ sont sur $\\Delta$ et $(MH) \\perp \\Delta$, donc $(MH) \\perp (HP)$ : rectangle en $H$.\n2. $MP^2 = MH^2 + HP^2$\n3. $HP^2 \\gt 0$, donc $MP^2 \\gt MH^2$, puis $MP \\gt MH$ (longueurs positives).\n4. $H$ est le point de $\\Delta$ le plus proche de $M$.",
+   "titre": "Problème - Projeté orthogonal - Le point le plus proche d’une droite",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nSoit $\\Delta$ une droite, $M$ un point qui n’est pas sur $\\Delta$ et $H$ le projeté orthogonal de $M$ sur $\\Delta$. Soit $P$ un point de $\\Delta$, distinct de $H$.\n\n[IMAGE_1]\n\n1. Expliquer pourquoi le triangle $MHP$ est rectangle en $H$.\n2. Écrire l’égalité de Pythagore dans le triangle $MHP$.\n3. En déduire que $MP^2 \\gt MH^2$, puis que $MP \\gt MH$.\n4. Conclure : quel est le point de $\\Delta$ le plus proche de $M$ ?"
+  },
+  {
+   "id": 2059,
+   "question": "<!-- optitab:1 -->\nDans un repère orthonormé, on considère les points $A(1\\,;1)$, $B(5\\,;2)$, $C(4\\,;6)$ et $D(0\\,;5)$.\n\n1. Démontrer que $ABCD$ est un parallélogramme.\n2. Calculer $AB^2$ et $BC^2$. Que peut-on en déduire ?\n3. Calculer $AC^2$ et démontrer que le triangle $ABC$ est rectangle en $B$. Conclure que $ABCD$ est un carré.\n4. Déterminer les coordonnées du centre $K$ du carré.\n5. Calculer le rayon du cercle circonscrit au carré.\n6. Calculer le périmètre et l’aire du carré.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : $ABCD$ est un parallélogramme\n\n::: methode\n$ABCD$ est un parallélogramme si et seulement si $\\overrightarrow{AB} = \\overrightarrow{DC}$.\n:::\n\n::: etape Coordonnées des vecteurs\n$$\\overrightarrow{AB}\\,(5 - 1\\,;2 - 1) = (4\\,;1)$$\n\n$$\\overrightarrow{DC}\\,(4 - 0\\,;6 - 5) = (4\\,;1)$$\n:::\n\n::: resultat\n$\\overrightarrow{AB} = \\overrightarrow{DC}$ : $ABCD$ est un parallélogramme.\n:::\n\n## Question 2 : $AB^2$ et $BC^2$\n\n::: etape Calculs\n$$\n\\begin{aligned}\nAB^2 &= 4^2 + 1^2 = 17 \\\\\nBC^2 &= (4 - 5)^2 + (6 - 2)^2 \\\\\n&= 1 + 16 = 17\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$AB^2 = BC^2 = 17$, donc $AB = BC = \\sqrt{17}$ : le parallélogramme a deux côtés consécutifs égaux, c’est un losange.\n:::\n\n## Question 3 : Angle droit en $B$, puis carré\n\n::: methode\nRéciproque de Pythagore dans le triangle $ABC$, avec le plus grand côté $[AC]$.\n:::\n\n::: etape Calcul de $AC^2$\n$$\n\\begin{aligned}\nAC^2 &= (4 - 1)^2 + (6 - 1)^2 \\\\\n&= 9 + 25 = 34\n\\end{aligned}\n$$\n:::\n\n::: etape Comparer\n$AB^2 + BC^2 = 17 + 17 = 34 = AC^2$ : le triangle $ABC$ est rectangle en $B$.\n:::\n\n::: etape Conclure\n$ABCD$ est un losange (question 2) qui a un angle droit : c’est un carré.\n:::\n\n::: resultat\n$ABCD$ est un carré de côté $\\sqrt{17}$.\n:::\n\n## Question 4 : Centre $K$\n\n::: methode\nLe centre du carré est le milieu commun de ses diagonales, par exemple le milieu de $[AC]$.\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\nx_K &= \\frac{1 + 4}{2} = \\frac{5}{2} \\\\\ny_K &= \\frac{1 + 6}{2} = \\frac{7}{2}\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$$K\\left(\\frac{5}{2}\\,;\\frac{7}{2}\\right)$$\n:::\n\n[IMAGE_1]\n\n## Question 5 : Rayon du cercle circonscrit\n\n::: methode\nLes diagonales d’un carré ont la même longueur et se coupent en leur milieu $K$ : $K$ est à la même distance des quatre sommets.\n:::\n\n::: etape Calcul\n$$R = KA = \\frac{AC}{2} = \\frac{\\sqrt{34}}{2}$$\n:::\n\n::: resultat\n$R = \\dfrac{\\sqrt{34}}{2} \\approx 2{,}92$.\n:::\n\n## Question 6 : Périmètre et aire\n\n::: etape Calculs\nLe côté mesure $\\sqrt{17}$ : $P = 4\\sqrt{17}$ et $\\mathcal{A} = \\left(\\sqrt{17}\\right)^2 = 17$.\n:::\n\n::: resultat\n$P = 4\\sqrt{17} \\approx 16{,}49$ et $\\mathcal{A} = 17$ unités d’aire.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $\\overrightarrow{AB}\\,(4\\,;1) = \\overrightarrow{DC}$ : parallélogramme.\n2. $AB^2 = BC^2 = 17$ : losange.\n3. $AC^2 = 34 = AB^2 + BC^2$ : angle droit en $B$, donc $ABCD$ est un carré.\n4. $K\\left(\\dfrac{5}{2}\\,;\\dfrac{7}{2}\\right)$\n5. $R = \\dfrac{\\sqrt{34}}{2} \\approx 2{,}92$\n6. $P = 4\\sqrt{17}$ et $\\mathcal{A} = 17$",
+   "titre": "Problème - Reconnaître un carré dans un repère",
+   "difficulty": "hard",
+   "contenu": "<!-- optitab:1 -->\nDans un repère orthonormé, on considère les points $A(1\\,;1)$, $B(5\\,;2)$, $C(4\\,;6)$ et $D(0\\,;5)$.\n\n1. Démontrer que $ABCD$ est un parallélogramme.\n2. Calculer $AB^2$ et $BC^2$. Que peut-on en déduire ?\n3. Calculer $AC^2$ et démontrer que le triangle $ABC$ est rectangle en $B$. Conclure que $ABCD$ est un carré.\n4. Déterminer les coordonnées du centre $K$ du carré.\n5. Calculer le rayon du cercle circonscrit au carré.\n6. Calculer le périmètre et l’aire du carré."
+  },
+  {
+   "id": 2071,
+   "question": "<!-- optitab:1 -->\nDans le triangle $ABC$, on a $AB = 7$ cm, $AC = 9$ cm et $\\widehat{BAC} = 60°$. On note $H$ le projeté orthogonal de $B$ sur la droite $(AC)$ ; on admet que $H$ appartient au segment $[AC]$.\n\n[IMAGE_1]\n\n1. Dans le triangle $ABH$, calculer les valeurs exactes de $AH$ et de $BH$.\n2. En déduire la longueur $HC$.\n3. Calculer la valeur exacte de $BC$, puis une valeur approchée au millimètre.\n4. Calculer l’aire du triangle $ABC$ : valeur exacte, puis valeur approchée au dixième.\n5. En déduire la distance du point $A$ à la droite $(BC)$, arrondie au millimètre.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Calculer $AH$ et $BH$\n\n::: methode\n$H$ est le projeté orthogonal de $B$ sur $(AC)$ : le triangle $ABH$ est rectangle en $H$, d’hypoténuse $[AB]$. On utilise le cosinus et le sinus de l’angle de $60°$.\n:::\n\n::: etape Côté adjacent $AH$\n$$AH = AB \\times \\cos 60° = 7 \\times \\frac{1}{2} = \\frac{7}{2}$$\n:::\n\n::: etape Côté opposé $BH$\n$$BH = AB \\times \\sin 60° = 7 \\times \\frac{\\sqrt{3}}{2} = \\frac{7\\sqrt{3}}{2}$$\n:::\n\n::: resultat\n$AH = 3{,}5$ cm et $BH = \\dfrac{7\\sqrt{3}}{2} \\approx 6{,}06$ cm.\n:::\n\n## Question 2 : Longueur $HC$\n\n::: etape Calcul\n$H$ est sur le segment $[AC]$ :\n$$HC = AC - AH = 9 - \\frac{7}{2} = \\frac{11}{2}$$\n:::\n\n::: resultat\n$HC = 5{,}5$ cm.\n:::\n\n## Question 3 : Calculer $BC$\n\n::: methode\nLe triangle $BHC$ est aussi rectangle en $H$, d’hypoténuse $[BC]$ : Pythagore.\n:::\n\n::: etape Pythagore dans $BHC$\n$$\n\\begin{aligned}\nBC^2 &= BH^2 + HC^2 \\\\\n&= \\frac{49 \\times 3}{4} + \\frac{121}{4} \\\\\n&= \\frac{147 + 121}{4} = \\frac{268}{4} = 67\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$BC = \\sqrt{67} \\approx 8{,}2$ cm.\n:::\n\n::: retenir\nLe triangle $ABC$ n’est pas rectangle : en traçant une **hauteur**, on le découpe en deux triangles rectangles, où l’on peut utiliser la trigonométrie et Pythagore.\n:::\n\n## Question 4 : Aire du triangle $ABC$\n\n::: methode\nAvec la base $[AC]$, la hauteur associée est $[BH]$.\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\n\\mathcal{A} &= \\frac{AC \\times BH}{2} \\\\\n&= \\frac{1}{2} \\times 9 \\times \\frac{7\\sqrt{3}}{2} = \\frac{63\\sqrt{3}}{4}\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$\\mathcal{A} = \\dfrac{63\\sqrt{3}}{4} \\approx 27{,}3$ cm².\n:::\n\n## Question 5 : Distance de $A$ à $(BC)$\n\n::: methode\nOn écrit l’aire avec la base $[BC]$ : la hauteur associée est la distance $h$ de $A$ à $(BC)$.\n:::\n\n::: etape Isoler $h$\n$$\\frac{BC \\times h}{2} = \\mathcal{A} \\quad\\text{donc}\\quad h = \\frac{2\\mathcal{A}}{BC}$$\n:::\n\n::: etape Calcul\n$$h = \\frac{63\\sqrt{3}}{2\\sqrt{67}} \\approx 6{,}67$$\n:::\n\n::: resultat\nLa distance de $A$ à la droite $(BC)$ vaut environ $6{,}7$ cm.\n:::\n\n::: attention\nPour la valeur approchée, on utilise les valeurs exactes de $\\mathcal{A}$ et de $BC$ à la calculatrice, pas des valeurs déjà arrondies.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $AH = \\dfrac{7}{2} = 3{,}5$ cm et $BH = \\dfrac{7\\sqrt{3}}{2} \\approx 6{,}06$ cm\n2. $HC = 5{,}5$ cm\n3. $BC = \\sqrt{67} \\approx 8{,}2$ cm\n4. $\\mathcal{A} = \\dfrac{63\\sqrt{3}}{4} \\approx 27{,}3$ cm²\n5. $h = \\dfrac{63\\sqrt{3}}{2\\sqrt{67}} \\approx 6{,}7$ cm",
+   "titre": "Problème - Triangle quelconque - Une longueur et une aire grâce à une hauteur",
+   "difficulty": "hard",
+   "contenu": "<!-- optitab:1 -->\nDans le triangle $ABC$, on a $AB = 7$ cm, $AC = 9$ cm et $\\widehat{BAC} = 60°$. On note $H$ le projeté orthogonal de $B$ sur la droite $(AC)$ ; on admet que $H$ appartient au segment $[AC]$.\n\n[IMAGE_1]\n\n1. Dans le triangle $ABH$, calculer les valeurs exactes de $AH$ et de $BH$.\n2. En déduire la longueur $HC$.\n3. Calculer la valeur exacte de $BC$, puis une valeur approchée au millimètre.\n4. Calculer l’aire du triangle $ABC$ : valeur exacte, puis valeur approchée au dixième.\n5. En déduire la distance du point $A$ à la droite $(BC)$, arrondie au millimètre."
+  }
+ ],
+ "images": [
+  {
+   "modele": "CoursImage",
+   "id": 674,
+   "proprietaire": 223,
+   "position": 1,
+   "image": "cours_images/v1_n169_co223_1_projete.png",
+   "legende": null,
+   "alt_text": "Point M, droite d et projeté orthogonal H de M sur d, avec l’angle droit en H ; le segment MH est plus court que le segment MN qui relie M à un autre point N de d.",
+   "title_text": "",
+   "width": 394,
+   "height": 187
+  },
+  {
+   "modele": "CoursImage",
+   "id": 675,
+   "proprietaire": 223,
+   "position": 2,
+   "image": "cours_images/v1_n169_co223_2_trigo.png",
+   "legende": null,
+   "alt_text": "Triangle ABC rectangle en B avec l’angle α en A : l’hypoténuse [AC], le côté adjacent à α [AB] et le côté opposé à α [BC].",
+   "title_text": "",
+   "width": 388,
+   "height": 208
+  },
+  {
+   "modele": "CoursImage",
+   "id": 676,
+   "proprietaire": 223,
+   "position": 3,
+   "image": "cours_images/v1_n169_co223_3_arbre.png",
+   "legende": null,
+   "alt_text": "Hauteur d’un arbre : depuis le point O, situé à 20 m du pied H de l’arbre, on voit le sommet S sous un angle de 35° ; le triangle OHS est rectangle en H.",
+   "title_text": "",
+   "width": 404,
+   "height": 267
+  },
+  {
+   "modele": "CoursImage",
+   "id": 677,
+   "proprietaire": 223,
+   "position": 4,
+   "image": "cours_images/v1_n169_co223_4_solides.png",
+   "legende": null,
+   "alt_text": "Pyramide, cône, cylindre et boule avec leur hauteur ou leur rayon en pointillés et leur formule de volume : un tiers de B fois h, un tiers de π r² h, π r² h et quatre tiers de π r³.",
+   "title_text": "",
+   "width": 268,
+   "height": 427
+  },
+  {
+   "modele": "CoursImage",
+   "id": 845,
+   "proprietaire": 223,
+   "position": 5,
+   "image": "cours_images/v1_n169_co223_5_enclos.png",
+   "legende": null,
+   "alt_text": "Enclos rectangulaire adossé à un mur : deux côtés de largeur x perpendiculaires au mur et un côté de longueur 40 − 2x parallèle au mur.",
+   "title_text": "",
+   "width": 337,
+   "height": 170
+  },
+  {
+   "modele": "SynthesisImage",
+   "id": 288,
+   "proprietaire": 139,
+   "position": 1,
+   "image": "synthesis_images/v1_n169_fi139_1_trigo.png",
+   "legende": null,
+   "alt_text": "Triangle ABC rectangle en B avec l’angle α en A : l’hypoténuse [AC], le côté adjacent à α [AB] et le côté opposé à α [BC].",
+   "title_text": "",
+   "width": 388,
+   "height": 208
+  },
+  {
+   "modele": "SynthesisImage",
+   "id": 289,
+   "proprietaire": 139,
+   "position": 2,
+   "image": "synthesis_images/v1_n169_fi139_2_solides.png",
+   "legende": null,
+   "alt_text": "Pyramide, cône, cylindre et boule avec leur hauteur ou leur rayon en pointillés et leur formule de volume : un tiers de B fois h, un tiers de π r² h, π r² h et quatre tiers de π r³.",
+   "title_text": "",
+   "width": 268,
+   "height": 427
+  },
+  {
+   "modele": "SynthesisImage",
+   "id": 370,
+   "proprietaire": 139,
+   "position": 3,
+   "image": "synthesis_images/v1_n169_fi139_3_projete.png",
+   "legende": null,
+   "alt_text": "Point M, droite d et projeté orthogonal H de M sur d, avec l’angle droit en H ; le segment MH est plus court que le segment MN qui relie M à un autre point N de d.",
+   "title_text": "",
+   "width": 394,
+   "height": 187
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 728,
+   "proprietaire": 2057,
+   "position": 1,
+   "image": "exercice_images/v1_n169_ex2057_1_ex_carre_acbd.png",
+   "legende": null,
+   "alt_text": "Repère avec A(−1 ; 1), C(3 ; 1), B(3 ; 5) et, en vert, D(−1 ; 5) : le carré ACBD, angle droit en C, côtés AC et CB codés égaux, diagonales en pointillés se coupant en M(1 ; 3).",
+   "title_text": "",
+   "width": 258,
+   "height": 294
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 737,
+   "proprietaire": 2069,
+   "position": 1,
+   "image": "exercice_images/v1_n169_ex2069_1_ex_aire_max.png",
+   "legende": null,
+   "alt_text": "Courbe de l’aire A(x) = x(20 − x) pour x entre 0 et 20 : une parabole tournée vers le bas dont le sommet, en vert, est le maximum (10 ; 100).",
+   "title_text": "",
+   "width": 429,
+   "height": 282
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 727,
+   "proprietaire": 2056,
+   "position": 1,
+   "image": "exercice_images/v1_n169_ex2056_1_ex_parallelogramme.png",
+   "legende": null,
+   "alt_text": "Repère avec le parallélogramme ABCD, A(−2 ; 1), B(2 ; 1), D(−1 ; 4) et, en vert, C(3 ; 4) ; diagonales en pointillés se coupant en K, et hauteur DE de longueur 3 en orange, perpendiculaire à (AB) en E(−1 ; 1).",
+   "title_text": "",
+   "width": 320,
+   "height": 284
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 729,
+   "proprietaire": 2058,
+   "position": 1,
+   "image": "exercice_images/v1_n169_ex2058_1_ex_projete_enonce.png",
+   "legende": null,
+   "alt_text": "Repère avec les points P(−2 ; 4) et Q(4 ; 1) sur la droite (PQ), et le point M(4 ; 6) au-dessus de la droite.",
+   "title_text": "",
+   "width": 304,
+   "height": 288
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3049,
+   "proprietaire": 2058,
+   "position": 2,
+   "image": "exercice_images/v1_n169_ex2058_2_ex_projete_corrige.png",
+   "legende": null,
+   "alt_text": "Même repère : en vert, le point H(2 ; 2) sur la droite (PQ) et le segment MH perpendiculaire à (PQ) ; les segments MP et MQ en pointillés sont plus longs que MH.",
+   "title_text": "",
+   "width": 304,
+   "height": 288
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 731,
+   "proprietaire": 2060,
+   "position": 1,
+   "image": "exercice_images/v1_n169_ex2060_1_ex_cercle_diametre.png",
+   "legende": null,
+   "alt_text": "Repère avec le cercle de centre M(1 ; 2) passant par A, B, C et D ; le rectangle ACBD en vert avec ses angles droits en C et en D, ses diagonales [AB] et [CD] en pointillés, et le point E(1 ; 5) à l’intérieur du cercle.",
+   "title_text": "",
+   "width": 278,
+   "height": 280
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 739,
+   "proprietaire": 2072,
+   "position": 1,
+   "image": "exercice_images/v1_n169_ex2072_1_ex_circonscrit.png",
+   "legende": null,
+   "alt_text": "Triangle ABC rectangle en A, avec AB = 6 cm et AC = 8 cm, inscrit dans son cercle circonscrit ; en vert, le point D qui complète le rectangle ABDC et le centre O, milieu commun des diagonales [AD] et [BC].",
+   "title_text": "",
+   "width": 220,
+   "height": 220
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 732,
+   "proprietaire": 2061,
+   "position": 1,
+   "image": "exercice_images/v1_n169_ex2061_1_ex_triangle_amb.png",
+   "legende": null,
+   "alt_text": "Triangle AMB rectangle en M, avec AM = 5 cm, MB = 12 cm et AB = 13 cm ; le segment MH en pointillés verts est perpendiculaire à (AB) en H.",
+   "title_text": "",
+   "width": 392,
+   "height": 204
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 726,
+   "proprietaire": 2055,
+   "position": 1,
+   "image": "exercice_images/v1_n169_ex2055_1_ex_symetries.png",
+   "legende": null,
+   "alt_text": "Repère avec A(−3 ; 1), B(1 ; 5), le milieu M(−1 ; 3) de [AB] et, en vert, A′(5 ; 9) et C(−2 ; 6) ; le parallélogramme OACB en vert dont les diagonales [OC] et [AB] se coupent en M.",
+   "title_text": "",
+   "width": 284,
+   "height": 310
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 733,
+   "proprietaire": 2063,
+   "position": 1,
+   "image": "exercice_images/v1_n169_ex2063_1_ex_echelle.png",
+   "legende": null,
+   "alt_text": "Échelle de 8 m appuyée contre un mur vertical, faisant un angle de 30° avec le sol ; h est la hauteur atteinte sur le mur et d la distance entre le pied de l’échelle et le mur.",
+   "title_text": "",
+   "width": 309,
+   "height": 218
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 734,
+   "proprietaire": 2065,
+   "position": 1,
+   "image": "exercice_images/v1_n169_ex2065_1_ex_triangle_ch.png",
+   "legende": null,
+   "alt_text": "Triangle ABC avec AC = 15 cm et AB = 14 cm ; la hauteur [CH] en pointillés verts est perpendiculaire à (AB), avec AH = 9 cm.",
+   "title_text": "",
+   "width": 319,
+   "height": 333
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 735,
+   "proprietaire": 2066,
+   "position": 1,
+   "image": "exercice_images/v1_n169_ex2066_1_ex_corde.png",
+   "legende": null,
+   "alt_text": "Cercle de centre O et de rayon 5 ; corde [AB] de milieu H, avec AH et HB codés égaux ; le segment OH de longueur 3, en vert, est perpendiculaire à la corde.",
+   "title_text": "",
+   "width": 234,
+   "height": 234
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 736,
+   "proprietaire": 2067,
+   "position": 1,
+   "image": "exercice_images/v1_n169_ex2067_1_ex_thales.png",
+   "legende": null,
+   "alt_text": "Triangle ABC avec AB = 12 cm, AC = 18 cm et BC = 15 cm ; D sur [AB] avec AD = 8 cm, E sur [AC], et le segment [DE] parallèle à (BC) ; le petit triangle ADE est en vert.",
+   "title_text": "",
+   "width": 240,
+   "height": 312
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3050,
+   "proprietaire": 2064,
+   "position": 1,
+   "image": "exercice_images/v1_n169_ex2064_1_ex_trigo_15.png",
+   "legende": null,
+   "alt_text": "Triangle rectangle d’hypoténuse 15 cm avec l’angle α : le côté adjacent mesure 12 cm et le côté opposé 9 cm, en vert.",
+   "title_text": "",
+   "width": 298,
+   "height": 217
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3051,
+   "proprietaire": 2068,
+   "position": 1,
+   "image": "exercice_images/v1_n169_ex2068_1_ex_cylindre_cone.png",
+   "legende": null,
+   "alt_text": "Un cylindre et un cône de même base, un disque de rayon r = 6 cm, et de même hauteur h = 15 cm, dessinés côte à côte.",
+   "title_text": "",
+   "width": 392,
+   "height": 224
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3047,
+   "proprietaire": 3750,
+   "position": 1,
+   "image": "exercice_images/v1_n169_ex3750_1_ex_pyramide.png",
+   "legende": null,
+   "alt_text": "Pyramide régulière SABCD à base carrée de côté 6 cm et d’arête latérale SA = 9 cm ; en vert, la hauteur [SO] et le segment [OA], perpendiculaires en O, centre de la base.",
+   "title_text": "",
+   "width": 282,
+   "height": 276
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3048,
+   "proprietaire": 3751,
+   "position": 1,
+   "image": "exercice_images/v1_n169_ex3751_1_ex_carre_inscrit.png",
+   "legende": null,
+   "alt_text": "Carré ABCD de côté 10 cm et, en vert, le carré MNPQ dont les sommets sont sur les côtés, avec AM = BN = CP = DQ = x.",
+   "title_text": "",
+   "width": 288,
+   "height": 286
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3052,
+   "proprietaire": 2062,
+   "position": 1,
+   "image": "exercice_images/v1_n169_ex2062_1_ex_delta.png",
+   "legende": null,
+   "alt_text": "Point M, droite Δ et projeté orthogonal H de M sur Δ, avec l’angle droit en H ; le segment MP qui relie M à un autre point P de Δ est en pointillés.",
+   "title_text": "",
+   "width": 396,
+   "height": 187
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 730,
+   "proprietaire": 2059,
+   "position": 1,
+   "image": "exercice_images/v1_n169_ex2059_1_ex_carre_repere.png",
+   "legende": null,
+   "alt_text": "Repère avec le carré ABCD, A(1 ; 1), B(5 ; 2), C(4 ; 6) et D(0 ; 5), angle droit en B et côtés codés égaux ; les diagonales se coupent au centre K, et le cercle circonscrit est en pointillés verts.",
+   "title_text": "",
+   "width": 256,
+   "height": 288
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 738,
+   "proprietaire": 2071,
+   "position": 1,
+   "image": "exercice_images/v1_n169_ex2071_1_ex_triangle_60.png",
+   "legende": null,
+   "alt_text": "Triangle ABC avec AB = 7 cm, AC = 9 cm et un angle de 60° en A ; la hauteur [BH] en pointillés verts est perpendiculaire à (AC) en H.",
+   "title_text": "",
+   "width": 288,
+   "height": 238
+  }
+ ],
+ "images_creees": [],
+ "exercices_crees": []
+}

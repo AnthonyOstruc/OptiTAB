@@ -107,11 +107,13 @@
     <meta name="twitter:image" content="https://www.optitab.net/Logo_bg.png" />
     <script>
       window.MathJax = {
+        // mhchem : formules et équations chimiques (\ce{…}, \pu{…}) de la physique-chimie
+        loader: { load: ['[tex]/textmacros', '[tex]/mhchem'] },
         tex: {
           inlineMath: [['$', '$'], ['\\(', '\\)']],
           displayMath: [['$$', '$$'], ['\\[', '\\]']],
           // Activer les macros de texte (\text, \textbf, etc.) pour faciliter les tableaux
-          packages: { '[+]': ['textmacros'] }
+          packages: { '[+]': ['textmacros', 'mhchem'] }
         },
         // IMPORTANT: utiliser un cache de police "none" pour que chaque équation SVG soit auto‑contenue.
         // Cela évite la perte des glyphes lors de la capture html2canvas/jsPDF.

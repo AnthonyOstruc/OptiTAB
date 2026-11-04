@@ -1,0 +1,2105 @@
+=== Découverte - Dérivation - De la courbe de f' aux variations de f
+Id: 4605
+Difficulté: easy
+Image: v1_n155_ex4605_1_courbe_derivee.png
+
+Énoncé: <!-- optitab:1 -->
+Une fonction $f$ est dérivable sur ${[-3\,;4]}$. Attention : la figure ci-dessous représente la courbe de sa **dérivée** $f'$, et non celle de $f$.
+
+[IMAGE_1]
+
+1. Lire $f'(-1)$, $f'(0)$ et $f'(3)$.
+2. Dresser le tableau de signes de $f'(x)$ sur ${[-3\,;4]}$.
+3. En déduire le sens de variation de $f$ sur ${[-3\,;4]}$. En quelles abscisses $f$ admet-elle un extremum local ? Préciser sa nature.
+4. On sait de plus que $f(0) = 2$. Déterminer l’équation réduite de la tangente à la courbe de $f$ au point d’abscisse $0$.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Lectures
+
+::: methode
+On lit des **ordonnées** sur la courbe de $f'$ : l’ordonnée du point d’abscisse $a$ est $f'(a)$.
+:::
+
+::: etape Lire
+La courbe de $f'$ coupe l’axe des abscisses en $-1$ et en $3$, et passe par le point $(0\,;-1)$.
+:::
+
+::: resultat
+$f'(-1) = 0$, $f'(0) = -1$ et $f'(3) = 0$.
+:::
+
+## Question 2 : Signe de $f'(x)$
+
+::: methode
+$f'(x) \gt 0$ là où la courbe de $f'$ est au-dessus de l’axe des abscisses, $f'(x) \lt 0$ là où elle est en dessous.
+:::
+
+::: tableau
+x : -3, -1, 3, 4
+f'(x) : , +, z, -, z, +,
+:::
+
+::: resultat
+$f'(x) \gt 0$ sur ${[-3\,;-1[}$ et sur ${]3\,;4]}$ ; $f'(x) \lt 0$ sur ${]{-1}\,;3[}$.
+:::
+
+## Question 3 : Variations de $f$
+
+::: etape Signe de $f'$ → variations de $f$
+$f$ est croissante sur ${[-3\,;-1]}$, décroissante sur ${[-1\,;3]}$, croissante sur ${[3\,;4]}$. Les valeurs de $f$ ne sont pas connues : le tableau ne contient que les flèches.
+:::
+
+::: tableau
+x : -3, -1, 3, 4
+f'(x) : , +, z, -, z, +,
+f(x) : -/, +/, -/, +/
+:::
+
+::: resultat
+$f'$ s’annule en changeant de signe en $-1$ (de $+$ à $-$) : maximum local ; et en $3$ (de $-$ à $+$) : minimum local.
+:::
+
+::: attention
+On ne lit pas les variations de $f$ sur les variations de la courbe tracée : par exemple, $f'$ est décroissante sur ${[-3\,;-1]}$, mais $f$ y est **croissante** car $f'(x) \gt 0$.
+:::
+
+## Question 4 : Tangente en $0$
+
+::: methode
+$T : y = f'(0)(x - 0) + f(0)$.
+:::
+
+::: etape Remplacer
+$f'(0) = -1$ et $f(0) = 2$, donc $y = -1 \times x + 2$.
+:::
+
+::: resultat
+$T : y = -x + 2$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $f'(-1) = 0$, $f'(0) = -1$, $f'(3) = 0$.
+2. $f'(x) \gt 0$ sur ${[-3\,;-1[}$ et ${]3\,;4]}$, $f'(x) \lt 0$ sur ${]{-1}\,;3[}$.
+3. $f$ croissante sur ${[-3\,;-1]}$, décroissante sur ${[-1\,;3]}$, croissante sur ${[3\,;4]}$ : maximum local en $-1$, minimum local en $3$.
+4. $T : y = -x + 2$.
+
+===
+
+=== Découverte - Dérivation - Introduction
+Id: 1366
+Difficulté: easy
+Image: v1_n155_ex1366_1_lecture_g.png,v1_n155_ex1366_2_lecture_g_corrige.png
+
+Énoncé: <!-- optitab:1 -->
+On découvre le nombre dérivé à partir de taux de variation de plus en plus « serrés ». Soit $f$ la fonction carré : $f(x) = x^2$.
+
+1. Taux de variation entre $3$ et $4$.
+   - a) Calculer $f(3)$ et $f(4)$.
+   - b) Calculer le taux de variation de $f$ entre $3$ et $4$.
+   - c) Que représente ce nombre pour la courbe de $f$ ?
+2. Calculer le taux de variation de $f$ entre $3$ et $3{,}5$, puis entre $3$ et $3{,}1$, puis entre $3$ et $3{,}01$. Vers quelle valeur ces taux semblent-ils se rapprocher ?
+3. Soit $h$ un réel non nul. Montrer que le taux de variation de $f$ entre $3$ et $3 + h$ est égal à $6 + h$. En déduire $f'(3)$.
+4. On considère le programme Python suivant. Quelles valeurs affiche-t-il ?
+
+```python
+def taux(h):
+    return ((3 + h)**2 - 3**2) / h
+
+for h in [1, 0.5, 0.1, 0.01]:
+    print(h, taux(h))
+```
+
+5. Lecture graphique. On a tracé la courbe $\mathcal{C}_g$ d’une fonction $g$ et sa tangente $T$ au point $A(2\,;5)$. La tangente $T$ passe aussi par le point $B(4\,;9)$.
+
+[IMAGE_1]
+
+   - a) Calculer le coefficient directeur de $T$.
+   - b) En déduire $g'(2)$.
+   - c) Déterminer l’équation réduite de $T$.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Taux de variation entre $3$ et $4$
+
+::: methode
+Le taux de variation de $f$ entre $a$ et $b$ est $\dfrac{f(b) - f(a)}{b - a}$.
+:::
+
+::: etape Calculer les images
+$f(3) = 3^2 = 9$ et $f(4) = 4^2 = 16$.
+:::
+
+::: etape Calculer le taux
+$$
+\begin{aligned}
+\frac{f(4) - f(3)}{4 - 3} &= \frac{16 - 9}{1} \\
+&= 7
+\end{aligned}
+$$
+:::
+
+::: etape Interpréter
+Ce taux est le coefficient directeur (la pente) de la **sécante** passant par les points $(3\,;9)$ et $(4\,;16)$ de la courbe.
+:::
+
+::: resultat
+$f(3) = 9$, $f(4) = 16$ ; le taux vaut $7$ : c’est la pente de la sécante.
+:::
+
+## Question 2 : Des taux de plus en plus proches
+
+::: methode
+Même calcul, avec $b$ de plus en plus proche de $3$.
+:::
+
+::: etape Entre $3$ et $3{,}5$
+$f(3{,}5) = 12{,}25$, donc le taux vaut $\dfrac{12{,}25 - 9}{0{,}5} = \dfrac{3{,}25}{0{,}5} = 6{,}5$.
+:::
+
+::: etape Entre $3$ et $3{,}1$
+$f(3{,}1) = 9{,}61$, donc le taux vaut $\dfrac{9{,}61 - 9}{0{,}1} = \dfrac{0{,}61}{0{,}1} = 6{,}1$.
+:::
+
+::: etape Entre $3$ et $3{,}01$
+$f(3{,}01) = 9{,}0601$, donc le taux vaut $\dfrac{9{,}0601 - 9}{0{,}01} = \dfrac{0{,}0601}{0{,}01} = 6{,}01$.
+:::
+
+::: resultat
+Les taux $6{,}5$ ; $6{,}1$ ; $6{,}01$ se rapprochent de $6$.
+:::
+
+## Question 3 : Calcul exact du nombre dérivé
+
+::: methode
+Développer le numérateur, simplifier par $h \neq 0$, puis faire tendre $h$ vers $0$.
+:::
+
+::: etape Simplifier le taux
+$$
+\begin{aligned}
+\frac{f(3 + h) - f(3)}{h} &= \frac{(3 + h)^2 - 9}{h} \\
+&= \frac{9 + 6h + h^2 - 9}{h} \\
+&= \frac{h(6 + h)}{h} \\
+&= 6 + h
+\end{aligned}
+$$
+:::
+
+::: etape Faire tendre $h$ vers $0$
+Quand $h$ tend vers $0$, $6 + h$ tend vers $6$ : $f$ est dérivable en $3$.
+:::
+
+::: resultat
+Le taux vaut $6 + h$ et $f'(3) = 6$.
+:::
+
+::: attention
+On ne remplace pas $h$ par $0$ dans le quotient de départ (division par $0$) : on simplifie d’abord par $h$.
+:::
+
+## Question 4 : Lire le programme Python
+
+::: methode
+`taux(h)` calcule $\dfrac{(3 + h)^2 - 3^2}{h}$, c’est-à-dire le taux de variation de $f$ entre $3$ et $3 + h$, qui vaut $6 + h$.
+:::
+
+::: etape Valeurs calculées
+Pour $h = 1$ ; $0{,}5$ ; $0{,}1$ ; $0{,}01$, on obtient $7$ ; $6{,}5$ ; $6{,}1$ ; $6{,}01$. L’ordinateur affiche :
+
+```console
+1 7.0
+0.5 6.5
+0.1 6.100000000000012
+0.01 6.009999999999849
+```
+
+Les derniers chiffres viennent des arrondis du calcul en machine (nombres à virgule flottante).
+:::
+
+::: resultat
+Le programme affiche les taux $7$ ; $6{,}5$ ; $6{,}1$ ; $6{,}01$ (aux arrondis de la machine près) : ils se rapprochent de $f'(3) = 6$.
+:::
+
+## Question 5 : Lecture graphique de $g'(2)$
+
+[IMAGE_2]
+
+::: methode
+$g'(2)$ est le coefficient directeur de la tangente au point d’abscisse $2$.
+:::
+
+::: etape Coefficient directeur de $T$
+$T$ passe par $A(2\,;5)$ et $B(4\,;9)$ :
+
+$$m = \frac{9 - 5}{4 - 2} = \frac{4}{2} = 2$$
+:::
+
+::: etape Nombre dérivé
+$g'(2) = m = 2$.
+:::
+
+::: etape Équation de $T$
+$$
+\begin{aligned}
+y &= g'(2)(x - 2) + g(2) \\
+&= 2(x - 2) + 5 \\
+&= 2x + 1
+\end{aligned}
+$$
+
+Vérification avec $B$ : $2 \times 4 + 1 = 9$.
+:::
+
+::: resultat
+$m = 2$, $g'(2) = 2$ et $T : y = 2x + 1$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. a) $f(3) = 9$ et $f(4) = 16$. b) Le taux vaut $7$. c) C’est la pente de la sécante passant par $(3\,;9)$ et $(4\,;16)$.
+2. $6{,}5$ ; $6{,}1$ ; $6{,}01$ : les taux se rapprochent de $6$.
+3. Le taux vaut $6 + h$, donc $f'(3) = 6$.
+4. Le programme affiche $7$ ; $6{,}5$ ; $6{,}1$ ; $6{,}01$ (aux arrondis de la machine près).
+5. a) $2$. b) $g'(2) = 2$. c) $T : y = 2x + 1$.
+
+===
+
+=== Découverte - Lecture graphique de la dérivée (type tangentes)
+Id: 1365
+Difficulté: easy
+Image: v1_n155_ex1365_1_lecture_f.png,v1_n155_ex1365_2_lecture_f_corrige.png
+
+Énoncé: <!-- optitab:1 -->
+On a tracé la courbe $\mathcal{C}_f$ d’une fonction $f$ définie sur $\mathbb{R}$, ainsi que ses tangentes :
+- $T_C$ au point $C(-1\,;2)$, qui passe aussi par le point $(1\,;0)$ ;
+- $T_D$ au point $D(2\,;0)$, qui passe aussi par le point $(0\,;-1)$.
+
+[IMAGE_1]
+
+1. Déterminer graphiquement $f'(-1)$.
+2. Déterminer graphiquement $f'(2)$.
+3. Déterminer les équations réduites de $T_C$ et de $T_D$.
+4. Au voisinage de $-1$, puis de $2$, la fonction $f$ semble-t-elle croissante ou décroissante ? Est-ce cohérent avec les signes de $f'(-1)$ et de $f'(2)$ ?
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Lire $f'(-1)$
+
+[IMAGE_2]
+
+::: methode
+$f'(-1)$ est le coefficient directeur de la tangente $T_C$ : on utilise deux de ses points.
+:::
+
+::: etape Deux points de $T_C$
+$T_C$ passe par $C(-1\,;2)$ et par $(1\,;0)$ : on avance de $2$ et on descend de $2$ (triangle orange).
+:::
+
+::: etape Coefficient directeur
+$$f'(-1) = \frac{0 - 2}{1 - (-1)} = \frac{-2}{2} = -1$$
+:::
+
+::: resultat
+$f'(-1) = -1$.
+:::
+
+## Question 2 : Lire $f'(2)$
+
+::: methode
+Même méthode avec la tangente $T_D$.
+:::
+
+::: etape Deux points de $T_D$
+$T_D$ passe par $(0\,;-1)$ et par $D(2\,;0)$ : on avance de $2$ et on monte de $1$ (triangle vert).
+:::
+
+::: etape Coefficient directeur
+$$f'(2) = \frac{0 - (-1)}{2 - 0} = \frac{1}{2}$$
+:::
+
+::: resultat
+$f'(2) = \dfrac{1}{2}$.
+:::
+
+## Question 3 : Équations des tangentes
+
+::: methode
+$T : y = f'(a)(x - a) + f(a)$, avec $f(-1) = 2$ et $f(2) = 0$ (coordonnées de $C$ et $D$).
+:::
+
+::: etape Tangente $T_C$
+$$
+\begin{aligned}
+y &= -1 \times (x + 1) + 2 \\
+&= -x + 1
+\end{aligned}
+$$
+:::
+
+::: etape Tangente $T_D$
+$$
+\begin{aligned}
+y &= \frac{1}{2}(x - 2) + 0 \\
+&= \frac{1}{2}x - 1
+\end{aligned}
+$$
+
+Vérification : l’ordonnée à l’origine $-1$ correspond bien au point $(0\,;-1)$.
+:::
+
+::: resultat
+$T_C : y = -x + 1$ et $T_D : y = \dfrac{1}{2}x - 1$.
+:::
+
+## Question 4 : Cohérence avec le sens de variation
+
+::: etape Au voisinage de $-1$
+La courbe descend : $f$ semble décroissante, et $f'(-1) = -1 \lt 0$.
+:::
+
+::: etape Au voisinage de $2$
+La courbe monte : $f$ semble croissante, et $f'(2) = \dfrac{1}{2} \gt 0$.
+:::
+
+::: resultat
+C’est cohérent : une tangente de pente négative accompagne une courbe qui descend, une pente positive une courbe qui monte.
+:::
+
+::: attention
+Ne pas confondre $f(2) = 0$ (ordonnée du point $D$) et $f'(2) = \dfrac{1}{2}$ (pente de la tangente en $D$).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $f'(-1) = -1$.
+2. $f'(2) = \dfrac{1}{2}$.
+3. $T_C : y = -x + 1$ et $T_D : y = \dfrac{1}{2}x - 1$.
+4. $f$ semble décroissante près de $-1$ ($f'(-1) \lt 0$) et croissante près de $2$ ($f'(2) \gt 0$) : c’est cohérent.
+
+===
+
+=== DS - Dérivation - Type 1
+Id: 1369
+Difficulté: hard
+
+Énoncé: <!-- optitab:1 -->
+Devoir surveillé portant sur l’ensemble du chapitre.
+
+**Partie A — Calculs de dérivées**
+
+**A1.** Calculer la dérivée de chacune des fonctions suivantes :
+- a) $f(x) = 3x^3 - 5x^2 + 7x - 2$ sur $\mathbb{R}$ ;
+- b) $g(x) = \dfrac{2}{x} - x^2$ sur ${]0\,;+\infty[}$ ;
+- c) $h(x) = x^2(3x - 1)$ sur $\mathbb{R}$ ;
+- d) $k(x) = \dfrac{x^2 + 1}{x}$ sur ${]0\,;+\infty[}$ ;
+- e) $m(x) = (2x + 5)^3$ sur $\mathbb{R}$.
+
+**Partie B — Équation de tangente**
+
+Soit $f$ la fonction définie sur $\mathbb{R}$ par $f(x) = 2x^2 - 8x + 5$.
+
+**B1.** Calculer $f'(x)$.
+
+**B2.** Calculer $f(3)$ et $f'(3)$.
+
+**B3.** Déterminer l’équation réduite de la tangente $T$ à la courbe de $f$ au point d’abscisse $3$.
+
+**B4.** En quel point la tangente à la courbe est-elle horizontale ? Donner son équation.
+
+**Partie C — Étude d’une fonction**
+
+Soit $g$ la fonction définie sur $\mathbb{R}$ par $g(x) = -x^3 + 3x^2 + 9x - 5$.
+
+**C1.** Calculer $g'(x)$ et montrer que $g'(x) = -3(x + 1)(x - 3)$.
+
+**C2.** Étudier le signe de $g'(x)$ sur $\mathbb{R}$.
+
+**C3.** Calculer $g(-1)$ et $g(3)$, puis dresser le tableau de variations de $g$.
+
+**C4.** En déduire les extremums locaux de $g$.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Partie A : Calculs de dérivées
+
+## Question A1 : Dériver cinq fonctions
+
+::: methode
+Dériver terme à terme ; simplifier avant de dériver quand c’est possible ; utiliser $\big(g(ax + b)\big)' = a\,g'(ax + b)$.
+:::
+
+::: etape a) Polynôme
+$$
+\begin{aligned}
+f'(x) &= 3 \times 3x^2 - 5 \times 2x + 7 \\
+&= 9x^2 - 10x + 7
+\end{aligned}
+$$
+:::
+
+::: etape b) Inverse et carré
+$g'(x) = 2 \times \left(-\dfrac{1}{x^2}\right) - 2x = -\dfrac{2}{x^2} - 2x$.
+:::
+
+::: etape c) Produit
+On développe : $h(x) = 3x^3 - x^2$, donc $h'(x) = 9x^2 - 2x$.
+:::
+
+::: etape d) Quotient simplifié
+$k(x) = \dfrac{x^2}{x} + \dfrac{1}{x} = x + \dfrac{1}{x}$, donc $k'(x) = 1 - \dfrac{1}{x^2} = \dfrac{x^2 - 1}{x^2}$.
+:::
+
+::: etape e) Fonction $x \mapsto g(ax + b)$
+$m(x) = g(2x + 5)$ avec $g(X) = X^3$, $g'(X) = 3X^2$ et $a = 2$ :
+
+$$m'(x) = 2 \times 3(2x + 5)^2 = 6(2x + 5)^2$$
+:::
+
+::: resultat
+$f'(x) = 9x^2 - 10x + 7$ ; $g'(x) = -\dfrac{2}{x^2} - 2x$ ; $h'(x) = 9x^2 - 2x$ ; $k'(x) = 1 - \dfrac{1}{x^2}$ ; $m'(x) = 6(2x + 5)^2$.
+:::
+
+::: attention
+Pour $m$, ne pas oublier le facteur $2$ : $3(2x + 5)^2$ seul est faux.
+:::
+
+## Partie B : Équation de tangente
+
+## Question B1 : Dérivée de $f$
+
+::: etape Dériver
+$f'(x) = 2 \times 2x - 8 = 4x - 8$.
+:::
+
+::: resultat
+$f'(x) = 4x - 8$.
+:::
+
+## Question B2 : Valeurs en $3$
+
+::: etape Calculer $f(3)$
+$$
+\begin{aligned}
+f(3) &= 2 \times 3^2 - 8 \times 3 + 5 \\
+&= 18 - 24 + 5 \\
+&= -1
+\end{aligned}
+$$
+:::
+
+::: etape Calculer $f'(3)$
+$f'(3) = 4 \times 3 - 8 = 4$.
+:::
+
+::: resultat
+$f(3) = -1$ et $f'(3) = 4$.
+:::
+
+## Question B3 : Tangente au point d’abscisse $3$
+
+::: methode
+$T : y = f'(a)(x - a) + f(a)$ avec $a = 3$.
+:::
+
+::: etape Remplacer et développer
+$$
+\begin{aligned}
+y &= 4(x - 3) + (-1) \\
+&= 4x - 12 - 1 \\
+&= 4x - 13
+\end{aligned}
+$$
+:::
+
+::: resultat
+$T : y = 4x - 13$.
+:::
+
+## Question B4 : Tangente horizontale
+
+::: methode
+Une tangente est horizontale lorsque son coefficient directeur est nul : on résout $f'(x) = 0$.
+:::
+
+::: etape Résoudre
+$4x - 8 = 0 \iff x = 2$.
+:::
+
+::: etape Équation
+$f(2) = 8 - 16 + 5 = -3$ et $f'(2) = 0$, donc la tangente a pour équation $y = -3$.
+:::
+
+::: resultat
+La tangente est horizontale au point $(2\,;-3)$ ; son équation est $y = -3$.
+:::
+
+## Partie C : Étude d’une fonction
+
+## Question C1 : Dérivée et factorisation
+
+::: etape Dériver
+$g'(x) = -3x^2 + 6x + 9$.
+:::
+
+::: etape Vérifier la factorisation
+$$
+\begin{aligned}
+-3(x + 1)(x - 3) &= -3(x^2 - 3x + x - 3) \\
+&= -3(x^2 - 2x - 3) \\
+&= -3x^2 + 6x + 9
+\end{aligned}
+$$
+:::
+
+::: resultat
+$g'(x) = -3x^2 + 6x + 9 = -3(x + 1)(x - 3)$.
+:::
+
+## Question C2 : Signe de $g'(x)$
+
+::: methode
+$g'(x)$ est un trinôme de racines $-1$ et $3$ et de coefficient $-3 \lt 0$ : il est du signe de $-3$ à l’extérieur des racines.
+:::
+
+::: tableau
+x : -\infty, -1, 3, +\infty
+g'(x) : , -, z, +, z, -,
+:::
+
+::: resultat
+$g'(x) \lt 0$ sur ${]{-\infty}\,;-1[}$ et sur ${]3\,;+\infty[}$ ; $g'(x) \gt 0$ sur ${]{-1}\,;3[}$.
+:::
+
+## Question C3 : Tableau de variations
+
+::: etape Calculer $g(-1)$ et $g(3)$
+$$
+\begin{aligned}
+g(-1) &= -(-1)^3 + 3 \times (-1)^2 + 9 \times (-1) - 5 \\
+&= 1 + 3 - 9 - 5 \\
+&= -10
+\end{aligned}
+$$
+
+$g(3) = -27 + 27 + 27 - 5 = 22$.
+:::
+
+::: tableau
+x : -\infty, -1, 3, +\infty
+g'(x) : , -, z, +, z, -,
+g(x) : +/, -/-10, +/22, -/
+:::
+
+::: resultat
+$g$ est décroissante sur ${]{-\infty}\,;-1]}$, croissante sur ${[-1\,;3]}$, décroissante sur ${[3\,;+\infty[}$.
+:::
+
+## Question C4 : Extremums locaux
+
+::: methode
+$g'$ s’annule en changeant de signe en $-1$ et en $3$.
+:::
+
+::: etape Lire le tableau
+En $-1$, $g'$ passe de $-$ à $+$ : minimum local. En $3$, $g'$ passe de $+$ à $-$ : maximum local.
+:::
+
+::: resultat
+Minimum local $g(-1) = -10$ ; maximum local $g(3) = 22$.
+:::
+
+::: attention
+Ce sont des extremums **locaux** : par exemple $g(-4) = 71 \gt 22$ et $g(6) = -59 \lt -10$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+**Partie A.** a) $9x^2 - 10x + 7$ ; b) $-\dfrac{2}{x^2} - 2x$ ; c) $9x^2 - 2x$ ; d) $1 - \dfrac{1}{x^2}$ ; e) $6(2x + 5)^2$.
+
+**Partie B.** B1 : $f'(x) = 4x - 8$. B2 : $f(3) = -1$, $f'(3) = 4$. B3 : $y = 4x - 13$. B4 : au point $(2\,;-3)$, tangente $y = -3$.
+
+**Partie C.** C1 : $g'(x) = -3x^2 + 6x + 9 = -3(x + 1)(x - 3)$. C2 : $g'(x) \lt 0$ sur ${]{-\infty}\,;-1[}$ et ${]3\,;+\infty[}$, $g'(x) \gt 0$ sur ${]{-1}\,;3[}$. C3 : $g(-1) = -10$, $g(3) = 22$ ; $g$ décroissante, croissante, puis décroissante. C4 : minimum local $-10$ en $-1$, maximum local $22$ en $3$.
+
+===
+
+=== DS - Dérivation - Type 2
+Id: 1371
+Difficulté: hard
+
+Énoncé: <!-- optitab:1 -->
+Devoir surveillé portant sur l’ensemble du chapitre.
+
+**Partie A — Calculs de dérivées**
+
+Calculer la dérivée de chacune des fonctions suivantes.
+
+**A1.** $f(x) = 4x^3 - 5x^2 + 2x - 9$ sur $\mathbb{R}$.
+
+**A2.** $g(x) = (2x + 3)(x - 1)$ sur $\mathbb{R}$.
+
+**A3.** $h(x) = \dfrac{3x + 1}{x}$ sur ${]0\,;+\infty[}$.
+
+**A4.** $k(x) = (5x - 2)^3$ sur $\mathbb{R}$.
+
+**Partie B — Équation de tangente**
+
+On considère la fonction $f$ définie sur $\mathbb{R}$ par $f(x) = -x^2 + 6x - 5$.
+
+**B1.** Calculer $f'(x)$.
+
+**B2.** Déterminer l’équation réduite de la tangente à la courbe de $f$ au point d’abscisse $1$.
+
+**B3.** En quel point la tangente à la courbe est-elle horizontale ? Donner son équation.
+
+**Partie C — Étude de fonction**
+
+On considère la fonction $g$ définie sur $\mathbb{R}$ par $g(x) = 2x^3 - 3x^2 - 12x + 7$.
+
+**C1.** Calculer $g'(x)$ et montrer que $g'(x) = 6(x + 1)(x - 2)$.
+
+**C2.** Étudier le signe de $g'(x)$ sur $\mathbb{R}$.
+
+**C3.** Calculer $g(-1)$ et $g(2)$.
+
+**C4.** Dresser le tableau de variations de $g$ et donner ses extremums locaux.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Partie A : Calculs de dérivées
+
+## Question A1 : Polynôme
+
+::: etape Dériver terme à terme
+$$
+\begin{aligned}
+f'(x) &= 4 \times 3x^2 - 5 \times 2x + 2 \\
+&= 12x^2 - 10x + 2
+\end{aligned}
+$$
+:::
+
+::: resultat
+$f'(x) = 12x^2 - 10x + 2$.
+:::
+
+## Question A2 : Produit
+
+::: methode
+$(uv)' = u'v + uv'$ avec $u(x) = 2x + 3$, $u'(x) = 2$, $v(x) = x - 1$, $v'(x) = 1$.
+:::
+
+::: etape Appliquer la formule
+$$
+\begin{aligned}
+g'(x) &= 2(x - 1) + (2x + 3) \times 1 \\
+&= 2x - 2 + 2x + 3 \\
+&= 4x + 1
+\end{aligned}
+$$
+:::
+
+::: etape Vérifier en développant
+$g(x) = 2x^2 + x - 3$, donc $g'(x) = 4x + 1$.
+:::
+
+::: resultat
+$g'(x) = 4x + 1$.
+:::
+
+## Question A3 : Quotient
+
+::: methode
+Simplifier d’abord : $h(x) = \dfrac{3x}{x} + \dfrac{1}{x} = 3 + \dfrac{1}{x}$.
+:::
+
+::: etape Dériver
+$h'(x) = 0 - \dfrac{1}{x^2} = -\dfrac{1}{x^2}$.
+:::
+
+::: etape Vérifier avec la formule du quotient
+$$
+\begin{aligned}
+h'(x) &= \frac{3 \times x - (3x + 1) \times 1}{x^2} \\
+&= \frac{-1}{x^2}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$h'(x) = -\dfrac{1}{x^2}$.
+:::
+
+## Question A4 : Fonction $x \mapsto g(ax + b)$
+
+::: methode
+$k(x) = g(5x - 2)$ avec $g(X) = X^3$, $g'(X) = 3X^2$ et $a = 5$ : $k'(x) = 5\,g'(5x - 2)$.
+:::
+
+::: etape Appliquer
+$k'(x) = 5 \times 3(5x - 2)^2 = 15(5x - 2)^2$.
+:::
+
+::: resultat
+$k'(x) = 15(5x - 2)^2$.
+:::
+
+## Partie B : Équation de tangente
+
+## Question B1 : Dérivée de $f$
+
+::: etape Dériver
+$f'(x) = -2x + 6$.
+:::
+
+::: resultat
+$f'(x) = -2x + 6$.
+:::
+
+## Question B2 : Tangente au point d’abscisse $1$
+
+::: methode
+$T : y = f'(1)(x - 1) + f(1)$.
+:::
+
+::: etape Calculer $f(1)$ et $f'(1)$
+$f(1) = -1 + 6 - 5 = 0$ et $f'(1) = -2 + 6 = 4$.
+:::
+
+::: etape Équation
+$y = 4(x - 1) + 0 = 4x - 4$.
+:::
+
+::: resultat
+$T : y = 4x - 4$.
+:::
+
+## Question B3 : Tangente horizontale
+
+::: methode
+Tangente horizontale $\iff f'(x) = 0$.
+:::
+
+::: etape Résoudre
+$-2x + 6 = 0 \iff x = 3$, et $f(3) = -9 + 18 - 5 = 4$.
+:::
+
+::: resultat
+La tangente est horizontale au point $(3\,;4)$ ; son équation est $y = 4$.
+:::
+
+## Partie C : Étude de fonction
+
+## Question C1 : Dérivée et factorisation
+
+::: etape Dériver
+$g'(x) = 6x^2 - 6x - 12 = 6(x^2 - x - 2)$.
+:::
+
+::: etape Factoriser le trinôme
+$x^2 - x - 2$ a pour racine évidente $-1$ ($1 + 1 - 2 = 0$) ; le produit des racines vaut $-2$, donc l’autre racine est $2$. Ainsi $x^2 - x - 2 = (x + 1)(x - 2)$.
+:::
+
+::: resultat
+$g'(x) = 6x^2 - 6x - 12 = 6(x + 1)(x - 2)$.
+:::
+
+## Question C2 : Signe de $g'(x)$
+
+::: methode
+Tableau de signes des facteurs (le facteur $6$ est positif).
+:::
+
+::: tableau
+x : -\infty, -1, 2, +\infty
+x + 1 : , -, z, +, t, +,
+x - 2 : , -, t, -, z, +,
+g'(x) : , +, z, -, z, +,
+:::
+
+::: resultat
+$g'(x) \gt 0$ sur ${]{-\infty}\,;-1[}$ et sur ${]2\,;+\infty[}$ ; $g'(x) \lt 0$ sur ${]{-1}\,;2[}$.
+:::
+
+## Question C3 : Valeurs de $g$
+
+::: etape Calculer $g(-1)$
+$$
+\begin{aligned}
+g(-1) &= 2 \times (-1)^3 - 3 \times (-1)^2 - 12 \times (-1) + 7 \\
+&= -2 - 3 + 12 + 7 \\
+&= 14
+\end{aligned}
+$$
+:::
+
+::: etape Calculer $g(2)$
+$$
+\begin{aligned}
+g(2) &= 2 \times 8 - 3 \times 4 - 12 \times 2 + 7 \\
+&= 16 - 12 - 24 + 7 \\
+&= -13
+\end{aligned}
+$$
+:::
+
+::: resultat
+$g(-1) = 14$ et $g(2) = -13$.
+:::
+
+## Question C4 : Variations et extremums
+
+::: tableau
+x : -\infty, -1, 2, +\infty
+g'(x) : , +, z, -, z, +,
+g(x) : -/, +/14, -/-13, +/
+:::
+
+::: etape Lire les extremums
+$g'$ s’annule en changeant de signe en $-1$ (de $+$ à $-$) et en $2$ (de $-$ à $+$).
+:::
+
+::: resultat
+$g$ admet un maximum local $14$ en $-1$ et un minimum local $-13$ en $2$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+**Partie A.** A1 : $12x^2 - 10x + 2$. A2 : $4x + 1$. A3 : $-\dfrac{1}{x^2}$. A4 : $15(5x - 2)^2$.
+
+**Partie B.** B1 : $f'(x) = -2x + 6$. B2 : $y = 4x - 4$. B3 : au point $(3\,;4)$, tangente $y = 4$.
+
+**Partie C.** C1 : $g'(x) = 6(x + 1)(x - 2)$. C2 : $g'(x) \gt 0$ sur ${]{-\infty}\,;-1[}$ et ${]2\,;+\infty[}$, $g'(x) \lt 0$ sur ${]{-1}\,;2[}$. C3 : $g(-1) = 14$, $g(2) = -13$. C4 : maximum local $14$ en $-1$, minimum local $-13$ en $2$.
+
+===
+
+=== Entraînement - Dérivation - Applications pratiques
+Id: 1373
+Difficulté: medium
+
+Énoncé: <!-- optitab:1 -->
+Trois situations concrètes où la dérivée permet de trouver un maximum ou un minimum.
+
+1. Un rectangle a un périmètre de $40$ m. On note $x$ la longueur d’un de ses côtés (en m), avec $0 \lt x \lt 20$.
+   - a) Exprimer la longueur $y$ de l’autre côté en fonction de $x$.
+   - b) Montrer que l’aire du rectangle est $A(x) = 20x - x^2$.
+   - c) Calculer $A'(x)$ et étudier les variations de $A$. Pour quelle valeur de $x$ l’aire est-elle maximale ?
+   - d) Quelle est alors la nature du rectangle ?
+2. Le coût de production de $x$ centaines d’objets est $C(x) = x^2 - 10x + 50$ (en euros), avec $x \in {[0\,;15]}$.
+   - a) Calculer $C'(x)$.
+   - b) Dresser le tableau de variations de $C$ sur ${[0\,;15]}$.
+   - c) Pour quelle production le coût est-il minimal ? Quel est ce coût ?
+3. Un mobile se déplace sur un axe. Sa position à l’instant $t$ (en s) est $s(t) = -t^2 + 6t + 2$ (en m), pour $t \ge 0$. Sa vitesse instantanée est $v(t) = s'(t)$.
+   - a) Calculer $v(t)$.
+   - b) À quel instant le mobile s’arrête-t-il ?
+   - c) Quelle est la position maximale atteinte ?
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Rectangle d’aire maximale
+
+::: methode
+Exprimer l’aire en fonction de $x$, puis étudier ses variations avec le signe de $A'(x)$.
+:::
+
+::: etape a) Autre côté
+Le périmètre vaut $2x + 2y = 40$, donc $x + y = 20$ et $y = 20 - x$.
+:::
+
+::: etape b) Aire
+$A(x) = x \times y = x(20 - x) = 20x - x^2$.
+:::
+
+::: etape c) Dérivée et signe
+$A'(x) = 20 - 2x$, et $20 - 2x \gt 0 \iff x \lt 10$. On étudie $A$ sur ${[0\,;20]}$ (les bornes correspondent à des rectangles « aplatis », d’aire nulle).
+:::
+
+::: tableau
+x : 0, 10, 20
+A'(x) : , +, z, -,
+A(x) : -/0, +/100, -/0
+:::
+
+::: etape d) Nature du rectangle
+Pour $x = 10$, l’autre côté mesure $y = 20 - 10 = 10$ : les quatre côtés sont égaux.
+:::
+
+::: resultat
+$y = 20 - x$ ; $A(x) = 20x - x^2$ ; l’aire est maximale pour $x = 10$ m et vaut $100$ m² ; le rectangle est alors un **carré**.
+:::
+
+## Question 2 : Coût minimal
+
+::: methode
+Étudier le signe de $C'(x)$ sur ${[0\,;15]}$ et calculer les images utiles.
+:::
+
+::: etape a) Dérivée
+$C'(x) = 2x - 10$, et $2x - 10 \gt 0 \iff x \gt 5$.
+:::
+
+::: etape b) Valeurs utiles
+$C(0) = 50$ ; $C(5) = 25 - 50 + 50 = 25$ ; $C(15) = 225 - 150 + 50 = 125$.
+:::
+
+::: tableau
+x : 0, 5, 15
+C'(x) : , -, z, +,
+C(x) : +/50, -/25, +/125
+:::
+
+::: resultat
+$C'(x) = 2x - 10$ ; le coût est minimal pour $x = 5$, soit $500$ objets, et vaut $25$ euros.
+:::
+
+## Question 3 : Mouvement d’un mobile
+
+::: methode
+La vitesse instantanée est la dérivée de la position ; le mobile s’arrête quand $v(t) = 0$.
+:::
+
+::: etape a) Vitesse
+$v(t) = s'(t) = -2t + 6$.
+:::
+
+::: etape b) Arrêt
+$-2t + 6 = 0 \iff t = 3$. Pour $0 \le t \lt 3$, $v(t) \gt 0$ (le mobile avance) ; pour $t \gt 3$, $v(t) \lt 0$ (il recule).
+:::
+
+::: tableau
+t : 0, 3, +\infty
+v(t) : , +, z, -,
+s(t) : -/2, +/11, -/
+:::
+
+::: etape c) Position maximale
+$s(3) = -9 + 18 + 2 = 11$.
+:::
+
+::: resultat
+$v(t) = -2t + 6$ ; le mobile s’arrête à $t = 3$ s ; sa position maximale est $11$ m.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. a) $y = 20 - x$. b) $A(x) = x(20 - x) = 20x - x^2$. c) $A'(x) = 20 - 2x$ : $A$ croissante sur ${[0\,;10]}$, décroissante sur ${[10\,;20]}$ ; aire maximale $100$ m² pour $x = 10$ m. d) C’est un carré.
+2. a) $C'(x) = 2x - 10$. b) $C$ décroissante sur ${[0\,;5]}$, croissante sur ${[5\,;15]}$. c) Coût minimal $25$ euros pour $x = 5$ ($500$ objets).
+3. a) $v(t) = -2t + 6$. b) $t = 3$ s. c) $11$ m.
+
+===
+
+=== Entraînement - Dérivation - Calculs de dérivées
+Id: 1367
+Difficulté: medium
+
+Énoncé: <!-- optitab:1 -->
+Entraînement aux formules de dérivation et à l’équation de la tangente.
+
+1. Calculer la dérivée des fonctions suivantes :
+   - a) $f(x) = 5x^2 + 3x - 7$ sur $\mathbb{R}$ ;
+   - b) $g(x) = x^3 - 2x^2 + 4$ sur $\mathbb{R}$ ;
+   - c) $h(x) = \dfrac{1}{x} + x$ sur ${]0\,;+\infty[}$.
+2. Soit $f(x) = x^2 - 4x + 3$ sur $\mathbb{R}$.
+   - a) Calculer $f'(x)$.
+   - b) Calculer $f(2)$ et $f'(2)$.
+   - c) Déterminer l’équation réduite de la tangente à la courbe de $f$ au point d’abscisse $2$.
+3. Dériver en utilisant les formules du cours, puis vérifier :
+   - a) $f(x) = x(2x + 1)$ sur $\mathbb{R}$ (formule du produit) ;
+   - b) $g(x) = \dfrac{x + 2}{x}$ sur ${]0\,;+\infty[}$ (formule du quotient) ;
+   - c) $h(x) = (3x - 1)^2$ sur $\mathbb{R}$ (dérivée de $x \mapsto g(ax + b)$).
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Dérivées usuelles
+
+::: methode
+$(x^n)' = nx^{n - 1}$, $(k)' = 0$, $\left(\dfrac{1}{x}\right)' = -\dfrac{1}{x^2}$, et on dérive une somme terme à terme.
+:::
+
+::: etape a) $f(x) = 5x^2 + 3x - 7$
+$f'(x) = 5 \times 2x + 3 = 10x + 3$.
+:::
+
+::: etape b) $g(x) = x^3 - 2x^2 + 4$
+$g'(x) = 3x^2 - 2 \times 2x + 0 = 3x^2 - 4x$.
+:::
+
+::: etape c) $h(x) = \frac{1}{x} + x$
+$h'(x) = -\dfrac{1}{x^2} + 1$.
+:::
+
+::: resultat
+$f'(x) = 10x + 3$ ; $g'(x) = 3x^2 - 4x$ ; $h'(x) = 1 - \dfrac{1}{x^2}$.
+:::
+
+## Question 2 : Équation de tangente
+
+::: methode
+$T : y = f'(2)(x - 2) + f(2)$.
+:::
+
+::: etape a) Dérivée
+$f'(x) = 2x - 4$.
+:::
+
+::: etape b) Valeurs en $2$
+$f(2) = 4 - 8 + 3 = -1$ et $f'(2) = 4 - 4 = 0$.
+:::
+
+::: etape c) Équation
+$y = 0 \times (x - 2) + (-1) = -1$.
+:::
+
+::: resultat
+$f'(x) = 2x - 4$ ; $f(2) = -1$, $f'(2) = 0$ ; la tangente est **horizontale**, d’équation $y = -1$.
+:::
+
+## Question 3 : Produit, quotient, $g(ax + b)$
+
+::: etape a) Produit
+$u(x) = x$, $u'(x) = 1$, $v(x) = 2x + 1$, $v'(x) = 2$ :
+
+$$
+\begin{aligned}
+f'(x) &= 1 \times (2x + 1) + x \times 2 \\
+&= 4x + 1
+\end{aligned}
+$$
+
+Vérification : $f(x) = 2x^2 + x$, donc $f'(x) = 4x + 1$.
+:::
+
+::: etape b) Quotient
+$u(x) = x + 2$, $u'(x) = 1$, $v(x) = x$, $v'(x) = 1$ :
+
+$$
+\begin{aligned}
+g'(x) &= \frac{1 \times x - (x + 2) \times 1}{x^2} \\
+&= -\frac{2}{x^2}
+\end{aligned}
+$$
+
+Vérification : $g(x) = 1 + \dfrac{2}{x}$, donc $g'(x) = -\dfrac{2}{x^2}$.
+:::
+
+::: etape c) Fonction $x \mapsto g(ax + b)$
+$h(x) = g(3x - 1)$ avec $g(X) = X^2$, $g'(X) = 2X$, $a = 3$ :
+
+$$
+\begin{aligned}
+h'(x) &= 3 \times 2(3x - 1) \\
+&= 18x - 6
+\end{aligned}
+$$
+
+Vérification : $h(x) = 9x^2 - 6x + 1$, donc $h'(x) = 18x - 6$.
+:::
+
+::: resultat
+$f'(x) = 4x + 1$ ; $g'(x) = -\dfrac{2}{x^2}$ ; $h'(x) = 18x - 6$.
+:::
+
+::: attention
+Pour $h$, l’erreur classique est d’écrire $2(3x - 1)$ en oubliant le facteur $a = 3$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. a) $f'(x) = 10x + 3$. b) $g'(x) = 3x^2 - 4x$. c) $h'(x) = 1 - \dfrac{1}{x^2}$.
+2. a) $f'(x) = 2x - 4$. b) $f(2) = -1$ et $f'(2) = 0$. c) $y = -1$ (tangente horizontale).
+3. a) $f'(x) = 4x + 1$. b) $g'(x) = -\dfrac{2}{x^2}$. c) $h'(x) = 18x - 6$.
+
+===
+
+=== Entraînement - Dérivation - g(ax + b), produits et quotients
+Id: 1372
+Difficulté: medium
+
+Énoncé: <!-- optitab:1 -->
+Entraînement aux formules $\big(g(ax + b)\big)' = a\,g'(ax + b)$, $(uv)' = u'v + uv'$ et $\left(\dfrac{u}{v}\right)' = \dfrac{u'v - uv'}{v^2}$.
+
+1. Calculer la dérivée des fonctions suivantes :
+   - a) $f(x) = (2x + 5)^4$ sur $\mathbb{R}$ ;
+   - b) $g(x) = (4 - x)^5$ sur $\mathbb{R}$ ;
+   - c) $h(x) = \sqrt{3x + 6}$ sur ${]{-2}\,;+\infty[}$ ;
+   - d) $k(x) = \dfrac{1}{2x - 1}$ sur ${]\frac{1}{2}\,;+\infty[}$.
+2. Calculer la dérivée des fonctions suivantes :
+   - a) $f(x) = x^2(x + 1)$ sur $\mathbb{R}$ ;
+   - b) $g(x) = (3x - 2)(x^2 + 1)$ sur $\mathbb{R}$ ;
+   - c) $h(x) = \dfrac{x^2}{x + 1}$ sur ${]{-1}\,;+\infty[}$.
+3. Soit $f(x) = (x^2 - 3)^2$ sur $\mathbb{R}$.
+   - a) Développer $f(x)$, puis calculer $f'(x)$.
+   - b) Résoudre l’équation $f'(x) = 0$.
+   - c) Dresser le tableau de variations de $f$.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Fonctions $x \mapsto g(ax + b)$
+
+::: methode
+Repérer $g$, $a$ et $b$, puis appliquer $\big(g(ax + b)\big)' = a\,g'(ax + b)$.
+:::
+
+::: etape a) $f(x) = (2x + 5)^4$
+$g(X) = X^4$, $g'(X) = 4X^3$, $a = 2$ : $f'(x) = 2 \times 4(2x + 5)^3 = 8(2x + 5)^3$.
+:::
+
+::: etape b) $g(x) = (4 - x)^5$
+On écrit $4 - x = -x + 4$ : $a = -1$. Avec $(X^5)' = 5X^4$ : $g'(x) = -1 \times 5(4 - x)^4 = -5(4 - x)^4$.
+:::
+
+::: etape c) $h(x) = \sqrt{3x + 6}$
+$g(X) = \sqrt{X}$, $g'(X) = \dfrac{1}{2\sqrt{X}}$, $a = 3$ (et $3x + 6 \gt 0$ sur ${]{-2}\,;+\infty[}$) :
+
+$$h'(x) = 3 \times \frac{1}{2\sqrt{3x + 6}} = \frac{3}{2\sqrt{3x + 6}}$$
+:::
+
+::: etape d) $k(x) = \frac{1}{2x - 1}$
+$g(X) = \dfrac{1}{X}$, $g'(X) = -\dfrac{1}{X^2}$, $a = 2$ :
+
+$$k'(x) = 2 \times \left(-\frac{1}{(2x - 1)^2}\right) = -\frac{2}{(2x - 1)^2}$$
+:::
+
+::: resultat
+$f'(x) = 8(2x + 5)^3$ ; $g'(x) = -5(4 - x)^4$ ; $h'(x) = \dfrac{3}{2\sqrt{3x + 6}}$ ; $k'(x) = -\dfrac{2}{(2x - 1)^2}$.
+:::
+
+::: attention
+Dans $(4 - x)^5$, le coefficient de $x$ est $a = -1$ : la dérivée est négative, pas $5(4 - x)^4$.
+:::
+
+## Question 2 : Produits et quotients
+
+::: etape a) $f(x) = x^2(x + 1)$
+$u(x) = x^2$, $u'(x) = 2x$, $v(x) = x + 1$, $v'(x) = 1$ :
+
+$$
+\begin{aligned}
+f'(x) &= 2x(x + 1) + x^2 \times 1 \\
+&= 3x^2 + 2x
+\end{aligned}
+$$
+:::
+
+::: etape b) $g(x) = (3x - 2)(x^2 + 1)$
+$u(x) = 3x - 2$, $u'(x) = 3$, $v(x) = x^2 + 1$, $v'(x) = 2x$ :
+
+$$
+\begin{aligned}
+g'(x) &= 3(x^2 + 1) + (3x - 2) \times 2x \\
+&= 3x^2 + 3 + 6x^2 - 4x \\
+&= 9x^2 - 4x + 3
+\end{aligned}
+$$
+:::
+
+::: etape c) $h(x) = \frac{x^2}{x + 1}$
+$u(x) = x^2$, $u'(x) = 2x$, $v(x) = x + 1$, $v'(x) = 1$ :
+
+$$
+\begin{aligned}
+h'(x) &= \frac{2x(x + 1) - x^2 \times 1}{(x + 1)^2} \\
+&= \frac{x^2 + 2x}{(x + 1)^2} \\
+&= \frac{x(x + 2)}{(x + 1)^2}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$f'(x) = 3x^2 + 2x$ ; $g'(x) = 9x^2 - 4x + 3$ ; $h'(x) = \dfrac{x(x + 2)}{(x + 1)^2}$.
+:::
+
+## Question 3 : Étude de $f(x) = (x^2 - 3)^2$
+
+::: methode
+La formule $\big(g(ax + b)\big)'$ ne s’applique pas ici ($x^2 - 3$ n’est pas de la forme $ax + b$) : on développe.
+:::
+
+::: etape a) Développer et dériver
+$f(x) = x^4 - 6x^2 + 9$, donc $f'(x) = 4x^3 - 12x = 4x(x^2 - 3)$.
+:::
+
+::: etape b) Résoudre $f'(x) = 0$
+$4x(x^2 - 3) = 0 \iff x = 0$ ou $x^2 = 3$, c’est-à-dire $x = 0$, $x = -\sqrt{3}$ ou $x = \sqrt{3}$.
+:::
+
+::: etape c) Signe et valeurs
+$4x$ est du signe de $x$ ; $x^2 - 3$ est négatif entre $-\sqrt{3}$ et $\sqrt{3}$, positif à l’extérieur. De plus $f(0) = 9$ et $f(\pm\sqrt{3}) = (3 - 3)^2 = 0$.
+:::
+
+::: tableau
+x : -\infty, -\sqrt{3}, 0, \sqrt{3}, +\infty
+4x : , -, t, -, z, +, t, +,
+x^2 - 3 : , +, z, -, t, -, z, +,
+f'(x) : , -, z, +, z, -, z, +,
+f(x) : +/, -/0, +/9, -/0, +/
+:::
+
+::: resultat
+$f'(x) = 4x^3 - 12x$ ; $f'(x) = 0$ pour $x \in \{-\sqrt{3}\,;0\,;\sqrt{3}\}$ ; minimum $0$ en $\pm\sqrt{3}$, maximum local $9$ en $0$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. a) $8(2x + 5)^3$. b) $-5(4 - x)^4$. c) $\dfrac{3}{2\sqrt{3x + 6}}$. d) $-\dfrac{2}{(2x - 1)^2}$.
+2. a) $3x^2 + 2x$. b) $9x^2 - 4x + 3$. c) $\dfrac{x(x + 2)}{(x + 1)^2}$.
+3. a) $f(x) = x^4 - 6x^2 + 9$ et $f'(x) = 4x^3 - 12x$. b) $x = -\sqrt{3}$, $x = 0$ ou $x = \sqrt{3}$. c) $f$ décroissante sur ${]{-\infty}\,;-\sqrt{3}]}$, croissante sur ${[-\sqrt{3}\,;0]}$, décroissante sur ${[0\,;\sqrt{3}]}$, croissante sur ${[\sqrt{3}\,;+\infty[}$ ; minimum $0$, maximum local $9$.
+
+===
+
+=== Entraînement - Dérivation - Inverse, racine carrée et valeur absolue
+Id: 4604
+Difficulté: medium
+Image: v1_n155_ex4604_1_cours_nonderivable.png
+
+Énoncé: <!-- optitab:1 -->
+1. Soit $f$ la fonction définie sur ${[1\,;6]}$ par $f(x) = x + \dfrac{4}{x}$.
+   - a) Montrer que $f'(x) = \dfrac{(x - 2)(x + 2)}{x^2}$.
+   - b) Dresser le tableau de variations de $f$ sur ${[1\,;6]}$.
+   - c) En déduire que, pour tout $x$ de ${[1\,;6]}$, $4 \le f(x) \le \dfrac{20}{3}$.
+2. Soit $g$ la fonction définie sur ${[0\,;+\infty[}$ par $g(x) = x\sqrt{x}$.
+   - a) Montrer que, pour tout $x \gt 0$, $g'(x) = \dfrac{3}{2}\sqrt{x}$.
+   - b) Calculer le taux de variation de $g$ entre $0$ et $h$ (avec $h \gt 0$). La fonction $g$ est-elle dérivable en $0$ ?
+3. Démontrer que la fonction racine carrée n’est pas dérivable en $0$ : calculer son taux de variation entre $0$ et $h$ ($h \gt 0$), puis sa valeur pour $h = 0{,}01$ et $h = 0{,}0001$.
+4. Calculer le taux de variation de la fonction valeur absolue entre $0$ et $h$ pour $h = 0{,}1$, puis pour $h = -0{,}1$. Que peut-on en conclure ?
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Étude de $f(x) = x + \frac{4}{x}$
+
+::: methode
+Dériver, réduire au même dénominateur, étudier le signe, puis lire le minimum et le maximum dans le tableau.
+:::
+
+::: etape a) Dérivée
+$$
+\begin{aligned}
+f'(x) &= 1 - \frac{4}{x^2} \\
+&= \frac{x^2 - 4}{x^2} \\
+&= \frac{(x - 2)(x + 2)}{x^2}
+\end{aligned}
+$$
+:::
+
+::: etape b) Signe et valeurs
+Sur ${[1\,;6]}$, $x + 2 \gt 0$ et $x^2 \gt 0$ : $f'(x)$ a le signe de $x - 2$. De plus $f(1) = 5$, $f(2) = 2 + 2 = 4$ et $f(6) = 6 + \dfrac{4}{6} = \dfrac{20}{3}$.
+:::
+
+::: tableau
+x : 1, 2, 6
+f'(x) : , -, z, +,
+f(x) : +/5, -/4, +/\frac{20}{3}
+:::
+
+::: etape c) Encadrement
+Le minimum de $f$ sur ${[1\,;6]}$ est $4$ ; son maximum est la plus grande des valeurs $5$ et $\dfrac{20}{3} \approx 6{,}67$, soit $\dfrac{20}{3}$.
+:::
+
+::: resultat
+$f$ décroît sur ${[1\,;2]}$ puis croît sur ${[2\,;6]}$ ; pour tout $x$ de ${[1\,;6]}$, $4 \le f(x) \le \dfrac{20}{3}$.
+:::
+
+## Question 2 : Étude de $g(x) = x\sqrt{x}$
+
+::: methode
+Formule du produit avec $u(x) = x$, $u'(x) = 1$, $v(x) = \sqrt{x}$, $v'(x) = \dfrac{1}{2\sqrt{x}}$ (valable pour $x \gt 0$).
+:::
+
+::: etape a) Dérivée pour $x \gt 0$
+$$
+\begin{aligned}
+g'(x) &= 1 \times \sqrt{x} + x \times \frac{1}{2\sqrt{x}} \\
+&= \sqrt{x} + \frac{\sqrt{x}}{2} \\
+&= \frac{3}{2}\sqrt{x}
+\end{aligned}
+$$
+car $\dfrac{x}{\sqrt{x}} = \sqrt{x}$ pour $x \gt 0$.
+:::
+
+::: etape b) En $0$, on revient à la définition
+Pour $h \gt 0$ : $\dfrac{g(h) - g(0)}{h} = \dfrac{h\sqrt{h}}{h} = \sqrt{h}$, qui tend vers $0$ quand $h$ tend vers $0$.
+:::
+
+::: resultat
+$g'(x) = \dfrac{3}{2}\sqrt{x}$ pour $x \gt 0$ ; $g$ est dérivable en $0$ et $g'(0) = 0$.
+:::
+
+::: attention
+La formule du produit ne s’applique pas en $0$, car $\sqrt{\phantom{x}}$ n’y est pas dérivable : il faut revenir au taux de variation.
+:::
+
+## Question 3 : La racine carrée en $0$
+
+[IMAGE_1]
+
+::: etape Taux de variation
+Pour $h \gt 0$ : $\dfrac{\sqrt{h} - \sqrt{0}}{h} = \dfrac{\sqrt{h}}{h} = \dfrac{1}{\sqrt{h}}$.
+:::
+
+::: etape Valeurs
+Pour $h = 0{,}01$ : $\dfrac{1}{\sqrt{0{,}01}} = \dfrac{1}{0{,}1} = 10$. Pour $h = 0{,}0001$ : $\dfrac{1}{0{,}01} = 100$.
+:::
+
+::: resultat
+Quand $h$ tend vers $0$, $\dfrac{1}{\sqrt{h}}$ devient aussi grand que l’on veut : le taux n’a pas de limite réelle, la racine carrée n’est pas dérivable en $0$.
+:::
+
+## Question 4 : La valeur absolue en $0$
+
+::: etape Taux de variation
+$\dfrac{|h| - |0|}{h} = \dfrac{|h|}{h}$. Pour $h = 0{,}1$ : $\dfrac{0{,}1}{0{,}1} = 1$. Pour $h = -0{,}1$ : $\dfrac{0{,}1}{-0{,}1} = -1$.
+:::
+
+::: etape Généraliser
+Le taux vaut $1$ pour tout $h \gt 0$ et $-1$ pour tout $h \lt 0$ : il ne se rapproche pas d’un nombre unique quand $h$ tend vers $0$.
+:::
+
+::: resultat
+La valeur absolue n’est pas dérivable en $0$ : sa courbe forme un angle à l’origine (pentes $-1$ à gauche et $1$ à droite).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. a) $f'(x) = 1 - \dfrac{4}{x^2} = \dfrac{(x - 2)(x + 2)}{x^2}$. b) $f$ décroissante sur ${[1\,;2]}$, croissante sur ${[2\,;6]}$ ; $f(1) = 5$, $f(2) = 4$, $f(6) = \dfrac{20}{3}$. c) $4 \le f(x) \le \dfrac{20}{3}$.
+2. a) $g'(x) = \sqrt{x} + \dfrac{x}{2\sqrt{x}} = \dfrac{3}{2}\sqrt{x}$. b) Le taux vaut $\sqrt{h}$, qui tend vers $0$ : $g$ est dérivable en $0$ et $g'(0) = 0$.
+3. Le taux vaut $\dfrac{1}{\sqrt{h}}$ : $10$ puis $100$ ; il n’a pas de limite réelle.
+4. $1$ puis $-1$ : la valeur absolue n’est pas dérivable en $0$.
+
+===
+
+=== Problème - Dérivation - Étude de variations
+Id: 1368
+Difficulté: medium
+Image: v1_n155_ex1368_1_etude_1368.png
+
+Énoncé: <!-- optitab:1 -->
+On considère la fonction $f$ définie sur $\mathbb{R}$ par $f(x) = x^3 - 6x^2 + 9x + 1$.
+
+1. Étude de la dérivée.
+   - a) Calculer $f'(x)$.
+   - b) Montrer que $f'(x) = 3(x - 1)(x - 3)$.
+   - c) Résoudre l’équation $f'(x) = 0$.
+2. Tableau de variations.
+   - a) Étudier le signe de $f'(x)$ sur $\mathbb{R}$.
+   - b) Calculer $f(1)$ et $f(3)$.
+   - c) Dresser le tableau de variations de $f$.
+3. Extremums et tangentes.
+   - a) La fonction $f$ admet-elle un maximum local ? un minimum local ? Préciser.
+   - b) Calculer $f(5)$. Le maximum local est-il le plus grand des nombres $f(x)$ ?
+   - c) Donner les équations des tangentes horizontales à la courbe de $f$.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Dérivée
+
+::: etape a) Dériver
+$f'(x) = 3x^2 - 12x + 9$.
+:::
+
+::: etape b) Factoriser
+$f'(x) = 3(x^2 - 4x + 3)$ ; le trinôme $x^2 - 4x + 3$ a pour racine évidente $1$ et le produit des racines vaut $3$, donc l’autre racine est $3$ : $x^2 - 4x + 3 = (x - 1)(x - 3)$.
+:::
+
+::: etape c) Résoudre
+Un produit est nul si et seulement si l’un de ses facteurs est nul : $x = 1$ ou $x = 3$.
+:::
+
+::: resultat
+$f'(x) = 3x^2 - 12x + 9 = 3(x - 1)(x - 3)$ ; $f'(x) = 0 \iff x = 1$ ou $x = 3$.
+:::
+
+## Question 2 : Tableau de variations
+
+::: methode
+$f'(x)$ est un trinôme de coefficient $3 \gt 0$ : positif à l’extérieur des racines $1$ et $3$, négatif entre elles.
+:::
+
+::: etape b) Valeurs
+$f(1) = 1 - 6 + 9 + 1 = 5$ et $f(3) = 27 - 54 + 27 + 1 = 1$.
+:::
+
+::: tableau
+x : -\infty, 1, 3, +\infty
+f'(x) : , +, z, -, z, +,
+f(x) : -/, +/5, -/1, +/
+:::
+
+::: resultat
+$f$ est croissante sur ${]{-\infty}\,;1]}$, décroissante sur ${[1\,;3]}$, croissante sur ${[3\,;+\infty[}$.
+:::
+
+## Question 3 : Extremums et tangentes
+
+[IMAGE_1]
+
+::: etape a) Extremums locaux
+En $1$, $f'$ s’annule en passant de $+$ à $-$ : maximum local $f(1) = 5$. En $3$, $f'$ passe de $-$ à $+$ : minimum local $f(3) = 1$.
+:::
+
+::: etape b) Comparer avec $f(5)$
+$f(5) = 125 - 150 + 45 + 1 = 21 \gt 5$ : le maximum local $5$ n’est pas la plus grande valeur de $f$ sur $\mathbb{R}$. Il est seulement le plus grand **au voisinage** de $1$.
+:::
+
+::: etape c) Tangentes horizontales
+Elles correspondent à $f'(x) = 0$, donc aux points $(1\,;5)$ et $(3\,;1)$ : leurs équations sont $y = f(1)$ et $y = f(3)$.
+:::
+
+::: resultat
+Maximum local $5$ en $1$, minimum local $1$ en $3$ ; $f(5) = 21 \gt 5$ ; tangentes horizontales $y = 5$ et $y = 1$.
+:::
+
+::: attention
+Un extremum **local** n’est pas forcément un extremum sur tout l’ensemble de définition.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. a) $f'(x) = 3x^2 - 12x + 9$. b) $f'(x) = 3(x - 1)(x - 3)$. c) $x = 1$ ou $x = 3$.
+2. a) $f'(x) \gt 0$ sur ${]{-\infty}\,;1[}$ et ${]3\,;+\infty[}$, $f'(x) \lt 0$ sur ${]1\,;3[}$. b) $f(1) = 5$ et $f(3) = 1$. c) $f$ croissante, décroissante, puis croissante.
+3. a) Maximum local $5$ en $1$ ; minimum local $1$ en $3$. b) $f(5) = 21$ : non, $5$ n’est qu’un maximum local. c) $y = 5$ et $y = 1$.
+
+===
+
+=== Problème - Dérivation - Inégalité et position d’une courbe et d’une tangente
+Id: 4603
+Difficulté: medium
+Image: v1_n155_ex4603_1_tangente_cube.png
+
+Énoncé: <!-- optitab:1 -->
+Soit $f$ la fonction cube, définie sur $\mathbb{R}$ par $f(x) = x^3$, et $\mathcal{C}_f$ sa courbe. On note $A$ le point de $\mathcal{C}_f$ d’abscisse $1$.
+
+1. Déterminer l’équation réduite de la tangente $T$ à $\mathcal{C}_f$ au point $A$.
+2. On pose, pour tout réel $x$, $d(x) = x^3 - 3x + 2$.
+   - a) Calculer $d'(x)$ et le factoriser.
+   - b) Dresser le tableau de variations de $d$ sur ${[-2\,;+\infty[}$, en calculant $d(-2)$, $d(-1)$ et $d(1)$.
+   - c) En déduire que $d(x) \ge 0$ pour tout $x \ge -2$.
+3. Interpréter graphiquement le résultat : position de $\mathcal{C}_f$ par rapport à $T$ sur ${[-2\,;+\infty[}$.
+4. En déduire que, pour tout réel $x \ge 0$, on a $x^3 + 2 \ge 3x$.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Tangente en $A$
+
+::: methode
+$T : y = f'(1)(x - 1) + f(1)$, avec $f'(x) = 3x^2$.
+:::
+
+::: etape Valeurs en $1$
+$f(1) = 1$ et $f'(1) = 3 \times 1^2 = 3$.
+:::
+
+::: etape Équation
+$$
+\begin{aligned}
+y &= 3(x - 1) + 1 \\
+&= 3x - 2
+\end{aligned}
+$$
+:::
+
+::: resultat
+$T : y = 3x - 2$.
+:::
+
+## Question 2 : Étude de la différence $d(x) = f(x) - (3x - 2)$
+
+::: methode
+Pour comparer $\mathcal{C}_f$ et $T$, on étudie le signe de la différence $d(x) = x^3 - (3x - 2) = x^3 - 3x + 2$ grâce à ses variations.
+:::
+
+::: etape a) Dérivée
+$$
+\begin{aligned}
+d'(x) &= 3x^2 - 3 \\
+&= 3(x^2 - 1) \\
+&= 3(x - 1)(x + 1)
+\end{aligned}
+$$
+:::
+
+::: etape b) Valeurs utiles
+$d(-2) = -8 + 6 + 2 = 0$ ; $d(-1) = -1 + 3 + 2 = 4$ ; $d(1) = 1 - 3 + 2 = 0$. Le trinôme $3(x - 1)(x + 1)$ est positif à l’extérieur de $-1$ et $1$, négatif entre.
+:::
+
+::: tableau
+x : -2, -1, 1, +\infty
+d'(x) : , +, z, -, z, +,
+d(x) : -/0, +/4, -/0, +/
+:::
+
+::: etape c) Minimum de $d$
+Sur ${[-2\,;+\infty[}$, les valeurs « en bas » du tableau sont $d(-2) = 0$ et $d(1) = 0$ : le minimum de $d$ sur cet intervalle est $0$.
+:::
+
+::: resultat
+$d'(x) = 3(x - 1)(x + 1)$ ; le minimum de $d$ sur ${[-2\,;+\infty[}$ est $0$, donc $d(x) \ge 0$ pour tout $x \ge -2$.
+:::
+
+## Question 3 : Interprétation graphique
+
+[IMAGE_1]
+
+::: etape Traduire $d(x) \ge 0$
+$d(x) \ge 0 \iff x^3 \ge 3x - 2$ : le point de $\mathcal{C}_f$ d’abscisse $x$ est au-dessus du point de $T$ de même abscisse.
+:::
+
+::: resultat
+Sur ${[-2\,;+\infty[}$, $\mathcal{C}_f$ est au-dessus de sa tangente $T$ ; elles se touchent aux points d’abscisses $-2$ et $1$.
+:::
+
+## Question 4 : Une inégalité
+
+::: etape Utiliser la question 2
+Si $x \ge 0$, alors $x \ge -2$, donc $d(x) \ge 0$, c’est-à-dire $x^3 - 3x + 2 \ge 0$.
+:::
+
+::: resultat
+Pour tout $x \ge 0$ : $x^3 + 2 \ge 3x$.
+:::
+
+::: retenir
+Pour démontrer une inégalité $f(x) \ge g(x)$ sur un intervalle, on étudie les variations de $d = f - g$ et on montre que son minimum est positif ou nul.
+:::
+
+::: remarque Vérification
+On peut vérifier que $d(x) = (x - 1)^2(x + 2)$ : sur ${[-2\,;+\infty[}$, les deux facteurs sont positifs ou nuls.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $T : y = 3x - 2$.
+2. a) $d'(x) = 3(x - 1)(x + 1)$. b) $d$ croissante sur ${[-2\,;-1]}$, décroissante sur ${[-1\,;1]}$, croissante sur ${[1\,;+\infty[}$ ; $d(-2) = 0$, $d(-1) = 4$, $d(1) = 0$. c) Le minimum de $d$ sur ${[-2\,;+\infty[}$ est $0$, donc $d(x) \ge 0$.
+3. Sur ${[-2\,;+\infty[}$, $\mathcal{C}_f$ est au-dessus de $T$ (contact en $-2$ et en $1$).
+4. Pour $x \ge 0$, $d(x) \ge 0$, donc $x^3 + 2 \ge 3x$.
+
+===
+
+=== Type examen - Dérivation - Type 2
+Id: 1370
+Difficulté: hard
+
+Énoncé: <!-- optitab:1 -->
+Sujet de type examen sur la dérivation et ses applications (durée conseillée : 1 heure).
+
+**Partie A — Questions de cours** (4 points)
+
+**A1.** Donner la définition du nombre dérivé de $f$ en $a$.
+
+**A2.** Donner l’équation réduite de la tangente à la courbe de $f$ au point d’abscisse $a$.
+
+**A3.** Énoncer le théorème qui relie le signe de la dérivée et le sens de variation d’une fonction.
+
+**A4.** Soit $u$ et $v$ deux fonctions dérivables sur un intervalle $I$, $v$ ne s’annulant pas sur $I$. Rappeler les formules de $(uv)'$ et de $\left(\dfrac{u}{v}\right)'$.
+
+**Partie B — Calculs et applications** (7 points)
+
+Soit $f$ la fonction définie sur $\mathbb{R}$ par $f(x) = x^3 - 6x^2 + 12x - 3$.
+
+**B1.** Calculer $f'(x)$.
+
+**B2.** Écrire $f'(x)$ sous la forme $3(x - a)^2$, où $a$ est un réel à déterminer.
+
+**B3.** Résoudre l’équation $f'(x) = 0$, puis étudier le signe de $f'(x)$ sur $\mathbb{R}$.
+
+**B4.** En déduire le sens de variation de $f$ sur $\mathbb{R}$. La fonction $f$ admet-elle un extremum local en $2$ ?
+
+**B5.** Déterminer l’équation réduite de la tangente à la courbe de $f$ au point d’abscisse $2$.
+
+**Partie C — Problème d’optimisation** (9 points)
+
+Un artisan fabrique des boîtes sans couvercle en forme de pavé droit. La base est un carré de côté $x$ cm et la hauteur mesure $10 - x$ cm, avec $0 \lt x \lt 10$.
+
+**C1.** Montrer que le volume de la boîte est $V(x) = 10x^2 - x^3$ (en cm³).
+
+**C2.** Calculer $V'(x)$ et le factoriser.
+
+**C3.** Étudier le signe de $V'(x)$ sur ${]0\,;10[}$, puis dresser le tableau de variations de $V$.
+
+**C4.** Pour quelle valeur de $x$ le volume est-il maximal ? Donner ce volume maximal (valeur exacte, puis arrondi au dixième).
+
+**C5.** Calculer $V(2)$ et $V(8)$ et les comparer au volume maximal.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Partie A : Questions de cours
+
+## Question A1 : Nombre dérivé
+
+::: rappel Définition
+$f$ est dérivable en $a$ si le taux de variation $\dfrac{f(a + h) - f(a)}{h}$ tend vers un nombre réel quand $h$ tend vers $0$ ; ce nombre est $f'(a)$ :
+
+$$f'(a) = \lim_{h \to 0} \frac{f(a + h) - f(a)}{h}$$
+:::
+
+## Question A2 : Tangente
+
+::: rappel Formule
+$$y = f'(a)(x - a) + f(a)$$
+:::
+
+## Question A3 : Signe de la dérivée et variations
+
+::: rappel Théorème
+Soit $f$ dérivable sur un intervalle $I$. Si $f'(x) \ge 0$ pour tout $x$ de $I$, alors $f$ est croissante sur $I$ ; si $f'(x) \le 0$ pour tout $x$ de $I$, alors $f$ est décroissante sur $I$.
+:::
+
+## Question A4 : Produit et quotient
+
+::: rappel Formules
+$(uv)' = u'v + uv'$ et $\left(\dfrac{u}{v}\right)' = \dfrac{u'v - uv'}{v^2}$.
+:::
+
+## Partie B : Calculs et applications
+
+## Question B1 : Dérivée
+
+::: etape Dériver
+$f'(x) = 3x^2 - 12x + 12$.
+:::
+
+::: resultat
+$f'(x) = 3x^2 - 12x + 12$.
+:::
+
+## Question B2 : Forme $3(x - a)^2$
+
+::: etape Factoriser
+$f'(x) = 3(x^2 - 4x + 4)$, et on reconnaît l’identité remarquable $x^2 - 4x + 4 = (x - 2)^2$.
+:::
+
+::: resultat
+$f'(x) = 3(x - 2)^2$, donc $a = 2$.
+:::
+
+## Question B3 : Équation et signe
+
+::: etape Résoudre
+$3(x - 2)^2 = 0 \iff x - 2 = 0 \iff x = 2$.
+:::
+
+::: etape Signe
+Un carré est positif ou nul et $3 \gt 0$ : $f'(x) \ge 0$ pour tout réel $x$, avec égalité seulement en $2$.
+:::
+
+::: resultat
+$f'(x) = 0 \iff x = 2$ ; $f'(x) \gt 0$ pour tout $x \neq 2$.
+:::
+
+## Question B4 : Sens de variation
+
+::: etape Conclure
+$f'(x) \ge 0$ sur $\mathbb{R}$ et $f'$ ne s’annule qu’en $2$ : $f$ est strictement croissante sur $\mathbb{R}$. On calcule $f(2) = 8 - 24 + 24 - 3 = 5$.
+:::
+
+::: tableau
+x : -\infty, 2, +\infty
+f'(x) : , +, z, +,
+f(x) : -/, =/5, +/
+:::
+
+::: resultat
+$f$ est strictement croissante sur $\mathbb{R}$ ; elle n’admet **pas** d’extremum local en $2$, car $f'$ s’annule sans changer de signe.
+:::
+
+::: attention
+$f'(2) = 0$ ne suffit pas pour avoir un extremum : il faut que $f'$ change de signe.
+:::
+
+## Question B5 : Tangente au point d’abscisse $2$
+
+::: etape Équation
+$f(2) = 5$ et $f'(2) = 0$, donc $y = 0 \times (x - 2) + 5 = 5$.
+:::
+
+::: resultat
+La tangente est horizontale, d’équation $y = 5$.
+:::
+
+## Partie C : Problème d’optimisation
+
+## Question C1 : Volume
+
+::: etape Aire de base × hauteur
+$V(x) = x^2 \times (10 - x) = 10x^2 - x^3$.
+:::
+
+::: resultat
+$V(x) = 10x^2 - x^3$ (en cm³).
+:::
+
+## Question C2 : Dérivée
+
+::: etape Dériver et factoriser
+$V'(x) = 20x - 3x^2 = x(20 - 3x)$.
+:::
+
+::: resultat
+$V'(x) = x(20 - 3x)$.
+:::
+
+## Question C3 : Signe et variations
+
+::: etape Signe des facteurs
+Sur ${]0\,;10[}$, $x \gt 0$ ; et $20 - 3x \gt 0 \iff x \lt \dfrac{20}{3}$. Donc $V'(x)$ a le signe de $20 - 3x$.
+:::
+
+::: etape Valeur en $\frac{20}{3}$
+$$
+\begin{aligned}
+V\left(\frac{20}{3}\right) &= \left(\frac{20}{3}\right)^2 \times \left(10 - \frac{20}{3}\right) \\
+&= \frac{400}{9} \times \frac{10}{3} \\
+&= \frac{4000}{27}
+\end{aligned}
+$$
+:::
+
+On étudie $V$ sur ${[0\,;10]}$ (aux bornes, la boîte est « aplatie » et son volume est nul).
+
+::: tableau
+x : 0, \frac{20}{3}, 10
+V'(x) : z, +, z, -,
+V(x) : -/0, +/\frac{4000}{27}, -/0
+:::
+
+::: resultat
+$V$ est croissante sur ${\left]0\,;\frac{20}{3}\right]}$ et décroissante sur ${\left[\frac{20}{3}\,;10\right[}$.
+:::
+
+## Question C4 : Volume maximal
+
+::: resultat
+Le volume est maximal pour $x = \dfrac{20}{3} \approx 6{,}67$ cm ; il vaut $\dfrac{4000}{27} \approx 148{,}1$ cm³.
+:::
+
+## Question C5 : Comparaison
+
+::: etape Calculer
+$V(2) = 40 - 8 = 32$ cm³ et $V(8) = 640 - 512 = 128$ cm³.
+:::
+
+::: resultat
+$32 \lt 128 \lt 148{,}1$ : les deux volumes sont inférieurs au volume maximal, ce qui confirme le résultat de C4.
+:::
+
+Solution:
+<!-- optitab:1 -->
+**Partie A.** A1 : $f'(a) = \lim\limits_{h \to 0} \dfrac{f(a + h) - f(a)}{h}$. A2 : $y = f'(a)(x - a) + f(a)$. A3 : $f' \ge 0$ sur $I$ ⇒ $f$ croissante ; $f' \le 0$ ⇒ $f$ décroissante. A4 : $(uv)' = u'v + uv'$ et $\left(\dfrac{u}{v}\right)' = \dfrac{u'v - uv'}{v^2}$.
+
+**Partie B.** B1 : $3x^2 - 12x + 12$. B2 : $3(x - 2)^2$, $a = 2$. B3 : $x = 2$ ; $f'(x) \gt 0$ pour $x \neq 2$. B4 : $f$ strictement croissante sur $\mathbb{R}$, pas d’extremum en $2$. B5 : $y = 5$.
+
+**Partie C.** C1 : $V(x) = 10x^2 - x^3$. C2 : $V'(x) = x(20 - 3x)$. C3 : $V$ croissante sur ${\left]0\,;\frac{20}{3}\right]}$, décroissante sur ${\left[\frac{20}{3}\,;10\right[}$. C4 : $x = \dfrac{20}{3}$ cm, $V_{\max} = \dfrac{4000}{27} \approx 148{,}1$ cm³. C5 : $V(2) = 32$ cm³ et $V(8) = 128$ cm³, inférieurs au maximum.
+
+===
+
+=== Type examen - Dérivation - Type 3
+Id: 1374
+Difficulté: hard
+
+Énoncé: <!-- optitab:1 -->
+Sujet de type examen couvrant l’ensemble du chapitre.
+
+**Partie A — Questions de cours**
+
+**A1.** Énoncer la définition du nombre dérivé $f'(a)$ d’une fonction $f$ en un réel $a$.
+
+**A2.** Donner la formule de dérivation d’un produit $uv$.
+
+**A3.** Soit $g$ une fonction dérivable et $a$, $b$ deux réels. Donner la dérivée de la fonction $x \mapsto g(ax + b)$.
+
+**Partie B — Calculs de dérivées**
+
+Calculer la dérivée de chacune des fonctions suivantes.
+
+**B1.** $f(x) = 3x^4 - 2x^3 + x - 5$ sur $\mathbb{R}$.
+
+**B2.** $g(x) = (x^2 - 1)(2x + 3)$ sur $\mathbb{R}$.
+
+**B3.** $h(x) = \dfrac{2x - 1}{x + 2}$ sur ${]{-2}\,;+\infty[}$.
+
+**B4.** $k(x) = \sqrt{5 - 2x}$ sur ${\left]-\infty\,;\frac{5}{2}\right[}$.
+
+**Partie C — Étude d’une fonction et tangente**
+
+On considère la fonction $f$ définie sur $\mathbb{R}$ par $f(x) = x^3 - 3x^2 + 4$.
+
+**C1.** Calculer $f'(x)$ et le factoriser.
+
+**C2.** Étudier le signe de $f'(x)$ sur $\mathbb{R}$.
+
+**C3.** Dresser le tableau de variations de $f$ et donner ses extremums locaux.
+
+**C4.** Déterminer l’équation réduite de la tangente à la courbe de $f$ au point d’abscisse $1$.
+
+**Partie D — Problème d’optimisation**
+
+Un fabricant produit des boîtes cylindriques de volume $500$ cm³. On note $r$ le rayon de la base et $h$ la hauteur (en cm), avec $r \gt 0$.
+
+**D1.** Exprimer $h$ en fonction de $r$ (on rappelle que $V = \pi r^2 h$).
+
+**D2.** L’aire totale de la boîte est $S = 2\pi r^2 + 2\pi r h$. Montrer que $S(r) = 2\pi r^2 + \dfrac{1000}{r}$.
+
+**D3.** Montrer que $S'(r) = \dfrac{4(\pi r^3 - 250)}{r^2}$.
+
+**D4.** On admet qu’il existe un unique réel $r_0 \gt 0$ tel que $r_0^3 = \dfrac{250}{\pi}$ ; on a $r_0 \approx 4{,}30$. Étudier le signe de $S'(r)$, puis les variations de $S$ sur ${]0\,;+\infty[}$. Pour quel rayon l’aire totale est-elle minimale ?
+
+**D5.** Montrer que, pour ce rayon, la hauteur est égale au diamètre : $h = 2r_0$.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Partie A : Questions de cours
+
+## Question A1 : Nombre dérivé
+
+::: rappel Définition
+$$f'(a) = \lim_{h \to 0} \frac{f(a + h) - f(a)}{h}$$
+lorsque cette limite existe et est un nombre réel. C’est le coefficient directeur de la tangente à la courbe au point d’abscisse $a$.
+:::
+
+## Question A2 : Dérivée d’un produit
+
+::: rappel Formule
+$(uv)' = u'v + uv'$.
+:::
+
+## Question A3 : Dérivée de $x \mapsto g(ax + b)$
+
+::: rappel Formule
+$\big(g(ax + b)\big)' = a\,g'(ax + b)$.
+:::
+
+## Partie B : Calculs de dérivées
+
+## Question B1 : Polynôme
+
+::: etape Dériver terme à terme
+$$
+\begin{aligned}
+f'(x) &= 3 \times 4x^3 - 2 \times 3x^2 + 1 \\
+&= 12x^3 - 6x^2 + 1
+\end{aligned}
+$$
+:::
+
+::: resultat
+$f'(x) = 12x^3 - 6x^2 + 1$.
+:::
+
+## Question B2 : Produit
+
+::: methode
+$u(x) = x^2 - 1$, $u'(x) = 2x$, $v(x) = 2x + 3$, $v'(x) = 2$.
+:::
+
+::: etape Appliquer $(uv)' = u'v + uv'$
+$$
+\begin{aligned}
+g'(x) &= 2x(2x + 3) + (x^2 - 1) \times 2 \\
+&= 4x^2 + 6x + 2x^2 - 2 \\
+&= 6x^2 + 6x - 2
+\end{aligned}
+$$
+:::
+
+::: resultat
+$g'(x) = 6x^2 + 6x - 2$.
+:::
+
+## Question B3 : Quotient
+
+::: methode
+$u(x) = 2x - 1$, $u'(x) = 2$, $v(x) = x + 2$, $v'(x) = 1$.
+:::
+
+::: etape Appliquer la formule du quotient
+$$
+\begin{aligned}
+h'(x) &= \frac{2(x + 2) - (2x - 1) \times 1}{(x + 2)^2} \\
+&= \frac{2x + 4 - 2x + 1}{(x + 2)^2} \\
+&= \frac{5}{(x + 2)^2}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$h'(x) = \dfrac{5}{(x + 2)^2}$.
+:::
+
+## Question B4 : Fonction $x \mapsto g(ax + b)$
+
+::: methode
+$k(x) = g(-2x + 5)$ avec $g(X) = \sqrt{X}$, $g'(X) = \dfrac{1}{2\sqrt{X}}$ et $a = -2$.
+:::
+
+::: etape Appliquer
+$$k'(x) = -2 \times \frac{1}{2\sqrt{5 - 2x}} = -\frac{1}{\sqrt{5 - 2x}}$$
+:::
+
+::: resultat
+$k'(x) = -\dfrac{1}{\sqrt{5 - 2x}}$.
+:::
+
+## Partie C : Étude d’une fonction et tangente
+
+## Question C1 : Dérivée
+
+::: etape Dériver et factoriser
+$f'(x) = 3x^2 - 6x = 3x(x - 2)$.
+:::
+
+::: resultat
+$f'(x) = 3x(x - 2)$.
+:::
+
+## Question C2 : Signe de $f'(x)$
+
+::: tableau
+x : -\infty, 0, 2, +\infty
+3x : , -, z, +, t, +,
+x - 2 : , -, t, -, z, +,
+f'(x) : , +, z, -, z, +,
+:::
+
+::: resultat
+$f'(x) \gt 0$ sur ${]{-\infty}\,;0[}$ et sur ${]2\,;+\infty[}$ ; $f'(x) \lt 0$ sur ${]0\,;2[}$.
+:::
+
+## Question C3 : Variations et extremums
+
+::: etape Valeurs
+$f(0) = 4$ et $f(2) = 8 - 12 + 4 = 0$.
+:::
+
+::: tableau
+x : -\infty, 0, 2, +\infty
+f'(x) : , +, z, -, z, +,
+f(x) : -/, +/4, -/0, +/
+:::
+
+::: resultat
+Maximum local $4$ en $0$ ; minimum local $0$ en $2$.
+:::
+
+## Question C4 : Tangente au point d’abscisse $1$
+
+::: etape Valeurs en $1$
+$f(1) = 1 - 3 + 4 = 2$ et $f'(1) = 3 - 6 = -3$.
+:::
+
+::: etape Équation
+$$
+\begin{aligned}
+y &= -3(x - 1) + 2 \\
+&= -3x + 5
+\end{aligned}
+$$
+:::
+
+::: resultat
+$T : y = -3x + 5$.
+:::
+
+## Partie D : Problème d’optimisation
+
+## Question D1 : Hauteur
+
+::: etape Isoler $h$
+$\pi r^2 h = 500$, donc $h = \dfrac{500}{\pi r^2}$.
+:::
+
+::: resultat
+$h = \dfrac{500}{\pi r^2}$.
+:::
+
+## Question D2 : Aire totale
+
+::: etape Remplacer $h$
+$$
+\begin{aligned}
+S(r) &= 2\pi r^2 + 2\pi r \times \frac{500}{\pi r^2} \\
+&= 2\pi r^2 + \frac{1000}{r}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$S(r) = 2\pi r^2 + \dfrac{1000}{r}$.
+:::
+
+## Question D3 : Dérivée
+
+::: etape Dériver
+$$
+\begin{aligned}
+S'(r) &= 4\pi r - \frac{1000}{r^2} \\
+&= \frac{4\pi r^3 - 1000}{r^2} \\
+&= \frac{4(\pi r^3 - 250)}{r^2}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$S'(r) = \dfrac{4(\pi r^3 - 250)}{r^2}$.
+:::
+
+## Question D4 : Variations et rayon optimal
+
+::: methode
+$r^2 \gt 0$ : $S'(r)$ a le signe de $\pi r^3 - 250$, c’est-à-dire de $r^3 - r_0^3$.
+:::
+
+::: etape Signe
+La fonction cube est strictement croissante : si $0 \lt r \lt r_0$, alors $r^3 \lt r_0^3$ et $S'(r) \lt 0$ ; si $r \gt r_0$, alors $r^3 \gt r_0^3$ et $S'(r) \gt 0$.
+:::
+
+::: tableau
+r : 0, r_0, +\infty
+S'(r) : d, -, z, +,
+S(r) : D+/, -/S(r_0), +/
+:::
+
+::: resultat
+$S$ est décroissante sur ${]0\,;r_0]}$ et croissante sur ${[r_0\,;+\infty[}$ : l’aire est minimale pour $r = r_0 \approx 4{,}30$ cm.
+:::
+
+## Question D5 : Hauteur optimale
+
+::: etape Utiliser $\pi r_0^3 = 250$
+$$
+\begin{aligned}
+h &= \frac{500}{\pi r_0^2} \\
+&= \frac{500\,r_0}{\pi r_0^3} \\
+&= \frac{500\,r_0}{250} \\
+&= 2r_0
+\end{aligned}
+$$
+:::
+
+::: resultat
+$h = 2r_0 \approx 8{,}60$ cm : la boîte la plus économe est aussi haute que large.
+:::
+
+Solution:
+<!-- optitab:1 -->
+**Partie A.** A1 : $f'(a) = \lim\limits_{h \to 0} \dfrac{f(a + h) - f(a)}{h}$. A2 : $(uv)' = u'v + uv'$. A3 : $\big(g(ax + b)\big)' = a\,g'(ax + b)$.
+
+**Partie B.** B1 : $12x^3 - 6x^2 + 1$. B2 : $6x^2 + 6x - 2$. B3 : $\dfrac{5}{(x + 2)^2}$. B4 : $-\dfrac{1}{\sqrt{5 - 2x}}$.
+
+**Partie C.** C1 : $f'(x) = 3x(x - 2)$. C2 : $f'(x) \gt 0$ sur ${]{-\infty}\,;0[}$ et ${]2\,;+\infty[}$, $f'(x) \lt 0$ sur ${]0\,;2[}$. C3 : maximum local $4$ en $0$, minimum local $0$ en $2$. C4 : $y = -3x + 5$.
+
+**Partie D.** D1 : $h = \dfrac{500}{\pi r^2}$. D2 : $S(r) = 2\pi r^2 + \dfrac{1000}{r}$. D3 : $S'(r) = \dfrac{4(\pi r^3 - 250)}{r^2}$. D4 : $S$ décroissante sur ${]0\,;r_0]}$, croissante sur ${[r_0\,;+\infty[}$ ; aire minimale pour $r = r_0 \approx 4{,}30$ cm. D5 : $h = 2r_0 \approx 8{,}60$ cm.
+
+===

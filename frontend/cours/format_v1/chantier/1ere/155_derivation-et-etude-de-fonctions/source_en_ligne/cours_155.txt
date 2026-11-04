@@ -1,0 +1,310 @@
+Titre: Dérivation
+
+<!-- optitab:1 -->
+::: objectifs
+- Calculer un taux de variation et un nombre dérivé à partir de la définition.
+- Lire graphiquement un nombre dérivé et déterminer l’équation réduite d’une tangente.
+- Connaître les dérivées des fonctions usuelles et les règles de calcul.
+- Étudier les variations d’une fonction et ses extremums à l’aide du signe de sa dérivée.
+- Résoudre un problème d’optimisation, établir une inégalité, comparer deux courbes.
+:::
+
+## I. Taux de variation et nombre dérivé
+
+::: definition Taux de variation
+Soit $f$ une fonction définie sur un intervalle $I$, $a$ un réel de $I$ et $h$ un réel non nul tel que $a + h$ appartienne à $I$. Le **taux de variation** de $f$ entre $a$ et $a + h$ est le nombre :
+
+$$\frac{f(a + h) - f(a)}{h}$$
+
+C’est le coefficient directeur (la pente) de la sécante $(AM)$, où $A(a\,;f(a))$ et $M(a + h\,;f(a + h))$ sont deux points de la courbe $\mathcal{C}_f$.
+:::
+
+::: definition Nombre dérivé
+On dit que $f$ est **dérivable en $a$** lorsque le taux de variation de $f$ entre $a$ et $a + h$ tend vers un nombre réel quand $h$ tend vers $0$. Ce nombre est le **nombre dérivé** de $f$ en $a$, noté $f'(a)$ :
+
+$$f'(a) = \lim_{h \to 0} \frac{f(a + h) - f(a)}{h}$$
+:::
+
+[IMAGE_1]
+
+::: exemple Nombre dérivé de la fonction carré en 1
+Soit $f(x) = x^2$ et $a = 1$. Pour tout réel $h \neq 0$ :
+
+$$
+\begin{aligned}
+\frac{f(1 + h) - f(1)}{h} &= \frac{(1 + h)^2 - 1}{h} \\
+&= \frac{1 + 2h + h^2 - 1}{h} \\
+&= \frac{h(2 + h)}{h} \\
+&= 2 + h
+\end{aligned}
+$$
+
+Quand $h$ tend vers $0$, $2 + h$ tend vers $2$ : $f$ est dérivable en $1$ et $f'(1) = 2$.
+:::
+
+::: methode Calculer un nombre dérivé avec la définition
+1. Écrire le taux de variation $\dfrac{f(a + h) - f(a)}{h}$ avec $h \neq 0$.
+2. Développer le numérateur, puis simplifier par $h$.
+3. Chercher la limite de l’expression obtenue quand $h$ tend vers $0$.
+:::
+
+::: remarque Interprétations du nombre dérivé
+Le nombre dérivé mesure une **variation instantanée** : si $d(t)$ est la distance parcourue à l’instant $t$, alors $d'(t)$ est la vitesse instantanée ; si $C(q)$ est le coût de production de $q$ objets, $C'(q)$ est le coût marginal.
+:::
+
+## II. Tangente à une courbe
+
+::: definition Tangente
+Soit $f$ dérivable en $a$. La **tangente** à la courbe $\mathcal{C}_f$ au point $A(a\,;f(a))$ est la droite qui passe par $A$ et dont le coefficient directeur est $f'(a)$.
+:::
+
+::: propriete Équation réduite de la tangente
+La tangente à $\mathcal{C}_f$ au point d’abscisse $a$ a pour équation :
+
+$$y = f'(a)(x - a) + f(a)$$
+:::
+
+::: demonstration Au programme
+La tangente a pour coefficient directeur $f'(a)$ : elle a une équation de la forme $y = f'(a)\,x + p$. Elle passe par $A(a\,;f(a))$, donc $f(a) = f'(a) \times a + p$, d’où $p = f(a) - f'(a)\,a$. Ainsi :
+
+$$
+\begin{aligned}
+y &= f'(a)\,x + f(a) - f'(a)\,a \\
+&= f'(a)(x - a) + f(a)
+\end{aligned}
+$$
+:::
+
+[IMAGE_2]
+
+::: exemple Tangente à la parabole $y = x^2$ en $1$
+On a $f(1) = 1$ et $f'(1) = 2$, donc :
+
+$$
+\begin{aligned}
+T : y &= 2(x - 1) + 1 \\
+&= 2x - 1
+\end{aligned}
+$$
+:::
+
+::: methode Lire graphiquement un nombre dérivé
+$f'(a)$ est le coefficient directeur de la tangente au point d’abscisse $a$. On repère deux points de la tangente à coordonnées lisibles, $(x_1\,;y_1)$ et $(x_2\,;y_2)$, et on calcule $\dfrac{y_2 - y_1}{x_2 - x_1}$ (« on avance de… on monte de… »). Une tangente horizontale correspond à $f'(a) = 0$.
+:::
+
+::: attention
+Ne pas confondre $f(a)$, l’**ordonnée** du point de contact, et $f'(a)$, la **pente** de la tangente.
+:::
+
+## III. Fonction dérivée
+
+::: definition Fonction dérivée
+Une fonction $f$ est **dérivable sur un intervalle $I$** lorsqu’elle est dérivable en tout réel $a$ de $I$. La fonction qui, à tout $x$ de $I$, associe $f'(x)$ est la **fonction dérivée** de $f$, notée $f'$.
+:::
+
+::: propriete Dérivées des fonctions usuelles
+| Fonction $f$ | Dérivée $f'$ |
+|---|---|
+| $f(x) = k$ (constante) | $f'(x) = 0$ |
+| $f(x) = mx + p$ | $f'(x) = m$ |
+| $f(x) = x^2$ | $f'(x) = 2x$ |
+| $f(x) = x^3$ | $f'(x) = 3x^2$ |
+| $f(x) = x^n$ ($n \ge 1$ entier) | $f'(x) = nx^{n - 1}$ |
+| $f(x) = \dfrac{1}{x}$ | $f'(x) = -\dfrac{1}{x^2}$ |
+| $f(x) = \sqrt{x}$ | $f'(x) = \dfrac{1}{2\sqrt{x}}$ |
+
+Ces fonctions sont dérivables sur $\mathbb{R}$, sauf la fonction inverse (dérivable sur ${]{-\infty}\,;0[}$ et sur ${]0\,;+\infty[}$) et la fonction racine carrée (dérivable sur ${]0\,;+\infty[}$ seulement).
+:::
+
+::: demonstration Dérivée de la fonction carré (au programme)
+Pour tout réel $x$ et tout réel $h \neq 0$ :
+
+$$
+\begin{aligned}
+\frac{(x + h)^2 - x^2}{h} &= \frac{2xh + h^2}{h} \\
+&= 2x + h
+\end{aligned}
+$$
+
+Quand $h$ tend vers $0$, $2x + h$ tend vers $2x$ : la fonction carré est dérivable sur $\mathbb{R}$ et $(x^2)' = 2x$.
+:::
+
+::: demonstration Dérivée de la fonction inverse (au programme)
+Soit $x \neq 0$ et $h \neq 0$ tel que $x + h \neq 0$ et de même signe que $x$ :
+
+$$
+\begin{aligned}
+\frac{1}{h}\left(\frac{1}{x + h} - \frac{1}{x}\right) &= \frac{1}{h} \times \frac{x - (x + h)}{x(x + h)} \\
+&= \frac{-1}{x(x + h)}
+\end{aligned}
+$$
+
+Quand $h$ tend vers $0$, $x(x + h)$ tend vers $x^2$ : le taux tend vers $-\dfrac{1}{x^2}$. Donc $\left(\dfrac{1}{x}\right)' = -\dfrac{1}{x^2}$.
+:::
+
+::: demonstration La fonction racine carrée n’est pas dérivable en 0 (au programme)
+Pour tout réel $h \gt 0$ :
+
+$$\frac{\sqrt{0 + h} - \sqrt{0}}{h} = \frac{\sqrt{h}}{h} = \frac{1}{\sqrt{h}}$$
+
+Quand $h$ tend vers $0$, $\sqrt{h}$ tend vers $0$, donc $\dfrac{1}{\sqrt{h}}$ devient aussi grand que l’on veut : le taux n’a pas de limite réelle. La fonction racine carrée n’est **pas dérivable en $0$** (sa courbe a une tangente verticale à l’origine).
+:::
+
+::: propriete La valeur absolue n’est pas dérivable en 0
+La fonction valeur absolue est définie par $|x| = x$ si $x \ge 0$ et $|x| = -x$ si $x \lt 0$. Son taux de variation entre $0$ et $h$ vaut :
+
+$$\frac{|h| - |0|}{h} = \frac{|h|}{h}$$
+
+Il est égal à $1$ si $h \gt 0$ et à $-1$ si $h \lt 0$ : il ne tend pas vers un nombre unique quand $h$ tend vers $0$. La valeur absolue n’est donc **pas dérivable en $0$** : sa courbe forme un « angle » à l’origine.
+:::
+
+[IMAGE_4]
+
+## IV. Opérations sur les fonctions dérivables
+
+::: propriete Règles de calcul
+Soit $u$ et $v$ deux fonctions dérivables sur un intervalle $I$ et $k$ un réel.
+
+| Fonction | Dérivée |
+|---|---|
+| $u + v$ | $u' + v'$ |
+| $ku$ | $ku'$ |
+| $uv$ | $u'v + uv'$ |
+| $\dfrac{1}{v}$ | $-\dfrac{v'}{v^2}$ |
+| $\dfrac{u}{v}$ | $\dfrac{u'v - uv'}{v^2}$ |
+
+Pour $\dfrac{1}{v}$ et $\dfrac{u}{v}$, la fonction $v$ ne doit pas s’annuler sur $I$.
+:::
+
+::: propriete Dérivée de $x \mapsto g(ax + b)$
+Soit $g$ une fonction dérivable et $a$, $b$ deux réels. La fonction $f$ définie par $f(x) = g(ax + b)$ est dérivable (pour les $x$ tels que $g$ est dérivable en $ax + b$) et :
+
+$$f'(x) = a\,g'(ax + b)$$
+:::
+
+::: demonstration Dérivée d’un produit (au programme)
+Soit $x$ dans $I$ et $h \neq 0$ tel que $x + h$ soit dans $I$. En ajoutant et en retranchant $u(x)v(x + h)$ au numérateur, le taux de variation de $uv$ entre $x$ et $x + h$ s’écrit :
+
+$$\frac{u(x + h) - u(x)}{h}\,v(x + h) + u(x)\,\frac{v(x + h) - v(x)}{h}$$
+
+Quand $h$ tend vers $0$, le premier quotient tend vers $u'(x)$, $v(x + h)$ tend vers $v(x)$ (admis) et le second quotient tend vers $v'(x)$. Le taux tend donc vers $u'(x)v(x) + u(x)v'(x)$ : $(uv)' = u'v + uv'$.
+:::
+
+::: exemple Produit
+$f(x) = (2x + 1)(x^2 - 3)$ sur $\mathbb{R}$. On pose $u(x) = 2x + 1$, $u'(x) = 2$, $v(x) = x^2 - 3$, $v'(x) = 2x$.
+
+$$
+\begin{aligned}
+f'(x) &= 2(x^2 - 3) + (2x + 1) \times 2x \\
+&= 2x^2 - 6 + 4x^2 + 2x \\
+&= 6x^2 + 2x - 6
+\end{aligned}
+$$
+:::
+
+::: exemple Quotient
+$g(x) = \dfrac{3x - 1}{x + 2}$ sur ${]{-2}\,;+\infty[}$. On pose $u(x) = 3x - 1$, $u'(x) = 3$, $v(x) = x + 2$, $v'(x) = 1$.
+
+$$
+\begin{aligned}
+g'(x) &= \frac{3(x + 2) - (3x - 1) \times 1}{(x + 2)^2} \\
+&= \frac{3x + 6 - 3x + 1}{(x + 2)^2} \\
+&= \frac{7}{(x + 2)^2}
+\end{aligned}
+$$
+:::
+
+::: exemple Fonction $x \mapsto g(ax + b)$
+- $h(x) = \sqrt{4x + 1}$ sur ${]{-\frac{1}{4}}\,;+\infty[}$ : $g = \sqrt{\phantom{x}}$, $a = 4$, donc $h'(x) = 4 \times \dfrac{1}{2\sqrt{4x + 1}} = \dfrac{2}{\sqrt{4x + 1}}$.
+- $k(x) = (2x - 5)^3$ sur $\mathbb{R}$ : $g(X) = X^3$, $g'(X) = 3X^2$, $a = 2$, donc $k'(x) = 2 \times 3(2x - 5)^2 = 6(2x - 5)^2$.
+:::
+
+::: attention Erreurs fréquentes
+- La dérivée d’un produit n’est pas le produit des dérivées : $(uv)' \neq u'v'$.
+- Dans un quotient, l’ordre compte : c’est $u'v - uv'$ au numérateur.
+- Pour $g(ax + b)$, ne pas oublier le facteur $a$ : $\big((3x - 1)^2\big)' = 3 \times 2(3x - 1)$, et non $2(3x - 1)$.
+:::
+
+::: conseil
+Avant d’appliquer une formule, simplifier si possible : $\dfrac{x^2 + 1}{x} = x + \dfrac{1}{x}$ se dérive sans la formule du quotient.
+:::
+
+## V. Dérivée et variations
+
+::: theoreme Signe de la dérivée et sens de variation (admis)
+Soit $f$ une fonction dérivable sur un intervalle $I$.
+- Si $f'(x) \ge 0$ pour tout $x$ de $I$, alors $f$ est croissante sur $I$.
+- Si $f'(x) \le 0$ pour tout $x$ de $I$, alors $f$ est décroissante sur $I$.
+- Si $f'(x) = 0$ pour tout $x$ de $I$, alors $f$ est constante sur $I$.
+
+Si $f'(x) \gt 0$ sur $I$, sauf en un nombre fini de points où $f'$ s’annule, alors $f$ est strictement croissante sur $I$ (de même pour « strictement décroissante »).
+:::
+
+::: definition Extremum local
+Soit $f$ définie sur un intervalle $I$ et $a$ un réel de $I$. On dit que $f(a)$ est un **maximum local** de $f$ s’il existe un intervalle ouvert $J$ contenant $a$ tel que $f(x) \le f(a)$ pour tout $x$ de $J \cap I$. On définit de même un **minimum local** (avec $f(x) \ge f(a)$). Un extremum est un maximum ou un minimum.
+:::
+
+::: propriete Extremum et dérivée
+Soit $f$ dérivable sur un intervalle ouvert $I$ et $a$ un réel de $I$.
+- Si $f$ admet un extremum local en $a$, alors $f'(a) = 0$ : la tangente en $a$ est horizontale.
+- Si $f'$ s’annule en $a$ **en changeant de signe**, alors $f$ admet un extremum local en $a$.
+:::
+
+::: attention
+$f'(a) = 0$ ne suffit pas : pour $f(x) = x^3$, on a $f'(0) = 0$, mais $f'(x) = 3x^2 \ge 0$ ne change pas de signe. La fonction cube est strictement croissante sur $\mathbb{R}$ et n’a pas d’extremum en $0$.
+:::
+
+::: methode Étudier les variations d’une fonction
+1. Préciser l’ensemble d’étude et calculer $f'(x)$.
+2. Factoriser $f'(x)$, puis dresser son tableau de signes.
+3. En déduire le tableau de variations de $f$.
+4. Compléter avec les images des valeurs où $f'$ s’annule (extremums) et des bornes de l’intervalle.
+:::
+
+::: exemple Étude de $f(x) = x^3 - 3x$ sur $\mathbb{R}$
+$f'(x) = 3x^2 - 3 = 3(x - 1)(x + 1)$ : c’est un trinôme de racines $-1$ et $1$, de coefficient $3 \gt 0$, donc positif à l’extérieur des racines et négatif entre elles. De plus $f(-1) = -1 + 3 = 2$ et $f(1) = 1 - 3 = -2$.
+:::
+
+::: tableau
+x : -\infty, -1, 1, +\infty
+f'(x) : , +, z, -, z, +,
+f(x) : -/, +/2, -/-2, +/
+:::
+
+La fonction $f$ admet un maximum local $2$ en $-1$ et un minimum local $-2$ en $1$ ; en ces points, la tangente est horizontale.
+
+[IMAGE_3]
+
+::: propriete Fonction polynôme du second degré
+Pour $f(x) = ax^2 + bx + c$ avec $a \neq 0$, on a $f'(x) = 2ax + b$, qui s’annule en $-\dfrac{b}{2a}$ en changeant de signe.
+- Si $a \gt 0$ : $f$ est décroissante puis croissante, avec un minimum en $-\dfrac{b}{2a}$.
+- Si $a \lt 0$ : $f$ est croissante puis décroissante, avec un maximum en $-\dfrac{b}{2a}$.
+:::
+
+### Applications
+
+::: methode Résoudre un problème d’optimisation
+1. Choisir la variable $x$ et préciser l’intervalle de ses valeurs possibles.
+2. Exprimer la grandeur à optimiser en fonction de $x$.
+3. Étudier les variations de cette fonction sur l’intervalle.
+4. Conclure : valeur de $x$, valeur de l’extremum, avec les unités.
+:::
+
+::: methode Établir une inégalité ou comparer deux courbes
+Pour montrer que $f(x) \ge g(x)$ sur $I$, on étudie la différence $d(x) = f(x) - g(x)$ : si son minimum sur $I$ est positif ou nul, alors $d(x) \ge 0$ sur $I$. Graphiquement, $\mathcal{C}_f$ est alors au-dessus de $\mathcal{C}_g$ sur $I$.
+:::
+
+::: exemple Montrer que $x + \frac{1}{x} \ge 2$ pour tout $x \gt 0$
+On pose $d(x) = x + \dfrac{1}{x} - 2$ sur ${]0\,;+\infty[}$. Alors :
+
+$$d'(x) = 1 - \frac{1}{x^2} = \frac{(x - 1)(x + 1)}{x^2}$$
+
+Sur ${]0\,;+\infty[}$, $x + 1 \gt 0$ et $x^2 \gt 0$ : $d'(x)$ a le signe de $x - 1$. Donc $d$ est décroissante sur ${]0\,;1]}$ et croissante sur ${[1\,;+\infty[}$ : son minimum est $d(1) = 1 + 1 - 2 = 0$. Ainsi $d(x) \ge 0$, c’est-à-dire $x + \dfrac{1}{x} \ge 2$.
+:::
+
+::: retenir
+- $f'(a)$ est la limite du taux de variation et la pente de la tangente : $y = f'(a)(x - a) + f(a)$.
+- $(x^n)' = nx^{n-1}$, $\left(\dfrac{1}{x}\right)' = -\dfrac{1}{x^2}$, $(\sqrt{x})' = \dfrac{1}{2\sqrt{x}}$ ; $\sqrt{\phantom{x}}$ et $|\cdot|$ ne sont pas dérivables en $0$.
+- $(uv)' = u'v + uv'$, $\left(\dfrac{u}{v}\right)' = \dfrac{u'v - uv'}{v^2}$, $\big(g(ax + b)\big)' = a\,g'(ax + b)$.
+- Signe de $f'$ → sens de variation de $f$ ; $f'$ s’annule en changeant de signe → extremum local.
+:::

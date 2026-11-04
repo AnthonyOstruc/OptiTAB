@@ -1,0 +1,94 @@
+Titre: Résumé : Probabilités conditionnelles et indépendance
+
+<!-- optitab:1 -->
+::: objectifs
+L’essentiel du chapitre : probabilité conditionnelle, tableau croisé, arbre pondéré, probabilités totales, tests et faux positifs, indépendance, deux épreuves indépendantes, simulation. Programme de Première spécialité.
+:::
+
+## I. Probabilité conditionnelle
+
+::: formule
+$$
+\begin{gathered}
+P_A(B) = \frac{P(A \cap B)}{P(A)} \quad (P(A) \neq 0) \\
+P(A \cap B) = P(A) \times P_A(B) \\
+P_A(\overline{B}) = 1 - P_A(B)
+\end{gathered}
+$$
+:::
+
+- $P_A(B)$ se lit « probabilité de $B$ sachant $A$ ».
+- Tableau croisé d’effectifs : $P_A(B) = \dfrac{\text{effectif de } A \cap B}{\text{effectif de } A}$ (on ne lit que la ligne ou la colonne de $A$).
+- « parmi », « sachant que », « si » $\to$ conditionnelle ; « et », « qui » $\to$ intersection.
+
+## II. Arbre pondéré
+
+[IMAGE_1]
+
+1. Branches issues d’un même nœud : somme $1$.
+2. Chemin : **produit** des probabilités (c’est $P(A \cap B)$).
+3. Événement : **somme** des chemins qui y mènent.
+
+## III. Probabilités totales et inversion
+
+Partition $A_1, \ldots, A_n$ : événements deux à deux incompatibles, de réunion $\Omega$.
+
+[IMAGE_2]
+
+::: formule
+$$
+\begin{aligned}
+P(B) &= P(A_1 \cap B) + \cdots + P(A_n \cap B) \\
+P(B) &= P(A)P_A(B) + P(\overline{A})P_{\overline{A}}(B)
+\end{aligned}
+$$
+:::
+
+::: methode Inverser un conditionnement
+L’arbre donne $P_A(B)$ ; pour $P_B(A)$ : chemin $P(A \cap B)$, puis $P(B)$ par les probabilités totales, puis $P_B(A) = \dfrac{P(A \cap B)}{P(B)}$.
+:::
+
+Exemple (test, $2\,\%$ de malades, $5\,\%$ de faux positifs) : $P(T) = 0{,}068$ et $P_T(M) = \dfrac{0{,}019}{0{,}068} \approx 0{,}279$, bien loin de $P_M(T) = 0{,}95$.
+
+[IMAGE_3]
+
+## IV. Indépendance
+
+$A$ et $B$ sont **indépendants** lorsque :
+
+::: formule
+$$P(A \cap B) = P(A) \times P(B)$$
+:::
+
+- Si $P(A) \neq 0$ : indépendants $\iff P_A(B) = P(B)$.
+- Si $A$ et $B$ sont indépendants, $A$ et $\overline{B}$ le sont aussi. Démonstration au programme :
+
+$$
+\begin{aligned}
+P(A \cap \overline{B}) &= P(A) - P(A)P(B) \\
+&= P(A)P(\overline{B})
+\end{aligned}
+$$
+
+- **Deux épreuves indépendantes** (lancers, tirages avec remise) : $P\big((x\,;y)\big) = P(x) \times P(y)$ ; dans l’arbre, le second niveau est identique sur chaque branche.
+
+[IMAGE_4]
+
+## V. Simulation
+
+- `random() < p` est vrai avec la probabilité $p$ ; une fonction suit l’arbre (première épreuve, puis seconde avec la probabilité conditionnelle qui convient).
+- Pour $n$ grand, la fréquence observée se rapproche de la probabilité (par exemple d’une probabilité conditionnelle : fréquence de $M$ parmi les positifs).
+
+## VI. Les pièges à éviter
+
+::: attention Les erreurs classiques
+1. Confondre $P_A(B)$, $P_B(A)$ et $P(A \cap B)$.
+2. Lire $P(B)$ sur une branche du second niveau : c’est $P_A(B)$.
+3. Oublier un chemin dans la formule des probabilités totales.
+4. Confondre **incompatibles** ($A \cap B = \varnothing$) et **indépendants** ($P(A \cap B) = P(A)P(B)$).
+5. Multiplier les probabilités de deux tirages **sans remise** comme s’ils étaient indépendants.
+:::
+
+::: remarque Réflexe
+Traduire chaque donnée de l’énoncé en $P(\ldots)$ ou $P_{\ldots}(\ldots)$ **avant** de dessiner l’arbre.
+:::

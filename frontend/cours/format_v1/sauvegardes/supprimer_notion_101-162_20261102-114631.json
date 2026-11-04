@@ -1,0 +1,491 @@
+[
+{
+ "model": "curriculum.notion",
+ "pk": 162,
+ "fields": {
+  "est_actif": true,
+  "date_creation": "2025-11-17T13:14:28.404Z",
+  "date_modification": "2026-02-09T08:44:17.086Z",
+  "titre": "Conditions / Logique",
+  "ordre": 1,
+  "description": null,
+  "couleur": "#3b82f6",
+  "svg_icon": null,
+  "theme": 70
+ }
+},
+{
+ "model": "curriculum.notion",
+ "pk": 101,
+ "fields": {
+  "est_actif": true,
+  "date_creation": "2025-10-01T19:37:47.578Z",
+  "date_modification": "2025-10-01T19:38:45.879Z",
+  "titre": "Conditions / Logique",
+  "ordre": 1,
+  "description": null,
+  "couleur": "#3b82f6",
+  "svg_icon": null,
+  "theme": 45
+ }
+},
+{
+ "model": "curriculum.exercice",
+ "pk": 1056,
+ "fields": {
+  "est_actif": true,
+  "date_creation": "2025-11-17T13:14:28.453Z",
+  "date_modification": "2025-11-17T13:14:28.453Z",
+  "titre": "Structures Conditionnelles - Conditions Imbriquées",
+  "contenu": "Résoudre les problèmes suivants en utilisant des structures conditionnelles imbriquées (une condition à l'intérieur d'une autre).\n**Question 1 :** Un cinéma applique les tarifs suivants : si l'âge est inférieur à 18 ans, le tarif est de 7€. Si l'âge est entre 18 et 64 ans, le tarif est de 12€, sauf si c'est lundi (tarif réduit à 9€). Si l'âge est 65 ans ou plus, le tarif est de 8€. Avec `age = 25` et `jour = \"Lundi\"`, quel est le tarif ?\n$\\\\$\n**Question 2 :** Pour accéder à une salle VIP, il faut soit être membre premium (`membre_premium = False`), soit avoir plus de 1000 points (`points = 1200`) ET avoir validé son email (`email_valide = True`). Avec ces valeurs, déterminer l'affichage.",
+  "difficulty": "medium",
+  "notion": 162,
+  "question": "Résoudre les problèmes suivants en utilisant des structures conditionnelles imbriquées (une condition à l'intérieur d'une autre).\n**Question 1 :** Un cinéma applique les tarifs suivants : si l'âge est inférieur à 18 ans, le tarif est de 7€. Si l'âge est entre 18 et 64 ans, le tarif est de 12€, sauf si c'est lundi (tarif réduit à 9€). Si l'âge est 65 ans ou plus, le tarif est de 8€. Avec `age = 25` et `jour = \"Lundi\"`, quel est le tarif ?\n$\\\\$\n**Question 2 :** Pour accéder à une salle VIP, il faut soit être membre premium (`membre_premium = False`), soit avoir plus de 1000 points (`points = 1200`) ET avoir validé son email (`email_valide = True`). Avec ces valeurs, déterminer l'affichage.",
+  "reponse_correcte": "1. Le programme affiche \"Tarif : 9€\"\n$\\\\$\n2. Le programme affiche \"Accès VIP accordé\"",
+  "etapes": "**Méthode générale :** Conditions imbriquées\n● **Principe** : Placer une structure conditionnelle à l'intérieur d'une autre\n$\\\\$\n● **Indentation** : Cruciale en Python ! Chaque niveau de condition ajoute 4 espaces\n$\\\\$\n● **Lisibilité** : Bien organiser les niveaux pour comprendre la logique\n$\\\\$\n● **Alternative** : Parfois, utiliser des opérateurs logiques (`and`, `or`) est plus simple\n$\\\\$\n**Question 1 :** Tarif cinéma avec `age = 25` et `jour = \"Lundi\"`\n$\\\\$\n<p><strong>Code Python :</strong></p>\n<table style=\"border-collapse: collapse; margin:10px 0;\">\n<tr>\n<td style=\"background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;\">\nage = <span style=\"color:#bd93f9;\">25</span><br>\njour = <span style=\"color:#f1fa8c;\">\"Lundi\"</span><br>\n<br>\n<span style=\"color:#ff79c6;\">if</span> age < <span style=\"color:#bd93f9;\">18</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;tarif = <span style=\"color:#bd93f9;\">7</span><br>\n<span style=\"color:#ff79c6;\">elif</span> age < <span style=\"color:#bd93f9;\">65</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"color:#ff79c6;\">if</span> jour == <span style=\"color:#f1fa8c;\">\"Lundi\"</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tarif = <span style=\"color:#bd93f9;\">9</span><br>\n&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"color:#ff79c6;\">else</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tarif = <span style=\"color:#bd93f9;\">12</span><br>\n<span style=\"color:#ff79c6;\">else</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;tarif = <span style=\"color:#bd93f9;\">8</span><br>\n<br>\n<span style=\"color:#50fa7b;\">print</span>(<span style=\"color:#f1fa8c;\">f\"Tarif : </span><span style=\"color:#8be9fd;\">{tarif}</span><span style=\"color:#f1fa8c;\">€\"</span>)\n</td>\n</tr>\n</table>\n$\\\\$\n● **Analyse :**\n$\\qquad$• `25 < 18` → `False`\n$\\qquad$• `25 < 65` → `True` ✓ (on entre dans ce bloc)\n$\\qquad$• Condition imbriquée : `jour == \"Lundi\"` → `True`\n$\\qquad$• `tarif = 9`\n$\\\\$\n● **Résultat :** Le programme affiche \"Tarif : 9€\"\n$\\\\$\n**Question 2 :** Accès VIP avec `membre_premium = False`, `points = 1200`, `email_valide = True`\n<p><strong>Code Python :</strong></p>\n<table style=\"border-collapse: collapse; margin:10px 0;\">\n<tr>\n<td style=\"background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;\">\nmembre_premium = <span style=\"color:#bd93f9;\">False</span><br>\npoints = <span style=\"color:#bd93f9;\">1200</span><br>\nemail_valide = <span style=\"color:#bd93f9;\">True</span><br>\n<br>\n<span style=\"color:#ff79c6;\">if</span> membre_premium:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"color:#50fa7b;\">print</span>(<span style=\"color:#f1fa8c;\">\"Accès VIP accordé\"</span>)<br>\n<span style=\"color:#ff79c6;\">else</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"color:#ff79c6;\">if</span> points > <span style=\"color:#bd93f9;\">1000</span> <span style=\"color:#ff79c6;\">and</span> email_valide:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"color:#50fa7b;\">print</span>(<span style=\"color:#f1fa8c;\">\"Accès VIP accordé\"</span>)<br>\n&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"color:#ff79c6;\">else</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"color:#50fa7b;\">print</span>(<span style=\"color:#f1fa8c;\">\"Accès VIP refusé\"</span>)\n</td>\n</tr>\n</table>\n$\\\\$\n● **Analyse :**\n$\\qquad$• `membre_premium` → `False`, on va dans le `else`\n$\\qquad$• Condition imbriquée : `(1200 > 1000) and (email_valide == True)`\n$\\qquad$• `True and True` → `True`\n$\\\\$\n● **Résultat :** Le programme affiche \"Accès VIP accordé\"\n$\\\\$",
+  "access_scope": "paid"
+ }
+},
+{
+ "model": "curriculum.exercice",
+ "pk": 1057,
+ "fields": {
+  "est_actif": true,
+  "date_creation": "2025-11-17T13:14:28.457Z",
+  "date_modification": "2025-11-17T13:14:28.457Z",
+  "titre": "Structures Conditionnelles - Problèmes de Synthèse",
+  "contenu": "Résoudre les problèmes complexes suivants en combinant plusieurs concepts de structures conditionnelles.\n**Question 1 :** Une compagnie aérienne calcule le prix d'un billet selon plusieurs critères :\n• Prix de base selon la destination : \"Paris\" → 100€, \"Londres\" → 150€, \"New York\" → 500€\n• Réduction de 20% si réservation plus de 30 jours à l'avance (`jours_avance = 45`)\n• Supplément de 50€ pour la classe affaires (`classe = \"Economique\"`)\n• Réduction supplémentaire de 10% si membre du club (`membre_club = True`)\n$\\\\$\nAvec `destination = \"Londres\"`, `jours_avance = 45`, `classe = \"Economique\"`, `membre_club = True`, calculer le prix final.\n$\\\\$\n**Question 2 :** Un système de sécurité valide l'accès selon les critères suivants :\n• Badge valide requis (`badge_valide = True`)\n• Si badge valide, vérifier l'heure : accès autorisé entre 8h et 18h (`heure = 15`)\n• Si heure valide, vérifier le niveau d'accréditation : \"Admin\" → accès total, \"Employé\" → accès limité, \"Stagiaire\" → accès refusé après 17h\n$\\\\$\nAvec `badge_valide = True`, `heure = 15`, `niveau = \"Employé\"`, déterminer le message d'accès.",
+  "difficulty": "hard",
+  "notion": 162,
+  "question": "Résoudre les problèmes complexes suivants en combinant plusieurs concepts de structures conditionnelles.\n**Question 1 :** Une compagnie aérienne calcule le prix d'un billet selon plusieurs critères :\n• Prix de base selon la destination : \"Paris\" → 100€, \"Londres\" → 150€, \"New York\" → 500€\n• Réduction de 20% si réservation plus de 30 jours à l'avance (`jours_avance = 45`)\n• Supplément de 50€ pour la classe affaires (`classe = \"Economique\"`)\n• Réduction supplémentaire de 10% si membre du club (`membre_club = True`)\n$\\\\$\nAvec `destination = \"Londres\"`, `jours_avance = 45`, `classe = \"Economique\"`, `membre_club = True`, calculer le prix final.\n$\\\\$\n**Question 2 :** Un système de sécurité valide l'accès selon les critères suivants :\n• Badge valide requis (`badge_valide = True`)\n• Si badge valide, vérifier l'heure : accès autorisé entre 8h et 18h (`heure = 15`)\n• Si heure valide, vérifier le niveau d'accréditation : \"Admin\" → accès total, \"Employé\" → accès limité, \"Stagiaire\" → accès refusé après 17h\n$\\\\$\nAvec `badge_valide = True`, `heure = 15`, `niveau = \"Employé\"`, déterminer le message d'accès.",
+  "reponse_correcte": "1. Prix final : **108.0€**\n$\\\\$\n2. Message : **\"Accès limité accordé\"**",
+  "etapes": "**Question 1 :** Prix billet avion avec multiples critères\n● **Données :** `destination = \"Londres\"`, `jours_avance = 45`, `classe = \"Economique\"`, `membre_club = True`\n$\\\\$\n<p><strong>Code Python :</strong></p>\n<table style=\"border-collapse: collapse; margin:10px 0;\">\n<tr>\n<td style=\"background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;\">\ndestination = <span style=\"color:#f1fa8c;\">\"Londres\"</span><br>\njours_avance = <span style=\"color:#bd93f9;\">45</span><br>\nclasse = <span style=\"color:#f1fa8c;\">\"Economique\"</span><br>\nmembre_club = <span style=\"color:#bd93f9;\">True</span><br>\n<br>\n<span style=\"color:#6272a4;\"># Prix de base selon destination</span><br>\n<span style=\"color:#ff79c6;\">if</span> destination <span style=\"color:#ffffff;\">==</span> <span style=\"color:#f1fa8c;\">\"Paris\"</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"color:#ffffff;\">prix</span> <span style=\"color:#ffffff;\">=</span> <span style=\"color:#bd93f9;\">100</span><br>\n<span style=\"color:#ff79c6;\">elif</span> destination <span style=\"color:#ffffff;\">==</span> <span style=\"color:#f1fa8c;\">\"Londres\"</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"color:#ffffff;\">prix</span> <span style=\"color:#ffffff;\">=</span> <span style=\"color:#bd93f9;\">150</span><br>\n<span style=\"color:#ff79c6;\">elif</span> destination <span style=\"color:#ffffff;\">==</span> <span style=\"color:#f1fa8c;\">\"New York\"</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"color:#ffffff;\">prix</span> <span style=\"color:#ffffff;\">=</span> <span style=\"color:#bd93f9;\">500</span><br>\n<br>\n<span style=\"color:#6272a4;\"># Réduction anticipation</span><br>\n<span style=\"color:#ff79c6;\">if</span> jours_avance > <span style=\"color:#bd93f9;\">30</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"color:#ffffff;\">prix</span> <span style=\"color:#ffffff;\">=</span> <span style=\"color:#ffffff;\">prix</span> <span style=\"color:#ffffff;\">$\\ast$</span> <span style=\"color:#bd93f9;\">0.80</span><br>\n<br>\n<span style=\"color:#6272a4;\"># Supplément classe affaires</span><br>\n<span style=\"color:#ff79c6;\">if</span> <span style=\"color:#ffffff;\">classe</span> <span style=\"color:#ffffff;\">==</span> <span style=\"color:#f1fa8c;\">\"Affaires\"</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"color:#ffffff;\">prix</span> <span style=\"color:#ffffff;\">=</span> <span style=\"color:#ffffff;\">prix</span> <span style=\"color:#ffffff;\">+</span> <span style=\"color:#bd93f9;\">50</span><br>\n<br>\n<span style=\"color:#6272a4;\"># Réduction membre club</span><br>\n<span style=\"color:#ff79c6;\">if</span> <span style=\"color:#ffffff;\">membre_club</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"color:#ffffff;\">prix</span> <span style=\"color:#ffffff;\">=</span> <span style=\"color:#ffffff;\">prix</span> <span style=\"color:#ffffff;\">$\\ast$</span> <span style=\"color:#bd93f9;\">0.90</span><br>\n<br>\n<span style=\"color:#50fa7b;\">print</span>(<span style=\"color:#f1fa8c;\">f\"Prix final : </span><span style=\"color:#8be9fd;\">{prix}</span><span style=\"color:#f1fa8c;\">€\"</span>)\n</td>\n</tr>\n</table>\n$\\\\$\n● **Calculs détaillés :**\n$\\qquad$• Prix de base : `destination == \"Londres\"` → `150€`\n$\\qquad$• Réduction anticipation : `45 > 30` → `True` → `150 $\\ast$ 0.80 = 120€`\n$\\qquad$• Classe : `\"Economique\"` ≠ `\"Affaires\"` → pas de supplément → `120€`\n$\\qquad$• Membre club : `True` → `120 $\\ast$ 0.90 = 108€`\n$\\\\$\n● **Résultat :** Prix final : **108.0€**\n$\\\\$\n**Question 2 :** Système de sécurité avec `badge_valide = True`, `heure = 15`, `niveau = \"Employé\"`\n<p><strong>Code Python :</strong></p>\n<table style=\"border-collapse: collapse; margin:10px 0;\">\n<tr>\n<td style=\"background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;\">\nbadge_valide = <span style=\"color:#bd93f9;\">True</span><br>\nheure = <span style=\"color:#bd93f9;\">15</span><br>\nniveau = <span style=\"color:#f1fa8c;\">\"Employé\"</span><br>\n<br>\n<span style=\"color:#ff79c6;\">if</span> <span style=\"color:#ff79c6;\">not</span> badge_valide:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;message = <span style=\"color:#f1fa8c;\">\"Accès refusé - Badge invalide\"</span><br>\n<span style=\"color:#ff79c6;\">else</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"color:#ff79c6;\">if</span> heure < <span style=\"color:#bd93f9;\">8</span> <span style=\"color:#ff79c6;\">or</span> heure > <span style=\"color:#bd93f9;\">18</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;message = <span style=\"color:#f1fa8c;\">\"Accès refusé - Hors horaires\"</span><br>\n&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"color:#ff79c6;\">else</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"color:#ff79c6;\">if</span> niveau == <span style=\"color:#f1fa8c;\">\"Admin\"</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;message = <span style=\"color:#f1fa8c;\">\"Accès total accordé\"</span><br>\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"color:#ff79c6;\">elif</span> niveau == <span style=\"color:#f1fa8c;\">\"Employé\"</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;message = <span style=\"color:#f1fa8c;\">\"Accès limité accordé\"</span><br>\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"color:#ff79c6;\">elif</span> niveau == <span style=\"color:#f1fa8c;\">\"Stagiaire\"</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"color:#ff79c6;\">if</span> heure > <span style=\"color:#bd93f9;\">17</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;message = <span style=\"color:#f1fa8c;\">\"Accès refusé - Stagiaire après 17h\"</span><br>\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"color:#ff79c6;\">else</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;message = <span style=\"color:#f1fa8c;\">\"Accès limité accordé\"</span><br>\n<br>\n<span style=\"color:#50fa7b;\">print</span>(message)\n</td>\n</tr>\n</table>\n$\\\\$\n● **Analyse :**\n$\\qquad$• `badge_valide` → `True`, on continue\n$\\qquad$• `15 < 8` → `False`, `15 > 18` → `False`, donc horaire valide\n$\\qquad$• `niveau == \"Employé\"` → `True`\n$\\qquad$• `message = \"Accès limité accordé\"`\n$\\\\$\n● **Résultat :** \"Accès limité accordé\"\n$\\\\$",
+  "access_scope": "paid"
+ }
+},
+{
+ "model": "curriculum.exercice",
+ "pk": 1053,
+ "fields": {
+  "est_actif": true,
+  "date_creation": "2025-11-17T13:14:28.433Z",
+  "date_modification": "2025-11-17T13:14:28.433Z",
+  "titre": "Structures Conditionnelles - Tests Simples et Comparaisons",
+  "contenu": "Écrire des programmes Python simples utilisant des structures conditionnelles pour résoudre les problèmes suivants.\n**Question 1 :** Écrire un programme qui prend un nombre `n = 15` et affiche \"Positif\" si le nombre est strictement positif, \"Négatif\" si le nombre est strictement négatif, et \"Zéro\" si le nombre est égal à zéro.\n$\\\\$\n**Question 2 :** Écrire un programme qui vérifie si un nombre `age = 20` permet l'accès à un site (âge minimum 18 ans). Afficher \"Accès autorisé\" ou \"Accès refusé\".",
+  "difficulty": "easy",
+  "notion": 162,
+  "question": "Écrire des programmes Python simples utilisant des structures conditionnelles pour résoudre les problèmes suivants.\n**Question 1 :** Écrire un programme qui prend un nombre `n = 15` et affiche \"Positif\" si le nombre est strictement positif, \"Négatif\" si le nombre est strictement négatif, et \"Zéro\" si le nombre est égal à zéro.\n$\\\\$\n**Question 2 :** Écrire un programme qui vérifie si un nombre `age = 20` permet l'accès à un site (âge minimum 18 ans). Afficher \"Accès autorisé\" ou \"Accès refusé\".",
+  "reponse_correcte": "1. Le programme affiche \"Positif\"\n$\\\\$\n2. Le programme affiche \"Accès autorisé\"",
+  "etapes": "**Méthode générale :** Structure conditionnelle simple\n● **Structure `if`** : Exécute un bloc si une condition est vraie\n$\\\\$\n● **Structure `if... else`** : Exécute un bloc ou l'autre selon la condition\n$\\\\$\n● **Structure `if... elif... else`** : Teste plusieurs conditions successives\n$\\\\$\n● **Syntaxe Python** : Ne pas oublier les deux-points `:` et l'indentation (4 espaces)\n$\\\\$\n**Question 1 :** Test du signe d'un nombre avec `n = 15`\n$\\\\$\n<p><strong>Code Python :</strong></p>\n<table style=\"border-collapse: collapse; margin:10px 0;\">\n<tr>\n<td style=\"background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;\">\nn = <span style=\"color:#bd93f9;\">15</span><br>\n<br>\n<span style=\"color:#ff79c6;\">if</span> n > <span style=\"color:#bd93f9;\">0</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"color:#50fa7b;\">print</span>(<span style=\"color:#f1fa8c;\">\"Positif\"</span>)<br>\n<span style=\"color:#ff79c6;\">elif</span> n < <span style=\"color:#bd93f9;\">0</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"color:#50fa7b;\">print</span>(<span style=\"color:#f1fa8c;\">\"Négatif\"</span>)<br>\n<span style=\"color:#ff79c6;\">else</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"color:#50fa7b;\">print</span>(<span style=\"color:#f1fa8c;\">\"Zéro\"</span>)\n</td>\n</tr>\n</table>\n$\\\\$\n● **Analyse :** `15 > 0` → `True`, donc on exécute le premier bloc\n$\\\\$\n● **Résultat :** Le programme affiche \"Positif\"\n$\\\\$\n**Question 2 :** Vérification d'âge avec `age = 20`\n<p><strong>Code Python :</strong></p>\n<table style=\"border-collapse: collapse; margin:10px 0;\">\n<tr>\n<td style=\"background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;\">\nage = <span style=\"color:#bd93f9;\">20</span><br>\n<br>\n<span style=\"color:#ff79c6;\">if</span> age >= <span style=\"color:#bd93f9;\">18</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"color:#50fa7b;\">print</span>(<span style=\"color:#f1fa8c;\">\"Accès autorisé\"</span>)<br>\n<span style=\"color:#ff79c6;\">else</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"color:#50fa7b;\">print</span>(<span style=\"color:#f1fa8c;\">\"Accès refusé\"</span>)\n</td>\n</tr>\n</table>\n$\\\\$\n● **Analyse :** `20 >= 18` → `True`, donc on exécute le bloc `if`\n$\\\\$\n● **Résultat :** Le programme affiche \"Accès autorisé\"\n$\\\\$",
+  "access_scope": "paid"
+ }
+},
+{
+ "model": "curriculum.exercice",
+ "pk": 1054,
+ "fields": {
+  "est_actif": true,
+  "date_creation": "2025-11-17T13:14:28.442Z",
+  "date_modification": "2026-02-01T17:18:16.935Z",
+  "titre": "Structures Conditionnelles - Opérateurs Logiques",
+  "contenu": "Résoudre les problèmes suivants en utilisant les opérateurs logiques (`and`, `or`, `not`) en Python.\n**Question 1 :** Un utilisateur peut accéder à un service si son `age = 25` est compris entre 18 et 65 ans (inclus). Écrire le code et déterminer l'affichage.\n$\\\\$\n**Question 2 :** Une remise est accordée si c'est le week-end (`jour = \"Samedi\"`) OU si le client a une carte de fidélité (`carte = False`). Écrire le code et déterminer l'affichage.",
+  "difficulty": "easy",
+  "notion": 162,
+  "question": "Résoudre les problèmes suivants en utilisant les opérateurs logiques (`and`, `or`, `not`) en Python.\n**Question 1 :** Un utilisateur peut accéder à un service si son `age = 25` est compris entre 18 et 65 ans (inclus). Écrire le code et déterminer l'affichage.\n$\\\\$\n**Question 2 :** Une remise est accordée si c'est le week-end (`jour = \"Samedi\"`) OU si le client a une carte de fidélité (`carte = False`). Écrire le code et déterminer l'affichage.",
+  "reponse_correcte": "1. Le programme affiche \"Accès autorisé\"\n$\\\\$\n2. Le programme affiche \"Remise accordée\"",
+  "etapes": "**Méthode générale :** Opérateurs logiques en Python\n● **Opérateur `and`** : Retourne `True` si toutes les conditions sont vraies\n$\\\\$\n● **Opérateur `or`** : Retourne `True` si au moins une condition est vraie\n$\\\\$\n● **Opérateur `not`** : Inverse la valeur de vérité d'une condition\n$\\\\$\n● **Évaluation** : Bien analyser chaque sous-condition avant de combiner\n$\\\\$\n**Question 1 :** Accès entre 18 et 65 ans avec `age = 25`\n$\\\\$\n<p><strong>Code Python :</strong></p>\n<table style=\"border-collapse: collapse; margin:10px 0;\">\n<tr>\n<td style=\"background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;\">\nage = <span style=\"color:#bd93f9;\">25</span><br>\n<br>\n<span style=\"color:#ff79c6;\">if</span> age >= <span style=\"color:#bd93f9;\">18</span> <span style=\"color:#ff79c6;\">and</span> age <= <span style=\"color:#bd93f9;\">65</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"color:#50fa7b;\">print</span>(<span style=\"color:#f1fa8c;\">\"Accès autorisé\"</span>)<br>\n<span style=\"color:#ff79c6;\">else</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"color:#50fa7b;\">print</span>(<span style=\"color:#f1fa8c;\">\"Accès refusé\"</span>)\n</td>\n</tr>\n</table>\n$\\\\$\n● **Analyse de la condition :** `(25 >= 18) and (25 <= 65)`\n$\\qquad$• `25 >= 18` → `True`\n$\\qquad$• `25 <= 65` → `True`\n$\\qquad$• `True and True` → `True`\n$\\\\$\n● **Résultat :** Le programme affiche \"Accès autorisé\"\n$\\\\$\n**Question 2 :** Remise week-end ou carte fidélité avec `jour = \"Samedi\"` et `carte = False`\n<p><strong>Code Python :</strong></p>\n<table style=\"border-collapse: collapse; margin:10px 0;\">\n<tr>\n<td style=\"background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;\">\njour = <span style=\"color:#f1fa8c;\">\"Samedi\"</span><br>\ncarte = <span style=\"color:#bd93f9;\">False</span><br>\n<br>\n<span style=\"color:#ff79c6;\">if</span> jour == <span style=\"color:#f1fa8c;\">\"Samedi\"</span> <span style=\"color:#ff79c6;\">or</span> jour == <span style=\"color:#f1fa8c;\">\"Dimanche\"</span> <span style=\"color:#ff79c6;\">or</span> carte == <span style=\"color:#bd93f9;\">True</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"color:#50fa7b;\">print</span>(<span style=\"color:#f1fa8c;\">\"Remise accordée\"</span>)<br>\n<span style=\"color:#ff79c6;\">else</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"color:#50fa7b;\">print</span>(<span style=\"color:#f1fa8c;\">\"Pas de remise\"</span>)\n</td>\n</tr>\n</table>\n$\\\\$\n● **Analyse de la condition :** `(jour == \"Samedi\") or (jour == \"Dimanche\") or (carte == True)`\n$\\qquad$• `jour == \"Samedi\"` → `True`\n$\\qquad$• `jour == \"Dimanche\"` → `False`\n$\\qquad$• `carte == True` → `False`\n$\\qquad$• `True or False or False` → `True`\n$\\\\$\n● **Résultat :** Le programme affiche \"Remise accordée\"\n$\\\\$",
+  "access_scope": "both"
+ }
+},
+{
+ "model": "curriculum.exercice",
+ "pk": 826,
+ "fields": {
+  "est_actif": true,
+  "date_creation": "2025-10-09T12:32:00.198Z",
+  "date_modification": "2025-10-09T12:32:00.198Z",
+  "titre": "Structures Conditionnelles - Tests Simples et Comparaisons",
+  "contenu": "Écrire des programmes Python simples utilisant des structures conditionnelles pour résoudre les problèmes suivants.\n**Question 1 :** Écrire un programme qui prend un nombre `n = 15` et affiche \"Positif\" si le nombre est strictement positif, \"Négatif\" si le nombre est strictement négatif, et \"Zéro\" si le nombre est égal à zéro.\n$\\\\$\n**Question 2 :** Écrire un programme qui vérifie si un nombre `age = 20` permet l'accès à un site (âge minimum 18 ans). Afficher \"Accès autorisé\" ou \"Accès refusé\".",
+  "difficulty": "easy",
+  "notion": 101,
+  "question": "<!-- optitab:1 -->\n1. Écrire une fonction `signe(n)` qui renvoie « Positif » si $n$ est strictement positif, « Négatif » s’il est strictement négatif et « Zéro » sinon. Donner son résultat pour $15$, $-3$ et $0$.\n2. Un site est réservé aux personnes d’au moins 18 ans. Écrire un programme qui affiche « Accès autorisé » ou « Accès refusé ». Donner l’affichage pour `age = 20`, puis pour `age = 18`.\n3. Écrire un programme qui affiche « pair » ou « impair » selon la valeur de l’entier `n`. Donner l’affichage pour `n = 15`.",
+  "reponse_correcte": "<!-- optitab:1 -->\n1. « Positif » pour $15$, « Négatif » pour $-3$, « Zéro » pour $0$.\n2. Condition `age >= 18` : « Accès autorisé » pour 20 ans comme pour 18 ans.\n3. `15 % 2` vaut $1$ : le programme affiche « impair ».",
+  "etapes": "<!-- optitab:1 -->\n## Question 1 : Signe d’un nombre\n\n::: methode\nTrois cas qui s’excluent : `if … elif … else`.\n:::\n\n```python\ndef signe(n):\n    if n > 0:\n        return \"Positif\"\n    elif n < 0:\n        return \"Négatif\"\n    else:\n        return \"Zéro\"\n\nprint(signe(15))\nprint(signe(-3))\nprint(signe(0))\n```\n\n```console\nPositif\nNégatif\nZéro\n```\n\n::: etape Déroulement\n- $15$ : `15 > 0` est vrai ;\n- $-3$ : `-3 > 0` est faux, `-3 < 0` est vrai ;\n- $0$ : les deux tests sont faux, on arrive au `else`.\n:::\n\n::: resultat\n« Positif » pour $15$, « Négatif » pour $-3$, « Zéro » pour $0$.\n:::\n\n## Question 2 : Accès à partir de 18 ans\n\n::: methode\n« Au moins 18 ans » se traduit par `age >= 18` (et non `age > 18`).\n:::\n\n```python\nage = 18\nif age >= 18:\n    print(\"Accès autorisé\")\nelse:\n    print(\"Accès refusé\")\n```\n\n```console\nAccès autorisé\n```\n\n::: etape Analyse\n- `age = 20` : `20 >= 18` est vrai, « Accès autorisé » ;\n- `age = 18` : `18 >= 18` est vrai, « Accès autorisé ».\n:::\n\n::: attention\nAvec `age > 18`, une personne de 18 ans serait refusée à tort : c’est pourquoi on teste toujours la valeur frontière.\n:::\n\n::: resultat\n« Accès autorisé » dans les deux cas.\n:::\n\n## Question 3 : Pair ou impair\n\n::: methode\nUn entier est pair lorsque le reste de sa division par $2$ est nul : `n % 2 == 0`.\n:::\n\n```python\nn = 15\nif n % 2 == 0:\n    print(\"pair\")\nelse:\n    print(\"impair\")\n```\n\n```console\nimpair\n```\n\n::: etape Analyse\n$15 = 2 \\times 7 + 1$ : le reste `15 % 2` vaut $1$, la condition `n % 2 == 0` est fausse.\n:::\n\n::: resultat\nLe programme affiche « impair ».\n:::",
+  "access_scope": "paid"
+ }
+},
+{
+ "model": "curriculum.exercice",
+ "pk": 827,
+ "fields": {
+  "est_actif": true,
+  "date_creation": "2025-10-09T12:32:00.255Z",
+  "date_modification": "2025-10-09T12:32:00.255Z",
+  "titre": "Structures Conditionnelles - Opérateurs Logiques",
+  "contenu": "Résoudre les problèmes suivants en utilisant les opérateurs logiques (`and`, `or`, `not`) en Python.\n**Question 1 :** Un utilisateur peut accéder à un service si son `age = 25` est compris entre 18 et 65 ans (inclus). Écrire le code et déterminer l'affichage.\n$\\\\$\n**Question 2 :** Une remise est accordée si c'est le week-end (`jour = \"Samedi\"`) OU si le client a une carte de fidélité (`carte = False`). Écrire le code et déterminer l'affichage.",
+  "difficulty": "easy",
+  "notion": 101,
+  "question": "<!-- optitab:1 -->\n1. Un service est réservé aux personnes âgées de 18 à 65 ans inclus. Écrire un programme qui affiche « Accès autorisé » ou « Accès refusé » selon la valeur de `age`. Donner l’affichage pour `age = 25`, puis pour `age = 70`.\n2. Une remise est accordée le week-end (samedi ou dimanche) ou aux clients qui ont une carte de fidélité. Écrire le programme et donner l’affichage pour `jour = \"Samedi\"` et `carte = False`.\n3. Écrire, sans utiliser `not`, la condition contraire de celle de la question 1.",
+  "reponse_correcte": "<!-- optitab:1 -->\n1. Condition `18 <= age <= 65` : « Accès autorisé » pour $25$ ans, « Accès refusé » pour $70$ ans.\n2. `True or False or False` vaut `True` : le programme affiche « Remise accordée ».\n3. `age < 18 or age > 65`.",
+  "etapes": "<!-- optitab:1 -->\n## Question 1 : Âge entre 18 et 65 ans inclus\n\n::: methode\n« Entre 18 et 65 inclus » signifie `age >= 18` **et** `age <= 65`, ce que Python écrit aussi `18 <= age <= 65`.\n:::\n\n```python\nage = 25\nif 18 <= age <= 65:\n    print(\"Accès autorisé\")\nelse:\n    print(\"Accès refusé\")\n```\n\n```console\nAccès autorisé\n```\n\n::: etape Analyse pour age = 25\n`25 >= 18` est vrai et `25 <= 65` est vrai : `True and True` vaut `True`.\n:::\n\n::: etape Analyse pour age = 70\n`70 >= 18` est vrai mais `70 <= 65` est faux : `True and False` vaut `False`, le programme affiche « Accès refusé ».\n:::\n\n::: resultat\n« Accès autorisé » pour $25$ ans, « Accès refusé » pour $70$ ans.\n:::\n\n## Question 2 : Remise le week-end ou avec une carte\n\n::: methode\n`or` est vrai dès qu’**une** des conditions est vraie.\n:::\n\n```python\njour = \"Samedi\"\ncarte = False\nsam = jour == \"Samedi\"\ndim = jour == \"Dimanche\"\nif sam or dim or carte:\n    print(\"Remise accordée\")\nelse:\n    print(\"Pas de remise\")\n```\n\n```console\nRemise accordée\n```\n\n::: etape Analyse\n`sam` vaut `True`, `dim` vaut `False`, `carte` vaut `False` : `True or False or False` vaut `True`.\n:::\n\n::: attention\nÉcrire `jour == \"Samedi\" or \"Dimanche\"` est une erreur classique : `\"Dimanche\"` seul est considéré comme vrai, et la condition serait vraie tous les jours. Chaque comparaison doit être écrite en entier.\n:::\n\n::: resultat\nLe programme affiche « Remise accordée ».\n:::\n\n## Question 3 : Condition contraire\n\n::: methode\nLoi de De Morgan : `not (A and B)` équivaut à `(not A) or (not B)`.\n:::\n\n::: etape Appliquer la règle\nLa condition de la question 1 est `age >= 18 and age <= 65`. Sa négation est `not (age >= 18)` **ou** `not (age <= 65)`, c’est-à-dire `age < 18 or age > 65`.\n:::\n\n[IMAGE_1]\n\n::: attention\nLa négation de « et » est un « ou » : `age < 18 and age > 65` serait toujours faux, car aucun âge n’est à la fois inférieur à 18 et supérieur à 65.\n:::\n\n::: resultat\nLa condition contraire est `age < 18 or age > 65`.\n:::",
+  "access_scope": "paid"
+ }
+},
+{
+ "model": "curriculum.exercice",
+ "pk": 828,
+ "fields": {
+  "est_actif": true,
+  "date_creation": "2025-10-09T12:32:00.318Z",
+  "date_modification": "2026-02-01T17:09:44.785Z",
+  "titre": "Structures Conditionnelles - Structures Multiples (if, elif, else)",
+  "contenu": "Utiliser la structure `if... elif... else` pour résoudre les problèmes suivants.\n**Question 1 :** Écrire un programme qui détermine la catégorie d'un film selon l'âge de l'utilisateur (`age = 14`) : \"Tout public\" (tout âge), \"Accord parental\" (moins de 13 ans), \"Interdit -16\" (moins de 16 ans), \"Interdit -18\" (moins de 18 ans), \"Adulte\" (18 ans et plus). Pour cet exercice, utiliser la classification : moins de 13 ans → \"Accord parental\".\n$\\\\$\n**Question 2 :** Calculer le prix d'un billet de train selon l'âge (`age = 67`) : gratuit (moins de 4 ans), 8€ (4-17 ans), 15€ (18-64 ans), 10€ (65 ans et plus).",
+  "difficulty": "medium",
+  "notion": 101,
+  "question": "<!-- optitab:1 -->\n1. Un site de vidéos indique à chaque utilisateur les films qu’il peut regarder selon son âge : moins de 12 ans, « tous publics » ; de 12 à 15 ans, « jusqu’à -12 » ; 16 ou 17 ans, « jusqu’à -16 » ; 18 ans et plus, « tous les films ». Écrire un programme avec `if … elif … else` et donner l’affichage pour `age = 14`.\n2. Le prix d’un billet de train est : gratuit avant 4 ans, 8 € de 4 à 17 ans, 15 € de 18 à 64 ans, 10 € à partir de 65 ans. Écrire une fonction `tarif(age)` et donner les prix pour 67, 4, 18 et 65 ans.\n3. Un élève a écrit le programme ci-dessous. Qu’affiche-t-il pour `age = 30` ? Expliquer l’erreur et la corriger.\n\n   ```python\n   age = 30\n   if age >= 4:\n       prix = 8\n   elif age >= 18:\n       prix = 15\n   elif age >= 65:\n       prix = 10\n   else:\n       prix = 0\n   print(prix)\n   ```",
+  "reponse_correcte": "<!-- optitab:1 -->\n1. Le programme affiche « jusqu’à -12 ».\n2. $10$ € à 67 ans, $8$ € à 4 ans, $15$ € à 18 ans, $10$ € à 65 ans.\n3. Il affiche `8` : le test `age >= 4`, placé en premier, est vrai pour tous à partir de 4 ans. Il faut tester `age >= 65`, puis `age >= 18`, puis `age >= 4` ; on obtient alors `15`.",
+  "etapes": "<!-- optitab:1 -->\n## Question 1 : Films autorisés selon l’âge\n\n::: methode\nLes tranches d’âge s’excluent : une seule structure `if … elif … else`, avec des seuils croissants testés par `<`.\n:::\n\n```python\nage = 14\nif age < 12:\n    films = \"tous publics\"\nelif age < 16:\n    films = \"jusqu'à -12\"\nelif age < 18:\n    films = \"jusqu'à -16\"\nelse:\n    films = \"tous les films\"\nprint(films)\n```\n\n```console\njusqu'à -12\n```\n\n::: etape Déroulement\n`14 < 12` est faux, puis `14 < 16` est vrai : `films` reçoit `\"jusqu'à -12\"` et les tests suivants ne sont pas examinés.\n:::\n\n::: resultat\nPour 14 ans, le programme affiche « jusqu’à -12 ».\n:::\n\n## Question 2 : Prix du billet de train\n\n::: methode\nMême structure, dans une fonction ; on la teste sur les valeurs frontières.\n:::\n\n```python\ndef tarif(age):\n    if age < 4:\n        return 0\n    elif age < 18:\n        return 8\n    elif age < 65:\n        return 15\n    else:\n        return 10\n\nfor a in [67, 4, 18, 65]:\n    print(a, tarif(a))\n```\n\n```console\n67 10\n4 8\n18 15\n65 10\n```\n\n::: etape Déroulement pour 67 ans\n`67 < 4`, `67 < 18` et `67 < 65` sont faux : on arrive au `else`, le prix est $10$ €.\n:::\n\n::: etape Frontières\n- $4$ ans : `4 < 4` est faux et `4 < 18` est vrai, soit $8$ € ;\n- $18$ ans : `18 < 18` est faux et `18 < 65` est vrai, soit $15$ € ;\n- $65$ ans : tous les tests sont faux, soit $10$ €.\n:::\n\n::: resultat\n$10$ € à 67 ans, $8$ € à 4 ans, $15$ € à 18 ans, $10$ € à 65 ans.\n:::\n\n## Question 3 : Erreur d’ordre des conditions\n\n::: methode\nOn suit le programme pas à pas : le **premier** test vrai décide.\n:::\n\n::: etape Ce qu’affiche le programme\n`30 >= 4` est vrai dès le premier test : `prix` reçoit $8$ et le programme affiche `8`. Les tests `age >= 18` et `age >= 65` ne sont jamais atteints pour une personne de 4 ans ou plus : tous paient $8$ €.\n:::\n\n::: etape Correction\nAvec des tests « supérieur ou égal », on part du plus grand seuil :\n\n```python\nage = 30\nif age >= 65:\n    prix = 10\nelif age >= 18:\n    prix = 15\nelif age >= 4:\n    prix = 8\nelse:\n    prix = 0\nprint(prix)\n```\n\n```console\n15\n```\n:::\n\n::: resultat\nLe programme de l’élève affiche `8` au lieu de `15`. Il faut tester les seuils dans l’ordre décroissant : $65$, $18$, puis $4$.\n:::",
+  "access_scope": "both"
+ }
+},
+{
+ "model": "curriculum.exercice",
+ "pk": 829,
+ "fields": {
+  "est_actif": true,
+  "date_creation": "2025-10-09T12:32:00.376Z",
+  "date_modification": "2025-10-09T12:32:00.376Z",
+  "titre": "Structures Conditionnelles - Conditions Imbriquées",
+  "contenu": "Résoudre les problèmes suivants en utilisant des structures conditionnelles imbriquées (une condition à l'intérieur d'une autre).\n**Question 1 :** Un cinéma applique les tarifs suivants : si l'âge est inférieur à 18 ans, le tarif est de 7€. Si l'âge est entre 18 et 64 ans, le tarif est de 12€, sauf si c'est lundi (tarif réduit à 9€). Si l'âge est 65 ans ou plus, le tarif est de 8€. Avec `age = 25` et `jour = \"Lundi\"`, quel est le tarif ?\n$\\\\$\n**Question 2 :** Pour accéder à une salle VIP, il faut soit être membre premium (`membre_premium = False`), soit avoir plus de 1000 points (`points = 1200`) ET avoir validé son email (`email_valide = True`). Avec ces valeurs, déterminer l'affichage.",
+  "difficulty": "medium",
+  "notion": 101,
+  "question": "<!-- optitab:1 -->\nDans les questions 1 et 2, on utilise une structure conditionnelle **imbriquée** : un `if` placé à l’intérieur d’un autre.\n\n1. Un cinéma applique les tarifs suivants :\n   - moins de 18 ans : 7 € ;\n   - de 18 à 64 ans : 12 €, mais 9 € le lundi ;\n   - 65 ans et plus : 8 €.\n\n   Écrire un programme qui calcule le tarif à partir des variables `age` et `jour`. Quel tarif obtient-on pour `age = 25` et `jour = \"Lundi\"` ?\n2. L’accès à une salle VIP est accordé aux membres premium ; pour les autres, il faut avoir plus de $1\\,000$ points **et** avoir validé son adresse e-mail. Écrire un programme qui affiche « Accès accordé » ou « Accès refusé », puis donner l’affichage pour `premium = False`, `points = 1200` et `email_ok = True`.\n3. Réécrire le programme de la question 2 sans imbrication, avec une seule instruction `if … else` utilisant `and` et `or`. Quel est l’affichage si `points = 800` (les autres données étant inchangées) ?",
+  "reponse_correcte": "<!-- optitab:1 -->\n1. Tests successifs `age < 18`, `age < 65`, puis `jour == \"Lundi\"` dans le bloc des 18-64 ans : le tarif est de $9$ €.\n2. Le programme affiche « Accès accordé ».\n3. Condition `premium or bonus`, où `bonus` vaut `points > 1000 and email_ok` ; avec `points = 800`, l’affichage est « Accès refusé ».",
+  "etapes": "<!-- optitab:1 -->\n## Question 1 : Tarif du cinéma\n\n::: methode\nOn distingue d’abord les trois tranches d’âge (`if … elif … else`) ; le jour n’intervient que pour la tranche de 18 à 64 ans, d’où un test imbriqué dans ce seul bloc.\n:::\n\n[IMAGE_1]\n\n```python\nage = 25\njour = \"Lundi\"\nif age < 18:\n    tarif = 7\nelif age < 65:\n    if jour == \"Lundi\":\n        tarif = 9\n    else:\n        tarif = 12\nelse:\n    tarif = 8\nprint(\"Tarif :\", tarif, \"€\")\n```\n\n```console\nTarif : 9 €\n```\n\n::: etape Déroulement\n- `25 < 18` est faux : on passe au `elif` ;\n- `25 < 65` est vrai : on entre dans ce bloc ;\n- test imbriqué : `jour == \"Lundi\"` est vrai, donc `tarif` reçoit $9$.\n:::\n\n::: attention\nLa comparaison de chaînes distingue majuscules et minuscules : avec `jour = \"lundi\"`, le test `jour == \"Lundi\"` serait faux et le tarif serait $12$ €.\n:::\n\n::: resultat\nPour un spectateur de 25 ans un lundi, le tarif est de $9$ €.\n:::\n\n## Question 2 : Accès à la salle VIP\n\n::: methode\nPremier niveau : être membre premium ou non ; second niveau, seulement pour les non-membres : points et e-mail.\n:::\n\n```python\npremium = False\npoints = 1200\nemail_ok = True\nok = False\nif premium:\n    ok = True\nelse:\n    if points > 1000:\n        if email_ok:\n            ok = True\nif ok:\n    print(\"Accès accordé\")\nelse:\n    print(\"Accès refusé\")\n```\n\n```console\nAccès accordé\n```\n\n::: etape Déroulement\n- `premium` vaut `False` : on entre dans le bloc `else` ;\n- `1200 > 1000` est vrai : on passe au test suivant ;\n- `email_ok` vaut `True` : `ok` reçoit `True` et le programme affiche « Accès accordé ».\n:::\n\n::: resultat\nLe programme affiche « Accès accordé ».\n:::\n\n## Question 3 : Une seule condition\n\n::: methode\nOn traduit la règle en une seule phrase logique : premium **ou** (plus de 1000 points **et** e-mail validé).\n:::\n\n::: etape Écrire la condition\nOn range la seconde partie dans une variable booléenne `bonus`, puis on teste `premium or bonus`.\n:::\n\n```python\npremium = False\npoints = 800\nemail_ok = True\nbonus = (points > 1000\n         and email_ok)\nif premium or bonus:\n    print(\"Accès accordé\")\nelse:\n    print(\"Accès refusé\")\n```\n\n```console\nAccès refusé\n```\n\n::: etape Déroulement avec points = 800\n`800 > 1000` est faux, donc `bonus` vaut `False and True`, c’est-à-dire `False` ; `premium or bonus` vaut `False or False`, soit `False`.\n:::\n\n::: retenir\nLes parenthèses sont indispensables à la lecture : `premium or (A and B)` n’est pas `(premium or A) and B`. En Python, `and` est prioritaire sur `or`, mais écrire les parenthèses évite toute ambiguïté.\n:::\n\n::: resultat\nAvec `points = 800`, le programme affiche « Accès refusé ». Avec `points = 1200`, il affiche « Accès accordé », comme à la question 2.\n:::",
+  "access_scope": "paid"
+ }
+},
+{
+ "model": "curriculum.exercice",
+ "pk": 830,
+ "fields": {
+  "est_actif": true,
+  "date_creation": "2025-10-09T12:32:00.453Z",
+  "date_modification": "2025-10-09T12:32:00.453Z",
+  "titre": "Structures Conditionnelles - Problèmes de Synthèse",
+  "contenu": "Résoudre les problèmes complexes suivants en combinant plusieurs concepts de structures conditionnelles.\n**Question 1 :** Une compagnie aérienne calcule le prix d'un billet selon plusieurs critères :\n• Prix de base selon la destination : \"Paris\" → 100€, \"Londres\" → 150€, \"New York\" → 500€\n• Réduction de 20% si réservation plus de 30 jours à l'avance (`jours_avance = 45`)\n• Supplément de 50€ pour la classe affaires (`classe = \"Economique\"`)\n• Réduction supplémentaire de 10% si membre du club (`membre_club = True`)\n$\\\\$\nAvec `destination = \"Londres\"`, `jours_avance = 45`, `classe = \"Economique\"`, `membre_club = True`, calculer le prix final.\n$\\\\$\n**Question 2 :** Un système de sécurité valide l'accès selon les critères suivants :\n• Badge valide requis (`badge_valide = True`)\n• Si badge valide, vérifier l'heure : accès autorisé entre 8h et 18h (`heure = 15`)\n• Si heure valide, vérifier le niveau d'accréditation : \"Admin\" → accès total, \"Employé\" → accès limité, \"Stagiaire\" → accès refusé après 17h\n$\\\\$\nAvec `badge_valide = True`, `heure = 15`, `niveau = \"Employé\"`, déterminer le message d'accès.",
+  "difficulty": "hard",
+  "notion": 101,
+  "question": "<!-- optitab:1 -->\n1. Une compagnie aérienne calcule le prix d’un billet en appliquant, dans cet ordre, les règles suivantes :\n   - prix de base selon la destination : Paris 100 €, Londres 150 €, New York 500 € ;\n   - réduction de $20\\,\\%$ si la réservation est faite plus de 30 jours à l’avance ;\n   - supplément de 50 € en classe affaires ;\n   - réduction supplémentaire de $10\\,\\%$ pour les membres du club.\n\n   a) Écrire un programme qui calcule le prix final, et le donner pour un vol pour Londres réservé 45 jours à l’avance, en classe économique, par un membre du club.\n\n   b) Quel est le prix d’un vol pour New York réservé 10 jours à l’avance, en classe affaires, par un non-membre ?\n2. Un système de sécurité attribue un niveau d’accès (« total », « limité » ou « refusé ») :\n   - sans badge valide, l’accès est refusé ;\n   - en dehors de la plage de 8 h à 18 h (incluses), l’accès est refusé ;\n   - sinon, un administrateur a un accès total, un employé un accès limité, et un stagiaire un accès limité jusqu’à 17 h, refusé après 17 h.\n\n   a) Écrire une fonction `acces(badge, h, niveau)` qui renvoie le niveau d’accès, et donner son résultat pour un employé qui présente un badge valide à 15 h.\n\n   b) Tester la fonction sur les cas limites : un stagiaire à 17 h puis à 18 h, un administrateur à 19 h.",
+  "reponse_correcte": "<!-- optitab:1 -->\n1. a) $150 \\times 0{,}8 \\times 0{,}9 = 108$ € ; b) $500 + 50 = 550$ €.\n2. a) « limité » ; b) stagiaire à 17 h : « limité » ; stagiaire à 18 h : « refusé » ; administrateur à 19 h : « refusé ».",
+  "etapes": "<!-- optitab:1 -->\n## Question 1 : Prix d’un billet d’avion\n\n::: methode\nLe prix de base relève de **cas qui s’excluent** (`if … elif`) ; les trois règles suivantes sont **indépendantes** : chacune fait l’objet d’un `if` séparé, appliqué dans l’ordre.\n:::\n\n```python\ndest = \"Londres\"\njours = 45\nclasse = \"Économique\"\nclub = True\nif dest == \"Paris\":\n    prix = 100\nelif dest == \"Londres\":\n    prix = 150\nelif dest == \"New York\":\n    prix = 500\nif jours > 30:\n    prix = prix * 0.8\nif classe == \"Affaires\":\n    prix = prix + 50\nif club:\n    prix = prix * 0.9\nprint(round(prix, 2), \"€\")\n```\n\n```console\n108.0 €\n```\n\n::: etape a) Calcul pour Londres\n- prix de base : $150$ € ;\n- $45 \\gt 30$ est vrai : $150 \\times 0{,}8 = 120$ € ;\n- classe économique : pas de supplément ;\n- membre du club : $120 \\times 0{,}9 = 108$ €.\n:::\n\n::: etape b) Calcul pour New York\n- prix de base : $500$ € ;\n- $10 \\gt 30$ est faux : pas de réduction ;\n- classe affaires : $500 + 50 = 550$ € ;\n- non-membre : pas de réduction.\n\nEn remplaçant les données par `\"New York\"`, `10`, `\"Affaires\"` et `False`, le programme affiche `550 €`.\n:::\n\n::: attention\nAvec des `elif` à la place des trois derniers `if`, une seule règle serait appliquée : pour Londres, seule la réduction de $20\\,\\%$ serait prise en compte, et le prix serait faux ($120$ € au lieu de $108$ €).\n:::\n\n::: resultat\na) $108$ € pour Londres ; b) $550$ € pour New York. La fonction `round(prix, 2)` arrondit au centime les calculs sur les nombres décimaux.\n:::\n\n## Question 2 : Système de sécurité\n\n::: methode\nDans une fonction, `return` termine l’exécution : chaque test n’est examiné que si les précédents ont échoué, ce qui équivaut à des conditions imbriquées.\n:::\n\n```python\ndef acces(badge, h, niveau):\n    if not badge:\n        return \"refusé\"\n    if h < 8 or h > 18:\n        return \"refusé\"\n    if niveau == \"Admin\":\n        return \"total\"\n    if niveau == \"Stagiaire\":\n        if h > 17:\n            return \"refusé\"\n    return \"limité\"\n\ne = \"Employé\"\nprint(acces(True, 15, e))\n```\n\n```console\nlimité\n```\n\n::: etape a) Employé à 15 h avec badge\n`not badge` est faux ; `15 < 8 or 15 > 18` est faux ; le niveau n’est ni `\"Admin\"` ni `\"Stagiaire\"` : la fonction renvoie `\"limité\"`.\n:::\n\nOn teste ensuite les cas limites de la question b).\n\n```python\ndef acces(badge, h, niveau):\n    if not badge:\n        return \"refusé\"\n    if h < 8 or h > 18:\n        return \"refusé\"\n    if niveau == \"Admin\":\n        return \"total\"\n    if niveau == \"Stagiaire\":\n        if h > 17:\n            return \"refusé\"\n    return \"limité\"\n\ns = \"Stagiaire\"\nprint(acces(True, 17, s))\nprint(acces(True, 18, s))\na = \"Admin\"\nprint(acces(True, 19, a))\n```\n\n```console\nlimité\nrefusé\nrefusé\n```\n\n::: etape b) Cas limites\n- stagiaire à 17 h : `17 > 17` est faux, accès limité ;\n- stagiaire à 18 h : l’heure est dans la plage, mais `18 > 17` est vrai, accès refusé ;\n- administrateur à 19 h : `19 > 18` est vrai, accès refusé avant même de regarder le niveau.\n:::\n\n::: resultat\na) La fonction renvoie « limité ». b) « limité », « refusé » et « refusé ».\n:::",
+  "access_scope": "paid"
+ }
+},
+{
+ "model": "curriculum.exercice",
+ "pk": 1055,
+ "fields": {
+  "est_actif": true,
+  "date_creation": "2025-11-17T13:14:28.447Z",
+  "date_modification": "2025-11-17T13:14:28.447Z",
+  "titre": "Structures Conditionnelles - Structures Multiples (if, elif, else)",
+  "contenu": "Utiliser la structure `if... elif... else` pour résoudre les problèmes suivants.\n**Question 1 :** Écrire un programme qui détermine la catégorie d'un film selon l'âge de l'utilisateur (`age = 14`) : \"Tout public\" (tout âge), \"Accord parental\" (moins de 13 ans), \"Interdit -16\" (moins de 16 ans), \"Interdit -18\" (moins de 18 ans), \"Adulte\" (18 ans et plus). Pour cet exercice, utiliser la classification : moins de 13 ans → \"Accord parental\".\n$\\\\$\n**Question 2 :** Calculer le prix d'un billet de train selon l'âge (`age = 67`) : gratuit (moins de 4 ans), 8€ (4-17 ans), 15€ (18-64 ans), 10€ (65 ans et plus).",
+  "difficulty": "medium",
+  "notion": 162,
+  "question": "Utiliser la structure `if... elif... else` pour résoudre les problèmes suivants.\n**Question 1 :** Écrire un programme qui détermine la catégorie d'un film selon l'âge de l'utilisateur (`age = 14`) : \"Tout public\" (tout âge), \"Accord parental\" (moins de 13 ans), \"Interdit -16\" (moins de 16 ans), \"Interdit -18\" (moins de 18 ans), \"Adulte\" (18 ans et plus). Pour cet exercice, utiliser la classification : moins de 13 ans → \"Accord parental\".\n$\\\\$\n**Question 2 :** Calculer le prix d'un billet de train selon l'âge (`age = 67`) : gratuit (moins de 4 ans), 8€ (4-17 ans), 15€ (18-64 ans), 10€ (65 ans et plus).",
+  "reponse_correcte": "1. Le programme affiche \"Catégorie : Interdit -16\"\n$\\\\$\n2. Le programme affiche \"Prix du billet : 10€\"",
+  "etapes": "**Méthode générale :** Structure `if... elif... else`\n● **Principe** : Tester plusieurs conditions dans l'ordre d'apparition\n$\\\\$\n● **Important** : Dès qu'une condition est vraie, son bloc est exécuté et les autres ne sont pas testés\n$\\\\$\n● **Ordre** : Commencer par les conditions les plus restrictives ou dans l'ordre logique\n$\\\\$\n● **else final** : Facultatif mais recommandé pour gérer tous les cas restants\n$\\\\$\n**Question 1 :** Catégorie film avec `age = 14`\n$\\\\$\n<p><strong>Code Python :</strong></p>\n<table style=\"border-collapse: collapse; margin:10px 0;\">\n<tr>\n<td style=\"background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;\">\nage = <span style=\"color:#bd93f9;\">14</span><br>\n<br>\n<span style=\"color:#ff79c6;\">if</span> age < <span style=\"color:#bd93f9;\">13</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;categorie = <span style=\"color:#f1fa8c;\">\"Accord parental\"</span><br>\n<span style=\"color:#ff79c6;\">elif</span> age < <span style=\"color:#bd93f9;\">16</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;categorie = <span style=\"color:#f1fa8c;\">\"Interdit -16\"</span><br>\n<span style=\"color:#ff79c6;\">elif</span> age < <span style=\"color:#bd93f9;\">18</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;categorie = <span style=\"color:#f1fa8c;\">\"Interdit -18\"</span><br>\n<span style=\"color:#ff79c6;\">else</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;categorie = <span style=\"color:#f1fa8c;\">\"Adulte\"</span><br>\n<br>\n<span style=\"color:#50fa7b;\">print</span>(<span style=\"color:#f1fa8c;\">f\"Catégorie : </span><span style=\"color:#8be9fd;\">{categorie}</span><span style=\"color:#f1fa8c;\">\"</span>)\n</td>\n</tr>\n</table>\n$\\\\$\n● **Analyse :**\n$\\qquad$• `14 < 13` → `False`\n$\\qquad$• `14 < 16` → `True` ✓ (on s'arrête ici)\n$\\\\$\n● **Résultat :** Le programme affiche \"Catégorie : Interdit -16\"\n$\\\\$\n**Question 2 :** Prix billet train avec `age = 67`\n<p><strong>Code Python :</strong></p>\n<table style=\"border-collapse: collapse; margin:10px 0;\">\n<tr>\n<td style=\"background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;\">\nage = <span style=\"color:#bd93f9;\">67</span><br>\n<br>\n<span style=\"color:#ff79c6;\">if</span> age < <span style=\"color:#bd93f9;\">4</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;prix = <span style=\"color:#bd93f9;\">0</span><br>\n<span style=\"color:#ff79c6;\">elif</span> age < <span style=\"color:#bd93f9;\">18</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;prix = <span style=\"color:#bd93f9;\">8</span><br>\n<span style=\"color:#ff79c6;\">elif</span> age < <span style=\"color:#bd93f9;\">65</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;prix = <span style=\"color:#bd93f9;\">15</span><br>\n<span style=\"color:#ff79c6;\">else</span>:<br>\n&nbsp;&nbsp;&nbsp;&nbsp;prix = <span style=\"color:#bd93f9;\">10</span><br>\n<br>\n<span style=\"color:#50fa7b;\">print</span>(<span style=\"color:#f1fa8c;\">f\"Prix du billet : </span><span style=\"color:#8be9fd;\">{prix}</span><span style=\"color:#f1fa8c;\">€\"</span>)\n</td>\n</tr>\n</table>\n$\\\\$\n● **Analyse :**\n$\\qquad$• `67 < 4` → `False`\n$\\qquad$• `67 < 18` → `False`\n$\\qquad$• `67 < 65` → `False`\n$\\qquad$• On arrive au `else` → `prix = 10`\n$\\\\$\n● **Résultat :** Le programme affiche \"Prix du billet : 10€\"\n$\\\\$",
+  "access_scope": "paid"
+ }
+},
+{
+ "model": "curriculum.exerciceimage",
+ "pk": 2905,
+ "fields": {
+  "exercice": 829,
+  "image": "exercice_images/v1_n101_ex829_1_arbre_cinema.png",
+  "position": 1,
+  "legende": null,
+  "alt_text": "Arbre de décision du tarif du cinéma ; en vert, le chemin pour age = 25 et jour = \"Lundi\" : non à age < 18, oui à age < 65, oui au lundi, tarif 9 €",
+  "title_text": "",
+  "width": 314,
+  "height": 275,
+  "date_creation": "2026-10-28T15:34:44.311Z",
+  "date_modification": "2026-10-28T15:34:44.311Z"
+ }
+},
+{
+ "model": "curriculum.exerciceimage",
+ "pk": 2906,
+ "fields": {
+  "exercice": 827,
+  "image": "exercice_images/v1_n101_ex827_1_negation_intervalle.png",
+  "position": 1,
+  "legende": null,
+  "alt_text": "Droite des âges : l'intervalle de 18 à 65 en vert (18 <= age <= 65) et, en orange, sa négation age < 18 or age > 65",
+  "title_text": "",
+  "width": 434,
+  "height": 90,
+  "date_creation": "2026-10-28T15:34:44.475Z",
+  "date_modification": "2026-10-28T15:34:44.475Z"
+ }
+},
+{
+ "model": "suivis.suiviexercice",
+ "pk": 728,
+ "fields": {
+  "est_actif": true,
+  "date_creation": "2025-12-02T07:33:56.509Z",
+  "date_modification": "2025-12-02T07:33:56.509Z",
+  "user": 2,
+  "exercice": 830,
+  "reponse_donnee": "acquired",
+  "est_correct": true,
+  "points_obtenus": 1,
+  "temps_seconde": 0
+ }
+},
+{
+ "model": "suivis.suiviexercice",
+ "pk": 553,
+ "fields": {
+  "est_actif": true,
+  "date_creation": "2025-10-10T15:55:31.900Z",
+  "date_modification": "2025-10-10T15:55:31.900Z",
+  "user": 61,
+  "exercice": 828,
+  "reponse_donnee": "acquired",
+  "est_correct": true,
+  "points_obtenus": 1,
+  "temps_seconde": 0
+ }
+},
+{
+ "model": "suivis.suiviexercice",
+ "pk": 614,
+ "fields": {
+  "est_actif": true,
+  "date_creation": "2025-10-24T14:41:16.945Z",
+  "date_modification": "2025-10-24T14:41:16.945Z",
+  "user": 65,
+  "exercice": 826,
+  "reponse_donnee": "acquired",
+  "est_correct": true,
+  "points_obtenus": 1,
+  "temps_seconde": 0
+ }
+},
+{
+ "model": "suivis.suiviexercice",
+ "pk": 615,
+ "fields": {
+  "est_actif": true,
+  "date_creation": "2025-10-24T14:46:52.571Z",
+  "date_modification": "2025-10-24T14:46:52.571Z",
+  "user": 65,
+  "exercice": 828,
+  "reponse_donnee": "acquired",
+  "est_correct": true,
+  "points_obtenus": 1,
+  "temps_seconde": 0
+ }
+},
+{
+ "model": "cours.cours",
+ "pk": 150,
+ "fields": {
+  "est_actif": true,
+  "date_creation": "2025-11-17T13:14:28.419Z",
+  "date_modification": "2025-11-17T13:14:28.419Z",
+  "titre": "Conditions et logique en Python",
+  "ordre": 1,
+  "contenu": "<div style=\"background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;\">\n\n    <div style=\"background:#e8f4fd; border:2px solid #3498db; border-radius:8px; padding:15px; margin-bottom:20px;\">\n        <p style=\"margin:0; font-size:1.05em; color:#2c3e50;\"><strong>🎯 Objectifs du chapitre :</strong> écrire des conditions avec les opérateurs de comparaison et les connecteurs logiques <code>and</code>, <code>or</code>, <code>not</code>, programmer des choix avec <code>if</code>, <code>elif</code>, <code>else</code>, et traduire en Python des situations mathématiques (discriminant, appartenance à un intervalle, divisibilité).</p>\n    </div>\n\n    <h2 style=\"color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;\">I. Booléens et comparaisons</h2>\n\n    <div style=\"background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;\">\n        <div style=\"background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;\">\n            <p style=\"margin:0;\"><strong>Définition :</strong> une <strong>condition</strong> est une expression qui vaut <code>True</code> (vrai) ou <code>False</code> (faux) : c’est un <strong>booléen</strong>. On l’obtient avec les comparaisons <code>==</code> (égal), <code>!=</code> (différent), <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code>.</p>\n        </div>\n        <p style=\"font-size:1em;\"><strong>Exemples :</strong> <code>3 &#42; 4 == 12</code> vaut <code>True</code> ; <code>7 % 2 == 0</code> vaut <code>False</code> ($\\displaystyle 7$ n’est pas pair).</p>\n        <div style=\"background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;\">\n            <strong>⚠️ Attention :</strong> les nombres décimaux sont stockés de façon approchée : <code>0.1 + 0.2 == 0.3</code> vaut <code>False</code> ! Pour comparer deux flottants, on teste plutôt <code>abs(x - y) &lt; 1e-9</code>.\n        </div>\n    </div>\n\n    <h2 style=\"color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;\">II. Connecteurs logiques</h2>\n\n    <div style=\"background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;\">\n        <div style=\"background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;\">\n            <p style=\"margin:0;\">• <code>A and B</code> est vrai si <strong>les deux</strong> conditions sont vraies.</p>\n            <p style=\"margin:6px 0 0 0;\">• <code>A or B</code> est vrai si <strong>au moins une</strong> des deux est vraie.</p>\n            <p style=\"margin:6px 0 0 0;\">• <code>not A</code> est vrai si <code>A</code> est faux.</p>\n        </div>\n        [IMAGE_1]\n        <p style=\"font-size:1em;\"><strong>Exemple :</strong> $\\displaystyle x \\in [2\\,;5]$ se traduit par <code>2 &lt;= x and x &lt;= 5</code> (ou <code>2 &lt;= x &lt;= 5</code>) ; $\\displaystyle x \\notin [2\\,;5]$ par <code>x &lt; 2 or x &gt; 5</code>.</p>\n        <div style=\"background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;\">\n            <strong>💡 Négation :</strong> le contraire de « A et B » est « non A ou non B » ; le contraire de « A ou B » est « non A et non B ».\n        </div>\n    </div>\n\n    <h2 style=\"color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;\">III. Instructions if, elif, else</h2>\n\n    <div style=\"background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;\">\n        <div style=\"background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;\">\n            <p style=\"margin:0;\"><strong>Syntaxe :</strong> Python teste les conditions dans l’ordre et exécute le <strong>premier</strong> bloc dont la condition est vraie ; <code>else</code> traite tous les autres cas. Chaque ligne <code>if</code>, <code>elif</code>, <code>else</code> se termine par deux-points, et les blocs sont indentés.</p>\n        </div>\n        [IMAGE_2]\n        <div style=\"background:#2c3e50; color:#ecf0f1; padding:12px; border-radius:6px; margin:10px 0 0 0; font-family:monospace; white-space:pre; overflow-x:auto;\">def nb_solutions(a, b, c):\n    delta = b &#42; b - 4 &#42; a &#42; c\n    if delta &gt; 0:\n        return 2\n    elif delta == 0:\n        return 1\n    else:\n        return 0</div>\n        <p style=\"font-size:1em;\"><strong>Tests :</strong> <code>nb_solutions(2, 4, -6)</code> renvoie $\\displaystyle 2$ ($\\displaystyle \\Delta = 64$) ; <code>nb_solutions(1, -2, 1)</code> renvoie $\\displaystyle 1$ ($\\displaystyle \\Delta = 0$) ; <code>nb_solutions(1, 1, 1)</code> renvoie $\\displaystyle 0$ ($\\displaystyle \\Delta = -3$).</p>\n    </div>\n\n    <h2 style=\"color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;\">IV. Conditions composées</h2>\n\n    <div style=\"background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;\">\n        <p style=\"font-size:1em;\"><strong>Exemple :</strong> une année est bissextile si elle est divisible par $\\displaystyle 4$ mais pas par $\\displaystyle 100$, ou si elle est divisible par $\\displaystyle 400$.</p>\n        <div style=\"background:#2c3e50; color:#ecf0f1; padding:12px; border-radius:6px; margin:10px 0 0 0; font-family:monospace; white-space:pre; overflow-x:auto;\">def bissextile(a):\n    return (a % 4 == 0 and a % 100 != 0) or a % 400 == 0</div>\n        <p style=\"font-size:1em;\"><code>bissextile(2024)</code> renvoie <code>True</code>, <code>bissextile(1900)</code> renvoie <code>False</code>, <code>bissextile(2000)</code> renvoie <code>True</code>.</p>\n        <div style=\"background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;\">\n            <strong>⚠️ Attention :</strong> l’ordre des tests compte dans une suite <code>if</code> / <code>elif</code> : on place d’abord les cas les plus particuliers. On utilise des parenthèses pour rendre claires les conditions qui mélangent <code>and</code> et <code>or</code>.\n        </div>\n    </div>\n\n    <div style=\"background:#ecfdf5; border:2px solid #10b981; border-radius:8px; padding:15px; margin:20px 0 0 0;\">\n        <p style=\"margin:0; font-size:1.05em; color:#2c3e50;\"><strong>🏆 L’essentiel :</strong> une condition vaut <code>True</code> ou <code>False</code> ; <code>==</code> compare, <code>=</code> affecte ; <code>and</code> exige les deux, <code>or</code> au moins une ; <code>if</code> / <code>elif</code> / <code>else</code> exécute un seul bloc, le premier dont la condition est vraie ; on ne compare pas deux flottants avec <code>==</code>. Fiche de synthèse dans l’onglet Fiches !</p>\n    </div>\n\n</div>",
+  "difficulty": "easy",
+  "notion": 162,
+  "video_url": null,
+  "pdf_file": "",
+  "access_scope": "paid"
+ }
+},
+{
+ "model": "cours.cours",
+ "pk": 103,
+ "fields": {
+  "est_actif": true,
+  "date_creation": "2025-10-09T09:56:08.003Z",
+  "date_modification": "2026-01-29T11:44:01.534Z",
+  "titre": "Les Structures Conditionnelles et la Logique en Python",
+  "ordre": 1,
+  "contenu": "<!-- optitab:1 -->\n::: objectifs\nÉcrire une condition avec les opérateurs de comparaison et les opérateurs logiques `and`, `or`, `not` ; utiliser les structures `if`, `if … else` et `if … elif … else`, y compris imbriquées ; écrire une fonction qui renvoie un booléen ; tester un programme sur les cas limites.\n:::\n\n::: prerequis\nVariables et affectation ; types `int`, `float`, `str` ; opérations `//` (quotient entier) et `%` (reste).\n:::\n\n## I. Booléens et comparaisons\n\n::: definition Booléen, condition\nUn **booléen** est une valeur de vérité : `True` (vrai) ou `False` (faux). Une **condition** est une expression dont la valeur est un booléen.\n:::\n\n| Python | En maths | Signification |\n|---|---|---|\n| `==` | $=$ | égal à |\n| `!=` | $\\neq$ | différent de |\n| `<` | $\\lt$ | strictement inférieur à |\n| `<=` | $\\leqslant$ | inférieur ou égal à |\n| `>` | $\\gt$ | strictement supérieur à |\n| `>=` | $\\geqslant$ | supérieur ou égal à |\n\n```python\nx = 7\nprint(x > 5, x == 7)\nprint(x != 7, x <= 6)\nprint(x % 2 == 1)\n```\n\n```console\nTrue True\nFalse False\nTrue\n```\n\nLa dernière condition teste si le reste de la division de $x$ par $2$ vaut $1$, c’est-à-dire si $x$ est impair.\n\n::: attention Ne pas confondre = et ==\n`x = 5` est une **affectation** : la variable `x` reçoit la valeur $5$. `x == 5` est une **comparaison** : elle vaut `True` ou `False`. Écrire `if x = 5:` provoque une erreur de syntaxe.\n:::\n\n::: propriete Encadrement\nPython accepte les encadrements : `18 <= age <= 65` équivaut à `age >= 18 and age <= 65` et traduit $18 \\leqslant \\text{âge} \\leqslant 65$.\n:::\n\n::: attention Comparer des nombres décimaux\nLes nombres décimaux (type `float`) sont stockés en binaire de façon approchée : une égalité entre deux résultats de calculs peut être fausse.\n\n```python\nprint(0.1 + 0.2 == 0.3)\nd = 0.1 + 0.2 - 0.3\nprint(abs(d) < 1e-9)\n```\n\n```console\nFalse\nTrue\n```\n\nOn compare donc deux flottants à une **tolérance** près : `abs(a - b) < 1e-9`.\n:::\n\n## II. Opérateurs logiques\n\n::: definition and, or, not\nPour deux conditions `A` et `B` :\n- `A and B` est vraie lorsque `A` et `B` sont **toutes les deux** vraies ;\n- `A or B` est vraie lorsque **au moins une** des deux est vraie (« ou » inclusif) ;\n- `not A` est vraie lorsque `A` est fausse.\n:::\n\n| `A` | `B` | `A and B` | `A or B` | `not A` |\n|---|---|---|---|---|\n| `True` | `True` | `True` | `True` | `False` |\n| `True` | `False` | `False` | `True` | `False` |\n| `False` | `True` | `False` | `True` | `True` |\n| `False` | `False` | `False` | `False` | `True` |\n\n::: exemple\n```python\nage = 23\ninscrit = True\nprint(age < 26 and inscrit)\njour = \"Mardi\"\nwe = [\"Samedi\", \"Dimanche\"]\nprint(jour in we or age > 60)\n```\n\n```console\nTrue\nFalse\n```\n:::\n\n::: propriete Négation d’une condition (lois de De Morgan)\n- `not (A and B)` équivaut à `(not A) or (not B)` ;\n- `not (A or B)` équivaut à `(not A) and (not B)`.\n\nAinsi, la négation de `18 <= age <= 65` est `age < 18 or age > 65`.\n:::\n\n[IMAGE_1]\n\n::: remarque Pour aller plus loin : évaluation paresseuse\nDans `A and B`, Python n’évalue `B` que si `A` est vraie ; dans `A or B`, seulement si `A` est fausse. La condition `x != 0 and 10 / x > 1` ne provoque donc jamais de division par zéro.\n:::\n\n## III. La structure if … else\n\n::: definition Syntaxe\n```python\nif condition:\n    bloc1\nelse:\n    bloc2\nsuite\n```\n\nSi la condition est vraie, `bloc1` est exécuté, sinon c’est `bloc2` ; un seul des deux blocs est exécuté, puis le programme continue avec `suite`.\n:::\n\n::: propriete Règles d’écriture\n- La ligne `if` (comme `elif` et `else`) se termine par deux-points `:`.\n- Les instructions d’un bloc sont **indentées** de quatre espaces ; la fin de l’indentation marque la fin du bloc.\n- Le bloc `else` est facultatif : sans lui, si la condition est fausse, le programme passe directement à la suite.\n:::\n\n```python\nage = 17\nif age >= 18:\n    print(\"Majeur\")\nelse:\n    print(\"Mineur\")\nprint(\"Fin\")\n```\n\n```console\nMineur\nFin\n```\n\nLa condition `17 >= 18` est fausse : seul le bloc `else` est exécuté. La ligne `print(\"Fin\")` n’est pas indentée : elle est exécutée dans tous les cas.\n\n::: exemple Un if sans else\nUn magasin accorde une réduction de $10\\,\\%$ sur les achats de plus de $100$ €.\n\n```python\nmontant = 120\nif montant > 100:\n    montant = montant * 0.9\nprint(montant)\n```\n\n```console\n108.0\n```\n\nComme $120 \\gt 100$, le montant est multiplié par $0{,}9$ : $120 \\times 0{,}9 = 108$.\n:::\n\n## IV. Plusieurs cas : if … elif … else\n\n::: definition Syntaxe\n```python\nif condition1:\n    bloc1\nelif condition2:\n    bloc2\nelse:\n    bloc3\n```\n\n`elif` est l’abréviation de « else if » (sinon si). On peut écrire autant de `elif` que nécessaire.\n:::\n\n[IMAGE_2]\n\n::: propriete Fonctionnement\nLes conditions sont testées **dans l’ordre**. Dès qu’une condition est vraie, son bloc est exécuté et les suivantes ne sont pas examinées ; le bloc `else`, facultatif, traite tous les cas restants. Un seul bloc est donc exécuté.\n:::\n\n::: exemple Mention au baccalauréat\n```python\nmoyenne = 14.5\nif moyenne >= 16:\n    mention = \"Très bien\"\nelif moyenne >= 14:\n    mention = \"Bien\"\nelif moyenne >= 12:\n    mention = \"Assez bien\"\nelse:\n    mention = \"Aucune\"\nprint(mention)\n```\n\n```console\nBien\n```\n\nLe test `14.5 >= 16` est faux, le test `14.5 >= 14` est vrai : `mention` reçoit `\"Bien\"` et le test `moyenne >= 12` n’est même pas examiné.\n:::\n\n::: attention L’ordre des conditions compte\nSi l’on testait d’abord `moyenne >= 12`, une moyenne de $17$ obtiendrait « Assez bien », car ce premier test serait déjà vrai. Avec des seuils « supérieur ou égal », on teste du plus grand seuil au plus petit.\n:::\n\n## V. Conditions imbriquées\n\nUne structure conditionnelle peut être placée à l’intérieur d’un bloc d’une autre : on parle de conditions **imbriquées**. Chaque niveau ajoute quatre espaces d’indentation.\n\n::: exemple Accès à un parc d’attractions\nÀ partir de $12$ ans, on a accès à toutes les attractions ; les plus jeunes ont accès aux attractions moyennes s’ils mesurent au moins $140$ cm, sinon aux attractions pour enfants.\n\n```python\nage = 10\ntaille = 145\nif age >= 12:\n    acces = \"total\"\nelse:\n    if taille >= 140:\n        acces = \"moyen\"\n    else:\n        acces = \"enfants\"\nprint(acces)\n```\n\n```console\nmoyen\n```\n\nLe test `10 >= 12` est faux : on entre dans le bloc `else`, où le test imbriqué `145 >= 140` est vrai.\n:::\n\n::: remarque\nUn `else` qui ne contient qu’un `if` s’écrit plus simplement avec `elif` : `if age >= 12:` puis `elif taille >= 140:` puis `else:`.\n:::\n\n## VI. Fonctions et conditions\n\nUne **fonction** peut contenir des conditions ; l’instruction `return` renvoie le résultat et **termine** la fonction.\n\n::: exemple Une fonction qui renvoie un booléen\n```python\ndef est_pair(n):\n    return n % 2 == 0\n\nprint(est_pair(10))\nprint(est_pair(7))\n```\n\n```console\nTrue\nFalse\n```\n:::\n\n::: exemple Année bissextile\nUne année est bissextile si elle est divisible par $4$ sans l’être par $100$, ou si elle est divisible par $400$.\n\n```python\ndef bissextile(a):\n    if a % 400 == 0:\n        return True\n    elif a % 100 == 0:\n        return False\n    else:\n        return a % 4 == 0\n\nprint(bissextile(2024))\nprint(bissextile(1900))\nprint(bissextile(2000))\nprint(bissextile(2025))\n```\n\n```console\nTrue\nFalse\nTrue\nFalse\n```\n\nL’ordre des tests est essentiel : $2000$ est divisible par $100$, mais le test `a % 400 == 0`, placé avant, le déclare bissextile.\n:::\n\n## VII. Tester un programme : les cas limites\n\n::: methode Tester un programme à conditions\n1. Choisir au moins une valeur dans **chaque cas** prévu.\n2. Tester les **valeurs frontières** (par exemple $18$ pour la condition `age >= 18`) : c’est là que se cachent les erreurs entre `<` et `<=`.\n3. Comparer les affichages obtenus avec les résultats attendus.\n:::\n\nUne compagnie de transport applique les tarifs suivants.\n\n| Âge | Tarif |\n|---|---|\n| moins de 4 ans | gratuit |\n| de 4 à 11 ans | 5 € |\n| de 12 à 17 ans | 8 € |\n| de 18 à 64 ans | 12 € |\n| 65 ans et plus | 6 € |\n\n```python\ndef tarif(age):\n    if age < 4:\n        return 0\n    elif age < 12:\n        return 5\n    elif age < 18:\n        return 8\n    elif age < 65:\n        return 12\n    else:\n        return 6\n\nfor a in [3, 4, 17, 18, 65]:\n    print(a, tarif(a))\n```\n\n```console\n3 0\n4 5\n17 8\n18 12\n65 6\n```\n\nChaque frontière donne le tarif attendu : $4$ ans paie $5$ €, $18$ ans paie $12$ €, $65$ ans paie $6$ €.\n\n## VIII. Erreurs fréquentes\n\n::: attention Les erreurs classiques\n1. Oublier les deux-points `:` ou l’indentation : erreur `SyntaxError` ou `IndentationError`.\n2. Confondre `=` (affectation) et `==` (comparaison).\n3. Mal ordonner les `elif` : un premier test trop large « capture » les cas suivants.\n4. Écrire `if x == 1 or 2:` : cette condition est **toujours vraie**, car `2` seul est considéré comme vrai. Il faut écrire `if x == 1 or x == 2:`.\n5. Écrire `true` ou `false` : en Python, les booléens prennent une majuscule, `True` et `False`.\n6. Tester l’égalité de deux flottants avec `==` : comparer à une tolérance près.\n7. Oublier que les chaînes distinguent majuscules et minuscules : `\"Lundi\" == \"lundi\"` vaut `False`.\n:::\n\n::: exemple Le piège du « or »\n```python\nx = 5\nif x == 1 or 2:\n    print(\"piège\")\nprint(x == 1 or x == 2)\n```\n\n```console\npiège\nFalse\n```\n:::\n\n::: retenir\n- Comparaisons : `==`, `!=`, `<`, `<=`, `>`, `>=` ; elles renvoient `True` ou `False`.\n- `and` : toutes vraies ; `or` : au moins une vraie ; `not` : contraire. Négation : `not (A and B)` équivaut à `not A or not B`.\n- `if` / `elif` / `else` : conditions testées dans l’ordre, un seul bloc exécuté ; deux-points et indentation obligatoires.\n- Tester chaque cas et chaque valeur frontière.\n- Fiche de synthèse dans l’onglet Fiches !\n:::",
+  "difficulty": "easy",
+  "notion": 101,
+  "video_url": null,
+  "pdf_file": "",
+  "access_scope": "free"
+ }
+},
+{
+ "model": "cours.coursimage",
+ "pk": 808,
+ "fields": {
+  "cours": 103,
+  "image": "cours_images/v1_n101_co103_1_negation_intervalle.png",
+  "image_type": "illustration",
+  "position": 1,
+  "legende": null,
+  "alt_text": "Droite des âges : l'intervalle de 18 à 65 en vert (18 <= age <= 65) et, en orange, sa négation age < 18 or age > 65",
+  "title_text": "",
+  "width": 434,
+  "height": 90,
+  "date_creation": "2026-10-28T15:34:43.786Z",
+  "date_modification": "2026-10-28T15:34:43.786Z"
+ }
+},
+{
+ "model": "cours.coursimage",
+ "pk": 809,
+ "fields": {
+  "cours": 103,
+  "image": "cours_images/v1_n101_co103_2_organigramme_elif.png",
+  "image_type": "illustration",
+  "position": 2,
+  "legende": null,
+  "alt_text": "Organigramme de if, elif, else : condition1 puis condition2 sont testées dans l'ordre ; un seul des blocs 1, 2 ou 3 est exécuté avant la suite du programme",
+  "title_text": "",
+  "width": 354,
+  "height": 270,
+  "date_creation": "2026-10-28T15:34:43.954Z",
+  "date_modification": "2026-10-28T15:34:43.954Z"
+ }
+},
+{
+ "model": "cours.coursimage",
+ "pk": 738,
+ "fields": {
+  "cours": 150,
+  "image": "cours_images/1er_algo_logique.png",
+  "image_type": "illustration",
+  "position": 1,
+  "legende": null,
+  "alt_text": "Figure du cours : algo logique",
+  "title_text": "",
+  "width": 1201,
+  "height": 464,
+  "date_creation": "2026-10-27T18:37:08.796Z",
+  "date_modification": "2026-10-27T18:37:08.796Z"
+ }
+},
+{
+ "model": "cours.coursimage",
+ "pk": 739,
+ "fields": {
+  "cours": 150,
+  "image": "cours_images/1er_algo_organigramme.png",
+  "image_type": "illustration",
+  "position": 2,
+  "legende": null,
+  "alt_text": "Figure du cours : algo organigramme",
+  "title_text": "",
+  "width": 1289,
+  "height": 789,
+  "date_creation": "2026-10-27T18:37:09.207Z",
+  "date_modification": "2026-10-27T18:37:09.207Z"
+ }
+},
+{
+ "model": "synthesis.synthesissheet",
+ "pk": 35,
+ "fields": {
+  "est_actif": true,
+  "date_creation": "2025-10-19T19:14:28.982Z",
+  "date_modification": "2025-10-27T22:13:20.856Z",
+  "titre": "Résumé : Structures Conditionnelles en Python",
+  "ordre": 0,
+  "notion": 101,
+  "summary": "<!-- optitab:1 -->\n::: objectifs\nRetenir l’essentiel : comparaisons, opérateurs logiques, structures `if`, `elif`, `else` et pièges classiques. Programme de Terminale.\n:::\n\n## I. Comparaisons et booléens\n\n| Python | Sens |\n|---|---|\n| `==`, `!=` | égal à, différent de |\n| `<`, `<=` | inférieur strict, inférieur ou égal |\n| `>`, `>=` | supérieur strict, supérieur ou égal |\n| `18 <= x <= 65` | encadrement : $18 \\leqslant x \\leqslant 65$ |\n\nUne comparaison vaut `True` ou `False`. Parité : `n % 2 == 0` est vraie si $n$ est pair.\n\n## II. Opérateurs logiques\n\n| `A` | `B` | `A and B` | `A or B` | `not A` |\n|---|---|---|---|---|\n| `True` | `True` | `True` | `True` | `False` |\n| `True` | `False` | `False` | `True` | `False` |\n| `False` | `True` | `False` | `True` | `True` |\n| `False` | `False` | `False` | `False` | `True` |\n\n::: formule\n`not (A and B)` ⟺ `not A or not B` ; `not (A or B)` ⟺ `not A and not B`\n:::\n\n## III. Structures conditionnelles\n\n```python\nnote = 15\nif note >= 16:\n    m = \"Très bien\"\nelif note >= 14:\n    m = \"Bien\"\nelse:\n    m = \"Autre\"\nprint(m)\n```\n\n```console\nBien\n```\n\n[IMAGE_1]\n\n::: methode Règles\n- Deux-points `:` après `if`, `elif`, `else` ; blocs indentés de quatre espaces.\n- Conditions testées dans l’ordre : le premier bloc dont la condition est vraie est exécuté, les autres sont ignorés.\n- Seuils « supérieur ou égal » : du plus grand au plus petit.\n- Tester chaque cas et chaque valeur frontière.\n:::\n\n## IV. Les pièges à éviter\n\n::: attention Les 5 erreurs classiques\n1. `=` (affectation) au lieu de `==` (comparaison).\n2. Oublier les deux-points ou l’indentation.\n3. `if x == 1 or 2:` est toujours vraie : écrire `x == 1 or x == 2`.\n4. Comparer deux flottants avec `==` : `0.1 + 0.2 == 0.3` vaut `False`.\n5. Écrire `true` au lieu de `True`.\n:::\n\n::: remarque Réflexe\nPlusieurs cas qui s’excluent → `if … elif … else` ; conditions indépendantes → plusieurs `if` successifs.\n:::",
+  "difficulty": "medium",
+  "key_points": [],
+  "formulas": [],
+  "examples": [],
+  "reading_time_minutes": 8,
+  "show_on_home": false,
+  "show_on_public_site": true,
+  "access_scope": "paid",
+  "sheet_type": "summary"
+ }
+},
+{
+ "model": "synthesis.synthesissheet",
+ "pk": 60,
+ "fields": {
+  "est_actif": true,
+  "date_creation": "2025-11-17T13:14:28.410Z",
+  "date_modification": "2025-11-17T13:14:28.410Z",
+  "titre": "Résumé : Conditions et logique en Python",
+  "ordre": 0,
+  "notion": 162,
+  "summary": "<div style=\"background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;\">\n\n<div style=\"background:#e8f4fd; border:2px solid #3498db; border-radius:8px; padding:15px; margin-bottom:20px;\">\n<p style=\"margin:0; font-size:1.05em; color:#2c3e50;\"><strong>📚 Objectif pédagogique :</strong> retenir l’essentiel : booléens, comparaisons, <code>and</code> / <code>or</code> / <code>not</code>, structures conditionnelles. Programme de Première.</p>\n</div>\n\n<h2 style=\"color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;\">I. Conditions</h2>\n\n<div style=\"background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;\">\n[IMAGE_1]\n<p style=\"margin:0;\">1️⃣ Comparaisons : <code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code> → <code>True</code> ou <code>False</code>.</p>\n<p style=\"margin:6px 0 0 0;\">2️⃣ $\\displaystyle x \\in [a\\,;b]$ : <code>a &lt;= x and x &lt;= b</code>.</p>\n<p style=\"margin:6px 0 0 0;\">3️⃣ Divisibilité : <code>n % d == 0</code>.</p>\n</div>\n\n<h2 style=\"color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;\">II. Choisir</h2>\n\n<div style=\"background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;\">\n[IMAGE_2]\n<p style=\"margin:0;\">1️⃣ <code>if</code> … <code>elif</code> … <code>else</code> : un seul bloc exécuté.</p>\n<p style=\"margin:6px 0 0 0;\">2️⃣ Deux-points en fin de ligne, blocs indentés de 4 espaces.</p>\n<p style=\"margin:6px 0 0 0;\">3️⃣ Flottants : <code>abs(x - y) &lt; 1e-9</code> au lieu de <code>x == y</code>.</p>\n</div>\n\n<h2 style=\"color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;\">III. Les pièges à éviter</h2>\n\n<div style=\"background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;\">\n<p style=\"margin:0;\"><strong>⚠️ Les 4 erreurs classiques :</strong></p>\n<p style=\"margin:6px 0 0 0;\">1️⃣ Écrire <code>=</code> au lieu de <code>==</code> dans un test.</p>\n<p style=\"margin:6px 0 0 0;\">2️⃣ Confondre <code>and</code> et <code>or</code> pour un intervalle.</p>\n<p style=\"margin:6px 0 0 0;\">3️⃣ Mettre un cas général avant un cas particulier dans une suite d’<code>elif</code>.</p>\n<p style=\"margin:6px 0 0 0;\">4️⃣ Tester l’égalité de deux flottants avec <code>==</code>.</p>\n</div>\n\n<div style=\"background:#ecfdf5; border:2px solid #10b981; border-radius:8px; padding:15px; margin:20px 0 0 0;\">\n<p style=\"margin:0; font-size:1.05em; color:#2c3e50;\"><strong>🏆 Réflexe :</strong> je teste ma fonction sur un exemple par branche (chaque <code>if</code>, <code>elif</code> et <code>else</code>).</p>\n</div>\n\n</div>",
+  "difficulty": "medium",
+  "key_points": [],
+  "formulas": [],
+  "examples": [],
+  "reading_time_minutes": 8,
+  "show_on_home": false,
+  "show_on_public_site": true,
+  "access_scope": "paid",
+  "sheet_type": "summary"
+ }
+},
+{
+ "model": "synthesis.synthesisimage",
+ "pk": 327,
+ "fields": {
+  "sheet": 60,
+  "image": "synthesis_images/1er_algo_organigramme.png",
+  "image_type": "illustration",
+  "position": 2,
+  "caption": null,
+  "alt_text": "Figure de la fiche : algo organigramme",
+  "title_text": "",
+  "width": 1289,
+  "height": 789,
+  "date_creation": "2026-10-27T18:37:09.983Z",
+  "date_modification": "2026-10-27T18:37:09.983Z"
+ }
+},
+{
+ "model": "synthesis.synthesisimage",
+ "pk": 326,
+ "fields": {
+  "sheet": 60,
+  "image": "synthesis_images/1er_algo_logique.png",
+  "image_type": "illustration",
+  "position": 1,
+  "caption": null,
+  "alt_text": "Figure de la fiche : algo logique",
+  "title_text": "",
+  "width": 1201,
+  "height": 464,
+  "date_creation": "2026-10-27T18:37:09.581Z",
+  "date_modification": "2026-10-27T18:37:09.581Z"
+ }
+},
+{
+ "model": "synthesis.synthesisimage",
+ "pk": 367,
+ "fields": {
+  "sheet": 35,
+  "image": "synthesis_images/v1_n101_fi35_1_organigramme_elif.png",
+  "image_type": "illustration",
+  "position": 1,
+  "caption": null,
+  "alt_text": "Organigramme de if, elif, else : condition1 puis condition2 sont testées dans l'ordre ; un seul des blocs 1, 2 ou 3 est exécuté avant la suite du programme",
+  "title_text": "",
+  "width": 354,
+  "height": 270,
+  "date_creation": "2026-10-28T15:34:44.133Z",
+  "date_modification": "2026-10-28T15:34:44.133Z"
+ }
+}
+]

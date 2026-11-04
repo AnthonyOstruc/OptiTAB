@@ -1,0 +1,670 @@
+Titre: Équations et Fonctions Polynômes du Second Degré
+
+<!-- optitab:1 -->
+::: remarque Sections principales
+Les sections I à VIII ainsi que la démonstration de la résolution de l'équation du second degré couvrent les concepts fondamentaux. Ces connaissances permettent de résoudre les problèmes courants.
+:::
+
+::: methode Approfondissements et culture
+La section IX (polynôme du troisième degré, factorisations particulières) propose des approfondissements. Elle enrichit votre culture mathématique et votre compréhension globale.
+:::
+
+## I. Définitions et formes d'un polynôme du second degré
+
+### Qu'est-ce qu'une fonction polynôme du second degré ?
+
+::: definition
+Une **fonction polynôme du second degré** (ou **fonction trinôme**) est une fonction définie sur $\mathbb{R}$ par :
+
+$$f(x) = ax^2 + bx + c$$
+
+où $a$, $b$ et $c$ sont des nombres réels avec $a \neq 0$.
+
+Les nombres $a$, $b$ et $c$ sont appelés respectivement **coefficient dominant**, **coefficient de degré 1** et **terme constant**.
+:::
+
+::: exemple
+- $f(x) = 2x^2 - 3x + 1$ : $a = 2$, $b = -3$, $c = 1$
+- $g(x) = -x^2 + 5x - 2$ : $a = -1$, $b = 5$, $c = -2$
+- $h(x) = x^2 - 4$ : $a = 1$, $b = 0$, $c = -4$
+- $k(x) = 3x^2$ : $a = 3$, $b = 0$, $c = 0$
+:::
+
+::: remarque
+Si $a = 0$, alors $f(x) = bx + c$ est une fonction affine (polynôme du premier degré), pas du second degré !
+:::
+
+::: demonstration Les trois formes d'un polynôme du second degré
+Un polynôme du second degré peut s'écrire sous **trois formes** différentes :
+
+- **Forme développée réduite** : $f(x) = ax^2 + bx + c$ (la plus courante pour définir la fonction)
+- **Forme canonique** : $f(x) = a(x - \alpha)^2 + \beta$ où $\alpha$ et $\beta$ sont des réels
+- **Forme factorisée** : $f(x) = a(x - x_1)(x - x_2)$ si le polynôme admet deux racines distinctes, ou $f(x) = a(x - x_0)^2$ si une racine double
+
+Chaque forme est adaptée à un type de problème spécifique.
+:::
+
+## II. Forme factorisée et racines
+
+### Racines d'un polynôme
+
+::: definition
+Un nombre réel $x_0$ est une **racine** (ou un **zéro**) d'un polynôme $f$ si $f(x_0) = 0$.
+
+Résoudre l'équation $f(x) = 0$ revient à trouver toutes les racines de $f$.
+:::
+
+::: exemple
+- Pour $f(x) = (x-2)(x+1)$ : $f(2) = 0$ et $f(-1) = 0$, donc les racines sont $x_1 = 2$ et $x_2 = -1$
+- Pour $g(x) = 2(x-3)^2$ : $g(3) = 0$, donc $x_0 = 3$ est une racine (double)
+- Pour $h(x) = x^2 + 1$ : $h(x) = 0 \Leftrightarrow x^2 = -1$, donc aucune racine réelle
+:::
+
+### Forme factorisée
+
+::: definition Forme factorisée d'un polynôme
+Si un polynôme $f(x) = ax^2 + bx + c$ admet deux racines distinctes $x_1$ et $x_2$, alors il peut s'écrire sous la forme :
+
+$$f(x) = a(x - x_1)(x - x_2)$$
+
+Si $f$ admet une racine double $x_0$, alors :
+
+$$f(x) = a(x - x_0)^2$$
+:::
+
+::: exemple
+- $f(x) = 2(x-1)(x+3)$ : racines $x_1 = 1$ et $x_2 = -3$
+- En développant : $\displaystyle f(x) = 2(x^2 + 2x - 3) = 2x^2 + 4x - 6$
+- $g(x) = -3(x-2)^2 = -3(x^2 - 4x + 4) = -3x^2 + 12x - 12$ : racine double $x_0 = 2$
+- $h(x) = (x-5)(x+5) = x^2 - 25$ : racines $x_1 = 5$ et $x_2 = -5$ (identité remarquable)
+:::
+
+### Somme et produit des racines
+
+::: definition Relations entre coefficients et racines
+Si un polynôme $f(x) = ax^2 + bx + c$ admet deux racines distinctes $x_1$ et $x_2$, alors :
+
+$\displaystyle x_1 + x_2 = -\frac{b}{a}$ (somme des racines)
+
+$\displaystyle x_1 \times x_2 = \frac{c}{a}$ (produit des racines)
+:::
+
+::: demonstration
+Si $f(x) = ax^2 + bx + c$ admet deux racines $x_1$ et $x_2$, alors :
+
+$$
+\begin{aligned}
+f(x) &= a(x - x_1)(x - x_2) \\
+&= a[x^2 - (x_1 + x_2)x + x_1x_2] \\
+&= ax^2 - a(x_1 + x_2)x + ax_1x_2
+\end{aligned}
+$$
+
+Par identification avec $\displaystyle f(x) = ax^2 + bx + c$ :
+
+$-a(x_1 + x_2) = b$ donc $x_1 + x_2 = -\frac{b}{a}$
+
+$ax_1x_2 = c$ donc $x_1 \times x_2 = \frac{c}{a}$
+:::
+
+::: exemple
+- Pour $f(x) = x^2 - 5x + 6$ : $x_1 + x_2 = 5$ et $x_1 \times x_2 = 6$
+- On trouve facilement : $x_1 = 2$ et $x_2 = 3$ (car $2 + 3 = 5$ et $2 \times 3 = 6$)
+- Pour $g(x) = 2x^2 + 4x - 6$ : $x_1 + x_2 = -2$ et $x_1 \times x_2 = -3$
+- On trouve : $x_1 = 1$ et $x_2 = -3$ (car $1 + (-3) = -2$ et $1 \times (-3) = -3$)
+:::
+
+## III. Forme canonique et discriminant
+
+### Forme canonique
+
+::: theoreme Forme canonique
+Tout polynôme du second degré $f(x) = ax^2 + bx + c$ peut s'écrire sous la forme canonique :
+
+$$f(x) = a\left(x + \frac{b}{2a}\right)^2 - \frac{b^2 - 4ac}{4a}$$
+
+On pose :
+
+- $\alpha = -\frac{b}{2a}$ (abscisse du sommet de la parabole)
+- $\displaystyle \beta = f(\alpha) = -\frac{b^2 - 4ac}{4a}$ (ordonnée du sommet)
+
+On écrit alors : $\displaystyle f(x) = a(x - \alpha)^2 + \beta$
+:::
+
+::: demonstration Méthode de complétion du carré
+On part de : $\displaystyle f(x) = ax^2 + bx + c$
+
+On met $a$ en facteur : $f(x) = a\left(x^2 + \frac{b}{a}x\right) + c$
+
+On complète le carré : $\displaystyle f(x) = a\left(x^2 + \frac{b}{a}x + \frac{b^2}{4a^2} - \frac{b^2}{4a^2}\right) + c$
+
+$$
+\begin{aligned}
+f(x) &= a\left(x + \frac{b}{2a}\right)^2 - \frac{b^2}{4a} + c \\
+&= a\left(x + \frac{b}{2a}\right)^2 - \frac{b^2 - 4ac}{4a}
+\end{aligned}
+$$
+:::
+
+::: exemple
+Pour $\displaystyle f(x) = 2x^2 - 4x + 1$ :
+
+$$\alpha = -\frac{-4}{2 \times 2} = \frac{4}{4} = 1$$
+
+$$
+\begin{aligned}
+\beta &= f(1) \\
+&= 2 \times 1^2 - 4 \times 1 + 1 \\
+&= 2 - 4 + 1 \\
+&= -1
+\end{aligned}
+$$
+
+Forme canonique : $\displaystyle f(x) = 2(x - 1)^2 - 1$
+
+Le sommet de la parabole est le point $S(\alpha, \beta) = (1, -1)$.
+:::
+
+[IMAGE_1]
+
+### Discriminant
+
+::: definition
+Pour un polynôme $f(x) = ax^2 + bx + c$, on appelle **discriminant** le nombre réel :
+
+$$\Delta = b^2 - 4ac$$
+
+Le discriminant permet de déterminer le nombre de racines réelles du polynôme.
+:::
+
+::: propriete Nombre de racines selon le discriminant
+- Si $\Delta > 0$ : le polynôme admet **deux racines distinctes** $x_1$ et $x_2$
+- Si $\Delta = 0$ : le polynôme admet **une racine double** $x_0 = -\frac{b}{2a}$
+- Si $\Delta < 0$ : le polynôme n'admet **aucune racine réelle**
+:::
+
+::: exemple
+- $f(x) = x^2 - 5x + 6$ : $\Delta = (-5)^2 - 4 \times 1 \times 6 = 25 - 24 = 1 > 0$ → deux racines distinctes
+- $g(x) = x^2 - 4x + 4$ : $\Delta = (-4)^2 - 4 \times 1 \times 4 = 16 - 16 = 0$ → une racine double
+- $h(x) = x^2 + x + 1$ : $\Delta = 1^2 - 4 \times 1 \times 1 = 1 - 4 = -3 < 0$ → aucune racine réelle
+:::
+
+## IV. Résolution d'une équation du second degré
+
+### Formule générale
+
+::: theoreme Résolution de l'équation $\displaystyle ax^2 + bx + c = 0$
+Soit l'équation $ax^2 + bx + c = 0$ avec $a \neq 0$.
+
+On calcule le discriminant : $\displaystyle \Delta = b^2 - 4ac$
+
+- **Si $\Delta > 0$** : l'équation admet deux solutions distinctes :
+- $x_1 = \frac{-b - \sqrt{\Delta}}{2a}$ et $x_2 = \frac{-b + \sqrt{\Delta}}{2a}$
+- **Si $\Delta = 0$** : l'équation admet une solution double :
+- $\displaystyle x_0 = -\frac{b}{2a}$
+- **Si $\Delta < 0$** : l'équation n'admet aucune solution réelle.
+:::
+
+::: demonstration
+On utilise la forme canonique : $f(x) = a\left(x + \frac{b}{2a}\right)^2 - \frac{\Delta}{4a}$
+
+Résoudre $f(x) = 0$ équivaut à : $a\left(x + \frac{b}{2a}\right)^2 = \frac{\Delta}{4a}$
+
+Soit : $\displaystyle \left(x + \frac{b}{2a}\right)^2 = \frac{\Delta}{4a^2}$
+
+**Cas 1 : $\displaystyle \Delta > 0$**
+
+$$x + \frac{b}{2a} = \pm \frac{\sqrt{\Delta}}{2a}$$
+
+D'où : $\displaystyle x = -\frac{b}{2a} \pm \frac{\sqrt{\Delta}}{2a} = \frac{-b \pm \sqrt{\Delta}}{2a}$
+
+**Cas 2 : $\displaystyle \Delta = 0$**
+
+$\left(x + \frac{b}{2a}\right)^2 = 0$, donc $x = -\frac{b}{2a}$ (racine double)
+
+**Cas 3 : $\displaystyle \Delta < 0$**
+
+L'équation $\left(x + \frac{b}{2a}\right)^2 = \frac{\Delta}{4a^2} < 0$ est impossible dans $\mathbb{R}$.
+:::
+
+::: exemple
+**Exemple 1 :** $\displaystyle x^2 - 5x + 6 = 0$
+
+$$\Delta = (-5)^2 - 4 \times 1 \times 6 = 25 - 24 = 1$$
+
+$x_1 = \frac{5 - 1}{2} = 2$ et $x_2 = \frac{5 + 1}{2} = 3$
+
+**Exemple 2 :** $\displaystyle 2x^2 - 4x + 2 = 0$
+
+$$\Delta = (-4)^2 - 4 \times 2 \times 2 = 16 - 16 = 0$$
+
+$\displaystyle x_0 = \frac{4}{4} = 1$ (racine double)
+
+**Exemple 3 :** $\displaystyle x^2 + x + 1 = 0$
+
+$\displaystyle \Delta = 1 - 4 = -3 < 0$ → aucune solution réelle
+:::
+
+## V. Signe d'une fonction polynôme du second degré
+
+### Étude du signe
+
+::: theoreme Signe d'un polynôme du second degré
+Soit $f(x) = ax^2 + bx + c$ avec $a \neq 0$ et $\Delta = b^2 - 4ac$.
+
+Le signe de $f(x)$ dépend du signe de $a$ et du discriminant $\Delta$.
+:::
+
+::: propriete Cas 1 : $\Delta > 0$ (deux racines distinctes $x_1 < x_2$)
+Le polynôme s'annule en $x_1$ et $x_2$.
+
+Si $a > 0$ : $f(x) > 0$ pour $x < x_1$ ou $x > x_2$, et $f(x) < 0$ pour $x_1 < x < x_2$
+
+Si $a < 0$ : $f(x) < 0$ pour $x < x_1$ ou $x > x_2$, et $f(x) > 0$ pour $x_1 < x < x_2$
+:::
+
+::: propriete Cas 2 : $\Delta = 0$ (racine double $x_0$)
+$f(x_0) = 0$ et $f(x)$ a le même signe que $a$ pour tout $x \neq x_0$
+:::
+
+::: propriete Cas 3 : $\displaystyle \Delta < 0$ (aucune racine réelle)
+$f(x)$ a le même signe que $a$ pour tout $x \in \mathbb{R}$
+:::
+
+::: exemple 1 - Signe avec forme factorisée
+Étudier le signe de $\displaystyle f(x) = 2(x-1)(x+3)$
+
+Racines : $x_1 = -3$ et $x_2 = 1$ (avec $x_1 < x_2$)
+
+Coefficient dominant : $\displaystyle a = 2 > 0$
+
+Tableau de signes :
+
+$f(x) > 0$ sur $]-\infty, -3[ \cup ]1, +\infty[$
+
+$f(x) < 0$ sur $]-3, 1[$
+
+$f(x) = 0$ en $x = -3$ et $x = 1$
+:::
+
+::: exemple 2 - Signe avec racine double
+Étudier le signe de $\displaystyle f(x) = -3(x-2)^2$
+
+Racine double : $\displaystyle x_0 = 2$
+
+Coefficient dominant : $\displaystyle a = -3 < 0$
+
+$f(2) = 0$ et $f(x) < 0$ pour tout $x \neq 2$
+:::
+
+::: exemple 3 - Signe sans racine réelle
+Étudier le signe de $\displaystyle f(x) = x^2 + x + 1$
+
+$\displaystyle \Delta = 1 - 4 = -3 < 0$ → aucune racine réelle
+
+Coefficient dominant : $\displaystyle a = 1 > 0$
+
+$f(x) > 0$ pour tout $x \in \mathbb{R}$
+:::
+
+## VI. Factorisation avec diverses stratégies
+
+### Stratégies de factorisation
+
+::: methode Stratégie 1 : Racine évidente
+On teste des valeurs simples ($0, 1, -1, 2, -2, \ldots$) pour trouver une racine évidente.
+
+**Exemple :** Factoriser $\displaystyle f(x) = x^2 - 5x + 6$
+
+On teste $f(2) = 4 - 10 + 6 = 0$ → $2$ est une racine
+
+On teste $f(3) = 9 - 15 + 6 = 0$ → $3$ est une racine
+
+Donc : $\displaystyle f(x) = (x-2)(x-3)$
+:::
+
+::: methode Stratégie 2 : Détection des racines par somme et produit
+Si $x_1 + x_2 = s$ et $x_1 \times x_2 = p$, alors $x_1$ et $x_2$ sont les racines de $x^2 - sx + p = 0$.
+
+**Exemple :** Factoriser $\displaystyle f(x) = x^2 - 5x + 6$
+
+Somme : $5$, Produit : $6$ → on cherche deux nombres dont la somme est $5$ et le produit $6$
+
+On trouve : $2 + 3 = 5$ et $2 \times 3 = 6$
+
+Donc : $\displaystyle f(x) = (x-2)(x-3)$
+:::
+
+::: methode Stratégie 3 : Identité remarquable
+Reconnaître une identité remarquable permet de factoriser directement.
+
+- $\displaystyle a^2 - b^2 = (a-b)(a+b)$ (différence de deux carrés)
+- $\displaystyle a^2 + 2ab + b^2 = (a+b)^2$ (carré d'une somme)
+- $\displaystyle a^2 - 2ab + b^2 = (a-b)^2$ (carré d'une différence)
+
+**Exemples :**
+
+$\displaystyle x^2 - 25 = (x-5)(x+5)$ (différence de carrés)
+
+$\displaystyle x^2 - 4x + 4 = (x-2)^2$ (carré d'une différence)
+:::
+
+::: methode Stratégie 4 : Application des formules générales
+On calcule le discriminant $\Delta = b^2 - 4ac$ et on utilise les formules :
+
+- Si $\Delta > 0$ : $f(x) = a(x-x_1)(x-x_2)$ avec $x_1 = \frac{-b-\sqrt{\Delta}}{2a}$ et $x_2 = \frac{-b+\sqrt{\Delta}}{2a}$
+- Si $\Delta = 0$ : $f(x) = a(x-x_0)^2$ avec $x_0 = -\frac{b}{2a}$
+- Si $\Delta < 0$ : le polynôme ne se factorise pas dans $\mathbb{R}$
+
+**Exemple :** Factoriser $\displaystyle f(x) = 2x^2 - 4x - 6$
+
+$$
+\begin{aligned}
+\Delta &= (-4)^2 - 4 \times 2 \times (-6) \\
+&= 16 + 48 \\
+&= 64
+\end{aligned}
+$$
+
+$x_1 = \frac{4-8}{4} = -1$ et $x_2 = \frac{4+8}{4} = 3$
+
+Donc : $\displaystyle f(x) = 2(x+1)(x-3)$
+:::
+
+## VII. Choix de la forme adaptée
+
+### Quand utiliser quelle forme ?
+
+::: demonstration Guide de choix de la forme
+- **Forme développée réduite** $f(x) = ax^2 + bx + c$ :
+- → Pour calculer l'image d'une valeur, pour additionner ou soustraire des polynômes
+- **Forme canonique** $\displaystyle f(x) = a(x-\alpha)^2 + \beta$ :
+- → Pour déterminer les variations, le minimum/maximum (sommet de la parabole en $(\alpha, \beta)$)
+- **Forme factorisée** $\displaystyle f(x) = a(x-x_1)(x-x_2)$ :
+- → Pour résoudre une équation $f(x) = 0$, pour étudier le signe, pour déterminer les racines
+:::
+
+::: exemple 1 - Résoudre une équation
+Résoudre $\displaystyle 2x^2 - 8x + 6 = 0$
+
+**Méthode :** On factorise (forme factorisée) ou on utilise le discriminant
+
+$$2x^2 - 8x + 6 = 2(x^2 - 4x + 3) = 2(x-1)(x-3)$$
+
+Solutions : $x = 1$ ou $x = 3$
+:::
+
+::: exemple 2 - Résoudre une inéquation
+Résoudre $\displaystyle x^2 - 5x + 6 \geq 0$
+
+**Méthode :** On utilise la forme factorisée pour étudier le signe
+
+$$x^2 - 5x + 6 = (x-2)(x-3)$$
+
+Tableau de signes : $f(x) \geq 0$ sur $]-\infty, 2] \cup [3, +\infty[$
+:::
+
+::: exemple 3 - Optimisation (minimum/maximum)
+Trouver le minimum de $\displaystyle f(x) = 2x^2 - 4x + 1$
+
+**Méthode :** On utilise la forme canonique
+
+$$f(x) = 2(x-1)^2 - 1$$
+
+Le minimum est atteint en $x = 1$ et vaut $f(1) = -1$
+:::
+
+## VIII. Représentation graphique et transformations de paraboles
+
+### La parabole : courbe représentative d'une fonction du second degré
+
+::: definition
+La courbe représentative d'une fonction polynôme du second degré est une **parabole**.
+
+- Si $a > 0$ : la parabole est tournée vers le haut (forme de « U »)
+- Si $a < 0$ : la parabole est tournée vers le bas (forme de « ∩ »)
+
+Le point le plus bas (si $a > 0$) ou le plus haut (si $a < 0$) est appelé le **sommet** de la parabole.
+:::
+
+::: exemple Lien avec la forme canonique
+La forme canonique $f(x) = a(x - \alpha)^2 + \beta$ permet de lire directement les coordonnées du sommet :
+
+- Le sommet de la parabole a pour coordonnées $S(\alpha, \beta)$
+- La parabole admet un axe de symétrie : la droite d'équation $x = \alpha$
+- Si $a > 0$ : $\beta$ est la valeur minimale de $f$, atteinte en $x = \alpha$
+- Si $a < 0$ : $\beta$ est la valeur maximale de $f$, atteinte en $x = \alpha$
+:::
+
+### Transformations de paraboles : translations
+
+::: demonstration Parabole de référence
+La fonction $f(x) = x^2$ est la **parabole de référence**.
+
+- Son sommet est à l'origine : $\displaystyle S(0, 0)$
+- Elle passe par les points $(-2, 4)$, $(-1, 1)$, $(0, 0)$, $(1, 1)$, $(2, 4)$
+- Elle est symétrique par rapport à l'axe des ordonnées (droite $x = 0$)
+:::
+
+::: definition Translation horizontale
+La fonction $g(x) = (x - h)^2$ correspond à une **translation horizontale** de la parabole de référence.
+
+- Si $h > 0$ : translation de $h$ unités vers la **droite**
+- Si $h < 0$ : translation de $|h|$ unités vers la **gauche**
+- Le sommet se déplace de $(0, 0)$ à $(h, 0)$
+- L'axe de symétrie devient la droite $x = h$
+
+**Exemple :** $g(x) = (x - 3)^2$ est la parabole de référence translatée de 3 unités vers la droite. Son sommet est en $(3, 0)$.
+:::
+
+::: definition Translation verticale
+La fonction $h(x) = x^2 + k$ correspond à une **translation verticale** de la parabole de référence.
+
+- Si $k > 0$ : translation de $k$ unités vers le **haut**
+- Si $k < 0$ : translation de $|k|$ unités vers le **bas**
+- Le sommet se déplace de $(0, 0)$ à $(0, k)$
+- L'axe de symétrie reste la droite $x = 0$ (axe des ordonnées)
+
+**Exemple :** $h(x) = x^2 + 2$ est la parabole de référence translatée de 2 unités vers le haut. Son sommet est en $(0, 2)$.
+:::
+
+::: definition Translation double (horizontale et verticale)
+La fonction $p(x) = (x - h)^2 + k$ correspond à une **translation du sommet** de la parabole de référence.
+
+- Le sommet se déplace de $(0, 0)$ à $(h, k)$
+- C'est la combinaison d'une translation horizontale de $h$ et d'une translation verticale de $k$
+- L'axe de symétrie devient la droite $x = h$
+
+**Exemple :** $p(x) = (x + 2)^2 - 3 = (x - (-2))^2 + (-3)$ est la parabole de référence translatée de 2 unités vers la gauche et de 3 unités vers le bas. Son sommet est en $(-2, -3)$.
+:::
+
+::: methode Pour identifier une parabole sur un graphique
+**Étape 1 :** Repérer le sommet $S(\alpha, \beta)$ de la parabole
+
+**Étape 2 :** Déterminer le sens d'ouverture (vers le haut → $a > 0$, vers le bas → $a < 0$)
+
+**Étape 3 :** Si nécessaire, utiliser un point connu pour déterminer la valeur de $a$
+
+**Étape 4 :** Écrire la forme canonique : $f(x) = a(x - \alpha)^2 + \beta$
+:::
+
+::: exemple
+Sur un graphique, on observe quatre paraboles :
+
+- **Parabole A :** sommet en $(0, 0)$ → $f(x) = x^2$ (parabole de référence)
+- **Parabole B :** sommet en $(0, 3)$ → $g(x) = x^2 + 3$ (translation verticale de 3 unités vers le haut)
+- **Parabole C :** sommet en $(2, 0)$ → $h(x) = (x - 2)^2$ (translation horizontale de 2 unités vers la droite)
+- **Parabole D :** sommet en $(-1, 2)$ → $p(x) = (x + 1)^2 + 2$ (translation de 1 unité vers la gauche et 2 unités vers le haut)
+
+On peut vérifier ces expressions en calculant l'ordonnée à l'origine (valeur en $x = 0$) :
+
+- $\displaystyle f(0) = 0$
+- $\displaystyle g(0) = 3$
+- $\displaystyle h(0) = (0-2)^2 = 4$
+- $\displaystyle p(0) = (0+1)^2 + 2 = 3$
+:::
+
+## IX. Applications et problèmes
+
+### Problèmes types
+
+::: exemple Problème 1 - Déterminer un polynôme connaissant ses racines
+Déterminer les fonctions polynômes du second degré s'annulant en $2$ et $-3$.
+
+**Solution :** Toute fonction polynôme du second degré s'annulant en $2$ et $-3$ s'écrit :
+
+$f(x) = a(x-2)(x+3)$ où $a \in \mathbb{R}^*$
+
+En développant : $\displaystyle f(x) = ax^2 + ax - 6a$
+
+Il existe une infinité de polynômes (un pour chaque valeur de $a \neq 0$)
+:::
+
+::: exemple Problème 2 - Optimisation
+Un projectile est lancé. Sa hauteur (en mètres) au temps $t$ (en secondes) est donnée par :
+
+$$h(t) = -5t^2 + 20t + 10$$
+
+Quelle est la hauteur maximale atteinte et à quel instant ?
+
+**Solution :** On met sous forme canonique
+
+$$
+\begin{aligned}
+h(t) &= -5(t^2 - 4t) + 10 \\
+&= -5[(t-2)^2 - 4] + 10 \\
+&= -5(t-2)^2 + 30
+\end{aligned}
+$$
+
+Le maximum est atteint en $t = 2$ s et vaut $h(2) = 30$ m
+:::
+
+::: exemple Problème 3 - Inéquation avec paramètre
+Pour quelles valeurs de $m$ l'équation $x^2 - mx + 1 = 0$ admet-elle deux solutions distinctes ?
+
+**Solution :** On calcule le discriminant : $\Delta = m^2 - 4$
+
+L'équation admet deux solutions distinctes si $\Delta > 0$, soit $m^2 - 4 > 0$
+
+Cela équivaut à $m^2 > 4$, donc $m < -2$ ou $m > 2$
+:::
+
+## X. Approfondissements possibles
+
+::: methode Approfondissements (bonus)
+Cette section présente des approfondissements intéressants. Ces sujets enrichissent votre culture mathématique et votre compréhension approfondie.
+:::
+
+### 1. Factorisation d'un polynôme du troisième degré
+
+::: exemple
+Si un polynôme du troisième degré $P(x) = ax^3 + bx^2 + cx + d$ admet une racine $x_0$, alors on peut le factoriser sous la forme :
+
+$$P(x) = (x - x_0)(ax^2 + Bx + C)$$
+
+où $ax^2 + Bx + C$ est un polynôme du second degré que l'on peut factoriser par identification ou division polynomiale.
+
+**Exemple :** Factoriser $\displaystyle P(x) = x^3 - 6x^2 + 11x - 6$
+
+On teste $P(1) = 1 - 6 + 11 - 6 = 0$ → $1$ est une racine
+
+Par identification : $\displaystyle P(x) = (x-1)(x^2 - 5x + 6) = (x-1)(x-2)(x-3)$
+
+Les racines sont : $\displaystyle 1, 2, 3$
+:::
+
+### 2. Factorisations particulières
+
+::: definition Factorisation de $\displaystyle x^n - 1$
+Pour tout entier naturel $\displaystyle n \geq 1$ :
+
+$$x^n - 1 = (x-1)(x^{n-1} + x^{n-2} + \cdots + x + 1)$$
+
+**Exemples :**
+
+$$x^2 - 1 = (x-1)(x+1)$$
+
+$$x^3 - 1 = (x-1)(x^2 + x + 1)$$
+
+$$x^4 - 1 = (x-1)(x^3 + x^2 + x + 1) = (x-1)(x+1)(x^2+1)$$
+:::
+
+::: definition Factorisation de $\displaystyle x^n - a^n$
+Pour tout entier naturel $n \geq 1$ et tout réel $a$ :
+
+$$x^n - a^n = (x-a)(x^{n-1} + ax^{n-2} + a^2x^{n-3} + \cdots + a^{n-2}x + a^{n-1})$$
+
+**Exemples :**
+
+$x^2 - a^2 = (x-a)(x+a)$ (identité remarquable connue)
+
+$$x^3 - a^3 = (x-a)(x^2 + ax + a^2)$$
+
+$x^4 - 16 = (x-2)(x^3 + 2x^2 + 4x + 8)$ (avec $a = 2$, donc $a^4 = 16$)
+:::
+
+### 3. Déterminer deux nombres connaissant leur somme et leur produit
+
+::: exemple Problème
+Déterminer deux nombres réels $x_1$ et $x_2$ connaissant leur somme $s$ et leur produit $p$.
+
+**Méthode :** Les nombres $x_1$ et $x_2$ sont les racines du polynôme :
+
+$$P(x) = x^2 - sx + p$$
+
+En effet, d'après les relations coefficients-racines : $x_1 + x_2 = s$ et $x_1 \times x_2 = p$.
+
+On résout alors $\displaystyle x^2 - sx + p = 0$.
+
+Le discriminant est : $\displaystyle \Delta = s^2 - 4p$
+
+- Si $\Delta > 0$ : deux solutions distinctes $x_1 = \frac{s-\sqrt{\Delta}}{2}$ et $x_2 = \frac{s+\sqrt{\Delta}}{2}$
+- Si $\Delta = 0$ : une solution double $x_1 = x_2 = \frac{s}{2}$
+- Si $\Delta < 0$ : aucune solution réelle (il n'existe pas de couple de réels ayant cette somme et ce produit)
+
+**Exemple :** Trouver deux nombres dont la somme est $5$ et le produit est $6$
+
+On résout $\displaystyle x^2 - 5x + 6 = 0$
+
+$$\Delta = 25 - 24 = 1$$
+
+$x_1 = \frac{5-1}{2} = 2$ et $x_2 = \frac{5+1}{2} = 3$
+
+Les deux nombres sont $2$ et $3$
+:::
+
+## X. Conseils méthodologiques
+
+### Méthodes générales
+
+::: conseil
+- **Choisir la bonne forme :** Développée pour calculer, canonique pour variations/extrema, factorisée pour équations/signe
+- **Vérifier le discriminant :** Toujours calculer $\Delta = b^2 - 4ac$ avant de chercher les racines
+- **Racine évidente :** Toujours tester $0, 1, -1, 2, -2$ pour trouver une racine rapidement
+- **Somme et produit :** Utiliser $x_1 + x_2 = -\frac{b}{a}$ et $x_1 \times x_2 = \frac{c}{a}$ pour vérifier les racines
+- **Identités remarquables :** Reconnaître $a^2 - b^2$, $(a+b)^2$, $(a-b)^2$ pour factoriser directement
+- **Signe :** Utiliser la forme factorisée et faire un tableau de signes, attention au signe de $a$
+- **Vérification :** Toujours vérifier les racines en remplaçant dans l'équation initiale
+:::
+
+::: attention
+- **Oublier le coefficient $a$** dans la forme factorisée : $f(x) = a(x-x_1)(x-x_2)$, pas $(x-x_1)(x-x_2)$
+- **Erreur de signe dans le discriminant :** $\Delta = b^2 - 4ac$ (attention au signe moins)
+- **Confondre $x_1$ et $x_2$ :** Par convention, $x_1 = \frac{-b-\sqrt{\Delta}}{2a}$ et $x_2 = \frac{-b+\sqrt{\Delta}}{2a}$ (donc $x_1 < x_2$)
+- **Oublier le cas $\Delta = 0$** : Il y a une racine double, pas « aucune racine »
+- **Signe incorrect :** Pour $a > 0$, le polynôme est négatif entre les racines, positif à l'extérieur
+- **Forme canonique :** Ne pas oublier le signe moins : $\alpha = -\frac{b}{2a}$
+- **Division par zéro :** Vérifier que $a \neq 0$ avant d'appliquer les formules
+:::
+
+::: remarque Récapitulatif - Formules à retenir
+| Objet | Formule |
+|---|---|
+| **Discriminant** | $\displaystyle \Delta = b^2 - 4ac$ |
+| **Racines <br> ($\displaystyle \Delta > 0$)** | $\displaystyle x_1 = \frac{-b-\sqrt{\Delta}}{2a}$ et $\displaystyle x_2 = \frac{-b+\sqrt{\Delta}}{2a}$ |
+| **Racine double <br> ($\displaystyle \Delta = 0$)** | $\displaystyle x_0 = -\frac{b}{2a}$ |
+| **Somme des racines** | $\displaystyle x_1 + x_2 = -\frac{b}{a}$ |
+| **Produit des racines** | $\displaystyle x_1 \times x_2 = \frac{c}{a}$ |
+| **Forme canonique** | $\displaystyle f(x) = a\left(x + \frac{b}{2a}\right)^2 - \frac{\Delta}{4a}$ |
+:::

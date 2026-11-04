@@ -1,0 +1,152 @@
+[
+  {
+    "titre": "Lire une part",
+    "enonce": "Quelle fraction du disque la partie colorée représente-t-elle ?",
+    "corrige": "Le disque est partagé en 8 parts égales et 3 sont colorées : la fraction est $\\res{\\frac38}$.",
+    "methode": "Compter les parts du partage puis les parts prises.",
+    "controle": "assert Rational(3,8)==Rational(3,8)",
+    "figure": "frac-1",
+    "conseil": "",
+    "difficulte": 1
+  },
+  {
+    "titre": "Colorier une fraction",
+    "enonce": "Reproduire la bande et colorier $\\frac25$ de sa surface.",
+    "corrige": "La bande compte 5 cases égales : on en colorie $\\res2$. La version corrigée montre les deux cases colorées ; tout choix de deux cases convient.",
+    "methode": "Repérer le nombre de parts égales de la bande.",
+    "controle": "assert Rational(2,5)<1",
+    "figure": "frac-2",
+    "conseil": "",
+    "difficulte": 1
+  },
+  {
+    "titre": "Le bon vocabulaire",
+    "enonce": "Pour la fraction $\\frac7{10}$, donner le numérateur et le dénominateur, puis écrire en chiffres « trois quarts » et « huit sixièmes ».",
+    "corrige": "Le numérateur est $\\res7$, le dénominateur $\\res{10}$. « Trois quarts » s’écrit $\\res{\\frac34}$ et « huit sixièmes » $\\res{\\frac86}$.",
+    "methode": "Le dénominateur nomme la part, le numérateur les compte.",
+    "controle": "assert Rational(7,10).p==7 and Rational(7,10).q==10 and Rational(8,6)>1",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 1
+  },
+  {
+    "titre": "Des parts vraiment égales ?",
+    "enonce": "La figure est coupée en trois morceaux et un morceau est coloré. Peut-on dire que la partie colorée représente $\\frac13$ de la figure ? Expliquer.",
+    "corrige": "$\\res{\\text{Non}}$ : les trois morceaux n’ont pas la même taille. Une fraction ne décrit un partage que si les parts sont égales. Ici le morceau coloré couvre la moitié de la figure.",
+    "methode": "Contrôler l’égalité des parts avant d’écrire une fraction.",
+    "controle": "assert Rational(1,2)!=Rational(1,3)",
+    "figure": "frac-4",
+    "conseil": "",
+    "difficulte": 1
+  },
+  {
+    "titre": "Au-delà de l’unité",
+    "enonce": "Chaque disque est partagé en quarts. Écrire la fraction colorée, puis l’écrire avec un entier et une fraction plus petite que 1.",
+    "corrige": "On compte 5 quarts colorés : $\\frac54$. Un disque entier fait 4 quarts : $\\res{\\frac54=1+\\frac14}$.",
+    "methode": "Compter les unités complètes dans les parts.",
+    "controle": "assert Rational(5,4)==1+Rational(1,4)",
+    "figure": "frac-5",
+    "conseil": "",
+    "difficulte": 1
+  },
+  {
+    "titre": "Entier caché",
+    "enonce": "Écrire $\\frac74$ sous la forme d’un entier et d’une fraction inférieure à 1. Que vaut $\\frac93$ ?",
+    "corrige": "$\\frac74=\\frac44+\\frac34=\\res{1+\\frac34}$. Pour les tiers : $\\frac93=\\res3$, car $9=3\\times3$.",
+    "methode": "Retirer les paquets qui font des unités entières.",
+    "controle": "assert Rational(7,4)==1+Rational(3,4) and Rational(9,3)==3",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 2
+  },
+  {
+    "titre": "Recomposer",
+    "enonce": "Écrire $2+\\frac35$ sous la forme d’une seule fraction.",
+    "corrige": "Deux unités font $\\frac{10}5$. Avec les trois cinquièmes restants : $2+\\frac35=\\res{\\frac{13}5}$.",
+    "methode": "Convertir les entiers dans la part demandée.",
+    "controle": "assert 2+Rational(3,5)==Rational(13,5)",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 2
+  },
+  {
+    "titre": "Encadrer une fraction",
+    "enonce": "Encadrer $\\frac{11}4$ puis $\\frac{17}5$ entre deux entiers consécutifs.",
+    "corrige": "$\\frac84=2$ et $\\frac{12}4=3$ : $\\res{2<\\frac{11}4<3}$. De même $\\frac{15}5=3$ et $\\frac{20}5=4$ : $\\res{3<\\frac{17}5<4}$.",
+    "methode": "Chercher les multiples du dénominateur voisins du numérateur.",
+    "controle": "assert 2<Rational(11,4)<3 and 3<Rational(17,5)<4",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 2
+  },
+  {
+    "titre": "Sept galettes pour quatre",
+    "enonce": "Quatre enfants se partagent équitablement 7 galettes identiques. Quelle part de galette chacun reçoit-il ? L’écrire de deux façons.",
+    "corrige": "Chaque enfant reçoit $\\res{\\frac74}$ de galette : une galette entière et trois quarts, soit $\\res{1+\\frac34}$. Contrôle : $4\\times\\frac74=7$ galettes.",
+    "methode": "Couper chaque galette selon le nombre d’enfants.",
+    "controle": "assert 4*Rational(7,4)==7 and Rational(7,4)==1+Rational(3,4)",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 2
+  },
+  {
+    "titre": "Égales à un entier",
+    "enonce": "Compléter : $\\frac{\\square}6=1$ ; $\\frac{12}{\\square}=1$ ; combien de quarts font 2 unités ?",
+    "corrige": "Il faut autant de parts que le partage : $\\res{\\frac66=1}$ et $\\res{\\frac{12}{12}=1}$. Deux unités font $2\\times4$ quarts, soit $\\res{\\frac84}$.",
+    "methode": "Une fraction vaut 1 quand numérateur et dénominateur sont égaux.",
+    "controle": "assert Rational(6,6)==1 and Rational(12,12)==1 and 2==Rational(8,4)",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 2
+  },
+  {
+    "titre": "Le gâteau de la fête",
+    "enonce": "Un gâteau est découpé en 12 parts égales. Les invités mangent 5 parts le midi et 4 parts le soir.\\begin{questions}\n\\item Quelle fraction du gâteau a été mangée ?\n\\item Quelle fraction du gâteau reste-t-il ?\n\\end{questions}",
+    "corrige": "On a mangé $5+4=9$ parts : $\\res{\\frac9{12}}$ du gâteau. Il reste $12-9=3$ parts, soit $\\res{\\frac3{12}}$. Contrôle : $\\frac9{12}+\\frac3{12}=\\frac{12}{12}=1$, le gâteau entier.",
+    "methode": "Compter les parts sur le même partage en 12.",
+    "controle": "assert Rational(9,12)+Rational(3,12)==1",
+    "figure": "frac-11",
+    "conseil": "",
+    "difficulte": 3
+  },
+  {
+    "titre": "La frise de la classe",
+    "enonce": "Une frise compte 20 carreaux identiques. Les élèves peignent en bleu le quart de la frise. Combien de carreaux sont bleus ? Quelle fraction de la frise reste à peindre ?",
+    "corrige": "Le quart de 20 : $20:4=\\res5$ carreaux bleus. Il reste 15 carreaux, soit $\\res{\\frac{15}{20}}$ de la frise, les trois quarts.",
+    "methode": "Prendre une part du partage en quatre.",
+    "controle": "assert 20//4==5 and Rational(15,20)==Rational(3,4)",
+    "figure": "frac-12",
+    "conseil": "",
+    "difficulte": 3
+  },
+  {
+    "titre": "Des tartes en sixièmes",
+    "enonce": "Deux tartes identiques sont coupées en sixièmes. Les convives mangent 7 parts. Écrire la fraction de tarte mangée, la comparer à 1 et l’écrire avec un entier.",
+    "corrige": "Sept sixièmes : $\\frac76$. Comme $7>6$, cette fraction $\\res{\\text{dépasse }1}$ : une tarte entière et un sixième, $\\res{\\frac76=1+\\frac16}$.",
+    "methode": "Comparer le numérateur au dénominateur.",
+    "controle": "assert Rational(7,6)>1 and Rational(7,6)==1+Rational(1,6)",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 3
+  },
+  {
+    "titre": "Dépasser 1 sans calculer",
+    "enonce": "Sans poser de calcul, dire si chaque fraction est inférieure, égale ou supérieure à 1 : $\\frac98$ ; $\\frac56$ ; $\\frac{12}{12}$ ; $\\frac{20}{19}$.",
+    "corrige": "$\\frac98$ et $\\frac{20}{19}$ sont $\\res{\\text{supérieures à }1}$ : le numérateur dépasse le dénominateur. $\\frac56<1$ et $\\frac{12}{12}=1$.",
+    "methode": "Comparer numérateur et dénominateur.",
+    "controle": "assert Rational(9,8)>1 and Rational(5,6)<1 and Rational(12,12)==1 and Rational(20,19)>1",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 3
+  },
+  {
+    "titre": "La moitié de qui ?",
+    "enonce": "Hugo dit : « Une demi-pizza, c’est toujours plus qu’un quart de pizza. » Léna répond : « Pas si les pizzas sont différentes ! » Qui a raison ? Expliquer.",
+    "corrige": "$\\res{\\text{Léna a raison}}$ : une fraction désigne une part d’un tout précis. La moitié d’une petite pizza peut être moins grosse que le quart d’une pizza géante. Sur un même tout, en revanche, $\\frac12>\\frac14$.",
+    "methode": "Toujours préciser le tout dont on prend une fraction.",
+    "controle": "assert Rational(1,2)>Rational(1,4)",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 3
+  }
+]

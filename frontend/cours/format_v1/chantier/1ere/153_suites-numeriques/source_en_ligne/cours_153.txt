@@ -1,0 +1,228 @@
+Titre: Suites numériques
+
+<!-- optitab:1 -->
+::: objectifs
+Générer une suite (forme explicite, relation de récurrence, algorithme, motif), la représenter, étudier son sens de variation, maîtriser les suites arithmétiques et géométriques (terme général, sommes, variations, modélisation) et conjecturer le comportement des termes quand $n$ devient grand.
+:::
+
+## I. Généralités
+
+::: definition Suite numérique
+Une **suite** $(u_n)$ associe à chaque entier naturel $n$ un nombre réel noté $u_n$ (ou $u(n)$), appelé **terme de rang $n$**.
+:::
+
+::: propriete Modes de génération
+- **Forme explicite** $u_n = f(n)$ : chaque terme se calcule directement à partir de $n$. Exemple : $u_n = n^2 - 4n$ donne $u_3 = 9 - 12 = -3$.
+- **Relation de récurrence** : on donne le premier terme et une relation $u_{n+1} = f(u_n)$. Exemple : $v_0 = 2$ et $v_{n+1} = 3v_n - 1$ donnent $v_1 = 5$, puis $v_2 = 14$.
+- **Algorithme, motif géométrique, dénombrement** : la suite est produite par un programme ou par une construction (nombre d’allumettes du motif numéro $n$, nombre de poignées de main entre $n$ personnes…).
+:::
+
+::: definition Représentation graphique
+Dans un repère, la suite $(u_n)$ est représentée par le **nuage de points** de coordonnées $(n\,;u_n)$. On ne relie pas les points : la suite n’est définie que pour des entiers.
+:::
+
+[IMAGE_1]
+
+::: attention
+$u_{n+1}$ (le terme qui suit $u_n$) n’est pas $u_n + 1$ (le terme augmenté de $1$). Avec une relation de récurrence, pour obtenir $u_{10}$ il faut d’abord calculer tous les termes précédents.
+:::
+
+## II. Sens de variation
+
+::: definition
+- $(u_n)$ est **croissante** si $u_{n+1} \ge u_n$ pour tout $n$ ;
+- $(u_n)$ est **décroissante** si $u_{n+1} \le u_n$ pour tout $n$ ;
+- avec des inégalités strictes, la suite est **strictement** croissante ou décroissante.
+:::
+
+::: methode Étudier le sens de variation
+1. Étudier le signe de $u_{n+1} - u_n$ : c’est la méthode générale.
+2. Si tous les termes sont strictement positifs : comparer le quotient $\dfrac{u_{n+1}}{u_n}$ à $1$.
+3. Si $u_n = f(n)$ et si $f$ est croissante (ou décroissante) sur $[0\,;+\infty[$, la suite l’est aussi.
+:::
+
+::: exemple
+Pour $u_n = n^2 - 4n$ :
+$$
+\begin{aligned}
+u_{n+1} - u_n &= (n + 1)^2 - 4(n + 1) - (n^2 - 4n) \\
+&= n^2 + 2n + 1 - 4n - 4 - n^2 + 4n \\
+&= 2n - 3
+\end{aligned}
+$$
+On a $2n - 3 \gt 0$ dès que $n \ge 2$ : la suite est strictement croissante à partir du rang $2$, alors que $u_0 \gt u_1 \gt u_2$ (voir le nuage ci-dessus).
+:::
+
+::: attention
+La méthode 3 ne vaut que pour une forme explicite : pour une suite définie par $u_{n+1} = f(u_n)$, les variations de $f$ ne donnent pas celles de la suite.
+:::
+
+## III. Suites arithmétiques
+
+::: definition Suite arithmétique
+$(u_n)$ est **arithmétique de raison $r$** si, pour tout $n$, $u_{n+1} = u_n + r$ : on passe d’un terme au suivant en **ajoutant** toujours le même nombre $r$.
+:::
+
+::: theoreme Terme général
+Si $(u_n)$ est arithmétique de raison $r$, alors pour tous entiers $n$ et $p$ :
+$$u_n = u_0 + nr \qquad u_n = u_p + (n - p)r$$
+:::
+
+::: demonstration
+On écrit $u_1 - u_0 = r$, $u_2 - u_1 = r$, …, $u_n - u_{n-1} = r$, soit $n$ égalités. En les additionnant, les termes intermédiaires s’éliminent : $u_n - u_0 = nr$, donc $u_n = u_0 + nr$. De même, de $u_p$ à $u_n$ il y a $n - p$ égalités : $u_n = u_p + (n - p)r$.
+:::
+
+::: propriete Variations et représentation
+- Si $r \gt 0$, la suite est strictement croissante ; si $r \lt 0$, strictement décroissante ; si $r = 0$, constante.
+- Les points $(n\,;u_n)$ sont **alignés** sur la droite d’équation $y = rx + u_0$ : une suite arithmétique modélise une **croissance linéaire** (lien avec les fonctions affines).
+:::
+
+[IMAGE_4]
+
+::: methode Montrer qu’une suite est arithmétique
+Calculer $u_{n+1} - u_n$ pour un entier $n$ quelconque : si le résultat est un nombre $r$ **qui ne dépend pas de $n$**, la suite est arithmétique de raison $r$.
+:::
+
+::: exemple
+Pour $u_n = 5 - 2n$ :
+$$u_{n+1} - u_n = 5 - 2(n + 1) - (5 - 2n) = -2$$
+La suite est arithmétique de raison $-2$ et de premier terme $u_0 = 5$ ; elle est strictement décroissante.
+:::
+
+::: theoreme Somme des premiers entiers
+Pour tout entier $n \ge 1$ :
+$$1 + 2 + \cdots + n = \frac{n(n + 1)}{2}$$
+:::
+
+::: demonstration
+On écrit la somme $S$ deux fois, dans un sens puis dans l’autre :
+$$
+\begin{aligned}
+S &= 1 + 2 + \cdots + (n - 1) + n \\
+S &= n + (n - 1) + \cdots + 2 + 1
+\end{aligned}
+$$
+En additionnant colonne par colonne, chaque colonne vaut $n + 1$ et il y a $n$ colonnes : $2S = n(n + 1)$, d’où le résultat.
+:::
+
+[IMAGE_2]
+
+::: retenir Somme de termes consécutifs d’une suite arithmétique
+$$S = N \times \frac{a + b}{2}$$
+où $N$ est le nombre de termes, $a$ le premier terme et $b$ le dernier. De $u_0$ à $u_n$, il y a $n + 1$ termes. Exemple :
+$$1 + 2 + \cdots + 100 = 100 \times \frac{1 + 100}{2} = 5\,050$$
+:::
+
+## IV. Suites géométriques
+
+::: definition Suite géométrique
+$(u_n)$ est **géométrique de raison $q$** si, pour tout $n$, $u_{n+1} = q \times u_n$ : on passe d’un terme au suivant en **multipliant** toujours par le même nombre $q$.
+:::
+
+::: theoreme Terme général
+Si $(u_n)$ est géométrique de raison $q$, alors pour tous entiers $n$ et $p$ :
+$$u_n = u_0 \times q^n \qquad u_n = u_p \times q^{n - p}$$
+:::
+
+::: demonstration
+De $u_0$ à $u_n$, on multiplie $n$ fois de suite par $q$ : $u_n = u_0 \times q \times q \times \cdots \times q = u_0 \times q^n$. De même, de $u_p$ à $u_n$, on multiplie $n - p$ fois par $q$.
+:::
+
+::: propriete Variations (cas $u_0 \gt 0$ et $q \gt 0$)
+- Si $q \gt 1$, la suite est strictement croissante ; si $0 \lt q \lt 1$, strictement décroissante ; si $q = 1$, constante.
+- En effet, $u_{n+1} - u_n = u_0 q^n (q - 1)$ a le signe de $q - 1$.
+- Si $u_0 \lt 0$, les sens sont inversés ; si $q \lt 0$, les termes changent de signe à chaque rang : la suite n’est ni croissante ni décroissante.
+:::
+
+[IMAGE_5]
+
+::: propriete Évolutions à taux constant
+Une quantité qui augmente de $t\,\%$ à chaque période est multipliée à chaque fois par $1 + \frac{t}{100}$ : elle forme une suite géométrique de raison $q = 1 + \frac{t}{100}$ (**croissance exponentielle**). Une baisse de $t\,\%$ donne $q = 1 - \frac{t}{100}$.
+:::
+
+::: exemple
+Un capital de $1\,000$ € placé à $3\,\%$ par an (intérêts composés) vaut $u_n = 1\,000 \times 1{,}03^n$ euros après $n$ années : au bout de $10$ ans, $u_{10} \approx 1\,343{,}92$ €.
+:::
+
+::: methode Montrer qu’une suite est géométrique
+Exprimer $u_{n+1}$ en fonction de $u_n$ et obtenir $u_{n+1} = q \times u_n$ avec un nombre $q$ **qui ne dépend pas de $n$**. Si les termes sont non nuls, cela revient à montrer que le quotient $\dfrac{u_{n+1}}{u_n}$ est constant.
+:::
+
+::: theoreme Somme des puissances de $q$
+Pour tout réel $q \neq 1$ et tout entier $n$ :
+$$1 + q + q^2 + \cdots + q^n = \frac{1 - q^{n+1}}{1 - q}$$
+:::
+
+::: demonstration
+On note $S = 1 + q + \cdots + q^n$. Alors $qS = q + q^2 + \cdots + q^{n+1}$. Dans la différence, tous les termes s’éliminent sauf $1$ et $q^{n+1}$ :
+$$
+\begin{aligned}
+S - qS &= 1 - q^{n+1} \\
+S(1 - q) &= 1 - q^{n+1}
+\end{aligned}
+$$
+Comme $q \neq 1$, on divise par $1 - q \neq 0$.
+:::
+
+::: exemple
+$1 + 2 + 4 + \cdots + 2^9 = \dfrac{1 - 2^{10}}{1 - 2} = \dfrac{-1\,023}{-1} = 1\,023$. Pour une suite géométrique de raison $q \neq 1$ : $u_0 + u_1 + \cdots + u_n = u_0 \times \dfrac{1 - q^{n+1}}{1 - q}$.
+:::
+
+::: attention
+- La somme $1 + q + \cdots + q^n$ compte $n + 1$ termes, d’où l’exposant $n + 1$.
+- Une hausse de $3\,\%$ correspond à $q = 1{,}03$, pas à $q = 0{,}03$ ; une baisse de $3\,\%$ correspond à $q = 0{,}97$.
+:::
+
+## V. Comportement quand $n$ devient grand
+
+On **conjecture** ce comportement à l’aide d’un tableau de valeurs (calculatrice, tableur, programme) ou du nuage de points. Trois situations typiques :
+
+- les termes se rapprochent autant qu’on veut d’un nombre : $u_n = 2 - \frac{1}{2^n}$ se rapproche de $2$ ;
+- les termes deviennent aussi grands que l’on veut : $v_n = 3n - 5$ ou $w_n = 2^n$ ;
+- aucun des deux : $(-1)^n$ vaut alternativement $1$ et $-1$.
+
+::: propriete Puissances $q^n$ (observation)
+Si $0 \lt q \lt 1$, les termes $q^n$ se rapprochent de $0$ ; si $q \gt 1$, ils deviennent aussi grands que l’on veut.
+:::
+
+::: methode Représenter une suite $u_{n+1} = f(u_n)$ en « escalier »
+On trace la courbe de $f$ et la droite $y = x$. On part de $u_0$ sur l’axe des abscisses et on monte jusqu’à la courbe : l’ordonnée obtenue est $u_1 = f(u_0)$. On se déplace horizontalement jusqu’à la droite $y = x$, ce qui reporte $u_1$ en abscisse ; puis on recommence.
+:::
+
+[IMAGE_3]
+
+Avec $u_0 = 1$ et $u_{n+1} = 0{,}5u_n + 2$, on obtient $1$ ; $2{,}5$ ; $3{,}25$ ; $3{,}625$… Les termes semblent se rapprocher de $4$, abscisse du point d’intersection de la courbe et de la droite : $0{,}5x + 2 = x \iff x = 4$.
+
+::: remarque
+En Première, ces comportements sont seulement **conjecturés** ; la notion de limite d’une suite et sa notation sont étudiées en Terminale.
+:::
+
+### Algorithmes
+
+Calcul d’un terme ($v_0 = 2$, $v_{n+1} = 3v_n - 1$) et algorithme de **seuil** : au bout de combien d’années le capital de $1\,000$ € placé à $3\,\%$ dépasse-t-il $2\,000$ € ?
+
+```python
+def terme(n):
+    v = 2
+    for k in range(n):
+        v = 3 * v - 1
+    return v
+
+def seuil(A):
+    n = 0
+    u = 1000
+    while u < A:
+        u = 1.03 * u
+        n = n + 1
+    return n
+```
+
+`terme(2)` renvoie $14$ et `seuil(2000)` renvoie $24$ : en effet $1\,000 \times 1{,}03^{23} \approx 1\,973{,}59$ et $1\,000 \times 1{,}03^{24} \approx 2\,032{,}79$.
+
+::: retenir
+- Arithmétique : $u_{n+1} = u_n + r$, $u_n = u_0 + nr$, $1 + 2 + \cdots + n = \frac{n(n + 1)}{2}$.
+- Géométrique : $u_{n+1} = q u_n$, $u_n = u_0 q^n$, $1 + q + \cdots + q^n = \frac{1 - q^{n+1}}{1 - q}$ pour $q \neq 1$.
+- Variations : signe de $u_{n+1} - u_n$ ; seuil : boucle `while`.
+
+Fiche de synthèse dans l’onglet Fiches !
+:::

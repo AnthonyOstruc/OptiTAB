@@ -1,0 +1,104 @@
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Des durées de trajet (en minutes) ont été regroupées en classes de 10 minutes : $[0\ ;\ 10[$, $[10\ ;\ 20[$, $[20\ ;\ 30[$, $[30\ ;\ 40[$.
+
+[IMAGE_1]
+
+1. Lire l'effectif de chaque classe.
+2. Calculer l'effectif total.
+3. Dans quelle classe se trouve la médiane ? Justifier avec les effectifs cumulés.
+4. Estimer la moyenne en utilisant les centres des classes.
+5. Peut-on connaître la médiane exacte ? Pourquoi ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les effectifs
+
+::: methode
+Les classes ont la même largeur : la hauteur de chaque rectangle donne l'effectif de la classe.
+:::
+
+::: resultat
+| Classe | $[0\ ;\ 10[$ | $[10\ ;\ 20[$ | $[20\ ;\ 30[$ | $[30\ ;\ 40[$ |
+|---|---|---|---|---|
+| Effectif | $4$ | $8$ | $6$ | $2$ |
+:::
+
+## Question 2 : L'effectif total
+
+::: etape Additionner les effectifs
+$$4 + 8 + 6 + 2 = 20$$
+:::
+
+::: resultat
+L'effectif total est $20$ trajets.
+:::
+
+## Question 3 : La classe médiane
+
+::: methode
+Effectif pair $20$ : la médiane se situe entre les valeurs de rangs $10$ et $11$. Les effectifs cumulés indiquent dans quelle classe elles tombent.
+:::
+
+::: etape Effectifs cumulés
+$4$ ; $4 + 8 = 12$ ; $12 + 6 = 18$ ; $18 + 2 = 20$.
+:::
+
+::: etape Placer les rangs 10 et 11
+La 1ʳᵉ classe contient les rangs $1$ à $4$, la 2ᵉ les rangs $5$ à $12$ : les rangs $10$ et $11$ sont dans la 2ᵉ classe.
+:::
+
+::: resultat
+La médiane se trouve dans la classe $[10\ ;\ 20[$.
+:::
+
+## Question 4 : L'estimation de la moyenne
+
+::: methode
+On remplace chaque classe par son centre, puis on calcule une moyenne pondérée par les effectifs.
+:::
+
+::: etape Centres des classes
+$\dfrac{0 + 10}{2} = 5$ ; puis $15$ ; $25$ ; $35$.
+:::
+
+::: etape Moyenne pondérée
+$$
+\begin{aligned}
+\bar{x} &\approx \frac{5 \times 4 + 15 \times 8 + 25 \times 6 + 35 \times 2}{20} \\
+&= \frac{20 + 120 + 150 + 70}{20} = \frac{360}{20} = 18
+\end{aligned}
+$$
+:::
+
+::: resultat
+La durée moyenne est d'environ $18$ minutes (estimation).
+:::
+
+## Question 5 : La médiane exacte ?
+
+::: methode
+La médiane exacte demande de connaître les valeurs de rangs $10$ et $11$.
+:::
+
+::: resultat
+Non : le regroupement en classes a fait perdre les valeurs exactes ; on sait seulement que la médiane est entre $10$ et $20$ minutes.
+:::
+
+::: attention Erreur fréquente
+Estimer la moyenne avec les bornes des classes ($0$, $10$, $20$…) au lieu de leurs **centres** ($5$, $15$, $25$, $35$).
+:::
+
+::: retenir
+Données en classes : médiane localisée dans une classe, moyenne seulement estimée.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $4$ ; $8$ ; $6$ ; $2$
+2. $20$
+3. $[10\ ;\ 20[$ (rangs $10$ et $11$)
+4. Environ $18$ min
+5. Non : les valeurs exactes sont perdues

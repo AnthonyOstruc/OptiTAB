@@ -1,0 +1,83 @@
+Titre: Résumé : Sommes et Produits
+
+<!-- optitab:1 -->
+## I. Notations et conventions
+
+| Notation | Signification | Exemple |
+|---|---|---|
+| $\displaystyle \sum_{i=1}^{n} a_i$ | $\displaystyle a_1 + a_2 + \cdots + a_n$ | $\displaystyle \sum_{i=1}^{5} i = 15$ |
+| $\displaystyle \prod_{i=1}^{n} a_i$ | $\displaystyle a_1 \times a_2 \times \cdots \times a_n$ | $\displaystyle \prod_{i=1}^{4} i = 24$ |
+| $\displaystyle \sum_{i \in \emptyset} a_i$ | 0 (élément neutre de l'addition) | Convention |
+| $\displaystyle \prod_{i \in \emptyset} a_i$ | 1 (élément neutre de la multiplication) | Convention |
+
+## II. Propriétés des sommes
+
+| Propriété | Formule |
+|---|---|
+| **Linéarité** | $\displaystyle \sum_{i} (\lambda a_i + \mu b_i) = \lambda \sum_{i} a_i + \mu \sum_{i} b_i$ |
+| **Décomposition** | Si $\displaystyle I = J \cup K$ et $\displaystyle J \cap K = \emptyset$ : $\displaystyle \sum_{i \in I} a_i = \sum_{i \in J} a_i + \sum_{i \in K} a_i$ |
+| **Changement d'indice** | $\displaystyle \sum_{i=p}^{q} a_i = \sum_{j=p+k}^{q+k} a_{j-k}$ |
+| **Produit de deux sommes** | $\displaystyle \left(\sum_{i=1}^{n} a_i\right) \times \left(\sum_{j=1}^{m} b_j\right) = \sum_{i=1}^{n} \sum_{j=1}^{m} a_i b_j$ |
+
+## III. Sommes télescopiques
+
+| Type | Formule |
+|---|---|
+| **Somme télescopique** | $\displaystyle \sum_{k=1}^{n} (u_{k+1} - u_k) = u_{n+1} - u_1$ |
+| **Produit télescopique** | $\displaystyle \prod_{k=1}^{n} \frac{u_{k+1}}{u_k} = \frac{u_{n+1}}{u_1}$ |
+| **Passage au logarithme** | $\displaystyle \ln\left(\prod_{k} a_k\right) = \sum_{k} \ln(a_k)$ (si $\displaystyle a_k > 0$) |
+
+## IV. Formules classiques
+
+| Somme | Formule |
+|---|---|
+| **Somme des entiers** | $\displaystyle \sum_{k=1}^{n} k = \frac{n(n+1)}{2}$ |
+| **Somme des carrés** | $\displaystyle \sum_{k=1}^{n} k^2 = \frac{n(n+1)(2n+1)}{6}$ |
+| **Somme des cubes** | $\displaystyle \sum_{k=1}^{n} k^3 = \left(\frac{n(n+1)}{2}\right)^2$ |
+| **Somme géométrique** ($\displaystyle x \neq 1$) | $\displaystyle \sum_{k=0}^{n} x^k = \frac{1 - x^{n+1}}{1 - x}$ |
+| **Suite arithmétique** | $\displaystyle \sum_{k=m}^{n} a_k = (n - m + 1) \times \frac{a_m + a_n}{2}$ |
+| **Factorisation** | $\displaystyle a^n - b^n = (a - b) \sum_{k=0}^{n-1} a^{n-1-k} b^k$ |
+
+## V. Factorielle et coefficients binomiaux
+
+| Notion | Définition / Formule |
+|---|---|
+| **Factorielle** | $\displaystyle n! = \prod_{k=1}^{n} k = 1 \times 2 \times \cdots \times n$ avec $\displaystyle 0! = 1$ |
+| **Récurrence** | $\displaystyle (n+1)! = (n+1) \times n!$ |
+| **Coefficient binomial** | $\displaystyle \binom{n}{k} = \frac{n!}{k!(n-k)!}$ si $\displaystyle 0 \leq k \leq n$, sinon $\displaystyle 0$ |
+| **Symétrie** | $\displaystyle \binom{n}{k} = \binom{n}{n-k}$ |
+| **Relation de Pascal** | $\displaystyle \binom{n+1}{k} = \binom{n}{k} + \binom{n}{k-1}$ |
+| **Somme des coefficients** | $\displaystyle \sum_{k=0}^{n} \binom{n}{k} = 2^n$ |
+
+## VI. Formule du binôme
+
+| Formule | Expression |
+|---|---|
+| **Binôme de Newton** | $\displaystyle (a + b)^n = \sum_{k=0}^{n} \binom{n}{k} a^{n-k} b^k$ |
+| **Cas $\displaystyle a = b = 1$** | $\displaystyle 2^n = \sum_{k=0}^{n} \binom{n}{k}$ |
+| **Cas $\displaystyle a = 1$, $\displaystyle b = -1$** | $\displaystyle 0 = \sum_{k=0}^{n} (-1)^k \binom{n}{k}$ |
+| **Formule du bâton de hockey** | $\displaystyle \sum_{i=r}^{n} \binom{i}{r} = \binom{n+1}{r+1}$ |
+| **Somme pondérée** | $\displaystyle \sum_{k=0}^{n} k \binom{n}{k} = n2^{n-1}$ |
+| **Identité de Vandermonde** | $\displaystyle \sum_{k=0}^{n} \binom{n}{k}^2 = \binom{2n}{n}$ |
+
+## VII. Sommes doubles et triangulaires
+
+| Type | Propriété |
+|---|---|
+| **Somme double** | $\displaystyle \sum_{i=1}^{n} \sum_{j=1}^{m} a_{i,j} = \sum_{j=1}^{m} \sum_{i=1}^{n} a_{i,j}$ (interversion possible) |
+| **Somme triangulaire** | $\displaystyle \sum_{i=1}^{n} \sum_{j=1}^{i} a_{i,j} = \sum_{j=1}^{n} \sum_{i=j}^{n} a_{i,j}$ |
+| **Exemple simple** | $\displaystyle \sum_{i=1}^{n} \sum_{j=1}^{i} 1 = \sum_{i=1}^{n} i = \frac{n(n+1)}{2}$ |
+
+## VIII. Points clés à retenir
+
+| Notion | À retenir |
+|---|---|
+| **Convention vide** | $\displaystyle \sum_{\emptyset} = 0$ et $\displaystyle \prod_{\emptyset} = 1$ (éléments neutres) |
+| **Somme géométrique** | Ne PAS utiliser $\displaystyle \frac{1 - x^{n+1}}{1 - x}$ pour $\displaystyle x = 1$. Utiliser $\displaystyle \sum_{k=0}^{n} 1 = n+1$ |
+| **Coefficients binomiaux** | $\displaystyle \binom{n}{k} = 0$ si $\displaystyle k < 0$ ou $\displaystyle k > n$ (convention) |
+| **Somme vs Produit de sommes** | $\displaystyle \sum_{k} a_k b_k \neq \left(\sum_{k} a_k\right) \times \left(\sum_{k} b_k\right)$ en général |
+| **Changement d'indice** | Toujours vérifier les nouvelles bornes après un changement d'indice |
+| **Triangle de Pascal** | Chaque coefficient = somme des deux au-dessus : $\displaystyle \binom{n+1}{k} = \binom{n}{k} + \binom{n}{k-1}$ |
+| **Télescopique** | Chercher une décomposition en différence pour simplifier : $\displaystyle \frac{1}{k(k+1)} = \frac{1}{k} - \frac{1}{k+1}$ |
+| **Sommes doubles** | Intervertir l'ordre des sommations peut simplifier le calcul |
+| **Erreurs fréquentes** | Confondre $\displaystyle \sum_{k=0}^{n}$ et $\displaystyle \sum_{k=1}^{n}$, oublier les bornes, appliquer formule géométrique à $\displaystyle x=1$ |

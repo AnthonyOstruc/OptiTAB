@@ -1,0 +1,777 @@
+Titre: Arithmétique dans l'ensemble des entiers relatifs
+
+<!-- optitab:1 -->
+## I. Divisibilité et division euclidienne
+
+### Divisibilité dans $\displaystyle \mathbb{Z}$
+
+::: definition
+Soient $a$ et $b$ deux entiers relatifs.
+
+On dit que $a$ **divise** $b$ (ou que $b$ est un **multiple** de $a$) s'il existe un entier $k$ tel que :
+
+::: formule
+$$b = k \times a$$
+:::
+
+On note alors : $\displaystyle a \mid b$
+
+Si $a$ ne divise pas $b$, on note : $a \nmid b$
+:::
+
+::: exemple
+- $5 \mid 15$ car $15 = 3 \times 5$ (ici $k = 3$)
+- $-7 \mid 21$ car $21 = (-3) \times (-7)$
+- $4 \nmid 13$ car il n'existe pas d'entier $k$ tel que $13 = 4k$
+- Tout entier divise $0$ : pour tout $a \in \mathbb{Z}$, $a \mid 0$ car $0 = 0 \times a$
+:::
+
+::: propriete
+Pour tous entiers relatifs $a$, $b$, $c$ :
+
+- $\displaystyle a \mid a$ (réflexivité)
+- Si $a \mid b$ et $b \mid c$, alors $a \mid c$ (transitivité)
+- Si $a \mid b$ et $a \mid c$, alors $a \mid (b + c)$ et $a \mid (b - c)$
+- Si $a \mid b$, alors $a \mid (k \times b)$ pour tout entier $k$
+- Si $a \mid b$ et $b \mid a$, alors $|a| = |b|$ (on dit que $a$ et $b$ sont **associés**)
+- **Combinaisons linéaires :** Si $d \mid a$ et $d \mid b$, alors $d \mid (ua + vb)$ pour tous $u, v \in \mathbb{Z}$
+:::
+
+::: exemple
+- **Transitivité :** $3 \mid 12$ et $12 \mid 24$, donc $3 \mid 24$
+- **Somme :** $5 \mid 15$ et $5 \mid 20$, donc $5 \mid (15 + 20) = 35$
+- **Multiples :** $7 \mid 14$, donc $7 \mid (3 \times 14) = 42$
+- **Associés :** $4 \mid -8$ et $-8 \mid 4$, donc $|4| = |-8| = 4$
+- **Combinaison linéaire :** $6 \mid 18$ et $6 \mid 24$, donc $6 \mid (2 \times 18 - 1 \times 24) = 12$
+:::
+
+::: remarque Cas particuliers importants
+- $1$ et $-1$ divisent tous les entiers relatifs
+- $0$ est multiple de tout entier, mais $0$ ne divise aucun entier non nul
+:::
+
+::: definition Caractérisation des couples d'entiers associés
+Deux entiers relatifs $a$ et $b$ sont **associés** si et seulement si :
+
+::: formule
+$$b = \pm a$$
+:::
+:::
+
+::: exemple
+- $5$ et $-5$ sont associés car $-5 = -5$
+- $7$ et $7$ sont associés car $7 = 7$
+- $3$ et $-3$ sont associés car $|-3| = |3| = 3$
+:::
+
+::: theoreme
+Soient $a \in \mathbb{Z}$ et $b \in \mathbb{Z}^{\ast}$.
+
+Il existe un **unique** couple d'entiers $(q, r)$ tel que :
+
+::: formule
+$a = bq + r$ avec $0 \leq r < |b|$
+:::
+
+L'entier $q$ est appelé le **quotient** et $r$ le **reste** de la division euclidienne de $a$ par $b$.
+:::
+
+::: exemple
+- Division de $23$ par $5$ : $23 = 5 \times 4 + 3$ (quotient : $4$, reste : $3$)
+- Division de $-17$ par $4$ : $-17 = 4 \times (-5) + 3$ (quotient : $-5$, reste : $3$)
+- Division de $42$ par $-7$ : $42 = (-7) \times (-6) + 0$ (quotient : $-6$, reste : $0$)
+:::
+
+::: remarque
+Le reste $r$ est toujours **positif ou nul** et **strictement inférieur** à la valeur absolue du diviseur $|b|$.
+
+Cette condition garantit l'**unicité** du couple $(q, r)$.
+:::
+
+## II. PGCD et algorithme d'Euclide
+
+### Plus grand commun diviseur (PGCD)
+
+::: definition
+Soient $a$ et $b$ deux entiers naturels, dont l'un au moins est non nul.
+
+Le **plus grand commun diviseur** (PGCD) de $a$ et $b$, noté $a \wedge b$ ou $\text{pgcd}(a, b)$, est le **plus grand élément** (pour l'ordre naturel dans $\mathbb{N}$) de l'ensemble des diviseurs communs à $a$ et $b$.
+
+::: formule
+$$a \wedge b = \max\{d \in \mathbb{N}^{\ast} : d \mid a \text{ et } d \mid b\}$$
+:::
+:::
+
+::: exemple
+- Les diviseurs de $12$ sont : $\{1, 2, 3, 4, 6, 12\}$
+- Les diviseurs de $18$ sont : $\{1, 2, 3, 6, 9, 18\}$
+- Les diviseurs communs sont : $\displaystyle \{1, 2, 3, 6\}$
+- Donc : $\displaystyle 12 \wedge 18 = 6$
+:::
+
+::: propriete
+- L'ensemble des diviseurs communs à $a$ et $b$ est égal à l'ensemble des diviseurs de $a \wedge b$.
+- $a \wedge b$ est le plus grand élément (au sens de la divisibilité) de l'ensemble des diviseurs communs à $a$ et $b$.
+- Pour $k \in \mathbb{N}^{\ast}$ : $(ka) \wedge (kb) = k(a \wedge b)$
+- Si $a \mid b$, alors $a \wedge b = |a|$
+- $a \wedge b = |a| \wedge |b|$ (le PGCD ne dépend que des valeurs absolues)
+:::
+
+::: exemple
+- $8 \wedge 12 = 4$, et les diviseurs de $4$ sont $\{1, 2, 4\}$, qui sont bien les diviseurs communs de $8$ et $12$
+- $\displaystyle (3 \times 8) \wedge (3 \times 12) = 24 \wedge 36 = 12 = 3 \times (8 \wedge 12) = 3 \times 4$
+- Comme $6 \mid 18$, on a $6 \wedge 18 = 6$
+- $\displaystyle (-15) \wedge 21 = 15 \wedge 21 = 3$
+:::
+
+::: definition Extension au cas de deux entiers relatifs
+Pour deux entiers relatifs $a$ et $b$ (dont l'un au moins est non nul), on définit :
+
+::: formule
+$$a \wedge b = |a| \wedge |b|$$
+:::
+:::
+
+::: demonstration Algorithme d'Euclide
+L'algorithme d'Euclide permet de calculer efficacement le PGCD de deux entiers naturels non nuls.
+
+**Principe :** Si $a = bq + r$ est la division euclidienne de $a$ par $b$, alors :
+
+::: formule
+$$a \wedge b = b \wedge r$$
+:::
+
+On répète cette opération jusqu'à obtenir un reste nul. Le dernier reste non nul est le PGCD.
+:::
+
+::: exemple Calcul de $\displaystyle 252 \wedge 198$
+$$252 = 198 \times 1 + 54$$
+
+$$198 = 54 \times 3 + 36$$
+
+$$54 = 36 \times 1 + 18$$
+
+$$36 = 18 \times 2 + 0$$
+
+Donc : $\displaystyle 252 \wedge 198 = 18$
+:::
+
+::: definition Relation de Bézout
+Soient $a$ et $b$ deux entiers relatifs non tous deux nuls.
+
+Il existe des entiers relatifs $u$ et $v$ tels que :
+
+::: formule
+$$au + bv = a \wedge b$$
+:::
+
+Un tel couple $(u, v)$ est appelé un **couple de Bézout**.
+:::
+
+::: demonstration Algorithme d'Euclide étendu
+L'algorithme d'Euclide étendu permet de déterminer un couple de Bézout $(u, v)$ tel que $au + bv = a \wedge b$.
+
+On remonte les divisions euclidiennes effectuées dans l'algorithme d'Euclide pour exprimer chaque reste en fonction de $a$ et $b$.
+:::
+
+::: exemple Trouver un couple de Bézout pour $48$ et $18$
+**Algorithme d'Euclide :**
+
+$$48 = 18 \times 2 + 12$$
+
+$$18 = 12 \times 1 + 6$$
+
+$$12 = 6 \times 2 + 0$$
+
+Donc : $\displaystyle 48 \wedge 18 = 6$
+
+**En remontant pour obtenir un couple de Bézout :**
+
+$$6 = 18 - 12 \times 1$$
+
+$6 = 18 - (48 - 18 \times 2)$ (car $12 = 48 - 18 \times 2$)
+
+$$6 = 18 - 48 + 18 \times 2$$
+
+$$6 = -48 + 18 \times 3$$
+
+Ainsi : $\displaystyle (-1) \times 48 + 3 \times 18 = 6$
+
+Un couple de Bézout est : $\displaystyle (u, v) = (-1, 3)$
+:::
+
+::: definition Plus petit commun multiple (PPCM)
+Soient $a$ et $b$ deux entiers relatifs non nuls.
+
+Le **plus petit commun multiple** (PPCM) de $a$ et $b$, noté $a \vee b$ ou $\text{ppcm}(a, b)$, est le plus petit entier naturel non nul qui soit multiple à la fois de $a$ et de $b$.
+
+::: formule
+$$a \vee b = \min\{m \in \mathbb{N}^{\ast} : a \mid m \text{ et } b \mid m\}$$
+:::
+:::
+
+::: propriete Relation entre PGCD et PPCM
+Pour deux entiers relatifs non nuls $a$ et $b$ :
+
+::: formule
+$$(a \wedge b) \times (a \vee b) = |ab|$$
+:::
+:::
+
+::: exemple
+- Pour $a = 12$ et $b = 18$ : $12 \wedge 18 = 6$ et $12 \vee 18 = 36$
+- Vérification : $\displaystyle 6 \times 36 = 216 = |12 \times 18|$
+- Pour $a = 15$ et $b = 25$ : $15 \wedge 25 = 5$ et $15 \vee 25 = 75$, et $5 \times 75 = 375 = |15 \times 25|$
+:::
+
+## III. Entiers premiers entre eux
+
+### Définition et propriétés
+
+::: definition Couple d'entiers premiers entre eux
+Deux entiers relatifs $a$ et $b$ sont dits **premiers entre eux** si leur PGCD est égal à $1$.
+
+::: formule
+$$a \wedge b = 1$$
+:::
+
+On note aussi : $\displaystyle a \perp b$
+:::
+
+::: exemple
+- $8 \wedge 15 = 1$, donc $8$ et $15$ sont premiers entre eux
+- $7 \wedge 11 = 1$, donc $7$ et $11$ sont premiers entre eux
+- $12 \wedge 18 = 6 \neq 1$, donc $12$ et $18$ ne sont pas premiers entre eux
+:::
+
+::: theoreme
+Deux entiers relatifs $a$ et $b$ sont premiers entre eux **si et seulement si** il existe des entiers relatifs $u$ et $v$ tels que :
+
+::: formule
+$$au + bv = 1$$
+:::
+:::
+
+::: exemple Pour $5$ et $7$
+On a $5 \wedge 7 = 1$, donc $5$ et $7$ sont premiers entre eux.
+
+Un couple de Bézout est : $\displaystyle 3 \times 5 + (-2) \times 7 = 15 - 14 = 1$
+
+Donc $(u, v) = (3, -2)$ vérifie $5u + 7v = 1$
+:::
+
+::: definition Lemme de Gauss
+Soient $a$, $b$ et $c$ trois entiers relatifs.
+
+Si $a \mid bc$ et $a \wedge b = 1$, alors $a \mid c$.
+:::
+
+::: exemple
+On a $3 \mid (5 \times 6) = 30$ et $3 \wedge 5 = 1$
+
+Par le lemme de Gauss, on en déduit que $3 \mid 6$, ce qui est bien vérifié.
+
+Remarque : Si $a \wedge b \neq 1$, cette conclusion n'est pas nécessairement vraie. Par exemple, $6 \mid (4 \times 9) = 36$, mais $6 \wedge 4 = 2 \neq 1$ et $6 \nmid 9$.
+:::
+
+::: propriete
+- Si $a$ et $b$ sont premiers entre eux et divisent $n$, alors $ab \mid n$.
+- Si $a$ et $b$ sont premiers à $n$, alors $ab$ est premier à $n$.
+- Si $a \wedge b = 1$ et $a \mid c$ et $b \mid c$, alors $ab \mid c$.
+- Si $a \wedge b = 1$, alors $a \wedge b^n = 1$ pour tout $n \in \mathbb{N}^{\ast}$.
+:::
+
+::: definition Forme irréductible d'un rationnel
+Tout nombre rationnel $r$ peut s'écrire sous la forme $r = \frac{p}{q}$ avec $p \in \mathbb{Z}$, $q \in \mathbb{N}^{\ast}$ et $p \wedge q = 1$.
+
+Cette écriture est unique à un signe près et est appelée la **forme irréductible** de $r$.
+:::
+
+::: definition PGCD d'un nombre fini d'entiers
+Soient $a_1, a_2, \ldots, a_n$ des entiers relatifs (dont l'un au moins est non nul).
+
+Le PGCD de $a_1, a_2, \ldots, a_n$, noté $a_1 \wedge a_2 \wedge \cdots \wedge a_n$, est défini par récurrence :
+
+::: formule
+$$a_1 \wedge a_2 \wedge \cdots \wedge a_n = (a_1 \wedge \cdots \wedge a_{n-1}) \wedge a_n$$
+:::
+
+Il existe des entiers $u_1, u_2, \ldots, u_n$ tels que :
+
+::: formule
+$$u_1 a_1 + \cdots + u_n a_n = a_1 \wedge \cdots \wedge a_n$$
+:::
+:::
+
+::: definition Entiers premiers entre eux dans leur ensemble
+Des entiers $a_1, a_2, \ldots, a_n$ sont dits **premiers entre eux dans leur ensemble** si :
+
+::: formule
+$$a_1 \wedge a_2 \wedge \cdots \wedge a_n = 1$$
+:::
+
+Ils sont dits **premiers entre eux deux à deux** si $a_i \wedge a_j = 1$ pour tous $i \neq j$.
+
+**Attention :** Premiers entre eux deux à deux $\Rightarrow$ Premiers entre eux dans leur ensemble, mais la réciproque est fausse.
+:::
+
+## IV. Nombres premiers
+
+### Définition et propriétés fondamentales
+
+::: definition Nombre premier
+Un entier naturel $p \geq 2$ est dit **premier** s'il n'admet que deux diviseurs positifs distincts : $1$ et $p$ lui-même.
+
+Autrement dit, $p$ est premier si et seulement si :
+
+::: formule
+$$\{d \in \mathbb{N}^{\ast} : d \mid p\} = \{1, p\}$$
+:::
+:::
+
+::: exemple
+- Les nombres premiers inférieurs à $20$ sont : $\{2, 3, 5, 7, 11, 13, 17, 19\}$
+- $2$ est premier car ses seuls diviseurs sont $1$ et $2$
+- $17$ est premier car ses seuls diviseurs sont $1$ et $17$
+- $15$ n'est pas premier car $3$ et $5$ le divisent
+:::
+
+::: demonstration Crible d'Ératosthène
+Le crible d'Ératosthène est une méthode pour déterminer tous les nombres premiers inférieurs à un entier donné $n$.
+
+**Principe :**
+
+1. Écrire tous les entiers de $2$ à $n$.
+2. Barrer tous les multiples de $2$ (sauf $2$).
+3. Prendre le plus petit nombre non barré, c'est un nombre premier.
+4. Barrer tous ses multiples (sauf lui-même).
+5. Répéter jusqu'à ce que tous les nombres soient soit premiers, soit barrés.
+:::
+
+::: exemple Crible pour trouver les nombres premiers inférieurs à $30$
+On écrit : $\displaystyle 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30$
+
+Barrons les multiples de $2$ : $4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30$
+
+Le plus petit non barré est $3$ (premier). Barrons les multiples de $3$ : $9, 15, 21, 27$
+
+Le suivant est $5$ (premier). Barrons les multiples de $5$ : $25$
+
+Les nombres premiers inférieurs à $30$ sont : $\{2, 3, 5, 7, 11, 13, 17, 19, 23, 29\}$
+:::
+
+::: definition L'ensemble des nombres premiers est infini
+Il existe une infinité de nombres premiers.
+
+Cette propriété a été démontrée par Euclide : si on suppose qu'il n'y a qu'un nombre fini de nombres premiers, on peut construire un nombre qui n'est divisible par aucun d'entre eux, ce qui est absurde.
+:::
+
+::: theoreme Fondamental de l'arithmétique
+Tout entier naturel $n \geq 2$ admet une **décomposition unique** (à l'ordre près des facteurs) en produit de nombres premiers :
+
+::: formule
+$$n = p_1^{\alpha_1} p_2^{\alpha_2} \cdots p_k^{\alpha_k}$$
+:::
+
+où $p_1 < p_2 < \cdots < p_k$ sont des nombres premiers et $\alpha_1, \alpha_2, \ldots, \alpha_k \in \mathbb{N}^{\ast}$.
+:::
+
+::: exemple
+- $\displaystyle 12 = 2^2 \times 3^1$ (décomposition unique)
+- $\displaystyle 100 = 2^2 \times 5^2$
+- $\displaystyle 360 = 2^3 \times 3^2 \times 5^1$
+- $\displaystyle 231 = 3^1 \times 7^1 \times 11^1 = 3 \times 7 \times 11$
+- $17$ est premier, donc sa décomposition est $17 = 17^1$
+:::
+
+::: definition Valuation p-adique
+Soit $p$ un nombre premier et $n \in \mathbb{N}^{\ast}$.
+
+La **valuation p-adique** de $n$, notée $v_p(n)$, est l'exposant de $p$ dans la décomposition en facteurs premiers de $n$.
+
+Autrement dit, $v_p(n)$ est le plus grand entier $k$ tel que $p^k \mid n$.
+:::
+
+::: exemple
+- Pour $360 = 2^3 \times 3^2 \times 5^1$ : $v_2(360) = 3$, $v_3(360) = 2$, $v_5(360) = 1$, $v_7(360) = 0$
+- Pour $84 = 2^2 \times 3^1 \times 7^1$ : $v_2(84) = 2$, $v_3(84) = 1$, $v_7(84) = 1$, $v_5(84) = 0$
+- Pour $50 = 2^1 \times 5^2$ : $v_2(50) = 1$, $v_5(50) = 2$, $v_3(50) = 0$
+- Si $p$ ne divise pas $n$, alors $v_p(n) = 0$. Par exemple, $v_3(14) = 0$ car $3 \nmid 14$
+:::
+
+::: remarque Convention (approfondissement)
+Par convention, on pose $v_p(0) = +\infty$ pour tout nombre premier $p$.
+
+Cette convention permet d'étendre certaines propriétés de la valuation p-adique au cas $n = 0$.
+:::
+
+::: propriete
+- $v_p(ab) = v_p(a) + v_p(b)$ pour tous $a, b \in \mathbb{N}^{\ast}$
+- $v_p(a^n) = n \cdot v_p(a)$ pour tout $n \in \mathbb{N}^{\ast}$
+- $a \mid b$ si et seulement si $v_p(a) \leq v_p(b)$ pour tout nombre premier $p$
+:::
+
+::: exemple
+- **Produit :** Pour $12 = 2^2 \times 3$ et $18 = 2 \times 3^2$, on a $v_2(12 \times 18) = v_2(12) + v_2(18) = 2 + 1 = 3$
+- **Puissance :** Pour $6 = 2 \times 3$, on a $v_2(6^3) = 3 \times v_2(6) = 3 \times 1 = 3$, donc $6^3 = 2^3 \times 3^3 = 216$
+- **Divisibilité :** Pour vérifier si $12 \mid 60$ :
+- $12 = 2^2 \times 3$ et $60 = 2^2 \times 3 \times 5$
+- On a $v_2(12) = 2 \leq 2 = v_2(60)$ et $v_3(12) = 1 \leq 1 = v_3(60)$
+- Donc $\displaystyle 12 \mid 60$
+:::
+
+::: attention Approfondissement
+Pour tous $\displaystyle a, b \in \mathbb{N}^{\ast}$ :
+
+::: formule
+$$v_p(a + b) \geq \min(v_p(a), v_p(b))$$
+:::
+
+avec **égalité** si $\displaystyle v_p(a) \neq v_p(b)$.
+
+Cette propriété est utile pour l'étude des sommes et des équations diophantiennes.
+:::
+
+::: exemple
+Pour $\displaystyle p = 2$ :
+
+$12 = 2^2 \times 3$ et $18 = 2 \times 3^2$, donc $v_2(12) = 2$ et $v_2(18) = 1$
+
+Comme $v_2(12) \neq v_2(18)$, on a $v_2(12 + 18) = v_2(30) = \min(2, 1) = 1$
+
+Vérification : $30 = 2 \times 3 \times 5$, donc $v_2(30) = 1$
+
+**Cas d'inégalité stricte :**
+
+$6 = 2 \times 3$ et $10 = 2 \times 5$, donc $v_2(6) = 1 = v_2(10)$
+
+On a $\displaystyle v_2(6 + 10) = v_2(16) = 4 > 1 = \min(v_2(6), v_2(10))$
+
+Car $\displaystyle 16 = 2^4$
+:::
+
+::: definition Expressions du PGCD et du PPCM à l'aide des valuations p-adiques
+Soient $a$ et $b$ deux entiers naturels non nuls.
+
+Si $a = \prod_{p \text{ premier}} p^{v_p(a)}$ et $b = \prod_{p \text{ premier}} p^{v_p(b)}$, alors :
+
+::: formule
+$$a \wedge b = \prod_{p \text{ premier}} p^{\min(v_p(a), v_p(b))}$$
+:::
+
+::: formule
+$$a \vee b = \prod_{p \text{ premier}} p^{\max(v_p(a), v_p(b))}$$
+:::
+:::
+
+::: exemple
+$360 = 2^3 \times 3^2 \times 5$ et $84 = 2^2 \times 3 \times 7$
+
+Donc :
+
+$$
+\begin{aligned}
+360 \wedge 84 &= 2^{\min(3,2)} \times 3^{\min(2,1)} \times 5^{\min(1,0)} \times 7^{\min(0,1)} \\
+&= 2^2 \times 3 \\
+&= 12
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+360 \vee 84 &= 2^{\max(3,2)} \times 3^{\max(2,1)} \times 5^{\max(1,0)} \times 7^{\max(0,1)} \\
+&= 2^3 \times 3^2 \times 5 \times 7 \\
+&= 2520
+\end{aligned}
+$$
+:::
+
+## V. Congruences
+
+### Relation de congruence modulo un entier
+
+::: definition
+Soient $a$, $b$ et $n$ des entiers relatifs, avec $n \neq 0$.
+
+On dit que $a$ est **congru à $b$ modulo $n$** si $n$ divise $a - b$.
+
+::: formule
+$$a \equiv b \pmod{n} \Leftrightarrow n \mid (a - b)$$
+:::
+
+On note aussi : $\displaystyle a = b \ [n]$
+:::
+
+::: exemple
+- $17 \equiv 2 \pmod{5}$ car $5 \mid (17 - 2) = 15$
+- $23 \equiv 3 \pmod{10}$ car $10 \mid (23 - 3) = 20$
+- $-5 \equiv 1 \pmod{6}$ car $6 \mid (-5 - 1) = -6$
+- $100 \equiv 1 \pmod{9}$ car $9 \mid (100 - 1) = 99$
+:::
+
+::: propriete
+- **Réflexivité :** $\displaystyle a \equiv a \pmod{n}$
+- **Symétrie :** Si $a \equiv b \pmod{n}$, alors $b \equiv a \pmod{n}$
+- **Transitivité :** Si $a \equiv b \pmod{n}$ et $b \equiv c \pmod{n}$, alors $a \equiv c \pmod{n}$
+- La congruence modulo $n$ est donc une **relation d'équivalence** sur $\mathbb{Z}$.
+:::
+
+::: definition Opérations sur les congruences
+Soient $a$, $b$, $c$, $d$ et $n$ des entiers relatifs, avec $n \neq 0$.
+
+Si $a \equiv b \pmod{n}$ et $c \equiv d \pmod{n}$, alors :
+
+- $\displaystyle a + c \equiv b + d \pmod{n}$ (somme)
+- $\displaystyle a - c \equiv b - d \pmod{n}$ (différence)
+- $\displaystyle ac \equiv bd \pmod{n}$ (produit)
+- $a^k \equiv b^k \pmod{n}$ pour tout $k \in \mathbb{N}$ (puissance)
+:::
+
+::: exemple
+- **Somme :** $7 \equiv 2 \pmod{5}$ et $8 \equiv 3 \pmod{5}$, donc $7 + 8 = 15 \equiv 2 + 3 = 5 \equiv 0 \pmod{5}$
+- **Produit :** $4 \equiv 1 \pmod{3}$ et $5 \equiv 2 \pmod{3}$, donc $4 \times 5 = 20 \equiv 1 \times 2 = 2 \pmod{3}$
+- **Puissance :** $3 \equiv 3 \pmod{7}$, donc $3^4 = 81 \equiv 81 \bmod 7 = 4 \pmod{7}$
+- **Calcul :** $\displaystyle 23^2 \pmod{10} = (23 \bmod 10)^2 = 3^2 = 9 \pmod{10}$
+:::
+
+::: attention
+On **ne peut pas** simplifier une congruence par un diviseur commun sans précaution.
+
+Si $c \wedge n = 1$, alors $ac \equiv bc \pmod{n}$ implique $a \equiv b \pmod{n}$.
+:::
+
+::: attention Approfondissement : Règle générale de simplification
+Si $\displaystyle ac \equiv bc \pmod{n}$, alors :
+
+::: formule
+$$a \equiv b \pmod{\frac{n}{n \wedge c}}$$
+:::
+
+Cette règle générale permet de simplifier une congruence même lorsque $c$ et $n$ ne sont pas premiers entre eux.
+:::
+
+::: definition Inverse modulo n
+Soient $a$ et $n$ des entiers relatifs, avec $n \geq 2$.
+
+On dit que $a$ admet un **inverse modulo $n$** s'il existe un entier $b$ tel que :
+
+::: formule
+$$ab \equiv 1 \pmod{n}$$
+:::
+
+Un tel $b$ est noté $a^{-1} \pmod{n}$.
+:::
+
+::: propriete Caractérisation de l'existence d'un inverse modulo n
+Un entier $a$ admet un inverse modulo $n$ **si et seulement si** $a \wedge n = 1$.
+
+Dans ce cas, l'inverse peut être déterminé à l'aide de l'algorithme d'Euclide étendu.
+:::
+
+::: demonstration Utilisation d'un inverse modulo n pour résoudre une congruence
+Pour résoudre une équation de la forme $ax \equiv b \pmod{n}$ :
+
+1. Vérifier que $a \wedge n = 1$ (sinon, il faut d'abord simplifier).
+2. Calculer l'inverse $a^{-1} \pmod{n}$ à l'aide de l'algorithme d'Euclide étendu.
+3. Multiplier les deux membres par $a^{-1}$ : $x \equiv a^{-1} b \pmod{n}$.
+:::
+
+::: exemple Résoudre $\displaystyle 7x \equiv 3 \pmod{11}$
+On a $7 \wedge 11 = 1$, donc $7$ admet un inverse modulo $11$.
+
+Par l'algorithme d'Euclide étendu : $11 = 7 \times 1 + 4$, $7 = 4 \times 1 + 3$, $4 = 3 \times 1 + 1$.
+
+En remontant : $\displaystyle 1 = 4 - 3 = 4 - (7 - 4) = 2 \times 4 - 7 = 2(11 - 7) - 7 = 2 \times 11 - 3 \times 7$.
+
+Donc $-3 \times 7 \equiv 1 \pmod{11}$, soit $7^{-1} \equiv -3 \equiv 8 \pmod{11}$.
+
+Ainsi : $\displaystyle x \equiv 8 \times 3 \equiv 24 \equiv 2 \pmod{11}$.
+:::
+
+::: remarque Petit théorème de Fermat
+Soit $p$ un nombre premier et $a$ un entier non divisible par $p$.
+
+Alors :
+
+::: formule
+$$a^{p-1} \equiv 1 \pmod{p}$$
+:::
+
+De manière équivalente, pour tout entier $a$ :
+
+::: formule
+$$a^p \equiv a \pmod{p}$$
+:::
+:::
+
+::: remarque Application du petit théorème de Fermat
+Le petit théorème de Fermat permet de calculer rapidement des puissances modulo un nombre premier.
+
+Par exemple, pour calculer $\displaystyle 3^{100} \pmod{7}$ :
+
+Comme $7$ est premier et $3 \wedge 7 = 1$, on a $3^6 \equiv 1 \pmod{7}$.
+
+Donc $\displaystyle 3^{100} = 3^{6 \times 16 + 4} = (3^6)^{16} \times 3^4 \equiv 1^{16} \times 3^4 \equiv 81 \equiv 4 \pmod{7}$.
+:::
+
+::: remarque
+Les anneaux $\mathbb{Z}/n\mathbb{Z}$ sont **hors programme** en MPSI.
+
+On travaille uniquement avec la relation de congruence modulo $n$ sur $\mathbb{Z}$.
+:::
+
+## VI. Méthodes et applications pratiques
+
+### Résolution de problèmes arithmétiques
+
+::: methode Pour calculer un PGCD
+1. Utiliser l'algorithme d'Euclide en effectuant des divisions euclidiennes successives.
+2. Le dernier reste non nul est le PGCD.
+3. Pour obtenir un couple de Bézout, remonter les divisions avec l'algorithme d'Euclide étendu.
+:::
+
+::: exemple Calculer $\displaystyle 84 \wedge 60$
+**Algorithme d'Euclide :**
+
+$$84 = 60 \times 1 + 24$$
+
+$$60 = 24 \times 2 + 12$$
+
+$$24 = 12 \times 2 + 0$$
+
+Donc : $\displaystyle 84 \wedge 60 = 12$
+
+**Pour obtenir un couple de Bézout :**
+
+$$12 = 60 - 24 \times 2$$
+
+$$
+\begin{aligned}
+12 &= 60 - (84 - 60) \times 2 \\
+&= 60 - 84 \times 2 + 60 \times 2
+\end{aligned}
+$$
+
+$$12 = -84 \times 2 + 60 \times 3$$
+
+Un couple de Bézout est : $\displaystyle (u, v) = (-2, 3)$
+:::
+
+::: attention Approfondissement : Résolution complète d'une équation diophantienne linéaire
+Pour résoudre $ax + by = c$ dans $\mathbb{Z}$ (avec $a$ et $b$ non tous deux nuls) :
+
+1. **Condition d'existence :** Vérifier que $a \wedge b \mid c$ (condition nécessaire et suffisante).
+2. **Solution particulière :** Trouver une solution particulière $(x_0, y_0)$ à l'aide de l'algorithme d'Euclide étendu appliqué à $a$ et $b$.
+3. **Forme générale des solutions :** Si $d = a \wedge b$, les solutions sont de la forme :
+
+::: formule
+$x = x_0 + k \frac{b}{d}$, $\quad y = y_0 - k \frac{a}{d}$
+:::
+
+où $k \in \mathbb{Z}$ parcourt tous les entiers relatifs.
+
+Cette méthode est une application directe de la relation de Bézout et est très utilisée en MPSI.
+:::
+
+::: exemple Résoudre $48x + 18y = 6$ dans $\mathbb{Z}$
+**1. Condition d'existence :**
+
+On a $\displaystyle 48 \wedge 18 = 6$ (calculé précédemment).
+
+Comme $6 \mid 6$, l'équation admet des solutions.
+
+**2. Solution particulière :**
+
+On a déjà trouvé : $\displaystyle (-1) \times 48 + 3 \times 18 = 6$
+
+Donc une solution particulière est : $(x_0, y_0) = (-1, 3)$
+
+**3. Forme générale des solutions :**
+
+Avec $d = 6$, $a = 48$, $b = 18$, les solutions sont :
+
+$$x = -1 + k \times \frac{18}{6} = -1 + 3k$$
+
+$$y = 3 - k \times \frac{48}{6} = 3 - 8k$$
+
+où $\displaystyle k \in \mathbb{Z}$.
+
+**Vérification :** Pour $k = 1$ : $x = 2$, $y = -5$, et $48 \times 2 + 18 \times (-5) = 96 - 90 = 6$
+:::
+
+::: methode Pour déterminer la décomposition en facteurs premiers
+1. Tester la divisibilité par les nombres premiers successifs : $2, 3, 5, 7, 11, \ldots$
+2. Pour chaque facteur premier trouvé, déterminer sa valuation p-adique.
+3. Continuer jusqu'à obtenir $1$ comme quotient.
+:::
+
+::: exemple Décomposer $420$ en facteurs premiers
+**Étape 1 :** $420$ est divisible par $2$ : $420 = 2 \times 210$
+
+$210$ est divisible par $2$ : $210 = 2 \times 105$
+
+$105$ n'est pas divisible par $2$
+
+Donc : $\displaystyle v_2(420) = 2$
+
+**Étape 2 :** $105$ est divisible par $3$ : $105 = 3 \times 35$
+
+$35$ n'est pas divisible par $3$
+
+Donc : $\displaystyle v_3(420) = 1$
+
+**Étape 3 :** $35$ est divisible par $5$ : $35 = 5 \times 7$
+
+$\displaystyle 7$ est premier
+
+Donc : $v_5(420) = 1$ et $v_7(420) = 1$
+
+**Conclusion :** $\displaystyle 420 = 2^2 \times 3^1 \times 5^1 \times 7^1 = 2^2 \times 3 \times 5 \times 7$
+:::
+
+## VII. Conseils pratiques et erreurs à éviter
+
+### Conseils et pièges courants
+
+::: conseil
+- **Divisibilité :** Toujours vérifier les conditions d'existence avant d'appliquer les propriétés
+- **PGCD :** Utiliser l'algorithme d'Euclide plutôt que la décomposition en facteurs premiers pour de grands nombres
+- **Congruences :** Attention à ne pas simplifier sans vérifier que le diviseur est premier au module
+- **Nombres premiers :** Pour tester si un nombre est premier, il suffit de vérifier la divisibilité par les nombres premiers inférieurs ou égaux à $\sqrt{n}$
+- **Valuation p-adique :** Très utile pour calculer le PGCD et le PPCM de plusieurs nombres
+:::
+
+::: attention
+- Confondre « premiers entre eux » et « premiers entre eux deux à deux »
+- Oublier que le reste de la division euclidienne doit être positif ou nul et strictement inférieur à $|b|$
+- Simplifier une congruence sans vérifier que le diviseur est premier au module
+- Confondre $a \wedge b$ (PGCD) et $a \vee b$ (PPCM)
+- Oublier que le petit théorème de Fermat nécessite que $p$ soit premier et que $a \wedge p = 1$
+- Ne pas vérifier les conditions d'existence avant d'appliquer le théorème de Bézout
+:::
+
+## VIII. Tableaux récapitulatifs
+
+### Notations et symboles
+
+| Notation | Signification |
+|---|---|
+| $\displaystyle a \mid b$ | $\displaystyle a$ divise $\displaystyle b$ |
+| $\displaystyle a \nmid b$ | $\displaystyle a$ ne divise pas $\displaystyle b$ |
+| $\displaystyle a \wedge b$ | PGCD de $\displaystyle a$ et $\displaystyle b$ |
+| $\displaystyle a \vee b$ | PPCM de $\displaystyle a$ et $\displaystyle b$ |
+| $\displaystyle a \perp b$ | $\displaystyle a$ et $\displaystyle b$ sont premiers entre eux |
+| $\displaystyle a \equiv b \pmod{n}$ | $\displaystyle a$ est congru à $\displaystyle b$ modulo $\displaystyle n$ |
+| $\displaystyle v_p(n)$ | Valuation p-adique de $\displaystyle n$ |
+
+### Propriétés principales
+
+| Propriété | Formule |
+|---|---|
+| Relation PGCD-PPCM | $\displaystyle (a \wedge b) \times (a \vee b) = |ab|$ |
+| Relation de Bézout | $\displaystyle au + bv = a \wedge b$ |
+| Théorème de Bézout | $\displaystyle a \wedge b = 1 \Leftrightarrow \exists u, v \in \mathbb{Z}, au + bv = 1$ |
+| Lemme de Gauss | Si $\displaystyle a \mid bc$ et $\displaystyle a \wedge b = 1$, alors $\displaystyle a \mid c$ |
+| PGCD avec valuation p-adique | $\displaystyle a \wedge b = \prod_p p^{\min(v_p(a), v_p(b))}$ |
+| PPCM avec valuation p-adique | $\displaystyle a \vee b = \prod_p p^{\max(v_p(a), v_p(b))}$ |
+| Petit théorème de Fermat | Si $\displaystyle p$ premier et $\displaystyle a \wedge p = 1$, alors $\displaystyle a^{p-1} \equiv 1 \pmod{p}$ |

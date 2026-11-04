@@ -1,0 +1,611 @@
+{
+ "notion": 89,
+ "dossier": "C:\\Users\\SWEELCO-AT\\Desktop\\SWINDER\\OptiTABV2\\frontend\\cours\\format_v1\\chantier\\terminale\\89_calcul-integral",
+ "date": "2026-11-02T19:41:15",
+ "cours": [
+  {
+   "id": 97,
+   "contenu": "<!-- optitab:1 -->\n::: objectifs\nInterpréter une intégrale comme une aire, la calculer à l’aide d’une primitive, utiliser ses propriétés (linéarité, Chasles, positivité, croissance), calculer une aire entre deux courbes et une valeur moyenne, intégrer par parties, encadrer une intégrale et l’approcher par la méthode des rectangles.\n:::\n\n::: prerequis\nPrimitives des fonctions usuelles ; fonctions exponentielle, logarithme, sinus et cosinus.\n:::\n\n## I. Intégrale d’une fonction continue positive\n\n::: definition Intégrale et aire\nLe plan est muni d’un repère orthogonal ; l’**unité d’aire** (u.a.) est l’aire du rectangle construit sur les deux vecteurs unités.\n\nSoit $f$ une fonction continue et positive sur $[a\\,;b]$ et $\\mathcal{D}$ le domaine compris entre la courbe de $f$, l’axe des abscisses et les droites d’équations $x = a$ et $x = b$. L’**intégrale** de $f$ de $a$ à $b$, notée $\\displaystyle\\int_a^b f(x)\\,\\mathrm{d}x$, est l’aire de $\\mathcal{D}$ en unités d’aire.\n:::\n\n[IMAGE_1]\n\n::: remarque\nLa variable d’intégration est muette : $\\displaystyle\\int_a^b f(x)\\,\\mathrm{d}x = \\int_a^b f(t)\\,\\mathrm{d}t$.\n:::\n\n## II. Intégrale et primitive\n\n::: theoreme Théorème fondamental\nSi $f$ est continue et positive sur $[a\\,;b]$, la fonction $F$ définie sur $[a\\,;b]$ par\n$$F(x) = \\int_a^x f(t)\\,\\mathrm{d}t$$\nest dérivable sur $[a\\,;b]$ et $F' = f$ : c’est la primitive de $f$ qui s’annule en $a$.\n:::\n\n::: demonstration Cas où $f$ est croissante\nSoit $x$ dans $[a\\,;b[$ et $h \\gt 0$ tel que $x + h \\le b$. Le nombre $F(x + h) - F(x)$ est l’aire du domaine situé sous la courbe entre $x$ et $x + h$. Comme $f$ est croissante, ce domaine contient le rectangle de hauteur $f(x)$ et il est contenu dans le rectangle de hauteur $f(x + h)$, tous deux de largeur $h$ :\n$$h\\,f(x) \\le F(x + h) - F(x) \\le h\\,f(x + h)$$\nEn divisant par $h \\gt 0$ :\n$$f(x) \\le \\frac{F(x + h) - F(x)}{h} \\le f(x + h)$$\nComme $f$ est continue, $f(x + h)$ tend vers $f(x)$ quand $h$ tend vers $0$ : par encadrement, le taux d’accroissement tend vers $f(x)$. On raisonne de même pour $h \\lt 0$. Donc $F$ est dérivable en $x$ et $F'(x) = f(x)$.\n:::\n\n[IMAGE_2]\n\n::: theoreme Calcul d’une intégrale\nToute fonction continue sur un intervalle admet des primitives. Si $f$ est continue sur un intervalle $I$, de signe quelconque, et si $F$ est une primitive de $f$ sur $I$, alors pour tous réels $a$ et $b$ de $I$ :\n$$\\int_a^b f(x)\\,\\mathrm{d}x = \\big[F(x)\\big]_a^b = F(b) - F(a)$$\n:::\n\n::: remarque\nLe résultat ne dépend pas de la primitive choisie : deux primitives de $f$ diffèrent d’une constante, qui disparaît dans la différence $F(b) - F(a)$.\n:::\n\n::: exemple\n- $\\displaystyle\\int_0^2 x^2\\,\\mathrm{d}x = \\left[\\frac{x^3}{3}\\right]_0^2 = \\frac{8}{3} - 0 = \\frac{8}{3}$\n- $\\displaystyle\\int_1^e \\frac{1}{x}\\,\\mathrm{d}x = \\big[\\ln x\\big]_1^e = \\ln e - \\ln 1 = 1$\n- $\\displaystyle\\int_0^1 e^{2x}\\,\\mathrm{d}x = \\left[\\frac{1}{2}e^{2x}\\right]_0^1 = \\frac{e^2 - 1}{2}$\n:::\n\n::: attention\nOn calcule $F(b) - F(a)$, dans cet ordre : la borne du haut moins la borne du bas.\n:::\n\n## III. Propriétés de l’intégrale\n\n::: propriete\nSoit $f$ et $g$ continues sur un intervalle $I$, $a$, $b$, $c$ des réels de $I$ et $\\lambda$ un réel.\n- **Linéarité :** $\\displaystyle\\int_a^b \\big(f(x) + g(x)\\big)\\,\\mathrm{d}x = \\int_a^b f(x)\\,\\mathrm{d}x + \\int_a^b g(x)\\,\\mathrm{d}x$ et $\\displaystyle\\int_a^b \\lambda f(x)\\,\\mathrm{d}x = \\lambda\\int_a^b f(x)\\,\\mathrm{d}x$.\n- **Relation de Chasles :** $\\displaystyle\\int_a^c f(x)\\,\\mathrm{d}x = \\int_a^b f(x)\\,\\mathrm{d}x + \\int_b^c f(x)\\,\\mathrm{d}x$ ; en particulier $\\displaystyle\\int_a^a f(x)\\,\\mathrm{d}x = 0$ et $\\displaystyle\\int_b^a f(x)\\,\\mathrm{d}x = -\\int_a^b f(x)\\,\\mathrm{d}x$.\n- **Positivité :** si $a \\le b$ et $f \\ge 0$ sur $[a\\,;b]$, alors $\\displaystyle\\int_a^b f(x)\\,\\mathrm{d}x \\ge 0$.\n- **Croissance :** si $a \\le b$ et $f \\le g$ sur $[a\\,;b]$, alors $\\displaystyle\\int_a^b f(x)\\,\\mathrm{d}x \\le \\int_a^b g(x)\\,\\mathrm{d}x$.\n:::\n\n::: exemple Encadrer une intégrale\nOn ne connaît pas de primitive de $x \\mapsto e^{-x^2}$ s’écrivant avec les fonctions usuelles. Pour tout réel $u$, $e^u \\ge 1 + u$ ; avec $u = -x^2 \\le 0$, on obtient, pour $x$ dans $[0\\,;1]$ :\n$$1 - x^2 \\le e^{-x^2} \\le 1$$\nPar croissance de l’intégrale ($0 \\le 1$) :\n$$\\int_0^1 (1 - x^2)\\,\\mathrm{d}x \\le \\int_0^1 e^{-x^2}\\,\\mathrm{d}x \\le \\int_0^1 1\\,\\mathrm{d}x$$\nd’où $\\displaystyle\\frac{2}{3} \\le \\int_0^1 e^{-x^2}\\,\\mathrm{d}x \\le 1$.\n:::\n\n::: attention\nOn n’intègre une inégalité que si les bornes sont dans l’ordre croissant ($a \\le b$).\n:::\n\n## IV. Aires\n\n::: propriete Fonction de signe quelconque\nL’intégrale est une **aire algébrique** : les parties du domaine situées au-dessus de l’axe des abscisses comptent positivement, celles situées en dessous comptent négativement. Si $f \\le 0$ sur $[a\\,;b]$, l’aire du domaine vaut $\\displaystyle -\\int_a^b f(x)\\,\\mathrm{d}x$ u.a.\n:::\n\n[IMAGE_3]\n\n::: exemple\n$\\displaystyle\\int_0^{2\\pi} \\sin x\\,\\mathrm{d}x = \\big[-\\cos x\\big]_0^{2\\pi} = -1 + 1 = 0$, alors que l’aire colorée vaut $2 + 2 = 4$ u.a. : les deux arches se compensent dans l’intégrale.\n:::\n\n::: propriete Aire entre deux courbes\nSi $f$ et $g$ sont continues et $g \\le f$ sur $[a\\,;b]$, l’aire du domaine compris entre les deux courbes et les droites d’équations $x = a$ et $x = b$ vaut\n$$\\int_a^b \\big(f(x) - g(x)\\big)\\,\\mathrm{d}x \\text{ u.a.}$$\n:::\n\n[IMAGE_4]\n\n::: exemple\nSur $[0\\,;1]$, $x - x^2 = x(1 - x) \\ge 0$, donc la droite $y = x$ est au-dessus de la parabole $y = x^2$ :\n$$\n\\begin{aligned}\n\\mathcal{A} &= \\int_0^1 (x - x^2)\\,\\mathrm{d}x \\\\\n&= \\left[\\frac{x^2}{2} - \\frac{x^3}{3}\\right]_0^1 \\\\\n&= \\frac{1}{2} - \\frac{1}{3} = \\frac{1}{6} \\text{ u.a.}\n\\end{aligned}\n$$\n:::\n\n::: methode Calculer une aire\n1. Étudier le signe de $f$ (ou de $f - g$ pour deux courbes) sur $[a\\,;b]$ : chercher où elle s’annule.\n2. Découper l’intervalle aux points où le signe change (relation de Chasles).\n3. Sur chaque morceau, intégrer la fonction si elle est positive, son opposée si elle est négative, puis additionner.\n:::\n\n## V. Valeur moyenne\n\n::: definition Valeur moyenne\nSoit $f$ continue sur $[a\\,;b]$, avec $a \\lt b$. La **valeur moyenne** de $f$ sur $[a\\,;b]$ est le réel\n$$\\mu = \\frac{1}{b - a}\\int_a^b f(x)\\,\\mathrm{d}x$$\nSi $f$ est positive, le rectangle de base $[a\\,;b]$ et de hauteur $\\mu$ a la même aire que le domaine situé sous la courbe.\n:::\n\n[IMAGE_5]\n\n::: exemple\nPour $f(x) = x^2$ sur $[0\\,;3]$ :\n$$\\mu = \\frac{1}{3}\\int_0^3 x^2\\,\\mathrm{d}x = \\frac{1}{3}\\left[\\frac{x^3}{3}\\right]_0^3 = \\frac{1}{3} \\times 9 = 3$$\n:::\n\n::: attention\nEn général, la valeur moyenne n’est ni $f\\left(\\frac{a + b}{2}\\right)$ ni $\\frac{f(a) + f(b)}{2}$ : dans l’exemple, $f\\left(\\frac{3}{2}\\right) = \\frac{9}{4}$ et $\\frac{f(0) + f(3)}{2} = \\frac{9}{2}$, alors que $\\mu = 3$.\n:::\n\n## VI. Intégration par parties\n\n::: theoreme Intégration par parties\nSi $u$ et $v$ sont dérivables sur $[a\\,;b]$, à dérivées continues, alors\n$$\\int_a^b u(x)\\,v'(x)\\,\\mathrm{d}x = \\big[u(x)\\,v(x)\\big]_a^b - \\int_a^b u'(x)\\,v(x)\\,\\mathrm{d}x$$\n:::\n\n::: demonstration\nLa fonction $uv$ est dérivable et $(uv)' = u'v + uv'$, qui est continue : $uv$ est une primitive de $u'v + uv'$. Donc, par linéarité :\n$$\\big[u(x)\\,v(x)\\big]_a^b = \\int_a^b u'(x)\\,v(x)\\,\\mathrm{d}x + \\int_a^b u(x)\\,v'(x)\\,\\mathrm{d}x$$\nce qui donne la formule.\n:::\n\n::: methode Choisir $u$ et $v'$\nOn choisit pour $u$ le facteur qui se simplifie quand on le dérive (un polynôme, $\\ln x$) et pour $v'$ un facteur dont on connaît une primitive ($e^x$, $\\sin x$, $\\cos x$). Pour intégrer $\\ln x$, on écrit $\\ln x = 1 \\times \\ln x$, avec $u(x) = \\ln x$ et $v'(x) = 1$.\n:::\n\n::: exemple\nPour $\\displaystyle\\int_0^1 xe^x\\,\\mathrm{d}x$, on pose $u(x) = x$ et $v'(x) = e^x$, donc $u'(x) = 1$ et $v(x) = e^x$ :\n$$\n\\begin{aligned}\n\\int_0^1 xe^x\\,\\mathrm{d}x &= \\big[xe^x\\big]_0^1 - \\int_0^1 e^x\\,\\mathrm{d}x \\\\\n&= e - \\big[e^x\\big]_0^1 \\\\\n&= e - (e - 1) = 1\n\\end{aligned}\n$$\n:::\n\n::: attention\nNe pas oublier le crochet $\\big[u(x)\\,v(x)\\big]_a^b$, ni le signe « $-$ » devant la seconde intégrale.\n:::\n\n## VII. Méthode des rectangles\n\nOn partage $[a\\,;b]$ en $n$ intervalles de même largeur $h = \\frac{b - a}{n}$ et on additionne les aires des rectangles construits sur chacun d’eux. Si $f$ est croissante, les rectangles dont la hauteur est la valeur de $f$ à **gauche** de chaque intervalle donnent une valeur approchée **par défaut** de l’intégrale ; ceux dont la hauteur est la valeur à **droite** donnent une valeur approchée **par excès**. L’encadrement se resserre quand $n$ augmente.\n\n[IMAGE_6]\n\n::: exemple\nPour $f(x) = x^2$ sur $[0\\,;2]$ avec $n = 8$ ($h = 0{,}25$) :\n$$2{,}1875 \\le \\int_0^2 x^2\\,\\mathrm{d}x \\le 3{,}1875$$\n:::\n\nLa fonction Python ci-dessous calcule la somme des rectangles à gauche :\n\n```python\ndef rectangles(f, a, b, n):\n    h = (b - a) / n\n    s = 0\n    for k in range(n):\n        s = s + f(a + k * h) * h\n    return s\n```\n\nAvec $f(x) = x^2$, $a = 0$, $b = 2$ et $n = 100$, elle renvoie $2{,}6268$, proche de la valeur exacte $\\frac{8}{3} \\approx 2{,}6667$.\n\n::: retenir\n- $\\displaystyle\\int_a^b f(x)\\,\\mathrm{d}x = F(b) - F(a)$ pour toute primitive $F$ de $f$ ; $x \\mapsto \\int_a^x f(t)\\,\\mathrm{d}t$ est la primitive de $f$ qui s’annule en $a$.\n- Linéarité, relation de Chasles, positivité et croissance (bornes dans l’ordre croissant).\n- Une intégrale est une aire algébrique ; une aire se calcule après l’étude du signe de $f$ (ou de $f - g$).\n- Valeur moyenne : $\\displaystyle\\mu = \\frac{1}{b - a}\\int_a^b f(x)\\,\\mathrm{d}x$.\n- Intégration par parties : $\\displaystyle\\int_a^b uv' = \\big[uv\\big]_a^b - \\int_a^b u'v$.\n\nFiche de synthèse dans l’onglet Fiches !\n:::"
+  }
+ ],
+ "fiches": [
+  {
+   "id": 34,
+   "summary": "<!-- optitab:1 -->\n::: objectifs\nRetenir l’essentiel : calcul d’intégrales, propriétés, aires, valeur moyenne, intégration par parties. Programme de Terminale.\n:::\n\n## I. Calculer une intégrale\n\n::: formule\n$\\displaystyle\\int_a^b f(x)\\,\\mathrm{d}x = \\big[F(x)\\big]_a^b = F(b) - F(a)$ avec $F' = f$\n:::\n\n[IMAGE_1]\n\n1. Si $f \\ge 0$ sur $[a\\,;b]$, l’intégrale est l’aire du domaine sous la courbe, en u.a.\n2. $x \\mapsto \\displaystyle\\int_a^x f(t)\\,\\mathrm{d}t$ est la primitive de $f$ qui s’annule en $a$.\n3. Exemple : $\\displaystyle\\int_0^2 x^2\\,\\mathrm{d}x = \\left[\\frac{x^3}{3}\\right]_0^2 = \\frac{8}{3}$.\n\n## II. Propriétés\n\n1. **Linéarité :** $\\displaystyle\\int_a^b (\\alpha f + \\beta g) = \\alpha\\int_a^b f + \\beta\\int_a^b g$.\n2. **Chasles :** $\\displaystyle\\int_a^c f = \\int_a^b f + \\int_b^c f$ ; $\\displaystyle\\int_b^a f = -\\int_a^b f$.\n3. **Positivité, croissance** (si $a \\le b$) : $f \\ge 0 \\Rightarrow \\displaystyle\\int_a^b f \\ge 0$ ; $f \\le g \\Rightarrow \\displaystyle\\int_a^b f \\le \\int_a^b g$.\n\n## III. Aires et valeur moyenne\n\n[IMAGE_2]\n\n1. Aire entre deux courbes ($g \\le f$ sur $[a\\,;b]$) : $\\displaystyle\\mathcal{A} = \\int_a^b \\big(f(x) - g(x)\\big)\\,\\mathrm{d}x$ u.a.\n2. Si $f \\le 0$ sur $[a\\,;b]$, l’aire vaut $\\displaystyle -\\int_a^b f(x)\\,\\mathrm{d}x$ u.a.\n3. Valeur moyenne : $\\displaystyle\\mu = \\frac{1}{b - a}\\int_a^b f(x)\\,\\mathrm{d}x$.\n\n## IV. Intégration par parties\n\n::: formule\n$\\displaystyle\\int_a^b u\\,v' = \\big[u\\,v\\big]_a^b - \\int_a^b u'\\,v$\n:::\n\n$u$ : le facteur qui se simplifie en dérivant (polynôme, $\\ln x$) ; $v'$ : un facteur dont on connaît une primitive ($e^x$, $\\sin x$, $\\cos x$).\n\n## V. Les pièges à éviter\n\n::: attention Les 4 erreurs classiques\n1. Calculer $F(a) - F(b)$ au lieu de $F(b) - F(a)$.\n2. Donner une aire négative : si $f \\le 0$, l’aire vaut $\\displaystyle -\\int_a^b f$.\n3. Oublier l’ordre des courbes dans $\\displaystyle\\int_a^b (f - g)$ : la courbe du haut moins celle du bas.\n4. Oublier le crochet $[uv]_a^b$ ou le signe « $-$ » dans l’intégration par parties.\n:::\n\n::: remarque Réflexe\nAire demandée → j’étudie d’abord le signe de $f$ (ou la position des courbes), je découpe l’intervalle si besoin, puis je calcule avec une primitive.\n:::"
+  }
+ ],
+ "exercices": [
+  {
+   "id": 1231,
+   "question": "<!-- optitab:1 -->\nCalculer les intégrales suivantes à l’aide d’une primitive.\n\n1. $\\displaystyle\\int_0^2 (3x^2 + 2x - 1)\\,\\mathrm{d}x$\n2. $\\displaystyle\\int_1^3 (2x + 5)\\,\\mathrm{d}x$\n3. $\\displaystyle\\int_0^1 x^3\\,\\mathrm{d}x$\n4. $\\displaystyle\\int_{-1}^2 (x^2 - 3x + 2)\\,\\mathrm{d}x$\n5. $\\displaystyle\\int_0^4 \\sqrt{x}\\,\\mathrm{d}x$",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Calculer $\\displaystyle\\int_0^2 (3x^2 + 2x - 1)\\,\\mathrm{d}x$\n\n::: methode\nChercher une primitive $F$ de la fonction, puis calculer $F(2) - F(0)$.\n:::\n\n::: rappel Formule\n$\\displaystyle\\int_a^b f(x)\\,\\mathrm{d}x = \\big[F(x)\\big]_a^b = F(b) - F(a)$, où $F$ est une primitive de $f$ ; une primitive de $x^n$ est $\\dfrac{x^{n+1}}{n+1}$.\n:::\n\n::: etape Primitive\nUne primitive de $f(x) = 3x^2 + 2x - 1$ est $F(x) = x^3 + x^2 - x$.\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\n\\int_0^2 (3x^2 + 2x - 1)\\,\\mathrm{d}x &= \\big[x^3 + x^2 - x\\big]_0^2 \\\\\n&= (8 + 4 - 2) - 0 \\\\\n&= 10\n\\end{aligned}\n$$\n:::\n\n::: remarque\nInutile d’ajouter une constante $C$ à la primitive : elle disparaît dans la différence $F(b) - F(a)$.\n:::\n\n::: resultat\n$$\\int_0^2 (3x^2 + 2x - 1)\\,\\mathrm{d}x = 10$$\n:::\n\n## Question 2 : Calculer $\\displaystyle\\int_1^3 (2x + 5)\\,\\mathrm{d}x$\n\n::: methode\nPrimitive de la fonction affine, puis $F(3) - F(1)$.\n:::\n\n::: etape Primitive\nUne primitive de $2x + 5$ est $F(x) = x^2 + 5x$.\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\n\\int_1^3 (2x + 5)\\,\\mathrm{d}x &= \\big[x^2 + 5x\\big]_1^3 \\\\\n&= (9 + 15) - (1 + 5) \\\\\n&= 24 - 6 \\\\\n&= 18\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$$\\int_1^3 (2x + 5)\\,\\mathrm{d}x = 18$$\n:::\n\n## Question 3 : Calculer $\\displaystyle\\int_0^1 x^3\\,\\mathrm{d}x$\n\n::: methode\nPrimitive de $x^n$ avec $n = 3$.\n:::\n\n::: etape Primitive\nUne primitive de $x^3$ est $F(x) = \\dfrac{x^4}{4}$.\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\n\\int_0^1 x^3\\,\\mathrm{d}x &= \\left[\\frac{x^4}{4}\\right]_0^1 \\\\\n&= \\frac{1}{4} - 0 \\\\\n&= \\frac{1}{4}\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$$\\int_0^1 x^3\\,\\mathrm{d}x = \\frac{1}{4}$$\n:::\n\n## Question 4 : Calculer $\\displaystyle\\int_{-1}^2 (x^2 - 3x + 2)\\,\\mathrm{d}x$\n\n::: methode\nPrimitive terme à terme, puis calcul soigneux de $F(2)$ et de $F(-1)$.\n:::\n\n::: etape Primitive\nUne primitive de $x^2 - 3x + 2$ est $F(x) = \\dfrac{x^3}{3} - \\dfrac{3x^2}{2} + 2x$.\n:::\n\n::: etape Valeurs aux bornes\n$$\n\\begin{aligned}\nF(2) &= \\frac{8}{3} - 6 + 4 = \\frac{2}{3} \\\\\nF(-1) &= -\\frac{1}{3} - \\frac{3}{2} - 2 = -\\frac{23}{6}\n\\end{aligned}\n$$\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\n\\int_{-1}^2 (x^2 - 3x + 2)\\,\\mathrm{d}x &= F(2) - F(-1) \\\\\n&= \\frac{2}{3} + \\frac{23}{6} \\\\\n&= \\frac{4}{6} + \\frac{23}{6} \\\\\n&= \\frac{27}{6} = \\frac{9}{2}\n\\end{aligned}\n$$\n:::\n\n::: attention\nAvec une borne négative, attention aux signes : $(-1)^3 = -1$ et $(-1)^2 = 1$.\n:::\n\n::: resultat\n$$\\int_{-1}^2 (x^2 - 3x + 2)\\,\\mathrm{d}x = \\frac{9}{2}$$\n:::\n\n## Question 5 : Calculer $\\displaystyle\\int_0^4 \\sqrt{x}\\,\\mathrm{d}x$\n\n::: methode\nÉcrire $\\sqrt{x} = x^{1/2}$ et utiliser la primitive de $x^n$.\n:::\n\n::: etape Primitive\n$\\sqrt{x} = x^{1/2}$ a pour primitive $F(x) = \\dfrac{x^{3/2}}{3/2} = \\dfrac{2}{3}x\\sqrt{x}$.\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\n\\int_0^4 \\sqrt{x}\\,\\mathrm{d}x &= \\left[\\frac{2}{3}x\\sqrt{x}\\right]_0^4 \\\\\n&= \\frac{2}{3} \\times 4 \\times 2 - 0 \\\\\n&= \\frac{16}{3}\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$$\\int_0^4 \\sqrt{x}\\,\\mathrm{d}x = \\frac{16}{3}$$\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $\\displaystyle\\int_0^2 (3x^2 + 2x - 1)\\,\\mathrm{d}x = 10$\n2. $\\displaystyle\\int_1^3 (2x + 5)\\,\\mathrm{d}x = 18$\n3. $\\displaystyle\\int_0^1 x^3\\,\\mathrm{d}x = \\frac{1}{4}$\n4. $\\displaystyle\\int_{-1}^2 (x^2 - 3x + 2)\\,\\mathrm{d}x = \\frac{9}{2}$\n5. $\\displaystyle\\int_0^4 \\sqrt{x}\\,\\mathrm{d}x = \\frac{16}{3}$",
+   "titre": "Découverte - Calcul Intégral - Intégrales Définies de Base",
+   "difficulty": "easy",
+   "contenu": "<!-- optitab:1 -->\nCalculer les intégrales suivantes à l’aide d’une primitive.\n\n1. $\\displaystyle\\int_0^2 (3x^2 + 2x - 1)\\,\\mathrm{d}x$\n2. $\\displaystyle\\int_1^3 (2x + 5)\\,\\mathrm{d}x$\n3. $\\displaystyle\\int_0^1 x^3\\,\\mathrm{d}x$\n4. $\\displaystyle\\int_{-1}^2 (x^2 - 3x + 2)\\,\\mathrm{d}x$\n5. $\\displaystyle\\int_0^4 \\sqrt{x}\\,\\mathrm{d}x$"
+  },
+  {
+   "id": 1232,
+   "question": "<!-- optitab:1 -->\nUtiliser les propriétés de l’intégrale : linéarité, relation de Chasles, échange des bornes.\n\n1. Calculer $\\displaystyle\\int_0^2 (3x^2 - 2x + 4)\\,\\mathrm{d}x$ en utilisant la linéarité.\n2. Calculer $\\displaystyle\\int_0^1 x^2\\,\\mathrm{d}x + \\int_1^2 x^2\\,\\mathrm{d}x$, puis vérifier le résultat en calculant $\\displaystyle\\int_0^2 x^2\\,\\mathrm{d}x$.\n3. Calculer $\\displaystyle\\int_2^0 (x + 1)\\,\\mathrm{d}x$.\n4. Sachant que $\\displaystyle\\int_0^3 f(x)\\,\\mathrm{d}x = 5$ et $\\displaystyle\\int_0^3 g(x)\\,\\mathrm{d}x = 2$, calculer $\\displaystyle\\int_0^3 \\big(2f(x) + 3g(x)\\big)\\,\\mathrm{d}x$.\n5. Que vaut $\\displaystyle\\int_1^1 (x^2 + 1)\\,\\mathrm{d}x$ ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Calculer $\\displaystyle\\int_0^2 (3x^2 - 2x + 4)\\,\\mathrm{d}x$ par linéarité\n\n::: methode\nSéparer l’intégrale en trois intégrales simples, puis les calculer une à une.\n:::\n\n::: rappel Linéarité\n$\\displaystyle\\int_a^b \\big(\\lambda f(x) + \\mu g(x)\\big)\\,\\mathrm{d}x = \\lambda\\int_a^b f(x)\\,\\mathrm{d}x + \\mu\\int_a^b g(x)\\,\\mathrm{d}x$\n:::\n\n::: etape Décomposition\n$$\\int_0^2 (3x^2 - 2x + 4)\\,\\mathrm{d}x = 3\\int_0^2 x^2\\,\\mathrm{d}x - 2\\int_0^2 x\\,\\mathrm{d}x + 4\\int_0^2 1\\,\\mathrm{d}x$$\n:::\n\n::: etape Calcul de chaque intégrale\n- $\\displaystyle\\int_0^2 x^2\\,\\mathrm{d}x = \\left[\\frac{x^3}{3}\\right]_0^2 = \\frac{8}{3}$\n- $\\displaystyle\\int_0^2 x\\,\\mathrm{d}x = \\left[\\frac{x^2}{2}\\right]_0^2 = 2$\n- $\\displaystyle\\int_0^2 1\\,\\mathrm{d}x = \\big[x\\big]_0^2 = 2$\n:::\n\n::: etape Assemblage\n$$3 \\times \\frac{8}{3} - 2 \\times 2 + 4 \\times 2 = 8 - 4 + 8 = 12$$\n:::\n\n::: resultat\n$$\\int_0^2 (3x^2 - 2x + 4)\\,\\mathrm{d}x = 12$$\n:::\n\n## Question 2 : Calculer $\\displaystyle\\int_0^1 x^2\\,\\mathrm{d}x + \\int_1^2 x^2\\,\\mathrm{d}x$ et vérifier avec $\\displaystyle\\int_0^2 x^2\\,\\mathrm{d}x$\n\n::: methode\nCalculer les deux intégrales, les additionner, puis comparer : c’est la relation de Chasles.\n:::\n\n::: rappel Relation de Chasles\n$\\displaystyle\\int_a^b f(x)\\,\\mathrm{d}x + \\int_b^c f(x)\\,\\mathrm{d}x = \\int_a^c f(x)\\,\\mathrm{d}x$\n:::\n\n::: etape Les deux intégrales\n$$\n\\begin{aligned}\n\\int_0^1 x^2\\,\\mathrm{d}x &= \\left[\\frac{x^3}{3}\\right]_0^1 = \\frac{1}{3} \\\\\n\\int_1^2 x^2\\,\\mathrm{d}x &= \\left[\\frac{x^3}{3}\\right]_1^2 = \\frac{8}{3} - \\frac{1}{3} = \\frac{7}{3}\n\\end{aligned}\n$$\n:::\n\n::: etape Somme\n$$\\frac{1}{3} + \\frac{7}{3} = \\frac{8}{3}$$\n:::\n\n::: etape Vérification\n$$\\int_0^2 x^2\\,\\mathrm{d}x = \\left[\\frac{x^3}{3}\\right]_0^2 = \\frac{8}{3}$$\nOn retrouve bien la même valeur.\n:::\n\n::: resultat\n$$\\int_0^1 x^2\\,\\mathrm{d}x + \\int_1^2 x^2\\,\\mathrm{d}x = \\int_0^2 x^2\\,\\mathrm{d}x = \\frac{8}{3}$$\n:::\n\n## Question 3 : Calculer $\\displaystyle\\int_2^0 (x + 1)\\,\\mathrm{d}x$\n\n::: methode\nLes bornes sont dans l’ordre décroissant : échanger les bornes change le signe de l’intégrale.\n:::\n\n::: rappel Échange des bornes\n$\\displaystyle\\int_b^a f(x)\\,\\mathrm{d}x = -\\int_a^b f(x)\\,\\mathrm{d}x$\n:::\n\n::: etape Calcul de $\\displaystyle\\int_0^2 (x + 1)\\,\\mathrm{d}x$\n$$\n\\begin{aligned}\n\\int_0^2 (x + 1)\\,\\mathrm{d}x &= \\left[\\frac{x^2}{2} + x\\right]_0^2 \\\\\n&= (2 + 2) - 0 \\\\\n&= 4\n\\end{aligned}\n$$\n:::\n\n::: etape Conclusion\n$$\\int_2^0 (x + 1)\\,\\mathrm{d}x = -\\int_0^2 (x + 1)\\,\\mathrm{d}x = -4$$\n:::\n\n::: remarque\nLe résultat est négatif alors que $x + 1 \\gt 0$ sur $[0\\,;2]$ : la positivité de l’intégrale ne s’applique que si les bornes sont dans l’ordre croissant.\n:::\n\n::: resultat\n$$\\int_2^0 (x + 1)\\,\\mathrm{d}x = -4$$\n:::\n\n## Question 4 : Calculer $\\displaystyle\\int_0^3 \\big(2f(x) + 3g(x)\\big)\\,\\mathrm{d}x$\n\n::: methode\nLinéarité : on se ramène aux deux intégrales connues.\n:::\n\n::: etape Linéarité\n$$\n\\begin{aligned}\n\\int_0^3 \\big(2f(x) + 3g(x)\\big)\\,\\mathrm{d}x &= 2\\int_0^3 f(x)\\,\\mathrm{d}x + 3\\int_0^3 g(x)\\,\\mathrm{d}x \\\\\n&= 2 \\times 5 + 3 \\times 2 \\\\\n&= 16\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$$\\int_0^3 \\big(2f(x) + 3g(x)\\big)\\,\\mathrm{d}x = 16$$\n:::\n\n## Question 5 : Que vaut $\\displaystyle\\int_1^1 (x^2 + 1)\\,\\mathrm{d}x$ ?\n\n::: methode\nLes deux bornes sont égales.\n:::\n\n::: etape Propriété\nPour toute fonction continue $f$, $\\displaystyle\\int_a^a f(x)\\,\\mathrm{d}x = F(a) - F(a) = 0$ : le domaine a une largeur nulle.\n:::\n\n::: resultat\n$$\\int_1^1 (x^2 + 1)\\,\\mathrm{d}x = 0$$\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $12$\n2. $\\dfrac{1}{3} + \\dfrac{7}{3} = \\dfrac{8}{3}$, qui est bien la valeur de $\\displaystyle\\int_0^2 x^2\\,\\mathrm{d}x$ (relation de Chasles).\n3. $-4$\n4. $16$\n5. $0$",
+   "titre": "Découverte - Calcul Intégral - Propriétés des Intégrales",
+   "difficulty": "easy",
+   "contenu": "<!-- optitab:1 -->\nUtiliser les propriétés de l’intégrale : linéarité, relation de Chasles, échange des bornes.\n\n1. Calculer $\\displaystyle\\int_0^2 (3x^2 - 2x + 4)\\,\\mathrm{d}x$ en utilisant la linéarité.\n2. Calculer $\\displaystyle\\int_0^1 x^2\\,\\mathrm{d}x + \\int_1^2 x^2\\,\\mathrm{d}x$, puis vérifier le résultat en calculant $\\displaystyle\\int_0^2 x^2\\,\\mathrm{d}x$.\n3. Calculer $\\displaystyle\\int_2^0 (x + 1)\\,\\mathrm{d}x$.\n4. Sachant que $\\displaystyle\\int_0^3 f(x)\\,\\mathrm{d}x = 5$ et $\\displaystyle\\int_0^3 g(x)\\,\\mathrm{d}x = 2$, calculer $\\displaystyle\\int_0^3 \\big(2f(x) + 3g(x)\\big)\\,\\mathrm{d}x$.\n5. Que vaut $\\displaystyle\\int_1^1 (x^2 + 1)\\,\\mathrm{d}x$ ?"
+  },
+  {
+   "id": 1235,
+   "question": "<!-- optitab:1 -->\nDans chaque cas, calculer l’aire, en unités d’aire (u.a.), du domaine compris entre les deux courbes sur l’intervalle indiqué.\n\n1. $y = x^2$ et $y = 2x$ sur $[0\\,;2]$\n2. $y = x$ et $y = x^2$ sur $[0\\,;1]$\n3. $y = \\sin x$ et $y = \\cos x$ sur $\\left[0\\,;\\frac{\\pi}{2}\\right]$\n4. $y = e^x$ et $y = 1$ sur $[0\\,;1]$\n5. $y = x^3$ et $y = x$ sur $[-1\\,;1]$",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Aire entre $y = x^2$ et $y = 2x$ sur $[0\\,;2]$\n\n::: methode\nÉtudier le signe de la différence pour savoir quelle courbe est au-dessus, puis intégrer « courbe du haut moins courbe du bas ».\n:::\n\n::: rappel Aire entre deux courbes\nSi $g \\le f$ sur $[a\\,;b]$, l’aire du domaine compris entre les deux courbes est $\\displaystyle\\int_a^b \\big(f(x) - g(x)\\big)\\,\\mathrm{d}x$ u.a.\n:::\n\n::: etape Position des courbes\n$2x - x^2 = x(2 - x)$. Sur $[0\\,;2]$, $x \\ge 0$ et $2 - x \\ge 0$, donc $2x - x^2 \\ge 0$ : la droite $y = 2x$ est au-dessus de la parabole (elles se coupent en $0$ et en $2$).\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\n\\mathcal{A} &= \\int_0^2 (2x - x^2)\\,\\mathrm{d}x \\\\\n&= \\left[x^2 - \\frac{x^3}{3}\\right]_0^2 \\\\\n&= 4 - \\frac{8}{3} \\\\\n&= \\frac{4}{3}\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$\\mathcal{A} = \\dfrac{4}{3}$ u.a.\n:::\n\n[IMAGE_1]\n\n## Question 2 : Aire entre $y = x$ et $y = x^2$ sur $[0\\,;1]$\n\n::: methode\nMême démarche : signe de $x - x^2$, puis intégrale de la différence.\n:::\n\n::: etape Position des courbes\n$x - x^2 = x(1 - x) \\ge 0$ sur $[0\\,;1]$ : la droite $y = x$ est au-dessus de la parabole $y = x^2$.\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\n\\mathcal{A} &= \\int_0^1 (x - x^2)\\,\\mathrm{d}x \\\\\n&= \\left[\\frac{x^2}{2} - \\frac{x^3}{3}\\right]_0^1 \\\\\n&= \\frac{1}{2} - \\frac{1}{3} \\\\\n&= \\frac{1}{6}\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$\\mathcal{A} = \\dfrac{1}{6}$ u.a.\n:::\n\n[IMAGE_2]\n\n## Question 3 : Aire entre $y = \\sin x$ et $y = \\cos x$ sur $\\left[0\\,;\\frac{\\pi}{2}\\right]$\n\n::: methode\nLes courbes se croisent dans l’intervalle : on découpe en deux morceaux (relation de Chasles).\n:::\n\n::: etape Point d’intersection\nSur $\\left[0\\,;\\frac{\\pi}{2}\\right]$, $\\sin x = \\cos x \\iff \\tan x = 1 \\iff x = \\dfrac{\\pi}{4}$.\n:::\n\n::: etape Position des courbes\n- Sur $\\left[0\\,;\\frac{\\pi}{4}\\right]$ : $\\cos x \\ge \\sin x$ (en $0$, $\\cos 0 = 1 \\gt 0 = \\sin 0$).\n- Sur $\\left[\\frac{\\pi}{4}\\,;\\frac{\\pi}{2}\\right]$ : $\\sin x \\ge \\cos x$ (en $\\frac{\\pi}{2}$, $\\sin\\frac{\\pi}{2} = 1 \\gt 0 = \\cos\\frac{\\pi}{2}$).\n:::\n\n::: etape Premier morceau\nUne primitive de $\\cos x - \\sin x$ est $\\sin x + \\cos x$ :\n$$\n\\begin{aligned}\n\\int_0^{\\pi/4} (\\cos x - \\sin x)\\,\\mathrm{d}x &= \\big[\\sin x + \\cos x\\big]_0^{\\pi/4} \\\\\n&= \\left(\\frac{\\sqrt{2}}{2} + \\frac{\\sqrt{2}}{2}\\right) - (0 + 1) \\\\\n&= \\sqrt{2} - 1\n\\end{aligned}\n$$\n:::\n\n::: etape Second morceau\nUne primitive de $\\sin x - \\cos x$ est $-\\cos x - \\sin x$ :\n$$\n\\begin{aligned}\n\\int_{\\pi/4}^{\\pi/2} (\\sin x - \\cos x)\\,\\mathrm{d}x &= \\big[-\\cos x - \\sin x\\big]_{\\pi/4}^{\\pi/2} \\\\\n&= (0 - 1) - \\left(-\\frac{\\sqrt{2}}{2} - \\frac{\\sqrt{2}}{2}\\right) \\\\\n&= \\sqrt{2} - 1\n\\end{aligned}\n$$\n:::\n\n::: etape Aire totale\n$$\\mathcal{A} = (\\sqrt{2} - 1) + (\\sqrt{2} - 1) = 2\\sqrt{2} - 2 \\approx 0{,}83$$\n:::\n\n::: resultat\n$\\mathcal{A} = 2\\sqrt{2} - 2$ u.a. $\\approx 0{,}83$ u.a.\n:::\n\n[IMAGE_3]\n\n## Question 4 : Aire entre $y = e^x$ et $y = 1$ sur $[0\\,;1]$\n\n::: methode\nComparer $e^x$ et $1$ grâce à la croissance de l’exponentielle.\n:::\n\n::: etape Position des courbes\nLa fonction exponentielle est croissante et $e^0 = 1$ : pour $x \\ge 0$, $e^x \\ge 1$. La courbe de $\\exp$ est au-dessus de la droite $y = 1$.\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\n\\mathcal{A} &= \\int_0^1 (e^x - 1)\\,\\mathrm{d}x \\\\\n&= \\big[e^x - x\\big]_0^1 \\\\\n&= (e - 1) - (1 - 0) \\\\\n&= e - 2\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$\\mathcal{A} = e - 2$ u.a. $\\approx 0{,}72$ u.a.\n:::\n\n[IMAGE_4]\n\n## Question 5 : Aire entre $y = x^3$ et $y = x$ sur $[-1\\,;1]$\n\n::: methode\nÉtudier le signe de $x^3 - x$, qui change en $0$ : on découpe l’intervalle.\n:::\n\n::: etape Signe de la différence\n$x^3 - x = x(x - 1)(x + 1)$ s’annule en $-1$, $0$ et $1$.\n\n::: tableau\nx : -1, 0, 1\nx^3 - x : z, +, z, -, z\n:::\n\nSur $[-1\\,;0]$, la courbe $y = x^3$ est au-dessus ; sur $[0\\,;1]$, c’est la droite $y = x$.\n:::\n\n::: etape Premier morceau\n$$\n\\begin{aligned}\n\\int_{-1}^0 (x^3 - x)\\,\\mathrm{d}x &= \\left[\\frac{x^4}{4} - \\frac{x^2}{2}\\right]_{-1}^0 \\\\\n&= 0 - \\left(\\frac{1}{4} - \\frac{1}{2}\\right) \\\\\n&= \\frac{1}{4}\n\\end{aligned}\n$$\n:::\n\n::: etape Second morceau\n$$\n\\begin{aligned}\n\\int_0^1 (x - x^3)\\,\\mathrm{d}x &= \\left[\\frac{x^2}{2} - \\frac{x^4}{4}\\right]_0^1 \\\\\n&= \\frac{1}{2} - \\frac{1}{4} \\\\\n&= \\frac{1}{4}\n\\end{aligned}\n$$\n:::\n\n::: etape Aire totale\n$$\\mathcal{A} = \\frac{1}{4} + \\frac{1}{4} = \\frac{1}{2}$$\n:::\n\n::: attention\nCalculer directement $\\displaystyle\\int_{-1}^1 (x - x^3)\\,\\mathrm{d}x$ donne $0$ : les deux morceaux se compensent. Une aire se calcule toujours morceau par morceau.\n:::\n\n::: resultat\n$\\mathcal{A} = \\dfrac{1}{2}$ u.a.\n:::\n\n[IMAGE_5]",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $\\dfrac{4}{3}$ u.a.\n2. $\\dfrac{1}{6}$ u.a.\n3. $2\\sqrt{2} - 2 \\approx 0{,}83$ u.a.\n4. $e - 2 \\approx 0{,}72$ u.a.\n5. $\\dfrac{1}{2}$ u.a.",
+   "titre": "Entraînement - Calcul Intégral - Aires entre Deux Courbes",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nDans chaque cas, calculer l’aire, en unités d’aire (u.a.), du domaine compris entre les deux courbes sur l’intervalle indiqué.\n\n1. $y = x^2$ et $y = 2x$ sur $[0\\,;2]$\n2. $y = x$ et $y = x^2$ sur $[0\\,;1]$\n3. $y = \\sin x$ et $y = \\cos x$ sur $\\left[0\\,;\\frac{\\pi}{2}\\right]$\n4. $y = e^x$ et $y = 1$ sur $[0\\,;1]$\n5. $y = x^3$ et $y = x$ sur $[-1\\,;1]$"
+  },
+  {
+   "id": 1234,
+   "question": "<!-- optitab:1 -->\nDans chaque cas, calculer l’aire, en unités d’aire (u.a.), du domaine compris entre la courbe, l’axe des abscisses et les droites d’équations indiquées.\n\n1. $y = x^2$, entre $x = 0$ et $x = 3$\n2. $y = 2x + 1$, entre $x = -1$ et $x = 2$\n3. $y = \\sqrt{x}$, entre $x = 0$ et $x = 4$\n4. $y = \\sin x$, entre $x = 0$ et $x = \\pi$\n5. $y = e^x$, entre $x = 0$ et $x = 1$",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Aire sous $y = x^2$ entre $x = 0$ et $x = 3$\n\n::: methode\nLa fonction est positive : l’aire est égale à l’intégrale.\n:::\n\n::: rappel Aire sous une courbe\nSi $f \\ge 0$ sur $[a\\,;b]$, l’aire du domaine est $\\displaystyle\\int_a^b f(x)\\,\\mathrm{d}x$ u.a. ; si $f$ change de signe, on découpe l’intervalle.\n:::\n\n::: etape Signe\n$x^2 \\ge 0$ sur $[0\\,;3]$.\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\n\\mathcal{A} &= \\int_0^3 x^2\\,\\mathrm{d}x \\\\\n&= \\left[\\frac{x^3}{3}\\right]_0^3 \\\\\n&= 9 - 0 \\\\\n&= 9\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$\\mathcal{A} = 9$ u.a.\n:::\n\n[IMAGE_1]\n\n## Question 2 : Aire sous $y = 2x + 1$ entre $x = -1$ et $x = 2$\n\n::: methode\nLa fonction change de signe en $-\\frac{1}{2}$ : on découpe l’intervalle et on compte positivement la partie située sous l’axe.\n:::\n\n::: etape Signe\n$2x + 1 = 0 \\iff x = -\\dfrac{1}{2}$ : la fonction est négative sur $\\left[-1\\,;-\\frac{1}{2}\\right]$ et positive sur $\\left[-\\frac{1}{2}\\,;2\\right]$.\n:::\n\n::: etape Partie sous l’axe\nUne primitive de $2x + 1$ est $x^2 + x$ :\n$$\n\\begin{aligned}\n\\int_{-1}^{-1/2} (2x + 1)\\,\\mathrm{d}x &= \\big[x^2 + x\\big]_{-1}^{-1/2} \\\\\n&= \\left(\\frac{1}{4} - \\frac{1}{2}\\right) - (1 - 1) \\\\\n&= -\\frac{1}{4}\n\\end{aligned}\n$$\nCette partie a donc une aire de $\\dfrac{1}{4}$ u.a.\n:::\n\n::: etape Partie au-dessus de l’axe\n$$\n\\begin{aligned}\n\\int_{-1/2}^{2} (2x + 1)\\,\\mathrm{d}x &= \\big[x^2 + x\\big]_{-1/2}^{2} \\\\\n&= (4 + 2) - \\left(-\\frac{1}{4}\\right) \\\\\n&= \\frac{25}{4}\n\\end{aligned}\n$$\n:::\n\n::: etape Aire totale\n$$\\mathcal{A} = \\frac{1}{4} + \\frac{25}{4} = \\frac{26}{4} = \\frac{13}{2}$$\nVérification géométrique : les deux parties sont des triangles, d’aires $\\frac{1}{2} \\times \\frac{1}{2} \\times 1 = \\frac{1}{4}$ et $\\frac{1}{2} \\times \\frac{5}{2} \\times 5 = \\frac{25}{4}$.\n:::\n\n::: attention\nL’intégrale $\\displaystyle\\int_{-1}^2 (2x + 1)\\,\\mathrm{d}x$ vaut $6$, et non $\\frac{13}{2}$ : elle compte négativement la partie située sous l’axe.\n:::\n\n::: resultat\n$\\mathcal{A} = \\dfrac{13}{2}$ u.a.\n:::\n\n[IMAGE_2]\n\n## Question 3 : Aire sous $y = \\sqrt{x}$ entre $x = 0$ et $x = 4$\n\n::: methode\nFonction positive : aire égale à l’intégrale, avec $\\sqrt{x} = x^{1/2}$.\n:::\n\n::: etape Calcul\nUne primitive de $x^{1/2}$ est $\\dfrac{2}{3}x^{3/2} = \\dfrac{2}{3}x\\sqrt{x}$ :\n$$\n\\begin{aligned}\n\\mathcal{A} &= \\int_0^4 \\sqrt{x}\\,\\mathrm{d}x \\\\\n&= \\left[\\frac{2}{3}x\\sqrt{x}\\right]_0^4 \\\\\n&= \\frac{2}{3} \\times 4 \\times 2 \\\\\n&= \\frac{16}{3}\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$\\mathcal{A} = \\dfrac{16}{3}$ u.a.\n:::\n\n[IMAGE_3]\n\n## Question 4 : Aire sous $y = \\sin x$ entre $x = 0$ et $x = \\pi$\n\n::: methode\n$\\sin x \\ge 0$ sur $[0\\,;\\pi]$ : aire égale à l’intégrale.\n:::\n\n::: etape Calcul\nUne primitive de $\\sin x$ est $-\\cos x$ :\n$$\n\\begin{aligned}\n\\mathcal{A} &= \\int_0^{\\pi} \\sin x\\,\\mathrm{d}x \\\\\n&= \\big[-\\cos x\\big]_0^{\\pi} \\\\\n&= -\\cos\\pi + \\cos 0 \\\\\n&= 1 + 1 = 2\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$\\mathcal{A} = 2$ u.a.\n:::\n\n[IMAGE_4]\n\n## Question 5 : Aire sous $y = e^x$ entre $x = 0$ et $x = 1$\n\n::: methode\n$e^x \\gt 0$ : aire égale à l’intégrale.\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\n\\mathcal{A} &= \\int_0^1 e^x\\,\\mathrm{d}x \\\\\n&= \\big[e^x\\big]_0^1 \\\\\n&= e - 1\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$\\mathcal{A} = e - 1$ u.a. $\\approx 1{,}72$ u.a.\n:::\n\n[IMAGE_5]",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $9$ u.a.\n2. $\\dfrac{13}{2}$ u.a. (alors que l’intégrale vaut $6$)\n3. $\\dfrac{16}{3}$ u.a.\n4. $2$ u.a.\n5. $e - 1 \\approx 1{,}72$ u.a.",
+   "titre": "Entraînement - Calcul Intégral - Aires sous la Courbe",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nDans chaque cas, calculer l’aire, en unités d’aire (u.a.), du domaine compris entre la courbe, l’axe des abscisses et les droites d’équations indiquées.\n\n1. $y = x^2$, entre $x = 0$ et $x = 3$\n2. $y = 2x + 1$, entre $x = -1$ et $x = 2$\n3. $y = \\sqrt{x}$, entre $x = 0$ et $x = 4$\n4. $y = \\sin x$, entre $x = 0$ et $x = \\pi$\n5. $y = e^x$, entre $x = 0$ et $x = 1$"
+  },
+  {
+   "id": 1239,
+   "question": "<!-- optitab:1 -->\nCalculer l’aire, en unités d’aire (u.a.), de chacun des domaines suivants, après avoir déterminé les points d’intersection et les positions relatives des courbes.\n\n1. Le domaine délimité par la courbe de $x \\mapsto x^3$, l’axe des abscisses et les droites $x = -1$ et $x = 2$.\n2. Le domaine délimité par les courbes d’équations $y = x^2$ et $y = 4x - x^2$.\n3. Le domaine compris entre les courbes de $\\sin$ et de $\\cos$ sur $[0\\,;2\\pi]$.\n4. Le domaine compris entre les courbes d’équations $y = e^x$ et $y = e^{-x}$ sur $[0\\,;1]$.\n5. Le domaine délimité par les courbes d’équations $y = x^4 - 2x^2$ et $y = 2x^2$.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Domaine sous $y = x^3$ entre $x = -1$ et $x = 2$\n\n::: methode\n$x^3$ change de signe en $0$ : on découpe l’intervalle et on prend l’opposé de l’intégrale sur la partie négative.\n:::\n\n::: etape Signe\n$x^3 \\le 0$ sur $[-1\\,;0]$ et $x^3 \\ge 0$ sur $[0\\,;2]$.\n:::\n\n::: etape Partie sous l’axe\n$$\n\\begin{aligned}\n\\mathcal{A}_1 &= -\\int_{-1}^0 x^3\\,\\mathrm{d}x \\\\\n&= -\\left[\\frac{x^4}{4}\\right]_{-1}^0 \\\\\n&= -\\left(0 - \\frac{1}{4}\\right) \\\\\n&= \\frac{1}{4}\n\\end{aligned}\n$$\n:::\n\n::: etape Partie au-dessus de l’axe\n$$\n\\begin{aligned}\n\\mathcal{A}_2 &= \\int_0^2 x^3\\,\\mathrm{d}x \\\\\n&= \\left[\\frac{x^4}{4}\\right]_0^2 \\\\\n&= \\frac{16}{4} - 0 \\\\\n&= 4\n\\end{aligned}\n$$\n:::\n\n::: etape Aire totale\n$$\\mathcal{A} = \\frac{1}{4} + 4 = \\frac{17}{4}$$\n:::\n\n::: resultat\n$\\mathcal{A} = \\dfrac{17}{4}$ u.a. $= 4{,}25$ u.a.\n:::\n\n[IMAGE_1]\n\n## Question 2 : Domaine entre $y = x^2$ et $y = 4x - x^2$\n\n::: methode\nChercher les abscisses des points d’intersection (ce sont les bornes), puis la courbe du dessus.\n:::\n\n::: etape Points d’intersection\n$$\n\\begin{aligned}\nx^2 = 4x - x^2 &\\iff 2x^2 - 4x = 0 \\\\\n&\\iff 2x(x - 2) = 0 \\\\\n&\\iff x = 0 \\text{ ou } x = 2\n\\end{aligned}\n$$\n:::\n\n::: etape Position des courbes\n$(4x - x^2) - x^2 = 2x(2 - x) \\ge 0$ sur $[0\\,;2]$ : la parabole $y = 4x - x^2$ est au-dessus.\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\n\\mathcal{A} &= \\int_0^2 (4x - 2x^2)\\,\\mathrm{d}x \\\\\n&= \\left[2x^2 - \\frac{2x^3}{3}\\right]_0^2 \\\\\n&= 8 - \\frac{16}{3} \\\\\n&= \\frac{8}{3}\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$\\mathcal{A} = \\dfrac{8}{3}$ u.a.\n:::\n\n[IMAGE_2]\n\n## Question 3 : Domaine entre les courbes de $\\sin$ et de $\\cos$ sur $[0\\,;2\\pi]$\n\n::: methode\nLes courbes se coupent deux fois : on découpe en trois morceaux, en intégrant à chaque fois « haut moins bas ».\n:::\n\n::: etape Points d’intersection\n$\\sin x = \\cos x \\iff \\tan x = 1 \\iff x = \\dfrac{\\pi}{4} + k\\pi$ ($k$ entier). Sur $[0\\,;2\\pi]$ : $x = \\dfrac{\\pi}{4}$ et $x = \\dfrac{5\\pi}{4}$.\n:::\n\n::: etape Position des courbes\n- Sur $\\left[0\\,;\\frac{\\pi}{4}\\right]$ et sur $\\left[\\frac{5\\pi}{4}\\,;2\\pi\\right]$ : $\\cos x \\ge \\sin x$.\n- Sur $\\left[\\frac{\\pi}{4}\\,;\\frac{5\\pi}{4}\\right]$ : $\\sin x \\ge \\cos x$ (en $\\pi$, $\\sin\\pi = 0 \\gt -1 = \\cos\\pi$).\n:::\n\n::: etape Premier morceau\n$$\n\\begin{aligned}\n\\mathcal{A}_1 &= \\int_0^{\\pi/4} (\\cos x - \\sin x)\\,\\mathrm{d}x = \\big[\\sin x + \\cos x\\big]_0^{\\pi/4} \\\\\n&= \\left(\\frac{\\sqrt{2}}{2} + \\frac{\\sqrt{2}}{2}\\right) - (0 + 1) \\\\\n&= \\sqrt{2} - 1\n\\end{aligned}\n$$\n:::\n\n::: etape Deuxième morceau\n$$\n\\begin{aligned}\n\\mathcal{A}_2 &= \\int_{\\pi/4}^{5\\pi/4} (\\sin x - \\cos x)\\,\\mathrm{d}x = \\big[-\\cos x - \\sin x\\big]_{\\pi/4}^{5\\pi/4} \\\\\n&= \\left(\\frac{\\sqrt{2}}{2} + \\frac{\\sqrt{2}}{2}\\right) - \\left(-\\frac{\\sqrt{2}}{2} - \\frac{\\sqrt{2}}{2}\\right) \\\\\n&= 2\\sqrt{2}\n\\end{aligned}\n$$\n:::\n\n::: etape Troisième morceau\n$$\n\\begin{aligned}\n\\mathcal{A}_3 &= \\int_{5\\pi/4}^{2\\pi} (\\cos x - \\sin x)\\,\\mathrm{d}x = \\big[\\sin x + \\cos x\\big]_{5\\pi/4}^{2\\pi} \\\\\n&= (0 + 1) - \\left(-\\frac{\\sqrt{2}}{2} - \\frac{\\sqrt{2}}{2}\\right) \\\\\n&= 1 + \\sqrt{2}\n\\end{aligned}\n$$\n:::\n\n::: etape Aire totale\n$$\\mathcal{A} = (\\sqrt{2} - 1) + 2\\sqrt{2} + (1 + \\sqrt{2}) = 4\\sqrt{2} \\approx 5{,}66$$\n:::\n\n::: resultat\n$\\mathcal{A} = 4\\sqrt{2}$ u.a. $\\approx 5{,}66$ u.a.\n:::\n\n[IMAGE_3]\n\n## Question 4 : Domaine entre $y = e^x$ et $y = e^{-x}$ sur $[0\\,;1]$\n\n::: methode\nComparer les exposants, puis intégrer la différence.\n:::\n\n::: etape Position des courbes\nPour $x \\ge 0$, $x \\ge -x$ ; la fonction exponentielle étant croissante, $e^x \\ge e^{-x}$ sur $[0\\,;1]$.\n:::\n\n::: etape Calcul\nUne primitive de $e^{-x}$ est $-e^{-x}$, donc une primitive de $e^x - e^{-x}$ est $e^x + e^{-x}$ :\n$$\n\\begin{aligned}\n\\mathcal{A} &= \\int_0^1 (e^x - e^{-x})\\,\\mathrm{d}x \\\\\n&= \\big[e^x + e^{-x}\\big]_0^1 \\\\\n&= \\left(e + \\frac{1}{e}\\right) - (1 + 1) \\\\\n&= e + \\frac{1}{e} - 2\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$\\mathcal{A} = e + \\dfrac{1}{e} - 2$ u.a. $\\approx 1{,}09$ u.a.\n:::\n\n[IMAGE_4]\n\n## Question 5 : Domaine entre $y = x^4 - 2x^2$ et $y = 2x^2$\n\n::: methode\nPoints d’intersection, position des courbes, puis parité pour simplifier le calcul.\n:::\n\n::: etape Points d’intersection\n$$\n\\begin{aligned}\nx^4 - 2x^2 = 2x^2 &\\iff x^4 - 4x^2 = 0 \\\\\n&\\iff x^2(x^2 - 4) = 0 \\\\\n&\\iff x = -2,\\ x = 0 \\text{ ou } x = 2\n\\end{aligned}\n$$\n:::\n\n::: etape Position des courbes\n$2x^2 - (x^4 - 2x^2) = 4x^2 - x^4 = x^2(4 - x^2) \\ge 0$ sur $[-2\\,;2]$ : la parabole $y = 2x^2$ est au-dessus.\n:::\n\n::: etape Utilisation de la parité\nLa fonction $x \\mapsto 4x^2 - x^4$ est paire : sa courbe est symétrique par rapport à l’axe des ordonnées, donc les aires sur $[-2\\,;0]$ et sur $[0\\,;2]$ sont égales.\n$$\\mathcal{A} = 2\\int_0^2 (4x^2 - x^4)\\,\\mathrm{d}x$$\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\n\\mathcal{A} &= 2\\left[\\frac{4x^3}{3} - \\frac{x^5}{5}\\right]_0^2 \\\\\n&= 2\\left(\\frac{32}{3} - \\frac{32}{5}\\right) \\\\\n&= 2 \\times \\frac{64}{15} \\\\\n&= \\frac{128}{15}\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$\\mathcal{A} = \\dfrac{128}{15}$ u.a. $\\approx 8{,}53$ u.a.\n:::\n\n[IMAGE_5]",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $\\dfrac{1}{4} + 4 = \\dfrac{17}{4}$ u.a.\n2. $\\dfrac{8}{3}$ u.a.\n3. $4\\sqrt{2} \\approx 5{,}66$ u.a.\n4. $e + \\dfrac{1}{e} - 2 \\approx 1{,}09$ u.a.\n5. $\\dfrac{128}{15} \\approx 8{,}53$ u.a.",
+   "titre": "Entraînement - Calcul Intégral - Applications Géométriques Avancées",
+   "difficulty": "hard",
+   "contenu": "<!-- optitab:1 -->\nCalculer l’aire, en unités d’aire (u.a.), de chacun des domaines suivants, après avoir déterminé les points d’intersection et les positions relatives des courbes.\n\n1. Le domaine délimité par la courbe de $x \\mapsto x^3$, l’axe des abscisses et les droites $x = -1$ et $x = 2$.\n2. Le domaine délimité par les courbes d’équations $y = x^2$ et $y = 4x - x^2$.\n3. Le domaine compris entre les courbes de $\\sin$ et de $\\cos$ sur $[0\\,;2\\pi]$.\n4. Le domaine compris entre les courbes d’équations $y = e^x$ et $y = e^{-x}$ sur $[0\\,;1]$.\n5. Le domaine délimité par les courbes d’équations $y = x^4 - 2x^2$ et $y = 2x^2$."
+  },
+  {
+   "id": 1237,
+   "question": "<!-- optitab:1 -->\nCalculer les intégrales suivantes en reconnaissant la dérivée d’une fonction composée, c’est-à-dire une expression de la forme $u'(x)\\,f\\big(u(x)\\big)$, avec la fonction $u$ indiquée.\n\n1. $\\displaystyle\\int_0^2 2x(x^2 + 1)^3\\,\\mathrm{d}x$, avec $u(x) = x^2 + 1$\n2. $\\displaystyle\\int_0^1 \\frac{2x}{x^2 + 1}\\,\\mathrm{d}x$, avec $u(x) = x^2 + 1$\n3. $\\displaystyle\\int_0^1 xe^{x^2}\\,\\mathrm{d}x$, avec $u(x) = x^2$\n4. $\\displaystyle\\int_0^2 \\frac{1}{\\sqrt{2x + 3}}\\,\\mathrm{d}x$, avec $u(x) = 2x + 3$\n5. $\\displaystyle\\int_1^2 \\frac{1}{(x + 1)^2}\\,\\mathrm{d}x$, avec $u(x) = x + 1$",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Calculer $\\displaystyle\\int_0^2 2x(x^2 + 1)^3\\,\\mathrm{d}x$\n\n::: methode\nReconnaître la forme $u'u^3$, dont une primitive est $\\dfrac{u^4}{4}$.\n:::\n\n::: rappel Primitives de fonctions composées\nPour $u$ dérivable : $u'u^n$ a pour primitive $\\dfrac{u^{n+1}}{n+1}$ ; $\\dfrac{u'}{u}$ a pour primitive $\\ln u$ (si $u \\gt 0$) ; $u'e^u$ a pour primitive $e^u$ ; $\\dfrac{u'}{\\sqrt{u}}$ a pour primitive $2\\sqrt{u}$ ; $\\dfrac{u'}{u^2}$ a pour primitive $-\\dfrac{1}{u}$.\n:::\n\n::: etape Reconnaître la forme\nAvec $u(x) = x^2 + 1$, on a $u'(x) = 2x$, donc $2x(x^2 + 1)^3 = u'(x)\\,u(x)^3$.\n:::\n\n::: etape Primitive\nUne primitive est $F(x) = \\dfrac{(x^2 + 1)^4}{4}$.\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\n\\int_0^2 2x(x^2 + 1)^3\\,\\mathrm{d}x &= \\left[\\frac{(x^2 + 1)^4}{4}\\right]_0^2 \\\\\n&= \\frac{5^4}{4} - \\frac{1^4}{4} \\\\\n&= \\frac{625 - 1}{4} \\\\\n&= 156\n\\end{aligned}\n$$\n:::\n\n::: remarque Pour aller plus loin : le changement de variable\nHors programme de Terminale : on peut aussi « poser $u = x^2 + 1$ », ce qui transforme l’intégrale en $\\displaystyle\\int_{u(0)}^{u(2)} u^3\\,\\mathrm{d}u = \\int_1^5 u^3\\,\\mathrm{d}u = \\left[\\frac{u^4}{4}\\right]_1^5 = 156$. Les bornes changent avec la variable : c’est la même idée que la forme $u'u^3$.\n:::\n\n::: resultat\n$$\\int_0^2 2x(x^2 + 1)^3\\,\\mathrm{d}x = 156$$\n:::\n\n## Question 2 : Calculer $\\displaystyle\\int_0^1 \\frac{2x}{x^2 + 1}\\,\\mathrm{d}x$\n\n::: methode\nReconnaître la forme $\\dfrac{u'}{u}$ avec $u \\gt 0$, dont une primitive est $\\ln u$.\n:::\n\n::: etape Reconnaître la forme\nAvec $u(x) = x^2 + 1$, $u'(x) = 2x$ et $u(x) \\gt 0$ : $\\dfrac{2x}{x^2 + 1} = \\dfrac{u'(x)}{u(x)}$.\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\n\\int_0^1 \\frac{2x}{x^2 + 1}\\,\\mathrm{d}x &= \\big[\\ln(x^2 + 1)\\big]_0^1 \\\\\n&= \\ln 2 - \\ln 1 \\\\\n&= \\ln 2\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$$\\int_0^1 \\frac{2x}{x^2 + 1}\\,\\mathrm{d}x = \\ln 2$$\n:::\n\n## Question 3 : Calculer $\\displaystyle\\int_0^1 xe^{x^2}\\,\\mathrm{d}x$\n\n::: methode\nFaire apparaître $u'e^u$ avec $u(x) = x^2$ en ajustant le coefficient.\n:::\n\n::: etape Reconnaître la forme\nAvec $u(x) = x^2$, $u'(x) = 2x$. Il manque un facteur $2$ : $xe^{x^2} = \\dfrac{1}{2} \\times 2xe^{x^2} = \\dfrac{1}{2}u'(x)\\,e^{u(x)}$.\n:::\n\n::: etape Primitive\nUne primitive est $F(x) = \\dfrac{1}{2}e^{x^2}$.\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\n\\int_0^1 xe^{x^2}\\,\\mathrm{d}x &= \\left[\\frac{1}{2}e^{x^2}\\right]_0^1 \\\\\n&= \\frac{1}{2}e - \\frac{1}{2} \\\\\n&= \\frac{e - 1}{2}\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$$\\int_0^1 xe^{x^2}\\,\\mathrm{d}x = \\frac{e - 1}{2}$$\n:::\n\n## Question 4 : Calculer $\\displaystyle\\int_0^2 \\frac{1}{\\sqrt{2x + 3}}\\,\\mathrm{d}x$\n\n::: methode\nFaire apparaître $\\dfrac{u'}{\\sqrt{u}}$ avec $u(x) = 2x + 3$, dont une primitive est $2\\sqrt{u}$.\n:::\n\n::: etape Reconnaître la forme\nAvec $u(x) = 2x + 3$, $u'(x) = 2$ et $u(x) \\gt 0$ sur $[0\\,;2]$ : $\\dfrac{1}{\\sqrt{2x + 3}} = \\dfrac{1}{2} \\times \\dfrac{u'(x)}{\\sqrt{u(x)}}$.\n:::\n\n::: etape Primitive\nUne primitive est $F(x) = \\dfrac{1}{2} \\times 2\\sqrt{2x + 3} = \\sqrt{2x + 3}$.\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\n\\int_0^2 \\frac{1}{\\sqrt{2x + 3}}\\,\\mathrm{d}x &= \\big[\\sqrt{2x + 3}\\big]_0^2 \\\\\n&= \\sqrt{7} - \\sqrt{3}\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$$\\int_0^2 \\frac{1}{\\sqrt{2x + 3}}\\,\\mathrm{d}x = \\sqrt{7} - \\sqrt{3} \\approx 0{,}91$$\n:::\n\n## Question 5 : Calculer $\\displaystyle\\int_1^2 \\frac{1}{(x + 1)^2}\\,\\mathrm{d}x$\n\n::: methode\nReconnaître la forme $\\dfrac{u'}{u^2}$, dont une primitive est $-\\dfrac{1}{u}$.\n:::\n\n::: etape Reconnaître la forme\nAvec $u(x) = x + 1$, $u'(x) = 1$ : $\\dfrac{1}{(x + 1)^2} = \\dfrac{u'(x)}{u(x)^2}$.\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\n\\int_1^2 \\frac{1}{(x + 1)^2}\\,\\mathrm{d}x &= \\left[-\\frac{1}{x + 1}\\right]_1^2 \\\\\n&= -\\frac{1}{3} + \\frac{1}{2} \\\\\n&= \\frac{1}{6}\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$$\\int_1^2 \\frac{1}{(x + 1)^2}\\,\\mathrm{d}x = \\frac{1}{6}$$\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $\\left[\\dfrac{(x^2 + 1)^4}{4}\\right]_0^2 = 156$\n2. $\\big[\\ln(x^2 + 1)\\big]_0^1 = \\ln 2$\n3. $\\left[\\dfrac{1}{2}e^{x^2}\\right]_0^1 = \\dfrac{e - 1}{2}$\n4. $\\big[\\sqrt{2x + 3}\\big]_0^2 = \\sqrt{7} - \\sqrt{3}$\n5. $\\left[-\\dfrac{1}{x + 1}\\right]_1^2 = \\dfrac{1}{6}$",
+   "titre": "Entraînement - Calcul Intégral - Changement de Variable",
+   "difficulty": "hard",
+   "contenu": "<!-- optitab:1 -->\nCalculer les intégrales suivantes en reconnaissant la dérivée d’une fonction composée, c’est-à-dire une expression de la forme $u'(x)\\,f\\big(u(x)\\big)$, avec la fonction $u$ indiquée.\n\n1. $\\displaystyle\\int_0^2 2x(x^2 + 1)^3\\,\\mathrm{d}x$, avec $u(x) = x^2 + 1$\n2. $\\displaystyle\\int_0^1 \\frac{2x}{x^2 + 1}\\,\\mathrm{d}x$, avec $u(x) = x^2 + 1$\n3. $\\displaystyle\\int_0^1 xe^{x^2}\\,\\mathrm{d}x$, avec $u(x) = x^2$\n4. $\\displaystyle\\int_0^2 \\frac{1}{\\sqrt{2x + 3}}\\,\\mathrm{d}x$, avec $u(x) = 2x + 3$\n5. $\\displaystyle\\int_1^2 \\frac{1}{(x + 1)^2}\\,\\mathrm{d}x$, avec $u(x) = x + 1$"
+  },
+  {
+   "id": 1233,
+   "question": "<!-- optitab:1 -->\nCalculer les intégrales suivantes.\n\n1. $\\displaystyle\\int_0^1 e^{2x}\\,\\mathrm{d}x$\n2. $\\displaystyle\\int_0^{\\pi/2} \\sin x\\,\\mathrm{d}x$\n3. $\\displaystyle\\int_0^{\\pi} \\cos x\\,\\mathrm{d}x$\n4. $\\displaystyle\\int_0^1 (e^x + \\sin x)\\,\\mathrm{d}x$\n5. $\\displaystyle\\int_{-1}^1 e^{-x}\\,\\mathrm{d}x$",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Calculer $\\displaystyle\\int_0^1 e^{2x}\\,\\mathrm{d}x$\n\n::: methode\nUne primitive de $e^{ax}$ ($a \\ne 0$) est $\\dfrac{1}{a}e^{ax}$.\n:::\n\n::: rappel Primitives utiles\n$e^{ax}$ a pour primitive $\\dfrac{1}{a}e^{ax}$ ; $\\sin x$ a pour primitive $-\\cos x$ ; $\\cos x$ a pour primitive $\\sin x$.\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\n\\int_0^1 e^{2x}\\,\\mathrm{d}x &= \\left[\\frac{1}{2}e^{2x}\\right]_0^1 \\\\\n&= \\frac{e^2}{2} - \\frac{1}{2} \\\\\n&= \\frac{e^2 - 1}{2}\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$$\\int_0^1 e^{2x}\\,\\mathrm{d}x = \\frac{e^2 - 1}{2} \\approx 3{,}19$$\n:::\n\n## Question 2 : Calculer $\\displaystyle\\int_0^{\\pi/2} \\sin x\\,\\mathrm{d}x$\n\n::: methode\nUne primitive de $\\sin x$ est $-\\cos x$ (attention au signe).\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\n\\int_0^{\\pi/2} \\sin x\\,\\mathrm{d}x &= \\big[-\\cos x\\big]_0^{\\pi/2} \\\\\n&= -\\cos\\frac{\\pi}{2} + \\cos 0 \\\\\n&= 0 + 1 \\\\\n&= 1\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$$\\int_0^{\\pi/2} \\sin x\\,\\mathrm{d}x = 1$$\n:::\n\n## Question 3 : Calculer $\\displaystyle\\int_0^{\\pi} \\cos x\\,\\mathrm{d}x$\n\n::: methode\nUne primitive de $\\cos x$ est $\\sin x$.\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\n\\int_0^{\\pi} \\cos x\\,\\mathrm{d}x &= \\big[\\sin x\\big]_0^{\\pi} \\\\\n&= \\sin\\pi - \\sin 0 \\\\\n&= 0\n\\end{aligned}\n$$\n:::\n\n::: remarque\n$\\cos$ est positive sur $\\left[0\\,;\\frac{\\pi}{2}\\right]$ et négative sur $\\left[\\frac{\\pi}{2}\\,;\\pi\\right]$ : par symétrie, les deux parties se compensent exactement. Une intégrale nulle ne signifie pas que la fonction est nulle.\n:::\n\n::: resultat\n$$\\int_0^{\\pi} \\cos x\\,\\mathrm{d}x = 0$$\n:::\n\n## Question 4 : Calculer $\\displaystyle\\int_0^1 (e^x + \\sin x)\\,\\mathrm{d}x$\n\n::: methode\nLinéarité : primitive de chaque terme.\n:::\n\n::: etape Primitive\nUne primitive de $e^x + \\sin x$ est $F(x) = e^x - \\cos x$.\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\n\\int_0^1 (e^x + \\sin x)\\,\\mathrm{d}x &= \\big[e^x - \\cos x\\big]_0^1 \\\\\n&= (e - \\cos 1) - (1 - 1) \\\\\n&= e - \\cos 1\n\\end{aligned}\n$$\n:::\n\n::: attention\n$\\cos 0 = 1$ : le terme $F(0) = e^0 - \\cos 0$ vaut bien $0$, et non $1$.\n:::\n\n::: resultat\n$$\\int_0^1 (e^x + \\sin x)\\,\\mathrm{d}x = e - \\cos 1 \\approx 2{,}18$$\n:::\n\n## Question 5 : Calculer $\\displaystyle\\int_{-1}^1 e^{-x}\\,\\mathrm{d}x$\n\n::: methode\nPrimitive de $e^{ax}$ avec $a = -1$ : $-e^{-x}$.\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\n\\int_{-1}^1 e^{-x}\\,\\mathrm{d}x &= \\big[-e^{-x}\\big]_{-1}^1 \\\\\n&= -e^{-1} - (-e^{1}) \\\\\n&= e - \\frac{1}{e}\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$$\\int_{-1}^1 e^{-x}\\,\\mathrm{d}x = e - \\frac{1}{e} \\approx 2{,}35$$\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $\\dfrac{e^2 - 1}{2} \\approx 3{,}19$\n2. $1$\n3. $0$\n4. $e - \\cos 1 \\approx 2{,}18$\n5. $e - \\dfrac{1}{e} \\approx 2{,}35$",
+   "titre": "Entraînement - Calcul Intégral - Exponentielles et Trigonométriques",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nCalculer les intégrales suivantes.\n\n1. $\\displaystyle\\int_0^1 e^{2x}\\,\\mathrm{d}x$\n2. $\\displaystyle\\int_0^{\\pi/2} \\sin x\\,\\mathrm{d}x$\n3. $\\displaystyle\\int_0^{\\pi} \\cos x\\,\\mathrm{d}x$\n4. $\\displaystyle\\int_0^1 (e^x + \\sin x)\\,\\mathrm{d}x$\n5. $\\displaystyle\\int_{-1}^1 e^{-x}\\,\\mathrm{d}x$"
+  },
+  {
+   "id": 1241,
+   "question": "<!-- optitab:1 -->\nPour chaque fonction, calculer l’intégrale demandée, puis l’aire, en unités d’aire (u.a.), du domaine compris entre la courbe et l’axe des abscisses sur le même intervalle. Comparer les deux résultats.\n\n1. $\\displaystyle\\int_{-2}^1 (x^2 - 1)\\,\\mathrm{d}x$\n2. $\\displaystyle\\int_{-1}^2 (x^3 - x)\\,\\mathrm{d}x$\n3. $\\displaystyle\\int_0^{2\\pi} \\sin x\\,\\mathrm{d}x$ (interpréter géométriquement le résultat)\n4. $\\displaystyle\\int_{-2}^2 (x^2 - 4)\\,\\mathrm{d}x$\n5. $\\displaystyle\\int_0^3 (x^2 - 4x + 3)\\,\\mathrm{d}x$",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : $\\displaystyle\\int_{-2}^1 (x^2 - 1)\\,\\mathrm{d}x$ et aire\n\n::: methode\nL’intégrale est une aire algébrique ; pour l’aire, on découpe aux zéros de la fonction et on compte chaque morceau positivement.\n:::\n\n::: rappel Intégrale et aire\nSur un intervalle où $f \\ge 0$, l’aire vaut $\\displaystyle\\int f$ ; là où $f \\le 0$, elle vaut $\\displaystyle -\\int f$.\n:::\n\n::: etape Signe de $x^2 - 1$\n$x^2 - 1 = (x - 1)(x + 1)$ s’annule en $-1$ et en $1$.\n\n::: tableau\nx : -2, -1, 1\nx^2 - 1 : , +, z, -, z\n:::\n:::\n\n::: etape Intégrale\nUne primitive de $x^2 - 1$ est $F(x) = \\dfrac{x^3}{3} - x$ :\n$$\n\\begin{aligned}\n\\int_{-2}^1 (x^2 - 1)\\,\\mathrm{d}x &= \\left(\\frac{1}{3} - 1\\right) - \\left(-\\frac{8}{3} + 2\\right) \\\\\n&= -\\frac{2}{3} + \\frac{2}{3} \\\\\n&= 0\n\\end{aligned}\n$$\n:::\n\n::: etape Aire\n$$\n\\begin{aligned}\n\\mathcal{A}_1 &= \\int_{-2}^{-1} (x^2 - 1)\\,\\mathrm{d}x = \\frac{2}{3} - \\left(-\\frac{2}{3}\\right) = \\frac{4}{3} \\\\\n\\mathcal{A}_2 &= -\\int_{-1}^{1} (x^2 - 1)\\,\\mathrm{d}x = -\\left(-\\frac{2}{3} - \\frac{2}{3}\\right) = \\frac{4}{3}\n\\end{aligned}\n$$\nDonc $\\mathcal{A} = \\dfrac{4}{3} + \\dfrac{4}{3} = \\dfrac{8}{3}$.\n:::\n\n::: resultat\nIntégrale : $0$ ; aire : $\\dfrac{8}{3}$ u.a. Les parties au-dessus et au-dessous de l’axe ont la même aire et se compensent dans l’intégrale.\n:::\n\n[IMAGE_1]\n\n## Question 2 : $\\displaystyle\\int_{-1}^2 (x^3 - x)\\,\\mathrm{d}x$ et aire\n\n::: methode\nTrois morceaux de signes alternés : on calcule chacun, puis on additionne leurs valeurs absolues.\n:::\n\n::: etape Signe de $x^3 - x$\n$x^3 - x = x(x - 1)(x + 1)$ s’annule en $-1$, $0$ et $1$.\n\n::: tableau\nx : -1, 0, 1, 2\nx^3 - x : z, +, z, -, z, +,\n:::\n:::\n\n::: etape Intégrale\nUne primitive est $F(x) = \\dfrac{x^4}{4} - \\dfrac{x^2}{2}$ :\n$$\n\\begin{aligned}\n\\int_{-1}^2 (x^3 - x)\\,\\mathrm{d}x &= (4 - 2) - \\left(\\frac{1}{4} - \\frac{1}{2}\\right) \\\\\n&= 2 + \\frac{1}{4} \\\\\n&= \\frac{9}{4}\n\\end{aligned}\n$$\n:::\n\n::: etape Aire\n$$\n\\begin{aligned}\n\\mathcal{A}_1 &= \\int_{-1}^{0} (x^3 - x)\\,\\mathrm{d}x = 0 - \\left(-\\frac{1}{4}\\right) = \\frac{1}{4} \\\\\n\\mathcal{A}_2 &= -\\int_{0}^{1} (x^3 - x)\\,\\mathrm{d}x = -\\left(-\\frac{1}{4} - 0\\right) = \\frac{1}{4} \\\\\n\\mathcal{A}_3 &= \\int_{1}^{2} (x^3 - x)\\,\\mathrm{d}x = 2 - \\left(-\\frac{1}{4}\\right) = \\frac{9}{4}\n\\end{aligned}\n$$\nDonc $\\mathcal{A} = \\dfrac{1}{4} + \\dfrac{1}{4} + \\dfrac{9}{4} = \\dfrac{11}{4}$.\n:::\n\n::: resultat\nIntégrale : $\\dfrac{9}{4}$ ; aire : $\\dfrac{11}{4}$ u.a. La partie située sous l’axe ($\\frac{1}{4}$ u.a.) est retranchée dans l’intégrale : $\\frac{11}{4} - 2 \\times \\frac{1}{4} = \\frac{9}{4}$.\n:::\n\n[IMAGE_2]\n\n## Question 3 : $\\displaystyle\\int_0^{2\\pi} \\sin x\\,\\mathrm{d}x$ et interprétation\n\n::: methode\nCalculer l’intégrale, puis l’aire des deux arches séparément.\n:::\n\n::: etape Intégrale\n$$\n\\begin{aligned}\n\\int_0^{2\\pi} \\sin x\\,\\mathrm{d}x &= \\big[-\\cos x\\big]_0^{2\\pi} \\\\\n&= -\\cos(2\\pi) + \\cos 0 \\\\\n&= -1 + 1 \\\\\n&= 0\n\\end{aligned}\n$$\n:::\n\n::: etape Aire\n$\\sin x \\ge 0$ sur $[0\\,;\\pi]$ et $\\sin x \\le 0$ sur $[\\pi\\,;2\\pi]$ :\n$$\n\\begin{aligned}\n\\mathcal{A}_1 &= \\int_0^{\\pi} \\sin x\\,\\mathrm{d}x = \\big[-\\cos x\\big]_0^{\\pi} = 1 + 1 = 2 \\\\\n\\mathcal{A}_2 &= -\\int_{\\pi}^{2\\pi} \\sin x\\,\\mathrm{d}x = -\\big[-\\cos x\\big]_{\\pi}^{2\\pi} = -(-1 - 1) = 2\n\\end{aligned}\n$$\nDonc $\\mathcal{A} = 2 + 2 = 4$.\n:::\n\n::: etape Interprétation\nL’arche située au-dessus de l’axe et celle située en dessous ont la même aire, $2$ u.a. : dans l’intégrale, la seconde compte négativement, d’où un total nul.\n:::\n\n::: resultat\nIntégrale : $0$ ; aire : $4$ u.a.\n:::\n\n[IMAGE_3]\n\n## Question 4 : $\\displaystyle\\int_{-2}^2 (x^2 - 4)\\,\\mathrm{d}x$ et aire\n\n::: methode\nLa fonction est négative sur tout l’intervalle : l’aire est l’opposé de l’intégrale.\n:::\n\n::: etape Signe de $x^2 - 4$\n$x^2 - 4 = (x - 2)(x + 2) \\le 0$ sur $[-2\\,;2]$.\n\n::: tableau\nx : -2, 2\nx^2 - 4 : z, -, z\n:::\n:::\n\n::: etape Intégrale\n$$\n\\begin{aligned}\n\\int_{-2}^2 (x^2 - 4)\\,\\mathrm{d}x &= \\left[\\frac{x^3}{3} - 4x\\right]_{-2}^2 \\\\\n&= \\left(\\frac{8}{3} - 8\\right) - \\left(-\\frac{8}{3} + 8\\right) \\\\\n&= -\\frac{16}{3} - \\frac{16}{3} \\\\\n&= -\\frac{32}{3}\n\\end{aligned}\n$$\n:::\n\n::: etape Aire\n$$\\mathcal{A} = -\\int_{-2}^2 (x^2 - 4)\\,\\mathrm{d}x = \\frac{32}{3}$$\n:::\n\n::: resultat\nIntégrale : $-\\dfrac{32}{3}$ ; aire : $\\dfrac{32}{3}$ u.a.\n:::\n\n[IMAGE_4]\n\n## Question 5 : $\\displaystyle\\int_0^3 (x^2 - 4x + 3)\\,\\mathrm{d}x$ et aire\n\n::: methode\nFactoriser pour trouver les zéros, puis découper l’intervalle.\n:::\n\n::: etape Signe de $x^2 - 4x + 3$\n$x^2 - 4x + 3 = (x - 1)(x - 3)$ s’annule en $1$ et en $3$.\n\n::: tableau\nx : 0, 1, 3\nx^2 - 4x + 3 : , +, z, -, z\n:::\n:::\n\n::: etape Intégrale\nUne primitive est $F(x) = \\dfrac{x^3}{3} - 2x^2 + 3x$ :\n$$\n\\begin{aligned}\n\\int_0^3 (x^2 - 4x + 3)\\,\\mathrm{d}x &= (9 - 18 + 9) - 0 \\\\\n&= 0\n\\end{aligned}\n$$\n:::\n\n::: etape Aire\n$F(1) = \\dfrac{1}{3} - 2 + 3 = \\dfrac{4}{3}$, $F(0) = 0$ et $F(3) = 0$ :\n$$\n\\begin{aligned}\n\\mathcal{A}_1 &= \\int_0^1 (x^2 - 4x + 3)\\,\\mathrm{d}x = F(1) - F(0) = \\frac{4}{3} \\\\\n\\mathcal{A}_2 &= -\\int_1^3 (x^2 - 4x + 3)\\,\\mathrm{d}x = -\\big(F(3) - F(1)\\big) = \\frac{4}{3}\n\\end{aligned}\n$$\nDonc $\\mathcal{A} = \\dfrac{4}{3} + \\dfrac{4}{3} = \\dfrac{8}{3}$.\n:::\n\n::: resultat\nIntégrale : $0$ ; aire : $\\dfrac{8}{3}$ u.a.\n:::\n\n[IMAGE_5]",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. Intégrale : $0$ ; aire : $\\dfrac{8}{3}$ u.a.\n2. Intégrale : $\\dfrac{9}{4}$ ; aire : $\\dfrac{11}{4}$ u.a.\n3. Intégrale : $0$ ; aire : $4$ u.a. (les deux arches se compensent)\n4. Intégrale : $-\\dfrac{32}{3}$ ; aire : $\\dfrac{32}{3}$ u.a.\n5. Intégrale : $0$ ; aire : $\\dfrac{8}{3}$ u.a.",
+   "titre": "Entraînement - Calcul Intégral - Fonctions de Signe Quelconque",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nPour chaque fonction, calculer l’intégrale demandée, puis l’aire, en unités d’aire (u.a.), du domaine compris entre la courbe et l’axe des abscisses sur le même intervalle. Comparer les deux résultats.\n\n1. $\\displaystyle\\int_{-2}^1 (x^2 - 1)\\,\\mathrm{d}x$\n2. $\\displaystyle\\int_{-1}^2 (x^3 - x)\\,\\mathrm{d}x$\n3. $\\displaystyle\\int_0^{2\\pi} \\sin x\\,\\mathrm{d}x$ (interpréter géométriquement le résultat)\n4. $\\displaystyle\\int_{-2}^2 (x^2 - 4)\\,\\mathrm{d}x$\n5. $\\displaystyle\\int_0^3 (x^2 - 4x + 3)\\,\\mathrm{d}x$"
+  },
+  {
+   "id": 1238,
+   "question": "<!-- optitab:1 -->\nCalculer les intégrales suivantes à l’aide d’une intégration par parties.\n\n1. $\\displaystyle\\int_0^1 xe^x\\,\\mathrm{d}x$\n2. $\\displaystyle\\int_0^{\\pi/2} x\\cos x\\,\\mathrm{d}x$\n3. $\\displaystyle\\int_1^e \\ln x\\,\\mathrm{d}x$\n4. $\\displaystyle\\int_0^1 xe^{2x}\\,\\mathrm{d}x$\n5. $\\displaystyle\\int_0^{\\pi} x\\sin x\\,\\mathrm{d}x$",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Calculer $\\displaystyle\\int_0^1 xe^x\\,\\mathrm{d}x$\n\n::: methode\nIntégration par parties avec $u(x) = x$ (il se simplifie en dérivant) et $v'(x) = e^x$.\n:::\n\n::: rappel Intégration par parties\n$\\displaystyle\\int_a^b u(x)\\,v'(x)\\,\\mathrm{d}x = \\big[u(x)\\,v(x)\\big]_a^b - \\int_a^b u'(x)\\,v(x)\\,\\mathrm{d}x$, avec $u$ et $v$ dérivables à dérivées continues.\n:::\n\n::: etape Choix de $u$ et $v'$\n$$\n\\begin{aligned}\nu(x) &= x & u'(x) &= 1 \\\\\nv'(x) &= e^x & v(x) &= e^x\n\\end{aligned}\n$$\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\n\\int_0^1 xe^x\\,\\mathrm{d}x &= \\big[xe^x\\big]_0^1 - \\int_0^1 e^x\\,\\mathrm{d}x \\\\\n&= (e - 0) - \\big[e^x\\big]_0^1 \\\\\n&= e - (e - 1) \\\\\n&= 1\n\\end{aligned}\n$$\n:::\n\n::: attention\nLe choix inverse ($u(x) = e^x$, $v'(x) = x$) fait apparaître $\\int x^2e^x$, plus compliquée : on choisit pour $u$ le facteur qui se simplifie en dérivant.\n:::\n\n::: resultat\n$$\\int_0^1 xe^x\\,\\mathrm{d}x = 1$$\n:::\n\n## Question 2 : Calculer $\\displaystyle\\int_0^{\\pi/2} x\\cos x\\,\\mathrm{d}x$\n\n::: methode\nIntégration par parties avec $u(x) = x$ et $v'(x) = \\cos x$.\n:::\n\n::: etape Choix de $u$ et $v'$\n$$\n\\begin{aligned}\nu(x) &= x & u'(x) &= 1 \\\\\nv'(x) &= \\cos x & v(x) &= \\sin x\n\\end{aligned}\n$$\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\n\\int_0^{\\pi/2} x\\cos x\\,\\mathrm{d}x &= \\big[x\\sin x\\big]_0^{\\pi/2} - \\int_0^{\\pi/2} \\sin x\\,\\mathrm{d}x \\\\\n&= \\frac{\\pi}{2} - \\big[-\\cos x\\big]_0^{\\pi/2} \\\\\n&= \\frac{\\pi}{2} - (0 + 1) \\\\\n&= \\frac{\\pi}{2} - 1\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$$\\int_0^{\\pi/2} x\\cos x\\,\\mathrm{d}x = \\frac{\\pi}{2} - 1 \\approx 0{,}57$$\n:::\n\n## Question 3 : Calculer $\\displaystyle\\int_1^e \\ln x\\,\\mathrm{d}x$\n\n::: methode\nÉcrire $\\ln x = 1 \\times \\ln x$ et prendre $u(x) = \\ln x$, $v'(x) = 1$.\n:::\n\n::: etape Choix de $u$ et $v'$\n$$\n\\begin{aligned}\nu(x) &= \\ln x & u'(x) &= \\frac{1}{x} \\\\\nv'(x) &= 1 & v(x) &= x\n\\end{aligned}\n$$\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\n\\int_1^e \\ln x\\,\\mathrm{d}x &= \\big[x\\ln x\\big]_1^e - \\int_1^e \\frac{1}{x} \\times x\\,\\mathrm{d}x \\\\\n&= (e\\ln e - 1 \\times \\ln 1) - \\int_1^e 1\\,\\mathrm{d}x \\\\\n&= e - (e - 1) \\\\\n&= 1\n\\end{aligned}\n$$\n:::\n\n::: retenir\nCette méthode montre qu’une primitive de $\\ln x$ sur $]0\\,;+\\infty[$ est $x\\ln x - x$.\n:::\n\n::: resultat\n$$\\int_1^e \\ln x\\,\\mathrm{d}x = 1$$\n:::\n\n## Question 4 : Calculer $\\displaystyle\\int_0^1 xe^{2x}\\,\\mathrm{d}x$\n\n::: methode\nIntégration par parties avec $u(x) = x$ et $v'(x) = e^{2x}$, dont une primitive est $\\dfrac{1}{2}e^{2x}$.\n:::\n\n::: etape Choix de $u$ et $v'$\n$$\n\\begin{aligned}\nu(x) &= x & u'(x) &= 1 \\\\\nv'(x) &= e^{2x} & v(x) &= \\frac{1}{2}e^{2x}\n\\end{aligned}\n$$\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\n\\int_0^1 xe^{2x}\\,\\mathrm{d}x &= \\left[\\frac{1}{2}xe^{2x}\\right]_0^1 - \\frac{1}{2}\\int_0^1 e^{2x}\\,\\mathrm{d}x \\\\\n&= \\frac{e^2}{2} - \\frac{1}{2}\\left[\\frac{1}{2}e^{2x}\\right]_0^1 \\\\\n&= \\frac{e^2}{2} - \\frac{e^2 - 1}{4} \\\\\n&= \\frac{2e^2 - e^2 + 1}{4} \\\\\n&= \\frac{e^2 + 1}{4}\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$$\\int_0^1 xe^{2x}\\,\\mathrm{d}x = \\frac{e^2 + 1}{4} \\approx 2{,}10$$\n:::\n\n## Question 5 : Calculer $\\displaystyle\\int_0^{\\pi} x\\sin x\\,\\mathrm{d}x$\n\n::: methode\nIntégration par parties avec $u(x) = x$ et $v'(x) = \\sin x$ ; attention, $v(x) = -\\cos x$.\n:::\n\n::: etape Choix de $u$ et $v'$\n$$\n\\begin{aligned}\nu(x) &= x & u'(x) &= 1 \\\\\nv'(x) &= \\sin x & v(x) &= -\\cos x\n\\end{aligned}\n$$\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\n\\int_0^{\\pi} x\\sin x\\,\\mathrm{d}x &= \\big[-x\\cos x\\big]_0^{\\pi} - \\int_0^{\\pi} (-\\cos x)\\,\\mathrm{d}x \\\\\n&= (-\\pi\\cos\\pi - 0) + \\big[\\sin x\\big]_0^{\\pi} \\\\\n&= \\pi + 0 \\\\\n&= \\pi\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$$\\int_0^{\\pi} x\\sin x\\,\\mathrm{d}x = \\pi$$\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $1$\n2. $\\dfrac{\\pi}{2} - 1 \\approx 0{,}57$\n3. $1$\n4. $\\dfrac{e^2 + 1}{4} \\approx 2{,}10$\n5. $\\pi$",
+   "titre": "Entraînement - Calcul Intégral - Intégration par Parties",
+   "difficulty": "hard",
+   "contenu": "<!-- optitab:1 -->\nCalculer les intégrales suivantes à l’aide d’une intégration par parties.\n\n1. $\\displaystyle\\int_0^1 xe^x\\,\\mathrm{d}x$\n2. $\\displaystyle\\int_0^{\\pi/2} x\\cos x\\,\\mathrm{d}x$\n3. $\\displaystyle\\int_1^e \\ln x\\,\\mathrm{d}x$\n4. $\\displaystyle\\int_0^1 xe^{2x}\\,\\mathrm{d}x$\n5. $\\displaystyle\\int_0^{\\pi} x\\sin x\\,\\mathrm{d}x$"
+  },
+  {
+   "id": 1240,
+   "question": "<!-- optitab:1 -->\nRésoudre les problèmes suivants à l’aide du calcul intégral.\n\n1. Une population évolue selon $P(t) = 1\\,000\\,e^{0{,}02t}$ ($t$ en années). Calculer la population moyenne entre $t = 0$ et $t = 10$.\n2. Un mobile se déplace sur un axe à la vitesse $v(t) = 3t^2 - 6t + 2$ ($t$ en secondes, $v$ en m/s).\n  - a) Calculer son déplacement $\\displaystyle\\int_0^3 v(t)\\,\\mathrm{d}t$ entre $t = 0$ et $t = 3$.\n  - b) Le mobile change de sens : déterminer les instants où $v$ s’annule, puis la distance totale parcourue.\n3. Le revenu marginal d’une entreprise est $R'(x) = 100 - 2x$ (en euros), où $x$ est le nombre d’unités produites, avec $R(0) = 0$. Calculer le revenu total $R(50)$ pour une production de $50$ unités.\n4. La température d’un objet est $T(t) = 20 + 80e^{-0{,}1t}$ ($t$ en heures, $T$ en °C). Calculer sa température moyenne sur les dix premières heures.\n5. Un réservoir se vide selon $V(t) = 1\\,000\\left(1 - \\dfrac{t}{24}\\right)^2$ ($t$ en heures, $V$ en litres). Calculer le volume moyen sur les douze premières heures.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Population moyenne entre $t = 0$ et $t = 10$\n\n::: methode\nValeur moyenne de $P$ sur $[0\\,;10]$.\n:::\n\n::: rappel Valeur moyenne\n$\\displaystyle\\mu = \\frac{1}{b - a}\\int_a^b f(t)\\,\\mathrm{d}t$\n:::\n\n::: etape Primitive\nUne primitive de $1\\,000\\,e^{0{,}02t}$ est $\\dfrac{1\\,000}{0{,}02}e^{0{,}02t} = 50\\,000\\,e^{0{,}02t}$.\n:::\n\n::: etape Intégrale\n$$\n\\begin{aligned}\n\\int_0^{10} 1\\,000\\,e^{0{,}02t}\\,\\mathrm{d}t &= \\big[50\\,000\\,e^{0{,}02t}\\big]_0^{10} \\\\\n&= 50\\,000\\,e^{0{,}2} - 50\\,000 \\\\\n&= 50\\,000\\left(e^{0{,}2} - 1\\right)\n\\end{aligned}\n$$\n:::\n\n::: etape Valeur moyenne\n$$\\mu = \\frac{1}{10} \\times 50\\,000\\left(e^{0{,}2} - 1\\right) = 5\\,000\\left(e^{0{,}2} - 1\\right) \\approx 1\\,107$$\n:::\n\n::: resultat\nLa population moyenne est $5\\,000\\left(e^{0{,}2} - 1\\right) \\approx 1\\,107$ individus.\n:::\n\n## Question 2 : Déplacement et distance parcourue\n\n::: methode\nLe déplacement est l’intégrale de la vitesse ; la distance parcourue est l’intégrale de $|v|$, calculée morceau par morceau.\n:::\n\n::: etape a) Déplacement\nUne primitive de $v$ est $x(t) = t^3 - 3t^2 + 2t$ (position, avec $x(0) = 0$) :\n$$\n\\begin{aligned}\n\\int_0^3 (3t^2 - 6t + 2)\\,\\mathrm{d}t &= \\big[t^3 - 3t^2 + 2t\\big]_0^3 \\\\\n&= 27 - 27 + 6 \\\\\n&= 6\n\\end{aligned}\n$$\nLe déplacement est de $6$ m.\n:::\n\n::: etape b) Instants où $v$ s’annule\n$3t^2 - 6t + 2 = 0$ : $\\Delta = 36 - 24 = 12$, d’où\n$$t_1 = \\frac{6 - 2\\sqrt{3}}{6} = 1 - \\frac{\\sqrt{3}}{3} \\approx 0{,}42 \\quad\\text{et}\\quad t_2 = 1 + \\frac{\\sqrt{3}}{3} \\approx 1{,}58$$\n$v$ est positive sur $[0\\,;t_1]$, négative sur $[t_1\\,;t_2]$ et positive sur $[t_2\\,;3]$.\n:::\n\n::: etape b) Positions aux instants clés\n$x(t) = t(t - 1)(t - 2)$ ; avec $s = \\frac{\\sqrt{3}}{3}$, $t_1 = 1 - s$ et $t_2 = 1 + s$ :\n$$\n\\begin{aligned}\nx(t_1) &= s(1 - s^2) = \\frac{\\sqrt{3}}{3} \\times \\frac{2}{3} = \\frac{2\\sqrt{3}}{9} \\\\\nx(t_2) &= -s(1 - s^2) = -\\frac{2\\sqrt{3}}{9}\n\\end{aligned}\n$$\net $x(0) = 0$, $x(3) = 6$.\n:::\n\n::: etape b) Distance totale\n$$\n\\begin{aligned}\nd &= \\big|x(t_1) - x(0)\\big| + \\big|x(t_2) - x(t_1)\\big| + \\big|x(3) - x(t_2)\\big| \\\\\n&= \\frac{2\\sqrt{3}}{9} + \\frac{4\\sqrt{3}}{9} + 6 + \\frac{2\\sqrt{3}}{9} \\\\\n&= 6 + \\frac{8\\sqrt{3}}{9} \\approx 7{,}54\n\\end{aligned}\n$$\n:::\n\n::: resultat\nDéplacement : $6$ m ; distance parcourue : $6 + \\dfrac{8\\sqrt{3}}{9} \\approx 7{,}54$ m.\n:::\n\n## Question 3 : Revenu total pour $50$ unités\n\n::: methode\n$R$ est une primitive de $R'$ : $R(50) = R(0) + \\displaystyle\\int_0^{50} R'(x)\\,\\mathrm{d}x$.\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\nR(50) &= 0 + \\int_0^{50} (100 - 2x)\\,\\mathrm{d}x \\\\\n&= \\big[100x - x^2\\big]_0^{50} \\\\\n&= 5\\,000 - 2\\,500 \\\\\n&= 2\\,500\n\\end{aligned}\n$$\n:::\n\n::: resultat\nLe revenu total est $R(50) = 2\\,500$ euros.\n:::\n\n## Question 4 : Température moyenne sur $[0\\,;10]$\n\n::: methode\nValeur moyenne de $T$ sur $[0\\,;10]$ ; une primitive de $e^{-0{,}1t}$ est $-10\\,e^{-0{,}1t}$.\n:::\n\n::: etape Primitive\nUne primitive de $T(t) = 20 + 80e^{-0{,}1t}$ est $20t - 800e^{-0{,}1t}$ (on vérifie : la dérivée de $-800e^{-0{,}1t}$ est $-800 \\times (-0{,}1)e^{-0{,}1t} = 80e^{-0{,}1t}$).\n:::\n\n::: etape Intégrale\n$$\n\\begin{aligned}\n\\int_0^{10} T(t)\\,\\mathrm{d}t &= \\big[20t - 800e^{-0{,}1t}\\big]_0^{10} \\\\\n&= \\left(200 - 800e^{-1}\\right) - (0 - 800) \\\\\n&= 1\\,000 - \\frac{800}{e}\n\\end{aligned}\n$$\n:::\n\n::: etape Valeur moyenne\n$$\\mu = \\frac{1}{10}\\left(1\\,000 - \\frac{800}{e}\\right) = 100 - \\frac{80}{e} \\approx 70{,}6$$\n:::\n\n::: resultat\nLa température moyenne est $100 - \\dfrac{80}{e} \\approx 70{,}6$ °C.\n:::\n\n## Question 5 : Volume moyen sur $[0\\,;12]$\n\n::: methode\nReconnaître la forme $u'u^2$ avec $u(t) = 1 - \\dfrac{t}{24}$, puis calculer la valeur moyenne.\n:::\n\n::: etape Primitive\nAvec $u(t) = 1 - \\dfrac{t}{24}$, $u'(t) = -\\dfrac{1}{24}$, donc $u^2 = -24\\,u'u^2$, qui a pour primitive $-24 \\times \\dfrac{u^3}{3} = -8u^3$. Une primitive de $V$ est donc\n$$t \\mapsto -8\\,000\\left(1 - \\frac{t}{24}\\right)^3$$\n:::\n\n::: etape Intégrale\n$$\n\\begin{aligned}\n\\int_0^{12} V(t)\\,\\mathrm{d}t &= \\left[-8\\,000\\left(1 - \\frac{t}{24}\\right)^3\\right]_0^{12} \\\\\n&= -8\\,000 \\times \\frac{1}{8} + 8\\,000 \\\\\n&= 7\\,000\n\\end{aligned}\n$$\n:::\n\n::: etape Valeur moyenne\n$$\\mu = \\frac{7\\,000}{12} = \\frac{1\\,750}{3} \\approx 583{,}3$$\n:::\n\n::: resultat\nLe volume moyen est $\\dfrac{1\\,750}{3} \\approx 583{,}3$ litres.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $5\\,000\\left(e^{0{,}2} - 1\\right) \\approx 1\\,107$ individus\n2. a) Déplacement : $6$ m. b) $v$ s’annule en $1 - \\dfrac{\\sqrt{3}}{3}$ et $1 + \\dfrac{\\sqrt{3}}{3}$ ; distance : $6 + \\dfrac{8\\sqrt{3}}{9} \\approx 7{,}54$ m.\n3. $R(50) = 2\\,500$ euros\n4. $100 - \\dfrac{80}{e} \\approx 70{,}6$ °C\n5. $\\dfrac{1\\,750}{3} \\approx 583{,}3$ litres",
+   "titre": "Entraînement - Calcul Intégral - Problèmes de Modélisation",
+   "difficulty": "hard",
+   "contenu": "<!-- optitab:1 -->\nRésoudre les problèmes suivants à l’aide du calcul intégral.\n\n1. Une population évolue selon $P(t) = 1\\,000\\,e^{0{,}02t}$ ($t$ en années). Calculer la population moyenne entre $t = 0$ et $t = 10$.\n2. Un mobile se déplace sur un axe à la vitesse $v(t) = 3t^2 - 6t + 2$ ($t$ en secondes, $v$ en m/s).\n  - a) Calculer son déplacement $\\displaystyle\\int_0^3 v(t)\\,\\mathrm{d}t$ entre $t = 0$ et $t = 3$.\n  - b) Le mobile change de sens : déterminer les instants où $v$ s’annule, puis la distance totale parcourue.\n3. Le revenu marginal d’une entreprise est $R'(x) = 100 - 2x$ (en euros), où $x$ est le nombre d’unités produites, avec $R(0) = 0$. Calculer le revenu total $R(50)$ pour une production de $50$ unités.\n4. La température d’un objet est $T(t) = 20 + 80e^{-0{,}1t}$ ($t$ en heures, $T$ en °C). Calculer sa température moyenne sur les dix premières heures.\n5. Un réservoir se vide selon $V(t) = 1\\,000\\left(1 - \\dfrac{t}{24}\\right)^2$ ($t$ en heures, $V$ en litres). Calculer le volume moyen sur les douze premières heures."
+  },
+  {
+   "id": 1236,
+   "question": "<!-- optitab:1 -->\nCalculer la valeur moyenne de chaque fonction sur l’intervalle indiqué.\n\n1. $f(x) = x^2$ sur $[0\\,;3]$\n2. $f(x) = \\sin x$ sur $[0\\,;\\pi]$\n3. $f(x) = e^x$ sur $[0\\,;1]$\n4. $f(x) = 2x + 1$ sur $[1\\,;4]$\n5. $f(x) = \\cos x$ sur $\\left[0\\,;\\frac{\\pi}{2}\\right]$",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Valeur moyenne de $x^2$ sur $[0\\,;3]$\n\n::: methode\nAppliquer la formule $\\mu = \\dfrac{1}{b - a}\\displaystyle\\int_a^b f(x)\\,\\mathrm{d}x$.\n:::\n\n::: rappel Valeur moyenne\nSi $f$ est continue sur $[a\\,;b]$ ($a \\lt b$), $\\displaystyle\\mu = \\frac{1}{b - a}\\int_a^b f(x)\\,\\mathrm{d}x$. Si $f \\ge 0$, le rectangle de base $[a\\,;b]$ et de hauteur $\\mu$ a la même aire que le domaine sous la courbe.\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\n\\mu &= \\frac{1}{3 - 0}\\int_0^3 x^2\\,\\mathrm{d}x \\\\\n&= \\frac{1}{3}\\left[\\frac{x^3}{3}\\right]_0^3 \\\\\n&= \\frac{1}{3} \\times 9 \\\\\n&= 3\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$\\mu = 3$\n:::\n\n[IMAGE_1]\n\n## Question 2 : Valeur moyenne de $\\sin$ sur $[0\\,;\\pi]$\n\n::: methode\nMême formule, avec $b - a = \\pi$.\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\n\\mu &= \\frac{1}{\\pi}\\int_0^{\\pi} \\sin x\\,\\mathrm{d}x \\\\\n&= \\frac{1}{\\pi}\\big[-\\cos x\\big]_0^{\\pi} \\\\\n&= \\frac{1}{\\pi} \\times (1 + 1) \\\\\n&= \\frac{2}{\\pi}\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$\\mu = \\dfrac{2}{\\pi} \\approx 0{,}64$\n:::\n\n[IMAGE_2]\n\n## Question 3 : Valeur moyenne de $\\exp$ sur $[0\\,;1]$\n\n::: methode\nIci $b - a = 1$ : la valeur moyenne est égale à l’intégrale.\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\n\\mu &= \\frac{1}{1 - 0}\\int_0^1 e^x\\,\\mathrm{d}x \\\\\n&= \\big[e^x\\big]_0^1 \\\\\n&= e - 1\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$\\mu = e - 1 \\approx 1{,}72$\n:::\n\n[IMAGE_3]\n\n## Question 4 : Valeur moyenne de $2x + 1$ sur $[1\\,;4]$\n\n::: methode\nMême formule, avec $b - a = 3$.\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\n\\mu &= \\frac{1}{3}\\int_1^4 (2x + 1)\\,\\mathrm{d}x \\\\\n&= \\frac{1}{3}\\big[x^2 + x\\big]_1^4 \\\\\n&= \\frac{1}{3}(20 - 2) \\\\\n&= 6\n\\end{aligned}\n$$\n:::\n\n::: remarque\nPour une fonction affine, la valeur moyenne est la valeur au milieu de l’intervalle : $f\\left(\\frac{5}{2}\\right) = 6$. Ce n’est plus vrai en général (question 1 : $f\\left(\\frac{3}{2}\\right) = \\frac{9}{4} \\ne 3$).\n:::\n\n::: resultat\n$\\mu = 6$\n:::\n\n[IMAGE_4]\n\n## Question 5 : Valeur moyenne de $\\cos$ sur $\\left[0\\,;\\frac{\\pi}{2}\\right]$\n\n::: methode\nMême formule, avec $b - a = \\dfrac{\\pi}{2}$, donc $\\dfrac{1}{b - a} = \\dfrac{2}{\\pi}$.\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\n\\mu &= \\frac{2}{\\pi}\\int_0^{\\pi/2} \\cos x\\,\\mathrm{d}x \\\\\n&= \\frac{2}{\\pi}\\big[\\sin x\\big]_0^{\\pi/2} \\\\\n&= \\frac{2}{\\pi} \\times 1 \\\\\n&= \\frac{2}{\\pi}\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$\\mu = \\dfrac{2}{\\pi} \\approx 0{,}64$\n:::\n\n[IMAGE_5]",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $\\mu = 3$\n2. $\\mu = \\dfrac{2}{\\pi} \\approx 0{,}64$\n3. $\\mu = e - 1 \\approx 1{,}72$\n4. $\\mu = 6$\n5. $\\mu = \\dfrac{2}{\\pi} \\approx 0{,}64$",
+   "titre": "Entraînement - Calcul Intégral - Valeur Moyenne d'une Fonction",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nCalculer la valeur moyenne de chaque fonction sur l’intervalle indiqué.\n\n1. $f(x) = x^2$ sur $[0\\,;3]$\n2. $f(x) = \\sin x$ sur $[0\\,;\\pi]$\n3. $f(x) = e^x$ sur $[0\\,;1]$\n4. $f(x) = 2x + 1$ sur $[1\\,;4]$\n5. $f(x) = \\cos x$ sur $\\left[0\\,;\\frac{\\pi}{2}\\right]$"
+  },
+  {
+   "id": 1242,
+   "question": "<!-- optitab:1 -->\nExercice de type bac combinant plusieurs méthodes du calcul intégral.\n\n1. Soit $f(x) = x^2 - 2x + 1$. Calculer $\\displaystyle\\int_0^3 f(x)\\,\\mathrm{d}x$, puis l’aire, en u.a., du domaine délimité par la courbe de $f$, l’axe des abscisses et les droites d’équations $x = 0$ et $x = 3$.\n2. Soit $g(x) = e^x - 1$. Calculer la valeur moyenne de $g$ sur $[0\\,;2]$.\n3. Calculer $\\displaystyle\\int_0^1 xe^{2x}\\,\\mathrm{d}x$ à l’aide d’une intégration par parties.\n4. Calculer l’aire, en u.a., du domaine compris entre les courbes d’équations $y = x^2$ et $y = 2x - x^2$ sur $[0\\,;1]$.\n5. Soit $h(x) = \\dfrac{1}{x + 1}$. Calculer $\\displaystyle\\int_0^2 h(x)\\,\\mathrm{d}x$, puis la valeur moyenne de $h$ sur $[0\\,;2]$.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Intégrale et aire pour $f(x) = x^2 - 2x + 1$\n\n::: methode\nCalculer l’intégrale avec une primitive, puis étudier le signe de $f$ pour en déduire l’aire.\n:::\n\n::: etape Intégrale\nUne primitive de $f$ est $F(x) = \\dfrac{x^3}{3} - x^2 + x$ :\n$$\n\\begin{aligned}\n\\int_0^3 f(x)\\,\\mathrm{d}x &= \\left[\\frac{x^3}{3} - x^2 + x\\right]_0^3 \\\\\n&= (9 - 9 + 3) - 0 \\\\\n&= 3\n\\end{aligned}\n$$\n:::\n\n::: etape Signe de $f$\n$f(x) = x^2 - 2x + 1 = (x - 1)^2 \\ge 0$ sur $[0\\,;3]$ : l’aire est égale à l’intégrale.\n:::\n\n::: resultat\n$\\displaystyle\\int_0^3 f(x)\\,\\mathrm{d}x = 3$ et l’aire vaut $3$ u.a.\n:::\n\n[IMAGE_1]\n\n## Question 2 : Valeur moyenne de $g(x) = e^x - 1$ sur $[0\\,;2]$\n\n::: methode\n$\\mu = \\dfrac{1}{2 - 0}\\displaystyle\\int_0^2 g(x)\\,\\mathrm{d}x$.\n:::\n\n::: etape Intégrale\n$$\n\\begin{aligned}\n\\int_0^2 (e^x - 1)\\,\\mathrm{d}x &= \\big[e^x - x\\big]_0^2 \\\\\n&= (e^2 - 2) - (1 - 0) \\\\\n&= e^2 - 3\n\\end{aligned}\n$$\n:::\n\n::: etape Valeur moyenne\n$$\\mu = \\frac{1}{2}\\left(e^2 - 3\\right) = \\frac{e^2 - 3}{2} \\approx 2{,}19$$\n:::\n\n::: resultat\n$\\mu = \\dfrac{e^2 - 3}{2} \\approx 2{,}19$\n:::\n\n## Question 3 : Calculer $\\displaystyle\\int_0^1 xe^{2x}\\,\\mathrm{d}x$ par parties\n\n::: methode\nPrendre $u(x) = x$ (il se simplifie en dérivant) et $v'(x) = e^{2x}$.\n:::\n\n::: etape Choix de $u$ et $v'$\n$$\n\\begin{aligned}\nu(x) &= x & u'(x) &= 1 \\\\\nv'(x) &= e^{2x} & v(x) &= \\frac{1}{2}e^{2x}\n\\end{aligned}\n$$\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\n\\int_0^1 xe^{2x}\\,\\mathrm{d}x &= \\left[\\frac{1}{2}xe^{2x}\\right]_0^1 - \\frac{1}{2}\\int_0^1 e^{2x}\\,\\mathrm{d}x \\\\\n&= \\frac{e^2}{2} - \\frac{1}{2}\\left[\\frac{1}{2}e^{2x}\\right]_0^1 \\\\\n&= \\frac{e^2}{2} - \\frac{e^2 - 1}{4} \\\\\n&= \\frac{e^2 + 1}{4}\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$$\\int_0^1 xe^{2x}\\,\\mathrm{d}x = \\frac{e^2 + 1}{4} \\approx 2{,}10$$\n:::\n\n## Question 4 : Aire entre $y = x^2$ et $y = 2x - x^2$ sur $[0\\,;1]$\n\n::: methode\nPosition des courbes, puis intégrale de « haut moins bas ».\n:::\n\n::: etape Position des courbes\n$(2x - x^2) - x^2 = 2x - 2x^2 = 2x(1 - x) \\ge 0$ sur $[0\\,;1]$ : la courbe $y = 2x - x^2$ est au-dessus (elles se coupent en $0$ et en $1$).\n:::\n\n::: etape Calcul\n$$\n\\begin{aligned}\n\\mathcal{A} &= \\int_0^1 (2x - 2x^2)\\,\\mathrm{d}x \\\\\n&= \\left[x^2 - \\frac{2x^3}{3}\\right]_0^1 \\\\\n&= 1 - \\frac{2}{3} \\\\\n&= \\frac{1}{3}\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$\\mathcal{A} = \\dfrac{1}{3}$ u.a.\n:::\n\n[IMAGE_2]\n\n## Question 5 : Intégrale et valeur moyenne de $h(x) = \\dfrac{1}{x + 1}$ sur $[0\\,;2]$\n\n::: methode\nSur $[0\\,;2]$, $x + 1 \\gt 0$ : une primitive de $\\dfrac{1}{x + 1}$ est $\\ln(x + 1)$.\n:::\n\n::: etape Intégrale\n$$\n\\begin{aligned}\n\\int_0^2 \\frac{1}{x + 1}\\,\\mathrm{d}x &= \\big[\\ln(x + 1)\\big]_0^2 \\\\\n&= \\ln 3 - \\ln 1 \\\\\n&= \\ln 3\n\\end{aligned}\n$$\n:::\n\n::: etape Valeur moyenne\n$$\\mu = \\frac{1}{2 - 0} \\times \\ln 3 = \\frac{\\ln 3}{2} \\approx 0{,}55$$\n:::\n\n::: resultat\n$\\displaystyle\\int_0^2 h(x)\\,\\mathrm{d}x = \\ln 3$ et $\\mu = \\dfrac{\\ln 3}{2} \\approx 0{,}55$.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. Intégrale : $3$ ; aire : $3$ u.a. (car $f(x) = (x - 1)^2 \\ge 0$)\n2. $\\mu = \\dfrac{e^2 - 3}{2} \\approx 2{,}19$\n3. $\\dfrac{e^2 + 1}{4} \\approx 2{,}10$\n4. $\\dfrac{1}{3}$ u.a.\n5. Intégrale : $\\ln 3$ ; valeur moyenne : $\\dfrac{\\ln 3}{2} \\approx 0{,}55$",
+   "titre": "Type Bac - Calcul Intégral - Exercice Combiné",
+   "difficulty": "hard",
+   "contenu": "<!-- optitab:1 -->\nExercice de type bac combinant plusieurs méthodes du calcul intégral.\n\n1. Soit $f(x) = x^2 - 2x + 1$. Calculer $\\displaystyle\\int_0^3 f(x)\\,\\mathrm{d}x$, puis l’aire, en u.a., du domaine délimité par la courbe de $f$, l’axe des abscisses et les droites d’équations $x = 0$ et $x = 3$.\n2. Soit $g(x) = e^x - 1$. Calculer la valeur moyenne de $g$ sur $[0\\,;2]$.\n3. Calculer $\\displaystyle\\int_0^1 xe^{2x}\\,\\mathrm{d}x$ à l’aide d’une intégration par parties.\n4. Calculer l’aire, en u.a., du domaine compris entre les courbes d’équations $y = x^2$ et $y = 2x - x^2$ sur $[0\\,;1]$.\n5. Soit $h(x) = \\dfrac{1}{x + 1}$. Calculer $\\displaystyle\\int_0^2 h(x)\\,\\mathrm{d}x$, puis la valeur moyenne de $h$ sur $[0\\,;2]$."
+  }
+ ],
+ "images": [
+  {
+   "modele": "CoursImage",
+   "id": 775,
+   "proprietaire": 97,
+   "position": 1,
+   "image": "cours_images/v1_n89_co97_1_cours_aire_def.png",
+   "legende": null,
+   "alt_text": "Domaine D compris entre la courbe de f, l axe des abscisses et les droites x = a et x = b",
+   "title_text": "",
+   "width": 353,
+   "height": 228
+  },
+  {
+   "modele": "CoursImage",
+   "id": 776,
+   "proprietaire": 97,
+   "position": 2,
+   "image": "cours_images/v1_n89_co97_2_cours_demo.png",
+   "legende": null,
+   "alt_text": "Courbe croissante : entre x et x + h, rectangle de hauteur f(x) contenu dans le domaine, rectangle de hauteur f(x + h) le contenant",
+   "title_text": "",
+   "width": 394,
+   "height": 238
+  },
+  {
+   "modele": "CoursImage",
+   "id": 777,
+   "proprietaire": 97,
+   "position": 3,
+   "image": "cours_images/v1_n89_co97_3_cours_sin_signe.png",
+   "legende": null,
+   "alt_text": "Courbe du sinus sur [0 ; 2 pi] : arche positive en vert, arche negative en orange",
+   "title_text": "",
+   "width": 392,
+   "height": 185
+  },
+  {
+   "modele": "CoursImage",
+   "id": 778,
+   "proprietaire": 97,
+   "position": 4,
+   "image": "cours_images/v1_n89_co97_4_cours_entre.png",
+   "legende": null,
+   "alt_text": "Domaine compris entre la droite y = x et la parabole y = x carre sur [0 ; 1]",
+   "title_text": "",
+   "width": 306,
+   "height": 252
+  },
+  {
+   "modele": "CoursImage",
+   "id": 831,
+   "proprietaire": 97,
+   "position": 5,
+   "image": "cours_images/v1_n89_co97_5_cours_moyenne.png",
+   "legende": null,
+   "alt_text": "Aire sous y = x carre sur [0 ; 3] et rectangle de meme aire de hauteur mu = 3",
+   "title_text": "",
+   "width": 324,
+   "height": 259
+  },
+  {
+   "modele": "CoursImage",
+   "id": 832,
+   "proprietaire": 97,
+   "position": 6,
+   "image": "cours_images/v1_n89_co97_6_cours_rectangles.png",
+   "legende": null,
+   "alt_text": "Methode des rectangles pour x carre sur [0 ; 2] avec 8 rectangles inferieurs (verts) et superieurs (orange)",
+   "title_text": "",
+   "width": 324,
+   "height": 249
+  },
+  {
+   "modele": "SynthesisImage",
+   "id": 347,
+   "proprietaire": 34,
+   "position": 1,
+   "image": "synthesis_images/v1_n89_fi34_1_fiche_aire_x2.png",
+   "legende": null,
+   "alt_text": "Aire sous la parabole y = x carre entre 0 et 2, egale a 8/3 unites d aire",
+   "title_text": "",
+   "width": 324,
+   "height": 248
+  },
+  {
+   "modele": "SynthesisImage",
+   "id": 348,
+   "proprietaire": 34,
+   "position": 2,
+   "image": "synthesis_images/v1_n89_fi34_2_cours_entre.png",
+   "legende": null,
+   "alt_text": "Domaine compris entre la droite y = x et la parabole y = x carre sur [0 ; 1]",
+   "title_text": "",
+   "width": 306,
+   "height": 252
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 331,
+   "proprietaire": 1235,
+   "position": 1,
+   "image": "exercice_images/v1_n89_ex1235_1_e1235_q1.png",
+   "legende": null,
+   "alt_text": "Domaine entre la parabole y = x carre et la droite y = 2x sur [0 ; 2]",
+   "title_text": "",
+   "width": 325,
+   "height": 252
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 332,
+   "proprietaire": 1235,
+   "position": 2,
+   "image": "exercice_images/v1_n89_ex1235_2_cours_entre.png",
+   "legende": null,
+   "alt_text": "Domaine entre la droite y = x et la parabole y = x carre sur [0 ; 1]",
+   "title_text": "",
+   "width": 306,
+   "height": 252
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 333,
+   "proprietaire": 1235,
+   "position": 3,
+   "image": "exercice_images/v1_n89_ex1235_3_e1235_q3.png",
+   "legende": null,
+   "alt_text": "Domaine entre les courbes de sinus et cosinus sur [0 ; pi/2], qui se coupent en pi/4",
+   "title_text": "",
+   "width": 333,
+   "height": 242
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 334,
+   "proprietaire": 1235,
+   "position": 4,
+   "image": "exercice_images/v1_n89_ex1235_4_e1235_q4.png",
+   "legende": null,
+   "alt_text": "Domaine entre la courbe de l exponentielle et la droite y = 1 sur [0 ; 1]",
+   "title_text": "",
+   "width": 306,
+   "height": 253
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 335,
+   "proprietaire": 1235,
+   "position": 5,
+   "image": "exercice_images/v1_n89_ex1235_5_e1235_q5.png",
+   "legende": null,
+   "alt_text": "Deux domaines entre la cubique y = x puissance 3 et la droite y = x sur [-1 ; 1]",
+   "title_text": "",
+   "width": 306,
+   "height": 260
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 326,
+   "proprietaire": 1234,
+   "position": 1,
+   "image": "exercice_images/v1_n89_ex1234_1_e1234_q1.png",
+   "legende": null,
+   "alt_text": "Aire sous la parabole y = x carre entre x = 0 et x = 3",
+   "title_text": "",
+   "width": 306,
+   "height": 256
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 327,
+   "proprietaire": 1234,
+   "position": 2,
+   "image": "exercice_images/v1_n89_ex1234_2_e1234_q2.png",
+   "legende": null,
+   "alt_text": "Droite y = 2x + 1 entre -1 et 2 : triangle sous l axe en orange, triangle au-dessus en vert",
+   "title_text": "",
+   "width": 315,
+   "height": 252
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 328,
+   "proprietaire": 1234,
+   "position": 3,
+   "image": "exercice_images/v1_n89_ex1234_3_e1234_q3.png",
+   "legende": null,
+   "alt_text": "Aire sous la courbe de la racine carree entre 0 et 4",
+   "title_text": "",
+   "width": 324,
+   "height": 214
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 329,
+   "proprietaire": 1234,
+   "position": 4,
+   "image": "exercice_images/v1_n89_ex1234_4_e1234_q4.png",
+   "legende": null,
+   "alt_text": "Aire sous une arche de sinus entre 0 et pi",
+   "title_text": "",
+   "width": 324,
+   "height": 210
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 330,
+   "proprietaire": 1234,
+   "position": 5,
+   "image": "exercice_images/v1_n89_ex1234_5_e1234_q5.png",
+   "legende": null,
+   "alt_text": "Aire sous la courbe de l exponentielle entre 0 et 1",
+   "title_text": "",
+   "width": 297,
+   "height": 253
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 341,
+   "proprietaire": 1239,
+   "position": 1,
+   "image": "exercice_images/v1_n89_ex1239_1_e1239_q1.png",
+   "legende": null,
+   "alt_text": "Courbe de x puissance 3 entre -1 et 2 : partie sous l axe en orange, partie au-dessus en vert",
+   "title_text": "",
+   "width": 315,
+   "height": 270
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 342,
+   "proprietaire": 1239,
+   "position": 2,
+   "image": "exercice_images/v1_n89_ex1239_2_e1239_q2.png",
+   "legende": null,
+   "alt_text": "Domaine entre les paraboles y = x carre et y = 4x - x carre, qui se coupent en 0 et 2",
+   "title_text": "",
+   "width": 331,
+   "height": 251
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 343,
+   "proprietaire": 1239,
+   "position": 3,
+   "image": "exercice_images/v1_n89_ex1239_3_e1239_q3.png",
+   "legende": null,
+   "alt_text": "Trois domaines A1, A2, A3 entre les courbes de sinus et cosinus sur [0 ; 2 pi]",
+   "title_text": "",
+   "width": 401,
+   "height": 204
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 344,
+   "proprietaire": 1239,
+   "position": 4,
+   "image": "exercice_images/v1_n89_ex1239_4_e1239_q4.png",
+   "legende": null,
+   "alt_text": "Domaine entre les courbes de e puissance x et e puissance -x sur [0 ; 1]",
+   "title_text": "",
+   "width": 306,
+   "height": 253
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 345,
+   "proprietaire": 1239,
+   "position": 5,
+   "image": "exercice_images/v1_n89_ex1239_5_e1239_q5.png",
+   "legende": null,
+   "alt_text": "Domaine entre la parabole y = 2x carre et la quartique y = x puissance 4 - 2x carre sur [-2 ; 2]",
+   "title_text": "",
+   "width": 382,
+   "height": 270
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 2972,
+   "proprietaire": 1241,
+   "position": 1,
+   "image": "exercice_images/v1_n89_ex1241_1_e1241_q1.png",
+   "legende": null,
+   "alt_text": "Parabole y = x carre - 1 sur [-2 ; 1] : A1 au-dessus de l axe, A2 en dessous",
+   "title_text": "",
+   "width": 320,
+   "height": 242
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 2973,
+   "proprietaire": 1241,
+   "position": 2,
+   "image": "exercice_images/v1_n89_ex1241_2_e1241_q2.png",
+   "legende": null,
+   "alt_text": "Courbe y = x puissance 3 - x sur [-1 ; 2] : parties positives en vert, partie negative en orange",
+   "title_text": "",
+   "width": 315,
+   "height": 251
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 2974,
+   "proprietaire": 1241,
+   "position": 3,
+   "image": "exercice_images/v1_n89_ex1241_3_cours_sin_signe.png",
+   "legende": null,
+   "alt_text": "Courbe du sinus sur [0 ; 2 pi] : arche positive en vert, arche negative en orange",
+   "title_text": "",
+   "width": 392,
+   "height": 185
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 2975,
+   "proprietaire": 1241,
+   "position": 4,
+   "image": "exercice_images/v1_n89_ex1241_4_e1241_q4.png",
+   "legende": null,
+   "alt_text": "Parabole y = x carre - 4 entierement sous l axe sur [-2 ; 2], minimum -4",
+   "title_text": "",
+   "width": 315,
+   "height": 232
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 2976,
+   "proprietaire": 1241,
+   "position": 5,
+   "image": "exercice_images/v1_n89_ex1241_5_e1241_q5.png",
+   "legende": null,
+   "alt_text": "Parabole y = x carre - 4x + 3 sur [0 ; 3] : A1 au-dessus de l axe, A2 en dessous",
+   "title_text": "",
+   "width": 315,
+   "height": 242
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 336,
+   "proprietaire": 1236,
+   "position": 1,
+   "image": "exercice_images/v1_n89_ex1236_1_cours_moyenne.png",
+   "legende": null,
+   "alt_text": "Aire sous y = x carre sur [0 ; 3] et rectangle de meme aire de hauteur mu = 3",
+   "title_text": "",
+   "width": 324,
+   "height": 259
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 337,
+   "proprietaire": 1236,
+   "position": 2,
+   "image": "exercice_images/v1_n89_ex1236_2_e1236_q2.png",
+   "legende": null,
+   "alt_text": "Aire sous le sinus sur [0 ; pi] et rectangle de meme aire de hauteur 2/pi",
+   "title_text": "",
+   "width": 324,
+   "height": 210
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 338,
+   "proprietaire": 1236,
+   "position": 3,
+   "image": "exercice_images/v1_n89_ex1236_3_e1236_q3.png",
+   "legende": null,
+   "alt_text": "Aire sous l exponentielle sur [0 ; 1] et rectangle de meme aire de hauteur e - 1",
+   "title_text": "",
+   "width": 297,
+   "height": 253
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 339,
+   "proprietaire": 1236,
+   "position": 4,
+   "image": "exercice_images/v1_n89_ex1236_4_e1236_q4.png",
+   "legende": null,
+   "alt_text": "Trapeze sous y = 2x + 1 sur [1 ; 4] et rectangle de meme aire de hauteur 6",
+   "title_text": "",
+   "width": 324,
+   "height": 260
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 340,
+   "proprietaire": 1236,
+   "position": 5,
+   "image": "exercice_images/v1_n89_ex1236_5_e1236_q5.png",
+   "legende": null,
+   "alt_text": "Aire sous le cosinus sur [0 ; pi/2] et rectangle de meme aire de hauteur 2/pi",
+   "title_text": "",
+   "width": 296,
+   "height": 218
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 2977,
+   "proprietaire": 1242,
+   "position": 1,
+   "image": "exercice_images/v1_n89_ex1242_1_e1242_q1.png",
+   "legende": null,
+   "alt_text": "Aire sous la parabole y = (x - 1) au carre entre 0 et 3",
+   "title_text": "",
+   "width": 315,
+   "height": 234
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 2978,
+   "proprietaire": 1242,
+   "position": 2,
+   "image": "exercice_images/v1_n89_ex1242_2_e1242_q4.png",
+   "legende": null,
+   "alt_text": "Domaine entre les paraboles y = x carre et y = 2x - x carre sur [0 ; 1]",
+   "title_text": "",
+   "width": 298,
+   "height": 251
+  }
+ ],
+ "images_creees": [
+  {
+   "modele": "CoursImage",
+   "id": 1046
+  },
+  {
+   "modele": "CoursImage",
+   "id": 1047
+  },
+  {
+   "modele": "CoursImage",
+   "id": 1048
+  },
+  {
+   "modele": "SynthesisImage",
+   "id": 414
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3759
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3760
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3761
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3762
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3763
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3764
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3765
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3766
+  }
+ ],
+ "exercices_crees": [
+  {
+   "cle": "nouveau-1",
+   "id": 5256,
+   "titre": "Type examen - Étude d’une suite d’intégrales"
+  },
+  {
+   "cle": "nouveau-2",
+   "id": 5257,
+   "titre": "Problème - Encadrer une intégrale par la méthode des rectangles"
+  }
+ ]
+}

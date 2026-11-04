@@ -1,0 +1,95 @@
+=== Limites et convergence des suites - Programme Terminale
+Images: term_suites_recurrence.png, term_suites_convergence.png, term_suites_gendarmes.png, term_suites_qn.png
+Titre: Limites et convergence des suites
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+    <div style="background:#e8f4fd; border:2px solid #3498db; border-radius:8px; padding:15px; margin-bottom:20px;">
+        <p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🎯 Objectifs du chapitre :</strong> rédiger un raisonnement par récurrence, définir la limite d’une suite, calculer des limites (opérations, formes indéterminées), utiliser les théorèmes de comparaison et des gendarmes, connaître la limite de $q^n$ et le théorème de convergence monotone.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Raisonnement par récurrence</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Principe :</strong> soit $P(n)$ une propriété dépendant d’un entier $n$. Si</p>
+            <p style="margin:6px 0 0 0;">• <strong>initialisation</strong> : $P(n_0)$ est vraie,</p>
+            <p style="margin:6px 0 0 0;">• <strong>hérédité</strong> : pour tout $n \ge n_0$, si $P(n)$ est vraie, alors $P(n + 1)$ est vraie,</p>
+            <p style="margin:6px 0 0 0;">alors $P(n)$ est vraie pour tout entier $n \ge n_0$.</p>
+        </div>
+        [IMAGE_1]
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Inégalité de Bernoulli (démonstration au programme) :</strong> pour tout réel $a \gt 0$ et tout entier $n$, $(1 + a)^n \ge 1 + na$.</p>
+            <p style="margin:6px 0 0 0;"><em>Preuve :</em> pour $n = 0$, $1 \ge 1$. Si $(1 + a)^n \ge 1 + na$, alors, comme $1 + a \gt 0$, $(1 + a)^{n+1} \ge (1 + na)(1 + a) = 1 + (n + 1)a + na^2 \ge 1 + (n + 1)a$.</p>
+        </div>
+        <p style="font-size:1em;"><strong>Exemple :</strong> $u_0 = 1$ et $u_{n+1} = 0{,}5\,u_n + 1$. Montrons $P(n)$ : « $1 \le u_n \le u_{n+1} \le 2$ ». On a $u_0 = 1$ et $u_1 = 1{,}5$ : $P(0)$ est vraie. Si $P(n)$ est vraie, la fonction $x \mapsto 0{,}5x + 1$ étant croissante, on obtient $1{,}5 \le u_{n+1} \le u_{n+2} \le 2$, donc $P(n + 1)$ est vraie.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Limite d’une suite</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Définitions :</strong></p>
+            <p style="margin:6px 0 0 0;">• $(u_n)$ <strong>converge</strong> vers $\ell$ si tout intervalle ouvert contenant $\ell$ contient tous les termes à partir d’un certain rang. On note $\lim u_n = \ell$.</p>
+            <p style="margin:6px 0 0 0;">• $(u_n)$ tend vers $+\infty$ si tout intervalle $]A\,;+\infty[$ contient tous les termes à partir d’un certain rang.</p>
+            <p style="margin:6px 0 0 0;">• Une suite qui ne converge pas est dite <strong>divergente</strong>.</p>
+        </div>
+        [IMAGE_2]
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Limites de référence :</strong> $\frac{1}{n}$, $\frac{1}{n^2}$, $\frac{1}{\sqrt{n}}$ tendent vers $0$ ; $n$, $n^2$, $\sqrt{n}$ tendent vers $+\infty$.
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Calculer une limite</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Opérations :</strong> les limites se combinent « naturellement » pour les sommes, produits et quotients, sauf dans les quatre <strong>formes indéterminées</strong> : $\infty - \infty$, $0 \times \infty$, $\frac{\infty}{\infty}$ et $\frac{0}{0}$.</p>
+        </div>
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Lever une indétermination :</strong> on factorise par le terme « dominant ». Par exemple $n^2 - 5n = n^2\left(1 - \frac{5}{n}\right)$ tend vers $+\infty$, et $\frac{3n^2 + 1}{n^2 - 5n} = \frac{3 + \frac{1}{n^2}}{1 - \frac{5}{n}}$ tend vers $3$.
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Comparaison et encadrement</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Théorème de comparaison (démonstration au programme) :</strong> si $u_n \ge v_n$ à partir d’un certain rang et si $\lim v_n = +\infty$, alors $\lim u_n = +\infty$.</p>
+            <p style="margin:6px 0 0 0;"><em>Preuve :</em> pour tout $A$, il existe un rang à partir duquel $v_n \gt A$, donc $u_n \ge v_n \gt A$ (à partir du plus grand des deux rangs).</p>
+            <p style="margin:6px 0 0 0;"><strong>Théorème des gendarmes :</strong> si $v_n \le u_n \le w_n$ à partir d’un certain rang et si $(v_n)$ et $(w_n)$ convergent vers la même limite $\ell$, alors $(u_n)$ converge vers $\ell$.</p>
+        </div>
+        [IMAGE_3]
+        <p style="font-size:1em;"><strong>Exemples :</strong> $-\frac{1}{n} \le \frac{(-1)^n}{n} \le \frac{1}{n}$, donc $\frac{(-1)^n}{n}$ tend vers $0$ ; $n + \sin n \ge n - 1$, donc $n + \sin n$ tend vers $+\infty$.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Suites géométriques et suites monotones</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Limite de $q^n$ :</strong> si $q \gt 1$, $\lim q^n = +\infty$ ; si $-1 \lt q \lt 1$, $\lim q^n = 0$ ; si $q = 1$, la suite est constante ; si $q \le -1$, elle n’a pas de limite.</p>
+            <p style="margin:6px 0 0 0;"><em>Preuve pour $q \gt 1$ (au programme) :</em> on écrit $q = 1 + a$ avec $a \gt 0$ ; par Bernoulli, $q^n \ge 1 + na$, qui tend vers $+\infty$, et on conclut par comparaison.</p>
+        </div>
+        [IMAGE_4]
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Convergence monotone :</strong> toute suite croissante et majorée converge ; toute suite décroissante et minorée converge. Une suite croissante non majorée tend vers $+\infty$ (démonstration au programme).</p>
+        </div>
+        <p style="font-size:1em;"><strong>Exemple :</strong> la suite du I est croissante et majorée par $2$, donc elle converge vers un réel $\ell$ qui vérifie $\ell = 0{,}5\ell + 1$, soit $\ell = 2$.</p>
+        <div style="background:#2c3e50; color:#ecf0f1; padding:12px; border-radius:6px; margin:10px 0 0 0; font-family:monospace; white-space:pre; overflow-x:auto;">def seuil(e):
+    n = 0
+    p = 1
+    while p &gt;= e:
+        p = 0.8 &#42; p
+        n = n + 1
+    return n</div>
+        <p style="font-size:1em;"><code>seuil(0.001)</code> renvoie $31$ : c’est le premier rang à partir duquel $0{,}8^n \lt 0{,}001$.</p>
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong> une suite croissante et majorée par $2$ ne converge pas forcément vers $2$ : le majorant n’est pas toujours la limite. Il faut un argument supplémentaire (ici, l’équation $\ell = 0{,}5\ell + 1$).
+        </div>
+    </div>
+
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:8px; padding:15px; margin:20px 0 0 0;">
+        <p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🏆 L’essentiel :</strong> récurrence = initialisation + hérédité ; formes indéterminées levées en factorisant ; comparaison et gendarmes pour encadrer ; $q^n \rightarrow +\infty$ si $q \gt 1$, $\rightarrow 0$ si $|q| \lt 1$ ; croissante et majorée $\Rightarrow$ convergente. Fiche de synthèse dans l’onglet Fiches !</p>
+    </div>
+
+</div>

@@ -98,6 +98,12 @@ const collectUnlockedLevels = (status) => {
   return result
 }
 
+// Demande de statut en cours, partagée par tous les appelants : un second appel
+// attend la même réponse au lieu de repartir sans statut. `generation` écarte
+// une réponse arrivée après une déconnexion (clear).
+let demandeEnCours = null
+let generation = 0
+
 export const useSubscriptionStore = defineStore('subscription', {
   state: () => ({
     status: null,
@@ -141,26 +147,37 @@ export const useSubscriptionStore = defineStore('subscription', {
   },
   actions: {
     async fetchStatus({ force = false } = {}) {
-      if (this.loading) return
+      if (demandeEnCours) return demandeEnCours
       const now = Date.now()
       if (!force && this.status && now - this.loadedAt < 60_000) {
         return
       }
+      const maGeneration = generation
       this.loading = true
       this.error = null
-      try {
-        const { getSubscriptionStatus } = await import('@/api/subscriptions')
-        const response = await getSubscriptionStatus()
-        this.status = response.data
-        this.loadedAt = Date.now()
-      } catch (error) {
-        this.error = error
-        this.status = null
-      } finally {
-        this.loading = false
-      }
+      demandeEnCours = (async () => {
+        try {
+          const { getSubscriptionStatus } = await import('@/api/subscriptions')
+          const response = await getSubscriptionStatus()
+          if (maGeneration !== generation) return
+          this.status = response.data
+          this.loadedAt = Date.now()
+        } catch (error) {
+          if (maGeneration !== generation) return
+          this.error = error
+          this.status = null
+        } finally {
+          if (maGeneration === generation) {
+            this.loading = false
+            demandeEnCours = null
+          }
+        }
+      })()
+      return demandeEnCours
     },
     clear() {
+      generation += 1
+      demandeEnCours = null
       this.status = null
       this.error = null
       this.loadedAt = 0

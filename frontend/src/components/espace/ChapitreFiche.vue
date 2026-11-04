@@ -22,7 +22,7 @@
         </p>
         <TextSize v-model="zoom" />
       </div>
-      <EspaceDoc :html="html" :zoom="zoom" />
+      <EspaceDoc :html="html" :zoom="zoom" :actif="actif" />
       <div class="cf-next">
         <span>Prêt à t’entraîner&nbsp;?</span>
         <button type="button" class="es-btn" @click="$emit('go', 'exercices')">
@@ -39,12 +39,14 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { ArrowRightIcon, DocumentTextIcon } from '@heroicons/vue/24/outline'
 import EspaceDoc from './EspaceDoc.vue'
 import TextSize from './TextSize.vue'
-import { getSynthesisSheet, getSynthesisSheets } from '@/api/synthesis'
+import { chargerFiche } from '@/utils/chapitreContenu'
 import { renderContentWithImages } from '@/utils/scientificRenderer'
 import { useTailleTexte } from '@/composables/useTailleTexte'
 
 const props = defineProps({
-  notionId: { type: [String, Number], required: true }
+  notionId: { type: [String, Number], required: true },
+  // Onglet affiché (sinon gardé dans la page, masqué).
+  actif: { type: Boolean, default: true }
 })
 defineEmits(['go'])
 
@@ -60,14 +62,7 @@ const html = computed(() => {
 async function charger() {
   loading.value = true
   try {
-    const { data } = await getSynthesisSheets({ notion: props.notionId, sheet_type: 'summary' })
-    const premiere = Array.isArray(data) ? data[0] : (data?.results || [])[0]
-    if (premiere?.id) {
-      const detail = await getSynthesisSheet(premiere.id).catch(() => null)
-      fiche.value = detail?.data || premiere
-    } else {
-      fiche.value = null
-    }
+    fiche.value = await chargerFiche(props.notionId)
   } catch {
     fiche.value = null
   } finally {

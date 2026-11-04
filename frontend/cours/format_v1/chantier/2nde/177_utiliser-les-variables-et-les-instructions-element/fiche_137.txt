@@ -1,0 +1,66 @@
+Titre: Résumé : Utiliser les variables et les instructions élémentaires
+
+<!-- optitab:1 -->
+::: objectifs
+Retenir l’essentiel : types, affectation, formules, conditions et boucles en Python (programme de Seconde).
+:::
+
+## I. Variables et affectation
+
+| Type | Exemples |
+|---|---|
+| `int` (entier) | `7`, `-3` |
+| `float` (flottant) | `2.5`, `4.0` |
+| `str` (chaîne) | `"bonjour"` |
+| `bool` (booléen) | `True`, `False` |
+
+[IMAGE_1]
+
+- `a = a + 3` : on calcule à droite avec l’ancienne valeur, puis on range dans `a`.
+- Opérations : `*` produit, `/` quotient, `//` quotient entier, `%` reste, `**` puissance.
+- $\dfrac{a + b}{2}$ s’écrit `(a + b) / 2` ; `n % 2 == 0` teste si $n$ est pair.
+
+## II. Conditions et boucles
+
+```python
+x = -2
+if x > 0:
+    print("positif")
+elif x < 0:
+    print("négatif")
+else:
+    print("nul")
+```
+
+```python
+s = 0
+for i in range(1, 5):
+    s = s + i
+```
+
+```python
+n = 0
+p = 1
+while p <= 1000:
+    p = 2 * p
+    n = n + 1
+```
+
+| Boucle | Quand l’utiliser ? |
+|---|---|
+| `for i in range(n)` | $n$ répétitions connues, `i` de $0$ à $n - 1$ |
+| `while condition` | répéter tant que la condition est vraie (seuil) |
+
+## III. Les pièges à éviter
+
+::: attention Les 5 erreurs classiques
+1. Écrire `=` au lieu de `==` dans une condition.
+2. Oublier les deux-points ou l’indentation après `if`, `elif`, `else`, `for`, `while`.
+3. Croire que `range(5)` va jusqu’à $5$ : il s’arrête à $4$.
+4. Initialiser l’accumulateur `s = 0` **dans** la boucle au lieu d’avant.
+5. Écrire une boucle `while` dont la condition reste toujours vraie.
+:::
+
+::: remarque Réflexe
+Pour comprendre un programme, je fais son tableau de suivi : une colonne par variable, une ligne par instruction ou par tour de boucle.
+:::

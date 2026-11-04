@@ -1,0 +1,284 @@
+Titre: Les Primitives
+
+<!-- optitab:1 -->
+::: remarque Sections principales
+Les sections I à IV couvrent les concepts fondamentaux des primitives. Les parties marquées **« Bonus »** sont des approfondissements utiles qui vous permettent d'explorer des thèmes avancés.
+:::
+
+## I. Définition et notations
+
+### Primitive d'une fonction
+
+::: definition Primitive d'une fonction
+Une **primitive** d'une fonction $f$ définie sur un intervalle $I$ est une fonction $F$ définie sur $I$ telle que :
+
+::: formule
+$$F'(x) = f(x) \quad \text{pour tout } x \in I$$
+:::
+
+L'ensemble des primitives de $f$ se note :
+
+::: formule
+$$\int f(x) \, dx = F(x) + C$$
+:::
+
+*où $C$ est une constante réelle arbitraire.*
+:::
+
+| Primitives élémentaires | Fonction | Primitive |
+|---|---|---|
+| Constante | $\displaystyle k$ (constante) | $\displaystyle k x + C$ |
+| Puissance | $\displaystyle x^n$ ($\displaystyle n \neq -1$) | $\displaystyle\frac{x^{n+1}}{n+1} + C$ |
+| Racine carrée | $\displaystyle\frac{1}{\sqrt{x}}$ | $\displaystyle 2\sqrt{x} + C$ |
+| Inverse | $\displaystyle\frac{1}{x}$ | $\displaystyle\ln|x| + C$ |
+| Exponentielle | $\displaystyle e^x$ | $\displaystyle e^x + C$ |
+| Sinus | $\displaystyle\sin(x)$ | $\displaystyle -\cos(x) + C$ |
+| Cosinus | $\displaystyle\cos(x)$ | $\displaystyle\sin(x) + C$ |
+
+## II. Propriétés des primitives
+
+### Linéarité
+
+::: theoreme Linéarité de l'intégration
+Pour toutes fonctions $f$ et $g$ admettant des primitives et tous réels $a, b$ :
+
+::: formule
+$$\int (a f(x) + b g(x)) \, dx = a \int f(x) \, dx + b \int g(x) \, dx$$
+:::
+:::
+
+::: remarque Conséquence
+L'intégration est une opération linéaire.
+:::
+
+### Intégration par parties
+
+::: theoreme Intégration par parties
+Si $u$ et $v$ sont des fonctions dérivables, alors :
+
+::: formule
+$$\int u(x) v'(x) \, dx = u(x) v(x) - \int u'(x) v(x) \, dx$$
+:::
+
+Ou sous forme tabulaire :
+
+::: formule
+$$\int u \, dv = u v - \int v \, du$$
+:::
+:::
+
+::: attention Choix de $\displaystyle u$
+Mnémonique « ILATE » - Inverse, Logarithme, Algébrique, Trigonométrique, Exponentielle (ordre de priorité pour choisir $u$)
+:::
+
+## III. Méthodes de calcul
+
+### Intégration par parties - Exemples
+
+::: exemple
+Calculer $\displaystyle\int x e^x \, dx$
+
+**Résolution :**
+
+On pose $u = x$ et $dv = e^x dx$, donc $du = dx$ et $v = e^x$
+
+$$
+\begin{aligned}
+\int x e^x \, dx &= x e^x - \int e^x \, dx \\
+&= x e^x - e^x + C \\
+&= e^x (x - 1) + C
+\end{aligned}
+$$
+:::
+
+::: exemple
+Calculer $\displaystyle\int \ln(x) \, dx$
+
+**Résolution :**
+
+On pose $u = \ln(x)$ et $dv = dx$, donc $du = \frac{1}{x} dx$ et $v = x$
+
+$$
+\begin{aligned}
+\int \ln(x) \, dx &= x \ln(x) - \int x \cdot \frac{1}{x} \, dx \\
+&= x \ln(x) - \int dx \\
+&= x \ln(x) - x + C
+\end{aligned}
+$$
+:::
+
+::: exemple
+Calculer $\displaystyle\int x^2 \sin(x) \, dx$
+
+**Résolution :**
+
+On pose $u = x^2$ et $dv = \sin(x) dx$, donc $du = 2x dx$ et $v = -\cos(x)$
+
+$$
+\begin{aligned}
+\int x^2 \sin(x) \, dx &= -x^2 \cos(x) - \int -2x \cos(x) \, dx \\
+&= -x^2 \cos(x) + 2 \int x \cos(x) \, dx
+\end{aligned}
+$$
+
+Puis intégrer par parties à nouveau : $u = x$, $dv = \cos(x) dx$
+
+$$
+\begin{aligned}
+\int x \cos(x) \, dx &= x \sin(x) - \int \sin(x) \, dx \\
+&= x \sin(x) + \cos(x) + C
+\end{aligned}
+$$
+
+Donc résultat final : $\displaystyle -x^2 \cos(x) + 2(x \sin(x) + \cos(x)) + C$
+:::
+
+### Changement de variable (substitution)
+
+::: theoreme Changement de variable
+On pose $u = g(x)$ où $g$ est une fonction dérivable, alors $du = g'(x) \, dx$
+
+::: formule
+$$\int f(g(x)) \cdot g'(x) \, dx = \int f(u) \, du$$
+:::
+:::
+
+::: remarque Reconnaître la forme
+On cherche une fonction et sa dérivée dans l'intégrande.
+:::
+
+::: exemple
+Calculer $\displaystyle\int 2x(x^2 + 1)^3 \, dx$
+
+**Résolution :**
+
+On reconnaît $u = x^2 + 1$ et $du = 2x \, dx$
+
+$$
+\begin{aligned}
+\int 2x(x^2 + 1)^3 \, dx &= \int u^3 \, du \\
+&= \frac{u^4}{4} + C \\
+&= \frac{(x^2 + 1)^4}{4} + C
+\end{aligned}
+$$
+:::
+
+::: exemple
+Calculer $\displaystyle\int \frac{2x}{x^2 + 1} \, dx$
+
+**Résolution :**
+
+On reconnaît $u = x^2 + 1$ et $du = 2x \, dx$
+
+$$
+\begin{aligned}
+\int \frac{2x}{x^2 + 1} \, dx &= \int \frac{du}{u} \\
+&= \ln|u| + C \\
+&= \ln|x^2 + 1| + C
+\end{aligned}
+$$
+:::
+
+::: exemple
+Calculer $\displaystyle\int x e^{x^2} \, dx$
+
+**Résolution :**
+
+On reconnaît $u = x^2$ et $du = 2x \, dx$, donc $x \, dx = \frac{du}{2}$
+
+$$
+\begin{aligned}
+\int x e^{x^2} \, dx &= \int e^u \cdot \frac{du}{2} \\
+&= \frac{1}{2} \int e^u \, du \\
+&= \frac{1}{2} e^u + C \\
+&= \frac{1}{2} e^{x^2} + C
+\end{aligned}
+$$
+:::
+
+### Tableau des primitives composées
+
+| Fonction composée | Primitive | Condition |
+|---|---|---|
+| $\displaystyle (ax + b)^n$ | $\displaystyle\frac{(ax + b)^{n+1}}{a(n+1)} + C$ | $\displaystyle n \neq -1$ |
+| $\displaystyle\frac{1}{ax + b}$ | $\displaystyle\frac{1}{a} \ln|ax + b| + C$ | $\displaystyle ax + b \neq 0$ |
+| $\displaystyle e^{ax + b}$ | $\displaystyle\frac{1}{a} e^{ax + b} + C$ | $\displaystyle a \neq 0$ |
+| $\displaystyle\sin(ax + b)$ | $\displaystyle -\frac{1}{a} \cos(ax + b) + C$ | $\displaystyle a \neq 0$ |
+| $\displaystyle\cos(ax + b)$ | $\displaystyle\frac{1}{a} \sin(ax + b) + C$ | $\displaystyle a \neq 0$ |
+| $\displaystyle\frac{1}{\sqrt{ax + b}}$ | $\displaystyle\frac{2}{a} \sqrt{ax + b} + C$ | $\displaystyle ax + b > 0$ |
+| $\displaystyle\frac{ax + b}{(ax + b)^2 + c^2}$ | $\displaystyle\frac{1}{2a} \ln|(ax + b)^2 + c^2| + C$ | $\displaystyle a, c \neq 0$ |
+| $\displaystyle a \cdot f(ax + b)$ | $\displaystyle F(ax + b) + C$ | $\displaystyle F' = f$ |
+
+::: attention Règle générale
+Pour $\int f(ax + b) \, dx$, on divise par le coefficient $a$ et on compose avec $(ax + b)$.
+:::
+
+::: exemple
+Calculer $\displaystyle\int (3x - 2)^4 \, dx$
+
+**Résolution :**
+
+$$
+\begin{aligned}
+\int (3x - 2)^4 \, dx &= \frac{(3x - 2)^5}{3 \cdot 5} + C \\
+&= \frac{(3x - 2)^5}{15} + C
+\end{aligned}
+$$
+:::
+
+## IV. Techniques avancées
+
+### Intégration de fractions rationnelles
+
+::: methode
+Décomposition en éléments simples
+:::
+
+::: exemple
+Calculer $\displaystyle\int \frac{2x + 3}{x^2 - 1} \, dx$
+
+**Résolution :**
+
+$$
+\begin{aligned}
+\frac{2x + 3}{x^2 - 1} &= \frac{2x + 3}{(x-1)(x+1)} \\
+&= \frac{a}{x-1} + \frac{b}{x+1}
+\end{aligned}
+$$
+
+$$2x + 3 = a(x+1) + b(x-1)$$
+
+Pour $x=1$ : $5 = 2a$ donc $a = \frac{5}{2}$
+
+Pour $x=-1$ : $1 = -2b$ donc $b = -\frac{1}{2}$
+
+$$\int \frac{5/2}{x-1} \, dx - \int \frac{1/2}{x+1} \, dx = \frac{5}{2} \ln|x-1| - \frac{1}{2} \ln|x+1| + C$$
+:::
+
+### Intégrales trigonométriques
+
+| Forme | Méthode | Exemple |
+|---|---|---|
+| $\displaystyle\int \sin^n(x) \cos^m(x) \, dx$ | Changement $\displaystyle u = \sin(x)$ ou $\displaystyle u = \cos(x)$ | $\displaystyle\int \sin^3(x) \, dx = -\cos(x) + \frac{\cos^3(x)}{3} + C$ |
+| $\displaystyle\int \tan^n(x) \, dx$ | Changement $\displaystyle u = \tan(x)$ | $\displaystyle\int \tan^2(x) \, dx = \tan(x) - x + C$ |
+
+## V. Erreurs fréquentes et conseils
+
+::: attention
+- Oublier la constante d'intégration $C$ dans les primitives
+- Mauvais choix de $u$ dans l'intégration par parties
+- Oublier de changer les bornes dans le changement de variable (pour les intégrales définies)
+- Confondre $\int \frac{1}{x^2} dx = -\frac{1}{x} + C$ et $\int \frac{1}{x} dx = \ln|x| + C$
+- Appliquer des formules sans vérifier les conditions de validité
+- Oublier que $\int x^n dx = \frac{x^{n+1}}{n+1} + C$ ne marche pas pour $n = -1$
+:::
+
+::: conseil
+- Maîtriser parfaitement les **primitives élémentaires**
+- Pour l'intégration par parties : choisir $u$ selon « ILATE »
+- Penser aux **changements de variable** classiques ($\tan(x)$, $\sin(x)$, etc.)
+- Pour les fractions rationnelles : décomposer systématiquement
+- Utiliser la **linéarité** pour décomposer les intégrales complexes
+- Vérifier toujours les **conditions de validité** des méthodes
+- S'entraîner régulièrement pour automatiser les calculs
+:::

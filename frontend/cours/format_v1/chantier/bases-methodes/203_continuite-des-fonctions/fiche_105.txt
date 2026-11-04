@@ -1,0 +1,95 @@
+Titre: Résumé : Continuité des Fonctions
+
+<!-- optitab:1 -->
+::: objectifs
+Maîtriser la continuité des fonctions : définition, lien avec la dérivabilité, théorème des valeurs intermédiaires et applications.
+:::
+
+## I. Définition de la continuité
+
+| Notion | Définition |
+|---|---|
+| **Continuité en un point** <br> *Pas de « trou » ni de « saut »* | $\displaystyle \lim_{x \to a} f(x) = f(a)$ |
+| **Continuité sur un intervalle** <br> *Continue en tout point* | Sur $\displaystyle ]a,b[$ : continue en tout point <br> Sur $\displaystyle [a,b]$ : aussi $\displaystyle \lim_{x \to a^+} f(x) = f(a)$ et $\displaystyle \lim_{x \to b^-} f(x) = f(b)$ |
+| **Prolongement par continuité** <br> *« Réparer » une discontinuité* | Si $\displaystyle \lim_{x \to a} f(x) = L$ existe, définir $\displaystyle g(x) = \begin{cases} f(x) & \text{si } x \neq a \\ L & \text{si } x = a \end{cases}$ |
+
+[IMAGE_1]
+
+## II. Opérations sur les fonctions continues
+
+::: theoreme
+Si $f$ et $g$ sont continues en $a$, alors les opérations suivantes sont aussi continues en $a$ :
+:::
+
+| Opération | Résultat |
+|---|---|
+| $\displaystyle f + g$ | Continue en $\displaystyle a$ |
+| $\displaystyle f \times g$ | Continue en $\displaystyle a$ |
+| $\displaystyle \frac{f}{g}$ (si $\displaystyle g(a) \neq 0$) | Continue en $\displaystyle a$ |
+| $\displaystyle f \circ g$ | Continue en $\displaystyle a$ si $\displaystyle g$ continue en $\displaystyle a$ et $\displaystyle f$ continue en $\displaystyle g(a)$ |
+
+## III. Lien continuité et dérivabilité
+
+| Théorème | Formule |
+|---|---|
+| **Dérivable $\Rightarrow$ continue** <br> *Toute fonction dérivable est continue* | $\displaystyle f$ dérivable en $\displaystyle a \quad \Rightarrow \quad f$ continue en $\displaystyle a$ |
+| ** Réciproque fausse** <br> *Une fonction continue n'est pas forcément dérivable* | Exemple : $\displaystyle f(x) = |x|$ continue en $\displaystyle 0$ mais non dérivable en $\displaystyle 0$ |
+
+## IV. Image d'une suite convergente
+
+| Théorème | Formule |
+|---|---|
+| **Image d'une suite convergente** <br> *On peut « passer la limite à l'intérieur »* | Si $\displaystyle (u_n)$ converge vers $\displaystyle \ell$ et $\displaystyle f$ continue en $\displaystyle \ell$ : <br> <br> $\displaystyle \lim_{n \to +\infty} f(u_n) = f(\ell) = f\left(\lim_{n \to +\infty} u_n\right)$ |
+
+## V. Théorème des valeurs intermédiaires
+
+| Théorème | Énoncé |
+|---|---|
+| **TVI** <br> *Existence d'une solution* | Si $\displaystyle f$ continue sur $\displaystyle [a, b]$ et $\displaystyle k$ entre $\displaystyle f(a)$ et $\displaystyle f(b)$, alors il existe $\displaystyle c \in [a, b]$ tel que $\displaystyle f(c) = k$ |
+| **TVI avec unicité** <br> *Si $\displaystyle f$ strictement monotone* | Si $\displaystyle f$ continue et strictement monotone sur $\displaystyle [a, b]$, alors il existe **un unique** $\displaystyle c \in [a, b]$ tel que $\displaystyle f(c) = k$ |
+
+## VI. Applications
+
+| Application | Méthode |
+|---|---|
+| **Étudier l'équation** <br> $\displaystyle f(x) = k$ | **1.** Vérifier la continuité de $\displaystyle f$ sur $\displaystyle [a,b]$ <br> **2.** Calculer $\displaystyle f(a)$ et $\displaystyle f(b)$ <br> **3.** Vérifier que $\displaystyle k$ est entre $\displaystyle f(a)$ et $\displaystyle f(b)$ <br> **4.** Étudier la monotonie de $\displaystyle f$ pour unicité |
+| **Suites récurrentes** <br> *$\displaystyle u_{n+1} = f(u_n)$* | Si $\displaystyle (u_n)$ converge vers $\displaystyle \ell$ et $\displaystyle f$ est continue, alors : <br> **$\displaystyle \ell = f(\ell)$** <br> *$\displaystyle \ell$ est un point fixe de $\displaystyle f$* |
+
+## VII. Fonctions usuelles continues
+
+| Fonction | Domaine de continuité |
+|---|---|
+| Polynômes | $\displaystyle \mathbb{R}$ |
+| Fonctions rationnelles | $\displaystyle \{x \mid Q(x) \neq 0\}$ |
+| $\displaystyle \sqrt{x}$ | $\displaystyle [0, +\infty[$ |
+| $\displaystyle e^x$ | $\displaystyle \mathbb{R}$ |
+| $\displaystyle \ln(x)$ | $\displaystyle ]0, +\infty[$ |
+| $\sin(x)$, $\cos(x)$ | $\displaystyle \mathbb{R}$ |
+
+## VIII. Erreurs fréquentes
+
+| Piège fréquent | Correction |
+|---|---|
+| Confondre continuité et dérivabilité | Une fonction continue n'est pas forcément dérivable (ex: $\displaystyle |x|$ en $\displaystyle 0$) |
+| Oublier de vérifier la continuité aux bornes | Sur $\displaystyle [a,b]$, vérifier aussi $\displaystyle \lim_{x \to a^+} f(x) = f(a)$ et $\displaystyle \lim_{x \to b^-} f(x) = f(b)$ |
+| Oublier les hypothèses du TVI | La fonction doit être continue sur un intervalle **fermé** $\displaystyle [a,b]$ |
+| Confondre existence et unicité | Le TVI donne l'existence, la monotonie donne l'unicité |
+
+## IX. Formules essentielles — mémo rapide
+
+| Notion | Formule essentielle |
+|---|---|
+| Continuité en un point | $\displaystyle \lim_{x \to a} f(x) = f(a)$ |
+| Dérivable $\Rightarrow$ continue | $\displaystyle f$ dérivable en $\displaystyle a \Rightarrow f$ continue en $\displaystyle a$ |
+| Image d'une suite convergente | $\displaystyle \lim_{n \to +\infty} f(u_n) = f\left(\lim_{n \to +\infty} u_n\right)$ |
+| Théorème des valeurs intermédiaires | $\displaystyle f$ continue sur $\displaystyle [a,b]$ et $\displaystyle k$ entre $\displaystyle f(a)$ et $\displaystyle f(b)$ $\Rightarrow$ $\exists c \in [a,b]$ tel que $\displaystyle f(c) = k$ |
+
+## X. Méthodologie — stratégie de résolution
+
+| Type de problème | Méthode recommandée |
+|---|---|
+| Vérifier la continuité en un point | Calculer $\displaystyle \lim_{x \to a} f(x)$ et vérifier qu'elle égale $\displaystyle f(a)$ |
+| Appliquer le TVI | Vérifier continuité sur $\displaystyle [a,b]$ et que $\displaystyle k$ est entre $\displaystyle f(a)$ et $\displaystyle f(b)$ |
+| Obtenir l'unicité d'une solution | Étudier la monotonie de $\displaystyle f$ (via le signe de $\displaystyle f'$) |
+| Étudier une suite récurrente | Si $\displaystyle (u_n)$ converge vers $\displaystyle \ell$ et $\displaystyle f$ continue, alors $\displaystyle \ell = f(\ell)$ |
+| Encadrer une solution | Utiliser la méthode de dichotomie ou des valeurs de test |

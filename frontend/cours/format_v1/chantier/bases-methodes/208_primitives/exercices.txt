@@ -1,0 +1,1721 @@
+=== Découverte - Primitives - Calculs de Base
+Id: 1632
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Calculer les primitives suivantes en utilisant les primitives élémentaires.
+
+1. Calculer $\displaystyle\int (3x^2 + 2)\, dx$ et trouver la primitive $F$ telle que $F(0) = 3$
+2. Calculer $\displaystyle\int 5x^4\, dx$ et trouver la primitive $F$ telle que $F(1) = 2$
+3. Calculer $\displaystyle\int (7 - 4x)\, dx$ et trouver la primitive $F$ telle que $F(0) = 5$
+4. Calculer $\displaystyle\int e^x\, dx$ et trouver la primitive $F$ telle que $F(0) = 1$
+5. Calculer $\displaystyle\int \cos(x)\, dx$ et trouver la primitive $F$ telle que $F(0) = 0$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer $\displaystyle\int (3x^2 + 2)\, dx$ et trouver la primitive $F$ telle que $F(0) = 3$
+
+::: methode
+Linéarité : $\displaystyle\int (af(x) + bg(x))\, dx = a\displaystyle\int f(x)\, dx + b\displaystyle\int g(x)\, dx$
+:::
+
+::: etape Décomposition
+- $\displaystyle\int (3x^2 + 2)\, dx = 3\displaystyle\int x^2\, dx + 2\displaystyle\int 1\, dx$
+:::
+
+::: etape Calcul des primitives
+- $\displaystyle\int x^2\, dx = \frac{x^3}{3} + C_1$
+- $\displaystyle\int 1\, dx = x + C_2$
+:::
+
+::: etape Primitive générale
+$\displaystyle F(x) = x^3 + 2x + C$
+
+- **Remarque :** Quand on additionne plusieurs primitives, on peut regrouper tous les $+C_1, +C_2, ...$ en une seule constante $C$ générale.
+:::
+
+::: etape Calcul de la constante
+$$
+\begin{aligned}
+F(0) = 3 &\Rightarrow 0^3 + 2(0) + C = 3 \\
+&\Rightarrow C = 3
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$F(x) = x^3 + 2x + 3$$
+:::
+
+## Question 2 : Calculer $\displaystyle\int 5x^4\, dx$ et trouver la primitive $F$ telle que $F(1) = 2$
+
+::: methode
+Linéarité + Puissance : $\int x^n\, dx = \frac{x^{n+1}}{n+1} + C$ pour $n\neq -1$
+:::
+
+::: etape Linéarité
+- $\displaystyle\int 5x^4\, dx = 5\displaystyle\int x^4\, dx$
+:::
+
+::: etape Calcul de la primitive
+$$
+\begin{aligned}
+\int x^4\, dx &= \frac{x^{4+1}}{4+1} + C_1 \\
+&= \frac{x^5}{5} + C_1
+\end{aligned}
+$$
+:::
+
+::: etape Primitive générale
+$$F(x) = x^5 + C$$
+:::
+
+::: etape Calcul de la constante
+$$
+\begin{aligned}
+F(1) = 2 &\Rightarrow 1^5 + C = 2 \\
+&\Rightarrow 1 + C = 2 \\
+&\Rightarrow C = 1
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$F(x) = x^5 + 1$$
+:::
+
+## Question 3 : Calculer $\displaystyle\int (7 - 4x)\, dx$ et trouver la primitive $F$ telle que $F(0) = 5$
+
+::: methode
+Linéarité : $\displaystyle\int (af(x) + bg(x))\, dx = a\displaystyle\int f(x)\, dx + b\displaystyle\int g(x)\, dx$
+:::
+
+::: etape Décomposition
+- $\displaystyle\int (7 - 4x)\, dx = 7\displaystyle\int 1\, dx - 4\displaystyle\int x\, dx$
+:::
+
+::: etape Calcul des primitives
+- $\displaystyle\int 1\, dx = x + C_1$
+- $\displaystyle\int x\, dx = \frac{x^2}{2} + C_2$
+:::
+
+::: etape Primitive générale
+$$F(x) = 7x - 2x^2 + C$$
+:::
+
+::: etape Calcul de la constante
+$$
+\begin{aligned}
+F(0) = 5 &\Rightarrow 7(0) - 2(0)^2 + C = 5 \\
+&\Rightarrow C = 5
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$F(x) = 7x - 2x^2 + 5$$
+:::
+
+## Question 4 : Calculer $\displaystyle\int e^x\, dx$ et trouver la primitive $F$ telle que $F(0) = 1$
+
+::: methode
+Exponentielle : $\displaystyle\int e^x\, dx = e^x + C$
+:::
+
+::: etape Forme directe
+- $\int e^x\, dx$ (application directe de la formule)
+:::
+
+::: etape Primitive générale
+$$F(x) = e^x + C$$
+:::
+
+::: etape Calcul de la constante
+$$
+\begin{aligned}
+F(0) = 1 &\Rightarrow e^0 + C = 1 \\
+&\Rightarrow 1 + C = 1 \\
+&\Rightarrow C = 0
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$F(x) = e^x$$
+:::
+
+## Question 5 : Calculer $\displaystyle\int \cos(x)\, dx$ et trouver la primitive $F$ telle que $F(0) = 0$
+
+::: methode
+Cosinus : $\displaystyle\int \cos(x)\, dx = \sin(x) + C$
+:::
+
+::: etape Forme directe
+- $\int \cos(x)\, dx$ (application directe de la formule)
+:::
+
+::: etape Primitive générale
+$$F(x) = \sin(x) + C$$
+:::
+
+::: etape Calcul de la constante
+$$
+\begin{aligned}
+F(0) = 0 &\Rightarrow \sin(0) + C = 0 \\
+&\Rightarrow 0 + C = 0 \\
+&\Rightarrow C = 0
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$F(x) = \sin(x)$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle F(x) = x^3 + 2x + 3$
+2. $\displaystyle F(x) = x^5 + 1$
+3. $\displaystyle F(x) = 7x - 2x^2 + 5$
+4. $\displaystyle F(x) = e^x$
+5. $\displaystyle F(x) = \sin(x)$
+
+===
+
+=== Découverte - Primitives - Linéarité et Combinaisons
+Id: 1633
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Utiliser la linéarité pour décomposer et intégrer.
+
+1. Calculer $\displaystyle\int (2x^3 - 5x + 4)\, dx$ et trouver la primitive $F$ telle que $F(0) = 1$
+2. Calculer $\displaystyle\int (x^2 + 3x + 1)\, dx$ et trouver la primitive $F$ telle que $F(0) = 2$
+3. Calculer $\displaystyle\int (6\,e^x - 3)\, dx$ et trouver la primitive $F$ telle que $F(0) = 0$
+4. Calculer $\displaystyle\int (4\cos(x) - 2\sin(x))\, dx$ et trouver la primitive $F$ telle que $F(0) = 1$
+5. Calculer $\displaystyle\int (\sqrt{x} + \frac{1}{\sqrt{x}})\, dx$ et trouver la primitive $F$ telle que $F(1) = 3$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer $\displaystyle\int (2x^3 - 5x + 4)\, dx$ et trouver la primitive $F$ telle que $F(0) = 1$
+
+::: methode
+Linéarité : $\displaystyle\int (af(x) + bg(x) + ch(x))\, dx = a\displaystyle\int f(x)\, dx + b\displaystyle\int g(x)\, dx + c\displaystyle\int h(x)\, dx$
+:::
+
+::: etape Décomposition
+- $\displaystyle\int (2x^3 - 5x + 4)\, dx = 2\displaystyle\int x^3\, dx - 5\displaystyle\int x\, dx + 4\displaystyle\int 1\, dx$
+:::
+
+::: etape Calcul des primitives
+- $\displaystyle\int x^3\, dx = \frac{x^4}{4} + C_1$
+- $\displaystyle\int x\, dx = \frac{x^2}{2} + C_2$
+- $\displaystyle\int 1\, dx = x + C_3$
+:::
+
+::: etape Primitive générale
+$$F(x) = \frac{x^4}{2} - \frac{5x^2}{2} + 4x + C$$
+:::
+
+::: etape Calcul de la constante
+$$
+\begin{aligned}
+F(0) = 1 &\Rightarrow \frac{0^4}{2} - \frac{5(0)^2}{2} + 4(0) + C = 1 \\
+&\Rightarrow C = 1
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$F(x) = \frac{x^4}{2} - \frac{5x^2}{2} + 4x + 1$$
+:::
+
+## Question 2 : Calculer $\displaystyle\int (x^2 + 3x + 1)\, dx$ et trouver la primitive $F$ telle que $F(0) = 2$
+
+::: methode
+Linéarité + Puissances : $\displaystyle\int x^n\, dx = \frac{x^{n+1}}{n+1} + C$
+:::
+
+::: etape Décomposition
+- $\displaystyle\int (x^2 + 3x + 1)\, dx = \displaystyle\int x^2\, dx + 3\displaystyle\int x\, dx + \displaystyle\int 1\, dx$
+:::
+
+::: etape Calcul des primitives
+- $\displaystyle\int x^2\, dx = \frac{x^3}{3} + C_1$
+- $\displaystyle\int x\, dx = \frac{x^2}{2} + C_2$
+- $\displaystyle\int 1\, dx = x + C_3$
+:::
+
+::: etape Primitive générale
+$$F(x) = \frac{x^3}{3} + \frac{3x^2}{2} + x + C$$
+:::
+
+::: etape Calcul de la constante
+$$
+\begin{aligned}
+F(0) = 2 &\Rightarrow \frac{0^3}{3} + \frac{3(0)^2}{2} + 0 + C = 2 \\
+&\Rightarrow C = 2
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$F(x) = \frac{x^3}{3} + \frac{3x^2}{2} + x + 2$$
+:::
+
+## Question 3 : Calculer $\displaystyle\int (6\,e^x - 3)\, dx$ et trouver la primitive $F$ telle que $F(0) = 0$
+
+::: methode
+Linéarité + Exponentielle : $\displaystyle\int e^x\, dx = e^x + C$
+:::
+
+::: etape Décomposition
+- $\displaystyle\int (6\,e^x - 3)\, dx = 6\displaystyle\int e^x\, dx - 3\displaystyle\int 1\, dx$
+:::
+
+::: etape Calcul des primitives
+- $\displaystyle\int e^x\, dx = e^x + C_1$
+- $\displaystyle\int 1\, dx = x + C_2$
+:::
+
+::: etape Primitive générale
+$$F(x) = 6e^x - 3x + C$$
+:::
+
+::: etape Calcul de la constante
+$$
+\begin{aligned}
+F(0) = 0 &\Rightarrow 6e^0 - 3(0) + C = 0 \\
+&\Rightarrow 6 + C = 0 \\
+&\Rightarrow C = -6
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$F(x) = 6e^x - 3x - 6$$
+:::
+
+## Question 4 : Calculer $\displaystyle\int (4\cos(x) - 2\sin(x))\, dx$ et trouver la primitive $F$ telle que $F(0) = 1$
+
+::: methode
+Trigonométriques : $\int \cos(x)\, dx = \sin(x) + C$, $\int \sin(x)\, dx = -\cos(x) + C$
+:::
+
+::: etape Décomposition
+- $\displaystyle\int (4\cos(x) - 2\sin(x))\, dx = 4\displaystyle\int \cos(x)\, dx - 2\displaystyle\int \sin(x)\, dx$
+:::
+
+::: etape Calcul des primitives
+- $\displaystyle\int \cos(x)\, dx = \sin(x) + C_1$
+- $\displaystyle\int \sin(x)\, dx = -\cos(x) + C_2$
+:::
+
+::: etape Primitive générale
+$$F(x) = 4\sin(x) + 2\cos(x) + C$$
+:::
+
+::: etape Calcul de la constante
+$$
+\begin{aligned}
+F(0) = 1 &\Rightarrow 4\sin(0) + 2\cos(0) + C = 1 \\
+&\Rightarrow 0 + 2 + C = 1 \\
+&\Rightarrow C = -1
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$F(x) = 4\sin(x) + 2\cos(x) - 1$$
+:::
+
+## Question 5 : Calculer $\displaystyle\int (\sqrt{x} + \frac{1}{\sqrt{x}})\, dx$ et trouver la primitive $F$ telle que $F(1) = 3$
+
+::: methode
+Puissances : $\int x^n\, dx = \frac{x^{n+1}}{n+1} + C$ pour $n\neq -1$
+:::
+
+::: etape Transformation (passage racine → puissance)
+- $\sqrt{x} = x^{1/2}$ et $\frac{1}{\sqrt{x}} = x^{-1/2}$
+- $\displaystyle\int (\sqrt{x} + \frac{1}{\sqrt{x}})\, dx = \displaystyle\int x^{1/2}\, dx + \displaystyle\int x^{-1/2}\, dx$
+:::
+
+::: etape Calcul des primitives
+$$
+\begin{aligned}
+\int x^{1/2}\, dx &= \frac{x^{1/2+1}}{1/2+1} + C_1 \\
+&= \frac{x^{3/2}}{3/2} + C_1 \\
+&= \frac{2}{3}x^{3/2} + C_1
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+\int x^{-1/2}\, dx &= \frac{x^{-1/2+1}}{-1/2+1} + C_2 \\
+&= \frac{x^{1/2}}{1/2} + C_2 \\
+&= 2x^{1/2} + C_2
+\end{aligned}
+$$
+:::
+
+::: etape Primitive générale
+$$F(x) = \frac{2}{3}x^{3/2} + 2x^{1/2} + C$$
+:::
+
+::: etape Calcul de la constante
+$$
+\begin{aligned}
+F(1) = 3 &\Rightarrow \frac{2}{3}(1)^{3/2} + 2(1)^{1/2} + C = 3 \\
+&\Rightarrow \frac{2}{3} + 2 + C = 3 \\
+&\Rightarrow C = \frac{1}{3}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$F(x) = \frac{2}{3}x^{3/2} + 2x^{1/2} + \frac{1}{3}$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle F(x) = \frac{x^4}{2} - \frac{5x^2}{2} + 4x + 1$
+2. $\displaystyle F(x) = \frac{x^3}{3} + \frac{3x^2}{2} + x + 2$
+3. $\displaystyle F(x) = 6e^x - 3x - 6$
+4. $\displaystyle F(x) = 4\sin(x) + 2\cos(x) - 1$
+5. $\displaystyle F(x) = \frac{2}{3}x^{3/2} + 2x^{1/2} + \frac{1}{3}$
+
+===
+
+=== Entraînement - Primitives - Exponentielles et Trigonométriques
+Id: 1634
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Calculer des primitives impliquant $\displaystyle e^{ax+b}$, $\displaystyle \sin$ et $\displaystyle \cos$.
+
+**Rappel :** Pour justifier les formules de primitives composées, on peut utiliser les dérivées :
+
+• $\displaystyle\frac{d}{dx}[\sin(ax+b)] = \displaystyle a\cos(ax+b)$ donc $\displaystyle\int \cos(ax+b)\, dx = \frac{1}{a}\sin(ax+b) + C$
+
+• $\displaystyle\frac{d}{dx}[\cos(ax+b)] = \displaystyle -a\sin(ax+b)$ donc $\displaystyle\int \sin(ax+b)\, dx = -\frac{1}{a}\cos(ax+b) + C$
+
+1. Calculer $\displaystyle\int e^{3x}\, dx$ et trouver la primitive $F$ telle que $\displaystyle F(0) = \frac{1}{3}$
+2. Calculer $\displaystyle\int e^{2x + 1}\, dx$ et trouver la primitive $F$ telle que $\displaystyle F(0) = \frac{e}{2}$
+3. Calculer $\displaystyle\int \sin(2x)\, dx$ et trouver la primitive $F$ telle que $\displaystyle F(0) = 0$
+4. Calculer $\displaystyle\int \cos(5x)\, dx$ et trouver la primitive $F$ telle que $\displaystyle F(0) = \frac{1}{5}$
+5. Calculer $\displaystyle\int (3e^{x} - 2\cos(2x))\, dx$ et trouver la primitive $F$ telle que $\displaystyle F(0) = 2$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer $\displaystyle\int e^{3x}\, dx$ et trouver la primitive $F$ telle que $F(0) = \frac{1}{3}$
+
+::: methode
+Exponentielle composée : $\displaystyle\int e^{ax+b}\, dx = \frac{1}{a}e^{ax+b} + C$
+:::
+
+::: etape Identification des paramètres
+- $a = 3$ et $b = 0$
+:::
+
+::: etape Application directe de la formule
+- $\displaystyle\int e^{3x}\, dx = \frac{1}{3}e^{3x} + C$
+:::
+
+::: etape Primitive générale
+$$F(x) = \frac{1}{3}e^{3x} + C$$
+:::
+
+::: etape Calcul de la constante
+$$
+\begin{aligned}
+F(0) = \frac{1}{3} &\Rightarrow \frac{1}{3}e^{0} + C = \frac{1}{3} \\
+&\Rightarrow \frac{1}{3} + C = \frac{1}{3} \\
+&\Rightarrow C = 0
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$F(x) = \frac{1}{3}e^{3x}$$
+:::
+
+## Question 2 : Calculer $\displaystyle\int e^{2x+1}\, dx$ et trouver la primitive $F$ telle que $F(0) = \frac{e}{2}$
+
+::: methode
+Exponentielle composée : $\displaystyle\int e^{ax+b}\, dx = \frac{1}{a}e^{ax+b} + C$
+:::
+
+::: etape Identification des paramètres
+- $a = 2$ et $b = 1$
+:::
+
+::: etape Application directe de la formule
+- $\displaystyle\int e^{2x+1}\, dx = \frac{1}{2}e^{2x+1} + C$
+:::
+
+::: etape Primitive générale
+$$F(x) = \frac{1}{2}e^{2x+1} + C$$
+:::
+
+::: etape Calcul de la constante
+$$
+\begin{aligned}
+F(0) = \frac{e}{2} &\Rightarrow \frac{1}{2}e^{2(0)+1} + C = \frac{e}{2} \\
+&\Rightarrow \frac{1}{2}e + C = \frac{e}{2} \\
+&\Rightarrow C = 0
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$F(x) = \frac{1}{2}e^{2x+1}$$
+:::
+
+## Question 3 : Calculer $\displaystyle\int \sin(2x)\, dx$ et trouver la primitive $F$ telle que $F(0) = 0$
+
+::: methode
+Sinus composé : $\displaystyle\int \sin(ax+b)\, dx = -\frac{1}{a}\cos(ax+b) + C$
+:::
+
+::: etape Identification des paramètres
+- $a = 2$ et $b = 0$
+:::
+
+::: etape Application directe de la formule
+- $\displaystyle\int \sin(2x)\, dx = -\frac{1}{2}\cos(2x) + C$
+:::
+
+::: etape Primitive générale
+$$F(x) = -\frac{1}{2}\cos(2x) + C$$
+:::
+
+::: etape Calcul de la constante
+$$
+\begin{aligned}
+F(0) = 0 &\Rightarrow -\frac{1}{2}\cos(2(0)) + C = 0 \\
+&\Rightarrow -\frac{1}{2} + C = 0 \\
+&\Rightarrow C = \frac{1}{2}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$F(x) = -\frac{1}{2}\cos(2x) + \frac{1}{2}$$
+:::
+
+## Question 4 : Calculer $\displaystyle\int \cos(5x)\, dx$ et trouver la primitive $F$ telle que $F(0) = \frac{1}{5}$
+
+::: methode
+Cosinus composé : $\displaystyle\int \cos(ax+b)\, dx = \frac{1}{a}\sin(ax+b) + C$
+:::
+
+::: etape Identification des paramètres
+- $a = 5$ et $b = 0$
+:::
+
+::: etape Application directe de la formule
+- $\displaystyle\int \cos(5x)\, dx = \frac{1}{5}\sin(5x) + C$
+:::
+
+::: etape Primitive générale
+$$F(x) = \frac{1}{5}\sin(5x) + C$$
+:::
+
+::: etape Calcul de la constante
+$$
+\begin{aligned}
+F(0) = \frac{1}{5} &\Rightarrow \frac{1}{5}\sin(5(0)) + C = \frac{1}{5} \\
+&\Rightarrow 0 + C = \frac{1}{5} \\
+&\Rightarrow C = \frac{1}{5}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$F(x) = \frac{1}{5}\sin(5x) + \frac{1}{5}$$
+:::
+
+## Question 5 : Calculer $\displaystyle\int (3e^{x} - 2\cos(2x))\, dx$ et trouver la primitive $F$ telle que $F(0) = 2$
+
+::: methode
+Linéarité + Exponentielle + Cosinus composé : $\int (af(x) + bg(x))\, dx = a\int f(x)\, dx + b\int g(x)\, dx$
+:::
+
+::: etape Décomposition
+- $\displaystyle\int (3e^{x} - 2\cos(2x))\, dx = 3\displaystyle\int e^{x}\, dx - 2\displaystyle\int \cos(2x)\, dx$
+:::
+
+::: etape Calcul des primitives
+- $\displaystyle\int e^{x}\, dx = e^{x} + C_1$
+- $\int \cos(2x)\, dx = \frac{1}{2}\sin(2x) + C_2$ (formule : $\int \cos(ax+b)\, dx = \frac{1}{a}\sin(ax+b) + C$ avec $a = 2$ et $b = 0$)
+:::
+
+::: etape Primitive générale
+$$F(x) = 3e^x - \sin(2x) + C$$
+:::
+
+::: etape Calcul de la constante
+$$
+\begin{aligned}
+F(0) = 2 &\Rightarrow 3e^0 - \sin(2(0)) + C = 2 \\
+&\Rightarrow 3 - 0 + C = 2 \\
+&\Rightarrow C = -1
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$F(x) = 3e^x - \sin(2x) - 1$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle F(x) = \frac{1}{3}e^{3x}$
+2. $\displaystyle F(x) = \frac{1}{2}e^{2x+1}$
+3. $\displaystyle F(x) = -\frac{1}{2}\cos(2x) + \frac{1}{2}$
+4. $\displaystyle F(x) = \frac{1}{5}\sin(5x) + \frac{1}{5}$
+5. $\displaystyle F(x) = 3e^x - \sin(2x) - 1$
+
+===
+
+=== Entraînement - Primitives - Fonctions Rationnelles Simples
+Id: 1635
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Intégrer des fonctions rationnelles simples.
+
+1. Calculer $\displaystyle\int \frac{1}{x}\, dx$ ($\displaystyle x\neq 0$)
+2. Calculer $\displaystyle\int \frac{2x}{x^2 + 1}\, dx$
+3. Calculer $\displaystyle\int \frac{1}{(3x+1)^3}\, dx$
+4. Calculer $\displaystyle\int \frac{x-1}{x^2}\, dx$ ($\displaystyle x\neq 0$)
+5. Calculer $\displaystyle\int \frac{5}{2x - 3}\, dx$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer $\displaystyle\int \frac{1}{x}\, dx$ ($\displaystyle x\neq 0$)
+
+::: rappel Formule
+Inverse : $\displaystyle\int \frac{1}{x}\, dx = \ln|x| + C$
+:::
+
+::: point Application
+Forme directe (primitive élémentaire)
+
+- $\int \frac{1}{x}\, dx$ est la primitive fondamentale du logarithme
+:::
+
+::: resultat
+$$\ln|x| + C$$
+:::
+
+## Question 2 : Calculer $\displaystyle\int \frac{2x}{x^2 + 1}\, dx$
+
+::: methode
+Substitution (changement de variable)
+:::
+
+::: etape Choix de la substitution
+- Poser $\displaystyle u = x^2 + 1$
+- Alors $\displaystyle du = 2x\,dx$
+:::
+
+::: etape Réécriture de l'intégrale
+- $\displaystyle\int \frac{2x}{x^2 + 1}\, dx = \displaystyle\int \frac{1}{u}\, du$
+:::
+
+::: etape Calcul de la primitive
+- $\displaystyle\int \frac{1}{u}\, du = \ln|u| + C = \ln|x^2 + 1| + C$
+:::
+
+::: resultat
+$\ln(x^2 + 1) + C$ (car $x^2 + 1 > 0$)
+:::
+
+## Question 3 : Calculer $\displaystyle\int \frac{1}{(3x+1)^3}\, dx$
+
+::: rappel Formule
+Puissance négative composée : $\int (ax+b)^n\, dx = \frac{1}{a}\cdot\frac{(ax+b)^{n+1}}{n+1} + C$ pour $n\neq -1$
+:::
+
+::: etape Transformation
+- $\displaystyle\frac{1}{(3x+1)^3} = (3x+1)^{-3}$
+- $\displaystyle\int \frac{1}{(3x+1)^3}\, dx = \displaystyle\int (3x+1)^{-3}\, dx$
+:::
+
+::: etape Identification des paramètres
+- $a = 3$, $b = 1$, $n = -3$
+:::
+
+::: etape Application de la formule
+$$
+\begin{aligned}
+\int (3x+1)^{-3}\, dx &= \frac{1}{3}\cdot\frac{(3x+1)^{-3+1}}{-3+1} + C \\
+&= \frac{1}{3}\cdot\frac{(3x+1)^{-2}}{-2} + C \\
+&= -\frac{1}{6}(3x+1)^{-2} + C
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$-\frac{1}{6(3x+1)^2} + C$$
+:::
+
+## Question 4 : Calculer $\displaystyle\int \frac{x-1}{x^2}\, dx$ ($\displaystyle x\neq 0$)
+
+::: methode
+Décomposition puis linéarité
+:::
+
+::: etape Décomposition de la fraction (pour $x \neq 0$)
+$$
+\begin{aligned}
+\frac{x-1}{x^2} &= \frac{x}{x^2} - \frac{1}{x^2} \\
+&= \frac{1}{x} - \frac{1}{x^2}
+\end{aligned}
+$$
+:::
+
+::: etape Transformation en puissance
+- $\displaystyle\int \left(\frac{1}{x} - \frac{1}{x^2}\right)\, dx = \displaystyle\int \frac{1}{x}\, dx - \displaystyle\int x^{-2}\, dx$
+:::
+
+::: etape Application des formules
+- $\displaystyle\int \frac{1}{x}\, dx = \ln|x| + C_1$
+
+$$
+\begin{aligned}
+\int x^{-2}\, dx &= \frac{x^{-2+1}}{-2+1} + C_2 \\
+&= \frac{x^{-1}}{-1} + C_2 \\
+&= -\frac{1}{x} + C_2
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$\ln|x| - \left(-\frac{1}{x}\right) + C = \ln|x| + \frac{1}{x} + C$$
+:::
+
+## Question 5 : Calculer $\displaystyle\int \frac{5}{2x - 3}\, dx$
+
+::: rappel Formule
+Inverse composé : $\displaystyle\int \frac{1}{ax+b}\, dx = \frac{1}{a}\ln|ax+b| + C$
+:::
+
+::: etape Factorisation
+- $\displaystyle\int \frac{5}{2x - 3}\, dx = 5\int \frac{1}{2x - 3}\, dx$
+:::
+
+::: etape Identification des paramètres
+- $a = 2$, $b = -3$
+:::
+
+::: etape Application de la formule
+- $\displaystyle 5\int \frac{1}{2x - 3}\, dx = 5 \cdot \frac{1}{2}\ln|2x - 3| + C$
+:::
+
+::: resultat
+$$\frac{5}{2}\ln|2x - 3| + C$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle \ln|x| + C$
+2. $\displaystyle \ln(x^2 + 1) + C$
+3. $\displaystyle -\frac{1}{6(3x+1)^2} + C$
+4. $\displaystyle \ln|x| + \frac{1}{x} + C$
+5. $\displaystyle \frac{5}{2}\ln|2x - 3| + C$
+
+===
+
+=== Entraînement - Primitives - Formes Composées
+Id: 1639
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Utiliser le tableau des primitives composées.
+
+**Rappel des formules principales :**
+
+• $\displaystyle\int (ax+b)^n\, dx = \frac{1}{a}\cdot\frac{(ax+b)^{n+1}}{n+1} + C$ (pour $n \neq -1$)
+
+• $\displaystyle\int e^{ax+b}\, dx = \frac{1}{a}e^{ax+b} + C$
+
+• $\displaystyle\int \sin(ax+b)\, dx = -\frac{1}{a}\cos(ax+b) + C$
+
+• $\displaystyle\int \cos(ax+b)\, dx = \frac{1}{a}\sin(ax+b) + C$
+
+1. Calculer $\displaystyle\int (3x - 2)^4\, dx$
+2. Calculer $\displaystyle\int \frac{1}{2x + 5}\, dx$
+3. Calculer $\displaystyle\int \sin(3x - 1)\, dx$
+4. Calculer $\displaystyle\int \cos(4x + 2)\, dx$
+5. Calculer $\displaystyle\int e^{5x - 3}\, dx$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer $\displaystyle\int (3x - 2)^4\, dx$
+
+::: point Type
+Puissance composée $(ax+b)^n$
+:::
+
+::: rappel Formule
+$$\int (ax+b)^n\, dx = \frac{1}{a}\cdot\frac{(ax+b)^{n+1}}{n+1} + C$$
+:::
+
+::: point Identification
+$a = 3$, $b = -2$, $n = 4$
+:::
+
+::: point Application
+$$
+\begin{aligned}
+\int (3x-2)^4\, dx &= \frac{1}{3}\cdot\frac{(3x-2)^{4+1}}{4+1} + C \\
+&= \frac{1}{3}\cdot\frac{(3x-2)^5}{5} + C \\
+&= \frac{(3x-2)^5}{15} + C
+\end{aligned}
+$$
+:::
+
+## Question 2 : Calculer $\displaystyle\int \frac{1}{2x + 5}\, dx$
+
+::: point Type
+Inverse composé $\displaystyle\frac{1}{ax+b}$
+:::
+
+::: rappel Formule
+$$\int \frac{1}{ax+b}\, dx = \frac{1}{a}\ln|ax+b| + C$$
+:::
+
+::: point Identification
+$a = 2$, $b = 5$
+:::
+
+::: point Application
+- $\displaystyle\int \frac{1}{2x+5}\, dx = \frac{1}{2}\ln|2x+5| + C$
+:::
+
+## Question 3 : Calculer $\displaystyle\int \sin(3x - 1)\, dx$
+
+::: point Type
+Sinus composé $\displaystyle\sin(ax+b)$
+:::
+
+::: rappel Formule
+$$\int \sin(ax+b)\, dx = -\frac{1}{a}\cos(ax+b) + C$$
+:::
+
+::: point Identification
+$a = 3$, $b = -1$
+:::
+
+::: point Application
+- $\displaystyle\int \sin(3x-1)\, dx = -\frac{1}{3}\cos(3x-1) + C$
+:::
+
+## Question 4 : Calculer $\displaystyle\int \cos(4x + 2)\, dx$
+
+::: point Type
+Cosinus composé $\displaystyle\cos(ax+b)$
+:::
+
+::: rappel Formule
+$$\int \cos(ax+b)\, dx = \frac{1}{a}\sin(ax+b) + C$$
+:::
+
+::: point Identification
+$a = 4$, $b = 2$
+:::
+
+::: point Application
+- $\displaystyle\int \cos(4x+2)\, dx = \frac{1}{4}\sin(4x+2) + C$
+:::
+
+## Question 5 : Calculer $\displaystyle\int e^{5x - 3}\, dx$
+
+::: point Type
+Exponentielle composée $\displaystyle e^{ax+b}$
+:::
+
+::: rappel Formule
+$$\int e^{ax+b}\, dx = \frac{1}{a}e^{ax+b} + C$$
+:::
+
+::: point Identification
+$a = 5$, $b = -3$
+:::
+
+::: point Application
+- $\displaystyle\int e^{5x-3}\, dx = \frac{1}{5}e^{5x-3} + C$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle \frac{(3x-2)^5}{15} + C$
+2. $\displaystyle \frac{1}{2}\ln|2x+5| + C$
+3. $\displaystyle -\frac{1}{3}\cos(3x - 1) + C$
+4. $\displaystyle \frac{1}{4}\sin(4x + 2) + C$
+5. $\displaystyle \frac{1}{5}e^{5x - 3} + C$
+
+===
+
+=== Entraînement - Primitives - Intégration par Parties
+Id: 1637
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Appliquer la formule $\displaystyle\int u\, dv = uv - \int v\, du$.
+
+1. Calculer $\displaystyle\int x e^x\, dx$
+2. Calculer $\displaystyle\int x \cos(x)\, dx$
+3. Calculer $\displaystyle\int \ln(x)\, dx$ ($\displaystyle x>0$)
+4. Calculer $\displaystyle\int x^2 \sin(x)\, dx$ (une itération supplémentaire requise)
+5. Calculer $\displaystyle\int x e^{2x}\, dx$
+
+Étapes:
+<!-- optitab:1 -->
+**Méthode générale :** Pour choisir $u$ et $dv$, utiliser la règle **ILATE** (ordre de priorité pour $u$) :
+
+::: point I
+Inverse (fonctions réciproques : $\arctan$, $\arcsin$, etc.)
+:::
+
+::: point L
+Logarithme ($\displaystyle\ln(x)$)
+:::
+
+::: point A
+Algébrique (polynômes : $x$, $x^2$, $x^3$, etc.)
+:::
+
+::: point T
+Trigonométrique ($\sin(x)$, $\cos(x)$, etc.)
+:::
+
+::: point E
+Exponentielle ($e^x$, $e^{ax}$)
+
+**Principe :** Choisir $u$ en priorité dans l'ordre ILATE, et $dv$ sera le reste.
+:::
+
+## Question 1 : Calculer $\displaystyle\int x e^x\, dx$
+
+::: rappel Formule
+Intégration par parties : $\displaystyle\int u\, dv = uv - \int v\, du$
+:::
+
+::: point Choix (A avant E)
+- $u = x$ → $du = dx$
+- $dv = e^x dx$ → $v = e^x$
+:::
+
+::: point Application de la formule
+$$
+\begin{aligned}
+\int x e^x dx &= x e^x - \int e^x dx \\
+&= x e^x - e^x + C \\
+&= e^x(x - 1) + C
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$e^x(x - 1) + C$$
+:::
+
+## Question 2 : Calculer $\displaystyle\int x \cos(x)\, dx$
+
+::: rappel Formule
+Intégration par parties : $\displaystyle\int u\, dv = uv - \int v\, du$
+:::
+
+::: point Choix (A avant T)
+- $u = x$ → $du = dx$
+- $dv = \cos(x) dx$ → $v = \sin(x)$
+:::
+
+::: point Application de la formule
+$$
+\begin{aligned}
+\int x \cos(x) dx &= x \sin(x) - \int \sin(x) dx \\
+&= x \sin(x) - (-\cos(x)) + C \\
+&= x\sin(x) + \cos(x) + C
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$x\sin(x) + \cos(x) + C$$
+:::
+
+## Question 3 : Calculer $\displaystyle\int \ln(x)\, dx$ ($\displaystyle x>0$)
+
+::: rappel Formule
+Intégration par parties : $\displaystyle\int u\, dv = uv - \int v\, du$
+:::
+
+::: point Choix (L prioritaire)
+- $u = \ln(x)$ → $du = \frac{1}{x}dx$
+- $dv = dx$ → $v = x$
+:::
+
+::: point Application de la formule
+$$
+\begin{aligned}
+\int \ln(x) dx &= x \ln(x) - \int x \cdot \frac{1}{x} dx \\
+&= x \ln(x) - \int 1 dx \\
+&= x\ln(x) - x + C
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$x\ln(x) - x + C$$
+:::
+
+## Question 4 : Calculer $\displaystyle\int x^2 \sin(x)\, dx$
+
+::: rappel Formule
+Intégration par parties (deux fois) : $\int u\, dv = uv - \int v\, du$
+:::
+
+::: point Première IPP (A avant T)
+$u = x^2$, $dv = \sin(x)dx$
+
+- $du = 2x dx$, $v = -\cos(x)$
+- $\displaystyle \int x^2 \sin(x) dx = -x^2\cos(x) + 2\int x\cos(x) dx$
+:::
+
+::: point Deuxième IPP sur $\displaystyle\int x\cos(x) dx$ (A avant T)
+- $u = x$, $dv = \cos(x)dx$ → $du = dx$, $v = \sin(x)$
+
+$$
+\begin{aligned}
+\int x\cos(x) dx &= x\sin(x) - \int \sin(x) dx \\
+&= x\sin(x) + \cos(x)
+\end{aligned}
+$$
+:::
+
+::: point Résultat final
+$$-x^2\cos(x) + 2(x\sin(x) + \cos(x)) + C$$
+:::
+
+## Question 5 : Calculer $\displaystyle\int x e^{2x}\, dx$
+
+::: rappel Formule
+Intégration par parties : $\displaystyle\int u\, dv = uv - \int v\, du$
+:::
+
+::: point Choix (A avant E)
+- $u = x$ → $du = dx$
+- $dv = e^{2x}dx$ → $v = \frac{1}{2}e^{2x}$ (car $\int e^{2x} dx = \frac{1}{2}e^{2x} + C$)
+:::
+
+::: point Application de la formule
+$$
+\begin{aligned}
+\int x e^{2x} dx &= x \cdot \frac{1}{2}e^{2x} - \int \frac{1}{2}e^{2x} dx \\
+&= \frac{x}{2}e^{2x} - \frac{1}{2} \cdot \frac{1}{2}e^{2x} + C \\
+&= \frac{x}{2}e^{2x} - \frac{1}{4}e^{2x} + C \\
+&= e^{2x}\left(\frac{x}{2} - \frac{1}{4}\right) + C
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$e^{2x}\left(\frac{x}{2} - \frac{1}{4}\right) + C$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle e^x(x - 1) + C$
+2. $\displaystyle x\sin(x) + \cos(x) + C$
+3. $\displaystyle x\ln(x) - x + C$
+4. $\displaystyle -x^2\cos(x) + 2(x\sin(x) + \cos(x)) + C$
+5. $\displaystyle e^{2x}\left(\frac{x}{2} - \frac{1}{4}\right) + C$
+
+===
+
+=== Entraînement - Primitives - Intégration par Parties Avancée
+Id: 1638
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Entraînement supplémentaire sur l'intégration par parties.
+
+1. Calculer $\displaystyle\int x^2 e^x\, dx$
+2. Calculer $\displaystyle\int x\ln(x)\, dx$ ($\displaystyle x>0$)
+3. Calculer $\displaystyle\int x\sin(2x)\, dx$
+4. Calculer $\displaystyle\int (x+1)e^x\, dx$
+5. Calculer $\displaystyle\int x^2 \cos(x)\, dx$
+
+Étapes:
+<!-- optitab:1 -->
+**Méthode générale :** Pour choisir $u$ et $dv$, utiliser la règle **ILATE** (ordre de priorité pour $u$) :
+
+::: point I
+Inverse (fonctions réciproques : $\arctan$, $\arcsin$, etc.)
+:::
+
+::: point L
+Logarithme ($\displaystyle\ln(x)$)
+:::
+
+::: point A
+Algébrique (polynômes : $x$, $x^2$, $x^3$, etc.)
+:::
+
+::: point T
+Trigonométrique ($\sin(x)$, $\cos(x)$, etc.)
+:::
+
+::: point E
+Exponentielle ($e^x$, $e^{ax}$)
+
+**Principe :** Choisir $u$ en priorité dans l'ordre ILATE, et $dv$ sera le reste.
+:::
+
+## Question 1 : Calculer $\displaystyle\int x^2 e^x\, dx$
+
+::: rappel Formule
+Intégration par parties (deux fois) : $\int u\, dv = uv - \int v\, du$
+:::
+
+::: point Première IPP (A avant E)
+$u = x^2$, $dv = e^x dx$
+
+- $du = 2x dx$, $v = e^x$
+- $\displaystyle \int x^2 e^x dx = x^2 e^x - 2\int x e^x dx$
+:::
+
+::: point Deuxième IPP sur $\displaystyle\int x e^x dx$ (A avant E)
+- $u = x$, $dv = e^x dx$ → $du = dx$, $v = e^x$
+- $\displaystyle \int x e^x dx = x e^x - \int e^x dx = x e^x - e^x$
+:::
+
+::: point Résultat final
+$$x^2 e^x - 2(x e^x - e^x) + C = e^x(x^2 - 2x + 2) + C$$
+:::
+
+## Question 2 : Calculer $\displaystyle\int x\ln(x)\, dx$ ($\displaystyle x>0$)
+
+::: rappel Formule
+Intégration par parties : $\displaystyle\int u\, dv = uv - \int v\, du$
+:::
+
+::: point Choix (L avant A)
+$u = \ln(x)$, $dv = x dx$
+
+- $du = \frac{1}{x}dx$, $v = \frac{x^2}{2}$
+:::
+
+::: point Application
+$$
+\begin{aligned}
+\int x\ln(x) dx &= \frac{x^2}{2}\ln(x) - \int \frac{x^2}{2} \cdot \frac{1}{x} dx \\
+&= \frac{x^2}{2}\ln(x) - \int \frac{x}{2} dx \\
+&= \frac{x^2}{2}\ln(x) - \frac{x^2}{4} + C
+\end{aligned}
+$$
+:::
+
+## Question 3 : Calculer $\displaystyle\int x\sin(2x)\, dx$
+
+::: rappel Formule
+Intégration par parties : $\displaystyle\int u\, dv = uv - \int v\, du$
+:::
+
+::: point Choix (A avant T)
+$u = x$, $dv = \sin(2x)dx$
+
+- $du = dx$, $v = -\frac{1}{2}\cos(2x)$
+:::
+
+::: point Application
+$$
+\begin{aligned}
+\int x\sin(2x) dx &= -\frac{x}{2}\cos(2x) - \int \left(-\frac{1}{2}\cos(2x)\right) dx \\
+&= -\frac{x}{2}\cos(2x) + \frac{1}{2}\int \cos(2x) dx \\
+&= -\frac{x}{2}\cos(2x) + \frac{1}{4}\sin(2x) + C
+\end{aligned}
+$$
+:::
+
+## Question 4 : Calculer $\displaystyle\int (x+1)e^x\, dx$
+
+::: methode
+Intégration par parties : $\displaystyle\int u\, dv = uv - \int v\, du$
+:::
+
+::: point Choix (A avant E)
+$u = x+1$, $dv = e^x dx$
+
+- $du = dx$, $v = e^x$
+:::
+
+::: point Application
+$$
+\begin{aligned}
+\int (x+1)e^x dx &= (x+1)e^x - \int e^x dx \\
+&= (x+1)e^x - e^x + C \\
+&= e^x[(x+1) - 1] + C \\
+&= xe^x + C
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$F(x) = xe^x + C$$
+:::
+
+## Question 5 : Calculer $\displaystyle\int x^2 \cos(x)\, dx$
+
+::: rappel Formule
+Intégration par parties (deux fois) : $\int u\, dv = uv - \int v\, du$
+:::
+
+::: point Première IPP (A avant T)
+$u = x^2$, $dv = \cos(x) dx$
+
+- $du = 2x dx$, $v = \sin(x)$
+- $\displaystyle \int x^2 \cos(x) dx = x^2 \sin(x) - 2\displaystyle\int x \sin(x) dx$
+:::
+
+::: point Deuxième IPP sur $\displaystyle\int x \sin(x) dx$ (A avant T)
+- $u = x$, $dv = \sin(x) dx$ → $du = dx$, $v = -\cos(x)$
+
+$$
+\begin{aligned}
+\int x \sin(x) dx &= -x\cos(x) - \int (-\cos(x)) dx \\
+&= -x\cos(x) + \sin(x)
+\end{aligned}
+$$
+:::
+
+::: point Résultat final
+$$x^2 \sin(x) - 2(-x\cos(x) + \sin(x)) + C = x^2\sin(x) + 2x\cos(x) - 2\sin(x) + C$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle e^x(x^2 - 2x + 2) + C$
+2. $\displaystyle \frac{x^2}{2}\ln(x) - \frac{x^2}{4} + C$
+3. $\displaystyle -\frac{x}{2}\cos(2x) + \frac{1}{4}\sin(2x) + C$
+4. $\displaystyle xe^x + C$
+5. $\displaystyle x^2\sin(x) + 2x\cos(x) - 2\sin(x) + C$
+
+===
+
+=== Entraînement - Primitives - Mélanges Classiques
+Id: 1641
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Intégrer des combinaisons mixtes. Certaines intégrales ont déjà été vues dans les parties précédentes (intégration par parties, linéarité, etc.) : cette feuille permet de réviser et de mélanger les techniques.
+
+1. Calculer $\displaystyle\int (x e^x)\, dx$
+2. Calculer $\displaystyle\int (x \sin(x))\, dx$
+3. Calculer $\displaystyle\int (e^x + \cos(x))\, dx$
+4. Calculer $\displaystyle\int (x^2 + e^{2x})\, dx$
+5. Calculer $\displaystyle\int (\frac{1}{x} + \frac{1}{x^2})\, dx$ ($\displaystyle x\neq 0$)
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer $\displaystyle\int x e^x\, dx$
+
+::: methode
+Intégration par parties (IPP)
+:::
+
+::: point Choix (A avant E)
+$u = x$, $dv = e^x dx$ → $du = dx$, $v = e^x$
+:::
+
+::: point Application
+$$
+\begin{aligned}
+\int x e^x dx &= x e^x - \int e^x dx \\
+&= x e^x - e^x + C \\
+&= e^x(x - 1) + C
+\end{aligned}
+$$
+:::
+
+## Question 2 : Calculer $\displaystyle\int x \sin(x)\, dx$
+
+::: methode
+Intégration par parties (IPP)
+:::
+
+::: point Choix (A avant T)
+$u = x$, $dv = \sin(x) dx$ → $du = dx$, $v = -\cos(x)$
+:::
+
+::: point Application
+$$
+\begin{aligned}
+\int x \sin(x) dx &= -x\cos(x) - \int (-\cos(x)) dx \\
+&= -x\cos(x) + \int \cos(x) dx \\
+&= -x\cos(x) + \sin(x) + C
+\end{aligned}
+$$
+:::
+
+## Question 3 : Calculer $\displaystyle\int (e^x + \cos(x))\, dx$
+
+::: methode
+Linéarité de l'intégrale
+:::
+
+::: point Décomposition
+$$\int (e^x + \cos(x))\, dx = \int e^x\, dx + \int \cos(x)\, dx$$
+:::
+
+::: point Application
+- $\displaystyle\int e^x\, dx = e^x + C_1$
+- $\displaystyle\int \cos(x)\, dx = \sin(x) + C_2$
+:::
+
+::: resultat
+$$e^x + \sin(x) + C$$
+:::
+
+## Question 4 : Calculer $\displaystyle\int (x^2 + e^{2x})\, dx$
+
+::: methode
+Linéarité de l'intégrale
+:::
+
+::: point Décomposition
+$$\int (x^2 + e^{2x})\, dx = \int x^2\, dx + \int e^{2x}\, dx$$
+:::
+
+::: point Application
+- $\displaystyle\int x^2\, dx = \frac{x^3}{3} + C_1$
+- $\displaystyle\int e^{2x}\, dx = \frac{1}{2}e^{2x} + C_2$
+:::
+
+::: resultat
+$$\frac{x^3}{3} + \frac{1}{2}e^{2x} + C$$
+:::
+
+## Question 5 : Calculer $\displaystyle\int \left(\frac{1}{x} + \frac{1}{x^2}\right) dx$ ($\displaystyle x\neq 0$)
+
+::: methode
+Linéarité + Transformation
+:::
+
+::: point Transformation
+$$\frac{1}{x^2} = x^{-2}$$
+:::
+
+::: point Décomposition
+$$\int \left(\frac{1}{x} + \frac{1}{x^2}\right) dx = \int \frac{1}{x}\, dx + \int x^{-2}\, dx$$
+:::
+
+::: point Application
+- $\displaystyle\int \frac{1}{x}\, dx = \ln|x| + C_1$
+
+$$
+\begin{aligned}
+\int x^{-2}\, dx &= \frac{x^{-1}}{-1} + C_2 \\
+&= -\frac{1}{x} + C_2
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$\ln|x| - \frac{1}{x} + C$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle e^x(x - 1) + C$
+2. $\displaystyle -x\cos(x) + \sin(x) + C$
+3. $\displaystyle e^x + \sin(x) + C$
+4. $\displaystyle \frac{x^3}{3} + \frac{1}{2}e^{2x} + C$
+5. $\displaystyle \ln|x| - \frac{1}{x} + C$
+
+===
+
+=== Entraînement - Primitives - Racines, Puissances et Inverses
+Id: 1640
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Intégrer des combinaisons de racines et puissances.
+
+1. Calculer $\displaystyle\int x\sqrt{x}\, dx$
+2. Calculer $\displaystyle\int \frac{1}{\sqrt{x}}\, dx$ ($\displaystyle x>0$)
+3. Calculer $\displaystyle\int \frac{x}{\sqrt{x+1}}\, dx$ ($\displaystyle x>-1$)
+4. Calculer $\displaystyle\int \frac{1}{(x+2)^2}\, dx$
+5. Calculer $\displaystyle\int \frac{1}{\sqrt{2x+1}}\, dx$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer $\displaystyle\int x\sqrt{x}\, dx$
+
+::: methode
+Transformation en puissance puis formule de base
+:::
+
+::: etape Transformation
+- $\displaystyle x\sqrt{x} = x \cdot x^{1/2} = x^{3/2}$
+:::
+
+::: etape Application de la formule
+$$
+\begin{aligned}
+\int x^{3/2}\, dx &= \frac{x^{3/2+1}}{3/2+1} + C \\
+&= \frac{x^{5/2}}{5/2} + C \\
+&= \frac{2}{5}x^{5/2} + C
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$\frac{2}{5}x^{5/2} + C$$
+:::
+
+## Question 2 : Calculer $\displaystyle\int \frac{1}{\sqrt{x}}\, dx$ ($\displaystyle x>0$)
+
+::: methode
+Transformation en puissance puis formule de base
+:::
+
+::: etape Transformation
+- $\displaystyle\frac{1}{\sqrt{x}} = x^{-1/2}$
+:::
+
+::: etape Application de la formule
+$$
+\begin{aligned}
+\int x^{-1/2}\, dx &= \frac{x^{-1/2+1}}{-1/2+1} + C \\
+&= \frac{x^{1/2}}{1/2} + C \\
+&= 2\sqrt{x} + C
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$2\sqrt{x} + C$$
+:::
+
+## Question 3 : Calculer $\displaystyle\int \frac{x}{\sqrt{x+1}}\, dx$ ($\displaystyle x>-1$)
+
+::: methode
+Substitution (changement de variable)
+:::
+
+::: etape Choix de la substitution
+- Poser $\displaystyle u = x + 1$
+- Alors $\displaystyle du = dx$
+- On a aussi $x = u - 1$ (car $u = x + 1$)
+:::
+
+::: etape Réécriture de l'intégrale
+$$
+\begin{aligned}
+\int \frac{x}{\sqrt{x+1}}\, dx &= \int \frac{u-1}{\sqrt{u}}\, du \\
+&= \int \frac{u}{\sqrt{u}}\, du - \int \frac{1}{\sqrt{u}}\, du \\
+&= \int u^{1/2}\, du - \int u^{-1/2}\, du
+\end{aligned}
+$$
+:::
+
+::: etape Calcul des primitives
+$$
+\begin{aligned}
+\int u^{1/2}\, du &= \frac{u^{3/2}}{3/2} + C_1 \\
+&= \frac{2}{3}u^{3/2} + C_1
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+\int u^{-1/2}\, du &= \frac{u^{1/2}}{1/2} + C_2 \\
+&= 2u^{1/2} + C_2
+\end{aligned}
+$$
+:::
+
+::: etape Retour à la variable initiale
+- $\displaystyle \frac{2}{3}u^{3/2} - 2u^{1/2} + C = \frac{2}{3}(x+1)^{3/2} - 2\sqrt{x+1} + C$
+:::
+
+::: resultat
+$$\frac{2}{3}(x+1)^{3/2} - 2\sqrt{x+1} + C$$
+:::
+
+## Question 4 : Calculer $\displaystyle\int \frac{1}{(x+2)^2}\, dx$
+
+::: methode
+Puissance négative composée
+:::
+
+::: etape Transformation
+- $\displaystyle\frac{1}{(x+2)^2} = (x+2)^{-2}$
+:::
+
+::: etape Application de la formule
+- Formule : $\int (ax+b)^n\, dx = \frac{1}{a}\cdot\frac{(ax+b)^{n+1}}{n+1} + C$ pour $n\neq -1$
+- Ici : $a = 1$, $b = 2$, $n = -2$
+
+$$
+\begin{aligned}
+\int (x+2)^{-2}\, dx &= \frac{1}{1}\cdot\frac{(x+2)^{-2+1}}{-2+1} + C \\
+&= \frac{(x+2)^{-1}}{-1} + C \\
+&= -\frac{1}{x+2} + C
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$-\frac{1}{x+2} + C$$
+:::
+
+## Question 5 : Calculer $\displaystyle\int \frac{1}{\sqrt{2x+1}}\, dx$
+
+::: methode
+Substitution (changement de variable)
+:::
+
+::: etape Choix de la substitution
+- Poser $\displaystyle u = 2x + 1$
+- Alors $du = 2\, dx$ d'où $dx = \frac{du}{2}$
+:::
+
+::: etape Réécriture de l'intégrale
+$$
+\begin{aligned}
+\int \frac{1}{\sqrt{2x+1}}\, dx &= \int \frac{1}{\sqrt{u}} \cdot \frac{du}{2} \\
+&= \frac{1}{2}\int u^{-1/2}\, du
+\end{aligned}
+$$
+
+- **Remarque :** Le facteur $\frac{1}{2}$ vient de $dx = \frac{du}{2}$
+:::
+
+::: etape Calcul de la primitive
+$$
+\begin{aligned}
+\frac{1}{2}\int u^{-1/2}\, du &= \frac{1}{2} \cdot \frac{u^{-1/2+1}}{-1/2+1} + C \\
+&= \frac{1}{2} \cdot \frac{u^{1/2}}{1/2} + C \\
+&= \sqrt{u} + C
+\end{aligned}
+$$
+:::
+
+::: etape Retour à la variable initiale
+- $\displaystyle \sqrt{u} + C = \sqrt{2x+1} + C$
+:::
+
+::: resultat
+$$\sqrt{2x+1} + C$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle \frac{2}{5}x^{5/2} + C$
+2. $\displaystyle 2\sqrt{x} + C$
+3. $\displaystyle \frac{2}{3}(x+1)^{3/2} - 2\sqrt{x+1} + C$
+4. $\displaystyle -\frac{1}{x+2} + C$
+5. $\displaystyle \sqrt{2x+1} + C$
+
+===
+
+=== Entraînement - Primitives - Substitution (Changement de variable)
+Id: 1636
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Utiliser un changement de variable adapté.
+
+1. Calculer $\displaystyle\int 2x(x^2 + 1)^3\, dx$
+2. Calculer $\displaystyle\int \frac{2x}{x^2 + 1}\, dx$
+3. Calculer $\displaystyle\int x e^{x^2}\, dx$
+4. Calculer $\displaystyle\int \frac{1}{\sqrt{2x + 3}}\, dx$
+5. Calculer $\displaystyle\int \frac{1}{(x+1)^2}\, dx$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer $\displaystyle\int 2x(x^2 + 1)^3\, dx$
+
+::: methode
+Substitution (changement de variable)
+:::
+
+::: etape Choix de la substitution
+- Poser $\displaystyle u = x^2 + 1$
+- Alors $\displaystyle du = 2x\, dx$
+:::
+
+::: etape Réécriture de l'intégrale
+- $\displaystyle\int 2x(x^2 + 1)^3\, dx = \int u^3\, du$
+:::
+
+::: etape Calcul de la primitive
+$$
+\begin{aligned}
+\int u^3\, du &= \frac{u^{3+1}}{3+1} + C \\
+&= \frac{u^4}{4} + C
+\end{aligned}
+$$
+:::
+
+::: etape Retour à la variable initiale
+- $\displaystyle \frac{u^4}{4} + C = \frac{(x^2+1)^4}{4} + C$
+:::
+
+::: resultat
+$$\frac{(x^2+1)^4}{4} + C$$
+:::
+
+## Question 2 : Calculer $\displaystyle\int \frac{2x}{x^2 + 1}\, dx$
+
+::: methode
+Substitution (changement de variable)
+:::
+
+::: etape Choix de la substitution
+- Poser $\displaystyle u = x^2 + 1$
+- Alors $\displaystyle du = 2x\, dx$
+:::
+
+::: etape Réécriture de l'intégrale
+- $\displaystyle\int \frac{2x}{x^2 + 1}\, dx = \displaystyle\int \frac{1}{u}\, du$
+:::
+
+::: etape Calcul de la primitive
+- $\displaystyle\int \frac{1}{u}\, du = \ln|u| + C$
+:::
+
+::: etape Retour à la variable initiale
+- $\displaystyle \ln|u| + C = \ln|x^2+1| + C$
+:::
+
+::: resultat
+$\ln|x^2+1| + C$ (ou $\ln(x^2+1) + C$ car $x^2+1 > 0$)
+:::
+
+## Question 3 : Calculer $\displaystyle\int x e^{x^2}\, dx$
+
+::: methode
+Substitution (changement de variable)
+:::
+
+::: etape Choix de la substitution
+- Poser $\displaystyle u = x^2$
+- Alors $du = 2x\, dx$ d'où $x\, dx = \frac{du}{2}$
+:::
+
+::: etape Réécriture de l'intégrale
+$$
+\begin{aligned}
+\int x e^{x^2}\, dx &= \int e^u \cdot \frac{du}{2} \\
+&= \frac{1}{2}\int e^u\, du
+\end{aligned}
+$$
+:::
+
+::: etape Calcul de la primitive
+- $\displaystyle\frac{1}{2}\int e^u\, du = \frac{1}{2}e^u + C$
+:::
+
+::: etape Retour à la variable initiale
+- $\displaystyle \frac{1}{2}e^u + C = \frac{1}{2}e^{x^2} + C$
+:::
+
+::: resultat
+$$\frac{1}{2}e^{x^2} + C$$
+:::
+
+## Question 4 : Calculer $\displaystyle\int \frac{1}{\sqrt{2x + 3}}\, dx$
+
+::: methode
+Substitution (changement de variable)
+:::
+
+::: etape Choix de la substitution
+- Poser $\displaystyle u = 2x + 3$
+- Alors $du = 2\, dx$ d'où $dx = \frac{du}{2}$
+:::
+
+::: etape Réécriture de l'intégrale
+$$
+\begin{aligned}
+\int \frac{1}{\sqrt{2x + 3}}\, dx &= \int \frac{1}{\sqrt{u}} \cdot \frac{du}{2} \\
+&= \frac{1}{2}\int u^{-1/2}\, du
+\end{aligned}
+$$
+
+- **Remarque :** Le facteur $\frac{1}{2}$ vient de $dx = \frac{du}{2}$
+:::
+
+::: etape Calcul de la primitive
+$$
+\begin{aligned}
+\frac{1}{2}\int u^{-1/2}\, du &= \frac{1}{2} \cdot \frac{u^{-1/2+1}}{-1/2+1} + C \\
+&= \frac{1}{2} \cdot \frac{u^{1/2}}{1/2} + C \\
+&= \sqrt{u} + C
+\end{aligned}
+$$
+:::
+
+::: etape Retour à la variable initiale
+- $\displaystyle \sqrt{u} + C = \sqrt{2x+3} + C$
+:::
+
+::: resultat
+$$\sqrt{2x+3} + C$$
+:::
+
+## Question 5 : Calculer $\displaystyle\int \frac{1}{(x+1)^2}\, dx$
+
+::: methode
+Puissance négative composée (ou substitution)
+:::
+
+::: etape Transformation en puissance
+- $\displaystyle\int \frac{1}{(x+1)^2}\, dx = \int (x+1)^{-2}\, dx$
+:::
+
+::: etape Application de la formule
+- Formule : $\int (ax+b)^n\, dx = \frac{1}{a}\cdot\frac{(ax+b)^{n+1}}{n+1} + C$ pour $n\neq -1$
+- Ici : $a = 1$, $b = 1$, $n = -2$
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+\int (x+1)^{-2}\, dx &= \frac{1}{1}\cdot\frac{(x+1)^{-2+1}}{-2+1} + C \\
+&= \frac{(x+1)^{-1}}{-1} + C \\
+&= -\frac{1}{x+1} + C
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$-\frac{1}{x+1} + C$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\displaystyle \frac{(x^2+1)^4}{4} + C$
+2. $\displaystyle \ln|x^2+1| + C$
+3. $\displaystyle \frac{1}{2}e^{x^2} + C$
+4. $\displaystyle \sqrt{2x+3} + C$
+5. $\displaystyle -\frac{1}{x+1} + C$
+
+===

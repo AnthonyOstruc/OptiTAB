@@ -1,0 +1,175 @@
+Titre: Probabilités conditionnelles et indépendance
+
+<!-- optitab:1 -->
+::: objectifs
+Consolider le calcul conditionnel (arbres pondérés, probabilités totales), « inverser » un conditionnement dans des situations concrètes (tests de dépistage), reconnaître des événements indépendants et modéliser une succession d’épreuves indépendantes.
+:::
+
+## I. Probabilité conditionnelle et arbres pondérés
+
+::: definition Probabilité de $B$ sachant $A$
+Soit $A$ un événement de probabilité non nulle. La probabilité de $B$ **sachant** $A$ est
+
+$$P_A(B) = \frac{P(A \cap B)}{P(A)}$$
+
+C’est la probabilité que $B$ se réalise lorsque l’on sait que $A$ est réalisé. On la note aussi $P(B \mid A)$.
+:::
+
+::: propriete Formule des probabilités composées
+Si $P(A) \neq 0$ :
+
+$$P(A \cap B) = P(A) \times P_A(B)$$
+
+De plus, $P_A$ est une probabilité : $0 \le P_A(B) \le 1$ et $P_A(\overline{B}) = 1 - P_A(B)$.
+:::
+
+[IMAGE_4]
+
+::: theoreme Règles des arbres pondérés
+1. La somme des probabilités des branches issues d’un même nœud vaut $1$.
+2. La probabilité d’un chemin est le **produit** des probabilités de ses branches.
+3. La probabilité d’un événement est la **somme** des probabilités des chemins qui y mènent.
+:::
+
+::: attention
+Sur les branches du second niveau, on lit des probabilités **conditionnelles** : $P_A(B)$, et non $P(B)$ ni $P(A \cap B)$.
+:::
+
+## II. Probabilités totales et inversion du conditionnement
+
+::: definition Partition de l’univers
+Les événements $A_1, A_2, \ldots, A_n$ forment une **partition** de l’univers $\Omega$ s’ils sont de probabilités non nulles, deux à deux incompatibles, et si leur réunion est $\Omega$. Par exemple, $A$ et $\overline{A}$ forment une partition de $\Omega$.
+:::
+
+[IMAGE_1]
+
+::: theoreme Formule des probabilités totales
+Si $A_1, A_2, \ldots, A_n$ forment une partition de l’univers, alors pour tout événement $B$ :
+
+$$
+\begin{aligned}
+P(B) &= P(A_1 \cap B) + P(A_2 \cap B) + \cdots + P(A_n \cap B) \\
+&= P(A_1) \times P_{A_1}(B) + \cdots + P(A_n) \times P_{A_n}(B)
+\end{aligned}
+$$
+
+En particulier : $P(B) = P(A) \times P_A(B) + P(\overline{A}) \times P_{\overline{A}}(B)$.
+:::
+
+::: methode « Inverser » un conditionnement
+L’énoncé donne $P_A(B)$ et demande $P_B(A)$ :
+
+1. on construit l’arbre pondéré ;
+2. on lit $P(A \cap B)$ sur un chemin ;
+3. on calcule $P(B)$ par la formule des probabilités totales ;
+4. on conclut : $P_B(A) = \dfrac{P(A \cap B)}{P(B)}$.
+:::
+
+::: exemple Test de dépistage
+Une maladie touche $2\,\%$ de la population. Un test est positif chez $95\,\%$ des malades et chez $10\,\%$ des personnes saines. On choisit une personne au hasard ; on note $M$ : « la personne est malade » et $T$ : « le test est positif ». Ainsi $P(M) = 0{,}02$, $P_M(T) = 0{,}95$ et $P_{\overline{M}}(T) = 0{,}1$.
+:::
+
+[IMAGE_2]
+
+Les chemins en vert mènent à $T$. D’après la formule des probabilités totales :
+
+$$
+\begin{aligned}
+P(T) &= P(M \cap T) + P(\overline{M} \cap T) \\
+&= 0{,}02 \times 0{,}95 + 0{,}98 \times 0{,}1 \\
+&= 0{,}019 + 0{,}098 \\
+&= 0{,}117
+\end{aligned}
+$$
+
+On inverse alors le conditionnement :
+
+$$P_T(M) = \frac{P(M \cap T)}{P(T)} = \frac{0{,}019}{0{,}117} = \frac{19}{117} \approx 0{,}162$$
+
+::: remarque Interprétation
+Même avec un test positif, la probabilité d’être malade n’est que d’environ $16\,\%$ : la maladie étant rare, la plupart des tests positifs sont de « faux positifs ». C’est pourquoi on confirme un résultat positif par un second test.
+:::
+
+::: attention
+$P_M(T) = 0{,}95$ (fiabilité du test chez les malades) n’est pas $P_T(M) \approx 0{,}16$ (probabilité d’être malade quand le test est positif). Confondre $P_A(B)$ et $P_B(A)$ est l’erreur la plus fréquente du chapitre.
+:::
+
+## III. Indépendance de deux événements
+
+::: definition Événements indépendants
+Deux événements $A$ et $B$ sont **indépendants** si
+
+$$P(A \cap B) = P(A) \times P(B)$$
+
+Lorsque $P(A) \neq 0$, cela équivaut à $P_A(B) = P(B)$ : savoir que $A$ est réalisé ne change pas la probabilité de $B$.
+:::
+
+::: exemple
+On lance un dé équilibré ; $A$ : « obtenir un nombre pair », $B$ : « obtenir un nombre inférieur ou égal à $2$ ».
+
+- $P(A \cap B) = P(\{2\}) = \dfrac{1}{6}$ ;
+- $P(A) \times P(B) = \dfrac{1}{2} \times \dfrac{1}{3} = \dfrac{1}{6}$.
+
+Les deux nombres sont égaux : $A$ et $B$ sont indépendants. En revanche, avec $C$ : « obtenir un nombre inférieur ou égal à $3$ », $P(A \cap C) = P(\{2\}) = \dfrac{1}{6}$ alors que $P(A) \times P(C) = \dfrac{1}{4}$ : $A$ et $C$ ne sont pas indépendants.
+:::
+
+::: propriete Indépendance et événement contraire
+Si $A$ et $B$ sont indépendants, alors $\overline{A}$ et $B$ sont indépendants (de même que $A$ et $\overline{B}$, et $\overline{A}$ et $\overline{B}$).
+:::
+
+::: demonstration
+$B$ est la réunion des événements incompatibles $A \cap B$ et $\overline{A} \cap B$, donc $P(B) = P(A \cap B) + P(\overline{A} \cap B)$. Ainsi :
+
+$$
+\begin{aligned}
+P(\overline{A} \cap B) &= P(B) - P(A \cap B) \\
+&= P(B) - P(A) \times P(B) \\
+&= P(B) \times \big(1 - P(A)\big) \\
+&= P(\overline{A}) \times P(B)
+\end{aligned}
+$$
+
+donc $\overline{A}$ et $B$ sont indépendants.
+:::
+
+::: attention Indépendants ou incompatibles ?
+Ce sont deux notions différentes. Incompatibles signifie $A \cap B = \varnothing$, donc $P(A \cap B) = 0$. Deux événements incompatibles de probabilités non nulles ne sont **jamais** indépendants, puisque $P(A) \times P(B) \neq 0$.
+:::
+
+## IV. Succession d’épreuves indépendantes
+
+::: propriete
+Lors d’une succession d’épreuves indépendantes (lancers successifs, tirages **avec remise**…), la probabilité d’une issue $(x_1, x_2, \ldots, x_n)$ est le produit des probabilités de chaque résultat :
+
+$$P\big((x_1, x_2, \ldots, x_n)\big) = P(x_1) \times P(x_2) \times \cdots \times P(x_n)$$
+
+Dans l’arbre, les probabilités d’un niveau ne dépendent pas des branches précédentes.
+:::
+
+::: exemple Trois penalties
+Un joueur tire $3$ penalties ; chacun est réussi ($S$) avec la probabilité $0{,}6$ et manqué ($E$) avec la probabilité $0{,}4$, indépendamment des autres.
+:::
+
+[IMAGE_3]
+
+« Exactement $2$ réussites » est réalisé par les $3$ chemins verts ($SSE$, $SES$, $ESS$), qui ont tous la même probabilité $0{,}6^2 \times 0{,}4$ :
+
+$$P(\text{exactement 2 réussites}) = 3 \times 0{,}6^2 \times 0{,}4 = 0{,}432$$
+
+« Au moins une réussite » est le contraire de « aucune réussite » (chemin $EEE$) :
+
+$$P(\text{au moins une réussite}) = 1 - 0{,}4^3 = 1 - 0{,}064 = 0{,}936$$
+
+::: attention
+Tirages **sans remise** : la composition de l’urne change après chaque tirage, les épreuves ne sont pas indépendantes. Les probabilités du second niveau de l’arbre sont alors conditionnelles et différentes d’une branche à l’autre.
+:::
+
+::: retenir
+- $P(A \cap B) = P(A) \times P_A(B)$ ; chemin = produit, événement = somme des chemins.
+- Probabilités totales : $P(B) = P(A)P_A(B) + P(\overline{A})P_{\overline{A}}(B)$.
+- Inversion : $P_B(A) = \dfrac{P(A \cap B)}{P(B)}$, avec $P(B)$ obtenu par les probabilités totales.
+- Indépendance : $P(A \cap B) = P(A) \times P(B)$ ; alors $\overline{A}$ et $B$ sont aussi indépendants.
+- Épreuves indépendantes : on multiplie le long du chemin ; « au moins un » $= 1 - P(\text{aucun})$.
+
+Fiche de synthèse dans l’onglet Fiches !
+:::

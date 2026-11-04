@@ -1,0 +1,142 @@
+Titre: Résumé : Produit Scalaire et Orthogonalité
+
+<!-- optitab:1 -->
+## I. Définition du produit scalaire
+
+| Type | Formule |
+|---|---|
+| **Définition géométrique** | $\displaystyle\vec{u} \cdot \vec{v} = \|\vec{u}\| \times \|\vec{v}\| \times \cos(\theta)$ |
+| **Définition analytique** | $\displaystyle\vec{u} \cdot \vec{v} = x_1x_2 + y_1y_2$ |
+
+| Cas particuliers |
+|---|
+| **Orthogonaux :** $\displaystyle\vec{u} \perp \vec{v} \Leftrightarrow \vec{u} \cdot \vec{v} = 0$ <br> <br> **Même sens :** $\displaystyle\vec{u} \cdot \vec{v} = \|\vec{u}\| \times \|\vec{v}\|$ <br> <br> **Sens opposés :** $\displaystyle\vec{u} \cdot \vec{v} = -\|\vec{u}\| \times \|\vec{v}\|$ |
+
+## II. Propriétés du produit scalaire
+
+| Propriété | Expression |
+|---|---|
+| **Commutativité** | $\displaystyle\vec{u} \cdot \vec{v} = \vec{v} \cdot \vec{u}$ |
+| **Bilinéarité** | $\displaystyle(k\vec{u}) \cdot \vec{v} = k(\vec{u} \cdot \vec{v})$ |
+| **Distributivité** | $\displaystyle\vec{u} \cdot (\vec{v} + \vec{w}) = \vec{u} \cdot \vec{v} + \vec{u} \cdot \vec{w}$ |
+| **Carré scalaire** | $\displaystyle\vec{u} \cdot \vec{u} = \|\vec{u}\|^2$ |
+
+::: resultat Conséquence importante
+$$\|\vec{u}\| = \sqrt{\vec{u} \cdot \vec{u}}$$
+:::
+
+## III. Orthogonalité
+
+| Définition |
+|---|
+| Deux vecteurs $\displaystyle\vec{u}$ et $\displaystyle\vec{v}$ sont orthogonaux si et seulement si $\displaystyle\vec{u} \cdot \vec{v} = 0$ |
+
+| Étape | Méthode de vérification |
+|---|---|
+| **1** | Calculer $\displaystyle\vec{u} \cdot \vec{v}$ |
+| **2** | Si résultat = 0 → orthogonaux |
+| **3** | Si résultat ≠ 0 → non orthogonaux |
+
+::: attention
+Le vecteur nul est orthogonal à tout vecteur. Pour des vecteurs non nuls, « orthogonal » = « perpendiculaire ».
+:::
+
+## IV. Norme d'un vecteur
+
+| Définition |
+|---|
+| Pour $\displaystyle\vec{u} = \begin{pmatrix} x \\ y \end{pmatrix}$ : $\displaystyle\|\vec{u}\| = \sqrt{x^2 + y^2}$ |
+
+| Propriété |
+|---|
+| $\displaystyle\|\vec{u}\|^2 = \vec{u} \cdot \vec{u} = x^2 + y^2$ |
+
+| Exemple |
+|---|
+| $\displaystyle\vec{u} = \begin{pmatrix} 3 \\ 4 \end{pmatrix}$ → $\displaystyle\|\vec{u}\| = \sqrt{3^2 + 4^2} = \sqrt{25} = 5$ |
+
+## V. Projection orthogonale
+
+| Définition |
+|---|
+| Projection orthogonale de $\displaystyle\vec{v}$ sur $\displaystyle\vec{u}$ : $\displaystyle\text{proj}_{\vec{u}}(\vec{v}) = \frac{\vec{v} \cdot \vec{u}}{\|\vec{u}\|^2} \vec{u}$ |
+
+| Application |
+|---|
+| Donne la composante de $\displaystyle\vec{v}$ dans la direction de $\displaystyle\vec{u}$ |
+
+| Exemple |
+|---|
+| Si $\displaystyle\vec{u} = \begin{pmatrix} 3 \\ 4 \end{pmatrix}$ et $\displaystyle\vec{v} = \begin{pmatrix} 2 \\ 1 \end{pmatrix}$, alors $\displaystyle\text{proj}_{\vec{u}}(\vec{v}) = \begin{pmatrix} \frac{6}{5} \\ \frac{8}{5} \end{pmatrix}$ |
+
+## VI. Applications géométriques
+
+| Application | Formule |
+|---|---|
+| **Distance entre points** | $\displaystyle AB = \sqrt{(x_B - x_A)^2 + (y_B - y_A)^2}$ |
+| **Angle entre vecteurs** | $\displaystyle\cos(\theta) = \frac{\vec{u} \cdot \vec{v}}{\|\vec{u}\| \times \|\vec{v}\|}$ |
+| **Vecteur unitaire** | $\displaystyle\vec{u}_0 = \frac{\vec{u}}{\|\vec{u}\|}$ |
+
+| Classification des angles |
+|---|
+| $\displaystyle\cos(\theta) > 0$ → angle aigu ($\displaystyle\theta < 90°$) <br> <br> $\displaystyle\cos(\theta) = 0$ → angle droit ($\displaystyle\theta = 90°$) <br> <br> $\displaystyle\cos(\theta) < 0$ → angle obtus ($\displaystyle\theta > 90°$) |
+
+## VII. Équations de droites et distances
+
+| Type | Formule |
+|---|---|
+| **Équation cartésienne** | $\displaystyle ax + by + c = 0$ (avec $\displaystyle\vec{n} = \begin{pmatrix} a \\ b \end{pmatrix}$) |
+| **Distance point-droite** | $\displaystyle d(A, \text{droite}) = \frac{|ax_0 + by_0 + c|}{\sqrt{a^2 + b^2}}$ |
+| **Distance point-plan (3D)** | $\displaystyle d(A, \text{plan}) = \frac{|ax_0 + by_0 + cz_0 + d|}{\sqrt{a^2 + b^2 + c^2}}$ |
+
+::: attention Important
+Le vecteur normal $\vec{n}$ est orthogonal à la droite. Ne pas confondre avec le vecteur directeur !
+:::
+
+## VIII. Formules rapides — mémo
+
+| Notion | Formule/Condition |
+|---|---|
+| **Produit scalaire analytique** | $\displaystyle\vec{u} \cdot \vec{v} = x_1x_2 + y_1y_2$ |
+| **Produit scalaire géométrique** | $\displaystyle\vec{u} \cdot \vec{v} = \|\vec{u}\| \times \|\vec{v}\| \times \cos(\theta)$ |
+| **Orthogonalité** | $\displaystyle\vec{u} \perp \vec{v} \Leftrightarrow \vec{u} \cdot \vec{v} = 0$ |
+| **Norme d'un vecteur** | $\displaystyle\|\vec{u}\| = \sqrt{x^2 + y^2} = \sqrt{\vec{u} \cdot \vec{u}}$ |
+| **Projection orthogonale** | $\displaystyle\text{proj}_{\vec{u}}(\vec{v}) = \frac{\vec{v} \cdot \vec{u}}{\|\vec{u}\|^2} \vec{u}$ |
+| **Angle entre vecteurs** | $\displaystyle\cos(\theta) = \frac{\vec{u} \cdot \vec{v}}{\|\vec{u}\| \times \|\vec{v}\|}$ |
+| **Distance entre points** | $\displaystyle AB = \sqrt{(x_B - x_A)^2 + (y_B - y_A)^2}$ |
+| **Distance point-droite** | $\displaystyle d = \frac{|ax_0 + by_0 + c|}{\sqrt{a^2 + b^2}}$ |
+| **Vecteur unitaire** | $\displaystyle\vec{u}_0 = \frac{\vec{u}}{\|\vec{u}\|}$ |
+| **Équation cartésienne** | $\displaystyle ax + by + c = 0$ (vecteur normal $\displaystyle\begin{pmatrix} a \\ b \end{pmatrix}$) |
+
+## IX. Méthodes pratiques
+
+| Étape | Démarche pour résoudre un problème |
+|---|---|
+| **1** | Identifier le type : Orthogonalité, angle, distance, projection |
+| **2** | Choisir la méthode : Analytique ou géométrique selon le contexte |
+| **3** | Appliquer la formule : Utiliser la formule appropriée |
+| **4** | Calculer : Effectuer les calculs avec attention |
+| **5** | Interpréter : Donner une conclusion géométrique |
+
+| Conseils pratiques |
+|---|
+| Vérifier que les vecteurs sont non nuls avant d'étudier l'orthogonalité <br> <br> Utiliser la valeur absolue pour les distances <br> <br> Identifier clairement vecteur normal vs vecteur directeur <br> <br> Vérifier les résultats avec les deux définitions du produit scalaire |
+
+### Points clés à retenir
+
+| Notion | À retenir |
+|---|---|
+| **Produit scalaire** | Donne un nombre (scalaire), pas un vecteur. Formule analytique : $\displaystyle x_1x_2 + y_1y_2$ |
+| **Orthogonalité** | $\displaystyle\vec{u} \perp \vec{v} \Leftrightarrow \vec{u} \cdot \vec{v} = 0$. Pour vecteurs non nuls = perpendiculaire |
+| **Norme d'un vecteur** | $\displaystyle\|\vec{u}\| = \sqrt{x^2 + y^2}$. Propriété : $\displaystyle\|\vec{u}\|^2 = \vec{u} \cdot \vec{u}$ |
+| **Projection orthogonale** | $\displaystyle\text{proj}_{\vec{u}}(\vec{v}) = \frac{\vec{v} \cdot \vec{u}}{\|\vec{u}\|^2} \vec{u}$ |
+| **Angle entre vecteurs** | $\displaystyle\cos(\theta) = \frac{\vec{u} \cdot \vec{v}}{\|\vec{u}\| \times \|\vec{v}\|}$ |
+| **Distance entre points** | $\displaystyle AB = \sqrt{(x_B - x_A)^2 + (y_B - y_A)^2}$ |
+| **Distance point-droite** | $\displaystyle d = \frac{|ax_0 + by_0 + c|}{\sqrt{a^2 + b^2}}$ (attention à la valeur absolue) |
+| **Vecteur normal** | Orthogonal à la droite, différent du vecteur directeur |
+| **Équation cartésienne** | $\displaystyle ax + by + c = 0$ avec vecteur normal $\displaystyle\begin{pmatrix} a \\ b \end{pmatrix}$ |
+| **Propriétés du produit scalaire** | Commutatif, bilinéaire, distributif. Carré scalaire = norme au carré |
+| **Classification des angles** | $\displaystyle\cos > 0$ (aigu), $\displaystyle\cos = 0$ (droit), $\displaystyle\cos < 0$ (obtus) |
+| **Vecteur unitaire** | $\displaystyle\vec{u}_0 = \frac{\vec{u}}{\|\vec{u}\|}$ (norme = 1) |
+| **Applications 3D** | Distance point-plan, orthogonalité avec plans |
+| **Erreurs fréquentes** | Confondre produit scalaire/vectoriel, oublier valeur absolue, confondre normal/directeur |

@@ -1,0 +1,226 @@
+Titre: Modéliser le hasard, calculer des probabilités
+
+<!-- optitab:1 -->
+::: objectifs
+- Décrire une expérience aléatoire : univers, issues, événements.
+- Utiliser la réunion, l’intersection et le contraire d’événements.
+- Définir une loi de probabilité et calculer la probabilité d’un événement.
+- Utiliser $P(\overline{A}) = 1 - P(A)$ et $P(A \cup B) + P(A \cap B) = P(A) + P(B)$.
+- Dénombrer les issues d’une expérience à deux ou trois épreuves avec un arbre ou un tableau.
+- Construire un modèle à partir de fréquences observées, en distinguant modèle et réalité.
+:::
+
+## I. Expérience aléatoire, univers, événements
+
+::: definition Expérience aléatoire
+Une **expérience aléatoire** a plusieurs résultats possibles, appelés **issues**, et on ne peut pas prévoir lequel sera obtenu.
+
+L’ensemble de toutes les issues est l’**univers**, noté $\Omega$ (« oméga »).
+:::
+
+::: definition Événement
+- Un **événement** est une partie de l’univers $\Omega$ : c’est un ensemble d’issues.
+- Un événement formé d’une seule issue est un événement **élémentaire**.
+- L’événement $\Omega$ est **certain** ; l’événement $\varnothing$ (aucune issue) est **impossible**.
+:::
+
+::: exemple
+On lance un dé à six faces : $\Omega = \{1\,;2\,;3\,;4\,;5\,;6\}$.
+
+- L’événement $A$ « obtenir un nombre pair » est $A = \{2\,;4\,;6\}$.
+- L’événement « obtenir $5$ » est l’événement élémentaire $\{5\}$.
+- L’événement « obtenir $7$ » est impossible : c’est $\varnothing$.
+:::
+
+## II. Opérations sur les événements
+
+::: definition Intersection, réunion
+Soit $A$ et $B$ deux événements.
+
+- $A \cap B$ (« $A$ **et** $B$ ») est formé des issues qui sont à la fois dans $A$ et dans $B$.
+- $A \cup B$ (« $A$ **ou** $B$ ») est formé des issues qui sont dans $A$, dans $B$, ou dans les deux.
+:::
+
+[IMAGE_1]
+
+::: definition Contraire, incompatibles
+- Le **contraire** de $A$, noté $\overline{A}$, est formé des issues de $\Omega$ qui ne sont pas dans $A$.
+- $A$ et $B$ sont **incompatibles** lorsque $A \cap B = \varnothing$ : ils ne peuvent pas se réaliser en même temps.
+:::
+
+[IMAGE_2]
+
+::: exemple
+On tire au hasard un nombre entier de $1$ à $10$. Soit $A$ « le nombre est pair » et $B$ « le nombre est supérieur ou égal à $7$ ».
+
+- $A = \{2\,;4\,;6\,;8\,;10\}$ et $B = \{7\,;8\,;9\,;10\}$ ;
+- $A \cap B = \{8\,;10\}$ : « pair **et** au moins $7$ » ;
+- $A \cup B = \{2\,;4\,;6\,;7\,;8\,;9\,;10\}$ : « pair **ou** au moins $7$ » ;
+- $\overline{A} = \{1\,;3\,;5\,;7\,;9\}$ : « le nombre est impair ».
+:::
+
+::: attention
+Dans la langue courante, « ou » est souvent exclusif (l’un ou l’autre, pas les deux). En probabilités, « $A$ ou $B$ » **inclut** le cas où les deux se réalisent.
+:::
+
+## III. Loi de probabilité
+
+::: definition Loi de probabilité
+L’univers étant $\Omega = \{x_1\,;x_2\,;\ldots\,;x_n\}$, définir une **loi de probabilité** sur $\Omega$, c’est associer à chaque issue $x_i$ un nombre $p_i$ tel que :
+
+- chaque $p_i$ est compris entre $0$ et $1$ ;
+- $p_1 + p_2 + \cdots + p_n = 1$.
+
+On la présente souvent dans un tableau.
+:::
+
+::: propriete Probabilité d’un événement
+- La probabilité $P(A)$ d’un événement $A$ est la **somme des probabilités des issues** qui le composent.
+- Pour tout événement $A$ : $0 \le P(A) \le 1$, avec $P(\varnothing) = 0$ et $P(\Omega) = 1$.
+:::
+
+::: exemple Un dé truqué
+Un dé est truqué : la face $6$ sort avec la probabilité $0{,}5$ et chacune des cinq autres faces avec la probabilité $0{,}1$.
+
+| Issue | $1$ | $2$ | $3$ | $4$ | $5$ | $6$ |
+|---|---|---|---|---|---|---|
+| Probabilité | $0{,}1$ | $0{,}1$ | $0{,}1$ | $0{,}1$ | $0{,}1$ | $0{,}5$ |
+
+C’est bien une loi de probabilité : $5 \times 0{,}1 + 0{,}5 = 1$. Pour $A$ « obtenir un nombre pair » :
+
+$$
+\begin{aligned}
+P(A) &= P(\{2\}) + P(\{4\}) + P(\{6\}) \\
+&= 0{,}1 + 0{,}1 + 0{,}5 \\
+&= 0{,}7
+\end{aligned}
+$$
+:::
+
+::: propriete Équiprobabilité
+Lorsque toutes les issues ont la même probabilité, on parle d’**équiprobabilité**. Si $\Omega$ compte $n$ issues, chacune a la probabilité $\dfrac{1}{n}$ et, pour tout événement $A$ :
+
+$$P(A) = \frac{\text{nombre d’issues de } A}{\text{nombre d’issues de } \Omega}$$
+:::
+
+::: remarque Repère
+Les mots « équilibré », « bien mélangé », « au hasard », « indiscernables au toucher » signalent une situation d’équiprobabilité. Avec un dé équilibré : $P(\text{« pair »}) = \dfrac{3}{6} = \dfrac{1}{2}$.
+:::
+
+## IV. Calculer avec le contraire, la réunion et l’intersection
+
+::: propriete Contraire
+Pour tout événement $A$ :
+
+$$P(\overline{A}) = 1 - P(A)$$
+:::
+
+::: demonstration
+Les issues de $\Omega$ se répartissent entre $A$ et $\overline{A}$, sans issue commune. En additionnant les probabilités de toutes les issues, on obtient $P(A) + P(\overline{A}) = P(\Omega) = 1$, d’où $P(\overline{A}) = 1 - P(A)$.
+:::
+
+::: propriete Réunion et intersection
+Pour tous événements $A$ et $B$ :
+
+$$P(A \cup B) + P(A \cap B) = P(A) + P(B)$$
+
+ce qui s’écrit aussi :
+
+$$P(A \cup B) = P(A) + P(B) - P(A \cap B)$$
+
+Si $A$ et $B$ sont incompatibles : $P(A \cup B) = P(A) + P(B)$.
+:::
+
+::: demonstration
+Dans $P(A) + P(B)$, chaque issue de $A \cap B$ est comptée **deux fois** (une fois dans $A$, une fois dans $B$) et les autres issues de $A \cup B$ une seule fois. Dans $P(A \cup B) + P(A \cap B)$, c’est exactement la même chose : les deux sommes sont égales.
+:::
+
+::: exemple
+On tire une carte au hasard dans un jeu de $32$ cartes. $A$ : « cœur » ($8$ cartes), $B$ : « figure » ($12$ cartes : valet, dame, roi), $A \cap B$ : « figure de cœur » ($3$ cartes).
+
+$$
+\begin{aligned}
+P(A \cup B) &= P(A) + P(B) - P(A \cap B) \\
+&= \frac{8}{32} + \frac{12}{32} - \frac{3}{32} \\
+&= \frac{17}{32}
+\end{aligned}
+$$
+:::
+
+::: attention
+On n’écrit $P(A \cup B) = P(A) + P(B)$ que si $A$ et $B$ sont **incompatibles**. Sinon, les issues communes sont comptées deux fois : ici $\frac{8}{32} + \frac{12}{32} = \frac{20}{32}$ serait faux.
+:::
+
+## V. Expériences à deux ou trois épreuves
+
+Pour une expérience qui se déroule en plusieurs étapes, un **arbre** ou un **tableau à double entrée** permet de lister toutes les issues sans en oublier ni en compter deux fois.
+
+::: methode Dénombrer avec un arbre
+1. À chaque étape, tracer une branche par résultat possible.
+2. Chaque chemin de la racine à une extrémité donne **une issue**.
+3. Si les issues sont équiprobables, compter les chemins favorables et diviser par le nombre total de chemins.
+:::
+
+[IMAGE_3]
+
+::: exemple Deux lancers d’une pièce équilibrée
+L’arbre donne $4$ issues équiprobables : $(P\,;P)$, $(P\,;F)$, $(F\,;P)$, $(F\,;F)$. L’événement « obtenir au moins un Pile » contient $3$ issues, donc sa probabilité est $\dfrac{3}{4}$.
+
+Par le contraire : « au moins un Pile » a pour contraire « aucun Pile », c’est-à-dire $(F\,;F)$, d’où $1 - \dfrac{1}{4} = \dfrac{3}{4}$.
+:::
+
+::: methode Dénombrer avec un tableau à double entrée
+Pour deux épreuves (deux dés, deux tirages…), on place les résultats de la première en lignes, ceux de la seconde en colonnes : chaque case est **une issue**.
+:::
+
+::: exemple Somme de deux dés équilibrés
+On lance un dé rouge et un dé bleu, équilibrés, et on fait la somme des deux faces.
+
+| Rouge / Bleu | $1$ | $2$ | $3$ | $4$ | $5$ | $6$ |
+|---|---|---|---|---|---|---|
+| $1$ | $2$ | $3$ | $4$ | $5$ | $6$ | $\mathbf{7}$ |
+| $2$ | $3$ | $4$ | $5$ | $6$ | $\mathbf{7}$ | $8$ |
+| $3$ | $4$ | $5$ | $6$ | $\mathbf{7}$ | $8$ | $9$ |
+| $4$ | $5$ | $6$ | $\mathbf{7}$ | $8$ | $9$ | $10$ |
+| $5$ | $6$ | $\mathbf{7}$ | $8$ | $9$ | $10$ | $11$ |
+| $6$ | $\mathbf{7}$ | $8$ | $9$ | $10$ | $11$ | $12$ |
+
+Le tableau compte $6 \times 6 = 36$ issues équiprobables, dont $6$ donnent une somme égale à $7$ :
+
+$$P(\text{« somme } 7\text{ »}) = \frac{6}{36} = \frac{1}{6}$$
+:::
+
+::: attention
+Les sommes $2, 3, \ldots, 12$ ne sont **pas** équiprobables : la somme $2$ n’apparaît qu’une fois sur $36$, la somme $7$ six fois. Les issues équiprobables sont les **couples** (dé rouge ; dé bleu), pas les sommes.
+:::
+
+::: methode « Au moins un » : passer par le contraire
+Le contraire de « au moins un $6$ » est « aucun $6$ ». Avec deux dés, « aucun $6$ » compte $5 \times 5 = 25$ issues, donc :
+
+$$P(\text{« au moins un } 6\text{ »}) = 1 - \frac{25}{36} = \frac{11}{36}$$
+:::
+
+Avec **trois** épreuves (trois lancers d’une pièce, par exemple), l’arbre a trois niveaux : $2 \times 2 \times 2 = 8$ issues.
+
+## VI. Modèle et réalité
+
+::: definition Deux façons de choisir une loi
+- **Modèle a priori** : la situation est symétrique (pièce, dé équilibré, urne bien mélangée…) ; on suppose l’équiprobabilité.
+- **Modèle construit à partir de fréquences** : quand aucune symétrie ne s’applique (punaise, dé truqué, météo…), on répète l’expérience un grand nombre de fois et on prend comme probabilités les **fréquences observées**.
+:::
+
+::: exemple Une punaise
+On lance $1\,000$ fois une punaise : elle tombe $372$ fois « pointe en haut ». La fréquence observée est $\dfrac{372}{1\,000} = 0{,}372$. On choisit le modèle : $P(\text{« pointe en haut »}) = 0{,}372$ et $P(\text{« pointe en bas »}) = 0{,}628$.
+:::
+
+::: attention
+Un modèle n’est **pas** la réalité. Avec une pièce équilibrée, $P(\text{Pile}) = 0{,}5$, mais sur $40$ lancers on peut très bien obtenir $26$ Pile (fréquence $0{,}65$). Les fréquences observées varient d’une série à l’autre ; elles se rapprochent en général de la probabilité du modèle quand le nombre de répétitions devient grand.
+:::
+
+::: retenir
+- Une loi de probabilité associe à chaque issue un nombre entre $0$ et $1$, la somme de ces nombres valant $1$.
+- $P(A)$ est la somme des probabilités des issues de $A$ ; en cas d’équiprobabilité, $P(A) = \dfrac{\text{issues de } A}{\text{issues de } \Omega}$.
+- $P(\overline{A}) = 1 - P(A)$ et $P(A \cup B) = P(A) + P(B) - P(A \cap B)$.
+- Un arbre ou un tableau à double entrée permet de compter les issues d’une expérience à deux ou trois épreuves.
+- Une probabilité est une valeur du modèle ; une fréquence est une observation.
+:::

@@ -1,0 +1,161 @@
+Titre: Manipuler les nombres réels
+
+<!-- optitab:1 -->
+::: objectifs
+- Connaître les ensembles de nombres $\mathbb{N}$, $\mathbb{Z}$, $\mathbb{D}$, $\mathbb{Q}$ et $\mathbb{R}$.
+- Lire et écrire un intervalle, passer d’une inégalité à un intervalle.
+- Utiliser la valeur absolue comme une distance.
+- Encadrer et arrondir un nombre réel.
+:::
+
+## I. Les ensembles de nombres
+
+::: definition Les ensembles de nombres
+- $\mathbb{N}$ : les **entiers naturels** $0$ ; $1$ ; $2$ ; $3$ ; …
+- $\mathbb{Z}$ : les **entiers relatifs** … ; $-2$ ; $-1$ ; $0$ ; $1$ ; $2$ ; …
+- $\mathbb{D}$ : les **nombres décimaux**, qui s’écrivent $\dfrac{k}{10^n}$ avec $k \in \mathbb{Z}$ et $n \in \mathbb{N}$ : leur écriture décimale est finie.
+- $\mathbb{Q}$ : les **nombres rationnels**, qui s’écrivent $\dfrac{p}{q}$ avec $p \in \mathbb{Z}$ et $q \in \mathbb{Z}$, $q \neq 0$.
+- $\mathbb{R}$ : les **nombres réels**, abscisses des points d’une droite graduée.
+
+Un réel qui n’est pas rationnel est dit **irrationnel** : par exemple $\sqrt{2}$ et $\pi$.
+:::
+
+::: exemple
+$0{,}125 = \dfrac{125}{1\,000} = \dfrac{125}{10^3}$ est décimal ; $\dfrac{1}{3} = 0{,}333\ldots$ est rationnel mais pas décimal.
+:::
+
+::: propriete Inclusions
+Chaque ensemble est contenu dans le suivant :
+
+$$\mathbb{N} \subset \mathbb{Z} \subset \mathbb{D} \subset \mathbb{Q} \subset \mathbb{R}$$
+:::
+
+[IMAGE_1]
+
+### La droite des réels
+
+À chaque point d’une droite graduée correspond un unique réel, son **abscisse**, et réciproquement : tout réel est l’abscisse d’un unique point.
+
+[IMAGE_2]
+
+### Deux démonstrations au programme
+
+::: demonstration $\dfrac{1}{3}$ n’est pas un nombre décimal
+Supposons que $\dfrac{1}{3}$ soit décimal : $\dfrac{1}{3} = \dfrac{k}{10^n}$ avec $k \in \mathbb{Z}$ et $n \in \mathbb{N}$.
+
+Alors $10^n = 3k$, donc $10^n$ serait divisible par $3$.
+
+Or $10^n = 2^n \times 5^n$ n’a que $2$ et $5$ comme facteurs premiers : $10^n$ n’est pas divisible par $3$. C’est une contradiction, donc $\dfrac{1}{3}$ n’est pas décimal.
+:::
+
+::: demonstration $\sqrt{2}$ est irrationnel
+Supposons que $\sqrt{2} = \dfrac{p}{q}$ avec $p$ et $q$ entiers naturels non nuls et une fraction **irréductible**.
+
+Alors $p^2 = 2q^2$ : $p^2$ est pair, donc $p$ est pair (le carré d’un nombre impair est impair). On écrit $p = 2k$.
+
+Puis $4k^2 = 2q^2$, soit $q^2 = 2k^2$ : $q^2$ est pair, donc $q$ est pair aussi.
+
+$p$ et $q$ sont alors tous deux divisibles par $2$ : la fraction n’était pas irréductible. C’est une contradiction, donc $\sqrt{2}$ est irrationnel.
+:::
+
+## II. Les intervalles
+
+::: definition Intervalle
+Un **intervalle** est l’ensemble des réels compris entre deux bornes. On écrit $x \in [2\,;5]$ pour dire $2 \le x \le 5$.
+
+- Crochet tourné vers le nombre : la borne est **incluse**.
+- Crochet tourné vers l’extérieur : la borne est **exclue**.
+:::
+
+[IMAGE_3]
+
+| Inégalité | Intervalle |
+|---|---|
+| $a \le x \le b$ | $x \in [a\,;b]$ |
+| $a \lt x \lt b$ | $x \in {]a\,;b[}$ |
+| $a \le x \lt b$ | $x \in {[a\,;b[}$ |
+| $x \ge a$ | $x \in {[a\,;+\infty[}$ |
+| $x \gt a$ | $x \in {]a\,;+\infty[}$ |
+| $x \le b$ | $x \in {]{-\infty}\,;b]}$ |
+| $x \lt b$ | $x \in {]{-\infty}\,;b[}$ |
+
+L’ensemble de tous les réels s’écrit $\mathbb{R} = {]{-\infty}\,;+\infty[}$.
+
+::: attention
+- $+\infty$ et $-\infty$ ne sont pas des nombres : le crochet est **toujours ouvert** de leur côté.
+- La plus petite borne s’écrit à gauche : $[2\,;5]$ et jamais $[5\,;2]$.
+:::
+
+::: remarque Intersection de deux intervalles
+L’**intersection** $I \cap J$ est l’ensemble des réels qui appartiennent à la fois à $I$ **et** à $J$. Par exemple, $[-1\,;4] \cap {]2\,;6[} = {]2\,;4]}$.
+:::
+
+## III. Valeur absolue et distance
+
+::: definition Valeur absolue, distance
+- La **valeur absolue** d’un réel $x$, notée $|x|$, est la distance entre $x$ et $0$ sur la droite graduée : $|x| = x$ si $x \ge 0$ et $|x| = -x$ si $x \lt 0$.
+- La **distance** entre deux réels $a$ et $b$ est $|b - a|$ (ou $|a - b|$, c’est le même nombre).
+:::
+
+::: exemple
+$\lvert -7\rvert = 7$ ; la distance entre $-3$ et $5$ vaut $|5 - (-3)| = |8| = 8$.
+:::
+
+[IMAGE_4]
+
+::: propriete Intervalle centré
+Les réels situés à une distance au plus $r$ de $a$ (avec $r \gt 0$) forment l’intervalle de **centre** $a$ et de **rayon** $r$ :
+
+$$|x - a| \le r \iff x \in [a - r\,;a + r]$$
+:::
+
+::: exemple
+$$|x - 3| \le 2 \iff 1 \le x \le 5 \iff x \in [1\,;5]$$
+:::
+
+[IMAGE_5]
+
+::: attention
+- Une valeur absolue n’est **jamais négative** : $\lvert -7\rvert = 7$.
+- En général $|a + b| \neq |a| + |b|$ : $|3 + (-5)| = 2$ alors que $|3| + \lvert -5\rvert = 8$.
+:::
+
+## IV. Encadrer et arrondir
+
+::: definition Encadrement
+Encadrer un réel $x$ à $10^{-n}$ près, c’est trouver deux décimaux $a$ et $b$ tels que $a \le x \le b$ et $b - a = 10^{-n}$. Le nombre $b - a$ est l’**amplitude** de l’encadrement.
+:::
+
+::: exemple
+$1{,}41^2 = 1{,}9881 \lt 2$ et $1{,}42^2 = 2{,}0164 \gt 2$, donc $1{,}41 \le \sqrt{2} \le 1{,}42$ : c’est un encadrement de $\sqrt{2}$ à $10^{-2}$ près.
+:::
+
+[IMAGE_6]
+
+::: methode Arrondir à $n$ décimales
+On regarde la décimale suivante :
+- de $0$ à $4$, on garde la dernière décimale ;
+- de $5$ à $9$, on augmente de $1$ la dernière décimale gardée.
+
+Ainsi $\pi \approx 3{,}142$ au millième (la décimale suivante, $5$, fait monter le $1$ à $2$). Dans un problème, on arrondit selon la précision des données.
+:::
+
+::: remarque Algorithme de balayage
+Pour encadrer $\sqrt{2}$, on part de $a = 1$ et on avance d’un pas $h = 10^{-n}$ tant que $(a + h)^2 \le 2$.
+
+```python
+def encadrement(n):
+    h = 10 ** (-n)
+    a = 1
+    while (a + h)**2 <= 2:
+        a = a + h
+    return a, a + h
+```
+:::
+
+::: retenir
+- $\mathbb{N} \subset \mathbb{Z} \subset \mathbb{D} \subset \mathbb{Q} \subset \mathbb{R}$ ; $\dfrac{1}{3}$ n’est pas décimal et $\sqrt{2}$ est irrationnel.
+- $x \in [a\,;b] \iff a \le x \le b$ ; un crochet ouvert exclut la borne.
+- $|b - a|$ est la distance entre $a$ et $b$.
+- $|x - a| \le r \iff x \in [a - r\,;a + r]$.
+:::

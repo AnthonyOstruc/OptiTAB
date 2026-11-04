@@ -1,0 +1,178 @@
+{
+  "numero": 19,
+  "slug": "proportionnalite",
+  "titre": "La proportionnalité",
+  "partie": "5 · Modéliser et organiser",
+  "sous_titre": "Deux grandeurs · Fois plus · Fois moins",
+  "objectifs": [
+    "Reconnaître une situation de proportionnalité.",
+    "Raisonner avec « fois plus » et « fois moins ».",
+    "Résoudre des problèmes de proportionnalité en contexte."
+  ],
+  "prerequis": [
+    "Multiplication, division et nombres décimaux."
+  ],
+  "cours": [
+    "\\essSection{1}{Reconnaître une situation proportionnelle}\n\\begin{definition}Deux grandeurs sont en situation de proportionnalité quand, si l’une est multipliée par un nombre, l’autre est multipliée par le même nombre : 2 fois plus de baguettes, 2 fois plus cher ; 3 fois moins de farine, 3 fois moins de crêpes.\\end{definition}\n\\begin{exemple}Le prix de cahiers identiques est proportionnel à leur nombre. En revanche, la taille d’un enfant n’est pas proportionnelle à son âge : à 10 ans, on ne mesure pas deux fois sa taille de 5 ans.\\end{exemple}\n\\begin{attention}Un prix avec une part fixe n’est pas proportionnel : avec 10 euros d’abonnement puis 2 euros par séance, 10 séances ne coûtent pas deux fois plus que 5 séances. Vérifier le « fois plus » avant de l’utiliser.\\end{attention}\n\\begin{savoirfaire}[Dire le raisonnement]Rédiger le raisonnement avec une phrase : « Si j’achète 3 fois plus de pains, alors je paie 3 fois plus. » La phrase dit la grandeur, le sens et le nombre de fois.\\end{savoirfaire}",
+    "\\essSection{2}{Raisonner de proportion en proportion}\n\\begin{exemple}Quatre pains aux raisins coûtent 7 euros. Douze pains, c’est 3 fois plus de pains : ils coûtent 3 fois plus, soit $7\\times3=21$ euros. Le prix d’un seul pain n’était pas nécessaire.\\end{exemple}\n\\begin{savoirfaire}[Multiplier ou diviser les deux grandeurs]« Fois moins » fonctionne de même : si 10 photocopies coûtent 3 euros, 5 photocopies, c’est 2 fois moins, donc $3:2=1{,}50$ euro. Chercher le lien multiplicatif entre les deux quantités données.\\end{savoirfaire}\n\\begin{exemple}Une fontaine régulière remplit 40 L en 5 min. En 20 min, soit 4 fois plus de temps, elle remplit $40\\times4=160$ L. Le débit régulier garantit la proportionnalité.\\end{exemple}\n\\begin{attention}Toujours contrôler la vraisemblance : plus de pains doit coûter plus cher ; moins de temps doit donner moins d’eau. Un résultat qui diminue quand la quantité augmente signale une erreur.\\end{attention}"
+  ],
+  "exercices": [
+    {
+      "titre": "Proportionnel ou pas ?",
+      "enonce": "Dire si chaque situation relève de la proportionnalité : le prix de cahiers identiques selon leur nombre ; la taille d’un enfant selon son âge.",
+      "corrige": "Les cahiers : $\\res{\\text{oui}}$, 2 fois plus de cahiers coûtent 2 fois plus. La taille : $\\res{\\text{non}}$, elle n’est pas multipliée par 2 quand l’âge double.",
+      "methode": "Tester la phrase « fois plus » sur la situation.",
+      "controle": "assert 2*2==4",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 1
+    },
+    {
+      "titre": "Deux fois plus",
+      "enonce": "Un kilogramme de pommes coûte $2{,}40$ euros. Combien coûtent 2 kg, puis 4 kg ?",
+      "corrige": "2 kg, c’est 2 fois plus : $2{,}40\\times2=\\res{4{,}80}$ euros. 4 kg, c’est encore le double : $\\res{9{,}60}$ euros.",
+      "methode": "Doubler le prix quand la masse double.",
+      "controle": "assert Rational(\"2.40\")*2==Rational(\"4.80\") and Rational(\"4.80\")*2==Rational(\"9.60\")",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 1
+    },
+    {
+      "titre": "La recette multipliée",
+      "enonce": "Pour 4 personnes, une recette demande 250 g de riz. Quelle masse pour 8 personnes ? Pour 12 personnes ?",
+      "corrige": "8 personnes, 2 fois plus : $250\\times2=\\res{500}$ g. 12 personnes, 3 fois plus que 4 : $250\\times3=\\res{750}$ g.",
+      "methode": "Comparer les nombres de personnes entre eux.",
+      "controle": "assert 250*2==500 and 250*3==750",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 1
+    },
+    {
+      "titre": "Les pains aux raisins",
+      "enonce": "Quatre pains aux raisins coûtent 7 euros. Combien coûtent 12 pains aux raisins ?",
+      "corrige": "12 pains, c’est $12:4=3$ fois plus de pains : ils coûtent 3 fois plus, soit $7\\times3=\\res{21}$ euros. Inutile de connaître le prix d’un pain.",
+      "methode": "Chercher le lien multiplicatif entre 4 et 12.",
+      "controle": "assert 12//4==3 and 7*3==21",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 1
+    },
+    {
+      "titre": "Les cahiers du bureau",
+      "enonce": "Cinq cahiers identiques coûtent 8 euros. Combien coûtent 15 cahiers ?",
+      "corrige": "15 cahiers, c’est 3 fois plus : $8\\times3=\\res{24}$ euros.",
+      "methode": "Multiplier le prix par le même nombre de fois.",
+      "controle": "assert 15//5==3 and 8*3==24",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 1
+    },
+    {
+      "titre": "Fois moins",
+      "enonce": "Dix photocopies coûtent 3 euros. Combien coûtent 30 photocopies ? Et 5 photocopies ?",
+      "corrige": "30 copies, 3 fois plus : $3\\times3=\\res9$ euros. 5 copies, 2 fois moins que 10 : $3:2=\\res{1{,}50}$ euro.",
+      "methode": "Utiliser « fois plus » et « fois moins » depuis la même donnée.",
+      "controle": "assert 3*3==9 and Rational(3,2)==Rational(\"1.50\")",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 2
+    },
+    {
+      "titre": "Le pot de peinture",
+      "enonce": "Six litres de peinture couvrent 30 m² de mur. Quelle surface couvrent 3 litres ? Et 18 litres ?",
+      "corrige": "3 L, 2 fois moins : $30:2=\\res{15}$ m². 18 L, 3 fois plus que 6 : $30\\times3=\\res{90}$ m².",
+      "methode": "Relier chaque quantité de peinture à 6 litres.",
+      "controle": "assert 30//2==15 and 30*3==90",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 2
+    },
+    {
+      "titre": "À allure régulière",
+      "enonce": "Un train roule à allure régulière : en 2 heures, il parcourt 320 km.\\begin{questions}\n\\item Quelle distance parcourt-il en 1 heure ?\n\\item Quelle distance parcourt-il en 6 heures ?\n\\end{questions}",
+      "corrige": "1 h, 2 fois moins de temps : $320:2=\\res{160}$ km. 6 h, 3 fois plus que 2 h : $320\\times3=\\res{960}$ km. L’allure régulière rend la distance proportionnelle au temps.",
+      "methode": "Comparer chaque durée à 2 heures.",
+      "controle": "assert 320//2==160 and 320*3==960",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 2
+    },
+    {
+      "titre": "Les crêpes du goûter",
+      "enonce": "Avec 250 g de farine, on fait 12 crêpes. Combien de crêpes avec 500 g ? Quelle farine pour 36 crêpes ?",
+      "corrige": "500 g, 2 fois plus : $12\\times2=\\res{24}$ crêpes. 36 crêpes, 3 fois plus que 12 : $250\\times3=\\res{750}$ g de farine.",
+      "methode": "Raisonner dans le sens demandé par chaque question.",
+      "controle": "assert 12*2==24 and 36//12==3 and 250*3==750",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 2
+    },
+    {
+      "titre": "L’abonnement piégé",
+      "enonce": "La piscine coûte 10 euros d’abonnement puis 2 euros par entrée. Paul dit : « 10 entrées coûtent deux fois plus cher que 5 entrées. » Vérifier.",
+      "corrige": "5 entrées : $10+5\\times2=20$ euros. 10 entrées : $10+10\\times2=30$ euros. Or $20\\times2=40\\ne30$ : Paul $\\res{\\text{se trompe}}$, la part fixe de l’abonnement casse la proportionnalité.",
+      "methode": "Calculer les deux montants avant de comparer.",
+      "controle": "assert 10+5*2==20 and 10+10*2==30 and 30!=40",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 2
+    },
+    {
+      "titre": "La fontaine du square",
+      "enonce": "Une fontaine au débit régulier remplit un arrosoir de 40 L en 5 minutes. Quel volume remplit-elle en 20 minutes ? En combien de temps remplit-elle 120 L ?",
+      "corrige": "20 min, 4 fois plus : $40\\times4=\\res{160}$ L. Pour 120 L, soit 3 fois 40 L, il faut 3 fois plus de temps : $5\\times3=\\res{15}$ min.",
+      "methode": "Faire le lien multiplicatif sur la grandeur connue.",
+      "controle": "assert 40*4==160 and 120//40==3 and 5*3==15",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 3
+    },
+    {
+      "titre": "Le marché",
+      "enonce": "Trois kilogrammes de poires coûtent $7{,}50$ euros. Combien coûtent 9 kg ? Et 6 kg ?",
+      "corrige": "9 kg, 3 fois plus : $7{,}50\\times3=\\res{22{,}50}$ euros. 6 kg, 2 fois plus : $7{,}50\\times2=\\res{15}$ euros.",
+      "methode": "Relier chaque masse à 3 kg.",
+      "controle": "assert Rational(\"7.50\")*3==Rational(\"22.50\") and Rational(\"7.50\")*2==15",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 3
+    },
+    {
+      "titre": "Deux boulangeries",
+      "enonce": "Chez Bleuet, 4 croissants coûtent 5 euros. Chez Coquelicot, 8 croissants coûtent $9{,}60$ euros. Où 8 croissants sont-ils les moins chers ?",
+      "corrige": "Chez Bleuet, 8 croissants, 2 fois plus : $5\\times2=10$ euros. Chez Coquelicot : $9{,}60$ euros. Comme $9{,}60<10$, c’est $\\res{\\text{chez Coquelicot}}$, avec $0{,}40$ euro d’écart.",
+      "methode": "Ramener les deux offres au même nombre de croissants.",
+      "controle": "assert 5*2==10 and Rational(\"9.60\")<10 and 10-Rational(\"9.60\")==Rational(\".40\")",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 3
+    },
+    {
+      "titre": "Le ruban au mètre",
+      "enonce": "Quatre mètres de ruban coûtent 6 euros. Lisa veut 10 m : elle calcule le prix de 2 m, puis multiplie par 5. Détailler et conclure.",
+      "corrige": "2 m, 2 fois moins que 4 m : $6:2=3$ euros. 10 m, 5 fois plus que 2 m : $3\\times5=\\res{15}$ euros. Passer par 2 m permet d’atteindre 10 m par multiplication.",
+      "methode": "Enchaîner un « fois moins » puis un « fois plus ».",
+      "controle": "assert 6//2==3 and 3*5==15 and 10==2*5",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 3
+    },
+    {
+      "titre": "Le carré qui grandit",
+      "enonce": "On double le côté d’un carré. Son périmètre double-t-il ? Son aire double-t-elle ? Tester avec un carré de 3 carreaux de côté.",
+      "corrige": "Périmètre : $4\\times3=12$ devient $4\\times6=24$ : il $\\res{\\text{double}}$, le périmètre est proportionnel au côté. Aire : $3\\times3=9$ carreaux devient $6\\times6=36$ : elle est multipliée par $\\res4$, pas par 2 : l’aire n’est pas proportionnelle au côté.",
+      "methode": "Tester chaque grandeur séparément.",
+      "controle": "assert 4*3==12 and 4*6==24 and 24==2*12 and 3*3==9 and 6*6==36 and 36==4*9",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 3
+    }
+  ],
+  "reperes": [
+    "Reconnaître la proportionnalité",
+    "Fois plus et fois moins",
+    "Situations régulières",
+    "Pièges et comparaisons"
+  ],
+  "deco": "courbe"
+}

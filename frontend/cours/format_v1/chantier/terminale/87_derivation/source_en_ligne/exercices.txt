@@ -1,0 +1,1794 @@
+=== Découverte - Fonctions Composées - Expressions Rationnelles
+Id: 1253
+Difficulté: easy
+
+Énoncé: <!-- optitab:1 -->
+On considère les fonctions $f$, $g$ et $h$ définies par :
+
+- $f(x) = \dfrac{1}{x + 1}$, sur $\mathbb{R} \setminus \{-1\}$ ;
+- $g(x) = 2x - 3$, sur $\mathbb{R}$ ;
+- $h(x) = x^2$, sur $\mathbb{R}$.
+
+1. Déterminer l'expression de $(f \circ g)(x)$ et préciser l'ensemble de définition de $f \circ g$.
+2. Déterminer l'expression de $(g \circ f)(x)$ et préciser l'ensemble de définition de $g \circ f$.
+3. Déterminer l'expression de $(h \circ g)(x)$.
+4. Déterminer l'expression de $(f \circ h)(x)$ et préciser l'ensemble de définition de $f \circ h$.
+5. Déterminer l'expression de $(g \circ h)(x)$.
+6. Déterminer l'expression de $(f \circ g \circ h)(x)$ et préciser l'ensemble de définition de $f \circ g \circ h$.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Expression et ensemble de définition de $f \circ g$
+
+::: methode
+$(f \circ g)(x) = f\big(g(x)\big)$ : on remplace $x$ par $g(x)$ dans l'expression de $f$.
+:::
+
+::: etape Expression de $(f \circ g)(x)$
+$$
+\begin{aligned}
+(f \circ g)(x) &= \dfrac{1}{g(x) + 1} \\
+&= \dfrac{1}{(2x - 3) + 1} \\
+&= \dfrac{1}{2x - 2} \\
+&= \dfrac{1}{2(x - 1)}
+\end{aligned}
+$$
+:::
+
+::: etape Ensemble de définition
+$g(x)$ existe pour tout réel $x$, et $f\big(g(x)\big)$ existe si $g(x) \neq -1$ :
+
+$$g(x) = -1 \iff 2x - 3 = -1 \iff x = 1$$
+:::
+
+::: retenir
+$x$ appartient à l'ensemble de définition de $v \circ u$ lorsque $u(x)$ existe **et** que $u(x)$ appartient à l'ensemble de définition de $v$.
+:::
+
+::: resultat
+$(f \circ g)(x) = \dfrac{1}{2(x - 1)}$, définie sur $\mathbb{R} \setminus \{1\}$.
+:::
+
+## Question 2 : Expression et ensemble de définition de $g \circ f$
+
+::: methode
+$(g \circ f)(x) = g\big(f(x)\big)$ : on remplace $x$ par $f(x)$ dans l'expression de $g$.
+:::
+
+::: etape Expression de $(g \circ f)(x)$
+$$
+\begin{aligned}
+(g \circ f)(x) &= 2f(x) - 3 \\
+&= \dfrac{2}{x + 1} - 3 \\
+&= \dfrac{2 - 3(x + 1)}{x + 1} \\
+&= \dfrac{-3x - 1}{x + 1}
+\end{aligned}
+$$
+:::
+
+::: etape Ensemble de définition
+$f(x)$ existe si $x \neq -1$ ; $g$ est définie sur $\mathbb{R}$ : aucune autre condition.
+:::
+
+::: attention
+$f \circ g$ et $g \circ f$ sont deux fonctions différentes : l'ordre de composition compte.
+:::
+
+::: resultat
+$(g \circ f)(x) = \dfrac{-3x - 1}{x + 1}$, définie sur $\mathbb{R} \setminus \{-1\}$.
+:::
+
+## Question 3 : Expression de $(h \circ g)(x)$
+
+::: methode
+$(h \circ g)(x) = h\big(g(x)\big) = \big(g(x)\big)^2$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+(h \circ g)(x) &= (2x - 3)^2 \\
+&= 4x^2 - 12x + 9
+\end{aligned}
+$$
+
+$g$ et $h$ sont définies sur $\mathbb{R}$, donc $h \circ g$ aussi.
+:::
+
+::: resultat
+$(h \circ g)(x) = (2x - 3)^2 = 4x^2 - 12x + 9$, définie sur $\mathbb{R}$.
+:::
+
+## Question 4 : Expression et ensemble de définition de $f \circ h$
+
+::: methode
+$(f \circ h)(x) = f\big(h(x)\big)$ : on remplace $x$ par $h(x) = x^2$ dans l'expression de $f$.
+:::
+
+::: etape Expression
+$$(f \circ h)(x) = \dfrac{1}{h(x) + 1} = \dfrac{1}{x^2 + 1}$$
+:::
+
+::: etape Ensemble de définition
+Il faut $h(x) \neq -1$, c'est-à-dire $x^2 \neq -1$ : c'est toujours vrai, car $x^2 \ge 0$. Le dénominateur $x^2 + 1 \ge 1$ ne s'annule jamais.
+:::
+
+::: resultat
+$(f \circ h)(x) = \dfrac{1}{x^2 + 1}$, définie sur $\mathbb{R}$.
+:::
+
+## Question 5 : Expression de $(g \circ h)(x)$
+
+::: methode
+$(g \circ h)(x) = g\big(h(x)\big) = 2h(x) - 3$.
+:::
+
+::: etape Calcul
+$$(g \circ h)(x) = 2x^2 - 3$$
+
+$g$ et $h$ sont définies sur $\mathbb{R}$, donc $g \circ h$ aussi.
+:::
+
+::: resultat
+$(g \circ h)(x) = 2x^2 - 3$, définie sur $\mathbb{R}$.
+:::
+
+## Question 6 : Expression et ensemble de définition de $f \circ g \circ h$
+
+::: methode
+On compose de droite à gauche : $(f \circ g \circ h)(x) = f\big((g \circ h)(x)\big)$, avec la question 5.
+:::
+
+::: etape Expression
+D'après la question 5, $(g \circ h)(x) = 2x^2 - 3$, donc :
+
+$$
+\begin{aligned}
+(f \circ g \circ h)(x) &= \dfrac{1}{(2x^2 - 3) + 1} \\
+&= \dfrac{1}{2x^2 - 2} \\
+&= \dfrac{1}{2(x - 1)(x + 1)}
+\end{aligned}
+$$
+:::
+
+::: etape Ensemble de définition
+Il faut $(g \circ h)(x) \neq -1$ :
+
+$$2x^2 - 3 = -1 \iff x^2 = 1 \iff x = -1 \text{ ou } x = 1$$
+:::
+
+::: resultat
+$(f \circ g \circ h)(x) = \dfrac{1}{2(x - 1)(x + 1)}$, définie sur $\mathbb{R} \setminus \{-1\,;1\}$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $(f \circ g)(x) = \dfrac{1}{2(x - 1)}$ sur $\mathbb{R} \setminus \{1\}$.
+2. $(g \circ f)(x) = \dfrac{-3x - 1}{x + 1}$ sur $\mathbb{R} \setminus \{-1\}$.
+3. $(h \circ g)(x) = 4x^2 - 12x + 9$ sur $\mathbb{R}$.
+4. $(f \circ h)(x) = \dfrac{1}{x^2 + 1}$ sur $\mathbb{R}$.
+5. $(g \circ h)(x) = 2x^2 - 3$ sur $\mathbb{R}$.
+6. $(f \circ g \circ h)(x) = \dfrac{1}{2(x - 1)(x + 1)}$ sur $\mathbb{R} \setminus \{-1\,;1\}$.
+
+===
+
+=== Entraînement - Dérivation de Fonctions Composées
+Id: 1261
+Difficulté: medium
+
+Énoncé: <!-- optitab:1 -->
+On considère les fonctions $f$, $g$, $h$ et $k$ définies par :
+
+- $f(x) = e^{x^2 + 1}$ ;
+- $g(x) = \ln(x^2 + 4)$ ;
+- $h(x) = \sqrt{2x - 1}$ ;
+- $k(x) = \dfrac{1}{x^2 + 3}$.
+
+1. Calculer $f'(x)$.
+2. Calculer $g'(x)$.
+3. Déterminer l'ensemble de définition de $h$, calculer $h'(x)$ et préciser l'ensemble de dérivabilité de $h$.
+4. Calculer $k'(x)$.
+5. Étudier le signe de $g'(x)$ et en déduire les variations de $g$.
+6. Soit $\ell(x) = \ln(3x^2 + 2x - 1)$. Déterminer l'ensemble de définition de $\ell$, puis calculer $\ell'(x)$.
+7. Soit $m(x) = e^{-2x^2 + 5x}$. Calculer $m'(x)$.
+8. Soit $n(x) = \sqrt{x^2 - 4x + 3}$. Déterminer l'ensemble de définition de $n$, calculer $n'(x)$ et préciser l'ensemble de dérivabilité de $n$.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Calculer $f'(x)$ pour $f(x) = e^{x^2 + 1}$
+
+::: methode
+Dérivée de $e^u$ : $(e^u)' = u'\,e^u$.
+:::
+
+::: etape Identifier $u$
+$f(x) = e^{u(x)}$ avec $u(x) = x^2 + 1$, dérivable sur $\mathbb{R}$, et $u'(x) = 2x$.
+:::
+
+::: etape Appliquer la formule
+$$f'(x) = u'(x)\,e^{u(x)} = 2x\,e^{x^2 + 1}$$
+:::
+
+::: resultat
+$f'(x) = 2x\,e^{x^2 + 1}$ pour tout réel $x$.
+:::
+
+## Question 2 : Calculer $g'(x)$ pour $g(x) = \ln(x^2 + 4)$
+
+::: methode
+Dérivée de $\ln u$ (avec $u \gt 0$) : $(\ln u)' = \dfrac{u'}{u}$.
+:::
+
+::: etape Identifier $u$
+$g(x) = \ln\big(u(x)\big)$ avec $u(x) = x^2 + 4$. Pour tout réel $x$, $u(x) \ge 4 \gt 0$ : $g$ est définie et dérivable sur $\mathbb{R}$, et $u'(x) = 2x$.
+:::
+
+::: etape Appliquer la formule
+$$g'(x) = \dfrac{u'(x)}{u(x)} = \dfrac{2x}{x^2 + 4}$$
+:::
+
+::: resultat
+$g'(x) = \dfrac{2x}{x^2 + 4}$ pour tout réel $x$.
+:::
+
+## Question 3 : Ensemble de définition et dérivée de $h(x) = \sqrt{2x - 1}$
+
+::: methode
+$\sqrt{u}$ est définie là où $u \ge 0$ ; la formule $(\sqrt{u})' = \dfrac{u'}{2\sqrt{u}}$ s'applique là où $u \gt 0$.
+:::
+
+::: etape Ensemble de définition
+$h(x)$ existe si $2x - 1 \ge 0$, c'est-à-dire $x \ge \dfrac{1}{2}$ : $D_h = \left[\dfrac{1}{2}\,;+\infty\right[$.
+:::
+
+::: etape Calcul de $h'(x)$ pour $x \gt \dfrac{1}{2}$
+$u(x) = 2x - 1 \gt 0$ et $u'(x) = 2$, donc :
+
+$$
+\begin{aligned}
+h'(x) &= \dfrac{2}{2\sqrt{2x - 1}} \\
+&= \dfrac{1}{\sqrt{2x - 1}}
+\end{aligned}
+$$
+:::
+
+::: etape Et en $\dfrac{1}{2}$ ?
+Pour $t \gt 0$, le taux d'accroissement de $h$ entre $\dfrac{1}{2}$ et $\dfrac{1}{2} + t$ vaut :
+
+$$\dfrac{h\left(\frac{1}{2} + t\right) - h\left(\frac{1}{2}\right)}{t} = \dfrac{\sqrt{2t}}{t} = \sqrt{\dfrac{2}{t}}$$
+
+Il tend vers $+\infty$ quand $t$ tend vers $0$ : $h$ n'est pas dérivable en $\dfrac{1}{2}$ (la courbe y a une demi-tangente verticale).
+:::
+
+::: resultat
+$h'(x) = \dfrac{1}{\sqrt{2x - 1}}$ ; $h$ est définie sur $\left[\dfrac{1}{2}\,;+\infty\right[$ et dérivable sur $\left]\dfrac{1}{2}\,;+\infty\right[$.
+:::
+
+## Question 4 : Calculer $k'(x)$ pour $k(x) = \dfrac{1}{x^2 + 3}$
+
+::: methode
+Dérivée de $\dfrac{1}{u}$ (avec $u$ qui ne s'annule pas) : $\left(\dfrac{1}{u}\right)' = -\dfrac{u'}{u^2}$.
+:::
+
+::: etape Identifier $u$
+$u(x) = x^2 + 3 \ge 3$ ne s'annule jamais : $k$ est dérivable sur $\mathbb{R}$, et $u'(x) = 2x$.
+:::
+
+::: etape Appliquer la formule
+$$k'(x) = -\dfrac{u'(x)}{\big(u(x)\big)^2} = -\dfrac{2x}{(x^2 + 3)^2}$$
+:::
+
+::: resultat
+$k'(x) = -\dfrac{2x}{(x^2 + 3)^2}$ pour tout réel $x$.
+:::
+
+## Question 5 : Signe de $g'(x)$ et variations de $g$
+
+::: methode
+Le signe de $g'$ donne les variations de $g$ ; un dénominateur strictement positif ne change pas le signe.
+:::
+
+::: etape Signe de $g'(x) = \dfrac{2x}{x^2 + 4}$
+Le dénominateur $x^2 + 4$ est strictement positif : $g'(x)$ a le signe de $2x$, négatif pour $x \lt 0$, nul en $0$, positif pour $x \gt 0$.
+:::
+
+::: etape Limites et valeur en $0$
+$\lim\limits_{x \to \pm\infty} (x^2 + 4) = +\infty$ et $\lim\limits_{X \to +\infty} \ln X = +\infty$ : par composition, $\lim\limits_{x \to \pm\infty} g(x) = +\infty$. De plus, $g(0) = \ln 4$.
+:::
+
+::: point Tableau de variations
+::: tableau
+x : -\infty, 0, +\infty
+2x : , -, z, +,
+x^2 + 4 : , +, , +,
+g'(x) : , -, z, +,
+g : +/+\infty, -/\ln 4, +/+\infty
+:::
+:::
+
+::: resultat
+$g$ est strictement décroissante sur $]-\infty\,;0]$ et strictement croissante sur $[0\,;+\infty[$ : elle admet un minimum $g(0) = \ln 4$.
+:::
+
+## Question 6 : Ensemble de définition et dérivée de $\ell(x) = \ln(3x^2 + 2x - 1)$
+
+::: methode
+$\ln u$ est définie et dérivable là où $u \gt 0$, avec $(\ln u)' = \dfrac{u'}{u}$.
+:::
+
+::: etape Racines de $u(x) = 3x^2 + 2x - 1$
+$\Delta = 2^2 - 4 \times 3 \times (-1) = 16$, d'où :
+
+$$x_1 = \dfrac{-2 - 4}{6} = -1 \qquad \text{et} \qquad x_2 = \dfrac{-2 + 4}{6} = \dfrac{1}{3}$$
+
+Le trinôme (coefficient $3 \gt 0$) est strictement positif à l'extérieur de ses racines.
+:::
+
+::: etape Ensemble de définition
+$$D_\ell = ]-\infty\,;-1[ \cup \left]\dfrac{1}{3}\,;+\infty\right[$$
+:::
+
+::: etape Calcul de $\ell'(x)$
+$u'(x) = 6x + 2$, donc, pour tout $x$ de $D_\ell$ :
+
+$$\ell'(x) = \dfrac{6x + 2}{3x^2 + 2x - 1} = \dfrac{2(3x + 1)}{3x^2 + 2x - 1}$$
+:::
+
+::: resultat
+$\ell$ est définie et dérivable sur $]-\infty\,;-1[ \cup \left]\dfrac{1}{3}\,;+\infty\right[$, avec $\ell'(x) = \dfrac{6x + 2}{3x^2 + 2x - 1}$.
+:::
+
+## Question 7 : Calculer $m'(x)$ pour $m(x) = e^{-2x^2 + 5x}$
+
+::: methode
+Dérivée de $e^u$ : $(e^u)' = u'\,e^u$.
+:::
+
+::: etape Identifier $u$
+$u(x) = -2x^2 + 5x$, dérivable sur $\mathbb{R}$, et $u'(x) = -4x + 5$.
+:::
+
+::: etape Appliquer la formule
+$$m'(x) = (-4x + 5)\,e^{-2x^2 + 5x}$$
+:::
+
+::: resultat
+$m'(x) = (-4x + 5)\,e^{-2x^2 + 5x}$ pour tout réel $x$.
+:::
+
+## Question 8 : Ensemble de définition et dérivée de $n(x) = \sqrt{x^2 - 4x + 3}$
+
+::: methode
+$\sqrt{u}$ est définie là où $u \ge 0$ ; la formule $(\sqrt{u})' = \dfrac{u'}{2\sqrt{u}}$ s'applique là où $u \gt 0$.
+:::
+
+::: etape Ensemble de définition
+$x^2 - 4x + 3 = (x - 1)(x - 3)$ : ce trinôme est positif ou nul à l'extérieur de ses racines $1$ et $3$.
+
+$$D_n = ]-\infty\,;1] \cup [3\,;+\infty[$$
+:::
+
+::: etape Calcul de $n'(x)$ pour $x \lt 1$ ou $x \gt 3$
+$u(x) \gt 0$ et $u'(x) = 2x - 4 = 2(x - 2)$, donc :
+
+$$
+\begin{aligned}
+n'(x) &= \dfrac{2(x - 2)}{2\sqrt{x^2 - 4x + 3}} \\
+&= \dfrac{x - 2}{\sqrt{x^2 - 4x + 3}}
+\end{aligned}
+$$
+:::
+
+::: etape En $1$ et en $3$
+$u(1) = u(3) = 0$ : la formule ne s'applique pas. Par exemple en $3$, pour $t \gt 0$ :
+
+$$\dfrac{n(3 + t) - n(3)}{t} = \dfrac{\sqrt{t^2 + 2t}}{t} = \sqrt{1 + \dfrac{2}{t}}$$
+
+qui tend vers $+\infty$ quand $t$ tend vers $0$ : $n$ n'est pas dérivable en $3$ ; de même en $1$. La courbe y a des demi-tangentes verticales.
+:::
+
+::: resultat
+$n$ est définie sur $]-\infty\,;1] \cup [3\,;+\infty[$, dérivable sur $]-\infty\,;1[ \cup ]3\,;+\infty[$, avec $n'(x) = \dfrac{x - 2}{\sqrt{x^2 - 4x + 3}}$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $f'(x) = 2x\,e^{x^2 + 1}$
+2. $g'(x) = \dfrac{2x}{x^2 + 4}$
+3. $h$ est définie sur $\left[\dfrac{1}{2}\,;+\infty\right[$, dérivable sur $\left]\dfrac{1}{2}\,;+\infty\right[$, avec $h'(x) = \dfrac{1}{\sqrt{2x - 1}}$.
+4. $k'(x) = -\dfrac{2x}{(x^2 + 3)^2}$
+5. $g$ est décroissante sur $]-\infty\,;0]$, croissante sur $[0\,;+\infty[$ ; minimum $g(0) = \ln 4$.
+6. $D_\ell = ]-\infty\,;-1[ \cup \left]\dfrac{1}{3}\,;+\infty\right[$ et $\ell'(x) = \dfrac{6x + 2}{3x^2 + 2x - 1}$.
+7. $m'(x) = (-4x + 5)\,e^{-2x^2 + 5x}$
+8. $n$ est définie sur $]-\infty\,;1] \cup [3\,;+\infty[$, dérivable sur $]-\infty\,;1[ \cup ]3\,;+\infty[$, avec $n'(x) = \dfrac{x - 2}{\sqrt{x^2 - 4x + 3}}$.
+
+===
+
+=== Entraînement - Dérivation - Dérivées de Produit et Quotient
+Id: 1257
+Difficulté: medium
+Image: v1_n87_ex1257_1_ex1257_h.png
+
+Énoncé: <!-- optitab:1 -->
+On considère les fonctions $h$ et $k$ définies par :
+
+- $h(x) = (x^2 + 3x)(2x - 1)$, sur $\mathbb{R}$ ;
+- $k(x) = \dfrac{x^2 + 2}{x - 3}$, sur $\mathbb{R} \setminus \{3\}$.
+
+1. Calculer $h'(x)$.
+2. Calculer $k'(x)$.
+3. Étudier les limites de $k$ en $3$, à gauche et à droite. Interpréter graphiquement.
+4. Étudier le sens de variation de $h$ sur $\mathbb{R}$ (limites comprises).
+5. Étudier la convexité de $h$ : calculer $h''(x)$ et déterminer le point d'inflexion de sa courbe.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Calculer $h'(x)$
+
+::: methode
+Dérivée d'un produit : $(uv)' = u'v + uv'$.
+:::
+
+::: etape Identifier $u$ et $v$
+$u(x) = x^2 + 3x$ et $v(x) = 2x - 1$, d'où $u'(x) = 2x + 3$ et $v'(x) = 2$.
+:::
+
+::: etape Appliquer la formule et développer
+$$
+\begin{aligned}
+h'(x) &= (2x + 3)(2x - 1) + 2(x^2 + 3x) \\
+&= 4x^2 + 4x - 3 + 2x^2 + 6x \\
+&= 6x^2 + 10x - 3
+\end{aligned}
+$$
+:::
+
+::: resultat
+$h'(x) = 6x^2 + 10x - 3$
+:::
+
+## Question 2 : Calculer $k'(x)$
+
+::: methode
+Dérivée d'un quotient : $\left(\dfrac{u}{v}\right)' = \dfrac{u'v - uv'}{v^2}$.
+:::
+
+::: etape Identifier $u$ et $v$
+$u(x) = x^2 + 2$ et $v(x) = x - 3$, d'où $u'(x) = 2x$ et $v'(x) = 1$.
+:::
+
+::: etape Appliquer la formule
+$$
+\begin{aligned}
+k'(x) &= \dfrac{2x(x - 3) - (x^2 + 2) \times 1}{(x - 3)^2} \\
+&= \dfrac{2x^2 - 6x - x^2 - 2}{(x - 3)^2} \\
+&= \dfrac{x^2 - 6x - 2}{(x - 3)^2}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$k'(x) = \dfrac{x^2 - 6x - 2}{(x - 3)^2}$ pour $x \neq 3$.
+:::
+
+## Question 3 : Limites de $k$ en $3$
+
+::: methode
+Numérateur de limite non nulle, dénominateur qui tend vers $0$ : le signe du dénominateur décide.
+:::
+
+::: etape Numérateur
+$\lim\limits_{x \to 3} (x^2 + 2) = 11 \gt 0$.
+:::
+
+::: etape Dénominateur
+Si $x \lt 3$, $x - 3 \lt 0$ : $x - 3$ tend vers $0$ par valeurs négatives. Si $x \gt 3$, il tend vers $0$ par valeurs positives.
+:::
+
+::: etape Conclusion par quotient
+$$\lim_{x \to 3^-} k(x) = -\infty \qquad \text{et} \qquad \lim_{x \to 3^+} k(x) = +\infty$$
+:::
+
+::: resultat
+$\lim\limits_{x \to 3^-} k(x) = -\infty$ et $\lim\limits_{x \to 3^+} k(x) = +\infty$ : la droite d'équation $x = 3$ est asymptote verticale à la courbe de $k$.
+:::
+
+## Question 4 : Sens de variation de $h$
+
+::: methode
+Signe du trinôme $h'(x) = 6x^2 + 10x - 3$ : discriminant et racines.
+:::
+
+::: etape Racines de $h'(x)$
+$\Delta = 10^2 - 4 \times 6 \times (-3) = 172 = 4 \times 43$, donc $\sqrt{\Delta} = 2\sqrt{43}$ et :
+
+$$x_1 = \dfrac{-10 - 2\sqrt{43}}{12} = \dfrac{-5 - \sqrt{43}}{6} \approx -1{,}93$$
+
+$$x_2 = \dfrac{-5 + \sqrt{43}}{6} \approx 0{,}26$$
+
+Le trinôme (coefficient $6 \gt 0$) est positif à l'extérieur des racines, négatif entre elles.
+:::
+
+::: etape Limites
+$h(x) = 2x^3 + 5x^2 - 3x$ : en $\pm\infty$, un polynôme a la limite de son terme de plus haut degré $2x^3$, donc $\lim\limits_{x \to -\infty} h(x) = -\infty$ et $\lim\limits_{x \to +\infty} h(x) = +\infty$.
+:::
+
+::: etape Valeurs des extremums (calculatrice)
+$h(x_1) \approx 10{,}04$ et $h(x_2) \approx -0{,}41$.
+:::
+
+::: point Tableau de variations
+::: tableau
+x : -\infty, x_1, x_2, +\infty
+h'(x) : , +, z, -, z, +,
+h : -/-\infty, +/h(x_1), -/h(x_2), +/+\infty
+:::
+:::
+
+::: resultat
+$h$ est croissante sur $]-\infty\,;x_1]$, décroissante sur $[x_1\,;x_2]$ et croissante sur $[x_2\,;+\infty[$, avec $x_1 = \dfrac{-5 - \sqrt{43}}{6}$ et $x_2 = \dfrac{-5 + \sqrt{43}}{6}$.
+:::
+
+## Question 5 : Convexité de $h$ et point d'inflexion
+
+::: methode
+Signe de la dérivée seconde $h''$.
+:::
+
+::: etape Dérivée seconde
+$$h''(x) = (6x^2 + 10x - 3)' = 12x + 10$$
+:::
+
+::: etape Signe de $h''(x)$
+$12x + 10 \ge 0 \iff x \ge -\dfrac{5}{6}$.
+
+::: tableau
+x : -\infty, -\frac{5}{6}, +\infty
+h''(x) : , -, z, +,
+Convexité de $h$ : , concave, t, convexe,
+:::
+:::
+
+::: etape Ordonnée du point d'inflexion
+$h''$ s'annule en $-\dfrac{5}{6}$ en changeant de signe. On calcule :
+
+$$
+\begin{aligned}
+h\left(-\dfrac{5}{6}\right) &= \left(\dfrac{25}{36} - \dfrac{90}{36}\right) \times \left(-\dfrac{10}{6} - 1\right) \\
+&= \left(-\dfrac{65}{36}\right) \times \left(-\dfrac{8}{3}\right) \\
+&= \dfrac{520}{108} = \dfrac{130}{27}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$h$ est concave sur $\left]-\infty\,;-\dfrac{5}{6}\right]$ et convexe sur $\left[-\dfrac{5}{6}\,;+\infty\right[$ : le point $I\left(-\dfrac{5}{6}\,;\dfrac{130}{27}\right)$, avec $\dfrac{130}{27} \approx 4{,}81$, est le point d'inflexion.
+:::
+
+[IMAGE_1]
+
+Solution:
+<!-- optitab:1 -->
+1. $h'(x) = 6x^2 + 10x - 3$
+2. $k'(x) = \dfrac{x^2 - 6x - 2}{(x - 3)^2}$
+3. $\lim\limits_{x \to 3^-} k(x) = -\infty$ et $\lim\limits_{x \to 3^+} k(x) = +\infty$ : asymptote verticale d'équation $x = 3$.
+4. Avec $x_1 = \dfrac{-5 - \sqrt{43}}{6} \approx -1{,}93$ et $x_2 = \dfrac{-5 + \sqrt{43}}{6} \approx 0{,}26$ : $h$ est croissante sur $]-\infty\,;x_1]$, décroissante sur $[x_1\,;x_2]$, croissante sur $[x_2\,;+\infty[$.
+5. $h''(x) = 12x + 10$ : $h$ est concave sur $\left]-\infty\,;-\dfrac{5}{6}\right]$, convexe sur $\left[-\dfrac{5}{6}\,;+\infty\right[$ ; point d'inflexion $I\left(-\dfrac{5}{6}\,;\dfrac{130}{27}\right)$.
+
+===
+
+=== Entraînement - Dérivation - Polynômes et Opérations
+Id: 1262
+Difficulté: easy
+
+Énoncé: <!-- optitab:1 -->
+Calculer la dérivée de chacune des fonctions suivantes, sur l'ensemble indiqué.
+
+1. $f(x) = 3x^4 - 5x^3 + 2x^2 - 7x + 1$, sur $\mathbb{R}$
+2. $g(x) = (2x + 1)(x^2 - 3)$, sur $\mathbb{R}$
+3. $h(x) = \dfrac{x^2 + 1}{x - 2}$, sur $\mathbb{R} \setminus \{2\}$
+4. $k(x) = x^3(2x - 1)^2$, sur $\mathbb{R}$
+5. $p(x) = \dfrac{2x^3 - x + 1}{x^2 + 1}$, sur $\mathbb{R}$
+6. $q(x) = (x^2 + 3x)(x - 1)(2x + 1)$, sur $\mathbb{R}$
+7. $r(x) = \dfrac{x^4 - 2x^2 + 1}{x^2 - 1}$, sur $\mathbb{R} \setminus \{-1\,;1\}$
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Dérivée de $f(x) = 3x^4 - 5x^3 + 2x^2 - 7x + 1$
+
+::: methode
+On dérive terme à terme avec $(x^n)' = nx^{n-1}$ et $(ku)' = ku'$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+f'(x) &= 3 \times 4x^3 - 5 \times 3x^2 + 2 \times 2x - 7 \\
+&= 12x^3 - 15x^2 + 4x - 7
+\end{aligned}
+$$
+:::
+
+::: resultat
+$f'(x) = 12x^3 - 15x^2 + 4x - 7$
+:::
+
+## Question 2 : Dérivée de $g(x) = (2x + 1)(x^2 - 3)$
+
+::: methode
+Dérivée d'un produit : $(uv)' = u'v + uv'$.
+:::
+
+::: etape Identifier $u$ et $v$
+$u(x) = 2x + 1$ et $v(x) = x^2 - 3$, d'où $u'(x) = 2$ et $v'(x) = 2x$.
+:::
+
+::: etape Appliquer la formule
+$$
+\begin{aligned}
+g'(x) &= 2(x^2 - 3) + (2x + 1) \times 2x \\
+&= 2x^2 - 6 + 4x^2 + 2x \\
+&= 6x^2 + 2x - 6
+\end{aligned}
+$$
+:::
+
+::: resultat
+$g'(x) = 6x^2 + 2x - 6$
+:::
+
+## Question 3 : Dérivée de $h(x) = \dfrac{x^2 + 1}{x - 2}$
+
+::: methode
+Dérivée d'un quotient : $\left(\dfrac{u}{v}\right)' = \dfrac{u'v - uv'}{v^2}$.
+:::
+
+::: etape Identifier $u$ et $v$
+$u(x) = x^2 + 1$ et $v(x) = x - 2$ (non nul sur $\mathbb{R} \setminus \{2\}$), d'où $u'(x) = 2x$ et $v'(x) = 1$.
+:::
+
+::: etape Appliquer la formule
+$$
+\begin{aligned}
+h'(x) &= \dfrac{2x(x - 2) - (x^2 + 1) \times 1}{(x - 2)^2} \\
+&= \dfrac{2x^2 - 4x - x^2 - 1}{(x - 2)^2} \\
+&= \dfrac{x^2 - 4x - 1}{(x - 2)^2}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$h'(x) = \dfrac{x^2 - 4x - 1}{(x - 2)^2}$ pour $x \neq 2$.
+:::
+
+## Question 4 : Dérivée de $k(x) = x^3(2x - 1)^2$
+
+::: methode
+Deux méthodes : développer puis dériver, ou dériver le produit (avec $(w^2)' = 2w'w$).
+:::
+
+::: etape Méthode 1 : développer
+$$
+\begin{aligned}
+k(x) &= x^3(4x^2 - 4x + 1) \\
+&= 4x^5 - 4x^4 + x^3
+\end{aligned}
+$$
+
+donc $k'(x) = 20x^4 - 16x^3 + 3x^2$.
+:::
+
+::: etape Méthode 2 : formule du produit
+$u(x) = x^3$ et $v(x) = (2x - 1)^2$ ; $u'(x) = 3x^2$ et $v'(x) = 2 \times 2 \times (2x - 1) = 4(2x - 1)$.
+
+$$
+\begin{aligned}
+k'(x) &= 3x^2(2x - 1)^2 + x^3 \times 4(2x - 1) \\
+&= 12x^4 - 12x^3 + 3x^2 + 8x^4 - 4x^3 \\
+&= 20x^4 - 16x^3 + 3x^2
+\end{aligned}
+$$
+:::
+
+::: resultat
+$k'(x) = 20x^4 - 16x^3 + 3x^2$
+:::
+
+## Question 5 : Dérivée de $p(x) = \dfrac{2x^3 - x + 1}{x^2 + 1}$
+
+::: methode
+Dérivée d'un quotient : $\left(\dfrac{u}{v}\right)' = \dfrac{u'v - uv'}{v^2}$.
+:::
+
+::: etape Identifier $u$ et $v$
+$u(x) = 2x^3 - x + 1$ et $v(x) = x^2 + 1$ (jamais nul), d'où $u'(x) = 6x^2 - 1$ et $v'(x) = 2x$.
+:::
+
+::: etape Numérateur $u'v - uv'$
+$$
+\begin{aligned}
+(6x^2 - 1)(x^2 + 1) &= 6x^4 + 5x^2 - 1 \\
+(2x^3 - x + 1) \times 2x &= 4x^4 - 2x^2 + 2x
+\end{aligned}
+$$
+
+donc :
+
+$$
+\begin{aligned}
+u'v - uv' &= 6x^4 + 5x^2 - 1 - (4x^4 - 2x^2 + 2x) \\
+&= 2x^4 + 7x^2 - 2x - 1
+\end{aligned}
+$$
+:::
+
+::: resultat
+$p'(x) = \dfrac{2x^4 + 7x^2 - 2x - 1}{(x^2 + 1)^2}$
+:::
+
+## Question 6 : Dérivée de $q(x) = (x^2 + 3x)(x - 1)(2x + 1)$
+
+::: methode
+Produit de trois facteurs : on regroupe deux facteurs, puis on applique $(uv)' = u'v + uv'$.
+:::
+
+::: etape Regrouper
+$q(x) = u(x) \times s(x)$ avec $u(x) = x^2 + 3x$ et $s(x) = (x - 1)(2x + 1) = 2x^2 - x - 1$ ; $u'(x) = 2x + 3$ et $s'(x) = 4x - 1$.
+:::
+
+::: etape Appliquer la formule
+$$q'(x) = (2x + 3)(2x^2 - x - 1) + (x^2 + 3x)(4x - 1)$$
+
+avec :
+
+$$
+\begin{aligned}
+(2x + 3)(2x^2 - x - 1) &= 4x^3 + 4x^2 - 5x - 3 \\
+(x^2 + 3x)(4x - 1) &= 4x^3 + 11x^2 - 3x
+\end{aligned}
+$$
+:::
+
+::: etape Additionner
+$$q'(x) = 8x^3 + 15x^2 - 8x - 3$$
+:::
+
+::: remarque
+On peut aussi développer d'abord : $q(x) = 2x^4 + 5x^3 - 4x^2 - 3x$, puis dériver terme à terme.
+:::
+
+::: resultat
+$q'(x) = 8x^3 + 15x^2 - 8x - 3$
+:::
+
+## Question 7 : Dérivée de $r(x) = \dfrac{x^4 - 2x^2 + 1}{x^2 - 1}$
+
+::: methode
+Simplifier avant de dériver, sans changer l'ensemble de définition.
+:::
+
+::: etape Simplifier
+$x^4 - 2x^2 + 1 = (x^2 - 1)^2$ (identité remarquable), donc, pour $x \neq \pm 1$ :
+
+$$r(x) = \dfrac{(x^2 - 1)^2}{x^2 - 1} = x^2 - 1$$
+:::
+
+::: etape Dériver
+Pour $x \neq \pm 1$ : $r'(x) = 2x$.
+:::
+
+::: point Vérification avec la formule du quotient
+$u(x) = (x^2 - 1)^2$, $u'(x) = 4x^3 - 4x = 4x(x^2 - 1)$, $v(x) = x^2 - 1$, $v'(x) = 2x$ :
+
+$$
+\begin{aligned}
+r'(x) &= \dfrac{4x(x^2 - 1)(x^2 - 1) - (x^2 - 1)^2 \times 2x}{(x^2 - 1)^2} \\
+&= \dfrac{2x(x^2 - 1)^2}{(x^2 - 1)^2} = 2x
+\end{aligned}
+$$
+:::
+
+::: attention
+La simplification ne change pas l'ensemble de définition : $r$ n'est définie ni en $-1$ ni en $1$, donc $r'(x) = 2x$ seulement pour $x \neq \pm 1$.
+:::
+
+::: resultat
+$r'(x) = 2x$ pour $x \neq \pm 1$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $f'(x) = 12x^3 - 15x^2 + 4x - 7$
+2. $g'(x) = 6x^2 + 2x - 6$
+3. $h'(x) = \dfrac{x^2 - 4x - 1}{(x - 2)^2}$ pour $x \neq 2$
+4. $k'(x) = 20x^4 - 16x^3 + 3x^2$
+5. $p'(x) = \dfrac{2x^4 + 7x^2 - 2x - 1}{(x^2 + 1)^2}$
+6. $q'(x) = 8x^3 + 15x^2 - 8x - 3$
+7. $r'(x) = 2x$ pour $x \neq \pm 1$
+
+===
+
+=== Entrainement - Fonctions Composées - Expressions avec Racines et Valeurs Absolues
+Id: 1254
+Difficulté: medium
+
+Énoncé: <!-- optitab:1 -->
+On considère les fonctions $f$, $g$ et $h$ définies par :
+
+- $f(x) = \sqrt{x + 2}$, sur $[-2\,;+\infty[$ ;
+- $g(x) = |x - 1|$, sur $\mathbb{R}$ ;
+- $h(x) = \dfrac{x}{x - 2}$, sur $\mathbb{R} \setminus \{2\}$.
+
+Pour chacune des fonctions suivantes, déterminer son expression (simplifiée) et préciser son ensemble de définition.
+
+1. $f \circ g$
+2. $g \circ f$
+3. $h \circ g$
+4. $f \circ h$
+5. $g \circ h$
+6. $f \circ g \circ h$
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Expression et ensemble de définition de $f \circ g$
+
+::: methode
+$(f \circ g)(x) = f\big(g(x)\big)$ existe si $g(x)$ existe et si $g(x) \ge -2$ (ensemble de définition de $f$).
+:::
+
+::: etape Expression
+$$(f \circ g)(x) = \sqrt{g(x) + 2} = \sqrt{|x - 1| + 2}$$
+:::
+
+::: etape Ensemble de définition
+Pour tout réel $x$, $|x - 1| \ge 0$, donc $|x - 1| + 2 \ge 2 \gt 0$ : la racine carrée existe toujours.
+:::
+
+::: resultat
+$(f \circ g)(x) = \sqrt{|x - 1| + 2}$, définie sur $\mathbb{R}$.
+:::
+
+## Question 2 : Expression et ensemble de définition de $g \circ f$
+
+::: methode
+$(g \circ f)(x) = g\big(f(x)\big) = |f(x) - 1|$.
+:::
+
+::: etape Expression
+$$(g \circ f)(x) = \left|\sqrt{x + 2} - 1\right|$$
+:::
+
+::: etape Ensemble de définition
+$f(x)$ existe si $x + 2 \ge 0$, soit $x \ge -2$ ; $g$ est définie sur $\mathbb{R}$ : aucune autre condition.
+:::
+
+::: resultat
+$(g \circ f)(x) = \left|\sqrt{x + 2} - 1\right|$, définie sur $[-2\,;+\infty[$.
+:::
+
+## Question 3 : Expression et ensemble de définition de $h \circ g$
+
+::: methode
+$(h \circ g)(x) = h\big(g(x)\big)$ existe si $g(x) \neq 2$.
+:::
+
+::: etape Expression
+$$(h \circ g)(x) = \dfrac{g(x)}{g(x) - 2} = \dfrac{|x - 1|}{|x - 1| - 2}$$
+:::
+
+::: etape Ensemble de définition
+$$|x - 1| = 2 \iff x - 1 = 2 \text{ ou } x - 1 = -2 \iff x = 3 \text{ ou } x = -1$$
+:::
+
+::: resultat
+$(h \circ g)(x) = \dfrac{|x - 1|}{|x - 1| - 2}$, définie sur $\mathbb{R} \setminus \{-1\,;3\}$.
+:::
+
+## Question 4 : Expression et ensemble de définition de $f \circ h$
+
+::: methode
+$(f \circ h)(x) = \sqrt{h(x) + 2}$ existe si $x \neq 2$ et si $h(x) + 2 \ge 0$.
+:::
+
+::: etape Expression
+$$
+\begin{aligned}
+h(x) + 2 &= \dfrac{x + 2(x - 2)}{x - 2} \\
+&= \dfrac{3x - 4}{x - 2}
+\end{aligned}
+$$
+
+donc $(f \circ h)(x) = \sqrt{\dfrac{3x - 4}{x - 2}}$.
+:::
+
+::: etape Signe de $\dfrac{3x - 4}{x - 2}$
+::: tableau
+x : -\infty, \frac{4}{3}, 2, +\infty
+3x - 4 : , -, z, +, , +,
+x - 2 : , -, , -, z, +,
+\frac{3x - 4}{x - 2} : , +, z, -, d, +,
+:::
+:::
+
+::: etape Ensemble de définition
+D'après le tableau, $\dfrac{3x - 4}{x - 2} \ge 0$ pour $x \le \dfrac{4}{3}$ ou $x \gt 2$.
+:::
+
+::: resultat
+$(f \circ h)(x) = \sqrt{\dfrac{3x - 4}{x - 2}}$, définie sur $\left]-\infty\,;\dfrac{4}{3}\right] \cup ]2\,;+\infty[$.
+:::
+
+## Question 5 : Expression et ensemble de définition de $g \circ h$
+
+::: methode
+$(g \circ h)(x) = |h(x) - 1|$ : on réduit au même dénominateur sous la valeur absolue.
+:::
+
+::: etape Expression
+$$
+\begin{aligned}
+(g \circ h)(x) &= \left|\dfrac{x}{x - 2} - 1\right| \\
+&= \left|\dfrac{x - (x - 2)}{x - 2}\right| \\
+&= \left|\dfrac{2}{x - 2}\right| = \dfrac{2}{|x - 2|}
+\end{aligned}
+$$
+:::
+
+::: etape Ensemble de définition
+Seule condition : $h(x)$ existe, soit $x \neq 2$.
+:::
+
+::: resultat
+$(g \circ h)(x) = \dfrac{2}{|x - 2|}$, définie sur $\mathbb{R} \setminus \{2\}$.
+:::
+
+## Question 6 : Expression et ensemble de définition de $f \circ g \circ h$
+
+::: methode
+$(f \circ g \circ h)(x) = f\big((g \circ h)(x)\big)$ : on utilise la question 5.
+:::
+
+::: etape Expression
+$$
+\begin{aligned}
+(f \circ g \circ h)(x) &= \sqrt{\dfrac{2}{|x - 2|} + 2} \\
+&= \sqrt{\dfrac{2 + 2|x - 2|}{|x - 2|}} \\
+&= \sqrt{\dfrac{2(1 + |x - 2|)}{|x - 2|}}
+\end{aligned}
+$$
+:::
+
+::: etape Ensemble de définition
+Il faut $x \neq 2$ (pour $h$), puis $(g \circ h)(x) + 2 \ge 0$ : c'est toujours vrai, car $\dfrac{2}{|x - 2|} \gt 0$.
+:::
+
+::: resultat
+$(f \circ g \circ h)(x) = \sqrt{\dfrac{2(1 + |x - 2|)}{|x - 2|}}$, définie sur $\mathbb{R} \setminus \{2\}$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $(f \circ g)(x) = \sqrt{|x - 1| + 2}$ sur $\mathbb{R}$.
+2. $(g \circ f)(x) = \left|\sqrt{x + 2} - 1\right|$ sur $[-2\,;+\infty[$.
+3. $(h \circ g)(x) = \dfrac{|x - 1|}{|x - 1| - 2}$ sur $\mathbb{R} \setminus \{-1\,;3\}$.
+4. $(f \circ h)(x) = \sqrt{\dfrac{3x - 4}{x - 2}}$ sur $\left]-\infty\,;\dfrac{4}{3}\right] \cup ]2\,;+\infty[$.
+5. $(g \circ h)(x) = \dfrac{2}{|x - 2|}$ sur $\mathbb{R} \setminus \{2\}$.
+6. $(f \circ g \circ h)(x) = \sqrt{\dfrac{2(1 + |x - 2|)}{|x - 2|}}$ sur $\mathbb{R} \setminus \{2\}$.
+
+===
+
+=== Problème - Dérivation - Fonction Composée avec Étude de Convexité
+Id: 1256
+Difficulté: medium
+Image: v1_n87_ex1256_1_ex1256_g.png
+
+Énoncé: <!-- optitab:1 -->
+On considère la fonction $g$ définie sur $\mathbb{R}$ par $g(x) = e^{-x^2 + 2x - 1}$.
+
+1. Calculer $g'(x)$.
+2. Étudier les variations de $g$ (limites comprises) et déterminer son extremum.
+3. Étudier la convexité de $g$ : calculer $g''(x)$ et déterminer les points d'inflexion de sa courbe.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Calculer $g'(x)$
+
+::: methode
+Dérivée de $e^u$ : $(e^u)' = u'\,e^u$.
+:::
+
+::: etape Identifier $u$
+$g(x) = e^{u(x)}$ avec $u(x) = -x^2 + 2x - 1$, dérivable sur $\mathbb{R}$, et $u'(x) = -2x + 2$.
+:::
+
+::: resultat
+$g'(x) = (-2x + 2)\,e^{-x^2 + 2x - 1}$
+:::
+
+## Question 2 : Variations et extremum de $g$
+
+::: methode
+Une exponentielle est strictement positive : $g'(x)$ a le signe de $-2x + 2$.
+:::
+
+::: etape Signe de $g'(x)$
+$-2x + 2 \ge 0 \iff x \le 1$, et $e^{-x^2 + 2x - 1} \gt 0$ pour tout réel $x$.
+:::
+
+::: etape Limites
+$-x^2 + 2x - 1 = -(x - 1)^2$ tend vers $-\infty$ quand $x \to \pm\infty$, et $\lim\limits_{X \to -\infty} e^X = 0$ : par composition, $\lim\limits_{x \to \pm\infty} g(x) = 0$.
+:::
+
+::: etape Extremum
+$g(1) = e^{-1 + 2 - 1} = e^0 = 1$.
+:::
+
+::: point Tableau de variations
+::: tableau
+x : -\infty, 1, +\infty
+-2x + 2 : , +, z, -,
+e^{-x^2 + 2x - 1} : , +, , +,
+g'(x) : , +, z, -,
+g : -/0, +/1, -/0
+:::
+:::
+
+::: resultat
+$g$ est croissante sur $]-\infty\,;1]$ et décroissante sur $[1\,;+\infty[$ : elle admet un maximum égal à $g(1) = 1$.
+:::
+
+## Question 3 : Convexité de $g$ et points d'inflexion
+
+::: methode
+Dériver $g'$ (produit), factoriser par l'exponentielle, puis étudier le signe du trinôme.
+:::
+
+::: etape Calcul de $g''(x)$
+On note $v(x) = -x^2 + 2x - 1$, de sorte que $g'(x) = (-2x + 2)\,e^{v(x)}$ et $\left(e^{v}\right)' = (-2x + 2)\,e^{v}$. Formule du produit :
+
+$$
+\begin{aligned}
+g''(x) &= -2\,e^{v(x)} + (-2x + 2)(-2x + 2)\,e^{v(x)} \\
+&= \big[(-2x + 2)^2 - 2\big]\,e^{v(x)} \\
+&= (4x^2 - 8x + 2)\,e^{-x^2 + 2x - 1}
+\end{aligned}
+$$
+:::
+
+::: etape Racines de $4x^2 - 8x + 2$
+$\Delta = 64 - 32 = 32$ et $\sqrt{32} = 4\sqrt{2}$ :
+
+$$x_1 = \dfrac{8 - 4\sqrt{2}}{8} = \dfrac{2 - \sqrt{2}}{2} \approx 0{,}293$$
+
+$$x_2 = \dfrac{2 + \sqrt{2}}{2} \approx 1{,}707$$
+:::
+
+::: etape Signe de $g''(x)$
+Le trinôme (coefficient $4 \gt 0$) est positif à l'extérieur des racines ; l'exponentielle est strictement positive.
+
+::: tableau
+x : -\infty, x_1, x_2, +\infty
+4x^2 - 8x + 2 : , +, z, -, z, +,
+e^{-x^2 + 2x - 1} : , +, , +, , +,
+g''(x) : , +, z, -, z, +,
+Convexité de $g$ : , convexe, t, concave, t, convexe,
+:::
+:::
+
+::: etape Points d'inflexion
+$g''$ s'annule en changeant de signe en $x_1$ et en $x_2$. Comme $-x^2 + 2x - 1 = -(x - 1)^2$ et $(x_1 - 1)^2 = (x_2 - 1)^2 = \dfrac{1}{2}$ :
+
+$$g(x_1) = g(x_2) = e^{-\frac{1}{2}} \approx 0{,}61$$
+:::
+
+::: resultat
+$g$ est convexe sur $]-\infty\,;x_1]$ et sur $[x_2\,;+\infty[$, concave sur $[x_1\,;x_2]$ ; sa courbe a deux points d'inflexion, d'abscisses $x_1 = \dfrac{2 - \sqrt{2}}{2}$ et $x_2 = \dfrac{2 + \sqrt{2}}{2}$, et d'ordonnée $e^{-\frac{1}{2}}$.
+:::
+
+[IMAGE_1]
+
+Solution:
+<!-- optitab:1 -->
+1. $g'(x) = (-2x + 2)\,e^{-x^2 + 2x - 1}$
+2. $g$ est croissante sur $]-\infty\,;1]$, décroissante sur $[1\,;+\infty[$, de limite $0$ en $-\infty$ et en $+\infty$ ; maximum $g(1) = 1$.
+3. $g''(x) = (4x^2 - 8x + 2)\,e^{-x^2 + 2x - 1}$ : $g$ est convexe sur $]-\infty\,;x_1]$ et sur $[x_2\,;+\infty[$, concave sur $[x_1\,;x_2]$ ; points d'inflexion d'abscisses $x_1 = \dfrac{2 - \sqrt{2}}{2} \approx 0{,}29$ et $x_2 = \dfrac{2 + \sqrt{2}}{2} \approx 1{,}71$.
+
+===
+
+=== Problème - Dérivation - Fonction Composée Complexe
+Id: 1260
+Difficulté: medium
+Image: v1_n87_ex1260_1_ex1260_f.png
+
+Énoncé: <!-- optitab:1 -->
+On considère la fonction $f$ définie par $f(x) = \sqrt{x^2 + 4x + 3}$ sur $D_f = ]-\infty\,;-3] \cup [-1\,;+\infty[$.
+
+1. Calculer $f'(x)$ pour $x$ dans $]-\infty\,;-3[ \cup ]-1\,;+\infty[$.
+2. Étudier le signe de $f'(x)$.
+3. Étudier les variations de $f$.
+4. Calculer les limites de $f$ en $-\infty$ et en $+\infty$, ainsi que $f(-3)$ et $f(-1)$.
+5. Étudier la convexité de $f$ : calculer $f''(x)$ et dire si la courbe admet un point d'inflexion.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Calculer $f'(x)$
+
+::: methode
+Dérivée de $\sqrt{u}$, valable là où $u \gt 0$ : $(\sqrt{u})' = \dfrac{u'}{2\sqrt{u}}$.
+:::
+
+::: etape Identifier $u$
+$u(x) = x^2 + 4x + 3 = (x + 1)(x + 3)$ : $u(x) \gt 0$ pour $x \lt -3$ ou $x \gt -1$ (à l'extérieur des racines), et $u'(x) = 2x + 4 = 2(x + 2)$.
+:::
+
+::: etape Appliquer la formule
+$$
+\begin{aligned}
+f'(x) &= \dfrac{2(x + 2)}{2\sqrt{x^2 + 4x + 3}} \\
+&= \dfrac{x + 2}{\sqrt{x^2 + 4x + 3}}
+\end{aligned}
+$$
+:::
+
+::: remarque
+En $-3$ et en $-1$, $u$ s'annule : la formule ne s'applique pas, et $f$ n'y est pas dérivable (la courbe y a des demi-tangentes verticales).
+:::
+
+::: resultat
+$f'(x) = \dfrac{x + 2}{\sqrt{x^2 + 4x + 3}}$ sur $]-\infty\,;-3[ \cup ]-1\,;+\infty[$.
+:::
+
+## Question 2 : Signe de $f'(x)$
+
+::: methode
+Le dénominateur est une racine carrée strictement positive : $f'(x)$ a le signe de $x + 2$.
+:::
+
+::: etape Signe sur chaque intervalle
+- Sur $]-\infty\,;-3[$ : $x + 2 \lt -1 \lt 0$, donc $f'(x) \lt 0$.
+- Sur $]-1\,;+\infty[$ : $x + 2 \gt 1 \gt 0$, donc $f'(x) \gt 0$.
+:::
+
+::: attention
+$x + 2$ s'annule en $-2$, mais $-2 \notin D_f$ : $f'$ ne change pas de signe à l'intérieur de chaque intervalle.
+:::
+
+::: point Tableau de signes
+::: tableau
+x : -\infty, -3, -1, +\infty
+x + 2 : , -, , h, , +,
+\sqrt{x^2 + 4x + 3} : , +, z, h, z, +,
+f'(x) : , -, d, h, d, +,
+:::
+:::
+
+::: resultat
+$f'(x) \lt 0$ sur $]-\infty\,;-3[$ et $f'(x) \gt 0$ sur $]-1\,;+\infty[$.
+:::
+
+## Question 3 : Variations de $f$
+
+::: methode
+Le signe de $f'$ donne les variations ; on complète avec les valeurs aux bornes $-3$ et $-1$ (les limites en $\pm\infty$ sont calculées à la question 4).
+:::
+
+::: etape Valeurs en $-3$ et en $-1$
+$f(-3) = \sqrt{9 - 12 + 3} = 0$ et $f(-1) = \sqrt{1 - 4 + 3} = 0$.
+:::
+
+::: point Tableau de variations
+::: tableau
+x : -\infty, -3, -1, +\infty
+f'(x) : , -, d, h, d, +,
+f : +/+\infty, -D/0, D-/0, +/+\infty
+:::
+:::
+
+::: resultat
+$f$ est décroissante sur $]-\infty\,;-3]$ et croissante sur $[-1\,;+\infty[$ ; son minimum $0$ est atteint en $-3$ et en $-1$.
+:::
+
+## Question 4 : Limites et valeurs aux bornes
+
+::: methode
+Limite d'une composée : limite de l'expression sous la racine, puis limite de la racine.
+:::
+
+::: etape En $-\infty$ et en $+\infty$
+$x^2 + 4x + 3$ a la limite de son terme de plus haut degré $x^2$ : $\lim\limits_{x \to \pm\infty} (x^2 + 4x + 3) = +\infty$. Comme $\lim\limits_{X \to +\infty} \sqrt{X} = +\infty$, par composition :
+
+$$\lim_{x \to -\infty} f(x) = +\infty \qquad \text{et} \qquad \lim_{x \to +\infty} f(x) = +\infty$$
+:::
+
+::: etape En $-3$ et en $-1$
+$f(-3) = f(-1) = 0$ (question 3). $f$ est continue sur $D_f$ : $\lim\limits_{x \to -3^-} f(x) = 0$ et $\lim\limits_{x \to -1^+} f(x) = 0$.
+:::
+
+::: resultat
+$\lim\limits_{x \to -\infty} f(x) = \lim\limits_{x \to +\infty} f(x) = +\infty$ ; $f(-3) = f(-1) = 0$.
+:::
+
+## Question 5 : Convexité de $f$
+
+::: methode
+Dérivée du quotient $f'(x) = \dfrac{x + 2}{\sqrt{u(x)}}$, avec $u(x) = x^2 + 4x + 3$ et $\left(\sqrt{u}\right)' = \dfrac{x + 2}{\sqrt{u}}$.
+:::
+
+::: etape Calcul de $f''(x)$
+$$
+\begin{aligned}
+f''(x) &= \dfrac{1 \times \sqrt{u(x)} - (x + 2) \times \dfrac{x + 2}{\sqrt{u(x)}}}{u(x)} \\
+&= \dfrac{u(x) - (x + 2)^2}{u(x)\sqrt{u(x)}}
+\end{aligned}
+$$
+
+(on a multiplié le numérateur et le dénominateur par $\sqrt{u(x)}$).
+:::
+
+::: etape Simplifier le numérateur
+$$u(x) - (x + 2)^2 = x^2 + 4x + 3 - (x^2 + 4x + 4) = -1$$
+
+donc :
+
+$$f''(x) = -\dfrac{1}{(x^2 + 4x + 3)\sqrt{x^2 + 4x + 3}}$$
+:::
+
+::: etape Signe de $f''(x)$
+Sur $]-\infty\,;-3[ \cup ]-1\,;+\infty[$, $x^2 + 4x + 3 \gt 0$ : le dénominateur est strictement positif, donc $f''(x) \lt 0$.
+
+::: tableau
+x : -\infty, -3, -1, +\infty
+f''(x) : , -, d, h, d, -,
+Convexité de $f$ : , concave, d, h, d, concave,
+:::
+:::
+
+::: etape Point d'inflexion ?
+$f''$ ne s'annule jamais et garde un signe constant : la courbe n'a **pas** de point d'inflexion.
+:::
+
+::: resultat
+$f''(x) = -\dfrac{1}{(x^2 + 4x + 3)\sqrt{x^2 + 4x + 3}} \lt 0$ : $f$ est concave sur $]-\infty\,;-3[$ et sur $]-1\,;+\infty[$ ; pas de point d'inflexion.
+:::
+
+[IMAGE_1]
+
+Solution:
+<!-- optitab:1 -->
+1. $f'(x) = \dfrac{x + 2}{\sqrt{x^2 + 4x + 3}}$ sur $]-\infty\,;-3[ \cup ]-1\,;+\infty[$.
+2. $f'(x) \lt 0$ sur $]-\infty\,;-3[$ et $f'(x) \gt 0$ sur $]-1\,;+\infty[$ ($-2 \notin D_f$).
+3. $f$ est décroissante sur $]-\infty\,;-3]$, croissante sur $[-1\,;+\infty[$ ; minimum $0$ en $-3$ et en $-1$.
+4. $\lim\limits_{x \to -\infty} f(x) = \lim\limits_{x \to +\infty} f(x) = +\infty$ ; $f(-3) = f(-1) = 0$.
+5. $f''(x) = -\dfrac{1}{(x^2 + 4x + 3)\sqrt{x^2 + 4x + 3}} \lt 0$ : $f$ est concave sur chacun des deux intervalles ; pas de point d'inflexion.
+
+===
+
+=== Problème - Dérivation - Fonction Composée Complexe et Étude Complète
+Id: 1259
+Difficulté: hard
+Image: v1_n87_ex1259_1_ex1259_f.png
+
+Énoncé: <!-- optitab:1 -->
+On considère la fonction $f$ définie par $f(x) = \ln\left(\dfrac{x^2 + 1}{x^2 - 4}\right)$ sur $D_f = ]-\infty\,;-2[ \cup ]2\,;+\infty[$, et $\mathcal{C}_f$ sa courbe.
+
+1. Calculer $f'(x)$.
+2. Étudier le signe de $f'(x)$.
+3. Étudier les variations de $f$ ; admet-elle des extremums locaux ?
+4. Calculer les limites de $f$ aux bornes de $D_f$.
+5. Étudier la convexité de $f$ : calculer $f''(x)$ et dire si $\mathcal{C}_f$ admet un point d'inflexion.
+6. Déterminer les asymptotes à $\mathcal{C}_f$ et la position de $\mathcal{C}_f$ par rapport à son asymptote horizontale.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Calculer $f'(x)$
+
+::: methode
+$(\ln u)' = \dfrac{u'}{u}$, avec $u(x) = \dfrac{x^2 + 1}{x^2 - 4} \gt 0$ sur $D_f$.
+:::
+
+::: etape Calcul de $u'(x)$ (quotient)
+$$
+\begin{aligned}
+u'(x) &= \dfrac{2x(x^2 - 4) - (x^2 + 1) \times 2x}{(x^2 - 4)^2} \\
+&= \dfrac{2x^3 - 8x - 2x^3 - 2x}{(x^2 - 4)^2} \\
+&= \dfrac{-10x}{(x^2 - 4)^2}
+\end{aligned}
+$$
+:::
+
+::: etape Calcul de $f'(x)$
+$$
+\begin{aligned}
+f'(x) &= \dfrac{u'(x)}{u(x)} = \dfrac{-10x}{(x^2 - 4)^2} \times \dfrac{x^2 - 4}{x^2 + 1} \\
+&= \dfrac{-10x}{(x^2 - 4)(x^2 + 1)}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$f'(x) = \dfrac{-10x}{(x^2 - 4)(x^2 + 1)}$ sur $D_f$.
+:::
+
+## Question 2 : Signe de $f'(x)$
+
+::: methode
+Signe d'un quotient : on étudie chaque facteur sur $D_f$.
+:::
+
+::: etape Le dénominateur
+Sur $D_f$, $x^2 \gt 4$, donc $x^2 - 4 \gt 0$ ; et $x^2 + 1 \gt 0$. Le dénominateur est strictement positif : $f'(x)$ a le signe de $-10x$.
+:::
+
+::: point Tableau de signes
+::: tableau
+x : -\infty, -2, 2, +\infty
+-10x : , +, , h, , -,
+(x^2 - 4)(x^2 + 1) : , +, z, h, z, +,
+f'(x) : , +, d, h, d, -,
+:::
+:::
+
+::: resultat
+$f'(x) \gt 0$ sur $]-\infty\,;-2[$ et $f'(x) \lt 0$ sur $]2\,;+\infty[$.
+:::
+
+## Question 3 : Variations et extremums de $f$
+
+::: methode
+Le signe de $f'$ donne les variations sur chaque intervalle de $D_f$ (les limites sont calculées à la question 4).
+:::
+
+::: point Tableau de variations
+::: tableau
+x : -\infty, -2, 2, +\infty
+f'(x) : , +, d, h, d, -,
+f : -/0, +D/+\infty, D+/+\infty, -/0
+:::
+:::
+
+::: resultat
+$f$ est strictement croissante sur $]-\infty\,;-2[$ et strictement décroissante sur $]2\,;+\infty[$. Sur ces intervalles ouverts, $f$ est strictement monotone : elle n'admet aucun extremum local.
+:::
+
+## Question 4 : Limites aux bornes de $D_f$
+
+::: methode
+Limite d'une composée : limite de $u(x)$, puis limite de $\ln$.
+:::
+
+::: etape En $-\infty$ et en $+\infty$
+Pour $x \neq 0$ :
+
+$$\dfrac{x^2 + 1}{x^2 - 4} = \dfrac{1 + \frac{1}{x^2}}{1 - \frac{4}{x^2}}$$
+
+qui tend vers $1$ quand $x \to \pm\infty$. Comme $\lim\limits_{X \to 1} \ln X = \ln 1 = 0$ :
+
+$$\lim_{x \to -\infty} f(x) = \lim_{x \to +\infty} f(x) = 0$$
+:::
+
+::: etape En $-2$ (à gauche) et en $2$ (à droite)
+$x^2 + 1 \to 5$ et $x^2 - 4 \to 0$ par valeurs positives (car $x^2 \gt 4$ sur $D_f$) : $u(x) \to +\infty$. Comme $\lim\limits_{X \to +\infty} \ln X = +\infty$ :
+
+$$\lim_{x \to -2^-} f(x) = +\infty \qquad \text{et} \qquad \lim_{x \to 2^+} f(x) = +\infty$$
+:::
+
+::: resultat
+$\lim\limits_{x \to \pm\infty} f(x) = 0$ ; $\lim\limits_{x \to -2^-} f(x) = \lim\limits_{x \to 2^+} f(x) = +\infty$.
+:::
+
+## Question 5 : Convexité de $f$
+
+::: methode
+Dérivée du quotient $f'(x) = \dfrac{a(x)}{b(x)}$, avec $a(x) = -10x$ et $b(x) = (x^2 - 4)(x^2 + 1) = x^4 - 3x^2 - 4$.
+:::
+
+::: etape Dérivées de $a$ et de $b$
+$a'(x) = -10$ et $b'(x) = 4x^3 - 6x = 2x(2x^2 - 3)$.
+:::
+
+::: etape Numérateur $a'b - ab'$
+$$
+\begin{aligned}
+a'b - ab' &= -10(x^4 - 3x^2 - 4) + 10x \times 2x(2x^2 - 3) \\
+&= -10x^4 + 30x^2 + 40 + 40x^4 - 60x^2 \\
+&= 30x^4 - 30x^2 + 40 \\
+&= 10(3x^4 - 3x^2 + 4)
+\end{aligned}
+$$
+
+d'où :
+
+$$f''(x) = \dfrac{10(3x^4 - 3x^2 + 4)}{(x^2 - 4)^2(x^2 + 1)^2}$$
+:::
+
+::: etape Signe de $f''(x)$
+On pose $X = x^2$ : $3X^2 - 3X + 4$ a pour discriminant $\Delta = 9 - 48 = -39 \lt 0$, donc il a le signe de son coefficient $3 \gt 0$ : $3x^4 - 3x^2 + 4 \gt 0$ pour tout réel $x$. Le dénominateur est un carré non nul sur $D_f$ : $f''(x) \gt 0$.
+
+::: tableau
+x : -\infty, -2, 2, +\infty
+f''(x) : , +, d, h, d, +,
+Convexité de $f$ : , convexe, d, h, d, convexe,
+:::
+:::
+
+::: resultat
+$f$ est convexe sur $]-\infty\,;-2[$ et sur $]2\,;+\infty[$ ; $f''$ ne s'annule pas : pas de point d'inflexion.
+:::
+
+## Question 6 : Asymptotes et position relative
+
+::: methode
+Limite infinie en un réel : asymptote verticale ; limite finie en $\pm\infty$ : asymptote horizontale.
+:::
+
+::: etape Asymptotes verticales
+$\lim\limits_{x \to -2^-} f(x) = +\infty$ et $\lim\limits_{x \to 2^+} f(x) = +\infty$ : les droites d'équations $x = -2$ et $x = 2$ sont asymptotes verticales.
+:::
+
+::: etape Asymptote horizontale
+$\lim\limits_{x \to \pm\infty} f(x) = 0$ : la droite d'équation $y = 0$ (l'axe des abscisses) est asymptote horizontale en $-\infty$ et en $+\infty$.
+:::
+
+::: etape Position par rapport à la droite $y = 0$
+Sur $D_f$, $x^2 - 4 \gt 0$ et $x^2 + 1 \gt x^2 - 4$, donc $\dfrac{x^2 + 1}{x^2 - 4} \gt 1$, et, $\ln$ étant strictement croissante :
+
+$$f(x) \gt \ln 1 = 0$$
+:::
+
+::: resultat
+Asymptotes : $x = -2$, $x = 2$ et $y = 0$ ; $\mathcal{C}_f$ est strictement au-dessus de l'axe des abscisses.
+:::
+
+[IMAGE_1]
+
+Solution:
+<!-- optitab:1 -->
+1. $f'(x) = \dfrac{-10x}{(x^2 - 4)(x^2 + 1)}$
+2. $f'(x) \gt 0$ sur $]-\infty\,;-2[$ et $f'(x) \lt 0$ sur $]2\,;+\infty[$.
+3. $f$ est croissante sur $]-\infty\,;-2[$, décroissante sur $]2\,;+\infty[$ ; aucun extremum local.
+4. $\lim\limits_{x \to \pm\infty} f(x) = 0$ ; $\lim\limits_{x \to -2^-} f(x) = \lim\limits_{x \to 2^+} f(x) = +\infty$.
+5. $f''(x) = \dfrac{10(3x^4 - 3x^2 + 4)}{(x^2 - 4)^2(x^2 + 1)^2} \gt 0$ : $f$ est convexe sur chacun des deux intervalles ; pas de point d'inflexion.
+6. Asymptotes $x = -2$, $x = 2$ et $y = 0$ ; la courbe est au-dessus de l'axe des abscisses.
+
+===
+
+=== Problème - Dérivation - Fonction Polynomiale et Étude Complète
+Id: 1255
+Difficulté: medium
+Image: v1_n87_ex1255_1_ex1255_f.png
+
+Énoncé: <!-- optitab:1 -->
+On considère la fonction $f$ définie sur $\mathbb{R}$ par $f(x) = x^3 - 6x^2 + 9x + 1$, et $\mathcal{C}_f$ sa courbe.
+
+1. Calculer $f'(x)$ et la factoriser.
+2. Étudier le signe de $f'(x)$.
+3. Étudier les variations de $f$, déterminer ses extremums locaux et calculer leurs valeurs.
+4. Écrire une équation de la tangente à $\mathcal{C}_f$ au point d'abscisse $1$.
+5. Étudier la convexité de $f$ : calculer $f''(x)$ et déterminer le point d'inflexion de $\mathcal{C}_f$.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Calculer $f'(x)$ et la factoriser
+
+::: methode
+Dériver terme à terme, puis factoriser.
+:::
+
+::: etape Dérivée terme à terme
+$(x^3)' = 3x^2$, $(-6x^2)' = -12x$, $(9x)' = 9$ et $(1)' = 0$, donc $f'(x) = 3x^2 - 12x + 9$.
+:::
+
+::: etape Factorisation
+$1$ est racine évidente de $x^2 - 4x + 3$, et le produit des racines vaut $3$ : l'autre racine est $3$.
+
+$$
+\begin{aligned}
+f'(x) &= 3(x^2 - 4x + 3) \\
+&= 3(x - 1)(x - 3)
+\end{aligned}
+$$
+:::
+
+::: resultat
+$f'(x) = 3x^2 - 12x + 9 = 3(x - 1)(x - 3)$
+:::
+
+## Question 2 : Signe de $f'(x)$
+
+::: methode
+Tableau de signes du produit $3(x - 1)(x - 3)$.
+:::
+
+::: point Tableau de signes
+::: tableau
+x : -\infty, 1, 3, +\infty
+x - 1 : , -, z, +, , +,
+x - 3 : , -, , -, z, +,
+f'(x) : , +, z, -, z, +,
+:::
+:::
+
+::: resultat
+$f'(x) \gt 0$ sur $]-\infty\,;1[$ et sur $]3\,;+\infty[$, $f'(x) \lt 0$ sur $]1\,;3[$, et $f'(1) = f'(3) = 0$.
+:::
+
+## Question 3 : Variations et extremums locaux de $f$
+
+::: methode
+Le signe de $f'$ donne les variations ; un extremum local se trouve là où $f'$ s'annule en changeant de signe.
+:::
+
+::: etape Valeurs des extremums
+$$
+\begin{aligned}
+f(1) &= 1 - 6 + 9 + 1 = 5 \\
+f(3) &= 27 - 54 + 27 + 1 = 1
+\end{aligned}
+$$
+:::
+
+::: etape Limites
+En $\pm\infty$, un polynôme a la limite de son terme de plus haut degré $x^3$ : $\lim\limits_{x \to -\infty} f(x) = -\infty$ et $\lim\limits_{x \to +\infty} f(x) = +\infty$.
+:::
+
+::: point Tableau de variations
+::: tableau
+x : -\infty, 1, 3, +\infty
+f'(x) : , +, z, -, z, +,
+f : -/-\infty, +/5, -/1, +/+\infty
+:::
+:::
+
+::: resultat
+$f$ est croissante sur $]-\infty\,;1]$, décroissante sur $[1\,;3]$, croissante sur $[3\,;+\infty[$ : maximum local $f(1) = 5$, minimum local $f(3) = 1$.
+:::
+
+## Question 4 : Tangente au point d'abscisse $1$
+
+::: methode
+Tangente au point d'abscisse $a$ : $y = f'(a)(x - a) + f(a)$.
+:::
+
+::: etape Valeurs utiles
+$f(1) = 5$ et $f'(1) = 3(1 - 1)(1 - 3) = 0$.
+:::
+
+::: etape Équation
+$y = 0 \times (x - 1) + 5$, soit $y = 5$ : la tangente est horizontale, comme en tout extremum local d'une fonction dérivable.
+:::
+
+::: resultat
+La tangente au point d'abscisse $1$ a pour équation $y = 5$.
+:::
+
+## Question 5 : Convexité de $f$ et point d'inflexion
+
+::: methode
+Signe de la dérivée seconde $f''$.
+:::
+
+::: etape Dérivée seconde
+$$f''(x) = (3x^2 - 12x + 9)' = 6x - 12 = 6(x - 2)$$
+:::
+
+::: etape Signe de $f''(x)$
+::: tableau
+x : -\infty, 2, +\infty
+f''(x) : , -, z, +,
+Convexité de $f$ : , concave, t, convexe,
+:::
+:::
+
+::: etape Point d'inflexion
+$f''$ s'annule en $2$ en changeant de signe, et $f(2) = 8 - 24 + 18 + 1 = 3$.
+:::
+
+::: resultat
+$f$ est concave sur $]-\infty\,;2]$ et convexe sur $[2\,;+\infty[$ : $I(2\,;3)$ est le point d'inflexion de $\mathcal{C}_f$.
+:::
+
+[IMAGE_1]
+
+Solution:
+<!-- optitab:1 -->
+1. $f'(x) = 3x^2 - 12x + 9 = 3(x - 1)(x - 3)$
+2. $f'(x) \gt 0$ sur $]-\infty\,;1[ \cup ]3\,;+\infty[$ et $f'(x) \lt 0$ sur $]1\,;3[$.
+3. $f$ est croissante sur $]-\infty\,;1]$, décroissante sur $[1\,;3]$, croissante sur $[3\,;+\infty[$ ; maximum local $f(1) = 5$, minimum local $f(3) = 1$.
+4. $y = 5$
+5. $f''(x) = 6(x - 2)$ : $f$ est concave sur $]-\infty\,;2]$, convexe sur $[2\,;+\infty[$ ; point d'inflexion $I(2\,;3)$.
+
+===
+
+=== Problème - Dérivation - Fonction Rationnelle et Optimisation
+Id: 1258
+Difficulté: medium
+Image: v1_n87_ex1258_1_ex1258_f.png
+
+Énoncé: <!-- optitab:1 -->
+On considère la fonction $f$ définie sur $D_f = \mathbb{R} \setminus \{-1\,;1\}$ par $f(x) = \dfrac{x^2 + 4x + 3}{x^2 - 1}$, et $\mathcal{C}_f$ sa courbe.
+
+1. Calculer $f'(x)$ (on pourra d'abord simplifier $f(x)$).
+2. Étudier le signe de $f'(x)$.
+3. Étudier les variations de $f$ ; admet-elle des extremums locaux ?
+4. Calculer les limites de $f$ aux bornes de son ensemble de définition.
+5. Déterminer les asymptotes à $\mathcal{C}_f$.
+6. Étudier la convexité de $f$ : calculer $f''(x)$ et dire si $\mathcal{C}_f$ admet un point d'inflexion.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Calculer $f'(x)$
+
+::: methode
+Simplifier la fraction avant de dériver, sans changer l'ensemble de définition.
+:::
+
+::: etape Factoriser
+- $x^2 + 4x + 3 = (x + 1)(x + 3)$ ($\Delta = 16 - 12 = 4$, racines $-1$ et $-3$) ;
+- $x^2 - 1 = (x - 1)(x + 1)$.
+:::
+
+::: etape Simplifier
+Pour tout $x$ de $D_f$, $x + 1 \neq 0$, donc :
+
+$$f(x) = \dfrac{(x + 1)(x + 3)}{(x - 1)(x + 1)} = \dfrac{x + 3}{x - 1}$$
+:::
+
+::: etape Dériver (quotient)
+$u(x) = x + 3$ et $v(x) = x - 1$, d'où $u'(x) = v'(x) = 1$ :
+
+$$
+\begin{aligned}
+f'(x) &= \dfrac{1 \times (x - 1) - (x + 3) \times 1}{(x - 1)^2} \\
+&= \dfrac{-4}{(x - 1)^2}
+\end{aligned}
+$$
+:::
+
+::: attention
+Après simplification, $f$ reste non définie en $-1$ : l'égalité $f(x) = \dfrac{x + 3}{x - 1}$ n'est valable que sur $D_f = \mathbb{R} \setminus \{-1\,;1\}$.
+:::
+
+::: resultat
+$f(x) = \dfrac{x + 3}{x - 1}$ et $f'(x) = -\dfrac{4}{(x - 1)^2}$ pour tout $x$ de $D_f$.
+:::
+
+## Question 2 : Signe de $f'(x)$
+
+::: methode
+Numérateur constant, dénominateur carré.
+:::
+
+::: etape Signe
+$-4 \lt 0$ et $(x - 1)^2 \gt 0$ sur $D_f$ : $f'(x) \lt 0$ pour tout $x$ de $D_f$.
+:::
+
+::: resultat
+$f'(x) \lt 0$ sur $D_f$.
+:::
+
+## Question 3 : Variations et extremums de $f$
+
+::: methode
+$D_f$ est la réunion de trois intervalles : on conclut sur chacun d'eux (les limites sont calculées à la question 4).
+:::
+
+::: point Tableau de variations
+::: tableau
+x : -\infty, -1, 1, +\infty
+f'(x) : , -, d, -, d, -,
+f : +/1, -D+/-1/-1, -D+/-\infty/+\infty, -/1
+:::
+:::
+
+::: attention
+$f$ n'est pas décroissante sur $D_f$ tout entier : $f(0) = -3$ et $f(2) = 5$, alors que $0 \lt 2$. Elle est décroissante sur **chacun** des intervalles.
+:::
+
+::: resultat
+$f$ est strictement décroissante sur $]-\infty\,;-1[$, sur $]-1\,;1[$ et sur $]1\,;+\infty[$ ; ces intervalles sont ouverts, donc $f$ n'admet aucun extremum local.
+:::
+
+## Question 4 : Limites aux bornes de $D_f$
+
+::: methode
+On utilise la forme simplifiée $f(x) = \dfrac{x + 3}{x - 1}$.
+:::
+
+::: etape En $-\infty$ et en $+\infty$
+Pour $x \neq 0$, $f(x) = \dfrac{1 + \frac{3}{x}}{1 - \frac{1}{x}}$, donc $\lim\limits_{x \to \pm\infty} f(x) = 1$.
+:::
+
+::: etape En $-1$
+$\lim\limits_{x \to -1} \dfrac{x + 3}{x - 1} = \dfrac{2}{-2} = -1$, à gauche comme à droite.
+:::
+
+::: etape En $1$
+$x + 3 \to 4 \gt 0$ ; $x - 1 \to 0$ par valeurs négatives si $x \lt 1$, par valeurs positives si $x \gt 1$ :
+
+$$\lim_{x \to 1^-} f(x) = -\infty \qquad \text{et} \qquad \lim_{x \to 1^+} f(x) = +\infty$$
+:::
+
+::: resultat
+$\lim\limits_{x \to \pm\infty} f(x) = 1$ ; $\lim\limits_{x \to -1} f(x) = -1$ ; $\lim\limits_{x \to 1^-} f(x) = -\infty$ et $\lim\limits_{x \to 1^+} f(x) = +\infty$.
+:::
+
+## Question 5 : Asymptotes à $\mathcal{C}_f$
+
+::: methode
+Limite finie en $\pm\infty$ : asymptote horizontale ; limite infinie en un réel : asymptote verticale.
+:::
+
+::: etape Asymptote horizontale
+$\lim\limits_{x \to \pm\infty} f(x) = 1$ : la droite d'équation $y = 1$ est asymptote horizontale en $-\infty$ et en $+\infty$.
+:::
+
+::: etape Asymptote verticale
+Les limites en $1$ sont infinies : la droite d'équation $x = 1$ est asymptote verticale.
+:::
+
+::: etape En $-1$
+La limite est finie (elle vaut $-1$) : pas d'asymptote. La courbe présente un « trou » au point $(-1\,;-1)$, qui ne lui appartient pas.
+:::
+
+::: resultat
+Asymptotes : $y = 1$ (horizontale) et $x = 1$ (verticale) ; aucune asymptote en $-1$.
+:::
+
+[IMAGE_1]
+
+## Question 6 : Convexité de $f$
+
+::: methode
+Dériver $f'(x) = -4 \times \dfrac{1}{(x - 1)^2}$ avec $\left(\dfrac{1}{u}\right)' = -\dfrac{u'}{u^2}$, puis étudier le signe.
+:::
+
+::: etape Dérivée seconde
+Avec $u(x) = (x - 1)^2$ et $u'(x) = 2(x - 1)$ :
+
+$$
+\begin{aligned}
+f''(x) &= -4 \times \left(-\dfrac{2(x - 1)}{(x - 1)^4}\right) \\
+&= \dfrac{8}{(x - 1)^3}
+\end{aligned}
+$$
+:::
+
+::: etape Signe de $f''(x)$
+$8 \gt 0$ : $f''(x)$ a le signe de $(x - 1)^3$, c'est-à-dire celui de $x - 1$.
+
+::: tableau
+x : -\infty, -1, 1, +\infty
+(x - 1)^3 : , -, , -, z, +,
+f''(x) : , -, d, -, d, +,
+Convexité de $f$ : , concave, d, concave, d, convexe,
+:::
+:::
+
+::: etape Point d'inflexion ?
+$f''$ ne s'annule jamais ; elle change de signe en $1$, mais $1 \notin D_f$ (asymptote verticale) : $\mathcal{C}_f$ n'a pas de point d'inflexion.
+:::
+
+::: resultat
+$f''(x) = \dfrac{8}{(x - 1)^3}$ : $f$ est concave sur $]-\infty\,;-1[$ et sur $]-1\,;1[$, convexe sur $]1\,;+\infty[$ ; pas de point d'inflexion.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $f(x) = \dfrac{x + 3}{x - 1}$ sur $D_f$ et $f'(x) = -\dfrac{4}{(x - 1)^2}$.
+2. $f'(x) \lt 0$ sur $D_f$.
+3. $f$ est décroissante sur $]-\infty\,;-1[$, sur $]-1\,;1[$ et sur $]1\,;+\infty[$ ; aucun extremum local.
+4. $\lim\limits_{x \to \pm\infty} f(x) = 1$ ; $\lim\limits_{x \to -1} f(x) = -1$ ; $\lim\limits_{x \to 1^-} f(x) = -\infty$ et $\lim\limits_{x \to 1^+} f(x) = +\infty$.
+5. Asymptotes $y = 1$ et $x = 1$ ; « trou » au point $(-1\,;-1)$.
+6. $f''(x) = \dfrac{8}{(x - 1)^3}$ : $f$ est concave sur $]-\infty\,;-1[$ et sur $]-1\,;1[$, convexe sur $]1\,;+\infty[$ ; pas de point d'inflexion.
+
+===

@@ -1,0 +1,265 @@
+Titre: Résoudre des problèmes de géométrie
+
+<!-- optitab:1 -->
+::: objectifs
+- Connaître le projeté orthogonal d’un point sur une droite et calculer la distance d’un point à une droite.
+- Calculer des longueurs et des angles dans un triangle rectangle : Pythagore, cosinus, sinus, tangente.
+- Démontrer et utiliser la relation $\cos^2\alpha + \sin^2\alpha = 1$.
+- Résoudre des problèmes sur des triangles, des quadrilatères et des cercles, avec ou sans repère.
+- Calculer des aires et des volumes, et traiter un problème d’optimisation.
+:::
+
+## I. Projeté orthogonal et distance d’un point à une droite
+
+::: definition Projeté orthogonal
+Soit $d$ une droite et $M$ un point du plan. Le **projeté orthogonal** de $M$ sur $d$ est le point $H$ de $d$ tel que la droite $(MH)$ soit perpendiculaire à $d$.
+
+Si $M$ appartient à $d$, son projeté orthogonal est $M$ lui-même.
+:::
+
+[IMAGE_1]
+
+::: theoreme Le point le plus proche
+Le projeté orthogonal $H$ du point $M$ sur la droite $d$ est le point de $d$ le plus proche de $M$ : pour tout point $N$ de $d$, $MN \geq MH$.
+:::
+
+::: demonstration
+Soit $N$ un point de $d$, distinct de $H$. Les points $H$ et $N$ sont sur $d$ et $(MH) \perp d$, donc le triangle $MHN$ est rectangle en $H$.
+
+D’après le théorème de Pythagore :
+$$MN^2 = MH^2 + HN^2$$
+
+Comme $N \neq H$, on a $HN^2 \gt 0$, donc $MN^2 \gt MH^2$. Les longueurs étant positives, on en déduit $MN \gt MH$.
+
+Si $N = H$, alors $MN = MH$. Dans tous les cas, $MN \geq MH$ : $H$ est le point de $d$ le plus proche de $M$.
+:::
+
+::: definition Distance d’un point à une droite
+La **distance du point $M$ à la droite $d$** est la longueur $MH$, où $H$ est le projeté orthogonal de $M$ sur $d$.
+:::
+
+::: remarque
+Dans un triangle $ABC$, la hauteur issue de $C$ est le segment $[CH]$, où $H$ est le projeté orthogonal de $C$ sur $(AB)$. Sa longueur $CH$ est la distance de $C$ à la droite $(AB)$.
+:::
+
+::: methode Calculer une distance avec deux calculs d’aire
+On calcule l’aire du triangle de deux façons, avec deux bases différentes, puis on isole la hauteur cherchée.
+:::
+
+::: exemple
+Le triangle $ABC$ est rectangle en $A$ avec $AB = 6$, $AC = 8$ et $BC = 10$. On cherche la distance $AH$ de $A$ à la droite $(BC)$.
+
+Avec la base $[AB]$ :
+$$\mathcal{A} = \frac{AB \times AC}{2} = \frac{6 \times 8}{2} = 24$$
+
+Avec la base $[BC]$ :
+$$\mathcal{A} = \frac{BC \times AH}{2} = \frac{10 \times AH}{2} = 5\,AH$$
+
+Donc $5\,AH = 24$ et $AH = 4{,}8$.
+:::
+
+## II. Le triangle rectangle
+
+### 1. Théorème de Pythagore et réciproque
+
+::: theoreme Théorème de Pythagore
+Si le triangle $ABC$ est rectangle en $B$, alors $AC^2 = AB^2 + BC^2$.
+
+**Réciproque :** si $AC^2 = AB^2 + BC^2$, alors le triangle $ABC$ est rectangle en $B$.
+:::
+
+::: attention
+Pour utiliser la réciproque, on compare le carré du **plus grand côté** à la somme des carrés des deux autres. Si l’égalité est fausse, le triangle n’est pas rectangle.
+:::
+
+### 2. Cosinus, sinus et tangente d’un angle aigu
+
+::: definition
+Dans un triangle rectangle, pour un angle aigu $\alpha$ :
+
+$$\cos\alpha = \frac{\text{côté adjacent}}{\text{hypoténuse}}$$
+
+$$\sin\alpha = \frac{\text{côté opposé}}{\text{hypoténuse}}$$
+
+$$\tan\alpha = \frac{\text{côté opposé}}{\text{côté adjacent}}$$
+:::
+
+[IMAGE_2]
+
+::: exemple
+Sur la figure, le triangle $ABC$ est rectangle en $B$ : $\cos\alpha = \dfrac{AB}{AC}$, $\sin\alpha = \dfrac{BC}{AC}$ et $\tan\alpha = \dfrac{BC}{AB}$.
+:::
+
+::: propriete Relations entre cosinus et sinus
+Pour tout angle aigu $\alpha$ :
+$$\cos^2\alpha + \sin^2\alpha = 1 \qquad \tan\alpha = \frac{\sin\alpha}{\cos\alpha}$$
+
+De plus $0 \lt \cos\alpha \lt 1$ et $0 \lt \sin\alpha \lt 1$.
+:::
+
+::: demonstration
+Avec les notations de la figure, le triangle $ABC$ est rectangle en $B$ :
+$$
+\begin{aligned}
+\cos^2\alpha + \sin^2\alpha &= \frac{AB^2}{AC^2} + \frac{BC^2}{AC^2} \\
+&= \frac{AB^2 + BC^2}{AC^2} \\
+&= \frac{AC^2}{AC^2} = 1
+\end{aligned}
+$$
+car $AB^2 + BC^2 = AC^2$ d’après le théorème de Pythagore.
+
+De même, $\dfrac{\sin\alpha}{\cos\alpha} = \dfrac{BC}{AC} \times \dfrac{AC}{AB} = \dfrac{BC}{AB} = \tan\alpha$.
+:::
+
+::: propriete Valeurs remarquables
+| Angle $\alpha$ | $30°$ | $45°$ | $60°$ |
+|---|---|---|---|
+| $\cos\alpha$ | $\frac{\sqrt{3}}{2}$ | $\frac{\sqrt{2}}{2}$ | $\frac{1}{2}$ |
+| $\sin\alpha$ | $\frac{1}{2}$ | $\frac{\sqrt{2}}{2}$ | $\frac{\sqrt{3}}{2}$ |
+| $\tan\alpha$ | $\frac{\sqrt{3}}{3}$ | $1$ | $\sqrt{3}$ |
+:::
+
+::: methode Calculer une longueur ou un angle
+1. Repérer le triangle **rectangle** et l’angle utilisé.
+2. Nommer l’hypoténuse, le côté opposé et le côté adjacent **à cet angle**.
+3. Choisir la formule qui relie ce que l’on connaît à ce que l’on cherche.
+4. Pour un angle, utiliser les touches $\cos^{-1}$, $\sin^{-1}$ ou $\tan^{-1}$ de la calculatrice (mode degrés).
+:::
+
+::: exemple Une hauteur inaccessible
+D’un point $O$ situé à $20$ m du pied $H$ d’un arbre, on voit son sommet $S$ sous un angle de $35°$. Le triangle $OHS$ est rectangle en $H$. Pour l’angle en $O$, $[HS]$ est le côté opposé et $[OH]$ le côté adjacent :
+$$\tan 35° = \frac{HS}{20} \quad\text{donc}\quad HS = 20 \tan 35° \approx 14 \text{ m}$$
+:::
+
+[IMAGE_3]
+
+::: exemple Calculer un angle
+Dans un triangle rectangle, le côté opposé à l’angle $\alpha$ mesure $3$ cm et le côté adjacent $4$ cm. Alors $\tan\alpha = \dfrac{3}{4} = 0{,}75$ et la calculatrice donne $\alpha \approx 36{,}9°$.
+:::
+
+::: attention
+- La trigonométrie ne s’utilise que dans un triangle **rectangle**.
+- Le côté adjacent et le côté opposé dépendent de l’angle choisi : les nommer à chaque fois.
+- La calculatrice doit être en mode **degrés**.
+:::
+
+## III. Configurations utiles
+
+::: rappel Triangles et cercles
+- Si un triangle $ABC$ est rectangle en $C$, alors $C$ est sur le cercle de diamètre $[AB]$ : le centre du cercle circonscrit est le milieu de l’hypoténuse.
+- Réciproquement, si $C$ est un point du cercle de diamètre $[AB]$, distinct de $A$ et de $B$, alors le triangle $ABC$ est rectangle en $C$.
+- Dans un cercle de centre $O$, la droite qui joint $O$ au milieu d’une corde $[AB]$ est perpendiculaire à cette corde : c’est la médiatrice de $[AB]$.
+:::
+
+::: rappel Quadrilatères
+| Quadrilatère | Caractérisation |
+|---|---|
+| Parallélogramme | diagonales de même milieu |
+| Rectangle | parallélogramme avec un angle droit, ou diagonales de même longueur |
+| Losange | parallélogramme avec deux côtés consécutifs égaux |
+| Carré | rectangle et losange à la fois |
+:::
+
+::: rappel Théorème de Thalès
+Si $D$ est sur $[AB]$, $E$ sur $[AC]$ et $(DE) \parallel (BC)$, alors
+$$\frac{AD}{AB} = \frac{AE}{AC} = \frac{DE}{BC}$$
+:::
+
+::: rappel Dans un repère orthonormé
+Pour $A(x_A\,;y_A)$ et $B(x_B\,;y_B)$ :
+$$AB = \sqrt{(x_B - x_A)^2 + (y_B - y_A)^2}$$
+
+et le milieu de $[AB]$ a pour coordonnées
+$$\left(\frac{x_A + x_B}{2}\,;\frac{y_A + y_B}{2}\right)$$
+:::
+
+::: exemple Prouver qu’un triangle est rectangle avec des coordonnées
+Dans un repère orthonormé, $A(0\,;0)$, $B(4\,;2)$ et $C(1\,;3)$. On calcule les carrés des longueurs :
+$$
+\begin{aligned}
+AB^2 &= 4^2 + 2^2 = 20 \\
+AC^2 &= 1^2 + 3^2 = 10 \\
+BC^2 &= (-3)^2 + 1^2 = 10
+\end{aligned}
+$$
+
+Le plus grand côté est $[AB]$ et $AC^2 + BC^2 = 20 = AB^2$ : le triangle $ABC$ est rectangle en $C$ (et isocèle en $C$). Son aire vaut $\dfrac{AC \times BC}{2} = \dfrac{\sqrt{10} \times \sqrt{10}}{2} = 5$.
+:::
+
+## IV. Aires et volumes
+
+::: propriete Aires usuelles
+| Figure | Aire |
+|---|---|
+| Triangle | $\dfrac{\text{base} \times \text{hauteur}}{2}$ |
+| Parallélogramme | $\text{base} \times \text{hauteur}$ |
+| Trapèze | $\dfrac{(B + b) \times h}{2}$ |
+| Disque de rayon $r$ | $\pi r^2$ |
+:::
+
+::: propriete Volumes usuels
+| Solide | Volume |
+|---|---|
+| Pavé droit | $L \times \ell \times h$ |
+| Prisme droit, cylindre | $\mathcal{B} \times h$ |
+| Pyramide, cône | $\dfrac{1}{3} \times \mathcal{B} \times h$ |
+| Boule de rayon $r$ | $\dfrac{4}{3}\pi r^3$ |
+
+$\mathcal{B}$ désigne l’aire de la base et $h$ la hauteur du solide.
+:::
+
+[IMAGE_4]
+
+::: exemple
+Un cône a pour base un disque de rayon $3$ cm et pour hauteur $4$ cm :
+$$V = \frac{1}{3} \times \pi \times 3^2 \times 4 = 12\pi \approx 37{,}7 \text{ cm}^3$$
+:::
+
+::: remarque Unités
+Une aire s’exprime en unités carrées (cm², m²), un volume en unités cubes (cm³, m³). On retient : $1$ L $= 1$ dm³ $= 1\,000$ cm³, et $1$ mL $= 1$ cm³.
+:::
+
+::: attention
+Ne pas oublier le facteur $\dfrac{1}{3}$ pour une pyramide ou un cône : un cône a le tiers du volume du cylindre de même base et de même hauteur.
+:::
+
+## V. Problèmes d’optimisation
+
+::: methode Optimiser une grandeur
+1. Choisir la variable $x$ (souvent une longueur) et préciser les valeurs possibles de $x$.
+2. Exprimer la grandeur à optimiser (aire, longueur…) en fonction de $x$.
+3. Écrire cette expression sous une forme qui montre le maximum ou le minimum, par exemple $a - k(x - b)^2$ avec $k \gt 0$.
+4. Conclure dans le contexte : valeur de $x$, dimensions, valeur optimale.
+:::
+
+::: exemple Le plus grand enclos
+Avec $40$ m de grillage, on veut clôturer un enclos rectangulaire le long d’un mur (le mur forme un côté). On note $x$ la largeur, en mètres, avec $0 \lt x \lt 20$ : la longueur vaut $40 - 2x$.
+
+[IMAGE_5]
+
+L’aire vaut $\mathcal{A}(x) = x(40 - 2x) = 40x - 2x^2$. On vérifie en développant que
+$$\mathcal{A}(x) = 200 - 2(x - 10)^2$$
+
+Comme $(x - 10)^2 \geq 0$, on a $\mathcal{A}(x) \leq 200$, avec égalité pour $x = 10$. L’aire maximale est $200$ m², pour un enclos de $10$ m sur $20$ m.
+:::
+
+::: attention
+L’étude se fait sur les valeurs **possibles** de $x$ : une longueur est positive, et un point placé sur un segment ne peut pas en sortir.
+:::
+
+## VI. Démarche de résolution
+
+::: methode Résoudre un problème de géométrie
+1. Faire une figure soignée et la coder (angles droits, longueurs égales, données).
+2. Repérer les configurations : triangle rectangle, projeté orthogonal, parallélogramme, cercle, droites parallèles.
+3. Choisir l’outil : Pythagore, trigonométrie, Thalès, aires, coordonnées ou vecteurs.
+4. Rédiger en citant à chaque étape la propriété utilisée, puis vérifier la vraisemblance du résultat sur la figure.
+:::
+
+::: retenir
+- Le projeté orthogonal $H$ de $M$ sur $d$ est le point de $d$ le plus proche de $M$ ; $MH$ est la distance de $M$ à $d$.
+- Triangle rectangle en $B$ : $AC^2 = AB^2 + BC^2$.
+- $\cos = \frac{\text{adj}}{\text{hyp}}$, $\sin = \frac{\text{opp}}{\text{hyp}}$, $\tan = \frac{\text{opp}}{\text{adj}}$ et $\cos^2\alpha + \sin^2\alpha = 1$.
+- Volumes : $\mathcal{B}h$ pour un prisme ou un cylindre, $\frac{1}{3}\mathcal{B}h$ pour une pyramide ou un cône, $\frac{4}{3}\pi r^3$ pour une boule.
+- Optimisation : variable, valeurs possibles, expression, forme qui montre l’extremum, conclusion.
+:::

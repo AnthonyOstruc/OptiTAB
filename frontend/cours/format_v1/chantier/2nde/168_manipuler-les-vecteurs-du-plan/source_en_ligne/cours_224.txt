@@ -1,0 +1,206 @@
+Titre: Manipuler les vecteurs du plan
+
+<!-- optitab:1 -->
+::: objectifs
+- Associer un vecteur à une translation ; reconnaître des vecteurs égaux ou opposés.
+- Additionner des vecteurs (relation de Chasles, règle du parallélogramme) et multiplier un vecteur par un réel.
+- Calculer avec des coordonnées : vecteur, somme, produit, norme, distance, milieu.
+- Utiliser le déterminant pour prouver une colinéarité, un parallélisme ou un alignement.
+:::
+
+## I. Vecteurs et translations
+
+::: definition Vecteur associé à une translation
+La translation qui transforme $A$ en $B$ est associée au **vecteur** $\overrightarrow{AB}$. Lorsque $A \neq B$, ce vecteur est caractérisé par :
+
+- sa **direction** : celle de la droite $(AB)$ ;
+- son **sens** : de $A$ vers $B$ ;
+- sa **norme** (sa longueur) : la distance $AB$, notée $\|\overrightarrow{AB}\|$.
+:::
+
+::: definition Vecteurs égaux
+Deux vecteurs sont **égaux** lorsqu’ils ont même direction, même sens et même norme. Un même vecteur peut donc être représenté à partir de n’importe quel point : on le note alors simplement $\vec{u}$.
+:::
+
+::: propriete Égalité de vecteurs et parallélogramme
+$\overrightarrow{AB} = \overrightarrow{CD}$ si et seulement si $ABDC$ est un parallélogramme.
+
+Le parallélogramme peut être aplati (points $A$, $B$, $C$, $D$ alignés). De façon équivalente : $\overrightarrow{AB} = \overrightarrow{CD}$ si et seulement si $[AD]$ et $[BC]$ ont le même milieu.
+:::
+
+[IMAGE_1]
+
+::: attention
+L’ordre des lettres compte : $\overrightarrow{AB} = \overrightarrow{CD}$ donne le parallélogramme $ABDC$ (et non $ABCD$). On suit le contour $A \to B \to D \to C$.
+:::
+
+::: definition Vecteur nul, vecteur opposé
+- Le **vecteur nul** est $\vec{0} = \overrightarrow{AA} = \overrightarrow{BB} = \dots$ : sa norme vaut $0$.
+- L’**opposé** de $\overrightarrow{AB}$ est $\overrightarrow{BA}$, noté $-\overrightarrow{AB}$ : même direction, même norme, sens contraire.
+:::
+
+## II. Somme de vecteurs
+
+::: definition Somme de deux vecteurs
+La somme $\vec{u} + \vec{v}$ est le vecteur associé à la translation obtenue en enchaînant la translation de vecteur $\vec{u}$ puis celle de vecteur $\vec{v}$.
+:::
+
+::: propriete Relation de Chasles
+Pour tous points $A$, $B$ et $C$ :
+
+$$\overrightarrow{AB} + \overrightarrow{BC} = \overrightarrow{AC}$$
+:::
+
+[IMAGE_2]
+
+::: methode Construire la somme $\vec{u} + \vec{v}$
+- **Bout à bout** : on trace $\vec{u}$, puis $\vec{v}$ à partir de l’extrémité de $\vec{u}$ ; la somme va de l’origine de $\vec{u}$ à l’extrémité de $\vec{v}$.
+- **Règle du parallélogramme** : si $\vec{u} = \overrightarrow{OA}$ et $\vec{v} = \overrightarrow{OB}$, alors $\vec{u} + \vec{v} = \overrightarrow{OM}$, où $OAMB$ est un parallélogramme (diagonale issue de $O$).
+:::
+
+::: definition Différence
+$\vec{u} - \vec{v} = \vec{u} + (-\vec{v})$. En particulier, $\overrightarrow{AB} - \overrightarrow{AC} = \overrightarrow{AB} + \overrightarrow{CA} = \overrightarrow{CB}$.
+:::
+
+::: exemple Simplifier avec Chasles
+$$
+\begin{aligned}
+\overrightarrow{AB} - \overrightarrow{DB} + \overrightarrow{DA} &= \overrightarrow{AB} + \overrightarrow{BD} + \overrightarrow{DA} \\
+&= \overrightarrow{AD} + \overrightarrow{DA} \\
+&= \overrightarrow{AA} = \vec{0}
+\end{aligned}
+$$
+:::
+
+::: propriete Milieu d’un segment
+$I$ est le milieu de $[AB]$ si et seulement si $\overrightarrow{AI} = \overrightarrow{IB}$, ou encore $\overrightarrow{AB} = 2\overrightarrow{AI}$.
+:::
+
+## III. Produit par un réel et colinéarité
+
+::: definition Produit d’un vecteur par un réel
+Soit $\vec{u} \neq \vec{0}$ et $k$ un réel non nul. Le vecteur $k\vec{u}$ a :
+
+- la même direction que $\vec{u}$ ;
+- le même sens que $\vec{u}$ si $k \gt 0$, le sens contraire si $k \lt 0$ ;
+- pour norme $|k| \times \|\vec{u}\|$.
+
+Par convention, $0\vec{u} = \vec{0}$ et $k\vec{0} = \vec{0}$.
+:::
+
+[IMAGE_3]
+
+::: propriete Règles de calcul
+Pour tous vecteurs $\vec{u}$, $\vec{v}$ et tous réels $k$, $k'$ :
+
+- $k(\vec{u} + \vec{v}) = k\vec{u} + k\vec{v}$ ;
+- $(k + k')\vec{u} = k\vec{u} + k'\vec{u}$ ;
+- $k(k'\vec{u}) = (kk')\vec{u}$.
+:::
+
+::: definition Vecteurs colinéaires
+Deux vecteurs $\vec{u}$ et $\vec{v}$ sont **colinéaires** s’il existe un réel $k$ tel que $\vec{v} = k\vec{u}$ ou $\vec{u} = k\vec{v}$. Deux vecteurs non nuls colinéaires ont la même direction. Le vecteur nul est colinéaire à tout vecteur.
+:::
+
+::: propriete Parallélisme et alignement
+- Les droites $(AB)$ et $(CD)$ sont **parallèles** si et seulement si $\overrightarrow{AB}$ et $\overrightarrow{CD}$ sont colinéaires.
+- Les points $A$, $B$ et $C$ sont **alignés** si et seulement si $\overrightarrow{AB}$ et $\overrightarrow{AC}$ sont colinéaires.
+:::
+
+::: exemple
+Si $\overrightarrow{AM} = \frac{2}{5}\overrightarrow{AB}$, alors $A$, $M$, $B$ sont alignés et $M$ est sur le segment $[AB]$, aux deux cinquièmes de la longueur en partant de $A$ (car $0 \lt \frac{2}{5} \lt 1$).
+:::
+
+## IV. Coordonnées dans une base orthonormée
+
+::: definition Base et repère orthonormés
+Deux vecteurs $\vec{i}$ et $\vec{j}$ de norme $1$ et de directions perpendiculaires forment une **base orthonormée** $(\vec{i}, \vec{j})$ ; avec une origine $O$, on obtient le **repère orthonormé** $(O\,;\vec{i}, \vec{j})$.
+
+Tout vecteur $\vec{u}$ s’écrit de façon unique $\vec{u} = x\vec{i} + y\vec{j}$ : le couple $(x\,;y)$ est formé des **coordonnées** de $\vec{u}$, notées $\vec{u}\begin{pmatrix} x \\ y \end{pmatrix}$ ou $\vec{u}\,(x\,;y)$.
+:::
+
+[IMAGE_4]
+
+::: propriete Calculs avec les coordonnées
+Pour $A(x_A\,;y_A)$, $B(x_B\,;y_B)$, $\vec{u}\,(x\,;y)$, $\vec{v}\,(x'\,;y')$ et un réel $k$ :
+
+- $\overrightarrow{AB}\,(x_B - x_A\,;\,y_B - y_A)$ ;
+- $\vec{u} = \vec{v} \iff x = x'$ et $y = y'$ ;
+- $\vec{u} + \vec{v}\,(x + x'\,;\,y + y')$ et $k\vec{u}\,(kx\,;\,ky)$.
+:::
+
+::: propriete Norme, distance et milieu (repère orthonormé)
+$$\|\vec{u}\| = \sqrt{x^2 + y^2}$$
+
+$$AB = \sqrt{(x_B - x_A)^2 + (y_B - y_A)^2}$$
+
+Le milieu $I$ de $[AB]$ a pour coordonnées $\left(\dfrac{x_A + x_B}{2}\,;\,\dfrac{y_A + y_B}{2}\right)$.
+:::
+
+[IMAGE_5]
+
+::: exemple
+Avec $A(1\,;1)$ et $B(5\,;4)$ : $\overrightarrow{AB}\,(5 - 1\,;\,4 - 1)$, soit $\overrightarrow{AB}\,(4\,;3)$, puis $AB = \sqrt{4^2 + 3^2} = \sqrt{25} = 5$. Le milieu de $[AB]$ est $I(3\,;2{,}5)$.
+:::
+
+::: methode Lire ou représenter un vecteur sur un quadrillage
+Pour lire les coordonnées d’un vecteur, on compte le déplacement horizontal (abscisse : vers la droite $+$, vers la gauche $-$), puis le déplacement vertical (ordonnée : vers le haut $+$, vers le bas $-$). Pour représenter $\vec{u}\,(x\,;y)$ à partir d’un point $A$, on fait le chemin inverse : on part de $A$, on avance de $x$ puis de $y$.
+:::
+
+::: attention
+- On calcule toujours « arrivée moins départ » : pour $\overrightarrow{AB}$, c’est $x_B - x_A$ et non $x_A - x_B$.
+- Les formules de la norme et de la distance ne sont valables que dans un repère **orthonormé**.
+- En général, $\|\vec{u} + \vec{v}\| \neq \|\vec{u}\| + \|\vec{v}\|$ : on n’additionne pas les longueurs.
+:::
+
+## V. Déterminant et colinéarité
+
+::: definition Déterminant de deux vecteurs
+Dans une base orthonormée, le **déterminant** de $\vec{u}\,(x\,;y)$ et $\vec{v}\,(x'\,;y')$ est le nombre
+
+$$\det(\vec{u}, \vec{v}) = \begin{vmatrix} x & x' \\ y & y' \end{vmatrix} = xy' - x'y$$
+:::
+
+::: theoreme Critère de colinéarité
+$\vec{u}$ et $\vec{v}$ sont colinéaires si et seulement si $\det(\vec{u}, \vec{v}) = 0$.
+:::
+
+::: demonstration
+**Sens direct.** Si $\vec{u} = \vec{0}$, alors $x = y = 0$ et $\det(\vec{u}, \vec{v}) = 0$. Sinon, $\vec{v} = k\vec{u}$, donc $x' = kx$ et $y' = ky$ ; alors $xy' - x'y = x(ky) - (kx)y = 0$ (même calcul si $\vec{u} = k\vec{v}$).
+
+**Réciproque.** Supposons $xy' - x'y = 0$. Si $\vec{u} = \vec{0}$, les vecteurs sont colinéaires. Sinon, $x \neq 0$ ou $y \neq 0$.
+
+- Si $x \neq 0$, on pose $k = \dfrac{x'}{x}$ : alors $x' = kx$ et $y' = \dfrac{x'y}{x} = ky$, donc $\vec{v} = k\vec{u}$.
+- Si $x = 0$, alors $y \neq 0$ et $x'y = 0$ donne $x' = 0$ ; avec $k = \dfrac{y'}{y}$, on obtient $\vec{v} = k\vec{u}$.
+
+Dans tous les cas, $\vec{u}$ et $\vec{v}$ sont colinéaires.
+:::
+
+::: methode Prouver un alignement ou un parallélisme
+- **Alignement** de $A$, $B$, $C$ : on calcule $\overrightarrow{AB}$ et $\overrightarrow{AC}$, puis $\det(\overrightarrow{AB}, \overrightarrow{AC})$ ; s’il est nul, les points sont alignés.
+- **Parallélisme** de $(AB)$ et $(CD)$ : on calcule $\det(\overrightarrow{AB}, \overrightarrow{CD})$ ; s’il est nul, les droites sont parallèles.
+:::
+
+::: exemple
+$A(1\,;1)$, $B(3\,;2)$ et $C(7\,;4)$. On a $\overrightarrow{AB}\,(2\,;1)$ et $\overrightarrow{AC}\,(6\,;3)$, d’où
+
+$$\det(\overrightarrow{AB}, \overrightarrow{AC}) = 2 \times 3 - 6 \times 1 = 0$$
+
+Les points $A$, $B$ et $C$ sont alignés ; d’ailleurs $\overrightarrow{AC} = 3\overrightarrow{AB}$.
+:::
+
+[IMAGE_6]
+
+::: remarque Droites parallèles ou confondues ?
+Si $\det(\overrightarrow{AB}, \overrightarrow{CD}) = 0$, les droites $(AB)$ et $(CD)$ sont parallèles, éventuellement confondues. Pour savoir si elles sont distinctes, on teste si $C$ appartient à $(AB)$ avec $\det(\overrightarrow{AB}, \overrightarrow{AC})$.
+:::
+
+::: retenir
+- $\overrightarrow{AB} = \overrightarrow{CD} \iff ABDC$ est un parallélogramme.
+- Chasles : $\overrightarrow{AB} + \overrightarrow{BC} = \overrightarrow{AC}$.
+- $\overrightarrow{AB}\,(x_B - x_A\,;\,y_B - y_A)$ et $AB = \sqrt{(x_B - x_A)^2 + (y_B - y_A)^2}$.
+- Milieu : moyenne des coordonnées.
+- $\det(\vec{u}, \vec{v}) = xy' - x'y = 0 \iff \vec{u}$ et $\vec{v}$ colinéaires : on prouve ainsi un parallélisme ou un alignement.
+
+Fiche de synthèse dans l’onglet Fiches !
+:::

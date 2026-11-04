@@ -7,8 +7,8 @@
       :class="{ passed: rule.passed }"
     >
       <span class="icon">
-        <svg v-if="rule.passed" width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M4 8.5l3 3 5-5" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <svg v-else width="16" height="16" fill="none" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" stroke="#d1d5db" stroke-width="2"/></svg>
+        <svg v-if="rule.passed" width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M4 8.5l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg v-else width="16" height="16" fill="none" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="2"/></svg>
       </span>
       <span class="label">{{ rule.label }}</span>
     </div>
@@ -59,54 +59,41 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped>
+/* Critères du mot de passe : pastilles discrètes, vertes une fois remplies. */
 .password-strength {
   display: flex;
-  gap: 12px;
-  margin-top: 6px;
   flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 2px;
 }
 .strength-box {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
-  background: #f3f4f6;
-  border-radius: 6px;
-  padding: 4px 10px 4px 6px;
-  font-size: 13px;
-  color: #6b7280;
+  gap: 5px;
+  padding: 4px 10px 4px 7px;
+  border-radius: 999px;
+  background: var(--om-bg-soft, #f6f8fc);
+  color: var(--om-muted, #5d667d);
+  font-family: var(--om-font, 'Montserrat', sans-serif);
+  font-size: 12.5px;
+  font-weight: 600;
   transition: background 0.2s, color 0.2s;
-  border: 1.5px solid #e5e7eb;
-  min-width: 90px;
-  font-weight: 500;
 }
 .strength-box .icon {
   display: flex;
   align-items: center;
+  color: var(--om-line-strong, #cfd6e4);
 }
 .strength-box.passed {
-  background: #e6f9f1;
-  color: #3b8544;
-  border-color: #3b8544;
+  background: var(--om-green-50, #ecf7ec);
+  color: var(--om-green-700, #2f7a3a);
 }
-.strength-box.passed .icon svg {
-  stroke: #3b8544;
+.strength-box.passed .icon {
+  color: var(--om-green-700, #2f7a3a);
 }
-
-@media (max-width: 640px) {
-  .password-strength {
-    gap: 6px;
-  }
-
-  .strength-box {
-    font-size: 11px;
-    padding: 3px 8px 3px 5px;
-    min-width: 70px;
-  }
-
-  .strength-box .icon svg {
-    width: 14px;
-    height: 14px;
-  }
+.strength-box .icon svg {
+  width: 14px;
+  height: 14px;
 }
-</style> 
+</style>

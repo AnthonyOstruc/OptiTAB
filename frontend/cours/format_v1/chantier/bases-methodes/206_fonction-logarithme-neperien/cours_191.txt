@@ -1,0 +1,448 @@
+Titre: La Fonction Logarithme Népérien
+
+<!-- optitab:1 -->
+::: remarque Sections principales
+Les sections I à VI couvrent les concepts fondamentaux de la fonction logarithme népérien. Les parties marquées **« Bonus »** sont des approfondissements utiles qui enrichissent votre compréhension.
+:::
+
+## I. Définition du logarithme népérien
+
+### Définition comme fonction réciproque
+
+::: definition Fonction logarithme népérien
+La fonction **logarithme népérien**, notée $\ln$, est la fonction réciproque de la fonction exponentielle.
+
+Pour tout $x > 0$, $\ln(x)$ est l'unique réel tel que :
+
+::: formule
+$$e^{\ln(x)} = x$$
+:::
+
+Pour tout $\displaystyle x \in \mathbb{R}$, on a aussi :
+
+::: formule
+$$\ln(e^x) = x$$
+:::
+:::
+
+::: remarque Interprétation
+Le logarithme népérien « annule » l'exponentielle et vice versa. Si $y = e^x$, alors $x = \ln(y)$.
+
+Les courbes représentatives de $\exp$ et $\ln$ sont symétriques par rapport à la droite d'équation $y = x$.
+:::
+
+### Domaine de définition et ensemble image
+
+::: propriete Domaine et image
+- **Domaine de définition :** $D_{\ln} = ]0, +\infty[$ (strictement positif)
+- **Ensemble image :** $\ln(]0, +\infty[) = \mathbb{R}$ (tout réel atteint)
+:::
+
+::: attention Important
+Le logarithme népérien n'est défini que pour les nombres strictement positifs. Pour $x \leq 0$, $\ln(x)$ n'existe pas dans les réels.
+:::
+
+## II. Propriétés algébriques du logarithme
+
+### Règles de calcul fondamentales
+
+::: theoreme Propriétés algébriques du logarithme
+Pour tous réels $x, y > 0$ et tout rationnel $q$ :
+
+- **Produit :** $\displaystyle \ln(xy) = \ln(x) + \ln(y)$
+- **Quotient :** $\displaystyle \ln\left(\frac{x}{y}\right) = \ln(x) - \ln(y)$
+- **Puissance :** $\displaystyle \ln(x^q) = q \ln(x)$
+- **Valeurs particulières :** $\ln(1) = 0$ et $\ln(e) = 1$
+- **Relation avec l'exponentielle :** $\ln(e^x) = x$ et $e^{\ln(x)} = x$
+:::
+
+::: remarque Règle mnémotechnique
+Les logarithmes **s'additionnent** pour un produit, se **soustraient** pour un quotient, et se **multiplient** par l'exposant pour une puissance.
+:::
+
+::: exemple
+- $\displaystyle \ln(12) = \ln(3 \times 4) = \ln(3) + \ln(4) = \ln(3) + 2\ln(2)$
+- $\displaystyle \ln\left(\frac{16}{9}\right) = \ln(16) - \ln(9) = 4\ln(2) - 2\ln(3)$
+- $\displaystyle \ln(\sqrt{x^3}) = \ln(x^{3/2}) = \frac{3}{2} \ln(x)$
+- $\displaystyle \ln(e^{3x-1}) + \ln(e^{x+2}) = (3x-1) + (x+2) = 4x + 1$
+:::
+
+## III. Dérivée et variations
+
+### Dérivée du logarithme népérien
+
+::: theoreme Dérivée du logarithme népérien
+La fonction logarithme népérien est dérivable sur $]0, +\infty[$ et pour tout $x > 0$ :
+
+::: formule
+$$(\ln(x))' = \frac{1}{x}$$
+:::
+:::
+
+::: demonstration
+On admet que la fonction logarithme népérien est dérivable sur $]0, +\infty[$.
+
+Par définition, pour tout $x > 0$ : $e^{\ln(x)} = x$.
+
+En dérivant les deux membres par rapport à $x$ :
+
+$$e^{\ln(x)} \times (\ln(x))' = 1$$
+
+Comme $\displaystyle e^{\ln(x)} = x$, on obtient :
+
+$$x \times (\ln(x))' = 1$$
+
+Donc : $\displaystyle (\ln(x))' = \frac{1}{x}$
+:::
+
+::: propriete Dérivée d'une composée avec le logarithme
+Si $u$ est une fonction dérivable et strictement positive sur un intervalle $I$, alors :
+
+::: formule
+$$(\ln(u))' = \frac{u'}{u}$$
+:::
+:::
+
+::: attention
+Pour dériver $\ln(u(x))$, on obtient $\frac{u'}{u}$, et non simplement $\frac{1}{u}$ ! Il ne faut pas oublier le numérateur $u'$.
+:::
+
+::: exemple
+- $\displaystyle (\ln(2x + 1))' = \frac{2}{2x + 1}$
+- $\displaystyle (\ln(x^2 - 1))' = \frac{2x}{x^2 - 1}$
+- $\displaystyle (x^2 \ln(x))' = 2x \ln(x) + x = x(2\ln(x) + 1)$ (produit)
+- $\displaystyle \left(\frac{\ln(x)}{x^2}\right)' = \frac{1 - 2\ln(x)}{x^3}$ (quotient)
+:::
+
+### Sens de variation
+
+::: propriete Variation du logarithme népérien
+La fonction logarithme népérien est **strictement croissante** sur $]0, +\infty[$.
+
+En effet, pour tout $x > 0$ : $\ln'(x) = \frac{1}{x} > 0$.
+:::
+
+::: tableau
+x : 0^+, +\infty
+\frac{1}{x} : , +,
+\ln(x) : -/-\infty, +/+\infty
+:::
+
+## IV. Limites et courbe représentative
+
+### Limites du logarithme népérien
+
+::: theoreme Limites du logarithme népérien
+- $\displaystyle \lim_{x \to 0^+} \ln(x) = -\infty$
+- $\displaystyle \lim_{x \to +\infty} \ln(x) = +\infty$
+- $\ln(1) = 0$ et $\ln(e) = 1$
+:::
+
+::: remarque Interprétation graphique
+- En $0^+$, $\ln(x)$ tend vers $-\infty$ : **asymptote verticale** d'équation $x = 0$
+- En $+\infty$, $\ln(x)$ tend vers $+\infty$ mais **très lentement**
+- Le point $(1, 0)$ est l'**intercept à l'origine**
+:::
+
+[IMAGE_1]
+
+### Lien entre les courbes représentatives de $\displaystyle \exp$ et $\displaystyle \ln$
+
+::: propriete Symétrie des courbes
+Les courbes représentatives des fonctions $\exp$ et $\ln$ sont **symétriques** par rapport à la droite d'équation $y = x$.
+
+Cela découle du fait que $\ln$ est la fonction réciproque de $\exp$.
+:::
+
+::: exemple
+- Le point $(0, 1)$ sur la courbe de $\exp$ correspond au point $(1, 0)$ sur la courbe de $\ln$
+- Le point $(1, e)$ sur la courbe de $\exp$ correspond au point $(e, 1)$ sur la courbe de $\ln$
+- L'asymptote horizontale $y = 0$ pour $\exp$ en $-\infty$ correspond à l'asymptote verticale $x = 0$ pour $\ln$
+:::
+
+## V. Croissance comparée
+
+### Croissance comparée du logarithme et des puissances
+
+::: theoreme Croissance comparée en $\displaystyle +\infty$
+Pour tout entier naturel $\displaystyle n \geq 1$ :
+
+::: formule
+$$\lim_{x \to +\infty} \frac{\ln(x)}{x^n} = 0$$
+:::
+
+::: formule
+$$\lim_{x \to +\infty} \frac{x^n}{\ln(x)} = +\infty$$
+:::
+
+Autrement dit : **le logarithme croît moins vite que toute puissance de $x$** en $+\infty$.
+:::
+
+::: theoreme Croissance comparée en $\displaystyle 0^+$
+Pour tout entier naturel $\displaystyle n \geq 1$ :
+
+::: formule
+$$\lim_{x \to 0^+} x^n \ln(x) = 0$$
+:::
+
+Autrement dit : **le logarithme est « écrasé » par les puissances** en $0^+$.
+:::
+
+::: demonstration Limite de $x \ln(x)$ en $0^+$
+On pose $t = \frac{1}{x}$, donc $x = \frac{1}{t}$ et quand $x \to 0^+$, on a $t \to +\infty$.
+
+$$
+\begin{aligned}
+x \ln(x) &= \frac{1}{t} \ln\left(\frac{1}{t}\right) \\
+&= \frac{1}{t} \times (-\ln(t)) \\
+&= -\frac{\ln(t)}{t}
+\end{aligned}
+$$
+
+D'après la croissance comparée en $+\infty$ : $\lim_{t \to +\infty} \frac{\ln(t)}{t} = 0$
+
+Donc : $\displaystyle \lim_{x \to 0^+} x \ln(x) = 0$
+:::
+
+::: exemple
+- $\lim_{x \to +\infty} \frac{\ln(x)}{x^2} = 0$ (le logarithme est « écrasé » par $x^2$)
+- $\lim_{x \to +\infty} \frac{x^3}{\ln(x)} = +\infty$ (les puissances l'emportent sur le logarithme)
+- $\lim_{x \to 0^+} x^2 \ln(x) = 0$ (le logarithme est « écrasé » par $x^2$)
+- $\lim_{x \to 0^+} \sqrt{x} \ln(x) = 0$ (même avec une puissance fractionnaire)
+:::
+
+## VI. Équations et inéquations logarithmiques
+
+### Méthodes de résolution d'équations
+
+::: methode 1 - Égalité de deux logarithmes
+$$
+\begin{aligned}
+\ln(a) = \ln(b) \quad &\Leftrightarrow \quad a = b \quad (a, b > 0)
+\end{aligned}
+$$
+
+Si deux logarithmes sont égaux, leurs arguments sont égaux.
+:::
+
+::: methode 2 - Logarithme égal à un nombre
+$$
+\begin{aligned}
+\ln(x) = k \quad &\Leftrightarrow \quad x = e^k \quad (k \in \mathbb{R})
+\end{aligned}
+$$
+
+Le résultat est toujours positif.
+:::
+
+::: exemple
+Résoudre $\displaystyle \ln(x+2) = \ln(3x-1)$
+
+**Résolution :**
+
+- $\displaystyle \ln(x+2) = \ln(3x-1) \quad \Leftrightarrow \quad x + 2 = 3x - 1$
+- $\displaystyle \Leftrightarrow \quad 3 = 2x$
+- $\displaystyle \Leftrightarrow \quad x = \frac{3}{2}$
+
+Vérification : $x = 1,5 > 0$, $1,5 + 2 = 3,5 > 0$ et $3 \times 1,5 - 1 = 3,5 > 0$
+
+::: resultat
+$$S = \left\{\frac{3}{2}\right\}$$
+:::
+:::
+
+::: exemple
+Résoudre $\displaystyle \ln(x) = 2$
+
+**Résolution :**
+
+$$\ln(x) = 2 \quad \Leftrightarrow \quad x = e^2$$
+
+::: resultat
+$S = \{e^2\}$ (environ $7,389$)
+:::
+:::
+
+### Méthodes de résolution d'inéquations
+
+::: propriete Conservation de l'ordre
+La fonction logarithme népérien est **strictement croissante** sur $]0, +\infty[$, donc elle **conserve l'ordre** :
+
+- $\displaystyle \ln(a) < \ln(b) \quad \Leftrightarrow \quad a < b \quad (a, b > 0)$
+- $\displaystyle \ln(a) \leq \ln(b) \quad \Leftrightarrow \quad a \leq b \quad (a, b > 0)$
+:::
+
+::: methode
+Pour résoudre une inéquation logarithmique, on compare les arguments en conservant le sens de l'inégalité.
+:::
+
+::: exemple
+Résoudre $\displaystyle \ln(x+1) < \ln(2x)$
+
+**Résolution :**
+
+- $\ln(x+1) < \ln(2x) \quad \Leftrightarrow \quad x + 1 < 2x$ (avec $x+1 > 0$ et $2x > 0$, soit $x > 0$)
+- $\displaystyle \Leftrightarrow \quad 1 < x$
+
+::: resultat
+$$S = ]1, +\infty[$$
+:::
+:::
+
+::: exemple
+Résoudre $\displaystyle \ln(x) \geq -1$
+
+**Résolution :**
+
+$\ln(x) \geq -1 \quad \Leftrightarrow \quad x \geq e^{-1} = \frac{1}{e}$ (avec $x > 0$)
+
+::: resultat
+$S = \left[\frac{1}{e}, +\infty\right[$ (soit environ $[0,368 ; +\infty[$)
+:::
+:::
+
+## VII. Applications et étude de fonction
+
+### Exemple complet : Étude de $\displaystyle f(x) = x \ln(x)$
+
+**Énoncé :** Étudier la fonction $f(x) = x \ln(x)$ sur $]0, +\infty[$
+
+::: etape Domaine de définition
+$f$ est définie sur $]0, +\infty[$ (nécessaire pour $\ln(x)$)
+:::
+
+::: etape Calcul de la dérivée
+$f$ est un produit $u \times v$ avec $u(x) = x$ et $v(x) = \ln(x)$
+
+Donc $u'(x) = 1$ et $v'(x) = \frac{1}{x}$
+
+$$
+\begin{aligned}
+f'(x) &= 1 \times \ln(x) + x \times \frac{1}{x} \\
+&= \ln(x) + 1
+\end{aligned}
+$$
+:::
+
+::: etape Signe de $\displaystyle f'(x)$
+$$f'(x) = \ln(x) + 1$$
+
+- $\displaystyle \ln(x) + 1 = 0 \Leftrightarrow \ln(x) = -1 \Leftrightarrow x = e^{-1} = \frac{1}{e}$
+- Pour $x > \frac{1}{e}$, $\ln(x) > -1$ donc $f'(x) > 0$
+- Pour $0 < x < \frac{1}{e}$, $\ln(x) < -1$ donc $f'(x) < 0$
+:::
+
+::: etape Limites
+En $0^+$ : forme indéterminée "$0 \times (-\infty)$"
+
+$\lim_{x \to 0^+} x \ln(x) = 0$ (limite de référence démontrée ci-dessus)
+
+En $+\infty$ : $\lim_{x \to +\infty} x \ln(x) = +\infty$ (car $x$ l'emporte sur $\ln(x)$)
+:::
+
+::: etape Tableau de variations
+::: tableau
+x : 0^+, \frac{1}{e}, +\infty
+f'(x) : , -, z, +,
+f(x) : +/0, -/-\frac{1}{e}, +/+\infty
+:::
+:::
+
+::: resultat
+- $f$ est **décroissante** sur $\left]0, \frac{1}{e}\right]$ de $0$ à $-\frac{1}{e}$
+- $f$ admet un **minimum** en $x = \frac{1}{e}$ : $f\left(\frac{1}{e}\right) = -\frac{1}{e} \approx -0,368$
+- $f$ est **croissante** sur $\left[\frac{1}{e}, +\infty\right[$ de $-\frac{1}{e}$ à $+\infty$
+- L'axe des ordonnées ($x = 0$) est **asymptote verticale**
+- L'axe des abscisses ($y = 0$) est **asymptote horizontale** en $0^+$
+:::
+
+[IMAGE_2]
+
+## VIII. Bonus - Algorithme de Briggs
+
+::: methode Approfondissement
+L'algorithme de Briggs est une méthode historique pour calculer des logarithmes. Cette section est un approfondissement culturel qui enrichit votre compréhension des méthodes numériques.
+:::
+
+### Principe de l'algorithme de Briggs
+
+::: methode
+L'algorithme de Briggs utilise la propriété : $\ln(x) = \ln\left(\frac{x}{e}\right) + 1$
+
+En itérant cette relation, on peut approcher le logarithme d'un nombre donné.
+:::
+
+```python
+def briggs_log(x, iterations=10):
+    if x <= 0:
+        return None
+    result = 0
+    for i in range(iterations):
+        while x > 2.718:  # e ≈ 2.718
+            x = x / 2.718
+            result += 1
+        while x < 1:
+            x = x * 2.718
+            result -= 1
+        if abs(x - 1) < 0.001:
+            break
+        x = sqrt(x)  # Approximation supplémentaire
+        result = result / 2
+    return result
+```
+
+::: exemple Note
+En évaluation, l'algorithme pourra être donné en pseudo-code ou en français ; ici il est illustré en Python.
+:::
+
+## IX. Bonus - Approfondissements possibles
+
+::: methode Approfondissement
+Les sections suivantes enrichissent votre culture mathématique et vous offrent une vision plus complète de l'analyse.
+:::
+
+### Bonus - Fonction puissance $\displaystyle x \mapsto x^{\alpha}$
+
+::: definition Fonction puissance
+Pour $\alpha \in \mathbb{R}$, la fonction $x \mapsto x^{\alpha}$ est définie sur $]0, +\infty[$ par :
+
+::: formule
+$$x^{\alpha} = e^{\alpha \ln(x)}$$
+:::
+
+Cette définition généralise les puissances entières et rationnelles.
+:::
+
+### Bonus - Limite de $\displaystyle \left(1 + \frac{x}{n}\right)^n$
+
+::: theoreme Limite remarquable
+Pour tout $\displaystyle x \in \mathbb{R}$ :
+
+::: formule
+$$\lim_{n \to +\infty} \left(1 + \frac{x}{n}\right)^n = e^x$$
+:::
+
+*Cette limite est fondamentale pour définir l'exponentielle et établir le lien avec le logarithme.*
+:::
+
+## X. Erreurs fréquentes et conseils
+
+::: attention
+- Confondre $\ln(a) + \ln(b)$ et $\ln(a + b)$ : on a $\ln(a) + \ln(b) = \ln(ab)$, pas $\ln(a + b)$ !
+- Oublier le numérateur dans $(\ln(u))' = \frac{u'}{u}$ : ce n'est pas $\frac{1}{u}$
+- Croire que $\ln(x)$ est défini pour $x \leq 0$ : le logarithme n'existe que pour $x > 0$
+- Inverser le sens des inégalités : le logarithme est croissant donc conserve l'ordre
+- Oublier que $\displaystyle \ln(1) = 0$ (et non 1)
+- Confondre $\ln(e^x)$ et $e^{\ln(x)}$ : les deux valent $x$ mais dans des contextes différents
+- Penser que $\ln(x^2) = 2\ln(x)$ sans vérifier le domaine : c'est vrai pour $x > 0$
+:::
+
+::: conseil
+- Toujours utiliser les **propriétés algébriques** pour simplifier avant de résoudre
+- Pour les équations : ramener à une égalité de la forme $\ln(a) = \ln(b)$ ou $\ln(x) = k$
+- Pour les inéquations : utiliser la croissance de la fonction logarithme
+- Vérifier que les arguments des logarithmes sont **strictement positifs**
+- S'entraîner à reconnaître les formes indéterminées et savoir les lever
+- Maîtriser les limites de référence (notamment $\lim_{x \to 0^+} x \ln(x) = 0$)
+- Penser à la relation bijective entre $\ln$ et $\exp$ : $y = \ln(x) \Leftrightarrow x = e^y$
+:::

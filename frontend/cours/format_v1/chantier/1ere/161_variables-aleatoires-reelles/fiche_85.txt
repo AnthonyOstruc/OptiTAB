@@ -1,0 +1,87 @@
+Titre: Résumé : Variables aléatoires réelles
+
+<!-- optitab:1 -->
+::: objectifs
+L’essentiel du chapitre : loi, espérance, variance, écart type, transformation $aX + b$, jeu équitable, simulation. Programme de Première spécialité.
+:::
+
+## I. Variable aléatoire et loi
+
+- $X$ associe un **nombre réel** à chaque issue d’une expérience aléatoire.
+- $\{X = a\}$ : issues pour lesquelles $X$ vaut $a$ ; $\{X \leqslant a\}$ : issues pour lesquelles $X$ vaut au plus $a$.
+- **Loi** de $X$ : tableau des valeurs distinctes $x_i$ et des $p_i = P(X = x_i)$.
+
+::: formule
+$$0 \leqslant p_i \leqslant 1 \qquad p_1 + p_2 + \cdots + p_n = 1$$
+:::
+
+::: methode Déterminer une loi
+1. Lister les valeurs distinctes de $X$.
+2. Regrouper les issues qui donnent chaque valeur (dénombrement ou arbre : on multiplie le long d’un chemin, on ajoute les chemins).
+3. Contrôler que la somme vaut $1$.
+:::
+
+Exemple avec un arbre ($3$ boules rouges, $2$ bleues, deux tirages sans remise, $X$ = nombre de rouges) :
+
+[IMAGE_3]
+
+Diagramme en bâtons d’une loi (jeu de dé du cours) :
+
+[IMAGE_1]
+
+## II. Espérance, variance, écart type
+
+::: formule
+$$
+\begin{gathered}
+E(X) = \sum p_ix_i \\
+V(X) = \sum p_i\big(x_i - E(X)\big)^2 \\
+V(X) = E(X^2) - \big(E(X)\big)^2 \\
+\sigma(X) = \sqrt{V(X)}
+\end{gathered}
+$$
+:::
+
+- $E(X)$ : valeur moyenne de $X$ sur un grand nombre de répétitions.
+- $V(X) \geqslant 0$ et $\sigma(X)$ (même unité que $X$) mesurent la dispersion autour de $E(X)$ : le **risque** d’un jeu.
+- Exemple (dé : $-2$ € pour un impair, $1$ € pour $2$ ou $4$, $5$ € pour $6$) : $E(X) = \frac{1}{6}$, $E(X^2) = \frac{13}{2}$, $V(X) = \frac{233}{36}$, $\sigma(X) \approx 2{,}54$.
+- Même espérance, risques différents :
+
+[IMAGE_4]
+
+## III. Transformation affine et jeu équitable
+
+::: formule
+$$
+\begin{gathered}
+E(aX + b) = aE(X) + b \\
+V(aX + b) = a^2V(X) \\
+\sigma(aX + b) = |a|\,\sigma(X)
+\end{gathered}
+$$
+:::
+
+- Gain net $N = G - m$ (gain brut moins la mise) : $E(N) = E(G) - m$.
+- Jeu **équitable** : $E(N) = 0$, soit $m = E(G)$ ; favorable au joueur si $E(N) \gt 0$, défavorable si $E(N) \lt 0$.
+
+## IV. Simulation
+
+- `randint(1, 6)` simule un dé ; une fonction renvoie une valeur de $X$, une autre la **moyenne** $m$ d’un échantillon de taille $n$.
+- Plus $n$ est grand, plus $m$ est proche de $E(X)$ (loi des grands nombres, observée par simulation).
+- Le plus souvent (environ $95\,\%$ des échantillons), $|m - E(X)| \leqslant \dfrac{2\sigma}{\sqrt{n}}$.
+
+[IMAGE_2]
+
+## V. Les pièges à éviter
+
+::: attention Les erreurs classiques
+1. Oublier de regrouper les issues qui donnent la même valeur, ou ne pas vérifier que la somme des probabilités vaut $1$.
+2. Confondre gain brut et gain net : la mise se retranche **une seule fois**.
+3. Confondre $E(X^2)$ et $\big(E(X)\big)^2$.
+4. Écrire $V(aX + b) = aV(X) + b$ : c’est $a^2V(X)$ ; la constante $b$ ne change pas la variance.
+5. Donner $V(X)$ au lieu de $\sigma(X)$, ou arrondir trop tôt.
+:::
+
+::: remarque Réflexe
+Toujours commencer par le **tableau de la loi** de $X$ : l’espérance, la variance et l’écart type se calculent à partir de lui.
+:::

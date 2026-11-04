@@ -1,0 +1,769 @@
+Titre: Nombres complexes
+
+<!-- optitab:1 -->
+## I. Nombres complexes : définitions et opérations
+
+### Définition et notation
+
+::: definition Nombres complexes
+Un nombre complexe est un nombre de la forme $z = a + ib$ où :
+
+- $a$ et $b$ sont des nombres réels
+- $i$ est l'unité imaginaire vérifiant $i^2 = -1$
+
+L'ensemble des nombres complexes est noté $\mathbb{C}$.
+
+**Remarque :** La construction de $\mathbb{C}$ est hors programme. On admet l'existence de $\mathbb{C}$ comme extension de $\mathbb{R}$.
+:::
+
+::: definition Partie réelle et partie imaginaire
+Pour $\displaystyle z = a + ib$ :
+
+- La **partie réelle** de $z$ est $a$, notée $\text{Re}(z)$ ou $\Re(z)$
+- La **partie imaginaire** de $z$ est $b$, notée $\text{Im}(z)$ ou $\Im(z)$
+
+On a donc : $\displaystyle z = \text{Re}(z) + i \text{Im}(z)$
+:::
+
+::: exemple
+- $z = 3 + 4i$ : $\text{Re}(z) = 3$, $\text{Im}(z) = 4$
+- $z = -2i$ : $\text{Re}(z) = 0$, $\text{Im}(z) = -2$
+- $z = 5$ : $\text{Re}(z) = 5$, $\text{Im}(z) = 0$ (nombre réel pur)
+- $z = i$ : $\text{Re}(z) = 0$, $\text{Im}(z) = 1$ (unité imaginaire)
+:::
+
+::: propriete Opérations sur les nombres complexes
+Pour $z = a + ib$ et $z' = a' + ib'$ :
+
+- **Addition :** $\displaystyle z + z' = (a + a') + i(b + b')$
+- **Multiplication :** $\displaystyle z \times z' = (aa' - bb') + i(ab' + a'b)$
+- **Opposé :** $\displaystyle -z = -a - ib$
+- **Inverse :** Si $z \neq 0$, $\frac{1}{z} = \frac{a}{a^2 + b^2} - i\frac{b}{a^2 + b^2}$
+:::
+
+::: demonstration Justification de la multiplication
+$$\begin{aligned} z \times z' &= (a + ib)(a' + ib') = aa' + iab' + ia'b + i^2bb' \\ &= aa' + i(ab' + a'b) - bb' \end{aligned}$$
+
+En utilisant $i^2 = -1$, on obtient : $z \times z' = (aa' - bb') + i(ab' + a'b)$
+:::
+
+::: propriete Extension de calculs classiques
+Les formules suivantes restent valables dans $\mathbb{C}$ :
+
+- **Somme géométrique :** Pour $z \neq 1$, $\sum_{k=0}^{n} z^k = \frac{1 - z^{n+1}}{1 - z}$
+- **Factorisation :** $\displaystyle a^n - b^n = (a - b)\sum_{k=0}^{n-1} a^{n-1-k}b^k$
+- **Formule du binôme :** $\displaystyle (a + b)^n = \sum_{k=0}^{n} \binom{n}{k} a^{n-k}b^k$
+:::
+
+::: demonstration Représentation géométrique : plan complexe
+On identifie $\mathbb{C}$ avec le plan muni d'un repère orthonormé direct $(O, \vec{i}, \vec{j})$.
+
+À tout nombre complexe $z = a + ib$, on associe le point $M(a, b)$ du plan.
+
+- Le point $M$ est appelé **image** de $z$
+- Le nombre complexe $z$ est appelé **affixe** du point $M$
+- Si $\vec{u}$ est un vecteur de coordonnées $(a, b)$, alors $z = a + ib$ est l'**affixe** du vecteur $\vec{u}$
+:::
+
+## II. Conjugaison et module
+
+### Conjugué d'un nombre complexe
+
+::: definition
+Pour $z = a + ib$, le **conjugué** de $z$ est :
+
+$$\overline{z} = a - ib$$
+:::
+
+::: propriete
+- **Involution :** $\displaystyle \overline{\overline{z}} = z$
+- **Compatibilité avec l'addition :** $\overline{z + z'} = \overline{z} + \overline{z'}$
+- **Compatibilité avec la multiplication :** $\overline{z \times z'} = \overline{z} \times \overline{z'}$
+- **Compatibilité avec l'inverse :** Si $z \neq 0$, $\overline{\left(\frac{1}{z}\right)} = \frac{1}{\overline{z}}$
+- **Parties réelle et imaginaire :** $\text{Re}(z) = \frac{z + \overline{z}}{2}$ et $\text{Im}(z) = \frac{z - \overline{z}}{2i}$
+- **Nombre réel :** $\displaystyle z \in \mathbb{R} \Leftrightarrow z = \overline{z}$
+:::
+
+::: demonstration Interprétation géométrique
+Dans le plan complexe, si $M$ est l'image de $z$, alors $\overline{M}$ (symétrique de $M$ par rapport à l'axe des abscisses) est l'image de $\overline{z}$.
+:::
+
+::: definition Module d'un nombre complexe
+Pour $z = a + ib$, le **module** de $z$ est :
+
+$$|z| = \sqrt{a^2 + b^2}$$
+
+Le module est toujours positif ou nul. On a $|z| = 0$ si et seulement si $z = 0$.
+:::
+
+::: propriete
+- **Relation fondamentale :** $\displaystyle |z|^2 = z \overline{z}$
+- **Module d'un produit :** $\displaystyle |z \times z'| = |z| \times |z'|$
+- **Module d'un quotient :** Si $z' \neq 0$, $\left|\frac{z}{z'}\right| = \frac{|z|}{|z'|}$
+- **Module du conjugué :** $\displaystyle |\overline{z}| = |z|$
+- **Inégalité triangulaire :** $|z + z'| \leq |z| + |z'|$
+- **Cas d'égalité :** $|z + z'| = |z| + |z'|$ si et seulement si $z$ et $z'$ sont alignés avec l'origine et de même sens
+:::
+
+::: demonstration
+Pour $\displaystyle z = a + ib$, on a :
+
+$$
+\begin{aligned}
+z \overline{z} &= (a + ib)(a - ib) \\
+&= a^2 - (ib)^2 \\
+&= a^2 - i^2b^2 \\
+&= a^2 + b^2 \\
+&= |z|^2
+\end{aligned}
+$$
+:::
+
+::: demonstration Interprétation géométrique
+Si $M$ est l'image de $z$ dans le plan complexe, alors :
+
+- $|z|$ est la distance $OM$
+- $|z - z'|$ est la distance entre les points d'affixes $z$ et $z'$
+- L'ensemble $\{z \in \mathbb{C} : |z - z_0| = r\}$ avec $r > 0$ est le cercle de centre $z_0$ et de rayon $r$
+- L'ensemble $\{z \in \mathbb{C} : |z - z_0| \leq r\}$ est le disque fermé de centre $z_0$ et de rayon $r$
+:::
+
+::: exemple
+- $\displaystyle |3 + 4i| = \sqrt{9 + 16} = 5$
+- $\displaystyle |1 - i| = \sqrt{1 + 1} = \sqrt{2}$
+- $\displaystyle |i| = 1$
+- Pour $z = 2 + 3i$, on a $z \overline{z} = (2 + 3i)(2 - 3i) = 4 + 9 = 13 = |z|^2$
+:::
+
+::: propriete Inégalités et identités de base
+- **Inégalité triangulaire inversée :** Pour tous $z, z' \in \mathbb{C}$ : $||z| - |z'|| \leq |z - z'|$. Cette inégalité est souvent utilisée dans les preuves.
+- **Identité du parallélogramme :** Pour tous $z, z' \in \mathbb{C}$ : $|z + z'|^2 + |z - z'|^2 = 2(|z|^2 + |z'|^2)$
+- **Identités utiles pour la géométrie :** Ces identités sont utiles pour la géométrie, les médiatrices, etc.
+
+  - $\displaystyle |z + z'|^2 = |z|^2 + |z'|^2 + 2\text{Re}(z\overline{z'})$
+  - $\displaystyle |z - z'|^2 = |z|^2 + |z'|^2 - 2\text{Re}(z\overline{z'})$
+
+- **Cas d'égalité de l'inégalité triangulaire :** $|z + z'| = |z| + |z'|$ si et seulement si $\arg(z) = \arg(z') [2\pi]$ (même direction et même sens).
+:::
+
+::: propriete Produit scalaire via affixes
+Soient $\vec{u}$ et $\vec{v}$ deux vecteurs d'affixes respectives $z$ et $z'$.
+
+Le produit scalaire s'exprime par : $\vec{u} \cdot \vec{v} = \text{Re}(z\overline{z'})$
+
+**Condition d'orthogonalité :** $\vec{u} \perp \vec{v} \Leftrightarrow \text{Re}(z\overline{z'}) = 0$
+
+**Application :** Pour vérifier que deux vecteurs $\overrightarrow{AB}$ et $\overrightarrow{AC}$ sont orthogonaux (où $a$, $b$, $c$ sont les affixes de $A$, $B$, $C$), on peut utiliser :
+
+$$\text{Re}((b-a)\overline{(c-a)}) = 0$$
+
+Cette écriture est souvent plus directe que de vérifier $\frac{c-a}{b-a} \in i\mathbb{R}$ (qui signifie que le rapport est imaginaire pur).
+:::
+
+::: methode Rationalisation systématique
+Pour calculer $\frac{z_1}{z_2}$ avec $z_2 \neq 0$, on multiplie numérateur et dénominateur par $\overline{z_2}$ :
+
+$$
+\begin{aligned}
+\frac{z_1}{z_2} &= \frac{z_1 \overline{z_2}}{z_2 \overline{z_2}} \\
+&= \frac{z_1 \overline{z_2}}{|z_2|^2}
+\end{aligned}
+$$
+
+Cette méthode permet d'obtenir directement la forme algébrique.
+:::
+
+## III. Nombres complexes de module 1 et trigonométrie
+
+### Identification du cercle unité
+
+::: definition Cercle unité et nombres complexes de module 1
+L'ensemble des nombres complexes de module 1 est noté $\mathbb{U}$ :
+
+$$\mathbb{U} = \{z \in \mathbb{C} : |z| = 1\}$$
+
+Dans le plan complexe, $\mathbb{U}$ correspond au cercle trigonométrique (cercle de centre $O$ et de rayon $1$).
+:::
+
+::: definition Exponentielle complexe $\displaystyle e^{it}$
+Pour tout réel $\displaystyle t$, on définit :
+
+$$e^{it} = \cos(t) + i\sin(t)$$
+
+On a alors : $\displaystyle |e^{it}| = \sqrt{\cos^2(t) + \sin^2(t)} = 1$
+
+Donc $e^{it} \in \mathbb{U}$ pour tout $t \in \mathbb{R}$.
+:::
+
+::: propriete Exponentielle d'une somme
+Pour tous réels $t$ et $t'$ :
+
+$$e^{i(t + t')} = e^{it} \times e^{it'}$$
+:::
+
+::: demonstration
+$$\begin{aligned} e^{it} \times e^{it'} &= (\cos(t) + i\sin(t))(\cos(t') + i\sin(t')) \\ &= \cos(t)\cos(t') - \sin(t)\sin(t') + i(\sin(t)\cos(t') + \cos(t)\sin(t')) \end{aligned}$$
+
+En utilisant les formules d'addition trigonométriques :
+
+$$\begin{aligned} &= \cos(t + t') + i\sin(t + t') \\ &= e^{i(t + t')} \end{aligned}$$
+:::
+
+::: propriete Formules d'Euler
+Pour tout réel $\displaystyle t$ :
+
+$\cos(t) = \frac{e^{it} + e^{-it}}{2}$ et $\sin(t) = \frac{e^{it} - e^{-it}}{2i}$
+:::
+
+::: demonstration
+On a $e^{it} = \cos(t) + i\sin(t)$ et $e^{-it} = \cos(t) - i\sin(t)$
+
+En additionnant : $e^{it} + e^{-it} = 2\cos(t)$, donc $\cos(t) = \frac{e^{it} + e^{-it}}{2}$
+
+En soustrayant : $e^{it} - e^{-it} = 2i\sin(t)$, donc $\sin(t) = \frac{e^{it} - e^{-it}}{2i}$
+:::
+
+::: propriete Technique de l'angle moitié
+Factorisations utiles :
+
+- $\displaystyle 1 + e^{it} = e^{it/2}(e^{-it/2} + e^{it/2}) = 2e^{it/2}\cos\left(\frac{t}{2}\right)$
+- $\displaystyle e^{ip} + e^{iq} = e^{i(p+q)/2}(e^{i(p-q)/2} + e^{-i(p-q)/2}) = 2e^{i(p+q)/2}\cos\left(\frac{p-q}{2}\right)$
+:::
+
+::: propriete Formule de Moivre
+Pour tout réel $t$ et tout entier $n$ :
+
+$$(e^{it})^n = e^{int}$$
+
+En utilisant la définition de $e^{it}$, on obtient :
+
+$$(\cos(t) + i\sin(t))^n = \cos(nt) + i\sin(nt)$$
+:::
+
+::: demonstration Applications de la formule de Moivre
+**Linéarisation :** Exprimer $\cos^n(t)$ et $\sin^n(t)$ en fonction de $\cos(kt)$ et $\sin(kt)$
+
+**Calcul de sommes :** Calculer $\sum_{k=0}^{n} \cos(kt)$ et $\sum_{k=0}^{n} \sin(kt)$
+
+**Formules de trigonométrie :** Retrouver les expressions de $\cos(nt)$ et $\sin(nt)$ en fonction de $\cos(t)$ et $\sin(t)$
+:::
+
+::: methode Sommes géométriques complexes → parties réelle et imaginaire
+Pour calculer $\sum_{k=0}^{n} \cos(kt)$ et $\sum_{k=0}^{n} \sin(kt)$, on utilise :
+
+$\sum_{k=0}^{n} \cos(kt) = \text{Re}\left(\sum_{k=0}^{n} e^{ikt}\right)$ et $\sum_{k=0}^{n} \sin(kt) = \text{Im}\left(\sum_{k=0}^{n} e^{ikt}\right)$
+
+On calcule d'abord $S = \sum_{k=0}^{n} e^{ikt} = \sum_{k=0}^{n} (e^{it})^k$ (somme géométrique finie), puis on prend la partie réelle ou imaginaire selon le besoin.
+
+**Série géométrique infinie :** Si $|q| < 1$, alors :
+
+$$\sum_{k=0}^{+\infty} q^k = \frac{1}{1 - q}$$
+
+Cette formule s'applique aussi aux nombres complexes de module strictement inférieur à $1$.
+:::
+
+::: exemple Calcul de $\displaystyle \sum_{k=0}^{n} \cos(kt)$
+On considère $\displaystyle S = \sum_{k=0}^{n} e^{ikt} = \sum_{k=0}^{n} (e^{it})^k$
+
+Si $e^{it} \neq 1$ (i.e. $t \not\equiv 0 [2\pi]$), alors :
+
+$$
+\begin{aligned}
+S &= \frac{1 - e^{i(n+1)t}}{1 - e^{it}} \\
+&= \frac{e^{i(n+1)t/2}(e^{-i(n+1)t/2} - e^{i(n+1)t/2})}{e^{it/2}(e^{-it/2} - e^{it/2})} \\
+&= \frac{e^{int/2}\sin((n+1)t/2)}{\sin(t/2)}
+\end{aligned}
+$$
+
+En prenant la partie réelle : $\displaystyle \sum_{k=0}^{n} \cos(kt) = \frac{\sin((n+1)t/2)\cos(nt/2)}{\sin(t/2)}$
+
+**Formule finale pour $\sin$ :** $\sum_{k=0}^{n} \sin(kt) = \frac{\sin((n+1)t/2)\sin(nt/2)}{\sin(t/2)}$
+:::
+
+::: propriete Formules de factorisation $\cos(p) \pm \cos(q)$ et $\sin(p) \pm \sin(q)$
+À savoir retrouver rapidement :
+
+- $\displaystyle \cos(p) + \cos(q) = 2\cos\left(\frac{p+q}{2}\right)\cos\left(\frac{p-q}{2}\right)$
+- $\displaystyle \cos(p) - \cos(q) = -2\sin\left(\frac{p+q}{2}\right)\sin\left(\frac{p-q}{2}\right)$
+- $\displaystyle \sin(p) + \sin(q) = 2\sin\left(\frac{p+q}{2}\right)\cos\left(\frac{p-q}{2}\right)$
+- $\displaystyle \sin(p) - \sin(q) = 2\cos\left(\frac{p+q}{2}\right)\sin\left(\frac{p-q}{2}\right)$
+:::
+
+::: methode Mini-méthode : Trigonométrie → Complexes
+Pour transformer $a\cos(t) + b\sin(t)$ en $A\cos(t - \varphi)$, on utilise la représentation complexe :
+
+$a + ib = A e^{i\varphi}$ où $A = \sqrt{a^2 + b^2}$ et $\cos(\varphi) = \frac{a}{A}$, $\sin(\varphi) = \frac{b}{A}$
+
+Alors $\displaystyle a\cos(t) + b\sin(t) = \text{Re}((a + ib)e^{it}) = \text{Re}(A e^{i(t+\varphi)}) = A\cos(t - \varphi)$
+
+Pour résoudre $\cos(t) = \alpha$, on peut passer par $\text{Re}(e^{it}) = \alpha$.
+:::
+
+## IV. Forme trigonométrique
+
+### Écriture trigonométrique d'un nombre complexe
+
+::: definition Forme trigonométrique
+Tout nombre complexe non nul $z$ peut s'écrire sous la forme :
+
+$z = r e^{i\theta}$ où $r > 0$ et $\theta \in \mathbb{R}$
+
+Cette écriture est appelée **forme trigonométrique** (ou forme exponentielle) de $z$.
+
+On a alors :
+
+- $r = |z|$ (module de $z$)
+- $\theta$ est un **argument** de $z$, noté $\arg(z)$
+:::
+
+::: attention
+L'argument d'un nombre complexe n'est pas unique. Si $\theta$ est un argument de $z$, alors $\theta + 2k\pi$ (avec $k \in \mathbb{Z}$) est aussi un argument de $z$.
+
+On appelle **argument principal** l'unique argument appartenant à $]-\pi, \pi]$.
+:::
+
+::: definition Argument et argument principal
+Pour un nombre complexe non nul $z$, on note $\text{Arg}(z)$ l'**argument principal** de $z$, choisi dans $]-\pi, \pi]$ (convention usuelle).
+
+** Important :** Il faut être cohérent partout avec cette convention $\text{Arg}(z) \in ]-\pi, \pi]$.
+
+**Propriétés utiles :**
+
+- $\displaystyle \arg(\overline{z}) = -\arg(z) [2\pi]$
+- $\displaystyle \arg\left(\frac{1}{z}\right) = -\arg(z) [2\pi]$
+- $\displaystyle \arg(z \times z') = \arg(z) + \arg(z') [2\pi]$
+- $|z + z'| = |z| + |z'| \Leftrightarrow \arg(z) = \arg(z') [2\pi]$ (cas d'égalité de l'inégalité triangulaire : alignement avec l'origine et même sens)
+:::
+
+::: methode Passage de la forme algébrique à la forme trigonométrique
+Pour $\displaystyle z = a + ib \neq 0$ :
+
+- $\displaystyle r = |z| = \sqrt{a^2 + b^2}$
+- $\cos(\theta) = \frac{a}{r}$ et $\sin(\theta) = \frac{b}{r}$
+- On détermine $\theta$ en utilisant les signes de $a$ et $b$ pour choisir le bon quadrant
+:::
+
+::: propriete Arguments d'un produit et d'un quotient
+Pour $z = r e^{i\theta}$ et $z' = r' e^{i\theta'}$ :
+
+- **Produit :** $z \times z' = rr' e^{i(\theta + \theta')}$, donc $\arg(z \times z') = \arg(z) + \arg(z') [2\pi]$
+- **Quotient :** Si $z' \neq 0$, $\frac{z}{z'} = \frac{r}{r'} e^{i(\theta - \theta')}$, donc $\arg\left(\frac{z}{z'}\right) = \arg(z) - \arg(z') [2\pi]$
+- **Puissance :** $z^n = r^n e^{in\theta}$, donc $\arg(z^n) = n\arg(z) [2\pi]$
+
+**Micro-rappel :** Pour les modules : $|z \times z'| = |z||z'|$ et $\left|\frac{z}{z'}\right| = \frac{|z|}{|z'|}$.
+:::
+
+::: propriete Transformation de $a\cos(t) + b\sin(t)$ en $A\cos(t - \varphi)$
+Pour $\displaystyle (a, b) \neq (0, 0)$, on peut écrire :
+
+$$a\cos(t) + b\sin(t) = A\cos(t - \varphi)$$
+
+où :
+
+- $\displaystyle A = \sqrt{a^2 + b^2}$
+- $\cos(\varphi) = \frac{a}{A}$ et $\sin(\varphi) = \frac{b}{A}$
+
+Cette transformation utilise la forme trigonométrique du complexe $a + ib = A e^{i\varphi}$.
+:::
+
+::: exemple
+- $z = 1 + i$ : $|z| = \sqrt{2}$, $\arg(z) = \frac{\pi}{4}$, donc $z = \sqrt{2} e^{i\pi/4}$
+- $z = -1 + i\sqrt{3}$ : $|z| = 2$, $\arg(z) = \frac{2\pi}{3}$, donc $z = 2 e^{i2\pi/3}$
+- $\displaystyle \cos(t) + \sin(t) = \sqrt{2}\cos\left(t - \frac{\pi}{4}\right)$
+- $3\cos(t) + 4\sin(t) = 5\cos(t - \varphi)$ où $\cos(\varphi) = \frac{3}{5}$ et $\sin(\varphi) = \frac{4}{5}$
+:::
+
+## V. Équations algébriques
+
+### Factorisation et équations polynomiales
+
+::: propriete Factorisation par $\displaystyle z - a$
+Soit $P$ une fonction polynomiale à coefficients complexes.
+
+Si $a$ est une racine de $P$ (i.e. $P(a) = 0$), alors :
+
+$$P(z) = (z - a)Q(z)$$
+
+où $Q$ est un polynôme de degré $\deg(P) - 1$.
+:::
+
+::: methode Résolution d'équations du second degré dans $\mathbb{C}$
+Pour l'équation $az^2 + bz + c = 0$ avec $a \neq 0$ et $a, b, c \in \mathbb{C}$ :
+
+Le discriminant est $\displaystyle \Delta = b^2 - 4ac$.
+
+- Si $\Delta \neq 0$, les solutions sont : $z = \frac{-b \pm \sqrt{\Delta}}{2a}$
+- Si $\Delta = 0$, il y a une solution double : $z = -\frac{b}{2a}$
+
+**Remarque :** Dans $\mathbb{C}$, toute équation du second degré admet toujours deux solutions (éventuellement confondues).
+:::
+
+::: attention Calcul des racines carrées d'un nombre complexe
+**Méthode algébrique :** Pour calculer $\sqrt{\Delta}$ où $\Delta$ est un nombre complexe donné en forme algébrique, on cherche $z = x + iy$ tel que $z^2 = \Delta$.
+
+En identifiant parties réelle et imaginaire, on obtient un système de deux équations à deux inconnues.
+
+**Méthode polaire (plus rapide) :** Si $z = r e^{i\theta} \neq 0$ avec $r > 0$, alors les deux racines carrées sont :
+
+$\sqrt{r} e^{i\theta/2}$ et $\sqrt{r} e^{i(\theta/2 + \pi)} = -\sqrt{r} e^{i\theta/2}$
+
+Les deux valeurs correspondent aux arguments $\theta/2$ et $\theta/2 + \pi$.
+:::
+
+::: propriete Somme et produit des racines
+Pour l'équation $az^2 + bz + c = 0$ avec $a \neq 0$ :
+
+Si $z_1$ et $z_2$ sont les racines (éventuellement confondues), alors :
+
+- **Somme :** $\displaystyle z_1 + z_2 = -\frac{b}{a}$
+- **Produit :** $\displaystyle z_1 \times z_2 = \frac{c}{a}$
+:::
+
+::: exemple Résoudre $\displaystyle z^2 - 2z + 2 = 0$
+Le discriminant est $\displaystyle \Delta = 4 - 8 = -4 = (2i)^2$
+
+Les solutions sont : $\displaystyle z = \frac{2 \pm 2i}{2} = 1 \pm i$
+
+Vérification : $(1+i) + (1-i) = 2 = -\frac{(-2)}{1}$ et $(1+i)(1-i) = 2 = \frac{2}{1}$
+:::
+
+::: exemple Calculer les racines carrées de $3 + 4i$
+On cherche $z = x + iy$ tel que $z^2 = 3 + 4i$
+
+On a $\displaystyle (x + iy)^2 = x^2 - y^2 + 2ixy = 3 + 4i$
+
+En identifiant : $x^2 - y^2 = 3$ et $2xy = 4$, donc $xy = 2$
+
+On trouve $z = 2 + i$ ou $z = -2 - i$
+:::
+
+## VI. Racines n-ièmes
+
+### Racines n-ièmes de l'unité
+
+::: definition Racines n-ièmes de l'unité
+Pour $n \in \mathbb{N}^{\ast}$, on pose $\omega = e^{2i\pi/n}$.
+
+Les racines n-ièmes de l'unité sont les solutions de $z^n = 1$, données par :
+
+$$\mathbb{U}_n = \{1, \omega, \omega^2, \ldots, \omega^{n-1}\}$$
+
+**Propriété fondamentale :** $\sum_{k=0}^{n-1} \omega^k = 0$
+
+Démonstration : $\displaystyle \sum_{k=0}^{n-1} \omega^k = \sum_{k=0}^{n-1} (e^{2i\pi/n})^k = \frac{1 - (e^{2i\pi/n})^n}{1 - e^{2i\pi/n}} = \frac{1 - e^{2i\pi}}{1 - e^{2i\pi/n}} = \frac{1 - 1}{1 - e^{2i\pi/n}} = 0$
+
+**Mini-propriété :** Pour $\displaystyle m \in \mathbb{Z}$, on a :
+
+$$\sum_{k=0}^{n-1} \omega^{km} = \begin{cases} 0 & \text{si } n \nmid m \\ n & \text{si } n \mid m \end{cases}$$
+
+Application directe en sommes trigonométriques périodiques.
+:::
+
+::: retenir
+La somme des racines n-ièmes de l'unité est toujours nulle : $\sum_{k=0}^{n-1} \omega^k = 0$.
+:::
+
+::: propriete
+- $\mathbb{U}_n$ contient exactement $n$ éléments
+- Le produit de deux racines n-ièmes de l'unité est encore une racine n-ième de l'unité
+- L'inverse d'une racine n-ième de l'unité est encore une racine n-ième de l'unité
+- La somme des racines n-ièmes de l'unité est nulle : $\sum_{k=0}^{n-1} \omega^k = 0$
+:::
+
+::: demonstration Représentation géométrique
+Les racines n-ièmes de l'unité sont les sommets d'un polygone régulier à $n$ côtés inscrit dans le cercle unité, avec un sommet en $1$.
+:::
+
+::: definition Racines n-ièmes d'un nombre complexe non nul
+Pour $z_0 \neq 0$ écrit sous forme trigonométrique $z_0 = r e^{i\theta}$ avec $r > 0$ :
+
+Les racines n-ièmes de $z_0$ (solutions de $z^n = z_0$) sont :
+
+$z_k = r^{1/n} e^{i(\theta + 2k\pi)/n}$ pour $k = 0, 1, \ldots, n-1$
+
+où $r^{1/n}$ désigne la racine n-ième réelle positive de $r$.
+:::
+
+::: exemple Racines cubiques de $\displaystyle -8$
+On a $\displaystyle -8 = 8 e^{i\pi}$
+
+Les racines cubiques sont :
+
+- $\displaystyle z_0 = 2 e^{i\pi/3} = 1 + i\sqrt{3}$
+- $\displaystyle z_1 = 2 e^{i\pi} = -2$
+- $\displaystyle z_2 = 2 e^{i5\pi/3} = 1 - i\sqrt{3}$
+:::
+
+::: exemple Racines quatrièmes de l'unité
+$$\mathbb{U}_4 = \{1, i, -1, -i\}$$
+
+En effet : $1 = e^{0}$, $i = e^{i\pi/2}$, $-1 = e^{i\pi}$, $-i = e^{i3\pi/2}$
+:::
+
+## VII. Exponentielle complexe
+
+### Définition et propriétés
+
+::: definition Exponentielle complexe
+Pour tout nombre complexe $z = x + iy$ (avec $x, y \in \mathbb{R}$), on définit :
+
+$$e^z = e^x e^{iy} = e^x(\cos(y) + i\sin(y))$$
+
+On utilise les notations $\exp(z)$ ou $e^z$.
+:::
+
+::: propriete
+- **Exponentielle d'une somme :** $e^{z + z'} = e^z \times e^{z'}$
+- **Module :** $\displaystyle |e^z| = e^{\text{Re}(z)} = e^x$
+- **Argument :** $\displaystyle \arg(e^z) = \text{Im}(z) = y [2\pi]$
+- **Inverse :** $\displaystyle \frac{1}{e^z} = e^{-z}$
+- **Puissance :** $(e^z)^n = e^{nz}$ pour tout entier $n$
+:::
+
+::: propriete Condition d'égalité de deux exponentielles
+Pour tous $\displaystyle z, z' \in \mathbb{C}$ :
+
+$$
+\begin{aligned}
+e^z = e^{z'} &\Leftrightarrow z - z' \in 2i\pi\mathbb{Z}
+\end{aligned}
+$$
+
+Autrement dit, $e^z = e^{z'}$ si et seulement s'il existe $k \in \mathbb{Z}$ tel que $z - z' = 2ik\pi$.
+
+**Cas particulier important :** $e^z = 1 \Leftrightarrow z \in 2i\pi\mathbb{Z}$
+:::
+
+::: demonstration
+On a $\displaystyle e^z = e^{z'} \Leftrightarrow e^{z - z'} = 1$
+
+En posant $z - z' = x + iy$, on obtient $e^{x + iy} = 1$
+
+Donc $e^x = 1$ (donc $x = 0$) et $e^{iy} = 1$ (donc $y \in 2\pi\mathbb{Z}$)
+
+Ainsi $z - z' = 2ik\pi$ avec $k \in \mathbb{Z}$.
+:::
+
+::: methode Résolution de l'équation $\displaystyle e^z = a$
+Pour $a \in \mathbb{C}^{\ast}$ écrit sous forme trigonométrique $a = r e^{i\theta}$ avec $r > 0$ et $\theta = \text{Arg}(a) \in ]-\pi, \pi]$ :
+
+L'équation $e^z = a$ admet pour solutions :
+
+$z = \ln|a| + i(\text{Arg}(a) + 2k\pi)$ avec $k \in \mathbb{Z}$
+
+où $\ln|a|$ désigne le logarithme népérien réel de $|a|$.
+
+**Remarque :** On utilise ici le logarithme uniquement pour résoudre $e^z = a$, sans théorie des branches ni argument multi-valué approfondi.
+:::
+
+::: exemple
+- $\displaystyle e^{1 + i\pi} = e \times e^{i\pi} = -e$
+- $\displaystyle |e^{2 + 3i}| = e^2$
+- $\displaystyle \arg(e^{1 + i\pi/4}) = \frac{\pi}{4} [2\pi]$
+- **Résoudre $e^z = 2i$ :** On a $2i = 2 \times e^{i\pi/2}$, donc $|a| = 2$ et $\text{Arg}(a) = \frac{\pi}{2}$. Les solutions sont : $z = \ln(2) + i\left(\frac{\pi}{2} + 2k\pi\right)$ avec $k \in \mathbb{Z}$
+:::
+
+## VIII. Interprétation géométrique des nombres complexes
+
+### Applications géométriques
+
+::: demonstration Interprétation géométrique de $\frac{c-a}{b-a}$
+Soient $A$, $B$ et $C$ trois points du plan d'affixes respectives $a$, $b$ et $c$.
+
+Le nombre complexe $\displaystyle \frac{c-a}{b-a}$ a pour :
+
+- **Module :** $\left|\frac{c-a}{b-a}\right| = \frac{AC}{AB}$ (rapport des distances)
+- **Argument :** $\arg\left(\frac{c-a}{b-a}\right) = (\overrightarrow{AB}, \overrightarrow{AC})$ (mesure de l'angle orienté)
+:::
+
+::: exemple
+Soient $A(1)$, $B(3)$ et $C(1+2i)$ d'affixes respectives $1$, $3$ et $1+2i$.
+
+On a $\displaystyle \frac{c-a}{b-a} = \frac{1+2i-1}{3-1} = \frac{2i}{2} = i = e^{i\pi/2}$.
+
+Donc $\frac{AC}{AB} = |i| = 1$ (distances égales) et $(\overrightarrow{AB}, \overrightarrow{AC}) = \frac{\pi}{2}$ (angle droit en $A$).
+:::
+
+::: demonstration Applications $\displaystyle z \mapsto az + b$
+Pour $(a, b) \in \mathbb{C}^{\ast} \times \mathbb{C}$, l'application $f : z \mapsto az + b$ est une **similitude directe**.
+
+En écrivant $a = |a| e^{i\theta}$ avec $\theta = \arg(a)$ :
+
+- $|a|$ est le **rapport** de la similitude
+- $\theta$ est l'**angle** de la similitude
+- $b$ est l'**affixe du centre** (point fixe si $|a| \neq 1$)
+:::
+
+::: exemple
+Pour $\displaystyle f : z \mapsto (1+i)z + 2$.
+
+On a $1+i = \sqrt{2} e^{i\pi/4}$, donc $|a| = \sqrt{2}$ (rapport), $\theta = \frac{\pi}{4}$ (rotation de $\frac{\pi}{4}$) et $b = 2$ (translation).
+
+Cette similitude combine une homothétie de rapport $\sqrt{2}$, une rotation de $\frac{\pi}{4}$ et une translation de $2$ unités vers la droite.
+:::
+
+::: demonstration Cas particuliers
+- **Translation :** $z \mapsto z + b$ (correspond à $a = 1$)
+- **Homothétie :** $z \mapsto kz$ avec $k \in \mathbb{R}^{\ast}$ (correspond à $a \in \mathbb{R}^{\ast}$ et $b = 0$)
+- **Rotation :** $z \mapsto e^{i\theta}z$ (correspond à $|a| = 1$ et $b = 0$)
+- **Similitude générale :** $z \mapsto az + b$ avec $a \in \mathbb{C}^{\ast}$
+:::
+
+::: exemple
+- **Translation :** $z \mapsto z + 2+i$ translate tous les points de $2$ unités vers la droite et $1$ unité vers le haut
+- **Homothétie :** $z \mapsto 3z$ multiplie toutes les distances par $3$ depuis l'origine
+- **Rotation :** $z \mapsto e^{i\pi/2}z = iz$ est une rotation de $\frac{\pi}{2}$ autour de l'origine (sens direct)
+- **Similitude :** $z \mapsto 2e^{i\pi/4}z + 1+i$ combine une homothétie de rapport $2$, une rotation de $\frac{\pi}{4}$ et une translation
+:::
+
+::: demonstration Interprétation géométrique de la conjugaison
+L'application $z \mapsto \overline{z}$ est la **symétrie axiale** par rapport à l'axe des abscisses.
+
+Propriétés géométriques :
+
+- $\displaystyle |z| = |\overline{z}|$ : conservation des distances
+- $\arg(\overline{z}) = -\arg(z) [2\pi]$ : changement de signe de l'angle
+:::
+
+::: exemple
+Pour $z = 3 + 4i$, on a $\overline{z} = 3 - 4i$.
+
+Le point d'affixe $z$ est à $5$ unités de l'origine avec un angle de $\arctan(4/3)$.
+
+Le point d'affixe $\overline{z}$ est son symétrique par rapport à l'axe des abscisses, à la même distance mais avec un angle opposé.
+:::
+
+::: propriete Traduction d'alignement et d'orthogonalité
+Soient $A$, $B$ et $C$ trois points d'affixes $a$, $b$ et $c$.
+
+- **Alignement :** $A$, $B$, $C$ sont alignés si et seulement si $\frac{c-a}{b-a} \in \mathbb{R}$
+- **Orthogonalité :** $(AB) \perp (AC)$ si et seulement si $\frac{c-a}{b-a} \in i\mathbb{R}$ (imaginaire pur)
+:::
+
+::: exemple
+Soient $A(0)$, $B(2)$ et $C(1+i)$ d'affixes respectives $0$, $2$ et $1+i$.
+
+On a $\frac{c-a}{b-a} = \frac{1+i}{2} = \frac{1}{2} + \frac{i}{2} \notin \mathbb{R}$ et $\notin i\mathbb{R}$, donc les points ne sont ni alignés, ni en angle droit.
+
+Pour $C'(4)$ d'affixe $4$, on a $\frac{4-0}{2-0} = 2 \in \mathbb{R}$, donc $A$, $B$, $C'$ sont alignés.
+
+Pour $C''(2i)$ d'affixe $2i$, on a $\frac{2i-0}{2-0} = i \in i\mathbb{R}$, donc $(AB) \perp (AC'')$.
+:::
+
+::: propriete Lieux géométriques express
+Lieux géométriques fréquents en DS/colles :
+
+- **Droite dirigée par un angle :** $\{z \in \mathbb{C} : \arg(z - a) = \theta\}$ (demi-droite issue de $a$ faisant un angle $\theta$ avec l'axe des abscisses)
+- **Demi-droite :** $\{z \in \mathbb{C} : \arg((z - a)/(b - a)) = 0\}$ (demi-droite $[AB)$)
+- **Cercle/disque :** $\{z \in \mathbb{C} : |z - a| = r\}$ (cercle) et $\{z \in \mathbb{C} : |z - a| \leq r\}$ (disque fermé)
+- **Médiatrice :** $\{z \in \mathbb{C} : |z - a| = |z - b|\}$ (médiatrice du segment $[AB]$)
+:::
+
+::: exemple
+- $\{z \in \mathbb{C} : |z - 1| = 2\}$ est le cercle de centre $1$ (point d'affixe $1$) et de rayon $2$
+- $\{z \in \mathbb{C} : |z - i| = |z + i|\}$ est la médiatrice de $[A(i), B(-i)]$, c'est-à-dire l'axe des abscisses
+- $\{z \in \mathbb{C} : \arg(z - 1) = \frac{\pi}{4}\}$ est la demi-droite issue de $1$ faisant un angle de $\frac{\pi}{4}$ avec l'axe des abscisses
+- $\{z \in \mathbb{C} : |z| \leq 1\}$ est le disque fermé de centre $O$ et de rayon $1$ (disque unité)
+:::
+
+::: propriete Lieux géométriques classiques+
+**Cercles d'Apollonius :** Pour $\lambda > 0$ et $\lambda \neq 1$, l'ensemble $\{z \in \mathbb{C} : |z - a| = \lambda|z - b|\}$ est un cercle.
+
+Si $\lambda = 1$, c'est la médiatrice de $[AB]$.
+
+Pour $\lambda \neq 1$, le cercle a pour centre $\frac{a - \lambda^2 b}{1 - \lambda^2}$ et pour rayon $\frac{\lambda|a - b|}{|1 - \lambda^2|}$.
+
+**Droite d'orientation donnée :** Pour $u \neq 0$ et un point $a$, la droite passant par $a$ et dirigée par $u$ est :
+
+$$\{z \in \mathbb{C} : \text{Im}(\overline{u}(z - a)) = 0\}$$
+
+Le demi-plan correspondant est : $\{z \in \mathbb{C} : \text{Im}(\overline{u}(z - a)) \geq 0\}$.
+
+Cette forme est très utile en colles/DS.
+:::
+
+::: exemple
+**Cercle d'Apollonius :** Pour $a = 0$, $b = 4$ et $\lambda = 2$, l'ensemble $\{z \in \mathbb{C} : |z| = 2|z - 4|\}$ est un cercle.
+
+Le centre est $\frac{0 - 4 \times 4}{1 - 4} = \frac{-16}{-3} = \frac{16}{3}$ et le rayon est $\frac{2 \times 4}{|1 - 4|} = \frac{8}{3}$.
+
+**Droite d'orientation :** La droite passant par $1+i$ et dirigée par $1$ (affixe $1$) est :
+
+$$
+\begin{aligned}
+\{z \in \mathbb{C} : \text{Im}(\overline{1}(z - (1+i))) &= 0\} \\
+&= \{z \in \mathbb{C} : \text{Im}(z - 1 - i) \\
+&= 0\}
+\end{aligned}
+$$
+
+C'est la droite horizontale passant par $1+i$, d'équation $\text{Im}(z) = 1$.
+:::
+
+::: methode Équations mixtes (applications géométriques)
+Ces équations sont très courantes en devoirs :
+
+**Type $\displaystyle a\overline{z} + bz + c = 0$ :**
+
+- Méthode 1 : Poser $z = x + iy$ et identifier parties réelle et imaginaire
+- Méthode 2 : Multiplier par $\overline{a}$ pour isoler $\overline{z}/z$, puis séparer $\text{Re}$ et $\text{Im}$
+
+**Type $\displaystyle |az + b| = r$ :**
+
+Si $a \neq 0$, alors $|z + \frac{b}{a}| = \frac{r}{|a|}$, ce qui définit un cercle de centre $-\frac{b}{a}$ et de rayon $\frac{r}{|a|}$.
+:::
+
+::: exemple
+**Type 1 :** Résoudre $\displaystyle \overline{z} + z = 2$.
+
+En posant $z = x + iy$, on obtient $(x - iy) + (x + iy) = 2x = 2$, donc $x = 1$.
+
+L'ensemble solution est la droite verticale $\{z \in \mathbb{C} : \text{Re}(z) = 1\}$.
+
+**Type 2 :** L'équation $|2z + 1| = 3$ équivaut à $|z + \frac{1}{2}| = \frac{3}{2}$.
+
+C'est le cercle de centre $-\frac{1}{2}$ et de rayon $\frac{3}{2}$.
+:::
+
+::: exemple Triangle équilatéral
+Soient $A$, $B$, $C$ trois points d'affixes $a$, $b$, $c$.
+
+Le triangle $ABC$ est équilatéral direct si et seulement si :
+
+$\frac{c-a}{b-a} = e^{i\pi/3}$ ou $c - a = e^{i\pi/3}(b - a)$
+:::
+
+::: remarque
+L'étude générale des similitudes est hors programme. On se limite aux cas particuliers mentionnés : translations, homothéties, rotations et similitudes directes de la forme $z \mapsto az + b$.
+:::
+
+## IX. Conseils méthodologiques
+
+### Méthodes et erreurs fréquentes
+
+::: methode
+1. **Forme trigonométrique :** Utiliser la forme $re^{i\theta}$ pour les multiplications, divisions et puissances
+2. **Forme algébrique :** Utiliser $a + ib$ pour les additions et soustractions
+3. **Racines carrées :** Pour calculer $\sqrt{\Delta}$, chercher $z = x + iy$ tel que $z^2 = \Delta$
+4. **Racines n-ièmes :** Mettre le nombre sous forme trigonométrique puis utiliser la formule générale
+5. **Géométrie :** Utiliser les affixes pour traduire les problèmes géométriques en problèmes algébriques
+:::
+
+::: remarque Points clés à retenir
+- **Formules d'Euler :** Savoir retrouver rapidement $\cos(t)$ et $\sin(t)$ en fonction de $e^{it}$
+- **Formule de Moivre :** $(e^{it})^n = e^{int}$ pour linéariser et calculer des sommes
+- **Module et argument :** $|z \times z'| = |z||z'|$ et $\arg(z \times z') = \arg(z) + \arg(z') [2\pi]$
+- **Conjugaison :** $z \overline{z} = |z|^2$ pour calculer l'inverse d'un nombre complexe
+- **Racines n-ièmes :** Toujours $n$ racines distinctes pour un nombre non nul
+- **Exponentielle :** $\displaystyle e^z = e^{z'} \Leftrightarrow z - z' \in 2i\pi\mathbb{Z}$
+:::
+
+::: attention
+- **Argument non unique :** Ne pas oublier le modulo $2\pi$ dans les arguments
+- **Racines carrées :** Dans $\mathbb{C}$, il y a toujours deux racines carrées (sauf pour 0)
+- **Module d'une somme :** Attention, $|z + z'| \neq |z| + |z'|$ en général (inégalité triangulaire)
+- **Exponentielle :** $e^{z + z'} = e^z e^{z'}$ mais $e^{zz'} \neq e^z e^{z'}$
+- **Forme trigonométrique :** Toujours vérifier que le module est positif
+- **Racines n-ièmes :** Ne pas oublier toutes les racines (il y en a $n$)
+- **Géométrie :** Attention à l'orientation (direct/indirect) dans les problèmes géométriques
+:::

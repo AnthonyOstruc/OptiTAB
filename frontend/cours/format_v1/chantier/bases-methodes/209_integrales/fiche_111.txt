@@ -1,0 +1,143 @@
+Titre: Résumé : Calcul Intégral
+
+<!-- optitab:1 -->
+::: objectifs
+Maîtriser le calcul intégral : définition, théorème fondamental, propriétés, intégration par parties, calcul d'aires.
+:::
+
+## I. Définition
+
+::: definition Intégrale définie
+Soit $f$ une fonction continue sur un segment $[a, b]$.
+
+L'intégrale définie de $f$ de $a$ à $b$, notée :
+
+::: formule
+$$\int_a^b f(x) \, dx$$
+:::
+
+*Si $f$ est positive, elle représente l'aire sous la courbe entre $a$ et $b$.*
+:::
+
+::: definition Calcul par les primitives
+Si $F$ est une primitive de $f$, alors :
+
+::: formule
+$$\int_a^b f(x) \, dx = F(b) - F(a) = [F(x)]_a^b$$
+:::
+:::
+
+[IMAGE_3]
+
+## II. Théorème fondamental
+
+::: theoreme Primitive définie par une intégrale
+Si $f$ est continue sur $[a, b]$, alors la fonction :
+
+::: formule
+$$F_a(x) = \int_a^x f(t) \, dt$$
+:::
+
+est la primitive de $f$ qui s'annule en $a$.
+:::
+
+::: theoreme Existence de primitives
+**Toute fonction continue sur un intervalle admet des primitives**.
+:::
+
+## III. Propriétés
+
+::: theoreme
+Pour toutes fonctions continues $f$ et $g$ sur $[a, b]$ et tous réels $\lambda, \mu$ :
+:::
+
+| Propriété | Formule |
+|---|---|
+| Linéarité | $\displaystyle\int_a^b (\lambda f + \mu g) dx = \lambda \int_a^b f dx + \mu \int_a^b g dx$ |
+| Positivité | Si $\displaystyle f(x) \geq 0$ sur $\displaystyle [a,b]$, alors $\displaystyle\int_a^b f(x) dx \geq 0$ |
+| Relation de Chasles | $\displaystyle\int_a^b f dx + \int_b^c f dx = \int_a^c f dx$ |
+| Inversion des bornes | $\displaystyle\int_a^b f dx = -\int_b^a f dx$ |
+
+## IV. Intégration par parties
+
+::: theoreme Intégration par parties
+Si $u$ et $v$ sont dérivables sur $[a, b]$ avec $u'$ et $v'$ continues, alors :
+
+::: formule
+$$\int_a^b u(x) v'(x) dx = [u(x) v(x)]_a^b - \int_a^b u'(x) v(x) dx$$
+:::
+:::
+
+::: methode Choix de $\displaystyle u$
+Mnémonique **« ILATE »** : Inverse, Logarithme, Algébrique, Trigonométrique, Exponentielle
+:::
+
+## V. Valeur moyenne
+
+::: definition Valeur moyenne
+La valeur moyenne d'une fonction $f$ continue sur $[a, b]$ est :
+
+::: formule
+$$\mu = \frac{1}{b-a} \int_a^b f(x) dx$$
+:::
+:::
+
+## VI. Calcul d'aires
+
+::: propriete Aire sous la courbe
+Si $f(x) \geq 0$ sur $[a, b]$, l'aire sous la courbe est :
+
+::: formule
+$$\mathcal{A} = \int_a^b f(x) dx$$
+:::
+:::
+
+[IMAGE_1]
+
+::: theoreme Aire entre deux courbes
+Si $f(x) \geq g(x)$ sur $[a, b]$, l'aire entre les courbes est :
+
+::: formule
+$$\mathcal{A} = \int_a^b [f(x) - g(x)] dx$$
+:::
+:::
+
+::: methode Calcul d'aire entre deux courbes
+1. Déterminer les points d'intersection : résoudre $f(x) = g(x)$
+2. Étudier les positions relatives : déterminer où $f(x) \geq g(x)$
+3. Découper l'intervalle si nécessaire selon les points d'intersection
+4. Calculer : $\displaystyle\int_a^b |f(x) - g(x)| dx$
+:::
+
+[IMAGE_2]
+
+## VII. Erreurs fréquentes
+
+| Piège fréquent | Correction |
+|---|---|
+| Confondre aire et intégrale | L'intégrale peut être négative, pas l'aire. Pour l'aire, utiliser $\displaystyle |f(x)|$ |
+| Se tromper dans l'ordre des bornes | $\displaystyle\int_a^b f dx = -\int_b^a f dx$ |
+| Oublier le terme $\displaystyle [uv]_a^b$ | Dans l'intégration par parties, ne pas oublier $\displaystyle [u(x) v(x)]_a^b$ |
+| Négliger le signe de la fonction | Pour les aires, faire attention au signe et utiliser $\displaystyle |f(x) - g(x)|$ si nécessaire |
+| Confondre valeur moyenne et valeur au milieu | La valeur moyenne est $\displaystyle \frac{1}{b-a} \int_a^b f dx$, pas $\displaystyle f\left(\frac{a+b}{2}\right)$ |
+
+## VIII. Formules essentielles — mémo rapide
+
+| Notion | Formule essentielle |
+|---|---|
+| Calcul par primitive | $\displaystyle\int_a^b f(x) dx = F(b) - F(a) = [F(x)]_a^b$ |
+| Linéarité | $\displaystyle\int_a^b (\lambda f + \mu g) dx = \lambda \int_a^b f dx + \mu \int_a^b g dx$ |
+| Relation de Chasles | $\displaystyle\int_a^b f dx + \int_b^c f dx = \int_a^c f dx$ |
+| Intégration par parties | $\displaystyle\int_a^b u v' dx = [uv]_a^b - \int_a^b u' v dx$ |
+| Valeur moyenne | $\displaystyle\mu = \frac{1}{b-a} \int_a^b f(x) dx$ |
+| Aire entre deux courbes | $\displaystyle\mathcal{A} = \int_a^b |f(x) - g(x)| dx$ |
+
+## IX. Méthodologie — stratégie de résolution
+
+| Type de problème | Méthode recommandée |
+|---|---|
+| Calculer une intégrale définie | 1. Trouver une primitive $\displaystyle F$ de $\displaystyle f$ <br> 2. Calculer $\displaystyle F(b) - F(a)$ |
+| Intégrale d'un produit | Intégration par parties (choisir $\displaystyle u$ selon « ILATE ») |
+| Calculer une aire sous la courbe | Vérifier que $\displaystyle f(x) \geq 0$, puis calculer $\displaystyle\int_a^b f(x) dx$ |
+| Calculer l'aire entre deux courbes | 1. Trouver les points d'intersection <br> 2. Déterminer les positions relatives <br> 3. Calculer $\displaystyle\int_a^b |f(x) - g(x)| dx$ |
+| Calculer une valeur moyenne | Calculer $\displaystyle\int_a^b f(x) dx$, puis diviser par $\displaystyle (b-a)$ |

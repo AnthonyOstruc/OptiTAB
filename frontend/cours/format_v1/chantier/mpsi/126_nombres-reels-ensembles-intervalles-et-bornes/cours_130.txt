@@ -1,0 +1,302 @@
+Titre: Nombres réels
+
+<!-- optitab:1 -->
+## I. Ensembles numériques usuels
+
+### Panorama des ensembles classiques
+
+::: definition
+- $\mathbb{N} = \{0, 1, 2, 3, \ldots\}$ : ensemble des entiers naturels
+- $ \displaystyle \mathbb{Z} = \{\ldots, -2, -1, 0, 1, 2, \ldots\}$ : entiers relatifs
+- $ \displaystyle \mathbb{D} = \left\{\frac{a}{10^n} \mid a \in \mathbb{Z}, n \in \mathbb{N}\right\}$ : décimaux finis
+- $ \displaystyle \mathbb{Q} = \left\{\frac{p}{q} \mid p \in \mathbb{Z}, q \in \mathbb{Z} \setminus \{0\}\right\}$ : rationnels
+- $\mathbb{R}$ : nombres réels, contenant rationnels et irrationnels (ex : $\sqrt{2}, \pi$ )
+:::
+
+::: notation
+- $ \displaystyle \mathbb{Q}^c = \mathbb{R} \setminus \mathbb{Q}$ : irrationnels
+- $\mathbb{R}_+ = [0, +\infty[$, $\mathbb{R}^\ast = \mathbb{R} \setminus \{0\}$, $\mathbb{R}_- = ]-\infty, 0]$
+- Inclusions : $\mathbb{N} \subset \mathbb{Z} \subset \mathbb{D} \subset \mathbb{Q} \subset \mathbb{R}$ et $\mathbb{R} \subset \mathbb{C}$
+:::
+
+::: notation Double notation des intervalles
+- $]a, b[ = (a, b)$ et $[a, b[ = [a, b)$ : la notation française avec crochets et la notation internationale coexistent
+- $]-\infty, b[ = (-\infty, b)$, $]a, +\infty[ = (a, +\infty)$ : $-\infty$ et $+\infty$ ne sont pas des réels mais des symboles utiles pour écrire les bornes
+- Toujours vérifier quelles bornes sont incluses (crochet) ou exclues (parenthèse) pour éviter les confusions en exercices
+:::
+
+::: propriete
+- $(\mathbb{Z}, +)$ est un groupe abélien, $(\mathbb{Q}, +, \times)$ un corps, $(\mathbb{R}, +, \times)$ un corps ordonné complet
+- Chaque $x \in \mathbb{R}$ possède une écriture décimale (éventuellement infinie non périodique pour les irrationnels)
+- Un nombre est **rationnel** si et seulement si son écriture décimale est finie ou infinie périodique (un motif se répète indéfiniment)
+- Les ensembles $\mathbb{Q}$ et $\mathbb{R} \setminus \mathbb{Q}$ sont denses dans $\mathbb{R}$ (voir Section VII) ; tout réel est limite d'une suite de rationnels
+:::
+
+::: exemple
+- $0{,}125 = \frac{125}{1000} = \frac{1}{8} \in \mathbb{D} \subset \mathbb{Q}$ : écriture décimale finie (rationnel)
+- $\frac{1}{3} = 0{,}333\ldots = 0{,}\overline{3} \in \mathbb{Q}$ : écriture décimale infinie périodique (le chiffre 3 se répète)
+- $\frac{2}{7} = 0{,}285714285714\ldots = 0{,}\overline{285714} \in \mathbb{Q}$ : période de 6 chiffres (rationnel)
+- $\frac{5}{6} = 0{,}8333\ldots = 0{,}8\overline{3} \in \mathbb{Q}$ : partie non périodique puis période
+- $\sqrt{2} = 1{,}41421356\ldots \notin \mathbb{Q}$ : écriture décimale infinie **non périodique** (irrationnel)
+- $\pi = 3{,}14159265\ldots$ et $e = 2{,}71828\ldots$ : transcendants, donc irrationnels (pas de période)
+- $-7 \in \mathbb{Z}$, $\frac{22}{7} = 3{,}\overline{142857} \in \mathbb{Q}$ (approximation rationnelle de $\pi$)
+- $0{,}5 = \frac{1}{2} \in \mathbb{D}$, mais $\frac{1}{3} \notin \mathbb{D}$ car non décimal fini
+:::
+
+## II. Ordre et opérations sur \(\mathbb{R}\)
+
+### Compatibilité de l'ordre avec les opérations
+
+::: definition
+Pour $x, y \in \mathbb{R}$, on dit que $x \leq y$ si $y - x \in \mathbb{R}_+$.
+
+La relation $\leq$ est réflexive, antisymétrique, transitive et totale sur $\mathbb{R}$.
+:::
+
+::: propriete
+- $x \leq y \Rightarrow x + z \leq y + z$ pour tout $z \in \mathbb{R}$
+- Si $x \leq y$ et $0 \leq z$, alors $xz \leq yz$
+- Si $x \leq y$ et $z \leq t$, alors $x + z \leq y + t$
+- $x \leq y \Rightarrow -y \leq -x$, d'où $x \leq y \Leftrightarrow -y \leq -x$
+:::
+
+::: definition Axiome d'Archimède
+Pour tout réel $\varepsilon > 0$, il existe un entier naturel $n$ tel que $\frac{1}{n} < \varepsilon$. Équivalent : pour tout réel $x$, il existe $n \in \mathbb{N}$ avec $n > x$.
+
+Cet axiome relie intimement les entiers aux réels et permet les encadrements par défaut/excès ou l'existence des suites $(\frac{1}{n})$ décroissantes vers 0.
+:::
+
+::: methode Comparer deux réels
+1. Exprimer la différence $y - x$ sous une forme factorisée ou simplifiée
+2. Utiliser des encadrements connus (ex : $-1 \leq \sin x \leq 1$)
+3. Exploiter la monotonie de fonctions usuelles (croissance de $e^x$, $\ln x$, etc.)
+4. Conclure sur le signe de la différence pour déterminer l'ordre
+:::
+
+::: exemple
+- Comparer $3$ et $2{,}9$ : $3 - 2{,}9 = 0{,}1 > 0$, donc $3 > 2{,}9$
+- Si $x \leq 5$ et $y \leq 3$, alors $x + y \leq 8$ (addition membre à membre)
+- Si $2 \leq x \leq 4$, alors $6 \leq 3x \leq 12$ (multiplication par $3 > 0$)
+- Pour montrer $\frac{1}{n+1} < \frac{1}{n}$ : calculer $\frac{1}{n} - \frac{1}{n+1} = \frac{1}{n(n+1)} > 0$
+:::
+
+## III. Intervalles, voisinages et parties de \(\mathbb{R}\)
+
+### Typologie et représentations
+
+::: definition
+Un sous-ensemble $I \subset \mathbb{R}$ est un intervalle si, pour tous $a, b \in I$ et tout $x \in \mathbb{R}$, $a \leq x \leq b$ implique $x \in I$ .
+:::
+
+::: demonstration Proposition caractéristique
+Une partie $X \subset \mathbb{R}$ est un intervalle si et seulement si, pour tous $a, b \in X$ tels que $a \leq b$, on a $[a, b] \subset X$.
+:::
+
+::: notation
+- Intervalle ouvert : $ \displaystyle ]a, b[ = \{x \in \mathbb{R} \mid a < x < b\}$
+- Intervalle fermé : $ \displaystyle [a, b] = \{x \in \mathbb{R} \mid a \leq x \leq b\}$
+- Intervalles semi-ouverts : $[a, b[$ et $]a, b]$
+- Intervalles infinis : $]-\infty, b[$, $]a, +\infty[$, $\mathbb{R}$
+- Voisinage de $a$ : tout intervalle ouvert contenant $a$ (petit voisinage standard $]a-\varepsilon, a+\varepsilon[$)
+:::
+
+::: propriete
+- L'intersection de deux intervalles est un intervalle (éventuellement vide)
+- Tout segment $[a, b]$ est fermé et borné (les arguments de compacité seront vus plus tard)
+:::
+
+::: exemple
+- $]-2, 3]$ sur la droite réelle : point ouvert en $-2$, point plein en $3$, portion colorée entre les deux
+- $[0, 1] \cap [0{,}5, 2] = [0{,}5, 1]$ : intersection de deux intervalles
+- $\mathbb{R}_+ = [0, +\infty[$ est un intervalle fermé à gauche, ouvert à droite
+- Un voisinage de $2$ est par exemple $]1{,}9, 2{,}1[$ ou $]1, 3[$
+- $\{1, 2, 3\}$ n'est pas un intervalle (ne contient pas tous les réels entre 1 et 3)
+:::
+
+::: notation
+On adjoint souvent deux symboles $-\infty$ et $+\infty$ (non réels) pour écrire des intervalles illimités ou parler de limites : on note alors $\overline{\mathbb{R}} = \mathbb{R} \cup \{-\infty, +\infty\}$.
+
+Aucune opération algébrique n'est définie ici ; ces symboles servent uniquement dans les raisonnements d'analyse.
+:::
+
+## IV. Valeur absolue et distance
+
+### Outil central pour mesurer des écarts
+
+::: definition
+$|x| = \begin{cases} x & \text{si } x \geq 0 \\ -x & \text{si } x < 0 \end{cases}$, distance de $x$ à l'origine.
+
+::: formule
+$|x - y|$ mesure la distance entre $x$ et $y$
+:::
+:::
+
+::: propriete
+- $|x| \geq 0$ et $|x| = 0 \Leftrightarrow x = 0$
+- $|xy| = |x| \cdot |y|$, $\left|\frac{x}{y}\right| = \frac{|x|}{|y|}$ si $y \neq 0$
+- **Inégalité triangulaire :** $|x + y| \leq |x| + |y|$
+- $|x - y| \geq \big| |x| - |y| \big|$ (inégalité triangulaire inversée)
+:::
+
+::: methode Manipuler une valeur absolue
+1. Identifier les cas selon le signe (résolution par analyse de signe)
+2. Utiliser l'inégalité triangulaire pour encadrer ou montrer la convergence d'une suite
+3. Reformuler $|x - a| < r$ comme $x \in ]a - r, a + r[$ pour interprétation géométrique
+4. Pour des démonstrations, passer par les carrés si les signes posent problème
+:::
+
+::: exemple
+- Résoudre $|2x - 3| \leq 5$ : on obtient $-5 \leq 2x - 3 \leq 5$, soit $-1 \leq x \leq 4$
+- $|\pi - 3| \approx 0{,}14$ mesure la distance entre $\pi$ et $3$
+- $ \displaystyle |(-3) \times 4| = |-12| = 12 = 3 \times 4 = |-3| \times |4|$ (multiplicativité)
+- $|3 + 4| = 7 = 3 + 4 = |3| + |4|$ (égalité dans l'inégalité triangulaire si même signe)
+- $|3 - 5| = |-2| = 2$ mais $|3| + |-5| = 8$ : inégalité stricte $2 < 8$
+- $|x - 2| < 0{,}1$ équivaut à $x \in ]1{,}9, 2{,}1[$ (voisinage de 2 de rayon 0,1)
+:::
+
+## V. Parties majorées, minorées, borne supérieure et inférieure
+
+### Bornes d'une partie de \(\mathbb{R}\)
+
+::: definition
+- $X \subset \mathbb{R}$ est **majorée** s'il existe $M \in \mathbb{R}$ tel que $\forall x \in X, x \leq M$
+- $X$ est **minorée** s'il existe $m$ tel que $\forall x \in X, m \leq x$
+- $\sup X$ : plus petite borne supérieure de $X$ (si $X$ est non vide et majoré)
+- $\inf X$ : plus grande borne inférieure de $X$ (si $X$ est non vide et minoré)
+:::
+
+::: notation
+On note $\sup X$ la borne supérieure d'une partie $X \subset \mathbb{R}$, et $\inf X$ sa borne inférieure (lorsqu'elles existent).
+:::
+
+::: propriete Caractérisations
+- $ \displaystyle \beta = \sup X \Leftrightarrow \begin{cases} \forall x \in X, x \leq \beta \\ \forall \varepsilon > 0, \exists x \in X : \beta - \varepsilon < x \end{cases}$
+- $ \displaystyle \alpha = \inf X \Leftrightarrow \begin{cases} \forall x \in X, \alpha \leq x \\ \forall \varepsilon > 0, \exists x \in X : x < \alpha + \varepsilon \end{cases}$
+- Si $X$ est un intervalle fermé borné $[a, b]$, alors $\inf X = a$ et $\sup X = b$
+:::
+
+::: demonstration Esquisse de démonstration
+L'unicité de $\sup X$ découle de l'ordre total : deux bornes supérieures $\beta_1, \beta_2$ vérifient $\beta_1 \leq \beta_2$ et $\beta_2 \leq \beta_1$, d'où $\beta_1 = \beta_2$.
+
+L'existence dans $\mathbb{R}$ est garantie par la propriété de complétude (voir Section VI).
+:::
+
+::: exemple
+- Pour $X = \{x \in \mathbb{R} \mid x^2 \leq 2\}$, on a $X = [-\sqrt{2}, \sqrt{2}]$, donc $\sup X = \sqrt{2}$ et $\inf X = -\sqrt{2}$
+- Pour $A = ]0, 1[$, on a $\sup A = 1$ et $\inf A = 0$ (bornes non atteintes)
+- $B = \left\{\frac{1}{n} \mid n \in \mathbb{N}^\ast\right\} = \{1, \frac{1}{2}, \frac{1}{3}, \ldots\}$ : $\sup B = 1$ (atteint), $\inf B = 0$ (non atteint)
+- $C = \{(-1)^n + \frac{1}{n} \mid n \geq 1\}$ : $\sup C \approx 1$ et $\inf C = -1$
+- $\mathbb{N}$ est minoré par 0 ($\inf \mathbb{N} = 0$) mais non majoré ($\sup \mathbb{N} = +\infty$)
+:::
+
+## VI. Complétude de \(\mathbb{R}\) et propriétés dérivées
+
+### Droite réelle achevée
+
+::: methode
+::: formule
+Toute partie non vide et majorée de $\mathbb{R}$ admet une borne supérieure dans $\mathbb{R}$.
+:::
+
+Cette propriété caractérise la droite réelle achevée $\mathbb{R}$ par rapport aux rationnels.
+:::
+
+::: propriete Conséquences importantes
+- Théorème des segments emboîtés : si $(I_n)$ est une suite décroissante de segments non vides, alors $\bigcap_{n \geq 0} I_n \neq \varnothing$
+- Toute suite croissante et majorée converge dans $\mathbb{R}$ (vers sa borne supérieure) — admis ici, démontré et exploité dans le chapitre *Suites*
+- Toute suite décroissante et minorée converge dans $\mathbb{R}$ (vers son infimum) — admis ici, démontré dans le chapitre *Suites*
+:::
+
+::: demonstration (idée) du théorème des segments emboîtés
+Poser $a_n = \inf I_n$ et $b_n = \sup I_n$. Les suites $(a_n)$ et $(b_n)$ sont respectivement croissante et décroissante, bornées, donc convergentes.
+
+La limite commune $\ell$ appartient à chaque $I_n$, ce qui prouve l'intersection non vide.
+:::
+
+::: exemple
+- Segments emboîtés $I_n = [0, \frac{1}{n}]$ : $I_1 \supset I_2 \supset I_3 \supset \ldots$, leur intersection est $\{0\}$
+- La suite $u_n = 1 + \frac{1}{2} + \frac{1}{4} + \ldots + \frac{1}{2^n}$ est croissante et majorée par 2, donc converge vers $\sup\{u_n\} = 2$
+- Dans $\mathbb{Q}$, l'ensemble $\{x \in \mathbb{Q} \mid x^2 < 2\}$ est majoré mais n'admet pas de borne supérieure dans $\mathbb{Q}$ (car $\sqrt{2} \notin \mathbb{Q}$) : illustration que $\mathbb{Q}$ n'est pas complet
+:::
+
+## VII. Densité des rationnels et des irrationnels, approximations
+
+### Remplir la droite réelle
+
+::: definition
+Un ensemble $E \subset \mathbb{R}$ est **dense** dans $\mathbb{R}$ si tout intervalle ouvert contient un élément de $E$.
+:::
+
+::: propriete
+- $\mathbb{Q}$ est dense dans $\mathbb{R}$ : entre deux réels distincts, on trouve un rationnel
+- $\mathbb{R} \setminus \mathbb{Q}$ est dense : entre deux réels distincts, on trouve un irrationnel
+- En particulier, tout intervalle ouvert non vide de $\mathbb{R}$ contient au moins un rationnel et au moins un irrationnel
+- Conséquence : tout intervalle ouvert contient une infinité de rationnels et d'irrationnels
+:::
+
+::: demonstration (idée) de la densité de \(\mathbb{Q}\)
+Pour $a < b$, choisir $n$ tel que $n(b - a) > 1$. Il existe $k \in \mathbb{Z}$ avec $na < k < nb$, d'où $\frac{k}{n} \in \mathbb{Q}$ et $a < \frac{k}{n} < b$.
+:::
+
+::: definition Approximations décimales par défaut et par excès
+Pour un réel $x$ et un entier $n \geq 1$, on définit :
+
+::: formule
+$$
+\begin{aligned}
+x_n^- &= \frac{\lfloor 10^n x \rfloor}{10^n} \quad , \quad x_n^+ \\
+&= \frac{\lceil 10^n x \rceil}{10^n} \quad , \quad x_n^+ - x_n^- \\
+&= 10^{-n}
+\end{aligned}
+$$
+:::
+
+$x_n^-$ (approximation par défaut) et $x_n^+$ (par excès) encadrent $x$ avec une précision $10^{-n}$ : on a $x_n^- \leq x \leq x_n^+$ et $x \in [x_n^-, x_n^+]$.
+
+Ces suites de décimaux rationnels montrent en particulier que tout réel est limite d'une suite de rationnels.
+:::
+
+::: propriete Partie entière et plafond
+- $\lfloor x \rfloor$ (partie entière) est l'unique entier tel que $\lfloor x \rfloor \leq x < \lfloor x \rfloor + 1$
+- $\lceil x \rceil$ (plafond) est l'unique entier tel que $\lceil x \rceil - 1 < x \leq \lceil x \rceil$
+- On a $\lfloor x \rfloor \leq x \leq \lceil x \rceil$, ce qui fournit des encadrements efficaces, notamment pour appliquer l'axiome d'Archimède.
+:::
+
+::: methode Approximation décimale d'un réel
+1. Encadrer le nombre dans un segment de longueur $1$
+2. Diviser par 10 et répéter (méthode des dichotomies décimales)
+3. Associer au rang $n$ une approximation à $10^{-n}$ près par défaut et par excès
+4. Vérifier la précision en contrôlant la longueur de l'intervalle restant
+:::
+
+::: exemple
+- Approximer $\sqrt{2}$ à $10^{-3}$ près : $1{,}414^2 = 1{,}999396$, $1{,}415^2 = 2{,}002225$, donc $\sqrt{2} \in [1{,}414, 1{,}415]$
+- Entre 0 et 1, trouver un rationnel : $\frac{1}{2} \in \mathbb{Q}$ et $0 < \frac{1}{2} < 1$
+- Entre $\pi$ et $\pi + 1$, il existe $\frac{22}{7} \approx 3{,}142857$ (rationnel) et aussi $\pi + \frac{\sqrt{2}}{10}$ (irrationnel)
+- Partie entière : $\lfloor 3{,}7 \rfloor = 3$, $\lfloor -2{,}3 \rfloor = -3$, $\lceil 3{,}7 \rceil = 4$, $\lceil -2{,}3 \rceil = -2$
+- Pour $x = \pi \approx 3{,}14159$, on a $x_1^- = 3{,}1$, $x_1^+ = 3{,}2$ et $x_2^- = 3{,}14$, $x_2^+ = 3{,}15$
+:::
+
+## VIII. Conseils méthodologiques et erreurs à éviter
+
+### Boîte à outils pour les exercices
+
+::: methode Prouver l'existence d'une borne
+1. Identifier une majoration simple (inégalités usuelles, majoration terme à terme)
+2. Montrer que la majoration est optimale en construisant une suite qui l'atteint asymptotiquement
+3. Conclure que la valeur atteinte est la borne supérieure
+:::
+
+::: remarque Bonnes pratiques
+- Toujours vérifier si l'ensemble étudié est non vide avant de parler de bornes
+- Privilégier les reformulations géométriques (segments, distances) pour clarifier les inégalités
+- Utiliser la densité des rationnels pour construire des suites d'approximations
+- Exploiter la complétude pour justifier des limites de suites monotones
+:::
+
+::: attention
+- Confondre majoration et maximum : une borne supérieure n'est pas forcément atteinte
+- Oublier que les rationnels ne satisfont pas la propriété de complétude (ex : $\sqrt{2} \notin \mathbb{Q}$)
+- Utiliser une approximation décimale sans préciser la précision demandée
+- Négliger les cas d'égalité dans les inégalités triangulaires
+:::

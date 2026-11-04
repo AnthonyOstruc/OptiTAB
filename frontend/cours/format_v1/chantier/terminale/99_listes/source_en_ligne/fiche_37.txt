@@ -1,0 +1,81 @@
+Titre: Résumé : Les Listes en Python
+
+<!-- optitab:1 -->
+::: objectifs
+Retenir l’essentiel sur les listes en Python : création, indices, modification, parcours et construction. Programme de Terminale.
+:::
+
+## I. Créer une liste et lire ses éléments
+
+::: definition
+Une **liste** est une suite **ordonnée** et **modifiable** de valeurs, écrite entre crochets : `notes = [12, 15, 18, 10, 14]`. Le premier élément a l’indice $0$, le dernier l’indice `len(notes) - 1`, aussi noté `-1`.
+:::
+
+[IMAGE_1]
+
+| Écriture | Valeur |
+|---|---|
+| `notes[0]` | `12` (premier élément) |
+| `notes[-1]` | `14` (dernier élément) |
+| `len(notes)` | `5` (nombre d’éléments) |
+| `notes[5]` | erreur `IndexError` |
+
+## II. Modifier une liste
+
+| Instruction | Effet sur `L` |
+|---|---|
+| `L[i] = v` | remplace l’élément d’indice `i` par `v` |
+| `L.append(v)` | ajoute `v` à la fin |
+| `L.insert(i, v)` | insère `v` à l’indice `i` |
+| `L.remove(v)` | supprime la première valeur `v` |
+| `L.pop()` | retire et renvoie le dernier élément |
+| `L.sort()` | trie `L` dans l’ordre croissant |
+| `L.reverse()` | inverse l’ordre des éléments |
+
+## III. S’informer sur une liste
+
+| Écriture | Renvoie |
+|---|---|
+| `sum(L)`, `min(L)`, `max(L)` | la somme, le plus petit, le plus grand élément |
+| `x in L` | `True` si `x` est dans `L`, sinon `False` |
+| `L.index(x)` | l’indice de la première occurrence de `x` |
+| `L.count(x)` | le nombre d’occurrences de `x` |
+| `sorted(L)` | une copie triée (`L` reste inchangée) |
+
+## IV. Parcourir et construire
+
+::: methode Parcourir
+- Par valeurs, quand seules les valeurs comptent : `for x in L:`
+- Par indices, quand la position compte : `for i in range(len(L)):` puis `L[i]`
+:::
+
+```python
+notes = [14, 12, 16, 10, 18]
+somme = 0
+for note in notes:
+    somme = somme + note
+print(somme / len(notes))
+```
+
+```console
+14.0
+```
+
+::: methode Construire
+- Par ajouts successifs : `L = []`, puis `L.append(…)` dans une boucle.
+- En compréhension : `[k**2 for k in range(1, 6)]` vaut `[1, 4, 9, 16, 25]`.
+- Avec un filtre : `[x for x in L if x >= 12]` garde les éléments supérieurs ou égaux à $12$.
+:::
+
+## V. Les pièges à éviter
+
+::: attention Les 4 erreurs classiques
+1. Oublier que le premier indice est $0$ : `L[len(L)]` n’existe pas.
+2. Écrire `L = L.sort()` : `sort` ne renvoie rien, `L` vaut alors `None`.
+3. Croire que `M = L` copie la liste : écrire `M = L.copy()`.
+4. Appeler `remove` ou `index` sur une valeur absente : erreur, tester d’abord `if x in L:`.
+:::
+
+::: remarque Réflexe
+Besoin de la position → parcours par indices ; sinon, parcours par valeurs. Pour retirer des éléments, construire une nouvelle liste par filtrage plutôt que supprimer pendant le parcours.
+:::

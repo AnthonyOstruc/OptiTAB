@@ -1,0 +1,62 @@
+Titre: Résumé : Algorithmique et programmation
+
+<!-- optitab:1 -->
+## I. Scripts et variables
+
+- Un **script** est une pile de blocs, déclenchée par un **événement** et exécutée **de haut en bas**.
+- Chaque famille de blocs a sa couleur :
+
+[IMAGE_1]
+
+- « mettre x à … » **remplace** la valeur de x ; « ajouter … à x » la **modifie** (« ajouter −5 » la diminue).
+- **Entrée** : « demander … et attendre » range la valeur tapée dans **réponse**. **Sortie** : « dire … ».
+- Exécuter à la main : un **tableau d'exécution**, une colonne par variable, une ligne par bloc ou par tour.
+- **Programme de calcul** : l'exécuter avec une lettre $x$ donne une expression ; on la réduit pour démontrer, on résout une équation pour retrouver le nombre de départ.
+
+## II. Instructions conditionnelles
+
+- « si condition alors … sinon … » : **une seule** branche est exécutée.
+- Conditions : « < », « = », « > » ; « et », « ou », « non ».
+- Toujours tester la **valeur frontière** : $10 < 10$ est faux. « $x \geqslant 18$ » s'écrit « non (x < 18) ».
+- Plusieurs cas : des tests placés les uns dans les autres.
+
+## III. Les boucles
+
+| Boucle | Fonctionnement |
+|---|---|
+| répéter n fois | exactement $n$ tours |
+| répéter jusqu'à condition | condition testée avant chaque tour ; arrêt dès qu'elle est vraie |
+| répéter indéfiniment | ne s'arrête jamais |
+
+- Bloc **dans** la boucle : exécuté à chaque tour ; bloc **après** : une seule fois.
+- Boucles imbriquées : on **multiplie** les nombres de tours.
+- Une variable qui n'évolue pas vers la condition d'arrêt donne une **boucle infinie**.
+
+## IV. Le lutin et le stylo
+
+- Scène : x de $-240$ à $240$, y de $-180$ à $180$, centre $(0\ ;\ 0)$.
+- Orientation : $0$ haut, $90$ droite, $180$ bas, $-90$ gauche.
+
+[IMAGE_2]
+
+- « s'orienter à » **impose** l'orientation ; « tourner ↻ » (sens des aiguilles d'une montre) ou « tourner ↺ » (sens inverse) **ajoute** un angle.
+- Le lutin ne trace que si le stylo est **en position d'écriture**.
+- Polygone régulier à $n$ côtés : répéter $n$ fois « avancer ; tourner de $\dfrac{360}{n}$ degrés » (angle **extérieur**) : carré $90^\circ$, triangle équilatéral $120^\circ$, hexagone $60^\circ$.
+
+## V. Blocs personnalisés, événements, messages
+
+- Bloc personnalisé : « définir nom (paramètre) » ; chaque appel donne une valeur au paramètre.
+- Événements : drapeau, touche pressée, message reçu ; un script ne démarre qu'à **son** événement.
+- « envoyer à tous … » déclenche les scripts « quand je reçois … » ; avec « et attendre », l'envoyeur attend qu'ils soient terminés.
+
+::: attention Les erreurs classiques
+1. Confondre « mettre » (remplacer) et « ajouter » (modifier).
+2. Croire que « répéter jusqu'à x > 100 » s'arrête à $100$ : elle s'arrête à la première valeur qui dépasse $100$.
+3. Tourner de l'angle **intérieur** d'un polygone au lieu de l'angle extérieur.
+4. Oublier « stylo en position d'écriture » : rien n'est tracé.
+5. Conclure qu'un programme est toujours juste après un ou deux essais : seul le calcul littéral le démontre.
+:::
+
+::: conseil Réflexe
+Pour un script de calcul, noter les valeurs des variables pas à pas, puis écrire l'expression avec une lettre. Pour un tracé, noter à chaque étape la **position** et l'**orientation** du lutin.
+:::

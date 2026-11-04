@@ -1,0 +1,129 @@
+Titre: Programmes de calcul
+
+<!-- optitab:1 -->
+::: objectifs
+- Exécuter un programme de calcul en notant chaque résultat intermédiaire.
+- Traduire une suite d’instructions par une expression.
+- Retrouver un nombre initial en remontant les étapes.
+- Comparer des programmes et expliquer une régularité.
+:::
+
+::: prerequis
+Connaître les quatre opérations et lire une expression avec des parenthèses.
+:::
+
+## I. Comprendre la notion de programme
+
+::: definition Programme de calcul
+Un programme de calcul est une suite ordonnée d’instructions. On choisit un nombre de départ ; chaque instruction agit sur le résultat obtenu à l’étape précédente. Le dernier nombre calculé est le résultat final.
+:::
+
+::: exemple
+Programme : choisir un nombre, ajouter 3, multiplier le résultat par 2, puis retirer 4. Avec le départ 5 :
+
+$$5+3=8$$
+$$8\times2=16$$
+$$16-4=12$$
+
+Les nombres successifs sont 5, 8, 16 et 12. Écrire $5=8=16=12$ serait faux : ce sont des étapes successives, pas des nombres égaux.
+:::
+
+::: methode Exécuter sans oublier d’étape
+Lire toutes les consignes, entourer le nombre initial, puis noter un résultat par instruction. Garder les éventuelles unités dans un problème concret. Vérifier qu’aucune opération n’a été sautée ni appliquée deux fois.
+:::
+
+## II. Traduire avec des parenthèses
+
+::: propriete Regrouper ce qui doit être calculé d’abord
+Les parenthèses indiquent un groupe à calculer avant de l’utiliser dans la suite. « Ajouter 3 puis multiplier le résultat par 2 » s’écrit $(5+3)\times2$ pour un départ 5.
+:::
+
+::: exemple
+Le programme précédent se traduit par :
+
+$$(5+3)\times2-4=12$$
+
+Sans les parenthèses, $5+3\times2-4=7$ ne traduit pas la même suite d’instructions.
+:::
+
+::: attention Portée d’une instruction
+« Multiplier le résultat par 2 » concerne toute la somme déjà obtenue. Ce n’est pas seulement multiplier le dernier nombre ajouté. On peut relire l’expression de l’intérieur des parenthèses vers l’extérieur pour contrôler la traduction.
+:::
+
+## III. L’ordre des opérations change le résultat
+
+::: exemple Comparer deux programmes
+Programme A : ajouter 3, puis multiplier par 2. Programme B : multiplier par 2, puis ajouter 3. Avec le départ 5 :
+
+$$A:(5+3)\times2=16$$
+$$B:5\times2+3=13$$
+
+Les résultats sont différents : dans A, les 3 unités ajoutées sont aussi doublées ; dans B, elles sont ajoutées après le doublement.
+:::
+
+::: remarque Justifier la différence
+Il ne suffit pas de dire « les résultats sont différents ». On précise quelle quantité est multipliée, quelle quantité est ajoutée et à quel moment. On n’affirme pas non plus que changer l’ordre modifie toujours le résultat : certaines opérations peuvent donner le même résultat dans un autre ordre.
+:::
+
+## IV. Retrouver le nombre de départ
+
+::: methode Remonter les instructions
+1. Partir du résultat final.
+2. Défaire la dernière opération, puis l’avant-dernière, jusqu’au début.
+3. Remplacer une addition par une soustraction, et inversement.
+4. Remplacer une multiplication par une division, et inversement, avec un nombre non nul.
+5. Refaire le programme dans le sens initial pour vérifier.
+:::
+
+::: exemple
+Programme : multiplier le nombre initial par 3, puis ajouter 7. Le résultat est 19.
+
+On retire d’abord 7 : $19-7=12$. Puis on divise par 3 : $12\div3=4$. Le nombre initial est 4. Vérification : $4\times3+7=19$.
+:::
+
+::: exemple Trois opérations à remonter
+Programme : ajouter 10, multiplier par 2, puis retirer 6. Le résultat vaut 20. On effectue successivement $20+6=26$, $26\div2=13$, puis $13-10=3$. Vérification : $(3+10)\times2-6=20$.
+:::
+
+::: attention Inverser l’ordre aussi
+Pour remonter un programme, on inverse les opérations ET leur ordre. Retirer 10 avant de défaire les deux dernières consignes ne retrouve pas le départ du programme précédent. Un programme comportant une multiplication par 0 ne permet pas de retrouver un départ unique : tous les nombres sont alors transformés en 0 à cette étape.
+:::
+
+## V. Explorer un programme avec un tableau
+
+::: exemple
+Programme : ajouter 3 puis multiplier par 2.
+
+| Départ | Après l’addition | Résultat |
+|---|---|---|
+| 0 | 3 | 6 |
+| 1 | 4 | 8 |
+| 2 | 5 | 10 |
+| 10 | 13 | 26 |
+
+Quand le départ augmente de 1, la somme augmente de 1, puis la multiplication par 2 transforme cette variation en une augmentation de 2.
+:::
+
+::: attention Une régularité à expliquer
+Le résultat ne double pas quand le départ double : les départs 1 et 2 donnent 8 et 10, et $2\times8=16\ne10$. Observer une différence constante ne suffit pas à conclure à une proportionnalité.
+:::
+
+## VI. Construire un programme qui traduit une situation
+
+::: exemple Prix d’une activité
+Une activité coûte 3 € par séance et 5 € d’inscription, payés une fois. Le programme « multiplier le nombre de séances par 3, puis ajouter 5 » calcule le prix. Pour 8 séances, $8\times3+5=29$ €.
+
+Si un élève paie 35 €, on retire l’inscription : $35-5=30$ €, puis on divise par le tarif : $30\div3=10$. Il suit 10 séances.
+:::
+
+::: methode Tester puis justifier
+Pour vérifier un programme proposé, essayer un départ facile, puis un autre. Un contre-exemple suffit à montrer qu’une règle est fausse. Pour expliquer une règle valable pour tous les départs, analyser ce que chaque opération fait au nombre et aux quantités ajoutées.
+:::
+
+::: exemple Raccourcir une suite
+« Multiplier par 2, ajouter 6, puis diviser par 2 » revient à ajouter 3 : la première multiplication est annulée par la division, tandis que les 6 unités ajoutées deviennent 3 unités. Cette explication dépasse la simple observation de quelques essais.
+:::
+
+::: retenir
+Suivre l’ordre, noter les résultats intermédiaires et utiliser des parenthèses adaptées. Pour retrouver le départ, remonter les consignes avec leurs opérations inverses, puis vérifier. Un tableau aide à chercher ; une explication donne le sens de la règle.
+:::

@@ -1,0 +1,385 @@
+Titre: Notion de liste
+
+<!-- optitab:1 -->
+::: objectifs
+Générer une liste en extension, par ajouts successifs avec `append` et en compréhension ; lire et modifier ses éléments grâce à leurs indices ; parcourir une liste par ses éléments ou par ses indices ; utiliser des listes en mathématiques : termes d’une suite, valeurs d’une fonction, résultats d’une simulation, coefficients directeurs de sécantes.
+:::
+
+::: prerequis
+Programme de Seconde : variables et affectation, fonctions (`def`, `return`), instruction conditionnelle `if`, boucles `for` (avec `range`) et `while`. La notion de liste est la seule notion d’algorithmique nouvelle en Première.
+:::
+
+## I. Qu’est-ce qu’une liste ?
+
+::: definition Liste
+Une **liste** est une suite finie et **ordonnée** de valeurs. En Python, on l’écrit entre crochets, les éléments étant séparés par des virgules : `[12, 15, 9, 14, 10]`. La **liste vide** s’écrit `[]`.
+:::
+
+::: propriete Longueur d’une liste
+`len(L)` renvoie le **nombre d’éléments** de la liste `L`. La liste vide a pour longueur $0$.
+:::
+
+```python
+notes = [12, 15, 9, 14, 10]
+vide = []
+print(notes)
+print(len(notes), len(vide))
+```
+
+```console
+[12, 15, 9, 14, 10]
+5 0
+```
+
+::: remarque Pourquoi des listes ?
+Une variable ne garde qu’une valeur : à chaque affectation, l’ancienne valeur est perdue. Une liste garde **toutes** les valeurs calculées, dans l’ordre : les termes d’une suite, les valeurs d’une fonction, les résultats d’une simulation… On peut ensuite les relire, les compter, en faire la moyenne ou les représenter.
+:::
+
+## II. Éléments et indices
+
+### 1. Lire un élément
+
+::: definition Indice
+Chaque élément d’une liste est repéré par sa position, appelée **indice**. Le premier élément a l’indice $0$ : une liste de $n$ éléments a pour indices $0$, $1$, …, $n-1$. L’élément d’indice `i` de la liste `L` s’écrit `L[i]`.
+:::
+
+[IMAGE_1]
+
+::: propriete Indices négatifs
+Python compte aussi à partir de la fin : `L[-1]` est le **dernier** élément, `L[-2]` l’avant-dernier, etc. Pour une liste de $n$ éléments, `L[-1]` désigne le même élément que `L[n - 1]`.
+:::
+
+```python
+notes = [12, 15, 9, 14, 10]
+print(notes[0], notes[2])
+print(notes[-1], notes[-2])
+print(notes[len(notes) - 1])
+```
+
+```console
+12 9
+10 14
+10
+```
+
+::: attention Indice hors de la liste
+Avec $5$ éléments, les indices vont de $0$ à $4$ (ou de $-5$ à $-1$). L’instruction `print(notes[5])` arrête le programme sur l’erreur `IndexError: list index out of range` (indice hors de la liste). Le dernier élément s’obtient par `notes[-1]` ou `notes[len(notes) - 1]`, jamais par `notes[len(notes)]`.
+:::
+
+### 2. Modifier un élément
+
+::: propriete Affectation d’un élément
+`L[i] = v` remplace l’élément d’indice `i` par la valeur `v`. La longueur de la liste ne change pas.
+:::
+
+```python
+notes = [12, 15, 9, 14, 10]
+notes[2] = 11
+notes[-1] = notes[-1] + 2
+print(notes)
+```
+
+```console
+[12, 15, 11, 14, 12]
+```
+
+### 3. Indices et rangs d’une suite
+
+::: methode Faire correspondre indice et rang
+Si la liste `u` contient les termes $u_0$, $u_1$, $u_2$, … d’une suite, dans cet ordre, alors l’élément `u[n]` est le terme $u_n$ : **l’indice est le rang**.
+
+Si la suite commence au rang $1$, la liste contient $u_1$, $u_2$, … : il y a un décalage, `u[0]` est $u_1$ et, plus généralement, `u[n - 1]` est $u_n$.
+:::
+
+## III. Générer une liste
+
+### 1. En extension
+
+Quand on connaît toutes les valeurs, on les écrit entre crochets : `premiers = [2, 3, 5, 7, 11]`. On peut aussi transformer un `range` en liste : `list(range(5))` vaut `[0, 1, 2, 3, 4]`.
+
+### 2. Par ajouts successifs
+
+::: propriete La méthode `append`
+`L.append(x)` ajoute la valeur `x` **à la fin** de la liste `L` : sa longueur augmente de $1$.
+:::
+
+::: methode Construire une liste par ajouts successifs
+On part d’une liste de départ (vide, ou réduite au premier terme), puis une boucle ajoute un élément à chaque tour avec `append`. Le dernier élément ajouté est `L[-1]` : on s’en sert pour calculer le suivant.
+:::
+
+::: exemple Termes d’une suite définie par récurrence
+La suite $(u_n)$ est définie par $u_0 = 1$ et, pour tout entier naturel $n$, $u_{n+1} = 2u_n + 1$.
+
+```python
+u = [1]
+for k in range(5):
+    u.append(2 * u[-1] + 1)
+print(u)
+print(len(u))
+```
+
+```console
+[1, 3, 7, 15, 31, 63]
+6
+```
+
+La boucle fait $5$ tours, mais la liste contient $6$ termes : $u_0$, présent au départ, puis $u_1$, …, $u_5$ ajoutés un par un. Le schéma montre les quatre premiers tours.
+:::
+
+[IMAGE_2]
+
+::: attention
+`append` modifie la liste et ne renvoie rien. On écrit `u.append(x)` seul sur sa ligne, jamais `u = u.append(x)` : la variable `u` vaudrait alors `None` et la liste serait perdue.
+:::
+
+### 3. En compréhension
+
+::: definition Liste en compréhension
+L’écriture `[expression for k in range(n)]` construit en une ligne la liste des valeurs de l’expression pour $k$ allant de $0$ à $n - 1$.
+
+On peut aussi parcourir une autre liste, `[expression for x in L]`, et ne garder que certains éléments avec un filtre, `[x for x in L if condition]`.
+:::
+
+```python
+print([k**2 for k in range(6)])
+print([3*n + 2 for n in range(5)])
+L = [12, 15, 9, 14, 10]
+print([x for x in L if x >= 12])
+```
+
+```console
+[0, 1, 4, 9, 16, 25]
+[2, 5, 8, 11, 14]
+[12, 15, 14]
+```
+
+La première liste contient les carrés des entiers de $0$ à $5$ ; la deuxième, les cinq premiers termes de la suite arithmétique $u_n = 3n + 2$ (premier terme $2$, raison $3$) ; la troisième, les notes supérieures ou égales à $12$.
+
+::: methode Choisir la bonne écriture
+- Valeurs connues à l’avance : **en extension**.
+- Suite donnée par une formule explicite $u_n = f(n)$ : **en compréhension**, `[f(n) for n in range(N)]`.
+- Suite donnée par une relation de récurrence (le terme suivant se calcule à partir du précédent) : **par ajouts successifs**, avec `u[-1]`.
+:::
+
+## IV. Parcourir une liste
+
+::: propriete Deux façons de parcourir une liste
+- **Par les éléments** : avec `for x in L:`, la variable `x` prend successivement chaque valeur de `L`. Ce parcours suffit quand seules les valeurs comptent.
+- **Par les indices** : avec `for i in range(len(L)):`, la variable `i` prend les valeurs $0$, $1$, …, $n - 1$ et l’élément correspondant est `L[i]`. Ce parcours est nécessaire quand la position compte : donner le rang d’un terme, comparer deux termes voisins, modifier `L[i]`.
+:::
+
+```python
+u = [1, 3, 7, 15]
+for i in range(len(u)):
+    print("u", i, "vaut", u[i])
+```
+
+```console
+u 0 vaut 1
+u 1 vaut 3
+u 2 vaut 7
+u 3 vaut 15
+```
+
+### Trois algorithmes de référence
+
+::: methode Somme et moyenne
+Un **accumulateur** `s`, initialisé à $0$, reçoit chaque élément.
+
+```python
+notes = [12, 15, 9, 14, 10]
+s = 0
+for x in notes:
+    s = s + x
+print(s, s / len(notes))
+```
+
+```console
+60 12.0
+```
+
+La moyenne vaut $\dfrac{60}{5} = 12$. Python écrit le résultat d’une division `/` avec un point décimal : `12.0`. Les fonctions `sum(L)`, `max(L)` et `min(L)` donnent directement la somme, le plus grand et le plus petit élément.
+:::
+
+::: methode Compter, calculer une fréquence
+Un **compteur** `c`, initialisé à $0$, augmente de $1$ pour chaque élément qui vérifie la condition.
+
+```python
+notes = [12, 15, 9, 14, 10]
+c = 0
+for x in notes:
+    if x >= 12:
+        c = c + 1
+print(c, c / len(notes))
+```
+
+```console
+3 0.6
+```
+
+$3$ notes sur $5$ sont supérieures ou égales à $12$ : la fréquence est $\dfrac{3}{5} = 0{,}6$.
+:::
+
+::: methode Plus grand élément et son indice
+On retient l’indice `imax` du plus grand élément rencontré ; on le remplace dès qu’on trouve un élément plus grand.
+
+```python
+notes = [12, 15, 9, 14, 10]
+imax = 0
+for i in range(len(notes)):
+    if notes[i] > notes[imax]:
+        imax = i
+print(imax, notes[imax])
+```
+
+```console
+1 15
+```
+
+La meilleure note, $15$, est la deuxième : son indice est $1$.
+:::
+
+## V. Les listes en mathématiques
+
+### 1. Termes d’une suite et nuage de points
+
+::: exemple Conjecturer le comportement d’une suite
+La suite $(u_n)$ est définie par $u_0 = 1$ et $u_{n+1} = 0{,}5\,u_n + 2$.
+
+```python
+u = [1]
+for k in range(4):
+    u.append(0.5 * u[-1] + 2)
+print(u)
+print(sum(u))
+```
+
+```console
+[1, 2.5, 3.25, 3.625, 3.8125]
+14.1875
+```
+
+On lit $u_1 = 2{,}5$, $u_2 = 3{,}25$, $u_3 = 3{,}625$, $u_4 = 3{,}8125$ et $u_0 + u_1 + \dots + u_4 = 14{,}1875$. Avec `range(8)`, on obtient $u_0$, …, $u_8$, que l’on représente par le nuage des points de coordonnées $(n \,;\, u_n)$.
+:::
+
+[IMAGE_3]
+
+Les points montent et semblent se rapprocher de la droite d’équation $y = 4$ : on **conjecture** que la suite est croissante et que ses termes se rapprochent de $4$. Une liste de termes permet de conjecturer ; elle ne démontre rien.
+
+### 2. Liste de valeurs d’une fonction
+
+::: methode Tableau de valeurs avec deux listes
+Pour tabuler une fonction $f$ sur $[a \,;\, b]$ avec un pas $p$, on construit la liste `X` des abscisses $a$, $a + p$, $a + 2p$, …, puis la liste `Y` des images, en compréhension. L’élément `Y[i]` est l’image de `X[i]`.
+:::
+
+::: exemple Fonction $f(x) = x^2 - 2x$ sur $[-2 \,;\, 4]$, pas $1$
+```python
+def f(x):
+    return x**2 - 2*x
+
+X = list(range(-2, 5))
+Y = [f(x) for x in X]
+print(X)
+print(Y)
+print(min(Y))
+```
+
+```console
+[-2, -1, 0, 1, 2, 3, 4]
+[8, 3, 0, -1, 0, 3, 8]
+-1
+```
+
+Les deux listes forment le tableau de valeurs de $f$ : sous chaque abscisse `X[i]`, on lit son image `Y[i]`. Par exemple, `Y[0]` est $f(-2) = 8$ et `Y[3]` est $f(1) = -1$.
+
+La plus petite valeur de la liste, $-1$, est obtenue pour $x = 1$. Pour un pas de $0{,}5$, on écrirait `X = [-2 + 0.5*k for k in range(13)]`.
+:::
+
+### 3. Simulation : liste de résultats, fréquences, moyenne
+
+::: exemple 1 000 lancers d’un dé équilibré
+On range les $1\,000$ résultats dans la liste `R`, puis on compte les effectifs de chaque face dans la liste `E` : la face `x` correspond à l’indice `x - 1`.
+:::
+
+```python
+from random import randint, seed
+seed(1)
+R = []
+for k in range(1000):
+    R.append(randint(1, 6))
+E = [0, 0, 0, 0, 0, 0]
+for x in R:
+    E[x - 1] = E[x - 1] + 1
+print(E)
+print(E[5] / len(R))
+print(sum(R) / len(R))
+```
+
+```console
+[160, 166, 165, 163, 183, 163]
+0.163
+3.532
+```
+
+`randint(1, 6)` renvoie un entier au hasard entre $1$ et $6$. L’instruction `seed(1)` fixe la suite des tirages : le programme donne alors toujours le même affichage, celui ci-dessus (sans elle, les résultats changent à chaque exécution).
+
+- `E[5]` est l’effectif de la face $6$ : sa fréquence est $0{,}163$, proche de $\dfrac{1}{6} \approx 0{,}167$.
+- La moyenne des résultats est $3{,}532$, proche de $3{,}5$, moyenne des faces $\dfrac{1 + 2 + \dots + 6}{6}$.
+
+[IMAGE_4]
+
+::: remarque
+Les fréquences observées fluctuent autour de $\dfrac{1}{6}$. Plus le nombre de lancers est grand, plus elles ont tendance à s’en rapprocher.
+:::
+
+### 4. Coefficients directeurs des sécantes
+
+Soit $f(x) = x^2$, $A$ le point de la courbe d’abscisse $1$ et $M$ le point de la courbe d’abscisse $1 + h$ ($h \neq 0$). Le coefficient directeur de la sécante $(AM)$ est le taux de variation
+$$\frac{f(1 + h) - f(1)}{h}.$$
+
+[IMAGE_5]
+
+```python
+def f(x):
+    return x**2
+
+def taux(h):
+    return (f(1 + h) - f(1)) / h
+
+H = [1, 0.5, 0.25, 0.125, 0.0625]
+P = [taux(h) for h in H]
+print(P)
+```
+
+```console
+[3.0, 2.5, 2.25, 2.125, 2.0625]
+```
+
+Quand $h$ se rapproche de $0$, les coefficients directeurs se rapprochent de $2$ : la sécante $(AM)$ se rapproche de la tangente en $A$. Le calcul le confirme : pour $h \neq 0$,
+$$
+\begin{aligned}
+\frac{f(1 + h) - f(1)}{h} &= \frac{1 + 2h + h^2 - 1}{h} \\
+&= \frac{h(2 + h)}{h} \\
+&= 2 + h
+\end{aligned}
+$$
+qui tend vers $2$ quand $h$ tend vers $0$ : le nombre dérivé de $f$ en $1$ est $f'(1) = 2$.
+
+## VI. Erreurs fréquentes
+
+::: attention Les erreurs classiques
+1. Oublier que le premier indice est $0$ : le premier élément est `L[0]`, le dernier `L[len(L) - 1]` ou `L[-1]`, et `L[len(L)]` provoque une erreur `IndexError`.
+2. Écrire `u = u.append(x)` : `append` ne renvoie rien, la liste est perdue.
+3. Se tromper sur le nombre de termes : partir de `[u0]` puis faire `range(n)` tours donne $n + 1$ termes, de $u_0$ à $u_n$.
+4. Confondre l’indice `i` et la valeur `L[i]` dans un parcours par indices.
+5. Oublier de diviser par le nombre d’éléments pour une moyenne ou une fréquence.
+:::
+
+::: retenir
+- Une liste s’écrit entre crochets ; `len(L)` donne son nombre d’éléments.
+- Indices de $0$ à `len(L) - 1` ; `L[-1]` est le dernier élément ; `L[i] = v` remplace un élément.
+- Trois façons de générer une liste : en extension, par ajouts successifs (`append` dans une boucle), en compréhension (`[… for k in range(n)]`, avec un filtre `if` éventuel).
+- Deux parcours : par les éléments (`for x in L:`) ou par les indices (`for i in range(len(L)):`).
+- En mathématiques : termes d’une suite, tableau de valeurs, résultats d’une simulation, coefficients directeurs de sécantes.
+- Fiche de synthèse dans l’onglet Fiches !
+:::

@@ -1,0 +1,152 @@
+[
+  {
+    "titre": "Lire un tableau",
+    "enonce": "Le tableau du cours donne les fruits préférés de la classe. Combien d’élèves préfèrent la fraise ? Combien d’élèves ont répondu en tout ?",
+    "corrige": "La colonne fraise indique $\\res9$ élèves. Le total vaut $7+9+5+4=\\res{25}$ élèves.",
+    "methode": "Lire la bonne colonne puis additionner.",
+    "controle": "assert 7+9+5+4==25",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 1
+  },
+  {
+    "titre": "Double entrée",
+    "enonce": "Le tableau croise deux classes et deux menus.\\begin{center}\\renewcommand{\\arraystretch}{1.35}\\begin{tabular}{c|cc}\\toprule\n & Menu A & Menu B\\\\\\midrule\nCM1 & 17 & 8\\\\\nCM2 & 14 & 12\\\\\n\\bottomrule\\end{tabular}\\end{center}Combien d’élèves de CM2 prennent le menu A ? Combien d’élèves prennent le menu B ?",
+    "corrige": "Au croisement de la ligne CM2 et de la colonne Menu A : $\\res{14}$ élèves. Menu B : $8+12=\\res{20}$ élèves.",
+    "methode": "Croiser ligne et colonne avant d’additionner.",
+    "controle": "assert 14==14 and 8+12==20",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 1
+  },
+  {
+    "titre": "Compléter les totaux",
+    "enonce": "Reprendre le tableau des menus et calculer : le nombre d’élèves de CM1, le nombre d’élèves de CM2 et le nombre total d’élèves.",
+    "corrige": "CM1 : $17+8=\\res{25}$. CM2 : $14+12=\\res{26}$. Total : $25+26=\\res{51}$ élèves ; on retrouve ce total en additionnant les colonnes : $31+20=51$.",
+    "methode": "Vérifier le total par lignes puis par colonnes.",
+    "controle": "assert 17+8==25 and 14+12==26 and 25+26==51 and 17+14+8+12==51",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 1
+  },
+  {
+    "titre": "Le diagramme en barres",
+    "enonce": "Le diagramme donne le nombre de livres empruntés par jour. Lire le nombre de livres du mardi et celui du jeudi. Quel jour en compte le plus ?",
+    "corrige": "Mardi : $\\res{12}$ livres ; jeudi : $\\res{18}$ livres, la barre la plus haute : c’est le $\\res{\\text{jeudi}}$. Chaque graduation vaut 2 livres.",
+    "methode": "Lire la hauteur de chaque barre sur l’axe.",
+    "controle": "assert 18>12",
+    "figure": "don-4",
+    "conseil": "",
+    "difficulte": 1
+  },
+  {
+    "titre": "La courbe de température",
+    "enonce": "La courbe donne la température d’une journée. Lire la température à 8 h et à 14 h. À quelle heure la température est-elle la plus haute ?",
+    "corrige": "À 8 h : $\\res{12\\,^\\circ\\mathrm C}$ ; à 14 h : $\\res{21\\,^\\circ\\mathrm C}$, le point le plus haut de la courbe : le maximum est à $\\res{14\\ \\text h}$.",
+    "methode": "Suivre la verticale de l’heure jusqu’à la courbe.",
+    "controle": "assert 21>12",
+    "figure": "don-5",
+    "conseil": "",
+    "difficulte": 1
+  },
+  {
+    "titre": "Construire un diagramme",
+    "enonce": "Construire le diagramme en barres des fruits préférés du cours : pomme 7, fraise 9, cerise 5, banane 4. L’axe est gradué de 1 en 1.",
+    "corrige": "Chaque fruit reçoit une barre de la hauteur de son effectif : 7, 9, 5 et 4. La barre la plus haute est celle de la fraise. Le diagramme figure en vert.",
+    "methode": "Une barre par catégorie, hauteur égale à l’effectif.",
+    "controle": "assert max([7,9,5,4])==9",
+    "figure": "don-6",
+    "conseil": "",
+    "difficulte": 2
+  },
+  {
+    "titre": "Des points dans un repère",
+    "enonce": "Chaque point du repère donne la masse d’un chiot selon son âge en semaines. Lire la masse à 2 semaines et à 6 semaines.",
+    "corrige": "À 2 semaines : $\\res{2\\ \\mathrm{kg}}$. À 6 semaines : $\\res{5\\ \\mathrm{kg}}$. On lit l’abscisse (l’âge) puis l’ordonnée (la masse) de chaque point.",
+    "methode": "Lire les deux coordonnées dans le bon ordre.",
+    "controle": "assert 5>2",
+    "figure": "don-7",
+    "conseil": "",
+    "difficulte": 2
+  },
+  {
+    "titre": "Des questions en étapes",
+    "enonce": "Avec le tableau des menus de l’exercice 2 : combien d’élèves de plus en CM2 qu’en CM1 ont choisi le menu B ? Le menu A est-il plus choisi que le menu B ?",
+    "corrige": "Menu B : $12-8=\\res4$ élèves de plus en CM2. Menu A : $17+14=31$ choix contre 20 : $\\res{\\text{oui}}$, avec $31-20=11$ choix d’écart.",
+    "methode": "Extraire les bonnes cases avant de calculer.",
+    "controle": "assert 12-8==4 and 17+14==31 and 31-20==11",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 2
+  },
+  {
+    "titre": "L’année des températures",
+    "enonce": "La courbe donne la température moyenne de chaque mois d’une ville. Quel est le mois le plus chaud ? Le plus froid ? Calculer l’écart entre les deux.",
+    "corrige": "Le point le plus haut est en $\\res{\\text{juillet}}$ ($22\\,^\\circ$C), le plus bas en $\\res{\\text{janvier}}$ ($4\\,^\\circ$C). L’écart vaut $22-4=\\res{18}$ degrés.",
+    "methode": "Chercher les points extrêmes de la courbe.",
+    "controle": "assert 22-4==18",
+    "figure": "don-9",
+    "conseil": "",
+    "difficulte": 2
+  },
+  {
+    "titre": "La barre fausse",
+    "enonce": "Le tableau annonce : lundi 8, mardi 12, mercredi 6 tickets vendus. Une barre du diagramme ne correspond pas au tableau. Laquelle ? Corriger.",
+    "corrige": "La barre du $\\res{\\text{mardi}}$ monte à 10 au lieu de $\\res{12}$. Les barres de lundi et mercredi sont correctes ; la barre corrigée figure en vert.",
+    "methode": "Comparer chaque barre à sa valeur du tableau.",
+    "controle": "assert 12!=10",
+    "figure": "don-10",
+    "conseil": "",
+    "difficulte": 2
+  },
+  {
+    "titre": "L’enquête brute",
+    "enonce": "Les réponses brutes à la question « Comment viens-tu à l’école ? » sont : à pied, vélo, à pied, bus, vélo, à pied, bus, à pied, vélo, à pied.\\begin{questions}\n\\item Construire le tableau des effectifs.\n\\item Quel est le moyen le plus utilisé ?\n\\end{questions}",
+    "corrige": "En comptant : à pied $\\res5$, vélo $\\res3$, bus $\\res2$. Le total $5+3+2=10$ retrouve les dix réponses. Le moyen le plus utilisé est la marche $\\res{\\text{à pied}}$.",
+    "methode": "Barrer les réponses au fur et à mesure du comptage.",
+    "controle": "assert 5+3+2==10 and max([5,3,2])==5",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 3
+  },
+  {
+    "titre": "La bibliothèque",
+    "enonce": "Le tableau donne les prêts de la bibliothèque.\\begin{center}\\renewcommand{\\arraystretch}{1.35}\\begin{tabular}{c|cc}\\toprule\n & Romans & Documentaires\\\\\\midrule\nSemaine 1 & 34 & 21\\\\\nSemaine 2 & 28 & 25\\\\\n\\bottomrule\\end{tabular}\\end{center}\\begin{questions}\n\\item Combien de livres ont été prêtés en semaine 1 ?\n\\item Les prêts de documentaires ont-ils augmenté ou diminué ?\n\\item Combien de romans ont été prêtés en deux semaines ?\n\\end{questions}",
+    "corrige": "Semaine 1 : $34+21=\\res{55}$ prêts. Documentaires : de 21 à 25, ils ont $\\res{\\text{augmenté}}$ de 4. Romans : $34+28=\\res{62}$ en deux semaines.",
+    "methode": "Choisir les cases utiles à chaque question.",
+    "controle": "assert 34+21==55 and 25-21==4 and 34+28==62",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 3
+  },
+  {
+    "titre": "La plante qui pousse",
+    "enonce": "La courbe donne la hauteur d’une plante semée en classe, mesurée chaque semaine. Lire la hauteur à la semaine 3, puis dire à partir de quelle semaine la plante dépasse 10 cm.",
+    "corrige": "À la semaine 3 : $\\res{6\\ \\mathrm{cm}}$. La courbe franchit la ligne des 10 cm entre les semaines 4 et 5 : la plante dépasse 10 cm à partir de la $\\res{\\text{semaine }5}$, où elle atteint 13 cm.",
+    "methode": "Suivre la ligne horizontale des 10 cm.",
+    "controle": "assert 6<10<13",
+    "figure": "don-13",
+    "conseil": "",
+    "difficulte": 3
+  },
+  {
+    "titre": "Deux villes, deux courbes",
+    "enonce": "Le graphique superpose les températures de Brestel et de Lyonnet sur quatre saisons. Quelle ville est la plus chaude en été ? En hiver ? Quelle ville a les températures les plus régulières ?",
+    "corrige": "En été, la courbe de Lyonnet est au-dessus : $\\res{\\text{Lyonnet}}$ ($24\\,^\\circ$C contre 18). En hiver, Brestel garde $\\res{7\\,^\\circ\\mathrm C}$ contre 3. Les variations de Brestel, de 7 à 18 degrés, sont plus resserrées : ses températures sont $\\res{\\text{les plus régulières}}$.",
+    "methode": "Comparer les courbes saison par saison.",
+    "controle": "assert 24>18 and 7>3 and 18-7<24-3",
+    "figure": "don-14",
+    "conseil": "",
+    "difficulte": 3
+  },
+  {
+    "titre": "Les précipitations",
+    "enonce": "Le tableau donne les précipitations d’une ville, en millimètres.\\begin{center}\\renewcommand{\\arraystretch}{1.35}\\begin{tabular}{c|cccc}\\toprule\nMois & sept. & oct. & nov. & déc.\\\\\\midrule\nPluie (mm) & 45 & 78 & 96 & 60\\\\\n\\bottomrule\\end{tabular}\\end{center}\\begin{questions}\n\\item Quel mois est le plus pluvieux ?\n\\item Combien de pluie est tombée en tout sur ces quatre mois ?\n\\item Novembre a-t-il reçu plus de pluie que septembre et décembre réunis ?\n\\end{questions}",
+    "corrige": "Le mois le plus pluvieux est $\\res{\\text{novembre}}$ (96 mm). Total : $45+78+96+60=\\res{279}$ mm. Septembre et décembre réunis : $45+60=105$ mm ; novembre, avec 96 mm, en a reçu $\\res{\\text{moins}}$.",
+    "methode": "Répondre à chaque question avec les bonnes cases.",
+    "controle": "assert max([45,78,96,60])==96 and 45+78+96+60==279 and 45+60==105 and 96<105",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 3
+  }
+]

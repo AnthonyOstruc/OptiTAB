@@ -1,0 +1,2073 @@
+=== Découverte - Suivre un script pas à pas
+Id: 2443
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+On considère le script suivant.
+
+[IMAGE_1]
+
+1. Donner la valeur de x après chacun des trois blocs de la famille « Variables » (en orange).
+2. Quelle valeur le lutin dit-il ?
+3. On échange les blocs « ajouter 5 à x » et « mettre x à x × 2 ». Quelle valeur le lutin dit-il alors ?
+4. Dans le script de départ, on remplace $3$ par un nombre $a$. Exprimer la valeur dite en fonction de $a$, puis développer.
+5. Par quel nombre faut-il remplacer $3$ pour que le lutin dise $30$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : La valeur de x après chaque bloc
+
+::: methode
+On exécute les blocs de haut en bas, en partant toujours de la **dernière** valeur de x, et on note tout dans un tableau d'exécution.
+:::
+
+::: etape Tableau d'exécution
+| Bloc exécuté | Calcul | x |
+|---|---|---|
+| mettre x à 3 | — | $3$ |
+| ajouter 5 à x | $3 + 5$ | $8$ |
+| mettre x à x × 2 | $8 \times 2$ | $16$ |
+:::
+
+::: resultat
+x vaut successivement $3$, $8$, puis $16$.
+:::
+
+## Question 2 : La valeur dite
+
+::: etape Le bloc « dire x »
+C'est le dernier bloc : il affiche la valeur de x à ce moment-là, donc après les trois blocs de la question 1.
+:::
+
+::: resultat
+Le lutin dit $16$.
+:::
+
+## Question 3 : Les blocs échangés
+
+::: methode
+On refait le tableau d'exécution avec le nouvel ordre des blocs (en vert).
+:::
+
+[IMAGE_2]
+
+::: etape Tableau d'exécution
+| Bloc exécuté | Calcul | x |
+|---|---|---|
+| mettre x à 3 | — | $3$ |
+| mettre x à x × 2 | $3 \times 2$ | $6$ |
+| ajouter 5 à x | $6 + 5$ | $11$ |
+:::
+
+::: resultat
+Le lutin dit $11$ : l'ordre des instructions change le résultat.
+:::
+
+## Question 4 : La valeur dite en fonction de $a$
+
+::: methode
+On suit les blocs avec $a$ à la place de $3$. Le bloc « mettre x à x × 2 » multiplie **tout** le résultat précédent par $2$ : il faut des parenthèses.
+:::
+
+::: etape Suivre les blocs avec $a$
+- Après « ajouter 5 à x » : x vaut $a + 5$.
+- Après « mettre x à x × 2 » : x vaut $(a + 5) \times 2$.
+:::
+
+::: etape Développer
+$$(a + 5) \times 2 = a \times 2 + 5 \times 2 = 2a + 10$$
+:::
+
+::: resultat
+Le lutin dit $(a + 5) \times 2 = 2a + 10$.
+:::
+
+## Question 5 : Obtenir 30
+
+::: etape Résoudre l'équation $2a + 10 = 30$
+$$
+\begin{aligned}
+2a + 10 &= 30 \\
+2a &= 20 \\
+a &= 10
+\end{aligned}
+$$
+:::
+
+::: point Vérification
+$(10 + 5) \times 2 = 15 \times 2 = 30$.
+:::
+
+::: resultat
+Il faut remplacer $3$ par $10$.
+:::
+
+::: attention Erreur fréquente
+Écrire $a + 5 \times 2$ : le script ajoute $5$ **avant** de multiplier, donc on écrit $(a + 5) \times 2$, avec des parenthèses.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $3$ ; $8$ ; $16$
+2. $16$
+3. $11$
+4. $(a + 5) \times 2 = 2a + 10$
+5. $10$
+
+===
+
+=== Découverte - Compléter un programme de calcul
+Id: 2444
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Voici un programme de calcul :
+
+- choisir un nombre ;
+- lui ajouter $4$ ;
+- multiplier le résultat par $3$ ;
+- annoncer le résultat.
+
+Lina le programme avec Scratch. Voici son script, avec trois cases A, B et C à compléter.
+
+[IMAGE_1]
+
+1. Que faut-il placer dans les cases A, B et C ?
+2. Quel résultat le lutin dit-il si l'on répond $2$ ? si l'on répond $-4$ ? si l'on répond $0{,}5$ ?
+3. On note $x$ le nombre choisi. Exprimer le résultat en fonction de $x$, puis développer.
+4. Quel nombre faut-il choisir pour que le lutin dise $30$ ?
+5. Tom a placé le bloc « mettre x à x × 3 » **avant** le bloc « ajouter 4 à x ». Quel résultat son script donne-t-il pour $2$ ? Programme-t-il le même calcul ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Compléter le script
+
+::: methode
+On traduit chaque étape du programme par un bloc. Le nombre tapé par l'utilisateur est rangé dans le bloc **réponse** ; on applique ensuite les opérations dans l'ordre.
+:::
+
+::: etape Les trois cases
+- Case A : x doit recevoir le nombre choisi, c'est-à-dire **réponse** (famille Capteurs).
+- Case B : on ajoute $4$ à x.
+- Case C : on multiplie x par $3$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+A : réponse ; B : $4$ ; C : $3$.
+:::
+
+## Question 2 : Trois essais
+
+::: methode
+On suit le script avec chaque réponse : d'abord « ajouter 4 », puis « × 3 ».
+:::
+
+::: etape Calculs
+- Réponse $2$ : $2 + 4 = 6$, puis $6 \times 3 = 18$.
+- Réponse $-4$ : $-4 + 4 = 0$, puis $0 \times 3 = 0$.
+- Réponse $0{,}5$ : $0{,}5 + 4 = 4{,}5$, puis $4{,}5 \times 3 = 13{,}5$.
+:::
+
+::: resultat
+Le lutin dit $18$, puis $0$, puis $13{,}5$.
+:::
+
+## Question 3 : Le résultat en fonction de $x$
+
+::: methode
+Avec $x$ : « ajouter 4 » donne $x + 4$ ; la multiplication par $3$ porte sur **toute** cette expression.
+:::
+
+::: etape Développer
+$$3(x + 4) = 3 \times x + 3 \times 4 = 3x + 12$$
+:::
+
+::: resultat
+Le résultat est $3(x + 4) = 3x + 12$.
+:::
+
+## Question 4 : Obtenir 30
+
+::: etape Résoudre l'équation $3x + 12 = 30$
+$$
+\begin{aligned}
+3x + 12 &= 30 \\
+3x &= 18 \\
+x &= 6
+\end{aligned}
+$$
+:::
+
+::: point Vérification
+$(6 + 4) \times 3 = 10 \times 3 = 30$.
+:::
+
+::: resultat
+Il faut choisir $6$.
+:::
+
+## Question 5 : Le script de Tom
+
+::: etape Avec $2$
+Tom multiplie d'abord : $2 \times 3 = 6$, puis il ajoute : $6 + 4 = 10$.
+:::
+
+::: etape Avec un nombre $x$ quelconque
+Le script de Tom calcule $3x + 4$, alors que le programme demande $3(x + 4) = 3x + 12$.
+:::
+
+::: resultat
+Le script de Tom dit $10$ pour $2$ (au lieu de $18$) : il ne programme pas le même calcul.
+:::
+
+::: retenir
+« demander … et attendre » est l'**entrée** du programme (la valeur tapée va dans **réponse**) ; « dire » est sa **sortie**. L'ordre des blocs traduit l'ordre des étapes du calcul.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. A : réponse ; B : $4$ ; C : $3$
+2. $18$ ; $0$ ; $13{,}5$
+3. $3(x + 4) = 3x + 12$
+4. $6$
+5. $10$ ; non, son script calcule $3x + 4$.
+
+===
+
+=== Découverte - Une boucle « répéter n fois »
+Id: 2445
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+On considère le script suivant.
+
+[IMAGE_1]
+
+1. Combien de fois le bloc « ajouter 3 à x » est-il exécuté ?
+2. Donner la valeur de x à la fin de chaque tour de boucle.
+3. Quelle valeur le lutin dit-il ?
+4. Combien de fois le bloc « dire x » est-il exécuté ? Pourquoi ?
+5. Que faut-il modifier pour que le lutin dise $30$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Nombre d'exécutions
+
+::: methode
+On regarde où est placé le bloc : il est **dans** la mâchoire du bloc « répéter 4 fois ».
+:::
+
+::: resultat
+Le bloc « ajouter 3 à x » est exécuté $4$ fois, une fois par tour.
+:::
+
+## Question 2 : Les valeurs de x
+
+::: methode
+x part de $0$ ; à chaque tour, on ajoute $3$ à la dernière valeur.
+:::
+
+::: etape Tableau d'exécution
+| Tour | 1 | 2 | 3 | 4 |
+|---|---|---|---|---|
+| x à la fin du tour | $3$ | $6$ | $9$ | $12$ |
+:::
+
+::: resultat
+x vaut $3$, $6$, $9$, puis $12$.
+:::
+
+## Question 3 : La valeur dite
+
+::: etape Après la boucle
+Le bloc « dire x » est exécuté quand la boucle est terminée, avec la dernière valeur de x.
+:::
+
+::: resultat
+Le lutin dit $12$.
+:::
+
+## Question 4 : Le bloc « dire x »
+
+::: etape Sa place dans le script
+Il est emboîté **sous** le bloc « répéter », et non dans sa mâchoire : il n'est pas répété.
+:::
+
+::: resultat
+Une seule fois, car il est placé après la boucle.
+:::
+
+## Question 5 : Obtenir 30
+
+::: methode
+Chaque tour ajoute $3$ : la valeur dite est $3 \times (\text{nombre de tours})$.
+:::
+
+::: etape Nombre de tours
+$$3 \times n = 30 \quad \text{donc} \quad n = \frac{30}{3} = 10$$
+:::
+
+[IMAGE_2]
+
+::: resultat
+Il faut remplacer « répéter 4 fois » par « répéter 10 fois » (bloc vert).
+:::
+
+::: attention Erreur fréquente
+Confondre les blocs **dans** la boucle (exécutés à chaque tour) et les blocs **après** la boucle (exécutés une seule fois).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $4$ fois
+2. $3$ ; $6$ ; $9$ ; $12$
+3. $12$
+4. Une seule fois : il est après la boucle.
+5. « répéter 10 fois »
+
+===
+
+=== Découverte - Un test « si … alors … sinon »
+Id: 2446
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Le script suivant compare le nombre choisi à $10$.
+
+[IMAGE_1]
+
+1. Que dit le lutin si l'on répond $9$ ?
+2. Que dit-il si l'on répond $10$ ?
+3. Que dit-il si l'on répond $14$ ?
+4. Quel est le plus grand nombre entier pour lequel il dit « petit » ?
+5. Que dit-il pour $9{,}99$ ? pour $-20$ ?
+6. On veut que le lutin dise « petit » aussi pour $10$. Par quelle condition faut-il remplacer « x < 10 » ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Réponse 9
+
+::: methode
+On évalue la condition « x < 10 » : si elle est vraie, on exécute la branche « alors » ; sinon, la branche « sinon ».
+:::
+
+::: etape Condition
+$9 < 10$ est **vraie**.
+:::
+
+::: resultat
+Le lutin dit « petit ».
+:::
+
+## Question 2 : Réponse 10
+
+::: etape Condition
+$10 < 10$ est **fausse** : $10$ n'est pas strictement inférieur à $10$. On passe dans la branche « sinon ».
+:::
+
+::: resultat
+Le lutin dit « grand ».
+:::
+
+## Question 3 : Réponse 14
+
+::: etape Condition
+$14 < 10$ est fausse.
+:::
+
+::: resultat
+Le lutin dit « grand ».
+:::
+
+## Question 4 : Le plus grand entier « petit »
+
+::: etape
+Le lutin dit « petit » exactement quand $x < 10$. Le plus grand entier strictement inférieur à $10$ est $9$.
+:::
+
+::: resultat
+$9$.
+:::
+
+## Question 5 : Réponses $9{,}99$ et $-20$
+
+::: etape Conditions
+$9{,}99 < 10$ est vraie ; $-20 < 10$ est vraie.
+:::
+
+::: resultat
+Le lutin dit « petit » dans les deux cas.
+:::
+
+## Question 6 : Inclure 10
+
+::: methode
+« petit » doit être dit quand $x < 10$ **ou** $x = 10$ : on combine deux conditions avec le bloc « ou ».
+:::
+
+[IMAGE_2]
+
+::: resultat
+On remplace la condition par « (x < 10) ou (x = 10) » (en vert). Remplacer $10$ par $11$ ne convient pas : $10{,}5$ serait alors « petit ».
+:::
+
+::: retenir
+Pour tester un script qui contient une condition, essayer **toujours** la valeur frontière (ici $10$).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. petit
+2. grand
+3. grand
+4. $9$
+5. petit ; petit
+6. « (x < 10) ou (x = 10) »
+
+===
+
+=== Découverte - Se repérer sur la scène
+Id: 2447
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Sur la scène, l'abscisse x va de $-240$ à $240$ et l'ordonnée y de $-180$ à $180$. L'orientation $0$ est vers le haut, $90$ vers la droite, $180$ vers le bas et $-90$ vers la gauche. Au départ, le stylo est relevé.
+
+[IMAGE_1]
+
+1. Où se trouve le lutin après le bloc « aller à x : −100 y : 50 » ? On appelle $A$ ce point. Ce déplacement est-il tracé ?
+2. Vers où le lutin regarde-t-il après « s'orienter à 90 » ? Quelles sont ses coordonnées après « avancer de 80 pas » (point $B$) ?
+3. Quelles sont ses coordonnées après « ajouter −90 à y » (point $C$) ? Ce déplacement est-il horizontal ou vertical ?
+4. Où se trouve-t-il à la fin du script (point $D$) ?
+5. Calculer la longueur totale du tracé, puis le représenter dans un repère.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Le point A
+
+::: etape « aller à x : −100 y : 50 »
+Le lutin est placé au point d'abscisse $-100$ et d'ordonnée $50$. Le stylo n'est mis en position d'écriture qu'**après** ce bloc : le déplacement n'est pas tracé.
+:::
+
+::: resultat
+$A(-100\ ;\ 50)$ ; ce déplacement n'est pas tracé.
+:::
+
+## Question 2 : Le point B
+
+::: methode
+Orientation $90$ : le lutin regarde vers la droite. Avancer vers la droite augmente l'abscisse, l'ordonnée ne change pas.
+:::
+
+::: etape Calcul
+$x = -100 + 80 = -20$ et $y = 50$.
+:::
+
+::: resultat
+Le lutin regarde vers la droite ; $B(-20\ ;\ 50)$.
+:::
+
+## Question 3 : Le point C
+
+::: etape « ajouter −90 à y »
+Seule l'ordonnée change : $y = 50 + (-90) = -40$ ; l'abscisse reste $-20$. Le stylo est baissé : ce segment vertical est tracé.
+:::
+
+::: resultat
+$C(-20\ ;\ -40)$ ; le déplacement est vertical, vers le bas.
+:::
+
+## Question 4 : Le point D
+
+::: etape « s'orienter à −90 », puis « avancer de 60 pas »
+Le lutin regarde vers la gauche : l'abscisse diminue de $60$, soit $x = -20 - 60 = -80$ ; $y$ reste $-40$.
+:::
+
+::: resultat
+$D(-80\ ;\ -40)$, le lutin regardant vers la gauche.
+:::
+
+## Question 5 : Le tracé
+
+::: etape Les positions successives
+- « aller à x : −100 y : 50 » : $A(-100\ ;\ 50)$, déplacement non tracé.
+- « avancer de 80 pas » : $B(-20\ ;\ 50)$, segment de longueur $80$.
+- « ajouter −90 à y » : $C(-20\ ;\ -40)$, segment de longueur $90$.
+- « avancer de 60 pas » : $D(-80\ ;\ -40)$, segment de longueur $60$.
+:::
+
+::: etape Longueur totale
+$$80 + 90 + 60 = 230$$
+:::
+
+[IMAGE_2]
+
+::: resultat
+Le tracé est la ligne brisée $ABCD$ (en vert), de longueur $230$.
+:::
+
+::: attention Erreur fréquente
+Penser que « avancer » augmente toujours x : le lutin avance dans la direction où il **regarde** ; avec l'orientation $-90$, l'abscisse diminue.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $A(-100\ ;\ 50)$ ; non tracé
+2. Vers la droite ; $B(-20\ ;\ 50)$
+3. $C(-20\ ;\ -40)$ ; vertical
+4. $D(-80\ ;\ -40)$
+5. $230$
+
+===
+
+=== Découverte - Tracer un carré avec le stylo
+Id: 2448
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+« tourner ↺ » fait tourner le lutin dans le sens inverse des aiguilles d'une montre.
+
+[IMAGE_1]
+
+1. Quelles sont les coordonnées du lutin après le premier « avancer de 40 pas » ?
+2. Vers où le lutin regarde-t-il après le premier « tourner ↺ de 90 degrés » ?
+3. Quelle figure est tracée ? Donner les coordonnées de ses sommets.
+4. Quelle est la longueur totale tracée ?
+5. Comment modifier le script pour tracer un triangle équilatéral de côté $40$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Après le premier déplacement
+
+::: methode
+Le lutin part de $(0\ ;\ 0)$ orienté vers la droite (orientation $90$) : avancer de $40$ augmente l'abscisse de $40$.
+:::
+
+::: resultat
+$(40\ ;\ 0)$.
+:::
+
+## Question 2 : Après le premier quart de tour
+
+::: etape « tourner ↺ de 90 degrés »
+Un quart de tour dans le sens inverse des aiguilles d'une montre : le lutin qui regardait vers la droite regarde maintenant vers le haut.
+:::
+
+::: resultat
+Vers le haut (orientation $0$).
+:::
+
+## Question 3 : La figure tracée
+
+::: etape Tour par tour : position après « avancer », orientation après « tourner »
+- Tour 1 : $(40\ ;\ 0)$, puis orientation $0$ (haut).
+- Tour 2 : $(40\ ;\ 40)$, puis orientation $-90$ (gauche).
+- Tour 3 : $(0\ ;\ 40)$, puis orientation $180$ (bas).
+- Tour 4 : $(0\ ;\ 0)$, puis orientation $90$ (droite).
+:::
+
+::: etape Conclusion
+Quatre côtés de longueur $40$ et quatre angles droits : c'est un carré.
+:::
+
+[IMAGE_2]
+
+::: resultat
+Un carré de côté $40$, de sommets $(0\ ;\ 0)$, $(40\ ;\ 0)$, $(40\ ;\ 40)$ et $(0\ ;\ 40)$.
+:::
+
+## Question 4 : La longueur tracée
+
+::: etape Calcul
+Le stylo trace $4$ segments de longueur $40$ : $4 \times 40 = 160$.
+:::
+
+::: resultat
+La longueur tracée est $160$.
+:::
+
+## Question 5 : Un triangle équilatéral
+
+::: methode
+Pour revenir au point de départ, les rotations doivent faire un tour complet : $360^\circ$. Avec $3$ côtés, le lutin tourne de $\dfrac{360}{3} = 120^\circ$ à chaque sommet.
+:::
+
+[IMAGE_3]
+
+::: etape Le tracé obtenu
+Trois côtés de $40$ et trois rotations de $120^\circ$ : le lutin revient en $(0\ ;\ 0)$, orienté vers la droite.
+:::
+
+[IMAGE_4]
+
+::: resultat
+« répéter 3 fois » et « tourner ↺ de 120 degrés » (en vert).
+:::
+
+::: attention Erreur fréquente
+Tourner de $60^\circ$ (l'angle **intérieur** du triangle) : le lutin tourne de l'angle **extérieur**, $180^\circ - 60^\circ = 120^\circ$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $(40\ ;\ 0)$
+2. Vers le haut (orientation $0$)
+3. Un carré de sommets $(0\ ;\ 0)$, $(40\ ;\ 0)$, $(40\ ;\ 40)$, $(0\ ;\ 40)$
+4. $160$
+5. « répéter 3 fois » et « tourner ↺ de 120 degrés »
+
+===
+
+=== Découverte - Une somme cumulée
+Id: 2449
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+On considère le script suivant, qui utilise deux variables s et n.
+
+[IMAGE_1]
+
+1. Donner les valeurs de s et de n à la fin de chacun des cinq tours.
+2. Quelle valeur le lutin dit-il ?
+3. Quelle est la valeur de n à la fin du script ?
+4. Quel calcul ce script effectue-t-il ?
+5. Quelle valeur dirait-il avec « répéter 10 fois » ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Le tableau des valeurs
+
+::: methode
+Au départ, s vaut $0$ et n vaut $1$. À chaque tour, on ajoute n à s, **puis** on augmente n de $1$ : on respecte cet ordre.
+:::
+
+::: etape Tableau d'exécution
+| Tour | s | n |
+|---|---|---|
+| départ | $0$ | $1$ |
+| 1 | $0 + 1 = 1$ | $2$ |
+| 2 | $1 + 2 = 3$ | $3$ |
+| 3 | $3 + 3 = 6$ | $4$ |
+| 4 | $6 + 4 = 10$ | $5$ |
+| 5 | $10 + 5 = 15$ | $6$ |
+:::
+
+::: resultat
+s vaut $1$, $3$, $6$, $10$, $15$ et n vaut $2$, $3$, $4$, $5$, $6$.
+:::
+
+## Question 2 : La valeur dite
+
+::: etape
+Le bloc « dire s » est après la boucle : on lit la dernière valeur de s dans le tableau.
+:::
+
+::: resultat
+Le lutin dit $15$.
+:::
+
+## Question 3 : La valeur finale de n
+
+::: etape
+n part de $1$ et augmente de $1$ à chacun des $5$ tours : $1 + 5 = 6$.
+:::
+
+::: resultat
+n vaut $6$.
+:::
+
+## Question 4 : Le calcul effectué
+
+::: etape
+À chaque tour, on ajoute à s la valeur de n : $1$, puis $2$, $3$, $4$ et $5$.
+:::
+
+::: resultat
+Le script calcule la somme $1 + 2 + 3 + 4 + 5 = 15$.
+:::
+
+## Question 5 : Avec 10 tours
+
+::: methode
+s cumule alors les entiers de $1$ à $10$ ; on les regroupe par paires de somme $11$.
+:::
+
+::: etape Calcul
+$$(1 + 10) + (2 + 9) + (3 + 8) + (4 + 7) + (5 + 6) = 5 \times 11 = 55$$
+:::
+
+::: resultat
+Le lutin dirait $55$.
+:::
+
+::: attention Erreur fréquente
+Inverser les deux blocs de la boucle : si n augmente **avant** d'être ajouté, le script calcule $2 + 3 + 4 + 5 + 6 = 20$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. s : $1$ ; $3$ ; $6$ ; $10$ ; $15$ — n : $2$ ; $3$ ; $4$ ; $5$ ; $6$
+2. $15$
+3. $6$
+4. $1 + 2 + 3 + 4 + 5$
+5. $55$
+
+===
+
+=== Entraînement - Une boucle « répéter jusqu'à »
+Id: 2450
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On considère le script suivant.
+
+[IMAGE_1]
+
+1. Donner les valeurs successives de x.
+2. Combien de tours la boucle effectue-t-elle ?
+3. Quelle valeur le lutin dit-il ?
+4. On remplace « ajouter 6 à x » par « ajouter 5 à x ». Combien de tours la boucle fait-elle ? Quelle valeur est dite ?
+5. On remplace par « ajouter 0 à x ». Que se passe-t-il ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les valeurs de x
+
+::: methode
+La condition « x > 20 » est testée **avant** chaque tour : si elle est fausse, on fait un tour ; dès qu'elle est vraie, la boucle s'arrête.
+:::
+
+::: etape Tableau d'exécution
+| Tour | x avant le tour | x > 20 ? | x à la fin du tour |
+|---|---|---|---|
+| 1 | $0$ | non | $6$ |
+| 2 | $6$ | non | $12$ |
+| 3 | $12$ | non | $18$ |
+| 4 | $18$ | non | $24$ |
+| — | $24$ | oui : arrêt | — |
+:::
+
+::: resultat
+x vaut $0$, puis $6$, $12$, $18$ et $24$.
+:::
+
+## Question 2 : Le nombre de tours
+
+::: etape
+On compte les lignes « non » du tableau : $18 > 20$ est faux, mais $24 > 20$ est vrai.
+:::
+
+::: resultat
+La boucle fait $4$ tours.
+:::
+
+## Question 3 : La valeur dite
+
+::: etape
+Le bloc « dire x » est exécuté à la sortie de la boucle, avec la première valeur qui a rendu la condition vraie.
+:::
+
+::: resultat
+Le lutin dit $24$.
+:::
+
+## Question 4 : Avec « ajouter 5 à x »
+
+::: etape Valeurs successives
+$0$, $5$, $10$, $15$, $20$, $25$. Attention : $20 > 20$ est **faux**, il faut donc encore un tour.
+:::
+
+::: resultat
+$5$ tours ; le lutin dit $25$.
+:::
+
+## Question 5 : Avec « ajouter 0 à x »
+
+::: etape
+x reste égal à $0$ : la condition $0 > 20$ est toujours fausse.
+:::
+
+::: resultat
+La boucle ne s'arrête jamais : c'est une boucle infinie, le lutin ne dit rien.
+:::
+
+::: attention Erreur fréquente
+Croire que la boucle s'arrête « à 20 » : elle s'arrête à la **première** valeur qui rend la condition vraie ($24$, ou $25$ à la question 4).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $0$ ; $6$ ; $12$ ; $18$ ; $24$
+2. $4$ tours
+3. $24$
+4. $5$ tours ; $25$
+5. Boucle infinie
+
+===
+
+=== Entraînement - Reconnaître un multiple
+Id: 2451
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Dans le script suivant, « a modulo b » donne le reste de la division euclidienne de $a$ par $b$.
+
+[IMAGE_1]
+
+1. Que dit le lutin si l'on répond $18$ ?
+2. Que dit-il si l'on répond $19$ ?
+3. Quels entiers ce script reconnaît-il, c'est-à-dire pour quels entiers dit-il $1$ ?
+4. Que dit-il pour $0$ ? Est-ce cohérent ?
+5. Comment modifier le script pour qu'il reconnaisse les nombres pairs ? Que dirait-il alors pour $35$ et pour $36$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Réponse 18
+
+::: methode
+On calcule le reste de la division par $3$ ; s'il vaut $0$, la condition est vraie et y prend la valeur $1$, sinon y garde la valeur $0$.
+:::
+
+::: etape Division euclidienne
+$18 = 3 \times 6 + 0$ : le reste est $0$, la condition « (x modulo 3) = 0 » est vraie, y prend la valeur $1$.
+:::
+
+::: resultat
+Le lutin dit $1$.
+:::
+
+## Question 2 : Réponse 19
+
+::: etape Division euclidienne
+$19 = 3 \times 6 + 1$ : le reste est $1$, la condition est fausse, y reste égal à $0$.
+:::
+
+::: resultat
+Le lutin dit $0$.
+:::
+
+## Question 3 : Les entiers reconnus
+
+::: etape
+Le lutin dit $1$ exactement quand le reste de la division par $3$ est nul, c'est-à-dire quand x est divisible par $3$.
+:::
+
+::: resultat
+Les multiples de $3$ : $0$, $3$, $6$, $9$, $12$…
+:::
+
+## Question 4 : Réponse 0
+
+::: etape
+$0 = 3 \times 0 + 0$ : le reste est $0$.
+:::
+
+::: resultat
+Il dit $1$ : c'est cohérent, car $0 = 3 \times 0$ est un multiple de $3$.
+:::
+
+## Question 5 : Les nombres pairs
+
+::: methode
+Un nombre est pair quand le reste de sa division par $2$ est nul : on remplace « x modulo 3 » par « x modulo 2 ».
+:::
+
+[IMAGE_2]
+
+::: etape Avec 35 et 36
+$35 = 2 \times 17 + 1$ (reste $1$) et $36 = 2 \times 18 + 0$ (reste $0$).
+:::
+
+::: resultat
+On remplace $3$ par $2$ (en vert) ; le script dit alors $0$ pour $35$ et $1$ pour $36$.
+:::
+
+::: retenir
+« n est divisible par d » se programme avec la condition « (n modulo d) = 0 ».
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $1$
+2. $0$
+3. Les multiples de $3$
+4. $1$ : $0$ est un multiple de $3$.
+5. « x modulo 2 » ; $0$ pour $35$, $1$ pour $36$
+
+===
+
+=== Entraînement - Énumérer les diviseurs d'un entier
+Id: 2452
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On considère le script suivant.
+
+[IMAGE_1]
+
+1. Quelles valeurs de d sont testées ?
+2. Quelles valeurs le lutin dit-il, dans l'ordre ?
+3. Pourquoi commence-t-on avec d = $1$ et non avec d = $0$ ?
+4. Que représentent les nombres dits ? Combien y en a-t-il ?
+5. On remplace $12$ par $13$ dans les deux blocs. Que dit le lutin ? Que peut-on en conclure pour $13$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les valeurs testées
+
+::: etape
+d part de $1$ et augmente de $1$ à la fin de chacun des $12$ tours.
+:::
+
+::: resultat
+d prend les valeurs $1$, $2$, $3$, …, $12$.
+:::
+
+## Question 2 : Les valeurs dites
+
+::: methode
+À chaque tour, le lutin dit d seulement si « (n modulo d) = 0 », c'est-à-dire si le reste de la division de $12$ par d est nul.
+:::
+
+::: etape Tableau d'exécution
+| d | Reste de $12$ par d | Dit ? |
+|---|---|---|
+| $1$ | $0$ | oui |
+| $2$ | $0$ | oui |
+| $3$ | $0$ | oui |
+| $4$ | $0$ | oui |
+| $5$ | $2$ | non |
+| $6$ | $0$ | oui |
+| $7$ | $5$ | non |
+| $8$ | $4$ | non |
+| $9$ | $3$ | non |
+| $10$ | $2$ | non |
+| $11$ | $1$ | non |
+| $12$ | $0$ | oui |
+
+Par exemple : $12 = 5 \times 2 + 2$ (reste $2$) et $12 = 6 \times 2 + 0$ (reste $0$).
+:::
+
+::: resultat
+Le lutin dit $1$, $2$, $3$, $4$, $6$, $12$.
+:::
+
+## Question 3 : Pourquoi pas 0
+
+::: etape
+« 12 modulo 0 » demanderait de diviser $12$ par $0$, ce qui est impossible.
+:::
+
+::: resultat
+On ne peut pas diviser par $0$ : on commence donc à $1$.
+:::
+
+## Question 4 : Les nombres dits
+
+::: etape
+Les nombres dits sont exactement ceux qui divisent $12$ (reste nul).
+:::
+
+::: resultat
+Ce sont les diviseurs de $12$ ; il y en a $6$.
+:::
+
+## Question 5 : Avec 13
+
+::: etape
+Pour d allant de $1$ à $13$, seuls $1$ et $13$ donnent un reste nul dans la division de $13$.
+:::
+
+::: resultat
+Le lutin dit $1$ et $13$ : $13$ a exactement deux diviseurs, c'est un nombre premier.
+:::
+
+::: retenir
+Une boucle et un test « modulo » permettent d'énumérer les diviseurs d'un entier.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. De $1$ à $12$
+2. $1$ ; $2$ ; $3$ ; $4$ ; $6$ ; $12$
+3. Division par $0$ impossible.
+4. Les $6$ diviseurs de $12$
+5. $1$ et $13$ : $13$ est premier.
+
+===
+
+=== Entraînement - Piloter le lutin au clavier
+Id: 2453
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Un lutin possède les quatre scripts suivants. Il ne trace rien : seul son déplacement nous intéresse.
+
+[IMAGE_1]
+
+1. Quel événement déclenche chacun des quatre scripts ?
+2. On clique sur le drapeau, puis on appuie $3$ fois sur la flèche droite. Quelles sont les coordonnées du lutin ?
+3. On appuie ensuite $4$ fois sur la flèche haut. Où se trouve-t-il ?
+4. Après un clic sur le drapeau, sur quelles touches faut-il appuyer pour amener le lutin au point $(90\ ;\ 0)$ ?
+5. Que fait la touche espace ? Écrire un cinquième script pour que la flèche gauche déplace le lutin de $30$ vers la gauche.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les événements
+
+::: methode
+Le bloc chapeau (jaune) de chaque script indique l'événement qui le déclenche.
+:::
+
+::: resultat
+Script 1 : le clic sur le drapeau vert ; script 2 : la touche flèche droite ; script 3 : la touche flèche haut ; script 4 : la touche espace.
+:::
+
+## Question 2 : Trois fois la flèche droite
+
+::: etape Le drapeau
+Le lutin est placé en $(-60\ ;\ -40)$.
+:::
+
+::: etape Trois appuis sur la flèche droite
+Chaque appui exécute le script 2 : « ajouter 30 à x ». L'abscisse devient $-60 + 3 \times 30 = 30$ ; l'ordonnée ne change pas.
+:::
+
+::: resultat
+$(30\ ;\ -40)$.
+:::
+
+## Question 3 : Puis quatre fois la flèche haut
+
+::: etape
+Chaque appui ajoute $20$ à y : $-40 + 4 \times 20 = 40$ ; x reste $30$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+$(30\ ;\ 40)$.
+:::
+
+## Question 4 : Atteindre (90 ; 0)
+
+::: etape Abscisse
+Il faut passer de $-60$ à $90$ : $90 - (-60) = 150 = 5 \times 30$, soit $5$ appuis sur la flèche droite.
+:::
+
+::: etape Ordonnée
+Il faut passer de $-40$ à $0$ : $0 - (-40) = 40 = 2 \times 20$, soit $2$ appuis sur la flèche haut.
+:::
+
+::: resultat
+$5$ appuis sur la flèche droite et $2$ sur la flèche haut, dans n'importe quel ordre.
+:::
+
+## Question 5 : La touche espace et la flèche gauche
+
+::: etape La touche espace
+Elle exécute « aller à x : 0 y : 0 » : le lutin revient au centre de la scène.
+:::
+
+::: etape Le script de la flèche gauche
+Aller vers la gauche, c'est diminuer l'abscisse : on ajoute $-30$ à x.
+:::
+
+[IMAGE_3]
+
+::: resultat
+La touche espace ramène le lutin en $(0\ ;\ 0)$. Script 5 : « quand la touche flèche gauche est pressée », « ajouter −30 à x ».
+:::
+
+::: attention Erreur fréquente
+Écrire « ajouter 30 à x » pour aller à gauche : l'abscisse doit **diminuer**, on ajoute donc un nombre négatif.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Drapeau ; flèche droite ; flèche haut ; espace
+2. $(30\ ;\ -40)$
+3. $(30\ ;\ 40)$
+4. $5$ fois flèche droite et $2$ fois flèche haut
+5. Retour en $(0\ ;\ 0)$ ; « quand la touche flèche gauche est pressée », « ajouter −30 à x »
+
+===
+
+=== Entraînement - Un bloc personnalisé « carré »
+Id: 2454
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Le lutin utilise le bloc personnalisé « carré », défini ci-dessous, puis le script principal.
+
+[IMAGE_1]
+
+1. Que trace « carré (30) » ? Où se trouve le lutin ensuite, et vers où regarde-t-il ?
+2. Quelles sont les abscisses des points de départ des trois carrés ?
+3. Quel espace sépare deux carrés voisins ? Pourquoi relève-t-on le stylo ?
+4. Quelle est la longueur totale tracée ?
+5. Où se trouve le lutin à la fin du script ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Le bloc « carré (30) »
+
+::: methode
+L'appel « carré (30) » exécute la définition avec côté $= 30$ : on répète $4$ fois « avancer de 30 pas ; tourner ↺ de 90 degrés ».
+:::
+
+::: etape
+Quatre côtés égaux et quatre quarts de tour : $4 \times 90^\circ = 360^\circ$, un tour complet.
+:::
+
+::: resultat
+Un carré de côté $30$ ; le lutin revient à son point de départ, en regardant toujours vers la droite.
+:::
+
+## Question 2 : Les points de départ
+
+::: etape Tour par tour
+Chaque carré ramène le lutin à son point de départ ; seul « avancer de 40 pas » le déplace.
+
+- Tour 1 : carré tracé depuis $(0\ ;\ 0)$, puis le lutin va en $(40\ ;\ 0)$.
+- Tour 2 : carré tracé depuis $(40\ ;\ 0)$, puis le lutin va en $(80\ ;\ 0)$.
+- Tour 3 : carré tracé depuis $(80\ ;\ 0)$, puis le lutin va en $(120\ ;\ 0)$.
+:::
+
+::: resultat
+Les carrés commencent en $x = 0$, $x = 40$ et $x = 80$.
+:::
+
+## Question 3 : L'espace entre les carrés
+
+::: etape
+Un carré occupe $30$ en largeur et le suivant commence $40$ plus loin : $40 - 30 = 10$.
+:::
+
+::: resultat
+Un espace de $10$ ; le stylo est relevé pour que ce déplacement ne soit pas tracé.
+:::
+
+## Question 4 : La longueur tracée
+
+::: etape
+Seuls les trois carrés sont tracés, chacun de périmètre $4 \times 30 = 120$ :
+$$3 \times 120 = 360$$
+:::
+
+[IMAGE_2]
+
+::: resultat
+La longueur tracée est $360$.
+:::
+
+## Question 5 : La position finale
+
+::: etape
+Après le troisième carré, le lutin avance encore de $40$ : $80 + 40 = 120$.
+:::
+
+::: resultat
+Le lutin finit en $(120\ ;\ 0)$ (flèche orange).
+:::
+
+::: retenir
+Un bloc personnalisé sépare le **motif** (le carré) du **déplacement** entre deux motifs ; il doit ramener le lutin à son point de départ pour que la répétition soit régulière.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Un carré de côté $30$ ; retour au point de départ, vers la droite
+2. $0$ ; $40$ ; $80$
+3. $10$ ; pour ne pas tracer le déplacement
+4. $360$
+5. $(120\ ;\ 0)$
+
+===
+
+=== Entraînement - Simuler un dé
+Id: 2455
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Le script suivant simule $600$ lancers d'un dé équilibré à six faces.
+
+[IMAGE_1]
+
+1. Pourquoi le bloc « mettre succès à 0 » est-il placé **avant** la boucle ?
+2. Que modélise le bloc « nombre aléatoire entre 1 et 6 » ?
+3. Que compte la variable succès ? Que représente la valeur dite par le lutin ?
+4. Quelle est la probabilité d'obtenir $6$ ? Combien de succès peut-on attendre environ ?
+5. Le lutin dit $0{,}18$. Le dé est-il truqué ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : L'initialisation
+
+::: etape
+Un bloc placé **dans** la boucle est exécuté à chaque tour : « mettre succès à 0 » remettrait le compteur à zéro à chaque lancer.
+:::
+
+::: resultat
+Le compteur doit partir de $0$ une seule fois, au début : il est donc placé avant la boucle.
+:::
+
+## Question 2 : Le nombre aléatoire
+
+::: resultat
+Le lancer d'un dé équilibré : chaque entier de $1$ à $6$ a la même chance d'être choisi.
+:::
+
+## Question 3 : La variable succès et la valeur dite
+
+::: etape
+succès augmente de $1$ chaque fois que dé vaut $6$ ; à la fin, on divise par le nombre de lancers, $600$.
+:::
+
+::: resultat
+succès compte les $6$ obtenus ; la valeur dite est la **fréquence** d'apparition du $6$.
+:::
+
+## Question 4 : Probabilité et nombre attendu
+
+::: etape
+Le dé est équilibré : $6$ issues équiprobables, dont une favorable. Sur $600$ lancers, on attend environ $600 \times \dfrac{1}{6}$ succès.
+$$600 \times \frac{1}{6} = 100$$
+:::
+
+::: resultat
+La probabilité est $\dfrac{1}{6}$ ; on attend environ $100$ succès.
+:::
+
+## Question 5 : Une fréquence de 0,18
+
+::: etape Comparer
+$\dfrac{1}{6} \approx 0{,}167$ ; l'écart avec $0{,}18$ est d'environ $0{,}013$, très faible.
+:::
+
+::: resultat
+Non : sur $600$ lancers, la fréquence fluctue autour de la probabilité ; un écart de $0{,}013$ est normal.
+:::
+
+::: retenir
+Simuler = **initialiser** le compteur avant la boucle, **compter** à chaque tour, **diviser** après la boucle.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Pour ne pas le remettre à $0$ à chaque lancer.
+2. Le lancer d'un dé équilibré
+3. Le nombre de $6$ ; la fréquence du $6$
+4. $\dfrac{1}{6}$ ; environ $100$
+5. Non, c'est une fluctuation normale.
+
+===
+
+=== Entraînement - Compléter un script de tracé
+Id: 2456
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On veut que le lutin trace le rectangle ci-dessous, de longueur $80$ et de largeur $50$, dont le centre est l'origine du repère. Le tracé commence au sommet situé en bas à gauche, le lutin regardant vers la droite.
+
+[IMAGE_1]
+
+Voici le script, avec cinq cases à compléter.
+
+[IMAGE_2]
+
+1. Quelles sont les coordonnées du sommet situé en bas à gauche ? Compléter les cases A et B.
+2. Combien de fois faut-il répéter les quatre blocs de la boucle ? Compléter la case C.
+3. Compléter les cases D et E.
+4. Donner les coordonnées des quatre sommets dans l'ordre du tracé, puis la longueur totale tracée.
+5. Où se trouve le lutin à la fin du script ? Vers où regarde-t-il ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Le point de départ
+
+::: methode
+Le centre du rectangle est $(0\ ;\ 0)$ : les sommets sont à $\dfrac{80}{2} = 40$ à gauche et à droite du centre, et à $\dfrac{50}{2} = 25$ en dessous et au-dessus.
+:::
+
+::: resultat
+Le sommet en bas à gauche est $(-40\ ;\ -25)$ : A $= -40$ et B $= -25$.
+:::
+
+## Question 2 : Le nombre de répétitions
+
+::: etape
+Un passage dans la boucle trace une longueur ($80$) et une largeur ($50$), avec deux quarts de tour : c'est la moitié du rectangle.
+:::
+
+::: resultat
+Il faut $2$ passages : C $= 2$.
+:::
+
+## Question 3 : Les cases D et E
+
+::: etape
+Après la longueur, le lutin tourne d'un quart de tour, puis trace la **largeur** : D $= 50$. Il tourne encore d'un quart de tour pour repartir dans le sens de la longueur : E $= 90$.
+:::
+
+[IMAGE_3]
+
+::: resultat
+D $= 50$ et E $= 90$ (cases complétées en vert).
+:::
+
+## Question 4 : Les sommets et la longueur
+
+::: etape Les positions successives
+- Départ : $(-40\ ;\ -25)$, vers la droite.
+- « avancer de 80 pas » : $(40\ ;\ -25)$, puis quart de tour : vers le haut.
+- « avancer de 50 pas » : $(40\ ;\ 25)$, puis quart de tour : vers la gauche.
+- « avancer de 80 pas » : $(-40\ ;\ 25)$, puis quart de tour : vers le bas.
+- « avancer de 50 pas » : $(-40\ ;\ -25)$, puis quart de tour : vers la droite.
+:::
+
+::: etape Longueur
+C'est le périmètre du rectangle : $2 \times (80 + 50) = 260$.
+:::
+
+[IMAGE_4]
+
+::: resultat
+Sommets : $(-40\ ;\ -25)$, $(40\ ;\ -25)$, $(40\ ;\ 25)$, $(-40\ ;\ 25)$ ; longueur tracée : $260$.
+:::
+
+## Question 5 : La position finale
+
+::: resultat
+Le lutin revient en $(-40\ ;\ -25)$ et regarde vers la droite : quatre quarts de tour font un tour complet.
+:::
+
+::: attention Erreur fréquente
+Écrire A $= 0$ et B $= 0$ : le centre du rectangle est l'origine, mais le tracé commence à un **sommet**.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $(-40\ ;\ -25)$ : A $= -40$, B $= -25$
+2. C $= 2$
+3. D $= 50$, E $= 90$
+4. $(-40\ ;\ -25)$, $(40\ ;\ -25)$, $(40\ ;\ 25)$, $(-40\ ;\ 25)$ ; $260$
+5. En $(-40\ ;\ -25)$, vers la droite
+
+===
+
+=== Problème - Deux lutins qui communiquent
+Id: 2457
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Un projet comporte deux lutins, Guide et Joueur, dont voici les scripts. La variable score est commune aux deux lutins.
+
+[IMAGE_1]
+
+1. Quel événement démarre le script de chaque lutin ?
+2. Décrire l'ordre dans lequel les blocs sont exécutés après un clic sur le drapeau. Quelle valeur le lutin Guide dit-il ?
+3. Quel est le rôle de « et attendre » dans le bloc « envoyer à tous départ et attendre » ?
+4. Que pourrait-il se passer avec le simple bloc « envoyer à tous départ » ?
+5. On ajoute un troisième lutin qui a exactement le même script que Joueur. Quelle valeur Guide dit-il alors ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les événements
+
+::: methode
+Chaque script commence par un bloc chapeau qui indique son événement déclencheur.
+:::
+
+::: resultat
+Guide démarre au clic sur le drapeau vert ; Joueur démarre quand il reçoit le message « départ ».
+:::
+
+## Question 2 : L'ordre d'exécution
+
+::: etape Tableau d'exécution
+| Étape | Lutin | Bloc | score |
+|---|---|---|---|
+| 1 | Guide | mettre score à 0 | $0$ |
+| 2 | Guide | envoyer à tous départ et attendre | $0$ |
+| 3 | Joueur | répéter 10 fois : ajouter 1 à score | $1$, $2$, …, $10$ |
+| 4 | Guide | dire score | $10$ |
+:::
+
+::: resultat
+Guide dit $10$.
+:::
+
+## Question 3 : Le rôle de « et attendre »
+
+::: resultat
+Le script de Guide est suspendu jusqu'à ce que le script de Joueur, déclenché par « départ », soit **terminé** : le bloc « dire score » n'est exécuté qu'ensuite.
+:::
+
+## Question 4 : Sans attente
+
+::: etape
+Sans attente, Guide continue tout de suite après l'envoi : son bloc « dire score » s'exécute en même temps que le comptage de Joueur.
+:::
+
+::: resultat
+Guide pourrait dire le score avant la fin du comptage : $0$ ou une valeur incomplète.
+:::
+
+## Question 5 : Avec un troisième lutin
+
+::: etape
+Le message « départ » déclenche les **deux** scripts identiques, et « et attendre » attend la fin des deux. Chacun ajoute $1$ dix fois au même score : $10 + 10 = 20$.
+:::
+
+::: resultat
+Guide dit $20$.
+:::
+
+::: retenir
+Les messages servent à **synchroniser** les lutins ; « envoyer à tous … et attendre » garantit l'ordre des opérations.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Guide : drapeau vert ; Joueur : réception de « départ »
+2. Guide met score à $0$, Joueur ajoute $1$ dix fois, puis Guide dit $10$.
+3. Attendre la fin du script de Joueur
+4. Le score pourrait être dit avant la fin du comptage.
+5. $20$
+
+===
+
+=== Problème - Un programme de calcul mystère
+Id: 2458
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+On considère le script suivant.
+
+[IMAGE_1]
+
+1. Quel résultat obtient-on en choisissant $5$ ?
+2. Et en choisissant $-3$ ?
+3. Et en choisissant $2{,}5$ ? Quelle conjecture peut-on faire ?
+4. Démontrer cette conjecture pour un nombre $n$ quelconque.
+5. Par quel nombre faut-il remplacer $8$ pour que le résultat soit toujours $5$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Avec 5
+
+::: methode
+On suit les blocs dans l'ordre : r reçoit n × 4, puis on ajoute $8$, on divise par $4$ et on soustrait n.
+:::
+
+::: etape Tableau d'exécution
+| Bloc exécuté | Calcul | r |
+|---|---|---|
+| mettre r à n × 4 | $5 \times 4$ | $20$ |
+| ajouter 8 à r | $20 + 8$ | $28$ |
+| mettre r à r / 4 | $28 \div 4$ | $7$ |
+| mettre r à r − n | $7 - 5$ | $2$ |
+:::
+
+::: resultat
+Le lutin dit $2$.
+:::
+
+## Question 2 : Avec −3
+
+::: etape Calculs
+$-3 \times 4 = -12$ ; $-12 + 8 = -4$ ; $-4 \div 4 = -1$ ; $-1 - (-3) = -1 + 3 = 2$.
+:::
+
+::: resultat
+Le lutin dit $2$.
+:::
+
+## Question 3 : Avec 2,5
+
+::: etape Calculs
+$2{,}5 \times 4 = 10$ ; $10 + 8 = 18$ ; $18 \div 4 = 4{,}5$ ; $4{,}5 - 2{,}5 = 2$.
+:::
+
+::: resultat
+On obtient encore $2$. Conjecture : le résultat est toujours égal à $2$.
+:::
+
+## Question 4 : La démonstration
+
+::: methode
+Trois exemples ne suffisent pas : on fait le calcul avec une lettre, valable pour tous les nombres.
+:::
+
+::: etape Calcul littéral
+$$
+\begin{aligned}
+r &= \frac{4n + 8}{4} - n \\
+&= \frac{4n}{4} + \frac{8}{4} - n \\
+&= n + 2 - n \\
+&= 2
+\end{aligned}
+$$
+:::
+
+::: resultat
+Pour tout nombre $n$, le résultat vaut $2$ : la conjecture est démontrée.
+:::
+
+## Question 5 : Obtenir toujours 5
+
+::: etape Avec un nombre $a$ à la place de 8
+$$\frac{4n + a}{4} - n = n + \frac{a}{4} - n = \frac{a}{4}$$
+:::
+
+::: etape Résoudre
+$$\frac{a}{4} = 5 \quad \text{donc} \quad a = 20$$
+:::
+
+::: resultat
+Il faut remplacer $8$ par $20$.
+:::
+
+::: attention Erreur fréquente
+Considérer que trois exemples **prouvent** la conjecture : seul le calcul littéral la démontre pour tous les nombres.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $2$
+2. $2$
+3. $2$ ; le résultat est toujours $2$.
+4. $\dfrac{4n + 8}{4} - n = n + 2 - n = 2$
+5. $20$
+
+===
+
+=== Problème - Un escalier
+Id: 2459
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+« tourner ↺ » tourne dans le sens inverse des aiguilles d'une montre, « tourner ↻ » dans le sens des aiguilles d'une montre.
+
+[IMAGE_1]
+
+1. Quelle est la position du lutin à la fin du premier tour de boucle ?
+2. Quelle est son orientation à la fin de chaque tour ?
+3. Quelle est sa position finale ?
+4. Quelle est la longueur totale tracée ?
+5. Sur quelle droite se trouvent les « nez de marche » $(20\ ;\ 20)$, $(40\ ;\ 40)$… ? Que faut-il modifier pour tracer $8$ marches de $15$ ? Où arrive alors le lutin ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Le premier tour
+
+::: etape Le premier tour, bloc par bloc
+- Départ : $(0\ ;\ 0)$, vers la droite (orientation $90$).
+- « avancer de 20 pas » : $(20\ ;\ 0)$.
+- « tourner ↺ de 90 degrés » : vers le haut (orientation $0$).
+- « avancer de 20 pas » : $(20\ ;\ 20)$.
+- « tourner ↻ de 90 degrés » : de nouveau vers la droite (orientation $90$).
+:::
+
+::: resultat
+$(20\ ;\ 20)$.
+:::
+
+## Question 2 : L'orientation
+
+::: etape
+Dans chaque tour, le lutin tourne de $90^\circ$ dans un sens, puis de $90^\circ$ dans l'autre : les deux rotations se compensent.
+:::
+
+::: resultat
+À la fin de chaque tour, il regarde vers la droite (orientation $90$).
+:::
+
+## Question 3 : La position finale
+
+::: etape
+Chaque tour ajoute $20$ à x et $20$ à y ; il y a $5$ tours : $5 \times 20 = 100$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+$(100\ ;\ 100)$.
+:::
+
+## Question 4 : La longueur tracée
+
+::: etape
+Chaque tour trace deux segments de $20$ :
+$$5 \times (20 + 20) = 200$$
+:::
+
+::: resultat
+La longueur tracée est $200$.
+:::
+
+## Question 5 : La droite et la modification
+
+::: etape Les nez de marche
+Les points $(20\ ;\ 20)$, $(40\ ;\ 40)$, …, $(100\ ;\ 100)$ ont une ordonnée égale à leur abscisse : ils sont sur la droite d'équation $y = x$.
+:::
+
+::: etape 8 marches de 15
+On remplace « répéter 5 fois » par « répéter 8 fois », et $20$ par $15$ dans les deux blocs « avancer ». Arrivée : $8 \times 15 = 120$.
+:::
+
+::: resultat
+Droite d'équation $y = x$ ; avec « répéter 8 fois » et « avancer de 15 pas » (deux fois), le lutin arrive en $(120\ ;\ 120)$.
+:::
+
+::: retenir
+Pour suivre un lutin, noter à chaque étape sa **position** et son **orientation**.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $(20\ ;\ 20)$
+2. Vers la droite (orientation $90$)
+3. $(100\ ;\ 100)$
+4. $200$
+5. $y = x$ ; « répéter 8 fois » et « avancer de 15 pas » ; arrivée en $(120\ ;\ 120)$
+
+===
+
+=== Problème - Des polygones réguliers
+Id: 2460
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Le bloc personnalisé « polygone » a deux paramètres : le nombre de côtés n et la longueur d'un côté.
+
+[IMAGE_1]
+
+1. Que trace « polygone (6) (30) » ? De quel angle le lutin tourne-t-il à chaque sommet ?
+2. Calculer le périmètre de la figure tracée.
+3. Quel appel faut-il écrire pour tracer un triangle équilatéral de côté $50$ ? De quel angle le lutin tourne-t-il ?
+4. Un élève veut tracer un pentagone régulier ($5$ côtés). Il fait tourner son lutin de $108^\circ$ à chaque sommet. Que se passe-t-il ? Quel angle faut-il ?
+5. Que trace « polygone (36) (5) » ? Calculer son périmètre.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : « polygone (6) (30) »
+
+::: methode
+Le bloc répète n fois « avancer de côté ; tourner de 360 / n degrés » : n côtés égaux, et un tour complet de $360^\circ$ à la fin.
+:::
+
+::: etape Avec n = 6 et côté = 30
+Six côtés de $30$ ; à chaque sommet, le lutin tourne de $\dfrac{360}{6} = 60^\circ$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+Un hexagone régulier de côté $30$ ; le lutin tourne de $60^\circ$ à chaque sommet.
+:::
+
+## Question 2 : Le périmètre
+
+::: etape
+Périmètre d'un polygone régulier $=$ nombre de côtés $\times$ longueur d'un côté :
+$$6 \times 30 = 180$$
+:::
+
+::: resultat
+Le périmètre est $180$.
+:::
+
+## Question 3 : Le triangle équilatéral
+
+::: etape
+Un triangle équilatéral a $3$ côtés égaux : n $= 3$ et côté $= 50$ ; l'angle de rotation est $\dfrac{360}{3} = 120^\circ$.
+:::
+
+::: resultat
+« polygone (3) (50) » : le lutin tourne de $120^\circ$ à chaque sommet.
+:::
+
+## Question 4 : Le pentagone
+
+::: etape L'erreur
+$108^\circ$ est l'angle **intérieur** du pentagone régulier. Après $5$ rotations, le lutin a tourné de $5 \times 108^\circ = 540^\circ$, et non de $360^\circ$ : la figure ne se referme pas (tracé orange en pointillés).
+:::
+
+::: etape Le bon angle
+Le lutin doit tourner de l'angle **extérieur** :
+$$\frac{360}{5} = 72^\circ = 180^\circ - 108^\circ$$
+:::
+
+[IMAGE_3]
+
+::: resultat
+La figure ne se referme pas ; il faut tourner de $72^\circ$ (pentagone vert).
+:::
+
+## Question 5 : « polygone (36) (5) »
+
+::: etape
+Avec n $= 36$, le lutin tourne de $\dfrac{360}{36} = 10^\circ$ à chaque sommet : beaucoup de petits côtés, qui tournent peu.
+:::
+
+::: resultat
+Un polygone régulier à $36$ côtés, qui ressemble à un cercle ; périmètre : $36 \times 5 = 180$.
+:::
+
+::: retenir
+Polygone régulier à $n$ côtés : le lutin tourne de $\dfrac{360}{n}$ degrés, l'angle **extérieur**.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Un hexagone régulier de côté $30$ ; $60^\circ$
+2. $180$
+3. « polygone (3) (50) » ; $120^\circ$
+4. La figure ne se referme pas ; $72^\circ$
+5. Un polygone à $36$ côtés, presque un cercle ; $180$
+
+===
+
+=== Problème - Le jeu du nombre secret
+Id: 2461
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Dans ce jeu, l'ordinateur choisit un nombre secret que le joueur doit deviner.
+
+[IMAGE_1]
+
+1. Quel est le rôle du bloc « mettre secret à nombre aléatoire entre 1 et 100 » ?
+2. Le nombre secret est $37$. Le joueur propose $50$, puis $25$, puis $37$. Quels messages le lutin dit-il ?
+3. Quelle valeur le lutin dit-il à la fin de cette partie ? Que représente-t-elle ?
+4. Un joueur propose un nombre au hasard entre $1$ et $100$. Quelle est la probabilité qu'il trouve du premier coup ?
+5. Un joueur propose toujours le nombre situé au milieu des nombres encore possibles. Expliquer pourquoi $7$ essais lui suffisent toujours.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Le nombre secret
+
+::: resultat
+Ce bloc, exécuté une seule fois avant la boucle, choisit au hasard un entier entre $1$ et $100$ : c'est le nombre à deviner.
+:::
+
+## Question 2 : Les messages
+
+::: methode
+À chaque tour : le joueur propose un nombre (réponse), essais augmente de $1$, puis on compare réponse au secret.
+:::
+
+::: etape Tour par tour (secret = 37)
+- Proposition $50$ : essais vaut $1$ ; $50 < 37$ est faux, $50 > 37$ est vrai : « Plus petit ! ».
+- Proposition $25$ : essais vaut $2$ ; $25 < 37$ est vrai : « Plus grand ! ».
+- Proposition $37$ : essais vaut $3$ ; les deux conditions sont fausses : aucun message. Avant le tour suivant, réponse $=$ secret est vrai : la boucle s'arrête.
+:::
+
+::: resultat
+« Plus petit ! », puis « Plus grand ! » ; pour $37$, aucun message, et la boucle s'arrête car réponse $=$ secret.
+:::
+
+## Question 3 : La valeur finale
+
+::: etape
+Après la boucle, le lutin dit essais, qui a augmenté de $1$ à chaque proposition.
+:::
+
+::: resultat
+Le lutin dit $3$ : c'est le nombre d'essais du joueur.
+:::
+
+## Question 4 : Du premier coup
+
+::: etape
+Les $100$ nombres de $1$ à $100$ ont la même chance d'être proposés, et un seul est le secret.
+:::
+
+::: resultat
+$\dfrac{1}{100}$.
+:::
+
+## Question 5 : La stratégie du milieu
+
+::: methode
+Si l'essai est faux, le message indique de quel côté chercher : il reste au plus la **moitié** des nombres encore possibles.
+:::
+
+::: etape Nombres encore possibles après chaque essai raté
+$$100 \to 50 \to 25 \to 12 \to 6 \to 3 \to 1$$
+Après $6$ essais ratés, il reste au plus un nombre : le $7$e essai est forcément le bon.
+:::
+
+::: resultat
+$7$ essais suffisent toujours. Cela vient de $2^6 = 64 < 100 \leq 2^7 = 128$.
+:::
+
+::: retenir
+Couper en deux à chaque étape (la **dichotomie**) est la stratégie la plus rapide.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Choisir le nombre secret au hasard
+2. « Plus petit ! » ; « Plus grand ! » ; aucun message
+3. $3$, le nombre d'essais
+4. $\dfrac{1}{100}$
+5. Chaque essai raté divise au moins par deux les possibilités : $100 \to 50 \to 25 \to 12 \to 6 \to 3 \to 1$.
+
+===
+
+=== Type brevet - Une frise de triangles
+Id: 2462
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+On a écrit le bloc personnalisé « triangle » et le script principal ci-dessous.
+
+[IMAGE_1]
+
+1. Que trace l'instruction « triangle (20) » ? Pourquoi le lutin tourne-t-il de $120^\circ$ à chaque sommet ?
+2. Quelles sont la valeur de longueur et la position du lutin à la fin du premier passage dans la boucle ?
+3. Parmi les trois dessins ci-dessous, lequel le script produit-il ? Justifier.
+
+[IMAGE_2]
+
+4. Quelle est la longueur totale tracée ?
+5. Où se trouve le lutin à la fin du script ? Que vaut alors longueur ?
+6. Quelle modification du script permet d'obtenir le dessin C ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Le bloc « triangle »
+
+::: etape Le tracé de « triangle (20) »
+Le bloc répète $3$ fois « avancer de 20 pas ; tourner ↺ de 120 degrés » : trois côtés de longueur $20$, et le lutin revient à son point de départ après $3 \times 120^\circ = 360^\circ$.
+:::
+
+::: etape L'angle de 120°
+Les angles d'un triangle équilatéral mesurent $60^\circ$ ; le lutin tourne de l'angle extérieur : $180^\circ - 60^\circ = 120^\circ$.
+:::
+
+::: resultat
+Un triangle équilatéral de côté $20$ ; le lutin tourne de $120^\circ = \dfrac{360}{3}$, l'angle extérieur.
+:::
+
+## Question 2 : Le premier passage dans la boucle
+
+::: etape Bloc par bloc
+- « aller à x : −150 y : 0 » : le lutin est en $(-150\ ;\ 0)$.
+- « mettre longueur à 20 » : longueur vaut $20$.
+- « triangle (longueur) » : triangle de côté $20$ ; le lutin revient en $(-150\ ;\ 0)$.
+- « avancer de longueur + 10 » : il avance de $20 + 10 = 30$, jusqu'en $(-120\ ;\ 0)$.
+- « ajouter 20 à longueur » : longueur vaut $20 + 20 = 40$.
+:::
+
+::: resultat
+longueur vaut $40$ et le lutin est en $(-120\ ;\ 0)$.
+:::
+
+## Question 3 : Le bon dessin
+
+::: methode
+On compare la taille des triangles et l'espace entre eux avec ce que fait le script.
+:::
+
+::: etape Deux observations
+- longueur augmente de $20$ à chaque passage : les triangles **grandissent** ($20$, $40$, $60$, $80$). Le dessin C, aux triangles égaux, ne convient pas.
+- Entre deux triangles, le lutin avance de longueur $+ 10$ : il dépasse le triangle de $10$, donc il reste un **espace** de $10$. Le dessin A, aux triangles accolés, ne convient pas.
+:::
+
+[IMAGE_3]
+
+::: resultat
+C'est le dessin B.
+:::
+
+## Question 4 : La longueur tracée
+
+::: etape
+Les quatre triangles ont pour côtés $20$, $40$, $60$ et $80$ ; chacun a trois côtés :
+$$3 \times (20 + 40 + 60 + 80) = 3 \times 200 = 600$$
+:::
+
+::: resultat
+La longueur tracée est $600$.
+:::
+
+## Question 5 : La fin du script
+
+::: etape Les déplacements stylo relevé
+Le lutin avance de $20 + 10$, $40 + 10$, $60 + 10$ et $80 + 10$ :
+$$-150 + 30 + 50 + 70 + 90 = 90$$
+:::
+
+::: resultat
+Le lutin finit en $(90\ ;\ 0)$ ; longueur vaut $20 + 4 \times 20 = 100$.
+:::
+
+## Question 6 : Obtenir le dessin C
+
+::: etape
+Dans le dessin C, les triangles ont tous le côté $20$ et sont espacés de $10$ : longueur ne doit plus changer.
+:::
+
+::: resultat
+Il suffit de supprimer le bloc « ajouter 20 à longueur ».
+:::
+
+::: attention Erreur fréquente
+Oublier que longueur change à chaque passage : à chaque tour, il faut utiliser la **nouvelle** valeur de longueur, à la fois pour le triangle et pour le déplacement.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Un triangle équilatéral de côté $20$ ; $120^\circ$ est l'angle extérieur ($3 \times 120^\circ = 360^\circ$).
+2. longueur $= 40$ ; $(-120\ ;\ 0)$
+3. Le dessin B
+4. $600$
+5. $(90\ ;\ 0)$ ; longueur $= 100$
+6. Supprimer « ajouter 20 à longueur »
+
+===
+
+=== Type brevet - La somme de deux dés
+Id: 2463
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Le script suivant simule $1\,000$ lancers de deux dés équilibrés à six faces.
+
+[IMAGE_1]
+
+1. Que représentent les variables d1 et d2 ? Quelles sont les valeurs possibles de d1 + d2 ?
+2. Que compte la variable compteur ? Que représente le nombre dit par le lutin ?
+3. Combien y a-t-il d'issues (d1 ; d2) équiprobables ? Lesquelles donnent une somme égale à $7$ ? En déduire la probabilité d'obtenir une somme égale à $7$.
+4. Le lutin dit $0{,}171$. Ce résultat est-il surprenant ?
+5. On veut maintenant estimer la probabilité d'obtenir un **double** (deux faces identiques). Quelle condition faut-il placer dans le bloc « si » ? Quelle valeur le lutin devrait-il dire environ ?
+6. On remplace $7$ par $12$ dans le script de départ. Autour de combien de succès peut-on s'attendre ? Quelle somme est la plus probable ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les variables d1 et d2
+
+::: etape
+d1 et d2 reçoivent chacune un entier au hasard entre $1$ et $6$ : ce sont les résultats des deux dés. La plus petite somme est $1 + 1 = 2$, la plus grande $6 + 6 = 12$.
+:::
+
+::: resultat
+Les faces des deux dés ; la somme peut valoir $2$, $3$, …, $12$ (onze valeurs).
+:::
+
+## Question 2 : Le compteur et la valeur dite
+
+::: etape
+compteur augmente de $1$ chaque fois que d1 + d2 $= 7$ ; à la fin, le lutin dit compteur / 1000.
+:::
+
+::: resultat
+compteur compte les lancers dont la somme vaut $7$ ; le lutin dit la **fréquence** de la somme $7$ sur $1\,000$ lancers.
+:::
+
+## Question 3 : La probabilité de la somme 7
+
+::: etape Les issues
+Chaque dé a $6$ faces : $6 \times 6 = 36$ couples (d1 ; d2), tous équiprobables.
+:::
+
+::: etape Les issues de somme 7
+$(1\ ;\ 6)$, $(2\ ;\ 5)$, $(3\ ;\ 4)$, $(4\ ;\ 3)$, $(5\ ;\ 2)$, $(6\ ;\ 1)$ : $6$ issues.
+:::
+
+::: etape La probabilité
+$$P(\text{somme } 7) = \frac{6}{36} = \frac{1}{6}$$
+:::
+
+::: resultat
+$36$ issues ; $6$ donnent $7$ ; la probabilité est $\dfrac{1}{6}$.
+:::
+
+## Question 4 : Une fréquence de 0,171
+
+::: etape Comparer
+$\dfrac{1}{6} \approx 0{,}167$ : l'écart avec $0{,}171$ est d'environ $0{,}004$.
+:::
+
+::: resultat
+Non : sur $1\,000$ lancers, la fréquence est proche de la probabilité $\dfrac{1}{6}$, sans lui être égale.
+:::
+
+## Question 5 : Estimer la probabilité d'un double
+
+::: etape La condition
+Un double, c'est d1 $=$ d2 : on remplace la condition par « d1 = d2 ».
+:::
+
+[IMAGE_2]
+
+::: etape La probabilité
+Il y a $6$ doubles parmi les $36$ issues : $\dfrac{6}{36} = \dfrac{1}{6} \approx 0{,}167$.
+:::
+
+::: resultat
+Condition « d1 = d2 » (en vert) ; le lutin devrait dire environ $0{,}167$.
+:::
+
+## Question 6 : La somme 12
+
+::: etape
+Une seule issue donne $12$ : $(6\ ;\ 6)$. Probabilité $\dfrac{1}{36}$, donc environ $\dfrac{1\,000}{36} \approx 28$ succès.
+:::
+
+::: etape Comparer les sommes
+| Somme | Nombre d'issues sur $36$ |
+|---|---|
+| $2$ ou $12$ | $1$ |
+| $3$ ou $11$ | $2$ |
+| $4$ ou $10$ | $3$ |
+| $5$ ou $9$ | $4$ |
+| $6$ ou $8$ | $5$ |
+| $7$ | $6$ |
+:::
+
+::: resultat
+Environ $28$ succès ; la somme $7$ est la plus probable ($6$ issues sur $36$).
+:::
+
+::: attention Erreur fréquente
+Croire que les onze sommes sont équiprobables : on raisonne sur les $36$ **couples** (d1 ; d2), qui eux le sont.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Les faces des deux dés ; de $2$ à $12$
+2. Le nombre de sommes égales à $7$ ; la fréquence de la somme $7$
+3. $36$ issues ; $(1\ ;\ 6)$, $(2\ ;\ 5)$, $(3\ ;\ 4)$, $(4\ ;\ 3)$, $(5\ ;\ 2)$, $(6\ ;\ 1)$ ; $\dfrac{1}{6}$
+4. Non : $0{,}171$ est proche de $\dfrac{1}{6} \approx 0{,}167$.
+5. « d1 = d2 » ; environ $0{,}167$
+6. Environ $28$ ; la somme $7$
+
+===

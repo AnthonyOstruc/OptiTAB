@@ -1,0 +1,381 @@
+Titre: Variables aléatoires réelles
+
+<!-- optitab:1 -->
+::: objectifs
+Modéliser une situation par une variable aléatoire et utiliser les notations $\{X = a\}$, $\{X \leqslant a\}$, $P(X = a)$, $P(X \leqslant a)$ ; déterminer la loi d’une variable aléatoire ; calculer et interpréter son espérance, sa variance et son écart type ; utiliser $E(aX + b)$ et $V(aX + b)$ ; résoudre un problème de jeu équitable ; simuler une variable aléatoire en Python et comparer la moyenne d’un échantillon à l’espérance.
+:::
+
+::: prerequis
+Une expérience aléatoire a un ensemble fini d’issues $\Omega$ (l’univers), muni d’une loi de probabilité $P$ : chaque issue a une probabilité positive et la somme de ces probabilités vaut $1$. En situation d’équiprobabilité, $P(A) = \dfrac{\text{nombre d’issues de } A}{\text{nombre total d’issues}}$. Moyenne pondérée d’une série statistique.
+:::
+
+## I. Variable aléatoire réelle
+
+::: definition Variable aléatoire
+Une **variable aléatoire réelle** $X$ est une fonction qui associe un nombre réel à chaque issue d’une expérience aléatoire :
+$$X : \Omega \to \mathbb{R}$$
+Elle modélise un résultat **numérique** de l’expérience : un gain, un nombre de succès, une somme de points…
+:::
+
+::: exemple Jeu de dé (exemple suivi dans tout le chapitre)
+On lance un dé équilibré à six faces. Le joueur gagne $5$ € s’il obtient $6$, gagne $1$ € s’il obtient $2$ ou $4$, et perd $2$ € s’il obtient un nombre impair. On note $X$ le gain algébrique du joueur (une perte est un gain négatif).
+
+| Issue | $1$ | $2$ | $3$ | $4$ | $5$ | $6$ |
+|---|---|---|---|---|---|---|
+| Valeur de $X$ | $-2$ | $1$ | $-2$ | $1$ | $-2$ | $5$ |
+
+$X$ prend les trois valeurs $-2$, $1$ et $5$.
+:::
+
+::: notation Événements définis par une variable aléatoire
+Pour un réel $a$ :
+- $\{X = a\}$ est l’événement formé des issues pour lesquelles $X$ prend la valeur $a$ ; sa probabilité se note $P(X = a)$ ;
+- $\{X \leqslant a\}$ est l’événement formé des issues pour lesquelles $X$ prend une valeur inférieure ou égale à $a$ ; sa probabilité se note $P(X \leqslant a)$.
+
+On définit de même $\{X \lt a\}$, $\{X \geqslant a\}$, $\{X \gt a\}$.
+:::
+
+::: exemple Passer de la langue naturelle aux notations
+Dans le jeu de dé :
+- « le joueur perd de l’argent » est l’événement $\{X \lt 0\} = \{X = -2\} = \{1\,;3\,;5\}$ ;
+- « le joueur gagne au moins $1$ € » est l’événement $\{X \geqslant 1\} = \{2\,;4\,;6\}$ ;
+- $\{X = 5\} = \{6\}$, donc $P(X = 5) = \dfrac{1}{6}$.
+:::
+
+## II. Loi de probabilité
+
+::: definition Loi d’une variable aléatoire
+Soit $X$ une variable aléatoire qui prend les valeurs $x_1, x_2, \ldots, x_n$. La **loi de probabilité** de $X$ est la donnée de chaque valeur $x_i$ et de sa probabilité $p_i = P(X = x_i)$. On la présente dans un tableau :
+
+| $x_i$ | $x_1$ | $x_2$ | $\cdots$ | $x_n$ |
+|---|---|---|---|---|
+| $P(X = x_i)$ | $p_1$ | $p_2$ | $\cdots$ | $p_n$ |
+:::
+
+::: propriete
+Les événements $\{X = x_1\}, \ldots, \{X = x_n\}$ sont deux à deux incompatibles et leur réunion est l’univers. Donc chaque $p_i$ est compris entre $0$ et $1$ et
+$$p_1 + p_2 + \cdots + p_n = 1$$
+:::
+
+::: methode Déterminer la loi d’une variable aléatoire
+1. Lister les valeurs **distinctes** que peut prendre $X$.
+2. Pour chaque valeur $x_i$, regrouper toutes les issues qui la donnent et calculer $P(X = x_i)$ (dénombrement, arbre pondéré…).
+3. Présenter la loi dans un tableau et **contrôler** que la somme des probabilités vaut $1$.
+:::
+
+::: exemple Loi du gain dans le jeu de dé
+$\{X = -2\} = \{1\,;3\,;5\}$, $\{X = 1\} = \{2\,;4\}$ et $\{X = 5\} = \{6\}$. Le dé est équilibré, d’où :
+
+| $x_i$ | $-2$ | $1$ | $5$ |
+|---|---|---|---|
+| $P(X = x_i)$ | $\dfrac{3}{6} = \dfrac{1}{2}$ | $\dfrac{2}{6} = \dfrac{1}{3}$ | $\dfrac{1}{6}$ |
+
+Contrôle : $\dfrac{1}{2} + \dfrac{1}{3} + \dfrac{1}{6} = \dfrac{3 + 2 + 1}{6} = 1$.
+
+Probabilité que le joueur ne gagne pas plus de $1$ € :
+$$
+\begin{aligned}
+P(X \leqslant 1) &= P(X = -2) + P(X = 1) \\
+&= \frac{1}{2} + \frac{1}{3} = \frac{5}{6}
+\end{aligned}
+$$
+:::
+
+On représente une loi par un **diagramme en bâtons** : un bâton de hauteur $P(X = x_i)$ au-dessus de chaque valeur $x_i$.
+
+[IMAGE_1]
+
+::: exemple Loi obtenue avec un arbre
+Une urne contient $3$ boules rouges et $2$ boules bleues. On tire successivement et **sans remise** deux boules ; $X$ est le nombre de boules rouges obtenues. On multiplie les probabilités le long de chaque chemin de l’arbre.
+
+[IMAGE_2]
+
+$$
+\begin{aligned}
+P(X = 0) &= P(B_1B_2) = \frac{2}{5} \times \frac{1}{4} = \frac{1}{10} \\
+P(X = 1) &= P(R_1B_2) \\
+&\quad + P(B_1R_2) \\
+&= \frac{3}{10} + \frac{3}{10} = \frac{3}{5} \\
+P(X = 2) &= P(R_1R_2) = \frac{3}{5} \times \frac{2}{4} = \frac{3}{10}
+\end{aligned}
+$$
+
+| $x_i$ | $0$ | $1$ | $2$ |
+|---|---|---|---|
+| $P(X = x_i)$ | $\dfrac{1}{10}$ | $\dfrac{3}{5}$ | $\dfrac{3}{10}$ |
+
+Contrôle : $\dfrac{1}{10} + \dfrac{6}{10} + \dfrac{3}{10} = 1$.
+:::
+
+::: attention Erreurs fréquentes
+- Oublier de **regrouper** les issues qui donnent la même valeur : la valeur $1$ du nombre de boules rouges correspond aux **deux** chemins $R_1B_2$ et $B_1R_2$.
+- Écrire une loi dont la somme des probabilités n’est pas égale à $1$ : c’est le signe d’une erreur.
+:::
+
+## III. Espérance
+
+::: definition Espérance
+L’**espérance** de $X$ est le nombre
+$$
+\begin{aligned}
+E(X) &= p_1x_1 + p_2x_2 \\
+&\quad + \cdots + p_nx_n \\
+&= \sum_{i=1}^{n} p_ix_i
+\end{aligned}
+$$
+C’est la moyenne des valeurs $x_i$ pondérées par leurs probabilités.
+:::
+
+::: exemple Espérance du gain dans le jeu de dé
+$$
+\begin{aligned}
+E(X) &= \frac{1}{2} \times (-2) + \frac{1}{3} \times 1 + \frac{1}{6} \times 5 \\
+&= \frac{-6 + 2 + 5}{6} \\
+&= \frac{1}{6} \approx 0{,}17
+\end{aligned}
+$$
+:::
+
+::: remarque Interprétation
+Si l’on joue un très grand nombre de parties, le gain moyen par partie est proche de $E(X)$ : ici, environ $0{,}17$ € par partie (voir la partie VI). L’espérance n’est pas forcément une valeur prise par $X$ : on ne gagne jamais exactement $0{,}17$ € en une partie.
+:::
+
+::: definition Jeu équitable
+Si $X$ est le gain algébrique d’un joueur (mise déduite), le jeu est :
+- **équitable** si $E(X) = 0$ ;
+- **favorable** au joueur si $E(X) \gt 0$ ;
+- **défavorable** au joueur si $E(X) \lt 0$.
+
+Le jeu de dé est donc légèrement favorable au joueur.
+:::
+
+## IV. Variance et écart type
+
+::: definition Variance et écart type
+La **variance** de $X$ est la moyenne, pondérée par les probabilités, des carrés des écarts à l’espérance :
+$$V(X) = \sum_{i=1}^{n} p_i\big(x_i - E(X)\big)^2$$
+L’**écart type** de $X$ est $\sigma(X) = \sqrt{V(X)}$. Il s’exprime dans la même unité que $X$.
+:::
+
+::: remarque Interprétation
+La variance et l’écart type mesurent la **dispersion** des valeurs de $X$ autour de son espérance. Une variance est toujours positive ou nulle ; elle est nulle seulement si $X$ est constante. Plus l’écart type est grand, plus les valeurs prises s’éloignent souvent de la moyenne : pour un jeu, c’est une mesure du **risque**.
+:::
+
+Deux jeux de même espérance $0$, mais de dispersions différentes : le gain $A$ vaut $-1$ ou $1$ avec la probabilité $\frac{1}{2}$, le gain $B$ vaut $-3$ ou $3$ avec la probabilité $\frac{1}{2}$. On trouve $\sigma(A) = 1$ et $\sigma(B) = 3$ : le jeu $B$ est trois fois plus « risqué ».
+
+[IMAGE_3]
+
+::: theoreme Formule de König-Huygens
+$$V(X) = E(X^2) - \big(E(X)\big)^2$$
+où $E(X^2) = \sum p_ix_i^2$ est la moyenne, pondérée par les probabilités, des carrés des valeurs.
+:::
+
+::: demonstration
+Notons $\mu = E(X)$. En développant le carré :
+$$
+\begin{aligned}
+V(X) &= \sum p_i\left(x_i^2 - 2\mu x_i + \mu^2\right) \\
+ &= \sum p_ix_i^2 \\
+&\quad - 2\mu\sum p_ix_i + \mu^2\sum p_i \\
+&= E(X^2) - 2\mu \times \mu + \mu^2 \times 1 \\
+&= E(X^2) - \mu^2
+\end{aligned}
+$$
+:::
+
+::: methode Calculer une variance et un écart type
+1. Calculer $E(X)$.
+2. Calculer $E(X^2) = \sum p_ix_i^2$ (on élève les **valeurs** au carré, pas les probabilités).
+3. $V(X) = E(X^2) - \big(E(X)\big)^2$, puis $\sigma(X) = \sqrt{V(X)}$.
+4. Garder les fractions exactes jusqu’au bout, arrondir seulement à la fin.
+:::
+
+::: exemple Jeu de dé
+$$
+\begin{aligned}
+E(X^2) &= \frac{1}{2} \times (-2)^2 \\
+&\quad + \frac{1}{3} \times 1^2 + \frac{1}{6} \times 5^2 \\
+&= 2 + \frac{1}{3} + \frac{25}{6} = \frac{13}{2}
+\end{aligned}
+$$
+$$
+\begin{aligned}
+V(X) &= \frac{13}{2} - \left(\frac{1}{6}\right)^2 \\
+&= \frac{234}{36} - \frac{1}{36} = \frac{233}{36} \approx 6{,}47
+\end{aligned}
+$$
+$\sigma(X) = \sqrt{\dfrac{233}{36}} = \dfrac{\sqrt{233}}{6} \approx 2{,}54$ € : les gains s’écartent nettement de leur moyenne de $0{,}17$ €.
+:::
+
+::: attention Erreurs fréquentes
+- Écrire $\big(E(X)\big)^2$ à la place de $E(X^2)$ : ce ne sont pas les mêmes nombres ($\frac{1}{36}$ et $\frac{13}{2}$ ici).
+- Donner la variance quand on demande l’écart type (ou oublier la racine carrée).
+- Trouver une variance négative : c’est forcément une erreur de calcul.
+:::
+
+::: methode Algorithme : espérance, variance, écart type en Python
+Les valeurs sont rangées dans une liste `x`, les probabilités dans une liste `p` de même longueur.
+
+```python
+from math import sqrt
+
+def indicateurs(x, p):
+    E = 0
+    for i in range(len(x)):
+        E = E + p[i] * x[i]
+    V = 0
+    for i in range(len(x)):
+        ecart = x[i] - E
+        V = V + p[i] * ecart ** 2
+    return E, V, sqrt(V)
+
+x = [-2, 1, 5]
+p = [1/2, 1/3, 1/6]
+print(indicateurs(x, p))
+```
+
+Le programme affiche environ $(0{,}1667\,;6{,}4722\,;2{,}5441)$, c’est-à-dire $E(X)$, $V(X)$ et $\sigma(X)$.
+:::
+
+## V. Transformation affine et jeu équitable
+
+::: propriete Espérance et variance de $aX + b$
+Pour tous réels $a$ et $b$ :
+$$
+\begin{gathered}
+E(aX + b) = aE(X) + b \\
+V(aX + b) = a^2V(X) \\
+\sigma(aX + b) = |a|\,\sigma(X)
+\end{gathered}
+$$
+:::
+
+::: demonstration
+$aX + b$ prend les valeurs $ax_i + b$ avec les probabilités $p_i$. Notons $\mu = E(X)$.
+$$
+\begin{aligned}
+E(aX + b) &= \sum p_i(ax_i + b) \\
+&= a\sum p_ix_i + b\sum p_i \\
+&= a\mu + b
+\end{aligned}
+$$
+Les écarts à l’espérance sont $(ax_i + b) - (a\mu + b) = a(x_i - \mu)$, donc
+$$
+\begin{aligned}
+V(aX + b) &= \sum p_i\,a^2(x_i - \mu)^2 \\
+&= a^2V(X)
+\end{aligned}
+$$
+et $\sigma(aX + b) = \sqrt{a^2V(X)} = |a|\,\sigma(X)$.
+:::
+
+::: exemple Changer les règles du jeu de dé
+On double tous les gains, puis on ajoute un bonus de $1$ € : le nouveau gain est $Y = 2X + 1$.
+$$
+\begin{aligned}
+E(Y) &= 2E(X) + 1 = \frac{2}{6} + 1 = \frac{4}{3} \approx 1{,}33 \\
+V(Y) &= 2^2\,V(X) = 4 \times \frac{233}{36} \\
+&= \frac{233}{9} \approx 25{,}9 \\
+\sigma(Y) &= 2\,\sigma(X) \approx 5{,}09
+\end{aligned}
+$$
+Le gain moyen passe à environ $1{,}33$ € et l’écart type à environ $5{,}09$ €.
+:::
+
+::: attention
+- Ajouter une constante **décale** les valeurs sans changer leur dispersion : $V(X + b) = V(X)$.
+- Le coefficient $a$ est **au carré** dans la variance : $V(aX + b) = a^2V(X)$, et non $aV(X) + b$.
+- $\sigma(-X) = \sigma(X)$ : un écart type n’est jamais négatif.
+:::
+
+::: methode Trouver la mise qui rend un jeu équitable
+1. Déterminer la loi du gain **brut** $G$ (somme reçue) et calculer $E(G)$.
+2. Avec une mise $m$, le gain net est $N = G - m$, donc $E(N) = E(G) - m$.
+3. Le jeu est équitable si $E(N) = 0$, c’est-à-dire si $m = E(G)$.
+:::
+
+::: exemple
+Un forain fait payer une mise de $m$ euros, puis le joueur lance un dé équilibré : il reçoit $6$ € pour un $6$, $3$ € pour un $2$ ou un $4$, rien sinon.
+
+$E(G) = \dfrac{1}{6} \times 6 + \dfrac{1}{3} \times 3 + \dfrac{1}{2} \times 0 = 2$, donc $E(N) = 2 - m$.
+
+Le jeu est équitable pour une mise de $2$ €. Avec une mise de $2{,}50$ €, $E(N) = -0{,}50$ : en moyenne, le forain gagne $0{,}50$ € par partie.
+:::
+
+## VI. Simulation et moyenne d’un échantillon
+
+::: definition Échantillon
+Un **échantillon de taille** $n$ d’une variable aléatoire $X$ est la liste des $n$ valeurs obtenues en répétant $n$ fois l’expérience, de façon identique et indépendante. Sa **moyenne** est
+$$m = \frac{x_1 + x_2 + \cdots + x_n}{n}$$
+où $x_1, \ldots, x_n$ sont les valeurs observées. Cette moyenne varie d’un échantillon à l’autre.
+:::
+
+::: methode Simuler une variable aléatoire en Python
+`randint(1, 6)` (module `random`) renvoie un entier au hasard entre $1$ et $6$ : il simule le lancer d’un dé équilibré. La fonction `gain` simule une partie du jeu de dé ; la fonction `moyenne` renvoie la moyenne d’un échantillon de taille `n`.
+
+```python
+from random import randint
+
+def gain():
+    d = randint(1, 6)
+    if d == 6:
+        return 5
+    elif d % 2 == 0:
+        return 1
+    else:
+        return -2
+
+def moyenne(n):
+    s = 0
+    for k in range(n):
+        s = s + gain()
+    return s / n
+```
+:::
+
+On a tracé la moyenne observée après $n$ parties, pour $n$ allant de $1$ à $2\,000$ (une seule simulation) :
+
+[IMAGE_4]
+
+::: propriete Moyenne d’échantillon et espérance (constat de simulation)
+Plus la taille $n$ de l’échantillon est grande, plus la moyenne observée $m$ a tendance à être proche de l’espérance $E(X)$. C’est la **loi des grands nombres**, que l’on observe ici sur des simulations.
+:::
+
+::: exemple Écart entre la moyenne et l’espérance
+Pour le jeu de dé, $\mu = E(X) = \dfrac{1}{6}$ et $\sigma = \sigma(X) \approx 2{,}544$. Avec des échantillons de taille $n = 100$ :
+$$\frac{2\sigma}{\sqrt{n}} \approx \frac{2 \times 2{,}544}{10} \approx 0{,}509$$
+On a simulé $100$ échantillons de taille $100$ et placé leurs moyennes. La bande verte est l’intervalle $\left[\mu - \dfrac{2\sigma}{\sqrt{n}}\,;\mu + \dfrac{2\sigma}{\sqrt{n}}\right] \approx [-0{,}34\,;0{,}68]$.
+
+[IMAGE_5]
+
+Ici, $96$ moyennes sur $100$ vérifient $|m - \mu| \leqslant \dfrac{2\sigma}{\sqrt{n}}$.
+:::
+
+::: remarque
+Sur de nombreuses simulations, la proportion des échantillons dont la moyenne vérifie $|m - \mu| \leqslant \dfrac{2\sigma}{\sqrt{n}}$ est généralement proche de $95\,\%$. Comme $\dfrac{2\sigma}{\sqrt{n}}$ diminue quand $n$ augmente, les moyennes se resserrent autour de $\mu$ : pour diviser cet écart par $2$, il faut multiplier $n$ par $4$.
+:::
+
+La fonction `proportion(N, n)` simule $N$ échantillons de taille $n$ du jeu de dé (avec la fonction `moyenne` ci-dessus) et renvoie la proportion de ceux dont la moyenne $m$ vérifie $|m - \mu| \leqslant h$, où $h = \dfrac{2\sigma}{\sqrt{n}}$.
+
+```python
+from math import sqrt
+
+def proportion(N, n):
+    mu = 1 / 6
+    sigma = sqrt(233) / 6
+    h = 2 * sigma / sqrt(n)
+    c = 0
+    for k in range(N):
+        m = moyenne(n)
+        if abs(m - mu) <= h:
+            c = c + 1
+    return c / N
+```
+
+::: retenir
+- Une variable aléatoire $X$ associe un réel à chaque issue ; sa loi donne les $P(X = x_i)$, positifs et de somme $1$.
+- $E(X) = \sum p_ix_i$ : valeur moyenne sur un grand nombre de répétitions ; jeu équitable si $E(\text{gain net}) = 0$.
+- $V(X) = \sum p_i\big(x_i - E(X)\big)^2$, que l’on calcule aussi par $V(X) = E(X^2) - \big(E(X)\big)^2$, et $\sigma(X) = \sqrt{V(X)}$ : dispersion, risque.
+- $E(aX + b) = aE(X) + b$, $V(aX + b) = a^2V(X)$, $\sigma(aX + b) = |a|\,\sigma(X)$.
+- La moyenne d’un échantillon simulé de grande taille est proche de $E(X)$ ; l’écart $|m - \mu|$ est le plus souvent inférieur à $\dfrac{2\sigma}{\sqrt{n}}$.
+:::

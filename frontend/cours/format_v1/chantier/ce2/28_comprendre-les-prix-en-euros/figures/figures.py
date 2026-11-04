@@ -1,0 +1,3 @@
+# -*- coding: utf-8 -*-
+"""Figures TikZ ; compilation officielle figures_livre.py."""
+FIGURES = {'pieces_375': '\\begin{tikzpicture}[line width=0.9pt,text=otInk]\n\\draw[otNavy,fill=otOrange!15,line width=1pt] (0.0,0) circle (.64);\\node[font=\\large] at (0.0,0) {2 €};\n\\draw[otNavy,fill=otOrange!15,line width=1pt] (1.55,0) circle (.64);\\node[font=\\large] at (1.55,0) {1 €};\n\\draw[otNavy,fill=otOrange!15,line width=1pt] (3.1,0) circle (.64);\\node[font=\\large] at (3.1,0) {50 c};\n\\draw[otNavy,fill=otOrange!15,line width=1pt] (4.65,0) circle (.64);\\node[font=\\large] at (4.65,0) {20 c};\n\\draw[otNavy,fill=otOrange!15,line width=1pt] (6.2,0) circle (.64);\\node[font=\\large] at (6.2,0) {5 c};\n\n\\end{tikzpicture}'}

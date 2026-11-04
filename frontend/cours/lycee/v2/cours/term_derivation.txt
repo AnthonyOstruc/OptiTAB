@@ -1,0 +1,77 @@
+=== Dérivation et convexité - Programme Terminale
+Images: term_derivation_composee.png, term_derivation_convexite.png, term_derivation_inflexion.png, term_derivation_lorenz.png
+Titre: Dérivation et convexité
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+    <div style="background:#e8f4fd; border:2px solid #3498db; border-radius:8px; padding:15px; margin-bottom:20px;">
+        <p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🎯 Objectifs du chapitre :</strong> dériver une fonction composée, calculer une dérivée seconde, étudier la convexité d’une fonction, déterminer un point d’inflexion et utiliser la convexité pour établir des inégalités.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Rappels de Première</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;">• Tangente en $a$ : $y = f'(a)(x - a) + f(a)$.</p>
+            <p style="margin:6px 0 0 0;">• $(x^n)' = nx^{n-1}$ ; $\left(\frac{1}{x}\right)' = -\frac{1}{x^2}$ ; $(\sqrt{x})' = \frac{1}{2\sqrt{x}}$ ; $(e^x)' = e^x$ ; $(\sin x)' = \cos x$ ; $(\cos x)' = -\sin x$.</p>
+            <p style="margin:6px 0 0 0;">• $(uv)' = u'v + uv'$ ; $\left(\frac{u}{v}\right)' = \frac{u'v - uv'}{v^2}$ ; le signe de $f'$ donne les variations de $f$.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Dérivée d’une fonction composée</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Théorème :</strong> si $u$ est dérivable sur $I$ et $v$ dérivable sur un intervalle contenant $u(I)$, alors $v \circ u$ est dérivable sur $I$ et</p>
+            <div style="text-align:center; margin:10px 0 0 0;">$(v \circ u)'(x) = v'(u(x)) \times u'(x)$</div>
+        </div>
+        [IMAGE_1]
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Cas à connaître :</strong> $(e^u)' = u'e^u$ ; $(u^n)' = nu'u^{n-1}$ ; $(\sqrt{u})' = \frac{u'}{2\sqrt{u}}$ ; $\left(\frac{1}{u}\right)' = -\frac{u'}{u^2}$.
+        </div>
+        <p style="font-size:1em;"><strong>Exemples :</strong> $f(x) = e^{x^2 + 1}$ donne $f'(x) = 2x\,e^{x^2 + 1}$ ; $g(x) = (3x - 1)^5$ donne $g'(x) = 15(3x - 1)^4$ ; $h(x) = \sqrt{x^2 + 9}$ donne $h'(x) = \frac{x}{\sqrt{x^2 + 9}}$.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Dérivée seconde et convexité</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Définitions :</strong> la <strong>dérivée seconde</strong> $f''$ est la dérivée de $f'$. Une fonction est <strong>convexe</strong> sur $I$ si sa courbe est au-dessus de ses tangentes, <strong>concave</strong> si elle est en dessous.</p>
+            <p style="margin:6px 0 0 0;"><strong>Théorème :</strong> si $f$ est deux fois dérivable sur $I$ : $f$ convexe $\iff f'$ croissante $\iff f'' \ge 0$ sur $I$ (et de même concave $\iff f'' \le 0$).</p>
+        </div>
+        [IMAGE_2]
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Propriété (démonstration au programme) :</strong> si $f'$ est croissante sur $I$, la courbe de $f$ est au-dessus de chacune de ses tangentes.</p>
+            <p style="margin:6px 0 0 0;"><em>Preuve :</em> pour $a \in I$, on pose $g(x) = f(x) - f'(a)(x - a) - f(a)$. Alors $g'(x) = f'(x) - f'(a)$ est négatif pour $x \le a$ et positif pour $x \ge a$ ; $g$ admet donc un minimum en $a$, égal à $g(a) = 0$, d’où $g \ge 0$.</p>
+        </div>
+        <p style="font-size:1em;"><strong>Application :</strong> $\exp'' = \exp \gt 0$, donc l’exponentielle est convexe ; sa courbe est au-dessus de sa tangente en $0$, d’où l’inégalité $e^x \ge 1 + x$ pour tout réel $x$.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Point d’inflexion</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Définition et propriété :</strong> un <strong>point d’inflexion</strong> est un point où la courbe traverse sa tangente ; la convexité y change. Si $f''$ s’annule <strong>en changeant de signe</strong> en $a$, le point d’abscisse $a$ est un point d’inflexion.</p>
+        </div>
+        [IMAGE_3]
+        <p style="font-size:1em;"><strong>Exemple :</strong> $f(x) = x^3 - 3x$ : $f'(x) = 3x^2 - 3$ et $f''(x) = 6x$, qui change de signe en $0$. $f$ est concave sur $]-\infty\,;0]$, convexe sur $[0\,;+\infty[$, et $I(0\,;0)$ est un point d’inflexion ; la tangente en $I$ a pour équation $y = -3x$.</p>
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong> $f''(a) = 0$ ne suffit pas : pour $f(x) = x^4$, $f''(0) = 0$ mais $f'' = 12x^2 \ge 0$ ne change pas de signe, et il n’y a pas de point d’inflexion.
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Une application : la courbe de Lorenz</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <p style="font-size:1em;">En économie, la courbe de Lorenz associe à $x$ % de la population la plus pauvre la part $L(x)$ des richesses qu’elle possède. C’est une fonction croissante et convexe, ici $L(x) = x^2$ (avec $x$ et $L(x)$ exprimés en proportions).</p>
+        [IMAGE_4]
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Lecture :</strong> plus la courbe est « creusée » sous la droite d’égalité $y = x$, plus la répartition est inégalitaire. Par exemple $L(0{,}5) = 0{,}25$ : la moitié la plus pauvre possède $25\,\%$ des richesses.
+        </div>
+    </div>
+
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:8px; padding:15px; margin:20px 0 0 0;">
+        <p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🏆 L’essentiel :</strong> $(v \circ u)' = (v' \circ u) \times u'$, d’où $(e^u)' = u'e^u$ et $(u^n)' = nu'u^{n-1}$ ; convexe $\iff$ courbe au-dessus de ses tangentes $\iff f'' \ge 0$ ; point d’inflexion là où $f''$ change de signe ; la convexité fournit des inégalités comme $e^x \ge 1 + x$. Fiche de synthèse dans l’onglet Fiches !</p>
+    </div>
+
+</div>

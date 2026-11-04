@@ -1,222 +1,127 @@
 <template>
-  <Modal :is-open="isOpen" :can-close="false" :show-header="false">
-    <div class="pays-niveau-selector">
-      <!-- Header avec progression -->
-      <div class="modal-header">
-        <div class="progress-bar">
-          <div class="progress-step" :class="{ active: currentStep >= 1, completed: currentStep > 1 }">
-            <span class="step-number">1</span>
-            <span class="step-label">Profil</span>
-          </div>
-          <div class="progress-line" :class="{ completed: currentStep > 1 }"></div>
-          <div class="progress-step" :class="{ active: currentStep >= 2, completed: currentStep > 2 }">
-            <span class="step-number">2</span>
-            <span class="step-label">Pays</span>
-          </div>
-          <div class="progress-line" :class="{ completed: currentStep > 2 }"></div>
-          <div class="progress-step" :class="{ active: currentStep >= 3, completed: currentStep > 3 }">
-            <span class="step-number">3</span>
-            <span class="step-label">Niveau</span>
-          </div>
-        </div>
-        <h2>🎓 Configuration de votre profil d'apprentissage</h2>
-        <p class="modal-subtitle">{{ getStepSubtitle() }}</p>
-      </div>
+  <Modal
+    :is-open="isOpen"
+    :can-close="false"
+    :title="currentStep === 4 ? 'C’est prêt !' : 'Bienvenue sur OptiTAB'"
+    :eyebrow="currentStep < 4 ? `Étape ${numeroAffiche} sur ${etapesAffichees.length}` : ''"
+    :subtitle="getStepSubtitle()"
+    :icon="currentStep === 4 ? CheckCircleIcon : SparklesIcon"
+    size="medium"
+  >
+    <div class="pn">
+      <!-- Progression -->
+      <ol v-if="currentStep < 4" class="pn-steps" aria-label="Progression">
+        <li v-for="(etape, i) in etapesAffichees" :key="etape.nom" :class="{ 'is-done': currentStep > etape.n, 'is-current': currentStep === etape.n }">
+          <span class="pn-steps__dot">
+            <CheckIcon v-if="currentStep > etape.n" aria-hidden="true" />
+            <template v-else>{{ i + 1 }}</template>
+          </span>
+          {{ etape.nom }}
+        </li>
+      </ol>
 
-      <!-- Étape 1: Sélection du type de profil (élève/parent) -->
-      <div v-if="currentStep === 1" class="step-content">
-        <div class="section-header">
-          <h3>👤 Vous êtes...</h3>
-          <p>Sélectionnez votre profil pour personnaliser votre expérience</p>
-        </div>
-
-        <div class="role-grid">
-          <div 
-            class="role-card"
-            :class="{ selected: selectedRole === 'student' }"
-            @click="selectRole('student')"
+      <!-- Étape 1 : élève ou parent -->
+      <div v-if="currentStep === 1" class="pn-step">
+        <p class="pn-question">Tu es…</p>
+        <div class="pn-grid pn-grid--2">
+          <button
+            v-for="role in ROLES"
+            :key="role.cle"
+            type="button"
+            :class="['pn-card', { selected: selectedRole === role.cle }]"
+            :aria-pressed="selectedRole === role.cle"
+            @click="selectRole(role.cle)"
           >
-            <div class="role-icon">🎓</div>
-            <div class="role-info">
-              <h4>Élève / Étudiant</h4>
-              <p>J'utilise OptiTAB pour apprendre et m'exercer</p>
-            </div>
-            <div v-if="selectedRole === 'student'" class="selected-indicator">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-          </div>
-
-          <div 
-            class="role-card"
-            :class="{ selected: selectedRole === 'parent' }"
-            @click="selectRole('parent')"
-          >
-            <div class="role-icon">👨‍👩‍👧</div>
-            <div class="role-info">
-              <h4>Parent</h4>
-              <p>Je souhaite suivre la progression de mon enfant</p>
-            </div>
-            <div v-if="selectedRole === 'parent'" class="selected-indicator">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-          </div>
+            <span class="pn-card__icon"><component :is="role.icone" aria-hidden="true" /></span>
+            <span class="pn-card__text">
+              <strong>{{ role.titre }}</strong>
+              <small>{{ role.texte }}</small>
+            </span>
+            <CheckCircleSolid v-if="selectedRole === role.cle" class="pn-card__check" aria-hidden="true" />
+          </button>
         </div>
-
-        <div class="step-actions">
-          <div></div>
-          <button 
-            @click="nextStep" 
-            :disabled="!selectedRole"
-            class="btn-primary"
-          >
-            <span>Continuer</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-              <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+        <div class="pn-actions">
+          <span></span>
+          <button type="button" class="om-btn om-btn--primary" :disabled="!selectedRole || (loadingPays && currentStep === 1)" @click="nextStep">
+            Continuer
+            <ArrowRightIcon aria-hidden="true" />
           </button>
         </div>
       </div>
 
-      <!-- Étape 2: Sélection du pays -->
-      <div v-if="currentStep === 2" class="step-content">
-        <div class="section-header">
-          <h3>📍 Sélectionnez votre pays</h3>
-          <p>Choisissez votre pays pour personnaliser le contenu selon votre système éducatif</p>
+      <!-- Étape 2 : pays -->
+      <div v-if="currentStep === 2" class="pn-step">
+        <p class="pn-question">Dans quel pays es-tu scolarisé ?</p>
+        <p v-if="loadingPays" class="pn-etat">Chargement des pays…</p>
+        <div v-else-if="errorPays" class="pn-etat">
+          <p class="om-alert om-alert--error">Impossible de charger les pays.</p>
+          <button type="button" class="om-btn om-btn--ghost" @click="loadPays">Réessayer</button>
         </div>
-
-        <div v-if="loadingPays" class="loading-state">
-          <div class="spinner"></div>
-          <p>Chargement des pays disponibles...</p>
-        </div>
-
-        <div v-else-if="errorPays" class="error-state">
-          <p>❌ Erreur lors du chargement des pays</p>
-          <button @click="loadPays" class="btn-retry">Réessayer</button>
-        </div>
-
-        <div v-else class="pays-grid">
-          <div 
-            v-for="pays in paysDisponibles" 
+        <div v-else class="pn-grid pn-grid--2">
+          <button
+            v-for="pays in paysAvecCours"
             :key="pays.id"
-            class="pays-card"
-            :class="{ selected: selectedPaysId === pays.id }"
+            type="button"
+            :class="['pn-card', { selected: selectedPaysId === pays.id }]"
+            :aria-pressed="selectedPaysId === pays.id"
             @click="selectPays(pays)"
           >
-            <div class="pays-flag">{{ pays.drapeau_emoji }}</div>
-            <div class="pays-info">
-              <h4>{{ pays.nom }}</h4>
-              <p>{{ pays.nombre_niveaux || 0 }} niveaux disponibles</p>
-            </div>
-            <div v-if="selectedPaysId === pays.id" class="selected-indicator">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-          </div>
+            <span class="pn-card__flag" aria-hidden="true">{{ pays.drapeau_emoji }}</span>
+            <span class="pn-card__text">
+              <strong>{{ pays.nom }}</strong>
+              <small>{{ pays.nombre_niveaux || 0 }} classes disponibles</small>
+            </span>
+            <CheckCircleSolid v-if="selectedPaysId === pays.id" class="pn-card__check" aria-hidden="true" />
+          </button>
         </div>
-
-        <div class="step-actions">
-          <button @click="previousStep" class="btn-secondary">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-              <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+        <div class="pn-actions">
+          <button type="button" class="om-btn om-btn--ghost" @click="previousStep">
+            <ArrowLeftIcon aria-hidden="true" />
             Retour
           </button>
-          <button 
-            @click="nextStep" 
-            :disabled="!selectedPaysId || loadingNiveaux"
-            class="btn-primary"
-          >
-            <span v-if="loadingNiveaux">Chargement...</span>
-            <span v-else>Continuer</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-              <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+          <button type="button" class="om-btn om-btn--primary" :disabled="!selectedPaysId || loadingNiveaux" @click="nextStep">
+            {{ loadingNiveaux ? 'Chargement…' : 'Continuer' }}
+            <ArrowRightIcon v-if="!loadingNiveaux" aria-hidden="true" />
           </button>
         </div>
       </div>
 
-      <!-- Étape 3: Sélection du niveau -->
-      <div v-if="currentStep === 3" class="step-content">
-        <div class="section-header">
-          <h3>📚 Sélectionnez votre niveau scolaire</h3>
-          <p>Choisissez votre niveau pour {{ selectedPays?.nom }}</p>
-        </div>
-
-        <div v-if="loadingNiveaux" class="loading-state">
-          <div class="spinner"></div>
-          <p>Chargement des niveaux...</p>
-        </div>
-
-        <div v-else-if="niveaux.length === 0" class="empty-state">
-          <p>Aucun niveau disponible pour ce pays</p>
-        </div>
-
-        <div v-else class="niveaux-grid">
-          <div 
-            v-for="niveau in niveaux" 
+      <!-- Étape 3 : classe -->
+      <div v-if="currentStep === 3" class="pn-step">
+        <p class="pn-question">En quelle classe{{ selectedPays?.nom ? ` (${selectedPays.nom})` : '' }} ?</p>
+        <p v-if="loadingNiveaux" class="pn-etat">Chargement des classes…</p>
+        <p v-else-if="niveaux.length === 0" class="pn-etat">Aucune classe disponible pour ce pays.</p>
+        <div v-else class="pn-grid pn-grid--classes">
+          <button
+            v-for="niveau in niveaux"
             :key="niveau.id"
-            class="niveau-card"
-            :class="{ selected: selectedNiveauId === niveau.id }"
+            type="button"
+            :class="['pn-classe', { selected: selectedNiveauId === niveau.id }]"
+            :aria-pressed="selectedNiveauId === niveau.id"
             @click="selectNiveau(niveau)"
           >
-            <div class="niveau-color" :style="{ backgroundColor: niveau.couleur || '#667eea' }"></div>
-            <div class="niveau-info">
-              <h4>{{ niveau.nom_local || niveau.nom }}</h4>
-              <p>Niveau scolaire</p>
-            </div>
-            <div v-if="selectedNiveauId === niveau.id" class="selected-indicator">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-          </div>
+            {{ niveau.nom_local || niveau.nom }}
+          </button>
         </div>
-
-        <div class="step-actions">
-          <button @click="previousStep" class="btn-secondary">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-              <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+        <div class="pn-actions">
+          <button type="button" class="om-btn om-btn--ghost" @click="previousStep">
+            <ArrowLeftIcon aria-hidden="true" />
             Retour
           </button>
-          <button 
-            @click="saveConfiguration" 
-            :disabled="!selectedNiveauId || saving"
-            class="btn-primary"
-          >
-            <span v-if="saving">Enregistrement...</span>
-            <span v-else>Terminer la configuration</span>
+          <button type="button" class="om-btn om-btn--primary" :disabled="!selectedNiveauId || saving" @click="saveConfiguration">
+            {{ saving ? 'Enregistrement…' : 'Terminer' }}
           </button>
         </div>
       </div>
 
-      <!-- Étape 4: Confirmation -->
-      <div v-if="currentStep === 4" class="step-content">
-        <div class="confirmation-content">
-          <div class="success-icon">✅</div>
-          <h3>Configuration terminée !</h3>
-          <p>Votre profil a été configuré avec succès.</p>
-          <div class="configuration-summary">
-            <div class="summary-item">
-              <span class="label">Profil:</span>
-              <span class="value">{{ selectedRole === 'student' ? 'Élève / Étudiant' : 'Parent' }}</span>
-            </div>
-            <div class="summary-item">
-              <span class="label">Pays:</span>
-              <span class="value">{{ selectedPays?.nom }}</span>
-            </div>
-            <div class="summary-item">
-              <span class="label">Niveau:</span>
-              <span class="value">{{ selectedNiveau?.nom_local || selectedNiveau?.nom }}</span>
-            </div>
-          </div>
-          <p class="redirect-message">Vous allez être redirigé vers votre tableau de bord...</p>
-        </div>
+      <!-- Étape 4 : confirmation -->
+      <div v-if="currentStep === 4" class="pn-step">
+        <dl class="pn-summary">
+          <div><dt>Profil</dt><dd>{{ selectedRole === 'student' ? 'Élève' : 'Parent' }}</dd></div>
+          <div><dt>Pays</dt><dd>{{ selectedPays?.nom }}</dd></div>
+          <div><dt>Classe</dt><dd>{{ selectedNiveau?.nom_local || selectedNiveau?.nom }}</dd></div>
+        </dl>
+        <p class="pn-redirect">Tu vas être redirigé vers ton espace…</p>
       </div>
     </div>
   </Modal>
@@ -227,6 +132,8 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { useToast } from '@/composables/useToast'
 import Modal from '@/components/common/Modal.vue'
+import { AcademicCapIcon, ArrowLeftIcon, ArrowRightIcon, CheckCircleIcon, CheckIcon, SparklesIcon, UsersIcon } from '@heroicons/vue/24/outline'
+import { CheckCircleIcon as CheckCircleSolid } from '@heroicons/vue/24/solid'
 import { getPaysActifs, getPaysNiveaux } from '@/api/pays.js'
 import { updateUserPaysNiveau, updateUserRole } from '@/api/users.js'
 
@@ -238,6 +145,11 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['configuration-complete', 'close'])
+
+const ROLES = [
+  { cle: 'student', titre: 'Élève', texte: 'J’apprends et je m’entraîne sur OptiTAB', icone: AcademicCapIcon },
+  { cle: 'parent', titre: 'Parent', texte: 'Je suis la progression de mon enfant', icone: UsersIcon }
+]
 
 const userStore = useUserStore()
 const { showToast } = useToast()
@@ -254,7 +166,17 @@ const loadingNiveaux = ref(false)
 const errorPays = ref(false)
 const saving = ref(false)
 
-// Computed
+// Seuls les pays qui ont des classes (donc des cours) sont proposés. S'il n'y en
+// a qu'un, l'étape « Pays » est sautée : il est choisi d'office.
+const paysAvecCours = computed(() => paysDisponibles.value.filter((p) => Number(p.nombre_niveaux) > 0))
+const paysUnique = computed(() => (paysAvecCours.value.length === 1 ? paysAvecCours.value[0] : null))
+const etapesAffichees = computed(() => [
+  { n: 1, nom: 'Profil' },
+  ...(paysUnique.value ? [] : [{ n: 2, nom: 'Pays' }]),
+  { n: 3, nom: 'Classe' }
+])
+const numeroAffiche = computed(() => Math.max(1, etapesAffichees.value.findIndex((e) => e.n === currentStep.value) + 1))
+
 const selectedPays = computed(() => 
   paysDisponibles.value.find(p => p.id === selectedPaysId.value)
 )
@@ -266,10 +188,10 @@ const selectedNiveau = computed(() =>
 // Méthodes
 const getStepSubtitle = () => {
   switch (currentStep.value) {
-    case 1: return 'Étape 1 sur 3 - Choisissez votre profil'
-    case 2: return 'Étape 2 sur 3 - Choisissez votre pays'
-    case 3: return 'Étape 3 sur 3 - Choisissez votre niveau'
-    case 4: return 'Configuration terminée'
+    case 1: return `${paysUnique.value ? 'Deux' : 'Trois'} questions rapides pour te proposer les bons cours et exercices.`
+    case 2: return 'Les programmes suivent le système scolaire de ton pays.'
+    case 3: return 'Tu pourras changer de classe plus tard depuis ton compte.'
+    case 4: return 'Ton espace est prêt.'
     default: return ''
   }
 }
@@ -323,12 +245,16 @@ const selectRole = (role) => {
   selectedRole.value = role
 }
 
-const nextStep = () => {
+const nextStep = async () => {
   if (currentStep.value === 1 && selectedRole.value) {
-    currentStep.value = 2
-    if (paysDisponibles.value.length === 0) {
-      loadPays()
+    if (paysDisponibles.value.length === 0) await loadPays()
+    if (paysUnique.value) {
+      selectPays(paysUnique.value)
+      currentStep.value = 3
+      loadNiveauxPourPays(paysUnique.value.id)
+      return
     }
+    currentStep.value = 2
   } else if (currentStep.value === 2 && selectedPaysId.value) {
     currentStep.value = 3
     loadNiveauxPourPays(selectedPaysId.value)
@@ -339,7 +265,7 @@ const previousStep = () => {
   if (currentStep.value === 2) {
     currentStep.value = 1
   } else if (currentStep.value === 3) {
-    currentStep.value = 2
+    currentStep.value = paysUnique.value ? 1 : 2
     niveaux.value = []
     selectedNiveauId.value = null
   }
@@ -400,310 +326,249 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.pays-niveau-selector {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.modal-header {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.progress-bar {
+/* Éléments communs (.om-btn, .om-alert) : components/common/Modal.vue */
+.pn-steps {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1.5rem;
+  gap: 8px;
+  margin: -4px 0 24px;
+  padding: 0;
+  list-style: none;
 }
 
-.progress-step {
+.pn-steps li {
   display: flex;
-  flex-direction: column;
+  flex: 1;
   align-items: center;
-  gap: 0.5rem;
-}
-
-.step-number {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background-color: #e5e7eb;
-  color: #6b7280;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: var(--om-bg-soft);
+  color: var(--om-muted);
+  font-size: 13.5px;
   font-weight: 600;
-  font-size: 14px;
-  transition: all 0.3s ease;
 }
 
-.progress-step.active .step-number {
-  background-color: #1b3c8e;
-  color: white;
+.pn-steps li.is-current {
+  background: var(--om-navy-50);
+  color: var(--om-navy);
 }
 
-.progress-step.completed .step-number {
-  background-color: #3b8544;
-  color: white;
+.pn-steps li.is-done {
+  color: var(--om-green-700);
 }
 
-.step-label {
-  font-size: 12px;
-  color: #6b7280;
-  font-weight: 500;
+.pn-steps__dot {
+  display: inline-grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #fff;
+  font-size: 12.5px;
 }
 
-.progress-step.active .step-label {
-  color: #1b3c8e;
+.pn-steps li.is-current .pn-steps__dot {
+  background: var(--om-navy);
+  color: #fff;
 }
 
-.progress-step.completed .step-label {
-  color: #3b8544;
+.pn-steps li.is-done .pn-steps__dot {
+  background: var(--om-green-700);
+  color: #fff;
 }
 
-.progress-line {
-  width: 60px;
-  height: 2px;
-  background-color: #e5e7eb;
-  margin: 0 1rem;
-  transition: all 0.3s ease;
+.pn-steps__dot svg {
+  width: 14px;
+  height: 14px;
 }
 
-.progress-line.completed {
-  background-color: #3b8544;
-}
-
-.modal-header h2 {
-  font-size: 1.5rem;
+.pn-question {
+  margin: 0 0 14px;
+  color: var(--om-ink);
+  font-size: 17px;
   font-weight: 700;
-  color: #1f2937;
-  margin-bottom: 0.5rem;
 }
 
-.modal-subtitle {
-  color: #6b7280;
-  font-size: 0.875rem;
-}
-
-.step-content {
-  min-height: 400px;
-}
-
-.section-header {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.section-header h3 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #1f2937;
-  margin-bottom: 0.5rem;
-}
-
-.section-header p {
-  color: #6b7280;
-  font-size: 0.875rem;
-}
-
-.loading-state, .error-state, .empty-state {
-  text-align: center;
-  padding: 3rem 1rem;
-}
-
-.spinner {
-  width: 40px;
-  height: 40px;
-  border: 3px solid #e5e7eb;
-  border-top: 3px solid #1b3c8e;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin: 0 auto 1rem;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.btn-retry {
-  background-color: #1b3c8e;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  font-size: 0.875rem;
-  transition: background-color 0.3s ease;
-}
-
-.btn-retry:hover {
-  background-color: #122a66;
-}
-
-.pays-grid, .niveaux-grid, .role-grid {
+.pn-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
-  margin-bottom: 2rem;
+  gap: 12px;
 }
 
-.pays-card, .niveau-card, .role-card {
-  background: white;
-  border: 2px solid #e5e7eb;
-  border-radius: 0.75rem;
-  padding: 1.5rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
+.pn-grid--2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.pn-grid--classes {
+  grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+  gap: 8px;
+}
+
+.pn-card {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 1rem;
-}
-
-.pays-card:hover, .niveau-card:hover, .role-card:hover {
-  border-color: #1b3c8e;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(27, 60, 142, 0.1);
-}
-
-.pays-card.selected, .niveau-card.selected, .role-card.selected {
-  border-color: #1b3c8e;
-  background-color: #f8fafc;
-}
-
-.pays-flag, .role-icon {
-  font-size: 2rem;
-  flex-shrink: 0;
-}
-
-.niveau-color {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.pays-info, .niveau-info, .role-info {
-  flex: 1;
-}
-
-.pays-info h4, .niveau-info h4, .role-info h4 {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #1f2937;
-  margin-bottom: 0.25rem;
-}
-
-.pays-info p, .niveau-info p, .role-info p {
-  font-size: 0.875rem;
-  color: #6b7280;
-  margin: 0;
-}
-
-.selected-indicator {
-  color: #1b3c8e;
-  flex-shrink: 0;
-}
-
-.step-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  margin-top: 2rem;
-}
-
-.btn-primary, .btn-secondary {
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  font-weight: 500;
-  font-size: 0.875rem;
+  gap: 14px;
+  padding: 16px;
+  border: 1.5px solid var(--om-line);
+  border-radius: 16px;
+  background: #fff;
+  color: var(--om-ink);
+  font-family: var(--om-font);
+  text-align: left;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.pn-card:hover {
+  border-color: var(--om-navy-100);
+  box-shadow: 0 6px 18px rgba(16, 32, 79, 0.08);
+}
+
+.pn-card.selected {
+  border-color: var(--om-navy);
+  background: var(--om-navy-50);
+}
+
+.pn-card:focus-visible,
+.pn-classe:focus-visible {
+  outline: 2px solid var(--om-navy);
+  outline-offset: 2px;
+}
+
+.pn-card__icon {
+  display: inline-grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--om-navy-50);
+  color: var(--om-navy);
+}
+
+.pn-card.selected .pn-card__icon {
+  background: #fff;
+}
+
+.pn-card__icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.pn-card__flag {
+  font-size: 30px;
+  line-height: 1;
+}
+
+.pn-card__text {
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  border: none;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
 }
 
-.btn-primary {
-  background-color: #1b3c8e;
-  color: white;
+.pn-card__text strong {
+  font-size: 16px;
 }
 
-.btn-primary:hover:not(:disabled) {
-  background-color: #122a66;
+.pn-card__text small {
+  color: var(--om-muted);
+  font-size: 13.5px;
+  line-height: 1.4;
 }
 
-.btn-primary:disabled {
-  background-color: #9ca3af;
-  cursor: not-allowed;
+.pn-card__check {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 22px;
+  height: 22px;
+  color: var(--om-navy);
 }
 
-.btn-secondary {
-  background-color: #f3f4f6;
-  color: #374151;
-  border: 1px solid #d1d5db;
+.pn-classe {
+  min-height: 48px;
+  padding: 0 10px;
+  border: 1.5px solid var(--om-line);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--om-ink);
+  font: 600 15px/1.2 var(--om-font);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
 }
 
-.btn-secondary:hover {
-  background-color: #e5e7eb;
+.pn-classe:hover {
+  border-color: var(--om-navy);
 }
 
-.confirmation-content {
-  text-align: center;
-  padding: 3rem 1rem;
+.pn-classe.selected {
+  border-color: var(--om-navy);
+  background: var(--om-navy);
+  color: #fff;
 }
 
-.success-icon {
-  font-size: 4rem;
-  margin-bottom: 1rem;
+.pn-etat {
+  margin: 8px 0;
+  color: var(--om-muted);
 }
 
-.confirmation-content h3 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #1f2937;
-  margin-bottom: 0.5rem;
-}
-
-.confirmation-content p {
-  color: #6b7280;
-  margin-bottom: 2rem;
-}
-
-.configuration-summary {
-  background-color: #f8fafc;
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.summary-item {
+.pn-actions {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 0.5rem 0;
+  gap: 10px;
+  margin-top: 26px;
 }
 
-.summary-item:not(:last-child) {
-  border-bottom: 1px solid #e5e7eb;
+.pn-summary {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 16px 18px;
+  border-radius: 16px;
+  background: var(--om-bg-soft);
 }
 
-.summary-item .label {
-  font-weight: 500;
-  color: #6b7280;
+.pn-summary div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
 }
 
-.summary-item .value {
-  font-weight: 600;
-  color: #1f2937;
+.pn-summary dt {
+  color: var(--om-muted);
 }
 
-.redirect-message {
-  font-style: italic;
-  color: #9ca3af;
+.pn-summary dd {
+  margin: 0;
+  color: var(--om-ink);
+  font-weight: 700;
+}
+
+.pn-redirect {
+  margin: 16px 0 0;
+  color: var(--om-muted);
+  font-size: 14px;
+  text-align: center;
+}
+
+@media (max-width: 520px) {
+  .pn-grid--2 {
+    grid-template-columns: 1fr;
+  }
+
+  .pn-steps li {
+    justify-content: center;
+    font-size: 0;
+  }
+
+  .pn-steps__dot {
+    font-size: 12.5px;
+  }
+
+  .pn-actions .om-btn {
+    flex: 1;
+  }
 }
 </style>

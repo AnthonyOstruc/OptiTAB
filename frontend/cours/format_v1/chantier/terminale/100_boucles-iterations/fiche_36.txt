@@ -1,0 +1,90 @@
+Titre: Résumé : Algorithmes du programme de Terminale
+
+<!-- optitab:1 -->
+::: objectifs
+L'essentiel des algorithmes du programme de Terminale : suites, dichotomie, Newton, rectangles, seuils, simulations, dénombrement.
+:::
+
+## I. Suites : terme, somme, seuil
+
+| Objectif | Structure |
+|---|---|
+| terme $u_n$ | `for` : $n$ applications de la récurrence |
+| somme $u_0 + \dots + u_n$ | `for` de $n + 1$ tours, accumulateur à $0$ |
+| plus petit $n$ tel que $u_n \gt A$ | `while u <= A:` et un compteur |
+
+```python
+def seuil(A):
+    n = 0
+    u = 1
+    while u <= A:
+        u = 0.8 * u + 2
+        n = n + 1
+    return n
+
+print(seuil(9))
+```
+
+```console
+10
+```
+
+[IMAGE_1]
+
+::: attention Suite majorée
+Ici $u_n \lt 10$ pour tout $n$ (récurrence) : `seuil(10)` ne s'arrête jamais. On vérifie toujours que le seuil sera dépassé.
+:::
+
+## II. Résoudre $f(x) = 0$
+
+::: methode Dichotomie
+Tant que $b - a \gt e$ : $m = \dfrac{a + b}{2}$ ; si $f(a) \times f(m) \le 0$, alors $b \leftarrow m$, sinon $a \leftarrow m$. Après $n$ tours, l'amplitude est $\dfrac{b - a}{2^n}$.
+:::
+
+::: formule
+$$\text{Newton :}\quad x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}$$
+:::
+
+Newton converge beaucoup plus vite, à condition de partir près de la solution et que $f'(x_n) \neq 0$.
+
+## III. Intégrale : méthode des rectangles
+
+Avec $h = \dfrac{b - a}{n}$ et $x_k = a + kh$ :
+
+$$
+\begin{aligned}
+S &= h \sum_{k=0}^{n-1} f(x_k) \quad \text{(à gauche)} \\
+s &= h \sum_{k=1}^{n} f(x_k) \quad \text{(à droite)}
+\end{aligned}
+$$
+
+[IMAGE_2]
+
+Si $f$ est décroissante : $s \le \displaystyle\int_a^b f(x)\,\mathrm{d}x \le S$ ; inversé si $f$ est croissante.
+
+## IV. Seuils : algorithme puis logarithme
+
+- L'algorithme donne le plus petit entier qui convient ; le calcul le démontre.
+- $q^n \lt \varepsilon$ avec $0 \lt q \lt 1$ : $n \gt \dfrac{\ln(\varepsilon)}{\ln(q)}$ (le sens change, car $\ln(q) \lt 0$).
+
+## V. Probabilités
+
+- Succès de probabilité $p$ : le test `random() < p`.
+- Loi $\mathcal{B}(n\,;p)$ : somme de $n$ épreuves de Bernoulli indépendantes.
+- $P(X = k) = \dbinom{n}{k}\,p^k\,(1 - p)^{n-k}$, avec `comb(n, k)` pour $\dbinom{n}{k}$.
+- Fréquence : un compteur divisé par le nombre $N$ d'expériences.
+- `seed(2026)` fixe la graine : la simulation donne toujours le même résultat.
+- Loi des grands nombres : la fréquence d'un échantillon se rapproche de $p$ quand sa taille augmente.
+
+## VI. Dénombrement
+
+- Triangle de Pascal : chaque ligne commence et finit par $1$ ; les autres nombres sont `L[k] + L[k + 1]`, la somme de deux voisins de la ligne précédente.
+- Parties à $2$ éléments : deux boucles, `j` allant de `i + 1` à `len(E) - 1` ; il y en a $\dbinom{n}{2}$.
+
+::: attention Les pièges
+1. Condition du `while` : le **contraire** de la condition cherchée.
+2. Diviser par $\ln(q) \lt 0$ change le sens de l'inégalité.
+3. Dichotomie : on garde la moitié où $f$ change de signe.
+4. Rectangles : `range(n)` à gauche, `range(1, n + 1)` à droite.
+5. Sans `seed`, une simulation change à chaque exécution.
+:::

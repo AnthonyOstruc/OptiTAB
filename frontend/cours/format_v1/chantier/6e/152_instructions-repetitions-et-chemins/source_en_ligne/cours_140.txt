@@ -1,0 +1,82 @@
+Titre: Instructions, répétitions et chemins
+
+<!-- optitab:1 -->
+::: objectifs
+- Identifier une instruction, une séquence, une entrée et une sortie.
+- Exécuter ou produire un programme simple, avec ou sans machine.
+- Utiliser une répétition ; programmer et vérifier un chemin.
+:::
+
+## I. Lire des instructions dans l’ordre
+::: definition Instruction et séquence
+Une instruction est un ordre élémentaire : avancer, tourner, ajouter un nombre ou afficher un résultat. Une séquence est une liste d’instructions exécutées dans l’ordre indiqué.
+:::
+::: attention L’ordre fait partie du programme
+« Ajouter 3 puis doubler » diffère de « doubler puis ajouter 3 ». Pour l’entrée 5, le premier donne $5+3=8$, puis $8\times2=16$ ; le second donne $5\times2=10$, puis $10+3=13$.
+:::
+
+## II. Entrée, calculs et sortie
+::: definition Suivre les données
+Une entrée est une donnée fournie au programme. Une sortie est une information qu’il affiche ou produit. Un calcul intermédiaire peut être utilisé par l’instruction suivante.
+:::
+```console
+demander un nombre
+ajouter 2 au nombre saisi
+multiplier le résultat par 2
+afficher le résultat final
+```
+::: exemple Un test
+Avec l’entrée 6, on obtient $6+2=8$, puis $8\times2=16$. La sortie est 16. Afficher un résultat ne modifie pas automatiquement l’entrée ; il faut respecter ce que le programme indique.
+:::
+::: methode Tester une séquence
+Noter l’entrée ; exécuter une seule instruction à la fois ; conserver le résultat intermédiaire ; continuer jusqu’à la sortie ; comparer à un résultat attendu.
+:::
+
+## III. Répéter un bloc
+::: definition Répétition
+Une répétition exécute un même bloc un nombre donné de fois. Le bloc peut contenir plusieurs instructions. La répétition porte sur toutes les instructions qu’il contient.
+:::
+```console
+partir de 2
+répéter 3 fois :
+    ajouter 4 au résultat courant
+```
+::: exemple Suivre les passages
+Les résultats successifs sont 6, 10 et 14. Le nombre initial 2 existe avant le premier passage : trois répétitions produisent trois nouveaux résultats.
+:::
+::: methode Écrire plus court
+Repérer un bloc identique qui se répète ; compter ses occurrences ; l’écrire une seule fois dans une boucle ; tester que la séquence obtenue garde les mêmes actions.
+:::
+
+## IV. Programmer un chemin
+### 1. Deux codages à distinguer
+Dans un codage global, « haut » signifie toujours le haut de la feuille. Dans un codage relatif, « avancer » dépend de l’orientation actuelle ; « tourner à gauche » change cette orientation, sans déplacement.
+
+[IMAGE_1]
+
+::: exemple Déplacement global
+Depuis A1, avec colonnes vers la droite et lignes vers le haut, « droite de 3 ; haut de 2 » mène à D3. Le trajet compte $3+2=5$ cases.
+:::
+### 2. Construire un carré
+On part orienté vers la droite, crayon baissé. Un quart de tour correspond à 90°.
+
+```console
+répéter 4 fois :
+    avancer de 3 cases
+    tourner à gauche (90°)
+```
+
+[IMAGE_2]
+
+::: exemple Vérifier le tracé
+Les quatre déplacements tracent les quatre côtés du carré. La distance parcourue vaut $4\times3=12$ cases. Le robot revient au départ ; le dernier virage lui rend son orientation initiale.
+:::
+::: methode Déboguer un programme
+Préciser la position et l’orientation initiales. Exécuter ligne par ligne ; repérer le premier écart avec le chemin voulu ; corriger l’instruction ou la répétition ; refaire le test depuis le début.
+:::
+::: attention
+Tourner ne fait pas avancer. Le nombre de répétitions n’est pas toujours le nombre total d’instructions. Le chemin doit respecter les obstacles et pas seulement atteindre l’arrivée.
+:::
+::: retenir
+Une instruction doit être précise. Respecter l’ordre et les résultats intermédiaires ; distinguer entrée et sortie ; vérifier une boucle par ses passages et un chemin par ses positions successives.
+:::

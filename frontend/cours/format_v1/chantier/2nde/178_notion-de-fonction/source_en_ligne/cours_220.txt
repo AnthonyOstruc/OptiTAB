@@ -1,0 +1,162 @@
+Titre: Notion de fonction en Python
+
+<!-- optitab:1 -->
+::: objectifs
+- Définir et appeler une fonction Python à un ou plusieurs arguments ; distinguer `return` et `print`.
+- Lire, comprendre, compléter et modifier une fonction donnée.
+- Écrire une fonction qui renvoie le résultat d’une expérience aléatoire.
+- Répéter une expérience pour obtenir une fréquence, une moyenne, un écart type (sans liste).
+:::
+
+## I. Définir et appeler une fonction
+
+::: definition Fonction Python
+Une **fonction** est un bloc d’instructions nommé. Elle reçoit des **arguments** (les données d’entrée), effectue des instructions et **renvoie** un résultat avec `return`.
+
+- On la **définit** avec la ligne `def nom(arguments):` suivie d’un bloc **indenté** (décalé de quatre espaces).
+- On l’**appelle** en écrivant `nom(valeurs)` : les valeurs prennent la place des arguments.
+:::
+
+::: exemple Traduire une fonction mathématique
+La fonction mathématique $f : x \mapsto 3x + 2$ s’écrit en Python :
+
+```python
+def f(x):
+    return 3 * x + 2
+```
+
+L’appel `f(4)` remplace `x` par $4$ : il renvoie $3 \times 4 + 2 = 14$, l’image de $4$ par $f$.
+:::
+
+[IMAGE_1]
+
+::: attention return ou print ?
+- `return` **renvoie** une valeur : on peut la stocker (`y = f(4)`), l’utiliser dans un calcul (`f(4) + 1`) ou dans une autre fonction. Dès qu’un `return` est exécuté, la fonction s’arrête.
+- `print` se contente d’**afficher** à l’écran : la valeur n’est pas récupérable. Une fonction sans `return` renvoie la valeur spéciale `None`.
+:::
+
+## II. Plusieurs arguments, plusieurs instructions
+
+Une fonction peut avoir plusieurs arguments (séparés par des virgules), aucun argument, et contenir des tests `if` ou des boucles.
+
+```python
+def prix_ttc(ht, t):
+    return ht * (1 + t / 100)
+
+def est_pair(n):
+    return n % 2 == 0
+
+def tarif(age):
+    if age < 12:
+        return 5
+    elif age < 18:
+        return 8
+    else:
+        return 11
+```
+
+::: exemple Appels
+- `prix_ttc(50, 20)` renvoie $50 \times 1{,}2 = 60$ (affiché `60.0`).
+- `est_pair(7)` renvoie `False`, car le reste de la division de $7$ par $2$ vaut $1$.
+- `tarif(15)` renvoie `8` : le test `age < 12` est faux, le test `age < 18` est vrai.
+:::
+
+::: attention L’ordre des arguments compte
+Les valeurs sont affectées aux arguments **dans l’ordre** : `prix_ttc(20, 50)` calcule le prix d’un article à $20$ € avec une taxe de $50\,\%$, soit $30$, et non $60$.
+:::
+
+::: methode Écrire une fonction
+1. **Entrées** : de quelles données a-t-on besoin ? Ce sont les arguments.
+2. **Sortie** : quel résultat veut-on ? C’est ce qui suit `return`.
+3. **Test** : on appelle la fonction sur un exemple dont on connaît la réponse.
+:::
+
+## III. Fonctions renvoyant un nombre aléatoire
+
+::: definition Le module random
+Après la ligne `from random import randint, random` :
+
+- `randint(a, b)` renvoie un **entier** au hasard entre $a$ et $b$, **bornes incluses** ;
+- `random()` renvoie un **nombre décimal** au hasard dans l’intervalle ${[0\,;1[}$.
+:::
+
+```python
+from random import randint
+from random import random
+
+def lancer():
+    return randint(1, 6)
+
+def epreuve(p):
+    if random() < p:
+        return 1
+    return 0
+```
+
+::: propriete Simuler un événement de probabilité $p$
+Pour $0 \le p \le 1$, la condition `random() < p` est vraie avec la probabilité $p$. La fonction `epreuve(p)` renvoie donc $1$ (succès) avec la probabilité $p$ et $0$ (échec) avec la probabilité $1 - p$.
+:::
+
+## IV. Répéter une expérience : fréquence
+
+Pour répéter $n$ fois une expérience, on utilise une boucle `for` et un **compteur** initialisé à $0$.
+
+```python
+def frequence_six(n):
+    k = 0
+    for i in range(n):
+        if lancer() == 6:
+            k = k + 1
+    return k / n
+```
+
+::: exemple Fréquence du 6
+La figure montre la fréquence du 6 obtenue pour $n$ allant de $10$ à $3\,000$ lancers simulés. Pour les petites valeurs de $n$, elle varie beaucoup ; quand $n$ devient grand, elle se stabilise autour de la probabilité $\frac{1}{6} \approx 0{,}167$.
+:::
+
+[IMAGE_2]
+
+::: retenir
+Plus le nombre $n$ de répétitions est grand, plus la fréquence d’un événement est, en général, proche de sa probabilité. Deux appels `frequence_six(1000)` donnent en général deux résultats différents : c’est la **fluctuation d’échantillonnage**.
+:::
+
+## V. Moyenne et écart type, sans liste
+
+Pour une série $x_1, x_2, \ldots, x_n$, on note $m$ la moyenne, $V$ la variance et $\sigma$ l’écart type :
+
+$$m = \frac{x_1 + x_2 + \cdots + x_n}{n} \qquad \sigma = \sqrt{V}$$
+
+$$V = \frac{x_1^2 + x_2^2 + \cdots + x_n^2}{n} - m^2$$
+
+Il suffit donc d’accumuler la **somme** des valeurs et la **somme de leurs carrés** : aucune liste n’est nécessaire.
+
+```python
+from random import randint
+from math import sqrt
+
+def moyenne_ecart_type(n):
+    s = 0
+    s2 = 0
+    for i in range(n):
+        x = randint(1, 6)
+        s = s + x
+        s2 = s2 + x * x
+    m = s / n
+    v = s2 / n - m * m
+    return m, sqrt(v)
+```
+
+::: exemple Interpréter le résultat
+L’appel `moyenne_ecart_type(10000)` renvoie un couple proche de $(3{,}5\,;\,1{,}71)$ : en moyenne un lancer de dé donne $3{,}5$, et les résultats s’écartent de cette moyenne d’environ $1{,}7$. On récupère les deux valeurs avec `m, e = moyenne_ecart_type(10000)`.
+:::
+
+::: attention Les accumulateurs
+Les variables qui accumulent (`k`, `s`, `s2`) s’initialisent à $0$ **avant** la boucle, jamais à l’intérieur ; le `return` se place **après** la boucle (non indenté sous le `for`), sinon la fonction s’arrête dès le premier tour.
+:::
+
+::: retenir
+- `def nom(arguments):` puis un bloc indenté ; `return` renvoie le résultat et arrête la fonction.
+- On appelle une fonction avec des valeurs, dans l’ordre des arguments.
+- `randint(a, b)` et `random()` simulent le hasard ; `random() < p` est vrai avec la probabilité $p$.
+- Une boucle répète l’expérience : compteur pour une fréquence, sommes pour une moyenne et un écart type.
+:::

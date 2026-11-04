@@ -1,0 +1,152 @@
+[
+  {
+    "titre": "Vrai ou faux ?",
+    "enonce": "L’égalité $8+6=9+5$ est-elle vraie ? Et $7\\times4=30-3$ ?",
+    "corrige": "$8+6=14$ et $9+5=14$ : la première égalité est $\\res{\\text{vraie}}$. $7\\times4=28$ mais $30-3=27$ : la seconde est $\\res{\\text{fausse}}$.",
+    "methode": "Calculer séparément les deux côtés.",
+    "controle": "assert 8+6==9+5 and 7*4!=30-3",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 1
+  },
+  {
+    "titre": "Trous additifs",
+    "enonce": "Compléter : $47+\\square=92$ et $\\square-28=35$.",
+    "corrige": "$92-47=45$, donc $\\square=\\res{45}$. Pour la seconde : $35+28=63$, donc $\\square=\\res{63}$.",
+    "methode": "Utiliser l’opération inverse.",
+    "controle": "assert 47+45==92 and 63-28==35",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 1
+  },
+  {
+    "titre": "Trous multiplicatifs",
+    "enonce": "Compléter : $7\\times\\square=84$, puis $178-\\square=6\\times8$.",
+    "corrige": "$84:7=12$, donc $\\square=\\res{12}$. À droite, $6\\times8=48$ ; alors $178-\\square=48$ donne $\\square=178-48=\\res{130}$.",
+    "methode": "Commencer par le côté entièrement connu.",
+    "controle": "assert 7*12==84 and 178-130==6*8",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 1
+  },
+  {
+    "titre": "La machine à nombres",
+    "enonce": "Exécuter le programme de calcul avec 6, puis avec 10 : choisir un nombre ; ajouter 2 ; multiplier par 4.",
+    "corrige": "Avec 6 : $6+2=8$ puis $8\\times4=\\res{32}$. Avec 10 : $10+2=12$ puis $12\\times4=\\res{48}$.",
+    "methode": "Suivre les étapes dans l’ordre.",
+    "controle": "assert (6+2)*4==32 and (10+2)*4==48",
+    "figure": "prog-4",
+    "conseil": "",
+    "difficulte": 1
+  },
+  {
+    "titre": "Poursuivre une suite",
+    "enonce": "Donner les deux termes suivants de la suite $3 ;\\ 10 ;\\ 17 ;\\ 24 ;\\ \\ldots$ et énoncer la règle.",
+    "corrige": "Chaque terme vaut le précédent $\\res{\\text{plus }7}$. Les termes suivants sont $24+7=\\res{31}$ puis $31+7=\\res{38}$.",
+    "methode": "Calculer l’écart entre deux termes voisins.",
+    "controle": "assert 10-3==17-10==24-17==7 and 24+7==31 and 31+7==38",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 1
+  },
+  {
+    "titre": "Deux règles différentes",
+    "enonce": "Trouver la règle de chaque suite et donner le terme suivant : $5 ;\\ 10 ;\\ 20 ;\\ 40 ;\\ \\ldots$ puis $5 ;\\ 10 ;\\ 15 ;\\ 20 ;\\ \\ldots$",
+    "corrige": "Dans la première, chaque terme est $\\res{\\text{le double}}$ du précédent : le suivant est $\\res{80}$. Dans la seconde, on ajoute 5 : le suivant est $\\res{25}$. Deux suites peuvent commencer pareil et diverger.",
+    "methode": "Tester « plus combien » puis « fois combien ».",
+    "controle": "assert 40*2==80 and 20+5==25 and [5*2,10*2,20*2]==[10,20,40]",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 2
+  },
+  {
+    "titre": "Remonter la machine",
+    "enonce": "Un programme multiplie par 3 puis retire 4. Le résultat affiché est 20. Quel nombre a été choisi ?",
+    "corrige": "On remonte à l’envers : avant de retirer 4, le nombre était $20+4=24$ ; avant de multiplier par 3, il était $24:3=\\res8$. Contrôle : $8\\times3-4=20$.",
+    "methode": "Défaire les étapes en sens inverse.",
+    "controle": "assert 8*3-4==20 and (20+4)//3==8",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 2
+  },
+  {
+    "titre": "La suite qui zigzague",
+    "enonce": "Donner les deux termes suivants : $80 ;\\ 85 ;\\ 83 ;\\ 88 ;\\ 86 ;\\ 91 ;\\ 89 ;\\ \\ldots$",
+    "corrige": "La règle alterne : $+5$ puis $-2$. Après 89 : $89+5=\\res{94}$, puis $94-2=\\res{92}$.",
+    "methode": "Observer les écarts un pas sur deux.",
+    "controle": "assert 85-80==5 and 85-83==2 and 89+5==94 and 94-2==92",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 2
+  },
+  {
+    "titre": "Deux symboles",
+    "enonce": "Trouver les nombres cachés : $\\triangle+\\triangle+5=19$, puis $\\triangle+\\bullet=12$.",
+    "corrige": "Les deux triangles valent ensemble $19-5=14$, donc $\\triangle=\\res7$. Alors $7+\\bullet=12$ donne $\\bullet=\\res5$. Un même symbole cache toujours le même nombre.",
+    "methode": "Retirer d’abord ce qui est connu.",
+    "controle": "assert 7+7+5==19 and 7+5==12",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 2
+  },
+  {
+    "titre": "Le nombre caché",
+    "enonce": "Trouver le nombre caché : $\\square\\times4+3=31$.",
+    "corrige": "Avant d’ajouter 3, le produit valait $31-3=28$. Avant de multiplier par 4, le nombre était $28:4=\\res7$. Contrôle : $7\\times4+3=31$.",
+    "methode": "Remonter les opérations une à une.",
+    "controle": "assert 7*4+3==31",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 2
+  },
+  {
+    "titre": "Les tee-shirts",
+    "enonce": "Un tee-shirt coûte 12 euros et la livraison coûte 5 euros, quel que soit le nombre acheté.\\begin{questions}\n\\item Calculer le prix de 4 tee-shirts livrés.\n\\item Écrire le prix à payer pour $N$ tee-shirts livrés.\n\\end{questions}",
+    "corrige": "Pour 4 tee-shirts : $4\\times12+5=\\res{53}$ euros. Pour $N$ tee-shirts, le prix en euros s’écrit $\\res{(N\\times12)+5}$ : la lettre $N$ représente n’importe quel nombre de tee-shirts.",
+    "methode": "Séparer ce qui dépend du nombre acheté et ce qui est fixe.",
+    "controle": "assert 4*12+5==53 and 12*n+5-(n*12+5)==0",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 3
+  },
+  {
+    "titre": "Ciseaux et stylos",
+    "enonce": "Deux paires de ciseaux identiques et trois stylos à 2 euros coûtent 20 euros en tout. Quel est le prix d’une paire de ciseaux ?",
+    "corrige": "Les stylos coûtent $3\\times2=6$ euros. Les deux paires coûtent $20-6=14$ euros, donc une paire coûte $14:2=\\res7$ euros. Contrôle : $2\\times7+3\\times2=20$.",
+    "methode": "Retirer la dépense connue avant de partager.",
+    "controle": "assert 3*2==6 and 20-6==14 and 14//2==7 and 2*7+3*2==20",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 3
+  },
+  {
+    "titre": "Des carrés d’allumettes",
+    "enonce": "Une rangée de carrés est construite avec des allumettes : le premier carré en demande 4, chaque carré suivant en demande 3 de plus. Combien d’allumettes pour une rangée de 5 carrés ? Et pour 10 carrés ?",
+    "corrige": "Pour 5 carrés : $4+4\\times3=\\res{16}$ allumettes. Pour 10 carrés : $4+9\\times3=\\res{31}$. Après le premier carré, chaque nouveau carré partage une allumette avec le précédent.",
+    "methode": "Compter le premier motif puis les ajouts identiques.",
+    "controle": "assert 4+4*3==16 and 4+9*3==31",
+    "figure": "motifs-13",
+    "conseil": "",
+    "difficulte": 3
+  },
+  {
+    "titre": "Le motif en croix",
+    "enonce": "Une croix de carreaux grandit à chaque étape : 5 carreaux à l’étape 1, puis 4 carreaux de plus à chaque étape. Combien de carreaux à l’étape 4 ? À quelle étape utilise-t-on exactement 29 carreaux ?",
+    "corrige": "Étape 4 : $5+3\\times4=\\res{17}$ carreaux. Pour 29 carreaux : $29-5=24$, soit $24:4=6$ ajouts après l’étape 1 : c’est l’étape $\\res7$. Contrôle : $5+6\\times4=29$.",
+    "methode": "Compter les ajouts depuis la première étape.",
+    "controle": "assert 5+3*4==17 and 5+6*4==29",
+    "figure": "motifs-14",
+    "conseil": "",
+    "difficulte": 3
+  },
+  {
+    "titre": "Inventer un programme",
+    "enonce": "Proposer un programme de calcul en deux étapes qui transforme 5 en 26. Les programmes « multiplier par 5 puis ajouter 1 » et « ajouter 1 puis multiplier par 5 » donnent-ils le même résultat ?",
+    "corrige": "Une solution : multiplier par 5 puis ajouter 1, car $5\\times5+1=\\res{26}$. Les deux programmes diffèrent : $5\\times5+1=26$ mais $(5+1)\\times5=\\res{30}$. L’ordre des étapes change le résultat.",
+    "methode": "Tester chaque programme sur le même nombre.",
+    "controle": "assert 5*5+1==26 and (5+1)*5==30",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 3
+  }
+]

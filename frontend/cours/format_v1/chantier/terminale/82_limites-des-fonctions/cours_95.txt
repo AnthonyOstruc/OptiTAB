@@ -1,0 +1,227 @@
+Titre: Limites des fonctions
+
+<!-- optitab:1 -->
+::: objectifs
+Déterminer la limite d’une fonction en $+\infty$, en $-\infty$ ou en un réel, l’interpréter graphiquement par une asymptote, calculer avec les opérations et la composition, lever une forme indéterminée, utiliser les théorèmes de comparaison et des gendarmes, et connaître les croissances comparées de $x^n$ et de $e^x$.
+:::
+
+## I. Limite d’une fonction en l’infini
+
+::: definition Limite finie en $+\infty$
+La fonction $f$ a pour limite le réel $\ell$ en $+\infty$ si tout intervalle ouvert contenant $\ell$ contient toutes les valeurs $f(x)$ dès que $x$ est assez grand. On note
+$$\lim_{x \to +\infty} f(x) = \ell$$
+La droite d’équation $y = \ell$ est alors **asymptote horizontale** à la courbe de $f$ en $+\infty$.
+:::
+
+::: definition Limite infinie en $+\infty$
+La fonction $f$ a pour limite $+\infty$ en $+\infty$ si tout intervalle $]A\,;+\infty[$ contient toutes les valeurs $f(x)$ dès que $x$ est assez grand : $f(x)$ finit par dépasser n’importe quel réel $A$. On note $\lim\limits_{x \to +\infty} f(x) = +\infty$.
+:::
+
+::: remarque
+On définit de même les limites en $-\infty$ et la limite $-\infty$. Une fonction peut n’avoir aucune limite : $\cos x$ oscille entre $-1$ et $1$ et n’a pas de limite en $+\infty$.
+:::
+
+## II. Limite infinie en un réel
+
+::: definition Limite infinie en un réel $a$
+La fonction $f$ a pour limite $+\infty$ en $a$ si tout intervalle $]A\,;+\infty[$ contient toutes les valeurs $f(x)$ dès que $x$ est assez proche de $a$. On note $\lim\limits_{x \to a} f(x) = +\infty$ (de même pour $-\infty$). La droite d’équation $x = a$ est alors **asymptote verticale** à la courbe de $f$.
+:::
+
+::: definition Limite à gauche, limite à droite
+- **Limite à gauche** : $x$ tend vers $a$ en restant inférieur à $a$ ; on note $\lim\limits_{x \to a^-} f(x)$.
+- **Limite à droite** : $x$ tend vers $a$ en restant supérieur à $a$ ; on note $\lim\limits_{x \to a^+} f(x)$.
+
+Si $f$ n’est pas définie en $a$, elle a une limite en $a$ lorsque ses limites à gauche et à droite existent et sont égales.
+:::
+
+[IMAGE_1]
+
+::: exemple Étude de $f(x) = \dfrac{2x + 1}{x - 1}$ sur $\mathbb{R} \setminus \{1\}$
+**En $+\infty$ et en $-\infty$.** Pour $x \neq 0$ :
+$$
+\begin{aligned}
+f(x) &= \frac{x\left(2 + \frac{1}{x}\right)}{x\left(1 - \frac{1}{x}\right)} \\
+&= \frac{2 + \frac{1}{x}}{1 - \frac{1}{x}}
+\end{aligned}
+$$
+Comme $\frac{1}{x} \to 0$, on obtient $\lim\limits_{x \to +\infty} f(x) = \lim\limits_{x \to -\infty} f(x) = 2$ : la droite $y = 2$ est asymptote horizontale en $+\infty$ et en $-\infty$.
+
+**En $1$.** Le numérateur tend vers $3$. Si $x \gt 1$, $x - 1$ tend vers $0$ en restant positif, donc $\lim\limits_{x \to 1^+} f(x) = +\infty$ ; si $x \lt 1$, $x - 1$ tend vers $0$ en restant négatif, donc $\lim\limits_{x \to 1^-} f(x) = -\infty$. La droite $x = 1$ est asymptote verticale.
+:::
+
+::: remarque Pour aller plus loin : asymptote oblique
+Si $\lim\limits_{x \to +\infty} \big[f(x) - (ax + b)\big] = 0$, la droite d’équation $y = ax + b$ est **asymptote oblique** à la courbe de $f$ en $+\infty$ (de même en $-\infty$). Par exemple $\dfrac{x^2 - 1}{x - 2} = x + 2 + \dfrac{3}{x - 2}$ et $\dfrac{3}{x - 2} \to 0$ : la droite $y = x + 2$ est asymptote oblique. Cette notion est hors programme : elle est toujours guidée.
+:::
+
+## III. Limites des fonctions de référence
+
+Pour tout entier $n \ge 1$ (« — » : fonction non définie de ce côté) :
+
+| $f(x)$ | en $-\infty$ | en $0^-$ | en $0^+$ | en $+\infty$ |
+|---|---|---|---|---|
+| $x^n$, $n$ pair | $+\infty$ | $0$ | $0$ | $+\infty$ |
+| $x^n$, $n$ impair | $-\infty$ | $0$ | $0$ | $+\infty$ |
+| $\dfrac{1}{x^n}$, $n$ pair | $0$ | $+\infty$ | $+\infty$ | $0$ |
+| $\dfrac{1}{x^n}$, $n$ impair | $0$ | $-\infty$ | $+\infty$ | $0$ |
+| $\sqrt{x}$ | — | — | $0$ | $+\infty$ |
+| $\dfrac{1}{\sqrt{x}}$ | — | — | $+\infty$ | $0$ |
+| $e^x$ | $0$ | $1$ | $1$ | $+\infty$ |
+
+## IV. Opérations sur les limites
+
+Les règles sont les mêmes que pour les suites. $\ell$ et $\ell'$ désignent des réels ; les limites sont prises au même endroit ($+\infty$, $-\infty$ ou un réel $a$). « F.I. » signifie forme indéterminée.
+
+### Somme
+
+| $\lim f$ | $\lim g$ | $\lim (f + g)$ |
+|---|---|---|
+| $\ell$ | $\ell'$ | $\ell + \ell'$ |
+| $\ell$ | $+\infty$ | $+\infty$ |
+| $\ell$ | $-\infty$ | $-\infty$ |
+| $+\infty$ | $+\infty$ | $+\infty$ |
+| $-\infty$ | $-\infty$ | $-\infty$ |
+| $+\infty$ | $-\infty$ | F.I. |
+
+### Produit
+
+| $\lim f$ | $\lim g$ | $\lim (f \times g)$ |
+|---|---|---|
+| $\ell$ | $\ell'$ | $\ell \times \ell'$ |
+| $\ell \neq 0$ | $\pm\infty$ | $\pm\infty$ (règle des signes) |
+| $\pm\infty$ | $\pm\infty$ | $\pm\infty$ (règle des signes) |
+| $0$ | $\pm\infty$ | F.I. |
+
+### Quotient
+
+| $\lim f$ | $\lim g$ | $\lim \dfrac{f}{g}$ |
+|---|---|---|
+| $\ell$ | $\ell' \neq 0$ | $\dfrac{\ell}{\ell'}$ |
+| $\ell$ | $\pm\infty$ | $0$ |
+| $\pm\infty$ | $\ell' \neq 0$ | $\pm\infty$ (règle des signes) |
+| $\ell \neq 0$ ou $\pm\infty$ | $0$, avec $g$ de signe constant | $\pm\infty$ (règle des signes) |
+| $0$ | $0$ | F.I. |
+| $\pm\infty$ | $\pm\infty$ | F.I. |
+
+::: retenir Les quatre formes indéterminées
+$$\infty - \infty \qquad 0 \times \infty \qquad \frac{\infty}{\infty} \qquad \frac{0}{0}$$
+Une forme indéterminée n’est pas un résultat : il faut transformer l’écriture de la fonction.
+:::
+
+::: methode Lever une forme indéterminée
+- **Polynôme ou quotient de polynômes en $\pm\infty$** : factoriser par le terme de plus haut degré. Un polynôme a la limite de son terme de plus haut degré ; un quotient de polynômes, celle du quotient de leurs termes de plus haut degré.
+- **Forme $\frac{0}{0}$ en un réel $a$** : factoriser par $(x - a)$, puis simplifier.
+- **Racines carrées** : multiplier et diviser par la quantité conjuguée.
+- **Taux d’accroissement** : si $g$ est dérivable en $a$, $\dfrac{g(x) - g(a)}{x - a}$ tend vers $g'(a)$. Ainsi $\lim\limits_{x \to 0} \dfrac{e^x - 1}{x} = \exp'(0) = 1$ et $\lim\limits_{x \to 0} \dfrac{\sin x}{x} = \sin'(0) = 1$.
+:::
+
+::: exemple Factoriser par le terme dominant
+En $+\infty$, $\dfrac{3x^2 - 5x + 1}{x^2 + 2}$ est de la forme $\frac{\infty}{\infty}$. Pour $x \neq 0$ :
+$$
+\begin{aligned}
+\frac{3x^2 - 5x + 1}{x^2 + 2} &= \frac{x^2\left(3 - \frac{5}{x} + \frac{1}{x^2}\right)}{x^2\left(1 + \frac{2}{x^2}\right)} \\
+&= \frac{3 - \frac{5}{x} + \frac{1}{x^2}}{1 + \frac{2}{x^2}}
+\end{aligned}
+$$
+Le numérateur tend vers $3$ et le dénominateur vers $1$, donc $\lim\limits_{x \to +\infty} \dfrac{3x^2 - 5x + 1}{x^2 + 2} = 3$.
+:::
+
+::: exemple Quantité conjuguée
+En $+\infty$, $\sqrt{x + 1} - \sqrt{x}$ est de la forme $\infty - \infty$. Pour $x \gt 0$ :
+$$
+\begin{aligned}
+\sqrt{x + 1} - \sqrt{x} &= \frac{\left(\sqrt{x + 1} - \sqrt{x}\right)\left(\sqrt{x + 1} + \sqrt{x}\right)}{\sqrt{x + 1} + \sqrt{x}} \\
+&= \frac{(x + 1) - x}{\sqrt{x + 1} + \sqrt{x}} \\
+&= \frac{1}{\sqrt{x + 1} + \sqrt{x}}
+\end{aligned}
+$$
+Le dénominateur tend vers $+\infty$, donc $\lim\limits_{x \to +\infty} \left(\sqrt{x + 1} - \sqrt{x}\right) = 0$.
+:::
+
+::: attention
+« $\frac{3}{0}$ » n’est pas un résultat. Quand le dénominateur tend vers $0$ (et le numérateur vers un réel non nul), on étudie le **signe** du dénominateur : il faut souvent distinguer la limite à gauche et la limite à droite.
+:::
+
+## V. Limite d’une fonction composée
+
+::: theoreme Composition
+$a$, $b$ et $c$ désignent des réels, $+\infty$ ou $-\infty$. Si $\lim\limits_{x \to a} u(x) = b$ et $\lim\limits_{X \to b} g(X) = c$, alors
+$$\lim_{x \to a} g\big(u(x)\big) = c$$
+:::
+
+::: exemple
+- $\lim\limits_{x \to +\infty} e^{-x^2}$ : on pose $X = -x^2$. Comme $\lim\limits_{x \to +\infty} (-x^2) = -\infty$ et $\lim\limits_{X \to -\infty} e^X = 0$, on obtient $\lim\limits_{x \to +\infty} e^{-x^2} = 0$.
+- $\lim\limits_{x \to +\infty} \sqrt{4 + \frac{1}{x}}$ : on pose $X = 4 + \frac{1}{x}$, qui tend vers $4$, et $\lim\limits_{X \to 4} \sqrt{X} = 2$ ; la limite vaut $2$.
+:::
+
+## VI. Comparaison et encadrement
+
+::: theoreme Théorèmes de comparaison
+- Si $f(x) \ge g(x)$ pour $x$ assez grand et $\lim\limits_{x \to +\infty} g(x) = +\infty$, alors $\lim\limits_{x \to +\infty} f(x) = +\infty$.
+- Si $f(x) \le h(x)$ pour $x$ assez grand et $\lim\limits_{x \to +\infty} h(x) = -\infty$, alors $\lim\limits_{x \to +\infty} f(x) = -\infty$.
+
+Mêmes énoncés en $-\infty$ ou en un réel $a$.
+:::
+
+::: exemple
+Pour tout réel $x$, $\cos x \ge -1$, donc $x + \cos x \ge x - 1$. Comme $\lim\limits_{x \to +\infty} (x - 1) = +\infty$, on obtient $\lim\limits_{x \to +\infty} (x + \cos x) = +\infty$.
+:::
+
+::: theoreme Théorème des gendarmes
+Si $g(x) \le f(x) \le h(x)$ pour $x$ assez grand et si $\lim\limits_{x \to +\infty} g(x) = \lim\limits_{x \to +\infty} h(x) = \ell$ (réel), alors $\lim\limits_{x \to +\infty} f(x) = \ell$. Même énoncé en $-\infty$ ou en un réel $a$.
+:::
+
+[IMAGE_2]
+
+::: exemple
+Pour tout réel $x$, $-1 \le \sin x \le 1$. Pour $x \gt 0$, on divise par $x \gt 0$ :
+$$-\frac{1}{x} \le \frac{\sin x}{x} \le \frac{1}{x}$$
+Les deux fonctions qui encadrent tendent vers $0$ en $+\infty$, donc $\lim\limits_{x \to +\infty} \dfrac{\sin x}{x} = 0$.
+:::
+
+::: attention
+Le théorème des gendarmes exige que les **deux** fonctions qui encadrent aient la **même** limite. L’encadrement $-1 \le \sin x \le 1$ seul ne donne aucune limite.
+:::
+
+## VII. Croissances comparées
+
+::: theoreme Croissances comparées
+Pour tout entier $n \ge 1$ :
+$$\lim_{x \to +\infty} \frac{e^x}{x^n} = +\infty$$
+$$\lim_{x \to +\infty} x^n e^{-x} = 0 \quad \text{et} \quad \lim_{x \to -\infty} x^n e^x = 0$$
+:::
+
+[IMAGE_3]
+
+Même si $x^3$ dépasse $e^x$ sur un intervalle, l’exponentielle finit par l’emporter : $e^x \gt x^3$ dès que $x \gt 4{,}54$ environ.
+
+::: demonstration Cas $n = 1$, puis cas général
+Soit $g(x) = e^x - \dfrac{x^2}{2}$ sur $[0\,;+\infty[$. On a $g'(x) = e^x - x$ et $g''(x) = e^x - 1 \ge 0$ : $g'$ est croissante, donc $g'(x) \ge g'(0) = 1 \gt 0$. Ainsi $g$ est croissante et $g(x) \ge g(0) = 1 \gt 0$, c’est-à-dire $e^x \gt \dfrac{x^2}{2}$.
+
+Pour $x \gt 0$, on en déduit $\dfrac{e^x}{x} \gt \dfrac{x}{2}$. Comme $\lim\limits_{x \to +\infty} \dfrac{x}{2} = +\infty$, le théorème de comparaison donne $\lim\limits_{x \to +\infty} \dfrac{e^x}{x} = +\infty$.
+
+Pour $n \ge 2$ et $x \gt 0$ :
+$$\frac{e^x}{x^n} = \frac{1}{n^n}\left(\frac{e^{\frac{x}{n}}}{\frac{x}{n}}\right)^n$$
+Avec $X = \frac{x}{n}$, qui tend vers $+\infty$, $\dfrac{e^X}{X} \to +\infty$ ; par composition et produit, $\dfrac{e^x}{x^n} \to +\infty$. Enfin $x^n e^{-x} = \dfrac{1}{\frac{e^x}{x^n}} \to 0$, et en posant $X = -x$ : $x^n e^x = (-1)^n X^n e^{-X} \to 0$ quand $x \to -\infty$.
+:::
+
+::: exemple
+- $\lim\limits_{x \to +\infty} \dfrac{x^2}{e^x} = 0$ : c’est l’inverse de $\dfrac{e^x}{x^2}$, qui tend vers $+\infty$.
+- En $+\infty$, $x^2 - e^x$ est de la forme $\infty - \infty$. On factorise par le terme dominant : $x^2 - e^x = e^x\left(\dfrac{x^2}{e^x} - 1\right)$. La parenthèse tend vers $-1$ et $e^x \to +\infty$, donc $\lim\limits_{x \to +\infty} (x^2 - e^x) = -\infty$.
+:::
+
+::: attention
+Les croissances comparées s’appliquent à des **produits** ou des **quotients** de $e^x$ et de puissances de $x$, en $+\infty$ ou en $-\infty$. Pour une somme ou une différence comme $x^2 - e^x$, on factorise d’abord par le terme dominant.
+:::
+
+::: remarque Avec le logarithme népérien
+On établit de même, dans le chapitre sur la fonction $\ln$ : $\lim\limits_{x \to +\infty} \dfrac{\ln x}{x} = 0$ et $\lim\limits_{x \to 0^+} x\ln x = 0$. En $+\infty$, toute puissance de $x$ l’emporte sur $\ln x$.
+:::
+
+::: retenir
+- Limite finie $\ell$ en $\pm\infty$ : asymptote horizontale $y = \ell$ ; limite infinie en $a$ : asymptote verticale $x = a$.
+- Formes indéterminées $\infty - \infty$, $0 \times \infty$, $\frac{\infty}{\infty}$, $\frac{0}{0}$ : factoriser par le terme dominant, simplifier par $(x - a)$, utiliser la quantité conjuguée ou un taux d’accroissement.
+- Composition, comparaison et gendarmes pour les fonctions composées ou oscillantes.
+- Croissances comparées : $\dfrac{e^x}{x^n} \to +\infty$ en $+\infty$ et $x^n e^x \to 0$ en $-\infty$.
+
+Fiche de synthèse dans l’onglet Fiches !
+:::

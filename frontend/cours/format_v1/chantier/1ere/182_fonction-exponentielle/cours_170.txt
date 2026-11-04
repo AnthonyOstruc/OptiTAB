@@ -1,0 +1,355 @@
+Titre: Fonction exponentielle
+
+<!-- optitab:1 -->
+::: objectifs
+- Connaître la définition de la fonction exponentielle : $f' = f$ et $f(0) = 1$.
+- Construire des valeurs approchées de $e^x$ et du nombre $e$ par la méthode d’Euler.
+- Utiliser la relation fonctionnelle $e^{a+b} = e^a \times e^b$ et ses conséquences.
+- Connaître le signe, la dérivée, les variations et la courbe de l’exponentielle, et sa tangente en $0$.
+- Résoudre des équations $e^a = e^b$ et des inéquations $e^a < e^b$.
+- Étudier les fonctions $t \mapsto e^{kt}$ et $t \mapsto e^{-kt}$, et la suite $\left(e^{na}\right)$.
+- Modéliser une croissance ou une décroissance exponentielle.
+:::
+
+::: prerequis
+- Dérivée d’un produit, d’un quotient et de $x \mapsto g(ax + b)$ ; lien entre signe de la dérivée et variations.
+- Équation de la tangente : $y = f'(a)(x - a) + f(a)$.
+- Suites géométriques ; règles de calcul sur les puissances.
+:::
+
+## I. Définition de la fonction exponentielle
+
+::: theoreme Existence et unicité (admis)
+Il existe une **unique** fonction $f$ dérivable sur $\mathbb{R}$ telle que
+$$f' = f \quad \text{et} \quad f(0) = 1.$$
+:::
+
+::: definition Fonction exponentielle
+Cette fonction s’appelle la **fonction exponentielle** et se note $\exp$. Elle est donc dérivable sur $\mathbb{R}$ et vérifie :
+$$\exp' = \exp \qquad \text{et} \qquad \exp(0) = 1.$$
+On note $e = \exp(1)$. Ce nombre vaut environ $2{,}718$.
+:::
+
+::: propriete Elle ne s’annule jamais
+Pour tout réel $x$ :
+$$\exp(x) \times \exp(-x) = 1.$$
+En particulier, $\exp(x) \neq 0$ pour tout réel $x$, et $\exp(-x) = \dfrac{1}{\exp(x)}$.
+:::
+
+::: demonstration
+On pose $g(x) = \exp(x) \times \exp(-x)$ pour tout réel $x$. La fonction $x \mapsto \exp(-x)$ a pour dérivée $x \mapsto -\exp'(-x) = -\exp(-x)$ (dérivée de $x \mapsto u(ax + b)$ avec $a = -1$). Par la règle du produit :
+$$
+\begin{aligned}
+g'(x) &= \exp'(x)\exp(-x) \\
+&\quad + \exp(x) \times \left(-\exp(-x)\right) \\
+&= \exp(x)\exp(-x) \\
+&\quad - \exp(x)\exp(-x) \\
+&= 0.
+\end{aligned}
+$$
+La fonction $g$ est donc constante sur $\mathbb{R}$, égale à $g(0) = \exp(0) \times \exp(0) = 1$.
+
+Si l’on avait $\exp(x) = 0$ pour un réel $x$, on aurait $g(x) = 0$, ce qui est impossible.
+:::
+
+## II. Méthode d’Euler : approcher la courbe et le nombre $e$
+
+::: propriete Idée de la méthode
+Pour $h$ proche de $0$, la tangente donne l’approximation $f(x + h) \approx f(x) + h f'(x)$. Avec $f' = f$ :
+$$\exp(x + h) \approx (1 + h)\exp(x).$$
+:::
+
+::: methode Construire des valeurs approchées pas à pas
+On choisit un pas $h > 0$ et on part de $y_0 = \exp(0) = 1$. À chaque étape, on avance de $h$ en multipliant par $1 + h$ :
+$$y_{k+1} = (1 + h)\,y_k$$
+La suite $(y_k)$ est géométrique de raison $1 + h$, donc :
+$$y_k = (1 + h)^k.$$
+Le nombre $y_k$ est une valeur approchée de $\exp(kh)$. On relie les points $(kh\,;\,y_k)$ par des segments.
+:::
+
+::: exemple Pas $h = 0{,}5$
+$y_0 = 1$, $y_1 = 1{,}5$, $y_2 = 2{,}25$, $y_3 = 3{,}375$, $y_4 = 5{,}0625$.
+
+Ainsi $\exp(1) \approx 2{,}25$ et $\exp(2) \approx 5{,}06$ (valeur exacte : $e^2 \approx 7{,}39$). Plus le pas est petit, meilleure est l’approximation.
+:::
+
+[IMAGE_1]
+
+### Approximation du nombre $e$
+
+Pour approcher $e = \exp(1)$, on fait $n$ pas de longueur $h = \dfrac{1}{n}$ : on obtient $\left(1 + \dfrac{1}{n}\right)^n$.
+
+```python
+def euler(n):
+    h = 1 / n
+    y = 1
+    for k in range(n):
+        y = y + h * y
+    return y
+```
+
+| $n$ | `euler(n)` |
+|---|---|
+| $10$ | $2{,}5937\ldots$ |
+| $100$ | $2{,}7048\ldots$ |
+| $1\,000$ | $2{,}7169\ldots$ |
+
+Les valeurs se rapprochent de $e \approx 2{,}71828$.
+
+## III. Relation fonctionnelle et notation $e^x$
+
+::: theoreme Relation fonctionnelle
+Pour tous réels $a$ et $b$ :
+$$\exp(a + b) = \exp(a) \times \exp(b).$$
+:::
+
+::: demonstration
+On fixe le réel $b$ et on pose $k(x) = \exp(x + b) \times \exp(-x)$. Comme pour $g$ au I :
+$$
+\begin{aligned}
+k'(x) &= \exp(x + b)\exp(-x) \\
+&\quad - \exp(x + b)\exp(-x) \\
+&= 0.
+\end{aligned}
+$$
+Donc $k$ est constante, égale à $k(0) = \exp(b) \times 1 = \exp(b)$. Ainsi $\exp(x + b)\exp(-x) = \exp(b)$ ; en multipliant par $\exp(x)$ et en utilisant $\exp(-x)\exp(x) = 1$, on obtient $\exp(x + b) = \exp(x)\exp(b)$. On conclut avec $x = a$.
+:::
+
+::: propriete Conséquences
+Pour tous réels $a$ et $b$ et tout entier relatif $n$ :
+$$
+\begin{aligned}
+\exp(-a) &= \frac{1}{\exp(a)} \\
+\exp(a - b) &= \frac{\exp(a)}{\exp(b)} \\
+\exp(na) &= \left(\exp(a)\right)^n
+\end{aligned}
+$$
+:::
+
+::: notation Notation $e^x$
+Avec $a = 1$, la dernière égalité donne $\exp(n) = e^n$ pour tout entier $n$. On prolonge cette écriture à tous les réels : pour tout réel $x$,
+$$\exp(x) = e^x.$$
+Les règles s’écrivent alors comme celles des puissances :
+
+| Règle | Exemple |
+|---|---|
+| $e^0 = 1$ et $e^1 = e$ | $e^{-1} = \dfrac{1}{e} \approx 0{,}368$ |
+| $e^{a+b} = e^a \times e^b$ | $e^{x+2} = e^2 \times e^x$ |
+| $e^{-a} = \dfrac{1}{e^a}$ | $e^{-3x} = \dfrac{1}{e^{3x}}$ |
+| $e^{a-b} = \dfrac{e^a}{e^b}$ | $\dfrac{e^{5x}}{e^{2x}} = e^{3x}$ |
+| $\left(e^a\right)^n = e^{na}$ | $\left(e^x\right)^3 = e^{3x}$ |
+:::
+
+::: methode Transformer une expression
+On regroupe en une seule exponentielle : on **additionne** les exposants d’un produit, on **soustrait** ceux d’un quotient, on **multiplie** l’exposant par $n$ pour une puissance.
+:::
+
+::: exemple
+$$e^{2x} \times e^{-x+3} = e^{2x + (-x + 3)} = e^{x+3}$$
+$$
+\begin{aligned}
+\frac{\left(e^x\right)^2}{e^{2x-1}} &= \frac{e^{2x}}{e^{2x-1}} \\
+&= e^{2x - (2x - 1)} \\
+&= e^1 = e
+\end{aligned}
+$$
+:::
+
+::: attention Erreurs fréquentes
+- $e^{a+b}$ est un **produit** : $e^{a+b} \neq e^a + e^b$ (par exemple $e^{1+1} = e^2 \approx 7{,}39$ alors que $e + e \approx 5{,}44$).
+- $e^{2x} = \left(e^x\right)^2$ est différent de $2e^x$ et de $e^{x^2}$.
+:::
+
+### La suite $\left(e^{na}\right)$
+
+::: propriete Une suite géométrique
+Pour tout réel $a$, la suite $(u_n)$ définie par $u_n = e^{na}$ est **géométrique** de premier terme $u_0 = 1$ et de raison $q = e^a$, car
+$$
+\begin{aligned}
+u_{n+1} &= e^{(n+1)a} = e^{na + a} \\
+&= e^{na} \times e^a \\
+&= q \times u_n.
+\end{aligned}
+$$
+:::
+
+::: exemple
+La suite $u_n = e^{-0{,}5n}$ est géométrique de raison $e^{-0{,}5} \approx 0{,}607$. Comme $0 < e^{-0{,}5} < 1$ et $u_0 = 1 > 0$, elle est décroissante.
+:::
+
+## IV. Signe, variations et courbe
+
+::: propriete Signe
+Pour tout réel $x$ :
+$$e^x > 0.$$
+:::
+
+::: demonstration
+Pour tout réel $x$, $e^x = e^{\frac{x}{2} + \frac{x}{2}} = \left(e^{\frac{x}{2}}\right)^2 \geqslant 0$. Comme une exponentielle ne s’annule jamais, $e^x > 0$.
+:::
+
+::: theoreme Dérivée et variations
+La fonction exponentielle est dérivable sur $\mathbb{R}$ et $\left(e^x\right)' = e^x$. Comme $e^x > 0$, elle est **strictement croissante** sur $\mathbb{R}$.
+
+::: tableau
+x : -\infty, 0, 1, +\infty
+\exp'(x) : , +, t, +, t, +,
+\exp(x) : -/, =/1, =/e, +/
+:::
+:::
+
+::: propriete Tangente en $0$
+La tangente à la courbe au point d’abscisse $0$ a pour coefficient directeur $\exp'(0) = e^0 = 1$ et passe par le point $(0\,;\,1)$. Son équation est :
+$$y = x + 1.$$
+Pour $h$ proche de $0$, on a donc l’approximation $e^h \approx 1 + h$ (par exemple $e^{0{,}1} \approx 1{,}1$, alors que la calculatrice donne $e^{0{,}1} \approx 1{,}105$).
+:::
+
+[IMAGE_2]
+
+::: retenir La courbe de l’exponentielle
+- Elle est entièrement **au-dessus de l’axe des abscisses** ($e^x > 0$).
+- Elle **monte** de gauche à droite, de plus en plus vite (sa pente $e^x$ augmente).
+- Elle passe par $(0\,;\,1)$ et $(1\,;\,e)$, avec $e \approx 2{,}718$.
+:::
+
+## V. Équations et inéquations
+
+::: propriete Comparer deux exponentielles
+La fonction exponentielle étant strictement croissante, pour tous réels $a$ et $b$ :
+$$
+\begin{aligned}
+e^a = e^b &\iff a = b \\
+e^a < e^b &\iff a < b
+\end{aligned}
+$$
+En particulier, avec $1 = e^0$ : $e^x = 1 \iff x = 0$, $e^x > 1 \iff x > 0$ et $e^x < 1 \iff x < 0$.
+:::
+
+::: methode Résoudre une équation ou une inéquation
+1. On écrit chaque membre sous la forme $e^{\ldots}$ (avec les règles de calcul ; $1 = e^0$, $e = e^1$).
+2. On compare les exposants : même égalité, même sens d’inégalité.
+3. On résout l’équation ou l’inéquation obtenue.
+:::
+
+::: exemple
+$$
+\begin{aligned}
+e^{2x-1} = e^{x+3} &\iff 2x - 1 = x + 3 \\
+&\iff x = 4
+\end{aligned}
+$$
+$$
+\begin{aligned}
+e^{3x} > e^{x+4} &\iff 3x > x + 4 \\
+&\iff x > 2
+\end{aligned}
+$$
+Solutions : $S = \{4\}$ pour l’équation, $S = \,]2\,;+\infty[$ pour l’inéquation.
+:::
+
+::: methode Un produit avec une exponentielle
+Comme $e^{\ldots} > 0$, un produit $A(x) \times e^{\ldots}$ est nul exactement quand $A(x) = 0$, et il a le **signe de $A(x)$**.
+
+Exemple :
+$$
+\begin{aligned}
+(x - 2)e^x = 0 &\iff x = 2 \\
+(x - 2)e^x > 0 &\iff x > 2
+\end{aligned}
+$$
+:::
+
+::: attention
+- Une équation $e^{\ldots} = 0$ ou $e^{\ldots} = -2$ n’a **aucune** solution, car une exponentielle est strictement positive.
+- Une équation comme $e^x = 5$ a une solution (la courbe coupe la droite $y = 5$), mais on ne sait pas encore l’écrire de façon exacte : on en cherche une valeur approchée (tableau de valeurs, balayage en Python).
+:::
+
+## VI. Les fonctions $t \mapsto e^{kt}$ et $t \mapsto e^{-kt}$
+
+::: propriete Dérivée
+Pour tous réels $a$ et $b$, la fonction $t \mapsto e^{at+b}$ est dérivable sur $\mathbb{R}$ et
+$$\left(e^{at+b}\right)' = a\,e^{at+b}.$$
+En particulier, pour tout réel $k$ : $\left(e^{kt}\right)' = k\,e^{kt}$.
+:::
+
+::: propriete Variations (avec $k > 0$)
+- $\left(e^{kt}\right)' = k\,e^{kt} > 0$ : la fonction $t \mapsto e^{kt}$ est **strictement croissante** sur $\mathbb{R}$.
+- $\left(e^{-kt}\right)' = -k\,e^{-kt} < 0$ : la fonction $t \mapsto e^{-kt}$ est **strictement décroissante** sur $\mathbb{R}$.
+- Les deux courbes passent par $(0\,;\,1)$ et sont symétriques par rapport à l’axe des ordonnées, car $e^{-kt} = e^{k \times (-t)}$.
+- Plus $k$ est grand, plus la courbe est raide : la tangente en $0$ a pour coefficient directeur $k$ (ou $-k$).
+:::
+
+[IMAGE_3]
+
+::: methode Étudier une fonction qui contient une exponentielle
+1. On dérive (produit, quotient, $e^{at+b}$).
+2. On **factorise** la dérivée par l’exponentielle.
+3. Comme l’exponentielle est strictement positive, la dérivée a le signe de l’autre facteur.
+:::
+
+::: exemple Étude de $f(x) = (2x - 1)e^x$ sur $[-2\,;\,1]$
+Avec $u(x) = 2x - 1$ et $v(x) = e^x$ : $u'(x) = 2$, $v'(x) = e^x$.
+$$
+\begin{aligned}
+f'(x) &= 2e^x + (2x - 1)e^x \\
+&= (2x + 1)e^x
+\end{aligned}
+$$
+Comme $e^x > 0$, $f'(x)$ a le signe de $2x + 1$, qui s’annule en $x = -\dfrac{1}{2}$.
+
+::: tableau
+x : -2, -\frac{1}{2}, 1
+f'(x) : , -, z, +,
+f(x) : +/-5e^{-2}, -/-2e^{-\frac{1}{2}}, +/e
+:::
+
+Le minimum de $f$ sur $[-2\,;\,1]$ est $f\left(-\dfrac{1}{2}\right) = -2e^{-\frac{1}{2}} \approx -1{,}21$.
+:::
+
+[IMAGE_4]
+
+## VII. Modéliser une croissance ou une décroissance exponentielle
+
+::: definition Modèle exponentiel
+Une grandeur qui évolue au cours du temps selon $Q(t) = Q_0\,e^{kt}$, avec $Q_0 > 0$, suit :
+- une **croissance exponentielle** si $k > 0$ (population de bactéries, placement…) ;
+- une **décroissance exponentielle** si $k < 0$ (désintégration radioactive, élimination d’un médicament…).
+
+Sa vitesse de variation, $Q'(t) = k\,Q(t)$, est **proportionnelle** à la grandeur elle-même.
+:::
+
+::: propriete Lien avec les suites géométriques
+Aux instants entiers, $Q(n) = Q_0\,e^{kn} = Q_0\left(e^k\right)^n$ : la suite $\left(Q(n)\right)$ est géométrique de raison $e^k$. À chaque unité de temps, la grandeur est multipliée par $e^k$ : son taux d’évolution est $e^k - 1$.
+:::
+
+::: exemple Décroissance radioactive
+La masse d’un échantillon radioactif est $m(t) = 100\,e^{-0{,}1t}$ (en grammes, $t$ en années).
+- $m(0) = 100$ g et $m(10) = 100\,e^{-1}$, soit environ $36{,}8$ g.
+- Chaque année, la masse est multipliée par $e^{-0{,}1} \approx 0{,}905$ : elle baisse d’environ $9{,}5\,\%$.
+- La masse passe sous $50$ g au cours de la $7^{\text{e}}$ année : $m(6) \approx 54{,}9$ et $m(7) \approx 49{,}7$.
+:::
+
+[IMAGE_5]
+
+```python
+from math import exp
+
+n = 0
+while 100 * exp(-0.1 * n) > 50:
+    n = n + 1
+print(n)  # affiche 7
+```
+
+::: attention
+Le taux d’évolution par unité de temps est $e^k - 1$, et non $k$ : ici $e^{-0{,}1} - 1 \approx -0{,}095$, soit $-9{,}5\,\%$ et non $-10\,\%$.
+:::
+
+::: retenir L’essentiel
+- $\exp' = \exp$, $e^0 = 1$, $e^1 = e \approx 2{,}718$.
+- $e^{a+b} = e^a \times e^b$, $e^{-a} = \dfrac{1}{e^a}$, $e^{a-b} = \dfrac{e^a}{e^b}$, $\left(e^a\right)^n = e^{na}$.
+- $e^x > 0$ ; l’exponentielle est strictement croissante ; tangente en $0$ : $y = x + 1$.
+- $e^a = e^b \iff a = b$ et $e^a < e^b \iff a < b$.
+- $\left(e^{at+b}\right)' = a\,e^{at+b}$ ; pour $k > 0$, $e^{kt}$ croît et $e^{-kt}$ décroît.
+- $\left(e^{na}\right)$ est géométrique de raison $e^a$.
+- Méthode d’Euler : $y_{k+1} = (1 + h)\,y_k$ ; $\left(1 + \dfrac{1}{n}\right)^n$ approche $e$.
+:::

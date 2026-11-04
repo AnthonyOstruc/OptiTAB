@@ -1,0 +1,444 @@
+Titre: Les Listes en Python
+
+<!-- optitab:1 -->
+::: objectifs
+Créer une liste (en extension, par ajouts successifs ou en compréhension), accéder à ses éléments grâce à leurs indices, la modifier, la parcourir, et l’utiliser pour calculer une somme, une moyenne, un maximum, filtrer ou rechercher des valeurs.
+:::
+
+::: prerequis
+Variables et affectation, boucle `for` et fonction `range`, instruction conditionnelle `if`.
+:::
+
+## I. Créer une liste
+
+::: definition Liste
+Une **liste** est une suite **ordonnée** et **modifiable** de valeurs. En Python, on l’écrit **en extension** : les éléments entre crochets, séparés par des virgules.
+:::
+
+```python
+notes = [12, 15, 18, 10, 14]
+fruits = ["pomme", "kiwi"]
+vide = []
+print(notes)
+print(len(notes))
+print(len(fruits), len(vide))
+```
+
+```console
+[12, 15, 18, 10, 14]
+5
+2 0
+```
+
+::: propriete Longueur d’une liste
+`len(L)` renvoie le **nombre d’éléments** de la liste `L`. La liste vide `[]` a pour longueur $0$.
+:::
+
+::: remarque
+Une liste peut contenir plusieurs fois la même valeur, et même des valeurs de types différents, comme `[3, "a", True]`. En pratique, on y range des valeurs de même nature : des notes, des termes d’une suite, des résultats de simulation…
+:::
+
+## II. Accéder aux éléments : les indices
+
+::: definition Indice
+Chaque élément d’une liste est repéré par sa position, appelée **indice**. Le premier élément a l’indice $0$ : une liste de $n$ éléments a pour indices $0$, $1$, …, $n-1$. L’élément d’indice `i` de la liste `L` s’écrit `L[i]`.
+:::
+
+[IMAGE_1]
+
+::: propriete Indices négatifs
+Python accepte aussi des indices négatifs, comptés à partir de la fin : `L[-1]` est le dernier élément, `L[-2]` l’avant-dernier, etc. Pour une liste de $n$ éléments, `L[-k]` désigne le même élément que `L[n - k]`.
+:::
+
+::: exemple
+```python
+notes = [12, 15, 18, 10, 14]
+print(notes[0], notes[2])
+print(notes[-1], notes[-2])
+print(notes[len(notes) - 1])
+```
+
+```console
+12 18
+14 10
+14
+```
+:::
+
+::: attention Indice hors de la liste
+Avec $5$ éléments, les indices vont de $0$ à $4$ (ou de $-5$ à $-1$). L’instruction `print(notes[5])` arrête le programme sur une erreur `IndexError` (message « list index out of range » : indice hors de la liste).
+
+Le dernier élément s’obtient par `notes[-1]` ou `notes[len(notes) - 1]`, jamais par `notes[len(notes)]`.
+:::
+
+::: remarque Pour aller plus loin : les tranches
+`L[a:b]` renvoie la liste des éléments d’indices $a$ à $b-1$. Avec la liste `notes` ci-dessus, `notes[1:3]` vaut `[15, 18]`.
+:::
+
+## III. Modifier une liste
+
+### 1. Remplacer un élément
+
+::: propriete Affectation d’un élément
+`L[i] = valeur` remplace l’élément d’indice `i` par `valeur` ; la longueur de la liste ne change pas.
+:::
+
+```python
+notes = [12, 15, 18, 10, 14]
+notes[1] = 16
+print(notes)
+```
+
+```console
+[12, 16, 18, 10, 14]
+```
+
+### 2. Ajouter, insérer, supprimer
+
+Une **méthode** est une fonction propre aux listes ; elle s’écrit après le nom de la liste et un point, comme `L.append(5)`. Les méthodes ci-dessous **modifient la liste elle-même**. Elles sont appliquées successivement à la liste `L = [3, 1, 2]`.
+
+- `L.append(5)` ajoute `5` à la fin : `L` devient `[3, 1, 2, 5]` ;
+- `L.insert(0, 7)` insère `7` à l’indice `0` : `L` devient `[7, 3, 1, 2, 5]` ;
+- `L.remove(1)` supprime la première valeur `1` : `L` devient `[7, 3, 2, 5]` ;
+- `x = L.pop()` retire le dernier élément et le renvoie : `x` vaut `5` et `L` devient `[7, 3, 2]`.
+
+Lors d’une insertion, les éléments situés à partir de l’indice choisi reculent d’un rang : leurs indices augmentent de $1$. Par exemple, avec `nombres = [5, 10, 15]`, l’instruction `nombres.insert(1, 8)` donne `[5, 8, 10, 15]`. De même, `L.pop(i)` retire l’élément d’indice `i`.
+
+[IMAGE_2]
+
+::: exemple Une liste de courses
+```python
+courses = ["pain", "lait"]
+courses.append("riz")
+print(courses)
+courses.insert(1, "thé")
+print(courses)
+courses[0] = "miel"
+print(courses)
+courses.remove("lait")
+print(courses)
+```
+
+```console
+['pain', 'lait', 'riz']
+['pain', 'thé', 'lait', 'riz']
+['miel', 'thé', 'lait', 'riz']
+['miel', 'thé', 'riz']
+```
+
+Python affiche les chaînes de caractères d’une liste entre apostrophes.
+:::
+
+::: attention
+- `L.remove(x)` supprime une **valeur**, alors que `L.pop(i)` retire l’élément d’**indice** `i`.
+- `L.remove(x)` provoque une erreur `ValueError` si `x` n’est pas dans la liste : on teste d’abord `if x in L:`.
+- `append` ajoute **un seul** élément : `L.append([4, 5])` ajoute la liste `[4, 5]` comme dernier élément. Pour ajouter les deux valeurs, on écrit `L = L + [4, 5]`.
+:::
+
+## IV. S’informer sur une liste et la trier
+
+### 1. Fonctions et méthodes d’information
+
+| Écriture | Renvoie |
+|---|---|
+| `len(L)` | le nombre d’éléments |
+| `sum(L)` | la somme des éléments |
+| `min(L)`, `max(L)` | le plus petit, le plus grand élément |
+| `x in L` | `True` si `x` est dans `L`, `False` sinon |
+| `L.index(x)` | l’indice de la première occurrence de `x` |
+| `L.count(x)` | le nombre d’occurrences de `x` |
+
+```python
+L = [5, 2, 8, 2, 1]
+print(len(L), sum(L))
+print(min(L), max(L))
+print(8 in L, 7 in L)
+print(L.index(2), L.count(2))
+```
+
+```console
+5 18
+1 8
+True False
+1 2
+```
+
+::: methode Rechercher une valeur sans erreur
+On teste la présence avec `in` **avant** de demander l’indice : `L.index(x)` provoque une erreur si `x` est absent.
+
+```python
+nom = "Zoé"
+noms = ["Léo", "Inès", "Zoé"]
+if nom in noms:
+    i = noms.index(nom)
+    print("Indice :", i)
+else:
+    print("Absent")
+```
+
+```console
+Indice : 2
+```
+:::
+
+### 2. Trier une liste
+
+::: propriete Trier : deux écritures
+- `L.sort()` trie la liste `L` **elle-même** dans l’ordre croissant ; cette méthode ne renvoie rien.
+- `sorted(L)` renvoie une **nouvelle** liste triée ; `L` n’est pas modifiée.
+- `L.reverse()` inverse l’ordre des éléments ; `L.sort(reverse=True)` trie dans l’ordre décroissant.
+:::
+
+```python
+L = [15, 8, 20, 12]
+M = sorted(L)
+print(M)
+print(L)
+L.sort()
+print(L)
+L.reverse()
+print(L)
+```
+
+```console
+[8, 12, 15, 20]
+[15, 8, 20, 12]
+[8, 12, 15, 20]
+[20, 15, 12, 8]
+```
+
+`sorted(L)` a fourni une copie triée sans modifier `L` ; `L.sort()` a ensuite trié `L` elle-même.
+
+::: remarque
+Les chaînes de caractères sont triées dans l’ordre alphabétique : `sorted(["Chloé", "Alice", "Bob"])` vaut `['Alice', 'Bob', 'Chloé']`. Attention : les majuscules passent avant toutes les minuscules, et les lettres accentuées après.
+:::
+
+## V. Parcourir une liste
+
+::: propriete Deux façons de parcourir une liste
+- **Par valeurs** : avec `for x in L:`, la variable `x` prend successivement chaque valeur de `L`. Ce parcours suffit quand seules les valeurs comptent.
+- **Par indices** : avec `for i in range(len(L)):`, la variable `i` prend les valeurs $0$, $1$, …, $n-1$ et l’élément correspondant est `L[i]`. Ce parcours est nécessaire quand on a besoin de la position : modifier `L[i]`, comparer deux éléments voisins…
+:::
+
+```python
+# Parcours par valeurs
+fruits = ["pomme", "kiwi", "poire"]
+for f in fruits:
+    print(f)
+```
+
+```console
+pomme
+kiwi
+poire
+```
+
+```python
+# Parcours par indices
+fruits = ["pomme", "kiwi", "poire"]
+for i in range(len(fruits)):
+    print(i, fruits[i])
+```
+
+```console
+0 pomme
+1 kiwi
+2 poire
+```
+
+### Trois algorithmes de référence
+
+::: methode Calculer une somme, une moyenne
+On utilise un **accumulateur** : une variable initialisée à $0$, à laquelle on ajoute chaque valeur.
+
+```python
+# Somme et moyenne
+notes = [14, 12, 16, 10, 18]
+somme = 0
+for note in notes:
+    somme = somme + note
+moyenne = somme / len(notes)
+print(somme, moyenne)
+```
+
+```console
+70 14.0
+```
+
+La moyenne vaut $\frac{70}{5} = 14$. Une division `/` donne toujours un nombre décimal, que Python écrit avec un point : `14.0`.
+:::
+
+::: methode Chercher le plus grand élément
+On retient le premier élément, puis on le remplace chaque fois qu’on rencontre un élément plus grand.
+
+```python
+# Plus grand élément
+nombres = [5, 8, 12, 3, 15]
+maxi = nombres[0]
+for x in nombres:
+    if x > maxi:
+        maxi = x
+print(maxi)
+```
+
+```console
+15
+```
+:::
+
+::: methode Filtrer une liste
+On part d’une liste vide et on y ajoute avec `append` les seuls éléments qui vérifient la condition.
+
+```python
+# Filtrage
+notes = [15, 8, 18, 10, 16]
+bonnes = []
+for note in notes:
+    if note >= 12:
+        bonnes.append(note)
+print(bonnes)
+```
+
+```console
+[15, 18, 16]
+```
+:::
+
+## VI. Construire une liste
+
+### 1. Par ajouts successifs
+
+::: exemple Liste des termes d’une suite
+La suite $(u_n)$ est définie par $u_0 = 3$ et $u_{n+1} = 2u_n - 1$. On part de la liste `[3]` et, à chaque tour, on ajoute le terme suivant, calculé à partir du dernier terme `u[-1]`.
+
+```python
+u = [3]
+for k in range(5):
+    u.append(2 * u[-1] - 1)
+print(u)
+```
+
+```console
+[3, 5, 9, 17, 33, 65]
+```
+
+La liste contient $u_0$, $u_1$, …, $u_5$ : l’élément `u[n]` est le terme $u_n$.
+:::
+
+### 2. En compréhension
+
+::: definition Liste en compréhension
+L’écriture `[expression for x in …]` construit en une seule ligne la liste des valeurs de l’expression. On peut ajouter un filtre : `[expression for x in … if condition]`.
+:::
+
+```python
+L = [15, 8, 18, 10, 16]
+print([k**2 for k in range(1, 6)])
+print([3 * n for n in range(5)])
+print([x for x in L if x >= 12])
+```
+
+```console
+[1, 4, 9, 16, 25]
+[0, 3, 6, 9, 12]
+[15, 18, 16]
+```
+
+La première liste contient les carrés des entiers de $1$ à $5$, la deuxième les cinq premiers multiples de $3$, la troisième les éléments de `L` supérieurs ou égaux à $12$.
+
+### 3. Autres écritures utiles
+
+| Écriture | Résultat |
+|---|---|
+| `list(range(5))` | `[0, 1, 2, 3, 4]` |
+| `[0] * 4` | `[0, 0, 0, 0]` |
+| `[1, 2] + [3, 4]` | `[1, 2, 3, 4]` (concaténation) |
+
+## VII. Affectation et copie
+
+::: attention Une affectation ne copie pas une liste
+Après `M = L`, les noms `L` et `M` désignent **la même liste** : modifier `M` modifie aussi `L`. Pour obtenir une copie indépendante, on écrit `N = L.copy()`.
+:::
+
+```python
+L = [1, 2, 3]
+M = L
+M.append(4)
+print(L)
+N = L.copy()
+N.append(5)
+print(L, N)
+```
+
+```console
+[1, 2, 3, 4]
+[1, 2, 3, 4] [1, 2, 3, 4, 5]
+```
+
+[IMAGE_3]
+
+## VIII. Exemple complet : une série de notes
+
+Un élève a obtenu les notes `[14, 12, 16, 10, 18, 15]`. On calcule sa moyenne (arrondie au dixième), sa meilleure et sa moins bonne note, l’indice de la meilleure note et le nombre de notes supérieures ou égales à $12$.
+
+```python
+# Bilan du trimestre
+notes = [14, 12, 16, 10, 18, 15]
+m = sum(notes) / len(notes)
+print("Moyenne :", round(m, 1))
+print("Maxi :", max(notes))
+print("Mini :", min(notes))
+print("Indice :", notes.index(18))
+B = [x for x in notes if x >= 12]
+print("Notes >= 12 :", len(B))
+```
+
+```console
+Moyenne : 14.2
+Maxi : 18
+Mini : 10
+Indice : 4
+Notes >= 12 : 5
+```
+
+::: retenir Lecture des résultats
+La somme des notes est $85$ et $\frac{85}{6} \approx 14{,}2$ ; la note $18$ est la cinquième, d’indice $4$ ; seule la note $10$ est inférieure à $12$, donc $5$ notes sur $6$ sont supérieures ou égales à $12$.
+:::
+
+## IX. Erreurs fréquentes
+
+::: attention Les erreurs classiques
+1. Oublier que le premier indice est $0$ : le dernier élément d’une liste de $n$ éléments est `L[n - 1]`, et `L[n]` provoque une erreur `IndexError`.
+2. Écrire `L = L.sort()` : la méthode `sort` ne renvoie rien, donc `L` vaut alors `None`. On écrit `L.sort()` seul, ou `M = sorted(L)`.
+3. Croire que `M = L` copie la liste : on utilise `M = L.copy()`.
+4. Appeler `L.remove(x)` ou `L.index(x)` sans vérifier que `x in L` : erreur `ValueError` si `x` est absent.
+5. Supprimer des éléments d’une liste pendant qu’on la parcourt : certains éléments sont « sautés ».
+:::
+
+::: exemple Supprimer pendant un parcours
+On veut retirer les nombres pairs de la liste `[2, 4, 5, 6]`.
+
+```python
+L = [2, 4, 5, 6]
+for x in L:
+    if x % 2 == 0:
+        L.remove(x)
+print(L)
+```
+
+```console
+[4, 5]
+```
+
+Le $4$ n’a pas été supprimé : après le retrait du $2$, les éléments ont reculé d’un rang et la boucle est passée directement au $5$. On construit plutôt une nouvelle liste par filtrage : à partir de `[2, 4, 5, 6]`, l’écriture `[x for x in L if x % 2 != 0]` donne bien `[5]`.
+:::
+
+::: retenir
+- Création : `L = [12, 15, 18]` ou `L = []` ; nombre d’éléments : `len(L)`.
+- Indices de $0$ à `len(L) - 1` ; `L[-1]` est le dernier élément.
+- Modification : `L[i] = v`, `append`, `insert`, `remove`, `pop`.
+- Information : `sum`, `min`, `max`, `in`, `index`, `count` ; tri : `L.sort()` (la liste elle-même) ou `sorted(L)` (une copie triée).
+- Parcours par valeurs `for x in L:` ou par indices `for i in range(len(L)):`.
+- Construction par ajouts successifs (`append` dans une boucle) ou en compréhension.
+- Fiche de synthèse dans l’onglet Fiches !
+:::

@@ -305,14 +305,20 @@ export function getImageUrl(imagePath, type = 'cours') {
  * Mais si la réduction la rendrait trop petite (< ~70 %), elle repasse à
  * taille normale et défile horizontalement (classe .mjx-scrollable) :
  * toujours lisible, jamais coupée.
+ * `root` : un élément, une liste d'éléments (blocs d'un document), ou rien
+ * (toute la page). Les zones marquées .tex2jax_ignore (onglets masqués,
+ * ignorés aussi par MathJax) ne sont ni mesurées ni modifiées.
  */
 export function tuneMathOverflow(root) {
   if (typeof document === 'undefined') return
-  const scope = root instanceof Element ? root : document.body
-  if (!scope) return
+  const scopes = (Array.isArray(root) ? root : [root instanceof Element ? root : document.body]).filter(Boolean)
+  if (!scopes.length) return
+  const tous = (selecteur) => scopes
+    .flatMap((scope) => [...scope.querySelectorAll(selecteur)])
+    .filter((el) => !el.closest('.tex2jax_ignore'))
 
   const entries = []
-  scope.querySelectorAll('.sci-doc mjx-container').forEach((container) => {
+  tous('.sci-doc mjx-container').forEach((container) => {
     const svg = container.querySelector('svg')
     if (!svg) return
     container.classList.remove('mjx-scrollable')
@@ -337,7 +343,7 @@ export function tuneMathOverflow(root) {
 
   // Ponctuation liée à une formule aussi large que la ligne : la laisser
   // passer à la ligne plutôt que de déborder
-  scope.querySelectorAll('.otm-nb').forEach((span) => {
+  tous('.otm-nb').forEach((span) => {
     span.classList.remove('otm-nb--libre')
     const block = span.parentElement && span.parentElement.closest('p, li, td, th, div')
     if (block && span.getBoundingClientRect().width > block.clientWidth - 4) {
@@ -347,12 +353,63 @@ export function tuneMathOverflow(root) {
 
   // Tableaux de variations : agrandir les flèches ↗ ↘ pour une
   // lecture digne d'un manuel
-  scope.querySelectorAll('.sci-doc td').forEach((td) => {
+  tous('.sci-doc td').forEach((td) => {
     const text = (td.textContent || '').trim()
     if (text === '↗' || text === '↘') {
       td.classList.add('sd-var-arrow')
     }
   })
+}
+
+/**
+ * Met en forme les formules des éléments donnés. Les appels passent l'un
+ * après l'autre (deux calculs MathJax simultanés peuvent se gêner) ; la
+ * promesse se résout une fois ces éléments traités.
+ */
+let fileMathJax = Promise.resolve()
+
+/**
+ * Met en forme toute la page, demandes regroupées : celles qui arrivent
+ * avant le départ du calcul (contenu, images, montage, plusieurs exercices
+ * sur la même page) n'en déclenchent qu'un ; une demande arrivée pendant le
+ * calcul en relance un seul ensuite. Les formules larges sont ajustées après.
+ */
+let pagePrevue = null
+let pageEnCours = false
+let pageARefaire = false
+export function typesetPageGroupe() {
+  if (pagePrevue) return pagePrevue
+  if (pageEnCours) {
+    pageARefaire = true
+    return Promise.resolve()
+  }
+  pagePrevue = Promise.resolve().then(async () => {
+    pagePrevue = null
+    pageEnCours = true
+    try {
+      if (window.MathJax?.typesetPromise) {
+        await window.MathJax.typesetPromise()
+        tuneMathOverflow()
+      }
+    } finally {
+      pageEnCours = false
+      if (pageARefaire) {
+        pageARefaire = false
+        typesetPageGroupe().catch(() => {})
+      }
+    }
+  })
+  return pagePrevue
+}
+
+export function typesetElements(elements) {
+  const tache = fileMathJax.then(async () => {
+    const mj = typeof window !== 'undefined' ? window.MathJax : null
+    if (mj?.startup?.promise) await mj.startup.promise
+    if (mj?.typesetPromise) await mj.typesetPromise(elements)
+  })
+  fileMathJax = tache.catch(() => {})
+  return tache
 }
 
 /**

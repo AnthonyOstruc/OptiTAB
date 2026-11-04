@@ -1,0 +1,534 @@
+Titre: Sommes de variables aléatoires
+
+<!-- optitab:1 -->
+::: remarque Sections principales
+La section 0 rappelle les notions fondamentales d'espérance, variance et écart-type. Les sections I à V couvrent les concepts clés des sommes de variables aléatoires. Les parties marquées **« Bonus »** sont des approfondissements utiles qui vous permettent d'explorer des thèmes avancés.
+:::
+
+## 0. Rappels : Espérance, variance et écart-type
+
+### Espérance d'une variable aléatoire
+
+::: definition Espérance
+L'**espérance** d'une variable aléatoire $X$ est la moyenne pondérée de ses valeurs par leurs probabilités :
+
+::: formule
+$$E(X) = \sum_{i} x_i \times P(X = x_i)$$
+:::
+
+où la somme porte sur toutes les valeurs possibles $x_i$ de $X$.
+:::
+
+::: exemple
+On lance un dé équilibré. Soit $X$ le résultat.
+
+$$
+\begin{aligned}
+E(X) &= 1 \times \frac{1}{6} + 2 \times \frac{1}{6} + 3 \times \frac{1}{6} + 4 \times \frac{1}{6} + 5 \times \frac{1}{6} + 6 \times \frac{1}{6} \\
+&= \frac{21}{6} \\
+&= 3,5
+\end{aligned}
+$$
+:::
+
+### Variance et écart-type
+
+::: definition Variance
+La **variance** d'une variable aléatoire $X$ mesure la dispersion de ses valeurs autour de l'espérance :
+
+::: formule
+$$V(X) = E(X^2) - [E(X)]^2$$
+:::
+
+ou encore :
+
+::: formule
+$$V(X) = \sum_{i} (x_i - E(X))^2 \times P(X = x_i)$$
+:::
+:::
+
+::: definition Écart-type
+L'**écart-type** est la racine carrée de la variance :
+
+::: formule
+$$\sigma(X) = \sqrt{V(X)}$$
+:::
+:::
+
+::: propriete Interprétation
+Plus la variance (ou l'écart-type) est grande, plus les valeurs de $X$ sont dispersées autour de l'espérance.
+:::
+
+::: exemple
+Pour un dé équilibré, on a $\displaystyle E(X) = 3,5$.
+
+$$
+\begin{aligned}
+E(X^2) &= 1^2 \times \frac{1}{6} + 2^2 \times \frac{1}{6} + \cdots + 6^2 \times \frac{1}{6} \\
+&= \frac{91}{6}
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+V(X) &= E(X^2) - [E(X)]^2 \\
+&= \frac{91}{6} - \left(\frac{21}{6}\right)^2 \\
+&= \frac{91}{6} - \frac{441}{36} \\
+&= \frac{546 - 441}{36} \\
+&= \frac{105}{36} \\
+&= \frac{35}{12}
+\end{aligned}
+$$
+
+$$\sigma(X) = \sqrt{\frac{35}{12}} \approx 1,71$$
+:::
+
+### Loi de Bernoulli
+
+::: rappel Loi de Bernoulli
+Une variable aléatoire $X$ suit une **loi de Bernoulli** de paramètre $p$ si :
+
+- $\displaystyle P(X = 1) = p$ (succès)
+- $\displaystyle P(X = 0) = 1 - p$ (échec)
+
+On note : $\displaystyle X \sim \mathrm{Bernoulli}(p)$
+:::
+
+::: propriete Espérance et variance de la loi de Bernoulli
+Pour $\displaystyle X \sim \mathrm{Bernoulli}(p)$ :
+
+- **Espérance :** $\displaystyle E(X) = p$
+- **Variance :** $\displaystyle V(X) = p(1-p)$
+:::
+
+## I. Somme de deux variables aléatoires
+
+### Définition
+
+::: definition Somme de variables aléatoires
+Soient $X$ et $Y$ deux variables aléatoires définies sur le même univers.
+
+La variable aléatoire **somme** $S = X + Y$ est définie par :
+
+::: formule
+$$S(\omega) = X(\omega) + Y(\omega)$$
+:::
+
+pour toute issue $\omega$ de l'univers.
+:::
+
+::: exemple
+On lance deux dés équilibrés. Soit $X$ le résultat du premier dé et $Y$ le résultat du second dé.
+
+La variable $S = X + Y$ représente la somme des deux dés.
+
+Par exemple, si $X = 3$ et $Y = 4$, alors $S = 7$.
+:::
+
+## II. Linéarité de l'espérance
+
+### Théorème de linéarité
+
+::: theoreme Linéarité de l'espérance
+Soient $X$ et $Y$ deux variables aléatoires définies sur le même univers, et $a$ un réel.
+
+Alors :
+
+- **Espérance de la somme :** $\displaystyle E(X + Y) = E(X) + E(Y)$
+- **Espérance du produit par un réel :** $E(aX) = a \times E(X)$
+:::
+
+::: demonstration
+L'espérance est définie comme une moyenne pondérée sur l'ensemble des issues.
+
+Pour $\displaystyle E(X + Y)$ :
+
+$$
+\begin{aligned}
+E(X + Y) &= \sum_{\omega} P(\omega) \times (X(\omega) + Y(\omega)) \\
+&= \sum_{\omega} P(\omega) \times X(\omega) + \sum_{\omega} P(\omega) \times Y(\omega) \\
+&= E(X) + E(Y)
+\end{aligned}
+$$
+
+Pour $\displaystyle E(aX)$ :
+
+$$
+\begin{aligned}
+E(aX) &= \sum_{\omega} P(\omega) \times aX(\omega) \\
+&= a \times \sum_{\omega} P(\omega) \times X(\omega) \\
+&= a \times E(X)
+\end{aligned}
+$$
+:::
+
+::: propriete Validité générale
+La linéarité de l'espérance est valable pour **toutes** les variables aléatoires, qu'elles soient indépendantes ou non.
+:::
+
+::: methode Capacité attendue : Calculer l'espérance en utilisant la linéarité
+Pour calculer l'espérance d'une variable complexe :
+
+1. Représenter la variable comme somme de variables plus simples
+2. Appliquer la linéarité : $\displaystyle E(X + Y) = E(X) + E(Y)$
+3. Calculer les espérances des composantes
+:::
+
+::: exemple
+On lance deux dés équilibrés. Soit $X$ le résultat du premier dé et $Y$ le résultat du second dé.
+
+On sait que $\displaystyle E(X) = E(Y) = \frac{1+2+3+4+5+6}{6} = 3,5$
+
+Pour la somme $\displaystyle S = X + Y$ :
+
+$$E(S) = E(X + Y) = E(X) + E(Y) = 3,5 + 3,5 = 7$$
+:::
+
+## III. Variables aléatoires indépendantes
+
+### Définition dans le cadre d'une succession d'épreuves indépendantes
+
+::: definition Variables indépendantes
+Dans le cadre d'une **succession d'épreuves indépendantes**, les variables aléatoires associées à chaque épreuve sont dites **indépendantes**.
+
+Cela signifie que le résultat d'une épreuve n'influence pas les résultats des autres épreuves.
+:::
+
+::: attention Important
+Lorsque plusieurs variables aléatoires sont indépendantes, leurs comportements n'interfèrent pas. Cela est particulièrement utile dans la succession d'épreuves indépendantes.
+
+L'hypothèse d'indépendance est constitutive du modèle considéré. On ne demande pas de justifier l'indépendance de variables aléatoires données a priori.
+:::
+
+::: exemple
+- Dans un schéma de Bernoulli, les variables de Bernoulli associées à chaque épreuve sont indépendantes
+- Lancer deux dés : les résultats sont indépendants
+- Tirer deux boules avec remise : les résultats sont indépendants
+:::
+
+## IV. Additivité de la variance
+
+### Théorème d'additivité
+
+::: theoreme Additivité de la variance
+Soient $X$ et $Y$ deux variables aléatoires **indépendantes** définies sur le même univers, et $a$ un réel.
+
+Alors :
+
+- **Variance de la somme :** $\displaystyle V(X + Y) = V(X) + V(Y)$
+- **Variance du produit par un réel :** $V(aX) = a^2 \times V(X)$
+:::
+
+::: attention
+L'additivité de la variance **n'est valable que si les variables sont indépendantes**.
+
+Si les variables ne sont pas indépendantes, on a généralement $V(X + Y) \neq V(X) + V(Y)$.
+:::
+
+::: remarque
+L'additivité de la variance pour la somme de deux variables indépendantes est un résultat fondamental souvent admis dans les cours d'introduction aux probabilités.
+:::
+
+::: methode Capacité attendue : Calculer la variance en exprimant comme somme de variables indépendantes
+Pour calculer la variance d'une variable complexe :
+
+1. Vérifier que les variables sont indépendantes
+2. Exprimer la variable comme somme de variables indépendantes
+3. Appliquer l'additivité : $\displaystyle V(X + Y) = V(X) + V(Y)$
+:::
+
+::: exemple
+On lance deux dés équilibrés. Soit $X$ le résultat du premier dé et $Y$ le résultat du second dé.
+
+Rappel : $\displaystyle V(X) = E(X^2) - [E(X)]^2$
+
+On peut montrer que $\displaystyle V(X) = V(Y) = \frac{35}{12}$ (admis)
+
+Comme $X$ et $Y$ sont indépendantes, pour la somme $S = X + Y$ :
+
+$$
+\begin{aligned}
+V(S) &= V(X + Y) \\
+&= V(X) + V(Y) \\
+&= \frac{35}{12} + \frac{35}{12} \\
+&= \frac{35}{6}
+\end{aligned}
+$$
+:::
+
+## V. Application à la loi binomiale
+
+### Représentation comme somme de variables de Bernoulli
+
+::: propriete Loi binomiale comme somme
+Dans un schéma de Bernoulli de paramètres $n$ et $p$, le nombre de succès $X$ peut s'écrire comme :
+
+::: formule
+$$X = X_1 + X_2 + \cdots + X_n$$
+:::
+
+où chaque $X_i$ suit une loi de Bernoulli de paramètre $p$ et les $X_i$ sont indépendantes.
+:::
+
+::: theoreme Espérance et variance de la loi binomiale
+Pour $\displaystyle X \sim \mathcal{B}(n, p)$ :
+
+- **Espérance :** $\displaystyle E(X) = np$
+- **Variance :** $\displaystyle V(X) = np(1-p)$
+- **Écart-type :** $\displaystyle \sigma(X) = \sqrt{np(1-p)}$
+:::
+
+::: demonstration
+On écrit $X = X_1 + X_2 + \cdots + X_n$ où chaque $X_i \sim \mathrm{Bernoulli}(p)$.
+
+**Espérance :**
+
+$$
+\begin{aligned}
+E(X) &= E(X_1 + X_2 + \cdots + X_n) \\
+&= E(X_1) + E(X_2) + \cdots + E(X_n)
+\end{aligned}
+$$
+
+$$= p + p + \cdots + p = np$$
+
+**Variance :**
+
+Comme les $X_i$ sont indépendantes :
+
+$$
+\begin{aligned}
+V(X) &= V(X_1 + X_2 + \cdots + X_n) \\
+&= V(X_1) + V(X_2) + \cdots + V(X_n)
+\end{aligned}
+$$
+
+$$= p(1-p) + p(1-p) + \cdots + p(1-p) = np(1-p)$$
+:::
+
+::: exemple
+On lance 20 fois une pièce équilibrée. Soit $X$ le nombre de piles.
+
+$$X \sim \mathcal{B}(20, \frac{1}{2})$$
+
+$$E(X) = 20 \times \frac{1}{2} = 10$$
+
+$$V(X) = 20 \times \frac{1}{2} \times \frac{1}{2} = 5$$
+
+$$\sigma(X) = \sqrt{5} \approx 2,24$$
+:::
+
+## VI. Échantillon de taille n
+
+::: remarque Pour le Bac
+On utilisera surtout ce résultat quand les $X_i$ suivent une **loi de Bernoulli** (cas des fréquences de succès dans un schéma de Bernoulli).
+:::
+
+### Définition
+
+::: definition Échantillon
+Un **échantillon de taille $n$** d'une loi de probabilité est une liste $(X_1, X_2, \ldots, X_n)$ de variables aléatoires **indépendantes et identiques** suivant cette loi.
+
+*Note : La notation « i.i.d. » (indépendantes et identiquement distribuées) est une notation mathématique standard précise pour décrire ce concept.*
+:::
+
+::: exemple
+- Lancer $n$ fois un dé équilibré : chaque résultat suit la même loi
+- Tirer $n$ boules avec remise : chaque tirage suit la même loi
+- Répéter $n$ fois une épreuve de Bernoulli : chaque résultat suit une loi de Bernoulli
+:::
+
+::: methode Approfondissement
+La partie générale ci-dessous (avec $\mu$ et $\sigma^2$) est un approfondissement. Pour le Bac, on utilisera surtout le cas particulier des variables de Bernoulli (voir section suivante).
+:::
+
+### Somme et moyenne d'un échantillon
+
+::: propriete Somme et moyenne
+Pour un échantillon $(X_1, X_2, \ldots, X_n)$ de variables indépendantes de même loi, d'espérance $\mu$ et de variance $\sigma^2$ :
+
+- **Somme :** $\displaystyle S_n = X_1 + X_2 + \cdots + X_n$
+- **Moyenne :** $\displaystyle M_n = \frac{S_n}{n} = \frac{X_1 + X_2 + \cdots + X_n}{n}$
+:::
+
+::: theoreme Espérance, variance et écart-type
+Pour la somme $\displaystyle S_n$ :
+
+- $\displaystyle E(S_n) = n\mu$
+- $\displaystyle V(S_n) = n\sigma^2$
+- $\displaystyle \sigma(S_n) = \sqrt{n}\sigma$
+
+Pour la moyenne $\displaystyle M_n$ :
+
+- $\displaystyle E(M_n) = \mu$
+- $\displaystyle V(M_n) = \frac{\sigma^2}{n}$
+- $\displaystyle \sigma(M_n) = \frac{\sigma}{\sqrt{n}}$
+:::
+
+::: demonstration
+**Pour $\displaystyle S_n$ :**
+
+$$
+\begin{aligned}
+E(S_n) &= E(X_1 + \cdots + X_n) \\
+&= E(X_1) + \cdots + E(X_n) \\
+&= \mu + \cdots + \mu \\
+&= n\mu
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+V(S_n) &= V(X_1 + \cdots + X_n) \\
+&= V(X_1) + \cdots + V(X_n) \\
+&= \sigma^2 + \cdots + \sigma^2 \\
+&= n\sigma^2
+\end{aligned}
+$$
+
+**Pour $\displaystyle M_n = \frac{S_n}{n}$ :**
+
+$$
+\begin{aligned}
+E(M_n) &= E\left(\frac{S_n}{n}\right) \\
+&= \frac{1}{n}E(S_n) \\
+&= \frac{1}{n} \times n\mu \\
+&= \mu
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+V(M_n) &= V\left(\frac{S_n}{n}\right) \\
+&= \left(\frac{1}{n}\right)^2 V(S_n) \\
+&= \frac{1}{n^2} \times n\sigma^2 \\
+&= \frac{\sigma^2}{n}
+\end{aligned}
+$$
+:::
+
+::: exemple
+On lance 100 fois un dé équilibré. Soit $X_i$ le résultat du $i$-ème lancer.
+
+Chaque $X_i$ a pour espérance $\mu = 3,5$ et variance $\sigma^2 = \frac{35}{12}$.
+
+Pour la somme $\displaystyle S_{100} = X_1 + \cdots + X_{100}$ :
+
+$$E(S_{100}) = 100 \times 3,5 = 350$$
+
+$$
+\begin{aligned}
+\sigma(S_{100}) &= \sqrt{100} \times \sqrt{\frac{35}{12}} \\
+&= 10 \times \sqrt{\frac{35}{12}} \approx 17,08
+\end{aligned}
+$$
+
+Pour la moyenne $\displaystyle M_{100} = \frac{S_{100}}{100}$ :
+
+$$E(M_{100}) = 3,5$$
+
+$$
+\begin{aligned}
+\sigma(M_{100}) &= \frac{\sqrt{\frac{35}{12}}}{\sqrt{100}} \\
+&= \frac{\sqrt{\frac{35}{12}}}{10} \approx 0,17
+\end{aligned}
+$$
+:::
+
+### Application : Fréquence de succès dans un schéma de Bernoulli
+
+::: remarque Lien avec les fréquences
+On considère un échantillon de taille $n$ de variables de Bernoulli :
+
+$\displaystyle X_1, \ldots, X_n \sim \mathrm{Bernoulli}(p)$ indépendantes.
+
+On note $F_n$ la **fréquence de succès** :
+
+::: formule
+$$F_n = \frac{X_1 + \cdots + X_n}{n}$$
+:::
+
+Donc $F_n$ est juste la **moyenne** des $X_i$.
+
+Alors :
+
+- $\displaystyle E(F_n) = p$
+- $\displaystyle V(F_n) = \frac{p(1-p)}{n}$
+
+**Interprétation :** En moyenne, la fréquence observée est proche de $p$, et plus $n$ est grand, plus la fréquence varie peu autour de $p$.
+
+*Cette propriété est fondamentale pour les intervalles de fluctuation d'échantillonnage.*
+:::
+
+## VII. Bonus - Approfondissements
+
+::: methode Approfondissement
+Cette partie approfondit votre compréhension en démontrant completément les résultats utiles pour les sommes de variables aléatoires.
+
+La relation $E(XY) = E(X)E(Y)$ pour des variables indépendantes et la démonstration complète de l'additivité de la variance via $E(XY)$ enrichissent votre compréhension des probabilités.
+:::
+
+### Bonus - Espérance du produit de variables indépendantes
+
+::: theoreme Espérance du produit
+Si $X$ et $Y$ sont deux variables aléatoires **indépendantes**, alors :
+
+::: formule
+$$E(XY) = E(X) \times E(Y)$$
+:::
+:::
+
+::: remarque Application à la variance
+Cette propriété permet de démontrer l'additivité de la variance pour des variables indépendantes :
+
+$$
+\begin{aligned}
+V(X + Y) &= E((X + Y)^2) - [E(X + Y)]^2 \\
+&= E(X^2 + 2XY + Y^2) - [E(X) + E(Y)]^2 \\
+&= E(X^2) + 2E(XY) + E(Y^2) - [E(X)]^2 - 2E(X)E(Y) - [E(Y)]^2
+\end{aligned}
+$$
+
+En utilisant $E(XY) = E(X)E(Y)$ (car indépendantes) :
+
+$$= [E(X^2) - [E(X)]^2] + [E(Y^2) - [E(Y)]^2] = V(X) + V(Y)$$
+:::
+
+::: attention Note
+La relation $E(XY) = E(X)E(Y)$ pour des variables indépendantes est fondamentale pour comprendre l'additivité de la variance.
+:::
+
+## VIII. Erreurs fréquentes et conseils
+
+::: attention
+- Oublier que l'additivité de la variance nécessite l'**indépendance** des variables
+- Confondre $V(aX) = a^2V(X)$ avec $V(aX) = aV(X)$
+- Oublier que la linéarité de l'espérance est valable même si les variables ne sont pas indépendantes
+- Confondre $E(XY)$ et $E(X)E(Y)$ (égalité vraie seulement si indépendantes)
+- Oublier que $V(M_n) = \frac{\sigma^2}{n}$ et non $\frac{\sigma^2}{n^2}$
+- Ne pas vérifier que les variables sont bien indépendantes avant d'appliquer l'additivité de la variance
+:::
+
+::: conseil
+- Toujours vérifier l'indépendance avant d'appliquer l'additivité de la variance
+- Représenter une variable complexe comme somme de variables plus simples
+- Utiliser la linéarité de l'espérance systématiquement pour simplifier les calculs
+- Attention à $V(aX) = a^2V(X)$ (le carré est important !)
+- Pour les échantillons, bien distinguer somme et moyenne
+- Interpréter les résultats dans le contexte de l'exercice
+:::
+
+## IX. Tableau récapitulatif
+
+::: methode Récapitulatif - Formules et propriétés à retenir
+| Notion | Formule / Propriété |
+|---|---|
+| **Linéarité de l'espérance** | $\displaystyle E(X + Y) = E(X) + E(Y)$ <br> $\displaystyle E(aX) = a \times E(X)$ <br> *(valable pour toutes variables)* |
+| **Variance et écart-type** | $\displaystyle V(X) = E(X^2) - [E(X)]^2$ <br> $\displaystyle \sigma(X) = \sqrt{V(X)}$ |
+| **Additivité de la variance** | Si $\displaystyle X$ et $\displaystyle Y$ sont **indépendantes** : <br> $\displaystyle V(X + Y) = V(X) + V(Y)$ <br> $\displaystyle V(aX) = a^2 \times V(X)$ |
+| **Loi binomiale** | $\displaystyle X \sim \mathcal{B}(n, p)$ <br> $\displaystyle E(X) = np$ <br> $\displaystyle V(X) = np(1-p)$ <br> $\displaystyle \sigma(X) = \sqrt{np(1-p)}$ |
+| **Échantillon - Somme** | $\displaystyle S_n = X_1 + \cdots + X_n$ (indépendantes de même loi) <br> $\displaystyle E(S_n) = n\mu$ <br> $\displaystyle V(S_n) = n\sigma^2$ <br> $\displaystyle \sigma(S_n) = \sqrt{n}\sigma$ |
+| **Échantillon - Moyenne** | $\displaystyle M_n = \frac{S_n}{n}$ <br> $\displaystyle E(M_n) = \mu$ <br> $\displaystyle V(M_n) = \frac{\sigma^2}{n}$ <br> $\displaystyle \sigma(M_n) = \frac{\sigma}{\sqrt{n}}$ |
+| **Fréquence de succès** | $\displaystyle F_n = \frac{X_1 + \cdots + X_n}{n}$ (Bernoulli) <br> $\displaystyle E(F_n) = p$ <br> $\displaystyle V(F_n) = \frac{p(1-p)}{n}$ |
+| **Variables indépendantes** | Dans le cadre d'une **succession d'épreuves indépendantes**, les variables associées sont indépendantes |
+:::

@@ -147,7 +147,9 @@ import {
   LockClosedIcon
 } from '@heroicons/vue/24/outline'
 import ExerciceQCM from '@/components/UI/ExerciceQCM.vue'
-import { createStatus, deleteStatus, getExercices, getStatuses, updateStatus } from '@/api'
+import { createStatus, deleteStatus, updateStatus } from '@/api'
+import { chargerExercices } from '@/utils/chapitreContenu'
+import { tuneMathOverflow, typesetElements } from '@/utils/scientificRenderer'
 import { useProgression } from '@/composables/useProgression'
 import { useUserStore } from '@/stores/user'
 import { useSubscriptionStore } from '@/stores/subscription'
@@ -155,7 +157,9 @@ import { vitrineContact } from '@/config/vitrineContent'
 
 const props = defineProps({
   notionId: { type: [String, Number], required: true },
-  exerciceInitial: { type: [String, Number], default: null }
+  exerciceInitial: { type: [String, Number], default: null },
+  // Onglet affiché (sinon gardé dans la page, masqué).
+  actif: { type: Boolean, default: true }
 })
 const emit = defineEmits(['progress'])
 
@@ -329,10 +333,7 @@ async function charger() {
   loading.value = true
   erreur.value = false
   try {
-    const [data, statuts] = await Promise.all([
-      getExercices({ notion: props.notionId, niveau: userStore.niveau_pays?.id }),
-      getStatuses()
-    ])
+    const [data, statuts] = await chargerExercices(props.notionId)
     const brut = Array.isArray(data) ? data : []
     exercices.value = brut
       .slice()
@@ -356,6 +357,32 @@ async function charger() {
 
 onMounted(charger)
 watch(() => props.notionId, charger)
+
+// Lien vers un exercice précis alors que l'onglet est déjà chargé (gardé en mémoire).
+watch(() => props.exerciceInitial, (id) => {
+  const ex = exercices.value.find((e) => e.id === Number(id))
+  if (!ex || ex.id === courantId.value) return
+  if (!liste.value.includes(ex)) reinitialiser()
+  choisir(ex.id, { remonter: false })
+})
+
+// Onglet réaffiché : compteurs du bandeau à jour ; formules arrivées pendant
+// qu'il était masqué mises en forme (le calcul de l'exercice ignore les
+// onglets masqués) ; formules larges réajustées si la fenêtre a changé.
+const LATEX_BRUT = /\\\(|\\\[|\$/
+let largeurFenetre = window.innerWidth
+watch(() => props.actif, (affiche) => {
+  const root = rootRef.value
+  if (!affiche || loading.value || !root) return
+  emit('progress', compteurs.value)
+  const largeurChangee = window.innerWidth !== largeurFenetre
+  largeurFenetre = window.innerWidth
+  if (LATEX_BRUT.test(root.textContent || '')) {
+    typesetElements([root]).then(() => tuneMathOverflow(root)).catch(() => {})
+  } else if (largeurChangee) {
+    tuneMathOverflow(root)
+  }
+}, { flush: 'post' })
 </script>
 
 <style scoped>

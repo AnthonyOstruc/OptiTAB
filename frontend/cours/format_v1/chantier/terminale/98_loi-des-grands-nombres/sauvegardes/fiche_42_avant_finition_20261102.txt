@@ -1,0 +1,49 @@
+Titre: Résumé : Concentration et loi des grands nombres
+
+<!-- optitab:1 -->
+::: objectifs
+Retenir l'essentiel : inégalité de Bienaymé-Tchebychev, inégalité de concentration, loi des grands nombres, taille d'échantillon. Programme de Terminale.
+:::
+
+## I. Les deux inégalités
+
+::: formule
+$$P\big(|X - \mu| \ge \delta\big) \le \frac{V}{\delta^2}$$
+:::
+
+1. Forme équivalente : $P\big(|X - \mu| \lt \delta\big) \ge 1 - \dfrac{V}{\delta^2}$.
+2. Avec $\delta = k\sigma$ : $P\big(|X - \mu| \ge k\sigma\big) \le \dfrac{1}{k^2}$.
+3. Moyenne $M_n$ d'un échantillon de taille $n$ : $E(M_n) = \mu$ et $V(M_n) = \dfrac{V}{n}$.
+
+::: formule
+$$P\big(|M_n - \mu| \ge \delta\big) \le \frac{V}{n\delta^2}$$
+:::
+
+## II. Loi des grands nombres
+
+$$\lim\limits_{n \to +\infty} P\big(|M_n - \mu| \ge \delta\big) = 0$$
+
+[IMAGE_2]
+
+La moyenne d'un grand échantillon est proche de l'espérance ; la fréquence d'un succès se stabilise autour de sa probabilité $p$.
+
+## III. Taille d'échantillon
+
+::: methode Précision $\delta$, risque $\alpha$
+1. Écrire la condition suffisante $\dfrac{V}{n\delta^2} \le \alpha$.
+2. Résoudre en $n$ : $n \ge \dfrac{V}{\alpha\delta^2}$.
+3. Pour une fréquence de paramètre inconnu, utiliser $p(1-p) \le \dfrac{1}{4}$ : $n \ge \dfrac{1}{4\alpha\delta^2}$.
+:::
+
+## IV. Les pièges à éviter
+
+::: attention Les 4 erreurs classiques
+1. Oublier le carré : c'est $\delta^2$ au dénominateur.
+2. Confondre la variance $V$ et l'écart type $\sigma = \sqrt{V}$.
+3. Prendre la majoration pour la valeur exacte : la vraie probabilité est souvent bien plus petite.
+4. Croire que les résultats « se compensent » d'un lancer à l'autre.
+:::
+
+::: remarque Réflexe
+« Déterminer $n$ pour que la probabilité d'un écart d'au moins $\delta$ soit au plus $\alpha$ » → j'écris $\dfrac{V}{n\delta^2} \le \alpha$ et je résous en $n$.
+:::

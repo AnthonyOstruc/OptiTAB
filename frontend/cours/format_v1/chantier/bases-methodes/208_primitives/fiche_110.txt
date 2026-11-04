@@ -1,0 +1,112 @@
+Titre: Résumé : Primitives
+
+<!-- optitab:1 -->
+::: objectifs
+Maîtriser les primitives : définition, propriétés, méthodes de calcul (intégration par parties, changement de variable).
+:::
+
+## I. Définition
+
+::: definition Primitive d'une fonction
+Une primitive d'une fonction $f$ définie sur un intervalle $I$ est une fonction $F$ telle que :
+
+::: formule
+$F'(x) = f(x)$ pour tout $x \in I$
+:::
+
+L'ensemble des primitives se note :
+
+::: formule
+$$\int f(x) \, dx = F(x) + C$$
+:::
+
+*où $C$ est une constante réelle arbitraire*
+:::
+
+## II. Primitives usuelles
+
+| Fonction $\displaystyle f(x)$ | Primitive $\displaystyle F(x) + C$ |
+|---|---|
+| $\displaystyle k$ (constante) | $\displaystyle k x + C$ |
+| $\displaystyle x^n$ ($\displaystyle n \neq -1$) | $\displaystyle\frac{x^{n+1}}{n+1} + C$ |
+| $\displaystyle \frac{1}{x}$ | $\displaystyle \ln|x| + C$ |
+| $\displaystyle \frac{1}{\sqrt{x}}$ | $\displaystyle 2\sqrt{x} + C$ |
+| $\displaystyle e^x$ | $\displaystyle e^x + C$ |
+| $\displaystyle \sin(x)$ | $\displaystyle -\cos(x) + C$ |
+| $\displaystyle \cos(x)$ | $\displaystyle \sin(x) + C$ |
+
+## III. Propriétés
+
+::: theoreme Linéarité de l'intégration
+Pour toutes fonctions $f$ et $g$ admettant des primitives et tous réels $a, b$ :
+
+::: formule
+$$\int (a f(x) + b g(x)) \, dx = a \int f(x) \, dx + b \int g(x) \, dx$$
+:::
+:::
+
+## IV. Intégration par parties
+
+::: theoreme Intégration par parties
+Si $u$ et $v$ sont des fonctions dérivables, alors :
+
+::: formule
+$$\int u(x) v'(x) \, dx = u(x) v(x) - \int u'(x) v(x) \, dx$$
+:::
+:::
+
+::: methode Choix de $\displaystyle u$
+Mnémonique **« ILATE »** : Inverse, Logarithme, Algébrique, Trigonométrique, Exponentielle (ordre de priorité pour choisir $u$)
+:::
+
+## V. Changement de variable
+
+::: theoreme Changement de variable
+On pose $u = g(x)$ où $g$ est une fonction dérivable, alors $du = g'(x) \, dx$
+
+::: formule
+$$\int f(g(x)) \cdot g'(x) \, dx = \int f(u) \, du$$
+:::
+:::
+
+## VI. Primitives composées
+
+| Fonction composée | Primitive |
+|---|---|
+| $\displaystyle (ax + b)^n$ ($\displaystyle n \neq -1$) | $\displaystyle\frac{(ax + b)^{n+1}}{a(n+1)} + C$ |
+| $\displaystyle\frac{1}{ax + b}$ | $\displaystyle\frac{1}{a} \ln|ax + b| + C$ |
+| $\displaystyle e^{ax + b}$ | $\displaystyle\frac{1}{a} e^{ax + b} + C$ |
+| $\displaystyle \sin(ax + b)$ | $\displaystyle -\frac{1}{a} \cos(ax + b) + C$ |
+| $\displaystyle \cos(ax + b)$ | $\displaystyle\frac{1}{a} \sin(ax + b) + C$ |
+
+*Règle générale : Pour $\int f(ax + b) \, dx$, on divise par le coefficient $a$ et on compose avec $(ax + b)$.*
+
+## VII. Erreurs fréquentes
+
+| Piège fréquent | Correction |
+|---|---|
+| Oublier la constante $\displaystyle C$ | Toujours ajouter $\displaystyle + C$ à la fin |
+| Mauvais choix de $\displaystyle u$ dans l'intégration par parties | Utiliser la mnémonique « ILATE » |
+| Confondre $\displaystyle\int \frac{1}{x^2} dx$ et $\displaystyle\int \frac{1}{x} dx$ | $\displaystyle\int \frac{1}{x^2} dx = -\frac{1}{x} + C$ <br> $\displaystyle\int \frac{1}{x} dx = \ln|x| + C$ |
+| Appliquer $\displaystyle\int x^n dx = \frac{x^{n+1}}{n+1}$ pour $\displaystyle n = -1$ | Pour $\displaystyle n = -1$, c'est $\displaystyle\int \frac{1}{x} dx = \ln|x| + C$ |
+| Oublier de diviser par $\displaystyle a$ dans les primitives composées | Pour $\displaystyle\int f(ax + b) dx$, diviser par $\displaystyle a$ |
+
+## VIII. Formules essentielles — mémo rapide
+
+| Notion | Formule essentielle |
+|---|---|
+| Définition | $\displaystyle F'(x) = f(x) \Rightarrow \int f(x) dx = F(x) + C$ |
+| Linéarité | $\displaystyle\int (a f + b g) dx = a \int f dx + b \int g dx$ |
+| Intégration par parties | $\displaystyle\int u v' dx = u v - \int u' v dx$ |
+| Changement de variable | $\displaystyle\int f(g(x)) g'(x) dx = \int f(u) du$ |
+| Primitive composée | $\displaystyle\int f(ax + b) dx = \frac{1}{a} F(ax + b) + C$ |
+
+## IX. Méthodologie — stratégie de résolution
+
+| Type de problème | Méthode recommandée |
+|---|---|
+| Primitive élémentaire | Utiliser directement le tableau des primitives usuelles |
+| Produit de fonctions | Intégration par parties (choisir $\displaystyle u$ selon « ILATE ») |
+| Fonction composée avec sa dérivée | Changement de variable : poser $\displaystyle u = g(x)$ |
+| Forme $\displaystyle f(ax + b)$ | Utiliser les primitives composées (diviser par $\displaystyle a$) |
+| Somme de fonctions | Utiliser la linéarité pour séparer les intégrales |

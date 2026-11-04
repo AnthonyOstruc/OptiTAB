@@ -1,0 +1,209 @@
+Titre: Concentration, loi des grands nombres
+
+<!-- optitab:1 -->
+::: objectifs
+Majorer la probabilité d'un écart à l'espérance avec l'inégalité de Bienaymé-Tchebychev, appliquer l'inégalité de concentration à la moyenne d'un échantillon, comprendre la loi des grands nombres (y compris par simulation) et déterminer une taille d'échantillon garantissant une précision et un risque donnés.
+:::
+
+::: prerequis
+Espérance, variance et écart type d'une variable aléatoire ; loi binomiale ; somme et moyenne d'un échantillon (notion « Sommes de variables aléatoires »).
+:::
+
+## I. Inégalité de Bienaymé-Tchebychev
+
+::: theoreme Inégalité de Bienaymé-Tchebychev
+Soit $X$ une variable aléatoire d'espérance $\mu$ et de variance $V$. Pour tout réel $\delta \gt 0$ :
+
+$$P\big(|X - \mu| \ge \delta\big) \le \frac{V}{\delta^2}$$
+
+La probabilité que $X$ s'écarte de son espérance d'au moins $\delta$ est d'autant plus petite que la variance est petite.
+:::
+
+::: remarque Forme équivalente
+En passant à l'événement contraire : $P\big(|X - \mu| \lt \delta\big) \ge 1 - \dfrac{V}{\delta^2}$.
+:::
+
+::: propriete Écarts mesurés en écarts types
+En notant $\sigma = \sqrt{V}$ l'écart type et en prenant $\delta = k\sigma$ avec $k \gt 0$ :
+
+$$P\big(|X - \mu| \ge k\sigma\big) \le \frac{1}{k^2}$$
+
+Un écart d'au moins $2\sigma$ a une probabilité au plus égale à $\dfrac{1}{4}$ ; un écart d'au moins $3\sigma$, au plus égale à $\dfrac{1}{9} \approx 0{,}11$.
+:::
+
+::: exemple Une loi binomiale
+Soit $X \sim \mathcal{B}(20\,;0{,}5)$ : $\mu = 20 \times 0{,}5 = 10$ et $V = 20 \times 0{,}5 \times 0{,}5 = 5$. Avec $\delta = 4$ :
+
+$$P\big(|X - 10| \ge 4\big) \le \frac{5}{4^2} = \frac{5}{16} \approx 0{,}31$$
+
+La valeur exacte, $P(X \le 6) + P(X \ge 14) \approx 0{,}115$, est bien plus petite.
+:::
+
+[IMAGE_1]
+
+::: attention Une majoration, pas une valeur exacte
+L'inégalité est valable pour **toute** loi : c'est sa force, mais elle est souvent grossière. Elle garantit qu'un écart d'au moins $2\sigma$ a une probabilité au plus égale à $0{,}25$, alors que, pour les lois rencontrées en pratique, cette probabilité est souvent voisine de $0{,}05$, voire inférieure.
+:::
+
+## II. Échantillon et variable moyenne
+
+::: definition Échantillon
+Un **échantillon de taille $n$** d'une loi de probabilité est une liste $(X_1, X_2, \dots, X_n)$ de $n$ variables aléatoires **indépendantes** qui suivent toutes cette loi. On note
+
+$$
+\begin{aligned}
+S_n &= X_1 + X_2 + \dots + X_n \\
+M_n &= \frac{S_n}{n}
+\end{aligned}
+$$
+
+la somme et la **moyenne** de l'échantillon.
+:::
+
+::: propriete Espérance et variance de la moyenne
+Si la loi a pour espérance $\mu$ et pour variance $V$ :
+
+$$
+\begin{aligned}
+E(M_n) &= \mu \\
+V(M_n) &= \frac{V}{n} \\
+\sigma(M_n) &= \frac{\sigma}{\sqrt{n}}
+\end{aligned}
+$$
+
+La moyenne a la même espérance que chaque $X_i$, mais elle est $n$ fois moins dispersée (en variance).
+:::
+
+::: exemple Fréquence d'un succès
+On répète $n$ fois, de façon indépendante, une épreuve de Bernoulli de paramètre $p$ ; $X_i$ vaut $1$ en cas de succès, $0$ sinon. Alors $S_n \sim \mathcal{B}(n\,;p)$ et $M_n = F_n$ est la **fréquence** des succès, avec $E(F_n) = p$ et $V(F_n) = \dfrac{p(1-p)}{n}$.
+:::
+
+## III. Inégalité de concentration
+
+::: theoreme Inégalité de concentration
+Soit $M_n$ la moyenne d'un échantillon de taille $n$ d'une loi d'espérance $\mu$ et de variance $V$. Pour tout réel $\delta \gt 0$ :
+
+$$P\big(|M_n - \mu| \ge \delta\big) \le \frac{V}{n\delta^2}$$
+:::
+
+::: demonstration
+On applique l'inégalité de Bienaymé-Tchebychev à la variable $M_n$, dont l'espérance vaut $\mu$ et la variance $\dfrac{V}{n}$. On obtient
+
+$$P\big(|M_n - \mu| \ge \delta\big) \le \frac{V(M_n)}{\delta^2} = \frac{V}{n\delta^2}$$
+:::
+
+::: exemple Lancers d'une pièce
+On lance $n$ fois une pièce équilibrée ; $F_n$ est la fréquence de « pile », $\mu = 0{,}5$ et $V = 0{,}5 \times 0{,}5 = 0{,}25$. Pour que $P\big(|F_n - 0{,}5| \ge 0{,}05\big) \le 0{,}05$, il suffit que
+
+$$
+\begin{aligned}
+&\frac{0{,}25}{n \times 0{,}05^2} \le 0{,}05 \\
+\iff\ &\frac{100}{n} \le 0{,}05 \\
+\iff\ &n \ge 2\,000
+\end{aligned}
+$$
+:::
+
+## IV. Loi des grands nombres
+
+::: theoreme Loi faible des grands nombres
+Avec les notations précédentes, pour tout réel $\delta \gt 0$ :
+
+$$\lim\limits_{n \to +\infty} P\big(|M_n - \mu| \ge \delta\big) = 0$$
+:::
+
+::: demonstration
+Pour tout $n \ge 1$, $0 \le P\big(|M_n - \mu| \ge \delta\big) \le \dfrac{V}{n\delta^2}$ et $\lim\limits_{n \to +\infty} \dfrac{V}{n\delta^2} = 0$ : d'après le théorème des gendarmes, la probabilité tend vers $0$.
+:::
+
+Quand la taille de l'échantillon augmente, la moyenne observée se rapproche de l'espérance avec une probabilité aussi proche de $1$ que l'on veut. Pour des épreuves de Bernoulli, la **fréquence** des succès se stabilise autour de la probabilité $p$ : c'est ce qui justifie l'estimation d'une probabilité par une fréquence.
+
+[IMAGE_2]
+
+La figure montre trois simulations de $1\,000$ lancers d'une pièce équilibrée. D'après l'inégalité de concentration, pour chaque $n$, la fréquence $f_n$ reste dans la bande verte avec une probabilité d'au moins $0{,}95$ : la largeur de cette bande tend vers $0$.
+
+::: attention Ce que la loi des grands nombres ne dit pas
+- La fréquence ne devient pas **égale** à $p$ : seule la probabilité d'un écart donné tend vers $0$.
+- Les résultats ne se « compensent » pas : les lancers restent indépendants, et après une série de « face », « pile » n'est pas plus probable. C'est la moyenne qui se stabilise, pas les résultats individuels.
+:::
+
+## V. Taille d'échantillon
+
+::: methode Déterminer une taille d'échantillon
+Pour garantir $P\big(|M_n - \mu| \ge \delta\big) \le \alpha$ (précision $\delta$, risque $\alpha$), il suffit que
+
+$$\frac{V}{n\delta^2} \le \alpha \iff n \ge \frac{V}{\alpha\delta^2}$$
+
+C'est une condition **suffisante** : une taille plus petite peut aussi convenir, mais l'inégalité ne permet pas de le garantir.
+:::
+
+::: propriete Fréquence de paramètre inconnu
+Pour tout réel $p$, $p(1-p) = \dfrac{1}{4} - \left(p - \dfrac{1}{2}\right)^2 \le \dfrac{1}{4}$. Pour une fréquence, il suffit donc que
+
+$$n \ge \frac{1}{4\alpha\delta^2}$$
+
+et cette condition ne dépend pas de $p$.
+:::
+
+::: exemple Un sondage
+On veut estimer une proportion inconnue à $\delta = 0{,}03$ près avec un risque $\alpha = 0{,}05$ :
+
+$$n \ge \frac{1}{4 \times 0{,}05 \times 0{,}03^2} \approx 5\,555{,}6$$
+
+Il suffit d'interroger $5\,556$ personnes.
+:::
+
+::: remarque Pour aller plus loin : estimation
+Si l'on observe une moyenne $m$ sur un échantillon de taille $n$, on choisit $\delta = \sqrt{\dfrac{V}{n\alpha}}$. L'intervalle aléatoire $[M_n - \delta\,;M_n + \delta]$ contient $\mu$ avec une probabilité d'au moins $1 - \alpha$ : l'intervalle observé $[m - \delta\,;m + \delta]$ est un intervalle de confiance pour $\mu$, au niveau d'au moins $1 - \alpha$.
+:::
+
+## VI. Simulation en Python
+
+On simule $N = 1\,000$ échantillons de $100$ lancers d'une pièce équilibrée et l'on calcule la proportion d'échantillons dont la fréquence $F$ de « pile » s'écarte de $0{,}5$ d'au moins $0{,}1$. Si $S = 100F$ est le nombre de « pile », cela s'écrit $|S - 50| \ge 10$.
+
+```python
+from random import random
+
+def piles(n):
+    nb = 0
+    for i in range(n):
+        if random() < 0.5:
+            nb = nb + 1
+    return nb
+
+def ecarts(N):
+    nb = 0
+    for k in range(N):
+        s = piles(100)
+        if abs(s - 50) >= 10:
+            nb = nb + 1
+    return nb / N
+
+print(ecarts(1000))
+```
+
+Un affichage possible (le résultat change à chaque exécution) :
+
+```console
+0.057
+```
+
+L'inégalité de concentration garantit seulement
+
+$$P\big(|F_{100} - 0{,}5| \ge 0{,}1\big) \le \frac{0{,}25}{100 \times 0{,}1^2} = 0{,}25$$
+
+alors que la valeur exacte, calculée avec la loi $\mathcal{B}(100\,;0{,}5)$, vaut environ $0{,}057$ : la majoration est très large.
+
+::: attention Comparer des entiers plutôt que des décimaux
+Le test `abs(s / 100 - 0.5) >= 0.1` serait faux pour $s = 40$ et $s = 60$ : en machine, `0.6 - 0.5` vaut `0.09999999999999998`, qui est inférieur à `0.1`. Avec les entiers `s` et `50`, le calcul est exact.
+:::
+
+::: retenir
+- Bienaymé-Tchebychev : $P\big(|X - \mu| \ge \delta\big) \le \dfrac{V}{\delta^2}$.
+- Moyenne d'un échantillon : $E(M_n) = \mu$ et $V(M_n) = \dfrac{V}{n}$.
+- Concentration : $P\big(|M_n - \mu| \ge \delta\big) \le \dfrac{V}{n\delta^2}$.
+- Loi des grands nombres : cette probabilité tend vers $0$ quand $n$ tend vers $+\infty$.
+- Taille d'échantillon : $n \ge \dfrac{V}{\alpha\delta^2}$ ; pour une fréquence, $n \ge \dfrac{1}{4\alpha\delta^2}$.
+
+Fiche de synthèse dans l'onglet Fiches !
+:::

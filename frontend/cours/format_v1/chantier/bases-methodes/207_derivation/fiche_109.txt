@@ -1,0 +1,163 @@
+Titre: Résumé : Dérivation
+
+<!-- optitab:1 -->
+::: objectifs
+Maîtriser la dérivation : nombre dérivé, fonction dérivée, formules de dérivation, dérivées composées, étude de fonctions, convexité.
+:::
+
+## I. Nombre dérivé
+
+::: definition Nombre dérivé
+Le nombre dérivé de $f$ en $a$, noté $f'(a)$, est la limite (si elle existe) :
+
+::: formule
+$$f'(a) = \lim_{h \to 0} \frac{f(a+h) - f(a)}{h}$$
+:::
+
+*Formule équivalente : $\displaystyle f'(a) = \lim_{x \to a} \frac{f(x) - f(a)}{x - a}$*
+:::
+
+| Interprétation | Signification |
+|---|---|
+| Géométrique | Coefficient directeur de la tangente |
+| Physique | Taux de variation instantané |
+
+::: definition Équation de la tangente
+::: formule
+$$y = f'(a)(x - a) + f(a)$$
+:::
+:::
+
+## II. Fonction dérivée
+
+::: definition Fonction dérivée
+Une fonction $f$ est dérivable sur un intervalle $I$ si elle admet un nombre dérivé en tout point de $I$.
+
+La fonction dérivée $f'$ associe à chaque $x$ de $I$ le nombre dérivé $f'(x)$.
+:::
+
+## III. Dérivées des fonctions usuelles
+
+| Fonction $\displaystyle f(x)$ | Dérivée $\displaystyle f'(x)$ |
+|---|---|
+| $\displaystyle k$ (constante) | $\displaystyle 0$ |
+| $\displaystyle x$ | $\displaystyle 1$ |
+| $\displaystyle x^n$ ($\displaystyle n \geq 1$) | $\displaystyle nx^{n-1}$ |
+| $\displaystyle \frac{1}{x}$ | $\displaystyle -\frac{1}{x^2}$ |
+| $\displaystyle \sqrt{x}$ | $\displaystyle \frac{1}{2\sqrt{x}}$ |
+| $\displaystyle e^x$ | $\displaystyle e^x$ |
+| $\displaystyle \ln(x)$ | $\displaystyle \frac{1}{x}$ |
+| $\displaystyle \sin(x)$ | $\displaystyle \cos(x)$ |
+| $\displaystyle \cos(x)$ | $\displaystyle -\sin(x)$ |
+
+## IV. Opérations sur les dérivées
+
+::: theoreme
+Soient $u$ et $v$ deux fonctions dérivables sur un intervalle $I$, et $k$ une constante.
+:::
+
+| Fonction | Dérivée |
+|---|---|
+| $\displaystyle k \times u$ | $\displaystyle k \times u'$ |
+| $\displaystyle u + v$ | $\displaystyle u' + v'$ |
+| $\displaystyle u \times v$ | $\displaystyle u' \times v + u \times v'$ |
+| $\displaystyle \frac{1}{v}$ (si $\displaystyle v \neq 0$) | $\displaystyle -\frac{v'}{v^2}$ |
+| $\displaystyle \frac{u}{v}$ (si $\displaystyle v \neq 0$) | $\displaystyle \frac{u' \times v - u \times v'}{v^2}$ |
+
+## V. Dérivée d'une fonction composée
+
+::: theoreme Dérivée d'une composée
+Si $u$ est dérivable sur $I$ et $f$ est dérivable sur $u(I)$, alors :
+
+::: formule
+$$(f \circ u)' = (f' \circ u) \times u'$$
+:::
+
+*Autrement dit : $\displaystyle (f(u(x)))' = f'(u(x)) \times u'(x)$*
+:::
+
+| Fonction | Dérivée |
+|---|---|
+| $\displaystyle u^n$ ($\displaystyle n \geq 1$) | $\displaystyle n \times u' \times u^{n-1}$ |
+| $\displaystyle \frac{1}{u}$ (si $\displaystyle u \neq 0$) | $\displaystyle -\frac{u'}{u^2}$ |
+| $\displaystyle \sqrt{u}$ (si $\displaystyle u > 0$) | $\displaystyle \frac{u'}{2\sqrt{u}}$ |
+| $\displaystyle e^{u}$ | $\displaystyle u' \times e^{u}$ |
+| $\displaystyle \ln(u)$ (si $\displaystyle u > 0$) | $\displaystyle \frac{u'}{u}$ |
+| $\displaystyle \sin(u)$ | $\displaystyle u' \times \cos(u)$ |
+| $\displaystyle \cos(u)$ | $\displaystyle -u' \times \sin(u)$ |
+
+## VI. Sens de variation
+
+::: theoreme Lien dérivée et variations
+Soit $f$ une fonction dérivable sur un intervalle $I$.
+:::
+
+| Signe de $\displaystyle f'(x)$ | Variation de $\displaystyle f$ |
+|---|---|
+| $\displaystyle f'(x) > 0$ sur $\displaystyle I$ | $\displaystyle f$ est strictement croissante ↗ |
+| $\displaystyle f'(x) < 0$ sur $\displaystyle I$ | $\displaystyle f$ est strictement décroissante ↘ |
+| $\displaystyle f'(x) = 0$ sur $\displaystyle I$ | $\displaystyle f$ est constante → |
+
+::: methode Extremums
+Si $f'(a) = 0$ et $f'$ change de signe en $a$ :
+
+- $f'$ positif avant, négatif après → **maximum local** en $a$
+- $f'$ négatif avant, positif après → **minimum local** en $a$
+:::
+
+::: exemple Tableau de variation
+Tableau montrant les relations entre $f$ et $f'$ :
+:::
+
+::: tableau
+x : -\infty, a, +\infty
+f'(x) : , +, z, -,
+f(x) : -/-\infty, +/M, -/-\infty
+:::
+
+*Légende : $f'$ détermine les variations, $f$ montre les extremums (M est un maximum local en $a$).*
+
+## VII. Convexité et concavité
+
+::: definition Convexité
+Soit $f$ une fonction dérivable deux fois sur un intervalle $I$.
+:::
+
+| Signe de $\displaystyle f''(x)$ | Convexité |
+|---|---|
+| $\displaystyle f''(x) > 0$ sur $\displaystyle I$ | $\displaystyle f$ est **convexe** (forme U) |
+| $\displaystyle f''(x) < 0$ sur $\displaystyle I$ | $\displaystyle f$ est **concave** (forme ∩) |
+| $\displaystyle f''(a) = 0$ et changement de signe | **Point d'inflexion** en $\displaystyle a$ |
+
+[IMAGE_1]
+
+## VIII. Erreurs fréquentes
+
+| Piège fréquent | Correction |
+|---|---|
+| $\displaystyle (uv)' \neq u'v'$ | C'est $\displaystyle (uv)' = u'v + uv'$ |
+| Oublier $\displaystyle u'$ dans $\displaystyle (e^u)'$ | C'est $\displaystyle (e^u)' = u'e^u$, pas $\displaystyle e^u$ |
+| Signe pour $\displaystyle (\cos x)'$ | C'est $\displaystyle (\cos x)' = -\sin x$ (signe négatif !) |
+| Oublier le carré au dénominateur | Pour $\displaystyle \left(\frac{u}{v}\right)'$ : dénominateur = $\displaystyle v^2$ |
+| Confondre maximum de $\displaystyle f$ et de $\displaystyle f'$ | On cherche les points où $\displaystyle f'(x) = 0$ |
+
+## IX. Formules essentielles — mémo rapide
+
+| Notion | Formule essentielle |
+|---|---|
+| Nombre dérivé | $\displaystyle f'(a) = \lim_{h \to 0} \frac{f(a+h) - f(a)}{h}$ |
+| Tangente | $\displaystyle y = f'(a)(x - a) + f(a)$ |
+| Produit | $\displaystyle (uv)' = u'v + uv'$ |
+| Quotient | $\displaystyle \left(\frac{u}{v}\right)' = \frac{u'v - uv'}{v^2}$ |
+| Composée | $\displaystyle (f \circ u)' = (f' \circ u) \times u'$ |
+| Variation | $\displaystyle f'(x) > 0 \Rightarrow f$ croissante |
+
+## X. Méthodologie — stratégie de résolution
+
+| Type de problème | Méthode recommandée |
+|---|---|
+| Calculer une dérivée | Identifier le type : simple, produit, quotient, composée. Appliquer la formule correspondante |
+| Étudier les variations | 1. Calculer $\displaystyle f'(x)$ <br> 2. Étudier le signe de $\displaystyle f'(x)$ <br> 3. Dresser le tableau de variations |
+| Trouver un extremum | Résoudre $\displaystyle f'(x) = 0$, puis vérifier le changement de signe de $\displaystyle f'$ |
+| Équation de tangente | Calculer $\displaystyle f'(a)$ et $\displaystyle f(a)$, puis appliquer : $\displaystyle y = f'(a)(x - a) + f(a)$ |
+| Étudier la convexité | Calculer $\displaystyle f''(x)$ et étudier son signe. Si $\displaystyle f''(a) = 0$ avec changement de signe → point d'inflexion |

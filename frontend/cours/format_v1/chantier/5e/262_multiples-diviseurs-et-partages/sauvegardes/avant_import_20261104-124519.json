@@ -1,0 +1,329 @@
+{
+ "notion": 262,
+ "dossier": "C:\\Users\\SWEELCO-AT\\Desktop\\SWINDER\\OptiTABV2\\frontend\\cours\\format_v1\\chantier\\5e\\262_multiples-diviseurs-et-partages",
+ "date": "2026-11-04T12:45:18",
+ "cours": [
+  {
+   "id": 257,
+   "contenu": "<!-- optitab:1 -->\n::: objectifs\n- Effectuer une division euclidienne et nommer ses termes : dividende, diviseur, quotient, reste.\n- Reconnaître des multiples et des diviseurs ; trouver tous les diviseurs d'un nombre.\n- Utiliser les critères de divisibilité par $2$, $3$, $4$, $5$, $9$ et $10$.\n- Connaître la définition d'un nombre premier et reconnaître les premiers nombres premiers.\n- Résoudre des problèmes de partage et de regroupement.\n:::\n\n## I. La division euclidienne\n\nOn range $23$ jetons par paquets de $5$ : on obtient $4$ paquets complets et il reste $3$ jetons, trop peu pour former un nouveau paquet.\n\n[IMAGE_1]\n\n::: definition Division euclidienne\nEffectuer la **division euclidienne** d'un nombre entier $a$ par un nombre entier $b$ non nul, c'est trouver deux nombres entiers $q$ et $r$ tels que :\n$$a = b \\times q + r \\quad \\text{avec} \\quad r < b$$\n- $a$ est le **dividende** et $b$ le **diviseur** ;\n- $q$ est le **quotient** (entier) et $r$ le **reste**.\n:::\n\n::: methode Poser une division euclidienne\n1. Prendre à gauche du dividende assez de chiffres pour obtenir un nombre supérieur ou égal au diviseur.\n2. Chercher combien de fois le diviseur y est contenu : c'est un chiffre du quotient. Soustraire le produit.\n3. Abaisser le chiffre suivant à côté du reste, puis recommencer.\n4. Quand tous les chiffres sont abaissés, le dernier nombre obtenu est le reste.\n:::\n\n::: exemple Diviser $158$ par $7$\nDans $15$, il y a $2$ fois $7$ : $15 - 14 = 1$. On abaisse le $8$ : dans $18$, il y a $2$ fois $7$ : $18 - 14 = 4$.\n\n[IMAGE_2]\n\nContrôle : $7 \\times 22 + 4 = 154 + 4 = 158$, et le reste $4$ est bien inférieur à $7$.\n:::\n\n::: attention Le reste est toujours plus petit que le diviseur\nL'égalité $158 = 7 \\times 21 + 11$ est juste, mais ce n'est pas la division euclidienne de $158$ par $7$ : le reste $11$ est plus grand que $7$, on peut encore faire un paquet de $7$.\n:::\n\n::: methode Encadrer pour trouver le quotient\nLe quotient $q$ est le nombre tel que $b \\times q \\le a < b \\times (q + 1)$. Pour $158$ et $7$ :\n$$7 \\times 22 = 154 \\le 158 < 161 = 7 \\times 23$$\ndonc $q = 22$ et $r = 158 - 154 = 4$.\n:::\n\n## II. Multiples et diviseurs\n\n::: definition Multiple, diviseur\n$a$ et $b$ sont deux nombres entiers, avec $b$ non nul. Si $a = b \\times k$ où $k$ est un nombre entier, on dit que :\n- $a$ est un **multiple** de $b$ ;\n- $b$ est un **diviseur** de $a$, ou encore $b$ **divise** $a$, ou $a$ est **divisible** par $b$.\n\nAutrement dit, $b$ divise $a$ lorsque le **reste** de la division euclidienne de $a$ par $b$ est **nul**.\n:::\n\n::: exemple\n- $56 = 8 \\times 7$ : $56$ est un multiple de $8$ (et de $7$) ; $8$ est un diviseur de $56$.\n- $60 = 7 \\times 8 + 4$ : le reste n'est pas nul, donc $7$ ne divise pas $60$ et $60$ n'est pas un multiple de $7$.\n- Les multiples de $9$ sont $0$, $9$, $18$, $27$, $36$… : on les obtient avec la table de $9$ et il y en a une infinité.\n:::\n\n::: remarque\n- $0$ est un multiple de tous les nombres : $0 = b \\times 0$.\n- $1$ divise tous les nombres et tout nombre se divise lui-même : $a = 1 \\times a$.\n:::\n\n::: methode Trouver tous les diviseurs d'un nombre\nChercher les produits égaux à ce nombre **par paires**, en testant $1$, $2$, $3$… dans l'ordre. Chaque produit donne deux diviseurs. On s'arrête quand les paires recommencent dans l'autre sens.\n:::\n\n::: exemple Les diviseurs de $24$\n$$24 = 1 \\times 24 = 2 \\times 12 = 3 \\times 8 = 4 \\times 6$$\n$5$ ne divise pas $24$, et après $4 \\times 6$ on retrouverait $6 \\times 4$. Les diviseurs de $24$ sont : $1$ ; $2$ ; $3$ ; $4$ ; $6$ ; $8$ ; $12$ ; $24$. Chaque paire correspond à un rectangle de $24$ carreaux :\n\n[IMAGE_3]\n:::\n\n::: attention Ne pas inverser les mots\n$6$ est un **diviseur** de $24$ et $24$ est un **multiple** de $6$. Dire « $6$ est un multiple de $24$ » est faux : un multiple est en général plus grand, un diviseur plus petit.\n:::\n\n## III. Les critères de divisibilité\n\n::: propriete Critères de divisibilité\n| Divisible par | Critère |\n|---|---|\n| $2$ | son chiffre des unités est $0$, $2$, $4$, $6$ ou $8$ |\n| $5$ | son chiffre des unités est $0$ ou $5$ |\n| $10$ | son chiffre des unités est $0$ |\n| $4$ | le nombre formé par ses deux derniers chiffres est divisible par $4$ |\n| $3$ | la somme de ses chiffres est divisible par $3$ |\n| $9$ | la somme de ses chiffres est divisible par $9$ |\n:::\n\n::: exemple Le nombre $1\\,548$\n- Le chiffre des unités est $8$ : $1\\,548$ est divisible par $2$, mais pas par $5$ ni par $10$.\n- Les deux derniers chiffres forment $48 = 4 \\times 12$ : $1\\,548$ est divisible par $4$.\n- $1 + 5 + 4 + 8 = 18$ et $18 = 9 \\times 2$ : $1\\,548$ est divisible par $9$ et par $3$.\n\nContrôle : $1\\,548 = 9 \\times 172$ et $1\\,548 = 4 \\times 387$.\n:::\n\n::: attention Erreurs fréquentes\n- Le critère de $4$ porte sur les **deux** derniers chiffres : $34$ se termine par $4$ mais n'est pas divisible par $4$ ($34 = 4 \\times 8 + 2$).\n- Les critères de $3$ et de $9$ portent sur la **somme** des chiffres, pas sur le dernier chiffre : $23$ se termine par $3$ mais n'est pas divisible par $3$.\n:::\n\n::: remarque\nUn nombre divisible par $9$ est toujours divisible par $3$ (car $9 = 3 \\times 3$). L'inverse est faux : $12$ est divisible par $3$, mais pas par $9$.\n:::\n\n## IV. Les nombres premiers\n\n::: definition Nombre premier\nUn **nombre premier** est un nombre entier qui a **exactement deux** diviseurs : $1$ et lui-même.\n:::\n\n::: exemple\n- $13$ est premier : ses seuls diviseurs sont $1$ et $13$.\n- $15$ n'est pas premier : il a quatre diviseurs, $1$, $3$, $5$ et $15$ ($15 = 3 \\times 5$).\n- $1$ n'est pas premier : il n'a qu'un seul diviseur.\n:::\n\n::: methode Le crible d'Ératosthène\nDans le tableau des nombres de $1$ à $50$, on raye $1$, puis on garde $2$ et on raye tous les autres multiples de $2$ ; on garde $3$ et on raye ses autres multiples ; puis de même avec $5$ et $7$. Les nombres qui restent sont les nombres premiers.\n:::\n\n[IMAGE_4]\n\n::: retenir Les nombres premiers inférieurs à $30$ (à connaître)\n$2$ ; $3$ ; $5$ ; $7$ ; $11$ ; $13$ ; $17$ ; $19$ ; $23$ ; $29$.\n:::\n\n::: methode Un nombre est-il premier ?\n- Pour prouver qu'il **n'est pas premier**, on trouve un diviseur autre que $1$ et lui-même (les critères aident) : $87$ n'est pas premier car $8 + 7 = 15$, donc $87 = 3 \\times 29$.\n- Pour un nombre **inférieur à $100$**, s'il n'est divisible ni par $2$, ni par $3$, ni par $5$, ni par $7$, il est premier (et différent de $1$) : par exemple $89$.\n:::\n\n::: attention Erreurs fréquentes\n- $1$ n'est pas premier.\n- $2$ est premier : c'est le seul nombre premier pair.\n- Un nombre impair n'est pas forcément premier : $9 = 3 \\times 3$, $21 = 3 \\times 7$, $49 = 7 \\times 7$.\n:::\n\n## V. Problèmes de partage et de regroupement\n\n::: methode Partager ou regrouper : la division euclidienne\nQuand on répartit $a$ objets par groupes de $b$ (ou en $b$ parts égales), on effectue la division euclidienne $a = b \\times q + r$, puis on **interprète** le résultat selon la question :\n- $q$ donne le nombre de groupes **complets** (ou la taille de chaque part) ;\n- $r$ donne ce qui **reste** ;\n- pour **tout** ranger, il faut $q + 1$ contenants si le reste n'est pas nul.\n:::\n\n::: exemple\nUn fleuriste a $158$ roses et fait des bouquets de $7$ roses. Comme $158 = 7 \\times 22 + 4$ : il fait $22$ bouquets et il reste $4$ roses. Pour mettre toutes les roses dans des vases de $7$ roses, il faut $22 + 1 = 23$ vases.\n:::\n\n::: methode Former des lots identiques sans reste\nSi l'on veut des lots **identiques** avec **tous** les objets, le nombre de lots doit **diviser chaque** quantité. On liste les diviseurs de chaque quantité et on garde les diviseurs **communs** ; le plus grand donne le nombre maximal de lots.\n:::\n\n::: exemple\nAvec $12$ billes et $18$ cubes : diviseurs de $12$ : $1$ ; $2$ ; $3$ ; $4$ ; $6$ ; $12$. Diviseurs de $18$ : $1$ ; $2$ ; $3$ ; $6$ ; $9$ ; $18$. Diviseurs communs : $1$ ; $2$ ; $3$ ; $6$. On peut faire au maximum $6$ lots, chacun de $12 \\div 6 = 2$ billes et $18 \\div 6 = 3$ cubes.\n\n[IMAGE_5]\n:::\n\n::: methode Des rendez-vous qui se répètent\nDeux événements qui se répètent toutes les $a$ minutes et toutes les $b$ minutes, partis ensemble, se reproduisent ensemble à un **multiple commun** de $a$ et de $b$. On écrit les multiples de chacun et on cherche le premier nombre commun.\n:::\n\n::: exemple\nDeux guirlandes s'allument ensemble, puis l'une toutes les $4$ secondes et l'autre toutes les $6$ secondes.\n- Multiples de $4$ : $4$ ; $8$ ; $12$ ; $16$ ; $20$ ; $24$…\n- Multiples de $6$ : $6$ ; $12$ ; $18$ ; $24$…\n\nElles se rallument ensemble au bout de $12$ s, puis de $24$ s, de $36$ s…\n:::\n\n::: attention Diviseurs ou multiples ?\n- Un **partage** sans reste demande des **diviseurs** (le nombre de lots est plus petit que les quantités).\n- Un **rendez-vous** demande des **multiples** (la durée est plus grande que les périodes). Additionner les périodes ne marche pas : $4 + 6 = 10$ n'est un multiple ni de $4$ ni de $6$.\n:::\n\n::: retenir\n- Division euclidienne : $a = b \\times q + r$ avec $r < b$ (dividende, diviseur, quotient, reste).\n- $b$ divise $a$ quand le reste est nul : $a$ est un multiple de $b$, $b$ est un diviseur de $a$.\n- Critères : $2$, $5$, $10$ (dernier chiffre) ; $4$ (deux derniers chiffres) ; $3$, $9$ (somme des chiffres).\n- Un nombre premier a exactement deux diviseurs, $1$ et lui-même ; $1$ n'est pas premier.\n- Partages sans reste → diviseurs communs ; rendez-vous → multiples communs.\n:::"
+  }
+ ],
+ "fiches": [
+  {
+   "id": 177,
+   "summary": "<!-- optitab:1 -->\n::: objectifs\nRetenir l'essentiel : division euclidienne, multiples et diviseurs, critères de divisibilité, nombres premiers et problèmes de partage.\n:::\n\n## I. Division euclidienne\n\n$$a = b \\times q + r \\quad \\text{avec} \\quad r < b$$\n\n$a$ : dividende ; $b$ : diviseur ; $q$ : quotient ; $r$ : reste.\n\n[IMAGE_1]\n\n- **Contrôle** : $7 \\times 22 + 4 = 158$ et $4 < 7$.\n- **Encadrer** : $7 \\times 22 = 154 \\le 158 < 161 = 7 \\times 23$.\n\n## II. Multiples et diviseurs\n\n- $a = b \\times k$ : $a$ est un **multiple** de $b$ ; $b$ est un **diviseur** de $a$ ($b$ divise $a$).\n- $b$ divise $a$ quand le reste de la division de $a$ par $b$ est **nul**.\n- Tous les diviseurs, par paires : $24 = 1 \\times 24 = 2 \\times 12 = 3 \\times 8 = 4 \\times 6$.\n\n| Divisible par | Critère |\n|---|---|\n| $2$ / $5$ / $10$ | chiffre des unités pair / $0$ ou $5$ / $0$ |\n| $4$ | deux derniers chiffres divisibles par $4$ |\n| $3$ / $9$ | somme des chiffres divisible par $3$ / par $9$ |\n\n## III. Nombres premiers\n\n- **Premier** : exactement deux diviseurs, $1$ et lui-même.\n- Premiers inférieurs à $30$ : $2$ ; $3$ ; $5$ ; $7$ ; $11$ ; $13$ ; $17$ ; $19$ ; $23$ ; $29$.\n- Un nombre inférieur à $100$ qui n'est divisible ni par $2$, ni par $3$, ni par $5$, ni par $7$ est premier (sauf $1$).\n\n## IV. Partages et regroupements\n\n| Situation | Outil |\n|---|---|\n| Ranger $a$ objets par groupes de $b$ | division euclidienne : $q$ groupes complets, $r$ restants ; $q + 1$ contenants pour tout ranger si $r \\neq 0$ |\n| Lots identiques sans reste | diviseurs communs ; le plus grand donne le maximum de lots |\n| Rendez-vous périodiques | multiples communs ; le plus petit (non nul) donne la première rencontre |\n\n::: attention Les 5 erreurs classiques\n1. Garder un reste trop grand : $158 = 7 \\times 21 + 11$ n'est pas la division euclidienne ($11 > 7$).\n2. Inverser multiple et diviseur : $6$ est un diviseur de $24$, pas un multiple.\n3. Tester $4$ sur le dernier chiffre seul : $34$ n'est pas divisible par $4$.\n4. Croire que $1$ est premier, ou qu'un nombre impair est premier : $21 = 3 \\times 7$.\n5. Oublier le groupe incomplet : $50$ photos dans un album de $8$ photos par page demandent $7$ pages, pas $6$ ($50 = 8 \\times 6 + 2$).\n:::"
+  }
+ ],
+ "exercices": [
+  {
+   "id": 2731,
+   "question": "<!-- optitab:1 -->\nOn a posé ci-dessous la division euclidienne de $347$ par $9$.\n\n[IMAGE_1]\n\n1. Recopier et compléter : « Dans cette division, $347$ est le …, $9$ est le …, $38$ est le … et $5$ est le … ».\n2. Écrire l'égalité de la division euclidienne de $347$ par $9$, puis la contrôler.\n3. Poser et effectuer la division euclidienne de $254$ par $6$.\n4. Parmi les égalités $254 = 6 \\times 41 + 8$ et $254 = 6 \\times 42 + 2$, laquelle traduit la division euclidienne de $254$ par $6$ ? Expliquer.\n5. Sans poser de nouvelle division, en déduire le quotient et le reste de la division euclidienne de $260$ par $6$.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Nommer les termes de la division\n\n::: methode\nLe nombre que l'on divise est à gauche de la potence, le nombre par lequel on divise est en haut à droite, le résultat est sous le trait et ce qui reste est le dernier nombre écrit en bas.\n:::\n\n::: etape Lire la potence\n- $347$ est écrit à gauche : c'est le nombre que l'on partage.\n- $9$ est en haut à droite : on fait des groupes de $9$.\n- $38$ est sous le trait horizontal : c'est le nombre de groupes de $9$.\n- $5$ est le dernier nombre obtenu en bas : c'est ce qui reste.\n\n[IMAGE_2]\n:::\n\n::: resultat\n$347$ est le **dividende**, $9$ le **diviseur**, $38$ le **quotient** et $5$ le **reste**.\n:::\n\n## Question 2 : Écrire et contrôler l'égalité\n\n::: methode\ndividende $=$ diviseur $\\times$ quotient $+$ reste, avec un reste plus petit que le diviseur.\n:::\n\n::: etape Écrire l'égalité\n$$347 = 9 \\times 38 + 5$$\n:::\n\n::: etape Contrôler le calcul\n$$\n\\begin{aligned}\n9 \\times 38 + 5 &= 342 + 5 \\\\\n&= 347\n\\end{aligned}\n$$\nLe reste $5$ est bien plus petit que le diviseur $9$.\n:::\n\n::: resultat\n$347 = 9 \\times 38 + 5$, avec $5 < 9$.\n:::\n\n## Question 3 : Diviser $254$ par $6$\n\n::: methode\nPrendre à gauche assez de chiffres pour dépasser le diviseur, chercher combien de fois il y est contenu, soustraire, puis abaisser le chiffre suivant.\n:::\n\n::: etape Premier chiffre du quotient\n$2$ est plus petit que $6$ : on prend $25$. Comme $6 \\times 4 = 24 \\le 25 < 30 = 6 \\times 5$, il y a $4$ fois $6$ dans $25$. On soustrait : $25 - 24 = 1$.\n:::\n\n::: etape Deuxième chiffre du quotient\nOn abaisse le $4$ à côté du reste $1$ : on obtient $14$. Il y a $2$ fois $6$ dans $14$ ($6 \\times 2 = 12$) et $14 - 12 = 2$.\n\n[IMAGE_3]\n:::\n\n::: point Vérification\n$6 \\times 42 + 2 = 252 + 2 = 254$ et $2 < 6$.\n:::\n\n::: resultat\nLe quotient est $42$ et le reste est $2$ : $254 = 6 \\times 42 + 2$.\n:::\n\n## Question 4 : Choisir la bonne égalité\n\n::: methode\nUne égalité juste ne suffit pas : dans la division euclidienne, le reste doit être plus petit que le diviseur.\n:::\n\n::: etape Les deux égalités sont justes\n$$\n\\begin{aligned}\n6 \\times 41 + 8 &= 246 + 8 = 254 \\\\\n6 \\times 42 + 2 &= 252 + 2 = 254\n\\end{aligned}\n$$\n:::\n\n::: etape Comparer chaque reste au diviseur\n- $8 > 6$ : avec $8$ objets restants, on pourrait encore former un groupe de $6$.\n- $2 < 6$ : on ne peut plus former de groupe.\n:::\n\n::: resultat\nC'est $254 = 6 \\times 42 + 2$ : quotient $42$, reste $2$.\n:::\n\n## Question 5 : En déduire la division de $260$ par $6$\n\n::: methode\n$260 = 254 + 6$ : ajouter $6$ au dividende revient à ajouter un groupe de $6$.\n:::\n\n::: etape Ajouter un groupe\n$$\n\\begin{aligned}\n260 &= 254 + 6 \\\\\n&= 6 \\times 42 + 2 + 6 \\\\\n&= 6 \\times 43 + 2\n\\end{aligned}\n$$\n:::\n\n::: etape Vérifier le reste\n$2 < 6$ : cette égalité est bien celle de la division euclidienne.\n:::\n\n::: resultat\nQuotient $43$, reste $2$.\n:::\n\n::: attention Erreur fréquente\nAccepter un reste plus grand que le diviseur, comme $8$ dans $254 = 6 \\times 41 + 8$. Le reste est toujours **strictement plus petit** que le diviseur : c'est ce qui rend la division euclidienne unique.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. Dividende $347$, diviseur $9$, quotient $38$, reste $5$.\n2. $347 = 9 \\times 38 + 5$, avec $5 < 9$.\n3. $254 = 6 \\times 42 + 2$ : quotient $42$, reste $2$.\n4. $254 = 6 \\times 42 + 2$, car le reste $8$ de l'autre égalité dépasse le diviseur $6$.\n5. $260 = 6 \\times 43 + 2$ : quotient $43$, reste $2$.",
+   "titre": "Découverte - Effectuer une division euclidienne",
+   "difficulty": "easy",
+   "contenu": "<!-- optitab:1 -->\nOn a posé ci-dessous la division euclidienne de $347$ par $9$.\n\n[IMAGE_1]\n\n1. Recopier et compléter : « Dans cette division, $347$ est le …, $9$ est le …, $38$ est le … et $5$ est le … ».\n2. Écrire l'égalité de la division euclidienne de $347$ par $9$, puis la contrôler.\n3. Poser et effectuer la division euclidienne de $254$ par $6$.\n4. Parmi les égalités $254 = 6 \\times 41 + 8$ et $254 = 6 \\times 42 + 2$, laquelle traduit la division euclidienne de $254$ par $6$ ? Expliquer.\n5. Sans poser de nouvelle division, en déduire le quotient et le reste de la division euclidienne de $260$ par $6$."
+  },
+  {
+   "id": 2726,
+   "question": "<!-- optitab:1 -->\n1. Recopier et compléter avec le mot « multiple » ou le mot « diviseur ».\n   - a) $42 = 6 \\times 7$, donc $42$ est un … de $6$.\n   - b) $7$ est un … de $42$.\n   - c) $5$ est un … de $35$.\n   - d) $90$ est un … de $9$.\n2. Donner tous les multiples de $8$ compris entre $50$ et $100$.\n3. Justifier chaque réponse à l'aide d'une division euclidienne.\n   - a) $91$ est-il un multiple de $7$ ?\n   - b) $7$ est-il un diviseur de $100$ ?\n4. Vrai ou faux ? Justifier.\n   - a) $0$ est un multiple de $8$.\n   - b) $1$ est un diviseur de $37$.\n   - c) $24$ est un diviseur de $6$.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Multiple ou diviseur ?\n\n::: methode\nSi $a = b \\times k$ avec $k$ entier, alors $a$ est un **multiple** de $b$ et $b$ est un **diviseur** de $a$.\n:::\n\n::: etape Écrire chaque fois un produit\n- a) $42 = 6 \\times 7$ : $42$ est un multiple de $6$.\n- b) Le même produit montre que $7$ est un diviseur de $42$.\n- c) $35 = 5 \\times 7$ : $5$ est un diviseur de $35$.\n- d) $90 = 9 \\times 10$ : $90$ est un multiple de $9$.\n:::\n\n::: resultat\na) multiple ; b) diviseur ; c) diviseur ; d) multiple.\n:::\n\n## Question 2 : Les multiples de $8$ entre $50$ et $100$\n\n::: methode\nLes multiples de $8$ sont les nombres de la table de $8$ : $8 \\times 0$, $8 \\times 1$, $8 \\times 2$…\n:::\n\n::: etape Trouver le premier multiple après $50$\n$8 \\times 6 = 48$ est trop petit et $8 \\times 7 = 56$ dépasse $50$ : on commence à $56$.\n:::\n\n::: etape Ajouter $8$ à chaque fois\n$56$ ; $64$ ; $72$ ; $80$ ; $88$ ; $96$. Le suivant, $104$, dépasse $100$.\n:::\n\n::: resultat\n$56$ ; $64$ ; $72$ ; $80$ ; $88$ ; $96$.\n:::\n\n## Question 3 : Justifier par une division euclidienne\n\n::: methode\n$b$ divise $a$ exactement quand le reste de la division euclidienne de $a$ par $b$ est nul.\n:::\n\n::: etape a) Diviser $91$ par $7$\n$$91 = 7 \\times 13 + 0$$\nLe reste est nul.\n:::\n\n::: etape b) Diviser $100$ par $7$\n$$100 = 7 \\times 14 + 2 \\quad \\text{avec} \\quad 2 < 7$$\nLe reste vaut $2$ : il n'est pas nul.\n:::\n\n::: resultat\na) Oui, $91 = 7 \\times 13$ est un multiple de $7$. b) Non, $7$ ne divise pas $100$ (reste $2$).\n:::\n\n## Question 4 : Vrai ou faux\n\n::: etape a) Le nombre $0$\n$0 = 8 \\times 0$ : $0$ s'écrit $8 \\times k$ avec $k = 0$, entier.\n:::\n\n::: etape b) Le nombre $1$\n$37 = 1 \\times 37$ : $1$ divise $37$ (et même tous les nombres).\n:::\n\n::: etape c) $24$ et $6$\n$24 = 6 \\times 4$ : c'est $6$ qui est un diviseur de $24$. Un diviseur de $6$ ne peut pas dépasser $6$ ; or $24 > 6$.\n:::\n\n::: resultat\na) Vrai ; b) vrai ; c) faux : $24$ est un **multiple** de $6$.\n:::\n\n::: attention Erreur fréquente\nInverser les deux mots. Dans $42 = 6 \\times 7$, le grand nombre $42$ est le **multiple**, les petits nombres $6$ et $7$ sont les **diviseurs**.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. a) multiple ; b) diviseur ; c) diviseur ; d) multiple.\n2. $56$ ; $64$ ; $72$ ; $80$ ; $88$ ; $96$.\n3. a) Oui : $91 = 7 \\times 13$. b) Non : $100 = 7 \\times 14 + 2$.\n4. a) Vrai ($0 = 8 \\times 0$) ; b) vrai ($37 = 1 \\times 37$) ; c) faux ($24$ est un multiple de $6$).",
+   "titre": "Découverte - Reconnaître des multiples et des diviseurs",
+   "difficulty": "easy",
+   "contenu": "<!-- optitab:1 -->\n1. Recopier et compléter avec le mot « multiple » ou le mot « diviseur ».\n   - a) $42 = 6 \\times 7$, donc $42$ est un … de $6$.\n   - b) $7$ est un … de $42$.\n   - c) $5$ est un … de $35$.\n   - d) $90$ est un … de $9$.\n2. Donner tous les multiples de $8$ compris entre $50$ et $100$.\n3. Justifier chaque réponse à l'aide d'une division euclidienne.\n   - a) $91$ est-il un multiple de $7$ ?\n   - b) $7$ est-il un diviseur de $100$ ?\n4. Vrai ou faux ? Justifier.\n   - a) $0$ est un multiple de $8$.\n   - b) $1$ est un diviseur de $37$.\n   - c) $24$ est un diviseur de $6$."
+  },
+  {
+   "id": 2730,
+   "question": "<!-- optitab:1 -->\nOn étudie les nombres $360$ ; $1\\,245$ ; $2\\,718$ et $5\\,116$.\n\n1. Recopier et compléter le tableau par « oui » ou « non ».\n\n| Divisible par… | $2$ | $3$ | $4$ | $5$ | $9$ | $10$ |\n|---|---|---|---|---|---|---|\n| $360$ | … | … | … | … | … | … |\n| $1\\,245$ | … | … | … | … | … | … |\n| $2\\,718$ | … | … | … | … | … | … |\n| $5\\,116$ | … | … | … | … | … | … |\n\n2. $2\\,718$ est un nombre pair. Est-il divisible par $4$ ? Expliquer.\n3. Trouver le plus petit nombre de trois chiffres divisible à la fois par $2$, par $5$ et par $9$.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Compléter le tableau\n\n::: methode\nPour $2$, $5$ et $10$ : regarder le chiffre des unités. Pour $4$ : les deux derniers chiffres. Pour $3$ et $9$ : la somme des chiffres.\n:::\n\n::: etape Le chiffre des unités ($2$, $5$, $10$)\n- $360$ se termine par $0$ : divisible par $2$, par $5$ et par $10$.\n- $1\\,245$ se termine par $5$ : divisible par $5$, pas par $2$ ni par $10$.\n- $2\\,718$ se termine par $8$ : divisible par $2$, pas par $5$ ni par $10$.\n- $5\\,116$ se termine par $6$ : divisible par $2$, pas par $5$ ni par $10$.\n:::\n\n::: etape Les deux derniers chiffres ($4$)\n- $60 = 4 \\times 15$ : $360$ est divisible par $4$.\n- $45$ est impair : $1\\,245$ n'est pas divisible par $4$.\n- $18 = 4 \\times 4 + 2$ : $2\\,718$ n'est pas divisible par $4$.\n- $16 = 4 \\times 4$ : $5\\,116$ est divisible par $4$.\n:::\n\n::: etape La somme des chiffres ($3$ et $9$)\n- $3 + 6 + 0 = 9$ : $360$ est divisible par $3$ et par $9$.\n- $1 + 2 + 4 + 5 = 12$ : $1\\,245$ est divisible par $3$, mais pas par $9$.\n- $2 + 7 + 1 + 8 = 18$ : $2\\,718$ est divisible par $3$ et par $9$.\n- $5 + 1 + 1 + 6 = 13$ : $5\\,116$ n'est divisible ni par $3$ ni par $9$.\n:::\n\n::: resultat\n- $360$ : oui pour $2$, $3$, $4$, $5$, $9$ et $10$.\n- $1\\,245$ : oui pour $3$ et $5$ ; non pour $2$, $4$, $9$ et $10$.\n- $2\\,718$ : oui pour $2$, $3$ et $9$ ; non pour $4$, $5$ et $10$.\n- $5\\,116$ : oui pour $2$ et $4$ ; non pour $3$, $5$, $9$ et $10$.\n:::\n\n## Question 2 : Pair, mais divisible par $4$ ?\n\n::: methode\nÊtre pair ne suffit pas : pour $4$, on teste le nombre formé par les deux derniers chiffres.\n:::\n\n::: etape Tester $18$\n$$18 = 4 \\times 4 + 2$$\nLe reste n'est pas nul : $18$ n'est pas divisible par $4$.\n:::\n\n::: resultat\nNon : $2\\,718$ est pair, mais il n'est pas divisible par $4$, car $18$ ne l'est pas.\n:::\n\n## Question 3 : Divisible par $2$, $5$ et $9$\n\n::: methode\nTraduire chaque condition sur les chiffres, puis chercher en partant de $100$.\n:::\n\n::: etape Divisible par $2$ et par $5$\nLe chiffre des unités doit être pair **et** égal à $0$ ou $5$ : c'est donc $0$.\n:::\n\n::: etape Divisible par $9$\nLe nombre s'écrit $1\\square0$ (on cherche le plus petit, donc le chiffre des centaines est $1$). La somme $1 + \\square + 0$ doit être un multiple de $9$ : $1 + \\square = 9$, donc $\\square = 8$.\n:::\n\n::: point Vérification\n$180 = 2 \\times 90 = 5 \\times 36 = 9 \\times 20$.\n:::\n\n::: resultat\nLe plus petit est $180$.\n:::\n\n::: attention Erreur fréquente\nAppliquer un critère au mauvais endroit : $2\\,718$ se termine par $8$, mais c'est le nombre $18$ qu'il faut tester pour $4$ ; et $1\\,245$ ne se termine pas par $3$, pourtant il est divisible par $3$ car la **somme** de ses chiffres vaut $12$.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $360$ : oui partout. $1\\,245$ : oui pour $3$ et $5$ seulement. $2\\,718$ : oui pour $2$, $3$ et $9$ seulement. $5\\,116$ : oui pour $2$ et $4$ seulement.\n2. Non : $18 = 4 \\times 4 + 2$.\n3. $180$.",
+   "titre": "Découverte - Utiliser les critères de divisibilité",
+   "difficulty": "easy",
+   "contenu": "<!-- optitab:1 -->\nOn étudie les nombres $360$ ; $1\\,245$ ; $2\\,718$ et $5\\,116$.\n\n1. Recopier et compléter le tableau par « oui » ou « non ».\n\n| Divisible par… | $2$ | $3$ | $4$ | $5$ | $9$ | $10$ |\n|---|---|---|---|---|---|---|\n| $360$ | … | … | … | … | … | … |\n| $1\\,245$ | … | … | … | … | … | … |\n| $2\\,718$ | … | … | … | … | … | … |\n| $5\\,116$ | … | … | … | … | … | … |\n\n2. $2\\,718$ est un nombre pair. Est-il divisible par $4$ ? Expliquer.\n3. Trouver le plus petit nombre de trois chiffres divisible à la fois par $2$, par $5$ et par $9$."
+  },
+  {
+   "id": 2738,
+   "question": "<!-- optitab:1 -->\nUn rectangle a une aire de $36$ cm². Ses côtés mesurent un nombre entier de centimètres. Un rectangle de $4$ cm sur $9$ cm et un rectangle de $9$ cm sur $4$ cm ne comptent que pour un seul rectangle.\n\n1. Trouver toutes les dimensions possibles de ce rectangle.\n2. En déduire la liste de tous les diviseurs de $36$.\n3. Calculer le périmètre de chaque rectangle trouvé. Lequel a le plus petit périmètre ?\n4. Combien de rectangles différents peut-on former avec une aire de $37$ cm² ? Que peut-on en déduire pour le nombre $37$ ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Les dimensions possibles\n\n::: methode\nL'aire vaut longueur $\\times$ largeur : on cherche tous les produits égaux à $36$, par paires, en testant $1$, $2$, $3$… dans l'ordre.\n:::\n\n::: etape Tester les largeurs dans l'ordre\n$$\n\\begin{aligned}\n36 &= 1 \\times 36 \\\\\n&= 2 \\times 18 \\\\\n&= 3 \\times 12 \\\\\n&= 4 \\times 9 \\\\\n&= 6 \\times 6\n\\end{aligned}\n$$\n$5$ ne convient pas : $36 = 5 \\times 7 + 1$.\n:::\n\n::: etape Savoir s'arrêter\nAprès $6 \\times 6$, on retrouverait $9 \\times 4$, $12 \\times 3$… : les mêmes rectangles dans l'autre sens.\n\n[IMAGE_1]\n:::\n\n::: resultat\nCinq rectangles : $1 \\times 36$, $2 \\times 18$, $3 \\times 12$, $4 \\times 9$ et $6 \\times 6$ (en cm).\n:::\n\n## Question 2 : Les diviseurs de $36$\n\n::: methode\nChaque produit $36 = a \\times b$ donne deux diviseurs, $a$ et $b$.\n:::\n\n::: etape Relever les nombres des cinq produits\nOn écrit les deux nombres de chaque paire, dans l'ordre, et $6$ une seule fois.\n:::\n\n::: resultat\nLes diviseurs de $36$ sont : $1$ ; $2$ ; $3$ ; $4$ ; $6$ ; $9$ ; $12$ ; $18$ ; $36$ (neuf diviseurs).\n:::\n\n## Question 3 : Les périmètres\n\n::: methode\nPérimètre d'un rectangle $= 2 \\times (\\text{longueur} + \\text{largeur})$.\n:::\n\n::: etape Calculer chaque périmètre\n| Côtés (cm) | Périmètre (cm) |\n|---|---|\n| $1$ et $36$ | $2 \\times 37 = 74$ |\n| $2$ et $18$ | $2 \\times 20 = 40$ |\n| $3$ et $12$ | $2 \\times 15 = 30$ |\n| $4$ et $9$ | $2 \\times 13 = 26$ |\n| $6$ et $6$ | $2 \\times 12 = 24$ |\n:::\n\n::: resultat\nLe carré de $6$ cm de côté a le plus petit périmètre : $24$ cm. Des rectangles de même aire n'ont donc pas tous le même périmètre.\n:::\n\n## Question 4 : Une aire de $37$ cm²\n\n::: methode\nChercher tous les produits égaux à $37$, comme à la question 1.\n:::\n\n::: etape Tester $2$, $3$, $4$, $5$ et $6$\n- $37$ est impair : pas divisible par $2$ (ni par $4$).\n- $3 + 7 = 10$ : pas divisible par $3$.\n- $37$ ne se termine ni par $0$ ni par $5$ : pas divisible par $5$.\n- $37 = 6 \\times 6 + 1$ : pas divisible par $6$.\n:::\n\n::: etape Savoir s'arrêter\nUne paire $a \\times b$ avec $a$ et $b$ tous deux au moins égaux à $7$ donnerait au moins $7 \\times 7 = 49$, plus que $37$ : il n'y a plus rien à tester.\n:::\n\n::: resultat\nUn seul rectangle : $1 \\times 37$. Le nombre $37$ n'a que deux diviseurs, $1$ et $37$ : c'est un **nombre premier**.\n:::\n\n::: attention Erreur fréquente\nOublier une paire ou compter deux fois le même rectangle. Tester les nombres **dans l'ordre** et s'arrêter quand les paires recommencent permet d'être sûr de les avoir tous.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $1 \\times 36$, $2 \\times 18$, $3 \\times 12$, $4 \\times 9$ et $6 \\times 6$ (en cm).\n2. $1$ ; $2$ ; $3$ ; $4$ ; $6$ ; $9$ ; $12$ ; $18$ ; $36$.\n3. Périmètres : $74$ ; $40$ ; $30$ ; $26$ ; $24$ cm. Le plus petit est celui du carré de côté $6$ cm : $24$ cm.\n4. Un seul rectangle ($1 \\times 37$) : $37$ est un nombre premier.",
+   "titre": "Entraînement - Des rectangles d'aire imposée",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nUn rectangle a une aire de $36$ cm². Ses côtés mesurent un nombre entier de centimètres. Un rectangle de $4$ cm sur $9$ cm et un rectangle de $9$ cm sur $4$ cm ne comptent que pour un seul rectangle.\n\n1. Trouver toutes les dimensions possibles de ce rectangle.\n2. En déduire la liste de tous les diviseurs de $36$.\n3. Calculer le périmètre de chaque rectangle trouvé. Lequel a le plus petit périmètre ?\n4. Combien de rectangles différents peut-on former avec une aire de $37$ cm² ? Que peut-on en déduire pour le nombre $37$ ?"
+  },
+  {
+   "id": 2728,
+   "question": "<!-- optitab:1 -->\nVoici le tableau des nombres entiers de $1$ à $50$.\n\n[IMAGE_1]\n\n1. Répondre en utilisant la définition d'un nombre premier.\n   - a) Pourquoi $1$ n'est-il pas un nombre premier ?\n   - b) $2$ est-il un nombre premier ?\n2. Appliquer le crible d'Ératosthène : rayer $1$, puis les multiples de $2$ autres que $2$, puis ceux de $3$, de $5$ et de $7$ autres que ces nombres. Donner la liste des nombres premiers inférieurs à $50$.\n3. Sans le tableau, dire si chacun des nombres suivants est premier. Justifier.\n   - a) $51$\n   - b) $57$\n   - c) $91$\n   - d) $97$\n4. Léo affirme : « Tous les nombres impairs sont premiers. » A-t-il raison ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Les cas de $1$ et de $2$\n\n::: methode\nUn nombre premier a **exactement deux** diviseurs : $1$ et lui-même.\n:::\n\n::: etape Compter les diviseurs\n- Le seul diviseur de $1$ est $1$ : il n'en a qu'un.\n- Les diviseurs de $2$ sont $1$ et $2$ : il en a exactement deux.\n:::\n\n::: resultat\na) $1$ n'a qu'un seul diviseur, il n'est pas premier. b) Oui, $2$ est premier : c'est le seul nombre premier pair.\n:::\n\n## Question 2 : Le crible d'Ératosthène\n\n::: methode\nOn garde chaque nombre premier et on raye tous ses autres multiples ; ce qui reste est premier.\n:::\n\n::: etape Rayer $1$ et les multiples de $2$\nOn raye $1$, puis $4$ ; $6$ ; $8$ ; … ; $50$ : tous les nombres pairs sauf $2$.\n:::\n\n::: etape Rayer les multiples de $3$, de $5$ et de $7$\n- Multiples de $3$ pas encore rayés : $9$ ; $15$ ; $21$ ; $27$ ; $33$ ; $39$ ; $45$.\n- Multiples de $5$ pas encore rayés : $25$ ; $35$.\n- Multiple de $7$ pas encore rayé : $49 = 7 \\times 7$.\n:::\n\n::: etape Pourquoi s'arrêter à $7$\nLe nombre premier suivant est $11$. Un multiple de $11$ non encore rayé n'aurait aucun facteur $2$, $3$, $5$ ou $7$ : ce serait au moins $11 \\times 11 = 121$, au-delà de $50$.\n\n[IMAGE_2]\n:::\n\n::: resultat\nLes $15$ nombres premiers inférieurs à $50$ : $2$ ; $3$ ; $5$ ; $7$ ; $11$ ; $13$ ; $17$ ; $19$ ; $23$ ; $29$ ; $31$ ; $37$ ; $41$ ; $43$ ; $47$.\n:::\n\n## Question 3 : Premier ou non ?\n\n::: methode\nPour un nombre inférieur à $100$ : s'il est divisible par $2$, $3$, $5$ ou $7$ (et différent de ces nombres), il n'est pas premier ; sinon, il est premier.\n:::\n\n::: etape a) et b) Le critère de $3$\n- $5 + 1 = 6$ : $51$ est divisible par $3$, $51 = 3 \\times 17$.\n- $5 + 7 = 12$ : $57$ est divisible par $3$, $57 = 3 \\times 19$.\n:::\n\n::: etape c) Le nombre $91$\n$91$ est impair, $9 + 1 = 10$ n'est pas un multiple de $3$, il ne se termine ni par $0$ ni par $5$. Mais $91 = 7 \\times 13$.\n:::\n\n::: etape d) Le nombre $97$\n- $97$ est impair : pas divisible par $2$.\n- $9 + 7 = 16$ : pas divisible par $3$.\n- Il ne se termine ni par $0$ ni par $5$ : pas divisible par $5$.\n- $97 = 7 \\times 13 + 6$ : pas divisible par $7$.\n:::\n\n::: resultat\n$51$, $57$ et $91$ ne sont pas premiers ; $97$ est premier.\n:::\n\n## Question 4 : L'affirmation de Léo\n\n::: methode\nPour montrer qu'une affirmation est fausse, un seul contre-exemple suffit.\n:::\n\n::: etape Chercher un nombre impair non premier\n$9$ est impair et $9 = 3 \\times 3$ : il a trois diviseurs, $1$, $3$ et $9$.\n:::\n\n::: resultat\nLéo a tort : $9$ est impair mais n'est pas premier (de même $15$, $21$, $91$…).\n:::\n\n::: attention Erreur fréquente\nCroire qu'un nombre « qui a l'air premier » l'est : $51$, $57$ et $91$ sont impairs et ne sont pas dans les tables les plus connues, mais ils ne sont pas premiers. Il faut toujours tester $2$, $3$, $5$ et $7$.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. a) $1$ n'a qu'un seul diviseur. b) Oui : ses diviseurs sont $1$ et $2$.\n2. $2$ ; $3$ ; $5$ ; $7$ ; $11$ ; $13$ ; $17$ ; $19$ ; $23$ ; $29$ ; $31$ ; $37$ ; $41$ ; $43$ ; $47$.\n3. $51 = 3 \\times 17$, $57 = 3 \\times 19$ et $91 = 7 \\times 13$ ne sont pas premiers ; $97$ est premier.\n4. Non : $9 = 3 \\times 3$ est impair et n'est pas premier.",
+   "titre": "Entraînement - Reconnaître des nombres premiers",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nVoici le tableau des nombres entiers de $1$ à $50$.\n\n[IMAGE_1]\n\n1. Répondre en utilisant la définition d'un nombre premier.\n   - a) Pourquoi $1$ n'est-il pas un nombre premier ?\n   - b) $2$ est-il un nombre premier ?\n2. Appliquer le crible d'Ératosthène : rayer $1$, puis les multiples de $2$ autres que $2$, puis ceux de $3$, de $5$ et de $7$ autres que ces nombres. Donner la liste des nombres premiers inférieurs à $50$.\n3. Sans le tableau, dire si chacun des nombres suivants est premier. Justifier.\n   - a) $51$\n   - b) $57$\n   - c) $91$\n   - d) $97$\n4. Léo affirme : « Tous les nombres impairs sont premiers. » A-t-il raison ?"
+  },
+  {
+   "id": 2737,
+   "question": "<!-- optitab:1 -->\nDans chaque nombre, le symbole $\\square$ remplace un chiffre (de $0$ à $9$).\n\n1. On considère le nombre $4\\square2$.\n   - a) Quels chiffres peut-on écrire à la place de $\\square$ pour que $4\\square2$ soit divisible par $3$ ?\n   - b) Parmi les nombres obtenus, lequel est divisible par $9$ ?\n   - c) Peut-on choisir $\\square$ pour que $4\\square2$ soit divisible par $5$ ?\n2. Quels chiffres peut-on écrire à la place de $\\square$ pour que $57\\square$ soit divisible par $4$ ? Lequel de ces nombres est aussi divisible par $3$ ?\n3. Trouver le chiffre $\\square$ pour que $2\\square5$ soit divisible par $9$. Ce nombre est-il divisible par $5$ ? par $10$ ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Le nombre $4\\square2$\n\n::: methode\nPour $3$ et $9$, on écrit la somme des chiffres en fonction de $\\square$ ; pour $5$, on regarde le chiffre des unités.\n:::\n\n::: etape a) Divisible par $3$\nLa somme des chiffres vaut $4 + \\square + 2 = 6 + \\square$. Elle est comprise entre $6$ et $15$. Les multiples de $3$ de cet intervalle sont $6$ ; $9$ ; $12$ ; $15$, d'où $\\square = 0$ ; $3$ ; $6$ ou $9$.\n:::\n\n::: etape b) Divisible par $9$\nParmi les sommes $6$ ; $9$ ; $12$ ; $15$, seule $9$ est un multiple de $9$ : $\\square = 3$. Contrôle : $432 = 9 \\times 48$.\n:::\n\n::: etape c) Divisible par $5$\nUn multiple de $5$ se termine par $0$ ou $5$. Ici, le chiffre des unités est toujours $2$, quel que soit $\\square$.\n:::\n\n::: resultat\na) $402$ ; $432$ ; $462$ ; $492$. b) $432$. c) Non, c'est impossible.\n:::\n\n## Question 2 : Le nombre $57\\square$\n\n::: methode\nPour $4$, seul compte le nombre formé par les deux derniers chiffres : ici $7\\square$.\n:::\n\n::: etape Chercher les multiples de $4$ entre $70$ et $79$\n$4 \\times 18 = 72$ et $4 \\times 19 = 76$ ; $4 \\times 17 = 68$ et $4 \\times 20 = 80$ sont en dehors.\nDonc $\\square = 2$ ou $\\square = 6$.\n:::\n\n::: etape Tester la divisibilité par $3$\n- $5 + 7 + 2 = 14$ : $572$ n'est pas divisible par $3$.\n- $5 + 7 + 6 = 18$ : $576$ est divisible par $3$ ($576 = 3 \\times 192$).\n:::\n\n::: resultat\n$572$ et $576$ sont divisibles par $4$ ; seul $576$ est aussi divisible par $3$.\n:::\n\n## Question 3 : Le nombre $2\\square5$\n\n::: etape Divisible par $9$\nLa somme vaut $2 + \\square + 5 = 7 + \\square$, comprise entre $7$ et $16$. Le seul multiple de $9$ entre $7$ et $16$ est $9$ : $7 + \\square = 9$, donc $\\square = 2$.\n:::\n\n::: etape Divisible par $5$ et par $10$\n$225$ se termine par $5$ : il est divisible par $5$ ($225 = 5 \\times 45$), mais pas par $10$.\n:::\n\n::: resultat\n$\\square = 2$ : $225 = 9 \\times 25$ ; il est divisible par $5$, pas par $10$.\n:::\n\n::: attention Erreur fréquente\nOublier des solutions : il faut chercher **tous** les multiples possibles de la somme ($6$, $9$, $12$ et $15$ en question 1 a), pas seulement le premier. Et un critère sur les unités, comme celui de $5$, ne dépend pas des autres chiffres.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. a) $\\square = 0$, $3$, $6$ ou $9$ : $402$ ; $432$ ; $462$ ; $492$. b) $432$. c) Non : le nombre se termine par $2$.\n2. $572$ et $576$ ; seul $576$ est aussi divisible par $3$.\n3. $\\square = 2$ : $225$, divisible par $5$ mais pas par $10$.",
+   "titre": "Entraînement - Trouver un chiffre manquant",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nDans chaque nombre, le symbole $\\square$ remplace un chiffre (de $0$ à $9$).\n\n1. On considère le nombre $4\\square2$.\n   - a) Quels chiffres peut-on écrire à la place de $\\square$ pour que $4\\square2$ soit divisible par $3$ ?\n   - b) Parmi les nombres obtenus, lequel est divisible par $9$ ?\n   - c) Peut-on choisir $\\square$ pour que $4\\square2$ soit divisible par $5$ ?\n2. Quels chiffres peut-on écrire à la place de $\\square$ pour que $57\\square$ soit divisible par $4$ ? Lequel de ces nombres est aussi divisible par $3$ ?\n3. Trouver le chiffre $\\square$ pour que $2\\square5$ soit divisible par $9$. Ce nombre est-il divisible par $5$ ? par $10$ ?"
+  },
+  {
+   "id": 2745,
+   "question": "<!-- optitab:1 -->\nLa navette A part à 9 h 10, puis toutes les $8$ minutes. La navette B part à 9 h 14, puis toutes les $12$ minutes. Elles circulent toute la matinée.\n\n1. Écrire les horaires de départ de chaque navette jusqu'à 9 h 50 inclus.\n2. À quelle heure les deux navettes partent-elles ensemble pour la première fois ?\n3. Après ce premier départ commun, au bout de combien de minutes repartent-elles ensemble ? Justifier avec des multiples, puis donner les deux départs communs suivants.\n4. Combien de départs la navette A effectue-t-elle de 9 h 10 à 10 h 14 inclus ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Les horaires de départ\n\n::: methode\nPartir du premier départ de chaque navette et ajouter sa période à chaque fois.\n:::\n\n::: etape Ajouter $8$ min (A) et $12$ min (B)\n| Navette | Départs jusqu'à 9 h 50 |\n|---|---|\n| A | 9 h 10 ; 9 h 18 ; 9 h 26 ; 9 h 34 ; 9 h 42 ; 9 h 50 |\n| B | 9 h 14 ; 9 h 26 ; 9 h 38 ; 9 h 50 |\n:::\n\n::: resultat\nA : 9 h 10, 9 h 18, 9 h 26, 9 h 34, 9 h 42, 9 h 50. B : 9 h 14, 9 h 26, 9 h 38, 9 h 50.\n:::\n\n## Question 2 : Le premier départ commun\n\n::: methode\nChercher la première heure présente dans les deux listes.\n:::\n\n::: etape Comparer les listes\n9 h 10 et 9 h 18 ne sont pas dans la liste de B ; 9 h 14 n'est pas dans celle de A. La première heure commune est 9 h 26.\n:::\n\n::: point Vérification\n- De 9 h 10 à 9 h 26, il s'écoule $16$ min, et $16 = 2 \\times 8$ : c'est le troisième départ de A.\n- De 9 h 14 à 9 h 26, il s'écoule $12$ min, et $12 = 1 \\times 12$ : c'est le deuxième départ de B.\n:::\n\n::: resultat\nLes deux navettes partent ensemble pour la première fois à 9 h 26.\n:::\n\n## Question 3 : Les départs communs suivants\n\n::: methode\nUne fois parties ensemble, elles se retrouvent au bout d'une durée qui est un **multiple commun** de $8$ et de $12$ : on prend le plus petit.\n:::\n\n::: etape Comparer les multiples\n- Multiples de $8$ : $8$ ; $16$ ; $24$ ; $32$…\n- Multiples de $12$ : $12$ ; $24$ ; $36$…\n\nLe plus petit multiple commun non nul est $24$.\n:::\n\n::: etape Ajouter $24$ min\n9 h 26 + 24 min = 9 h 50, puis 9 h 50 + 24 min = 10 h 14.\n\n[IMAGE_1]\n:::\n\n::: resultat\nElles repartent ensemble toutes les $24$ minutes : à 9 h 50, puis à 10 h 14.\n:::\n\n## Question 4 : Les départs de la navette A\n\n::: methode\nCompter les intervalles de $8$ min, puis ajouter le premier départ.\n:::\n\n::: etape Durée et nombre d'intervalles\nDe 9 h 10 à 10 h 14, il s'écoule $64$ min, et $64 = 8 \\times 8$ : il y a $8$ intervalles de $8$ min.\n:::\n\n::: etape Compter les départs\nLe départ de 9 h 10, puis un départ à la fin de chacun des $8$ intervalles : $1 + 8 = 9$ départs.\n:::\n\n::: resultat\nLa navette A effectue $9$ départs de 9 h 10 à 10 h 14 inclus.\n:::\n\n::: attention Erreur fréquente\nAjouter $24$ min au premier départ de A (9 h 10 + 24 min = 9 h 34) : les navettes ne partent pas ensemble au début, il faut d'abord trouver leur premier départ commun. Et ne pas confondre le nombre d'intervalles ($8$) avec le nombre de départs ($9$).\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. A : 9 h 10, 9 h 18, 9 h 26, 9 h 34, 9 h 42, 9 h 50. B : 9 h 14, 9 h 26, 9 h 38, 9 h 50.\n2. À 9 h 26.\n3. Toutes les $24$ min ($24$ est le plus petit multiple commun de $8$ et $12$) : 9 h 50 et 10 h 14.\n4. $9$ départs.",
+   "titre": "Problème - Deux navettes aux départs décalés",
+   "difficulty": "hard",
+   "contenu": "<!-- optitab:1 -->\nLa navette A part à 9 h 10, puis toutes les $8$ minutes. La navette B part à 9 h 14, puis toutes les $12$ minutes. Elles circulent toute la matinée.\n\n1. Écrire les horaires de départ de chaque navette jusqu'à 9 h 50 inclus.\n2. À quelle heure les deux navettes partent-elles ensemble pour la première fois ?\n3. Après ce premier départ commun, au bout de combien de minutes repartent-elles ensemble ? Justifier avec des multiples, puis donner les deux départs communs suivants.\n4. Combien de départs la navette A effectue-t-elle de 9 h 10 à 10 h 14 inclus ?"
+  },
+  {
+   "id": 2727,
+   "question": "<!-- optitab:1 -->\nPour une fête, un club dispose de $18$ sucettes et de $30$ caramels. Il veut préparer des sachets **identiques** (le même nombre de sucettes et le même nombre de caramels dans chaque sachet) en utilisant **tous** les bonbons.\n\n[IMAGE_1]\n\n1. Peut-on préparer $4$ sachets ? Et $3$ sachets ? Donner, quand c'est possible, la composition d'un sachet.\n2. Donner la liste des diviseurs de $18$, puis celle des diviseurs de $30$.\n3. Quels sont tous les nombres de sachets possibles ?\n4. Quel est le plus grand nombre de sachets possible ? Quelle est alors la composition d'un sachet ?\n5. Le club a $18 + 30 = 48$ bonbons et $48 = 8 \\times 6$. Pourquoi ne peut-il pas préparer $8$ sachets identiques ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : $4$ sachets ? $3$ sachets ?\n\n::: methode\nLe nombre de sachets doit diviser **chaque** quantité : on partage les sucettes, puis les caramels.\n:::\n\n::: etape Essayer $4$ sachets\n$$18 = 4 \\times 4 + 2$$\nIl resterait $2$ sucettes : $4$ ne divise pas $18$.\n:::\n\n::: etape Essayer $3$ sachets\n$$18 = 3 \\times 6 \\qquad 30 = 3 \\times 10$$\nLes deux restes sont nuls.\n:::\n\n::: resultat\n$4$ sachets : impossible. $3$ sachets : possible, avec $6$ sucettes et $10$ caramels par sachet.\n:::\n\n## Question 2 : Les diviseurs de $18$ et de $30$\n\n::: methode\nChercher les produits par paires, en testant $1$, $2$, $3$… dans l'ordre.\n:::\n\n::: etape Diviseurs de $18$\n$$18 = 1 \\times 18 = 2 \\times 9 = 3 \\times 6$$\n$4$ et $5$ ne divisent pas $18$.\n:::\n\n::: etape Diviseurs de $30$\n$$\n\\begin{aligned}\n30 &= 1 \\times 30 = 2 \\times 15 \\\\\n&= 3 \\times 10 = 5 \\times 6\n\\end{aligned}\n$$\n$4$ ne divise pas $30$.\n:::\n\n::: resultat\nDiviseurs de $18$ : $1$ ; $2$ ; $3$ ; $6$ ; $9$ ; $18$. Diviseurs de $30$ : $1$ ; $2$ ; $3$ ; $5$ ; $6$ ; $10$ ; $15$ ; $30$.\n:::\n\n## Question 3 : Les nombres de sachets possibles\n\n::: methode\nGarder les nombres présents dans les **deux** listes : les diviseurs communs.\n:::\n\n::: etape Comparer les listes\n$9$ et $18$ ne divisent pas $30$ ; $5$, $10$, $15$ et $30$ ne divisent pas $18$. Il reste $1$, $2$, $3$ et $6$.\n:::\n\n::: resultat\nOn peut préparer $1$, $2$, $3$ ou $6$ sachets.\n:::\n\n## Question 4 : Le plus grand nombre de sachets\n\n::: methode\nPrendre le plus grand diviseur commun, puis partager chaque sorte de bonbons.\n:::\n\n::: etape Choisir et partager\nLe plus grand diviseur commun est $6$ :\n$$18 \\div 6 = 3 \\qquad 30 \\div 6 = 5$$\n\n[IMAGE_2]\n:::\n\n::: resultat\nAu maximum $6$ sachets, contenant chacun $3$ sucettes et $5$ caramels.\n:::\n\n## Question 5 : Pourquoi pas $8$ sachets ?\n\n::: methode\nCe n'est pas le total qui compte : chaque sorte de bonbons doit être partagée sans reste.\n:::\n\n::: etape Partager chaque sorte en $8$\n$$18 = 8 \\times 2 + 2 \\qquad 30 = 8 \\times 3 + 6$$\nLes restes ne sont pas nuls : $8$ ne divise ni $18$ ni $30$.\n:::\n\n::: resultat\nAvec $8$ sachets de $6$ bonbons, certains auraient plus de sucettes que d'autres : les sachets ne seraient pas identiques.\n:::\n\n::: attention Erreur fréquente\nChercher les diviseurs du **total** $48$. Le nombre de sachets doit diviser **chacune** des quantités ($18$ et $30$) : on cherche des diviseurs **communs**.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $4$ sachets : non ($18 = 4 \\times 4 + 2$). $3$ sachets : oui, $6$ sucettes et $10$ caramels chacun.\n2. $18$ : $1$ ; $2$ ; $3$ ; $6$ ; $9$ ; $18$. $30$ : $1$ ; $2$ ; $3$ ; $5$ ; $6$ ; $10$ ; $15$ ; $30$.\n3. $1$, $2$, $3$ ou $6$ sachets.\n4. $6$ sachets de $3$ sucettes et $5$ caramels.\n5. $8$ ne divise ni $18$ ni $30$ : les sachets ne seraient pas identiques.",
+   "titre": "Problème - Préparer des sachets de bonbons",
+   "difficulty": "hard",
+   "contenu": "<!-- optitab:1 -->\nPour une fête, un club dispose de $18$ sucettes et de $30$ caramels. Il veut préparer des sachets **identiques** (le même nombre de sucettes et le même nombre de caramels dans chaque sachet) en utilisant **tous** les bonbons.\n\n[IMAGE_1]\n\n1. Peut-on préparer $4$ sachets ? Et $3$ sachets ? Donner, quand c'est possible, la composition d'un sachet.\n2. Donner la liste des diviseurs de $18$, puis celle des diviseurs de $30$.\n3. Quels sont tous les nombres de sachets possibles ?\n4. Quel est le plus grand nombre de sachets possible ? Quelle est alors la composition d'un sachet ?\n5. Le club a $18 + 30 = 48$ bonbons et $48 = 8 \\times 6$. Pourquoi ne peut-il pas préparer $8$ sachets identiques ?"
+  },
+  {
+   "id": 2729,
+   "question": "<!-- optitab:1 -->\nUne fermière ramasse $38$ œufs. Elle les range dans des boîtes de $6$ places.\n\n[IMAGE_1]\n\n1. Effectuer la division euclidienne de $38$ par $6$.\n2. Combien de boîtes peut-elle remplir complètement ? Combien d'œufs reste-t-il ?\n3. Combien de boîtes lui faut-il pour ranger tous ses œufs ? Combien de places restent vides dans la dernière boîte ?\n4. Pendant la semaine, elle ramasse $245$ œufs, qu'elle range cette fois dans des boîtes de $12$ places. Elle ne vend que les boîtes pleines, $4$ € la boîte. Combien de boîtes vend-elle et quelle somme reçoit-elle ?\n5. Elle partage ces boîtes pleines entre $3$ épiceries : chacune doit recevoir le même nombre de boîtes, le plus grand possible. Combien de boîtes chaque épicerie reçoit-elle ? Combien en reste-t-il à la ferme ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Diviser $38$ par $6$\n\n::: methode\nEncadrer $38$ entre deux multiples consécutifs de $6$.\n:::\n\n::: etape Encadrer\n$$6 \\times 6 = 36 \\le 38 < 42 = 6 \\times 7$$\n:::\n\n::: etape Calculer le reste\n$38 - 36 = 2$, et $2 < 6$.\n:::\n\n::: resultat\n$38 = 6 \\times 6 + 2$ : quotient $6$, reste $2$.\n:::\n\n## Question 2 : Les boîtes pleines\n\n::: methode\nLe quotient donne le nombre de boîtes **complètes**, le reste le nombre d'œufs qui restent.\n:::\n\n::: etape Interpréter la division\nOn forme $6$ groupes de $6$ œufs, soit $36$ œufs ; il en reste $2$, pas assez pour une boîte de plus.\n\n[IMAGE_2]\n:::\n\n::: resultat\nElle remplit $6$ boîtes et il reste $2$ œufs.\n:::\n\n## Question 3 : Tout ranger\n\n::: methode\nLes œufs qui restent ont besoin d'une boîte de plus, même incomplète.\n:::\n\n::: etape Compter les boîtes\n$6 + 1 = 7$ boîtes.\n:::\n\n::: etape Compter les places vides\n$$\n\\begin{aligned}\n7 \\times 6 - 38 &= 42 - 38 \\\\\n&= 4\n\\end{aligned}\n$$\n:::\n\n::: resultat\nIl lui faut $7$ boîtes ; $4$ places restent vides dans la dernière.\n:::\n\n## Question 4 : Les boîtes de $12$\n\n::: methode\nDiviser $245$ par $12$ : seules les boîtes pleines, données par le quotient, sont vendues.\n:::\n\n::: etape Encadrer $245$\n$$12 \\times 20 = 240 \\le 245 < 252 = 12 \\times 21$$\ndonc $245 = 12 \\times 20 + 5$, avec $5 < 12$.\n:::\n\n::: etape Calculer la recette\n$$20 \\times 4 = 80$$\n:::\n\n::: resultat\nElle vend $20$ boîtes et reçoit $80$ € ; $5$ œufs ne sont pas vendus.\n:::\n\n## Question 5 : Partager entre $3$ épiceries\n\n::: methode\nC'est un partage en $3$ parts égales : le quotient donne la part de chacune, le reste ce qui ne peut pas être partagé.\n:::\n\n::: etape Diviser $20$ par $3$\n$$20 = 3 \\times 6 + 2 \\quad \\text{avec} \\quad 2 < 3$$\n:::\n\n::: point Vérification\n$3 \\times 6 + 2 = 18 + 2 = 20$ boîtes.\n:::\n\n::: resultat\nChaque épicerie reçoit $6$ boîtes et il en reste $2$ à la ferme.\n:::\n\n::: attention Erreur fréquente\nRépondre toujours avec le quotient. Il faut relire la question : « boîtes **pleines** » → le quotient ($6$) ; « pour ranger **tous** les œufs » → le quotient plus un ($7$), car le reste n'est pas nul.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $38 = 6 \\times 6 + 2$.\n2. $6$ boîtes pleines ; il reste $2$ œufs.\n3. $7$ boîtes ; $4$ places vides.\n4. $245 = 12 \\times 20 + 5$ : $20$ boîtes vendues, $80$ €.\n5. $20 = 3 \\times 6 + 2$ : $6$ boîtes par épicerie, $2$ restent à la ferme.",
+   "titre": "Problème - Ranger des œufs en boîtes",
+   "difficulty": "hard",
+   "contenu": "<!-- optitab:1 -->\nUne fermière ramasse $38$ œufs. Elle les range dans des boîtes de $6$ places.\n\n[IMAGE_1]\n\n1. Effectuer la division euclidienne de $38$ par $6$.\n2. Combien de boîtes peut-elle remplir complètement ? Combien d'œufs reste-t-il ?\n3. Combien de boîtes lui faut-il pour ranger tous ses œufs ? Combien de places restent vides dans la dernière boîte ?\n4. Pendant la semaine, elle ramasse $245$ œufs, qu'elle range cette fois dans des boîtes de $12$ places. Elle ne vend que les boîtes pleines, $4$ € la boîte. Combien de boîtes vend-elle et quelle somme reçoit-elle ?\n5. Elle partage ces boîtes pleines entre $3$ épiceries : chacune doit recevoir le même nombre de boîtes, le plus grand possible. Combien de boîtes chaque épicerie reçoit-elle ? Combien en reste-t-il à la ferme ?"
+  },
+  {
+   "id": 2744,
+   "question": "<!-- optitab:1 -->\nLe collège organise une kermesse. Les trois parties sont indépendantes.\n\n**Partie A : le transport**\n\n$213$ personnes doivent se rendre à la kermesse en minibus de $9$ places.\n\n1. Poser la division euclidienne de $213$ par $9$.\n2. Combien de minibus faut-il réserver au minimum ? Combien de places resteront libres ?\n\n**Partie B : les lots**\n\nLe stand des lots dispose de $84$ stylos et de $126$ cahiers. On veut préparer des lots identiques en utilisant tous les objets.\n\n3. Un élève affirme qu'on peut préparer $9$ lots. A-t-il raison ?\n4. Montrer que les nombres de lots possibles sont $1$ ; $2$ ; $3$ ; $6$ ; $7$ ; $14$ ; $21$ et $42$.\n5. On ne peut pas préparer plus de $20$ lots. Combien de lots prépare-t-on au maximum, et que contient chacun ?\n\n**Partie C : la tombola**\n\n6. Le numéro du ticket gagnant est un nombre compris entre $100$ et $200$, divisible par $4$ et par $9$, dont le chiffre des dizaines est $4$. Quel est ce numéro ?\n7. Le numéro du deuxième ticket gagnant est un nombre premier compris entre $90$ et $100$. Quel est-il ? Justifier.",
+   "etapes": "<!-- optitab:1 -->\n## Partie A : le transport\n\n## Question 1 : Diviser $213$ par $9$\n\n::: methode\nPoser la division : on prend $21$, puis on abaisse le $3$.\n:::\n\n::: etape Premier chiffre du quotient\nDans $21$, il y a $2$ fois $9$ ($9 \\times 2 = 18$) et $21 - 18 = 3$.\n:::\n\n::: etape Deuxième chiffre du quotient\nOn abaisse le $3$ : $33$. Il y a $3$ fois $9$ dans $33$ ($9 \\times 3 = 27$) et $33 - 27 = 6$.\n\n[IMAGE_1]\n:::\n\n::: resultat\n$213 = 9 \\times 23 + 6$, avec $6 < 9$.\n:::\n\n## Question 2 : Le nombre de minibus\n\n::: methode\n$23$ minibus pleins ne suffisent pas : les $6$ personnes restantes ont besoin d'un minibus de plus.\n:::\n\n::: etape Compter les minibus et les places\n$23 + 1 = 24$ minibus, soit $24 \\times 9 = 216$ places, et $216 - 213 = 3$.\n:::\n\n::: resultat\nIl faut réserver $24$ minibus ; $3$ places resteront libres.\n:::\n\n## Partie B : les lots\n\n## Question 3 : $9$ lots ?\n\n::: methode\nPour $9$ lots identiques, $9$ doit diviser $84$ et $126$ : on utilise le critère de divisibilité par $9$.\n:::\n\n::: etape Tester $84$\n$8 + 4 = 12$, qui n'est pas un multiple de $9$ : $84$ n'est pas divisible par $9$ ($84 = 9 \\times 9 + 3$).\n:::\n\n::: resultat\nNon, l'élève a tort : on ne peut pas partager les $84$ stylos en $9$ parts égales.\n:::\n\n## Question 4 : Les nombres de lots possibles\n\n::: methode\nLe nombre de lots doit diviser $84$ **et** $126$ : on cherche les diviseurs communs.\n:::\n\n::: etape Diviseurs de $84$\n$$\n\\begin{aligned}\n84 &= 1 \\times 84 = 2 \\times 42 \\\\\n&= 3 \\times 28 = 4 \\times 21 \\\\\n&= 6 \\times 14 = 7 \\times 12\n\\end{aligned}\n$$\nDiviseurs :$1$ ; $2$ ; $3$ ; $4$ ; $6$ ; $7$ ; $12$ ; $14$ ; $21$ ; $28$ ; $42$ ; $84$.\n:::\n\n::: etape Garder ceux qui divisent $126$\n$$\n\\begin{aligned}\n126 &= 1 \\times 126 = 2 \\times 63 \\\\\n&= 3 \\times 42 = 6 \\times 21 \\\\\n&= 7 \\times 18 = 14 \\times 9\n\\end{aligned}\n$$\nDonc $1$, $2$, $3$, $6$, $7$, $14$, $21$ et $42$ divisent $126$. En revanche, $126 = 4 \\times 31 + 2$ : $4$ ne divise pas $126$, donc ses multiples $12$, $28$ et $84$ non plus.\n:::\n\n::: resultat\nLes diviseurs communs à $84$ et $126$ sont $1$ ; $2$ ; $3$ ; $6$ ; $7$ ; $14$ ; $21$ ; $42$ : ce sont les nombres de lots possibles.\n:::\n\n## Question 5 : Au plus $20$ lots\n\n::: methode\nParmi les nombres possibles, garder ceux qui ne dépassent pas $20$, puis prendre le plus grand.\n:::\n\n::: etape Choisir\n$21$ et $42$ dépassent $20$ : le plus grand nombre possible est $14$.\n:::\n\n::: etape Composition d'un lot\n$$84 \\div 14 = 6 \\qquad 126 \\div 14 = 9$$\n:::\n\n::: resultat\nOn prépare $14$ lots, contenant chacun $6$ stylos et $9$ cahiers.\n:::\n\n## Partie C : la tombola\n\n## Question 6 : Le ticket gagnant\n\n::: methode\nÉcrire le nombre avec un chiffre inconnu, puis utiliser les critères de $9$ et de $4$.\n:::\n\n::: etape Écrire le nombre\nCompris entre $100$ et $200$ : le chiffre des centaines est $1$. Le chiffre des dizaines est $4$. Le nombre s'écrit $14\\square$.\n:::\n\n::: etape Divisible par $9$\n$1 + 4 + \\square = 5 + \\square$ doit être un multiple de $9$. Comme $\\square$ est compris entre $0$ et $9$, seul $5 + \\square = 9$ convient : $\\square = 4$.\n:::\n\n::: etape Divisible par $4$\nLes deux derniers chiffres forment $44 = 4 \\times 11$ : $144$ est bien divisible par $4$.\n:::\n\n::: resultat\nLe numéro gagnant est $144$ ($144 = 4 \\times 36 = 9 \\times 16$).\n:::\n\n## Question 7 : Le nombre premier entre $90$ et $100$\n\n::: methode\nÉliminer les nombres qui ont un diviseur $2$, $3$, $5$ ou $7$.\n:::\n\n::: etape Éliminer\n- $92$, $94$, $96$, $98$ sont pairs.\n- $93$ ($9 + 3 = 12$) et $99$ ($9 + 9 = 18$) sont divisibles par $3$.\n- $95$ se termine par $5$.\n- $91 = 7 \\times 13$.\n:::\n\n::: etape Tester $97$\n$97$ n'est divisible ni par $2$, ni par $3$ ($9 + 7 = 16$), ni par $5$, ni par $7$ ($97 = 7 \\times 13 + 6$). Comme $97 < 100$, il est premier.\n:::\n\n::: resultat\nLe numéro est $97$, seul nombre premier entre $90$ et $100$.\n:::\n\n::: attention Erreur fréquente\nEn partie A, répondre $23$ minibus : avec le reste $6$, six personnes resteraient à pied. En partie B, prendre le plus grand diviseur commun ($42$) sans tenir compte de la contrainte « pas plus de $20$ lots ».\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $213 = 9 \\times 23 + 6$.\n2. $24$ minibus ; $3$ places libres.\n3. Non : $84$ n'est pas divisible par $9$ ($8 + 4 = 12$).\n4. Ce sont les diviseurs communs à $84$ et $126$.\n5. $14$ lots de $6$ stylos et $9$ cahiers.\n6. $144$.\n7. $97$.",
+   "titre": "Type brevet - Organiser une kermesse",
+   "difficulty": "hard",
+   "contenu": "<!-- optitab:1 -->\nLe collège organise une kermesse. Les trois parties sont indépendantes.\n\n**Partie A : le transport**\n\n$213$ personnes doivent se rendre à la kermesse en minibus de $9$ places.\n\n1. Poser la division euclidienne de $213$ par $9$.\n2. Combien de minibus faut-il réserver au minimum ? Combien de places resteront libres ?\n\n**Partie B : les lots**\n\nLe stand des lots dispose de $84$ stylos et de $126$ cahiers. On veut préparer des lots identiques en utilisant tous les objets.\n\n3. Un élève affirme qu'on peut préparer $9$ lots. A-t-il raison ?\n4. Montrer que les nombres de lots possibles sont $1$ ; $2$ ; $3$ ; $6$ ; $7$ ; $14$ ; $21$ et $42$.\n5. On ne peut pas préparer plus de $20$ lots. Combien de lots prépare-t-on au maximum, et que contient chacun ?\n\n**Partie C : la tombola**\n\n6. Le numéro du ticket gagnant est un nombre compris entre $100$ et $200$, divisible par $4$ et par $9$, dont le chiffre des dizaines est $4$. Quel est ce numéro ?\n7. Le numéro du deuxième ticket gagnant est un nombre premier compris entre $90$ et $100$. Quel est-il ? Justifier."
+  }
+ ],
+ "images": [
+  {
+   "modele": "CoursImage",
+   "id": 1215,
+   "proprietaire": 257,
+   "position": 1,
+   "image": "cours_images/v1_n262_co257_1_paquets_cours.png",
+   "legende": null,
+   "alt_text": "23 jetons rangés en 4 paquets de 5 jetons, soit 20 jetons, et 3 jetons restants : 23 = 5 × 4 + 3.",
+   "title_text": "",
+   "width": 236,
+   "height": 198
+  },
+  {
+   "modele": "CoursImage",
+   "id": 1216,
+   "proprietaire": 257,
+   "position": 2,
+   "image": "cours_images/v1_n262_co257_2_division_cours.png",
+   "legende": null,
+   "alt_text": "Division posée de 158 par 7 : dividende 158, diviseur 7, quotient 22, reste 4, d'où 158 = 7 × 22 + 4 avec 4 < 7.",
+   "title_text": "",
+   "width": 330,
+   "height": 200
+  },
+  {
+   "modele": "CoursImage",
+   "id": 1217,
+   "proprietaire": 257,
+   "position": 3,
+   "image": "cours_images/v1_n262_co257_3_diviseurs_24.png",
+   "legende": null,
+   "alt_text": "Les quatre façons de ranger 24 carreaux en rectangle : 24 × 1, 12 × 2, 8 × 3 et 6 × 4, qui donnent les huit diviseurs de 24.",
+   "title_text": "",
+   "width": 248,
+   "height": 231
+  },
+  {
+   "modele": "CoursImage",
+   "id": 1218,
+   "proprietaire": 257,
+   "position": 4,
+   "image": "cours_images/v1_n262_co257_4_crible_50.png",
+   "legende": null,
+   "alt_text": "Tableau des nombres de 1 à 50 où les 15 nombres premiers inférieurs à 50 sont encadrés sur fond bleu : 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47.",
+   "title_text": "",
+   "width": 400,
+   "height": 249
+  },
+  {
+   "modele": "CoursImage",
+   "id": 1219,
+   "proprietaire": 257,
+   "position": 5,
+   "image": "cours_images/v1_n262_co257_5_lots_cours.png",
+   "legende": null,
+   "alt_text": "Six lots identiques formés avec 12 billes et 18 cubes : chaque lot contient 2 billes et 3 cubes.",
+   "title_text": "",
+   "width": 260,
+   "height": 174
+  },
+  {
+   "modele": "SynthesisImage",
+   "id": 484,
+   "proprietaire": 177,
+   "position": 1,
+   "image": "synthesis_images/v1_n262_fi177_1_division_cours.png",
+   "legende": null,
+   "alt_text": "Division posée de 158 par 7 : dividende 158, diviseur 7, quotient 22, reste 4, d'où 158 = 7 × 22 + 4 avec 4 < 7.",
+   "title_text": "",
+   "width": 330,
+   "height": 200
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 4943,
+   "proprietaire": 2731,
+   "position": 1,
+   "image": "exercice_images/v1_n262_ex2731_1_div347_enonce.png",
+   "legende": null,
+   "alt_text": "Division posée de 347 par 9 : 34 moins 27, on abaisse le 7, 77 moins 72 ; il reste 5 et le quotient écrit sous le diviseur est 38.",
+   "title_text": "",
+   "width": 153,
+   "height": 154
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 4944,
+   "proprietaire": 2731,
+   "position": 2,
+   "image": "exercice_images/v1_n262_ex2731_2_div347_corrige.png",
+   "legende": null,
+   "alt_text": "La division de 347 par 9 annotée en vert : dividende 347, diviseur 9, quotient 38, reste 5, d'où 347 = 9 × 38 + 5 avec 5 < 9.",
+   "title_text": "",
+   "width": 330,
+   "height": 200
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 4945,
+   "proprietaire": 2731,
+   "position": 3,
+   "image": "exercice_images/v1_n262_ex2731_3_div254_corrige.png",
+   "legende": null,
+   "alt_text": "Division posée de 254 par 6 en vert : 25 moins 24, on abaisse le 4, 14 moins 12 ; quotient 42, reste 2, d'où 254 = 6 × 42 + 2.",
+   "title_text": "",
+   "width": 246,
+   "height": 200
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 4946,
+   "proprietaire": 2738,
+   "position": 1,
+   "image": "exercice_images/v1_n262_ex2738_1_diviseurs_36.png",
+   "legende": null,
+   "alt_text": "Les cinq rectangles de 36 carreaux : 36 × 1, 18 × 2, 12 × 3, 9 × 4 et 6 × 6 ; diviseurs de 36 en vert : 1, 2, 3, 4, 6, 9, 12, 18, 36.",
+   "title_text": "",
+   "width": 310,
+   "height": 280
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 4939,
+   "proprietaire": 2728,
+   "position": 1,
+   "image": "exercice_images/v1_n262_ex2728_1_crible50_enonce.png",
+   "legende": null,
+   "alt_text": "Tableau des nombres entiers de 1 à 50, sur cinq lignes de dix nombres, sans aucun marquage.",
+   "title_text": "",
+   "width": 399,
+   "height": 210
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 4940,
+   "proprietaire": 2728,
+   "position": 2,
+   "image": "exercice_images/v1_n262_ex2728_2_crible50_corrige.png",
+   "legende": null,
+   "alt_text": "Tableau de 1 à 50 après le crible : les 15 nombres premiers sont encadrés en vert (2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47), les autres sont grisés.",
+   "title_text": "",
+   "width": 400,
+   "height": 249
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 4948,
+   "proprietaire": 2745,
+   "position": 1,
+   "image": "exercice_images/v1_n262_ex2745_1_navettes_corrige.png",
+   "legende": null,
+   "alt_text": "Frise de 9 h 10 à 10 h 14 : départs de la navette A toutes les 8 min, de la navette B toutes les 12 min à partir de 9 h 14 ; départs simultanés en vert à 9 h 26, 9 h 50 et 10 h 14.",
+   "title_text": "",
+   "width": 387,
+   "height": 202
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 4937,
+   "proprietaire": 2727,
+   "position": 1,
+   "image": "exercice_images/v1_n262_ex2727_1_bonbons_enonce.png",
+   "legende": null,
+   "alt_text": "Les bonbons du club : 18 sucettes (disques orange) et 30 caramels (carrés bleus).",
+   "title_text": "",
+   "width": 292,
+   "height": 92
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 4938,
+   "proprietaire": 2727,
+   "position": 2,
+   "image": "exercice_images/v1_n262_ex2727_2_bonbons_corrige.png",
+   "legende": null,
+   "alt_text": "Six sachets identiques encadrés en vert, contenant chacun 3 sucettes et 5 caramels.",
+   "title_text": "",
+   "width": 305,
+   "height": 174
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 4941,
+   "proprietaire": 2729,
+   "position": 1,
+   "image": "exercice_images/v1_n262_ex2729_1_oeufs_enonce.png",
+   "legende": null,
+   "alt_text": "38 œufs dessinés et une boîte vide de 6 places.",
+   "title_text": "",
+   "width": 290,
+   "height": 122
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 4942,
+   "proprietaire": 2729,
+   "position": 2,
+   "image": "exercice_images/v1_n262_ex2729_2_oeufs_corrige.png",
+   "legende": null,
+   "alt_text": "Les 38 œufs rangés : 6 boîtes pleines de 6 œufs encadrées en vert, soit 36 œufs, et 2 œufs restants ; 38 = 6 × 6 + 2.",
+   "title_text": "",
+   "width": 284,
+   "height": 202
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 4947,
+   "proprietaire": 2744,
+   "position": 1,
+   "image": "exercice_images/v1_n262_ex2744_1_div213_corrige.png",
+   "legende": null,
+   "alt_text": "Division posée de 213 par 9 en vert : 21 moins 18, on abaisse le 3, 33 moins 27 ; quotient 23, reste 6, d'où 213 = 9 × 23 + 6.",
+   "title_text": "",
+   "width": 246,
+   "height": 200
+  }
+ ],
+ "images_creees": [],
+ "exercices_crees": []
+}

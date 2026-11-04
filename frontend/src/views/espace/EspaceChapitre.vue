@@ -1,6 +1,6 @@
 <template>
   <EspaceLayout :title="chapitre?.titre || 'Chapitre'" :back="{ to: ESPACE_ROUTES.chapitres, label: 'Retour à mes chapitres' }" :wide="onglet === 'cours'">
-    <header class="ch-hero" :style="visuel.style">
+    <header ref="heroRef" class="ch-hero" :style="visuel.style">
       <nav class="ch-crumbs" aria-label="Fil d’Ariane">
         <router-link :to="ESPACE_ROUTES.chapitres">Mes chapitres</router-link>
         <ChevronRightIcon aria-hidden="true" />
@@ -10,7 +10,7 @@
         <span class="es-theme-ico ch-hero__ico"><component :is="visuel.icone" aria-hidden="true" /></span>
         <div class="ch-hero__text">
           <p class="ch-hero__kicker">
-            <template v-if="chapitre">Chapitre {{ chapitre.numero }} · {{ chapitre.theme }}</template>
+            <template v-if="chapitre">{{ chapitre.numero ? `Chapitre ${chapitre.numero}` : `Maths ${chapitre.classe || 'autre classe'}` }} · {{ chapitre.theme }}</template>
             <template v-else>&nbsp;</template>
           </p>
           <h1 class="ch-hero__title">{{ chapitre?.titre || '' }}</h1>
@@ -33,9 +33,9 @@
     </header>
 
     <!-- Onglets, collés en haut pendant la lecture -->
-    <div class="ch-tabs" role="tablist" aria-label="Contenu du chapitre">
+    <div ref="tabsRef" class="ch-tabs" role="tablist" aria-label="Contenu du chapitre" :style="{ '--ch-n': onglets.length }">
       <button
-        v-for="t in ONGLETS"
+        v-for="t in onglets"
         :key="t.cle"
         type="button"
         role="tab"
@@ -50,9 +50,18 @@
     </div>
 
     <div class="ch-body">
-      <ChapitreCours v-if="onglet === 'cours'" :notion-id="notionId" @go="ouvrir" />
-      <ChapitreFiche v-else-if="onglet === 'fiche'" :notion-id="notionId" @go="ouvrir" />
-      <ChapitreExercices v-else :notion-id="notionId" :exercice-initial="route.query.ex || null" @progress="majProgres" />
+      <!-- Onglets déjà ouverts : ils restent dans la page, simplement masqués, avec
+           leurs formules et leur mise en page ; y revenir est immédiat. -->
+      <div
+        v-for="cle in ouverts"
+        :key="`${cle}-${notionId}`"
+        :class="['ch-pane', { 'ch-pane--cache tex2jax_ignore': cle !== onglet }]"
+      >
+        <ChapitreCours v-if="cle === 'cours'" :notion-id="notionId" :actif="cle === onglet" @go="ouvrir" />
+        <ChapitreFiche v-else-if="cle === 'fiche'" :notion-id="notionId" :actif="cle === onglet" @go="ouvrir" />
+        <ChapitreQuiz v-else-if="cle === 'quiz'" :notion-id="notionId" @go="ouvrir" />
+        <ChapitreExercices v-else :notion-id="notionId" :actif="cle === onglet" :exercice-initial="route.query.ex || null" @progress="majProgres" />
+      </div>
     </div>
 
     <!-- Chapitres voisins -->
@@ -77,12 +86,13 @@
 </template>
 
 <script setup>
-import { computed, onMounted, reactive, watch } from 'vue'
+import { computed, nextTick, onMounted, reactive, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import {
   BookOpenIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
+  BoltIcon,
   ClockIcon,
   DocumentTextIcon,
   PencilSquareIcon
@@ -92,7 +102,11 @@ import ProgressRing from '@/components/espace/ProgressRing.vue'
 import ChapitreCours from '@/components/espace/ChapitreCours.vue'
 import ChapitreFiche from '@/components/espace/ChapitreFiche.vue'
 import ChapitreExercices from '@/components/espace/ChapitreExercices.vue'
+import ChapitreQuiz from '@/components/espace/ChapitreQuiz.vue'
+import { aUnQuiz } from '@/data/quiz'
+import { getNotionDetail } from '@/api'
 import { useProgression } from '@/composables/useProgression'
+import { prechargerChapitre } from '@/utils/chapitreContenu'
 import { ESPACE_ROUTES, chapitreLink } from '@/config/espace'
 import { depuis, pourcent } from '@/utils/espaceFormat'
 import { indexThemes, visuelTheme } from '@/utils/espaceTheme'
@@ -108,11 +122,30 @@ const router = useRouter()
 const { progression, charger } = useProgression()
 
 const notionId = computed(() => route.params.notionId)
-const onglet = computed(() => (ONGLETS.some((o) => o.cle === route.query.onglet) ? route.query.onglet : 'cours'))
+// L'onglet Quiz n'existe que pour les chapitres qui ont un quiz (src/data/quiz).
+const onglets = computed(() => (aUnQuiz(notionId.value) ? [...ONGLETS, { cle: 'quiz', label: 'Quiz', icone: BoltIcon }] : ONGLETS))
+const onglet = computed(() => (onglets.value.some((o) => o.cle === route.query.onglet) ? route.query.onglet : 'cours'))
 
 const chapitres = computed(() => progression.value?.chapitres || [])
 const index = computed(() => chapitres.value.findIndex((c) => String(c.id) === String(notionId.value)))
-const chapitre = computed(() => (index.value >= 0 ? { ...chapitres.value[index.value], numero: index.value + 1 } : null))
+// Chapitre d'une autre classe (ouvert depuis l'historique, par exemple) : il
+// n'est pas dans la progression de la classe actuelle, son titre est lu au serveur.
+const horsClasse = ref(null)
+const chapitre = computed(() => (index.value >= 0 ? { ...chapitres.value[index.value], numero: index.value + 1 } : horsClasse.value))
+watch([notionId, () => progression.value], async ([id]) => {
+  if (!progression.value || index.value >= 0) return
+  if (horsClasse.value && String(horsClasse.value.id) === String(id)) return
+  horsClasse.value = null
+  try {
+    const reponse = await getNotionDetail(id)
+    const n = reponse?.data || reponse
+    if (n && String(n.id) === String(notionId.value)) {
+      horsClasse.value = { id: n.id, titre: n.titre || n.nom, theme: n.theme_nom || '', theme_id: n.theme, classe: n.contexte_detail?.niveau?.nom || '' }
+    }
+  } catch {
+    // Titre indisponible : la page reste utilisable (onglets et contenus).
+  }
+}, { immediate: true })
 const precedent = computed(() => (index.value > 0 ? chapitres.value[index.value - 1] : null))
 const suivant = computed(() => (index.value >= 0 && index.value < chapitres.value.length - 1 ? chapitres.value[index.value + 1] : null))
 const visuel = computed(() => {
@@ -143,17 +176,61 @@ function ouvrir(cle) {
   else query.onglet = cle
   if (cle !== 'exercices') delete query.ex
   router.push({ query })
-  window.scrollTo({ top: 0, behavior: 'auto' })
+}
+
+// Onglets déjà ouverts dans ce chapitre (gardés dans la page, masqués).
+const ouverts = ref([onglet.value])
+
+// ---------- Position de lecture par onglet ----------
+// En revenant sur un onglet déjà ouvert, on retrouve l'endroit où l'on
+// s'était arrêté ; un onglet jamais ouvert commence au début de son contenu.
+const heroRef = ref(null)
+const tabsRef = ref(null)
+const positions = new Map()
+
+function debutContenu() {
+  const hero = heroRef.value
+  const barre = tabsRef.value
+  if (!hero || !barre) return 0
+  const marge = parseFloat(getComputedStyle(hero).marginBottom) || 0
+  const collee = parseFloat(getComputedStyle(barre).top) || 0
+  return Math.max(0, hero.getBoundingClientRect().bottom + window.scrollY + marge - collee)
+}
+
+// Pendant la lecture, on prépare déjà les autres onglets du chapitre.
+function prechargerAutresOnglets() {
+  const id = notionId.value
+  const lancer = () => {
+    if (String(id) !== String(notionId.value)) return
+    prechargerChapitre(id, ONGLETS.map((o) => o.cle).filter((cle) => cle !== onglet.value))
+  }
+  if ('requestIdleCallback' in window) window.requestIdleCallback(lancer, { timeout: 2500 })
+  else setTimeout(lancer, 1500)
 }
 
 onMounted(async () => {
+  prechargerAutresOnglets()
   await charger()
   depuisServeur()
 })
 
-watch(notionId, () => {
-  depuisServeur()
-  window.scrollTo({ top: 0, behavior: 'auto' })
+watch([notionId, onglet], async ([id, cle], [ancienId, ancienneCle]) => {
+  if (id !== ancienId) {
+    ouverts.value = [cle]
+    positions.clear()
+    depuisServeur()
+    window.scrollTo({ top: 0, behavior: 'auto' })
+    prechargerAutresOnglets()
+    // Progression relue si un exercice a changé de statut entre-temps.
+    await charger()
+    depuisServeur()
+    return
+  }
+  if (!ouverts.value.includes(cle)) ouverts.value.push(cle)
+  positions.set(ancienneCle, window.scrollY)
+  await nextTick()
+  const memo = positions.get(cle)
+  window.scrollTo({ top: memo ?? Math.min(window.scrollY, debutContenu()), behavior: 'auto' })
 })
 </script>
 
@@ -394,6 +471,20 @@ watch(notionId, () => {
   scroll-margin-top: calc(var(--es-top) + 72px);
 }
 
+/* Onglet déjà ouvert mais masqué : le navigateur garde son rendu (formules,
+   mise en page) pour le réafficher instantanément. Navigateurs anciens :
+   simple masquage. */
+.ch-pane--cache {
+  display: none;
+}
+
+@supports (content-visibility: hidden) {
+  .ch-pane--cache {
+    display: block;
+    content-visibility: hidden;
+  }
+}
+
 /* ---------- Chapitres voisins ---------- */
 
 .ch-neighbours {
@@ -526,7 +617,7 @@ watch(notionId, () => {
 
   .ch-tabs {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(var(--ch-n, 3), minmax(0, 1fr));
     margin: 0 -16px 16px;
     padding: 0 8px;
     background: rgba(255, 255, 255, 0.96);

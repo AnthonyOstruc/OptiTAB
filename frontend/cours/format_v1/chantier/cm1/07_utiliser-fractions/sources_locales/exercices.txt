@@ -1,0 +1,152 @@
+[
+  {
+    "titre": "Lire sur la demi-droite",
+    "enonce": "L’unité est partagée en quarts. Lire les fractions repérées par les points A et B.",
+    "corrige": "Chaque pas vaut $\\frac14$. A est 3 pas après 0 : $\\res{A\\left(\\frac34\\right)}$. B est 3 pas après 1 : $\\res{B\\left(\\frac74\\right)}$.",
+    "methode": "Compter les pas depuis zéro.",
+    "controle": "assert Rational(3,4)<1<Rational(7,4)",
+    "figure": "fd-1",
+    "conseil": "",
+    "difficulte": 1
+  },
+  {
+    "titre": "Placer des tiers",
+    "enonce": "Sur la demi-droite graduée en tiers, placer les points $C\\left(\\frac23\\right)$ et $D\\left(\\frac53\\right)$.",
+    "corrige": "C se place 2 pas après 0 et D cinq pas après 0, c’est-à-dire 2 pas après l’entier 1. Les positions figurent en vert sur le corrigé.",
+    "methode": "Avancer d’autant de pas que le numérateur.",
+    "controle": "assert Rational(5,3)==1+Rational(2,3)",
+    "figure": "fd-2",
+    "conseil": "",
+    "difficulte": 1
+  },
+  {
+    "titre": "Comparer à l’unité",
+    "enonce": "Comparer chaque fraction à 1 : $\\frac56$ ; $\\frac76$ ; $\\frac66$.",
+    "corrige": "$\\res{\\frac56<1}$ : il manque un sixième. $\\res{\\frac76>1}$ : un sixième de trop. $\\res{\\frac66=1}$ exactement.",
+    "methode": "Comparer le numérateur au dénominateur.",
+    "controle": "assert Rational(5,6)<1 and Rational(7,6)>1 and Rational(6,6)==1",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 1
+  },
+  {
+    "titre": "Même dénominateur",
+    "enonce": "Comparer $\\frac58$ et $\\frac38$, puis ranger dans l’ordre croissant : $\\frac45$ ; $\\frac15$ ; $\\frac75$.",
+    "corrige": "Les huitièmes ont la même taille : $\\res{\\frac58>\\frac38}$. Pour les cinquièmes : $\\res{\\frac15<\\frac45<\\frac75}$.",
+    "methode": "À parts égales, comparer les numérateurs.",
+    "controle": "assert Rational(5,8)>Rational(3,8) and Rational(1,5)<Rational(4,5)<Rational(7,5)",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 1
+  },
+  {
+    "titre": "Une part d’une quantité",
+    "enonce": "Calculer $\\frac13$ de 12 billes, puis $\\frac14$ de 100 mètres.",
+    "corrige": "Partager 12 en 3 : $12:3=\\res4$ billes. Partager 100 en 4 : $100:4=\\res{25}$ mètres.",
+    "methode": "Partager la quantité selon le dénominateur.",
+    "controle": "assert 12//3==4 and 100//4==25",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 1
+  },
+  {
+    "titre": "Réunir des parts",
+    "enonce": "Calculer $\\frac38+\\frac28$, puis $\\frac25+\\frac35$.",
+    "corrige": "Les parts s’ajoutent : $\\res{\\frac58}$. Ensuite $\\frac25+\\frac35=\\frac55=\\res1$ : l’unité est reconstituée.",
+    "methode": "Ajouter les numérateurs, garder le dénominateur.",
+    "controle": "assert Rational(3,8)+Rational(2,8)==Rational(5,8) and Rational(2,5)+Rational(3,5)==1",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 2
+  },
+  {
+    "titre": "Retirer des parts",
+    "enonce": "Calculer $\\frac7{10}-\\frac4{10}$, puis $1-\\frac29$.",
+    "corrige": "$\\res{\\frac7{10}-\\frac4{10}=\\frac3{10}}$. Pour la seconde, écrire $1=\\frac99$ : $\\frac99-\\frac29=\\res{\\frac79}$.",
+    "methode": "Écrire 1 avec le dénominateur utile.",
+    "controle": "assert Rational(7,10)-Rational(4,10)==Rational(3,10) and 1-Rational(2,9)==Rational(7,9)",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 2
+  },
+  {
+    "titre": "Compléter jusqu’à 1",
+    "enonce": "Compléter : $\\frac59+\\frac{\\square}9=1$, puis $\\frac{\\square}6+\\frac16=1$.",
+    "corrige": "Il faut 9 neuvièmes en tout : $\\square=\\res4$. Pour les sixièmes : $\\square=\\res5$, car $\\frac56+\\frac16=\\frac66=1$.",
+    "methode": "Compter les parts manquantes.",
+    "controle": "assert Rational(5,9)+Rational(4,9)==1 and Rational(5,6)+Rational(1,6)==1",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 2
+  },
+  {
+    "titre": "Des cinquièmes bien placés",
+    "enonce": "L’unité est partagée en cinquièmes. Lire la fraction du point E, puis placer $F\\left(1+\\frac25\\right)$.",
+    "corrige": "E est 4 pas après 0 : $\\res{E\\left(\\frac45\\right)}$. F se place 2 pas après 1, c’est $\\frac75$ ; sa position figure en vert.",
+    "methode": "Convertir l’écriture mixte en pas sur la droite.",
+    "controle": "assert 1+Rational(2,5)==Rational(7,5)",
+    "figure": "fd-9",
+    "conseil": "",
+    "difficulte": 2
+  },
+  {
+    "titre": "Quelle part est la plus grande ?",
+    "enonce": "Comparer $\\frac13$ et $\\frac14$ à l’aide des bandes, puis comparer $\\frac23$ et $\\frac24$.",
+    "corrige": "Partager en 3 donne des parts plus grandes que partager en 4 : $\\res{\\frac13>\\frac14}$. En prenant deux parts de chaque : $\\res{\\frac23>\\frac24}$. Les bandes superposées le montrent sans calcul.",
+    "methode": "À numérateur égal, le plus petit dénominateur gagne.",
+    "controle": "assert Rational(1,3)>Rational(1,4) and Rational(2,3)>Rational(2,4)",
+    "figure": "fd-10",
+    "conseil": "",
+    "difficulte": 2
+  },
+  {
+    "titre": "Mesurer avec une bande",
+    "enonce": "Avec la bande unité pliée en quarts, mesurer la longueur du segment tracé.",
+    "corrige": "La bande se reporte 2 fois en entier, puis 3 plis d’un quart complètent : la longueur vaut $\\res{2+\\frac34}$ d’unité, soit $\\frac{11}4$.",
+    "methode": "Reporter l’unité entière avant les parts.",
+    "controle": "assert 2+Rational(3,4)==Rational(11,4)",
+    "figure": "fd-11",
+    "conseil": "",
+    "difficulte": 3
+  },
+  {
+    "titre": "La randonnée",
+    "enonce": "Un sentier mesure 20 km. Le matin, le groupe parcourt le quart du sentier.\\begin{questions}\n\\item Quelle distance est parcourue le matin ?\n\\item Quelle distance reste-t-il pour l’après-midi ?\n\\end{questions}",
+    "corrige": "Le quart de 20 km : $20:4=\\res5$ km le matin. Il reste $20-5=\\res{15}$ km. Contrôle : $5+15=20$ km, le sentier entier.",
+    "methode": "Calculer la part puis le reste du tout.",
+    "controle": "assert 20//4==5 and 20-5==15",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 3
+  },
+  {
+    "titre": "Sept parts de deux tartes",
+    "enonce": "Deux tartes identiques sont coupées en sixièmes et 7 parts sont mangées. Quelle fraction de tarte reste-t-il ?",
+    "corrige": "Deux tartes font $\\frac{12}6$. Il reste $\\frac{12}6-\\frac76=\\res{\\frac56}$ de tarte : un peu moins qu’une tarte entière.",
+    "methode": "Écrire les deux tartes en sixièmes avant de soustraire.",
+    "controle": "assert Rational(12,6)-Rational(7,6)==Rational(5,6)",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 3
+  },
+  {
+    "titre": "La même longueur ?",
+    "enonce": "Lila plie une bande en 2 et prend 1 part ; Noa plie la même bande en 4 et prend 2 parts. Ont-ils pris la même longueur ? Justifier avec les bandes.",
+    "corrige": "$\\res{\\text{Oui}}$ : deux quarts superposés couvrent exactement une moitié, donc $\\frac12=\\frac24$. Deux écritures différentes peuvent désigner le même nombre.",
+    "methode": "Superposer les parts pour comparer.",
+    "controle": "assert Rational(1,2)==Rational(2,4)",
+    "figure": "fd-14",
+    "conseil": "",
+    "difficulte": 3
+  },
+  {
+    "titre": "Le ruban partagé",
+    "enonce": "Un ruban de 18 m est partagé : Ana reçoit la moitié, Bilal reçoit le tiers, Chloé reçoit le reste.\\begin{questions}\n\\item Calculer les longueurs reçues par Ana et Bilal.\n\\item Quelle longueur reste-t-il pour Chloé ?\n\\end{questions}",
+    "corrige": "Ana : $18:2=\\res9$ m. Bilal : $18:3=\\res6$ m. Ensemble ils prennent 15 m ; Chloé reçoit $18-15=\\res3$ m. Contrôle : $9+6+3=18$ m.",
+    "methode": "Traiter chaque part unitaire comme un partage.",
+    "controle": "assert 18//2==9 and 18//3==6 and 18-9-6==3",
+    "figure": "",
+    "conseil": "",
+    "difficulte": 3
+  }
+]

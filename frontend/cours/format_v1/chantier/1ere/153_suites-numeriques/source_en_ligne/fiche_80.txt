@@ -1,0 +1,68 @@
+Titre: Résumé : Suites numériques
+
+<!-- optitab:1 -->
+::: objectifs
+Retenir l’essentiel : modes de génération, sens de variation, suites arithmétiques et géométriques, sommes, comportement quand $n$ devient grand. Programme de Première.
+:::
+
+## I. Arithmétique ou géométrique ?
+
+::: definition Arithmétique de raison $r$ (croissance linéaire)
+- Récurrence : $u_{n+1} = u_n + r$.
+- Terme général : $u_n = u_0 + nr$ ; depuis le rang $p$ : $u_n = u_p + (n - p)r$.
+- Variations : signe de $r$ ; points alignés.
+:::
+
+::: definition Géométrique de raison $q$ (taux constant)
+- Récurrence : $u_{n+1} = q \times u_n$.
+- Terme général : $u_n = u_0 \times q^n$ ; depuis le rang $p$ : $u_n = u_p \times q^{n-p}$.
+- Variations (si $u_0 \gt 0$, $q \gt 0$) : croissante si $q \gt 1$, décroissante si $0 \lt q \lt 1$.
+:::
+
+[IMAGE_1]
+
+[IMAGE_3]
+
+::: methode Reconnaître la nature d’une suite
+- $u_{n+1} - u_n$ constant (indépendant de $n$) : arithmétique.
+- $u_{n+1} = q \times u_n$ avec $q$ constant : géométrique.
+- Hausse de $t\,\%$ : $q = 1 + \frac{t}{100}$ ; baisse de $t\,\%$ : $q = 1 - \frac{t}{100}$.
+:::
+
+## II. Sens de variation
+
+::: methode
+- Signe de $u_{n+1} - u_n$ (méthode générale).
+- Termes strictement positifs : comparer $\dfrac{u_{n+1}}{u_n}$ à $1$.
+- Forme explicite $u_n = f(n)$ : variations de $f$ sur $[0\,;+\infty[$.
+:::
+
+## III. Sommes
+
+::: formule
+$$1 + 2 + \cdots + n = \frac{n(n + 1)}{2}$$
+:::
+
+[IMAGE_2]
+
+::: formule
+$$1 + q + \cdots + q^n = \frac{1 - q^{n+1}}{1 - q} \quad (q \neq 1)$$
+:::
+
+- Termes consécutifs d’une suite arithmétique : $S = N \times \frac{a + b}{2}$ ($N$ termes, premier $a$, dernier $b$).
+- Suite géométrique : $u_0 + \cdots + u_n = u_0 \times \frac{1 - q^{n+1}}{1 - q}$.
+
+## IV. Quand $n$ devient grand
+
+- On conjecture à l’aide d’un tableau de valeurs ou du nuage de points.
+- $0 \lt q \lt 1$ : $q^n$ se rapproche de $0$ ; $q \gt 1$ : $q^n$ devient aussi grand que l’on veut.
+- Seuil : boucle `while u < A:` qui compte les rangs.
+
+## V. Les pièges à éviter
+
+::: attention Les 4 erreurs classiques
+1. Confondre $u_{n+1}$ (terme suivant) et $u_n + 1$.
+2. Écrire $u_n = u_1 + nr$ quand la suite commence à $u_1$ : c’est $u_n = u_1 + (n - 1)r$.
+3. Mal compter les termes d’une somme : de $u_0$ à $u_n$, il y en a $n + 1$.
+4. Prendre $q = 0{,}03$ pour une hausse de $3\,\%$ au lieu de $q = 1{,}03$.
+:::

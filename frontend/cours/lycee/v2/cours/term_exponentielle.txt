@@ -1,0 +1,73 @@
+=== Fonction exponentielle - Programme Terminale
+Images: 1er_exp_courbe.png, term_exp_tableau.png, term_exp_etude.png, term_exp_modele.png
+Titre: Fonction exponentielle : limites et études
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+    <div style="background:#e8f4fd; border:2px solid #3498db; border-radius:8px; padding:15px; margin-bottom:20px;">
+        <p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🎯 Objectifs du chapitre :</strong> réinvestir les propriétés de l’exponentielle vues en Première, connaître ses limites et les croissances comparées, dériver $e^u$, mener l’étude complète d’une fonction et exploiter un modèle exponentiel.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Rappels</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;">• $\exp' = \exp$ et $e^0 = 1$ ; $e^{a + b} = e^ae^b$ ; $e^{-a} = \frac{1}{e^a}$ ; $(e^a)^n = e^{na}$.</p>
+            <p style="margin:6px 0 0 0;">• $e^x \gt 0$ ; $\exp$ est strictement croissante et convexe : $e^a = e^b \iff a = b$, $e^a \lt e^b \iff a \lt b$, et $e^x \ge 1 + x$.</p>
+        </div>
+        [IMAGE_1]
+        <p style="font-size:1em;"><strong>Exemple :</strong> $e^{2x} \ge e^{1 - x} \iff 2x \ge 1 - x \iff x \ge \frac{1}{3}$.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Limites</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Propriétés :</strong> $\lim\limits_{x \to +\infty} e^x = +\infty$ ; $\lim\limits_{x \to -\infty} e^x = 0$ ; $\lim\limits_{x \to 0} \frac{e^x - 1}{x} = 1$.</p>
+            <p style="margin:6px 0 0 0;"><em>Preuves (au programme) :</em> $e^x \ge 1 + x$ et $1 + x \to +\infty$, d’où la première limite par comparaison. Ensuite $e^x = \frac{1}{e^{-x}}$ avec $e^{-x} \to +\infty$ quand $x \to -\infty$. Enfin, $\frac{e^x - 1}{x}$ est le taux de variation de $\exp$ en $0$, qui tend vers $\exp'(0) = 1$.</p>
+        </div>
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Croissances comparées :</strong> pour tout entier $n \ge 1$, $\lim\limits_{x \to +\infty} \frac{e^x}{x^n} = +\infty$, $\lim\limits_{x \to +\infty} x^ne^{-x} = 0$ et $\lim\limits_{x \to -\infty} x^ne^x = 0$.</p>
+        </div>
+        <p style="font-size:1em;"><strong>Exemples :</strong> $e^{2x} - e^x = e^x(e^x - 1)$ tend vers $+\infty$ en $+\infty$ ; $\frac{x + 1}{e^x} = \frac{x}{e^x} + \frac{1}{e^x}$ tend vers $0$ en $+\infty$.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Fonctions $e^{u}$</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Propriété :</strong> si $u$ est dérivable sur $I$, alors $e^u$ l’est aussi et $\left(e^u\right)' = u'e^u$ ; $e^u$ a les mêmes variations que $u$.</p>
+        </div>
+        <p style="font-size:1em;"><strong>Exemples :</strong> $\left(e^{-x^2}\right)' = -2x\,e^{-x^2}$ ; comme $-x^2 \to -\infty$ en $\pm\infty$, la composition donne $\lim\limits_{x \to \pm\infty} e^{-x^2} = 0$.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Étude complète d’une fonction</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <p style="font-size:1em;"><strong>Exemple :</strong> $f(x) = xe^{-x}$ sur $\mathbb{R}$.</p>
+        <p style="font-size:1em;">• <strong>Limites :</strong> en $-\infty$, $x \to -\infty$ et $e^{-x} \to +\infty$, donc $f(x) \to -\infty$ ; en $+\infty$, $f(x) = \frac{x}{e^x} \to 0$ (croissances comparées) : la droite $y = 0$ est asymptote.</p>
+        <p style="font-size:1em;">• <strong>Dérivée :</strong> $f'(x) = e^{-x} - xe^{-x} = (1 - x)e^{-x}$, du signe de $1 - x$ puisque $e^{-x} \gt 0$.</p>
+        [IMAGE_2]
+        <p style="font-size:1em;">• <strong>Convexité :</strong> $f''(x) = (x - 2)e^{-x}$ change de signe en $2$ : point d’inflexion d’abscisse $2$.</p>
+        [IMAGE_3]
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Plan d’étude :</strong> ensemble de définition, limites aux bornes, dérivée et son signe, tableau de variations (avec extremums), éventuellement convexité, puis courbe.
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Un modèle exponentiel</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <p style="font-size:1em;">La tension aux bornes d’un condensateur qui se charge vaut $u(t) = 5\left(1 - e^{-0{,}5t}\right)$ ($t$ en secondes, $u$ en volts).</p>
+        [IMAGE_4]
+        <p style="font-size:1em;">$u'(t) = 2{,}5\,e^{-0{,}5t} \gt 0$ : la tension augmente ; et $\lim\limits_{t \to +\infty} u(t) = 5$ car $e^{-0{,}5t} \to 0$. Par exemple $u(4) = 5\left(1 - e^{-2}\right) \approx 4{,}32$ V.</p>
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong> la valeur limite $5$ n’est jamais atteinte : $u(t) \lt 5$ pour tout $t$, car $e^{-0{,}5t} \gt 0$.
+        </div>
+    </div>
+
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:8px; padding:15px; margin:20px 0 0 0;">
+        <p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🏆 L’essentiel :</strong> $\lim\limits_{+\infty} e^x = +\infty$, $\lim\limits_{-\infty} e^x = 0$, $\lim\limits_{x \to 0} \frac{e^x - 1}{x} = 1$ ; croissances comparées : l’exponentielle l’emporte sur toute puissance ; $(e^u)' = u'e^u$ ; dans $f'(x) = (\ldots)e^{\ldots}$, le signe est celui du facteur devant l’exponentielle. Fiche de synthèse dans l’onglet Fiches !</p>
+    </div>
+
+</div>

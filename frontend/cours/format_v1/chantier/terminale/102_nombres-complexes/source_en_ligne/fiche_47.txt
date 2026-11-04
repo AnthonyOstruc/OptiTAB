@@ -1,0 +1,70 @@
+Titre: Résumé : Nombres Complexes
+
+<!-- optitab:1 -->
+::: objectifs
+Retenir l’essentiel : les trois formes d’un nombre complexe, module et argument, équations polynomiales, géométrie et racines de l’unité. Programme de Terminale, option Mathématiques expertes.
+:::
+
+## I. Forme algébrique et conjugué
+
+::: formule
+$z = x + \mathrm{i}y$ avec $x = \mathrm{Re}(z)$ et $y = \mathrm{Im}(z)$ réels, $\mathrm{i}^2 = -1$
+:::
+
+1. Égalité : $x + \mathrm{i}y = x' + \mathrm{i}y' \iff x = x'$ et $y = y'$.
+2. Conjugué $\overline{z} = x - \mathrm{i}y$ : $\overline{z + z'} = \overline{z} + \overline{z'}$, $\overline{zz'} = \overline{z}\,\overline{z'}$, $\overline{z^n} = \overline{z}^{\,n}$, $\overline{\left(\frac{1}{z}\right)} = \frac{1}{\overline{z}}$.
+3. $z$ réel $\iff \overline{z} = z$ ; $z$ imaginaire pur $\iff \overline{z} = -z$.
+4. Quotient : multiplier par le conjugué du dénominateur, car $z\overline{z} = x^2 + y^2$.
+5. Équation avec $z$ et $\overline{z}$ : poser $z = x + \mathrm{i}y$, puis identifier parties réelles et imaginaires.
+
+## II. Module, argument et formes
+
+[IMAGE_1]
+
+| Forme | Écriture | Usage |
+|---|---|---|
+| Algébrique | $z = x + \mathrm{i}y$ | sommes, parties réelle et imaginaire |
+| Trigonométrique | $z = r(\cos\theta + \mathrm{i}\sin\theta)$ | lecture du module et de l’argument |
+| Exponentielle | $z = r\,\mathrm{e}^{\mathrm{i}\theta}$ | produits, quotients, puissances |
+
+1. $r = |z| = \sqrt{x^2 + y^2} = OM$ et $|z|^2 = z\overline{z}$ ; $\theta = \arg(z)$ ($z \neq 0$) vérifie $\cos\theta = \frac{x}{r}$ et $\sin\theta = \frac{y}{r}$.
+2. $|zz'| = |z|\,|z'|$, $\left|\frac{z}{z'}\right| = \frac{|z|}{|z'|}$ ; $\arg(zz') = \arg z + \arg z'$ et $\arg\left(\frac{z}{z'}\right) = \arg z - \arg z'$ $[2\pi]$.
+3. $\mathrm{e}^{\mathrm{i}\theta} = \cos\theta + \mathrm{i}\sin\theta$ ; $\mathrm{e}^{\mathrm{i}a}\,\mathrm{e}^{\mathrm{i}b} = \mathrm{e}^{\mathrm{i}(a + b)}$ ; Moivre : $\left(\mathrm{e}^{\mathrm{i}\theta}\right)^n = \mathrm{e}^{\mathrm{i}n\theta}$.
+4. Euler : $\cos\theta = \frac{\mathrm{e}^{\mathrm{i}\theta} + \mathrm{e}^{-\mathrm{i}\theta}}{2}$ et $\sin\theta = \frac{\mathrm{e}^{\mathrm{i}\theta} - \mathrm{e}^{-\mathrm{i}\theta}}{2\mathrm{i}}$ (linéarisation).
+5. $\cos(a + b) = \cos a\cos b - \sin a\sin b$ ; $\sin(a + b) = \sin a\cos b + \cos a\sin b$ ; $\mathbb{U} = \{z \mid |z| = 1\}$ est stable par produit et inverse.
+
+## III. Équations polynomiales
+
+::: formule
+$az^2 + bz + c = 0$ ($a$, $b$, $c$ réels), $\Delta \lt 0$ : $z = \dfrac{-b \pm \mathrm{i}\sqrt{-\Delta}}{2a}$
+:::
+
+1. Les deux solutions sont conjuguées et $az^2 + bz + c = a(z - z_1)(z - z_2)$.
+2. $z^n - a^n = (z - a)\left(z^{n-1} + az^{n-2} + \cdots + a^{n-1}\right)$.
+3. Si $P(a) = 0$, alors $P(z) = (z - a)Q(z)$ : on identifie $Q$, puis on résout $Q(z) = 0$.
+4. Un polynôme de degré $n$ a au plus $n$ racines.
+
+## IV. Géométrie
+
+| Situation | Traduction complexe |
+|---|---|
+| Vecteur, milieu | $z_{\overrightarrow{AB}} = b - a$ ; $z_I = \frac{a + b}{2}$ |
+| Distance | $AB = |b - a|$ |
+| Angle orienté | $\left(\overrightarrow{AB}, \overrightarrow{AC}\right) = \arg\left(\frac{c - a}{b - a}\right)\ [2\pi]$ |
+| Alignement / orthogonalité | $\frac{c - a}{b - a}$ réel / imaginaire pur |
+| Cercle / médiatrice | $|z - \omega| = r$ / $|z - a| = |z - b|$ |
+| Racines $n$-ièmes de $1$ | $\mathrm{e}^{\mathrm{i}\frac{2k\pi}{n}}$, $0 \le k \le n - 1$ : polygone régulier, somme nulle |
+
+## V. Les pièges à éviter
+
+::: attention Les 5 erreurs classiques
+1. $\mathrm{Im}(3 - 5\mathrm{i}) = -5$, pas $-5\mathrm{i}$.
+2. Un argument se lit avec le cosinus **et** le sinus.
+3. Le module d’une forme trigonométrique est strictement positif.
+4. $|z + z'| \neq |z| + |z'|$ en général ; $\sqrt{-16}$ n’a pas de sens.
+5. Dans $\frac{c - a}{b - a}$, le vecteur de départ $\overrightarrow{AB}$ est au dénominateur.
+:::
+
+::: remarque Réflexe
+Somme → forme algébrique ; produit, quotient, puissance → forme exponentielle ; question de géométrie → quotient $\frac{c - a}{b - a}$.
+:::

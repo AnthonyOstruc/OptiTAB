@@ -1,0 +1,90 @@
+Titre: Résumé : Notion de liste
+
+<!-- optitab:1 -->
+::: objectifs
+L'essentiel sur les listes en Terminale : générer, manipuler, parcourir, et les utiliser pour les suites, les simulations et le dénombrement.
+:::
+
+## I. Éléments et indices
+
+- `L = [3, 5, 9, 17, 33]` ; `len(L)` vaut $5$.
+- Indices de $0$ à `len(L) - 1` ; `L[-1]` est le dernier élément ; `L[len(L)]` provoque une erreur `IndexError`.
+- Si `u` contient $u_0$, $u_1$, …, alors `u[n]` est $u_n$ : l'indice est le rang.
+
+[IMAGE_1]
+
+## II. Générer une liste
+
+::: methode Trois façons
+- En extension : `[2, 3, 5, 7]`.
+- Par ajouts successifs : `u = [1]` puis `u.append(2 * u[-1] + 1)` dans une boucle (suite récurrente).
+- En compréhension : `[n**2 for n in range(6)]`, avec un filtre `if`.
+:::
+
+| Dans le filtre | Ensemble obtenu |
+|---|---|
+| `and` | intersection $A \cap B$ |
+| `or` | réunion $A \cup B$ |
+| `not` | complémentaire $\overline{A}$ |
+
+## III. Ajouter et supprimer
+
+- `L.append(x)` ajoute `x` à la fin.
+- `L.pop()` retire le dernier élément, `L.pop(i)` celui d'indice `i`.
+- `L.remove(x)` supprime la première valeur `x` (tester d'abord `x in L`).
+
+## IV. Parcourir
+
+- Par les éléments : `for x in L:`.
+- Par les indices : `for i in range(len(L)):` puis `L[i]`.
+- `sum(L)`, `max(L)`, `min(L)`, `L.count(x)`.
+
+## V. En Terminale
+
+::: methode Seuil d'une suite
+```python
+u = [2]
+while u[-1] <= 100:
+    u.append(1.5 * u[-1])
+print(len(u) - 1)
+```
+
+```console
+10
+```
+
+Le rang du premier terme qui dépasse le seuil est `len(u) - 1`.
+:::
+
+- **Simulation** : liste `R` des résultats ; effectif de $k$ : `R.count(k)` ; fréquences en compréhension : `[e / N for e in E]`.
+- **Loi des grands nombres** : la liste des moyennes d'échantillons de grande taille reste proche de l'espérance.
+
+::: methode Dénombrement
+Une liste de listes en compréhension, avec deux `for` :
+
+```python
+E = [1, 2, 3, 4]
+P = [[x, y] for x in E
+     for y in E if x < y]
+print(len(P))
+```
+
+```console
+6
+```
+
+Selon le filtre :
+- sans condition : les $n^2$ couples ;
+- avec `x != y` : les $n(n-1)$ couples d'éléments distincts ;
+- avec `x < y` : les $\dbinom{n}{2}$ parties à $2$ éléments.
+:::
+
+[IMAGE_2]
+
+::: attention Les pièges
+1. Le premier indice est $0$.
+2. `u = u.append(x)` perd la liste : écrire `u.append(x)` seul.
+3. À partir de `[u0]`, après $n$ ajouts, le dernier terme est $u_n$.
+4. `remove(x)` : une valeur ; `pop(i)` : un indice.
+5. `or` donne la réunion, `and` l'intersection.
+:::

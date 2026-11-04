@@ -1,0 +1,85 @@
+Titre: Résumé : Sommes de variables aléatoires
+
+<!-- optitab:1 -->
+::: objectifs
+Maîtriser les sommes de variables aléatoires : linéarité de l'espérance, additivité de la variance, application à la loi binomiale et aux échantillons.
+:::
+
+## I. Rappels
+
+| Notion | Formule |
+|---|---|
+| **Espérance** | $\displaystyle E(X) = \sum_{i} x_i \times P(X = x_i)$ |
+| **Variance** | $\displaystyle V(X) = E(X^2) - [E(X)]^2$ |
+| **Écart-type** | $\displaystyle \sigma(X) = \sqrt{V(X)}$ |
+| **Loi de Bernoulli** <br> *$\displaystyle X \sim \mathrm{Bernoulli}(p)$* | $\displaystyle E(X) = p$$\displaystyle V(X) = p(1-p)$ |
+
+## II. Linéarité de l'espérance
+
+| Propriété | Formule |
+|---|---|
+| Espérance de la somme | $\displaystyle E(X + Y) = E(X) + E(Y)$ |
+| Espérance du produit par un réel | $\displaystyle E(aX) = a \times E(X)$ |
+
+::: propriete Important
+Valable pour **toutes** les variables, indépendantes ou non.
+:::
+
+## III. Additivité de la variance
+
+| Propriété | Formule |
+|---|---|
+| Variance de la somme <br> *(variables indépendantes)* | $\displaystyle V(X + Y) = V(X) + V(Y)$ |
+| Variance du produit par un réel | $\displaystyle V(aX) = a^2 \times V(X)$ |
+
+::: attention
+L'additivité nécessite l'**indépendance** des variables.
+:::
+
+## IV. Loi binomiale
+
+::: propriete Représentation
+$X = X_1 + X_2 + \cdots + X_n$ où $X_i \sim \mathrm{Bernoulli}(p)$ indépendantes.
+:::
+
+| Notion | Formule |
+|---|---|
+| Espérance <br> *$\displaystyle X \sim \mathcal{B}(n, p)$* | $\displaystyle E(X) = np$ |
+| Variance | $\displaystyle V(X) = np(1-p)$ |
+| Écart-type | $\displaystyle \sigma(X) = \sqrt{np(1-p)}$ |
+
+## V. Échantillon de taille n
+
+::: definition
+$(X_1, X_2, \ldots, X_n)$ variables **indépendantes et identiques** (espérance $\mu$, variance $\sigma^2$).
+:::
+
+| Variable | Espérance | Variance / Écart-type |
+|---|---|---|
+| **Somme $\displaystyle S_n$** <br> $\displaystyle = X_1 + \cdots + X_n$ | $\displaystyle E(S_n) = n\mu$ | $\displaystyle V(S_n) = n\sigma^2$$\displaystyle \sigma(S_n) = \sqrt{n}\sigma$ |
+| **Moyenne $\displaystyle M_n$** <br> $\displaystyle = \frac{S_n}{n}$ | $\displaystyle E(M_n) = \mu$ | $\displaystyle V(M_n) = \frac{\sigma^2}{n}$$\displaystyle \sigma(M_n) = \frac{\sigma}{\sqrt{n}}$ |
+
+::: remarque Fréquence de succès
+$F_n = \frac{X_1 + \cdots + X_n}{n}$ (Bernoulli) vérifie $E(F_n) = p$ et $V(F_n) = \frac{p(1-p)}{n}$.
+:::
+
+## VI. Tableau récapitulatif
+
+| Notion | Formule |
+|---|---|
+| **Linéarité de l'espérance** | $\displaystyle E(X + Y) = E(X) + E(Y)$$\displaystyle E(aX) = a \times E(X)$*(toujours valable)* |
+| **Variance** | $\displaystyle V(X) = E(X^2) - [E(X)]^2$$\displaystyle \sigma(X) = \sqrt{V(X)}$ |
+| **Additivité de la variance** <br> *(variables indépendantes)* | $\displaystyle V(X + Y) = V(X) + V(Y)$$\displaystyle V(aX) = a^2 \times V(X)$ |
+| **Loi binomiale** <br> *$\displaystyle X \sim \mathcal{B}(n, p)$* | $\displaystyle E(X) = np$$\displaystyle V(X) = np(1-p)$$\displaystyle \sigma(X) = \sqrt{np(1-p)}$ |
+| **Échantillon - Somme** <br> *$\displaystyle S_n = X_1 + \cdots + X_n$* | $\displaystyle E(S_n) = n\mu$$\displaystyle V(S_n) = n\sigma^2$$\displaystyle \sigma(S_n) = \sqrt{n}\sigma$ |
+| **Échantillon - Moyenne** <br> *$\displaystyle M_n = \frac{S_n}{n}$* | $\displaystyle E(M_n) = \mu$$\displaystyle V(M_n) = \frac{\sigma^2}{n}$$\displaystyle \sigma(M_n) = \frac{\sigma}{\sqrt{n}}$ |
+| **Fréquence de succès** <br> *$\displaystyle F_n = \frac{X_1 + \cdots + X_n}{n}$* | $\displaystyle E(F_n) = p$$\displaystyle V(F_n) = \frac{p(1-p)}{n}$ |
+
+## VII. Erreurs fréquentes
+
+| Piège | Correction |
+|---|---|
+| Oublier l'**indépendance** pour l'additivité | $\displaystyle V(X + Y) = V(X) + V(Y)$ seulement si indépendantes |
+| Confondre $\displaystyle V(aX) = a^2V(X)$ avec $\displaystyle V(aX) = aV(X)$ | Attention au **carré** : $\displaystyle V(aX) = a^2 \times V(X)$ |
+| Penser que $\displaystyle E(X + Y) = E(X) + E(Y)$ nécessite l'indépendance | Linéarité toujours valable, même sans indépendance |
+| Confondre $\displaystyle V(M_n) = \frac{\sigma^2}{n}$ avec $\displaystyle \frac{\sigma^2}{n^2}$ | $\displaystyle V(M_n) = V\left(\frac{S_n}{n}\right) = \frac{1}{n^2}V(S_n) = \frac{\sigma^2}{n}$ |

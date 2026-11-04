@@ -1,0 +1,261 @@
+Titre: Résumé : Arithmétique
+
+<!-- optitab:1 -->
+::: objectifs
+Maîtriser l'arithmétique : divisibilité, congruences, PGCD, théorèmes de Bézout et Gauss, nombres premiers. Ce résumé couvre les notions essentielles d'arithmétique.
+:::
+
+## I. Divisibilité dans ℤ
+
+::: definition
+Soient $a$ et $b$ deux entiers relatifs. On dit que $b$ **divise** $a$ s'il existe un entier $k$ tel que $a = b \times k$.
+
+*Notation :* $b \mid a$ (lire "$b$ divise $a$")
+:::
+
+| Propriété | Formule |
+|---|---|
+| Transitivité | Si $b \mid a$ et $c \mid b$, alors $c \mid a$ |
+| Linéarité | Si $b \mid a$ et $b \mid c$, alors $b \mid (a + c)$ et $b \mid (a - c)$ |
+| Multiplication | Si $b \mid a$, alors $b \mid (a \times k)$ pour tout entier $k$ |
+
+::: methode
+Pour déterminer tous les diviseurs d'un entier positif $n$, tester tous les entiers de $1$ à $\sqrt{n}$. Si $d$ divise $n$, alors $\frac{n}{d}$ divise aussi $n$.
+:::
+
+## II. Division euclidienne
+
+::: theoreme
+Soient $a \in \mathbb{Z}$ et $b \in \mathbb{N}^{\ast}$.
+
+Il existe un unique couple d'entiers $(q, r)$ tel que :
+
+::: formule
+$a = bq + r$ avec $0 \leq r < b$
+:::
+
+*Termes :* $q$ est le **quotient**, $r$ est le **reste**
+:::
+
+::: remarque
+$b \mid a$ si et seulement si le reste de la division euclidienne de $a$ par $b$ est nul.
+:::
+
+[IMAGE_1]
+
+## III. Congruences dans ℤ
+
+::: definition
+Soient $a$, $b$ et $n$ des entiers, avec $n \geq 2$.
+
+On dit que $a$ est **congru à $b$ modulo $n$** si $n$ divise $a - b$.
+
+*Notation :* $a \equiv b \pmod{n}$
+:::
+
+| Caractérisation | Équivalence |
+|---|---|
+| Par divisibilité | $a \equiv b \pmod{n} \Leftrightarrow n \mid (a - b)$ |
+| Par reste | $a$ et $b$ ont le même reste dans la division euclidienne par $n$ |
+
+| Opération | Compatibilité |
+|---|---|
+| Addition | $a + c \equiv b + d \pmod{n}$ |
+| Soustraction | $a - c \equiv b - d \pmod{n}$ |
+| Multiplication | $a \times c \equiv b \times d \pmod{n}$ |
+| Puissance | $a^k \equiv b^k \pmod{n}$ pour tout entier naturel $k$ |
+
+## IV. PGCD de deux entiers
+
+::: definition
+Le **Plus Grand Commun Diviseur** (PGCD) de $a$ et $b$ est le plus grand entier positif qui divise à la fois $a$ et $b$.
+
+*Notation :* $\mathrm{PGCD}(a, b)$ ou $a \wedge b$
+:::
+
+| Propriété | Formule |
+|---|---|
+| Commutativité | $\mathrm{PGCD}(a, b) = \mathrm{PGCD}(b, a)$ |
+| Valeur absolue | $\mathrm{PGCD}(a, b) = \mathrm{PGCD}(|a|, |b|)$ |
+| Cas particulier | $\mathrm{PGCD}(a, 0) = |a|$ si $a \neq 0$ |
+| Invariance | $\mathrm{PGCD}(a, b) = \mathrm{PGCD}(a, b + ka)$ pour tout entier $k$ |
+
+::: remarque Algorithme d'Euclide
+Pour calculer $\mathrm{PGCD}(a, b)$ avec $a \geq b > 0$, on effectue des divisions euclidiennes successives jusqu'à obtenir un reste nul. Le dernier reste non nul est le PGCD.
+:::
+
+[IMAGE_2]
+
+## V. Entiers premiers entre eux
+
+::: definition
+Deux entiers relatifs $a$ et $b$ sont dits **premiers entre eux** si leur PGCD est égal à $1$.
+
+*Condition :* $\mathrm{PGCD}(a, b) = 1$
+:::
+
+::: propriete
+Deux nombres premiers distincts sont toujours premiers entre eux.
+:::
+
+## VI. Théorème de Bézout
+
+::: theoreme
+Soient $a$ et $b$ deux entiers relatifs non tous deux nuls.
+
+Il existe des entiers relatifs $x$ et $y$ tels que :
+
+::: formule
+$$ax + by = \mathrm{PGCD}(a, b)$$
+:::
+
+*Terme :* Un tel couple $(x, y)$ est appelé **couple de Bézout**
+:::
+
+::: remarque Caractérisation
+Deux entiers $a$ et $b$ sont premiers entre eux si et seulement s'il existe des entiers $x$ et $y$ tels que :
+
+::: formule
+$$ax + by = 1$$
+:::
+:::
+
+::: remarque Algorithme d'Euclide étendu
+Pour trouver un couple de Bézout, on remonte les divisions euclidiennes de l'algorithme d'Euclide en exprimant chaque reste comme combinaison linéaire de $a$ et $b$.
+:::
+
+::: remarque Inverse modulo $n$
+Si $\mathrm{PGCD}(a, n) = 1$, alors il existe un entier $x$ tel que $ax \equiv 1 \pmod{n}$. On trouve cet inverse avec l'algorithme d'Euclide étendu.
+:::
+
+## VII. Résolution de congruences linéaires
+
+| Cas | Méthode |
+|---|---|
+| **Si $d = \mathrm{PGCD}(a, n) = 1$** | Solution unique modulo $n$. Trouver l'inverse de $a$ modulo $n$. |
+| **Si $d > 1$ et $d \nmid b$** | Aucune solution |
+| **Si $d > 1$ et $d \mid b$** | $d$ solutions modulo $n$. Simplifier en divisant par $d$. |
+
+## VIII. Théorème de Gauss
+
+::: theoreme
+Soient $a$, $b$ et $c$ des entiers relatifs.
+
+Si $a$ divise le produit $bc$ et si $a$ et $b$ sont premiers entre eux, alors $a$ divise $c$.
+
+::: formule
+$$
+\begin{aligned}
+(a \mid bc \text{ et } \mathrm{PGCD}(a, b) = 1) &\Rightarrow a \mid c
+\end{aligned}
+$$
+:::
+:::
+
+::: remarque Corollaire
+Si un nombre premier $p$ divise le produit $ab$, alors $p$ divise $a$ ou $p$ divise $b$.
+:::
+
+## IX. Nombres premiers
+
+::: definition
+Un **nombre premier** est un entier naturel $\geq 2$ qui n'admet que deux diviseurs positifs : $1$ et lui-même.
+
+*Remarque :* $1$ n'est ni premier ni composé
+:::
+
+::: methode
+Pour tester si un entier $n \geq 2$ est premier, tester la divisibilité par tous les entiers de $2$ à $\sqrt{n}$.
+:::
+
+::: theoreme
+L'ensemble des nombres premiers est infini.
+:::
+
+## X. Décomposition en facteurs premiers
+
+::: theoreme
+Tout entier naturel $n \geq 2$ peut s'écrire de manière unique (à l'ordre près) comme produit de nombres premiers :
+
+::: formule
+$$n = p_1^{\alpha_1} \times p_2^{\alpha_2} \times \cdots \times p_k^{\alpha_k}$$
+:::
+
+où $p_1 < p_2 < \cdots < p_k$ sont des nombres premiers et $\alpha_1, \alpha_2, \ldots, \alpha_k$ sont des entiers naturels non nuls.
+:::
+
+## XI. Équations diophantiennes
+
+::: definition
+Une **équation diophantienne** est une équation dont on cherche les solutions en nombres entiers.
+:::
+
+| Étape | Méthode |
+|---|---|
+| **1. Condition d'existence** | Vérifier que $\mathrm{PGCD}(a, b) \mid c$ |
+| **2. Solution particulière** | Trouver $(x_0, y_0)$ avec l'algorithme d'Euclide étendu |
+| **3. Solutions générales** | Exprimer toutes les solutions en fonction de $(x_0, y_0)$ |
+
+## XII. Petit théorème de Fermat
+
+::: remarque Approfondissement
+Cette section est un approfondissement utile mais non essentiel pour les bases.
+:::
+
+::: theoreme
+Soit $p$ un nombre premier et $a$ un entier non divisible par $p$.
+
+::: formule
+$$a^{p-1} \equiv 1 \pmod{p}$$
+:::
+
+*Équivalent :*
+
+::: formule
+$$a^p \equiv a \pmod{p}$$
+:::
+
+pour tout entier $a$
+:::
+
+::: remarque Application
+Utilisé dans les tests de primalité et dans certains systèmes de cryptographie (comme RSA).
+:::
+
+## XIII. Erreurs fréquentes
+
+| Piège fréquent | Correction |
+|---|---|
+| Confondre « divise » et « est divisible par » | $b \mid a$ signifie "$b$ divise $a$« (ou »$a$ est divisible par $b$") |
+| Oublier que le reste doit être positif | Dans la division euclidienne, $0 \leq r < b$ (reste toujours positif ou nul) |
+| Confondre $\equiv$ et $=$ | $a \equiv b \pmod{n}$ signifie "$a$ et $b$ ont le même reste modulo $n$« , pas »$a = b$" |
+| Oublier de vérifier $\mathrm{PGCD}(a, n) = 1$ | Avant de chercher un inverse modulo $n$, vérifier que $\mathrm{PGCD}(a, n) = 1$ |
+| Oublier que $1$ n'est pas premier | $1$ n'est ni premier ni composé. Un nombre premier est $\geq 2$ |
+| Ne pas vérifier la condition d'existence | Pour les équations diophantiennes, toujours vérifier que $\mathrm{PGCD}(a, b) \mid c$ |
+
+## XIV. Formules essentielles — mémo rapide
+
+| Notion | Formule essentielle |
+|---|---|
+| **Divisibilité** | $b \mid a$ si $\exists k \in \mathbb{Z}, a = b \times k$ |
+| **Division euclidienne** | $a = bq + r$ avec $0 \leq r < b$ |
+| **Congruence** | $a \equiv b \pmod{n} \Leftrightarrow n \mid (a - b)$ |
+| **PGCD** | Plus grand diviseur commun positif de $a$ et $b$ |
+| **Nombres premiers entre eux** | $\mathrm{PGCD}(a, b) = 1$ |
+| **Théorème de Bézout** | $\exists (x, y) \in \mathbb{Z}^2, ax + by = \mathrm{PGCD}(a, b)$ |
+| **Théorème de Gauss** | $(a \mid bc \text{ et } \mathrm{PGCD}(a, b) = 1) \Rightarrow a \mid c$ |
+| **Nombre premier** | Entier $\geq 2$ ayant exactement deux diviseurs positifs |
+| **Décomposition en facteurs premiers** | $n = p_1^{\alpha_1} \times p_2^{\alpha_2} \times \cdots \times p_k^{\alpha_k}$ (unique) |
+| **Petit théorème de Fermat** | Si $p$ premier et $p \nmid a$, alors $a^{p-1} \equiv 1 \pmod{p}$ |
+| **Inverse modulo $n$** | Si $\mathrm{PGCD}(a, n) = 1$, alors $\exists x, ax \equiv 1 \pmod{n}$ |
+
+## XV. Méthodologie — stratégie de résolution
+
+| Type de problème | Méthode recommandée |
+|---|---|
+| **Calculer le PGCD** | Algorithme d'Euclide (divisions euclidiennes successives) |
+| **Trouver un couple de Bézout** | Algorithme d'Euclide étendu (remonter les divisions) |
+| **Résoudre $ax \equiv b \pmod{n}$** | Calculer $d = \mathrm{PGCD}(a, n)$, puis selon $d$ : solution unique ou $d$ solutions |
+| **Trouver l'inverse modulo $n$** | Vérifier $\mathrm{PGCD}(a, n) = 1$, puis algorithme d'Euclide étendu |
+| **Résoudre une équation diophantienne** | Vérifier condition d'existence, trouver solution particulière, exprimer solutions générales |
+| **Tester la primalité** | Tester la divisibilité par tous les entiers de $2$ à $\sqrt{n}$ |

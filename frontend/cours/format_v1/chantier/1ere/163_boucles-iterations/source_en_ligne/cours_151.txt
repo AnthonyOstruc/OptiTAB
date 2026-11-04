@@ -1,0 +1,72 @@
+Titre: Boucles et itérations en Python
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+    <div style="background:#e8f4fd; border:2px solid #3498db; border-radius:8px; padding:15px; margin-bottom:20px;">
+        <p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🎯 Objectifs du chapitre :</strong> répéter des instructions avec une boucle <code>for</code> (nombre de tours connu) ou <code>while</code> (tant qu’une condition est vraie), utiliser accumulateurs et compteurs, calculer les termes d’une suite et déterminer un seuil.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Boucle for et range</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Syntaxe :</strong> <code>for k in range(…):</code> exécute le bloc indenté une fois pour chaque valeur de <code>k</code>. <code>range(n)</code> donne $\displaystyle 0, 1, \ldots, n - 1$ ; <code>range(a, b)</code> donne les entiers de $\displaystyle a$ à $\displaystyle b - 1$ ; <code>range(a, b, p)</code> avance de $\displaystyle p$ en $\displaystyle p$.</p>
+        </div>
+        [IMAGE_1]
+        <p style="font-size:1em;"><strong>Exemple (accumulateur) :</strong> la somme $\displaystyle 1^2 + 2^2 + \cdots + 10^2$.</p>
+        <div style="background:#2c3e50; color:#ecf0f1; padding:12px; border-radius:6px; margin:10px 0 0 0; font-family:monospace; white-space:pre; overflow-x:auto;">s = 0
+for k in range(1, 11):
+    s = s + k &#42; k
+print(s)    # affiche 385</div>
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Accumulateur et compteur :</strong> une somme s’initialise à $\displaystyle 0$, un produit à $\displaystyle 1$, un compteur à $\displaystyle 0$ (puis <code>c = c + 1</code> à chaque cas favorable), toujours <strong>avant</strong> la boucle.
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Termes d’une suite</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <p style="font-size:1em;"><strong>Exemple :</strong> $\displaystyle u_0 = 0$ et $\displaystyle u_{n+1} = 0{,}5\,u_n + 2$. Pour obtenir $\displaystyle u_n$, on applique $\displaystyle n$ fois la relation de récurrence.</p>
+        <div style="background:#2c3e50; color:#ecf0f1; padding:12px; border-radius:6px; margin:10px 0 0 0; font-family:monospace; white-space:pre; overflow-x:auto;">def terme(n):
+    u = 0
+    for k in range(n):
+        u = 0.5 &#42; u + 2
+    return u</div>
+        <p style="font-size:1em;"><code>terme(10)</code> renvoie $\displaystyle 3{,}99609375$ : les termes se rapprochent de $\displaystyle 4$.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Boucle while et seuil</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Syntaxe :</strong> <code>while condition:</code> répète le bloc <strong>tant que</strong> la condition est vraie. On l’utilise quand on ne connaît pas le nombre de tours, par exemple pour trouver le premier rang où une suite dépasse un seuil.</p>
+        </div>
+        <p style="font-size:1em;"><strong>Exemple :</strong> $\displaystyle u_0 = 2$ et $\displaystyle u_{n+1} = 1{,}5\,u_n$. À partir de quel rang a-t-on $\displaystyle u_n \gt 20$ ?</p>
+        [IMAGE_2]
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong> la condition du <code>while</code> est celle pour <strong>continuer</strong> (ici $\displaystyle u \le 20$), c’est-à-dire le contraire de la condition d’arrêt. Si elle ne devient jamais fausse, la boucle est infinie.
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Boucles imbriquées et break</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <p style="font-size:1em;"><strong>Boucles imbriquées :</strong> pour compter les lancers de deux dés dont la somme vaut $\displaystyle 7$, on parcourt toutes les paires.</p>
+        <div style="background:#2c3e50; color:#ecf0f1; padding:12px; border-radius:6px; margin:10px 0 0 0; font-family:monospace; white-space:pre; overflow-x:auto;">c = 0
+for i in range(1, 7):
+    for j in range(1, 7):
+        if i + j == 7:
+            c = c + 1
+print(c, c / 36)    # affiche 6 et 0.1666…</div>
+        <p style="font-size:1em;"><strong>Sortie anticipée :</strong> <code>break</code> interrompt la boucle. Par exemple, pour trouver le plus petit diviseur de $\displaystyle 91$ supérieur à $\displaystyle 1$ :</p>
+        <div style="background:#2c3e50; color:#ecf0f1; padding:12px; border-radius:6px; margin:10px 0 0 0; font-family:monospace; white-space:pre; overflow-x:auto;">for d in range(2, 92):
+    if 91 % d == 0:
+        print(d)    # affiche 7
+        break</div>
+    </div>
+
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:8px; padding:15px; margin:20px 0 0 0;">
+        <p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🏆 L’essentiel :</strong> <code>for</code> quand le nombre de tours est connu (<code>range</code> exclut la borne de fin), <code>while</code> pour répéter tant qu’une condition est vraie (recherche de seuil) ; accumulateurs et compteurs s’initialisent avant la boucle ; un tableau de suivi permet de vérifier un programme. Fiche de synthèse dans l’onglet Fiches !</p>
+    </div>
+
+</div>

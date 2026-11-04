@@ -1,0 +1,2 @@
+# -*- coding: utf-8 -*-
+FIGURES = {'groupes': '\n\\begin{tikzpicture}[x=1cm,y=1cm]\n\\node[text=otNavy] at (3.6,1.8) {Quatre cartons de 125 livres};\n\\foreach \\x in {0,1.8,3.6,5.4}{\n  \\draw[draw=otNavy,fill=otSky,line width=.8pt] (\\x,0) rectangle +(1.5,1.1);\n  \\node[text=otNavy] at (\\x+.75,.55) {125};\n}\n\\node[text=otGreenDark] at (3.45,-.65) {$4\\times125=500$ livres};\n\\end{tikzpicture}\n'}

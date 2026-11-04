@@ -224,6 +224,8 @@
           </div>
         </section>
 
+        <QuizNotes :chapitres="chapitres" :prefere="reprise?.chapitre?.id" />
+
         <!-- Ordinateur : la méthode ; téléphone : le prof (le menu latéral n'y est pas) -->
         <section class="es-card ae-tip" aria-labelledby="ae-tip-title">
           <h2 id="ae-tip-title" class="es-h2">La méthode qui marche</h2>
@@ -270,6 +272,7 @@ import {
 } from '@heroicons/vue/24/outline'
 import ProgressRing from './ProgressRing.vue'
 import WeekBars from './WeekBars.vue'
+import QuizNotes from './QuizNotes.vue'
 import SubscriptionPromptModal from '@/components/modals/SubscriptionPromptModal.vue'
 import { fetchMyOverview, fetchParentInvitations, respondParentInvitation } from '@/api/users'
 import { useProgression } from '@/composables/useProgression'

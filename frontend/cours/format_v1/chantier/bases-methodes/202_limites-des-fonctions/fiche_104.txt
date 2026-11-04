@@ -1,0 +1,160 @@
+Titre: Résumé : Limites des Fonctions
+
+<!-- optitab:1 -->
+::: objectifs
+Maîtriser les limites de fonctions : définitions, opérations, limites usuelles, théorème des gendarmes, croissances comparées et asymptotes.
+:::
+
+## I. Définitions intuitives
+
+| Type de limite | Formule |
+|---|---|
+| **Limite finie en un point** <br> *$f(x)$ se rapproche de $L$ quand $x$ se rapproche de $a$* | $\displaystyle \lim_{x \to a} f(x) = L$ |
+| **Limite finie à l'infini** <br> *$f(x)$ se rapproche de $L$ quand $x$ devient très grand* | $\displaystyle \lim_{x \to +\infty} f(x) = L$ |
+| **Limite infinie** <br> *$f(x)$ devient très grand quand $x$ se rapproche de $a$* | $\displaystyle \lim_{x \to a} f(x) = +\infty$ |
+| **Théorème - Existence de la limite** <br> *La limite existe si les limites à droite et à gauche sont égales* | $\displaystyle \lim_{x \to a} f(x) = L \quad \Leftrightarrow$ <br> $\displaystyle \lim_{x \to a^+} f(x) = \lim_{x \to a^-} f(x) = L$ |
+
+## II. Opérations sur les limites
+
+| Opération | Formule |
+|---|---|
+| **Somme** | $\displaystyle \lim_{x \to a} (f(x) + g(x)) = \displaystyle\lim_{x \to a} f(x) + \displaystyle\lim_{x \to a} g(x)$ |
+| **Somme <br> Exception** | *Forme indéterminée :* $\displaystyle +\infty - \infty$ |
+| **Produit** | $\displaystyle \lim_{x \to a} (f(x) \times g(x)) = \displaystyle\lim_{x \to a} f(x) \times \displaystyle\lim_{x \to a} g(x)$ |
+| **Produit <br> Exception** | *Forme indéterminée :* $\displaystyle 0 \times (+\infty)$ |
+| **Quotient** | $\displaystyle \lim_{x \to a} \frac{f(x)}{g(x)} = \frac{\displaystyle\lim_{x \to a} f(x)}{\displaystyle\lim_{x \to a} g(x)}$ |
+| **Quotient <br> Exception** | *Formes indéterminées :* $\displaystyle \frac{0}{0}$ ou $\displaystyle \frac{\infty}{\infty}$ |
+
+::: attention Formes indéterminées (FI)
+« Forme indéterminée » signifie qu'on ne peut pas conclure directement, il faut **transformer** l'expression avant d'appliquer les règles.
+
+$+\infty - \infty$ → Factoriser par le terme dominant $0 \times \infty$ → Transformer en quotient ou simplifier $\frac{0}{0}$ → Factoriser ou simplifier $\frac{\infty}{\infty}$ → Factoriser par le terme de plus haut degré
+:::
+
+::: theoreme Composition des limites
+Si $\lim_{x \to a} g(x) = b$ et $\lim_{y \to b} f(y) = L$, alors :
+
+::: formule
+$$\lim_{x \to a} f(g(x)) = L$$
+:::
+:::
+
+## III. Limites des fonctions de référence
+
+| Fonction | Limite |
+|---|---|
+| $\displaystyle \lim_{x \to +\infty} x^n$ ($\displaystyle n \geq 1$) | $\displaystyle +\infty$ |
+| $\displaystyle \lim_{x \to +\infty} \frac{1}{x^n}$ ($\displaystyle n \geq 1$) | $\displaystyle 0$ |
+| $\displaystyle \lim_{x \to +\infty} \sqrt{x}$ | $\displaystyle +\infty$ |
+| $\displaystyle \lim_{x \to +\infty} e^x$ | $\displaystyle +\infty$ |
+| $\displaystyle \lim_{x \to -\infty} e^x$ | $\displaystyle 0$ |
+| $\displaystyle \lim_{x \to 0} \frac{\sin(x)}{x}$ | $\displaystyle 1$ |
+| $\displaystyle \lim_{x \to 0} \frac{e^x - 1}{x}$ | $\displaystyle 1$ |
+
+## IV. Limites et comparaison
+
+::: theoreme
+Soient $f$, $g$ et $h$ trois fonctions telles que, au voisinage de $a$ :
+
+$$g(x) \leq f(x) \leq h(x)$$
+
+Si $\lim_{x \to a} g(x) = \lim_{x \to a} h(x) = L$ (où $L \in \mathbb{R}$), alors :
+
+::: formule
+$$\lim_{x \to a} f(x) = L$$
+:::
+:::
+
+::: theoreme Comparaison et limite infinie
+Si $f(x) \leq g(x)$ au voisinage de $a$ :
+
+- Si $\lim_{x \to a} f(x) = +\infty$, alors $\lim_{x \to a} g(x) = +\infty$
+- Si $\lim_{x \to a} g(x) = -\infty$, alors $\lim_{x \to a} f(x) = -\infty$
+:::
+
+## V. Croissances comparées
+
+| Type de croissance | Formules |
+|---|---|
+| **Exponentielle / Puissance** <br> *Pour tout $n \geq 1$* <br> *L'exponentielle croît plus vite* | $\displaystyle \lim_{x \to +\infty} \frac{e^x}{x^n} = +\infty$ <br> <br> $\displaystyle \lim_{x \to +\infty} \frac{x^n}{e^x} = 0$ |
+| **Logarithme / Puissance** <br> *Pour tout $n \geq 1$* <br> *Le logarithme croît plus lentement* | $\displaystyle \lim_{x \to +\infty} \frac{\ln(x)}{x^n} = 0$ <br> <br> $\displaystyle \lim_{x \to 0^+} x^n \ln(x) = 0$ |
+
+## VI. Asymptotes parallèles aux axes
+
+::: definition Asymptote horizontale
+Si $\lim_{x \to +\infty} f(x) = L$ ou $\lim_{x \to -\infty} f(x) = L$ (où $L \in \mathbb{R}$), alors la droite d'équation **$y = L$** est une asymptote horizontale.
+:::
+
+[IMAGE_1]
+
+::: definition Asymptote verticale
+Si $\lim_{x \to a^+} f(x) = \pm\infty$ ou $\lim_{x \to a^-} f(x) = \pm\infty$, alors la droite d'équation **$x = a$** est une asymptote verticale.
+:::
+
+[IMAGE_2]
+
+## VII. Asymptotes obliques
+
+::: definition
+Si $\lim_{x \to +\infty} [f(x) - (ax + b)] = 0$ (où $a, b \in \mathbb{R}$ avec $a \neq 0$), alors la droite d'équation **$y = ax + b$** est une asymptote oblique.
+:::
+
+::: methode Pour déterminer une asymptote oblique
+1. **Calculer $a$ :** $a = \lim_{x \to +\infty} \frac{f(x)}{x}$
+2. **Calculer $b$ :** $b = \lim_{x \to +\infty} [f(x) - ax]$
+3. **Vérifier :** Si $a \neq 0$ et $b$ existe, alors $y = ax + b$ est asymptote oblique
+:::
+
+[IMAGE_3]
+
+## VIII. Méthodes de calcul de limites
+
+::: exemple Factorisation du terme prépondérant
+Pour calculer une limite à l'infini, factoriser par le terme de plus haut degré au numérateur et au dénominateur.
+
+*Exemple :* $\displaystyle \lim_{x \to +\infty} \frac{2x^2 + 3x - 1}{3x^2 - x + 2} = \lim_{x \to +\infty} \frac{x^2(2 + \frac{3}{x} - \frac{1}{x^2})}{x^2(3 - \frac{1}{x} + \frac{2}{x^2})} = \frac{2}{3}$
+:::
+
+::: exemple Simplification
+Pour les formes indéterminées $\frac{0}{0}$, factoriser numérateur et dénominateur puis simplifier.
+
+*Exemple :* $\displaystyle \lim_{x \to 1} \frac{x^2 - 1}{x - 1} = \lim_{x \to 1} \frac{(x-1)(x+1)}{x-1} = \lim_{x \to 1} (x+1) = 2$
+:::
+
+## IX. Erreurs fréquentes
+
+| Piège fréquent | Correction |
+|---|---|
+| Appliquer directement les règles sur les FI | Transformer d'abord (factoriser, simplifier) |
+| Confondre limite et valeur | Ne pas confondre $\displaystyle \lim_{x \to a} f(x)$ avec $f(a)$ |
+| Oublier de vérifier les limites à gauche et à droite | Pour les asymptotes verticales, calculer les deux limites |
+| Croissances comparées : oublier que $e^x$ croît plus vite | $\displaystyle \lim_{x \to +\infty} \frac{e^x}{x^n} = +\infty$ pour tout $n$ |
+| Division par zéro sans vérification | Vérifier les conditions de validité avant de diviser |
+
+## X. Formules essentielles — mémo rapide
+
+| Notion | Formule essentielle |
+|---|---|
+| **Limite d'une somme** | $\displaystyle \lim_{x \to a} (f(x) + g(x)) = \displaystyle\lim_{x \to a} f(x) + \displaystyle\lim_{x \to a} g(x)$ |
+| **Limite d'un produit** | $\displaystyle \lim_{x \to a} (f(x) \times g(x)) = \displaystyle\lim_{x \to a} f(x) \times \displaystyle\lim_{x \to a} g(x)$ |
+| **Limite d'un quotient** | $\displaystyle \lim_{x \to a} \frac{f(x)}{g(x)} = \frac{\displaystyle\lim_{x \to a} f(x)}{\displaystyle\lim_{x \to a} g(x)}$ |
+| **Théorème des gendarmes** | Si $g(x) \leq f(x) \leq h(x)$ et $\displaystyle \lim_{x \to a} g(x) = \lim_{x \to a} h(x) = L$, alors $\displaystyle \lim_{x \to a} f(x) = L$ |
+| **Croissance comparée exponentielle** | $\displaystyle \lim_{x \to +\infty} \frac{e^x}{x^n} = +\infty$ et $\displaystyle \lim_{x \to +\infty} \frac{x^n}{e^x} = 0$ |
+| **Croissance comparée logarithme** | $\displaystyle \lim_{x \to +\infty} \frac{\ln(x)}{x^n} = 0$ et $\displaystyle \lim_{x \to 0^+} x^n \ln(x) = 0$ |
+| **Asymptote horizontale** | Si $\displaystyle \lim_{x \to +\infty} f(x) = L$, alors $y = L$ est asymptote horizontale |
+| **Asymptote verticale** | Si $\displaystyle \lim_{x \to a^+} f(x) = \pm\infty$, alors $x = a$ est asymptote verticale |
+| **Asymptote oblique** | $\displaystyle a = \lim_{x \to +\infty} \frac{f(x)}{x}$ et $\displaystyle b = \lim_{x \to +\infty} [f(x) - ax]$ |
+
+## XI. Méthodologie — stratégie de résolution
+
+| Type de problème | Méthode recommandée |
+|---|---|
+| **Calculer une limite simple** | Utiliser les opérations directes (somme, produit, quotient) si pas de FI |
+| **Forme indéterminée $\displaystyle \frac{\infty}{\infty}$** | Factoriser par le terme de plus haut degré au numérateur et dénominateur |
+| **Forme indéterminée $\displaystyle \frac{0}{0}$** | Factoriser numérateur et dénominateur puis simplifier |
+| **Forme indéterminée $+\infty - \infty$** | Factoriser par le terme dominant |
+| **Limite avec $\sin$ ou $\cos$** | Utiliser le théorème des gendarmes (encadrer entre $-1$ et $1$) |
+| **Limite avec exponentielle** | Utiliser les croissances comparées : $e^x$ croît plus vite que $x^n$ |
+| **Déterminer une asymptote horizontale** | Calculer $\displaystyle \lim_{x \to +\infty} f(x)$ et $\displaystyle \lim_{x \to -\infty} f(x)$ |
+| **Déterminer une asymptote verticale** | Chercher les valeurs où le dénominateur s'annule, calculer les limites à gauche et à droite |
+| **Déterminer une asymptote oblique** | Calculer $\displaystyle a = \lim_{x \to +\infty} \frac{f(x)}{x}$, puis $\displaystyle b = \lim_{x \to +\infty} [f(x) - ax]$ |

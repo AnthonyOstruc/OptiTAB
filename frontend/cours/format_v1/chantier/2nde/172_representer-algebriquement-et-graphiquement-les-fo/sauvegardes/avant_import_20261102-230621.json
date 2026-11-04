@@ -1,0 +1,564 @@
+{
+ "notion": 172,
+ "dossier": "C:\\Users\\SWEELCO-AT\\Desktop\\SWINDER\\OptiTABV2\\frontend\\cours\\format_v1\\chantier\\2nde\\172_representer-algebriquement-et-graphiquement-les-fo",
+ "date": "2026-11-02T23:06:20",
+ "cours": [
+  {
+   "id": 218,
+   "contenu": "<!-- optitab:1 -->\n::: objectifs\nCalculer et lire des images et des antécédents, reconnaître les points d’une courbe, résoudre graphiquement des équations et inéquations du type $f(x) = k$, $f(x) \\lt k$, $f(x) = g(x)$, $f(x) \\lt g(x)$, reconnaître une fonction paire ou impaire, et résoudre une inéquation produit ou quotient avec un tableau de signes.\n:::\n\n## I. Image, antécédent, ensemble de définition\n\n::: definition\nUne **fonction** $f$ définie sur un ensemble $D$ associe à chaque nombre $x$ de $D$ un **unique** nombre noté $f(x)$, appelé **image** de $x$. Si $f(x) = y$, on dit que $x$ est **un antécédent** de $y$.\n:::\n\nUne fonction peut être donnée par une **formule**, par un **tableau de valeurs** ou par une **courbe**.\n\n::: exemple\nSoit $f(x) = x^2 - 2x - 3$.\n\n- Image de $4$ : $f(4) = 16 - 8 - 3 = 5$.\n- Antécédents de $-3$ : on résout $x^2 - 2x - 3 = -3$, soit $x^2 - 2x = 0$, c’est-à-dire $x(x - 2) = 0$. Les antécédents de $-3$ sont $0$ et $2$.\n:::\n\n::: remarque Ensemble de définition\nOn exclut les valeurs interdites :\n\n- $x \\mapsto \\frac{1}{x - 2}$ est définie sur $\\mathbb{R} \\setminus \\{2\\}$ (pas de division par $0$) ;\n- $x \\mapsto \\sqrt{x + 1}$ est définie sur $[-1\\,;+\\infty[$ (pas de racine carrée d’un nombre négatif).\n:::\n\n::: attention\nUn nombre a toujours **une seule** image, mais il peut avoir aucun, un ou plusieurs antécédents.\n:::\n\n## II. Courbe représentative\n\n::: definition\nDans un repère, la **courbe représentative** $\\mathcal{C}_f$ de $f$ est l’ensemble des points $M(x\\,;f(x))$ pour $x$ dans $D$. On dit que $\\mathcal{C}_f$ a pour **équation** $y = f(x)$.\n:::\n\n::: propriete\n$$M(a\\,;b) \\in \\mathcal{C}_f \\iff a \\in D \\text{ et } b = f(a)$$\n:::\n\n::: exemple\nAvec $f(x) = x^2 - 2x - 3$ :\n\n- $A(-2\\,;5)$ : $f(-2) = 4 + 4 - 3 = 5$, donc $A \\in \\mathcal{C}_f$ ;\n- $B(1\\,;0)$ : $f(1) = 1 - 2 - 3 = -4 \\neq 0$, donc $B \\notin \\mathcal{C}_f$.\n:::\n\n::: methode Lire une image, des antécédents\n- **Image de $a$** : on part de $a$ sur l’axe des abscisses, on monte (ou descend) jusqu’à la courbe, puis on lit l’ordonnée.\n- **Antécédents de $k$** : on trace la droite horizontale $y = k$ ; les antécédents sont les **abscisses** de ses points d’intersection avec la courbe.\n:::\n\n[IMAGE_1]\n\n## III. Résolution graphique d’équations et d’inéquations\n\n::: propriete Avec une droite horizontale\n- Les solutions de $f(x) = k$ sont les abscisses des points de $\\mathcal{C}_f$ d’ordonnée $k$.\n- Les solutions de $f(x) \\lt k$ sont les abscisses des points de $\\mathcal{C}_f$ situés **strictement sous** la droite $y = k$ (pour $f(x) \\gt k$ : strictement au-dessus).\n:::\n\n::: propriete Avec deux courbes\n- Les solutions de $f(x) = g(x)$ sont les abscisses des points d’intersection de $\\mathcal{C}_f$ et $\\mathcal{C}_g$.\n- Les solutions de $f(x) \\lt g(x)$ sont les abscisses des points où $\\mathcal{C}_f$ est **strictement sous** $\\mathcal{C}_g$.\n:::\n\n::: exemple\nAvec $f(x) = x^2 - 2x - 3$ et $g(x) = x + 1$, on lit sur la figure :\n\n- $f(x) = g(x) \\iff x = -1$ ou $x = 4$ ;\n- $f(x) \\le g(x) \\iff x \\in [-1\\,;4]$ (parabole sous la droite, bornes comprises) ;\n- $f(x) \\lt 0 \\iff x \\in {]-1\\,;3[}$ (parabole strictement sous l’axe des abscisses).\n:::\n\n[IMAGE_2]\n\n::: attention\n- Les solutions sont des valeurs de $x$ : on les lit sur l’axe des **abscisses**.\n- Inégalité large ($\\le$, $\\ge$) : bornes comprises, crochets fermés ; inégalité stricte ($\\lt$, $\\gt$) : crochets ouverts.\n- Une lecture graphique peut être imprécise : on la confirme par le calcul quand c’est possible.\n:::\n\n::: exemple Confirmation par le calcul\n$$\n\\begin{aligned}\nf(x) = g(x) &\\iff x^2 - 2x - 3 = x + 1 \\\\\n&\\iff x^2 - 3x - 4 = 0 \\\\\n&\\iff (x + 1)(x - 4) = 0\n\\end{aligned}\n$$\n\nDonc $x = -1$ ou $x = 4$ : la lecture graphique est confirmée.\n:::\n\n## IV. Fonctions paires et impaires\n\n::: definition\nSoit $f$ définie sur un ensemble $D$ symétrique par rapport à $0$ (si $x \\in D$, alors $-x \\in D$).\n\n- $f$ est **paire** si, pour tout $x$ de $D$, $f(-x) = f(x)$.\n- $f$ est **impaire** si, pour tout $x$ de $D$, $f(-x) = -f(x)$.\n:::\n\n::: propriete Traduction géométrique\n- $f$ est paire si et seulement si $\\mathcal{C}_f$ est symétrique par rapport à l’**axe des ordonnées** : si $M(x\\,;y) \\in \\mathcal{C}_f$, alors $M'(-x\\,;y) \\in \\mathcal{C}_f$.\n- $f$ est impaire si et seulement si $\\mathcal{C}_f$ est symétrique par rapport à l’**origine** $O$ : si $N(x\\,;y) \\in \\mathcal{C}_f$, alors $N'(-x\\,;-y) \\in \\mathcal{C}_f$.\n:::\n\n[IMAGE_3]\n\n::: exemple\n$g(x) = 3x^2 - 5$ est paire : pour tout réel $x$,\n\n$$g(-x) = 3(-x)^2 - 5 = 3x^2 - 5 = g(x)$$\n\n$h(x) = x^3 - 3x$ est impaire : pour tout réel $x$,\n\n$$\n\\begin{aligned}\nh(-x) &= (-x)^3 - 3(-x) \\\\\n&= -x^3 + 3x = -h(x)\n\\end{aligned}\n$$\n\n$f(x) = x^2 - 2x - 3$ n’est ni paire ni impaire : $f(1) = -4$ et $f(-1) = 0$, donc $f(-1) \\neq f(1)$ et $f(-1) \\neq -f(1)$.\n:::\n\n::: attention\nPour montrer qu’une fonction n’est **pas** paire (ou pas impaire), un seul contre-exemple numérique suffit. Pour montrer qu’elle **est** paire, il faut un calcul valable pour tout $x$.\n:::\n\n## V. Résolution algébrique avec un tableau de signes\n\n::: methode Résoudre une inéquation produit ou quotient\n1. Tout passer dans un membre pour comparer à $0$.\n2. Factoriser (produit ou quotient de facteurs affines).\n3. Étudier le signe de chaque facteur : $ax + b$ s’annule en $-\\frac{b}{a}$ et a le signe de $a$ à droite de cette valeur.\n4. Appliquer la règle des signes dans un tableau, puis lire les solutions.\n:::\n\n::: exemple\nRésoudre $x^2 - 2x - 3 \\le 0$. On factorise : $x^2 - 2x - 3 = (x + 1)(x - 3)$.\n:::\n\n::: tableau\nx : -\\infty, -1, 3, +\\infty\nx+1 : , -, z, +, t, +,\nx-3 : , -, t, -, z, +,\nProduit : , +, z, -, z, +,\n:::\n\n::: resultat\n$$(x + 1)(x - 3) \\le 0 \\iff x \\in [-1\\,;3]$$\n\nCe que confirme la courbe : la parabole est sous l’axe des abscisses entre $-1$ et $3$.\n:::\n\n::: attention\nPour un quotient comme $\\frac{x + 1}{x - 3}$, la valeur $3$ est **interdite** (double barre dans le tableau) : elle est toujours exclue de l’ensemble des solutions, même pour une inégalité large.\n:::\n\n::: retenir\n- Une image est unique ; un nombre peut avoir aucun, un ou plusieurs antécédents.\n- $M(a\\,;b) \\in \\mathcal{C}_f \\iff b = f(a)$.\n- $f(x) = k$, $f(x) \\lt k$, $f(x) = g(x)$, $f(x) \\lt g(x)$ : les solutions se lisent sur l’axe des abscisses.\n- Paire : $f(-x) = f(x)$ (symétrie d’axe des ordonnées) ; impaire : $f(-x) = -f(x)$ (symétrie de centre $O$).\n- Inéquation : comparer à $0$, factoriser, tableau de signes.\n:::"
+  }
+ ],
+ "fiches": [
+  {
+   "id": 142,
+   "summary": "<!-- optitab:1 -->\n::: objectifs\nRetenir l’essentiel : image, antécédent, courbe, résolutions graphique et algébrique, parité. Programme de Seconde.\n:::\n\n## I. Image, antécédent, courbe\n\n::: formule\n$$M(a\\,;b) \\in \\mathcal{C}_f \\iff b = f(a)$$\n:::\n\n[IMAGE_1]\n\n1. Image de $a$ : on calcule $f(a)$, ou on lit l’ordonnée du point de $\\mathcal{C}_f$ d’abscisse $a$.\n2. Antécédents de $k$ : on résout $f(x) = k$, ou on lit les abscisses des points de $\\mathcal{C}_f$ situés sur la droite $y = k$.\n3. Paire : $f(-x) = f(x)$, courbe symétrique par rapport à l’axe des ordonnées.\n4. Impaire : $f(-x) = -f(x)$, courbe symétrique par rapport à l’origine.\n\n## II. Résoudre des équations et inéquations\n\n[IMAGE_2]\n\n1. $f(x) = k$ : abscisses des points de $\\mathcal{C}_f$ sur la droite $y = k$.\n2. $f(x) \\lt k$ : abscisses des points de $\\mathcal{C}_f$ strictement sous la droite $y = k$.\n3. $f(x) = g(x)$ : abscisses des points d’intersection des deux courbes.\n4. $f(x) \\le g(x)$ : abscisses des points où $\\mathcal{C}_f$ est sous $\\mathcal{C}_g$.\n5. Par le calcul : tout passer d’un côté, factoriser, tableau de signes.\n\nExemple : $x^2 - 2x - 3 \\le 0 \\iff (x + 1)(x - 3) \\le 0 \\iff x \\in [-1\\,;3]$.\n\n::: tableau\nx : -\\infty, -1, 3, +\\infty\nx+1 : , -, z, +, t, +,\nx-3 : , -, t, -, z, +,\nProduit : , +, z, -, z, +,\n:::\n\n## III. Les pièges à éviter\n\n::: attention Les 4 erreurs classiques\n1. Confondre image (lue sur l’axe des ordonnées) et antécédent (lu sur l’axe des abscisses).\n2. Donner des ordonnées comme solutions d’une inéquation : les solutions sont des valeurs de $x$.\n3. Oublier les crochets : $\\le$ inclut les bornes, $\\lt$ les exclut.\n4. Garder une valeur interdite dans l’ensemble des solutions d’une inéquation quotient.\n:::\n\n::: conseil Réflexe\nJe lis d’abord sur le graphique pour deviner la réponse, puis je la confirme par le calcul.\n:::"
+  }
+ ],
+ "exercices": [
+  {
+   "id": 2035,
+   "question": "<!-- optitab:1 -->\nSoit $f$ la fonction définie sur $\\mathbb{R}$ par $f(x) = x^2 - 3x + 1$. On note $\\mathcal{C}_f$ sa courbe représentative, tracée ci-dessous.\n\n[IMAGE_1]\n\n1. Le point $A(2\\,;-1)$ appartient-il à $\\mathcal{C}_f$ ?\n2. Le point $B(-1\\,;5)$ appartient-il à $\\mathcal{C}_f$ ?\n3. Le point $C(0\\,;0)$ appartient-il à $\\mathcal{C}_f$ ?\n4. Donner les coordonnées du point de $\\mathcal{C}_f$ d’abscisse $3$.\n5. Déterminer par le calcul les abscisses des points de $\\mathcal{C}_f$ d’ordonnée $1$.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Le point $A(2\\,;-1)$\n\n::: methode\nUn point $M(a\\,;b)$ appartient à $\\mathcal{C}_f$ si et seulement si $b = f(a)$ : on calcule l’image de l’abscisse et on la compare à l’ordonnée.\n:::\n\n::: etape Calculer l’image de l’abscisse $x_A = 2$\n$$f(2) = 2^2 - 3 \\times 2 + 1 = 4 - 6 + 1 = -1$$\n:::\n\n::: etape Comparer avec l’ordonnée $y_A = -1$\n$f(2) = -1 = y_A$.\n:::\n\n::: resultat\n$A \\in \\mathcal{C}_f$.\n:::\n\n## Question 2 : Le point $B(-1\\,;5)$\n\n::: methode\nMême méthode : calculer $f(-1)$ et comparer à $y_B$.\n:::\n\n::: etape Calculer $f(-1)$\n$$f(-1) = (-1)^2 - 3 \\times (-1) + 1 = 1 + 3 + 1 = 5$$\n:::\n\n::: resultat\n$f(-1) = 5 = y_B$, donc $B \\in \\mathcal{C}_f$.\n:::\n\n::: attention\nMettre $-1$ entre parenthèses : $(-1)^2 = 1$, alors que $-1^2 = -1$.\n:::\n\n## Question 3 : Le point $C(0\\,;0)$\n\n::: methode\nCalculer $f(0)$ et comparer à $y_C = 0$.\n:::\n\n::: etape Calculer $f(0)$\n$$f(0) = 0^2 - 3 \\times 0 + 1 = 1$$\n:::\n\n::: resultat\n$f(0) = 1 \\neq 0$, donc $C \\notin \\mathcal{C}_f$ : le point de $\\mathcal{C}_f$ d’abscisse $0$ est $(0\\,;1)$, pas $(0\\,;0)$.\n:::\n\n## Question 4 : Point de $\\mathcal{C}_f$ d’abscisse $3$\n\n::: methode\nSur $\\mathcal{C}_f$, le point d’abscisse $a$ a pour ordonnée $f(a)$.\n:::\n\n::: etape Calculer $f(3)$\n$$f(3) = 3^2 - 3 \\times 3 + 1 = 9 - 9 + 1 = 1$$\n:::\n\n::: resultat\nLe point de $\\mathcal{C}_f$ d’abscisse $3$ est $(3\\,;1)$.\n:::\n\n## Question 5 : Points de $\\mathcal{C}_f$ d’ordonnée $1$\n\n::: methode\nChercher les points d’ordonnée $1$, c’est résoudre l’équation $f(x) = 1$.\n:::\n\n::: etape Écrire l’équation et tout passer à gauche\n$$\n\\begin{aligned}\nf(x) = 1 &\\iff x^2 - 3x + 1 = 1 \\\\\n&\\iff x^2 - 3x = 0\n\\end{aligned}\n$$\n:::\n\n::: etape Factoriser par $x$\n$$x^2 - 3x = 0 \\iff x(x - 3) = 0$$\n:::\n\n::: etape Appliquer la règle du produit nul\n$x = 0$ ou $x - 3 = 0$, soit $x = 0$ ou $x = 3$.\n:::\n\n::: resultat\nLes abscisses cherchées sont $0$ et $3$ : ce sont les points $(0\\,;1)$ et $(3\\,;1)$.\n:::\n\n[IMAGE_2]\n\n::: retenir\nLes points d’ordonnée $k$ s’obtiennent en résolvant $f(x) = k$ : graphiquement, ce sont les intersections de $\\mathcal{C}_f$ avec la droite $y = k$.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $f(2) = -1$ : oui, $A \\in \\mathcal{C}_f$.\n2. $f(-1) = 5$ : oui, $B \\in \\mathcal{C}_f$.\n3. $f(0) = 1 \\neq 0$ : non, $C \\notin \\mathcal{C}_f$.\n4. $(3\\,;1)$.\n5. $x = 0$ ou $x = 3$.",
+   "titre": "Découverte - Courbe représentative : appartenance d’un point",
+   "difficulty": "easy",
+   "contenu": "<!-- optitab:1 -->\nSoit $f$ la fonction définie sur $\\mathbb{R}$ par $f(x) = x^2 - 3x + 1$. On note $\\mathcal{C}_f$ sa courbe représentative, tracée ci-dessous.\n\n[IMAGE_1]\n\n1. Le point $A(2\\,;-1)$ appartient-il à $\\mathcal{C}_f$ ?\n2. Le point $B(-1\\,;5)$ appartient-il à $\\mathcal{C}_f$ ?\n3. Le point $C(0\\,;0)$ appartient-il à $\\mathcal{C}_f$ ?\n4. Donner les coordonnées du point de $\\mathcal{C}_f$ d’abscisse $3$.\n5. Déterminer par le calcul les abscisses des points de $\\mathcal{C}_f$ d’ordonnée $1$."
+  },
+  {
+   "id": 2037,
+   "question": "<!-- optitab:1 -->\nUne fonction $f$ est définie sur $[-3\\,;3]$. On a relevé les valeurs suivantes.\n\n| $x$ | $-3$ | $-2$ | $-1$ | $0$ | $1$ | $2$ | $3$ |\n|---|---|---|---|---|---|---|---|\n| $f(x)$ | $5$ | $2$ | $0$ | $-1$ | $0$ | $2$ | $5$ |\n\n1. Donner $f(-2)$, $f(0)$ et $f(3)$.\n2. Donner les antécédents de $0$ par $f$ figurant dans la table.\n3. Le point $P(2\\,;2)$ appartient-il à la courbe $\\mathcal{C}_f$ ?\n4. Parmi les valeurs de la table, quelles sont les solutions de $f(x) = 2$ ?\n5. Parmi les valeurs de $x$ de la table, pour lesquelles a-t-on $f(x) \\le 0$ ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Lire des images\n\n::: methode\nL’image de $a$ se lit dans la colonne de $a$, sur la ligne $f(x)$.\n:::\n\n::: etape Lecture dans la table\n- Colonne $x = -2$ : $f(-2) = 2$.\n- Colonne $x = 0$ : $f(0) = -1$.\n- Colonne $x = 3$ : $f(3) = 5$.\n:::\n\n::: resultat\n$f(-2) = 2$, $f(0) = -1$ et $f(3) = 5$.\n:::\n\n## Question 2 : Antécédents de $0$\n\n::: methode\nOn cherche $0$ sur la ligne $f(x)$, puis on lit les valeurs de $x$ correspondantes.\n:::\n\n::: etape Lecture dans la table\nLa valeur $0$ apparaît deux fois : $f(-1) = 0$ et $f(1) = 0$.\n:::\n\n::: resultat\nDans la table, les antécédents de $0$ sont $-1$ et $1$.\n:::\n\n::: attention\nUne table ne donne que quelques valeurs : la fonction pourrait avoir d’autres antécédents de $0$ entre deux colonnes. On répond donc « d’après la table ».\n:::\n\n## Question 3 : Le point $P(2\\,;2)$\n\n::: methode\n$P(a\\,;b) \\in \\mathcal{C}_f$ si et seulement si $f(a) = b$.\n:::\n\n::: etape Comparer $f(2)$ et l’ordonnée de $P$\nLa table donne $f(2) = 2$, et $P$ a pour ordonnée $2$.\n:::\n\n::: resultat\n$f(2) = 2$, donc $P \\in \\mathcal{C}_f$.\n:::\n\n## Question 4 : Solutions de $f(x) = 2$ dans la table\n\n::: methode\nRésoudre $f(x) = 2$, c’est chercher les antécédents de $2$.\n:::\n\n::: etape Lecture dans la table\n$f(-2) = 2$ et $f(2) = 2$.\n:::\n\n::: resultat\nParmi les valeurs de la table, les solutions sont $-2$ et $2$.\n:::\n\n## Question 5 : Valeurs de $x$ telles que $f(x) \\le 0$\n\n::: methode\nOn repère sur la ligne $f(x)$ les valeurs négatives ou nulles.\n:::\n\n::: etape Lecture dans la table\n$f(-1) = 0$, $f(0) = -1$ et $f(1) = 0$ ; toutes les autres valeurs sont strictement positives.\n:::\n\n::: resultat\nParmi les valeurs de la table, $f(x) \\le 0$ pour $x \\in \\{-1\\,;0\\,;1\\}$.\n:::\n\n::: attention\n$\\le 0$ signifie « négatif **ou nul** » : $-1$ et $1$ (où $f(x) = 0$) font partie des réponses.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $f(-2) = 2$, $f(0) = -1$, $f(3) = 5$.\n2. $-1$ et $1$.\n3. Oui, car $f(2) = 2$.\n4. $x = -2$ ou $x = 2$.\n5. $x \\in \\{-1\\,;0\\,;1\\}$.",
+   "titre": "Découverte - Lire des images et des antécédents sur une table",
+   "difficulty": "easy",
+   "contenu": "<!-- optitab:1 -->\nUne fonction $f$ est définie sur $[-3\\,;3]$. On a relevé les valeurs suivantes.\n\n| $x$ | $-3$ | $-2$ | $-1$ | $0$ | $1$ | $2$ | $3$ |\n|---|---|---|---|---|---|---|---|\n| $f(x)$ | $5$ | $2$ | $0$ | $-1$ | $0$ | $2$ | $5$ |\n\n1. Donner $f(-2)$, $f(0)$ et $f(3)$.\n2. Donner les antécédents de $0$ par $f$ figurant dans la table.\n3. Le point $P(2\\,;2)$ appartient-il à la courbe $\\mathcal{C}_f$ ?\n4. Parmi les valeurs de la table, quelles sont les solutions de $f(x) = 2$ ?\n5. Parmi les valeurs de $x$ de la table, pour lesquelles a-t-on $f(x) \\le 0$ ?"
+  },
+  {
+   "id": 2036,
+   "question": "<!-- optitab:1 -->\nOn considère la fonction $f$ définie sur $\\mathbb{R}$ par $f(x) = x^2 - 4$. On veut tracer sa courbe $\\mathcal{C}_f$ sur $[-3\\,;3]$.\n\n1. Compléter la table de valeurs.\n\n| $x$ | $-3$ | $-2$ | $-1$ | $0$ | $1$ | $2$ | $3$ |\n|---|---|---|---|---|---|---|---|\n| $f(x)$ | … | … | … | … | … | … | … |\n\n2. Placer les points $(x\\,;f(x))$ dans le repère ci-dessous, puis tracer $\\mathcal{C}_f$.\n\n[IMAGE_1]\n\n3. La courbe $\\mathcal{C}_f$ coupe-t-elle l’axe des abscisses ? Si oui, en quels points ?\n4. Donner les antécédents de $0$ par $f$.\n5. La fonction $f$ est-elle paire, impaire, ou ni l’une ni l’autre ? Quelle symétrie de la courbe le confirme ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Compléter la table de valeurs\n\n::: methode\nOn remplace $x$ par chaque valeur, en mettant les nombres négatifs entre parenthèses.\n:::\n\n::: etape Calcul des images\n- $f(-3) = (-3)^2 - 4 = 9 - 4 = 5$\n- $f(-2) = (-2)^2 - 4 = 4 - 4 = 0$\n- $f(-1) = (-1)^2 - 4 = 1 - 4 = -3$\n- $f(0) = 0^2 - 4 = -4$\n- $f(1) = 1 - 4 = -3$, $f(2) = 4 - 4 = 0$, $f(3) = 9 - 4 = 5$\n:::\n\n::: resultat\n| $x$ | $-3$ | $-2$ | $-1$ | $0$ | $1$ | $2$ | $3$ |\n|---|---|---|---|---|---|---|---|\n| $f(x)$ | $5$ | $0$ | $-3$ | $-4$ | $-3$ | $0$ | $5$ |\n:::\n\n## Question 2 : Placer les points et tracer la courbe\n\n::: methode\nChaque colonne de la table donne un point $(x\\,;f(x))$ ; on relie les points par une courbe régulière (pas par des segments).\n:::\n\n::: etape Liste des points\n$(-3\\,;5)$, $(-2\\,;0)$, $(-1\\,;-3)$, $(0\\,;-4)$, $(1\\,;-3)$, $(2\\,;0)$, $(3\\,;5)$.\n:::\n\n[IMAGE_2]\n\n::: resultat\nLa courbe obtenue est une parabole, de point le plus bas $(0\\,;-4)$.\n:::\n\n## Question 3 : Intersection avec l’axe des abscisses\n\n::: methode\nSur l’axe des abscisses, l’ordonnée est nulle : on résout $f(x) = 0$.\n:::\n\n::: etape Résoudre $x^2 - 4 = 0$\n$$\n\\begin{aligned}\nx^2 - 4 = 0 &\\iff (x - 2)(x + 2) = 0 \\\\\n&\\iff x = 2 \\text{ ou } x = -2\n\\end{aligned}\n$$\n:::\n\n::: resultat\nOui : $\\mathcal{C}_f$ coupe l’axe des abscisses aux points $(-2\\,;0)$ et $(2\\,;0)$.\n:::\n\n## Question 4 : Antécédents de $0$\n\n::: methode\nUn antécédent de $0$ est une solution de $f(x) = 0$.\n:::\n\n::: resultat\nD’après la question 3, les antécédents de $0$ sont $-2$ et $2$.\n:::\n\n## Question 5 : Parité de $f$\n\n::: methode\n$\\mathbb{R}$ est symétrique par rapport à $0$ ; on calcule $f(-x)$ pour tout réel $x$ et on compare à $f(x)$.\n:::\n\n::: etape Calculer $f(-x)$\n$$f(-x) = (-x)^2 - 4 = x^2 - 4 = f(x)$$\n:::\n\n::: resultat\n$f$ est **paire** : sa courbe est symétrique par rapport à l’axe des ordonnées, ce que montre la table ($f(-3) = f(3)$, $f(-2) = f(2)$, $f(-1) = f(1)$).\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $5$ ; $0$ ; $-3$ ; $-4$ ; $-3$ ; $0$ ; $5$.\n2. Parabole passant par les sept points, de point le plus bas $(0\\,;-4)$.\n3. Oui, en $(-2\\,;0)$ et $(2\\,;0)$.\n4. $-2$ et $2$.\n5. $f$ est paire (symétrie par rapport à l’axe des ordonnées).",
+   "titre": "Découverte - Table de valeurs : représenter une fonction",
+   "difficulty": "easy",
+   "contenu": "<!-- optitab:1 -->\nOn considère la fonction $f$ définie sur $\\mathbb{R}$ par $f(x) = x^2 - 4$. On veut tracer sa courbe $\\mathcal{C}_f$ sur $[-3\\,;3]$.\n\n1. Compléter la table de valeurs.\n\n| $x$ | $-3$ | $-2$ | $-1$ | $0$ | $1$ | $2$ | $3$ |\n|---|---|---|---|---|---|---|---|\n| $f(x)$ | … | … | … | … | … | … | … |\n\n2. Placer les points $(x\\,;f(x))$ dans le repère ci-dessous, puis tracer $\\mathcal{C}_f$.\n\n[IMAGE_1]\n\n3. La courbe $\\mathcal{C}_f$ coupe-t-elle l’axe des abscisses ? Si oui, en quels points ?\n4. Donner les antécédents de $0$ par $f$.\n5. La fonction $f$ est-elle paire, impaire, ou ni l’une ni l’autre ? Quelle symétrie de la courbe le confirme ?"
+  },
+  {
+   "id": 2040,
+   "question": "<!-- optitab:1 -->\nLes fonctions suivantes sont définies sur $\\mathbb{R}$, ensemble symétrique par rapport à $0$.\n\n1. La fonction $f : x \\mapsto x^2 - 5$ est-elle paire, impaire, ou ni l’une ni l’autre ?\n2. La fonction $g : x \\mapsto x^3 - x$ est-elle paire, impaire, ou ni l’une ni l’autre ?\n3. La fonction $h : x \\mapsto x^3 + x^2$ est-elle paire, impaire, ou ni l’une ni l’autre ?\n4. Une fonction $u$ est paire et le point $A(2\\,;-3)$ appartient à sa courbe. Donner un autre point de la courbe de $u$.\n5. Une fonction $v$ est impaire et le point $B(4\\,;1)$ appartient à sa courbe. Donner un autre point de la courbe de $v$.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Parité de $f(x) = x^2 - 5$\n\n::: methode\nCalculer $f(-x)$ pour tout réel $x$, puis comparer à $f(x)$ et à $-f(x)$.\n:::\n\n::: etape Calculer $f(-x)$\n$$f(-x) = (-x)^2 - 5 = x^2 - 5 = f(x)$$\n:::\n\n::: resultat\n$f$ est **paire** : sa courbe est symétrique par rapport à l’axe des ordonnées.\n:::\n\n[IMAGE_1]\n\n## Question 2 : Parité de $g(x) = x^3 - x$\n\n::: methode\nMême méthode : $(-x)^3 = -x^3$ (puissance impaire).\n:::\n\n::: etape Calculer $g(-x)$\n$$\n\\begin{aligned}\ng(-x) &= (-x)^3 - (-x) \\\\\n&= -x^3 + x \\\\\n&= -(x^3 - x) = -g(x)\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$g$ est **impaire** : sa courbe est symétrique par rapport à l’origine.\n:::\n\n[IMAGE_2]\n\n## Question 3 : Parité de $h(x) = x^3 + x^2$\n\n::: methode\nPour montrer qu’une fonction n’est ni paire ni impaire, un contre-exemple numérique suffit.\n:::\n\n::: etape Calculer $h(1)$ et $h(-1)$\n- $h(1) = 1^3 + 1^2 = 2$\n- $h(-1) = (-1)^3 + (-1)^2 = -1 + 1 = 0$\n:::\n\n::: etape Conclure\n- $h(-1) \\neq h(1)$ (car $0 \\neq 2$) : $h$ n’est pas paire.\n- $h(-1) \\neq -h(1)$ (car $0 \\neq -2$) : $h$ n’est pas impaire.\n:::\n\n::: resultat\n$h$ n’est **ni paire ni impaire** : sa courbe n’a aucune des deux symétries.\n:::\n\n[IMAGE_3]\n\n::: attention\nLa somme d’une fonction paire ($x^2$) et d’une fonction impaire ($x^3$) n’est en général ni paire ni impaire.\n:::\n\n## Question 4 : Point symétrique (fonction paire)\n\n::: methode\nSi $u$ est paire et $(a\\,;b)$ est sur sa courbe, alors $u(-a) = u(a) = b$ : le point $(-a\\,;b)$ est aussi sur la courbe.\n:::\n\n::: etape Appliquer à $A(2\\,;-3)$\n$u(-2) = u(2) = -3$ : on change seulement le signe de l’abscisse.\n:::\n\n::: resultat\n$A'(-2\\,;-3)$ appartient à la courbe de $u$ (symétrique de $A$ par rapport à l’axe des ordonnées).\n:::\n\n## Question 5 : Point symétrique (fonction impaire)\n\n::: methode\nSi $v$ est impaire et $(a\\,;b)$ est sur sa courbe, alors $v(-a) = -v(a) = -b$ : le point $(-a\\,;-b)$ est aussi sur la courbe.\n:::\n\n::: etape Appliquer à $B(4\\,;1)$\n$v(-4) = -v(4) = -1$ : on change le signe des deux coordonnées.\n:::\n\n::: resultat\n$B'(-4\\,;-1)$ appartient à la courbe de $v$ (symétrique de $B$ par rapport à l’origine).\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $f(-x) = f(x)$ : $f$ est paire.\n2. $g(-x) = -g(x)$ : $g$ est impaire.\n3. $h(1) = 2$ et $h(-1) = 0$ : $h$ n’est ni paire ni impaire.\n4. $A'(-2\\,;-3)$.\n5. $B'(-4\\,;-1)$.",
+   "titre": "Entraînement - Fonctions paires et impaires : reconnaître et utiliser les symétries",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nLes fonctions suivantes sont définies sur $\\mathbb{R}$, ensemble symétrique par rapport à $0$.\n\n1. La fonction $f : x \\mapsto x^2 - 5$ est-elle paire, impaire, ou ni l’une ni l’autre ?\n2. La fonction $g : x \\mapsto x^3 - x$ est-elle paire, impaire, ou ni l’une ni l’autre ?\n3. La fonction $h : x \\mapsto x^3 + x^2$ est-elle paire, impaire, ou ni l’une ni l’autre ?\n4. Une fonction $u$ est paire et le point $A(2\\,;-3)$ appartient à sa courbe. Donner un autre point de la courbe de $u$.\n5. Une fonction $v$ est impaire et le point $B(4\\,;1)$ appartient à sa courbe. Donner un autre point de la courbe de $v$."
+  },
+  {
+   "id": 3748,
+   "question": "<!-- optitab:1 -->\nUne fonction $f$, définie sur $[-2\\,;2]$, est représentée par la courbe $\\mathcal{C}_f$ ci-dessous.\n\n[IMAGE_1]\n\n1. Lire $f(-2)$, $f(0)$ et $f(1)$.\n2. Résoudre graphiquement $f(x) = 1$, puis $f(x) = -1$.\n3. L’équation $f(x) = 2$ a-t-elle des solutions ?\n4. Résoudre graphiquement l’inéquation $f(x) \\lt 1$.\n5. On admet que $f(x) = \\dfrac{x^3 - 3x}{2}$. Résoudre par le calcul l’équation $f(x) = 0$.\n6. En déduire l’ensemble des solutions de $f(x) \\gt 0$, à l’aide de la courbe.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Lire des images\n\n::: methode\nOn part de l’abscisse sur l’axe horizontal, on rejoint la courbe, puis on lit l’ordonnée.\n:::\n\n::: etape Lecture\n- Le point de $\\mathcal{C}_f$ d’abscisse $-2$ a pour ordonnée $-1$.\n- La courbe passe par l’origine.\n- Le point d’abscisse $1$ a pour ordonnée $-1$.\n:::\n\n::: resultat\n$f(-2) = -1$, $f(0) = 0$ et $f(1) = -1$.\n:::\n\n## Question 2 : Résoudre $f(x) = 1$ et $f(x) = -1$\n\n::: methode\nOn trace la droite horizontale $y = k$ et on lit les **abscisses** des points d’intersection avec $\\mathcal{C}_f$.\n:::\n\n::: etape Droite $y = 1$\nElle touche la courbe en deux points, d’abscisses $-1$ et $2$.\n:::\n\n::: etape Droite $y = -1$\nElle touche la courbe en deux points, d’abscisses $-2$ et $1$.\n:::\n\n[IMAGE_2]\n\n::: resultat\n- $f(x) = 1 \\iff x = -1$ ou $x = 2$ ;\n- $f(x) = -1 \\iff x = -2$ ou $x = 1$.\n:::\n\n## Question 3 : L’équation $f(x) = 2$\n\n::: methode\nOn regarde si la droite $y = 2$ rencontre la courbe.\n:::\n\n::: etape Lecture\nSur $[-2\\,;2]$, toutes les ordonnées des points de $\\mathcal{C}_f$ sont comprises entre $-1$ et $1$ : la droite $y = 2$ est entièrement au-dessus de la courbe.\n:::\n\n::: resultat\nL’équation $f(x) = 2$ n’a **aucune** solution : $S = \\varnothing$.\n:::\n\n## Question 4 : Résoudre $f(x) \\lt 1$\n\n::: methode\nOn cherche les abscisses des points de $\\mathcal{C}_f$ situés **strictement sous** la droite $y = 1$.\n:::\n\n::: etape Lecture\nLa courbe est sous la droite $y = 1$ sur tout l’intervalle, sauf en deux points où elle la touche : $x = -1$ et $x = 2$. Ces deux valeurs sont exclues car $f(x) = 1$ n’est pas strictement inférieur à $1$.\n:::\n\n[IMAGE_3]\n\n::: resultat\n$$S = {[-2\\,;-1[} \\cup {]-1\\,;2[}$$\n:::\n\n::: attention\nEn $x = -1$, la courbe touche la droite sans la traverser : il faut quand même exclure $-1$, d’où la réunion de deux intervalles.\n:::\n\n## Question 5 : Résoudre $f(x) = 0$ par le calcul\n\n::: methode\nOn factorise $x^3 - 3x$ par $x$, puis on utilise la règle du produit nul.\n:::\n\n::: etape Se ramener au numérateur\n$$f(x) = 0 \\iff \\frac{x^3 - 3x}{2} = 0 \\iff x^3 - 3x = 0$$\n:::\n\n::: etape Factoriser\n$$x^3 - 3x = x(x^2 - 3) = x\\left(x - \\sqrt{3}\\right)\\left(x + \\sqrt{3}\\right)$$\n:::\n\n::: etape Produit nul\n$x = 0$ ou $x = \\sqrt{3}$ ou $x = -\\sqrt{3}$ ; ces trois valeurs sont dans $[-2\\,;2]$ car $\\sqrt{3} \\approx 1{,}73$.\n:::\n\n::: resultat\n$$S = \\left\\{-\\sqrt{3}\\,;0\\,;\\sqrt{3}\\right\\}$$\n\nLa courbe coupe l’axe des abscisses en ces trois points.\n:::\n\n::: remarque\nSur la figure, on lit environ $-1{,}7$ et $1{,}7$ : seul le calcul donne les valeurs exactes $\\pm\\sqrt{3}$.\n:::\n\n## Question 6 : Résoudre $f(x) \\gt 0$\n\n::: methode\nOn cherche les abscisses des points de $\\mathcal{C}_f$ strictement au-dessus de l’axe des abscisses, en utilisant les valeurs exactes de la question 5.\n:::\n\n::: etape Lecture\n- Entre $-\\sqrt{3}$ et $0$, la courbe est au-dessus de l’axe.\n- Entre $\\sqrt{3}$ et $2$, elle est aussi au-dessus de l’axe ; $2$ est compris car $f(2) = 1 \\gt 0$.\n- Sur $\\left[-2\\,;-\\sqrt{3}\\right]$ et sur $\\left[0\\,;\\sqrt{3}\\right]$, elle est sous l’axe ou le touche : ces valeurs sont exclues.\n:::\n\n[IMAGE_4]\n\n::: resultat\n$$S = \\left]-\\sqrt{3}\\,;0\\right[ \\cup \\left]\\sqrt{3}\\,;2\\right]$$\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $f(-2) = -1$, $f(0) = 0$, $f(1) = -1$.\n2. $f(x) = 1 \\iff x \\in \\{-1\\,;2\\}$ ; $f(x) = -1 \\iff x \\in \\{-2\\,;1\\}$.\n3. Non : $S = \\varnothing$.\n4. $x \\in {[-2\\,;-1[} \\cup {]-1\\,;2[}$.\n5. $x \\in \\left\\{-\\sqrt{3}\\,;0\\,;\\sqrt{3}\\right\\}$.\n6. $x \\in \\left]-\\sqrt{3}\\,;0\\right[ \\cup \\left]\\sqrt{3}\\,;2\\right]$.",
+   "titre": "Entraînement - Résolution graphique sur une courbe : f(x) = k et f(x) < k",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nUne fonction $f$, définie sur $[-2\\,;2]$, est représentée par la courbe $\\mathcal{C}_f$ ci-dessous.\n\n[IMAGE_1]\n\n1. Lire $f(-2)$, $f(0)$ et $f(1)$.\n2. Résoudre graphiquement $f(x) = 1$, puis $f(x) = -1$.\n3. L’équation $f(x) = 2$ a-t-elle des solutions ?\n4. Résoudre graphiquement l’inéquation $f(x) \\lt 1$.\n5. On admet que $f(x) = \\dfrac{x^3 - 3x}{2}$. Résoudre par le calcul l’équation $f(x) = 0$.\n6. En déduire l’ensemble des solutions de $f(x) \\gt 0$, à l’aide de la courbe."
+  },
+  {
+   "id": 2039,
+   "question": "<!-- optitab:1 -->\nOn considère les fonctions $f$ et $g$ définies sur $\\mathbb{R}$ par $f(x) = x^2 - 2$ et $g(x) = x$. Leurs courbes $\\mathcal{C}_f$ (parabole) et $\\mathcal{C}_g$ (droite) sont tracées ci-dessous.\n\n[IMAGE_1]\n\n1. Résoudre graphiquement l’équation $f(x) = g(x)$.\n2. Donner les coordonnées des points d’intersection de $\\mathcal{C}_f$ et $\\mathcal{C}_g$.\n3. Résoudre graphiquement l’inéquation $f(x) \\ge g(x)$.\n4. Démontrer que, pour tout réel $x$, $f(x) - g(x) = (x + 1)(x - 2)$.\n5. Résoudre par le calcul $f(x) = g(x)$, puis $f(x) \\ge g(x)$ à l’aide d’un tableau de signes. Comparer avec les lectures graphiques.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Résoudre graphiquement $f(x) = g(x)$\n\n::: methode\nLes solutions de $f(x) = g(x)$ sont les abscisses des points d’intersection des deux courbes.\n:::\n\n::: etape Repérer les intersections\nLa parabole et la droite se coupent en deux points, d’abscisses $-1$ et $2$.\n:::\n\n[IMAGE_2]\n\n::: resultat\nGraphiquement, $f(x) = g(x) \\iff x = -1$ ou $x = 2$.\n:::\n\n## Question 2 : Coordonnées des points d’intersection\n\n::: methode\nUn point d’intersection d’abscisse $a$ a pour ordonnée $f(a)$, qui est aussi égale à $g(a)$.\n:::\n\n::: etape Calculer les ordonnées\n- $f(-1) = (-1)^2 - 2 = -1$ et $g(-1) = -1$ ;\n- $f(2) = 2^2 - 2 = 2$ et $g(2) = 2$.\n:::\n\n::: resultat\nLes points d’intersection sont $(-1\\,;-1)$ et $(2\\,;2)$.\n:::\n\n## Question 3 : Résoudre graphiquement $f(x) \\ge g(x)$\n\n::: methode\nOn cherche les abscisses des points où la parabole est **au-dessus** de la droite (ou la coupe).\n:::\n\n::: etape Lire la position des courbes\n- À gauche de $-1$ et à droite de $2$, la parabole est au-dessus de la droite.\n- Entre $-1$ et $2$, elle est en dessous.\n- En $-1$ et en $2$, les courbes se coupent : il y a égalité, valeurs comprises car l’inégalité est large.\n:::\n\n[IMAGE_3]\n\n::: resultat\nGraphiquement, l’ensemble des solutions de $f(x) \\ge g(x)$ est\n\n$$S = {]-\\infty\\,;-1]} \\cup [2\\,;+\\infty[$$\n:::\n\n## Question 4 : Factoriser $f(x) - g(x)$\n\n::: methode\nPour démontrer une égalité, on développe le membre factorisé et on compare.\n:::\n\n::: etape Développer $(x + 1)(x - 2)$\n$$\n\\begin{aligned}\n(x + 1)(x - 2) &= x^2 - 2x + x - 2 \\\\\n&= x^2 - x - 2\n\\end{aligned}\n$$\n:::\n\n::: etape Calculer $f(x) - g(x)$\n$$f(x) - g(x) = x^2 - 2 - x = x^2 - x - 2$$\n:::\n\n::: resultat\nPour tout réel $x$, $f(x) - g(x) = (x + 1)(x - 2)$.\n:::\n\n## Question 5 : Résolution par le calcul\n\n::: methode\nComparer $f(x)$ et $g(x)$, c’est étudier le signe de la différence $f(x) - g(x)$.\n:::\n\n::: etape Équation\n$$\n\\begin{aligned}\nf(x) = g(x) &\\iff (x + 1)(x - 2) = 0 \\\\\n&\\iff x = -1 \\text{ ou } x = 2\n\\end{aligned}\n$$\n:::\n\n::: etape Tableau de signes de $(x + 1)(x - 2)$\n$x + 1$ s’annule en $-1$ et $x - 2$ en $2$ ; chacun est négatif avant sa valeur d’annulation et positif après (coefficient de $x$ égal à $1 \\gt 0$).\n:::\n\n::: tableau\nx : -\\infty, -1, 2, +\\infty\nx+1 : , -, z, +, t, +,\nx-2 : , -, t, -, z, +,\nProduit : , +, z, -, z, +,\n:::\n\n::: resultat\n$f(x) \\ge g(x) \\iff (x + 1)(x - 2) \\ge 0$, donc\n\n$$S = {]-\\infty\\,;-1]} \\cup [2\\,;+\\infty[$$\n\nLe calcul confirme les lectures graphiques.\n:::\n\n::: attention\nNe pas « diviser » ou simplifier une inéquation par une expression en $x$ : on passe tout d’un côté, on factorise et on étudie le signe.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $x = -1$ ou $x = 2$.\n2. $(-1\\,;-1)$ et $(2\\,;2)$.\n3. $x \\in {]-\\infty\\,;-1]} \\cup [2\\,;+\\infty[$.\n4. $(x + 1)(x - 2) = x^2 - x - 2 = f(x) - g(x)$.\n5. $S = \\{-1\\,;2\\}$ pour l’équation ; $S = {]-\\infty\\,;-1]} \\cup [2\\,;+\\infty[$ pour l’inéquation.",
+   "titre": "Entraînement - Résoudre f(x) = g(x) et f(x) ≥ g(x) : graphique puis calcul",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nOn considère les fonctions $f$ et $g$ définies sur $\\mathbb{R}$ par $f(x) = x^2 - 2$ et $g(x) = x$. Leurs courbes $\\mathcal{C}_f$ (parabole) et $\\mathcal{C}_g$ (droite) sont tracées ci-dessous.\n\n[IMAGE_1]\n\n1. Résoudre graphiquement l’équation $f(x) = g(x)$.\n2. Donner les coordonnées des points d’intersection de $\\mathcal{C}_f$ et $\\mathcal{C}_g$.\n3. Résoudre graphiquement l’inéquation $f(x) \\ge g(x)$.\n4. Démontrer que, pour tout réel $x$, $f(x) - g(x) = (x + 1)(x - 2)$.\n5. Résoudre par le calcul $f(x) = g(x)$, puis $f(x) \\ge g(x)$ à l’aide d’un tableau de signes. Comparer avec les lectures graphiques."
+  },
+  {
+   "id": 2038,
+   "question": "<!-- optitab:1 -->\nUne fonction $f$ est définie sur $[-3\\,;5]$ par sa courbe $\\mathcal{C}_f$ : la ligne brisée qui relie, dans cet ordre, les points $A(-3\\,;1)$, $B(-1\\,;4)$, $C(2\\,;-2)$ et $D(5\\,;1)$.\n\n[IMAGE_1]\n\n1. Lire $f(-1)$, $f(2)$ et $f(5)$.\n2. Résoudre graphiquement $f(x) = 0$.\n3. Résoudre graphiquement $f(x) = 1$.\n4. Résoudre graphiquement $f(x) \\ge 1$.\n5. Résoudre graphiquement $f(x) \\le 0$.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Lire des images\n\n::: methode\nLes points $B$, $C$, $D$ sont sur $\\mathcal{C}_f$ : l’ordonnée de chacun est l’image de son abscisse.\n:::\n\n::: etape Lecture\n- $B(-1\\,;4)$ donne $f(-1) = 4$ ;\n- $C(2\\,;-2)$ donne $f(2) = -2$ ;\n- $D(5\\,;1)$ donne $f(5) = 1$.\n:::\n\n::: resultat\n$f(-1) = 4$, $f(2) = -2$ et $f(5) = 1$.\n:::\n\n## Question 2 : Résoudre $f(x) = 0$\n\n::: methode\nLes solutions sont les abscisses des points où $\\mathcal{C}_f$ coupe l’axe des abscisses (droite $y = 0$).\n:::\n\n::: etape Lecture sur la figure\nLe segment $[AB]$ reste au-dessus de l’axe (ordonnées entre $1$ et $4$). Le segment $[BC]$ coupe l’axe en $x = 1$ et le segment $[CD]$ le coupe en $x = 4$.\n:::\n\n[IMAGE_2]\n\n::: etape Vérification par le calcul\n- $[BC]$ descend de $6$ unités quand $x$ augmente de $3$ : pente $-2$, donc $f(x) = -2x + 2$ sur $[-1\\,;2]$, et $-2x + 2 = 0 \\iff x = 1$.\n- $[CD]$ monte de $3$ unités quand $x$ augmente de $3$ : pente $1$, donc $f(x) = x - 4$ sur $[2\\,;5]$, et $x - 4 = 0 \\iff x = 4$.\n:::\n\n::: resultat\n$f(x) = 0 \\iff x = 1$ ou $x = 4$.\n:::\n\n## Question 3 : Résoudre $f(x) = 1$\n\n::: methode\nOn trace la droite horizontale $y = 1$ et on lit les abscisses de ses points d’intersection avec $\\mathcal{C}_f$.\n:::\n\n::: etape Lecture sur la figure\nLa droite $y = 1$ passe par $A$ (abscisse $-3$) et par $D$ (abscisse $5$), et coupe $[BC]$ en un troisième point.\n:::\n\n::: etape Abscisse du point sur $[BC]$\n$$-2x + 2 = 1 \\iff -2x = -1 \\iff x = \\frac{1}{2}$$\n:::\n\n[IMAGE_3]\n\n::: resultat\n$f(x) = 1 \\iff x \\in \\left\\{-3\\,;\\frac{1}{2}\\,;5\\right\\}$.\n:::\n\n## Question 4 : Résoudre $f(x) \\ge 1$\n\n::: methode\nOn cherche les abscisses des points de $\\mathcal{C}_f$ situés sur ou au-dessus de la droite $y = 1$.\n:::\n\n::: etape Lecture morceau par morceau\n- De $A$ jusqu’au point d’abscisse $\\frac{1}{2}$, la courbe est au-dessus de $y = 1$ (ou dessus aux bornes) : $x \\in \\left[-3\\,;\\frac{1}{2}\\right]$.\n- Entre $\\frac{1}{2}$ et $5$, la courbe est sous la droite, sauf au point $D$ où $f(5) = 1$ : on garde $x = 5$.\n:::\n\n[IMAGE_4]\n\n::: resultat\n$$S = \\left[-3\\,;\\frac{1}{2}\\right] \\cup \\{5\\}$$\n:::\n\n::: attention\nNe pas oublier les points isolés : en $x = 5$, $f(5) = 1$ vérifie bien $f(x) \\ge 1$.\n:::\n\n## Question 5 : Résoudre $f(x) \\le 0$\n\n::: methode\nOn cherche les abscisses des points de $\\mathcal{C}_f$ situés sur ou sous l’axe des abscisses.\n:::\n\n::: etape Lecture sur la figure\nLa courbe passe sous l’axe en $x = 1$ et revient sur l’axe en $x = 4$ ; partout ailleurs elle est au-dessus.\n:::\n\n[IMAGE_5]\n\n::: resultat\n$f(x) \\le 0 \\iff x \\in [1\\,;4]$.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $f(-1) = 4$, $f(2) = -2$, $f(5) = 1$.\n2. $x = 1$ ou $x = 4$.\n3. $x \\in \\left\\{-3\\,;\\frac{1}{2}\\,;5\\right\\}$.\n4. $x \\in \\left[-3\\,;\\frac{1}{2}\\right] \\cup \\{5\\}$.\n5. $x \\in [1\\,;4]$.",
+   "titre": "Entraînement - Résoudre f(x) = k et f(x) ≤ k (courbe polygonale)",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nUne fonction $f$ est définie sur $[-3\\,;5]$ par sa courbe $\\mathcal{C}_f$ : la ligne brisée qui relie, dans cet ordre, les points $A(-3\\,;1)$, $B(-1\\,;4)$, $C(2\\,;-2)$ et $D(5\\,;1)$.\n\n[IMAGE_1]\n\n1. Lire $f(-1)$, $f(2)$ et $f(5)$.\n2. Résoudre graphiquement $f(x) = 0$.\n3. Résoudre graphiquement $f(x) = 1$.\n4. Résoudre graphiquement $f(x) \\ge 1$.\n5. Résoudre graphiquement $f(x) \\le 0$."
+  },
+  {
+   "id": 2041,
+   "question": "<!-- optitab:1 -->\nDeux fonctions $f$ et $g$ sont définies sur $[-3\\,;3]$ ; $f$ est **paire** et $g$ est **impaire**. On connaît les valeurs suivantes.\n\n| $x$ | $-3$ | $-2$ | $-1$ | $0$ | $1$ | $2$ | $3$ |\n|---|---|---|---|---|---|---|---|\n| $f(x)$ | … | … | … | $1$ | $4$ | $7$ | $10$ |\n| $g(x)$ | … | … | … | $0$ | $2$ | $5$ | $9$ |\n\n1. Calculer $f(-1)$, $f(-2)$ et $f(-3)$.\n2. Calculer $g(-1)$, $g(-2)$ et $g(-3)$.\n3. Compléter la table.\n4. Donner deux antécédents de $7$ par $f$.\n5. Donner un antécédent de $-9$ par $g$.\n6. Expliquer pourquoi on a forcément $g(0) = 0$.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Calculer $f(-1)$, $f(-2)$, $f(-3)$\n\n::: methode\n$f$ est paire : pour tout $x$ de $[-3\\,;3]$, $f(-x) = f(x)$.\n:::\n\n::: etape Appliquer la parité\n- $f(-1) = f(1) = 4$\n- $f(-2) = f(2) = 7$\n- $f(-3) = f(3) = 10$\n:::\n\n::: resultat\n$f(-1) = 4$, $f(-2) = 7$ et $f(-3) = 10$.\n:::\n\n## Question 2 : Calculer $g(-1)$, $g(-2)$, $g(-3)$\n\n::: methode\n$g$ est impaire : pour tout $x$ de $[-3\\,;3]$, $g(-x) = -g(x)$.\n:::\n\n::: etape Appliquer l’imparité\n- $g(-1) = -g(1) = -2$\n- $g(-2) = -g(2) = -5$\n- $g(-3) = -g(3) = -9$\n:::\n\n::: resultat\n$g(-1) = -2$, $g(-2) = -5$ et $g(-3) = -9$.\n:::\n\n::: attention\nPour une fonction impaire, on change le signe de l’image : $g(-2) = -5$, et non $5$.\n:::\n\n## Question 3 : Compléter la table\n\n::: methode\nOn reporte les valeurs des questions 1 et 2.\n:::\n\n::: resultat\n| $x$ | $-3$ | $-2$ | $-1$ | $0$ | $1$ | $2$ | $3$ |\n|---|---|---|---|---|---|---|---|\n| $f(x)$ | $10$ | $7$ | $4$ | $1$ | $4$ | $7$ | $10$ |\n| $g(x)$ | $-9$ | $-5$ | $-2$ | $0$ | $2$ | $5$ | $9$ |\n:::\n\n## Question 4 : Deux antécédents de $7$ par $f$\n\n::: methode\nUn antécédent de $7$ est un nombre $x$ tel que $f(x) = 7$.\n:::\n\n::: etape Lecture et parité\n$f(2) = 7$, et par parité $f(-2) = f(2) = 7$.\n:::\n\n::: resultat\n$-2$ et $2$ sont deux antécédents de $7$ par $f$.\n:::\n\n## Question 5 : Un antécédent de $-9$ par $g$\n\n::: methode\nOn cherche $x$ tel que $g(x) = -9$ ; on connaît $g(3) = 9$.\n:::\n\n::: etape Utiliser l’imparité\n$g(-3) = -g(3) = -9$.\n:::\n\n::: resultat\n$-3$ est un antécédent de $-9$ par $g$.\n:::\n\n## Question 6 : Pourquoi $g(0) = 0$\n\n::: methode\nOn applique la définition de l’imparité avec $x = 0$.\n:::\n\n::: etape Écrire l’égalité pour $x = 0$\n$g(-0) = -g(0)$, soit $g(0) = -g(0)$, donc $2g(0) = 0$.\n:::\n\n::: resultat\n$g(0) = 0$ : la courbe d’une fonction impaire définie en $0$ passe par l’origine.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $f(-1) = 4$, $f(-2) = 7$, $f(-3) = 10$.\n2. $g(-1) = -2$, $g(-2) = -5$, $g(-3) = -9$.\n3. Ligne $f$ : $10$ ; $7$ ; $4$. Ligne $g$ : $-9$ ; $-5$ ; $-2$.\n4. $-2$ et $2$.\n5. $-3$.\n6. $g(0) = -g(0)$, donc $g(0) = 0$.",
+   "titre": "Entraînement - Utiliser la parité pour compléter une table",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nDeux fonctions $f$ et $g$ sont définies sur $[-3\\,;3]$ ; $f$ est **paire** et $g$ est **impaire**. On connaît les valeurs suivantes.\n\n| $x$ | $-3$ | $-2$ | $-1$ | $0$ | $1$ | $2$ | $3$ |\n|---|---|---|---|---|---|---|---|\n| $f(x)$ | … | … | … | $1$ | $4$ | $7$ | $10$ |\n| $g(x)$ | … | … | … | $0$ | $2$ | $5$ | $9$ |\n\n1. Calculer $f(-1)$, $f(-2)$ et $f(-3)$.\n2. Calculer $g(-1)$, $g(-2)$ et $g(-3)$.\n3. Compléter la table.\n4. Donner deux antécédents de $7$ par $f$.\n5. Donner un antécédent de $-9$ par $g$.\n6. Expliquer pourquoi on a forcément $g(0) = 0$."
+  },
+  {
+   "id": 2042,
+   "question": "<!-- optitab:1 -->\nOn considère l’expression $P(x) = (x - 2)(x + 3)$, définie pour tout réel $x$.\n\n1. Résoudre l’équation $P(x) = 0$.\n2. Donner le signe de $x - 2$ selon les valeurs de $x$.\n3. Donner le signe de $x + 3$ selon les valeurs de $x$.\n4. Dresser le tableau de signes de $P(x)$, puis résoudre $P(x) \\le 0$.\n5. Résoudre $P(x) \\gt 0$.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Résoudre $(x - 2)(x + 3) = 0$\n\n::: methode\nUn produit est nul si et seulement si l’un au moins de ses facteurs est nul.\n:::\n\n::: etape Annuler chaque facteur\n- $x - 2 = 0 \\iff x = 2$\n- $x + 3 = 0 \\iff x = -3$\n:::\n\n::: resultat\n$P(x) = 0 \\iff x = -3$ ou $x = 2$.\n:::\n\n## Question 2 : Signe de $x - 2$\n\n::: methode\nRésoudre l’inéquation $x - 2 \\gt 0$ donne directement le signe.\n:::\n\n::: etape Résolution\n$x - 2 \\gt 0 \\iff x \\gt 2$ ; de même $x - 2 \\lt 0 \\iff x \\lt 2$.\n:::\n\n::: resultat\n$x - 2$ est négatif sur ${]-\\infty\\,;2[}$, nul en $2$, positif sur ${]2\\,;+\\infty[}$.\n:::\n\n## Question 3 : Signe de $x + 3$\n\n::: methode\nMême méthode : $x + 3 \\gt 0 \\iff x \\gt -3$.\n:::\n\n::: resultat\n$x + 3$ est négatif sur ${]-\\infty\\,;-3[}$, nul en $-3$, positif sur ${]-3\\,;+\\infty[}$.\n:::\n\n## Question 4 : Tableau de signes et $P(x) \\le 0$\n\n::: methode\nOn range les valeurs d’annulation dans l’ordre croissant ($-3$ puis $2$), on reporte le signe de chaque facteur, puis on applique la règle des signes colonne par colonne.\n:::\n\n::: etape Tableau de signes\nLigne de $P(x)$ : deux facteurs de même signe donnent « $+$ », deux facteurs de signes contraires donnent « $-$ ».\n:::\n\n::: tableau\nx : -\\infty, -3, 2, +\\infty\nx+3 : , -, z, +, t, +,\nx-2 : , -, t, -, z, +,\nP(x) : , +, z, -, z, +,\n:::\n\n::: etape Lire les solutions\n$P(x) \\le 0$ : on garde la colonne « $-$ » et les deux valeurs où $P(x) = 0$ (inégalité large).\n:::\n\n[IMAGE_1]\n\n::: resultat\n$P(x) \\le 0 \\iff x \\in [-3\\,;2]$.\n:::\n\n## Question 5 : Résoudre $P(x) \\gt 0$\n\n::: methode\nOn garde les colonnes « $+$ », sans les valeurs d’annulation (inégalité stricte).\n:::\n\n[IMAGE_2]\n\n::: resultat\n$$S = {]-\\infty\\,;-3[} \\cup {]2\\,;+\\infty[}$$\n:::\n\n::: attention\nInégalité stricte : crochets ouverts en $-3$ et $2$, car $P(-3) = P(2) = 0$ n’est pas strictement positif.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $x = -3$ ou $x = 2$.\n2. Négatif sur ${]-\\infty\\,;2[}$, nul en $2$, positif sur ${]2\\,;+\\infty[}$.\n3. Négatif sur ${]-\\infty\\,;-3[}$, nul en $-3$, positif sur ${]-3\\,;+\\infty[}$.\n4. $S = [-3\\,;2]$.\n5. $S = {]-\\infty\\,;-3[} \\cup {]2\\,;+\\infty[}$.",
+   "titre": "Maîtrise - Inéquation produit : tableau de signes",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nOn considère l’expression $P(x) = (x - 2)(x + 3)$, définie pour tout réel $x$.\n\n1. Résoudre l’équation $P(x) = 0$.\n2. Donner le signe de $x - 2$ selon les valeurs de $x$.\n3. Donner le signe de $x + 3$ selon les valeurs de $x$.\n4. Dresser le tableau de signes de $P(x)$, puis résoudre $P(x) \\le 0$.\n5. Résoudre $P(x) \\gt 0$."
+  },
+  {
+   "id": 2043,
+   "question": "<!-- optitab:1 -->\nOn considère l’expression $Q(x) = \\dfrac{2x - 3}{x + 1}$.\n\n1. Pour quelles valeurs de $x$ l’expression $Q(x)$ est-elle définie ?\n2. Résoudre l’équation $Q(x) = 0$.\n3. Étudier le signe de $2x - 3$ et celui de $x + 1$.\n4. Dresser le tableau de signes de $Q(x)$, puis résoudre $Q(x) \\ge 0$.\n5. Résoudre $Q(x) \\lt 0$.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Valeur interdite\n\n::: methode\nUn quotient n’est défini que si son dénominateur est non nul.\n:::\n\n::: etape Annulation du dénominateur\n$x + 1 = 0 \\iff x = -1$.\n:::\n\n::: resultat\n$Q(x)$ est définie pour $x \\in \\mathbb{R} \\setminus \\{-1\\}$ : $-1$ est la **valeur interdite**.\n:::\n\n## Question 2 : Résoudre $Q(x) = 0$\n\n::: methode\nUn quotient est nul si et seulement si son numérateur est nul (et son dénominateur non nul).\n:::\n\n::: etape Annuler le numérateur\n$$2x - 3 = 0 \\iff 2x = 3 \\iff x = \\frac{3}{2}$$\n:::\n\n::: etape Vérifier que la valeur est autorisée\n$\\frac{3}{2} \\neq -1$ : la valeur est autorisée.\n:::\n\n::: resultat\n$Q(x) = 0 \\iff x = \\frac{3}{2}$.\n:::\n\n## Question 3 : Signe de chaque facteur\n\n::: methode\nUne expression $ax + b$ (avec $a \\neq 0$) a le signe de $a$ à droite de sa valeur d’annulation, le signe contraire à gauche.\n:::\n\n::: etape Signe de $2x - 3$\n$a = 2 \\gt 0$ : $2x - 3$ est négatif pour $x \\lt \\frac{3}{2}$, nul en $\\frac{3}{2}$, positif pour $x \\gt \\frac{3}{2}$.\n:::\n\n::: etape Signe de $x + 1$\n$a = 1 \\gt 0$ : $x + 1$ est négatif pour $x \\lt -1$, nul en $-1$, positif pour $x \\gt -1$.\n:::\n\n::: resultat\n$2x - 3$ change de signe en $\\frac{3}{2}$ et $x + 1$ en $-1$ ; tous deux passent de « $-$ » à « $+$ ».\n:::\n\n## Question 4 : Tableau de signes et $Q(x) \\ge 0$\n\n::: methode\nMême règle des signes que pour un produit ; la valeur interdite $-1$ est marquée d’une double barre.\n:::\n\n::: etape Tableau de signes\nValeurs rangées dans l’ordre croissant : $-1 \\lt \\frac{3}{2}$. Double barre en $-1$ sur la ligne de $Q(x)$.\n:::\n\n::: tableau\nx : -\\infty, -1, \\frac{3}{2}, +\\infty\n2x-3 : , -, t, -, z, +,\nx+1 : , -, z, +, t, +,\nQ(x) : , +, d, -, z, +,\n:::\n\n::: etape Lire les solutions\nOn garde les colonnes « $+$ » et la valeur $\\frac{3}{2}$ (où $Q(x) = 0$), mais **jamais** $-1$ (valeur interdite).\n:::\n\n[IMAGE_1]\n\n::: resultat\n$$S = {]-\\infty\\,;-1[} \\cup \\left[\\frac{3}{2}\\,;+\\infty\\right[$$\n:::\n\n::: attention\nMême si l’inégalité est large, le crochet est ouvert en $-1$ : $Q(-1)$ n’existe pas.\n:::\n\n## Question 5 : Résoudre $Q(x) \\lt 0$\n\n::: methode\nOn garde la colonne « $-$ », sans les bornes : en $-1$ le quotient n’existe pas, en $\\frac{3}{2}$ il est nul.\n:::\n\n[IMAGE_2]\n\n::: resultat\n$$S = \\left]-1\\,;\\frac{3}{2}\\right[$$\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $\\mathbb{R} \\setminus \\{-1\\}$.\n2. $x = \\frac{3}{2}$.\n3. $2x - 3$ : $-$ puis $+$ (change en $\\frac{3}{2}$) ; $x + 1$ : $-$ puis $+$ (change en $-1$).\n4. $S = {]-\\infty\\,;-1[} \\cup \\left[\\frac{3}{2}\\,;+\\infty\\right[$.\n5. $S = \\left]-1\\,;\\frac{3}{2}\\right[$.",
+   "titre": "Maîtrise - Inéquation quotient : valeur interdite et tableau de signes",
+   "difficulty": "hard",
+   "contenu": "<!-- optitab:1 -->\nOn considère l’expression $Q(x) = \\dfrac{2x - 3}{x + 1}$.\n\n1. Pour quelles valeurs de $x$ l’expression $Q(x)$ est-elle définie ?\n2. Résoudre l’équation $Q(x) = 0$.\n3. Étudier le signe de $2x - 3$ et celui de $x + 1$.\n4. Dresser le tableau de signes de $Q(x)$, puis résoudre $Q(x) \\ge 0$.\n5. Résoudre $Q(x) \\lt 0$."
+  },
+  {
+   "id": 3749,
+   "question": "<!-- optitab:1 -->\nAvec une clôture de $20$ m, on construit un enclos rectangulaire. On note $x$ la longueur d’un côté, en mètres ($0 \\lt x \\lt 10$), et $A(x)$ l’aire de l’enclos, en m².\n\n[IMAGE_1]\n\n1. Justifier que l’autre côté mesure $10 - x$, puis que $A(x) = x(10 - x)$.\n2. Calculer $A(2)$ et $A(4)$.\n3. La courbe de $A$ est tracée ci-dessous. Résoudre graphiquement $A(x) = 21$, puis $A(x) \\ge 21$.\n\n[IMAGE_2]\n\n4. Démontrer que, pour tout réel $x$, $A(x) - 21 = (x - 3)(7 - x)$.\n5. Résoudre $A(x) \\ge 21$ par le calcul, à l’aide d’un tableau de signes.\n6. Conclure : quelles longueurs de côté permettent d’obtenir un enclos d’au moins $21$ m² ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Expression de l’aire\n\n::: methode\nLe périmètre d’un rectangle de côtés $x$ et $\\ell$ vaut $2x + 2\\ell$.\n:::\n\n::: etape Autre côté\n$$\n\\begin{aligned}\n2x + 2\\ell = 20 &\\iff x + \\ell = 10 \\\\\n&\\iff \\ell = 10 - x\n\\end{aligned}\n$$\n:::\n\n::: etape Aire\nAire d’un rectangle : longueur $\\times$ largeur, donc $A(x) = x(10 - x)$.\n:::\n\n::: resultat\nL’autre côté mesure $10 - x$ et $A(x) = x(10 - x)$ pour $x \\in {]0\\,;10[}$.\n:::\n\n## Question 2 : Calculer $A(2)$ et $A(4)$\n\n::: methode\nOn remplace $x$ par la valeur dans $A(x) = x(10 - x)$.\n:::\n\n::: etape Calculs\n- $A(2) = 2 \\times (10 - 2) = 2 \\times 8 = 16$\n- $A(4) = 4 \\times (10 - 4) = 4 \\times 6 = 24$\n:::\n\n::: resultat\n$A(2) = 16$ m² et $A(4) = 24$ m².\n:::\n\n## Question 3 : Résolution graphique\n\n::: methode\nOn trace la droite horizontale $y = 21$ : les solutions sont des abscisses, lues sur l’axe horizontal.\n:::\n\n::: etape Équation $A(x) = 21$\nLa droite $y = 21$ coupe la courbe en deux points, d’abscisses $3$ et $7$.\n:::\n\n::: etape Inéquation $A(x) \\ge 21$\nLa courbe est au-dessus de la droite (ou la touche) entre ces deux abscisses, bornes comprises.\n:::\n\n[IMAGE_3]\n\n::: resultat\nGraphiquement :\n\n- $A(x) = 21 \\iff x = 3$ ou $x = 7$ ;\n- $A(x) \\ge 21 \\iff x \\in [3\\,;7]$.\n:::\n\n## Question 4 : Factorisation de $A(x) - 21$\n\n::: methode\nOn développe le membre de droite et on compare avec $A(x) - 21$ développé.\n:::\n\n::: etape Développer $(x - 3)(7 - x)$\n$$\n\\begin{aligned}\n(x - 3)(7 - x) &= 7x - x^2 - 21 + 3x \\\\\n&= -x^2 + 10x - 21\n\\end{aligned}\n$$\n:::\n\n::: etape Développer $A(x) - 21$\n$$\n\\begin{aligned}\nA(x) - 21 &= 10x - x^2 - 21 \\\\\n&= -x^2 + 10x - 21\n\\end{aligned}\n$$\n:::\n\n::: resultat\nPour tout réel $x$, $A(x) - 21 = (x - 3)(7 - x)$.\n:::\n\n## Question 5 : Résolution par le calcul\n\n::: methode\n$A(x) \\ge 21$ équivaut à $A(x) - 21 \\ge 0$, soit $(x - 3)(7 - x) \\ge 0$ : on étudie le signe de ce produit sur ${]0\\,;10[}$.\n:::\n\n::: etape Signe de chaque facteur\n- $x - 3$ : coefficient $1 \\gt 0$, négatif avant $3$, positif après.\n- $7 - x$ : coefficient $-1 \\lt 0$, **positif** avant $7$, négatif après.\n:::\n\n::: etape Tableau de signes sur ${]0\\,;10[}$\n\n::: tableau\nx : 0, 3, 7, 10\nx-3 : , -, z, +, t, +,\n7-x : , +, t, +, z, -,\nProduit : , -, z, +, z, -,\n:::\n:::\n\n::: resultat\n$A(x) \\ge 21 \\iff x \\in [3\\,;7]$ : le calcul confirme la lecture graphique.\n:::\n\n::: attention\nLe facteur $7 - x$ a un coefficient de $x$ négatif : il est positif **à gauche** de $7$. C’est l’erreur la plus fréquente dans ce type de tableau.\n:::\n\n## Question 6 : Conclusion\n\n::: methode\nOn traduit l’ensemble des solutions dans le contexte de l’enclos.\n:::\n\n::: resultat\nL’aire est d’au moins $21$ m² lorsque le côté $x$ mesure entre $3$ m et $7$ m (l’autre côté mesure alors entre $7$ m et $3$ m).\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $2x + 2\\ell = 20$ donne $\\ell = 10 - x$, et $A(x) = x(10 - x)$.\n2. $A(2) = 16$ et $A(4) = 24$.\n3. $A(x) = 21 \\iff x \\in \\{3\\,;7\\}$ ; $A(x) \\ge 21 \\iff x \\in [3\\,;7]$.\n4. $(x - 3)(7 - x) = -x^2 + 10x - 21 = A(x) - 21$.\n5. $S = [3\\,;7]$.\n6. Côté compris entre $3$ m et $7$ m.",
+   "titre": "Problème - Enclos rectangulaire : résoudre A(x) ≥ 21 de deux façons",
+   "difficulty": "hard",
+   "contenu": "<!-- optitab:1 -->\nAvec une clôture de $20$ m, on construit un enclos rectangulaire. On note $x$ la longueur d’un côté, en mètres ($0 \\lt x \\lt 10$), et $A(x)$ l’aire de l’enclos, en m².\n\n[IMAGE_1]\n\n1. Justifier que l’autre côté mesure $10 - x$, puis que $A(x) = x(10 - x)$.\n2. Calculer $A(2)$ et $A(4)$.\n3. La courbe de $A$ est tracée ci-dessous. Résoudre graphiquement $A(x) = 21$, puis $A(x) \\ge 21$.\n\n[IMAGE_2]\n\n4. Démontrer que, pour tout réel $x$, $A(x) - 21 = (x - 3)(7 - x)$.\n5. Résoudre $A(x) \\ge 21$ par le calcul, à l’aide d’un tableau de signes.\n6. Conclure : quelles longueurs de côté permettent d’obtenir un enclos d’au moins $21$ m² ?"
+  },
+  {
+   "id": 2044,
+   "question": "<!-- optitab:1 -->\nUne compagnie de taxis propose deux tarifs pour une course de $x$ kilomètres ($x \\ge 0$).\n\n- Tarif A : prise en charge de $3$ €, puis $2$ € par kilomètre. On note $f(x)$ le prix en euros.\n- Tarif B : prise en charge de $8$ €, puis $1$ € par kilomètre. On note $g(x)$ le prix en euros.\n\n1. Exprimer $f(x)$ et $g(x)$ en fonction de $x$, et préciser l’ensemble de définition.\n2. Calculer $f(4)$ et $g(4)$. Quel tarif est le moins cher pour $4$ km ?\n3. Résoudre $f(x) = g(x)$ et interpréter le résultat.\n4. Résoudre l’inéquation $f(x) \\le g(x)$ et interpréter le résultat.\n5. Quel tarif choisir pour une course de $20$ km ? Justifier.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Expressions et ensemble de définition\n\n::: methode\nUn prix « fixe + prix par kilomètre $\\times$ nombre de kilomètres » se modélise par une fonction affine.\n:::\n\n::: etape Tarif A\n$3$ € fixes et $2$ € par kilomètre : $f(x) = 2x + 3$.\n:::\n\n::: etape Tarif B\n$8$ € fixes et $1$ € par kilomètre : $g(x) = x + 8$.\n:::\n\n::: etape Ensemble de définition\n$x$ est une distance : $x \\ge 0$.\n:::\n\n[IMAGE_1]\n\n::: resultat\n$f(x) = 2x + 3$ et $g(x) = x + 8$, définies sur $[0\\,;+\\infty[$.\n:::\n\n## Question 2 : Comparer pour $4$ km\n\n::: methode\nOn calcule les deux prix puis on les compare.\n:::\n\n::: etape Calculs\n- $f(4) = 2 \\times 4 + 3 = 11$\n- $g(4) = 4 + 8 = 12$\n:::\n\n::: resultat\nPour $4$ km, le tarif A est le moins cher : $11$ € contre $12$ €.\n:::\n\n## Question 3 : Résoudre $f(x) = g(x)$\n\n::: methode\nOn résout une équation du premier degré : les termes en $x$ d’un côté, les nombres de l’autre.\n:::\n\n::: etape Résolution\n$$\n\\begin{aligned}\nf(x) = g(x) &\\iff 2x + 3 = x + 8 \\\\\n&\\iff 2x - x = 8 - 3 \\\\\n&\\iff x = 5\n\\end{aligned}\n$$\n:::\n\n::: etape Prix commun\n$f(5) = 2 \\times 5 + 3 = 13$ et $g(5) = 5 + 8 = 13$.\n:::\n\n[IMAGE_2]\n\n::: resultat\nPour $5$ km, les deux tarifs coûtent le même prix, $13$ € : les droites se coupent au point $(5\\,;13)$.\n:::\n\n## Question 4 : Résoudre $f(x) \\le g(x)$\n\n::: methode\nOn résout l’inéquation comme l’équation, puis on tient compte de l’ensemble de définition.\n:::\n\n::: etape Résolution\n$$\n\\begin{aligned}\nf(x) \\le g(x) &\\iff 2x + 3 \\le x + 8 \\\\\n&\\iff x \\le 5\n\\end{aligned}\n$$\n:::\n\n::: etape Tenir compte de $x \\ge 0$\nOn obtient $x \\in [0\\,;5]$ : sur cet intervalle, la droite du tarif A est sous celle du tarif B.\n:::\n\n[IMAGE_3]\n\n::: resultat\nLe tarif A est le moins cher (ou au même prix) pour une course de $0$ à $5$ km.\n:::\n\n## Question 5 : Course de $20$ km\n\n::: methode\n$20 \\gt 5$ : d’après la question 4, le tarif B est alors le moins cher ; on le confirme par le calcul.\n:::\n\n::: etape Calculs\n- $f(20) = 2 \\times 20 + 3 = 43$\n- $g(20) = 20 + 8 = 28$\n:::\n\n[IMAGE_4]\n\n::: resultat\nPour $20$ km, on choisit le tarif B : $28$ € au lieu de $43$ €, soit $15$ € d’économie.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $f(x) = 2x + 3$, $g(x) = x + 8$, sur $[0\\,;+\\infty[$.\n2. $f(4) = 11$ et $g(4) = 12$ : tarif A.\n3. $x = 5$ : même prix ($13$ €) pour $5$ km.\n4. $x \\in [0\\,;5]$ : tarif A jusqu’à $5$ km.\n5. Tarif B ($28$ € contre $43$ €).",
+   "titre": "Problème - Modélisation : comparer deux tarifs (intersection)",
+   "difficulty": "hard",
+   "contenu": "<!-- optitab:1 -->\nUne compagnie de taxis propose deux tarifs pour une course de $x$ kilomètres ($x \\ge 0$).\n\n- Tarif A : prise en charge de $3$ €, puis $2$ € par kilomètre. On note $f(x)$ le prix en euros.\n- Tarif B : prise en charge de $8$ €, puis $1$ € par kilomètre. On note $g(x)$ le prix en euros.\n\n1. Exprimer $f(x)$ et $g(x)$ en fonction de $x$, et préciser l’ensemble de définition.\n2. Calculer $f(4)$ et $g(4)$. Quel tarif est le moins cher pour $4$ km ?\n3. Résoudre $f(x) = g(x)$ et interpréter le résultat.\n4. Résoudre l’inéquation $f(x) \\le g(x)$ et interpréter le résultat.\n5. Quel tarif choisir pour une course de $20$ km ? Justifier."
+  }
+ ],
+ "images": [
+  {
+   "modele": "CoursImage",
+   "id": 688,
+   "proprietaire": 218,
+   "position": 1,
+   "image": "cours_images/v1_n172_co218_1_cours_lecture.png",
+   "legende": null,
+   "alt_text": "Courbe de f(x) = x² − 2x − 3 : lecture de l’image f(4) = 5 et des antécédents 0 et 2 de −3 sur la droite y = −3",
+   "title_text": "",
+   "width": 353,
+   "height": 336
+  },
+  {
+   "modele": "CoursImage",
+   "id": 689,
+   "proprietaire": 218,
+   "position": 2,
+   "image": "cours_images/v1_n172_co218_2_cours_resolution.png",
+   "legende": null,
+   "alt_text": "Parabole Cf et droite Cg d’équation y = x + 1 sécantes en x = −1 et x = 4 ; solutions de f(x) ≤ g(x) en vert sur l’axe des abscisses, de −1 à 4",
+   "title_text": "",
+   "width": 353,
+   "height": 355
+  },
+  {
+   "modele": "CoursImage",
+   "id": 690,
+   "proprietaire": 218,
+   "position": 3,
+   "image": "cours_images/v1_n172_co218_3_cours_parite.png",
+   "legende": null,
+   "alt_text": "À gauche, courbe de g(x) = 3x² − 5 symétrique par rapport à l’axe des ordonnées (points M et M’) ; à droite, courbe de h(x) = x³ − 3x symétrique par rapport à l’origine (points N et N’)",
+   "title_text": "",
+   "width": 442,
+   "height": 275
+  },
+  {
+   "modele": "SynthesisImage",
+   "id": 294,
+   "proprietaire": 142,
+   "position": 1,
+   "image": "synthesis_images/v1_n172_fi142_1_cours_lecture.png",
+   "legende": null,
+   "alt_text": "Courbe de f(x) = x² − 2x − 3 : lecture de l’image f(4) = 5 et des antécédents 0 et 2 de −3 sur la droite y = −3",
+   "title_text": "",
+   "width": 353,
+   "height": 336
+  },
+  {
+   "modele": "SynthesisImage",
+   "id": 295,
+   "proprietaire": 142,
+   "position": 2,
+   "image": "synthesis_images/v1_n172_fi142_2_cours_resolution.png",
+   "legende": null,
+   "alt_text": "Parabole Cf et droite Cg d’équation y = x + 1 sécantes en x = −1 et x = 4 ; solutions de f(x) ≤ g(x) en vert sur l’axe des abscisses, de −1 à 4",
+   "title_text": "",
+   "width": 353,
+   "height": 355
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 682,
+   "proprietaire": 2035,
+   "position": 1,
+   "image": "exercice_images/v1_n172_ex2035_1_ex_appart_enonce.png",
+   "legende": null,
+   "alt_text": "Courbe de la fonction f(x) = x² − 3x + 1 tracée pour x entre −1,3 et 4,3",
+   "title_text": "",
+   "width": 344,
+   "height": 327
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 683,
+   "proprietaire": 2035,
+   "position": 2,
+   "image": "exercice_images/v1_n172_ex2035_2_ex_appart_corrige.png",
+   "legende": null,
+   "alt_text": "Courbe de f avec les points A(2 ; −1) et B(−1 ; 5) sur la courbe, le point C(0 ; 0) hors de la courbe, et la droite y = 1 qui coupe la courbe en x = 0 et x = 3",
+   "title_text": "",
+   "width": 344,
+   "height": 327
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 684,
+   "proprietaire": 2036,
+   "position": 1,
+   "image": "exercice_images/v1_n172_ex2036_1_ex_table_repere.png",
+   "legende": null,
+   "alt_text": "Repère quadrillé vide, abscisses de −3 à 3 et ordonnées de −4 à 5, pour placer les points",
+   "title_text": "",
+   "width": 324,
+   "height": 355
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 685,
+   "proprietaire": 2036,
+   "position": 2,
+   "image": "exercice_images/v1_n172_ex2036_2_ex_table_courbe.png",
+   "legende": null,
+   "alt_text": "Parabole d’équation y = x² − 4 passant par les sept points de la table, de point le plus bas (0 ; −4)",
+   "title_text": "",
+   "width": 324,
+   "height": 355
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 694,
+   "proprietaire": 2040,
+   "position": 1,
+   "image": "exercice_images/v1_n172_ex2040_1_ex_parite_f.png",
+   "legende": null,
+   "alt_text": "Courbe de y = x² − 5, symétrique par rapport à l’axe des ordonnées, avec deux points symétriques d’abscisses −2,5 et 2,5",
+   "title_text": "",
+   "width": 278,
+   "height": 260
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 695,
+   "proprietaire": 2040,
+   "position": 2,
+   "image": "exercice_images/v1_n172_ex2040_2_ex_parite_g.png",
+   "legende": null,
+   "alt_text": "Courbe de y = x³ − x, symétrique par rapport à l’origine, avec deux points symétriques d’abscisses −1,5 et 1,5",
+   "title_text": "",
+   "width": 278,
+   "height": 264
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 696,
+   "proprietaire": 2040,
+   "position": 3,
+   "image": "exercice_images/v1_n172_ex2040_3_ex_parite_h.png",
+   "legende": null,
+   "alt_text": "Courbe de y = x³ + x² sans symétrie, avec les points d’ordonnées h(1) = 2 et h(−1) = 0",
+   "title_text": "",
+   "width": 281,
+   "height": 260
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3040,
+   "proprietaire": 3748,
+   "position": 1,
+   "image": "exercice_images/v1_n172_ex3748_1_ex_cubique_enonce.png",
+   "legende": null,
+   "alt_text": "Courbe d’une fonction f définie sur [−2 ; 2], passant par (−2 ; −1), (−1 ; 1), l’origine, (1 ; −1) et (2 ; 1)",
+   "title_text": "",
+   "width": 362,
+   "height": 289
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3041,
+   "proprietaire": 3748,
+   "position": 2,
+   "image": "exercice_images/v1_n172_ex3748_2_ex_cubique_q2.png",
+   "legende": null,
+   "alt_text": "Droites y = 1 et y = −1 coupant la courbe aux abscisses −1 et 2, puis −2 et 1",
+   "title_text": "",
+   "width": 362,
+   "height": 289
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3042,
+   "proprietaire": 3748,
+   "position": 3,
+   "image": "exercice_images/v1_n172_ex3748_3_ex_cubique_q4.png",
+   "legende": null,
+   "alt_text": "Solutions de f(x) < 1 en vert sur l’axe, de −2 à 2, avec −1 et 2 exclus (points vides) car la courbe y touche la droite y = 1",
+   "title_text": "",
+   "width": 362,
+   "height": 289
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3043,
+   "proprietaire": 3748,
+   "position": 4,
+   "image": "exercice_images/v1_n172_ex3748_4_ex_cubique_q6.png",
+   "legende": null,
+   "alt_text": "Solutions de f(x) > 0 en vert sur l’axe : de −√3 à 0 et de √3 à 2, où la courbe est au-dessus de l’axe des abscisses",
+   "title_text": "",
+   "width": 362,
+   "height": 289
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 691,
+   "proprietaire": 2039,
+   "position": 1,
+   "image": "exercice_images/v1_n172_ex2039_1_ex_inter_enonce.png",
+   "legende": null,
+   "alt_text": "Parabole Cf d’équation y = x² − 2 et droite Cg d’équation y = x dans un repère",
+   "title_text": "",
+   "width": 344,
+   "height": 328
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 692,
+   "proprietaire": 2039,
+   "position": 2,
+   "image": "exercice_images/v1_n172_ex2039_2_ex_inter_points.png",
+   "legende": null,
+   "alt_text": "Points d’intersection de la parabole et de la droite, (−1 ; −1) et (2 ; 2), avec leurs abscisses −1 et 2 marquées sur l’axe",
+   "title_text": "",
+   "width": 344,
+   "height": 328
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 693,
+   "proprietaire": 2039,
+   "position": 3,
+   "image": "exercice_images/v1_n172_ex2039_3_ex_inter_sup.png",
+   "legende": null,
+   "alt_text": "La parabole est au-dessus de la droite à gauche de −1 et à droite de 2 ; solutions de f(x) ≥ g(x) en vert sur l’axe des abscisses, bornes comprises",
+   "title_text": "",
+   "width": 344,
+   "height": 328
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 686,
+   "proprietaire": 2038,
+   "position": 1,
+   "image": "exercice_images/v1_n172_ex2038_1_ex_poly_enonce.png",
+   "legende": null,
+   "alt_text": "Ligne brisée reliant les points A(−3 ; 1), B(−1 ; 4), C(2 ; −2) et D(5 ; 1)",
+   "title_text": "",
+   "width": 372,
+   "height": 289
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 687,
+   "proprietaire": 2038,
+   "position": 2,
+   "image": "exercice_images/v1_n172_ex2038_2_ex_poly_q2.png",
+   "legende": null,
+   "alt_text": "Ligne brisée ABCD coupant l’axe des abscisses aux points d’abscisses 1 et 4",
+   "title_text": "",
+   "width": 372,
+   "height": 289
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 688,
+   "proprietaire": 2038,
+   "position": 3,
+   "image": "exercice_images/v1_n172_ex2038_3_ex_poly_q3.png",
+   "legende": null,
+   "alt_text": "Droite y = 1 coupant la ligne brisée en trois points, d’abscisses −3, 1/2 et 5",
+   "title_text": "",
+   "width": 372,
+   "height": 289
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 689,
+   "proprietaire": 2038,
+   "position": 4,
+   "image": "exercice_images/v1_n172_ex2038_4_ex_poly_q4.png",
+   "legende": null,
+   "alt_text": "Solutions de f(x) ≥ 1 en vert sur l’axe des abscisses : l’intervalle de −3 à 1/2 et le point isolé 5",
+   "title_text": "",
+   "width": 372,
+   "height": 289
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 690,
+   "proprietaire": 2038,
+   "position": 5,
+   "image": "exercice_images/v1_n172_ex2038_5_ex_poly_q5.png",
+   "legende": null,
+   "alt_text": "Solutions de f(x) ≤ 0 en vert sur l’axe des abscisses : l’intervalle de 1 à 4, où la ligne brisée est sous l’axe",
+   "title_text": "",
+   "width": 372,
+   "height": 289
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 697,
+   "proprietaire": 2042,
+   "position": 1,
+   "image": "exercice_images/v1_n172_ex2042_1_ex_produit_q4.png",
+   "legende": null,
+   "alt_text": "Courbe de y = (x − 2)(x + 3) sous l’axe des abscisses entre −3 et 2 ; solutions de P(x) ≤ 0 en vert, bornes comprises",
+   "title_text": "",
+   "width": 344,
+   "height": 327
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 698,
+   "proprietaire": 2042,
+   "position": 2,
+   "image": "exercice_images/v1_n172_ex2042_2_ex_produit_q5.png",
+   "legende": null,
+   "alt_text": "Courbe de y = (x − 2)(x + 3) au-dessus de l’axe avant −3 et après 2 ; solutions de P(x) > 0 en vert, bornes exclues",
+   "title_text": "",
+   "width": 344,
+   "height": 327
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 699,
+   "proprietaire": 2043,
+   "position": 1,
+   "image": "exercice_images/v1_n172_ex2043_1_ex_quotient_q4.png",
+   "legende": null,
+   "alt_text": "Courbe de y = (2x − 3)/(x + 1) avec la valeur interdite x = −1 en pointillés ; solutions de Q(x) ≥ 0 en vert : avant −1 (exclu) et à partir de 3/2 (compris)",
+   "title_text": "",
+   "width": 374,
+   "height": 327
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 700,
+   "proprietaire": 2043,
+   "position": 2,
+   "image": "exercice_images/v1_n172_ex2043_2_ex_quotient_q5.png",
+   "legende": null,
+   "alt_text": "Courbe de y = (2x − 3)/(x + 1) avec la valeur interdite x = −1 ; solutions de Q(x) < 0 en vert entre −1 et 3/2, bornes exclues",
+   "title_text": "",
+   "width": 374,
+   "height": 327
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3044,
+   "proprietaire": 3749,
+   "position": 1,
+   "image": "exercice_images/v1_n172_ex3749_1_ex_enclos_schema.png",
+   "legende": null,
+   "alt_text": "Enclos rectangulaire de côtés x et 10 − x",
+   "title_text": "",
+   "width": 300,
+   "height": 179
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3045,
+   "proprietaire": 3749,
+   "position": 2,
+   "image": "exercice_images/v1_n172_ex3749_2_ex_enclos_courbe.png",
+   "legende": null,
+   "alt_text": "Courbe de l’aire A(x) = x(10 − x) pour x entre 0 et 10, en forme d’arche culminant à 25 pour x = 5",
+   "title_text": "",
+   "width": 394,
+   "height": 318
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3046,
+   "proprietaire": 3749,
+   "position": 3,
+   "image": "exercice_images/v1_n172_ex3749_3_ex_enclos_resolution.png",
+   "legende": null,
+   "alt_text": "Droite y = 21 coupant la courbe de l’aire en x = 3 et x = 7 ; solutions de A(x) ≥ 21 en vert sur l’axe, de 3 à 7",
+   "title_text": "",
+   "width": 394,
+   "height": 318
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 701,
+   "proprietaire": 2044,
+   "position": 1,
+   "image": "exercice_images/v1_n172_ex2044_1_ex_tarif_q1.png",
+   "legende": null,
+   "alt_text": "Droites des tarifs A, f(x) = 2x + 3, et B, g(x) = x + 8, pour une distance de 0 à 10 km",
+   "title_text": "",
+   "width": 388,
+   "height": 316
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 702,
+   "proprietaire": 2044,
+   "position": 2,
+   "image": "exercice_images/v1_n172_ex2044_2_ex_tarif_q3.png",
+   "legende": null,
+   "alt_text": "Les droites des deux tarifs se coupent au point (5 ; 13) : même prix de 13 € pour 5 km",
+   "title_text": "",
+   "width": 388,
+   "height": 316
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 703,
+   "proprietaire": 2044,
+   "position": 3,
+   "image": "exercice_images/v1_n172_ex2044_3_ex_tarif_q4.png",
+   "legende": null,
+   "alt_text": "Solutions de f(x) ≤ g(x) en vert sur l’axe, de 0 à 5 km : la droite du tarif A est sous celle du tarif B",
+   "title_text": "",
+   "width": 388,
+   "height": 316
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 704,
+   "proprietaire": 2044,
+   "position": 4,
+   "image": "exercice_images/v1_n172_ex2044_4_ex_tarif_q5.png",
+   "legende": null,
+   "alt_text": "Prix pour 20 km : 43 € avec le tarif A et 28 € avec le tarif B",
+   "title_text": "",
+   "width": 388,
+   "height": 326
+  }
+ ],
+ "images_creees": [
+  {
+   "modele": "ExerciceImage",
+   "id": 4330
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 4331
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 4332
+  }
+ ],
+ "exercices_crees": []
+}

@@ -7,23 +7,11 @@
   <Modal
     :is-open="isOpen"
     title="Connexion"
+    subtitle="Content de te revoir ! Connecte-toi pour retrouver tes chapitres et tes progrès."
+    :icon="ArrowRightOnRectangleIcon"
     size="small"
     @close="handleClose"
   >
-    <!-- Sign Up Link moved here -->
-    <div class="signup-link signup-link-top">
-      <p>
-        Pas encore de compte ?
-        <button
-          type="button"
-          class="signup-btn" data-cta-name="signup" data-cta-location="modal"
-          @click="handleSignUp"
-        >
-          Créer un compte
-        </button>
-      </p>
-    </div>
-
     <!-- Login Form -->
     <DynamicForm
       :field-names="fieldNames"
@@ -39,48 +27,53 @@
     >
       <!-- Custom Form Content -->
       <template #form-content>
-        <div
-          v-if="loginErrorMessage"
-          class="login-error"
-          role="alert"
-          aria-live="assertive"
-        >
-          {{ loginErrorMessage }}
-        </div>
         <div class="form-options">
           <button
             type="button"
-            class="forgot-password-btn"
+            class="om-link forgot-password-btn"
             @click="handleForgotPassword"
           >
             Mot de passe oublié ?
           </button>
         </div>
+        <p
+          v-if="loginErrorMessage"
+          class="om-alert om-alert--error"
+          role="alert"
+          aria-live="assertive"
+        >
+          {{ loginErrorMessage }}
+        </p>
       </template>
     </DynamicForm>
 
-    <!-- Divider -->
-    <div class="divider">
-      <span class="divider-line"></span>
-      <span class="divider-text">ou</span>
-      <span class="divider-line"></span>
-    </div>
+    <p class="om-divider">ou</p>
 
     <!-- Social Login -->
-    <div class="social-login">
-      <div class="social-btn-group">
-        <button
-          v-for="provider in socialProviders"
-          :key="provider.key"
-          :class="['social-btn', provider.btnClass]"
-          @click="() => handleSocialLogin(provider.key)"
-          :disabled="isSubmitting || (provider.key === 'google' && isGoogleLoading)"
-        >
-          <img :src="provider.icon" :alt="provider.key" class="social-icon" />
-          {{ provider.label }}
-        </button>
-      </div>
+    <div class="social-btn-group">
+      <button
+        v-for="provider in socialProviders"
+        :key="provider.key"
+        type="button"
+        :class="['om-btn om-btn--ghost om-btn--block social-btn', provider.btnClass]"
+        @click="() => handleSocialLogin(provider.key)"
+        :disabled="isSubmitting || (provider.key === 'google' && isGoogleLoading)"
+      >
+        <img :src="provider.icon" alt="" class="social-icon" />
+        {{ provider.label }}
+      </button>
     </div>
+
+    <p class="switch-account">
+      Pas encore de compte ?
+      <button
+        type="button"
+        class="om-link" data-cta-name="signup" data-cta-location="modal"
+        @click="handleSignUp"
+      >
+        Créer un compte gratuit
+      </button>
+    </p>
   </Modal>
 </template>
 
@@ -98,6 +91,7 @@ import { useUserStore } from '@/stores/user'
 import { useGoogleAuth } from '@/composables/useGoogleAuth'
 import { useToast } from '@/composables/useToast'
 import * as analytics from '@/services/analytics'
+import { ArrowRightOnRectangleIcon } from '@heroicons/vue/24/outline'
 
 export default {
   name: 'LoginModal',
@@ -508,6 +502,7 @@ export default {
     }
 
     return {
+      ArrowRightOnRectangleIcon,
       // Form configuration
       config,
       fieldNames,
@@ -537,155 +532,18 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
-@use '@/assets/variables.scss' as *;
-
-// Form styles
-.login-form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-// Form options
+<style scoped>
+/* Éléments communs (.om-btn, .om-link, .om-divider, .om-alert) : components/common/Modal.vue */
 .form-options {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: flex-end;
+  margin-top: -6px;
   font-size: 14px;
-}
-
-.login-error {
-  margin: 16px 0 8px;
-  padding: 12px 14px;
-  border-radius: 10px;
-  border: 1px solid #fecaca;
-  background: #fef2f2;
-  color: #b91c1c;
-  font-size: 0.92rem;
-  line-height: 1.4;
-}
-
-.checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-}
-
-.checkbox-input {
-  width: 16px;
-  height: 16px;
-  accent-color: $primary-color;
-}
-
-.checkbox-text {
-  color: $text-color;
-}
-
-.forgot-password-btn {
-  background: none;
-  border: none;
-  color: $primary-color;
-  text-decoration: none;
-  font-weight: 500;
-  cursor: pointer;
-  font-size: 14px;
-
-  &:hover {
-    text-decoration: underline;
-  }
-}
-
-// Submit button
-.login-submit-btn {
-  @extend .btn;
-  @extend .btn-primary;
-  width: 100%;
-  padding: 14px 20px;
-  font-size: 16px;
-  font-weight: 600;
-  border-radius: 8px;
-  position: relative;
-  min-height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-
-  &:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-  }
-}
-
-// Divider
-.divider {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  margin: 24px 0;
-  position: relative;
-}
-
-.divider-line {
-  flex: 1;
-  height: 1px;
-  background: #e5e7eb;
-  margin: 0 12px;
-}
-
-.divider-text {
-  background: $white;
-  padding: 0 16px;
-  color: #6b7280;
-  font-size: 14px;
-  font-weight: 500;
-  z-index: 1;
-  position: relative;
-}
-
-// Social login
-.social-login {
-  margin-bottom: 24px;
 }
 
 .social-btn-group {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.social-btn {
-  @extend .btn;
-  width: 100%;
-  padding: 12px 16px;
-  border: 2px solid #e5e7eb;
-  background: $white;
-  color: $text-color;
-  border-radius: 8px;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  transition: all 0.2s ease;
-
-  &:hover:not(:disabled) {
-    background: #f9fafb;
-    border-color: #d1d5db;
-  }
-
-  &:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-  }
-}
-
-.social-btn.google-btn {
-  border-color: #e5e7eb;
-  color: $text-color;
+  display: grid;
+  gap: 10px;
 }
 
 .social-icon {
@@ -693,56 +551,10 @@ export default {
   height: 20px;
 }
 
-// Sign up link
-.signup-link {
+.switch-account {
+  margin: 22px 0 0;
+  color: var(--om-muted);
+  font-size: 14.5px;
   text-align: center;
-  font-size: 14px;
-  color: $text-color;
-
-  p {
-    margin: 0;
-  }
-}
-
-.signup-link-top {
-  text-align: center;
-  margin-bottom: 16px;
-  font-size: 14px;
-}
-
-.signup-btn {
-  background: none;
-  border: none;
-  color: $primary-color;
-  text-decoration: none;
-  font-weight: 600;
-  cursor: pointer;
-  font-size: 14px;
-
-  &:hover {
-    text-decoration: underline;
-  }
-}
-
-// Responsive
-@media (max-width: 480px) {
-  .form-options {
-    flex-direction: column;
-    gap: 12px;
-    align-items: flex-start;
-  }
-
-  .social-btn-group {
-    gap: 8px;
-  }
-
-  .social-btn {
-    padding: 10px 12px;
-    font-size: 14px;
-  }
-
-  .divider-text {
-    font-size: 13px;
-  }
 }
 </style>

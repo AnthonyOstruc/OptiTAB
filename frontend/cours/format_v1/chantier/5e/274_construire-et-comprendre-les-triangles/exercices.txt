@@ -1,0 +1,1405 @@
+=== Découverte - Trois longueurs : triangle possible ou non ?
+Id: 2980
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+On cherche si trois longueurs données peuvent être les longueurs des côtés d'un triangle, puis on construit un triangle au compas.
+
+1. Peut-on construire un triangle dont les côtés mesurent :
+   - a) $4$ cm, $5$ cm et $7$ cm ?
+   - b) $3$ cm, $4$ cm et $8$ cm ?
+   - c) $2{,}5$ cm, $3{,}5$ cm et $6$ cm ?
+   - d) $6$ cm, $6$ cm et $6$ cm ?
+2. On veut construire le triangle $ABC$ tel que $AB = 6$ cm, $AC = 4$ cm et $BC = 5$ cm. Voici une figure à main levée. Vérifier que ce triangle existe.
+
+[IMAGE_1]
+
+3. Expliquer comment construire ce triangle à la règle et au compas, puis le construire.
+4. Les deux arcs de cercle se coupent en deux points, de part et d'autre de $(AB)$. Lequel faut-il choisir ?
+5. Deux côtés d'un triangle mesurent $3$ cm et $7$ cm. Le troisième côté peut-il mesurer $4$ cm ? $9$ cm ? $11$ cm ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les quatre triplets de longueurs
+
+::: methode
+On compare la **plus grande** longueur à la somme des deux autres (inégalité triangulaire).
+:::
+
+::: etape a) $4$ cm, $5$ cm et $7$ cm
+La plus grande longueur est $7$ cm et $4 + 5 = 9$. Comme $7 < 9$, le triangle existe.
+:::
+
+::: etape b) $3$ cm, $4$ cm et $8$ cm
+La plus grande longueur est $8$ cm et $3 + 4 = 7$. Comme $8 > 7$, les deux petits côtés sont trop courts pour se rejoindre : aucun triangle.
+:::
+
+::: etape c) $2{,}5$ cm, $3{,}5$ cm et $6$ cm
+La plus grande longueur est $6$ cm et $2{,}5 + 3{,}5 = 6$. Il y a égalité : les deux arcs se touchent en un seul point du segment de $6$ cm, et les trois sommets sont alignés.
+:::
+
+::: etape d) $6$ cm, $6$ cm et $6$ cm
+La plus grande longueur est $6$ cm et $6 + 6 = 12$. Comme $6 < 12$, le triangle existe : c'est un triangle équilatéral.
+:::
+
+[IMAGE_2]
+
+::: resultat
+a) Oui. b) Non. c) Non : on obtient un triangle aplati. d) Oui (triangle équilatéral).
+:::
+
+## Question 2 : Le triangle $ABC$ existe-t-il ?
+
+::: etape Comparer
+La plus grande longueur est $AB = 6$ cm et $AC + BC = 4 + 5 = 9$ cm. Comme $6 < 9$, l'inégalité triangulaire est respectée.
+:::
+
+::: resultat
+Le triangle $ABC$ existe.
+:::
+
+## Question 3 : La construction au compas
+
+::: methode
+On trace un côté, puis on place le troisième sommet grâce à ses distances aux deux extrémités : ce sont des rayons de cercles.
+:::
+
+::: etape Le premier côté
+On trace le segment $[AB]$ de $6$ cm à la règle graduée.
+:::
+
+::: etape Les deux arcs
+- $AC = 4$ cm : le point $C$ est à $4$ cm de $A$, donc sur l'arc de cercle de centre $A$ et de rayon $4$ cm.
+- $BC = 5$ cm : le point $C$ est à $5$ cm de $B$, donc sur l'arc de cercle de centre $B$ et de rayon $5$ cm.
+:::
+
+::: etape Terminer
+Le point $C$ est le point d'intersection des deux arcs. On trace $[AC]$ et $[BC]$, en laissant les arcs visibles.
+:::
+
+::: resultat
+On trace $[AB]$, puis un arc de centre $A$ et de rayon $4$ cm et un arc de centre $B$ et de rayon $5$ cm : $C$ est à leur intersection.
+:::
+
+::: attention Erreur fréquente
+Inverser les rayons : l'arc de centre $A$ a pour rayon la longueur du côté qui part de $A$, c'est-à-dire $AC = 4$ cm, et non $BC$.
+:::
+
+## Question 4 : Les deux points d'intersection
+
+::: etape Comparer les deux points
+Les deux points $C$ et $C'$ sont chacun à $4$ cm de $A$ et à $5$ cm de $B$. Ils sont symétriques par rapport à la droite $(AB)$.
+:::
+
+[IMAGE_3]
+
+::: resultat
+On peut choisir l'un ou l'autre : les triangles $ABC$ et $ABC'$ ont les mêmes longueurs et sont superposables (l'un est le retourné de l'autre).
+:::
+
+## Question 5 : Le troisième côté
+
+::: methode
+Pour chaque valeur proposée, on applique la méthode : plus grande longueur comparée à la somme des deux autres.
+:::
+
+::: etape Avec $4$ cm
+La plus grande longueur est $7$ cm et $3 + 4 = 7$ : il y a égalité, le triangle serait aplati.
+:::
+
+::: etape Avec $9$ cm
+La plus grande longueur est $9$ cm et $3 + 7 = 10$. Comme $9 < 10$, le triangle existe.
+:::
+
+::: etape Avec $11$ cm
+La plus grande longueur est $11$ cm et $3 + 7 = 10$. Comme $11 > 10$, aucun triangle.
+:::
+
+::: resultat
+Seule la longueur $9$ cm convient ; $4$ cm donne un triangle aplati et $11$ cm est impossible.
+:::
+
+::: retenir
+Pour savoir si trois longueurs forment un triangle, il suffit de tester la plus grande : elle doit être **strictement** inférieure à la somme des deux autres.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. a) Oui ($7 < 9$). b) Non ($8 > 7$). c) Triangle aplati ($6 = 6$). d) Oui ($6 < 12$).
+2. $6 < 4 + 5 = 9$ : le triangle $ABC$ existe.
+3. $[AB]$ de $6$ cm, arc de centre $A$ de rayon $4$ cm, arc de centre $B$ de rayon $5$ cm ; $C$ à l'intersection.
+4. L'un ou l'autre : les deux triangles sont superposables.
+5. $9$ cm seulement ($4$ cm : aplati ; $11$ cm : impossible).
+
+===
+
+=== Découverte - Somme des angles et triangles particuliers
+Id: 2984
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Les quatre triangles ci-dessous sont codés. Les angles marqués d'un point d'interrogation sont inconnus.
+
+[IMAGE_1]
+
+1. Triangle a) : calculer $\widehat{ACB}$.
+2. Triangle b) : le triangle $DEF$ est rectangle en $D$. Calculer $\widehat{DFE}$.
+3. Triangle c) : le triangle $GHI$ est isocèle en $G$. Calculer $\widehat{GHI}$ et $\widehat{GIH}$.
+4. Triangle d) : le triangle $JKL$ est isocèle en $J$. Calculer $\widehat{JLK}$ et $\widehat{KJL}$.
+5. Démontrer que chaque angle d'un triangle équilatéral mesure $60°$.
+6. Existe-t-il un triangle qui a :
+   - a) deux angles droits ?
+   - b) un angle de $100°$ et un angle de $85°$ ?
+   - c) trois angles de $50°$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Le triangle $ABC$
+
+::: methode
+La somme des trois angles d'un triangle vaut $180°$ : on soustrait de $180°$ les deux angles connus.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+\widehat{ACB} &= 180° - (47° + 68°) \\
+&= 180° - 115° \\
+&= 65°
+\end{aligned}
+$$
+:::
+
+::: resultat
+$\widehat{ACB} = 65°$.
+:::
+
+## Question 2 : Le triangle rectangle $DEF$
+
+::: etape Utiliser l'angle droit
+Le triangle est rectangle en $D$, donc $\widehat{EDF} = 90°$.
+
+$$
+\begin{aligned}
+\widehat{DFE} &= 180° - (90° + 34°) \\
+&= 180° - 124° \\
+&= 56°
+\end{aligned}
+$$
+:::
+
+::: etape Vérification
+Dans un triangle rectangle, les deux angles aigus ont pour somme $90°$ : $34° + 56° = 90°$.
+:::
+
+::: resultat
+$\widehat{DFE} = 56°$.
+:::
+
+## Question 3 : Le triangle $GHI$ isocèle en $G$
+
+::: methode
+Dans un triangle isocèle, les deux angles à la base sont égaux. Ici, la base est $[HI]$.
+:::
+
+::: etape Ce qui reste pour les deux angles à la base
+$180° - 40° = 140°$
+:::
+
+::: etape Partager en deux
+Les angles $\widehat{GHI}$ et $\widehat{GIH}$ sont égaux : chacun mesure $140° \div 2 = 70°$.
+:::
+
+::: resultat
+$\widehat{GHI} = \widehat{GIH} = 70°$.
+:::
+
+## Question 4 : Le triangle $JKL$ isocèle en $J$
+
+::: etape L'autre angle à la base
+Le triangle est isocèle en $J$ : les angles à la base $\widehat{JKL}$ et $\widehat{JLK}$ sont égaux, donc $\widehat{JLK} = 52°$.
+:::
+
+::: etape L'angle au sommet principal
+$$
+\begin{aligned}
+\widehat{KJL} &= 180° - (52° + 52°) \\
+&= 180° - 104° \\
+&= 76°
+\end{aligned}
+$$
+:::
+
+[IMAGE_2]
+
+::: resultat
+$\widehat{JLK} = 52°$ et $\widehat{KJL} = 76°$.
+:::
+
+::: attention Erreur fréquente
+Croire que l'angle connu est l'angle au sommet principal. Ici, l'angle de $52°$ est en $K$, un sommet de la base : c'est l'angle en $L$ qui lui est égal.
+:::
+
+## Question 5 : Le triangle équilatéral
+
+::: methode
+Un triangle équilatéral est un triangle isocèle particulier : on l'utilise pour chacun de ses sommets.
+:::
+
+::: etape Trois angles égaux
+Soit $MNP$ un triangle équilatéral : $MN = MP = NP$.
+
+- $MN = MP$ : le triangle est isocèle en $M$, donc $\widehat{N} = \widehat{P}$.
+- $NM = NP$ : le triangle est isocèle en $N$, donc $\widehat{M} = \widehat{P}$.
+
+Les trois angles sont donc égaux.
+:::
+
+::: etape Utiliser la somme
+Leur somme vaut $180°$, donc chacun mesure $180° \div 3 = 60°$.
+:::
+
+::: resultat
+Dans un triangle équilatéral, chaque angle mesure $60°$.
+:::
+
+## Question 6 : Des triangles impossibles ?
+
+::: methode
+On calcule la somme des angles proposés et on la compare à $180°$.
+:::
+
+::: etape a) Deux angles droits
+$90° + 90° = 180°$ : il ne resterait $0°$ pour le troisième angle. Les deux côtés perpendiculaires au même côté seraient parallèles et ne se couperaient jamais.
+:::
+
+::: etape b) $100°$ et $85°$
+$100° + 85° = 185°$, déjà plus que $180°$.
+:::
+
+::: etape c) Trois angles de $50°$
+$3 \times 50° = 150°$, et non $180°$.
+:::
+
+::: resultat
+Aucun de ces triangles n'existe.
+:::
+
+::: retenir
+Un triangle a au plus un angle droit ou un angle obtus. Ses trois angles ont **toujours** une somme de $180°$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\widehat{ACB} = 65°$.
+2. $\widehat{DFE} = 56°$.
+3. $\widehat{GHI} = \widehat{GIH} = 70°$.
+4. $\widehat{JLK} = 52°$ et $\widehat{KJL} = 76°$.
+5. Les trois angles sont égaux et leur somme vaut $180°$ : $180° \div 3 = 60°$.
+6. a) Non. b) Non ($185° > 180°$). c) Non ($150° \neq 180°$).
+
+===
+
+=== Découverte - Construire avec deux côtés et l'angle compris
+Id: 2981
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+On veut construire le triangle $DEF$ tel que $DE = 5{,}5$ cm, $DF = 4$ cm et $\widehat{EDF} = 50°$. Voici une figure à main levée.
+
+[IMAGE_1]
+
+1. L'angle donné est-il compris entre les deux côtés connus ? Justifier.
+2. Écrire, dans l'ordre, les étapes de la construction.
+3. Construire le triangle $DEF$, puis mesurer $EF$.
+4. Mesurer $\widehat{DEF}$ et $\widehat{DFE}$ au rapporteur. Vérifier la somme des trois angles.
+5. Construire le triangle $ABC$ isocèle en $A$ tel que $AB = 4$ cm et $\widehat{BAC} = 30°$, puis calculer $\widehat{ABC}$ et $\widehat{ACB}$.
+6. Lina trace $[DE]$, puis place l'angle de $50°$ en $E$. Expliquer son erreur.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : L'angle est-il compris ?
+
+::: methode
+Dans le nom d'un angle, la lettre du milieu est son sommet.
+:::
+
+::: etape Lire les données
+Le sommet de $\widehat{EDF}$ est $D$. Les côtés connus $[DE]$ et $[DF]$ ont tous les deux pour extrémité $D$ : l'angle est formé par ces deux côtés.
+:::
+
+::: resultat
+Oui : l'angle de $50°$, en $D$, est compris entre $[DE]$ et $[DF]$.
+:::
+
+## Question 2 : Le programme de construction
+
+::: etape Les étapes
+1. Tracer le segment $[DE]$ de $5{,}5$ cm.
+2. Placer le centre du rapporteur en $D$, le zéro sur $[DE]$, et tracer la demi-droite d'origine $D$ qui fait un angle de $50°$ avec $[DE]$.
+3. Reporter $4$ cm au compas sur cette demi-droite, à partir de $D$ : c'est le point $F$.
+4. Tracer $[EF]$.
+:::
+
+::: resultat
+Segment $[DE]$, puis angle de $50°$ en $D$, puis report de $4$ cm sur la demi-droite, enfin $[EF]$.
+:::
+
+## Question 3 : La construction et la longueur $EF$
+
+::: etape Construire
+On suit les étapes de la question 2. L'arc de compas qui place $F$ reste visible.
+:::
+
+[IMAGE_2]
+
+::: etape Mesurer
+À la règle graduée, on lit $EF \approx 4{,}2$ cm.
+:::
+
+::: resultat
+$EF \approx 4{,}2$ cm.
+:::
+
+## Question 4 : Les deux autres angles
+
+::: etape Mesurer
+Au rapporteur : $\widehat{DEF} \approx 46°$ et $\widehat{DFE} \approx 84°$.
+:::
+
+::: etape Vérifier
+$50° + 46° + 84° = 180°$ : la somme des angles est bien $180°$, aux erreurs de mesure près.
+:::
+
+::: resultat
+$\widehat{DEF} \approx 46°$ et $\widehat{DFE} \approx 84°$ ; la somme vaut $180°$.
+:::
+
+## Question 5 : Le triangle isocèle $ABC$
+
+::: methode
+Isocèle en $A$ signifie $AB = AC$ : on connaît donc deux côtés et l'angle en $A$, qui est compris entre eux.
+:::
+
+::: etape Construire
+On trace $[AB]$ de $4$ cm, la demi-droite d'origine $A$ faisant $30°$ avec $[AB]$, puis on reporte $AC = 4$ cm au compas. On trace $[BC]$.
+:::
+
+[IMAGE_3]
+
+::: etape Calculer les angles à la base
+Les angles à la base sont égaux et se partagent $180° - 30° = 150°$ :
+
+$$\widehat{ABC} = \widehat{ACB} = 150° \div 2 = 75°$$
+:::
+
+::: resultat
+$\widehat{ABC} = \widehat{ACB} = 75°$.
+:::
+
+## Question 6 : L'erreur de Lina
+
+::: etape Le sommet de l'angle
+L'angle $\widehat{EDF}$ a pour sommet $D$. En plaçant $50°$ en $E$, Lina construit un angle $\widehat{DEF}$ de $50°$, qui n'est pas demandé : son triangle n'aura pas les bonnes dimensions.
+:::
+
+::: resultat
+L'angle de $50°$ doit être placé en $D$, le sommet commun aux deux côtés connus.
+:::
+
+::: attention Erreur fréquente
+Placer l'angle au mauvais sommet. On repère toujours le sommet de l'angle (lettre du milieu) **avant** de prendre le rapporteur.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Oui : l'angle a pour sommet $D$, extrémité commune de $[DE]$ et $[DF]$.
+2. $[DE]$, angle de $50°$ en $D$, report de $4$ cm au compas, puis $[EF]$.
+3. $EF \approx 4{,}2$ cm.
+4. $\widehat{DEF} \approx 46°$, $\widehat{DFE} \approx 84°$ ; $50° + 46° + 84° = 180°$.
+5. $\widehat{ABC} = \widehat{ACB} = 75°$.
+6. L'angle de $50°$ doit être en $D$, pas en $E$.
+
+===
+
+=== Entraînement - Calculer un angle avant de construire
+Id: 2978
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+**Partie A.** On veut construire le triangle $AUG$ tel que $AU = 5$ cm, $\widehat{UAG} = 40°$ et $\widehat{AGU} = 75°$.
+
+[IMAGE_1]
+
+1. Pourquoi ne peut-on pas construire ce triangle directement avec ces données ? Calculer $\widehat{AUG}$.
+2. Expliquer la construction, puis construire le triangle $AUG$.
+3. Mesurer $AG$ et $UG$. Contrôler la mesure de l'angle en $G$.
+
+**Partie B.** Le triangle $EFG$ est isocèle en $E$, avec $FG = 5$ cm et $\widehat{FEG} = 70°$.
+
+[IMAGE_2]
+
+4. Calculer $\widehat{EFG}$ et $\widehat{EGF}$.
+5. Construire le triangle $EFG$.
+6. Peut-on construire un triangle ayant un côté de $4$ cm et deux angles adjacents à ce côté de $100°$ et $85°$ ? Justifier.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : L'angle en $U$
+
+::: methode
+Pour construire avec un côté et deux angles, il faut les deux angles **adjacents** à ce côté, c'est-à-dire situés à ses deux extrémités.
+:::
+
+::: etape Repérer le problème
+Le côté connu est $[AU]$. L'angle en $A$ lui est adjacent, mais l'angle en $G$ ne l'est pas : $G$ est justement le point qu'on cherche. Il faut donc l'angle en $U$.
+:::
+
+::: etape Calculer
+$$
+\begin{aligned}
+\widehat{AUG} &= 180° - (40° + 75°) \\
+&= 180° - 115° \\
+&= 65°
+\end{aligned}
+$$
+:::
+
+::: resultat
+L'angle en $G$ n'est pas au bout de $[AU]$ ; on calcule $\widehat{AUG} = 65°$.
+:::
+
+## Question 2 : Construire $AUG$
+
+::: etape Les étapes
+1. Tracer $[AU]$ de $5$ cm.
+2. En $A$, tracer au rapporteur une demi-droite faisant $40°$ avec $[AU]$.
+3. En $U$, tracer une demi-droite faisant $65°$ avec $[UA]$, du même côté de $(AU)$.
+4. Le point $G$ est l'intersection des deux demi-droites.
+:::
+
+[IMAGE_3]
+
+::: resultat
+Le triangle $AUG$ est construit à partir de $[AU]$ et des angles de $40°$ en $A$ et $65°$ en $U$.
+:::
+
+## Question 3 : Mesures et contrôle
+
+::: etape Mesurer
+À la règle : $AG \approx 4{,}7$ cm et $UG \approx 3{,}3$ cm.
+:::
+
+::: etape Contrôler
+Au rapporteur, on lit $\widehat{AGU} \approx 75°$, ce qui correspond à la donnée de l'énoncé.
+:::
+
+::: resultat
+$AG \approx 4{,}7$ cm, $UG \approx 3{,}3$ cm et l'angle en $G$ mesure bien $75°$.
+:::
+
+## Question 4 : Les angles à la base de $EFG$
+
+::: methode
+Le triangle est isocèle en $E$ : les angles à la base, en $F$ et en $G$, sont égaux.
+:::
+
+::: etape Calcul
+Les deux angles à la base se partagent $180° - 70° = 110°$, donc chacun mesure $110° \div 2 = 55°$.
+:::
+
+::: resultat
+$\widehat{EFG} = \widehat{EGF} = 55°$.
+:::
+
+## Question 5 : Construire $EFG$
+
+::: etape Les étapes
+On connaît maintenant le côté $[FG]$ et ses deux angles adjacents : on trace $[FG]$ de $5$ cm, puis une demi-droite à $55°$ en $F$ et une demi-droite à $55°$ en $G$, du même côté. Elles se coupent en $E$.
+:::
+
+[IMAGE_4]
+
+::: etape Contrôle
+On mesure $\widehat{FEG} \approx 70°$ et l'on vérifie que $EF = EG$ (environ $4{,}4$ cm).
+:::
+
+::: resultat
+Le triangle $EFG$ est construit avec $[FG]$ et deux angles de $55°$.
+:::
+
+## Question 6 : $100°$ et $85°$
+
+::: etape Additionner
+$100° + 85° = 185°$, qui dépasse $180°$.
+:::
+
+::: etape Interpréter
+Le troisième angle devrait mesurer $180° - 185°$, ce qui est impossible : les deux demi-droites tracées du même côté du segment ne se rencontrent pas.
+:::
+
+::: resultat
+Non : la somme des deux angles dépasse déjà $180°$.
+:::
+
+::: attention Erreur fréquente
+Tracer la seconde demi-droite de l'autre côté du segment : les deux angles doivent être construits **du même côté** de $(AU)$ pour que les demi-droites se coupent.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. L'angle en $G$ n'est pas adjacent à $[AU]$ ; $\widehat{AUG} = 65°$.
+2. $[AU]$ de $5$ cm, $40°$ en $A$, $65°$ en $U$ du même côté ; $G$ à l'intersection.
+3. $AG \approx 4{,}7$ cm, $UG \approx 3{,}3$ cm, $\widehat{AGU} \approx 75°$.
+4. $\widehat{EFG} = \widehat{EGF} = 55°$.
+5. $[FG]$ de $5$ cm et deux angles de $55°$ ; $EF = EG \approx 4{,}4$ cm.
+6. Non : $100° + 85° = 185° > 180°$.
+
+===
+
+=== Entraînement - Tracer des hauteurs et calculer une aire
+Id: 2991
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Les figures ne sont pas en vraie grandeur. Dans le triangle $ABC$, $BC = 7$ cm et $AC = 5$ cm.
+
+[IMAGE_1]
+
+1. Expliquer comment tracer la hauteur issue de $A$. On note $H$ son pied et on mesure $AH = 4$ cm.
+2. Calculer l'aire du triangle $ABC$.
+3. On trace la hauteur issue de $B$ ; son pied $K$ est sur $[AC]$. Calculer $BK$ en utilisant l'aire du triangle.
+4. Tracer la troisième hauteur, issue de $C$. Que constate-t-on ?
+5. Le triangle $DEF$ a un angle obtus en $E$ et $EF = 4$ cm. Où se trouve le pied $K$ de la hauteur issue de $D$ ?
+
+[IMAGE_2]
+
+6. On mesure $DK = 3$ cm. Calculer l'aire du triangle $DEF$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Tracer la hauteur issue de $A$
+
+::: methode
+Une hauteur passe par un sommet et est perpendiculaire à la droite qui porte le côté opposé.
+:::
+
+::: etape Tracer
+On place l'équerre le long de $[BC]$ et on la fait glisser jusqu'à ce que son autre côté passe par $A$. On trace la droite perpendiculaire à $(BC)$ passant par $A$ : elle coupe $[BC]$ en $H$.
+:::
+
+::: resultat
+La hauteur issue de $A$ est la perpendiculaire à $(BC)$ passant par $A$ ; son pied $H$ est sur $[BC]$.
+:::
+
+## Question 2 : L'aire de $ABC$
+
+::: methode
+On prend la base $[BC]$ et sa hauteur correspondante $[AH]$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+\mathcal{A}_{ABC} &= \frac{BC \times AH}{2} \\
+&= \frac{7 \times 4}{2} \\
+&= 14
+\end{aligned}
+$$
+:::
+
+::: resultat
+$\mathcal{A}_{ABC} = 14$ cm$^2$.
+:::
+
+## Question 3 : La longueur $BK$
+
+::: methode
+L'aire ne dépend pas de la base choisie : avec la base $[AC]$, la hauteur correspondante est $[BK]$.
+:::
+
+::: etape Écrire l'aire avec la base $[AC]$
+$$\frac{AC \times BK}{2} = 14$$
+
+En multipliant par $2$ : $5 \times BK = 28$.
+:::
+
+::: etape Calculer
+$BK = 28 \div 5 = 5{,}6$ cm. Vérification : $5 \times 5{,}6 \div 2 = 14$.
+:::
+
+[IMAGE_3]
+
+::: resultat
+$BK = 5{,}6$ cm.
+:::
+
+## Question 4 : La troisième hauteur
+
+::: etape Tracer et observer
+On trace la perpendiculaire à $(AB)$ passant par $C$ ; son pied est $L$. Elle passe par le point où se coupent déjà les deux premières hauteurs.
+:::
+
+::: resultat
+Les trois hauteurs sont concourantes : elles passent par un même point, l'orthocentre du triangle.
+:::
+
+## Question 5 : La hauteur dans le triangle obtus
+
+::: etape Prolonger le côté
+L'angle en $E$ est obtus : la perpendiculaire à $(EF)$ passant par $D$ ne rencontre pas le segment $[EF]$. On prolonge $[FE]$ au-delà de $E$, en pointillés.
+:::
+
+[IMAGE_4]
+
+::: resultat
+Le pied $K$ est sur le prolongement de $[FE]$, du côté de $E$ : la hauteur est à l'extérieur du triangle.
+:::
+
+## Question 6 : L'aire de $DEF$
+
+::: methode
+La base est toujours le côté $[EF]$ ; $[DK]$ est sa hauteur correspondante, même si $K$ est en dehors du segment.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+\mathcal{A}_{DEF} &= \frac{EF \times DK}{2} \\
+&= \frac{4 \times 3}{2} \\
+&= 6
+\end{aligned}
+$$
+:::
+
+::: resultat
+$\mathcal{A}_{DEF} = 6$ cm$^2$.
+:::
+
+::: attention Erreur fréquente
+Prendre $KF$ comme base : $[KF]$ n'est pas un côté du triangle $DEF$. Le produit $KF \times DK \div 2$ donnerait l'aire du triangle $DKF$, plus grand que $DEF$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Perpendiculaire à $(BC)$ passant par $A$ ; pied $H$ sur $[BC]$.
+2. $\mathcal{A}_{ABC} = 7 \times 4 \div 2 = 14$ cm$^2$.
+3. $5 \times BK = 28$, donc $BK = 5{,}6$ cm.
+4. Les trois hauteurs sont concourantes (orthocentre).
+5. $K$ est sur le prolongement de $[FE]$, à l'extérieur du triangle.
+6. $\mathcal{A}_{DEF} = 4 \times 3 \div 2 = 6$ cm$^2$.
+
+===
+
+=== Entraînement - Médiatrices et cercle circonscrit
+Id: 2987
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+1. Vérifier que le triangle $ABC$ tel que $AB = 7$ cm, $AC = 5$ cm et $BC = 6$ cm existe, puis le construire.
+
+[IMAGE_1]
+
+2. Tracer au compas les médiatrices de $[AB]$ et de $[BC]$ ; elles se coupent en $O$. Justifier que $OA = OB = OC$.
+3. Tracer le cercle de centre $O$ passant par $A$. Par quels points passe-t-il ? La médiatrice de $[AC]$ passe-t-elle par $O$ ? Mesurer le rayon.
+4. Construire le triangle $RST$ rectangle en $R$ tel que $RS = 3$ cm et $RT = 4$ cm. Tracer les médiatrices de $[RS]$ et de $[RT]$ : où se coupent-elles ?
+
+[IMAGE_2]
+
+5. Mesurer $ST$. En déduire le rayon du cercle circonscrit au triangle $RST$.
+6. Le triangle $EFG$ est isocèle en $E$. Expliquer pourquoi la médiatrice de $[FG]$ passe par $E$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Le triangle $ABC$
+
+::: etape Existence
+La plus grande longueur est $AB = 7$ cm et $AC + BC = 5 + 6 = 11$ cm. Comme $7 < 11$, le triangle existe.
+:::
+
+::: etape Construction
+On trace $[AB]$ de $7$ cm, puis un arc de centre $A$ et de rayon $5$ cm et un arc de centre $B$ et de rayon $6$ cm : ils se coupent en $C$.
+:::
+
+::: resultat
+Le triangle $ABC$ existe ($7 < 11$) et se construit au compas.
+:::
+
+## Question 2 : Le point $O$
+
+::: methode
+Pour tracer la médiatrice de $[AB]$ au compas : avec un même écartement (plus grand que la moitié de $AB$), on trace des arcs de centre $A$ et de centre $B$ de part et d'autre de $[AB]$ ; la droite qui joint les deux points d'intersection est la médiatrice.
+:::
+
+::: etape Première égalité
+$O$ est sur la médiatrice de $[AB]$, donc il est à égale distance de $A$ et de $B$ : $OA = OB$.
+:::
+
+::: etape Seconde égalité
+$O$ est sur la médiatrice de $[BC]$, donc $OB = OC$.
+:::
+
+::: resultat
+$OA = OB$ et $OB = OC$, donc $OA = OB = OC$.
+:::
+
+## Question 3 : Le cercle circonscrit
+
+::: etape Les trois sommets
+Le cercle de centre $O$ et de rayon $OA$ passe par $B$ et par $C$, puisque $OB = OC = OA$ : c'est le cercle circonscrit au triangle $ABC$.
+:::
+
+::: etape La troisième médiatrice
+Comme $OA = OC$, le point $O$ est à égale distance de $A$ et de $C$ : il est sur la médiatrice de $[AC]$ (en tirets sur la figure).
+:::
+
+[IMAGE_3]
+
+::: etape Mesurer
+On lit un rayon $OA \approx 3{,}6$ cm.
+:::
+
+::: resultat
+Le cercle passe par $A$, $B$ et $C$ ; la médiatrice de $[AC]$ passe par $O$ ; rayon $\approx 3{,}6$ cm.
+:::
+
+## Question 4 : Le triangle rectangle $RST$
+
+::: etape Construire
+On trace $[RS]$ de $3$ cm, la perpendiculaire à $(RS)$ en $R$ à l'équerre, et on reporte $RT = 4$ cm au compas.
+:::
+
+::: etape Observer
+Les deux médiatrices se coupent en un point $O$ situé sur l'hypoténuse $[ST]$ : à la règle, on constate que c'est le **milieu** de $[ST]$.
+:::
+
+[IMAGE_4]
+
+::: resultat
+Les médiatrices de $[RS]$ et $[RT]$ se coupent au milieu $O$ de l'hypoténuse $[ST]$.
+:::
+
+## Question 5 : Le rayon
+
+::: etape Mesurer
+On mesure $ST = 5$ cm.
+:::
+
+::: etape Conclure
+Le centre $O$ est le milieu de $[ST]$, donc le rayon vaut $OS = ST \div 2 = 5 \div 2 = 2{,}5$ cm.
+:::
+
+::: resultat
+$ST = 5$ cm et le rayon du cercle circonscrit est $2{,}5$ cm.
+:::
+
+::: retenir
+Dans un triangle rectangle, le centre du cercle circonscrit est le milieu de l'hypoténuse : le triangle est inscrit dans un demi-cercle dont l'hypoténuse est un diamètre.
+:::
+
+## Question 6 : Le triangle isocèle $EFG$
+
+::: etape Utiliser l'équidistance
+Le triangle est isocèle en $E$, donc $EF = EG$ : le point $E$ est à égale distance de $F$ et de $G$.
+:::
+
+::: etape Conclure
+Un point à égale distance de $F$ et de $G$ est sur la médiatrice de $[FG]$.
+:::
+
+::: resultat
+$EF = EG$, donc $E$ est sur la médiatrice de $[FG]$.
+:::
+
+::: attention Erreur fréquente
+Croire qu'une seule médiatrice suffit pour le centre du cercle : la médiatrice de $[AB]$ donne seulement $OA = OB$. Il en faut deux pour obtenir trois distances égales.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $7 < 5 + 6 = 11$ : le triangle existe.
+2. $O$ sur la médiatrice de $[AB]$ : $OA = OB$ ; sur celle de $[BC]$ : $OB = OC$.
+3. Le cercle passe par $A$, $B$ et $C$ ; la médiatrice de $[AC]$ passe par $O$ ; rayon $\approx 3{,}6$ cm.
+4. Au milieu $O$ de l'hypoténuse $[ST]$.
+5. $ST = 5$ cm ; rayon $2{,}5$ cm.
+6. $EF = EG$, donc $E$ est sur la médiatrice de $[FG]$.
+
+===
+
+=== Problème - Partager un champ en parts de même aire
+Id: 2982
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Un champ a la forme du triangle $ABC$ ci-dessous (la figure n'est pas à l'échelle) : $BC = 90$ m, $[AH]$ est la hauteur issue de $A$, avec $AH = 40$ m et $BH = 30$ m, et $M$ est le milieu de $[BC]$. Deux frères veulent se partager le champ en deux parcelles de même aire, avec une clôture droite partant de $A$.
+
+[IMAGE_1]
+
+1. Calculer l'aire du champ.
+2. Premier projet : la clôture suit $[AH]$. Calculer l'aire des parcelles $ABH$ et $AHC$. Le partage est-il équitable ?
+3. Second projet : la clôture suit $[AM]$. Démontrer que les parcelles $ABM$ et $AMC$ ont la même aire, puis calculer cette aire.
+4. La clôture $[AM]$ est-elle perpendiculaire à $(BC)$ ? Justifier.
+5. Finalement, le champ est partagé entre trois enfants. Où placer deux points $P$ et $Q$ sur $[BC]$ pour que les triangles $ABP$, $APQ$ et $AQC$ aient la même aire ? Calculer cette aire.
+6. Tracer les trois médianes du triangle $ABC$. Que constate-t-on ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : L'aire du champ
+
+::: methode
+Aire d'un triangle : base fois hauteur correspondante, divisé par $2$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+\mathcal{A}_{ABC} &= \frac{BC \times AH}{2} \\
+&= \frac{90 \times 40}{2} \\
+&= 1\,800
+\end{aligned}
+$$
+:::
+
+::: resultat
+Le champ a une aire de $1\,800$ m$^2$.
+:::
+
+## Question 2 : Le partage par la hauteur
+
+::: etape Les longueurs des bases
+$BH = 30$ m et $HC = BC - BH = 90 - 30 = 60$ m.
+:::
+
+::: etape Les deux aires
+Les deux triangles ont la même hauteur $AH = 40$ m :
+
+- $\mathcal{A}_{ABH} = 30 \times 40 \div 2 = 600$ m$^2$ ;
+- $\mathcal{A}_{AHC} = 60 \times 40 \div 2 = 1\,200$ m$^2$.
+
+Vérification : $600 + 1\,200 = 1\,800$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+$600$ m$^2$ et $1\,200$ m$^2$ : le partage n'est pas équitable.
+:::
+
+## Question 3 : Le partage par la médiane
+
+::: methode
+Deux triangles qui ont des bases de même longueur et la même hauteur correspondante ont la même aire.
+:::
+
+::: etape Les bases
+$M$ est le milieu de $[BC]$, donc $BM = MC = 90 \div 2 = 45$ m.
+:::
+
+::: etape La hauteur commune
+Les bases $[BM]$ et $[MC]$ sont portées par la même droite $(BC)$ : la hauteur issue de $A$ est la même pour les deux triangles, $AH = 40$ m.
+:::
+
+::: etape Conclure et calculer
+Les deux parcelles ont donc la même aire :
+
+$$\mathcal{A}_{ABM} = \mathcal{A}_{AMC} = \frac{45 \times 40}{2} = 900$$
+
+C'est bien la moitié de $1\,800$ m$^2$.
+:::
+
+[IMAGE_3]
+
+::: resultat
+$\mathcal{A}_{ABM} = \mathcal{A}_{AMC} = 900$ m$^2$ : la médiane $[AM]$ partage le champ en deux parts égales.
+:::
+
+## Question 4 : $[AM]$ est-elle perpendiculaire à $(BC)$ ?
+
+::: etape Comparer $M$ et $H$
+$BM = 45$ m alors que $BH = 30$ m : les points $M$ et $H$ sont différents, à $45 - 30 = 15$ m l'un de l'autre.
+:::
+
+::: etape Conclure
+La seule perpendiculaire à $(BC)$ passant par $A$ est la hauteur $(AH)$. Comme $M \neq H$, la droite $(AM)$ n'est pas perpendiculaire à $(BC)$.
+:::
+
+::: resultat
+Non : la médiane $[AM]$ n'est pas la hauteur, car $M$ n'est pas le pied $H$.
+:::
+
+## Question 5 : Trois parts égales
+
+::: methode
+On partage la base en trois segments de même longueur : les trois triangles auront alors des bases égales et la même hauteur $AH$.
+:::
+
+::: etape Placer $P$ et $Q$
+$90 \div 3 = 30$ m. On place $P$ et $Q$ sur $[BC]$ tels que $BP = PQ = QC = 30$ m. (Ici, $P$ est le point $H$.)
+:::
+
+::: etape Calculer l'aire
+Chaque triangle a pour base $30$ m et pour hauteur $40$ m :
+
+$$\frac{30 \times 40}{2} = 600$$
+
+Vérification : $3 \times 600 = 1\,800$.
+:::
+
+[IMAGE_4]
+
+::: resultat
+$BP = PQ = QC = 30$ m ; chaque part mesure $600$ m$^2$.
+:::
+
+## Question 6 : Les trois médianes
+
+::: etape Tracer
+On place les milieux des trois côtés et on relie chacun au sommet opposé.
+:::
+
+[IMAGE_5]
+
+::: resultat
+Les trois médianes se coupent en un même point $G$ : elles sont concourantes. Ce point est le centre de gravité du triangle.
+:::
+
+::: attention Erreur fréquente
+Couper par la hauteur pour partager en deux : la hauteur ne coupe la base en son milieu que si le triangle est isocèle en $A$. C'est la **médiane** qui partage l'aire en deux.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $1\,800$ m$^2$.
+2. $600$ m$^2$ et $1\,200$ m$^2$ : pas équitable.
+3. $BM = MC = 45$ m et même hauteur $AH$ : $900$ m$^2$ chacune.
+4. Non : $M \neq H$ ($HM = 15$ m).
+5. $BP = PQ = QC = 30$ m ; $600$ m$^2$ chacune.
+6. Les trois médianes sont concourantes (centre de gravité).
+
+===
+
+=== Problème - Le gazon du jardin rectangulaire
+Id: 2994
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Le jardin de Léa est un rectangle $ABCD$ avec $AB = 12$ m et $BC = 8$ m. Elle veut semer du gazon sur la partie triangulaire $ABM$, où $M$ est le point du côté $[DC]$ tel que $DM = 4$ m.
+
+[IMAGE_1]
+
+1. On trace la hauteur du triangle $ABM$ issue de $M$ ; son pied $K$ est sur $[AB]$. Justifier que $MK = 8$ m.
+2. Calculer l'aire du triangle $ABM$.
+3. Léa hésite à placer $M$ ailleurs sur $[DC]$, en $M'$ tel que $DM' = 9$ m. Quelle serait l'aire du triangle $ABM'$ ? Expliquer.
+4. Quelle fraction du jardin le triangle $ABM$ occupe-t-il ?
+5. Calculer l'aire des triangles $AMD$ et $BCM$, puis vérifier le résultat de la question 4.
+6. Finalement, Léa sème seulement $18$ m$^2$ de gazon dans un triangle $ABN$, avec $N$ sur $[BC]$. Calculer $BN$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : La hauteur $MK$
+
+::: methode
+La hauteur issue de $M$ est perpendiculaire à $(AB)$. On cherche une figure connue qui contient $[MK]$.
+:::
+
+::: etape Le quadrilatère $AKMD$
+Le quadrilatère $AKMD$ a trois angles droits : en $A$ et en $D$ (angles du rectangle) et en $K$ (pied de la hauteur). C'est donc un rectangle.
+:::
+
+::: etape Conclure
+Dans le rectangle $AKMD$, les côtés opposés $[MK]$ et $[DA]$ ont la même longueur : $MK = AD = BC = 8$ m.
+:::
+
+::: resultat
+$MK = 8$ m.
+:::
+
+## Question 2 : L'aire de $ABM$
+
+::: etape Calcul
+$$
+\begin{aligned}
+\mathcal{A}_{ABM} &= \frac{AB \times MK}{2} \\
+&= \frac{12 \times 8}{2} \\
+&= 48
+\end{aligned}
+$$
+:::
+
+::: resultat
+$\mathcal{A}_{ABM} = 48$ m$^2$.
+:::
+
+## Question 3 : Avec le point $M'$
+
+::: methode
+Deux triangles de même base et de même hauteur ont la même aire.
+:::
+
+::: etape Même base, même hauteur
+Le triangle $ABM'$ a la même base $[AB]$ de $12$ m. Comme $M'$ est aussi sur $[DC]$, sa hauteur issue de $M'$ mesure aussi $8$ m (même raisonnement qu'à la question 1).
+:::
+
+[IMAGE_2]
+
+::: resultat
+$\mathcal{A}_{ABM'} = 12 \times 8 \div 2 = 48$ m$^2$ : l'aire ne dépend pas de la position du point sur $[DC]$.
+:::
+
+## Question 4 : La fraction du jardin
+
+::: etape L'aire du jardin
+$\mathcal{A}_{ABCD} = 12 \times 8 = 96$ m$^2$.
+:::
+
+::: etape Comparer
+$48 = 96 \div 2$.
+:::
+
+::: resultat
+Le triangle $ABM$ occupe la **moitié** du jardin.
+:::
+
+## Question 5 : Les deux autres triangles
+
+::: etape Le triangle $AMD$
+Il est rectangle en $D$ : on prend la base $[DM]$ et la hauteur $[AD]$.
+
+$$\mathcal{A}_{AMD} = \frac{4 \times 8}{2} = 16$$
+:::
+
+::: etape Le triangle $BCM$
+$CM = DC - DM = 12 - 4 = 8$ m. Il est rectangle en $C$ :
+
+$$\mathcal{A}_{BCM} = \frac{8 \times 8}{2} = 32$$
+:::
+
+::: etape Vérifier
+$16 + 32 = 48$ m$^2$ et $48 + 48 = 96$ m$^2$ : les deux triangles $AMD$ et $BCM$ occupent l'autre moitié du jardin.
+:::
+
+::: resultat
+$\mathcal{A}_{AMD} = 16$ m$^2$ et $\mathcal{A}_{BCM} = 32$ m$^2$ ; leur total, $48$ m$^2$, confirme que $ABM$ est la moitié du jardin.
+:::
+
+## Question 6 : Le point $N$
+
+::: methode
+Le triangle $ABN$ est rectangle en $B$ : avec la base $[AB]$, la hauteur correspondante est $[BN]$. On remonte le calcul de l'aire.
+:::
+
+::: etape Écrire l'aire
+$$\frac{12 \times BN}{2} = 18$$
+
+En multipliant par $2$ : $12 \times BN = 36$.
+:::
+
+::: etape Calculer
+$BN = 36 \div 12 = 3$ m. Vérification : $12 \times 3 \div 2 = 18$.
+:::
+
+[IMAGE_3]
+
+::: resultat
+$BN = 3$ m.
+:::
+
+::: attention Erreur fréquente
+Oublier le « $\div 2$ » en remontant le calcul : $12 \times BN = 18$ donnerait $BN = 1{,}5$ m, et le triangle n'aurait que $9$ m$^2$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $AKMD$ est un rectangle, donc $MK = AD = 8$ m.
+2. $\mathcal{A}_{ABM} = 48$ m$^2$.
+3. $48$ m$^2$ : même base $[AB]$ et même hauteur $8$ m.
+4. La moitié du jardin ($96$ m$^2$).
+5. $16$ m$^2$ et $32$ m$^2$ ; $16 + 32 = 48$.
+6. $BN = 3$ m.
+
+===
+
+=== Problème - Un angle extérieur dans un triangle isocèle
+Id: 2998
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Le triangle $ABC$ est isocèle en $A$. Les points $B$, $C$ et $D$ sont alignés dans cet ordre et $\widehat{ACD} = 124°$.
+
+[IMAGE_1]
+
+1. Calculer $\widehat{ACB}$.
+2. En déduire $\widehat{ABC}$.
+3. Calculer $\widehat{BAC}$.
+4. Comparer $\widehat{ACD}$ avec $\widehat{BAC} + \widehat{ABC}$.
+5. Quelle devrait être la mesure de $\widehat{ACD}$ pour que le triangle $ABC$ soit équilatéral ?
+6. Quelle devrait être la mesure de $\widehat{ACD}$ pour que le triangle $ABC$ soit rectangle en $A$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : L'angle $\widehat{ACB}$
+
+::: methode
+Les points $B$, $C$, $D$ sont alignés : les angles $\widehat{ACB}$ et $\widehat{ACD}$ forment ensemble un angle plat.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+\widehat{ACB} &= 180° - \widehat{ACD} \\
+&= 180° - 124° \\
+&= 56°
+\end{aligned}
+$$
+:::
+
+::: resultat
+$\widehat{ACB} = 56°$.
+:::
+
+## Question 2 : L'angle $\widehat{ABC}$
+
+::: etape Utiliser le triangle isocèle
+Le triangle $ABC$ est isocèle en $A$ : ses angles à la base, en $B$ et en $C$, sont égaux.
+:::
+
+::: resultat
+$\widehat{ABC} = \widehat{ACB} = 56°$.
+:::
+
+## Question 3 : L'angle $\widehat{BAC}$
+
+::: etape Somme des angles
+$$
+\begin{aligned}
+\widehat{BAC} &= 180° - (56° + 56°) \\
+&= 180° - 112° \\
+&= 68°
+\end{aligned}
+$$
+:::
+
+[IMAGE_2]
+
+::: resultat
+$\widehat{BAC} = 68°$.
+:::
+
+## Question 4 : Une propriété de l'angle extérieur
+
+::: etape Calculer
+$\widehat{BAC} + \widehat{ABC} = 68° + 56° = 124°$.
+:::
+
+::: etape Expliquer
+$\widehat{ACD}$ et la somme $\widehat{BAC} + \widehat{ABC}$ sont tous deux égaux à $180° - \widehat{ACB}$ : l'un par l'angle plat, l'autre par la somme des angles du triangle.
+:::
+
+::: resultat
+$\widehat{ACD} = \widehat{BAC} + \widehat{ABC} = 124°$.
+:::
+
+## Question 5 : Pour un triangle équilatéral
+
+::: etape Raisonner à l'envers
+Si $ABC$ est équilatéral, alors $\widehat{ACB} = 60°$, donc $\widehat{ACD} = 180° - 60° = 120°$.
+:::
+
+::: etape Vérifier
+Avec $\widehat{ACD} = 120°$ : $\widehat{ACB} = \widehat{ABC} = 60°$ et $\widehat{BAC} = 180° - 120° = 60°$. Les trois angles sont égaux : le triangle est équilatéral.
+:::
+
+::: resultat
+Il faudrait $\widehat{ACD} = 120°$.
+:::
+
+## Question 6 : Pour un triangle rectangle en $A$
+
+::: etape Les angles à la base
+Si $\widehat{BAC} = 90°$, les deux angles à la base, égaux, se partagent $180° - 90° = 90°$ : chacun mesure $45°$.
+:::
+
+::: etape L'angle extérieur
+$\widehat{ACD} = 180° - 45° = 135°$.
+:::
+
+::: resultat
+Il faudrait $\widehat{ACD} = 135°$ (triangle rectangle isocèle en $A$).
+:::
+
+::: attention Erreur fréquente
+Confondre l'angle extérieur $\widehat{ACD}$ avec l'angle intérieur $\widehat{ACB}$ : ils ne sont pas égaux, ils sont **supplémentaires** (leur somme vaut $180°$).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\widehat{ACB} = 56°$.
+2. $\widehat{ABC} = 56°$.
+3. $\widehat{BAC} = 68°$.
+4. $68° + 56° = 124° = \widehat{ACD}$.
+5. $\widehat{ACD} = 120°$.
+6. $\widehat{ACD} = 135°$.
+
+===
+
+=== Synthèse - Construire et étudier un triangle rectangle
+Id: 2996
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Le triangle $ABC$ est rectangle en $A$, avec $AB = 4{,}5$ cm et $AC = 6$ cm. Voici une figure à main levée.
+
+[IMAGE_1]
+
+1. Quelle méthode de construction utiliser ? Construire le triangle $ABC$ en vraie grandeur.
+2. Mesurer $BC$ et $\widehat{ABC}$. En déduire $\widehat{ACB}$ par le calcul.
+3. Tracer au compas la médiatrice de $[BC]$ ; elle coupe $[BC]$ en $O$. Tracer le cercle de centre $O$ passant par $B$. Que constate-t-on ? Donner son rayon.
+4. Calculer l'aire du triangle $ABC$.
+5. On note $H$ le pied de la hauteur issue de $A$. Calculer $AH$ en utilisant l'aire.
+6. Calculer l'aire des triangles $ABO$ et $AOC$. Justifier.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Construire le triangle
+
+::: methode
+L'angle droit est l'angle en $A$, compris entre les côtés connus $[AB]$ et $[AC]$ : c'est une construction avec deux longueurs et l'angle compris.
+:::
+
+::: etape Les étapes
+1. Tracer $[AB]$ de $4{,}5$ cm.
+2. Tracer à l'équerre la perpendiculaire à $(AB)$ passant par $A$.
+3. Reporter $6$ cm au compas sur cette perpendiculaire à partir de $A$ : c'est le point $C$.
+4. Tracer $[BC]$.
+:::
+
+::: resultat
+Deux longueurs et l'angle droit compris entre elles : $[AB]$, perpendiculaire en $A$, report de $AC = 6$ cm.
+:::
+
+## Question 2 : Mesures et calcul d'angle
+
+::: etape Mesurer
+À la règle, $BC = 7{,}5$ cm. Au rapporteur, $\widehat{ABC} \approx 53°$.
+:::
+
+::: etape Calculer
+Le triangle est rectangle en $A$ : ses angles aigus ont pour somme $90°$.
+
+$$\widehat{ACB} \approx 90° - 53° = 37°$$
+:::
+
+::: resultat
+$BC = 7{,}5$ cm, $\widehat{ABC} \approx 53°$ et $\widehat{ACB} \approx 37°$.
+:::
+
+## Question 3 : Le cercle circonscrit
+
+::: etape Tracer
+On trace la médiatrice de $[BC]$ au compas (deux arcs de centre $B$ et deux arcs de centre $C$, de même rayon) ; elle coupe $[BC]$ en son milieu $O$. On trace le cercle de centre $O$ passant par $B$.
+:::
+
+::: etape Observer
+Le cercle passe aussi par $C$ (car $OB = OC$) et par $A$ : on vérifie à la règle que $OA = OB$.
+:::
+
+[IMAGE_2]
+
+::: etape Le rayon
+Le rayon vaut $OB = BC \div 2 = 7{,}5 \div 2 = 3{,}75$ cm.
+:::
+
+::: resultat
+Le cercle de diamètre $[BC]$ passe par $A$ : c'est le cercle circonscrit au triangle rectangle, de centre le milieu $O$ de l'hypoténuse et de rayon $3{,}75$ cm.
+:::
+
+## Question 4 : L'aire de $ABC$
+
+::: methode
+Dans un triangle rectangle en $A$, on peut prendre $[AB]$ comme base : la hauteur correspondante est $[AC]$, puisque $(AC) \perp (AB)$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+\mathcal{A}_{ABC} &= \frac{AB \times AC}{2} \\
+&= \frac{4{,}5 \times 6}{2} \\
+&= 13{,}5
+\end{aligned}
+$$
+:::
+
+::: resultat
+$\mathcal{A}_{ABC} = 13{,}5$ cm$^2$.
+:::
+
+## Question 5 : La hauteur $AH$
+
+::: methode
+Avec la base $[BC]$, la hauteur correspondante est $[AH]$. On écrit l'aire avec cette base et on remonte le calcul.
+:::
+
+::: etape Écrire l'aire
+$$\frac{BC \times AH}{2} = 13{,}5$$
+
+En multipliant par $2$ : $7{,}5 \times AH = 27$.
+:::
+
+::: etape Calculer
+$AH = 27 \div 7{,}5 = 3{,}6$ cm. Vérification : $7{,}5 \times 3{,}6 \div 2 = 13{,}5$.
+:::
+
+[IMAGE_3]
+
+::: resultat
+$AH = 3{,}6$ cm.
+:::
+
+## Question 6 : Les triangles $ABO$ et $AOC$
+
+::: etape Reconnaître une médiane
+$O$ est le milieu de $[BC]$, donc $[AO]$ est la médiane issue de $A$.
+:::
+
+::: etape Justifier
+Les triangles $ABO$ et $AOC$ ont des bases égales, $BO = OC = 3{,}75$ cm, et la même hauteur $AH = 3{,}6$ cm : ils ont la même aire.
+:::
+
+::: etape Calculer
+$$\mathcal{A}_{ABO} = \frac{3{,}75 \times 3{,}6}{2} = 6{,}75$$
+
+C'est bien la moitié de $13{,}5$ cm$^2$.
+:::
+
+::: resultat
+$\mathcal{A}_{ABO} = \mathcal{A}_{AOC} = 6{,}75$ cm$^2$.
+:::
+
+::: retenir
+Dans ce triangle rectangle, le milieu $O$ de l'hypoténuse sert trois fois : centre du cercle circonscrit, pied de la médiane issue de $A$ et point qui partage l'aire en deux.
+:::
+
+::: attention Erreur fréquente
+Prendre $[AB]$ comme base avec la hauteur $[AH]$ : la hauteur $[AH]$ correspond à la base $[BC]$, pas à $[AB]$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Deux longueurs et l'angle droit compris : $[AB]$, perpendiculaire en $A$, $AC = 6$ cm.
+2. $BC = 7{,}5$ cm, $\widehat{ABC} \approx 53°$, $\widehat{ACB} \approx 37°$.
+3. Le cercle de centre $O$ (milieu de $[BC]$) passe par $A$, $B$ et $C$ ; rayon $3{,}75$ cm.
+4. $\mathcal{A}_{ABC} = 13{,}5$ cm$^2$.
+5. $AH = 3{,}6$ cm.
+6. $6{,}75$ cm$^2$ chacun (médiane $[AO]$).
+
+===

@@ -1,0 +1,209 @@
+Titre: Résumé : Limites et Convergence des Suites
+
+<!-- optitab:1 -->
+::: objectifs
+Maîtriser les limites de suites : convergence, divergence, théorème des gendarmes, opérations sur les limites, suites géométriques et théorème de convergence des suites monotones.
+:::
+
+## I. Rappels : suites arithmétiques et géométriques
+
+### Suite arithmétique
+
+::: definition
+$(u_n)$ est arithmétique s'il existe $r$ tel que $u_{n+1} = u_n + r$.
+
+Le nombre $r$ est appelé la **raison** de la suite.
+:::
+
+| Formule | Expression |
+|---|---|
+| **Terme général <br> À partir du premier terme** | $\displaystyle u_n = u_0 + n r$ |
+| **Terme général <br> À partir d'un rang $p$ quelconque** | $\displaystyle u_n = u_p + (n-p)r$ |
+| **Somme des $n+1$ premiers termes** | $\displaystyle S_n = u_0 + u_1 + \cdots + u_n$ |
+| **Formule simplifiée** | $\displaystyle S_n = (n+1) \times \frac{u_0 + u_n}{2}$ |
+
+### Suite géométrique
+
+::: definition
+$(u_n)$ est géométrique s'il existe $q$ tel que $u_{n+1} = q \cdot u_n$.
+
+Le nombre $q$ est appelé la **raison** de la suite.
+:::
+
+| Formule | Expression |
+|---|---|
+| **Terme général <br> À partir du premier terme** | $\displaystyle u_n = u_0 \cdot q^n$ |
+| **Terme général <br> À partir d'un rang $p$ quelconque** | $\displaystyle u_n = u_p \cdot q^{n-p}$ |
+| **Somme des $n+1$ premiers termes** <br> *(si $\displaystyle q \neq 1$)* | $\displaystyle S_n = u_0 + u_1 + \cdots + u_n$ |
+| **Formule simplifiée** <br> *(si $\displaystyle q \neq 1$)* | $\displaystyle S_n = u_0 \times \frac{1 - q^{n+1}}{1 - q}$ |
+| **Somme des $n+1$ premiers termes** <br> *(si $\displaystyle q = 1$)* | $\displaystyle S_n = (n+1) \times u_0$ |
+| **Limite de la somme** <br> *(si $\displaystyle 0 < q < 1$)* | $\displaystyle \lim_{n \to +\infty} S_n = \frac{u_0}{1 - q}$ |
+
+## II. Raisonnement par récurrence
+
+::: methode
+Pour montrer qu'une propriété $P(n)$ est vraie pour tout $n \geq n_0$ :
+
+**1. Initialisation :** Montrer que $P(n_0)$ est vraie.
+
+**2. Hérédité :** Supposer $P(k)$ vraie (hypothèse de récurrence) et montrer $P(k+1)$.
+:::
+
+## III. Définitions des limites
+
+::: definition Suite tendant vers $+\infty$
+À partir d'un certain rang, tous les termes deviennent aussi grands qu'on veut.
+
+::: formule
+$$\lim_{n \to +\infty} u_n = +\infty$$
+:::
+:::
+
+::: definition Suite convergente
+La suite $(u_n)$ converge vers $\ell$ si, à partir d'un certain rang, tous les termes sont aussi proches qu'on veut de $\ell$.
+
+::: formule
+$$\lim_{n \to +\infty} u_n = \ell$$
+:::
+:::
+
+::: theoreme Unicité de la limite
+Si une suite converge, sa limite est unique.
+:::
+
+::: theoreme Convergence implique bornée
+Toute suite convergente est bornée.
+
+*Conséquence :* Si une suite n'est pas bornée, elle ne peut pas converger.
+:::
+
+## IV. Limites usuelles
+
+| Expression | Limite |
+|---|---|
+| $\displaystyle \frac{1}{n^k}$ avec $\displaystyle k > 0$ | $\displaystyle \lim_{n \to +\infty} \frac{1}{n^k} = 0$ |
+| $\displaystyle n^k$ avec $\displaystyle k > 0$ | $\displaystyle \lim_{n \to +\infty} n^k = +\infty$ |
+| $\displaystyle \sqrt{n}$ | $\displaystyle \lim_{n \to +\infty} \sqrt{n} = +\infty$ |
+| $\displaystyle q^n$ | Voir section VII |
+
+## V. Théorème des gendarmes
+
+::: theoreme
+Soient $(u_n)$, $(v_n)$ et $(w_n)$ trois suites telles que, à partir d'un certain rang :
+
+$$u_n \leq v_n \leq w_n$$
+
+Si $\lim_{n \to +\infty} u_n = \lim_{n \to +\infty} w_n = \ell$ (où $\ell \in \mathbb{R}$), alors :
+
+::: formule
+$$\lim_{n \to +\infty} v_n = \ell$$
+:::
+:::
+
+::: exemple
+Déterminer la limite de $\displaystyle v_n = \frac{\sin(n)}{n}$
+
+On a : $-1 \leq \sin(n) \leq 1$ pour tout $n$
+
+Donc : $\displaystyle -\frac{1}{n} \leq \frac{\sin(n)}{n} \leq \frac{1}{n}$
+
+Comme $\lim_{n \to +\infty} \left(-\frac{1}{n}\right) = 0$ et $\lim_{n \to +\infty} \frac{1}{n} = 0$,
+
+par le théorème des gendarmes : $\lim_{n \to +\infty} \frac{\sin(n)}{n} = 0$
+:::
+
+## VI. Opérations sur les limites
+
+| Opération | Formule |
+|---|---|
+| **Somme** | $\displaystyle \lim_{n \to +\infty} (u_n + v_n) = \displaystyle\lim_{n \to +\infty} u_n + \displaystyle\lim_{n \to +\infty} v_n$ |
+| **Somme <br> Exception** | *Forme indéterminée :* $\displaystyle +\infty - \infty$ |
+| **Produit** | $\displaystyle \lim_{n \to +\infty} (u_n \times v_n) = \displaystyle\lim_{n \to +\infty} u_n \times \displaystyle\lim_{n \to +\infty} v_n$ |
+| **Produit <br> Exception** | *Forme indéterminée :* $\displaystyle 0 \times (+\infty)$ |
+| **Quotient** | $\displaystyle \lim_{n \to +\infty} \frac{u_n}{v_n} = \frac{\displaystyle\lim_{n \to +\infty} u_n}{\displaystyle\lim_{n \to +\infty} v_n}$ |
+| **Quotient <br> Exception** | *Formes indéterminées :* $\displaystyle \frac{0}{0}$ ou $\displaystyle \frac{\infty}{\infty}$ |
+
+::: attention Formes indéterminées (FI)
+« Forme indéterminée » signifie qu'on ne peut pas conclure directement, il faut **transformer** l'expression avant d'appliquer les règles.
+
+| **$\displaystyle +\infty - \infty$** | → **Factoriser** par le terme dominant |
+| **$\displaystyle 0 \times \infty$** | → **Transformer** en quotient ou **simplifier** |
+| **$\displaystyle \frac{0}{0}$** | → **Factoriser** ou **simplifier** |
+| **$\displaystyle \frac{\infty}{\infty}$** | → **Factoriser** par le terme de plus haut degré |
+:::
+
+## VII. Limite de $(q^n)$
+
+| Valeur de $q$ | Limite de $(q^n)$ |
+|---|---|
+| $\displaystyle q > 1$ | $\displaystyle \lim_{n \to +\infty} q^n = +\infty$ |
+| $\displaystyle q = 1$ | $\displaystyle \lim_{n \to +\infty} q^n = 1$ |
+| $\displaystyle -1 < q < 1$ et $\displaystyle q \neq 0$ | $\displaystyle \lim_{n \to +\infty} q^n = 0$ |
+| $\displaystyle q = 0$ | $\displaystyle \lim_{n \to +\infty} q^n = 0$ |
+
+::: theoreme Somme d'une suite géométrique
+Pour une suite géométrique de premier terme $u_0$ et de raison $q \neq 1$ :
+
+::: formule
+$$S_n = u_0 \times \frac{1 - q^{n+1}}{1 - q}$$
+:::
+
+Si $\displaystyle 0 < q < 1$, alors :
+
+::: formule
+$$\lim_{n \to +\infty} S_n = \frac{u_0}{1 - q}$$
+:::
+:::
+
+## VIII. Théorème de convergence des suites monotones
+
+::: theoreme Convergence des suites monotones
+Toute suite **croissante majorée** converge.
+
+Toute suite **décroissante minorée** converge.
+
+*Ce théorème est admis.*
+:::
+
+::: theoreme Suite croissante non majorée
+Toute suite **croissante non majorée** tend vers $+\infty$.
+:::
+
+::: exemple
+Soit $(u_n)$ définie par $u_0 = 1$ et $u_{n+1} = \sqrt{u_n + 2}$
+
+On montre que cette suite est croissante et majorée par $2$.
+
+Par le théorème, elle converge vers une limite $\ell$ qui vérifie $\ell = \sqrt{\ell + 2}$.
+
+En résolvant : $\ell^2 = \ell + 2$, on trouve $\ell = 2$ (car $\ell \geq 0$).
+:::
+
+## IX. Algorithmes
+
+::: definition Recherche de seuil
+Déterminer le plus petit entier $n$ tel que $u_n \geq S$ (où $S$ est un seuil donné).
+:::
+
+::: definition Approximation d'un nombre
+Utiliser une suite convergente pour obtenir des valeurs approchées d'un nombre réel.
+:::
+
+## X. Méthodes pour déterminer une limite
+
+| Méthode | Quand l'utiliser |
+|---|---|
+| Opérations directes | Limites connues, pas de forme indéterminée |
+| Factorisation | Formes $\displaystyle \frac{\infty}{\infty}$ ou $\displaystyle +\infty - \infty$ |
+| Théorème des gendarmes | Suites avec $\sin$, $\cos$, etc. |
+| Théorème de convergence | Suite monotone et bornée |
+| Limite de $(q^n)$ | Suites géométriques |
+
+## XI. Erreurs fréquentes
+
+| Piège fréquent | Correction |
+|---|---|
+| Appliquer directement les règles sur les FI | Transformer d'abord (factoriser, simplifier) |
+| Croire qu'une suite croissante converge | Elle doit aussi être majorée pour converger |
+| Confondre "tend vers $+\infty$« et »converge" | Une suite qui tend vers $+\infty$ diverge |
+| Oublier l'hypothèse de récurrence | Utiliser explicitement $P(k)$ dans l'hérédité |

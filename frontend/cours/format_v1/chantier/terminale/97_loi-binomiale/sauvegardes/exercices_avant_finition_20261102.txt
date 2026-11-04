@@ -1,0 +1,1455 @@
+=== Découverte - Application de la Loi Binomiale : Jeu de Cartes
+Id: 1111
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Un jeu de société contient $20$ cartes : $12$ cartes bleues et $8$ cartes rouges. On tire successivement $5$ cartes **avec remise** et l’on note $X$ le nombre de cartes bleues obtenues. Le tirage d’une carte bleue constitue un succès.
+
+1. Justifier que $X$ suit une loi binomiale et préciser ses paramètres.
+2. Calculer la probabilité d’obtenir exactement $3$ cartes bleues.
+3. Calculer la probabilité d’obtenir au plus $2$ cartes bleues.
+4. Calculer l’espérance, la variance et l’écart-type de $X$.
+5. Calculer la probabilité d’obtenir au moins $4$ cartes bleues.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Justifier que $X$ suit une loi binomiale
+
+::: methode
+Reconnaître un schéma de Bernoulli : des épreuves à deux issues, identiques et indépendantes.
+:::
+
+::: etape Une épreuve de Bernoulli
+Chaque tirage a deux issues : succès « la carte est bleue », de probabilité $p = \frac{12}{20} = 0{,}6$, et échec « la carte est rouge », de probabilité $1 - p = 0{,}4$.
+:::
+
+::: etape Un schéma de Bernoulli
+Les tirages se font avec remise : le jeu est le même à chaque tirage, donc les $5$ épreuves sont identiques et indépendantes. $X$ compte le nombre de succès.
+:::
+
+::: resultat
+$X$ suit la loi binomiale $\mathcal{B}(5\,;0{,}6)$.
+:::
+
+## Question 2 : Probabilité d’obtenir exactement $3$ cartes bleues
+
+::: methode
+Appliquer $P(X = k) = \binom{n}{k}p^k(1 - p)^{n - k}$ avec $n = 5$, $p = 0{,}6$ et $k = 3$.
+:::
+
+::: etape Coefficient binomial
+$$\binom{5}{3} = \frac{5!}{3!\,2!} = \frac{5 \times 4}{2} = 10$$
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+P(X = 3) &= \binom{5}{3} \times 0{,}6^3 \times 0{,}4^2 \\
+&= 10 \times 0{,}216 \times 0{,}16 \\
+&= 0{,}3456
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(X = 3) = 0{,}3456$
+:::
+
+## Question 3 : Probabilité d’obtenir au plus $2$ cartes bleues
+
+::: methode
+« Au plus $2$ » signifie $X \le 2$ : on additionne $P(X = 0)$, $P(X = 1)$ et $P(X = 2)$.
+:::
+
+::: etape Les trois probabilités
+Avec $\binom{5}{0} = 1$, $\binom{5}{1} = 5$ et $\binom{5}{2} = 10$ :
+
+$$
+\begin{aligned}
+P(X = 0) &= 0{,}4^5 = 0{,}01024 \\
+P(X = 1) &= 5 \times 0{,}6 \times 0{,}4^4 = 0{,}0768 \\
+P(X = 2) &= 10 \times 0{,}6^2 \times 0{,}4^3 = 0{,}2304
+\end{aligned}
+$$
+:::
+
+::: etape Somme
+$$
+\begin{aligned}
+P(X \le 2) &= 0{,}01024 + 0{,}0768 + 0{,}2304 \\
+&= 0{,}31744
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(X \le 2) = 0{,}31744 \approx 0{,}317$
+:::
+
+## Question 4 : Espérance, variance et écart-type
+
+::: methode
+Pour $X$ de loi $\mathcal{B}(n\,;p)$ : $E(X) = np$, $V(X) = np(1 - p)$ et $\sigma(X) = \sqrt{V(X)}$.
+:::
+
+::: etape Calculs
+$$
+\begin{aligned}
+E(X) &= 5 \times 0{,}6 = 3 \\
+V(X) &= 5 \times 0{,}6 \times 0{,}4 = 1{,}2 \\
+\sigma(X) &= \sqrt{1{,}2} \approx 1{,}095
+\end{aligned}
+$$
+:::
+
+::: resultat
+$E(X) = 3$ ; $V(X) = 1{,}2$ ; $\sigma(X) \approx 1{,}095$. En moyenne, on obtient $3$ cartes bleues sur $5$ tirages.
+:::
+
+## Question 5 : Probabilité d’obtenir au moins $4$ cartes bleues
+
+::: methode
+« Au moins $4$ » signifie $X \ge 4$, c’est-à-dire $X = 4$ ou $X = 5$.
+:::
+
+::: etape Les deux probabilités
+Avec $\binom{5}{4} = 5$ et $\binom{5}{5} = 1$ :
+
+$$
+\begin{aligned}
+P(X = 4) &= 5 \times 0{,}6^4 \times 0{,}4 = 0{,}2592 \\
+P(X = 5) &= 0{,}6^5 = 0{,}07776
+\end{aligned}
+$$
+:::
+
+::: etape Somme
+$$P(X \ge 4) = 0{,}2592 + 0{,}07776 = 0{,}33696$$
+:::
+
+::: point Vérification par l’événement contraire
+$$
+\begin{aligned}
+P(X \ge 4) &= 1 - P(X \le 3) \\
+&= 1 - (0{,}31744 + 0{,}3456) \\
+&= 1 - 0{,}66304 \\
+&= 0{,}33696
+\end{aligned}
+$$
+:::
+
+::: point Loi de $X$
+| $k$ | $P(X = k)$ |
+|---|---|
+| $0$ | $0{,}01024$ |
+| $1$ | $0{,}0768$ |
+| $2$ | $0{,}2304$ |
+| $3$ | $0{,}3456$ |
+| $4$ | $0{,}2592$ |
+| $5$ | $0{,}07776$ |
+
+La somme des probabilités vaut bien $1$.
+:::
+
+::: resultat
+$P(X \ge 4) = 0{,}33696 \approx 0{,}337$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $X$ suit la loi binomiale $\mathcal{B}(5\,;0{,}6)$.
+2. $P(X = 3) = 0{,}3456$.
+3. $P(X \le 2) = 0{,}31744 \approx 0{,}317$.
+4. $E(X) = 3$ ; $V(X) = 1{,}2$ ; $\sigma(X) \approx 1{,}095$.
+5. $P(X \ge 4) = 0{,}33696 \approx 0{,}337$.
+
+===
+
+=== Découverte - Informatique : Tests de Logiciels
+Id: 1120
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Un développeur teste un algorithme sur $14$ jeux de données différents. Chaque jeu de données passe tous les tests avec la probabilité $0{,}6$, indépendamment des autres. On note $X$ le nombre de jeux de données réussis ; un jeu de données réussi constitue un succès.
+
+1. Justifier que $X$ suit une loi binomiale et préciser ses paramètres.
+2. Calculer la probabilité qu’exactement $9$ jeux de données soient réussis.
+3. Calculer la probabilité qu’au moins $7$ jeux de données soient réussis.
+4. Calculer l’espérance et l’écart-type de $X$.
+5. Chaque jeu de données réussi rapporte une prime de $100$ €. Quel est le montant moyen de la prime ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Justifier que $X$ suit une loi binomiale
+
+::: methode
+Reconnaître un schéma de Bernoulli.
+:::
+
+::: etape Schéma de Bernoulli
+Chaque test d’un jeu de données est une épreuve à deux issues : succès « réussi », de probabilité $p = 0{,}6$, ou échec, de probabilité $0{,}4$. Les $14$ épreuves sont identiques et indépendantes, et $X$ compte les succès.
+:::
+
+::: resultat
+$X$ suit la loi binomiale $\mathcal{B}(14\,;0{,}6)$.
+:::
+
+## Question 2 : Probabilité d’exactement $9$ jeux réussis
+
+::: methode
+Formule $P(X = k) = \binom{n}{k}p^k(1 - p)^{n - k}$ avec $k = 9$.
+:::
+
+::: etape Coefficient binomial
+$$
+\begin{aligned}
+\binom{14}{9} = \binom{14}{5} &= \frac{14 \times 13 \times 12 \times 11 \times 10}{5 \times 4 \times 3 \times 2 \times 1} \\
+&= 2002
+\end{aligned}
+$$
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+P(X = 9) &= 2002 \times 0{,}6^9 \times 0{,}4^5 \\
+&\approx 2002 \times 0{,}010078 \times 0{,}01024 \\
+&\approx 0{,}2066
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(X = 9) \approx 0{,}207$
+:::
+
+## Question 3 : Probabilité d’au moins $7$ jeux réussis
+
+::: methode
+Passer à l’événement contraire : $P(X \ge 7) = 1 - P(X \le 6)$.
+:::
+
+::: etape Calcul
+La calculatrice donne $P(X \le 6) \approx 0{,}1501$ (« binomFRép(14, 0.6, 6) »), donc
+
+$$
+\begin{aligned}
+P(X \ge 7) &= 1 - P(X \le 6) \\
+&\approx 1 - 0{,}1501 \\
+&= 0{,}8499
+\end{aligned}
+$$
+:::
+
+::: attention
+$P(X \ge 7) = 1 - P(X \le 6)$ et non $1 - P(X \le 7)$ : la valeur $7$ fait partie de l’événement.
+:::
+
+::: resultat
+$P(X \ge 7) \approx 0{,}850$
+:::
+
+## Question 4 : Espérance et écart-type
+
+::: methode
+$E(X) = np$ et $\sigma(X) = \sqrt{np(1 - p)}$.
+:::
+
+::: etape Calculs
+$$
+\begin{aligned}
+E(X) &= 14 \times 0{,}6 = 8{,}4 \\
+V(X) &= 14 \times 0{,}6 \times 0{,}4 = 3{,}36 \\
+\sigma(X) &= \sqrt{3{,}36} \approx 1{,}833
+\end{aligned}
+$$
+:::
+
+::: resultat
+$E(X) = 8{,}4$ et $\sigma(X) \approx 1{,}833$.
+:::
+
+## Question 5 : Montant moyen de la prime
+
+::: methode
+La prime vaut $100X$ euros ; par linéarité, $E(100X) = 100\,E(X)$.
+:::
+
+::: etape Calcul
+$$E(100X) = 100 \times 8{,}4 = 840$$
+:::
+
+::: resultat
+La prime moyenne est de $840$ €.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $X$ suit la loi binomiale $\mathcal{B}(14\,;0{,}6)$.
+2. $P(X = 9) \approx 0{,}207$.
+3. $P(X \ge 7) = 1 - P(X \le 6) \approx 0{,}850$.
+4. $E(X) = 8{,}4$ ; $\sigma(X) \approx 1{,}833$.
+5. Prime moyenne : $840$ €.
+
+===
+
+=== Entraînement - Biologie : Génétique des Pois
+Id: 1117
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Pour le caractère « forme de la graine », on croise des pois hybrides (hétérozygotes) avec des pois ridés (homozygotes récessifs) : c’est un croisement-test. Chaque pois obtenu est lisse (caractère dominant) ou ridé (caractère récessif), avec la probabilité $0{,}5$ dans chaque cas, indépendamment des autres. On observe $16$ pois issus de ce croisement et l’on note $X$ le nombre de pois lisses ; un pois lisse constitue un succès.
+
+1. Justifier que $X$ suit une loi binomiale et préciser ses paramètres.
+2. Calculer la probabilité d’observer exactement $9$ pois lisses.
+3. Calculer la probabilité d’observer plus de $10$ pois lisses.
+4. Calculer l’espérance de $X$, puis sa variance et son écart-type.
+5. Interpréter l’espérance du point de vue biologique.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Justifier que $X$ suit une loi binomiale
+
+::: methode
+Reconnaître un schéma de Bernoulli.
+:::
+
+::: etape Schéma de Bernoulli
+Chaque descendant est une épreuve à deux issues : succès « lisse », de probabilité $p = 0{,}5$, ou échec « ridé ». Les $16$ épreuves sont identiques et indépendantes, et $X$ compte les succès.
+:::
+
+::: resultat
+$X$ suit la loi binomiale $\mathcal{B}(16\,;0{,}5)$.
+:::
+
+## Question 2 : Probabilité d’exactement $9$ pois lisses
+
+::: methode
+Avec $p = 1 - p = 0{,}5$, chaque chemin a la même probabilité $0{,}5^{16} = \frac{1}{65\,536}$.
+:::
+
+::: etape Calcul
+$\binom{16}{9} = 11\,440$, donc
+
+$$
+\begin{aligned}
+P(X = 9) &= \binom{16}{9} \times 0{,}5^9 \times 0{,}5^7 \\
+&= \frac{11\,440}{65\,536} \\
+&\approx 0{,}1746
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(X = 9) \approx 0{,}175$
+:::
+
+## Question 3 : Probabilité de plus de $10$ pois lisses
+
+::: methode
+« Plus de $10$ » signifie $X > 10$, c’est-à-dire $X \ge 11$.
+:::
+
+::: etape Avec la calculatrice
+$$
+\begin{aligned}
+P(X \ge 11) &= 1 - P(X \le 10) \\
+&\approx 1 - 0{,}8949 \\
+&= 0{,}1051
+\end{aligned}
+$$
+:::
+
+::: etape Vérification par le calcul exact
+Tous les chemins ont la probabilité $\frac{1}{65\,536}$ ; on compte ceux qui ont $11$ à $16$ succès :
+
+$$
+\begin{aligned}
+P(X \ge 11) &= \frac{4\,368 + 1\,820 + 560 + 120 + 16 + 1}{65\,536} \\
+&= \frac{6\,885}{65\,536} \approx 0{,}1051
+\end{aligned}
+$$
+:::
+
+[IMAGE_1]
+
+::: attention
+« Plus de $10$ » exclut la valeur $10$ : ce n’est pas $P(X \ge 10)$.
+:::
+
+::: resultat
+$P(X > 10) = P(X \ge 11) \approx 0{,}105$
+:::
+
+## Question 4 : Espérance, variance et écart-type
+
+::: methode
+$E(X) = np$, $V(X) = np(1 - p)$, $\sigma(X) = \sqrt{V(X)}$.
+:::
+
+::: etape Calculs
+$$
+\begin{aligned}
+E(X) &= 16 \times 0{,}5 = 8 \\
+V(X) &= 16 \times 0{,}5 \times 0{,}5 = 4 \\
+\sigma(X) &= \sqrt{4} = 2
+\end{aligned}
+$$
+:::
+
+::: remarque
+Pour $p = 0{,}5$ : $E(X) = \frac{n}{2}$ et $V(X) = \frac{n}{4}$.
+:::
+
+::: resultat
+$E(X) = 8$ ; $V(X) = 4$ ; $\sigma(X) = 2$.
+:::
+
+## Question 5 : Interprétation biologique
+
+::: methode
+L’espérance est la moyenne de $X$ sur un grand nombre de répétitions du croisement.
+:::
+
+::: etape Interprétation
+Sur un grand nombre de séries de $16$ pois, on observe en moyenne $8$ pois lisses, soit la moitié : c’est la proportion $1$ : $1$ prévue par Mendel pour un croisement-test, puisque le parent hybride transmet l’allèle dominant à la moitié de ses descendants.
+:::
+
+::: etape Fluctuation
+Une série donnée s’écarte souvent un peu de $8$ : $P(6 \le X \le 10) = \frac{51\,766}{65\,536} \approx 0{,}790$. Observer $7$ ou $9$ pois lisses est donc tout à fait normal.
+:::
+
+::: resultat
+En moyenne, la moitié des pois sont lisses ($8$ sur $16$), conformément à la proportion $1$ : $1$ du croisement-test.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $X$ suit la loi binomiale $\mathcal{B}(16\,;0{,}5)$.
+2. $P(X = 9) = \frac{11\,440}{65\,536} \approx 0{,}175$.
+3. $P(X > 10) = P(X \ge 11) = \frac{6\,885}{65\,536} \approx 0{,}105$.
+4. $E(X) = 8$ ; $V(X) = 4$ ; $\sigma(X) = 2$.
+5. En moyenne, la moitié des pois sont lisses : proportion $1$ : $1$ du croisement-test.
+
+===
+
+=== Entraînement - Commerce : Satisfaction Clientèle
+Id: 1118
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Une entreprise de vente en ligne a un taux de satisfaction de $82\,\%$. Un commercial contacte $20$ clients choisis au hasard parmi un très grand nombre de clients ; on note $X$ le nombre de clients satisfaits. Un client satisfait constitue un succès.
+
+1. Justifier que $X$ suit une loi binomiale et préciser ses paramètres.
+2. Calculer la probabilité qu’exactement $16$ clients soient satisfaits.
+3. Calculer la probabilité qu’au moins $18$ clients soient satisfaits.
+4. Calculer l’écart-type du nombre de clients satisfaits.
+5. Chaque client satisfait rapporte $200$ € de chiffre d’affaires. Quel est le chiffre d’affaires moyen attendu ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Justifier que $X$ suit une loi binomiale
+
+::: methode
+Reconnaître un schéma de Bernoulli ; un choix au hasard dans une très grande population est assimilé à un tirage avec remise.
+:::
+
+::: etape Schéma de Bernoulli
+Chaque client contacté est satisfait (succès, probabilité $p = 0{,}82$) ou non (probabilité $0{,}18$). Les clients étant choisis au hasard parmi un très grand nombre, les $20$ épreuves sont assimilées à des épreuves identiques et indépendantes ; $X$ compte les succès.
+:::
+
+::: resultat
+$X$ suit la loi binomiale $\mathcal{B}(20\,;0{,}82)$.
+:::
+
+## Question 2 : Probabilité d’exactement $16$ clients satisfaits
+
+::: methode
+Formule $P(X = k) = \binom{n}{k}p^k(1 - p)^{n - k}$ avec $k = 16$.
+:::
+
+::: etape Calcul
+$\binom{20}{16} = \binom{20}{4} = 4\,845$, donc
+
+$$
+\begin{aligned}
+P(X = 16) &= 4\,845 \times 0{,}82^{16} \times 0{,}18^4 \\
+&\approx 4\,845 \times 0{,}0418 \times 0{,}00104976 \\
+&\approx 0{,}2125
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(X = 16) \approx 0{,}213$
+:::
+
+## Question 3 : Probabilité d’au moins $18$ clients satisfaits
+
+::: methode
+$X \ge 18$ signifie $X = 18$, $19$ ou $20$ : on additionne trois probabilités.
+:::
+
+::: etape Les trois probabilités (calculatrice)
+$$
+\begin{aligned}
+P(X = 18) &\approx 0{,}1730 \\
+P(X = 19) &\approx 0{,}0829 \\
+P(X = 20) &= 0{,}82^{20} \approx 0{,}0189
+\end{aligned}
+$$
+:::
+
+::: etape Somme
+$$P(X \ge 18) \approx 0{,}1730 + 0{,}0829 + 0{,}0189 = 0{,}2748$$
+
+On retrouve ce résultat avec $1 - P(X \le 17)$.
+:::
+
+::: resultat
+$P(X \ge 18) \approx 0{,}275$
+:::
+
+## Question 4 : Écart-type du nombre de clients satisfaits
+
+::: methode
+$\sigma(X) = \sqrt{np(1 - p)}$.
+:::
+
+::: etape Calculs
+$$
+\begin{aligned}
+V(X) &= 20 \times 0{,}82 \times 0{,}18 = 2{,}952 \\
+\sigma(X) &= \sqrt{2{,}952} \approx 1{,}718
+\end{aligned}
+$$
+:::
+
+::: resultat
+$\sigma(X) \approx 1{,}718$
+:::
+
+## Question 5 : Chiffre d’affaires moyen
+
+::: methode
+Le chiffre d’affaires vaut $200X$ euros, d’espérance $200\,E(X)$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+E(X) &= 20 \times 0{,}82 = 16{,}4 \\
+E(200X) &= 200 \times 16{,}4 = 3\,280
+\end{aligned}
+$$
+:::
+
+::: resultat
+Le chiffre d’affaires moyen attendu est de $3\,280$ €.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $X$ suit la loi binomiale $\mathcal{B}(20\,;0{,}82)$.
+2. $P(X = 16) \approx 0{,}213$.
+3. $P(X \ge 18) \approx 0{,}275$.
+4. $\sigma(X) = \sqrt{2{,}952} \approx 1{,}718$.
+5. Chiffre d’affaires moyen : $3\,280$ €.
+
+===
+
+=== Entraînement - Médecine : Efficacité d'un Traitement
+Id: 1115
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Un nouveau médicament contre la migraine est efficace dans $75\,\%$ des cas. Un médecin traite $12$ patients souffrant de migraines chroniques ; on admet que leurs réactions au traitement sont indépendantes. On note $X$ le nombre de patients guéris ; une guérison constitue un succès.
+
+1. Justifier que $X$ suit une loi binomiale et préciser ses paramètres.
+2. Calculer la probabilité de guérir exactement $10$ patients.
+3. Calculer la probabilité de guérir au moins $8$ patients.
+4. Quel est le nombre moyen de patients guéris ?
+5. Chaque traitement coûte $150$ €. Quel est, en moyenne, le coût du traitement par patient guéri ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Justifier que $X$ suit une loi binomiale
+
+::: methode
+Reconnaître un schéma de Bernoulli.
+:::
+
+::: etape Schéma de Bernoulli
+Chaque patient traité est guéri (succès, probabilité $p = 0{,}75$) ou non (probabilité $0{,}25$). Les $12$ épreuves sont identiques et indépendantes, et $X$ compte les guérisons.
+:::
+
+::: resultat
+$X$ suit la loi binomiale $\mathcal{B}(12\,;0{,}75)$.
+:::
+
+## Question 2 : Probabilité de guérir exactement $10$ patients
+
+::: methode
+Formule $P(X = k) = \binom{n}{k}p^k(1 - p)^{n - k}$ avec $k = 10$.
+:::
+
+::: etape Calcul
+$\binom{12}{10} = \binom{12}{2} = \frac{12 \times 11}{2} = 66$, donc
+
+$$
+\begin{aligned}
+P(X = 10) &= 66 \times 0{,}75^{10} \times 0{,}25^2 \\
+&\approx 66 \times 0{,}0563 \times 0{,}0625 \\
+&\approx 0{,}2323
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(X = 10) \approx 0{,}232$
+:::
+
+## Question 3 : Probabilité de guérir au moins $8$ patients
+
+::: methode
+Événement contraire : $P(X \ge 8) = 1 - P(X \le 7)$.
+:::
+
+::: etape Calcul
+La calculatrice donne $P(X \le 7) \approx 0{,}1576$, donc
+
+$$P(X \ge 8) \approx 1 - 0{,}1576 = 0{,}8424$$
+:::
+
+::: resultat
+$P(X \ge 8) \approx 0{,}842$
+:::
+
+## Question 4 : Nombre moyen de patients guéris
+
+::: methode
+Le nombre moyen est l’espérance $E(X) = np$.
+:::
+
+::: etape Calcul
+$$E(X) = 12 \times 0{,}75 = 9$$
+:::
+
+::: resultat
+En moyenne, $9$ patients sur $12$ sont guéris (moyenne sur un grand nombre de groupes de $12$ patients).
+:::
+
+## Question 5 : Coût moyen par patient guéri
+
+::: methode
+Rapporter le coût total des $12$ traitements au nombre moyen de guérisons.
+:::
+
+::: etape Coût total
+$$12 \times 150 = 1\,800$$
+
+Les $12$ traitements coûtent $1\,800$ €.
+:::
+
+::: etape Coût par patient guéri
+$$\frac{1\,800}{E(X)} = \frac{1\,800}{9} = 200$$
+:::
+
+::: resultat
+Le coût moyen est de $200$ € par patient guéri.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $X$ suit la loi binomiale $\mathcal{B}(12\,;0{,}75)$.
+2. $P(X = 10) \approx 0{,}232$.
+3. $P(X \ge 8) = 1 - P(X \le 7) \approx 0{,}842$.
+4. $E(X) = 9$ patients guéris en moyenne.
+5. $\frac{1\,800}{9} = 200$ € par patient guéri.
+
+===
+
+=== Entraînement - Sondage Politique : Intentions de Vote
+Id: 1113
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Dans une ville de $5\,000$ habitants, $35\,\%$ des habitants ont l’intention de voter pour un candidat à l’élection municipale. On interroge $25$ habitants choisis au hasard et l’on note $X$ le nombre de réponses favorables au candidat ; une réponse favorable constitue un succès.
+
+1. Justifier que l’on peut modéliser $X$ par une loi binomiale ; préciser ses paramètres.
+2. Calculer la probabilité d’obtenir au moins $10$ réponses favorables.
+3. Quel est le nombre moyen de réponses favorables ?
+4. Calculer la probabilité d’obtenir exactement $8$ réponses favorables.
+5. Calculer la probabilité qu’au moins $40\,\%$ des personnes interrogées soient favorables au candidat.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Modéliser $X$ par une loi binomiale
+
+::: methode
+Un tirage sans remise d’un petit échantillon dans une grande population est assimilé à un tirage avec remise.
+:::
+
+::: etape Assimilation à des tirages avec remise
+Les $25$ personnes sont choisies sans remise, mais $25$ est très petit devant $5\,000$ : la proportion de personnes favorables ne change presque pas d’un tirage à l’autre. On assimile donc ce choix à $25$ tirages avec remise, identiques et indépendants.
+:::
+
+::: etape Schéma de Bernoulli
+Chaque personne interrogée répond favorablement (succès, probabilité $p = 0{,}35$) ou non. $X$ compte les succès.
+:::
+
+::: resultat
+$X$ suit la loi binomiale $\mathcal{B}(25\,;0{,}35)$.
+:::
+
+## Question 2 : Probabilité d’au moins $10$ réponses favorables
+
+::: methode
+Événement contraire : $P(X \ge 10) = 1 - P(X \le 9)$.
+:::
+
+::: etape Calcul
+La calculatrice donne $P(X \le 9) \approx 0{,}6303$, donc
+
+$$P(X \ge 10) \approx 1 - 0{,}6303 = 0{,}3697$$
+:::
+
+::: resultat
+$P(X \ge 10) \approx 0{,}370$
+:::
+
+## Question 3 : Nombre moyen de réponses favorables
+
+::: methode
+Le nombre moyen est l’espérance $E(X) = np$.
+:::
+
+::: etape Calcul
+$$E(X) = 25 \times 0{,}35 = 8{,}75$$
+:::
+
+::: remarque
+L’espérance n’est pas forcément un entier : c’est une moyenne sur un grand nombre d’échantillons de $25$ personnes.
+:::
+
+::: resultat
+En moyenne, $8{,}75$ réponses favorables sur $25$.
+:::
+
+## Question 4 : Probabilité d’exactement $8$ réponses favorables
+
+::: methode
+Formule $P(X = k) = \binom{n}{k}p^k(1 - p)^{n - k}$ avec $k = 8$.
+:::
+
+::: etape Calcul
+$\binom{25}{8} = 1\,081\,575$, donc
+
+$$
+\begin{aligned}
+P(X = 8) &= 1\,081\,575 \times 0{,}35^8 \times 0{,}65^{17} \\
+&\approx 0{,}1607
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(X = 8) \approx 0{,}161$
+:::
+
+## Question 5 : Au moins $40\,\%$ de réponses favorables
+
+::: methode
+Traduire le pourcentage en nombre de personnes.
+:::
+
+::: etape Traduction
+$40\,\%$ de $25$ personnes : $0{,}4 \times 25 = 10$. L’événement est donc $X \ge 10$, déjà étudié à la question 2.
+:::
+
+::: etape Interprétation
+Le candidat n’a que $35\,\%$ d’intentions de vote, mais un échantillon sur trois environ lui en attribue au moins $40\,\%$ : c’est la fluctuation d’échantillonnage, importante pour un échantillon de $25$ personnes.
+:::
+
+::: resultat
+$P(X \ge 10) \approx 0{,}370$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $X$ suit (approximativement) la loi binomiale $\mathcal{B}(25\,;0{,}35)$.
+2. $P(X \ge 10) = 1 - P(X \le 9) \approx 0{,}370$.
+3. $E(X) = 8{,}75$.
+4. $P(X = 8) \approx 0{,}161$.
+5. $40\,\%$ de $25$ vaut $10$ : $P(X \ge 10) \approx 0{,}370$.
+
+===
+
+=== Problème - Contrôle Qualité : Analyse Statistique des Défauts
+Id: 1112
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Un contrôle de qualité porte sur $15$ produits identiques. Chaque produit est défectueux avec la probabilité $0{,}1$, indépendamment des autres. On note $X$ le nombre de produits défectueux.
+
+1. Calculer la probabilité d’avoir exactement $2$ produits défectueux.
+2. Calculer la probabilité d’avoir au plus $1$ produit défectueux.
+3. Calculer la probabilité d’avoir au moins $3$ produits défectueux.
+4. Calculer l’espérance et l’écart-type du nombre de produits défectueux.
+5. Le remplacement d’un produit défectueux coûte $50$ €. Quel est le coût moyen de remplacement ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Probabilité d’exactement $2$ produits défectueux
+
+::: methode
+Identifier la loi de $X$, puis appliquer la formule de la loi binomiale.
+:::
+
+::: etape Loi de $X$
+Chaque produit est défectueux (succès, probabilité $p = 0{,}1$) ou non ; les $15$ épreuves sont identiques et indépendantes. Donc $X$ suit la loi $\mathcal{B}(15\,;0{,}1)$.
+:::
+
+::: etape Calcul
+$\binom{15}{2} = \frac{15 \times 14}{2} = 105$, donc
+
+$$
+\begin{aligned}
+P(X = 2) &= 105 \times 0{,}1^2 \times 0{,}9^{13} \\
+&\approx 105 \times 0{,}01 \times 0{,}2542 \\
+&\approx 0{,}2669
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(X = 2) \approx 0{,}267$
+:::
+
+## Question 2 : Probabilité d’au plus $1$ produit défectueux
+
+::: methode
+$X \le 1$ signifie $X = 0$ ou $X = 1$.
+:::
+
+::: etape Les deux probabilités
+$$
+\begin{aligned}
+P(X = 0) &= 0{,}9^{15} \approx 0{,}2059 \\
+P(X = 1) &= 15 \times 0{,}1 \times 0{,}9^{14} = 1{,}5 \times 0{,}9^{14} \approx 0{,}3432
+\end{aligned}
+$$
+:::
+
+::: etape Somme sans arrondi intermédiaire
+$$
+\begin{aligned}
+P(X \le 1) &= 0{,}9^{15} + 1{,}5 \times 0{,}9^{14} \\
+&= 0{,}9^{14} \times (0{,}9 + 1{,}5) \\
+&= 2{,}4 \times 0{,}9^{14} \approx 0{,}5490
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(X \le 1) \approx 0{,}549$
+:::
+
+## Question 3 : Probabilité d’au moins $3$ produits défectueux
+
+::: methode
+Événement contraire : $P(X \ge 3) = 1 - P(X \le 2)$.
+:::
+
+::: etape Calcul de $P(X \le 2)$
+$$
+\begin{aligned}
+P(X \le 2) &= P(X \le 1) + P(X = 2) \\
+&\approx 0{,}5490 + 0{,}2669 \\
+&= 0{,}8159
+\end{aligned}
+$$
+:::
+
+::: etape Conclusion
+$$P(X \ge 3) \approx 1 - 0{,}8159 = 0{,}1841$$
+:::
+
+::: resultat
+$P(X \ge 3) \approx 0{,}184$
+:::
+
+## Question 4 : Espérance et écart-type
+
+::: methode
+$E(X) = np$ et $\sigma(X) = \sqrt{np(1 - p)}$.
+:::
+
+::: etape Calculs
+$$
+\begin{aligned}
+E(X) &= 15 \times 0{,}1 = 1{,}5 \\
+V(X) &= 15 \times 0{,}1 \times 0{,}9 = 1{,}35 \\
+\sigma(X) &= \sqrt{1{,}35} \approx 1{,}162
+\end{aligned}
+$$
+:::
+
+::: resultat
+$E(X) = 1{,}5$ et $\sigma(X) \approx 1{,}162$.
+:::
+
+## Question 5 : Coût moyen de remplacement
+
+::: methode
+Le coût vaut $50X$ euros, d’espérance $50\,E(X)$.
+:::
+
+::: etape Calcul
+$$E(50X) = 50 \times 1{,}5 = 75$$
+:::
+
+::: resultat
+Le coût moyen de remplacement est de $75$ €.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $X$ suit la loi $\mathcal{B}(15\,;0{,}1)$ et $P(X = 2) \approx 0{,}267$.
+2. $P(X \le 1) = 2{,}4 \times 0{,}9^{14} \approx 0{,}549$.
+3. $P(X \ge 3) = 1 - P(X \le 2) \approx 0{,}184$.
+4. $E(X) = 1{,}5$ ; $\sigma(X) \approx 1{,}162$.
+5. Coût moyen : $75$ €.
+
+===
+
+=== Problème - Contrôle Qualité : Tests de Résistance
+Id: 1114
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Un fabricant teste la résistance de composants électroniques. Chaque composant présente un défaut de fabrication avec la probabilité $0{,}08$, indépendamment des autres. On teste un lot de $30$ composants et l’on note $X$ le nombre de composants défectueux ; pour cette étude, un composant défectueux constitue un « succès ».
+
+1. Justifier que $X$ suit une loi binomiale et préciser ses paramètres.
+2. Calculer la probabilité d’observer au plus $2$ composants défectueux.
+3. Calculer l’écart-type du nombre de composants défectueux.
+4. Calculer la probabilité que le nombre de composants défectueux soit compris entre $3$ et $5$ (inclus).
+5. Le remplacement d’un composant défectueux coûte $25$ €. Quel est le coût moyen de remplacement pour le lot ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Justifier que $X$ suit une loi binomiale
+
+::: methode
+Reconnaître un schéma de Bernoulli.
+:::
+
+::: etape Schéma de Bernoulli
+Chaque composant testé est défectueux (succès, probabilité $p = 0{,}08$) ou conforme. Les $30$ épreuves sont identiques et indépendantes, et $X$ compte les succès.
+:::
+
+::: resultat
+$X$ suit la loi binomiale $\mathcal{B}(30\,;0{,}08)$.
+:::
+
+## Question 2 : Probabilité d’au plus $2$ composants défectueux
+
+::: methode
+$X \le 2$ signifie $X = 0$, $1$ ou $2$.
+:::
+
+::: etape Les trois probabilités
+Avec $\binom{30}{1} = 30$ et $\binom{30}{2} = 435$ :
+
+$$
+\begin{aligned}
+P(X = 0) &= 0{,}92^{30} \approx 0{,}0820 \\
+P(X = 1) &= 30 \times 0{,}08 \times 0{,}92^{29} \approx 0{,}2138 \\
+P(X = 2) &= 435 \times 0{,}08^2 \times 0{,}92^{28} \approx 0{,}2696
+\end{aligned}
+$$
+:::
+
+::: etape Somme
+$$P(X \le 2) \approx 0{,}0820 + 0{,}2138 + 0{,}2696 = 0{,}5654$$
+
+La calculatrice (« binomFRép(30, 0.08, 2) ») donne la même valeur.
+:::
+
+::: resultat
+$P(X \le 2) \approx 0{,}565$
+:::
+
+## Question 3 : Écart-type du nombre de défauts
+
+::: methode
+$\sigma(X) = \sqrt{np(1 - p)}$.
+:::
+
+::: etape Calculs
+$$
+\begin{aligned}
+E(X) &= 30 \times 0{,}08 = 2{,}4 \\
+V(X) &= 30 \times 0{,}08 \times 0{,}92 = 2{,}208 \\
+\sigma(X) &= \sqrt{2{,}208} \approx 1{,}486
+\end{aligned}
+$$
+:::
+
+::: resultat
+$\sigma(X) \approx 1{,}486$
+:::
+
+## Question 4 : Probabilité d’avoir entre $3$ et $5$ défauts
+
+::: methode
+$P(3 \le X \le 5) = P(X \le 5) - P(X \le 2)$ : on retire de $P(X \le 5)$ les valeurs $0$, $1$ et $2$.
+:::
+
+::: etape Avec les probabilités cumulées
+La calculatrice donne $P(X \le 5) \approx 0{,}9707$, et $P(X \le 2) \approx 0{,}5654$ (question 2) :
+
+$$P(3 \le X \le 5) \approx 0{,}9707 - 0{,}5654 = 0{,}4053$$
+:::
+
+[IMAGE_1]
+
+::: point Vérification terme à terme
+$$
+\begin{aligned}
+P(X = 3) &= 4\,060 \times 0{,}08^3 \times 0{,}92^{27} \approx 0{,}2188 \\
+P(X = 4) &= 27\,405 \times 0{,}08^4 \times 0{,}92^{26} \approx 0{,}1284 \\
+P(X = 5) &= 142\,506 \times 0{,}08^5 \times 0{,}92^{25} \approx 0{,}0581
+\end{aligned}
+$$
+
+Leur somme vaut $0{,}2188 + 0{,}1284 + 0{,}0581 = 0{,}4053$.
+:::
+
+::: attention
+On retire $P(X \le 2)$, et non $P(X \le 3)$ : la valeur $3$ fait partie de l’événement.
+:::
+
+::: resultat
+$P(3 \le X \le 5) \approx 0{,}405$
+:::
+
+## Question 5 : Coût moyen pour le lot
+
+::: methode
+Le coût vaut $25X$ euros, d’espérance $25\,E(X)$.
+:::
+
+::: etape Calcul
+$$E(25X) = 25 \times 2{,}4 = 60$$
+:::
+
+::: resultat
+Le coût moyen de remplacement pour le lot est de $60$ €.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $X$ suit la loi binomiale $\mathcal{B}(30\,;0{,}08)$.
+2. $P(X \le 2) \approx 0{,}565$.
+3. $\sigma(X) = \sqrt{2{,}208} \approx 1{,}486$.
+4. $P(3 \le X \le 5) = P(X \le 5) - P(X \le 2) \approx 0{,}405$.
+5. Coût moyen : $60$ €.
+
+===
+
+=== Problème - Environnement : Recyclage des Déchets
+Id: 1119
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Dans une ville, $25\,\%$ des ménages trient correctement leurs déchets recyclables. On contrôle $35$ ménages choisis au hasard parmi les très nombreux ménages de la ville et l’on note $X$ le nombre de ménages qui trient correctement (ménages « conformes ») ; un ménage conforme constitue un succès. Chaque ménage conforme fait économiser $200$ € à la collectivité.
+
+1. Justifier que $X$ suit une loi binomiale et préciser ses paramètres.
+2. Calculer la probabilité qu’exactement $10$ ménages contrôlés soient conformes.
+3. Calculer la probabilité que le nombre de ménages conformes soit compris entre $6$ et $12$ (inclus).
+4. Calculer la variance et l’écart-type du nombre de ménages conformes.
+5. Une campagne de sensibilisation coûte $5\,000$ € et ferait passer le taux de tri de $25\,\%$ à $30\,\%$. Calculer l’économie moyenne supplémentaire sur ces $35$ ménages, puis le bénéfice net moyen de la campagne. Est-elle rentable à cette échelle ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Justifier que $X$ suit une loi binomiale
+
+::: methode
+Reconnaître un schéma de Bernoulli ; un choix au hasard dans une très grande population est assimilé à un tirage avec remise.
+:::
+
+::: etape Schéma de Bernoulli
+Chaque ménage contrôlé est conforme (succès, probabilité $p = 0{,}25$) ou non. Les ménages étant très nombreux, les $35$ contrôles sont assimilés à des épreuves identiques et indépendantes ; $X$ compte les succès.
+:::
+
+::: resultat
+$X$ suit la loi binomiale $\mathcal{B}(35\,;0{,}25)$.
+:::
+
+## Question 2 : Probabilité d’exactement $10$ ménages conformes
+
+::: methode
+Formule de la loi binomiale, calculée à la calculatrice (« binomFdp(35, 0.25, 10) »).
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+P(X = 10) &= \binom{35}{10} \times 0{,}25^{10} \times 0{,}75^{25} \\
+&\approx 0{,}1318
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(X = 10) \approx 0{,}132$
+:::
+
+## Question 3 : Probabilité d’avoir entre $6$ et $12$ ménages conformes
+
+::: methode
+$P(6 \le X \le 12) = P(X \le 12) - P(X \le 5)$.
+:::
+
+::: etape Probabilités cumulées (calculatrice)
+$$
+\begin{aligned}
+P(X \le 12) &\approx 0{,}9244 \\
+P(X \le 5) &\approx 0{,}0976
+\end{aligned}
+$$
+:::
+
+::: etape Différence
+$$P(6 \le X \le 12) \approx 0{,}9244 - 0{,}0976 = 0{,}8268$$
+:::
+
+[IMAGE_1]
+
+::: attention
+On retire $P(X \le 5)$ et non $P(X \le 6)$ : la valeur $6$ fait partie de l’événement.
+:::
+
+::: resultat
+$P(6 \le X \le 12) \approx 0{,}827$
+:::
+
+## Question 4 : Variance et écart-type
+
+::: methode
+$V(X) = np(1 - p)$ et $\sigma(X) = \sqrt{V(X)}$.
+:::
+
+::: etape Calculs
+$$
+\begin{aligned}
+E(X) &= 35 \times 0{,}25 = 8{,}75 \\
+V(X) &= 35 \times 0{,}25 \times 0{,}75 = 6{,}5625 \\
+\sigma(X) &= \sqrt{6{,}5625} \approx 2{,}562
+\end{aligned}
+$$
+:::
+
+::: resultat
+$V(X) = 6{,}5625$ et $\sigma(X) \approx 2{,}562$.
+:::
+
+## Question 5 : Bénéfice net de la campagne
+
+::: methode
+Comparer les espérances avant et après la campagne, puis traduire en euros.
+:::
+
+::: etape Nombres moyens de ménages conformes
+Avant : $E(X) = 35 \times 0{,}25 = 8{,}75$. Après : $X'$ suit $\mathcal{B}(35\,;0{,}3)$ et $E(X') = 35 \times 0{,}3 = 10{,}5$.
+
+La campagne apporte en moyenne $10{,}5 - 8{,}75 = 1{,}75$ ménage conforme de plus.
+:::
+
+::: etape Économie et bénéfice
+$$
+\begin{aligned}
+\text{économie supplémentaire} &= 1{,}75 \times 200 = 350 \\
+\text{bénéfice net} &= 350 - 5\,000 = -4\,650
+\end{aligned}
+$$
+:::
+
+::: remarque
+Chaque ménage rapporte en moyenne $0{,}05 \times 200 = 10$ € de plus : la campagne ne devient rentable qu’à partir de $\frac{5\,000}{10} = 500$ ménages.
+:::
+
+::: resultat
+Économie supplémentaire moyenne : $350$ € ; bénéfice net : $-4\,650$ €. Sur $35$ ménages, la campagne n’est pas rentable.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $X$ suit la loi binomiale $\mathcal{B}(35\,;0{,}25)$.
+2. $P(X = 10) \approx 0{,}132$.
+3. $P(6 \le X \le 12) = P(X \le 12) - P(X \le 5) \approx 0{,}827$.
+4. $V(X) = 6{,}5625$ ; $\sigma(X) \approx 2{,}562$.
+5. Économie supplémentaire : $350$ € ; bénéfice net : $-4\,650$ € : campagne non rentable sur $35$ ménages.
+
+===
+
+=== Problème - Sécurité Routière : Contrôle d'Alcoolémie
+Id: 1116
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Lors d’un contrôle routier, $15\,\%$ des conducteurs contrôlés présentent un taux d’alcoolémie supérieur à la limite légale. Les forces de l’ordre contrôlent $40$ conducteurs choisis au hasard parmi un très grand nombre ; on note $X$ le nombre de conducteurs en infraction. Un conducteur en infraction constitue un succès.
+
+1. Justifier que $X$ suit une loi binomiale et préciser ses paramètres.
+2. Calculer la probabilité d’interpeller exactement $6$ conducteurs en infraction.
+3. Calculer la probabilité d’interpeller au plus $4$ conducteurs en infraction.
+4. Calculer la variance et l’écart-type du nombre d’infractions.
+5. Chaque infraction est sanctionnée par une amende de $135$ €. Quel est le montant total moyen des amendes ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Justifier que $X$ suit une loi binomiale
+
+::: methode
+Reconnaître un schéma de Bernoulli.
+:::
+
+::: etape Schéma de Bernoulli
+Chaque conducteur contrôlé est en infraction (succès, probabilité $p = 0{,}15$) ou non. Les conducteurs étant choisis au hasard parmi un très grand nombre, les $40$ contrôles sont assimilés à des épreuves identiques et indépendantes ; $X$ compte les succès.
+:::
+
+::: resultat
+$X$ suit la loi binomiale $\mathcal{B}(40\,;0{,}15)$.
+:::
+
+## Question 2 : Probabilité d’exactement $6$ infractions
+
+::: methode
+Formule de la loi binomiale, calculée à la calculatrice (« binomFdp(40, 0.15, 6) »).
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+P(X = 6) &= \binom{40}{6} \times 0{,}15^6 \times 0{,}85^{34} \\
+&\approx 0{,}1742
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(X = 6) \approx 0{,}174$
+:::
+
+## Question 3 : Probabilité d’au plus $4$ infractions
+
+::: methode
+« Au plus $4$ » signifie $X \le 4$ : c’est une probabilité cumulée (« binomFRép »).
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+P(X \le 4) &= P(X = 0) + P(X = 1) + \cdots + P(X = 4) \\
+&\approx 0{,}2633
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(X \le 4) \approx 0{,}263$
+:::
+
+## Question 4 : Variance et écart-type
+
+::: methode
+$V(X) = np(1 - p)$ et $\sigma(X) = \sqrt{V(X)}$.
+:::
+
+::: etape Calculs
+$$
+\begin{aligned}
+V(X) &= 40 \times 0{,}15 \times 0{,}85 = 5{,}1 \\
+\sigma(X) &= \sqrt{5{,}1} \approx 2{,}258
+\end{aligned}
+$$
+:::
+
+::: resultat
+$V(X) = 5{,}1$ et $\sigma(X) \approx 2{,}258$.
+:::
+
+## Question 5 : Montant total moyen des amendes
+
+::: methode
+Le montant vaut $135X$ euros, d’espérance $135\,E(X)$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+E(X) &= 40 \times 0{,}15 = 6 \\
+E(135X) &= 135 \times 6 = 810
+\end{aligned}
+$$
+:::
+
+::: resultat
+Le montant total moyen des amendes est de $810$ €.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $X$ suit la loi binomiale $\mathcal{B}(40\,;0{,}15)$.
+2. $P(X = 6) \approx 0{,}174$.
+3. $P(X \le 4) \approx 0{,}263$.
+4. $V(X) = 5{,}1$ ; $\sigma(X) \approx 2{,}258$.
+5. Montant moyen des amendes : $810$ €.
+
+===
+
+=== Type Bac - Campagne de Conseils Financiers
+Id: 1121
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Un conseiller d’une banque organise une campagne de démarchage téléphonique. Parmi toutes les personnes contactées, $15\,\%$ acceptent de prendre un rendez-vous pour un bilan financier. Chaque employé de la banque passe $30$ appels par jour ; on admet que les réponses des personnes appelées sont indépendantes. On note $X$ le nombre de rendez-vous obtenus par un employé en une journée.
+
+1. Justifier que $X$ suit une loi binomiale et préciser ses paramètres.
+2. Calculer la probabilité qu’un employé obtienne exactement $5$ rendez-vous au cours d’une journée.
+3. Calculer la probabilité qu’un employé obtienne au moins un rendez-vous dans sa journée.
+4. Déterminer l’espérance et l’écart-type du nombre de rendez-vous obtenus.
+5. Un autre employé contacte $n$ personnes dans la journée. Déterminer le plus petit entier $n$ tel que la probabilité d’obtenir au moins un rendez-vous soit supérieure à $0{,}95$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Justifier que $X$ suit une loi binomiale
+
+::: methode
+Reconnaître un schéma de Bernoulli et rédiger la justification complète.
+:::
+
+::: etape Schéma de Bernoulli
+Chaque appel est une épreuve à deux issues : succès « rendez-vous », de probabilité $p = 0{,}15$, ou échec, de probabilité $0{,}85$. Les $30$ appels sont identiques et indépendants, et $X$ compte le nombre de succès.
+:::
+
+::: resultat
+$X$ suit la loi binomiale $\mathcal{B}(30\,;0{,}15)$.
+:::
+
+## Question 2 : Probabilité d’exactement $5$ rendez-vous
+
+::: methode
+Formule $P(X = k) = \binom{n}{k}p^k(1 - p)^{n - k}$ avec $k = 5$.
+:::
+
+::: etape Calcul
+$\binom{30}{5} = 142\,506$, donc
+
+$$
+\begin{aligned}
+P(X = 5) &= 142\,506 \times 0{,}15^5 \times 0{,}85^{25} \\
+&\approx 0{,}1861
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(X = 5) \approx 0{,}186$
+:::
+
+## Question 3 : Probabilité d’au moins un rendez-vous
+
+::: methode
+Événement contraire : $P(X \ge 1) = 1 - P(X = 0)$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+P(X = 0) &= 0{,}85^{30} \approx 0{,}0076 \\
+P(X \ge 1) &= 1 - 0{,}85^{30} \approx 0{,}9924
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(X \ge 1) \approx 0{,}992$
+:::
+
+## Question 4 : Espérance et écart-type
+
+::: methode
+$E(X) = np$ et $\sigma(X) = \sqrt{np(1 - p)}$.
+:::
+
+::: etape Calculs
+$$
+\begin{aligned}
+E(X) &= 30 \times 0{,}15 = 4{,}5 \\
+V(X) &= 30 \times 0{,}15 \times 0{,}85 = 3{,}825 \\
+\sigma(X) &= \sqrt{3{,}825} \approx 1{,}956
+\end{aligned}
+$$
+:::
+
+::: resultat
+$E(X) = 4{,}5$ et $\sigma(X) \approx 1{,}956$.
+:::
+
+## Question 5 : Plus petit nombre d’appels
+
+::: methode
+La probabilité d’au moins un rendez-vous vaut $1 - 0{,}85^n$ : résoudre l’inéquation avec le logarithme népérien.
+:::
+
+::: etape Mise en équation
+Avec $n$ appels, le nombre de rendez-vous suit la loi $\mathcal{B}(n\,;0{,}15)$ et la probabilité d’en obtenir au moins un vaut $1 - 0{,}85^n$. On cherche $n$ tel que $1 - 0{,}85^n > 0{,}95$.
+:::
+
+::: etape Résolution
+$$
+\begin{aligned}
+1 - 0{,}85^n > 0{,}95 &\iff 0{,}85^n < 0{,}05 \\
+&\iff n\ln(0{,}85) < \ln(0{,}05) \\
+&\iff n > \frac{\ln(0{,}05)}{\ln(0{,}85)} \approx 18{,}4
+\end{aligned}
+$$
+
+La fonction $\ln$ est strictement croissante, ce qui justifie la deuxième équivalence ; comme $\ln(0{,}85) < 0$, la division change le sens de l’inégalité.
+:::
+
+::: point Vérification
+| $n$ | $1 - 0{,}85^n$ |
+|---|---|
+| $18$ | $\approx 0{,}9464$ |
+| $19$ | $\approx 0{,}9544$ |
+
+$18$ appels ne suffisent pas, $19$ appels suffisent.
+:::
+
+::: resultat
+Le plus petit entier qui convient est $n = 19$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $X$ suit la loi binomiale $\mathcal{B}(30\,;0{,}15)$.
+2. $P(X = 5) \approx 0{,}186$.
+3. $P(X \ge 1) = 1 - 0{,}85^{30} \approx 0{,}992$.
+4. $E(X) = 4{,}5$ ; $\sigma(X) \approx 1{,}956$.
+5. $n = 19$ personnes au minimum.
+
+===

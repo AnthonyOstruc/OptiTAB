@@ -1,0 +1,1619 @@
+=== Entraînement - Tester en Python multiples et nombres premiers
+Id: 1923
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On considère les deux fonctions Python suivantes. L’opérateur `%` donne le reste de la division euclidienne ; on suppose $b \neq 0$.
+
+**Fonction 1 :** tester si `a` est un multiple de `b`.
+
+```python
+def est_multiple(a, b):
+    r = a % b
+    if r == 0:
+        return True
+    else:
+        return False
+```
+
+**Fonction 2 :** tester si `n` est un nombre premier.
+
+```python
+def est_premier(n):
+    if n < 2:
+        return False
+    i = 2
+    while i * i <= n:
+        if n % i == 0:
+            return False
+        i = i + 1
+    return True
+```
+
+**Fonction 3 :** chercher le plus grand multiple de `a` inférieur ou égal à `b` (avec $a \ge 1$ et $b \ge 0$).
+
+```python
+def plus_grand_multiple(a, b):
+    m = 0
+    while m + a <= b:
+        m = m + a
+    return m
+```
+
+1. Que renvoie `est_multiple(84, 7)` ?
+2. Que renvoie `est_multiple(85, 7)` ?
+3. Que renvoie `est_multiple(0, 5)` ?
+4. Que renvoie `est_premier(49)` ?
+5. Pour `est_premier(97)`, quelles valeurs de `i` sont testées ? Que renvoie la fonction ?
+6. Que renvoie `plus_grand_multiple(8, 70)` ? Expliquer pourquoi la boucle s’arrête.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Que renvoie `est_multiple(84, 7)` ?
+
+::: methode
+Calculer le reste de $84$ dans la division par $7$ : c’est la valeur de `r`.
+:::
+
+::: etape Calculer le reste
+- $84 = 7 \times 12 + 0$, donc `84 % 7` vaut $0$.
+:::
+
+::: etape Tester la condition
+- `r == 0` est vrai, donc la fonction renvoie `True`.
+:::
+
+::: resultat
+`est_multiple(84, 7)` renvoie `True` : $84$ est un multiple de $7$.
+:::
+
+## Question 2 : Que renvoie `est_multiple(85, 7)` ?
+
+::: methode
+Calculer le reste de $85$ dans la division par $7$.
+:::
+
+::: etape Calculer le reste
+- $85 = 7 \times 12 + 1$, donc `85 % 7` vaut $1$.
+:::
+
+::: etape Tester la condition
+- `r == 0` est faux (car $r = 1$), donc la fonction renvoie `False`.
+:::
+
+::: resultat
+`est_multiple(85, 7)` renvoie `False` : $85$ n’est pas un multiple de $7$.
+:::
+
+## Question 3 : Que renvoie `est_multiple(0, 5)` ?
+
+::: methode
+$0$ est un multiple de tout entier non nul, car $0 = 0 \times 5$.
+:::
+
+::: etape Calculer le reste
+- $0 = 5 \times 0 + 0$, donc `0 % 5` vaut $0$.
+:::
+
+::: etape Tester la condition
+- `r == 0` est vrai, donc la fonction renvoie `True`.
+:::
+
+::: resultat
+`est_multiple(0, 5)` renvoie `True`.
+:::
+
+## Question 4 : Que renvoie `est_premier(49)` ?
+
+::: methode
+Suivre la boucle : `i` part de $2$ et augmente de $1$ tant que $i \times i \le 49$.
+:::
+
+::: etape Valeurs possibles de `i`
+- $7 \times 7 = 49 \le 49$ mais $8 \times 8 = 64 \gt 49$ : `i` peut prendre les valeurs $2, 3, 4, 5, 6, 7$.
+:::
+
+::: etape Test de divisibilité
+- Pour $i = 2, 3, 4, 5, 6$, le reste de $49$ n’est pas nul.
+- Pour $i = 7$ : $49 = 7 \times 7$, donc `49 % 7` vaut $0$ et la fonction renvoie `False`.
+:::
+
+::: resultat
+`est_premier(49)` renvoie `False` : $49 = 7^2$ n’est pas premier.
+:::
+
+## Question 5 : Valeurs de `i` testées pour `est_premier(97)`
+
+::: methode
+La boucle continue tant que $i \times i \le 97$, sauf si un diviseur est trouvé avant.
+:::
+
+::: etape Dernière valeur testée
+- $9 \times 9 = 81 \le 97$ et $10 \times 10 = 100 \gt 97$.
+- Donc `i` prend les valeurs $2, 3, 4, 5, 6, 7, 8, 9$.
+:::
+
+::: etape Aucun diviseur trouvé
+- Aucun des restes `97 % i` n’est nul (par exemple $97 = 7 \times 13 + 6$).
+- La boucle s’arrête quand `i` vaut $10$, et la fonction renvoie `True`.
+:::
+
+::: resultat
+Les valeurs testées sont $i = 2, 3, 4, 5, 6, 7, 8, 9$ ; la fonction renvoie `True` : $97$ est premier.
+:::
+
+::: retenir
+Tester $i \times i \le n$ revient à tester $i \le \sqrt{n}$ : il est inutile de chercher un diviseur plus grand.
+:::
+
+## Question 6 : Que renvoie `plus_grand_multiple(8, 70)` ?
+
+::: methode
+Suivre les valeurs de `m` : la variable avance de $8$ en $8$ tant que le multiple suivant `m + a` ne dépasse pas $70$.
+:::
+
+::: etape Valeurs successives de `m`
+- `m` prend les valeurs $0$, $8$, $16$, $24$, $32$, $40$, $48$, $56$, $64$.
+- Quand `m` vaut $64$ : $64 + 8 = 72 \gt 70$, la condition `m + a <= b` est fausse et la boucle s’arrête.
+:::
+
+[IMAGE_1]
+
+::: resultat
+`plus_grand_multiple(8, 70)` renvoie $64$ : c’est le plus grand multiple de $8$ inférieur ou égal à $70$, car le multiple suivant, $72$, dépasse $70$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. `True`
+2. `False`
+3. `True`
+4. `False` ($49 = 7^2$)
+5. $i = 2, 3, 4, 5, 6, 7, 8, 9$ ; la fonction renvoie `True` ($97$ est premier).
+6. $64$ (le multiple suivant, $72$, dépasse $70$).
+
+===
+
+=== Découverte - Division euclidienne et plus grand multiple
+Id: 1916
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Effectuer des divisions euclidiennes et utiliser le fait : $a$ est un multiple de $b$ si et seulement si le reste de la division de $a$ par $b$ vaut $0$.
+
+1. Faire la division euclidienne de $125$ par $7$
+2. $156$ est-il un multiple de $12$ ?
+3. Trouver le quotient et le reste de la division euclidienne de $83$ par $9$
+4. Quel est le plus grand multiple de $8$ inférieur ou égal à $70$ ?
+5. Donner le reste de la division euclidienne de $2024$ par $9$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Division euclidienne de $125$ par $7$
+
+::: methode
+Chercher $q$ et $r$ tels que $125=7q+r$ avec $0\le r<7$
+:::
+
+::: etape Trouver le quotient
+- $7\times 17=119$ et $7\times 18=126>125$
+- Donc $q=17$
+:::
+
+::: etape Calculer le reste
+- $r=125-119=6$
+:::
+
+::: point Vérification
+$0\le 6<7$ : la condition $0\le r<b$ est bien respectée
+:::
+
+::: resultat
+$$125=7\times 17+6$$
+:::
+
+## Question 2 : $156$ est-il multiple de $12$ ?
+
+::: methode
+Calculer le reste de la division par $12$
+:::
+
+::: etape Division euclidienne
+- $12\times 13=156$
+:::
+
+::: resultat
+Le reste est $0$, donc $156$ est un multiple de $12$
+:::
+
+## Question 3 : Division euclidienne de $83$ par $9$
+
+::: methode
+$83=9q+r$ avec $0\le r<9$
+:::
+
+::: etape Trouver $q$
+- $9\times 9=81$ et $9\times 10=90>83$
+- Donc $q=9$
+:::
+
+::: etape Reste
+- $r=83-81=2$
+:::
+
+::: resultat
+$$83=9\times 9+2$$
+:::
+
+## Question 4 : Plus grand multiple de $8$ inférieur ou égal à $70$
+
+::: methode
+Division euclidienne de $70$ par $8$
+:::
+
+::: etape Calculer le quotient
+- $8\times 8=64$ et $8\times 9=72>70$
+- Donc le quotient est $8$
+:::
+
+::: etape En déduire le multiple
+- Plus grand multiple : $8\times 8=64$
+:::
+
+[IMAGE_1]
+
+::: resultat
+Le plus grand multiple de $8$ inférieur ou égal à $70$ est $64$.
+:::
+
+## Question 5 : Reste de la division de $2024$ par $9$
+
+::: methode
+Chercher $q$ et $r$ tels que $2024=9q+r$
+:::
+
+::: etape Approcher un multiple de $9$
+- $9\times 224=2016$
+:::
+
+::: etape Calculer le reste
+- $r=2024-2016=8$
+:::
+
+::: resultat
+Le reste est $8$ (donc $2024=9\times 224+8$)
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $125=7\times 17+6$
+2. Oui, $156=12\times 13$
+3. $83=9\times 9+2$
+4. $64$
+5. Reste $8$
+
+===
+
+=== Découverte - La somme de deux multiples est un multiple
+Id: 1914
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Rappel : un entier $m$ est un **multiple** de l’entier $a$ s’il existe un entier $k$ tel que $m = k \times a$.
+
+1. Vérifier que $35$ et $56$ sont des multiples de $7$, puis que leur somme en est un aussi.
+2. Démontrer que la somme de deux multiples de $7$ est toujours un multiple de $7$.
+3. Soit $a$ un entier. Démontrer que la somme de deux multiples de $a$ est un multiple de $a$.
+4. Sans poser de division, montrer que $7\,007 + 140$ et $7\,007 - 140$ sont des multiples de $7$.
+5. Le nombre $3 + 4$ est-il un multiple de $7$ ? Les nombres $3$ et $4$ le sont-ils ? Que peut-on en conclure ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Vérifier sur $35$ et $56$
+
+::: methode
+Écrire chaque nombre sous la forme $k \times 7$ avec $k$ entier.
+:::
+
+::: etape Les deux nombres
+- $35 = 7 \times 5$ : $35$ est un multiple de $7$.
+- $56 = 7 \times 8$ : $56$ est un multiple de $7$.
+:::
+
+::: etape Leur somme
+$35 + 56 = 91 = 7 \times 13$.
+:::
+
+::: resultat
+$35$, $56$ et leur somme $91$ sont des multiples de $7$.
+:::
+
+## Question 2 : Démontrer pour deux multiples de $7$
+
+::: methode
+Écrire les deux multiples avec deux entiers **quelconques** $k$ et $k'$, puis factoriser la somme par $7$.
+:::
+
+::: etape Écrire les deux multiples
+Soient $m$ et $n$ deux multiples de $7$ : il existe des entiers $k$ et $k'$ tels que $m = 7k$ et $n = 7k'$.
+:::
+
+::: etape Factoriser la somme
+$$m + n = 7k + 7k' = 7(k + k')$$
+:::
+
+::: resultat
+$k + k'$ est un entier, donc $m + n$ est un multiple de $7$.
+:::
+
+La figure le montre sur l’exemple de la question 1 : $5$ colonnes de $7$ carreaux plus $8$ colonnes de $7$ carreaux font $13$ colonnes de $7$ carreaux.
+
+[IMAGE_1]
+
+::: attention
+Vérifier sur un ou plusieurs exemples ne démontre rien : il faut raisonner avec des entiers $k$ et $k'$ quelconques.
+:::
+
+## Question 3 : Cas général
+
+::: methode
+Même raisonnement en remplaçant $7$ par $a$ : c’est la démonstration du cours.
+:::
+
+::: etape Écrire et factoriser
+Soient $m = k \times a$ et $n = k' \times a$ deux multiples de $a$, avec $k$ et $k'$ entiers :
+$$m + n = k \times a + k' \times a = (k + k') \times a$$
+:::
+
+::: resultat
+$k + k'$ est un entier : la somme de deux multiples de $a$ est un multiple de $a$.
+:::
+
+## Question 4 : $7\,007 + 140$ et $7\,007 - 140$
+
+::: methode
+Reconnaître deux multiples de $7$, puis appliquer la question 3 (et son analogue pour la différence).
+:::
+
+::: etape Deux multiples de $7$
+$7\,007 = 7 \times 1\,001$ et $140 = 7 \times 20$.
+:::
+
+::: etape Somme
+$$
+\begin{aligned}
+7\,007 + 140 &= 7 \times (1\,001 + 20) \\
+&= 7 \times 1\,021
+\end{aligned}
+$$
+:::
+
+::: etape Différence
+$$
+\begin{aligned}
+7\,007 - 140 &= 7 \times (1\,001 - 20) \\
+&= 7 \times 981
+\end{aligned}
+$$
+:::
+
+::: resultat
+$7\,147 = 7 \times 1\,021$ et $6\,867 = 7 \times 981$ sont des multiples de $7$ : la différence de deux multiples de $a$ est aussi un multiple de $a$.
+:::
+
+## Question 5 : Et la réciproque ?
+
+::: methode
+Tester l’affirmation « si une somme est un multiple de $7$, alors ses deux termes le sont » sur l’exemple $3 + 4$.
+:::
+
+::: etape Tester
+- $3 + 4 = 7 = 7 \times 1$ : la somme est un multiple de $7$.
+- $3$ et $4$ ne sont pas des multiples de $7$ (ils sont compris strictement entre $0$ et $7$).
+:::
+
+::: resultat
+La réciproque est fausse : une somme peut être un multiple de $7$ sans que ses termes le soient. L’exemple $3 + 4$ est un **contre-exemple**.
+:::
+
+::: retenir
+Un seul contre-exemple suffit pour montrer qu’une affirmation est fausse ; pour montrer qu’elle est vraie, il faut une démonstration générale.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $35 = 7 \times 5$, $56 = 7 \times 8$ et $35 + 56 = 91 = 7 \times 13$.
+2. $7k + 7k' = 7(k + k')$ avec $k + k'$ entier.
+3. $k \times a + k' \times a = (k + k') \times a$ avec $k + k'$ entier.
+4. $7\,007 + 140 = 7 \times 1\,021$ et $7\,007 - 140 = 7 \times 981$.
+5. $3 + 4 = 7$ est multiple de $7$, mais ni $3$ ni $4$ : la réciproque est fausse.
+
+===
+
+=== Découverte - Reconnaître un multiple et lister des diviseurs
+Id: 1915
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Utiliser la définition : $a$ est un multiple de $b$ si $a=b\times k$ avec $k\in\mathbb{Z}$.
+
+**Notation :** On note aussi $b\mid a$ et on lit "$b$ divise $a$".
+
+1. Montrer que $72$ est un multiple de $9$
+2. $65$ est-il un multiple de $8$ ?
+3. Donner la liste des diviseurs positifs de $24$
+4. Trouver $k$ tel que $54 = 6k$
+5. $7$ divise-t-il $203$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $72$ est-il multiple de $9$ ?
+
+::: methode
+Chercher un entier $k$ tel que $72=9k$
+:::
+
+::: etape Calculer $72\div 9$
+- $72\div 9=8$
+:::
+
+::: etape Conclure
+- $72=9\times 8$
+:::
+
+::: resultat
+$72$ est un multiple de $9$ (donc $9\mid 72$)
+:::
+
+## Question 2 : $65$ est-il multiple de $8$ ?
+
+::: methode
+Division euclidienne par $8$ (reste nul ou non)
+:::
+
+::: etape Encadrer par des multiples de $8$
+- $8\times 8=64$ et $8\times 9=72$
+:::
+
+::: etape Identifier le reste
+- $65=8\times 8 + 1$
+:::
+
+::: resultat
+Le reste vaut $1\neq 0$, donc $65$ n'est pas un multiple de $8$
+:::
+
+## Question 3 : Diviseurs positifs de $24$
+
+::: methode
+Chercher tous les entiers naturels $d$ tels que $d\mid 24$
+:::
+
+::: etape Écrire des couples de facteurs
+- $24=1\times 24$
+- $24=2\times 12$
+- $24=3\times 8$
+- $24=4\times 6$
+:::
+
+Chaque façon de ranger $24$ carreaux en rectangle donne deux diviseurs :
+
+[IMAGE_1]
+
+::: resultat
+Les diviseurs positifs de $24$ sont $1,\ 2,\ 3,\ 4,\ 6,\ 8,\ 12,\ 24$
+:::
+
+## Question 4 : Trouver $k$ tel que $54=6k$
+
+::: methode
+Diviser par $6$
+:::
+
+::: etape Calculer
+- $k=\dfrac{54}{6}=9$
+:::
+
+::: resultat
+$54=6\times 9$, donc $k=9$
+:::
+
+## Question 5 : $7$ divise-t-il $203$ ?
+
+::: methode
+Chercher un entier $k$ tel que $203=7k$
+:::
+
+::: etape Tester un produit simple
+- $7\times 29=203$
+:::
+
+::: resultat
+$203$ est un multiple de $7$ (donc $7\mid 203$)
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $72=9\times 8$ donc $9\mid 72$
+2. $65=8\times 8+1$ donc $65$ n'est pas multiple de $8$
+3. $1,\ 2,\ 3,\ 4,\ 6,\ 8,\ 12,\ 24$
+4. $k=9$
+5. $203=7\times 29$ donc $7\mid 203$
+
+===
+
+=== Entraînement - Utiliser les critères de divisibilité
+Id: 1918
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Utiliser les critères de divisibilité par $2,3,4,5,6,9,10$ pour répondre rapidement.
+
+**Rappel des critères :**
+
+- Par $2$ : dernier chiffre pair
+
+- Par $3$ : somme des chiffres divisible par $3$
+
+- Par $4$ : deux derniers chiffres forment un nombre divisible par $4$
+
+- Par $5$ : dernier chiffre $0$ ou $5$
+
+- Par $6$ : divisible par $2$ ET par $3$
+
+- Par $9$ : somme des chiffres divisible par $9$
+
+- Par $10$ : dernier chiffre $0$
+
+1. Parmi $2,3,4,5,6,9,10$, par lesquels $7290$ est-il divisible ?
+2. Dire si $1428$ est divisible par $4$, par $6$ et par $9$
+3. On note $24a$ le nombre à trois chiffres. Quelles valeurs de $a$ (chiffre) rendent $24a$ divisible par $3$ ?
+4. On note $3b5$ le nombre à trois chiffres. Quelle valeur de $b$ (chiffre) rend $3b5$ divisible par $9$ ?
+5. Dire si $5040$ est divisible par $4$, par $6$ et par $10$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Diviseurs de $7290$
+
+::: methode
+Tester chaque critère : dernier chiffre, somme des chiffres, deux derniers chiffres.
+:::
+
+::: etape Divisibilité par $2$, $5$, $10$
+- $7290$ se termine par $0$, donc il est divisible par $2$, $5$ et $10$.
+:::
+
+::: etape Divisibilité par $3$ et $9$
+- Somme des chiffres : $7+2+9+0=18$
+- $18$ est divisible par $3$ et par $9$
+:::
+
+::: etape Divisibilité par $6$
+- Divisible par $2$ et par $3$ donc divisible par $6$
+:::
+
+::: etape Divisibilité par $4$
+- Deux derniers chiffres : $90$ n'est pas divisible par $4$
+:::
+
+::: resultat
+$7290$ est divisible par $2,3,5,6,9,10$ mais pas par $4$
+:::
+
+## Question 2 : $1428$ divisible par $4$, $6$, $9$ ?
+
+::: methode
+Utiliser les critères
+:::
+
+::: etape Par $4$
+- Deux derniers chiffres : $28$ est divisible par $4$ donc $1428$ est divisible par $4$
+:::
+
+::: etape Par $3$ puis $6$
+- Somme des chiffres : $1+4+2+8=15$, divisible par $3$
+- $1428$ est pair donc divisible par $2$
+- Donc $1428$ est divisible par $6$
+:::
+
+::: etape Par $9$
+- $15$ n'est pas divisible par $9$ donc $1428$ n'est pas divisible par $9$
+:::
+
+::: resultat
+Divisible par $4$ et $6$, mais pas par $9$
+:::
+
+## Question 3 : Valeurs de $a$ pour que $24a$ soit divisible par $3$
+
+::: methode
+Un nombre est divisible par $3$ si la somme de ses chiffres est divisible par $3$
+:::
+
+::: etape Somme des chiffres
+- $2+4+a=6+a$
+:::
+
+::: etape Condition
+- $6$ est un multiple de $3$ : $6+a$ est divisible par $3$ exactement quand $a$ l’est.
+- $a$ est un chiffre (de $0$ à $9$) : $a = 0$, $3$, $6$ ou $9$.
+:::
+
+::: resultat
+$a\in\{0,3,6,9\}$ : les nombres $240$, $243$, $246$ et $249$ sont divisibles par $3$.
+:::
+
+## Question 4 : Valeur de $b$ pour que $3b5$ soit divisible par $9$
+
+::: methode
+Divisible par $9$ si la somme des chiffres est divisible par $9$
+:::
+
+::: etape Somme des chiffres
+- $3+b+5=8+b$
+:::
+
+::: etape Condition
+- $b$ est un chiffre, donc $8 \le 8+b \le 17$.
+- Le seul multiple de $9$ entre $8$ et $17$ est $9$ : il faut $8+b=9$, donc $b=1$.
+:::
+
+::: point Vérification
+$3+1+5=9$ : $315 = 9 \times 35$ est bien divisible par $9$.
+:::
+
+::: resultat
+$b=1$ (le nombre est $315$)
+:::
+
+## Question 5 : $5040$ divisible par $4$, $6$, $10$ ?
+
+::: methode
+Appliquer les critères de divisibilité par $10$, $4$ et $6$.
+:::
+
+::: etape Par $10$
+- $5040$ se termine par $0$, donc il est divisible par $10$.
+:::
+
+::: etape Par $4$
+- Deux derniers chiffres : $40$ est divisible par $4$
+:::
+
+::: etape Par $6$
+- $5040$ est pair donc divisible par $2$
+- Somme des chiffres : $5+0+4+0=9$, divisible par $3$
+- Donc divisible par $6$
+:::
+
+::: resultat
+$5040$ est divisible par $4$, $6$ et $10$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $7290$ est divisible par $2,3,5,6,9,10$ (pas par $4$)
+2. $1428$ est divisible par $4$ et $6$ (pas par $9$)
+3. $a\in\{0,3,6,9\}$
+4. $b=1$
+5. Oui : $5040$ est divisible par $4$, $6$ et $10$
+
+===
+
+=== Entraînement - Décomposer un entier en facteurs premiers
+Id: 1920
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Décomposer les entiers suivants en produit de facteurs premiers, puis utiliser ces décompositions.
+
+1. Décomposer $84$ en facteurs premiers
+2. Décomposer $120$ en facteurs premiers
+3. Décomposer $45$ en facteurs premiers
+4. Décomposer $210$ en facteurs premiers
+5. Trouver tous les diviseurs de $60$ strictement supérieurs à $10$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Décomposition de $84$
+
+::: methode
+Divisions successives par des nombres premiers
+:::
+
+::: etape Diviser par $2$
+- $84=2\times 42$
+- $42=2\times 21$
+:::
+
+::: etape Continuer
+- $21=3\times 7$
+:::
+
+::: resultat
+$$84=2^2\times 3\times 7$$
+:::
+
+## Question 2 : Décomposition de $120$
+
+::: methode
+Diviser par $2$ tant que possible, puis factoriser
+:::
+
+::: etape Extraire les facteurs $2$
+$$
+\begin{aligned}
+120 &= 2\times 60 \\
+&= 2^2\times 30 \\
+&= 2^3\times 15
+\end{aligned}
+$$
+:::
+
+::: etape Décomposer $15$
+- $15=3\times 5$, et $3$ et $5$ sont premiers.
+:::
+
+[IMAGE_1]
+
+::: resultat
+$$120=2^3\times 3\times 5$$
+:::
+
+## Question 3 : Décomposition de $45$
+
+::: methode
+Utiliser $45=9\times 5$
+:::
+
+::: etape Décomposer
+- $45=9\times 5=3^2\times 5$
+:::
+
+::: resultat
+$$45=3^2\times 5$$
+:::
+
+## Question 4 : Décomposition de $210$
+
+::: methode
+Décomposer en produits simples
+:::
+
+::: etape $210=21\times 10$
+- $21=3\times 7$
+- $10=2\times 5$
+:::
+
+::: resultat
+$$210=2\times 3\times 5\times 7$$
+:::
+
+## Question 5 : Diviseurs de $60$ supérieurs à $10$
+
+::: methode
+Lister les diviseurs de $60$ par paires, puis garder ceux qui sont strictement supérieurs à $10$.
+:::
+
+::: etape Décomposer $60$
+- $60=2^2\times 3\times 5$
+:::
+
+::: etape Lister les diviseurs (par couples)
+- $60=1\times 60$
+- $60=2\times 30$
+- $60=3\times 20$
+- $60=4\times 15$
+- $60=5\times 12$
+- $60=6\times 10$
+:::
+
+::: etape Garder ceux strictement supérieurs à $10$
+- $12,\ 15,\ 20,\ 30,\ 60$
+:::
+
+::: resultat
+$$12,\ 15,\ 20,\ 30,\ 60$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $84=2^2\times 3\times 7$
+2. $120=2^3\times 3\times 5$
+3. $45=3^2\times 5$
+4. $210=2\times 3\times 5\times 7$
+5. $12,\ 15,\ 20,\ 30,\ 60$
+
+===
+
+=== Entraînement - Démontrer des propriétés de divisibilité
+Id: 1924
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Justifier des propriétés de divisibilité en utilisant des écritures du type $n=ak$ (avec $k\in\mathbb{Z}$) et des critères (par $3$, $4$, $12$).
+
+1. Montrer que le produit d’un multiple de $3$ et d’un multiple de $4$ est un multiple de $12$.
+2. Un nombre est dit parfait s’il est égal à la somme de ses diviseurs positifs strictement inférieurs à lui-même. Montrer que $6$ est un nombre parfait.
+3. On considère le nombre dont l’écriture décimale est $7a2b$ (avec $a$ et $b$ des chiffres). Déterminer les valeurs possibles de $a$ et $b$ pour qu’il soit divisible par $12$.
+4. On considère un entier naturel $n$ tel que $n-1$ soit divisible par $4$. Montrer que $n^2-1$ est divisible par $8$.
+5. Montrer que si $n$ est divisible par $3$, alors $n^2$ est divisible par $9$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Produit d’un multiple de $3$ et d’un multiple de $4$
+
+::: methode
+Utiliser les définitions de « multiple »
+:::
+
+::: etape Écrire les deux nombres
+- Si $a$ est multiple de $3$, alors $a=3m$ avec $m\in\mathbb{Z}$
+- Si $b$ est multiple de $4$, alors $b=4p$ avec $p\in\mathbb{Z}$
+:::
+
+::: etape Calculer le produit
+- $ab=(3m)\times(4p)=12mp$
+:::
+
+::: resultat
+Comme $mp\in\mathbb{Z}$, $ab$ est un multiple de $12$.
+:::
+
+## Question 2 : Montrer que $6$ est un nombre parfait
+
+::: methode
+Lister les diviseurs positifs (autres que lui-même) puis additionner
+:::
+
+::: etape Diviseurs positifs de $6$
+- $1,\ 2,\ 3,\ 6$
+:::
+
+::: etape Somme des diviseurs strictement inférieurs à $6$
+- $1+2+3=6$
+:::
+
+::: resultat
+$6$ est un nombre parfait
+:::
+
+## Question 3 : Divisibilité de $7a2b$ par $12$
+
+::: methode
+$12=3\times 4$ donc divisible par $12 \iff$ divisible par $3$ et par $4$
+:::
+
+::: etape Condition « divisible par $4$ »
+- Les deux derniers chiffres sont $2b$
+- $20,\ 24,\ 28$ sont divisibles par $4$ donc $b\in\{0,4,8\}$
+:::
+
+::: etape Condition « divisible par $3$ »
+- Somme des chiffres : $7+a+2+b=9+a+b$
+- Il faut $9+a+b$ divisible par $3 \iff a+b$ divisible par $3$
+:::
+
+::: etape Lister les possibilités
+| $b$ | $a+b$ multiple de $3$ | $a$ possibles |
+|---|---|---|
+| $0$ | $a \in \{0, 3, 6, 9\}$ | $0$, $3$, $6$, $9$ |
+| $4$ | $a+4 \in \{6, 9, 12\}$ | $2$, $5$, $8$ |
+| $8$ | $a+8 \in \{9, 12, 15\}$ | $1$, $4$, $7$ |
+:::
+
+::: resultat
+Il y a $10$ nombres possibles : $7020$, $7320$, $7620$, $7920$, $7224$, $7524$, $7824$, $7128$, $7428$ et $7728$.
+:::
+
+## Question 4 : Si $4\mid(n-1)$, montrer que $8\mid(n^2-1)$
+
+::: methode
+Factoriser $n^2-1$ et utiliser l’écriture $n-1=4k$
+:::
+
+::: etape Écrire $n-1$ comme un multiple de $4$
+- $n-1=4k$ avec $k\in\mathbb{Z}$
+:::
+
+::: etape Factoriser
+- $n^2-1=(n-1)(n+1)$
+:::
+
+::: etape Montrer que le produit est un multiple de $8$
+- $n+1=(n-1)+2=4k+2=2(2k+1)$
+- Donc :
+$$
+\begin{aligned}
+n^2-1 &= (n-1)(n+1) \\
+&= 4k\times 2(2k+1) \\
+&= 8k(2k+1)
+\end{aligned}
+$$
+:::
+
+::: resultat
+$k(2k+1)$ est un entier, donc $n^2-1=8\times k(2k+1)$ est divisible par $8$.
+:::
+
+## Question 5 : Si $3\mid n$, montrer que $9\mid n^2$
+
+::: methode
+Écrire $n=3k$ puis élever au carré
+:::
+
+::: etape Écriture
+- $n=3k$ avec $k\in\mathbb{Z}$
+:::
+
+::: etape Carré
+- $n^2=(3k)^2=9k^2$
+:::
+
+::: resultat
+$k^2$ est un entier, donc $n^2=9k^2$ est divisible par $9$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Si $a=3m$ et $b=4p$, alors $ab=12mp$ : c’est un multiple de $12$.
+2. $1+2+3=6$ donc $6$ est parfait.
+3. $b=0$ et $a\in\{0,3,6,9\}$ ; $b=4$ et $a\in\{2,5,8\}$ ; $b=8$ et $a\in\{1,4,7\}$ (soit $10$ nombres).
+4. $n^2-1=(n-1)(n+1)=8k(2k+1)$ donc divisible par $8$
+5. $n=3k \Rightarrow n^2=9k^2$ donc divisible par $9$
+
+===
+
+=== Entraînement - Reconnaître un nombre premier
+Id: 1919
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Un entier naturel $n\ge 2$ est premier s'il admet exactement deux diviseurs positifs : $1$ et $n$. Pour tester, on cherche un diviseur premier $p$ tel que $p^2 \le n$ (c’est-à-dire $p \le \sqrt{n}$).
+
+1. $29$ est-il premier ?
+2. $91$ est-il premier ?
+3. $97$ est-il premier ?
+4. Parmi $21,\ 23,\ 25,\ 29,\ 31$, lesquels sont premiers ?
+5. $121$ est-il premier ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Tester $29$
+
+::: methode
+Tester les diviseurs premiers $\le \sqrt{29}$
+:::
+
+::: etape Estimer $\sqrt{29}$
+- $\sqrt{29}\approx 5{,}4$
+:::
+
+::: etape Tester $2,3,5$
+- $29$ est impair donc pas divisible par $2$
+- $2+9=11$ donc pas divisible par $3$
+- Ne se termine ni par $0$ ni par $5$ donc pas divisible par $5$
+:::
+
+::: resultat
+Aucun diviseur trouvé, donc $29$ est premier
+:::
+
+## Question 2 : Tester $91$
+
+::: methode
+Tester les diviseurs $\le \sqrt{91}$
+:::
+
+::: etape Estimer $\sqrt{91}$
+- $\sqrt{91}\approx 9{,}5$
+:::
+
+::: etape Tester $2,3,5,7$
+- $91$ est impair donc pas divisible par $2$
+- $9+1=10$ donc pas divisible par $3$
+- Ne se termine ni par $0$ ni par $5$ donc pas divisible par $5$
+- $91=7\times 13$ donc divisible par $7$
+:::
+
+::: resultat
+$91$ n'est pas premier
+:::
+
+## Question 3 : Tester $97$
+
+::: methode
+Tester les diviseurs $\le \sqrt{97}$
+:::
+
+::: etape Estimer $\sqrt{97}$
+- $\sqrt{97}\approx 9{,}8$
+:::
+
+::: etape Tester $2,3,5,7$
+- $97$ est impair donc pas divisible par $2$
+- $9+7=16$ donc pas divisible par $3$
+- Ne se termine ni par $0$ ni par $5$ donc pas divisible par $5$
+- $97=7\times 13+6$ donc pas divisible par $7$
+:::
+
+::: resultat
+Aucun diviseur trouvé, donc $97$ est premier
+:::
+
+## Question 4 : Nombres premiers parmi $21$, $23$, $25$, $29$, $31$
+
+::: methode
+Chercher une factorisation simple, sinon tester les diviseurs premiers $p$ tels que $p^2 \le n$.
+:::
+
+::: etape Tester chaque nombre
+- $21=3\times 7$ : pas premier.
+- $23$ : ni $2$ ni $3$ ne le divisent, et $5^2=25 \gt 23$ : premier.
+- $25=5\times 5$ : pas premier.
+- $29$ est premier (question 1).
+- $31$ : ni $2$, ni $3$, ni $5$ ne le divisent, et $7^2=49 \gt 31$ : premier.
+:::
+
+::: point Crible de $20$ à $39$
+Comme $7^2 = 49$, un nombre non premier inférieur à $49$ a toujours un diviseur parmi $2$, $3$ et $5$ : en éliminant leurs multiples, il ne reste que les nombres premiers.
+:::
+
+[IMAGE_1]
+
+::: resultat
+Les nombres premiers sont $23,\ 29,\ 31$
+:::
+
+## Question 5 : Tester $121$
+
+::: methode
+Tester les diviseurs $\le \sqrt{121}$
+:::
+
+::: etape Calculer $\sqrt{121}$
+- $\sqrt{121}=11$
+:::
+
+::: etape Tester $11$
+- $121=11\times 11$
+:::
+
+::: resultat
+$121$ n'est pas premier
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $29$ est premier
+2. $91=7\times 13$ donc n'est pas premier
+3. $97$ est premier
+4. Premiers : $23,\ 29,\ 31$
+5. $121=11^2$ donc n'est pas premier
+
+===
+
+=== Entraînement - Démontrer avec des nombres pairs et impairs
+Id: 1917
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Rappels : $n$ est pair $\iff n=2k$ ; $n$ est impair $\iff n=2k+1$ (avec $k\in\mathbb{Z}$). Justifier à l'aide de ces écritures.
+
+1. Écrire $38$ sous la forme $2k$ et préciser si 38 est pair ou impair
+2. Écrire $57$ sous la forme $2k+1$ et préciser si 57 est pair ou impair
+3. Si $n$ est pair, que peut-on dire de $n+1$ ? Justifier
+4. Démontrer que la somme de deux nombres impairs est paire
+5. Démontrer que le carré d'un nombre impair est impair
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $38$ sous la forme $2k$
+
+::: methode
+Calculer $k=\dfrac{38}{2}$
+:::
+
+::: etape Calculer
+- $k=\dfrac{38}{2}=19$
+:::
+
+::: resultat
+$38=2\times 19$ donc $38$ est pair
+:::
+
+## Question 2 : $57$ sous la forme $2k+1$
+
+::: methode
+Trouver $k$ tel que $57=2k+1$
+:::
+
+::: etape Isoler $k$
+- $57=2k+1 \Rightarrow 56=2k \Rightarrow k=28$
+:::
+
+::: resultat
+$57=2\times 28+1$ donc $57$ est impair
+:::
+
+## Question 3 : Si $n$ est pair, quelle est la parité de $n+1$ ?
+
+::: methode
+Écrire $n=2k$
+:::
+
+::: etape Ajouter $1$
+- $n+1=2k+1$
+:::
+
+::: resultat
+$n+1$ est impair
+:::
+
+## Question 4 : Somme de deux impairs
+
+::: methode
+Écrire deux impairs sous la forme $2k+1$ et $2k'+1$
+:::
+
+::: etape Écrire les deux nombres
+- $a=2k+1$ et $b=2k'+1$ avec $k$ et $k'$ entiers
+:::
+
+::: etape Additionner
+- $a+b=(2k+1)+(2k'+1)=2(k+k'+1)$
+:::
+
+Sur un exemple : chaque impair est formé de paires et d’un point isolé ; les deux points isolés forment une nouvelle paire.
+
+[IMAGE_1]
+
+::: resultat
+$a+b=2(k+k'+1)$ avec $k+k'+1\in\mathbb{Z}$ : la somme de deux impairs est paire.
+:::
+
+## Question 5 : Carré d'un impair
+
+::: methode
+Partir de $n=2k+1$ puis développer $n^2$
+:::
+
+::: etape Écrire $n$ impair
+- $n=2k+1$ avec $k\in\mathbb{Z}$
+:::
+
+::: etape Calculer $n^2$
+- $n^2=(2k+1)^2=4k^2+4k+1$
+:::
+
+::: etape Mettre sous la forme $2K+1$
+- $4k^2+4k+1=2(2k^2+2k)+1$
+:::
+
+::: resultat
+$n^2$ est de la forme $2K+1$, donc $n^2$ est impair
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $38=2\times 19$ donc 38 est pair
+2. $57=2\times 28+1$ donc 57 est impair
+3. Si $n=2k$, alors $n+1=2k+1$ donc $n+1$ est impair
+4. $(2k+1)+(2k'+1)=2(k+k'+1)$ : la somme de deux impairs est paire.
+5. Si $n=2k+1$, alors $n^2=2(2k^2+2k)+1$ donc $n^2$ est impair
+
+===
+
+=== Entraînement - Rendre une fraction irréductible
+Id: 1921
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Le **PGCD** de deux entiers est leur plus grand diviseur commun. Pour rendre une fraction irréductible, on divise son numérateur et son dénominateur par leur PGCD (ou on simplifie les facteurs premiers communs).
+
+1. Simplifier $\dfrac{84}{126}$
+2. Simplifier $\dfrac{45}{60}$
+3. Calculer $\mathrm{PGCD}(72,120)$
+4. Simplifier $\dfrac{150}{210}$
+5. Simplifier $\dfrac{168}{252}$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Simplifier $\dfrac{84}{126}$
+
+::: methode
+Diviser numérateur et dénominateur par leur PGCD
+:::
+
+::: etape Trouver le PGCD
+- $84=2^2\times 3\times 7$
+- $126=2\times 3^2\times 7$
+- Facteurs communs : $2\times 3\times 7=42$
+- Donc $\mathrm{PGCD}(84,126)=42$
+:::
+
+::: etape Simplifier
+$$
+\begin{aligned}
+\frac{84}{126} &= \frac{84\div 42}{126\div 42} \\
+&= \frac{2}{3}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$\frac{84}{126}=\frac{2}{3}$$
+:::
+
+## Question 2 : Simplifier $\dfrac{45}{60}$
+
+::: methode
+Décomposition puis simplification
+:::
+
+::: etape Décomposer
+- $45=3^2\times 5$
+- $60=2^2\times 3\times 5$
+:::
+
+::: etape Simplifier les facteurs communs
+$$
+\begin{aligned}
+\frac{45}{60} &= \frac{3^2\times 5}{2^2\times 3\times 5} \\
+&= \frac{3}{4}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$\frac{45}{60}=\frac{3}{4}$$
+:::
+
+## Question 3 : Calculer $\mathrm{PGCD}(72,120)$
+
+::: methode
+Décomposition en facteurs premiers
+:::
+
+::: etape Décomposer
+- $72=2^3\times 3^2$
+- $120=2^3\times 3\times 5$
+:::
+
+::: etape Garder les facteurs communs avec les plus petits exposants
+- Commun : $2^3\times 3=8\times 3=24$
+:::
+
+::: resultat
+$$\mathrm{PGCD}(72,120)=24$$
+:::
+
+## Question 4 : Simplifier $\dfrac{150}{210}$
+
+::: methode
+Utiliser le PGCD
+:::
+
+::: etape Décomposer
+- $150=2\times 3\times 5^2$
+- $210=2\times 3\times 5\times 7$
+:::
+
+::: etape Simplifier
+$$
+\begin{aligned}
+\frac{150}{210} &= \frac{2\times 3\times 5^2}{2\times 3\times 5\times 7} \\
+&= \frac{5}{7}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$\frac{150}{210}=\frac{5}{7}$$
+:::
+
+## Question 5 : Simplifier $\dfrac{168}{252}$
+
+::: methode
+Simplifier par le PGCD
+:::
+
+::: etape Décomposer
+- $168=2^3\times 3\times 7$
+- $252=2^2\times 3^2\times 7$
+:::
+
+::: etape Facteurs communs
+- $2^2\times 3\times 7=84$
+:::
+
+::: etape Simplifier
+$$
+\begin{aligned}
+\frac{168}{252} &= \frac{168\div 84}{252\div 84} \\
+&= \frac{2}{3}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$\frac{168}{252}=\frac{2}{3}$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\dfrac{84}{126}=\dfrac{2}{3}$
+2. $\dfrac{45}{60}=\dfrac{3}{4}$
+3. $\mathrm{PGCD}(72,120)=24$
+4. $\dfrac{150}{210}=\dfrac{5}{7}$
+5. $\dfrac{168}{252}=\dfrac{2}{3}$
+
+===
+
+=== Problème - Phénomènes périodiques et multiples communs
+Id: 1922
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Le **PPCM** de deux entiers naturels non nuls est leur plus petit multiple commun strictement positif. Il sert notamment à synchroniser des événements périodiques et à trouver un dénominateur commun.
+
+1. Calculer $\mathrm{PPCM}(12,18)$
+2. Deux feux clignotent : le premier toutes les $45$ s, le second toutes les $60$ s. Au bout de combien de temps reclignotent-ils ensemble ?
+3. Trouver le plus petit entier naturel strictement supérieur à $200$ divisible par $9$ et par $14$
+4. Calculer $\dfrac{1}{6}+\dfrac{1}{8}$ et simplifier
+5. Trouver le plus petit multiple commun de $6,\ 8$ et $9$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $\mathrm{PPCM}(12,18)$
+
+::: methode
+Décomposer puis prendre tous les facteurs avec les plus grands exposants
+:::
+
+::: etape Décomposer
+- $12=2^2\times 3$
+- $18=2\times 3^2$
+:::
+
+::: etape Construire le PPCM
+- $\mathrm{PPCM}(12,18)=2^2\times 3^2=36$
+:::
+
+::: resultat
+$$\mathrm{PPCM}(12,18)=36$$
+:::
+
+## Question 2 : Feux clignotant toutes les $45$ s et toutes les $60$ s
+
+::: methode
+Les feux clignotent ensemble aux instants multiples de $45$ et de $60$ : le premier est $\mathrm{PPCM}(45,60)$.
+:::
+
+::: etape Décomposer
+- $45=3^2\times 5$
+- $60=2^2\times 3\times 5$
+:::
+
+::: etape PPCM
+- $\mathrm{PPCM}(45,60)=2^2\times 3^2\times 5=180$
+:::
+
+[IMAGE_1]
+
+::: resultat
+Ils clignotent de nouveau ensemble au bout de $180$ s, soit $3$ minutes.
+:::
+
+## Question 3 : Plus petit entier strictement supérieur à $200$ divisible par $9$ et $14$
+
+::: methode
+Un nombre divisible par $9$ et par $14$ est un multiple de $\mathrm{PPCM}(9,14)$ : chercher le premier qui dépasse $200$.
+:::
+
+::: etape PPCM
+- $9=3^2$ et $14=2\times 7$
+- Donc $\mathrm{PPCM}(9,14)=2\times 3^2\times 7=126$
+:::
+
+::: etape Multiples de $126$
+- $126\times 1=126$ (trop petit)
+- $126\times 2=252$ (convient)
+:::
+
+::: resultat
+Le plus petit entier strictement supérieur à $200$ divisible par $9$ et par $14$ est $252$.
+:::
+
+## Question 4 : Addition $\dfrac{1}{6}+\dfrac{1}{8}$
+
+::: methode
+Prendre le PPCM des dénominateurs
+:::
+
+::: etape Calculer $\mathrm{PPCM}(6,8)$
+- $6=2\times 3$ et $8=2^3$
+- $\mathrm{PPCM}(6,8)=2^3\times 3=24$
+:::
+
+::: etape Mettre au même dénominateur
+- $\dfrac{1}{6}=\dfrac{4}{24}$
+- $\dfrac{1}{8}=\dfrac{3}{24}$
+:::
+
+::: etape Additionner
+- $\dfrac{4}{24}+\dfrac{3}{24}=\dfrac{7}{24}$
+:::
+
+::: resultat
+$$\frac{1}{6}+\frac{1}{8}=\frac{7}{24}$$
+:::
+
+## Question 5 : Plus petit multiple commun de $6,\ 8,\ 9$
+
+::: methode
+Décomposer puis prendre les plus grands exposants
+:::
+
+::: etape Décomposer
+- $6=2\times 3$
+- $8=2^3$
+- $9=3^2$
+:::
+
+::: etape PPCM
+- $2^3\times 3^2=8\times 9=72$
+:::
+
+::: resultat
+Le plus petit multiple commun de $6$, $8$ et $9$ est $72$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\mathrm{PPCM}(12,18)=36$
+2. $\mathrm{PPCM}(45,60)=180$ s (3 minutes)
+3. $252$
+4. $\dfrac{1}{6}+\dfrac{1}{8}=\dfrac{7}{24}$
+5. $72$
+
+===
+
+=== Problème - Organiser une kermesse avec diviseurs et multiples
+Id: 1925
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Pour une kermesse, on prépare des sachets et on organise des animations.
+
+- On dispose de $84$ biscuits et de $126$ jus.
+
+- Deux guirlandes lumineuses clignotent : la première toutes les $12$ s, la seconde toutes les $18$ s (elles démarrent ensemble).
+
+- On veut fabriquer un code de ticket (nombre à 3 chiffres) divisible à la fois par $9$ et par $10$.
+
+1. Quel est le nombre maximum de sachets identiques que l'on peut préparer sans reste ?
+2. Combien y a-t-il de biscuits et de jus dans chaque sachet ?
+3. Au bout de combien de secondes les deux guirlandes clignotent-elles ensemble à nouveau ?
+4. En $3$ minutes, combien de fois clignotent-elles ensemble ? (On compte le clignotement de départ à $t=0$.)
+5. Quel est le plus petit code à 3 chiffres divisible par $9$ et par $10$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Nombre maximum de sachets identiques
+
+::: methode
+Le nombre de sachets doit diviser $84$ et $126$ : le plus grand possible est leur plus grand diviseur commun (PGCD).
+:::
+
+::: etape Décomposer
+- $84=2^2\times 3\times 7$
+- $126=2\times 3^2\times 7$
+:::
+
+::: etape Facteurs communs
+- $2\times 3\times 7=42$
+:::
+
+::: resultat
+$\mathrm{PGCD}(84,126)=42$ donc on peut faire au maximum $42$ sachets
+:::
+
+## Question 2 : Contenu d'un sachet
+
+::: methode
+Diviser par le nombre de sachets
+:::
+
+::: etape Biscuits par sachet
+- $84\div 42=2$
+:::
+
+::: etape Jus par sachet
+- $126\div 42=3$
+:::
+
+::: resultat
+$2$ biscuits et $3$ jus par sachet
+:::
+
+## Question 3 : Synchronisation des guirlandes
+
+::: methode
+Les guirlandes clignotent ensemble aux instants multiples de $12$ et de $18$ : le premier après le départ est $\mathrm{PPCM}(12,18)$.
+:::
+
+::: etape Décomposer
+- $12=2^2\times 3$
+- $18=2\times 3^2$
+:::
+
+::: etape PPCM
+- $\mathrm{PPCM}(12,18)=2^2\times 3^2=36$
+:::
+
+::: resultat
+Elles clignotent ensemble toutes les $36$ secondes
+:::
+
+## Question 4 : Nombre de clignotements communs en $3$ minutes
+
+::: methode
+$3$ minutes font $180$ s, et les clignotements communs ont lieu toutes les $36$ s.
+:::
+
+::: etape Calculer le nombre d'intervalles
+- $180\div 36=5$
+:::
+
+::: etape Compter en incluant le départ
+- Instants : $0$, $36$, $72$, $108$, $144$ et $180$ s.
+- Cela fait $6$ clignotements communs.
+:::
+
+[IMAGE_1]
+
+::: resultat
+En $3$ minutes, les guirlandes clignotent ensemble $6$ fois (départ compris).
+:::
+
+## Question 5 : Plus petit code à 3 chiffres divisible par $9$ et $10$
+
+::: methode
+Chercher $\mathrm{PPCM}(9,10)$ puis le plus petit multiple à 3 chiffres
+:::
+
+::: etape PPCM
+- $9=3^2$ et $10=2\times 5$ donc $\mathrm{PPCM}(9,10)=90$
+:::
+
+::: etape Premier multiple à 3 chiffres
+- $90\times 1=90$ (2 chiffres)
+- $90\times 2=180$ (3 chiffres)
+:::
+
+::: resultat
+Le plus petit code possible est $180$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $42$ sachets
+2. $2$ biscuits et $3$ jus par sachet
+3. $36$ s
+4. $6$ fois (en comptant $t=0$)
+5. $180$
+
+===

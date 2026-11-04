@@ -1,0 +1,200 @@
+Titre: Continuité des fonctions d’une variable réelle
+
+<!-- optitab:1 -->
+::: objectifs
+Définir la continuité d’une fonction, connaître les fonctions continues usuelles, prolonger une fonction par continuité, utiliser la continuité pour trouver la limite d’une suite récurrente, appliquer le théorème des valeurs intermédiaires et son corollaire, et approcher une solution par dichotomie.
+:::
+
+## I. Fonction continue
+
+### 1. Définition
+
+::: definition Continuité en un point, sur un intervalle
+Soit $f$ une fonction définie sur un intervalle $I$ et $a$ un réel de $I$.
+- $f$ est **continue en $a$** si $\lim\limits_{x \to a} f(x) = f(a)$.
+- $f$ est **continue sur $I$** si elle est continue en tout réel de $I$ : sa courbe se trace alors « sans lever le crayon ».
+:::
+
+[IMAGE_1]
+
+::: exemple Une fonction discontinue : la partie entière
+La partie entière $E(x)$ est le plus grand entier inférieur ou égal à $x$ : $E(2{,}7) = 2$, $E(1) = 1$, $E(0{,}99) = 0$.
+
+Pour $0 \le x \lt 1$, $E(x) = 0$, donc $\lim\limits_{x \to 1^-} E(x) = 0$, alors que $E(1) = 1$ : $E$ n’est pas continue en $1$. De même, elle n’est continue en aucun entier : sa courbe « saute » d’une marche à la suivante.
+:::
+
+### 2. Fonctions continues usuelles
+
+::: propriete
+- Les fonctions polynômes, la fonction exponentielle, les fonctions sinus et cosinus et la fonction valeur absolue sont continues sur $\mathbb{R}$.
+- La fonction racine carrée est continue sur $[0\,;+\infty[$ ; la fonction logarithme népérien est continue sur $]0\,;+\infty[$.
+- Une fonction rationnelle est continue sur chaque intervalle de son ensemble de définition.
+- Les sommes, produits, quotients et composées de fonctions continues sont continues (là où elles sont définies).
+:::
+
+### 3. Dérivabilité et continuité
+
+::: theoreme
+Toute fonction **dérivable** sur un intervalle $I$ est **continue** sur $I$.
+:::
+
+::: demonstration
+Soit $a \in I$. Pour tout réel $h \ne 0$ tel que $a + h \in I$ :
+
+$$f(a + h) - f(a) = h \times \frac{f(a + h) - f(a)}{h}$$
+
+Quand $h$ tend vers $0$, le quotient tend vers $f'(a)$ et $h$ tend vers $0$ : le produit tend vers $0 \times f'(a) = 0$. Donc $\lim\limits_{h \to 0} f(a + h) = f(a)$ : $f$ est continue en $a$.
+:::
+
+::: attention La réciproque est fausse
+$x \mapsto |x|$ et $x \mapsto \sqrt{x}$ sont continues en $0$, mais elles ne sont **pas dérivables** en $0$.
+:::
+
+### 4. Continuité en un point de raccord
+
+::: methode Fonction définie par morceaux
+Pour une fonction $f$ définie par deux formules de part et d’autre de $a$ :
+1. calculer $f(a)$ ;
+2. calculer la limite à gauche $\lim\limits_{x \to a^-} f(x)$ et la limite à droite $\lim\limits_{x \to a^+} f(x)$ ;
+3. $f$ est continue en $a$ si et seulement si ces trois nombres sont égaux.
+:::
+
+::: exemple
+$f(x) = x + 1$ si $x \lt 1$ et $f(x) = 3 - x$ si $x \ge 1$.
+- $f(1) = 3 - 1 = 2$ ;
+- $\lim\limits_{x \to 1^-} f(x) = \lim\limits_{x \to 1^-} (x + 1) = 2$ ;
+- $\lim\limits_{x \to 1^+} f(x) = \lim\limits_{x \to 1^+} (3 - x) = 2$.
+
+Les trois nombres sont égaux : $f$ est continue en $1$. Comme $f$ est affine, donc continue, sur $]-\infty\,;1[$ et sur $]1\,;+\infty[$, elle est continue sur $\mathbb{R}$.
+:::
+
+### 5. Prolongement par continuité
+
+::: methode Prolonger une fonction par continuité
+Si $f$ n’est pas définie en $a$ mais admet en $a$ une **limite finie** $\ell$, la fonction $\tilde{f}$ définie par $\tilde{f}(x) = f(x)$ pour $x \ne a$ et $\tilde{f}(a) = \ell$ est continue en $a$ : c’est le **prolongement par continuité** de $f$ en $a$.
+:::
+
+::: exemple
+$f(x) = \dfrac{x^2 - 4}{x - 2}$ n’est pas définie en $2$. Pour $x \ne 2$ :
+
+$$
+\begin{aligned}
+f(x) &= \frac{(x - 2)(x + 2)}{x - 2} \\
+&= x + 2
+\end{aligned}
+$$
+
+donc $\lim\limits_{x \to 2} f(x) = 4$. En posant $\tilde{f}(2) = 4$, on prolonge $f$ par continuité en $2$.
+:::
+
+## II. Continuité et suites
+
+::: theoreme Image d’une suite convergente
+Si la suite $(u_n)$ converge vers $\ell$ et si $f$ est continue en $\ell$, alors la suite $\big(f(u_n)\big)$ converge vers $f(\ell)$.
+:::
+
+::: theoreme Théorème du point fixe
+Soit $(u_n)$ définie par $u_0$ et, pour tout entier naturel $n$, $u_{n+1} = f(u_n)$. Si $(u_n)$ converge vers $\ell$ et si $f$ est continue en $\ell$, alors $f(\ell) = \ell$ : la limite $\ell$ est un **point fixe** de $f$.
+:::
+
+::: remarque Pourquoi ?
+D’une part $u_{n+1}$ tend vers $\ell$ ; d’autre part $u_{n+1} = f(u_n)$ tend vers $f(\ell)$ par continuité. Une suite n’a qu’une limite, donc $f(\ell) = \ell$. Graphiquement, $\ell$ est l’abscisse d’un point d’intersection de la courbe de $f$ et de la droite d’équation $y = x$.
+:::
+
+::: exemple
+$u_0 = 0$ et $u_{n+1} = \sqrt{u_n + 2}$, c’est-à-dire $u_{n+1} = f(u_n)$ avec $f(x) = \sqrt{x + 2}$, continue sur $[-2\,;+\infty[$.
+
+On admet (par récurrence) que $(u_n)$ est croissante et majorée par $2$ : elle converge donc vers un réel $\ell$ avec $0 \le \ell \le 2$. Comme $f$ est continue en $\ell$ :
+
+$$
+\begin{aligned}
+\ell = \sqrt{\ell + 2} &\Rightarrow \ell^2 = \ell + 2 \\
+&\Rightarrow \ell^2 - \ell - 2 = 0 \\
+&\Rightarrow (\ell - 2)(\ell + 1) = 0
+\end{aligned}
+$$
+
+donc $\ell = 2$ ou $\ell = -1$. Puisque $\ell \ge 0$, la suite converge vers $\ell = 2$.
+:::
+
+[IMAGE_2]
+
+::: attention
+Le théorème du point fixe s’utilise **après** avoir prouvé la convergence de la suite. S’il y a plusieurs points fixes, on choisit le bon à l’aide d’un encadrement (ici $\ell \ge 0$).
+:::
+
+## III. Théorème des valeurs intermédiaires
+
+::: theoreme Théorème des valeurs intermédiaires (TVI)
+Si $f$ est **continue** sur $[a\,;b]$, alors pour tout réel $k$ compris entre $f(a)$ et $f(b)$, l’équation $f(x) = k$ admet **au moins une** solution dans $[a\,;b]$.
+:::
+
+[IMAGE_3]
+
+::: theoreme Corollaire : cas d’une fonction strictement monotone
+Si $f$ est **continue** et **strictement monotone** sur $[a\,;b]$, alors pour tout réel $k$ compris entre $f(a)$ et $f(b)$, l’équation $f(x) = k$ admet une **unique** solution dans $[a\,;b]$.
+
+Le résultat s’étend à un intervalle ouvert ou non borné, en remplaçant $f(a)$ et $f(b)$ par les limites de $f$ aux bornes.
+:::
+
+[IMAGE_4]
+
+::: exemple
+$f(x) = x^3 + x - 1$ sur $[0\,;1]$.
+- $f$ est dérivable, donc continue, et $f'(x) = 3x^2 + 1 \gt 0$ : $f$ est strictement croissante sur $[0\,;1]$.
+- $f(0) = -1 \lt 0$ et $f(1) = 1 \gt 0$ : $0$ est compris entre $f(0)$ et $f(1)$.
+
+D’après le corollaire du TVI, l’équation $f(x) = 0$ admet une unique solution $\alpha$ dans $[0\,;1]$.
+
+::: tableau Variations de $f$ sur $[0\,;1]$
+x : 0, \alpha, 1
+f'(x) : , +, , +,
+f(x) : -/-1, =/0, +/1
+:::
+:::
+
+::: methode Rédaction type
+« $f$ est continue et strictement croissante sur $[a\,;b]$ ; $k$ est compris entre $f(a)$ et $f(b)$ ; d’après le corollaire du théorème des valeurs intermédiaires, l’équation $f(x) = k$ admet une unique solution dans $[a\,;b]$. » On s’appuie le plus souvent sur un tableau de variations.
+:::
+
+::: attention Pièges fréquents
+- Il faut une fonction continue **sur un intervalle** : $x \mapsto \frac{1}{x}$ prend des valeurs de signes contraires en $-1$ et en $1$, mais ne s’annule jamais (elle n’est pas définie en $0$).
+- Le TVI donne l’**existence** d’une solution ; c’est la stricte monotonie qui donne l’**unicité**.
+- Si $f(a)$ et $f(b)$ sont de même signe, on ne peut rien conclure : $(x^2 - 1)^2 = 0$ a deux solutions dans $[-2\,;2]$, alors que la fonction vaut $9$ en $-2$ et en $2$.
+:::
+
+## IV. Méthode par dichotomie
+
+Pour approcher la solution $\alpha$ de $f(x) = 0$ sur $[a\,;b]$, avec $f(a)$ et $f(b)$ de signes contraires :
+1. on calcule le milieu $m = \dfrac{a + b}{2}$ ;
+2. si $f(a)$ et $f(m)$ sont de signes contraires, $\alpha$ est dans $[a\,;m]$ : on remplace $b$ par $m$ ; sinon, $\alpha$ est dans $[m\,;b]$ : on remplace $a$ par $m$ ;
+3. on recommence tant que l’amplitude $b - a$ dépasse la précision voulue.
+
+À chaque étape, l’amplitude de l’intervalle est divisée par $2$ : après $n$ étapes, elle vaut $\dfrac{b - a}{2^n}$.
+
+[IMAGE_5]
+
+```python
+def f(x):
+    return x * x * x + x - 1
+
+def dichotomie(f, a, b, e):
+    while b - a > e:
+        m = (a + b) / 2
+        if f(a) * f(m) <= 0:
+            b = m
+        else:
+            a = m
+    return a, b
+```
+
+`dichotomie(f, 0, 1, 0.001)` renvoie $(0{,}681640625\,;\,0{,}6826171875)$ après $10$ étapes (car $\frac{1}{2^{10}} \lt 0{,}001$) : on en déduit $0{,}6816 \lt \alpha \lt 0{,}6827$, donc $\alpha \approx 0{,}682$ à $10^{-3}$ près.
+
+::: retenir
+- Continue en $a$ : $\lim\limits_{x \to a} f(x) = f(a)$ ; dérivable $\Rightarrow$ continue (réciproque fausse).
+- Limite finie en un point où $f$ n’est pas définie : prolongement par continuité.
+- Si $u_{n+1} = f(u_n)$ converge vers $\ell$ avec $f$ continue en $\ell$, alors $f(\ell) = \ell$.
+- TVI : continue $\Rightarrow$ au moins une solution ; continue et strictement monotone $\Rightarrow$ une unique solution ; la dichotomie en donne une valeur approchée.
+
+Fiche de synthèse dans l’onglet Fiches !
+:::

@@ -1,0 +1,78 @@
+Titre: Fonction exponentielle
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+    <div style="background:#e8f4fd; border:2px solid #3498db; border-radius:8px; padding:15px; margin-bottom:20px;">
+        <p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🎯 Objectifs du chapitre :</strong> connaître la définition de la fonction exponentielle, utiliser ses propriétés algébriques, connaître son signe, ses variations et sa courbe, résoudre des équations et inéquations, dériver $\displaystyle e^{ax + b}$ et modéliser une évolution exponentielle.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Définition</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Théorème (admis) :</strong> il existe une unique fonction $\displaystyle f$ dérivable sur $\displaystyle \mathbb{R}$ telle que $\displaystyle f' = f$ et $\displaystyle f(0) = 1$. On l’appelle <strong>fonction exponentielle</strong> et on la note $\displaystyle \exp$. On pose $\displaystyle e = \exp(1) \approx 2{,}718$ et on écrit $\displaystyle \exp(x) = e^x$.</p>
+        </div>
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Propriété (démonstration au programme) :</strong> pour tout réel $\displaystyle x$, $\displaystyle e^x \times e^{-x} = 1$ ; en particulier $\displaystyle e^x \neq 0$.</p>
+            <p style="margin:6px 0 0 0;"><em>Preuve :</em> $\displaystyle g(x) = e^x e^{-x}$ a pour dérivée $\displaystyle g'(x) = e^x e^{-x} - e^x e^{-x} = 0$, donc $\displaystyle g$ est constante, égale à $\displaystyle g(0) = 1$.</p>
+        </div>
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Méthode d’Euler :</strong> comme $\displaystyle f' = f$, on a $\displaystyle f(x + h) \approx f(x) + hf(x) = (1 + h)f(x)$ pour $\displaystyle h$ petit. En partant de $\displaystyle f(0) = 1$, on construit pas à pas des valeurs approchées de $\displaystyle e^x$.
+        </div>
+        [IMAGE_1]
+        <div style="background:#2c3e50; color:#ecf0f1; padding:12px; border-radius:6px; margin:10px 0 0 0; font-family:monospace; white-space:pre; overflow-x:auto;">def euler(n):
+    h = 1 / n
+    y = 1
+    for k in range(n):
+        y = y + h &#42; y
+    return y</div>
+        <p style="font-size:1em;"><code>euler(10)</code> renvoie environ $\displaystyle 2{,}594$ et <code>euler(1000)</code> environ $\displaystyle 2{,}717$ : on approche $\displaystyle e$.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Propriétés algébriques</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Propriétés :</strong> pour tous réels $\displaystyle a$, $\displaystyle b$ et tout entier $\displaystyle n$ :</p>
+            <div style="text-align:center; margin:10px 0 0 0;">$\displaystyle e^{a + b} = e^a \times e^b$ ; $\displaystyle e^{-a} = \frac{1}{e^a}$ ; $\displaystyle e^{a - b} = \frac{e^a}{e^b}$ ; $\displaystyle \left(e^a\right)^n = e^{na}$</div>
+        </div>
+        <p style="font-size:1em;"><strong>Exemples :</strong> $\displaystyle e^{2x} \times e^{-x + 3} = e^{x + 3}$ et $\displaystyle \frac{\left(e^x\right)^2}{e^{2x - 1}} = e^{2x - (2x - 1)} = e$.</p>
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Lien avec les suites :</strong> pour tout réel $\displaystyle a$, la suite $\displaystyle \left(e^{na}\right)$ est géométrique de raison $\displaystyle e^a$, puisque $\displaystyle e^{(n + 1)a} = e^{na} \times e^a$.
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Étude de la fonction exponentielle</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Propriétés :</strong> pour tout réel $\displaystyle x$, $\displaystyle e^x \gt 0$. Comme $\displaystyle \exp' = \exp \gt 0$, la fonction exponentielle est <strong>strictement croissante</strong> sur $\displaystyle \mathbb{R}$. Sa tangente en $\displaystyle 0$ a pour équation $\displaystyle y = x + 1$.</p>
+        </div>
+        [IMAGE_2]
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Conséquences :</strong> pour tous réels $\displaystyle a$ et $\displaystyle b$, $\displaystyle e^a = e^b \iff a = b$ et $\displaystyle e^a \lt e^b \iff a \lt b$.</p>
+        </div>
+        <p style="font-size:1em;"><strong>Exemples :</strong> $\displaystyle e^{2x - 1} = e^{x + 3} \iff 2x - 1 = x + 3 \iff x = 4$ ; $\displaystyle e^{3x} \gt e^{x + 4} \iff 3x \gt x + 4 \iff x \gt 2$.</p>
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong> $\displaystyle e^x$ n’est jamais nul ni négatif : l’équation $\displaystyle e^x = 0$ ou $\displaystyle e^x = -2$ n’a pas de solution. Et $\displaystyle e^{a + b} \neq e^a + e^b$.
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Fonctions $\displaystyle x \mapsto e^{kx}$ et dérivation</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Propriété :</strong> $\displaystyle \left(e^{ax + b}\right)' = a\,e^{ax + b}$. En particulier, $\displaystyle x \mapsto e^{kx}$ est croissante si $\displaystyle k \gt 0$ et décroissante si $\displaystyle k \lt 0$.</p>
+        </div>
+        [IMAGE_3]
+        <p style="font-size:1em;"><strong>Exemple d’étude :</strong> $\displaystyle f(x) = (2x - 1)e^x$. Par la règle du produit, $\displaystyle f'(x) = 2e^x + (2x - 1)e^x = (2x + 1)e^x$. Comme $\displaystyle e^x \gt 0$, $\displaystyle f'(x)$ a le signe de $\displaystyle 2x + 1$ : $\displaystyle f$ est décroissante sur $\displaystyle \left]-\infty\,;-\frac{1}{2}\right]$, croissante ensuite, avec un minimum $\displaystyle f\left(-\frac{1}{2}\right) = -2e^{-\frac{1}{2}} \approx -1{,}21$.</p>
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Modélisation :</strong> une quantité qui varie proportionnellement à elle-même suit un modèle $\displaystyle N(t) = N_0\,e^{kt}$ : croissance d’une population ($\displaystyle k \gt 0$), décroissance radioactive ($\displaystyle k \lt 0$). Par exemple $\displaystyle N(t) = 1\,000\,e^{-0{,}1t}$ donne $\displaystyle N(10) = 1\,000\,e^{-1} \approx 368$.
+        </div>
+    </div>
+
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:8px; padding:15px; margin:20px 0 0 0;">
+        <p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🏆 L’essentiel :</strong> $\displaystyle \exp' = \exp$ et $\displaystyle e^0 = 1$ ; $\displaystyle e^{a + b} = e^ae^b$, $\displaystyle e^{-a} = \frac{1}{e^a}$, $\displaystyle (e^a)^n = e^{na}$ ; $\displaystyle e^x \gt 0$ et $\displaystyle \exp$ est strictement croissante, donc $\displaystyle e^a = e^b \iff a = b$ et $\displaystyle e^a \lt e^b \iff a \lt b$ ; $\displaystyle \left(e^{ax + b}\right)' = a\,e^{ax + b}$. Fiche de synthèse dans l’onglet Fiches !</p>
+    </div>
+
+</div>

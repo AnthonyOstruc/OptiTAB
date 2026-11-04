@@ -1,0 +1,2479 @@
+=== Découverte - Le triangle existe-t-il ?
+Id: 3146
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+On se demande si trois longueurs données peuvent être les longueurs des côtés d'un triangle.
+
+1. Peut-on construire un triangle de côtés $3$ cm, $4$ cm et $8$ cm ?
+2. Même question avec $4$ cm, $5$ cm et $6$ cm.
+3. Même question avec $5$ cm, $7$ cm et $12$ cm. Que se passe-t-il ?
+4. Même question avec $2{,}5$ cm, $3{,}5$ cm et $5$ cm.
+5. Deux côtés d'un triangle mesurent $6$ cm et $9$ cm. Entre quelles valeurs la longueur $c$ du troisième côté, en cm, est-elle comprise ?
+6. Combien de valeurs entières (en cm) sont possibles pour $c$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les longueurs $3$, $4$ et $8$
+
+::: methode
+On compare la **plus grande** longueur à la somme des deux autres (inégalité triangulaire).
+:::
+
+::: etape Comparer
+La plus grande longueur est $8$ cm. La somme des deux autres vaut $3 + 4 = 7$ cm, et $8 > 7$.
+:::
+
+::: resultat
+Non : le côté de $8$ cm est trop long, les deux autres côtés ne peuvent pas se rejoindre.
+:::
+
+## Question 2 : Les longueurs $4$, $5$ et $6$
+
+::: etape Comparer
+La plus grande longueur est $6$ cm et $4 + 5 = 9$ cm. Comme $6 < 9$, l'inégalité triangulaire est respectée.
+:::
+
+::: resultat
+Oui, ce triangle existe.
+:::
+
+## Question 3 : Les longueurs $5$, $7$ et $12$
+
+::: etape Comparer
+La plus grande longueur est $12$ cm et $5 + 7 = 12$ cm : la plus grande longueur est **égale** à la somme des deux autres.
+:::
+
+::: etape Interpréter
+Les deux arcs de cercle se touchent en un seul point, situé sur le segment de $12$ cm : les trois sommets sont alignés.
+:::
+
+[IMAGE_1]
+
+::: resultat
+On obtient un triangle aplati : ce n'est pas un vrai triangle.
+:::
+
+## Question 4 : Des longueurs décimales
+
+::: etape Comparer
+La plus grande longueur est $5$ cm et $2{,}5 + 3{,}5 = 6$ cm. Comme $5 < 6$, l'inégalité est respectée.
+:::
+
+::: resultat
+Oui, ce triangle existe.
+:::
+
+## Question 5 : Encadrer le troisième côté
+
+::: methode
+Chaque côté doit être plus court que la somme des deux autres. On ne sait pas quel côté est le plus grand : on étudie les deux possibilités.
+:::
+
+::: etape Si $c$ est le plus grand côté
+Il faut $c < 6 + 9$, c'est-à-dire $c < 15$.
+:::
+
+::: etape Si le côté de $9$ cm est le plus grand
+Il faut $9 < 6 + c$, c'est-à-dire $c > 9 - 6$, soit $c > 3$.
+:::
+
+::: etape Le côté de $6$ cm
+Il ne peut pas être le plus grand, puisque $9 > 6$ : il n'y a pas d'autre condition.
+:::
+
+::: resultat
+$$3 < c < 15$$
+:::
+
+::: attention Erreur fréquente
+Oublier la condition $c > 3$ : avec $c = 2$, on aurait $6 + 2 = 8 < 9$, et le triangle n'existerait pas.
+:::
+
+## Question 6 : Les valeurs entières
+
+::: etape Lister
+Les entiers strictement compris entre $3$ et $15$ sont $4$, $5$, $6$, …, $14$.
+:::
+
+::: etape Compter
+De $4$ à $14$, il y a $14 - 4 + 1 = 11$ entiers.
+:::
+
+::: resultat
+$11$ valeurs entières sont possibles, de $4$ cm à $14$ cm.
+:::
+
+::: retenir
+Un côté d'un triangle est toujours plus long que la différence des deux autres et plus court que leur somme.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Non : $3 + 4 = 7 < 8$.
+2. Oui : $4 + 5 = 9 > 6$.
+3. Triangle aplati : $5 + 7 = 12$.
+4. Oui : $2{,}5 + 3{,}5 = 6 > 5$.
+5. $3 < c < 15$.
+6. $11$ valeurs (de $4$ à $14$).
+
+===
+
+=== Découverte - Construire un triangle avec ses trois côtés
+Id: 3147
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+On veut construire le triangle $ABC$ tel que $AB = 6$ cm, $AC = 5$ cm et $BC = 4$ cm. Voici une figure à main levée.
+
+[IMAGE_1]
+
+1. Vérifier que ce triangle existe.
+2. Par quel segment commencer la construction ?
+3. Quel arc de cercle trace-t-on à partir de $A$ ? Pourquoi ?
+4. Quel arc de cercle trace-t-on à partir de $B$ ? Où se trouve alors le point $C$ ?
+5. Les deux arcs, prolongés de l'autre côté de $(AB)$, se coupent en un second point $C'$. Les triangles $ABC$ et $ABC'$ sont-ils égaux ? Justifier.
+6. Mesurer l'angle $\widehat{BAC}$ au rapporteur sur la construction.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Le triangle existe-t-il ?
+
+::: methode
+On teste l'inégalité triangulaire avec la plus grande longueur.
+:::
+
+::: etape Comparer
+La plus grande longueur est $AB = 6$ cm et $AC + BC = 5 + 4 = 9$ cm. Comme $6 < 9$, l'inégalité est respectée.
+:::
+
+::: resultat
+Le triangle $ABC$ existe.
+:::
+
+## Question 2 : Le premier segment
+
+::: etape Choisir
+On trace un côté dont on connaît la longueur ; les deux autres sommets seront placés à partir de ses extrémités. On choisit souvent le plus long.
+:::
+
+::: resultat
+On trace le segment $[AB]$ de longueur $6$ cm.
+:::
+
+## Question 3 : L'arc de centre $A$
+
+::: methode
+Les points situés à $5$ cm de $A$ forment le cercle de centre $A$ et de rayon $5$ cm.
+:::
+
+::: etape Traduire la donnée
+$AC = 5$ cm : le point $C$ est à $5$ cm de $A$, donc sur le cercle de centre $A$ et de rayon $5$ cm.
+:::
+
+::: resultat
+On trace un arc de cercle de centre $A$ et de rayon $5$ cm.
+:::
+
+::: attention Erreur fréquente
+Prendre le rayon $4$ cm à partir de $A$ : le rayon de l'arc de centre $A$ est la longueur du côté qui part de $A$, ici $AC$.
+:::
+
+## Question 4 : L'arc de centre $B$
+
+::: etape Traduire la donnée
+$BC = 4$ cm : le point $C$ est aussi sur le cercle de centre $B$ et de rayon $4$ cm.
+:::
+
+::: resultat
+On trace un arc de centre $B$ et de rayon $4$ cm. Le point $C$ est l'intersection des deux arcs ; on trace ensuite $[AC]$ et $[BC]$.
+:::
+
+[IMAGE_2]
+
+## Question 5 : Le second point $C'$
+
+::: etape Les longueurs
+$C'$ est sur les deux mêmes arcs : $AC' = 5$ cm $= AC$ et $BC' = 4$ cm $= BC$. Le côté $[AB]$ est commun aux deux triangles.
+:::
+
+::: etape Le cas d'égalité
+Les triangles $ABC$ et $ABC'$ ont leurs trois côtés égaux deux à deux.
+:::
+
+::: resultat
+Oui, les triangles $ABC$ et $ABC'$ sont égaux : l'un est le retourné de l'autre (symétrique par rapport à $(AB)$).
+:::
+
+::: retenir
+Trois longueurs possibles déterminent un triangle unique, à un retournement près.
+:::
+
+## Question 6 : L'angle $\widehat{BAC}$
+
+::: etape Mesurer
+On place le centre du rapporteur en $A$ et le zéro sur $[AB]$, puis on lit la graduation sur $[AC]$.
+:::
+
+::: resultat
+$\widehat{BAC} \approx 41°$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Oui : $5 + 4 = 9 > 6$.
+2. Le segment $[AB]$ de $6$ cm.
+3. Arc de centre $A$ et de rayon $5$ cm, car $AC = 5$ cm.
+4. Arc de centre $B$ et de rayon $4$ cm ; $C$ est l'intersection des arcs.
+5. Oui : trois côtés égaux deux à deux.
+6. $\widehat{BAC} \approx 41°$.
+
+===
+
+=== Découverte - Somme des angles et triangles particuliers
+Id: 3148
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Dans tout triangle, la somme des mesures des trois angles est égale à $180°$. Les figures ne sont pas en vraie grandeur.
+
+[IMAGE_1]
+
+1. Dans le triangle $ABC$, $\widehat{A} = 52°$ et $\widehat{B} = 71°$. Calculer $\widehat{C}$.
+2. Le triangle $EFG$ est isocèle en $E$ et $\widehat{E} = 40°$. Calculer $\widehat{F}$ et $\widehat{G}$.
+3. Quels sont les angles d'un triangle équilatéral ? Justifier.
+4. Le triangle $RST$ est rectangle en $R$ et $\widehat{S} = 35°$. Calculer $\widehat{T}$.
+5. Les angles d'un triangle mesurent $x$, $2x$ et $3x$ (en degrés). Calculer $x$, puis les trois angles. Quelle est la nature de ce triangle ?
+6. Un triangle peut-il avoir deux angles droits ? Justifier.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Le troisième angle de $ABC$
+
+::: methode
+On retranche de $180°$ les deux angles connus.
+:::
+
+::: etape Calculer
+$$\widehat{C} = 180° - 52° - 71° = 57°$$
+:::
+
+::: resultat
+$\widehat{C} = 57°$.
+:::
+
+## Question 2 : Le triangle isocèle $EFG$
+
+::: methode
+Dans un triangle isocèle en $E$, les angles à la base $\widehat{F}$ et $\widehat{G}$ sont égaux.
+:::
+
+::: etape Ce qui reste pour la base
+$$180° - 40° = 140°$$
+:::
+
+::: etape Partager en deux
+$$\widehat{F} = \widehat{G} = \frac{140°}{2} = 70°$$
+:::
+
+::: resultat
+$\widehat{F} = \widehat{G} = 70°$.
+:::
+
+::: attention Erreur fréquente
+Prendre $40°$ pour un angle à la base : l'angle en $E$, sommet principal, est celui qui est compris entre les deux côtés égaux.
+:::
+
+## Question 3 : Le triangle équilatéral
+
+::: etape Les angles sont égaux
+Un triangle équilatéral est isocèle de trois façons : ses trois angles sont égaux.
+:::
+
+::: etape Calculer
+$$\frac{180°}{3} = 60°$$
+:::
+
+::: resultat
+Les trois angles d'un triangle équilatéral mesurent $60°$.
+:::
+
+## Question 4 : Le triangle rectangle $RST$
+
+::: etape Calculer
+$$\widehat{T} = 180° - 90° - 35° = 55°$$
+:::
+
+[IMAGE_2]
+
+::: resultat
+$\widehat{T} = 55°$.
+:::
+
+::: retenir
+Dans un triangle rectangle, les deux angles aigus ont une somme de $90°$.
+:::
+
+## Question 5 : Des angles $x$, $2x$ et $3x$
+
+::: methode
+On écrit l'équation « somme des angles $= 180$ ».
+:::
+
+::: etape Résoudre
+$$
+\begin{aligned}
+x + 2x + 3x &= 180 \\
+6x &= 180 \\
+x &= 30
+\end{aligned}
+$$
+:::
+
+::: etape Les trois angles
+$x = 30°$, $2x = 60°$ et $3x = 90°$. Contrôle : $30 + 60 + 90 = 180$.
+:::
+
+::: resultat
+Les angles mesurent $30°$, $60°$ et $90°$ : c'est un triangle rectangle.
+:::
+
+## Question 6 : Deux angles droits ?
+
+::: etape Raisonner
+Deux angles droits font déjà $90° + 90° = 180°$ : le troisième angle mesurerait $0°$.
+:::
+
+::: resultat
+Non, c'est impossible : un triangle a au plus un angle droit.
+:::
+
+::: attention Erreur fréquente
+Penser qu'un triangle peut avoir deux angles obtus : leur somme dépasserait déjà $180°$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\widehat{C} = 57°$
+2. $\widehat{F} = \widehat{G} = 70°$
+3. $60°$ chacun ($180 : 3$).
+4. $\widehat{T} = 55°$
+5. $x = 30$ ; $30°$, $60°$, $90°$ : triangle rectangle.
+6. Non : $90° + 90° = 180°$.
+
+===
+
+=== Découverte - Reconnaître un cas d'égalité
+Id: 3149
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Dans chaque paire, les codages indiquent les éléments égaux : des traits identiques pour des côtés de même longueur, des arcs identiques pour des angles de même mesure.
+
+[IMAGE_1]
+
+1. Les triangles de la paire 1 sont-ils égaux ? Justifier.
+2. Même question pour la paire 2.
+3. Même question pour la paire 3.
+4. Même question pour la paire 4.
+5. Dans la paire 2, quels autres éléments sont égaux, sans être codés ?
+6. Combien d'informations bien choisies faut-il au minimum pour être sûr que deux triangles sont égaux ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : La paire 1
+
+::: methode
+On compte les éléments codés, puis on regarde s'ils forment l'un des trois cas d'égalité.
+:::
+
+::: etape Lire les codages
+Les trois côtés de l'un sont égaux aux trois côtés de l'autre (un, deux et trois traits).
+:::
+
+::: resultat
+Oui : les deux triangles ont leurs trois côtés égaux deux à deux.
+:::
+
+## Question 2 : La paire 2
+
+::: etape Lire les codages
+Deux côtés sont égaux deux à deux, et l'angle codé est situé **entre** ces deux côtés.
+:::
+
+::: resultat
+Oui : deux côtés égaux et l'angle compris égal.
+:::
+
+## Question 3 : La paire 3
+
+::: etape Lire les codages
+Un côté est égal, et les deux angles codés sont situés **aux extrémités** de ce côté.
+:::
+
+::: resultat
+Oui : un côté égal et les deux angles adjacents égaux.
+:::
+
+## Question 4 : La paire 4
+
+::: etape Lire les codages
+Les trois angles sont égaux deux à deux, mais aucun côté n'est codé : le second triangle est nettement plus grand.
+:::
+
+[IMAGE_2]
+
+::: resultat
+Non : ils ont la même forme (ils sont semblables), mais pas la même taille.
+:::
+
+::: attention Erreur fréquente
+Croire que trois angles égaux suffisent : ce n'est pas un cas d'égalité, il faut au moins un côté égal.
+:::
+
+## Question 5 : Les éléments non codés de la paire 2
+
+::: etape Raisonner
+Les triangles de la paire 2 sont égaux, donc superposables : **tous** leurs éléments correspondants sont égaux.
+:::
+
+::: resultat
+Le troisième côté et les deux autres angles sont aussi égaux.
+:::
+
+## Question 6 : Le minimum d'informations
+
+::: etape Raisonner
+Avec seulement deux informations, on peut toujours construire des triangles différents (par exemple, deux côtés sans l'angle compris).
+:::
+
+::: resultat
+Il faut trois informations, qui forment l'un des trois cas d'égalité et contiennent au moins un côté.
+:::
+
+::: retenir
+Les trois cas d'égalité : trois côtés ; deux côtés et l'angle compris ; un côté et les deux angles adjacents.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Oui : trois côtés égaux.
+2. Oui : deux côtés et l'angle compris.
+3. Oui : un côté et les deux angles adjacents.
+4. Non : même forme, tailles différentes.
+5. Le troisième côté et les deux autres angles.
+6. Trois, formant un cas d'égalité (dont au moins un côté).
+
+===
+
+=== Découverte - Associer les sommets de deux triangles égaux
+Id: 3150
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Les triangles $ABC$ et $DEF$ ont les longueurs indiquées sur la figure (en cm). On donne $\widehat{A} \approx 83°$ et $\widehat{B} \approx 41°$ (mesures arrondies au degré).
+
+[IMAGE_1]
+
+1. Pourquoi les triangles $ABC$ et $DEF$ sont-ils égaux ?
+2. Associer chaque sommet du triangle $ABC$ au sommet correspondant du triangle $DEF$.
+3. Compléter : « les triangles $ABC$ et … sont égaux ».
+4. Calculer $\widehat{C}$.
+5. En déduire les angles $\widehat{D}$, $\widehat{E}$ et $\widehat{F}$.
+6. Léa écrit : « les triangles $ABC$ et $DEF$ sont égaux ». Pourquoi cette écriture est-elle incorrecte ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Pourquoi sont-ils égaux ?
+
+::: etape Comparer les longueurs
+Triangle $ABC$ : $AB = 5$, $BC = 6$, $CA = 4$. Triangle $DEF$ : $EF = 5$, $FD = 6$, $DE = 4$.
+:::
+
+::: resultat
+Les deux triangles ont leurs trois côtés égaux deux à deux : ils sont égaux.
+:::
+
+## Question 2 : La correspondance des sommets
+
+::: methode
+Un sommet est l'extrémité commune de deux côtés : on cherche dans l'autre triangle le sommet commun aux deux côtés de mêmes longueurs.
+:::
+
+::: etape Le sommet $B$
+$B$ est l'extrémité commune des côtés de $5$ et de $6$ ($[AB]$ et $[BC]$). Dans $DEF$, l'extrémité commune des côtés de $5$ et de $6$ ($[EF]$ et $[FD]$) est $F$.
+:::
+
+::: etape Les sommets $A$ et $C$
+$A$ est l'extrémité commune des côtés de $5$ et de $4$ : il correspond à $E$ (commun à $[EF]$ et $[DE]$). $C$ est l'extrémité commune des côtés de $6$ et de $4$ : il correspond à $D$.
+:::
+
+::: resultat
+$A$ correspond à $E$, $B$ à $F$ et $C$ à $D$.
+:::
+
+## Question 3 : L'ordre des lettres
+
+::: etape Respecter la correspondance
+On écrit les sommets de $DEF$ dans l'ordre des correspondants de $A$, $B$, $C$ : $E$, $F$, $D$.
+:::
+
+::: resultat
+Les triangles $ABC$ et $EFD$ sont égaux.
+:::
+
+## Question 4 : L'angle $\widehat{C}$
+
+::: etape Somme des angles
+$$\widehat{C} \approx 180° - 83° - 41° = 56°$$
+:::
+
+::: resultat
+$\widehat{C} \approx 56°$.
+:::
+
+## Question 5 : Les angles du triangle $DEF$
+
+::: etape Angles correspondants
+Dans deux triangles égaux, les angles correspondants sont égaux : $\widehat{E} = \widehat{A}$, $\widehat{F} = \widehat{B}$ et $\widehat{D} = \widehat{C}$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+$\widehat{E} \approx 83°$, $\widehat{F} \approx 41°$ et $\widehat{D} \approx 56°$.
+:::
+
+## Question 6 : L'erreur de Léa
+
+::: etape Lire l'écriture de Léa
+« $ABC$ et $DEF$ » associerait $A$ à $D$ et $B$ à $E$, donc il faudrait $AB = DE$.
+:::
+
+::: etape Contrôler
+Or $AB = 5$ cm et $DE = 4$ cm : ces côtés ne sont pas égaux.
+:::
+
+::: resultat
+L'ordre des lettres doit suivre la correspondance des sommets : on écrit « $ABC$ et $EFD$ ».
+:::
+
+::: attention Erreur fréquente
+Associer les sommets dans l'ordre alphabétique : la correspondance se lit sur les côtés (ou les angles) égaux, jamais sur les noms.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Trois côtés égaux deux à deux ($5$, $6$, $4$).
+2. $A \leftrightarrow E$, $B \leftrightarrow F$, $C \leftrightarrow D$.
+3. $ABC$ et $EFD$.
+4. $\widehat{C} \approx 56°$
+5. $\widehat{D} \approx 56°$, $\widehat{E} \approx 83°$, $\widehat{F} \approx 41°$.
+6. Elle associe $A$ à $D$ et $B$ à $E$, or $AB = 5 \neq DE = 4$.
+
+===
+
+=== Découverte - Construire avec deux côtés et l'angle compris
+Id: 3151
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+On veut construire le triangle $ABC$ tel que $AB = 5$ cm, $AC = 4$ cm et $\widehat{BAC} = 50°$. Voici une figure à main levée.
+
+[IMAGE_1]
+
+1. Où se trouve l'angle donné par rapport aux deux côtés donnés ?
+2. Quelle est la première étape de la construction ?
+3. Comment trace-t-on l'angle de $50°$ ?
+4. Comment place-t-on le point $C$ ?
+5. Mesurer la longueur $BC$ sur la construction.
+6. Un camarade commence la construction par le segment $[AC]$. Obtiendra-t-il le même triangle ? Justifier.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : La place de l'angle
+
+::: methode
+Le sommet d'un angle est la lettre du milieu de son nom ; ses côtés passent par les deux autres lettres.
+:::
+
+::: etape Lire le nom de l'angle
+Dans $\widehat{BAC}$, la lettre du milieu est le sommet : l'angle est en $A$, entre les côtés $[AB]$ et $[AC]$.
+:::
+
+::: resultat
+L'angle de $50°$ est compris entre les deux côtés connus : ce sont deux côtés et l'angle compris.
+:::
+
+## Question 2 : La première étape
+
+::: resultat
+On trace le segment $[AB]$ de $5$ cm.
+:::
+
+## Question 3 : L'angle de $50°$
+
+::: etape Utiliser le rapporteur
+On place le centre du rapporteur en $A$ et le zéro sur $[AB]$ ; on marque un point en face de la graduation $50$, puis on trace la demi-droite d'origine $A$ passant par ce point.
+:::
+
+::: resultat
+On trace une demi-droite d'origine $A$ qui fait un angle de $50°$ avec $[AB]$.
+:::
+
+::: attention Erreur fréquente
+Placer l'angle en $B$ : l'angle $\widehat{BAC}$ a pour sommet $A$, la lettre du milieu.
+:::
+
+## Question 4 : Le point $C$
+
+::: etape Reporter la longueur
+On prend un écartement de compas de $4$ cm et on pique en $A$ : l'arc coupe la demi-droite en $C$.
+:::
+
+::: resultat
+$C$ est le point de la demi-droite situé à $4$ cm de $A$ ; on trace ensuite $[BC]$.
+:::
+
+[IMAGE_2]
+
+## Question 5 : La longueur $BC$
+
+::: etape Mesurer
+On mesure $[BC]$ à la règle sur la construction.
+:::
+
+::: resultat
+$BC \approx 3{,}9$ cm.
+:::
+
+## Question 6 : En commençant par $[AC]$
+
+::: etape Comparer les données
+Le camarade utilise les mêmes données : deux côtés de $5$ cm et $4$ cm, et l'angle de $50°$ compris entre eux.
+:::
+
+::: resultat
+Oui : deux triangles qui ont deux côtés égaux et l'angle compris égal sont égaux. Il obtient un triangle superposable au premier.
+:::
+
+::: retenir
+Deux côtés et l'angle compris déterminent un triangle unique : tout le monde obtient le même triangle.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Entre les deux côtés : angle compris.
+2. Tracer $[AB]$ de $5$ cm.
+3. Au rapporteur, demi-droite d'origine $A$ à $50°$ de $[AB]$.
+4. $C$ sur cette demi-droite, à $4$ cm de $A$ (compas).
+5. $BC \approx 3{,}9$ cm
+6. Oui (deux côtés et l'angle compris).
+
+===
+
+=== Découverte - Construire avec un côté et deux angles adjacents
+Id: 3152
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+On veut construire le triangle $ABC$ tel que $BC = 6$ cm, $\widehat{ABC} = 40°$ et $\widehat{ACB} = 60°$. Voici une figure à main levée.
+
+[IMAGE_1]
+
+1. Calculer l'angle $\widehat{BAC}$.
+2. Où sont situés les deux angles donnés par rapport au côté $[BC]$ ?
+3. Décrire les étapes de la construction.
+4. Mesurer $AB$ et $AC$ sur la construction.
+5. Quel est le plus long côté ? Face à quel angle se trouve-t-il ?
+6. Quelle est la nature du triangle $ABC$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : L'angle en $A$
+
+::: methode
+La somme des angles d'un triangle vaut $180°$ : on retranche les deux angles connus.
+:::
+
+::: etape Somme des angles
+$$\widehat{BAC} = 180° - 40° - 60° = 80°$$
+:::
+
+::: resultat
+$\widehat{BAC} = 80°$.
+:::
+
+## Question 2 : La place des angles
+
+::: etape Lire les angles
+$\widehat{ABC}$ a pour sommet $B$ et $\widehat{ACB}$ a pour sommet $C$ : ce sont les deux extrémités du côté $[BC]$.
+:::
+
+::: resultat
+On connaît un côté et les deux angles adjacents à ce côté.
+:::
+
+## Question 3 : La construction
+
+::: etape Le côté
+Tracer le segment $[BC]$ de $6$ cm.
+:::
+
+::: etape Les deux angles
+Avec le rapporteur, tracer en $B$ une demi-droite qui fait un angle de $40°$ avec $[BC]$, puis en $C$ une demi-droite qui fait un angle de $60°$ avec $[CB]$, **du même côté** de $(BC)$.
+:::
+
+::: etape Le sommet $A$
+Les deux demi-droites se coupent en $A$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+$[BC]$ de $6$ cm, angles de $40°$ en $B$ et de $60°$ en $C$ du même côté ; $A$ est l'intersection des demi-droites.
+:::
+
+::: attention Erreur fréquente
+Tracer les deux demi-droites de part et d'autre de $(BC)$ : elles ne se coupent plus.
+:::
+
+## Question 4 : Les longueurs
+
+::: etape Mesurer
+On mesure à la règle sur la construction.
+:::
+
+::: resultat
+$AB \approx 5{,}3$ cm et $AC \approx 3{,}9$ cm.
+:::
+
+## Question 5 : Le plus long côté
+
+::: etape Comparer
+$BC = 6$ cm est le plus long côté. Il est face à l'angle $\widehat{A} = 80°$, le plus grand des trois angles. De même, le plus court $[AC]$ est face au plus petit angle $\widehat{B} = 40°$.
+:::
+
+::: resultat
+Le plus long côté est $[BC]$ : il est face au plus grand angle, $\widehat{A}$.
+:::
+
+## Question 6 : La nature du triangle
+
+::: etape Examiner les angles
+Les angles $80°$, $40°$ et $60°$ sont tous différents et tous aigus.
+:::
+
+::: resultat
+$ABC$ est un triangle quelconque (ni isocèle, ni rectangle), dont les trois angles sont aigus.
+:::
+
+::: retenir
+Un côté et ses deux angles adjacents déterminent un triangle unique.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\widehat{BAC} = 80°$
+2. Aux deux extrémités de $[BC]$ : angles adjacents.
+3. $[BC]$, angle de $40°$ en $B$, angle de $60°$ en $C$ du même côté ; $A$ à l'intersection.
+4. $AB \approx 5{,}3$ cm ; $AC \approx 3{,}9$ cm
+5. $[BC]$, face à $\widehat{A}$.
+6. Quelconque, trois angles aigus.
+
+===
+
+=== Entraînement - Les deux triangles d'un parallélogramme
+Id: 3153
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+$ABCD$ est un parallélogramme : ses côtés opposés ont la même longueur. On donne $AB = 7$ cm, $BC = 4$ cm et $\widehat{ABC} = 70°$. La diagonale $[AC]$ le partage en deux triangles.
+
+[IMAGE_1]
+
+1. Donner les longueurs $CD$ et $DA$.
+2. Démontrer que les triangles $ABC$ et $CDA$ sont égaux.
+3. Préciser la correspondance des sommets.
+4. En déduire la mesure de l'angle $\widehat{CDA}$.
+5. On donne $\widehat{DAB} = 110°$. En utilisant la diagonale $[BD]$, démontrer que $\widehat{BCD} = \widehat{DAB}$.
+6. Calculer le périmètre du parallélogramme. Que peut-on dire des aires des triangles $ABC$ et $CDA$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les côtés opposés
+
+::: etape Utiliser la propriété
+Dans un parallélogramme, les côtés opposés ont la même longueur : $[CD]$ est opposé à $[AB]$ et $[DA]$ est opposé à $[BC]$.
+:::
+
+::: resultat
+$CD = AB = 7$ cm et $DA = BC = 4$ cm.
+:::
+
+## Question 2 : Deux triangles égaux
+
+::: methode
+On cherche trois égalités qui forment un cas d'égalité ; la diagonale est un côté commun.
+:::
+
+::: etape On sait que
+Dans les triangles $ABC$ et $CDA$ :
+- $AB = CD$ (côtés opposés du parallélogramme) ;
+- $BC = DA$ (côtés opposés du parallélogramme) ;
+- $AC = CA$ (côté commun).
+:::
+
+::: etape Or
+Deux triangles qui ont leurs trois côtés égaux deux à deux sont égaux.
+:::
+
+::: resultat
+Donc les triangles $ABC$ et $CDA$ sont égaux.
+:::
+
+## Question 3 : La correspondance
+
+::: etape Suivre les côtés égaux
+$[AB]$ correspond à $[CD]$ et $[BC]$ à $[DA]$. Le sommet $B$, commun à $[AB]$ et $[BC]$, correspond au sommet $D$, commun à $[CD]$ et $[DA]$.
+:::
+
+::: resultat
+$A$ correspond à $C$, $B$ à $D$ et $C$ à $A$ : c'est pourquoi on écrit « $ABC$ et $CDA$ ».
+:::
+
+## Question 4 : L'angle en $D$
+
+::: etape Angles correspondants
+$\widehat{ABC}$ (sommet $B$) et $\widehat{CDA}$ (sommet $D$) sont des angles correspondants de deux triangles égaux.
+:::
+
+[IMAGE_2]
+
+::: resultat
+$\widehat{CDA} = \widehat{ABC} = 70°$.
+:::
+
+## Question 5 : L'angle en $C$
+
+::: etape On sait que
+Dans les triangles $DAB$ et $BCD$ : $DA = BC$, $AB = CD$ (côtés opposés) et $[BD]$ est commun.
+:::
+
+::: etape Or
+Trois côtés égaux deux à deux : les triangles $DAB$ et $BCD$ sont égaux, avec $A$ qui correspond à $C$ (le sommet opposé à la diagonale commune).
+:::
+
+::: etape Donc
+Les angles correspondants $\widehat{DAB}$ et $\widehat{BCD}$ sont égaux : $\widehat{BCD} = 110°$.
+:::
+
+::: etape Vérification
+La diagonale partage le quadrilatère en deux triangles, donc la somme de ses angles vaut $2 \times 180° = 360°$ :
+$$110° + 70° + 110° + 70° = 360°$$
+:::
+
+::: resultat
+$\widehat{BCD} = \widehat{DAB} = 110°$.
+:::
+
+## Question 6 : Périmètre et aires
+
+::: etape Le périmètre
+$$\mathcal{P} = 2 \times (7 + 4) = 22$$
+:::
+
+::: etape Les aires
+Deux triangles égaux sont superposables, donc ils ont la même aire.
+:::
+
+::: resultat
+Le périmètre vaut $22$ cm ; les triangles $ABC$ et $CDA$ ont la même aire : chacun est la moitié du parallélogramme.
+:::
+
+::: attention Erreur fréquente
+Écrire « $ABC$ et $ADC$ » : ce serait associer $A$ à $A$ et $B$ à $D$, donc affirmer $AB = AD$, ce qui est faux ($7 \neq 4$). L'ordre des lettres doit suivre la correspondance.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $CD = 7$ cm et $DA = 4$ cm.
+2. Trois côtés égaux deux à deux ($AB = CD$, $BC = DA$, $[AC]$ commun).
+3. $A \leftrightarrow C$, $B \leftrightarrow D$, $C \leftrightarrow A$.
+4. $\widehat{CDA} = 70°$
+5. Triangles $DAB$ et $BCD$ égaux, donc $\widehat{BCD} = 110°$.
+6. $22$ cm ; aires égales (chacune la moitié du parallélogramme).
+
+===
+
+=== Entraînement - Démontrer avec la médiane d'un triangle isocèle
+Id: 3154
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+$ABC$ est un triangle isocèle en $A$ ($AB = AC$) et $H$ est le milieu de $[BC]$.
+
+[IMAGE_1]
+
+1. Démontrer que les triangles $ABH$ et $ACH$ sont égaux.
+2. En déduire que $\widehat{ABC} = \widehat{ACB}$.
+3. Démontrer que $\widehat{AHB} = \widehat{AHC}$, puis que ces deux angles sont droits.
+4. Que représente la droite $(AH)$ pour le segment $[BC]$ ?
+5. Que représente-t-elle pour l'angle $\widehat{BAC}$ ?
+6. On donne $\widehat{BAC} = 40°$. Calculer $\widehat{ABC}$ et $\widehat{BAH}$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Deux triangles égaux
+
+::: methode
+On rédige en trois temps : **On sait que… Or… Donc…**
+:::
+
+::: etape On sait que
+Dans les triangles $ABH$ et $ACH$ :
+- $AB = AC$ (le triangle est isocèle en $A$) ;
+- $BH = CH$ ($H$ est le milieu de $[BC]$) ;
+- $AH = AH$ (côté commun).
+:::
+
+::: etape Or
+Deux triangles qui ont leurs trois côtés égaux deux à deux sont égaux.
+:::
+
+::: resultat
+Donc les triangles $ABH$ et $ACH$ sont égaux, avec $B$ qui correspond à $C$.
+:::
+
+## Question 2 : Les angles à la base
+
+::: etape Angles correspondants
+$\widehat{ABH}$ et $\widehat{ACH}$ sont des angles correspondants (sommets $B$ et $C$) des deux triangles égaux. Comme $H$ est sur $[BC]$, $\widehat{ABH} = \widehat{ABC}$ et $\widehat{ACH} = \widehat{ACB}$.
+:::
+
+::: resultat
+$\widehat{ABC} = \widehat{ACB}$ : les angles à la base d'un triangle isocèle sont égaux.
+:::
+
+## Question 3 : Les angles en $H$
+
+::: etape Ils sont égaux
+$\widehat{AHB}$ et $\widehat{AHC}$ ont pour sommet le point $H$, qui se correspond à lui-même : ce sont des angles correspondants, donc ils sont égaux.
+:::
+
+::: etape Ils sont supplémentaires
+Les points $B$, $H$, $C$ sont alignés : $\widehat{AHB} + \widehat{AHC} = 180°$.
+:::
+
+::: etape Conclure
+Deux angles égaux de somme $180°$ mesurent chacun $\dfrac{180°}{2} = 90°$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+$\widehat{AHB} = \widehat{AHC} = 90°$ : la droite $(AH)$ est perpendiculaire à $(BC)$.
+:::
+
+## Question 4 : La droite $(AH)$ et le segment $[BC]$
+
+::: etape Utiliser la définition
+$(AH)$ passe par le milieu $H$ de $[BC]$ et elle est perpendiculaire à $[BC]$.
+:::
+
+::: resultat
+$(AH)$ est la médiatrice de $[BC]$ (et aussi la hauteur issue de $A$).
+:::
+
+## Question 5 : La droite $(AH)$ et l'angle $\widehat{BAC}$
+
+::: etape Angles correspondants
+$\widehat{BAH}$ et $\widehat{CAH}$ sont des angles correspondants des triangles égaux : ils sont égaux.
+:::
+
+::: resultat
+$(AH)$ partage l'angle $\widehat{BAC}$ en deux angles égaux : c'est la bissectrice de $\widehat{BAC}$.
+:::
+
+## Question 6 : Les mesures
+
+::: etape L'angle $\widehat{ABC}$
+$$\widehat{ABC} = \frac{180° - 40°}{2} = \frac{140°}{2} = 70°$$
+:::
+
+::: etape L'angle $\widehat{BAH}$
+$$\widehat{BAH} = \frac{40°}{2} = 20°$$
+:::
+
+::: resultat
+$\widehat{ABC} = 70°$ et $\widehat{BAH} = 20°$.
+:::
+
+::: retenir
+Dans un triangle isocèle, la droite qui joint le sommet principal au milieu de la base est à la fois médiane, médiatrice, hauteur et bissectrice.
+:::
+
+::: attention Erreur fréquente
+Affirmer que $(AH) \perp (BC)$ parce que « ça se voit » : la démonstration passe par les triangles égaux et l'angle plat.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $AB = AC$, $BH = CH$, $[AH]$ commun : trois côtés égaux.
+2. Angles correspondants : $\widehat{ABC} = \widehat{ACB}$.
+3. Égaux et de somme $180°$ : $90°$ chacun.
+4. La médiatrice de $[BC]$.
+5. La bissectrice de $\widehat{BAC}$.
+6. $\widehat{ABC} = 70°$ ; $\widehat{BAH} = 20°$.
+
+===
+
+=== Entraînement - Médiatrices et cercle circonscrit
+Id: 3155
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On considère le triangle $ABC$ tel que $AB = 7$ cm, $BC = 6$ cm et $AC = 5$ cm. Voici une figure à main levée.
+
+[IMAGE_1]
+
+1. Construire le triangle $ABC$.
+2. Construire au compas la médiatrice $(d_1)$ du segment $[AB]$. Expliquer pourquoi la construction est juste.
+3. Construire la médiatrice $(d_2)$ du segment $[BC]$ ; elle coupe $(d_1)$ en $O$. Démontrer que $OA = OB = OC$.
+4. En déduire que $O$ appartient à la médiatrice de $[AC]$. Le vérifier sur la figure.
+5. Tracer le cercle de centre $O$ passant par $A$. Que remarque-t-on ? Mesurer son rayon.
+6. Un point $M$ de $(d_1)$ est tel que $MA = 4{,}5$ cm. Que vaut $MB$ ? Justifier.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Construire le triangle
+
+::: etape Vérifier
+La plus grande longueur est $7$ cm et $6 + 5 = 11$ cm : le triangle existe.
+:::
+
+::: etape Construire
+Tracer $[AB]$ de $7$ cm, puis un arc de centre $A$ et de rayon $5$ cm et un arc de centre $B$ et de rayon $6$ cm : ils se coupent en $C$.
+:::
+
+::: resultat
+Le triangle $ABC$ est construit avec la règle et le compas (voir la figure de la question 5).
+:::
+
+## Question 2 : La médiatrice de $[AB]$
+
+::: methode
+Les points de la médiatrice de $[AB]$ sont les points à égale distance de $A$ et de $B$.
+:::
+
+::: etape Construire
+Avec un même écartement, plus grand que $3{,}5$ cm (moitié de $AB$), tracer deux arcs de centre $A$ et deux arcs de centre $B$, au-dessus et au-dessous de $[AB]$. Ils se coupent en deux points.
+:::
+
+::: etape Justifier
+Chacun de ces deux points est à la même distance de $A$ et de $B$ (le même écartement) : il est donc sur la médiatrice de $[AB]$. Deux points suffisent pour tracer une droite.
+:::
+
+::: resultat
+La droite qui passe par les deux points d'intersection des arcs est la médiatrice $(d_1)$ de $[AB]$.
+:::
+
+## Question 3 : Le point $O$
+
+::: etape On sait que
+$O$ est sur la médiatrice $(d_1)$ de $[AB]$ et sur la médiatrice $(d_2)$ de $[BC]$.
+:::
+
+::: etape Or
+Un point de la médiatrice d'un segment est à égale distance des extrémités de ce segment.
+:::
+
+::: etape Donc
+$O \in (d_1)$ donne $OA = OB$, et $O \in (d_2)$ donne $OB = OC$.
+:::
+
+::: resultat
+$$OA = OB = OC$$
+:::
+
+## Question 4 : La médiatrice de $[AC]$
+
+::: etape On sait que
+D'après la question 3, $OA = OC$ : le point $O$ est à égale distance de $A$ et de $C$.
+:::
+
+::: etape Or
+Un point à égale distance des extrémités d'un segment est sur la médiatrice de ce segment.
+:::
+
+::: resultat
+Donc $O$ appartient à la médiatrice de $[AC]$ : sur la figure, les trois médiatrices passent par $O$.
+:::
+
+## Question 5 : Le cercle circonscrit
+
+::: etape Raisonner
+Le cercle de centre $O$ passant par $A$ a pour rayon $OA$. Comme $OB = OA$ et $OC = OA$, il passe aussi par $B$ et par $C$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+Le cercle passe par les trois sommets : c'est le cercle circonscrit au triangle $ABC$. On mesure un rayon d'environ $3{,}6$ cm.
+:::
+
+## Question 6 : Le point $M$
+
+::: etape On sait que
+$M$ est sur $(d_1)$, la médiatrice de $[AB]$.
+:::
+
+::: etape Or
+Tout point de la médiatrice de $[AB]$ est à égale distance de $A$ et de $B$.
+:::
+
+::: resultat
+Donc $MB = MA = 4{,}5$ cm.
+:::
+
+::: attention Erreur fréquente
+Construire la médiatrice avec un écartement de compas plus petit que la moitié du segment : les arcs ne se coupent pas.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Triangle construit (règle et compas).
+2. Deux paires d'arcs de même rayon centrés en $A$ et en $B$ ; leurs intersections sont à égale distance de $A$ et de $B$.
+3. $OA = OB$ et $OB = OC$ (propriété de la médiatrice).
+4. $OA = OC$, donc $O$ est sur la médiatrice de $[AC]$.
+5. Le cercle passe par $A$, $B$, $C$ (cercle circonscrit) ; rayon $\approx 3{,}6$ cm.
+6. $MB = 4{,}5$ cm
+
+===
+
+=== Entraînement - Deux segments de même milieu
+Id: 3156
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Les segments $[AB]$ et $[CD]$ se coupent en leur milieu commun $O$.
+
+[IMAGE_1]
+
+1. Écrire les égalités de longueurs données par l'énoncé.
+2. Pourquoi $\widehat{AOC} = \widehat{BOD}$ ?
+3. Démontrer que les triangles $AOC$ et $BOD$ sont égaux. Préciser la correspondance des sommets.
+4. On mesure $AC = 6$ cm. Que vaut $BD$ ?
+5. On mesure $\widehat{OAC} = 47°$. Que vaut $\widehat{OBD}$ ? Que peut-on en déduire pour les droites $(AC)$ et $(BD)$ ?
+6. Démontrer de même que $AD = BC$. Quelle est la nature du quadrilatère $ACBD$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les longueurs
+
+::: etape Traduire « milieu »
+$O$ est le milieu de $[AB]$ et le milieu de $[CD]$.
+:::
+
+::: resultat
+$OA = OB$ et $OC = OD$.
+:::
+
+## Question 2 : Les angles en $O$
+
+::: etape Observer
+Les droites $(AB)$ et $(CD)$ se coupent en $O$ : les angles $\widehat{AOC}$ et $\widehat{BOD}$ ont le même sommet et des côtés dans le prolongement l'un de l'autre.
+:::
+
+::: resultat
+Ce sont des angles opposés par le sommet : ils sont égaux.
+:::
+
+## Question 3 : Les triangles $AOC$ et $BOD$
+
+::: methode
+On rassemble trois égalités : les deux égalités de longueurs (milieu) et l'angle en $O$, qui est compris entre ces côtés.
+:::
+
+::: etape On sait que
+- $OA = OB$ (question 1) ;
+- $OC = OD$ (question 1) ;
+- $\widehat{AOC} = \widehat{BOD}$ (question 2).
+:::
+
+::: etape Or
+L'angle $\widehat{AOC}$ est compris entre les côtés $[OA]$ et $[OC]$, et $\widehat{BOD}$ entre $[OB]$ et $[OD]$. Deux triangles qui ont deux côtés égaux et l'angle compris égal sont égaux.
+:::
+
+::: resultat
+Donc les triangles $AOC$ et $BOD$ sont égaux, avec $A \leftrightarrow B$, $O \leftrightarrow O$ et $C \leftrightarrow D$.
+:::
+
+::: attention Erreur fréquente
+Utiliser le cas des trois côtés : on ne connaît pas encore $AC$ et $BD$, c'est justement ce qu'on cherche à comparer.
+:::
+
+## Question 4 : La longueur $BD$
+
+::: etape Côtés correspondants
+$[AC]$ et $[BD]$ joignent des sommets correspondants ($A \leftrightarrow B$, $C \leftrightarrow D$) : ce sont des côtés correspondants.
+:::
+
+::: resultat
+$BD = AC = 6$ cm.
+:::
+
+## Question 5 : Des droites parallèles
+
+::: etape L'angle $\widehat{OBD}$
+$\widehat{OAC}$ et $\widehat{OBD}$ sont des angles correspondants des triangles égaux ($A \leftrightarrow B$) : $\widehat{OBD} = 47°$.
+:::
+
+::: etape Les droites
+Les droites $(AC)$ et $(BD)$ sont coupées par la sécante $(AB)$ ; les angles $\widehat{OAC}$ et $\widehat{OBD}$ sont alternes-internes et égaux.
+:::
+
+[IMAGE_2]
+
+::: resultat
+$\widehat{OBD} = 47°$ et, les angles alternes-internes étant égaux, $(AC) \parallel (BD)$.
+:::
+
+## Question 6 : Le quadrilatère $ACBD$
+
+::: etape Les triangles $AOD$ et $BOC$
+$OA = OB$, $OD = OC$ et $\widehat{AOD} = \widehat{BOC}$ (opposés par le sommet, compris entre ces côtés) : les triangles $AOD$ et $BOC$ sont égaux, avec $A \leftrightarrow B$ et $D \leftrightarrow C$.
+:::
+
+::: etape Conclure sur les côtés
+Les côtés correspondants $[AD]$ et $[BC]$ sont égaux : $AD = BC$.
+:::
+
+::: resultat
+$ACBD$ a ses côtés opposés de même longueur ($AC = BD$ et $AD = BC$) : c'est un parallélogramme. On le savait aussi car ses diagonales $[AB]$ et $[CD]$ ont le même milieu.
+:::
+
+::: retenir
+Des angles opposés par le sommet fournissent souvent l'angle compris qui permet de démontrer que deux triangles sont égaux.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $OA = OB$ et $OC = OD$.
+2. Angles opposés par le sommet.
+3. Deux côtés et l'angle compris ; $A \leftrightarrow B$, $O \leftrightarrow O$, $C \leftrightarrow D$.
+4. $BD = 6$ cm
+5. $\widehat{OBD} = 47°$ ; $(AC) \parallel (BD)$.
+6. $AD = BC$ ; $ACBD$ est un parallélogramme.
+
+===
+
+=== Entraînement - Des données suffisantes pour construire ?
+Id: 3157
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Dans chaque cas, dire si les informations permettent de construire un triangle $ABC$ unique (à un retournement près). Justifier.
+
+1. $AB = 4$ cm, $AC = 6$ cm et $BC = 5$ cm.
+2. $AB = 4$ cm et $AC = 6$ cm seulement.
+3. $\widehat{A} = 50°$, $\widehat{B} = 60°$ et $\widehat{C} = 70°$.
+4. $AB = 5$ cm, $\widehat{A} = 45°$ et $\widehat{B} = 75°$.
+5. $AB = 5$ cm, $AC = 4$ cm et $\widehat{BAC} = 30°$.
+6. $AB = 5$ cm, $\widehat{A} = 120°$ et $\widehat{B} = 70°$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Trois côtés
+
+::: methode
+Pour chaque cas, on vérifie d'abord que les données sont possibles, puis qu'elles forment l'une des trois constructions (trois côtés ; deux côtés et l'angle compris ; un côté et les deux angles adjacents).
+:::
+
+::: etape Existence
+La plus grande longueur est $6$ cm et $4 + 5 = 9$ cm : le triangle existe.
+:::
+
+::: resultat
+Oui : trois côtés déterminent un triangle unique.
+:::
+
+## Question 2 : Deux côtés seulement
+
+::: etape Faire varier l'angle
+L'angle en $A$ n'est pas donné : on peut ouvrir plus ou moins l'angle entre $[AB]$ et $[AC]$, et la longueur $BC$ change avec lui.
+:::
+
+[IMAGE_1]
+
+::: resultat
+Non : il existe une infinité de triangles différents (à gauche sur la figure, deux d'entre eux).
+:::
+
+## Question 3 : Trois angles
+
+::: etape Existence
+$50° + 60° + 70° = 180°$ : ces angles sont possibles.
+:::
+
+::: etape La taille
+Aucune longueur n'est donnée : on peut construire un petit ou un grand triangle avec ces angles (à droite sur la figure).
+:::
+
+::: resultat
+Non : on obtient des triangles de même forme (semblables) mais de tailles différentes.
+:::
+
+::: attention Erreur fréquente
+Croire que les trois angles « fixent tout » : ils fixent la forme, pas la taille.
+:::
+
+## Question 4 : Un côté et deux angles
+
+::: etape Position des angles
+$\widehat{A}$ et $\widehat{B}$ sont aux extrémités du côté $[AB]$, et $45° + 75° = 120° < 180°$.
+:::
+
+::: resultat
+Oui : un côté et les deux angles adjacents ; le troisième angle mesure $180° - 120° = 60°$.
+:::
+
+## Question 5 : Deux côtés et un angle
+
+::: etape Position de l'angle
+$\widehat{BAC}$ a pour sommet $A$ : il est compris entre $[AB]$ et $[AC]$.
+:::
+
+::: resultat
+Oui : deux côtés et l'angle compris déterminent un triangle unique.
+:::
+
+## Question 6 : Des angles trop grands
+
+::: etape Somme des deux angles
+$120° + 70° = 190°$, ce qui dépasse déjà $180°$.
+:::
+
+::: resultat
+Non : aucun triangle ne convient, les deux demi-droites ne se coupent pas.
+:::
+
+::: retenir
+Avant de construire, on vérifie que les données sont possibles (inégalité triangulaire, somme des angles) et suffisantes.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Oui (trois côtés).
+2. Non : infinité de triangles.
+3. Non : même forme, tailles différentes.
+4. Oui (un côté et les deux angles adjacents).
+5. Oui (deux côtés et l'angle compris).
+6. Non : $120° + 70° > 180°$.
+
+===
+
+=== Entraînement - Tracer les hauteurs d'un triangle
+Id: 3158
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Dans le triangle $ABC$ ci-dessous, $BC = 8$ cm. Le point $H$ de $[BC]$ est tel que $BH = 2$ cm, $AH = 4{,}5$ cm et $(AH) \perp (BC)$. On donne aussi $AC = 7{,}5$ cm. Le triangle $EFG$ a un angle obtus en $F$.
+
+[IMAGE_1]
+
+1. Pourquoi la droite $(AH)$ est-elle la hauteur issue de $A$ du triangle $ABC$ ?
+2. Calculer l'aire du triangle $ABC$.
+3. On note $K$ le pied de la hauteur issue de $B$. En prenant $[AC]$ comme base, calculer la longueur $BK$.
+4. Tracer les trois hauteurs du triangle $ABC$. Que constate-t-on ?
+5. Dans le triangle $EFG$, où se trouve le pied de la hauteur issue de $E$ ?
+6. Dans le triangle $EFG$, où se trouve le pied de la hauteur issue de $F$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : La hauteur issue de $A$
+
+::: methode
+Une hauteur passe par un sommet et est perpendiculaire au côté opposé.
+:::
+
+::: etape Vérifier les deux conditions
+La droite $(AH)$ passe par le sommet $A$ et elle est perpendiculaire à $(BC)$, qui porte le côté opposé à $A$.
+:::
+
+::: resultat
+$(AH)$ est la hauteur issue de $A$ ; son pied est $H$.
+:::
+
+## Question 2 : L'aire du triangle $ABC$
+
+::: methode
+Aire $= \dfrac{\text{base} \times \text{hauteur}}{2}$, avec la hauteur relative à la base choisie.
+:::
+
+::: etape Base $[BC]$, hauteur $AH$
+$$\mathcal{A} = \frac{BC \times AH}{2} = \frac{8 \times 4{,}5}{2} = \frac{36}{2} = 18$$
+:::
+
+::: resultat
+L'aire du triangle $ABC$ est $18$ cm².
+:::
+
+## Question 3 : La longueur $BK$
+
+::: etape Écrire l'aire avec la base $[AC]$
+La hauteur relative à la base $[AC]$ est $BK$ :
+$$\mathcal{A} = \frac{AC \times BK}{2} = \frac{7{,}5 \times BK}{2}$$
+:::
+
+::: etape Résoudre
+$$
+\begin{aligned}
+\frac{7{,}5 \times BK}{2} &= 18 \\
+7{,}5 \times BK &= 36 \\
+BK &= \frac{36}{7{,}5} = 4{,}8
+\end{aligned}
+$$
+:::
+
+::: resultat
+$BK = 4{,}8$ cm.
+:::
+
+::: attention Erreur fréquente
+Associer la base $[AC]$ à la hauteur $AH$ : chaque base a sa propre hauteur, celle qui lui est perpendiculaire.
+:::
+
+## Question 4 : Les trois hauteurs
+
+::: etape Tracer
+Avec l'équerre, on trace par chaque sommet la perpendiculaire au côté opposé.
+:::
+
+[IMAGE_2]
+
+::: resultat
+Les trois hauteurs se coupent en un même point.
+:::
+
+## Question 5 : La hauteur issue de $E$
+
+::: etape Tracer
+On trace par $E$ la perpendiculaire à la droite $(FG)$. Comme l'angle en $F$ est obtus, elle coupe la droite $(FG)$ **en dehors** du segment $[FG]$, du côté de $F$.
+:::
+
+[IMAGE_3]
+
+::: resultat
+Le pied de la hauteur issue de $E$ est sur le prolongement de $[FG]$, à l'extérieur du triangle.
+:::
+
+## Question 6 : La hauteur issue de $F$
+
+::: etape Tracer
+On trace par $F$ la perpendiculaire à $(EG)$ : les angles en $E$ et en $G$ sont aigus, elle coupe le segment $[EG]$.
+:::
+
+::: resultat
+Le pied de la hauteur issue de $F$ est sur le segment $[EG]$ : cette hauteur est à l'intérieur du triangle.
+:::
+
+::: retenir
+Pour tracer une hauteur, on prolonge si besoin le côté opposé : dans un triangle qui a un angle obtus, deux hauteurs sont extérieures au triangle.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Elle passe par $A$ et est perpendiculaire à $(BC)$.
+2. $\mathcal{A} = 18$ cm²
+3. $BK = 4{,}8$ cm
+4. Les trois hauteurs sont concourantes.
+5. Sur le prolongement de $[FG]$ (extérieur au triangle).
+6. Sur le segment $[EG]$ (intérieur).
+
+===
+
+=== Entraînement - Reconnaître des triangles semblables
+Id: 3159
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+**Partie A.** Les triangles $ABC$ et $DEF$ ci-dessous ont les angles indiqués.
+
+[IMAGE_1]
+
+1. Calculer $\widehat{C}$ et $\widehat{F}$.
+2. Les triangles $ABC$ et $DEF$ sont-ils semblables ? Justifier.
+3. Associer chaque sommet de $ABC$ au sommet correspondant de $DEF$.
+
+**Partie B.** Voici les longueurs des côtés de trois triangles, rangées dans l'ordre croissant (en cm).
+
+| Triangle | Petit côté | Côté moyen | Grand côté |
+|---|---|---|---|
+| $T_1$ | $3$ | $4$ | $6$ |
+| $T_2$ | $6$ | $8$ | $11$ |
+| $T_3$ | $4{,}5$ | $6$ | $9$ |
+
+4. Le triangle $T_2$ est-il semblable au triangle $T_1$ ?
+5. Le triangle $T_3$ est-il semblable au triangle $T_1$ ? Si oui, préciser le coefficient de proportionnalité.
+6. Vrai ou faux : « deux triangles semblables sont toujours égaux ».
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les angles manquants
+
+::: etape Triangle $ABC$
+$$\widehat{C} = 180° - 50° - 60° = 70°$$
+:::
+
+::: etape Triangle $DEF$
+$$\widehat{F} = 180° - 70° - 50° = 60°$$
+:::
+
+::: resultat
+$\widehat{C} = 70°$ et $\widehat{F} = 60°$.
+:::
+
+## Question 2 : Semblables ?
+
+::: methode
+Deux triangles sont semblables lorsque leurs angles sont égaux deux à deux.
+:::
+
+::: etape Comparer
+Les angles de $ABC$ mesurent $50°$, $60°$ et $70°$ ; ceux de $DEF$ mesurent $70°$, $50°$ et $60°$ : ce sont les mêmes mesures.
+:::
+
+[IMAGE_2]
+
+::: resultat
+Oui, les triangles $ABC$ et $DEF$ sont semblables.
+:::
+
+## Question 3 : La correspondance
+
+::: etape Associer les angles égaux
+$\widehat{A} = \widehat{E} = 50°$, $\widehat{B} = \widehat{F} = 60°$ et $\widehat{C} = \widehat{D} = 70°$.
+:::
+
+::: resultat
+$A$ correspond à $E$, $B$ à $F$ et $C$ à $D$.
+:::
+
+## Question 4 : Les triangles $T_1$ et $T_2$
+
+::: methode
+Les côtés correspondants se rangent dans le même ordre : on calcule les trois quotients « côté de $T_2$ ÷ côté de $T_1$ ». Le triangle est semblable si les trois quotients sont égaux.
+:::
+
+::: etape Calculer les quotients
+- petits côtés : $\dfrac{6}{3} = 2$ ;
+- côtés moyens : $\dfrac{8}{4} = 2$ ;
+- grands côtés : $\dfrac{11}{6} \approx 1{,}83$.
+:::
+
+::: resultat
+Non : le troisième quotient est différent, les longueurs ne sont pas proportionnelles. $T_2$ n'est pas semblable à $T_1$.
+:::
+
+::: attention Erreur fréquente
+S'arrêter après deux quotients égaux : il faut vérifier les **trois** quotients.
+:::
+
+## Question 5 : Les triangles $T_1$ et $T_3$
+
+::: etape Calculer les quotients
+- petits côtés : $\dfrac{4{,}5}{3} = 1{,}5$ ;
+- côtés moyens : $\dfrac{6}{4} = 1{,}5$ ;
+- grands côtés : $\dfrac{9}{6} = 1{,}5$.
+:::
+
+[IMAGE_3]
+
+::: resultat
+Oui : les longueurs sont proportionnelles, $T_3$ est semblable à $T_1$, avec un coefficient de $1{,}5$ ($T_3$ est un agrandissement de $T_1$).
+:::
+
+## Question 6 : Semblables donc égaux ?
+
+::: etape Un contre-exemple
+$T_1$ et $T_3$ sont semblables, mais le côté de $3$ cm de $T_1$ correspond à un côté de $4{,}5$ cm : ils n'ont pas la même taille.
+:::
+
+::: resultat
+Faux : deux triangles semblables ont la même forme, mais pas forcément la même taille. En revanche, deux triangles égaux sont toujours semblables (coefficient $1$).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\widehat{C} = 70°$ ; $\widehat{F} = 60°$
+2. Oui : mêmes angles ($50°$, $60°$, $70°$).
+3. $A \leftrightarrow E$, $B \leftrightarrow F$, $C \leftrightarrow D$.
+4. Non : $\dfrac{11}{6} \neq 2$.
+5. Oui, coefficient $1{,}5$.
+6. Faux (exemple : $T_1$ et $T_3$).
+
+===
+
+=== Problème - Mesurer la largeur d'une rivière
+Id: 3160
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Pour mesurer la largeur d'une rivière sans la traverser, on repère un arbre $A$ sur l'autre rive, juste en face du point $B$. On longe la rive perpendiculairement à $(AB)$ jusqu'au point $C$ ($BC = 40$ m) où l'on plante un piquet, puis on continue jusqu'au point $D$ ($CD = 40$ m). On s'éloigne alors de la rivière perpendiculairement à la rive, jusqu'au point $E$ d'où l'on voit le piquet $C$ et l'arbre $A$ alignés. On mesure $DE$.
+
+[IMAGE_1]
+
+1. Quels angles de la figure sont droits ? Pourquoi ?
+2. Pourquoi $\widehat{ACB} = \widehat{ECD}$ ?
+3. Démontrer que les triangles $ABC$ et $EDC$ sont égaux.
+4. On mesure $DE = 28$ m. En déduire la largeur $AB$ de la rivière.
+5. Pourquoi a-t-on choisi $BC = CD$ ?
+6. À un autre endroit, avec la même méthode, on mesure $DE = 31{,}5$ m. Quelle est la largeur de la rivière à cet endroit ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les angles droits
+
+::: etape Lire l'énoncé
+On longe la rive perpendiculairement à $(AB)$ : l'angle en $B$ est droit. On s'éloigne ensuite perpendiculairement à la rive : l'angle en $D$ est droit.
+:::
+
+::: resultat
+$\widehat{ABC} = 90°$ et $\widehat{EDC} = 90°$.
+:::
+
+## Question 2 : Les angles en $C$
+
+::: etape Les alignements
+$A$, $C$, $E$ sont alignés (on voit $C$ et $A$ alignés depuis $E$) et $B$, $C$, $D$ sont alignés (on longe la rive).
+:::
+
+::: resultat
+$\widehat{ACB}$ et $\widehat{ECD}$ sont opposés par le sommet $C$ : ils sont égaux.
+:::
+
+## Question 3 : Deux triangles égaux
+
+::: methode
+On rassemble le côté égal et les angles des questions 1 et 2, puis on vérifie que ces angles sont aux extrémités du côté.
+:::
+
+::: etape On sait que
+Dans les triangles $ABC$ et $EDC$ :
+- $BC = DC = 40$ m ;
+- $\widehat{ABC} = \widehat{EDC} = 90°$ (question 1) ;
+- $\widehat{ACB} = \widehat{ECD}$ (question 2).
+:::
+
+::: etape Or
+Les deux angles sont situés aux extrémités des côtés égaux $[BC]$ et $[DC]$. Deux triangles qui ont un côté égal et les deux angles adjacents égaux sont égaux.
+:::
+
+::: resultat
+Donc les triangles $ABC$ et $EDC$ sont égaux, avec $A \leftrightarrow E$, $B \leftrightarrow D$ et $C \leftrightarrow C$.
+:::
+
+## Question 4 : La largeur de la rivière
+
+::: etape Côtés correspondants
+$[AB]$ et $[ED]$ joignent des sommets correspondants : ce sont des côtés correspondants, donc $AB = ED$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+La rivière mesure $AB = 28$ m de large.
+:::
+
+## Question 5 : Le choix de $BC = CD$
+
+::: etape Raisonner
+Sans cette égalité, les deux triangles auraient seulement des angles égaux : ils seraient semblables, mais pas forcément de la même taille.
+:::
+
+::: resultat
+$BC = CD$ fournit le côté égal nécessaire au cas d'égalité « un côté et les deux angles adjacents ».
+:::
+
+::: attention Erreur fréquente
+Croire que les deux angles égaux suffisent : sans côté égal, les deux triangles auraient la même forme mais pas forcément la même taille.
+:::
+
+## Question 6 : À un autre endroit
+
+::: etape Même raisonnement
+La démonstration ne dépend pas des mesures : on a toujours $AB = DE$.
+:::
+
+::: resultat
+La rivière mesure $31{,}5$ m de large à cet endroit.
+:::
+
+::: retenir
+Des triangles égaux permettent de mesurer une longueur inaccessible en la « recopiant » sur un terrain accessible.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. En $B$ et en $D$ (déplacements perpendiculaires).
+2. Angles opposés par le sommet.
+3. Un côté égal ($40$ m) et les deux angles adjacents égaux.
+4. $AB = 28$ m
+5. Pour avoir un côté égal.
+6. $31{,}5$ m
+
+===
+
+=== Problème - La hauteur d'un arbre grâce aux ombres
+Id: 3161
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Au même instant, un bâton vertical $[BS]$ de $1{,}2$ m a une ombre $[OB]$ de $1{,}8$ m, et un arbre vertical $[AT]$ a une ombre $[PA]$ de $9$ m. Le sol est horizontal et les rayons du soleil $(OS)$ et $(PT)$ sont parallèles.
+
+[IMAGE_1]
+
+1. Quelle est la nature des triangles $OBS$ et $PAT$ ? Justifier.
+2. Pourquoi les angles $\widehat{BOS}$ et $\widehat{APT}$ sont-ils égaux ?
+3. Démontrer que les triangles $OBS$ et $PAT$ sont semblables. Préciser la correspondance des sommets.
+4. Compléter un tableau de proportionnalité avec les côtés correspondants $[OB]$ et $[PA]$, $[BS]$ et $[AT]$. Calculer le coefficient de proportionnalité.
+5. Calculer la hauteur $AT$ de l'arbre.
+6. Plus tard dans la journée, l'ombre du bâton mesure $1{,}2$ m. Quelle est alors la longueur de l'ombre de l'arbre ? Que mesure l'angle $\widehat{BOS}$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : La nature des triangles
+
+::: etape Verticales et sol
+Le bâton et l'arbre sont verticaux et le sol est horizontal : $(BS) \perp (OB)$ et $(AT) \perp (PA)$.
+:::
+
+::: resultat
+$OBS$ est rectangle en $B$ et $PAT$ est rectangle en $A$.
+:::
+
+## Question 2 : Les angles au sol
+
+::: etape On sait que
+Les rayons $(OS)$ et $(PT)$ sont parallèles, et la droite du sol $(OA)$ les coupe.
+:::
+
+::: etape Or
+Deux droites parallèles coupées par une sécante forment des angles correspondants égaux.
+:::
+
+::: resultat
+Donc $\widehat{BOS} = \widehat{APT}$ : les rayons font le même angle avec le sol.
+:::
+
+## Question 3 : Deux triangles semblables
+
+::: methode
+Deux paires d'angles égaux suffisent : la troisième paire est alors égale, car la somme des angles vaut $180°$.
+:::
+
+::: etape Deux paires d'angles égaux
+$\widehat{OBS} = \widehat{PAT} = 90°$ et $\widehat{BOS} = \widehat{APT}$.
+:::
+
+::: etape La troisième paire
+$\widehat{BSO} = 180° - 90° - \widehat{BOS}$ et $\widehat{ATP} = 180° - 90° - \widehat{APT}$ : ces deux angles sont donc égaux aussi.
+:::
+
+::: resultat
+Les triangles $OBS$ et $PAT$ ont leurs angles égaux deux à deux : ils sont semblables, avec $O \leftrightarrow P$, $B \leftrightarrow A$ et $S \leftrightarrow T$.
+:::
+
+## Question 4 : Le tableau de proportionnalité
+
+::: etape Les côtés correspondants
+| Triangle | ombre | hauteur |
+|---|---|---|
+| bâton $OBS$ | $OB = 1{,}8$ | $BS = 1{,}2$ |
+| arbre $PAT$ | $PA = 9$ | $AT = ?$ |
+:::
+
+::: etape Le coefficient
+$$k = \frac{PA}{OB} = \frac{9}{1{,}8} = 5$$
+:::
+
+::: resultat
+Les longueurs du triangle $PAT$ sont celles du triangle $OBS$ multipliées par $5$.
+:::
+
+## Question 5 : La hauteur de l'arbre
+
+::: etape Appliquer le coefficient
+$$AT = 5 \times BS = 5 \times 1{,}2 = 6$$
+:::
+
+[IMAGE_2]
+
+::: resultat
+L'arbre mesure $6$ m de haut.
+:::
+
+::: attention Erreur fréquente
+Associer l'ombre du bâton à la hauteur de l'arbre : on compare toujours des côtés correspondants (ombre avec ombre, hauteur avec hauteur).
+:::
+
+## Question 6 : Plus tard dans la journée
+
+::: etape Le nouveau coefficient
+Les nouveaux triangles sont encore semblables (mêmes raisonnements). La hauteur de l'arbre est $5$ fois celle du bâton ($6 = 5 \times 1{,}2$), donc son ombre est aussi $5$ fois celle du bâton :
+$$5 \times 1{,}2 = 6$$
+:::
+
+::: etape L'angle
+Le triangle $OBS$ est maintenant rectangle en $B$ avec $OB = BS = 1{,}2$ m : il est rectangle isocèle, donc ses angles aigus mesurent $45°$.
+:::
+
+::: resultat
+L'ombre de l'arbre mesure $6$ m et $\widehat{BOS} = 45°$.
+:::
+
+::: retenir
+Des triangles semblables ont des côtés proportionnels : on calcule le coefficient avec deux côtés correspondants connus, puis on l'applique.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $OBS$ rectangle en $B$ ; $PAT$ rectangle en $A$.
+2. Angles correspondants (rayons parallèles, sécante : le sol).
+3. Angle droit et $\widehat{BOS} = \widehat{APT}$ : semblables ; $O \leftrightarrow P$, $B \leftrightarrow A$, $S \leftrightarrow T$.
+4. Coefficient $k = 5$.
+5. $AT = 6$ m
+6. $6$ m ; $\widehat{BOS} = 45°$.
+
+===
+
+=== Problème - Un triangle équilatéral dans un autre
+Id: 3162
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+$ABC$ est un triangle équilatéral de côté $6$ cm. On place $D$ sur $[AB]$, $E$ sur $[BC]$ et $F$ sur $[CA]$ tels que $AD = BE = CF = 2$ cm.
+
+[IMAGE_1]
+
+1. Quels sont les angles du triangle $ABC$ ?
+2. Calculer $BD$, $CE$ et $AF$.
+3. Démontrer que les triangles $ADF$ et $BED$ sont égaux.
+4. Démontrer de même que les triangles $CFE$ et $ADF$ sont égaux.
+5. En déduire la nature du triangle $DEF$.
+6. Sur une construction en vraie grandeur, on mesure $DF$ au millimètre près. Donner une valeur approchée du périmètre de $DEF$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les angles de $ABC$
+
+::: etape Triangle équilatéral
+Ses trois angles sont égaux et leur somme vaut $180°$ : $180° : 3 = 60°$.
+:::
+
+::: resultat
+$\widehat{A} = \widehat{B} = \widehat{C} = 60°$.
+:::
+
+## Question 2 : Les autres longueurs
+
+::: etape Soustraire
+$$BD = AB - AD = 6 - 2 = 4$$
+
+De même, $CE = 6 - 2 = 4$ et $AF = 6 - 2 = 4$.
+:::
+
+::: resultat
+$BD = CE = AF = 4$ cm.
+:::
+
+## Question 3 : Les triangles $ADF$ et $BED$
+
+::: methode
+Dans chaque triangle « de coin », on connaît deux côtés ($2$ et $4$) et l'angle de $60°$ situé entre eux.
+:::
+
+::: etape On sait que
+Dans les triangles $ADF$ et $BED$ :
+- $AD = BE = 2$ cm ;
+- $AF = BD = 4$ cm ;
+- $\widehat{DAF} = \widehat{EBD} = 60°$ (angles du triangle équilatéral).
+:::
+
+::: etape Or
+L'angle $\widehat{DAF}$ est compris entre $[AD]$ et $[AF]$, et l'angle $\widehat{EBD}$ entre $[BE]$ et $[BD]$. Deux côtés égaux et l'angle compris égal : les triangles sont égaux.
+:::
+
+::: resultat
+Donc les triangles $ADF$ et $BED$ sont égaux, avec $A \leftrightarrow B$, $D \leftrightarrow E$ et $F \leftrightarrow D$.
+:::
+
+## Question 4 : Les triangles $CFE$ et $ADF$
+
+::: etape On sait que
+$CF = AD = 2$ cm, $CE = AF = 4$ cm et $\widehat{FCE} = \widehat{DAF} = 60°$, angle compris entre ces côtés.
+:::
+
+::: resultat
+Les triangles $CFE$ et $ADF$ sont égaux (deux côtés et l'angle compris), avec $C \leftrightarrow A$, $F \leftrightarrow D$ et $E \leftrightarrow F$.
+:::
+
+## Question 5 : La nature de $DEF$
+
+::: etape Côtés correspondants
+- Triangles $ADF$ et $BED$ : $[DF]$ correspond à $[ED]$, donc $DF = ED$.
+- Triangles $CFE$ et $ADF$ : $[FE]$ correspond à $[DF]$, donc $FE = DF$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+$DE = EF = FD$ : le triangle $DEF$ est équilatéral.
+:::
+
+::: attention Erreur fréquente
+Conclure en mesurant seulement : une mesure suggère que $DEF$ est équilatéral, seule la démonstration le prouve.
+:::
+
+## Question 6 : Mesure et périmètre
+
+::: etape Mesurer
+On mesure $DF \approx 3{,}5$ cm.
+:::
+
+::: etape Calculer
+$DEF$ est équilatéral, donc son périmètre vaut $3 \times DF \approx 3 \times 3{,}5 = 10{,}5$.
+:::
+
+::: resultat
+Le périmètre de $DEF$ vaut environ $10{,}5$ cm.
+:::
+
+::: retenir
+Repérer plusieurs triangles égaux disposés « en tournant » permet de démontrer des égalités de longueurs.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $60°$ chacun.
+2. $BD = CE = AF = 4$ cm
+3. Deux côtés et l'angle compris ($2$ cm, $4$ cm, $60°$).
+4. Même raisonnement : $CF = AD$, $CE = AF$, angle de $60°$.
+5. $DEF$ est équilatéral.
+6. $DF \approx 3{,}5$ cm ; périmètre $\approx 10{,}5$ cm.
+
+===
+
+=== Problème - Une antenne à égale distance de trois villages
+Id: 3163
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Sur le plan quadrillé ci-dessous, un carreau mesure $1$ cm et représente $1$ km. On veut installer une antenne-relais à égale distance des trois villages $A$, $B$ et $C$.
+
+[IMAGE_1]
+
+1. L'antenne doit être à la même distance de $A$ et de $B$. Sur quelle droite doit-elle se trouver ? Tracer cette droite.
+2. Elle doit aussi être à la même distance de $B$ et de $C$. Tracer la droite correspondante.
+3. On appelle $O$ le point d'intersection de ces deux droites. Démontrer que $O$ est à égale distance des trois villages.
+4. Placer $O$ sur le plan, puis donner la distance réelle entre l'antenne et chaque village.
+5. L'antenne a une portée de $6$ km. Les villages $A$, $B$, $C$ sont-ils couverts ? Le village $D$ est-il couvert ?
+6. Existe-t-il un autre emplacement à égale distance des trois villages ? Justifier.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : À égale distance de $A$ et de $B$
+
+::: methode
+Les points à égale distance de $A$ et de $B$ sont exactement les points de la médiatrice de $[AB]$.
+:::
+
+::: etape Construire
+$A$ et $B$ sont sur la même ligne du quadrillage, à $8$ carreaux l'un de l'autre : le milieu de $[AB]$ est à $4$ carreaux de chacun. La médiatrice est la droite du quadrillage perpendiculaire à $[AB]$ en ce milieu.
+:::
+
+::: resultat
+L'antenne doit être sur la médiatrice de $[AB]$.
+:::
+
+## Question 2 : À égale distance de $B$ et de $C$
+
+::: etape Construire
+On construit au compas la médiatrice de $[BC]$ : deux arcs de même rayon centrés en $B$ et deux centrés en $C$ ; la droite passe par leurs deux points d'intersection.
+:::
+
+::: resultat
+L'antenne doit aussi être sur la médiatrice de $[BC]$.
+:::
+
+## Question 3 : Le point $O$
+
+::: etape On sait que
+$O$ est sur la médiatrice de $[AB]$ et sur la médiatrice de $[BC]$.
+:::
+
+::: etape Or
+Un point de la médiatrice d'un segment est à égale distance des extrémités du segment.
+:::
+
+::: resultat
+Donc $OA = OB$ et $OB = OC$, c'est-à-dire $OA = OB = OC$ : $O$ est à égale distance des trois villages.
+:::
+
+## Question 4 : La distance aux villages
+
+::: etape Placer $O$
+Les deux médiatrices se coupent en un nœud du quadrillage : c'est le point $O$.
+:::
+
+::: etape Mesurer
+On mesure $OA = OB = OC = 5$ cm sur le plan. Avec $1$ cm pour $1$ km, cela représente $5$ km.
+:::
+
+[IMAGE_2]
+
+::: resultat
+L'antenne est à $5$ km de chacun des trois villages : le cercle de centre $O$ et de rayon $5$ cm passe par $A$, $B$ et $C$ (cercle circonscrit).
+:::
+
+## Question 5 : La portée de $6$ km
+
+::: etape Les villages $A$, $B$, $C$
+Ils sont à $5$ km de l'antenne, et $5 < 6$.
+:::
+
+::: etape Le village $D$
+$D$ est sur la même ligne du quadrillage que $O$, à $7$ carreaux : $OD = 7$ km, et $7 > 6$.
+:::
+
+::: resultat
+$A$, $B$ et $C$ sont couverts ; $D$ n'est pas couvert.
+:::
+
+## Question 6 : Un autre emplacement ?
+
+::: etape Raisonner
+Un tel point doit être à la fois sur la médiatrice de $[AB]$ et sur celle de $[BC]$. Ces deux droites ne sont pas parallèles : elles se coupent en un seul point.
+:::
+
+::: resultat
+Non : $O$ est le seul point à égale distance des trois villages.
+:::
+
+::: attention Erreur fréquente
+Placer l'antenne au « milieu » du triangle à vue d'œil : seul le point d'intersection des médiatrices est à égale distance des trois sommets.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Sur la médiatrice de $[AB]$.
+2. Sur la médiatrice de $[BC]$.
+3. $OA = OB$ et $OB = OC$ (propriété de la médiatrice).
+4. $5$ km de chaque village.
+5. $A$, $B$, $C$ couverts ($5 < 6$) ; $D$ non couvert ($7 > 6$).
+6. Non : les deux médiatrices se coupent en un seul point.
+
+===
+
+=== Problème - Deux côtés et un angle non compris
+Id: 3164
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+On veut construire un triangle $ABC$ tel que $AB = 6$ cm, $\widehat{ABC} = 40°$ et $AC = 4{,}5$ cm.
+
+1. Tracer $[BA]$, puis la demi-droite $[Bx)$ telle que $\widehat{ABx} = 40°$. Sur quelle ligne se trouve le point $C$ ?
+2. À quelle distance de $A$ se trouve $C$ ? Tracer l'arc de cercle correspondant. Combien de points d'intersection a-t-il avec $[Bx)$ ?
+3. Combien de triangles $ABC$ répondent à la question ?
+4. On note $C_1$ et $C_2$ les points obtenus. Mesurer $BC_1$ et $BC_2$.
+5. Pourquoi ces données ne permettent-elles pas de construire un triangle unique ?
+6. Combien de triangles obtient-on si $AC = 3$ cm ? Et si $AC = 7$ cm ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : La position de $C$
+
+::: methode
+Chaque donnée place $C$ sur une ligne : une demi-droite pour l'angle, un cercle pour la longueur. Le point $C$ est à leur intersection.
+:::
+
+::: etape Traduire l'angle
+$\widehat{ABC} = 40°$ : le point $C$ est sur la demi-droite $[Bx)$ qui fait un angle de $40°$ avec $[BA]$.
+:::
+
+::: resultat
+$C$ est sur la demi-droite $[Bx)$.
+:::
+
+## Question 2 : L'arc de centre $A$
+
+::: etape Traduire la longueur
+$AC = 4{,}5$ cm : $C$ est sur le cercle de centre $A$ et de rayon $4{,}5$ cm.
+:::
+
+::: etape Construire
+On trace cet arc : il coupe la demi-droite $[Bx)$ en deux points.
+:::
+
+::: resultat
+L'arc coupe $[Bx)$ en deux points, notés $C_1$ et $C_2$.
+:::
+
+## Question 3 : Le nombre de triangles
+
+::: etape Vérifier les trois conditions
+$C_1$ et $C_2$ sont sur $[Bx)$ et à $4{,}5$ cm de $A$ : les triangles $ABC_1$ et $ABC_2$ vérifient tous les deux $AB = 6$ cm, $\widehat{ABC} = 40°$ et $AC = 4{,}5$ cm.
+:::
+
+[IMAGE_1]
+
+::: resultat
+Deux triangles différents répondent à la question.
+:::
+
+## Question 4 : Les mesures
+
+::: etape Mesurer
+On mesure à la règle sur la construction.
+:::
+
+::: resultat
+$BC_1 \approx 6{,}9$ cm et $BC_2 \approx 2{,}3$ cm : les deux triangles ne sont pas égaux.
+:::
+
+## Question 5 : Pourquoi pas un triangle unique ?
+
+::: etape La position de l'angle
+L'angle connu $\widehat{ABC}$ a pour sommet $B$ ; il est compris entre $[BA]$ et $[BC]$, alors que les côtés connus sont $[AB]$ et $[AC]$.
+:::
+
+::: resultat
+L'angle n'est pas compris entre les deux côtés connus : ce n'est pas un des trois cas de construction d'un triangle unique.
+:::
+
+::: attention Erreur fréquente
+Penser que « deux côtés et un angle » suffisent toujours : l'angle doit être **entre** les deux côtés connus.
+:::
+
+## Question 6 : D'autres longueurs $AC$
+
+::: etape Avec $AC = 3$ cm
+On mesure avec l'équerre la distance de $A$ à la demi-droite $[Bx)$ : environ $3{,}9$ cm. Un cercle de rayon $3$ cm est trop petit pour l'atteindre.
+:::
+
+::: etape Avec $AC = 7$ cm
+Le cercle de rayon $7$ cm coupe la droite $(Bx)$ en deux points, mais l'un est de l'autre côté de $B$, en dehors de la demi-droite $[Bx)$ : un seul point convient.
+:::
+
+[IMAGE_2]
+
+::: resultat
+Avec $AC = 3$ cm : aucun triangle. Avec $AC = 7$ cm : un seul triangle.
+:::
+
+::: retenir
+Avec deux côtés et un angle non compris, on peut obtenir deux triangles, un seul ou aucun : il faut construire pour savoir.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Sur la demi-droite $[Bx)$.
+2. À $4{,}5$ cm de $A$ ; deux points d'intersection.
+3. Deux triangles.
+4. $BC_1 \approx 6{,}9$ cm ; $BC_2 \approx 2{,}3$ cm
+5. L'angle n'est pas compris entre les côtés connus.
+6. $AC = 3$ cm : aucun ; $AC = 7$ cm : un seul.
+
+===
+
+=== Type brevet - Fabriquer un cerf-volant
+Id: 3165
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Pour fabriquer un cerf-volant $ABCD$, on croise deux baguettes perpendiculaires en $H$ : $[AC]$ de $80$ cm et $[BD]$ de $50$ cm, avec $AH = 20$ cm, $HC = 60$ cm et $H$ milieu de $[BD]$.
+
+[IMAGE_1]
+
+**Partie A : des triangles égaux**
+
+1. Calculer $BH$ et $HD$.
+2. Démontrer que les triangles $ABH$ et $ADH$ sont égaux.
+3. En déduire que $AB = AD$.
+
+**Partie B : une médiatrice**
+
+4. Démontrer que la droite $(AC)$ est la médiatrice du segment $[BD]$. En déduire, sans utiliser de triangles égaux, que $CB = CD$.
+
+**Partie C : la toile**
+
+5. Calculer l'aire du triangle $ABC$, puis celle du cerf-volant $ABCD$.
+6. On fabrique deux cerfs-volants. La toile coûte $15$ € le mètre carré. Calculer la surface de toile nécessaire en m², puis son prix (sans tenir compte des chutes).
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $BH$ et $HD$
+
+::: etape Utiliser le milieu
+$H$ est le milieu de $[BD]$, qui mesure $50$ cm : $50 : 2 = 25$.
+:::
+
+::: resultat
+$BH = HD = 25$ cm.
+:::
+
+## Question 2 : Les triangles $ABH$ et $ADH$
+
+::: etape On sait que
+Dans les triangles $ABH$ et $ADH$ :
+- $AH = AH$ (côté commun) ;
+- $BH = DH = 25$ cm ;
+- $\widehat{AHB} = \widehat{AHD} = 90°$ (baguettes perpendiculaires).
+:::
+
+::: etape Or
+L'angle droit en $H$ est compris entre les côtés $[HA]$ et $[HB]$ d'une part, $[HA]$ et $[HD]$ d'autre part. Deux côtés égaux et l'angle compris égal : les triangles sont égaux.
+:::
+
+::: resultat
+Donc les triangles $ABH$ et $ADH$ sont égaux, avec $B \leftrightarrow D$.
+:::
+
+## Question 3 : $AB = AD$
+
+::: etape Côtés correspondants
+$[AB]$ et $[AD]$ joignent des sommets correspondants ($A \leftrightarrow A$, $B \leftrightarrow D$).
+:::
+
+::: resultat
+$AB = AD$.
+:::
+
+## Question 4 : La médiatrice de $[BD]$
+
+::: etape On sait que
+La droite $(AC)$ passe par $H$, milieu de $[BD]$, et elle est perpendiculaire à $(BD)$.
+:::
+
+::: etape Or
+La médiatrice d'un segment est la droite perpendiculaire à ce segment en son milieu.
+:::
+
+::: etape Donc
+$(AC)$ est la médiatrice de $[BD]$. Le point $C$ est sur cette médiatrice, donc il est à égale distance de $B$ et de $D$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+$(AC)$ est la médiatrice de $[BD]$, donc $CB = CD$ (et de même $AB = AD$).
+:::
+
+## Question 5 : Les aires
+
+::: methode
+Dans le triangle $ABC$, la hauteur relative à la base $[AC]$ est $[BH]$, car $(BH) \perp (AC)$.
+:::
+
+::: etape Le triangle $ABC$
+$$\mathcal{A}_{ABC} = \frac{AC \times BH}{2} = \frac{80 \times 25}{2} = 1\,000$$
+:::
+
+::: etape Le triangle $ADC$
+De même, avec la hauteur $[DH]$ de $25$ cm, $\mathcal{A}_{ADC} = 1\,000$ cm².
+:::
+
+::: etape Le cerf-volant
+$$\mathcal{A}_{ABCD} = 1\,000 + 1\,000 = 2\,000$$
+:::
+
+::: resultat
+L'aire du triangle $ABC$ est $1\,000$ cm² et celle du cerf-volant est $2\,000$ cm².
+:::
+
+::: attention Erreur fréquente
+Prendre $AH$ comme hauteur du triangle $ABC$ : la hauteur relative à $[AC]$ est perpendiculaire à $(AC)$, c'est $[BH]$.
+:::
+
+## Question 6 : La toile
+
+::: etape La surface en cm²
+$$2 \times 2\,000 = 4\,000$$
+:::
+
+::: etape Convertir
+$1$ m² $= 10\,000$ cm², donc $4\,000$ cm² $= 0{,}4$ m².
+:::
+
+::: etape Le prix
+$$0{,}4 \times 15 = 6$$
+:::
+
+::: resultat
+Il faut $0{,}4$ m² de toile, qui coûte $6$ €.
+:::
+
+::: retenir
+Pour démontrer que deux longueurs sont égales, on peut utiliser deux triangles égaux ou, plus rapidement, la propriété de la médiatrice.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $BH = HD = 25$ cm
+2. Deux côtés égaux et l'angle droit compris.
+3. $AB = AD$ (côtés correspondants).
+4. $(AC)$ perpendiculaire à $[BD]$ en son milieu ; $C$ sur la médiatrice donc $CB = CD$.
+5. $1\,000$ cm² ; $2\,000$ cm²
+6. $0{,}4$ m² ; $6$ €
+
+===
+
+=== Type brevet - Le milieu d'un côté du rectangle
+Id: 3166
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+$ABCD$ est un rectangle tel que $AB = 8$ cm et $AD = 3$ cm ; $M$ est le milieu de $[AB]$.
+
+[IMAGE_1]
+
+1. Calculer $MA$ et $MB$.
+2. Démontrer que les triangles $MAD$ et $MBC$ sont égaux.
+3. En déduire que le triangle $MDC$ est isocèle, puis que $M$ appartient à la médiatrice de $[DC]$.
+4. On mesure $\widehat{AMD} \approx 37°$. En déduire $\widehat{BMC}$, puis $\widehat{DMC}$.
+5. Calculer les angles $\widehat{MDC}$ et $\widehat{MCD}$.
+6. Retrouver la mesure de $\widehat{MDC}$ en utilisant les droites parallèles $(AB)$ et $(DC)$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $MA$ et $MB$
+
+::: etape Utiliser le milieu
+$M$ est le milieu de $[AB]$, qui mesure $8$ cm : $8 : 2 = 4$.
+:::
+
+::: resultat
+$MA = MB = 4$ cm.
+:::
+
+## Question 2 : Deux triangles égaux
+
+::: methode
+Un rectangle a ses côtés opposés égaux et quatre angles droits : on y trouve deux côtés égaux et l'angle compris.
+:::
+
+::: etape On sait que
+Dans les triangles $MAD$ et $MBC$ :
+- $MA = MB = 4$ cm ;
+- $AD = BC = 3$ cm (côtés opposés du rectangle) ;
+- $\widehat{MAD} = \widehat{MBC} = 90°$ (angles du rectangle).
+:::
+
+::: etape Or
+L'angle droit en $A$ est compris entre $[AM]$ et $[AD]$, et celui en $B$ entre $[BM]$ et $[BC]$. Deux côtés égaux et l'angle compris égal : les triangles sont égaux.
+:::
+
+::: resultat
+Donc les triangles $MAD$ et $MBC$ sont égaux, avec $M \leftrightarrow M$, $A \leftrightarrow B$ et $D \leftrightarrow C$.
+:::
+
+## Question 3 : Le triangle $MDC$ et la médiatrice
+
+::: etape Côtés correspondants
+$[MD]$ et $[MC]$ sont des côtés correspondants des triangles égaux : $MD = MC$.
+:::
+
+::: etape Le triangle isocèle
+Le triangle $MDC$ a deux côtés égaux, $[MD]$ et $[MC]$ : il est isocèle en $M$.
+:::
+
+::: etape La médiatrice
+$MD = MC$ : le point $M$ est à égale distance de $D$ et de $C$, donc il est sur la médiatrice de $[DC]$.
+:::
+
+::: resultat
+$MDC$ est isocèle en $M$, et $M$ appartient à la médiatrice de $[DC]$.
+:::
+
+## Question 4 : Les angles en $M$
+
+::: etape L'angle $\widehat{BMC}$
+$\widehat{AMD}$ et $\widehat{BMC}$ sont des angles correspondants des triangles égaux : $\widehat{BMC} = \widehat{AMD} \approx 37°$.
+:::
+
+::: etape L'angle $\widehat{DMC}$
+$A$, $M$, $B$ sont alignés : les trois angles $\widehat{AMD}$, $\widehat{DMC}$ et $\widehat{CMB}$ forment un angle plat.
+$$\widehat{DMC} \approx 180° - 37° - 37° = 106°$$
+:::
+
+::: resultat
+$\widehat{BMC} \approx 37°$ et $\widehat{DMC} \approx 106°$.
+:::
+
+## Question 5 : Les angles à la base de $MDC$
+
+::: etape Triangle isocèle en $M$
+Ses angles à la base sont égaux et se partagent $180° - 106° = 74°$ :
+$$\widehat{MDC} = \widehat{MCD} \approx \frac{74°}{2} = 37°$$
+:::
+
+[IMAGE_2]
+
+::: resultat
+$\widehat{MDC} = \widehat{MCD} \approx 37°$.
+:::
+
+## Question 6 : Avec les droites parallèles
+
+::: etape Les droites
+$ABCD$ est un rectangle, donc $(AB) \parallel (DC)$. La sécante $(MD)$ coupe ces deux droites.
+:::
+
+::: etape Les angles alternes-internes
+$\widehat{AMD}$ et $\widehat{MDC}$ sont alternes-internes : comme les droites sont parallèles, ils sont égaux.
+:::
+
+::: resultat
+$\widehat{MDC} = \widehat{AMD} \approx 37°$ : on retrouve le résultat de la question 5.
+:::
+
+::: retenir
+Démontrer un même résultat de deux façons différentes est un excellent contrôle.
+:::
+
+::: attention Erreur fréquente
+Écrire « $MAD$ et $MCB$ sont égaux » : $D$ correspond à $C$ et $A$ à $B$, il faut respecter cet ordre (« $MAD$ et $MBC$ »).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $MA = MB = 4$ cm
+2. Deux côtés égaux ($4$ cm et $3$ cm) et l'angle droit compris.
+3. $MD = MC$ : $MDC$ isocèle en $M$ ; $M$ sur la médiatrice de $[DC]$.
+4. $\widehat{BMC} \approx 37°$ ; $\widehat{DMC} \approx 106°$
+5. $\widehat{MDC} = \widehat{MCD} \approx 37°$
+6. Alternes-internes : $\widehat{MDC} = \widehat{AMD} \approx 37°$.
+
+===

@@ -115,32 +115,48 @@ export default {
 .dynamic-form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 14px;
 }
 
 .form-fields {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 18px;
 }
 
+/* Bouton principal des fenêtres (même style que .om-btn--primary). */
 .form-submit-btn {
-  @extend .btn;
-  @extend .btn-primary;
   width: 100%;
-  padding: 14px 20px;
-  font-size: 16px;
+  min-height: 50px;
+  margin-top: 4px;
+  padding: 0 24px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--om-navy, #1b3c8e);
+  color: #fff;
+  font-family: var(--om-font, 'Montserrat', sans-serif);
+  font-size: 15.5px;
   font-weight: 600;
-  border-radius: 8px;
   position: relative;
-  min-height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+
+  &:hover:not(:disabled) {
+    background: var(--om-navy-700, #163274);
+    box-shadow: 0 8px 22px rgba(27, 60, 142, 0.25);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--om-navy, #1b3c8e);
+    outline-offset: 3px;
+  }
 
   &:disabled {
-    opacity: 0.7;
+    opacity: 0.55;
     cursor: not-allowed;
   }
 }

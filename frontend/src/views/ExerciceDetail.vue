@@ -7,9 +7,9 @@
         position="top-left"
       />
       
-      <div v-if="loading" class="state-container">
+      <div v-if="loading || redirection" class="state-container">
         <div class="loading-spinner"></div>
-        <p>Chargement de l'exercice...</p>
+        <p>Ouverture de l’exercice…</p>
       </div>
 
       <div v-else-if="error" class="state-container">
@@ -63,6 +63,9 @@ const exerciceId = route.params.exerciceId
 
 const exercice = ref(null)
 const loading = ref(true)
+// Vrai pendant le passage vers la page du chapitre : l'ancien affichage de
+// l'exercice n'est jamais montré entre-temps.
+const redirection = ref(false)
 const error = ref('')
 
 const notionDe = (ex) => {
@@ -91,7 +94,13 @@ const loadExercice = async () => {
     // Nouvel espace : l'exercice s'ouvre dans la page de son chapitre.
     const notion = notionDe(exercice.value)
     if (notion) {
-      router.replace(chapitreLink(notion, 'exercices', exercice.value.id))
+      redirection.value = true
+      try {
+        await router.replace(chapitreLink(notion, 'exercices', exercice.value.id))
+      } finally {
+        // Navigation refusée ou annulée : on affiche l'exercice ici, en secours.
+        if (route.name === 'ExerciceDetail') redirection.value = false
+      }
       return
     }
 

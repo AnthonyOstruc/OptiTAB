@@ -1,0 +1,307 @@
+Titre: Construire et comparer des triangles
+
+<!-- optitab:1 -->
+::: objectifs
+- Savoir si un triangle est constructible grâce à l'inégalité triangulaire.
+- Utiliser la somme des angles et les propriétés des triangles particuliers.
+- Construire un triangle connaissant trois côtés, deux côtés et l'angle compris, ou un côté et deux angles.
+- Construire les médiatrices, les hauteurs et le cercle circonscrit d'un triangle.
+- Reconnaître des triangles égaux (cas d'égalité) et des triangles semblables.
+- Rédiger une démonstration courte : « On sait que… Or… Donc… ».
+:::
+
+## I. Le triangle existe-t-il ?
+
+::: propriete Inégalité triangulaire
+Dans un triangle, la longueur de chaque côté est inférieure à la somme des longueurs des deux autres côtés :
+
+$$AB < AC + CB$$
+
+Le chemin direct de $A$ à $B$ est plus court que le détour par $C$.
+:::
+
+::: propriete Cas d'égalité
+Si $AB = AC + CB$, alors le point $C$ appartient au segment $[AB]$ : les points $A$, $B$, $C$ sont alignés et le « triangle » est **aplati**.
+:::
+
+Pour savoir si trois longueurs donnent un triangle, il suffit de tester la **plus grande** : les deux autres comparaisons sont alors automatiquement vraies.
+
+::: methode Tester trois longueurs
+1. Repérer la plus grande longueur.
+2. Calculer la somme des deux autres.
+3. Conclure :
+   - plus grande longueur $<$ somme des deux autres : le triangle existe ;
+   - plus grande longueur $=$ somme des deux autres : triangle aplati ;
+   - plus grande longueur $>$ somme des deux autres : aucun triangle.
+:::
+
+Sur la figure, le côté de $6$ cm est tracé ; on cherche le troisième sommet avec deux arcs de cercle.
+
+[IMAGE_1]
+
+::: exemple
+Peut-on construire un triangle de côtés $7$ cm, $4$ cm et $2{,}5$ cm ?
+
+La plus grande longueur est $7$ cm et $4 + 2{,}5 = 6{,}5$. Comme $7 > 6{,}5$, ce triangle n'existe pas : les deux arcs de cercle ne se rencontrent pas.
+:::
+
+::: attention Erreur fréquente
+Comparer la **plus petite** longueur à la somme des deux autres : avec $2$, $3$ et $8$, on a bien $2 < 3 + 8$, et pourtant le triangle n'existe pas, car $8 > 2 + 3$.
+:::
+
+## II. Angles et triangles particuliers
+
+::: propriete Somme des angles d'un triangle
+Dans tout triangle, la somme des mesures des trois angles est égale à $180°$ :
+
+$$\widehat{A} + \widehat{B} + \widehat{C} = 180°$$
+:::
+
+[IMAGE_2]
+
+::: demonstration
+On trace la droite $(d)$ parallèle à $(BC)$ passant par $A$. Les droites $(d)$ et $(BC)$ sont parallèles et coupées par la sécante $(AB)$ : les angles alternes-internes marqués en orange sont égaux. De même avec la sécante $(AC)$ pour les angles marqués en vert. En $A$, les trois angles mis bout à bout forment un angle plat, qui mesure $180°$. Donc $\widehat{A} + \widehat{B} + \widehat{C} = 180°$.
+:::
+
+::: exemple
+Dans un triangle $ABC$, $\widehat{A} = 48°$ et $\widehat{B} = 75°$.
+
+$$\widehat{C} = 180° - 48° - 75° = 57°$$
+:::
+
+### Les triangles particuliers
+
+[IMAGE_3]
+
+| Triangle | Définition | Propriété des angles |
+|---|---|---|
+| isocèle en $A$ | $AB = AC$ | les angles à la base $\widehat{B}$ et $\widehat{C}$ sont égaux |
+| équilatéral | trois côtés égaux | trois angles de $60°$ |
+| rectangle en $A$ | $\widehat{A} = 90°$ | $\widehat{B} + \widehat{C} = 90°$ |
+| rectangle isocèle en $A$ | $\widehat{A} = 90°$ et $AB = AC$ | $90°$, $45°$ et $45°$ |
+
+::: propriete Reconnaître un triangle isocèle par ses angles
+Si un triangle a deux angles égaux, alors il est isocèle. Si ses trois angles mesurent $60°$, il est équilatéral.
+:::
+
+::: exemple
+Un triangle isocèle a un angle au sommet principal de $40°$. Ses deux angles à la base sont égaux et se partagent $180° - 40° = 140°$ :
+
+$$\frac{140°}{2} = 70°$$
+:::
+
+::: attention Erreur fréquente
+Un triangle ne peut pas avoir deux angles droits, ni deux angles obtus : leur somme atteindrait ou dépasserait déjà $180°$.
+:::
+
+## III. Construire un triangle
+
+On commence toujours par vérifier que les données sont possibles (inégalité triangulaire, somme des angles inférieure à $180°$), puis on réalise une figure à main levée. Les traits de construction (arcs de cercle) restent visibles : ils justifient la construction.
+
+### Avec les trois côtés
+
+::: methode Construire $ABC$ avec $AB = 5$ cm, $AC = 4$ cm et $BC = 3{,}5$ cm
+1. Tracer le segment $[AB]$ de $5$ cm.
+2. Tracer un arc de cercle de centre $A$ et de rayon $4$ cm : $C$ est à $4$ cm de $A$.
+3. Tracer un arc de cercle de centre $B$ et de rayon $3{,}5$ cm : $C$ est à $3{,}5$ cm de $B$.
+4. Le point $C$ est l'intersection des deux arcs ; tracer $[AC]$ et $[BC]$.
+:::
+
+[IMAGE_4]
+
+### Avec deux côtés et l'angle compris entre eux
+
+::: methode Construire $DEF$ avec $DE = 5$ cm, $DF = 3{,}5$ cm et $\widehat{EDF} = 45°$
+1. Tracer le segment $[DE]$ de $5$ cm.
+2. Avec le rapporteur centré en $D$, tracer la demi-droite d'origine $D$ qui fait un angle de $45°$ avec $[DE]$.
+3. Reporter $3{,}5$ cm au compas sur cette demi-droite à partir de $D$ : c'est le point $F$.
+4. Tracer $[EF]$.
+:::
+
+[IMAGE_5]
+
+### Avec un côté et les deux angles adjacents
+
+::: methode Construire $RST$ avec $RS = 5$ cm, $\widehat{TRS} = 35°$ et $\widehat{RST} = 65°$
+1. Vérifier : $35° + 65° = 100° < 180°$.
+2. Tracer le segment $[RS]$ de $5$ cm.
+3. Tracer en $R$ une demi-droite faisant un angle de $35°$ avec $[RS]$, puis en $S$ une demi-droite faisant un angle de $65°$, du même côté de $(RS)$.
+4. Le point $T$ est l'intersection des deux demi-droites.
+:::
+
+[IMAGE_6]
+
+::: retenir
+Trois côtés, deux côtés et l'angle compris, ou un côté et les deux angles adjacents : ces données déterminent un triangle **unique**. Deux élèves qui suivent la même construction obtiennent des triangles superposables.
+:::
+
+::: attention Deux côtés et un angle non compris
+Si l'angle connu n'est pas situé entre les deux côtés connus, on peut obtenir deux triangles différents, un seul, ou aucun.
+:::
+
+## IV. Médiatrices, hauteurs et cercle circonscrit
+
+### Médiatrice d'un segment
+
+::: definition Médiatrice
+La **médiatrice** d'un segment est la droite perpendiculaire à ce segment qui passe par son milieu.
+:::
+
+::: propriete Équidistance
+- Si un point est sur la médiatrice de $[AB]$, alors il est à égale distance de $A$ et de $B$ : $MA = MB$.
+- Réciproquement, si $MA = MB$, alors le point $M$ est sur la médiatrice de $[AB]$.
+:::
+
+::: methode Construire la médiatrice de $[AB]$ au compas
+1. Avec un même écartement, plus grand que la moitié de $AB$, tracer deux arcs de centre $A$, l'un au-dessus et l'autre au-dessous de $[AB]$.
+2. Avec le même écartement, tracer deux arcs de centre $B$ qui coupent les précédents.
+3. Les deux points d'intersection sont chacun à égale distance de $A$ et de $B$ : ils sont sur la médiatrice. La droite qui les joint est la médiatrice.
+:::
+
+[IMAGE_7]
+
+### Cercle circonscrit à un triangle
+
+::: propriete Les trois médiatrices
+Les trois médiatrices des côtés d'un triangle $ABC$ se coupent en un même point $O$. Ce point est à égale distance des trois sommets : $OA = OB = OC$.
+
+Le cercle de centre $O$ passant par $A$ passe donc aussi par $B$ et par $C$ : c'est le **cercle circonscrit** au triangle.
+:::
+
+[IMAGE_8]
+
+::: demonstration
+Soit $O$ le point d'intersection des médiatrices de $[AB]$ et de $[BC]$.
+
+- $O$ est sur la médiatrice de $[AB]$, donc $OA = OB$.
+- $O$ est sur la médiatrice de $[BC]$, donc $OB = OC$.
+
+Ainsi $OA = OC$ : le point $O$ est à égale distance de $A$ et de $C$, donc il est aussi sur la médiatrice de $[AC]$.
+:::
+
+::: conseil
+Pour construire le cercle circonscrit, deux médiatrices suffisent ; la troisième sert de contrôle.
+:::
+
+### Hauteurs d'un triangle
+
+::: definition Hauteur
+Dans un triangle, la **hauteur** issue d'un sommet est la droite qui passe par ce sommet et qui est perpendiculaire au côté opposé (ou à la droite qui le porte). Le point d'intersection est le **pied** de la hauteur.
+:::
+
+[IMAGE_9]
+
+::: propriete
+- Les trois hauteurs d'un triangle se coupent en un même point (admis).
+- Aire d'un triangle : $\mathcal{A} = \dfrac{\text{base} \times \text{hauteur}}{2}$, la hauteur étant celle qui est relative à la base choisie.
+:::
+
+::: attention Erreur fréquente
+Dans un triangle qui a un angle obtus, deux hauteurs sont à l'extérieur du triangle : leur pied est sur le prolongement du côté opposé.
+:::
+
+## V. Triangles égaux
+
+::: definition Triangles égaux
+Deux triangles sont **égaux** lorsqu'ils sont superposables, éventuellement après avoir retourné l'un d'eux. Leurs côtés et leurs angles **correspondants** sont alors égaux deux à deux ; ils ont le même périmètre et la même aire.
+:::
+
+::: notation
+On écrit les sommets dans l'ordre de la correspondance : « les triangles $ABC$ et $DEF$ sont égaux » signifie que $A$ correspond à $D$, $B$ à $E$ et $C$ à $F$, donc $AB = DE$, $BC = EF$, $AC = DF$ et $\widehat{A} = \widehat{D}$, $\widehat{B} = \widehat{E}$, $\widehat{C} = \widehat{F}$.
+:::
+
+::: propriete Les trois cas d'égalité
+Deux triangles sont égaux s'ils ont, deux à deux :
+
+- leurs **trois côtés** égaux ;
+- **deux côtés** égaux et l'**angle compris** entre ces côtés égal ;
+- **un côté** égal et les **deux angles adjacents** à ce côté égaux.
+:::
+
+[IMAGE_10]
+
+::: methode Démontrer que deux triangles sont égaux
+1. Nommer les deux triangles.
+2. Écrire trois égalités (côtés ou angles) en justifiant chacune.
+3. Vérifier qu'elles forment un cas d'égalité, puis conclure.
+4. En déduire l'égalité cherchée : côtés ou angles **correspondants**.
+:::
+
+::: attention Deux pièges
+- Trois angles égaux ne suffisent pas : les triangles ont la même forme, mais pas forcément la même taille.
+- Deux côtés et un angle **non compris** entre eux ne suffisent pas.
+:::
+
+## VI. Triangles semblables
+
+::: definition Triangles semblables
+Deux triangles sont **semblables** lorsque leurs angles sont égaux deux à deux : ils ont la même forme, mais pas forcément la même taille.
+:::
+
+Comme la somme des angles vaut $180°$, deux paires d'angles égaux suffisent : la troisième paire est alors égale aussi.
+
+::: propriete Longueurs proportionnelles
+Si deux triangles sont semblables, les longueurs de leurs côtés correspondants sont **proportionnelles**. Réciproquement, si les longueurs des côtés de deux triangles sont proportionnelles, ces triangles sont semblables.
+:::
+
+[IMAGE_11]
+
+::: exemple
+Sur la figure, les triangles $ABC$ et $DEF$ ont leurs angles égaux deux à deux : $\widehat{A} = \widehat{D}$, $\widehat{B} = \widehat{E}$ et $\widehat{C} = \widehat{F}$. Ils sont semblables, et les côtés correspondants sont ceux qui joignent des sommets correspondants (longueurs en cm).
+
+| Côtés | $[AB]$ et $[DE]$ | $[BC]$ et $[EF]$ | $[AC]$ et $[DF]$ |
+|---|---|---|---|
+| Triangle $ABC$ | $4$ | $5$ | $6$ |
+| Triangle $DEF$ | $6$ | $?$ | $9$ |
+
+Le coefficient de proportionnalité est $\dfrac{6}{4} = 1{,}5$ (contrôle : $6 \times 1{,}5 = 9$). Donc $EF = 5 \times 1{,}5 = 7{,}5$ cm.
+:::
+
+::: retenir Égaux ou semblables ?
+- Triangles **égaux** : même forme **et** même taille (côtés égaux).
+- Triangles **semblables** : même forme (angles égaux), côtés proportionnels.
+- Deux triangles égaux sont semblables, mais deux triangles semblables ne sont pas forcément égaux.
+:::
+
+## VII. Rédiger une démonstration
+
+::: methode Les trois temps d'une démonstration
+- **On sait que** : les données de l'énoncé ou ce qui a déjà été démontré.
+- **Or** : la propriété utilisée (définition, propriété, cas d'égalité).
+- **Donc** : la conclusion, qui peut servir à l'étape suivante.
+:::
+
+::: exemple Démontrer une égalité de longueurs
+Les triangles $ABC$ et $ABD$ sont placés de part et d'autre de $(AB)$, avec $AC = AD$ et $\widehat{BAC} = \widehat{BAD}$. Démontrer que $BC = BD$.
+
+[IMAGE_12]
+
+**On sait que**, dans les triangles $ABC$ et $ABD$ :
+- $AC = AD$ (énoncé) ;
+- $\widehat{BAC} = \widehat{BAD}$ (énoncé) ;
+- le côté $[AB]$ est commun.
+
+**Or** l'angle $\widehat{BAC}$ est compris entre les côtés $[AB]$ et $[AC]$, et l'angle $\widehat{BAD}$ entre $[AB]$ et $[AD]$ : deux triangles qui ont deux côtés égaux et l'angle compris égal sont égaux.
+
+**Donc** les triangles $ABC$ et $ABD$ sont égaux, avec $C$ qui correspond à $D$. Les côtés correspondants $[BC]$ et $[BD]$ sont égaux : $BC = BD$.
+:::
+
+| Pour démontrer que… | on peut utiliser… |
+|---|---|
+| deux longueurs sont égales | deux triangles égaux, la médiatrice, un triangle isocèle |
+| deux angles sont égaux | deux triangles égaux, un triangle isocèle |
+| un triangle est isocèle | deux côtés égaux ou deux angles égaux |
+| un point est sur une médiatrice | il est à égale distance des extrémités |
+
+::: attention Erreur fréquente
+Conclure à partir d'une mesure sur la figure : une mesure permet de conjecturer, seule une démonstration prouve.
+:::
+
+::: retenir
+- Triangle possible : plus grande longueur $<$ somme des deux autres ; angles : somme de $180°$.
+- Constructions : trois côtés (compas), deux côtés et l'angle compris, un côté et deux angles adjacents (rapporteur).
+- Médiatrice : points à égale distance des extrémités ; les trois médiatrices se coupent au centre du cercle circonscrit.
+- Hauteur : passe par un sommet, perpendiculaire au côté opposé.
+- Triangles égaux : cas des trois côtés, de deux côtés et l'angle compris, d'un côté et des deux angles adjacents.
+- Triangles semblables : angles égaux, côtés proportionnels.
+:::

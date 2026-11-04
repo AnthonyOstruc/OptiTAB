@@ -1,0 +1,167 @@
+Titre: Résumé : Vecteurs, Droites et Plans dans l'Espace
+
+<!-- optitab:1 -->
+::: objectifs
+Maîtriser la géométrie dans l'espace : repérage 3D, représentations paramétriques de droites, équations cartésiennes de plans, positions relatives. Applications pratiques.
+:::
+
+## I. Rappels essentiels
+
+::: definition Vecteur de l'espace
+Un vecteur de l'espace est défini par ses coordonnées : $\vec{u} = \begin{pmatrix} x \\ y \\ z \end{pmatrix}$
+:::
+
+| Règle | Formule |
+|---|---|
+| Règle de Chasles | $\displaystyle \overrightarrow{AB} + \overrightarrow{BC} = \overrightarrow{AC}$ |
+| Règle du parallélogramme | $\displaystyle \overrightarrow{AB} + \overrightarrow{AD} = \overrightarrow{AC}$ |
+| Relation fondamentale | $\displaystyle \overrightarrow{AB} = \overrightarrow{OB} - \overrightarrow{OA}$ |
+| Vecteurs opposés | $\displaystyle \overrightarrow{AB} = -\overrightarrow{BA}$ |
+
+[IMAGE_1]
+
+| Notion | Formule |
+|---|---|
+| Coordonnées d'un vecteur | $\displaystyle \overrightarrow{AB} \begin{pmatrix} x_B - x_A \\ y_B - y_A \\ z_B - z_A \end{pmatrix}$ |
+| Produit scalaire | $\displaystyle \vec{u} \cdot \vec{v} = xx' + yy' + zz'$ |
+| Vecteurs orthogonaux | $\displaystyle \vec{u} \cdot \vec{v} = 0$ |
+| Colinéarité (2 vecteurs) | $\displaystyle \vec{u} = k\vec{v}$ ou $\displaystyle \frac{x}{x'} = \frac{y}{y'} = \frac{z}{z'}$ |
+| Coplanarité (3 vecteurs) | $\displaystyle \begin{vmatrix} x & y & z \\ x' & y' & z' \\ x'' & y'' & z'' \end{vmatrix} = 0$ |
+
+## II. Combinaisons linéaires
+
+::: definition Combinaison linéaire
+Le vecteur $\vec{v} = a_1\vec{u_1} + a_2\vec{u_2} + \ldots + a_n\vec{u_n}$ est une **combinaison linéaire** des vecteurs $\vec{u_1}, \vec{u_2}, \ldots, \vec{u_n}$.
+:::
+
+[IMAGE_2]
+
+| Notion | Définition |
+|---|---|
+| Indépendance linéaire | La seule combinaison linéaire qui donne $\displaystyle \vec{0}$ est celle où tous les coefficients sont nuls |
+| Dépendance linéaire | Il existe des coefficients non tous nuls tels que $\displaystyle a_1\vec{u_1} + a_2\vec{u_2} + \ldots + a_n\vec{u_n} = \vec{0}$ |
+
+## III. Droites de l'espace
+
+| Notion | Définition |
+|---|---|
+| Vecteur directeur | Vecteur non nul qui a la même direction que la droite |
+| Colinéarité | Deux vecteurs sont colinéaires si $\displaystyle \vec{u} = k\vec{v}$ pour un certain $\displaystyle k \in \mathbb{R}$ |
+
+[IMAGE_3]
+
+::: theoreme Représentation paramétrique d'une droite
+Une droite passant par $A(x_0, y_0, z_0)$ et de vecteur directeur $\vec{u} = \begin{pmatrix} a \\ b \\ c \end{pmatrix}$ admet la représentation paramétrique :
+
+::: formule
+$\begin{cases} x = x_0 + ta \\ y = y_0 + tb \\ z = z_0 + tc \end{cases}$ où $t \in \mathbb{R}$
+:::
+:::
+
+## IV. Plans de l'espace
+
+| Notion | Définition |
+|---|---|
+| Direction d'un plan | Ensemble des vecteurs parallèles au plan |
+| Vecteurs directeurs d'un plan | Deux vecteurs **non colinéaires** de la direction du plan |
+
+[IMAGE_4]
+
+::: theoreme Représentation paramétrique d'un plan
+Un plan passant par $A(x_0, y_0, z_0)$ et de direction engendrée par $\vec{u}$ et $\vec{v}$ (non colinéaires) :
+
+::: formule
+$\begin{cases} x = x_0 + a_1t + a_2s \\ y = y_0 + b_1t + b_2s \\ z = z_0 + c_1t + c_2s \end{cases}$ où $t, s \in \mathbb{R}$
+:::
+:::
+
+::: theoreme Équation cartésienne d'un plan
+Un plan $\mathcal{P}$ de l'espace admet une équation cartésienne de la forme :
+
+::: formule
+$$ax + by + cz + d = 0$$
+
+*où $\displaystyle (a, b, c) \neq (0, 0, 0)$*
+:::
+
+*Le vecteur $\vec{n} \begin{pmatrix} a \\ b \\ c \end{pmatrix}$ est un **vecteur normal** au plan*
+:::
+
+## V. Bases et repères
+
+| Notion | Définition |
+|---|---|
+| Base de l'espace | Triplet de vecteurs $\displaystyle (\vec{i}, \vec{j}, \vec{k})$ linéairement indépendants |
+| Repère de l'espace | Point origine $\displaystyle O$ + base $\displaystyle (\vec{i}, \vec{j}, \vec{k})$ |
+| Décomposition sur une base | $\displaystyle \vec{u} = x\vec{i} + y\vec{j} + z\vec{k}$ (décomposition unique) |
+
+[IMAGE_5]
+
+## VI. Positions relatives
+
+::: theoreme
+Soient deux droites de vecteurs directeurs $\vec{u_1}$ et $\vec{u_2}$.
+:::
+
+| Situation | Condition |
+|---|---|
+| Parallèles distinctes | $\displaystyle \vec{u_1}$ et $\displaystyle \vec{u_2}$ colinéaires, aucun point commun |
+| Confondues | $\displaystyle \vec{u_1}$ et $\displaystyle \vec{u_2}$ colinéaires, un point commun |
+| Sécantes | $\displaystyle \vec{u_1}$ et $\displaystyle \vec{u_2}$ non colinéaires, un point commun |
+| Non coplanaires | $\displaystyle \vec{u_1}$ et $\displaystyle \vec{u_2}$ non colinéaires, aucun point commun |
+
+[IMAGE_6]
+
+::: theoreme
+Soit $d$ une droite de vecteur directeur $\vec{u}$ et $\mathcal{P}$ un plan de vecteurs directeurs $\vec{v_1}$ et $\vec{v_2}$ (non colinéaires).
+:::
+
+| Situation | Condition |
+|---|---|
+| Parallèle au plan | $\displaystyle \vec{u}$ combinaison linéaire de $\displaystyle \vec{v_1}$ et $\displaystyle \vec{v_2}$, aucun point commun |
+| Incluse dans le plan | $\displaystyle \vec{u}$ combinaison linéaire de $\displaystyle \vec{v_1}$ et $\displaystyle \vec{v_2}$, un point commun |
+| Sécante | $\displaystyle \vec{u}$ n'est pas combinaison linéaire de $\displaystyle \vec{v_1}$ et $\displaystyle \vec{v_2}$ |
+
+[IMAGE_7]
+
+::: theoreme
+Soient deux plans de directions respectives engendrées par $(\vec{u_1}, \vec{v_1})$ et $(\vec{u_2}, \vec{v_2})$.
+:::
+
+| Situation | Condition |
+|---|---|
+| Parallèles distincts | Directions identiques, aucun point commun |
+| Confondus | Directions identiques, un point commun |
+| Sécants | Directions différentes (intersection = une droite) |
+
+[IMAGE_8]
+
+## VII. Erreurs fréquentes
+
+| Piège fréquent | Correction |
+|---|---|
+| Confondre colinéaires et égaux | Deux vecteurs colinéaires peuvent avoir des normes différentes |
+| Oublier de vérifier la non-colinéarité | Vérifier que les vecteurs directeurs d'un plan sont **non colinéaires** |
+| Confondre coplanaires et colinéaires | Coplanarité : **3 vecteurs** <br> Colinéarité : **2 vecteurs** |
+| Oublier le cas non coplanaires | Dans l'espace, deux droites peuvent être **non coplanaires** |
+| Négliger le vecteur nul | Le vecteur nul est toujours dépendant avec n'importe quel autre vecteur |
+
+## VIII. Formules essentielles — mémo rapide
+
+| Notion | Formule essentielle |
+|---|---|
+| Droite par $\displaystyle A$, vecteur directeur $\displaystyle \vec{u}$ | $\displaystyle \begin{cases} x = x_0 + ta \\ y = y_0 + tb \\ z = z_0 + tc \end{cases}$, $\displaystyle t \in \mathbb{R}$ |
+| Plan par $\displaystyle A$, vecteurs $\displaystyle \vec{u}$ et $\displaystyle \vec{v}$ | $\displaystyle \begin{cases} x = x_0 + a_1t + a_2s \\ y = y_0 + b_1t + b_2s \\ z = z_0 + c_1t + c_2s \end{cases}$ où $\displaystyle t, s \in \mathbb{R}$ |
+| Équation cartésienne d'un plan | $\displaystyle ax + by + cz + d = 0$ <br> Vecteur normal : $\displaystyle \vec{n} \begin{pmatrix} a \\ b \\ c \end{pmatrix}$ |
+| Produit scalaire | $\displaystyle \vec{u} \cdot \vec{v} = xx' + yy' + zz'$ <br> Orthogonaux si $\displaystyle \vec{u} \cdot \vec{v} = 0$ |
+| Décomposition sur une base | $\displaystyle \vec{u} = x\vec{i} + y\vec{j} + z\vec{k}$ |
+
+## IX. Méthodologie — stratégie de résolution
+
+| Type de problème | Méthode recommandée |
+|---|---|
+| Déterminer une représentation paramétrique | 1. Identifier un point $\displaystyle A$ et un vecteur directeur $\displaystyle \vec{u}$ (ou deux vecteurs pour un plan) <br> 2. Écrire $\displaystyle \overrightarrow{AM} = t\vec{u}$ (ou $\displaystyle \overrightarrow{AM} = t\vec{u} + s\vec{v}$ pour un plan) <br> 3. Traduire en coordonnées |
+| Étudier les positions relatives | 1. Identifier les **vecteurs directeurs** (pour les droites) ou **normaux** (pour les plans) <br> 2. Étudier la colinéarité ou l'orthogonalité <br> 3. Vérifier s'il existe un point commun (si nécessaire) <br> 4. Conclure selon les cas possibles |
+| Trouver l'équation d'un plan | 1. Identifier un point $\displaystyle A$ et un vecteur normal $\displaystyle \vec{n}$ <br> 2. Écrire $\displaystyle \overrightarrow{AM} \cdot \vec{n} = 0$ <br> 3. Développer pour obtenir $\displaystyle ax + by + cz + d = 0$ |
+| Vérifier la coplanarité | Calculer le déterminant des trois vecteurs. Si $\displaystyle \det = 0$, les vecteurs sont coplanaires |
+| Points de vigilance | Toujours vérifier que les vecteurs directeurs d'un plan sont **non colinéaires**. Utiliser des figures pour visualiser les configurations |

@@ -1,0 +1,50 @@
+Titre: Résumé : Statistiques
+
+<!-- optitab:1 -->
+::: objectifs
+Retenir l'essentiel : effectifs et fréquences, moyenne simple et pondérée, médiane, étendue, diagrammes, tableur et comparaison de séries.
+:::
+
+## I. Les indicateurs
+
+| Indicateur | Calcul |
+|---|---|
+| **Fréquence** | effectif ÷ effectif total (somme des fréquences = 1) |
+| **Moyenne pondérée** | somme des (valeur × effectif) ÷ effectif total |
+| **Médiane** | valeur centrale de la série **rangée** (effectif pair : moyenne des 2 valeurs centrales) |
+| **Étendue** | plus grande valeur − plus petite valeur (dispersion) |
+
+[IMAGE_1]
+
+::: exemple
+Notes $6\ (\times 2)$, $8\ (\times 3)$, $10\ (\times 6)$, $12\ (\times 5)$, $16\ (\times 4)$ : effectif $20$, moyenne $\dfrac{220}{20} = 11$, médiane $10$ (10ᵉ et 11ᵉ valeurs), étendue $16 - 6 = 10$.
+:::
+
+## II. La médiane en pratique
+
+[IMAGE_2]
+
+::: methode
+Ranger la série. $N$ impair : rang $\dfrac{N+1}{2}$. $N$ pair : moyenne des valeurs de rangs $\dfrac{N}{2}$ et $\dfrac{N}{2}+1$. Avec un tableau : effectifs cumulés.
+:::
+
+## III. Les graphiques
+
+- **Bâtons** : valeurs isolées, hauteur = effectif.
+- **Histogramme** : classes, rectangles accolés ; médiane seulement **localisée**, moyenne seulement **estimée** (centres des classes).
+- **Circulaire** : angle $= 360^\circ \times$ fréquence ; somme des angles $= 360^\circ$.
+
+[IMAGE_3]
+
+## IV. Tableur et comparaison
+
+- `=MOYENNE(A2:A10)`, `=MEDIANE(A2:A10)`, `=MAX(…)-MIN(…)`.
+- Moyenne pondérée : `=SOMMEPROD(A2:A4;B2:B4)` divisé par `=SOMME(B2:B4)`.
+- Comparer deux séries : position (moyenne, médiane) **et** dispersion (étendue).
+
+::: attention Les erreurs classiques
+1. Chercher la médiane sans avoir rangé la série.
+2. Faire la moyenne de deux moyennes de groupes de tailles différentes.
+3. Oublier les effectifs (`=MOYENNE` au lieu d'une moyenne pondérée).
+4. Se laisser tromper par un axe vertical qui ne commence pas à $0$.
+:::

@@ -1,0 +1,178 @@
+{
+  "numero": 1,
+  "slug": "grands-nombres",
+  "titre": "Les nombres jusqu’au million",
+  "partie": "1 · Nombres entiers et calculs",
+  "sous_titre": "Classes · Rangs · Décompositions · Demi-droite",
+  "objectifs": [
+    "Lire, écrire et décomposer les nombres jusqu’à six chiffres.",
+    "Distinguer le chiffre des dizaines et le nombre de dizaines.",
+    "Comparer, encadrer et placer des nombres entiers."
+  ],
+  "prerequis": [
+    "Numération jusqu’à 9 999 et tables d’addition."
+  ],
+  "cours": [
+    "\\essSection{1}{Lire et décomposer les grands nombres}\n\\begin{definition}Dans un nombre entier, les chiffres sont groupés par classes de trois rangs : la classe des unités simples, puis la classe des mille. Le nombre $304\\,065$ se lit « trois-cent-quatre-mille-soixante-cinq » : 304 dans la classe des mille, 065 dans la classe des unités.\\end{definition}\\begin{center}\\renewcommand{\\arraystretch}{1.35}\\begin{tabular}{c|cc}\\toprule\nClasse & des mille & des unités simples\\\\\\midrule\nRangs & centaines, dizaines, unités & centaines, dizaines, unités\\\\\n$304\\,065$ & 3 0 4 & 0 6 5\\\\\n\\bottomrule\\end{tabular}\\end{center}\n\\begin{propriete}La valeur d’un chiffre dépend de sa position : dans $52\\,700$, le chiffre 2 vaut $2\\,000$. Dix unités font une dizaine, dix dizaines font une centaine, dix centaines font un millier : chaque rang vaut dix fois le rang placé à sa droite.\\end{propriete}\n\\begin{exemple}$304\\,065=3\\times100\\,000+4\\times1\\,000+6\\times10+5$. Les zéros gardent la place des rangs vides : sans eux, on lirait $3\\,465$, un tout autre nombre.\\end{exemple}\n\\begin{savoirfaire}[Chiffre ou nombre]Dans $4\\,627$, le chiffre des dizaines est 2. Le nombre de dizaines est 462, car $4\\,627=462\\times10+7$ : on compte toutes les dizaines contenues dans le nombre. Cette distinction sert pour les échanges : 462 carnets de dix timbres sont complets.\\end{savoirfaire}",
+    "\\essSection{2}{Comparer, encadrer et placer}\n\\begin{propriete}Pour comparer deux entiers : celui qui a le moins de chiffres est le plus petit ; à nombre de chiffres égal, on compare rang par rang en partant de la gauche. On écrit $9\\,875<12\\,034$ et $64\\,350>64\\,280$.\\end{propriete}\n@FIG:cours-droite-mille@\n\\begin{savoirfaire}[Encadrer et intercaler]Encadrer $45\\,670$ entre deux dizaines de mille consécutives : $40\\,000<45\\,670<50\\,000$. Intercaler un nombre entre $23\\,500$ et $23\\,600$ : par exemple $23\\,540$. « Compris entre » se vérifie avec les deux symboles.\\end{savoirfaire}\n\\begin{attention}Sur une demi-droite graduée, lire d’abord la valeur d’un intervalle entre deux graduations. Un nombre n’est pas plus grand parce que son écriture semble plus longue à l’œil : comparer les rangs, pas la place occupée sur la page.\\end{attention}"
+  ],
+  "exercices": [
+    {
+      "titre": "Écrire en chiffres",
+      "enonce": "Écrire en chiffres : « huit-mille-quarante » ; « vingt-trois-mille-quatre-cent-cinq » ; « six-cent-mille-neuf ».",
+      "corrige": "On place chaque classe : $\\res{8\\,040}$, $\\res{23\\,405}$ et $\\res{600\\,009}$. Les rangs sans unités reçoivent un zéro.",
+      "methode": "Repérer la classe des mille dans le nom du nombre.",
+      "controle": "assert 8*1000+40==8040 and 23*1000+405==23405 and 600*1000+9==600009",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 1
+    },
+    {
+      "titre": "Lire en classes",
+      "enonce": "Écrire en lettres les nombres $86\\,312$ et $450\\,070$.",
+      "corrige": "On lit la classe des mille puis celle des unités : $\\res{\\text{quatre-vingt-six-mille-trois-cent-douze}}$ et $\\res{\\text{quatre-cent-cinquante-mille-soixante-dix}}$.",
+      "methode": "Séparer les classes avant de lire.",
+      "controle": "assert 86*1000+312==86312 and 450*1000+70==450070",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 1
+    },
+    {
+      "titre": "La valeur d’un chiffre",
+      "enonce": "Dans $582\\,741$, donner le chiffre des unités de mille, puis la valeur du chiffre 8.",
+      "corrige": "Le chiffre des unités de mille est $\\res2$. Le chiffre 8 occupe le rang des dizaines de mille : il vaut $\\res{80\\,000}$.",
+      "methode": "Associer chaque chiffre à son rang.",
+      "controle": "assert (582741//1000)%10==2 and (582741//10000)%10==8",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 1
+    },
+    {
+      "titre": "Chiffre et nombre de dizaines",
+      "enonce": "Pour le nombre $4\\,627$, donner le chiffre des dizaines puis le nombre de dizaines.",
+      "corrige": "Le chiffre des dizaines est $\\res2$. Comme $4\\,627=462\\times10+7$, le nombre de dizaines est $\\res{462}$.",
+      "methode": "Compter toutes les dizaines contenues.",
+      "controle": "assert (4627//10)%10==2 and 4627//10==462",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 1
+    },
+    {
+      "titre": "Comparer deux nombres",
+      "enonce": "Compléter par $<$ ou $>$ : $45\\,806\\ \\ldots\\ 45\\,860$, puis $9\\,875\\ \\ldots\\ 12\\,034$.",
+      "corrige": "Les centaines sont égales, mais $0<6$ aux dizaines : $\\res{45\\,806<45\\,860}$. Un nombre à quatre chiffres est plus petit qu’un nombre à cinq chiffres : $\\res{9\\,875<12\\,034}$.",
+      "methode": "Comparer d’abord les longueurs, puis les rangs.",
+      "controle": "assert 45806<45860 and 9875<12034",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 1
+    },
+    {
+      "titre": "Décomposer",
+      "enonce": "Écrire la décomposition de $304\\,065$ avec les valeurs de chaque chiffre.",
+      "corrige": "$304\\,065=\\res{3\\times100\\,000+4\\times1\\,000+6\\times10+5}$. Les rangs vides n’apparaissent pas dans la somme.",
+      "methode": "N’écrire que les rangs non nuls.",
+      "controle": "assert 3*100000+4*1000+6*10+5==304065",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 2
+    },
+    {
+      "titre": "Recomposer",
+      "enonce": "Quel nombre s’écrit $7\\times10\\,000+3\\times100+9$ ? Et $5\\times100\\,000+2\\times10$ ?",
+      "corrige": "On place 7 aux dizaines de mille, 3 aux centaines, 9 aux unités : $\\res{70\\,309}$. Le second nombre est $\\res{500\\,020}$.",
+      "methode": "Placer chaque valeur à son rang, compléter par des zéros.",
+      "controle": "assert 7*10000+3*100+9==70309 and 5*100000+2*10==500020",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 2
+    },
+    {
+      "titre": "Sur la demi-droite",
+      "enonce": "Lire les nombres repérés par les points A, B et C.",
+      "corrige": "Deux graduations marquées voisines diffèrent de $1\\,000$ ; chaque petit intervalle vaut donc 500. On lit $\\res{A(25\\,000)}$, $\\res{B(26\\,500)}$ et $\\res{C(27\\,500)}$.",
+      "methode": "Chercher d’abord la valeur d’un intervalle.",
+      "controle": "assert 24000+2*500==25000 and 24000+5*500==26500 and 24000+7*500==27500",
+      "figure": "num-8",
+      "conseil": "",
+      "difficulte": 2
+    },
+    {
+      "titre": "Encadrer",
+      "enonce": "Encadrer $45\\,670$ entre deux dizaines de mille consécutives, puis $8\\,294$ entre deux centaines consécutives.",
+      "corrige": "$\\res{40\\,000<45\\,670<50\\,000}$ : les dizaines de mille voisines sont $40\\,000$ et $50\\,000$. Pour les centaines : $\\res{8\\,200<8\\,294<8\\,300}$.",
+      "methode": "Repérer le rang demandé avant d’encadrer.",
+      "controle": "assert 40000<45670<50000 and 8200<8294<8300",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 2
+    },
+    {
+      "titre": "Ordonner",
+      "enonce": "Ranger dans l’ordre croissant : $56\\,400$ ; $9\\,980$ ; $56\\,040$ ; $100\\,000$ ; $55\\,999$.",
+      "corrige": "Le nombre à quatre chiffres vient d’abord, celui à six chiffres en dernier. L’ordre est $\\res{9\\,980<55\\,999<56\\,040<56\\,400<100\\,000}$.",
+      "methode": "Grouper par nombre de chiffres puis comparer.",
+      "controle": "assert sorted([56400,9980,56040,100000,55999])==[9980,55999,56040,56400,100000]",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 2
+    },
+    {
+      "titre": "Des fleuves à ranger",
+      "enonce": "La Loire mesure $1\\,006$ km, la Seine 775 km, la Garonne 647 km et le Rhône 812 km. Ranger ces fleuves du plus court au plus long. Lesquels mesurent moins de 800 km ?",
+      "corrige": "L’ordre croissant des longueurs est $\\res{647<775<812<1\\,006}$ : Garonne, Seine, Rhône, Loire. La Garonne et la Seine mesurent moins de 800 km, car $\\res{647<800}$ et $\\res{775<800}$.",
+      "methode": "Comparer les nombres avant de conclure sur les fleuves.",
+      "controle": "assert sorted([1006,775,647,812])==[647,775,812,1006] and [d for d in [1006,775,647,812] if d<800]==[775,647]",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 3
+    },
+    {
+      "titre": "Des carnets de timbres",
+      "enonce": "Une collection compte $3\\,240$ timbres, rangés par carnets de 10. Combien de carnets complets obtient-on ? Même question pour $5\\,278$ timbres, puis donner le nombre de timbres restants.",
+      "corrige": "$3\\,240=324\\times10$ : on remplit $\\res{324}$ carnets, sans reste. $5\\,278=527\\times10+8$ : on remplit $\\res{527}$ carnets et il reste $\\res8$ timbres. Le nombre de carnets complets est le nombre de dizaines.",
+      "methode": "Relier carnets de dix et nombre de dizaines.",
+      "controle": "assert divmod(3240,10)==(324,0) and divmod(5278,10)==(527,8)",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 3
+    },
+    {
+      "titre": "Un nombre à inventer",
+      "enonce": "Trouver un nombre compris entre $45\\,300$ et $45\\,400$ dont le chiffre des dizaines est 7. Combien y a-t-il de possibilités ?",
+      "corrige": "Le nombre s’écrit $45\\,37\\square$ : par exemple $\\res{45\\,370}$. Le chiffre des unités est libre : il y a $\\res{10}$ possibilités, de $45\\,370$ à $45\\,379$.",
+      "methode": "Fixer les rangs imposés, libérer les autres.",
+      "controle": "assert 45300<45370<45400 and (45370//10)%10==7 and len([a for a in range(45300,45400) if (a//10)%10==7])==10",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 3
+    },
+    {
+      "titre": "Avec cinq cartes",
+      "enonce": "Avec les cartes 7, 0, 3, 9 et 1 utilisées chacune une fois, former le plus grand nombre possible, puis le plus petit nombre à cinq chiffres.",
+      "corrige": "Pour le plus grand, ranger les cartes en ordre décroissant : $\\res{97\\,310}$. Pour le plus petit, commencer par le plus petit chiffre non nul puis ranger le reste en ordre croissant : $\\res{10\\,379}$. Un nombre à cinq chiffres ne commence pas par 0.",
+      "methode": "Choisir d’abord le chiffre de gauche.",
+      "controle": "assert ''.join(sorted('70391',reverse=True))=='97310' and ''.join(sorted('70391'))=='01379' and 10379==int('1'+'0379')",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 3
+    },
+    {
+      "titre": "Trois communes",
+      "enonce": "Trois communes comptent $45\\,806$, $45\\,860$ et $9\\,980$ habitants. Ranger les populations dans l’ordre décroissant, encadrer la plus grande entre deux dizaines de mille consécutives et donner son chiffre des centaines.",
+      "corrige": "L’ordre décroissant est $\\res{45\\,860>45\\,806>9\\,980}$. La plus grande population vérifie $\\res{40\\,000<45\\,860<50\\,000}$. Son chiffre des centaines est $\\res8$.",
+      "methode": "Traiter chaque question avec le même nombre bien identifié.",
+      "controle": "assert sorted([45806,45860,9980],reverse=True)==[45860,45806,9980] and 40000<45860<50000 and (45860//100)%10==8",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 3
+    }
+  ],
+  "reperes": [
+    "Classes, rangs et décompositions",
+    "Chiffre et nombre d’unités",
+    "Comparer, encadrer, intercaler",
+    "Demi-droite graduée et problèmes"
+  ],
+  "deco": "calcul"
+}

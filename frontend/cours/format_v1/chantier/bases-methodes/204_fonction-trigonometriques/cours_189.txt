@@ -1,0 +1,354 @@
+Titre: Les Fonctions Trigonométriques
+
+<!-- optitab:1 -->
+::: remarque Structure du cours
+Les sections I à VIII couvrent les notions fondamentales sur les fonctions trigonométriques. Les parties marquées **« Bonus »** sont des approfondissements utiles pour enrichir votre compréhension.
+:::
+
+## I. Définition et cercle trigonométrique
+
+### Définition géométrique
+
+::: definition Fonctions trigonométriques
+Les **fonctions trigonométriques** sont définies à partir du cercle trigonométrique (cercle unité de rayon 1 centré à l'origine).
+
+Pour un angle $\theta$ en radians, on considère un point $M$ sur le cercle tel que l'angle entre l'axe positif des abscisses et $OM$ soit $\theta$.
+:::
+
+| Fonction | Définition |
+|---|---|
+| $\sin(\theta)$ | Ordonnée du point $M$ |
+| $\cos(\theta)$ | Abscisse du point $M$ |
+| $\tan(\theta)$ | $\dfrac{\sin(\theta)}{\cos(\theta)}$ (si $\cos(\theta) \neq 0$) |
+
+::: retenir
+Toutes les fonctions trigonométriques sont définies pour tout angle réel $\theta \in \mathbb{R}$, sauf $\tan(\theta)$ qui n'est pas définie quand $\cos(\theta) = 0$ (c'est-à-dire en $\frac{\pi}{2} + k\pi$).
+:::
+
+[IMAGE_1]
+
+### Valeurs remarquables
+
+| Angle | $\sin$ | $\cos$ | $\tan$ |
+|---|---|---|---|
+| $0$ | $0$ | $1$ | $0$ |
+| $\dfrac{\pi}{6}$ | $\dfrac{1}{2}$ | $\dfrac{\sqrt{3}}{2}$ | $\dfrac{1}{\sqrt{3}}$ |
+| $\dfrac{\pi}{4}$ | $\dfrac{\sqrt{2}}{2}$ | $\dfrac{\sqrt{2}}{2}$ | $1$ |
+| $\dfrac{\pi}{3}$ | $\dfrac{\sqrt{3}}{2}$ | $\dfrac{1}{2}$ | $\sqrt{3}$ |
+| $\dfrac{\pi}{2}$ | $1$ | $0$ | Non défini |
+
+## II. Propriétés fondamentales
+
+### Relation fondamentale
+
+::: definition Relation fondamentale
+Pour tout $\displaystyle \theta \in \mathbb{R}$ :
+
+::: formule
+$$\sin^2(\theta) + \cos^2(\theta) = 1$$
+:::
+:::
+
+::: remarque Conséquences
+- $\displaystyle \sin(\theta) = \pm \sqrt{1 - \cos^2(\theta)}$
+- $\displaystyle \cos(\theta) = \pm \sqrt{1 - \sin^2(\theta)}$
+:::
+
+### Périodicité
+
+| Fonction | Période |
+|---|---|
+| $\sin(\theta)$ et $\cos(\theta)$ | $2\pi$ |
+| $\tan(\theta)$ et $\cot(\theta)$ | $\pi$ |
+
+### Parité
+
+| Fonction | Parité |
+|---|---|
+| $\sin(-\theta)$ | $-\sin(\theta)$ (impaire) |
+| $\cos(-\theta)$ | $\cos(\theta)$ (paire) |
+| $\tan(-\theta)$ | $-\tan(\theta)$ (impaire) |
+
+### Angles associés
+
+::: methode Formules des angles associés
+Ces formules permettent de simplifier les expressions trigonométriques en utilisant les propriétés de symétrie du cercle trigonométrique.
+:::
+
+| Angle | $\cos$ | $\sin$ | $\tan$ |
+|---|---|---|---|
+| $-x$ | $\cos(-x) = \cos(x)$ | $\sin(-x) = -\sin(x)$ | $\tan(-x) = -\tan(x)$ |
+| $\pi - x$ | $\cos(\pi - x) = -\cos(x)$ | $\sin(\pi - x) = \sin(x)$ | $\tan(\pi - x) = -\tan(x)$ |
+| $\pi + x$ | $\cos(\pi + x) = -\cos(x)$ | $\sin(\pi + x) = -\sin(x)$ | $\tan(\pi + x) = \tan(x)$ |
+| $\dfrac{\pi}{2} - x$ | $\cos\left(\dfrac{\pi}{2} - x\right) = \sin(x)$ | $\sin\left(\dfrac{\pi}{2} - x\right) = \cos(x)$ | $\tan\left(\dfrac{\pi}{2} - x\right) = \cot(x)$ |
+| $\dfrac{\pi}{2} + x$ | $\cos\left(\dfrac{\pi}{2} + x\right) = -\sin(x)$ | $\sin\left(\dfrac{\pi}{2} + x\right) = \cos(x)$ | $\tan\left(\dfrac{\pi}{2} + x\right) = -\cot(x)$ |
+| $2\pi - x$ | $\cos(2\pi - x) = \cos(x)$ | $\sin(2\pi - x) = -\sin(x)$ | $\tan(2\pi - x) = -\tan(x)$ |
+
+::: exemple
+- $\displaystyle \cos\left(\frac{5\pi}{6}\right) = \cos\left(\pi - \frac{\pi}{6}\right) = -\cos\left(\frac{\pi}{6}\right) = -\frac{\sqrt{3}}{2}$
+- $\displaystyle \sin\left(\frac{3\pi}{4}\right) = \sin\left(\pi - \frac{\pi}{4}\right) = \sin\left(\frac{\pi}{4}\right) = \frac{\sqrt{2}}{2}$
+- $\displaystyle \cos\left(\frac{7\pi}{6}\right) = \cos\left(\pi + \frac{\pi}{6}\right) = -\cos\left(\frac{\pi}{6}\right) = -\frac{\sqrt{3}}{2}$
+:::
+
+::: methode
+Pour utiliser ces formules, identifiez d'abord l'angle associé le plus simple, puis appliquez la formule correspondante.
+:::
+
+## III. Dérivées des fonctions trigonométriques
+
+### Formules de dérivation
+
+| Fonction | Dérivée |
+|---|---|
+| $\sin(u(x))$ | $\cos(u) \cdot u'(x)$ |
+| $\cos(u(x))$ | $-\sin(u) \cdot u'(x)$ |
+| $\tan(u(x))$ | $\dfrac{1}{\cos^2(u)} \cdot u'(x) = \sec^2(u) \cdot u'(x)$ |
+
+::: attention
+Pour $\tan(u)$, la formule $\frac{1}{\cos^2(u)}$ n'est valable que si $\cos(u) \neq 0$.
+:::
+
+### Exemples de calculs de dérivées
+
+::: exemple
+**À calculer :** Dérivée de $\displaystyle f(x) = \sin(3x)$
+
+**Résolution :**
+
+- $u(x) = 3x$, donc $u'(x) = 3$
+- $\displaystyle f'(x) = \cos(3x) \times u'(x) = \cos(3x) \times 3$
+
+::: resultat
+$$f'(x) = 3\cos(3x)$$
+:::
+:::
+
+::: exemple
+**À calculer :** Dérivée de $f(x) = x^2 \cos(x)$ (produit)
+
+**Résolution :**
+
+- $u(x) = x^2$ donc $u'(x) = 2x$
+- $v(x) = \cos(x)$ donc $v'(x) = -\sin(x)$
+- $\displaystyle (uv)' = u'v + uv'$
+- $\displaystyle f'(x) = 2x \times \cos(x) + x^2 \times (-\sin(x))$
+
+::: resultat
+$$f'(x) = 2x\cos(x) - x^2\sin(x)$$
+:::
+:::
+
+::: exemple
+**À calculer :** Dérivée de $f(x) = \tan(x^2 + 1)$ (composée)
+
+**Résolution :**
+
+- $u(x) = x^2 + 1$ donc $u'(x) = 2x$
+- $\displaystyle (\tan(u))' = \frac{1}{\cos^2(u)} \times u'$
+- $\displaystyle f'(x) = \frac{1}{\cos^2(x^2 + 1)} \times 2x$
+
+::: resultat
+$$f'(x) = \frac{2x}{\cos^2(x^2 + 1)}$$
+:::
+:::
+
+## IV. Étude des fonctions sinus et cosinus
+
+### Domaine et image
+
+::: propriete Propriétés de $\sin(x)$ et $\cos(x)$
+- **Domaine :** $\displaystyle \mathbb{R}$
+- **Image :** $\displaystyle [-1, 1]$
+- **Périodicité :** $\displaystyle 2\pi$
+:::
+
+### Sens de variation de $\sin(x)$
+
+::: tableau
+x : -\dfrac{3\pi}{2}, -\dfrac{\pi}{2}, \dfrac{\pi}{2}, \dfrac{3\pi}{2}
+\cos(x) : , -, z, +, z, -,
+\sin(x) : +/1, -/-1, +/1, -/-1
+:::
+
+[IMAGE_2]
+
+### Sens de variation de $\cos(x)$
+
+::: tableau
+x : 0, \pi, 2\pi
+-\sin(x) : , -, z, +,
+\cos(x) : +/1, -/-1, +/1
+:::
+
+[IMAGE_3]
+
+## V. Étude de la fonction tangente
+
+### Domaine et comportement
+
+::: propriete Propriétés de $\displaystyle \tan(x)$
+- **Domaine :** $\displaystyle \mathbb{R} \setminus \left\{\frac{\pi}{2} + k\pi \mid k \in \mathbb{Z}\right\}$
+- **Image :** $\mathbb{R}$ (tous les réels atteints)
+- **Périodicité :** $\displaystyle \pi$
+- **Asymptotes verticales :** $\displaystyle x = \frac{\pi}{2} + k\pi$
+:::
+
+::: tableau
+x : -\dfrac{\pi}{2}^-, +\dfrac{\pi}{2}^+
+\dfrac{1}{\cos^2(x)} : , +,
+\tan(x) : -/-\infty, +/+\infty
+:::
+
+[IMAGE_4]
+
+## VI. Équations trigonométriques
+
+### Méthodes de résolution
+
+::: methode
+Utiliser les formules d'addition et les valeurs remarquables
+:::
+
+::: propriete Équations élémentaires
+- $\sin(x) = \sin(a) \Rightarrow x = a + 2k\pi$ ou $x = \pi - a + 2k\pi$
+- $\displaystyle \cos(x) = \cos(a) \Rightarrow x = \pm a + 2k\pi$
+- $\displaystyle \tan(x) = \tan(a) \Rightarrow x = a + k\pi$
+:::
+
+### Exemples de résolution d'équations
+
+::: exemple
+**Équation :** Résoudre $\sin(x) = \frac{1}{2}$ sur $[0, 2\pi[$
+
+**Résolution :**
+
+- **Étape 1 :** Solutions générales : $x = \frac{\pi}{6} + 2k\pi$ ou $x = \pi - \frac{\pi}{6} + 2k\pi = \frac{5\pi}{6} + 2k\pi$
+- **Étape 2 :** Sur $[0, 2\pi[$ : pour $k=0$, on a $x = \frac{\pi}{6}$ et $x = \frac{5\pi}{6}$
+- **Étape 3 :** Vérification : $\sin\left(\frac{\pi}{6}\right) = \frac{1}{2}$ et $\sin\left(\frac{5\pi}{6}\right) = \frac{1}{2}$
+
+::: resultat
+$$S = \left\{\frac{\pi}{6}, \frac{5\pi}{6}\right\}$$
+:::
+:::
+
+::: exemple
+**Équation :** Résoudre $\displaystyle 2\cos^2(x) - 3\cos(x) + 1 = 0$
+
+**Résolution :**
+
+- **Étape 1 :** Poser $X = \cos(x)$, l'équation devient $2X^2 - 3X + 1 = 0$
+- **Étape 2 :** $\Delta = 9 - 8 = 1$, donc $X_1 = \frac{3+1}{4} = 1$ et $X_2 = \frac{3-1}{4} = \frac{1}{2}$
+- **Étape 3 :** Résoudre $\cos(x) = 1$ → $x = 2k\pi$ et $\cos(x) = \frac{1}{2}$ → $x = \pm\frac{\pi}{3} + 2k\pi$
+- **Étape 4 :** Réunir toutes les solutions
+
+::: resultat
+$$S = \left\{2k\pi\right\} \cup \left\{\pm\frac{\pi}{3} + 2k\pi\right\}, k \in \mathbb{Z}$$
+:::
+:::
+
+## VII. Inéquations trigonométriques
+
+### Méthode de résolution
+
+::: methode
+Étudier le signe de la fonction sur une période, puis généraliser par périodicité.
+:::
+
+::: methode
+Utiliser les tableaux de signes en considérant la périodicité.
+:::
+
+### Exemples de résolution d'inéquations
+
+::: exemple
+**Inéquation :** Résoudre $\sin(x) > \frac{1}{2}$ sur $\mathbb{R}$
+
+**Résolution :**
+
+- **Étape 1 :** Sur $[0, 2\pi[$ : $\sin(x) > \frac{1}{2}$ pour $x \in \left]\frac{\pi}{6}, \frac{5\pi}{6}\right[$
+- **Étape 2 :** Par périodicité ($2\pi$), généraliser à $\mathbb{R}$
+- **Étape 3 :** $x \in \left]\frac{\pi}{6} + 2k\pi, \frac{5\pi}{6} + 2k\pi\right[$ pour tout $k \in \mathbb{Z}$
+
+::: resultat
+$$S = \bigcup_{k \in \mathbb{Z}} \left]\frac{\pi}{6} + 2k\pi, \frac{5\pi}{6} + 2k\pi\right[$$
+:::
+:::
+
+::: exemple
+**Inéquation :** Résoudre $\tan(x) \leq 1$ sur $[0, 2\pi[$
+
+**Résolution :**
+
+- **Étape 1 :** Sur une période $\left]-\frac{\pi}{2}, \frac{\pi}{2}\right[$ : $\tan(x) \leq 1$ pour $x \in \left]-\frac{\pi}{2}, \frac{\pi}{4}\right]$
+- **Étape 2 :** Par périodicité ($\pi$), étendre à $[0, 2\pi[$
+- **Étape 3 :** $\displaystyle x \in \left[0, \frac{\pi}{4}\right] \cup \left[\pi, \frac{5\pi}{4}\right[$
+
+::: resultat
+$$S = \left[0, \frac{\pi}{4}\right] \cup \left[\pi, \frac{5\pi}{4}\right[$$
+:::
+:::
+
+## VIII. Applications et exercices types
+
+### Exemple complet : Étude d'une fonction trigonométrique
+
+**Énoncé :** Étudier la fonction $f(x) = \sin(x) + \cos(x)$ sur $\mathbb{R}$
+
+::: etape Calcul de la dérivée
+$$f'(x) = \cos(x) - \sin(x)$$
+:::
+
+::: etape Résolution $\displaystyle f'(x) = 0$
+$$
+\begin{aligned}
+\cos(x) - \sin(x) = 0 &\Rightarrow \cos(x) = \sin(x) \\
+&\Rightarrow \tan(x) = 1
+\end{aligned}
+$$
+
+Solutions : $\displaystyle x = \frac{\pi}{4} + k\pi$
+:::
+
+::: etape Signe de $\displaystyle f'(x)$
+$$f'(x) = \sqrt{2} \sin\left(x - \frac{\pi}{4}\right)$$
+
+Donc même signe que $\displaystyle \sin\left(x - \frac{\pi}{4}\right)$
+:::
+
+::: etape Tableau de variations sur $[0, 2\pi]$
+::: tableau
+x : 0, \dfrac{\pi}{4}, 2\pi
+f'(x) : , +, z, -,
+f(x) : -/1, +/\sqrt{2}, -/1
+:::
+:::
+
+::: resultat
+- $f$ est **périodique** de période $2\pi$
+- $f$ admet un **maximum** de $\sqrt{2}$ en $x = \frac{\pi}{4} + 2k\pi$
+- $f$ est **croissante** sur $\left[\frac{5\pi}{4} + 2k\pi, \frac{\pi}{4} + 2(k+1)\pi\right[$
+- $f$ est **décroissante** sur $\left[\frac{\pi}{4} + 2k\pi, \frac{5\pi}{4} + 2k\pi\right]$
+:::
+
+[IMAGE_5]
+
+## IX. Erreurs fréquentes et conseils
+
+::: attention
+- Confondre $\sin^2(x) + \cos^2(x) = 1$ avec $\sin(x) + \cos(x) = 1$
+- Oublier que $\tan(x)$ n'est pas définie en $\frac{\pi}{2} + k\pi$
+- Inverser les dérivées : $(\sin(x))' = \cos(x)$ et $(\cos(x))' = -\sin(x)$
+- Oublier la périodicité dans les équations : une équation a généralement une infinité de solutions
+- Confondre les périodes : $2\pi$ pour sin/cos, $\pi$ pour tan
+- Oublier que $\sin(x)$ et $\cos(x)$ sont bornés par $[-1, 1]$
+:::
+
+::: conseil
+- Mémoriser les **valeurs remarquables** aux angles $\frac{\pi}{6}$, $\frac{\pi}{4}$, $\frac{\pi}{3}$, $\frac{\pi}{2}$
+- Utiliser la **relation fondamentale** $\sin^2 + \cos^2 = 1$ pour simplifier
+- Penser en termes de **périodicité** pour généraliser les solutions
+- Pour les dérivées composées : identifier $u(x)$ et appliquer la règle de dérivation
+- Pour les équations : commencer par résoudre sur une période, puis généraliser
+- Vérifier que les solutions trouvées sont dans le domaine de définition
+- S'entraîner à reconnaître les formes $\sin(x) \pm \cos(x) = k$ et utiliser les méthodes adaptées
+:::

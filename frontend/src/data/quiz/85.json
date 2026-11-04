@@ -1,0 +1,354 @@
+{
+ "notion": 85,
+ "titre": "Fonction exponentielle",
+ "intro": "16 questions pour vérifier que tu maîtrises la fonction exponentielle, des règles de calcul à l'étude de fonction.",
+ "duree": 16,
+ "parties": [
+  "Rappels de Première",
+  "Limites",
+  "Fonctions de la forme $e^{u}$",
+  "Étude complète d'une fonction",
+  "Un modèle exponentiel"
+ ],
+ "questions": [
+  {
+   "id": "q01",
+   "type": "vf",
+   "niveau": "Découverte",
+   "theme": "Signe de l'exponentielle",
+   "partie": "Rappels de Première",
+   "enonce": "L'équation $e^{x} = -2$ admet au moins une solution réelle.",
+   "reponse": false,
+   "explication": "Une exponentielle est **toujours strictement positive**.\n\nPour tout réel $x$, $e^{x} \\gt 0$ : $e^{x}$ ne peut jamais valoir $-2$. La courbe de $\\exp$ et la droite d'équation $y = -2$ n'ont aucun point commun.\n\n::: resultat\nFaux : l'équation $e^{x} = -2$ n'a **aucune** solution.\n:::",
+   "figure_corrige": {
+    "src": "/quiz/85/q01_corrige.png",
+    "w": 354,
+    "h": 260
+   }
+  },
+  {
+   "id": "q02",
+   "type": "qcm",
+   "niveau": "Découverte",
+   "theme": "Lecture graphique",
+   "partie": "Rappels de Première",
+   "enonce": "Laquelle de ces courbes représente la fonction exponentielle $x \\mapsto e^{x}$ ?",
+   "choix_figures": [
+    {
+     "src": "/quiz/85/q02_a.png",
+     "w": 226,
+     "h": 214
+    },
+    {
+     "src": "/quiz/85/q02_b.png",
+     "w": 226,
+     "h": 214
+    },
+    {
+     "src": "/quiz/85/q02_c.png",
+     "w": 226,
+     "h": 214
+    },
+    {
+     "src": "/quiz/85/q02_d.png",
+     "w": 226,
+     "h": 214
+    }
+   ],
+   "bonne": 2,
+   "explication": "On contrôle trois propriétés de la courbe de $\\exp$ :\n- elle passe par le point $(0\\,;1)$, car $e^{0} = 1$ ;\n- elle reste au-dessus de l'axe des abscisses, car $e^{x} \\gt 0$ ;\n- elle monte : $\\exp$ est strictement croissante.\n\n::: resultat\nC'est la courbe croissante, toujours au-dessus de l'axe des abscisses, qui passe par $(0\\,;1)$ (et par $(1\\,;e)$, avec $e \\approx 2{,}72$).\n:::\n\nLes autres courbes : $e^{-x}$ (décroissante), $e^{x} - 1$ (passe par l'origine), $e^{x} + 1$ (passe par $(0\\,;2)$).",
+   "figure_corrige": {
+    "src": "/quiz/85/q02_corrige.png",
+    "w": 354,
+    "h": 260
+   }
+  },
+  {
+   "id": "q03",
+   "type": "saisie",
+   "niveau": "Découverte",
+   "theme": "Règles de calcul",
+   "partie": "Rappels de Première",
+   "enonce": "Pour tout réel $x$, écrire $\\left(e^{x}\\right)^{3} \\times e^{-x}$ sous la forme d'une seule exponentielle.",
+   "nature": "expression",
+   "reponses": [
+    "exp(2*x)"
+   ],
+   "placeholder": "par exemple e^(5x)",
+   "explication": "On applique $\\left(e^{a}\\right)^{n} = e^{na}$, puis $e^{a} \\times e^{b} = e^{a+b}$.\n\n$$\\left(e^{x}\\right)^{3} \\times e^{-x} = e^{3x} \\times e^{-x} = e^{3x - x}$$\n\n::: resultat\n$\\left(e^{x}\\right)^{3} \\times e^{-x} = e^{2x}$\n:::\n\n::: attention Erreur fréquente\n$\\left(e^{x}\\right)^{3} = e^{3x}$, et non $e^{x^{3}}$. Au clavier, mettre l'exposant entre parenthèses : `e^(2x)`, car `e^2x` se lit $e^{2} \\times x$.\n:::"
+  },
+  {
+   "id": "q04",
+   "type": "qcm",
+   "niveau": "Découverte",
+   "theme": "Tangente en 0",
+   "partie": "Rappels de Première",
+   "enonce": "La droite $T$ est tangente à la courbe de $x \\mapsto e^{x}$ au point d'abscisse $0$. Quelle est son équation ?",
+   "figure": {
+    "src": "/quiz/85/q04_enonce.png",
+    "w": 354,
+    "h": 260
+   },
+   "choix": [
+    "$y = x + 1$",
+    "$y = x$",
+    "$y = e\\,x$",
+    "$y = x - 1$"
+   ],
+   "bonne": 0,
+   "explication": "Tangente en $a$ : $y = f'(a)(x - a) + f(a)$. Ici $f = \\exp$ et $a = 0$.\n\n- $f(0) = e^{0} = 1$ ;\n- $f'(0) = e^{0} = 1$, car $\\exp' = \\exp$.\n\n::: resultat\n$T : y = 1 \\times (x - 0) + 1$, soit $y = x + 1$.\n:::\n\nLa courbe est au-dessus de sa tangente : pour tout réel $x$, $e^{x} \\ge x + 1$.",
+   "figure_corrige": {
+    "src": "/quiz/85/q04_corrige.png",
+    "w": 380,
+    "h": 260
+   }
+  },
+  {
+   "id": "q05",
+   "type": "multi",
+   "niveau": "Entraînement",
+   "theme": "Règles de calcul",
+   "partie": "Rappels de Première",
+   "enonce": "Cocher les égalités vraies pour **tout** réel $x$.",
+   "choix": [
+    "$e^{2x} = \\left(e^{x}\\right)^{2}$",
+    "$e^{-x} = \\dfrac{1}{e^{x}}$",
+    "$e^{x+1} = e^{x} + e$",
+    "$e^{x^{2}} = \\left(e^{x}\\right)^{2}$",
+    "$\\dfrac{e^{3x}}{e^{x}} = e^{2x}$",
+    "$e^{x} \\times e^{2} = e^{2x}$"
+   ],
+   "bonnes": [
+    0,
+    1,
+    4
+   ],
+   "explication": "On applique les règles : $e^{a+b} = e^{a} \\times e^{b}$, $e^{-a} = \\dfrac{1}{e^{a}}$, $e^{a-b} = \\dfrac{e^{a}}{e^{b}}$ et $\\left(e^{a}\\right)^{n} = e^{na}$.\n\n- Vrai : $\\left(e^{x}\\right)^{2} = e^{2x}$.\n- Vrai : $e^{-x} = \\dfrac{1}{e^{x}}$.\n- Vrai : $\\dfrac{e^{3x}}{e^{x}} = e^{3x - x} = e^{2x}$.\n- Faux : $e^{x+1} = e^{x} \\times e$ (un produit, pas une somme).\n- Faux : $\\left(e^{x}\\right)^{2} = e^{2x}$, et non $e^{x^{2}}$.\n- Faux : $e^{x} \\times e^{2} = e^{x+2}$ : on **ajoute** les exposants.\n\n::: resultat\nTrois égalités vraies : $e^{2x} = \\left(e^{x}\\right)^{2}$, $e^{-x} = \\dfrac{1}{e^{x}}$ et $\\dfrac{e^{3x}}{e^{x}} = e^{2x}$.\n:::"
+  },
+  {
+   "id": "q06",
+   "type": "vf",
+   "niveau": "Entraînement",
+   "theme": "Sens de variation",
+   "partie": "Rappels de Première",
+   "enonce": "La fonction $f : x \\mapsto e^{-2x+1}$ est croissante sur $\\mathbb{R}$, car la fonction exponentielle est croissante.",
+   "reponse": false,
+   "explication": "$e^{u}$ a les **mêmes variations que $u$**. Ici $u(x) = -2x + 1$ est décroissante.\n\nPar le calcul : $f'(x) = -2\\,e^{-2x+1}$, et $e^{-2x+1} \\gt 0$, donc $f'(x) \\lt 0$.\n\n::: resultat\nFaux : $f$ est strictement **décroissante** sur $\\mathbb{R}$.\n:::",
+   "figure_corrige": {
+    "src": "/quiz/85/q06_corrige.png",
+    "w": 364,
+    "h": 251
+   }
+  },
+  {
+   "id": "q07",
+   "type": "qcm",
+   "niveau": "Entraînement",
+   "theme": "Dérivée de exp(u)",
+   "partie": "Fonctions de la forme $e^{u}$",
+   "enonce": "Soit $f(x) = e^{-3x+1}$. Pour tout réel $x$, $f'(x)$ est égal à :",
+   "choix": [
+    "$-3\\,e^{-3x+1}$",
+    "$e^{-3x+1}$",
+    "$(-3x+1)\\,e^{-3x}$",
+    "$3\\,e^{-3x+1}$"
+   ],
+   "bonne": 0,
+   "explication": "On utilise $\\left(e^{u}\\right)' = u'\\,e^{u}$ avec $u(x) = -3x + 1$, donc $u'(x) = -3$.\n\n::: resultat\n$f'(x) = -3\\,e^{-3x+1}$\n:::\n\n::: attention Erreur fréquente\nOublier le facteur $u'$ : la dérivée de $e^{-3x+1}$ n'est pas $e^{-3x+1}$.\n:::"
+  },
+  {
+   "id": "q08",
+   "type": "saisie",
+   "niveau": "Entraînement",
+   "theme": "Dérivée d'un produit",
+   "partie": "Étude complète d'une fonction",
+   "enonce": "Soit $f(x) = (x - 1)\\,e^{x}$. Écrire $f'(x)$ sous la forme la plus simple.",
+   "nature": "expression",
+   "reponses": [
+    "x*exp(x)"
+   ],
+   "placeholder": "par exemple (2x+1)e^x",
+   "explication": "Dérivée d'un produit : $(uv)' = u'v + uv'$ avec $u(x) = x - 1$ et $v(x) = e^{x}$, donc $u'(x) = 1$ et $v'(x) = e^{x}$.\n\n$$\n\\begin{aligned}\nf'(x) &= 1 \\times e^{x} + (x - 1)\\,e^{x} \\\\\n&= (1 + x - 1)\\,e^{x} \\\\\n&= x\\,e^{x}\n\\end{aligned}\n$$\n\n::: resultat\n$f'(x) = x\\,e^{x}$\n:::\n\n::: attention Erreur fréquente\n$(uv)' \\ne u'v'$ : en dérivant chaque facteur séparément, on trouverait $e^{x}$, ce qui est faux.\n:::"
+  },
+  {
+   "id": "q09",
+   "type": "saisie",
+   "niveau": "Entraînement",
+   "theme": "Équations",
+   "partie": "Rappels de Première",
+   "enonce": "Résoudre dans $\\mathbb{R}$ l'équation $e^{2x-1} = e^{x+3}$. Donner la solution.",
+   "nature": "nombre",
+   "reponses": [
+    "4"
+   ],
+   "placeholder": "par exemple 2,5",
+   "explication": "Pour tous réels $a$ et $b$ : $e^{a} = e^{b} \\iff a = b$. On compare les exposants.\n\n$$\n\\begin{aligned}\ne^{2x-1} = e^{x+3} &\\iff 2x - 1 = x + 3 \\\\\n&\\iff x = 4\n\\end{aligned}\n$$\n\n::: resultat\n$S = \\{4\\}$\n:::"
+  },
+  {
+   "id": "q10",
+   "type": "ordre",
+   "niveau": "Entraînement",
+   "theme": "Inéquations",
+   "partie": "Rappels de Première",
+   "enonce": "Remettre dans l'ordre les étapes de la résolution de $e^{3x-2} \\lt e^{x+4}$.",
+   "etapes": [
+    "$\\exp$ est strictement croissante : on compare les exposants.",
+    "$3x - 2 \\lt x + 4$",
+    "$2x \\lt 6$",
+    "$x \\lt 3$",
+    "$S = \\left]-\\infty\\,;3\\right[$"
+   ],
+   "explication": "Comme $\\exp$ est strictement croissante, $e^{a} \\lt e^{b} \\iff a \\lt b$ : le sens de l'inégalité est **conservé**.\n\n$$\n\\begin{aligned}\ne^{3x-2} \\lt e^{x+4} &\\iff 3x - 2 \\lt x + 4 \\\\\n&\\iff 2x \\lt 6 \\\\\n&\\iff x \\lt 3\n\\end{aligned}\n$$\n\n::: resultat\n$S = \\left]-\\infty\\,;3\\right[$\n:::",
+   "figure_corrige": {
+    "src": "/quiz/85/q10_corrige.png",
+    "w": 328,
+    "h": 92
+   }
+  },
+  {
+   "id": "q11",
+   "type": "multi",
+   "niveau": "Approfondissement",
+   "theme": "Limites",
+   "partie": "Limites",
+   "enonce": "Cocher les limites exactes.",
+   "choix": [
+    "$\\lim\\limits_{x \\to -\\infty} e^{x} = 0$",
+    "$\\lim\\limits_{x \\to +\\infty} x\\,e^{-x} = +\\infty$",
+    "$\\lim\\limits_{x \\to +\\infty} \\dfrac{e^{x}}{x^{3}} = +\\infty$",
+    "$\\lim\\limits_{x \\to 0} \\dfrac{e^{x} - 1}{x} = 0$",
+    "$\\lim\\limits_{x \\to -\\infty} x^{2}\\,e^{x} = 0$"
+   ],
+   "bonnes": [
+    0,
+    2,
+    4
+   ],
+   "explication": "- Vrai : $\\lim\\limits_{x \\to -\\infty} e^{x} = 0$ (asymptote $y = 0$).\n- Faux : $x\\,e^{-x} = \\dfrac{x}{e^{x}} \\to 0$ en $+\\infty$ (croissances comparées).\n- Vrai : en $+\\infty$, l'exponentielle l'emporte sur $x^{3}$.\n- Faux : $\\dfrac{e^{x} - 1}{x}$ est le taux d'accroissement de $\\exp$ en $0$ ; il tend vers $\\exp'(0) = 1$.\n- Vrai : $\\lim\\limits_{x \\to -\\infty} x^{n}\\,e^{x} = 0$, ici avec $n = 2$.\n\n::: resultat\nLes limites exactes : $\\lim\\limits_{x \\to -\\infty} e^{x} = 0$, $\\lim\\limits_{x \\to +\\infty} \\dfrac{e^{x}}{x^{3}} = +\\infty$ et $\\lim\\limits_{x \\to -\\infty} x^{2}\\,e^{x} = 0$.\n:::\n\n::: attention Erreur fréquente\n« $0 \\times \\infty$ » et « $\\frac{\\infty}{\\infty}$ » sont des formes indéterminées : on conclut avec les croissances comparées.\n:::"
+  },
+  {
+   "id": "q11b",
+   "type": "qcm",
+   "niveau": "Approfondissement",
+   "theme": "Limites",
+   "partie": "Limites",
+   "enonce": "Que vaut $\\lim\\limits_{x \\to +\\infty} \\left(e^{2x} - 3e^{x}\\right)$ ?",
+   "choix": [
+    "$+\\infty$",
+    "$-\\infty$",
+    "$0$",
+    "On ne peut pas conclure : c'est une forme indéterminée."
+   ],
+   "bonne": 0,
+   "explication": "On a une forme « $\\infty - \\infty$ » : on **factorise par le terme le plus fort**, $e^{x}$.\n\n$$e^{2x} - 3e^{x} = e^{x}\\left(e^{x} - 3\\right)$$\n\nQuand $x \\to +\\infty$ : $e^{x} \\to +\\infty$ et $e^{x} - 3 \\to +\\infty$, donc le produit tend vers $+\\infty$.\n\n::: resultat\n$\\lim\\limits_{x \\to +\\infty} \\left(e^{2x} - 3e^{x}\\right) = +\\infty$\n:::\n\n::: attention Erreur fréquente\nS'arrêter à « $\\infty - \\infty$, on ne peut pas conclure » : une forme indéterminée se **lève**, ici en factorisant.\n:::"
+  },
+  {
+   "id": "q12",
+   "type": "associer",
+   "niveau": "Approfondissement",
+   "theme": "Variations et courbes",
+   "partie": "Fonctions de la forme $e^{u}$",
+   "enonce": "Associer chaque fonction à sa courbe.",
+   "gauche": [
+    "$x \\mapsto e^{-x}$",
+    "$x \\mapsto e^{-x^{2}}$",
+    "$x \\mapsto e^{x^{2}}$",
+    "$x \\mapsto x\\,e^{x}$"
+   ],
+   "droite_figures": [
+    {
+     "src": "/quiz/85/q12_a.png",
+     "w": 226,
+     "h": 204
+    },
+    {
+     "src": "/quiz/85/q12_b.png",
+     "w": 226,
+     "h": 204
+    },
+    {
+     "src": "/quiz/85/q12_c.png",
+     "w": 226,
+     "h": 204
+    },
+    {
+     "src": "/quiz/85/q12_d.png",
+     "w": 226,
+     "h": 204
+    }
+   ],
+   "explication": "$e^{u}$ a les **mêmes variations que $u$**, et $e^{u} \\gt 0$.\n\n- $e^{-x}$ : $u(x) = -x$ est décroissante, donc la courbe descend ; elle passe par $(0\\,;1)$.\n- $e^{-x^{2}}$ : $-x^{2}$ croît puis décroît, donc courbe « en cloche », maximum $1$ en $0$.\n- $e^{x^{2}}$ : $x^{2}$ décroît puis croît, donc minimum $1$ en $0$.\n- $x\\,e^{x}$ : elle est nulle en $0$ et négative pour $x \\lt 0$ ; c'est la seule qui passe sous l'axe des abscisses.\n\n::: resultat\nPour reconnaître une courbe : sens de variation (signe de $u'$), valeur en $0$, signe de la fonction.\n:::"
+  },
+  {
+   "id": "q13",
+   "type": "qcm",
+   "niveau": "Approfondissement",
+   "theme": "Suites géométriques",
+   "partie": "Rappels de Première",
+   "enonce": "Soit la suite définie pour tout entier naturel $n$ par $u_n = e^{-0{,}5n}$. Cette suite est :",
+   "choix": [
+    "géométrique de raison $e^{-0{,}5}$",
+    "arithmétique de raison $-0{,}5$",
+    "géométrique de raison $-0{,}5$",
+    "arithmétique de raison $e^{-0{,}5}$"
+   ],
+   "bonne": 0,
+   "explication": "On exprime $u_{n+1}$ en fonction de $u_n$ avec $e^{a+b} = e^{a} \\times e^{b}$ :\n\n$$u_{n+1} = e^{-0{,}5(n+1)} = e^{-0{,}5n} \\times e^{-0{,}5} = e^{-0{,}5} \\times u_n$$\n\n::: resultat\n$(u_n)$ est géométrique de raison $q = e^{-0{,}5} \\approx 0{,}61$ et de premier terme $u_0 = 1$.\n:::\n\nComme $0 \\lt q \\lt 1$ et $u_0 \\gt 0$, la suite est décroissante et tend vers $0$.",
+   "figure_corrige": {
+    "src": "/quiz/85/q13_corrige.png",
+    "w": 357,
+    "h": 222
+   }
+  },
+  {
+   "id": "q14",
+   "type": "saisie",
+   "niveau": "Approfondissement",
+   "theme": "Étude de fonction",
+   "partie": "Étude complète d'une fonction",
+   "enonce": "On étudie $f(x) = x\\,e^{-x}$ sur $\\mathbb{R}$. Donner la **valeur exacte** du maximum de $f$.",
+   "figure": {
+    "src": "/quiz/85/q14_enonce.png",
+    "w": 372,
+    "h": 232
+   },
+   "nature": "nombre",
+   "reponses": [
+    "1/e"
+   ],
+   "placeholder": "valeur exacte",
+   "explication": "On dérive, on étudie le signe de $f'$, puis on calcule la valeur du maximum.\n\n$$f'(x) = 1 \\times e^{-x} + x \\times \\left(-e^{-x}\\right) = (1 - x)\\,e^{-x}$$\n\nComme $e^{-x} \\gt 0$, $f'(x)$ a le signe de $1 - x$ : positif avant $1$, négatif après.\n\n::: tableau\nx : -\\infty, 1, +\\infty\nf'(x) : , +, z, -,\nf(x) : -/-\\infty, +/\\frac{1}{e}, -/0\n:::\n\n::: resultat\nLe maximum de $f$ vaut $f(1) = 1 \\times e^{-1} = \\dfrac{1}{e}$.\n:::\n\n::: attention Erreur fréquente\nNe pas confondre l'abscisse du maximum ($x = 1$) et sa valeur ($\\frac{1}{e}$). La valeur $0{,}37$ n'est qu'une valeur approchée.\n:::",
+   "figure_corrige": {
+    "src": "/quiz/85/q14_corrige.png",
+    "w": 372,
+    "h": 232
+   }
+  },
+  {
+   "id": "q15",
+   "type": "saisie",
+   "niveau": "Approfondissement",
+   "theme": "Modèle exponentiel",
+   "partie": "Un modèle exponentiel",
+   "enonce": "La tension aux bornes d'un condensateur qui se charge vaut $u(t) = 5\\left(1 - e^{-0{,}5t}\\right)$ ($t$ en secondes, $u$ en volts). Calculer $u(4)$, arrondi au centième.",
+   "figure": {
+    "src": "/quiz/85/q15_enonce.png",
+    "w": 368,
+    "h": 220
+   },
+   "nature": "nombre",
+   "reponses": [
+    "5*(1-exp(-2))"
+   ],
+   "tolerance": 0.005,
+   "unite": "V",
+   "placeholder": "par exemple 1,23",
+   "explication": "On remplace $t$ par $4$ : $-0{,}5 \\times 4 = -2$.\n\n$$u(4) = 5\\left(1 - e^{-2}\\right) \\approx 5 \\times (1 - 0{,}1353) \\approx 4{,}32$$\n\n::: resultat\n$u(4) \\approx 4{,}32$ V\n:::\n\nLa tension se rapproche de $5$ V sans jamais l'atteindre, car $e^{-0{,}5t} \\gt 0$.\n\n::: attention Erreur fréquente\nLe signe de l'exposant : $-0{,}5 \\times 4 = -2$, donc $e^{-2} \\approx 0{,}14$ (et non $e^{2}$).\n:::",
+   "figure_corrige": {
+    "src": "/quiz/85/q15_corrige.png",
+    "w": 386,
+    "h": 220
+   }
+  }
+ ]
+}

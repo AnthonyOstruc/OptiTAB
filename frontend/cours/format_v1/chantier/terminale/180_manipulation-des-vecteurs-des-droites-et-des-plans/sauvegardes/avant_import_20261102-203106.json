@@ -1,0 +1,484 @@
+{
+ "notion": 180,
+ "dossier": "C:\\Users\\SWEELCO-AT\\Desktop\\SWINDER\\OptiTABV2\\frontend\\cours\\format_v1\\chantier\\terminale\\180_manipulation-des-vecteurs-des-droites-et-des-plans",
+ "date": "2026-11-02T20:31:06",
+ "cours": [
+  {
+   "id": 167,
+   "contenu": "<!-- optitab:1 -->\n::: objectifs\n- Calculer avec les vecteurs de l’espace : relation de Chasles, combinaisons linéaires.\n- Caractériser une droite par un point et un vecteur directeur, un plan par un point et deux vecteurs non colinéaires.\n- Reconnaître des vecteurs colinéaires ou coplanaires ; décomposer un vecteur dans une base.\n- Décrire les positions relatives de droites et de plans ; utiliser le théorème du toit ; construire une section.\n:::\n\n## I. Vecteurs de l’espace\n\n::: definition Vecteurs de l’espace\nLes notions de vecteur, de somme et de produit par un réel s’étendent à l’espace avec les **mêmes règles** que dans le plan :\n- à deux points $A$ et $B$ est associé le vecteur $\\overrightarrow{AB}$, celui de la translation qui envoie $A$ sur $B$ ;\n- $\\overrightarrow{AB} = \\overrightarrow{DC}$ si et seulement si $ABCD$ est un parallélogramme (éventuellement aplati) ;\n- relation de Chasles : $\\overrightarrow{AB} + \\overrightarrow{BC} = \\overrightarrow{AC}$ ;\n- $I$ est le milieu de $[AB]$ si et seulement si $\\overrightarrow{AI} = \\frac{1}{2}\\overrightarrow{AB}$.\n:::\n\n::: definition Combinaison linéaire\nUne **combinaison linéaire** des vecteurs $\\vec{u}$ et $\\vec{v}$ est un vecteur de la forme $a\\vec{u} + b\\vec{v}$, où $a$ et $b$ sont des réels. De même, $a\\vec{u} + b\\vec{v} + c\\vec{w}$ est une combinaison linéaire de $\\vec{u}$, $\\vec{v}$ et $\\vec{w}$.\n:::\n\n::: propriete Colinéarité\nDeux vecteurs $\\vec{u}$ et $\\vec{v}$ sont **colinéaires** si l’un est le produit de l’autre par un réel ($\\vec{v} = k\\vec{u}$ ou $\\vec{u} = k\\vec{v}$). Par suite :\n- $A$, $B$, $C$ sont alignés si et seulement si $\\overrightarrow{AB}$ et $\\overrightarrow{AC}$ sont colinéaires ;\n- les droites $(AB)$ et $(CD)$ sont parallèles si et seulement si $\\overrightarrow{AB}$ et $\\overrightarrow{CD}$ sont colinéaires.\n:::\n\n::: exemple Décomposer un vecteur dans un cube\nDans le cube $ABCDEFGH$ ci-dessous, $\\overrightarrow{BC} = \\overrightarrow{AD}$ et $\\overrightarrow{CG} = \\overrightarrow{AE}$ (arêtes parallèles, de même sens et de même longueur). Avec la relation de Chasles :\n\n$$\n\\begin{aligned}\n\\overrightarrow{AG} &= \\overrightarrow{AB} + \\overrightarrow{BC} + \\overrightarrow{CG} \\\\\n&= \\overrightarrow{AB} + \\overrightarrow{AD} + \\overrightarrow{AE}\n\\end{aligned}\n$$\n:::\n\n[IMAGE_1]\n\n## II. Droites et plans de l’espace\n\n### 1. Droites\n\n::: definition Droite de l’espace\nSoit $A$ un point et $\\vec{u}$ un vecteur **non nul**. La droite $d$ passant par $A$ et de **vecteur directeur** $\\vec{u}$ est l’ensemble des points $M$ tels que\n\n$$\\overrightarrow{AM} = t\\,\\vec{u}, \\quad t \\in \\mathbb{R}$$\n:::\n\n::: propriete\n- Si $A$ et $B$ sont deux points distincts de $d$, alors $\\overrightarrow{AB}$ est un vecteur directeur de $d$ ; tout vecteur non nul colinéaire à $\\vec{u}$ dirige aussi $d$.\n- Deux droites sont parallèles si et seulement si leurs vecteurs directeurs sont colinéaires.\n:::\n\n### 2. Plans\n\n::: definition Plan de l’espace\nSoit $A$ un point, $\\vec{u}$ et $\\vec{v}$ deux vecteurs **non colinéaires**. Le plan $\\mathcal{P}$ passant par $A$ et dirigé par $\\vec{u}$ et $\\vec{v}$ est l’ensemble des points $M$ tels que\n\n$$\\overrightarrow{AM} = x\\,\\vec{u} + y\\,\\vec{v}, \\quad x \\in \\mathbb{R},\\ y \\in \\mathbb{R}$$\n\nLe couple $(\\vec{u}, \\vec{v})$ est un couple de vecteurs directeurs de $\\mathcal{P}$ ; les vecteurs $x\\vec{u} + y\\vec{v}$ forment la **direction** du plan.\n:::\n\n[IMAGE_2]\n\nSur la figure, $\\overrightarrow{AM} = 2\\vec{u} + 1{,}5\\,\\vec{v}$ : on construit $M$ en complétant le parallélogramme.\n\n::: remarque\nTrois points non alignés $A$, $B$, $C$ définissent un unique plan, noté $(ABC)$, dirigé par $\\overrightarrow{AB}$ et $\\overrightarrow{AC}$. Une droite et un point extérieur à cette droite, ou deux droites parallèles distinctes, définissent aussi un unique plan.\n:::\n\n### 3. Vecteurs coplanaires\n\n::: definition Vecteurs coplanaires\nTrois vecteurs $\\vec{u}$, $\\vec{v}$, $\\vec{w}$ sont **coplanaires** si, en les représentant à partir d’un même point $O$ ($\\vec{u} = \\overrightarrow{OU}$, $\\vec{v} = \\overrightarrow{OV}$, $\\vec{w} = \\overrightarrow{OW}$), les quatre points $O$, $U$, $V$, $W$ sont dans un même plan.\n:::\n\n::: theoreme Caractérisation\nSi $\\vec{u}$ et $\\vec{v}$ ne sont pas colinéaires, les vecteurs $\\vec{u}$, $\\vec{v}$, $\\vec{w}$ sont coplanaires si et seulement s’il existe deux réels $a$ et $b$ tels que\n\n$$\\vec{w} = a\\vec{u} + b\\vec{v}$$\n\nEn particulier, quatre points $A$, $B$, $C$, $D$ sont coplanaires si et seulement si $\\overrightarrow{AB}$, $\\overrightarrow{AC}$, $\\overrightarrow{AD}$ sont coplanaires.\n:::\n\n[IMAGE_3]\n\n::: exemple Dans le cube\n$\\overrightarrow{EG} = \\overrightarrow{EF} + \\overrightarrow{EH}$, donc $\\overrightarrow{EF}$, $\\overrightarrow{EH}$ et $\\overrightarrow{EG}$ sont coplanaires : ils sont dans le plan $(EFG)$. En revanche, $\\overrightarrow{EF}$, $\\overrightarrow{EH}$ et $\\overrightarrow{EA}$ ne sont pas coplanaires, car $A$ n’appartient pas au plan $(EFG)$.\n:::\n\n::: methode Démontrer que trois vecteurs sont (ou ne sont pas) coplanaires\nOn cherche deux réels $a$ et $b$ tels que $\\vec{w} = a\\vec{u} + b\\vec{v}$ :\n- sur une figure, par une décomposition avec la relation de Chasles ;\n- en coordonnées, par un système de **trois** équations à deux inconnues : on trouve $a$ et $b$ avec deux équations, puis on **vérifie** la troisième. Si elle est fausse, les vecteurs ne sont pas coplanaires.\n:::\n\n::: exemple\nSoit $\\vec{u}\\begin{pmatrix} 1 \\\\ 0 \\\\ 1 \\end{pmatrix}$, $\\vec{v}\\begin{pmatrix} 0 \\\\ 1 \\\\ 1 \\end{pmatrix}$, $\\vec{w}\\begin{pmatrix} 2 \\\\ 3 \\\\ 5 \\end{pmatrix}$ et $\\vec{t}\\begin{pmatrix} 1 \\\\ 1 \\\\ 3 \\end{pmatrix}$.\n- $\\vec{w} = a\\vec{u} + b\\vec{v}$ : les deux premières coordonnées donnent $a = 2$ et $b = 3$ ; la troisième est vérifiée car $a + b = 5$. Donc $\\vec{w} = 2\\vec{u} + 3\\vec{v}$ : $\\vec{u}$, $\\vec{v}$, $\\vec{w}$ sont **coplanaires**.\n- $\\vec{t} = a\\vec{u} + b\\vec{v}$ : on obtient $a = 1$ et $b = 1$, mais $a + b = 2 \\neq 3$. Donc $\\vec{u}$, $\\vec{v}$, $\\vec{t}$ ne sont **pas** coplanaires.\n:::\n\n## III. Bases et repères de l’espace\n\n::: definition Base de l’espace\nTrois vecteurs **non coplanaires** $\\vec{\\imath}$, $\\vec{\\jmath}$, $\\vec{k}$ forment une **base** de l’espace.\n:::\n\n::: theoreme Décomposition dans une base\nSi $(\\vec{\\imath}, \\vec{\\jmath}, \\vec{k})$ est une base, tout vecteur $\\vec{u}$ s’écrit de **façon unique** $\\vec{u} = x\\vec{\\imath} + y\\vec{\\jmath} + z\\vec{k}$. Les réels $x$, $y$, $z$ sont les **coordonnées** de $\\vec{u}$ dans cette base ; on note $\\vec{u}\\begin{pmatrix} x \\\\ y \\\\ z \\end{pmatrix}$.\n:::\n\n::: definition Repère de l’espace\nUn **repère** $(O\\,;\\vec{\\imath}, \\vec{\\jmath}, \\vec{k})$ est formé d’un point $O$ (l’origine) et d’une base. Le point $M$ a pour coordonnées $(x\\,;y\\,;z)$ si et seulement si\n\n$$\\overrightarrow{OM} = x\\vec{\\imath} + y\\vec{\\jmath} + z\\vec{k}$$\n\n$x$ est l’abscisse, $y$ l’ordonnée et $z$ la cote de $M$. Le repère est **orthonormé** si $\\vec{\\imath}$, $\\vec{\\jmath}$, $\\vec{k}$ sont deux à deux orthogonaux et de norme $1$.\n:::\n\n[IMAGE_4]\n\nSur la figure, $M(2\\,;3\\,;2)$ : $\\overrightarrow{OM} = 2\\vec{\\imath} + 3\\vec{\\jmath} + 2\\vec{k}$.\n\n::: propriete Calculs en coordonnées\nDans un repère, avec $A(x_A\\,;y_A\\,;z_A)$ et $B(x_B\\,;y_B\\,;z_B)$ :\n- $\\overrightarrow{AB}\\begin{pmatrix} x_B - x_A \\\\ y_B - y_A \\\\ z_B - z_A \\end{pmatrix}$ ;\n- le milieu de $[AB]$ a pour coordonnées $\\left(\\dfrac{x_A + x_B}{2}\\,;\\dfrac{y_A + y_B}{2}\\,;\\dfrac{z_A + z_B}{2}\\right)$ ;\n- les coordonnées de $\\vec{u} + \\vec{v}$ et de $k\\vec{u}$ se calculent coordonnée par coordonnée ;\n- deux vecteurs sont colinéaires si et seulement si leurs coordonnées sont proportionnelles.\n:::\n\n::: exemple\n$A(1\\,;0\\,;2)$, $B(3\\,;1\\,;1)$ et $C(7\\,;3\\,;-1)$. On a $\\overrightarrow{AB}\\begin{pmatrix} 2 \\\\ 1 \\\\ -1 \\end{pmatrix}$ et $\\overrightarrow{AC}\\begin{pmatrix} 6 \\\\ 3 \\\\ -3 \\end{pmatrix}$, donc $\\overrightarrow{AC} = 3\\overrightarrow{AB}$ : les points $A$, $B$, $C$ sont alignés.\n:::\n\n::: methode Choisir un repère adapté à un solide\nDans un cube $ABCDEFGH$, on prend le repère $(A\\,;\\overrightarrow{AB}, \\overrightarrow{AD}, \\overrightarrow{AE})$ : $A(0\\,;0\\,;0)$, $B(1\\,;0\\,;0)$, $C(1\\,;1\\,;0)$, $D(0\\,;1\\,;0)$, $E(0\\,;0\\,;1)$, $F(1\\,;0\\,;1)$, $G(1\\,;1\\,;1)$ et $H(0\\,;1\\,;1)$. Pour un pavé droit, les coordonnées dans ce repère sont les mêmes (le repère n’est alors pas orthonormé).\n:::\n\n## IV. Positions relatives de droites et de plans\n\n### 1. Deux droites\n\n::: propriete\nDeux droites de l’espace sont :\n- soit **coplanaires** : elles sont alors sécantes (en un point) ou parallèles (strictement parallèles ou confondues) ;\n- soit **non coplanaires** : elles ne sont ni sécantes, ni parallèles.\n:::\n\n[IMAGE_5]\n\n::: exemple\nDans le cube : $(AB)$ et $(HG)$ sont parallèles (car $\\overrightarrow{HG} = \\overrightarrow{AB}$) ; $(AB)$ et $(BC)$ sont sécantes en $B$ ; $(AB)$ et $(CG)$ sont non coplanaires.\n:::\n\n::: attention\nDans l’espace, deux droites non parallèles ne sont pas forcément sécantes. Sur une figure en perspective, deux droites qui semblent se couper ne se coupent pas forcément : $(AB)$ et $(CG)$ n’ont aucun point commun.\n:::\n\n### 2. Une droite et un plan\n\n::: propriete\nSoit $d$ une droite de vecteur directeur $\\vec{w}$ et $\\mathcal{P}$ un plan dirigé par $\\vec{u}$ et $\\vec{v}$.\n- Si $\\vec{u}$, $\\vec{v}$, $\\vec{w}$ sont coplanaires, $d$ est **parallèle** à $\\mathcal{P}$ : soit $d$ est incluse dans $\\mathcal{P}$, soit $d$ et $\\mathcal{P}$ n’ont aucun point commun (strictement parallèles).\n- Sinon, $d$ et $\\mathcal{P}$ sont **sécants** en un point.\n:::\n\n[IMAGE_6]\n\n::: methode Étudier la position d’une droite et d’un plan\n1. On teste si $\\vec{w}$ est une combinaison linéaire de $\\vec{u}$ et $\\vec{v}$ ; si ce n’est pas le cas, $d$ et $\\mathcal{P}$ sont sécants.\n2. Sinon, on teste si un point de $d$ appartient à $\\mathcal{P}$ : si oui, $d$ est incluse dans $\\mathcal{P}$ ; si non, elle lui est strictement parallèle.\n:::\n\n### 3. Deux plans\n\n::: propriete\n- Deux plans de l’espace sont soit **sécants** suivant une droite, soit **parallèles** (strictement parallèles ou confondus).\n- Deux plans sont parallèles si et seulement si deux droites sécantes de l’un sont parallèles à l’autre.\n- Si deux plans sont parallèles, tout plan qui coupe l’un coupe l’autre, et les deux droites d’intersection sont parallèles.\n:::\n\n[IMAGE_7]\n\n### 4. Le théorème du toit\n\n::: theoreme Théorème du toit\nSi deux plans sécants $\\mathcal{P}_1$ et $\\mathcal{P}_2$ contiennent respectivement deux droites parallèles $d_1$ et $d_2$, alors leur droite d’intersection $\\Delta$ est parallèle à $d_1$ et à $d_2$.\n:::\n\n[IMAGE_8]\n\n::: demonstration\nSoit $\\vec{u}$ un vecteur directeur commun à $d_1$ et $d_2$, et $A$ un point de $\\Delta$. Notons $\\delta$ la droite passant par $A$ et dirigée par $\\vec{u}$.\n- $A \\in \\mathcal{P}_1$ et $\\vec{u}$ dirige $d_1 \\subset \\mathcal{P}_1$, donc $\\delta \\subset \\mathcal{P}_1$.\n- De même, $A \\in \\mathcal{P}_2$ et $\\vec{u}$ dirige $d_2 \\subset \\mathcal{P}_2$, donc $\\delta \\subset \\mathcal{P}_2$.\n\nAinsi $\\delta$ est incluse dans $\\mathcal{P}_1 \\cap \\mathcal{P}_2 = \\Delta$ : les deux droites sont confondues, et $\\Delta$, dirigée par $\\vec{u}$, est parallèle à $d_1$ et à $d_2$.\n:::\n\n## V. Section d’un solide par un plan\n\n::: methode Construire la section d’un cube par un plan\n- Deux points du plan de coupe situés sur une même face se relient : on obtient un côté de la section.\n- Les côtés situés sur deux faces parallèles sont **parallèles** (propriété des plans parallèles).\n- Pour atteindre une autre face, on prolonge un côté jusqu’à une arête ou une droite de cette face.\n:::\n\n::: exemple\n$I$ et $J$ sont les milieux de $[AB]$ et $[BC]$. Le plan $(IJG)$ coupe la face $EFGH$, parallèle à $ABCD$, suivant la parallèle à $(IJ)$ passant par $G$, c’est-à-dire $(GE)$ (on a $\\overrightarrow{EG} = 2\\overrightarrow{IJ}$). La section est le trapèze $IJGE$.\n:::\n\n[IMAGE_9]\n\n::: retenir\n- Droite : $\\overrightarrow{AM} = t\\vec{u}$ ; plan : $\\overrightarrow{AM} = x\\vec{u} + y\\vec{v}$ avec $\\vec{u}$, $\\vec{v}$ non colinéaires.\n- $\\vec{u}$, $\\vec{v}$ non colinéaires : $\\vec{u}$, $\\vec{v}$, $\\vec{w}$ coplanaires $\\iff \\vec{w} = a\\vec{u} + b\\vec{v}$.\n- Une base de l’espace : trois vecteurs non coplanaires ; coordonnées à trois composantes.\n- Deux droites de l’espace peuvent être non coplanaires ; le théorème du toit donne la direction d’une intersection de plans.\n\nFiche de synthèse dans l’onglet Fiches !\n:::"
+  }
+ ],
+ "fiches": [
+  {
+   "id": 74,
+   "summary": "<!-- optitab:1 -->\n::: objectifs\nRetenir l’essentiel : droites et plans, colinéarité, coplanarité, bases et repères, positions relatives. Programme de Terminale.\n:::\n\n## I. Droites, plans, coplanarité\n\n1. Droite passant par $A$, dirigée par $\\vec{u} \\neq \\vec{0}$ : $\\overrightarrow{AM} = t\\vec{u}$, $t \\in \\mathbb{R}$.\n2. Plan passant par $A$, dirigé par $\\vec{u}$, $\\vec{v}$ **non colinéaires** : $\\overrightarrow{AM} = x\\vec{u} + y\\vec{v}$.\n3. $A$, $B$, $C$ alignés $\\iff \\overrightarrow{AC} = k\\overrightarrow{AB}$ (coordonnées proportionnelles).\n\n::: formule\n$\\vec{u}$, $\\vec{v}$ non colinéaires : $\\vec{u}, \\vec{v}, \\vec{w}$ coplanaires $\\iff \\vec{w} = a\\vec{u} + b\\vec{v}$\n:::\n\n[IMAGE_1]\n\n4. Quatre points $A$, $B$, $C$, $D$ sont coplanaires $\\iff$ $\\overrightarrow{AB}$, $\\overrightarrow{AC}$, $\\overrightarrow{AD}$ sont coplanaires.\n5. Base : trois vecteurs non coplanaires ; tout vecteur s’écrit de façon unique $x\\vec{\\imath} + y\\vec{\\jmath} + z\\vec{k}$.\n6. $\\overrightarrow{AB}\\begin{pmatrix} x_B - x_A \\\\ y_B - y_A \\\\ z_B - z_A \\end{pmatrix}$ ; milieu : moyenne des coordonnées.\n\n## II. Positions relatives\n\n| Objets | Positions possibles |\n|---|---|\n| Deux droites | sécantes, parallèles, ou **non coplanaires** |\n| Droite et plan | sécants en un point, ou parallèles (incluse ou strictement parallèle) |\n| Deux plans | sécants suivant une droite, ou parallèles (confondus ou strictement parallèles) |\n\n::: theoreme Théorème du toit\n$\\mathcal{P}_1$ et $\\mathcal{P}_2$ sécants suivant $\\Delta$, $d_1 \\subset \\mathcal{P}_1$, $d_2 \\subset \\mathcal{P}_2$ et $d_1 \\parallel d_2$ : alors $\\Delta \\parallel d_1$ et $\\Delta \\parallel d_2$.\n:::\n\n[IMAGE_2]\n\n## III. Les pièges à éviter\n\n::: attention Les 4 erreurs classiques\n1. Croire que deux droites non parallèles sont sécantes : dans l’espace, elles peuvent être non coplanaires.\n2. Diriger un plan par deux vecteurs colinéaires.\n3. Conclure à la coplanarité avec deux équations seulement : il faut **vérifier la troisième**.\n4. Appeler « théorème du toit » le simple fait que deux droites parallèles à une même troisième sont parallèles.\n:::\n\n::: remarque Réflexe\nDans un solide, je choisis un repère adapté (un sommet et trois arêtes) pour tout traduire en coordonnées ; pour une section, je relie les points d’une même face et j’utilise les faces parallèles.\n:::"
+  }
+ ],
+ "exercices": [
+  {
+   "id": 1093,
+   "question": "<!-- optitab:1 -->\nDans un repère de l’espace, on considère les vecteurs\n\n$$\\vec{u}\\begin{pmatrix} 2 \\\\ -1 \\\\ 3 \\end{pmatrix}, \\quad \\vec{v}\\begin{pmatrix} 1 \\\\ 4 \\\\ -2 \\end{pmatrix} \\quad \\text{et} \\quad \\vec{w}\\begin{pmatrix} 0 \\\\ 2 \\\\ 1 \\end{pmatrix}$$\n\n1. Calculer les coordonnées de $\\vec{u} + \\vec{v}$.\n2. Calculer les coordonnées de $3\\vec{u} - 2\\vec{v}$.\n3. Les vecteurs $\\vec{u}$ et $\\vec{v}$ sont-ils colinéaires ?\n4. Calculer les coordonnées de $\\vec{u} + \\vec{v} + \\vec{w}$.\n5. Déterminer les coordonnées du vecteur $\\overrightarrow{AB}$, où $A(1\\,;2\\,;3)$ et $B(4\\,;-1\\,;5)$.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Calculer $\\vec{u} + \\vec{v}$\n\n::: methode\nOn additionne les coordonnées une à une.\n:::\n\n::: etape Addition coordonnée par coordonnée\n$$\\vec{u} + \\vec{v}\\begin{pmatrix} 2 + 1 \\\\ -1 + 4 \\\\ 3 + (-2) \\end{pmatrix}, \\quad \\text{soit} \\quad \\vec{u} + \\vec{v}\\begin{pmatrix} 3 \\\\ 3 \\\\ 1 \\end{pmatrix}$$\n:::\n\n::: resultat\n$$\\vec{u} + \\vec{v}\\begin{pmatrix} 3 \\\\ 3 \\\\ 1 \\end{pmatrix}$$\n:::\n\n## Question 2 : Calculer $3\\vec{u} - 2\\vec{v}$\n\n::: methode\nOn multiplie chaque coordonnée par le réel, puis on soustrait coordonnée par coordonnée.\n:::\n\n::: etape Produits par un réel\n$$3\\vec{u}\\begin{pmatrix} 6 \\\\ -3 \\\\ 9 \\end{pmatrix} \\quad \\text{et} \\quad 2\\vec{v}\\begin{pmatrix} 2 \\\\ 8 \\\\ -4 \\end{pmatrix}$$\n:::\n\n::: etape Différence\n$$3\\vec{u} - 2\\vec{v}\\begin{pmatrix} 6 - 2 \\\\ -3 - 8 \\\\ 9 - (-4) \\end{pmatrix}, \\quad \\text{soit} \\quad 3\\vec{u} - 2\\vec{v}\\begin{pmatrix} 4 \\\\ -11 \\\\ 13 \\end{pmatrix}$$\n:::\n\n::: resultat\n$$3\\vec{u} - 2\\vec{v}\\begin{pmatrix} 4 \\\\ -11 \\\\ 13 \\end{pmatrix}$$\n:::\n\n## Question 3 : Les vecteurs $\\vec{u}$ et $\\vec{v}$ sont-ils colinéaires ?\n\n::: methode\nDeux vecteurs sont colinéaires si et seulement si leurs coordonnées sont proportionnelles.\n:::\n\n::: etape Chercher un réel $k$ tel que $\\vec{u} = k\\vec{v}$\nIl faudrait $2 = k \\times 1$, $-1 = k \\times 4$ et $3 = k \\times (-2)$.\n- La première égalité impose $k = 2$.\n- La deuxième devient alors $-1 = 8$ : c’est faux.\n:::\n\n::: resultat\nAucun réel $k$ ne convient : $\\vec{u}$ et $\\vec{v}$ ne sont **pas colinéaires**.\n:::\n\n## Question 4 : Calculer $\\vec{u} + \\vec{v} + \\vec{w}$\n\n::: methode\nOn réutilise le résultat de la question 1 : $\\vec{u} + \\vec{v} + \\vec{w} = (\\vec{u} + \\vec{v}) + \\vec{w}$.\n:::\n\n::: etape Addition\n$$\\vec{u} + \\vec{v} + \\vec{w}\\begin{pmatrix} 3 + 0 \\\\ 3 + 2 \\\\ 1 + 1 \\end{pmatrix}, \\quad \\text{soit} \\quad \\vec{u} + \\vec{v} + \\vec{w}\\begin{pmatrix} 3 \\\\ 5 \\\\ 2 \\end{pmatrix}$$\n:::\n\n::: resultat\n$$\\vec{u} + \\vec{v} + \\vec{w}\\begin{pmatrix} 3 \\\\ 5 \\\\ 2 \\end{pmatrix}$$\n:::\n\n## Question 5 : Coordonnées de $\\overrightarrow{AB}$\n\n::: methode\n$\\overrightarrow{AB}$ a pour coordonnées $(x_B - x_A\\,;y_B - y_A\\,;z_B - z_A)$ : « arrivée moins départ ».\n:::\n\n::: etape Calcul\n$$\\overrightarrow{AB}\\begin{pmatrix} 4 - 1 \\\\ -1 - 2 \\\\ 5 - 3 \\end{pmatrix}, \\quad \\text{soit} \\quad \\overrightarrow{AB}\\begin{pmatrix} 3 \\\\ -3 \\\\ 2 \\end{pmatrix}$$\n:::\n\n::: attention\nOn calcule toujours « coordonnées de $B$ moins coordonnées de $A$ » pour $\\overrightarrow{AB}$, et non l’inverse.\n:::\n\n::: resultat\n$$\\overrightarrow{AB}\\begin{pmatrix} 3 \\\\ -3 \\\\ 2 \\end{pmatrix}$$\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $\\vec{u} + \\vec{v}\\begin{pmatrix} 3 \\\\ 3 \\\\ 1 \\end{pmatrix}$\n2. $3\\vec{u} - 2\\vec{v}\\begin{pmatrix} 4 \\\\ -11 \\\\ 13 \\end{pmatrix}$\n3. Non : $\\vec{u} = k\\vec{v}$ imposerait $k = 2$ puis $-1 = 8$, ce qui est faux.\n4. $\\vec{u} + \\vec{v} + \\vec{w}\\begin{pmatrix} 3 \\\\ 5 \\\\ 2 \\end{pmatrix}$\n5. $\\overrightarrow{AB}\\begin{pmatrix} 3 \\\\ -3 \\\\ 2 \\end{pmatrix}$",
+   "titre": "Découverte - Opérations sur les vecteurs de l'espace",
+   "difficulty": "easy",
+   "contenu": "<!-- optitab:1 -->\nDans un repère de l’espace, on considère les vecteurs\n\n$$\\vec{u}\\begin{pmatrix} 2 \\\\ -1 \\\\ 3 \\end{pmatrix}, \\quad \\vec{v}\\begin{pmatrix} 1 \\\\ 4 \\\\ -2 \\end{pmatrix} \\quad \\text{et} \\quad \\vec{w}\\begin{pmatrix} 0 \\\\ 2 \\\\ 1 \\end{pmatrix}$$\n\n1. Calculer les coordonnées de $\\vec{u} + \\vec{v}$.\n2. Calculer les coordonnées de $3\\vec{u} - 2\\vec{v}$.\n3. Les vecteurs $\\vec{u}$ et $\\vec{v}$ sont-ils colinéaires ?\n4. Calculer les coordonnées de $\\vec{u} + \\vec{v} + \\vec{w}$.\n5. Déterminer les coordonnées du vecteur $\\overrightarrow{AB}$, où $A(1\\,;2\\,;3)$ et $B(4\\,;-1\\,;5)$."
+  },
+  {
+   "id": 1094,
+   "question": "<!-- optitab:1 -->\nDans un repère de l’espace, on considère les points $A(1\\,;2\\,;3)$, $B(3\\,;4\\,;5)$ et $C(2\\,;3\\,;4)$.\n\n1. Calculer les coordonnées du vecteur $\\overrightarrow{AB}$.\n2. Calculer les coordonnées du vecteur $\\overrightarrow{AC}$.\n3. Les vecteurs $\\overrightarrow{AB}$ et $\\overrightarrow{AC}$ sont-ils colinéaires ?\n4. Les points $A$, $B$ et $C$ sont-ils alignés ?\n5. Donner un vecteur directeur de la droite $(AB)$.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Coordonnées de $\\overrightarrow{AB}$\n\n::: methode\n« Arrivée moins départ » : $\\overrightarrow{AB}(x_B - x_A\\,;y_B - y_A\\,;z_B - z_A)$.\n:::\n\n::: etape Calcul\n$$\\overrightarrow{AB}\\begin{pmatrix} 3 - 1 \\\\ 4 - 2 \\\\ 5 - 3 \\end{pmatrix}, \\quad \\text{soit} \\quad \\overrightarrow{AB}\\begin{pmatrix} 2 \\\\ 2 \\\\ 2 \\end{pmatrix}$$\n:::\n\n::: resultat\n$$\\overrightarrow{AB}\\begin{pmatrix} 2 \\\\ 2 \\\\ 2 \\end{pmatrix}$$\n:::\n\n## Question 2 : Coordonnées de $\\overrightarrow{AC}$\n\n::: methode\nMême formule, avec le point $C$.\n:::\n\n::: etape Calcul\n$$\\overrightarrow{AC}\\begin{pmatrix} 2 - 1 \\\\ 3 - 2 \\\\ 4 - 3 \\end{pmatrix}, \\quad \\text{soit} \\quad \\overrightarrow{AC}\\begin{pmatrix} 1 \\\\ 1 \\\\ 1 \\end{pmatrix}$$\n:::\n\n::: resultat\n$$\\overrightarrow{AC}\\begin{pmatrix} 1 \\\\ 1 \\\\ 1 \\end{pmatrix}$$\n:::\n\n## Question 3 : $\\overrightarrow{AB}$ et $\\overrightarrow{AC}$ sont-ils colinéaires ?\n\n::: methode\nOn cherche un réel $k$ tel que $\\overrightarrow{AB} = k\\overrightarrow{AC}$ (coordonnées proportionnelles).\n:::\n\n::: etape Comparer les coordonnées\nChaque coordonnée de $\\overrightarrow{AB}$ est le double de celle de $\\overrightarrow{AC}$ : $2 = 2 \\times 1$ pour les trois coordonnées. Donc $\\overrightarrow{AB} = 2\\overrightarrow{AC}$.\n:::\n\n::: resultat\nOui : $\\overrightarrow{AB} = 2\\overrightarrow{AC}$, les vecteurs sont **colinéaires**.\n:::\n\n## Question 4 : Les points $A$, $B$ et $C$ sont-ils alignés ?\n\n::: methode\n$A$, $B$, $C$ sont alignés si et seulement si $\\overrightarrow{AB}$ et $\\overrightarrow{AC}$ sont colinéaires.\n:::\n\n::: etape Conclusion\nD’après la question 3, $\\overrightarrow{AB}$ et $\\overrightarrow{AC}$ sont colinéaires ; ces deux vecteurs ont la même origine $A$, donc $C$ est sur la droite $(AB)$.\n:::\n\n::: resultat\nOui, les points $A$, $B$ et $C$ sont **alignés**.\n:::\n\n::: remarque\n$\\overrightarrow{AC} = \\frac{1}{2}\\overrightarrow{AB}$ : le point $C$ est le **milieu** de $[AB]$. On le vérifie : $\\left(\\frac{1 + 3}{2}\\,;\\frac{2 + 4}{2}\\,;\\frac{3 + 5}{2}\\right) = (2\\,;3\\,;4)$.\n:::\n\n## Question 5 : Un vecteur directeur de $(AB)$\n\n::: methode\nSi $A$ et $B$ sont deux points distincts d’une droite, $\\overrightarrow{AB}$ en est un vecteur directeur ; tout vecteur non nul colinéaire convient aussi.\n:::\n\n::: etape Choix d’un vecteur directeur\n$\\overrightarrow{AB}\\begin{pmatrix} 2 \\\\ 2 \\\\ 2 \\end{pmatrix}$ dirige $(AB)$. Le vecteur $\\overrightarrow{AC}\\begin{pmatrix} 1 \\\\ 1 \\\\ 1 \\end{pmatrix} = \\frac{1}{2}\\overrightarrow{AB}$, plus simple, convient aussi.\n:::\n\n::: resultat\n$\\overrightarrow{AB}\\begin{pmatrix} 2 \\\\ 2 \\\\ 2 \\end{pmatrix}$ (ou $\\vec{u}\\begin{pmatrix} 1 \\\\ 1 \\\\ 1 \\end{pmatrix}$) est un vecteur directeur de $(AB)$.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $\\overrightarrow{AB}\\begin{pmatrix} 2 \\\\ 2 \\\\ 2 \\end{pmatrix}$\n2. $\\overrightarrow{AC}\\begin{pmatrix} 1 \\\\ 1 \\\\ 1 \\end{pmatrix}$\n3. Oui : $\\overrightarrow{AB} = 2\\overrightarrow{AC}$.\n4. Oui, $A$, $B$, $C$ sont alignés ($C$ est même le milieu de $[AB]$).\n5. $\\overrightarrow{AB}\\begin{pmatrix} 2 \\\\ 2 \\\\ 2 \\end{pmatrix}$, ou plus simplement $\\vec{u}\\begin{pmatrix} 1 \\\\ 1 \\\\ 1 \\end{pmatrix}$.",
+   "titre": "Découverte - Vecteurs directeurs et colinéarité",
+   "difficulty": "easy",
+   "contenu": "<!-- optitab:1 -->\nDans un repère de l’espace, on considère les points $A(1\\,;2\\,;3)$, $B(3\\,;4\\,;5)$ et $C(2\\,;3\\,;4)$.\n\n1. Calculer les coordonnées du vecteur $\\overrightarrow{AB}$.\n2. Calculer les coordonnées du vecteur $\\overrightarrow{AC}$.\n3. Les vecteurs $\\overrightarrow{AB}$ et $\\overrightarrow{AC}$ sont-ils colinéaires ?\n4. Les points $A$, $B$ et $C$ sont-ils alignés ?\n5. Donner un vecteur directeur de la droite $(AB)$."
+  },
+  {
+   "id": 1095,
+   "question": "<!-- optitab:1 -->\nDans un repère de l’espace, on considère les vecteurs\n\n$$\\vec{u}\\begin{pmatrix} 1 \\\\ 2 \\\\ 0 \\end{pmatrix}, \\quad \\vec{v}\\begin{pmatrix} 0 \\\\ 1 \\\\ 1 \\end{pmatrix} \\quad \\text{et} \\quad \\vec{w}\\begin{pmatrix} 2 \\\\ 5 \\\\ 1 \\end{pmatrix}$$\n\n1. Exprimer $\\vec{w}$ comme combinaison linéaire de $\\vec{u}$ et $\\vec{v}$.\n2. Les vecteurs $\\vec{u}$ et $\\vec{v}$ sont-ils colinéaires ?\n3. Les trois vecteurs $\\vec{u}$, $\\vec{v}$ et $\\vec{w}$ sont-ils coplanaires ?\n4. Les vecteurs $\\vec{u}$ et $\\vec{v}$ peuvent-ils diriger un plan (former une base de la direction d’un plan) ?\n5. Le vecteur $\\vec{t}\\begin{pmatrix} 3 \\\\ 7 \\\\ 2 \\end{pmatrix}$ est-il une combinaison linéaire de $\\vec{u}$ et $\\vec{v}$ ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Écrire $\\vec{w}$ sous la forme $a\\vec{u} + b\\vec{v}$\n\n::: methode\nOn écrit l’égalité coordonnée par coordonnée : système de trois équations à deux inconnues.\n:::\n\n::: etape Le système\n$a\\vec{u} + b\\vec{v}$ a pour coordonnées $(a\\,;2a + b\\,;b)$. On veut donc :\n\n$$\\begin{cases} a = 2 \\\\ 2a + b = 5 \\\\ b = 1 \\end{cases}$$\n:::\n\n::: etape Résolution et vérification\nLa première et la troisième équation donnent $a = 2$ et $b = 1$. On vérifie la deuxième : $2 \\times 2 + 1 = 5$. Elle est vraie.\n:::\n\n::: resultat\n$$\\vec{w} = 2\\vec{u} + \\vec{v}$$\n:::\n\n## Question 2 : $\\vec{u}$ et $\\vec{v}$ sont-ils colinéaires ?\n\n::: methode\nOn cherche un réel $k$ tel que $\\vec{u} = k\\vec{v}$.\n:::\n\n::: etape Comparaison des premières coordonnées\n$\\vec{u} = k\\vec{v}$ donnerait, pour la première coordonnée, $1 = k \\times 0 = 0$ : impossible. Et $\\vec{v} = k\\vec{u}$ donnerait, pour la troisième, $1 = k \\times 0$ : impossible aussi.\n:::\n\n::: resultat\n$\\vec{u}$ et $\\vec{v}$ ne sont **pas colinéaires**.\n:::\n\n## Question 3 : $\\vec{u}$, $\\vec{v}$, $\\vec{w}$ sont-ils coplanaires ?\n\n::: methode\n$\\vec{u}$ et $\\vec{v}$ n’étant pas colinéaires, $\\vec{u}$, $\\vec{v}$, $\\vec{w}$ sont coplanaires si et seulement si $\\vec{w}$ est une combinaison linéaire de $\\vec{u}$ et $\\vec{v}$.\n:::\n\n::: etape Conclusion\nD’après la question 1, $\\vec{w} = 2\\vec{u} + \\vec{v}$.\n:::\n\n::: resultat\nOui, $\\vec{u}$, $\\vec{v}$ et $\\vec{w}$ sont **coplanaires**.\n:::\n\n## Question 4 : $\\vec{u}$ et $\\vec{v}$ peuvent-ils diriger un plan ?\n\n::: methode\nUn plan est dirigé par deux vecteurs **non colinéaires**.\n:::\n\n::: etape Conclusion\nD’après la question 2, $\\vec{u}$ et $\\vec{v}$ ne sont pas colinéaires : pour tout point $A$, ils dirigent le plan formé des points $M$ tels que $\\overrightarrow{AM} = x\\vec{u} + y\\vec{v}$.\n:::\n\n::: resultat\nOui, $(\\vec{u}, \\vec{v})$ est une base de la direction d’un plan.\n:::\n\n## Question 5 : $\\vec{t}$ est-il une combinaison linéaire de $\\vec{u}$ et $\\vec{v}$ ?\n\n::: methode\nMême système qu’à la question 1, puis vérification de l’équation restante.\n:::\n\n::: etape Le système\n$$\\begin{cases} a = 3 \\\\ 2a + b = 7 \\\\ b = 2 \\end{cases}$$\n:::\n\n::: etape Vérification\nLa première et la troisième équation donnent $a = 3$ et $b = 2$. Mais alors $2a + b = 6 + 2 = 8 \\neq 7$ : la deuxième équation est fausse.\n:::\n\n::: attention\nTrouver $a$ et $b$ avec deux équations ne suffit pas : il faut toujours vérifier la troisième.\n:::\n\n::: resultat\nNon : $\\vec{t}$ n’est pas une combinaison linéaire de $\\vec{u}$ et $\\vec{v}$. Les vecteurs $\\vec{u}$, $\\vec{v}$, $\\vec{t}$ ne sont donc **pas coplanaires**.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $\\vec{w} = 2\\vec{u} + \\vec{v}$\n2. Non, $\\vec{u}$ et $\\vec{v}$ ne sont pas colinéaires.\n3. Oui, $\\vec{u}$, $\\vec{v}$, $\\vec{w}$ sont coplanaires (car $\\vec{w} = 2\\vec{u} + \\vec{v}$).\n4. Oui, étant non colinéaires, ils dirigent un plan.\n5. Non : on trouve $a = 3$, $b = 2$, mais $2a + b = 8 \\neq 7$.",
+   "titre": "Entraînement - Combinaisons linéaires et indépendance",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nDans un repère de l’espace, on considère les vecteurs\n\n$$\\vec{u}\\begin{pmatrix} 1 \\\\ 2 \\\\ 0 \\end{pmatrix}, \\quad \\vec{v}\\begin{pmatrix} 0 \\\\ 1 \\\\ 1 \\end{pmatrix} \\quad \\text{et} \\quad \\vec{w}\\begin{pmatrix} 2 \\\\ 5 \\\\ 1 \\end{pmatrix}$$\n\n1. Exprimer $\\vec{w}$ comme combinaison linéaire de $\\vec{u}$ et $\\vec{v}$.\n2. Les vecteurs $\\vec{u}$ et $\\vec{v}$ sont-ils colinéaires ?\n3. Les trois vecteurs $\\vec{u}$, $\\vec{v}$ et $\\vec{w}$ sont-ils coplanaires ?\n4. Les vecteurs $\\vec{u}$ et $\\vec{v}$ peuvent-ils diriger un plan (former une base de la direction d’un plan) ?\n5. Le vecteur $\\vec{t}\\begin{pmatrix} 3 \\\\ 7 \\\\ 2 \\end{pmatrix}$ est-il une combinaison linéaire de $\\vec{u}$ et $\\vec{v}$ ?"
+  },
+  {
+   "id": 1096,
+   "question": "<!-- optitab:1 -->\nDans un repère de l’espace, on considère les points $A(0\\,;0\\,;0)$, $B(2\\,;1\\,;0)$, $C(1\\,;2\\,;1)$, $D(3\\,;3\\,;1)$ et $E(1\\,;0\\,;2)$.\n\n1. Calculer les coordonnées des vecteurs $\\overrightarrow{AB}$, $\\overrightarrow{AC}$ et $\\overrightarrow{AD}$.\n2. Les vecteurs $\\overrightarrow{AB}$ et $\\overrightarrow{AC}$ sont-ils colinéaires ?\n3. Les vecteurs $\\overrightarrow{AB}$ et $\\overrightarrow{AC}$ forment-ils une base de la direction du plan $(ABC)$ ?\n4. Les points $A$, $B$, $C$ et $D$ sont-ils coplanaires ?\n5. Les points $A$, $B$, $C$ et $E$ sont-ils coplanaires ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Coordonnées de $\\overrightarrow{AB}$, $\\overrightarrow{AC}$, $\\overrightarrow{AD}$\n\n::: methode\nComme $A$ est l’origine, les coordonnées de $\\overrightarrow{AB}$ sont celles de $B$ (et de même pour $C$ et $D$).\n:::\n\n::: etape Calcul\n$$\\overrightarrow{AB}\\begin{pmatrix} 2 \\\\ 1 \\\\ 0 \\end{pmatrix}, \\quad \\overrightarrow{AC}\\begin{pmatrix} 1 \\\\ 2 \\\\ 1 \\end{pmatrix}, \\quad \\overrightarrow{AD}\\begin{pmatrix} 3 \\\\ 3 \\\\ 1 \\end{pmatrix}$$\n:::\n\n::: resultat\n$\\overrightarrow{AB}\\begin{pmatrix} 2 \\\\ 1 \\\\ 0 \\end{pmatrix}$, $\\overrightarrow{AC}\\begin{pmatrix} 1 \\\\ 2 \\\\ 1 \\end{pmatrix}$ et $\\overrightarrow{AD}\\begin{pmatrix} 3 \\\\ 3 \\\\ 1 \\end{pmatrix}$\n:::\n\n## Question 2 : $\\overrightarrow{AB}$ et $\\overrightarrow{AC}$ sont-ils colinéaires ?\n\n::: methode\nOn cherche un réel $k$ tel que $\\overrightarrow{AB} = k\\overrightarrow{AC}$.\n:::\n\n::: etape Comparaison\nLa première coordonnée impose $2 = k \\times 1$, soit $k = 2$. La deuxième deviendrait $1 = 2 \\times 2 = 4$ : faux.\n:::\n\n::: resultat\nNon, $\\overrightarrow{AB}$ et $\\overrightarrow{AC}$ ne sont **pas colinéaires** : les points $A$, $B$, $C$ ne sont pas alignés.\n:::\n\n## Question 3 : Base de la direction du plan $(ABC)$\n\n::: methode\nDeux vecteurs non colinéaires d’un plan dirigent ce plan.\n:::\n\n::: etape Conclusion\n$A$, $B$, $C$ ne sont pas alignés : ils définissent le plan $(ABC)$. Les vecteurs $\\overrightarrow{AB}$ et $\\overrightarrow{AC}$ joignent des points de ce plan et ne sont pas colinéaires (question 2).\n:::\n\n::: resultat\nOui, $(\\overrightarrow{AB}, \\overrightarrow{AC})$ est une base de la direction du plan $(ABC)$ : $M \\in (ABC) \\iff \\overrightarrow{AM} = x\\overrightarrow{AB} + y\\overrightarrow{AC}$.\n:::\n\n## Question 4 : $A$, $B$, $C$, $D$ sont-ils coplanaires ?\n\n::: methode\n$A$, $B$, $C$, $D$ sont coplanaires si et seulement si $\\overrightarrow{AD}$ s’écrit $a\\overrightarrow{AB} + b\\overrightarrow{AC}$.\n:::\n\n::: etape Le système\n$a\\overrightarrow{AB} + b\\overrightarrow{AC}$ a pour coordonnées $(2a + b\\,;a + 2b\\,;b)$ :\n\n$$\\begin{cases} 2a + b = 3 \\\\ a + 2b = 3 \\\\ b = 1 \\end{cases}$$\n:::\n\n::: etape Résolution et vérification\n- La troisième équation donne $b = 1$.\n- La première donne alors $2a + 1 = 3$, soit $a = 1$.\n- Vérification dans la deuxième : $1 + 2 \\times 1 = 3$. Elle est vraie.\n\nDonc $\\overrightarrow{AD} = \\overrightarrow{AB} + \\overrightarrow{AC}$.\n:::\n\n::: resultat\nOui, $A$, $B$, $C$ et $D$ sont **coplanaires**, car $\\overrightarrow{AD} = \\overrightarrow{AB} + \\overrightarrow{AC}$.\n:::\n\n::: remarque\n$\\overrightarrow{AD} = \\overrightarrow{AB} + \\overrightarrow{AC}$ signifie que $ABDC$ est un parallélogramme : on vérifie que $\\overrightarrow{CD}\\begin{pmatrix} 2 \\\\ 1 \\\\ 0 \\end{pmatrix} = \\overrightarrow{AB}$.\n:::\n\n## Question 5 : $A$, $B$, $C$, $E$ sont-ils coplanaires ?\n\n::: methode\nMême méthode avec $\\overrightarrow{AE}\\begin{pmatrix} 1 \\\\ 0 \\\\ 2 \\end{pmatrix}$.\n:::\n\n::: etape Le système\n$$\\begin{cases} 2a + b = 1 \\\\ a + 2b = 0 \\\\ b = 2 \\end{cases}$$\n:::\n\n::: etape Résolution et vérification\n- La troisième équation donne $b = 2$.\n- La première donne $2a + 2 = 1$, soit $a = -\\frac{1}{2}$.\n- Vérification dans la deuxième : $-\\frac{1}{2} + 2 \\times 2 = \\frac{7}{2} \\neq 0$. Elle est fausse.\n:::\n\n::: resultat\nNon : $\\overrightarrow{AE}$ n’est pas une combinaison linéaire de $\\overrightarrow{AB}$ et $\\overrightarrow{AC}$, donc $E \\notin (ABC)$ : les points $A$, $B$, $C$, $E$ ne sont **pas coplanaires**.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $\\overrightarrow{AB}\\begin{pmatrix} 2 \\\\ 1 \\\\ 0 \\end{pmatrix}$, $\\overrightarrow{AC}\\begin{pmatrix} 1 \\\\ 2 \\\\ 1 \\end{pmatrix}$, $\\overrightarrow{AD}\\begin{pmatrix} 3 \\\\ 3 \\\\ 1 \\end{pmatrix}$\n2. Non, ils ne sont pas colinéaires.\n3. Oui, ils forment une base de la direction du plan $(ABC)$.\n4. Oui : $\\overrightarrow{AD} = \\overrightarrow{AB} + \\overrightarrow{AC}$ ($ABDC$ est un parallélogramme).\n5. Non : le système donne $b = 2$, $a = -\\frac{1}{2}$, mais $a + 2b = \\frac{7}{2} \\neq 0$.",
+   "titre": "Entraînement - Coplanarité de points et de vecteurs",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nDans un repère de l’espace, on considère les points $A(0\\,;0\\,;0)$, $B(2\\,;1\\,;0)$, $C(1\\,;2\\,;1)$, $D(3\\,;3\\,;1)$ et $E(1\\,;0\\,;2)$.\n\n1. Calculer les coordonnées des vecteurs $\\overrightarrow{AB}$, $\\overrightarrow{AC}$ et $\\overrightarrow{AD}$.\n2. Les vecteurs $\\overrightarrow{AB}$ et $\\overrightarrow{AC}$ sont-ils colinéaires ?\n3. Les vecteurs $\\overrightarrow{AB}$ et $\\overrightarrow{AC}$ forment-ils une base de la direction du plan $(ABC)$ ?\n4. Les points $A$, $B$, $C$ et $D$ sont-ils coplanaires ?\n5. Les points $A$, $B$, $C$ et $E$ sont-ils coplanaires ?"
+  },
+  {
+   "id": 1097,
+   "question": "<!-- optitab:1 -->\nOn considère un cube $ABCDEFGH$ et l’on se place dans le repère $(A\\,;\\overrightarrow{AB}, \\overrightarrow{AD}, \\overrightarrow{AE})$.\n\n[IMAGE_1]\n\n1. Donner les coordonnées des huit sommets du cube.\n2. Exprimer le vecteur $\\overrightarrow{AG}$ comme combinaison linéaire de $\\overrightarrow{AB}$, $\\overrightarrow{AD}$ et $\\overrightarrow{AE}$.\n3. Donner un vecteur directeur de la droite $(AC)$.\n4. Les vecteurs $\\overrightarrow{EF}$ et $\\overrightarrow{EH}$ forment-ils une base de la direction du plan $(EFG)$ ?\n5. Les points $A$, $C$, $F$ et $H$ sont-ils coplanaires ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Coordonnées des sommets\n\n[IMAGE_1]\n\n::: methode\n$M(x\\,;y\\,;z)$ signifie $\\overrightarrow{AM} = x\\overrightarrow{AB} + y\\overrightarrow{AD} + z\\overrightarrow{AE}$ : on décompose chaque $\\overrightarrow{AM}$ en suivant les arêtes.\n:::\n\n::: etape Origine et sommets sur les axes\n$A(0\\,;0\\,;0)$ ; $B(1\\,;0\\,;0)$ ; $D(0\\,;1\\,;0)$ ; $E(0\\,;0\\,;1)$.\n:::\n\n::: etape Autres sommets\n- $\\overrightarrow{AC} = \\overrightarrow{AB} + \\overrightarrow{BC} = \\overrightarrow{AB} + \\overrightarrow{AD}$, donc $C(1\\,;1\\,;0)$.\n- $\\overrightarrow{AF} = \\overrightarrow{AB} + \\overrightarrow{BF} = \\overrightarrow{AB} + \\overrightarrow{AE}$, donc $F(1\\,;0\\,;1)$.\n- $\\overrightarrow{AH} = \\overrightarrow{AD} + \\overrightarrow{DH} = \\overrightarrow{AD} + \\overrightarrow{AE}$, donc $H(0\\,;1\\,;1)$.\n- $\\overrightarrow{AG} = \\overrightarrow{AB} + \\overrightarrow{AD} + \\overrightarrow{AE}$ (question 2), donc $G(1\\,;1\\,;1)$.\n:::\n\n::: resultat\n$A(0\\,;0\\,;0)$, $B(1\\,;0\\,;0)$, $C(1\\,;1\\,;0)$, $D(0\\,;1\\,;0)$, $E(0\\,;0\\,;1)$, $F(1\\,;0\\,;1)$, $G(1\\,;1\\,;1)$, $H(0\\,;1\\,;1)$\n:::\n\n## Question 2 : Décomposer $\\overrightarrow{AG}$\n\n[IMAGE_2]\n\n::: methode\nRelation de Chasles en suivant trois arêtes, puis remplacement par des vecteurs égaux.\n:::\n\n::: etape Chemin le long des arêtes\n$$\\overrightarrow{AG} = \\overrightarrow{AB} + \\overrightarrow{BC} + \\overrightarrow{CG}$$\n:::\n\n::: etape Vecteurs égaux\n$ABCD$ est un carré, donc $\\overrightarrow{BC} = \\overrightarrow{AD}$ ; $BCGF$ et $ADHE$ sont des carrés, donc $\\overrightarrow{CG} = \\overrightarrow{BF} = \\overrightarrow{AE}$.\n:::\n\n::: resultat\n$$\\overrightarrow{AG} = \\overrightarrow{AB} + \\overrightarrow{AD} + \\overrightarrow{AE}$$\n:::\n\n## Question 3 : Un vecteur directeur de $(AC)$\n\n::: methode\n$\\overrightarrow{AC}$, qui joint deux points distincts de la droite, la dirige.\n:::\n\n::: etape Calcul\n$$\\overrightarrow{AC}\\begin{pmatrix} 1 - 0 \\\\ 1 - 0 \\\\ 0 - 0 \\end{pmatrix}, \\quad \\text{soit} \\quad \\overrightarrow{AC}\\begin{pmatrix} 1 \\\\ 1 \\\\ 0 \\end{pmatrix}$$\n:::\n\n::: resultat\n$\\overrightarrow{AC}\\begin{pmatrix} 1 \\\\ 1 \\\\ 0 \\end{pmatrix}$, c’est-à-dire $\\overrightarrow{AB} + \\overrightarrow{AD}$, est un vecteur directeur de $(AC)$.\n:::\n\n## Question 4 : $\\overrightarrow{EF}$ et $\\overrightarrow{EH}$ dirigent-ils le plan $(EFG)$ ?\n\n::: methode\nIl faut deux vecteurs du plan qui ne sont pas colinéaires.\n:::\n\n::: etape Ce sont des vecteurs du plan $(EFG)$\nLes points $E$, $F$, $G$, $H$ sont les sommets de la face carrée $EFGH$ : ils sont dans le plan $(EFG)$, donc $\\overrightarrow{EF}$ et $\\overrightarrow{EH}$ sont des vecteurs de ce plan.\n:::\n\n::: etape Ils ne sont pas colinéaires\n$\\overrightarrow{EF}\\begin{pmatrix} 1 \\\\ 0 \\\\ 0 \\end{pmatrix}$ et $\\overrightarrow{EH}\\begin{pmatrix} 0 \\\\ 1 \\\\ 0 \\end{pmatrix}$ : $\\overrightarrow{EF} = k\\overrightarrow{EH}$ donnerait $1 = 0$ pour la première coordonnée.\n:::\n\n::: resultat\nOui, $(\\overrightarrow{EF}, \\overrightarrow{EH})$ est une base de la direction du plan $(EFG)$ ; par exemple, $\\overrightarrow{EG} = \\overrightarrow{EF} + \\overrightarrow{EH}$.\n:::\n\n## Question 5 : $A$, $C$, $F$, $H$ sont-ils coplanaires ?\n\n::: methode\nOn cherche si $\\overrightarrow{AH}$ s’écrit $a\\overrightarrow{AC} + b\\overrightarrow{AF}$ ($\\overrightarrow{AC}$ et $\\overrightarrow{AF}$ n’étant pas colinéaires).\n:::\n\n::: etape Les vecteurs\n$$\\overrightarrow{AC}\\begin{pmatrix} 1 \\\\ 1 \\\\ 0 \\end{pmatrix}, \\quad \\overrightarrow{AF}\\begin{pmatrix} 1 \\\\ 0 \\\\ 1 \\end{pmatrix}, \\quad \\overrightarrow{AH}\\begin{pmatrix} 0 \\\\ 1 \\\\ 1 \\end{pmatrix}$$\n:::\n\n::: etape Le système\n$$\\begin{cases} a + b = 0 \\\\ a = 1 \\\\ b = 1 \\end{cases}$$\n\nLa deuxième et la troisième équation donnent $a = 1$ et $b = 1$, mais alors $a + b = 2 \\neq 0$ : la première est fausse.\n:::\n\n::: resultat\nNon : $\\overrightarrow{AH}$ n’est pas une combinaison linéaire de $\\overrightarrow{AC}$ et $\\overrightarrow{AF}$, donc $A$, $C$, $F$, $H$ ne sont **pas coplanaires**.\n:::\n\n::: remarque\n$ACFH$ est donc un vrai tétraèdre ; ses six arêtes sont des diagonales de faces du cube, de même longueur : c’est un tétraèdre régulier.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $A(0\\,;0\\,;0)$, $B(1\\,;0\\,;0)$, $C(1\\,;1\\,;0)$, $D(0\\,;1\\,;0)$, $E(0\\,;0\\,;1)$, $F(1\\,;0\\,;1)$, $G(1\\,;1\\,;1)$, $H(0\\,;1\\,;1)$\n2. $\\overrightarrow{AG} = \\overrightarrow{AB} + \\overrightarrow{AD} + \\overrightarrow{AE}$\n3. $\\overrightarrow{AC}\\begin{pmatrix} 1 \\\\ 1 \\\\ 0 \\end{pmatrix}$\n4. Oui : ce sont deux vecteurs non colinéaires du plan $(EFG)$.\n5. Non : $\\overrightarrow{AH} = a\\overrightarrow{AC} + b\\overrightarrow{AF}$ impose $a = b = 1$ et $a + b = 0$, impossible.",
+   "titre": "Problème - Configuration dans un cube",
+   "difficulty": "hard",
+   "contenu": "<!-- optitab:1 -->\nOn considère un cube $ABCDEFGH$ et l’on se place dans le repère $(A\\,;\\overrightarrow{AB}, \\overrightarrow{AD}, \\overrightarrow{AE})$.\n\n[IMAGE_1]\n\n1. Donner les coordonnées des huit sommets du cube.\n2. Exprimer le vecteur $\\overrightarrow{AG}$ comme combinaison linéaire de $\\overrightarrow{AB}$, $\\overrightarrow{AD}$ et $\\overrightarrow{AE}$.\n3. Donner un vecteur directeur de la droite $(AC)$.\n4. Les vecteurs $\\overrightarrow{EF}$ et $\\overrightarrow{EH}$ forment-ils une base de la direction du plan $(EFG)$ ?\n5. Les points $A$, $C$, $F$ et $H$ sont-ils coplanaires ?"
+  },
+  {
+   "id": 1098,
+   "question": "<!-- optitab:1 -->\n$ABCDEFGH$ est un cube ; on se place dans le repère $(A\\,;\\overrightarrow{AB}, \\overrightarrow{AD}, \\overrightarrow{AE})$. On considère :\n- le plan $\\mathcal{P}_1 = (ABC)$, qui contient la face $ABCD$ ;\n- le plan $\\mathcal{P}_2 = (BCG)$, qui contient la face $BCGF$ ;\n- la droite $(d_1)$ passant par $A$ et parallèle à $(BC)$ ;\n- la droite $(d_2)$ passant par $F$ et parallèle à $(BC)$.\n\n[IMAGE_1]\n\n1. Déterminer la position relative des plans $\\mathcal{P}_1$ et $\\mathcal{P}_2$.\n2. Donner un vecteur directeur de la droite $(BC)$.\n3. Justifier que $\\overrightarrow{BC}$ dirige aussi $(d_1)$ et $(d_2)$ ; en déduire que $(d_1) = (AD)$ et $(d_2) = (FG)$.\n4. Vérifier que $(d_1)$ est contenue dans $\\mathcal{P}_1$ et que $(d_2)$ est contenue dans $\\mathcal{P}_2$.\n5. On note $K$ le centre de la face $ABFE$.\n   - a) Justifier que $(d_1)$ et $(d_2)$ sont coplanaires et que le plan qui les contient est le plan $(ADG)$.\n   - b) Montrer que $K$ appartient aux plans $(ADG)$ et $(BCE)$. On admet que ces deux plans sont distincts : en déduire qu’ils sont sécants suivant une droite $\\Delta$ passant par $K$.\n   - c) À l’aide du théorème du toit, montrer que $\\Delta$ est la parallèle à $(BC)$ passant par $K$.",
+   "etapes": "<!-- optitab:1 -->\n[IMAGE_1]\n\n## Question 1 : Position relative de $\\mathcal{P}_1$ et $\\mathcal{P}_2$\n\n::: methode\nDeux plans distincts qui ont deux points communs distincts sont sécants suivant la droite qui joint ces points.\n:::\n\n::: etape Points communs\n$B$ et $C$ appartiennent à la fois à la face $ABCD$ et à la face $BCGF$ : ils sont dans $\\mathcal{P}_1$ et dans $\\mathcal{P}_2$.\n:::\n\n::: etape Les plans sont distincts\n$F$ appartient à $\\mathcal{P}_2$, mais pas à $\\mathcal{P}_1$ : sa cote vaut $1$, alors que tous les points de la face $ABCD$ ont une cote nulle.\n:::\n\n::: resultat\n$\\mathcal{P}_1$ et $\\mathcal{P}_2$ sont **sécants** suivant la droite $(BC)$.\n:::\n\n## Question 2 : Un vecteur directeur de $(BC)$\n\n::: methode\n« Arrivée moins départ » avec $B(1\\,;0\\,;0)$ et $C(1\\,;1\\,;0)$.\n:::\n\n::: etape Calcul\n$$\\overrightarrow{BC}\\begin{pmatrix} 1 - 1 \\\\ 1 - 0 \\\\ 0 - 0 \\end{pmatrix}, \\quad \\text{soit} \\quad \\overrightarrow{BC}\\begin{pmatrix} 0 \\\\ 1 \\\\ 0 \\end{pmatrix}$$\n:::\n\n::: resultat\n$\\overrightarrow{BC}\\begin{pmatrix} 0 \\\\ 1 \\\\ 0 \\end{pmatrix}$ dirige $(BC)$ ; on remarque que $\\overrightarrow{BC} = \\overrightarrow{AD}$.\n:::\n\n## Question 3 : Vecteur directeur de $(d_1)$ et $(d_2)$\n\n::: methode\nDeux droites parallèles ont des vecteurs directeurs colinéaires : un vecteur directeur de l’une dirige l’autre.\n:::\n\n::: etape La droite $(d_1)$\n$(d_1) \\parallel (BC)$, donc $\\overrightarrow{BC}$ dirige $(d_1)$. Or $\\overrightarrow{BC} = \\overrightarrow{AD}$ : la droite passant par $A$ et dirigée par $\\overrightarrow{AD}$ est la droite $(AD)$.\n:::\n\n::: etape La droite $(d_2)$\n$(d_2) \\parallel (BC)$, donc $\\overrightarrow{BC}$ dirige $(d_2)$. Or $\\overrightarrow{FG} = \\overrightarrow{BC}$ (face carrée $BCGF$) : la droite passant par $F$ et dirigée par $\\overrightarrow{FG}$ est la droite $(FG)$.\n:::\n\n::: resultat\n$\\overrightarrow{BC}\\begin{pmatrix} 0 \\\\ 1 \\\\ 0 \\end{pmatrix}$ dirige $(d_1)$ et $(d_2)$ ; $(d_1) = (AD)$ et $(d_2) = (FG)$.\n:::\n\n## Question 4 : $(d_1) \\subset \\mathcal{P}_1$ et $(d_2) \\subset \\mathcal{P}_2$\n\n::: methode\nUne droite qui passe par deux points d’un plan est contenue dans ce plan.\n:::\n\n::: etape Pour $(d_1)$\n$(d_1) = (AD)$ et les points $A$ et $D$ sont des sommets de la face $ABCD$ : $(d_1) \\subset \\mathcal{P}_1$.\n:::\n\n::: etape Pour $(d_2)$\n$(d_2) = (FG)$ et les points $F$ et $G$ sont des sommets de la face $BCGF$ : $(d_2) \\subset \\mathcal{P}_2$.\n:::\n\n::: resultat\n$(d_1) \\subset \\mathcal{P}_1$ et $(d_2) \\subset \\mathcal{P}_2$.\n:::\n\n## Question 5 : Le théorème du toit\n\n[IMAGE_2]\n\n::: rappel\n**Théorème du toit.** Si deux plans sécants contiennent respectivement deux droites parallèles, alors leur droite d’intersection est parallèle à ces deux droites.\n:::\n\n::: methode\nOn identifie deux plans sécants, chacun contenant une droite, ces deux droites étant parallèles.\n:::\n\n::: etape a) Le plan qui contient $(d_1)$ et $(d_2)$\n$(d_1)$ et $(d_2)$ sont toutes deux parallèles à $(BC)$, donc parallèles entre elles : elles sont coplanaires. Le plan qui les contient passe par $A$ et $D$ (points de $(d_1)$) et par $G$ (point de $(d_2)$) ; comme $A$, $D$, $G$ ne sont pas alignés, c’est le plan $(ADG)$. Il contient aussi $F$ : c’est le plan du rectangle $ADGF$.\n:::\n\n::: etape b) Le point $K$ est commun aux deux plans\n$K$, centre du carré $ABFE$, est le milieu de ses deux diagonales $[AF]$ et $[BE]$.\n- $A$ et $F$ appartiennent au plan $(ADG)$, donc $K \\in (AF) \\subset (ADG)$.\n- $B$ et $E$ appartiennent au plan $(BCE)$, donc $K \\in (BE) \\subset (BCE)$.\n\nLes deux plans sont distincts et ont le point $K$ en commun : ils sont sécants suivant une droite $\\Delta$ qui passe par $K$.\n:::\n\n::: etape c) Application du théorème du toit\n- Le plan $(ADG)$ contient la droite $(AD)$.\n- Le plan $(BCE)$ contient la droite $(BC)$.\n- $(AD) \\parallel (BC)$ et les deux plans sont sécants suivant $\\Delta$.\n\nD’après le théorème du toit, $\\Delta$ est parallèle à $(BC)$ ; comme elle passe par $K$, c’est la parallèle à $(BC)$ passant par $K$.\n:::\n\n::: resultat\n$\\Delta = (ADG) \\cap (BCE)$ est la parallèle à $(BC)$ passant par $K$.\n:::\n\n::: remarque\n$\\Delta$ passe aussi par $L$, centre de la face $DCGH$ (milieu de $[DG]$ et de $[CH]$). En coordonnées, $K\\left(\\frac{1}{2}\\,;0\\,;\\frac{1}{2}\\right)$, $L\\left(\\frac{1}{2}\\,;1\\,;\\frac{1}{2}\\right)$ et $\\overrightarrow{KL}\\begin{pmatrix} 0 \\\\ 1 \\\\ 0 \\end{pmatrix} = \\overrightarrow{BC}$.\n:::\n\n::: attention\nLe théorème du toit sert à trouver la **direction de l’intersection** de deux plans. Dire que deux droites parallèles à une même troisième sont parallèles entre elles n’est pas le théorème du toit.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $\\mathcal{P}_1$ et $\\mathcal{P}_2$ sont sécants suivant la droite $(BC)$.\n2. $\\overrightarrow{BC}\\begin{pmatrix} 0 \\\\ 1 \\\\ 0 \\end{pmatrix}$\n3. $(d_1)$ et $(d_2)$ sont parallèles à $(BC)$, donc dirigées par $\\overrightarrow{BC} = \\overrightarrow{AD} = \\overrightarrow{FG}$ : $(d_1) = (AD)$ et $(d_2) = (FG)$.\n4. $A, D \\in \\mathcal{P}_1$ et $F, G \\in \\mathcal{P}_2$, donc $(d_1) \\subset \\mathcal{P}_1$ et $(d_2) \\subset \\mathcal{P}_2$.\n5. a) $(d_1) \\parallel (d_2)$, donc elles sont coplanaires, dans le plan $(ADG)$ (rectangle $ADGF$). b) $K$ est le milieu de $[AF]$ et de $[BE]$, donc $K \\in (ADG) \\cap (BCE)$. c) $(AD) \\subset (ADG)$, $(BC) \\subset (BCE)$ et $(AD) \\parallel (BC)$ : par le théorème du toit, $\\Delta$ est la parallèle à $(BC)$ passant par $K$.",
+   "titre": "Problème - Positions relatives et loi des toits",
+   "difficulty": "hard",
+   "contenu": "<!-- optitab:1 -->\n$ABCDEFGH$ est un cube ; on se place dans le repère $(A\\,;\\overrightarrow{AB}, \\overrightarrow{AD}, \\overrightarrow{AE})$. On considère :\n- le plan $\\mathcal{P}_1 = (ABC)$, qui contient la face $ABCD$ ;\n- le plan $\\mathcal{P}_2 = (BCG)$, qui contient la face $BCGF$ ;\n- la droite $(d_1)$ passant par $A$ et parallèle à $(BC)$ ;\n- la droite $(d_2)$ passant par $F$ et parallèle à $(BC)$.\n\n[IMAGE_1]\n\n1. Déterminer la position relative des plans $\\mathcal{P}_1$ et $\\mathcal{P}_2$.\n2. Donner un vecteur directeur de la droite $(BC)$.\n3. Justifier que $\\overrightarrow{BC}$ dirige aussi $(d_1)$ et $(d_2)$ ; en déduire que $(d_1) = (AD)$ et $(d_2) = (FG)$.\n4. Vérifier que $(d_1)$ est contenue dans $\\mathcal{P}_1$ et que $(d_2)$ est contenue dans $\\mathcal{P}_2$.\n5. On note $K$ le centre de la face $ABFE$.\n   - a) Justifier que $(d_1)$ et $(d_2)$ sont coplanaires et que le plan qui les contient est le plan $(ADG)$.\n   - b) Montrer que $K$ appartient aux plans $(ADG)$ et $(BCE)$. On admet que ces deux plans sont distincts : en déduire qu’ils sont sécants suivant une droite $\\Delta$ passant par $K$.\n   - c) À l’aide du théorème du toit, montrer que $\\Delta$ est la parallèle à $(BC)$ passant par $K$."
+  },
+  {
+   "id": 1102,
+   "question": "<!-- optitab:1 -->\n$ABCDEFGH$ est un cube : la face du bas est le carré $ABCD$, la face du haut le carré $EFGH$. On note $I$, $J$ et $K$ les milieux respectifs des arêtes $[AD]$, $[AE]$ et $[FG]$, et $(IJK)$ le plan passant par ces trois points.\n\n[IMAGE_1]\n\n1. Construire, sans justifier, le point d’intersection $P$ du plan $(IJK)$ et de la droite $(EH)$. On laissera visibles les traits de construction.\n2. Construire, en justifiant, l’intersection du plan $(IJK)$ et du plan $(EFG)$.\n3. Construire, sans justifier, la section du cube par le plan $(IJK)$, en laissant apparaître les traits de construction.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Construire $P = (IJK) \\cap (EH)$\n\n[IMAGE_2]\n\n::: methode\nOn travaille dans une face qui contient deux points du plan $(IJK)$ et la droite $(EH)$.\n:::\n\n::: etape Choisir la face\n$I \\in [AD]$ et $J \\in [AE]$ sont deux points du plan $(IJK)$ situés dans la face $ADHE$, qui contient aussi la droite $(EH)$.\n:::\n\n::: etape Construire $P$\nDans le plan $(ADH)$, les droites $(IJ)$ et $(EH)$ ne sont pas parallèles : on prolonge $(IJ)$ jusqu’à la droite $(EH)$, prolongée au-delà de $E$. Leur point d’intersection est $P$.\n:::\n\n::: resultat\n$P$ est le point d’intersection des droites $(IJ)$ et $(EH)$ ; il est situé hors du cube, au-delà de $E$.\n:::\n\n::: remarque\n$(IJ)$ joint les milieux de $[AD]$ et $[AE]$ : elle est parallèle à $(DE)$, et l’on obtient $EP = \\frac{1}{2}EH$.\n:::\n\n## Question 2 : Intersection des plans $(IJK)$ et $(EFG)$\n\n[IMAGE_3]\n\n::: methode\nDeux plans distincts et sécants se coupent suivant une droite : il suffit d’en trouver deux points communs.\n:::\n\n::: etape Premier point commun : $K$\n$K \\in [FG]$, donc $K$ appartient au plan $(EFG)$ de la face du haut ; et $K \\in (IJK)$ par définition.\n:::\n\n::: etape Deuxième point commun : $P$\n$P \\in (IJ)$ et $(IJ) \\subset (IJK)$, donc $P \\in (IJK)$. De plus, $P \\in (EH)$ et $(EH) \\subset (EFG)$, donc $P \\in (EFG)$.\n:::\n\n::: etape Conclusion\nLes plans $(IJK)$ et $(EFG)$ sont distincts (le point $I$, sur la face du bas, n’appartient pas au plan de la face du haut) et ont deux points communs distincts $P$ et $K$ : ils sont sécants suivant la droite $(PK)$.\n:::\n\n::: resultat\n$(IJK) \\cap (EFG) = (PK)$. Cette droite coupe l’arête $[EF]$ en un point $R$ (ici le milieu de $[EF]$).\n:::\n\n## Question 3 : Section du cube par $(IJK)$\n\n[IMAGE_4]\n\n::: methode\nOn relie les points du plan situés sur une même face, et l’on utilise les faces parallèles : un plan coupe deux faces parallèles suivant deux segments parallèles.\n:::\n\n::: etape Faces $ADHE$, $ABFE$ et $EFGH$\n- Face $ADHE$ : on relie $I$ et $J$.\n- Face $ABFE$ : on relie $J$ et $R$.\n- Face $EFGH$ : on relie $R$ et $K$ (segment de la droite $(PK)$).\n:::\n\n::: etape Face $BCGF$, parallèle à $ADHE$\nLe côté de la section dans $BCGF$ est parallèle à $(IJ)$ : on trace par $K$ la parallèle à $(IJ)$. Elle coupe l’arête $[CG]$ en $N$, milieu de $[CG]$.\n:::\n\n::: etape Face $ABCD$, parallèle à $EFGH$\nLe côté de la section dans $ABCD$ est parallèle à $(RK)$ : on trace par $I$ la parallèle à $(RK)$. Elle coupe l’arête $[CD]$ en $M$, milieu de $[CD]$.\n:::\n\n::: etape Face $DCGH$\nOn relie $M$ et $N$, deux points du plan situés sur la face $DCGH$.\n:::\n\n::: resultat\nLa section du cube par le plan $(IJK)$ est l’**hexagone** $IJRKNM$, dont les sommets sont les milieux des arêtes $[AD]$, $[AE]$, $[EF]$, $[FG]$, $[CG]$ et $[CD]$.\n:::\n\n::: remarque\nLes six côtés joignent les milieux de deux arêtes voisines d’une face : ils ont tous la même longueur, la moitié d’une diagonale de face. Cet hexagone est même régulier.\n:::\n\n::: attention\nLa droite $(JR)$ ne coupe pas l’arête $[BF]$ : elle coupe la droite $(BF)$ au-dessus de $F$, hors du cube. Il faut toujours vérifier qu’un point construit est bien sur une arête avant de l’ajouter à la section.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. Dans la face $ADHE$, $P$ est le point d’intersection de $(IJ)$ et de $(EH)$ ; il est situé au-delà de $E$, avec $EP = \\frac{1}{2}EH$.\n2. $P$ et $K$ appartiennent aux deux plans, donc $(IJK) \\cap (EFG) = (PK)$ ; cette droite coupe $[EF]$ en son milieu $R$.\n3. La section est l’hexagone $IJRKNM$, où $N$ et $M$ sont les milieux de $[CG]$ et $[CD]$ ($(KN) \\parallel (IJ)$ et $(IM) \\parallel (RK)$ grâce aux faces parallèles).",
+   "titre": "Problème - Section d'un cube par un plan $(IJK)$",
+   "difficulty": "hard",
+   "contenu": "<!-- optitab:1 -->\n$ABCDEFGH$ est un cube : la face du bas est le carré $ABCD$, la face du haut le carré $EFGH$. On note $I$, $J$ et $K$ les milieux respectifs des arêtes $[AD]$, $[AE]$ et $[FG]$, et $(IJK)$ le plan passant par ces trois points.\n\n[IMAGE_1]\n\n1. Construire, sans justifier, le point d’intersection $P$ du plan $(IJK)$ et de la droite $(EH)$. On laissera visibles les traits de construction.\n2. Construire, en justifiant, l’intersection du plan $(IJK)$ et du plan $(EFG)$.\n3. Construire, sans justifier, la section du cube par le plan $(IJK)$, en laissant apparaître les traits de construction."
+  },
+  {
+   "id": 1101,
+   "question": "<!-- optitab:1 -->\n$ABCD$ est un tétraèdre. On note $I$, $J$, $K$ et $L$ les milieux respectifs des arêtes $[AB]$, $[AC]$, $[CD]$ et $[BD]$. À l’aide du théorème des milieux, on étudie la section du tétraèdre par le plan $(IJK)$.\n\n[IMAGE_1]\n\n1. Montrer que $(IJ) \\parallel (BC)$.\n2. Montrer que $(JK) \\parallel (AD)$.\n3. Montrer que $(IL) \\parallel (AD)$ et que $(KL) \\parallel (BC)$.\n4. En déduire que les droites $(IJ)$ et $(KL)$ sont parallèles, puis que les droites $(JK)$ et $(IL)$ sont parallèles.\n5. En déduire que les points $I$, $J$, $K$ et $L$ sont coplanaires et que la section du tétraèdre $ABCD$ par le plan $(IJK)$ est un parallélogramme.",
+   "etapes": "<!-- optitab:1 -->\n[IMAGE_1]\n\n::: rappel\n**Théorème des milieux.** Dans un triangle, la droite qui joint les milieux de deux côtés est parallèle au troisième côté, et le segment qui les joint mesure la moitié de ce côté. En vecteurs : si $I$ et $J$ sont les milieux de $[AB]$ et $[AC]$, alors $\\overrightarrow{IJ} = \\frac{1}{2}\\overrightarrow{BC}$.\n:::\n\n## Question 1 : $(IJ) \\parallel (BC)$\n\n::: methode\nThéorème des milieux dans la face qui contient $I$, $J$, $B$, $C$.\n:::\n\n::: etape Dans le triangle $ABC$\n$I$ est le milieu de $[AB]$ et $J$ le milieu de $[AC]$ : $\\overrightarrow{IJ} = \\frac{1}{2}\\overrightarrow{BC}$.\n:::\n\n::: resultat\n$(IJ) \\parallel (BC)$\n:::\n\n## Question 2 : $(JK) \\parallel (AD)$\n\n::: methode\nThéorème des milieux dans le triangle $ACD$.\n:::\n\n::: etape Dans le triangle $ACD$\n$J$ est le milieu de $[CA]$ et $K$ le milieu de $[CD]$ : $\\overrightarrow{JK} = \\frac{1}{2}\\overrightarrow{AD}$.\n:::\n\n::: resultat\n$(JK) \\parallel (AD)$\n:::\n\n## Question 3 : $(IL) \\parallel (AD)$ et $(KL) \\parallel (BC)$\n\n::: methode\nThéorème des milieux dans les deux autres faces.\n:::\n\n::: etape Dans le triangle $ABD$\n$I$ est le milieu de $[BA]$ et $L$ le milieu de $[BD]$ : $\\overrightarrow{IL} = \\frac{1}{2}\\overrightarrow{AD}$, donc $(IL) \\parallel (AD)$.\n:::\n\n::: etape Dans le triangle $BCD$\n$L$ est le milieu de $[DB]$ et $K$ le milieu de $[DC]$ : $\\overrightarrow{LK} = \\frac{1}{2}\\overrightarrow{BC}$, donc $(KL) \\parallel (BC)$.\n:::\n\n::: resultat\n$(IL) \\parallel (AD)$ et $(KL) \\parallel (BC)$\n:::\n\n## Question 4 : $(IJ) \\parallel (KL)$ et $(JK) \\parallel (IL)$\n\n::: methode\nDans l’espace comme dans le plan, deux droites parallèles à une même troisième sont parallèles entre elles.\n:::\n\n::: etape $(IJ)$ et $(KL)$\n$(IJ) \\parallel (BC)$ (question 1) et $(KL) \\parallel (BC)$ (question 3), donc $(IJ) \\parallel (KL)$.\n:::\n\n::: etape $(JK)$ et $(IL)$\n$(JK) \\parallel (AD)$ (question 2) et $(IL) \\parallel (AD)$ (question 3), donc $(JK) \\parallel (IL)$.\n:::\n\n::: resultat\n$(IJ) \\parallel (KL)$ et $(JK) \\parallel (IL)$\n:::\n\n::: remarque\nOn n’utilise pas ici le théorème du toit : celui-ci sert à trouver la direction de la droite d’intersection de deux plans.\n:::\n\n## Question 5 : Coplanarité et nature de la section\n\n[IMAGE_2]\n\n::: methode\nDeux droites parallèles distinctes définissent un plan ; un quadrilatère dont les côtés opposés sont parallèles est un parallélogramme.\n:::\n\n::: etape $I$, $J$, $K$ ne sont pas alignés\n$(IJ)$ est parallèle à $(BC)$ et $(JK)$ à $(AD)$. Les droites $(BC)$ et $(AD)$ ne sont pas parallèles, car $A$, $B$, $C$, $D$ ne sont pas coplanaires. Donc $(IJ)$ et $(JK)$ ne sont pas confondues : $I$, $J$, $K$ définissent bien un plan $(IJK)$.\n:::\n\n::: etape $L$ appartient au plan $(IJK)$\nD’après les questions 1 et 3, $\\overrightarrow{IJ} = \\frac{1}{2}\\overrightarrow{BC} = \\overrightarrow{LK}$, donc $\\overrightarrow{IJ} + \\overrightarrow{KL} = \\vec{0}$. Avec la relation de Chasles :\n\n$$\n\\begin{aligned}\n\\overrightarrow{IL} &= \\overrightarrow{IJ} + \\overrightarrow{JK} + \\overrightarrow{KL} \\\\\n&= \\overrightarrow{JK} \\\\\n&= \\overrightarrow{IK} - \\overrightarrow{IJ}\n\\end{aligned}\n$$\n\n$\\overrightarrow{IL}$ est une combinaison linéaire de $\\overrightarrow{IJ}$ et $\\overrightarrow{IK}$ : $L \\in (IJK)$, les quatre points sont coplanaires.\n:::\n\n::: etape Nature de $IJKL$\n$\\overrightarrow{IJ} = \\overrightarrow{LK}$ : le quadrilatère $IJKL$ est un parallélogramme (ses côtés opposés sont parallèles deux à deux).\n:::\n\n::: etape La section\nLe plan $(IJK)$ coupe les quatre faces suivant les segments $[IJ]$ (face $ABC$), $[JK]$ (face $ACD$), $[KL]$ (face $BCD$) et $[LI]$ (face $ABD$).\n:::\n\n::: resultat\n$I$, $J$, $K$, $L$ sont coplanaires et la section du tétraèdre par le plan $(IJK)$ est le **parallélogramme** $IJKL$.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. Dans le triangle $ABC$, $\\overrightarrow{IJ} = \\frac{1}{2}\\overrightarrow{BC}$, donc $(IJ) \\parallel (BC)$.\n2. Dans le triangle $ACD$, $\\overrightarrow{JK} = \\frac{1}{2}\\overrightarrow{AD}$, donc $(JK) \\parallel (AD)$.\n3. Dans $ABD$, $\\overrightarrow{IL} = \\frac{1}{2}\\overrightarrow{AD}$ ; dans $BCD$, $\\overrightarrow{LK} = \\frac{1}{2}\\overrightarrow{BC}$. Donc $(IL) \\parallel (AD)$ et $(KL) \\parallel (BC)$.\n4. Deux droites parallèles à une même troisième sont parallèles : $(IJ) \\parallel (KL)$ (à $(BC)$) et $(JK) \\parallel (IL)$ (à $(AD)$).\n5. $\\overrightarrow{IJ} = \\overrightarrow{LK}$ : $I$, $J$, $K$, $L$ sont coplanaires et $IJKL$ est un parallélogramme ; c’est la section du tétraèdre par $(IJK)$.",
+   "titre": "Problème - Section d'un tétraèdre par un plan de milieux",
+   "difficulty": "hard",
+   "contenu": "<!-- optitab:1 -->\n$ABCD$ est un tétraèdre. On note $I$, $J$, $K$ et $L$ les milieux respectifs des arêtes $[AB]$, $[AC]$, $[CD]$ et $[BD]$. À l’aide du théorème des milieux, on étudie la section du tétraèdre par le plan $(IJK)$.\n\n[IMAGE_1]\n\n1. Montrer que $(IJ) \\parallel (BC)$.\n2. Montrer que $(JK) \\parallel (AD)$.\n3. Montrer que $(IL) \\parallel (AD)$ et que $(KL) \\parallel (BC)$.\n4. En déduire que les droites $(IJ)$ et $(KL)$ sont parallèles, puis que les droites $(JK)$ et $(IL)$ sont parallèles.\n5. En déduire que les points $I$, $J$, $K$ et $L$ sont coplanaires et que la section du tétraèdre $ABCD$ par le plan $(IJK)$ est un parallélogramme."
+  },
+  {
+   "id": 1103,
+   "question": "<!-- optitab:1 -->\n$ABCDEFGH$ est un cube. Les points $I$ et $J$ sont les milieux respectifs des segments $[EF]$ et $[BC]$.\n\n[IMAGE_1]\n\n1. À l’aide d’une décomposition vectorielle (sans coordonnées), démontrer que $\\overrightarrow{IJ} = -\\frac{1}{2}\\overrightarrow{CE} - \\frac{1}{2}\\overrightarrow{CG}$. Que peut-on en déduire pour les vecteurs $\\overrightarrow{IJ}$, $\\overrightarrow{CE}$ et $\\overrightarrow{CG}$ ?\n2. Retrouver ce résultat dans le repère $(A\\,;\\overrightarrow{AB}, \\overrightarrow{AD}, \\overrightarrow{AE})$, à l’aide des coordonnées.",
+   "etapes": "<!-- optitab:1 -->\n[IMAGE_2]\n\n## Question 1 : Décomposition vectorielle\n\n::: methode\nOn exprime $\\overrightarrow{IJ}$, $\\overrightarrow{CE}$ et $\\overrightarrow{CG}$ dans la base $(\\overrightarrow{AB}, \\overrightarrow{AD}, \\overrightarrow{AE})$ des arêtes issues de $A$, puis on compare.\n:::\n\n::: etape Exprimer $\\overrightarrow{IJ}$\nOn passe par les arêtes : $\\overrightarrow{IJ} = \\overrightarrow{IF} + \\overrightarrow{FB} + \\overrightarrow{BJ}$, avec $\\overrightarrow{IF} = \\frac{1}{2}\\overrightarrow{EF} = \\frac{1}{2}\\overrightarrow{AB}$, $\\overrightarrow{FB} = -\\overrightarrow{AE}$ et $\\overrightarrow{BJ} = \\frac{1}{2}\\overrightarrow{BC} = \\frac{1}{2}\\overrightarrow{AD}$. Donc\n\n$$\\overrightarrow{IJ} = \\frac{1}{2}\\overrightarrow{AB} + \\frac{1}{2}\\overrightarrow{AD} - \\overrightarrow{AE}$$\n:::\n\n::: etape Exprimer $\\overrightarrow{CE}$ et $\\overrightarrow{CG}$\n$$\n\\begin{aligned}\n\\overrightarrow{CE} &= \\overrightarrow{CB} + \\overrightarrow{BA} + \\overrightarrow{AE} \\\\\n&= -\\overrightarrow{AD} - \\overrightarrow{AB} + \\overrightarrow{AE}\n\\end{aligned}\n$$\n\net $\\overrightarrow{CG} = \\overrightarrow{AE}$ (arêtes parallèles de même sens et de même longueur).\n:::\n\n::: etape Comparer\n$$\n\\begin{aligned}\n-\\frac{1}{2}\\overrightarrow{CE} - \\frac{1}{2}\\overrightarrow{CG} &= \\frac{1}{2}\\overrightarrow{AB} + \\frac{1}{2}\\overrightarrow{AD} - \\frac{1}{2}\\overrightarrow{AE} - \\frac{1}{2}\\overrightarrow{AE} \\\\\n&= \\frac{1}{2}\\overrightarrow{AB} + \\frac{1}{2}\\overrightarrow{AD} - \\overrightarrow{AE} \\\\\n&= \\overrightarrow{IJ}\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$\\overrightarrow{IJ} = -\\frac{1}{2}\\overrightarrow{CE} - \\frac{1}{2}\\overrightarrow{CG}$ : $\\overrightarrow{IJ}$ est une combinaison linéaire de $\\overrightarrow{CE}$ et $\\overrightarrow{CG}$ (non colinéaires), donc $\\overrightarrow{IJ}$, $\\overrightarrow{CE}$ et $\\overrightarrow{CG}$ sont **coplanaires**.\n:::\n\n::: remarque\nGéométriquement, la droite $(IJ)$ est parallèle au plan $(CEG)$, c’est-à-dire au plan du rectangle $ACGE$.\n:::\n\n## Question 2 : Avec les coordonnées\n\n::: methode\nOn calcule les coordonnées des trois vecteurs, puis on cherche $a$ et $b$ tels que $\\overrightarrow{IJ} = a\\overrightarrow{CE} + b\\overrightarrow{CG}$.\n:::\n\n::: etape Coordonnées des points\n$C(1\\,;1\\,;0)$, $E(0\\,;0\\,;1)$, $G(1\\,;1\\,;1)$ ; $I$ milieu de $[EF]$ avec $F(1\\,;0\\,;1)$ : $I\\left(\\frac{1}{2}\\,;0\\,;1\\right)$ ; $J$ milieu de $[BC]$ avec $B(1\\,;0\\,;0)$ : $J\\left(1\\,;\\frac{1}{2}\\,;0\\right)$.\n:::\n\n::: etape Coordonnées des vecteurs\n$$\\overrightarrow{IJ}\\begin{pmatrix} \\frac{1}{2} \\\\ \\frac{1}{2} \\\\ -1 \\end{pmatrix}, \\quad \\overrightarrow{CE}\\begin{pmatrix} -1 \\\\ -1 \\\\ 1 \\end{pmatrix}, \\quad \\overrightarrow{CG}\\begin{pmatrix} 0 \\\\ 0 \\\\ 1 \\end{pmatrix}$$\n:::\n\n::: etape Le système\n$$\\begin{cases} \\frac{1}{2} = -a \\\\ \\frac{1}{2} = -a \\\\ -1 = a + b \\end{cases}$$\n\nLes deux premières équations donnent $a = -\\frac{1}{2}$ ; la troisième donne alors $b = -1 - a = -\\frac{1}{2}$. Le système a une solution.\n:::\n\n::: resultat\n$\\overrightarrow{IJ} = -\\frac{1}{2}\\overrightarrow{CE} - \\frac{1}{2}\\overrightarrow{CG}$ : on retrouve que les trois vecteurs sont coplanaires.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $\\overrightarrow{IJ} = \\frac{1}{2}\\overrightarrow{AB} + \\frac{1}{2}\\overrightarrow{AD} - \\overrightarrow{AE}$ et $-\\frac{1}{2}\\overrightarrow{CE} - \\frac{1}{2}\\overrightarrow{CG}$ donne la même expression : $\\overrightarrow{IJ} = -\\frac{1}{2}\\overrightarrow{CE} - \\frac{1}{2}\\overrightarrow{CG}$, donc les trois vecteurs sont coplanaires.\n2. $\\overrightarrow{IJ}\\left(\\frac{1}{2}\\,;\\frac{1}{2}\\,;-1\\right)$, $\\overrightarrow{CE}(-1\\,;-1\\,;1)$, $\\overrightarrow{CG}(0\\,;0\\,;1)$ : le système donne $a = b = -\\frac{1}{2}$.",
+   "titre": "Problème - Vecteurs coplanaires dans un cube",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\n$ABCDEFGH$ est un cube. Les points $I$ et $J$ sont les milieux respectifs des segments $[EF]$ et $[BC]$.\n\n[IMAGE_1]\n\n1. À l’aide d’une décomposition vectorielle (sans coordonnées), démontrer que $\\overrightarrow{IJ} = -\\frac{1}{2}\\overrightarrow{CE} - \\frac{1}{2}\\overrightarrow{CG}$. Que peut-on en déduire pour les vecteurs $\\overrightarrow{IJ}$, $\\overrightarrow{CE}$ et $\\overrightarrow{CG}$ ?\n2. Retrouver ce résultat dans le repère $(A\\,;\\overrightarrow{AB}, \\overrightarrow{AD}, \\overrightarrow{AE})$, à l’aide des coordonnées."
+  },
+  {
+   "id": 1099,
+   "question": "<!-- optitab:1 -->\nDans l’espace muni d’un repère orthonormé $(O\\,;\\vec{\\imath}, \\vec{\\jmath}, \\vec{k})$, on considère les points $A(1\\,;0\\,;0)$, $B(2\\,;1\\,;0)$, $C(0\\,;1\\,;1)$ et $D(3\\,;2\\,;1)$.\n\n1. Calculer les coordonnées des vecteurs $\\overrightarrow{AB}$, $\\overrightarrow{AC}$ et $\\overrightarrow{AD}$.\n2. Les points $A$, $B$ et $C$ sont-ils alignés ?\n3. Les vecteurs $\\overrightarrow{AB}$ et $\\overrightarrow{AC}$ forment-ils une base de la direction du plan $(ABC)$ ?\n4. Montrer que $\\overrightarrow{AD}$ ne s’écrit pas sous la forme $a\\overrightarrow{AB} + b\\overrightarrow{AC}$, où $a$ et $b$ sont des réels.\n5. En déduire que le point $D$ n’appartient pas au plan $(ABC)$ et que les points $A$, $B$, $C$ et $D$ ne sont pas coplanaires.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Coordonnées des vecteurs\n\n::: methode\n« Arrivée moins départ ».\n:::\n\n::: etape Calculs\n$$\\overrightarrow{AB}\\begin{pmatrix} 2 - 1 \\\\ 1 - 0 \\\\ 0 - 0 \\end{pmatrix}, \\quad \\overrightarrow{AC}\\begin{pmatrix} 0 - 1 \\\\ 1 - 0 \\\\ 1 - 0 \\end{pmatrix}, \\quad \\overrightarrow{AD}\\begin{pmatrix} 3 - 1 \\\\ 2 - 0 \\\\ 1 - 0 \\end{pmatrix}$$\n:::\n\n::: resultat\n$\\overrightarrow{AB}\\begin{pmatrix} 1 \\\\ 1 \\\\ 0 \\end{pmatrix}$, $\\overrightarrow{AC}\\begin{pmatrix} -1 \\\\ 1 \\\\ 1 \\end{pmatrix}$ et $\\overrightarrow{AD}\\begin{pmatrix} 2 \\\\ 2 \\\\ 1 \\end{pmatrix}$\n:::\n\n## Question 2 : $A$, $B$, $C$ sont-ils alignés ?\n\n::: methode\n$A$, $B$, $C$ sont alignés si et seulement si $\\overrightarrow{AB}$ et $\\overrightarrow{AC}$ sont colinéaires.\n:::\n\n::: etape Chercher $k$ tel que $\\overrightarrow{AC} = k\\overrightarrow{AB}$\nLa troisième coordonnée donnerait $1 = k \\times 0 = 0$ : impossible.\n:::\n\n::: resultat\n$\\overrightarrow{AB}$ et $\\overrightarrow{AC}$ ne sont pas colinéaires : $A$, $B$, $C$ ne sont **pas alignés**.\n:::\n\n## Question 3 : Base de la direction du plan $(ABC)$\n\n::: methode\nDeux vecteurs non colinéaires d’un plan dirigent ce plan.\n:::\n\n::: etape Conclusion\n$A$, $B$, $C$ ne sont pas alignés : ils définissent un plan $(ABC)$, dirigé par les vecteurs non colinéaires $\\overrightarrow{AB}$ et $\\overrightarrow{AC}$.\n:::\n\n::: resultat\nOui : $M \\in (ABC) \\iff \\overrightarrow{AM} = x\\overrightarrow{AB} + y\\overrightarrow{AC}$, avec $x$ et $y$ réels.\n:::\n\n## Question 4 : $\\overrightarrow{AD}$ n’est pas combinaison linéaire de $\\overrightarrow{AB}$ et $\\overrightarrow{AC}$\n\n::: methode\nOn suppose $\\overrightarrow{AD} = a\\overrightarrow{AB} + b\\overrightarrow{AC}$ et l’on aboutit à une contradiction.\n:::\n\n::: etape Le système\n$a\\overrightarrow{AB} + b\\overrightarrow{AC}$ a pour coordonnées $(a - b\\,;a + b\\,;b)$ :\n\n$$\\begin{cases} a - b = 2 \\\\ a + b = 2 \\\\ b = 1 \\end{cases}$$\n:::\n\n::: etape Résolution et vérification\n- La troisième équation donne $b = 1$.\n- La première donne alors $a = 2 + 1 = 3$.\n- Dans la deuxième : $a + b = 4 \\neq 2$. Contradiction.\n:::\n\n::: resultat\nIl n’existe pas de réels $a$ et $b$ tels que $\\overrightarrow{AD} = a\\overrightarrow{AB} + b\\overrightarrow{AC}$.\n:::\n\n## Question 5 : $D \\notin (ABC)$\n\n::: methode\nOn utilise la caractérisation du plan $(ABC)$ obtenue à la question 3.\n:::\n\n::: etape Le point $D$\nSi $D$ appartenait à $(ABC)$, on aurait $\\overrightarrow{AD} = x\\overrightarrow{AB} + y\\overrightarrow{AC}$ pour deux réels $x$ et $y$, ce qui est impossible d’après la question 4.\n:::\n\n::: etape Les quatre points\n$A$, $B$, $C$ définissent un unique plan, et $D$ n’y appartient pas : aucun plan ne contient les quatre points.\n:::\n\n::: resultat\n$D \\notin (ABC)$ et $A$, $B$, $C$, $D$ ne sont **pas coplanaires** : $ABCD$ est un tétraèdre.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $\\overrightarrow{AB}\\begin{pmatrix} 1 \\\\ 1 \\\\ 0 \\end{pmatrix}$, $\\overrightarrow{AC}\\begin{pmatrix} -1 \\\\ 1 \\\\ 1 \\end{pmatrix}$, $\\overrightarrow{AD}\\begin{pmatrix} 2 \\\\ 2 \\\\ 1 \\end{pmatrix}$\n2. Non : $\\overrightarrow{AC} = k\\overrightarrow{AB}$ donnerait $1 = 0$.\n3. Oui, ils sont non colinéaires et dirigent le plan $(ABC)$.\n4. Le système donne $b = 1$, $a = 3$, mais $a + b = 4 \\neq 2$ : impossible.\n5. $D \\notin (ABC)$, donc $A$, $B$, $C$, $D$ ne sont pas coplanaires ($ABCD$ est un tétraèdre).",
+   "titre": "Type Bac - Étude complète d'une configuration spatiale",
+   "difficulty": "hard",
+   "contenu": "<!-- optitab:1 -->\nDans l’espace muni d’un repère orthonormé $(O\\,;\\vec{\\imath}, \\vec{\\jmath}, \\vec{k})$, on considère les points $A(1\\,;0\\,;0)$, $B(2\\,;1\\,;0)$, $C(0\\,;1\\,;1)$ et $D(3\\,;2\\,;1)$.\n\n1. Calculer les coordonnées des vecteurs $\\overrightarrow{AB}$, $\\overrightarrow{AC}$ et $\\overrightarrow{AD}$.\n2. Les points $A$, $B$ et $C$ sont-ils alignés ?\n3. Les vecteurs $\\overrightarrow{AB}$ et $\\overrightarrow{AC}$ forment-ils une base de la direction du plan $(ABC)$ ?\n4. Montrer que $\\overrightarrow{AD}$ ne s’écrit pas sous la forme $a\\overrightarrow{AB} + b\\overrightarrow{AC}$, où $a$ et $b$ sont des réels.\n5. En déduire que le point $D$ n’appartient pas au plan $(ABC)$ et que les points $A$, $B$, $C$ et $D$ ne sont pas coplanaires."
+  },
+  {
+   "id": 1100,
+   "question": "<!-- optitab:1 -->\nDans l’espace muni d’un repère orthonormé, on considère :\n- la droite $(d_1)$ passant par $A(1\\,;0\\,;1)$ et de vecteur directeur $\\vec{u_1}\\begin{pmatrix} 2 \\\\ 1 \\\\ -1 \\end{pmatrix}$ ;\n- la droite $(d_2)$ passant par $B(0\\,;2\\,;0)$ et de vecteur directeur $\\vec{u_2}\\begin{pmatrix} 1 \\\\ -1 \\\\ 2 \\end{pmatrix}$ ;\n- le plan $\\mathcal{P}$ passant par $C(0\\,;0\\,;1)$ et dirigé par $\\vec{v_1}\\begin{pmatrix} 1 \\\\ 1 \\\\ 0 \\end{pmatrix}$ et $\\vec{v_2}\\begin{pmatrix} 0 \\\\ 1 \\\\ 1 \\end{pmatrix}$.\n\n1. Les vecteurs $\\vec{u_1}$ et $\\vec{u_2}$ sont-ils colinéaires ?\n2. Les vecteurs $\\vec{v_1}$ et $\\vec{v_2}$ forment-ils une base de la direction du plan $\\mathcal{P}$ ?\n3. Le vecteur $\\vec{u_1}$ est-il une combinaison linéaire de $\\vec{v_1}$ et $\\vec{v_2}$ ?\n4. Le vecteur $\\vec{u_2}$ est-il une combinaison linéaire de $\\vec{v_1}$ et $\\vec{v_2}$ ?\n5. Déterminer la position relative de la droite $(d_1)$ et du plan $\\mathcal{P}$.\n6. Déterminer la position relative de la droite $(d_2)$ et du plan $\\mathcal{P}$.\n7. Déterminer la position relative des droites $(d_1)$ et $(d_2)$.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : $\\vec{u_1}$ et $\\vec{u_2}$ sont-ils colinéaires ?\n\n::: methode\nOn cherche un réel $k$ tel que $\\vec{u_1} = k\\vec{u_2}$.\n:::\n\n::: etape Comparaison\nLa première coordonnée impose $2 = k$ ; la deuxième deviendrait $1 = -k = -2$ : faux.\n:::\n\n::: resultat\nNon, $\\vec{u_1}$ et $\\vec{u_2}$ ne sont **pas colinéaires** : $(d_1)$ et $(d_2)$ ne sont pas parallèles.\n:::\n\n## Question 2 : $\\vec{v_1}$ et $\\vec{v_2}$ dirigent-ils $\\mathcal{P}$ ?\n\n::: methode\nIl suffit qu’ils ne soient pas colinéaires.\n:::\n\n::: etape Comparaison\n$\\vec{v_1} = k\\vec{v_2}$ donnerait $1 = 0$ pour la première coordonnée : impossible.\n:::\n\n::: resultat\nOui, $\\vec{v_1}$ et $\\vec{v_2}$ ne sont pas colinéaires : ils forment une base de la direction de $\\mathcal{P}$.\n:::\n\n## Question 3 : $\\vec{u_1}$ est-il combinaison linéaire de $\\vec{v_1}$ et $\\vec{v_2}$ ?\n\n::: methode\nOn cherche $a$ et $b$ tels que $\\vec{u_1} = a\\vec{v_1} + b\\vec{v_2}$ ; $a\\vec{v_1} + b\\vec{v_2}$ a pour coordonnées $(a\\,;a + b\\,;b)$.\n:::\n\n::: etape Le système\n$$\\begin{cases} a = 2 \\\\ a + b = 1 \\\\ b = -1 \\end{cases}$$\n\nLa première et la troisième équation donnent $a = 2$ et $b = -1$ ; la deuxième est vérifiée : $2 + (-1) = 1$.\n:::\n\n::: resultat\nOui : $\\vec{u_1} = 2\\vec{v_1} - \\vec{v_2}$.\n:::\n\n## Question 4 : $\\vec{u_2}$ est-il combinaison linéaire de $\\vec{v_1}$ et $\\vec{v_2}$ ?\n\n::: methode\nMême système avec les coordonnées de $\\vec{u_2}$.\n:::\n\n::: etape Le système\n$$\\begin{cases} a = 1 \\\\ a + b = -1 \\\\ b = 2 \\end{cases}$$\n\nOn obtient $a = 1$ et $b = 2$, mais $a + b = 3 \\neq -1$ : la deuxième équation est fausse.\n:::\n\n::: resultat\nNon, $\\vec{u_2}$ n’est pas une combinaison linéaire de $\\vec{v_1}$ et $\\vec{v_2}$.\n:::\n\n## Question 5 : Position de $(d_1)$ et de $\\mathcal{P}$\n\n::: methode\nD’après la question 3, $\\vec{u_1}$, $\\vec{v_1}$, $\\vec{v_2}$ sont coplanaires : $(d_1)$ est parallèle à $\\mathcal{P}$. Il reste à savoir si elle est incluse dans $\\mathcal{P}$, en testant le point $A$.\n:::\n\n::: etape $A$ appartient-il à $\\mathcal{P}$ ?\n$A \\in \\mathcal{P}$ si et seulement si $\\overrightarrow{CA}$ s’écrit $x\\vec{v_1} + y\\vec{v_2}$. Or $\\overrightarrow{CA}\\begin{pmatrix} 1 \\\\ 0 \\\\ 0 \\end{pmatrix}$ :\n\n$$\\begin{cases} x = 1 \\\\ x + y = 0 \\\\ y = 0 \\end{cases}$$\n\nOn obtient $x = 1$ et $y = 0$, mais $x + y = 1 \\neq 0$ : impossible. Donc $A \\notin \\mathcal{P}$.\n:::\n\n::: resultat\n$(d_1)$ est parallèle à $\\mathcal{P}$ sans y être incluse : elle est **strictement parallèle** à $\\mathcal{P}$.\n:::\n\n## Question 6 : Position de $(d_2)$ et de $\\mathcal{P}$\n\n::: methode\nUne droite est parallèle à un plan si et seulement si son vecteur directeur est une combinaison linéaire de deux vecteurs directeurs du plan.\n:::\n\n::: etape Conclusion\nD’après la question 4, $\\vec{u_2}$, $\\vec{v_1}$, $\\vec{v_2}$ ne sont pas coplanaires : $(d_2)$ n’est pas parallèle à $\\mathcal{P}$ (ni incluse, ni strictement parallèle).\n:::\n\n::: resultat\n$(d_2)$ et $\\mathcal{P}$ sont **sécants** en un point.\n:::\n\n::: remarque Pour aller plus loin\nLe point d’intersection $M$ vérifie $\\overrightarrow{BM} = t\\vec{u_2}$ et $\\overrightarrow{CM} = x\\vec{v_1} + y\\vec{v_2}$, soit $(t\\,;2 - t\\,;2t) = (x\\,;x + y\\,;1 + y)$. On trouve $t = x = \\frac{3}{4}$ et $y = \\frac{1}{2}$, d’où $M\\left(\\frac{3}{4}\\,;\\frac{5}{4}\\,;\\frac{3}{2}\\right)$.\n:::\n\n## Question 7 : Position de $(d_1)$ et $(d_2)$\n\n::: methode\nLes vecteurs directeurs ne sont pas colinéaires (question 1) : les droites ne sont pas parallèles. On cherche un éventuel point commun.\n:::\n\n::: etape Points des deux droites\n- $M \\in (d_1) \\iff \\overrightarrow{AM} = t\\vec{u_1}$ : $M(1 + 2t\\,;t\\,;1 - t)$, $t \\in \\mathbb{R}$.\n- $M \\in (d_2) \\iff \\overrightarrow{BM} = s\\vec{u_2}$ : $M(s\\,;2 - s\\,;2s)$, $s \\in \\mathbb{R}$.\n:::\n\n::: etape Le système\n$$\\begin{cases} 1 + 2t = s \\\\ t = 2 - s \\\\ 1 - t = 2s \\end{cases}$$\n\n- Les deux premières équations donnent $1 + 2t = 2 - t$, soit $t = \\frac{1}{3}$, puis $s = \\frac{5}{3}$.\n- Dans la troisième : $1 - t = \\frac{2}{3}$ alors que $2s = \\frac{10}{3}$. Contradiction.\n:::\n\n::: resultat\nLes droites $(d_1)$ et $(d_2)$ ne sont ni parallèles ni sécantes : elles sont **non coplanaires**.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. Non, $\\vec{u_1}$ et $\\vec{u_2}$ ne sont pas colinéaires.\n2. Oui, $\\vec{v_1}$ et $\\vec{v_2}$ ne sont pas colinéaires : ils dirigent $\\mathcal{P}$.\n3. Oui : $\\vec{u_1} = 2\\vec{v_1} - \\vec{v_2}$.\n4. Non : le système donne $a = 1$, $b = 2$ et $a + b = 3 \\neq -1$.\n5. $(d_1)$ est strictement parallèle à $\\mathcal{P}$ (parallèle, et $A \\notin \\mathcal{P}$).\n6. $(d_2)$ et $\\mathcal{P}$ sont sécants (en $M\\left(\\frac{3}{4}\\,;\\frac{5}{4}\\,;\\frac{3}{2}\\right)$).\n7. $(d_1)$ et $(d_2)$ sont non coplanaires.",
+   "titre": "Type Bac - Positions relatives et configurations",
+   "difficulty": "hard",
+   "contenu": "<!-- optitab:1 -->\nDans l’espace muni d’un repère orthonormé, on considère :\n- la droite $(d_1)$ passant par $A(1\\,;0\\,;1)$ et de vecteur directeur $\\vec{u_1}\\begin{pmatrix} 2 \\\\ 1 \\\\ -1 \\end{pmatrix}$ ;\n- la droite $(d_2)$ passant par $B(0\\,;2\\,;0)$ et de vecteur directeur $\\vec{u_2}\\begin{pmatrix} 1 \\\\ -1 \\\\ 2 \\end{pmatrix}$ ;\n- le plan $\\mathcal{P}$ passant par $C(0\\,;0\\,;1)$ et dirigé par $\\vec{v_1}\\begin{pmatrix} 1 \\\\ 1 \\\\ 0 \\end{pmatrix}$ et $\\vec{v_2}\\begin{pmatrix} 0 \\\\ 1 \\\\ 1 \\end{pmatrix}$.\n\n1. Les vecteurs $\\vec{u_1}$ et $\\vec{u_2}$ sont-ils colinéaires ?\n2. Les vecteurs $\\vec{v_1}$ et $\\vec{v_2}$ forment-ils une base de la direction du plan $\\mathcal{P}$ ?\n3. Le vecteur $\\vec{u_1}$ est-il une combinaison linéaire de $\\vec{v_1}$ et $\\vec{v_2}$ ?\n4. Le vecteur $\\vec{u_2}$ est-il une combinaison linéaire de $\\vec{v_1}$ et $\\vec{v_2}$ ?\n5. Déterminer la position relative de la droite $(d_1)$ et du plan $\\mathcal{P}$.\n6. Déterminer la position relative de la droite $(d_2)$ et du plan $\\mathcal{P}$.\n7. Déterminer la position relative des droites $(d_1)$ et $(d_2)$."
+  },
+  {
+   "id": 1104,
+   "question": "<!-- optitab:1 -->\n$ABCDEFGH$ est un pavé droit (parallélépipède rectangle). On note $I$ le milieu de l’arête $[BF]$.\n\n[IMAGE_1]\n\n1. Les vecteurs $\\overrightarrow{CA}$, $\\overrightarrow{DE}$ et $\\overrightarrow{DG}$ sont-ils coplanaires ? Justifier à l’aide des coordonnées dans le repère $(A\\,;\\overrightarrow{AB}, \\overrightarrow{AD}, \\overrightarrow{AE})$.\n2. Les vecteurs $\\overrightarrow{AI}$, $\\overrightarrow{DF}$ et $\\overrightarrow{HE}$ sont-ils coplanaires ? Justifier à l’aide des coordonnées.\n3. Retrouver le résultat de la question 1 par une décomposition vectorielle.\n4. Retrouver le résultat de la question 2 par une décomposition vectorielle.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : $\\overrightarrow{CA}$, $\\overrightarrow{DE}$, $\\overrightarrow{DG}$ (coordonnées)\n\n[IMAGE_2]\n\n::: methode\nOn cherche $a$ et $b$ tels que $\\overrightarrow{CA} = a\\overrightarrow{DE} + b\\overrightarrow{DG}$ ($\\overrightarrow{DE}$ et $\\overrightarrow{DG}$ n’étant pas colinéaires).\n:::\n\n::: etape Coordonnées des sommets\nDans le repère $(A\\,;\\overrightarrow{AB}, \\overrightarrow{AD}, \\overrightarrow{AE})$ : $A(0\\,;0\\,;0)$, $C(1\\,;1\\,;0)$, $D(0\\,;1\\,;0)$, $E(0\\,;0\\,;1)$, $G(1\\,;1\\,;1)$. Ce repère n’est pas orthonormé (les arêtes n’ont pas la même longueur), mais les coordonnées se calculent de la même façon.\n:::\n\n::: etape Coordonnées des vecteurs\n$$\\overrightarrow{CA}\\begin{pmatrix} -1 \\\\ -1 \\\\ 0 \\end{pmatrix}, \\quad \\overrightarrow{DE}\\begin{pmatrix} 0 \\\\ -1 \\\\ 1 \\end{pmatrix}, \\quad \\overrightarrow{DG}\\begin{pmatrix} 1 \\\\ 0 \\\\ 1 \\end{pmatrix}$$\n:::\n\n::: etape Le système\n$a\\overrightarrow{DE} + b\\overrightarrow{DG}$ a pour coordonnées $(b\\,;-a\\,;a + b)$ :\n\n$$\\begin{cases} b = -1 \\\\ -a = -1 \\\\ a + b = 0 \\end{cases}$$\n\nOn obtient $b = -1$ et $a = 1$ ; la troisième équation est vérifiée : $1 + (-1) = 0$.\n:::\n\n::: resultat\n$\\overrightarrow{CA} = \\overrightarrow{DE} - \\overrightarrow{DG}$ : les vecteurs $\\overrightarrow{CA}$, $\\overrightarrow{DE}$, $\\overrightarrow{DG}$ sont **coplanaires**.\n:::\n\n## Question 2 : $\\overrightarrow{AI}$, $\\overrightarrow{DF}$, $\\overrightarrow{HE}$ (coordonnées)\n\n[IMAGE_3]\n\n::: methode\nOn cherche $a$ et $b$ tels que $\\overrightarrow{AI} = a\\overrightarrow{DF} + b\\overrightarrow{HE}$.\n:::\n\n::: etape Coordonnées\n$I$ est le milieu de $[BF]$ avec $B(1\\,;0\\,;0)$ et $F(1\\,;0\\,;1)$ : $I\\left(1\\,;0\\,;\\frac{1}{2}\\right)$. Avec $D(0\\,;1\\,;0)$ et $H(0\\,;1\\,;1)$ :\n\n$$\\overrightarrow{AI}\\begin{pmatrix} 1 \\\\ 0 \\\\ \\frac{1}{2} \\end{pmatrix}, \\quad \\overrightarrow{DF}\\begin{pmatrix} 1 \\\\ -1 \\\\ 1 \\end{pmatrix}, \\quad \\overrightarrow{HE}\\begin{pmatrix} 0 \\\\ -1 \\\\ 0 \\end{pmatrix}$$\n\n$\\overrightarrow{DF}$ et $\\overrightarrow{HE}$ ne sont pas colinéaires (la première coordonnée de $\\overrightarrow{HE}$ est nulle, pas celle de $\\overrightarrow{DF}$).\n:::\n\n::: etape Le système\n$a\\overrightarrow{DF} + b\\overrightarrow{HE}$ a pour coordonnées $(a\\,;-a - b\\,;a)$ :\n\n$$\\begin{cases} a = 1 \\\\ -a - b = 0 \\\\ a = \\frac{1}{2} \\end{cases}$$\n\nLa première et la troisième équation sont contradictoires : $1 \\neq \\frac{1}{2}$.\n:::\n\n::: resultat\nAucun couple $(a\\,;b)$ ne convient : $\\overrightarrow{AI}$, $\\overrightarrow{DF}$, $\\overrightarrow{HE}$ ne sont **pas coplanaires**.\n:::\n\n## Question 3 : Décomposition pour la question 1\n\n[IMAGE_2]\n\n::: methode\nOn exprime les trois vecteurs dans la base $(\\overrightarrow{AB}, \\overrightarrow{AD}, \\overrightarrow{AE})$ à l’aide de la relation de Chasles.\n:::\n\n::: etape Les trois vecteurs\n- $\\overrightarrow{CA} = \\overrightarrow{CB} + \\overrightarrow{BA} = -\\overrightarrow{AD} - \\overrightarrow{AB}$ ;\n- $\\overrightarrow{DE} = \\overrightarrow{DA} + \\overrightarrow{AE} = -\\overrightarrow{AD} + \\overrightarrow{AE}$ ;\n- $\\overrightarrow{DG} = \\overrightarrow{DC} + \\overrightarrow{CG} = \\overrightarrow{AB} + \\overrightarrow{AE}$.\n:::\n\n::: etape Combinaison\n$$\n\\begin{aligned}\n\\overrightarrow{DE} - \\overrightarrow{DG} &= (-\\overrightarrow{AD} + \\overrightarrow{AE}) - (\\overrightarrow{AB} + \\overrightarrow{AE}) \\\\\n&= -\\overrightarrow{AB} - \\overrightarrow{AD} \\\\\n&= \\overrightarrow{CA}\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$\\overrightarrow{CA} = \\overrightarrow{DE} - \\overrightarrow{DG}$ : on retrouve que les trois vecteurs sont coplanaires.\n:::\n\n## Question 4 : Décomposition pour la question 2\n\n[IMAGE_3]\n\n::: methode\nMême démarche, puis on utilise l’**unicité** de la décomposition dans une base.\n:::\n\n::: etape Les trois vecteurs\n- $\\overrightarrow{AI} = \\overrightarrow{AB} + \\overrightarrow{BI} = \\overrightarrow{AB} + \\frac{1}{2}\\overrightarrow{AE}$ (car $\\overrightarrow{BF} = \\overrightarrow{AE}$) ;\n- $\\overrightarrow{DF} = \\overrightarrow{DA} + \\overrightarrow{AB} + \\overrightarrow{BF} = \\overrightarrow{AB} - \\overrightarrow{AD} + \\overrightarrow{AE}$ ;\n- $\\overrightarrow{HE} = \\overrightarrow{DA} = -\\overrightarrow{AD}$.\n:::\n\n::: etape Identification\nSi $\\overrightarrow{AI} = a\\overrightarrow{DF} + b\\overrightarrow{HE}$, alors\n\n$$\\overrightarrow{AB} + \\frac{1}{2}\\overrightarrow{AE} = a\\overrightarrow{AB} + (-a - b)\\overrightarrow{AD} + a\\overrightarrow{AE}$$\n\nPar unicité de la décomposition, $a = 1$ (sur $\\overrightarrow{AB}$) et $a = \\frac{1}{2}$ (sur $\\overrightarrow{AE}$) : contradiction.\n:::\n\n::: resultat\n$\\overrightarrow{AI}$ n’est pas une combinaison linéaire de $\\overrightarrow{DF}$ et $\\overrightarrow{HE}$ : les trois vecteurs ne sont pas coplanaires.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. Oui : $\\overrightarrow{CA}(-1\\,;-1\\,;0) = \\overrightarrow{DE} - \\overrightarrow{DG}$, donc les vecteurs sont coplanaires.\n2. Non : $\\overrightarrow{AI} = a\\overrightarrow{DF} + b\\overrightarrow{HE}$ impose $a = 1$ et $a = \\frac{1}{2}$.\n3. $\\overrightarrow{CA} = -\\overrightarrow{AB} - \\overrightarrow{AD} = \\overrightarrow{DE} - \\overrightarrow{DG}$.\n4. $\\overrightarrow{AI} = \\overrightarrow{AB} + \\frac{1}{2}\\overrightarrow{AE}$ et $a\\overrightarrow{DF} + b\\overrightarrow{HE} = a\\overrightarrow{AB} - (a + b)\\overrightarrow{AD} + a\\overrightarrow{AE}$ : l’unicité impose $a = 1$ et $a = \\frac{1}{2}$, impossible.",
+   "titre": "Type Bac - Vecteurs coplanaires et non coplanaires dans un pavé droit",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\n$ABCDEFGH$ est un pavé droit (parallélépipède rectangle). On note $I$ le milieu de l’arête $[BF]$.\n\n[IMAGE_1]\n\n1. Les vecteurs $\\overrightarrow{CA}$, $\\overrightarrow{DE}$ et $\\overrightarrow{DG}$ sont-ils coplanaires ? Justifier à l’aide des coordonnées dans le repère $(A\\,;\\overrightarrow{AB}, \\overrightarrow{AD}, \\overrightarrow{AE})$.\n2. Les vecteurs $\\overrightarrow{AI}$, $\\overrightarrow{DF}$ et $\\overrightarrow{HE}$ sont-ils coplanaires ? Justifier à l’aide des coordonnées.\n3. Retrouver le résultat de la question 1 par une décomposition vectorielle.\n4. Retrouver le résultat de la question 2 par une décomposition vectorielle."
+  }
+ ],
+ "images": [
+  {
+   "modele": "CoursImage",
+   "id": 781,
+   "proprietaire": 167,
+   "position": 1,
+   "image": "cours_images/v1_n180_co167_1_cube_chasles.png",
+   "legende": null,
+   "alt_text": "Cube ABCDEFGH : le vecteur AG (en vert) est la somme des vecteurs AB, BC et CG pris le long des arêtes",
+   "title_text": "",
+   "width": 290,
+   "height": 278
+  },
+  {
+   "modele": "CoursImage",
+   "id": 782,
+   "proprietaire": 167,
+   "position": 2,
+   "image": "cours_images/v1_n180_co167_2_plan_point_vecteurs.png",
+   "legende": null,
+   "alt_text": "Plan P passant par A et dirigé par u et v ; le point M vérifie AM = 2u + 1,5v, construit en complétant le parallélogramme",
+   "title_text": "",
+   "width": 376,
+   "height": 142
+  },
+  {
+   "modele": "CoursImage",
+   "id": 783,
+   "proprietaire": 167,
+   "position": 3,
+   "image": "cours_images/v1_n180_co167_3_cube_coplanaires.png",
+   "legende": null,
+   "alt_text": "Cube : les vecteurs EF, EH et EG sont dans le plan de la face EFGH, le vecteur EA (orange) sort de ce plan",
+   "title_text": "",
+   "width": 290,
+   "height": 278
+  },
+  {
+   "modele": "CoursImage",
+   "id": 822,
+   "proprietaire": 167,
+   "position": 4,
+   "image": "cours_images/v1_n180_co167_4_repere_espace.png",
+   "legende": null,
+   "alt_text": "Repère de l'espace (O ; i, j, k) et point M de coordonnées (2 ; 3 ; 2) avec ses projections en pointillés",
+   "title_text": "",
+   "width": 418,
+   "height": 312
+  },
+  {
+   "modele": "CoursImage",
+   "id": 823,
+   "proprietaire": 167,
+   "position": 5,
+   "image": "cours_images/v1_n180_co167_5_cube_deux_droites.png",
+   "legende": null,
+   "alt_text": "Cube : les droites (AB) et (HG) sont parallèles, les droites (AB) et (CG) sont non coplanaires",
+   "title_text": "",
+   "width": 331,
+   "height": 296
+  },
+  {
+   "modele": "CoursImage",
+   "id": 824,
+   "proprietaire": 167,
+   "position": 6,
+   "image": "cours_images/v1_n180_co167_6_droite_et_plan.png",
+   "legende": null,
+   "alt_text": "Trois positions d'une droite d et d'un plan P : d incluse dans P, d sécante à P en I, d strictement parallèle à P",
+   "title_text": "",
+   "width": 444,
+   "height": 198
+  },
+  {
+   "modele": "CoursImage",
+   "id": 825,
+   "proprietaire": 167,
+   "position": 7,
+   "image": "cours_images/v1_n180_co167_7_deux_plans.png",
+   "legende": null,
+   "alt_text": "Deux plans sécants suivant une droite Delta, et deux plans parallèles",
+   "title_text": "",
+   "width": 425,
+   "height": 190
+  },
+  {
+   "modele": "CoursImage",
+   "id": 826,
+   "proprietaire": 167,
+   "position": 8,
+   "image": "cours_images/v1_n180_co167_8_theoreme_toit.png",
+   "legende": null,
+   "alt_text": "Théorème du toit : plans P1 et P2 sécants suivant Delta, contenant les droites parallèles d1 et d2, toutes parallèles à Delta",
+   "title_text": "",
+   "width": 274,
+   "height": 271
+  },
+  {
+   "modele": "CoursImage",
+   "id": 827,
+   "proprietaire": 167,
+   "position": 9,
+   "image": "cours_images/v1_n180_co167_9_section_trapeze.png",
+   "legende": null,
+   "alt_text": "Section du cube par le plan (IJG), I et J milieux de [AB] et [BC] : le trapèze IJGE",
+   "title_text": "",
+   "width": 290,
+   "height": 278
+  },
+  {
+   "modele": "SynthesisImage",
+   "id": 351,
+   "proprietaire": 74,
+   "position": 1,
+   "image": "synthesis_images/v1_n180_fi74_1_cube_coplanaires.png",
+   "legende": null,
+   "alt_text": "Cube : les vecteurs EF, EH et EG sont coplanaires (face EFGH), le vecteur EA ne l'est pas avec eux",
+   "title_text": "",
+   "width": 290,
+   "height": 278
+  },
+  {
+   "modele": "SynthesisImage",
+   "id": 352,
+   "proprietaire": 74,
+   "position": 2,
+   "image": "synthesis_images/v1_n180_fi74_2_theoreme_toit.png",
+   "legende": null,
+   "alt_text": "Théorème du toit : deux plans sécants suivant Delta contenant deux droites parallèles d1 et d2",
+   "title_text": "",
+   "width": 274,
+   "height": 271
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 254,
+   "proprietaire": 1097,
+   "position": 1,
+   "image": "exercice_images/v1_n180_ex1097_1_cube_repere_A.png",
+   "legende": null,
+   "alt_text": "Cube ABCDEFGH avec les vecteurs AB, AD et AE issus de A, qui forment le repère",
+   "title_text": "",
+   "width": 290,
+   "height": 278
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 255,
+   "proprietaire": 1097,
+   "position": 2,
+   "image": "exercice_images/v1_n180_ex1097_2_cube_chasles.png",
+   "legende": null,
+   "alt_text": "Cube : le vecteur AG obtenu en suivant les arêtes AB, BC puis CG",
+   "title_text": "",
+   "width": 290,
+   "height": 278
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 256,
+   "proprietaire": 1098,
+   "position": 1,
+   "image": "exercice_images/v1_n180_ex1098_1_cube_deux_plans_droites.png",
+   "legende": null,
+   "alt_text": "Cube avec le plan P1 de la face ABCD, le plan P2 de la face BCGF, la droite (d1) passant par A et la droite (d2) passant par F",
+   "title_text": "",
+   "width": 374,
+   "height": 308
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 2958,
+   "proprietaire": 1098,
+   "position": 2,
+   "image": "exercice_images/v1_n180_ex1098_2_cube_toit.png",
+   "legende": null,
+   "alt_text": "Cube : plans (ADGF) et (BCHE) sécants suivant la droite Delta passant par K et L, centres des faces ABFE et DCGH",
+   "title_text": "",
+   "width": 306,
+   "height": 252
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 259,
+   "proprietaire": 1102,
+   "position": 1,
+   "image": "exercice_images/v1_n180_ex1102_1_section_cube_enonce.png",
+   "legende": null,
+   "alt_text": "Cube ABCDEFGH avec I, J et K, milieux des arêtes [AD], [AE] et [FG]",
+   "title_text": "",
+   "width": 276,
+   "height": 266
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 260,
+   "proprietaire": 1102,
+   "position": 2,
+   "image": "exercice_images/v1_n180_ex1102_2_section_cube_q1.png",
+   "legende": null,
+   "alt_text": "Construction du point P, intersection de la droite (IJ) prolongée et de la droite (EH) prolongée au-delà de E",
+   "title_text": "",
+   "width": 308,
+   "height": 266
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 261,
+   "proprietaire": 1102,
+   "position": 3,
+   "image": "exercice_images/v1_n180_ex1102_3_section_cube_q2.png",
+   "legende": null,
+   "alt_text": "Droite (PK), intersection des plans (IJK) et (EFG), qui coupe l'arête [EF] en R",
+   "title_text": "",
+   "width": 308,
+   "height": 266
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 262,
+   "proprietaire": 1102,
+   "position": 4,
+   "image": "exercice_images/v1_n180_ex1102_4_section_cube_q3.png",
+   "legende": null,
+   "alt_text": "Section du cube par le plan (IJK) : l'hexagone IJRKNM, avec les traits de construction",
+   "title_text": "",
+   "width": 310,
+   "height": 266
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 257,
+   "proprietaire": 1101,
+   "position": 1,
+   "image": "exercice_images/v1_n180_ex1101_1_tetraedre_milieux.png",
+   "legende": null,
+   "alt_text": "Tétraèdre ABCD avec I, J, K et L, milieux des arêtes [AB], [AC], [CD] et [BD]",
+   "title_text": "",
+   "width": 284,
+   "height": 290
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 258,
+   "proprietaire": 1101,
+   "position": 2,
+   "image": "exercice_images/v1_n180_ex1101_2_tetraedre_section.png",
+   "legende": null,
+   "alt_text": "Section du tétraèdre ABCD par le plan (IJK) : le parallélogramme IJKL",
+   "title_text": "",
+   "width": 284,
+   "height": 290
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 263,
+   "proprietaire": 1103,
+   "position": 1,
+   "image": "exercice_images/v1_n180_ex1103_1_cube_milieux_IJ.png",
+   "legende": null,
+   "alt_text": "Cube ABCDEFGH avec I milieu de [EF] et J milieu de [BC]",
+   "title_text": "",
+   "width": 290,
+   "height": 278
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 264,
+   "proprietaire": 1103,
+   "position": 2,
+   "image": "exercice_images/v1_n180_ex1103_2_cube_IJ_CE_CG.png",
+   "legende": null,
+   "alt_text": "Cube avec les vecteurs IJ (en vert), CE et CG",
+   "title_text": "",
+   "width": 290,
+   "height": 278
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 265,
+   "proprietaire": 1104,
+   "position": 1,
+   "image": "exercice_images/v1_n180_ex1104_1_pave_I.png",
+   "legende": null,
+   "alt_text": "Pavé droit ABCDEFGH avec I milieu de l'arête [BF]",
+   "title_text": "",
+   "width": 321,
+   "height": 214
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 266,
+   "proprietaire": 1104,
+   "position": 2,
+   "image": "exercice_images/v1_n180_ex1104_2_pave_CA_DE_DG.png",
+   "legende": null,
+   "alt_text": "Pavé droit avec les vecteurs CA (en vert), DE et DG",
+   "title_text": "",
+   "width": 321,
+   "height": 214
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 267,
+   "proprietaire": 1104,
+   "position": 3,
+   "image": "exercice_images/v1_n180_ex1104_3_pave_AI_DF_HE.png",
+   "legende": null,
+   "alt_text": "Pavé droit avec les vecteurs AI (en orange), DF et HE",
+   "title_text": "",
+   "width": 321,
+   "height": 214
+  }
+ ],
+ "images_creees": [
+  {
+   "modele": "SynthesisImage",
+   "id": 416
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3775
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3776
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3777
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3778
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3779
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3780
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3781
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3782
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3783
+  }
+ ],
+ "exercices_crees": []
+}

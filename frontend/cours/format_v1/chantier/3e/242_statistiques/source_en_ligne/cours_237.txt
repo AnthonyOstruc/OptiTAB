@@ -1,0 +1,158 @@
+Titre: Statistiques
+
+<!-- optitab:1 -->
+::: objectifs
+- Organiser une série statistique : effectifs, fréquences, effectifs cumulés.
+- Calculer et interpréter la moyenne (simple et pondérée), la médiane et l'étendue.
+- Lire et construire un diagramme en bâtons, un histogramme, un diagramme circulaire.
+- Utiliser un tableur et comparer deux séries de façon critique.
+:::
+
+## I. Effectifs et fréquences
+
+::: definition Vocabulaire
+- La **population** est l'ensemble étudié ; le **caractère** est ce que l'on observe (note, taille, moyen de transport…).
+- L'**effectif** d'une valeur est le nombre de fois où elle apparaît ; l'**effectif total** $N$ est le nombre total d'observations.
+- La **fréquence** d'une valeur est le quotient de son effectif par l'effectif total.
+:::
+
+$$\text{fréquence} = \frac{\text{effectif de la valeur}}{\text{effectif total}}$$
+
+::: propriete
+Une fréquence est comprise entre $0$ et $1$ ; on l'exprime souvent en pourcentage. La somme de toutes les fréquences vaut $1$, soit $100\ \%$.
+:::
+
+::: exemple
+Dans un groupe de $30$ élèves, $12$ viennent à vélo : fréquence $\dfrac{12}{30} = 0{,}4$, soit $40\ \%$.
+:::
+
+::: definition Effectif cumulé
+L'**effectif cumulé** d'une valeur est le nombre d'observations inférieures ou égales à cette valeur. Il se calcule en additionnant les effectifs de gauche à droite.
+:::
+
+## II. La moyenne
+
+::: definition Moyenne simple
+La **moyenne** d'une série est la somme des valeurs divisée par le nombre de valeurs.
+:::
+
+::: definition Moyenne pondérée
+Quand les données sont dans un tableau d'effectifs, on multiplie chaque valeur par son effectif, on additionne ces produits, puis on divise par l'effectif total :
+
+$$\bar{x} = \frac{x_1 \times n_1 + x_2 \times n_2 + \dots + x_p \times n_p}{n_1 + n_2 + \dots + n_p}$$
+:::
+
+[IMAGE_1]
+
+::: exemple Notes d'une classe (diagramme ci-dessus)
+| Note | $6$ | $8$ | $10$ | $12$ | $16$ |
+|---|---|---|---|---|---|
+| Effectif | $2$ | $3$ | $6$ | $5$ | $4$ |
+
+$$
+\begin{aligned}
+\bar{x} &= \frac{6 \times 2 + 8 \times 3 + 10 \times 6 + 12 \times 5 + 16 \times 4}{20} \\
+&= \frac{12 + 24 + 60 + 60 + 64}{20} = \frac{220}{20} = 11
+\end{aligned}
+$$
+:::
+
+::: attention
+Pour réunir deux groupes, on n'effectue pas la moyenne des deux moyennes (sauf si les groupes ont le même effectif) : on additionne les **sommes** des deux groupes et on divise par l'effectif total.
+:::
+
+## III. La médiane et l'étendue
+
+::: definition Médiane
+La **médiane** d'une série **rangée dans l'ordre croissant** est un nombre qui partage la série en deux groupes de même effectif : au moins la moitié des valeurs lui sont inférieures ou égales, et au moins la moitié lui sont supérieures ou égales.
+:::
+
+::: methode Déterminer une médiane
+1. Ranger la série dans l'ordre croissant.
+2. Si l'effectif $N$ est **impair**, la médiane est la valeur de rang $\dfrac{N+1}{2}$.
+3. Si l'effectif $N$ est **pair**, la médiane est la moyenne des valeurs de rangs $\dfrac{N}{2}$ et $\dfrac{N}{2} + 1$.
+4. Avec un tableau d'effectifs, les **effectifs cumulés** donnent directement les rangs.
+:::
+
+[IMAGE_2]
+
+::: exemple
+Série de $8$ valeurs : $2\ ;\ 3\ ;\ 5\ ;\ 6\ ;\ 6\ ;\ 9\ ;\ 11\ ;\ 12$. L'effectif est pair : on prend les 4ᵉ et 5ᵉ valeurs, $6$ et $6$. La médiane vaut $6$.
+:::
+
+::: definition Étendue
+L'**étendue** est la différence entre la plus grande et la plus petite valeur de la série. Elle mesure la **dispersion** des valeurs.
+:::
+
+::: exemple
+Pour la série $2\ ;\ 3\ ;\ 3\ ;\ 8$ : moyenne $4$, médiane $3$, étendue $8 - 2 = 6$. Trois nombres, trois informations différentes.
+:::
+
+::: attention Erreurs fréquentes
+- Chercher la médiane sans avoir **rangé** la série.
+- Calculer l'étendue avec les effectifs au lieu des valeurs.
+- Une valeur extrême déplace fortement la moyenne, mais presque pas la médiane.
+:::
+
+## IV. Représenter une série
+
+### Diagramme en bâtons et histogramme
+
+Le **diagramme en bâtons** convient aux valeurs isolées (notes, nombre de frères et sœurs…) : la hauteur de chaque bâton est l'effectif de la valeur (voir le diagramme du II).
+
+L'**histogramme** représente des données regroupées en **classes** : des rectangles accolés, dont la hauteur donne l'effectif quand les classes ont la même largeur.
+
+[IMAGE_3]
+
+::: attention Données en classes
+Le regroupement fait perdre les valeurs exactes. On peut repérer la **classe** qui contient la médiane, pas sa valeur exacte ; les centres des classes ne donnent qu'une **estimation** de la moyenne. La classe $[10\ ;\ 20[$ contient $10$ et exclut $20$.
+:::
+
+### Diagramme circulaire
+
+::: methode Construire un diagramme circulaire
+Chaque secteur a un angle proportionnel à l'effectif :
+
+$$\text{angle} = 360^\circ \times \text{fréquence} = \frac{\text{effectif}}{\text{effectif total}} \times 360^\circ$$
+
+On vérifie que la somme des angles vaut $360^\circ$.
+:::
+
+[IMAGE_4]
+
+::: exemple
+Sur $40$ réponses, $18$ choisissent B : fréquence $\dfrac{18}{40} = 0{,}45 = 45\ \%$ et angle $0{,}45 \times 360^\circ = 162^\circ$.
+:::
+
+## V. Tableur et comparaison de séries
+
+::: methode Avec un tableur
+- Moyenne simple d'une plage : `=MOYENNE(A2:A10)` ; médiane : `=MEDIANE(A2:A10)`.
+- Étendue : `=MAX(A2:A10)-MIN(A2:A10)`.
+- Moyenne pondérée (valeurs en A, effectifs en B) : la somme pondérée `=SOMMEPROD(A2:A4;B2:B4)` divisée par l'effectif total `=SOMME(B2:B4)`.
+:::
+
+::: attention
+`=MOYENNE(A2:A4)` fait la moyenne des valeurs **sans tenir compte des effectifs** : elle est fausse pour un tableau d'effectifs.
+:::
+
+::: methode Comparer deux séries
+On compare un indicateur de **position** (moyenne ou médiane) **et** un indicateur de **dispersion** (étendue).
+:::
+
+[IMAGE_5]
+
+::: exemple
+Série A : $10\ ;\ 10\ ;\ 11\ ;\ 12\ ;\ 12$. Série B : $4\ ;\ 8\ ;\ 12\ ;\ 14\ ;\ 17$. Les deux moyennes valent $11$, mais l'étendue de A est $2$ et celle de B est $13$ : les résultats de B sont beaucoup plus dispersés.
+:::
+
+::: remarque Lecture critique d'un graphique
+Vérifier les unités, la taille des groupes et surtout l'**origine de l'axe vertical** : un axe qui ne commence pas à $0$ peut exagérer visuellement une petite différence.
+:::
+
+::: retenir
+- Fréquence = effectif ÷ effectif total ; somme des fréquences = $1$.
+- Moyenne pondérée = somme des (valeur × effectif) ÷ effectif total.
+- Médiane = valeur centrale de la série **rangée** ; étendue = max − min.
+- Même moyenne n'implique ni même médiane ni même dispersion.
+:::

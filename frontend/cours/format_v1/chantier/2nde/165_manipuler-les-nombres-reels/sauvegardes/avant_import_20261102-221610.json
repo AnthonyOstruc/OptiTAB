@@ -1,0 +1,289 @@
+{
+ "notion": 165,
+ "dossier": "C:\\Users\\SWEELCO-AT\\Desktop\\SWINDER\\OptiTABV2\\frontend\\cours\\format_v1\\chantier\\2nde\\165_manipuler-les-nombres-reels",
+ "date": "2026-11-02T22:16:09",
+ "cours": [
+  {
+   "id": 160,
+   "contenu": "<!-- optitab:1 -->\n::: objectifs\n- Connaître les ensembles de nombres $\\mathbb{N}$, $\\mathbb{Z}$, $\\mathbb{D}$, $\\mathbb{Q}$ et $\\mathbb{R}$.\n- Lire et écrire un intervalle, passer d’une inégalité à un intervalle.\n- Utiliser la valeur absolue comme une distance.\n- Encadrer et arrondir un nombre réel.\n:::\n\n## I. Les ensembles de nombres\n\n::: definition Les ensembles de nombres\n- $\\mathbb{N}$ : les **entiers naturels** $0$ ; $1$ ; $2$ ; $3$ ; …\n- $\\mathbb{Z}$ : les **entiers relatifs** … ; $-2$ ; $-1$ ; $0$ ; $1$ ; $2$ ; …\n- $\\mathbb{D}$ : les **nombres décimaux**, qui s’écrivent $\\dfrac{k}{10^n}$ avec $k \\in \\mathbb{Z}$ et $n \\in \\mathbb{N}$ : leur écriture décimale est finie.\n- $\\mathbb{Q}$ : les **nombres rationnels**, qui s’écrivent $\\dfrac{p}{q}$ avec $p \\in \\mathbb{Z}$ et $q \\in \\mathbb{Z}$, $q \\neq 0$.\n- $\\mathbb{R}$ : les **nombres réels**, abscisses des points d’une droite graduée.\n\nUn réel qui n’est pas rationnel est dit **irrationnel** : par exemple $\\sqrt{2}$ et $\\pi$.\n:::\n\n::: exemple\n$0{,}125 = \\dfrac{125}{1\\,000} = \\dfrac{125}{10^3}$ est décimal ; $\\dfrac{1}{3} = 0{,}333\\ldots$ est rationnel mais pas décimal.\n:::\n\n::: propriete Inclusions\nChaque ensemble est contenu dans le suivant :\n\n$$\\mathbb{N} \\subset \\mathbb{Z} \\subset \\mathbb{D} \\subset \\mathbb{Q} \\subset \\mathbb{R}$$\n:::\n\n[IMAGE_1]\n\n### La droite des réels\n\nÀ chaque point d’une droite graduée correspond un unique réel, son **abscisse**, et réciproquement : tout réel est l’abscisse d’un unique point.\n\n[IMAGE_2]\n\n### Deux démonstrations au programme\n\n::: demonstration $\\dfrac{1}{3}$ n’est pas un nombre décimal\nSupposons que $\\dfrac{1}{3}$ soit décimal : $\\dfrac{1}{3} = \\dfrac{k}{10^n}$ avec $k \\in \\mathbb{Z}$ et $n \\in \\mathbb{N}$.\n\nAlors $10^n = 3k$, donc $10^n$ serait divisible par $3$.\n\nOr $10^n = 2^n \\times 5^n$ n’a que $2$ et $5$ comme facteurs premiers : $10^n$ n’est pas divisible par $3$. C’est une contradiction, donc $\\dfrac{1}{3}$ n’est pas décimal.\n:::\n\n::: demonstration $\\sqrt{2}$ est irrationnel\nSupposons que $\\sqrt{2} = \\dfrac{p}{q}$ avec $p$ et $q$ entiers naturels non nuls et une fraction **irréductible**.\n\nAlors $p^2 = 2q^2$ : $p^2$ est pair, donc $p$ est pair (le carré d’un nombre impair est impair). On écrit $p = 2k$.\n\nPuis $4k^2 = 2q^2$, soit $q^2 = 2k^2$ : $q^2$ est pair, donc $q$ est pair aussi.\n\n$p$ et $q$ sont alors tous deux divisibles par $2$ : la fraction n’était pas irréductible. C’est une contradiction, donc $\\sqrt{2}$ est irrationnel.\n:::\n\n## II. Les intervalles\n\n::: definition Intervalle\nUn **intervalle** est l’ensemble des réels compris entre deux bornes. On écrit $x \\in [2\\,;5]$ pour dire $2 \\le x \\le 5$.\n\n- Crochet tourné vers le nombre : la borne est **incluse**.\n- Crochet tourné vers l’extérieur : la borne est **exclue**.\n:::\n\n[IMAGE_3]\n\n| Inégalité | Intervalle |\n|---|---|\n| $a \\le x \\le b$ | $x \\in [a\\,;b]$ |\n| $a \\lt x \\lt b$ | $x \\in {]a\\,;b[}$ |\n| $a \\le x \\lt b$ | $x \\in {[a\\,;b[}$ |\n| $x \\ge a$ | $x \\in {[a\\,;+\\infty[}$ |\n| $x \\gt a$ | $x \\in {]a\\,;+\\infty[}$ |\n| $x \\le b$ | $x \\in {]{-\\infty}\\,;b]}$ |\n| $x \\lt b$ | $x \\in {]{-\\infty}\\,;b[}$ |\n\nL’ensemble de tous les réels s’écrit $\\mathbb{R} = {]{-\\infty}\\,;+\\infty[}$.\n\n::: attention\n- $+\\infty$ et $-\\infty$ ne sont pas des nombres : le crochet est **toujours ouvert** de leur côté.\n- La plus petite borne s’écrit à gauche : $[2\\,;5]$ et jamais $[5\\,;2]$.\n:::\n\n::: remarque Intersection de deux intervalles\nL’**intersection** $I \\cap J$ est l’ensemble des réels qui appartiennent à la fois à $I$ **et** à $J$. Par exemple, $[-1\\,;4] \\cap {]2\\,;6[} = {]2\\,;4]}$.\n:::\n\n## III. Valeur absolue et distance\n\n::: definition Valeur absolue, distance\n- La **valeur absolue** d’un réel $x$, notée $|x|$, est la distance entre $x$ et $0$ sur la droite graduée : $|x| = x$ si $x \\ge 0$ et $|x| = -x$ si $x \\lt 0$.\n- La **distance** entre deux réels $a$ et $b$ est $|b - a|$ (ou $|a - b|$, c’est le même nombre).\n:::\n\n::: exemple\n$\\lvert -7\\rvert = 7$ ; la distance entre $-3$ et $5$ vaut $|5 - (-3)| = |8| = 8$.\n:::\n\n[IMAGE_4]\n\n::: propriete Intervalle centré\nLes réels situés à une distance au plus $r$ de $a$ (avec $r \\gt 0$) forment l’intervalle de **centre** $a$ et de **rayon** $r$ :\n\n$$|x - a| \\le r \\iff x \\in [a - r\\,;a + r]$$\n:::\n\n::: exemple\n$$|x - 3| \\le 2 \\iff 1 \\le x \\le 5 \\iff x \\in [1\\,;5]$$\n:::\n\n[IMAGE_5]\n\n::: attention\n- Une valeur absolue n’est **jamais négative** : $\\lvert -7\\rvert = 7$.\n- En général $|a + b| \\neq |a| + |b|$ : $|3 + (-5)| = 2$ alors que $|3| + \\lvert -5\\rvert = 8$.\n:::\n\n## IV. Encadrer et arrondir\n\n::: definition Encadrement\nEncadrer un réel $x$ à $10^{-n}$ près, c’est trouver deux décimaux $a$ et $b$ tels que $a \\le x \\le b$ et $b - a = 10^{-n}$. Le nombre $b - a$ est l’**amplitude** de l’encadrement.\n:::\n\n::: exemple\n$1{,}41^2 = 1{,}9881 \\lt 2$ et $1{,}42^2 = 2{,}0164 \\gt 2$, donc $1{,}41 \\le \\sqrt{2} \\le 1{,}42$ : c’est un encadrement de $\\sqrt{2}$ à $10^{-2}$ près.\n:::\n\n[IMAGE_6]\n\n::: methode Arrondir à $n$ décimales\nOn regarde la décimale suivante :\n- de $0$ à $4$, on garde la dernière décimale ;\n- de $5$ à $9$, on augmente de $1$ la dernière décimale gardée.\n\nAinsi $\\pi \\approx 3{,}142$ au millième (la décimale suivante, $5$, fait monter le $1$ à $2$). Dans un problème, on arrondit selon la précision des données.\n:::\n\n::: remarque Algorithme de balayage\nPour encadrer $\\sqrt{2}$, on part de $a = 1$ et on avance d’un pas $h = 10^{-n}$ tant que $(a + h)^2 \\le 2$.\n\n```python\ndef encadrement(n):\n    h = 10 ** (-n)\n    a = 1\n    while (a + h)**2 <= 2:\n        a = a + h\n    return a, a + h\n```\n:::\n\n::: retenir\n- $\\mathbb{N} \\subset \\mathbb{Z} \\subset \\mathbb{D} \\subset \\mathbb{Q} \\subset \\mathbb{R}$ ; $\\dfrac{1}{3}$ n’est pas décimal et $\\sqrt{2}$ est irrationnel.\n- $x \\in [a\\,;b] \\iff a \\le x \\le b$ ; un crochet ouvert exclut la borne.\n- $|b - a|$ est la distance entre $a$ et $b$.\n- $|x - a| \\le r \\iff x \\in [a - r\\,;a + r]$.\n:::"
+  }
+ ],
+ "fiches": [
+  {
+   "id": 133,
+   "summary": "<!-- optitab:1 -->\n::: objectifs\nRetenir l’essentiel : les ensembles de nombres, les intervalles, la valeur absolue et l’encadrement.\n:::\n\n## I. Les ensembles de nombres\n\n::: formule\n$$\\mathbb{N} \\subset \\mathbb{Z} \\subset \\mathbb{D} \\subset \\mathbb{Q} \\subset \\mathbb{R}$$\n:::\n\n[IMAGE_1]\n\n- **Décimal** : $\\dfrac{k}{10^n}$, écriture décimale finie ($0{,}125$).\n- **Rationnel** : $\\dfrac{p}{q}$, écriture décimale finie ou périodique ($\\dfrac{1}{3} = 0{,}333\\ldots$).\n- **Irrationnel** : réel non rationnel ($\\sqrt{2}$, $\\pi$).\n\n## II. Intervalles, distances, encadrements\n\n[IMAGE_2]\n\n| Inégalité | Intervalle |\n|---|---|\n| $a \\le x \\le b$ | $x \\in [a\\,;b]$ |\n| $a \\lt x \\lt b$ | $x \\in {]a\\,;b[}$ |\n| $x \\ge a$ | $x \\in {[a\\,;+\\infty[}$ |\n| $x \\lt b$ | $x \\in {]{-\\infty}\\,;b[}$ |\n\n- $|x|$ est la distance de $x$ à $0$ ; la distance entre $a$ et $b$ est $|b - a|$.\n- Intervalle centré : $|x - a| \\le r \\iff x \\in [a - r\\,;a + r]$. Exemple : $|x - 3| \\le 2 \\iff x \\in [1\\,;5]$.\n- Encadrement à $10^{-n}$ près : $a \\le x \\le b$ avec $b - a = 10^{-n}$, comme $1{,}41 \\le \\sqrt{2} \\le 1{,}42$.\n\n## III. Les pièges à éviter\n\n::: attention Les 4 erreurs classiques\n1. Fermer le crochet du côté de l’infini : on écrit ${[2\\,;+\\infty[}$.\n2. Oublier qu’un crochet ouvert exclut la borne : $5 \\notin {[2\\,;5[}$.\n3. Écrire une valeur absolue négative : $\\lvert -7\\rvert = 7$.\n4. Croire qu’un nombre est irrationnel parce que la calculatrice affiche beaucoup de décimales : $\\dfrac{1}{7}$ est rationnel.\n:::\n\n::: conseil Réflexe\n- Une inégalité : je la dessine sur la droite graduée, puis je l’écris en intervalle.\n- « $|x - a| \\le r$ » se lit « $x$ est à une distance au plus $r$ de $a$ ».\n:::"
+  }
+ ],
+ "exercices": [
+  {
+   "id": 1934,
+   "question": "<!-- optitab:1 -->\nOn considère la fonction Python suivante, qui cherche un encadrement de $\\sqrt{2}$ d’amplitude $10^{-n}$.\n\n```python\ndef encadrement_sqrt2(n):\n    h = 10 ** (-n)\n    a = 1.0\n    while (a + h)**2 <= 2:\n        a = a + h\n    return a, a + h\n```\n\n1. Pour $n = 2$, quelle est la valeur de `h` ?\n2. Que signifie la condition de boucle $(a + h)^2 \\le 2$ ?\n3. Quand la boucle s’arrête, que peut-on dire de $a$ et de $a + h$ par rapport à $\\sqrt{2}$ ?\n4. Sans exécuter le programme, donner l’encadrement renvoyé pour $n = 2$.\n5. Que faut-il changer dans le code pour encadrer $\\sqrt{3}$ au lieu de $\\sqrt{2}$ ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Valeur de $h$\n\n::: methode\nLa ligne `h = 10 ** (-n)` calcule $h = 10^{-n}$.\n:::\n\n::: etape Remplacer $n$ par $2$\n$$h = 10^{-2} = \\dfrac{1}{100} = 0{,}01$$\n:::\n\n::: resultat\nPour $n = 2$, $h = 0{,}01$ : le programme avance de centième en centième.\n:::\n\n## Question 2 : Sens de la condition $(a + h)^2 \\le 2$\n\n::: methode\nComparer des carrés de nombres positifs revient à comparer les nombres.\n:::\n\n::: etape Traduire la condition\n$a + h$ est positif. Or, pour deux nombres positifs, $u^2 \\le v^2 \\iff u \\le v$. Donc :\n\n$$(a + h)^2 \\le 2 \\iff a + h \\le \\sqrt{2}$$\n:::\n\n::: resultat\nLa condition teste si le nombre suivant $a + h$ est encore inférieur ou égal à $\\sqrt{2}$ : tant que c’est le cas, on avance d’un pas.\n:::\n\n## Question 3 : À l’arrêt de la boucle\n\n::: methode\nLa boucle s’arrête dès que la condition devient fausse.\n:::\n\n::: etape Ce que l’on sait de $a$\nAu départ $a = 1 \\le \\sqrt{2}$, et $a$ ne reçoit une nouvelle valeur $a + h$ que si $a + h \\le \\sqrt{2}$. Donc on a toujours $a \\le \\sqrt{2}$.\n:::\n\n::: etape Ce que l’on sait de $a + h$\nÀ l’arrêt, la condition est fausse : $(a + h)^2 \\gt 2$, donc $a + h \\gt \\sqrt{2}$.\n:::\n\n::: resultat\n$$a \\le \\sqrt{2} \\lt a + h$$\n:::\n\n## Question 4 : Encadrement pour $n = 2$\n\n::: methode\nChercher les deux centièmes consécutifs qui entourent $\\sqrt{2}$, à l’aide de leurs carrés.\n:::\n\n::: etape Calculer deux carrés\n- $1{,}41^2 = 1{,}9881 \\le 2$ : la boucle avance encore jusqu’à $a = 1{,}41$.\n- $1{,}42^2 = 2{,}0164 \\gt 2$ : la boucle s’arrête avec $a = 1{,}41$.\n:::\n\n::: resultat\nLa fonction renvoie $(1{,}41\\,;\\ 1{,}42)$, c’est-à-dire $1{,}41 \\le \\sqrt{2} \\lt 1{,}42$.\n:::\n\n::: remarque\nEn pratique, Python affiche `1.4100000000000004` : les calculs sur les nombres à virgule sont arrondis en machine. Le résultat reste l’encadrement $[1{,}41\\,;1{,}42]$.\n:::\n\n## Question 5 : Encadrer $\\sqrt{3}$\n\n::: methode\nSeul le nombre comparé au carré change.\n:::\n\n::: etape Modifier la condition\nOn remplace la ligne de la boucle par `while (a + h)**2 <= 3:`. Le départ $a = 1$ convient encore, car $1 \\le \\sqrt{3}$.\n:::\n\n::: resultat\nIl suffit de remplacer $2$ par $3$ dans la condition : $(a + h)^2 \\le 3$.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $h = 10^{-2} = 0{,}01$.\n2. $(a + h)^2 \\le 2$ signifie $a + h \\le \\sqrt{2}$ : on peut encore avancer.\n3. $a \\le \\sqrt{2} \\lt a + h$.\n4. $(1{,}41\\,;\\ 1{,}42)$, soit $1{,}41 \\le \\sqrt{2} \\lt 1{,}42$.\n5. Remplacer la condition par $(a + h)^2 \\le 3$.",
+   "titre": "Algorithmique - Encadrer $\\displaystyle \\sqrt{2}$ par balayage",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nOn considère la fonction Python suivante, qui cherche un encadrement de $\\sqrt{2}$ d’amplitude $10^{-n}$.\n\n```python\ndef encadrement_sqrt2(n):\n    h = 10 ** (-n)\n    a = 1.0\n    while (a + h)**2 <= 2:\n        a = a + h\n    return a, a + h\n```\n\n1. Pour $n = 2$, quelle est la valeur de `h` ?\n2. Que signifie la condition de boucle $(a + h)^2 \\le 2$ ?\n3. Quand la boucle s’arrête, que peut-on dire de $a$ et de $a + h$ par rapport à $\\sqrt{2}$ ?\n4. Sans exécuter le programme, donner l’encadrement renvoyé pour $n = 2$.\n5. Que faut-il changer dans le code pour encadrer $\\sqrt{3}$ au lieu de $\\sqrt{2}$ ?"
+  },
+  {
+   "id": 1927,
+   "question": "<!-- optitab:1 -->\nÉcrire chaque nombre sous forme de fraction irréductible (les points de suspension indiquent que le bloc de chiffres se répète indéfiniment).\n\n::: rappel Méthode\n- On appelle $x$ le nombre.\n- On multiplie $x$ par une puissance de $10$ pour décaler la virgule jusqu’à retrouver le même bloc qui se répète.\n- On soustrait pour faire disparaître la partie qui se répète, puis on résout.\n:::\n\n1. $x = 0{,}333\\ldots$\n2. $x = 0{,}2727\\ldots$\n3. $x = 0{,}1666\\ldots$\n4. $x = 1{,}08333\\ldots$\n5. $x = 2{,}4545\\ldots$",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : $x = 0{,}333\\ldots$\n\n::: methode\nLe bloc qui se répète ($3$) a $1$ chiffre : on multiplie par $10$.\n:::\n\n::: etape Décaler et soustraire\n$$\n\\begin{aligned}\n10x &= 3{,}333\\ldots \\\\\nx &= 0{,}333\\ldots \\\\\n10x - x &= 3\n\\end{aligned}\n$$\n:::\n\n::: etape Résoudre\n$9x = 3$, donc $x = \\dfrac{3}{9} = \\dfrac{1}{3}$.\n:::\n\n::: resultat\n$$0{,}333\\ldots = \\dfrac{1}{3}$$\n:::\n\n## Question 2 : $x = 0{,}2727\\ldots$\n\n::: methode\nLe bloc qui se répète ($27$) a $2$ chiffres : on multiplie par $100$.\n:::\n\n::: etape Décaler et soustraire\n$$\n\\begin{aligned}\n100x &= 27{,}2727\\ldots \\\\\nx &= 0{,}2727\\ldots \\\\\n100x - x &= 27\n\\end{aligned}\n$$\n:::\n\n::: etape Résoudre et simplifier\n$99x = 27$, donc $x = \\dfrac{27}{99} = \\dfrac{9 \\times 3}{9 \\times 11} = \\dfrac{3}{11}$.\n:::\n\n::: resultat\n$$0{,}2727\\ldots = \\dfrac{3}{11}$$\n:::\n\n## Question 3 : $x = 0{,}1666\\ldots$\n\n::: methode\nLe $6$ ne se répète qu’à partir de la deuxième décimale : on aligne les parties qui se répètent avec $10x$ et $100x$.\n:::\n\n::: etape Décaler\n$$\n\\begin{aligned}\n100x &= 16{,}666\\ldots \\\\\n10x &= 1{,}666\\ldots\n\\end{aligned}\n$$\n:::\n\n::: etape Soustraire et résoudre\n$100x - 10x = 16 - 1 = 15$, donc $90x = 15$ et $x = \\dfrac{15}{90} = \\dfrac{1}{6}$.\n:::\n\n::: resultat\n$$0{,}1666\\ldots = \\dfrac{1}{6}$$\n:::\n\n## Question 4 : $x = 1{,}08333\\ldots$\n\n::: methode\nLe bloc $3$ se répète à partir de la troisième décimale : on aligne avec $100x$ et $1\\,000x$.\n:::\n\n::: etape Décaler\n$$\n\\begin{aligned}\n1\\,000x &= 1\\,083{,}333\\ldots \\\\\n100x &= 108{,}333\\ldots\n\\end{aligned}\n$$\n:::\n\n::: etape Soustraire et résoudre\n$1\\,000x - 100x = 1\\,083 - 108 = 975$, donc $900x = 975$ et :\n\n$$x = \\dfrac{975}{900} = \\dfrac{75 \\times 13}{75 \\times 12} = \\dfrac{13}{12}$$\n:::\n\n::: resultat\n$$1{,}08333\\ldots = \\dfrac{13}{12}$$\n:::\n\n## Question 5 : $x = 2{,}4545\\ldots$\n\n::: methode\nLe bloc qui se répète ($45$) a $2$ chiffres : on multiplie par $100$.\n:::\n\n::: etape Décaler et soustraire\n$$\n\\begin{aligned}\n100x &= 245{,}4545\\ldots \\\\\nx &= 2{,}4545\\ldots \\\\\n100x - x &= 243\n\\end{aligned}\n$$\n:::\n\n::: etape Résoudre et simplifier\n$99x = 243$, donc $x = \\dfrac{243}{99} = \\dfrac{9 \\times 27}{9 \\times 11} = \\dfrac{27}{11}$.\n:::\n\n::: resultat\n$$2{,}4545\\ldots = \\dfrac{27}{11}$$\n:::\n\n::: retenir\nUn nombre dont l’écriture décimale est périodique est toujours rationnel.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $0{,}333\\ldots = \\dfrac{1}{3}$\n2. $0{,}2727\\ldots = \\dfrac{3}{11}$\n3. $0{,}1666\\ldots = \\dfrac{1}{6}$\n4. $1{,}08333\\ldots = \\dfrac{13}{12}$\n5. $2{,}4545\\ldots = \\dfrac{27}{11}$",
+   "titre": "Approfondissement - Décimaux périodiques - Écrire en fraction",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nÉcrire chaque nombre sous forme de fraction irréductible (les points de suspension indiquent que le bloc de chiffres se répète indéfiniment).\n\n::: rappel Méthode\n- On appelle $x$ le nombre.\n- On multiplie $x$ par une puissance de $10$ pour décaler la virgule jusqu’à retrouver le même bloc qui se répète.\n- On soustrait pour faire disparaître la partie qui se répète, puis on résout.\n:::\n\n1. $x = 0{,}333\\ldots$\n2. $x = 0{,}2727\\ldots$\n3. $x = 0{,}1666\\ldots$\n4. $x = 1{,}08333\\ldots$\n5. $x = 2{,}4545\\ldots$"
+  },
+  {
+   "id": 1926,
+   "question": "<!-- optitab:1 -->\nPour chaque question, dire si le nombre appartient à l’intervalle donné.\n\n::: rappel\n- $x \\in [a\\,;b] \\iff a \\le x \\le b$ (bornes incluses).\n- $x \\in {]a\\,;b[} \\iff a \\lt x \\lt b$ (bornes exclues).\n:::\n\n1. Le nombre $-2$ appartient-il à $[-2\\,;5]$ ?\n2. Le nombre $-2$ appartient-il à ${]{-2}\\,;5]}$ ?\n3. Le nombre $0$ appartient-il à ${]{-\\infty}\\,;0[}$ ?\n4. Parmi les nombres $-1$ ; $0$ ; $2$, lesquels appartiennent à ${[0\\,;+\\infty[}$ ?\n5. Parmi les nombres $3{,}5$ ; $4$ ; $4{,}1$, lesquels appartiennent à ${]3{,}5\\,;4]}$ ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : $-2 \\in [-2\\,;5]$ ?\n\n::: methode\n$$x \\in [a\\,;b] \\iff a \\le x \\le b$$\n:::\n\n::: etape Traduire\n$-2 \\in [-2\\,;5] \\iff -2 \\le -2 \\le 5$\n:::\n\n::: etape Vérifier les deux inégalités\n- $-2 \\le -2$ : vrai (l’égalité est autorisée, la borne est incluse).\n- $-2 \\le 5$ : vrai.\n:::\n\n::: resultat\nOui : $-2 \\in [-2\\,;5]$.\n:::\n\n## Question 2 : $-2 \\in {]{-2}\\,;5]}$ ?\n\n::: methode\n$$x \\in {]a\\,;b]} \\iff a \\lt x \\le b$$\n:::\n\n::: etape Traduire\n$-2 \\in {]{-2}\\,;5]} \\iff -2 \\lt -2 \\le 5$\n:::\n\n::: etape Vérifier l’inégalité stricte\n$-2 \\lt -2$ est faux : l’inégalité est stricte, l’égalité est interdite.\n:::\n\n::: resultat\nNon : $-2 \\notin {]{-2}\\,;5]}$.\n:::\n\n::: attention\nLe crochet tourné vers l’extérieur exclut la borne : $-2$ est la borne de ${]{-2}\\,;5]}$, mais il n’en fait pas partie.\n:::\n\n## Question 3 : $0 \\in {]{-\\infty}\\,;0[}$ ?\n\n::: methode\n$$x \\in {]{-\\infty}\\,;b[} \\iff x \\lt b$$\n:::\n\n::: etape Traduire et vérifier\n$0 \\in {]{-\\infty}\\,;0[} \\iff 0 \\lt 0$, ce qui est faux.\n:::\n\n::: resultat\nNon : $0 \\notin {]{-\\infty}\\,;0[}$.\n:::\n\n## Question 4 : Appartenance à ${[0\\,;+\\infty[}$\n\n::: methode\n$$x \\in {[0\\,;+\\infty[} \\iff x \\ge 0$$\n:::\n\n::: etape Tester chaque nombre\n- $-1 \\lt 0$, donc $-1 \\notin {[0\\,;+\\infty[}$.\n- $0 \\ge 0$, donc $0 \\in {[0\\,;+\\infty[}$.\n- $2 \\ge 0$, donc $2 \\in {[0\\,;+\\infty[}$.\n:::\n\n::: resultat\n$0$ et $2$ appartiennent à ${[0\\,;+\\infty[}$ ; $-1$ n’y appartient pas.\n:::\n\n## Question 5 : Appartenance à ${]3{,}5\\,;4]}$\n\n::: methode\n$$x \\in {]a\\,;b]} \\iff a \\lt x \\le b$$\n:::\n\n::: etape Tester chaque nombre\n- $3{,}5$ : il faudrait $3{,}5 \\lt 3{,}5$, faux, donc $3{,}5 \\notin {]3{,}5\\,;4]}$.\n- $4$ : $3{,}5 \\lt 4 \\le 4$ est vrai, donc $4 \\in {]3{,}5\\,;4]}$.\n- $4{,}1$ : il faudrait $4{,}1 \\le 4$, faux, donc $4{,}1 \\notin {]3{,}5\\,;4]}$.\n:::\n\n::: resultat\nSeul $4$ appartient à ${]3{,}5\\,;4]}$.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. Oui : $-2 \\in [-2\\,;5]$.\n2. Non : $-2 \\notin {]{-2}\\,;5]}$.\n3. Non : $0 \\notin {]{-\\infty}\\,;0[}$.\n4. $0$ et $2$.\n5. Seulement $4$.",
+   "titre": "Découverte - Intervalles - Appartenance",
+   "difficulty": "easy",
+   "contenu": "<!-- optitab:1 -->\nPour chaque question, dire si le nombre appartient à l’intervalle donné.\n\n::: rappel\n- $x \\in [a\\,;b] \\iff a \\le x \\le b$ (bornes incluses).\n- $x \\in {]a\\,;b[} \\iff a \\lt x \\lt b$ (bornes exclues).\n:::\n\n1. Le nombre $-2$ appartient-il à $[-2\\,;5]$ ?\n2. Le nombre $-2$ appartient-il à ${]{-2}\\,;5]}$ ?\n3. Le nombre $0$ appartient-il à ${]{-\\infty}\\,;0[}$ ?\n4. Parmi les nombres $-1$ ; $0$ ; $2$, lesquels appartiennent à ${[0\\,;+\\infty[}$ ?\n5. Parmi les nombres $3{,}5$ ; $4$ ; $4{,}1$, lesquels appartiennent à ${]3{,}5\\,;4]}$ ?"
+  },
+  {
+   "id": 1928,
+   "question": "<!-- optitab:1 -->\nTraduire chaque écriture en intervalle par des inégalités, et inversement.\n\n1. Écrire avec des inégalités : $x \\in [-1\\,;3]$.\n2. Écrire avec des inégalités : $x \\in {]0\\,;5[}$.\n3. Écrire avec un intervalle : $-2 \\le x \\lt 4$.\n4. Écrire avec un intervalle : $x \\ge 7$.\n5. Écrire avec un intervalle : $x \\lt -3$.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : $x \\in [-1\\,;3]$\n\n::: methode\nUn crochet tourné vers le nombre signifie « borne incluse » : on utilise $\\le$.\n:::\n\n::: resultat\n$$-1 \\le x \\le 3$$\n:::\n\n## Question 2 : $x \\in {]0\\,;5[}$\n\n::: methode\nUn crochet tourné vers l’extérieur signifie « borne exclue » : on utilise $\\lt$.\n:::\n\n::: resultat\n$$0 \\lt x \\lt 5$$\n:::\n\n## Question 3 : $-2 \\le x \\lt 4$\n\n::: methode\n$\\le$ donne un crochet fermé, $\\lt$ donne un crochet ouvert.\n:::\n\n::: etape Chaque borne\n- $-2 \\le x$ : $-2$ est inclus, on écrit $[-2$.\n- $x \\lt 4$ : $4$ est exclu, on écrit $4[$.\n:::\n\n::: resultat\n$$x \\in {[-2\\,;4[}$$\n:::\n\n## Question 4 : $x \\ge 7$\n\n::: methode\n$$x \\ge a \\iff x \\in {[a\\,;+\\infty[}$$\n:::\n\n::: resultat\n$$x \\in {[7\\,;+\\infty[}$$\n:::\n\n## Question 5 : $x \\lt -3$\n\n::: methode\n$$x \\lt b \\iff x \\in {]{-\\infty}\\,;b[}$$\n:::\n\n::: resultat\n$$x \\in {]{-\\infty}\\,;-3[}$$\n:::\n\n::: attention\nDu côté de $-\\infty$ ou de $+\\infty$, le crochet est toujours ouvert.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $-1 \\le x \\le 3$\n2. $0 \\lt x \\lt 5$\n3. $x \\in {[-2\\,;4[}$\n4. $x \\in {[7\\,;+\\infty[}$\n5. $x \\in {]{-\\infty}\\,;-3[}$",
+   "titre": "Découverte - Intervalles et inégalités - Traduire",
+   "difficulty": "easy",
+   "contenu": "<!-- optitab:1 -->\nTraduire chaque écriture en intervalle par des inégalités, et inversement.\n\n1. Écrire avec des inégalités : $x \\in [-1\\,;3]$.\n2. Écrire avec des inégalités : $x \\in {]0\\,;5[}$.\n3. Écrire avec un intervalle : $-2 \\le x \\lt 4$.\n4. Écrire avec un intervalle : $x \\ge 7$.\n5. Écrire avec un intervalle : $x \\lt -3$."
+  },
+  {
+   "id": 1932,
+   "question": "<!-- optitab:1 -->\n::: rappel\n- $\\mathbb{D}$ : nombres décimaux (écriture décimale **finie**).\n- $\\mathbb{Q}$ : nombres rationnels (quotients $\\dfrac{p}{q}$ d’entiers, $q \\neq 0$).\n- $\\mathbb{R} \\setminus \\mathbb{Q}$ : nombres irrationnels (par exemple $\\sqrt{2}$, $\\pi$).\n:::\n\n1. Écrire $12{,}3$ sous forme de fraction, puis dire si $12{,}3 \\in \\mathbb{D}$ et si $12{,}3 \\in \\mathbb{Q}$.\n2. Écrire $0{,}04$ sous forme de fraction irréductible.\n3. Dire si $\\dfrac{7}{4}$ est décimal, puis donner son écriture décimale.\n4. Dire si $\\dfrac{1}{6}$ est décimal, en justifiant avec son écriture décimale.\n5. Classer les nombres $-2{,}5$ ; $\\dfrac{5}{2}$ ; $\\dfrac{1}{3}$ ; $\\sqrt{2}$ ; $\\pi$ dans $\\mathbb{D}$, dans $\\mathbb{Q} \\setminus \\mathbb{D}$ ou dans $\\mathbb{R} \\setminus \\mathbb{Q}$.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : $12{,}3$\n\n::: methode\nUn chiffre après la virgule : on écrit des dixièmes.\n:::\n\n::: etape Écrire la fraction\n$$12{,}3 = \\dfrac{123}{10}$$\n:::\n\n::: resultat\n$12{,}3 = \\dfrac{123}{10}$ : c’est un décimal, donc aussi un rationnel. $12{,}3 \\in \\mathbb{D}$ et $12{,}3 \\in \\mathbb{Q}$.\n:::\n\n## Question 2 : $0{,}04$\n\n::: methode\nDeux chiffres après la virgule : on écrit des centièmes, puis on simplifie.\n:::\n\n::: etape Écrire et simplifier\n$$0{,}04 = \\dfrac{4}{100} = \\dfrac{4 \\times 1}{4 \\times 25} = \\dfrac{1}{25}$$\n:::\n\n::: resultat\n$$0{,}04 = \\dfrac{1}{25}$$\n:::\n\n## Question 3 : $\\dfrac{7}{4}$\n\n::: methode\nEffectuer la division de $7$ par $4$.\n:::\n\n::: etape Division\n$7 \\div 4 = 1{,}75$ : la division s’arrête.\n:::\n\n::: resultat\nOui : $\\dfrac{7}{4} = 1{,}75 = \\dfrac{175}{100}$, donc $\\dfrac{7}{4} \\in \\mathbb{D}$.\n:::\n\n## Question 4 : $\\dfrac{1}{6}$\n\n::: methode\nObserver l’écriture décimale : finie ou non ?\n:::\n\n::: etape Division\n$1 \\div 6 = 0{,}1666\\ldots$ : le chiffre $6$ se répète sans fin.\n:::\n\n::: resultat\nL’écriture décimale ne s’arrête pas : $\\dfrac{1}{6} \\notin \\mathbb{D}$, mais $\\dfrac{1}{6} \\in \\mathbb{Q}$ (c’est un quotient d’entiers).\n:::\n\n## Question 5 : Classer\n\n::: methode\n- Écriture décimale finie : décimal.\n- Quotient d’entiers non décimal : rationnel non décimal.\n- $\\sqrt{2}$ et $\\pi$ sont irrationnels (cours).\n:::\n\n::: etape Chaque nombre\n- $-2{,}5 = -\\dfrac{25}{10}$ : décimal.\n- $\\dfrac{5}{2} = 2{,}5$ : décimal.\n- $\\dfrac{1}{3} = 0{,}333\\ldots$ : rationnel non décimal.\n- $\\sqrt{2}$ et $\\pi$ : irrationnels.\n:::\n\n::: resultat\n| Ensemble | Nombres |\n|---|---|\n| $\\mathbb{D}$ | $-2{,}5$ ; $\\dfrac{5}{2}$ |\n| $\\mathbb{Q} \\setminus \\mathbb{D}$ | $\\dfrac{1}{3}$ |\n| $\\mathbb{R} \\setminus \\mathbb{Q}$ | $\\sqrt{2}$ ; $\\pi$ |\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $12{,}3 = \\dfrac{123}{10}$ : $12{,}3 \\in \\mathbb{D}$ et $12{,}3 \\in \\mathbb{Q}$.\n2. $0{,}04 = \\dfrac{1}{25}$.\n3. Oui : $\\dfrac{7}{4} = 1{,}75$.\n4. Non : $\\dfrac{1}{6} = 0{,}1666\\ldots$ (écriture infinie), mais $\\dfrac{1}{6} \\in \\mathbb{Q}$.\n5. $\\mathbb{D}$ : $-2{,}5$ et $\\dfrac{5}{2}$ ; $\\mathbb{Q} \\setminus \\mathbb{D}$ : $\\dfrac{1}{3}$ ; $\\mathbb{R} \\setminus \\mathbb{Q}$ : $\\sqrt{2}$ et $\\pi$.",
+   "titre": "Entraînement - Décimaux, rationnels, irrationnels - Classer",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\n::: rappel\n- $\\mathbb{D}$ : nombres décimaux (écriture décimale **finie**).\n- $\\mathbb{Q}$ : nombres rationnels (quotients $\\dfrac{p}{q}$ d’entiers, $q \\neq 0$).\n- $\\mathbb{R} \\setminus \\mathbb{Q}$ : nombres irrationnels (par exemple $\\sqrt{2}$, $\\pi$).\n:::\n\n1. Écrire $12{,}3$ sous forme de fraction, puis dire si $12{,}3 \\in \\mathbb{D}$ et si $12{,}3 \\in \\mathbb{Q}$.\n2. Écrire $0{,}04$ sous forme de fraction irréductible.\n3. Dire si $\\dfrac{7}{4}$ est décimal, puis donner son écriture décimale.\n4. Dire si $\\dfrac{1}{6}$ est décimal, en justifiant avec son écriture décimale.\n5. Classer les nombres $-2{,}5$ ; $\\dfrac{5}{2}$ ; $\\dfrac{1}{3}$ ; $\\sqrt{2}$ ; $\\pi$ dans $\\mathbb{D}$, dans $\\mathbb{Q} \\setminus \\mathbb{D}$ ou dans $\\mathbb{R} \\setminus \\mathbb{Q}$."
+  },
+  {
+   "id": 1931,
+   "question": "<!-- optitab:1 -->\nL’intervalle de centre $a$ et de rayon $r$ ($r \\gt 0$) est caractérisé par :\n\n$$x \\in [a - r\\,;a + r] \\iff |x - a| \\le r$$\n\n1. Écrire $[2\\,;8]$ sous la forme $[a - r\\,;a + r]$, puis traduire $x \\in [2\\,;8]$ par une inégalité $|x - a| \\le r$.\n2. Pour $a = -1$ et $r = 4$, écrire l’intervalle $[a - r\\,;a + r]$ et l’inégalité $|x - a| \\le r$.\n3. Résoudre $|x - 3| \\le 2$.\n4. Résoudre $|x + 2| \\lt 3$.\n5. Le nombre $x = -4$ est-il solution de $|x - 1| \\le 5$ ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : L’intervalle $[2\\,;8]$\n\n::: methode\nLe centre est le milieu des bornes, le rayon est la moitié de la longueur.\n:::\n\n::: etape Calculer $a$ et $r$\n$$a = \\dfrac{2 + 8}{2} = 5 \\qquad r = \\dfrac{8 - 2}{2} = 3$$\n:::\n\n::: resultat\n$[2\\,;8] = [5 - 3\\,;5 + 3]$, donc $x \\in [2\\,;8] \\iff |x - 5| \\le 3$.\n:::\n\n## Question 2 : $a = -1$ et $r = 4$\n\n::: methode\nCalculer les bornes $a - r$ et $a + r$.\n:::\n\n::: etape Bornes\n- $a - r = -1 - 4 = -5$\n- $a + r = -1 + 4 = 3$\n:::\n\n::: etape Inégalité\n$|x - (-1)| \\le 4$, c’est-à-dire $|x + 1| \\le 4$.\n:::\n\n::: resultat\nL’intervalle est $[-5\\,;3]$ et l’inégalité est $|x + 1| \\le 4$.\n:::\n\n## Question 3 : Résoudre $|x - 3| \\le 2$\n\n::: methode\n$$|x - a| \\le r \\iff a - r \\le x \\le a + r$$\n:::\n\n::: etape Appliquer avec $a = 3$ et $r = 2$\n$$3 - 2 \\le x \\le 3 + 2 \\iff 1 \\le x \\le 5$$\n:::\n\n::: resultat\nL’ensemble des solutions est $[1\\,;5]$.\n:::\n\n## Question 4 : Résoudre $|x + 2| \\lt 3$\n\n::: methode\nÉcrire $|x + 2|$ sous la forme $|x - a|$ pour lire le centre.\n:::\n\n::: etape Reconnaître le centre\n$|x + 2| = |x - (-2)|$ : c’est la distance entre $x$ et $-2$. Le centre est $a = -2$ et le rayon $r = 3$.\n:::\n\n::: etape Appliquer\n$$-2 - 3 \\lt x \\lt -2 + 3 \\iff -5 \\lt x \\lt 1$$\n:::\n\n[IMAGE_1]\n\n::: resultat\nL’ensemble des solutions est ${]{-5}\\,;1[}$ (bornes exclues car l’inégalité est stricte).\n:::\n\n::: attention\n$|x + 2|$ est la distance de $x$ à $-2$, et non à $2$.\n:::\n\n## Question 5 : $x = -4$ et $|x - 1| \\le 5$\n\n::: methode\nRemplacer $x$ par $-4$ et tester l’inégalité.\n:::\n\n::: etape Calcul\n$$\\lvert -4 - 1\\rvert = \\lvert -5\\rvert = 5$$\n:::\n\n::: resultat\n$5 \\le 5$ est vrai : $x = -4$ est solution (c’est une borne de l’intervalle $[-4\\,;6]$).\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $a = 5$, $r = 3$ : $x \\in [2\\,;8] \\iff |x - 5| \\le 3$.\n2. $[-5\\,;3]$ et $|x + 1| \\le 4$.\n3. $x \\in [1\\,;5]$.\n4. $x \\in {]{-5}\\,;1[}$.\n5. Oui, car $\\lvert -4 - 1\\rvert = 5 \\le 5$.",
+   "titre": "Entraînement - Intervalles centrés - Passer à $\\displaystyle |x-a|$",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nL’intervalle de centre $a$ et de rayon $r$ ($r \\gt 0$) est caractérisé par :\n\n$$x \\in [a - r\\,;a + r] \\iff |x - a| \\le r$$\n\n1. Écrire $[2\\,;8]$ sous la forme $[a - r\\,;a + r]$, puis traduire $x \\in [2\\,;8]$ par une inégalité $|x - a| \\le r$.\n2. Pour $a = -1$ et $r = 4$, écrire l’intervalle $[a - r\\,;a + r]$ et l’inégalité $|x - a| \\le r$.\n3. Résoudre $|x - 3| \\le 2$.\n4. Résoudre $|x + 2| \\lt 3$.\n5. Le nombre $x = -4$ est-il solution de $|x - 1| \\le 5$ ?"
+  },
+  {
+   "id": 1929,
+   "question": "<!-- optitab:1 -->\nL’**intersection** $A \\cap B$ est l’ensemble des nombres qui appartiennent à $A$ **et** à $B$.\n\n1. Déterminer $[-1\\,;4] \\cap {]2\\,;6[}$.\n2. Déterminer ${]{-\\infty}\\,;3]} \\cap {[1\\,;+\\infty[}$.\n3. Résoudre : $x \\gt -2$ et $x \\le 5$ (donner la solution sous forme d’intervalle).\n4. Parmi les nombres $-3$ ; $-2$ ; $0$ ; $4$ ; $6$, lesquels appartiennent à $[-1\\,;4] \\cap {]2\\,;6[}$ ?\n5. Déterminer $[0\\,;1] \\cap {]1\\,;2[}$.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : $[-1\\,;4] \\cap {]2\\,;6[}$\n\n::: methode\nReprésenter les deux intervalles sur une même droite et garder la partie commune.\n:::\n\n[IMAGE_1]\n\n::: etape Comparer les bornes\n- À gauche, on garde la plus grande des deux bornes : $2$.\n- À droite, on garde la plus petite : $4$.\n:::\n\n::: etape Crochets\n- $2$ est exclu de ${]2\\,;6[}$, donc exclu de l’intersection : $]2$.\n- $4$ appartient aux deux intervalles ($4 \\in [-1\\,;4]$ et $4 \\in {]2\\,;6[}$) : $4]$.\n:::\n\n::: resultat\n$$[-1\\,;4] \\cap {]2\\,;6[} = {]2\\,;4]}$$\n:::\n\n## Question 2 : ${]{-\\infty}\\,;3]} \\cap {[1\\,;+\\infty[}$\n\n::: methode\nTraduire chaque intervalle par une inégalité.\n:::\n\n::: etape Traduire\n$x \\le 3$ et $x \\ge 1$, c’est-à-dire $1 \\le x \\le 3$.\n:::\n\n::: resultat\n$${]{-\\infty}\\,;3]} \\cap {[1\\,;+\\infty[} = [1\\,;3]$$\n:::\n\n## Question 3 : $x \\gt -2$ et $x \\le 5$\n\n::: methode\nÉcrire chaque condition en intervalle, puis prendre l’intersection.\n:::\n\n::: etape Intervalles\n- $x \\gt -2 \\iff x \\in {]{-2}\\,;+\\infty[}$\n- $x \\le 5 \\iff x \\in {]{-\\infty}\\,;5]}$\n:::\n\n::: resultat\n$-2 \\lt x \\le 5$, donc $x \\in {]{-2}\\,;5]}$.\n:::\n\n## Question 4 : Appartenance à l’intersection\n\n::: methode\nD’après la question 1, l’intersection est ${]2\\,;4]}$ : on teste $2 \\lt x \\le 4$.\n:::\n\n::: etape Tester chaque nombre\n- $-3$, $-2$ et $0$ sont inférieurs à $2$ : ils n’appartiennent pas à ${]2\\,;4]}$.\n- $2 \\lt 4 \\le 4$ : $4 \\in {]2\\,;4]}$.\n- $6 \\gt 4$ : $6 \\notin {]2\\,;4]}$.\n:::\n\n::: resultat\nSeul $4$ appartient à $[-1\\,;4] \\cap {]2\\,;6[}$.\n:::\n\n## Question 5 : $[0\\,;1] \\cap {]1\\,;2[}$\n\n::: methode\nChercher un nombre qui vérifie à la fois $x \\le 1$ et $x \\gt 1$.\n:::\n\n::: etape Conclure\nAucun nombre ne peut être à la fois inférieur ou égal à $1$ et strictement supérieur à $1$.\n:::\n\n::: resultat\n$[0\\,;1] \\cap {]1\\,;2[} = \\varnothing$ : l’intersection est vide.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. ${]2\\,;4]}$\n2. $[1\\,;3]$\n3. ${]{-2}\\,;5]}$\n4. Seulement $4$.\n5. $\\varnothing$ (intersection vide).",
+   "titre": "Entraînement - Intervalles - Intersections simples",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\nL’**intersection** $A \\cap B$ est l’ensemble des nombres qui appartiennent à $A$ **et** à $B$.\n\n1. Déterminer $[-1\\,;4] \\cap {]2\\,;6[}$.\n2. Déterminer ${]{-\\infty}\\,;3]} \\cap {[1\\,;+\\infty[}$.\n3. Résoudre : $x \\gt -2$ et $x \\le 5$ (donner la solution sous forme d’intervalle).\n4. Parmi les nombres $-3$ ; $-2$ ; $0$ ; $4$ ; $6$, lesquels appartiennent à $[-1\\,;4] \\cap {]2\\,;6[}$ ?\n5. Déterminer $[0\\,;1] \\cap {]1\\,;2[}$."
+  },
+  {
+   "id": 1930,
+   "question": "<!-- optitab:1 -->\n::: rappel\n- $|x|$ est la distance entre $x$ et $0$.\n- La distance entre $a$ et $b$ est $|b - a|$.\n:::\n\n1. Calculer $\\lvert -7\\rvert$.\n2. Calculer $|3 - 8|$.\n3. Calculer la distance entre $-4$ et $9$.\n4. Donner la distance entre $2{,}5$ et $0$.\n5. La distance entre $x$ et $3$ vaut $2$ : donner les deux valeurs possibles de $x$.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : $\\lvert -7\\rvert$\n\n::: methode\nLa valeur absolue d’un nombre négatif est son opposé.\n:::\n\n::: resultat\n$$\\lvert -7\\rvert = 7$$\n:::\n\n## Question 2 : $|3 - 8|$\n\n::: methode\nCalculer d’abord ce qui est à l’intérieur de la valeur absolue.\n:::\n\n::: etape Calcul\n$$|3 - 8| = \\lvert -5\\rvert = 5$$\n:::\n\n::: resultat\n$$|3 - 8| = 5$$\n:::\n\n## Question 3 : Distance entre $-4$ et $9$\n\n::: methode\n$$\\text{distance entre } a \\text{ et } b = |b - a|$$\n:::\n\n::: etape Calcul\n$$|9 - (-4)| = |9 + 4| = |13| = 13$$\n:::\n\n::: resultat\nLa distance entre $-4$ et $9$ vaut $13$.\n:::\n\n## Question 4 : Distance entre $2{,}5$ et $0$\n\n::: methode\nLa distance à $0$ est la valeur absolue.\n:::\n\n::: resultat\n$$|2{,}5| = 2{,}5$$\n:::\n\n## Question 5 : Distance $2$ entre $x$ et $3$\n\n::: methode\n« La distance entre $x$ et $3$ vaut $2$ » se traduit par $|x - 3| = 2$.\n:::\n\n::: etape Résoudre\n$x - 3 = 2$ ou $x - 3 = -2$, donc $x = 5$ ou $x = 1$.\n:::\n\n[IMAGE_1]\n\n::: resultat\n$x = 1$ ou $x = 5$ : ce sont les deux réels situés à $2$ unités de $3$.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $\\lvert -7\\rvert = 7$\n2. $|3 - 8| = 5$\n3. $13$\n4. $2{,}5$\n5. $x = 1$ ou $x = 5$",
+   "titre": "Entraînement - Valeur absolue - Distance et calculs",
+   "difficulty": "easy",
+   "contenu": "<!-- optitab:1 -->\n::: rappel\n- $|x|$ est la distance entre $x$ et $0$.\n- La distance entre $a$ et $b$ est $|b - a|$.\n:::\n\n1. Calculer $\\lvert -7\\rvert$.\n2. Calculer $|3 - 8|$.\n3. Calculer la distance entre $-4$ et $9$.\n4. Donner la distance entre $2{,}5$ et $0$.\n5. La distance entre $x$ et $3$ vaut $2$ : donner les deux valeurs possibles de $x$."
+  },
+  {
+   "id": 1933,
+   "question": "<!-- optitab:1 -->\n::: rappel\n- Un encadrement $a \\le x \\le b$ a pour **amplitude** $b - a$.\n- Encadrer à $10^{-n}$ près, c’est donner un encadrement d’amplitude $10^{-n}$.\n:::\n\n1. On admet que $\\pi \\approx 3{,}1415926$. Donner un encadrement de $\\pi$ d’amplitude $10^{-2}$.\n2. Vérifier que $1{,}41^2 \\lt 2$ et $1{,}42^2 \\gt 2$, puis encadrer $\\sqrt{2}$ avec une amplitude de $0{,}01$.\n3. Donner un encadrement de $\\dfrac{5}{7}$ d’amplitude $0{,}1$.\n4. Arrondir $3{,}14159$ au centième, puis au millième.\n5. Un disque a pour rayon $r = 4{,}8$ cm. En prenant $\\pi \\approx 3{,}14$, calculer son aire $A = \\pi r^2$ et l’arrondir au dixième de cm².",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Encadrer $\\pi$ à $10^{-2}$ près\n\n::: methode\nÀ $10^{-2}$ près, c’est au centième : on garde $2$ décimales.\n:::\n\n::: etape Encadrer\n$3{,}14 \\le 3{,}1415926\\ldots \\le 3{,}15$ et $3{,}15 - 3{,}14 = 0{,}01$.\n:::\n\n::: resultat\n$3{,}14 \\le \\pi \\le 3{,}15$ (amplitude $0{,}01$).\n:::\n\n## Question 2 : Encadrer $\\sqrt{2}$\n\n::: methode\nPour des nombres positifs, si $a^2 \\lt 2 \\lt b^2$, alors $a \\lt \\sqrt{2} \\lt b$.\n:::\n\n::: etape Calculer les carrés\n- $1{,}41^2 = 1{,}9881 \\lt 2$\n- $1{,}42^2 = 2{,}0164 \\gt 2$\n:::\n\n::: resultat\n$1{,}41 \\lt \\sqrt{2} \\lt 1{,}42$ (amplitude $0{,}01$).\n:::\n\n## Question 3 : Encadrer $\\dfrac{5}{7}$ à $0{,}1$ près\n\n::: methode\nCalculer une valeur approchée, puis garder une décimale.\n:::\n\n::: etape Valeur approchée\n$5 \\div 7 \\approx 0{,}714$\n:::\n\n::: resultat\n$0{,}7 \\le \\dfrac{5}{7} \\le 0{,}8$ (amplitude $0{,}1$).\n:::\n\n## Question 4 : Arrondir $3{,}14159$\n\n::: methode\nRegarder le chiffre qui suit la dernière décimale gardée : de $0$ à $4$ on garde, de $5$ à $9$ on augmente de $1$.\n:::\n\n::: etape Au centième\nOn garde $3{,}14$ ; le chiffre suivant est $1$ (moins de $5$) : on garde $3{,}14$.\n:::\n\n::: etape Au millième\nOn garde $3{,}141$ ; le chiffre suivant est $5$ : le dernier chiffre $1$ devient $2$.\n:::\n\n::: resultat\n$3{,}14159 \\approx 3{,}14$ au centième et $3{,}14159 \\approx 3{,}142$ au millième.\n:::\n\n## Question 5 : Aire du disque\n\n::: methode\nCalculer $r^2$, multiplier par $3{,}14$, puis arrondir.\n:::\n\n::: etape Calculer\n$$\n\\begin{aligned}\nr^2 &= 4{,}8^2 = 23{,}04 \\\\\nA &\\approx 3{,}14 \\times 23{,}04 = 72{,}3456\n\\end{aligned}\n$$\n:::\n\n::: etape Arrondir au dixième\nLe chiffre des centièmes est $4$ (moins de $5$) : $72{,}3456 \\approx 72{,}3$.\n:::\n\n::: resultat\n$$A \\approx 72{,}3 \\text{ cm}^2$$\n:::\n\n::: attention\nAvec la touche $\\pi$ de la calculatrice, on obtient $A \\approx 72{,}38$, soit $72{,}4$ cm² au dixième : la valeur approchée $3{,}14$ choisie dans l’énoncé change ici le dernier chiffre.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $3{,}14 \\le \\pi \\le 3{,}15$\n2. $1{,}41 \\lt \\sqrt{2} \\lt 1{,}42$\n3. $0{,}7 \\le \\dfrac{5}{7} \\le 0{,}8$\n4. $3{,}14$ au centième ; $3{,}142$ au millième.\n5. $A \\approx 72{,}3$ cm² (avec $\\pi \\approx 3{,}14$).",
+   "titre": "Maîtrise - Encadrement et arrondis - $\\displaystyle 10^{-n}$ près",
+   "difficulty": "medium",
+   "contenu": "<!-- optitab:1 -->\n::: rappel\n- Un encadrement $a \\le x \\le b$ a pour **amplitude** $b - a$.\n- Encadrer à $10^{-n}$ près, c’est donner un encadrement d’amplitude $10^{-n}$.\n:::\n\n1. On admet que $\\pi \\approx 3{,}1415926$. Donner un encadrement de $\\pi$ d’amplitude $10^{-2}$.\n2. Vérifier que $1{,}41^2 \\lt 2$ et $1{,}42^2 \\gt 2$, puis encadrer $\\sqrt{2}$ avec une amplitude de $0{,}01$.\n3. Donner un encadrement de $\\dfrac{5}{7}$ d’amplitude $0{,}1$.\n4. Arrondir $3{,}14159$ au centième, puis au millième.\n5. Un disque a pour rayon $r = 4{,}8$ cm. En prenant $\\pi \\approx 3{,}14$, calculer son aire $A = \\pi r^2$ et l’arrondir au dixième de cm²."
+  },
+  {
+   "id": 1935,
+   "question": "<!-- optitab:1 -->\nUne usine fabrique des tiges de longueur théorique $30{,}0$ cm. Une tige est **acceptée** si sa longueur $L$ (en cm) est comprise entre $29{,}7$ cm et $30{,}3$ cm, bornes incluses.\n\n1. Écrire la condition d’acceptation sous forme d’intervalle.\n2. Écrire la même condition avec une valeur absolue, sous la forme $|L - a| \\le r$.\n3. On mesure $L_1 = 29{,}65$ cm, $L_2 = 29{,}90$ cm et $L_3 = 30{,}31$ cm. Quelles tiges sont acceptées ?\n4. Quel est l’écart maximal autorisé par rapport à $30{,}0$ cm ?\n5. Le technicien arrondit chaque mesure au dixième avant de décider. Une tige mesure $30{,}34$ cm. Est-elle acceptée après arrondi ? Et si l’on garde la mesure exacte ?",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Condition en intervalle\n\n::: methode\n« Entre $29{,}7$ et $30{,}3$, bornes incluses » donne un intervalle fermé.\n:::\n\n::: resultat\n$$L \\in [29{,}7\\,;30{,}3]$$\n:::\n\n## Question 2 : Condition en valeur absolue\n\n::: methode\nPour un intervalle $[a - r\\,;a + r]$, le centre $a$ est le milieu des bornes et le rayon $r$ la moitié de la longueur.\n:::\n\n::: etape Calculer $a$ et $r$\n- Centre : $a = \\dfrac{29{,}7 + 30{,}3}{2} = 30$\n- Rayon : $r = \\dfrac{30{,}3 - 29{,}7}{2} = 0{,}3$\n:::\n\n[IMAGE_1]\n\n::: resultat\n$$L \\in [29{,}7\\,;30{,}3] \\iff |L - 30| \\le 0{,}3$$\n:::\n\n## Question 3 : Tiges acceptées\n\n::: methode\nTester l’appartenance de chaque mesure à $[29{,}7\\,;30{,}3]$.\n:::\n\n::: etape Comparer\n- $29{,}65 \\lt 29{,}7$ : $L_1$ est refusée.\n- $29{,}7 \\le 29{,}90 \\le 30{,}3$ : $L_2$ est acceptée.\n- $30{,}31 \\gt 30{,}3$ : $L_3$ est refusée.\n:::\n\n::: resultat\nSeule la tige $L_2$ est acceptée.\n:::\n\n## Question 4 : Écart maximal\n\n::: methode\nL’écart maximal au centre est le rayon $r$ de l’intervalle.\n:::\n\n::: resultat\nL’écart maximal autorisé est $0{,}3$ cm (en plus ou en moins).\n:::\n\n## Question 5 : Effet de l’arrondi\n\n::: methode\nComparer la décision prise avec la mesure arrondie et avec la mesure exacte.\n:::\n\n::: etape Arrondir $30{,}34$ au dixième\nLe chiffre des centièmes est $4$ : $30{,}34 \\approx 30{,}3$.\n:::\n\n::: etape Décision avec l’arrondi\n$30{,}3 \\in [29{,}7\\,;30{,}3]$ : la tige est **acceptée**.\n:::\n\n::: etape Décision avec la mesure exacte\n$|30{,}34 - 30| = 0{,}34 \\gt 0{,}3$ : la tige est **refusée**.\n:::\n\n::: resultat\nAcceptée après arrondi, refusée avec la mesure exacte : arrondir avant de décider peut faire accepter une tige hors tolérance.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $L \\in [29{,}7\\,;30{,}3]$\n2. $|L - 30| \\le 0{,}3$\n3. Seule $L_2$ est acceptée.\n4. $0{,}3$ cm.\n5. Avec l’arrondi : acceptée ; avec la mesure exacte : refusée.",
+   "titre": "Problème - Contrôle qualité - Tolérance et intervalle",
+   "difficulty": "hard",
+   "contenu": "<!-- optitab:1 -->\nUne usine fabrique des tiges de longueur théorique $30{,}0$ cm. Une tige est **acceptée** si sa longueur $L$ (en cm) est comprise entre $29{,}7$ cm et $30{,}3$ cm, bornes incluses.\n\n1. Écrire la condition d’acceptation sous forme d’intervalle.\n2. Écrire la même condition avec une valeur absolue, sous la forme $|L - a| \\le r$.\n3. On mesure $L_1 = 29{,}65$ cm, $L_2 = 29{,}90$ cm et $L_3 = 30{,}31$ cm. Quelles tiges sont acceptées ?\n4. Quel est l’écart maximal autorisé par rapport à $30{,}0$ cm ?\n5. Le technicien arrondit chaque mesure au dixième avant de décider. Une tige mesure $30{,}34$ cm. Est-elle acceptée après arrondi ? Et si l’on garde la mesure exacte ?"
+  }
+ ],
+ "images": [
+  {
+   "modele": "CoursImage",
+   "id": 660,
+   "proprietaire": 160,
+   "position": 1,
+   "image": "cours_images/v1_n165_co160_1_ensembles.png",
+   "legende": null,
+   "alt_text": "Ensembles emboîtés N, Z, D, Q et R, avec des exemples de nombres dans chacun : 0, 3, 17 ; −5, −1 ; 0,25, −3,4 ; 1/3, −5/7 ; √2, π, −√5.",
+   "title_text": "",
+   "width": 428,
+   "height": 334
+  },
+  {
+   "modele": "CoursImage",
+   "id": 661,
+   "proprietaire": 160,
+   "position": 2,
+   "image": "cours_images/v1_n165_co160_2_droite_reels.png",
+   "legende": null,
+   "alt_text": "Droite graduée de −3 à 4 sur laquelle sont placés les réels −2, −0,75, 1/3, √2 et π.",
+   "title_text": "",
+   "width": 442,
+   "height": 98
+  },
+  {
+   "modele": "CoursImage",
+   "id": 646,
+   "proprietaire": 160,
+   "position": 3,
+   "image": "cours_images/v1_n165_co160_3_intervalles.png",
+   "legende": null,
+   "alt_text": "Quatre droites graduées représentant [2 ; 5], ]2 ; 5[, [2 ; +∞[ et ]−∞ ; 1] avec leurs crochets et les inégalités correspondantes.",
+   "title_text": "",
+   "width": 440,
+   "height": 224
+  },
+  {
+   "modele": "CoursImage",
+   "id": 647,
+   "proprietaire": 160,
+   "position": 4,
+   "image": "cours_images/v1_n165_co160_4_distance.png",
+   "legende": null,
+   "alt_text": "Droite graduée : la distance entre −3 et 0 vaut |−3| = 3 et la distance entre −3 et 5 vaut |5 − (−3)| = 8.",
+   "title_text": "",
+   "width": 440,
+   "height": 150
+  },
+  {
+   "modele": "CoursImage",
+   "id": 648,
+   "proprietaire": 160,
+   "position": 5,
+   "image": "cours_images/v1_n165_co160_5_intervalle_centre.png",
+   "legende": null,
+   "alt_text": "Intervalle [1 ; 5] de centre 3 et de rayon 2 sur une droite graduée : |x − 3| ≤ 2 équivaut à x dans [1 ; 5].",
+   "title_text": "",
+   "width": 390,
+   "height": 171
+  },
+  {
+   "modele": "CoursImage",
+   "id": 649,
+   "proprietaire": 160,
+   "position": 6,
+   "image": "cours_images/v1_n165_co160_6_encadrement_racine2.png",
+   "legende": null,
+   "alt_text": "Zooms successifs sur la droite graduée : √2 est entre 1 et 2, puis entre 1,4 et 1,5, puis entre 1,41 et 1,42.",
+   "title_text": "",
+   "width": 444,
+   "height": 286
+  },
+  {
+   "modele": "SynthesisImage",
+   "id": 276,
+   "proprietaire": 133,
+   "position": 1,
+   "image": "synthesis_images/v1_n165_fi133_1_ensembles.png",
+   "legende": null,
+   "alt_text": "Ensembles emboîtés N, Z, D, Q et R, avec des exemples de nombres dans chacun : 0, 3, 17 ; −5, −1 ; 0,25, −3,4 ; 1/3, −5/7 ; √2, π, −√5.",
+   "title_text": "",
+   "width": 428,
+   "height": 334
+  },
+  {
+   "modele": "SynthesisImage",
+   "id": 277,
+   "proprietaire": 133,
+   "position": 2,
+   "image": "synthesis_images/v1_n165_fi133_2_intervalles.png",
+   "legende": null,
+   "alt_text": "Quatre droites graduées représentant [2 ; 5], ]2 ; 5[, [2 ; +∞[ et ]−∞ ; 1] avec leurs crochets et les inégalités correspondantes.",
+   "title_text": "",
+   "width": 440,
+   "height": 224
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3007,
+   "proprietaire": 1931,
+   "position": 1,
+   "image": "exercice_images/v1_n165_ex1931_1_ex_centre_ouvert.png",
+   "legende": null,
+   "alt_text": "Intervalle ouvert ]−5 ; 1[ de centre −2 et de rayon 3, solution de |x + 2| < 3.",
+   "title_text": "",
+   "width": 430,
+   "height": 136
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3008,
+   "proprietaire": 1929,
+   "position": 1,
+   "image": "exercice_images/v1_n165_ex1929_1_ex_intersection.png",
+   "legende": null,
+   "alt_text": "Les intervalles [−1 ; 4] et ]2 ; 6[ représentés au-dessus d’une droite graduée ; leur partie commune ]2 ; 4] est tracée en vert.",
+   "title_text": "",
+   "width": 439,
+   "height": 160
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3009,
+   "proprietaire": 1930,
+   "position": 1,
+   "image": "exercice_images/v1_n165_ex1930_1_ex_distance_deux.png",
+   "legende": null,
+   "alt_text": "Droite graduée : les réels 1 et 5, en vert, sont tous les deux à la distance 2 du réel 3.",
+   "title_text": "",
+   "width": 390,
+   "height": 136
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3010,
+   "proprietaire": 1935,
+   "position": 1,
+   "image": "exercice_images/v1_n165_ex1935_1_ex_tolerance.png",
+   "legende": null,
+   "alt_text": "Intervalle des longueurs acceptées [29,7 ; 30,3] en cm, de centre 30 et de rayon 0,3, sur une droite graduée de 29,6 à 30,4.",
+   "title_text": "",
+   "width": 394,
+   "height": 143
+  }
+ ],
+ "images_creees": [
+  {
+   "modele": "ExerciceImage",
+   "id": 4260
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 4261
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 4262
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 4263
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 4264
+  }
+ ],
+ "exercices_crees": [
+  {
+   "cle": "nouveau-1",
+   "id": 5562,
+   "titre": "Découverte - Lire et placer des réels sur une droite graduée"
+  },
+  {
+   "cle": "nouveau-2",
+   "id": 5563,
+   "titre": "Problème - Arrondir avec le bon nombre de chiffres significatifs"
+  }
+ ]
+}

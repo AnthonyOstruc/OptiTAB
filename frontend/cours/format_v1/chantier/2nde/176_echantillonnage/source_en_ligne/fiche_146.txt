@@ -1,0 +1,61 @@
+Titre: Résumé : Échantillonnage et simulation
+
+<!-- optitab:1 -->
+::: objectifs
+L’essentiel : échantillon, fluctuation, loi des grands nombres, écart $\frac{1}{\sqrt{n}}$, estimation, simulation en Python.
+:::
+
+## I. Fréquence et probabilité
+
+- **Échantillon de taille $n$** : $n$ répétitions indépendantes d’une expérience à deux issues (succès de probabilité $p$).
+- **Fréquence** : $f = \frac{k}{n}$ où $k$ est le nombre de succès ; $0 \le f \le 1$.
+- **Fluctuation** : $f$ change d’un échantillon à l’autre.
+- **Loi des grands nombres** : quand $n$ grandit, $f$ se rapproche de $p$.
+
+## II. Écart entre $f$ et $p$
+
+::: formule
+$$|f - p| \le \frac{1}{\sqrt{n}}$$
+:::
+
+Pour $n$ assez grand, cette inégalité est vraie dans **au moins $95\,\%$ des échantillons environ**.
+
+[IMAGE_2]
+
+| $n$ | $25$ | $100$ | $400$ | $2\,500$ | $10\,000$ |
+|---|---|---|---|---|---|
+| $\frac{1}{\sqrt{n}}$ | $0{,}2$ | $0{,}1$ | $0{,}05$ | $0{,}02$ | $0{,}01$ |
+
+::: methode Juger un modèle
+Je calcule $f$, puis $\frac{1}{\sqrt{n}}$, puis je compare $|f - p|$ à $\frac{1}{\sqrt{n}}$ :
+- $|f - p| \le \frac{1}{\sqrt{n}}$ : résultat compatible avec le modèle ;
+- $|f - p| \gt \frac{1}{\sqrt{n}}$ : on peut douter du modèle (risque d’erreur d’environ $5\,\%$ au plus).
+:::
+
+::: methode Estimer une proportion inconnue
+Dans au moins $95\,\%$ des cas environ, $p \in \left[f - \frac{1}{\sqrt{n}}\,;\, f + \frac{1}{\sqrt{n}}\right]$.
+:::
+
+## III. Simulation en Python
+
+```python
+from random import random
+
+def freq(n, p):
+    k = 0
+    for i in range(n):
+        if random() < p:
+            k = k + 1
+    return k / n
+```
+
+`random() < p` est vrai avec la probabilité $p$ : il simule un succès.
+
+## IV. Les pièges à éviter
+
+::: attention Les 4 erreurs classiques
+1. Confondre la fréquence (observée, variable) et la probabilité (théorique, fixe).
+2. Conclure à partir d’un tout petit échantillon.
+3. Présenter la conclusion comme certaine : elle comporte toujours un risque.
+4. Croire qu’après plusieurs « pile », « face » devient plus probable : les lancers sont indépendants.
+:::

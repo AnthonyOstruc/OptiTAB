@@ -1,0 +1,176 @@
+Titre: Utiliser l’information chiffrée et statistique descriptive
+
+<!-- optitab:1 -->
+::: objectifs
+- Calculer une proportion, un effectif, une proportion de proportion.
+- Traduire une évolution par une variation absolue, un taux d’évolution et un coefficient multiplicateur.
+- Enchaîner des évolutions et déterminer une évolution réciproque.
+- Résumer une série par un indicateur de position (moyenne, médiane) et un indicateur de dispersion (écart interquartile, écart type), puis comparer deux séries.
+:::
+
+## I. Proportions
+
+::: definition Proportion
+Si une partie $A$ d’une population $E$ compte $n_A$ éléments sur $n_E$, la **proportion** de $A$ dans $E$ est
+
+$$p = \frac{n_A}{n_E}.$$
+
+C’est un nombre compris entre $0$ et $1$, souvent écrit en pourcentage : $p = 0{,}35 = 35\,\%$.
+:::
+
+::: methode Passer d’une proportion à un effectif
+- Proportion : $p = \dfrac{n_A}{n_E}$.
+- Effectif : $n_A = p \times n_E$ (prendre $35\,\%$ de $200$, c’est calculer $0{,}35 \times 200 = 70$).
+:::
+
+::: propriete Proportion de proportion
+Si $A \subset B \subset E$, $p_1$ est la proportion de $A$ dans $B$ et $p_2$ la proportion de $B$ dans $E$, alors la proportion de $A$ dans $E$ est
+
+$$p = p_1 \times p_2.$$
+:::
+
+::: exemple
+$40\,\%$ des élèves d’un lycée sont en Seconde et $30\,\%$ des élèves de Seconde font du latin. La proportion d’élèves du lycée qui sont en Seconde et font du latin est $0{,}3 \times 0{,}4 = 0{,}12$, soit $12\,\%$.
+:::
+
+Sur la figure, les aires sont proportionnelles aux effectifs : la Seconde occupe $40\,\%$ du lycée et le latin $30\,\%$ de la Seconde, donc $12\,\%$ du lycée.
+
+[IMAGE_4]
+
+::: attention
+On **multiplie** les proportions emboîtées, on ne les additionne pas : $30\,\%$ de $40\,\%$ font $12\,\%$, et non $70\,\%$.
+:::
+
+## II. Évolutions
+
+::: definition Variation absolue, taux d’évolution, coefficient multiplicateur
+Une quantité passe de la valeur $V_0 \neq 0$ à la valeur $V_1$.
+- La **variation absolue** est $V_1 - V_0$ (dans l’unité de la quantité).
+- Le **taux d’évolution** (ou variation relative) est $t = \dfrac{V_1 - V_0}{V_0}$.
+- Le **coefficient multiplicateur** est $CM = \dfrac{V_1}{V_0} = 1 + t$ ; ainsi $V_1 = CM \times V_0$.
+:::
+
+::: exemple
+Une hausse de $25\,\%$ correspond à $CM = 1 + 0{,}25 = 1{,}25$ ; une baisse de $20\,\%$ correspond à $CM = 1 - 0{,}20 = 0{,}8$. Un prix qui passe de $80$ € à $92$ € subit une variation absolue de $12$ € et un taux d’évolution $t = \dfrac{12}{80} = 0{,}15$, soit $+15\,\%$.
+:::
+
+Sur un axe, un coefficient multiplicateur inférieur à $1$ traduit une baisse, un coefficient supérieur à $1$ une hausse, et $CM = 1$ l’absence d’évolution.
+
+[IMAGE_5]
+
+::: propriete Évolutions successives et évolution réciproque
+- Si une quantité subit successivement des évolutions de coefficients $CM_1$ et $CM_2$, le coefficient global est le **produit** $CM_1 \times CM_2$.
+- L’**évolution réciproque** d’une évolution de coefficient $CM$ (celle qui ramène à la valeur de départ) a pour coefficient $\dfrac{1}{CM}$.
+:::
+
+[IMAGE_1]
+
+::: demonstration
+Si $V_1 = CM_1 \times V_0$ et $V_2 = CM_2 \times V_1$, alors $V_2 = CM_2 \times CM_1 \times V_0$ : le coefficient global est $CM_1 \times CM_2$. Pour revenir de $V_1 = CM \times V_0$ à $V_0$, il faut multiplier par $\dfrac{1}{CM}$, car $\dfrac{1}{CM} \times CM \times V_0 = V_0$.
+:::
+
+::: exemple
+Un prix augmente de $5\,\%$ puis de $3\,\%$ : $1{,}05 \times 1{,}03 = 1{,}0815$, soit une hausse globale de $8{,}15\,\%$ (et non de $8\,\%$). Après une hausse de $25\,\%$, il faut une baisse de $20\,\%$ pour revenir au prix initial, car $\dfrac{1}{1{,}25} = 0{,}8$.
+:::
+
+::: attention
+Les taux d’évolution ne s’additionnent pas. Une hausse de $10\,\%$ suivie d’une baisse de $10\,\%$ donne $1{,}1 \times 0{,}9 = 0{,}99$ : c’est une baisse de $1\,\%$, pas un retour au prix initial.
+:::
+
+## III. Indicateurs de position : moyenne et médiane
+
+::: definition Moyenne pondérée
+Une série prend les valeurs $x_1, \ldots, x_p$ avec les effectifs $n_1, \ldots, n_p$ ; l’effectif total est $N = n_1 + \cdots + n_p$. Sa **moyenne** est
+
+$$\bar{x} = \frac{n_1x_1 + n_2x_2 + \cdots + n_px_p}{N}.$$
+:::
+
+::: propriete Linéarité de la moyenne
+Si chaque valeur $x$ est remplacée par $ax + b$, la moyenne devient $a\bar{x} + b$.
+:::
+
+::: exemple
+Notes $8$, $10$, $12$, $15$ d’effectifs $3$, $5$, $8$, $4$ :
+
+$$
+\begin{aligned}
+\bar{x} &= \frac{3 \times 8 + 5 \times 10 + 8 \times 12 + 4 \times 15}{20} \\
+&= \frac{230}{20} = 11{,}5
+\end{aligned}
+$$
+
+Si l’on ajoute $2$ points à chaque note, la nouvelle moyenne est $11{,}5 + 2 = 13{,}5$, sans refaire le calcul.
+:::
+
+::: definition Médiane et quartiles
+Les $N$ valeurs étant **rangées dans l’ordre croissant** :
+- la **médiane** $\mathrm{Me}$ partage la série en deux groupes de même effectif ;
+- le **premier quartile** $Q_1$ est la plus petite valeur de la série telle qu’au moins $25\,\%$ des valeurs lui soient inférieures ou égales ;
+- le **troisième quartile** $Q_3$ est la plus petite valeur de la série telle qu’au moins $75\,\%$ des valeurs lui soient inférieures ou égales.
+:::
+
+::: methode Trouver la médiane et les quartiles
+1. Ranger les valeurs dans l’ordre croissant (avec les effectifs cumulés si la série est donnée par un tableau).
+2. Médiane : si $N$ est impair, c’est la valeur de rang $\dfrac{N+1}{2}$ ; si $N$ est pair, c’est la moyenne des valeurs de rangs $\dfrac{N}{2}$ et $\dfrac{N}{2} + 1$.
+3. $Q_1$ : valeur dont le rang est le plus petit entier supérieur ou égal à $\dfrac{N}{4}$ ; $Q_3$ : de même avec $\dfrac{3N}{4}$.
+:::
+
+::: exemple
+La série $4\,;7\,;8\,;9\,;10\,;11\,;12\,;12\,;14\,;15\,;19$ compte $N = 11$ valeurs.
+- Médiane : valeur de rang $\dfrac{11+1}{2} = 6$, donc $\mathrm{Me} = 11$.
+- $\dfrac{11}{4} = 2{,}75$ : $Q_1$ est la valeur de rang $3$, donc $Q_1 = 8$.
+- $\dfrac{3 \times 11}{4} = 8{,}25$ : $Q_3$ est la valeur de rang $9$, donc $Q_3 = 14$.
+:::
+
+[IMAGE_2]
+
+::: remarque
+La médiane est peu sensible aux valeurs extrêmes, contrairement à la moyenne : si la plus grande valeur $19$ devient $90$, la médiane reste $11$ mais la moyenne passe de $11$ à $\dfrac{192}{11} \approx 17{,}5$.
+:::
+
+## IV. Indicateurs de dispersion
+
+::: definition Écart interquartile et écart type
+- L’**écart interquartile** est $Q_3 - Q_1$ : il mesure l’étendue de la moitié centrale des valeurs.
+- L’**écart type** $\sigma$ mesure la dispersion des valeurs autour de la moyenne :
+
+$$\sigma = \sqrt{\frac{n_1(x_1 - \bar{x})^2 + \cdots + n_p(x_p - \bar{x})^2}{N}}.$$
+:::
+
+::: exemple
+Pour la série précédente : $Q_3 - Q_1 = 14 - 8 = 6$. Sa moyenne est $\bar{x} = \dfrac{121}{11} = 11$ ; la somme des carrés des écarts à la moyenne vaut
+
+$$
+\begin{aligned}
+&49 + 16 + 9 + 4 + 1 + 0 \\
+&+ 1 + 1 + 9 + 16 + 64 = 170,
+\end{aligned}
+$$
+
+donc $\sigma = \sqrt{\dfrac{170}{11}} \approx 3{,}9$.
+:::
+
+Les deux séries ci-dessous ont la même moyenne $11$ ; la série $B$ est pourtant beaucoup plus dispersée : son écart type vaut environ $4{,}2$, contre $1{,}2$ pour la série $A$.
+
+[IMAGE_3]
+
+::: methode Comparer deux séries
+1. Comparer un indicateur de **position** : moyenne (avec l’écart type) ou médiane (avec l’écart interquartile).
+2. Comparer un indicateur de **dispersion** : plus $\sigma$ (ou $Q_3 - Q_1$) est grand, plus les valeurs sont étalées.
+3. Conclure par une phrase en contexte : « en moyenne, … ; les résultats de … sont plus homogènes ».
+:::
+
+::: remarque Écart type à la calculatrice et en Python
+En pratique, $\bar{x}$ et $\sigma$ s’obtiennent avec la calculatrice (menu statistiques) ou un tableur. Une fonction Python peut renvoyer $\bar{x}$, $\sigma$ et la proportion des valeurs situées dans l’intervalle $[\bar{x} - 2\sigma\,;\,\bar{x} + 2\sigma]$ : pour beaucoup de séries, cette proportion dépasse $90\,\%$.
+:::
+
+::: attention
+- Toujours **ranger** les valeurs avant de chercher la médiane ou les quartiles.
+- Dans une moyenne pondérée, ne pas oublier les effectifs : on divise par l’effectif total $N$, pas par le nombre de valeurs différentes.
+:::
+
+::: retenir
+- Proportion $\dfrac{n_A}{n_E}$ ; proportion de proportion : on multiplie.
+- $CM = 1 + t = \dfrac{V_1}{V_0}$ ; évolutions successives : on multiplie les coefficients ; réciproque : $\dfrac{1}{CM}$.
+- Position : moyenne pondérée (linéaire), médiane ; dispersion : $Q_3 - Q_1$ et écart type $\sigma$.
+:::

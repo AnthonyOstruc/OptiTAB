@@ -1,0 +1,789 @@
+Titre: Arithmétique
+
+<!-- optitab:1 -->
+::: remarque Sections principales
+Les sections I à VIII couvrent les concepts fondamentaux de l'arithmétique. Les parties marquées **« Bonus »** sont des approfondissements utiles pour enrichir votre compréhension.
+:::
+
+## I. Divisibilité dans ℤ
+
+### Définition de la divisibilité
+
+::: definition Divisibilité
+Soient $a$ et $b$ deux entiers relatifs. On dit que $b$ **divise** $a$ (ou que $a$ est **divisible** par $b$) s'il existe un entier relatif $k$ tel que :
+
+::: formule
+$$a = b \times k$$
+:::
+
+On note : $b \mid a$ (lire "$b$ divise $a$").
+:::
+
+::: propriete Propriétés de la divisibilité
+Pour tous entiers relatifs $a$, $b$, $c$ :
+
+- Si $b \mid a$ et $c \mid b$, alors $c \mid a$ (transitivité)
+- Si $b \mid a$ et $b \mid c$, alors $b \mid (a + c)$ et $b \mid (a - c)$
+- Si $b \mid a$, alors $b \mid (a \times k)$ pour tout entier $k$
+- $1$ et $-1$ divisent tout entier
+:::
+
+::: exemple
+- $3 \mid 12$ car $12 = 3 \times 4$
+- $-5 \mid 15$ car $15 = (-5) \times (-3)$
+- Les diviseurs de $12$ sont : $\pm 1, \pm 2, \pm 3, \pm 4, \pm 6, \pm 12$
+:::
+
+::: methode Capacité attendue : Déterminer les diviseurs d'un entier
+Pour déterminer tous les diviseurs d'un entier positif $n$ :
+
+1. Tester tous les entiers de $1$ à $\sqrt{n}$
+2. Si $d$ divise $n$, alors $\frac{n}{d}$ divise aussi $n$
+3. N'oublier pas les diviseurs négatifs si on travaille dans $\mathbb{Z}$
+:::
+
+## II. Division euclidienne
+
+### Théorème de la division euclidienne
+
+::: theoreme Division euclidienne
+Soient $a \in \mathbb{Z}$ et $b \in \mathbb{N}^{\ast}$.
+
+Il existe un unique couple d'entiers $(q, r)$ tel que :
+
+::: formule
+$a = bq + r$ avec $0 \leq r < b$
+:::
+
+Les entiers $q$ et $r$ sont respectivement appelés **quotient** et **reste** de la division euclidienne de $a$ par $b$.
+:::
+
+::: exemple
+- Division de $23$ par $5$ : $23 = 5 \times 4 + 3$ (quotient $4$, reste $3$)
+- Division de $-17$ par $4$ : $-17 = 4 \times (-5) + 3$ (quotient $-5$, reste $3$)
+- Division de $742$ par $16$ : $742 = 16 \times 46 + 6$ (quotient $46$, reste $6$)
+:::
+
+::: remarque
+Le reste $r$ est toujours positif ou nul et strictement inférieur au diviseur $b$.
+
+On a $b \mid a$ si et seulement si le reste de la division euclidienne de $a$ par $b$ est nul.
+:::
+
+[IMAGE_1]
+
+## III. Congruences dans ℤ
+
+### Définition de la congruence
+
+::: definition Congruence modulo n
+Soient $a$, $b$ et $n$ des entiers, avec $n \geq 2$.
+
+On dit que $a$ est **congru à $b$ modulo $n$** si $n$ divise $a - b$.
+
+On note :
+
+::: formule
+$$a \equiv b \pmod{n}$$
+:::
+:::
+
+::: propriete Caractérisation de la congruence
+Les assertions suivantes sont équivalentes :
+
+- $\displaystyle a \equiv b \pmod{n}$
+- $\displaystyle n \mid (a - b)$
+- $a$ et $b$ ont le même reste dans la division euclidienne par $n$
+:::
+
+::: exemple
+- $17 \equiv 2 \pmod{5}$ car $17 - 2 = 15$ est divisible par $5$
+- $-3 \equiv 2 \pmod{5}$ car $-3 - 2 = -5$ est divisible par $5$
+- $23 \equiv 3 \pmod{10}$ car $23 = 10 \times 2 + 3$ et $3 = 10 \times 0 + 3$
+:::
+
+### Compatibilité des congruences avec les opérations
+
+::: theoreme Compatibilité avec les opérations
+Soient $a$, $b$, $c$, $d$ et $n$ des entiers avec $n \geq 2$.
+
+Si $a \equiv b \pmod{n}$ et $c \equiv d \pmod{n}$, alors :
+
+- $\displaystyle a + c \equiv b + d \pmod{n}$
+- $\displaystyle a - c \equiv b - d \pmod{n}$
+- $\displaystyle a \times c \equiv b \times d \pmod{n}$
+- $a^k \equiv b^k \pmod{n}$ pour tout entier naturel $k$
+:::
+
+::: exemple
+- Comme $7 \equiv 2 \pmod{5}$ et $9 \equiv 4 \pmod{5}$, on a : $7 + 9 = 16 \equiv 2 + 4 = 6 \equiv 1 \pmod{5}$
+- $\displaystyle 7 \times 9 = 63 \equiv 2 \times 4 = 8 \equiv 3 \pmod{5}$
+- $\displaystyle 7^3 = 343 \equiv 2^3 = 8 \equiv 3 \pmod{5}$
+:::
+
+## IV. PGCD de deux entiers
+
+### Définition du PGCD
+
+::: definition Plus Grand Commun Diviseur (PGCD)
+Soient $a$ et $b$ deux entiers relatifs non tous deux nuls.
+
+Le **Plus Grand Commun Diviseur** (PGCD) de $a$ et $b$ est le plus grand entier positif qui divise à la fois $a$ et $b$.
+
+On note : $\mathrm{PGCD}(a, b)$ ou $a \wedge b$.
+:::
+
+::: propriete Propriétés du PGCD
+Pour tous entiers $a$, $b$, $c$ :
+
+- $\displaystyle \mathrm{PGCD}(a, b) = \mathrm{PGCD}(b, a)$ (commutativité)
+- $\displaystyle \mathrm{PGCD}(a, b) = \mathrm{PGCD}(|a|, |b|)$
+- $\mathrm{PGCD}(a, 0) = |a|$ si $a \neq 0$
+- $\mathrm{PGCD}(a, b) = \mathrm{PGCD}(a, b + ka)$ pour tout entier $k$
+:::
+
+::: exemple
+- $\mathrm{PGCD}(12, 18)$ : $18 = 12 \times 1 + 6$, $12 = 6 \times 2 + 0$, donc $\mathrm{PGCD}(12, 18) = 6$
+- $\mathrm{PGCD}(15, 7)$ : $15 = 7 \times 2 + 1$, $7 = 1 \times 7 + 0$, donc $\mathrm{PGCD}(15, 7) = 1$
+- $\mathrm{PGCD}(-24, 36) = \mathrm{PGCD}(24, 36)$ : $36 = 24 \times 1 + 12$, $24 = 12 \times 2 + 0$, donc $\mathrm{PGCD}(-24, 36) = 12$
+:::
+
+::: methode Capacité attendue : Déterminer le PGCD de deux entiers
+On peut déterminer le PGCD par :
+
+- La liste des diviseurs communs (méthode longue)
+- L'algorithme d'Euclide (méthode efficace)
+:::
+
+### Algorithme d'Euclide
+
+::: theoreme Algorithme d'Euclide
+Pour calculer $\mathrm{PGCD}(a, b)$ avec $a \geq b > 0$ :
+
+On effectue des divisions euclidiennes successives jusqu'à obtenir un reste nul :
+
+- $a = bq_1 + r_1$ avec $0 \leq r_1 < b$
+- $b = r_1q_2 + r_2$ avec $0 \leq r_2 < r_1$
+- $r_1 = r_2q_3 + r_3$ avec $0 \leq r_3 < r_2$
+- ... et ainsi de suite jusqu'à $\displaystyle r_n = 0$
+
+Alors $\mathrm{PGCD}(a, b) = r_{n-1}$ (le dernier reste non nul).
+:::
+
+[IMAGE_2]
+
+::: exemple Calculer $\displaystyle \mathrm{PGCD}(252, 198)$
+**Étape 1 :** Division euclidienne de $252$ par $198$
+
+$$252 = 198 \times 1 + 54$$
+
+Quotient : $1$, Reste : $54$
+
+**Étape 2 :** Division euclidienne de $198$ par $54$ (le reste précédent)
+
+$$198 = 54 \times 3 + 36$$
+
+Quotient : $3$, Reste : $36$
+
+**Étape 3 :** Division euclidienne de $54$ par $36$ (le reste précédent)
+
+$$54 = 36 \times 1 + 18$$
+
+Quotient : $1$, Reste : $18$
+
+**Étape 4 :** Division euclidienne de $36$ par $18$ (le reste précédent)
+
+$$36 = 18 \times 2 + 0$$
+
+Quotient : $2$, Reste : $0$
+
+**Étape 5 :** Conclusion
+
+Le dernier reste non nul est $\displaystyle 18$
+
+Donc $\displaystyle \mathrm{PGCD}(252, 198) = 18$
+:::
+
+```python
+def pgcd_euclide(a, b):
+    while b != 0:
+        a, b = b, a % b
+    return abs(a)
+```
+
+## V. Couples d'entiers premiers entre eux
+
+### Définition
+
+::: definition Entiers premiers entre eux
+Deux entiers relatifs $a$ et $b$ sont dits **premiers entre eux** si leur PGCD est égal à $1$ :
+
+::: formule
+$$\mathrm{PGCD}(a, b) = 1$$
+:::
+:::
+
+::: exemple
+- $15$ et $7$ sont premiers entre eux car $\mathrm{PGCD}(15, 7) = 1$
+- $12$ et $18$ ne sont pas premiers entre eux car $\mathrm{PGCD}(12, 18) = 6 \neq 1$
+- Deux nombres premiers distincts sont toujours premiers entre eux
+:::
+
+## VI. Théorème de Bézout
+
+### Théorème de Bézout
+
+::: theoreme
+Soient $a$ et $b$ deux entiers relatifs non tous deux nuls.
+
+Il existe des entiers relatifs $x$ et $y$ tels que :
+
+::: formule
+$$ax + by = \mathrm{PGCD}(a, b)$$
+:::
+
+Un tel couple $(x, y)$ est appelé **couple de Bézout**.
+:::
+
+::: demonstration
+On utilise l'algorithme d'Euclide étendu :
+
+En remontant les divisions euclidiennes de l'algorithme d'Euclide, on exprime chaque reste comme combinaison linéaire de $a$ et $b$.
+
+Le dernier reste non nul (qui est le PGCD) s'exprime donc comme combinaison linéaire de $a$ et $b$.
+:::
+
+### Algorithme d'Euclide étendu
+
+::: methode Algorithme d'Euclide étendu
+Pour trouver un couple de Bézout $(x, y)$ tel que $ax + by = \mathrm{PGCD}(a, b)$ :
+
+1. **Étape 1 :** Appliquer l'algorithme d'Euclide pour calculer $\mathrm{PGCD}(a, b)$
+2. **Étape 2 :** Remonter les divisions euclidiennes en exprimant chaque reste comme combinaison linéaire de $a$ et $b$
+3. **Étape 3 :** Le dernier reste non nul (le PGCD) s'exprime finalement comme $ax + by$
+:::
+
+::: exemple Détaillé : Trouver un couple de Bézout pour $\mathrm{PGCD}(252, 198) = 18$
+**Étape 1 :** Algorithme d'Euclide
+
+$$252 = 198 \times 1 + 54$$
+
+$$198 = 54 \times 3 + 36$$
+
+$$54 = 36 \times 1 + 18$$
+
+$$36 = 18 \times 2 + 0$$
+
+Donc $\displaystyle \mathrm{PGCD}(252, 198) = 18$
+
+**Étape 2 :** Remontée (on exprime chaque reste en fonction de $252$ et $198$)
+
+De $54 = 36 \times 1 + 18$, on a : $18 = 54 - 36 \times 1$
+
+On remplace $36$ par $198 - 54 \times 3$ :
+
+$$
+\begin{aligned}
+18 &= 54 - (198 - 54 \times 3) \times 1 \\
+&= 54 \times 4 - 198
+\end{aligned}
+$$
+
+On remplace $54$ par $252 - 198$ :
+
+$$
+\begin{aligned}
+18 &= (252 - 198) \times 4 - 198 \\
+&= 252 \times 4 - 198 \times 5
+\end{aligned}
+$$
+
+**Étape 3 :** Conclusion
+
+$$18 = 252 \times 4 + 198 \times (-5)$$
+
+Un couple de Bézout est $\displaystyle (4, -5)$.
+:::
+
+```python
+def bezout(a, b):
+    if b == 0:
+        return a, 1, 0
+    pgcd, x1, y1 = bezout(b, a % b)
+    x = y1
+    y = x1 - (a // b) * y1
+    return pgcd, x, y
+```
+
+::: propriete Caractérisation des entiers premiers entre eux
+Deux entiers $a$ et $b$ sont premiers entre eux si et seulement s'il existe des entiers $x$ et $y$ tels que :
+
+::: formule
+$$ax + by = 1$$
+:::
+:::
+
+::: methode Capacité attendue : Déterminer un inverse de $a$ modulo $n$ lorsque $a$ et $n$ sont premiers entre eux
+Si $\mathrm{PGCD}(a, n) = 1$, alors il existe un entier $x$ tel que $ax \equiv 1 \pmod{n}$.
+
+Pour trouver cet inverse, on utilise l'algorithme d'Euclide étendu pour obtenir un couple de Bézout $(x, y)$ tel que $ax + ny = 1$.
+
+Alors $ax \equiv 1 \pmod{n}$, donc $x$ est un inverse de $a$ modulo $n$.
+:::
+
+::: exemple Détaillé : Trouver l'inverse de $3$ modulo $7$
+**Étape 1 :** Vérifier que l'inverse existe
+
+On calcule $\mathrm{PGCD}(3, 7)$ : $7 = 3 \times 2 + 1$ et $3 = 1 \times 3 + 0$
+
+Donc $\displaystyle \mathrm{PGCD}(3, 7) = 1$
+
+Comme $\mathrm{PGCD}(3, 7) = 1$, l'inverse de $3$ modulo $7$ existe.
+
+**Étape 2 :** Appliquer l'algorithme d'Euclide étendu
+
+On cherche $x$ et $y$ tels que $3x + 7y = 1$.
+
+On remonte l'algorithme d'Euclide :
+
+De $7 = 3 \times 2 + 1$, on a : $1 = 7 - 3 \times 2$
+
+Donc $\displaystyle 1 = 3 \times (-2) + 7 \times 1$
+
+**Étape 3 :** Identifier l'inverse
+
+De $1 = 3 \times (-2) + 7 \times 1$, on a : $3 \times (-2) = 1 - 7 \times 1$
+
+Donc $\displaystyle 3 \times (-2) \equiv 1 \pmod{7}$
+
+Comme $-2 \equiv 5 \pmod{7}$, on a aussi : $3 \times 5 \equiv 1 \pmod{7}$
+
+**Étape 4 :** Vérification
+
+$$3 \times 5 = 15 = 7 \times 2 + 1 \equiv 1 \pmod{7}$$
+
+**Conclusion :** L'inverse de $3$ modulo $7$ est $5$ (on note $3^{-1} \equiv 5 \pmod{7}$).
+:::
+
+### Résolution d'une congruence linéaire
+
+::: methode Capacité attendue : Résoudre une congruence $ax \equiv b \pmod{n}$
+Pour résoudre $ax \equiv b \pmod{n}$, on suit cette méthode rigoureuse :
+
+1. **Poser $\displaystyle d = \mathrm{PGCD}(a, n)$**
+2. **Si $d \nmid b$ :** la congruence n'a **aucune solution**.
+3. **Si $\displaystyle d = 1$ :**
+
+  - $a$ est inversible modulo $n$
+  - On trouve l'inverse de $a$ modulo $n$ avec l'algorithme d'Euclide étendu
+  - On en déduit la **solution unique** modulo $n$
+
+4. **Si $d > 1$ et $d \mid b$ :**
+
+  - On simplifie en divisant par $d$ : $a' = \frac{a}{d}$, $b' = \frac{b}{d}$, $n' = \frac{n}{d}$
+  - On résout $a' x \equiv b' \pmod{n'}$, où $\mathrm{PGCD}(a', n') = 1$
+  - On trouve une solution modulo $n'$, puis on en déduit les **$d$ solutions** modulo $n$
+:::
+
+::: exemple 1 : Cas $\displaystyle \mathrm{PGCD}(a, n) = 1$ (solution unique)
+**Résoudre $\displaystyle 3x \equiv 2 \pmod{7}$**
+
+**Étape 1 :** Calculer $\displaystyle d = \mathrm{PGCD}(3, 7)$
+
+$7 = 3 \times 2 + 1$ et $3 = 1 \times 3 + 0$, donc $\mathrm{PGCD}(3, 7) = 1$
+
+**Étape 2 :** Comme $d = 1$, $3$ est inversible modulo $7$
+
+**Étape 3 :** Trouver l'inverse de $3$ modulo $7$
+
+On cherche $u$ tel que $3u \equiv 1 \pmod{7}$
+
+En testant : $3 \times 1 = 3 \not\equiv 1$, $3 \times 2 = 6 \not\equiv 1$, $3 \times 3 = 9 \equiv 2 \not\equiv 1$
+
+$$3 \times 5 = 15 = 7 \times 2 + 1 \equiv 1 \pmod{7}$$
+
+Donc $5$ est l'inverse de $3$ modulo $7$ (on note $3^{-1} \equiv 5 \pmod{7}$)
+
+**Étape 4 :** Multiplier les deux membres de la congruence par cet inverse
+
+$$3x \equiv 2 \pmod{7}$$
+
+$$5 \times 3x \equiv 5 \times 2 \pmod{7}$$
+
+$$(5 \times 3)x \equiv 10 \pmod{7}$$
+
+$1 \times x \equiv 3 \pmod{7}$ (car $10 = 7 + 3$)
+
+$$x \equiv 3 \pmod{7}$$
+
+**Étape 5 :** Vérification
+
+Pour $x = 3$ : $3 \times 3 = 9 = 7 + 2 \equiv 2 \pmod{7}$
+
+**Conclusion :** Les solutions sont les entiers de la forme $x = 7k + 3$ avec $k \in \mathbb{Z}$.
+
+*Par exemple : $\displaystyle x = 3, 10, 17, -4, -11, \ldots$*
+:::
+
+::: exemple 2 : Cas $\mathrm{PGCD}(a, n) = d > 1$ avec $d \mid b$ (plusieurs solutions)
+**Résoudre $\displaystyle 6x \equiv 4 \pmod{10}$**
+
+**Étape 1 :** Calculer $\displaystyle d = \mathrm{PGCD}(6, 10)$
+
+$10 = 6 \times 1 + 4$, $6 = 4 \times 1 + 2$, $4 = 2 \times 2 + 0$
+
+Donc $\displaystyle \mathrm{PGCD}(6, 10) = 2$
+
+**Étape 2 :** Vérifier si $\displaystyle d \mid b$
+
+$d = 2$ et $b = 4$, donc $2 \mid 4$
+
+Il y aura exactement $d = 2$ solutions modulo $10$
+
+**Étape 3 :** Simplifier la congruence en divisant par $d = 2$
+
+$$6x \equiv 4 \pmod{10}$$
+
+On divise par $2$ : $\frac{6}{2}x \equiv \frac{4}{2} \pmod{\frac{10}{2}}$
+
+$$3x \equiv 2 \pmod{5}$$
+
+On vérifie : $\mathrm{PGCD}(3, 5) = 1$ (la nouvelle congruence est bien inversible)
+
+**Étape 4 :** Résoudre $\displaystyle 3x \equiv 2 \pmod{5}$
+
+L'inverse de $3$ modulo $5$ : $3 \times 2 = 6 \equiv 1 \pmod{5}$
+
+Donc $\displaystyle 3^{-1} \equiv 2 \pmod{5}$
+
+$$3x \equiv 2 \pmod{5}$$
+
+$$2 \times 3x \equiv 2 \times 2 \pmod{5}$$
+
+$$x \equiv 4 \pmod{5}$$
+
+**Étape 5 :** Remonter aux solutions modulo $10$
+
+On a $x \equiv 4 \pmod{5}$, donc $x = 5k + 4$ avec $k \in \mathbb{Z}$
+
+On cherche les valeurs de $x$ modulo $10$ :
+
+Pour $k = 0$ : $x = 4 \Rightarrow x \equiv 4 \pmod{10}$
+
+Pour $k = 1$ : $x = 9 \Rightarrow x \equiv 9 \pmod{10}$
+
+Pour $k = 2$ : $x = 14 \equiv 4 \pmod{10}$ (déjà trouvé)
+
+Les solutions se répètent par cycle de $2$ (car $d = 2$)
+
+**Étape 6 :** Vérification
+
+Pour $x = 4$ : $6 \times 4 = 24 = 10 \times 2 + 4 \equiv 4 \pmod{10}$
+
+Pour $x = 9$ : $6 \times 9 = 54 = 10 \times 5 + 4 \equiv 4 \pmod{10}$
+
+**Conclusion :** Les solutions modulo $10$ sont : $x \equiv 4 \pmod{10}$ et $x \equiv 9 \pmod{10}$
+
+*On a bien $d = 2$ solutions distinctes modulo $10$.*
+:::
+
+## VII. Théorème de Gauss
+
+### Théorème de Gauss
+
+::: theoreme
+Soient $a$, $b$ et $c$ des entiers relatifs.
+
+Si $a$ divise le produit $bc$ et si $a$ et $b$ sont premiers entre eux, alors $a$ divise $c$.
+
+::: formule
+$$
+\begin{aligned}
+(a \mid bc \text{ et } \mathrm{PGCD}(a, b) = 1) &\Rightarrow a \mid c
+\end{aligned}
+$$
+:::
+:::
+
+::: demonstration
+Comme $\mathrm{PGCD}(a, b) = 1$, d'après le théorème de Bézout, il existe des entiers $x$ et $y$ tels que $ax + by = 1$.
+
+En multipliant par $c$ : $acx + bcy = c$.
+
+Comme $a \mid bc$, il existe un entier $k$ tel que $bc = ak$.
+
+Donc : $\displaystyle c = acx + aky = a(cx + ky)$
+
+Ainsi $\displaystyle a \mid c$.
+:::
+
+::: propriete Corollaire du théorème de Gauss
+Si un nombre premier $p$ divise le produit $ab$, alors $p$ divise $a$ ou $p$ divise $b$.
+:::
+
+::: exemple
+Si $7 \mid 15n$ et $\mathrm{PGCD}(7, 15) = 1$, alors $7 \mid n$.
+:::
+
+## VIII. Nombres premiers
+
+### Définition
+
+::: definition Nombre premier
+Un **nombre premier** est un entier naturel supérieur ou égal à $2$ qui n'admet que deux diviseurs positifs : $1$ et lui-même.
+
+Un entier qui n'est pas premier est dit **composé**.
+:::
+
+::: exemple
+- Nombres premiers : $\displaystyle 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, \ldots$
+- Nombres composés : $4 = 2^2$, $6 = 2 \times 3$, $8 = 2^3$, $9 = 3^2$, $10 = 2 \times 5$
+- $\displaystyle 1$ n'est ni premier ni composé
+:::
+
+::: theoreme L'ensemble des nombres premiers est infini
+Il existe une infinité de nombres premiers.
+:::
+
+::: demonstration
+Supposons par l'absurde qu'il n'existe qu'un nombre fini de nombres premiers : $p_1, p_2, \ldots, p_n$.
+
+Considérons le nombre $\displaystyle N = p_1 \times p_2 \times \cdots \times p_n + 1$.
+
+Ce nombre $N$ est strictement supérieur à $1$, donc il admet au moins un diviseur premier $p$.
+
+Mais $p$ ne peut être égal à aucun des $p_i$ (sinon $p$ diviserait $N - p_1 \times \cdots \times p_n = 1$, ce qui est impossible).
+
+Contradiction ! Donc il existe une infinité de nombres premiers.
+:::
+
+::: methode Capacité attendue : Étudier la primalité de certains nombres
+Pour tester si un entier $n \geq 2$ est premier :
+
+1. Tester la divisibilité par tous les entiers de $2$ à $\sqrt{n}$
+2. Si aucun ne divise $n$, alors $n$ est premier
+3. Sinon, $\displaystyle n$ est composé
+:::
+
+### Décomposition en facteurs premiers
+
+::: theoreme Existence et unicité de la décomposition
+Tout entier naturel $n \geq 2$ peut s'écrire de manière unique (à l'ordre près) comme produit de nombres premiers :
+
+::: formule
+$$n = p_1^{\alpha_1} \times p_2^{\alpha_2} \times \cdots \times p_k^{\alpha_k}$$
+:::
+
+où $p_1 < p_2 < \cdots < p_k$ sont des nombres premiers et $\alpha_1, \alpha_2, \ldots, \alpha_k$ sont des entiers naturels non nuls.
+:::
+
+::: exemple
+- $\displaystyle 12 = 2^2 \times 3$
+- $\displaystyle 60 = 2^2 \times 3 \times 5$
+- $\displaystyle 100 = 2^2 \times 5^2$
+- $\displaystyle 231 = 3 \times 7 \times 11$
+:::
+
+```python
+def decomposition_facteurs_premiers(n):
+    facteurs = {}
+    d = 2
+    while d * d <= n:
+        while n % d == 0:
+            facteurs[d] = facteurs.get(d, 0) + 1
+            n //= d
+        d += 1
+    if n > 1:
+        facteurs[n] = facteurs.get(n, 0) + 1
+    return facteurs
+```
+
+## IX. Approfondissement - Petit théorème de Fermat
+
+::: methode Approfondissement
+Cette section est un approfondissement utile pour comprendre certaines applications (cryptographie, tests de primalité) et enrichit votre culture mathématique.
+:::
+
+### Théorème
+
+::: theoreme Petit théorème de Fermat
+Soit $p$ un nombre premier et $a$ un entier non divisible par $p$.
+
+Alors :
+
+::: formule
+$$a^{p-1} \equiv 1 \pmod{p}$$
+:::
+
+Ou de manière équivalente, pour tout entier $a$ :
+
+::: formule
+$$a^p \equiv a \pmod{p}$$
+:::
+:::
+
+::: exemple
+- Pour $p = 5$ et $a = 2$ : $2^4 = 16 \equiv 1 \pmod{5}$
+- Pour $p = 7$ et $a = 3$ : $3^6 = 729 \equiv 1 \pmod{7}$ (car $729 = 7 \times 104 + 1$)
+- Pour $p = 3$ : $4^3 = 64 \equiv 4 \pmod{3}$ (car $64 = 3 \times 21 + 1$ et $4 \equiv 1 \pmod{3}$)
+:::
+
+::: remarque Application
+Le petit théorème de Fermat est utilisé dans les tests de primalité et dans certains systèmes de cryptographie (comme RSA).
+:::
+
+## X. Équations diophantiennes
+
+### Définition et résolution
+
+::: definition Équation diophantienne
+Une **équation diophantienne** est une équation dont on cherche les solutions en nombres entiers.
+:::
+
+::: methode Capacité attendue : Résoudre des équations diophantiennes simples
+Pour résoudre une équation diophantienne linéaire $ax + by = c$ :
+
+1. Vérifier que $\mathrm{PGCD}(a, b) \mid c$ (condition nécessaire d'existence)
+2. Trouver une solution particulière $(x_0, y_0)$ en utilisant l'algorithme d'Euclide étendu
+3. Exprimer toutes les solutions en fonction de cette solution particulière
+:::
+
+::: exemple
+Résoudre dans $\mathbb{Z}^2$ : $3x + 5y = 7$
+
+Comme $\mathrm{PGCD}(3, 5) = 1$ et $1 \mid 7$, il existe des solutions.
+
+Une solution particulière : $3 \times (-1) + 5 \times 2 = 7$, donc $(x_0, y_0) = (-1, 2)$
+
+Toutes les solutions sont de la forme :
+
+$\begin{cases} x = -1 + 5k \\ y = 2 - 3k \end{cases}$ avec $k \in \mathbb{Z}$
+:::
+
+## XI. Bonus - Algorithmes et approfondissements
+
+::: methode Approfondissement
+Les sections suivantes enrichissent votre culture mathématique et votre compréhension approfondie de l'arithmétique.
+:::
+
+### Bonus - Crible d'Ératosthène
+
+::: attention Algorithme - Crible d'Ératosthène
+Pour trouver tous les nombres premiers inférieurs à $n$ :
+
+1. Écrire tous les entiers de $2$ à $n$
+2. Barrer tous les multiples de $2$ (sauf $2$)
+3. Prendre le premier nombre non barré (c'est un nombre premier)
+4. Barrer tous ses multiples
+5. Répéter jusqu'à avoir traité tous les nombres jusqu'à $\sqrt{n}$
+:::
+
+```python
+def crible_eratosthene(n):
+    premiers = [True] * (n + 1)
+    premiers[0] = premiers[1] = False
+    for i in range(2, int(n**0.5) + 1):
+        if premiers[i]:
+            for j in range(i*i, n + 1, i):
+                premiers[j] = False
+    return [i for i in range(n + 1) if premiers[i]]
+```
+
+### Bonus - Tests de divisibilité
+
+::: attention Tests de divisibilité classiques
+En utilisant les congruences, on peut établir des tests de divisibilité :
+
+- **Divisibilité par 2 :** Un nombre est divisible par $2$ si son chiffre des unités est pair
+- **Divisibilité par 3 :** Un nombre est divisible par $3$ si la somme de ses chiffres est divisible par $3$
+- **Divisibilité par 4 :** Un nombre est divisible par $4$ si le nombre formé par ses deux derniers chiffres est divisible par $4$
+- **Divisibilité par 5 :** Un nombre est divisible par $5$ si son chiffre des unités est $0$ ou $5$
+- **Divisibilité par 9 :** Un nombre est divisible par $9$ si la somme de ses chiffres est divisible par $9$
+- **Divisibilité par 11 :** Un nombre est divisible par $11$ si la différence entre la somme des chiffres de rang impair et la somme des chiffres de rang pair est divisible par $11$
+:::
+
+::: exemple
+Test de divisibilité par 3 :
+
+Un nombre s'écrit $\displaystyle n = a_k \times 10^k + a_{k-1} \times 10^{k-1} + \cdots + a_1 \times 10 + a_0$.
+
+Comme $10 \equiv 1 \pmod{3}$, on a $10^m \equiv 1 \pmod{3}$ pour tout $m$.
+
+Donc $\displaystyle n \equiv a_k + a_{k-1} + \cdots + a_1 + a_0 \pmod{3}$
+
+Ainsi $n$ est divisible par $3$ si et seulement si la somme de ses chiffres l'est.
+:::
+
+### Bonus - Applications au chiffrement
+
+::: attention Applications pratiques
+L'arithmétique est utilisée dans de nombreux systèmes de codage et chiffrement :
+
+- **Codes barres, code ISBN, clé RIB :** Utilisation de congruences pour détecter les erreurs
+- **Chiffrement affine :** Utilise des inverses modulo $n$
+- **Chiffrement RSA :** Basé sur le petit théorème de Fermat et la difficulté de factoriser de grands nombres
+- **Codes correcteurs :** Utilisation de l'arithmétique modulaire pour détecter et corriger des erreurs
+:::
+
+### Bonus - Racines rationnelles d'un polynôme
+
+::: theoreme Racines rationnelles
+Soit $P(x) = a_n x^n + a_{n-1} x^{n-1} + \cdots + a_1 x + a_0$ un polynôme à coefficients entiers.
+
+Si $\frac{p}{q}$ (avec $\mathrm{PGCD}(p, q) = 1$) est une racine rationnelle de $P$, alors :
+
+- $p$ divise $a_0$
+- $q$ divise $a_n$
+:::
+
+::: exemple
+Trouver les racines rationnelles de $P(x) = 2x^3 - 5x^2 + x + 2$
+
+Les diviseurs de $a_0 = 2$ sont : $\pm 1, \pm 2$
+
+Les diviseurs de $a_3 = 2$ sont : $\pm 1, \pm 2$
+
+Les candidats sont : $\displaystyle \pm 1, \pm 2, \pm \frac{1}{2}$
+
+On teste : $P(2) = 0$, donc $2$ est racine.
+:::
+
+## XII. Erreurs fréquentes et conseils
+
+::: attention
+- Confondre « divise » et « est divisible par »
+- Oublier que le reste dans la division euclidienne doit être positif
+- Confondre $a \equiv b \pmod{n}$ et $a = b$
+- Oublier de vérifier que $\mathrm{PGCD}(a, n) = 1$ avant de chercher un inverse modulo $n$
+- Penser que deux nombres premiers sont toujours premiers entre eux (vrai, mais attention à la formulation)
+- Oublier que $1$ n'est pas un nombre premier
+- Ne pas vérifier la condition d'existence pour les équations diophantiennes
+- Confondre le petit théorème de Fermat avec le grand théorème de Fermat
+:::
+
+::: conseil
+- Toujours vérifier les conditions d'existence avant de résoudre une équation
+- Utiliser l'algorithme d'Euclide pour calculer efficacement le PGCD
+- Pour les congruences, bien utiliser les propriétés de compatibilité
+- Pour les équations diophantiennes, toujours donner la forme générale des solutions
+- Vérifier systématiquement les résultats obtenus
+- Mémoriser les petits nombres premiers : $2, 3, 5, 7, 11, 13, 17, 19, 23, 29$
+- Penser à utiliser la décomposition en facteurs premiers pour simplifier les calculs
+:::
+
+## XIII. Tableau récapitulatif
+
+::: methode Récapitulatif - Formules et définitions à retenir
+| Notion | Définition / Formule |
+|---|---|
+| **Divisibilité** | $\displaystyle b \mid a$ si $\displaystyle \exists k \in \mathbb{Z}, a = b \times k$ |
+| **Division euclidienne** | $\displaystyle a = bq + r$ avec $\displaystyle 0 \leq r < b$ |
+| **Congruence** | $\displaystyle a \equiv b \pmod{n} \Leftrightarrow n \mid (a - b)$ |
+| **PGCD** | Plus grand diviseur commun positif de $\displaystyle a$ et $\displaystyle b$ |
+| **Nombres premiers entre eux** | $\displaystyle \mathrm{PGCD}(a, b) = 1$ |
+| **Théorème de Bézout** | $\displaystyle \exists (x, y) \in \mathbb{Z}^2, ax + by = \mathrm{PGCD}(a, b)$ |
+| **Théorème de Gauss** | $\displaystyle (a \mid bc \text{ et } \mathrm{PGCD}(a, b) = 1) \Rightarrow a \mid c$ |
+| **Nombre premier** | Entier $\displaystyle \geq 2$ ayant exactement deux diviseurs positifs |
+| **Décomposition en facteurs premiers** | $\displaystyle n = p_1^{\alpha_1} \times p_2^{\alpha_2} \times \cdots \times p_k^{\alpha_k}$ (unique) |
+| **Petit théorème de Fermat** | Si $\displaystyle p$ premier et $\displaystyle p \nmid a$, alors $\displaystyle a^{p-1} \equiv 1 \pmod{p}$ |
+:::

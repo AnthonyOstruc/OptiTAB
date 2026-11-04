@@ -116,8 +116,11 @@ function getComponentKey(route) {
     return `${name}-${route.params.matiereId || route.query.matiereId || 'default'}`
   }
   
-  // Pour les autres vues, utiliser le path complet
-  return route.path
+  // Pour les autres vues, utiliser le path complet. Les pages de l'espace
+  // dépendent de la classe : elles se reconstruisent quand elle change (sauf
+  // Mon compte, où se fait le changement, qui reste en place).
+  if (name === 'Account') return route.path
+  return `${route.path}|${userStore.niveau_pays?.id ?? ''}`
 }
 
 // Verification flow removed

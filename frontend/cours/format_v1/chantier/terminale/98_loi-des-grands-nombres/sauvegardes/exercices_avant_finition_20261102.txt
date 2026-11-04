@@ -1,0 +1,717 @@
+=== Découverte - Loi des Grands Nombres - Introduction et Théorème de Bernoulli
+Id: 821
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Comprendre le sens de la loi des grands nombres sur des exemples simples.
+
+1. On lance $100$ fois une pièce équilibrée et l'on obtient $47$ fois « pile ». Calculer la fréquence observée et la comparer à la probabilité théorique.
+2. On lance $600$ fois un dé équilibré. Vers quelle valeur la moyenne des résultats obtenus devrait-elle se rapprocher ?
+3. Sur $1\,000$ lancers d'une pièce, on observe $520$ fois « pile ». Ce résultat est-il compatible avec une pièce équilibrée ? On pourra majorer $P\big(|F - 0{,}5| \ge 0{,}05\big)$, où $F$ est la fréquence de « pile » sur $1\,000$ lancers.
+4. Un élève a une moyenne « théorique » de $14$ sur $20$. Après $5$ contrôles, sa moyenne est de $12$ ; après $50$ contrôles, elle est de $13{,}8$. Commenter ces résultats au regard de la loi des grands nombres.
+5. Expliquer pourquoi la loi des grands nombres ne garantit pas que la fréquence sera exactement égale à la probabilité.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Fréquence de « pile » sur $100$ lancers
+
+::: methode
+La fréquence est le nombre de succès divisé par le nombre d'essais ; on la compare à $p = 0{,}5$.
+:::
+
+::: etape Fréquence observée
+$$f = \frac{47}{100} = 0{,}47$$
+:::
+
+::: etape Comparaison
+L'écart avec la probabilité théorique est $|0{,}47 - 0{,}5| = 0{,}03$. Sur seulement $100$ lancers, un tel écart est courant : la loi des grands nombres décrit ce qui se passe quand le nombre de lancers devient grand.
+:::
+
+::: resultat
+$f = 0{,}47$, soit un écart de $0{,}03$ avec $p = 0{,}5$.
+:::
+
+## Question 2 : Moyenne de $600$ lancers d'un dé
+
+::: methode
+La moyenne d'un grand échantillon se rapproche de l'espérance de la loi.
+:::
+
+::: etape Espérance d'un lancer
+Chaque face a la probabilité $\dfrac{1}{6}$ :
+
+$$E(X) = \frac{1 + 2 + 3 + 4 + 5 + 6}{6} = \frac{21}{6} = 3{,}5$$
+:::
+
+::: etape Loi des grands nombres
+La moyenne $M_{600}$ des $600$ résultats a pour espérance $E(M_{600}) = 3{,}5$ ; d'après la loi des grands nombres, elle est proche de $3{,}5$ avec une forte probabilité.
+:::
+
+::: resultat
+La moyenne des résultats devrait être proche de $3{,}5$.
+:::
+
+## Question 3 : $520$ « pile » sur $1\,000$ lancers
+
+::: methode
+On applique l'inégalité de concentration à la fréquence $F$, avec $p = 0{,}5$, $V = p(1-p) = 0{,}25$ et $n = 1\,000$.
+:::
+
+::: etape Inégalité de concentration
+$$
+\begin{aligned}
+P\big(|F - 0{,}5| \ge 0{,}05\big) &\le \frac{0{,}25}{1\,000 \times 0{,}05^2} \\
+&= \frac{0{,}25}{2{,}5} = 0{,}1
+\end{aligned}
+$$
+
+Pour une pièce équilibrée, la fréquence est donc comprise strictement entre $0{,}45$ et $0{,}55$ avec une probabilité d'au moins $0{,}9$.
+:::
+
+::: etape Conclusion
+La fréquence observée $\dfrac{520}{1\,000} = 0{,}52$ s'écarte de $0{,}5$ de seulement $0{,}02$ : elle est dans l'intervalle $]0{,}45\,;0{,}55[$.
+:::
+
+::: resultat
+Oui : $f = 0{,}52$ est compatible avec une pièce équilibrée.
+:::
+
+## Question 4 : Moyenne de l'élève
+
+::: methode
+On compare l'écart entre la moyenne observée et la moyenne théorique pour $5$ puis $50$ contrôles.
+:::
+
+::: etape Écarts
+- Après $5$ contrôles : $|12 - 14| = 2$ points.
+- Après $50$ contrôles : $|13{,}8 - 14| = 0{,}2$ point.
+:::
+
+::: etape Interprétation
+Sur peu de contrôles, la moyenne fluctue beaucoup ; sur un grand nombre de contrôles, elle se rapproche de la valeur théorique. C'est l'idée de la loi des grands nombres (à condition de modéliser les notes comme des résultats indépendants d'une même loi d'espérance $14$).
+:::
+
+::: resultat
+L'écart passe de $2$ points à $0{,}2$ point : la moyenne se stabilise autour de $14$.
+:::
+
+## Question 5 : Pas d'égalité exacte
+
+::: methode
+On relit l'énoncé de la loi : il porte sur la **probabilité** d'un écart, pas sur la valeur de la fréquence.
+:::
+
+::: etape Ce que dit la loi
+Pour tout $\delta \gt 0$, $\lim\limits_{n \to +\infty} P\big(|F_n - p| \ge \delta\big) = 0$ : un écart d'au moins $\delta$, aussi petit soit $\delta$, devient de plus en plus improbable.
+:::
+
+::: etape Ce qu'elle ne dit pas
+La fréquence reste aléatoire : elle n'est pas égale à $p$. Par exemple, $F_n$ est un multiple de $\dfrac{1}{n}$ : pour $n = 1\,001$ lancers, la fréquence de « pile » ne peut jamais valoir exactement $0{,}5$.
+:::
+
+::: resultat
+La loi des grands nombres garantit un rapprochement de la fréquence vers $p$ (en probabilité), pas une égalité.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $f = 0{,}47$ : écart de $0{,}03$ avec $p = 0{,}5$, courant sur $100$ lancers.
+2. Vers l'espérance d'un lancer : $3{,}5$.
+3. $P\big(|F - 0{,}5| \ge 0{,}05\big) \le 0{,}1$ ; $f = 0{,}52$ est dans $]0{,}45\,;0{,}55[$ : résultat compatible avec une pièce équilibrée.
+4. L'écart passe de $2$ points à $0{,}2$ point : la moyenne se stabilise autour de $14$, comme le prévoit la loi des grands nombres.
+5. La loi porte sur la probabilité d'un écart, qui tend vers $0$ ; la fréquence reste aléatoire et n'est pas égale à $p$.
+
+===
+
+=== Entraînement - Loi des Grands Nombres - Inégalité de Bienaymé-Tchebychev
+Id: 822
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Appliquer l'inégalité de Bienaymé-Tchebychev pour majorer ou minorer des probabilités.
+
+1. Une variable aléatoire $X$ a pour espérance $\mu = 10$ et pour variance $V = 4$. Majorer $P\big(|X - 10| \ge 4\big)$.
+2. La note $X$ d'un élève choisi au hasard a pour espérance $12$ et pour écart type $3$. Majorer la probabilité que la note s'écarte d'au moins $6$ points de $12$.
+3. Une usine produit des boulons dont la longueur $L$ (en cm) a pour espérance $5$ et pour écart type $0{,}2$. Majorer la probabilité qu'un boulon mesure moins de $4{,}5$ cm ou plus de $5{,}5$ cm.
+4. Soit $X$ une variable aléatoire d'espérance $50$ et de variance $25$. Minorer $P\big(|X - 50| \lt 10\big)$.
+5. Le temps de production $T$ d'une pièce (en minutes) a pour espérance $8$ et pour écart type $1{,}5$. Majorer la probabilité que $T$ s'écarte d'au moins $3$ minutes de $8$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Majorer $P\big(|X - 10| \ge 4\big)$
+
+::: methode
+Inégalité de Bienaymé-Tchebychev : $P\big(|X - \mu| \ge \delta\big) \le \dfrac{V}{\delta^2}$.
+:::
+
+::: etape Paramètres
+$\mu = 10$, $V = 4$ et $\delta = 4$.
+:::
+
+::: etape Calcul
+$$P\big(|X - 10| \ge 4\big) \le \frac{4}{4^2} = \frac{4}{16} = 0{,}25$$
+:::
+
+::: resultat
+$$P\big(|X - 10| \ge 4\big) \le 0{,}25$$
+:::
+
+## Question 2 : Note d'un élève
+
+::: methode
+On traduit « s'écarter d'au moins $6$ points » par $|X - 12| \ge 6$, puis on applique l'inégalité avec $V = \sigma^2$.
+:::
+
+::: etape Paramètres
+$\mu = 12$, $\sigma = 3$ donc $V = 3^2 = 9$, et $\delta = 6$.
+:::
+
+::: etape Calcul
+$$P\big(|X - 12| \ge 6\big) \le \frac{9}{6^2} = \frac{9}{36} = 0{,}25$$
+:::
+
+::: attention
+L'énoncé donne l'**écart type** : il faut l'élever au carré pour obtenir la variance.
+:::
+
+::: resultat
+La probabilité d'une note inférieure ou égale à $6$ ou supérieure ou égale à $18$ est au plus $0{,}25$.
+:::
+
+## Question 3 : Longueur des boulons
+
+::: methode
+On écrit l'événement sous la forme d'un écart à l'espérance.
+:::
+
+::: etape Traduction
+« $L \lt 4{,}5$ ou $L \gt 5{,}5$ » signifie $|L - 5| \gt 0{,}5$. Cet événement est inclus dans $\big(|L - 5| \ge 0{,}5\big)$, donc
+
+$$P\big(|L - 5| \gt 0{,}5\big) \le P\big(|L - 5| \ge 0{,}5\big)$$
+:::
+
+::: etape Calcul
+$V = 0{,}2^2 = 0{,}04$ et $\delta = 0{,}5$ :
+
+$$P\big(|L - 5| \ge 0{,}5\big) \le \frac{0{,}04}{0{,}5^2} = \frac{0{,}04}{0{,}25} = 0{,}16$$
+:::
+
+::: resultat
+La probabilité qu'un boulon mesure moins de $4{,}5$ cm ou plus de $5{,}5$ cm est au plus $0{,}16$.
+:::
+
+## Question 4 : Minorer $P\big(|X - 50| \lt 10\big)$
+
+::: methode
+Forme équivalente de l'inégalité (événement contraire) : $P\big(|X - \mu| \lt \delta\big) \ge 1 - \dfrac{V}{\delta^2}$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+P\big(|X - 50| \lt 10\big) &\ge 1 - \frac{25}{10^2} \\
+&= 1 - 0{,}25 \\
+&= 0{,}75
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P\big(|X - 50| \lt 10\big) \ge 0{,}75$ : $X$ est strictement entre $40$ et $60$ avec une probabilité d'au moins $0{,}75$.
+:::
+
+## Question 5 : Temps de production
+
+::: methode
+Écart d'au moins $3$ minutes : $|T - 8| \ge 3$ ; variance $V = 1{,}5^2$.
+:::
+
+::: etape Calcul
+$$P\big(|T - 8| \ge 3\big) \le \frac{1{,}5^2}{3^2} = \frac{2{,}25}{9} = 0{,}25$$
+:::
+
+::: retenir
+Ici $\delta = 2\sigma$ : on retrouve la majoration universelle $\dfrac{1}{2^2} = \dfrac{1}{4}$ d'un écart d'au moins deux écarts types (de même aux questions 1 et 2).
+:::
+
+::: resultat
+La probabilité que le temps soit au plus $5$ minutes ou au moins $11$ minutes est au plus $0{,}25$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $P\big(|X - 10| \ge 4\big) \le \dfrac{4}{16} = 0{,}25$.
+2. $P\big(|X - 12| \ge 6\big) \le \dfrac{9}{36} = 0{,}25$.
+3. $P\big(|L - 5| \ge 0{,}5\big) \le \dfrac{0{,}04}{0{,}25} = 0{,}16$.
+4. $P\big(|X - 50| \lt 10\big) \ge 1 - \dfrac{25}{100} = 0{,}75$.
+5. $P\big(|T - 8| \ge 3\big) \le \dfrac{2{,}25}{9} = 0{,}25$.
+
+===
+
+=== Entraînement - Loi des Grands Nombres - Intervalles de Confiance et Estimation
+Id: 825
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Encadrer une espérance ou une proportion inconnue à l'aide de l'inégalité de concentration. Dans chaque question, l'écart type donné est supposé être celui de la loi étudiée (et non une estimation).
+
+1. Une variable aléatoire a une espérance inconnue $\mu$ et une variance $V = 16$. Sur un échantillon de taille $400$, on observe la moyenne $m = 25$. Déterminer un intervalle centré en $m$ qui contient $\mu$ au niveau de confiance d'au moins $0{,}95$.
+2. Le temps d'attente dans une file a un écart type de $2$ minutes. Sur $250$ clients, le temps moyen observé est $8{,}5$ minutes. Donner un intervalle contenant le temps moyen réel $\mu$ au niveau de confiance d'au moins $0{,}9$.
+3. Le poids d'une pomme a un écart type de $20$ g et une espérance inconnue $\mu$. On pèse $1\,000$ pommes. Minorer la probabilité que leur poids moyen $M$ soit à moins de $2$ g de $\mu$. On observe un poids moyen de $150$ g : interpréter.
+4. Dans un sondage auprès de $2\,500$ personnes, $60\,\%$ répondent « oui ». En utilisant $p(1-p) \le \dfrac{1}{4}$, construire un intervalle contenant la vraie proportion $p$ au niveau de confiance d'au moins $0{,}96$.
+5. Une expérience répétée $200$ fois donne une moyenne de $45{,}2$ ; l'écart type de la mesure est $3$. Quelle largeur d'intervalle centré en $45{,}2$ l'inégalité de concentration permet-elle de garantir au niveau de confiance $0{,}99$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Intervalle pour $\mu$ au niveau $0{,}95$
+
+::: methode
+On choisit $\delta$ tel que $\dfrac{V}{n\delta^2} \le 0{,}05$ : alors $P\big(|M_n - \mu| \ge \delta\big) \le 0{,}05$, et l'intervalle $[m - \delta\,;m + \delta]$ convient.
+:::
+
+::: etape Condition sur $\delta$
+$$
+\begin{aligned}
+&\frac{16}{400\,\delta^2} \le 0{,}05 \\
+\iff\ &\delta^2 \ge \frac{16}{400 \times 0{,}05} = 0{,}8 \\
+\iff\ &\delta \ge \sqrt{0{,}8} \approx 0{,}894
+\end{aligned}
+$$
+:::
+
+::: etape Intervalle
+On prend $\delta = 0{,}9$ (valeur arrondie **par excès**, pour garder la garantie) :
+
+$$[25 - 0{,}9\,;25 + 0{,}9] = [24{,}1\,;25{,}9]$$
+:::
+
+::: attention
+Arrondir $\delta$ par défaut (par exemple $0{,}89$) donnerait un intervalle trop étroit, pour lequel la garantie de $0{,}95$ n'est plus assurée.
+:::
+
+::: resultat
+$[24{,}1\,;25{,}9]$ contient $\mu$ au niveau de confiance d'au moins $0{,}95$.
+:::
+
+## Question 2 : Temps d'attente
+
+::: methode
+Même démarche avec $V = 2^2 = 4$, $n = 250$ et un risque $\alpha = 0{,}1$.
+:::
+
+::: etape Condition sur $\delta$
+$$\frac{4}{250\,\delta^2} \le 0{,}1 \iff \delta^2 \ge \frac{4}{25} = 0{,}16 \iff \delta \ge 0{,}4$$
+:::
+
+::: etape Intervalle
+$$[8{,}5 - 0{,}4\,;8{,}5 + 0{,}4] = [8{,}1\,;8{,}9]$$
+:::
+
+::: resultat
+$[8{,}1\,;8{,}9]$ (en minutes) contient le temps moyen réel au niveau de confiance d'au moins $0{,}9$.
+:::
+
+## Question 3 : Poids moyen des pommes
+
+::: methode
+On applique la forme équivalente de l'inégalité de concentration : $P\big(|M - \mu| \lt \delta\big) \ge 1 - \dfrac{V}{n\delta^2}$.
+:::
+
+::: etape Calcul
+$V = 20^2 = 400$, $n = 1\,000$ et $\delta = 2$ :
+
+$$
+\begin{aligned}
+P\big(|M - \mu| \lt 2\big) &\ge 1 - \frac{400}{1\,000 \times 2^2} \\
+&= 1 - 0{,}1 = 0{,}9
+\end{aligned}
+$$
+:::
+
+::: etape Interprétation
+Avec une probabilité d'au moins $0{,}9$, le poids moyen d'un échantillon de $1\,000$ pommes est à moins de $2$ g de $\mu$. Ayant observé $150$ g, on obtient l'intervalle $]148\,;152[$ (en grammes) pour $\mu$, au niveau de confiance d'au moins $0{,}9$.
+:::
+
+::: resultat
+$P\big(|M - \mu| \lt 2\big) \ge 0{,}9$ ; $\mu$ est dans $]148\,;152[$ au niveau de confiance d'au moins $0{,}9$.
+:::
+
+## Question 4 : Sondage
+
+::: methode
+La fréquence $F$ des « oui » a pour variance $\dfrac{p(1-p)}{n} \le \dfrac{1}{4n}$, même si $p$ est inconnue.
+:::
+
+::: etape Condition sur $\delta$
+On veut $\dfrac{1}{4n\delta^2} \le 0{,}04$ avec $n = 2\,500$ :
+
+$$
+\begin{aligned}
+&\delta^2 \ge \frac{1}{4 \times 2\,500 \times 0{,}04} = \frac{1}{400} \\
+\iff\ &\delta \ge \frac{1}{20} = 0{,}05
+\end{aligned}
+$$
+:::
+
+::: etape Intervalle
+$$[0{,}6 - 0{,}05\,;0{,}6 + 0{,}05] = [0{,}55\,;0{,}65]$$
+:::
+
+::: attention
+On ne remplace pas $p$ par la fréquence observée $0{,}6$ dans la variance : la majoration $p(1-p) \le \dfrac{1}{4}$ est rigoureuse et vaut pour toute valeur de $p$.
+:::
+
+::: resultat
+$[0{,}55\,;0{,}65]$ contient $p$ au niveau de confiance d'au moins $0{,}96$ (entre $55\,\%$ et $65\,\%$).
+:::
+
+## Question 5 : Largeur garantie au niveau $0{,}99$
+
+::: methode
+On cherche le plus petit $\delta$ tel que $\dfrac{V}{n\delta^2} \le 0{,}01$, puis la largeur $2\delta$.
+:::
+
+::: etape Condition sur $\delta$
+$V = 3^2 = 9$ et $n = 200$ :
+
+$$
+\begin{aligned}
+&\frac{9}{200\,\delta^2} \le 0{,}01 \\
+\iff\ &\delta^2 \ge \frac{9}{2} = 4{,}5 \\
+\iff\ &\delta \ge \frac{3\sqrt{2}}{2} \approx 2{,}12
+\end{aligned}
+$$
+:::
+
+::: etape Largeur et intervalle
+La plus petite largeur garantie par l'inégalité est $2\delta = 3\sqrt{2} \approx 4{,}24$. En arrondissant les bornes vers l'extérieur :
+
+$$[45{,}2 - 2{,}122\,;45{,}2 + 2{,}122] \subset [43{,}07\,;47{,}33]$$
+:::
+
+::: resultat
+Largeur $3\sqrt{2} \approx 4{,}24$ ; intervalle $[43{,}07\,;47{,}33]$ au niveau de confiance d'au moins $0{,}99$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\delta \ge \sqrt{0{,}8} \approx 0{,}894$ : $[24{,}1\,;25{,}9]$.
+2. $\delta = 0{,}4$ : $[8{,}1\,;8{,}9]$ minutes.
+3. $P\big(|M - \mu| \lt 2\big) \ge 0{,}9$ ; $\mu \in\, ]148\,;152[$ au niveau de confiance d'au moins $0{,}9$.
+4. $\delta = 0{,}05$ : $[0{,}55\,;0{,}65]$.
+5. Largeur $3\sqrt{2} \approx 4{,}24$ : $[43{,}07\,;47{,}33]$.
+
+===
+
+=== Entraînement - Loi des Grands Nombres - Vitesse de Convergence et Taille d'Échantillon
+Id: 823
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Déterminer, à l'aide de l'inégalité de concentration, une taille d'échantillon suffisante pour une précision $\delta$ et un risque $\alpha$ donnés. On note $S_n$ la somme et $\dfrac{S_n}{n}$ la moyenne de l'échantillon.
+
+1. On lance $n$ fois une pièce équilibrée. Combien de lancers suffisent pour que la fréquence de « pile » s'écarte de $0{,}5$ d'au moins $0{,}1$ avec une probabilité au plus égale à $0{,}05$ ?
+2. Un sondage porte sur une proportion $p = 0{,}4$. Combien de personnes suffit-il d'interroger pour que la fréquence observée s'écarte de $p$ d'au moins $0{,}02$ avec une probabilité au plus égale à $0{,}05$ ?
+3. On lance $n$ fois un dé équilibré. Déterminer $n$ pour que $P\left(\left|\dfrac{S_n}{n} - 3{,}5\right| \ge 0{,}5\right) \le 0{,}1$.
+4. Pour des épreuves de Bernoulli de paramètre $p = 0{,}5$, déterminer $n$ pour que $P\left(\left|\dfrac{S_n}{n} - 0{,}5\right| \ge 0{,}05\right) \le 0{,}01$.
+5. Un institut veut estimer une proportion $p = 0{,}3$ à $0{,}03$ près, avec un risque au plus égal à $0{,}1$. Quelle taille d'échantillon suffit ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Pièce équilibrée
+
+::: methode
+Condition suffisante : $\dfrac{V}{n\delta^2} \le \alpha$, avec $V = p(1-p)$ pour une fréquence.
+:::
+
+::: etape Paramètres
+$p = 0{,}5$ donc $V = 0{,}25$ ; $\delta = 0{,}1$ ; $\alpha = 0{,}05$.
+:::
+
+::: etape Résolution
+$$
+\begin{aligned}
+&\frac{0{,}25}{n \times 0{,}1^2} \le 0{,}05 \\
+\iff\ &\frac{25}{n} \le 0{,}05 \\
+\iff\ &n \ge \frac{25}{0{,}05} = 500
+\end{aligned}
+$$
+:::
+
+::: resultat
+$500$ lancers suffisent.
+:::
+
+## Question 2 : Sondage avec $p = 0{,}4$
+
+::: methode
+Même condition, avec $V = 0{,}4 \times 0{,}6 = 0{,}24$.
+:::
+
+::: etape Résolution
+$$
+\begin{aligned}
+&\frac{0{,}24}{n \times 0{,}02^2} \le 0{,}05 \\
+\iff\ &\frac{600}{n} \le 0{,}05 \\
+\iff\ &n \ge \frac{600}{0{,}05} = 12\,000
+\end{aligned}
+$$
+:::
+
+::: resultat
+Il suffit d'interroger $12\,000$ personnes.
+:::
+
+## Question 3 : Lancers d'un dé
+
+::: methode
+On calcule la variance d'un lancer avec $V(X) = E(X^2) - E(X)^2$, puis on résout la condition.
+:::
+
+::: etape Variance d'un lancer
+$E(X) = 3{,}5$ et $E(X^2) = \dfrac{1 + 4 + 9 + 16 + 25 + 36}{6} = \dfrac{91}{6}$. Donc
+
+$$
+\begin{aligned}
+V(X) &= \frac{91}{6} - \left(\frac{7}{2}\right)^2 \\
+&= \frac{182 - 147}{12} = \frac{35}{12} \approx 2{,}92
+\end{aligned}
+$$
+:::
+
+::: etape Résolution
+$$
+\begin{aligned}
+&\frac{35/12}{n \times 0{,}5^2} \le 0{,}1 \\
+\iff\ &n \ge \frac{35}{12 \times 0{,}25 \times 0{,}1} \\
+\iff\ &n \ge \frac{350}{3} \approx 116{,}7
+\end{aligned}
+$$
+:::
+
+::: attention
+$n$ est un entier : on arrondit **par excès**. Avec $n = 116$, la condition n'est pas satisfaite.
+:::
+
+::: resultat
+$n \ge 117$ : $117$ lancers suffisent.
+:::
+
+## Question 4 : Bernoulli de paramètre $0{,}5$
+
+::: methode
+Condition suffisante avec $V = 0{,}25$, $\delta = 0{,}05$ et $\alpha = 0{,}01$.
+:::
+
+::: etape Résolution
+$$
+\begin{aligned}
+&\frac{0{,}25}{n \times 0{,}05^2} \le 0{,}01 \\
+\iff\ &\frac{100}{n} \le 0{,}01 \\
+\iff\ &n \ge 10\,000
+\end{aligned}
+$$
+:::
+
+::: resultat
+$10\,000$ épreuves suffisent.
+:::
+
+## Question 5 : Proportion $p = 0{,}3$
+
+::: methode
+Condition suffisante avec $V = 0{,}3 \times 0{,}7 = 0{,}21$, $\delta = 0{,}03$ et $\alpha = 0{,}1$.
+:::
+
+::: etape Résolution
+$$
+\begin{aligned}
+&\frac{0{,}21}{n \times 0{,}03^2} \le 0{,}1 \\
+\iff\ &n \ge \frac{0{,}21}{0{,}000\,9 \times 0{,}1} \\
+\iff\ &n \ge \frac{7\,000}{3} \approx 2\,333{,}3
+\end{aligned}
+$$
+:::
+
+::: resultat
+Il suffit d'interroger $2\,334$ personnes.
+:::
+
+::: remarque Vitesse de convergence
+La taille suffisante $n \ge \dfrac{V}{\alpha\delta^2}$ est proportionnelle à $\dfrac{1}{\delta^2}$ : diviser la précision $\delta$ par $10$ oblige à multiplier $n$ par $100$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $n \ge 500$.
+2. $n \ge 12\,000$.
+3. $V = \dfrac{35}{12}$ et $n \ge \dfrac{350}{3} \approx 116{,}7$ : $n \ge 117$.
+4. $n \ge 10\,000$.
+5. $n \ge \dfrac{7\,000}{3} \approx 2\,333{,}3$ : $n \ge 2\,334$.
+
+===
+
+=== Problème - Loi des Grands Nombres - Applications Pratiques
+Id: 824
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Résoudre des problèmes concrets à l'aide des inégalités de Bienaymé-Tchebychev et de concentration.
+
+1. Une usine produit des vis dont la longueur a pour espérance $10$ cm et pour écart type $0{,}3$ cm. On mesure $100$ vis et l'on calcule leur longueur moyenne $M$. Majorer la probabilité que $M$ s'écarte de $10$ cm d'au moins $0{,}1$ cm.
+2. À la roulette ($37$ numéros équiprobables), on note $F$ la fréquence d'apparition du numéro $17$ sur $10\,000$ parties indépendantes. L'inégalité de concentration permet-elle de garantir que $F$ est comprise entre $0{,}024$ et $0{,}031$ avec une probabilité d'au moins $0{,}9$ ?
+3. Un lot est accepté si, sur $1\,000$ pièces testées, la fréquence $F$ des pièces défectueuses est strictement inférieure à $0{,}08$. Le taux réel de défauts est $p = 0{,}05$. Majorer la probabilité de rejeter ce lot à tort.
+4. Le temps passé sur un site web a un écart type de $5$ minutes. Combien d'utilisateurs suffit-il d'observer pour que le temps moyen observé s'écarte du temps moyen réel d'au moins $0{,}5$ minute avec une probabilité au plus égale à $0{,}05$ ?
+5. Un laboratoire mesure une constante physique : sur $500$ mesures, la moyenne est $9{,}82$ ; l'écart type d'une mesure est $0{,}4$. Déterminer un intervalle contenant la vraie valeur au niveau de confiance d'au moins $0{,}96$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Longueur moyenne des vis
+
+::: methode
+Inégalité de concentration : $P\big(|M_n - \mu| \ge \delta\big) \le \dfrac{V}{n\delta^2}$.
+:::
+
+::: etape Paramètres
+$\mu = 10$, $V = 0{,}3^2 = 0{,}09$, $n = 100$ et $\delta = 0{,}1$.
+:::
+
+::: etape Calcul
+$$P\big(|M - 10| \ge 0{,}1\big) \le \frac{0{,}09}{100 \times 0{,}1^2} = \frac{0{,}09}{1} = 0{,}09$$
+:::
+
+::: resultat
+$P\big(|M - 10| \ge 0{,}1\big) \le 0{,}09$.
+:::
+
+## Question 2 : Roulette
+
+::: methode
+L'inégalité porte sur un intervalle **centré** en $p$. Or $[0{,}024\,;0{,}031]$ n'est pas centré en $p = \dfrac{1}{37}$ : on utilise le plus grand intervalle centré en $p$ qu'il contient.
+:::
+
+::: etape Le plus grand intervalle centré
+$p = \dfrac{1}{37} \approx 0{,}027\,03$ est à environ $0{,}003\,03$ de $0{,}024$ et à environ $0{,}003\,97$ de $0{,}031$. On prend la plus petite distance :
+
+$$\delta = \frac{1}{37} - 0{,}024 \approx 0{,}003\,03$$
+
+L'intervalle $]p - \delta\,;p + \delta[$ est contenu dans $[0{,}024\,;0{,}031]$.
+:::
+
+[IMAGE_1]
+
+::: etape Inégalité de concentration
+$V = p(1-p) = \dfrac{1}{37} \times \dfrac{36}{37} \approx 0{,}026\,30$ et $n = 10\,000$ :
+
+$$P\big(|F - p| \ge \delta\big) \le \frac{0{,}026\,30}{10\,000 \times 0{,}003\,03^2} \approx 0{,}287$$
+
+donc
+
+$$
+\begin{aligned}
+P(0{,}024 \le F \le 0{,}031) &\ge P\big(|F - p| \lt \delta\big) \\
+&\ge 1 - 0{,}287 = 0{,}713
+\end{aligned}
+$$
+:::
+
+::: attention
+Prendre $\delta = 0{,}004$ serait faux : l'intervalle $]p - 0{,}004\,;p + 0{,}004[$ déborde de $[0{,}024\,;0{,}031]$ à gauche.
+:::
+
+::: etape Conclusion
+L'inégalité garantit seulement une probabilité d'au moins $0{,}713$, inférieure à $0{,}9$ : elle **ne permet pas** de conclure. (Le calcul exact avec la loi $\mathcal{B}(10\,000\,;\frac{1}{37})$ donne environ $0{,}965$ : l'inégalité est une majoration grossière.)
+:::
+
+::: resultat
+Non : l'inégalité de concentration garantit seulement $P(0{,}024 \le F \le 0{,}031) \ge 0{,}713$.
+:::
+
+## Question 3 : Contrôle qualité
+
+::: methode
+On rejette à tort si $F \ge 0{,}08$ alors que $p = 0{,}05$ : c'est un écart d'au moins $0{,}03$ au-dessus de $p$.
+:::
+
+::: etape Inclusion d'événements
+$F \ge 0{,}08 \iff F - 0{,}05 \ge 0{,}03$, ce qui entraîne $|F - 0{,}05| \ge 0{,}03$. Donc
+
+$$P(F \ge 0{,}08) \le P\big(|F - 0{,}05| \ge 0{,}03\big)$$
+:::
+
+::: etape Calcul
+$V = 0{,}05 \times 0{,}95 = 0{,}047\,5$ et $n = 1\,000$ :
+
+$$
+\begin{aligned}
+P\big(|F - 0{,}05| \ge 0{,}03\big) &\le \frac{0{,}047\,5}{1\,000 \times 0{,}03^2} \\
+&= \frac{0{,}047\,5}{0{,}9} \approx 0{,}053
+\end{aligned}
+$$
+:::
+
+::: resultat
+La probabilité de rejeter le lot à tort est au plus d'environ $0{,}053$.
+:::
+
+## Question 4 : Temps passé sur le site
+
+::: methode
+Condition suffisante : $\dfrac{V}{n\delta^2} \le \alpha$.
+:::
+
+::: etape Résolution
+$V = 5^2 = 25$, $\delta = 0{,}5$ et $\alpha = 0{,}05$ :
+
+$$
+\begin{aligned}
+&\frac{25}{n \times 0{,}5^2} \le 0{,}05 \\
+\iff\ &\frac{100}{n} \le 0{,}05 \\
+\iff\ &n \ge 2\,000
+\end{aligned}
+$$
+:::
+
+::: resultat
+Il suffit d'observer $2\,000$ utilisateurs.
+:::
+
+## Question 5 : Constante physique
+
+::: methode
+On cherche $\delta$ tel que $\dfrac{V}{n\delta^2} \le 0{,}04$ : l'intervalle $[m - \delta\,;m + \delta]$ convient.
+:::
+
+::: etape Condition sur $\delta$
+$V = 0{,}4^2 = 0{,}16$ et $n = 500$ :
+
+$$
+\begin{aligned}
+&\delta^2 \ge \frac{0{,}16}{500 \times 0{,}04} = 0{,}008 \\
+\iff\ &\delta \ge \sqrt{0{,}008} \approx 0{,}089\,4
+\end{aligned}
+$$
+:::
+
+::: etape Intervalle
+En arrondissant les bornes vers l'extérieur :
+
+$$[9{,}82 - 0{,}089\,5\,;9{,}82 + 0{,}089\,5] \subset [9{,}73\,;9{,}91]$$
+:::
+
+::: resultat
+$[9{,}73\,;9{,}91]$ contient la vraie valeur au niveau de confiance d'au moins $0{,}96$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $P\big(|M - 10| \ge 0{,}1\big) \le 0{,}09$.
+2. Non : avec $\delta = \dfrac{1}{37} - 0{,}024 \approx 0{,}003\,03$, l'inégalité ne garantit que $P(0{,}024 \le F \le 0{,}031) \ge 0{,}713$.
+3. $P(F \ge 0{,}08) \le \dfrac{0{,}047\,5}{0{,}9} \approx 0{,}053$.
+4. $n \ge 2\,000$.
+5. $[9{,}73\,;9{,}91]$.

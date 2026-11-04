@@ -1,0 +1,2938 @@
+=== Découverte - Variables Aléatoires - Introduction
+Id: 1331
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+On modélise trois expériences aléatoires par des variables aléatoires.
+
+1. On lance un dé équilibré à six faces et on note $X$ le numéro obtenu.
+   - a) Donner les valeurs possibles de $X$, puis la loi de $X$.
+   - b) Traduire par une phrase l’événement $\{X \leqslant 4\}$, puis calculer $P(X \leqslant 4)$.
+   - c) Écrire avec une notation l’événement « obtenir au moins $5$ », puis calculer sa probabilité.
+2. On lance deux dés équilibrés, un rouge et un bleu, et on note $Y$ la somme des deux numéros.
+   - a) Construire un tableau à double entrée donnant la valeur de $Y$ pour chacune des $36$ issues.
+   - b) Quelles sont les valeurs possibles de $Y$ ?
+   - c) Calculer $P(Y = 7)$ et $P(Y \leqslant 5)$.
+3. On lance trois fois de suite une pièce équilibrée et on note $Z$ le nombre de « Pile » obtenus.
+   - a) Compléter l’arbre donné à la fin de l’énoncé ($P$ : Pile, $F$ : Face) et donner la liste des $8$ issues.
+   - b) Déterminer la loi de $Z$ et vérifier que la somme des probabilités vaut $1$.
+   - c) Calculer $P(Z \geqslant 2)$.
+
+Arbre de la question 3 :
+
+[IMAGE_1]
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Lancer d’un dé
+
+::: methode
+Le dé est équilibré : les $6$ issues ont la même probabilité $\frac{1}{6}$. On compte les issues de chaque événement.
+:::
+
+::: etape a) Valeurs et loi de $X$
+$X$ prend les valeurs $1$, $2$, $3$, $4$, $5$ et $6$, chacune avec la probabilité $\frac{1}{6}$.
+
+| $x_i$ | $1$ | $2$ | $3$ | $4$ | $5$ | $6$ |
+|---|---|---|---|---|---|---|
+| $P(X = x_i)$ | $\frac{1}{6}$ | $\frac{1}{6}$ | $\frac{1}{6}$ | $\frac{1}{6}$ | $\frac{1}{6}$ | $\frac{1}{6}$ |
+:::
+
+::: etape b) L’événement $\{X \leqslant 4\}$
+$\{X \leqslant 4\}$ signifie « obtenir un numéro inférieur ou égal à $4$ », c’est-à-dire $\{1\,;2\,;3\,;4\}$.
+$$
+\begin{aligned}
+P(X \leqslant 4) &= P(X = 1) + P(X = 2) \\
+&\quad + P(X = 3) + P(X = 4) \\
+&= 4 \times \frac{1}{6} = \frac{2}{3}
+\end{aligned}
+$$
+:::
+
+::: etape c) Obtenir au moins $5$
+« Au moins $5$ » signifie « $5$ ou plus » : c’est l’événement $\{X \geqslant 5\} = \{5\,;6\}$.
+$$
+\begin{aligned}
+P(X \geqslant 5) &= P(X = 5) + P(X = 6) \\
+&= \frac{2}{6} = \frac{1}{3}
+\end{aligned}
+$$
+:::
+
+::: resultat
+Loi uniforme : $P(X = k) = \frac{1}{6}$ pour $k = 1, \ldots, 6$ ; $P(X \leqslant 4) = \frac{2}{3}$ et $P(X \geqslant 5) = \frac{1}{3}$.
+:::
+
+## Question 2 : Somme de deux dés
+
+::: methode
+Un tableau à double entrée donne les $36$ issues (dé rouge, dé bleu), toutes équiprobables. On compte les cases.
+:::
+
+::: etape a) Tableau des sommes
+Ligne : numéro du dé rouge ; colonne : numéro du dé bleu.
+
+| Rouge / Bleu | $1$ | $2$ | $3$ | $4$ | $5$ | $6$ |
+|---|---|---|---|---|---|---|
+| $1$ | $2$ | $3$ | $4$ | $5$ | $6$ | $7$ |
+| $2$ | $3$ | $4$ | $5$ | $6$ | $7$ | $8$ |
+| $3$ | $4$ | $5$ | $6$ | $7$ | $8$ | $9$ |
+| $4$ | $5$ | $6$ | $7$ | $8$ | $9$ | $10$ |
+| $5$ | $6$ | $7$ | $8$ | $9$ | $10$ | $11$ |
+| $6$ | $7$ | $8$ | $9$ | $10$ | $11$ | $12$ |
+:::
+
+::: etape b) Valeurs possibles
+La plus petite somme est $1 + 1 = 2$, la plus grande $6 + 6 = 12$, et toutes les valeurs intermédiaires apparaissent : $Y$ prend les valeurs $2, 3, \ldots, 12$.
+:::
+
+::: etape c) Probabilités
+La somme $7$ apparaît dans $6$ cases (la diagonale) : $P(Y = 7) = \frac{6}{36} = \frac{1}{6}$.
+
+$\{Y \leqslant 5\}$ : la somme $2$ apparaît $1$ fois, $3$ apparaît $2$ fois, $4$ apparaît $3$ fois et $5$ apparaît $4$ fois.
+$$P(Y \leqslant 5) = \frac{1 + 2 + 3 + 4}{36} = \frac{10}{36} = \frac{5}{18}$$
+:::
+
+::: attention
+Les $11$ valeurs de $Y$ ne sont **pas** équiprobables : ce sont les $36$ issues qui le sont. On ne peut donc pas écrire $P(Y = 7) = \frac{1}{11}$.
+:::
+
+::: resultat
+$Y$ prend les valeurs de $2$ à $12$ ; $P(Y = 7) = \frac{1}{6}$ et $P(Y \leqslant 5) = \frac{5}{18}$.
+:::
+
+## Question 3 : Nombre de « Pile » en trois lancers
+
+::: methode
+Chaque lancer donne Pile ($P$) ou Face ($F$) avec la probabilité $\frac{1}{2}$ ; un chemin de l’arbre a pour probabilité $\frac{1}{2} \times \frac{1}{2} \times \frac{1}{2} = \frac{1}{8}$.
+:::
+
+::: etape a) Arbre et issues
+[IMAGE_2]
+
+Les $8$ issues équiprobables sont $PPP$, $PPF$, $PFP$, $PFF$, $FPP$, $FPF$, $FFP$, $FFF$ ; la valeur de $Z$ est indiquée à droite de chaque chemin.
+:::
+
+::: etape b) Loi de $Z$
+On regroupe les issues selon le nombre de Pile : $\{Z = 0\} = \{FFF\}$, $\{Z = 1\} = \{PFF\,;FPF\,;FFP\}$, $\{Z = 2\} = \{PPF\,;PFP\,;FPP\}$, $\{Z = 3\} = \{PPP\}$.
+
+| $z_i$ | $0$ | $1$ | $2$ | $3$ |
+|---|---|---|---|---|
+| $P(Z = z_i)$ | $\frac{1}{8}$ | $\frac{3}{8}$ | $\frac{3}{8}$ | $\frac{1}{8}$ |
+
+Contrôle : $\frac{1}{8} + \frac{3}{8} + \frac{3}{8} + \frac{1}{8} = \frac{8}{8} = 1$.
+:::
+
+::: etape c) $P(Z \geqslant 2)$
+$$
+\begin{aligned}
+P(Z \geqslant 2) &= P(Z = 2) + P(Z = 3) \\
+&= \frac{3}{8} + \frac{1}{8} = \frac{1}{2}
+\end{aligned}
+$$
+:::
+
+::: resultat
+Loi de $Z$ : $\frac{1}{8}$, $\frac{3}{8}$, $\frac{3}{8}$, $\frac{1}{8}$ pour $0$, $1$, $2$, $3$ ; $P(Z \geqslant 2) = \frac{1}{2}$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. a) $X$ prend les valeurs $1$ à $6$, chacune avec la probabilité $\frac{1}{6}$. b) « Obtenir au plus $4$ » : $P(X \leqslant 4) = \frac{2}{3}$. c) $\{X \geqslant 5\}$ : $P(X \geqslant 5) = \frac{1}{3}$.
+2. a) Voir le tableau des $36$ sommes. b) $Y$ prend les valeurs $2, 3, \ldots, 12$. c) $P(Y = 7) = \frac{1}{6}$ et $P(Y \leqslant 5) = \frac{5}{18}$.
+3. a) $8$ issues équiprobables. b) $P(Z = 0) = \frac{1}{8}$, $P(Z = 1) = \frac{3}{8}$, $P(Z = 2) = \frac{3}{8}$, $P(Z = 3) = \frac{1}{8}$ ; somme $1$. c) $P(Z \geqslant 2) = \frac{1}{2}$.
+
+===
+
+=== DS - Variables Aléatoires - Type 1
+Id: 1335
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Devoir surveillé sur l’ensemble du chapitre.
+
+**Partie A — Somme de deux dés**
+
+On lance deux dés équilibrés à six faces et on note $X$ la somme des deux numéros obtenus.
+
+**A1.** Donner les valeurs possibles de $X$.
+
+**A2.** Calculer $P(X = 7)$, $P(X \leqslant 5)$ et $P(X \geqslant 10)$.
+
+**A3.** Donner la loi de probabilité complète de $X$, puis compléter le diagramme en bâtons ci-dessous. En ordonnée figure $36 \times P(X = x_i)$, c’est-à-dire le nombre de couples qui donnent la somme $x_i$.
+
+[IMAGE_1]
+
+**Partie B — Indicateurs d’une loi donnée**
+
+Une variable aléatoire $Y$ a la loi suivante.
+
+| $y_i$ | $-2$ | $0$ | $3$ | $5$ |
+|---|---|---|---|---|
+| $P(Y = y_i)$ | $0{,}2$ | $0{,}3$ | $0{,}4$ | $0{,}1$ |
+
+**B1.** Vérifier qu’il s’agit bien d’une loi de probabilité.
+
+**B2.** Calculer $E(Y)$, puis $E(Y^2)$.
+
+**B3.** En déduire $V(Y)$ et $\sigma(Y)$ (arrondi au centième).
+
+**Partie C — Un jeu de dé**
+
+On lance un dé équilibré. Si l’on obtient $6$, on reçoit $8$ € ; si l’on obtient $2$ ou $4$, on reçoit $2$ € ; si l’on obtient un nombre impair, on doit payer $3$ €. On note $G$ le gain algébrique (positif si l’on reçoit, négatif si l’on paie).
+
+**C1.** Déterminer la loi de $G$.
+
+**C2.** Calculer $E(G)$, puis $V(G)$ et $\sigma(G)$.
+
+**C3.** L’organisateur demande en plus une mise de $m$ euros avant chaque partie. Déterminer $m$ pour que le jeu soit équitable.
+
+**C4.** Avec cette mise, quel est l’écart type du gain net ? Justifier.
+
+Étapes:
+<!-- optitab:1 -->
+## Partie A : Somme de deux dés
+
+## Question A1 : Valeurs possibles
+
+::: methode
+On cherche la plus petite et la plus grande somme, puis on vérifie que toutes les valeurs intermédiaires sont atteintes.
+:::
+
+::: etape Valeurs extrêmes
+Somme minimale : $1 + 1 = 2$ ; somme maximale : $6 + 6 = 12$. Chaque entier entre les deux est atteint (par exemple $1 + k$ pour $k = 1, \ldots, 6$, puis $6 + k$).
+:::
+
+::: resultat
+$X$ prend les valeurs $2, 3, 4, \ldots, 12$.
+:::
+
+## Question A2 : Trois probabilités
+
+::: methode
+Les $36$ couples (dé 1, dé 2) sont équiprobables : $P(X = s) = \dfrac{n_s}{36}$, où $n_s$ est le nombre de couples de somme $s$.
+:::
+
+::: etape $P(X = 7)$
+Couples : $(1,6)$, $(2,5)$, $(3,4)$, $(4,3)$, $(5,2)$, $(6,1)$, soit $6$ couples : $P(X = 7) = \frac{6}{36} = \frac{1}{6}$.
+:::
+
+::: etape $P(X \leqslant 5)$
+Somme $2$ : $1$ couple ; somme $3$ : $2$ couples ; somme $4$ : $3$ couples ; somme $5$ : $4$ couples.
+$$P(X \leqslant 5) = \frac{1 + 2 + 3 + 4}{36} = \frac{10}{36} = \frac{5}{18}$$
+:::
+
+::: etape $P(X \geqslant 10)$
+Somme $10$ : $(4,6)$, $(5,5)$, $(6,4)$ ; somme $11$ : $(5,6)$, $(6,5)$ ; somme $12$ : $(6,6)$.
+$$P(X \geqslant 10) = \frac{3 + 2 + 1}{36} = \frac{6}{36} = \frac{1}{6}$$
+:::
+
+::: resultat
+$P(X = 7) = \frac{1}{6}$, $P(X \leqslant 5) = \frac{5}{18}$ et $P(X \geqslant 10) = \frac{1}{6}$.
+:::
+
+## Question A3 : Loi complète
+
+::: etape Nombre de couples pour chaque somme
+Pour $s$ de $2$ à $7$, il y a $s - 1$ couples ; pour $s$ de $7$ à $12$, il y en a $13 - s$.
+
+| $x_i$ | $2$ | $3$ | $4$ | $5$ | $6$ | $7$ | $8$ | $9$ | $10$ | $11$ | $12$ |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| $36 \times P(X = x_i)$ | $1$ | $2$ | $3$ | $4$ | $5$ | $6$ | $5$ | $4$ | $3$ | $2$ | $1$ |
+
+Contrôle : $1 + 2 + 3 + 4 + 5 + 6 + 5 + 4 + 3 + 2 + 1 = 36$, donc la somme des probabilités vaut $1$.
+:::
+
+::: etape Diagramme en bâtons
+[IMAGE_2]
+:::
+
+::: resultat
+$P(X = s) = \frac{s - 1}{36}$ pour $2 \leqslant s \leqslant 7$ et $P(X = s) = \frac{13 - s}{36}$ pour $7 \leqslant s \leqslant 12$ ; la loi est symétrique autour de $7$.
+:::
+
+## Partie B : Indicateurs d’une loi donnée
+
+## Question B1 : Loi de probabilité
+
+::: etape Contrôles
+Toutes les probabilités sont comprises entre $0$ et $1$, et $0{,}2 + 0{,}3 + 0{,}4 + 0{,}1 = 1$.
+:::
+
+::: resultat
+Le tableau définit bien une loi de probabilité.
+:::
+
+## Question B2 : $E(Y)$ et $E(Y^2)$
+
+::: methode
+$E(Y) = \sum p_iy_i$ ; pour $E(Y^2)$, on élève les **valeurs** au carré.
+:::
+
+::: etape Espérance
+$$
+\begin{aligned}
+E(Y) &= 0{,}2 \times (-2) + 0{,}3 \times 0 \\
+&\quad + 0{,}4 \times 3 + 0{,}1 \times 5 \\
+&= -0{,}4 + 0 + 1{,}2 + 0{,}5 = 1{,}3
+\end{aligned}
+$$
+:::
+
+::: etape Moyenne des carrés
+$$
+\begin{aligned}
+E(Y^2) &= 0{,}2 \times 4 + 0{,}3 \times 0 \\
+&\quad + 0{,}4 \times 9 + 0{,}1 \times 25 \\
+&= 0{,}8 + 0 + 3{,}6 + 2{,}5 = 6{,}9
+\end{aligned}
+$$
+:::
+
+::: resultat
+$E(Y) = 1{,}3$ et $E(Y^2) = 6{,}9$.
+:::
+
+## Question B3 : Variance et écart type
+
+::: etape König-Huygens
+$$
+\begin{aligned}
+V(Y) &= E(Y^2) - \big(E(Y)\big)^2 \\
+ &= 6{,}9 - 1{,}3^2 = 6{,}9 - 1{,}69 \\
+&= 5{,}21
+\end{aligned}
+$$
+:::
+
+::: etape Écart type
+$\sigma(Y) = \sqrt{5{,}21} \approx 2{,}28$.
+:::
+
+::: attention
+$1{,}3^2 = 1{,}69$ : ne pas confondre avec $1{,}3 \times 2 = 2{,}6$.
+:::
+
+::: resultat
+$V(Y) = 5{,}21$ et $\sigma(Y) \approx 2{,}28$.
+:::
+
+## Partie C : Un jeu de dé
+
+## Question C1 : Loi de $G$
+
+::: etape Regroupement des issues
+- $\{G = 8\} = \{6\}$ : probabilité $\frac{1}{6}$ ;
+- $\{G = 2\} = \{2\,;4\}$ : probabilité $\frac{2}{6} = \frac{1}{3}$ ;
+- $\{G = -3\} = \{1\,;3\,;5\}$ : probabilité $\frac{3}{6} = \frac{1}{2}$.
+:::
+
+::: resultat
+| $g_i$ | $-3$ | $2$ | $8$ |
+|---|---|---|---|
+| $P(G = g_i)$ | $\frac{1}{2}$ | $\frac{1}{3}$ | $\frac{1}{6}$ |
+:::
+
+## Question C2 : Espérance, variance, écart type
+
+::: etape Espérance
+$$
+\begin{aligned}
+E(G) &= \frac{1}{2} \times (-3) + \frac{1}{3} \times 2 + \frac{1}{6} \times 8 \\
+&= \frac{-9 + 4 + 8}{6} = \frac{3}{6} = \frac{1}{2}
+\end{aligned}
+$$
+:::
+
+::: etape Variance
+$$
+\begin{aligned}
+E(G^2) &= \frac{1}{2} \times 9 + \frac{1}{3} \times 4 + \frac{1}{6} \times 64 \\
+&= \frac{27 + 8 + 64}{6} = \frac{99}{6} = \frac{33}{2}
+\end{aligned}
+$$
+$$
+\begin{aligned}
+V(G) &= \frac{33}{2} - \left(\frac{1}{2}\right)^2 \\
+&= \frac{66}{4} - \frac{1}{4} = \frac{65}{4} = 16{,}25
+\end{aligned}
+$$
+:::
+
+::: etape Écart type
+$\sigma(G) = \sqrt{\frac{65}{4}} = \frac{\sqrt{65}}{2} \approx 4{,}03$ €.
+:::
+
+::: resultat
+$E(G) = 0{,}50$ €, $V(G) = 16{,}25$ et $\sigma(G) \approx 4{,}03$ €.
+:::
+
+## Question C3 : Mise équitable
+
+::: methode
+Le gain net est $N = G - m$ ; par linéarité, $E(N) = E(G) - m$.
+:::
+
+::: etape Équation
+$$E(N) = 0 \iff \frac{1}{2} - m = 0 \iff m = \frac{1}{2}$$
+:::
+
+::: resultat
+Le jeu est équitable pour une mise de $0{,}50$ €.
+:::
+
+## Question C4 : Écart type du gain net
+
+::: etape Transformation affine
+$N = G - \frac{1}{2}$ est de la forme $aG + b$ avec $a = 1$ et $b = -\frac{1}{2}$, donc $\sigma(N) = |1| \times \sigma(G) = \sigma(G)$.
+:::
+
+::: retenir
+Retrancher une mise décale tous les gains de la même quantité : l’espérance change, la dispersion non.
+:::
+
+::: resultat
+$\sigma(N) = \sigma(G) \approx 4{,}03$ €.
+:::
+
+Solution:
+<!-- optitab:1 -->
+**Partie A**
+
+A1. $X$ prend les valeurs $2, 3, \ldots, 12$.
+
+A2. $P(X = 7) = \frac{1}{6}$, $P(X \leqslant 5) = \frac{5}{18}$, $P(X \geqslant 10) = \frac{1}{6}$.
+
+A3. $P(X = s) = \frac{s - 1}{36}$ pour $s \leqslant 7$ et $\frac{13 - s}{36}$ pour $s \geqslant 7$.
+
+**Partie B**
+
+B1. Probabilités entre $0$ et $1$, de somme $1$.
+
+B2. $E(Y) = 1{,}3$ et $E(Y^2) = 6{,}9$.
+
+B3. $V(Y) = 5{,}21$ et $\sigma(Y) \approx 2{,}28$.
+
+**Partie C**
+
+C1. $P(G = -3) = \frac{1}{2}$, $P(G = 2) = \frac{1}{3}$, $P(G = 8) = \frac{1}{6}$.
+
+C2. $E(G) = 0{,}50$ €, $V(G) = 16{,}25$, $\sigma(G) \approx 4{,}03$ €.
+
+C3. $m = 0{,}50$ €.
+
+C4. $\sigma(N) = \sigma(G) \approx 4{,}03$ €.
+
+===
+
+=== DS - Variables Aléatoires - Type 2
+Id: 1336
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Devoir surveillé sur l’ensemble du chapitre.
+
+**Partie A — Tirage de jetons**
+
+Un sac contient $6$ jetons indiscernables au toucher : $2$ jetons gagnants et $4$ jetons perdants. On tire successivement et **sans remise** deux jetons, et on note $X$ le nombre de jetons gagnants obtenus.
+
+**A1.** Compléter l’arbre pondéré ci-dessous ($W_k$ : « le $k$-ième jeton est gagnant », $L_k$ : « il est perdant »).
+
+[IMAGE_1]
+
+**A2.** Déterminer la loi de $X$.
+
+**A3.** Calculer la probabilité d’obtenir au moins un jeton gagnant.
+
+**A4.** Calculer $E(X)$.
+
+**Partie B — Indicateurs et transformation affine**
+
+Une variable aléatoire $Y$ a la loi suivante.
+
+| $y_i$ | $-1$ | $2$ | $5$ |
+|---|---|---|---|
+| $P(Y = y_i)$ | $\frac{1}{3}$ | $\frac{1}{2}$ | $\frac{1}{6}$ |
+
+**B1.** Calculer $E(Y)$.
+
+**B2.** Calculer $E(Y^2)$, puis $V(Y)$ et $\sigma(Y)$.
+
+**B3.** On pose $Z = 2Y + 3$. Calculer $E(Z)$, $V(Z)$ et $\sigma(Z)$.
+
+**Partie C — Un jeu avec deux dés**
+
+On lance deux dés équilibrés. Si la somme vaut $7$ ou $11$, on gagne $10$ € ; si elle vaut $2$, $3$ ou $12$, on perd $5$ € ; sinon, on gagne $1$ €. On note $G$ le gain algébrique.
+
+**C1.** Déterminer la loi de $G$.
+
+**C2.** Calculer $E(G)$.
+
+**C3.** Le jeu, tel quel, est-il favorable au joueur ou à l’organisateur ?
+
+**C4.** Quelle mise $m$ faut-il demander avant chaque partie pour que le jeu soit équitable ?
+
+Étapes:
+<!-- optitab:1 -->
+## Partie A : Tirage de jetons
+
+## Question A1 : Arbre pondéré
+
+::: methode
+On note $W_k$ « le $k$-ième jeton est gagnant » et $L_k$ « il est perdant ». Au second tirage, il ne reste que $5$ jetons : les probabilités dépendent du premier tirage.
+:::
+
+::: etape Arbre
+[IMAGE_2]
+:::
+
+::: resultat
+Premier tirage : $\frac{2}{6}$ et $\frac{4}{6}$ ; second tirage : $\frac{1}{5}$ et $\frac{4}{5}$ après un gagnant, $\frac{2}{5}$ et $\frac{3}{5}$ après un perdant.
+:::
+
+## Question A2 : Loi de $X$
+
+::: methode
+On multiplie les probabilités le long d’un chemin, puis on ajoute les chemins qui donnent la même valeur de $X$.
+:::
+
+::: etape Calculs
+$$
+\begin{aligned}
+P(X = 2) &= P(W_1W_2) = \frac{2}{6} \times \frac{1}{5} = \frac{2}{30} \\
+&= \frac{1}{15} \\
+P(X = 1) &= P(W_1L_2) \\
+&\quad + P(L_1W_2) \\
+&= \frac{8}{30} + \frac{8}{30} = \frac{8}{15} \\
+P(X = 0) &= P(L_1L_2) = \frac{4}{6} \times \frac{3}{5} = \frac{12}{30} = \frac{2}{5}
+\end{aligned}
+$$
+Contrôle : $\frac{12}{30} + \frac{16}{30} + \frac{2}{30} = 1$.
+:::
+
+::: attention
+La valeur $X = 1$ correspond à **deux** chemins : gagnant puis perdant, et perdant puis gagnant.
+:::
+
+::: resultat
+| $x_i$ | $0$ | $1$ | $2$ |
+|---|---|---|---|
+| $P(X = x_i)$ | $\frac{2}{5}$ | $\frac{8}{15}$ | $\frac{1}{15}$ |
+:::
+
+## Question A3 : Au moins un jeton gagnant
+
+::: etape Événement contraire
+« Au moins un gagnant » est l’événement $\{X \geqslant 1\}$, contraire de $\{X = 0\}$.
+$$P(X \geqslant 1) = 1 - P(X = 0) = 1 - \frac{2}{5} = \frac{3}{5}$$
+:::
+
+::: resultat
+$P(X \geqslant 1) = \frac{3}{5} = 0{,}6$.
+:::
+
+## Question A4 : Espérance
+
+::: etape Calcul
+$$
+\begin{aligned}
+E(X) &= 0 \times \frac{2}{5} + 1 \times \frac{8}{15} + 2 \times \frac{1}{15} \\
+&= \frac{10}{15} = \frac{2}{3}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$E(X) = \frac{2}{3}$ : en moyenne, on obtient environ $0{,}67$ jeton gagnant par tirage de deux jetons.
+:::
+
+## Partie B : Indicateurs et transformation affine
+
+## Question B1 : Espérance
+
+::: etape Calcul
+$$
+\begin{aligned}
+E(Y) &= \frac{1}{3} \times (-1) + \frac{1}{2} \times 2 + \frac{1}{6} \times 5 \\
+&= \frac{-2 + 6 + 5}{6} = \frac{9}{6} = \frac{3}{2}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$E(Y) = \frac{3}{2} = 1{,}5$.
+:::
+
+## Question B2 : Variance et écart type
+
+::: etape Moyenne des carrés
+$$
+\begin{aligned}
+E(Y^2) &= \frac{1}{3} \times 1 + \frac{1}{2} \times 4 + \frac{1}{6} \times 25 \\
+&= \frac{2 + 12 + 25}{6} = \frac{39}{6} = \frac{13}{2}
+\end{aligned}
+$$
+:::
+
+::: etape König-Huygens
+$$V(Y) = \frac{13}{2} - \left(\frac{3}{2}\right)^2 = \frac{26}{4} - \frac{9}{4} = \frac{17}{4}$$
+$\sigma(Y) = \sqrt{\frac{17}{4}} = \frac{\sqrt{17}}{2} \approx 2{,}06$.
+:::
+
+::: resultat
+$E(Y^2) = \frac{13}{2}$, $V(Y) = \frac{17}{4} = 4{,}25$ et $\sigma(Y) = \frac{\sqrt{17}}{2} \approx 2{,}06$.
+:::
+
+## Question B3 : La variable $Z = 2Y + 3$
+
+::: methode
+$E(aY + b) = aE(Y) + b$, $V(aY + b) = a^2V(Y)$ et $\sigma(aY + b) = |a|\,\sigma(Y)$, ici avec $a = 2$ et $b = 3$.
+:::
+
+::: etape Calculs
+$$
+\begin{aligned}
+E(Z) &= 2 \times \frac{3}{2} + 3 = 6 \\
+V(Z) &= 2^2 \times \frac{17}{4} = 17 \\
+\sigma(Z) &= 2 \times \frac{\sqrt{17}}{2} = \sqrt{17}
+\end{aligned}
+$$
+:::
+
+::: attention
+La constante $3$ n’intervient pas dans la variance, et le coefficient $2$ y est élevé au carré.
+:::
+
+::: resultat
+$E(Z) = 6$, $V(Z) = 17$ et $\sigma(Z) = \sqrt{17} \approx 4{,}12$.
+:::
+
+## Partie C : Un jeu avec deux dés
+
+## Question C1 : Loi de $G$
+
+::: methode
+Les $36$ couples sont équiprobables. Nombre de couples par somme : $2 \to 1$, $3 \to 2$, $7 \to 6$, $11 \to 2$, $12 \to 1$.
+:::
+
+::: etape Calculs
+$$
+\begin{aligned}
+P(G = 10) &= \frac{6 + 2}{36} = \frac{8}{36} = \frac{2}{9} \\
+P(G = -5) &= \frac{1 + 2 + 1}{36} = \frac{4}{36} = \frac{1}{9} \\
+P(G = 1) &= 1 - \frac{2}{9} - \frac{1}{9} = \frac{6}{9} = \frac{2}{3}
+\end{aligned}
+$$
+:::
+
+::: resultat
+| $g_i$ | $-5$ | $1$ | $10$ |
+|---|---|---|---|
+| $P(G = g_i)$ | $\frac{1}{9}$ | $\frac{2}{3}$ | $\frac{2}{9}$ |
+:::
+
+## Question C2 : Espérance
+
+::: etape Calcul
+$$
+\begin{aligned}
+E(G) &= \frac{1}{9} \times (-5) + \frac{2}{3} \times 1 + \frac{2}{9} \times 10 \\
+&= \frac{-5 + 6 + 20}{9} = \frac{21}{9} = \frac{7}{3}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$E(G) = \frac{7}{3} \approx 2{,}33$ €.
+:::
+
+## Question C3 : Favorable à qui ?
+
+::: etape Signe de l’espérance
+$E(G) = \frac{7}{3} \gt 0$ : sur un grand nombre de parties, le joueur gagne en moyenne environ $2{,}33$ € par partie.
+:::
+
+::: resultat
+Sans mise, le jeu est favorable au joueur.
+:::
+
+## Question C4 : Mise équitable
+
+::: etape Équation
+Gain net : $N = G - m$, donc $E(N) = \frac{7}{3} - m$, qui est nul pour $m = \frac{7}{3}$.
+:::
+
+::: resultat
+Le jeu est équitable pour une mise de $\frac{7}{3}$ €, soit environ $2{,}33$ €.
+:::
+
+Solution:
+<!-- optitab:1 -->
+**Partie A**
+
+A1. Voir l’arbre ($\frac{2}{6}$, $\frac{4}{6}$, puis $\frac{1}{5}$, $\frac{4}{5}$ ou $\frac{2}{5}$, $\frac{3}{5}$).
+
+A2. $P(X = 0) = \frac{2}{5}$, $P(X = 1) = \frac{8}{15}$, $P(X = 2) = \frac{1}{15}$.
+
+A3. $P(X \geqslant 1) = \frac{3}{5}$.
+
+A4. $E(X) = \frac{2}{3}$.
+
+**Partie B**
+
+B1. $E(Y) = \frac{3}{2}$.
+
+B2. $E(Y^2) = \frac{13}{2}$, $V(Y) = \frac{17}{4}$, $\sigma(Y) = \frac{\sqrt{17}}{2} \approx 2{,}06$.
+
+B3. $E(Z) = 6$, $V(Z) = 17$, $\sigma(Z) = \sqrt{17} \approx 4{,}12$.
+
+**Partie C**
+
+C1. $P(G = -5) = \frac{1}{9}$, $P(G = 1) = \frac{2}{3}$, $P(G = 10) = \frac{2}{9}$.
+
+C2. $E(G) = \frac{7}{3} \approx 2{,}33$ €.
+
+C3. Favorable au joueur.
+
+C4. $m = \frac{7}{3} \approx 2{,}33$ €.
+
+===
+
+=== DS - Variables Aléatoires - Type 3
+Id: 1339
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Devoir surveillé sur l’ensemble du chapitre.
+
+**Partie A — Techniques fondamentales**
+
+**A1.** On lance deux dés équilibrés et on note $X$ le plus grand des deux numéros obtenus (si les deux numéros sont égaux, $X$ est ce numéro).
+- a) Quelles sont les valeurs possibles de $X$ ?
+- b) Calculer $P(X = 1)$, $P(X = 3)$ et $P(X = 6)$.
+- c) Déterminer la loi complète de $X$, puis calculer $E(X)$.
+
+**A2.** Une variable aléatoire $Y$ a la loi suivante.
+
+| $y_i$ | $-2$ | $0$ | $1$ | $4$ |
+|---|---|---|---|---|
+| $P(Y = y_i)$ | $0{,}1$ | $0{,}4$ | $0{,}3$ | $0{,}2$ |
+
+- a) Vérifier qu’il s’agit d’une loi de probabilité.
+- b) Calculer $P(Y \leqslant 0)$ et $P(Y \gt 1)$.
+
+**Partie B — Espérance et variance**
+
+On reprend la variable $Y$ de la question A2.
+
+**B1.** Calculer $E(Y)$ et $E(Y^2)$.
+
+**B2.** En déduire $V(Y)$ et $\sigma(Y)$ (arrondi au centième).
+
+**B3.** On pose $Z = -Y + 2$. Calculer $E(Z)$ et $V(Z)$.
+
+**Partie C — Application à un jeu**
+
+On lance un dé équilibré. On gagne $8$ € si l’on obtient $6$, $2$ € si l’on obtient $4$ ou $5$, et on perd $1$ € sinon. On note $G$ le gain algébrique.
+
+**C1.** Déterminer la loi de $G$.
+
+**C2.** Calculer $E(G)$, $V(G)$ et $\sigma(G)$ (arrondi au centième).
+
+**C3.** Quelle mise $m$ faut-il demander avant chaque partie pour que le jeu soit équitable ?
+
+Étapes:
+<!-- optitab:1 -->
+## Partie A : Techniques fondamentales
+
+## Question A1 : Plus grand des deux numéros
+
+::: methode
+Dans le tableau des $36$ couples équiprobables, on compte les cases où le plus grand numéro vaut $k$.
+:::
+
+::: etape a) Valeurs possibles
+Le plus grand numéro est au moins $1$ et au plus $6$ : $X$ prend les valeurs $1, 2, 3, 4, 5, 6$.
+:::
+
+::: etape b) Trois probabilités
+- $\{X = 1\}$ : seul le couple $(1,1)$, donc $P(X = 1) = \frac{1}{36}$.
+- $\{X = 3\}$ : $(1,3)$, $(2,3)$, $(3,3)$, $(3,1)$, $(3,2)$, soit $5$ couples : $P(X = 3) = \frac{5}{36}$.
+- $\{X = 6\}$ : les couples contenant au moins un $6$ : $6$ couples avec un $6$ sur le premier dé, $6$ avec un $6$ sur le second, moins le couple $(6,6)$ compté deux fois, soit $11$ couples : $P(X = 6) = \frac{11}{36}$.
+:::
+
+::: etape c) Loi complète
+Pour $X = k$ : $k$ couples ont le premier dé égal à $k$ et le second $\leqslant k$, $k$ couples l’inverse, et $(k,k)$ est compté deux fois. Il y a donc $2k - 1$ couples.
+
+| $x_i$ | $1$ | $2$ | $3$ | $4$ | $5$ | $6$ |
+|---|---|---|---|---|---|---|
+| $P(X = x_i)$ | $\frac{1}{36}$ | $\frac{3}{36}$ | $\frac{5}{36}$ | $\frac{7}{36}$ | $\frac{9}{36}$ | $\frac{11}{36}$ |
+
+Contrôle : $1 + 3 + 5 + 7 + 9 + 11 = 36$.
+:::
+
+::: etape Espérance
+$$
+\begin{aligned}
+E(X) &= \frac{1 \times 1 + 2 \times 3 + 3 \times 5 + 4 \times 7 + 5 \times 9 + 6 \times 11}{36} \\
+ &= \frac{1 + 6 + 15 + 28 + 45 + 66}{36} \\
+&= \frac{161}{36} \approx 4{,}47
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(X = k) = \frac{2k - 1}{36}$ pour $k = 1, \ldots, 6$ ; $E(X) = \frac{161}{36} \approx 4{,}47$.
+:::
+
+## Question A2 : Une loi donnée
+
+::: etape a) Vérification
+Chaque probabilité est entre $0$ et $1$, et $0{,}1 + 0{,}4 + 0{,}3 + 0{,}2 = 1$.
+:::
+
+::: etape b) Probabilités
+$$
+\begin{aligned}
+P(Y \leqslant 0) &= P(Y = -2) + P(Y = 0) \\
+&= 0{,}1 + 0{,}4 = 0{,}5 \\
+P(Y \gt 1) &= P(Y = 4) = 0{,}2
+\end{aligned}
+$$
+:::
+
+::: attention
+$\{Y \gt 1\}$ ne contient pas la valeur $1$ : inégalité **stricte**.
+:::
+
+::: resultat
+C’est une loi de probabilité ; $P(Y \leqslant 0) = 0{,}5$ et $P(Y \gt 1) = 0{,}2$.
+:::
+
+## Partie B : Espérance et variance
+
+## Question B1 : $E(Y)$ et $E(Y^2)$
+
+::: etape Calculs
+$$
+\begin{aligned}
+E(Y) &= 0{,}1 \times (-2) + 0{,}4 \times 0 \\
+&\quad + 0{,}3 \times 1 + 0{,}2 \times 4 \\
+&= -0{,}2 + 0 + 0{,}3 + 0{,}8 = 0{,}9 \\
+E(Y^2) &= 0{,}1 \times 4 + 0{,}4 \times 0 \\
+&\quad + 0{,}3 \times 1 + 0{,}2 \times 16 \\
+&= 0{,}4 + 0 + 0{,}3 + 3{,}2 = 3{,}9
+\end{aligned}
+$$
+:::
+
+::: resultat
+$E(Y) = 0{,}9$ et $E(Y^2) = 3{,}9$.
+:::
+
+## Question B2 : Variance et écart type
+
+::: etape König-Huygens
+$$
+\begin{aligned}
+V(Y) &= 3{,}9 - 0{,}9^2 \\
+&= 3{,}9 - 0{,}81 \\
+&= 3{,}09
+\end{aligned}
+$$
+Puis $\sigma(Y) = \sqrt{3{,}09} \approx 1{,}76$.
+:::
+
+::: resultat
+$V(Y) = 3{,}09$ et $\sigma(Y) \approx 1{,}76$.
+:::
+
+## Question B3 : La variable $Z = -Y + 2$
+
+::: etape Transformation affine ($a = -1$, $b = 2$)
+$$
+\begin{aligned}
+E(Z) &= -E(Y) + 2 = -0{,}9 + 2 = 1{,}1 \\
+V(Z) &= (-1)^2 \times V(Y) = 3{,}09
+\end{aligned}
+$$
+:::
+
+::: attention
+$V(-Y) = V(Y)$ : un coefficient négatif ne rend jamais la variance négative, car il est élevé au carré.
+:::
+
+::: resultat
+$E(Z) = 1{,}1$ et $V(Z) = 3{,}09$.
+:::
+
+## Partie C : Application à un jeu
+
+## Question C1 : Loi de $G$
+
+::: etape Regroupement
+$\{G = 8\} = \{6\}$, $\{G = 2\} = \{4\,;5\}$, $\{G = -1\} = \{1\,;2\,;3\}$.
+:::
+
+::: resultat
+| $g_i$ | $-1$ | $2$ | $8$ |
+|---|---|---|---|
+| $P(G = g_i)$ | $\frac{1}{2}$ | $\frac{1}{3}$ | $\frac{1}{6}$ |
+:::
+
+## Question C2 : Espérance, variance, écart type
+
+::: etape Espérance
+$$
+\begin{aligned}
+E(G) &= \frac{1}{2} \times (-1) + \frac{1}{3} \times 2 + \frac{1}{6} \times 8 \\
+&= \frac{-3 + 4 + 8}{6} = \frac{3}{2}
+\end{aligned}
+$$
+:::
+
+::: etape Variance
+$$
+\begin{aligned}
+E(G^2) &= \frac{1}{2} \times 1 + \frac{1}{3} \times 4 + \frac{1}{6} \times 64 \\
+&= \frac{3 + 8 + 64}{6} = \frac{75}{6} = 12{,}5
+\end{aligned}
+$$
+$$
+\begin{aligned}
+V(G) &= 12{,}5 - 1{,}5^2 \\
+&= 12{,}5 - 2{,}25 \\
+&= 10{,}25
+\end{aligned}
+$$
+:::
+
+::: etape Écart type
+$\sigma(G) = \sqrt{10{,}25} \approx 3{,}20$ €.
+:::
+
+::: attention
+$\sqrt{10{,}25}$ n’est pas égal à $3{,}2$ : $3{,}2^2 = 10{,}24$. On écrit donc $\sigma(G) \approx 3{,}20$, avec le signe « environ ».
+:::
+
+::: resultat
+$E(G) = 1{,}50$ €, $V(G) = 10{,}25$ et $\sigma(G) \approx 3{,}20$ €.
+:::
+
+## Question C3 : Mise équitable
+
+::: etape Équation
+Gain net $N = G - m$ : $E(N) = 1{,}5 - m = 0 \iff m = 1{,}5$.
+:::
+
+::: resultat
+Le jeu est équitable pour une mise de $1{,}50$ €.
+:::
+
+Solution:
+<!-- optitab:1 -->
+**Partie A**
+
+A1. a) $1, 2, \ldots, 6$. b) $P(X = 1) = \frac{1}{36}$, $P(X = 3) = \frac{5}{36}$, $P(X = 6) = \frac{11}{36}$. c) $P(X = k) = \frac{2k - 1}{36}$ ; $E(X) = \frac{161}{36} \approx 4{,}47$.
+
+A2. a) Somme $1$. b) $P(Y \leqslant 0) = 0{,}5$ et $P(Y \gt 1) = 0{,}2$.
+
+**Partie B**
+
+B1. $E(Y) = 0{,}9$ et $E(Y^2) = 3{,}9$.
+
+B2. $V(Y) = 3{,}09$ et $\sigma(Y) \approx 1{,}76$.
+
+B3. $E(Z) = 1{,}1$ et $V(Z) = 3{,}09$.
+
+**Partie C**
+
+C1. $P(G = -1) = \frac{1}{2}$, $P(G = 2) = \frac{1}{3}$, $P(G = 8) = \frac{1}{6}$.
+
+C2. $E(G) = 1{,}50$ €, $V(G) = 10{,}25$, $\sigma(G) \approx 3{,}20$ €.
+
+C3. $m = 1{,}50$ €.
+
+===
+
+=== Entraînement - Variables Aléatoires - Espérance
+Id: 1333
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Calculer et interpréter des espérances.
+
+1. On lance un dé équilibré. On définit $X$ ainsi : $X = 10$ si l’on obtient $6$, $X = 3$ si l’on obtient $2$ ou $4$, et $X = -2$ si l’on obtient un nombre impair.
+   - a) Déterminer la loi de $X$.
+   - b) Calculer $E(X)$.
+   - c) $X$ est le gain algébrique (en euros) d’un jeu. Interpréter $E(X)$.
+2. Une urne contient $4$ boules blanches et $6$ boules noires. On tire successivement et **sans remise** deux boules, et on note $Y$ le nombre de boules blanches obtenues.
+   - a) Compléter l’arbre pondéré donné à la fin de l’énoncé ($B_k$ : « la $k$-ième boule est blanche », $N_k$ : « elle est noire »).
+   - b) Déterminer la loi de $Y$.
+   - c) Calculer $E(Y)$ et interpréter.
+3. On lance deux dés équilibrés. Le gain, en euros, est égal au **produit** des deux numéros obtenus.
+   - a) Calculer l’espérance du gain.
+   - b) La mise pour jouer est de $10$ €. Le jeu est-il équitable ? Sinon, quelle mise le rendrait équitable ?
+
+Arbre de la question 2 :
+
+[IMAGE_1]
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Un gain sur un dé
+
+::: etape a) Loi de $X$
+$\{X = 10\} = \{6\}$, $\{X = 3\} = \{2\,;4\}$, $\{X = -2\} = \{1\,;3\,;5\}$.
+
+| $x_i$ | $-2$ | $3$ | $10$ |
+|---|---|---|---|
+| $P(X = x_i)$ | $\frac{1}{2}$ | $\frac{1}{3}$ | $\frac{1}{6}$ |
+:::
+
+::: etape b) Espérance
+$$
+\begin{aligned}
+E(X) &= \frac{1}{2} \times (-2) + \frac{1}{3} \times 3 + \frac{1}{6} \times 10 \\
+&= -1 + 1 + \frac{10}{6} = \frac{5}{3}
+\end{aligned}
+$$
+:::
+
+::: etape c) Interprétation
+Sur un grand nombre de parties, le joueur gagne en moyenne environ $1{,}67$ € par partie : le jeu lui est favorable.
+:::
+
+::: resultat
+$E(X) = \frac{5}{3} \approx 1{,}67$ € ; jeu favorable au joueur.
+:::
+
+## Question 2 : Tirage sans remise
+
+::: methode
+Après le premier tirage, il reste $9$ boules ; on adapte les effectifs. On note $B_k$ « la $k$-ième boule est blanche » et $N_k$ « elle est noire ».
+:::
+
+::: etape a) Arbre pondéré
+[IMAGE_2]
+:::
+
+::: etape b) Loi de $Y$
+$$
+\begin{aligned}
+P(Y = 0) &= P(N_1N_2) = \frac{6}{10} \times \frac{5}{9} = \frac{30}{90} \\
+&= \frac{1}{3} \\
+P(Y = 1) &= P(B_1N_2) \\
+&\quad + P(N_1B_2) \\
+&= \frac{24}{90} + \frac{24}{90} = \frac{8}{15} \\
+P(Y = 2) &= P(B_1B_2) = \frac{4}{10} \times \frac{3}{9} = \frac{12}{90} \\
+&= \frac{2}{15}
+\end{aligned}
+$$
+Contrôle : $\frac{30 + 48 + 12}{90} = 1$.
+
+| $y_i$ | $0$ | $1$ | $2$ |
+|---|---|---|---|
+| $P(Y = y_i)$ | $\frac{1}{3}$ | $\frac{8}{15}$ | $\frac{2}{15}$ |
+:::
+
+::: etape c) Espérance
+$$
+\begin{aligned}
+E(Y) &= 0 \times \frac{1}{3} + 1 \times \frac{8}{15} + 2 \times \frac{2}{15} \\
+&= \frac{12}{15} = \frac{4}{5}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$E(Y) = 0{,}8$ : en répétant l’expérience un grand nombre de fois, on obtient en moyenne $0{,}8$ boule blanche par tirage de deux boules.
+:::
+
+## Question 3 : Produit de deux dés
+
+::: methode
+On écrit le tableau des $36$ produits équiprobables ; l’espérance est la moyenne de ces $36$ nombres.
+:::
+
+::: etape Tableau des produits
+| Dé 1 / Dé 2 | $1$ | $2$ | $3$ | $4$ | $5$ | $6$ | Somme |
+|---|---|---|---|---|---|---|---|
+| $1$ | $1$ | $2$ | $3$ | $4$ | $5$ | $6$ | $21$ |
+| $2$ | $2$ | $4$ | $6$ | $8$ | $10$ | $12$ | $42$ |
+| $3$ | $3$ | $6$ | $9$ | $12$ | $15$ | $18$ | $63$ |
+| $4$ | $4$ | $8$ | $12$ | $16$ | $20$ | $24$ | $84$ |
+| $5$ | $5$ | $10$ | $15$ | $20$ | $25$ | $30$ | $105$ |
+| $6$ | $6$ | $12$ | $18$ | $24$ | $30$ | $36$ | $126$ |
+
+La ligne $i$ vaut $i \times (1 + 2 + \cdots + 6) = 21i$.
+:::
+
+::: etape a) Espérance du gain
+Chaque case a la probabilité $\frac{1}{36}$, donc $E(G)$ est la somme des $36$ cases divisée par $36$ :
+$$
+\begin{aligned}
+E(G) &= \frac{21 + 42 + 63 + 84 + 105 + 126}{36} \\
+&= \frac{441}{36} = \frac{49}{4} = 12{,}25
+\end{aligned}
+$$
+:::
+
+::: etape b) Mise de $10$ €
+Gain net $N = G - 10$ : $E(N) = 12{,}25 - 10 = 2{,}25 \neq 0$. Le jeu n’est pas équitable : il est favorable au joueur. Il devient équitable pour $m = E(G) = 12{,}25$ €.
+:::
+
+::: resultat
+$E(G) = 12{,}25$ € ; avec $10$ € de mise, $E(N) = 2{,}25$ € (favorable au joueur) ; mise équitable : $12{,}25$ €.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. a) $P(X = -2) = \frac{1}{2}$, $P(X = 3) = \frac{1}{3}$, $P(X = 10) = \frac{1}{6}$. b) $E(X) = \frac{5}{3} \approx 1{,}67$. c) Gain moyen d’environ $1{,}67$ € par partie : jeu favorable au joueur.
+2. a) Voir l’arbre. b) $P(Y = 0) = \frac{1}{3}$, $P(Y = 1) = \frac{8}{15}$, $P(Y = 2) = \frac{2}{15}$. c) $E(Y) = 0{,}8$ boule blanche en moyenne.
+3. a) $E(G) = 12{,}25$ €. b) Non : $E(N) = 2{,}25$ € ; mise équitable $12{,}25$ €.
+
+===
+
+=== Entraînement - Variables Aléatoires - Loi de Probabilité
+Id: 1332
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Déterminer et exploiter des lois de probabilité.
+
+1. Une variable aléatoire $X$ prend les valeurs $0$, $1$, $2$ et $3$ avec les probabilités respectives $0{,}1$ ; $0{,}25$ ; $p$ et $0{,}4$.
+   - a) Déterminer $p$.
+   - b) Calculer $P(X \geqslant 2)$ et $P(X \lt 2)$.
+   - c) Traduire par une phrase l’événement $\{X \leqslant 1\}$ et calculer sa probabilité.
+2. Une urne contient $3$ boules rouges, $2$ boules bleues et $1$ boule verte. On tire une boule au hasard. On gagne $5$ € pour une rouge, $2$ € pour une bleue et $10$ € pour la verte. On note $Y$ le gain.
+   - a) Déterminer la loi de $Y$ et vérifier que la somme des probabilités vaut $1$.
+   - b) Calculer $P(Y \geqslant 5)$.
+3. On lance deux dés équilibrés et on note $Z$ l’écart entre les deux numéros (le plus grand moins le plus petit ; $Z = 0$ si les numéros sont égaux).
+   - a) Quelles sont les valeurs possibles de $Z$ ?
+   - b) Déterminer la loi de $Z$, puis compléter le diagramme en bâtons donné à la fin de l’énoncé (en ordonnée : $36 \times P(Z = z_i)$, le nombre de couples).
+   - c) Calculer $P(Z \leqslant 2)$.
+
+Diagramme de la question 3 :
+
+[IMAGE_1]
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Compléter une loi
+
+::: methode
+La somme des probabilités d’une loi vaut $1$ ; on en déduit la probabilité manquante.
+:::
+
+::: etape a) Valeur de $p$
+$0{,}1 + 0{,}25 + p + 0{,}4 = 1$, donc $p = 1 - 0{,}75 = 0{,}25$.
+:::
+
+::: etape b) Deux probabilités
+$$
+\begin{aligned}
+P(X \geqslant 2) &= P(X = 2) + P(X = 3) \\
+&= 0{,}25 + 0{,}4 = 0{,}65 \\
+P(X \lt 2) &= 1 - P(X \geqslant 2) = 0{,}35
+\end{aligned}
+$$
+:::
+
+::: etape c) L’événement $\{X \leqslant 1\}$
+« $X$ prend une valeur inférieure ou égale à $1$ », c’est-à-dire « $X$ vaut $0$ ou $1$ » : $P(X \leqslant 1) = 0{,}1 + 0{,}25 = 0{,}35$. C’est le même événement que $\{X \lt 2\}$, car $X$ ne prend que des valeurs entières.
+:::
+
+::: resultat
+$p = 0{,}25$ ; $P(X \geqslant 2) = 0{,}65$ ; $P(X \lt 2) = P(X \leqslant 1) = 0{,}35$.
+:::
+
+## Question 2 : Gain d’un tirage
+
+::: etape a) Loi de $Y$
+Il y a $3 + 2 + 1 = 6$ boules équiprobables.
+
+| $y_i$ | $2$ | $5$ | $10$ |
+|---|---|---|---|
+| $P(Y = y_i)$ | $\frac{2}{6} = \frac{1}{3}$ | $\frac{3}{6} = \frac{1}{2}$ | $\frac{1}{6}$ |
+
+Contrôle : $\frac{2}{6} + \frac{3}{6} + \frac{1}{6} = 1$.
+:::
+
+::: etape b) $P(Y \geqslant 5)$
+$$
+\begin{aligned}
+P(Y \geqslant 5) &= P(Y = 5) + P(Y = 10) \\
+&= \frac{3}{6} + \frac{1}{6} \\
+&= \frac{2}{3}
+\end{aligned}
+$$
+:::
+
+::: resultat
+Loi : $\frac{1}{3}$, $\frac{1}{2}$, $\frac{1}{6}$ pour $2$, $5$, $10$ € ; $P(Y \geqslant 5) = \frac{2}{3}$.
+:::
+
+## Question 3 : Écart entre deux dés
+
+::: methode
+On écrit le tableau des $36$ écarts équiprobables, puis on compte les cases de chaque valeur.
+:::
+
+::: etape a) Valeurs possibles
+L’écart vaut au minimum $0$ (numéros égaux) et au maximum $6 - 1 = 5$ : $Z$ prend les valeurs $0, 1, 2, 3, 4, 5$.
+:::
+
+::: etape Tableau des écarts
+| Dé 1 / Dé 2 | $1$ | $2$ | $3$ | $4$ | $5$ | $6$ |
+|---|---|---|---|---|---|---|
+| $1$ | $0$ | $1$ | $2$ | $3$ | $4$ | $5$ |
+| $2$ | $1$ | $0$ | $1$ | $2$ | $3$ | $4$ |
+| $3$ | $2$ | $1$ | $0$ | $1$ | $2$ | $3$ |
+| $4$ | $3$ | $2$ | $1$ | $0$ | $1$ | $2$ |
+| $5$ | $4$ | $3$ | $2$ | $1$ | $0$ | $1$ |
+| $6$ | $5$ | $4$ | $3$ | $2$ | $1$ | $0$ |
+:::
+
+::: etape b) Loi de $Z$
+En comptant : $0$ apparaît $6$ fois, $1$ apparaît $10$ fois, $2$ : $8$ fois, $3$ : $6$ fois, $4$ : $4$ fois, $5$ : $2$ fois (total $36$).
+
+| $z_i$ | $0$ | $1$ | $2$ | $3$ | $4$ | $5$ |
+|---|---|---|---|---|---|---|
+| $P(Z = z_i)$ | $\frac{6}{36}$ | $\frac{10}{36}$ | $\frac{8}{36}$ | $\frac{6}{36}$ | $\frac{4}{36}$ | $\frac{2}{36}$ |
+
+[IMAGE_2]
+:::
+
+::: etape c) $P(Z \leqslant 2)$
+$$P(Z \leqslant 2) = \frac{6 + 10 + 8}{36} = \frac{24}{36} = \frac{2}{3}$$
+:::
+
+::: resultat
+$P(Z = 0) = \frac{1}{6}$, $P(Z = 1) = \frac{5}{18}$, $P(Z = 2) = \frac{2}{9}$, $P(Z = 3) = \frac{1}{6}$, $P(Z = 4) = \frac{1}{9}$, $P(Z = 5) = \frac{1}{18}$ ; $P(Z \leqslant 2) = \frac{2}{3}$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. a) $p = 0{,}25$. b) $P(X \geqslant 2) = 0{,}65$ et $P(X \lt 2) = 0{,}35$. c) « $X$ vaut $0$ ou $1$ » : $P(X \leqslant 1) = 0{,}35$.
+2. a) $P(Y = 2) = \frac{1}{3}$, $P(Y = 5) = \frac{1}{2}$, $P(Y = 10) = \frac{1}{6}$ ; somme $1$. b) $P(Y \geqslant 5) = \frac{2}{3}$.
+3. a) $0, 1, \ldots, 5$. b) $\frac{6}{36}$, $\frac{10}{36}$, $\frac{8}{36}$, $\frac{6}{36}$, $\frac{4}{36}$, $\frac{2}{36}$. c) $P(Z \leqslant 2) = \frac{2}{3}$.
+
+===
+
+=== Problème - Variables Aléatoires - Jeu Équitable
+Id: 1334
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Régler un jeu pour qu’il soit équitable, puis comparer des jeux selon leur espérance et leur risque.
+
+**Partie A — Un gain à régler**
+
+On lance un dé équilibré. Le joueur gagne $a$ euros s’il obtient $6$ ($a$ est un réel positif), gagne $2$ € s’il obtient $2$ ou $4$, et perd $4$ € s’il obtient un nombre impair. On note $G$ son gain algébrique.
+
+**A1.** Déterminer la loi de $G$ en fonction de $a$.
+
+**A2.** Exprimer $E(G)$ en fonction de $a$.
+
+**A3.** Pour quelle valeur de $a$ le jeu est-il équitable ?
+
+**A4.** L’organisateur demande désormais une mise de $1$ € avant chaque partie. Pour quelle valeur de $a$ le jeu est-il équitable ?
+
+**A5.** On prend la valeur de $a$ trouvée en A4. Calculer l’écart type du gain net.
+
+**Partie B — Trois tickets de loterie**
+
+Une loterie propose trois tickets :
+- ticket A : il coûte $2$ € et rapporte $10$ € avec la probabilité $0{,}1$, rien sinon ;
+- ticket B : il coûte $3$ € et rapporte $15$ € avec la probabilité $0{,}15$, rien sinon ;
+- ticket C : il coûte $5$ € et rapporte $30$ € avec la probabilité $0{,}15$, rien sinon.
+
+On note $N_A$, $N_B$ et $N_C$ les gains nets (somme reçue moins prix du ticket).
+
+**B1.** Donner la loi de chacune de ces trois variables.
+
+**B2.** Calculer leurs espérances. Quel ticket est le moins défavorable au joueur ? Lequel rapporte le plus à l’organisateur ?
+
+**B3.** Calculer $\sigma(N_A)$ et $\sigma(N_C)$. Comparer les deux tickets du point de vue du risque.
+
+Étapes:
+<!-- optitab:1 -->
+## Partie A : Un gain à régler
+
+## Question A1 : Loi de $G$
+
+::: etape Regroupement
+$\{G = a\} = \{6\}$, $\{G = 2\} = \{2\,;4\}$, $\{G = -4\} = \{1\,;3\,;5\}$.
+:::
+
+::: resultat
+| $g_i$ | $-4$ | $2$ | $a$ |
+|---|---|---|---|
+| $P(G = g_i)$ | $\frac{1}{2}$ | $\frac{1}{3}$ | $\frac{1}{6}$ |
+:::
+
+## Question A2 : Espérance en fonction de $a$
+
+::: etape Calcul
+$$
+\begin{aligned}
+E(G) &= \frac{1}{2} \times (-4) + \frac{1}{3} \times 2 + \frac{1}{6} \times a \\
+&= -2 + \frac{2}{3} + \frac{a}{6} = \frac{a}{6} - \frac{4}{3}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$E(G) = \dfrac{a}{6} - \dfrac{4}{3}$.
+:::
+
+## Question A3 : Jeu équitable sans mise
+
+::: etape Équation
+$$E(G) = 0 \iff \frac{a}{6} = \frac{4}{3} \iff a = 8$$
+:::
+
+::: resultat
+Le jeu est équitable pour $a = 8$ €.
+:::
+
+## Question A4 : Jeu équitable avec une mise de $1$ €
+
+::: methode
+Le gain net est $N = G - 1$ ; par linéarité, $E(N) = E(G) - 1$.
+:::
+
+::: etape Équation
+$$
+\begin{aligned}
+E(N) = 0 &\iff \frac{a}{6} - \frac{4}{3} - 1 = 0 \\
+&\iff \frac{a}{6} = \frac{7}{3} \\
+&\iff a = 14
+\end{aligned}
+$$
+:::
+
+::: resultat
+Avec une mise de $1$ €, le jeu est équitable pour $a = 14$ €.
+:::
+
+## Question A5 : Écart type du gain net
+
+::: methode
+$\sigma(N) = \sigma(G - 1) = \sigma(G)$ : on calcule $V(G)$ avec $a = 14$.
+:::
+
+::: etape Espérance et moyenne des carrés
+Avec $a = 14$ : $E(G) = \frac{14}{6} - \frac{4}{3} = \frac{7}{3} - \frac{4}{3} = 1$ (cohérent avec $E(N) = 0$).
+$$
+\begin{aligned}
+E(G^2) &= \frac{1}{2} \times 16 + \frac{1}{3} \times 4 + \frac{1}{6} \times 196 \\
+&= 8 + \frac{4}{3} + \frac{98}{3} = 8 + 34 = 42
+\end{aligned}
+$$
+:::
+
+::: etape Variance et écart type
+$V(G) = 42 - 1^2 = 41$, donc $\sigma(N) = \sigma(G) = \sqrt{41} \approx 6{,}40$ €.
+:::
+
+::: resultat
+$\sigma(N) = \sqrt{41} \approx 6{,}40$ € : le jeu est équitable en moyenne, mais les gains d’une partie sont très dispersés.
+:::
+
+## Partie B : Trois tickets de loterie
+
+## Question B1 : Lois des gains nets
+
+::: methode
+Gain net = somme reçue − prix du ticket. Un ticket gagnant rapporte « lot − prix », un ticket perdant « − prix ».
+:::
+
+::: etape Trois lois
+| $n_i$ | $-2$ | $8$ |
+|---|---|---|
+| $P(N_A = n_i)$ | $0{,}9$ | $0{,}1$ |
+
+| $n_i$ | $-3$ | $12$ |
+|---|---|---|
+| $P(N_B = n_i)$ | $0{,}85$ | $0{,}15$ |
+
+| $n_i$ | $-5$ | $25$ |
+|---|---|---|
+| $P(N_C = n_i)$ | $0{,}85$ | $0{,}15$ |
+:::
+
+::: attention
+Le prix du ticket se retranche **aussi** quand on gagne : le gain net d’un ticket A gagnant est $10 - 2 = 8$ €, pas $10$ €.
+:::
+
+::: resultat
+Gains nets : $N_A \in \{-2\,;8\}$, $N_B \in \{-3\,;12\}$, $N_C \in \{-5\,;25\}$, avec les probabilités ci-dessus.
+:::
+
+## Question B2 : Espérances
+
+::: etape Calculs
+$$
+\begin{aligned}
+E(N_A) &= 0{,}9 \times (-2) + 0{,}1 \times 8 \\
+&= -1{,}8 + 0{,}8 = -1 \\
+E(N_B) &= 0{,}85 \times (-3) \\
+&\quad + 0{,}15 \times 12 \\
+&= -2{,}55 + 1{,}8 = -0{,}75 \\
+E(N_C) &= 0{,}85 \times (-5) \\
+&\quad + 0{,}15 \times 25 \\
+&= -4{,}25 + 3{,}75 = -0{,}5
+\end{aligned}
+$$
+:::
+
+::: etape Interprétation
+Les trois espérances sont négatives : les trois tickets sont défavorables au joueur. Le ticket C est le moins défavorable ($-0{,}50$ € en moyenne par ticket). L’organisateur gagne en moyenne $1$ € par ticket A, $0{,}75$ € par ticket B et $0{,}50$ € par ticket C.
+:::
+
+::: resultat
+$E(N_A) = -1$ €, $E(N_B) = -0{,}75$ €, $E(N_C) = -0{,}50$ € ; le ticket C est le moins défavorable au joueur, le ticket A rapporte le plus à l’organisateur.
+:::
+
+## Question B3 : Comparer les risques
+
+::: etape Ticket A
+$$
+\begin{aligned}
+E(N_A^2) &= 0{,}9 \times 4 + 0{,}1 \times 64 \\
+&= 3{,}6 + 6{,}4 \\
+&= 10
+\end{aligned}
+$$
+Donc $V(N_A) = 10 - (-1)^2 = 9$ et $\sigma(N_A) = 3$ €.
+:::
+
+::: etape Ticket C
+$$
+\begin{aligned}
+E(N_C^2) &= 0{,}85 \times 25 \\
+&\quad + 0{,}15 \times 625 \\
+&= 21{,}25 + 93{,}75 \\
+&= 115
+\end{aligned}
+$$
+Donc $V(N_C) = 115 - 0{,}25 = 114{,}75$ et $\sigma(N_C) = \sqrt{114{,}75} \approx 10{,}71$ €.
+:::
+
+::: resultat
+$\sigma(N_A) = 3$ € et $\sigma(N_C) \approx 10{,}71$ € : le ticket C est moins défavorable en moyenne, mais beaucoup plus risqué (on peut perdre $5$ € ou gagner $25$ €).
+:::
+
+Solution:
+<!-- optitab:1 -->
+**Partie A**
+
+A1. $P(G = -4) = \frac{1}{2}$, $P(G = 2) = \frac{1}{3}$, $P(G = a) = \frac{1}{6}$.
+
+A2. $E(G) = \frac{a}{6} - \frac{4}{3}$.
+
+A3. $a = 8$ €.
+
+A4. $a = 14$ €.
+
+A5. $\sigma(N) = \sqrt{41} \approx 6{,}40$ €.
+
+**Partie B**
+
+B1. $N_A$ : $-2$ ($0{,}9$), $8$ ($0{,}1$) ; $N_B$ : $-3$ ($0{,}85$), $12$ ($0{,}15$) ; $N_C$ : $-5$ ($0{,}85$), $25$ ($0{,}15$).
+
+B2. $-1$ € ; $-0{,}75$ € ; $-0{,}50$ €. Ticket C le moins défavorable, ticket A le plus rentable pour l’organisateur.
+
+B3. $\sigma(N_A) = 3$ € et $\sigma(N_C) \approx 10{,}71$ € : C est bien plus risqué.
+
+===
+
+=== Type examen - Variables Aléatoires - Type 1
+Id: 1337
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Sujet de type examen sur l’ensemble du chapitre.
+
+**Exercice 1 — Questions de cours et applications**
+
+**1.1** Donner la définition de l’espérance d’une variable aléatoire $X$ qui prend les valeurs $x_1, \ldots, x_n$ avec les probabilités $p_1, \ldots, p_n$.
+
+**1.2** Une variable aléatoire $X$ a la loi suivante.
+
+| $x_i$ | $0$ | $2$ | $5$ |
+|---|---|---|---|
+| $P(X = x_i)$ | $0{,}4$ | $0{,}3$ | $0{,}3$ |
+
+Calculer $E(X)$ et $E(X^2)$, puis en déduire $V(X)$ et $\sigma(X)$ (arrondi au centième).
+
+**1.3** Énoncer les formules donnant $E(aX + b)$ et $V(aX + b)$, puis calculer $E(3X - 2)$ et $V(3X - 2)$.
+
+**Exercice 2 — Un jeu avec deux dés**
+
+On lance deux dés équilibrés. Si la somme vaut $7$, on gagne $12$ € ; si les deux numéros sont égaux (un « double »), on gagne $5$ € ; dans tous les autres cas, on perd $2$ €. On note $G$ le gain algébrique.
+
+**2.1** Expliquer pourquoi les deux premiers cas ne peuvent pas se produire en même temps, puis déterminer la loi de $G$.
+
+**2.2** Calculer $E(G)$.
+
+**2.3** On doit payer une mise de $2$ € pour jouer. Le jeu est-il équitable ?
+
+**2.4** Quelle mise $m$ rendrait le jeu équitable ?
+
+**Exercice 3 — Transformation affine**
+
+Une variable aléatoire $Y$ vérifie $E(Y) = 4$ et $V(Y) = 9$. Calculer $E(2Y + 1)$, $V(2Y + 1)$ et $\sigma(2Y + 1)$.
+
+Étapes:
+<!-- optitab:1 -->
+## Partie 1 : Questions de cours et applications
+
+## Question 1.1 : Définition de l’espérance
+
+::: resultat
+$$
+\begin{aligned}
+E(X) &= p_1x_1 + p_2x_2 \\
+&\quad + \cdots + p_nx_n \\
+&= \sum_{i=1}^{n} p_ix_i
+\end{aligned}
+$$
+C’est la moyenne des valeurs de $X$ pondérées par leurs probabilités.
+:::
+
+## Question 1.2 : Indicateurs de $X$
+
+::: etape Espérance
+$$
+\begin{aligned}
+E(X) &= 0{,}4 \times 0 + 0{,}3 \times 2 + 0{,}3 \times 5 \\
+&= 0 + 0{,}6 + 1{,}5 \\
+&= 2{,}1
+\end{aligned}
+$$
+:::
+
+::: etape Moyenne des carrés
+$$
+\begin{aligned}
+E(X^2) &= 0{,}4 \times 0 + 0{,}3 \times 4 \\
+&\quad + 0{,}3 \times 25 \\
+&= 1{,}2 + 7{,}5 \\
+&= 8{,}7
+\end{aligned}
+$$
+:::
+
+::: etape Variance et écart type
+$$
+\begin{aligned}
+V(X) &= 8{,}7 - 2{,}1^2 \\
+&= 8{,}7 - 4{,}41 \\
+&= 4{,}29
+\end{aligned}
+$$
+Puis $\sigma(X) = \sqrt{4{,}29} \approx 2{,}07$.
+:::
+
+::: resultat
+$E(X) = 2{,}1$, $E(X^2) = 8{,}7$, $V(X) = 4{,}29$, $\sigma(X) \approx 2{,}07$.
+:::
+
+## Question 1.3 : Transformation affine
+
+::: rappel
+Pour tous réels $a$ et $b$ : $E(aX + b) = aE(X) + b$ et $V(aX + b) = a^2V(X)$.
+:::
+
+::: etape Calculs avec $a = 3$ et $b = -2$
+$$
+\begin{aligned}
+E(3X - 2) &= 3 \times 2{,}1 - 2 = 4{,}3 \\
+V(3X - 2) &= 3^2 \times 4{,}29 = 38{,}61
+\end{aligned}
+$$
+:::
+
+::: resultat
+$E(3X - 2) = 4{,}3$ et $V(3X - 2) = 38{,}61$.
+:::
+
+## Partie 2 : Un jeu avec deux dés
+
+## Question 2.1 : Loi de $G$
+
+::: etape Cas incompatibles
+Un double a une somme paire ($2k$), alors que $7$ est impair : un double ne donne jamais $7$.
+:::
+
+::: etape Probabilités
+Sur les $36$ couples équiprobables : $6$ donnent la somme $7$, $6$ sont des doubles, et les $36 - 12 = 24$ autres font perdre.
+:::
+
+::: resultat
+| $g_i$ | $-2$ | $5$ | $12$ |
+|---|---|---|---|
+| $P(G = g_i)$ | $\frac{24}{36} = \frac{2}{3}$ | $\frac{6}{36} = \frac{1}{6}$ | $\frac{6}{36} = \frac{1}{6}$ |
+:::
+
+## Question 2.2 : Espérance
+
+::: etape Calcul
+$$
+\begin{aligned}
+E(G) &= \frac{2}{3} \times (-2) + \frac{1}{6} \times 5 + \frac{1}{6} \times 12 \\
+&= \frac{-8 + 5 + 12}{6} = \frac{9}{6} = 1{,}5
+\end{aligned}
+$$
+:::
+
+::: resultat
+$E(G) = 1{,}50$ €.
+:::
+
+## Question 2.3 : Mise de $2$ €
+
+::: etape Gain net
+$N = G - 2$, donc $E(N) = 1{,}5 - 2 = -0{,}5 \neq 0$.
+:::
+
+::: resultat
+Le jeu n’est pas équitable : il est défavorable au joueur, qui perd en moyenne $0{,}50$ € par partie.
+:::
+
+## Question 2.4 : Mise équitable
+
+::: etape Équation
+$E(G - m) = 1{,}5 - m = 0 \iff m = 1{,}5$.
+:::
+
+::: resultat
+La mise équitable est $1{,}50$ €.
+:::
+
+## Partie 3 : Transformation affine
+
+## Question 3 : $E$, $V$ et $\sigma$ de $2Y + 1$
+
+::: etape Calculs
+$$
+\begin{aligned}
+E(2Y + 1) &= 2 \times 4 + 1 = 9 \\
+V(2Y + 1) &= 2^2 \times 9 = 36 \\
+\sigma(2Y + 1) &= \sqrt{36} = 6
+\end{aligned}
+$$
+:::
+
+::: attention
+Erreur fréquente : $V(2Y + 1) = 2 \times 9 + 1 = 19$. Le coefficient est **au carré** et la constante disparaît.
+:::
+
+::: resultat
+$E(2Y + 1) = 9$, $V(2Y + 1) = 36$ et $\sigma(2Y + 1) = 6$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+**Exercice 1**
+
+1.1. $E(X) = \sum p_ix_i$.
+
+1.2. $E(X) = 2{,}1$, $E(X^2) = 8{,}7$, $V(X) = 4{,}29$, $\sigma(X) \approx 2{,}07$.
+
+1.3. $E(3X - 2) = 4{,}3$ et $V(3X - 2) = 38{,}61$.
+
+**Exercice 2**
+
+2.1. Un double a une somme paire. $P(G = -2) = \frac{2}{3}$, $P(G = 5) = \frac{1}{6}$, $P(G = 12) = \frac{1}{6}$.
+
+2.2. $E(G) = 1{,}50$ €.
+
+2.3. Non : $E(N) = -0{,}50$ €, jeu défavorable au joueur.
+
+2.4. $m = 1{,}50$ €.
+
+**Exercice 3**
+
+$E(2Y + 1) = 9$, $V(2Y + 1) = 36$, $\sigma(2Y + 1) = 6$.
+
+===
+
+=== Type examen - Variables Aléatoires - Type 2
+Id: 1338
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Sujet de type examen sur l’ensemble du chapitre.
+
+**Partie A — Maîtrise des techniques**
+
+**A1.** On lance un dé équilibré. On pose $X = -3$ si l’on obtient $1$ ou $2$, $X = 1$ si l’on obtient $3$ ou $4$, et $X = 4$ si l’on obtient $5$ ou $6$.
+- a) Déterminer la loi de $X$.
+- b) Calculer $E(X)$, $V(X)$ et $\sigma(X)$ (valeurs exactes, puis arrondi au centième).
+
+**A2.** Une variable aléatoire $Y$ vérifie $E(Y) = 5$ et $V(Y) = 16$. Calculer $E(-2Y + 3)$, $V(-2Y + 3)$ et $\sigma(-2Y + 3)$.
+
+**Partie B — Tirage dans une urne**
+
+Une urne contient $5$ boules rouges, $3$ boules bleues et $2$ boules vertes. On tire successivement et **sans remise** deux boules, et on note $Z$ le nombre de boules rouges obtenues.
+
+**B1.** Compléter l’arbre pondéré ci-dessous ($R_k$ : « la $k$-ième boule est rouge » ; on distingue seulement « rouge » et « non rouge »).
+
+[IMAGE_1]
+
+**B2.** Déterminer la loi de $Z$.
+
+**B3.** Calculer $E(Z)$, $V(Z)$ et $\sigma(Z)$.
+
+**B4.** Interpréter $E(Z)$.
+
+Étapes:
+<!-- optitab:1 -->
+## Partie A : Maîtrise des techniques
+
+## Question A1 : Étude de $X$
+
+::: etape a) Loi de $X$
+Chaque valeur correspond à $2$ faces sur $6$.
+
+| $x_i$ | $-3$ | $1$ | $4$ |
+|---|---|---|---|
+| $P(X = x_i)$ | $\frac{1}{3}$ | $\frac{1}{3}$ | $\frac{1}{3}$ |
+:::
+
+::: etape b) Espérance
+$E(X) = \frac{-3 + 1 + 4}{3} = \frac{2}{3}$.
+:::
+
+::: etape b) Variance et écart type
+$$
+\begin{aligned}
+E(X^2) &= \frac{9 + 1 + 16}{3} = \frac{26}{3} \\
+V(X) &= \frac{26}{3} - \left(\frac{2}{3}\right)^2 = \frac{78}{9} - \frac{4}{9} = \frac{74}{9}
+\end{aligned}
+$$
+$\sigma(X) = \sqrt{\frac{74}{9}} = \frac{\sqrt{74}}{3} \approx 2{,}87$.
+:::
+
+::: resultat
+$E(X) = \frac{2}{3} \approx 0{,}67$, $V(X) = \frac{74}{9} \approx 8{,}22$ et $\sigma(X) = \frac{\sqrt{74}}{3} \approx 2{,}87$.
+:::
+
+## Question A2 : La variable $-2Y + 3$
+
+::: etape Calculs avec $a = -2$ et $b = 3$
+$$
+\begin{aligned}
+E(-2Y + 3) &= -2 \times 5 + 3 = -7 \\
+V(-2Y + 3) &= (-2)^2 \times 16 = 64 \\
+\sigma(-2Y + 3) &= |-2| \times \sqrt{16} = 8
+\end{aligned}
+$$
+:::
+
+::: attention
+$(-2)^2 = 4$ : la variance reste positive. L’écart type fait intervenir $|a| = 2$, pas $-2$.
+:::
+
+::: resultat
+$E(-2Y + 3) = -7$, $V(-2Y + 3) = 64$ et $\sigma(-2Y + 3) = 8$.
+:::
+
+## Partie B : Tirage dans une urne
+
+## Question B1 : Arbre pondéré
+
+::: methode
+$R_k$ : « la $k$-ième boule est rouge » ; $\overline{R_k}$ : « elle n’est pas rouge » ($5$ boules non rouges au départ). Au second tirage, il reste $9$ boules.
+:::
+
+::: etape Arbre
+[IMAGE_2]
+:::
+
+::: resultat
+Premier tirage : $\frac{5}{10}$ et $\frac{5}{10}$ ; second : $\frac{4}{9}$ et $\frac{5}{9}$ après une rouge, $\frac{5}{9}$ et $\frac{4}{9}$ après une non rouge.
+:::
+
+## Question B2 : Loi de $Z$
+
+::: etape Calculs
+$$
+\begin{aligned}
+P(Z = 2) &= \frac{5}{10} \times \frac{4}{9} = \frac{20}{90} = \frac{2}{9} \\
+P(Z = 1) &= \frac{5}{10} \times \frac{5}{9} + \frac{5}{10} \times \frac{5}{9} = \frac{50}{90} = \frac{5}{9} \\
+P(Z = 0) &= \frac{5}{10} \times \frac{4}{9} = \frac{20}{90} = \frac{2}{9}
+\end{aligned}
+$$
+Contrôle : $\frac{2}{9} + \frac{5}{9} + \frac{2}{9} = 1$.
+:::
+
+::: resultat
+| $z_i$ | $0$ | $1$ | $2$ |
+|---|---|---|---|
+| $P(Z = z_i)$ | $\frac{2}{9}$ | $\frac{5}{9}$ | $\frac{2}{9}$ |
+:::
+
+## Question B3 : Indicateurs
+
+::: etape Espérance
+$E(Z) = 0 \times \frac{2}{9} + 1 \times \frac{5}{9} + 2 \times \frac{2}{9} = \frac{9}{9} = 1$.
+:::
+
+::: etape Variance et écart type
+$E(Z^2) = 0 + 1 \times \frac{5}{9} + 4 \times \frac{2}{9} = \frac{13}{9}$, donc $V(Z) = \frac{13}{9} - 1^2 = \frac{4}{9}$ et $\sigma(Z) = \sqrt{\frac{4}{9}} = \frac{2}{3}$.
+:::
+
+::: resultat
+$E(Z) = 1$, $V(Z) = \frac{4}{9}$ et $\sigma(Z) = \frac{2}{3} \approx 0{,}67$.
+:::
+
+## Question B4 : Interprétation
+
+::: resultat
+En répétant ce tirage un grand nombre de fois, on obtient en moyenne $1$ boule rouge par tirage de deux boules ; c’est logique, puisque la moitié des boules sont rouges. La loi est symétrique autour de $1$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+**Partie A**
+
+A1. a) Chaque valeur $-3$, $1$, $4$ a la probabilité $\frac{1}{3}$. b) $E(X) = \frac{2}{3}$, $V(X) = \frac{74}{9} \approx 8{,}22$, $\sigma(X) = \frac{\sqrt{74}}{3} \approx 2{,}87$.
+
+A2. $E(-2Y + 3) = -7$, $V(-2Y + 3) = 64$, $\sigma(-2Y + 3) = 8$.
+
+**Partie B**
+
+B1. Voir l’arbre.
+
+B2. $P(Z = 0) = \frac{2}{9}$, $P(Z = 1) = \frac{5}{9}$, $P(Z = 2) = \frac{2}{9}$.
+
+B3. $E(Z) = 1$, $V(Z) = \frac{4}{9}$, $\sigma(Z) = \frac{2}{3}$.
+
+B4. En moyenne, une boule rouge par tirage de deux boules.
+
+===
+
+=== Type examen - Variables Aléatoires - Type 3
+Id: 1340
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Sujet de type examen sur l’ensemble du chapitre.
+
+**Partie A — Questions de cours et applications**
+
+**A1.** Donner la définition de la variance d’une variable aléatoire $X$ d’espérance $\mu$, puis la formule de König-Huygens.
+
+**A2.** Une variable aléatoire $X$ a la loi suivante.
+
+| $x_i$ | $-1$ | $2$ | $4$ |
+|---|---|---|---|
+| $P(X = x_i)$ | $\frac{1}{4}$ | $\frac{1}{2}$ | $\frac{1}{4}$ |
+
+Calculer $E(X)$, $E(X^2)$, $V(X)$ et $\sigma(X)$.
+
+**A3.** Calculer $E(3X - 1)$ et $V(3X - 1)$.
+
+**Partie B — Un jeu de cartes**
+
+On tire une carte au hasard dans un jeu de $32$ cartes. Ce jeu contient $4$ as, $12$ figures (rois, dames, valets) et $16$ autres cartes. Le joueur gagne $6$ € pour un as, $2$ € pour une figure, et perd $2$ € pour une autre carte. On note $G$ son gain algébrique.
+
+**B1.** Déterminer la loi de $G$.
+
+**B2.** Calculer $E(G)$, $V(G)$ et $\sigma(G)$.
+
+**B3.** L’organisateur fait payer $1$ € par partie. On note $N$ le gain net du joueur. Calculer $E(N)$ et $\sigma(N)$. Que peut espérer gagner l’organisateur sur $200$ parties ?
+
+**B4.** Quelle mise rendrait le jeu équitable ?
+
+**Partie C — Simulation**
+
+On simule une partie (sans la mise) avec la fonction Python suivante.
+
+```python
+from random import randint
+
+def partie():
+    c = randint(1, 32)
+    if c <= 4:
+        return 6
+    elif c <= 16:
+        return 2
+    else:
+        return -2
+```
+
+**C1.** Expliquer pourquoi `partie()` simule bien le gain $G$.
+
+**C2.** Écrire une fonction `moyenne(n)` qui renvoie la moyenne des gains de $n$ parties simulées.
+
+**C3.** Une exécution a donné `moyenne(10)` $= 1{,}6$, `moyenne(100)` $= 0{,}64$ et `moyenne(10000)` $= 0{,}5036$. Commenter ces résultats.
+
+Étapes:
+<!-- optitab:1 -->
+## Partie A : Questions de cours et applications
+
+## Question A1 : Variance
+
+::: resultat
+$V(X) = \sum p_i(x_i - \mu)^2$ : moyenne pondérée des carrés des écarts à l’espérance. Formule de König-Huygens : $V(X) = E(X^2) - \mu^2$.
+:::
+
+## Question A2 : Indicateurs de $X$
+
+::: etape Espérance
+$$
+\begin{aligned}
+E(X) &= \frac{1}{4} \times (-1) + \frac{1}{2} \times 2 + \frac{1}{4} \times 4 \\
+&= -\frac{1}{4} + 1 + 1 = \frac{7}{4}
+\end{aligned}
+$$
+:::
+
+::: etape Moyenne des carrés
+$$
+\begin{aligned}
+E(X^2) &= \frac{1}{4} \times 1 + \frac{1}{2} \times 4 + \frac{1}{4} \times 16 \\
+&= \frac{1}{4} + 2 + 4 = \frac{25}{4}
+\end{aligned}
+$$
+:::
+
+::: etape Variance et écart type
+$$
+\begin{aligned}
+V(X) &= \frac{25}{4} - \left(\frac{7}{4}\right)^2 \\
+&= \frac{100}{16} - \frac{49}{16} = \frac{51}{16}
+\end{aligned}
+$$
+$\sigma(X) = \sqrt{\frac{51}{16}} = \frac{\sqrt{51}}{4} \approx 1{,}79$.
+:::
+
+::: resultat
+$E(X) = \frac{7}{4}$, $E(X^2) = \frac{25}{4}$, $V(X) = \frac{51}{16} \approx 3{,}19$, $\sigma(X) = \frac{\sqrt{51}}{4} \approx 1{,}79$.
+:::
+
+## Question A3 : La variable $3X - 1$
+
+::: etape Calculs
+$$
+\begin{aligned}
+E(3X - 1) &= 3 \times \frac{7}{4} - 1 = \frac{17}{4} \\
+V(3X - 1) &= 3^2 \times \frac{51}{16} = \frac{459}{16}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$E(3X - 1) = \frac{17}{4} = 4{,}25$ et $V(3X - 1) = \frac{459}{16} \approx 28{,}69$.
+:::
+
+## Partie B : Un jeu de cartes
+
+## Question B1 : Loi de $G$
+
+::: etape Probabilités
+Les $32$ cartes sont équiprobables : $P(G = 6) = \frac{4}{32} = \frac{1}{8}$, $P(G = 2) = \frac{12}{32} = \frac{3}{8}$, $P(G = -2) = \frac{16}{32} = \frac{1}{2}$.
+:::
+
+::: resultat
+| $g_i$ | $-2$ | $2$ | $6$ |
+|---|---|---|---|
+| $P(G = g_i)$ | $\frac{1}{2}$ | $\frac{3}{8}$ | $\frac{1}{8}$ |
+:::
+
+## Question B2 : Indicateurs de $G$
+
+::: etape Espérance
+$$
+\begin{aligned}
+E(G) &= \frac{1}{2} \times (-2) + \frac{3}{8} \times 2 + \frac{1}{8} \times 6 \\
+&= -1 + \frac{6}{8} + \frac{6}{8} \\
+&= \frac{1}{2}
+\end{aligned}
+$$
+:::
+
+::: etape Variance et écart type
+$$
+\begin{aligned}
+E(G^2) &= \frac{1}{2} \times 4 + \frac{3}{8} \times 4 + \frac{1}{8} \times 36 \\
+&= 2 + \frac{12}{8} + \frac{36}{8} = 2 + 6 = 8
+\end{aligned}
+$$
+$V(G) = 8 - \left(\frac{1}{2}\right)^2 = \frac{31}{4} = 7{,}75$ et $\sigma(G) = \frac{\sqrt{31}}{2} \approx 2{,}78$ €.
+:::
+
+::: resultat
+$E(G) = 0{,}50$ €, $V(G) = 7{,}75$ et $\sigma(G) \approx 2{,}78$ €.
+:::
+
+## Question B3 : Avec une mise de $1$ €
+
+::: etape Transformation affine
+$N = G - 1$ : $E(N) = 0{,}5 - 1 = -0{,}5$ et $\sigma(N) = \sigma(G) \approx 2{,}78$ €.
+:::
+
+::: etape Sur $200$ parties
+Le joueur perd en moyenne $0{,}50$ € par partie ; l’organisateur peut donc espérer gagner environ $200 \times 0{,}5 = 100$ € sur $200$ parties.
+:::
+
+::: resultat
+$E(N) = -0{,}50$ €, $\sigma(N) \approx 2{,}78$ € ; environ $100$ € pour l’organisateur sur $200$ parties.
+:::
+
+## Question B4 : Mise équitable
+
+::: resultat
+$E(G - m) = 0{,}5 - m = 0$ pour $m = 0{,}50$ € : c’est la mise équitable.
+:::
+
+## Partie C : Simulation
+
+## Question C1 : La fonction `partie`
+
+::: etape Lecture du programme
+`randint(1, 32)` choisit un entier au hasard entre $1$ et $32$ : il représente une carte. Les entiers $1$ à $4$ ($4$ valeurs) jouent le rôle des as, $5$ à $16$ ($12$ valeurs) celui des figures, $17$ à $32$ ($16$ valeurs) celui des autres cartes.
+:::
+
+::: resultat
+La fonction renvoie $6$, $2$ ou $-2$ avec les probabilités $\frac{4}{32}$, $\frac{12}{32}$ et $\frac{16}{32}$ : c’est la loi de $G$.
+:::
+
+## Question C2 : Fonction `moyenne`
+
+::: etape Programme
+On additionne les gains de $n$ parties, puis on divise par $n$.
+
+```python
+def moyenne(n):
+    s = 0
+    for k in range(n):
+        s = s + partie()
+    return s / n
+```
+:::
+
+::: resultat
+`moyenne(n)` renvoie la moyenne d’un échantillon de taille $n$ du gain $G$.
+:::
+
+## Question C3 : Commentaire
+
+::: etape Écarts à l’espérance
+$E(G) = 0{,}5$. Écarts observés : $|1{,}6 - 0{,}5| = 1{,}1$ pour $n = 10$, $|0{,}64 - 0{,}5| = 0{,}14$ pour $n = 100$, $|0{,}5036 - 0{,}5| = 0{,}0036$ pour $n = 10\,000$.
+:::
+
+::: etape Représentation
+Chaque point bleu est une moyenne observée ; chaque barre verte est l’intervalle
+$$\left[0{,}5 - \frac{2\sigma(G)}{\sqrt{n}}\,;0{,}5 + \frac{2\sigma(G)}{\sqrt{n}}\right]$$
+avec $\sigma(G) \approx 2{,}78$. Les barres raccourcissent quand $n$ augmente et les trois moyennes sont dans leur barre.
+
+[IMAGE_1]
+:::
+
+::: resultat
+Les moyennes fluctuent, mais se rapprochent de l’espérance $0{,}5$ quand la taille de l’échantillon augmente : c’est la loi des grands nombres observée par simulation.
+:::
+
+Solution:
+<!-- optitab:1 -->
+**Partie A**
+
+A1. $V(X) = \sum p_i(x_i - \mu)^2$, et aussi $V(X) = E(X^2) - \mu^2$.
+
+A2. $E(X) = \frac{7}{4}$, $E(X^2) = \frac{25}{4}$, $V(X) = \frac{51}{16}$, $\sigma(X) = \frac{\sqrt{51}}{4} \approx 1{,}79$.
+
+A3. $E(3X - 1) = \frac{17}{4}$ et $V(3X - 1) = \frac{459}{16}$.
+
+**Partie B**
+
+B1. $P(G = -2) = \frac{1}{2}$, $P(G = 2) = \frac{3}{8}$, $P(G = 6) = \frac{1}{8}$.
+
+B2. $E(G) = 0{,}50$ €, $V(G) = 7{,}75$, $\sigma(G) \approx 2{,}78$ €.
+
+B3. $E(N) = -0{,}50$ €, $\sigma(N) \approx 2{,}78$ € ; environ $100$ € pour l’organisateur.
+
+B4. $0{,}50$ €.
+
+**Partie C**
+
+C1. $4$, $12$ et $16$ entiers sur $32$ : même loi que $G$.
+
+C2. Boucle qui additionne $n$ appels à `partie()`, puis division par $n$.
+
+C3. Les moyennes se rapprochent de $E(G) = 0{,}5$ quand $n$ augmente.
+
+===
+
+=== Type examen - Variables Aléatoires - Type 4
+Id: 1341
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Sujet de type examen sur l’ensemble du chapitre.
+
+**Partie A — Questions de cours et applications**
+
+**A1.** Donner la définition de l’espérance d’une variable aléatoire.
+
+**A2.** Une variable aléatoire $X$ a la loi suivante.
+
+| $x_i$ | $0$ | $3$ | $6$ |
+|---|---|---|---|
+| $P(X = x_i)$ | $0{,}2$ | $0{,}5$ | $0{,}3$ |
+
+Calculer $E(X)$ et $E(X^2)$, puis en déduire $V(X)$ et $\sigma(X)$.
+
+**A3.** Calculer $E(4X - 5)$.
+
+**Partie B — Transformations affines**
+
+Une variable aléatoire $Y$ vérifie $E(Y) = 3$ et $V(Y) = 25$.
+
+**B1.** Calculer $E(2Y + 1)$, $V(2Y + 1)$ et $\sigma(2Y + 1)$.
+
+**B2.** On pose $Z = -Y + 6$. Calculer $E(Z)$, $V(Z)$ et $\sigma(Z)$.
+
+**Partie C — Un jeu avec deux dés**
+
+On lance deux dés équilibrés. Si la somme vaut $7$, on gagne $15$ € ; si la somme est paire, on gagne $2$ € ; dans les autres cas, on perd $3$ €. On note $G$ le gain algébrique.
+
+**C1.** Déterminer la loi de $G$.
+
+**C2.** Calculer $E(G)$, $V(G)$ et $\sigma(G)$ (arrondi au centième).
+
+**C3.** Quelle mise $m$ faut-il demander pour que le jeu soit équitable ?
+
+Étapes:
+<!-- optitab:1 -->
+## Partie A : Questions de cours et applications
+
+## Question A1 : Définition
+
+::: resultat
+Si $X$ prend les valeurs $x_1, \ldots, x_n$ avec les probabilités $p_1, \ldots, p_n$, alors $E(X) = \sum_{i=1}^{n} p_ix_i$.
+:::
+
+## Question A2 : Indicateurs de $X$
+
+::: etape Espérance et moyenne des carrés
+$$
+\begin{aligned}
+E(X) &= 0{,}2 \times 0 + 0{,}5 \times 3 + 0{,}3 \times 6 \\
+&= 1{,}5 + 1{,}8 = 3{,}3 \\
+E(X^2) &= 0{,}2 \times 0 + 0{,}5 \times 9 \\
+&\quad + 0{,}3 \times 36 \\
+&= 4{,}5 + 10{,}8 = 15{,}3
+\end{aligned}
+$$
+:::
+
+::: etape Variance et écart type
+$$
+\begin{aligned}
+V(X) &= 15{,}3 - 3{,}3^2 \\
+&= 15{,}3 - 10{,}89 \\
+&= 4{,}41
+\end{aligned}
+$$
+Donc $\sigma(X) = \sqrt{4{,}41} = 2{,}1$ (car $2{,}1^2 = 4{,}41$).
+:::
+
+::: resultat
+$E(X) = 3{,}3$, $E(X^2) = 15{,}3$, $V(X) = 4{,}41$ et $\sigma(X) = 2{,}1$.
+:::
+
+## Question A3 : La variable $4X - 5$
+
+::: resultat
+$$
+\begin{aligned}
+E(4X - 5) &= 4 \times 3{,}3 - 5 \\
+&= 13{,}2 - 5 = 8{,}2
+\end{aligned}
+$$
+:::
+
+## Partie B : Transformations affines
+
+## Question B1 : La variable $2Y + 1$
+
+::: etape Calculs
+$$
+\begin{aligned}
+E(2Y + 1) &= 2 \times 3 + 1 = 7 \\
+V(2Y + 1) &= 2^2 \times 25 = 100 \\
+\sigma(2Y + 1) &= \sqrt{100} = 10
+\end{aligned}
+$$
+:::
+
+::: resultat
+$E(2Y + 1) = 7$, $V(2Y + 1) = 100$ et $\sigma(2Y + 1) = 10$.
+:::
+
+## Question B2 : La variable $Z = -Y + 6$
+
+::: etape Calculs
+$$
+\begin{aligned}
+E(Z) &= -3 + 6 = 3 \\
+V(Z) &= (-1)^2 \times 25 = 25 \\
+\sigma(Z) &= 5
+\end{aligned}
+$$
+:::
+
+::: resultat
+$E(Z) = 3$, $V(Z) = 25$ et $\sigma(Z) = 5$.
+:::
+
+## Partie C : Un jeu avec deux dés
+
+## Question C1 : Loi de $G$
+
+::: methode
+On compte les couples parmi les $36$ : la somme $7$ (impaire) et les sommes paires sont des cas incompatibles ; le reste regroupe les sommes impaires autres que $7$.
+:::
+
+::: etape Dénombrement
+- somme $7$ : $6$ couples ;
+- somme paire : $1 + 3 + 5 + 5 + 3 + 1 = 18$ couples (sommes $2$, $4$, $6$, $8$, $10$, $12$) ;
+- autres cas : $36 - 6 - 18 = 12$ couples.
+:::
+
+::: resultat
+| $g_i$ | $-3$ | $2$ | $15$ |
+|---|---|---|---|
+| $P(G = g_i)$ | $\frac{12}{36} = \frac{1}{3}$ | $\frac{18}{36} = \frac{1}{2}$ | $\frac{6}{36} = \frac{1}{6}$ |
+:::
+
+## Question C2 : Indicateurs de $G$
+
+::: etape Espérance
+$$
+\begin{aligned}
+E(G) &= \frac{1}{3} \times (-3) + \frac{1}{2} \times 2 + \frac{1}{6} \times 15 \\
+&= -1 + 1 + 2{,}5 \\
+&= 2{,}5
+\end{aligned}
+$$
+:::
+
+::: etape Variance et écart type
+$$
+\begin{aligned}
+E(G^2) &= \frac{1}{3} \times 9 + \frac{1}{2} \times 4 + \frac{1}{6} \times 225 \\
+&= 3 + 2 + 37{,}5 = 42{,}5
+\end{aligned}
+$$
+$$
+\begin{aligned}
+V(G) &= 42{,}5 - 2{,}5^2 \\
+&= 42{,}5 - 6{,}25 \\
+&= 36{,}25
+\end{aligned}
+$$
+Et $\sigma(G) = \sqrt{36{,}25} \approx 6{,}02$ €.
+:::
+
+::: resultat
+$E(G) = 2{,}50$ €, $V(G) = 36{,}25$ et $\sigma(G) \approx 6{,}02$ €.
+:::
+
+## Question C3 : Mise équitable
+
+::: resultat
+$E(G - m) = 2{,}5 - m = 0$ pour $m = 2{,}50$ € : c’est la mise équitable.
+:::
+
+Solution:
+<!-- optitab:1 -->
+**Partie A**
+
+A1. $E(X) = \sum p_ix_i$.
+
+A2. $E(X) = 3{,}3$, $E(X^2) = 15{,}3$, $V(X) = 4{,}41$, $\sigma(X) = 2{,}1$.
+
+A3. $E(4X - 5) = 8{,}2$.
+
+**Partie B**
+
+B1. $E(2Y + 1) = 7$, $V(2Y + 1) = 100$, $\sigma(2Y + 1) = 10$.
+
+B2. $E(Z) = 3$, $V(Z) = 25$, $\sigma(Z) = 5$.
+
+**Partie C**
+
+C1. $P(G = -3) = \frac{1}{3}$, $P(G = 2) = \frac{1}{2}$, $P(G = 15) = \frac{1}{6}$.
+
+C2. $E(G) = 2{,}50$ €, $V(G) = 36{,}25$, $\sigma(G) \approx 6{,}02$ €.
+
+C3. $m = 2{,}50$ €.
+
+===
+
+=== Découverte - Notations et langage des variables aléatoires
+Id: 4933
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Une tombola vend $20$ tickets à $5$ € l’un. Parmi eux, $1$ ticket rapporte $50$ €, $4$ tickets rapportent $10$ € et les $15$ autres ne rapportent rien. On achète un ticket au hasard et on note $X$ le **gain net** du joueur, en euros (somme reçue moins le prix du ticket).
+
+1. Quelles sont les valeurs possibles de $X$ ? Déterminer la loi de $X$.
+2. Traduire par une phrase chacun des événements $\{X = -5\}$, $\{X \gt 0\}$ et $\{X \leqslant 5\}$.
+3. Écrire avec une notation, puis calculer la probabilité, de chacun des événements suivants.
+   - a) « Le joueur gagne au moins $5$ € ».
+   - b) « Le joueur ne gagne pas plus de $5$ € ».
+4. Calculer $E(X)$. Le jeu est-il favorable au joueur ? Vérifier le résultat en calculant le bénéfice total de l’organisateur.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Valeurs et loi de $X$
+
+::: methode
+Pour chaque type de ticket, gain net = somme reçue − $5$ €. Les $20$ tickets sont équiprobables.
+:::
+
+::: etape Valeurs de $X$
+- gros lot : $50 - 5 = 45$ ;
+- lot de $10$ € : $10 - 5 = 5$ ;
+- ticket perdant : $0 - 5 = -5$.
+:::
+
+::: etape Loi
+$$
+\begin{aligned}
+P(X = 45) &= \frac{1}{20} \\
+P(X = 5) &= \frac{4}{20} = \frac{1}{5} \\
+P(X = -5) &= \frac{15}{20} = \frac{3}{4}
+\end{aligned}
+$$
+Contrôle : $\frac{1 + 4 + 15}{20} = 1$.
+:::
+
+::: resultat
+| $x_i$ | $-5$ | $5$ | $45$ |
+|---|---|---|---|
+| $P(X = x_i)$ | $\frac{3}{4}$ | $\frac{1}{5}$ | $\frac{1}{20}$ |
+:::
+
+## Question 2 : De la notation à la phrase
+
+::: etape Traductions
+- $\{X = -5\}$ : « le ticket ne rapporte rien : le joueur perd les $5$ € du ticket » ;
+- $\{X \gt 0\}$ : « le joueur gagne de l’argent » (ticket à $10$ € ou gros lot) ;
+- $\{X \leqslant 5\}$ : « le joueur gagne au plus $5$ € » (ticket perdant ou ticket à $10$ €).
+:::
+
+::: resultat
+$\{X = -5\}$ : perdre sa mise ; $\{X \gt 0\}$ : gagner de l’argent ; $\{X \leqslant 5\}$ : ne pas gagner plus de $5$ €.
+:::
+
+## Question 3 : De la phrase à la notation
+
+::: etape a) Au moins $5$ €
+« Au moins $5$ € » signifie « $5$ € ou plus » : $\{X \geqslant 5\}$.
+$$
+\begin{aligned}
+P(X \geqslant 5) &= P(X = 5) + P(X = 45) \\
+&= \frac{4}{20} + \frac{1}{20} = \frac{1}{4}
+\end{aligned}
+$$
+:::
+
+::: etape b) Pas plus de $5$ €
+« Pas plus de $5$ € » signifie « $5$ € ou moins » : $\{X \leqslant 5\}$, contraire de $\{X = 45\}$.
+$$
+\begin{aligned}
+P(X \leqslant 5) &= 1 - P(X = 45) \\
+&= 1 - \frac{1}{20} = \frac{19}{20}
+\end{aligned}
+$$
+:::
+
+::: attention
+« Au moins » se traduit par $\geqslant$ et « au plus » (ou « pas plus de ») par $\leqslant$ ; dans les deux cas, la valeur $5$ est **comprise**.
+:::
+
+::: resultat
+$P(X \geqslant 5) = \frac{1}{4}$ et $P(X \leqslant 5) = \frac{19}{20}$.
+:::
+
+## Question 4 : Espérance
+
+::: etape Calcul
+$$
+\begin{aligned}
+E(X) &= \frac{3}{4} \times (-5) + \frac{1}{5} \times 5 + \frac{1}{20} \times 45 \\
+&= \frac{-75 + 20 + 45}{20} = \frac{-10}{20} = -0{,}5
+\end{aligned}
+$$
+:::
+
+::: etape Vérification par le bénéfice de l’organisateur
+L’organisateur encaisse $20 \times 5 = 100$ € et distribue $50 + 4 \times 10 = 90$ € : il gagne $10$ €, soit $\frac{10}{20} = 0{,}5$ € par ticket. Le joueur perd donc en moyenne $0{,}5$ € par ticket.
+:::
+
+::: resultat
+$E(X) = -0{,}50$ € $\lt 0$ : le jeu est défavorable au joueur.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $X$ prend les valeurs $-5$, $5$ et $45$, avec les probabilités $\frac{3}{4}$, $\frac{1}{5}$ et $\frac{1}{20}$.
+2. Perdre sa mise ; gagner de l’argent ; ne pas gagner plus de $5$ €.
+3. a) $P(X \geqslant 5) = \frac{1}{4}$. b) $P(X \leqslant 5) = \frac{19}{20}$.
+4. $E(X) = -0{,}50$ € : jeu défavorable (bénéfice de l’organisateur : $10$ € pour $20$ tickets).
+
+===
+
+=== Entraînement - Algorithme : espérance, variance et écart type
+Id: 4934
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+La loi d’une variable aléatoire $X$ est rangée dans deux listes Python de même longueur : `x` contient les valeurs $x_i$ et `p` les probabilités $p_i$. On considère la fonction suivante.
+
+```python
+from math import sqrt
+
+def indicateurs(x, p):
+    E = 0
+    for i in range(len(x)):
+        E = E + p[i] * x[i]
+    V = 0
+    for i in range(len(x)):
+        ecart = x[i] - E
+        V = V + p[i] * ecart ** 2
+    return E, V, sqrt(V)
+```
+
+1. Que contient la variable `E` à la fin de la première boucle ? Quelle formule du cours la seconde boucle applique-t-elle ?
+2. On prend `x = [0, 10, 20]` et `p = [0.5, 0.3, 0.2]`. Calculer à la main ce que renvoie `indicateurs(x, p)`.
+3. Retrouver la variance de la question 2 avec la formule de König-Huygens.
+4. Écrire une fonction `est_une_loi(p)` qui renvoie `True` si toutes les probabilités sont comprises entre $0$ et $1$ et si leur somme vaut $1$, et `False` sinon. Pourquoi faut-il tester la somme « à $10^{-9}$ près » ?
+5. Écrire une fonction `indicateurs2(x, p)` qui calcule $E(X)$ et $E(X^2)$ dans **une seule** boucle, puis utilise la formule de König-Huygens.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Lecture du programme
+
+::: etape Première boucle
+`E` part de $0$ et on lui ajoute $p_i \times x_i$ pour chaque indice $i$ : à la fin, `E` vaut $\sum p_ix_i = E(X)$.
+:::
+
+::: etape Seconde boucle
+`ecart` vaut $x_i - E(X)$ et `V` accumule $p_i\big(x_i - E(X)\big)^2$ : c’est la définition $V(X) = \sum p_i\big(x_i - E(X)\big)^2$. La fonction renvoie aussi $\sqrt{V}$, l’écart type.
+:::
+
+::: resultat
+`E` contient l’espérance ; la seconde boucle applique la définition de la variance ; la fonction renvoie $E(X)$, $V(X)$ et $\sigma(X)$.
+:::
+
+## Question 2 : Exécution à la main
+
+::: etape Espérance
+$$
+\begin{aligned}
+E &= 0{,}5 \times 0 + 0{,}3 \times 10 + 0{,}2 \times 20 \\
+&= 0 + 3 + 4 \\
+&= 7
+\end{aligned}
+$$
+:::
+
+::: etape Variance
+$$
+\begin{aligned}
+V &= 0{,}5 \times (0 - 7)^2 \\
+&\quad + 0{,}3 \times (10 - 7)^2 \\
+&\quad + 0{,}2 \times (20 - 7)^2 \\
+&= 0{,}5 \times 49 + 0{,}3 \times 9 + 0{,}2 \times 169 \\
+&= 24{,}5 + 2{,}7 + 33{,}8 = 61
+\end{aligned}
+$$
+:::
+
+::: resultat
+La fonction renvoie $7$, $61$ et $\sqrt{61} \approx 7{,}81$ (aux arrondis de calcul de l’ordinateur près).
+:::
+
+## Question 3 : König-Huygens
+
+::: etape Calcul
+$$
+\begin{aligned}
+E(X^2) &= 0{,}5 \times 0 + 0{,}3 \times 100 \\
+&\quad + 0{,}2 \times 400 \\
+&= 30 + 80 \\
+&= 110
+\end{aligned}
+$$
+Donc $V(X) = 110 - 7^2 = 110 - 49 = 61$.
+:::
+
+::: resultat
+On retrouve $V(X) = 61$.
+:::
+
+## Question 4 : Tester une loi
+
+::: etape Programme
+```python
+def est_une_loi(p):
+    for q in p:
+        if q < 0 or q > 1:
+            return False
+    ecart = abs(sum(p) - 1)
+    return ecart < 1e-9
+```
+:::
+
+::: etape Pourquoi une tolérance ?
+Les nombres décimaux sont stockés de façon approchée : en Python, `0.7 + 0.2 + 0.1` donne `0.9999999999999999`. Le test `sum(p) == 1` répondrait donc `False` pour une loi correcte ; on teste plutôt que l’écart à $1$ est minuscule.
+:::
+
+::: resultat
+La fonction renvoie `False` dès qu’une probabilité sort de $[0\,;1]$, puis teste si $\left|\sum p_i - 1\right| \lt 10^{-9}$.
+:::
+
+## Question 5 : Une seule boucle
+
+::: methode
+On accumule en même temps $\sum p_ix_i$ et $\sum p_ix_i^2$, puis $V = E(X^2) - E(X)^2$.
+:::
+
+::: etape Programme
+```python
+from math import sqrt
+
+def indicateurs2(x, p):
+    E = 0
+    E2 = 0
+    for i in range(len(x)):
+        E = E + p[i] * x[i]
+        E2 = E2 + p[i] * x[i] ** 2
+    V = E2 - E ** 2
+    return E, V, sqrt(V)
+```
+:::
+
+::: resultat
+Avec les listes de la question 2, `indicateurs2(x, p)` renvoie aussi environ $7$, $61$ et $7{,}81$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. `E` contient $E(X)$ ; la seconde boucle calcule $V(X) = \sum p_i(x_i - E(X))^2$.
+2. $E = 7$, $V = 61$, $\sigma = \sqrt{61} \approx 7{,}81$.
+3. $E(X^2) = 110$ et $110 - 49 = 61$.
+4. Tester chaque probabilité, puis que $\left|\sum p_i - 1\right| \lt 10^{-9}$ : les décimaux sont approchés (`0.7 + 0.2 + 0.1` donne `0.9999999999999999`).
+5. Une boucle qui accumule `E` et `E2`, puis `V = E2 - E ** 2`.
+
+===
+
+=== Entraînement - Simuler un jeu et calculer une moyenne d'échantillon
+Id: 4935
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Un jeu consiste à tirer au hasard un entier entre $1$ et $10$. Le joueur gagne $4$ € s’il tire $1$ ou $2$, gagne $1$ € s’il tire $3$, $4$ ou $5$, et perd $1$ € sinon. On note $X$ son gain algébrique.
+
+1. Déterminer la loi de $X$, puis calculer $E(X)$ et $\sigma(X)$ (arrondi au centième).
+2. Compléter la fonction suivante pour qu’elle simule une partie et renvoie le gain.
+
+```python
+from random import randint
+
+def partie():
+    t = randint(1, 10)
+    if t <= ...:
+        return ...
+    elif t <= ...:
+        return ...
+    else:
+        return ...
+```
+
+3. Écrire une fonction `moyenne(n)` qui renvoie la moyenne des gains de $n$ parties simulées.
+4. Une exécution a donné les résultats suivants.
+
+| $n$ | $10$ | $100$ | $1\,000$ | $10\,000$ |
+|---|---|---|---|---|
+| `moyenne(n)` | $1{,}6$ | $0{,}72$ | $0{,}609$ | $0{,}5948$ |
+
+Calculer l’écart entre chaque moyenne et $E(X)$. Que constate-t-on ?
+
+5. Pour $n = 10\,000$, comparer cet écart à $\dfrac{2\sigma(X)}{\sqrt{n}}$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Loi, espérance, écart type
+
+::: etape Loi
+Les $10$ entiers sont équiprobables : $P(X = 4) = \frac{2}{10} = 0{,}2$, $P(X = 1) = \frac{3}{10} = 0{,}3$, $P(X = -1) = \frac{5}{10} = 0{,}5$.
+
+| $x_i$ | $-1$ | $1$ | $4$ |
+|---|---|---|---|
+| $P(X = x_i)$ | $0{,}5$ | $0{,}3$ | $0{,}2$ |
+:::
+
+::: etape Espérance
+$$
+\begin{aligned}
+E(X) &= 0{,}5 \times (-1) \\
+&\quad + 0{,}3 \times 1 + 0{,}2 \times 4 \\
+&= -0{,}5 + 0{,}3 + 0{,}8 \\
+&= 0{,}6
+\end{aligned}
+$$
+:::
+
+::: etape Écart type
+$$
+\begin{aligned}
+E(X^2) &= 0{,}5 \times 1 + 0{,}3 \times 1 \\
+&\quad + 0{,}2 \times 16 \\
+&= 4
+\end{aligned}
+$$
+Donc $V(X) = 4 - 0{,}6^2 = 3{,}64$ et $\sigma(X) = \sqrt{3{,}64} \approx 1{,}91$.
+:::
+
+::: resultat
+$E(X) = 0{,}60$ € et $\sigma(X) \approx 1{,}91$ €.
+:::
+
+## Question 2 : Fonction `partie`
+
+::: etape Seuils
+$t \leqslant 2$ : tirage de $1$ ou $2$ ; sinon $t \leqslant 5$ : tirage de $3$, $4$ ou $5$ ; sinon : de $6$ à $10$.
+:::
+
+::: resultat
+```python
+from random import randint
+
+def partie():
+    t = randint(1, 10)
+    if t <= 2:
+        return 4
+    elif t <= 5:
+        return 1
+    else:
+        return -1
+```
+:::
+
+## Question 3 : Fonction `moyenne`
+
+::: etape Programme
+```python
+def moyenne(n):
+    s = 0
+    for k in range(n):
+        s = s + partie()
+    return s / n
+```
+:::
+
+::: attention
+Il faut appeler `partie()` **à chaque** tour de boucle : écrire `g = partie()` avant la boucle puis additionner `g` donnerait $n$ fois le même gain.
+:::
+
+::: resultat
+`moyenne(n)` additionne les gains de $n$ parties simulées et divise par $n$.
+:::
+
+## Question 4 : Écarts à l’espérance
+
+::: etape Calculs
+| $n$ | $10$ | $100$ | $1\,000$ | $10\,000$ |
+|---|---|---|---|---|
+| $\lvert m - 0{,}6\rvert$ | $1$ | $0{,}12$ | $0{,}009$ | $0{,}0052$ |
+:::
+
+::: resultat
+Les moyennes fluctuent, mais l’écart à $E(X) = 0{,}6$ a tendance à diminuer quand $n$ augmente : c’est la loi des grands nombres observée sur une simulation.
+:::
+
+## Question 5 : Comparaison avec $\frac{2\sigma}{\sqrt{n}}$
+
+::: etape Calcul
+$$\frac{2\sigma(X)}{\sqrt{10\,000}} = \frac{2\sqrt{3{,}64}}{100} \approx 0{,}038$$
+:::
+
+::: etape Représentation des quatre moyennes
+Chaque point bleu est une moyenne observée ; chaque barre verte est l’intervalle
+$$\left[0{,}6 - \frac{2\sigma}{\sqrt{n}}\,;0{,}6 + \frac{2\sigma}{\sqrt{n}}\right]$$
+pour la valeur de $n$ correspondante. Les barres raccourcissent quand $n$ augmente, et chaque moyenne est dans sa barre.
+
+[IMAGE_1]
+:::
+
+::: resultat
+$0{,}0052 \leqslant 0{,}038$ : l’écart observé est bien inférieur à $\frac{2\sigma}{\sqrt{n}}$, comme c’est le cas pour la plupart des échantillons.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $P(X = -1) = 0{,}5$, $P(X = 1) = 0{,}3$, $P(X = 4) = 0{,}2$ ; $E(X) = 0{,}6$ ; $\sigma(X) = \sqrt{3{,}64} \approx 1{,}91$.
+2. Seuils $2$ et $5$ ; valeurs renvoyées $4$, $1$ et $-1$.
+3. Boucle qui additionne $n$ appels à `partie()`, puis division par $n$.
+4. Écarts $1$ ; $0{,}12$ ; $0{,}009$ ; $0{,}0052$ : ils diminuent quand $n$ augmente.
+5. $0{,}0052 \leqslant 0{,}038$.
+
+===
+
+=== Problème - Fluctuation des moyennes d'échantillons
+Id: 4936
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+On lance un dé équilibré et on note $X$ le numéro obtenu. On étudie la moyenne $m$ d’un échantillon de $n$ lancers.
+
+1. Calculer $\mu = E(X)$, $V(X)$ et $\sigma = \sigma(X)$ (arrondi au millième).
+2. Pour $n = 100$, calculer $\dfrac{2\sigma}{\sqrt{n}}$ et donner l’intervalle $\left[\mu - \dfrac{2\sigma}{\sqrt{n}}\,;\mu + \dfrac{2\sigma}{\sqrt{n}}\right]$.
+3. On considère le programme suivant.
+
+```python
+from random import randint
+from math import sqrt
+
+def moyenne_echantillon(n):
+    s = 0
+    for k in range(n):
+        s = s + randint(1, 6)
+    return s / n
+
+def proportion(N, n):
+    mu = 3.5
+    sigma = sqrt(35 / 12)
+    h = 2 * sigma / sqrt(n)
+    c = 0
+    for k in range(N):
+        m = moyenne_echantillon(n)
+        if abs(m - mu) <= h:
+            c = c + 1
+    return c / N
+```
+
+   - a) Que compte la variable `c` ?
+   - b) Que renvoie `proportion(200, 100)` ?
+4. La figure ci-dessous représente les moyennes de $200$ échantillons de taille $100$ simulés ; la bande verte est l’intervalle de la question 2. Lors de cette simulation, `proportion(200, 100)` a renvoyé $0{,}97$. Combien de moyennes sont hors de la bande ? Les repérer sur la figure (certaines sont très proches du bord), puis commenter.
+
+[IMAGE_1]
+
+5. On prend maintenant des échantillons de taille $n = 400$. Calculer la nouvelle demi-largeur $\dfrac{2\sigma}{\sqrt{n}}$. Comment la figure serait-elle modifiée ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Espérance, variance, écart type
+
+::: etape Espérance
+Chaque numéro a la probabilité $\frac{1}{6}$ : $\mu = \frac{1 + 2 + 3 + 4 + 5 + 6}{6} = \frac{21}{6} = 3{,}5$.
+:::
+
+::: etape Variance
+$$
+\begin{aligned}
+E(X^2) &= \frac{1 + 4 + 9 + 16 + 25 + 36}{6} = \frac{91}{6} \\
+V(X) &= \frac{91}{6} - \left(\frac{7}{2}\right)^2 = \frac{182}{12} - \frac{147}{12} \\
+&= \frac{35}{12}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$\mu = 3{,}5$, $V(X) = \frac{35}{12}$ et $\sigma = \sqrt{\frac{35}{12}} \approx 1{,}708$.
+:::
+
+## Question 2 : Intervalle pour $n = 100$
+
+::: etape Demi-largeur
+$$\frac{2\sigma}{\sqrt{100}} = \frac{2 \times 1{,}708}{10} \approx 0{,}342$$
+:::
+
+::: resultat
+L’intervalle est environ
+$$
+\begin{aligned}
+&[3{,}5 - 0{,}342\,;3{,}5 + 0{,}342] \\
+&= [3{,}158\,;3{,}842]
+\end{aligned}
+$$
+:::
+
+## Question 3 : Lecture du programme
+
+::: etape a) La variable `c`
+À chaque tour, on simule un échantillon de taille `n` et on calcule sa moyenne `m`. La variable `h` vaut $\frac{2\sigma}{\sqrt{n}}$ ; on ajoute $1$ à `c` si $|m - \mu| \leqslant h$ : `c` compte les échantillons dont la moyenne est dans l’intervalle.
+:::
+
+::: etape b) Valeur renvoyée
+`c / N` est la **proportion** des $N$ échantillons dont la moyenne est dans l’intervalle.
+:::
+
+::: resultat
+`proportion(200, 100)` renvoie la proportion, parmi $200$ échantillons de taille $100$, de ceux dont la moyenne vérifie $|m - 3{,}5| \leqslant 0{,}342$ ; elle change à chaque exécution.
+:::
+
+## Question 4 : Lecture de la figure
+
+::: etape Comptage
+La proportion de moyennes dans la bande est $0{,}97$ : $0{,}97 \times 200 = 194$ moyennes sont dans la bande, donc $200 - 194 = 6$ moyennes sont hors de la bande.
+:::
+
+::: etape Repérage
+Les $6$ moyennes hors de la bande sont entourées en vert : quatre juste au-dessus du bord supérieur $3{,}842$, une nettement au-dessus (proche de $4$) et une au-dessous du bord inférieur (proche de $3$).
+
+[IMAGE_2]
+:::
+
+::: resultat
+$6$ moyennes sont hors de la bande. $97\,\%$ des moyennes sont à moins de $\frac{2\sigma}{\sqrt{n}}$ de $\mu$, ce qui est proche des $95\,\%$ attendus en général.
+:::
+
+## Question 5 : Échantillons de taille $400$
+
+::: etape Nouvelle demi-largeur
+$$\frac{2\sigma}{\sqrt{400}} = \frac{2 \times 1{,}708}{20} \approx 0{,}171$$
+L’intervalle devient environ $[3{,}329\,;3{,}671]$ : sa largeur est divisée par $2$ quand $n$ est multiplié par $4$.
+:::
+
+::: resultat
+Avec $n = 400$, la bande serait deux fois plus étroite et les moyennes seraient deux fois plus resserrées autour de $3{,}5$ ; environ $95\,\%$ d’entre elles resteraient en général dans la bande.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\mu = 3{,}5$, $V(X) = \frac{35}{12}$, $\sigma \approx 1{,}708$.
+2. $\frac{2\sigma}{\sqrt{100}} \approx 0{,}342$ ; intervalle $[3{,}158\,;3{,}842]$.
+3. a) Le nombre d’échantillons dont la moyenne est dans l’intervalle. b) La proportion de ces échantillons parmi $200$.
+4. $0{,}97 \times 200 = 194$ moyennes dans la bande, donc $6$ hors de la bande ; $97\,\%$ est proche de $95\,\%$.
+5. $\frac{2\sigma}{\sqrt{400}} \approx 0{,}171$ : bande deux fois plus étroite, moyennes plus resserrées.
+
+===
+
+=== Entraînement - Comparer deux jeux : espérance et risque
+Id: 4937
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Deux jeux utilisent un dé équilibré.
+- **Jeu A** : on perd $1$ € si l’on obtient $1$, $2$ ou $3$ ; on gagne $2$ € si l’on obtient $4$, $5$ ou $6$.
+- **Jeu B** : on gagne $8$ € si l’on obtient $6$ ; on perd $1$ € sinon.
+
+On note $A$ et $B$ les gains algébriques correspondants. Leurs lois sont représentées ci-dessous.
+
+[IMAGE_1]
+
+1. Donner la loi de $A$ et celle de $B$.
+2. Calculer $E(A)$ et $E(B)$.
+3. Calculer $\sigma(A)$ et $\sigma(B)$ (valeur exacte, puis arrondi au centième).
+4. Calculer la probabilité de gagner de l’argent à chaque jeu.
+5. Un joueur prudent hésite entre les deux jeux. Que lui conseiller ? Justifier à l’aide des résultats.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Lois
+
+::: resultat
+| $a_i$ | $-1$ | $2$ |
+|---|---|---|
+| $P(A = a_i)$ | $\frac{1}{2}$ | $\frac{1}{2}$ |
+
+| $b_i$ | $-1$ | $8$ |
+|---|---|---|
+| $P(B = b_i)$ | $\frac{5}{6}$ | $\frac{1}{6}$ |
+:::
+
+## Question 2 : Espérances
+
+::: etape Calculs
+$$
+\begin{aligned}
+E(A) &= \frac{1}{2} \times (-1) + \frac{1}{2} \times 2 = \frac{1}{2} \\
+E(B) &= \frac{5}{6} \times (-1) + \frac{1}{6} \times 8 = \frac{3}{6} = \frac{1}{2}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$E(A) = E(B) = 0{,}50$ € : en moyenne, les deux jeux rapportent autant.
+:::
+
+## Question 3 : Écarts types
+
+::: etape Jeu A
+$E(A^2) = \frac{1}{2} \times 1 + \frac{1}{2} \times 4 = \frac{5}{2}$, donc $V(A) = \frac{5}{2} - \frac{1}{4} = \frac{9}{4}$ et $\sigma(A) = \frac{3}{2} = 1{,}5$.
+:::
+
+::: etape Jeu B
+$E(B^2) = \frac{5}{6} \times 1 + \frac{1}{6} \times 64 = \frac{69}{6} = \frac{23}{2}$, donc $V(B) = \frac{23}{2} - \frac{1}{4} = \frac{45}{4}$ et $\sigma(B) = \frac{\sqrt{45}}{2} = \frac{3\sqrt{5}}{2} \approx 3{,}35$.
+:::
+
+::: resultat
+$\sigma(A) = 1{,}50$ € et $\sigma(B) = \frac{3\sqrt{5}}{2} \approx 3{,}35$ €.
+:::
+
+## Question 4 : Probabilité de gagner
+
+::: etape Calculs
+$P(A \gt 0) = P(A = 2) = \frac{1}{2}$ et $P(B \gt 0) = P(B = 8) = \frac{1}{6}$.
+:::
+
+::: resultat
+On gagne une fois sur deux au jeu A, une fois sur six seulement au jeu B.
+:::
+
+## Question 5 : Conseil
+
+::: etape Analyse
+Sur les diagrammes, la droite verte en pointillés marque l’espérance commune $0{,}5$ et la flèche verte s’étend de $E - \sigma$ à $E + \sigma$ : elle est bien plus longue pour le jeu B.
+
+[IMAGE_2]
+
+Les deux jeux ont la même espérance, mais l’écart type de $B$ est plus de deux fois plus grand : les gains de $B$ sont beaucoup plus dispersés (on perd souvent, et on gagne rarement une grosse somme).
+:::
+
+::: retenir
+À espérance égale, l’écart type mesure le **risque** : plus il est grand, plus le résultat d’une partie est imprévisible.
+:::
+
+::: resultat
+Au joueur prudent, on conseille le jeu A : même gain moyen ($0{,}50$ €), mais un risque plus faible ($\sigma = 1{,}5$ contre $3{,}35$) et une chance de gagner plus grande ($\frac{1}{2}$ contre $\frac{1}{6}$).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $A$ : $-1$ et $2$, chacun avec la probabilité $\frac{1}{2}$ ; $B$ : $-1$ avec la probabilité $\frac{5}{6}$, $8$ avec la probabilité $\frac{1}{6}$.
+2. $E(A) = E(B) = 0{,}50$ €.
+3. $\sigma(A) = 1{,}5$ € et $\sigma(B) = \frac{3\sqrt{5}}{2} \approx 3{,}35$ €.
+4. $P(A \gt 0) = \frac{1}{2}$ et $P(B \gt 0) = \frac{1}{6}$.
+5. Le jeu A : même espérance, risque plus faible.
+
+===

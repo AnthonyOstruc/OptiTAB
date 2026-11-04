@@ -1,0 +1,51 @@
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+    <div style="background:#e8f4fd; border:2px solid #3498db; border-radius:8px; padding:15px; margin-bottom:20px;">
+        <p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🎯 Objectifs du chapitre :</strong> utiliser l’inégalité de Bienaymé-Tchebychev, en déduire l’inégalité de concentration pour la moyenne d’un échantillon, comprendre la loi faible des grands nombres et déterminer une taille d’échantillon suffisante.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Inégalité de Bienaymé-Tchebychev</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Théorème (admis) :</strong> pour toute variable aléatoire $\displaystyle X$ d’espérance $\displaystyle \mu$ et de variance $\displaystyle V$, et pour tout réel $\displaystyle \delta \gt 0$ :</p>
+            <div style="text-align:center; margin:10px 0 0 0;">$\displaystyle P\big(|X - \mu| \ge \delta\big) \le \frac{V}{\delta^2}$</div>
+            <p style="margin:6px 0 0 0;">La probabilité que $\displaystyle X$ s’écarte de sa moyenne d’au moins $\displaystyle \delta$ est majorée, d’autant mieux que la variance est petite.</p>
+        </div>
+        [IMAGE_1]
+        <p style="font-size:1em;"><strong>Exemple :</strong> pour $\displaystyle X \sim \mathcal{B}(20\,;0{,}5)$, $\displaystyle \mu = 10$ et $\displaystyle V = 5$. Avec $\displaystyle \delta = 4$ : $\displaystyle P(|X - 10| \ge 4) \le \frac{5}{16} \approx 0{,}31$. La valeur exacte (environ $\displaystyle 0{,}115$) est bien inférieure : l’inégalité donne une majoration, souvent large.</p>
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Forme équivalente :</strong> en passant au contraire, $\displaystyle P\big(|X - \mu| \lt \delta\big) \ge 1 - \frac{V}{\delta^2}$. Avec $\displaystyle \delta = 2\sigma$ : au moins $\displaystyle 75\,\%$ des valeurs sont à moins de deux écarts types de la moyenne.
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Inégalité de concentration</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Théorème (démonstration au programme) :</strong> soit $\displaystyle M_n$ la moyenne d’un échantillon de taille $\displaystyle n$ d’une variable $\displaystyle X$ d’espérance $\displaystyle \mu$ et de variance $\displaystyle V$. Pour tout $\displaystyle \delta \gt 0$ :</p>
+            <div style="text-align:center; margin:10px 0 0 0;">$\displaystyle P\big(|M_n - \mu| \ge \delta\big) \le \frac{V}{n\delta^2}$</div>
+            <p style="margin:6px 0 0 0;"><em>Preuve :</em> $\displaystyle E(M_n) = \mu$ et $\displaystyle V(M_n) = \frac{V}{n}$ ; on applique Bienaymé-Tchebychev à $\displaystyle M_n$.</p>
+        </div>
+        <p style="font-size:1em;"><strong>Exemple :</strong> on lance $\displaystyle n$ fois une pièce équilibrée ; $\displaystyle M_n$ est la fréquence de « pile », $\displaystyle \mu = 0{,}5$, $\displaystyle V = 0{,}25$. Pour que $\displaystyle P(|M_n - 0{,}5| \ge 0{,}05) \le 0{,}05$, il suffit que $\displaystyle \frac{0{,}25}{n \times 0{,}05^2} \le 0{,}05$, c’est-à-dire $\displaystyle n \ge 2\,000$.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Loi des grands nombres</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Théorème (loi faible des grands nombres) :</strong> pour tout $\displaystyle \delta \gt 0$, $\displaystyle \lim\limits_{n \to +\infty} P\big(|M_n - \mu| \ge \delta\big) = 0$.</p>
+            <p style="margin:6px 0 0 0;"><em>Preuve :</em> la probabilité est comprise entre $\displaystyle 0$ et $\displaystyle \frac{V}{n\delta^2}$, qui tend vers $\displaystyle 0$ (gendarmes).</p>
+        </div>
+        [IMAGE_2]
+        <p style="font-size:1em;">Autrement dit, quand la taille de l’échantillon augmente, la moyenne observée se rapproche de l’espérance avec une probabilité aussi proche de $\displaystyle 1$ que l’on veut : c’est ce qui justifie l’estimation d’une probabilité par une fréquence.</p>
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong> la loi des grands nombres ne dit pas qu’un résultat « rare » va devenir plus probable pour compenser : les lancers restent indépendants. C’est la moyenne qui se stabilise, pas les résultats individuels.
+        </div>
+    </div>
+
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:8px; padding:15px; margin:20px 0 0 0;">
+        <p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🏆 L’essentiel :</strong> Bienaymé-Tchebychev : $\displaystyle P(|X - \mu| \ge \delta) \le \frac{V}{\delta^2}$ ; concentration : $\displaystyle P(|M_n - \mu| \ge \delta) \le \frac{V}{n\delta^2}$ ; loi des grands nombres : cette probabilité tend vers $\displaystyle 0$ ; pour garantir une précision $\displaystyle \delta$ avec un risque $\displaystyle \alpha$, il suffit que $\displaystyle n \ge \frac{V}{\alpha\delta^2}$. Fiche de synthèse dans l’onglet Fiches !</p>
+    </div>
+
+</div>

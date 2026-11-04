@@ -1,0 +1,2 @@
+# -*- coding: utf-8 -*-
+FIGURES = {'doubler': '\n\\begin{tikzpicture}[x=1cm,y=1cm]\n\\node[anchor=west,text=otNavy] at (0,1.6) {4 cahiers : 6 euros};\n\\foreach \\x in {0,.6,1.2,1.8}{\\draw[otNavy,fill=otSky] (\\x,.1) rectangle +(.43,.9);}\n\\node[anchor=west,text=otNavy] at (0,-.6) {8 cahiers : deux lots identiques};\n\\foreach \\x in {0,.6,1.2,1.8,3,3.6,4.2,4.8}{\\draw[otNavy,fill=otSky] (\\x,-2) rectangle +(.43,.9);}\n\\node[text=otGreenDark] at (2.65,-2.7) {Le double de cahiers coûte le double : 12 euros};\n\\end{tikzpicture}\n'}

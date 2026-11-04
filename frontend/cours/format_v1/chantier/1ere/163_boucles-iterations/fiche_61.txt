@@ -1,0 +1,73 @@
+Titre: Résumé : Algorithmes du programme de Première
+
+<!-- optitab:1 -->
+::: objectifs
+L'essentiel des algorithmes à savoir écrire en Première : suites, fonctions, dérivation, exponentielle, approximation de $\pi$ et simulations.
+:::
+
+## I. Suites numériques
+
+| Algorithme | Idée |
+|---|---|
+| terme $u_n$ | $n$ tours de `u = …` (relation de récurrence) |
+| somme $u_0 + \dots + u_n$ | `s = s + u` puis terme suivant, `range(n + 1)` |
+| factorielle $n!$ | `p = 1` puis `p = p * k` pour $k$ de $1$ à $n$ |
+| seuil : premier $n$ tel que $u_n \gt A$ | `while u <= A:` et un compteur `n` |
+
+```python
+def seuil(A):
+    n = 0
+    u = 2
+    while u <= A:
+        u = 1.5 * u
+        n = n + 1
+    return n
+
+print(seuil(50))
+```
+
+```console
+8
+```
+
+[IMAGE_1]
+
+::: attention Seuil jamais atteint
+Si $u_n = 4 - 4 \times 0{,}5^n$, on a toujours $u_n \lt 4$ : avec le seuil $5$, la boucle `while u <= 5:` ne s'arrête jamais. On justifie d'abord que le seuil est dépassé.
+:::
+
+## II. Fonctions et dérivation
+
+- **Tableau de valeurs** : une boucle `for` sur `x`, et `print(x, f(x))` à chaque tour.
+- **Balayage** : `while f(x + pas) > 0:` suivi de `x = x + pas` encadre une solution de $f(x) = 0$ (pour $f$ décroissante qui change de signe) entre `x` et `x + pas`.
+- **Sécantes** : pour un pas $h$, on calcule les coefficients directeurs $\dfrac{f(x + h) - f(x)}{h}$, proches de $f'(x)$ quand $h$ est petit.
+
+## III. Exponentielle et nombre $\pi$
+
+- **Euler** ($f' = f$, $f(0) = 1$) : à chaque tour, `x = x + h` et `y = y + h * y`.
+- **Nombre $e$** : $\left(1 + \dfrac{1}{n}\right)^n$ s'approche de $e \approx 2{,}718$ ; on écrit `(1 + 1/n)**n`.
+- **Archimède** : à partir de l'hexagone ($c = 1$, $n = 6$), `c = sqrt(2 - sqrt(4 - c**2))` et `n = 2 * n` ; le demi-périmètre $\dfrac{n\,c}{2}$ s'approche de $\pi$ par valeurs inférieures.
+
+[IMAGE_2]
+
+## IV. Probabilités
+
+| Instruction | Rôle |
+|---|---|
+| `random() < p` | événement de probabilité $p$ |
+| `randint(1, 6)` | dé équilibré ($1$ et $6$ inclus) |
+| compteur `c`, puis `c / N` | fréquence sur $N$ expériences |
+| somme `s`, puis `s / n` | moyenne d'un échantillon de taille $n$ |
+
+- Pour $N$ grand, la fréquence est proche de la probabilité et la moyenne de l'espérance.
+- **Deux épreuves successives** : le résultat de la première fixe les conditions de la seconde (`if t1 == "R": …`), comme dans un arbre.
+
+## V. Les pièges à éviter
+
+::: attention Les erreurs classiques
+1. `range(n)` s'arrête à $n - 1$ : de $u_0$ à $u_n$, il y a $n + 1$ termes.
+2. Initialiser l'accumulateur dans la boucle, ou un produit à $0$.
+3. Écrire la condition d'arrêt dans le `while` au lieu de la condition pour continuer.
+4. Chercher un seuil que la suite n'atteint jamais : boucle infinie.
+5. Oublier les parenthèses : `1 + 1/n**n` n'est pas $\left(1 + \frac{1}{n}\right)^n$.
+:::

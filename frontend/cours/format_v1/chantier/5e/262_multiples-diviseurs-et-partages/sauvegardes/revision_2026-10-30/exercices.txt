@@ -1,0 +1,2475 @@
+=== Découverte - Multiples, diviseurs et partages - 1. Des places pour une sortie
+Id: 2726
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Une association doit ranger 21 objets dans des boîtes qui contiennent chacune au maximum 4 objets. Les objets ne peuvent pas être découpés.
+
+1. Encadrer 21 par deux multiples consécutifs de 4.
+2. Effectuer la division euclidienne : donner quotient et reste.
+3. Vérifier que le reste est autorisé.
+4. Combien de boîtes faut-il pour ranger tous les objets ?
+5. Combien de places resteront vides dans la dernière boîte ?
+6. 4 est-il un diviseur de 21 ? Quel nombre minimal d’objets faudrait-il ajouter pour obtenir des boîtes toutes pleines ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Encadrer 21 par deux multiples consécutifs de 4.
+
+::: methode
+Chercher deux multiples consécutifs du diviseur.
+:::
+
+::: etape Raisonner et calculer
+$$4\times5=20\le 21<24=4\times6$$
+:::
+
+::: resultat
+$20\le 21<24$.
+:::
+
+## Question 2 : Effectuer la division euclidienne : donner quotient et reste.
+
+::: methode
+Décomposer en boîtes pleines et objets restants.
+:::
+
+::: etape Raisonner et calculer
+$$21=4\times5+1$$
+:::
+
+::: resultat
+Quotient 5 ; reste 1.
+:::
+
+## Question 3 : Vérifier que le reste est autorisé.
+
+::: methode
+Vérifier les deux bornes imposées au reste.
+:::
+
+::: etape Raisonner et calculer
+$$0\le 1<4$$
+:::
+
+::: resultat
+$0\le 1<4$ : le reste convient.
+:::
+
+## Question 4 : Combien de boîtes faut-il pour ranger tous les objets ?
+
+::: methode
+Tenir compte du reste pour ranger tous les objets.
+:::
+
+::: etape Raisonner et calculer
+Il reste 1 objet(s) après les 5 boîtes pleines : $$5+1=6$$
+:::
+
+::: resultat
+6 boîtes.
+:::
+
+## Question 5 : Combien de places resteront vides dans la dernière boîte ?
+
+::: methode
+Comparer la capacité totale au nombre d’objets.
+:::
+
+::: etape Raisonner et calculer
+$$\begin{aligned}6\times4-21&=24-21\\&=3\end{aligned}$$
+:::
+
+::: resultat
+3 places.
+:::
+
+## Question 6 : 4 est-il un diviseur de 21 ? Quel nombre minimal d’objets faudrait-il ajouter pour obtenir des boîtes toutes pleines ?
+
+::: methode
+Vérifier la divisibilité, puis compléter au multiple suivant.
+:::
+
+::: etape Raisonner et calculer
+Le reste vaut 1, donc il est non nul. $$21+3=24$$
+:::
+
+::: resultat
+Non ; ajouter 3 objets permet d’obtenir 24 objets.
+:::
+
+::: retenir
+Dans une division euclidienne, le reste est toujours inférieur au diviseur. Une boîte partiellement remplie compte comme une boîte.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $20\le 21<24$.
+2. Quotient 5 ; reste 1.
+3. $0\le 1<4$ : le reste convient.
+4. 6 boîtes.
+5. 3 places.
+6. Non ; ajouter 3 objets permet d’obtenir 24 objets.
+
+===
+
+=== Découverte - Multiples, diviseurs et partages - 2. Des lots identiques pour la fête
+Id: 2727
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Le club possède 36 cartes rouges et 54 cartes bleues. Il veut fabriquer des lots identiques contenant les deux couleurs, sans laisser de carte.
+
+1. Vérifier que 36 est divisible par 2 et par 3.
+2. Peut-on fabriquer six lots identiques ? Donner leur composition.
+3. Lister tous les nombres de lots possibles.
+4. Quel est le plus grand nombre de lots possible ?
+5. Quelle sera alors la composition d’un lot ?
+6. Pourquoi ne peut-on pas choisir un nombre de lots plus grand simplement en partageant le total des cartes ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Vérifier que 36 est divisible par 2 et par 3.
+
+::: methode
+Appliquer les critères de divisibilité par 2 et par 3.
+:::
+
+::: etape Raisonner et calculer
+36 est pair. La somme de ses chiffres vaut 9, multiple de 3. $$36\div2=18\quad;\quad 36\div3=12$$
+:::
+
+::: resultat
+Oui : 36 est pair et sa somme de chiffres vaut 9, multiple de 3.
+:::
+
+## Question 2 : Peut-on fabriquer six lots identiques ? Donner leur composition.
+
+::: methode
+Partager chaque couleur séparément en six.
+:::
+
+::: etape Raisonner et calculer
+$$36\div6=6\quad;\quad 54\div6=9$$
+:::
+
+::: resultat
+Oui : 6 cartes rouges et 9 cartes bleues par lot.
+:::
+
+## Question 3 : Lister tous les nombres de lots possibles.
+
+::: methode
+Énumérer les diviseurs de chaque effectif.
+:::
+
+::: etape Raisonner et calculer
+Diviseurs de 36 : 1, 2, 3, 4, 6, 9, 12, 18, 36.
+
+Diviseurs de 54 : 1, 2, 3, 6, 9, 18, 27, 54.
+
+On conserve seulement les nombres présents dans les deux listes.
+:::
+
+::: resultat
+1, 2, 3, 6, 9, 18.
+:::
+
+## Question 4 : Quel est le plus grand nombre de lots possible ?
+
+::: methode
+Lire le plus grand diviseur commun dans la liste.
+:::
+
+::: etape Raisonner et calculer
+La liste commune est 1, 2, 3, 6, 9, 18. Son maximum est 18.
+:::
+
+::: resultat
+18 lots.
+:::
+
+## Question 5 : Quelle sera alors la composition d’un lot ?
+
+::: methode
+Partager chaque couleur entre les lots retenus.
+:::
+
+::: etape Raisonner et calculer
+$$36\div18=2\quad;\quad 54\div18=3$$
+:::
+
+::: resultat
+2 cartes rouges et 3 cartes bleues par lot.
+:::
+
+## Question 6 : Pourquoi ne peut-on pas choisir un nombre de lots plus grand simplement en partageant le total des cartes ?
+
+::: methode
+Vérifier la composition de chaque lot, couleur par couleur.
+:::
+
+::: etape Raisonner et calculer
+Par exemple, 90 divise le total 90, mais il est supérieur à chacun des deux effectifs : on ne peut pas répartir une carte de chaque couleur dans chacun de ces lots.
+:::
+
+::: resultat
+Le nombre de lots doit diviser chacun des deux effectifs, pas seulement leur somme.
+:::
+
+::: retenir
+Des lots identiques sans reste imposent un diviseur commun aux effectifs de toutes les catégories.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Oui : 36 est pair et sa somme de chiffres vaut 9, multiple de 3.
+2. Oui : 6 cartes rouges et 9 cartes bleues par lot.
+3. 1, 2, 3, 6, 9, 18.
+4. 18 lots.
+5. 2 cartes rouges et 3 cartes bleues par lot.
+6. Le nombre de lots doit diviser chacun des deux effectifs, pas seulement leur somme.
+
+===
+
+=== Découverte - Multiples, diviseurs et partages - 3. Quand les deux signaux se retrouveront-ils ?
+Id: 2728
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Deux signaux lumineux s’allument ensemble à l’instant 0. Le premier se rallume toutes les 6 secondes et le second toutes les 6 secondes.
+
+1. Donner les cinq premiers instants strictement positifs du premier signal.
+2. Donner les cinq premiers instants strictement positifs du second signal.
+3. Déterminer le premier instant positif où les signaux s’allument ensemble.
+4. Combien de périodes de chaque signal se sont écoulées à cet instant ?
+5. Donner les deux instants communs suivants.
+6. Pourquoi la somme des deux périodes ne donne-t-elle pas toujours une rencontre ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Donner les cinq premiers instants strictement positifs du premier signal.
+
+::: methode
+Écrire les cinq premiers multiples strictement positifs.
+:::
+
+::: etape Raisonner et calculer
+$$6\times1=6,\quad 6\times2=12,\quad\ldots,\quad 6\times5=30$$
+:::
+
+::: resultat
+6, 12, 18, 24, 30 s.
+:::
+
+## Question 2 : Donner les cinq premiers instants strictement positifs du second signal.
+
+::: methode
+Faire la même liste avec la seconde période.
+:::
+
+::: etape Raisonner et calculer
+$$6\times1=6,\quad 6\times2=12,\quad\ldots,\quad 6\times5=30$$
+:::
+
+::: resultat
+6, 12, 18, 24, 30 s.
+:::
+
+## Question 3 : Déterminer le premier instant positif où les signaux s’allument ensemble.
+
+::: methode
+Chercher le premier multiple strictement positif commun.
+:::
+
+::: etape Raisonner et calculer
+Jusqu’à la première rencontre :
+
+- Premier signal : 6.
+- Second signal : 6.
+:::
+
+::: resultat
+6 s.
+:::
+
+## Question 4 : Combien de périodes de chaque signal se sont écoulées à cet instant ?
+
+::: methode
+Diviser l’instant commun par chaque période.
+:::
+
+::: etape Raisonner et calculer
+$$6\div6=1\quad;\quad 6\div6=1$$
+:::
+
+::: resultat
+1 période(s) du premier ; 1 du second.
+:::
+
+## Question 5 : Donner les deux instants communs suivants.
+
+::: methode
+Ajouter chaque fois la durée du cycle commun.
+:::
+
+::: etape Raisonner et calculer
+$$6+6=12\quad;\quad 12+6=18$$
+:::
+
+::: resultat
+12 s et 18 s.
+:::
+
+## Question 6 : Pourquoi la somme des deux périodes ne donne-t-elle pas toujours une rencontre ?
+
+::: methode
+Tester si la somme est un multiple de chaque période.
+:::
+
+::: etape Raisonner et calculer
+Ici, la somme fonctionne, mais elle ne donne pas nécessairement le premier instant commun. Contre-exemple général : pour des périodes de 4 s et 6 s, la somme 10 s n’est multiple ni de 4 ni de 6.
+:::
+
+::: resultat
+Une rencontre exige un multiple des deux périodes ; leur somme n’a pas toujours cette propriété.
+:::
+
+::: retenir
+Pour des rendez-vous périodiques, chercher des multiples communs ; pour des partages sans reste, chercher des diviseurs communs.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. 6, 12, 18, 24, 30 s.
+2. 6, 12, 18, 24, 30 s.
+3. 6 s.
+4. 1 période(s) du premier ; 1 du second.
+5. 12 s et 18 s.
+6. Une rencontre exige un multiple des deux périodes ; leur somme n’a pas toujours cette propriété.
+
+===
+
+=== Découverte - Multiples, diviseurs et partages - 4. Des places pour une sortie
+Id: 2729
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Une association doit ranger 57 objets dans des boîtes qui contiennent chacune au maximum 7 objets. Les objets ne peuvent pas être découpés.
+
+1. Encadrer 57 par deux multiples consécutifs de 7.
+2. Effectuer la division euclidienne : donner quotient et reste.
+3. Vérifier que le reste est autorisé.
+4. Combien de boîtes faut-il pour ranger tous les objets ?
+5. Combien de places resteront vides dans la dernière boîte ?
+6. 7 est-il un diviseur de 57 ? Quel nombre minimal d’objets faudrait-il ajouter pour obtenir des boîtes toutes pleines ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Encadrer 57 par deux multiples consécutifs de 7.
+
+::: methode
+Chercher deux multiples consécutifs du diviseur.
+:::
+
+::: etape Raisonner et calculer
+$$7\times8=56\le 57<63=7\times9$$
+:::
+
+::: resultat
+$56\le 57<63$.
+:::
+
+## Question 2 : Effectuer la division euclidienne : donner quotient et reste.
+
+::: methode
+Décomposer en boîtes pleines et objets restants.
+:::
+
+::: etape Raisonner et calculer
+$$57=7\times8+1$$
+:::
+
+::: resultat
+Quotient 8 ; reste 1.
+:::
+
+## Question 3 : Vérifier que le reste est autorisé.
+
+::: methode
+Vérifier les deux bornes imposées au reste.
+:::
+
+::: etape Raisonner et calculer
+$$0\le 1<7$$
+:::
+
+::: resultat
+$0\le 1<7$ : le reste convient.
+:::
+
+## Question 4 : Combien de boîtes faut-il pour ranger tous les objets ?
+
+::: methode
+Tenir compte du reste pour ranger tous les objets.
+:::
+
+::: etape Raisonner et calculer
+Il reste 1 objet(s) après les 8 boîtes pleines : $$8+1=9$$
+:::
+
+::: resultat
+9 boîtes.
+:::
+
+## Question 5 : Combien de places resteront vides dans la dernière boîte ?
+
+::: methode
+Comparer la capacité totale au nombre d’objets.
+:::
+
+::: etape Raisonner et calculer
+$$\begin{aligned}9\times7-57&=63-57\\&=6\end{aligned}$$
+:::
+
+::: resultat
+6 places.
+:::
+
+## Question 6 : 7 est-il un diviseur de 57 ? Quel nombre minimal d’objets faudrait-il ajouter pour obtenir des boîtes toutes pleines ?
+
+::: methode
+Vérifier la divisibilité, puis compléter au multiple suivant.
+:::
+
+::: etape Raisonner et calculer
+Le reste vaut 1, donc il est non nul. $$57+6=63$$
+:::
+
+::: resultat
+Non ; ajouter 6 objets permet d’obtenir 63 objets.
+:::
+
+::: retenir
+Dans une division euclidienne, le reste est toujours inférieur au diviseur. Une boîte partiellement remplie compte comme une boîte.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $56\le 57<63$.
+2. Quotient 8 ; reste 1.
+3. $0\le 1<7$ : le reste convient.
+4. 9 boîtes.
+5. 6 places.
+6. Non ; ajouter 6 objets permet d’obtenir 63 objets.
+
+===
+
+=== Découverte - Multiples, diviseurs et partages - 5. Des lots identiques pour la fête
+Id: 2730
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Le club possède 36 cartes rouges et 54 cartes bleues. Il veut fabriquer des lots identiques contenant les deux couleurs, sans laisser de carte.
+
+1. Vérifier que 36 est divisible par 2 et par 3.
+2. Peut-on fabriquer six lots identiques ? Donner leur composition.
+3. Lister tous les nombres de lots possibles.
+4. Quel est le plus grand nombre de lots possible ?
+5. Quelle sera alors la composition d’un lot ?
+6. Pourquoi ne peut-on pas choisir un nombre de lots plus grand simplement en partageant le total des cartes ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Vérifier que 36 est divisible par 2 et par 3.
+
+::: methode
+Appliquer les critères de divisibilité par 2 et par 3.
+:::
+
+::: etape Raisonner et calculer
+36 est pair. La somme de ses chiffres vaut 9, multiple de 3. $$36\div2=18\quad;\quad 36\div3=12$$
+:::
+
+::: resultat
+Oui : 36 est pair et sa somme de chiffres vaut 9, multiple de 3.
+:::
+
+## Question 2 : Peut-on fabriquer six lots identiques ? Donner leur composition.
+
+::: methode
+Partager chaque couleur séparément en six.
+:::
+
+::: etape Raisonner et calculer
+$$36\div6=6\quad;\quad 54\div6=9$$
+:::
+
+::: resultat
+Oui : 6 cartes rouges et 9 cartes bleues par lot.
+:::
+
+## Question 3 : Lister tous les nombres de lots possibles.
+
+::: methode
+Énumérer les diviseurs de chaque effectif.
+:::
+
+::: etape Raisonner et calculer
+Diviseurs de 36 : 1, 2, 3, 4, 6, 9, 12, 18, 36.
+
+Diviseurs de 54 : 1, 2, 3, 6, 9, 18, 27, 54.
+
+On conserve seulement les nombres présents dans les deux listes.
+:::
+
+::: resultat
+1, 2, 3, 6, 9, 18.
+:::
+
+## Question 4 : Quel est le plus grand nombre de lots possible ?
+
+::: methode
+Lire le plus grand diviseur commun dans la liste.
+:::
+
+::: etape Raisonner et calculer
+La liste commune est 1, 2, 3, 6, 9, 18. Son maximum est 18.
+:::
+
+::: resultat
+18 lots.
+:::
+
+## Question 5 : Quelle sera alors la composition d’un lot ?
+
+::: methode
+Partager chaque couleur entre les lots retenus.
+:::
+
+::: etape Raisonner et calculer
+$$36\div18=2\quad;\quad 54\div18=3$$
+:::
+
+::: resultat
+2 cartes rouges et 3 cartes bleues par lot.
+:::
+
+## Question 6 : Pourquoi ne peut-on pas choisir un nombre de lots plus grand simplement en partageant le total des cartes ?
+
+::: methode
+Vérifier la composition de chaque lot, couleur par couleur.
+:::
+
+::: etape Raisonner et calculer
+Par exemple, 90 divise le total 90, mais il est supérieur à chacun des deux effectifs : on ne peut pas répartir une carte de chaque couleur dans chacun de ces lots.
+:::
+
+::: resultat
+Le nombre de lots doit diviser chacun des deux effectifs, pas seulement leur somme.
+:::
+
+::: retenir
+Des lots identiques sans reste imposent un diviseur commun aux effectifs de toutes les catégories.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Oui : 36 est pair et sa somme de chiffres vaut 9, multiple de 3.
+2. Oui : 6 cartes rouges et 9 cartes bleues par lot.
+3. 1, 2, 3, 6, 9, 18.
+4. 18 lots.
+5. 2 cartes rouges et 3 cartes bleues par lot.
+6. Le nombre de lots doit diviser chacun des deux effectifs, pas seulement leur somme.
+
+===
+
+=== Découverte - Multiples, diviseurs et partages - 6. Quand les deux signaux se retrouveront-ils ?
+Id: 2731
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Deux signaux lumineux s’allument ensemble à l’instant 0. Le premier se rallume toutes les 9 secondes et le second toutes les 6 secondes.
+
+1. Donner les cinq premiers instants strictement positifs du premier signal.
+2. Donner les cinq premiers instants strictement positifs du second signal.
+3. Déterminer le premier instant positif où les signaux s’allument ensemble.
+4. Combien de périodes de chaque signal se sont écoulées à cet instant ?
+5. Donner les deux instants communs suivants.
+6. Pourquoi la somme des deux périodes ne donne-t-elle pas toujours une rencontre ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Donner les cinq premiers instants strictement positifs du premier signal.
+
+::: methode
+Écrire les cinq premiers multiples strictement positifs.
+:::
+
+::: etape Raisonner et calculer
+$$9\times1=9,\quad 9\times2=18,\quad\ldots,\quad 9\times5=45$$
+:::
+
+::: resultat
+9, 18, 27, 36, 45 s.
+:::
+
+## Question 2 : Donner les cinq premiers instants strictement positifs du second signal.
+
+::: methode
+Faire la même liste avec la seconde période.
+:::
+
+::: etape Raisonner et calculer
+$$6\times1=6,\quad 6\times2=12,\quad\ldots,\quad 6\times5=30$$
+:::
+
+::: resultat
+6, 12, 18, 24, 30 s.
+:::
+
+## Question 3 : Déterminer le premier instant positif où les signaux s’allument ensemble.
+
+::: methode
+Chercher le premier multiple strictement positif commun.
+:::
+
+::: etape Raisonner et calculer
+Jusqu’à la première rencontre :
+
+- Premier signal : 9, 18.
+- Second signal : 6, 12, 18.
+:::
+
+::: resultat
+18 s.
+:::
+
+## Question 4 : Combien de périodes de chaque signal se sont écoulées à cet instant ?
+
+::: methode
+Diviser l’instant commun par chaque période.
+:::
+
+::: etape Raisonner et calculer
+$$18\div9=2\quad;\quad 18\div6=3$$
+:::
+
+::: resultat
+2 période(s) du premier ; 3 du second.
+:::
+
+## Question 5 : Donner les deux instants communs suivants.
+
+::: methode
+Ajouter chaque fois la durée du cycle commun.
+:::
+
+::: etape Raisonner et calculer
+$$18+18=36\quad;\quad 36+18=54$$
+:::
+
+::: resultat
+36 s et 54 s.
+:::
+
+## Question 6 : Pourquoi la somme des deux périodes ne donne-t-elle pas toujours une rencontre ?
+
+::: methode
+Tester si la somme est un multiple de chaque période.
+:::
+
+::: etape Raisonner et calculer
+Ici, 9+6=15 n’est pas divisible par les deux périodes. Contre-exemple général : pour des périodes de 4 s et 6 s, la somme 10 s n’est multiple ni de 4 ni de 6.
+:::
+
+::: resultat
+Une rencontre exige un multiple des deux périodes ; leur somme n’a pas toujours cette propriété.
+:::
+
+::: retenir
+Pour des rendez-vous périodiques, chercher des multiples communs ; pour des partages sans reste, chercher des diviseurs communs.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. 9, 18, 27, 36, 45 s.
+2. 6, 12, 18, 24, 30 s.
+3. 18 s.
+4. 2 période(s) du premier ; 3 du second.
+5. 36 s et 54 s.
+6. Une rencontre exige un multiple des deux périodes ; leur somme n’a pas toujours cette propriété.
+
+===
+
+=== Découverte - Multiples, diviseurs et partages - 7. Des places pour une sortie
+Id: 2732
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Une association doit ranger 111 objets dans des boîtes qui contiennent chacune au maximum 10 objets. Les objets ne peuvent pas être découpés.
+
+1. Encadrer 111 par deux multiples consécutifs de 10.
+2. Effectuer la division euclidienne : donner quotient et reste.
+3. Vérifier que le reste est autorisé.
+4. Combien de boîtes faut-il pour ranger tous les objets ?
+5. Combien de places resteront vides dans la dernière boîte ?
+6. 10 est-il un diviseur de 111 ? Quel nombre minimal d’objets faudrait-il ajouter pour obtenir des boîtes toutes pleines ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Encadrer 111 par deux multiples consécutifs de 10.
+
+::: methode
+Chercher deux multiples consécutifs du diviseur.
+:::
+
+::: etape Raisonner et calculer
+$$10\times11=110\le 111<120=10\times12$$
+:::
+
+::: resultat
+$110\le 111<120$.
+:::
+
+## Question 2 : Effectuer la division euclidienne : donner quotient et reste.
+
+::: methode
+Décomposer en boîtes pleines et objets restants.
+:::
+
+::: etape Raisonner et calculer
+$$111=10\times11+1$$
+:::
+
+::: resultat
+Quotient 11 ; reste 1.
+:::
+
+## Question 3 : Vérifier que le reste est autorisé.
+
+::: methode
+Vérifier les deux bornes imposées au reste.
+:::
+
+::: etape Raisonner et calculer
+$$0\le 1<10$$
+:::
+
+::: resultat
+$0\le 1<10$ : le reste convient.
+:::
+
+## Question 4 : Combien de boîtes faut-il pour ranger tous les objets ?
+
+::: methode
+Tenir compte du reste pour ranger tous les objets.
+:::
+
+::: etape Raisonner et calculer
+Il reste 1 objet(s) après les 11 boîtes pleines : $$11+1=12$$
+:::
+
+::: resultat
+12 boîtes.
+:::
+
+## Question 5 : Combien de places resteront vides dans la dernière boîte ?
+
+::: methode
+Comparer la capacité totale au nombre d’objets.
+:::
+
+::: etape Raisonner et calculer
+$$\begin{aligned}12\times10-111&=120-111\\&=9\end{aligned}$$
+:::
+
+::: resultat
+9 places.
+:::
+
+## Question 6 : 10 est-il un diviseur de 111 ? Quel nombre minimal d’objets faudrait-il ajouter pour obtenir des boîtes toutes pleines ?
+
+::: methode
+Vérifier la divisibilité, puis compléter au multiple suivant.
+:::
+
+::: etape Raisonner et calculer
+Le reste vaut 1, donc il est non nul. $$111+9=120$$
+:::
+
+::: resultat
+Non ; ajouter 9 objets permet d’obtenir 120 objets.
+:::
+
+::: retenir
+Dans une division euclidienne, le reste est toujours inférieur au diviseur. Une boîte partiellement remplie compte comme une boîte.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $110\le 111<120$.
+2. Quotient 11 ; reste 1.
+3. $0\le 1<10$ : le reste convient.
+4. 12 boîtes.
+5. 9 places.
+6. Non ; ajouter 9 objets permet d’obtenir 120 objets.
+
+===
+
+=== Entraînement - Multiples, diviseurs et partages - 1. Des places pour une sortie
+Id: 2733
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Une association doit ranger 29 objets dans des boîtes qui contiennent chacune au maximum 4 objets. Les objets ne peuvent pas être découpés.
+
+1. Encadrer 29 par deux multiples consécutifs de 4.
+2. Effectuer la division euclidienne : donner quotient et reste.
+3. Vérifier que le reste est autorisé.
+4. Combien de boîtes faut-il pour ranger tous les objets ?
+5. Combien de places resteront vides dans la dernière boîte ?
+6. 4 est-il un diviseur de 29 ? Quel nombre minimal d’objets faudrait-il ajouter pour obtenir des boîtes toutes pleines ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Encadrer 29 par deux multiples consécutifs de 4.
+
+::: methode
+Chercher deux multiples consécutifs du diviseur.
+:::
+
+::: etape Raisonner et calculer
+$$4\times7=28\le 29<32=4\times8$$
+:::
+
+::: resultat
+$28\le 29<32$.
+:::
+
+## Question 2 : Effectuer la division euclidienne : donner quotient et reste.
+
+::: methode
+Décomposer en boîtes pleines et objets restants.
+:::
+
+::: etape Raisonner et calculer
+$$29=4\times7+1$$
+:::
+
+::: resultat
+Quotient 7 ; reste 1.
+:::
+
+## Question 3 : Vérifier que le reste est autorisé.
+
+::: methode
+Vérifier les deux bornes imposées au reste.
+:::
+
+::: etape Raisonner et calculer
+$$0\le 1<4$$
+:::
+
+::: resultat
+$0\le 1<4$ : le reste convient.
+:::
+
+## Question 4 : Combien de boîtes faut-il pour ranger tous les objets ?
+
+::: methode
+Tenir compte du reste pour ranger tous les objets.
+:::
+
+::: etape Raisonner et calculer
+Il reste 1 objet(s) après les 7 boîtes pleines : $$7+1=8$$
+:::
+
+::: resultat
+8 boîtes.
+:::
+
+## Question 5 : Combien de places resteront vides dans la dernière boîte ?
+
+::: methode
+Comparer la capacité totale au nombre d’objets.
+:::
+
+::: etape Raisonner et calculer
+$$\begin{aligned}8\times4-29&=32-29\\&=3\end{aligned}$$
+:::
+
+::: resultat
+3 places.
+:::
+
+## Question 6 : 4 est-il un diviseur de 29 ? Quel nombre minimal d’objets faudrait-il ajouter pour obtenir des boîtes toutes pleines ?
+
+::: methode
+Vérifier la divisibilité, puis compléter au multiple suivant.
+:::
+
+::: etape Raisonner et calculer
+Le reste vaut 1, donc il est non nul. $$29+3=32$$
+:::
+
+::: resultat
+Non ; ajouter 3 objets permet d’obtenir 32 objets.
+:::
+
+::: retenir
+Dans une division euclidienne, le reste est toujours inférieur au diviseur. Une boîte partiellement remplie compte comme une boîte.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $28\le 29<32$.
+2. Quotient 7 ; reste 1.
+3. $0\le 1<4$ : le reste convient.
+4. 8 boîtes.
+5. 3 places.
+6. Non ; ajouter 3 objets permet d’obtenir 32 objets.
+
+===
+
+=== Entraînement - Multiples, diviseurs et partages - 2. Des lots identiques pour la fête
+Id: 2734
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Le club possède 48 cartes rouges et 72 cartes bleues. Il veut fabriquer des lots identiques contenant les deux couleurs, sans laisser de carte.
+
+1. Vérifier que 48 est divisible par 2 et par 3.
+2. Peut-on fabriquer six lots identiques ? Donner leur composition.
+3. Lister tous les nombres de lots possibles.
+4. Quel est le plus grand nombre de lots possible ?
+5. Quelle sera alors la composition d’un lot ?
+6. Pourquoi ne peut-on pas choisir un nombre de lots plus grand simplement en partageant le total des cartes ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Vérifier que 48 est divisible par 2 et par 3.
+
+::: methode
+Appliquer les critères de divisibilité par 2 et par 3.
+:::
+
+::: etape Raisonner et calculer
+48 est pair. La somme de ses chiffres vaut 12, multiple de 3. $$48\div2=24\quad;\quad 48\div3=16$$
+:::
+
+::: resultat
+Oui : 48 est pair et sa somme de chiffres vaut 12, multiple de 3.
+:::
+
+## Question 2 : Peut-on fabriquer six lots identiques ? Donner leur composition.
+
+::: methode
+Partager chaque couleur séparément en six.
+:::
+
+::: etape Raisonner et calculer
+$$48\div6=8\quad;\quad 72\div6=12$$
+:::
+
+::: resultat
+Oui : 8 cartes rouges et 12 cartes bleues par lot.
+:::
+
+## Question 3 : Lister tous les nombres de lots possibles.
+
+::: methode
+Énumérer les diviseurs de chaque effectif.
+:::
+
+::: etape Raisonner et calculer
+Diviseurs de 48 : 1, 2, 3, 4, 6, 8, 12, 16, 24, 48.
+
+Diviseurs de 72 : 1, 2, 3, 4, 6, 8, 9, 12, 18, 24, 36, 72.
+
+On conserve seulement les nombres présents dans les deux listes.
+:::
+
+::: resultat
+1, 2, 3, 4, 6, 8, 12, 24.
+:::
+
+## Question 4 : Quel est le plus grand nombre de lots possible ?
+
+::: methode
+Lire le plus grand diviseur commun dans la liste.
+:::
+
+::: etape Raisonner et calculer
+La liste commune est 1, 2, 3, 4, 6, 8, 12, 24. Son maximum est 24.
+:::
+
+::: resultat
+24 lots.
+:::
+
+## Question 5 : Quelle sera alors la composition d’un lot ?
+
+::: methode
+Partager chaque couleur entre les lots retenus.
+:::
+
+::: etape Raisonner et calculer
+$$48\div24=2\quad;\quad 72\div24=3$$
+:::
+
+::: resultat
+2 cartes rouges et 3 cartes bleues par lot.
+:::
+
+## Question 6 : Pourquoi ne peut-on pas choisir un nombre de lots plus grand simplement en partageant le total des cartes ?
+
+::: methode
+Vérifier la composition de chaque lot, couleur par couleur.
+:::
+
+::: etape Raisonner et calculer
+Par exemple, 120 divise le total 120, mais il est supérieur à chacun des deux effectifs : on ne peut pas répartir une carte de chaque couleur dans chacun de ces lots.
+:::
+
+::: resultat
+Le nombre de lots doit diviser chacun des deux effectifs, pas seulement leur somme.
+:::
+
+::: retenir
+Des lots identiques sans reste imposent un diviseur commun aux effectifs de toutes les catégories.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Oui : 48 est pair et sa somme de chiffres vaut 12, multiple de 3.
+2. Oui : 8 cartes rouges et 12 cartes bleues par lot.
+3. 1, 2, 3, 4, 6, 8, 12, 24.
+4. 24 lots.
+5. 2 cartes rouges et 3 cartes bleues par lot.
+6. Le nombre de lots doit diviser chacun des deux effectifs, pas seulement leur somme.
+
+===
+
+=== Entraînement - Multiples, diviseurs et partages - 3. Quand les deux signaux se retrouveront-ils ?
+Id: 2735
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Deux signaux lumineux s’allument ensemble à l’instant 0. Le premier se rallume toutes les 6 secondes et le second toutes les 8 secondes.
+
+1. Donner les cinq premiers instants strictement positifs du premier signal.
+2. Donner les cinq premiers instants strictement positifs du second signal.
+3. Déterminer le premier instant positif où les signaux s’allument ensemble.
+4. Combien de périodes de chaque signal se sont écoulées à cet instant ?
+5. Donner les deux instants communs suivants.
+6. Pourquoi la somme des deux périodes ne donne-t-elle pas toujours une rencontre ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Donner les cinq premiers instants strictement positifs du premier signal.
+
+::: methode
+Écrire les cinq premiers multiples strictement positifs.
+:::
+
+::: etape Raisonner et calculer
+$$6\times1=6,\quad 6\times2=12,\quad\ldots,\quad 6\times5=30$$
+:::
+
+::: resultat
+6, 12, 18, 24, 30 s.
+:::
+
+## Question 2 : Donner les cinq premiers instants strictement positifs du second signal.
+
+::: methode
+Faire la même liste avec la seconde période.
+:::
+
+::: etape Raisonner et calculer
+$$8\times1=8,\quad 8\times2=16,\quad\ldots,\quad 8\times5=40$$
+:::
+
+::: resultat
+8, 16, 24, 32, 40 s.
+:::
+
+## Question 3 : Déterminer le premier instant positif où les signaux s’allument ensemble.
+
+::: methode
+Chercher le premier multiple strictement positif commun.
+:::
+
+::: etape Raisonner et calculer
+Jusqu’à la première rencontre :
+
+- Premier signal : 6, 12, 18, 24.
+- Second signal : 8, 16, 24.
+:::
+
+::: resultat
+24 s.
+:::
+
+## Question 4 : Combien de périodes de chaque signal se sont écoulées à cet instant ?
+
+::: methode
+Diviser l’instant commun par chaque période.
+:::
+
+::: etape Raisonner et calculer
+$$24\div6=4\quad;\quad 24\div8=3$$
+:::
+
+::: resultat
+4 période(s) du premier ; 3 du second.
+:::
+
+## Question 5 : Donner les deux instants communs suivants.
+
+::: methode
+Ajouter chaque fois la durée du cycle commun.
+:::
+
+::: etape Raisonner et calculer
+$$24+24=48\quad;\quad 48+24=72$$
+:::
+
+::: resultat
+48 s et 72 s.
+:::
+
+## Question 6 : Pourquoi la somme des deux périodes ne donne-t-elle pas toujours une rencontre ?
+
+::: methode
+Tester si la somme est un multiple de chaque période.
+:::
+
+::: etape Raisonner et calculer
+Ici, 6+8=14 n’est pas divisible par les deux périodes. Contre-exemple général : pour des périodes de 4 s et 6 s, la somme 10 s n’est multiple ni de 4 ni de 6.
+:::
+
+::: resultat
+Une rencontre exige un multiple des deux périodes ; leur somme n’a pas toujours cette propriété.
+:::
+
+::: retenir
+Pour des rendez-vous périodiques, chercher des multiples communs ; pour des partages sans reste, chercher des diviseurs communs.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. 6, 12, 18, 24, 30 s.
+2. 8, 16, 24, 32, 40 s.
+3. 24 s.
+4. 4 période(s) du premier ; 3 du second.
+5. 48 s et 72 s.
+6. Une rencontre exige un multiple des deux périodes ; leur somme n’a pas toujours cette propriété.
+
+===
+
+=== Entraînement - Multiples, diviseurs et partages - 4. Des places pour une sortie
+Id: 2736
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Une association doit ranger 71 objets dans des boîtes qui contiennent chacune au maximum 7 objets. Les objets ne peuvent pas être découpés.
+
+1. Encadrer 71 par deux multiples consécutifs de 7.
+2. Effectuer la division euclidienne : donner quotient et reste.
+3. Vérifier que le reste est autorisé.
+4. Combien de boîtes faut-il pour ranger tous les objets ?
+5. Combien de places resteront vides dans la dernière boîte ?
+6. 7 est-il un diviseur de 71 ? Quel nombre minimal d’objets faudrait-il ajouter pour obtenir des boîtes toutes pleines ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Encadrer 71 par deux multiples consécutifs de 7.
+
+::: methode
+Chercher deux multiples consécutifs du diviseur.
+:::
+
+::: etape Raisonner et calculer
+$$7\times10=70\le 71<77=7\times11$$
+:::
+
+::: resultat
+$70\le 71<77$.
+:::
+
+## Question 2 : Effectuer la division euclidienne : donner quotient et reste.
+
+::: methode
+Décomposer en boîtes pleines et objets restants.
+:::
+
+::: etape Raisonner et calculer
+$$71=7\times10+1$$
+:::
+
+::: resultat
+Quotient 10 ; reste 1.
+:::
+
+## Question 3 : Vérifier que le reste est autorisé.
+
+::: methode
+Vérifier les deux bornes imposées au reste.
+:::
+
+::: etape Raisonner et calculer
+$$0\le 1<7$$
+:::
+
+::: resultat
+$0\le 1<7$ : le reste convient.
+:::
+
+## Question 4 : Combien de boîtes faut-il pour ranger tous les objets ?
+
+::: methode
+Tenir compte du reste pour ranger tous les objets.
+:::
+
+::: etape Raisonner et calculer
+Il reste 1 objet(s) après les 10 boîtes pleines : $$10+1=11$$
+:::
+
+::: resultat
+11 boîtes.
+:::
+
+## Question 5 : Combien de places resteront vides dans la dernière boîte ?
+
+::: methode
+Comparer la capacité totale au nombre d’objets.
+:::
+
+::: etape Raisonner et calculer
+$$\begin{aligned}11\times7-71&=77-71\\&=6\end{aligned}$$
+:::
+
+::: resultat
+6 places.
+:::
+
+## Question 6 : 7 est-il un diviseur de 71 ? Quel nombre minimal d’objets faudrait-il ajouter pour obtenir des boîtes toutes pleines ?
+
+::: methode
+Vérifier la divisibilité, puis compléter au multiple suivant.
+:::
+
+::: etape Raisonner et calculer
+Le reste vaut 1, donc il est non nul. $$71+6=77$$
+:::
+
+::: resultat
+Non ; ajouter 6 objets permet d’obtenir 77 objets.
+:::
+
+::: retenir
+Dans une division euclidienne, le reste est toujours inférieur au diviseur. Une boîte partiellement remplie compte comme une boîte.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $70\le 71<77$.
+2. Quotient 10 ; reste 1.
+3. $0\le 1<7$ : le reste convient.
+4. 11 boîtes.
+5. 6 places.
+6. Non ; ajouter 6 objets permet d’obtenir 77 objets.
+
+===
+
+=== Entraînement - Multiples, diviseurs et partages - 5. Des lots identiques pour la fête
+Id: 2737
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Le club possède 48 cartes rouges et 72 cartes bleues. Il veut fabriquer des lots identiques contenant les deux couleurs, sans laisser de carte.
+
+1. Vérifier que 48 est divisible par 2 et par 3.
+2. Peut-on fabriquer six lots identiques ? Donner leur composition.
+3. Lister tous les nombres de lots possibles.
+4. Quel est le plus grand nombre de lots possible ?
+5. Quelle sera alors la composition d’un lot ?
+6. Pourquoi ne peut-on pas choisir un nombre de lots plus grand simplement en partageant le total des cartes ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Vérifier que 48 est divisible par 2 et par 3.
+
+::: methode
+Appliquer les critères de divisibilité par 2 et par 3.
+:::
+
+::: etape Raisonner et calculer
+48 est pair. La somme de ses chiffres vaut 12, multiple de 3. $$48\div2=24\quad;\quad 48\div3=16$$
+:::
+
+::: resultat
+Oui : 48 est pair et sa somme de chiffres vaut 12, multiple de 3.
+:::
+
+## Question 2 : Peut-on fabriquer six lots identiques ? Donner leur composition.
+
+::: methode
+Partager chaque couleur séparément en six.
+:::
+
+::: etape Raisonner et calculer
+$$48\div6=8\quad;\quad 72\div6=12$$
+:::
+
+::: resultat
+Oui : 8 cartes rouges et 12 cartes bleues par lot.
+:::
+
+## Question 3 : Lister tous les nombres de lots possibles.
+
+::: methode
+Énumérer les diviseurs de chaque effectif.
+:::
+
+::: etape Raisonner et calculer
+Diviseurs de 48 : 1, 2, 3, 4, 6, 8, 12, 16, 24, 48.
+
+Diviseurs de 72 : 1, 2, 3, 4, 6, 8, 9, 12, 18, 24, 36, 72.
+
+On conserve seulement les nombres présents dans les deux listes.
+:::
+
+::: resultat
+1, 2, 3, 4, 6, 8, 12, 24.
+:::
+
+## Question 4 : Quel est le plus grand nombre de lots possible ?
+
+::: methode
+Lire le plus grand diviseur commun dans la liste.
+:::
+
+::: etape Raisonner et calculer
+La liste commune est 1, 2, 3, 4, 6, 8, 12, 24. Son maximum est 24.
+:::
+
+::: resultat
+24 lots.
+:::
+
+## Question 5 : Quelle sera alors la composition d’un lot ?
+
+::: methode
+Partager chaque couleur entre les lots retenus.
+:::
+
+::: etape Raisonner et calculer
+$$48\div24=2\quad;\quad 72\div24=3$$
+:::
+
+::: resultat
+2 cartes rouges et 3 cartes bleues par lot.
+:::
+
+## Question 6 : Pourquoi ne peut-on pas choisir un nombre de lots plus grand simplement en partageant le total des cartes ?
+
+::: methode
+Vérifier la composition de chaque lot, couleur par couleur.
+:::
+
+::: etape Raisonner et calculer
+Par exemple, 120 divise le total 120, mais il est supérieur à chacun des deux effectifs : on ne peut pas répartir une carte de chaque couleur dans chacun de ces lots.
+:::
+
+::: resultat
+Le nombre de lots doit diviser chacun des deux effectifs, pas seulement leur somme.
+:::
+
+::: retenir
+Des lots identiques sans reste imposent un diviseur commun aux effectifs de toutes les catégories.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Oui : 48 est pair et sa somme de chiffres vaut 12, multiple de 3.
+2. Oui : 8 cartes rouges et 12 cartes bleues par lot.
+3. 1, 2, 3, 4, 6, 8, 12, 24.
+4. 24 lots.
+5. 2 cartes rouges et 3 cartes bleues par lot.
+6. Le nombre de lots doit diviser chacun des deux effectifs, pas seulement leur somme.
+
+===
+
+=== Entraînement - Multiples, diviseurs et partages - 6. Quand les deux signaux se retrouveront-ils ?
+Id: 2738
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Deux signaux lumineux s’allument ensemble à l’instant 0. Le premier se rallume toutes les 9 secondes et le second toutes les 8 secondes.
+
+1. Donner les cinq premiers instants strictement positifs du premier signal.
+2. Donner les cinq premiers instants strictement positifs du second signal.
+3. Déterminer le premier instant positif où les signaux s’allument ensemble.
+4. Combien de périodes de chaque signal se sont écoulées à cet instant ?
+5. Donner les deux instants communs suivants.
+6. Pourquoi la somme des deux périodes ne donne-t-elle pas toujours une rencontre ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Donner les cinq premiers instants strictement positifs du premier signal.
+
+::: methode
+Écrire les cinq premiers multiples strictement positifs.
+:::
+
+::: etape Raisonner et calculer
+$$9\times1=9,\quad 9\times2=18,\quad\ldots,\quad 9\times5=45$$
+:::
+
+::: resultat
+9, 18, 27, 36, 45 s.
+:::
+
+## Question 2 : Donner les cinq premiers instants strictement positifs du second signal.
+
+::: methode
+Faire la même liste avec la seconde période.
+:::
+
+::: etape Raisonner et calculer
+$$8\times1=8,\quad 8\times2=16,\quad\ldots,\quad 8\times5=40$$
+:::
+
+::: resultat
+8, 16, 24, 32, 40 s.
+:::
+
+## Question 3 : Déterminer le premier instant positif où les signaux s’allument ensemble.
+
+::: methode
+Chercher le premier multiple strictement positif commun.
+:::
+
+::: etape Raisonner et calculer
+Jusqu’à la première rencontre :
+
+- Premier signal : 9, 18, 27, 36, 45, 54, 63, 72.
+- Second signal : 8, 16, 24, 32, 40, 48, 56, 64, 72.
+:::
+
+::: resultat
+72 s.
+:::
+
+## Question 4 : Combien de périodes de chaque signal se sont écoulées à cet instant ?
+
+::: methode
+Diviser l’instant commun par chaque période.
+:::
+
+::: etape Raisonner et calculer
+$$72\div9=8\quad;\quad 72\div8=9$$
+:::
+
+::: resultat
+8 période(s) du premier ; 9 du second.
+:::
+
+## Question 5 : Donner les deux instants communs suivants.
+
+::: methode
+Ajouter chaque fois la durée du cycle commun.
+:::
+
+::: etape Raisonner et calculer
+$$72+72=144\quad;\quad 144+72=216$$
+:::
+
+::: resultat
+144 s et 216 s.
+:::
+
+## Question 6 : Pourquoi la somme des deux périodes ne donne-t-elle pas toujours une rencontre ?
+
+::: methode
+Tester si la somme est un multiple de chaque période.
+:::
+
+::: etape Raisonner et calculer
+Ici, 9+8=17 n’est pas divisible par les deux périodes. Contre-exemple général : pour des périodes de 4 s et 6 s, la somme 10 s n’est multiple ni de 4 ni de 6.
+:::
+
+::: resultat
+Une rencontre exige un multiple des deux périodes ; leur somme n’a pas toujours cette propriété.
+:::
+
+::: retenir
+Pour des rendez-vous périodiques, chercher des multiples communs ; pour des partages sans reste, chercher des diviseurs communs.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. 9, 18, 27, 36, 45 s.
+2. 8, 16, 24, 32, 40 s.
+3. 72 s.
+4. 8 période(s) du premier ; 9 du second.
+5. 144 s et 216 s.
+6. Une rencontre exige un multiple des deux périodes ; leur somme n’a pas toujours cette propriété.
+
+===
+
+=== Entraînement - Multiples, diviseurs et partages - 7. Des places pour une sortie
+Id: 2739
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Une association doit ranger 131 objets dans des boîtes qui contiennent chacune au maximum 10 objets. Les objets ne peuvent pas être découpés.
+
+1. Encadrer 131 par deux multiples consécutifs de 10.
+2. Effectuer la division euclidienne : donner quotient et reste.
+3. Vérifier que le reste est autorisé.
+4. Combien de boîtes faut-il pour ranger tous les objets ?
+5. Combien de places resteront vides dans la dernière boîte ?
+6. 10 est-il un diviseur de 131 ? Quel nombre minimal d’objets faudrait-il ajouter pour obtenir des boîtes toutes pleines ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Encadrer 131 par deux multiples consécutifs de 10.
+
+::: methode
+Chercher deux multiples consécutifs du diviseur.
+:::
+
+::: etape Raisonner et calculer
+$$10\times13=130\le 131<140=10\times14$$
+:::
+
+::: resultat
+$130\le 131<140$.
+:::
+
+## Question 2 : Effectuer la division euclidienne : donner quotient et reste.
+
+::: methode
+Décomposer en boîtes pleines et objets restants.
+:::
+
+::: etape Raisonner et calculer
+$$131=10\times13+1$$
+:::
+
+::: resultat
+Quotient 13 ; reste 1.
+:::
+
+## Question 3 : Vérifier que le reste est autorisé.
+
+::: methode
+Vérifier les deux bornes imposées au reste.
+:::
+
+::: etape Raisonner et calculer
+$$0\le 1<10$$
+:::
+
+::: resultat
+$0\le 1<10$ : le reste convient.
+:::
+
+## Question 4 : Combien de boîtes faut-il pour ranger tous les objets ?
+
+::: methode
+Tenir compte du reste pour ranger tous les objets.
+:::
+
+::: etape Raisonner et calculer
+Il reste 1 objet(s) après les 13 boîtes pleines : $$13+1=14$$
+:::
+
+::: resultat
+14 boîtes.
+:::
+
+## Question 5 : Combien de places resteront vides dans la dernière boîte ?
+
+::: methode
+Comparer la capacité totale au nombre d’objets.
+:::
+
+::: etape Raisonner et calculer
+$$\begin{aligned}14\times10-131&=140-131\\&=9\end{aligned}$$
+:::
+
+::: resultat
+9 places.
+:::
+
+## Question 6 : 10 est-il un diviseur de 131 ? Quel nombre minimal d’objets faudrait-il ajouter pour obtenir des boîtes toutes pleines ?
+
+::: methode
+Vérifier la divisibilité, puis compléter au multiple suivant.
+:::
+
+::: etape Raisonner et calculer
+Le reste vaut 1, donc il est non nul. $$131+9=140$$
+:::
+
+::: resultat
+Non ; ajouter 9 objets permet d’obtenir 140 objets.
+:::
+
+::: retenir
+Dans une division euclidienne, le reste est toujours inférieur au diviseur. Une boîte partiellement remplie compte comme une boîte.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $130\le 131<140$.
+2. Quotient 13 ; reste 1.
+3. $0\le 1<10$ : le reste convient.
+4. 14 boîtes.
+5. 9 places.
+6. Non ; ajouter 9 objets permet d’obtenir 140 objets.
+
+===
+
+=== Problème - Multiples, diviseurs et partages - 1. Des places pour une sortie
+Id: 2740
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Une association doit ranger 37 objets dans des boîtes qui contiennent chacune au maximum 4 objets. Les objets ne peuvent pas être découpés.
+
+1. Encadrer 37 par deux multiples consécutifs de 4.
+2. Effectuer la division euclidienne : donner quotient et reste.
+3. Vérifier que le reste est autorisé.
+4. Combien de boîtes faut-il pour ranger tous les objets ?
+5. Combien de places resteront vides dans la dernière boîte ?
+6. 4 est-il un diviseur de 37 ? Quel nombre minimal d’objets faudrait-il ajouter pour obtenir des boîtes toutes pleines ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Encadrer 37 par deux multiples consécutifs de 4.
+
+::: methode
+Chercher deux multiples consécutifs du diviseur.
+:::
+
+::: etape Raisonner et calculer
+$$4\times9=36\le 37<40=4\times10$$
+:::
+
+::: resultat
+$36\le 37<40$.
+:::
+
+## Question 2 : Effectuer la division euclidienne : donner quotient et reste.
+
+::: methode
+Décomposer en boîtes pleines et objets restants.
+:::
+
+::: etape Raisonner et calculer
+$$37=4\times9+1$$
+:::
+
+::: resultat
+Quotient 9 ; reste 1.
+:::
+
+## Question 3 : Vérifier que le reste est autorisé.
+
+::: methode
+Vérifier les deux bornes imposées au reste.
+:::
+
+::: etape Raisonner et calculer
+$$0\le 1<4$$
+:::
+
+::: resultat
+$0\le 1<4$ : le reste convient.
+:::
+
+## Question 4 : Combien de boîtes faut-il pour ranger tous les objets ?
+
+::: methode
+Tenir compte du reste pour ranger tous les objets.
+:::
+
+::: etape Raisonner et calculer
+Il reste 1 objet(s) après les 9 boîtes pleines : $$9+1=10$$
+:::
+
+::: resultat
+10 boîtes.
+:::
+
+## Question 5 : Combien de places resteront vides dans la dernière boîte ?
+
+::: methode
+Comparer la capacité totale au nombre d’objets.
+:::
+
+::: etape Raisonner et calculer
+$$\begin{aligned}10\times4-37&=40-37\\&=3\end{aligned}$$
+:::
+
+::: resultat
+3 places.
+:::
+
+## Question 6 : 4 est-il un diviseur de 37 ? Quel nombre minimal d’objets faudrait-il ajouter pour obtenir des boîtes toutes pleines ?
+
+::: methode
+Vérifier la divisibilité, puis compléter au multiple suivant.
+:::
+
+::: etape Raisonner et calculer
+Le reste vaut 1, donc il est non nul. $$37+3=40$$
+:::
+
+::: resultat
+Non ; ajouter 3 objets permet d’obtenir 40 objets.
+:::
+
+::: retenir
+Dans une division euclidienne, le reste est toujours inférieur au diviseur. Une boîte partiellement remplie compte comme une boîte.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $36\le 37<40$.
+2. Quotient 9 ; reste 1.
+3. $0\le 1<4$ : le reste convient.
+4. 10 boîtes.
+5. 3 places.
+6. Non ; ajouter 3 objets permet d’obtenir 40 objets.
+
+===
+
+=== Problème - Multiples, diviseurs et partages - 2. Des lots identiques pour la fête
+Id: 2741
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Le club possède 60 cartes rouges et 90 cartes bleues. Il veut fabriquer des lots identiques contenant les deux couleurs, sans laisser de carte.
+
+1. Vérifier que 60 est divisible par 2 et par 3.
+2. Peut-on fabriquer six lots identiques ? Donner leur composition.
+3. Lister tous les nombres de lots possibles.
+4. Quel est le plus grand nombre de lots possible ?
+5. Quelle sera alors la composition d’un lot ?
+6. Pourquoi ne peut-on pas choisir un nombre de lots plus grand simplement en partageant le total des cartes ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Vérifier que 60 est divisible par 2 et par 3.
+
+::: methode
+Appliquer les critères de divisibilité par 2 et par 3.
+:::
+
+::: etape Raisonner et calculer
+60 est pair. La somme de ses chiffres vaut 6, multiple de 3. $$60\div2=30\quad;\quad 60\div3=20$$
+:::
+
+::: resultat
+Oui : 60 est pair et sa somme de chiffres vaut 6, multiple de 3.
+:::
+
+## Question 2 : Peut-on fabriquer six lots identiques ? Donner leur composition.
+
+::: methode
+Partager chaque couleur séparément en six.
+:::
+
+::: etape Raisonner et calculer
+$$60\div6=10\quad;\quad 90\div6=15$$
+:::
+
+::: resultat
+Oui : 10 cartes rouges et 15 cartes bleues par lot.
+:::
+
+## Question 3 : Lister tous les nombres de lots possibles.
+
+::: methode
+Énumérer les diviseurs de chaque effectif.
+:::
+
+::: etape Raisonner et calculer
+Diviseurs de 60 : 1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60.
+
+Diviseurs de 90 : 1, 2, 3, 5, 6, 9, 10, 15, 18, 30, 45, 90.
+
+On conserve seulement les nombres présents dans les deux listes.
+:::
+
+::: resultat
+1, 2, 3, 5, 6, 10, 15, 30.
+:::
+
+## Question 4 : Quel est le plus grand nombre de lots possible ?
+
+::: methode
+Lire le plus grand diviseur commun dans la liste.
+:::
+
+::: etape Raisonner et calculer
+La liste commune est 1, 2, 3, 5, 6, 10, 15, 30. Son maximum est 30.
+:::
+
+::: resultat
+30 lots.
+:::
+
+## Question 5 : Quelle sera alors la composition d’un lot ?
+
+::: methode
+Partager chaque couleur entre les lots retenus.
+:::
+
+::: etape Raisonner et calculer
+$$60\div30=2\quad;\quad 90\div30=3$$
+:::
+
+::: resultat
+2 cartes rouges et 3 cartes bleues par lot.
+:::
+
+## Question 6 : Pourquoi ne peut-on pas choisir un nombre de lots plus grand simplement en partageant le total des cartes ?
+
+::: methode
+Vérifier la composition de chaque lot, couleur par couleur.
+:::
+
+::: etape Raisonner et calculer
+Par exemple, 150 divise le total 150, mais il est supérieur à chacun des deux effectifs : on ne peut pas répartir une carte de chaque couleur dans chacun de ces lots.
+:::
+
+::: resultat
+Le nombre de lots doit diviser chacun des deux effectifs, pas seulement leur somme.
+:::
+
+::: retenir
+Des lots identiques sans reste imposent un diviseur commun aux effectifs de toutes les catégories.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Oui : 60 est pair et sa somme de chiffres vaut 6, multiple de 3.
+2. Oui : 10 cartes rouges et 15 cartes bleues par lot.
+3. 1, 2, 3, 5, 6, 10, 15, 30.
+4. 30 lots.
+5. 2 cartes rouges et 3 cartes bleues par lot.
+6. Le nombre de lots doit diviser chacun des deux effectifs, pas seulement leur somme.
+
+===
+
+=== Problème - Multiples, diviseurs et partages - 3. Quand les deux signaux se retrouveront-ils ?
+Id: 2742
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Deux signaux lumineux s’allument ensemble à l’instant 0. Le premier se rallume toutes les 6 secondes et le second toutes les 10 secondes.
+
+1. Donner les cinq premiers instants strictement positifs du premier signal.
+2. Donner les cinq premiers instants strictement positifs du second signal.
+3. Déterminer le premier instant positif où les signaux s’allument ensemble.
+4. Combien de périodes de chaque signal se sont écoulées à cet instant ?
+5. Donner les deux instants communs suivants.
+6. Pourquoi la somme des deux périodes ne donne-t-elle pas toujours une rencontre ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Donner les cinq premiers instants strictement positifs du premier signal.
+
+::: methode
+Écrire les cinq premiers multiples strictement positifs.
+:::
+
+::: etape Raisonner et calculer
+$$6\times1=6,\quad 6\times2=12,\quad\ldots,\quad 6\times5=30$$
+:::
+
+::: resultat
+6, 12, 18, 24, 30 s.
+:::
+
+## Question 2 : Donner les cinq premiers instants strictement positifs du second signal.
+
+::: methode
+Faire la même liste avec la seconde période.
+:::
+
+::: etape Raisonner et calculer
+$$10\times1=10,\quad 10\times2=20,\quad\ldots,\quad 10\times5=50$$
+:::
+
+::: resultat
+10, 20, 30, 40, 50 s.
+:::
+
+## Question 3 : Déterminer le premier instant positif où les signaux s’allument ensemble.
+
+::: methode
+Chercher le premier multiple strictement positif commun.
+:::
+
+::: etape Raisonner et calculer
+Jusqu’à la première rencontre :
+
+- Premier signal : 6, 12, 18, 24, 30.
+- Second signal : 10, 20, 30.
+:::
+
+::: resultat
+30 s.
+:::
+
+## Question 4 : Combien de périodes de chaque signal se sont écoulées à cet instant ?
+
+::: methode
+Diviser l’instant commun par chaque période.
+:::
+
+::: etape Raisonner et calculer
+$$30\div6=5\quad;\quad 30\div10=3$$
+:::
+
+::: resultat
+5 période(s) du premier ; 3 du second.
+:::
+
+## Question 5 : Donner les deux instants communs suivants.
+
+::: methode
+Ajouter chaque fois la durée du cycle commun.
+:::
+
+::: etape Raisonner et calculer
+$$30+30=60\quad;\quad 60+30=90$$
+:::
+
+::: resultat
+60 s et 90 s.
+:::
+
+## Question 6 : Pourquoi la somme des deux périodes ne donne-t-elle pas toujours une rencontre ?
+
+::: methode
+Tester si la somme est un multiple de chaque période.
+:::
+
+::: etape Raisonner et calculer
+Ici, 6+10=16 n’est pas divisible par les deux périodes. Contre-exemple général : pour des périodes de 4 s et 6 s, la somme 10 s n’est multiple ni de 4 ni de 6.
+:::
+
+::: resultat
+Une rencontre exige un multiple des deux périodes ; leur somme n’a pas toujours cette propriété.
+:::
+
+::: retenir
+Pour des rendez-vous périodiques, chercher des multiples communs ; pour des partages sans reste, chercher des diviseurs communs.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. 6, 12, 18, 24, 30 s.
+2. 10, 20, 30, 40, 50 s.
+3. 30 s.
+4. 5 période(s) du premier ; 3 du second.
+5. 60 s et 90 s.
+6. Une rencontre exige un multiple des deux périodes ; leur somme n’a pas toujours cette propriété.
+
+===
+
+=== Problème - Multiples, diviseurs et partages - 4. Des places pour une sortie
+Id: 2743
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Une association doit ranger 85 objets dans des boîtes qui contiennent chacune au maximum 7 objets. Les objets ne peuvent pas être découpés.
+
+1. Encadrer 85 par deux multiples consécutifs de 7.
+2. Effectuer la division euclidienne : donner quotient et reste.
+3. Vérifier que le reste est autorisé.
+4. Combien de boîtes faut-il pour ranger tous les objets ?
+5. Combien de places resteront vides dans la dernière boîte ?
+6. 7 est-il un diviseur de 85 ? Quel nombre minimal d’objets faudrait-il ajouter pour obtenir des boîtes toutes pleines ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Encadrer 85 par deux multiples consécutifs de 7.
+
+::: methode
+Chercher deux multiples consécutifs du diviseur.
+:::
+
+::: etape Raisonner et calculer
+$$7\times12=84\le 85<91=7\times13$$
+:::
+
+::: resultat
+$84\le 85<91$.
+:::
+
+## Question 2 : Effectuer la division euclidienne : donner quotient et reste.
+
+::: methode
+Décomposer en boîtes pleines et objets restants.
+:::
+
+::: etape Raisonner et calculer
+$$85=7\times12+1$$
+:::
+
+::: resultat
+Quotient 12 ; reste 1.
+:::
+
+## Question 3 : Vérifier que le reste est autorisé.
+
+::: methode
+Vérifier les deux bornes imposées au reste.
+:::
+
+::: etape Raisonner et calculer
+$$0\le 1<7$$
+:::
+
+::: resultat
+$0\le 1<7$ : le reste convient.
+:::
+
+## Question 4 : Combien de boîtes faut-il pour ranger tous les objets ?
+
+::: methode
+Tenir compte du reste pour ranger tous les objets.
+:::
+
+::: etape Raisonner et calculer
+Il reste 1 objet(s) après les 12 boîtes pleines : $$12+1=13$$
+:::
+
+::: resultat
+13 boîtes.
+:::
+
+## Question 5 : Combien de places resteront vides dans la dernière boîte ?
+
+::: methode
+Comparer la capacité totale au nombre d’objets.
+:::
+
+::: etape Raisonner et calculer
+$$\begin{aligned}13\times7-85&=91-85\\&=6\end{aligned}$$
+:::
+
+::: resultat
+6 places.
+:::
+
+## Question 6 : 7 est-il un diviseur de 85 ? Quel nombre minimal d’objets faudrait-il ajouter pour obtenir des boîtes toutes pleines ?
+
+::: methode
+Vérifier la divisibilité, puis compléter au multiple suivant.
+:::
+
+::: etape Raisonner et calculer
+Le reste vaut 1, donc il est non nul. $$85+6=91$$
+:::
+
+::: resultat
+Non ; ajouter 6 objets permet d’obtenir 91 objets.
+:::
+
+::: retenir
+Dans une division euclidienne, le reste est toujours inférieur au diviseur. Une boîte partiellement remplie compte comme une boîte.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $84\le 85<91$.
+2. Quotient 12 ; reste 1.
+3. $0\le 1<7$ : le reste convient.
+4. 13 boîtes.
+5. 6 places.
+6. Non ; ajouter 6 objets permet d’obtenir 91 objets.
+
+===
+
+=== Problème - Multiples, diviseurs et partages - 5. Des lots identiques pour la fête
+Id: 2744
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Le club possède 60 cartes rouges et 90 cartes bleues. Il veut fabriquer des lots identiques contenant les deux couleurs, sans laisser de carte.
+
+1. Vérifier que 60 est divisible par 2 et par 3.
+2. Peut-on fabriquer six lots identiques ? Donner leur composition.
+3. Lister tous les nombres de lots possibles.
+4. Quel est le plus grand nombre de lots possible ?
+5. Quelle sera alors la composition d’un lot ?
+6. Pourquoi ne peut-on pas choisir un nombre de lots plus grand simplement en partageant le total des cartes ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Vérifier que 60 est divisible par 2 et par 3.
+
+::: methode
+Appliquer les critères de divisibilité par 2 et par 3.
+:::
+
+::: etape Raisonner et calculer
+60 est pair. La somme de ses chiffres vaut 6, multiple de 3. $$60\div2=30\quad;\quad 60\div3=20$$
+:::
+
+::: resultat
+Oui : 60 est pair et sa somme de chiffres vaut 6, multiple de 3.
+:::
+
+## Question 2 : Peut-on fabriquer six lots identiques ? Donner leur composition.
+
+::: methode
+Partager chaque couleur séparément en six.
+:::
+
+::: etape Raisonner et calculer
+$$60\div6=10\quad;\quad 90\div6=15$$
+:::
+
+::: resultat
+Oui : 10 cartes rouges et 15 cartes bleues par lot.
+:::
+
+## Question 3 : Lister tous les nombres de lots possibles.
+
+::: methode
+Énumérer les diviseurs de chaque effectif.
+:::
+
+::: etape Raisonner et calculer
+Diviseurs de 60 : 1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60.
+
+Diviseurs de 90 : 1, 2, 3, 5, 6, 9, 10, 15, 18, 30, 45, 90.
+
+On conserve seulement les nombres présents dans les deux listes.
+:::
+
+::: resultat
+1, 2, 3, 5, 6, 10, 15, 30.
+:::
+
+## Question 4 : Quel est le plus grand nombre de lots possible ?
+
+::: methode
+Lire le plus grand diviseur commun dans la liste.
+:::
+
+::: etape Raisonner et calculer
+La liste commune est 1, 2, 3, 5, 6, 10, 15, 30. Son maximum est 30.
+:::
+
+::: resultat
+30 lots.
+:::
+
+## Question 5 : Quelle sera alors la composition d’un lot ?
+
+::: methode
+Partager chaque couleur entre les lots retenus.
+:::
+
+::: etape Raisonner et calculer
+$$60\div30=2\quad;\quad 90\div30=3$$
+:::
+
+::: resultat
+2 cartes rouges et 3 cartes bleues par lot.
+:::
+
+## Question 6 : Pourquoi ne peut-on pas choisir un nombre de lots plus grand simplement en partageant le total des cartes ?
+
+::: methode
+Vérifier la composition de chaque lot, couleur par couleur.
+:::
+
+::: etape Raisonner et calculer
+Par exemple, 150 divise le total 150, mais il est supérieur à chacun des deux effectifs : on ne peut pas répartir une carte de chaque couleur dans chacun de ces lots.
+:::
+
+::: resultat
+Le nombre de lots doit diviser chacun des deux effectifs, pas seulement leur somme.
+:::
+
+::: retenir
+Des lots identiques sans reste imposent un diviseur commun aux effectifs de toutes les catégories.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Oui : 60 est pair et sa somme de chiffres vaut 6, multiple de 3.
+2. Oui : 10 cartes rouges et 15 cartes bleues par lot.
+3. 1, 2, 3, 5, 6, 10, 15, 30.
+4. 30 lots.
+5. 2 cartes rouges et 3 cartes bleues par lot.
+6. Le nombre de lots doit diviser chacun des deux effectifs, pas seulement leur somme.
+
+===
+
+=== Problème - Multiples, diviseurs et partages - 6. Quand les deux signaux se retrouveront-ils ?
+Id: 2745
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Deux signaux lumineux s’allument ensemble à l’instant 0. Le premier se rallume toutes les 9 secondes et le second toutes les 10 secondes.
+
+1. Donner les cinq premiers instants strictement positifs du premier signal.
+2. Donner les cinq premiers instants strictement positifs du second signal.
+3. Déterminer le premier instant positif où les signaux s’allument ensemble.
+4. Combien de périodes de chaque signal se sont écoulées à cet instant ?
+5. Donner les deux instants communs suivants.
+6. Pourquoi la somme des deux périodes ne donne-t-elle pas toujours une rencontre ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Donner les cinq premiers instants strictement positifs du premier signal.
+
+::: methode
+Écrire les cinq premiers multiples strictement positifs.
+:::
+
+::: etape Raisonner et calculer
+$$9\times1=9,\quad 9\times2=18,\quad\ldots,\quad 9\times5=45$$
+:::
+
+::: resultat
+9, 18, 27, 36, 45 s.
+:::
+
+## Question 2 : Donner les cinq premiers instants strictement positifs du second signal.
+
+::: methode
+Faire la même liste avec la seconde période.
+:::
+
+::: etape Raisonner et calculer
+$$10\times1=10,\quad 10\times2=20,\quad\ldots,\quad 10\times5=50$$
+:::
+
+::: resultat
+10, 20, 30, 40, 50 s.
+:::
+
+## Question 3 : Déterminer le premier instant positif où les signaux s’allument ensemble.
+
+::: methode
+Chercher le premier multiple strictement positif commun.
+:::
+
+::: etape Raisonner et calculer
+Jusqu’à la première rencontre :
+
+- Premier signal : 9, 18, 27, 36, 45, 54, 63, 72, 81, 90.
+- Second signal : 10, 20, 30, 40, 50, 60, 70, 80, 90.
+:::
+
+::: resultat
+90 s.
+:::
+
+## Question 4 : Combien de périodes de chaque signal se sont écoulées à cet instant ?
+
+::: methode
+Diviser l’instant commun par chaque période.
+:::
+
+::: etape Raisonner et calculer
+$$90\div9=10\quad;\quad 90\div10=9$$
+:::
+
+::: resultat
+10 période(s) du premier ; 9 du second.
+:::
+
+## Question 5 : Donner les deux instants communs suivants.
+
+::: methode
+Ajouter chaque fois la durée du cycle commun.
+:::
+
+::: etape Raisonner et calculer
+$$90+90=180\quad;\quad 180+90=270$$
+:::
+
+::: resultat
+180 s et 270 s.
+:::
+
+## Question 6 : Pourquoi la somme des deux périodes ne donne-t-elle pas toujours une rencontre ?
+
+::: methode
+Tester si la somme est un multiple de chaque période.
+:::
+
+::: etape Raisonner et calculer
+Ici, 9+10=19 n’est pas divisible par les deux périodes. Contre-exemple général : pour des périodes de 4 s et 6 s, la somme 10 s n’est multiple ni de 4 ni de 6.
+:::
+
+::: resultat
+Une rencontre exige un multiple des deux périodes ; leur somme n’a pas toujours cette propriété.
+:::
+
+::: retenir
+Pour des rendez-vous périodiques, chercher des multiples communs ; pour des partages sans reste, chercher des diviseurs communs.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. 9, 18, 27, 36, 45 s.
+2. 10, 20, 30, 40, 50 s.
+3. 90 s.
+4. 10 période(s) du premier ; 9 du second.
+5. 180 s et 270 s.
+6. Une rencontre exige un multiple des deux périodes ; leur somme n’a pas toujours cette propriété.
+
+===
+
+=== Problème - Multiples, diviseurs et partages - 7. Des places pour une sortie
+Id: 2746
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Une association doit ranger 151 objets dans des boîtes qui contiennent chacune au maximum 10 objets. Les objets ne peuvent pas être découpés.
+
+1. Encadrer 151 par deux multiples consécutifs de 10.
+2. Effectuer la division euclidienne : donner quotient et reste.
+3. Vérifier que le reste est autorisé.
+4. Combien de boîtes faut-il pour ranger tous les objets ?
+5. Combien de places resteront vides dans la dernière boîte ?
+6. 10 est-il un diviseur de 151 ? Quel nombre minimal d’objets faudrait-il ajouter pour obtenir des boîtes toutes pleines ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Encadrer 151 par deux multiples consécutifs de 10.
+
+::: methode
+Chercher deux multiples consécutifs du diviseur.
+:::
+
+::: etape Raisonner et calculer
+$$10\times15=150\le 151<160=10\times16$$
+:::
+
+::: resultat
+$150\le 151<160$.
+:::
+
+## Question 2 : Effectuer la division euclidienne : donner quotient et reste.
+
+::: methode
+Décomposer en boîtes pleines et objets restants.
+:::
+
+::: etape Raisonner et calculer
+$$151=10\times15+1$$
+:::
+
+::: resultat
+Quotient 15 ; reste 1.
+:::
+
+## Question 3 : Vérifier que le reste est autorisé.
+
+::: methode
+Vérifier les deux bornes imposées au reste.
+:::
+
+::: etape Raisonner et calculer
+$$0\le 1<10$$
+:::
+
+::: resultat
+$0\le 1<10$ : le reste convient.
+:::
+
+## Question 4 : Combien de boîtes faut-il pour ranger tous les objets ?
+
+::: methode
+Tenir compte du reste pour ranger tous les objets.
+:::
+
+::: etape Raisonner et calculer
+Il reste 1 objet(s) après les 15 boîtes pleines : $$15+1=16$$
+:::
+
+::: resultat
+16 boîtes.
+:::
+
+## Question 5 : Combien de places resteront vides dans la dernière boîte ?
+
+::: methode
+Comparer la capacité totale au nombre d’objets.
+:::
+
+::: etape Raisonner et calculer
+$$\begin{aligned}16\times10-151&=160-151\\&=9\end{aligned}$$
+:::
+
+::: resultat
+9 places.
+:::
+
+## Question 6 : 10 est-il un diviseur de 151 ? Quel nombre minimal d’objets faudrait-il ajouter pour obtenir des boîtes toutes pleines ?
+
+::: methode
+Vérifier la divisibilité, puis compléter au multiple suivant.
+:::
+
+::: etape Raisonner et calculer
+Le reste vaut 1, donc il est non nul. $$151+9=160$$
+:::
+
+::: resultat
+Non ; ajouter 9 objets permet d’obtenir 160 objets.
+:::
+
+::: retenir
+Dans une division euclidienne, le reste est toujours inférieur au diviseur. Une boîte partiellement remplie compte comme une boîte.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $150\le 151<160$.
+2. Quotient 15 ; reste 1.
+3. $0\le 1<10$ : le reste convient.
+4. 16 boîtes.
+5. 9 places.
+6. Non ; ajouter 9 objets permet d’obtenir 160 objets.

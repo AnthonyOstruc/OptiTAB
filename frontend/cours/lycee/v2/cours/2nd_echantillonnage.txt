@@ -1,0 +1,73 @@
+=== Échantillonnage - Programme Seconde
+Images: 2nd_echant_stabilisation.png, 2nd_echant_fluctuation.png
+Titre: Échantillonnage et simulation
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+    <div style="background:#e8f4fd; border:2px solid #3498db; border-radius:8px; padding:15px; margin-bottom:20px;">
+        <p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🎯 Objectifs du chapitre :</strong> comprendre la notion d’échantillon et la fluctuation d’échantillonnage, utiliser la stabilisation des fréquences pour estimer une probabilité, connaître l’ordre de grandeur $\frac{1}{\sqrt{n}}$ de l’écart entre fréquence et probabilité, et simuler des échantillons en Python.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Échantillon et fluctuation</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Définition :</strong> un <strong>échantillon de taille $n$</strong> est la liste des résultats obtenus en répétant $n$ fois, de façon indépendante, la même expérience aléatoire. Si un événement $A$ est réalisé $k$ fois, sa <strong>fréquence</strong> dans l’échantillon est $f = \frac{k}{n}$.</p>
+        </div>
+        <p style="font-size:1em;"><strong>Exemple :</strong> on lance $50$ fois une pièce et on obtient $27$ fois « pile » : la fréquence de « pile » est $f = \frac{27}{50} = 0{,}54$. Un autre échantillon de $50$ lancers donnera en général une autre fréquence : c’est la <strong>fluctuation d’échantillonnage</strong>.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Stabilisation des fréquences</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Loi des grands nombres :</strong> lorsque la taille $n$ de l’échantillon devient grande, la fréquence $f$ d’un événement se rapproche de sa probabilité $p$.</p>
+        </div>
+        [IMAGE_1]
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Estimer une probabilité :</strong> quand $p$ est inconnue (punaise qui tombe sur la pointe, dé déformé…), on l’estime par la fréquence observée sur un grand nombre d’expériences.
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Précision d’une estimation</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Propriété (observée par simulation) :</strong> pour des échantillons de taille $n$ assez grande, dans environ $95\,\%$ des cas, la fréquence $f$ vérifie $|f - p| \le \frac{1}{\sqrt{n}}$, c’est-à-dire $p - \frac{1}{\sqrt{n}} \le f \le p + \frac{1}{\sqrt{n}}$.</p>
+        </div>
+        [IMAGE_2]
+        <p style="font-size:1em;"><strong>Exemple :</strong> pour $n = 400$, $\frac{1}{\sqrt{400}} = 0{,}05$ : dans environ $95\,\%$ des échantillons, la fréquence est à moins de $0{,}05$ de $p$. Pour diviser cet écart par $2$, il faut multiplier la taille de l’échantillon par $4$.</p>
+        <p style="font-size:1em;"><strong>Application :</strong> on lance $1\,000$ fois un dé et le $6$ sort $210$ fois. Ici $f = 0{,}21$, $p = \frac{1}{6} \approx 0{,}167$ et $\frac{1}{\sqrt{1\,000}} \approx 0{,}032$. Comme $|f - p| \approx 0{,}043 \gt 0{,}032$, on peut douter que le dé soit équilibré.</p>
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong> ce n’est pas une certitude. Même avec un dé équilibré, environ $5\,\%$ des échantillons s’écartent de plus de $\frac{1}{\sqrt{n}}$ : la conclusion comporte toujours un risque d’erreur.
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Simuler en Python</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <p style="font-size:1em;">L’instruction <code>random()</code> renvoie un nombre au hasard dans $[0\,;1[$ : le test « <code>random() &lt; p</code> » est donc vrai avec la probabilité $p$.</p>
+        <div style="background:#2c3e50; color:#ecf0f1; padding:12px; border-radius:6px; margin:10px 0 0 0; font-family:monospace; white-space:pre; overflow-x:auto;">from random import random
+from math import sqrt
+
+def frequence(n, p):
+    k = 0
+    for i in range(n):
+        if random() &lt; p:
+            k = k + 1
+    return k / n
+
+def proportion_proches(N, n, p):
+    c = 0
+    for j in range(N):
+        if abs(frequence(n, p) - p) &lt;= 1 / sqrt(n):
+            c = c + 1
+    return c / N</div>
+        <p style="font-size:1em;"><strong>Exemple :</strong> <code>proportion_proches(1000, 100, 0.5)</code> renvoie une valeur proche de $0{,}95$.</p>
+    </div>
+
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:8px; padding:15px; margin:20px 0 0 0;">
+        <p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🏆 L’essentiel :</strong> la fréquence $f = \frac{k}{n}$ varie d’un échantillon à l’autre (fluctuation) ; quand $n$ augmente, $f$ se stabilise autour de $p$ (loi des grands nombres) ; dans environ $95\,\%$ des cas, $|f - p| \le \frac{1}{\sqrt{n}}$ ; une simulation en Python permet de le vérifier. Fiche de synthèse dans l’onglet Fiches !</p>
+    </div>
+
+</div>

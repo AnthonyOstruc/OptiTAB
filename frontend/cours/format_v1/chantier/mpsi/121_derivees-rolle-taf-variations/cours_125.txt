@@ -1,0 +1,820 @@
+Titre: Dérivation
+
+<!-- optitab:1 -->
+## I. Définition de la dérivée
+
+### Dérivée en un point
+
+::: definition Dérivée en un point
+Soit $f$ une fonction définie sur un intervalle $I$ et $a \in I$.
+
+On dit que $f$ est dérivable en $a$ si la limite suivante existe et est finie :
+
+::: formule
+$$
+\begin{aligned}
+f'(a) &= \lim_{h \to 0} \frac{f(a+h) - f(a)}{h} \\
+&= \lim_{x \to a} \frac{f(x) - f(a)}{x - a}
+\end{aligned}
+$$
+:::
+
+Cette limite, notée $f'(a)$, est appelée **dérivée de $f$ en $a$**.
+:::
+
+::: notation
+On note la dérivée de $f$ en $a$ de plusieurs façons :
+
+- $\displaystyle f'(a)$ (notation de Lagrange)
+- $\frac{df}{dx}(a)$ ou $\frac{d}{dx}(f(x))|_{x=a}$ (notation de Leibniz)
+- $\displaystyle Df(a)$ (notation opérateur)
+:::
+
+::: definition Dérivée à gauche et à droite
+Si $a$ est une extrémité de $I$ ou si on veut étudier séparément les limites à gauche et à droite :
+
+- **Dérivée à droite :** $\displaystyle f'_d(a) = \lim_{h \to 0^+} \frac{f(a+h) - f(a)}{h}$
+- **Dérivée à gauche :** $\displaystyle f'_g(a) = \lim_{h \to 0^-} \frac{f(a+h) - f(a)}{h}$
+
+$f$ est dérivable en $a$ si et seulement si $f'_d(a) = f'_g(a)$.
+:::
+
+::: definition Fonction dérivable sur un intervalle
+On dit que $f$ est dérivable sur $I$ si $f$ est dérivable en tout point de $I$.
+
+La fonction $f' : x \mapsto f'(x)$ est appelée **fonction dérivée** de $f$.
+:::
+
+::: demonstration Interprétation géométrique
+La dérivée $f'(a)$ représente le **coefficient directeur de la tangente** à la courbe représentative de $f$ au point d'abscisse $a$.
+
+L'équation de la tangente au point $(a, f(a))$ est :
+
+::: formule
+$$y = f(a) + f'(a)(x - a)$$
+:::
+:::
+
+::: demonstration Linéarisation (expansion locale d'ordre 1)
+Si $f$ est dérivable en $a$, alors :
+
+::: formule
+$f(a+h) = f(a) + f'(a)h + o(h)$ lorsque $h \to 0$
+:::
+
+où $o(h)$ désigne une fonction négligeable devant $h$ quand $h \to 0$.
+
+*Approximation locale :* $f(a+h) \approx f(a) + f'(a)h$ pour $h$ petit.
+
+Cette formule est très utile pour les approximations numériques et l'étude locale du comportement d'une fonction.
+:::
+
+::: exemple
+- Pour $f(x) = x^2$ en $a = 2$ : $f'(2) = \lim_{h \to 0} \frac{(2+h)^2 - 4}{h} = \lim_{h \to 0} \frac{4 + 4h + h^2 - 4}{h} = \lim_{h \to 0} (4 + h) = 4$
+- Pour $f(x) = \sqrt{x}$ en $a > 0$ : $f'(a) = \lim_{h \to 0} \frac{\sqrt{a+h} - \sqrt{a}}{h} = \lim_{h \to 0} \frac{1}{\sqrt{a+h} + \sqrt{a}} = \frac{1}{2\sqrt{a}}$
+- La fonction valeur absolue $x \mapsto |x|$ n'est pas dérivable en $0$ car $f'_d(0) = 1$ et $f'_g(0) = -1$
+:::
+
+## II. Règles de dérivation
+
+### Dérivée d'une combinaison linéaire
+
+::: definition Linéarité de la dérivation
+Soient $f$ et $g$ deux fonctions dérivables sur $I$, et $\lambda, \mu \in \mathbb{R}$.
+
+Alors $\lambda f + \mu g$ est dérivable sur $I$ et :
+
+::: formule
+$$(\lambda f + \mu g)' = \lambda f' + \mu g'$$
+:::
+:::
+
+::: exemple
+Si $f(x) = 3x^2 + 5x - 2$, alors $f'(x) = 3 \times 2x + 5 \times 1 - 0 = 6x + 5$
+:::
+
+### Dérivée d'un produit
+
+::: definition Règle du produit
+Soient $f$ et $g$ deux fonctions dérivables sur $I$.
+
+Alors $fg$ est dérivable sur $I$ et :
+
+::: formule
+$$(fg)' = f'g + fg'$$
+:::
+:::
+
+::: exemple
+Si $\displaystyle f(x) = x^2 \sin(x)$, alors :
+
+$$
+\begin{aligned}
+f'(x) &= (x^2)' \sin(x) + x^2 (\sin(x))' \\
+&= 2x \sin(x) + x^2 \cos(x)
+\end{aligned}
+$$
+:::
+
+::: remarque Généralisation
+Pour un produit de $n$ fonctions dérivables :
+
+$$(f_1 f_2 \cdots f_n)' = f'_1 f_2 \cdots f_n + f_1 f'_2 \cdots f_n + \cdots + f_1 f_2 \cdots f'_n$$
+:::
+
+### Dérivée d'un quotient
+
+::: definition Règle du quotient
+Soient $f$ et $g$ deux fonctions dérivables sur $I$ avec $g(x) \neq 0$ pour tout $x \in I$.
+
+Alors $\frac{f}{g}$ est dérivable sur $I$ et :
+
+::: formule
+$$\left(\frac{f}{g}\right)' = \frac{f'g - fg'}{g^2}$$
+:::
+:::
+
+::: exemple
+Si $\displaystyle f(x) = \frac{x^2 + 1}{x}$, alors :
+
+$$
+\begin{aligned}
+f'(x) &= \frac{(x^2 + 1)' \times x - (x^2 + 1) \times x'}{x^2} \\
+&= \frac{2x \times x - (x^2 + 1) \times 1}{x^2} \\
+&= \frac{x^2 - 1}{x^2}
+\end{aligned}
+$$
+:::
+
+::: attention
+Ne pas confondre $\left(\frac{f}{g}\right)'$ avec $\frac{f'}{g'}$ !
+
+En général : $\displaystyle \left(\frac{f}{g}\right)' \neq \frac{f'}{g'}$
+:::
+
+### Dérivée d'une composée
+
+::: definition Règle de la chaîne (ou dérivation d'une composée)
+Soient $f : I \to J$ et $g : J \to \mathbb{R}$ deux fonctions dérivables.
+
+Alors $g \circ f$ est dérivable sur $I$ et :
+
+::: formule
+$$(g \circ f)' = (g' \circ f) \times f'$$
+:::
+
+En notation de Leibniz : $\displaystyle \frac{d}{dx}(g(f(x))) = g'(f(x)) \times f'(x)$
+:::
+
+::: exemple
+Si $\displaystyle f(x) = \sin(x^2)$, alors :
+
+$$
+\begin{aligned}
+f'(x) &= \cos(x^2) \times (x^2)' \\
+&= \cos(x^2) \times 2x \\
+&= 2x \cos(x^2)
+\end{aligned}
+$$
+:::
+
+::: exemple
+Si $\displaystyle f(x) = (x^3 + 2x)^5$, alors :
+
+$$
+\begin{aligned}
+f'(x) &= 5(x^3 + 2x)^4 \times (x^3 + 2x)' \\
+&= 5(x^3 + 2x)^4 \times (3x^2 + 2)
+\end{aligned}
+$$
+:::
+
+::: conseil
+Pour dériver une composée, on dérive d'abord la fonction « extérieure » en gardant l'intérieur, puis on multiplie par la dérivée de la fonction « intérieure ».
+:::
+
+### Dérivées partielles (exemples simples)
+
+::: definition Dérivées partielles
+Pour une fonction de plusieurs variables, on peut dériver par rapport à une variable en considérant les autres comme constantes.
+
+On note $\frac{\partial f}{\partial x}$ ou $f_x$ la dérivée partielle de $f$ par rapport à $x$.
+
+On dérive par rapport à une variable en considérant l'autre comme constante. Ces résultats sont admis à ce stade.
+:::
+
+::: exemple
+- Si $f(x,y) = x^2 + xy + y^2$, alors $f_x = 2x + y$ et $f_y = x + 2y$
+- Si $g(x,y) = x e^{xy}$, alors $g_x = e^{xy}(1 + xy)$ et $g_y = x^2 e^{xy}$
+:::
+
+## III. Caractérisation des fonctions constantes et monotones
+
+### Fonctions constantes
+
+::: definition Caractérisation des fonctions constantes
+Soit $f$ une fonction dérivable sur un intervalle $I$.
+
+Les assertions suivantes sont équivalentes :
+
+- $f$ est constante sur $I$
+- $f'(x) = 0$ pour tout $x \in I$
+:::
+
+::: demonstration
+Si $f$ est constante, alors $f(x) = c$ pour tout $x$, donc $f'(x) = 0$.
+
+Réciproquement, si $f' = 0$ sur $I$, alors pour $a, b \in I$ avec $a < b$, le théorème des accroissements finis donne :
+
+$$f(b) - f(a) = f'(c)(b-a) = 0$$
+
+Donc $f(b) = f(a)$ pour tous $a, b \in I$, ce qui montre que $f$ est constante.
+:::
+
+### Fonctions croissantes et décroissantes
+
+::: definition Caractérisation des fonctions croissantes
+Soit $f$ une fonction dérivable sur un intervalle $I$.
+
+- $f$ est **croissante** sur $I$ si et seulement si $f'(x) \geq 0$ pour tout $x \in I$
+- $f$ est **strictement croissante** sur $I$ si $f'(x) > 0$ pour tout $x \in I$
+
+** Attention :** La réciproque n'est pas vraie en général. Si $f$ est strictement croissante, on a seulement $f'(x) \geq 0$ (avec éventuellement des zéros isolés).
+:::
+
+::: definition Caractérisation des fonctions décroissantes
+Soit $f$ une fonction dérivable sur un intervalle $I$.
+
+- $f$ est **décroissante** sur $I$ si et seulement si $f'(x) \leq 0$ pour tout $x \in I$
+- $f$ est **strictement décroissante** sur $I$ si $f'(x) < 0$ pour tout $x \in I$
+:::
+
+::: exemple
+Pour $f(x) = x^3$, on a $f'(x) = 3x^2 \geq 0$ pour tout $x \in \mathbb{R}$.
+
+On a $f'(0) = 0$ mais $f$ est strictement croissante sur $\mathbb{R}$.
+
+Ceci montre que la condition $f'(x) > 0$ n'est pas nécessaire pour avoir une fonction strictement croissante.
+:::
+
+::: attention Contre-exemple important
+La fonction $f(x) = x^3$ est strictement croissante sur $\mathbb{R}$ mais $f'(0) = 0$.
+
+Donc : **strictement croissante** $\nRightarrow$ $f'(x) > 0$ partout.
+:::
+
+## IV. Théorèmes fondamentaux : Rolle et accroissements finis
+
+### Théorème de Rolle
+
+::: theoreme
+Soit $f$ une fonction définie sur $[a,b]$ avec $a < b$.
+
+Si :
+
+- $f$ est continue sur $[a,b]$
+- $f$ est dérivable sur $]a,b[$
+- $\displaystyle f(a) = f(b)$
+
+Alors il existe $c \in ]a,b[$ tel que $f'(c) = 0$.
+:::
+
+::: demonstration Interprétation géométrique
+Si une fonction continue et dérivable prend la même valeur aux extrémités d'un intervalle, alors il existe au moins un point à l'intérieur où la tangente est horizontale.
+:::
+
+::: exemple
+Pour $f(x) = x^2 - 4x + 3$ sur $[1,3]$ :
+
+On a $f(1) = 0$ et $f(3) = 0$.
+
+$f'(x) = 2x - 4$, donc $f'(2) = 0$ avec $2 \in ]1,3[$.
+
+Le théorème de Rolle est vérifié : il existe bien un point où la dérivée s'annule.
+:::
+
+[IMAGE_1]
+
+### Théorème des accroissements finis (TAF)
+
+::: theoreme
+Soit $f$ une fonction définie sur $[a,b]$ avec $a < b$.
+
+Si :
+
+- $f$ est continue sur $[a,b]$
+- $f$ est dérivable sur $]a,b[$
+
+Alors il existe $\displaystyle c \in ]a,b[$ tel que :
+
+::: formule
+$$f(b) - f(a) = f'(c)(b - a)$$
+:::
+
+ou encore :
+
+::: formule
+$$f'(c) = \frac{f(b) - f(a)}{b - a}$$
+:::
+:::
+
+::: demonstration Interprétation géométrique
+Il existe au moins un point $c$ où la tangente à la courbe est parallèle à la corde joignant les points $(a, f(a))$ et $(b, f(b))$.
+
+Le coefficient directeur de cette corde est $\frac{f(b) - f(a)}{b - a}$.
+:::
+
+[IMAGE_2]
+
+::: exemple
+Pour $f(x) = x^2$ sur $[1,3]$ :
+
+$f(3) - f(1) = 9 - 1 = 8$ et $f'(x) = 2x$.
+
+Le TAF affirme qu'il existe $c \in ]1,3[$ tel que $8 = 2c \times (3-1) = 4c$.
+
+Donc $c = 2$, et effectivement $f'(2) = 4 = \frac{8}{2}$.
+:::
+
+::: definition Corollaires du TAF
+- **Inégalité de Lipschitz :** Si $|f'(x)| \leq M$ pour tout $x \in [a,b]$, alors $|f(b) - f(a)| \leq M|b - a|$
+- **Fonction constante :** Si $f' = 0$ sur un intervalle connexe $I$, alors $f$ est constante sur $I$
+- **Monotonie :** Si $f' \geq 0$ (resp. $f' \leq 0$) sur $I$, alors $f$ est croissante (resp. décroissante) sur $I$
+:::
+
+::: exemple Application du corollaire de Lipschitz
+Si $f'(x) = \cos(x)$ sur $[0, \pi]$, alors $|f'(x)| \leq 1$.
+
+Donc $\displaystyle |f(\pi) - f(0)| \leq \pi$.
+
+La variation de $f$ sur l'intervalle est majorée par la longueur de l'intervalle multipliée par le maximum de $|f'|$.
+:::
+
+## V. Tableau de variations et étude pratique d'une fonction
+
+### Méthode d'étude d'une fonction
+
+::: etape Pour étudier une fonction
+1. **Déterminer l'ensemble de définition** $D_f$
+2. **Étudier la parité, la périodicité** (si applicable)
+3. **Calculer la dérivée** $\displaystyle f'$
+4. **Déterminer le signe de** $\displaystyle f'$
+5. **Construire le tableau de variations**
+6. **Déterminer les limites aux bornes** de l'ensemble de définition
+7. **Tracer la courbe représentative**
+:::
+
+::: definition Tableau de variations
+Le tableau de variations résume les variations de $f$ sur son ensemble de définition.
+
+Il contient :
+
+- Les valeurs de $x$ où $f'$ s'annule ou change de signe
+- Le signe de $f'$ sur chaque intervalle
+- Les variations de $f$ (flèches montantes ou descendantes)
+- Les valeurs de $f$ aux points remarquables (extrema locaux, limites)
+:::
+
+::: exemple Étude de $\displaystyle f(x) = x^3 - 3x + 1$
+**1. Ensemble de définition :** $D_f = \mathbb{R}$
+
+**2. Dérivée :** $\displaystyle f'(x) = 3x^2 - 3 = 3(x^2 - 1) = 3(x-1)(x+1)$
+
+**3. Signe de** $\displaystyle f'$ :
+
+- $f'(x) > 0$ pour $x < -1$ ou $x > 1$
+- $f'(x) < 0$ pour $-1 < x < 1$
+- $f'(x) = 0$ pour $x = -1$ ou $x = 1$
+
+**4. Tableau de variations :**
+
+::: tableau
+x : -\infty, -1, 1, +\infty
+Signe de $\displaystyle f'(x)$ : , +, z, -, z, +,
+Variation de $\displaystyle f$ : -/-\infty, +/3, -/-1, +/+\infty
+:::
+
+On a : $f(-1) = (-1)^3 - 3(-1) + 1 = 3$ et $f(1) = 1 - 3 + 1 = -1$
+
+$f$ admet un maximum local en $x = -1$ et un minimum local en $x = 1$.
+:::
+
+### Recherche d'extremums
+
+::: definition Extremum local
+Soit $f$ une fonction dérivable sur un intervalle $I$ et $a \in I$.
+
+- Si $f'$ s'annule en $a$ en changeant de signe de $+$ à $-$, alors $f$ admet un **maximum local** en $a$
+- Si $f'$ s'annule en $a$ en changeant de signe de $-$ à $+$, alors $f$ admet un **minimum local** en $a$
+- Si $f'$ s'annule en $a$ sans changer de signe, alors $a$ n'est pas un extremum
+:::
+
+::: attention Condition nécessaire mais non suffisante
+Si $f$ admet un extremum local en $a$ et si $f$ est dérivable en $a$, alors $f'(a) = 0$.
+
+Mais la réciproque est fausse : $f'(a) = 0$ n'implique pas nécessairement un extremum (exemple : $f(x) = x^3$ en $0$).
+:::
+
+### Critère de la dérivée seconde (outil pratique)
+
+::: definition Critère de la dérivée seconde
+Soit $f$ une fonction deux fois dérivable sur un intervalle $I$ et $a \in I$ tel que $f'(a) = 0$.
+
+Alors :
+
+- Si $f''(a) > 0$, alors $f$ admet un **minimum local** en $a$
+- Si $f''(a) < 0$, alors $f$ admet un **maximum local** en $a$
+- Si $f''(a) = 0$, alors on ne peut pas conclure directement : il faut étudier le signe de $f'$ autour de $a$ (ou utiliser les dérivées d'ordre supérieur)
+:::
+
+::: formule Résumé pratique
+Si $f'(a) = 0$ et $f''(a) > 0 \Rightarrow$ minimum local
+
+Si $f'(a) = 0$ et $f''(a) < 0 \Rightarrow$ maximum local
+
+Si $f'(a) = 0$ et $f''(a) = 0 \Rightarrow$ conclure via $f'$ (ou ordre supérieur)
+:::
+
+::: exemple
+Pour $f(x) = x^3 - 3x + 1$, on a $f'(x) = 3x^2 - 3$ et $f''(x) = 6x$.
+
+Les points critiques sont $x = -1$ et $x = 1$ (où $f'(x) = 0$).
+
+- En $x = -1$ : $f''(-1) = -6 < 0$, donc **maximum local** en $x = -1$
+- En $x = 1$ : $f''(1) = 6 > 0$, donc **minimum local** en $x = 1$
+
+Ce résultat confirme ce que nous avions trouvé en étudiant le signe de $f'$.
+:::
+
+::: remarque Avantage
+Ce critère est très pratique car il permet de déterminer rapidement la nature d'un extremum sans avoir à étudier le signe de $f'$ autour du point critique.
+
+Cependant, il nécessite que $f$ soit deux fois dérivable et ne s'applique pas si $f''(a) = 0$.
+:::
+
+::: attention Cas particulier
+Si $f''(a) = 0$, le critère ne permet pas de conclure. Il faut alors :
+
+- Étudier le signe de $f'$ autour de $a$
+- Ou utiliser les dérivées d'ordre supérieur si disponibles
+
+Exemple : Pour $f(x) = x^4$, on a $f'(0) = 0$ et $f''(0) = 0$, mais $f^{(4)}(0) = 24 > 0$, donc $0$ est un minimum local.
+:::
+
+## VI. Convexité et concavité
+
+### Définition de la convexité
+
+::: definition Fonction convexe
+Soit $f$ une fonction définie sur un intervalle $I$.
+
+On dit que $f$ est **convexe** sur $I$ si pour tous $a, b \in I$ et pour tout $t \in [0,1]$ :
+
+::: formule
+$$f(ta + (1-t)b) \leq tf(a) + (1-t)f(b)$$
+:::
+
+On dit que $f$ est **strictement convexe** si l'inégalité est stricte pour $t \in ]0,1[$ et $a \neq b$.
+:::
+
+::: definition Fonction concave
+On dit que $f$ est **concave** sur $I$ si $-f$ est convexe, c'est-à-dire si pour tous $a, b \in I$ et pour tout $t \in [0,1]$ :
+
+::: formule
+$$f(ta + (1-t)b) \geq tf(a) + (1-t)f(b)$$
+:::
+
+On dit que $f$ est **strictement concave** si l'inégalité est stricte pour $t \in ]0,1[$ et $a \neq b$.
+:::
+
+::: demonstration Interprétation géométrique
+Une fonction est **convexe** si son graphe est situé **en dessous** de toute corde joignant deux points de la courbe.
+
+Une fonction est **concave** si son graphe est situé **au-dessus** de toute corde joignant deux points de la courbe.
+
+Pour une fonction convexe, la courbe « tourne sa concavité vers le haut » (forme de U).
+
+Pour une fonction concave, la courbe « tourne sa concavité vers le bas » (forme de ∩).
+:::
+
+[IMAGE_3]
+
+### Caractérisation par la dérivée seconde
+
+::: theoreme
+Soit $f$ une fonction deux fois dérivable sur un intervalle $I$.
+
+- $f$ est **convexe** sur $I$ si et seulement si $f''(x) \geq 0$ pour tout $x \in I$
+- $f$ est **strictement convexe** sur $I$ si $f''(x) > 0$ pour tout $x \in I$
+- $f$ est **concave** sur $I$ si et seulement si $f''(x) \leq 0$ pour tout $x \in I$
+- $f$ est **strictement concave** sur $I$ si $f''(x) < 0$ pour tout $x \in I$
+:::
+
+::: demonstration Interprétation
+La dérivée seconde $f''$ mesure la « courbure » de la fonction.
+
+- Si $f'' > 0$ : la fonction est convexe, la dérivée première $f'$ est croissante
+- Si $f'' < 0$ : la fonction est concave, la dérivée première $f'$ est décroissante
+:::
+
+::: exemple
+- Pour $f(x) = x^2$ : $f'(x) = 2x$, $f''(x) = 2 > 0$, donc $f$ est **strictement convexe** sur $\mathbb{R}$
+- Pour $f(x) = -x^2$ : $f'(x) = -2x$, $f''(x) = -2 < 0$, donc $f$ est **strictement concave** sur $\mathbb{R}$
+- Pour $f(x) = e^x$ : $f''(x) = e^x > 0$, donc $f$ est **strictement convexe** sur $\mathbb{R}$
+- Pour $f(x) = \ln(x)$ sur $]0,+\infty[$ : $f''(x) = -\frac{1}{x^2} < 0$, donc $f$ est **strictement concave**
+- Pour $f(x) = x^3$ : $f''(x) = 6x$, donc $f$ est convexe sur $[0,+\infty[$ et concave sur $]-\infty,0]$
+:::
+
+### Point d'inflexion
+
+::: definition
+Soit $f$ une fonction définie sur un intervalle $I$ et $a \in I$.
+
+On dit que $a$ est un **point d'inflexion** de $f$ si $f$ change de convexité en $a$, c'est-à-dire si :
+
+- $f$ est convexe sur un intervalle $]a-\varepsilon, a[$ et concave sur $]a, a+\varepsilon[$ (ou inversement)
+- pour un certain $\displaystyle \varepsilon > 0$
+:::
+
+::: definition Caractérisation par la dérivée seconde
+Si $f$ est deux fois dérivable et si $a$ est un point d'inflexion, alors $f''(a) = 0$.
+
+Réciproquement, si $f''(a) = 0$ et si $f''$ change de signe en $a$, alors $a$ est un point d'inflexion.
+:::
+
+::: demonstration Interprétation géométrique
+En un point d'inflexion, la courbe traverse sa tangente. La courbe change de « courbure » : elle passe de convexe à concave (ou inversement).
+:::
+
+::: exemple
+Pour $f(x) = x^3$ : $f''(x) = 6x$.
+
+On a $f''(0) = 0$ et $f''$ change de signe en $0$ (négative avant, positive après).
+
+Donc $0$ est un point d'inflexion : $f$ est concave sur $]-\infty, 0[$ et convexe sur $]0, +\infty[$.
+:::
+
+::: attention
+$f''(a) = 0$ n'implique pas nécessairement un point d'inflexion.
+
+Exemple : Pour $f(x) = x^4$, on a $f''(0) = 0$ mais $0$ n'est pas un point d'inflexion car $f''$ ne change pas de signe (elle reste positive).
+:::
+
+### Tableau de convexité
+
+::: methode Pour étudier la convexité
+Pour étudier la convexité d'une fonction $f$ deux fois dérivable :
+
+1. Calculer $\displaystyle f''$
+2. Déterminer le signe de $\displaystyle f''$
+3. Construire le tableau de convexité (indiquant où $f$ est convexe ou concave)
+4. Identifier les points d'inflexion (où $f''$ s'annule en changeant de signe)
+:::
+
+::: exemple Étude de $\displaystyle f(x) = x^3 - 3x$
+**1. Dérivée seconde :** $f'(x) = 3x^2 - 3$ et $f''(x) = 6x$
+
+**2. Signe de** $\displaystyle f''$ :
+
+- $f''(x) < 0$ pour $x < 0$ : $f$ est **concave** sur $]-\infty, 0[$
+- $f''(x) = 0$ pour $x = 0$
+- $f''(x) > 0$ pour $x > 0$ : $f$ est **convexe** sur $]0, +\infty[$
+
+**3. Point d'inflexion :** $x = 0$ est un point d'inflexion car $f''$ change de signe en $0$.
+:::
+
+## VII. Tracé du graphe
+
+### Éléments pour le tracé
+
+::: methode Points à déterminer pour tracer le graphe
+- **Points remarquables :** intersections avec les axes, extremums locaux
+- **Tangentes :** équations des tangentes aux points remarquables
+- **Asymptotes :** asymptotes verticales, horizontales ou obliques
+- **Limites :** comportement aux bornes de l'ensemble de définition
+- **Variations :** utiliser le tableau de variations pour guider le tracé
+:::
+
+::: definition Équation de la tangente
+La tangente à la courbe représentative de $f$ au point d'abscisse $a$ a pour équation :
+
+::: formule
+$$y = f(a) + f'(a)(x - a)$$
+:::
+:::
+
+::: exemple
+Pour $f(x) = x^2$ au point $a = 1$ :
+
+$f(1) = 1$ et $f'(1) = 2$, donc la tangente a pour équation :
+
+$$y = 1 + 2(x - 1) = 2x - 1$$
+:::
+
+## VIII. Dérivée d'une fonction réciproque
+
+### Théorème de la fonction réciproque
+
+::: definition Dérivée d'une fonction réciproque
+Soit $f$ une fonction continue et strictement monotone sur un intervalle $I$, et soit $f^{-1}$ sa fonction réciproque définie sur $J = f(I)$.
+
+Si $f$ est dérivable en $a \in I$ avec $f'(a) \neq 0$, alors $f^{-1}$ est dérivable en $b = f(a)$ et :
+
+::: formule
+$$
+\begin{aligned}
+(f^{-1})'(b) &= \frac{1}{f'(a)} \\
+&= \frac{1}{f'(f^{-1}(b))}
+\end{aligned}
+$$
+:::
+:::
+
+::: demonstration Interprétation géométrique
+Les courbes représentatives de $f$ et $f^{-1}$ sont symétriques par rapport à la droite $y = x$.
+
+Si la tangente à $f$ en $(a, f(a))$ a pour coefficient directeur $m$, alors la tangente à $f^{-1}$ en $(f(a), a)$ a pour coefficient directeur $\frac{1}{m}$.
+:::
+
+::: exemple Fonction racine carrée
+La fonction $f : x \mapsto x^2$ est strictement croissante sur $[0, +\infty[$.
+
+Sa réciproque est $f^{-1} : x \mapsto \sqrt{x}$ définie sur $[0, +\infty[$.
+
+Pour $x > 0$, on a $f'(x) = 2x$ et $f^{-1}(x) = \sqrt{x}$.
+
+Donc : $\displaystyle (f^{-1})'(x) = \frac{1}{f'(\sqrt{x})} = \frac{1}{2\sqrt{x}}$
+
+Ce qui confirme que $\displaystyle (\sqrt{x})' = \frac{1}{2\sqrt{x}}$.
+:::
+
+::: attention
+La condition $f'(a) \neq 0$ est essentielle. Si $f'(a) = 0$, alors $f^{-1}$ n'est pas dérivable en $f(a)$ (la tangente est verticale).
+:::
+
+## IX. Fonctions de classe C¹ et propriété de Darboux
+
+### Définition et propriétés
+
+::: definition Fonction de classe C¹
+Soit $f$ une fonction définie sur un intervalle $I$.
+
+On dit que $f$ est de **classe C¹** sur $I$ si :
+
+- $f$ est dérivable sur $I$
+- $f'$ est continue sur $I$
+:::
+
+::: propriete
+- Toute fonction de classe C¹ est dérivable, mais la réciproque est fausse
+- La somme, le produit et la composée de fonctions de classe C¹ sont de classe C¹
+- Le quotient de deux fonctions de classe C¹ (avec dénominateur non nul) est de classe C¹
+- Si $f$ est de classe C¹ et strictement monotone avec $f'$ ne s'annulant pas, alors $f^{-1}$ est de classe C¹
+:::
+
+::: exemple
+Les fonctions polynômes, exponentielles, logarithmes, fonctions trigonométriques sont de classe C¹ sur leur domaine de définition.
+
+La fonction $f(x) = x^2 \sin\left(\frac{1}{x}\right)$ pour $x \neq 0$ et $f(0) = 0$ est dérivable sur $\mathbb{R}$ mais n'est pas de classe C¹ car $f'$ n'est pas continue en $0$.
+:::
+
+### Propriété de Darboux pour les dérivées
+
+::: theoreme
+Soit $f$ une fonction dérivable sur un intervalle $I$.
+
+Alors $f'$ possède la **propriété des valeurs intermédiaires** sur $I$.
+
+Autrement dit : si $f'$ prend deux valeurs distinctes, alors elle prend toutes les valeurs intermédiaires.
+
+Une dérivée ne peut pas « sauter » de valeur.
+:::
+
+::: demonstration Conséquence importante
+Si $f'$ ne change pas de signe sur un intervalle $I$ (c'est-à-dire si $f'$ garde un signe constant ou s'annule), alors $f$ est monotone sur cet intervalle.
+
+En particulier, si $f'$ ne s'annule qu'en des points isolés, alors $f$ est strictement monotone sur les intervalles entre ces points.
+:::
+
+::: exemple
+La fonction $f(x) = x^3$ a pour dérivée $f'(x) = 3x^2$ qui s'annule uniquement en $0$.
+
+Puisque $f'$ ne change pas de signe (elle est toujours positive ou nulle), $f$ est croissante sur $\mathbb{R}$.
+
+En fait, $f$ est même strictement croissante car $f'$ ne s'annule qu'en un point isolé.
+:::
+
+::: remarque
+Contrairement aux fonctions continues, une dérivée peut ne pas être continue. Cependant, elle possède toujours la propriété des valeurs intermédiaires grâce au théorème de Darboux.
+:::
+
+## X. Dérivées d'ordre supérieur
+
+### Définition par récurrence
+
+::: definition Dérivée d'ordre n
+Soit $f$ une fonction définie sur un intervalle $I$.
+
+On définit par récurrence les dérivées successives :
+
+- $\displaystyle f^{(0)} = f$
+- Si $f^{(n)}$ existe et est dérivable, alors $f^{(n+1)} = (f^{(n)})'$
+
+On note aussi : $f'' = f^{(2)}$, $f''' = f^{(3)}$, etc.
+:::
+
+::: notation
+On note la dérivée d'ordre $n$ de plusieurs façons :
+
+- $\displaystyle f^{(n)}$ (notation de Lagrange)
+- $\frac{d^n f}{dx^n}$ ou $\frac{d^n}{dx^n}(f(x))$ (notation de Leibniz)
+- $\displaystyle D^n f$ (notation opérateur)
+:::
+
+::: definition Fonction de classe Cⁿ
+On dit que $f$ est de **classe Cⁿ** sur $I$ si $f$ est $n$ fois dérivable et si $f^{(n)}$ est continue sur $I$.
+
+On dit que $f$ est de **classe C∞** si $f$ est de classe Cⁿ pour tout $n \in \mathbb{N}$.
+:::
+
+::: exemple
+- Pour $f(x) = x^3$ : $f'(x) = 3x^2$, $f''(x) = 6x$, $f'''(x) = 6$, $f^{(4)}(x) = 0$
+- Pour $f(x) = e^x$ : $f^{(n)}(x) = e^x$ pour tout $n \in \mathbb{N}$
+- Pour $f(x) = \sin(x)$ : $f^{(n)}(x) = \sin\left(x + \frac{n\pi}{2}\right)$
+- Pour $f(x) = \ln(x)$ : $f^{(n)}(x) = \frac{(-1)^{n-1}(n-1)!}{x^n}$ pour $n \geq 1$
+:::
+
+### Formule de Leibniz
+
+::: definition Dérivée d'ordre n d'un produit
+Soient $f$ et $g$ deux fonctions $n$ fois dérivables sur $I$.
+
+Alors $fg$ est $n$ fois dérivable et :
+
+::: formule
+$$(fg)^{(n)} = \sum_{k=0}^{n} \binom{n}{k} f^{(k)} g^{(n-k)}$$
+:::
+
+Cette formule est appelée **formule de Leibniz**.
+:::
+
+::: exemple
+Pour calculer $\displaystyle (x^2 e^x)''$ :
+
+On pose $f(x) = x^2$ et $g(x) = e^x$.
+
+$f'(x) = 2x$, $f''(x) = 2$, $f'''(x) = 0$
+
+$g'(x) = e^x$, $g''(x) = e^x$
+
+Donc : $\displaystyle (x^2 e^x)'' = \binom{2}{0} x^2 e^x + \binom{2}{1} (2x) e^x + \binom{2}{2} (2) e^x = x^2 e^x + 4x e^x + 2 e^x = e^x(x^2 + 4x + 2)$
+:::
+
+## XI. Conseils méthodologiques
+
+### Méthodes de calcul
+
+::: methode Pour calculer une dérivée
+1. **Reconnaître le type** : somme, produit, quotient, composée
+2. **Appliquer les règles** : linéarité, produit, quotient, chaîne
+3. **Simplifier** : factoriser, réduire au même dénominateur
+4. **Vérifier** : s'assurer que le résultat est cohérent
+:::
+
+::: conseil
+- **Dérivée d'un produit :** Toujours utiliser $(fg)' = f'g + fg'$, jamais $(fg)' = f'g'$
+- **Dérivée d'un quotient :** Utiliser $\left(\frac{f}{g}\right)' = \frac{f'g - fg'}{g^2}$
+- **Composée :** Dériver d'abord la fonction extérieure, puis multiplier par la dérivée de l'intérieure
+- **Tableau de variations :** Toujours déterminer le signe de $f'$ avant de construire le tableau
+- **Extremums :** Vérifier le changement de signe de $f'$ pour confirmer un extremum
+- **Fonction réciproque :** Vérifier que $f'$ ne s'annule pas avant d'appliquer la formule
+:::
+
+::: attention
+- Confondre $(fg)'$ avec $f'g'$
+- Confondre $\left(\frac{f}{g}\right)'$ avec $\frac{f'}{g'}$
+- Oublier de multiplier par la dérivée de la fonction intérieure dans une composée
+- Penser que $f'(x) > 0$ est nécessaire pour une fonction strictement croissante
+- Oublier de vérifier que $f'(a) \neq 0$ avant d'appliquer la formule pour la dérivée d'une réciproque
+- Ne pas vérifier les conditions d'existence (dénominateur non nul, ensemble de définition)
+- Oublier les cas particuliers dans les calculs de limites pour les dérivées
+:::
+
+::: methode SF : Utilisation de la dérivation pour démontrer des inégalités
+Pour démontrer une inégalité $f(x) \geq g(x)$ sur un intervalle $I$, on peut :
+
+1. Étudier la fonction $\displaystyle h(x) = f(x) - g(x)$
+2. Calculer $h'$ et déterminer son signe
+3. En déduire les variations de $\displaystyle h$
+4. Vérifier que $h(x) \geq 0$ sur $I$
+:::
+
+::: methode SF : Recherche d'extremums
+Pour rechercher les extremums d'une fonction $f$ :
+
+1. Calculer $\displaystyle f'$
+2. Résoudre $\displaystyle f'(x) = 0$
+3. Étudier le signe de $f'$ autour de chaque solution
+4. Vérifier les valeurs aux bornes de l'intervalle
+5. Conclure sur la nature des extremums (maximum ou minimum, local ou global)
+:::

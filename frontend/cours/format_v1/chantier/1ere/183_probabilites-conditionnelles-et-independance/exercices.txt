@@ -1,0 +1,2456 @@
+=== DS - Devoir surveillé complet
+Id: 1312
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Devoir surveillé sur l’ensemble du chapitre. Les résultats non exacts sont arrondis au millième.
+
+**Partie A — Tableau croisé**
+
+Un lycée compte $400$ élèves. On note $C$ : « l’élève mange à la cantine » et $B$ : « l’élève vient en bus ». On choisit un élève au hasard.
+
+| | $B$ | $\overline{B}$ | Total |
+|---|---|---|---|
+| $C$ | $168$ | $\ldots$ | $280$ |
+| $\overline{C}$ | $\ldots$ | $\ldots$ | $\ldots$ |
+| Total | $240$ | $\ldots$ | $400$ |
+
+**A1.** Compléter le tableau.
+
+**A2.** Calculer $P_C(B)$ et $P_B(C)$, puis traduire chacune par une phrase.
+
+**A3.** Les événements $C$ et $B$ sont-ils indépendants ?
+
+**A4.** En déduire, sans calcul, la valeur de $P_{\overline{C}}(B)$, puis la vérifier avec le tableau.
+
+**Partie B — Arbre et inversion du conditionnement**
+
+Une usine fabrique des pièces sur deux machines : la machine $M_1$ produit $60\,\%$ des pièces, la machine $M_2$ le reste. $1\,\%$ des pièces de $M_1$ et $3\,\%$ des pièces de $M_2$ sont défectueuses. On prélève une pièce au hasard ; $D$ : « la pièce est défectueuse ».
+
+**B1.** Compléter l’arbre pondéré ci-dessous.
+
+[IMAGE_1]
+
+**B2.** Calculer $P(M_1 \cap D)$, puis montrer que $P(D) = 0{,}018$.
+
+**B3.** La pièce prélevée est défectueuse. Quelle est la probabilité qu’elle provienne de $M_2$ ?
+
+**B4.** La pièce prélevée n’est pas défectueuse. Quelle est la probabilité qu’elle provienne de $M_1$ ?
+
+**Partie C — Deux épreuves indépendantes**
+
+On prélève deux pièces au hasard. La production est assez importante pour que les deux prélèvements soient considérés comme **indépendants**. On note $D_1$ : « la première pièce est défectueuse » et $D_2$ : « la seconde pièce est défectueuse ».
+
+**C1.** Compléter l’arbre ci-dessous.
+
+[IMAGE_2]
+
+**C2.** Calculer la probabilité que les deux pièces soient défectueuses.
+
+**C3.** Calculer la probabilité qu’au moins une des deux pièces soit défectueuse.
+
+Étapes:
+<!-- optitab:1 -->
+## Partie A : Tableau croisé
+
+## Question A1 : Compléter le tableau
+
+::: methode
+Dans chaque ligne et chaque colonne, la somme des cases est égale au total.
+:::
+
+::: etape Cases déduites des totaux
+- Ligne $C$ : $280 - 168 = 112$ élèves dans $C \cap \overline{B}$.
+- Colonne $B$ : $240 - 168 = 72$ élèves dans $\overline{C} \cap B$.
+- Total de $\overline{C}$ : $400 - 280 = 120$ ; total de $\overline{B}$ : $400 - 240 = 160$.
+- Dernière case : $120 - 72 = 48$ élèves dans $\overline{C} \cap \overline{B}$.
+
+Contrôle par la colonne $\overline{B}$ : $112 + 48 = 160$.
+:::
+
+::: etape Tableau complété
+Les cases trouvées sont en vert.
+
+[IMAGE_3]
+:::
+
+::: resultat
+$C \cap \overline{B}$ : $112$ ; $\overline{C} \cap B$ : $72$ ; $\overline{C} \cap \overline{B}$ : $48$ ; totaux $120$ et $160$.
+:::
+
+## Question A2 : Calculer $P_C(B)$ et $P_B(C)$
+
+::: methode
+L’élève est choisi au hasard : $P_C(B) = \dfrac{\text{effectif de } C \cap B}{\text{effectif de } C}$. On divise par le total de la **condition**.
+:::
+
+::: etape $P_C(B)$ : on se place parmi les $280$ élèves de la cantine
+$$P_C(B) = \frac{168}{280} = 0{,}6$$
+
+Parmi les élèves qui mangent à la cantine, $60\,\%$ viennent en bus.
+:::
+
+::: etape $P_B(C)$ : on se place parmi les $240$ élèves qui viennent en bus
+$$P_B(C) = \frac{168}{240} = 0{,}7$$
+
+Parmi les élèves qui viennent en bus, $70\,\%$ mangent à la cantine.
+:::
+
+::: attention
+Même numérateur $168$, mais pas le même dénominateur : $P_C(B) \neq P_B(C)$.
+:::
+
+::: resultat
+$P_C(B) = 0{,}6$ et $P_B(C) = 0{,}7$.
+:::
+
+## Question A3 : Indépendance de $C$ et $B$
+
+::: methode
+On compare $P(C \cap B)$ et $P(C) \times P(B)$.
+:::
+
+::: etape Les trois probabilités
+$$
+\begin{aligned}
+P(C) &= \frac{280}{400} = 0{,}7 \\
+P(B) &= \frac{240}{400} = 0{,}6 \\
+P(C \cap B) &= \frac{168}{400} = 0{,}42
+\end{aligned}
+$$
+:::
+
+::: etape Comparaison
+$$
+\begin{aligned}
+P(C) \times P(B) &= 0{,}7 \times 0{,}6 \\
+&= 0{,}42 = P(C \cap B)
+\end{aligned}
+$$
+
+On le voit aussi avec $P_C(B) = 0{,}6 = P(B)$.
+:::
+
+::: resultat
+$C$ et $B$ sont indépendants.
+:::
+
+## Question A4 : En déduire $P_{\overline{C}}(B)$
+
+::: methode
+Propriété du cours : si deux événements sont indépendants, l’un est indépendant du contraire de l’autre.
+:::
+
+::: etape Déduction
+$B$ et $C$ sont indépendants, donc $B$ et $\overline{C}$ aussi. Ainsi $P(\overline{C} \cap B) = P(\overline{C}) \times P(B)$, d’où
+
+$$P_{\overline{C}}(B) = \frac{P(\overline{C} \cap B)}{P(\overline{C})} = P(B) = 0{,}6$$
+:::
+
+::: etape Vérification avec le tableau
+Parmi les $120$ élèves qui ne mangent pas à la cantine, $72$ viennent en bus : $\dfrac{72}{120} = 0{,}6$.
+:::
+
+::: resultat
+$P_{\overline{C}}(B) = 0{,}6$.
+:::
+
+## Partie B : Arbre et inversion du conditionnement
+
+## Question B1 : Compléter l’arbre
+
+::: methode
+On traduit les données : $P(M_1) = 0{,}6$, $P_{M_1}(D) = 0{,}01$, $P_{M_2}(D) = 0{,}03$. Puis à chaque nœud, la somme des branches vaut $1$.
+:::
+
+::: etape Probabilités manquantes
+- $P(M_2) = 1 - 0{,}6 = 0{,}4$ ;
+- $P_{M_1}(\overline{D}) = 1 - 0{,}01 = 0{,}99$ ;
+- $P_{M_2}(\overline{D}) = 1 - 0{,}03 = 0{,}97$.
+:::
+
+::: etape Arbre complété
+Valeurs trouvées et probabilités des chemins en vert :
+
+[IMAGE_4]
+:::
+
+::: resultat
+$P(M_2) = 0{,}4$, $P_{M_1}(\overline{D}) = 0{,}99$, $P_{M_2}(\overline{D}) = 0{,}97$.
+:::
+
+## Question B2 : $P(M_1 \cap D)$ et $P(D)$
+
+::: methode
+Un chemin : produit des branches. $P(D)$ : formule des probabilités totales avec la partition $\{M_1, M_2\}$.
+:::
+
+::: etape Chemins qui mènent à $D$
+$$
+\begin{aligned}
+P(M_1 \cap D) &= 0{,}6 \times 0{,}01 = 0{,}006 \\
+P(M_2 \cap D) &= 0{,}4 \times 0{,}03 = 0{,}012
+\end{aligned}
+$$
+:::
+
+::: etape Probabilités totales
+$$
+\begin{aligned}
+P(D) &= P(M_1 \cap D) + P(M_2 \cap D) \\
+&= 0{,}006 + 0{,}012 \\
+&= 0{,}018
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(M_1 \cap D) = 0{,}006$ et $P(D) = 0{,}018$.
+:::
+
+## Question B3 : Probabilité de $M_2$ sachant $D$
+
+::: methode
+On cherche $P_D(M_2)$ alors que l’arbre donne $P_{M_2}(D)$ : on inverse le conditionnement.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+P_D(M_2) &= \frac{P(M_2 \cap D)}{P(D)} = \frac{0{,}012}{0{,}018} \\
+&= \frac{2}{3} \approx 0{,}667
+\end{aligned}
+$$
+:::
+
+::: remarque
+$M_2$ ne fabrique que $40\,\%$ des pièces, mais deux pièces défectueuses sur trois en proviennent.
+:::
+
+::: resultat
+$P_D(M_2) = \dfrac{2}{3} \approx 0{,}667$.
+:::
+
+## Question B4 : Probabilité de $M_1$ sachant $\overline{D}$
+
+::: etape Probabilité de $\overline{D}$
+$P(\overline{D}) = 1 - 0{,}018 = 0{,}982$ et $P(M_1 \cap \overline{D}) = 0{,}6 \times 0{,}99 = 0{,}594$.
+:::
+
+::: etape Inversion
+$$P_{\overline{D}}(M_1) = \frac{0{,}594}{0{,}982} \approx 0{,}605$$
+:::
+
+::: resultat
+$P_{\overline{D}}(M_1) \approx 0{,}605$.
+:::
+
+## Partie C : Deux épreuves indépendantes
+
+## Question C1 : Compléter l’arbre
+
+::: methode
+Les prélèvements sont indépendants : au second niveau, on retrouve les **mêmes** probabilités sur les deux branches, $P(D) = 0{,}018$ et $P(\overline{D}) = 0{,}982$.
+:::
+
+::: etape Arbre complété
+[IMAGE_5]
+:::
+
+::: resultat
+Toutes les branches $D$ portent $0{,}018$, toutes les branches $\overline{D}$ portent $0{,}982$.
+:::
+
+## Question C2 : Deux pièces défectueuses
+
+::: etape Produit des probabilités
+$$P(D_1 \cap D_2) = 0{,}018 \times 0{,}018 = 0{,}000324$$
+:::
+
+::: resultat
+$P(D_1 \cap D_2) = 0{,}000324$.
+:::
+
+## Question C3 : Au moins une pièce défectueuse
+
+::: methode
+« Au moins une » est le contraire de « aucune » : on calcule $1 - P(\overline{D_1} \cap \overline{D_2})$.
+:::
+
+::: etape Aucune pièce défectueuse
+$$P(\overline{D_1} \cap \overline{D_2}) = 0{,}982^2 = 0{,}964324$$
+:::
+
+::: etape Événement contraire
+$$1 - 0{,}964324 = 0{,}035676 \approx 0{,}036$$
+:::
+
+::: attention
+Écrire $0{,}018 + 0{,}018$ est faux : les chemins $D_1 \cap D_2$, $D_1 \cap \overline{D_2}$ et $\overline{D_1} \cap D_2$ sont trois chemins différents, qu’il faudrait tous ajouter.
+:::
+
+::: resultat
+La probabilité qu’au moins une pièce soit défectueuse est environ $0{,}036$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. A1 : $112$ ; $72$ ; $48$ ; totaux $120$ et $160$.
+2. A2 : $P_C(B) = 0{,}6$ ; $P_B(C) = 0{,}7$.
+3. A3 : $P(C)P(B) = 0{,}42 = P(C \cap B)$ : indépendants.
+4. A4 : $P_{\overline{C}}(B) = P(B) = 0{,}6$, et $\frac{72}{120} = 0{,}6$.
+5. B1 : $0{,}4$ ; $0{,}99$ ; $0{,}97$.
+6. B2 : $P(M_1 \cap D) = 0{,}006$ ; $P(D) = 0{,}018$.
+7. B3 : $P_D(M_2) = \frac{2}{3} \approx 0{,}667$.
+8. B4 : $P_{\overline{D}}(M_1) \approx 0{,}605$.
+9. C1 : $0{,}018$ et $0{,}982$ à chaque niveau.
+10. C2 : $0{,}000324$.
+11. C3 : $1 - 0{,}982^2 \approx 0{,}036$.
+
+===
+
+=== Entraînement - Arbres pondérés et applications
+Id: 1309
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Sur un site de vente en ligne, $40\,\%$ des commandes sont passées depuis un téléphone, les autres depuis un ordinateur. $15\,\%$ des commandes passées depuis un téléphone sont retournées, contre $5\,\%$ des commandes passées depuis un ordinateur.
+
+On choisit une commande au hasard ; on note $T$ : « la commande est passée depuis un téléphone » et $R$ : « la commande est retournée ».
+
+1. Traduire les trois données de l’énoncé par des probabilités.
+2. Compléter l’arbre pondéré ci-dessous.
+3. Calculer $P(T \cap R)$ et interpréter ce nombre par une phrase.
+4. Montrer que $P(R) = 0{,}09$.
+5. Une commande a été retournée. Quelle est la probabilité qu’elle ait été passée depuis un téléphone ?
+6. Une commande n’a pas été retournée. Quelle est la probabilité qu’elle ait été passée depuis un ordinateur ? Arrondir au millième.
+7. Les événements $T$ et $R$ sont-ils indépendants ?
+
+[IMAGE_1]
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Traduire les données
+
+::: methode
+« $x\,\%$ des commandes » donne une probabilité simple ; « $x\,\%$ des commandes passées depuis… » donne une probabilité **conditionnelle**.
+:::
+
+::: etape Traduction
+- « $40\,\%$ des commandes sont passées depuis un téléphone » : $P(T) = 0{,}4$ ;
+- « $15\,\%$ des commandes **passées depuis un téléphone** sont retournées » : $P_T(R) = 0{,}15$ ;
+- « $5\,\%$ des commandes **passées depuis un ordinateur** » : $P_{\overline{T}}(R) = 0{,}05$.
+:::
+
+::: resultat
+$P(T) = 0{,}4$, $P_T(R) = 0{,}15$, $P_{\overline{T}}(R) = 0{,}05$.
+:::
+
+## Question 2 : Compléter l’arbre
+
+::: methode
+À chaque nœud, la somme des probabilités des branches vaut $1$.
+:::
+
+::: etape Probabilités manquantes
+$$
+\begin{aligned}
+P(\overline{T}) &= 1 - 0{,}4 = 0{,}6 \\
+P_T(\overline{R}) &= 1 - 0{,}15 = 0{,}85 \\
+P_{\overline{T}}(\overline{R}) &= 1 - 0{,}05 = 0{,}95
+\end{aligned}
+$$
+:::
+
+::: etape Arbre complété
+Valeurs trouvées et probabilités des chemins en vert :
+
+[IMAGE_2]
+:::
+
+::: resultat
+$P(\overline{T}) = 0{,}6$, $P_T(\overline{R}) = 0{,}85$, $P_{\overline{T}}(\overline{R}) = 0{,}95$.
+:::
+
+## Question 3 : Calculer $P(T \cap R)$
+
+::: methode
+$T \cap R$ correspond à un chemin : on multiplie les probabilités de ses branches.
+:::
+
+::: etape Produit
+$$
+\begin{aligned}
+P(T \cap R) &= P(T) \times P_T(R) \\
+&= 0{,}4 \times 0{,}15 = 0{,}06
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(T \cap R) = 0{,}06$ : $6\,\%$ des commandes sont passées depuis un téléphone **et** retournées.
+:::
+
+## Question 4 : Montrer que $P(R) = 0{,}09$
+
+::: methode
+Formule des probabilités totales : on ajoute les deux chemins qui mènent à $R$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+P(R) &= P(T \cap R) + P(\overline{T} \cap R) \\
+&= 0{,}4 \times 0{,}15 + 0{,}6 \times 0{,}05 \\
+&= 0{,}06 + 0{,}03 \\
+&= 0{,}09
+\end{aligned}
+$$
+:::
+
+::: attention
+$0{,}15$ et $0{,}05$ ne s’additionnent pas directement : ce sont des proportions de deux groupes de tailles différentes.
+:::
+
+::: resultat
+$P(R) = 0{,}09$.
+:::
+
+## Question 5 : Probabilité de $T$ sachant $R$
+
+::: methode
+On cherche $P_R(T)$ : on inverse le conditionnement avec $P(T \cap R)$ et $P(R)$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+P_R(T) &= \frac{P(T \cap R)}{P(R)} = \frac{0{,}06}{0{,}09} \\
+&= \frac{2}{3} \approx 0{,}667
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P_R(T) = \dfrac{2}{3}$ : deux commandes retournées sur trois ont été passées depuis un téléphone.
+:::
+
+## Question 6 : Probabilité de $\overline{T}$ sachant $\overline{R}$
+
+::: etape Les deux probabilités utiles
+$$
+\begin{aligned}
+P(\overline{R}) &= 1 - 0{,}09 = 0{,}91 \\
+P(\overline{T} \cap \overline{R}) &= 0{,}6 \times 0{,}95 = 0{,}57
+\end{aligned}
+$$
+:::
+
+::: etape Inversion
+$$P_{\overline{R}}(\overline{T}) = \frac{0{,}57}{0{,}91} \approx 0{,}626$$
+:::
+
+::: resultat
+$P_{\overline{R}}(\overline{T}) \approx 0{,}626$.
+:::
+
+## Question 7 : Indépendance de $T$ et $R$
+
+::: etape Comparaison
+$P(T) \times P(R) = 0{,}4 \times 0{,}09 = 0{,}036$, alors que $P(T \cap R) = 0{,}06$.
+:::
+
+::: resultat
+$0{,}036 \neq 0{,}06$ : $T$ et $R$ ne sont pas indépendants (une commande passée depuis un téléphone est plus souvent retournée).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $P(T) = 0{,}4$ ; $P_T(R) = 0{,}15$ ; $P_{\overline{T}}(R) = 0{,}05$.
+2. $P(\overline{T}) = 0{,}6$ ; $P_T(\overline{R}) = 0{,}85$ ; $P_{\overline{T}}(\overline{R}) = 0{,}95$.
+3. $P(T \cap R) = 0{,}06$.
+4. $P(R) = 0{,}06 + 0{,}03 = 0{,}09$.
+5. $P_R(T) = \frac{2}{3} \approx 0{,}667$.
+6. $P_{\overline{R}}(\overline{T}) = \frac{0{,}57}{0{,}91} \approx 0{,}626$.
+7. $P(T)P(R) = 0{,}036 \neq 0{,}06$ : pas indépendants.
+
+===
+
+=== Entraînement - Calculs de base
+Id: 1302
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+1. On donne $P(A) = 0{,}6$, $P(B) = 0{,}4$ et $P(A \cap B) = 0{,}2$. Calculer $P_A(B)$, $P_B(A)$ et $P_A(\overline{B})$.
+2. On donne $P(B) = 0{,}3$ et $P_B(A) = 0{,}7$. Calculer $P(A \cap B)$, puis $P(\overline{A} \cap B)$.
+3. On lance deux dés équilibrés, un rouge et un bleu. On note $S$ : « la somme des deux numéros est supérieure ou égale à $9$ » et $D$ : « le dé rouge donne $6$ ».
+   - a) Compléter le tableau des sommes ci-dessous.
+   - b) Calculer $P(S)$.
+   - c) Calculer $P_S(D)$ et $P_D(S)$. Ces deux probabilités sont-elles égales ?
+4. On tire une carte au hasard dans un jeu de $32$ cartes : $4$ couleurs (cœur, carreau, trèfle, pique) et $8$ hauteurs ($7$, $8$, $9$, $10$, valet, dame, roi, as). On note $F$ : « la carte est une figure (valet, dame ou roi) » et $C$ : « la carte est un cœur ».
+   - a) Calculer $P_F(C)$ et $P_C(F)$.
+   - b) Comparer $P_F(C)$ et $P(C)$. Que peut-on en conclure ?
+
+Tableau des sommes de la question 3 :
+
+[IMAGE_1]
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Avec la définition
+
+::: methode
+$P_A(B) = \dfrac{P(A \cap B)}{P(A)}$ : on divise toujours par la probabilité de la **condition**.
+:::
+
+::: etape $P_A(B)$ et $P_B(A)$
+$$
+\begin{aligned}
+P_A(B) &= \frac{0{,}2}{0{,}6} = \frac{1}{3} \\
+P_B(A) &= \frac{0{,}2}{0{,}4} = 0{,}5
+\end{aligned}
+$$
+:::
+
+::: etape $P_A(\overline{B})$
+$P_A$ est une probabilité : $P_A(\overline{B}) = 1 - P_A(B) = 1 - \dfrac{1}{3} = \dfrac{2}{3}$.
+:::
+
+::: resultat
+$P_A(B) = \dfrac{1}{3}$, $P_B(A) = 0{,}5$, $P_A(\overline{B}) = \dfrac{2}{3}$.
+:::
+
+## Question 2 : Probabilités composées
+
+::: methode
+$P(A \cap B) = P(B) \times P_B(A)$ ; et $P_B(\overline{A}) = 1 - P_B(A)$.
+:::
+
+::: etape $P(A \cap B)$
+$$P(A \cap B) = 0{,}3 \times 0{,}7 = 0{,}21$$
+:::
+
+::: etape $P(\overline{A} \cap B)$
+$P_B(\overline{A}) = 1 - 0{,}7 = 0{,}3$, donc
+
+$$P(\overline{A} \cap B) = 0{,}3 \times 0{,}3 = 0{,}09$$
+
+Contrôle : $0{,}21 + 0{,}09 = 0{,}3 = P(B)$.
+:::
+
+::: resultat
+$P(A \cap B) = 0{,}21$ et $P(\overline{A} \cap B) = 0{,}09$.
+:::
+
+## Question 3 : Deux dés
+
+::: methode
+Les $36$ cases du tableau (dé rouge, dé bleu) sont équiprobables. Pour $P_S(D)$, on ne compte que parmi les cases de $S$.
+:::
+
+::: etape a) Tableau des sommes
+Cases de $S$ en vert, ligne de $D$ encadrée :
+
+[IMAGE_2]
+:::
+
+::: etape b) $P(S)$
+$S$ compte $1 + 2 + 3 + 4 = 10$ cases (sommes $9$, $10$, $11$, $12$) :
+
+$$P(S) = \frac{10}{36} = \frac{5}{18}$$
+:::
+
+::: etape c) $P_S(D)$ : parmi les $10$ cases de $S$
+$4$ d’entre elles sont sur la ligne « rouge $= 6$ » : $(6,3)$, $(6,4)$, $(6,5)$, $(6,6)$.
+
+$$P_S(D) = \frac{4}{10} = \frac{2}{5}$$
+:::
+
+::: etape c) $P_D(S)$ : parmi les $6$ cases de $D$
+Les mêmes $4$ cases :
+
+$$P_D(S) = \frac{4}{6} = \frac{2}{3}$$
+:::
+
+::: attention
+$P_S(D) = \dfrac{2}{5}$ et $P_D(S) = \dfrac{2}{3}$ : on ne divise pas par le même nombre de cases. En général, $P_S(D) \neq P_D(S)$.
+:::
+
+::: resultat
+$P(S) = \dfrac{5}{18}$, $P_S(D) = \dfrac{2}{5}$, $P_D(S) = \dfrac{2}{3}$ : elles ne sont pas égales.
+:::
+
+## Question 4 : Jeu de 32 cartes
+
+::: methode
+On dénombre : $12$ figures ($3$ par couleur), $8$ cœurs, et $3$ figures de cœur (valet, dame et roi de cœur).
+:::
+
+::: etape a) Les deux probabilités conditionnelles
+$$
+\begin{aligned}
+P_F(C) &= \frac{3}{12} = \frac{1}{4} \\
+P_C(F) &= \frac{3}{8}
+\end{aligned}
+$$
+:::
+
+::: etape b) Comparaison
+$P(C) = \dfrac{8}{32} = \dfrac{1}{4} = P_F(C)$.
+:::
+
+::: retenir
+Savoir que la carte est une figure ne change pas la probabilité que ce soit un cœur : les événements $F$ et $C$ sont **indépendants**.
+:::
+
+::: resultat
+$P_F(C) = \dfrac{1}{4}$ et $P_C(F) = \dfrac{3}{8}$ ; $P_F(C) = P(C)$ : $F$ et $C$ sont indépendants.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $P_A(B) = \frac{1}{3}$ ; $P_B(A) = 0{,}5$ ; $P_A(\overline{B}) = \frac{2}{3}$.
+2. $P(A \cap B) = 0{,}21$ ; $P(\overline{A} \cap B) = 0{,}09$.
+3. b) $P(S) = \frac{5}{18}$. c) $P_S(D) = \frac{2}{5}$ et $P_D(S) = \frac{2}{3}$ : différentes.
+4. a) $P_F(C) = \frac{1}{4}$ ; $P_C(F) = \frac{3}{8}$. b) $P_F(C) = P(C)$ : $F$ et $C$ indépendants.
+
+===
+
+=== Entraînement - Indépendance et applications
+Id: 1310
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Une alarme comporte deux détecteurs qui fonctionnent **indépendamment** l’un de l’autre. Lors d’une intrusion, le détecteur $1$ se déclenche avec la probabilité $0{,}9$ et le détecteur $2$ avec la probabilité $0{,}8$. On note $D_1$ et $D_2$ les événements « le détecteur $1$ (le détecteur $2$) se déclenche ».
+
+1. Expliquer pourquoi $P_{D_1}(D_2) = P_{\overline{D_1}}(D_2) = 0{,}8$, puis compléter l’arbre ci-dessous.
+2. Calculer la probabilité que les deux détecteurs se déclenchent.
+3. Calculer la probabilité qu’un seul des deux détecteurs se déclenche.
+4. L’alarme sonne dès qu’au moins un détecteur se déclenche. Montrer de deux façons que l’alarme sonne avec la probabilité $0{,}98$ : avec l’arbre, puis avec l’événement contraire.
+5. L’alarme a sonné. Quelle est la probabilité que les deux détecteurs se soient déclenchés ? Arrondir au millième.
+6. On remplace le détecteur $2$ par un modèle qui se déclenche avec la probabilité $p$, toujours indépendamment du détecteur $1$. Pour quelles valeurs de $p$ l’alarme sonne-t-elle avec une probabilité d’au moins $0{,}99$ ?
+
+[IMAGE_1]
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Compléter l’arbre
+
+::: methode
+Deux événements indépendants : savoir si $D_1$ est réalisé ne change pas la probabilité de $D_2$.
+:::
+
+::: etape Probabilités conditionnelles
+$D_1$ et $D_2$ sont indépendants, donc $P_{D_1}(D_2) = P(D_2) = 0{,}8$. D’après la propriété du cours, $\overline{D_1}$ et $D_2$ sont aussi indépendants, donc $P_{\overline{D_1}}(D_2) = 0{,}8$.
+:::
+
+::: etape Arbre complété
+$P(\overline{D_1}) = 0{,}1$ et, sur les deux branches, $P(\overline{D_2}) = 0{,}2$. Le second niveau est identique : c’est la marque de deux épreuves indépendantes.
+
+[IMAGE_2]
+:::
+
+::: resultat
+Premier niveau : $0{,}9$ et $0{,}1$ ; second niveau : $0{,}8$ et $0{,}2$ sur chaque branche.
+:::
+
+## Question 2 : Les deux détecteurs
+
+::: etape Produit
+$$P(D_1 \cap D_2) = 0{,}9 \times 0{,}8 = 0{,}72$$
+:::
+
+::: resultat
+$P(D_1 \cap D_2) = 0{,}72$.
+:::
+
+## Question 3 : Un seul détecteur
+
+::: methode
+« Un seul » est réalisé par deux chemins : $D_1 \cap \overline{D_2}$ et $\overline{D_1} \cap D_2$. On les ajoute.
+:::
+
+::: etape Deux chemins
+$$
+\begin{aligned}
+P &= 0{,}9 \times 0{,}2 + 0{,}1 \times 0{,}8 \\
+&= 0{,}18 + 0{,}08 \\
+&= 0{,}26
+\end{aligned}
+$$
+:::
+
+::: resultat
+La probabilité qu’un seul détecteur se déclenche est $0{,}26$.
+:::
+
+## Question 4 : L’alarme sonne
+
+::: etape Première façon : avec l’arbre
+Trois chemins comportent au moins un déclenchement :
+
+$$0{,}72 + 0{,}18 + 0{,}08 = 0{,}98$$
+:::
+
+::: etape Seconde façon : avec l’événement contraire
+Le contraire est « aucun détecteur ne se déclenche » : $\overline{D_1} \cap \overline{D_2}$. Ces deux événements sont indépendants (propriété du cours), donc
+
+$$
+\begin{aligned}
+P(\overline{D_1} \cap \overline{D_2}) &= 0{,}1 \times 0{,}2 = 0{,}02 \\
+P(\text{alarme}) &= 1 - 0{,}02 = 0{,}98
+\end{aligned}
+$$
+:::
+
+::: resultat
+L’alarme sonne avec la probabilité $0{,}98$.
+:::
+
+## Question 5 : Sachant que l’alarme a sonné
+
+::: methode
+On note $S$ l’événement « l’alarme sonne ». $D_1 \cap D_2$ est inclus dans $S$, donc $P(D_1 \cap D_2 \cap S) = P(D_1 \cap D_2)$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+P_S(D_1 \cap D_2) &= \frac{0{,}72}{0{,}98} \\
+&= \frac{36}{49} \approx 0{,}735
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P_S(D_1 \cap D_2) \approx 0{,}735$.
+:::
+
+## Question 6 : Choisir le second détecteur
+
+::: methode
+Comme à la question 4, on passe par l’événement contraire « aucun détecteur ne se déclenche », de probabilité $0{,}1 \times (1 - p)$.
+:::
+
+::: etape Inéquation
+$$
+\begin{aligned}
+1 - 0{,}1(1 - p) &\geqslant 0{,}99 \\
+0{,}1(1 - p) &\leqslant 0{,}01 \\
+1 - p &\leqslant 0{,}1 \\
+p &\geqslant 0{,}9
+\end{aligned}
+$$
+:::
+
+::: resultat
+Il faut $p \geqslant 0{,}9$ : le second détecteur doit être au moins aussi fiable que le premier.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Par indépendance, $P_{D_1}(D_2) = P(D_2) = 0{,}8$, et de même $P_{\overline{D_1}}(D_2) = 0{,}8$.
+2. $0{,}72$.
+3. $0{,}18 + 0{,}08 = 0{,}26$.
+4. $0{,}72 + 0{,}18 + 0{,}08 = 0{,}98$, ou $1 - 0{,}1 \times 0{,}2 = 0{,}98$.
+5. $\frac{0{,}72}{0{,}98} = \frac{36}{49} \approx 0{,}735$.
+6. $p \geqslant 0{,}9$.
+
+===
+
+=== Entraînement - Indépendance de deux événements
+Id: 1303
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+1. On donne $P(A) = 0{,}4$, $P(B) = 0{,}5$ et $P(A \cap B) = 0{,}2$.
+   - a) Les événements $A$ et $B$ sont-ils indépendants ?
+   - b) Compléter le tableau de probabilités ci-dessous.
+   - c) Vérifier que $A$ et $\overline{B}$, puis $\overline{A}$ et $\overline{B}$, sont indépendants.
+2. On donne $P(A) = 0{,}3$, $P(B) = 0{,}6$ et $P(A \cap B) = 0{,}15$. Les événements $A$ et $B$ sont-ils indépendants ? Calculer $P_A(B)$ et interpréter.
+3. On lance un dé équilibré. $A$ : « obtenir un nombre pair », $B$ : « obtenir $1$ ou $2$ », $C$ : « obtenir $3$ ».
+   - a) $A$ et $B$ sont-ils indépendants ?
+   - b) $A$ et $C$ sont-ils incompatibles ? indépendants ?
+4. **Démonstration.** Soit $A$ et $B$ deux événements indépendants.
+   - a) Justifier que $P(A) = P(A \cap B) + P(A \cap \overline{B})$.
+   - b) En déduire que $A$ et $\overline{B}$ sont indépendants.
+5. $A$ et $B$ sont indépendants, avec $P(A) = 0{,}5$ et $P(B) = 0{,}4$.
+   - a) Compléter l’arbre ci-dessous.
+   - b) Calculer $P(A \cap \overline{B})$ et $P(A \cup B)$.
+   - c) Retrouver $P(A \cup B)$ à l’aide de l’événement contraire.
+
+Tableau de la question 1 :
+
+| | $B$ | $\overline{B}$ | Total |
+|---|---|---|---|
+| $A$ | $0{,}2$ | $\ldots$ | $0{,}4$ |
+| $\overline{A}$ | $\ldots$ | $\ldots$ | $\ldots$ |
+| Total | $0{,}5$ | $\ldots$ | $1$ |
+
+Arbre de la question 5 :
+
+[IMAGE_1]
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Un tableau de probabilités
+
+::: methode
+$A$ et $B$ sont indépendants lorsque $P(A \cap B) = P(A) \times P(B)$. Dans un tableau de probabilités, chaque ligne et chaque colonne a pour somme son total.
+:::
+
+::: etape a) Test d’indépendance
+$$
+\begin{aligned}
+P(A) \times P(B) &= 0{,}4 \times 0{,}5 \\
+&= 0{,}2 = P(A \cap B)
+\end{aligned}
+$$
+
+$A$ et $B$ sont indépendants.
+:::
+
+::: etape b) Tableau complété
+- $P(A \cap \overline{B}) = 0{,}4 - 0{,}2 = 0{,}2$ ;
+- $P(\overline{A} \cap B) = 0{,}5 - 0{,}2 = 0{,}3$ ;
+- $P(\overline{A}) = 1 - 0{,}4 = 0{,}6$ et $P(\overline{B}) = 1 - 0{,}5 = 0{,}5$ ;
+- $P(\overline{A} \cap \overline{B}) = 0{,}6 - 0{,}3 = 0{,}3$.
+
+[IMAGE_2]
+:::
+
+::: etape c) Vérifications
+$$
+\begin{aligned}
+P(A) \times P(\overline{B}) &= 0{,}4 \times 0{,}5 = 0{,}2 \\
+P(\overline{A}) \times P(\overline{B}) &= 0{,}6 \times 0{,}5 = 0{,}3
+\end{aligned}
+$$
+
+On retrouve $P(A \cap \overline{B}) = 0{,}2$ et $P(\overline{A} \cap \overline{B}) = 0{,}3$.
+:::
+
+::: resultat
+$A$ et $B$ sont indépendants ; $A$ et $\overline{B}$, puis $\overline{A}$ et $\overline{B}$, le sont aussi.
+:::
+
+## Question 2 : Un cas de non-indépendance
+
+::: etape Comparaison
+$P(A) \times P(B) = 0{,}3 \times 0{,}6 = 0{,}18$, alors que $P(A \cap B) = 0{,}15$.
+:::
+
+::: etape Probabilité conditionnelle
+$$P_A(B) = \frac{0{,}15}{0{,}3} = 0{,}5$$
+
+Or $P(B) = 0{,}6$ : savoir que $A$ est réalisé fait baisser la probabilité de $B$.
+:::
+
+::: resultat
+$0{,}18 \neq 0{,}15$ : $A$ et $B$ ne sont pas indépendants ; $P_A(B) = 0{,}5 \neq P(B)$.
+:::
+
+## Question 3 : Avec un dé
+
+::: methode
+Les $6$ faces sont équiprobables : on écrit chaque événement comme un ensemble d’issues.
+:::
+
+::: etape a) $A = \{2\,;4\,;6\}$ et $B = \{1\,;2\}$
+$A \cap B = \{2\}$, donc $P(A \cap B) = \dfrac{1}{6}$, et
+
+$$P(A) \times P(B) = \frac{1}{2} \times \frac{1}{3} = \frac{1}{6}$$
+
+$A$ et $B$ sont indépendants.
+:::
+
+::: etape b) $C = \{3\}$
+$A \cap C = \varnothing$ : $A$ et $C$ sont **incompatibles**. Alors $P(A \cap C) = 0$, mais $P(A) \times P(C) = \dfrac{1}{2} \times \dfrac{1}{6} = \dfrac{1}{12} \neq 0$.
+:::
+
+::: attention
+Incompatibles ne veut pas dire indépendants : ici, savoir que $A$ est réalisé rend $C$ impossible, ce qui change complètement sa probabilité.
+:::
+
+::: resultat
+$A$ et $B$ sont indépendants ; $A$ et $C$ sont incompatibles, donc pas indépendants.
+:::
+
+## Question 4 : Démonstration
+
+::: etape a) Découpage de $A$
+Une issue de $A$ est soit dans $B$, soit dans $\overline{B}$, jamais dans les deux. $A$ est donc la réunion des événements **incompatibles** $A \cap B$ et $A \cap \overline{B}$ :
+
+$$P(A) = P(A \cap B) + P(A \cap \overline{B})$$
+:::
+
+::: etape b) Calcul de $P(A \cap \overline{B})$
+$$
+\begin{aligned}
+P(A \cap \overline{B}) &= P(A) - P(A \cap B) \\
+&= P(A) - P(A) \times P(B) \\
+&= P(A) \times \big(1 - P(B)\big) \\
+&= P(A) \times P(\overline{B})
+\end{aligned}
+$$
+
+La deuxième ligne utilise l’indépendance de $A$ et $B$.
+:::
+
+::: resultat
+$P(A \cap \overline{B}) = P(A) \times P(\overline{B})$ : $A$ et $\overline{B}$ sont indépendants.
+:::
+
+## Question 5 : Utiliser l’indépendance
+
+::: etape a) Arbre complété
+Par indépendance, $P_A(B) = P_{\overline{A}}(B) = P(B) = 0{,}4$ : le second niveau porte $0{,}4$ et $0{,}6$ sur chaque branche.
+
+[IMAGE_3]
+:::
+
+::: etape b) $P(A \cap \overline{B})$ et $P(A \cup B)$
+$$
+\begin{aligned}
+P(A \cap \overline{B}) &= 0{,}5 \times 0{,}6 = 0{,}3 \\
+P(A \cap B) &= 0{,}5 \times 0{,}4 = 0{,}2 \\
+P(A \cup B) &= 0{,}5 + 0{,}4 - 0{,}2 = 0{,}7
+\end{aligned}
+$$
+:::
+
+::: etape c) Par l’événement contraire
+Le contraire de $A \cup B$ est $\overline{A} \cap \overline{B}$ ; ces deux événements sont indépendants, donc
+
+$$
+\begin{aligned}
+P(A \cup B) &= 1 - 0{,}5 \times 0{,}6 \\
+&= 1 - 0{,}3 = 0{,}7
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(A \cap \overline{B}) = 0{,}3$ et $P(A \cup B) = 0{,}7$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. a) $0{,}4 \times 0{,}5 = 0{,}2$ : indépendants. b) $0{,}2$ ; $0{,}3$ ; $0{,}3$ ; totaux $0{,}6$ et $0{,}5$. c) $0{,}4 \times 0{,}5 = 0{,}2$ et $0{,}6 \times 0{,}5 = 0{,}3$.
+2. $0{,}18 \neq 0{,}15$ : pas indépendants ; $P_A(B) = 0{,}5$.
+3. a) Indépendants ($\frac{1}{6} = \frac{1}{2} \times \frac{1}{3}$). b) Incompatibles, donc pas indépendants.
+4. $P(A \cap \overline{B}) = P(A) \times P(\overline{B})$ : voir la démonstration.
+5. b) $P(A \cap \overline{B}) = 0{,}3$ ; $P(A \cup B) = 0{,}7$. c) $1 - 0{,}5 \times 0{,}6 = 0{,}7$.
+
+===
+
+=== Problème - Applications complexes
+Id: 1311
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Une usine produit des pièces sur trois chaînes : la chaîne $A$ fournit $50\,\%$ de la production, la chaîne $B$ $30\,\%$ et la chaîne $C$ $20\,\%$. Les proportions de pièces défectueuses sont $1\,\%$ pour $A$, $2\,\%$ pour $B$ et $4\,\%$ pour $C$. On note $D$ : « la pièce est défectueuse ». Les résultats non exacts sont arrondis au millième.
+
+**Partie A — Une pièce**
+
+On prélève une pièce au hasard.
+
+**A1.** Justifier que $A$, $B$, $C$ forment une partition de l’univers, puis compléter l’arbre ci-dessous.
+
+[IMAGE_1]
+
+**A2.** Montrer que $P(D) = 0{,}019$.
+
+**A3.** La pièce est défectueuse. Calculer la probabilité qu’elle provienne de chacune des chaînes. De quelle chaîne provient-elle le plus probablement ? Commenter.
+
+**A4.** La pièce n’est pas défectueuse. Quelle est la probabilité qu’elle provienne de la chaîne $A$ ?
+
+**Partie B — Deux pièces**
+
+On prélève deux pièces ; les prélèvements sont considérés comme indépendants. On note $D_1$ et $D_2$ les événements « la première (la seconde) pièce est défectueuse ».
+
+**B1.** Compléter l’arbre ci-dessous.
+
+[IMAGE_2]
+
+**B2.** Calculer la probabilité qu’aucune pièce ne soit défectueuse, puis qu’au moins une pièce soit défectueuse.
+
+**B3.** Calculer la probabilité qu’exactement une pièce soit défectueuse.
+
+**Partie C — Améliorer la production**
+
+On améliore uniquement la chaîne $C$ : sa proportion de pièces défectueuses devient $y$. Pour quelles valeurs de $y$ a-t-on $P(D) \leqslant 0{,}015$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Partie A : Une pièce
+
+## Question A1 : Partition et arbre
+
+::: methode
+Partition : chaque pièce provient d’une et d’une seule chaîne. Arbre : premier niveau à trois branches, second niveau $D$ / $\overline{D}$.
+:::
+
+::: etape Partition
+Une pièce provient d’une seule chaîne : $A$, $B$, $C$ sont deux à deux incompatibles, et leur réunion est l’univers ($0{,}5 + 0{,}3 + 0{,}2 = 1$).
+:::
+
+::: etape Arbre complété
+$P_A(\overline{D}) = 0{,}99$, $P_B(\overline{D}) = 0{,}98$, $P_C(\overline{D}) = 0{,}96$.
+
+[IMAGE_3]
+:::
+
+::: resultat
+$A$, $B$, $C$ forment une partition ; les branches $\overline{D}$ portent $0{,}99$, $0{,}98$ et $0{,}96$.
+:::
+
+## Question A2 : Probabilités totales
+
+::: etape Les trois chemins vers $D$
+$$
+\begin{aligned}
+P(A \cap D) &= 0{,}5 \times 0{,}01 = 0{,}005 \\
+P(B \cap D) &= 0{,}3 \times 0{,}02 = 0{,}006 \\
+P(C \cap D) &= 0{,}2 \times 0{,}04 = 0{,}008
+\end{aligned}
+$$
+:::
+
+::: etape Somme
+$$P(D) = 0{,}005 + 0{,}006 + 0{,}008 = 0{,}019$$
+:::
+
+::: resultat
+$P(D) = 0{,}019$.
+:::
+
+## Question A3 : Origine d’une pièce défectueuse
+
+::: methode
+On inverse le conditionnement pour chaque chaîne : $P_D(X) = \dfrac{P(X \cap D)}{P(D)}$.
+:::
+
+::: etape Trois calculs
+$$
+\begin{aligned}
+P_D(A) &= \frac{0{,}005}{0{,}019} = \frac{5}{19} \approx 0{,}263 \\
+P_D(B) &= \frac{0{,}006}{0{,}019} = \frac{6}{19} \approx 0{,}316 \\
+P_D(C) &= \frac{0{,}008}{0{,}019} = \frac{8}{19} \approx 0{,}421
+\end{aligned}
+$$
+
+Contrôle : $\dfrac{5 + 6 + 8}{19} = 1$.
+:::
+
+::: remarque Commentaire
+La chaîne $C$ ne fournit que $20\,\%$ des pièces, mais elle est à l’origine de $42\,\%$ des pièces défectueuses : c’est elle qu’il faut améliorer en priorité.
+:::
+
+::: resultat
+$P_D(A) \approx 0{,}263$, $P_D(B) \approx 0{,}316$, $P_D(C) \approx 0{,}421$ : la chaîne $C$ est la plus probable.
+:::
+
+## Question A4 : Origine d’une pièce correcte
+
+::: etape Calcul
+$P(\overline{D}) = 1 - 0{,}019 = 0{,}981$ et $P(A \cap \overline{D}) = 0{,}5 \times 0{,}99 = 0{,}495$.
+
+$$P_{\overline{D}}(A) = \frac{0{,}495}{0{,}981} \approx 0{,}505$$
+:::
+
+::: resultat
+$P_{\overline{D}}(A) \approx 0{,}505$.
+:::
+
+## Partie B : Deux pièces
+
+## Question B1 : Arbre de deux épreuves indépendantes
+
+::: methode
+Les prélèvements sont indépendants : chaque niveau porte $P(D) = 0{,}019$ et $P(\overline{D}) = 0{,}981$.
+:::
+
+::: etape Arbre complété
+[IMAGE_4]
+:::
+
+::: resultat
+Branches $D$ : $0{,}019$ ; branches $\overline{D}$ : $0{,}981$, aux deux niveaux.
+:::
+
+## Question B2 : Aucune, puis au moins une pièce défectueuse
+
+::: etape Aucune pièce défectueuse
+$$P(\overline{D_1} \cap \overline{D_2}) = 0{,}981^2 = 0{,}962361 \approx 0{,}962$$
+:::
+
+::: etape Au moins une : événement contraire
+$$1 - 0{,}962361 = 0{,}037639 \approx 0{,}038$$
+:::
+
+::: resultat
+$P(\text{aucune}) \approx 0{,}962$ et $P(\text{au moins une}) \approx 0{,}038$.
+:::
+
+## Question B3 : Exactement une pièce défectueuse
+
+::: methode
+Deux chemins : $D_1 \cap \overline{D_2}$ et $\overline{D_1} \cap D_2$, de même probabilité.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+P &= 2 \times 0{,}019 \times 0{,}981 \\
+&= 0{,}037278 \approx 0{,}037
+\end{aligned}
+$$
+:::
+
+::: remarque
+Contrôle : on retrouve la probabilité d’« au moins une ».
+
+$$
+\begin{aligned}
+0{,}037278 + 0{,}019^2 &= 0{,}037278 + 0{,}000361 \\
+&= 0{,}037639
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(\text{exactement une}) \approx 0{,}037$.
+:::
+
+## Partie C : Améliorer la production
+
+::: methode
+On reprend la formule des probabilités totales avec $P_C(D) = y$, puis on résout l’inéquation.
+:::
+
+::: etape Inéquation
+$$
+\begin{aligned}
+0{,}005 + 0{,}006 + 0{,}2y &\leqslant 0{,}015 \\
+0{,}2y &\leqslant 0{,}004 \\
+y &\leqslant 0{,}02
+\end{aligned}
+$$
+:::
+
+::: resultat
+Il faut $y \leqslant 0{,}02$ : la chaîne $C$ doit diviser par deux sa proportion de pièces défectueuses.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. A1 : partition ; branches $\overline{D}$ : $0{,}99$ ; $0{,}98$ ; $0{,}96$.
+2. A2 : $P(D) = 0{,}019$ (somme des trois chemins).
+3. A3 : $P_D(A) = \frac{5}{19} \approx 0{,}263$ ; $P_D(B) = \frac{6}{19} \approx 0{,}316$ ; $P_D(C) = \frac{8}{19} \approx 0{,}421$ : chaîne $C$.
+4. A4 : $P_{\overline{D}}(A) \approx 0{,}505$.
+5. B2 : $0{,}981^2 \approx 0{,}962$ ; au moins une : $\approx 0{,}038$.
+6. B3 : $2 \times 0{,}019 \times 0{,}981 \approx 0{,}037$.
+7. C : $y \leqslant 0{,}02$.
+
+===
+
+=== Problème - Arbres pondérés
+Id: 1308
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Une urne contient $3$ boules rouges et $2$ boules bleues, indiscernables au toucher. On tire une boule, on note sa couleur, **sans la remettre**, puis on tire une seconde boule. On note $R_1$ : « la première boule est rouge », $B_1$ : « la première boule est bleue », et de même $R_2$ et $B_2$ pour la seconde boule.
+
+1. Compléter l’arbre ci-dessous en justifiant chaque probabilité.
+2. Calculer la probabilité d’obtenir deux boules rouges.
+3. Calculer la probabilité d’obtenir deux boules de la même couleur.
+4. Montrer que $P(R_2) = \dfrac{3}{5}$. Comparer avec $P(R_1)$.
+5. La seconde boule est rouge. Quelle est la probabilité que la première boule soit rouge ?
+6. Calculer la probabilité d’obtenir au moins une boule bleue.
+
+[IMAGE_1]
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Compléter l’arbre
+
+::: methode
+Au premier tirage, l’urne contient $5$ boules. Au second, il n’en reste que $4$, et la composition dépend de la première boule tirée.
+:::
+
+::: etape Premier tirage
+$P(R_1) = \dfrac{3}{5}$ et $P(B_1) = \dfrac{2}{5}$.
+:::
+
+::: etape Second tirage
+- Si la première est rouge, il reste $2$ rouges et $2$ bleues : $P_{R_1}(R_2) = \dfrac{2}{4}$ et $P_{R_1}(B_2) = \dfrac{2}{4}$.
+- Si la première est bleue, il reste $3$ rouges et $1$ bleue : $P_{B_1}(R_2) = \dfrac{3}{4}$ et $P_{B_1}(B_2) = \dfrac{1}{4}$.
+:::
+
+::: etape Arbre complété
+[IMAGE_2]
+:::
+
+::: resultat
+Premier niveau : $\dfrac{3}{5}$ et $\dfrac{2}{5}$ ; second niveau : $\dfrac{1}{2}$, $\dfrac{1}{2}$ après $R_1$, et $\dfrac{3}{4}$, $\dfrac{1}{4}$ après $B_1$.
+:::
+
+## Question 2 : Deux boules rouges
+
+::: etape Chemin $R_1 \cap R_2$
+$$P(R_1 \cap R_2) = \frac{3}{5} \times \frac{1}{2} = \frac{3}{10}$$
+:::
+
+::: resultat
+$P(R_1 \cap R_2) = \dfrac{3}{10}$.
+:::
+
+## Question 3 : Même couleur
+
+::: methode
+Deux chemins : $R_1 \cap R_2$ et $B_1 \cap B_2$. On les ajoute.
+:::
+
+::: etape Somme des chemins
+$$
+\begin{aligned}
+P &= \frac{3}{10} + \frac{2}{5} \times \frac{1}{4} \\
+&= \frac{3}{10} + \frac{1}{10} = \frac{2}{5}
+\end{aligned}
+$$
+:::
+
+::: resultat
+La probabilité d’obtenir deux boules de même couleur est $\dfrac{2}{5}$.
+:::
+
+## Question 4 : Probabilité de $R_2$
+
+::: methode
+$R_2$ est atteint par deux chemins : formule des probabilités totales avec la partition $\{R_1, B_1\}$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+P(R_2) &= P(R_1 \cap R_2) + P(B_1 \cap R_2) \\
+&= \frac{3}{10} + \frac{2}{5} \times \frac{3}{4} \\
+&= \frac{3}{10} + \frac{3}{10} = \frac{3}{5}
+\end{aligned}
+$$
+:::
+
+::: attention
+$P(R_2)$ ne se lit pas sur une branche : $\dfrac{1}{2}$ et $\dfrac{3}{4}$ sont des probabilités **conditionnelles**.
+:::
+
+::: resultat
+$P(R_2) = \dfrac{3}{5} = P(R_1)$ : sans information sur le premier tirage, la seconde boule a autant de chances d’être rouge que la première.
+:::
+
+## Question 5 : Première rouge sachant seconde rouge
+
+::: etape Inversion du conditionnement
+$$P_{R_2}(R_1) = \frac{P(R_1 \cap R_2)}{P(R_2)} = \frac{3}{10} \times \frac{5}{3} = \frac{1}{2}$$
+:::
+
+::: resultat
+$P_{R_2}(R_1) = \dfrac{1}{2}$.
+:::
+
+## Question 6 : Au moins une bleue
+
+::: methode
+Le contraire de « au moins une bleue » est « deux rouges ».
+:::
+
+::: etape Événement contraire
+$$P = 1 - \frac{3}{10} = \frac{7}{10}$$
+:::
+
+::: resultat
+La probabilité d’obtenir au moins une boule bleue est $\dfrac{7}{10}$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\frac{3}{5}$, $\frac{2}{5}$ ; puis $\frac{1}{2}$, $\frac{1}{2}$ (après $R_1$) et $\frac{3}{4}$, $\frac{1}{4}$ (après $B_1$).
+2. $\frac{3}{10}$.
+3. $\frac{3}{10} + \frac{1}{10} = \frac{2}{5}$.
+4. $P(R_2) = \frac{3}{10} + \frac{3}{10} = \frac{3}{5} = P(R_1)$.
+5. $P_{R_2}(R_1) = \frac{1}{2}$.
+6. $1 - \frac{3}{10} = \frac{7}{10}$.
+
+===
+
+=== Problème - Tests de dépistage et faux positifs
+Id: 1305
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Une maladie touche $1\,\%$ de la population. Un test de dépistage est positif chez $98\,\%$ des personnes malades ; il est négatif chez $97\,\%$ des personnes saines. On choisit une personne au hasard ; on note $M$ : « la personne est malade » et $T$ : « le test est positif ».
+
+**Partie A — Avec un arbre**
+
+**A1.** Traduire les données par des probabilités, puis compléter l’arbre ci-dessous.
+
+[IMAGE_1]
+
+**A2.** Calculer $P(T)$.
+
+**A3.** Le test d’une personne est positif. Quelle est la probabilité qu’elle soit malade ? Arrondir au millième, puis commenter.
+
+**A4.** Quelle est la proportion de faux positifs parmi les tests positifs ?
+
+**A5.** Calculer $P_{\overline{T}}(\overline{M})$, arrondie au dix-millième. Que peut-on dire d’un test négatif ?
+
+**Partie B — Avec un tableau**
+
+On considère une population de $100\,000$ personnes qui suit exactement ces proportions.
+
+| | $T$ | $\overline{T}$ | Total |
+|---|---|---|---|
+| $M$ | $\ldots$ | $\ldots$ | $\ldots$ |
+| $\overline{M}$ | $\ldots$ | $\ldots$ | $\ldots$ |
+| Total | $\ldots$ | $\ldots$ | $100\,000$ |
+
+**B1.** Compléter le tableau.
+
+**B2.** Retrouver le résultat de la question A3.
+
+**Partie C — Dans une population à risque**
+
+Dans un groupe à risque, $20\,\%$ des personnes sont malades ; le test garde les mêmes caractéristiques.
+
+**C1.** Compléter l’arbre ci-dessous.
+
+[IMAGE_2]
+
+**C2.** Calculer la probabilité qu’une personne de ce groupe soit malade sachant que son test est positif. Conclure.
+
+Étapes:
+<!-- optitab:1 -->
+## Partie A : Avec un arbre
+
+## Question A1 : Traduire et compléter l’arbre
+
+::: methode
+« Positif chez $98\,\%$ des malades » : on se place parmi les malades, c’est donc $P_M(T)$.
+:::
+
+::: etape Traduction
+$P(M) = 0{,}01$, $P_M(T) = 0{,}98$ et $P_{\overline{M}}(\overline{T}) = 0{,}97$.
+:::
+
+::: etape Compléments à 1
+$P(\overline{M}) = 0{,}99$, $P_M(\overline{T}) = 0{,}02$ et $P_{\overline{M}}(T) = 0{,}03$ (les faux positifs).
+
+[IMAGE_3]
+:::
+
+::: resultat
+$P(\overline{M}) = 0{,}99$ ; $P_M(\overline{T}) = 0{,}02$ ; $P_{\overline{M}}(T) = 0{,}03$.
+:::
+
+## Question A2 : Probabilité d’un test positif
+
+::: methode
+Formule des probabilités totales : deux chemins mènent à $T$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+P(T) &= P(M \cap T) + P(\overline{M} \cap T) \\
+&= 0{,}01 \times 0{,}98 + 0{,}99 \times 0{,}03 \\
+&= 0{,}0098 + 0{,}0297 \\
+&= 0{,}0395
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(T) = 0{,}0395$.
+:::
+
+## Question A3 : Malade sachant positif
+
+::: methode
+On cherche $P_T(M)$ alors que l’énoncé donne $P_M(T)$ : on inverse le conditionnement.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+P_T(M) &= \frac{P(M \cap T)}{P(T)} = \frac{0{,}0098}{0{,}0395} \\
+&= \frac{98}{395} \approx 0{,}248
+\end{aligned}
+$$
+:::
+
+::: retenir Commentaire
+Le test détecte $98\,\%$ des malades, et pourtant une personne positive n’a qu’environ une chance sur quatre d’être malade. La maladie est rare : les $3\,\%$ de faux positifs, pris parmi $99\,\%$ de personnes saines, sont plus nombreux que les vrais positifs.
+:::
+
+::: attention
+Ne pas confondre $P_M(T) = 0{,}98$ et $P_T(M) \approx 0{,}248$.
+:::
+
+::: resultat
+$P_T(M) \approx 0{,}248$.
+:::
+
+## Question A4 : Faux positifs parmi les positifs
+
+::: etape Probabilité contraire
+$$P_T(\overline{M}) = 1 - P_T(M) = \frac{297}{395} \approx 0{,}752$$
+:::
+
+::: resultat
+Environ $75\,\%$ des tests positifs sont des faux positifs.
+:::
+
+## Question A5 : Valeur d’un test négatif
+
+::: etape Les deux probabilités utiles
+$$
+\begin{aligned}
+P(\overline{T}) &= 1 - 0{,}0395 = 0{,}9605 \\
+P(\overline{M} \cap \overline{T}) &= 0{,}99 \times 0{,}97 = 0{,}9603
+\end{aligned}
+$$
+:::
+
+::: etape Inversion
+$$P_{\overline{T}}(\overline{M}) = \frac{0{,}9603}{0{,}9605} \approx 0{,}9998$$
+:::
+
+::: resultat
+$P_{\overline{T}}(\overline{M}) \approx 0{,}9998$ : un test négatif est très rassurant.
+:::
+
+## Partie B : Avec un tableau
+
+## Question B1 : Compléter le tableau
+
+::: methode
+On calcule d’abord les totaux des lignes ($1\,\%$ de malades), puis on répartit chaque ligne avec les pourcentages du test.
+:::
+
+::: etape Ligne des malades
+$100\,000 \times 0{,}01 = 1\,000$ malades, dont $1\,000 \times 0{,}98 = 980$ positifs et $20$ négatifs.
+:::
+
+::: etape Ligne des personnes saines
+$99\,000$ personnes saines, dont $99\,000 \times 0{,}03 = 2\,970$ positives et $96\,030$ négatives.
+:::
+
+::: etape Tableau complété
+Colonne $T$ : $980 + 2\,970 = 3\,950$ ; colonne $\overline{T}$ : $20 + 96\,030 = 96\,050$.
+
+[IMAGE_4]
+:::
+
+::: resultat
+$3\,950$ tests positifs, dont seulement $980$ chez des malades.
+:::
+
+## Question B2 : Retrouver $P_T(M)$
+
+::: etape Lecture de la colonne $T$
+On se place parmi les $3\,950$ positifs :
+
+$$P_T(M) = \frac{980}{3\,950} = \frac{98}{395} \approx 0{,}248$$
+:::
+
+::: resultat
+On retrouve $P_T(M) \approx 0{,}248$.
+:::
+
+## Partie C : Dans une population à risque
+
+## Question C1 : Nouvel arbre
+
+::: etape Arbre complété
+Seul le premier niveau change : $P(M) = 0{,}2$ et $P(\overline{M}) = 0{,}8$.
+
+[IMAGE_5]
+:::
+
+::: resultat
+Premier niveau : $0{,}2$ et $0{,}8$ ; second niveau inchangé.
+:::
+
+## Question C2 : Malade sachant positif
+
+::: etape Probabilités totales
+$$
+\begin{aligned}
+P(T) &= 0{,}2 \times 0{,}98 + 0{,}8 \times 0{,}03 \\
+&= 0{,}196 + 0{,}024 \\
+&= 0{,}22
+\end{aligned}
+$$
+:::
+
+::: etape Inversion
+$$P_T(M) = \frac{0{,}196}{0{,}22} = \frac{49}{55} \approx 0{,}891$$
+:::
+
+::: retenir Conclusion
+Avec le même test, la probabilité d’être malade quand le test est positif passe de $0{,}248$ à $0{,}891$. Elle dépend fortement de la proportion de malades dans la population testée.
+:::
+
+::: resultat
+$P_T(M) \approx 0{,}891$ dans le groupe à risque.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. A1 : $P(M) = 0{,}01$, $P_M(T) = 0{,}98$, $P_{\overline{M}}(\overline{T}) = 0{,}97$ ; compléments $0{,}99$, $0{,}02$, $0{,}03$.
+2. A2 : $P(T) = 0{,}0395$.
+3. A3 : $P_T(M) = \frac{98}{395} \approx 0{,}248$.
+4. A4 : $P_T(\overline{M}) \approx 0{,}752$.
+5. A5 : $P_{\overline{T}}(\overline{M}) \approx 0{,}9998$.
+6. B1 : $980$ ; $20$ ; $1\,000$ ; $2\,970$ ; $96\,030$ ; $99\,000$ ; $3\,950$ ; $96\,050$.
+7. B2 : $\frac{980}{3\,950} \approx 0{,}248$.
+8. C : $P(T) = 0{,}22$ ; $P_T(M) = \frac{49}{55} \approx 0{,}891$.
+
+===
+
+=== Problème - Formule des probabilités totales
+Id: 1304
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Dans un lycée, $45\,\%$ des élèves viennent à vélo, $35\,\%$ en bus et les autres à pied. Un élève qui vient à vélo est en retard avec la probabilité $0{,}04$, un élève qui vient en bus avec la probabilité $0{,}12$, un élève qui vient à pied avec la probabilité $0{,}06$.
+
+On choisit un élève au hasard un matin. On note $V$, $B$, $A$ les événements « l’élève vient à vélo », « en bus », « à pied », et $R$ : « l’élève est en retard ». Les résultats non exacts sont arrondis au millième.
+
+1. Justifier que $V$, $B$, $A$ forment une partition de l’univers, puis compléter l’arbre ci-dessous.
+2. Montrer que $P(R) = 0{,}072$.
+3. L’élève est en retard. Calculer la probabilité qu’il soit venu en bus, puis à vélo, puis à pied. Comparer $P_R(B)$ et $P(B)$.
+4. L’élève est à l’heure. Quelle est la probabilité qu’il soit venu à vélo ?
+5. La compagnie de bus veut améliorer sa ponctualité : on note $p$ la nouvelle probabilité qu’un élève venu en bus soit en retard, les autres données étant inchangées. Pour quelles valeurs de $p$ a-t-on $P(R) \leqslant 0{,}05$ ?
+
+[IMAGE_1]
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Partition et arbre
+
+::: methode
+Chaque élève utilise un et un seul moyen de transport. Dans l’arbre, la somme des branches issues de chaque nœud vaut $1$.
+:::
+
+::: etape Partition
+$V$, $B$, $A$ sont deux à deux incompatibles et leur réunion est l’univers. $P(A) = 1 - 0{,}45 - 0{,}35 = 0{,}2$.
+:::
+
+::: etape Arbre complété
+$P_V(\overline{R}) = 0{,}96$, $P_B(\overline{R}) = 0{,}88$, $P_A(\overline{R}) = 0{,}94$.
+
+[IMAGE_2]
+:::
+
+::: resultat
+$P(A) = 0{,}2$ ; branches $\overline{R}$ : $0{,}96$, $0{,}88$, $0{,}94$.
+:::
+
+## Question 2 : Probabilités totales
+
+::: methode
+Trois chemins mènent à $R$ : on les ajoute.
+:::
+
+::: etape Les trois chemins
+$$
+\begin{aligned}
+P(V \cap R) &= 0{,}45 \times 0{,}04 = 0{,}018 \\
+P(B \cap R) &= 0{,}35 \times 0{,}12 = 0{,}042 \\
+P(A \cap R) &= 0{,}2 \times 0{,}06 = 0{,}012
+\end{aligned}
+$$
+:::
+
+::: etape Somme
+$$P(R) = 0{,}018 + 0{,}042 + 0{,}012 = 0{,}072$$
+:::
+
+::: attention
+La moyenne des trois probabilités, $0{,}22 \div 3 \approx 0{,}073$, est fausse : les trois groupes n’ont pas la même taille, chaque probabilité doit être pondérée par la proportion du groupe.
+:::
+
+::: resultat
+$P(R) = 0{,}072$.
+:::
+
+## Question 3 : Moyen de transport d’un élève en retard
+
+::: etape Inversion pour chaque groupe
+$$
+\begin{aligned}
+P_R(B) &= \frac{0{,}042}{0{,}072} = \frac{7}{12} \approx 0{,}583 \\
+P_R(V) &= \frac{0{,}018}{0{,}072} = 0{,}25 \\
+P_R(A) &= \frac{0{,}012}{0{,}072} = \frac{1}{6} \approx 0{,}167
+\end{aligned}
+$$
+
+Contrôle : $\dfrac{7}{12} + \dfrac{3}{12} + \dfrac{2}{12} = 1$.
+:::
+
+::: etape Comparaison
+$P(B) = 0{,}35$ mais $P_R(B) \approx 0{,}583$ : les élèves du bus représentent $35\,\%$ des élèves, mais environ $58\,\%$ des retardataires.
+:::
+
+::: resultat
+$P_R(B) \approx 0{,}583$, $P_R(V) = 0{,}25$, $P_R(A) \approx 0{,}167$ ; $P_R(B) > P(B)$.
+:::
+
+## Question 4 : Moyen de transport d’un élève à l’heure
+
+::: etape Calcul
+$P(\overline{R}) = 1 - 0{,}072 = 0{,}928$ et $P(V \cap \overline{R}) = 0{,}45 \times 0{,}96 = 0{,}432$.
+
+$$P_{\overline{R}}(V) = \frac{0{,}432}{0{,}928} = \frac{27}{58} \approx 0{,}466$$
+:::
+
+::: resultat
+$P_{\overline{R}}(V) \approx 0{,}466$.
+:::
+
+## Question 5 : Objectif de ponctualité
+
+::: methode
+On écrit $P(R)$ en fonction de $p$ avec la formule des probabilités totales, puis on résout l’inéquation.
+:::
+
+::: etape Inéquation
+$$
+\begin{aligned}
+0{,}018 + 0{,}35p + 0{,}012 &\leqslant 0{,}05 \\
+0{,}35p &\leqslant 0{,}02 \\
+p &\leqslant \frac{0{,}02}{0{,}35} = \frac{2}{35}
+\end{aligned}
+$$
+
+et $\dfrac{2}{35} \approx 0{,}057$.
+:::
+
+::: resultat
+Il faut $p \leqslant \dfrac{2}{35}$, soit environ $p \leqslant 0{,}057$ : le retard en bus doit passer de $12\,\%$ à moins de $6\,\%$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Partition ; $P(A) = 0{,}2$ ; branches $\overline{R}$ : $0{,}96$ ; $0{,}88$ ; $0{,}94$.
+2. $P(R) = 0{,}072$ (somme des trois chemins).
+3. $P_R(B) = \frac{7}{12} \approx 0{,}583$ ; $P_R(V) = 0{,}25$ ; $P_R(A) = \frac{1}{6} \approx 0{,}167$ ; $P_R(B) > P(B) = 0{,}35$.
+4. $P_{\overline{R}}(V) = \frac{27}{58} \approx 0{,}466$.
+5. $p \leqslant \frac{2}{35} \approx 0{,}057$.
+
+===
+
+=== Problème - Synthèse 1 : tirages successifs
+Id: 1306
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Une urne contient $5$ boules rouges et $3$ boules bleues. On tire successivement deux boules. On note $R_1$, $B_1$ la couleur de la première boule et $R_2$, $B_2$ celle de la seconde.
+
+**Partie A — Tirages sans remise**
+
+**A1.** Compléter l’arbre ci-dessous.
+
+[IMAGE_1]
+
+**A2.** Calculer la probabilité d’obtenir deux boules rouges, puis exactement une boule rouge.
+
+**A3.** Calculer $P(R_2)$, puis $P_{R_2}(R_1)$.
+
+**A4.** Les événements $R_1$ et $R_2$ sont-ils indépendants ?
+
+**Partie B — Tirages avec remise**
+
+On remet la première boule dans l’urne avant le second tirage.
+
+**B1.** Compléter l’arbre ci-dessous.
+
+[IMAGE_2]
+
+**B2.** Calculer la probabilité d’obtenir deux boules rouges, puis exactement une boule rouge, puis $P(R_2)$.
+
+**B3.** Les événements $R_1$ et $R_2$ sont-ils indépendants ?
+
+**Partie C — Comparaison**
+
+Dans quel cas a-t-on le plus de chances d’obtenir deux boules de la même couleur ?
+
+Étapes:
+<!-- optitab:1 -->
+## Partie A : Tirages sans remise
+
+## Question A1 : Compléter l’arbre
+
+::: methode
+Sans remise, il reste $7$ boules au second tirage, et leur composition dépend de la première boule.
+:::
+
+::: etape Probabilités des branches
+- Premier tirage : $P(R_1) = \dfrac{5}{8}$, $P(B_1) = \dfrac{3}{8}$.
+- Après une rouge ($4$ R, $3$ B) : $P_{R_1}(R_2) = \dfrac{4}{7}$, $P_{R_1}(B_2) = \dfrac{3}{7}$.
+- Après une bleue ($5$ R, $2$ B) : $P_{B_1}(R_2) = \dfrac{5}{7}$, $P_{B_1}(B_2) = \dfrac{2}{7}$.
+:::
+
+::: etape Arbre complété
+[IMAGE_3]
+:::
+
+::: resultat
+Arbre complété ; les quatre chemins valent $\dfrac{5}{14}$, $\dfrac{15}{56}$, $\dfrac{15}{56}$ et $\dfrac{3}{28}$.
+:::
+
+## Question A2 : Deux rouges, une seule rouge
+
+::: etape Deux rouges
+$$P(R_1 \cap R_2) = \frac{5}{8} \times \frac{4}{7} = \frac{20}{56} = \frac{5}{14}$$
+:::
+
+::: etape Exactement une rouge : deux chemins
+$$
+\begin{aligned}
+P &= \frac{5}{8} \times \frac{3}{7} + \frac{3}{8} \times \frac{5}{7} \\
+&= \frac{15}{56} + \frac{15}{56} = \frac{15}{28}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(R_1 \cap R_2) = \dfrac{5}{14}$ et $P(\text{une seule rouge}) = \dfrac{15}{28}$.
+:::
+
+## Question A3 : $P(R_2)$ et $P_{R_2}(R_1)$
+
+::: etape Probabilités totales
+$$
+\begin{aligned}
+P(R_2) &= \frac{20}{56} + \frac{15}{56} \\
+&= \frac{35}{56} = \frac{5}{8}
+\end{aligned}
+$$
+:::
+
+::: etape Inversion
+$$P_{R_2}(R_1) = \frac{P(R_1 \cap R_2)}{P(R_2)} = \frac{5}{14} \times \frac{8}{5} = \frac{4}{7}$$
+:::
+
+::: resultat
+$P(R_2) = \dfrac{5}{8}$ et $P_{R_2}(R_1) = \dfrac{4}{7}$.
+:::
+
+## Question A4 : Indépendance ?
+
+::: etape Comparaison
+$P(R_1) \times P(R_2) = \dfrac{5}{8} \times \dfrac{5}{8} = \dfrac{25}{64}$, alors que $P(R_1 \cap R_2) = \dfrac{5}{14}$.
+
+Comme $25 \times 14 = 350$ et $5 \times 64 = 320$, ces deux fractions sont différentes.
+:::
+
+::: resultat
+$R_1$ et $R_2$ ne sont pas indépendants : sans remise, le premier tirage modifie la composition de l’urne.
+:::
+
+## Partie B : Tirages avec remise
+
+## Question B1 : Compléter l’arbre
+
+::: methode
+Avec remise, l’urne est la même aux deux tirages : les épreuves sont indépendantes, le second niveau est identique sur les deux branches.
+:::
+
+::: etape Arbre complété
+Toutes les branches rouges portent $\dfrac{5}{8}$, toutes les branches bleues $\dfrac{3}{8}$.
+
+[IMAGE_4]
+:::
+
+::: resultat
+Second niveau : $\dfrac{5}{8}$ et $\dfrac{3}{8}$ sur chaque branche.
+:::
+
+## Question B2 : Les trois probabilités
+
+::: etape Deux rouges et une seule rouge
+$$
+\begin{aligned}
+P(R_1 \cap R_2) &= \left(\frac{5}{8}\right)^2 = \frac{25}{64} \\
+P(\text{une seule rouge}) &= 2 \times \frac{15}{64} = \frac{15}{32}
+\end{aligned}
+$$
+:::
+
+::: etape $P(R_2)$
+$$P(R_2) = \frac{25}{64} + \frac{15}{64} = \frac{40}{64} = \frac{5}{8}$$
+:::
+
+::: resultat
+$\dfrac{25}{64}$, $\dfrac{15}{32}$ et $P(R_2) = \dfrac{5}{8}$.
+:::
+
+## Question B3 : Indépendance ?
+
+::: etape Comparaison
+$$
+\begin{aligned}
+P(R_1) \times P(R_2) &= \frac{5}{8} \times \frac{5}{8} \\
+&= \frac{25}{64} = P(R_1 \cap R_2)
+\end{aligned}
+$$
+:::
+
+::: resultat
+Avec remise, $R_1$ et $R_2$ sont indépendants.
+:::
+
+## Partie C : Comparaison
+
+::: methode
+« Même couleur » : chemins $R_1 \cap R_2$ et $B_1 \cap B_2$, dans chacun des deux arbres.
+:::
+
+::: etape Sans remise
+$$\frac{20}{56} + \frac{3}{8} \times \frac{2}{7} = \frac{20}{56} + \frac{6}{56} = \frac{13}{28} \approx 0{,}464$$
+:::
+
+::: etape Avec remise
+$$\frac{25}{64} + \frac{9}{64} = \frac{34}{64} = \frac{17}{32} \approx 0{,}531$$
+:::
+
+::: resultat
+Avec remise ($\approx 0{,}531$) plutôt que sans remise ($\approx 0{,}464$) : retirer une boule rend moins probable de retirer la même couleur.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. A1 : $\frac{5}{8}$, $\frac{3}{8}$ ; $\frac{4}{7}$, $\frac{3}{7}$ ; $\frac{5}{7}$, $\frac{2}{7}$.
+2. A2 : $\frac{5}{14}$ ; $\frac{15}{28}$.
+3. A3 : $P(R_2) = \frac{5}{8}$ ; $P_{R_2}(R_1) = \frac{4}{7}$.
+4. A4 : $\frac{25}{64} \neq \frac{5}{14}$ : pas indépendants.
+5. B2 : $\frac{25}{64}$ ; $\frac{15}{32}$ ; $P(R_2) = \frac{5}{8}$.
+6. B3 : indépendants.
+7. C : $\frac{13}{28} \approx 0{,}464$ sans remise, $\frac{17}{32} \approx 0{,}531$ avec remise.
+
+===
+
+=== Problème - Synthèse 2 : deux tirages avec remise
+Id: 1307
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Un sac contient $4$ jetons numérotés $1$, $2$, $3$, $4$. On tire un jeton, on note son numéro, on le **remet** dans le sac, puis on tire un second jeton.
+
+1. Expliquer pourquoi les deux tirages sont des épreuves indépendantes, et pourquoi chacune des $16$ issues a la probabilité $\dfrac{1}{16}$. Compléter le tableau des sommes ci-dessous.
+2. Calculer la probabilité d’obtenir deux numéros identiques.
+3. Calculer la probabilité que la somme des deux numéros soit égale à $5$.
+4. À l’aide de l’événement contraire, calculer la probabilité que le produit des deux numéros soit pair.
+5. On note $A$ : « le premier numéro est pair », $B$ : « le second numéro est pair » et $S$ : « la somme est paire ». Compléter l’arbre ci-dessous, puis calculer $P(S)$.
+6. Sachant que la somme est paire, quelle est la probabilité que les deux numéros soient pairs ?
+7. Les événements $A$ et $S$ sont-ils indépendants ?
+
+Tableau des sommes (ligne : premier jeton ; colonne : second jeton) :
+
+[IMAGE_1]
+
+Arbre de la question 5 :
+
+[IMAGE_2]
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Deux épreuves indépendantes
+
+::: methode
+Avec remise, le sac est identique aux deux tirages : le premier résultat ne modifie pas les probabilités du second.
+:::
+
+::: etape Probabilité d’une issue
+Chaque numéro sort avec la probabilité $\dfrac{1}{4}$ à chaque tirage. Les épreuves sont indépendantes, donc une issue $(a\,;b)$ a la probabilité
+
+$$\frac{1}{4} \times \frac{1}{4} = \frac{1}{16}$$
+:::
+
+::: etape Tableau des sommes
+Cases de somme $5$ en vert, numéros identiques encadrés :
+
+[IMAGE_3]
+:::
+
+::: resultat
+Les $16$ issues sont équiprobables, de probabilité $\dfrac{1}{16}$.
+:::
+
+## Question 2 : Numéros identiques
+
+::: etape Dénombrement
+Les issues $(1\,;1)$, $(2\,;2)$, $(3\,;3)$, $(4\,;4)$ : $4$ cases (encadrées).
+
+$$P = \frac{4}{16} = \frac{1}{4}$$
+:::
+
+::: resultat
+$P(\text{identiques}) = \dfrac{1}{4}$.
+:::
+
+## Question 3 : Somme égale à 5
+
+::: etape Dénombrement
+$(1\,;4)$, $(2\,;3)$, $(3\,;2)$, $(4\,;1)$ : $4$ cases (vertes).
+
+$$P = \frac{4}{16} = \frac{1}{4}$$
+:::
+
+::: resultat
+$P(\text{somme} = 5) = \dfrac{1}{4}$.
+:::
+
+## Question 4 : Produit pair
+
+::: methode
+Un produit est impair seulement si les **deux** numéros sont impairs. On passe par l’événement contraire.
+:::
+
+::: etape Produit impair
+Chaque tirage donne un impair ($1$ ou $3$) avec la probabilité $\dfrac{1}{2}$ ; les tirages sont indépendants :
+
+$$P(\text{produit impair}) = \frac{1}{2} \times \frac{1}{2} = \frac{1}{4}$$
+:::
+
+::: etape Événement contraire
+$$P(\text{produit pair}) = 1 - \frac{1}{4} = \frac{3}{4}$$
+:::
+
+::: resultat
+$P(\text{produit pair}) = \dfrac{3}{4}$.
+:::
+
+## Question 5 : Arbre de parité et $P(S)$
+
+::: etape Arbre complété
+$P(A) = \dfrac{2}{4} = \dfrac{1}{2}$ et, par indépendance, chaque branche du second niveau porte $\dfrac{1}{2}$.
+
+[IMAGE_4]
+:::
+
+::: etape Somme paire
+La somme est paire lorsque les deux numéros ont la même parité : chemins $A \cap B$ et $\overline{A} \cap \overline{B}$.
+
+$$P(S) = \frac{1}{4} + \frac{1}{4} = \frac{1}{2}$$
+:::
+
+::: resultat
+$P(S) = \dfrac{1}{2}$.
+:::
+
+## Question 6 : Deux pairs sachant somme paire
+
+::: etape Inversion
+$A \cap B$ est inclus dans $S$ :
+
+$$P_S(A \cap B) = \frac{P(A \cap B)}{P(S)} = \frac{1/4}{1/2} = \frac{1}{2}$$
+:::
+
+::: resultat
+$P_S(A \cap B) = \dfrac{1}{2}$.
+:::
+
+## Question 7 : $A$ et $S$ indépendants ?
+
+::: etape Comparaison
+$A \cap S$ : le premier est pair **et** la somme est paire, donc le second est pair aussi : $A \cap S = A \cap B$, de probabilité $\dfrac{1}{4}$.
+
+$$P(A) \times P(S) = \frac{1}{2} \times \frac{1}{2} = \frac{1}{4} = P(A \cap S)$$
+:::
+
+::: remarque
+Le résultat peut surprendre : savoir que le premier numéro est pair ne change pas la probabilité que la somme soit paire, car tout dépend alors du second tirage, qui donne un pair une fois sur deux.
+:::
+
+::: resultat
+$A$ et $S$ sont indépendants.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Avec remise : épreuves indépendantes ; chaque issue a la probabilité $\frac{1}{4} \times \frac{1}{4} = \frac{1}{16}$.
+2. $\frac{4}{16} = \frac{1}{4}$.
+3. $\frac{4}{16} = \frac{1}{4}$.
+4. $1 - \frac{1}{2} \times \frac{1}{2} = \frac{3}{4}$.
+5. Toutes les branches portent $\frac{1}{2}$ ; $P(S) = \frac{1}{4} + \frac{1}{4} = \frac{1}{2}$.
+6. $P_S(A \cap B) = \frac{1}{2}$.
+7. $P(A)P(S) = \frac{1}{4} = P(A \cap S)$ : indépendants.
+
+===
+
+=== Découverte - Tableau croisé et traduction d'un énoncé
+Id: 4943
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Une salle de sport compte $500$ adhérents. On note $A$ : « l’adhérent a un abonnement annuel » et $M$ : « l’adhérent pratique la musculation ». On choisit un adhérent au hasard. Le tableau ci-dessous est incomplet.
+
+| | $M$ | $\overline{M}$ | Total |
+|---|---|---|---|
+| $A$ | $120$ | $\ldots$ | $200$ |
+| $\overline{A}$ | $\ldots$ | $195$ | $\ldots$ |
+| Total | $\ldots$ | $\ldots$ | $500$ |
+
+1. Compléter le tableau.
+2. Calculer $P(A)$, $P(M)$ et $P(A \cap M)$.
+3. Calculer $P_A(M)$ et $P_M(A)$, puis traduire chacune par une phrase.
+4. Écrire avec une notation, puis calculer :
+   - a) la probabilité qu’un adhérent sans abonnement annuel pratique la musculation ;
+   - b) la probabilité qu’un adhérent qui ne pratique pas la musculation n’ait pas d’abonnement annuel (arrondir au millième).
+5. Les événements $A$ et $M$ sont-ils indépendants ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Compléter le tableau
+
+::: methode
+Chaque ligne et chaque colonne a pour somme son total ; on commence par les lignes ou colonnes où il ne manque qu’une case.
+:::
+
+::: etape Calculs
+- Ligne $A$ : $200 - 120 = 80$.
+- Total de $\overline{A}$ : $500 - 200 = 300$.
+- Ligne $\overline{A}$ : $300 - 195 = 105$.
+- Colonnes : $120 + 105 = 225$ et $80 + 195 = 275$ ; contrôle $225 + 275 = 500$.
+:::
+
+::: etape Tableau complété
+Les cases trouvées sont en vert.
+
+[IMAGE_1]
+:::
+
+::: resultat
+$A \cap \overline{M}$ : $80$ ; $\overline{A} \cap M$ : $105$ ; totaux $300$, $225$ et $275$.
+:::
+
+## Question 2 : Trois probabilités « simples »
+
+::: methode
+On divise par l’effectif total $500$.
+:::
+
+::: etape Calculs
+$$
+\begin{aligned}
+P(A) &= \frac{200}{500} = 0{,}4 \\
+P(M) &= \frac{225}{500} = 0{,}45 \\
+P(A \cap M) &= \frac{120}{500} = 0{,}24
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(A) = 0{,}4$, $P(M) = 0{,}45$, $P(A \cap M) = 0{,}24$.
+:::
+
+## Question 3 : Deux probabilités conditionnelles
+
+::: methode
+$P_A(M)$ : on se place **parmi les abonnés annuels** (ligne $A$) ; $P_M(A)$ : on se place **parmi les pratiquants de musculation** (colonne $M$).
+:::
+
+::: etape $P_A(M)$
+$$P_A(M) = \frac{120}{200} = 0{,}6$$
+
+Parmi les adhérents ayant un abonnement annuel, $60\,\%$ pratiquent la musculation.
+:::
+
+::: etape $P_M(A)$
+$$P_M(A) = \frac{120}{225} = \frac{8}{15} \approx 0{,}533$$
+
+Parmi les adhérents qui pratiquent la musculation, environ $53\,\%$ ont un abonnement annuel.
+:::
+
+::: resultat
+$P_A(M) = 0{,}6$ et $P_M(A) = \dfrac{8}{15} \approx 0{,}533$.
+:::
+
+## Question 4 : Du texte aux notations
+
+::: methode
+« Un adhérent **sans** abonnement annuel » est la condition : elle se place en indice.
+:::
+
+::: etape a) Musculation sachant $\overline{A}$
+C’est $P_{\overline{A}}(M)$ : parmi les $300$ adhérents sans abonnement annuel, $105$ pratiquent la musculation.
+
+$$P_{\overline{A}}(M) = \frac{105}{300} = 0{,}35$$
+:::
+
+::: etape b) $\overline{A}$ sachant $\overline{M}$
+C’est $P_{\overline{M}}(\overline{A})$ : parmi les $275$ adhérents qui ne pratiquent pas la musculation, $195$ n’ont pas d’abonnement annuel.
+
+$$P_{\overline{M}}(\overline{A}) = \frac{195}{275} = \frac{39}{55} \approx 0{,}709$$
+:::
+
+::: resultat
+$P_{\overline{A}}(M) = 0{,}35$ et $P_{\overline{M}}(\overline{A}) \approx 0{,}709$.
+:::
+
+## Question 5 : Indépendance
+
+::: etape Comparaison
+$P(A) \times P(M) = 0{,}4 \times 0{,}45 = 0{,}18$, alors que $P(A \cap M) = 0{,}24$.
+
+Autre façon : $P_A(M) = 0{,}6$ alors que $P(M) = 0{,}45$.
+:::
+
+::: resultat
+$A$ et $M$ ne sont pas indépendants : les abonnés annuels pratiquent plus souvent la musculation.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $80$ ; $105$ ; totaux $300$, $225$, $275$.
+2. $P(A) = 0{,}4$ ; $P(M) = 0{,}45$ ; $P(A \cap M) = 0{,}24$.
+3. $P_A(M) = 0{,}6$ ; $P_M(A) = \frac{8}{15} \approx 0{,}533$.
+4. a) $P_{\overline{A}}(M) = 0{,}35$. b) $P_{\overline{M}}(\overline{A}) = \frac{39}{55} \approx 0{,}709$.
+5. $0{,}18 \neq 0{,}24$ : pas indépendants.
+
+===
+
+=== Découverte - Lire et compléter un arbre pondéré
+Id: 4944
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Dans un lycée, $35\,\%$ des élèves sont internes. Parmi les internes, $60\,\%$ pratiquent un sport à l’association sportive ; parmi les autres élèves, $30\,\%$. On choisit un élève au hasard ; on note $I$ : « l’élève est interne » et $S$ : « l’élève pratique un sport à l’association sportive ».
+
+1. Traduire les nombres $0{,}35$, $0{,}6$ et $0{,}3$ avec des notations de probabilités.
+2. Compléter l’arbre pondéré ci-dessous.
+3. Calculer $P(I \cap S)$ et traduire ce résultat par une phrase.
+4. Montrer que $P(S) = 0{,}405$.
+5. L’élève choisi pratique un sport à l’association sportive. Quelle est la probabilité qu’il soit interne ? Arrondir au millième.
+6. Traduire $P_{\overline{S}}(I)$ par une phrase, puis la calculer (arrondir au millième).
+7. Les événements $I$ et $S$ sont-ils indépendants ?
+
+[IMAGE_1]
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Traduire les données
+
+::: etape Traduction
+- « $35\,\%$ des élèves sont internes » : $P(I) = 0{,}35$ ;
+- « **parmi les internes**, $60\,\%$ » : $P_I(S) = 0{,}6$ ;
+- « **parmi les autres élèves**, $30\,\%$ » : $P_{\overline{I}}(S) = 0{,}3$.
+:::
+
+::: resultat
+$P(I) = 0{,}35$, $P_I(S) = 0{,}6$, $P_{\overline{I}}(S) = 0{,}3$.
+:::
+
+## Question 2 : Compléter l’arbre
+
+::: methode
+La somme des branches issues d’un même nœud vaut $1$.
+:::
+
+::: etape Compléments
+$P(\overline{I}) = 0{,}65$, $P_I(\overline{S}) = 0{,}4$, $P_{\overline{I}}(\overline{S}) = 0{,}7$.
+
+[IMAGE_2]
+:::
+
+::: resultat
+$0{,}65$ ; $0{,}4$ ; $0{,}7$.
+:::
+
+## Question 3 : Un chemin
+
+::: etape Produit des branches
+$$P(I \cap S) = 0{,}35 \times 0{,}6 = 0{,}21$$
+:::
+
+::: resultat
+$P(I \cap S) = 0{,}21$ : $21\,\%$ des élèves sont internes **et** pratiquent un sport à l’association sportive.
+:::
+
+## Question 4 : Probabilités totales
+
+::: etape Deux chemins mènent à $S$
+$$
+\begin{aligned}
+P(S) &= 0{,}35 \times 0{,}6 + 0{,}65 \times 0{,}3 \\
+&= 0{,}21 + 0{,}195 \\
+&= 0{,}405
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(S) = 0{,}405$.
+:::
+
+## Question 5 : Interne sachant sportif
+
+::: etape Inversion
+$$
+\begin{aligned}
+P_S(I) &= \frac{P(I \cap S)}{P(S)} = \frac{0{,}21}{0{,}405} \\
+&= \frac{14}{27} \approx 0{,}519
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P_S(I) \approx 0{,}519$.
+:::
+
+## Question 6 : Traduire et calculer $P_{\overline{S}}(I)$
+
+::: etape Traduction
+$P_{\overline{S}}(I)$ est la probabilité qu’un élève qui ne pratique pas de sport à l’association sportive soit interne.
+:::
+
+::: etape Calcul
+$P(\overline{S}) = 1 - 0{,}405 = 0{,}595$ et $P(I \cap \overline{S}) = 0{,}35 \times 0{,}4 = 0{,}14$.
+
+$$P_{\overline{S}}(I) = \frac{0{,}14}{0{,}595} = \frac{4}{17} \approx 0{,}235$$
+:::
+
+::: resultat
+$P_{\overline{S}}(I) \approx 0{,}235$.
+:::
+
+## Question 7 : Indépendance
+
+::: etape Comparaison
+$P_I(S) = 0{,}6$ alors que $P(S) = 0{,}405$ : savoir que l’élève est interne augmente la probabilité qu’il pratique un sport.
+:::
+
+::: resultat
+$I$ et $S$ ne sont pas indépendants.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $P(I) = 0{,}35$ ; $P_I(S) = 0{,}6$ ; $P_{\overline{I}}(S) = 0{,}3$.
+2. $P(\overline{I}) = 0{,}65$ ; $P_I(\overline{S}) = 0{,}4$ ; $P_{\overline{I}}(\overline{S}) = 0{,}7$.
+3. $P(I \cap S) = 0{,}21$.
+4. $P(S) = 0{,}21 + 0{,}195 = 0{,}405$.
+5. $P_S(I) = \frac{14}{27} \approx 0{,}519$.
+6. $P_{\overline{S}}(I) = \frac{4}{17} \approx 0{,}235$.
+7. $P_I(S) = 0{,}6 \neq P(S)$ : pas indépendants.
+
+===
+
+=== Entraînement - Simuler deux épreuves en Python
+Id: 4945
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Une basketteuse tire deux lancers francs. Elle réussit le premier avec la probabilité $0{,}7$. Si elle l’a réussi, elle réussit le second avec la probabilité $0{,}8$ ; sinon, avec la probabilité $0{,}6$. On note $R_1$ et $R_2$ les événements « le premier (le second) lancer est réussi ».
+
+On simule cette situation en Python :
+
+```python
+from random import random
+
+def deux_lancers():
+    r1 = random() < 0.7
+    if r1:
+        r2 = random() < 0.8
+    else:
+        r2 = random() < 0.6
+    return r1, r2
+
+def simulation(n):
+    nb_r2 = 0
+    nb_r1r2 = 0
+    for k in range(n):
+        r1, r2 = deux_lancers()
+        if r2:
+            nb_r2 = nb_r2 + 1
+            if r1:
+                nb_r1r2 = nb_r1r2 + 1
+    return nb_r2 / n, nb_r1r2 / nb_r2
+```
+
+1. `random()` renvoie un nombre aléatoire de $[0\,;1[$. Expliquer pourquoi `random() < 0.7` vaut `True` avec la probabilité $0{,}7$, puis pourquoi `deux_lancers()` simule bien les deux lancers.
+2. Compléter l’arbre ci-dessous, puis calculer $P(R_2)$ et $P_{R_2}(R_1)$ (arrondir au millième).
+3. Que représentent les deux nombres renvoyés par `simulation(n)` ?
+4. Une exécution a donné l’affichage suivant. Comparer avec la question 2.
+
+```console
+>>> simulation(10000)
+(0.7409, 0.7562424078823053)
+```
+
+5. Le graphique ci-dessous montre, pour une simulation, la fréquence des seconds lancers réussis après $n$ séries de deux lancers. Décrire son évolution.
+6. Les événements $R_1$ et $R_2$ sont-ils indépendants ?
+7. Modifier la fonction `deux_lancers` pour simuler une joueuse dont les deux lancers sont **indépendants**, chacun réussi avec la probabilité $0{,}7$. Calculer alors $P(R_1 \cap R_2)$ et $P(R_2)$.
+
+Arbre de la question 2 :
+
+[IMAGE_1]
+
+Graphique de la question 5 :
+
+[IMAGE_2]
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Simuler un événement de probabilité donnée
+
+::: methode
+`random()` est « uniforme » sur $[0\,;1[$ : la probabilité de tomber dans un intervalle $[0\,;p[$ est sa longueur $p$.
+:::
+
+::: etape Le test de comparaison
+Le test `random() < 0.7` est vrai lorsque le nombre tombe dans $[0\,;0{,}7[$, intervalle de longueur $0{,}7$ : il vaut `True` avec la probabilité $0{,}7$.
+:::
+
+::: etape La fonction de simulation
+- `r1` vaut `True` avec la probabilité $0{,}7$ : c’est $R_1$.
+- Si `r1` est vrai, `r2` est tiré avec $0{,}8$ : c’est $P_{R_1}(R_2)$ ; sinon avec $0{,}6$ : c’est $P_{\overline{R_1}}(R_2)$.
+
+La fonction suit exactement l’arbre de la situation.
+:::
+
+::: resultat
+`deux_lancers()` renvoie le couple (premier réussi ?, second réussi ?) avec les bonnes probabilités.
+:::
+
+## Question 2 : Arbre et calculs exacts
+
+::: etape Arbre complété
+$P(\overline{R_1}) = 0{,}3$, $P_{R_1}(\overline{R_2}) = 0{,}2$, $P_{\overline{R_1}}(\overline{R_2}) = 0{,}4$.
+
+[IMAGE_3]
+:::
+
+::: etape $P(R_2)$ : probabilités totales
+$$
+\begin{aligned}
+P(R_2) &= 0{,}7 \times 0{,}8 + 0{,}3 \times 0{,}6 \\
+&= 0{,}56 + 0{,}18 \\
+&= 0{,}74
+\end{aligned}
+$$
+:::
+
+::: etape $P_{R_2}(R_1)$ : inversion
+$$P_{R_2}(R_1) = \frac{0{,}56}{0{,}74} = \frac{28}{37} \approx 0{,}757$$
+:::
+
+::: resultat
+$P(R_2) = 0{,}74$ et $P_{R_2}(R_1) \approx 0{,}757$.
+:::
+
+## Question 3 : Les deux nombres renvoyés
+
+::: etape Lecture du programme
+- `nb_r2` compte les séries où le second lancer est réussi : `nb_r2 / n` est la **fréquence** de $R_2$.
+- `nb_r1r2` compte, parmi elles, celles où le premier est aussi réussi : `nb_r1r2 / nb_r2` est la fréquence de $R_1$ **parmi** les séries où $R_2$ est réalisé.
+:::
+
+::: resultat
+Le premier nombre estime $P(R_2)$, le second estime $P_{R_2}(R_1)$.
+:::
+
+## Question 4 : Comparer
+
+::: etape Écarts
+- $0{,}7409$ contre $P(R_2) = 0{,}74$ : écart d’environ $0{,}001$ ;
+- $0{,}7562$ contre $P_{R_2}(R_1) \approx 0{,}757$ : écart d’environ $0{,}001$.
+:::
+
+::: resultat
+Pour $n = 10\,000$, les fréquences observées sont très proches des probabilités calculées.
+:::
+
+## Question 5 : Lire le graphique
+
+::: etape Évolution de la fréquence
+Pour les petites valeurs de $n$, la fréquence varie beaucoup ; quand $n$ augmente, elle se stabilise autour de $0{,}74$ (droite verte).
+
+[IMAGE_4]
+:::
+
+::: resultat
+La fréquence de $R_2$ se rapproche de $P(R_2) = 0{,}74$ quand $n$ devient grand.
+:::
+
+## Question 6 : Indépendance
+
+::: etape Comparaison
+$$P(R_1) \times P(R_2) = 0{,}7 \times 0{,}74 = 0{,}518$$
+
+alors que $P(R_1 \cap R_2) = 0{,}56$.
+
+Autre façon : $P_{R_1}(R_2) = 0{,}8 \neq P(R_2) = 0{,}74$.
+:::
+
+::: resultat
+$R_1$ et $R_2$ ne sont pas indépendants : réussir le premier lancer donne confiance pour le second.
+:::
+
+## Question 7 : Deux lancers indépendants
+
+::: methode
+Si les lancers sont indépendants, le second ne dépend pas du premier : plus besoin de `if`.
+:::
+
+::: etape Nouvelle fonction
+```python
+def deux_lancers():
+    r1 = random() < 0.7
+    r2 = random() < 0.7
+    return r1, r2
+```
+:::
+
+::: etape Calculs
+$$
+\begin{aligned}
+P(R_1 \cap R_2) &= 0{,}7 \times 0{,}7 = 0{,}49 \\
+P(R_2) &= 0{,}49 + 0{,}3 \times 0{,}7 = 0{,}7
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(R_1 \cap R_2) = 0{,}49$ et $P(R_2) = 0{,}7$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. `random()` tombe dans $[0\,;0{,}7[$ avec la probabilité $0{,}7$ ; la fonction suit l’arbre.
+2. $P(R_2) = 0{,}74$ ; $P_{R_2}(R_1) = \frac{28}{37} \approx 0{,}757$.
+3. Fréquence de $R_2$ ; fréquence de $R_1$ parmi les séries où $R_2$ est réalisé.
+4. $0{,}7409 \approx 0{,}74$ et $0{,}7562 \approx 0{,}757$.
+5. La fréquence se stabilise autour de $0{,}74$.
+6. $0{,}518 \neq 0{,}56$ : pas indépendants.
+7. `r2 = random() < 0.7` sans condition ; $P(R_1 \cap R_2) = 0{,}49$ ; $P(R_2) = 0{,}7$.
+
+===

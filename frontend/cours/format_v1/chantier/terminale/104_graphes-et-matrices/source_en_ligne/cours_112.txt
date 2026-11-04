@@ -1,0 +1,574 @@
+Titre: Matrices
+
+<!-- optitab:1 -->
+::: objectifs
+Calculer avec des matrices (produit, inverse, puissances), résoudre un système linéaire et étudier une suite de matrices colonnes ; modéliser une situation par un graphe et compter des chemins avec la matrice d’adjacence ; étudier une chaîne de Markov à deux ou trois états. Programme de Mathématiques expertes.
+:::
+
+## I. Matrices
+
+::: definition Matrice
+Soient $m$ et $n$ deux entiers naturels non nuls. Une **matrice de taille $m \times n$** est un tableau de nombres réels à $m$ lignes et $n$ colonnes. Le **coefficient** $a_{ij}$ est situé à la ligne $i$ et à la colonne $j$ ; on note $A = (a_{ij})$.
+
+- **Matrice ligne** : une seule ligne (taille $1 \times n$).
+- **Matrice colonne** : une seule colonne (taille $m \times 1$).
+- **Matrice carrée d’ordre $n$** : $n$ lignes et $n$ colonnes.
+:::
+
+::: exemple
+$A = \begin{pmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{pmatrix}$ est de taille $2 \times 3$ et $a_{23} = 6$ (ligne $2$, colonne $3$). $X = \begin{pmatrix} 1 \\ 0 \\ -1 \end{pmatrix}$ est une matrice colonne de taille $3 \times 1$ et $L = \begin{pmatrix} 1 & 2 & 3 & 4 \end{pmatrix}$ une matrice ligne de taille $1 \times 4$.
+:::
+
+::: definition Matrices carrées particulières
+- La **matrice nulle** $0_n$ : tous ses coefficients sont nuls.
+- La **matrice identité** $I_n$ : des $1$ sur la diagonale, des $0$ ailleurs ; par exemple $I_2 = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}$ et $I_3 = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix}$.
+- Une matrice **diagonale** : ses coefficients hors de la diagonale sont nuls, par exemple $D = \begin{pmatrix} 2 & 0 \\ 0 & 3 \end{pmatrix}$.
+:::
+
+Deux matrices sont **égales** lorsqu’elles ont la même taille et les mêmes coefficients, place par place.
+
+## II. Opérations sur les matrices
+
+### Somme et produit par un réel
+
+::: definition
+Pour deux matrices $A$ et $B$ de **même taille** et un réel $k$, on calcule coefficient par coefficient :
+
+$$(A + B)_{ij} = a_{ij} + b_{ij} \qquad \text{et} \qquad (kA)_{ij} = k\,a_{ij}$$
+:::
+
+::: exemple
+$$\begin{pmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{pmatrix} + \begin{pmatrix} 2 & -1 & 0 \\ 3 & 1 & -2 \end{pmatrix} = \begin{pmatrix} 3 & 1 & 3 \\ 7 & 6 & 4 \end{pmatrix}$$
+
+$$3\begin{pmatrix} 1 & 2 \\ -1 & 4 \end{pmatrix} = \begin{pmatrix} 3 & 6 \\ -3 & 12 \end{pmatrix}$$
+:::
+
+### Produit de deux matrices
+
+::: definition Produit
+Soit $A$ de taille $m \times n$ et $B$ de taille $n \times p$ : le nombre de **colonnes** de $A$ est égal au nombre de **lignes** de $B$. Le produit $AB$ est la matrice de taille $m \times p$ définie par
+
+$$(AB)_{ij} = a_{i1}b_{1j} + a_{i2}b_{2j} + \cdots + a_{in}b_{nj} = \sum_{k=1}^{n} a_{ik}\,b_{kj}$$
+:::
+
+::: methode Calculer un coefficient de $AB$
+Le coefficient $(AB)_{ij}$ se calcule avec la **ligne $i$ de $A$** et la **colonne $j$ de $B$** : on multiplie leurs termes deux à deux, puis on additionne.
+:::
+
+[IMAGE_1]
+
+::: exemple
+Avec $A = \begin{pmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{pmatrix}$ (taille $2 \times 3$) et $B = \begin{pmatrix} 1 & 0 \\ -1 & 2 \\ 2 & 1 \end{pmatrix}$ (taille $3 \times 2$), le produit $AB$ existe et il est de taille $2 \times 2$ :
+
+$$
+\begin{aligned}
+(AB)_{11} &= 1 \times 1 + 2 \times (-1) + 3 \times 2 \\
+&= 5 \\
+(AB)_{12} &= 1 \times 0 + 2 \times 2 + 3 \times 1 \\
+&= 7 \\
+(AB)_{21} &= 4 \times 1 + 5 \times (-1) + 6 \times 2 \\
+&= 11 \\
+(AB)_{22} &= 4 \times 0 + 5 \times 2 + 6 \times 1 \\
+&= 16
+\end{aligned}
+$$
+
+donc $AB = \begin{pmatrix} 5 & 7 \\ 11 & 16 \end{pmatrix}$.
+:::
+
+::: propriete Règles de calcul
+Pour des matrices de tailles compatibles :
+
+- $(AB)C = A(BC)$ (associativité) ;
+- $A(B + C) = AB + AC$ et $(A + B)C = AC + BC$ (distributivité) ;
+- $AI_n = I_nA = A$ pour toute matrice carrée $A$ d’ordre $n$.
+:::
+
+::: attention Le produit n’est pas commutatif
+En général $AB \neq BA$. Avec $A = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}$ et $B = \begin{pmatrix} 5 & 6 \\ 7 & 8 \end{pmatrix}$ :
+
+$$
+AB = \begin{pmatrix} 19 & 22 \\ 43 & 50 \end{pmatrix} \qquad \text{mais} \qquad BA = \begin{pmatrix} 23 & 34 \\ 31 & 46 \end{pmatrix}
+$$
+
+De plus, un produit peut être nul sans qu’aucun des facteurs ne le soit : $\begin{pmatrix} 1 & 1 \\ 1 & 1 \end{pmatrix}\begin{pmatrix} 1 & -1 \\ -1 & 1 \end{pmatrix} = 0_2$.
+:::
+
+## III. Matrice inverse et systèmes linéaires
+
+### Matrice inverse
+
+::: definition
+Une matrice carrée $A$ d’ordre $n$ est **inversible** s’il existe une matrice carrée $B$ d’ordre $n$ telle que $AB = BA = I_n$. Cette matrice $B$ est unique : c’est l’**inverse** de $A$, notée $A^{-1}$.
+:::
+
+::: propriete Une seule égalité suffit (admis)
+Si $A$ et $B$ sont deux matrices carrées d’ordre $n$ telles que $AB = I_n$, alors $A$ est inversible et $A^{-1} = B$.
+:::
+
+::: theoreme Inverse d’une matrice d’ordre 2
+Soit $A = \begin{pmatrix} a & b \\ c & d \end{pmatrix}$. Le nombre $\det(A) = ad - bc$ est le **déterminant** de $A$.
+
+- Si $ad - bc \neq 0$, $A$ est inversible et $A^{-1} = \dfrac{1}{ad - bc}\begin{pmatrix} d & -b \\ -c & a \end{pmatrix}$.
+- Si $ad - bc = 0$, $A$ n’est pas inversible.
+:::
+
+::: demonstration
+Posons $B = \begin{pmatrix} d & -b \\ -c & a \end{pmatrix}$. Un calcul direct donne
+
+$$
+\begin{aligned}
+AB &= \begin{pmatrix} ad - bc & -ab + ba \\ cd - dc & -cb + da \end{pmatrix} \\
+&= (ad - bc)\,I_2
+\end{aligned}
+$$
+
+- Si $ad - bc \neq 0$ : $A \times \dfrac{1}{ad - bc}B = I_2$, donc $A$ est inversible d’inverse $\dfrac{1}{ad - bc}B$.
+- Si $ad - bc = 0$ : $AB = 0_2$. Si $A$ était inversible, on aurait $B = A^{-1}(AB) = 0_2$, donc $a = b = c = d = 0$ et $A = 0_2$, qui n’est pas inversible : c’est absurde.
+:::
+
+::: exemple
+Pour $A = \begin{pmatrix} 2 & 3 \\ 1 & 4 \end{pmatrix}$ : $\det(A) = 2 \times 4 - 3 \times 1 = 5 \neq 0$, donc
+
+$$A^{-1} = \frac{1}{5}\begin{pmatrix} 4 & -3 \\ -1 & 2 \end{pmatrix}$$
+
+Contrôle : $\begin{pmatrix} 2 & 3 \\ 1 & 4 \end{pmatrix}\begin{pmatrix} 4 & -3 \\ -1 & 2 \end{pmatrix} = \begin{pmatrix} 5 & 0 \\ 0 & 5 \end{pmatrix} = 5I_2$, donc $AA^{-1} = I_2$.
+:::
+
+::: methode Inverse d’une matrice d’ordre 3
+On obtient l’inverse à la calculatrice (ou avec un logiciel), puis on le **contrôle** par un produit. Par exemple, pour $T = \begin{pmatrix} 1 & 1 & 0 \\ 0 & 1 & 1 \\ 0 & 0 & 1 \end{pmatrix}$ et $T' = \begin{pmatrix} 1 & -1 & 1 \\ 0 & 1 & -1 \\ 0 & 0 & 1 \end{pmatrix}$, on vérifie que $TT' = I_3$ : donc $T^{-1} = T'$.
+:::
+
+::: attention
+On ne divise jamais par une matrice : l’écriture $\dfrac{1}{A}$ n’a pas de sens. On multiplie par $A^{-1}$, du bon côté. Si $A$ et $B$ sont inversibles, $(AB)^{-1} = B^{-1}A^{-1}$ : l’ordre s’inverse.
+:::
+
+::: remarque Pour aller plus loin (hors programme) : déterminant d’ordre 3
+Pour $A = \begin{pmatrix} a & b & c \\ d & e & f \\ g & h & i \end{pmatrix}$, on définit
+
+$$
+\begin{aligned}
+\det(A) = {} & aei + bfg + cdh \\
+& - ceg - afh - bdi
+\end{aligned}
+$$
+
+La **règle de Sarrus** permet de retrouver cette formule : on recopie les deux premières colonnes à droite du tableau, on additionne les produits des trois diagonales descendantes et on retranche ceux des trois diagonales montantes. Comme à l’ordre 2, $A$ est inversible si et seulement si $\det(A) \neq 0$.
+:::
+
+[IMAGE_2]
+
+### Écriture matricielle d’un système linéaire
+
+::: definition
+Un système de $n$ équations linéaires à $n$ inconnues s’écrit $AX = Y$, où $A$ est la matrice carrée des coefficients, $X$ la matrice colonne des inconnues et $Y$ la matrice colonne des seconds membres.
+:::
+
+::: theoreme
+Si $A$ est inversible, le système $AX = Y$ admet une **unique** solution :
+
+$$X = A^{-1}Y$$
+:::
+
+::: demonstration
+Si $AX = Y$, en multipliant à gauche par $A^{-1}$ : $A^{-1}AX = A^{-1}Y$, c’est-à-dire $X = A^{-1}Y$. Réciproquement, $X = A^{-1}Y$ vérifie $AX = AA^{-1}Y = Y$.
+:::
+
+::: exemple
+Le système $\begin{cases} 2x + 3y = 5 \\ x + 4y = 6 \end{cases}$ s’écrit $AX = Y$ avec $A = \begin{pmatrix} 2 & 3 \\ 1 & 4 \end{pmatrix}$, $X = \begin{pmatrix} x \\ y \end{pmatrix}$ et $Y = \begin{pmatrix} 5 \\ 6 \end{pmatrix}$. On a vu que $A^{-1} = \dfrac{1}{5}\begin{pmatrix} 4 & -3 \\ -1 & 2 \end{pmatrix}$, donc
+
+$$
+\begin{aligned}
+X = A^{-1}Y &= \frac{1}{5}\begin{pmatrix} 4 \times 5 + (-3) \times 6 \\ (-1) \times 5 + 2 \times 6 \end{pmatrix} \\
+&= \frac{1}{5}\begin{pmatrix} 2 \\ 7 \end{pmatrix}
+\end{aligned}
+$$
+
+L’unique solution est $x = \dfrac{2}{5}$ et $y = \dfrac{7}{5}$.
+:::
+
+::: exemple Un système de trois équations
+Le système $\begin{cases} x + y = 3 \\ y + z = 5 \\ z = 2 \end{cases}$ s’écrit $TX = \begin{pmatrix} 3 \\ 5 \\ 2 \end{pmatrix}$ avec la matrice $T$ ci-dessus. Donc
+
+$$X = T^{-1}\begin{pmatrix} 3 \\ 5 \\ 2 \end{pmatrix} = \begin{pmatrix} 3 - 5 + 2 \\ 5 - 2 \\ 2 \end{pmatrix} = \begin{pmatrix} 0 \\ 3 \\ 2 \end{pmatrix}$$
+:::
+
+::: attention
+Si $A$ n’est pas inversible, le système a soit aucune solution, soit une infinité de solutions : on le résout alors par combinaison ou par substitution.
+:::
+
+## IV. Puissances de matrices et suites
+
+### Puissances d’une matrice carrée
+
+::: definition
+Pour une matrice carrée $A$ d’ordre $p$ et un entier $n \geq 1$, $A^n = A \times A \times \cdots \times A$ ($n$ facteurs), avec la convention $A^0 = I_p$. Pour tout $n$, $A^{n+1} = A^n \times A = A \times A^n$.
+:::
+
+::: propriete Matrice diagonale
+Pour $D = \begin{pmatrix} a & 0 \\ 0 & b \end{pmatrix}$ et tout entier $n \geq 0$, $D^n = \begin{pmatrix} a^n & 0 \\ 0 & b^n \end{pmatrix}$ (de même à l’ordre 3).
+:::
+
+::: attention
+Sauf pour une matrice diagonale, on n’obtient **pas** $A^n$ en élevant chaque coefficient à la puissance $n$.
+:::
+
+::: methode Calculer $A^n$
+1. Calculer $A^2$, $A^3$, $A^4$ (à la main ou à la calculatrice).
+2. Conjecturer une formule pour $A^n$.
+3. La démontrer par récurrence, en utilisant $A^{n+1} = A^n \times A$.
+:::
+
+::: exemple
+Soit $A = \begin{pmatrix} 1 & 1 \\ 0 & 1 \end{pmatrix}$. On trouve $A^2 = \begin{pmatrix} 1 & 2 \\ 0 & 1 \end{pmatrix}$ et $A^3 = \begin{pmatrix} 1 & 3 \\ 0 & 1 \end{pmatrix}$ : on conjecture que $A^n = \begin{pmatrix} 1 & n \\ 0 & 1 \end{pmatrix}$ pour tout entier $n \geq 0$.
+
+- **Initialisation** : $A^0 = I_2 = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}$, la formule est vraie pour $n = 0$.
+- **Hérédité** : si $A^n = \begin{pmatrix} 1 & n \\ 0 & 1 \end{pmatrix}$, alors $A^{n+1} = A^nA = \begin{pmatrix} 1 & n \\ 0 & 1 \end{pmatrix}\begin{pmatrix} 1 & 1 \\ 0 & 1 \end{pmatrix} = \begin{pmatrix} 1 & n + 1 \\ 0 & 1 \end{pmatrix}$.
+:::
+
+### Suites de matrices colonnes
+
+::: theoreme
+Soit $A$ une matrice carrée et $(U_n)$ une suite de matrices colonnes telle que $U_{n+1} = AU_n$ pour tout entier $n$. Alors, pour tout entier $n \geq 0$ :
+
+$$U_n = A^nU_0$$
+:::
+
+::: demonstration
+Par récurrence : $U_0 = I\,U_0 = A^0U_0$ ; si $U_n = A^nU_0$, alors $U_{n+1} = AU_n = A\,A^nU_0 = A^{n+1}U_0$.
+:::
+
+::: exemple Écrire une suite récurrente sous forme matricielle
+La suite définie par $u_0 = 0$, $u_1 = 1$ et $u_{n+2} = u_{n+1} + 2u_n$ s’étudie avec $U_n = \begin{pmatrix} u_{n+1} \\ u_n \end{pmatrix}$ :
+
+$$U_{n+1} = \begin{pmatrix} u_{n+2} \\ u_{n+1} \end{pmatrix} = \begin{pmatrix} 1 & 2 \\ 1 & 0 \end{pmatrix}\begin{pmatrix} u_{n+1} \\ u_n \end{pmatrix}$$
+
+donc $U_n = \begin{pmatrix} 1 & 2 \\ 1 & 0 \end{pmatrix}^n U_0$ avec $U_0 = \begin{pmatrix} 1 \\ 0 \end{pmatrix}$.
+:::
+
+::: methode Suite $U_{n+1} = AU_n + C$
+1. Chercher une matrice colonne constante $L$ telle que $L = AL + C$, c’est-à-dire $(I - A)L = C$ ; si $I - A$ est inversible, $L = (I - A)^{-1}C$.
+2. Poser $V_n = U_n - L$ : alors $V_{n+1} = AU_n + C - (AL + C) = AV_n$, donc $V_n = A^nV_0$.
+3. Conclure : $U_n = A^n(U_0 - L) + L$.
+:::
+
+::: exemple
+$A = \begin{pmatrix} 0{,}5 & 0 \\ 0 & 0{,}25 \end{pmatrix}$, $C = \begin{pmatrix} 1 \\ 3 \end{pmatrix}$ et $U_0 = \begin{pmatrix} 0 \\ 0 \end{pmatrix}$. L’équation $(I_2 - A)L = C$ s’écrit $0{,}5\,\ell_1 = 1$ et $0{,}75\,\ell_2 = 3$, donc $L = \begin{pmatrix} 2 \\ 4 \end{pmatrix}$. Alors
+
+$$U_n = A^n(U_0 - L) + L = \begin{pmatrix} 2 - 2 \times 0{,}5^n \\ 4 - 4 \times 0{,}25^n \end{pmatrix}$$
+
+Comme $0{,}5^n$ et $0{,}25^n$ tendent vers $0$, les coordonnées de $U_n$ tendent vers $2$ et $4$.
+:::
+
+## V. Transformations géométriques du plan
+
+::: propriete
+Dans un repère orthonormé d’origine $O$, chacune des transformations ci-dessous envoie le point $M(x\,;y)$ sur le point $M'(x'\,;y')$ tel que $\begin{pmatrix} x' \\ y' \end{pmatrix} = A\begin{pmatrix} x \\ y \end{pmatrix}$.
+:::
+
+| Transformation | Matrice $A$ |
+|---|---|
+| Rotation de centre $O$ et d’angle $\theta$ | $\begin{pmatrix} \cos\theta & -\sin\theta \\ \sin\theta & \cos\theta \end{pmatrix}$ |
+| Symétrie d’axe $(Ox)$ | $\begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix}$ |
+| Symétrie d’axe $(Oy)$ | $\begin{pmatrix} -1 & 0 \\ 0 & 1 \end{pmatrix}$ |
+| Homothétie de centre $O$ et de rapport $k$ | $\begin{pmatrix} k & 0 \\ 0 & k \end{pmatrix}$ |
+
+::: exemple
+La rotation de centre $O$ et d’angle $\dfrac{\pi}{2}$ a pour matrice $R = \begin{pmatrix} 0 & -1 \\ 1 & 0 \end{pmatrix}$, car $\cos\dfrac{\pi}{2} = 0$ et $\sin\dfrac{\pi}{2} = 1$. L’image de $M(2\,;1)$ est $M'(-1\,;2)$, car $\begin{pmatrix} 0 & -1 \\ 1 & 0 \end{pmatrix}\begin{pmatrix} 2 \\ 1 \end{pmatrix} = \begin{pmatrix} -1 \\ 2 \end{pmatrix}$.
+:::
+
+[IMAGE_3]
+
+::: attention Composer deux transformations
+Appliquer d’abord la transformation de matrice $A$, puis celle de matrice $B$, revient à appliquer la matrice $BA$ (et non $AB$) : $X'' = B(AX) = (BA)X$.
+:::
+
+## VI. Graphes
+
+### Vocabulaire
+
+::: definition Graphe
+Un **graphe** (non orienté) est formé de **sommets** et d’**arêtes** ; chaque arête relie deux sommets distincts, et deux sommets sont reliés par au plus une arête. Deux sommets reliés par une arête sont **adjacents**.
+
+- L’**ordre** du graphe est son nombre de sommets.
+- Le **degré** d’un sommet est le nombre d’arêtes dont il est une extrémité.
+- Un graphe est **complet** si deux sommets distincts quelconques sont toujours adjacents.
+:::
+
+[IMAGE_4]
+
+::: exemple
+Le graphe $G$ est d’ordre $5$ et possède $7$ arêtes. $A$ et $B$ sont adjacents ; $A$ et $C$ ne le sont pas, donc $G$ n’est pas complet.
+
+| Sommet | $A$ | $B$ | $C$ | $D$ | $E$ |
+|---|---|---|---|---|---|
+| Degré | $2$ | $3$ | $3$ | $4$ | $2$ |
+:::
+
+::: propriete
+La somme des degrés des sommets d’un graphe est égale au **double du nombre d’arêtes**.
+:::
+
+::: demonstration
+Chaque arête a deux extrémités : elle est comptée une fois dans le degré de chacune d’elles, donc deux fois dans la somme des degrés. Pour $G$ : $2 + 3 + 3 + 4 + 2 = 14 = 2 \times 7$.
+:::
+
+::: propriete Graphe complet
+Dans le graphe complet $K_n$ à $n$ sommets, chaque sommet est de degré $n - 1$ ; la somme des degrés vaut $n(n - 1)$, donc $K_n$ possède $\dfrac{n(n - 1)}{2}$ arêtes.
+:::
+
+[IMAGE_5]
+
+### Chaînes et connexité
+
+::: definition
+- Une **chaîne** est une suite de sommets dans laquelle deux sommets consécutifs sont adjacents ; sa **longueur** est le nombre d’arêtes parcourues. Les sommets et les arêtes peuvent se répéter.
+- Une chaîne est **fermée** si son premier et son dernier sommet sont égaux ; un **cycle** est une chaîne fermée dont les arêtes sont toutes distinctes.
+- Un graphe est **connexe** si deux sommets quelconques peuvent toujours être reliés par une chaîne.
+:::
+
+::: exemple
+Dans $G$, $A - B - C - E$ est une chaîne de longueur $3$ et $B - C - D - B$ est un cycle de longueur $3$. Le graphe $G$ est connexe ; si on lui retire les arêtes $C - E$ et $D - E$, le sommet $E$ est isolé et le graphe obtenu n’est plus connexe.
+:::
+
+[IMAGE_6]
+
+### Graphes orientés, graphes pondérés
+
+::: definition
+- Dans un **graphe orienté**, les arêtes ont un sens : ce sont des **arcs**. Un **chemin** est une suite de sommets dans laquelle chaque sommet est relié au suivant par un arc ; sa longueur est son nombre d’arcs.
+- Dans un **graphe pondéré**, chaque arête (ou arc) porte un nombre, son **poids** : distance, durée, coût, probabilité…
+:::
+
+::: exemple
+Le graphe pondéré ci-dessous donne les durées de trajet, en minutes, entre cinq villages. La chaîne $A - B - D - E$ a pour poids $3 + 9 + 12 = 24$ et la chaîne $A - D - E$ a pour poids $7 + 12 = 19$ : elle est plus rapide.
+:::
+
+[IMAGE_7]
+
+## VII. Matrice d’adjacence et nombre de chemins
+
+::: definition
+Soit un graphe d’ordre $p$ dont les sommets sont numérotés de $1$ à $p$. Sa **matrice d’adjacence** est la matrice carrée $M$ d’ordre $p$ dont le coefficient $m_{ij}$ vaut $1$ si une arête relie $i$ et $j$ (si un arc va de $i$ vers $j$, pour un graphe orienté), et $0$ sinon.
+:::
+
+::: propriete
+- Pour un graphe non orienté, $M$ est **symétrique** ($m_{ij} = m_{ji}$) et la somme de la ligne $i$ est le degré du sommet $i$.
+- Pour un graphe orienté, la somme de la ligne $i$ est le nombre d’arcs qui partent du sommet $i$.
+- Sans boucle, la diagonale de $M$ ne contient que des $0$.
+:::
+
+::: exemple Graphe non orienté
+Dans l’ordre $A$, $B$, $C$, $D$, $E$, la matrice d’adjacence du graphe $G$ est
+
+$$M_G = \begin{pmatrix} 0 & 1 & 0 & 1 & 0 \\ 1 & 0 & 1 & 1 & 0 \\ 0 & 1 & 0 & 1 & 1 \\ 1 & 1 & 1 & 0 & 1 \\ 0 & 0 & 1 & 1 & 0 \end{pmatrix}$$
+
+Elle est symétrique ; la ligne de $D$ contient quatre $1$ : $D$ est de degré $4$.
+:::
+
+[IMAGE_8]
+
+::: exemple Graphe orienté
+Le graphe orienté $H$ a pour arcs $A \to B$, $B \to C$, $C \to A$, $A \to D$, $C \to D$ et $D \to B$. Dans l’ordre $A$, $B$, $C$, $D$ :
+
+$$M = \begin{pmatrix} 0 & 1 & 0 & 1 \\ 0 & 0 & 1 & 0 \\ 1 & 0 & 0 & 1 \\ 0 & 1 & 0 & 0 \end{pmatrix}$$
+
+Elle n’est pas symétrique : il y a un arc $A \to B$ mais pas d’arc $B \to A$.
+:::
+
+::: theoreme Nombre de chemins de longueur $n$
+Soit $M$ la matrice d’adjacence d’un graphe et $n \geq 1$ un entier. Le coefficient $(M^n)_{ij}$ est égal au **nombre de chemins de longueur $n$** (de chaînes de longueur $n$ pour un graphe non orienté) qui vont du sommet $i$ au sommet $j$.
+:::
+
+::: demonstration
+Par récurrence sur $n$. Pour $n = 1$, c’est la définition de $M$.
+
+Supposons la propriété vraie pour un entier $n \geq 1$. Un chemin de longueur $n + 1$ de $i$ à $j$ est formé d’un chemin de longueur $n$ de $i$ à un sommet $k$ (son avant-dernier sommet), suivi d’un arc de $k$ vers $j$. Pour $k$ fixé, il y a $(M^n)_{ik}$ chemins de $i$ à $k$, et chacun se prolonge de $m_{kj}$ façons ($1$ si l’arc $k \to j$ existe, $0$ sinon) : cela fait $(M^n)_{ik}\,m_{kj}$ chemins. Les cas $k = 1, \dots, p$ ne se recouvrent pas, donc le nombre total est
+
+$$\sum_{k=1}^{p} (M^n)_{ik}\,m_{kj} = (M^nM)_{ij} = (M^{n+1})_{ij}$$
+:::
+
+::: exemple Interpréter $M^2$
+Pour le graphe orienté $H$ :
+
+$$M^2 = \begin{pmatrix} 0 & 1 & 1 & 0 \\ 1 & 0 & 0 & 1 \\ 0 & 2 & 0 & 1 \\ 0 & 0 & 1 & 0 \end{pmatrix}$$
+
+Le coefficient ligne $C$, colonne $B$ vaut $2$ : il y a deux chemins de longueur $2$ de $C$ vers $B$, $C \to A \to B$ et $C \to D \to B$. Le coefficient ligne $B$, colonne $B$ est nul : aucun chemin de longueur $2$ ne part de $B$ pour y revenir.
+:::
+
+[IMAGE_9]
+
+::: methode Calculer rapidement une ligne de $M^2$
+La ligne $i$ de $M^2$ est la **somme des lignes de $M$ des sommets atteints depuis $i$ par un arc**. Dans $H$, de $C$ partent les arcs $C \to A$ et $C \to D$ : la ligne $C$ de $M^2$ est la somme des lignes $A$ et $D$ de $M$, soit $\begin{pmatrix} 0 & 1 & 0 & 1 \end{pmatrix} + \begin{pmatrix} 0 & 1 & 0 & 0 \end{pmatrix} = \begin{pmatrix} 0 & 2 & 0 & 1 \end{pmatrix}$.
+:::
+
+::: remarque Pour aller plus loin : connexité et matrice
+Un graphe d’ordre $p$ est connexe si et seulement si tous les coefficients de $I_p + M + M^2 + \cdots + M^{p-1}$ sont strictement positifs : deux sommets reliés par une chaîne le sont par une chaîne de longueur au plus $p - 1$. Pour un graphe orienté, cette condition signifie que l’on peut aller de tout sommet à tout autre par un chemin : on dit que le graphe est **fortement connexe**.
+:::
+
+::: attention
+- Les coefficients de $M^n$ comptent les chemins de longueur **exactement** $n$, sommets répétés compris.
+- On fixe l’ordre des sommets avant d’écrire $M$ : ligne $=$ départ, colonne $=$ arrivée.
+- Les puissances de la matrice des poids d’un graphe pondéré ne comptent pas les chemins.
+:::
+
+## VIII. Chaînes de Markov
+
+### Matrice de transition et graphe
+
+::: definition
+Un système peut se trouver dans deux ou trois **états** ; on note $X_n$ son état à l’étape $n$ ($n = 0, 1, 2, \dots$). La suite $(X_n)$ est une **chaîne de Markov** si la probabilité de passer de l’état $i$ à l’état $j$ ne dépend que de $i$ et de $j$ (ni de $n$, ni des états antérieurs). On note
+
+$$p_{ij} = P_{(X_n = i)}(X_{n+1} = j)$$
+
+La **matrice de transition** est $P = (p_{ij})$ : la ligne $i$ correspond à l’état de départ, la colonne $j$ à l’état d’arrivée. Le **graphe pondéré associé** a un sommet par état et un arc $i \to j$ de poids $p_{ij}$ lorsque $p_{ij} \neq 0$ (une boucle si $i = j$).
+:::
+
+::: propriete
+Les coefficients de $P$ sont positifs ou nuls et la **somme des coefficients de chaque ligne vaut $1$** : sur le graphe, les poids des arcs qui partent d’un sommet, boucle comprise, ont pour somme $1$.
+:::
+
+::: exemple Deux états
+Chaque semaine, un abonné utilise l’une de deux plateformes $A$ et $B$. S’il est sur $A$, il y reste la semaine suivante avec la probabilité $0{,}8$ ; s’il est sur $B$, il passe sur $A$ avec la probabilité $0{,}3$. Dans l’ordre $A$, $B$ :
+
+$$P = \begin{pmatrix} 0{,}8 & 0{,}2 \\ 0{,}3 & 0{,}7 \end{pmatrix}$$
+:::
+
+[IMAGE_10]
+
+### Distribution après $n$ transitions
+
+::: definition
+La **distribution** à l’étape $n$ est la matrice ligne $\pi_n$ des probabilités des états ; pour deux états, $\pi_n = \begin{pmatrix} P(X_n = A) & P(X_n = B) \end{pmatrix}$. La matrice $\pi_0$ est la **distribution initiale**.
+:::
+
+::: theoreme
+Pour tout entier $n \geq 0$ :
+
+- $\pi_{n+1} = \pi_nP$, donc $\pi_n = \pi_0P^n$ ;
+- le coefficient $(P^n)_{ij}$ est la probabilité de passer de l’état $i$ à l’état $j$ en $n$ transitions : $(P^n)_{ij} = P_{(X_0 = i)}(X_n = j)$.
+:::
+
+::: demonstration
+Les événements $(X_n = k)$, pour les différents états $k$, forment une partition. D’après la formule des probabilités totales :
+
+$$
+\begin{aligned}
+P(X_{n+1} = j) &= \sum_{k} P(X_n \\
+&=  k)\,P_{(X_n = k)}(X_{n+1} \\
+&= j) \\
+&= \sum_{k} P(X_n = k)\,p_{kj}
+\end{aligned}
+$$
+
+C’est le coefficient $j$ de la matrice ligne $\pi_nP$ : donc $\pi_{n+1} = \pi_nP$, et par récurrence $\pi_n = \pi_0P^n$.
+
+Si la chaîne part de l’état $i$ avec certitude, $\pi_0$ a un $1$ en position $i$ et des $0$ ailleurs : $\pi_n = \pi_0P^n$ est alors la ligne $i$ de $P^n$, et son coefficient $j$ est $(P^n)_{ij}$.
+:::
+
+::: exemple
+L’abonné est sur $A$ au départ : $\pi_0 = \begin{pmatrix} 1 & 0 \end{pmatrix}$. Alors
+
+$$\pi_1 = \pi_0P = \begin{pmatrix} 0{,}8 & 0{,}2 \end{pmatrix}$$
+
+Pour $\pi_2 = \pi_1P$, on calcule ses deux coefficients :
+
+$$
+\begin{aligned}
+0{,}8 \times 0{,}8 + 0{,}2 \times 0{,}3 &= 0{,}7 \\
+0{,}8 \times 0{,}2 + 0{,}2 \times 0{,}7 &= 0{,}3
+\end{aligned}
+$$
+
+donc $\pi_2 = \begin{pmatrix} 0{,}7 & 0{,}3 \end{pmatrix}$.
+
+La probabilité qu’il soit sur $A$ deux semaines plus tard est $0{,}7$ : c’est aussi le coefficient $(P^2)_{AA}$, car $P^2 = \begin{pmatrix} 0{,}7 & 0{,}3 \\ 0{,}45 & 0{,}55 \end{pmatrix}$.
+:::
+
+::: attention
+La distribution est une matrice **ligne**, placée **à gauche** de $P$ : $\pi_{n+1} = \pi_nP$, et non $P\pi_n$.
+:::
+
+### Distribution invariante
+
+::: definition
+Une distribution $\pi$ (matrice ligne à coefficients positifs ou nuls, de somme $1$) est **invariante** si $\pi P = \pi$ : si la chaîne a la distribution $\pi$ à une étape, elle la garde à toutes les étapes suivantes.
+:::
+
+::: methode Déterminer une distribution invariante
+On pose $\pi = \begin{pmatrix} p & q \end{pmatrix}$ (ou $\pi = \begin{pmatrix} a & b & c \end{pmatrix}$ pour trois états), on écrit le système $\pi P = \pi$ et on lui ajoute l’équation $p + q = 1$ (ou $a + b + c = 1$).
+:::
+
+::: exemple
+Pour $P = \begin{pmatrix} 0{,}8 & 0{,}2 \\ 0{,}3 & 0{,}7 \end{pmatrix}$, la première équation de $\pi P = \pi$ est $0{,}8p + 0{,}3q = p$, soit $0{,}3q = 0{,}2p$, c’est-à-dire $q = \dfrac{2}{3}p$ (la seconde équation donne la même condition). Avec $p + q = 1$ : $\dfrac{5}{3}p = 1$, donc $p = 0{,}6$ et $q = 0{,}4$. La distribution invariante est $\pi = \begin{pmatrix} 0{,}6 & 0{,}4 \end{pmatrix}$.
+:::
+
+::: exemple Évolution à long terme
+Avec $a_n = P(X_n = A)$, on a $P(X_n = B) = 1 - a_n$, donc
+
+$$
+\begin{aligned}
+a_{n+1} &= 0{,}8a_n + 0{,}3(1 - a_n) \\
+&= 0{,}5a_n + 0{,}3
+\end{aligned}
+$$
+
+Ainsi $a_{n+1} - 0{,}6 = 0{,}5(a_n - 0{,}6)$ : la suite $(a_n - 0{,}6)$ est géométrique de raison $0{,}5$ et $a_n = 0{,}6 + (a_0 - 0{,}6) \times 0{,}5^n$. Comme $0{,}5^n$ tend vers $0$, $a_n$ tend vers $0{,}6$ : quelle que soit la distribution initiale, $\pi_n$ se rapproche de la distribution invariante $\begin{pmatrix} 0{,}6 & 0{,}4 \end{pmatrix}$.
+:::
+
+[IMAGE_11]
+
+::: exemple Trois états
+Un pion se déplace sur trois cases alignées $A$, $B$, $C$. Depuis $A$ (ou depuis $C$), il reste sur place ou va en $B$, avec la probabilité $0{,}5$ chaque fois ; depuis $B$, il reste en $B$ avec la probabilité $0{,}5$ et va en $A$ ou en $C$ avec la probabilité $0{,}25$ chaque fois. Dans l’ordre $A$, $B$, $C$ :
+
+$$P = \begin{pmatrix} 0{,}5 & 0{,}5 & 0 \\ 0{,}25 & 0{,}5 & 0{,}25 \\ 0 & 0{,}5 & 0{,}5 \end{pmatrix}$$
+
+Avec $\pi = \begin{pmatrix} a & b & c \end{pmatrix}$, le système $\pi P = \pi$ s’écrit
+
+$$\begin{cases} 0{,}5a + 0{,}25b = a \\ 0{,}5a + 0{,}5b + 0{,}5c = b \\ 0{,}25b + 0{,}5c = c \end{cases}$$
+
+La première équation donne $b = 2a$, la troisième $b = 2c$. Avec $a + b + c = 1$ : $a + 2a + a = 1$, donc $a = c = 0{,}25$ et $b = 0{,}5$ (la deuxième équation est alors vérifiée). La distribution invariante est $\begin{pmatrix} 0{,}25 & 0{,}5 & 0{,}25 \end{pmatrix}$.
+:::
+
+[IMAGE_12]
+
+### Calcul avec Python
+
+Le programme suivant calcule $\pi_n = \pi_0P^n$ en appliquant $n$ fois la relation $\pi_{k+1} = \pi_kP$ (les listes représentent les matrices ligne par ligne).
+
+```python
+def distrib(pi, P, n):
+    k = len(P)
+    for _ in range(n):
+        pi = [sum(pi[i] * P[i][j]
+              for i in range(k))
+              for j in range(k)]
+    return pi
+
+P = [[0.8, 0.2],
+     [0.3, 0.7]]
+pi = distrib([1, 0], P, 2)
+print([round(p, 4)
+       for p in pi])
+# affiche [0.7, 0.3]
+```
+
+Avec $n = 20$, le programme affiche `[0.6, 0.4]` : on retrouve la distribution invariante.
+
+## IX. L’essentiel
+
+::: retenir
+- $(AB)_{ij}$ : ligne $i$ de $A$ par colonne $j$ de $B$ ; en général $AB \neq BA$.
+- Si $ad - bc \neq 0$, $\begin{pmatrix} a & b \\ c & d \end{pmatrix}^{-1} = \dfrac{1}{ad - bc}\begin{pmatrix} d & -b \\ -c & a \end{pmatrix}$ ; si $A$ est inversible, $AX = Y \iff X = A^{-1}Y$.
+- $U_{n+1} = AU_n$ donne $U_n = A^nU_0$ ; pour $U_{n+1} = AU_n + C$, on cherche $L = AL + C$, puis $U_n = A^n(U_0 - L) + L$.
+- $(M^n)_{ij}$ est le nombre de chemins de longueur $n$ de $i$ à $j$.
+- Chaîne de Markov : $\pi_n = \pi_0P^n$ ; distribution invariante : $\pi P = \pi$, avec des coefficients de somme $1$.
+:::
+
+::: attention Erreurs fréquentes
+- Multiplier des matrices de tailles incompatibles, ou dans le mauvais ordre.
+- Écrire $\dfrac{1}{A}$ ou « diviser » par une matrice.
+- Calculer $A^n$ en élevant chaque coefficient à la puissance $n$ (faux, sauf pour une matrice diagonale).
+- Inverser lignes et colonnes dans une matrice d’adjacence ou de transition : ligne $=$ départ.
+- Oublier une boucle dans un graphe de Markov : les poids qui partent de chaque sommet ont pour somme $1$.
+:::

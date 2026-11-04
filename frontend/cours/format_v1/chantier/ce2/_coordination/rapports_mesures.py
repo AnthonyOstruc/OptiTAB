@@ -1,0 +1,8 @@
+from commun_redaction import ROOT
+import json
+for code in range(24,32):
+ d=next(ROOT.glob(f'{code:02}_*'));source=json.loads((d/'sources_locales/chapitre.json').read_text(encoding='utf-8'));items=json.loads((d/'donnees_exercices_root.json').read_text(encoding='utf-8'))
+ lines=['# Couverture des activités sources','', 'Les neuf activités du livre sont conservées dans leur ordre et développées en cinq questions liées. Les fichiers sources restent inchangés.','','| Source | Activité initiale | Exercice final |','|---|---|---|']
+ for i,(old,new) in enumerate(zip(source['exercices'],items),1):lines.append(f"| {i} | {old['consigne'].replace('|','/')} | nouveau-{i} — {new['titre']} |")
+ (d/'COUVERTURE.md').write_text('\n'.join(lines)+'\n',encoding='utf-8')
+ (d/'RAPPORT.md').write_text(f"# {source['titre']}\n\nCours et synthèse réécrits au format OptiTAB v1 : objectifs, définitions, méthode, exemples, erreurs fréquentes et repères. Les neuf exercices sources sont développés en 45 questions avec méthode, raisonnement et résultat pour chaque question.\n\nFigures TikZ produites avec la chaîne officielle du pilote ; correspondances locales et textes alternatifs. Les tableaux de données et les calculs posés restent du texte natif. Les situations utilisent les unités du CE2 et l’écriture à virgule uniquement pour la monnaie.\n\nLes résultats sont contrôlés par `verif_math.py`, qui relit les vrais fichiers finaux et recalcule les égalités, comparaisons et situations. Les contrôles du navigateur et les preuves de relecture sont conservés dans le dossier. Publication effectuée uniquement par la coordination après clôture des contrôles.\n",encoding='utf-8')

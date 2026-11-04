@@ -1,0 +1,213 @@
+Titre: Dérivation et convexité
+
+<!-- optitab:1 -->
+::: objectifs
+Dériver une fonction composée, calculer une dérivée seconde, étudier la convexité d’une fonction, déterminer un point d’inflexion et utiliser la convexité pour démontrer des inégalités.
+:::
+
+## I. Rappels de Première
+
+::: rappel Dérivées usuelles
+| $f(x)$ | $f'(x)$ | $f$ dérivable sur |
+|---|---|---|
+| $k$ (constante) | $0$ | $\mathbb{R}$ |
+| $x^n$ ($n \ge 1$ entier) | $nx^{n-1}$ | $\mathbb{R}$ |
+| $\dfrac{1}{x}$ | $-\dfrac{1}{x^2}$ | $]-\infty\,;0[$ et $]0\,;+\infty[$ |
+| $\sqrt{x}$ | $\dfrac{1}{2\sqrt{x}}$ | $]0\,;+\infty[$ |
+| $e^x$ | $e^x$ | $\mathbb{R}$ |
+| $\sin x$ | $\cos x$ | $\mathbb{R}$ |
+| $\cos x$ | $-\sin x$ | $\mathbb{R}$ |
+:::
+
+::: rappel Opérations et tangente
+- $(u + v)' = u' + v'$ ; $(ku)' = ku'$ ; $(uv)' = u'v + uv'$ ; $\left(\dfrac{u}{v}\right)' = \dfrac{u'v - uv'}{v^2}$.
+- Tangente à la courbe de $f$ au point d’abscisse $a$ : $y = f'(a)(x - a) + f(a)$.
+- Si $f' \gt 0$ sur un intervalle (sauf en des points isolés où elle s’annule), $f$ y est strictement croissante ; si $f' \lt 0$, strictement décroissante.
+:::
+
+## II. Dérivée d’une fonction composée
+
+::: definition Composée de deux fonctions
+Soit $u$ une fonction définie sur un intervalle $I$, à valeurs dans un intervalle $J$, et $v$ une fonction définie sur $J$. La **composée** $v \circ u$ (lire « $v$ rond $u$ ») est la fonction définie sur $I$ par
+
+$$(v \circ u)(x) = v\big(u(x)\big)$$
+
+On applique d’abord $u$, puis $v$.
+:::
+
+[IMAGE_1]
+
+::: exemple
+Avec $u(x) = x^2 + 1$ et $v(x) = e^x$ : $(v \circ u)(x) = e^{x^2 + 1}$, alors que $(u \circ v)(x) = \left(e^x\right)^2 + 1 = e^{2x} + 1$. En général, $v \circ u \neq u \circ v$ : l’ordre compte.
+:::
+
+::: theoreme Dérivée d’une fonction composée
+Si $u$ est dérivable sur $I$ et $v$ dérivable sur $J$ (avec $u(x) \in J$ pour tout $x$ de $I$), alors $v \circ u$ est dérivable sur $I$ et
+
+$$(v \circ u)'(x) = v'\big(u(x)\big) \times u'(x)$$
+:::
+
+::: propriete Cas à connaître
+| Fonction | Dérivée | Condition |
+|---|---|---|
+| $g(ax + b)$ | $a\,g'(ax + b)$ |  |
+| $u^n$ ($n \ge 1$ entier) | $n\,u'\,u^{n-1}$ |  |
+| $\dfrac{1}{u}$ | $-\dfrac{u'}{u^2}$ | $u$ ne s’annule pas |
+| $\sqrt{u}$ | $\dfrac{u'}{2\sqrt{u}}$ | $u \gt 0$ |
+| $e^u$ | $u'\,e^u$ |  |
+| $\ln u$ | $\dfrac{u'}{u}$ | $u \gt 0$ (chapitre logarithme) |
+:::
+
+::: methode Dériver une fonction composée
+1. Repérer la fonction « intérieure » $u$ et la fonction « extérieure ».
+2. Calculer $u'(x)$.
+3. Appliquer la formule du tableau, puis simplifier ou factoriser.
+:::
+
+::: exemple
+- $f(x) = e^{x^2 + 1}$ : $u(x) = x^2 + 1$, $u'(x) = 2x$, donc $f'(x) = 2x\,e^{x^2 + 1}$.
+- $g(x) = (3x - 1)^5$ : $u(x) = 3x - 1$, $u'(x) = 3$, donc $g'(x) = 5 \times 3 \times (3x - 1)^4 = 15(3x - 1)^4$.
+- $h(x) = \sqrt{x^2 + 9}$ : $u(x) = x^2 + 9 \gt 0$, $u'(x) = 2x$, donc $h'(x) = \dfrac{2x}{2\sqrt{x^2 + 9}} = \dfrac{x}{\sqrt{x^2 + 9}}$.
+:::
+
+::: attention
+Ne pas oublier le facteur $u'$ : $\left(e^{3x}\right)' = 3e^{3x}$, et non $e^{3x}$ ; $\left(\dfrac{1}{x^2 + 1}\right)' = -\dfrac{2x}{(x^2 + 1)^2}$.
+:::
+
+## III. Dérivée seconde et convexité
+
+::: definition Dérivée seconde
+Si $f$ est dérivable sur $I$ et si sa dérivée $f'$ est elle-même dérivable sur $I$, on note $f''$ la dérivée de $f'$ : c’est la **dérivée seconde** de $f$.
+:::
+
+::: definition Fonction convexe, fonction concave
+Soit $f$ une fonction définie sur un intervalle $I$ et $\mathcal{C}_f$ sa courbe.
+
+- $f$ est **convexe** sur $I$ si, pour tous points $A$ et $B$ de $\mathcal{C}_f$ d’abscisses dans $I$, la courbe est située **en dessous** de la sécante $(AB)$ entre $A$ et $B$.
+- $f$ est **concave** sur $I$ si la courbe est située **au-dessus** de ses sécantes entre les deux points.
+:::
+
+[IMAGE_2]
+
+::: theoreme Caractérisation (admise)
+Si $f$ est deux fois dérivable sur l’intervalle $I$, les propositions suivantes sont équivalentes :
+
+- $f$ est convexe sur $I$ ;
+- $\mathcal{C}_f$ est au-dessus de chacune de ses tangentes sur $I$ ;
+- $f'$ est croissante sur $I$ ;
+- $f''(x) \ge 0$ pour tout $x$ de $I$.
+
+De même : $f$ concave sur $I$ $\iff$ $\mathcal{C}_f$ en dessous de ses tangentes $\iff$ $f'$ décroissante $\iff$ $f'' \le 0$ sur $I$.
+:::
+
+::: demonstration Si $f'' \ge 0$ sur $I$, la courbe est au-dessus de ses tangentes
+Comme $f'' \ge 0$ sur $I$, la fonction $f'$ est croissante sur $I$. Soit $a \in I$ ; la tangente en $a$ a pour équation $y = f'(a)(x - a) + f(a)$. On pose, pour $x \in I$ :
+
+$$g(x) = f(x) - \big[f'(a)(x - a) + f(a)\big]$$
+
+$g$ est dérivable et $g'(x) = f'(x) - f'(a)$. Comme $f'$ est croissante :
+
+- si $x \le a$, alors $f'(x) \le f'(a)$, donc $g'(x) \le 0$ : $g$ est décroissante ;
+- si $x \ge a$, alors $f'(x) \ge f'(a)$, donc $g'(x) \ge 0$ : $g$ est croissante.
+
+$g$ admet donc un minimum en $a$, égal à $g(a) = f(a) - f(a) = 0$. Ainsi $g(x) \ge 0$ pour tout $x$ de $I$ : la courbe est au-dessus de sa tangente en $a$.
+:::
+
+::: propriete Convexité des fonctions de référence
+| Fonction | $f''(x)$ | Convexité |
+|---|---|---|
+| $x \mapsto x^2$ | $2$ | convexe sur $\mathbb{R}$ |
+| $x \mapsto x^3$ | $6x$ | concave sur $]-\infty\,;0]$, convexe sur $[0\,;+\infty[$ |
+| $x \mapsto \dfrac{1}{x}$ | $\dfrac{2}{x^3}$ | concave sur $]-\infty\,;0[$, convexe sur $]0\,;+\infty[$ |
+| $x \mapsto \sqrt{x}$ | $-\dfrac{1}{4x\sqrt{x}}$ | concave sur $]0\,;+\infty[$ |
+| $\exp$ | $e^x$ | convexe sur $\mathbb{R}$ |
+| $\ln$ | $-\dfrac{1}{x^2}$ | concave sur $]0\,;+\infty[$ |
+:::
+
+::: methode Étudier la convexité d’une fonction
+1. Calculer $f'(x)$, puis $f''(x)$ ; factoriser $f''(x)$.
+2. Étudier le signe de $f''(x)$ (tableau de signes).
+3. Conclure : $f$ est convexe là où $f'' \ge 0$, concave là où $f'' \le 0$.
+:::
+
+::: attention
+Convexe ne veut pas dire croissante : $x \mapsto x^2$ est convexe sur $\mathbb{R}$ mais décroissante sur $]-\infty\,;0]$. Pour la convexité, on étudie le signe de $f''$, pas celui de $f'$.
+:::
+
+## IV. Point d’inflexion
+
+::: definition Point d’inflexion
+Soit $f$ une fonction dérivable sur $I$ et $A$ un point de $\mathcal{C}_f$. On dit que $A$ est un **point d’inflexion** si la courbe **traverse** sa tangente en $A$. En un tel point, la fonction change de convexité.
+:::
+
+::: propriete
+Si $f''$ s’annule en $a$ **en changeant de signe**, alors le point de $\mathcal{C}_f$ d’abscisse $a$ est un point d’inflexion.
+:::
+
+::: exemple Étude de $f(x) = x^3 - 3x$ sur $\mathbb{R}$
+$f'(x) = 3x^2 - 3$ et $f''(x) = 6x$, qui s’annule en $0$ en changeant de signe.
+
+::: tableau
+x : -\infty, 0, +\infty
+f''(x) : , -, z, +,
+Convexité de $f$ : , concave, t, convexe,
+:::
+
+$f$ est concave sur $]-\infty\,;0]$ et convexe sur $[0\,;+\infty[$ : le point $I(0\,;0)$ est un point d’inflexion. La tangente en $I$ a pour équation $y = f'(0)(x - 0) + f(0)$, soit $y = -3x$ ; la courbe la traverse en $I$.
+:::
+
+[IMAGE_3]
+
+::: attention
+$f''(a) = 0$ ne suffit pas : pour $f(x) = x^4$, on a $f''(x) = 12x^2$, donc $f''(0) = 0$, mais $f''$ ne change pas de signe ($f'' \ge 0$) : $f$ est convexe sur $\mathbb{R}$ et sa courbe n’a **pas** de point d’inflexion.
+:::
+
+::: methode Lire la convexité sur un graphique
+- Sur la courbe de $f$ : convexe là où elle est « en creux », au-dessus de ses tangentes ; concave là où elle est « en bosse ».
+- Sur la courbe de $f'$ : $f$ est convexe là où $f'$ est croissante, concave là où $f'$ est décroissante ; les points d’inflexion correspondent aux extremums de $f'$.
+- Sur la courbe de $f''$ : $f$ est convexe là où la courbe de $f''$ est au-dessus de l’axe des abscisses.
+:::
+
+::: exemple Lecture sur la courbe de $f'$
+Ci-dessous, la courbe de la dérivée $f'(x) = x^3 - 3x$ de la fonction $f(x) = \dfrac{x^4}{4} - \dfrac{3x^2}{2}$. $f'$ est croissante (en vert) sur $]-\infty\,;-1]$ et sur $[1\,;+\infty[$ : $f$ y est convexe ; $f'$ est décroissante (en orange) sur $[-1\,;1]$ : $f$ y est concave. Les extremums de $f'$, en $-1$ et en $1$, donnent les points d’inflexion de la courbe de $f$.
+:::
+
+[IMAGE_6]
+
+## V. Convexité et inégalités
+
+::: methode Démontrer une inégalité par la convexité
+1. Montrer que $f$ est convexe (ou concave) sur $I$ en étudiant le signe de $f''$.
+2. Écrire l’équation $y = f'(a)(x - a) + f(a)$ d’une tangente bien choisie.
+3. Conclure : sur $I$, $f(x) \ge f'(a)(x - a) + f(a)$ si $f$ est convexe, $f(x) \le f'(a)(x - a) + f(a)$ si $f$ est concave.
+:::
+
+::: exemple Deux inégalités classiques
+- $\exp'' = \exp \gt 0$ : la fonction exponentielle est convexe sur $\mathbb{R}$. Sa tangente en $0$ a pour équation $y = e^0(x - 0) + e^0$, soit $y = x + 1$. Donc, pour tout réel $x$, $e^x \ge x + 1$.
+- $\ln''(x) = -\dfrac{1}{x^2} \lt 0$ : la fonction $\ln$ est concave sur $]0\,;+\infty[$. Sa tangente en $1$ a pour équation $y = x - 1$. Donc, pour tout $x \gt 0$, $\ln x \le x - 1$.
+:::
+
+[IMAGE_5]
+
+::: remarque Avec une sécante
+Une fonction convexe est en dessous de ses sécantes : la sécante à la courbe de $\exp$ passant par $A(0\,;1)$ et $B(1\,;e)$ a pour équation $y = 1 + (e - 1)x$, donc, pour tout $x \in [0\,;1]$, $e^x \le 1 + (e - 1)x$.
+:::
+
+## VI. Une application : la courbe de Lorenz
+
+En économie, la courbe de Lorenz associe à la proportion $x$ de la population la plus pauvre (entre $0$ et $1$) la proportion $L(x)$ des richesses totales qu’elle possède. La fonction $L$ est croissante et convexe sur $[0\,;1]$, avec $L(0) = 0$ et $L(1) = 1$ ; prenons ici $L(x) = x^2$.
+
+[IMAGE_4]
+
+::: remarque Lecture
+$L$ est convexe et passe par $(0\,;0)$ et $(1\,;1)$ : sa courbe est donc en dessous de la sécante $y = x$, appelée droite d’égalité. Plus la courbe est « creusée » sous cette droite, plus la répartition est inégalitaire. Par exemple, $L(0{,}5) = 0{,}25$ : la moitié la plus pauvre de la population possède $25\,\%$ des richesses.
+:::
+
+::: retenir
+- $(v \circ u)'(x) = v'\big(u(x)\big) \times u'(x)$ ; d’où $(e^u)' = u'e^u$, $(u^n)' = n\,u'\,u^{n-1}$, $(\sqrt{u})' = \dfrac{u'}{2\sqrt{u}}$.
+- $f$ convexe $\iff$ courbe sous ses sécantes $\iff$ courbe au-dessus de ses tangentes $\iff$ $f'$ croissante $\iff$ $f'' \ge 0$.
+- Point d’inflexion : là où $f''$ s’annule **en changeant de signe** ; la courbe y traverse sa tangente.
+- La convexité donne des inégalités : $e^x \ge x + 1$ pour tout réel $x$, $\ln x \le x - 1$ pour tout $x \gt 0$.
+
+Fiche de synthèse dans l’onglet Fiches !
+:::

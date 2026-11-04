@@ -1,0 +1,1922 @@
+=== Algorithmique - Approcher un maximum par balayage (Python)
+Id: 2024
+Difficulté: hard
+Image: v1_n173_ex2024_1_balayage.png
+
+Énoncé: <!-- optitab:1 -->
+On cherche le maximum de la fonction $f$ définie sur $[0\,;4]$ par $f(x) = x(5 - x)$, à l’aide du programme Python suivant (méthode par balayage).
+
+```python
+def f(x):
+    return x * (5 - x)
+
+a, b, n = 0, 4, 4
+x_max = a
+y_max = f(a)
+for i in range(1, n + 1):
+    x = a + i * (b - a) / n
+    if f(x) > y_max:
+        x_max = x
+        y_max = f(x)
+print(x_max, y_max)
+```
+
+1. Calculer le pas $\frac{b - a}{n}$ et donner les valeurs de $x$ testées par le programme.
+2. Calculer les images de ces valeurs, puis suivre l’évolution de `x_max` et `y_max`. Qu’affiche le programme ?
+3. Pourquoi le programme affiche-t-il $2$ et non $3$ pour `x_max` ?
+4. Vérifier que, pour tout réel $x$, $f(x) = 6{,}25 - (x - 2{,}5)^2$. En déduire le maximum exact de $f$ sur $[0\,;4]$ et la valeur de $x$ où il est atteint.
+5. On remplace `n = 4` par `n = 8`. Qu’affiche alors le programme ? Quel est l’effet d’une augmentation de $n$ ?
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Pas et valeurs testées
+
+::: methode
+Le pas est l’écart entre deux valeurs testées consécutives : $h = \frac{b - a}{n}$.
+:::
+
+::: etape Calcul du pas
+$$h = \frac{4 - 0}{4} = 1$$
+:::
+
+::: etape Valeurs testées
+Le programme calcule d’abord $f(a) = f(0)$, puis, dans la boucle, $x = 0 + i \times 1$ pour $i = 1, 2, 3, 4$.
+:::
+
+::: resultat
+Pas $h = 1$ ; valeurs testées : $0$, $1$, $2$, $3$ et $4$.
+:::
+
+## Question 2 : Exécution du programme
+
+::: methode
+On calcule les images, puis on suit les variables pas à pas : `y_max` ne change que si l’image est **strictement** plus grande.
+:::
+
+::: etape Images
+| $x$ | $0$ | $1$ | $2$ | $3$ | $4$ |
+|---|---|---|---|---|---|
+| $f(x)$ | $0$ | $4$ | $6$ | $6$ | $4$ |
+:::
+
+::: etape Suivi des variables
+| $i$ | Test | `x_max` | `y_max` |
+|---|---|---|---|
+| départ | | $0$ | $0$ |
+| $1$ | $4 \gt 0$ : oui | $1$ | $4$ |
+| $2$ | $6 \gt 4$ : oui | $2$ | $6$ |
+| $3$ | $6 \gt 6$ : non | $2$ | $6$ |
+| $4$ | $4 \gt 6$ : non | $2$ | $6$ |
+
+La colonne « Test » compare $f(x)$ à la valeur de `y_max` juste avant.
+:::
+
+::: resultat
+Le programme affiche `2.0 6.0` : la plus grande image calculée est $6$, obtenue pour $x = 2$.
+:::
+
+::: remarque
+Python écrit les nombres décimaux avec un point ; `x` est calculé par une division, d’où l’affichage `2.0`.
+:::
+
+## Question 3 : Pourquoi $2$ et non $3$ ?
+
+::: methode
+On relit la condition du test.
+:::
+
+::: etape Le test est strict
+$f(3) = 6$ et `y_max` vaut déjà $6$ ; la condition $6 \gt 6$ est fausse, donc `x_max` n’est pas modifié.
+:::
+
+::: resultat
+Le test `f(x) > y_max` est strict : en cas d’égalité, le programme garde la **première** valeur trouvée, $x = 2$.
+:::
+
+## Question 4 : Maximum exact
+
+::: methode
+On développe la forme proposée, puis on utilise qu’un carré est positif.
+:::
+
+::: etape Vérification de l’égalité
+$$
+\begin{aligned}
+(x - 2{,}5)^2 &= x^2 - 5x + 6{,}25 \\
+6{,}25 - (x - 2{,}5)^2 &= -x^2 + 5x \\
+&= x(5 - x)
+\end{aligned}
+$$
+:::
+
+::: etape Majoration
+Pour tout réel $x$, $(x - 2{,}5)^2 \ge 0$, donc $f(x) = 6{,}25 - (x - 2{,}5)^2 \le 6{,}25$.
+:::
+
+::: etape Égalité
+$f(2{,}5) = 6{,}25 - 0 = 6{,}25$, et $2{,}5$ appartient bien à $[0\,;4]$.
+:::
+
+[IMAGE_1]
+
+::: resultat
+Le maximum de $f$ sur $[0\,;4]$ est $6{,}25$, atteint en $x = 2{,}5$. Le balayage avec $n = 4$ ne l’a pas trouvé : il a donné $6$, une valeur approchée **par défaut**.
+:::
+
+## Question 5 : Avec $n = 8$
+
+::: methode
+Le pas devient $h = \frac{4}{8} = 0{,}5$ : les valeurs testées sont $0$ ; $0{,}5$ ; $1$ ; … ; $4$.
+:::
+
+::: etape La valeur $2{,}5$ est testée
+$2{,}5 = 0 + 5 \times 0{,}5$ est testée, et $f(2{,}5) = 6{,}25$ est la plus grande image possible.
+:::
+
+::: resultat
+Avec $n = 8$, le programme affiche `2.5 6.25` : c’est le maximum exact. Augmenter $n$ réduit le pas, donc améliore la précision, mais augmente le nombre de calculs ($n + 1$ images).
+:::
+
+::: attention
+Le balayage ne fournit en général qu’une **valeur approchée** du maximum : ici, on obtient la valeur exacte seulement parce que $2{,}5$ fait partie des valeurs testées.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Pas $1$ ; valeurs testées : $0$, $1$, $2$, $3$, $4$.
+2. Images $0$, $4$, $6$, $6$, $4$ ; le programme affiche `2.0 6.0`.
+3. Le test `f(x) > y_max` est strict : pour $x = 3$, $6 \gt 6$ est faux.
+4. $f(x) = 6{,}25 - (x - 2{,}5)^2 \le 6{,}25$ : maximum $6{,}25$, atteint en $x = 2{,}5$.
+5. Le programme affiche `2.5 6.25` ; un $n$ plus grand donne plus de précision mais plus de calculs.
+
+===
+
+=== Découverte - Lire un tableau de variations
+Id: 2018
+Difficulté: easy
+
+Énoncé: <!-- optitab:1 -->
+Une fonction $g$ définie sur $[-3\,;5]$ a le tableau de variations suivant.
+
+::: tableau
+x : -3, 1, 4, 5
+g(x) : +/2, -/-4, +/3, +/3
+:::
+
+1. Sur quels intervalles $g$ est-elle décroissante ? croissante ? constante ?
+2. Donner $g(1)$, $g(4)$ et $g(5)$.
+3. Comparer $g(-2)$ et $g(0)$.
+4. Comparer $g(0)$ et $g(4{,}5)$.
+5. Encadrer $g(x)$ pour $x \in [-3\,;1]$.
+6. Déterminer le minimum et le maximum de $g$ sur $[-3\,;5]$, et où ils sont atteints.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Sens de variation
+
+::: methode
+Une flèche descendante : décroissante ; montante : croissante ; horizontale : constante.
+:::
+
+::: etape Lecture des flèches
+- De $-3$ à $1$ : flèche descendante, de $2$ à $-4$.
+- De $1$ à $4$ : flèche montante, de $-4$ à $3$.
+- De $4$ à $5$ : flèche horizontale, la valeur reste $3$.
+:::
+
+::: resultat
+$g$ est décroissante sur $[-3\,;1]$, croissante sur $[1\,;4]$, constante sur $[4\,;5]$.
+:::
+
+## Question 2 : Images
+
+::: methode
+Les nombres au bout des flèches sont les images des nombres de la première ligne.
+:::
+
+::: resultat
+$g(1) = -4$, $g(4) = 3$, $g(5) = 3$.
+:::
+
+## Question 3 : Comparer $g(-2)$ et $g(0)$
+
+::: methode
+Les deux nombres sont-ils dans un même intervalle où $g$ est monotone ?
+:::
+
+::: etape Même intervalle
+$-2$ et $0$ appartiennent à $[-3\,;1]$, où $g$ est décroissante, et $-2 \lt 0$.
+:::
+
+::: etape L’ordre est inversé
+Une fonction décroissante range les images dans l’ordre contraire : $g(-2) \ge g(0)$.
+:::
+
+::: resultat
+$g(-2) \ge g(0)$ (le tableau ne dit pas si la décroissance est stricte).
+:::
+
+## Question 4 : Comparer $g(0)$ et $g(4{,}5)$
+
+::: methode
+$0$ et $4{,}5$ ne sont pas dans un même intervalle de monotonie : on compare chaque image à une valeur intermédiaire.
+:::
+
+::: etape Encadrement de $g(0)$
+Sur $[-3\,;1]$, $g$ décroît de $2$ à $-4$, donc $g(0) \le 2$.
+:::
+
+::: etape Valeur de $g(4{,}5)$
+Sur $[4\,;5]$, $g$ est constante égale à $3$, donc $g(4{,}5) = 3$.
+:::
+
+::: resultat
+$g(0) \le 2 \lt 3 = g(4{,}5)$, donc $g(0) \lt g(4{,}5)$.
+:::
+
+::: attention
+On ne compare pas directement deux images situées sur des intervalles de monotonie différents : il faut passer par une valeur intermédiaire.
+:::
+
+## Question 5 : Encadrer $g(x)$ sur $[-3\,;1]$
+
+::: methode
+Sur un intervalle où $g$ est monotone, $g(x)$ est compris entre les images des bornes.
+:::
+
+::: etape Lecture
+Sur $[-3\,;1]$, $g$ décroît de $g(-3) = 2$ à $g(1) = -4$.
+:::
+
+::: resultat
+Pour tout $x \in [-3\,;1]$ : $-4 \le g(x) \le 2$.
+:::
+
+## Question 6 : Extremums sur $[-3\,;5]$
+
+::: methode
+On compare toutes les valeurs écrites au bout des flèches.
+:::
+
+::: etape Minimum
+Les valeurs du tableau sont $2$, $-4$, $3$ et $3$ : la plus petite est $-4$, atteinte en $x = 1$.
+:::
+
+::: etape Maximum
+La plus grande est $3$ : elle est atteinte en $x = 4$, et aussi en tout $x$ de $[4\,;5]$ puisque $g$ y est constante.
+:::
+
+::: resultat
+Minimum $-4$, atteint en $x = 1$ ; maximum $3$, atteint en tout $x$ de $[4\,;5]$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Décroissante sur $[-3\,;1]$, croissante sur $[1\,;4]$, constante sur $[4\,;5]$.
+2. $g(1) = -4$, $g(4) = 3$, $g(5) = 3$.
+3. $g(-2) \ge g(0)$.
+4. $g(0) \le 2 \lt 3 = g(4{,}5)$, donc $g(0) \lt g(4{,}5)$.
+5. $-4 \le g(x) \le 2$.
+6. Minimum $-4$ en $x = 1$ ; maximum $3$ pour tout $x \in [4\,;5]$.
+
+===
+
+=== Découverte - Lire variations et extremums sur une courbe
+Id: 2012
+Difficulté: easy
+Image: v1_n173_ex2012_1_ex_courbe_enonce.png,v1_n173_ex2012_2_ex_courbe_corrige.png
+
+Énoncé: <!-- optitab:1 -->
+La courbe ci-dessous représente une fonction $f$ définie sur $[-4\,;4]$.
+
+[IMAGE_1]
+
+1. Lire $f(-4)$, $f(-2)$, $f(1)$ et $f(4)$.
+2. Sur quels intervalles $f$ est-elle croissante ? décroissante ?
+3. Dresser le tableau de variations de $f$ sur $[-4\,;4]$.
+4. Déterminer le maximum et le minimum de $f$ sur $[-4\,;4]$, et où ils sont atteints.
+5. Déterminer le maximum et le minimum de $f$ sur $[0\,;4]$.
+6. Sans lire leurs valeurs, comparer $f(-1)$ et $f(0)$.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Lire des images
+
+::: methode
+Pour lire $f(a)$ : on part de $a$ sur l’axe des abscisses, on rejoint la courbe verticalement, puis on lit l’ordonnée du point obtenu.
+:::
+
+::: etape Lecture
+- Le point d’abscisse $-4$ a pour ordonnée $1$.
+- Le point d’abscisse $-2$ est le point le plus haut : ordonnée $3$.
+- Le point d’abscisse $1$ est le point le plus bas : ordonnée $-2$.
+- Le point d’abscisse $4$ a pour ordonnée $2$.
+:::
+
+::: resultat
+$f(-4) = 1$, $f(-2) = 3$, $f(1) = -2$, $f(4) = 2$.
+:::
+
+## Question 2 : Sens de variation
+
+::: methode
+On parcourt la courbe de gauche à droite : elle monte quand $f$ est croissante, elle descend quand $f$ est décroissante.
+:::
+
+::: etape Lecture de gauche à droite
+- De $x = -4$ à $x = -2$, la courbe monte.
+- De $x = -2$ à $x = 1$, la courbe descend.
+- De $x = 1$ à $x = 4$, la courbe monte.
+:::
+
+::: resultat
+$f$ est croissante sur $[-4\,;-2]$ et sur $[1\,;4]$, décroissante sur $[-2\,;1]$.
+:::
+
+## Question 3 : Tableau de variations
+
+::: methode
+Première ligne : les bornes et les abscisses où le sens change ; deuxième ligne : les flèches et les images lues à la question 1.
+:::
+
+::: point Tableau de variations
+::: tableau
+x : -4, -2, 1, 4
+f(x) : -/1, +/3, -/-2, +/2
+:::
+:::
+
+::: resultat
+Le tableau comporte trois flèches : montante, descendante, montante.
+:::
+
+## Question 4 : Extremums sur $[-4\,;4]$
+
+::: methode
+On compare les valeurs au bout des flèches : le maximum est la plus grande, le minimum la plus petite.
+:::
+
+::: etape Comparaison
+- Valeurs « en haut » : $f(-2) = 3$ et $f(4) = 2$. La plus grande est $3$.
+- Valeurs « en bas » : $f(-4) = 1$ et $f(1) = -2$. La plus petite est $-2$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+Sur $[-4\,;4]$ : maximum $3$, atteint en $x = -2$ ; minimum $-2$, atteint en $x = 1$.
+:::
+
+## Question 5 : Extremums sur $[0\,;4]$
+
+::: methode
+On ne garde que la partie de la courbe d’abscisses comprises entre $0$ et $4$.
+:::
+
+::: etape Sur $[0\,;4]$
+$f$ est décroissante sur $[0\,;1]$ puis croissante sur $[1\,;4]$. Le plus bas est atteint en $1$ ; le plus haut est à une borne : $f(0)$ est négatif (environ $-0{,}7$) et $f(4) = 2$.
+:::
+
+::: resultat
+Sur $[0\,;4]$ : maximum $2$, atteint en $x = 4$ ; minimum $-2$, atteint en $x = 1$.
+:::
+
+::: attention
+Le maximum dépend de l’intervalle : sur $[0\,;4]$, ce n’est plus $3$, car $x = -2$ n’appartient pas à $[0\,;4]$.
+:::
+
+## Question 6 : Comparer $f(-1)$ et $f(0)$
+
+::: methode
+Deux nombres d’un même intervalle où $f$ est décroissante ont des images rangées dans l’ordre contraire.
+:::
+
+::: etape Même intervalle de monotonie
+$-1$ et $0$ appartiennent à $[-2\,;1]$, où $f$ est décroissante, et $-1 \lt 0$.
+:::
+
+::: resultat
+Donc $f(-1) \gt f(0)$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $f(-4) = 1$, $f(-2) = 3$, $f(1) = -2$, $f(4) = 2$.
+2. Croissante sur $[-4\,;-2]$ et sur $[1\,;4]$ ; décroissante sur $[-2\,;1]$.
+3. Flèches : montante de $1$ à $3$, descendante de $3$ à $-2$, montante de $-2$ à $2$.
+4. Maximum $3$ en $x = -2$ ; minimum $-2$ en $x = 1$.
+5. Sur $[0\,;4]$ : maximum $2$ en $x = 4$ ; minimum $-2$ en $x = 1$.
+6. $f(-1) \gt f(0)$.
+
+===
+
+=== Découverte - Racine carrée : variations
+Id: 2015
+Difficulté: medium
+
+Énoncé: <!-- optitab:1 -->
+On considère la fonction $r$ définie sur $\left[-2\,;\frac{5}{2}\right]$ par
+
+$$r(x) = \sqrt{5 - 2x}$$
+
+Sur cet intervalle, $5 - 2x \ge 0$ : la racine carrée est bien définie.
+
+1. Calculer $r(-2)$, $r(0)$ et $r\left(\frac{5}{2}\right)$.
+2. Démontrer que $r$ est strictement décroissante sur $\left[-2\,;\frac{5}{2}\right]$.
+3. Dresser le tableau de variations de $r$ (on y fera figurer la valeur $r(0)$).
+4. Déterminer le maximum et le minimum de $r$, et où ils sont atteints.
+5. Calculer $r\left(\frac{1}{2}\right)$, puis résoudre l’inéquation $r(x) \ge 2$ sur $\left[-2\,;\frac{5}{2}\right]$.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Images
+
+::: methode
+On remplace $x$ par la valeur dans $r(x) = \sqrt{5 - 2x}$.
+:::
+
+::: etape Calculs
+- $r(-2) = \sqrt{5 - 2 \times (-2)} = \sqrt{9} = 3$
+- $r(0) = \sqrt{5 - 0} = \sqrt{5}$
+- $r\left(\frac{5}{2}\right) = \sqrt{5 - 5} = \sqrt{0} = 0$
+:::
+
+::: resultat
+$r(-2) = 3$, $r(0) = \sqrt{5}$, $r\left(\frac{5}{2}\right) = 0$.
+:::
+
+## Question 2 : Sens de variation
+
+::: methode
+On part de $u \lt v$ et on applique les opérations de $r$ une à une, en suivant le sens des inégalités.
+:::
+
+::: etape Multiplier par $-2$
+Soient $u$ et $v$ dans $\left[-2\,;\frac{5}{2}\right]$ avec $u \lt v$. En multipliant par $-2 \lt 0$, l’ordre change : $-2u \gt -2v$.
+:::
+
+::: etape Ajouter $5$
+$5 - 2u \gt 5 - 2v \ge 0$.
+:::
+
+::: etape Prendre la racine carrée
+La fonction racine carrée est strictement croissante sur $[0\,;+\infty[$, elle conserve l’ordre : $\sqrt{5 - 2u} \gt \sqrt{5 - 2v}$, c’est-à-dire $r(u) \gt r(v)$.
+:::
+
+::: resultat
+Pour $u \lt v$, on a $r(u) \gt r(v)$ : $r$ est strictement décroissante sur $\left[-2\,;\frac{5}{2}\right]$.
+:::
+
+## Question 3 : Tableau de variations
+
+::: methode
+Une seule flèche descendante, de $r(-2)$ à $r\left(\frac{5}{2}\right)$ ; la valeur $r(0)$ s’écrit sur la flèche, au niveau de $x = 0$.
+:::
+
+::: etape Placement de $\sqrt{5}$
+$\sqrt{5} \approx 2{,}24$ est bien compris entre $0$ et $3$ (car $0 \lt 5 \lt 9$) : il se place sur la flèche, entre $3$ et $0$.
+:::
+
+::: point Tableau de variations
+::: tableau
+x : -2, 0, \frac{5}{2}
+r(x) : +/3, =/\sqrt{5}, -/0
+:::
+:::
+
+::: resultat
+$r$ décroît de $3$ (en $-2$) à $0$ (en $\frac{5}{2}$), en passant par $\sqrt{5}$ en $0$.
+:::
+
+## Question 4 : Extremums
+
+::: methode
+Une fonction décroissante sur $[a\,;b]$ atteint son maximum en $a$ et son minimum en $b$.
+:::
+
+::: resultat
+Maximum $3$, atteint en $x = -2$ ; minimum $0$, atteint en $x = \frac{5}{2}$.
+:::
+
+## Question 5 : Résoudre $r(x) \ge 2$
+
+::: methode
+On cherche le nombre dont l’image vaut $2$, puis on utilise la décroissance de $r$.
+:::
+
+::: etape Calcul de $r\left(\frac{1}{2}\right)$
+$$r\left(\frac{1}{2}\right) = \sqrt{5 - 1} = \sqrt{4} = 2$$
+:::
+
+::: etape Utiliser la décroissance
+$r(x) \ge 2$ s’écrit $r(x) \ge r\left(\frac{1}{2}\right)$. Comme $r$ est strictement décroissante, cela équivaut à $x \le \frac{1}{2}$.
+:::
+
+::: resultat
+$$S = \left[-2\,;\frac{1}{2}\right]$$
+:::
+
+::: attention
+Pour une fonction **décroissante**, $r(x) \ge r(a)$ équivaut à $x \le a$ : le sens de l’inégalité change.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $r(-2) = 3$, $r(0) = \sqrt{5}$, $r\left(\frac{5}{2}\right) = 0$.
+2. Si $u \lt v$, alors $5 - 2u \gt 5 - 2v \ge 0$, puis $r(u) \gt r(v)$ : $r$ est strictement décroissante.
+3. Flèche descendante de $3$ à $0$, passant par $\sqrt{5}$ en $x = 0$.
+4. Maximum $3$ en $x = -2$ ; minimum $0$ en $x = \frac{5}{2}$.
+5. $r\left(\frac{1}{2}\right) = 2$ ; $S = \left[-2\,;\frac{1}{2}\right]$.
+
+===
+
+=== Entraînement - Démontrer un sens de variation
+Id: 3746
+Difficulté: hard
+
+Énoncé: <!-- optitab:1 -->
+On considère les fonctions $f$ et $g$ définies par $f(x) = x^2 + 4x$ sur $[-2\,;+\infty[$ et $g(x) = 3 - \frac{2}{x}$ sur ${]0\,;+\infty[}$.
+
+1. Soient $u$ et $v$ deux réels. Montrer que $f(v) - f(u) = (v - u)(v + u + 4)$.
+2. En déduire que $f$ est strictement croissante sur $[-2\,;+\infty[$.
+3. Soient $u$ et $v$ deux réels strictement positifs. Montrer que $g(v) - g(u) = \frac{2(v - u)}{uv}$, puis en déduire le sens de variation de $g$ sur ${]0\,;+\infty[}$.
+4. Un élève calcule $f(0) = 0$ et $f(1) = 5$ et affirme : « $f$ est croissante sur $\mathbb{R}$ ». Montrer qu’il se trompe.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Factoriser $f(v) - f(u)$
+
+::: methode
+On regroupe les carrés et on utilise $v^2 - u^2 = (v - u)(v + u)$.
+:::
+
+::: etape Différence
+$$
+\begin{aligned}
+f(v) - f(u) &= v^2 + 4v - u^2 - 4u \\
+&= (v^2 - u^2) + 4(v - u) \\
+&= (v - u)(v + u) + 4(v - u) \\
+&= (v - u)(v + u + 4)
+\end{aligned}
+$$
+:::
+
+::: resultat
+$f(v) - f(u) = (v - u)(v + u + 4)$.
+:::
+
+## Question 2 : Croissance sur $[-2\,;+\infty[$
+
+::: methode
+On étudie le signe de chaque facteur pour $u \lt v$ quelconques de l’intervalle.
+:::
+
+::: etape Premier facteur
+$u \lt v$, donc $v - u \gt 0$.
+:::
+
+::: etape Second facteur
+$u \ge -2$ et $v \gt -2$ (car $v \gt u \ge -2$), donc $u + v \gt -4$, soit $v + u + 4 \gt 0$.
+:::
+
+::: etape Conclusion
+Produit de deux facteurs strictement positifs : $f(v) - f(u) \gt 0$, donc $f(u) \lt f(v)$.
+:::
+
+::: resultat
+$f$ est strictement croissante sur $[-2\,;+\infty[$.
+:::
+
+## Question 3 : Sens de variation de $g$
+
+::: methode
+Même démarche : on écrit $g(v) - g(u)$ sur un même dénominateur, puis on étudie son signe.
+:::
+
+::: etape Différence
+$$
+\begin{aligned}
+g(v) - g(u) &= \left(3 - \frac{2}{v}\right) - \left(3 - \frac{2}{u}\right) \\
+&= \frac{2}{u} - \frac{2}{v} \\
+&= \frac{2v - 2u}{uv} \\
+&= \frac{2(v - u)}{uv}
+\end{aligned}
+$$
+:::
+
+::: etape Signe pour $0 \lt u \lt v$
+$v - u \gt 0$ et $uv \gt 0$, donc $g(v) - g(u) \gt 0$.
+:::
+
+::: resultat
+$g$ est strictement croissante sur ${]0\,;+\infty[}$.
+:::
+
+## Question 4 : L’erreur de l’élève
+
+::: methode
+Pour montrer qu’une affirmation « pour tous $u \lt v$ » est fausse, un seul contre-exemple suffit.
+:::
+
+::: etape Contre-exemple
+$f(-4) = 16 - 16 = 0$ et $f(-3) = 9 - 12 = -3$. On a $-4 \lt -3$ mais $f(-4) \gt f(-3)$.
+:::
+
+::: resultat
+$f$ n’est pas croissante sur $\mathbb{R}$ : deux valeurs numériques ne suffisent jamais à prouver un sens de variation.
+:::
+
+::: attention
+Pour **démontrer** une variation, il faut des réels $u \lt v$ **quelconques** ; pour la **réfuter**, un contre-exemple suffit.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $f(v) - f(u) = (v^2 - u^2) + 4(v - u) = (v - u)(v + u + 4)$.
+2. Pour $-2 \le u \lt v$ : $v - u \gt 0$ et $v + u + 4 \gt 0$, donc $f(u) \lt f(v)$.
+3. $g(v) - g(u) = \frac{2(v - u)}{uv} \gt 0$ pour $0 \lt u \lt v$ : $g$ est strictement croissante.
+4. $-4 \lt -3$ mais $f(-4) = 0 \gt -3 = f(-3)$.
+
+===
+
+=== Entraînement - Fonction affine : taux d’accroissement
+Id: 2021
+Difficulté: medium
+
+Énoncé: <!-- optitab:1 -->
+Une fonction affine $p$ vérifie $p(1) = 4$ et $p(5) = -8$.
+
+1. Calculer le taux d’accroissement $\dfrac{p(5) - p(1)}{5 - 1}$.
+2. En déduire le coefficient directeur de $p$ et son sens de variation. Interpréter ce coefficient.
+3. Déterminer l’expression de $p(x)$.
+4. Calculer $p(0)$ et $p(-2)$.
+5. Dresser le tableau de variations de $p$ sur $[-2\,;5]$ et donner son maximum et son minimum sur cet intervalle.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Taux d’accroissement
+
+::: methode
+On applique la formule $\dfrac{p(v) - p(u)}{v - u}$ avec $u = 1$ et $v = 5$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+\frac{p(5) - p(1)}{5 - 1} &= \frac{-8 - 4}{4} \\
+&= \frac{-12}{4} \\
+&= -3
+\end{aligned}
+$$
+:::
+
+::: resultat
+Le taux d’accroissement vaut $-3$.
+:::
+
+## Question 2 : Coefficient directeur et sens de variation
+
+::: methode
+Pour une fonction affine $p(x) = mx + q$, le taux d’accroissement est toujours égal à $m$.
+:::
+
+::: etape Coefficient directeur
+$m = -3$, et $-3 \lt 0$.
+:::
+
+::: etape Interprétation
+Quand $x$ augmente de $1$, $p(x)$ diminue de $3$.
+:::
+
+::: resultat
+$m = -3 \lt 0$ : $p$ est strictement décroissante sur $\mathbb{R}$.
+:::
+
+## Question 3 : Expression de $p(x)$
+
+::: methode
+On écrit $p(x) = -3x + q$ et on trouve $q$ grâce à une valeur connue.
+:::
+
+::: etape Utiliser $p(1) = 4$
+$-3 \times 1 + q = 4$, donc $q = 7$.
+:::
+
+::: etape Contrôle avec $p(5)$
+$-3 \times 5 + 7 = -8$ : c’est bien $p(5)$.
+:::
+
+::: resultat
+$$p(x) = -3x + 7$$
+:::
+
+## Question 4 : Calculer $p(0)$ et $p(-2)$
+
+::: methode
+On remplace $x$ dans $p(x) = -3x + 7$.
+:::
+
+::: etape Calculs
+- $p(0) = -3 \times 0 + 7 = 7$
+- $p(-2) = -3 \times (-2) + 7 = 6 + 7 = 13$
+:::
+
+::: resultat
+$p(0) = 7$ et $p(-2) = 13$.
+:::
+
+## Question 5 : Tableau de variations et extremums sur $[-2\,;5]$
+
+::: methode
+$p$ est décroissante : maximum à la borne de gauche, minimum à la borne de droite.
+:::
+
+::: point Tableau de variations
+::: tableau
+x : -2, 5
+p(x) : +/13, -/-8
+:::
+:::
+
+::: resultat
+Sur $[-2\,;5]$ : maximum $13$, atteint en $x = -2$ ; minimum $-8$, atteint en $x = 5$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Le taux d’accroissement vaut $-3$.
+2. $m = -3 \lt 0$ : $p$ est strictement décroissante ; quand $x$ augmente de $1$, $p(x)$ diminue de $3$.
+3. $p(x) = -3x + 7$.
+4. $p(0) = 7$ et $p(-2) = 13$.
+5. Flèche descendante de $13$ à $-8$ ; maximum $13$ en $x = -2$, minimum $-8$ en $x = 5$.
+
+===
+
+=== Entraînement - Fonction affine : variations, signe et droite
+Id: 3747
+Difficulté: medium
+Image: v1_n173_ex3747_1_droites_n2.png
+
+Énoncé: <!-- optitab:1 -->
+Les droites $\mathcal{D}_f$ et $\mathcal{D}_g$ ci-dessous représentent deux fonctions affines $f$ et $g$.
+
+[IMAGE_1]
+
+1. Lire graphiquement $f(0)$, $f(2)$, $g(0)$ et $g(1)$, puis en déduire $f(x)$ et $g(x)$.
+2. Donner le sens de variation de $f$ et de $g$ et le relier à l’allure des droites.
+3. Dresser les tableaux de variations de $f$ et de $g$ sur $[-3\,;3]$.
+4. Résoudre $f(x) = 0$ et $g(x) = 0$.
+5. Dresser le tableau de signes de $f(x)$ et celui de $g(x)$ sur $\mathbb{R}$.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Expressions de $f$ et $g$
+
+::: methode
+Ordonnée à l’origine $p$ : image de $0$ ; coefficient directeur : $m = \frac{f(v) - f(u)}{v - u}$.
+:::
+
+::: etape Lecture pour $f$
+$\mathcal{D}_f$ passe par $(0\,;1)$ et $(2\,;2)$ : $f(0) = 1$ et $f(2) = 2$. Donc $p = 1$ et $m = \frac{2 - 1}{2 - 0} = \frac{1}{2}$.
+:::
+
+::: etape Lecture pour $g$
+$\mathcal{D}_g$ passe par $(0\,;3)$ et $(1\,;1)$ : $g(0) = 3$ et $g(1) = 1$. Donc $p = 3$ et $m = \frac{1 - 3}{1 - 0} = -2$.
+:::
+
+::: resultat
+$f(x) = 0{,}5x + 1$ et $g(x) = -2x + 3$.
+:::
+
+## Question 2 : Sens de variation
+
+::: methode
+Le signe du coefficient directeur donne le sens de variation ; graphiquement, la droite monte ou descend.
+:::
+
+::: etape Pour $f$
+$m = 0{,}5 \gt 0$ : $f$ est strictement croissante ; $\mathcal{D}_f$ monte de gauche à droite.
+:::
+
+::: etape Pour $g$
+$m = -2 \lt 0$ : $g$ est strictement décroissante ; $\mathcal{D}_g$ descend de gauche à droite.
+:::
+
+::: resultat
+$f$ est strictement croissante et $g$ strictement décroissante sur $\mathbb{R}$.
+:::
+
+## Question 3 : Tableaux de variations sur $[-3\,;3]$
+
+::: methode
+On calcule les images des bornes.
+:::
+
+::: etape Images
+- $f(-3) = -1{,}5 + 1 = -0{,}5$ et $f(3) = 1{,}5 + 1 = 2{,}5$
+- $g(-3) = 6 + 3 = 9$ et $g(3) = -6 + 3 = -3$
+:::
+
+::: point Tableaux de variations
+::: tableau
+x : -3, 3
+f(x) : -/-0{,}5, +/2{,}5
+g(x) : +/9, -/-3
+:::
+:::
+
+::: resultat
+$f$ croît de $-0{,}5$ à $2{,}5$ ; $g$ décroît de $9$ à $-3$.
+:::
+
+## Question 4 : Zéros de $f$ et $g$
+
+::: methode
+On résout une équation du premier degré ; graphiquement, c’est l’abscisse du point d’intersection de la droite avec l’axe des abscisses.
+:::
+
+::: etape Pour $f$
+$$
+\begin{aligned}
+0{,}5x + 1 = 0 &\iff 0{,}5x = -1 \\
+&\iff x = -2
+\end{aligned}
+$$
+:::
+
+::: etape Pour $g$
+$$
+\begin{aligned}
+-2x + 3 = 0 &\iff -2x = -3 \\
+&\iff x = \frac{3}{2} = 1{,}5
+\end{aligned}
+$$
+:::
+
+::: resultat
+$f(x) = 0 \iff x = -2$ ; $g(x) = 0 \iff x = 1{,}5$.
+:::
+
+## Question 5 : Tableaux de signes
+
+::: methode
+Une fonction affine croissante est négative avant son zéro et positive après ; une fonction affine décroissante, l’inverse.
+:::
+
+::: point Tableau de signes de $f(x)$
+::: tableau
+x : -\infty, -2, +\infty
+f(x) : , -, z, +,
+:::
+:::
+
+::: point Tableau de signes de $g(x)$
+::: tableau
+x : -\infty, \frac{3}{2}, +\infty
+g(x) : , +, z, -,
+:::
+:::
+
+::: resultat
+$f(x) \lt 0$ sur ${]-\infty\,;-2[}$ et $f(x) \gt 0$ sur ${]-2\,;+\infty[}$ ; $g(x) \gt 0$ sur ${]-\infty\,;1{,}5[}$ et $g(x) \lt 0$ sur ${]1{,}5\,;+\infty[}$.
+:::
+
+::: retenir
+Pour $mx + p$ avec $m \ne 0$ : le signe est celui de $m$ **à droite** du zéro $-\frac{p}{m}$, et le signe contraire à gauche.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $f(x) = 0{,}5x + 1$ et $g(x) = -2x + 3$.
+2. $f$ croissante ($m = 0{,}5 \gt 0$, la droite monte) ; $g$ décroissante ($m = -2 \lt 0$, la droite descend).
+3. $f$ : de $-0{,}5$ à $2{,}5$ ; $g$ : de $9$ à $-3$.
+4. $x = -2$ pour $f$ ; $x = 1{,}5$ pour $g$.
+5. $f(x)$ : $-$ puis $+$ (zéro en $-2$) ; $g(x)$ : $+$ puis $-$ (zéro en $1{,}5$).
+
+===
+
+=== Entraînement - Fonctions de référence : comparer et encadrer
+Id: 2020
+Difficulté: medium
+
+Énoncé: <!-- optitab:1 -->
+On utilise les variations des fonctions carré, inverse et racine carrée.
+
+1. Dresser le tableau de variations de la fonction carré sur $[-3\,;2]$. En déduire son maximum et son minimum sur cet intervalle.
+2. Encadrer $x^2$ lorsque $x \in [1\,;3]$, puis lorsque $x \in [-4\,;-2]$.
+3. Sans calculatrice, comparer $(-3{,}1)^2$ et $(-2{,}7)^2$.
+4. Sans calculatrice, comparer $\frac{1}{2}$ et $\frac{1}{5}$, puis $\frac{1}{-2}$ et $\frac{1}{-5}$.
+5. Déterminer le maximum et le minimum de la fonction inverse sur $\left[\frac{1}{2}\,;4\right]$.
+6. Résoudre l’inéquation $\sqrt{x} \ge 3$ sur $[0\,;+\infty[$.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Fonction carré sur $[-3\,;2]$
+
+::: methode
+La fonction carré est décroissante sur ${]-\infty\,;0]}$ et croissante sur $[0\,;+\infty[$ : sur $[-3\,;2]$, le sens change en $0$.
+:::
+
+::: etape Images utiles
+$(-3)^2 = 9$, $0^2 = 0$ et $2^2 = 4$.
+:::
+
+::: point Tableau de variations
+::: tableau
+x : -3, 0, 2
+x^2 : +/9, -/0, +/4
+:::
+:::
+
+::: resultat
+Sur $[-3\,;2]$ : minimum $0$, atteint en $x = 0$ ; maximum $9$, atteint en $x = -3$ (on compare $9$ et $4$).
+:::
+
+## Question 2 : Encadrer $x^2$
+
+::: methode
+Croissante : on garde le sens des inégalités ; décroissante : on le change.
+:::
+
+::: etape Sur $[1\,;3]$
+$1 \le x \le 3$ et la fonction carré est croissante sur $[0\,;+\infty[$ : $1^2 \le x^2 \le 3^2$.
+:::
+
+::: etape Sur $[-4\,;-2]$
+$-4 \le x \le -2$ et la fonction carré est décroissante sur ${]-\infty\,;0]}$ : $(-4)^2 \ge x^2 \ge (-2)^2$.
+:::
+
+::: resultat
+Si $x \in [1\,;3]$ : $1 \le x^2 \le 9$. Si $x \in [-4\,;-2]$ : $4 \le x^2 \le 16$.
+:::
+
+::: attention
+Erreur fréquente : écrire $16 \le x^2 \le 4$. Sur des nombres négatifs, la fonction carré inverse l’ordre.
+:::
+
+## Question 3 : Comparer $(-3{,}1)^2$ et $(-2{,}7)^2$
+
+::: methode
+Les deux nombres sont négatifs : on utilise la décroissance de la fonction carré sur ${]-\infty\,;0]}$.
+:::
+
+::: etape Ordre des nombres
+$-3{,}1 \lt -2{,}7 \le 0$.
+:::
+
+::: resultat
+La fonction carré inverse l’ordre sur ${]-\infty\,;0]}$, donc $(-3{,}1)^2 \gt (-2{,}7)^2$.
+:::
+
+## Question 4 : Comparaisons avec la fonction inverse
+
+::: methode
+La fonction inverse est décroissante sur ${]0\,;+\infty[}$ et sur ${]-\infty\,;0[}$ : sur chacun de ces intervalles, elle inverse l’ordre.
+:::
+
+::: etape Nombres positifs
+$0 \lt 2 \lt 5$, donc $\frac{1}{2} \gt \frac{1}{5}$.
+:::
+
+::: etape Nombres négatifs
+$-5 \lt -2 \lt 0$, donc $\frac{1}{-5} \gt \frac{1}{-2}$.
+:::
+
+::: resultat
+$\frac{1}{2} \gt \frac{1}{5}$ et $\frac{1}{-2} \lt \frac{1}{-5}$.
+:::
+
+## Question 5 : Inverse sur $\left[\frac{1}{2}\,;4\right]$
+
+::: methode
+La fonction inverse est décroissante sur $\left[\frac{1}{2}\,;4\right] \subset {]0\,;+\infty[}$ : maximum à gauche, minimum à droite.
+:::
+
+::: etape Images des bornes
+$\frac{1}{1/2} = 2$ et $\frac{1}{4} = 0{,}25$.
+:::
+
+::: resultat
+Maximum $2$, atteint en $x = \frac{1}{2}$ ; minimum $\frac{1}{4}$, atteint en $x = 4$.
+:::
+
+## Question 6 : Résoudre $\sqrt{x} \ge 3$
+
+::: methode
+On écrit $3$ comme une racine carrée, puis on utilise la croissance de la fonction racine carrée.
+:::
+
+::: etape Écrire $3 = \sqrt{9}$
+L’inéquation s’écrit $\sqrt{x} \ge \sqrt{9}$.
+:::
+
+::: etape Croissance stricte
+La fonction racine carrée est strictement croissante sur $[0\,;+\infty[$ : $\sqrt{x} \ge \sqrt{9}$ équivaut à $x \ge 9$.
+:::
+
+::: resultat
+$$S = [9\,;+\infty[$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Flèches : descendante de $9$ à $0$, montante de $0$ à $4$ ; minimum $0$ en $x = 0$, maximum $9$ en $x = -3$.
+2. $1 \le x^2 \le 9$ sur $[1\,;3]$ ; $4 \le x^2 \le 16$ sur $[-4\,;-2]$.
+3. $(-3{,}1)^2 \gt (-2{,}7)^2$.
+4. $\frac{1}{2} \gt \frac{1}{5}$ et $\frac{1}{-2} \lt \frac{1}{-5}$.
+5. Maximum $2$ en $x = \frac{1}{2}$ ; minimum $\frac{1}{4}$ en $x = 4$.
+6. $S = [9\,;+\infty[$.
+
+===
+
+=== Entraînement - Maximum et minimum d’une fonction monotone (affine)
+Id: 2019
+Difficulté: medium
+
+Énoncé: <!-- optitab:1 -->
+On considère la fonction affine $f$ définie sur $[-2\,;2]$ par $f(x) = 4 - 3x$.
+
+1. Donner le sens de variation de $f$.
+2. Calculer $f(-2)$ et $f(2)$, puis dresser le tableau de variations de $f$ sur $[-2\,;2]$.
+3. En déduire le maximum et le minimum de $f$ sur $[-2\,;2]$.
+4. Calculer $f(1)$, puis résoudre l’inéquation $f(x) \ge 1$ sur $[-2\,;2]$.
+5. Encadrer $f(x)$ lorsque $x \in [-2\,;2]$.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Sens de variation
+
+::: methode
+Pour $f(x) = mx + p$, le signe de $m$ donne le sens de variation.
+:::
+
+::: etape Coefficient directeur
+$f(x) = -3x + 4$ : $m = -3$, et $-3 \lt 0$.
+:::
+
+::: resultat
+$f$ est strictement décroissante sur $[-2\,;2]$ (et même sur $\mathbb{R}$).
+:::
+
+## Question 2 : Images des bornes et tableau
+
+::: methode
+On calcule les images des bornes, puis on trace une flèche descendante.
+:::
+
+::: etape Calculs
+- $f(-2) = 4 - 3 \times (-2) = 4 + 6 = 10$
+- $f(2) = 4 - 3 \times 2 = 4 - 6 = -2$
+:::
+
+::: point Tableau de variations
+::: tableau
+x : -2, 2
+f(x) : +/10, -/-2
+:::
+:::
+
+::: resultat
+$f(-2) = 10$ et $f(2) = -2$.
+:::
+
+## Question 3 : Extremums
+
+::: methode
+Une fonction décroissante sur $[a\,;b]$ atteint son maximum en $a$ et son minimum en $b$.
+:::
+
+::: resultat
+Maximum $10$, atteint en $x = -2$ ; minimum $-2$, atteint en $x = 2$.
+:::
+
+## Question 4 : Résoudre $f(x) \ge 1$
+
+::: methode
+On calcule le nombre dont l’image vaut $1$, puis on utilise la décroissance (ou on résout directement).
+:::
+
+::: etape Calcul de $f(1)$
+$f(1) = 4 - 3 = 1$.
+:::
+
+::: etape Utiliser la décroissance
+$f(x) \ge f(1)$ et $f$ strictement décroissante : cela équivaut à $x \le 1$.
+:::
+
+::: etape Contrôle par le calcul
+$$
+\begin{aligned}
+4 - 3x &\ge 1 \\
+-3x &\ge -3 \\
+x &\le 1
+\end{aligned}
+$$
+(division par $-3 \lt 0$ : le sens change).
+:::
+
+::: resultat
+Sur $[-2\,;2]$ : $S = [-2\,;1]$.
+:::
+
+::: attention
+Ne pas oublier de tenir compte de l’intervalle d’étude : $x \le 1$ **et** $x \in [-2\,;2]$.
+:::
+
+## Question 5 : Encadrement
+
+::: methode
+Les valeurs de $f(x)$ sont comprises entre le minimum et le maximum.
+:::
+
+::: resultat
+Pour tout $x \in [-2\,;2]$ : $-2 \le f(x) \le 10$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $m = -3 \lt 0$ : $f$ est strictement décroissante.
+2. $f(-2) = 10$, $f(2) = -2$ ; flèche descendante de $10$ à $-2$.
+3. Maximum $10$ en $x = -2$ ; minimum $-2$ en $x = 2$.
+4. $f(1) = 1$ ; $S = [-2\,;1]$.
+5. $-2 \le f(x) \le 10$.
+
+===
+
+=== Entraînement - Parabole : maximum sur un intervalle (forme développée)
+Id: 2014
+Difficulté: medium
+
+Énoncé: <!-- optitab:1 -->
+On considère la fonction $g$ définie sur $[0\,;5]$ par
+
+$$g(x) = -2x^2 + 12x - 11$$
+
+1. Vérifier que, pour tout réel $x$, $g(x) = -2(x - 3)^2 + 7$.
+2. Montrer que $g(x) \le 7$ pour tout $x$. Pour quelle valeur de $x$ a-t-on l’égalité ?
+3. Démontrer que $g$ est croissante sur $[0\,;3]$ et décroissante sur $[3\,;5]$.
+4. Dresser le tableau de variations de $g$ sur $[0\,;5]$. Donner son maximum et son minimum sur $[0\,;5]$.
+5. Déterminer le maximum et le minimum de $g$ sur $[4\,;5]$.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Vérifier la forme proposée
+
+::: methode
+On développe l’expression proposée et on retrouve $g(x)$.
+:::
+
+::: etape Développement
+$$
+\begin{aligned}
+-2(x - 3)^2 + 7 &= -2(x^2 - 6x + 9) + 7 \\
+&= -2x^2 + 12x - 18 + 7 \\
+&= -2x^2 + 12x - 11
+\end{aligned}
+$$
+:::
+
+::: resultat
+Pour tout réel $x$ : $g(x) = -2(x - 3)^2 + 7$.
+:::
+
+## Question 2 : Majorer $g(x)$
+
+::: methode
+Un carré est toujours positif ou nul.
+:::
+
+::: etape Signe du terme carré
+$(x - 3)^2 \ge 0$, donc $-2(x - 3)^2 \le 0$ (multiplication par $-2 \lt 0$).
+:::
+
+::: etape Conclusion
+$g(x) = -2(x - 3)^2 + 7 \le 7$.
+:::
+
+::: etape Cas d’égalité
+$$
+\begin{aligned}
+g(x) = 7 &\iff (x - 3)^2 = 0 \\
+&\iff x = 3
+\end{aligned}
+$$
+:::
+
+::: resultat
+$g(x) \le 7$ pour tout $x$, avec égalité seulement pour $x = 3$.
+:::
+
+## Question 3 : Sens de variation
+
+::: methode
+On part de $u \lt v$ et on suit les opérations : soustraire $3$, élever au carré, multiplier par $-2$, ajouter $7$.
+:::
+
+::: etape Sur $[0\,;3]$
+Soient $0 \le u \lt v \le 3$. Alors $u - 3 \lt v - 3 \le 0$. La fonction carré est décroissante sur ${]-\infty\,;0]}$ : $(u - 3)^2 \gt (v - 3)^2$. En multipliant par $-2 \lt 0$ : $-2(u - 3)^2 \lt -2(v - 3)^2$, puis en ajoutant $7$ : $g(u) \lt g(v)$.
+:::
+
+::: etape Sur $[3\,;5]$
+Soient $3 \le u \lt v \le 5$. Alors $0 \le u - 3 \lt v - 3$. La fonction carré est croissante sur $[0\,;+\infty[$ : $(u - 3)^2 \lt (v - 3)^2$. Donc $-2(u - 3)^2 \gt -2(v - 3)^2$, puis $g(u) \gt g(v)$.
+:::
+
+::: resultat
+$g$ est strictement croissante sur $[0\,;3]$ et strictement décroissante sur $[3\,;5]$.
+:::
+
+## Question 4 : Tableau de variations sur $[0\,;5]$
+
+::: methode
+On calcule les images des bornes et de $3$, puis on compare.
+:::
+
+::: etape Images
+- $g(0) = -11$
+- $g(3) = 7$
+- $g(5) = -2 \times 2^2 + 7 = -1$
+:::
+
+::: point Tableau de variations
+::: tableau
+x : 0, 3, 5
+g(x) : -/-11, +/7, -/-1
+:::
+:::
+
+::: resultat
+Sur $[0\,;5]$ : maximum $7$, atteint en $x = 3$ ; minimum $-11$, atteint en $x = 0$ (on compare $-11$ et $-1$).
+:::
+
+## Question 5 : Extremums sur $[4\,;5]$
+
+::: methode
+$[4\,;5]$ est inclus dans $[3\,;5]$, où $g$ est décroissante : maximum en $4$, minimum en $5$.
+:::
+
+::: etape Images
+$g(4) = -2 \times 1^2 + 7 = 5$ et $g(5) = -1$.
+:::
+
+::: resultat
+Sur $[4\,;5]$ : maximum $5$, atteint en $x = 4$ ; minimum $-1$, atteint en $x = 5$.
+:::
+
+::: attention
+Le maximum $7$ n’est pas atteint sur $[4\,;5]$, car $3 \notin [4\,;5]$ : un extremum dépend de l’intervalle.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. En développant : $-2(x - 3)^2 + 7 = -2x^2 + 12x - 11 = g(x)$.
+2. $(x - 3)^2 \ge 0$ donc $g(x) \le 7$ ; égalité pour $x = 3$.
+3. $g$ est croissante sur $[0\,;3]$, décroissante sur $[3\,;5]$.
+4. Flèches : de $-11$ à $7$, puis de $7$ à $-1$ ; maximum $7$ en $x = 3$, minimum $-11$ en $x = 0$.
+5. Sur $[4\,;5]$ : maximum $5$ en $x = 4$, minimum $-1$ en $x = 5$.
+
+===
+
+=== Entraînement - Parabole : minimum et inéquation
+Id: 2013
+Difficulté: medium
+
+Énoncé: <!-- optitab:1 -->
+On considère la fonction $f$ définie sur $[-6\,;2]$ par
+
+$$f(x) = (x + 3)^2 - 1$$
+
+1. Démontrer que $f$ est strictement décroissante sur $[-6\,;-3]$.
+2. Démontrer que $f$ est strictement croissante sur $[-3\,;2]$.
+3. Dresser le tableau de variations de $f$ sur $[-6\,;2]$.
+4. Déterminer le minimum et le maximum de $f$ sur $[-6\,;2]$.
+5. Calculer $f(0)$, puis résoudre l’inéquation $f(x) \le 8$ sur $[-6\,;2]$.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Décroissance sur $[-6\,;-3]$
+
+::: methode
+On part de $u \lt v$ dans l’intervalle et on suit les opérations : ajouter $3$, élever au carré, soustraire $1$.
+:::
+
+::: etape Ajouter $3$
+Soient $-6 \le u \lt v \le -3$. Alors $u + 3 \lt v + 3 \le 0$.
+:::
+
+::: etape Élever au carré
+La fonction carré est strictement décroissante sur ${]-\infty\,;0]}$ : $(u + 3)^2 \gt (v + 3)^2$.
+:::
+
+::: etape Soustraire $1$
+$(u + 3)^2 - 1 \gt (v + 3)^2 - 1$, c’est-à-dire $f(u) \gt f(v)$.
+:::
+
+::: resultat
+$f$ est strictement décroissante sur $[-6\,;-3]$.
+:::
+
+## Question 2 : Croissance sur $[-3\,;2]$
+
+::: methode
+Même démarche, mais les nombres $u + 3$ et $v + 3$ sont maintenant positifs.
+:::
+
+::: etape Ajouter $3$
+Soient $-3 \le u \lt v \le 2$. Alors $0 \le u + 3 \lt v + 3$.
+:::
+
+::: etape Élever au carré
+La fonction carré est strictement croissante sur $[0\,;+\infty[$ : $(u + 3)^2 \lt (v + 3)^2$, donc $f(u) \lt f(v)$.
+:::
+
+::: resultat
+$f$ est strictement croissante sur $[-3\,;2]$.
+:::
+
+## Question 3 : Tableau de variations
+
+::: methode
+On calcule les images de $-6$, $-3$ et $2$.
+:::
+
+::: etape Images
+- $f(-6) = (-3)^2 - 1 = 8$
+- $f(-3) = 0^2 - 1 = -1$
+- $f(2) = 5^2 - 1 = 24$
+:::
+
+::: point Tableau de variations
+::: tableau
+x : -6, -3, 2
+f(x) : +/8, -/-1, +/24
+:::
+:::
+
+::: resultat
+$f$ décroît de $8$ à $-1$ sur $[-6\,;-3]$, puis croît de $-1$ à $24$ sur $[-3\,;2]$.
+:::
+
+## Question 4 : Extremums
+
+::: methode
+On lit le tableau : la plus petite et la plus grande des valeurs au bout des flèches.
+:::
+
+::: resultat
+Minimum $-1$, atteint en $x = -3$ ; maximum $24$, atteint en $x = 2$.
+:::
+
+## Question 5 : Résoudre $f(x) \le 8$
+
+::: methode
+On repère, sur chaque intervalle de monotonie, les nombres dont l’image vaut $8$, puis on utilise le sens de variation.
+:::
+
+::: etape Calcul de $f(0)$
+$f(0) = 3^2 - 1 = 8$.
+:::
+
+::: etape Sur $[-6\,;-3]$
+$f$ décroît de $8$ à $-1$ : pour tout $x$ de cet intervalle, $f(x) \le f(-6) = 8$. Tout l’intervalle convient.
+:::
+
+::: etape Sur $[-3\,;2]$
+$f$ est strictement croissante : $f(x) \le 8 = f(0)$ équivaut à $x \le 0$. On garde $[-3\,;0]$.
+:::
+
+::: resultat
+$$S = [-6\,;0]$$
+:::
+
+::: retenir
+Contrôle par le calcul : $(x + 3)^2 \le 9 \iff -3 \le x + 3 \le 3 \iff -6 \le x \le 0$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Si $-6 \le u \lt v \le -3$ : $u + 3 \lt v + 3 \le 0$, donc $(u + 3)^2 \gt (v + 3)^2$ et $f(u) \gt f(v)$.
+2. Si $-3 \le u \lt v \le 2$ : $0 \le u + 3 \lt v + 3$, donc $f(u) \lt f(v)$.
+3. Flèches : de $8$ à $-1$, puis de $-1$ à $24$.
+4. Minimum $-1$ en $x = -3$ ; maximum $24$ en $x = 2$.
+5. $f(0) = 8$ ; $S = [-6\,;0]$.
+
+===
+
+=== Entraînement - Valeur absolue : variations et minimum
+Id: 2016
+Difficulté: medium
+
+Énoncé: <!-- optitab:1 -->
+On considère la fonction $h$ définie sur $[-1\,;6]$ par
+
+$$h(x) = |x - 2| + 1$$
+
+1. Écrire $h(x)$ sans valeur absolue lorsque $x \le 2$, puis lorsque $x \ge 2$.
+2. En déduire le sens de variation de $h$ sur $[-1\,;2]$ et sur $[2\,;6]$.
+3. Dresser le tableau de variations de $h$ sur $[-1\,;6]$.
+4. Déterminer le minimum et le maximum de $h$ sur $[-1\,;6]$.
+5. Résoudre l’inéquation $h(x) \le 4$ sur $[-1\,;6]$.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Enlever la valeur absolue
+
+::: methode
+$|A| = A$ si $A \ge 0$, et $|A| = -A$ si $A \le 0$.
+:::
+
+::: etape Si $x \le 2$
+$x - 2 \le 0$, donc $|x - 2| = 2 - x$ et $h(x) = 2 - x + 1 = 3 - x$.
+:::
+
+::: etape Si $x \ge 2$
+$x - 2 \ge 0$, donc $|x - 2| = x - 2$ et $h(x) = x - 2 + 1 = x - 1$.
+:::
+
+::: resultat
+$h(x) = 3 - x$ sur $[-1\,;2]$ et $h(x) = x - 1$ sur $[2\,;6]$.
+:::
+
+## Question 2 : Sens de variation
+
+::: methode
+Sur chaque intervalle, $h$ est affine : le signe du coefficient directeur donne le sens de variation.
+:::
+
+::: etape Sur $[-1\,;2]$
+$h(x) = -x + 3$ : coefficient directeur $-1 \lt 0$.
+:::
+
+::: etape Sur $[2\,;6]$
+$h(x) = x - 1$ : coefficient directeur $1 \gt 0$.
+:::
+
+::: resultat
+$h$ est strictement décroissante sur $[-1\,;2]$ et strictement croissante sur $[2\,;6]$.
+:::
+
+## Question 3 : Tableau de variations
+
+::: methode
+On calcule les images de $-1$, $2$ et $6$.
+:::
+
+::: etape Images
+- $h(-1) = |-3| + 1 = 4$
+- $h(2) = |0| + 1 = 1$
+- $h(6) = |4| + 1 = 5$
+:::
+
+::: point Tableau de variations
+::: tableau
+x : -1, 2, 6
+h(x) : +/4, -/1, +/5
+:::
+:::
+
+::: resultat
+$h$ décroît de $4$ à $1$, puis croît de $1$ à $5$.
+:::
+
+## Question 4 : Extremums
+
+::: methode
+On compare les valeurs au bout des flèches.
+:::
+
+::: resultat
+Minimum $1$, atteint en $x = 2$ ; maximum $5$, atteint en $x = 6$ (on compare $4$ et $5$).
+:::
+
+## Question 5 : Résoudre $h(x) \le 4$
+
+::: methode
+$|x - 2|$ est la distance entre $x$ et $2$.
+:::
+
+::: etape Isoler la valeur absolue
+$$|x - 2| + 1 \le 4 \iff |x - 2| \le 3$$
+:::
+
+::: etape Interpréter en distance
+La distance entre $x$ et $2$ est au plus $3$ : $2 - 3 \le x \le 2 + 3$, soit $-1 \le x \le 5$.
+:::
+
+::: etape Tenir compte de l’intervalle
+$[-1\,;5]$ est inclus dans $[-1\,;6]$.
+:::
+
+::: resultat
+$$S = [-1\,;5]$$
+:::
+
+::: retenir
+Contrôle avec le tableau : $h(-1) = 4$ et $h(5) = 4$ ; entre ces deux nombres, la courbe est sous la droite d’équation $y = 4$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $h(x) = 3 - x$ si $x \le 2$ ; $h(x) = x - 1$ si $x \ge 2$.
+2. Décroissante sur $[-1\,;2]$, croissante sur $[2\,;6]$.
+3. Flèches : de $4$ à $1$, puis de $1$ à $5$.
+4. Minimum $1$ en $x = 2$ ; maximum $5$ en $x = 6$.
+5. $S = [-1\,;5]$.
+
+===
+
+=== Maîtrise - Fonction rationnelle : variations et extremums sur un intervalle
+Id: 2017
+Difficulté: hard
+
+Énoncé: <!-- optitab:1 -->
+On considère la fonction $f$ définie sur $[-3\,;3]$ par
+
+$$f(x) = \frac{1}{x^2 + 1}$$
+
+Pour tout réel $x$, $x^2 + 1 \ge 1 \gt 0$ : $f$ est bien définie.
+
+1. Rappeler le sens de variation de la fonction carré sur $[-3\,;0]$ et sur $[0\,;3]$.
+2. En déduire le sens de variation de $x \mapsto x^2 + 1$ sur ces deux intervalles.
+3. Démontrer que $f$ est croissante sur $[-3\,;0]$ et décroissante sur $[0\,;3]$.
+4. Dresser le tableau de variations de $f$ sur $[-3\,;3]$.
+5. Déterminer le maximum et le minimum de $f$ sur $[-3\,;3]$.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Fonction carré
+
+::: methode
+Variations de la fonction carré (propriété du cours).
+:::
+
+::: resultat
+La fonction carré est strictement décroissante sur $[-3\,;0]$ et strictement croissante sur $[0\,;3]$.
+:::
+
+## Question 2 : Variations de $x \mapsto x^2 + 1$
+
+::: methode
+Ajouter une même constante aux deux membres d’une inégalité ne change pas son sens.
+:::
+
+::: etape Justification
+Si $u^2 \lt v^2$, alors $u^2 + 1 \lt v^2 + 1$ ; si $u^2 \gt v^2$, alors $u^2 + 1 \gt v^2 + 1$.
+:::
+
+::: resultat
+$x \mapsto x^2 + 1$ est strictement décroissante sur $[-3\,;0]$ et strictement croissante sur $[0\,;3]$.
+:::
+
+## Question 3 : Variations de $f$
+
+::: methode
+On utilise la fonction inverse, strictement décroissante sur ${]0\,;+\infty[}$ : elle inverse l’ordre de deux nombres strictement positifs.
+:::
+
+::: etape Sur $[-3\,;0]$
+Soient $-3 \le u \lt v \le 0$. D’après la question 2 : $u^2 + 1 \gt v^2 + 1 \ge 1 \gt 0$. La fonction inverse inverse l’ordre : $\frac{1}{u^2 + 1} \lt \frac{1}{v^2 + 1}$, soit $f(u) \lt f(v)$.
+:::
+
+::: etape Sur $[0\,;3]$
+Soient $0 \le u \lt v \le 3$. Alors $0 \lt u^2 + 1 \lt v^2 + 1$, donc $\frac{1}{u^2 + 1} \gt \frac{1}{v^2 + 1}$, soit $f(u) \gt f(v)$.
+:::
+
+::: resultat
+$f$ est strictement croissante sur $[-3\,;0]$ et strictement décroissante sur $[0\,;3]$.
+:::
+
+::: attention
+$f$ varie **en sens contraire** de son dénominateur $x^2 + 1$ (qui reste strictement positif).
+:::
+
+## Question 4 : Tableau de variations
+
+::: methode
+On calcule les images de $-3$, $0$ et $3$.
+:::
+
+::: etape Images
+- $f(-3) = \frac{1}{9 + 1} = \frac{1}{10}$
+- $f(0) = \frac{1}{0 + 1} = 1$
+- $f(3) = \frac{1}{9 + 1} = \frac{1}{10}$
+:::
+
+::: point Tableau de variations
+::: tableau
+x : -3, 0, 3
+f(x) : -/\frac{1}{10}, +/1, -/\frac{1}{10}
+:::
+:::
+
+::: resultat
+$f$ croît de $\frac{1}{10}$ à $1$, puis décroît de $1$ à $\frac{1}{10}$.
+:::
+
+## Question 5 : Extremums
+
+::: methode
+On lit les valeurs extrêmes dans le tableau.
+:::
+
+::: resultat
+Maximum $1$, atteint en $x = 0$ ; minimum $\frac{1}{10}$, atteint en $x = -3$ et en $x = 3$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Carré : décroissante sur $[-3\,;0]$, croissante sur $[0\,;3]$.
+2. $x^2 + 1$ : mêmes variations.
+3. $f$ est croissante sur $[-3\,;0]$ et décroissante sur $[0\,;3]$ (sens contraire du dénominateur strictement positif).
+4. Flèches : de $\frac{1}{10}$ à $1$, puis de $1$ à $\frac{1}{10}$.
+5. Maximum $1$ en $x = 0$ ; minimum $\frac{1}{10}$ en $x = -3$ et en $x = 3$.
+
+===
+
+=== Maîtrise - Variations et extremums d’une parabole (forme canonique)
+Id: 2022
+Difficulté: hard
+Image: v1_n173_ex2022_1_parabole_2022.png
+
+Énoncé: <!-- optitab:1 -->
+On considère la fonction $f$ définie sur $[-1\,;6]$ par
+
+$$f(x) = -(x - 2)^2 + 5$$
+
+1. Montrer que $f(x) \le 5$ pour tout réel $x$. Pour quelle valeur de $x$ a-t-on l’égalité ?
+2. En déduire le maximum de $f$ sur $[-1\,;6]$.
+3. Démontrer que $f$ est croissante sur $[-1\,;2]$ et décroissante sur $[2\,;6]$.
+4. Calculer $f(-1)$ et $f(6)$, dresser le tableau de variations de $f$ et déterminer son minimum sur $[-1\,;6]$.
+5. Calculer $f(0)$ et $f(4)$, puis résoudre l’inéquation $f(x) \ge 1$ sur $[-1\,;6]$.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Majorer $f(x)$
+
+::: methode
+Un carré est positif ou nul.
+:::
+
+::: etape Signe
+$(x - 2)^2 \ge 0$, donc $-(x - 2)^2 \le 0$ et $f(x) = -(x - 2)^2 + 5 \le 5$.
+:::
+
+::: etape Cas d’égalité
+$$
+\begin{aligned}
+f(x) = 5 &\iff (x - 2)^2 = 0 \\
+&\iff x = 2
+\end{aligned}
+$$
+:::
+
+::: resultat
+$f(x) \le 5$ pour tout $x$, avec égalité seulement pour $x = 2$.
+:::
+
+## Question 2 : Maximum
+
+::: methode
+$f(a)$ est le maximum si $f(x) \le f(a)$ pour tout $x$ de l’intervalle.
+:::
+
+::: resultat
+$2 \in [-1\,;6]$ et $f(2) = 5$ : le maximum de $f$ sur $[-1\,;6]$ est $5$, atteint en $x = 2$.
+:::
+
+## Question 3 : Sens de variation
+
+::: methode
+On part de $u \lt v$ et on suit les opérations : soustraire $2$, élever au carré, changer de signe, ajouter $5$.
+:::
+
+::: etape Sur $[-1\,;2]$
+Soient $-1 \le u \lt v \le 2$ : $u - 2 \lt v - 2 \le 0$. La fonction carré est décroissante sur ${]-\infty\,;0]}$ : $(u - 2)^2 \gt (v - 2)^2$. Donc $-(u - 2)^2 \lt -(v - 2)^2$, puis $f(u) \lt f(v)$.
+:::
+
+::: etape Sur $[2\,;6]$
+Soient $2 \le u \lt v \le 6$ : $0 \le u - 2 \lt v - 2$, donc $(u - 2)^2 \lt (v - 2)^2$, puis $f(u) \gt f(v)$.
+:::
+
+::: resultat
+$f$ est strictement croissante sur $[-1\,;2]$ et strictement décroissante sur $[2\,;6]$.
+:::
+
+## Question 4 : Tableau de variations et minimum
+
+::: methode
+Le minimum d’une fonction qui croît puis décroît est atteint à l’une des bornes : on compare leurs images.
+:::
+
+::: etape Images des bornes
+- $f(-1) = -(-3)^2 + 5 = -9 + 5 = -4$
+- $f(6) = -(4)^2 + 5 = -16 + 5 = -11$
+:::
+
+::: point Tableau de variations
+::: tableau
+x : -1, 2, 6
+f(x) : -/-4, +/5, -/-11
+:::
+:::
+
+::: resultat
+Minimum $-11$, atteint en $x = 6$ (on compare $-4$ et $-11$).
+:::
+
+## Question 5 : Résoudre $f(x) \ge 1$
+
+::: methode
+On repère les nombres dont l’image vaut $1$, puis on raisonne sur chaque intervalle de monotonie.
+:::
+
+::: etape Images utiles
+$f(0) = -(-2)^2 + 5 = 1$ et $f(4) = -(2)^2 + 5 = 1$.
+:::
+
+::: etape Sur $[-1\,;2]$
+$f$ est strictement croissante : $f(x) \ge 1 = f(0) \iff x \ge 0$. On garde $[0\,;2]$.
+:::
+
+::: etape Sur $[2\,;6]$
+$f$ est strictement décroissante : $f(x) \ge 1 = f(4) \iff x \le 4$. On garde $[2\,;4]$.
+:::
+
+[IMAGE_1]
+
+::: resultat
+$$S = [0\,;4]$$
+:::
+
+::: retenir
+Graphiquement : on garde les abscisses des points de la courbe situés **au-dessus** de la droite d’équation $y = 1$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $(x - 2)^2 \ge 0$ donc $f(x) \le 5$ ; égalité pour $x = 2$.
+2. Maximum $5$, atteint en $x = 2$.
+3. $f$ est croissante sur $[-1\,;2]$, décroissante sur $[2\,;6]$.
+4. $f(-1) = -4$, $f(6) = -11$ ; flèches de $-4$ à $5$ puis de $5$ à $-11$ ; minimum $-11$ en $x = 6$.
+5. $f(0) = f(4) = 1$ ; $S = [0\,;4]$.
+
+===
+
+=== Problème - Optimisation : aire maximale d’un rectangle
+Id: 2023
+Difficulté: hard
+Image: v1_n173_ex2023_1_rectangle_2023.png,v1_n173_ex2023_2_aire_2023.png
+
+Énoncé: <!-- optitab:1 -->
+Avec une clôture de $20$ m, on veut délimiter un enclos rectangulaire. On note $x$ (en m) la longueur d’un côté.
+
+[IMAGE_1]
+
+1. Justifier que l’autre côté mesure $10 - x$ (en m) et que $x$ appartient à ${]0\,;10[}$.
+2. Exprimer l’aire $A(x)$ de l’enclos, en m², en fonction de $x$, puis la développer.
+3. Vérifier que, pour tout réel $x$, $A(x) = 25 - (x - 5)^2$.
+4. En déduire l’aire maximale et les dimensions de l’enclos correspondant.
+5. Pour quelles valeurs de $x$ l’aire est-elle au moins égale à $21$ m² ?
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Le second côté
+
+::: methode
+Le périmètre d’un rectangle de côtés $x$ et $y$ est $2x + 2y$.
+:::
+
+::: etape Périmètre
+$2x + 2y = 20$, donc $x + y = 10$ et $y = 10 - x$.
+:::
+
+::: etape Contraintes
+Les longueurs sont strictement positives : $x \gt 0$ et $10 - x \gt 0$, soit $x \lt 10$.
+:::
+
+::: resultat
+L’autre côté mesure $10 - x$, avec $x \in {]0\,;10[}$.
+:::
+
+## Question 2 : Expression de l’aire
+
+::: methode
+Aire d’un rectangle : longueur $\times$ largeur.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+A(x) &= x(10 - x) \\
+&= 10x - x^2
+\end{aligned}
+$$
+:::
+
+::: resultat
+$A(x) = x(10 - x) = -x^2 + 10x$.
+:::
+
+## Question 3 : Vérifier la forme proposée
+
+::: methode
+On développe $25 - (x - 5)^2$.
+:::
+
+::: etape Développement
+$$
+\begin{aligned}
+25 - (x - 5)^2 &= 25 - (x^2 - 10x + 25) \\
+&= -x^2 + 10x \\
+&= A(x)
+\end{aligned}
+$$
+:::
+
+::: resultat
+Pour tout réel $x$ : $A(x) = 25 - (x - 5)^2$.
+:::
+
+## Question 4 : Aire maximale
+
+::: methode
+Un carré est positif ou nul : $(x - 5)^2 \ge 0$.
+:::
+
+::: etape Majoration
+$A(x) = 25 - (x - 5)^2 \le 25$ pour tout $x$ de ${]0\,;10[}$.
+:::
+
+::: etape Égalité
+$A(x) = 25 \iff (x - 5)^2 = 0 \iff x = 5$, et $5 \in {]0\,;10[}$.
+:::
+
+::: etape Dimensions
+$x = 5$ et $10 - x = 5$ : l’enclos est un carré.
+:::
+
+::: resultat
+L’aire maximale est $25$ m², obtenue pour un enclos carré de $5$ m de côté.
+:::
+
+## Question 5 : Aire au moins égale à $21$ m²
+
+::: methode
+On résout $A(x) \ge 21$ avec la forme $25 - (x - 5)^2$.
+:::
+
+::: etape Isoler le carré
+$$
+\begin{aligned}
+25 - (x - 5)^2 &\ge 21 \\
+(x - 5)^2 &\le 4
+\end{aligned}
+$$
+:::
+
+::: etape Interpréter
+$$
+\begin{aligned}
+(x - 5)^2 \le 4 &\iff -2 \le x - 5 \le 2 \\
+&\iff 3 \le x \le 7
+\end{aligned}
+$$
+:::
+
+::: etape Contrôle
+$A(3) = 3 \times 7 = 21$ et $A(7) = 7 \times 3 = 21$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+L’aire est au moins égale à $21$ m² pour $x \in [3\,;7]$.
+:::
+
+::: attention
+Erreur fréquente : écrire $(x - 5)^2 \le 4 \iff x - 5 \le 2$ seulement. Les nombres dont le carré est inférieur ou égal à $4$ sont ceux de $[-2\,;2]$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $2x + 2y = 20$ donc $y = 10 - x$ ; $x \gt 0$ et $10 - x \gt 0$ donnent $x \in {]0\,;10[}$.
+2. $A(x) = x(10 - x) = -x^2 + 10x$.
+3. $25 - (x - 5)^2 = -x^2 + 10x = A(x)$.
+4. Aire maximale $25$ m², pour un carré de $5$ m de côté.
+5. $x \in [3\,;7]$.
+
+===

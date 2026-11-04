@@ -1,0 +1,40 @@
+Titre: Résumé : Schéma de Bernoulli et loi binomiale
+
+<!-- optitab:1 -->
+::: objectifs
+Retenir l’essentiel : schéma de Bernoulli, loi binomiale, espérance, variance, probabilités cumulées et seuils. Programme de Terminale.
+:::
+
+## I. Loi binomiale
+
+::: formule
+$$P(X = k) = \binom{n}{k}\,p^k\,(1 - p)^{n - k}$$
+:::
+
+1. Conditions : $n$ épreuves à deux issues (succès de probabilité $p$), **identiques** et **indépendantes** ; $X$ = nombre de succès suit $\mathcal{B}(n\,;p)$.
+2. $E(X) = np$ ; $V(X) = np(1 - p)$ ; $\sigma(X) = \sqrt{np(1 - p)}$.
+3. Loi de Bernoulli (une seule épreuve) : $E(X) = p$ ; $V(X) = p(1 - p)$.
+
+[IMAGE_1]
+
+## II. Calculs
+
+1. $P(X = k)$ et $P(X \le k)$ : calculatrice (« binomFdp », « binomFRép » ; « BinomialPD », « BinomialCD ») ou Python.
+2. Au moins $k$ succès : $P(X \ge k) = 1 - P(X \le k - 1)$.
+3. Entre $a$ et $b$ succès : $P(a \le X \le b) = P(X \le b) - P(X \le a - 1)$
+4. Seuil : plus petit $k$ tel que $P(X \le k) \ge 1 - \alpha$.
+
+[IMAGE_2]
+
+## III. Les pièges à éviter
+
+::: attention Les 4 erreurs classiques
+1. Ne pas justifier les conditions (deux issues, identiques, indépendantes).
+2. Écrire $P(X \ge k) = 1 - P(X \le k)$ au lieu de $1 - P(X \le k - 1)$.
+3. Utiliser la loi binomiale pour des tirages sans remise dans une petite urne.
+4. Oublier le coefficient $\binom{n}{k}$ (nombre de chemins).
+:::
+
+::: remarque Réflexe
+« Au moins un succès » : $P(X \ge 1) = 1 - (1 - p)^n$. Pour un seuil sur $n$, résoudre $(1 - p)^n \le 1 - c$ avec $\ln$, en changeant le sens car $\ln(1 - p) < 0$.
+:::

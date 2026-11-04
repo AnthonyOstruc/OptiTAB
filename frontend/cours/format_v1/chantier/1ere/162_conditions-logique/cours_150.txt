@@ -1,0 +1,80 @@
+Titre: Conditions et logique en Python
+
+<!-- optitab:1 -->
+::: objectifs
+Écrire des conditions avec les opérateurs de comparaison et les connecteurs logiques `and`, `or`, `not`, programmer des choix avec `if`, `elif`, `else`, et traduire en Python des situations mathématiques (discriminant, appartenance à un intervalle, divisibilité).
+:::
+
+## I. Booléens et comparaisons
+
+::: definition
+Une **condition** est une expression qui vaut `True` (vrai) ou `False` (faux) : c’est un **booléen**. On l’obtient avec les comparaisons `==` (égal), `!=` (différent), `<`, `<=`, `>`, `>=`.
+:::
+
+::: exemple
+`3 * 4 == 12` vaut `True` ; `7 % 2 == 0` vaut `False` ($7$ n’est pas pair).
+:::
+
+::: attention
+Les nombres décimaux sont stockés de façon approchée : `0.1 + 0.2 == 0.3` vaut `False` ! Pour comparer deux flottants, on teste plutôt `abs(x - y) < 1e-9`.
+:::
+
+## II. Connecteurs logiques
+
+::: definition
+- `A and B` est vrai si **les deux** conditions sont vraies.
+- `A or B` est vrai si **au moins une** des deux est vraie.
+- `not A` est vrai si `A` est faux.
+:::
+
+[IMAGE_1]
+
+::: exemple
+$x \in [2\,;5]$ se traduit par `2 <= x and x <= 5` (ou `2 <= x <= 5`) ; $x \notin [2\,;5]$ par `x < 2 or x > 5`.
+:::
+
+::: remarque Négation
+Le contraire de « A et B » est « non A ou non B » ; le contraire de « A ou B » est « non A et non B ».
+:::
+
+## III. Instructions if, elif, else
+
+::: definition Syntaxe
+Python teste les conditions dans l’ordre et exécute le **premier** bloc dont la condition est vraie ; `else` traite tous les autres cas. Chaque ligne `if`, `elif`, `else` se termine par deux-points, et les blocs sont indentés.
+:::
+
+[IMAGE_2]
+
+```python
+def nb_solutions(a, b, c):
+    delta = b * b - 4 * a * c
+    if delta > 0:
+        return 2
+    elif delta == 0:
+        return 1
+    else:
+        return 0
+```
+
+**Tests :** `nb_solutions(2, 4, -6)` renvoie $2$ ($\Delta = 64$) ; `nb_solutions(1, -2, 1)` renvoie $1$ ($\Delta = 0$) ; `nb_solutions(1, 1, 1)` renvoie $0$ ($\Delta = -3$).
+
+## IV. Conditions composées
+
+::: exemple
+Une année est bissextile si elle est divisible par $4$ mais pas par $100$, ou si elle est divisible par $400$.
+:::
+
+```python
+def bissextile(a):
+    return (a % 4 == 0 and a % 100 != 0) or a % 400 == 0
+```
+
+`bissextile(2024)` renvoie `True`, `bissextile(1900)` renvoie `False`, `bissextile(2000)` renvoie `True`.
+
+::: attention
+L’ordre des tests compte dans une suite `if` / `elif` : on place d’abord les cas les plus particuliers. On utilise des parenthèses pour rendre claires les conditions qui mélangent `and` et `or`.
+:::
+
+::: retenir
+Une condition vaut `True` ou `False` ; `==` compare, `=` affecte ; `and` exige les deux, `or` au moins une ; `if` / `elif` / `else` exécute un seul bloc, le premier dont la condition est vraie ; on ne compare pas deux flottants avec `==`. Fiche de synthèse dans l’onglet Fiches !
+:::

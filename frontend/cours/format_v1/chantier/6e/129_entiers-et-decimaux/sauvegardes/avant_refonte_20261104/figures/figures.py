@@ -1,0 +1,2 @@
+# Figures originales du chantier 6e, palette commune.
+FIGURES = {'unite_dixieme_centieme': '\\begin{tikzpicture}[x=0.37cm,y=0.37cm]\n\\fill[otNavy!55] (0,9) rectangle (10,10);\n\\draw[step=0.37cm,otRule] (0,0) grid (10,10);\n\\draw[otNavy] (0,0) rectangle (10,10);\n\\node[below=9pt,text=otInk] at (5,0) {Un dixième};\n\\fill[otGreenDark!65] (14,9) rectangle (15,10);\n\\draw[step=0.37cm,otRule] (14,0) grid (24,10);\n\\draw[otNavy] (14,0) rectangle (24,10);\n\\node[below=9pt,text=otInk] at (19,0) {Un centième};\n\\end{tikzpicture}'}

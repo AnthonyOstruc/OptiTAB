@@ -1,0 +1,86 @@
+=== Multiples, diviseurs et nombres premiers - Programme Seconde
+Images: 2nd_arithmetique_rectangles.png, 2nd_arithmetique_crible.png, 2nd_arithmetique_arbre.png
+Titre: Multiples, diviseurs et nombres premiers
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+    <div style="background:#e8f4fd; border:2px solid #3498db; border-radius:8px; padding:15px; margin-bottom:20px;">
+        <p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🎯 Objectifs du chapitre :</strong> utiliser les notions de multiple et de diviseur, raisonner sur les nombres pairs et impairs, reconnaître un nombre premier, décomposer un entier en produit de facteurs premiers et l’utiliser pour simplifier une fraction ou résoudre un problème.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Multiples et diviseurs</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Définition :</strong> soient $a$ et $b$ deux entiers relatifs, avec $b \neq 0$. On dit que $a$ est un <strong>multiple</strong> de $b$, ou que $b$ est un <strong>diviseur</strong> de $a$, s’il existe un entier $k$ tel que $a = k \times b$.</p>
+        </div>
+        <p style="font-size:1em;"><strong>Exemples :</strong> $36 = 4 \times 9$, donc $36$ est un multiple de $4$ et $4$ est un diviseur de $36$. Les multiples de $7$ sont $\ldots, -14, -7, 0, 7, 14, 21, \ldots$</p>
+        [IMAGE_1]
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Propriété (démonstration au programme) :</strong> la somme de deux multiples d’un entier $a$ est un multiple de $a$.</p>
+            <p style="margin:6px 0 0 0;"><em>Preuve :</em> si $m = k \times a$ et $n = k' \times a$, alors $m + n = (k + k') \times a$, et $k + k'$ est un entier.</p>
+        </div>
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Critères de divisibilité :</strong> un entier est divisible par $2$ s’il se termine par $0, 2, 4, 6$ ou $8$ ; par $5$ s’il se termine par $0$ ou $5$ ; par $10$ s’il se termine par $0$ ; par $3$ (ou par $9$) si la somme de ses chiffres est divisible par $3$ (ou par $9$). Ainsi $4\,512$ est divisible par $3$ car $4 + 5 + 1 + 2 = 12$.
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Nombres pairs et impairs</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Définition :</strong> un entier $n$ est <strong>pair</strong> s’il s’écrit $n = 2k$, et <strong>impair</strong> s’il s’écrit $n = 2k + 1$, avec $k$ entier.</p>
+        </div>
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Propriété (démonstration au programme) :</strong> le carré d’un nombre impair est impair.</p>
+            <p style="margin:6px 0 0 0;"><em>Preuve :</em> si $n = 2k + 1$, alors $n^2 = 4k^2 + 4k + 1 = 2(2k^2 + 2k) + 1$, qui est de la forme $2k' + 1$.</p>
+        </div>
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Méthode :</strong> pour prouver qu’un résultat est vrai pour <strong>tous</strong> les entiers, on écrit l’entier sous la forme $2k$ ou $2k + 1$ et on calcule. Un exemple ne suffit pas : il ne fait que vérifier un cas.
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Nombres premiers</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Définition :</strong> un entier naturel est <strong>premier</strong> s’il admet exactement deux diviseurs positifs : $1$ et lui-même.</p>
+        </div>
+        [IMAGE_2]
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong> $1$ n’est pas premier (il n’a qu’un seul diviseur) ; $2$ est le seul nombre premier pair.
+        </div>
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Tester si $n$ est premier :</strong> il suffit d’essayer de le diviser par les nombres premiers $p$ tels que $p^2 \le n$. Pour $n = 97$ : ni $2$, ni $3$, ni $5$, ni $7$ ne divisent $97$, et $11^2 = 121 \gt 97$ : donc $97$ est premier.
+        </div>
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Propriété (décomposition) :</strong> tout entier supérieur ou égal à $2$ s’écrit comme un produit de nombres premiers, de façon unique à l’ordre près.</p>
+        </div>
+        [IMAGE_3]
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Applications</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <p style="font-size:1em;"><strong>Rendre une fraction irréductible :</strong> on décompose le numérateur et le dénominateur, puis on simplifie par les facteurs communs.</p>
+        <div style="text-align:center; margin:15px 0; padding:12px; background:#e8f4fd; border-radius:4px; border-left:6px solid #3498db;">
+            $\frac{84}{126} = \frac{2^2 \times 3 \times 7}{2 \times 3^2 \times 7} = \frac{2}{3}$
+        </div>
+        <p style="font-size:1em;"><strong>Résoudre un problème :</strong> un fleuriste a $84$ roses et $126$ tulipes. Il veut faire le plus grand nombre de bouquets identiques en utilisant toutes les fleurs. Le nombre de bouquets doit diviser $84$ et $126$ ; le plus grand diviseur commun est $2 \times 3 \times 7 = 42$. Il fait donc $42$ bouquets de $2$ roses et $3$ tulipes.</p>
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Algorithme :</strong> une fonction qui teste si un entier $n \ge 2$ est premier, avec l’opérateur % (reste de la division euclidienne).
+            <div style="background:#2c3e50; color:#ecf0f1; padding:12px; border-radius:6px; margin:10px 0 0 0; font-family:monospace; white-space:pre; overflow-x:auto;">def est_premier(n):
+    d = 2
+    while d &#42; d &lt;= n:
+        if n % d == 0:
+            return False
+        d = d + 1
+    return True</div>
+        </div>
+    </div>
+
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:8px; padding:15px; margin:20px 0 0 0;">
+        <p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🏆 L’essentiel :</strong> $a$ est un multiple de $b$ si $a = k \times b$ ; la somme de deux multiples de $a$ est un multiple de $a$ ; pair $= 2k$, impair $= 2k + 1$, et le carré d’un impair est impair ; un nombre premier a exactement deux diviseurs ($1$ n’est pas premier) ; tout entier $\ge 2$ se décompose en facteurs premiers, ce qui permet de simplifier les fractions. Fiche de synthèse dans l’onglet Fiches !</p>
+    </div>
+
+</div>

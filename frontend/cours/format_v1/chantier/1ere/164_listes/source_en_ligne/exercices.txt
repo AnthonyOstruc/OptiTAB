@@ -1,0 +1,2216 @@
+=== Découverte - Indices et éléments d'une liste
+Id: 1063
+Difficulté: easy
+Image: v1_n164_ex1063_1_ex1063_indices.png
+
+Énoncé: <!-- optitab:1 -->
+Les températures relevées à midi (en °C) pendant une semaine, du lundi au dimanche, sont rangées dans la liste `T`.
+
+```python
+T = [14, 17, 12, 19, 16, 11, 15]
+```
+
+1. Combien la liste `T` contient-elle d’éléments ? Quels sont ses indices ?
+2. Sans ordinateur, donner la valeur de :
+   - a) `T[0]` ;
+   - b) `T[3]` ;
+   - c) `T[-1]` ;
+   - d) `T[len(T) - 2]`.
+3. Quel est l’indice de la température du jeudi ? Quel est l’indice de la plus basse température de la semaine ?
+4. Le relevé du mercredi était faux : il fallait lire $13$. Écrire l’instruction qui corrige la liste, puis donner la liste obtenue.
+5. Que se passe-t-il si l’on exécute `print(T[7])` ?
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Nombre d’éléments et indices
+
+::: methode
+Une liste de $n$ éléments a pour indices $0$, $1$, …, $n - 1$ : on commence à compter à $0$.
+:::
+
+::: etape Nombre d’éléments
+La liste contient une température par jour de la semaine : `len(T)` vaut $7$.
+:::
+
+::: etape Indices
+Les indices vont de $0$ (lundi) à $6$ (dimanche). En comptant depuis la fin, ils vont de $-7$ à $-1$.
+:::
+
+[IMAGE_1]
+
+::: resultat
+`T` contient $7$ éléments, d’indices $0$, $1$, $2$, $3$, $4$, $5$, $6$.
+:::
+
+## Question 2 : Lire des éléments
+
+::: methode
+`T[i]` est l’élément d’indice `i` ; `T[-1]` est le dernier élément.
+:::
+
+::: etape Indices positifs
+- `T[0]` est le premier élément : $14$.
+- `T[3]` est le **quatrième** élément (indices $0$, $1$, $2$, $3$) : $19$.
+:::
+
+::: etape Indices négatifs et calculés
+- `T[-1]` est le dernier élément : $15$.
+- `len(T) - 2` vaut $7 - 2 = 5$, donc `T[len(T) - 2]` est `T[5]`, c’est-à-dire $11$ (l’avant-dernier élément).
+:::
+
+On vérifie à la machine :
+
+```python
+T = [14, 17, 12, 19, 16, 11, 15]
+print(T[0], T[3], T[-1])
+print(T[len(T) - 2])
+```
+
+```console
+14 19 15
+11
+```
+
+::: attention
+`T[3]` n’est pas le troisième élément mais le quatrième : on compte à partir de $0$.
+:::
+
+::: resultat
+a) $14$ ; b) $19$ ; c) $15$ ; d) $11$.
+:::
+
+## Question 3 : Retrouver un indice
+
+::: etape Jeudi
+Lundi a l’indice $0$, mardi $1$, mercredi $2$, donc jeudi a l’indice $3$.
+:::
+
+::: etape Plus basse température
+La plus petite valeur de la liste est $11$ ; elle est en sixième position, à l’indice $5$ (samedi).
+:::
+
+::: resultat
+Le jeudi a l’indice $3$ ; la plus basse température, $11$ °C, a l’indice $5$.
+:::
+
+## Question 4 : Modifier un élément
+
+::: methode
+`T[i] = v` remplace l’élément d’indice `i` par `v`, sans changer la longueur.
+:::
+
+::: etape Instruction
+Le mercredi est le troisième jour : son indice est $2$. On écrit `T[2] = 13`.
+:::
+
+```python
+T = [14, 17, 12, 19, 16, 11, 15]
+T[2] = 13
+print(T)
+```
+
+```console
+[14, 17, 13, 19, 16, 11, 15]
+```
+
+::: resultat
+`T[2] = 13` ; la liste devient `[14, 17, 13, 19, 16, 11, 15]`.
+:::
+
+## Question 5 : Indice hors de la liste
+
+::: etape Analyse
+Les indices de `T` vont de $0$ à $6$ : l’indice $7$ n’existe pas. Python arrête le programme sur l’erreur `IndexError: list index out of range` (indice hors de la liste).
+:::
+
+::: resultat
+`print(T[7])` provoque une erreur `IndexError`. Le dimanche, dernier jour, s’obtient par `T[6]` ou `T[-1]`.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $7$ éléments, d’indices $0$ à $6$.
+2. a) $14$ ; b) $19$ ; c) $15$ ; d) `T[5]`, soit $11$.
+3. Jeudi : indice $3$ ; plus basse température ($11$ °C) : indice $5$.
+4. `T[2] = 13`, d’où `[14, 17, 13, 19, 16, 11, 15]`.
+5. Erreur `IndexError` : l’indice $7$ n’existe pas.
+
+===
+
+=== Découverte - Suivre des ajouts successifs avec append
+Id: 1064
+Difficulté: easy
+Image: v1_n164_ex1064_1_ex1064_append.png
+
+Énoncé: <!-- optitab:1 -->
+On considère le programme suivant.
+
+```python
+L = [3]
+for k in range(4):
+    L.append(L[-1] + 2*k)
+print(L)
+```
+
+1. Recopier et compléter le tableau de suivi : à chaque tour de boucle, donner la valeur de `k`, le dernier élément `L[-1]` avant l’ajout et la valeur ajoutée.
+
+| Tour | $k$ | Dernier élément avant | Valeur ajoutée |
+|---|---|---|---|
+| 1 | … | … | … |
+| 2 | … | … | … |
+| 3 | … | … | … |
+| 4 | … | … | … |
+
+2. Qu’affiche le programme ? Quelle est la longueur finale de `L` ?
+3. La liste `L` contient les termes $u_0$, $u_1$, … d’une suite $(u_n)$. Donner $u_0$ et la relation entre $u_{n+1}$ et $u_n$. Quel élément de `L` est égal à $u_4$ ?
+4. Modifier le programme pour qu’il affiche seulement $u_{10}$, puis calculer $u_{10}$.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Tableau de suivi
+
+::: methode
+À chaque tour, on lit le dernier élément `L[-1]`, on calcule `L[-1] + 2*k` et on l’ajoute **à la fin** de la liste : il devient le nouveau dernier élément.
+:::
+
+::: etape Premier tour
+`k` vaut $0$ ; `L` est `[3]`, donc `L[-1]` vaut $3$ ; on ajoute $3 + 2 \times 0 = 3$.
+:::
+
+::: etape Tours suivants
+- `k` vaut $1$ : `L[-1]` vaut $3$, on ajoute $3 + 2 = 5$.
+- `k` vaut $2$ : `L[-1]` vaut $5$, on ajoute $5 + 4 = 9$.
+- `k` vaut $3$ : `L[-1]` vaut $9$, on ajoute $9 + 6 = 15$.
+:::
+
+| Tour | $k$ | Dernier élément avant | Valeur ajoutée |
+|---|---|---|---|
+| 1 | $0$ | $3$ | $3$ |
+| 2 | $1$ | $3$ | $5$ |
+| 3 | $2$ | $5$ | $9$ |
+| 4 | $3$ | $9$ | $15$ |
+
+[IMAGE_1]
+
+::: resultat
+Valeurs ajoutées successivement : $3$, $5$, $9$, $15$.
+:::
+
+## Question 2 : Affichage
+
+::: etape Liste finale
+La liste de départ `[3]` reçoit $4$ éléments : elle en contient $1 + 4 = 5$.
+:::
+
+```python
+L = [3]
+for k in range(4):
+    L.append(L[-1] + 2*k)
+print(L)
+print(len(L))
+```
+
+```console
+[3, 3, 5, 9, 15]
+5
+```
+
+::: attention
+La boucle fait $4$ tours, mais la liste a $5$ éléments : le premier, $3$, était présent avant la boucle.
+:::
+
+::: resultat
+Le programme affiche `[3, 3, 5, 9, 15]` ; la longueur finale est $5$.
+:::
+
+## Question 3 : La suite associée
+
+::: etape Premier terme et relation
+`L[0]` vaut $3$, donc $u_0 = 3$. Au tour où `k` vaut $n$, le dernier élément est $u_n$ et l’on ajoute $u_{n+1} = u_n + 2n$.
+:::
+
+::: etape Terme $u_4$
+L’indice est le rang : $u_4$ est `L[4]`, c’est-à-dire $15$ (le dernier élément, `L[-1]`).
+:::
+
+::: resultat
+$u_0 = 3$ et $u_{n+1} = u_n + 2n$ ; $u_4$ = `L[4]` $= 15$.
+:::
+
+## Question 4 : Calculer $u_{10}$
+
+::: methode
+Pour obtenir $u_0$, …, $u_{10}$, il faut $10$ ajouts, donc `range(10)` ; $u_{10}$ est alors le dernier élément.
+:::
+
+```python
+L = [3]
+for k in range(10):
+    L.append(L[-1] + 2*k)
+print(L[-1])
+```
+
+```console
+93
+```
+
+::: etape Vérification par le calcul
+On ajoute successivement $2 \times 0$, $2 \times 1$, …, $2 \times 9$ à $u_0 = 3$ :
+
+$$
+\begin{aligned}
+u_{10} &= 3 + 2 \times (0 + 1 + \dots + 9) \\
+&= 3 + 2 \times 45 \\
+&= 93
+\end{aligned}
+$$
+:::
+
+::: resultat
+On remplace `range(4)` par `range(10)` et `print(L)` par `print(L[-1])` (ou `print(L[10])`) : $u_{10} = 93$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Valeurs de `k` : $0$, $1$, $2$, $3$ ; dernier élément avant l’ajout : $3$, $3$, $5$, $9$ ; valeurs ajoutées : $3$, $5$, $9$, $15$.
+2. `[3, 3, 5, 9, 15]` ; longueur $5$.
+3. $u_0 = 3$, $u_{n+1} = u_n + 2n$ ; $u_4$ est `L[4]` $= 15$.
+4. `range(10)` et `print(L[-1])` : $u_{10} = 93$.
+
+===
+
+=== Entraînement - Générer une liste de trois façons
+Id: 1065
+Difficulté: easy
+
+Énoncé: <!-- optitab:1 -->
+1. Écrire **en extension** la liste `M` des multiples de $5$ compris entre $0$ et $30$ (inclus).
+2. Le programme suivant doit construire la même liste **par ajouts successifs**. Remplacer les points de suspension par l’instruction qui convient.
+
+```python
+M = []
+for k in range(7):
+    ...
+print(M)
+```
+
+3. Écrire la même liste **en compréhension**.
+4. Donner, sans ordinateur, les listes `A`, `B` et `C` créées par les instructions suivantes.
+
+```python
+A = [2*k + 1 for k in range(5)]
+B = [k**2 for k in range(1, 6)]
+C = [x for x in B if x % 2 == 0]
+```
+
+5. On veut les cinq premiers termes de chacune des suites suivantes. Choisir la façon de générer la liste, écrire le programme et donner la liste obtenue.
+   - a) $u_n = 3n - 1$ pour tout entier naturel $n$ ;
+   - b) $v_0 = 2$ et $v_{n+1} = 3v_n - 2$.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : En extension
+
+::: methode
+On écrit toutes les valeurs entre crochets, séparées par des virgules.
+:::
+
+::: etape Valeurs
+Les multiples de $5$ de $0$ à $30$ sont $0$, $5$, $10$, $15$, $20$, $25$, $30$ : il y en a $7$.
+:::
+
+::: resultat
+`M = [0, 5, 10, 15, 20, 25, 30]`
+:::
+
+## Question 2 : Par ajouts successifs
+
+::: methode
+Dans la boucle, `k` prend les valeurs $0$ à $6$ : on ajoute $5k$ à la fin de la liste avec `append`.
+:::
+
+::: etape Instruction manquante
+Au tour `k`, on ajoute le multiple $5 \times k$ : `M.append(5 * k)`.
+:::
+
+```python
+M = []
+for k in range(7):
+    M.append(5 * k)
+print(M)
+```
+
+```console
+[0, 5, 10, 15, 20, 25, 30]
+```
+
+::: attention
+On n’écrit pas `M = M.append(5 * k)` : `append` ne renvoie rien, `M` vaudrait `None`.
+:::
+
+::: resultat
+L’instruction manquante est `M.append(5 * k)`.
+:::
+
+## Question 3 : En compréhension
+
+::: methode
+`[expression for k in range(n)]` : l’expression est le terme général $5k$, pour $k$ de $0$ à $6$.
+:::
+
+```python
+M = [5 * k for k in range(7)]
+print(M)
+```
+
+```console
+[0, 5, 10, 15, 20, 25, 30]
+```
+
+::: resultat
+`M = [5 * k for k in range(7)]`
+:::
+
+## Question 4 : Lire des listes en compréhension
+
+::: etape Liste A
+$k$ prend les valeurs $0$ à $4$ ; $2k + 1$ vaut $1$, $3$, $5$, $7$, $9$ : les cinq premiers entiers impairs.
+:::
+
+::: etape Liste B
+`range(1, 6)` donne $k = 1$, $2$, $3$, $4$, $5$ ; leurs carrés sont $1$, $4$, $9$, $16$, $25$.
+:::
+
+::: etape Liste C
+On garde les éléments `x` de `B` tels que `x % 2 == 0`, c’est-à-dire les éléments pairs (reste $0$ dans la division par $2$) : $4$ et $16$.
+:::
+
+```python
+A = [2*k + 1 for k in range(5)]
+B = [k**2 for k in range(1, 6)]
+C = [x for x in B if x % 2 == 0]
+print(A)
+print(B)
+print(C)
+```
+
+```console
+[1, 3, 5, 7, 9]
+[1, 4, 9, 16, 25]
+[4, 16]
+```
+
+::: attention
+`range(1, 6)` s’arrête à $5$ : la borne $6$ n’est pas atteinte.
+:::
+
+::: resultat
+`A = [1, 3, 5, 7, 9]`, `B = [1, 4, 9, 16, 25]` et `C = [4, 16]`.
+:::
+
+## Question 5 : Choisir la bonne écriture
+
+::: methode
+Formule explicite $u_n = f(n)$ : compréhension. Relation de récurrence : ajouts successifs, en calculant le terme suivant à partir du dernier, `v[-1]`.
+:::
+
+::: etape a) Formule explicite
+$u_n$ se calcule directement à partir de $n$ : `u = [3*n - 1 for n in range(5)]`. On obtient $u_0 = -1$, $u_1 = 2$, $u_2 = 5$, $u_3 = 8$, $u_4 = 11$.
+:::
+
+::: etape b) Relation de récurrence
+Chaque terme se calcule à partir du précédent : on part de `[2]` et on fait $4$ tours.
+
+$$
+\begin{aligned}
+v_1 &= 3 \times 2 - 2 = 4 \\
+v_2 &= 3 \times 4 - 2 = 10 \\
+v_3 &= 3 \times 10 - 2 = 28 \\
+v_4 &= 3 \times 28 - 2 = 82
+\end{aligned}
+$$
+:::
+
+```python
+u = [3*n - 1 for n in range(5)]
+v = [2]
+for k in range(4):
+    v.append(3 * v[-1] - 2)
+print(u)
+print(v)
+```
+
+```console
+[-1, 2, 5, 8, 11]
+[2, 4, 10, 28, 82]
+```
+
+::: resultat
+- a) En compréhension : `[-1, 2, 5, 8, 11]`.
+- b) Par ajouts successifs ($4$ tours pour $5$ termes) : `[2, 4, 10, 28, 82]`.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. `M = [0, 5, 10, 15, 20, 25, 30]`
+2. `M.append(5 * k)`
+3. `M = [5 * k for k in range(7)]`
+4. `A = [1, 3, 5, 7, 9]`, `B = [1, 4, 9, 16, 25]`, `C = [4, 16]`.
+5. a) `[3*n - 1 for n in range(5)]` donne `[-1, 2, 5, 8, 11]` ; b) `v = [2]` puis $4$ fois `v.append(3 * v[-1] - 2)` : `[2, 4, 10, 28, 82]`.
+
+===
+
+=== Entraînement - Liste des termes d'une suite
+Id: 1066
+Difficulté: medium
+Image: v1_n164_ex1066_1_ex1066_repere.png,v1_n164_ex1066_2_ex1066_nuage.png
+
+Énoncé: <!-- optitab:1 -->
+La suite $(u_n)$ est définie par $u_0 = 5$ et, pour tout entier naturel $n$, $u_{n+1} = 2u_n - 3$.
+
+1. Calculer $u_1$, $u_2$ et $u_3$.
+2. Compléter la fonction `termes` pour qu’elle renvoie la liste $[u_0, u_1, \dots, u_n]$, construite par ajouts successifs. Que renvoie `termes(5)` ?
+
+```python
+def termes(n):
+    u = [5]
+    for k in range(n):
+        ...
+    return u
+```
+
+3. On admet que, pour tout entier naturel $n$, $u_n = 2^{n+1} + 3$. Écrire **en compréhension** la liste des termes $u_0$ à $u_5$ à l’aide de cette formule, et vérifier qu’on retrouve la liste de la question 2.
+4. Calculer la somme $u_0 + u_1 + \dots + u_5$ à l’aide de la liste.
+5. Placer les points de coordonnées $(n \,;\, u_n)$ pour $n$ allant de $0$ à $5$ dans le repère ci-dessous. Que peut-on conjecturer sur le sens de variation de la suite ?
+
+[IMAGE_1]
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Premiers termes
+
+::: methode
+On applique la relation de récurrence avec $n = 0$, puis $n = 1$, puis $n = 2$.
+:::
+
+::: etape Calculs
+$$
+\begin{aligned}
+u_1 &= 2u_0 - 3 = 2 \times 5 - 3 = 7 \\
+u_2 &= 2u_1 - 3 = 2 \times 7 - 3 = 11 \\
+u_3 &= 2u_2 - 3 = 2 \times 11 - 3 = 19
+\end{aligned}
+$$
+:::
+
+::: resultat
+$u_1 = 7$, $u_2 = 11$, $u_3 = 19$.
+:::
+
+## Question 2 : Fonction `termes`
+
+::: methode
+Le dernier terme calculé est `u[-1]` : le suivant vaut `2 * u[-1] - 3`, que l’on ajoute avec `append`.
+:::
+
+```python
+def termes(n):
+    u = [5]
+    for k in range(n):
+        u.append(2 * u[-1] - 3)
+    return u
+
+print(termes(5))
+```
+
+```console
+[5, 7, 11, 19, 35, 67]
+```
+
+::: etape Nombre de termes
+La liste part de $u_0$ et la boucle fait $n$ tours : `termes(n)` contient $n + 1$ termes, de $u_0$ à $u_n$. Pour $n = 5$ : $u_4 = 2 \times 19 - 3 = 35$ et $u_5 = 2 \times 35 - 3 = 67$.
+:::
+
+::: resultat
+`termes(5)` renvoie `[5, 7, 11, 19, 35, 67]`.
+:::
+
+## Question 3 : Avec la formule explicite
+
+::: methode
+Avec une formule explicite, la compréhension suffit : on écrit la formule dans une fonction `w`, puis `[w(n) for n in range(6)]`.
+:::
+
+```python
+def termes(n):
+    u = [5]
+    for k in range(n):
+        u.append(2 * u[-1] - 3)
+    return u
+
+def w(n):
+    return 2**(n + 1) + 3
+
+v = [w(n) for n in range(6)]
+print(v)
+print(v == termes(5))
+```
+
+```console
+[5, 7, 11, 19, 35, 67]
+True
+```
+
+::: etape Lecture
+`v == termes(5)` vaut `True` : les deux listes ont les mêmes éléments, dans le même ordre. Par exemple $u_5 = 2^6 + 3 = 64 + 3 = 67$.
+:::
+
+::: attention
+En Python, la puissance s’écrit `**` : `2**(n + 1)`. Le symbole `^` ne calcule pas une puissance.
+:::
+
+::: resultat
+La liste en compréhension des $2^{n+1} + 3$, pour $n$ de $0$ à $5$, est `[5, 7, 11, 19, 35, 67]` : c’est la même liste.
+:::
+
+## Question 4 : Somme des termes
+
+::: etape Calcul
+`sum(termes(5))` additionne les éléments de la liste :
+$$
+\begin{aligned}
+S &= 5 + 7 + 11 + 19 + 35 + 67 \\
+&= 144
+\end{aligned}
+$$
+:::
+
+::: resultat
+$u_0 + u_1 + \dots + u_5 = 144$.
+:::
+
+## Question 5 : Nuage de points
+
+::: etape Points à placer
+La liste donne les ordonnées : $(0 \,;\, 5)$, $(1 \,;\, 7)$, $(2 \,;\, 11)$, $(3 \,;\, 19)$, $(4 \,;\, 35)$, $(5 \,;\, 67)$.
+:::
+
+[IMAGE_2]
+
+::: etape Conjecture
+Les points montent de plus en plus vite : chaque terme semble plus grand que le précédent.
+:::
+
+::: resultat
+On conjecture que la suite $(u_n)$ est croissante.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $u_1 = 7$, $u_2 = 11$, $u_3 = 19$.
+2. Instruction manquante : `u.append(2 * u[-1] - 3)` ; `termes(5)` renvoie `[5, 7, 11, 19, 35, 67]`.
+3. `[w(n) for n in range(6)]`, où `w(n)` renvoie `2**(n + 1) + 3`, donne la même liste.
+4. $144$.
+5. Les points montent : on conjecture que $(u_n)$ est croissante.
+
+===
+
+=== Entraînement - Moyenne, médiane et écart type d'une série de notes
+Id: 5568
+Difficulté: medium
+Image: v1_n164_ex5568_1_exn5_liste.png,v1_n164_ex5568_2_exn5_batons.png
+
+Énoncé: <!-- optitab:1 -->
+Les notes (sur $20$) d’un groupe de $20$ élèves à un devoir sont résumées dans le tableau ci-dessous.
+
+| Note | Effectif |
+|---|---|
+| $8$ | $1$ |
+| $10$ | $4$ |
+| $12$ | $7$ |
+| $14$ | $5$ |
+| $16$ | $3$ |
+
+On range ces données dans deux listes de même longueur : `X[i]` est une note et `N[i]` son effectif.
+
+```python
+X = [8, 10, 12, 14, 16]
+N = [1, 4, 7, 5, 3]
+```
+
+1. Que valent `X[2]` et `N[2]` ? Que signifient-ils ? Écrire un programme qui calcule l’effectif total par un parcours de la liste `N`, sans utiliser `sum`.
+2. Le programme suivant construit la liste `L` des $20$ notes du groupe.
+
+```python
+# suite du programme
+L = []
+for i in range(len(X)):
+    for k in range(N[i]):
+        L.append(X[i])
+```
+
+- a) Combien de fois la note $12$ est-elle ajoutée ? Quelle est la longueur de `L` ?
+- b) Donner `L[0]`, `L[4]`, `L[5]` et `L[-1]`.
+- c) Les notes de `L` sont rangées dans l’ordre croissant. Justifier que la médiane de la série est la moyenne de `L[9]` et `L[10]`, puis la calculer.
+
+3. Compléter la fonction `moyenne`, qui parcourt les indices des deux listes, puis calculer la moyenne $m$ de la série.
+
+```python
+def moyenne(X, N):
+    s = 0
+    for i in range(len(X)):
+        s = ...
+    return s / sum(N)
+```
+
+4. La variance $V$ de la série est la moyenne des carrés des écarts à la moyenne, chaque note comptant autant de fois que son effectif. En notant $x_i$ la note `X[i]` et $n_i$ son effectif `N[i]`, on a :
+$$V = \frac{1}{20}\sum_{i=0}^{4} n_i\,(x_i - m)^2$$
+Écrire une fonction `variance(X, N)` sur le modèle de `moyenne`. Calculer $V$, puis l’écart type $s = \sqrt{V}$ arrondi au centième.
+5. Écrire en compréhension la liste `A` des notes de `L` comprises dans l’intervalle $[m - 2s \,;\, m + 2s]$. Quelle proportion des élèves a une note dans cet intervalle ?
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Deux listes et l’effectif total
+
+::: methode
+Les deux listes se lisent ensemble : au même indice `i` correspondent une note `X[i]` et son effectif `N[i]`.
+:::
+
+::: etape Lecture
+`X[2]` est le troisième élément de `X` : $12$. `N[2]` est le troisième élément de `N` : $7$. Ils forment la troisième ligne du tableau : $7$ élèves ont obtenu la note $12$.
+:::
+
+::: etape Accumulateur
+On ajoute un à un les éléments de `N` à une variable `n` initialisée à $0$ avant la boucle.
+:::
+
+```python
+N = [1, 4, 7, 5, 3]
+n = 0
+for e in N:
+    n = n + e
+print(n)
+```
+
+```console
+20
+```
+
+::: resultat
+`X[2]` vaut $12$ et `N[2]` vaut $7$ : la note $12$ a été obtenue par $7$ élèves. L’effectif total est $1 + 4 + 7 + 5 + 3 = 20$.
+:::
+
+## Question 2 : La liste de toutes les notes
+
+::: methode
+Pour chaque indice `i`, la boucle intérieure fait `N[i]` tours : la note `X[i]` est ajoutée `N[i]` fois à la fin de `L`.
+:::
+
+::: etape a) Nombre d’ajouts
+La note $12$ est `X[2]` : elle est ajoutée `N[2]` vaut $7$ fois. Au total, `L` reçoit $1 + 4 + 7 + 5 + 3 = 20$ notes.
+:::
+
+::: etape b) Place de chaque note
+Les notes arrivent dans l’ordre des indices de `X` :
+- indice $0$ : la note $8$ ($1$ fois) ;
+- indices $1$ à $4$ : la note $10$ ($4$ fois) ;
+- indices $5$ à $11$ : la note $12$ ($7$ fois) ;
+- indices $12$ à $16$ : la note $14$ ($5$ fois) ;
+- indices $17$ à $19$ : la note $16$ ($3$ fois).
+
+Donc `L[0]` vaut $8$, `L[4]` vaut $10$, `L[5]` vaut $12$, et `L[-1]`, le dernier élément `L[19]`, vaut $16$.
+:::
+
+```python
+X = [8, 10, 12, 14, 16]
+N = [1, 4, 7, 5, 3]
+L = []
+for i in range(len(X)):
+    for k in range(N[i]):
+        L.append(X[i])
+print(len(L))
+print(L[0], L[4], L[5], L[-1])
+print(L[9], L[10])
+```
+
+```console
+20
+8 10 12 16
+12 12
+```
+
+[IMAGE_1]
+
+::: etape c) Médiane
+La série a $20$ valeurs (un nombre pair) rangées dans l’ordre croissant : la médiane est la moyenne de la 10e et de la 11e valeur. On compte les indices à partir de $0$ : ce sont `L[9]` et `L[10]`, en vert sur le schéma. Elles valent toutes deux $12$, donc la médiane vaut $\dfrac{12 + 12}{2} = 12$.
+:::
+
+::: attention
+La 10e valeur est `L[9]` et non `L[10]` : l’indice est égal au rang moins $1$.
+:::
+
+::: resultat
+- a) La note $12$ est ajoutée $7$ fois ; `len(L)` vaut $20$.
+- b) `L[0]` vaut $8$, `L[4]` vaut $10$, `L[5]` vaut $12$, `L[-1]` vaut $16$.
+- c) La médiane est la moyenne de `L[9]` et `L[10]` : elle vaut $12$.
+:::
+
+## Question 3 : Moyenne de la série
+
+::: methode
+Chaque note `X[i]` compte `N[i]` fois : on additionne les produits `N[i] * X[i]`, puis on divise par l’effectif total.
+:::
+
+::: etape Instruction manquante
+Au tour `i`, on ajoute à `s` le produit de la note par son effectif : `s = s + N[i] * X[i]`.
+:::
+
+```python
+X = [8, 10, 12, 14, 16]
+N = [1, 4, 7, 5, 3]
+
+def moyenne(X, N):
+    s = 0
+    for i in range(len(X)):
+        s = s + N[i] * X[i]
+    return s / sum(N)
+
+print(moyenne(X, N))
+```
+
+```console
+12.5
+```
+
+::: etape Vérification par le calcul
+$$
+\begin{aligned}
+S &= 1 \times 8 + 4 \times 10 + 7 \times 12 \\
+&\quad + 5 \times 14 + 3 \times 16 \\
+&= 8 + 40 + 84 + 70 + 48 \\
+&= 250
+\end{aligned}
+$$
+donc $m = \dfrac{250}{20} = 12{,}5$. Avec la liste `L` de la question 2, `sum(L) / len(L)` donne aussi $12{,}5$.
+:::
+
+::: attention
+On ne peut pas parcourir seulement `X` avec `for x in X` : il faut aussi l’effectif de chaque note, rangé au **même indice** dans `N`. Et on divise par l’effectif total $20$, pas par `len(X)`, qui vaut $5$ (le nombre de notes différentes).
+:::
+
+::: resultat
+L’instruction manquante est `s = s + N[i] * X[i]` ; la moyenne est $m = 12{,}5$.
+:::
+
+## Question 4 : Variance et écart type
+
+::: methode
+Même parcours par indices que pour la moyenne ; on additionne cette fois les produits $n_i\,(x_i - m)^2$.
+:::
+
+```python
+# suite du programme
+from math import sqrt
+
+def variance(X, N):
+    m = moyenne(X, N)
+    s = 0
+    for i in range(len(X)):
+        s = s + N[i]*(X[i] - m)**2
+    return s / sum(N)
+
+V = variance(X, N)
+print(V)
+print(round(sqrt(V), 2))
+```
+
+```console
+4.75
+2.18
+```
+
+::: etape Vérification par le calcul
+Les écarts à la moyenne $12{,}5$ sont $-4{,}5$ ; $-2{,}5$ ; $-0{,}5$ ; $1{,}5$ ; $3{,}5$. Leurs carrés valent $20{,}25$ ; $6{,}25$ ; $0{,}25$ ; $2{,}25$ ; $12{,}25$.
+$$
+\begin{aligned}
+20V &= 1 \times 20{,}25 + 4 \times 6{,}25 \\
+&\quad + 7 \times 0{,}25 + 5 \times 2{,}25 \\
+&\quad + 3 \times 12{,}25 \\
+&= 95
+\end{aligned}
+$$
+donc $V = \dfrac{95}{20} = 4{,}75$ et $s = \sqrt{4{,}75} \approx 2{,}18$.
+:::
+
+::: attention
+Les parenthèses sont indispensables : `(X[i] - m)**2` calcule $(x_i - m)^2$, alors que `X[i] - m**2` calculerait $x_i - m^2$.
+:::
+
+::: resultat
+$V = 4{,}75$ et $s = \sqrt{4{,}75} \approx 2{,}18$.
+:::
+
+## Question 5 : Notes dans l’intervalle $[m - 2s \,;\, m + 2s]$
+
+::: methode
+Compréhension avec filtre : on garde les notes `x` de `L` qui vérifient `m - 2*s <= x <= m + 2*s`, puis on divise leur nombre par `len(L)`.
+:::
+
+::: etape Bornes de l’intervalle
+$2s \approx 4{,}36$, donc $m - 2s \approx 8{,}14$ et $m + 2s \approx 16{,}86$.
+:::
+
+```python
+# suite du programme
+L = []
+for i in range(len(X)):
+    for k in range(N[i]):
+        L.append(X[i])
+m = moyenne(X, N)
+s = sqrt(variance(X, N))
+A = [x for x in L
+     if m - 2*s <= x <= m + 2*s]
+print(len(A), len(A) / len(L))
+```
+
+```console
+19 0.95
+```
+
+::: etape Lecture
+Seule la note $8$, obtenue par un élève, est en dehors de l’intervalle $[8{,}14 \,;\, 16{,}86]$ (valeurs arrondies) : les $19$ autres notes y sont.
+:::
+
+[IMAGE_2]
+
+::: resultat
+La liste `A` contient $19$ notes : la proportion est $\dfrac{19}{20} = 0{,}95$, soit $95\,\%$ des élèves.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. `X[2]` vaut $12$ et `N[2]` vaut $7$ : $7$ élèves ont eu $12$ ; effectif total $20$.
+2. La liste `L` des $20$ notes :
+   - a) la note $12$ est ajoutée $7$ fois ; longueur $20$ ;
+   - b) $8$ ; $10$ ; $12$ ; $16$ ;
+   - c) $20$ valeurs : la médiane est la moyenne de `L[9]` et `L[10]`, soit $12$.
+3. `s = s + N[i] * X[i]` ; $m = 12{,}5$.
+4. $V = 4{,}75$ et $s \approx 2{,}18$.
+5. `A` garde les notes `x` de `L` telles que `m - 2*s <= x <= m + 2*s` : $19$ notes, soit $95\,\%$ des élèves.
+
+===
+
+=== Entraînement - Parcourir une liste : moyenne, fréquence, maximum
+Id: 1067
+Difficulté: medium
+
+Énoncé: <!-- optitab:1 -->
+Une station météo a mesuré les précipitations (en mm) pendant $10$ jours, numérotés de $1$ à $10$. Les mesures sont rangées dans la liste `P` : `P[0]` correspond au jour $1$.
+
+```python
+P = [12, 0, 5, 23, 0,
+     8, 17, 0, 3, 9]
+```
+
+1. Écrire un programme qui calcule, à l’aide d’une boucle et sans utiliser `sum`, le total des précipitations, puis la moyenne journalière. Donner les résultats.
+2. Écrire un programme qui compte les jours sans pluie et calcule leur fréquence.
+3. À l’aide d’un parcours par indices, écrire un programme qui détermine la plus forte précipitation et l’indice correspondant. De quel jour s’agit-il ?
+4. Construire par ajouts successifs la liste `J` des **numéros des jours** où il est tombé plus de $10$ mm.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Total et moyenne
+
+::: methode
+Accumulateur : une variable `s` initialisée à $0$, à laquelle on ajoute chaque élément ; la moyenne est `s / len(P)`.
+:::
+
+```python
+P = [12, 0, 5, 23, 0,
+     8, 17, 0, 3, 9]
+s = 0
+for x in P:
+    s = s + x
+print(s)
+print(s / len(P))
+```
+
+```console
+77
+7.7
+```
+
+::: etape Vérification
+$$
+\begin{aligned}
+s &= 12 + 0 + 5 + 23 + 0 \\
+&\quad + 8 + 17 + 0 + 3 + 9 \\
+&= 77
+\end{aligned}
+$$
+La moyenne vaut $\dfrac{77}{10} = 7{,}7$ mm par jour.
+:::
+
+::: attention
+Il faut initialiser `s` **avant** la boucle : écrit dans la boucle, `s = 0` effacerait le total à chaque tour.
+:::
+
+::: resultat
+Total : $77$ mm ; moyenne : $7{,}7$ mm par jour.
+:::
+
+## Question 2 : Jours sans pluie
+
+::: methode
+Compteur : une variable `c` initialisée à $0$, augmentée de $1$ à chaque élément égal à $0$.
+:::
+
+```python
+P = [12, 0, 5, 23, 0,
+     8, 17, 0, 3, 9]
+c = 0
+for x in P:
+    if x == 0:
+        c = c + 1
+print(c, c / len(P))
+```
+
+```console
+3 0.3
+```
+
+::: resultat
+$3$ jours sans pluie sur $10$ : la fréquence est $\dfrac{3}{10} = 0{,}3$.
+:::
+
+## Question 3 : Plus forte précipitation
+
+::: methode
+On retient l’indice `imax` du plus grand élément déjà rencontré et on le met à jour quand `P[i] > P[imax]`.
+:::
+
+```python
+P = [12, 0, 5, 23, 0,
+     8, 17, 0, 3, 9]
+imax = 0
+for i in range(len(P)):
+    if P[i] > P[imax]:
+        imax = i
+print(P[imax], imax)
+```
+
+```console
+23 3
+```
+
+::: etape De l’indice au jour
+`P[0]` correspond au jour $1$ : l’indice $i$ correspond au jour $i + 1$. L’indice $3$ correspond donc au jour $4$.
+:::
+
+::: attention
+Ne pas confondre l’indice ($3$), la valeur ($23$ mm) et le numéro du jour ($4$).
+:::
+
+::: resultat
+La plus forte précipitation est $23$ mm, à l’indice $3$ : c’est le jour $4$.
+:::
+
+## Question 4 : Liste des jours de forte pluie
+
+::: methode
+On part de la liste vide ; on parcourt les indices et on ajoute le numéro `i + 1` quand `P[i] > 10`.
+:::
+
+```python
+P = [12, 0, 5, 23, 0,
+     8, 17, 0, 3, 9]
+J = []
+for i in range(len(P)):
+    if P[i] > 10:
+        J.append(i + 1)
+print(J)
+```
+
+```console
+[1, 4, 7]
+```
+
+::: etape Contrôle
+Les valeurs supérieures à $10$ sont $12$ (indice $0$), $23$ (indice $3$) et $17$ (indice $6$), soit les jours $1$, $4$ et $7$.
+:::
+
+::: resultat
+`J = [1, 4, 7]`
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Total $77$ mm, moyenne $7{,}7$ mm par jour.
+2. $3$ jours sans pluie, fréquence $0{,}3$.
+3. Maximum $23$ mm, indice $3$, c’est-à-dire le jour $4$.
+4. `J = [1, 4, 7]`
+
+===
+
+=== Entraînement - Parcours par indices et sens de variation d'une suite
+Id: 4949
+Difficulté: medium
+Image: v1_n164_ex4949_1_exn4_nuage.png
+
+Énoncé: <!-- optitab:1 -->
+La suite $(u_n)$ est définie pour tout entier naturel $n$ par $u_n = n^2 - 7n + 1$. On exécute le programme suivant.
+
+```python
+def u(n):
+    return n**2 - 7*n + 1
+
+U = [u(n) for n in range(8)]
+D = []
+for i in range(len(U) - 1):
+    D.append(U[i + 1] - U[i])
+print(U)
+print(D)
+```
+
+1. Que contient la liste `U` ? Donner sa longueur, puis `U[3]`, `U[4]` et `U[-1]`.
+2. Que représente l’élément `D[i]` ? Pourquoi la boucle s’arrête-t-elle à l’indice `len(U) - 2` ? Donner la liste `D`.
+3. Démontrer que, pour tout entier naturel $n$, $u_{n+1} - u_n = 2n - 6$. En déduire le sens de variation de la suite.
+4. Écrire un programme qui affiche le premier indice `i` tel que `D[i] > 0`. Interpréter le résultat.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : La liste `U`
+
+::: methode
+`[u(n) for n in range(8)]` est la liste des termes $u_0$, …, $u_7$ : l’indice est le rang.
+:::
+
+::: etape Calculs
+$$
+\begin{aligned}
+u_3 &= 9 - 21 + 1 = -11 \\
+u_4 &= 16 - 28 + 1 = -11 \\
+u_7 &= 49 - 49 + 1 = 1
+\end{aligned}
+$$
+`U[-1]` est le dernier terme de la liste, $u_7$.
+:::
+
+::: resultat
+`U` contient les $8$ termes $u_0$ à $u_7$ ; `U[3]` $= -11$, `U[4]` $= -11$ et `U[-1]` $= u_7 = 1$.
+:::
+
+## Question 2 : La liste `D` des différences
+
+::: methode
+`D[i]` est `U[i + 1] - U[i]`, c’est-à-dire $u_{i+1} - u_i$ : la différence entre un terme et le précédent.
+:::
+
+::: etape Dernier indice
+`U[i + 1]` doit exister : $i + 1 \leqslant 7$, donc $i \leqslant 6$. Avec `range(len(U) - 1)`, c’est-à-dire `range(7)`, `i` va de $0$ à $6$ : `D` contient $7$ éléments.
+:::
+
+```python
+def u(n):
+    return n**2 - 7*n + 1
+
+U = [u(n) for n in range(8)]
+D = []
+for i in range(len(U) - 1):
+    D.append(U[i + 1] - U[i])
+print(U)
+print(D)
+```
+
+```console
+[1, -5, -9, -11, -11, -9, -5, 1]
+[-6, -4, -2, 0, 2, 4, 6]
+```
+
+::: attention
+Avec `range(len(U))`, le dernier tour calculerait `U[8]`, qui n’existe pas : erreur `IndexError`.
+:::
+
+::: resultat
+`D[i]` $= u_{i+1} - u_i$ ; `D = [-6, -4, -2, 0, 2, 4, 6]`.
+:::
+
+## Question 3 : Démonstration et sens de variation
+
+::: etape Calcul de la différence
+$$
+\begin{aligned}
+u_{n+1} - u_n &= (n + 1)^2 - 7(n + 1) + 1 \\
+&\quad - (n^2 - 7n + 1) \\
+&= n^2 + 2n + 1 - 7n - 7 + 1 \\
+&\quad - n^2 + 7n - 1 \\
+&= 2n - 6
+\end{aligned}
+$$
+On retrouve les éléments de `D` : $2 \times 0 - 6 = -6$, $2 \times 1 - 6 = -4$, etc.
+:::
+
+::: etape Signe
+- Pour $n \leqslant 2$ : $2n - 6 < 0$, donc $u_{n+1} < u_n$.
+- Pour $n = 3$ : $2n - 6 = 0$, donc $u_4 = u_3$.
+- Pour $n \geqslant 4$ : $2n - 6 > 0$, donc $u_{n+1} > u_n$.
+:::
+
+[IMAGE_1]
+
+::: resultat
+La suite est décroissante de $u_0$ à $u_3$, $u_3 = u_4 = -11$, puis elle est croissante à partir du rang $3$ ($u_{n+1} \geqslant u_n$ pour $n \geqslant 3$).
+:::
+
+## Question 4 : Premier indice où `D[i] > 0`
+
+::: methode
+Boucle `while` : on avance l’indice tant que `D[i] <= 0`.
+:::
+
+```python
+D = [-6, -4, -2, 0, 2, 4, 6]
+i = 0
+while D[i] <= 0:
+    i = i + 1
+print(i)
+```
+
+```console
+4
+```
+
+::: etape Interprétation
+`D[4]` $= u_5 - u_4 = 2 > 0$, et `D[i]` $\leqslant 0$ pour $i \leqslant 3$ : à partir du rang $4$, chaque terme est strictement plus grand que le précédent.
+:::
+
+::: resultat
+Le programme affiche $4$ : $u_5 > u_4$ est la première hausse de la suite.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Les termes $u_0$ à $u_7$ ($8$ éléments) ; `U[3]` $= -11$, `U[4]` $= -11$, `U[-1]` $= 1$.
+2. `D[i]` $= u_{i+1} - u_i$ ; `U[i + 1]` doit exister ; `D = [-6, -4, -2, 0, 2, 4, 6]`.
+3. $u_{n+1} - u_n = 2n - 6$ : la suite décroît jusqu’à $u_3$, $u_3 = u_4$, puis elle croît.
+4. Le programme affiche $4$ : première hausse entre $u_4$ et $u_5$.
+
+===
+
+=== Entraînement - Tableau de valeurs d'une fonction avec deux listes
+Id: 4946
+Difficulté: medium
+Image: v1_n164_ex4946_1_exn1_repere.png,v1_n164_ex4946_2_exn1_points.png
+
+Énoncé: <!-- optitab:1 -->
+On considère la fonction $f$ définie sur $\mathbb{R}$ par $f(x) = x^2 - 4x + 3$ et le programme suivant.
+
+```python
+def f(x):
+    return x**2 - 4*x + 3
+
+X = [0.5 * k for k in range(9)]
+Y = [f(x) for x in X]
+```
+
+1. Quelles valeurs contient la liste `X` ?
+2. Que contient la liste `Y` ? Recopier et compléter le tableau de valeurs.
+
+| $x$ | $f(x)$ |
+|---|---|
+| $0$ | … |
+| $0{,}5$ | … |
+| $1$ | … |
+| $1{,}5$ | … |
+| $2$ | … |
+| $2{,}5$ | … |
+| $3$ | … |
+| $3{,}5$ | … |
+| $4$ | … |
+
+3. Écrire un programme qui parcourt les indices pour trouver la plus petite valeur de `Y` et l’abscisse correspondante.
+4. Écrire en compréhension la liste des abscisses de `X` pour lesquelles $f(x) < 0$.
+5. Placer les points de coordonnées $(x \,;\, f(x))$ dans le repère ci-dessous. Conjecturer le minimum de $f$ sur $[0 \,;\, 4]$, puis le démontrer en vérifiant que $f(x) = (x - 2)^2 - 1$.
+
+[IMAGE_1]
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : La liste des abscisses
+
+::: methode
+`range(9)` donne $k = 0$, $1$, …, $8$ ; la liste contient les valeurs de $0{,}5k$.
+:::
+
+::: etape Valeurs
+$0{,}5 \times 0 = 0$, $0{,}5 \times 1 = 0{,}5$, …, $0{,}5 \times 8 = 4$ : ce sont les nombres de $0$ à $4$ avec un pas de $0{,}5$. Python les écrit `0.0`, `0.5`, …, `4.0`.
+:::
+
+::: resultat
+`X` contient $9$ abscisses : $0$ ; $0{,}5$ ; $1$ ; $1{,}5$ ; $2$ ; $2{,}5$ ; $3$ ; $3{,}5$ ; $4$.
+:::
+
+## Question 2 : Le tableau de valeurs
+
+::: methode
+`Y[i]` est l’image de `X[i]` : les deux listes forment le tableau de valeurs.
+:::
+
+::: etape Deux calculs détaillés
+$$
+\begin{aligned}
+f(0{,}5) &= 0{,}25 - 2 + 3 = 1{,}25 \\
+f(1{,}5) &= 2{,}25 - 6 + 3 = -0{,}75
+\end{aligned}
+$$
+:::
+
+```python
+def f(x):
+    return x**2 - 4*x + 3
+
+X = [0.5 * k for k in range(9)]
+Y = [f(x) for x in X]
+for i in range(len(X)):
+    print(X[i], Y[i])
+```
+
+```console
+0.0 3.0
+0.5 1.25
+1.0 0.0
+1.5 -0.75
+2.0 -1.0
+2.5 -0.75
+3.0 0.0
+3.5 1.25
+4.0 3.0
+```
+
+::: resultat
+| $x$ | $f(x)$ |
+|---|---|
+| $0$ | $3$ |
+| $0{,}5$ | $1{,}25$ |
+| $1$ | $0$ |
+| $1{,}5$ | $-0{,}75$ |
+| $2$ | $-1$ |
+| $2{,}5$ | $-0{,}75$ |
+| $3$ | $0$ |
+| $3{,}5$ | $1{,}25$ |
+| $4$ | $3$ |
+:::
+
+## Question 3 : Plus petite valeur
+
+::: methode
+Parcours par indices : on retient l’indice `imin` de la plus petite image rencontrée ; l’abscisse correspondante est `X[imin]`.
+:::
+
+```python
+def f(x):
+    return x**2 - 4*x + 3
+
+X = [0.5 * k for k in range(9)]
+Y = [f(x) for x in X]
+imin = 0
+for i in range(len(Y)):
+    if Y[i] < Y[imin]:
+        imin = i
+print(Y[imin], X[imin])
+```
+
+```console
+-1.0 2.0
+```
+
+::: resultat
+La plus petite valeur de la liste `Y` est $-1$, obtenue pour $x = 2$ (indice $4$).
+:::
+
+## Question 4 : Abscisses où $f(x) < 0$
+
+::: methode
+Compréhension avec filtre : `[x for x in X if condition]`.
+:::
+
+```python
+def f(x):
+    return x**2 - 4*x + 3
+
+X = [0.5 * k for k in range(9)]
+N = [x for x in X if f(x) < 0]
+print(N)
+```
+
+```console
+[1.5, 2.0, 2.5]
+```
+
+::: attention
+En $x = 1$ et $x = 3$, $f(x) = 0$ : ces abscisses ne vérifient pas $f(x) < 0$ (inégalité stricte).
+:::
+
+::: resultat
+`[1.5, 2.0, 2.5]` : pour les abscisses de la liste, $f(x) < 0$ seulement en $1{,}5$ ; $2$ et $2{,}5$.
+:::
+
+## Question 5 : Nuage de points et minimum
+
+::: etape Points
+Les points sont ceux du tableau ; les trois points d’ordonnée négative sont en vert.
+:::
+
+[IMAGE_2]
+
+::: etape Conjecture
+Le point le plus bas est $(2 \,;\, -1)$ et le nuage est symétrique par rapport à la droite d’équation $x = 2$. On conjecture que le minimum de $f$ sur $[0 \,;\, 4]$ est $-1$, atteint en $2$.
+:::
+
+::: etape Démonstration
+$$
+\begin{aligned}
+(x - 2)^2 - 1 &= x^2 - 4x + 4 - 1 \\
+&= x^2 - 4x + 3 \\
+&= f(x)
+\end{aligned}
+$$
+Un carré est positif ou nul : $(x - 2)^2 \geqslant 0$, donc $f(x) \geqslant -1$ pour tout réel $x$, avec égalité si et seulement si $x = 2$.
+:::
+
+::: attention
+La liste ne contient que $9$ valeurs : elle permet une conjecture, pas une preuve. Le minimum pourrait se trouver entre deux abscisses de la liste ; c’est le calcul qui le prouve.
+:::
+
+::: resultat
+Le minimum de $f$ sur $[0 \,;\, 4]$ est $f(2) = -1$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Les nombres de $0$ à $4$ avec un pas de $0{,}5$ ($9$ valeurs).
+2. $f(x)$ : $3$ ; $1{,}25$ ; $0$ ; $-0{,}75$ ; $-1$ ; $-0{,}75$ ; $0$ ; $1{,}25$ ; $3$.
+3. Plus petite valeur $-1$, pour $x = 2$.
+4. `[x for x in X if f(x) < 0]` donne `[1.5, 2.0, 2.5]`.
+5. Minimum conjecturé puis démontré : $f(x) = (x - 2)^2 - 1 \geqslant -1$, donc le minimum est $f(2) = -1$.
+
+===
+
+=== Problème - Coefficients directeurs des sécantes et nombre dérivé
+Id: 4948
+Difficulté: medium
+Image: v1_n164_ex4948_1_exn3_enonce.png,v1_n164_ex4948_2_exn3_secantes.png
+
+Énoncé: <!-- optitab:1 -->
+On considère la fonction $g$ définie sur $\mathbb{R}$ par $g(x) = x^2 - 3x$, sa courbe $\mathcal{C}_g$, le point $A$ de $\mathcal{C}_g$ d’abscisse $2$ et, pour $h \neq 0$, le point $M$ de $\mathcal{C}_g$ d’abscisse $2 + h$.
+
+[IMAGE_1]
+
+1. Calculer $g(2)$. Montrer que, pour $h \neq 0$, le coefficient directeur de la sécante $(AM)$ est égal à $1 + h$.
+2. Sans ordinateur, donner l’affichage du programme suivant.
+
+```python
+def g(x):
+    return x**2 - 3*x
+
+def taux(h):
+    return (g(2 + h) - g(2)) / h
+
+H = [1, 0.5, 0.25, 0.125]
+P = [taux(h) for h in H]
+print(P)
+```
+
+3. Écrire la liste `H` en compréhension, à l’aide de puissances de $2$.
+4. Quand $h$ se rapproche de $0$, de quel nombre les coefficients directeurs se rapprochent-ils ? Le vérifier avec la fonction dérivée de $g$, puis donner une équation de la tangente à $\mathcal{C}_g$ en $A$.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Coefficient directeur de $(AM)$
+
+::: methode
+Le coefficient directeur de $(AM)$ est le taux de variation $\dfrac{g(2 + h) - g(2)}{h}$.
+:::
+
+::: etape Calcul de $g(2)$ et de $g(2 + h)$
+$g(2) = 4 - 6 = -2$, donc $A(2 \,;\, -2)$.
+$$
+\begin{aligned}
+g(2 + h) &= (2 + h)^2 - 3(2 + h) \\
+&= 4 + 4h + h^2 - 6 - 3h \\
+&= h^2 + h - 2
+\end{aligned}
+$$
+:::
+
+::: etape Taux de variation
+$$
+\begin{aligned}
+\frac{g(2 + h) - g(2)}{h} &= \frac{h^2 + h - 2 + 2}{h} \\
+&= \frac{h(h + 1)}{h} \\
+&= 1 + h
+\end{aligned}
+$$
+:::
+
+::: resultat
+$g(2) = -2$ et le coefficient directeur de $(AM)$ vaut $1 + h$.
+:::
+
+## Question 2 : Affichage du programme
+
+::: methode
+`P` est la liste des valeurs de `taux(h)`, c’est-à-dire de $1 + h$, pour chaque `h` de la liste `H`, dans l’ordre.
+:::
+
+::: etape Valeurs
+$1 + 1 = 2$, $1 + 0{,}5 = 1{,}5$, $1 + 0{,}25 = 1{,}25$, $1 + 0{,}125 = 1{,}125$. Une division `/` donne un nombre décimal : Python écrit `2.0` et non `2`.
+:::
+
+```python
+def g(x):
+    return x**2 - 3*x
+
+def taux(h):
+    return (g(2 + h) - g(2)) / h
+
+H = [1, 0.5, 0.25, 0.125]
+P = [taux(h) for h in H]
+print(P)
+```
+
+```console
+[2.0, 1.5, 1.25, 1.125]
+```
+
+::: resultat
+Le programme affiche `[2.0, 1.5, 1.25, 1.125]`.
+:::
+
+## Question 3 : `H` en compréhension
+
+::: methode
+$1 = \dfrac{1}{2^0}$, $0{,}5 = \dfrac{1}{2^1}$, $0{,}25 = \dfrac{1}{2^2}$, $0{,}125 = \dfrac{1}{2^3}$ : le terme général est $\dfrac{1}{2^k}$ pour $k$ de $0$ à $3$.
+:::
+
+```python
+H = [1 / 2**k for k in range(4)]
+print(H)
+```
+
+```console
+[1.0, 0.5, 0.25, 0.125]
+```
+
+::: resultat
+`H = [1 / 2**k for k in range(4)]` (Python écrit le premier élément `1.0`).
+:::
+
+## Question 4 : Nombre dérivé et tangente
+
+::: etape Conjecture
+Les coefficients directeurs $2$ ; $1{,}5$ ; $1{,}25$ ; $1{,}125$ se rapprochent de $1$, comme $1 + h$ quand $h$ se rapproche de $0$.
+:::
+
+::: attention
+On ne peut pas calculer `taux(0)` : Python s’arrête sur l’erreur `ZeroDivisionError` (division par zéro). C’est pourquoi on calcule les taux pour une liste de valeurs de $h$ de plus en plus proches de $0$, sans jamais prendre $h = 0$.
+:::
+
+[IMAGE_2]
+
+::: etape Fonction dérivée
+$g'(x) = 2x - 3$, donc $g'(2) = 4 - 3 = 1$ : c’est bien la limite de $1 + h$ quand $h$ tend vers $0$.
+:::
+
+::: etape Tangente en $A$
+$$
+\begin{aligned}
+y &= g'(2)(x - 2) + g(2) \\
+&= 1 \times (x - 2) - 2 \\
+&= x - 4
+\end{aligned}
+$$
+:::
+
+::: resultat
+Les coefficients directeurs se rapprochent de $g'(2) = 1$ ; la tangente en $A$ a pour équation $y = x - 4$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $g(2) = -2$ ; $\dfrac{g(2 + h) - g(2)}{h} = 1 + h$.
+2. `[2.0, 1.5, 1.25, 1.125]`
+3. `H = [1 / 2**k for k in range(4)]`
+4. Ils se rapprochent de $1 = g'(2)$ ; tangente : $y = x - 4$.
+
+===
+
+=== Problème - Simuler des lancers de deux dés avec une liste
+Id: 4947
+Difficulté: hard
+Image: v1_n164_ex4947_1_exn2_histo.png
+
+Énoncé: <!-- optitab:1 -->
+On lance deux dés équilibrés à six faces et on note la somme $S$ des deux résultats. Le programme suivant simule $1\,000$ lancers ; l’instruction `seed(2)` fixe les tirages, pour que chacun obtienne les mêmes résultats.
+
+```python
+from random import randint, seed
+
+seed(2)
+S = []
+for k in range(1000):
+    a = randint(1, 6)
+    b = randint(1, 6)
+    S.append(a + b)
+```
+
+1. Que contient la liste `S` ? Quelle est sa longueur ? Quelles valeurs peuvent y apparaître ?
+2. Compléter le programme pour qu’il calcule la fréquence de la somme $7$ dans `S`. L’exécution donne $0{,}172$.
+3. À l’aide d’un tableau à double entrée, calculer la probabilité $P(S = 7)$ et la comparer à la fréquence observée.
+4. Compléter le programme pour qu’il calcule la moyenne des sommes obtenues. L’exécution donne $7{,}008$. Comparer avec $3{,}5 + 3{,}5$.
+5. On complète le programme pour ranger dans une liste `E` les effectifs des sommes $2$, $3$, …, $12$.
+
+```python
+# suite du programme
+E = [0 for k in range(11)]
+for s in S:
+    E[s - 2] = E[s - 2] + 1
+```
+
+- a) Pourquoi `E` a-t-elle $11$ éléments ? Pourquoi utilise-t-on l’indice `s - 2` ?
+- b) Quel élément de `E` contient l’effectif de la somme $7$ ?
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Contenu de la liste
+
+::: methode
+À chaque tour, `append` ajoute un élément : la liste reçoit autant d’éléments que de tours de boucle.
+:::
+
+::: etape Contenu et longueur
+À chaque tour, on tire deux entiers entre $1$ et $6$ et on ajoute leur somme à la fin de `S`. La boucle fait $1\,000$ tours : `len(S)` vaut $1\,000$.
+:::
+
+::: etape Valeurs possibles
+La plus petite somme est $1 + 1 = 2$, la plus grande $6 + 6 = 12$ : toutes les sommes entières de $2$ à $12$ sont possibles, soit $11$ valeurs.
+:::
+
+::: resultat
+`S` contient les $1\,000$ sommes simulées ; ses éléments sont des entiers de $2$ à $12$.
+:::
+
+## Question 2 : Fréquence de la somme 7
+
+::: methode
+Compteur : `c` augmente de $1$ chaque fois qu’un élément de `S` vaut $7$ ; la fréquence est `c / len(S)`.
+:::
+
+```python
+from random import randint, seed
+
+seed(2)
+S = []
+for k in range(1000):
+    a = randint(1, 6)
+    b = randint(1, 6)
+    S.append(a + b)
+c = 0
+for s in S:
+    if s == 7:
+        c = c + 1
+print(c, c / len(S))
+```
+
+```console
+172 0.172
+```
+
+::: resultat
+La somme $7$ apparaît $172$ fois : sa fréquence est $0{,}172$.
+:::
+
+## Question 3 : Probabilité de la somme 7
+
+::: methode
+Les $6 \times 6 = 36$ couples (dé 1 ; dé 2) sont équiprobables : on compte ceux dont la somme vaut $7$.
+:::
+
+::: etape Issues favorables
+$(1 \,;\, 6)$, $(2 \,;\, 5)$, $(3 \,;\, 4)$, $(4 \,;\, 3)$, $(5 \,;\, 2)$, $(6 \,;\, 1)$ : $6$ couples.
+:::
+
+::: etape Probabilité
+$$P(S = 7) = \frac{6}{36} = \frac{1}{6} \approx 0{,}167$$
+:::
+
+::: resultat
+$P(S = 7) = \dfrac{1}{6} \approx 0{,}167$ : la fréquence observée $0{,}172$ en est proche (écart d’environ $0{,}005$).
+:::
+
+## Question 4 : Moyenne des sommes
+
+::: methode
+La moyenne d’une liste de nombres est `sum(S) / len(S)`.
+:::
+
+```python
+from random import randint, seed
+
+seed(2)
+S = []
+for k in range(1000):
+    a = randint(1, 6)
+    b = randint(1, 6)
+    S.append(a + b)
+print(sum(S) / len(S))
+```
+
+```console
+7.008
+```
+
+::: etape Comparaison
+Un dé donne en moyenne $\dfrac{1 + 2 + \dots + 6}{6} = 3{,}5$ ; on s’attend donc à une somme moyenne proche de $3{,}5 + 3{,}5 = 7$.
+:::
+
+::: resultat
+La moyenne observée, $7{,}008$, est très proche de $7$.
+:::
+
+## Question 5 : Liste des effectifs
+
+::: etape a) Taille de `E` et indice `s - 2`
+Il y a $11$ sommes possibles, de $2$ à $12$ : `E` a un élément par somme. La somme $2$ doit correspondre à l’indice $0$, la somme $3$ à l’indice $1$… : la somme `s` correspond à l’indice `s - 2`, qui va de $0$ à $10$.
+:::
+
+::: etape b) Effectif de la somme 7
+La somme $7$ correspond à l’indice $7 - 2 = 5$ : son effectif est `E[5]`.
+:::
+
+```python
+from random import randint, seed
+
+seed(2)
+S = []
+for k in range(1000):
+    a = randint(1, 6)
+    b = randint(1, 6)
+    S.append(a + b)
+E = [0 for k in range(11)]
+for s in S:
+    E[s - 2] = E[s - 2] + 1
+print(E[5], len(E), sum(E))
+```
+
+```console
+172 11 1000
+```
+
+Le diagramme compare les fréquences observées $\dfrac{E[s-2]}{1\,000}$ (barres, la somme $7$ en vert) aux probabilités théoriques (traits orange).
+
+[IMAGE_1]
+
+::: attention
+`E[7]` n’est pas l’effectif de la somme $7$ mais celui de la somme $9$ : l’indice est décalé de $2$.
+:::
+
+::: resultat
+- a) Une case par somme possible ($11$ sommes) ; la somme $s$ est rangée à l’indice $s - 2$.
+- b) L’effectif de la somme $7$ est `E[5]`, qui vaut $172$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Les $1\,000$ sommes simulées ; longueur $1\,000$ ; valeurs de $2$ à $12$.
+2. Compteur `c` des éléments égaux à $7$, puis `c / len(S)` : $0{,}172$.
+3. $P(S = 7) = \dfrac{6}{36} = \dfrac{1}{6} \approx 0{,}167$, proche de $0{,}172$.
+4. `sum(S) / len(S)` donne $7{,}008$, proche de $7$.
+5. a) $11$ sommes possibles, la somme $s$ à l’indice $s - 2$ ; b) `E[5]`, qui vaut $172$.
+
+===
+
+=== Problème - Suite de Syracuse : la liste des termes d'un vol
+Id: 5569
+Difficulté: hard
+Image: v1_n164_ex5569_1_exn6_vol.png
+
+Énoncé: <!-- optitab:1 -->
+On choisit un entier $N \geqslant 1$ et on définit la suite $(u_n)$ par $u_0 = N$ et, pour tout entier naturel $n$ :
+- $u_{n+1} = \dfrac{u_n}{2}$ si $u_n$ est pair ;
+- $u_{n+1} = 3u_n + 1$ si $u_n$ est impair.
+
+On conjecture que cette suite, dite **de Syracuse**, atteint toujours $1$ : personne n’a encore réussi à le démontrer. La liste des termes $u_0$, $u_1$, … jusqu’au premier terme égal à $1$ s’appelle le **vol** de $N$ ; le nombre d’étapes pour atteindre $1$ est le **temps de vol** ; le plus grand terme est l’**altitude maximale**.
+
+```python
+def suivant(u):
+    if u % 2 == 0:
+        return u // 2
+    else:
+        return 3*u + 1
+
+def vol(N):
+    L = [N]
+    while L[-1] != 1:
+        ...
+    return L
+```
+
+`u % 2` est le reste de la division de `u` par $2$ et `u // 2` le quotient entier.
+
+1. Calculer à la main les termes du vol de $6$. En déduire son temps de vol et son altitude maximale.
+2. Compléter la fonction `vol`. Pourquoi utilise-t-on une boucle `while` et non une boucle `for` ?
+3. Exprimer le temps de vol de $N$ à l’aide de `len(vol(N))`.
+4. Écrire une fonction `altitude(N)` qui renvoie le plus grand élément de `vol(N)` à l’aide d’un parcours de la liste, sans utiliser `max`. Donner le temps de vol et l’altitude maximale de $7$, puis le rang du terme le plus grand.
+5. Temps de vol de plusieurs entiers.
+   - a) Écrire en compréhension la liste `T` des temps de vol des entiers de $1$ à $10$ (`T[0]` est le temps de vol de $1$) et la donner.
+   - b) Écrire un programme qui détermine l’entier de $1$ à $30$ qui a le plus long temps de vol. Que remarque-t-on ?
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Le vol de 6
+
+::: methode
+On applique la règle terme après terme : un terme pair est divisé par $2$, un terme impair $u$ est remplacé par $3u + 1$ ; on s’arrête au premier $1$.
+:::
+
+::: etape Calcul des termes
+- $u_0 = 6$ est pair : $u_1 = 6 \div 2 = 3$ ;
+- $u_1 = 3$ est impair : $u_2 = 3 \times 3 + 1 = 10$ ;
+- $u_2 = 10$ est pair : $u_3 = 5$ ;
+- $u_3 = 5$ est impair : $u_4 = 3 \times 5 + 1 = 16$ ;
+- ensuite, on divise par $2$ : $u_5 = 8$, $u_6 = 4$, $u_7 = 2$, $u_8 = 1$.
+:::
+
+::: etape Temps de vol et altitude
+Le premier terme égal à $1$ est $u_8$ : il faut $8$ étapes. Le plus grand terme est $u_4 = 16$.
+:::
+
+::: resultat
+Vol de $6$ : $6$, $3$, $10$, $5$, $16$, $8$, $4$, $2$, $1$. Temps de vol : $8$ ; altitude maximale : $16$.
+:::
+
+## Question 2 : La fonction `vol`
+
+::: methode
+Ajouts successifs : le terme suivant se calcule à partir du dernier terme, `L[-1]`, et on l’ajoute à la fin de la liste avec `append`.
+:::
+
+::: etape Instruction manquante
+`L.append(suivant(L[-1]))`
+:::
+
+```python
+def suivant(u):
+    if u % 2 == 0:
+        return u // 2
+    else:
+        return 3*u + 1
+
+def vol(N):
+    L = [N]
+    while L[-1] != 1:
+        L.append(suivant(L[-1]))
+    return L
+
+print(vol(6))
+```
+
+```console
+[6, 3, 10, 5, 16, 8, 4, 2, 1]
+```
+
+::: etape Pourquoi `while`
+On ne sait pas à l’avance combien de termes il faudra calculer : on continue **tant que** le dernier terme n’est pas égal à $1$. Une boucle `for` demande de connaître le nombre de tours avant de commencer.
+:::
+
+::: attention
+Avec `u / 2` au lieu de `u // 2`, Python calculerait des nombres décimaux : le vol de $6$ s’écrirait `[6, 3.0, 10.0, …]`. Le quotient entier `u // 2` garde des entiers.
+:::
+
+::: resultat
+Instruction manquante : `L.append(suivant(L[-1]))`. La fonction `vol(6)` renvoie `[6, 3, 10, 5, 16, 8, 4, 2, 1]`.
+:::
+
+## Question 3 : Temps de vol et longueur
+
+::: etape Compter les étapes
+Si le temps de vol est $t$, la liste `vol(N)` contient $u_0$, $u_1$, …, $u_t$ : elle a $t + 1$ éléments. Pour $6$ : $9$ éléments et $8$ étapes.
+:::
+
+::: attention
+Le temps de vol n’est pas `len(vol(N))` : le terme de départ $u_0 = N$ est dans la liste, mais ce n’est pas une étape.
+:::
+
+::: resultat
+Le temps de vol de $N$ est `len(vol(N)) - 1`.
+:::
+
+## Question 4 : Altitude maximale du vol de 7
+
+::: methode
+Algorithme du maximum : une variable `a` reçoit le premier terme ; on parcourt la liste et on remplace `a` par chaque terme plus grand.
+:::
+
+```python
+# suite du programme
+def altitude(N):
+    L = vol(N)
+    a = L[0]
+    for x in L:
+        if x > a:
+            a = x
+    return a
+
+print(len(vol(7)) - 1, altitude(7))
+```
+
+```console
+16 52
+```
+
+::: etape Rang du terme le plus grand
+Pour connaître le rang, on parcourt les **indices** et on retient l’indice `r` du plus grand terme rencontré.
+:::
+
+```python
+# suite du programme
+L = vol(7)
+r = 0
+for i in range(len(L)):
+    if L[i] > L[r]:
+        r = i
+print(r, L[r])
+```
+
+```console
+5 52
+```
+
+::: etape Lecture du vol
+Le vol de $7$ est $7$, $22$, $11$, $34$, $17$, $52$, $26$, $13$, $40$, $20$, $10$, $5$, $16$, $8$, $4$, $2$, $1$ : $17$ termes, donc $16$ étapes. Le nuage des points $(n \,;\, u_n)$ montre le pic $u_5 = 52$.
+:::
+
+[IMAGE_1]
+
+::: attention
+Ne pas confondre le rang du plus grand terme ($5$, c’est l’indice dans la liste) et sa valeur ($52$, l’altitude maximale).
+:::
+
+::: resultat
+Pour $N = 7$ : temps de vol $16$, altitude maximale $52$, atteinte au rang $5$ ($u_5 = 52$).
+:::
+
+## Question 5 : Temps de vol de plusieurs entiers
+
+::: methode
+On réutilise `vol` : le temps de vol de `N` est `len(vol(N)) - 1` ; la compréhension le calcule pour chaque entier.
+:::
+
+::: etape a) Liste `T` pour les entiers de 1 à 10
+`range(1, 11)` donne les entiers de $1$ à $10$ : `T[i]` est le temps de vol de l’entier $i + 1$. Pour $N = 1$, le vol est `[1]` : temps de vol $0$.
+:::
+
+```python
+# suite du programme
+T = [len(vol(N)) - 1
+     for N in range(1, 11)]
+print(T)
+```
+
+```console
+[0, 1, 7, 2, 5, 8, 16, 3, 19, 6]
+```
+
+::: etape b) Plus long temps de vol de 1 à 30
+Même liste pour les entiers de $1$ à $30$, puis recherche de l’indice du maximum.
+:::
+
+```python
+# suite du programme
+T = [len(vol(N)) - 1
+     for N in range(1, 31)]
+imax = 0
+for i in range(len(T)):
+    if T[i] > T[imax]:
+        imax = i
+print(imax + 1, T[imax])
+print(altitude(imax + 1))
+```
+
+```console
+27 111
+9232
+```
+
+::: attention
+`T[i]` est le temps de vol de l’entier `i + 1` : l’entier cherché est `imax + 1`, et non `imax`.
+:::
+
+::: resultat
+- a) `T` vaut `[0, 1, 7, 2, 5, 8, 16, 3, 19, 6]`.
+- b) C’est $27$ : son vol dure $111$ étapes et monte jusqu’à $9\,232$, alors que les autres entiers jusqu’à $30$ ont des temps de vol inférieurs à $25$. Le vol est imprévisible : un petit entier peut avoir un vol très long et très haut.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $6$, $3$, $10$, $5$, $16$, $8$, $4$, $2$, $1$ : temps de vol $8$, altitude maximale $16$.
+2. `L.append(suivant(L[-1]))` ; boucle `while` car le nombre de termes n’est pas connu à l’avance.
+3. `len(vol(N)) - 1`.
+4. Parcours avec une variable `a` du maximum ; pour $7$ : temps de vol $16$, altitude $52$, au rang $5$.
+5. Temps de vol de plusieurs entiers :
+   - a) liste des `len(vol(N)) - 1` pour `N` dans `range(1, 11)` : `[0, 1, 7, 2, 5, 8, 16, 3, 19, 6]` ;
+   - b) $27$ : temps de vol $111$, altitude $9\,232$.
+
+===
+
+=== Type examen - Deux placements : suites et listes
+Id: 5570
+Difficulté: hard
+Image: v1_n164_ex5570_1_exn7_placements.png
+
+Énoncé: <!-- optitab:1 -->
+Le 1er janvier 2026, Léa dispose de $1\,000$ € et hésite entre deux placements.
+- **Placement A** : chaque année, le capital augmente de $60$ € (intérêts simples, égaux à $6\,\%$ du capital de départ).
+- **Placement B** : chaque année, le capital augmente de $4\,\%$ (intérêts composés).
+
+On note $a_n$ et $b_n$ les capitaux (en €) au bout de $n$ années avec les placements A et B ; ainsi $a_0 = b_0 = 1\,000$.
+
+**Partie A : étude des deux suites**
+
+1. Calculer $a_1$, $a_2$, $b_1$ et $b_2$.
+2. Déterminer la nature de chaque suite, puis exprimer $a_n$ et $b_n$ en fonction de $n$.
+3. Calculer le capital au bout de $10$ ans avec chaque placement (au centime près). Quel placement est le plus intéressant sur $10$ ans ?
+
+**Partie B : comparaison à l’aide de listes**
+
+On exécute le programme suivant.
+
+```python
+A = [1000 + 60*n
+     for n in range(31)]
+B = [1000]
+for n in range(30):
+    B.append(B[-1] * 1.04)
+```
+
+4. Que contiennent les listes `A` et `B` ? Quelle est leur longueur ? Expliquer pourquoi `A` est écrite en compréhension et `B` par ajouts successifs, puis écrire aussi `B` en compréhension.
+5. Écrire un programme qui détermine le plus petit entier $n$ tel que $b_n > a_n$ en parcourant les indices des deux listes. Interpréter le résultat.
+6. On note `I` la liste des intérêts versés chaque année par le placement B : `I[n]` vaut $b_{n+1} - b_n$.
+   - a) Écrire `I` en compréhension. Démontrer que, pour tout entier naturel $n$, $b_{n+1} - b_n = 40 \times 1{,}04^n$.
+   - b) À partir de quelle année le placement B rapporte-t-il plus de $60$ € d’intérêts dans l’année ? Comparer avec la question 5 et expliquer.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Partie A : étude des deux suites
+
+## Question 1 : Premiers termes
+
+::: methode
+Placement A : on ajoute $60$ chaque année. Placement B : augmenter de $4\,\%$ revient à multiplier par $1 + \dfrac{4}{100} = 1{,}04$.
+:::
+
+::: etape Calculs
+$$
+\begin{aligned}
+a_1 &= 1\,000 + 60 = 1\,060 \\
+a_2 &= 1\,060 + 60 = 1\,120 \\
+b_1 &= 1\,000 \times 1{,}04 = 1\,040 \\
+b_2 &= 1\,040 \times 1{,}04 = 1\,081{,}6
+\end{aligned}
+$$
+:::
+
+::: resultat
+$a_1 = 1\,060$, $a_2 = 1\,120$, $b_1 = 1\,040$ et $b_2 = 1\,081{,}60$ (en €).
+:::
+
+## Question 2 : Nature des deux suites
+
+::: etape Suite $(a_n)$
+Pour tout entier naturel $n$, $a_{n+1} = a_n + 60$ : la suite $(a_n)$ est arithmétique de raison $r = 60$ et de premier terme $a_0 = 1\,000$. Donc $a_n = a_0 + nr = 1\,000 + 60n$.
+:::
+
+::: etape Suite $(b_n)$
+Pour tout entier naturel $n$, $b_{n+1} = 1{,}04\,b_n$ : la suite $(b_n)$ est géométrique de raison $q = 1{,}04$ et de premier terme $b_0 = 1\,000$. Donc $b_n = b_0 \times q^n = 1\,000 \times 1{,}04^n$.
+:::
+
+::: attention
+Une hausse de $4\,\%$ par an n’ajoute pas $40$ € chaque année : on multiplie par $1{,}04$ le capital **de l’année précédente**, qui a déjà augmenté. La suite $(b_n)$ n’est donc pas arithmétique.
+:::
+
+::: resultat
+$(a_n)$ est arithmétique de raison $60$ : $a_n = 1\,000 + 60n$. $(b_n)$ est géométrique de raison $1{,}04$ : $b_n = 1\,000 \times 1{,}04^n$.
+:::
+
+## Question 3 : Capitaux au bout de 10 ans
+
+::: etape Calculs
+$$
+\begin{aligned}
+a_{10} &= 1\,000 + 60 \times 10 = 1\,600 \\
+b_{10} &= 1\,000 \times 1{,}04^{10} \approx 1\,480{,}24
+\end{aligned}
+$$
+:::
+
+::: resultat
+Au bout de $10$ ans : $1\,600$ € avec A et environ $1\,480{,}24$ € avec B. Sur $10$ ans, le placement A est le plus intéressant.
+:::
+
+## Partie B : comparaison à l’aide de listes
+
+## Question 4 : Les listes `A` et `B`
+
+::: methode
+L’indice est le rang : `A[n]` vaut $a_n$ et `B[n]` vaut $b_n$.
+:::
+
+::: etape Contenu et longueur
+`range(31)` donne $n$ de $0$ à $30$ : `A` contient $a_0$, …, $a_{30}$, soit $31$ termes. `B` part de `[1000]` et reçoit $30$ termes : elle contient $b_0$, …, $b_{30}$, soit $31$ termes aussi.
+:::
+
+::: etape Choix des écritures
+$a_n$ se calcule directement à partir de $n$ (formule explicite) : la compréhension convient. `B` suit la relation de récurrence : chaque terme est le précédent, `B[-1]`, multiplié par $1{,}04$, et on l’ajoute avec `append`. La formule explicite de la question 2 permet aussi d’écrire `B` en compréhension.
+:::
+
+```python
+A = [1000 + 60*n
+     for n in range(31)]
+B = [1000 * 1.04**n
+     for n in range(31)]
+print(len(A), len(B))
+print(A[10], round(B[10], 2))
+```
+
+```console
+31 31
+1600 1480.24
+```
+
+::: resultat
+`A` et `B` contiennent les capitaux des rangs $0$ à $30$ : $31$ éléments chacune. En compréhension, `B` est la liste des `1000 * 1.04**n` pour `n` dans `range(31)` (programme ci-dessus).
+:::
+
+## Question 5 : Quand le placement B dépasse-t-il A ?
+
+::: methode
+Parcours par indices avec une boucle `while` : on avance `n` tant que `B[n] <= A[n]`. Les deux listes sont lues au **même indice**.
+:::
+
+```python
+A = [1000 + 60*n
+     for n in range(31)]
+B = [1000]
+for n in range(30):
+    B.append(B[-1] * 1.04)
+n = 0
+while B[n] <= A[n]:
+    n = n + 1
+print(n, A[n], round(B[n], 2))
+```
+
+```console
+21 2260 2278.77
+```
+
+::: etape Vérification par le calcul
+- $a_{20} = 2\,200$ et $b_{20} = 1\,000 \times 1{,}04^{20} \approx 2\,191{,}12$ : $b_{20} < a_{20}$ ;
+- $a_{21} = 2\,260$ et $b_{21} = 1\,000 \times 1{,}04^{21} \approx 2\,278{,}77$ : $b_{21} > a_{21}$.
+
+Le nuage montre les deux suites : les points de B restent sous ceux de A jusqu’au rang $20$, puis passent au-dessus.
+:::
+
+[IMAGE_1]
+
+::: attention
+Avec `while B[n] < A[n]`, la boucle s’arrêterait dès $n = 0$, car $b_0 = a_0 = 1\,000$ : le programme afficherait $0$. Il faut continuer tant que $b_n \leqslant a_n$.
+:::
+
+::: resultat
+$n = 21$ : c’est au bout de $21$ ans, le 1er janvier 2047, que le capital du placement B dépasse pour la première fois celui du placement A.
+:::
+
+## Question 6 : Les intérêts du placement B
+
+::: etape a) Liste des intérêts
+`I[n]` est `B[n + 1] - B[n]`. L’élément `B[n + 1]` doit exister, donc $n$ va de $0$ à $29$ : on utilise `range(30)`.
+
+```python
+# suite du programme
+I = [B[n + 1] - B[n]
+     for n in range(30)]
+```
+:::
+
+::: etape a) Démonstration
+$$
+\begin{aligned}
+b_{n+1} - b_n &= 1\,000 \times 1{,}04^{n+1} \\
+&\quad - 1\,000 \times 1{,}04^n \\
+&= 1\,000 \times 1{,}04^n \times (1{,}04 - 1) \\
+&= 1\,000 \times 1{,}04^n \times 0{,}04 \\
+&= 40 \times 1{,}04^n
+\end{aligned}
+$$
+:::
+
+::: methode
+b) On cherche le premier indice `k` tel que `I[k] > 60`, avec la même boucle `while` qu’à la question 5.
+:::
+
+```python
+# suite du programme
+I = [B[n + 1] - B[n]
+     for n in range(30)]
+k = 0
+while I[k] <= 60:
+    k = k + 1
+print(k, round(I[k], 2))
+```
+
+```console
+11 61.58
+```
+
+::: etape b) Interprétation
+`I[10]` vaut $40 \times 1{,}04^{10} \approx 59{,}21$ et `I[11]` vaut $40 \times 1{,}04^{11} \approx 61{,}58$. `I[11]` est $b_{12} - b_{11}$ : ce sont les intérêts de la 12e année de placement. À partir de là, B rapporte chaque année plus que les $60$ € de A.
+:::
+
+::: etape b) Comparaison avec la question 5
+Pendant les $11$ premières années, B rapporte moins que A chaque année : son retard grandit. Au rang $11$, $a_{11} = 1\,660$ et $b_{11} = 1\,000 \times 1{,}04^{11} \approx 1\,539{,}45$, donc le retard vaut environ $120{,}55$ €. Ensuite, B rattrape ce retard peu à peu, et il lui faut jusqu’au rang $21$ pour dépasser A.
+:::
+
+::: attention
+`I[k]` contient les intérêts de l’année qui va du rang $k$ au rang $k + 1$ : `I[11]` correspond à la douzième année, et non à la onzième.
+:::
+
+::: resultat
+- a) `I` contient les `B[n + 1] - B[n]` pour `n` dans `range(30)`, et $b_{n+1} - b_n = 40 \times 1{,}04^n$.
+- b) Dès la 12e année, B rapporte plus de $60$ € par an (environ $61{,}58$ €). Mais il doit d’abord combler son retard d’environ $120{,}55$ € : son capital ne dépasse celui de A qu’au bout de $21$ ans.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $a_1 = 1\,060$, $a_2 = 1\,120$, $b_1 = 1\,040$ et $b_2 = 1\,081{,}60$.
+2. $(a_n)$ arithmétique de raison $60$ : $a_n = 1\,000 + 60n$ ; $(b_n)$ géométrique de raison $1{,}04$ : $b_n = 1\,000 \times 1{,}04^n$.
+3. $a_{10} = 1\,600$ et $b_{10} \approx 1\,480{,}24$ : A est plus intéressant sur $10$ ans.
+4. Les capitaux des rangs $0$ à $30$ ($31$ éléments) ; en compréhension, `B` est la liste des `1000 * 1.04**n` pour `n` dans `range(31)`.
+5. $n = 21$ : B dépasse A au bout de $21$ ans.
+6. Les intérêts du placement B :
+   - a) liste des `B[n + 1] - B[n]` pour `n` dans `range(30)` ; $b_{n+1} - b_n = 40 \times 1{,}04^n$ ;
+   - b) dès la 12e année ; B doit d’abord combler un retard d’environ $120{,}55$ €, d’où les $21$ ans.
+
+===

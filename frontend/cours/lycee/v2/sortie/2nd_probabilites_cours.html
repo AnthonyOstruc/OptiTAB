@@ -1,0 +1,63 @@
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+    <div style="background:#e8f4fd; border:2px solid #3498db; border-radius:8px; padding:15px; margin-bottom:20px;">
+        <p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🎯 Objectifs du chapitre :</strong> décrire une expérience aléatoire (univers, issues, événements), définir une loi de probabilité, calculer la probabilité d’un événement, de son contraire, d’une réunion ou d’une intersection, et dénombrer les issues avec un arbre ou un tableau.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Vocabulaire</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Définitions :</strong> une <strong>expérience aléatoire</strong> a plusieurs résultats possibles, appelés <strong>issues</strong>, sans qu’on puisse prévoir lequel sera obtenu. L’ensemble des issues est l’<strong>univers</strong> $\displaystyle \Omega$. Un <strong>événement</strong> est une partie de $\displaystyle \Omega$ ; un événement formé d’une seule issue est dit <strong>élémentaire</strong>.</p>
+        </div>
+        <p style="font-size:1em;"><strong>Exemple :</strong> on lance un dé à six faces. $\displaystyle \Omega = \{1\,;2\,;3\,;4\,;5\,;6\}$ et l’événement $\displaystyle A$ « obtenir un nombre pair » est $\displaystyle A = \{2\,;4\,;6\}$.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Loi de probabilité</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Définition :</strong> définir une <strong>loi de probabilité</strong> sur $\displaystyle \Omega = \{x_1, \ldots, x_n\}$, c’est associer à chaque issue $\displaystyle x_i$ un nombre $\displaystyle p_i \ge 0$, avec $\displaystyle p_1 + p_2 + \cdots + p_n = 1$. La probabilité d’un événement $\displaystyle A$ est la somme des probabilités des issues qui le composent.</p>
+        </div>
+        <p style="font-size:1em;"><strong>Exemple :</strong> un dé truqué donne $\displaystyle 6$ avec la probabilité $\displaystyle 0{,}5$ et chacune des autres faces avec la probabilité $\displaystyle 0{,}1$ (la somme vaut bien $\displaystyle 5 \times 0{,}1 + 0{,}5 = 1$). Alors $\displaystyle p(A) = p(2) + p(4) + p(6) = 0{,}1 + 0{,}1 + 0{,}5 = 0{,}7$.</p>
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Équiprobabilité :</strong> si toutes les issues ont la même probabilité, alors $\displaystyle p(A) = \frac{\text{nombre d’issues de } A}{\text{nombre d’issues de } \Omega}$.</p>
+        </div>
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Repère :</strong> les mots « équilibré », « au hasard », « indiscernable » signalent une situation d’équiprobabilité. Avec un dé équilibré, $\displaystyle p(A) = \frac{3}{6} = \frac{1}{2}$.
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Opérations sur les événements</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;">• $\displaystyle A \cap B$ (« $\displaystyle A$ et $\displaystyle B$ ») est réalisé quand $\displaystyle A$ et $\displaystyle B$ le sont tous les deux ; $\displaystyle A \cup B$ (« $\displaystyle A$ ou $\displaystyle B$ ») quand au moins l’un des deux l’est.</p>
+            <p style="margin:6px 0 0 0;">• Le <strong>contraire</strong> $\displaystyle \overline{A}$ est réalisé quand $\displaystyle A$ ne l’est pas : $\displaystyle p(\overline{A}) = 1 - p(A)$.</p>
+            <p style="margin:6px 0 0 0;">• $\displaystyle A$ et $\displaystyle B$ sont <strong>incompatibles</strong> si $\displaystyle A \cap B = \varnothing$.</p>
+        </div>
+        [IMAGE_1]
+        <p style="font-size:1em;"><strong>Exemple :</strong> on tire une carte au hasard dans un jeu de $\displaystyle 32$ cartes. $\displaystyle A$ : « cœur » ($\displaystyle 8$ cartes), $\displaystyle B$ : « figure » ($\displaystyle 12$ cartes), $\displaystyle A \cap B$ : « figure de cœur » ($\displaystyle 3$ cartes). Donc $\displaystyle p(A \cup B) = \frac{8}{32} + \frac{12}{32} - \frac{3}{32} = \frac{17}{32}$.</p>
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong> on ne peut écrire $\displaystyle p(A \cup B) = p(A) + p(B)$ que si $\displaystyle A$ et $\displaystyle B$ sont incompatibles. Sinon, les issues communes seraient comptées deux fois.
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Expériences à deux épreuves</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <p style="font-size:1em;">Pour une expérience qui se déroule en deux étapes, un <strong>arbre</strong> ou un <strong>tableau à double entrée</strong> permet de lister toutes les issues sans en oublier.</p>
+        [IMAGE_2]
+        <p style="font-size:1em;"><strong>Exemple :</strong> on lance deux fois une pièce équilibrée. Les $\displaystyle 4$ issues sont équiprobables, donc $\displaystyle p(\text{« obtenir au moins un pile »}) = \frac{3}{4}$, ou encore $\displaystyle 1 - p(F\,;F) = 1 - \frac{1}{4}$.</p>
+        [IMAGE_3]
+        <p style="font-size:1em;"><strong>Exemple :</strong> on lance deux dés équilibrés et on fait la somme. Le tableau compte $\displaystyle 36$ issues équiprobables, dont $\displaystyle 6$ donnent une somme égale à $\displaystyle 7$ : $\displaystyle p = \frac{6}{36} = \frac{1}{6}$.</p>
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong> les sommes $\displaystyle 2, 3, \ldots, 12$ ne sont <strong>pas</strong> équiprobables : la somme $\displaystyle 2$ n’apparaît qu’une fois sur $\displaystyle 36$, la somme $\displaystyle 7$ six fois.
+        </div>
+    </div>
+
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:8px; padding:15px; margin:20px 0 0 0;">
+        <p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🏆 L’essentiel :</strong> une loi de probabilité donne des $\displaystyle p_i \ge 0$ de somme $\displaystyle 1$ ; en cas d’équiprobabilité, $\displaystyle p(A) = \frac{\text{issues favorables}}{\text{issues possibles}}$ ; $\displaystyle p(\overline{A}) = 1 - p(A)$ ; $\displaystyle p(A \cup B) = p(A) + p(B) - p(A \cap B)$ ; un arbre ou un tableau permet de compter les issues d’une expérience à deux épreuves. Fiche de synthèse dans l’onglet Fiches !</p>
+    </div>
+
+</div>

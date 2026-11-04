@@ -1,0 +1,101 @@
+Titre: Résumé : Raisonnement et Vocabulaire Ensembliste
+
+<!-- optitab:1 -->
+## I. Connecteurs logiques et quantificateurs
+
+| Connecteur | Notation | Signification |
+|---|---|---|
+| **Négation** | $\displaystyle \neg$ | non |
+| **Conjonction** | $\displaystyle \land$ | et |
+| **Disjonction** | $\displaystyle \lor$ | ou |
+| **Implication** | $\displaystyle \Rightarrow$ | implique |
+| **Équivalence** | $\displaystyle \Leftrightarrow$ | équivaut |
+
+| Quantificateur | Notation | Signification |
+|---|---|---|
+| **Pour tout** | $\displaystyle \forall$ | Pour tout élément |
+| **Il existe** | $\displaystyle \exists$ | Il existe au moins un |
+| **Il existe un unique** | $\displaystyle \exists!$ | Il existe exactement un |
+
+## II. Règles de négation
+
+| Proposition | Négation |
+|---|---|
+| $\displaystyle \forall x, P(x)$ | $\displaystyle \exists x, \neg P(x)$ |
+| $\displaystyle \exists x, P(x)$ | $\displaystyle \forall x, \neg P(x)$ |
+| $\displaystyle \exists! x, P(x)$ | $\displaystyle (\forall x, \neg P(x)) \text{ ou } (\exists x, y, x \neq y \text{ et } P(x) \text{ et } P(y))$ |
+| $\displaystyle P \Rightarrow Q$ | $\displaystyle P \text{ et } \neg Q$ |
+| $\displaystyle P \land Q$ | $\displaystyle \neg P \lor \neg Q$ |
+| $\displaystyle P \lor Q$ | $\displaystyle \neg P \land \neg Q$ |
+
+## III. Modes de raisonnement
+
+| Méthode | Principe |
+|---|---|
+| **Disjonction des cas** | On considère tous les cas possibles qui recouvrent la situation |
+| **Contraposition** | Pour prouver $\displaystyle P \Rightarrow Q$, on prouve $\displaystyle \neg Q \Rightarrow \neg P$ |
+| **Par l'absurde** | Pour prouver $\displaystyle P$, on suppose $\displaystyle \neg P$ et on aboutit à une contradiction |
+| **Analyse-synthèse** | Analyse : conditions nécessaires. Synthèse : vérification des solutions |
+| **Récurrence simple** | Initialisation : $\displaystyle P(0)$. Hérédité : $\displaystyle P(n) \Rightarrow P(n+1)$ |
+| **Récurrence forte** | Initialisation : $\displaystyle P(0)$. Hérédité : $\displaystyle (\forall k \leq n, P(k)) \Rightarrow P(n+1)$ |
+
+## IV. Opérations sur les ensembles
+
+| Opération | Notation | Définition |
+|---|---|---|
+| **Réunion** | $\displaystyle A \cup B$ | $\displaystyle \{x \in E \mid x \in A \text{ ou } x \in B\}$ |
+| **Intersection** | $\displaystyle A \cap B$ | $\displaystyle \{x \in E \mid x \in A \text{ et } x \in B\}$ |
+| **Différence** | $\displaystyle A \setminus B$ | $\displaystyle \{x \in E \mid x \in A \text{ et } x \notin B\}$ |
+| **Complémentaire** | $\displaystyle \overline{A}$, $\displaystyle A^c$ | $\displaystyle \{x \in E \mid x \notin A\}$ |
+| **Différence symétrique** | $\displaystyle A \triangle B$ | $\displaystyle (A \setminus B) \cup (B \setminus A)$ |
+
+| Propriété | Formule |
+|---|---|
+| **Commutativité** | $\displaystyle A \cup B = B \cup A$, $\displaystyle A \cap B = B \cap A$ |
+| **Associativité** | $\displaystyle (A \cup B) \cup C = A \cup (B \cup C)$ |
+| **Distributivité** | $\displaystyle A \cap (B \cup C) = (A \cap B) \cup (A \cap C)$ |
+| **Lois de De Morgan** | $\displaystyle \overline{A \cup B} = \overline{A} \cap \overline{B}$, $\displaystyle \overline{A \cap B} = \overline{A} \cup \overline{B}$ |
+
+## V. Applications
+
+| Propriété | Définition |
+|---|---|
+| **Injection** | $\displaystyle \forall x, y \in E, \quad f(x) = f(y) \Rightarrow x = y$ |
+| **Surjection** | $\displaystyle \forall y \in F, \quad \exists x \in E, \quad f(x) = y$ |
+| **Bijection** | Injective et surjective |
+
+| Opération | Propriété |
+|---|---|
+| **Image directe** | $\displaystyle f(A \cup B) = f(A) \cup f(B)$, $\displaystyle f(A \cap B) \subset f(A) \cap f(B)$ (égalité si injective) |
+| **Image réciproque** | $\displaystyle f^{-1}(B \cup C) = f^{-1}(B) \cup f^{-1}(C)$, $\displaystyle f^{-1}(B \cap C) = f^{-1}(B) \cap f^{-1}(C)$ |
+| **Composition** | Composée de deux injections est injective, composée de deux surjections est surjective |
+
+## VI. Relations
+
+| Propriété | Définition |
+|---|---|
+| **Réflexive** | $\displaystyle \forall x \in E, \quad x \mathcal{R} x$ |
+| **Symétrique** | $\displaystyle \forall x, y \in E, \quad x \mathcal{R} y \Rightarrow y \mathcal{R} x$ |
+| **Transitive** | $\displaystyle \forall x, y, z \in E, \quad (x \mathcal{R} y \text{ et } y \mathcal{R} z) \Rightarrow x \mathcal{R} z$ |
+| **Antisymétrique** | $\displaystyle \forall x, y \in E, \quad (x \mathcal{R} y \text{ et } y \mathcal{R} x) \Rightarrow x = y$ |
+
+| Type de relation | Propriétés |
+|---|---|
+| **Relation d'équivalence** | Réflexive, symétrique, transitive |
+| **Relation d'ordre** | Réflexive, antisymétrique, transitive |
+| **Ordre total** | Relation d'ordre + $\displaystyle \forall x, y, \quad x \preceq y \text{ ou } y \preceq x$ |
+
+## VII. Points clés à retenir
+
+| Notion | À retenir |
+|---|---|
+| **Quantificateurs** | L'ordre est crucial : $\displaystyle \forall x, \exists y$ n'est pas équivalent à $\displaystyle \exists y, \forall x$ |
+| **Négation** | $\displaystyle \neg(\forall x, P(x)) \Leftrightarrow \exists x, \neg P(x)$ et $\displaystyle \neg(\exists x, P(x)) \Leftrightarrow \forall x, \neg P(x)$ |
+| **Contraposition** | $\displaystyle (P \Rightarrow Q) \Leftrightarrow (\neg Q \Rightarrow \neg P)$ |
+| **Récurrence** | Ne jamais oublier l'initialisation. Hérédité : $\displaystyle P(n) \Rightarrow P(n+1)$ |
+| **Opérations sur les ensembles** | Lois de De Morgan : $\displaystyle \overline{A \cup B} = \overline{A} \cap \overline{B}$ |
+| **Image directe/réciproque** | $\displaystyle f(A \cap B) \subset f(A) \cap f(B)$ (égalité si injective). $\displaystyle f^{-1}(B \cap C) = f^{-1}(B) \cap f^{-1}(C)$ |
+| **Bijection** | Une bijection admet une réciproque unique. $\displaystyle (g \circ f)^{-1} = f^{-1} \circ g^{-1}$ |
+| **Classes d'équivalence** | Les classes d'équivalence forment une partition de l'ensemble sous-jacent |
+| **Partition** | Recouvrement disjoint où aucune partie n'est vide |
+| **Erreurs fréquentes** | Confondre $\displaystyle \in$ et $\displaystyle \subset$, utiliser $\displaystyle f^{-1}$ sans vérifier la bijectivité, oublier l'initialisation en récurrence |

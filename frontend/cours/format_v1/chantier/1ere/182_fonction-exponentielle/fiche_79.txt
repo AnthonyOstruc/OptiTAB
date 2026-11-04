@@ -1,0 +1,65 @@
+Titre: Résumé : Fonction exponentielle
+
+<!-- optitab:1 -->
+::: objectifs
+L’essentiel du chapitre : définition, relation fonctionnelle, signe et variations, tangente en $0$, équations et inéquations, fonctions $e^{kt}$ et $e^{-kt}$, suites $\left(e^{na}\right)$, méthode d’Euler. Programme de Première spécialité.
+:::
+
+## I. Définition et règles de calcul
+
+::: definition
+$\exp$ est l’unique fonction dérivable sur $\mathbb{R}$ telle que $\exp' = \exp$ et $\exp(0) = 1$ (unicité admise). On note $e = \exp(1) \approx 2{,}718$ et $\exp(x) = e^x$.
+:::
+
+::: formule
+$$e^{a+b} = e^a \times e^b$$
+:::
+
+| Règle | Exemple |
+|---|---|
+| $e^{-a} = \dfrac{1}{e^a}$ | $e^{-2} = \dfrac{1}{e^2}$ |
+| $e^{a-b} = \dfrac{e^a}{e^b}$ | $\dfrac{e^{3x}}{e^{x+1}} = e^{2x-1}$ |
+| $\left(e^a\right)^n = e^{na}$ | $\left(e^{x}\right)^2 = e^{2x}$ |
+
+La suite $\left(e^{na}\right)$ est géométrique de raison $e^a$.
+
+## II. Signe, variations, courbe
+
+- $e^x > 0$ pour tout réel $x$ : une exponentielle n’est jamais nulle ni négative.
+- $\left(e^x\right)' = e^x > 0$ : l’exponentielle est strictement croissante sur $\mathbb{R}$.
+- Tangente en $0$ : $y = x + 1$, d’où $e^h \approx 1 + h$ pour $h$ proche de $0$.
+
+[IMAGE_1]
+
+## III. Équations et inéquations
+
+::: methode
+On écrit chaque membre sous la forme $e^{\ldots}$ ($1 = e^0$), puis :
+$$
+\begin{aligned}
+e^a = e^b &\iff a = b \\
+e^a < e^b &\iff a < b
+\end{aligned}
+$$
+Pour un produit $A(x)\,e^{\ldots}$ : il a le signe de $A(x)$ et s’annule quand $A(x) = 0$.
+:::
+
+## IV. Dériver, étudier, modéliser
+
+- $\left(e^{at+b}\right)' = a\,e^{at+b}$. Pour $k > 0$ : $t \mapsto e^{kt}$ est croissante, $t \mapsto e^{-kt}$ est décroissante.
+- Étude d’une fonction : factoriser la dérivée par l’exponentielle, puis étudier le signe de l’autre facteur.
+- Modèle $Q(t) = Q_0\,e^{kt}$ : croissance si $k > 0$, décroissance si $k < 0$ ; $Q(n)$ est géométrique de raison $e^k$ (taux $e^k - 1$).
+
+[IMAGE_2]
+
+## V. Méthode d’Euler
+
+Avec un pas $h$ : $y_0 = 1$ et $y_{k+1} = (1 + h)\,y_k$ approchent $e^{kh}$. Avec $n$ pas de $h = \dfrac{1}{n}$, on approche $e$ par $\left(1 + \dfrac{1}{n}\right)^n$ (pour $n = 1\,000$ : $2{,}7169\ldots$).
+
+::: attention Les erreurs classiques
+1. Écrire $e^{a+b} = e^a + e^b$ : c’est un **produit**.
+2. Confondre $e^{2x}$, $2e^x$ et $e^{x^2}$.
+3. Chercher une solution à $e^x = 0$ ou à $e^x < 0$ : il n’y en a pas.
+4. Oublier le facteur $a$ en dérivant $e^{at+b}$ : $\left(e^{-3t}\right)' = -3e^{-3t}$.
+5. Confondre le coefficient $k$ et le taux d’évolution $e^k - 1$.
+:::

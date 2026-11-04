@@ -11,7 +11,7 @@ export const legalInfo = {
   site: 'www.optitab.net',
 
   editeur: {
-    raisonSociale: '', // ex. « SWEELCO »
+    raisonSociale: '', // nom de la société éditrice
     formeJuridique: '', // ex. « SAS au capital de 1 000 € » ou « Entreprise individuelle »
     adresse: '', // adresse du siège
     siren: '', // ex. « 123 456 789 RCS Angers »

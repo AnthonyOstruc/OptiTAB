@@ -78,8 +78,9 @@
         <router-link v-if="!isParent" :to="{ path: ESPACE_ROUTES.chapitres, query: { recherche: '1' } }" class="es-top__icon-btn" aria-label="Rechercher un chapitre">
           <MagnifyingGlassIcon aria-hidden="true" />
         </router-link>
-        <NotificationCenter />
-        <UserMenu />
+        <EspaceNotifications />
+        <span class="es-top__sep" aria-hidden="true"></span>
+        <EspaceCompte />
       </div>
     </header>
 
@@ -133,13 +134,15 @@ import {
   QuestionMarkCircleIcon as QuestionSolid,
   UserCircleIcon as UserCircleSolid
 } from '@heroicons/vue/24/solid'
-import NotificationCenter from '@/components/notifications/NotificationCenter.vue'
-import UserMenu from '@/components/dashboard/UserMenu.vue'
+import EspaceNotifications from './EspaceNotifications.vue'
+import EspaceCompte from './EspaceCompte.vue'
 import EspaceSearch from './EspaceSearch.vue'
 import { useUserStore } from '@/stores/user'
+import { useSubscriptionStore } from '@/stores/subscription'
 import { useQuizDisponible } from '@/composables/useQuizDisponible'
 import { ESPACE_ROUTES } from '@/config/espace'
 import { vitrineContact } from '@/config/vitrineContent'
+import { chapitreDuLien, prechargerChapitre } from '@/utils/chapitreContenu'
 import '@/styles/espace.css'
 
 const props = defineProps({
@@ -157,6 +160,7 @@ const props = defineProps({
 
 const route = useRoute()
 const userStore = useUserStore()
+const subscriptionStore = useSubscriptionStore()
 
 const isParent = computed(() => props.parent ?? userStore.role === 'parent')
 const homeLink = ESPACE_ROUTES.accueil
@@ -174,7 +178,9 @@ const CHAPITRES = { label: 'Mes chapitres', short: 'Chapitres', to: ESPACE_ROUTE
 const QUIZ = { label: 'Quiz', to: '/quiz', icon: QuestionMarkCircleIcon, iconOn: QuestionSolid, prefix: '/quiz' }
 const CALCUL = { label: 'Outil de calcul', short: 'Calcul', to: '/calculator', icon: CalculatorIcon, iconOn: CalculatorSolid }
 const PROF = { label: 'Cours particuliers', short: 'Prof', to: '/cours-particuliers', icon: AcademicCapIcon, iconOn: AcademicCapSolid }
-const ABONNEMENT = { label: 'Abonnement', to: '/billing', icon: CreditCardIcon, iconOn: CreditCardSolid }
+// Abonné : « Abonnement » mène à la gestion (suivi, factures, arrêt) ;
+// sinon, aux formules. Les deux pages allument le même lien.
+const ABONNEMENT_BASE = { label: 'Abonnement', icon: CreditCardIcon, iconOn: CreditCardSolid, pages: ['/billing', '/subscription'] }
 const COMPTE = { label: 'Mon compte', short: 'Compte', to: '/account', icon: UserCircleIcon, iconOn: UserCircleSolid }
 const ADMIN = { label: 'Administration', to: '/admin', icon: ShieldCheckIcon, iconOn: ShieldCheckIcon, prefix: '/admin' }
 
@@ -192,17 +198,41 @@ const mainItems = computed(() => {
   if (isParent.value) return [ACCUEIL, PROF]
   return [ACCUEIL, CHAPITRES, ...(avecQuiz.value ? [QUIZ] : []), HISTORIQUE, ...(avecCalcul.value ? [CALCUL] : [])]
 })
-const accountItems = computed(() => [ABONNEMENT, COMPTE, ...(userStore.isAdmin ? [ADMIN] : [])])
+const ABONNEMENT = computed(() => ({ ...ABONNEMENT_BASE, to: subscriptionStore.hasAccess ? '/subscription' : '/billing' }))
+const accountItems = computed(() => [ABONNEMENT.value, COMPTE, ...(userStore.isAdmin ? [ADMIN] : [])])
 const tabItems = computed(() => {
-  if (isParent.value) return [ACCUEIL, PROF, ABONNEMENT, COMPTE]
+  if (isParent.value) return [ACCUEIL, PROF, ABONNEMENT.value, COMPTE]
   return [ACCUEIL, CHAPITRES, ...(avecQuiz.value ? [QUIZ] : []), HISTORIQUE, PROF]
 })
 
 const isActive = (item) => {
   const path = route.path
   if (item.exact) return path === item.to
+  if (item.pages) return item.pages.includes(path)
   if (path === item.to) return true
   return Boolean(item.prefix && path.startsWith(item.prefix))
+}
+
+// Préchargement : quand la souris s'attarde sur un lien de chapitre (ou dès le
+// toucher, ou au clavier), son contenu est demandé tout de suite ; le clic
+// ouvre ensuite une page déjà prête.
+let minuteurPrecharge = null
+function chapitreVise(e) {
+  const lien = e.target instanceof Element ? e.target.closest('a[href]') : null
+  return lien ? chapitreDuLien(lien.getAttribute('href')) : null
+}
+function prechargerVise(e) {
+  const cible = chapitreVise(e)
+  if (cible) prechargerChapitre(cible.notionId, [cible.onglet])
+}
+function survolLien(e) {
+  if (e.pointerType !== 'mouse') return
+  clearTimeout(minuteurPrecharge)
+  const cible = chapitreVise(e)
+  if (cible) minuteurPrecharge = setTimeout(() => prechargerChapitre(cible.notionId, [cible.onglet]), 80)
+}
+function quitterLien() {
+  clearTimeout(minuteurPrecharge)
 }
 
 // Le défilement se fait sur la page entière (pas dans une zone interne) ;
@@ -210,8 +240,21 @@ const isActive = (item) => {
 onMounted(() => {
   document.documentElement.classList.add('es-page')
   if (!isParent.value) verifierQuiz()
+  // Statut gardé une minute dans le magasin : sert au lien « Abonnement ».
+  subscriptionStore.fetchStatus().catch(() => {})
+  document.addEventListener('pointerover', survolLien, { passive: true })
+  document.addEventListener('pointerout', quitterLien, { passive: true })
+  document.addEventListener('touchstart', prechargerVise, { passive: true })
+  document.addEventListener('focusin', prechargerVise)
 })
-onBeforeUnmount(() => document.documentElement.classList.remove('es-page'))
+onBeforeUnmount(() => {
+  document.documentElement.classList.remove('es-page')
+  clearTimeout(minuteurPrecharge)
+  document.removeEventListener('pointerover', survolLien)
+  document.removeEventListener('pointerout', quitterLien)
+  document.removeEventListener('touchstart', prechargerVise)
+  document.removeEventListener('focusin', prechargerVise)
+})
 </script>
 
 <style>
@@ -548,6 +591,13 @@ html.es-page body {
   flex-shrink: 0;
 }
 
+.es-top__sep {
+  width: 1px;
+  height: 24px;
+  margin: 0 4px;
+  background: var(--es-line);
+}
+
 /* ---------- Contenu ---------- */
 
 .es-main {
@@ -586,7 +636,8 @@ html.es-page body {
     padding: 0 10px 0 16px;
   }
 
-  .es-top__search {
+  .es-top__search,
+  .es-top__sep {
     display: none;
   }
 

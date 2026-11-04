@@ -1,0 +1,794 @@
+Titre: Nombres complexes
+
+<!-- optitab:1 -->
+::: objectifs
+Calculer avec les nombres complexes sous forme algébrique, trigonométrique et exponentielle ; interpréter module et argument dans le plan ; résoudre des équations polynomiales ; utiliser les nombres complexes en trigonométrie et en géométrie. Programme de Terminale, option Mathématiques expertes.
+:::
+
+::: prerequis
+Calcul littéral, équations du second degré, cercle trigonométrique et valeurs remarquables, produit scalaire, raisonnement par récurrence.
+:::
+
+## I. Forme algébrique
+
+### 1. L’ensemble $\mathbb{C}$
+
+::: definition Nombre complexe
+Il existe un ensemble noté $\mathbb{C}$, dont les éléments sont appelés **nombres complexes**, qui contient $\mathbb{R}$ et un nombre $\mathrm{i}$ tel que $\mathrm{i}^2 = -1$. Il est muni d’une addition et d’une multiplication qui suivent les mêmes règles de calcul que dans $\mathbb{R}$.
+
+Tout nombre complexe $z$ s’écrit de manière **unique** sous la forme
+
+::: formule
+$$z = x + \mathrm{i}y \quad \text{avec } x \text{ et } y \text{ réels}$$
+:::
+
+C’est la **forme algébrique** de $z$. Le réel $x$ est la **partie réelle** de $z$, notée $\mathrm{Re}(z)$ ; le réel $y$ est sa **partie imaginaire**, notée $\mathrm{Im}(z)$.
+:::
+
+::: remarque
+- Si $y = 0$, alors $z = x$ est un nombre réel : $\mathbb{R} \subset \mathbb{C}$.
+- Si $x = 0$, alors $z = \mathrm{i}y$ est un **imaginaire pur**.
+- $\mathrm{Re}(z)$ et $\mathrm{Im}(z)$ sont des **réels** : pour $z = 3 - 5\mathrm{i}$, $\mathrm{Im}(z) = -5$ (et non $-5\mathrm{i}$).
+:::
+
+::: propriete Égalité de deux nombres complexes
+Par unicité de la forme algébrique, pour tous réels $x$, $y$, $x'$, $y'$ :
+$$x + \mathrm{i}y = x' + \mathrm{i}y' \iff x = x' \text{ et } y = y'$$
+En particulier, $x + \mathrm{i}y = 0 \iff x = 0$ et $y = 0$.
+:::
+
+### 2. Calculs dans $\mathbb{C}$
+
+::: propriete Somme et produit
+Pour $z = x + \mathrm{i}y$ et $z' = x' + \mathrm{i}y'$ (avec $x$, $y$, $x'$, $y'$ réels) :
+$$z + z' = (x + x') + \mathrm{i}(y + y')$$
+$$zz' = (xx' - yy') + \mathrm{i}(xy' + x'y)$$
+En pratique, on développe comme dans $\mathbb{R}$, puis on remplace $\mathrm{i}^2$ par $-1$.
+:::
+
+::: exemple
+$$
+\begin{aligned}
+(2 + 3\mathrm{i})(1 - 2\mathrm{i}) &= 2 - 4\mathrm{i} + 3\mathrm{i} - 6\mathrm{i}^2 \\
+&= 2 - \mathrm{i} + 6 \\
+&= 8 - \mathrm{i}
+\end{aligned}
+$$
+Les puissances de $\mathrm{i}$ se répètent de $4$ en $4$ : $\mathrm{i}^2 = -1$, $\mathrm{i}^3 = -\mathrm{i}$, $\mathrm{i}^4 = 1$, $\mathrm{i}^5 = \mathrm{i}$… Ainsi $\mathrm{i}^{2026} = \mathrm{i}^{4 \times 506 + 2} = \mathrm{i}^2 = -1$.
+:::
+
+::: theoreme Formule du binôme de Newton
+Pour tous nombres complexes $a$ et $b$ et tout entier naturel $n$ :
+$$(a + b)^n = \sum_{k=0}^{n} \binom{n}{k} a^{n-k} b^k$$
+:::
+
+::: demonstration
+Par récurrence sur $n$. Pour $n = 0$ : $(a + b)^0 = 1 = \binom{0}{0} a^0 b^0$.
+
+Supposons la formule vraie au rang $n$. En développant, puis en décalant l’indice dans la seconde somme :
+$$
+\begin{aligned}
+(a + b)^{n+1} &= (a + b)\sum_{k=0}^{n} \binom{n}{k} a^{n-k} b^k \\
+&= \sum_{k=0}^{n} \binom{n}{k} a^{n+1-k} b^k + \sum_{k=1}^{n+1} \binom{n}{k-1} a^{n+1-k} b^{k}
+\end{aligned}
+$$
+On regroupe les termes de même puissance de $b$. Avec la relation de Pascal $\binom{n}{k} + \binom{n}{k-1} = \binom{n+1}{k}$ et les termes extrêmes $a^{n+1}$ et $b^{n+1}$, on obtient $\sum_{k=0}^{n+1} \binom{n+1}{k} a^{n+1-k} b^k$ : la formule est vraie au rang $n + 1$.
+
+Le calcul n’utilise que des règles valables dans $\mathbb{C}$ (en particulier $ab = ba$).
+:::
+
+::: exemple
+Avec les coefficients $1$, $4$, $6$, $4$, $1$ :
+$$
+\begin{aligned}
+(1 + \mathrm{i})^4 &= 1 + 4\mathrm{i} + 6\mathrm{i}^2 + 4\mathrm{i}^3 + \mathrm{i}^4 \\
+&= 1 + 4\mathrm{i} - 6 - 4\mathrm{i} + 1 \\
+&= -4
+\end{aligned}
+$$
+:::
+
+### 3. Conjugué et inverse
+
+::: definition Conjugué
+Le **conjugué** de $z = x + \mathrm{i}y$ (avec $x$ et $y$ réels) est le nombre complexe $\overline{z} = x - \mathrm{i}y$.
+:::
+
+::: propriete
+Pour tout nombre complexe $z = x + \mathrm{i}y$ :
+- $\overline{\overline{z}} = z$ ;
+- $z + \overline{z} = 2\,\mathrm{Re}(z)$ et $z - \overline{z} = 2\mathrm{i}\,\mathrm{Im}(z)$ ;
+- $z$ est réel $\iff \overline{z} = z$ ; $z$ est imaginaire pur $\iff \overline{z} = -z$ ;
+- $z\overline{z} = x^2 + y^2$ : c’est un réel positif, nul seulement si $z = 0$.
+:::
+
+::: propriete Inverse d’un nombre complexe non nul
+Si $z = x + \mathrm{i}y \neq 0$, alors $x^2 + y^2 \neq 0$ et $z$ admet un inverse :
+$$\frac{1}{z} = \frac{\overline{z}}{z\overline{z}} = \frac{x - \mathrm{i}y}{x^2 + y^2}$$
+:::
+
+::: methode Mettre un quotient sous forme algébrique
+On multiplie le numérateur et le dénominateur par le **conjugué du dénominateur** : le dénominateur devient le réel $x^2 + y^2$.
+:::
+
+::: exemple
+$$
+\begin{aligned}
+\frac{3 + 4\mathrm{i}}{1 - 2\mathrm{i}} &= \frac{(3 + 4\mathrm{i})(1 + 2\mathrm{i})}{(1 - 2\mathrm{i})(1 + 2\mathrm{i})} \\
+&= \frac{3 + 6\mathrm{i} + 4\mathrm{i} + 8\mathrm{i}^2}{1^2 + 2^2} \\
+&= \frac{-5 + 10\mathrm{i}}{5} \\
+&= -1 + 2\mathrm{i}
+\end{aligned}
+$$
+:::
+
+::: theoreme Conjugué d’une somme, d’un produit, d’une puissance, d’un inverse
+Pour tous nombres complexes $z$ et $z'$ et tout entier naturel $n$ :
+$$\overline{z + z'} = \overline{z} + \overline{z'}$$
+$$\overline{zz'} = \overline{z}\,\overline{z'}$$
+$$\overline{z^n} = \overline{z}^{\,n}$$
+et, si $z' \neq 0$ :
+$$\overline{\left(\frac{1}{z'}\right)} = \frac{1}{\overline{z'}}$$
+$$\overline{\left(\frac{z}{z'}\right)} = \frac{\overline{z}}{\overline{z'}}$$
+:::
+
+::: demonstration
+Soit $z = x + \mathrm{i}y$ et $z' = x' + \mathrm{i}y'$. La propriété de la somme est immédiate.
+
+**Produit.** D’une part, $zz' = (xx' - yy') + \mathrm{i}(xy' + x'y)$, donc $\overline{zz'} = (xx' - yy') - \mathrm{i}(xy' + x'y)$. D’autre part :
+$$
+\begin{aligned}
+\overline{z}\,\overline{z'} &= (x - \mathrm{i}y)(x' - \mathrm{i}y') \\
+&= xx' - \mathrm{i}xy' - \mathrm{i}x'y + \mathrm{i}^2 yy' \\
+&= (xx' - yy') - \mathrm{i}(xy' + x'y)
+\end{aligned}
+$$
+Les deux nombres sont égaux.
+
+**Puissance.** Par récurrence sur $n$ : $\overline{z^0} = \overline{1} = 1 = \overline{z}^{\,0}$. Si $\overline{z^n} = \overline{z}^{\,n}$, alors, par la propriété du produit, $\overline{z^{n+1}} = \overline{z^n \times z} = \overline{z^n} \times \overline{z} = \overline{z}^{\,n} \times \overline{z} = \overline{z}^{\,n+1}$.
+
+**Inverse.** Si $z' \neq 0$, alors $z' \times \frac{1}{z'} = 1$. En conjuguant, par la propriété du produit : $\overline{z'} \times \overline{\left(\frac{1}{z'}\right)} = \overline{1} = 1$. Comme $\overline{z'} \neq 0$, on obtient $\overline{\left(\frac{1}{z'}\right)} = \frac{1}{\overline{z'}}$.
+
+**Quotient.** On écrit $\frac{z}{z'} = z \times \frac{1}{z'}$ et on combine le produit et l’inverse.
+:::
+
+### 4. Équations du premier degré
+
+::: methode Résoudre une équation $az = b$
+Si $a \neq 0$, l’unique solution est $z = \frac{b}{a}$, que l’on met sous forme algébrique avec le conjugué du dénominateur.
+:::
+
+::: exemple
+Résoudre $(2 + 3\mathrm{i})z = 1 - \mathrm{i}$.
+$$
+\begin{aligned}
+z &= \frac{1 - \mathrm{i}}{2 + 3\mathrm{i}} \\
+&= \frac{(1 - \mathrm{i})(2 - 3\mathrm{i})}{2^2 + 3^2} \\
+&= \frac{2 - 3\mathrm{i} - 2\mathrm{i} + 3\mathrm{i}^2}{13} \\
+&= -\frac{1}{13} - \frac{5}{13}\mathrm{i}
+\end{aligned}
+$$
+:::
+
+::: methode Résoudre une équation où figurent $z$ et $\overline{z}$
+1. Poser $z = x + \mathrm{i}y$ avec $x$ et $y$ réels, donc $\overline{z} = x - \mathrm{i}y$.
+2. Remplacer, puis écrire chaque membre sous forme algébrique.
+3. Identifier les parties réelles et les parties imaginaires.
+4. Résoudre le système obtenu.
+:::
+
+::: exemple
+Résoudre $z + 2\overline{z} = 3 + 4\mathrm{i}$. Avec $z = x + \mathrm{i}y$ :
+$$
+\begin{aligned}
+(x + \mathrm{i}y) + 2(x - \mathrm{i}y) = 3 + 4\mathrm{i} &\iff 3x - \mathrm{i}y = 3 + 4\mathrm{i} \\
+&\iff 3x = 3 \text{ et } -y = 4
+\end{aligned}
+$$
+Donc $x = 1$ et $y = -4$ : l’unique solution est $z = 1 - 4\mathrm{i}$.
+:::
+
+::: attention
+- Quand $\overline{z}$ figure dans l’équation, on ne peut pas « isoler $z$ » : on passe par $x$ et $y$.
+- Il n’y a pas d’ordre sur $\mathbb{C}$ : écrire $z \gt 0$ ou $z_1 \lt z_2$ n’a pas de sens pour des nombres non réels.
+:::
+
+## II. Le plan complexe
+
+### 1. Image et affixe
+
+::: definition Image, affixe
+Le plan est muni d’un repère orthonormé direct $(O\,;\vec{u},\vec{v})$.
+- À tout nombre complexe $z = x + \mathrm{i}y$, on associe le point $M(x\,;y)$, appelé **image** de $z$, et le vecteur $\vec{w}(x\,;y)$, image vectorielle de $z$.
+- Réciproquement, $z$ est l’**affixe** du point $M$ (notée $z_M$) et du vecteur $\vec{w}$ (notée $z_{\vec{w}}$).
+
+L’axe des abscisses est l’**axe réel**, l’axe des ordonnées est l’**axe imaginaire**.
+:::
+
+[IMAGE_1]
+
+::: propriete
+Pour tous points $A$ et $B$ d’affixes $z_A$ et $z_B$ :
+- le vecteur $\overrightarrow{AB}$ a pour affixe $z_B - z_A$ ;
+- le milieu $I$ de $[AB]$ a pour affixe $z_I = \frac{z_A + z_B}{2}$ ;
+- l’affixe d’une somme de vecteurs est la somme des affixes, et $k\vec{w}$ ($k$ réel) a pour affixe $k\,z_{\vec{w}}$ ;
+- l’image de $\overline{z}$ est le symétrique de l’image de $z$ par rapport à l’axe réel ; celle de $-z$ est son symétrique par rapport à $O$.
+:::
+
+::: exemple
+Avec $A(1 + 2\mathrm{i})$ et $B(5 - \mathrm{i})$ : $\overrightarrow{AB}$ a pour affixe $(5 - \mathrm{i}) - (1 + 2\mathrm{i}) = 4 - 3\mathrm{i}$ et le milieu de $[AB]$ a pour affixe $\frac{6 + \mathrm{i}}{2} = 3 + \frac{1}{2}\mathrm{i}$.
+:::
+
+### 2. Module
+
+::: definition Module
+Le **module** de $z = x + \mathrm{i}y$ est le réel positif $|z| = \sqrt{x^2 + y^2}$.
+
+Si $M$ est l’image de $z$, alors $|z| = OM$. Si $z$ est réel, $|z|$ est sa valeur absolue.
+:::
+
+::: propriete
+Pour tous nombres complexes $z$, $z_A$, $z_B$ :
+- $|z|^2 = z\overline{z}$ ;
+- $|z| = 0 \iff z = 0$ ; $|\overline{z}| = |-z| = |z|$ ;
+- si $A$ et $B$ ont pour affixes $z_A$ et $z_B$, alors $AB = |z_B - z_A|$.
+:::
+
+::: theoreme Module d’un produit, d’une puissance, d’un inverse, d’un quotient
+Pour tous nombres complexes $z$ et $z'$ et tout entier naturel $n$ :
+$$|zz'| = |z|\,|z'| \qquad |z^n| = |z|^n$$
+et, si $z' \neq 0$ :
+$$\left|\frac{1}{z'}\right| = \frac{1}{|z'|}$$
+$$\left|\frac{z}{z'}\right| = \frac{|z|}{|z'|}$$
+:::
+
+::: demonstration
+**Relation $|z|^2 = z\overline{z}$.** Pour $z = x + \mathrm{i}y$ : $z\overline{z} = (x + \mathrm{i}y)(x - \mathrm{i}y) = x^2 - \mathrm{i}^2 y^2 = x^2 + y^2 = |z|^2$.
+
+**Produit.** Avec le conjugué d’un produit :
+$$
+\begin{aligned}
+|zz'|^2 &= zz'\,\overline{zz'} \\
+&= z z' \,\overline{z}\,\overline{z'} \\
+&= (z\overline{z})(z'\overline{z'}) = |z|^2 |z'|^2
+\end{aligned}
+$$
+Les modules étant positifs, $|zz'| = |z|\,|z'|$.
+
+**Puissance.** Par récurrence sur $n$, avec la règle du produit.
+
+**Inverse.** $|z'| \times \left|\frac{1}{z'}\right| = \left|z' \times \frac{1}{z'}\right| = |1| = 1$, d’où $\left|\frac{1}{z'}\right| = \frac{1}{|z'|}$. Le quotient s’en déduit.
+:::
+
+::: exemple
+Sans développer : $|(3 + 4\mathrm{i})(1 - \mathrm{i})| = |3 + 4\mathrm{i}| \times |1 - \mathrm{i}| = 5\sqrt{2}$ et $|(1 + \mathrm{i})^{10}| = (\sqrt{2})^{10} = 32$.
+:::
+
+::: attention
+En général, $|z + z'| \neq |z| + |z'|$ : par exemple $|1 + \mathrm{i}| = \sqrt{2}$ alors que $|1| + |\mathrm{i}| = 2$. On a seulement l’inégalité triangulaire $|z + z'| \le |z| + |z'|$.
+:::
+
+### 3. L’ensemble $\mathbb{U}$ des nombres complexes de module 1
+
+::: definition
+$\mathbb{U} = \{z \in \mathbb{C} \mid |z| = 1\}$. Son image dans le plan est le **cercle trigonométrique** (centre $O$, rayon $1$).
+:::
+
+::: propriete Stabilité de $\mathbb{U}$
+- Si $z$ et $z'$ appartiennent à $\mathbb{U}$, alors $zz' \in \mathbb{U}$.
+- Si $z \in \mathbb{U}$, alors $\frac{1}{z} \in \mathbb{U}$ et $\frac{1}{z} = \overline{z}$.
+:::
+
+::: demonstration
+$|zz'| = |z|\,|z'| = 1 \times 1 = 1$ et $\left|\frac{1}{z}\right| = \frac{1}{|z|} = 1$. Enfin $z\overline{z} = |z|^2 = 1$, donc $\frac{1}{z} = \overline{z}$.
+:::
+
+::: exemple
+$z = \frac{3}{5} + \frac{4}{5}\mathrm{i}$ appartient à $\mathbb{U}$ car $|z|^2 = \frac{9}{25} + \frac{16}{25} = 1$. Donc $\frac{1}{z} = \overline{z} = \frac{3}{5} - \frac{4}{5}\mathrm{i}$.
+:::
+
+### 4. Cercles et médiatrices
+
+::: propriete
+Soit $\Omega$, $A$, $B$ des points d’affixes $\omega$, $a$, $b$ (avec $a \neq b$), $r$ un réel strictement positif et $M$ un point d’affixe $z$.
+- $|z - \omega| = r \iff \Omega M = r \iff M$ appartient au **cercle** de centre $\Omega$ et de rayon $r$ ($|z - \omega| \le r$ : disque).
+- $|z - a| = |z - b| \iff MA = MB \iff M$ appartient à la **médiatrice** de $[AB]$.
+:::
+
+[IMAGE_2]
+
+::: methode Reconnaître un ensemble de points
+Écrire la condition sous la forme $|z - a|$, c’est-à-dire avec un **signe moins** devant l’affixe du point : $|z + 1 - 2\mathrm{i}| = |z - (-1 + 2\mathrm{i})|$. Si nécessaire, mettre en facteur le coefficient de $z$ : $|2z - 2 - 4\mathrm{i}| = 2\,|z - (1 + 2\mathrm{i})|$.
+:::
+
+::: exemple
+- $|z + 1 - 2\mathrm{i}| = 3$ : cercle de centre $\Omega(-1 + 2\mathrm{i})$ et de rayon $3$.
+- $|z - 2\mathrm{i}| = |z + 2|$ : médiatrice du segment $[AB]$ avec $A(2\mathrm{i})$ et $B(-2)$. En posant $z = x + \mathrm{i}y$ : $x^2 + (y - 2)^2 = (x + 2)^2 + y^2 \iff -4y = 4x \iff y = -x$.
+:::
+
+## III. Arguments et forme trigonométrique
+
+### 1. Arguments
+
+::: definition Argument
+Soit $z$ un nombre complexe **non nul** et $M$ son image. On appelle **argument** de $z$ toute mesure $\theta$ (en radians) de l’angle orienté $\left(\vec{u}, \overrightarrow{OM}\right)$. On note $\arg(z) = \theta \ [2\pi]$ : les arguments de $z$ sont les réels $\theta + 2k\pi$, $k \in \mathbb{Z}$.
+
+L’unique argument situé dans $]-\pi\,;\pi]$ est appelé argument principal.
+:::
+
+::: propriete
+Si $z = x + \mathrm{i}y \neq 0$, $r = |z|$ et $\theta = \arg(z)$, alors
+$$x = r\cos\theta \quad \text{et} \quad y = r\sin\theta$$
+c’est-à-dire
+$$\cos\theta = \frac{x}{r} \quad \text{et} \quad \sin\theta = \frac{y}{r}$$
+:::
+
+[IMAGE_3]
+
+::: propriete Arguments remarquables
+Pour $z \neq 0$ :
+- $z$ réel strictement positif $\iff \arg(z) = 0\ [2\pi]$ ; $z$ réel strictement négatif $\iff \arg(z) = \pi\ [2\pi]$ ;
+- $z$ imaginaire pur de partie imaginaire positive $\iff \arg(z) = \frac{\pi}{2}\ [2\pi]$ ;
+- $\arg(\overline{z}) = -\arg(z)\ [2\pi]$ et $\arg(-z) = \arg(z) + \pi\ [2\pi]$.
+:::
+
+::: methode Déterminer le module et un argument
+1. Calculer $r = |z| = \sqrt{x^2 + y^2}$.
+2. Calculer $\cos\theta = \frac{x}{r}$ et $\sin\theta = \frac{y}{r}$.
+3. Chercher sur le cercle trigonométrique l’angle qui a **à la fois** ce cosinus et ce sinus (les signes de $x$ et $y$ indiquent le quart du plan où se trouve $M$).
+:::
+
+::: exemple
+- $z = -1 + \mathrm{i}\sqrt{3}$ : $r = \sqrt{1 + 3} = 2$, $\cos\theta = -\frac{1}{2}$ et $\sin\theta = \frac{\sqrt{3}}{2}$, donc $\arg(z) = \frac{2\pi}{3}\ [2\pi]$.
+- $z = 1 - \mathrm{i}$ : $r = \sqrt{2}$, $\cos\theta = \frac{\sqrt{2}}{2}$ et $\sin\theta = -\frac{\sqrt{2}}{2}$, donc $\arg(z) = -\frac{\pi}{4}\ [2\pi]$.
+:::
+
+::: attention
+- Le nombre $0$ n’a pas d’argument.
+- Le cosinus seul (ou le quotient $\frac{y}{x}$ seul) ne suffit pas : pour $z = -1 - \mathrm{i}$, $\frac{y}{x} = 1$ mais $\arg(z) = -\frac{3\pi}{4}$, et non $\frac{\pi}{4}$.
+:::
+
+### 2. Forme trigonométrique
+
+::: definition Forme trigonométrique
+Tout nombre complexe non nul $z$ s’écrit
+::: formule
+$$z = r(\cos\theta + \mathrm{i}\sin\theta)$$
+:::
+avec $r = |z| \gt 0$ et $\theta = \arg(z)$.
+Réciproquement, si $z = r(\cos\theta + \mathrm{i}\sin\theta)$ avec $r \gt 0$, alors $|z| = r$ et $\arg(z) = \theta\ [2\pi]$.
+:::
+
+::: propriete
+Deux nombres complexes non nuls sont égaux si et seulement s’ils ont le même module et des arguments égaux à $2\pi$ près.
+:::
+
+::: exemple
+- Forme algébrique vers forme trigonométrique : $z = -\sqrt{3} + \mathrm{i}$ a pour module $2$, avec $\cos\theta = -\frac{\sqrt{3}}{2}$ et $\sin\theta = \frac{1}{2}$, donc $z = 2\left(\cos\frac{5\pi}{6} + \mathrm{i}\sin\frac{5\pi}{6}\right)$.
+- Forme trigonométrique vers forme algébrique :
+
+  $$
+  \begin{aligned}
+  4\left(\cos\left(-\tfrac{\pi}{3}\right) + \mathrm{i}\sin\left(-\tfrac{\pi}{3}\right)\right) &= 4\left(\frac{1}{2} - \frac{\sqrt{3}}{2}\mathrm{i}\right) \\
+  &= 2 - 2\sqrt{3}\,\mathrm{i}
+  \end{aligned}
+  $$
+:::
+
+::: attention
+Le module doit être **strictement positif** : $-2\left(\cos\frac{\pi}{6} + \mathrm{i}\sin\frac{\pi}{6}\right)$ n’est pas une forme trigonométrique. Comme $-1$ a pour argument $\pi$, ce nombre s’écrit $2\left(\cos\frac{7\pi}{6} + \mathrm{i}\sin\frac{7\pi}{6}\right)$.
+:::
+
+## IV. Exponentielle imaginaire et trigonométrie
+
+### 1. Formules d’addition et de duplication
+
+::: theoreme Formules d’addition
+Pour tous réels $a$ et $b$ :
+$$
+\begin{aligned}
+\cos(a - b) &= \cos a\cos b + \sin a\sin b \\
+\cos(a + b) &= \cos a\cos b - \sin a\sin b \\
+\sin(a + b) &= \sin a\cos b + \cos a\sin b \\
+\sin(a - b) &= \sin a\cos b - \cos a\sin b
+\end{aligned}
+$$
+:::
+
+::: demonstration
+Soit $A$ et $B$ les points du cercle trigonométrique associés à $a$ et $b$ : $A(\cos a\,;\sin a)$ et $B(\cos b\,;\sin b)$. On calcule le produit scalaire $\overrightarrow{OA} \cdot \overrightarrow{OB}$ de deux façons.
+- Avec les normes et l’angle : $OA = OB = 1$ et $\left(\overrightarrow{OA}, \overrightarrow{OB}\right) = b - a\ [2\pi]$, donc $\overrightarrow{OA} \cdot \overrightarrow{OB} = \cos(b - a) = \cos(a - b)$.
+- Avec les coordonnées (repère orthonormé) : $\overrightarrow{OA} \cdot \overrightarrow{OB} = \cos a\cos b + \sin a\sin b$.
+
+D’où la formule de $\cos(a - b)$. En remplaçant $b$ par $-b$ (le cosinus est pair, le sinus impair), on obtient celle de $\cos(a + b)$. Enfin :
+$$
+\begin{aligned}
+\sin(a + b) &= \cos\left(\frac{\pi}{2} - a - b\right) \\
+&= \cos\left(\left(\frac{\pi}{2} - a\right) - b\right) \\
+&= \cos\left(\frac{\pi}{2} - a\right)\cos b + \sin\left(\frac{\pi}{2} - a\right)\sin b \\
+&= \sin a\cos b + \cos a\sin b
+\end{aligned}
+$$
+puis $\sin(a - b)$ en remplaçant $b$ par $-b$.
+:::
+
+[IMAGE_4]
+
+::: propriete Formules de duplication
+Pour tout réel $a$ (cas $b = a$) :
+$$
+\begin{aligned}
+\cos(2a) &= \cos^2 a - \sin^2 a \\
+&= 2\cos^2 a - 1 \\
+&= 1 - 2\sin^2 a
+\end{aligned}
+$$
+$$\sin(2a) = 2\sin a\cos a$$
+:::
+
+::: exemple
+$$
+\begin{aligned}
+\cos\frac{\pi}{12} &= \cos\left(\frac{\pi}{3} - \frac{\pi}{4}\right) \\
+&= \cos\frac{\pi}{3}\cos\frac{\pi}{4} + \sin\frac{\pi}{3}\sin\frac{\pi}{4} \\
+&= \frac{1}{2} \times \frac{\sqrt{2}}{2} + \frac{\sqrt{3}}{2} \times \frac{\sqrt{2}}{2} \\
+&= \frac{\sqrt{2} + \sqrt{6}}{4}
+\end{aligned}
+$$
+:::
+
+### 2. Exponentielle imaginaire
+
+::: definition Exponentielle imaginaire
+Pour tout réel $\theta$, on note
+::: formule
+$$\mathrm{e}^{\mathrm{i}\theta} = \cos\theta + \mathrm{i}\sin\theta$$
+:::
+C’est le nombre complexe de module $1$ et d’argument $\theta$ : son image est le point du cercle trigonométrique associé à $\theta$.
+:::
+
+::: exemple
+$\mathrm{e}^{\mathrm{i}0} = 1$, $\mathrm{e}^{\mathrm{i}\frac{\pi}{2}} = \mathrm{i}$, $\mathrm{e}^{\mathrm{i}\pi} = -1$ (d’où $\mathrm{e}^{\mathrm{i}\pi} + 1 = 0$), $\mathrm{e}^{-\mathrm{i}\frac{\pi}{2}} = -\mathrm{i}$ et $\mathrm{e}^{\mathrm{i}(\theta + 2\pi)} = \mathrm{e}^{\mathrm{i}\theta}$.
+:::
+
+::: theoreme Relation fonctionnelle
+Pour tous réels $a$ et $b$ :
+::: formule
+$$\mathrm{e}^{\mathrm{i}a} \times \mathrm{e}^{\mathrm{i}b} = \mathrm{e}^{\mathrm{i}(a + b)}$$
+:::
+:::
+
+::: demonstration
+Avec les formules d’addition :
+$$
+\begin{aligned}
+\mathrm{e}^{\mathrm{i}a}\,\mathrm{e}^{\mathrm{i}b} &= (\cos a + \mathrm{i}\sin a)(\cos b + \mathrm{i}\sin b) \\
+&= (\cos a\cos b - \sin a\sin b) + \mathrm{i}(\sin a\cos b + \cos a\sin b) \\
+&= \cos(a + b) + \mathrm{i}\sin(a + b) \\
+&= \mathrm{e}^{\mathrm{i}(a + b)}
+\end{aligned}
+$$
+:::
+
+::: propriete Conséquences
+Pour tous réels $a$, $b$, $\theta$ :
+- $\frac{1}{\mathrm{e}^{\mathrm{i}\theta}} = \mathrm{e}^{-\mathrm{i}\theta} = \overline{\mathrm{e}^{\mathrm{i}\theta}}$ et $\frac{\mathrm{e}^{\mathrm{i}a}}{\mathrm{e}^{\mathrm{i}b}} = \mathrm{e}^{\mathrm{i}(a - b)}$ ;
+- $\mathrm{e}^{\mathrm{i}a} = \mathrm{e}^{\mathrm{i}b} \iff a = b\ [2\pi]$.
+
+La notation exponentielle se manipule donc comme l’exponentielle réelle.
+:::
+
+### 3. Forme exponentielle
+
+::: definition Forme exponentielle
+Tout nombre complexe non nul $z$, de module $r$ et d’argument $\theta$, s’écrit
+::: formule
+$$z = r\,\mathrm{e}^{\mathrm{i}\theta} \quad (r \gt 0)$$
+:::
+:::
+
+::: propriete Produit, quotient, puissance
+Pour $z = r\,\mathrm{e}^{\mathrm{i}\theta}$ et $z' = r'\,\mathrm{e}^{\mathrm{i}\theta'}$ ($r$, $r'$ strictement positifs) et $n$ entier :
+$$zz' = rr'\,\mathrm{e}^{\mathrm{i}(\theta + \theta')}$$
+$$\frac{z}{z'} = \frac{r}{r'}\,\mathrm{e}^{\mathrm{i}(\theta - \theta')}$$
+$$z^n = r^n\,\mathrm{e}^{\mathrm{i}n\theta}$$
+$$\overline{z} = r\,\mathrm{e}^{-\mathrm{i}\theta}$$
+Ainsi $\arg(zz') = \arg(z) + \arg(z')\ [2\pi]$, $\arg\left(\frac{z}{z'}\right) = \arg(z) - \arg(z')\ [2\pi]$ et $\arg(z^n) = n\arg(z)\ [2\pi]$.
+:::
+
+[IMAGE_5]
+
+::: methode Choisir la forme adaptée
+- Sommes, différences, parties réelle et imaginaire : **forme algébrique**.
+- Produits, quotients, puissances : **forme exponentielle** (les modules se multiplient, les arguments s’ajoutent).
+:::
+
+::: exemple
+- $1 + \mathrm{i} = \sqrt{2}\,\mathrm{e}^{\mathrm{i}\frac{\pi}{4}}$, donc $(1 + \mathrm{i})^8 = (\sqrt{2})^8\,\mathrm{e}^{\mathrm{i}\frac{8\pi}{4}} = 16\,\mathrm{e}^{2\mathrm{i}\pi} = 16$.
+- $\dfrac{1 + \mathrm{i}\sqrt{3}}{1 - \mathrm{i}} = \dfrac{2\,\mathrm{e}^{\mathrm{i}\frac{\pi}{3}}}{\sqrt{2}\,\mathrm{e}^{-\mathrm{i}\frac{\pi}{4}}} = \sqrt{2}\,\mathrm{e}^{\mathrm{i}\left(\frac{\pi}{3} + \frac{\pi}{4}\right)} = \sqrt{2}\,\mathrm{e}^{\mathrm{i}\frac{7\pi}{12}}$.
+:::
+
+### 4. Formules de Moivre et d’Euler
+
+::: theoreme Formule de Moivre
+Pour tout réel $\theta$ et tout entier relatif $n$ :
+::: formule
+$$(\cos\theta + \mathrm{i}\sin\theta)^n = \cos(n\theta) + \mathrm{i}\sin(n\theta)$$
+$$\left(\mathrm{e}^{\mathrm{i}\theta}\right)^n = \mathrm{e}^{\mathrm{i}n\theta}$$
+:::
+:::
+
+::: demonstration
+Pour $n \in \mathbb{N}$, par récurrence : $\left(\mathrm{e}^{\mathrm{i}\theta}\right)^0 = 1 = \mathrm{e}^{\mathrm{i}0}$, et si $\left(\mathrm{e}^{\mathrm{i}\theta}\right)^n = \mathrm{e}^{\mathrm{i}n\theta}$, la relation fonctionnelle donne $\left(\mathrm{e}^{\mathrm{i}\theta}\right)^{n+1} = \mathrm{e}^{\mathrm{i}n\theta}\,\mathrm{e}^{\mathrm{i}\theta} = \mathrm{e}^{\mathrm{i}(n+1)\theta}$. Pour $n$ négatif, on passe à l’inverse : $\left(\mathrm{e}^{\mathrm{i}\theta}\right)^{-n} = \frac{1}{\mathrm{e}^{\mathrm{i}n\theta}} = \mathrm{e}^{-\mathrm{i}n\theta}$.
+:::
+
+::: theoreme Formules d’Euler
+Pour tout réel $\theta$ :
+::: formule
+$$\cos\theta = \frac{\mathrm{e}^{\mathrm{i}\theta} + \mathrm{e}^{-\mathrm{i}\theta}}{2}$$
+$$\sin\theta = \frac{\mathrm{e}^{\mathrm{i}\theta} - \mathrm{e}^{-\mathrm{i}\theta}}{2\mathrm{i}}$$
+:::
+:::
+
+::: demonstration
+Le cosinus est pair et le sinus impair, donc $\mathrm{e}^{-\mathrm{i}\theta} = \cos\theta - \mathrm{i}\sin\theta$. En ajoutant et en soustrayant $\mathrm{e}^{\mathrm{i}\theta} = \cos\theta + \mathrm{i}\sin\theta$, on obtient $\mathrm{e}^{\mathrm{i}\theta} + \mathrm{e}^{-\mathrm{i}\theta} = 2\cos\theta$ et $\mathrm{e}^{\mathrm{i}\theta} - \mathrm{e}^{-\mathrm{i}\theta} = 2\mathrm{i}\sin\theta$.
+:::
+
+::: methode Linéariser une puissance de $\cos$ ou de $\sin$
+Écrire $\cos\theta$ (ou $\sin\theta$) avec une formule d’Euler, développer avec le binôme, puis regrouper les termes conjugués grâce à $\mathrm{e}^{\mathrm{i}k\theta} + \mathrm{e}^{-\mathrm{i}k\theta} = 2\cos(k\theta)$.
+:::
+
+::: exemple
+$$
+\begin{aligned}
+\cos^3\theta &= \frac{1}{8}\left(\mathrm{e}^{\mathrm{i}\theta} + \mathrm{e}^{-\mathrm{i}\theta}\right)^3 \\
+&= \frac{1}{8}\left(\mathrm{e}^{3\mathrm{i}\theta} + 3\mathrm{e}^{\mathrm{i}\theta} + 3\mathrm{e}^{-\mathrm{i}\theta} + \mathrm{e}^{-3\mathrm{i}\theta}\right) \\
+&= \frac{1}{8}\left(2\cos(3\theta) + 6\cos\theta\right) \\
+&= \frac{1}{4}\cos(3\theta) + \frac{3}{4}\cos\theta
+\end{aligned}
+$$
+:::
+
+::: methode Exprimer $\cos(n\theta)$ ou $\sin(n\theta)$ en fonction de $\cos\theta$ et $\sin\theta$
+Développer $(\cos\theta + \mathrm{i}\sin\theta)^n$ avec le binôme, puis identifier avec $\cos(n\theta) + \mathrm{i}\sin(n\theta)$ (formule de Moivre).
+:::
+
+::: exemple
+Avec le binôme (coefficients $1$, $3$, $3$, $1$) :
+$$
+\begin{aligned}
+(\cos\theta + \mathrm{i}\sin\theta)^3 &= \cos^3\theta + 3\mathrm{i}\cos^2\theta\sin\theta \\
+&\quad - 3\cos\theta\sin^2\theta - \mathrm{i}\sin^3\theta
+\end{aligned}
+$$
+Les parties réelles donnent, avec $\sin^2\theta = 1 - \cos^2\theta$ :
+$$
+\begin{aligned}
+\cos(3\theta) &= \cos^3\theta - 3\cos\theta\sin^2\theta \\
+&= 4\cos^3\theta - 3\cos\theta
+\end{aligned}
+$$
+:::
+
+## V. Équations polynomiales
+
+### 1. Second degré à coefficients réels
+
+::: theoreme
+Soit $a$, $b$, $c$ des réels avec $a \neq 0$, et $\Delta = b^2 - 4ac$. L’équation $az^2 + bz + c = 0$ admet dans $\mathbb{C}$ :
+- si $\Delta \gt 0$, deux solutions réelles $z_1 = \frac{-b - \sqrt{\Delta}}{2a}$ et $z_2 = \frac{-b + \sqrt{\Delta}}{2a}$ ;
+- si $\Delta = 0$, une solution réelle $z_0 = -\frac{b}{2a}$ ;
+- si $\Delta \lt 0$, deux solutions complexes **conjuguées** $z_1 = \frac{-b - \mathrm{i}\sqrt{-\Delta}}{2a}$ et $z_2 = \frac{-b + \mathrm{i}\sqrt{-\Delta}}{2a}$.
+
+Dans tous les cas, $az^2 + bz + c = a(z - z_1)(z - z_2)$ (avec $z_1 = z_2 = z_0$ si $\Delta = 0$).
+:::
+
+::: demonstration
+Cas $\Delta \lt 0$. La forme canonique donne $az^2 + bz + c = a\left[\left(z + \frac{b}{2a}\right)^2 - \frac{\Delta}{4a^2}\right]$. Comme $-\Delta \gt 0$, on écrit $-\frac{\Delta}{4a^2} = \left(\frac{\sqrt{-\Delta}}{2a}\right)^2 = -\left(\frac{\mathrm{i}\sqrt{-\Delta}}{2a}\right)^2$, d’où
+$$
+\begin{aligned}
+az^2 + bz + c &= a\left(z - \frac{-b + \mathrm{i}\sqrt{-\Delta}}{2a}\right) \\
+&\quad \times \left(z - \frac{-b - \mathrm{i}\sqrt{-\Delta}}{2a}\right)
+\end{aligned}
+$$
+Un produit de nombres complexes est nul si et seulement si l’un des facteurs est nul, ce qui donne les deux solutions.
+:::
+
+::: exemple
+Résoudre $z^2 - 2z + 5 = 0$ : $\Delta = (-2)^2 - 4 \times 1 \times 5 = -16$, donc $-\Delta = 16$ et $\sqrt{-\Delta} = 4$.
+$$z_1 = \frac{2 - 4\mathrm{i}}{2} = 1 - 2\mathrm{i}$$
+$$z_2 = \frac{2 + 4\mathrm{i}}{2} = 1 + 2\mathrm{i}$$
+et $z^2 - 2z + 5 = (z - 1 + 2\mathrm{i})(z - 1 - 2\mathrm{i})$.
+:::
+
+::: attention
+La racine carrée n’est définie que pour les réels positifs : écrire $\sqrt{-16}$ n’a pas de sens. On écrit $\Delta = -16 = (4\mathrm{i})^2$ ou on utilise directement $\mathrm{i}\sqrt{-\Delta}$.
+:::
+
+::: remarque
+Comme dans $\mathbb{R}$ : $z_1 + z_2 = -\frac{b}{a}$ et $z_1 z_2 = \frac{c}{a}$.
+:::
+
+### 2. Factorisation par $z - a$
+
+::: theoreme Factorisation de $z^n - a^n$
+Pour tous nombres complexes $z$ et $a$ et tout entier $n \ge 1$ :
+$$
+\begin{aligned}
+z^n - a^n &= (z - a)\left(z^{n-1} + a z^{n-2} + \cdots + a^{n-2} z + a^{n-1}\right) \\
+&= (z - a)\sum_{k=0}^{n-1} a^k z^{n-1-k}
+\end{aligned}
+$$
+:::
+
+::: demonstration
+On développe et on décale l’indice dans la seconde somme ($j = k + 1$) :
+$$
+\begin{aligned}
+(z - a)\sum_{k=0}^{n-1} a^k z^{n-1-k} &= \sum_{k=0}^{n-1} a^k z^{n-k} - \sum_{k=0}^{n-1} a^{k+1} z^{n-1-k} \\
+&= \sum_{k=0}^{n-1} a^k z^{n-k} - \sum_{j=1}^{n} a^{j} z^{n-j}
+\end{aligned}
+$$
+Tous les termes s’éliminent sauf $z^n$ (pour $k = 0$) et $-a^n$ (pour $j = n$) : le résultat vaut $z^n - a^n$.
+:::
+
+::: exemple
+$z^3 - 8 = z^3 - 2^3 = (z - 2)(z^2 + 2z + 4)$. Le trinôme a pour discriminant $4 - 16 = -12$ : l’équation $z^3 = 8$ a pour solutions $2$, $-1 + \mathrm{i}\sqrt{3}$ et $-1 - \mathrm{i}\sqrt{3}$.
+:::
+
+::: theoreme Factorisation d’un polynôme par $z - a$
+Soit $P$ un polynôme de degré $n \ge 1$ et $a$ un nombre complexe. Si $P(a) = 0$, il existe un polynôme $Q$ de degré $n - 1$ tel que, pour tout $z$, $P(z) = (z - a)Q(z)$.
+:::
+
+::: demonstration
+Écrivons $P(z) = \sum_{k=0}^{n} p_k z^k$ avec $p_n \neq 0$. Comme $P(a) = 0$ :
+$$P(z) = P(z) - P(a) = \sum_{k=1}^{n} p_k\left(z^k - a^k\right)$$
+Chaque $z^k - a^k$ se factorise par $z - a$, avec un quotient de degré $k - 1$. Donc $P(z) = (z - a)Q(z)$, où $Q$ est une somme de polynômes dont le seul terme de degré $n - 1$ est $p_n z^{n-1}$ : $Q$ est de degré $n - 1$.
+:::
+
+::: theoreme Nombre de racines
+Un polynôme non nul de degré $n$ admet au plus $n$ racines distinctes dans $\mathbb{C}$.
+:::
+
+::: demonstration
+Par récurrence sur $n$. Un polynôme constant non nul ($n = 0$) n’a aucune racine.
+
+Supposons la propriété vraie pour les polynômes de degré $n - 1$, et soit $P$ de degré $n$. Si $P$ n’a pas de racine, c’est terminé. Sinon, soit $a$ une racine : $P(z) = (z - a)Q(z)$ avec $Q$ de degré $n - 1$. Si $b \neq a$ est une autre racine, alors $(b - a)Q(b) = 0$ avec $b - a \neq 0$, donc $Q(b) = 0$. Les racines de $P$ autres que $a$ sont des racines de $Q$ : il y en a au plus $n - 1$. Donc $P$ a au plus $n$ racines.
+:::
+
+### 3. Équation de degré 3 dont une racine est connue
+
+::: methode Résoudre $P(z) = 0$ connaissant une racine $a$
+1. Vérifier que $P(a) = 0$.
+2. Écrire $P(z) = (z - a)(\alpha z^2 + \beta z + \gamma)$, développer et identifier les coefficients.
+3. Résoudre $\alpha z^2 + \beta z + \gamma = 0$.
+4. Conclure : les solutions sont $a$ et celles du trinôme.
+:::
+
+::: exemple
+Résoudre $P(z) = z^3 - 3z^2 + 4z - 2 = 0$.
+- $P(1) = 1 - 3 + 4 - 2 = 0$.
+- $(z - 1)(\alpha z^2 + \beta z + \gamma) = \alpha z^3 + (\beta - \alpha)z^2 + (\gamma - \beta)z - \gamma$. Par identification : $\alpha = 1$, $\beta - \alpha = -3$, $\gamma - \beta = 4$ et $-\gamma = -2$, soit $\alpha = 1$, $\beta = -2$, $\gamma = 2$.
+- $z^2 - 2z + 2 = 0$ : $\Delta = 4 - 8 = -4$, d’où $z = \frac{2 \pm 2\mathrm{i}}{2} = 1 \pm \mathrm{i}$.
+
+L’ensemble des solutions est $\{1\,;1 + \mathrm{i}\,;1 - \mathrm{i}\}$.
+:::
+
+[IMAGE_6]
+
+::: remarque
+Si $P$ est à coefficients **réels**, alors $\overline{P(z)} = P(\overline{z})$ : si $z_0$ est racine, $\overline{z_0}$ l’est aussi. Les racines non réelles vont par paires de conjugués, symétriques par rapport à l’axe réel.
+:::
+
+## VI. Nombres complexes et géométrie
+
+### 1. Module et argument de $\frac{c - a}{b - a}$
+
+::: propriete
+Soit $A$, $B$, $C$ des points d’affixes $a$, $b$, $c$, avec $A \neq B$ et $A \neq C$. Alors
+::: formule
+$$\left|\frac{c - a}{b - a}\right| = \frac{AC}{AB}$$
+$$\arg\left(\frac{c - a}{b - a}\right) = \left(\overrightarrow{AB}, \overrightarrow{AC}\right)\ [2\pi]$$
+:::
+:::
+
+::: demonstration
+$\left|\frac{c - a}{b - a}\right| = \frac{|c - a|}{|b - a|} = \frac{AC}{AB}$. Les vecteurs $\overrightarrow{AB}$ et $\overrightarrow{AC}$ ont pour affixes $b - a$ et $c - a$, donc $\arg(b - a) = \left(\vec{u}, \overrightarrow{AB}\right)$ et $\arg(c - a) = \left(\vec{u}, \overrightarrow{AC}\right)$ à $2\pi$ près. Par la relation de Chasles :
+$$
+\begin{aligned}
+\arg\left(\frac{c - a}{b - a}\right) &= \left(\vec{u}, \overrightarrow{AC}\right) - \left(\vec{u}, \overrightarrow{AB}\right) \\
+&= \left(\overrightarrow{AB}, \overrightarrow{AC}\right)\ [2\pi]
+\end{aligned}
+$$
+:::
+
+[IMAGE_7]
+
+::: propriete Conséquences
+Pour $A$, $B$, $C$ distincts, avec $q = \frac{c - a}{b - a}$ :
+- $A$, $B$, $C$ sont alignés $\iff q$ est réel ;
+- $(AB) \perp (AC) \iff q$ est imaginaire pur ;
+- $ABC$ est isocèle en $A$ $\iff |q| = 1$ ; $ABC$ est équilatéral direct $\iff q = \mathrm{e}^{\mathrm{i}\frac{\pi}{3}}$.
+:::
+
+::: methode Étudier une configuration du plan
+1. Calculer les affixes des vecteurs utiles ($b - a$, $c - a$…).
+2. Calculer le quotient et l’écrire sous forme algébrique ou exponentielle.
+3. Interpréter : réel (alignement), imaginaire pur (orthogonalité), module (rapport de longueurs), argument (angle).
+:::
+
+::: exemple
+Avec $A(1 + \mathrm{i})$, $B(3 + 2\mathrm{i})$ et $C(-1 + 5\mathrm{i})$ :
+$$
+\begin{aligned}
+\frac{c - a}{b - a} &= \frac{-2 + 4\mathrm{i}}{2 + \mathrm{i}} \\
+&= \frac{(-2 + 4\mathrm{i})(2 - \mathrm{i})}{5} \\
+&= \frac{10\mathrm{i}}{5} \\
+&= 2\mathrm{i} \\
+&= 2\,\mathrm{e}^{\mathrm{i}\frac{\pi}{2}}
+\end{aligned}
+$$
+Donc $\left(\overrightarrow{AB}, \overrightarrow{AC}\right) = \frac{\pi}{2}\ [2\pi]$ et $AC = 2AB$ : le triangle $ABC$ est rectangle en $A$.
+:::
+
+### 2. Racines $n$-ièmes de l’unité
+
+::: definition
+Soit $n$ un entier naturel non nul. On appelle **racine $n$-ième de l’unité** tout nombre complexe $z$ tel que $z^n = 1$. On note $\mathbb{U}_n$ leur ensemble.
+:::
+
+::: theoreme Détermination de $\mathbb{U}_n$
+$$\mathbb{U}_n = \left\{\mathrm{e}^{\mathrm{i}\frac{2k\pi}{n}} \mid k \in \{0\,;1\,;\ldots\,;n - 1\}\right\}$$
+Ces $n$ nombres sont distincts. Pour $n \ge 3$, leurs images sont les sommets d’un **polygone régulier** à $n$ côtés inscrit dans le cercle trigonométrique, dont l’un des sommets est le point d’affixe $1$.
+:::
+
+::: demonstration
+- Chaque $\mathrm{e}^{\mathrm{i}\frac{2k\pi}{n}}$ est solution : $\left(\mathrm{e}^{\mathrm{i}\frac{2k\pi}{n}}\right)^n = \mathrm{e}^{2\mathrm{i}k\pi} = 1$.
+- Réciproquement, si $z^n = 1$, alors $|z|^n = 1$, donc $|z| = 1$ et $z = \mathrm{e}^{\mathrm{i}\theta}$. Alors $\mathrm{e}^{\mathrm{i}n\theta} = 1 = \mathrm{e}^{\mathrm{i}0}$, donc $n\theta = 2k\pi$ avec $k \in \mathbb{Z}$, soit $\theta = \frac{2k\pi}{n}$.
+- Si $k = qn + r$ (division euclidienne, $0 \le r \le n - 1$), alors $\mathrm{e}^{\mathrm{i}\frac{2k\pi}{n}} = \mathrm{e}^{2\mathrm{i}q\pi}\,\mathrm{e}^{\mathrm{i}\frac{2r\pi}{n}} = \mathrm{e}^{\mathrm{i}\frac{2r\pi}{n}}$ : on peut se limiter à $k \in \{0\,;\ldots\,;n - 1\}$.
+- Pour $0 \le k \lt k' \le n - 1$, on a $0 \lt \frac{2(k' - k)\pi}{n} \lt 2\pi$ : les arguments ne sont pas égaux à $2\pi$ près, les $n$ nombres sont distincts.
+
+Deux points consécutifs sont séparés par l’angle $\frac{2\pi}{n}$ : le polygone est régulier.
+:::
+
+[IMAGE_8]
+
+::: propriete Cas usuels et somme
+- $\mathbb{U}_2 = \{1\,;-1\}$ et $\mathbb{U}_4 = \{1\,;\mathrm{i}\,;-1\,;-\mathrm{i}\}$.
+- $\mathbb{U}_3 = \{1\,;j\,;j^2\}$ avec $j = \mathrm{e}^{\mathrm{i}\frac{2\pi}{3}} = -\frac{1}{2} + \frac{\sqrt{3}}{2}\mathrm{i}$ et $j^2 = \overline{j} = -\frac{1}{2} - \frac{\sqrt{3}}{2}\mathrm{i}$.
+- Pour $n \ge 2$, la somme des racines $n$-ièmes de l’unité est nulle : avec $\omega = \mathrm{e}^{\mathrm{i}\frac{2\pi}{n}} \neq 1$,
+$$1 + \omega + \omega^2 + \cdots + \omega^{n-1} = \frac{1 - \omega^n}{1 - \omega} = 0$$
+En particulier, $1 + j + j^2 = 0$.
+:::
+
+::: methode Utiliser les racines de l’unité pour un polygone régulier
+Les sommets du polygone régulier à $n$ côtés inscrit dans le cercle trigonométrique, de sommet $1$, ont pour affixes $\omega^k$ avec $\omega = \mathrm{e}^{\mathrm{i}\frac{2\pi}{n}}$. On passe d’un sommet au suivant en multipliant par $\omega$ (rotation d’angle $\frac{2\pi}{n}$), et la longueur d’un côté vaut
+$$
+\begin{aligned}
+|\omega - 1| &= \left|\mathrm{e}^{\mathrm{i}\frac{\pi}{n}}\right| \times \left|\mathrm{e}^{\mathrm{i}\frac{\pi}{n}} - \mathrm{e}^{-\mathrm{i}\frac{\pi}{n}}\right| \\
+&= \left|2\mathrm{i}\sin\frac{\pi}{n}\right| \\
+&= 2\sin\frac{\pi}{n}
+\end{aligned}
+$$
+Pour l’hexagone régulier ($n = 6$), le côté vaut $2\sin\frac{\pi}{6} = 1$, égal au rayon.
+:::
+
+::: remarque Pour aller plus loin : équation $z^n = a$
+Si $a = \rho\,\mathrm{e}^{\mathrm{i}\alpha}$ avec $\rho \gt 0$, on cherche $z = R\,\mathrm{e}^{\mathrm{i}\theta}$ : l’équation $z^n = a$ équivaut à $R^n = \rho$ et $n\theta = \alpha\ [2\pi]$. Par exemple, $z^3 = -8 = 8\,\mathrm{e}^{\mathrm{i}\pi}$ a pour solutions $2\,\mathrm{e}^{\mathrm{i}\frac{\pi}{3}} = 1 + \mathrm{i}\sqrt{3}$, $2\,\mathrm{e}^{\mathrm{i}\pi} = -2$ et $2\,\mathrm{e}^{\mathrm{i}\frac{5\pi}{3}} = 1 - \mathrm{i}\sqrt{3}$.
+:::
+
+## VII. Erreurs fréquentes
+
+::: attention
+1. Oublier de remplacer $\mathrm{i}^2$ par $-1$ en développant.
+2. Écrire $\mathrm{Im}(3 - 5\mathrm{i}) = -5\mathrm{i}$ : la partie imaginaire est le **réel** $-5$.
+3. Confondre le conjugué $\overline{z} = x - \mathrm{i}y$ et l’opposé $-z = -x - \mathrm{i}y$.
+4. Déterminer un argument avec le cosinus seul : il faut le cosinus **et** le sinus.
+5. Écrire une forme trigonométrique avec un module négatif.
+6. Écrire $|z + z'| = |z| + |z'|$ ou $\sqrt{-16} = 4\mathrm{i}$.
+7. Inverser le quotient : $\arg\left(\frac{c - a}{b - a}\right) = \left(\overrightarrow{AB}, \overrightarrow{AC}\right)$, vecteur de départ au dénominateur.
+:::
+
+::: retenir
+$\mathrm{i}^2 = -1$ ; $z = x + \mathrm{i}y = r(\cos\theta + \mathrm{i}\sin\theta) = r\,\mathrm{e}^{\mathrm{i}\theta}$ avec $r = |z| = \sqrt{x^2 + y^2}$ ; $|z|^2 = z\overline{z}$ ; quotient : conjugué du dénominateur ; produits et puissances : les modules se multiplient, les arguments s’ajoutent ; $AB = |b - a|$ et $\arg\frac{c - a}{b - a} = \left(\overrightarrow{AB}, \overrightarrow{AC}\right)$ ; $\Delta \lt 0$ : $z = \frac{-b \pm \mathrm{i}\sqrt{-\Delta}}{2a}$ ; $\mathbb{U}_n = \left\{\mathrm{e}^{\mathrm{i}\frac{2k\pi}{n}}\right\}$. Fiche de synthèse dans l’onglet Fiches !
+:::

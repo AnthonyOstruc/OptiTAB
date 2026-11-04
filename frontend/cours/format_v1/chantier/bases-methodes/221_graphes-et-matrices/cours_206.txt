@@ -1,0 +1,637 @@
+Titre: Matrices
+
+<!-- optitab:1 -->
+## I. Définitions et notations
+
+### Définition d'une matrice
+
+::: definition
+Une **matrice** de taille $m \times n$ (lue « m par n ») est un tableau rectangulaire de nombres réels comportant $m$ lignes et $n$ colonnes.
+
+$$A = \begin{pmatrix} a_{11} & a_{12} & \cdots & a_{1n} \\ a_{21} & a_{22} & \cdots & a_{2n} \\ \vdots & \vdots & \ddots & \vdots \\ a_{m1} & a_{m2} & \cdots & a_{mn} \end{pmatrix}$$
+
+On note $a_{ij}$ le **coefficient** situé à la ligne $i$ et à la colonne $j$.
+:::
+
+::: notation
+On note $\mathcal{M}_{m,n}(\mathbb{R})$ l'ensemble des matrices de taille $m \times n$ à coefficients réels.
+:::
+
+::: exemple 1 - Matrice $\displaystyle 2 \times 3$
+$$A = \begin{pmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{pmatrix}$$
+:::
+
+::: exemple 2 - Matrice $\displaystyle 3 \times 2$
+$$B = \begin{pmatrix} 1 & 0 \\ -2 & 3 \\ 5 & 1 \end{pmatrix}$$
+:::
+
+::: exemple 3 - Matrice colonne $\displaystyle 3 \times 1$
+$$C = \begin{pmatrix} 2 \\ -1 \\ 3 \end{pmatrix}$$
+:::
+
+::: exemple 4 - Matrice ligne $\displaystyle 1 \times 4$
+$$L = \begin{pmatrix} 1 & 2 & 3 & 4 \end{pmatrix}$$
+:::
+
+### Matrices carrées
+
+::: definition
+Une matrice est dite **carrée** si elle a autant de lignes que de colonnes ($m = n$).
+
+On note $\mathcal{M}_n(\mathbb{R})$ l'ensemble des matrices carrées de taille $n \times n$.
+:::
+
+::: exemple
+Matrice carrée d'ordre 3
+
+$$A = \begin{pmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \\ 7 & 8 & 9 \end{pmatrix}$$
+:::
+
+### Matrices particulières
+
+::: definition Matrice nulle
+Tous les coefficients sont nuls
+
+$$0_n = \begin{pmatrix} 0 & 0 & \cdots & 0 \\ 0 & 0 & \cdots & 0 \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \cdots & 0 \end{pmatrix}$$
+:::
+
+::: definition Matrice identité
+Coefficients diagonaux égaux à 1, autres coefficients nuls
+
+$$I_n = \begin{pmatrix} 1 & 0 & \cdots & 0 \\ 0 & 1 & \cdots & 0 \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \cdots & 1 \end{pmatrix}$$
+
+Pour tout $n$ : $a_{ij} = \begin{cases} 1 & \text{si } i = j \\ 0 & \text{si } i \neq j \end{cases}$
+:::
+
+::: definition Matrice diagonale
+Tous les coefficients en dehors de la diagonale sont nuls
+
+$$D = \begin{pmatrix} d_1 & 0 & \cdots & 0 \\ 0 & d_2 & \cdots & 0 \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \cdots & d_n \end{pmatrix}$$
+:::
+
+::: definition Matrice triangulaire supérieure
+Tous les coefficients sous la diagonale sont nuls
+
+$$T = \begin{pmatrix} t_{11} & t_{12} & t_{13} \\ 0 & t_{22} & t_{23} \\ 0 & 0 & t_{33} \end{pmatrix}$$
+:::
+
+::: exemple 1 - Matrice identité d'ordre 2
+$$I_2 = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}$$
+:::
+
+::: exemple 2 - Matrice diagonale
+$$D = \begin{pmatrix} 3 & 0 & 0 \\ 0 & -2 & 0 \\ 0 & 0 & 5 \end{pmatrix}$$
+:::
+
+::: exemple 3 - Matrice triangulaire supérieure
+$$T = \begin{pmatrix} 1 & 2 & 3 \\ 0 & 4 & 5 \\ 0 & 0 & 6 \end{pmatrix}$$
+:::
+
+## II. Opérations sur les matrices
+
+### Égalité de matrices
+
+::: definition
+Deux matrices $A$ et $B$ sont égales si et seulement si :
+
+- Elles ont la même taille ($\displaystyle m \times n$)
+- Tous leurs coefficients sont égaux : $a_{ij} = b_{ij}$ pour tout $i, j$
+:::
+
+### Addition de matrices
+
+::: definition
+La somme de deux matrices $A$ et $B$ de même taille $m \times n$ est la matrice $C$ de taille $m \times n$ définie par :
+
+$$c_{ij} = a_{ij} + b_{ij} \quad \text{pour tout } i, j$$
+:::
+
+::: propriete
+- **Commutativité :** $\displaystyle A + B = B + A$
+- **Associativité :** $\displaystyle (A + B) + C = A + (B + C)$
+- **Élément neutre :** $\displaystyle A + 0 = A$
+- **Opposé :** $A + (-A) = 0$ où $(-A)_{ij} = -a_{ij}$
+:::
+
+::: exemple
+Addition de deux matrices $\displaystyle 2 \times 3$
+
+$$\begin{pmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{pmatrix} + \begin{pmatrix} 2 & -1 & 0 \\ 3 & 1 & -2 \end{pmatrix} = \begin{pmatrix} 3 & 1 & 3 \\ 7 & 6 & 4 \end{pmatrix}$$
+:::
+
+::: attention
+On ne peut additionner que des matrices de **même taille** !
+:::
+
+### Multiplication par un scalaire
+
+::: definition
+Le produit d'une matrice $A$ de taille $m \times n$ par un scalaire $\lambda \in \mathbb{R}$ est la matrice $B$ définie par :
+
+$$b_{ij} = \lambda \cdot a_{ij} \quad \text{pour tout } i, j$$
+:::
+
+::: propriete
+- $\displaystyle \lambda(A + B) = \lambda A + \lambda B$
+- $\displaystyle (\lambda + \mu)A = \lambda A + \mu A$
+- $\displaystyle \lambda(\mu A) = (\lambda \mu)A$
+- $1 \cdot A = A$ et $0 \cdot A = 0$
+:::
+
+::: exemple
+Multiplication par $\displaystyle \lambda = 3$
+
+$$3 \times \begin{pmatrix} 1 & 2 \\ -1 & 4 \end{pmatrix} = \begin{pmatrix} 3 & 6 \\ -3 & 12 \end{pmatrix}$$
+:::
+
+### Produit matriciel
+
+::: definition
+Le produit de deux matrices $A$ de taille $m \times n$ et $B$ de taille $n \times p$ est la matrice $C = AB$ de taille $m \times p$ définie par :
+
+$$
+\begin{aligned}
+c_{ij} &= \sum_{k=1}^{n} a_{ik} \cdot b_{kj} \\
+&= a_{i1}b_{1j} + a_{i2}b_{2j} + \cdots + a_{in}b_{nj}
+\end{aligned}
+$$
+
+**Condition :** Le nombre de colonnes de $A$ doit égaler le nombre de lignes de $B$.
+:::
+
+::: methode
+1. Le coefficient $c_{ij}$ est le produit scalaire de la ligne $i$ de $A$ par la colonne $j$ de $B$
+2. On multiplie terme à terme et on additionne
+3. Vérifier la compatibilité des tailles avant de commencer
+:::
+
+::: exemple
+Calculer $AB$ avec $A = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}$ et $B = \begin{pmatrix} 5 & 6 \\ 7 & 8 \end{pmatrix}$
+
+- $\displaystyle c_{11} = 1 \times 5 + 2 \times 7 = 5 + 14 = 19$
+- $\displaystyle c_{12} = 1 \times 6 + 2 \times 8 = 6 + 16 = 22$
+- $\displaystyle c_{21} = 3 \times 5 + 4 \times 7 = 15 + 28 = 43$
+- $\displaystyle c_{22} = 3 \times 6 + 4 \times 8 = 18 + 32 = 50$
+
+::: resultat
+$$AB = \begin{pmatrix} 19 & 22 \\ 43 & 50 \end{pmatrix}$$
+:::
+:::
+
+::: attention
+Le produit matriciel n'est **PAS commutatif** !
+
+En général : $\displaystyle AB \neq BA$
+:::
+
+::: propriete
+- **Associativité :** $\displaystyle (AB)C = A(BC)$
+- **Distributivité à gauche :** $A(B + C) = AB + AC$
+- **Distributivité à droite :** $(A + B)C = AC + BC$
+- **Élément neutre :** $\displaystyle AI_n = I_m A = A$
+- **Non-commutativité :** En général $AB \neq BA$
+:::
+
+## III. Matrice inverse
+
+### Définition de l'inverse
+
+::: definition
+Une matrice carrée $A$ d'ordre $n$ est dite **inversible** s'il existe une matrice $B$ d'ordre $n$ telle que :
+
+$$AB = BA = I_n$$
+
+On note $B = A^{-1}$ la **matrice inverse** de $A$.
+:::
+
+::: propriete
+Si $A$ est inversible, alors son inverse est **unique**.
+:::
+
+::: propriete
+- $\displaystyle (A^{-1})^{-1} = A$
+- $\displaystyle (AB)^{-1} = B^{-1}A^{-1}$ (inversion de l'ordre)
+- $(\lambda A)^{-1} = \dfrac{1}{\lambda} A^{-1}$ pour $\lambda \neq 0$
+- $\displaystyle (I_n)^{-1} = I_n$
+:::
+
+### Inverse d'une matrice 2×2
+
+::: definition Formule
+Pour une matrice $A = \begin{pmatrix} a & b \\ c & d \end{pmatrix}$, si $\det(A) = ad - bc \neq 0$, alors :
+
+$$A^{-1} = \dfrac{1}{ad - bc} \begin{pmatrix} d & -b \\ -c & a \end{pmatrix}$$
+:::
+
+::: methode
+1. Calculer le déterminant $\displaystyle \det(A) = ad - bc$
+2. Vérifier que $\displaystyle \det(A) \neq 0$
+3. Échanger les coefficients diagonaux : $a \leftrightarrow d$
+4. Changer le signe des coefficients anti-diagonaux : $b \to -b$, $c \to -c$
+5. Diviser tous les coefficients par $\det(A)$
+:::
+
+::: exemple
+Calculer l'inverse de $\displaystyle A = \begin{pmatrix} 2 & 3 \\ 1 & 4 \end{pmatrix}$
+
+- **Étape 1 :** Calculer le déterminant : $\det(A) = 2 \times 4 - 3 \times 1 = 8 - 3 = 5 \neq 0$
+- **Étape 2 :** Former la comatrice : $\begin{pmatrix} 4 & -3 \\ -1 & 2 \end{pmatrix}$
+- **Étape 3 :** Diviser par le déterminant : $A^{-1} = \dfrac{1}{5} \begin{pmatrix} 4 & -3 \\ -1 & 2 \end{pmatrix} = \begin{pmatrix} \frac{4}{5} & -\frac{3}{5} \\ -\frac{1}{5} & \frac{2}{5} \end{pmatrix}$
+
+::: remarque Vérification
+$$AA^{-1} = \begin{pmatrix} 2 & 3 \\ 1 & 4 \end{pmatrix} \begin{pmatrix} \frac{4}{5} & -\frac{3}{5} \\ -\frac{1}{5} & \frac{2}{5} \end{pmatrix} = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix} = I_2$$
+:::
+:::
+
+## IV. Déterminants
+
+### Déterminant d'une matrice 2×2
+
+::: definition
+Pour $\displaystyle A = \begin{pmatrix} a & b \\ c & d \end{pmatrix}$, le déterminant est :
+
+$$\det(A) = \begin{vmatrix} a & b \\ c & d \end{vmatrix} = ad - bc$$
+:::
+
+::: exemple
+$$\det\begin{pmatrix} 3 & 5 \\ 2 & 4 \end{pmatrix} = 3 \times 4 - 5 \times 2 = 12 - 10 = 2$$
+:::
+
+### Déterminant d'une matrice 3×3
+
+::: definition Développement selon la première ligne
+Pour $\displaystyle A = \begin{pmatrix} a & b & c \\ d & e & f \\ g & h & i \end{pmatrix}$ :
+
+$$\begin{aligned} \det(A) &= a \begin{vmatrix} e & f \\ h & i \end{vmatrix} - b \begin{vmatrix} d & f \\ g & i \end{vmatrix} + c \begin{vmatrix} d & e \\ g & h \end{vmatrix} \\ &= a(ei - fh) - b(di - fg) + c(dh - eg) \\ &= aei + bfg + cdh - ceg - afh - bdi \end{aligned}$$
+:::
+
+::: methode Visuelle (Sarrus)
+1. Recopier les deux premières colonnes à droite de la matrice
+2. Additionner les produits des diagonales descendantes (3 termes)
+3. Soustraire les produits des diagonales montantes (3 termes)
+:::
+
+::: exemple
+Calculer $\displaystyle \det\begin{pmatrix} 1 & 2 & 3 \\ 0 & 1 & 4 \\ 5 & 6 & 0 \end{pmatrix}$
+
+::: etape 1 : Recopier les deux premières colonnes à droite
+On « prolonge » la matrice :
+
+$$\begin{array}{ccc|cc} 1 & 2 & 3 & 1 & 2 \\ 0 & 1 & 4 & 0 & 1 \\ 5 & 6 & 0 & 5 & 6 \end{array}$$
+:::
+
+::: etape 2 : Somme des diagonales descendantes (↘)
+- $\displaystyle 1 \times 1 \times 0 = 0$
+- $\displaystyle 2 \times 4 \times 5 = 40$
+- $\displaystyle 3 \times 0 \times 6 = 0$
+
+**Somme descendante = $\displaystyle 0 + 40 + 0 = 40$**
+:::
+
+::: etape 3 : Somme des diagonales montantes (↗)
+- $\displaystyle 5 \times 1 \times 3 = 15$
+- $\displaystyle 6 \times 4 \times 1 = 24$
+- $\displaystyle 0 \times 0 \times 2 = 0$
+
+**Somme montante = $\displaystyle 15 + 24 + 0 = 39$**
+:::
+
+::: etape 4 : Déterminant (descendantes - montantes)
+$$\det(A) = 40 - 39 = 1$$
+:::
+:::
+
+::: attention
+La règle de Sarrus ne fonctionne **que pour les matrices 3×3**. Pour les matrices d'ordre supérieur, on utilise le développement par cofacteurs.
+:::
+
+### Propriétés des déterminants
+
+::: propriete
+- **Produit :** $\displaystyle \det(AB) = \det(A) \times \det(B)$
+- **Scalaire :** $\det(\lambda A) = \lambda^n \det(A)$ (pour une matrice d'ordre $n$)
+- **Inverse :** $\displaystyle \det(A^{-1}) = \dfrac{1}{\det(A)}$
+- **Transposée :** $\displaystyle \det(A^T) = \det(A)$
+- **Identité :** $\displaystyle \det(I_n) = 1$
+:::
+
+::: remarque Critère d'inversibilité
+Une matrice carrée $A$ est inversible si et seulement si $\det(A) \neq 0$.
+:::
+
+::: attention Transformations qui modifient le déterminant
+- Échanger deux lignes : le déterminant change de signe
+- Multiplier une ligne par $\lambda$ : le déterminant est multiplié par $\lambda$
+- Ajouter à une ligne un multiple d'une autre : le déterminant ne change pas
+:::
+
+## V. Systèmes linéaires
+
+### Écriture matricielle
+
+::: definition
+Un système de $n$ équations à $n$ inconnues peut s'écrire sous forme matricielle :
+
+$$AX = B$$
+
+où $A$ est la matrice des coefficients, $X$ la matrice colonne des inconnues et $B$ la matrice colonne des seconds membres.
+:::
+
+::: exemple
+Le système $\displaystyle \begin{cases} 2x + 3y = 5 \\ x + 4y = 6 \end{cases}$ s'écrit :
+
+$$\begin{pmatrix} 2 & 3 \\ 1 & 4 \end{pmatrix} \begin{pmatrix} x \\ y \end{pmatrix} = \begin{pmatrix} 5 \\ 6 \end{pmatrix}$$
+:::
+
+### Résolution par inversion de matrice
+
+::: theoreme
+Si la matrice $A$ est inversible (c'est-à-dire $\det(A) \neq 0$), alors le système $AX = B$ admet une unique solution :
+
+::: formule
+$$X = A^{-1}B$$
+:::
+:::
+
+::: methode
+1. Écrire le système sous forme matricielle $AX = B$
+2. Calculer $\det(A)$ et vérifier que $\det(A) \neq 0$
+3. Calculer la matrice inverse $\displaystyle A^{-1}$
+4. Multiplier les deux membres par $A^{-1}$ : $X = A^{-1}B$
+5. Effectuer le produit matriciel pour obtenir la solution
+:::
+
+::: exemple
+Résoudre $\displaystyle \begin{cases} 2x + 3y = 5 \\ x + 4y = 6 \end{cases}$
+
+**Étape 1 : Forme matricielle**
+
+$$\begin{pmatrix} 2 & 3 \\ 1 & 4 \end{pmatrix} \begin{pmatrix} x \\ y \end{pmatrix} = \begin{pmatrix} 5 \\ 6 \end{pmatrix}$$
+
+**Étape 2 : Déterminant**
+
+$$\det(A) = 2 \times 4 - 3 \times 1 = 5 \neq 0$$
+
+**Étape 3 : Inverse**
+
+$$A^{-1} = \dfrac{1}{5} \begin{pmatrix} 4 & -3 \\ -1 & 2 \end{pmatrix}$$
+
+**Étape 4 : Solution**
+
+- $\displaystyle X = A^{-1}B = \dfrac{1}{5} \begin{pmatrix} 4 & -3 \\ -1 & 2 \end{pmatrix} \begin{pmatrix} 5 \\ 6 \end{pmatrix}$
+- $\displaystyle = \dfrac{1}{5} \begin{pmatrix} 4 \times 5 + (-3) \times 6 \\ -1 \times 5 + 2 \times 6 \end{pmatrix} = \dfrac{1}{5} \begin{pmatrix} 2 \\ 7 \end{pmatrix}$
+- $\displaystyle = \begin{pmatrix} \frac{2}{5} \\ \frac{7}{5} \end{pmatrix}$
+
+::: resultat
+$x = \dfrac{2}{5}$ et $y = \dfrac{7}{5}$
+:::
+:::
+
+## VI. Puissances de matrices
+
+### Définition et propriétés
+
+::: definition
+Pour une matrice carrée $A$ et un entier $n \geq 1$ :
+
+$$A^n = \underbrace{A \times A \times \cdots \times A}_{n \text{ fois}}$$
+
+Par convention : $A^0 = I_n$ et $A^{-n} = (A^{-1})^n$ si $A$ est inversible.
+:::
+
+::: propriete
+- $\displaystyle A^m \times A^n = A^{m+n}$
+- $\displaystyle (A^m)^n = A^{mn}$
+- $\displaystyle \det(A^n) = (\det(A))^n$
+:::
+
+::: exemple
+Calculer $A^3$ pour $A = \begin{pmatrix} 1 & 1 \\ 0 & 1 \end{pmatrix}$
+
+- $\displaystyle A^2 = \begin{pmatrix} 1 & 1 \\ 0 & 1 \end{pmatrix} \begin{pmatrix} 1 & 1 \\ 0 & 1 \end{pmatrix} = \begin{pmatrix} 1 & 2 \\ 0 & 1 \end{pmatrix}$
+- $\displaystyle A^3 = A^2 \times A = \begin{pmatrix} 1 & 2 \\ 0 & 1 \end{pmatrix} \begin{pmatrix} 1 & 1 \\ 0 & 1 \end{pmatrix} = \begin{pmatrix} 1 & 3 \\ 0 & 1 \end{pmatrix}$
+
+::: remarque Conjecture
+$\displaystyle A^n = \begin{pmatrix} 1 & n \\ 0 & 1 \end{pmatrix}$ (démontrable par récurrence)
+:::
+:::
+
+## VII. Transformations géométriques du plan
+
+### Matrices de transformation
+
+::: methode
+Une transformation linéaire du plan peut être représentée par une matrice $2 \times 2$.
+
+Si $M(x, y)$ est transformé en $M'(x', y')$, alors :
+
+$$\begin{pmatrix} x' \\ y' \end{pmatrix} = A \begin{pmatrix} x \\ y \end{pmatrix}$$
+:::
+
+| Transformation | Matrice | Effet |
+|---|---|---|
+| Rotation d'angle $\displaystyle \theta$ | $\displaystyle \begin{pmatrix} \cos\theta & -\sin\theta \\ \sin\theta & \cos\theta \end{pmatrix}$ | Centre O, angle $\displaystyle \theta$ |
+| Symétrie/axe Ox | $\displaystyle \begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix}$ | Symétrie par rapport à l'axe des abscisses |
+| Symétrie/axe Oy | $\displaystyle \begin{pmatrix} -1 & 0 \\ 0 & 1 \end{pmatrix}$ | Symétrie par rapport à l'axe des ordonnées |
+| Homothétie de rapport $\displaystyle k$ | $\displaystyle \begin{pmatrix} k & 0 \\ 0 & k \end{pmatrix}$ | Agrandissement/réduction de facteur $\displaystyle k$ |
+| Projection sur Ox | $\displaystyle \begin{pmatrix} 1 & 0 \\ 0 & 0 \end{pmatrix}$ | $\displaystyle (x, y) \mapsto (x, 0)$ |
+
+::: exemple
+Rotation de $90°$ appliquée au point $M(2, 1)$
+
+- **Matrice de rotation :** $\displaystyle R = \begin{pmatrix} \cos 90° & -\sin 90° \\ \sin 90° & \cos 90° \end{pmatrix} = \begin{pmatrix} 0 & -1 \\ 1 & 0 \end{pmatrix}$
+- **Calcul :** $\displaystyle \begin{pmatrix} x' \\ y' \end{pmatrix} = \begin{pmatrix} 0 & -1 \\ 1 & 0 \end{pmatrix} \begin{pmatrix} 2 \\ 1 \end{pmatrix} = \begin{pmatrix} -1 \\ 2 \end{pmatrix}$
+- **Image :** $\displaystyle M'(-1, 2)$
+:::
+
+## VIII. Suites matricielles
+
+### Définition et étude
+
+::: definition
+Une suite de matrices $(A_n)$ est une suite dont chaque terme est une matrice.
+
+Forme récurrente : $A_{n+1} = MA_n$ où $M$ est une matrice constante.
+:::
+
+::: methode
+1. Calculer les premières puissances de $M$ : $M^2, M^3, \ldots$
+2. Chercher une formule générale pour $M^n$
+3. Démontrer par récurrence si nécessaire
+4. En déduire $\displaystyle A_n = M^n A_0$
+:::
+
+::: exemple
+Soit $\displaystyle M = \begin{pmatrix} 2 & 0 \\ 0 & 3 \end{pmatrix}$ (matrice diagonale)
+
+- $\displaystyle M^2 = \begin{pmatrix} 4 & 0 \\ 0 & 9 \end{pmatrix}$
+- $\displaystyle M^3 = \begin{pmatrix} 8 & 0 \\ 0 & 27 \end{pmatrix}$
+- **Formule générale :** $\displaystyle M^n = \begin{pmatrix} 2^n & 0 \\ 0 & 3^n \end{pmatrix}$
+
+::: propriete
+Pour une matrice diagonale, $D^n$ est obtenue en élevant chaque coefficient diagonal à la puissance $n$.
+:::
+:::
+
+## IX. Graphes et matrices
+
+### Définition d'un graphe
+
+::: definition
+Un **graphe** est un ensemble de **sommets** reliés par des **arêtes**.
+
+- **Graphe non orienté :** Les arêtes n'ont pas de direction
+- **Graphe orienté :** Les arêtes ont une direction (on parle d'arcs)
+:::
+
+::: notation
+Un graphe $G$ se note $G = (S, A)$ où :
+
+- $\displaystyle S = \{s_1, s_2, \ldots, s_n\}$ est l'ensemble des sommets
+- $A$ est l'ensemble des arêtes (ou arcs)
+:::
+
+### Matrice d'adjacence
+
+::: definition
+La **matrice d'adjacence** d'un graphe à $n$ sommets est une matrice carrée $A \in \mathcal{M}_n(\mathbb{R})$ définie par :
+
+$$a_{ij} = \begin{cases} 1 & \text{s'il existe une arête de } s_i \text{ vers } s_j \\ 0 & \text{sinon} \end{cases}$$
+:::
+
+::: propriete
+- **Graphe non orienté :** La matrice est symétrique ($a_{ij} = a_{ji}$)
+- **Graphe simple :** Les coefficients diagonaux sont nuls (pas de boucle)
+- **Degré d'un sommet :** La somme de la ligne $i$ donne le degré sortant du sommet $s_i$
+:::
+
+::: conseil
+Pour construire la matrice d'adjacence :
+
+- Dessiner d'abord le graphe
+- Numéroter les sommets de 1 à $\displaystyle n$
+- Pour chaque case $(i, j)$ : mettre 1 (ou le poids) s'il y a un arc de $i$ vers $j$, sinon 0
+:::
+
+::: exemple 1 - Graphe orienté
+Graphe à 5 sommets (A, B, C, D, E) avec les arcs : $A \to B$, $C \to B$, $C \to D$, $C \to E$, $D \to A$, $D \to B$, $D \to C$, $D \to E$
+
+[IMAGE_1]
+
+**Matrice d'adjacence :**
+
+$$A = \begin{pmatrix} 0 & 1 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 & 0 \\ 0 & 1 & 0 & 1 & 1 \\ 1 & 1 & 1 & 0 & 1 \\ 0 & 0 & 0 & 0 & 0 \end{pmatrix}$$
+
+- Matrice **non symétrique** : certains arcs sont unidirectionnels
+- Le sommet D a le degré sortant le plus élevé : 4 arcs (vers A, B, C, E)
+- Arc bidirectionnel : C ↔ D (C→D et D→C)
+:::
+
+::: exemple 2 - Graphe non orienté
+Graphe à 5 sommets (A, B, C, D, E) avec les arêtes : $\{A, B\}$, $\{A, D\}$, $\{B, C\}$, $\{B, D\}$, $\{C, D\}$, $\{C, E\}$, $\{D, E\}$
+
+[IMAGE_2]
+
+**Matrice d'adjacence :**
+
+$$A = \begin{pmatrix} 0 & 1 & 0 & 1 & 0 \\ 1 & 0 & 1 & 1 & 0 \\ 0 & 1 & 0 & 1 & 1 \\ 1 & 1 & 1 & 0 & 1 \\ 0 & 0 & 1 & 1 & 0 \end{pmatrix}$$
+
+- Matrice **symétrique** : $a_{ij} = a_{ji}$ (arêtes non orientées)
+- Le degré du sommet D est 4 (relié à A, B, C et E)
+- Le degré du sommet B est 3 (relié à A, C et D)
+:::
+
+::: exemple 3 - Graphe pondéré (non orienté)
+Graphe à 5 sommets (A, B, C, D, E) avec arêtes pondérées : $\{A, B\}$ (poids 3), $\{A, D\}$ (poids 7), $\{B, C\}$ (poids 10), $\{B, D\}$ (poids 9), $\{C, D\}$ (poids 15), $\{C, E\}$ (poids 5), $\{D, E\}$ (poids 12)
+
+[IMAGE_3]
+
+**Matrice d'adjacence pondérée :**
+
+$$A = \begin{pmatrix} 0 & 3 & 0 & 7 & 0 \\ 3 & 0 & 10 & 9 & 0 \\ 0 & 10 & 0 & 15 & 5 \\ 7 & 9 & 15 & 0 & 12 \\ 0 & 0 & 5 & 12 & 0 \end{pmatrix}$$
+
+- Matrice **symétrique** : $a_{ij} = a_{ji}$ (graphe non orienté)
+- Les coefficients représentent le **poids** (coût, distance, temps) de l'arête
+- $a_{AB} = 3$ : l'arête entre A et B a un poids de 3
+- $a_{ij} = 0$ : pas d'arête directe entre $i$ et $j$
+:::
+
+### Chemins et puissances de matrices
+
+::: theoreme
+Si $A$ est la matrice d'adjacence d'un graphe, alors le coefficient $(A^k)_{ij}$ compte le **nombre de chemins de longueur $k$** du sommet $s_i$ au sommet $s_j$.
+:::
+
+::: remarque Interprétation
+- $\displaystyle A^1 = A$ : chemins directs (longueur 1)
+- $A^2$ : chemins de longueur 2 (avec 1 sommet intermédiaire)
+- $A^k$ : chemins de longueur $k$ (avec $k-1$ sommets intermédiaires)
+:::
+
+::: exemple
+Pour le graphe précédent, calculons $A^2$
+
+**Calcul :**
+
+$$A^2 = \begin{pmatrix} 0 & 1 & 0 \\ 0 & 0 & 1 \\ 1 & 0 & 0 \end{pmatrix} \begin{pmatrix} 0 & 1 & 0 \\ 0 & 0 & 1 \\ 1 & 0 & 0 \end{pmatrix} = \begin{pmatrix} 0 & 0 & 1 \\ 1 & 0 & 0 \\ 0 & 1 & 0 \end{pmatrix}$$
+
+**Interprétation :**
+
+Il y a 1 chemin de longueur 2 de chaque sommet vers chaque sommet (le graphe est un cycle)
+:::
+
+### Graphes connexes et fortement connexes
+
+::: definition
+- **Graphe connexe (non orienté) :** Il existe un chemin entre toute paire de sommets
+- **Graphe fortement connexe (orienté) :** Il existe un chemin orienté entre toute paire de sommets dans les deux sens
+:::
+
+::: exemple 4 - Graphe connexe vs non connexe
+[IMAGE_4]
+
+**Graphe connexe :** Tous les sommets sont reliés entre eux par au moins un chemin
+
+**Graphe non connexe :** Il existe au moins deux sommets sans chemin les reliant
+:::
+
+::: exemple 5 - Graphe fortement connexe
+[IMAGE_5]
+
+**Critère :** Un graphe orienté est fortement connexe si pour toute paire de sommets $(i, j)$, il existe un chemin orienté de $i$ vers $j$ ET un chemin orienté de $j$ vers $i$
+:::
+
+::: methode Critère matriciel
+Un graphe à $n$ sommets est fortement connexe si et seulement si :
+
+$$A + A^2 + A^3 + \cdots + A^{n-1}$$
+
+ne contient aucun coefficient nul.
+:::
+
+## X. Erreurs fréquentes et conseils
+
+::: attention À éviter
+- Penser que $AB = BA$ (le produit matriciel n'est pas commutatif)
+- Oublier de vérifier la compatibilité des tailles avant de multiplier
+- Confondre $A^{-1}$ et $\dfrac{1}{A}$ (qui n'a pas de sens)
+- Penser que $AB = 0 \Rightarrow A = 0$ ou $B = 0$ (faux !)
+- Oublier que $\det(\lambda A) = \lambda^n \det(A)$ et non $\lambda \det(A)$
+- Inverser l'ordre dans $\displaystyle (AB)^{-1} = B^{-1}A^{-1}$
+- Appliquer la règle de Sarrus aux matrices d'ordre $\geq 4$ (elle ne marche que pour les $3 \times 3$)
+- Confondre la matrice d'adjacence d'un graphe orienté et non orienté
+- Oublier que dans un graphe simple, les coefficients diagonaux de la matrice d'adjacence sont nuls
+:::
+
+::: conseil
+- Toujours **vérifier les tailles** avant de faire une opération
+- Pour le produit matriciel, calculer **ligne × colonne**
+- Calculer le **déterminant d'abord** pour savoir si une matrice est inversible
+- Pour les puissances, chercher une **formule générale** par le calcul de quelques termes
+- Utiliser la **récurrence** pour démontrer les formules de puissances
+- Pour les systèmes, vérifier que $\det(A) \neq 0$ avant d'inverser
+- Toujours **vérifier le résultat** en calculant $AA^{-1}$
+- Pour les transformations géométriques, bien **identifier la matrice** associée
+- Pour les graphes, **dessiner le graphe** avant d'écrire la matrice d'adjacence
+- Utiliser les **puissances de matrices** pour compter les chemins dans un graphe
+:::

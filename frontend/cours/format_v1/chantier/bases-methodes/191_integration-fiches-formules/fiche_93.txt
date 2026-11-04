@@ -1,0 +1,219 @@
+Titre: Résumé : Intégration : primitives, intégrales et méthodes
+
+<!-- optitab:1 -->
+## Intégration : primitives, intégrales définies et méthodes de calcul
+
+## I. Qu'est-ce qu'une primitive ? Définitions fondamentales
+
+| Notion | Définition |
+|---|---|
+| **Primitive** | $\displaystyle F$ est une primitive de $\displaystyle f$ sur $\displaystyle I$ si $\displaystyle F'(x) = f(x)$ pour tout $\displaystyle x \in I$ |
+| **Ensemble des primitives** | Si $\displaystyle F$ est une primitive de $\displaystyle f$, alors toutes les primitives sont de la forme $\displaystyle F(x) + C$ où $\displaystyle C \in \mathbb{R}$ |
+| **Intégrale définie** | $\displaystyle \int_a^b f(x)\,dx = [F(x)]_a^b = F(b) - F(a)$ |
+| **Interprétation géométrique** | Aire algébrique entre la courbe de $\displaystyle f$ et l'axe des abscisses entre $\displaystyle a$ et $\displaystyle b$ |
+
+## II. Propriétés de l'intégrale
+
+| Propriété | Formule |
+|---|---|
+| **Linéarité** | $\displaystyle \int_a^b [kf(x) + lg(x)]\,dx = k\int_a^b f(x)\,dx + l\int_a^b g(x)\,dx$ |
+| **Relation de Chasles** | $\displaystyle \int_a^b f(x)\,dx = \int_a^c f(x)\,dx + \int_c^b f(x)\,dx$ |
+| **Inversion des bornes** | $\displaystyle \int_a^b f(x)\,dx = -\int_b^a f(x)\,dx$ |
+| **Intégrale nulle** | $\displaystyle \int_a^a f(x)\,dx = 0$ |
+| **Positivité** | Si $\displaystyle f(x) \geq 0$ sur $\displaystyle [a,b]$, alors $\displaystyle \int_a^b f(x)\,dx \geq 0$ |
+| **Inégalité** | Si $\displaystyle f(x) \leq g(x)$ sur $\displaystyle [a,b]$, alors $\displaystyle \int_a^b f(x)\,dx \leq \int_a^b g(x)\,dx$ |
+
+## III. Primitives des fonctions usuelles
+
+| Fonction $\displaystyle f(x)$ | Primitive $\displaystyle F(x)$ | Domaine |
+|---|---|---|
+| $\displaystyle k$ (constante) | $\displaystyle kx$ | $\displaystyle \mathbb{R}$ |
+| $\displaystyle x^n$ ($\displaystyle n \in \mathbb{N}$) | $\displaystyle \dfrac{x^{n+1}}{n+1}$ | $\displaystyle \mathbb{R}$ |
+| $\displaystyle \dfrac{1}{x}$ | $\displaystyle \ln|x|$ | $\displaystyle \mathbb{R}^\ast$ |
+| $\displaystyle \dfrac{1}{x^n}$ ($\displaystyle n \geq 2$) | $\displaystyle -\dfrac{1}{(n-1)x^{n-1}}$ | $\displaystyle \mathbb{R}^\ast$ |
+| $\displaystyle \dfrac{1}{\sqrt{x}}$ | $\displaystyle 2\sqrt{x}$ | $\displaystyle ]0, +\infty[$ |
+| $\displaystyle \sqrt{x}$ | $\displaystyle \dfrac{2x^{3/2}}{3}$ | $\displaystyle ]0, +\infty[$ |
+| $\displaystyle e^x$ | $\displaystyle e^x$ | $\displaystyle \mathbb{R}$ |
+| $\displaystyle \cos(x)$ | $\displaystyle \sin(x)$ | $\displaystyle \mathbb{R}$ |
+| $\displaystyle \sin(x)$ | $\displaystyle -\cos(x)$ | $\displaystyle \mathbb{R}$ |
+| $\displaystyle \dfrac{1}{\cos^2(x)}$ ou $\displaystyle 1 + \tan^2(x)$ | $\displaystyle \tan(x)$ | $\displaystyle \mathbb{R} \setminus \{\frac{\pi}{2} + k\pi\}$ |
+
+::: attention
+La primitive de $\sin(x)$ est $-\cos(x)$ (ne pas oublier le signe $-$)
+:::
+
+## IV. Primitives de fonctions composées
+
+| Fonction | Primitive |
+|---|---|
+| $\displaystyle u'(x) \cdot u(x)^n$ ($\displaystyle n \neq -1$) | $\displaystyle \dfrac{u(x)^{n+1}}{n+1}$ |
+| $\displaystyle \dfrac{u'(x)}{u(x)}$ (si $\displaystyle u(x) \neq 0$) | $\displaystyle \ln|u(x)|$ |
+| $\displaystyle u'(x) \cdot e^{u(x)}$ | $\displaystyle e^{u(x)}$ |
+| $\displaystyle u'(x) \cdot \cos(u(x))$ | $\displaystyle \sin(u(x))$ |
+| $\displaystyle u'(x) \cdot \sin(u(x))$ | $\displaystyle -\cos(u(x))$ |
+| $\displaystyle \dfrac{u'(x)}{\sqrt{u(x)}}$ (si $\displaystyle u(x) > 0$) | $\displaystyle 2\sqrt{u(x)}$ |
+
+| Exemples pratiques |
+|---|
+| **1.** $\displaystyle \int 2x(x^2 + 1)^3\,dx = \dfrac{(x^2+1)^4}{4} + C$ (car $\displaystyle u'(x) = 2x$ et $\displaystyle u(x) = x^2 + 1$) <br> <br> **2.** $\displaystyle \int \dfrac{2x}{x^2 + 1}\,dx = \ln|x^2 + 1| + C = \ln(x^2 + 1) + C$ <br> <br> **3.** $\displaystyle \int 3x^2 e^{x^3}\,dx = e^{x^3} + C$ <br> <br> **4.** $\displaystyle \int 2x\cos(x^2)\,dx = \sin(x^2) + C$ <br> <br> **5.** $\displaystyle \int \dfrac{1}{2x+3}\,dx = \dfrac{1}{2}\ln|2x+3| + C$ |
+
+## V. Méthodes d'intégration
+
+### 1. Intégration par parties
+
+| Formule |
+|---|
+| $\displaystyle \int_a^b u'(x)v(x)\,dx = [u(x)v(x)]_a^b - \int_a^b u(x)v'(x)\,dx$ <br> <br> Ou de manière équivalente : $\displaystyle \int u\,dv = uv - \int v\,du$ |
+
+| Exemple : $\displaystyle \int x e^x\,dx$ |
+|---|
+| On pose $\displaystyle u(x) = x$ et $\displaystyle v'(x) = e^x$ <br> Donc $\displaystyle u'(x) = 1$ et $\displaystyle v(x) = e^x$ <br> <br> $\displaystyle \int x e^x\,dx = x e^x - \int 1 \cdot e^x\,dx = x e^x - e^x + C = (x-1)e^x + C$ |
+
+### 2. Changement de variable
+
+| Formule |
+|---|
+| Si $\displaystyle x = \varphi(t)$ avec $\displaystyle \varphi$ bijective et dérivable : <br> <br> $\displaystyle \int_a^b f(x)\,dx = \int_{\varphi^{-1}(a)}^{\varphi^{-1}(b)} f(\varphi(t))\varphi'(t)\,dt$ |
+
+| Exemple : $\displaystyle \int \dfrac{1}{\sqrt{1-x^2}}\,dx$ |
+|---|
+| On pose $\displaystyle x = \sin(t)$, donc $\displaystyle dx = \cos(t)\,dt$ <br> <br> $\displaystyle \int \dfrac{1}{\sqrt{1-x^2}}\,dx = \int \dfrac{\cos(t)}{\sqrt{1-\sin^2(t)}}\,dt = \int \dfrac{\cos(t)}{|\cos(t)|}\,dt = \int 1\,dt = t + C = \arcsin(x) + C$ |
+
+## VI. Tableau récapitulatif complet des primitives (Lycée → Master)
+
+### 1. Fonctions de base (Lycée)
+
+| Fonction | Primitive | Conditions |
+|---|---|---|
+| $\displaystyle k$ (constante) | $\displaystyle kx$ | — |
+| $\displaystyle x^n$ ($\displaystyle n \in \mathbb{N}$) | $\displaystyle \dfrac{x^{n+1}}{n+1}$ | $\displaystyle n \geq 0$ |
+| $\displaystyle x^\alpha$ ($\displaystyle \alpha \in \mathbb{R}$, $\displaystyle \alpha \neq -1$) | $\displaystyle \dfrac{x^{\alpha+1}}{\alpha+1}$ | $\displaystyle x > 0$ |
+| $\displaystyle \dfrac{1}{x}$ ou $\displaystyle x^{-1}$ | $\displaystyle \ln|x|$ | $\displaystyle x \neq 0$ |
+| $\displaystyle \dfrac{1}{x^n}$ ou $\displaystyle x^{-n}$ ($\displaystyle n \geq 2$) | $\displaystyle -\dfrac{1}{(n-1)x^{n-1}}$ ou $\displaystyle \dfrac{x^{-n+1}}{-n+1}$ | $\displaystyle x \neq 0$ |
+| $\displaystyle \sqrt{x}$ ou $\displaystyle x^{1/2}$ | $\displaystyle \dfrac{2x^{3/2}}{3}$ ou $\displaystyle \dfrac{2x\sqrt{x}}{3}$ | $\displaystyle x > 0$ |
+| $\displaystyle \dfrac{1}{\sqrt{x}}$ ou $\displaystyle x^{-1/2}$ | $\displaystyle 2\sqrt{x}$ | $\displaystyle x > 0$ |
+| $\displaystyle \sqrt[n]{x}$ ou $\displaystyle x^{1/n}$ | $\displaystyle \dfrac{nx^{(n+1)/n}}{n+1}$ | $\displaystyle x > 0$ |
+
+### 2. Fonctions exponentielles et logarithmes (Lycée/Prépa)
+
+| Fonction | Primitive | Conditions |
+|---|---|---|
+| $\displaystyle e^x$ | $\displaystyle e^x$ | — |
+| $\displaystyle e^{ax}$ ($\displaystyle a \neq 0$) | $\displaystyle \dfrac{1}{a}e^{ax}$ | — |
+| $\displaystyle a^x$ ($\displaystyle a > 0$, $\displaystyle a \neq 1$) | $\displaystyle \dfrac{a^x}{\ln(a)}$ | — |
+| $\displaystyle \dfrac{1}{x}$ | $\displaystyle \ln|x|$ | $\displaystyle x \neq 0$ |
+| $\displaystyle \dfrac{1}{ax+b}$ ($\displaystyle a \neq 0$) | $\displaystyle \dfrac{1}{a}\ln|ax+b|$ | $\displaystyle ax+b \neq 0$ |
+| $\displaystyle \ln(x)$ | $\displaystyle x\ln(x) - x$ | $\displaystyle x > 0$ |
+| $\displaystyle x\ln(x)$ | $\displaystyle \dfrac{x^2}{2}\ln(x) - \dfrac{x^2}{4}$ | $\displaystyle x > 0$ |
+| $\displaystyle x^n\ln(x)$ ($\displaystyle n \geq 0$) | $\displaystyle \dfrac{x^{n+1}}{n+1}\ln(x) - \dfrac{x^{n+1}}{(n+1)^2}$ | $\displaystyle x > 0$ |
+
+### 3. Fonctions trigonométriques (Lycée)
+
+| Fonction | Primitive | Conditions |
+|---|---|---|
+| $\displaystyle \cos(x)$ | $\displaystyle \sin(x)$ | — |
+| $\displaystyle \sin(x)$ | $\displaystyle -\cos(x)$ | — |
+| $\displaystyle \cos(ax)$ ($\displaystyle a \neq 0$) | $\displaystyle \dfrac{1}{a}\sin(ax)$ | — |
+| $\displaystyle \sin(ax)$ ($\displaystyle a \neq 0$) | $\displaystyle -\dfrac{1}{a}\cos(ax)$ | — |
+| $\displaystyle \tan(x)$ | $\displaystyle -\ln|\cos(x)|$ | $\displaystyle \cos(x) \neq 0$ |
+| $\displaystyle \dfrac{1}{\cos^2(x)}$ ou $\displaystyle 1 + \tan^2(x)$ | $\displaystyle \tan(x)$ | $\displaystyle \cos(x) \neq 0$ |
+| $\displaystyle \dfrac{1}{\sin^2(x)}$ ou $\displaystyle 1 + \cot^2(x)$ | $\displaystyle -\cot(x)$ | $\displaystyle \sin(x) \neq 0$ |
+| $\displaystyle \cos^2(x)$ | $\displaystyle \dfrac{x}{2} + \dfrac{\sin(2x)}{4}$ | — |
+| $\displaystyle \sin^2(x)$ | $\displaystyle \dfrac{x}{2} - \dfrac{\sin(2x)}{4}$ | — |
+| $\displaystyle \cos(x)\sin(x)$ | $\displaystyle \dfrac{\sin^2(x)}{2}$ ou $\displaystyle -\dfrac{\cos^2(x)}{2}$ | — |
+
+### 4. Fonctions trigonométriques inverses (Prépa/Licence)
+
+| Fonction | Primitive | Conditions |
+|---|---|---|
+| $\displaystyle \dfrac{1}{\sqrt{1-x^2}}$ | $\displaystyle \arcsin(x)$ | $\displaystyle |x| < 1$ |
+| $\displaystyle -\dfrac{1}{\sqrt{1-x^2}}$ | $\displaystyle \arccos(x)$ | $\displaystyle |x| < 1$ |
+| $\displaystyle \dfrac{1}{1+x^2}$ | $\displaystyle \arctan(x)$ | — |
+| $\displaystyle -\dfrac{1}{1+x^2}$ | $\displaystyle \text{arccot}(x)$ | — |
+| $\displaystyle \arcsin(x)$ | $\displaystyle x\arcsin(x) + \sqrt{1-x^2}$ | $\displaystyle |x| \leq 1$ |
+| $\displaystyle \arccos(x)$ | $\displaystyle x\arccos(x) - \sqrt{1-x^2}$ | $\displaystyle |x| \leq 1$ |
+| $\displaystyle \arctan(x)$ | $\displaystyle x\arctan(x) - \dfrac{1}{2}\ln(1+x^2)$ | — |
+
+### 5. Fonctions hyperboliques (Prépa/Licence)
+
+| Fonction | Primitive | Conditions |
+|---|---|---|
+| $\displaystyle \sinh(x)$ | $\displaystyle \cosh(x)$ | — |
+| $\displaystyle \cosh(x)$ | $\displaystyle \sinh(x)$ | — |
+| $\displaystyle \tanh(x)$ | $\displaystyle \ln(\cosh(x))$ | — |
+| $\displaystyle \dfrac{1}{\cosh^2(x)}$ | $\displaystyle \tanh(x)$ | — |
+| $\displaystyle \dfrac{1}{\sinh^2(x)}$ | $\displaystyle -\text{coth}(x)$ | $\displaystyle x \neq 0$ |
+| $\displaystyle \cosh^2(x)$ | $\displaystyle \dfrac{x}{2} + \dfrac{\sinh(2x)}{4}$ | — |
+| $\displaystyle \sinh^2(x)$ | $\displaystyle -\dfrac{x}{2} + \dfrac{\sinh(2x)}{4}$ | — |
+
+### 6. Fonctions hyperboliques inverses (Prépa/Licence)
+
+| Fonction | Primitive | Conditions |
+|---|---|---|
+| $\displaystyle \dfrac{1}{\sqrt{x^2+1}}$ | $\displaystyle \text{argsinh}(x) = \ln(x + \sqrt{x^2+1})$ | — |
+| $\displaystyle \dfrac{1}{\sqrt{x^2-1}}$ | $\displaystyle \text{argcosh}(x) = \ln(x + \sqrt{x^2-1})$ | $\displaystyle x > 1$ |
+| $\displaystyle \dfrac{1}{1-x^2}$ | $\displaystyle \text{argtanh}(x) = \dfrac{1}{2}\ln\left(\dfrac{1+x}{1-x}\right)$ | $\displaystyle |x| < 1$ |
+| $\displaystyle \text{argsinh}(x)$ | $\displaystyle x\text{argsinh}(x) - \sqrt{x^2+1}$ | — |
+| $\displaystyle \text{argcosh}(x)$ | $\displaystyle x\text{argcosh}(x) - \sqrt{x^2-1}$ | $\displaystyle x > 1$ |
+| $\displaystyle \text{argtanh}(x)$ | $\displaystyle x\text{argtanh}(x) + \dfrac{1}{2}\ln(1-x^2)$ | $\displaystyle |x| < 1$ |
+
+### 7. Fractions rationnelles (Prépa/Licence)
+
+| Fonction | Primitive | Conditions |
+|---|---|---|
+| $\displaystyle \dfrac{1}{x^2+a^2}$ ($\displaystyle a > 0$) | $\displaystyle \dfrac{1}{a}\arctan\left(\dfrac{x}{a}\right)$ | — |
+| $\displaystyle \dfrac{1}{x^2-a^2}$ ($\displaystyle a > 0$) | $\displaystyle \dfrac{1}{2a}\ln\left|\dfrac{x-a}{x+a}\right|$ | $\displaystyle x \neq \pm a$ |
+| $\displaystyle \dfrac{1}{a^2-x^2}$ ($\displaystyle a > 0$) | $\displaystyle \dfrac{1}{2a}\ln\left|\dfrac{a+x}{a-x}\right|$ | $\displaystyle x \neq \pm a$ |
+| $\displaystyle \dfrac{x}{x^2+a^2}$ | $\displaystyle \dfrac{1}{2}\ln(x^2+a^2)$ | — |
+| $\displaystyle \dfrac{1}{\sqrt{a^2-x^2}}$ ($\displaystyle a > 0$) | $\displaystyle \arcsin\left(\dfrac{x}{a}\right)$ | $\displaystyle |x| < a$ |
+| $\displaystyle \dfrac{1}{\sqrt{x^2+a^2}}$ ($\displaystyle a > 0$) | $\displaystyle \ln(x + \sqrt{x^2+a^2})$ | — |
+| $\displaystyle \dfrac{1}{\sqrt{x^2-a^2}}$ ($\displaystyle a > 0$) | $\displaystyle \ln|x + \sqrt{x^2-a^2}|$ | $\displaystyle |x| > a$ |
+
+### 8. Produits de fonctions (Prépa/Licence)
+
+| Fonction | Primitive | Conditions |
+|---|---|---|
+| $\displaystyle xe^x$ | $\displaystyle (x-1)e^x$ | — |
+| $\displaystyle x^2e^x$ | $\displaystyle (x^2-2x+2)e^x$ | — |
+| $\displaystyle e^x\cos(x)$ | $\displaystyle \dfrac{e^x}{2}[\cos(x) + \sin(x)]$ | — |
+| $\displaystyle e^x\sin(x)$ | $\displaystyle \dfrac{e^x}{2}[\sin(x) - \cos(x)]$ | — |
+| $\displaystyle e^{ax}\cos(bx)$ ($\displaystyle a, b \neq 0$) | $\displaystyle \dfrac{e^{ax}}{a^2+b^2}[a\cos(bx) + b\sin(bx)]$ | — |
+| $\displaystyle e^{ax}\sin(bx)$ ($\displaystyle a, b \neq 0$) | $\displaystyle \dfrac{e^{ax}}{a^2+b^2}[a\sin(bx) - b\cos(bx)]$ | — |
+| $\displaystyle x\cos(x)$ | $\displaystyle \cos(x) + x\sin(x)$ | — |
+| $\displaystyle x\sin(x)$ | $\displaystyle \sin(x) - x\cos(x)$ | — |
+
+## VII. Erreurs fréquentes à éviter
+
+| Erreur fréquente | Correction |
+|---|---|
+| $\displaystyle \int \sin(x)\,dx = \cos(x) + C$ | $\displaystyle \int \sin(x)\,dx = -\cos(x) + C$ (signe négatif !) |
+| $\displaystyle \int \dfrac{1}{x}\,dx = \ln(x) + C$ | $\displaystyle \int \dfrac{1}{x}\,dx = \ln|x| + C$ (valeur absolue !) |
+| $\displaystyle \int x^n\,dx = \dfrac{x^n}{n} + C$ | $\displaystyle \int x^n\,dx = \dfrac{x^{n+1}}{n+1} + C$ (augmenter l'exposant !) |
+| $\displaystyle \int e^{2x}\,dx = e^{2x} + C$ | $\displaystyle \int e^{2x}\,dx = \dfrac{e^{2x}}{2} + C$ (diviser par le coefficient !) |
+| $\displaystyle \int f(x)g(x)\,dx = \left[\int f(x)\,dx\right]\left[\int g(x)\,dx\right]$ | Utiliser l'intégration par parties : $\displaystyle \int u\,dv = uv - \int v\,du$ |
+| Oublier la constante $\displaystyle C$ pour une primitive | Toujours ajouter $\displaystyle + C$ pour une primitive |
+| $\displaystyle \int_a^b f(x)\,dx = F(a) - F(b)$ | $\displaystyle \int_a^b f(x)\,dx = F(b) - F(a)$ (borne sup - borne inf !) |
+
+## VIII. Méthode de calcul pas à pas
+
+| Type d'intégrale | Méthode |
+|---|---|
+| **Fonction simple** | Appliquer directement la formule du tableau des primitives usuelles |
+| **Somme/différence** | Intégrer terme par terme : $\displaystyle \int [f(x) \pm g(x)]\,dx = \int f(x)\,dx \pm \int g(x)\,dx$ |
+| **$\displaystyle u'(x)f(u(x))$** | 1. Identifier $\displaystyle u(x)$ et vérifier que $\displaystyle u'(x)$ apparaît <br> 2. Utiliser la formule de composition appropriée |
+| **Produit** | Utiliser l'intégration par parties : $\displaystyle \int u\,dv = uv - \int v\,du$ |
+| **Fonction complexe** | Utiliser un changement de variable : $\displaystyle x = \varphi(t)$ |
+
+| Exemple détaillé : $\displaystyle \int_0^1 x^2e^x\,dx$ |
+|---|
+| **Méthode :** Intégration par parties (deux fois) <br> <br> **Première IPP :** $\displaystyle u = x^2$, $\displaystyle dv = e^x\,dx$ donc $\displaystyle du = 2x\,dx$, $\displaystyle v = e^x$ <br> $\displaystyle \int x^2e^x\,dx = x^2e^x - \int 2xe^x\,dx$ <br> <br> **Deuxième IPP :** $\displaystyle u = 2x$, $\displaystyle dv = e^x\,dx$ donc $\displaystyle du = 2\,dx$, $\displaystyle v = e^x$ <br> $\displaystyle \int 2xe^x\,dx = 2xe^x - \int 2e^x\,dx = 2xe^x - 2e^x$ <br> <br> **Résultat :** $\displaystyle \int x^2e^x\,dx = x^2e^x - 2xe^x + 2e^x = (x^2-2x+2)e^x + C$ <br> <br> **Intégrale définie :** $\displaystyle \int_0^1 x^2e^x\,dx = [(x^2-2x+2)e^x]_0^1 = (1-2+2)e - (0-0+2) = e - 2$ |
+
+## IX. Formules importantes
+
+| Formule |
+|---|
+| **Valeur moyenne d'une fonction :** <br> $\displaystyle \mu = \dfrac{1}{b-a}\int_a^b f(x)\,dx$ |
+| **Aire entre deux courbes :** <br> $\displaystyle A = \int_a^b |f(x) - g(x)|\,dx$ |
+| **Inégalité de la moyenne :** <br> Si $\displaystyle m \leq f(x) \leq M$ sur $\displaystyle [a,b]$, alors $\displaystyle m(b-a) \leq \int_a^b f(x)\,dx \leq M(b-a)$ |
+| **Intégrale d'une fonction paire :** <br> $\displaystyle \int_{-a}^a f(x)\,dx = 2\int_0^a f(x)\,dx$ si $\displaystyle f$ est paire |
+| **Intégrale d'une fonction impaire :** <br> $\displaystyle \int_{-a}^a f(x)\,dx = 0$ si $\displaystyle f$ est impaire |

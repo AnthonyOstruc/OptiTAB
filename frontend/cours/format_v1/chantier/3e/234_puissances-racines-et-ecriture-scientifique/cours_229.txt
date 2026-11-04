@@ -1,0 +1,178 @@
+Titre: Puissances, racines et écriture scientifique
+
+<!-- optitab:1 -->
+::: objectifs
+- Calculer avec des puissances d’exposant entier, positif ou négatif.
+- Utiliser les puissances de $10$, les préfixes de nano à giga et les ordres de grandeur.
+- Écrire un nombre en notation scientifique et calculer avec cette écriture.
+- Connaître la racine carrée d’un nombre positif, les carrés parfaits, et encadrer une racine.
+- Résoudre une équation du type $x^2 = a$.
+:::
+
+## I. Puissances d’un nombre
+
+::: definition Puissance d’exposant entier
+Pour un nombre $a$ et un entier $n \ge 1$ :
+
+$$a^n = \underbrace{a \times a \times \cdots \times a}_{n \text{ facteurs}}$$
+
+Pour $a \neq 0$, on pose $a^0 = 1$ et $a^{-n} = \dfrac{1}{a^n}$ (l’inverse de $a^n$).
+:::
+
+::: exemple
+$7^4 = 7 \times 7 \times 7 \times 7 = 2\,401$ ; $2^{-3} = \dfrac{1}{2^3} = \dfrac{1}{8}$ ; $9^0 = 1$.
+:::
+
+::: attention Signes et parenthèses
+- $(-5)^2 = (-5) \times (-5) = 25$, mais $-5^2 = -(5 \times 5) = -25$.
+- Une puissance **paire** d’un nombre négatif est positive, une puissance **impaire** est négative : $(-2)^3 = -8$ et $(-2)^4 = 16$.
+- $2^{-3}$ n’est pas négatif : $2^{-3} = \dfrac{1}{8}$.
+:::
+
+### Règles de calcul
+
+::: propriete Règles de calcul (pour $a \neq 0$, $m$ et $n$ entiers relatifs)
+| Règle | Exemple |
+|---|---|
+| $a^m \times a^n = a^{m+n}$ | $3^4 \times 3^2 = 3^6$ |
+| $\dfrac{a^m}{a^n} = a^{m-n}$ | $\dfrac{5^7}{5^3} = 5^4$ |
+| $(a^m)^n = a^{m \times n}$ | $(2^3)^4 = 2^{12}$ |
+| $(ab)^n = a^n b^n$ | $6^2 = 2^2 \times 3^2$ |
+:::
+
+::: demonstration Pourquoi $a^m \times a^n = a^{m+n}$ ?
+$3^4 \times 3^2 = (3 \times 3 \times 3 \times 3) \times (3 \times 3)$ : on obtient $4 + 2 = 6$ facteurs égaux à $3$, donc $3^6$.
+:::
+
+::: attention
+Les règles concernent les **produits** et les **quotients**, jamais les sommes : $2^3 + 2^2 = 8 + 4 = 12$, alors que $2^5 = 32$.
+:::
+
+## II. Puissances de 10 et ordres de grandeur
+
+::: propriete Puissances de 10
+Pour $n$ entier naturel :
+
+- $10^n = 1\underbrace{0\ldots0}_{n \text{ zéros}}$ : $10^3 = 1\,000$ ;
+- $10^{-n} = 0{,}\underbrace{0\ldots0}_{n-1 \text{ zéros}}1$ : $10^{-3} = 0{,}001$.
+
+Multiplier par $10^n$ décale la virgule de $n$ rangs vers la droite ; multiplier par $10^{-n}$ la décale de $n$ rangs vers la gauche.
+:::
+
+::: propriete Préfixes à connaître
+| Préfixe | Valeur | Exemple |
+|---|---|---|
+| giga (G) | $10^{9}$ | gigaoctet (Go) |
+| méga (M) | $10^{6}$ | mégawatt (MW) |
+| kilo (k) | $10^{3}$ | kilomètre (km) |
+| milli (m) | $10^{-3}$ | millimètre (mm) |
+| micro (µ) | $10^{-6}$ | micromètre (µm) |
+| nano (n) | $10^{-9}$ | nanomètre (nm) |
+
+Par exemple, $1$ km $= 10^3$ m et $1$ µm $= 10^{-6}$ m.
+:::
+
+::: definition Ordre de grandeur
+L’**ordre de grandeur** d’une quantité est la puissance de $10$ la plus proche : il permet de comparer rapidement des tailles très différentes.
+:::
+
+[IMAGE_1]
+
+## III. Notation scientifique
+
+::: definition Notation scientifique
+Tout nombre décimal positif non nul peut s’écrire de façon unique sous la forme
+
+$$a \times 10^n$$
+
+avec $1 \le a \lt 10$ et $n$ entier relatif.
+:::
+
+::: exemple
+$74\,000\,000 = 7{,}4 \times 10^7$ ; $0{,}000\,056 = 5{,}6 \times 10^{-5}$ ; $3\,450 = 3{,}45 \times 10^3$.
+:::
+
+::: methode Écrire un nombre en notation scientifique
+1. Placer la virgule juste après le premier chiffre non nul : on obtient $a$.
+2. Compter de combien de rangs la virgule a bougé : c’est $n$.
+3. Grand nombre ($\ge 10$) : $n$ positif ; nombre plus petit que $1$ : $n$ négatif.
+:::
+
+::: methode Calculer en notation scientifique
+On regroupe les nombres d’un côté et les puissances de $10$ de l’autre, puis on **normalise** :
+
+$$
+\begin{aligned}
+(3 \times 10^5) \times (4 \times 10^{-2}) &= (3 \times 4) \times 10^{5 + (-2)} \\
+&= 12 \times 10^3 \\
+&= 1{,}2 \times 10^1 \times 10^3 \\
+&= 1{,}2 \times 10^4
+\end{aligned}
+$$
+:::
+
+::: attention
+$12 \times 10^3$ est juste mais n’est **pas** une notation scientifique, car $12 \ge 10$. De même, $0{,}5 \times 10^4 = 5 \times 10^3$.
+:::
+
+## IV. Racine carrée
+
+::: definition Racine carrée
+Pour un nombre $a \ge 0$, la **racine carrée** de $a$, notée $\sqrt{a}$, est le nombre **positif** dont le carré est $a$ :
+
+$$\left(\sqrt{a}\right)^2 = a \qquad \text{et} \qquad \sqrt{a} \ge 0$$
+:::
+
+::: exemple
+$\sqrt{49} = 7$ car $7^2 = 49$ et $7 \ge 0$ ; $\sqrt{0{,}81} = 0{,}9$ ; $\sqrt{\dfrac{9}{16}} = \dfrac{3}{4}$.
+:::
+
+### Interprétation géométrique
+
+Un carré d’aire $A$ a pour côté $\sqrt{A}$. Un carré d’aire $25$ cm² a un côté de $5$ cm ; un carré d’aire $45$ cm² a un côté de $\sqrt{45}$ cm $\approx 6{,}71$ cm.
+
+[IMAGE_2]
+
+::: propriete Carrés parfaits à connaître
+| $n$ | $1$ | $2$ | $3$ | $4$ | $5$ | $6$ |
+|---|---|---|---|---|---|---|
+| $n^2$ | $1$ | $4$ | $9$ | $16$ | $25$ | $36$ |
+
+| $n$ | $7$ | $8$ | $9$ | $10$ | $11$ | $12$ |
+|---|---|---|---|---|---|---|
+| $n^2$ | $49$ | $64$ | $81$ | $100$ | $121$ | $144$ |
+
+Ainsi $\sqrt{1} = 1$, $\sqrt{4} = 2$, …, $\sqrt{144} = 12$.
+:::
+
+::: methode Encadrer une racine carrée
+On encadre le nombre entre deux carrés consécutifs : $36 \lt 37 \lt 49$, donc $6 \lt \sqrt{37} \lt 7$. Pour aller au dixième : $6{,}0^2 = 36 \lt 37 \lt 37{,}21 = 6{,}1^2$, donc $6{,}0 \lt \sqrt{37} \lt 6{,}1$.
+:::
+
+[IMAGE_3]
+
+::: propriete Équation $x^2 = a$
+- Si $a \gt 0$ : deux solutions, $\sqrt{a}$ et $-\sqrt{a}$.
+- Si $a = 0$ : une solution, $0$.
+- Si $a \lt 0$ : aucune solution (un carré n’est jamais négatif).
+:::
+
+::: exemple
+$x^2 = 45$ a deux solutions : $\sqrt{45} \approx 6{,}71$ et $-\sqrt{45} \approx -6{,}71$. Mais une longueur est positive : le côté du carré d’aire $45$ cm² est $\sqrt{45}$ cm.
+:::
+
+::: attention
+- $\sqrt{a + b} \neq \sqrt{a} + \sqrt{b}$ en général : $\sqrt{9 + 16} = \sqrt{25} = 5$, alors que $\sqrt{9} + \sqrt{16} = 7$.
+- $\sqrt{-4}$ n’existe pas, mais $\sqrt{(-4)^2} = \sqrt{16} = 4$.
+:::
+
+::: remarque Pour aller plus loin
+Pour $a \ge 0$ et $b \ge 0$, on a $\sqrt{a \times b} = \sqrt{a} \times \sqrt{b}$, par exemple $\sqrt{36 \times 25} = 6 \times 5 = 30$. Cette propriété sera étudiée en Seconde.
+:::
+
+::: retenir
+- $a^{-n} = \dfrac{1}{a^n}$ ; produit : on **additionne** les exposants ; puissance de puissance : on les **multiplie**.
+- Notation scientifique : $a \times 10^n$ avec $1 \le a \lt 10$.
+- Préfixes : giga $10^9$, méga $10^6$, kilo $10^3$, milli $10^{-3}$, micro $10^{-6}$, nano $10^{-9}$.
+- $\sqrt{a}$ est le nombre positif dont le carré vaut $a$ ; $x^2 = a$ ($a \gt 0$) a deux solutions $\pm\sqrt{a}$.
+:::

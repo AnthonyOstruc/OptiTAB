@@ -1,0 +1,490 @@
+=== Structures Conditionnelles - Conditions Imbriquées
+Id: 1056
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Résoudre les problèmes suivants en utilisant des structures conditionnelles imbriquées (une condition à l'intérieur d'une autre).
+
+1. Un cinéma applique les tarifs suivants : si l'âge est inférieur à 18 ans, le tarif est de 7€. Si l'âge est entre 18 et 64 ans, le tarif est de 12€, sauf si c'est lundi (tarif réduit à 9€). Si l'âge est 65 ans ou plus, le tarif est de 8€. Avec `age = 25` et `jour = « Lundi »`, quel est le tarif ?
+2. Pour accéder à une salle VIP, il faut soit être membre premium (`membre_premium = False`), soit avoir plus de 1000 points (`points = 1200`) ET avoir validé son email (`email_valide = True`). Avec ces valeurs, déterminer l'affichage.
+
+Étapes:
+<!-- optitab:1 -->
+**Méthode générale :** Conditions imbriquées
+
+::: point Principe
+Placer une structure conditionnelle à l'intérieur d'une autre
+:::
+
+::: point Indentation
+Cruciale en Python ! Chaque niveau de condition ajoute 4 espaces
+:::
+
+::: point Lisibilité
+Bien organiser les niveaux pour comprendre la logique
+:::
+
+::: point Alternative
+Parfois, utiliser des opérateurs logiques (`and`, `or`) est plus simple
+:::
+
+## Question 1 : Tarif cinéma avec `age = 25` et `jour = « Lundi »`
+
+**Code Python :**
+
+```python
+age = 25
+jour = "Lundi"
+
+if age < 18:
+    tarif = 7
+elif age < 65:
+    if jour == "Lundi":
+        tarif = 9
+    else:
+        tarif = 12
+else:
+    tarif = 8
+
+print(f"Tarif : {tarif}€")
+```
+
+::: point Analyse
+- `25 < 18` → `False`
+- `25 < 65` → `True` (on entre dans ce bloc)
+- Condition imbriquée : `jour == « Lundi »` → `True`
+- `tarif = 9`
+:::
+
+::: resultat
+Le programme affiche « Tarif : 9€ »
+:::
+
+## Question 2 : Accès VIP avec `membre_premium = False`, `points = 1200`, `email_valide = True`
+
+**Code Python :**
+
+```python
+membre_premium = False
+points = 1200
+email_valide = True
+
+if membre_premium:
+    print("Accès VIP accordé")
+else:
+    if points > 1000 and email_valide:
+        print("Accès VIP accordé")
+    else:
+        print("Accès VIP refusé")
+```
+
+::: point Analyse
+- `membre_premium` → `False`, on va dans le `else`
+- Condition imbriquée : `(1200 > 1000) and (email_valide == True)`
+- `True and True` → `True`
+:::
+
+::: resultat
+Le programme affiche « Accès VIP accordé »
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Le programme affiche « Tarif : 9€ »
+2. Le programme affiche « Accès VIP accordé »
+
+===
+
+=== Structures Conditionnelles - Opérateurs Logiques
+Id: 1054
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Résoudre les problèmes suivants en utilisant les opérateurs logiques (`and`, `or`, `not`) en Python.
+
+1. Un utilisateur peut accéder à un service si son `age = 25` est compris entre 18 et 65 ans (inclus). Écrire le code et déterminer l'affichage.
+2. Une remise est accordée si c'est le week-end (`jour = « Samedi »`) OU si le client a une carte de fidélité (`carte = False`). Écrire le code et déterminer l'affichage.
+
+Étapes:
+<!-- optitab:1 -->
+**Méthode générale :** Opérateurs logiques en Python
+
+::: point Opérateur `and`
+Retourne `True` si toutes les conditions sont vraies
+:::
+
+::: point Opérateur `or`
+Retourne `True` si au moins une condition est vraie
+:::
+
+::: point Opérateur `not`
+Inverse la valeur de vérité d'une condition
+:::
+
+::: point Évaluation
+Bien analyser chaque sous-condition avant de combiner
+:::
+
+## Question 1 : Accès entre 18 et 65 ans avec `age = 25`
+
+**Code Python :**
+
+```python
+age = 25
+
+if age >= 18 and age <= 65:
+    print("Accès autorisé")
+else:
+    print("Accès refusé")
+```
+
+::: point Analyse de la condition
+`(25 >= 18) and (25 <= 65)`
+
+- `25 >= 18` → `True`
+- `25 <= 65` → `True`
+- `True and True` → `True`
+:::
+
+::: resultat
+Le programme affiche « Accès autorisé »
+:::
+
+## Question 2 : Remise week-end ou carte fidélité avec `jour = « Samedi »` et `carte = False`
+
+**Code Python :**
+
+```python
+jour = "Samedi"
+carte = False
+
+if jour == "Samedi" or jour == "Dimanche" or carte == True:
+    print("Remise accordée")
+else:
+    print("Pas de remise")
+```
+
+::: point Analyse de la condition
+`(jour == « Samedi ») or (jour == « Dimanche ») or (carte == True)`
+
+- `jour == « Samedi »` → `True`
+- `jour == « Dimanche »` → `False`
+- `carte == True` → `False`
+- `True or False or False` → `True`
+:::
+
+::: resultat
+Le programme affiche « Remise accordée »
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Le programme affiche « Accès autorisé »
+2. Le programme affiche « Remise accordée »
+
+===
+
+=== Structures Conditionnelles - Problèmes de Synthèse
+Id: 1057
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Résoudre les problèmes complexes suivants en combinant plusieurs concepts de structures conditionnelles.
+
+1. Une compagnie aérienne calcule le prix d'un billet selon plusieurs critères :
+
+   • Prix de base selon la destination : « Paris » → 100€, « Londres » → 150€, « New York » → 500€
+
+   • Réduction de 20% si réservation plus de 30 jours à l'avance (`jours_avance = 45`)
+
+   • Supplément de 50€ pour la classe affaires (`classe = « Economique »`)
+
+   • Réduction supplémentaire de 10% si membre du club (`membre_club = True`)
+
+   Avec `destination = « Londres »`, `jours_avance = 45`, `classe = « Economique »`, `membre_club = True`, calculer le prix final.
+2. Un système de sécurité valide l'accès selon les critères suivants :
+
+   • Badge valide requis (`badge_valide = True`)
+
+   • Si badge valide, vérifier l'heure : accès autorisé entre 8h et 18h (`heure = 15`)
+
+   • Si heure valide, vérifier le niveau d'accréditation : « Admin » → accès total, « Employé » → accès limité, « Stagiaire » → accès refusé après 17h
+
+   Avec `badge_valide = True`, `heure = 15`, `niveau = « Employé »`, déterminer le message d'accès.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Prix billet avion avec multiples critères
+
+::: point Données
+`destination = « Londres »`, `jours_avance = 45`, `classe = « Economique »`, `membre_club = True`
+
+**Code Python :**
+
+```python
+destination = "Londres"
+jours_avance = 45
+classe = "Economique"
+membre_club = True
+
+# Prix de base selon destination
+if destination == "Paris":
+    prix = 100
+elif destination == "Londres":
+    prix = 150
+elif destination == "New York":
+    prix = 500
+
+# Réduction anticipation
+if jours_avance > 30:
+    prix = prix $\ast$ 0.80
+
+# Supplément classe affaires
+if classe == "Affaires":
+    prix = prix + 50
+
+# Réduction membre club
+if membre_club:
+    prix = prix $\ast$ 0.90
+
+print(f"Prix final : {prix}€")
+```
+:::
+
+::: point Calculs détaillés
+- Prix de base : `destination == « Londres »` → `150€`
+- Réduction anticipation : `45 > 30` → `True` → `150 $\ast$ 0.80 = 120€`
+- Classe : `« Economique »` ≠ `« Affaires »` → pas de supplément → `120€`
+- Membre club : `True` → `120 $\ast$ 0.90 = 108€`
+:::
+
+::: resultat
+Prix final : **108.0€**
+:::
+
+## Question 2 : Système de sécurité avec `badge_valide = True`, `heure = 15`, `niveau = « Employé »`
+
+**Code Python :**
+
+```python
+badge_valide = True
+heure = 15
+niveau = "Employé"
+
+if not badge_valide:
+    message = "Accès refusé - Badge invalide"
+else:
+    if heure < 8 or heure > 18:
+        message = "Accès refusé - Hors horaires"
+    else:
+        if niveau == "Admin":
+            message = "Accès total accordé"
+        elif niveau == "Employé":
+            message = "Accès limité accordé"
+        elif niveau == "Stagiaire":
+            if heure > 17:
+                message = "Accès refusé - Stagiaire après 17h"
+            else:
+                message = "Accès limité accordé"
+
+print(message)
+```
+
+::: point Analyse
+- `badge_valide` → `True`, on continue
+- `15 18` → `False`, donc horaire valide
+- `niveau == « Employé »` → `True`
+- `message = « Accès limité accordé »`
+:::
+
+::: resultat
+« Accès limité accordé »
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Prix final : **108.0€**
+2. Message : **« Accès limité accordé »**
+
+===
+
+=== Structures Conditionnelles - Structures Multiples (if, elif, else)
+Id: 1055
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Utiliser la structure `if... elif... else` pour résoudre les problèmes suivants.
+
+1. Écrire un programme qui détermine la catégorie d'un film selon l'âge de l'utilisateur (`age = 14`) : « Tout public » (tout âge), « Accord parental » (moins de 13 ans), « Interdit -16 » (moins de 16 ans), « Interdit -18 » (moins de 18 ans), « Adulte » (18 ans et plus). Pour cet exercice, utiliser la classification : moins de 13 ans → « Accord parental ».
+2. Calculer le prix d'un billet de train selon l'âge (`age = 67`) : gratuit (moins de 4 ans), 8€ (4-17 ans), 15€ (18-64 ans), 10€ (65 ans et plus).
+
+Étapes:
+<!-- optitab:1 -->
+**Méthode générale :** Structure `if... elif... else`
+
+::: point Principe
+Tester plusieurs conditions dans l'ordre d'apparition
+:::
+
+::: point Important
+Dès qu'une condition est vraie, son bloc est exécuté et les autres ne sont pas testés
+:::
+
+::: point Ordre
+Commencer par les conditions les plus restrictives ou dans l'ordre logique
+:::
+
+::: point else final
+Facultatif mais recommandé pour gérer tous les cas restants
+:::
+
+## Question 1 : Catégorie film avec `age = 14`
+
+**Code Python :**
+
+```python
+age = 14
+
+if age < 13:
+    categorie = "Accord parental"
+elif age < 16:
+    categorie = "Interdit -16"
+elif age < 18:
+    categorie = "Interdit -18"
+else:
+    categorie = "Adulte"
+
+print(f"Catégorie : {categorie}")
+```
+
+::: point Analyse
+- `14 < 13` → `False`
+- `14 < 16` → `True` (on s'arrête ici)
+:::
+
+::: resultat
+Le programme affiche « Catégorie : Interdit -16 »
+:::
+
+## Question 2 : Prix billet train avec `age = 67`
+
+**Code Python :**
+
+```python
+age = 67
+
+if age < 4:
+    prix = 0
+elif age < 18:
+    prix = 8
+elif age < 65:
+    prix = 15
+else:
+    prix = 10
+
+print(f"Prix du billet : {prix}€")
+```
+
+::: point Analyse
+- `67 < 4` → `False`
+- `67 < 18` → `False`
+- `67 < 65` → `False`
+- On arrive au `else` → `prix = 10`
+:::
+
+::: resultat
+Le programme affiche « Prix du billet : 10€ »
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Le programme affiche « Catégorie : Interdit -16 »
+2. Le programme affiche « Prix du billet : 10€ »
+
+===
+
+=== Structures Conditionnelles - Tests Simples et Comparaisons
+Id: 1053
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Écrire des programmes Python simples utilisant des structures conditionnelles pour résoudre les problèmes suivants.
+
+1. Écrire un programme qui prend un nombre `n = 15` et affiche « Positif » si le nombre est strictement positif, « Négatif » si le nombre est strictement négatif, et « Zéro » si le nombre est égal à zéro.
+2. Écrire un programme qui vérifie si un nombre `age = 20` permet l'accès à un site (âge minimum 18 ans). Afficher « Accès autorisé » ou « Accès refusé ».
+
+Étapes:
+<!-- optitab:1 -->
+**Méthode générale :** Structure conditionnelle simple
+
+::: point Structure `if`
+Exécute un bloc si une condition est vraie
+:::
+
+::: point Structure `if... else`
+Exécute un bloc ou l'autre selon la condition
+:::
+
+::: point Structure `if... elif... else`
+Teste plusieurs conditions successives
+:::
+
+::: point Syntaxe Python
+Ne pas oublier les deux-points `:` et l'indentation (4 espaces)
+:::
+
+## Question 1 : Test du signe d'un nombre avec `n = 15`
+
+**Code Python :**
+
+```python
+n = 15
+
+if n > 0:
+    print("Positif")
+elif n < 0:
+    print("Négatif")
+else:
+    print("Zéro")
+```
+
+::: point Analyse
+`15 > 0` → `True`, donc on exécute le premier bloc
+:::
+
+::: resultat
+Le programme affiche « Positif »
+:::
+
+## Question 2 : Vérification d'âge avec `age = 20`
+
+**Code Python :**
+
+```python
+age = 20
+
+if age >= 18:
+    print("Accès autorisé")
+else:
+    print("Accès refusé")
+```
+
+::: point Analyse
+`20 >= 18` → `True`, donc on exécute le bloc `if`
+:::
+
+::: resultat
+Le programme affiche « Accès autorisé »
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Le programme affiche « Positif »
+2. Le programme affiche « Accès autorisé »
+
+===

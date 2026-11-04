@@ -1,0 +1,178 @@
+{
+  "numero": 21,
+  "slug": "hasard",
+  "titre": "Premiers pas vers le hasard",
+  "partie": "5 · Modéliser et organiser",
+  "sous_titre": "Expériences aléatoires · Issues · Échelle des chances",
+  "objectifs": [
+    "Reconnaître une expérience aléatoire et lister ses issues.",
+    "Employer le vocabulaire : certain, possible, impossible, probable.",
+    "Comparer les chances de réalisation d’évènements."
+  ],
+  "prerequis": [
+    "Fractions simples et dénombrement."
+  ],
+  "cours": [
+    "\\essSection{1}{Le vocabulaire du hasard}\n\\begin{definition}Une expérience est aléatoire quand son résultat ne peut pas être prévu avant de la réaliser : lancer un dé, tirer une boule d’un sac sans regarder, piocher une carte. Les résultats possibles s’appellent les issues.\\end{definition}\n\\begin{exemple}Avec un dé ordinaire : « obtenir 7 » est impossible ; « obtenir un nombre de 1 à 6 » est certain ; « obtenir 2 » est possible, sans certitude. Entre impossible et certain, tous les degrés existent.\\end{exemple}\n@FIG:cours-echelle@\n\\begin{savoirfaire}[Une chance sur deux]« Une chance sur deux » décrit un évènement qui a autant de chances de se réaliser que de ne pas se réaliser : obtenir pile avec une pièce, ou tirer une carte rouge dans un jeu qui compte autant de rouges que de noires.\\end{savoirfaire}",
+    "\\essSection{2}{Compter les issues}\n\\begin{savoirfaire}[Recenser les issues]Lister toutes les issues avant de raisonner : une pièce en a 2, un dé en a 6, une urne de 4 boules en a 4. Un évènement est d’autant plus probable qu’il est réalisé par davantage d’issues, quand toutes les issues ont les mêmes chances.\\end{savoirfaire}\n\\begin{definition}Quand toutes les issues ont les mêmes chances de sortir, la situation est équiprobable : dé équilibré, boules indiscernables au toucher, cartes bien mélangées.\\end{definition}\n\\begin{attention}Deux issues possibles ne donnent pas toujours une chance sur deux ! Avec une urne de 1 boule rouge et 3 bleues, « rouge » et « bleu » sont deux résultats possibles, mais le bleu a trois fois plus d’issues pour lui.\\end{attention}\n\\begin{exemple}Obtenir 6 trois fois de suite n’assure rien pour le lancer suivant : le résultat reste imprévisible, c’est justement une expérience aléatoire.\\end{exemple}"
+  ],
+  "exercices": [
+    {
+      "titre": "Aléatoire ou pas ?",
+      "enonce": "Dire si l’expérience est aléatoire : lancer un dé et lire la face ; faire bouillir de l’eau et observer si elle chauffe ; tirer une carte d’un jeu mélangé.",
+      "corrige": "Le dé et la carte : $\\res{\\text{aléatoires}}$, le résultat est imprévisible. L’eau qui chauffe : résultat $\\res{\\text{certain}}$, l’expérience n’est pas aléatoire.",
+      "methode": "Se demander si le résultat est prévisible.",
+      "controle": "assert 1==1",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 1
+    },
+    {
+      "titre": "Le bon mot",
+      "enonce": "Avec un dé ordinaire, qualifier chaque évènement : « obtenir 7 » ; « obtenir un nombre de 1 à 6 » ; « obtenir 2 ».",
+      "corrige": "« Obtenir 7 » : $\\res{\\text{impossible}}$. « De 1 à 6 » : $\\res{\\text{certain}}$. « Obtenir 2 » : $\\res{\\text{possible}}$, une issue sur six.",
+      "methode": "Confronter l’évènement à la liste des issues.",
+      "controle": "assert len([a for a in range(1,7) if a==7])==0 and len([a for a in range(1,7)])==6",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 1
+    },
+    {
+      "titre": "Lister les issues",
+      "enonce": "Lister toutes les issues : d’un lancer de pièce ; d’un lancer de dé ; du tirage d’une boule dans un sac contenant une boule rouge, une verte et une bleue.",
+      "corrige": "Pièce : $\\res{\\text{pile, face}}$, 2 issues. Dé : $\\res{1,2,3,4,5,6}$, 6 issues. Sac : $\\res{\\text{rouge, verte, bleue}}$, 3 issues.",
+      "methode": "Écrire la liste complète sans oubli ni doublon.",
+      "controle": "assert 2==2 and len([1,2,3,4,5,6])==6 and 3==3",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 1
+    },
+    {
+      "titre": "Une chance sur deux",
+      "enonce": "Dire si l’évènement a une chance sur deux de se réaliser : obtenir pile avec une pièce ; obtenir un nombre pair avec un dé ; tirer une carte rouge d’un jeu de 32 cartes bien mélangé.",
+      "corrige": "Pile : $\\res{\\text{oui}}$, une issue sur deux. Pair : les issues 2, 4, 6 sur six, soit la moitié : $\\res{\\text{oui}}$. Carte rouge : 16 rouges sur 32 : $\\res{\\text{oui}}$ aussi.",
+      "methode": "Comparer les issues favorables à la moitié du total.",
+      "controle": "assert len([a for a in range(1,7) if a%2==0])==3 and Rational(3,6)==Rational(1,2) and Rational(16,32)==Rational(1,2)",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 1
+    },
+    {
+      "titre": "Sur l’échelle des chances",
+      "enonce": "Placer chaque évènement sur l’échelle, d’impossible à certain : « janvier suivra décembre » ; « obtenir 3 avec un dé » ; « tirer une boule jaune d’un sac qui n’en contient pas ».",
+      "corrige": "Janvier après décembre : $\\res{\\text{certain}}$, à droite. Obtenir 3 : $\\res{\\text{peu probable}}$, une issue sur six, à gauche du milieu. La boule jaune : $\\res{\\text{impossible}}$, tout à gauche. Les positions figurent en vert.",
+      "methode": "Associer chaque évènement à une zone de l’échelle.",
+      "controle": "assert Rational(1,6)<Rational(1,2)",
+      "figure": "pro-5",
+      "conseil": "",
+      "difficulte": 1
+    },
+    {
+      "titre": "Plus ou moins probable",
+      "enonce": "Avec un dé équilibré, quel évènement est le plus probable : « obtenir 2 » ou « obtenir un nombre pair » ? Justifier en comptant les issues.",
+      "corrige": "« Obtenir 2 » : 1 issue. « Pair » : 3 issues (2, 4, 6). Le pair est $\\res{\\text{plus probable}}$ : trois fois plus d’issues le réalisent.",
+      "methode": "Compter les issues qui réalisent chaque évènement.",
+      "controle": "assert 3>1",
+      "figure": "pro-6",
+      "conseil": "",
+      "difficulte": 2
+    },
+    {
+      "titre": "L’urne trompeuse",
+      "enonce": "Un sac contient 1 boule rouge et 3 boules bleues, indiscernables au toucher. Maé dit : « Rouge ou bleu, il y a deux résultats : j’ai une chance sur deux de tirer rouge. » Corriger.",
+      "corrige": "Les issues sont les 4 boules, pas les 2 couleurs : une seule boule donne le rouge, trois donnent le bleu. Le rouge est $\\res{\\text{peu probable}}$, loin d’une chance sur deux : compter les issues, pas les noms des résultats.",
+      "methode": "Revenir aux boules, les vraies issues du tirage.",
+      "controle": "assert 1+3==4 and Rational(1,4)!=Rational(1,2)",
+      "figure": "pro-7",
+      "conseil": "",
+      "difficulte": 2
+    },
+    {
+      "titre": "Équiprobable ou non ?",
+      "enonce": "Dire si toutes les issues ont les mêmes chances : un dé équilibré ; la roue dessinée, aux secteurs de tailles différentes ; une pièce truquée qui retombe presque toujours sur face.",
+      "corrige": "Le dé équilibré : $\\res{\\text{oui}}$, six issues de mêmes chances. La roue aux secteurs inégaux : $\\res{\\text{non}}$, le grand secteur sort plus souvent. La pièce truquée : $\\res{\\text{non}}$ plus.",
+      "methode": "Observer si un résultat est favorisé par l’objet.",
+      "controle": "assert 1==1",
+      "figure": "pro-8",
+      "conseil": "",
+      "difficulte": 2
+    },
+    {
+      "titre": "Le sac de la kermesse",
+      "enonce": "Un sac contient 5 jetons rouges et 2 jetons bleus. L’évènement « tirer un rouge » est-il probable ou peu probable ? Et « tirer un bleu » ?",
+      "corrige": "Cinq issues sur sept donnent le rouge : plus de la moitié, l’évènement est $\\res{\\text{probable}}$. Le bleu n’a que 2 issues sur 7, moins de la moitié : $\\res{\\text{peu probable}}$.",
+      "methode": "Comparer à la moitié du nombre total d’issues.",
+      "controle": "assert 5+2==7 and Rational(5,7)>Rational(1,2) and Rational(2,7)<Rational(1,2)",
+      "figure": "pro-9",
+      "conseil": "",
+      "difficulte": 2
+    },
+    {
+      "titre": "Les jetons numérotés",
+      "enonce": "Un sac contient huit jetons numérotés de 1 à 8. Quel évènement est le plus probable : « tirer un numéro plus grand que 6 » ou « tirer un numéro plus petit que 4 » ?",
+      "corrige": "Plus grand que 6 : les issues 7 et 8, soit 2 issues. Plus petit que 4 : les issues 1, 2 et 3, soit 3 issues. Le second évènement est $\\res{\\text{plus probable}}$.",
+      "methode": "Lister les numéros qui réalisent chaque évènement.",
+      "controle": "assert [a for a in range(1,9) if a>6]==[7,8] and [a for a in range(1,9) if a<4]==[1,2,3] and 3>2",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 2
+    },
+    {
+      "titre": "Le jeu de 32 cartes",
+      "enonce": "Dans un jeu de 32 cartes bien mélangé, quel évènement est le plus probable : « tirer un cœur » ou « tirer une carte rouge » ? Justifier.",
+      "corrige": "Les cœurs : 8 cartes. Les rouges : les 8 cœurs et les 8 carreaux, 16 cartes. La carte rouge est $\\res{\\text{plus probable}}$ : tout cœur est déjà une carte rouge, et les carreaux s’y ajoutent.",
+      "methode": "Compter les cartes qui réalisent chaque évènement.",
+      "controle": "assert 8<16 and 8+8==16",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 3
+    },
+    {
+      "titre": "Gagner ou perdre",
+      "enonce": "À une tombola, Jules dit : « Je gagne ou je perds, donc j’ai une chance sur deux de gagner. » Que lui répondre, sachant que 500 billets sont vendus et que 10 gagnent ?",
+      "corrige": "Les issues sont les 500 billets : seuls 10 donnent un lot. Gagner est $\\res{\\text{peu probable}}$ : deux résultats possibles ne font pas deux résultats de mêmes chances.",
+      "methode": "Prendre les billets comme issues, pas les mots.",
+      "controle": "assert Rational(10,500)!=Rational(1,2) and Rational(10,500)<Rational(1,2)",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 3
+    },
+    {
+      "titre": "La roue de la kermesse",
+      "enonce": "La roue de la kermesse porte 8 secteurs identiques : 4 marqués « perdu », 3 « bonbon » et 1 « peluche ». Quel lot est le plus probable ? La peluche a-t-elle une chance sur deux de sortir ?",
+      "corrige": "Les secteurs identiques rendent les 8 issues équiprobables. « Perdu » : 4 issues, le résultat le plus probable ; « bonbon » : 3 ; « peluche » : $\\res1$ issue sur 8, bien moins qu’une chance sur deux : $\\res{\\text{non}}$.",
+      "methode": "Compter les secteurs de chaque lot.",
+      "controle": "assert 4>3>1 and Rational(1,8)<Rational(1,2)",
+      "figure": "pro-13",
+      "conseil": "",
+      "difficulte": 3
+    },
+    {
+      "titre": "La série de six",
+      "enonce": "Nora a obtenu 6 trois fois de suite avec un dé équilibré. Elle affirme : « Je suis sûre d’avoir encore 6 au prochain lancer. » Puis elle se ravise : « Non, le 6 ne peut plus sortir ! » Que penser de ces deux phrases ?",
+      "corrige": "Les deux sont fausses : le lancer reste une expérience $\\res{\\text{aléatoire}}$, au résultat imprévisible. Le 6 reste possible, ni certain ni impossible : les lancers passés ne commandent pas le suivant.",
+      "methode": "Revenir à la définition d’une expérience aléatoire.",
+      "controle": "assert 1==1",
+      "figure": "",
+      "conseil": "",
+      "difficulte": 3
+    },
+    {
+      "titre": "Classer quatre évènements",
+      "enonce": "On tire une boule d’un sac contenant 2 rouges, 3 vertes et 5 noires. Classer du moins probable au plus probable : « tirer une rouge », « tirer une verte », « tirer une noire », « tirer une boule rouge, verte ou noire ».",
+      "corrige": "Les issues : 10 boules. Rouge : 2, verte : 3, noire : 5, et le dernier évènement est réalisé par les 10 : il est $\\res{\\text{certain}}$. Classement : $\\res{\\text{rouge}<\\text{verte}<\\text{noire}<\\text{certain}}$.",
+      "methode": "Compter les issues favorables de chaque évènement.",
+      "controle": "assert 2<3<5<10 and 2+3+5==10",
+      "figure": "pro-15",
+      "conseil": "",
+      "difficulte": 3
+    }
+  ],
+  "reperes": [
+    "Expériences et issues",
+    "Vocabulaire des chances",
+    "Équiprobabilité",
+    "Comparer des évènements"
+  ],
+  "deco": "probabilites"
+}

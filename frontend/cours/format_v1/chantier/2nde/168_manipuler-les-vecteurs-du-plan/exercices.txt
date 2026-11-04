@@ -1,0 +1,1801 @@
+=== Découverte - Coordonnées et norme de vecteurs
+Id: 1966
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Dans une base orthonormée, on donne les vecteurs $\vec{u}\,(3\,;-1)$ et $\vec{v}\,(-2\,;4)$.
+
+1. Calculer les coordonnées de $\vec{u} + \vec{v}$.
+2. Calculer les coordonnées de $-3\vec{v}$.
+3. Calculer $\|\vec{u}\|$ et $\|\vec{v}\|$.
+4. On donne $\vec{w}\,(6\,;-2)$. Montrer que $\vec{u}$ et $\vec{w}$ sont colinéaires en donnant un réel $k$ tel que $\vec{w} = k\vec{u}$.
+5. Calculer $\|\vec{w}\|$ de deux façons.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer les coordonnées de $\vec{u} + \vec{v}$
+
+::: methode
+On additionne les abscisses entre elles, puis les ordonnées entre elles.
+:::
+
+::: etape Addition coordonnée par coordonnée
+$$
+\begin{aligned}
+x &= 3 + (-2) = 1 \\
+y &= -1 + 4 = 3
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$\vec{u} + \vec{v}\,(1\,;3)$$
+:::
+
+## Question 2 : Calculer les coordonnées de $-3\vec{v}$
+
+::: methode
+On multiplie chaque coordonnée de $\vec{v}$ par $-3$.
+:::
+
+::: etape Produit par un réel
+$$
+\begin{aligned}
+x &= -3 \times (-2) = 6 \\
+y &= -3 \times 4 = -12
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$-3\vec{v}\,(6\,;-12)$$
+:::
+
+::: attention
+Le signe moins s’applique aux **deux** coordonnées : $-3 \times (-2) = 6$ est positif.
+:::
+
+## Question 3 : Calculer $\|\vec{u}\|$ et $\|\vec{v}\|$
+
+::: methode
+Dans une base orthonormée, si $\vec{a}\,(x\,;y)$, alors $\|\vec{a}\| = \sqrt{x^2 + y^2}$.
+:::
+
+::: etape Norme de $\vec{u}$
+$$
+\begin{aligned}
+\|\vec{u}\| &= \sqrt{3^2 + (-1)^2} \\
+&= \sqrt{9 + 1} = \sqrt{10}
+\end{aligned}
+$$
+:::
+
+::: etape Norme de $\vec{v}$
+$$
+\begin{aligned}
+\|\vec{v}\| &= \sqrt{(-2)^2 + 4^2} \\
+&= \sqrt{4 + 16} = \sqrt{20} \\
+&= \sqrt{4 \times 5} = 2\sqrt{5}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$\|\vec{u}\| = \sqrt{10}$ et $\|\vec{v}\| = 2\sqrt{5}$
+:::
+
+::: attention
+$(-1)^2 = 1$ : un carré est toujours positif. Écrire $-1^2$ sans parenthèses donnerait $-1$, ce qui est faux ici.
+:::
+
+## Question 4 : Montrer que $\vec{u}$ et $\vec{w}$ sont colinéaires
+
+::: methode
+On cherche un réel $k$ qui multiplie **les deux** coordonnées de $\vec{u}$ pour obtenir celles de $\vec{w}$.
+:::
+
+::: etape Comparer les abscisses
+$6 = k \times 3$ donne $k = 2$.
+:::
+
+::: etape Vérifier avec les ordonnées
+$2 \times (-1) = -2$ : c’est bien l’ordonnée de $\vec{w}$. Donc $2\vec{u}\,(6\,;-2)$, c’est-à-dire $2\vec{u} = \vec{w}$.
+:::
+
+::: resultat
+$\vec{w} = 2\vec{u}$ : les vecteurs $\vec{u}$ et $\vec{w}$ sont colinéaires.
+:::
+
+[IMAGE_1]
+
+## Question 5 : Calculer $\|\vec{w}\|$ de deux façons
+
+::: methode
+Avec la formule de la norme, puis avec $\|k\vec{u}\| = |k| \times \|\vec{u}\|$.
+:::
+
+::: etape Avec les coordonnées
+$$
+\begin{aligned}
+\|\vec{w}\| &= \sqrt{6^2 + (-2)^2} = \sqrt{40} \\
+&= \sqrt{4 \times 10} = 2\sqrt{10}
+\end{aligned}
+$$
+:::
+
+::: etape Avec la colinéarité
+$\vec{w} = 2\vec{u}$, donc $\|\vec{w}\| = 2 \times \|\vec{u}\| = 2\sqrt{10}$.
+:::
+
+::: resultat
+$$\|\vec{w}\| = 2\sqrt{10}$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\vec{u} + \vec{v}\,(1\,;3)$
+2. $-3\vec{v}\,(6\,;-12)$
+3. $\|\vec{u}\| = \sqrt{10}$ et $\|\vec{v}\| = 2\sqrt{5}$
+4. $\vec{w} = 2\vec{u}$, donc $\vec{u}$ et $\vec{w}$ sont colinéaires.
+5. $\|\vec{w}\| = 2\sqrt{10}$
+
+===
+
+=== Découverte - Simplifier avec la relation de Chasles
+Id: 1967
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+$A$, $B$, $C$, $D$ et $E$ sont cinq points quelconques du plan. Simplifier chaque expression en un seul vecteur, à l’aide de la relation de Chasles et de l’égalité $-\overrightarrow{AB} = \overrightarrow{BA}$.
+
+1. $\overrightarrow{AB} + \overrightarrow{BC} - \overrightarrow{AC}$
+2. $\overrightarrow{AD} + \overrightarrow{DC} + \overrightarrow{CB}$
+3. $\overrightarrow{AB} - \overrightarrow{DB} + \overrightarrow{DA}$
+4. $2\overrightarrow{AB} + \overrightarrow{BC} + \overrightarrow{CA}$
+5. $\overrightarrow{AE} + \overrightarrow{ED} - \overrightarrow{AD}$
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Simplifier $\overrightarrow{AB} + \overrightarrow{BC} - \overrightarrow{AC}$
+
+::: methode
+On regroupe les vecteurs qui s’enchaînent (l’extrémité de l’un est l’origine du suivant).
+:::
+
+::: etape Relation de Chasles
+$\overrightarrow{AB} + \overrightarrow{BC} = \overrightarrow{AC}$.
+:::
+
+::: etape Conclusion
+$$\overrightarrow{AC} - \overrightarrow{AC} = \vec{0}$$
+:::
+
+::: resultat
+$$\overrightarrow{AB} + \overrightarrow{BC} - \overrightarrow{AC} = \vec{0}$$
+:::
+
+## Question 2 : Simplifier $\overrightarrow{AD} + \overrightarrow{DC} + \overrightarrow{CB}$
+
+::: methode
+Les lettres s’enchaînent : $A \to D \to C \to B$. On applique Chasles deux fois.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+\overrightarrow{AD} + \overrightarrow{DC} + \overrightarrow{CB} &= \overrightarrow{AC} + \overrightarrow{CB} \\
+&= \overrightarrow{AB}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$\overrightarrow{AD} + \overrightarrow{DC} + \overrightarrow{CB} = \overrightarrow{AB}$$
+:::
+
+[IMAGE_1]
+
+## Question 3 : Simplifier $\overrightarrow{AB} - \overrightarrow{DB} + \overrightarrow{DA}$
+
+::: methode
+On transforme la soustraction : $-\overrightarrow{DB} = \overrightarrow{BD}$, puis on enchaîne.
+:::
+
+::: etape Supprimer le signe moins
+$$\overrightarrow{AB} - \overrightarrow{DB} + \overrightarrow{DA} = \overrightarrow{AB} + \overrightarrow{BD} + \overrightarrow{DA}$$
+:::
+
+::: etape Enchaîner $A \to B \to D \to A$
+$$
+\begin{aligned}
+\overrightarrow{AB} + \overrightarrow{BD} + \overrightarrow{DA} &= \overrightarrow{AD} + \overrightarrow{DA} \\
+&= \overrightarrow{AA} = \vec{0}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$\overrightarrow{AB} - \overrightarrow{DB} + \overrightarrow{DA} = \vec{0}$$
+:::
+
+::: attention
+On ne peut pas enchaîner $\overrightarrow{AB}$ et $\overrightarrow{DB}$ directement : les lettres ne se suivent pas. Il faut d’abord retourner le vecteur.
+:::
+
+## Question 4 : Simplifier $2\overrightarrow{AB} + \overrightarrow{BC} + \overrightarrow{CA}$
+
+::: methode
+On écrit $2\overrightarrow{AB} = \overrightarrow{AB} + \overrightarrow{AB}$ et on fait apparaître un « tour complet » $A \to B \to C \to A$.
+:::
+
+::: etape Faire apparaître une boucle
+Comme $2\overrightarrow{AB} = \overrightarrow{AB} + \overrightarrow{AB}$, l’expression vaut $\overrightarrow{AB} + \vec{s}$, où
+
+$$\vec{s} = \overrightarrow{AB} + \overrightarrow{BC} + \overrightarrow{CA}$$
+:::
+
+::: etape La boucle vaut le vecteur nul
+$$
+\begin{aligned}
+\vec{s} &= \overrightarrow{AC} + \overrightarrow{CA} \\
+&= \overrightarrow{AA} = \vec{0}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$2\overrightarrow{AB} + \overrightarrow{BC} + \overrightarrow{CA} = \overrightarrow{AB}$$
+:::
+
+## Question 5 : Simplifier $\overrightarrow{AE} + \overrightarrow{ED} - \overrightarrow{AD}$
+
+::: methode
+Même idée qu’à la question 1 : Chasles, puis un vecteur moins lui-même.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+\overrightarrow{AE} + \overrightarrow{ED} - \overrightarrow{AD} &= \overrightarrow{AD} - \overrightarrow{AD} \\
+&= \vec{0}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$\overrightarrow{AE} + \overrightarrow{ED} - \overrightarrow{AD} = \vec{0}$$
+:::
+
+::: retenir
+Un chemin fermé (on revient au point de départ) donne toujours le vecteur nul : $\overrightarrow{AB} + \overrightarrow{BC} + \overrightarrow{CA} = \vec{0}$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\vec{0}$
+2. $\overrightarrow{AB}$
+3. $\vec{0}$
+4. $\overrightarrow{AB}$
+5. $\vec{0}$
+
+===
+
+=== Découverte - Translation, vecteur nul et vecteur opposé
+Id: 1956
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Dans un repère orthonormé, on donne les points $A(1\,;-2)$, $B(4\,;1)$ et $C(-2\,;3)$.
+
+[IMAGE_2]
+
+1. Calculer les coordonnées du vecteur $\overrightarrow{AB}$.
+2. Le point $D$ est l’image de $C$ par la translation de vecteur $\overrightarrow{AB}$, c’est-à-dire $\overrightarrow{CD} = \overrightarrow{AB}$. Déterminer les coordonnées de $D$.
+3. Calculer les coordonnées de $\overrightarrow{CD}$ pour vérifier. Quelle est la nature du quadrilatère $ABDC$ ?
+4. Calculer les coordonnées de $\overrightarrow{BA}$ et préciser le lien entre $\overrightarrow{BA}$ et $\overrightarrow{AB}$.
+5. Déterminer le point $E$ tel que $\overrightarrow{AE} = \vec{0}$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer les coordonnées de $\overrightarrow{AB}$
+
+::: methode
+« Arrivée moins départ » : $\overrightarrow{AB}\,(x_B - x_A\,;\,y_B - y_A)$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+x_B - x_A &= 4 - 1 = 3 \\
+y_B - y_A &= 1 - (-2) = 3
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$\overrightarrow{AB}\,(3\,;3)$$
+:::
+
+## Question 2 : Déterminer les coordonnées de $D$
+
+::: methode
+On traduit $\overrightarrow{CD} = \overrightarrow{AB}$ par l’égalité des coordonnées, puis on résout.
+:::
+
+::: etape Traduire l’égalité
+$\overrightarrow{CD}\,(x_D - (-2)\,;\,y_D - 3)$ doit être égal à $(3\,;3)$ :
+$$
+\begin{aligned}
+x_D + 2 &= 3 \\
+y_D - 3 &= 3
+\end{aligned}
+$$
+:::
+
+::: etape Résoudre
+$x_D = 3 - 2 = 1$ et $y_D = 3 + 3 = 6$.
+:::
+
+::: resultat
+$$D(1\,;6)$$
+:::
+
+[IMAGE_1]
+
+## Question 3 : Vérifier et donner la nature de $ABDC$
+
+::: methode
+On recalcule $\overrightarrow{CD}$ avec les coordonnées trouvées, puis on applique la propriété du parallélogramme.
+:::
+
+::: etape Vérification
+$\overrightarrow{CD}\,(1 - (-2)\,;\,6 - 3)$, soit $\overrightarrow{CD}\,(3\,;3)$ : on retrouve $\overrightarrow{AB}$.
+:::
+
+::: etape Propriété
+$\overrightarrow{AB} = \overrightarrow{CD}$ équivaut à : $ABDC$ est un parallélogramme. Ici, il n’est pas aplati car $C$ n’est pas sur la droite $(AB)$.
+:::
+
+::: resultat
+$\overrightarrow{CD} = \overrightarrow{AB}$, donc $ABDC$ est un parallélogramme.
+:::
+
+::: attention
+L’ordre des sommets est $A$, $B$, $D$, $C$ (et non $A$, $B$, $C$, $D$) : on lit les deux vecteurs « dans le même sens ».
+:::
+
+## Question 4 : Calculer $\overrightarrow{BA}$ et le comparer à $\overrightarrow{AB}$
+
+::: methode
+« Arrivée moins départ », avec cette fois $A$ comme point d’arrivée.
+:::
+
+::: etape Calcul
+$\overrightarrow{BA}\,(1 - 4\,;\,-2 - 1)$, soit $\overrightarrow{BA}\,(-3\,;-3)$.
+:::
+
+::: etape Comparaison
+Les coordonnées de $\overrightarrow{BA}$ sont les opposées de celles de $\overrightarrow{AB}\,(3\,;3)$.
+:::
+
+::: resultat
+$\overrightarrow{BA} = -\overrightarrow{AB}$ : vecteurs opposés (même direction, même norme, sens contraire).
+:::
+
+## Question 5 : Déterminer $E$ tel que $\overrightarrow{AE} = \vec{0}$
+
+::: methode
+Le vecteur nul a pour coordonnées $(0\,;0)$ : l’origine et l’extrémité sont confondues.
+:::
+
+::: etape Traduire
+$x_E - 1 = 0$ et $y_E - (-2) = 0$, donc $x_E = 1$ et $y_E = -2$.
+:::
+
+::: resultat
+$E = A$, c’est-à-dire $E(1\,;-2)$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\overrightarrow{AB}\,(3\,;3)$
+2. $D(1\,;6)$
+3. $\overrightarrow{CD}\,(3\,;3) = \overrightarrow{AB}$, donc $ABDC$ est un parallélogramme.
+4. $\overrightarrow{BA}\,(-3\,;-3)$, donc $\overrightarrow{BA} = -\overrightarrow{AB}$.
+5. $E = A$, soit $E(1\,;-2)$.
+
+===
+
+=== Découverte - Lire les coordonnées d’un vecteur sur un quadrillage
+Id: 3734
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Le plan est muni d’un repère orthonormé ; le quadrillage a pour unité $1$. On a représenté les vecteurs $\overrightarrow{AB}$, $\overrightarrow{CD}$ et $\overrightarrow{EF}$.
+
+[IMAGE_1]
+
+1. Lire graphiquement les coordonnées des vecteurs $\overrightarrow{AB}$, $\overrightarrow{CD}$ et $\overrightarrow{EF}$.
+2. On donne $A(-4\,;1)$ et $B(-1\,;3)$. Retrouver par le calcul les coordonnées de $\overrightarrow{AB}$.
+3. Que peut-on dire des vecteurs $\overrightarrow{AB}$ et $\overrightarrow{CD}$ ? En déduire la nature du quadrilatère $ABDC$.
+4. Que peut-on dire des vecteurs $\overrightarrow{AB}$ et $\overrightarrow{EF}$ ?
+5. Calculer la norme $\|\overrightarrow{AB}\|$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Lire les coordonnées des trois vecteurs
+
+::: methode
+On part de l’origine du vecteur et on compte les carreaux jusqu’à son extrémité : d’abord horizontalement (abscisse), puis verticalement (ordonnée).
+:::
+
+[IMAGE_2]
+
+::: etape Vecteur $\overrightarrow{AB}$
+De $A$ à $B$ : $3$ carreaux vers la droite ($+3$), puis $2$ vers le haut ($+2$).
+:::
+
+::: etape Vecteur $\overrightarrow{CD}$
+De $C$ à $D$ : $3$ vers la droite ($+3$), puis $2$ vers le haut ($+2$).
+:::
+
+::: etape Vecteur $\overrightarrow{EF}$
+De $E$ à $F$ : $3$ vers la **gauche** ($-3$), puis $2$ vers le **bas** ($-2$).
+:::
+
+::: resultat
+$\overrightarrow{AB}\,(3\,;2)$, $\overrightarrow{CD}\,(3\,;2)$ et $\overrightarrow{EF}\,(-3\,;-2)$
+:::
+
+::: attention
+On lit toujours de l’origine vers l’extrémité (dans le sens de la flèche) : vers la gauche ou vers le bas, la coordonnée est négative.
+:::
+
+## Question 2 : Retrouver $\overrightarrow{AB}$ par le calcul
+
+::: methode
+« Arrivée moins départ » : $\overrightarrow{AB}\,(x_B - x_A\,;\,y_B - y_A)$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+x_B - x_A &= -1 - (-4) = 3 \\
+y_B - y_A &= 3 - 1 = 2
+\end{aligned}
+$$
+:::
+
+::: resultat
+$\overrightarrow{AB}\,(3\,;2)$ : le calcul confirme la lecture graphique.
+:::
+
+## Question 3 : Comparer $\overrightarrow{AB}$ et $\overrightarrow{CD}$
+
+::: methode
+Deux vecteurs sont égaux lorsqu’ils ont les mêmes coordonnées.
+:::
+
+::: etape Égalité
+$\overrightarrow{AB}$ et $\overrightarrow{CD}$ ont tous deux pour coordonnées $(3\,;2)$, donc $\overrightarrow{AB} = \overrightarrow{CD}$.
+:::
+
+::: etape Propriété du parallélogramme
+$\overrightarrow{AB} = \overrightarrow{CD}$ équivaut à : $ABDC$ est un parallélogramme. Il n’est pas aplati, car $C$ n’est pas sur la droite $(AB)$.
+:::
+
+::: resultat
+$\overrightarrow{AB} = \overrightarrow{CD}$, donc $ABDC$ est un parallélogramme.
+:::
+
+## Question 4 : Comparer $\overrightarrow{AB}$ et $\overrightarrow{EF}$
+
+::: methode
+On compare les coordonnées : sont-elles égales, opposées, proportionnelles ?
+:::
+
+::: etape Comparaison
+$\overrightarrow{EF}\,(-3\,;-2)$ a des coordonnées opposées à celles de $\overrightarrow{AB}\,(3\,;2)$, donc $\overrightarrow{EF} = -\overrightarrow{AB}$.
+:::
+
+::: resultat
+$\overrightarrow{AB}$ et $\overrightarrow{EF}$ sont opposés : même direction, même norme, sens contraires.
+:::
+
+## Question 5 : Calculer $\|\overrightarrow{AB}\|$
+
+::: methode
+Dans un repère orthonormé, $\|\vec{u}\| = \sqrt{x^2 + y^2}$.
+:::
+
+::: etape Calcul
+$$\|\overrightarrow{AB}\| = \sqrt{3^2 + 2^2} = \sqrt{9 + 4} = \sqrt{13}$$
+:::
+
+::: resultat
+$$\|\overrightarrow{AB}\| = \sqrt{13}$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\overrightarrow{AB}\,(3\,;2)$, $\overrightarrow{CD}\,(3\,;2)$, $\overrightarrow{EF}\,(-3\,;-2)$
+2. $\overrightarrow{AB}\,(-1 - (-4)\,;\,3 - 1)$, soit $(3\,;2)$.
+3. $\overrightarrow{AB} = \overrightarrow{CD}$, donc $ABDC$ est un parallélogramme.
+4. $\overrightarrow{EF} = -\overrightarrow{AB}$ : vecteurs opposés.
+5. $\|\overrightarrow{AB}\| = \sqrt{13}$
+
+===
+
+=== Entraînement - Nature d’un triangle grâce aux distances
+Id: 1963
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Dans un repère orthonormé, on donne les points $A(0\,;1)$, $B(4\,;3)$ et $C(2\,;-1)$.
+
+[IMAGE_2]
+
+1. Calculer les distances $AB$, $BC$ et $AC$.
+2. Que peut-on en déduire pour le triangle $ABC$ ?
+3. Le triangle $ABC$ est-il rectangle ? Justifier.
+4. Calculer les coordonnées du milieu $M$ de $[AC]$.
+5. Calculer la distance $BM$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer $AB$, $BC$ et $AC$
+
+::: methode
+Dans un repère orthonormé : $AB = \sqrt{(x_B - x_A)^2 + (y_B - y_A)^2}$.
+:::
+
+::: etape Distance $AB$
+$$
+\begin{aligned}
+AB &= \sqrt{(4 - 0)^2 + (3 - 1)^2} \\
+&= \sqrt{16 + 4} = \sqrt{20} = 2\sqrt{5}
+\end{aligned}
+$$
+:::
+
+::: etape Distance $BC$
+$$
+\begin{aligned}
+BC &= \sqrt{(2 - 4)^2 + (-1 - 3)^2} \\
+&= \sqrt{4 + 16} = \sqrt{20} = 2\sqrt{5}
+\end{aligned}
+$$
+:::
+
+::: etape Distance $AC$
+$$
+\begin{aligned}
+AC &= \sqrt{(2 - 0)^2 + (-1 - 1)^2} \\
+&= \sqrt{4 + 4} = \sqrt{8} = 2\sqrt{2}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$AB = 2\sqrt{5}$, $BC = 2\sqrt{5}$ et $AC = 2\sqrt{2}$
+:::
+
+## Question 2 : Nature du triangle $ABC$
+
+::: methode
+On compare les longueurs des trois côtés.
+:::
+
+::: etape Comparaison
+$AB = BC = 2\sqrt{5}$ et $AC = 2\sqrt{2} \neq 2\sqrt{5}$.
+:::
+
+::: resultat
+Le triangle $ABC$ est isocèle en $B$.
+:::
+
+[IMAGE_1]
+
+## Question 3 : Le triangle $ABC$ est-il rectangle ?
+
+::: methode
+Si le triangle était rectangle, l’hypoténuse serait le plus long côté : on teste l’égalité de Pythagore avec les carrés des longueurs.
+:::
+
+::: etape Carrés des longueurs
+$AB^2 = 20$, $BC^2 = 20$ et $AC^2 = 8$. Les plus longs côtés sont $[AB]$ et $[BC]$.
+:::
+
+::: etape Angle droit en $C$ (hypoténuse $[AB]$) ?
+$AC^2 + BC^2 = 8 + 20 = 28 \neq 20 = AB^2$.
+:::
+
+::: etape Angle droit en $A$ (hypoténuse $[BC]$) ?
+$AB^2 + AC^2 = 20 + 8 = 28 \neq 20 = BC^2$.
+:::
+
+::: etape Angle droit en $B$ (hypoténuse $[AC]$) ?
+Impossible : $[AC]$ n’est pas le plus long côté (d’ailleurs $AB^2 + BC^2 = 40 \neq 8$).
+:::
+
+::: resultat
+Aucune égalité de Pythagore n’est vérifiée : le triangle $ABC$ n’est pas rectangle.
+:::
+
+::: attention
+On compare les **carrés** des longueurs ($20$, $20$, $8$) et non les racines : $2\sqrt{5} + 2\sqrt{2}$ n’a rien à voir avec Pythagore.
+:::
+
+## Question 4 : Coordonnées du milieu $M$ de $[AC]$
+
+::: methode
+Les coordonnées du milieu sont les moyennes des coordonnées des extrémités.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+x_M &= \frac{0 + 2}{2} = 1 \\
+y_M &= \frac{1 + (-1)}{2} = 0
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$M(1\,;0)$$
+:::
+
+## Question 5 : Calculer $BM$
+
+::: methode
+Formule de la distance entre $B(4\,;3)$ et $M(1\,;0)$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+BM &= \sqrt{(1 - 4)^2 + (0 - 3)^2} \\
+&= \sqrt{9 + 9} = \sqrt{18} \\
+&= \sqrt{9 \times 2} = 3\sqrt{2}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$BM = 3\sqrt{2}$$
+:::
+
+::: remarque Contrôle
+Dans un triangle isocèle en $B$, la médiane $[BM]$ est aussi une hauteur : le triangle $ABM$ est rectangle en $M$. On vérifie : $BM^2 + AM^2 = 18 + 2 = 20 = AB^2$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $AB = 2\sqrt{5}$, $BC = 2\sqrt{5}$, $AC = 2\sqrt{2}$
+2. $AB = BC$ : le triangle $ABC$ est isocèle en $B$.
+3. Non : aucune égalité de Pythagore n’est vérifiée.
+4. $M(1\,;0)$
+5. $BM = 3\sqrt{2}$
+
+===
+
+=== Entraînement - Quatrième sommet d’un parallélogramme
+Id: 1964
+Difficulté: medium
+Image: schema_parallelogramme_ABCD.png
+
+Énoncé:
+<!-- optitab:1 -->
+Dans un repère orthonormé, on donne les points $A(2\,;1)$, $B(6\,;3)$ et $C(4\,;-1)$.
+
+[IMAGE_2]
+
+1. Calculer les coordonnées des vecteurs $\overrightarrow{AB}$ et $\overrightarrow{BC}$.
+2. Déterminer les coordonnées du point $D$ tel que $ABCD$ soit un parallélogramme (dans cet ordre).
+3. Vérifier que $\overrightarrow{DC} = \overrightarrow{AB}$.
+4. Calculer les coordonnées du milieu $I$ de $[AC]$.
+5. Calculer les coordonnées du milieu $J$ de $[BD]$ et conclure.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer $\overrightarrow{AB}$ et $\overrightarrow{BC}$
+
+::: methode
+« Arrivée moins départ » pour chaque vecteur.
+:::
+
+::: etape Vecteur $\overrightarrow{AB}$
+$\overrightarrow{AB}\,(6 - 2\,;\,3 - 1)$, soit $\overrightarrow{AB}\,(4\,;2)$.
+:::
+
+::: etape Vecteur $\overrightarrow{BC}$
+$\overrightarrow{BC}\,(4 - 6\,;\,-1 - 3)$, soit $\overrightarrow{BC}\,(-2\,;-4)$.
+:::
+
+::: resultat
+$\overrightarrow{AB}\,(4\,;2)$ et $\overrightarrow{BC}\,(-2\,;-4)$
+:::
+
+## Question 2 : Déterminer $D$ pour que $ABCD$ soit un parallélogramme
+
+::: methode
+$ABCD$ est un parallélogramme si et seulement si $\overrightarrow{AD} = \overrightarrow{BC}$ (côtés opposés $[AD]$ et $[BC]$, parcourus dans le même sens).
+:::
+
+::: etape Traduire l’égalité
+$\overrightarrow{AD}\,(x_D - 2\,;\,y_D - 1)$ doit être égal à $(-2\,;-4)$ :
+$$
+\begin{aligned}
+x_D - 2 &= -2 \\
+y_D - 1 &= -4
+\end{aligned}
+$$
+:::
+
+::: etape Résoudre
+$x_D = 0$ et $y_D = -3$.
+:::
+
+::: resultat
+$$D(0\,;-3)$$
+:::
+
+[IMAGE_1]
+
+::: attention
+Pour $ABCD$, l’égalité est $\overrightarrow{AD} = \overrightarrow{BC}$ (ou $\overrightarrow{AB} = \overrightarrow{DC}$), et non $\overrightarrow{AB} = \overrightarrow{CD}$, qui donnerait le parallélogramme $ABDC$.
+:::
+
+## Question 3 : Vérifier que $\overrightarrow{DC} = \overrightarrow{AB}$
+
+::: methode
+On calcule $\overrightarrow{DC}$ avec $D(0\,;-3)$ et on compare.
+:::
+
+::: etape Calcul
+$\overrightarrow{DC}\,(4 - 0\,;\,-1 - (-3))$, soit $\overrightarrow{DC}\,(4\,;2)$.
+:::
+
+::: resultat
+$\overrightarrow{DC}\,(4\,;2) = \overrightarrow{AB}$ : la seconde paire de côtés opposés le confirme.
+:::
+
+## Question 4 : Milieu $I$ de $[AC]$
+
+::: methode
+Moyenne des coordonnées des extrémités.
+:::
+
+::: etape Calcul
+$$I\left(\frac{2 + 4}{2}\,;\,\frac{1 + (-1)}{2}\right)$$
+:::
+
+::: resultat
+$$I(3\,;0)$$
+:::
+
+## Question 5 : Milieu $J$ de $[BD]$ et conclusion
+
+::: methode
+On calcule $J$ puis on compare avec $I$.
+:::
+
+::: etape Calcul
+$$J\left(\frac{6 + 0}{2}\,;\,\frac{3 + (-3)}{2}\right)$$
+donc $J(3\,;0)$.
+:::
+
+::: resultat
+$J = I$ : les diagonales $[AC]$ et $[BD]$ ont le même milieu, ce qui caractérise bien le parallélogramme $ABCD$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\overrightarrow{AB}\,(4\,;2)$ et $\overrightarrow{BC}\,(-2\,;-4)$
+2. $D(0\,;-3)$
+3. $\overrightarrow{DC}\,(4\,;2) = \overrightarrow{AB}$
+4. $I(3\,;0)$
+5. $J(3\,;0) = I$ : les diagonales ont le même milieu.
+
+===
+
+=== Entraînement - Distance et milieu d’un segment
+Id: 1965
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Dans un repère orthonormé, on donne les points $A(1\,;-3)$ et $B(7\,;1)$.
+
+1. Calculer les coordonnées du vecteur $\overrightarrow{AB}$.
+2. Calculer la distance $AB$.
+3. Calculer les coordonnées du milieu $M$ du segment $[AB]$.
+4. Calculer les coordonnées de $\overrightarrow{AM}$ et de $\overrightarrow{MB}$. Que constate-t-on ?
+5. Calculer la distance $AM$ et la comparer à $AB$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Coordonnées de $\overrightarrow{AB}$
+
+::: methode
+« Arrivée moins départ ».
+:::
+
+::: etape Calcul
+$\overrightarrow{AB}\,(7 - 1\,;\,1 - (-3))$
+:::
+
+::: resultat
+$$\overrightarrow{AB}\,(6\,;4)$$
+:::
+
+## Question 2 : Distance $AB$
+
+::: methode
+$AB = \|\overrightarrow{AB}\| = \sqrt{x^2 + y^2}$ avec les coordonnées de $\overrightarrow{AB}$ (repère orthonormé).
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+AB &= \sqrt{6^2 + 4^2} = \sqrt{36 + 16} \\
+&= \sqrt{52} = \sqrt{4 \times 13} = 2\sqrt{13}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$AB = 2\sqrt{13}$$
+:::
+
+## Question 3 : Milieu $M$ de $[AB]$
+
+::: methode
+Moyenne des coordonnées des extrémités.
+:::
+
+::: etape Calcul
+$$M\left(\frac{1 + 7}{2}\,;\,\frac{-3 + 1}{2}\right)$$
+:::
+
+::: resultat
+$$M(4\,;-1)$$
+:::
+
+## Question 4 : Comparer $\overrightarrow{AM}$ et $\overrightarrow{MB}$
+
+::: methode
+On calcule les deux vecteurs ; si $M$ est le milieu de $[AB]$, ils doivent être égaux.
+:::
+
+::: etape Vecteur $\overrightarrow{AM}$
+$\overrightarrow{AM}\,(4 - 1\,;\,-1 - (-3))$, soit $\overrightarrow{AM}\,(3\,;2)$.
+:::
+
+::: etape Vecteur $\overrightarrow{MB}$
+$\overrightarrow{MB}\,(7 - 4\,;\,1 - (-1))$, soit $\overrightarrow{MB}\,(3\,;2)$.
+:::
+
+::: resultat
+$\overrightarrow{AM} = \overrightarrow{MB}$ : on retrouve que $M$ est le milieu de $[AB]$, et $\overrightarrow{AB} = 2\overrightarrow{AM}$.
+:::
+
+[IMAGE_1]
+
+## Question 5 : Distance $AM$
+
+::: methode
+Norme de $\overrightarrow{AM}\,(3\,;2)$.
+:::
+
+::: etape Calcul
+$$AM = \sqrt{3^2 + 2^2} = \sqrt{9 + 4} = \sqrt{13}$$
+:::
+
+::: resultat
+$AM = \sqrt{13}$, soit la moitié de $AB = 2\sqrt{13}$ : cohérent avec $M$ milieu de $[AB]$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\overrightarrow{AB}\,(6\,;4)$
+2. $AB = 2\sqrt{13}$
+3. $M(4\,;-1)$
+4. $\overrightarrow{AM}\,(3\,;2) = \overrightarrow{MB}$ : $M$ est bien le milieu de $[AB]$.
+5. $AM = \sqrt{13} = \frac{1}{2}AB$
+
+===
+
+=== Entraînement - Construire une somme et une différence de vecteurs
+Id: 3735
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Le plan est muni d’un repère orthonormé d’origine $O$ ; le quadrillage a pour unité $1$. On a représenté deux vecteurs $\vec{u}$ et $\vec{v}$ à partir de $O$.
+
+[IMAGE_1]
+
+1. Lire les coordonnées de $\vec{u}$ et de $\vec{v}$.
+2. Calculer les coordonnées de $\vec{u} + \vec{v}$, de $\vec{u} - \vec{v}$ et de $2\vec{u}$.
+3. Construire le point $M$ tel que $\overrightarrow{OM} = \vec{u} + \vec{v}$ en plaçant les vecteurs bout à bout. Lire ses coordonnées et comparer avec la question 2.
+4. Construire de même le point $P$ tel que $\overrightarrow{OP} = \vec{u} - \vec{v}$, puis lire ses coordonnées.
+5. On donne $\vec{w}\,(4\,;6)$. Les vecteurs $\vec{w}$ et $\vec{u} + \vec{v}$ sont-ils colinéaires ? Justifier à l’aide d’un déterminant.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Lire les coordonnées de $\vec{u}$ et $\vec{v}$
+
+::: methode
+De l’origine $O$ à l’extrémité : déplacement horizontal, puis vertical.
+:::
+
+::: etape Vecteur $\vec{u}$
+$3$ carreaux vers la droite, $1$ vers le haut.
+:::
+
+::: etape Vecteur $\vec{v}$
+$1$ carreau vers la gauche, $2$ vers le haut.
+:::
+
+::: resultat
+$\vec{u}\,(3\,;1)$ et $\vec{v}\,(-1\,;2)$
+:::
+
+## Question 2 : Calculer $\vec{u} + \vec{v}$, $\vec{u} - \vec{v}$ et $2\vec{u}$
+
+::: methode
+On opère coordonnée par coordonnée.
+:::
+
+::: etape Somme
+$\vec{u} + \vec{v}\,(3 + (-1)\,;\,1 + 2)$, soit $(2\,;3)$.
+:::
+
+::: etape Différence
+$\vec{u} - \vec{v}\,(3 - (-1)\,;\,1 - 2)$, soit $(4\,;-1)$.
+:::
+
+::: etape Produit
+$2\vec{u}\,(2 \times 3\,;\,2 \times 1)$, soit $(6\,;2)$.
+:::
+
+::: resultat
+$\vec{u} + \vec{v}\,(2\,;3)$, $\vec{u} - \vec{v}\,(4\,;-1)$ et $2\vec{u}\,(6\,;2)$
+:::
+
+::: attention
+$3 - (-1) = 4$ : soustraire un nombre négatif revient à ajouter son opposé.
+:::
+
+## Question 3 : Construire $M$ tel que $\overrightarrow{OM} = \vec{u} + \vec{v}$
+
+::: methode
+Bout à bout : on trace $\vec{u}$ depuis $O$, puis $\vec{v}$ depuis l’extrémité de $\vec{u}$ ; $M$ est l’extrémité du second vecteur (relation de Chasles).
+:::
+
+[IMAGE_2]
+
+::: etape Construction
+L’extrémité de $\vec{u}$ est le point $(3\,;1)$. À partir de ce point, on reporte $\vec{v}$ : $1$ carreau vers la gauche et $2$ vers le haut. On arrive en $M$.
+:::
+
+::: etape Lecture
+On lit $M(2\,;3)$, donc $\overrightarrow{OM}\,(2\,;3)$ : ce sont bien les coordonnées de $\vec{u} + \vec{v}$ trouvées à la question 2.
+:::
+
+::: resultat
+$M(2\,;3)$ : la construction confirme le calcul.
+:::
+
+::: remarque Règle du parallélogramme
+Le quadrilatère formé par $O$, l’extrémité de $\vec{u}$, $M$ et l’extrémité de $\vec{v}$ est un parallélogramme : $\overrightarrow{OM}$ en est la diagonale issue de $O$.
+:::
+
+## Question 4 : Construire $P$ tel que $\overrightarrow{OP} = \vec{u} - \vec{v}$
+
+::: methode
+$\vec{u} - \vec{v} = \vec{u} + (-\vec{v})$ : on reporte cette fois l’opposé de $\vec{v}$ au bout de $\vec{u}$.
+:::
+
+::: etape Construction
+$-\vec{v}$ a pour coordonnées $(1\,;-2)$. Depuis $(3\,;1)$, on avance d’$1$ carreau vers la droite et de $2$ vers le bas.
+:::
+
+::: resultat
+$P(4\,;-1)$, en accord avec $\vec{u} - \vec{v}\,(4\,;-1)$.
+:::
+
+## Question 5 : $\vec{w}$ et $\vec{u} + \vec{v}$ sont-ils colinéaires ?
+
+::: methode
+Deux vecteurs sont colinéaires si et seulement si leur déterminant est nul : $\det(\vec{a}, \vec{b}) = xy' - x'y$.
+:::
+
+::: etape Déterminant
+Avec $\vec{u} + \vec{v}\,(2\,;3)$ et $\vec{w}\,(4\,;6)$ :
+$$
+\begin{aligned}
+\det(\vec{u} + \vec{v}, \vec{w}) &= 2 \times 6 - 4 \times 3 \\
+&= 12 - 12 = 0
+\end{aligned}
+$$
+:::
+
+::: etape Coefficient
+Les coordonnées de $\vec{w}$ sont le double de celles de $\vec{u} + \vec{v}$ : $\vec{w} = 2(\vec{u} + \vec{v})$.
+:::
+
+::: resultat
+$\det = 0$ : $\vec{w}$ et $\vec{u} + \vec{v}$ sont colinéaires, avec $\vec{w} = 2(\vec{u} + \vec{v})$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\vec{u}\,(3\,;1)$ et $\vec{v}\,(-1\,;2)$
+2. $\vec{u} + \vec{v}\,(2\,;3)$, $\vec{u} - \vec{v}\,(4\,;-1)$, $2\vec{u}\,(6\,;2)$
+3. $M(2\,;3)$
+4. $P(4\,;-1)$
+5. $\det(\vec{u} + \vec{v}, \vec{w}) = 0$ : colinéaires, $\vec{w} = 2(\vec{u} + \vec{v})$.
+
+===
+
+=== Entraînement - Alignement et parallélisme par le déterminant
+Id: 1962
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Dans un repère orthonormé, on donne les points $A(-1\,;1)$, $B(2\,;3)$, $C(4\,;0)$ et $D(1\,;-2)$. Pour tout réel $k$, on considère aussi le point $P(k\,;k + 4)$.
+
+[IMAGE_2]
+
+1. Calculer les coordonnées du vecteur $\overrightarrow{AB}$.
+2. Exprimer les coordonnées du vecteur $\overrightarrow{AP}$ en fonction de $k$.
+3. Calculer $\det(\overrightarrow{AB}, \overrightarrow{AP})$ en fonction de $k$, puis déterminer la valeur de $k$ pour laquelle $A$, $B$ et $P$ sont alignés.
+4. Pour cette valeur de $k$, donner les coordonnées de $P$ et vérifier l’alignement.
+5. Montrer que les droites $(AB)$ et $(CD)$ sont parallèles. Sont-elles confondues ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Coordonnées de $\overrightarrow{AB}$
+
+::: methode
+« Arrivée moins départ ».
+:::
+
+::: etape Calcul
+$\overrightarrow{AB}\,(2 - (-1)\,;\,3 - 1)$
+:::
+
+::: resultat
+$$\overrightarrow{AB}\,(3\,;2)$$
+:::
+
+## Question 2 : Coordonnées de $\overrightarrow{AP}$ en fonction de $k$
+
+::: methode
+Même formule, en gardant $k$ comme une lettre.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+x_P - x_A &= k - (-1) = k + 1 \\
+y_P - y_A &= (k + 4) - 1 = k + 3
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$\overrightarrow{AP}\,(k + 1\,;\,k + 3)$$
+:::
+
+## Question 3 : Valeur de $k$ pour laquelle $A$, $B$, $P$ sont alignés
+
+::: methode
+$A$, $B$, $P$ alignés $\iff \overrightarrow{AB}$ et $\overrightarrow{AP}$ colinéaires $\iff \det(\overrightarrow{AB}, \overrightarrow{AP}) = 0$.
+:::
+
+::: etape Déterminant
+Avec $\overrightarrow{AB}\,(3\,;2)$ et $\overrightarrow{AP}\,(k + 1\,;\,k + 3)$ :
+$$
+\begin{aligned}
+\det(\overrightarrow{AB}, \overrightarrow{AP}) &= 3(k + 3) - 2(k + 1) \\
+&= 3k + 9 - 2k - 2 \\
+&= k + 7
+\end{aligned}
+$$
+:::
+
+::: etape Équation
+$k + 7 = 0 \iff k = -7$.
+:::
+
+::: resultat
+$\det(\overrightarrow{AB}, \overrightarrow{AP}) = k + 7$ ; les points sont alignés pour $k = -7$.
+:::
+
+::: attention
+Dans $xy' - x'y$, le second produit est **soustrait en entier** : $-2(k + 1) = -2k - 2$, pas $-2k + 2$.
+:::
+
+## Question 4 : Coordonnées de $P$ et vérification
+
+::: methode
+On remplace $k$ par $-7$ dans $P(k\,;k + 4)$.
+:::
+
+::: etape Coordonnées
+$P(-7\,;\,-7 + 4)$, soit $P(-7\,;-3)$.
+:::
+
+::: etape Vérification
+$\overrightarrow{AP}\,(-7 + 1\,;\,-7 + 3)$, soit $(-6\,;-4)$ : c’est $-2\overrightarrow{AB}$, donc $\overrightarrow{AP}$ et $\overrightarrow{AB}$ sont bien colinéaires.
+:::
+
+::: resultat
+$$P(-7\,;-3)$$
+:::
+
+## Question 5 : Parallélisme de $(AB)$ et $(CD)$
+
+::: methode
+$(AB) \parallel (CD) \iff \det(\overrightarrow{AB}, \overrightarrow{CD}) = 0$ ; puis on teste si $C$ est sur $(AB)$.
+:::
+
+::: etape Vecteur $\overrightarrow{CD}$
+$\overrightarrow{CD}\,(1 - 4\,;\,-2 - 0)$, soit $\overrightarrow{CD}\,(-3\,;-2)$.
+:::
+
+::: etape Déterminant
+$$
+\begin{aligned}
+\det(\overrightarrow{AB}, \overrightarrow{CD}) &= 3 \times (-2) - (-3) \times 2 \\
+&= -6 + 6 = 0
+\end{aligned}
+$$
+:::
+
+::: etape Droites confondues ?
+$\overrightarrow{AC}\,(5\,;-1)$ et $\det(\overrightarrow{AB}, \overrightarrow{AC}) = 3 \times (-1) - 5 \times 2 = -13 \neq 0$ : $C$ n’est pas sur $(AB)$.
+:::
+
+::: resultat
+$(AB) \parallel (CD)$, et les droites sont distinctes (strictement parallèles).
+:::
+
+[IMAGE_1]
+
+Solution:
+<!-- optitab:1 -->
+1. $\overrightarrow{AB}\,(3\,;2)$
+2. $\overrightarrow{AP}\,(k + 1\,;\,k + 3)$
+3. $\det(\overrightarrow{AB}, \overrightarrow{AP}) = k + 7$ ; alignés pour $k = -7$.
+4. $P(-7\,;-3)$ et $\overrightarrow{AP} = -2\overrightarrow{AB}$.
+5. $\det(\overrightarrow{AB}, \overrightarrow{CD}) = 0$ : $(AB) \parallel (CD)$ ; elles ne sont pas confondues.
+
+===
+
+=== Entraînement - Coordonnée inconnue pour deux droites parallèles
+Id: 1961
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Dans un repère orthonormé, on donne les points $A(-2\,;0)$, $B(1\,;3)$ et $C(4\,;2)$. On cherche le point $D(t\,;-1)$, où $t$ est un réel, tel que les droites $(AB)$ et $(CD)$ soient parallèles.
+
+[IMAGE_1]
+
+1. Calculer les coordonnées du vecteur $\overrightarrow{AB}$.
+2. Calculer les coordonnées du vecteur $\overrightarrow{CD}$ en fonction de $t$.
+3. Exprimer $\det(\overrightarrow{AB}, \overrightarrow{CD})$ en fonction de $t$.
+4. En déduire la valeur de $t$ et les coordonnées de $D$.
+5. Vérifier le résultat en exprimant $\overrightarrow{CD}$ à l’aide de $\overrightarrow{AB}$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Coordonnées de $\overrightarrow{AB}$
+
+::: methode
+« Arrivée moins départ ».
+:::
+
+::: etape Calcul
+$\overrightarrow{AB}\,(1 - (-2)\,;\,3 - 0)$
+:::
+
+::: resultat
+$$\overrightarrow{AB}\,(3\,;3)$$
+:::
+
+## Question 2 : Coordonnées de $\overrightarrow{CD}$
+
+::: methode
+Même formule, $t$ restant une inconnue.
+:::
+
+::: etape Calcul
+$\overrightarrow{CD}\,(t - 4\,;\,-1 - 2)$
+:::
+
+::: resultat
+$$\overrightarrow{CD}\,(t - 4\,;-3)$$
+:::
+
+## Question 3 : $\det(\overrightarrow{AB}, \overrightarrow{CD})$ en fonction de $t$
+
+::: methode
+$\det(\vec{u}, \vec{v}) = xy' - x'y$ avec $\vec{u} = \overrightarrow{AB}\,(3\,;3)$ et $\vec{v} = \overrightarrow{CD}\,(t - 4\,;-3)$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+\det(\overrightarrow{AB}, \overrightarrow{CD}) &= 3 \times (-3) - (t - 4) \times 3 \\
+&= -9 - 3t + 12 \\
+&= 3 - 3t
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$\det(\overrightarrow{AB}, \overrightarrow{CD}) = 3 - 3t$$
+:::
+
+## Question 4 : Valeur de $t$ et coordonnées de $D$
+
+::: methode
+$(AB) \parallel (CD) \iff \det(\overrightarrow{AB}, \overrightarrow{CD}) = 0$.
+:::
+
+::: etape Résolution
+$3 - 3t = 0 \iff 3t = 3 \iff t = 1$.
+:::
+
+::: resultat
+$t = 1$, donc $D(1\,;-1)$.
+:::
+
+[IMAGE_2]
+
+## Question 5 : Vérification
+
+::: methode
+On calcule $\overrightarrow{CD}$ pour $t = 1$ et on cherche le coefficient qui le relie à $\overrightarrow{AB}$.
+:::
+
+::: etape Calcul
+Pour $t = 1$ : $\overrightarrow{CD}\,(1 - 4\,;-3)$, soit $(-3\,;-3)$.
+:::
+
+::: etape Coefficient
+$(-3\,;-3) = -1 \times (3\,;3)$, donc $\overrightarrow{CD} = -\overrightarrow{AB}$.
+:::
+
+::: resultat
+$\overrightarrow{CD} = -\overrightarrow{AB}$ : les vecteurs sont colinéaires, donc $(AB) \parallel (CD)$.
+:::
+
+::: remarque
+Les deux droites ne sont pas confondues : $\overrightarrow{AC}\,(6\,;2)$ et $\det(\overrightarrow{AB}, \overrightarrow{AC}) = 3 \times 2 - 6 \times 3 = -12 \neq 0$, donc $C$ n’est pas sur $(AB)$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\overrightarrow{AB}\,(3\,;3)$
+2. $\overrightarrow{CD}\,(t - 4\,;-3)$
+3. $\det(\overrightarrow{AB}, \overrightarrow{CD}) = 3 - 3t$
+4. $t = 1$, donc $D(1\,;-1)$.
+5. $\overrightarrow{CD} = -\overrightarrow{AB}$ : $(AB) \parallel (CD)$.
+
+===
+
+=== Problème - Segment parallèle à un côté d’un triangle
+Id: 1960
+Difficulté: medium
+Image: schema_triangle_MN_parallele.png
+
+Énoncé:
+<!-- optitab:1 -->
+On considère un triangle $ABC$. On place le point $M$ sur $[AB]$ et le point $N$ sur $[AC]$ tels que
+
+$$\overrightarrow{AM} = \frac{2}{5}\overrightarrow{AB} \quad \text{et} \quad \overrightarrow{AN} = \frac{2}{5}\overrightarrow{AC}$$
+
+[IMAGE_2]
+
+1. Exprimer $\overrightarrow{MA}$ en fonction de $\overrightarrow{AB}$.
+2. À l’aide de la relation de Chasles, exprimer $\overrightarrow{MN}$ en fonction de $\overrightarrow{AB}$ et $\overrightarrow{AC}$.
+3. Exprimer $\overrightarrow{BC}$ en fonction de $\overrightarrow{AB}$ et $\overrightarrow{AC}$.
+4. Montrer que $\overrightarrow{MN} = \frac{2}{5}\overrightarrow{BC}$, puis conclure sur les droites $(MN)$ et $(BC)$.
+5. En déduire une relation entre les longueurs $MN$ et $BC$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Exprimer $\overrightarrow{MA}$
+
+::: methode
+$\overrightarrow{MA}$ est l’opposé de $\overrightarrow{AM}$.
+:::
+
+::: etape Calcul
+$\overrightarrow{MA} = -\overrightarrow{AM} = -\frac{2}{5}\overrightarrow{AB}$.
+:::
+
+::: resultat
+$$\overrightarrow{MA} = -\frac{2}{5}\overrightarrow{AB}$$
+:::
+
+## Question 2 : Exprimer $\overrightarrow{MN}$
+
+::: methode
+On passe par le point $A$, dont on connaît la position par rapport à $M$ et à $N$ : $\overrightarrow{MN} = \overrightarrow{MA} + \overrightarrow{AN}$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+\overrightarrow{MN} &= \overrightarrow{MA} + \overrightarrow{AN} \\
+&= -\frac{2}{5}\overrightarrow{AB} + \frac{2}{5}\overrightarrow{AC}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$\overrightarrow{MN} = \frac{2}{5}\left(\overrightarrow{AC} - \overrightarrow{AB}\right)$$
+:::
+
+## Question 3 : Exprimer $\overrightarrow{BC}$
+
+::: methode
+Chasles en passant par $A$ : $\overrightarrow{BC} = \overrightarrow{BA} + \overrightarrow{AC}$.
+:::
+
+::: etape Calcul
+$\overrightarrow{BC} = \overrightarrow{BA} + \overrightarrow{AC} = -\overrightarrow{AB} + \overrightarrow{AC}$.
+:::
+
+::: resultat
+$$\overrightarrow{BC} = \overrightarrow{AC} - \overrightarrow{AB}$$
+:::
+
+## Question 4 : Montrer que $\overrightarrow{MN} = \frac{2}{5}\overrightarrow{BC}$ et conclure
+
+::: methode
+On reconnaît dans le résultat de la question 2 l’expression de $\overrightarrow{BC}$ trouvée à la question 3.
+:::
+
+::: etape Substitution
+$\overrightarrow{MN} = \frac{2}{5}\left(\overrightarrow{AC} - \overrightarrow{AB}\right)$ et $\overrightarrow{AC} - \overrightarrow{AB} = \overrightarrow{BC}$, donc $\overrightarrow{MN} = \frac{2}{5}\overrightarrow{BC}$.
+:::
+
+::: etape Conséquence
+$\overrightarrow{MN}$ et $\overrightarrow{BC}$ sont colinéaires, donc les droites $(MN)$ et $(BC)$ sont parallèles.
+:::
+
+::: resultat
+$\overrightarrow{MN} = \frac{2}{5}\overrightarrow{BC}$, donc $(MN) \parallel (BC)$.
+:::
+
+[IMAGE_1]
+
+## Question 5 : Relation entre $MN$ et $BC$
+
+::: methode
+La norme de $k\vec{u}$ vaut $|k| \times \|\vec{u}\|$.
+:::
+
+::: etape Calcul
+$MN = \left\|\frac{2}{5}\overrightarrow{BC}\right\| = \frac{2}{5}\|\overrightarrow{BC}\| = \frac{2}{5}BC$, car $\frac{2}{5} \gt 0$.
+:::
+
+::: resultat
+$$MN = \frac{2}{5}BC$$
+:::
+
+::: retenir
+On retrouve, avec des vecteurs, la réciproque du théorème de Thalès et la proportionnalité des longueurs.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\overrightarrow{MA} = -\frac{2}{5}\overrightarrow{AB}$
+2. $\overrightarrow{MN} = \frac{2}{5}\left(\overrightarrow{AC} - \overrightarrow{AB}\right)$
+3. $\overrightarrow{BC} = \overrightarrow{AC} - \overrightarrow{AB}$
+4. $\overrightarrow{MN} = \frac{2}{5}\overrightarrow{BC}$, donc $(MN) \parallel (BC)$.
+5. $MN = \frac{2}{5}BC$
+
+===
+
+=== Problème - Trajet d’un drone et somme de vecteurs
+Id: 1959
+Difficulté: hard
+Image: schema_deplacements_drone.png
+
+Énoncé:
+<!-- optitab:1 -->
+Dans un repère orthonormé (unité : $1$ km), un drone part du point $S(-3\,;2)$. Il effectue successivement les déplacements de vecteurs $\vec{u}\,(5\,;-1)$, $\vec{v}\,(-2\,;4)$ puis $\vec{w}\,(1\,;-3)$. On note $A$, $B$ et $T$ les points atteints après chaque déplacement.
+
+1. Déterminer les coordonnées des points $A$, $B$ et $T$.
+2. Donner les coordonnées du vecteur $\overrightarrow{ST}$.
+3. Calculer la distance $ST$ entre le départ et l’arrivée.
+4. Calculer les coordonnées de $\vec{u} + \vec{v} + \vec{w}$ et comparer avec $\overrightarrow{ST}$.
+5. Les vecteurs $\vec{u}$ et $\vec{v}$ sont-ils colinéaires ? Justifier avec un déterminant.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Coordonnées de $A$, $B$ et $T$
+
+::: methode
+Si $\overrightarrow{SA} = \vec{u}\,(a\,;b)$, alors $x_A - x_S = a$ et $y_A - y_S = b$, donc $A(x_S + a\,;\,y_S + b)$.
+:::
+
+::: etape Après $\vec{u}\,(5\,;-1)$
+$A(-3 + 5\,;\,2 - 1)$, soit $A(2\,;1)$.
+:::
+
+::: etape Après $\vec{v}\,(-2\,;4)$
+$B(2 - 2\,;\,1 + 4)$, soit $B(0\,;5)$.
+:::
+
+::: etape Après $\vec{w}\,(1\,;-3)$
+$T(0 + 1\,;\,5 - 3)$, soit $T(1\,;2)$.
+:::
+
+::: resultat
+$A(2\,;1)$, $B(0\,;5)$ et $T(1\,;2)$
+:::
+
+[IMAGE_1]
+
+## Question 2 : Coordonnées de $\overrightarrow{ST}$
+
+::: methode
+« Arrivée moins départ ».
+:::
+
+::: etape Calcul
+$\overrightarrow{ST}\,(1 - (-3)\,;\,2 - 2)$
+:::
+
+::: resultat
+$$\overrightarrow{ST}\,(4\,;0)$$
+:::
+
+## Question 3 : Distance $ST$
+
+::: methode
+$ST = \|\overrightarrow{ST}\| = \sqrt{x^2 + y^2}$ (repère orthonormé).
+:::
+
+::: etape Calcul
+$ST = \sqrt{4^2 + 0^2} = \sqrt{16} = 4$.
+:::
+
+::: resultat
+$ST = 4$ km.
+:::
+
+::: attention
+$ST$ est la distance « à vol d’oiseau » entre le départ et l’arrivée. Le trajet réellement parcouru est bien plus long : $\sqrt{26} + \sqrt{20} + \sqrt{10} \approx 12{,}7$ km. On n’additionne pas les normes pour obtenir la norme d’une somme.
+:::
+
+## Question 4 : Calculer $\vec{u} + \vec{v} + \vec{w}$
+
+::: methode
+On additionne coordonnée par coordonnée.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+x &= 5 + (-2) + 1 = 4 \\
+y &= -1 + 4 + (-3) = 0
+\end{aligned}
+$$
+:::
+
+::: etape Interprétation
+D’après la relation de Chasles, $\overrightarrow{ST} = \overrightarrow{SA} + \overrightarrow{AB} + \overrightarrow{BT} = \vec{u} + \vec{v} + \vec{w}$.
+:::
+
+::: resultat
+$\vec{u} + \vec{v} + \vec{w}\,(4\,;0)$, donc $\vec{u} + \vec{v} + \vec{w} = \overrightarrow{ST}$.
+:::
+
+## Question 5 : $\vec{u}$ et $\vec{v}$ sont-ils colinéaires ?
+
+::: methode
+$\vec{u}$ et $\vec{v}$ colinéaires $\iff \det(\vec{u}, \vec{v}) = 0$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+\det(\vec{u}, \vec{v}) &= 5 \times 4 - (-2) \times (-1) \\
+&= 20 - 2 = 18
+\end{aligned}
+$$
+:::
+
+::: resultat
+$\det(\vec{u}, \vec{v}) = 18 \neq 0$ : $\vec{u}$ et $\vec{v}$ ne sont pas colinéaires.
+:::
+
+::: attention
+$(-2) \times (-1) = 2$ ; on le **soustrait** : $20 - 2 = 18$ (et non $20 + 2$).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $A(2\,;1)$, $B(0\,;5)$, $T(1\,;2)$
+2. $\overrightarrow{ST}\,(4\,;0)$
+3. $ST = 4$ km
+4. $\vec{u} + \vec{v} + \vec{w}\,(4\,;0)$, donc $\vec{u} + \vec{v} + \vec{w} = \overrightarrow{ST}$.
+5. $\det(\vec{u}, \vec{v}) = 18 \neq 0$ : non colinéaires.
+
+===
+
+=== Problème - Démontrer le critère de colinéarité
+Id: 1957
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Dans une base orthonormée, on considère deux vecteurs $\vec{u}\,(x\,;y)$ et $\vec{v}\,(x'\,;y')$, avec $\vec{v} \neq \vec{0}$. On rappelle que $\det(\vec{u}, \vec{v}) = xy' - x'y$.
+
+On veut démontrer : $\vec{u}$ et $\vec{v}$ sont colinéaires si et seulement si $\det(\vec{u}, \vec{v}) = 0$.
+
+1. (Sens direct) On suppose qu’il existe un réel $k$ tel que $\vec{u} = k\vec{v}$. Montrer que $\det(\vec{u}, \vec{v}) = 0$.
+2. (Réciproque) On suppose $\det(\vec{u}, \vec{v}) = 0$. Écrire l’égalité obtenue entre $xy'$ et $x'y$.
+3. Dans le cas $x' \neq 0$, on pose $k = \frac{x}{x'}$. Montrer que $\vec{u} = k\vec{v}$.
+4. Dans le cas $x' = 0$ (et donc $y' \neq 0$), on pose $k = \frac{y}{y'}$. Montrer que $\vec{u} = k\vec{v}$.
+5. Conclure.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Sens direct
+
+::: methode
+On remplace $x$ et $y$ par leurs expressions en fonction de $x'$ et $y'$.
+:::
+
+::: etape Traduire $\vec{u} = k\vec{v}$
+Les coordonnées de $k\vec{v}$ sont $(kx'\,;ky')$, donc $x = kx'$ et $y = ky'$.
+:::
+
+::: etape Calcul du déterminant
+$$
+\begin{aligned}
+\det(\vec{u}, \vec{v}) &= xy' - x'y \\
+&= (kx')y' - x'(ky') \\
+&= kx'y' - kx'y' = 0
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$\det(\vec{u}, \vec{v}) = 0$$
+:::
+
+[IMAGE_1]
+
+## Question 2 : Traduire $\det(\vec{u}, \vec{v}) = 0$
+
+::: methode
+On applique la définition du déterminant.
+:::
+
+::: etape Calcul
+$xy' - x'y = 0$ équivaut à $xy' = x'y$.
+:::
+
+::: resultat
+$$xy' = x'y$$
+:::
+
+## Question 3 : Cas $x' \neq 0$
+
+::: methode
+Avec $k = \frac{x}{x'}$, on a déjà $x = kx'$ ; il reste à prouver $y = ky'$.
+:::
+
+::: etape Première coordonnée
+$k = \frac{x}{x'}$ donne $x = kx'$.
+:::
+
+::: etape Seconde coordonnée
+On remplace $x$ par $kx'$ dans $xy' = x'y$ : $kx'y' = x'y$. Comme $x' \neq 0$, on divise par $x'$ : $ky' = y$.
+:::
+
+::: resultat
+$x = kx'$ et $y = ky'$, donc $\vec{u} = k\vec{v}$.
+:::
+
+## Question 4 : Cas $x' = 0$ et $y' \neq 0$
+
+::: methode
+On montre d’abord que $x = 0$, puis on choisit $k = \frac{y}{y'}$.
+:::
+
+::: etape Abscisse de $\vec{u}$
+Avec $x' = 0$, l’égalité $xy' = x'y$ devient $xy' = 0$. Comme $y' \neq 0$, on obtient $x = 0$.
+:::
+
+::: etape Choix de $k$
+Avec $k = \frac{y}{y'}$ :
+- $kx' = \frac{y}{y'} \times 0 = 0 = x$ ;
+- $ky' = \frac{y}{y'} \times y' = y$.
+:::
+
+::: resultat
+$x = kx'$ et $y = ky'$, donc $\vec{u} = k\vec{v}$.
+:::
+
+## Question 5 : Conclusion
+
+::: methode
+On rassemble les deux sens de l’équivalence.
+:::
+
+::: etape Sens direct
+Si $\vec{u}$ et $\vec{v}$ sont colinéaires, alors $\det(\vec{u}, \vec{v}) = 0$ (question 1).
+:::
+
+::: etape Réciproque
+Si $\det(\vec{u}, \vec{v}) = 0$, alors, comme $\vec{v} \neq \vec{0}$, on a $x' \neq 0$ ou $y' \neq 0$ : les questions 3 et 4 traitent les deux cas et donnent $\vec{u} = k\vec{v}$.
+:::
+
+::: resultat
+$\vec{u}$ et $\vec{v}$ sont colinéaires si et seulement si $\det(\vec{u}, \vec{v}) = 0$.
+:::
+
+::: remarque Cas du vecteur nul
+Si $\vec{v} = \vec{0}$, alors $\det(\vec{u}, \vec{0}) = x \times 0 - 0 \times y = 0$ et $\vec{0} = 0 \times \vec{u}$ : l’équivalence reste vraie, puisque le vecteur nul est colinéaire à tout vecteur.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $x = kx'$ et $y = ky'$ donnent $\det(\vec{u}, \vec{v}) = kx'y' - kx'y' = 0$.
+2. $xy' = x'y$
+3. Si $x' \neq 0$ : avec $k = \frac{x}{x'}$, on obtient $y = ky'$, donc $\vec{u} = k\vec{v}$.
+4. Si $x' = 0$ : $x = 0$ et, avec $k = \frac{y}{y'}$, $\vec{u} = k\vec{v}$.
+5. $\vec{u}$ et $\vec{v}$ colinéaires $\iff \det(\vec{u}, \vec{v}) = 0$.
+
+===
+
+=== Problème - Alignement et milieu dans un triangle
+Id: 1958
+Difficulté: hard
+Image: schema_triangle_ADE.png
+
+Énoncé:
+<!-- optitab:1 -->
+On considère un triangle $ABC$. Le point $D$ est défini par $\overrightarrow{BD} = \frac{1}{3}\overrightarrow{BC}$, et le point $E$ par
+
+$$\overrightarrow{AE} = \frac{4}{3}\overrightarrow{AB} + \frac{2}{3}\overrightarrow{AC}$$
+
+[IMAGE_2]
+
+1. Exprimer $\overrightarrow{BC}$ en fonction de $\overrightarrow{AB}$ et $\overrightarrow{AC}$.
+2. En déduire $\overrightarrow{AD}$ en fonction de $\overrightarrow{AB}$ et $\overrightarrow{AC}$.
+3. Montrer que $\overrightarrow{AE} = 2\overrightarrow{AD}$.
+4. Que peut-on en déduire pour les points $A$, $D$ et $E$ ?
+5. Préciser la position du point $D$ sur le segment $[AE]$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Exprimer $\overrightarrow{BC}$
+
+::: methode
+Chasles en passant par $A$ : $\overrightarrow{BC} = \overrightarrow{BA} + \overrightarrow{AC}$.
+:::
+
+::: etape Calcul
+$\overrightarrow{BC} = \overrightarrow{BA} + \overrightarrow{AC} = -\overrightarrow{AB} + \overrightarrow{AC}$.
+:::
+
+::: resultat
+$$\overrightarrow{BC} = \overrightarrow{AC} - \overrightarrow{AB}$$
+:::
+
+## Question 2 : Exprimer $\overrightarrow{AD}$
+
+::: methode
+Chasles en passant par $B$ : $\overrightarrow{AD} = \overrightarrow{AB} + \overrightarrow{BD}$, puis on remplace $\overrightarrow{BD}$.
+:::
+
+::: etape Expression de $\overrightarrow{BD}$
+$$
+\begin{aligned}
+\overrightarrow{BD} &= \frac{1}{3}\overrightarrow{BC} \\
+&= \frac{1}{3}\overrightarrow{AC} - \frac{1}{3}\overrightarrow{AB}
+\end{aligned}
+$$
+:::
+
+::: etape Calcul de $\overrightarrow{AD}$
+$$
+\begin{aligned}
+\overrightarrow{AD} &= \overrightarrow{AB} + \overrightarrow{BD} \\
+&= \overrightarrow{AB} - \frac{1}{3}\overrightarrow{AB} + \frac{1}{3}\overrightarrow{AC} \\
+&= \frac{2}{3}\overrightarrow{AB} + \frac{1}{3}\overrightarrow{AC}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$\overrightarrow{AD} = \frac{2}{3}\overrightarrow{AB} + \frac{1}{3}\overrightarrow{AC}$$
+:::
+
+::: attention
+$\overrightarrow{AB} - \frac{1}{3}\overrightarrow{AB} = \left(1 - \frac{1}{3}\right)\overrightarrow{AB} = \frac{2}{3}\overrightarrow{AB}$ : on regroupe les termes en $\overrightarrow{AB}$ comme en calcul littéral.
+:::
+
+## Question 3 : Montrer que $\overrightarrow{AE} = 2\overrightarrow{AD}$
+
+::: methode
+On calcule $2\overrightarrow{AD}$ et on compare avec la définition de $E$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+2\overrightarrow{AD} &= 2\left(\frac{2}{3}\overrightarrow{AB} + \frac{1}{3}\overrightarrow{AC}\right) \\
+&= \frac{4}{3}\overrightarrow{AB} + \frac{2}{3}\overrightarrow{AC}
+\end{aligned}
+$$
+:::
+
+::: etape Comparaison
+On reconnaît exactement l’expression de $\overrightarrow{AE}$.
+:::
+
+::: resultat
+$$\overrightarrow{AE} = 2\overrightarrow{AD}$$
+:::
+
+## Question 4 : Les points $A$, $D$ et $E$
+
+::: methode
+Deux vecteurs de même origine $A$ colinéaires donnent trois points alignés.
+:::
+
+::: etape Colinéarité
+$\overrightarrow{AE} = 2\overrightarrow{AD}$ : les vecteurs $\overrightarrow{AE}$ et $\overrightarrow{AD}$ sont colinéaires.
+:::
+
+::: resultat
+Les points $A$, $D$ et $E$ sont alignés.
+:::
+
+## Question 5 : Position de $D$ sur $[AE]$
+
+::: methode
+On exprime $\overrightarrow{AD}$ en fonction de $\overrightarrow{AE}$.
+:::
+
+::: etape Calcul
+$\overrightarrow{AE} = 2\overrightarrow{AD}$ équivaut à $\overrightarrow{AD} = \frac{1}{2}\overrightarrow{AE}$.
+:::
+
+::: resultat
+$D$ est le milieu du segment $[AE]$.
+:::
+
+[IMAGE_1]
+
+Solution:
+<!-- optitab:1 -->
+1. $\overrightarrow{BC} = \overrightarrow{AC} - \overrightarrow{AB}$
+2. $\overrightarrow{AD} = \frac{2}{3}\overrightarrow{AB} + \frac{1}{3}\overrightarrow{AC}$
+3. $2\overrightarrow{AD} = \frac{4}{3}\overrightarrow{AB} + \frac{2}{3}\overrightarrow{AC} = \overrightarrow{AE}$
+4. $A$, $D$ et $E$ sont alignés.
+5. $D$ est le milieu de $[AE]$.
+
+===

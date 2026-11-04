@@ -1,0 +1,1681 @@
+=== Découverte - Produit scalaire et angle dans un pavé droit
+Id: 974
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+$ABCDEFGH$ est un pavé droit tel que $AB = 4$, $AD = 2$ et $AE = 3$. On munit l’espace du repère orthonormé $(A\,;\vec{\imath}, \vec{\jmath}, \vec{k})$, où $\vec{\imath} = \frac{1}{4}\overrightarrow{AB}$, $\vec{\jmath} = \frac{1}{2}\overrightarrow{AD}$ et $\vec{k} = \frac{1}{3}\overrightarrow{AE}$.
+
+[IMAGE_1]
+
+1. Donner les coordonnées des points $B$, $D$, $E$, $F$ et $H$.
+2. Calculer les coordonnées des vecteurs $\overrightarrow{AF}$ et $\overrightarrow{AH}$, puis le produit scalaire $\overrightarrow{AF} \cdot \overrightarrow{AH}$.
+3. Calculer les longueurs $AF$ et $AH$.
+4. En déduire une valeur approchée au dixième de degré de l’angle $\widehat{FAH}$.
+5. Calculer $\overrightarrow{AE} \cdot \overrightarrow{BD}$. Que peut-on en déduire pour les droites $(AE)$ et $(BD)$ ? Sont-elles perpendiculaires ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Coordonnées des sommets
+
+::: methode
+$\overrightarrow{AB} = 4\vec{\imath}$, $\overrightarrow{AD} = 2\vec{\jmath}$, $\overrightarrow{AE} = 3\vec{k}$ : on décompose chaque $\overrightarrow{AM}$ en suivant les arêtes.
+:::
+
+::: etape Sommets situés sur les axes
+$\overrightarrow{AB} = 4\vec{\imath}$ donne $B(4\,;0\,;0)$ ; de même $D(0\,;2\,;0)$ et $E(0\,;0\,;3)$.
+:::
+
+::: etape Sommets de la face du haut
+Les arêtes verticales sont égales : $\overrightarrow{BF} = \overrightarrow{DH} = \overrightarrow{AE}$. Donc :
+
+$$
+\begin{aligned}
+\overrightarrow{AF} &= \overrightarrow{AB} + \overrightarrow{AE} = 4\vec{\imath} + 3\vec{k} \\
+\overrightarrow{AH} &= \overrightarrow{AD} + \overrightarrow{AE} = 2\vec{\jmath} + 3\vec{k}
+\end{aligned}
+$$
+
+d’où $F(4\,;0\,;3)$ et $H(0\,;2\,;3)$.
+:::
+
+::: resultat
+$B(4\,;0\,;0)$, $D(0\,;2\,;0)$, $E(0\,;0\,;3)$, $F(4\,;0\,;3)$ et $H(0\,;2\,;3)$
+:::
+
+::: attention
+Les coordonnées ne sont pas toutes égales à $0$ ou $1$ : le repère est construit avec des vecteurs **unitaires**, et non avec les arêtes elles-mêmes.
+:::
+
+## Question 2 : Calculer $\overrightarrow{AF} \cdot \overrightarrow{AH}$
+
+::: methode
+Dans un repère **orthonormé**, $\vec{u} \cdot \vec{v} = xx' + yy' + zz'$.
+:::
+
+::: etape Coordonnées des vecteurs
+$A$ est l’origine : $\overrightarrow{AF}\,(4\,;0\,;3)$ et $\overrightarrow{AH}\,(0\,;2\,;3)$.
+:::
+
+::: etape Produit scalaire
+$$
+\begin{aligned}
+\overrightarrow{AF} \cdot \overrightarrow{AH} &= 4 \times 0 + 0 \times 2 + 3 \times 3 \\
+&= 9
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$\overrightarrow{AF} \cdot \overrightarrow{AH} = 9$$
+:::
+
+## Question 3 : Longueurs $AF$ et $AH$
+
+::: methode
+$\|\vec{u}\| = \sqrt{x^2 + y^2 + z^2}$ en repère orthonormé.
+:::
+
+::: etape Calculs
+$$AF = \sqrt{4^2 + 0^2 + 3^2} = \sqrt{25} = 5$$
+
+$$AH = \sqrt{0^2 + 2^2 + 3^2} = \sqrt{13}$$
+:::
+
+::: resultat
+$AF = 5$ et $AH = \sqrt{13}$.
+:::
+
+## Question 4 : Angle $\widehat{FAH}$
+
+::: methode
+$\cos\widehat{FAH} = \dfrac{\overrightarrow{AF} \cdot \overrightarrow{AH}}{AF \times AH}$, puis la touche $\cos^{-1}$ de la calculatrice (mode degrés).
+:::
+
+::: etape Cosinus
+$$\cos\widehat{FAH} = \frac{9}{5\sqrt{13}} \approx 0{,}4992$$
+:::
+
+::: etape Angle
+À la calculatrice : $\widehat{FAH} \approx 60{,}1°$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+$$\widehat{FAH} \approx 60{,}1°$$
+:::
+
+## Question 5 : Les droites $(AE)$ et $(BD)$
+
+::: methode
+Deux droites sont orthogonales si leurs vecteurs directeurs ont un produit scalaire nul ; elles sont perpendiculaires si, de plus, elles sont sécantes.
+:::
+
+::: etape Produit scalaire
+$\overrightarrow{AE}\,(0\,;0\,;3)$ et $\overrightarrow{BD}\,(-4\,;2\,;0)$ :
+
+$$
+\begin{aligned}
+\overrightarrow{AE} \cdot \overrightarrow{BD} &= 0 \times (-4) + 0 \times 2 + 3 \times 0 \\
+&= 0
+\end{aligned}
+$$
+
+Les droites $(AE)$ et $(BD)$ sont donc orthogonales.
+:::
+
+::: etape Sont-elles sécantes ?
+La droite $(AE)$ ne rencontre le plan $(ABD)$ de la face du bas qu’au point $A$, et $A$ n’est pas sur la diagonale $(BD)$. Les deux droites n’ont donc aucun point commun.
+:::
+
+::: resultat
+$\overrightarrow{AE} \cdot \overrightarrow{BD} = 0$ : $(AE)$ et $(BD)$ sont **orthogonales**, mais elles ne sont **pas perpendiculaires** (elles ne se coupent pas).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $B(4\,;0\,;0)$, $D(0\,;2\,;0)$, $E(0\,;0\,;3)$, $F(4\,;0\,;3)$, $H(0\,;2\,;3)$
+2. $\overrightarrow{AF}\,(4\,;0\,;3)$, $\overrightarrow{AH}\,(0\,;2\,;3)$ et $\overrightarrow{AF} \cdot \overrightarrow{AH} = 9$
+3. $AF = 5$ et $AH = \sqrt{13}$
+4. $\cos\widehat{FAH} = \frac{9}{5\sqrt{13}}$, donc $\widehat{FAH} \approx 60{,}1°$
+5. $\overrightarrow{AE} \cdot \overrightarrow{BD} = 0$ : les droites sont orthogonales, mais pas perpendiculaires car elles ne sont pas sécantes.
+
+===
+
+=== Découverte - Projeté orthogonal d'un point sur une droite
+Id: 978
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+L’espace est muni d’un repère orthonormé. On considère la droite $d$ passant par le point $B(1\,;0\,;2)$ et de vecteur directeur $\vec{u}\,(1\,;2\,;2)$, ainsi que le point $A(4\,;3\,;-1)$.
+
+1. Calculer $\|\vec{u}\|$ et le produit scalaire $\overrightarrow{BA} \cdot \vec{u}$.
+2. Un point $H$ de la droite $d$ vérifie $\overrightarrow{BH} = t\,\vec{u}$, où $t$ est un réel. Exprimer en fonction de $t$ les coordonnées de $H$, puis celles de $\overrightarrow{AH}$.
+3. Déterminer $t$ pour que $\overrightarrow{AH}$ soit orthogonal à $\vec{u}$. En déduire les coordonnées du projeté orthogonal $H$ de $A$ sur $d$.
+4. Calculer la distance $AH$ du point $A$ à la droite $d$.
+5. Vérifier que $BA^2 = BH^2 + AH^2$. Pourquoi était-ce prévisible ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $\|\vec{u}\|$ et $\overrightarrow{BA} \cdot \vec{u}$
+
+::: methode
+Norme et produit scalaire en repère orthonormé.
+:::
+
+::: etape Norme
+$$\|\vec{u}\| = \sqrt{1^2 + 2^2 + 2^2} = \sqrt{9} = 3$$
+:::
+
+::: etape Produit scalaire
+$\overrightarrow{BA}\,(4 - 1\,;3 - 0\,;-1 - 2)$, soit $\overrightarrow{BA}\,(3\,;3\,;-3)$ :
+
+$$
+\begin{aligned}
+\overrightarrow{BA} \cdot \vec{u} &= 3 \times 1 + 3 \times 2 + (-3) \times 2 \\
+&= 3
+\end{aligned}
+$$
+:::
+
+::: resultat
+$\|\vec{u}\| = 3$ et $\overrightarrow{BA} \cdot \vec{u} = 3$.
+:::
+
+## Question 2 : Coordonnées de $H$ et de $\overrightarrow{AH}$
+
+::: methode
+$\overrightarrow{BH} = t\,\vec{u}$ : on ajoute aux coordonnées de $B$ celles de $t\,\vec{u}$.
+:::
+
+::: etape Le point $H$
+$t\,\vec{u}\,(t\,;2t\,;2t)$, donc $H(1 + t\,;2t\,;2 + 2t)$.
+:::
+
+::: etape Le vecteur $\overrightarrow{AH}$
+$$\overrightarrow{AH}\,(1 + t - 4\,;2t - 3\,;2 + 2t + 1)$$
+
+soit $\overrightarrow{AH}\,(t - 3\,;2t - 3\,;2t + 3)$.
+:::
+
+::: resultat
+$H(1 + t\,;2t\,;2 + 2t)$ et $\overrightarrow{AH}\,(t - 3\,;2t - 3\,;2t + 3)$.
+:::
+
+## Question 3 : Le projeté orthogonal $H$
+
+::: methode
+Le projeté orthogonal de $A$ sur $d$ est le point $H$ de $d$ tel que $\overrightarrow{AH} \cdot \vec{u} = 0$.
+:::
+
+::: etape Équation en $t$
+$$
+\begin{aligned}
+\overrightarrow{AH} \cdot \vec{u} &= (t - 3) + 2(2t - 3) + 2(2t + 3) \\
+&= 9t - 3
+\end{aligned}
+$$
+
+Donc $\overrightarrow{AH} \cdot \vec{u} = 0 \iff 9t - 3 = 0 \iff t = \frac{1}{3}$.
+:::
+
+::: etape Coordonnées de $H$
+$$H\left(1 + \frac{1}{3}\,;\frac{2}{3}\,;2 + \frac{2}{3}\right)$$
+
+soit $H\left(\frac{4}{3}\,;\frac{2}{3}\,;\frac{8}{3}\right)$.
+:::
+
+[IMAGE_1]
+
+::: resultat
+$t = \dfrac{1}{3}$ et $H\left(\dfrac{4}{3}\,;\dfrac{2}{3}\,;\dfrac{8}{3}\right)$.
+:::
+
+::: retenir
+On retrouve $t = \dfrac{\overrightarrow{BA} \cdot \vec{u}}{\|\vec{u}\|^2} = \dfrac{3}{9} = \dfrac{1}{3}$ : c’est le lien avec la question 1.
+:::
+
+## Question 4 : Distance de $A$ à la droite $d$
+
+::: methode
+La distance d’un point à une droite est la longueur $AH$, où $H$ est le projeté orthogonal.
+:::
+
+::: etape Coordonnées de $\overrightarrow{AH}$
+Avec $t = \frac{1}{3}$ : $\overrightarrow{AH}\left(-\frac{8}{3}\,;-\frac{7}{3}\,;\frac{11}{3}\right)$.
+:::
+
+::: etape Longueur
+$$
+\begin{aligned}
+AH^2 &= \frac{64}{9} + \frac{49}{9} + \frac{121}{9} \\
+&= \frac{234}{9} \\
+&= 26
+\end{aligned}
+$$
+:::
+
+::: resultat
+La distance du point $A$ à la droite $d$ vaut $AH = \sqrt{26} \approx 5{,}10$.
+:::
+
+## Question 5 : Vérifier $BA^2 = BH^2 + AH^2$
+
+::: methode
+Calculer chaque carré de longueur, puis comparer.
+:::
+
+::: etape Les trois longueurs
+- $BA^2 = 3^2 + 3^2 + (-3)^2 = 27$ ;
+- $\overrightarrow{BH} = \frac{1}{3}\vec{u}$, donc $BH = \frac{1}{3} \times 3 = 1$ et $BH^2 = 1$ ;
+- $AH^2 = 26$ (question 4).
+:::
+
+::: etape Comparer
+$BH^2 + AH^2 = 1 + 26 = 27 = BA^2$.
+:::
+
+::: resultat
+$BA^2 = BH^2 + AH^2$ : c’est le théorème de Pythagore dans le triangle $ABH$, rectangle en $H$ puisque $(AH) \perp d$.
+:::
+
+::: attention
+Le projeté orthogonal est le point de $d$ le plus proche de $A$ : pour tout autre point $N$ de $d$, $AN^2 = AH^2 + HN^2 > AH^2$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\|\vec{u}\| = 3$ et $\overrightarrow{BA} \cdot \vec{u} = 3$
+2. $H(1 + t\,;2t\,;2 + 2t)$ et $\overrightarrow{AH}\,(t - 3\,;2t - 3\,;2t + 3)$
+3. $9t - 3 = 0$, donc $t = \frac{1}{3}$ et $H\left(\frac{4}{3}\,;\frac{2}{3}\,;\frac{8}{3}\right)$
+4. $AH = \sqrt{26} \approx 5{,}10$
+5. $BH^2 + AH^2 = 1 + 26 = 27 = BA^2$ : le triangle $ABH$ est rectangle en $H$.
+
+===
+
+=== Découverte - Règles de calcul : longueur, angle et aire
+Id: 981
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+$ABC$ est un triangle de l’espace tel que $AB = 3$, $AC = 2$ et $\overrightarrow{AB} \cdot \overrightarrow{AC} = -2$. On pose $\vec{u} = \overrightarrow{AB}$ et $\vec{v} = \overrightarrow{AC}$. Aucun repère n’est utilisé : on calcule uniquement avec les règles du produit scalaire.
+
+1. Justifier que $\overrightarrow{BC} = \vec{v} - \vec{u}$, puis calculer $BC^2$ en développant. En déduire $BC$.
+2. Calculer $\cos\widehat{BAC}$, puis une valeur approchée au dixième de degré de l’angle $\widehat{BAC}$. Cet angle est-il aigu ou obtus ?
+3. On note $I$ le milieu de $[BC]$. Exprimer $\overrightarrow{AI}$ en fonction de $\vec{u}$ et $\vec{v}$, puis calculer la longueur $AI$.
+4. On note $H$ le projeté orthogonal de $B$ sur la droite $(AC)$, et $k$ le réel tel que $\overrightarrow{AH} = k\,\overrightarrow{AC}$.
+   - a) Justifier que $\overrightarrow{AB} \cdot \overrightarrow{AC} = \overrightarrow{AH} \cdot \overrightarrow{AC}$.
+   - b) En déduire $k$. Le point $H$ appartient-il au segment $[AC]$ ?
+5. Calculer $BH$, puis l’aire du triangle $ABC$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer $BC$
+
+::: methode
+$BC^2 = \|\vec{v} - \vec{u}\|^2$ se développe comme une identité remarquable.
+:::
+
+::: etape Relation de Chasles
+$\overrightarrow{BC} = \overrightarrow{BA} + \overrightarrow{AC} = -\vec{u} + \vec{v} = \vec{v} - \vec{u}$.
+:::
+
+::: etape Développement
+$$
+\begin{aligned}
+BC^2 &= (\vec{v} - \vec{u}) \cdot (\vec{v} - \vec{u}) \\
+&= \|\vec{v}\|^2 - 2\,\vec{u} \cdot \vec{v} + \|\vec{u}\|^2 \\
+&= 4 - 2 \times (-2) + 9 \\
+&= 17
+\end{aligned}
+$$
+:::
+
+::: resultat
+$BC^2 = 17$, donc $BC = \sqrt{17} \approx 4{,}12$.
+:::
+
+## Question 2 : L’angle $\widehat{BAC}$
+
+::: methode
+$\overrightarrow{AB} \cdot \overrightarrow{AC} = AB \times AC \times \cos\widehat{BAC}$.
+:::
+
+::: etape Cosinus
+$$
+\begin{aligned}
+\cos\widehat{BAC} &= \frac{\overrightarrow{AB} \cdot \overrightarrow{AC}}{AB \times AC} \\
+&= \frac{-2}{3 \times 2} \\
+&= -\frac{1}{3}
+\end{aligned}
+$$
+:::
+
+::: etape Angle
+À la calculatrice (touche $\cos^{-1}$, mode degrés) : $\widehat{BAC} \approx 109{,}5°$.
+:::
+
+::: resultat
+$\cos\widehat{BAC} = -\dfrac{1}{3}$ et $\widehat{BAC} \approx 109{,}5°$ : l’angle est **obtus**.
+:::
+
+::: retenir
+Le signe du produit scalaire renseigne sur l’angle : positif, angle aigu ; nul, angle droit ; négatif, angle obtus.
+:::
+
+## Question 3 : La médiane $[AI]$
+
+::: methode
+$I$ milieu de $[BC]$ : $\overrightarrow{AI} = \frac{1}{2}\left(\overrightarrow{AB} + \overrightarrow{AC}\right)$.
+:::
+
+::: etape Carré scalaire
+$$
+\begin{aligned}
+AI^2 &= \frac{1}{4}\,(\vec{u} + \vec{v}) \cdot (\vec{u} + \vec{v}) \\
+&= \frac{1}{4}\left(\|\vec{u}\|^2 + 2\,\vec{u} \cdot \vec{v} + \|\vec{v}\|^2\right) \\
+&= \frac{1}{4}\,(9 - 4 + 4) \\
+&= \frac{9}{4}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$\overrightarrow{AI} = \dfrac{1}{2}\,(\vec{u} + \vec{v})$ et $AI = \dfrac{3}{2}$.
+:::
+
+## Question 4 : Le projeté $H$ de $B$ sur $(AC)$
+
+::: methode
+On décompose $\overrightarrow{AB} = \overrightarrow{AH} + \overrightarrow{HB}$, avec $\overrightarrow{HB}$ orthogonal à $\overrightarrow{AC}$.
+:::
+
+::: etape a) Projection
+$$
+\begin{aligned}
+\overrightarrow{AB} \cdot \overrightarrow{AC} &= \left(\overrightarrow{AH} + \overrightarrow{HB}\right) \cdot \overrightarrow{AC} \\
+&= \overrightarrow{AH} \cdot \overrightarrow{AC} + \overrightarrow{HB} \cdot \overrightarrow{AC} \\
+&= \overrightarrow{AH} \cdot \overrightarrow{AC}
+\end{aligned}
+$$
+
+car $\overrightarrow{HB} \cdot \overrightarrow{AC} = 0$ ($H$ est le projeté orthogonal de $B$ sur $(AC)$).
+:::
+
+::: etape b) Valeur de $k$
+$$
+\begin{aligned}
+\overrightarrow{AH} \cdot \overrightarrow{AC} &= k\,\overrightarrow{AC} \cdot \overrightarrow{AC} \\
+&= k \times AC^2 \\
+&= 4k
+\end{aligned}
+$$
+
+D’après a), $4k = -2$, donc $k = -\frac{1}{2}$.
+:::
+
+::: etape Position de $H$
+$\overrightarrow{AH} = -\frac{1}{2}\overrightarrow{AC}$ : $\overrightarrow{AH}$ et $\overrightarrow{AC}$ sont de sens contraires. $H$ est sur la droite $(AC)$, du côté opposé à $C$ par rapport à $A$, avec $AH = \frac{1}{2} \times 2 = 1$.
+:::
+
+[IMAGE_1]
+
+::: resultat
+$k = -\dfrac{1}{2}$ : $H$ n’appartient **pas** au segment $[AC]$ ; il est situé au-delà de $A$, à la distance $1$ de $A$.
+:::
+
+::: attention
+Le pied de la hauteur issue de $B$ tombe hors du côté $[AC]$ parce que l’angle en $A$ est obtus : $k$ est négatif exactement quand $\overrightarrow{AB} \cdot \overrightarrow{AC} < 0$.
+:::
+
+## Question 5 : Hauteur $BH$ et aire
+
+::: methode
+Le triangle $ABH$ est rectangle en $H$ : théorème de Pythagore. L’aire d’un triangle est la moitié du produit d’une base par la hauteur associée.
+:::
+
+::: etape Hauteur
+$$
+\begin{aligned}
+BH^2 &= AB^2 - AH^2 \\
+&= 9 - 1 = 8
+\end{aligned}
+$$
+
+donc $BH = \sqrt{8} = 2\sqrt{2}$.
+:::
+
+::: etape Aire
+La base $[AC]$ a pour longueur $2$ et la hauteur associée est $BH$ :
+
+$$
+\begin{aligned}
+\mathcal{A} &= \frac{AC \times BH}{2} \\
+&= \frac{2 \times 2\sqrt{2}}{2} \\
+&= 2\sqrt{2}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$BH = 2\sqrt{2}$ et l’aire du triangle $ABC$ vaut $2\sqrt{2} \approx 2{,}83$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $BC^2 = \|\vec{v}\|^2 - 2\,\vec{u} \cdot \vec{v} + \|\vec{u}\|^2 = 17$, donc $BC = \sqrt{17}$.
+2. $\cos\widehat{BAC} = -\frac{1}{3}$ et $\widehat{BAC} \approx 109{,}5°$ : angle obtus.
+3. $\overrightarrow{AI} = \frac{1}{2}\,(\vec{u} + \vec{v})$ et $AI = \frac{3}{2}$.
+4. a) $\overrightarrow{HB} \cdot \overrightarrow{AC} = 0$ donne $\overrightarrow{AB} \cdot \overrightarrow{AC} = \overrightarrow{AH} \cdot \overrightarrow{AC}$. b) $4k = -2$, donc $k = -\frac{1}{2}$ : $H$ est hors du segment $[AC]$, au-delà de $A$.
+5. $BH = 2\sqrt{2}$ et l’aire vaut $2\sqrt{2}$.
+
+===
+
+=== Découverte - Triangle rectangle et rectangle dans l'espace
+Id: 979
+Difficulté: easy
+Image: produit_scalaire_triangles_pythagore.png
+
+Énoncé:
+<!-- optitab:1 -->
+L’espace est muni d’un repère orthonormé. On considère les points $A(1\,;0\,;2)$, $B(3\,;2\,;3)$ et $C(3\,;-4\,;6)$.
+
+1. Calculer $\overrightarrow{AB} \cdot \overrightarrow{AC}$. Que peut-on en déduire pour le triangle $ABC$ ?
+2. Calculer les longueurs $AB$, $AC$ et $BC$, puis vérifier le théorème de Pythagore.
+3. Calculer l’aire du triangle $ABC$.
+4. Déterminer les coordonnées du point $D$ tel que $ABDC$ soit un parallélogramme. Quelle est la nature exacte de $ABDC$ ?
+5. Calculer $\overrightarrow{AD} \cdot \overrightarrow{BC}$. Les diagonales de $ABDC$ sont-elles perpendiculaires ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Le triangle $ABC$ est-il rectangle ?
+
+::: methode
+$ABC$ est rectangle en $A$ si et seulement si $\overrightarrow{AB} \cdot \overrightarrow{AC} = 0$.
+:::
+
+::: etape Coordonnées des vecteurs
+$\overrightarrow{AB}\,(3 - 1\,;2 - 0\,;3 - 2)$, soit $\overrightarrow{AB}\,(2\,;2\,;1)$, et $\overrightarrow{AC}\,(3 - 1\,;-4 - 0\,;6 - 2)$, soit $\overrightarrow{AC}\,(2\,;-4\,;4)$.
+:::
+
+::: etape Produit scalaire
+$$
+\begin{aligned}
+\overrightarrow{AB} \cdot \overrightarrow{AC} &= 2 \times 2 + 2 \times (-4) + 1 \times 4 \\
+&= 4 - 8 + 4 \\
+&= 0
+\end{aligned}
+$$
+:::
+
+::: resultat
+$\overrightarrow{AB} \cdot \overrightarrow{AC} = 0$ : le triangle $ABC$ est **rectangle en $A$**.
+:::
+
+## Question 2 : Longueurs et théorème de Pythagore
+
+::: methode
+$AB = \sqrt{(x_B - x_A)^2 + (y_B - y_A)^2 + (z_B - z_A)^2}$ en repère orthonormé.
+:::
+
+::: etape Les deux côtés de l’angle droit
+$AB = \sqrt{4 + 4 + 1} = \sqrt{9} = 3$ et $AC = \sqrt{4 + 16 + 16} = \sqrt{36} = 6$.
+:::
+
+::: etape L’hypoténuse
+$\overrightarrow{BC}\,(0\,;-6\,;3)$, donc $BC = \sqrt{0 + 36 + 9} = \sqrt{45} = 3\sqrt{5}$.
+:::
+
+::: etape Comparer
+$AB^2 + AC^2 = 9 + 36 = 45 = BC^2$.
+:::
+
+::: resultat
+$AB = 3$, $AC = 6$, $BC = 3\sqrt{5}$ et $AB^2 + AC^2 = BC^2$.
+:::
+
+## Question 3 : Aire du triangle $ABC$
+
+::: methode
+Dans un triangle rectangle, les côtés de l’angle droit sont une base et la hauteur associée.
+:::
+
+::: etape Calcul
+$$\mathcal{A} = \frac{AB \times AC}{2} = \frac{3 \times 6}{2} = 9$$
+:::
+
+::: resultat
+L’aire du triangle $ABC$ vaut $9$ unités d’aire.
+:::
+
+## Question 4 : Le point $D$ et la nature de $ABDC$
+
+::: methode
+$ABDC$ est un parallélogramme si et seulement si $\overrightarrow{AB} = \overrightarrow{CD}$.
+:::
+
+::: etape Coordonnées de $D$
+$\overrightarrow{CD} = \overrightarrow{AB}$ donne $x_D - 3 = 2$, $y_D + 4 = 2$, $z_D - 6 = 1$, soit $D(5\,;-2\,;7)$.
+:::
+
+::: etape Nature
+$ABDC$ est un parallélogramme qui a un angle droit en $A$ (question 1) : c’est un rectangle. Ce n’est pas un carré, car $AB = 3 \neq AC = 6$.
+:::
+
+[IMAGE_1]
+
+::: resultat
+$D(5\,;-2\,;7)$ et $ABDC$ est un **rectangle** (non carré).
+:::
+
+## Question 5 : Les diagonales $[AD]$ et $[BC]$
+
+::: methode
+Les diagonales sont perpendiculaires si et seulement si $\overrightarrow{AD} \cdot \overrightarrow{BC} = 0$ (elles se coupent en leur milieu).
+:::
+
+::: etape Coordonnées
+$\overrightarrow{AD}\,(4\,;-2\,;5)$ et $\overrightarrow{BC}\,(0\,;-6\,;3)$.
+:::
+
+::: etape Produit scalaire
+$$
+\begin{aligned}
+\overrightarrow{AD} \cdot \overrightarrow{BC} &= 4 \times 0 + (-2) \times (-6) + 5 \times 3 \\
+&= 27
+\end{aligned}
+$$
+:::
+
+::: resultat
+$\overrightarrow{AD} \cdot \overrightarrow{BC} = 27 \neq 0$ : les diagonales du rectangle $ABDC$ ne sont **pas perpendiculaires**.
+:::
+
+::: remarque
+Sans coordonnées, avec $\overrightarrow{AD} = \overrightarrow{AC} + \overrightarrow{AB}$ et $\overrightarrow{BC} = \overrightarrow{AC} - \overrightarrow{AB}$ :
+
+$$
+\begin{aligned}
+\overrightarrow{AD} \cdot \overrightarrow{BC} &= AC^2 - AB^2 \\
+&= 36 - 9 = 27
+\end{aligned}
+$$
+
+Les diagonales d’un rectangle ne sont perpendiculaires que si c’est un carré.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\overrightarrow{AB}\,(2\,;2\,;1)$, $\overrightarrow{AC}\,(2\,;-4\,;4)$ et $\overrightarrow{AB} \cdot \overrightarrow{AC} = 0$ : $ABC$ est rectangle en $A$.
+2. $AB = 3$, $AC = 6$, $BC = 3\sqrt{5}$ et $9 + 36 = 45$.
+3. Aire $= 9$ unités d’aire.
+4. $D(5\,;-2\,;7)$ ; $ABDC$ est un rectangle (non carré).
+5. $\overrightarrow{AD} \cdot \overrightarrow{BC} = 27 \neq 0$ : les diagonales ne sont pas perpendiculaires.
+
+===
+
+=== Découverte - Vecteur normal à un plan
+Id: 1107
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+L’espace est muni d’un repère orthonormé $(O\,;\vec{i}, \vec{j}, \vec{k})$. On considère les points $A(2\,;1\,;-1)$, $B(0\,;3\,;2)$ et $C(-1\,;0\,;1)$, ainsi que le vecteur $\vec{n}\,(7\,;-5\,;8)$.
+
+1. Montrer que le vecteur $\vec{n}$ est un vecteur normal au plan $(ABC)$.
+2. En déduire une équation cartésienne du plan $(ABC)$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Montrer que $\vec{n}$ est normal au plan $(ABC)$
+
+::: methode
+Un vecteur est normal à un plan s’il est orthogonal à deux vecteurs non colinéaires de ce plan.
+:::
+
+::: etape Deux vecteurs du plan $(ABC)$
+$$\overrightarrow{AB} = \begin{pmatrix} 0 - 2 \\ 3 - 1 \\ 2 - (-1) \end{pmatrix} = \begin{pmatrix} -2 \\ 2 \\ 3 \end{pmatrix} \qquad \overrightarrow{AC} = \begin{pmatrix} -1 - 2 \\ 0 - 1 \\ 1 - (-1) \end{pmatrix} = \begin{pmatrix} -3 \\ -1 \\ 2 \end{pmatrix}$$
+
+Ces vecteurs ne sont pas colinéaires : $\frac{-3}{-2} = \frac{3}{2}$ mais $\frac{-1}{2} = -\frac{1}{2}$, les coordonnées ne sont pas proportionnelles. Les points $A$, $B$, $C$ ne sont donc pas alignés et définissent bien un plan.
+:::
+
+::: etape Produit scalaire avec $\overrightarrow{AB}$
+$$
+\begin{aligned}
+\vec{n} \cdot \overrightarrow{AB} &= 7 \times (-2) + (-5) \times 2 + 8 \times 3 \\
+&= -14 - 10 + 24 \\
+&= 0
+\end{aligned}
+$$
+:::
+
+::: etape Produit scalaire avec $\overrightarrow{AC}$
+$$
+\begin{aligned}
+\vec{n} \cdot \overrightarrow{AC} &= 7 \times (-3) + (-5) \times (-1) + 8 \times 2 \\
+&= -21 + 5 + 16 \\
+&= 0
+\end{aligned}
+$$
+:::
+
+::: resultat
+$\vec{n}$ est orthogonal aux deux vecteurs non colinéaires $\overrightarrow{AB}$ et $\overrightarrow{AC}$ du plan $(ABC)$ : $\vec{n}$ est normal au plan $(ABC)$.
+:::
+
+[IMAGE_1]
+
+::: remarque Pour aller plus loin : trouver soi-même un vecteur normal
+On cherche $\vec{n}\,(a\,;b\,;c)$ tel que $\vec{n} \cdot \overrightarrow{AB} = 0$ et $\vec{n} \cdot \overrightarrow{AC} = 0$ :
+
+$$
+\begin{cases}
+-2a + 2b + 3c = 0 \\
+-3a - b + 2c = 0
+\end{cases}
+$$
+
+La seconde équation donne $b = -3a + 2c$ ; dans la première : $-8a + 7c = 0$, soit $a = \frac{7}{8}c$. En choisissant $c = 8$, on obtient $a = 7$ et $b = -5$ : on retrouve $\vec{n}\,(7\,;-5\,;8)$.
+:::
+
+## Question 2 : Équation cartésienne du plan $(ABC)$
+
+::: methode
+Avec le vecteur normal $\vec{n}\,(7\,;-5\,;8)$, le plan a une équation $7x - 5y + 8z + d = 0$ ; on calcule $d$ avec le point $A$.
+:::
+
+::: etape Calculer $d$
+$A(2\,;1\,;-1) \in (ABC)$ : $7 \times 2 - 5 \times 1 + 8 \times (-1) + d = 0$, soit $14 - 5 - 8 + d = 0$, donc $d = -1$.
+:::
+
+::: point Vérification
+- $B(0\,;3\,;2)$ : $0 - 15 + 16 - 1 = 0$.
+- $C(-1\,;0\,;1)$ : $-7 - 0 + 8 - 1 = 0$.
+:::
+
+::: resultat
+$$(ABC) : 7x - 5y + 8z - 1 = 0$$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\overrightarrow{AB}\,(-2\,;2\,;3)$ et $\overrightarrow{AC}\,(-3\,;-1\,;2)$ ne sont pas colinéaires, et $\vec{n} \cdot \overrightarrow{AB} = 0$, $\vec{n} \cdot \overrightarrow{AC} = 0$ : $\vec{n}$ est normal au plan $(ABC)$.
+2. $(ABC) : 7x - 5y + 8z - 1 = 0$
+
+===
+
+=== Entraînement - Projeté orthogonal sur un plan et distance
+Id: 976
+Difficulté: medium
+Image: produit_scalaire_distances_normes.png
+
+Énoncé:
+<!-- optitab:1 -->
+L’espace est muni d’un repère orthonormé. On considère le plan $\mathcal{P}$ passant par le point $A(1\,;0\,;1)$ et de vecteur normal $\vec{n}\,(2\,;-1\,;2)$, ainsi que les points $B(2\,;4\,;2)$ et $M(5\,;1\,;8)$.
+
+1. Montrer que le point $B$ appartient au plan $\mathcal{P}$.
+2. On note $H$ le projeté orthogonal de $M$ sur $\mathcal{P}$. Justifier qu’il existe un réel $t$ tel que $\overrightarrow{MH} = t\,\vec{n}$, puis exprimer les coordonnées de $H$ en fonction de $t$.
+3. En traduisant $\overrightarrow{AH} \cdot \vec{n} = 0$, déterminer $t$, puis les coordonnées de $H$.
+4. En déduire la distance du point $M$ au plan $\mathcal{P}$.
+5. Calculer $MB$ et vérifier que $MB^2 = MH^2 + HB^2$. Expliquer pourquoi $H$ est le point de $\mathcal{P}$ le plus proche de $M$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $B$ appartient-il à $\mathcal{P}$ ?
+
+::: methode
+$\mathcal{P}$ est le plan passant par $A$ et de vecteur normal $\vec{n}$ : $N \in \mathcal{P} \iff \overrightarrow{AN} \cdot \vec{n} = 0$.
+:::
+
+::: etape Calcul
+$\overrightarrow{AB}\,(1\,;4\,;1)$, donc
+
+$$
+\begin{aligned}
+\overrightarrow{AB} \cdot \vec{n} &= 1 \times 2 + 4 \times (-1) + 1 \times 2 \\
+&= 0
+\end{aligned}
+$$
+:::
+
+::: resultat
+$\overrightarrow{AB} \cdot \vec{n} = 0$ : $B \in \mathcal{P}$.
+:::
+
+## Question 2 : Le réel $t$ et les coordonnées de $H$
+
+::: methode
+La droite $(MH)$ est orthogonale à $\mathcal{P}$ : elle est dirigée par le vecteur normal $\vec{n}$.
+:::
+
+::: etape Colinéarité
+$\overrightarrow{MH}$ dirige la droite orthogonale à $\mathcal{P}$ passant par $M$, tout comme $\vec{n}$ : ces deux vecteurs sont colinéaires, et il existe un réel $t$ tel que $\overrightarrow{MH} = t\,\vec{n}$.
+:::
+
+::: etape Coordonnées
+$t\,\vec{n}\,(2t\,;-t\,;2t)$, donc $H(5 + 2t\,;1 - t\,;8 + 2t)$.
+:::
+
+::: resultat
+$H(5 + 2t\,;1 - t\,;8 + 2t)$
+:::
+
+## Question 3 : Calcul de $t$ et de $H$
+
+::: methode
+$H$ appartient à $\mathcal{P}$ : $\overrightarrow{AH} \cdot \vec{n} = 0$, équation d’inconnue $t$.
+:::
+
+::: etape Le vecteur $\overrightarrow{AH}$
+$\overrightarrow{AH}\,(4 + 2t\,;1 - t\,;7 + 2t)$.
+:::
+
+::: etape L’équation
+$$
+\begin{aligned}
+\overrightarrow{AH} \cdot \vec{n} &= 2(4 + 2t) - (1 - t) + 2(7 + 2t) \\
+&= 21 + 9t
+\end{aligned}
+$$
+
+Donc $\overrightarrow{AH} \cdot \vec{n} = 0 \iff 21 + 9t = 0 \iff t = -\frac{7}{3}$.
+:::
+
+::: etape Coordonnées de $H$
+$$H\left(5 - \frac{14}{3}\,;1 + \frac{7}{3}\,;8 - \frac{14}{3}\right)$$
+
+soit $H\left(\frac{1}{3}\,;\frac{10}{3}\,;\frac{10}{3}\right)$.
+:::
+
+::: resultat
+$t = -\dfrac{7}{3}$ et $H\left(\dfrac{1}{3}\,;\dfrac{10}{3}\,;\dfrac{10}{3}\right)$.
+:::
+
+## Question 4 : Distance de $M$ au plan $\mathcal{P}$
+
+::: methode
+La distance cherchée est $MH = |t| \times \|\vec{n}\|$.
+:::
+
+::: etape Calcul
+$\|\vec{n}\| = \sqrt{4 + 1 + 4} = 3$, donc $MH = \frac{7}{3} \times 3 = 7$.
+:::
+
+[IMAGE_1]
+
+::: resultat
+La distance du point $M$ au plan $\mathcal{P}$ vaut $7$.
+:::
+
+## Question 5 : Le point de $\mathcal{P}$ le plus proche de $M$
+
+::: methode
+Calculer les trois longueurs au carré ; puis utiliser l’orthogonalité de $\overrightarrow{MH}$ et de $\overrightarrow{HB}$.
+:::
+
+::: etape Les longueurs
+- $\overrightarrow{MB}\,(-3\,;3\,;-6)$, donc $MB^2 = 9 + 9 + 36 = 54$ et $MB = 3\sqrt{6} \approx 7{,}35$ ;
+- $\overrightarrow{HB}\left(\frac{5}{3}\,;\frac{2}{3}\,;-\frac{4}{3}\right)$, donc $HB^2 = \frac{25 + 4 + 16}{9} = 5$ ;
+- $MH^2 = 49$.
+
+On a bien :
+
+$$MH^2 + HB^2 = 49 + 5 = 54 = MB^2$$
+:::
+
+::: etape Pourquoi $H$ est le plus proche
+Pour tout point $Q$ de $\mathcal{P}$, $\overrightarrow{MH}$ est normal au plan et $\overrightarrow{HQ}$ est un vecteur du plan, donc le triangle $MHQ$ est rectangle en $H$ :
+
+$$MQ^2 = MH^2 + HQ^2 \geq MH^2$$
+
+avec égalité seulement si $Q = H$.
+:::
+
+::: resultat
+$MB = 3\sqrt{6}$ et $MB^2 = MH^2 + HB^2$ ; $H$ est le point de $\mathcal{P}$ le plus proche de $M$, et $MH = 7 < MB$.
+:::
+
+::: remarque Pour aller plus loin
+Une équation cartésienne de $\mathcal{P}$ est $2x - y + 2z - 4 = 0$ ; on peut aussi trouver $t$ en reportant les coordonnées de $H$ dans cette équation.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\overrightarrow{AB} \cdot \vec{n} = 2 - 4 + 2 = 0$ : $B \in \mathcal{P}$.
+2. $\overrightarrow{MH}$ et $\vec{n}$ dirigent la même droite (orthogonale à $\mathcal{P}$) : $\overrightarrow{MH} = t\,\vec{n}$ et $H(5 + 2t\,;1 - t\,;8 + 2t)$.
+3. $21 + 9t = 0$, donc $t = -\frac{7}{3}$ et $H\left(\frac{1}{3}\,;\frac{10}{3}\,;\frac{10}{3}\right)$.
+4. $MH = \frac{7}{3} \times 3 = 7$.
+5. $MB = 3\sqrt{6}$, $MB^2 = 54 = 49 + 5 = MH^2 + HB^2$ ; pour tout $Q$ de $\mathcal{P}$, $MQ^2 = MH^2 + HQ^2 \geq MH^2$.
+
+===
+
+=== Entraînement - Orthogonalité, angle et vecteur normal
+Id: 975
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+L’espace est muni d’un repère orthonormé d’origine $O$. On considère les vecteurs $\vec{u}\,(1\,;2\,;-2)$, $\vec{v}\,(2\,;1\,;2)$ et $\vec{w}\,(1\,;0\,;1)$.
+
+1. Montrer que $\vec{u}$ et $\vec{v}$ sont orthogonaux.
+2. Déterminer une valeur approchée au dixième de degré de l’angle $\theta$ formé par $\vec{u}$ et $\vec{w}$.
+3. Déterminer le réel $k$ pour lequel les vecteurs $\vec{a}\,(k\,;1\,;2)$ et $\vec{b}\,(3\,;-k\,;1)$ sont orthogonaux.
+4. Déterminer le vecteur $\vec{n}\,(a\,;b\,;1)$ orthogonal à la fois à $\vec{u}$ et à $\vec{v}$.
+5. On note $\mathcal{P}$ le plan passant par $O$ et dirigé par $\vec{u}$ et $\vec{v}$.
+   - a) Que représente $\vec{n}$ pour le plan $\mathcal{P}$ ? En déduire une équation cartésienne de $\mathcal{P}$.
+   - b) La droite passant par $O$ et dirigée par $\vec{w}$ est-elle orthogonale au plan $\mathcal{P}$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : $\vec{u}$ et $\vec{v}$ orthogonaux
+
+::: methode
+Deux vecteurs sont orthogonaux si et seulement si leur produit scalaire est nul.
+:::
+
+::: etape Produit scalaire
+$$
+\begin{aligned}
+\vec{u} \cdot \vec{v} &= 1 \times 2 + 2 \times 1 + (-2) \times 2 \\
+&= 2 + 2 - 4 \\
+&= 0
+\end{aligned}
+$$
+:::
+
+::: resultat
+$\vec{u} \cdot \vec{v} = 0$ : $\vec{u}$ et $\vec{v}$ sont orthogonaux.
+:::
+
+## Question 2 : Angle entre $\vec{u}$ et $\vec{w}$
+
+::: methode
+$\cos\theta = \dfrac{\vec{u} \cdot \vec{w}}{\|\vec{u}\| \times \|\vec{w}\|}$, puis la touche $\cos^{-1}$ de la calculatrice.
+:::
+
+::: etape Produit scalaire et normes
+- $\vec{u} \cdot \vec{w} = 1 + 0 - 2 = -1$
+- $\|\vec{u}\| = \sqrt{1 + 4 + 4} = 3$ et $\|\vec{w}\| = \sqrt{1 + 0 + 1} = \sqrt{2}$
+:::
+
+::: etape Cosinus et angle
+$$\cos\theta = \frac{-1}{3\sqrt{2}} = -\frac{\sqrt{2}}{6} \approx -0{,}236$$
+
+À la calculatrice : $\theta \approx 103{,}6°$.
+:::
+
+::: resultat
+$\theta \approx 103{,}6°$ (angle obtus, car $\vec{u} \cdot \vec{w} < 0$).
+:::
+
+## Question 3 : Valeur de $k$
+
+::: methode
+Écrire $\vec{a} \cdot \vec{b} = 0$ et résoudre l’équation d’inconnue $k$.
+:::
+
+::: etape Résolution
+$$
+\begin{aligned}
+\vec{a} \cdot \vec{b} &= 3k + 1 \times (-k) + 2 \times 1 \\
+&= 2k + 2
+\end{aligned}
+$$
+
+Donc $\vec{a} \cdot \vec{b} = 0 \iff 2k + 2 = 0 \iff k = -1$.
+:::
+
+::: point Vérification
+Pour $k = -1$ : $\vec{a}\,(-1\,;1\,;2)$, $\vec{b}\,(3\,;1\,;1)$ et $\vec{a} \cdot \vec{b} = -3 + 1 + 2 = 0$.
+:::
+
+::: resultat
+$$k = -1$$
+:::
+
+## Question 4 : Un vecteur orthogonal à $\vec{u}$ et à $\vec{v}$
+
+::: methode
+Les deux conditions $\vec{n} \cdot \vec{u} = 0$ et $\vec{n} \cdot \vec{v} = 0$ donnent un système de deux équations d’inconnues $a$ et $b$.
+:::
+
+::: etape Le système
+$$
+\left\{\begin{aligned}
+a + 2b - 2 &= 0 &&(\vec{n} \cdot \vec{u} = 0) \\
+2a + b + 2 &= 0 &&(\vec{n} \cdot \vec{v} = 0)
+\end{aligned}\right.
+$$
+:::
+
+::: etape Résolution
+La première équation donne $a = 2 - 2b$. Dans la seconde :
+
+$$
+\begin{aligned}
+2(2 - 2b) + b + 2 &= 0 \\
+6 - 3b &= 0 \\
+b &= 2
+\end{aligned}
+$$
+
+puis $a = 2 - 4 = -2$.
+:::
+
+::: point Vérification
+$\vec{n} \cdot \vec{u} = -2 + 4 - 2 = 0$ et $\vec{n} \cdot \vec{v} = -4 + 2 + 2 = 0$.
+:::
+
+::: resultat
+$$\vec{n}\,(-2\,;2\,;1)$$
+:::
+
+## Question 5 : Le plan $\mathcal{P}$
+
+::: methode
+Un vecteur orthogonal à deux vecteurs non colinéaires d’un plan est normal à ce plan ; une droite est orthogonale à un plan si et seulement si son vecteur directeur est colinéaire à un vecteur normal.
+:::
+
+::: etape a) Vecteur normal et équation
+$\vec{u}$ et $\vec{v}$ sont orthogonaux et non nuls, donc non colinéaires : ils dirigent bien $\mathcal{P}$. $\vec{n}$ est orthogonal à ces deux vecteurs : c’est un **vecteur normal** à $\mathcal{P}$.
+
+$\mathcal{P}$ a donc une équation $-2x + 2y + z + d = 0$, et $O(0\,;0\,;0) \in \mathcal{P}$ donne $d = 0$.
+:::
+
+[IMAGE_1]
+
+::: etape b) La droite dirigée par $\vec{w}$
+$\vec{w}\,(1\,;0\,;1)$ et $\vec{n}\,(-2\,;2\,;1)$ ne sont pas colinéaires : la deuxième coordonnée de $\vec{w}$ est nulle, pas celle de $\vec{n}$.
+:::
+
+::: resultat
+a) $\vec{n}$ est normal à $\mathcal{P}$ et $\mathcal{P} : -2x + 2y + z = 0$. b) La droite dirigée par $\vec{w}$ n’est **pas** orthogonale à $\mathcal{P}$.
+:::
+
+::: remarque Autre méthode
+Un vecteur directeur d’une droite orthogonale à $\mathcal{P}$ doit être orthogonal à $\vec{u}$ **et** à $\vec{v}$. Or $\vec{w} \cdot \vec{u} = -1 \neq 0$ (question 2) : cela suffit pour conclure.
+:::
+
+::: attention
+À l’inverse, pour **prouver** qu’une droite est orthogonale à un plan, un seul produit scalaire nul ne suffit pas : il faut l’orthogonalité à **deux** vecteurs non colinéaires du plan.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\vec{u} \cdot \vec{v} = 2 + 2 - 4 = 0$ : $\vec{u}$ et $\vec{v}$ sont orthogonaux.
+2. $\cos\theta = -\frac{\sqrt{2}}{6}$, donc $\theta \approx 103{,}6°$.
+3. $2k + 2 = 0$, donc $k = -1$.
+4. $\vec{n}\,(-2\,;2\,;1)$
+5. a) $\vec{n}$ est normal à $\mathcal{P}$ et $\mathcal{P} : -2x + 2y + z = 0$. b) Non : $\vec{w}$ n’est pas colinéaire à $\vec{n}$.
+
+===
+
+=== Problème - Plan médiateur d'un segment
+Id: 982
+Difficulté: medium
+Image: produit_scalaire_droites_mediatrice_ex1.png
+
+Énoncé:
+<!-- optitab:1 -->
+L’espace est muni d’un repère orthonormé $(O\,;\vec{\imath}, \vec{\jmath}, \vec{k})$. On considère les points $A(1\,;-1\,;2)$ et $B(3\,;3\,;0)$, et l’on note $I$ le milieu du segment $[AB]$.
+
+Le **plan médiateur** $\mathcal{P}$ du segment $[AB]$ est l’ensemble des points $M$ équidistants de $A$ et de $B$. On admet (voir le cours) que $M \in \mathcal{P} \iff \overrightarrow{IM} \cdot \overrightarrow{AB} = 0$.
+
+1. Calculer les coordonnées du point $I$ et du vecteur $\overrightarrow{AB}$.
+2. En déduire une équation cartésienne du plan $\mathcal{P}$.
+3. Le point $C(4\,;0\,;1)$ appartient-il à $\mathcal{P}$ ? Le vérifier en calculant $CA$ et $CB$.
+4. Déterminer les coordonnées du point $D$ de l’axe $(O\,;\vec{k})$ qui appartient à $\mathcal{P}$, puis calculer $DA$.
+5. Calculer $\overrightarrow{DA} \cdot \overrightarrow{DB}$, puis une valeur approchée au dixième de degré de l’angle $\widehat{ADB}$.
+6. Calculer $DI$, puis l’aire du triangle $ABD$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Le point $I$ et le vecteur $\overrightarrow{AB}$
+
+::: methode
+Milieu : moyenne des coordonnées ; vecteur : « arrivée moins départ ».
+:::
+
+::: etape Calculs
+$$I\left(\frac{1 + 3}{2}\,;\frac{-1 + 3}{2}\,;\frac{2 + 0}{2}\right)$$
+
+soit $I(2\,;1\,;1)$, et $\overrightarrow{AB}\,(3 - 1\,;3 + 1\,;0 - 2)$, soit $\overrightarrow{AB}\,(2\,;4\,;-2)$.
+:::
+
+::: resultat
+$I(2\,;1\,;1)$ et $\overrightarrow{AB}\,(2\,;4\,;-2)$.
+:::
+
+## Question 2 : Équation du plan médiateur
+
+::: methode
+Traduire $\overrightarrow{IM} \cdot \overrightarrow{AB} = 0$ avec $M(x\,;y\,;z)$ : $\mathcal{P}$ est le plan passant par $I$ et de vecteur normal $\overrightarrow{AB}$.
+:::
+
+::: etape Le produit scalaire
+$\overrightarrow{IM}\,(x - 2\,;y - 1\,;z - 1)$, donc
+
+$$
+\begin{aligned}
+\overrightarrow{IM} \cdot \overrightarrow{AB} &= 2(x - 2) + 4(y - 1) - 2(z - 1) \\
+&= 2x + 4y - 2z - 6
+\end{aligned}
+$$
+
+Ainsi $M \in \mathcal{P} \iff 2x + 4y - 2z - 6 = 0$, c’est-à-dire, en divisant par $2$ : $x + 2y - z - 3 = 0$.
+:::
+
+[IMAGE_1]
+
+::: resultat
+$$\mathcal{P} : x + 2y - z - 3 = 0$$
+:::
+
+## Question 3 : Le point $C(4\,;0\,;1)$
+
+::: methode
+Remplacer les coordonnées dans l’équation, puis contrôler avec les distances.
+:::
+
+::: etape Équation
+$4 + 2 \times 0 - 1 - 3 = 0$ : $C \in \mathcal{P}$.
+:::
+
+::: etape Contrôle par les distances
+$\overrightarrow{CA}\,(-3\,;-1\,;1)$ et $\overrightarrow{CB}\,(-1\,;3\,;-1)$, donc $CA^2 = 9 + 1 + 1 = 11$ et $CB^2 = 1 + 9 + 1 = 11$.
+:::
+
+::: resultat
+$C \in \mathcal{P}$ : on a bien $CA = CB = \sqrt{11}$.
+:::
+
+## Question 4 : Le point $D$ de l’axe $(O\,;\vec{k})$
+
+::: methode
+Un point de l’axe $(O\,;\vec{k})$ a pour coordonnées $(0\,;0\,;z)$ ; on reporte dans l’équation de $\mathcal{P}$.
+:::
+
+::: etape Équation en $z$
+$0 + 0 - z - 3 = 0$, donc $z = -3$ et $D(0\,;0\,;-3)$.
+:::
+
+::: etape Distance $DA$
+$\overrightarrow{DA}\,(1\,;-1\,;5)$, donc $DA = \sqrt{1 + 1 + 25} = \sqrt{27} = 3\sqrt{3}$.
+:::
+
+::: resultat
+$D(0\,;0\,;-3)$ et $DA = 3\sqrt{3}$ (et $DB = DA$, puisque $D \in \mathcal{P}$).
+:::
+
+## Question 5 : L’angle $\widehat{ADB}$
+
+::: methode
+$\cos\widehat{ADB} = \dfrac{\overrightarrow{DA} \cdot \overrightarrow{DB}}{DA \times DB}$.
+:::
+
+::: etape Produit scalaire
+$\overrightarrow{DB}\,(3\,;3\,;3)$, donc $DB = \sqrt{27} = 3\sqrt{3}$ et
+
+$$
+\begin{aligned}
+\overrightarrow{DA} \cdot \overrightarrow{DB} &= 1 \times 3 + (-1) \times 3 + 5 \times 3 \\
+&= 15
+\end{aligned}
+$$
+:::
+
+::: etape Cosinus et angle
+$$
+\begin{aligned}
+\cos\widehat{ADB} &= \frac{15}{3\sqrt{3} \times 3\sqrt{3}} \\
+&= \frac{15}{27} \\
+&= \frac{5}{9}
+\end{aligned}
+$$
+
+À la calculatrice : $\widehat{ADB} \approx 56{,}3°$.
+:::
+
+::: resultat
+$\overrightarrow{DA} \cdot \overrightarrow{DB} = 15$ et $\widehat{ADB} \approx 56{,}3°$.
+:::
+
+## Question 6 : Hauteur $DI$ et aire du triangle $ABD$
+
+::: methode
+Le triangle $ABD$ est isocèle en $D$ : la médiane $[DI]$ est aussi la hauteur issue de $D$.
+:::
+
+::: etape La hauteur $DI$
+$\overrightarrow{DI}\,(2\,;1\,;4)$, donc $DI = \sqrt{4 + 1 + 16} = \sqrt{21}$. Contrôle : $\overrightarrow{DI} \cdot \overrightarrow{AB} = 4 + 4 - 8 = 0$.
+:::
+
+::: etape L’aire
+$AB = \sqrt{4 + 16 + 4} = \sqrt{24} = 2\sqrt{6}$, donc
+
+$$
+\begin{aligned}
+\mathcal{A} &= \frac{AB \times DI}{2} \\
+&= \frac{2\sqrt{6} \times \sqrt{21}}{2} \\
+&= \sqrt{126} \\
+&= 3\sqrt{14}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$DI = \sqrt{21}$ et l’aire du triangle $ABD$ vaut $3\sqrt{14} \approx 11{,}2$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $I(2\,;1\,;1)$ et $\overrightarrow{AB}\,(2\,;4\,;-2)$
+2. $\mathcal{P} : x + 2y - z - 3 = 0$
+3. Oui : $4 + 0 - 1 - 3 = 0$, et $CA = CB = \sqrt{11}$.
+4. $D(0\,;0\,;-3)$ et $DA = 3\sqrt{3}$
+5. $\overrightarrow{DA} \cdot \overrightarrow{DB} = 15$, $\cos\widehat{ADB} = \frac{5}{9}$ et $\widehat{ADB} \approx 56{,}3°$
+6. $DI = \sqrt{21}$ et aire $= 3\sqrt{14} \approx 11{,}2$
+
+===
+
+=== Problème - Produit scalaire dans un cube
+Id: 1105
+Difficulté: medium
+Image: cube_produit_scalaire_2.png,cube_produit_scalaire_2_Etapes.png
+
+Énoncé:
+<!-- optitab:1 -->
+On considère un cube $ABCDEFGH$ d’arête $1$ : la face du bas est le carré $ABCD$, la face du haut est le carré $EFGH$, et $[AE]$, $[BF]$, $[CG]$, $[DH]$ sont des arêtes verticales. On s’intéresse aux vecteurs $\overrightarrow{AC}$ et $\overrightarrow{AG}$.
+
+[IMAGE_1]
+
+1. Calculer le produit scalaire $\overrightarrow{AC} \cdot \overrightarrow{AG}$ sans utiliser de repère, uniquement à l’aide de décompositions vectorielles et des propriétés du cube.
+2. Retrouver ce résultat dans le repère orthonormé $(A\,;\overrightarrow{AB}, \overrightarrow{AD}, \overrightarrow{AE})$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer $\overrightarrow{AC} \cdot \overrightarrow{AG}$ sans repère
+
+::: methode
+Décomposer les deux vecteurs à l’aide des arêtes $\overrightarrow{AB}$, $\overrightarrow{AD}$, $\overrightarrow{AE}$, puis développer par bilinéarité.
+:::
+
+::: rappel
+$\overrightarrow{AB}$, $\overrightarrow{AD}$ et $\overrightarrow{AE}$ sont deux à deux orthogonaux et de norme $1$ : leurs produits scalaires deux à deux sont nuls, et $\overrightarrow{AB} \cdot \overrightarrow{AB} = \overrightarrow{AD} \cdot \overrightarrow{AD} = \overrightarrow{AE} \cdot \overrightarrow{AE} = 1$.
+:::
+
+::: etape Décomposer $\overrightarrow{AC}$
+Dans le carré $ABCD$, $\overrightarrow{BC} = \overrightarrow{AD}$, donc :
+
+$$\overrightarrow{AC} = \overrightarrow{AB} + \overrightarrow{BC} = \overrightarrow{AB} + \overrightarrow{AD}$$
+:::
+
+::: etape Décomposer $\overrightarrow{AG}$
+De plus $\overrightarrow{CG} = \overrightarrow{AE}$ (arêtes verticales parallèles et de même longueur), donc :
+
+$$\overrightarrow{AG} = \overrightarrow{AC} + \overrightarrow{CG} = \overrightarrow{AB} + \overrightarrow{AD} + \overrightarrow{AE}$$
+:::
+
+::: etape Développer
+$$
+\begin{aligned}
+\overrightarrow{AC} \cdot \overrightarrow{AG} &= (\overrightarrow{AB} + \overrightarrow{AD}) \cdot (\overrightarrow{AB} + \overrightarrow{AD} + \overrightarrow{AE}) \\
+&= \overrightarrow{AB} \cdot \overrightarrow{AB} + \overrightarrow{AB} \cdot \overrightarrow{AD} + \overrightarrow{AB} \cdot \overrightarrow{AE} + \overrightarrow{AD} \cdot \overrightarrow{AB} + \overrightarrow{AD} \cdot \overrightarrow{AD} + \overrightarrow{AD} \cdot \overrightarrow{AE} \\
+&= 1 + 0 + 0 + 0 + 1 + 0 \\
+&= 2
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$\overrightarrow{AC} \cdot \overrightarrow{AG} = 2$$
+:::
+
+::: remarque Une méthode plus rapide
+[IMAGE_3]
+
+$\overrightarrow{AG} = \overrightarrow{AC} + \overrightarrow{CG}$, et $\overrightarrow{CG}$ est vertical tandis que $\overrightarrow{AC}$ est dans la face du bas : $\overrightarrow{AC} \cdot \overrightarrow{CG} = 0$. Le triangle $ACG$ est rectangle en $C$ ($C$ est le projeté orthogonal de $G$ sur la droite $(AC)$). Donc :
+
+$$
+\begin{aligned}
+\overrightarrow{AC} \cdot \overrightarrow{AG} &= \overrightarrow{AC} \cdot \overrightarrow{AC} + \overrightarrow{AC} \cdot \overrightarrow{CG} \\
+&= AC^2 + 0 \\
+&= \left(\sqrt{2}\right)^2 = 2
+\end{aligned}
+$$
+
+car $AC = \sqrt{1^2 + 1^2} = \sqrt{2}$ (diagonale d’un carré de côté $1$).
+:::
+
+## Question 2 : Retrouver le résultat avec un repère
+
+[IMAGE_2]
+
+::: methode
+Lire les coordonnées des points dans le repère orthonormé $(A\,;\overrightarrow{AB}, \overrightarrow{AD}, \overrightarrow{AE})$, puis appliquer $xx' + yy' + zz'$.
+:::
+
+::: etape Coordonnées des points
+$A(0\,;0\,;0)$, $B(1\,;0\,;0)$, $D(0\,;1\,;0)$, $E(0\,;0\,;1)$, d’où $C(1\,;1\,;0)$ et $G(1\,;1\,;1)$.
+:::
+
+::: etape Coordonnées des vecteurs
+$\overrightarrow{AC}\,(1\,;1\,;0)$ et $\overrightarrow{AG}\,(1\,;1\,;1)$.
+:::
+
+::: etape Produit scalaire
+$$\overrightarrow{AC} \cdot \overrightarrow{AG} = 1 \times 1 + 1 \times 1 + 0 \times 1 = 2$$
+:::
+
+::: resultat
+On retrouve $\overrightarrow{AC} \cdot \overrightarrow{AG} = 2$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\overrightarrow{AC} = \overrightarrow{AB} + \overrightarrow{AD}$ et $\overrightarrow{AG} = \overrightarrow{AB} + \overrightarrow{AD} + \overrightarrow{AE}$ ; en développant, $\overrightarrow{AC} \cdot \overrightarrow{AG} = 1 + 1 = 2$ (ou plus vite : $\overrightarrow{AC} \cdot \overrightarrow{AG} = AC^2 = 2$, car $\overrightarrow{AC} \perp \overrightarrow{CG}$).
+2. $\overrightarrow{AC}\,(1\,;1\,;0)$ et $\overrightarrow{AG}\,(1\,;1\,;1)$, donc $\overrightarrow{AC} \cdot \overrightarrow{AG} = 1 + 1 + 0 = 2$.
+
+===
+
+=== Problème - Produit scalaire dans un tétraèdre régulier
+Id: 1106
+Difficulté: medium
+Image: tetra_produit_scalaire_2.png,tetra_produit_scalaire_Q1.png,tetra_produit_scalaire_Q2.png,tetra_produit_scalaire_Q3.png,tetra_produit_scalaire_Q4.png
+
+Énoncé:
+<!-- optitab:1 -->
+On considère un tétraèdre régulier $ABCD$ d’arête $a$ : ses six arêtes mesurent $a$ et ses quatre faces sont des triangles équilatéraux de côté $a$. On note $I$, $J$ et $K$ les milieux respectifs des segments $[AB]$, $[AC]$ et $[AD]$.
+
+[IMAGE_1]
+
+On cherche à calculer différents produits scalaires en fonction de $a$.
+
+1. Calculer le produit scalaire $\overrightarrow{AB} \cdot \overrightarrow{AC}$.
+2. Calculer $\overrightarrow{BI} \cdot \overrightarrow{AJ}$.
+3. Calculer $\overrightarrow{IJ} \cdot \overrightarrow{AD}$. Que peut-on en déduire pour les droites $(IJ)$ et $(AD)$ ?
+4. Calculer $\overrightarrow{IK} \cdot \overrightarrow{JK}$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer $\overrightarrow{AB} \cdot \overrightarrow{AC}$
+
+[IMAGE_2]
+
+::: methode
+Utiliser $\overrightarrow{AB} \cdot \overrightarrow{AC} = AB \times AC \times \cos\widehat{BAC}$ dans la face équilatérale $ABC$.
+:::
+
+::: etape Données de la face $ABC$
+Le triangle $ABC$ est équilatéral de côté $a$ : $AB = AC = a$ et $\widehat{BAC} = 60°$.
+:::
+
+::: etape Calculer
+$$
+\begin{aligned}
+\overrightarrow{AB} \cdot \overrightarrow{AC} &= a \times a \times \cos 60° \\
+&= a^2 \times \frac{1}{2} \\
+&= \frac{a^2}{2}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$\overrightarrow{AB} \cdot \overrightarrow{AC} = \frac{a^2}{2}$$
+:::
+
+::: retenir
+De même, dans les faces $ABD$ et $ACD$ : $\overrightarrow{AB} \cdot \overrightarrow{AD} = \overrightarrow{AC} \cdot \overrightarrow{AD} = \frac{a^2}{2}$. Ces valeurs servent dans toute la suite.
+:::
+
+## Question 2 : Calculer $\overrightarrow{BI} \cdot \overrightarrow{AJ}$
+
+[IMAGE_3]
+
+::: methode
+Écrire les deux vecteurs en fonction de $\overrightarrow{AB}$ et $\overrightarrow{AC}$, puis utiliser la bilinéarité.
+:::
+
+::: etape Exprimer $\overrightarrow{BI}$
+$I$ est le milieu de $[AB]$, donc $\overrightarrow{BI} = \frac{1}{2}\overrightarrow{BA} = -\frac{1}{2}\overrightarrow{AB}$.
+:::
+
+::: etape Exprimer $\overrightarrow{AJ}$
+$J$ est le milieu de $[AC]$, donc $\overrightarrow{AJ} = \frac{1}{2}\overrightarrow{AC}$.
+:::
+
+::: etape Calculer
+$$
+\begin{aligned}
+\overrightarrow{BI} \cdot \overrightarrow{AJ} &= \left(-\frac{1}{2}\overrightarrow{AB}\right) \cdot \left(\frac{1}{2}\overrightarrow{AC}\right) \\
+&= -\frac{1}{4}\,\overrightarrow{AB} \cdot \overrightarrow{AC} \\
+&= -\frac{1}{4} \times \frac{a^2}{2} \\
+&= -\frac{a^2}{8}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$\overrightarrow{BI} \cdot \overrightarrow{AJ} = -\frac{a^2}{8}$$
+:::
+
+## Question 3 : Calculer $\overrightarrow{IJ} \cdot \overrightarrow{AD}$
+
+[IMAGE_4]
+
+::: methode
+Exprimer $\overrightarrow{IJ}$ en fonction de $\overrightarrow{AB}$ et $\overrightarrow{AC}$, puis utiliser les produits scalaires de la question 1.
+:::
+
+::: etape Exprimer $\overrightarrow{IJ}$
+$$
+\begin{aligned}
+\overrightarrow{IJ} &= \overrightarrow{IA} + \overrightarrow{AJ} \\
+&= -\frac{1}{2}\overrightarrow{AB} + \frac{1}{2}\overrightarrow{AC} \\
+&= \frac{1}{2}\left(\overrightarrow{AC} - \overrightarrow{AB}\right)
+\end{aligned}
+$$
+:::
+
+::: etape Calculer
+$$
+\begin{aligned}
+\overrightarrow{IJ} \cdot \overrightarrow{AD} &= \frac{1}{2}\left(\overrightarrow{AC} \cdot \overrightarrow{AD} - \overrightarrow{AB} \cdot \overrightarrow{AD}\right) \\
+&= \frac{1}{2}\left(\frac{a^2}{2} - \frac{a^2}{2}\right) \\
+&= 0
+\end{aligned}
+$$
+:::
+
+::: point Interprétation
+Le produit scalaire est nul : les droites $(IJ)$ et $(AD)$ sont **orthogonales**. Elles ne sont pas sécantes (elles ne sont même pas coplanaires) : on ne dit donc pas qu’elles sont perpendiculaires.
+:::
+
+::: resultat
+$\overrightarrow{IJ} \cdot \overrightarrow{AD} = 0$ : les droites $(IJ)$ et $(AD)$ sont orthogonales.
+:::
+
+::: remarque
+$\overrightarrow{IJ} = \frac{1}{2}\left(\overrightarrow{AC} - \overrightarrow{AB}\right) = \frac{1}{2}\overrightarrow{BC}$ (droite des milieux). On a donc aussi $\overrightarrow{BC} \cdot \overrightarrow{AD} = 0$ : dans un tétraèdre régulier, deux arêtes opposées sont orthogonales.
+:::
+
+## Question 4 : Calculer $\overrightarrow{IK} \cdot \overrightarrow{JK}$
+
+[IMAGE_5]
+
+::: methode
+Exprimer $\overrightarrow{IK}$ et $\overrightarrow{JK}$ à l’aide de $\overrightarrow{AB}$, $\overrightarrow{AC}$, $\overrightarrow{AD}$, puis développer.
+:::
+
+::: etape Exprimer les deux vecteurs
+Avec $\overrightarrow{AI} = \frac{1}{2}\overrightarrow{AB}$, $\overrightarrow{AJ} = \frac{1}{2}\overrightarrow{AC}$ et $\overrightarrow{AK} = \frac{1}{2}\overrightarrow{AD}$ :
+
+$$
+\begin{aligned}
+\overrightarrow{IK} &= \overrightarrow{AK} - \overrightarrow{AI} = \frac{1}{2}\left(\overrightarrow{AD} - \overrightarrow{AB}\right) \\
+\overrightarrow{JK} &= \overrightarrow{AK} - \overrightarrow{AJ} = \frac{1}{2}\left(\overrightarrow{AD} - \overrightarrow{AC}\right)
+\end{aligned}
+$$
+:::
+
+::: etape Développer
+$$
+\begin{aligned}
+\overrightarrow{IK} \cdot \overrightarrow{JK} &= \frac{1}{4}\left(\overrightarrow{AD} - \overrightarrow{AB}\right) \cdot \left(\overrightarrow{AD} - \overrightarrow{AC}\right) \\
+&= \frac{1}{4}\left(\overrightarrow{AD} \cdot \overrightarrow{AD} - \overrightarrow{AD} \cdot \overrightarrow{AC} - \overrightarrow{AB} \cdot \overrightarrow{AD} + \overrightarrow{AB} \cdot \overrightarrow{AC}\right)
+\end{aligned}
+$$
+:::
+
+::: etape Remplacer par les valeurs connues
+$\overrightarrow{AD} \cdot \overrightarrow{AD} = AD^2 = a^2$ et les trois autres produits valent $\frac{a^2}{2}$ (question 1) :
+
+$$
+\begin{aligned}
+\overrightarrow{IK} \cdot \overrightarrow{JK} &= \frac{1}{4}\left(a^2 - \frac{a^2}{2} - \frac{a^2}{2} + \frac{a^2}{2}\right) \\
+&= \frac{1}{4} \times \frac{a^2}{2} \\
+&= \frac{a^2}{8}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$\overrightarrow{IK} \cdot \overrightarrow{JK} = \frac{a^2}{8}$$
+:::
+
+::: remarque
+Contrôle : $\overrightarrow{IK} = \frac{1}{2}\overrightarrow{BD}$ et $\overrightarrow{JK} = \frac{1}{2}\overrightarrow{CD}$, donc $\overrightarrow{IK} \cdot \overrightarrow{JK} = \frac{1}{4}\,\overrightarrow{DB} \cdot \overrightarrow{DC} = \frac{1}{4} \times \frac{a^2}{2} = \frac{a^2}{8}$ (face équilatérale $BCD$).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\overrightarrow{AB} \cdot \overrightarrow{AC} = \frac{a^2}{2}$
+2. $\overrightarrow{BI} \cdot \overrightarrow{AJ} = -\frac{a^2}{8}$
+3. $\overrightarrow{IJ} \cdot \overrightarrow{AD} = 0$ : les droites $(IJ)$ et $(AD)$ sont orthogonales (non coplanaires).
+4. $\overrightarrow{IK} \cdot \overrightarrow{JK} = \frac{a^2}{8}$
+
+===
+
+=== Type bac - Angle maximal dans un tétraèdre trirectangle
+Id: 1108
+Difficulté: medium
+Image: tetra_angle_maximal_1.png
+
+Énoncé:
+<!-- optitab:1 -->
+On considère un tétraèdre $OABC$ tel que $\overrightarrow{OA}$, $\overrightarrow{OB}$ et $\overrightarrow{OC}$ sont deux à deux orthogonaux et de norme $1$. On travaille dans le repère orthonormé $(O\,;\overrightarrow{OA}, \overrightarrow{OB}, \overrightarrow{OC})$ : $O(0\,;0\,;0)$, $A(1\,;0\,;0)$, $B(0\,;1\,;0)$ et $C(0\,;0\,;1)$.
+
+Pour tout réel $x$ de l’intervalle $[0\,;1]$, on associe le point $M$ du segment $[BC]$ tel que $\overrightarrow{BM} = x\,\overrightarrow{BC}$, et on note $\theta(x)$ la mesure en radians de l’angle $\widehat{AMO}$.
+
+[IMAGE_1]
+
+1.
+   - a) Déterminer les coordonnées du vecteur $\overrightarrow{BC}$.
+   - b) Justifier que les coordonnées du point $M$ sont $(0\,;1 - x\,;x)$.
+2.
+   - a) Exprimer les coordonnées des vecteurs $\overrightarrow{MA}$ et $\overrightarrow{MO}$ en fonction de $x$.
+   - b) Montrer que, pour tout $x \in [0\,;1]$, $\cos^2\theta(x) = \dfrac{2x^2 - 2x + 1}{2x^2 - 2x + 2}$.
+3.
+   - a) Calculer $\theta(0)$ et $\theta(1)$.
+   - b) Montrer que, pour tout $x \in [0\,;1]$, $0 \leq \theta(x) \leq \dfrac{\pi}{2}$.
+4. On considère la fonction $f$ définie sur $[0\,;1]$ par $f(x) = \dfrac{2x^2 - 2x + 1}{2x^2 - 2x + 2}$.
+   - a) Calculer $f'(x)$, étudier son signe sur $[0\,;1]$ et dresser le tableau de variations de $f$.
+   - b) Pour quelle valeur de $x$ l’angle $\theta(x)$ est-il maximal ? Que valent alors $\cos^2\theta_{\max}$, puis $\theta_{\max}$ ?
+5. On s’intéresse au triangle $ABM$.
+   - a) Montrer que $\overrightarrow{MA} \cdot \overrightarrow{MB} = x(2x - 1)$.
+   - b) Pour quelle position du point $M$ sur le segment $[BC]$ le triangle $ABM$ est-il rectangle en $M$ ?
+
+Étapes:
+<!-- optitab:1 -->
+[IMAGE_1]
+
+## Question 1 : Coordonnées de $\overrightarrow{BC}$ et de $M$
+
+::: methode
+Coordonnées d’un vecteur : extrémité moins origine ; puis $\overrightarrow{OM} = \overrightarrow{OB} + \overrightarrow{BM}$.
+:::
+
+::: etape a) Vecteur $\overrightarrow{BC}$
+$$\overrightarrow{BC}\,(0 - 0\,;0 - 1\,;1 - 0), \text{ soit } \overrightarrow{BC}\,(0\,;-1\,;1)$$
+:::
+
+::: etape b) Point $M$
+$\overrightarrow{BM} = x\,\overrightarrow{BC}$ a pour coordonnées $(0\,;-x\,;x)$, donc :
+
+$$
+\begin{aligned}
+\overrightarrow{OM} &= \overrightarrow{OB} + \overrightarrow{BM} \\
+&= (0\,;1\,;0) + (0\,;-x\,;x) \\
+&= (0\,;1 - x\,;x)
+\end{aligned}
+$$
+:::
+
+::: resultat
+$\overrightarrow{BC}\,(0\,;-1\,;1)$ et $M(0\,;1 - x\,;x)$.
+:::
+
+## Question 2 : Expression de $\cos^2\theta(x)$
+
+::: methode
+$\cos\theta(x) = \dfrac{\overrightarrow{MA} \cdot \overrightarrow{MO}}{MA \times MO}$ : calculer le produit scalaire et les normes au carré.
+:::
+
+::: etape a) Vecteurs $\overrightarrow{MA}$ et $\overrightarrow{MO}$
+$$\overrightarrow{MA}\,(1 - 0\,;0 - (1 - x)\,;0 - x), \text{ soit } \overrightarrow{MA}\,(1\,;x - 1\,;-x)$$
+
+$$\overrightarrow{MO}\,(0\,;x - 1\,;-x)$$
+:::
+
+::: etape Produit scalaire
+$$
+\begin{aligned}
+\overrightarrow{MA} \cdot \overrightarrow{MO} &= 1 \times 0 + (x - 1)^2 + x^2 \\
+&= 2x^2 - 2x + 1
+\end{aligned}
+$$
+:::
+
+::: etape Normes au carré
+$$
+\begin{aligned}
+MO^2 &= (x - 1)^2 + x^2 = 2x^2 - 2x + 1 \\
+MA^2 &= 1 + (x - 1)^2 + x^2 = 2x^2 - 2x + 2
+\end{aligned}
+$$
+:::
+
+::: etape b) Élever au carré
+$M$ est distinct de $O$ et de $A$ ($M$ est sur $[BC]$), donc :
+
+$$
+\begin{aligned}
+\cos^2\theta(x) &= \frac{\left(\overrightarrow{MA} \cdot \overrightarrow{MO}\right)^2}{MA^2 \times MO^2} \\
+&= \frac{(2x^2 - 2x + 1)^2}{(2x^2 - 2x + 2)(2x^2 - 2x + 1)} \\
+&= \frac{2x^2 - 2x + 1}{2x^2 - 2x + 2}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$\cos^2\theta(x) = \frac{2x^2 - 2x + 1}{2x^2 - 2x + 2}$$
+:::
+
+## Question 3 : Valeurs particulières et encadrement de $\theta(x)$
+
+::: methode
+Remplacer $x$ par $0$ et $1$ ; pour l’encadrement, étudier le signe de $\cos\theta(x)$, c’est-à-dire celui de $\overrightarrow{MA} \cdot \overrightarrow{MO}$.
+:::
+
+::: etape a) Pour $x = 0$ et $x = 1$
+Pour $x = 0$ ($M = B$), $\overrightarrow{MA} \cdot \overrightarrow{MO} = 1 > 0$ et $\cos^2\theta(0) = \frac{1}{2}$, donc $\cos\theta(0) = \frac{\sqrt{2}}{2}$ et $\theta(0) = \frac{\pi}{4}$.
+
+Pour $x = 1$ ($M = C$), on trouve de même $\cos^2\theta(1) = \frac{1}{2}$ avec un produit scalaire positif, donc $\theta(1) = \frac{\pi}{4}$.
+:::
+
+::: etape b) Signe du cosinus
+Le trinôme $2x^2 - 2x + 1$ a pour discriminant $4 - 8 = -4 < 0$ : il est strictement positif. Donc $\overrightarrow{MA} \cdot \overrightarrow{MO} > 0$ et $\cos\theta(x) > 0$.
+:::
+
+::: etape Conclure
+$\theta(x)$ est la mesure d’un angle géométrique, donc $\theta(x) \in [0\,;\pi]$ ; comme $\cos\theta(x) > 0$, on a $\theta(x) \in \left[0\,;\frac{\pi}{2}\right[$.
+:::
+
+::: resultat
+$\theta(0) = \theta(1) = \dfrac{\pi}{4}$, et $0 \leq \theta(x) \leq \dfrac{\pi}{2}$ pour tout $x \in [0\,;1]$.
+:::
+
+::: attention
+$0 < \cos^2\theta(x) < 1$ ne suffit pas : cela donne seulement $-1 < \cos\theta(x) < 1$. C’est le **signe du produit scalaire** qui prouve que l’angle est aigu.
+:::
+
+## Question 4 : Variations de $f$ et angle maximal
+
+::: methode
+Dériver le quotient $\frac{u}{v}$ ; ensuite, sur $\left[0\,;\frac{\pi}{2}\right]$, $\theta$ est d’autant plus grand que $\cos\theta = \sqrt{f(x)}$ est petit.
+:::
+
+::: etape a) Dérivée
+On pose $u(x) = 2x^2 - 2x + 1$ et $v(x) = 2x^2 - 2x + 2$ ; $v(x) = u(x) + 1 > 0$ et $u'(x) = v'(x) = 4x - 2$.
+
+$$
+\begin{aligned}
+f'(x) &= \frac{u'(x)v(x) - u(x)v'(x)}{v(x)^2} \\
+&= \frac{(4x - 2)\left(v(x) - u(x)\right)}{v(x)^2} \\
+&= \frac{4x - 2}{(2x^2 - 2x + 2)^2}
+\end{aligned}
+$$
+
+Le dénominateur est positif : $f'(x)$ a le signe de $4x - 2$, négatif sur $\left[0\,;\frac{1}{2}\right]$ et positif sur $\left[\frac{1}{2}\,;1\right]$.
+:::
+
+::: etape Valeurs utiles
+$f(0) = \frac{1}{2}$, $f(1) = \frac{2 - 2 + 1}{2 - 2 + 2} = \frac{1}{2}$ et $f\left(\frac{1}{2}\right) = \dfrac{\frac{1}{2} - 1 + 1}{\frac{1}{2} - 1 + 2} = \dfrac{\frac{1}{2}}{\frac{3}{2}} = \frac{1}{3}$.
+:::
+
+::: point Tableau de variations de $f$
+::: tableau
+x : 0, \frac{1}{2}, 1
+f'(x) : , -, z, +,
+f(x) : +/\frac{1}{2}, -/\frac{1}{3}, +/\frac{1}{2}
+:::
+:::
+
+::: etape b) Lien avec l’angle
+$\cos\theta(x) = \sqrt{f(x)}$ (car $\cos\theta(x) > 0$) et la fonction $\arccos$ est décroissante : l’angle $\theta(x)$ est maximal quand $f(x)$ est minimal, c’est-à-dire pour $x = \frac{1}{2}$.
+:::
+
+[IMAGE_2]
+
+::: etape Valeur de l’angle maximal
+$$\cos^2\theta_{\max} = f\left(\frac{1}{2}\right) = \frac{1}{3} \qquad \text{donc} \qquad \cos\theta_{\max} = \frac{1}{\sqrt{3}} = \frac{\sqrt{3}}{3}$$
+
+et $\theta_{\max} = \arccos\left(\frac{\sqrt{3}}{3}\right) \approx 0{,}955$ rad, soit environ $54{,}7°$.
+:::
+
+::: resultat
+L’angle est maximal pour $x = \frac{1}{2}$ ($M$ milieu de $[BC]$) : $\cos^2\theta_{\max} = \frac{1}{3}$ et $\theta_{\max} = \arccos\left(\frac{\sqrt{3}}{3}\right) \approx 54{,}7°$.
+:::
+
+## Question 5 : Triangle $ABM$ rectangle en $M$
+
+[IMAGE_3]
+
+::: methode
+Le triangle $ABM$ (non aplati) est rectangle en $M$ si et seulement si $\overrightarrow{MA} \cdot \overrightarrow{MB} = 0$.
+:::
+
+::: etape Vecteur $\overrightarrow{MB}$
+$$\overrightarrow{MB}\,(0\,;1 - (1 - x)\,;0 - x), \text{ soit } \overrightarrow{MB}\,(0\,;x\,;-x)$$
+:::
+
+::: etape a) Produit scalaire
+$$
+\begin{aligned}
+\overrightarrow{MA} \cdot \overrightarrow{MB} &= 1 \times 0 + (x - 1) \times x + (-x) \times (-x) \\
+&= x^2 - x + x^2 \\
+&= x(2x - 1)
+\end{aligned}
+$$
+:::
+
+::: etape b) Résoudre
+$x(2x - 1) = 0 \iff x = 0$ ou $x = \frac{1}{2}$. Pour $x = 0$, $M = B$ et le triangle $ABM$ est aplati : on écarte ce cas.
+:::
+
+::: resultat
+Le triangle $ABM$ est rectangle en $M$ pour $x = \frac{1}{2}$, c’est-à-dire quand $M$ est le milieu de $[BC]$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\overrightarrow{BC}\,(0\,;-1\,;1)$ et $M(0\,;1 - x\,;x)$.
+2. $\overrightarrow{MA}\,(1\,;x - 1\,;-x)$, $\overrightarrow{MO}\,(0\,;x - 1\,;-x)$ et $\cos^2\theta(x) = \dfrac{2x^2 - 2x + 1}{2x^2 - 2x + 2}$.
+3. $\theta(0) = \theta(1) = \frac{\pi}{4}$ ; $\overrightarrow{MA} \cdot \overrightarrow{MO} = 2x^2 - 2x + 1 > 0$, donc $0 \leq \theta(x) \leq \frac{\pi}{2}$.
+4. $f'(x) = \dfrac{4x - 2}{(2x^2 - 2x + 2)^2}$ ; $f$ décroît de $\frac{1}{2}$ à $\frac{1}{3}$ sur $\left[0\,;\frac{1}{2}\right]$, puis croît jusqu’à $\frac{1}{2}$. Angle maximal pour $x = \frac{1}{2}$ : $\cos^2\theta_{\max} = \frac{1}{3}$ et $\theta_{\max} = \arccos\left(\frac{\sqrt{3}}{3}\right) \approx 54{,}7°$.
+5. $\overrightarrow{MA} \cdot \overrightarrow{MB} = x(2x - 1)$ ; $ABM$ est rectangle en $M$ pour $x = \frac{1}{2}$ ($M$ milieu de $[BC]$).
+
+===

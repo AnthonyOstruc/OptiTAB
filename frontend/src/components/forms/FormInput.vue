@@ -161,22 +161,24 @@ export default {
 
 <style scoped lang="scss">
 @use '@/assets/variables.scss' as *;
+/* Même style que les fenêtres (components/common/Modal.vue, variables --om-*). */
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 7px;
 }
 .form-label {
-  font-weight: 900;
-  color: $text-color;
+  font-family: var(--om-font, 'Montserrat', sans-serif);
+  font-weight: 600;
+  color: var(--om-ink-soft, #2c3550);
   font-size: 14px;
   display: flex;
   align-items: center;
   gap: 4px;
 }
 .required-indicator {
-  color: #ef4444;
-  font-weight: 700;
+  color: var(--om-red, #c0392b);
+  font-weight: 600;
 }
 .input-wrapper {
   position: relative;
@@ -197,11 +199,11 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #6b7280;
+  color: var(--om-muted, #5d667d);
   transition: color 0.2s ease;
 
   &:hover:not(:disabled) {
-    color: #374151;
+    color: var(--om-navy, #1b3c8e);
   }
 
   &:disabled {
@@ -216,33 +218,53 @@ export default {
 }
 .form-input {
   width: 100%;
+  min-height: 48px;
   padding: 12px 16px;
-  border: 2px solid #e5e7eb;
-  border-radius: 8px;
-  font-size: 16px;
+  border: 1.5px solid var(--om-line-strong, #cfd6e4);
+  border-radius: 12px;
+  font-family: var(--om-font, 'Montserrat', sans-serif);
+  font-size: 15.5px;
+  font-weight: 500;
   background: #fff;
-  color: #222;
-  transition: border 0.2s;
+  color: var(--om-ink, #121a33);
+  transition: border-color 0.2s, box-shadow 0.2s;
   margin-bottom: 0;
 
-  // Add padding-right for password fields with toggle button
-  &[type="password"] {
+  &::placeholder {
+    color: #8a93a8;
+  }
+
+  // Place pour le bouton « afficher le mot de passe »
+  &[type="password"],
+  .input-wrapper:has(.password-toggle) & {
     padding-right: 48px;
+  }
+
+  &.has-error {
+    border-color: var(--om-red, #c0392b);
+  }
+
+  &.is-disabled {
+    background: var(--om-bg-soft, #f6f8fc);
   }
 }
 .form-input:focus {
-  border-color: #1b3c8e;
+  border-color: var(--om-navy, #1b3c8e);
   outline: none;
+  box-shadow: 0 0 0 4px rgba(27, 60, 142, 0.12);
+}
+.form-input.has-error:focus {
+  box-shadow: 0 0 0 4px rgba(192, 57, 43, 0.12);
 }
 .form-error {
-  color: #ef4444;
-  font-size: 14px;
+  color: var(--om-red, #c0392b);
+  font-size: 13.5px;
   margin: 0;
   font-weight: 500;
 }
 .form-help {
-  color: #6b7280;
-  font-size: 14px;
+  color: var(--om-muted, #5d667d);
+  font-size: 13.5px;
   margin: 0;
 }
 </style> 

@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="cookie-consent-root">
     <transition name="cookie-fade">
       <section
@@ -8,99 +8,76 @@
         aria-live="polite"
         aria-label="Gestion des cookies"
       >
-        <div class="cookie-banner__content">
-          <div class="cookie-banner__text">
-            <strong>Votre vie privée compte.</strong>
-            <p>
-              OptiTAB utilise des cookies essentiels pour le fonctionnement du site et des cookies de
-              statistiques et marketing/publicité pour mesurer l'audience et personnaliser nos campagnes.
-              Vous pouvez accepter, refuser ou personnaliser votre choix.
-              <router-link to="/cookies" class="cookie-link">En savoir plus</router-link>.
-            </p>
-          </div>
-          <div class="cookie-banner__actions">
-            <button type="button" class="cookie-button" @click="acceptAll">Tout accepter</button>
-            <button type="button" class="cookie-button" @click="denyAll">Tout refuser</button>
-            <button type="button" class="cookie-button" @click="openPanel">Personnaliser</button>
-          </div>
+        <div class="cookie-banner__text">
+          <strong>Votre vie privée compte.</strong>
+          <p>
+            OptiTAB utilise des cookies essentiels pour le fonctionnement du site et des cookies de
+            statistiques et marketing/publicité pour mesurer l'audience et personnaliser nos campagnes.
+            Vous pouvez accepter, refuser ou personnaliser votre choix.
+            <router-link to="/cookies" class="cookie-link">En savoir plus</router-link>.
+          </p>
+        </div>
+        <div class="cookie-banner__actions">
+          <button type="button" class="om-btn om-btn--primary cookie-btn" @click="acceptAll">Tout accepter</button>
+          <button type="button" class="om-btn om-btn--ghost cookie-btn" @click="denyAll">Tout refuser</button>
+          <button type="button" class="om-btn om-btn--ghost cookie-btn" @click="openPanel">Personnaliser</button>
         </div>
       </section>
     </transition>
 
-    <transition name="cookie-fade">
-      <div v-if="isPanelOpen" class="cookie-panel-backdrop" @click.self="closePanel">
-        <section class="cookie-panel" role="dialog" aria-modal="true" aria-label="Préférences de cookies">
-          <header class="cookie-panel__header">
-            <div>
-              <h3>Préférences de cookies</h3>
-              <p>Choisissez les catégories que vous autorisez.</p>
-            </div>
-            <button type="button" class="cookie-panel__close" @click="closePanel" aria-label="Fermer">
-              ×
-            </button>
-          </header>
-
-          <div class="cookie-panel__body">
-            <div class="cookie-category">
-              <div>
-                <h4>Essentiels</h4>
-                <p>Indispensables au fonctionnement du site (authentification, sécurité, navigation).</p>
-              </div>
-              <span class="cookie-tag">Toujours actifs</span>
-            </div>
-
-            <div class="cookie-category cookie-category--toggle">
-              <div>
-                <h4>Statistiques</h4>
-                <p>
-                  Nous aident à mesurer l’audience et à améliorer l’expérience (Google Analytics, Microsoft
-                  Clarity).
-                </p>
-              </div>
-              <label class="cookie-toggle" aria-label="Autoriser les cookies de statistiques">
-                <input type="checkbox" v-model="analyticsEnabled" />
-                <span class="cookie-toggle__track">
-                  <span class="cookie-toggle__thumb"></span>
-                </span>
-              </label>
-            </div>
-
-            <div class="cookie-category cookie-category--toggle">
-              <div>
-                <h4>Marketing / Publicité</h4>
-                <p>
-                  Active les traceurs publicitaires pour la mesure et l'optimisation de campagnes (Meta
-                  Pixel).
-                </p>
-              </div>
-              <label class="cookie-toggle" aria-label="Autoriser les cookies marketing et publicitaires">
-                <input type="checkbox" v-model="marketingEnabled" />
-                <span class="cookie-toggle__track">
-                  <span class="cookie-toggle__thumb"></span>
-                </span>
-              </label>
-            </div>
+    <Modal
+      :is-open="isPanelOpen"
+      title="Préférences de cookies"
+      subtitle="Choisissez les catégories que vous autorisez. Vous pouvez changer d’avis à tout moment."
+      :icon="ShieldCheckIcon"
+      size="small"
+      @close="closePanel"
+    >
+      <div class="cookie-categories">
+        <div class="cookie-category">
+          <div>
+            <p class="cookie-category__title">Essentiels</p>
+            <p>Indispensables au fonctionnement du site (authentification, sécurité, navigation).</p>
           </div>
-
-          <div class="cookie-panel__actions">
-            <button type="button" class="cookie-button cookie-button--panel" @click="acceptAll">
-              Tout accepter
-            </button>
-            <button type="button" class="cookie-button cookie-button--panel" @click="denyAll">
-              Tout refuser
-            </button>
-            <button type="button" class="cookie-button cookie-button--primary" @click="savePreferences">
-              Enregistrer
-            </button>
+          <span class="cookie-tag">Toujours actifs</span>
+        </div>
+        <label class="cookie-category">
+          <div>
+            <p class="cookie-category__title">Statistiques</p>
+            <p>Nous aident à mesurer l’audience et à améliorer l’expérience (Google Analytics, Microsoft Clarity).</p>
           </div>
-        </section>
+          <span class="cookie-switch">
+            <input v-model="analyticsEnabled" type="checkbox" aria-label="Autoriser les cookies de statistiques" />
+            <span class="cookie-switch__track" aria-hidden="true"></span>
+          </span>
+        </label>
+        <label class="cookie-category">
+          <div>
+            <p class="cookie-category__title">Marketing / Publicité</p>
+            <p>Active les traceurs publicitaires pour la mesure et l’optimisation de campagnes (Meta Pixel).</p>
+          </div>
+          <span class="cookie-switch">
+            <input v-model="marketingEnabled" type="checkbox" aria-label="Autoriser les cookies marketing et publicitaires" />
+            <span class="cookie-switch__track" aria-hidden="true"></span>
+          </span>
+        </label>
       </div>
-    </transition>
+
+      <template #footer>
+        <div class="cookie-panel-actions">
+          <button type="button" class="om-btn om-btn--primary cookie-panel-actions__main" @click="savePreferences">Enregistrer mes choix</button>
+          <button type="button" class="om-btn om-btn--ghost" @click="denyAll">Tout refuser</button>
+          <button type="button" class="om-btn om-btn--ghost" @click="acceptAll">Tout accepter</button>
+        </div>
+      </template>
+    </Modal>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ShieldCheckIcon } from '@heroicons/vue/24/outline'
+import Modal from '@/components/common/Modal.vue'
 
 const STORAGE_KEY = 'optitab_cookie_consent_v1'
 const CONSENT_EVENT = 'open-cookie-preferences'
@@ -331,6 +308,7 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
+/* Boutons (.om-btn) et fenêtre : components/common/Modal.vue */
 .cookie-consent-root {
   position: relative;
   z-index: 10000;
@@ -338,143 +316,67 @@ onBeforeUnmount(() => {
 
 .cookie-banner {
   position: fixed;
-  left: 24px;
-  right: 24px;
-  bottom: calc(24px + env(safe-area-inset-bottom));
-  background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 20px 50px rgba(17, 24, 39, 0.18);
-  padding: 20px 24px;
-  border: 1px solid #e5e7eb;
-  pointer-events: auto;
-}
-
-.cookie-banner__content {
+  right: 16px;
+  bottom: 16px;
+  left: 16px;
+  z-index: 10000;
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
   align-items: center;
-  justify-content: space-between;
+  gap: 14px 24px;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 18px 20px;
+  border: 1px solid #e4e8f0;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(16, 32, 79, 0.08), 0 24px 60px rgba(16, 32, 79, 0.18);
+  color: #121a33;
+  font-family: 'Montserrat', 'Segoe UI', system-ui, sans-serif;
+  font-size: 14px;
 }
 
 .cookie-banner__text {
-  flex: 1 1 320px;
-  color: #1f2937;
-}
-
-.cookie-banner__text strong {
-  display: block;
-  font-size: 1rem;
-  margin-bottom: 0.35rem;
+  flex: 1 1 420px;
 }
 
 .cookie-banner__text p {
-  margin: 0;
-  font-size: 0.92rem;
-  color: #4b5563;
+  margin: 4px 0 0;
+  color: #2c3550;
+  line-height: 1.5;
 }
 
 .cookie-link {
-  color: #4e63c2;
+  color: #1b3c8e;
   font-weight: 600;
-  text-decoration: underline;
-  margin-left: 0.35rem;
 }
 
 .cookie-banner__actions {
   display: flex;
-  gap: 0.75rem;
-  flex: 1 1 280px;
-  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
-.cookie-button {
-  flex: 1 1 auto;
-  border: 1px solid #4e63c2;
-  background: #ffffff;
-  color: #4e63c2;
-  padding: 0.6rem 0.9rem;
-  border-radius: 999px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+.cookie-btn {
+  min-height: 42px;
+  padding: 0 18px;
+  font-size: 14px;
 }
 
-.cookie-button:hover {
-  background: #eef1ff;
-  box-shadow: 0 8px 20px rgba(78, 99, 194, 0.2);
-  transform: translateY(-1px);
+.cookie-categories {
+  display: grid;
+  gap: 10px;
 }
 
-.cookie-button--primary {
-  background: #4e63c2;
-  color: #ffffff;
-}
-
-.cookie-button--primary:hover {
-  background: #4053b6;
-}
-
-.cookie-button--panel {
-  background: #ffffff;
-}
-
-.cookie-panel-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.45);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  pointer-events: auto;
-}
-
-.cookie-panel {
-  background: #ffffff;
-  border-radius: 18px;
-  max-width: 640px;
+.cookie-panel-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
   width: 100%;
-  padding: 24px;
-  box-shadow: 0 30px 80px rgba(15, 23, 42, 0.3);
 }
 
-.cookie-panel__header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 18px;
-}
-
-.cookie-panel__header h3 {
-  margin: 0 0 0.25rem 0;
-  font-size: 1.2rem;
-  color: #111827;
-}
-
-.cookie-panel__header p {
-  margin: 0;
-  color: #6b7280;
-  font-size: 0.95rem;
-}
-
-.cookie-panel__close {
-  border: none;
-  background: #f3f4f6;
-  width: 36px;
-  height: 36px;
-  border-radius: 999px;
-  font-size: 1.2rem;
-  cursor: pointer;
-  color: #111827;
-}
-
-.cookie-panel__body {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+.cookie-panel-actions__main {
+  grid-column: 1 / -1;
 }
 
 .cookie-category {
@@ -483,87 +385,88 @@ onBeforeUnmount(() => {
   justify-content: space-between;
   gap: 16px;
   padding: 14px 16px;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  background: #f9fafb;
+  border: 1px solid var(--om-line);
+  border-radius: 14px;
+  cursor: pointer;
 }
 
-.cookie-category h4 {
-  margin: 0 0 0.25rem 0;
-  font-size: 1rem;
-  color: #111827;
+div.cookie-category {
+  cursor: default;
 }
 
 .cookie-category p {
+  margin: 2px 0 0;
+  color: var(--om-muted);
+  font-size: 13.5px;
+  line-height: 1.45;
+}
+
+.cookie-category .cookie-category__title {
   margin: 0;
-  font-size: 0.9rem;
-  color: #6b7280;
+  color: var(--om-ink);
+  font-size: 15px;
+  font-weight: 700;
 }
 
 .cookie-tag {
-  background: #e5e7eb;
-  color: #374151;
-  font-size: 0.75rem;
-  padding: 0.35rem 0.65rem;
+  flex-shrink: 0;
+  padding: 4px 10px;
   border-radius: 999px;
-  font-weight: 600;
+  background: var(--om-green-50);
+  color: var(--om-green-700);
+  font-size: 12.5px;
+  font-weight: 700;
   white-space: nowrap;
 }
 
-.cookie-category--toggle {
-  background: #fdfdfd;
-}
-
-.cookie-toggle {
-  display: inline-flex;
-  align-items: center;
-  cursor: pointer;
+.cookie-switch {
   position: relative;
+  flex-shrink: 0;
+  width: 46px;
+  height: 26px;
 }
 
-.cookie-toggle input {
+.cookie-switch input {
   position: absolute;
+  inset: 0;
+  z-index: 1;
+  margin: 0;
   opacity: 0;
-  pointer-events: none;
-  width: 1px;
-  height: 1px;
+  cursor: pointer;
 }
 
-.cookie-toggle__track {
-  width: 48px;
-  height: 28px;
-  background: #e5e7eb;
+.cookie-switch__track {
+  position: absolute;
+  inset: 0;
   border-radius: 999px;
-  padding: 3px;
-  display: inline-flex;
-  align-items: center;
-  transition: background 0.2s ease;
+  background: var(--om-line-strong);
+  transition: background 0.2s;
 }
 
-.cookie-toggle__thumb {
-  width: 22px;
-  height: 22px;
-  background: #ffffff;
+.cookie-switch__track::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
-  box-shadow: 0 4px 8px rgba(15, 23, 42, 0.2);
-  transform: translateX(0);
-  transition: transform 0.2s ease;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(16, 32, 79, 0.25);
+  transition: transform 0.2s;
 }
 
-.cookie-toggle input:checked + .cookie-toggle__track {
-  background: #4e63c2;
+.cookie-switch input:checked + .cookie-switch__track {
+  background: var(--om-navy);
 }
 
-.cookie-toggle input:checked + .cookie-toggle__track .cookie-toggle__thumb {
+.cookie-switch input:checked + .cookie-switch__track::after {
   transform: translateX(20px);
 }
 
-.cookie-panel__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-top: 20px;
-  justify-content: flex-end;
+.cookie-switch input:focus-visible + .cookie-switch__track {
+  outline: 2px solid var(--om-navy);
+  outline-offset: 2px;
 }
 
 .cookie-fade-enter-active,
@@ -574,31 +477,19 @@ onBeforeUnmount(() => {
 .cookie-fade-enter-from,
 .cookie-fade-leave-to {
   opacity: 0;
-  transform: translateY(8px);
+  transform: translateY(10px);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 640px) {
   .cookie-banner {
-    left: 16px;
-    right: 16px;
-    bottom: calc(16px + env(safe-area-inset-bottom));
+    right: 10px;
+    bottom: 10px;
+    left: 10px;
+    padding: 16px;
   }
 
-  .cookie-banner__actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .cookie-panel {
-    padding: 18px;
-  }
-
-  .cookie-panel__actions {
-    flex-direction: column;
-  }
-
-  .cookie-button {
-    width: 100%;
+  .cookie-banner__actions .cookie-btn {
+    flex: 1 1 auto;
   }
 }
 </style>

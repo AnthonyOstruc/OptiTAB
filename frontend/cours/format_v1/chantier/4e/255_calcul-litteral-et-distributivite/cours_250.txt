@@ -1,0 +1,278 @@
+Titre: Calcul littéral et distributivité
+
+<!-- optitab:1 -->
+::: objectifs
+- Écrire une expression littérale et calculer sa valeur en remplaçant la lettre par un nombre.
+- Réduire une expression (somme ou produit).
+- Développer avec la simple distributivité et supprimer des parenthèses.
+- Factoriser une expression à l'aide d'un facteur commun.
+- Développer et réduire un produit $(a + b)(c + d)$ avec la double distributivité.
+- Traduire un programme de calcul et prouver qu'une égalité est vraie ou fausse.
+:::
+
+## I. Expressions littérales
+
+::: definition
+Une **expression littérale** est une expression qui contient une ou plusieurs lettres. Chaque lettre désigne un nombre, qui peut varier.
+:::
+
+::: notation Conventions d'écriture
+- On peut supprimer le signe $\times$ devant une lettre ou une parenthèse : $3 \times x = 3x$ ; $2 \times (x + 1) = 2(x + 1)$ ; $a \times b = ab$.
+- $x \times x$ s'écrit $x^2$ (« $x$ au carré ») et $x \times x \times x$ s'écrit $x^3$.
+- $1 \times x = x$ et $0 \times x = 0$.
+- Dans un produit, on écrit le nombre en premier : $x \times 4 = 4x$.
+:::
+
+::: methode Traduire une phrase par une expression
+On repère la **dernière opération** effectuée : elle donne la nature de l'expression (une somme, une différence, un produit, un carré).
+:::
+
+::: exemple
+- « Le triple de $x$, diminué de $5$ » : la dernière opération est une soustraction, donc $3x - 5$.
+- « Le triple de la différence de $x$ et de $5$ » : la dernière opération est un produit, donc $3(x - 5)$.
+:::
+
+::: methode Calculer la valeur d'une expression
+1. On remplace la lettre par sa valeur, **entre parenthèses** si elle est négative.
+2. On rétablit les signes $\times$ sous-entendus.
+3. On respecte les priorités : puissances, puis produits, puis sommes et différences.
+:::
+
+::: exemple Calculer $E = 5x^2 - 3x + 1$ pour $x = -2$
+$$
+\begin{aligned}
+E &= 5 \times (-2)^2 - 3 \times (-2) + 1 \\
+&= 5 \times 4 + 6 + 1 \\
+&= 27
+\end{aligned}
+$$
+:::
+
+::: attention
+- $(-2)^2 = (-2) \times (-2) = 4$, mais $-2^2 = -(2 \times 2) = -4$ : sans parenthèses, le carré ne porte que sur $2$.
+- $3x$ pour $x = 5$ vaut $3 \times 5 = 15$, et non $35$ : le signe $\times$ est sous-entendu.
+:::
+
+## II. Réduire une expression
+
+::: definition
+- Les **termes** d'une somme sont les nombres que l'on additionne ou soustrait : $4x^2 - 3x + 7$ a trois termes, $4x^2$, $-3x$ et $7$.
+- **Réduire** une expression, c'est l'écrire avec le moins de termes possible, en regroupant les termes de même nature : les termes en $x^2$, les termes en $x$, les nombres.
+:::
+
+::: exemple Réduire $A = 6x - 4 + 2x^2 - 9x + 7$
+On regroupe les termes de même nature :
+$$
+\begin{aligned}
+A &= 2x^2 + (6x - 9x) + (-4 + 7) \\
+&= 2x^2 - 3x + 3
+\end{aligned}
+$$
+:::
+
+::: exemple Réduire un produit
+On multiplie les nombres entre eux, puis les lettres entre elles :
+$$4x \times 5x = 4 \times 5 \times x \times x = 20x^2$$
+:::
+
+::: attention
+- $x + x = 2x$, alors que $x \times x = x^2$.
+- $3x + 2$ ne se réduit pas : un terme en $x$ et un nombre ne s'ajoutent pas.
+- $2x^2 + 3x$ ne se réduit pas non plus : les termes en $x^2$ et en $x$ ne sont pas de même nature.
+:::
+
+## III. Développer avec la simple distributivité
+
+::: definition
+**Développer** une expression, c'est transformer un produit en une somme (ou une différence).
+:::
+
+::: propriete Simple distributivité
+Pour tous nombres $k$, $a$ et $b$ :
+$$k(a + b) = ka + kb$$
+$$k(a - b) = ka - kb$$
+:::
+
+L'aire du grand rectangle, $k(a + b)$, est égale à la somme des aires des deux petits rectangles, $ka + kb$.
+
+[IMAGE_1]
+
+::: exemple
+$$
+\begin{aligned}
+4(3x - 2) &= 4 \times 3x - 4 \times 2 \\
+&= 12x - 8
+\end{aligned}
+$$
+$$
+\begin{aligned}
+x(2x + 7) &= x \times 2x + x \times 7 \\
+&= 2x^2 + 7x
+\end{aligned}
+$$
+$$
+\begin{aligned}
+-3(2x - 5) &= -3 \times 2x - 3 \times (-5) \\
+&= -6x + 15
+\end{aligned}
+$$
+:::
+
+::: propriete Supprimer des parenthèses
+- Des parenthèses précédées du signe « $+$ » se suppriment sans rien changer : $+(a - b) = a - b$.
+- Des parenthèses précédées du signe « $-$ » se suppriment en changeant le signe de **chaque** terme : $-(a - b) = -a + b$.
+:::
+
+::: exemple Développer et réduire $B = 9 - (4x - 1) + 2(x + 3)$
+$$
+\begin{aligned}
+B &= 9 - 4x + 1 + 2x + 6 \\
+&= -2x + 16
+\end{aligned}
+$$
+:::
+
+::: attention
+- $3(x + 5) = 3x + 15$, et non $3x + 5$ : le facteur $3$ multiplie **chaque** terme de la parenthèse.
+- $-2(x - 4) = -2x + 8$ : le produit $(-2) \times (-4)$ est positif.
+:::
+
+## IV. Factoriser avec un facteur commun
+
+::: definition
+**Factoriser** une expression, c'est transformer une somme (ou une différence) en un produit. C'est l'opération inverse du développement :
+$$ka + kb = k(a + b)$$
+$$ka - kb = k(a - b)$$
+:::
+
+::: methode Factoriser
+1. Écrire chaque terme comme un produit, pour faire apparaître un **facteur commun** (un nombre, une lettre ou les deux).
+2. Écrire ce facteur commun devant une parenthèse qui contient ce qui reste de chaque terme.
+3. Contrôler en redéveloppant : on doit retrouver l'expression de départ.
+:::
+
+::: exemple
+$$
+\begin{aligned}
+6x + 21 &= 3 \times 2x + 3 \times 7 \\
+&= 3(2x + 7)
+\end{aligned}
+$$
+$$
+\begin{aligned}
+5x^2 - 4x &= x \times 5x - x \times 4 \\
+&= x(5x - 4)
+\end{aligned}
+$$
+$$
+\begin{aligned}
+8x + 8 &= 8 \times x + 8 \times 1 \\
+&= 8(x + 1)
+\end{aligned}
+$$
+:::
+
+::: attention
+$8x + 8 = 8(x + 1)$, et non $8x$ ni $8(x + 0)$ : quand un terme est égal au facteur commun, il reste $1$ dans la parenthèse.
+:::
+
+::: remarque
+On choisit en général le **plus grand** facteur commun : $18x - 24 = 2(9x - 12)$ est juste, mais on peut encore factoriser par $3$ ; la forme la plus simple est $6(3x - 4)$.
+:::
+
+## V. Développer avec la double distributivité
+
+::: propriete Double distributivité
+Pour tous nombres $a$, $b$, $c$ et $d$ :
+$$(a + b)(c + d) = ac + ad + bc + bd$$
+Chaque terme de la première parenthèse multiplie chaque terme de la seconde : on obtient **quatre produits**.
+:::
+
+L'aire du grand rectangle, $(a + b)(c + d)$, est la somme des aires des quatre rectangles qui le composent.
+
+[IMAGE_2]
+
+::: demonstration
+On note $k = c + d$ et on applique deux fois la simple distributivité :
+$$
+\begin{aligned}
+(a + b)(c + d) &= (a + b) \times k = ak + bk \\
+&= a(c + d) + b(c + d) \\
+&= ac + ad + bc + bd
+\end{aligned}
+$$
+:::
+
+::: methode Développer et réduire un produit de deux sommes
+1. Écrire les quatre produits, avec leurs signes.
+2. Calculer chaque produit.
+3. Réduire en regroupant les termes de même nature.
+:::
+
+::: exemple Développer et réduire $C = (3x + 2)(x - 4)$
+Les quatre produits : $3x \times x = 3x^2$ ; $3x \times (-4) = -12x$ ; $2 \times x = 2x$ ; $2 \times (-4) = -8$.
+$$
+\begin{aligned}
+C &= 3x^2 - 12x + 2x - 8 \\
+&= 3x^2 - 10x - 8
+\end{aligned}
+$$
+:::
+
+::: retenir Contrôler un développement
+On remplace $x$ par une valeur simple dans l'expression de départ et dans le résultat : on doit trouver le même nombre. Pour $x = 1$ : $(3 + 2)(1 - 4) = -15$ et $3 - 10 - 8 = -15$.
+:::
+
+::: attention
+- Oublier un des quatre produits : $(x + 3)(x + 2) \neq x^2 + 6$.
+- Se tromper de signe : dans $(x - 5)(x - 1)$, le produit $(-5) \times (-1)$ vaut $+5$.
+:::
+
+## VI. Programmes de calcul et preuves
+
+::: methode Traduire un programme de calcul
+On appelle $x$ le nombre de départ, puis on écrit l'expression obtenue après chaque étape, en ajoutant des parenthèses quand une opération porte sur tout le résultat précédent.
+:::
+
+::: exemple
+« Choisir un nombre. Ajouter $7$. Multiplier par $2$. Soustraire le double du nombre de départ. »
+
+[IMAGE_3]
+
+Avec le nombre $x$, on obtient :
+$$2(x + 7) - 2x = 2x + 14 - 2x = 14$$
+Le résultat vaut toujours $14$, quel que soit le nombre choisi.
+:::
+
+::: methode Prouver qu'une égalité est vraie ou fausse
+- Pour prouver qu'une égalité est **fausse**, il suffit de trouver **une valeur** pour laquelle les deux membres sont différents : c'est un **contre-exemple**.
+- Pour prouver qu'une égalité est **toujours vraie**, des exemples ne suffisent pas : on transforme l'un des membres (développer, réduire, factoriser) jusqu'à obtenir l'autre.
+:::
+
+::: exemple Une égalité fausse
+L'égalité $(x + 2)^2 = x^2 + 4$ est-elle vraie pour tout nombre $x$ ? Pour $x = 1$ : $(1 + 2)^2 = 9$ et $1^2 + 4 = 5$. Comme $9 \neq 5$, l'égalité est fausse.
+:::
+
+::: propriete Écrire des nombres entiers
+Soit $n$ un nombre entier.
+- Un nombre pair s'écrit $2n$ ; un nombre impair s'écrit $2n + 1$.
+- Un multiple de $5$ s'écrit $5n$.
+- Deux entiers consécutifs s'écrivent $n$ et $n + 1$.
+:::
+
+::: exemple La somme de deux entiers consécutifs est impaire
+$$n + (n + 1) = 2n + 1$$
+$2n + 1$ est de la forme « double d'un entier, plus $1$ » : la somme est toujours un nombre impair.
+:::
+
+::: attention
+Vérifier une égalité sur quelques valeurs ne la démontre pas : $x^2 + 2 = 3x$ est vraie pour $x = 1$ et pour $x = 2$, mais fausse pour $x = 0$ ($2 \neq 0$).
+:::
+
+::: retenir
+- Remplacer une lettre par un nombre : parenthèses, puis priorités.
+- Réduire : regrouper les termes de même nature.
+- Développer : $k(a + b) = ka + kb$ et $(a + b)(c + d) = ac + ad + bc + bd$.
+- Factoriser : $ka + kb = k(a + b)$, puis contrôler en redéveloppant.
+- Faux : un contre-exemple suffit. Toujours vrai : une preuve avec la lettre.
+:::

@@ -715,28 +715,6 @@ const ROUTE_SEO = {
     ]
   },
   CGV: { title: 'Conditions générales de vente | OptiTAB', canonicalPath: '/cgv', noindex: true },
-  // Blog
-  BlogList: {
-    title: 'Blog maths : conseils, méthodes et astuces | OptiTAB',
-    description: 'Découvre nos articles de blog : conseils en maths, méthodes de travail, astuces pour le brevet, le bac et la prépa.',
-    canonicalPath: '/blog',
-    keywords: ['blog maths', 'conseils maths', 'méthodes maths', 'astuces brevet bac prépa']
-  },
-  BlogCategory: {
-    title: 'Articles de blog par catégorie | OptiTAB',
-    description: 'Parcourez nos articles de blog classés par catégorie.',
-    noindex: false
-  },
-  BlogTag: {
-    title: 'Articles de blog par tag | OptiTAB',
-    description: 'Articles de blog associés à ce tag.',
-    noindex: false
-  },
-  BlogDetail: {
-    title: 'Article de blog | OptiTAB',
-    description: 'Article de blog OptiTAB : conseils et méthodes en maths.',
-    ogType: 'article'
-  },
   CGU: { title: 'Conditions générales d’utilisation | OptiTAB', canonicalPath: '/cgu', noindex: true },
   Confidentialite: { title: 'Politique de confidentialité | OptiTAB', canonicalPath: '/confidentialite', noindex: true },
   Legal: { title: 'Mentions légales | OptiTAB', canonicalPath: '/legal', noindex: true },

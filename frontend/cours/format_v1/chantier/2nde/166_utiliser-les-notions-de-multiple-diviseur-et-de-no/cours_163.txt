@@ -1,0 +1,161 @@
+Titre: Utiliser les notions de multiple, diviseur et de nombre premier
+
+<!-- optitab:1 -->
+::: objectifs
+Utiliser les notions de multiple et de diviseur, raisonner sur les nombres pairs et impairs, reconnaître un nombre premier, décomposer un entier en produit de facteurs premiers et l’utiliser pour simplifier une fraction ou résoudre un problème.
+:::
+
+## I. Multiples et diviseurs
+
+::: definition
+Soient $a$ et $b$ deux entiers relatifs, avec $b \neq 0$. On dit que $a$ est un **multiple** de $b$, ou que $b$ est un **diviseur** de $a$, s’il existe un entier $k$ tel que $a = k \times b$.
+:::
+
+::: exemple
+$36 = 4 \times 9$, donc $36$ est un multiple de $4$ et $4$ est un diviseur de $36$. Les multiples de $7$ sont $\ldots, -14, -7, 0, 7, 14, 21, \ldots$
+:::
+
+Les diviseurs positifs de $36$ vont par paires : chaque façon de ranger $36$ carreaux en rectangle en donne deux.
+
+[IMAGE_1]
+
+::: propriete
+La somme de deux multiples d’un entier $a$ est un multiple de $a$.
+:::
+
+::: demonstration
+Soient $m$ et $n$ deux multiples de $a$ : il existe des entiers $k$ et $k'$ tels que $m = k \times a$ et $n = k' \times a$. Alors
+$$m + n = k \times a + k' \times a = (k + k') \times a$$
+et $k + k'$ est un entier : $m + n$ est un multiple de $a$.
+:::
+
+Par exemple, avec $a = 7$ : $35 + 56 = 7 \times 5 + 7 \times 8 = 7 \times 13$.
+
+[IMAGE_4]
+
+::: remarque Critères de divisibilité
+- par $2$ : le nombre se termine par $0$, $2$, $4$, $6$ ou $8$ ;
+- par $5$ : il se termine par $0$ ou $5$ ; par $10$ : il se termine par $0$ ;
+- par $3$ (ou par $9$) : la somme de ses chiffres est divisible par $3$ (ou par $9$).
+
+Ainsi $4\,512$ est divisible par $3$ car $4 + 5 + 1 + 2 = 12$.
+:::
+
+## II. Nombres pairs et impairs
+
+::: definition
+Un entier $n$ est **pair** s’il s’écrit $n = 2k$, et **impair** s’il s’écrit $n = 2k + 1$, avec $k$ entier.
+:::
+
+En rangeant $n$ points par paires : il ne reste aucun point isolé si $n$ est pair, il en reste exactement un si $n$ est impair.
+
+[IMAGE_5]
+
+::: propriete
+Le carré d’un nombre impair est impair.
+:::
+
+::: demonstration
+Soit $n$ un nombre impair : $n = 2k + 1$ avec $k$ entier. Alors
+$$
+\begin{aligned}
+n^2 &= (2k + 1)^2 \\
+&= 4k^2 + 4k + 1 \\
+&= 2(2k^2 + 2k) + 1
+\end{aligned}
+$$
+Comme $2k^2 + 2k$ est un entier, $n^2$ est de la forme $2k' + 1$ : il est impair.
+:::
+
+::: methode
+Pour prouver qu’un résultat est vrai pour **tous** les entiers, on écrit l’entier sous la forme $2k$ ou $2k + 1$ et on calcule. Un exemple ne suffit pas : il ne fait que vérifier un cas.
+:::
+
+## III. Nombres premiers
+
+::: definition
+Un entier naturel est **premier** s’il admet exactement deux diviseurs positifs : $1$ et lui-même.
+:::
+
+Dans le tableau ci-dessous, les $25$ nombres premiers inférieurs à $100$ sont sur fond bleu : il suffit de barrer les multiples de $2$, $3$, $5$ et $7$ (car $11^2 = 121 \gt 100$).
+
+[IMAGE_2]
+
+::: attention
+$1$ n’est pas premier (il n’a qu’un seul diviseur) ; $2$ est le seul nombre premier pair.
+:::
+
+::: methode Tester si $n$ est premier
+On essaie de diviser $n$ par les nombres premiers $p$ tels que $p^2 \le n$. Si aucun ne divise $n$, alors $n$ est premier.
+
+Pour $n = 97$ : ni $2$, ni $3$, ni $5$, ni $7$ ne divisent $97$, et $11^2 = 121 \gt 97$ : donc $97$ est premier.
+:::
+
+::: propriete Décomposition en facteurs premiers
+Tout entier supérieur ou égal à $2$ s’écrit comme un produit de nombres premiers, de façon unique à l’ordre près.
+:::
+
+::: exemple
+On divise successivement par les plus petits nombres premiers possibles :
+$$
+\begin{aligned}
+360 &= 2 \times 180 = 2^2 \times 90 \\
+&= 2^3 \times 45 = 2^3 \times 3^2 \times 5
+\end{aligned}
+$$
+:::
+
+[IMAGE_3]
+
+## IV. Applications
+
+::: exemple Rendre une fraction irréductible
+On décompose le numérateur et le dénominateur, puis on simplifie par les facteurs communs :
+$$
+\begin{aligned}
+\frac{84}{126} &= \frac{2^2 \times 3 \times 7}{2 \times 3^2 \times 7} \\
+&= \frac{2}{3}
+\end{aligned}
+$$
+:::
+
+::: exemple Résoudre un problème
+Un fleuriste a $84$ roses et $126$ tulipes. Il veut faire le plus grand nombre de bouquets identiques en utilisant toutes les fleurs.
+
+Le nombre de bouquets doit diviser $84$ et $126$. Les facteurs communs aux deux décompositions donnent le plus grand diviseur commun : $2 \times 3 \times 7 = 42$. Il fait donc $42$ bouquets, chacun de $2$ roses ($84 = 42 \times 2$) et $3$ tulipes ($126 = 42 \times 3$).
+:::
+
+::: remarque Algorithmes
+L’opérateur `%` donne le reste de la division euclidienne : `a % b == 0` signifie que $a$ est un multiple de $b$.
+
+```python
+def est_multiple(a, b):
+    return a % b == 0
+```
+
+Pour trouver le plus grand multiple de $a$ inférieur ou égal à $b$ (avec $a \ge 1$, $b \ge 0$), on avance de $a$ en $a$ tant que l’on ne dépasse pas $b$.
+
+```python
+def plus_grand_multiple(a, b):
+    m = 0
+    while m + a <= b:
+        m = m + a
+    return m
+```
+
+La fonction suivante teste si un entier $n \ge 2$ est premier.
+
+```python
+def est_premier(n):
+    d = 2
+    while d * d <= n:
+        if n % d == 0:
+            return False
+        d = d + 1
+    return True
+```
+:::
+
+::: retenir
+$a$ est un multiple de $b$ si $a = k \times b$ ; la somme de deux multiples de $a$ est un multiple de $a$ ; pair $= 2k$, impair $= 2k + 1$, et le carré d’un impair est impair ; un nombre premier a exactement deux diviseurs ($1$ n’est pas premier) ; tout entier $\ge 2$ se décompose en facteurs premiers, ce qui permet de simplifier les fractions. Fiche de synthèse dans l’onglet Fiches !
+:::

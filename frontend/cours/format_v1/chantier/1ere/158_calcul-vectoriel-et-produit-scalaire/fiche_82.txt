@@ -1,0 +1,75 @@
+Titre: Résumé : Calcul vectoriel et produit scalaire
+
+<!-- optitab:1 -->
+::: objectifs
+L’essentiel du produit scalaire dans le plan : quatre façons de le calculer, l’orthogonalité, Al-Kashi, la médiane et le cercle de diamètre $[AB]$.
+:::
+
+## I. Calculer un produit scalaire
+
+::: formule
+$$\vec{u} \cdot \vec{v} = \|\vec{u}\| \times \|\vec{v}\| \times \cos(\vec{u}, \vec{v})$$
+:::
+
+| Données | Formule |
+|---|---|
+| Normes et angle | $\lVert\vec{u}\rVert \times \lVert\vec{v}\rVert \times \cos(\vec{u}, \vec{v})$ |
+| Projeté $H$ de $C$ sur $(AB)$ | $\overrightarrow{AB} \cdot \overrightarrow{AC} = \pm AB \times AH$ |
+| Trois longueurs | $\frac{1}{2}\left(AB^2 + AC^2 - BC^2\right)$ |
+| Coordonnées (repère orthonormé) | $xx' + yy'$ |
+
+[IMAGE_1]
+
+- Signe « $+$ » si $H$ est du côté de $B$ (angle aigu), « $-$ » sinon (angle obtus).
+- $\vec{u} \cdot \vec{u} = \|\vec{u}\|^2$ et $\|\vec{u}\| = \sqrt{x^2 + y^2}$.
+
+## II. Règles de calcul et orthogonalité
+
+- Symétrie et bilinéarité : on développe comme avec des nombres.
+- $\|\vec{u} + \vec{v}\|^2 = \|\vec{u}\|^2 + 2\,\vec{u} \cdot \vec{v} + \|\vec{v}\|^2$
+- $\|\vec{u} - \vec{v}\|^2 = \|\vec{u}\|^2 - 2\,\vec{u} \cdot \vec{v} + \|\vec{v}\|^2$
+- $(\vec{u} + \vec{v}) \cdot (\vec{u} - \vec{v}) = \|\vec{u}\|^2 - \|\vec{v}\|^2$
+
+::: theoreme Orthogonalité
+$\vec{u} \perp \vec{v} \iff \vec{u} \cdot \vec{v} = 0 \iff xx' + yy' = 0$
+:::
+
+::: methode Calculer un angle
+$$\cos(\vec{u}, \vec{v}) = \frac{\vec{u} \cdot \vec{v}}{\|\vec{u}\| \times \|\vec{v}\|}$$
+
+puis valeur remarquable ou touche $\cos^{-1}$ de la calculatrice.
+:::
+
+## III. Triangle et cercle
+
+[IMAGE_2]
+
+::: theoreme Al-Kashi
+$$a^2 = b^2 + c^2 - 2bc\cos\widehat{A}$$
+:::
+
+::: propriete Médiane ($I$ milieu de $[AB]$)
+$$\overrightarrow{MA} \cdot \overrightarrow{MB} = MI^2 - \frac{AB^2}{4}$$
+
+$$MA^2 + MB^2 = 2MI^2 + \frac{AB^2}{2}$$
+:::
+
+- $\overrightarrow{MA} \cdot \overrightarrow{MB} = 0 \iff M$ est sur le cercle de diamètre $[AB]$.
+
+[IMAGE_3]
+
+- $\overrightarrow{MA} \cdot \overrightarrow{MB} = k \iff MI^2 = k + \frac{AB^2}{4}$ : cercle de centre $I$, point $I$ ou ensemble vide.
+
+## IV. Les pièges à éviter
+
+::: attention Les erreurs classiques
+1. Écrire un produit scalaire comme un vecteur : c’est un **nombre**.
+2. Oublier le signe moins quand le projeté est de l’autre côté de $A$ (angle obtus).
+3. Utiliser $xx' + yy'$ dans un repère qui n’est pas orthonormé.
+4. Oublier le facteur $2$ du double produit dans $\|\vec{u} + \vec{v}\|^2$ ou dans Al-Kashi.
+5. Donner un angle arrondi sans indiquer la précision demandée.
+:::
+
+::: conseil Réflexe
+Pour prouver un angle droit, je calcule un produit scalaire et je montre qu’il est nul.
+:::

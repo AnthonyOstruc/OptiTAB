@@ -1,0 +1,337 @@
+Titre: Équations Différentielles
+
+<!-- optitab:1 -->
+::: remarque Sections principales
+Les sections I à VI couvrent les équations différentielles du premier ordre (définition, résolution, méthodes, applications et exercices). Les sections VII et VIII présentent les équations du second ordre et les structures classiques à connaître.
+:::
+
+## I. Définition et forme générale
+
+### Qu'est-ce qu'une équation différentielle ?
+
+::: definition Équation différentielle
+Une **équation différentielle** est une équation qui met en relation une fonction inconnue $y(x)$ avec sa dérivée $y'(x)$ :
+
+::: formule
+$$y' = f(x, y)$$
+:::
+:::
+
+::: remarque À savoir
+La forme générale d'une équation différentielle linéaire du premier ordre est **$y' + p(x)y = q(x)$**.
+
+Dans ce cours, nous étudions le cas particulier à coefficients constants : **$y' = a y + b$** où $a$ et $b$ sont des constantes.
+:::
+
+::: exemple
+- $\displaystyle y' = 2y$ (croissance exponentielle)
+- $\displaystyle y' = -3y + 5$ (équation complète)
+- $y' = y - 2$ (décroissance avec terme constant)
+:::
+
+## II. Méthodes de résolution
+
+### Résolution générale de y' = a y + b
+
+::: theoreme Solution générale
+Pour l'équation différentielle $y' = a y + b$ avec $a \neq 0$, la solution générale est :
+
+::: formule
+$$y(x) = C e^{a x} - \frac{b}{a}$$
+:::
+
+où $C$ est une constante réelle déterminée par la condition initiale.
+:::
+
+::: methode
+1. Résoudre l'équation homogène $y' = a y$
+2. Trouver une solution particulière de $y' = a y + b$
+3. Additionner les deux solutions
+
+** Cas particulier :** Si $a = 0$, l'équation devient $y' = b$, donc $y(x) = bx + C$.
+:::
+
+::: exemple
+Résoudre $\displaystyle y' = 2y + 4$
+
+**Résolution :**
+
+- **Équation homogène :** $\displaystyle y' - 2y = 0 \Rightarrow y_h = C e^{2x}$
+- **Solution particulière :** On cherche une solution constante $y_p = k$
+- $\displaystyle 0 = 2k + 4 \Rightarrow k = -2$
+- **Solution générale :** $\displaystyle y = C e^{2x} - 2$
+:::
+
+::: exemple
+Résoudre $\displaystyle y' = -y + 3$
+
+**Résolution :**
+
+- **Équation homogène :** $\displaystyle y' + y = 0 \Rightarrow y_h = C e^{-x}$
+- **Solution particulière :** On cherche une solution constante $y_p = k$
+- $\displaystyle 0 = -k + 3 \Rightarrow k = 3$
+- **Solution générale :** $\displaystyle y = C e^{-x} + 3$
+:::
+
+### Conditions initiales
+
+::: definition Condition initiale
+La constante $C$ est déterminée par une **condition initiale** :
+
+::: formule
+$$y(x_0) = y_0$$
+:::
+:::
+
+::: exemple
+Résoudre $y' = 2y + 4$ avec $y(0) = 1$
+
+**Résolution :**
+
+- Solution générale : $\displaystyle y = C e^{2x} - 2$
+- $\displaystyle y(0) = 1 \Rightarrow 1 = C - 2 \Rightarrow C = 3$
+- **Solution particulière :** $\displaystyle y = 3 e^{2x} - 2$
+:::
+
+## III. Méthode de séparation des variables
+
+### Principe général
+
+::: definition Séparation des variables
+Pour les équations de la forme $y' = g(x) h(y)$, on sépare les variables :
+
+::: formule
+$$\frac{dy}{h(y)} = g(x) \, dx$$
+:::
+
+On intègre chaque membre pour obtenir la solution générale.
+:::
+
+::: exemple
+Résoudre $\displaystyle y' = 2 x y$
+
+**Résolution :**
+
+- $\frac{dy}{y} = 2x \, dx$ (pour $y \neq 0$)
+- $\displaystyle \ln|y| = x^2 + C'$
+- $y = \pm e^{x^2 + C'} = K e^{x^2}$ où $K = \pm e^{C'}$
+:::
+
+## IV. Applications concrètes
+
+### Modélisation de la croissance
+
+::: exemple Croissance exponentielle
+Équation : $P' = k P$ (population, capital, réactions chimiques)
+
+Solution : $\displaystyle P(t) = P_0 e^{k t}$
+
+**Exemple :** Population : $P' = 0,05 P$, $P(0) = 1000$
+
+$$P(t) = 1000 e^{0,05 t}$$
+
+$\displaystyle P(10) = 1000 e^{0,5} \approx 1649$ individus
+:::
+
+::: exemple Décroissance radioactive
+Équation : $\displaystyle N' = -\lambda N$
+
+Solution : $\displaystyle N(t) = N_0 e^{-\lambda t}$
+
+**Demi-vie :** $\displaystyle T_{1/2} = \frac{\ln 2}{\lambda}$
+
+**Exemple :** Carbone 14 : $\lambda = 0,00012$, $T_{1/2} \approx 5770$ ans
+:::
+
+### Modélisation physique
+
+::: exemple Refroidissement d'un corps
+Équation : $T' = -k (T - T_a)$ où $T_a$ est la température ambiante
+
+Solution : $\displaystyle T(t) = T_a + (T_0 - T_a) e^{-k t}$
+:::
+
+::: exemple Circuit électrique
+Équation : $\displaystyle i' + \frac{R}{L} i = \frac{E}{L}$
+
+Courant : $\displaystyle i(t) = \frac{E}{R} \left(1 - e^{-\frac{R}{L} t}\right)$
+:::
+
+## V. Vérification des solutions
+
+### Méthode de vérification
+
+::: methode
+Dériver la solution proposée et vérifier si elle satisfait l'équation différentielle.
+:::
+
+::: exemple
+Vérifier que $y = 2 e^{2x} - 2$ satisfait $y' = 2y + 4$
+
+**Vérification :**
+
+$$y' = 4 e^{2x}$$
+
+$$
+\begin{aligned}
+2y + 4 &= 2(2 e^{2x} - 2) + 4 \\
+&= 4 e^{2x} - 4 + 4 \\
+&= 4 e^{2x}
+\end{aligned}
+$$
+
+Solution correcte !
+:::
+
+## VI. Exercices d'application
+
+### Exercices de base
+
+::: exemple Exercice 1
+Résoudre $y' = 3y - 6$ avec $y(0) = 4$
+
+*Solution : $\displaystyle y = 2 + 2 e^{3x}$*
+:::
+
+::: exemple Exercice 2
+Modéliser la décroissance radioactive : $N' = -0,02 N$ avec $N(0) = 100$
+
+*Solution : $\displaystyle N(t) = 100 e^{-0,02 t}$*
+:::
+
+::: exemple Exercice 3
+Résoudre $y' = -2y + 10$ avec $y(0) = 1$
+
+*Solution : $\displaystyle y = 5 - 4 e^{-2x}$*
+:::
+
+::: attention
+- Oublier la constante d'intégration $C$
+- Mauvais signe pour l'équation homogène
+- Erreur dans le calcul de la solution particulière
+- Oublier d'appliquer la condition initiale
+- Ne pas vérifier la solution obtenue
+:::
+
+::: conseil
+- Identifier la forme $y' = a y + b$ avec $a$ et $b$ constantes
+- Résoudre d'abord l'équation homogène $y' = a y$
+- Trouver une solution particulière constante
+- Appliquer la condition initiale pour trouver $C$
+- Vérifier toujours en dérivant la solution
+- Être attentif aux unités dans les applications
+:::
+
+## VII. Équations du second ordre (Introduction)
+
+### Forme générale
+
+::: definition Équation du second ordre
+Une **équation différentielle du second ordre** fait intervenir la dérivée seconde $y''(x)$ :
+
+::: formule
+$$y'' + ay' + by = c$$
+:::
+
+où $a$, $b$ et $c$ sont des constantes.
+:::
+
+::: remarque Équation caractéristique
+Pour résoudre $y'' + ay' + by = 0$, on pose l'**équation caractéristique** :
+
+::: formule
+$$r^2 + ar + b = 0$$
+:::
+
+La solution dépend du discriminant $\Delta = a^2 - 4b$ :
+:::
+
+::: exemple Cas 1 : Deux racines réelles distinctes ($\Delta > 0$)
+Si $r_1$ et $r_2$ sont les deux racines :
+
+::: exemple
+$$y(x) = C_1 e^{r_1 x} + C_2 e^{r_2 x}$$
+:::
+:::
+
+::: exemple Cas 2 : Racine double ($\displaystyle \Delta = 0$)
+Si $\displaystyle r$ est la racine double :
+
+::: exemple
+$$y(x) = (C_1 + C_2 x) e^{rx}$$
+:::
+:::
+
+::: exemple Cas 3 : Racines complexes conjuguées ($\Delta < 0$)
+Si $\displaystyle r = \alpha \pm i\beta$ :
+
+::: exemple
+$$y(x) = e^{\alpha x}(C_1 \cos(\beta x) + C_2 \sin(\beta x))$$
+:::
+:::
+
+::: exemple Classique : oscillateur harmonique
+L'équation $y'' + \omega^2 y = 0$ modélise un oscillateur harmonique (ressort, pendule).
+
+Équation caractéristique : $r^2 + \omega^2 = 0$ → $r = \pm i\omega$
+
+Solution générale :
+
+::: attention
+$$y(x) = A\cos(\omega x) + B\sin(\omega x)$$
+:::
+:::
+
+## VIII. Structures connues à savoir
+
+### Exemples types d'équations différentielles
+
+::: definition 1⃣ Croissance exponentielle : $y' = ky$
+Solution : $\displaystyle y(x) = Ce^{kx}$
+
+*Applications : croissance d'une population, désintégration radioactive ($k < 0$)*
+:::
+
+::: remarque 2⃣ Refroidissement de Newton : $y' = -k(y - T_0)$
+Solution : $\displaystyle y(t) = T_0 + (y_0 - T_0)e^{-kt}$
+
+*Applications : refroidissement d'un corps, température ambiante $T_0$*
+:::
+
+::: attention 3⃣ Croissance logistique : $\displaystyle y' = ky(1 - \frac{y}{L})$
+Solution : $\displaystyle y(t) = \frac{L}{1 + Ae^{-kt}}$
+
+*Applications : population avec capacité limite $L$, épidémiologie*
+:::
+
+::: propriete 4⃣ Circuit RC : $\displaystyle \tau y' + y = E$
+Solution : $\displaystyle y(t) = E + (y_0 - E)e^{-t/\tau}$
+
+*Applications : charge d'un condensateur, constante de temps $\tau = RC$*
+:::
+
+::: attention 5⃣ Oscillateur amorti : $\displaystyle y'' + 2\lambda y' + \omega_0^2 y = 0$
+Selon les valeurs de $\lambda$ et $\omega_0$ :
+
+- $\lambda < \omega_0$ : régime pseudo-périodique (oscillations amorties)
+- $\displaystyle \lambda = \omega_0$ : régime critique
+- $\lambda > \omega_0$ : régime apériodique (pas d'oscillations)
+
+*Applications : amortisseur, pendule avec frottement*
+:::
+
+::: demonstration 6⃣ Équation de Bernoulli : $\displaystyle y' + p(x)y = q(x)y^n$
+Changement de variable : $z = y^{1-n}$ ramène à une équation linéaire.
+
+*Applications : croissance avec effets non linéaires*
+:::
+
+### Méthode générale de résolution
+
+::: remarque Démarche systématique
+1. **Identifier le type** d'équation (ordre, linéaire/non linéaire, homogène/avec second membre)
+2. **Résoudre l'équation homogène** (second membre = 0) pour trouver la solution générale
+3. **Trouver une solution particulière** de l'équation complète (si second membre ≠ 0)
+4. **Solution générale** = solution homogène + solution particulière
+5. **Appliquer les conditions initiales** pour déterminer les constantes
+:::

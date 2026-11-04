@@ -1,0 +1,936 @@
+# ======================================================================
+# script cours_calcul
+# ======================================================================
+import random
+
+n = 0
+r = 0
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def lutin_quand_drapeau_clique_0():
+    global n, r, réponse
+    lutin = lutin_lutin
+    réponse = demander('Choisis un nombre')
+    n = réponse
+    r = (n + 3)
+    r = (r * 2)
+    lutin.dire(r)
+DRAPEAU.append(lutin_quand_drapeau_clique_0)
+# ======================================================================
+# script cours_si
+# ======================================================================
+import random
+
+âge = 0
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def lutin_quand_drapeau_clique_0():
+    global âge, réponse
+    lutin = lutin_lutin
+    réponse = demander('Quel est ton âge ?')
+    âge = réponse
+    if âge < 18:
+        lutin.dire('Tu es mineur.')
+    else:
+        lutin.dire('Tu es majeur.')
+DRAPEAU.append(lutin_quand_drapeau_clique_0)
+# ======================================================================
+# script cours_repeter
+# ======================================================================
+import random
+
+x = 0
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def lutin_quand_drapeau_clique_0():
+    global x, réponse
+    lutin = lutin_lutin
+    x = 0
+    for _ in range(5):
+        x = x + 2
+    lutin.dire(x)
+DRAPEAU.append(lutin_quand_drapeau_clique_0)
+# ======================================================================
+# script cours_jusqua
+# ======================================================================
+import random
+
+x = 0
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def lutin_quand_drapeau_clique_0():
+    global x, réponse
+    lutin = lutin_lutin
+    x = 1
+    while not (x > 100):
+        x = (x * 3)
+    lutin.dire(x)
+DRAPEAU.append(lutin_quand_drapeau_clique_0)
+# ======================================================================
+# script cours_carre
+# ======================================================================
+import random
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def lutin_quand_drapeau_clique_0():
+    global réponse
+    lutin = lutin_lutin
+    lutin.effacer_tout()
+    lutin.aller_a(0, 0)
+    lutin.orienter(90)
+    lutin.stylo_bas()
+    for _ in range(4):
+        lutin.avancer(50)
+        lutin.tourner_gauche(90)
+DRAPEAU.append(lutin_quand_drapeau_clique_0)
+# ======================================================================
+# script cours_bloc
+# ======================================================================
+import random
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def carré(côté):
+    global réponse
+    lutin = lutin_lutin
+    for _ in range(4):
+        lutin.avancer(côté)
+        lutin.tourner_gauche(90)
+
+def lutin_quand_drapeau_clique_1():
+    global réponse
+    lutin = lutin_lutin
+    lutin.effacer_tout()
+    lutin.aller_a(0, 0)
+    lutin.orienter(90)
+    lutin.stylo_bas()
+    carré(20)
+    carré(40)
+    carré(60)
+DRAPEAU.append(lutin_quand_drapeau_clique_1)
+# ======================================================================
+# script cours_messages
+# ======================================================================
+import random
+
+score = 0
+
+# ----- lutin Chat
+lutin_chat = Lutin('Chat')
+def chat_quand_drapeau_clique_0():
+    global score, réponse
+    lutin = lutin_chat
+    score = 0
+    envoyer_a_tous('compter')
+    lutin.dire(score)
+DRAPEAU.append(chat_quand_drapeau_clique_0)
+
+# ----- lutin Balle
+lutin_balle = Lutin('Balle')
+def balle_quand_je_recois_compter_0():
+    global score, réponse
+    lutin = lutin_balle
+    for _ in range(4):
+        score = score + 5
+MESSAGES.setdefault('compter', []).append(balle_quand_je_recois_compter_0)
+# ======================================================================
+# script 2443
+# ======================================================================
+import random
+
+x = 0
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def lutin_quand_drapeau_clique_0():
+    global x, réponse
+    lutin = lutin_lutin
+    x = 3
+    x = x + 5
+    x = (x * 2)
+    lutin.dire(x)
+DRAPEAU.append(lutin_quand_drapeau_clique_0)
+# ======================================================================
+# script 2443_echange
+# ======================================================================
+import random
+
+x = 0
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def lutin_quand_drapeau_clique_0():
+    global x, réponse
+    lutin = lutin_lutin
+    x = 3
+    x = (x * 2)
+    x = x + 5
+    lutin.dire(x)
+DRAPEAU.append(lutin_quand_drapeau_clique_0)
+# ======================================================================
+# script 2444
+# ======================================================================
+import random
+
+x = 0
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def lutin_quand_drapeau_clique_0():
+    global x, réponse
+    lutin = lutin_lutin
+    réponse = demander('Choisis un nombre')
+    x = réponse
+    x = x + 4
+    x = (x * 3)
+    lutin.dire(x)
+DRAPEAU.append(lutin_quand_drapeau_clique_0)
+# ======================================================================
+# script 2444_ordre
+# ======================================================================
+import random
+
+x = 0
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def lutin_quand_drapeau_clique_0():
+    global x, réponse
+    lutin = lutin_lutin
+    réponse = demander('Choisis un nombre')
+    x = réponse
+    x = (x * 3)
+    x = x + 4
+    lutin.dire(x)
+DRAPEAU.append(lutin_quand_drapeau_clique_0)
+# ======================================================================
+# script 2445
+# ======================================================================
+import random
+
+x = 0
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def lutin_quand_drapeau_clique_0():
+    global x, réponse
+    lutin = lutin_lutin
+    x = 0
+    for _ in range(4):
+        x = x + 3
+    lutin.dire(x)
+DRAPEAU.append(lutin_quand_drapeau_clique_0)
+# ======================================================================
+# script 2445_10
+# ======================================================================
+import random
+
+x = 0
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def lutin_quand_drapeau_clique_0():
+    global x, réponse
+    lutin = lutin_lutin
+    x = 0
+    for _ in range(10):
+        x = x + 3
+    lutin.dire(x)
+DRAPEAU.append(lutin_quand_drapeau_clique_0)
+# ======================================================================
+# script 2446
+# ======================================================================
+import random
+
+x = 0
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def lutin_quand_drapeau_clique_0():
+    global x, réponse
+    lutin = lutin_lutin
+    réponse = demander('Choisis un nombre')
+    x = réponse
+    if x < 10:
+        lutin.dire('petit')
+    else:
+        lutin.dire('grand')
+DRAPEAU.append(lutin_quand_drapeau_clique_0)
+# ======================================================================
+# script 2446_ou
+# ======================================================================
+import random
+
+x = 0
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def lutin_quand_drapeau_clique_0():
+    global x, réponse
+    lutin = lutin_lutin
+    réponse = demander('Choisis un nombre')
+    x = réponse
+    if (x < 10) or (x == 10):
+        lutin.dire('petit')
+    else:
+        lutin.dire('grand')
+DRAPEAU.append(lutin_quand_drapeau_clique_0)
+# ======================================================================
+# script 2447
+# ======================================================================
+import random
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def lutin_quand_drapeau_clique_0():
+    global réponse
+    lutin = lutin_lutin
+    lutin.effacer_tout()
+    lutin.aller_a(-100, 50)
+    lutin.orienter(90)
+    lutin.stylo_bas()
+    lutin.avancer(80)
+    lutin.ajouter_y(-90)
+    lutin.orienter(-90)
+    lutin.avancer(60)
+DRAPEAU.append(lutin_quand_drapeau_clique_0)
+# ======================================================================
+# script 2448
+# ======================================================================
+import random
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def lutin_quand_drapeau_clique_0():
+    global réponse
+    lutin = lutin_lutin
+    lutin.effacer_tout()
+    lutin.aller_a(0, 0)
+    lutin.orienter(90)
+    lutin.stylo_bas()
+    for _ in range(4):
+        lutin.avancer(40)
+        lutin.tourner_gauche(90)
+DRAPEAU.append(lutin_quand_drapeau_clique_0)
+# ======================================================================
+# script 2448_triangle
+# ======================================================================
+import random
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def lutin_quand_drapeau_clique_0():
+    global réponse
+    lutin = lutin_lutin
+    lutin.effacer_tout()
+    lutin.aller_a(0, 0)
+    lutin.orienter(90)
+    lutin.stylo_bas()
+    for _ in range(3):
+        lutin.avancer(40)
+        lutin.tourner_gauche(120)
+DRAPEAU.append(lutin_quand_drapeau_clique_0)
+# ======================================================================
+# script 2449
+# ======================================================================
+import random
+
+n = 0
+s = 0
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def lutin_quand_drapeau_clique_0():
+    global n, s, réponse
+    lutin = lutin_lutin
+    s = 0
+    n = 1
+    for _ in range(5):
+        s = s + n
+        n = n + 1
+    lutin.dire(s)
+DRAPEAU.append(lutin_quand_drapeau_clique_0)
+# ======================================================================
+# script 2450
+# ======================================================================
+import random
+
+x = 0
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def lutin_quand_drapeau_clique_0():
+    global x, réponse
+    lutin = lutin_lutin
+    x = 0
+    while not (x > 20):
+        x = x + 6
+    lutin.dire(x)
+DRAPEAU.append(lutin_quand_drapeau_clique_0)
+# ======================================================================
+# script 2451
+# ======================================================================
+import random
+
+x = 0
+y = 0
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def lutin_quand_drapeau_clique_0():
+    global x, y, réponse
+    lutin = lutin_lutin
+    réponse = demander('Choisis un entier')
+    x = réponse
+    y = 0
+    if (x % 3) == 0:
+        y = 1
+    lutin.dire(y)
+DRAPEAU.append(lutin_quand_drapeau_clique_0)
+# ======================================================================
+# script 2451_pair
+# ======================================================================
+import random
+
+x = 0
+y = 0
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def lutin_quand_drapeau_clique_0():
+    global x, y, réponse
+    lutin = lutin_lutin
+    réponse = demander('Choisis un entier')
+    x = réponse
+    y = 0
+    if (x % 2) == 0:
+        y = 1
+    lutin.dire(y)
+DRAPEAU.append(lutin_quand_drapeau_clique_0)
+# ======================================================================
+# script 2452
+# ======================================================================
+import random
+
+d = 0
+n = 0
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def lutin_quand_drapeau_clique_0():
+    global d, n, réponse
+    lutin = lutin_lutin
+    n = 12
+    d = 1
+    for _ in range(12):
+        if (n % d) == 0:
+            lutin.dire(d)
+        d = d + 1
+DRAPEAU.append(lutin_quand_drapeau_clique_0)
+# ======================================================================
+# script 2453
+# ======================================================================
+import random
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def lutin_quand_drapeau_clique_0():
+    global réponse
+    lutin = lutin_lutin
+    lutin.aller_a(-60, -40)
+DRAPEAU.append(lutin_quand_drapeau_clique_0)
+
+def lutin_quand_touche_flèche_droite_1():
+    global réponse
+    lutin = lutin_lutin
+    lutin.ajouter_x(30)
+TOUCHES.setdefault('flèche droite', []).append(lutin_quand_touche_flèche_droite_1)
+
+def lutin_quand_touche_flèche_haut_2():
+    global réponse
+    lutin = lutin_lutin
+    lutin.ajouter_y(20)
+TOUCHES.setdefault('flèche haut', []).append(lutin_quand_touche_flèche_haut_2)
+
+def lutin_quand_touche_espace_3():
+    global réponse
+    lutin = lutin_lutin
+    lutin.aller_a(0, 0)
+TOUCHES.setdefault('espace', []).append(lutin_quand_touche_espace_3)
+# ======================================================================
+# script 2453_gauche
+# ======================================================================
+import random
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def lutin_quand_touche_flèche_gauche_0():
+    global réponse
+    lutin = lutin_lutin
+    lutin.ajouter_x(-30)
+TOUCHES.setdefault('flèche gauche', []).append(lutin_quand_touche_flèche_gauche_0)
+# ======================================================================
+# script 2454
+# ======================================================================
+import random
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def carré(côté):
+    global réponse
+    lutin = lutin_lutin
+    for _ in range(4):
+        lutin.avancer(côté)
+        lutin.tourner_gauche(90)
+
+def lutin_quand_drapeau_clique_1():
+    global réponse
+    lutin = lutin_lutin
+    lutin.effacer_tout()
+    lutin.aller_a(0, 0)
+    lutin.orienter(90)
+    lutin.stylo_bas()
+    for _ in range(3):
+        carré(30)
+        lutin.stylo_haut()
+        lutin.avancer(40)
+        lutin.stylo_bas()
+DRAPEAU.append(lutin_quand_drapeau_clique_1)
+# ======================================================================
+# script 2455
+# ======================================================================
+import random
+
+dé = 0
+succès = 0
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def lutin_quand_drapeau_clique_0():
+    global dé, succès, réponse
+    lutin = lutin_lutin
+    succès = 0
+    for _ in range(600):
+        dé = random.randint(1, 6)
+        if dé == 6:
+            succès = succès + 1
+    lutin.dire((succès / 600))
+DRAPEAU.append(lutin_quand_drapeau_clique_0)
+# ======================================================================
+# script 2456
+# ======================================================================
+import random
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def lutin_quand_drapeau_clique_0():
+    global réponse
+    lutin = lutin_lutin
+    lutin.effacer_tout()
+    lutin.aller_a(-40, -25)
+    lutin.orienter(90)
+    lutin.stylo_bas()
+    for _ in range(2):
+        lutin.avancer(80)
+        lutin.tourner_gauche(90)
+        lutin.avancer(50)
+        lutin.tourner_gauche(90)
+DRAPEAU.append(lutin_quand_drapeau_clique_0)
+# ======================================================================
+# script 2457
+# ======================================================================
+import random
+
+score = 0
+
+# ----- lutin Guide
+lutin_guide = Lutin('Guide')
+def guide_quand_drapeau_clique_0():
+    global score, réponse
+    lutin = lutin_guide
+    score = 0
+    envoyer_a_tous('départ')
+    lutin.dire(score)
+DRAPEAU.append(guide_quand_drapeau_clique_0)
+
+# ----- lutin Joueur
+lutin_joueur = Lutin('Joueur')
+def joueur_quand_je_recois_départ_0():
+    global score, réponse
+    lutin = lutin_joueur
+    for _ in range(10):
+        score = score + 1
+MESSAGES.setdefault('départ', []).append(joueur_quand_je_recois_départ_0)
+# ======================================================================
+# script 2457_trois
+# ======================================================================
+import random
+
+score = 0
+
+# ----- lutin Guide
+lutin_guide = Lutin('Guide')
+def guide_quand_drapeau_clique_0():
+    global score, réponse
+    lutin = lutin_guide
+    score = 0
+    envoyer_a_tous('départ')
+    lutin.dire(score)
+DRAPEAU.append(guide_quand_drapeau_clique_0)
+
+# ----- lutin Joueur
+lutin_joueur = Lutin('Joueur')
+def joueur_quand_je_recois_départ_0():
+    global score, réponse
+    lutin = lutin_joueur
+    for _ in range(10):
+        score = score + 1
+MESSAGES.setdefault('départ', []).append(joueur_quand_je_recois_départ_0)
+
+# ----- lutin Joueur2
+lutin_joueur2 = Lutin('Joueur2')
+def joueur2_quand_je_recois_départ_0():
+    global score, réponse
+    lutin = lutin_joueur2
+    for _ in range(10):
+        score = score + 1
+MESSAGES.setdefault('départ', []).append(joueur2_quand_je_recois_départ_0)
+# ======================================================================
+# script 2458
+# ======================================================================
+import random
+
+n = 0
+r = 0
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def lutin_quand_drapeau_clique_0():
+    global n, r, réponse
+    lutin = lutin_lutin
+    réponse = demander('Choisis un nombre')
+    n = réponse
+    r = (n * 4)
+    r = r + 8
+    r = (r / 4)
+    r = (r - n)
+    lutin.dire(r)
+DRAPEAU.append(lutin_quand_drapeau_clique_0)
+# ======================================================================
+# script 2459
+# ======================================================================
+import random
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def lutin_quand_drapeau_clique_0():
+    global réponse
+    lutin = lutin_lutin
+    lutin.effacer_tout()
+    lutin.aller_a(0, 0)
+    lutin.orienter(90)
+    lutin.stylo_bas()
+    for _ in range(5):
+        lutin.avancer(20)
+        lutin.tourner_gauche(90)
+        lutin.avancer(20)
+        lutin.tourner_droite(90)
+DRAPEAU.append(lutin_quand_drapeau_clique_0)
+# ======================================================================
+# script 2459_8
+# ======================================================================
+import random
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def lutin_quand_drapeau_clique_0():
+    global réponse
+    lutin = lutin_lutin
+    lutin.effacer_tout()
+    lutin.aller_a(0, 0)
+    lutin.orienter(90)
+    lutin.stylo_bas()
+    for _ in range(8):
+        lutin.avancer(15)
+        lutin.tourner_gauche(90)
+        lutin.avancer(15)
+        lutin.tourner_droite(90)
+DRAPEAU.append(lutin_quand_drapeau_clique_0)
+# ======================================================================
+# script 2460
+# ======================================================================
+import random
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def polygone(n, côté):
+    global réponse
+    lutin = lutin_lutin
+    for _ in range(n):
+        lutin.avancer(côté)
+        lutin.tourner_gauche((360 / n))
+
+def lutin_quand_drapeau_clique_1():
+    global réponse
+    lutin = lutin_lutin
+    lutin.effacer_tout()
+    lutin.aller_a(0, 0)
+    lutin.orienter(90)
+    lutin.stylo_bas()
+    polygone(6, 30)
+DRAPEAU.append(lutin_quand_drapeau_clique_1)
+# ======================================================================
+# script 2460_triangle
+# ======================================================================
+import random
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def polygone(n, côté):
+    global réponse
+    lutin = lutin_lutin
+    for _ in range(n):
+        lutin.avancer(côté)
+        lutin.tourner_gauche((360 / n))
+
+def lutin_quand_drapeau_clique_1():
+    global réponse
+    lutin = lutin_lutin
+    lutin.effacer_tout()
+    lutin.aller_a(0, 0)
+    lutin.orienter(90)
+    lutin.stylo_bas()
+    polygone(3, 50)
+DRAPEAU.append(lutin_quand_drapeau_clique_1)
+# ======================================================================
+# script 2460_36
+# ======================================================================
+import random
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def polygone(n, côté):
+    global réponse
+    lutin = lutin_lutin
+    for _ in range(n):
+        lutin.avancer(côté)
+        lutin.tourner_gauche((360 / n))
+
+def lutin_quand_drapeau_clique_1():
+    global réponse
+    lutin = lutin_lutin
+    lutin.effacer_tout()
+    lutin.aller_a(0, 0)
+    lutin.orienter(90)
+    lutin.stylo_bas()
+    polygone(36, 5)
+DRAPEAU.append(lutin_quand_drapeau_clique_1)
+# ======================================================================
+# script 2460_faux108
+# ======================================================================
+import random
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def polygone(n, côté):
+    global réponse
+    lutin = lutin_lutin
+    for _ in range(n):
+        lutin.avancer(côté)
+        lutin.tourner_gauche(108)
+
+def lutin_quand_drapeau_clique_1():
+    global réponse
+    lutin = lutin_lutin
+    lutin.effacer_tout()
+    lutin.aller_a(0, 0)
+    lutin.orienter(90)
+    lutin.stylo_bas()
+    polygone(5, 30)
+DRAPEAU.append(lutin_quand_drapeau_clique_1)
+# ======================================================================
+# script 2460_bon72
+# ======================================================================
+import random
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def polygone(n, côté):
+    global réponse
+    lutin = lutin_lutin
+    for _ in range(n):
+        lutin.avancer(côté)
+        lutin.tourner_gauche((360 / n))
+
+def lutin_quand_drapeau_clique_1():
+    global réponse
+    lutin = lutin_lutin
+    lutin.effacer_tout()
+    lutin.aller_a(0, 0)
+    lutin.orienter(90)
+    lutin.stylo_bas()
+    polygone(5, 30)
+DRAPEAU.append(lutin_quand_drapeau_clique_1)
+# ======================================================================
+# script 2461
+# ======================================================================
+import random
+
+essais = 0
+secret = 0
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def lutin_quand_drapeau_clique_0():
+    global essais, secret, réponse
+    lutin = lutin_lutin
+    secret = random.randint(1, 100)
+    essais = 0
+    while not (réponse == secret):
+        réponse = demander('Propose un nombre')
+        essais = essais + 1
+        if réponse < secret:
+            lutin.dire('Plus grand !')
+        else:
+            if réponse > secret:
+                lutin.dire('Plus petit !')
+    lutin.dire(essais)
+DRAPEAU.append(lutin_quand_drapeau_clique_0)
+# ======================================================================
+# script 2462
+# ======================================================================
+import random
+
+longueur = 0
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def triangle(côté):
+    global longueur, réponse
+    lutin = lutin_lutin
+    for _ in range(3):
+        lutin.avancer(côté)
+        lutin.tourner_gauche(120)
+
+def lutin_quand_drapeau_clique_1():
+    global longueur, réponse
+    lutin = lutin_lutin
+    lutin.effacer_tout()
+    lutin.aller_a(-150, 0)
+    lutin.orienter(90)
+    longueur = 20
+    for _ in range(4):
+        lutin.stylo_bas()
+        triangle(longueur)
+        lutin.stylo_haut()
+        lutin.avancer((longueur + 10))
+        longueur = longueur + 20
+DRAPEAU.append(lutin_quand_drapeau_clique_1)
+# ======================================================================
+# script 2462_A
+# ======================================================================
+import random
+
+longueur = 0
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def triangle(côté):
+    global longueur, réponse
+    lutin = lutin_lutin
+    for _ in range(3):
+        lutin.avancer(côté)
+        lutin.tourner_gauche(120)
+
+def lutin_quand_drapeau_clique_1():
+    global longueur, réponse
+    lutin = lutin_lutin
+    lutin.effacer_tout()
+    lutin.aller_a(-150, 0)
+    lutin.orienter(90)
+    longueur = 20
+    for _ in range(4):
+        lutin.stylo_bas()
+        triangle(longueur)
+        lutin.stylo_haut()
+        lutin.avancer(longueur)
+        longueur = longueur + 20
+DRAPEAU.append(lutin_quand_drapeau_clique_1)
+# ======================================================================
+# script 2462_C
+# ======================================================================
+import random
+
+longueur = 0
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def triangle(côté):
+    global longueur, réponse
+    lutin = lutin_lutin
+    for _ in range(3):
+        lutin.avancer(côté)
+        lutin.tourner_gauche(120)
+
+def lutin_quand_drapeau_clique_1():
+    global longueur, réponse
+    lutin = lutin_lutin
+    lutin.effacer_tout()
+    lutin.aller_a(-150, 0)
+    lutin.orienter(90)
+    longueur = 20
+    for _ in range(4):
+        lutin.stylo_bas()
+        triangle(longueur)
+        lutin.stylo_haut()
+        lutin.avancer((longueur + 10))
+DRAPEAU.append(lutin_quand_drapeau_clique_1)
+# ======================================================================
+# script 2463
+# ======================================================================
+import random
+
+compteur = 0
+d1 = 0
+d2 = 0
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def lutin_quand_drapeau_clique_0():
+    global compteur, d1, d2, réponse
+    lutin = lutin_lutin
+    compteur = 0
+    for _ in range(1000):
+        d1 = random.randint(1, 6)
+        d2 = random.randint(1, 6)
+        if (d1 + d2) == 7:
+            compteur = compteur + 1
+    lutin.dire((compteur / 1000))
+DRAPEAU.append(lutin_quand_drapeau_clique_0)
+# ======================================================================
+# script 2463_doubles
+# ======================================================================
+import random
+
+compteur = 0
+d1 = 0
+d2 = 0
+
+# ----- lutin Lutin
+lutin_lutin = Lutin('Lutin')
+def lutin_quand_drapeau_clique_0():
+    global compteur, d1, d2, réponse
+    lutin = lutin_lutin
+    compteur = 0
+    for _ in range(1000):
+        d1 = random.randint(1, 6)
+        d2 = random.randint(1, 6)
+        if d1 == d2:
+            compteur = compteur + 1
+    lutin.dire((compteur / 1000))
+DRAPEAU.append(lutin_quand_drapeau_clique_0)

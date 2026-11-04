@@ -1,0 +1,1681 @@
+=== Découverte - Calculer les termes d'une suite
+Id: 1058
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+On considère la suite $(u_n)$ définie par $u_0 = 5$ et, pour tout entier naturel $n$, $u_{n+1} = 2u_n - 3$.
+
+1. Calculer $u_1$, $u_2$ et $u_3$.
+2. Compléter la fonction suivante pour qu'elle renvoie le terme $u_n$.
+
+```python
+def terme(n):
+    u = …
+    for k in range(…):
+        u = …
+    return u
+```
+
+3. Écrire une boucle qui affiche $n$ et $u_n$ pour $n$ allant de $0$ à $5$. Donner l'affichage obtenu.
+4. On pose $v_n = u_n - 3$. Montrer que la suite $(v_n)$ est géométrique, puis exprimer $u_n$ en fonction de $n$. Vérifier avec l'affichage de la question 3.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer $u_1$, $u_2$ et $u_3$
+
+::: methode
+On applique la relation de récurrence avec $n = 0$, puis $n = 1$, puis $n = 2$ : chaque terme se calcule à partir du précédent.
+:::
+
+::: etape Trois applications de la relation
+$$
+\begin{aligned}
+u_1 &= 2u_0 - 3 = 2 \times 5 - 3 = 7 \\
+u_2 &= 2u_1 - 3 = 2 \times 7 - 3 = 11 \\
+u_3 &= 2u_2 - 3 = 2 \times 11 - 3 = 19
+\end{aligned}
+$$
+:::
+
+::: resultat
+$u_1 = 7$, $u_2 = 11$ et $u_3 = 19$.
+:::
+
+## Question 2 : Compléter la fonction `terme`
+
+::: methode
+On part de $u_0$ et on applique $n$ fois la relation de récurrence : une boucle `for` de $n$ tours.
+:::
+
+::: etape Les trois trous
+- valeur de départ : `u = 5`, car $u_0 = 5$.
+- nombre de tours : `range(n)`, qui fait exactement $n$ tours.
+- relation de récurrence : `u = 2 * u - 3`.
+:::
+
+::: etape Fonction complète
+```python
+def terme(n):
+    u = 5
+    for k in range(n):
+        u = 2 * u - 3
+    return u
+```
+:::
+
+::: etape Tableau d'état de l'appel `terme(3)`
+| Étape | `k` | `u` |
+|---|---|---|
+| avant la boucle | — | $5$ |
+| tour 1 | $0$ | $7$ |
+| tour 2 | $1$ | $11$ |
+| tour 3 | $2$ | $19$ |
+
+On retrouve $u_3 = 19$.
+:::
+
+::: attention
+Avec `range(n + 1)`, la boucle ferait un tour de trop et la fonction renverrait $u_{n+1}$.
+:::
+
+::: resultat
+`u = 5`, `range(n)` et `u = 2 * u - 3`.
+:::
+
+## Question 3 : Afficher les premiers termes
+
+::: methode
+La variable `n` prend les valeurs $0$ à $5$, donc `range(6)` ; à chaque tour, on affiche `n` et `terme(n)`.
+:::
+
+::: etape Programme et affichage
+```python
+def terme(n):
+    u = 5
+    for k in range(n):
+        u = 2 * u - 3
+    return u
+
+for n in range(6):
+    print(n, terme(n))
+```
+
+```console
+0 5
+1 7
+2 11
+3 19
+4 35
+5 67
+```
+:::
+
+::: resultat
+Les termes de $u_0$ à $u_5$ sont $5$, $7$, $11$, $19$, $35$ et $67$.
+:::
+
+## Question 4 : Formule explicite
+
+::: methode
+On exprime $v_{n+1}$ en fonction de $v_n$ en remplaçant $u_{n+1}$ par $2u_n - 3$.
+:::
+
+::: etape La suite $(v_n)$ est géométrique
+$$
+\begin{aligned}
+v_{n+1} &= u_{n+1} - 3 \\
+&= 2u_n - 3 - 3 \\
+&= 2u_n - 6 \\
+&= 2(u_n - 3) \\
+&= 2v_n
+\end{aligned}
+$$
+
+$(v_n)$ est géométrique de raison $2$ et de premier terme $v_0 = u_0 - 3 = 2$.
+:::
+
+::: etape Expression de $u_n$
+$$v_n = 2 \times 2^n = 2^{n+1}$$
+
+donc
+
+$$u_n = v_n + 3 = 2^{n+1} + 3$$
+:::
+
+::: etape Vérification
+Pour $n = 5$ : $2^6 + 3 = 64 + 3 = 67$, comme dans l'affichage. De même $2^5 + 3 = 35$ pour $n = 4$.
+:::
+
+::: retenir
+Avec une formule explicite, la boucle devient inutile : la fonction peut renvoyer directement `2**(n + 1) + 3`.
+:::
+
+::: resultat
+$(v_n)$ est géométrique de raison $2$ et, pour tout entier naturel $n$, $u_n = 2^{n+1} + 3$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $u_1 = 7$, $u_2 = 11$, $u_3 = 19$.
+2. `u = 5`, `range(n)` et `u = 2 * u - 3`.
+3. Une boucle `for n in range(6)` qui affiche `n` et `terme(n)` donne $5$, $7$, $11$, $19$, $35$, $67$.
+4. $v_{n+1} = 2v_n$ et $v_0 = 2$, donc $v_n = 2^{n+1}$ et $u_n = 2^{n+1} + 3$.
+
+===
+
+
+=== Entraînement - Sommes de termes, factorielle et suite de Fibonacci
+Id: 1059
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Les trois questions sont indépendantes.
+
+1. On note $S = 1 + 3 + 5 + \dots + 99$ la somme des nombres impairs de $1$ à $99$.
+   - a) Écrire un programme qui calcule $S$ à l'aide d'une boucle.
+   - b) Retrouver le résultat avec la formule de la somme des termes d'une suite arithmétique.
+2. Pour $n \ge 1$, on note $n! = 1 \times 2 \times \dots \times n$.
+   - a) Écrire une fonction `factorielle(n)` et calculer $12!$.
+   - b) Écrire un programme qui détermine le plus petit entier $n$ tel que $n! \gt 10^9$.
+3. La suite de Fibonacci est définie par $F_0 = 0$, $F_1 = 1$ et $F_{n+2} = F_{n+1} + F_n$. Écrire un programme qui affiche les termes $F_0$ à $F_{10}$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Somme des nombres impairs de $1$ à $99$
+
+::: methode
+Les nombres impairs s'écrivent $u_k = 2k + 1$. On ajoute les termes $u_0 = 1$ à $u_{49} = 99$ dans un accumulateur.
+:::
+
+::: etape Compter les termes
+$2k + 1 = 99$ donne $k = 49$ : $k$ va de $0$ à $49$, il y a donc $50$ termes et la boucle est `for k in range(50)`.
+:::
+
+::: etape Programme et affichage
+```python
+s = 0
+for k in range(50):
+    s = s + (2 * k + 1)
+print(s)
+```
+
+```console
+2500
+```
+:::
+
+::: etape Vérification par la formule
+$(u_k)$ est arithmétique de raison $2$. La somme de termes consécutifs vaut « nombre de termes × (premier + dernier) ÷ 2 » :
+
+$$S = 50 \times \frac{1 + 99}{2} = 2500$$
+:::
+
+::: attention
+Avec `range(49)`, le dernier terme $99$ serait oublié : de $u_0$ à $u_{49}$, il y a $50$ termes.
+:::
+
+::: resultat
+$$S = 1 + 3 + \dots + 99 = 2500$$
+:::
+
+## Question 2 : Factorielle
+
+::: methode
+Un produit s'initialise à $1$, puis on le multiplie par $k$ pour $k$ allant de $1$ à $n$.
+:::
+
+::: etape a) Fonction et calcul de $12!$
+```python
+def factorielle(n):
+    p = 1
+    for k in range(1, n + 1):
+        p = p * k
+    return p
+
+print(factorielle(12))
+```
+
+```console
+479001600
+```
+:::
+
+::: etape b) Plus petit $n$ tel que $n! \gt 10^9$
+On ne sait pas combien de tours faire : boucle `while`. On fait avancer ensemble `n` et `p`, qui vaut $n!$, et on continue **tant que** $p \le 10^9$.
+
+```python
+n = 1
+p = 1
+while p <= 10**9:
+    n = n + 1
+    p = p * n
+print(n, p)
+```
+
+```console
+13 6227020800
+```
+:::
+
+::: etape Vérification
+$12! = 479\,001\,600 \le 10^9$ et $13! = 6\,227\,020\,800 \gt 10^9$.
+:::
+
+::: attention
+Un accumulateur de produit initialisé à $0$ resterait nul : `p = 1` avant la boucle.
+:::
+
+::: resultat
+$12! = 479\,001\,600$ ; le plus petit entier $n$ tel que $n! \gt 10^9$ est $n = 13$.
+:::
+
+## Question 3 : Suite de Fibonacci
+
+::: methode
+Chaque terme dépend des **deux** précédents : on garde deux variables, `a` $= F_n$ et `b` $= F_{n+1}$, et une variable `c` pour calculer le terme suivant.
+:::
+
+::: etape Programme et affichage
+```python
+a = 0
+b = 1
+for k in range(11):
+    print(a, end=" ")
+    c = a + b
+    a = b
+    b = c
+```
+
+```console
+0 1 1 2 3 5 8 13 21 34 55
+```
+
+`end=" "` affiche les termes sur une même ligne.
+:::
+
+::: attention L'ordre des affectations
+Sans la variable `c`, l'écriture `a = b` puis `b = a + b` est fausse : `a` a déjà pris sa nouvelle valeur.
+
+```python
+a = 0
+b = 1
+for k in range(6):
+    print(a, end=" ")
+    a = b
+    b = a + b
+```
+
+```console
+0 1 2 4 8 16
+```
+
+Ce programme affiche les puissances de $2$, pas la suite de Fibonacci.
+:::
+
+::: resultat
+$F_0$ à $F_{10}$ : $0$, $1$, $1$, $2$, $3$, $5$, $8$, $13$, $21$, $34$, $55$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. a) `s = 0` puis `s = s + (2 * k + 1)` pour `k` dans `range(50)` : $S = 2500$. b) $50 \times \dfrac{1 + 99}{2} = 2500$.
+2. a) $12! = 479\,001\,600$. b) Boucle `while p <= 10**9` : $n = 13$, car $13! = 6\,227\,020\,800$.
+3. $0$, $1$, $1$, $2$, $3$, $5$, $8$, $13$, $21$, $34$, $55$ (avec une variable intermédiaire `c`).
+
+===
+
+
+=== Entraînement - Algorithme de seuil d'une suite
+Id: 1060
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Une ville compte $20\,000$ habitants le 1er janvier 2025. Chaque année, sa population augmente de $3\,\%$ et $400$ nouveaux habitants s'installent. On note $u_n$ la population le 1er janvier de l'année $2025 + n$ : $u_0 = 20\,000$ et $u_{n+1} = 1{,}03\,u_n + 400$.
+
+[IMAGE_1]
+
+1. Calculer $u_1$ et $u_2$.
+2. Montrer que la suite $(u_n)$ est croissante.
+3. Compléter la fonction suivante pour qu'elle renvoie le plus petit rang $n$ tel que $u_n \gt A$.
+
+```python
+def seuil(A):
+    n = 0
+    u = 20000
+    while …:
+        u = …
+        n = n + 1
+    return n
+```
+
+4. L'appel `seuil(30000)` renvoie $9$. En quelle année la population dépassera-t-elle $30\,000$ habitants ? Vérifier en calculant $u_8$ et $u_9$.
+5. En quelle année la population aura-t-elle doublé par rapport à 2025 ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer $u_1$ et $u_2$
+
+::: methode
+Augmenter de $3\,\%$ revient à multiplier par $1{,}03$ ; on ajoute ensuite les $400$ nouveaux habitants.
+:::
+
+::: etape Calculs
+$$
+\begin{aligned}
+u_1 &= 1{,}03 \times 20\,000 + 400 = 21\,000 \\
+u_2 &= 1{,}03 \times 21\,000 + 400 = 22\,030
+\end{aligned}
+$$
+:::
+
+::: resultat
+$u_1 = 21\,000$ et $u_2 = 22\,030$.
+:::
+
+## Question 2 : Sens de variation
+
+::: methode
+On étudie le signe de $u_{n+1} - u_n$.
+:::
+
+::: etape Différence de deux termes consécutifs
+$$
+\begin{aligned}
+u_{n+1} - u_n &= 1{,}03\,u_n + 400 - u_n \\
+&= 0{,}03\,u_n + 400
+\end{aligned}
+$$
+
+Tous les termes sont positifs (on part de $20\,000$, on multiplie par $1{,}03$ et on ajoute $400$), donc $0{,}03\,u_n + 400 \gt 0$.
+:::
+
+::: resultat
+Pour tout $n$, $u_{n+1} - u_n \gt 0$ : la suite $(u_n)$ est croissante.
+:::
+
+## Question 3 : Compléter l'algorithme de seuil
+
+::: methode
+On veut s'arrêter dès que $u \gt A$ : on répète donc **tant que** $u \le A$, en calculant à chaque tour le terme suivant.
+:::
+
+::: etape Fonction complète
+```python
+def seuil(A):
+    n = 0
+    u = 20000
+    while u <= A:
+        u = 1.03 * u + 400
+        n = n + 1
+    return n
+
+print(seuil(30000))
+```
+
+```console
+9
+```
+:::
+
+::: attention
+La condition du `while` est le **contraire** de la condition cherchée. Avec `while u > A:`, la boucle ne ferait aucun tour (car $20\,000 \le 30\,000$) et la fonction renverrait $0$.
+:::
+
+::: resultat
+Les trous sont `u <= A` et `u = 1.03 * u + 400`.
+:::
+
+## Question 4 : Interpréter le résultat
+
+::: methode
+Le rang $n = 9$ correspond à l'année $2025 + 9$ ; on vérifie que $u_8 \le 30\,000 \lt u_9$.
+:::
+
+::: etape Les termes $u_8$ et $u_9$
+```python
+u = 20000
+for n in range(1, 10):
+    u = 1.03 * u + 400
+    if n >= 8:
+        print(n, round(u, 2))
+```
+
+```console
+8 28892.34
+9 30159.11
+```
+:::
+
+[IMAGE_2]
+
+::: resultat
+$u_8 \approx 28\,892 \le 30\,000$ et $u_9 \approx 30\,159 \gt 30\,000$ : la population dépassera $30\,000$ habitants en $2025 + 9 = 2034$.
+:::
+
+## Question 5 : Doublement de la population
+
+::: methode
+La population a doublé quand elle dépasse $2 \times 20\,000 = 40\,000$ : on réutilise la fonction avec $A = 40\,000$.
+:::
+
+::: etape Appel de la fonction
+```python
+print(seuil(40000))
+```
+
+```console
+16
+```
+:::
+
+::: resultat
+La population aura doublé en $2025 + 16 = 2041$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $u_1 = 21\,000$ et $u_2 = 22\,030$.
+2. $u_{n+1} - u_n = 0{,}03\,u_n + 400 \gt 0$ : la suite est croissante.
+3. `while u <= A:` et `u = 1.03 * u + 400`.
+4. $u_8 \approx 28\,892$ et $u_9 \approx 30\,159$ : la population dépassera $30\,000$ habitants en 2034.
+5. `seuil(40000)` renvoie $16$ : la population aura doublé en 2041.
+
+===
+
+
+=== Problème - Une suite qui ne dépasse jamais un seuil
+Id: 1061
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+On considère la suite $(u_n)$ définie par $u_0 = 1$ et $u_{n+1} = 0{,}8\,u_n + 3$, et la fonction Python suivante.
+
+```python
+def seuil(A):
+    n = 0
+    u = 1
+    while u <= A:
+        u = 0.8 * u + 3
+        n = n + 1
+    return n
+```
+
+Le graphique donne les termes $u_0$ à $u_{20}$.
+
+[IMAGE_1]
+
+1. Calculer $u_1$ et $u_2$.
+2. Que renvoie l'appel `seuil(14)` ? Interpréter ce résultat.
+3. On pose $v_n = u_n - 15$. Montrer que $(v_n)$ est géométrique, puis que $u_n = 15 - 14 \times 0{,}8^n$.
+4. Expliquer pourquoi l'appel `seuil(16)` ne se termine jamais. Pour quelles valeurs de $A$ l'appel `seuil(A)` se termine-t-il ?
+5. Modifier la fonction pour qu'elle fasse au plus $1000$ tours et renvoie `None` si le seuil n'est pas dépassé.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Calculer $u_1$ et $u_2$
+
+::: methode
+On applique la relation de récurrence avec $n = 0$ puis $n = 1$.
+:::
+
+::: etape Calculs
+$$
+\begin{aligned}
+u_1 &= 0{,}8 \times 1 + 3 = 3{,}8 \\
+u_2 &= 0{,}8 \times 3{,}8 + 3 = 6{,}04
+\end{aligned}
+$$
+:::
+
+::: resultat
+$u_1 = 3{,}8$ et $u_2 = 6{,}04$.
+:::
+
+## Question 2 : L'appel `seuil(14)`
+
+::: methode
+La boucle s'arrête au premier rang $n$ tel que $u_n \gt 14$ : la fonction renvoie ce rang.
+:::
+
+::: etape Exécution
+```python
+def seuil(A):
+    n = 0
+    u = 1
+    while u <= A:
+        u = 0.8 * u + 3
+        n = n + 1
+    return n
+
+print(seuil(14))
+```
+
+```console
+12
+```
+:::
+
+::: etape Vérification avec la formule de la question 3
+$u_{11} = 15 - 14 \times 0{,}8^{11} \approx 13{,}80 \le 14$ et $u_{12} = 15 - 14 \times 0{,}8^{12} \approx 14{,}04 \gt 14$.
+:::
+
+::: resultat
+`seuil(14)` renvoie $12$ : $u_{12}$ est le premier terme strictement supérieur à $14$.
+:::
+
+## Question 3 : Une suite géométrique auxiliaire
+
+::: methode
+On exprime $v_{n+1}$ en fonction de $v_n$, puis on revient à $u_n = v_n + 15$.
+:::
+
+::: etape $(v_n)$ est géométrique
+$$
+\begin{aligned}
+v_{n+1} &= u_{n+1} - 15 \\
+&= 0{,}8\,u_n + 3 - 15 \\
+&= 0{,}8\,u_n - 12 \\
+&= 0{,}8\,(u_n - 15) \\
+&= 0{,}8\,v_n
+\end{aligned}
+$$
+
+$(v_n)$ est géométrique de raison $0{,}8$ et de premier terme $v_0 = 1 - 15 = -14$.
+:::
+
+::: etape Expression de $u_n$
+$$v_n = -14 \times 0{,}8^n$$
+
+donc
+
+$$u_n = 15 - 14 \times 0{,}8^n$$
+:::
+
+::: resultat
+Pour tout entier naturel $n$, $u_n = 15 - 14 \times 0{,}8^n$.
+:::
+
+## Question 4 : Quand la boucle s'arrête-t-elle ?
+
+::: methode
+La boucle ne s'arrête que si la condition `u <= A` devient fausse, c'est-à-dire si un terme dépasse $A$.
+:::
+
+::: etape Le cas $A = 16$
+Pour tout $n$, $14 \times 0{,}8^n \gt 0$, donc $u_n = 15 - 14 \times 0{,}8^n \lt 15$. Ainsi $u_n \lt 16$ : la condition `u <= 16` reste toujours vraie et la boucle est infinie.
+:::
+
+[IMAGE_2]
+
+::: etape Le cas général
+- Si $A \ge 15$ : tous les termes sont inférieurs à $15$, donc à $A$ ; la boucle est infinie.
+- Si $A \lt 15$ : $u_n \gt A$ équivaut à $14 \times 0{,}8^n \lt 15 - A$. Comme $0{,}8^n$ devient aussi proche de $0$ que l'on veut (on l'admet), cette inégalité finit par être vraie : la boucle s'arrête.
+:::
+
+::: attention
+Un graphique ou un tableau de valeurs ne suffit pas : les termes « semblent » pouvoir dépasser $15$. Seule la formule $u_n = 15 - 14 \times 0{,}8^n$ prouve que $15$ n'est jamais atteint.
+:::
+
+::: resultat
+`seuil(16)` ne se termine pas car $u_n \lt 15$ pour tout $n$. L'appel `seuil(A)` se termine si et seulement si $A \lt 15$.
+:::
+
+## Question 5 : Un garde-fou
+
+::: methode
+On ajoute à la condition du `while` une limite sur le nombre de tours, puis on teste à la sortie si le seuil a bien été dépassé.
+:::
+
+::: etape Programme et affichage
+```python
+def seuil(A):
+    n = 0
+    u = 1
+    while u <= A and n < 1000:
+        u = 0.8 * u + 3
+        n = n + 1
+    if u > A:
+        return n
+    return None
+
+print(seuil(14))
+print(seuil(16))
+```
+
+```console
+12
+None
+```
+:::
+
+::: resultat
+Avec la condition `u <= A and n < 1000`, la fonction s'arrête toujours : elle renvoie $12$ pour $A = 14$ et `None` pour $A = 16$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $u_1 = 3{,}8$ et $u_2 = 6{,}04$.
+2. `seuil(14)` renvoie $12$ : $u_{12} \approx 14{,}04$ est le premier terme supérieur à $14$.
+3. $v_{n+1} = 0{,}8\,v_n$ et $v_0 = -14$, donc $u_n = 15 - 14 \times 0{,}8^n$.
+4. $u_n \lt 15 \lt 16$ pour tout $n$ : la boucle est infinie. `seuil(A)` se termine si et seulement si $A \lt 15$.
+5. Condition `while u <= A and n < 1000:`, puis `return n` si `u > A`, sinon `return None`.
+
+===
+
+
+=== Entraînement - Simuler la succession de deux épreuves
+Id: 1062
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On lance un dé équilibré. Si l'on obtient $6$, on tire une boule dans l'urne $A$, qui contient $3$ boules rouges et $1$ verte ; sinon, on tire une boule dans l'urne $B$, qui contient $1$ boule rouge et $3$ vertes. On note $S$ l'événement « obtenir $6$ » et $R$ l'événement « la boule est rouge ».
+
+[IMAGE_1]
+
+1. Compléter l'arbre et calculer $P(R)$.
+2. On considère la fonction suivante. Expliquer pourquoi elle simule l'expérience.
+
+```python
+from random import randint
+from random import random
+
+def experience():
+    d = randint(1, 6)
+    if d == 6:
+        p = 3 / 4
+    else:
+        p = 1 / 4
+    if random() < p:
+        return d, "R"
+    return d, "V"
+```
+
+3. Écrire un programme qui calcule la fréquence des boules rouges sur $10\,000$ expériences. Comparer avec $P(R)$.
+4. Calculer $P_R(S)$, puis l'estimer par simulation.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Arbre et probabilité de $R$
+
+::: methode
+La première épreuve (le dé) donne les branches $S$ et $\overline{S}$ ; la seconde (le tirage) dépend de l'urne choisie. On applique la formule des probabilités totales.
+:::
+
+::: etape Arbre complété
+[IMAGE_2]
+:::
+
+::: etape Probabilités totales
+$$
+\begin{aligned}
+P(R) &= P(S \cap R) + P(\overline{S} \cap R) \\
+&= \frac{1}{6} \times \frac{3}{4} + \frac{5}{6} \times \frac{1}{4} \\
+&= \frac{3}{24} + \frac{5}{24} \\
+&= \frac{1}{3}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$$P(R) = \frac{1}{3} \approx 0{,}333$$
+:::
+
+## Question 2 : Lire la fonction `experience`
+
+::: methode
+On suit les deux épreuves dans l'ordre : le dé, puis le tirage dans l'urne choisie.
+:::
+
+::: etape Première épreuve
+`randint(1, 6)` renvoie un entier de $1$ à $6$, chacun avec la probabilité $\dfrac{1}{6}$ : c'est le lancer du dé.
+:::
+
+::: etape Seconde épreuve
+Selon le dé, `p` vaut la probabilité de tirer une boule rouge dans l'urne choisie : $\dfrac{3}{4}$ pour l'urne $A$, $\dfrac{1}{4}$ pour l'urne $B$. Le test `random() < p` est vrai avec la probabilité $p$ : il simule le tirage.
+:::
+
+::: resultat
+La fonction renvoie le résultat du dé et la couleur de la boule, avec les probabilités de l'arbre.
+:::
+
+## Question 3 : Fréquence des boules rouges
+
+::: methode
+On répète l'expérience avec une boucle `for` et on compte les boules rouges.
+:::
+
+::: etape Programme et affichage
+```python
+from random import randint
+from random import random
+
+def experience():
+    d = randint(1, 6)
+    if d == 6:
+        p = 3 / 4
+    else:
+        p = 1 / 4
+    if random() < p:
+        return d, "R"
+    return d, "V"
+
+def frequence_rouge(N):
+    c = 0
+    for i in range(N):
+        d, b = experience()
+        if b == "R":
+            c = c + 1
+    return c / N
+
+print(frequence_rouge(10000))
+```
+
+```console
+0.3385
+```
+
+L'instruction `d, b = experience()` récupère les deux valeurs renvoyées par la fonction. Le résultat change à chaque exécution.
+:::
+
+::: resultat
+La fréquence observée, $0{,}3385$ ici, est proche de $P(R) = \dfrac{1}{3}$.
+:::
+
+## Question 4 : Probabilité conditionnelle $P_R(S)$
+
+::: methode
+$P_R(S) = \dfrac{P(S \cap R)}{P(R)}$ ; pour l'estimer, on ne garde que les expériences où la boule est rouge, et on y compte celles où le dé a donné $6$.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+P_R(S) &= \frac{P(S \cap R)}{P(R)} \\
+&= \frac{1}{8} \times 3 = \frac{3}{8} = 0{,}375
+\end{aligned}
+$$
+:::
+
+::: etape Simulation
+```python
+nR = 0
+nSR = 0
+for i in range(10000):
+    d, b = experience()
+    if b == "R":
+        nR = nR + 1
+        if d == 6:
+            nSR = nSR + 1
+print(round(nSR / nR, 4))
+```
+
+```console
+0.3748
+```
+:::
+
+::: attention
+Il ne faut pas diviser par $10\,000$ : on obtiendrait une estimation de $P(S \cap R) = \dfrac{1}{8}$, et non de $P_R(S)$.
+:::
+
+::: resultat
+$P_R(S) = \dfrac{3}{8} = 0{,}375$ ; la simulation donne une fréquence proche ($0{,}3748$ ici).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $P(R) = \dfrac{1}{6} \times \dfrac{3}{4} + \dfrac{5}{6} \times \dfrac{1}{4} = \dfrac{1}{3}$.
+2. `randint(1, 6)` simule le dé ; `random() < p` réalise « rouge » avec la probabilité $p$ de l'urne choisie.
+3. Compteur des boules rouges divisé par $10\,000$ : une fréquence proche de $\dfrac{1}{3}$.
+4. $P_R(S) = \dfrac{3}{8} = 0{,}375$ ; on divise le nombre de « $6$ et rouge » par le nombre de « rouge ».
+
+===
+
+
+=== Entraînement - Tableau de valeurs et balayage
+Id: 4950
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On considère la fonction $f$ définie sur $\mathbb{R}$ par $f(x) = -x^2 + 6x - 4$.
+
+1. Écrire un programme qui affiche un tableau de valeurs de $f$ pour $x$ entier de $0$ à $6$.
+2. En déduire deux intervalles d'amplitude $1$ contenant chacun une solution de $f(x) = 0$. Justifier à l'aide des variations de $f$.
+3. Écrire une fonction de balayage qui donne un encadrement d'amplitude $0{,}01$ de la plus grande solution.
+4. Résoudre $f(x) = 0$ de façon exacte et contrôler le résultat de la question 3.
+5. Adapter le balayage pour encadrer la plus petite solution.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Tableau de valeurs
+
+::: methode
+On définit $f$ par une fonction Python, puis une boucle `for` parcourt les entiers de $0$ à $6$ : `range(7)`.
+:::
+
+::: etape Programme et affichage
+```python
+def f(x):
+    return -x**2 + 6*x - 4
+
+for x in range(7):
+    print(x, f(x))
+```
+
+```console
+0 -4
+1 1
+2 4
+3 5
+4 4
+5 1
+6 -4
+```
+:::
+
+::: attention
+`-x**2` calcule $-(x^2)$, car la puissance est prioritaire : c'est bien $-x^2$.
+:::
+
+::: resultat
+Les images de $0$, $1$, …, $6$ sont $-4$, $1$, $4$, $5$, $4$, $1$, $-4$.
+:::
+
+## Question 2 : Localiser les solutions
+
+::: methode
+On repère les changements de signe dans le tableau, puis on utilise le sens de variation de $f$ pour montrer qu'il n'y a qu'une solution dans chaque intervalle.
+:::
+
+::: etape Variations
+$a = -1 \lt 0$ et le sommet a pour abscisse $-\dfrac{b}{2a} = \dfrac{-6}{-2} = 3$ : $f$ est strictement croissante sur $]-\infty\,;3]$ et strictement décroissante sur $[3\,;+\infty[$, de maximum $f(3) = 5$.
+:::
+
+::: etape Changements de signe
+- $f(0) = -4 \lt 0$ et $f(1) = 1 \gt 0$, et $f$ est croissante sur $[0\,;1]$ ;
+- $f(5) = 1 \gt 0$ et $f(6) = -4 \lt 0$, et $f$ est décroissante sur $[5\,;6]$.
+:::
+
+[IMAGE_1]
+
+::: resultat
+Une solution est dans $]0\,;1[$, l'autre dans $]5\,;6[$.
+:::
+
+## Question 3 : Balayage de pas $0{,}01$
+
+::: methode
+Sur $[5\,;6]$, $f$ est décroissante et $f(5) \gt 0$ : on avance de $0{,}01$ en $0{,}01$ **tant que** $f$ reste positive.
+:::
+
+::: etape Programme et affichage
+```python
+def balayage(a, pas):
+    x = a
+    while f(x + pas) > 0:
+        x = x + pas
+    x = round(x, 6)
+    return x, round(x + pas, 6)
+
+print(balayage(5, 0.01))
+```
+
+```console
+(5.23, 5.24)
+```
+
+`round(…, 6)` efface les erreurs d'arrondi des nombres décimaux en machine.
+:::
+
+::: resultat
+La plus grande solution vérifie $5{,}23 \lt x \lt 5{,}24$.
+:::
+
+## Question 4 : Résolution exacte
+
+::: methode
+On calcule le discriminant de $-x^2 + 6x - 4$.
+:::
+
+::: etape Discriminant et solutions
+$$
+\begin{aligned}
+\Delta &= 6^2 - 4 \times (-1) \times (-4) \\
+&= 36 - 16 = 20 \\
+x_1 &= \frac{-6 + \sqrt{20}}{-2} = 3 - \sqrt{5} \\
+x_2 &= \frac{-6 - \sqrt{20}}{-2} = 3 + \sqrt{5}
+\end{aligned}
+$$
+:::
+
+::: resultat
+Les solutions sont $3 - \sqrt{5} \approx 0{,}7639$ et $3 + \sqrt{5} \approx 5{,}2361$ ; on a bien $5{,}23 \lt 3 + \sqrt{5} \lt 5{,}24$.
+:::
+
+## Question 5 : La plus petite solution
+
+::: methode
+Sur $[0\,;1]$, $f$ est **croissante** et $f(0) \lt 0$ : on avance tant que $f$ reste **négative**. Seule la condition du `while` change.
+:::
+
+::: etape Programme et affichage
+```python
+def balayage2(a, pas):
+    x = a
+    while f(x + pas) < 0:
+        x = x + pas
+    x = round(x, 6)
+    return x, round(x + pas, 6)
+
+print(balayage2(0, 0.01))
+```
+
+```console
+(0.76, 0.77)
+```
+:::
+
+::: attention
+Avec la condition `f(x + pas) > 0` en partant de $0$, la boucle ne ferait aucun tour, car $f(0{,}01) \lt 0$ : la fonction renverrait $(0\,;0{,}01)$, ce qui est faux.
+:::
+
+::: resultat
+La plus petite solution vérifie $0{,}76 \lt x \lt 0{,}77$, en accord avec $3 - \sqrt{5} \approx 0{,}7639$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Images de $0$ à $6$ : $-4$, $1$, $4$, $5$, $4$, $1$, $-4$.
+2. Changements de signe et monotonie : une solution dans $]0\,;1[$, une dans $]5\,;6[$.
+3. `balayage(5, 0.01)` donne $(5{,}23\,;5{,}24)$.
+4. $\Delta = 20$ : $x = 3 - \sqrt{5}$ ou $x = 3 + \sqrt{5} \approx 5{,}2361$.
+5. Condition `f(x + pas) < 0` : $0{,}76 \lt 3 - \sqrt{5} \lt 0{,}77$.
+
+===
+
+
+=== Découverte - Coefficients directeurs des sécantes
+Id: 4951
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+On considère la fonction cube $f(x) = x^3$, le point $A(1\,;1)$ de sa courbe et, pour $h \ne 0$, le point $M$ de la courbe d'abscisse $1 + h$.
+
+[IMAGE_1]
+
+1. Montrer que le coefficient directeur de la sécante $(AM)$ vaut $3 + 3h + h^2$.
+2. Écrire un programme qui affiche ce coefficient directeur pour $h = 0{,}1$, $h = 0{,}01$ et $h = 0{,}001$. Quelle valeur de $f'(1)$ peut-on conjecturer ? La vérifier.
+3. Pour le pas $h = 0{,}01$, écrire un programme qui affiche la liste des coefficients directeurs des sécantes entre $x$ et $x + h$ pour $x = 0$ ; $0{,}5$ ; $1$ ; $1{,}5$. Comparer avec $f'(x)$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Coefficient directeur de $(AM)$
+
+::: methode
+Le coefficient directeur de la droite passant par $A(1\,;f(1))$ et $M(1 + h\,;f(1 + h))$ est le taux de variation $\dfrac{f(1 + h) - f(1)}{h}$.
+:::
+
+::: etape Développement
+$$
+\begin{aligned}
+\frac{f(1 + h) - f(1)}{h} &= \frac{(1 + h)^3 - 1}{h} \\
+&= \frac{1 + 3h + 3h^2 + h^3 - 1}{h} \\
+&= \frac{h(3 + 3h + h^2)}{h} \\
+&= 3 + 3h + h^2
+\end{aligned}
+$$
+:::
+
+[IMAGE_2]
+
+::: resultat
+Le coefficient directeur de $(AM)$ vaut $3 + 3h + h^2$.
+:::
+
+## Question 2 : Des sécantes de plus en plus proches de la tangente
+
+::: methode
+On calcule le taux de variation pour des valeurs de $h$ de plus en plus petites ; la valeur limite est le nombre dérivé $f'(1)$.
+:::
+
+::: etape Programme et affichage
+```python
+def f(x):
+    return x**3
+
+for h in [0.1, 0.01, 0.001]:
+    t = (f(1 + h) - f(1)) / h
+    print(h, round(t, 6))
+```
+
+```console
+0.1 3.31
+0.01 3.0301
+0.001 3.003001
+```
+
+On retrouve $3 + 3h + h^2$ : par exemple $3 + 0{,}3 + 0{,}01 = 3{,}31$ pour $h = 0{,}1$.
+:::
+
+::: etape Vérification
+La dérivée de $x \mapsto x^3$ est $x \mapsto 3x^2$, donc $f'(1) = 3 \times 1^2 = 3$.
+:::
+
+::: resultat
+Les coefficients directeurs se rapprochent de $3$ : on conjecture $f'(1) = 3$, ce que confirme $f'(x) = 3x^2$.
+:::
+
+## Question 3 : Liste des coefficients directeurs pour le pas $h = 0{,}01$
+
+::: methode
+Pour un pas fixé, on calcule $\dfrac{f(x + h) - f(x)}{h}$ pour chaque valeur de $x$ ; ici $x = \dfrac{k}{2}$ pour $k$ allant de $0$ à $3$.
+:::
+
+::: etape Programme et affichage
+```python
+h = 0.01
+for k in range(4):
+    x = k / 2
+    t = (f(x + h) - f(x)) / h
+    print(x, round(t, 4))
+```
+
+```console
+0.0 0.0001
+0.5 0.7651
+1.0 3.0301
+1.5 6.7951
+```
+:::
+
+::: etape Comparaison avec $f'(x) = 3x^2$
+| $x$ | coefficient directeur | $f'(x) = 3x^2$ |
+|---|---|---|
+| $0$ | $0{,}0001$ | $0$ |
+| $0{,}5$ | $0{,}7651$ | $0{,}75$ |
+| $1$ | $3{,}0301$ | $3$ |
+| $1{,}5$ | $6{,}7951$ | $6{,}75$ |
+:::
+
+::: resultat
+Avec le pas $0{,}01$, chaque coefficient directeur est proche de $f'(x) = 3x^2$ (écart inférieur à $0{,}05$).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\dfrac{(1 + h)^3 - 1}{h} = 3 + 3h + h^2$.
+2. Affichage : $3{,}31$ ; $3{,}0301$ ; $3{,}003001$. On conjecture $f'(1) = 3$, et en effet $f'(x) = 3x^2$.
+3. $0{,}0001$ ; $0{,}7651$ ; $3{,}0301$ ; $6{,}7951$, proches de $0$ ; $0{,}75$ ; $3$ ; $6{,}75$.
+
+===
+
+
+=== Problème - Méthode d'Euler et fonction exponentielle
+Id: 4952
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+La fonction exponentielle est l'unique fonction $f$ dérivable sur $\mathbb{R}$ telle que $f' = f$ et $f(0) = 1$. On en construit des valeurs approchées par la méthode d'Euler.
+
+1. Justifier que, pour $h$ proche de $0$, $f(x + h) \approx (1 + h)\,f(x)$.
+2. On prend $h = 0{,}5$. On pose $x_0 = 0$, $y_0 = 1$ et $x_{k+1} = x_k + h$, $y_{k+1} = (1 + h)\,y_k$. Calculer $y_1$, $y_2$, $y_3$ et $y_4$.
+3. Écrire une fonction `euler(h, n)` qui affiche les $n$ points $(x_k\,;y_k)$ suivant le point de départ, et contrôler la question 2.
+4. Exprimer $y_k$ en fonction de $h$ et $k$. En déduire qu'avec $n$ pas de longueur $h = \dfrac{1}{n}$, on obtient $\left(1 + \dfrac{1}{n}\right)^n$ comme valeur approchée de $e$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : L'approximation d'Euler
+
+::: methode
+On utilise l'approximation affine d'une fonction dérivable : $f(x + h) \approx f(x) + h\,f'(x)$ pour $h$ proche de $0$.
+:::
+
+::: etape Avec $f' = f$
+$$
+\begin{aligned}
+f(x + h) &\approx f(x) + h\,f'(x) \\
+&\approx f(x) + h\,f(x) \\
+&\approx (1 + h)\,f(x)
+\end{aligned}
+$$
+:::
+
+::: resultat
+Pour $h$ proche de $0$, $f(x + h) \approx (1 + h)\,f(x)$ : avancer de $h$ revient à multiplier par $1 + h$.
+:::
+
+## Question 2 : Calcul à la main avec $h = 0{,}5$
+
+::: methode
+À chaque pas, on multiplie l'ordonnée par $1 + h = 1{,}5$.
+:::
+
+::: etape Calculs
+$$
+\begin{aligned}
+y_1 &= 1{,}5 \times 1 = 1{,}5 \\
+y_2 &= 1{,}5 \times 1{,}5 = 2{,}25 \\
+y_3 &= 1{,}5 \times 2{,}25 = 3{,}375 \\
+y_4 &= 1{,}5 \times 3{,}375 = 5{,}0625
+\end{aligned}
+$$
+:::
+
+::: resultat
+Aux abscisses $0{,}5$ ; $1$ ; $1{,}5$ ; $2$, on obtient $y_1 = 1{,}5$, $y_2 = 2{,}25$, $y_3 = 3{,}375$ et $y_4 = 5{,}0625$.
+:::
+
+## Question 3 : La fonction `euler`
+
+::: methode
+Une boucle `for` de $n$ tours : à chaque tour, on avance de $h$ en abscisse et on remplace $y$ par $y + h\,y$.
+:::
+
+::: etape Programme et affichage
+```python
+def euler(h, n):
+    x = 0
+    y = 1
+    for k in range(n):
+        x = x + h
+        y = y + h * y
+        print(x, y)
+
+euler(0.5, 4)
+```
+
+```console
+0.5 1.5
+1.0 2.25
+1.5 3.375
+2.0 5.0625
+```
+:::
+
+::: etape Comparaison avec la courbe
+[IMAGE_1]
+
+Les points sont sous la courbe : par exemple $y_4 = 5{,}0625$ alors que $e^2 \approx 7{,}389$. Avec un pas plus petit, la ligne brisée se rapproche de la courbe.
+:::
+
+::: resultat
+`euler(0.5, 4)` affiche les points $(0{,}5\,;1{,}5)$, $(1\,;2{,}25)$, $(1{,}5\,;3{,}375)$ et $(2\,;5{,}0625)$, comme à la question 2.
+:::
+
+## Question 4 : Valeur approchée de $e$
+
+::: methode
+La suite $(y_k)$ est géométrique ; on l'utilise avec $h = \dfrac{1}{n}$ et $k = n$.
+:::
+
+::: etape Expression de $y_k$
+$y_{k+1} = (1 + h)\,y_k$ et $y_0 = 1$ : $(y_k)$ est géométrique de raison $1 + h$, donc $y_k = (1 + h)^k$.
+:::
+
+::: etape Le cas $h = \frac{1}{n}$
+Après $n$ pas de longueur $\dfrac{1}{n}$, on arrive à l'abscisse $n \times \dfrac{1}{n} = 1$, et
+
+$$y_n = \left(1 + \frac{1}{n}\right)^n \approx f(1) = e$$
+:::
+
+::: etape Contrôle numérique
+```python
+for n in [10, 100, 1000]:
+    print(n, (1 + 1/n)**n)
+```
+
+```console
+10 2.5937424601000023
+100 2.7048138294215285
+1000 2.7169239322355936
+```
+
+Les valeurs se rapprochent de $e \approx 2{,}71828$.
+:::
+
+::: resultat
+$y_k = (1 + h)^k$ ; avec $h = \dfrac{1}{n}$, la méthode d'Euler donne $\left(1 + \dfrac{1}{n}\right)^n$ comme valeur approchée de $e$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $f(x + h) \approx f(x) + h\,f'(x) = (1 + h)\,f(x)$ car $f' = f$.
+2. $y_1 = 1{,}5$ ; $y_2 = 2{,}25$ ; $y_3 = 3{,}375$ ; $y_4 = 5{,}0625$.
+3. Boucle de $n$ tours avec `x = x + h` et `y = y + h * y` ; `euler(0.5, 4)` retrouve ces valeurs.
+4. $y_k = (1 + h)^k$ ; pour $h = \dfrac{1}{n}$, $y_n = \left(1 + \dfrac{1}{n}\right)^n \approx e$.
+
+===
+
+
+=== Entraînement - Valeur approchée du nombre e
+Id: 4953
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Pour tout entier $n \ge 1$, on pose $u_n = \left(1 + \dfrac{1}{n}\right)^n$. On admet que la suite $(u_n)$ est croissante et que ses termes se rapprochent du nombre $e = \exp(1)$ en lui restant inférieurs.
+
+1. Calculer $u_1$, $u_2$ et $u_3$ (valeur exacte, puis arrondi au millième).
+2. Écrire un programme qui affiche $u_1$ à $u_5$ arrondis à $10^{-4}$.
+3. Écrire un programme qui détermine le plus petit entier $n$ tel que $e - u_n \lt 0{,}01$. On utilisera `exp(1)` du module `math`.
+4. Un élève écrit `1 + 1/n**n` à la place de `(1 + 1/n)**n` dans la condition du `while`. Expliquer pourquoi son programme ne s'arrête jamais.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Premiers termes
+
+::: methode
+On remplace $n$ par $1$, $2$ puis $3$ dans $\left(1 + \dfrac{1}{n}\right)^n$.
+:::
+
+::: etape Calculs
+$$
+\begin{aligned}
+u_1 &= (1 + 1)^1 = 2 \\
+u_2 &= \left(\frac{3}{2}\right)^2 = \frac{9}{4} = 2{,}25 \\
+u_3 &= \left(\frac{4}{3}\right)^3 = \frac{64}{27} \approx 2{,}370
+\end{aligned}
+$$
+:::
+
+::: resultat
+$u_1 = 2$, $u_2 = 2{,}25$ et $u_3 = \dfrac{64}{27} \approx 2{,}370$.
+:::
+
+## Question 2 : Afficher les premiers termes
+
+::: methode
+Une boucle `for` sur $n$ de $1$ à $5$, donc `range(1, 6)`.
+:::
+
+::: etape Programme et affichage
+```python
+for n in range(1, 6):
+    u = (1 + 1/n)**n
+    print(n, round(u, 4))
+```
+
+```console
+1 2.0
+2 2.25
+3 2.3704
+4 2.4414
+5 2.4883
+```
+:::
+
+::: resultat
+$u_4 \approx 2{,}4414$ et $u_5 \approx 2{,}4883$ : les termes augmentent lentement.
+:::
+
+## Question 3 : Algorithme de seuil
+
+::: methode
+On ne connaît pas le nombre de tours : boucle `while`. On veut $e - u_n \lt 0{,}01$, donc on continue **tant que** $e - u_n \ge 0{,}01$.
+:::
+
+::: etape Programme et affichage
+```python
+from math import exp
+
+e = exp(1)
+n = 1
+while e - (1 + 1/n)**n >= 0.01:
+    n = n + 1
+print(n)
+```
+
+```console
+135
+```
+:::
+
+::: etape Vérification
+```python
+print(e - (1 + 1/134)**134)
+print(e - (1 + 1/135)**135)
+```
+
+```console
+0.010073948233316532
+0.009999829387658643
+```
+
+Pour $n = 134$, l'écart vaut environ $0{,}01007 \ge 0{,}01$ ; pour $n = 135$, il vaut environ $0{,}0099998 \lt 0{,}01$.
+:::
+
+::: resultat
+Le plus petit entier cherché est $n = 135$ : $u_{135}$ est une valeur approchée de $e$ par défaut à $0{,}01$ près.
+:::
+
+## Question 4 : Une erreur de parenthèses
+
+::: methode
+On regarde ce que calcule vraiment l'expression `1 + 1/n**n` : la puissance est prioritaire sur la division et l'addition.
+:::
+
+::: etape Ce que calcule l'élève
+`1 + 1/n**n` vaut $1 + \dfrac{1}{n^n}$, et non $\left(1 + \dfrac{1}{n}\right)^n$. Pour $n \ge 1$, $1 + \dfrac{1}{n^n} \le 2$, donc
+
+$$
+\begin{aligned}
+e - \left(1 + \frac{1}{n^n}\right) &\ge e - 2 \\
+&\approx 0{,}718
+\end{aligned}
+$$
+:::
+
+::: resultat
+La condition reste toujours vraie : la boucle est infinie. Il faut écrire `(1 + 1/n)**n`.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $u_1 = 2$ ; $u_2 = 2{,}25$ ; $u_3 = \dfrac{64}{27} \approx 2{,}370$.
+2. Boucle `for n in range(1, 6)` : $2$ ; $2{,}25$ ; $2{,}3704$ ; $2{,}4414$ ; $2{,}4883$.
+3. Boucle `while` tant que $e - u_n \ge 0{,}01$ : $n = 135$.
+4. `1 + 1/n**n` $\le 2$, donc l'écart reste supérieur à $0{,}7$ : la boucle ne s'arrête jamais.
+
+===
+
+
+=== Entraînement - Simuler un jeu : fréquence et moyenne d'un échantillon
+Id: 4954
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Une roue de loterie fait gagner $8$ € avec la probabilité $0{,}1$, $2$ € avec la probabilité $0{,}3$, et fait perdre $2$ € dans les autres cas. On note $G$ le gain algébrique d'une partie.
+
+```python
+from random import random
+
+def gain():
+    a = random()
+    if a < 0.1:
+        return 8
+    elif a < 0.4:
+        return 2
+    else:
+        return -2
+```
+
+1. Donner la loi de $G$ et calculer $E(G)$.
+2. Expliquer pourquoi la fonction `gain()` simule une partie.
+3. Écrire une fonction `frequence(N)` qui renvoie la fréquence des parties gagnantes ($G \gt 0$) sur $N$ parties. Quelle valeur attend-on pour $N$ grand ?
+4. Écrire une fonction `moyenne(n)` qui renvoie la moyenne des gains d'un échantillon de $n$ parties. Comparer avec $E(G)$ les moyennes de trois échantillons de taille $100$, puis d'un échantillon de taille $10\,000$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Loi et espérance de $G$
+
+::: methode
+La probabilité de perdre est le complément à $1$ des deux autres.
+:::
+
+::: etape Loi de $G$
+$P(G = -2) = 1 - 0{,}1 - 0{,}3 = 0{,}6$.
+
+| $g$ | $-2$ | $2$ | $8$ |
+|---|---|---|---|
+| $P(G = g)$ | $0{,}6$ | $0{,}3$ | $0{,}1$ |
+:::
+
+::: etape Espérance
+$$
+\begin{aligned}
+E(G) &= -2 \times 0{,}6 + 2 \times 0{,}3 + 8 \times 0{,}1 \\
+&= -1{,}2 + 0{,}6 + 0{,}8 \\
+&= 0{,}2
+\end{aligned}
+$$
+:::
+
+::: resultat
+$E(G) = 0{,}2$ : en moyenne, le joueur gagne $0{,}20$ € par partie.
+:::
+
+## Question 2 : Pourquoi `gain()` simule une partie
+
+::: methode
+`random()` renvoie un réel au hasard dans $[0\,;1[$ : la probabilité qu'il tombe dans un intervalle est la longueur de cet intervalle.
+:::
+
+::: etape Les trois intervalles
+- $[0\,;0{,}1[$, de longueur $0{,}1$ : gain de $8$ € ;
+- $[0{,}1\,;0{,}4[$, de longueur $0{,}3$ : gain de $2$ € (le cas `a < 0.1` a déjà été traité) ;
+- $[0{,}4\,;1[$, de longueur $0{,}6$ : perte de $2$ €.
+:::
+
+::: resultat
+Les longueurs des intervalles sont les probabilités de la loi de $G$ : la fonction simule bien une partie.
+:::
+
+## Question 3 : Fréquence des parties gagnantes
+
+::: methode
+On répète $N$ parties et on compte celles où le gain est strictement positif.
+:::
+
+::: etape Programme et affichage
+```python
+from random import random
+
+def gain():
+    a = random()
+    if a < 0.1:
+        return 8
+    elif a < 0.4:
+        return 2
+    else:
+        return -2
+
+def frequence(N):
+    c = 0
+    for i in range(N):
+        if gain() > 0:
+            c = c + 1
+    return c / N
+
+print(frequence(10000))
+```
+
+```console
+0.4052
+```
+:::
+
+::: resultat
+$P(G \gt 0) = 0{,}1 + 0{,}3 = 0{,}4$ : pour $N$ grand, on attend une fréquence proche de $0{,}4$.
+:::
+
+## Question 4 : Moyenne d'un échantillon
+
+::: methode
+On ajoute les gains de $n$ parties dans un accumulateur, puis on divise par $n$.
+:::
+
+::: etape Programme et affichage
+```python
+def moyenne(n):
+    s = 0
+    for i in range(n):
+        s = s + gain()
+    return s / n
+
+for k in range(3):
+    print(moyenne(100))
+print(moyenne(10000))
+```
+
+```console
+0.2
+0.52
+0.38
+0.2196
+```
+:::
+
+::: attention
+Une moyenne calculée sur $100$ parties peut être assez loin de $E(G)$ ; elle change d'une exécution à l'autre.
+:::
+
+::: resultat
+Les trois échantillons de taille $100$ donnent $0{,}2$ ; $0{,}52$ ; $0{,}38$ : ces moyennes fluctuent beaucoup. Pour $n = 10\,000$, la moyenne $0{,}2196$ est proche de $E(G) = 0{,}2$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $P(G = -2) = 0{,}6$, $P(G = 2) = 0{,}3$, $P(G = 8) = 0{,}1$ ; $E(G) = 0{,}2$.
+2. Les intervalles $[0\,;0{,}1[$, $[0{,}1\,;0{,}4[$ et $[0{,}4\,;1[$ ont pour longueurs $0{,}1$, $0{,}3$ et $0{,}6$.
+3. Compteur des parties où `gain() > 0`, divisé par $N$ : fréquence proche de $0{,}4$.
+4. Accumulateur des gains divisé par $n$ : proche de $0{,}2$ pour $n = 10\,000$, plus dispersé pour $n = 100$.
+
+===
+
+
+=== Problème - Approximation de pi par la méthode d'Archimède
+Id: 4955
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Sur un cercle de centre $O$ et de rayon $1$, on place les $n$ sommets d'un polygone régulier. On note $c_n$ la longueur d'un côté et $p_n = \dfrac{n\,c_n}{2}$ le demi-périmètre. Sur la figure, $A$ et $B$ sont deux sommets consécutifs, $I$ est le milieu de $[AB]$ et $C$ le point du cercle sur la demi-droite $[OI)$.
+
+[IMAGE_1]
+
+1. Justifier que $c_6 = 1$ et $p_6 = 3$.
+2. Montrer que $OI = \dfrac{\sqrt{4 - c_n^2}}{2}$, puis que $AC^2 = 2 - \sqrt{4 - c_n^2}$. Que représente $AC$ ?
+3. Expliquer pourquoi $p_n \lt \pi$.
+4. Écrire un programme qui part de l'hexagone et double le nombre de côtés **tant que** $p_n \le 3{,}14$. Combien de côtés faut-il ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : L'hexagone
+
+::: methode
+On regarde le triangle formé par le centre et deux sommets consécutifs.
+:::
+
+::: etape Un triangle équilatéral
+L'angle au centre vaut $\dfrac{360°}{6} = 60°$ et $OA = OB = 1$ : le triangle $OAB$ est isocèle avec un angle de $60°$, il est donc équilatéral. Ainsi $c_6 = AB = 1$.
+:::
+
+::: etape Demi-périmètre
+$$p_6 = \frac{6 \times 1}{2} = 3$$
+:::
+
+::: resultat
+$c_6 = 1$ et $p_6 = 3$.
+:::
+
+## Question 2 : Du polygone à $n$ côtés au polygone à $2n$ côtés
+
+::: methode
+Le point $C$ est au milieu de l'arc $AB$ : $[AC]$ est un côté du polygone à $2n$ côtés. On applique deux fois le théorème de Pythagore.
+:::
+
+::: etape Le triangle $OIA$, rectangle en $I$
+La médiatrice de $[AB]$ passe par $O$, donc $(OI) \perp (AB)$ et $AI = \dfrac{c_n}{2}$ :
+
+$$
+\begin{aligned}
+OI^2 &= OA^2 - AI^2 \\
+&= 1 - \frac{c_n^2}{4} = \frac{4 - c_n^2}{4}
+\end{aligned}
+$$
+
+donc $OI = \dfrac{\sqrt{4 - c_n^2}}{2}$.
+:::
+
+[IMAGE_2]
+
+::: etape Le triangle $AIC$, rectangle en $I$
+$IC = OC - OI = 1 - OI$, donc
+
+$$
+\begin{aligned}
+AC^2 &= AI^2 + IC^2 \\
+&= \frac{c_n^2}{4} + 1 - 2\,OI + OI^2 \\
+&= \frac{c_n^2}{4} + 1 - \sqrt{4 - c_n^2} + \frac{4 - c_n^2}{4} \\
+&= 2 - \sqrt{4 - c_n^2}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$AC = c_{2n}$ est le côté du polygone à $2n$ côtés, et $c_{2n} = \sqrt{2 - \sqrt{4 - c_n^2}}$.
+:::
+
+## Question 3 : Pourquoi $p_n \lt \pi$
+
+::: methode
+On compare chaque côté du polygone avec l'arc de cercle qu'il sous-tend.
+:::
+
+::: etape Comparaison
+Chaque côté $[AB]$ est plus court que l'arc $AB$ (le segment est le plus court chemin). En ajoutant les $n$ côtés, le périmètre $n\,c_n$ est inférieur à la longueur du cercle, $2\pi$.
+:::
+
+::: resultat
+$n\,c_n \lt 2\pi$, donc $p_n = \dfrac{n\,c_n}{2} \lt \pi$ : on obtient des valeurs approchées de $\pi$ par défaut.
+:::
+
+## Question 4 : Nombre de côtés pour dépasser $3{,}14$
+
+::: methode
+On ne sait pas combien de doublements faire : boucle `while`, avec la condition contraire $p \le 3{,}14$. À chaque tour, on applique la formule de la question 2 (en deux temps, avec `r` $= \sqrt{4 - c^2}$) et on double `n`.
+:::
+
+::: etape Programme et affichage
+```python
+from math import sqrt
+
+n = 6
+c = 1
+p = 3
+while p <= 3.14:
+    r = sqrt(4 - c**2)
+    c = sqrt(2 - r)
+    n = 2 * n
+    p = n * c / 2
+print(n, p)
+```
+
+```console
+96 3.14103195089053
+```
+:::
+
+::: etape Les étapes intermédiaires
+| $n$ | $p_n$ |
+|---|---|
+| $6$ | $3$ |
+| $12$ | $3{,}1058$ |
+| $24$ | $3{,}1326$ |
+| $48$ | $3{,}1394$ |
+| $96$ | $3{,}1410$ |
+
+$p_{48} \approx 3{,}1394 \le 3{,}14$ et $p_{96} \approx 3{,}1410 \gt 3{,}14$.
+:::
+
+::: resultat
+Il faut un polygone à $96$ côtés : $3{,}14 \lt p_{96} \lt \pi$, c'est le calcul d'Archimède.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $OAB$ est équilatéral (angle au centre de $60°$) : $c_6 = 1$ et $p_6 = 3$.
+2. Pythagore dans $OIA$ puis dans $AIC$ : $AC^2 = 2 - \sqrt{4 - c_n^2}$, et $AC = c_{2n}$.
+3. Chaque côté est plus court que son arc : $n\,c_n \lt 2\pi$, donc $p_n \lt \pi$.
+4. Boucle `while p <= 3.14` : il faut $96$ côtés, $p_{96} \approx 3{,}1410$.
+
+===

@@ -1,5 +1,6 @@
 # --- Frontend build artifacts ---
 frontend/dist/
+frontend/.ressources-local/
 
 # --- Frontend dependencies ---
 frontend/node_modules/
@@ -25,3 +26,27 @@ backend/secrets/
 google-tts-service-account*.json
 
 
+
+# --- Local secrets and database backups ---
+.env
+.env.*
+!.env.example
+!.env.sample
+backend/backup_bdd/
+
+# --- Generated course previews and compilation files ---
+frontend/cours/**/build/
+frontend/cours/**/*.log
+frontend/cours/**/*.aux
+frontend/cours/**/captures*/
+frontend/cours/**/relecture*/
+frontend/cours/**/relecture*.png
+frontend/cours/**/planches*/
+frontend/cours/**/apercu.html
+
+# --- Temporary local files ---
+/tmp_tab.txt
+/livre/tmp-*.png
+
+# --- Bibliotheque locale exclue du deploiement ---
+/livre/

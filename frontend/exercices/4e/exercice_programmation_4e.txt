@@ -1,0 +1,1913 @@
+=== Découverte - Programmation - 1. Lire un script de dessin
+Difficulté: easy
+Images: prog_4e_d1_script.png, prog_4e_d1_solution.png
+
+Énoncé: Voici un script. Au départ, le lutin est orienté vers la droite (orientation $\displaystyle 90$).
+[IMAGE_1]
+$\\$
+**Question 1 : Que se passe-t-il quand on clique sur le drapeau vert, avant la boucle ?**
+$\\$
+**Question 2 : Combien de fois les blocs « avancer » et « tourner » sont-ils exécutés ?**
+$\\$
+**Question 3 : Quelle figure le lutin dessine-t-il ? Préciser ses dimensions.**
+$\\$
+**Question 4 : Quelle longueur totale le lutin a-t-il tracée ?**
+$\\$
+**Question 5 : Comment modifier le script pour dessiner un triangle équilatéral de côté $\displaystyle 100$ ?**
+$\\$
+**Question 6 : Et pour dessiner un hexagone régulier de côté $\displaystyle 100$ ?**
+
+Étapes:
+
+**Question 1 : Avant la boucle**
+
+    ● **Étape 1 :** Les blocs s'exécutent dans l'ordre : on efface l'écran, on place le lutin en $\displaystyle (0 ; 0)$, on l'oriente vers la droite et on baisse le stylo.
+    $\\$
+
+    ● **Résultat :** Le lutin est prêt à dessiner, au centre de la scène, tourné vers la droite.
+    $\\$
+
+**Question 2 : Le nombre d'exécutions**
+
+    ● **Étape 1 :** Les deux blocs sont à l'intérieur de « répéter $\displaystyle 4$ fois ».
+    $\\$
+
+    ● **Résultat :** Chacun est exécuté $\displaystyle 4$ fois.
+    $\\$
+
+**Question 3 : La figure**
+
+    ● **Étape 1 :** $\displaystyle 4$ côtés de $\displaystyle 100$ pas, et à chaque fois un quart de tour ($\displaystyle 90°$) : les côtés sont égaux et perpendiculaires.
+    $\\$
+
+    ● **Résultat :** Un carré de côté $\displaystyle 100$ pas.
+    $\\$
+
+[IMAGE_2]
+
+**Question 4 : La longueur tracée**
+
+    ● **Étape 1 :** $\displaystyle 4 \times 100$
+    $\\$
+
+    ● **Résultat :** $\displaystyle 400$ pas (le périmètre du carré).
+    $\\$
+
+**Question 5 : Le triangle équilatéral**
+
+    ● **Méthode :** Pour un polygone régulier à $\displaystyle n$ côtés, on répète $\displaystyle n$ fois et on tourne de $\displaystyle \frac{360}{n}$ degrés.
+    $\\$
+
+    ● **Étape 1 :** $\displaystyle n = 3$ et $\displaystyle \frac{360}{3} = 120$.
+    $\\$
+
+    ● **Résultat :** « répéter $\displaystyle 3$ fois », avec « tourner de $\displaystyle 120$ degrés ».
+    $\\$
+
+    ● ⚠️ **Erreur fréquente :** Tourner de $\displaystyle 60°$ (l'angle du triangle) : le lutin doit tourner de l'angle extérieur, $\displaystyle 180° - 60° = 120°$.
+    $\\$
+
+**Question 6 : L'hexagone**
+
+    ● **Étape 1 :** $\displaystyle n = 6$ et $\displaystyle \frac{360}{6} = 60$.
+    $\\$
+
+    ● **Résultat :** « répéter $\displaystyle 6$ fois », avec « tourner de $\displaystyle 60$ degrés ».
+    $\\$
+
+    ● 💡 **À retenir :** Quel que soit le polygone régulier, le lutin fait en tout un tour complet : $\displaystyle n \times \frac{360}{n} = 360°$.
+
+Solution:
+1. Écran effacé, lutin en $\displaystyle (0 ; 0)$, stylo baissé
+$\\$
+2. $\displaystyle 4$ fois
+$\\$
+3. Carré de côté $\displaystyle 100$
+$\\$
+4. $\displaystyle 400$ pas
+$\\$
+5. $\displaystyle 3$ fois, $\displaystyle 120°$
+$\\$
+6. $\displaystyle 6$ fois, $\displaystyle 60°$
+
+===
+
+=== Découverte - Programmation - 2. Un programme de calcul
+Difficulté: easy
+Images: prog_4e_d2_script.png
+
+Énoncé: Voici un programme de calcul. Le symbole « $\displaystyle \ast$ » est celui de la multiplication en programmation.
+[IMAGE_1]
+$\\$
+**Question 1 : Quel nombre affiche le programme si l'on choisit $\displaystyle 4$ ?**
+$\\$
+**Question 2 : Et si l'on choisit $\displaystyle -2$ ?**
+$\\$
+**Question 3 : Et si l'on choisit $\displaystyle 0$ ?**
+$\\$
+**Question 4 : Exprimer le résultat en fonction du nombre $\displaystyle x$ choisi.**
+$\\$
+**Question 5 : Quel nombre faut-il choisir pour que le programme affiche $\displaystyle 10$ ?**
+$\\$
+**Question 6 : On remplace le bloc « mettre [y] à y $\displaystyle -$ 5 » par « ajouter $\displaystyle (-5)$ à [y] ». Le programme affiche-t-il la même chose ?**
+
+Étapes:
+
+**Question 1 : Avec 4**
+
+    ● **Étape 1 :** $\displaystyle x = 4$ ; $\displaystyle y = 4 \times 3 = 12$ ; puis $\displaystyle y = 12 - 5$.
+    $\\$
+
+    ● **Résultat :** Le programme affiche $\displaystyle 7$.
+    $\\$
+
+**Question 2 : Avec −2**
+
+    ● **Étape 1 :** $\displaystyle y = -2 \times 3 = -6$ ; puis $\displaystyle y = -6 - 5$.
+    $\\$
+
+    ● **Résultat :** Le programme affiche $\displaystyle -11$.
+    $\\$
+
+**Question 3 : Avec 0**
+
+    ● **Étape 1 :** $\displaystyle y = 0 \times 3 = 0$ ; puis $\displaystyle y = 0 - 5$.
+    $\\$
+
+    ● **Résultat :** Le programme affiche $\displaystyle -5$.
+    $\\$
+
+**Question 4 : L'expression**
+
+    ● **Étape 1 :** $\displaystyle y$ vaut d'abord $\displaystyle 3x$, puis on lui retire $\displaystyle 5$.
+    $\\$
+
+    ● **Résultat :** Le résultat est $\displaystyle 3x - 5$.
+    $\\$
+
+    ● 💡 **À retenir :** Un programme de calcul se traduit par une expression littérale : chaque bloc « mettre » correspond à une étape du calcul.
+    $\\$
+
+**Question 5 : Pour obtenir 10**
+
+    ● **Étape 1 :** On résout $\displaystyle 3x - 5 = 10$ : $\displaystyle 3x = 15$, donc $\displaystyle x = 5$.
+    $\\$
+
+    ● **Résultat :** Il faut choisir $\displaystyle 5$.
+    $\\$
+
+    ● 🔎 **Vérification :** $\displaystyle 5 \times 3 - 5 = 10$ ✔️
+    $\\$
+
+**Question 6 : Mettre ou ajouter**
+
+    ● **Étape 1 :** « mettre [y] à $\displaystyle y - 5$ » remplace $\displaystyle y$ par $\displaystyle y - 5$ ; « ajouter $\displaystyle (-5)$ à [y] » augmente $\displaystyle y$ de $\displaystyle -5$ : c'est pareil.
+    $\\$
+
+    ● **Résultat :** Oui, les deux versions affichent le même résultat.
+    $\\$
+
+    ● ⚠️ **Erreur fréquente :** Écrire « mettre [y] à $\displaystyle (-5)$ » : on remplacerait $\displaystyle y$ par $\displaystyle -5$ et le programme afficherait toujours $\displaystyle -5$.
+
+Solution:
+1. $\displaystyle 7$
+$\\$
+2. $\displaystyle -11$
+$\\$
+3. $\displaystyle -5$
+$\\$
+4. $\displaystyle 3x - 5$
+$\\$
+5. $\displaystyle 5$
+$\\$
+6. Oui
+
+===
+
+=== Découverte - Programmation - 3. Une boucle qui additionne
+Difficulté: easy
+Images: prog_4e_d3_script.png, prog_4e_d3_tableau.png
+
+Énoncé: On étudie le script suivant.
+[IMAGE_1]
+$\\$
+**Question 1 : Que valent « compteur » et « somme » à la fin du premier tour de boucle ?**
+$\\$
+**Question 2 : Et à la fin du deuxième tour ?**
+$\\$
+**Question 3 : Recopier et compléter un tableau donnant « compteur » et « somme » à la fin de chacun des $\displaystyle 5$ tours.**
+$\\$
+**Question 4 : Quel nombre le lutin affiche-t-il ?**
+$\\$
+**Question 5 : Que calcule ce programme ? Qu'afficherait-il avec « répéter $\displaystyle 10$ fois » ?**
+$\\$
+**Question 6 : Qu'afficherait-il avec « répéter $\displaystyle 100$ fois » ?**
+
+Étapes:
+
+**Question 1 : Premier tour**
+
+    ● **Étape 1 :** « ajouter $\displaystyle 1$ à compteur » : compteur passe de $\displaystyle 0$ à $\displaystyle 1$ ; puis « ajouter compteur à somme » : somme passe de $\displaystyle 0$ à $\displaystyle 1$.
+    $\\$
+
+    ● **Résultat :** compteur $\displaystyle = 1$ et somme $\displaystyle = 1$.
+    $\\$
+
+**Question 2 : Deuxième tour**
+
+    ● **Étape 1 :** compteur passe à $\displaystyle 2$ ; somme passe à $\displaystyle 1 + 2 = 3$.
+    $\\$
+
+    ● **Résultat :** compteur $\displaystyle = 2$ et somme $\displaystyle = 3$.
+    $\\$
+
+**Question 3 : Le tableau de suivi**
+
+    ● **Étape 1 :** À chaque tour : compteur augmente de $\displaystyle 1$, puis on l'ajoute à la somme.
+    $\\$
+
+    ● **Résultat :** compteur : $\displaystyle 1$, $\displaystyle 2$, $\displaystyle 3$, $\displaystyle 4$, $\displaystyle 5$ ; somme : $\displaystyle 1$, $\displaystyle 3$, $\displaystyle 6$, $\displaystyle 10$, $\displaystyle 15$.
+    $\\$
+
+[IMAGE_2]
+
+    ● 💡 **À retenir :** Le tableau de suivi est l'outil n°1 pour comprendre (ou déboguer) une boucle.
+    $\\$
+
+**Question 4 : L'affichage**
+
+    ● **Étape 1 :** À la fin du dernier tour, somme $\displaystyle = 15$.
+    $\\$
+
+    ● **Résultat :** Le lutin affiche $\displaystyle 15$.
+    $\\$
+
+**Question 5 : Ce que calcule le programme**
+
+    ● **Étape 1 :** somme $\displaystyle = 1 + 2 + 3 + 4 + 5$ ; avec $\displaystyle 10$ tours : $\displaystyle 1 + 2 + \ldots + 10 = 55$.
+    $\\$
+
+    ● **Résultat :** Il calcule la somme des entiers de $\displaystyle 1$ à $\displaystyle n$ ; avec $\displaystyle 10$ tours il affiche $\displaystyle 55$.
+    $\\$
+
+**Question 6 : Avec 100 tours**
+
+    ● **Étape 1 :** Astuce de Gauss : on regroupe $\displaystyle 1 + 100$, $\displaystyle 2 + 99$, … soit $\displaystyle 50$ paires valant $\displaystyle 101$.
+    $\\$
+
+    ● **Résultat :** $\displaystyle 50 \times 101 = 5\,050$
+
+Solution:
+1. $\displaystyle 1$ et $\displaystyle 1$
+$\\$
+2. $\displaystyle 2$ et $\displaystyle 3$
+$\\$
+3. somme : $\displaystyle 1$ ; $\displaystyle 3$ ; $\displaystyle 6$ ; $\displaystyle 10$ ; $\displaystyle 15$
+$\\$
+4. $\displaystyle 15$
+$\\$
+5. $\displaystyle 1 + 2 + \ldots + n$ ; $\displaystyle 55$
+$\\$
+6. $\displaystyle 5\,050$
+
+===
+
+=== Découverte - Programmation - 4. Une condition
+Difficulté: easy
+Images: prog_4e_d4_script.png
+
+Énoncé: Voici un script qui utilise une condition.
+[IMAGE_1]
+$\\$
+**Question 1 : Qu'affiche le lutin si l'on répond $\displaystyle 15$ ?**
+$\\$
+**Question 2 : Et si l'on répond $\displaystyle 18$ ?**
+$\\$
+**Question 3 : Et si l'on répond $\displaystyle 17$ ? Expliquer.**
+$\\$
+**Question 4 : Par quelle autre condition, utilisant le nombre $\displaystyle 18$, pourrait-on remplacer « réponse $\displaystyle > 17$ » (pour des âges entiers) ?**
+$\\$
+**Question 5 : On écrit la condition « réponse $\displaystyle < 18$ ». Comment faut-il réorganiser les messages ?**
+$\\$
+**Question 6 : On veut aussi afficher « Tarif senior » à partir de $\displaystyle 65$ ans. Où ajouter une nouvelle condition ?**
+
+Étapes:
+
+**Question 1 : Réponse 15**
+
+    ● **Étape 1 :** $\displaystyle 15 > 17$ est faux : on exécute la partie « sinon ».
+    $\\$
+
+    ● **Résultat :** « Tu es mineur. »
+    $\\$
+
+**Question 2 : Réponse 18**
+
+    ● **Étape 1 :** $\displaystyle 18 > 17$ est vrai : on exécute la partie « alors ».
+    $\\$
+
+    ● **Résultat :** « Tu es majeur. »
+    $\\$
+
+**Question 3 : Réponse 17**
+
+    ● **Étape 1 :** $\displaystyle 17 > 17$ est faux (l'inégalité est stricte).
+    $\\$
+
+    ● **Résultat :** « Tu es mineur. » : c'est correct, à $\displaystyle 17$ ans on est mineur.
+    $\\$
+
+    ● ⚠️ **Erreur fréquente :** Lire « $\displaystyle >$ » comme « supérieur ou égal » : $\displaystyle 17$ n'est pas strictement supérieur à $\displaystyle 17$.
+    $\\$
+
+**Question 4 : Une condition équivalente**
+
+    ● **Étape 1 :** Pour des nombres entiers, « être strictement plus grand que $\displaystyle 17$ » revient à « être au moins égal à $\displaystyle 18$ ».
+    $\\$
+
+    ● **Résultat :** « réponse $\displaystyle \geqslant 18$ », que l'on écrit en blocs « non ⟨réponse $\displaystyle < 18$⟩ » ou « ⟨réponse $\displaystyle = 18$⟩ ou ⟨réponse $\displaystyle > 18$⟩ ».
+    $\\$
+
+**Question 5 : La condition inverse**
+
+    ● **Étape 1 :** Si la condition « réponse $\displaystyle < 18$ » est vraie, la personne est mineure.
+    $\\$
+
+    ● **Résultat :** Il faut échanger les messages : « Tu es mineur. » dans « alors » et « Tu es majeur. » dans « sinon ».
+    $\\$
+
+**Question 6 : Le tarif senior**
+
+    ● **Étape 1 :** On ne teste $\displaystyle 65$ ans que pour les majeurs : on place un nouveau « si ⟨réponse $\displaystyle > 64$⟩ alors … sinon … » dans la partie « alors ».
+    $\\$
+
+    ● **Résultat :** Dans la partie « alors » : si réponse $\displaystyle > 64$, dire « Tarif senior », sinon dire « Tu es majeur. ».
+    $\\$
+
+    ● 💡 **À retenir :** Des conditions placées les unes dans les autres permettent de distinguer plus de deux cas.
+
+Solution:
+1. Tu es mineur.
+$\\$
+2. Tu es majeur.
+$\\$
+3. Tu es mineur.
+$\\$
+4. réponse $\displaystyle \geqslant 18$
+$\\$
+5. On échange les deux messages
+$\\$
+6. Condition imbriquée dans « alors »
+
+===
+
+=== Découverte - Programmation - 5. Se déplacer dans un repère
+Difficulté: easy
+Images: prog_4e_d5_script.png, prog_4e_d5_solution.png
+
+Énoncé: Sur la scène, chaque point est repéré par ses coordonnées $\displaystyle (x ; y)$. On exécute le script suivant.
+[IMAGE_1]
+$\\$
+**Question 1 : Quels sont les trois points par lesquels passe le lutin ? On les nomme $\displaystyle A$, $\displaystyle C$, $\displaystyle B$ dans l'ordre de passage après le départ.**
+$\\$
+**Question 2 : Quelle figure est dessinée ?**
+$\\$
+**Question 3 : Calculer la longueur $\displaystyle AB$.**
+$\\$
+**Question 4 : Avec le théorème de Pythagore, calculer $\displaystyle AC$ au dixième.**
+$\\$
+**Question 5 : Démontrer que le triangle $\displaystyle ABC$ est rectangle et isocèle en $\displaystyle C$.**
+$\\$
+**Question 6 : Calculer l'aire du triangle $\displaystyle ABC$.**
+
+Étapes:
+
+**Question 1 : Les trois points**
+
+    ● **Étape 1 :** Le lutin part de $\displaystyle (-100 ; 0)$, va en $\displaystyle (0 ; 100)$, puis en $\displaystyle (100 ; 0)$ et revient en $\displaystyle (-100 ; 0)$.
+    $\\$
+
+    ● **Résultat :** $\displaystyle A(-100 ; 0)$, $\displaystyle C(0 ; 100)$ et $\displaystyle B(100 ; 0)$.
+    $\\$
+
+**Question 2 : La figure**
+
+    ● **Étape 1 :** Le stylo est baissé après le placement en $\displaystyle A$ : on trace $\displaystyle [AC]$, $\displaystyle [CB]$ puis $\displaystyle [BA]$.
+    $\\$
+
+    ● **Résultat :** Le triangle $\displaystyle ABC$.
+    $\\$
+
+[IMAGE_2]
+
+**Question 3 : La longueur AB**
+
+    ● **Étape 1 :** $\displaystyle A$ et $\displaystyle B$ ont la même ordonnée : $\displaystyle AB = 100 - (-100)$.
+    $\\$
+
+    ● **Résultat :** $\displaystyle AB = 200$ pas
+    $\\$
+
+**Question 4 : La longueur AC**
+
+    ● **Étape 1 :** De $\displaystyle A$ à $\displaystyle C$ : $\displaystyle 100$ pas vers la droite et $\displaystyle 100$ pas vers le haut, donc $\displaystyle AC^2 = 100^2 + 100^2 = 20\,000$.
+    $\\$
+
+    ● **Résultat :** $\displaystyle AC = \sqrt{20\,000} \approx 141{,}4$ pas
+    $\\$
+
+**Question 5 : Rectangle et isocèle**
+
+    ● **Étape 1 :** Par symétrie, $\displaystyle BC = AC \approx 141{,}4$ : le triangle est isocèle en $\displaystyle C$.
+    $\\$
+
+    ● **Étape 2 :** $\displaystyle AC^2 + BC^2 = 20\,000 + 20\,000 = 40\,000 = 200^2 = AB^2$.
+    $\\$
+
+    ● **Résultat :** D'après la réciproque du théorème de Pythagore, $\displaystyle ABC$ est rectangle en $\displaystyle C$ ; il est donc rectangle isocèle en $\displaystyle C$.
+    $\\$
+
+**Question 6 : L'aire**
+
+    ● **Étape 1 :** Base $\displaystyle AB = 200$, hauteur issue de $\displaystyle C$ : $\displaystyle 100$ ; $\displaystyle \frac{200 \times 100}{2}$.
+    $\\$
+
+    ● **Résultat :** $\displaystyle 10\,000$ pas²
+    $\\$
+
+    ● 💡 **À retenir :** La scène est un repère : coordonnées, Pythagore et aires s'y appliquent comme en géométrie.
+
+Solution:
+1. $\displaystyle A(-100 ; 0)$, $\displaystyle C(0 ; 100)$, $\displaystyle B(100 ; 0)$
+$\\$
+2. Le triangle $\displaystyle ABC$
+$\\$
+3. $\displaystyle 200$
+$\\$
+4. $\displaystyle \approx 141{,}4$
+$\\$
+5. $\displaystyle AC^2 + BC^2 = AB^2$ et $\displaystyle AC = BC$
+$\\$
+6. $\displaystyle 10\,000$
+
+===
+
+=== Découverte - Programmation - 6. Répéter jusqu'à
+Difficulté: easy
+Images: prog_4e_d6_script.png, prog_4e_d6_tableau.png
+
+Énoncé: On étudie le script suivant (« $\displaystyle \ast$ » signifie « multiplié par »).
+[IMAGE_1]
+$\\$
+**Question 1 : Que vaut $\displaystyle n$ après le premier tour de boucle ? Après le deuxième ?**
+$\\$
+**Question 2 : Compléter un tableau de suivi de $\displaystyle n$ et « étapes » jusqu'à l'arrêt.**
+$\\$
+**Question 3 : Quelle valeur le lutin affiche-t-il ? Combien de tours ont été effectués ?**
+$\\$
+**Question 4 : On remplace la condition par « $\displaystyle n > 1\,000$ ». Que se passe-t-il ?**
+$\\$
+**Question 5 : Quelle différence y a-t-il entre « répéter $\displaystyle 7$ fois » et « répéter jusqu'à » ?**
+$\\$
+**Question 6 : Que se passerait-il si l'on oubliait le bloc « mettre [n] à n $\displaystyle \ast$ 2 » ?**
+
+Étapes:
+
+**Question 1 : Les premiers tours**
+
+    ● **Étape 1 :** $\displaystyle n$ part de $\displaystyle 1$ et est multiplié par $\displaystyle 2$ à chaque tour.
+    $\\$
+
+    ● **Résultat :** $\displaystyle n = 2$ après le premier tour, $\displaystyle n = 4$ après le deuxième.
+    $\\$
+
+**Question 2 : Le tableau de suivi**
+
+    ● **Étape 1 :** $\displaystyle n$ : $\displaystyle 1 \to 2 \to 4 \to 8 \to 16 \to 32 \to 64 \to 128$.
+    $\\$
+
+    ● **Résultat :** Après $\displaystyle 7$ tours, $\displaystyle n = 128 > 100$ : la boucle s'arrête.
+    $\\$
+
+[IMAGE_2]
+
+**Question 3 : L'affichage**
+
+    ● **Étape 1 :** La condition « $\displaystyle n > 100$ » est fausse pour $\displaystyle 64$ et vraie pour $\displaystyle 128$.
+    $\\$
+
+    ● **Résultat :** Le lutin affiche $\displaystyle 128$, après $\displaystyle 7$ tours.
+    $\\$
+
+**Question 4 : Avec 1 000**
+
+    ● **Étape 1 :** On continue : $\displaystyle 256$, $\displaystyle 512$, $\displaystyle 1\,024$.
+    $\\$
+
+    ● **Résultat :** Le lutin affiche $\displaystyle 1\,024$, après $\displaystyle 10$ tours.
+    $\\$
+
+**Question 5 : Les deux boucles**
+
+    ● **Étape 1 :** Ici, on ne connaît pas à l'avance le nombre de doublements nécessaires pour dépasser $\displaystyle 100$ : « répéter jusqu'à » est adapté.
+    $\\$
+
+    ● **Résultat :** « répéter $\displaystyle 7$ fois » fait toujours $\displaystyle 7$ tours ; « répéter jusqu'à » s'arrête quand la condition devient vraie, le nombre de tours dépend des calculs.
+    $\\$
+
+**Question 6 : L'oubli**
+
+    ● **Étape 1 :** $\displaystyle n$ resterait égal à $\displaystyle 1$, et « $\displaystyle 1 > 100$ » serait toujours faux.
+    $\\$
+
+    ● **Résultat :** La boucle ne s'arrêterait jamais : c'est une boucle infinie.
+    $\\$
+
+    ● ⚠️ **Erreur fréquente :** Oublier de modifier, dans la boucle, la variable testée par la condition.
+    $\\$
+
+    ● 💡 **À retenir :** Dans une boucle « répéter jusqu'à », il faut qu'au moins un bloc fasse évoluer la condition.
+
+Solution:
+1. $\displaystyle 2$ puis $\displaystyle 4$
+$\\$
+2. $\displaystyle 2$, $\displaystyle 4$, $\displaystyle 8$, $\displaystyle 16$, $\displaystyle 32$, $\displaystyle 64$, $\displaystyle 128$
+$\\$
+3. $\displaystyle 128$ ; $\displaystyle 7$ tours
+$\\$
+4. $\displaystyle 1\,024$ ; $\displaystyle 10$ tours
+$\\$
+5. Nombre fixe / arrêt par condition
+$\\$
+6. Boucle infinie
+
+===
+
+=== Découverte - Programmation - 7. Vrai ou faux
+Difficulté: easy
+Images: prog_4e_d7_script.png
+
+Énoncé: Dire si chaque affirmation est vraie ou fausse, en justifiant. Les trois premières concernent le script ci-dessous.
+[IMAGE_1]
+$\\$
+**Question 1 : « Ce script dessine un triangle équilatéral de côté $\displaystyle 100$. »**
+$\\$
+**Question 2 : « Le bloc « avancer » est exécuté $\displaystyle 3$ fois. »**
+$\\$
+**Question 3 : « En remplaçant $\displaystyle 3$ par $\displaystyle 6$ et $\displaystyle 120$ par $\displaystyle 60$, on obtient un hexagone régulier. »**
+$\\$
+**Question 4 : « Une variable garde toujours la même valeur pendant tout le programme. »**
+$\\$
+**Question 5 : « Dans « répéter jusqu'à », la condition est testée avant chaque tour. »**
+$\\$
+**Question 6 : « Le bloc « mettre [x] à $\displaystyle 5$ » ajoute $\displaystyle 5$ à la valeur de $\displaystyle x$. »**
+
+Étapes:
+
+**Question 1 : Affirmation 1**
+
+    ● **Étape 1 :** $\displaystyle 3$ côtés de $\displaystyle 100$, en tournant de $\displaystyle \frac{360}{3} = 120°$ : les trois côtés sont égaux.
+    $\\$
+
+    ● **Résultat :** Vrai.
+    $\\$
+
+**Question 2 : Affirmation 2**
+
+    ● **Étape 1 :** Le bloc est dans « répéter $\displaystyle 3$ fois ».
+    $\\$
+
+    ● **Résultat :** Vrai.
+    $\\$
+
+**Question 3 : Affirmation 3**
+
+    ● **Étape 1 :** $\displaystyle \frac{360}{6} = 60$ : on tourne de $\displaystyle 60°$ six fois.
+    $\\$
+
+    ● **Résultat :** Vrai.
+    $\\$
+
+**Question 4 : Affirmation 4**
+
+    ● **Étape 1 :** Les blocs « mettre » et « ajouter » changent sa valeur.
+    $\\$
+
+    ● **Résultat :** Faux : une variable peut changer de valeur, c'est son intérêt.
+    $\\$
+
+**Question 5 : Affirmation 5**
+
+    ● **Étape 1 :** Si la condition est déjà vraie au départ, la boucle n'est pas exécutée du tout.
+    $\\$
+
+    ● **Résultat :** Vrai.
+    $\\$
+
+**Question 6 : Affirmation 6**
+
+    ● **Étape 1 :** « mettre » remplace la valeur ; c'est « ajouter » qui augmente.
+    $\\$
+
+    ● **Résultat :** Faux : après ce bloc, $\displaystyle x$ vaut $\displaystyle 5$, quelle que soit sa valeur avant.
+    $\\$
+
+    ● ⚠️ **Erreur fréquente :** Confondre « mettre » et « ajouter » : c'est l'erreur la plus fréquente avec les variables.
+    $\\$
+
+    ● 💡 **À retenir :** mettre = remplacer ; ajouter = augmenter (ou diminuer avec un nombre négatif).
+
+Solution:
+1. Vrai
+$\\$
+2. Vrai
+$\\$
+3. Vrai
+$\\$
+4. Faux
+$\\$
+5. Vrai
+$\\$
+6. Faux
+
+===
+
+=== Entraînement - Programmation - 1. Un bloc « polygone »
+Difficulté: medium
+Images: prog_4e_e1_script.png, prog_4e_e1_solution.png
+
+Énoncé: On a créé un bloc personnalisé « polygone » qui dépend de deux paramètres : le nombre $\displaystyle n$ de côtés et la longueur d'un côté.
+[IMAGE_1]
+$\\$
+**Question 1 : Que dessine le programme principal ? De quel angle le lutin tourne-t-il à chaque fois ?**
+$\\$
+**Question 2 : De quel angle tourne-t-il pour « polygone $\displaystyle (6)$ $\displaystyle (70)$ » ? Et pour « polygone $\displaystyle (8)$ $\displaystyle (55)$ » ?**
+$\\$
+**Question 3 : Calculer la longueur totale tracée par « polygone $\displaystyle (5)$ $\displaystyle (80)$ ».**
+$\\$
+**Question 4 : De combien de degrés le lutin a-t-il tourné en tout, quel que soit $\displaystyle n$ ?**
+$\\$
+**Question 5 : Que dessine « polygone $\displaystyle (36)$ $\displaystyle (10)$ » ? Quelle longueur est tracée ?**
+$\\$
+**Question 6 : Quelle est la mesure d'un angle intérieur du pentagone régulier ?**
+
+Étapes:
+
+**Question 1 : Le programme principal**
+
+    ● **Étape 1 :** « polygone $\displaystyle (5)$ $\displaystyle (80)$ » répète $\displaystyle 5$ fois « avancer de $\displaystyle 80$, tourner de $\displaystyle \frac{360}{5}$ ».
+    $\\$
+
+    ● **Résultat :** Un pentagone régulier de côté $\displaystyle 80$ ; le lutin tourne de $\displaystyle 72°$ à chaque fois.
+    $\\$
+
+**Question 2 : Hexagone et octogone**
+
+    ● **Étape 1 :** $\displaystyle \frac{360}{6} = 60$ et $\displaystyle \frac{360}{8} = 45$.
+    $\\$
+
+    ● **Résultat :** $\displaystyle 60°$ pour l'hexagone, $\displaystyle 45°$ pour l'octogone.
+    $\\$
+
+[IMAGE_2]
+
+**Question 3 : La longueur tracée**
+
+    ● **Étape 1 :** $\displaystyle 5 \times 80$
+    $\\$
+
+    ● **Résultat :** $\displaystyle 400$ pas.
+    $\\$
+
+**Question 4 : L'angle total**
+
+    ● **Étape 1 :** $\displaystyle n \times \frac{360}{n} = 360$
+    $\\$
+
+    ● **Résultat :** $\displaystyle 360°$ : le lutin a fait un tour complet et revient à son orientation de départ.
+    $\\$
+
+**Question 5 : Avec 36 côtés**
+
+    ● **Étape 1 :** $\displaystyle 36$ côtés de $\displaystyle 10$ pas, en tournant de $\displaystyle 10°$ : la figure ressemble à un cercle.
+    $\\$
+
+    ● **Résultat :** Un polygone à $\displaystyle 36$ côtés, presque un cercle ; longueur tracée $\displaystyle 36 \times 10 = 360$ pas.
+    $\\$
+
+**Question 6 : L'angle intérieur**
+
+    ● **Étape 1 :** Le lutin tourne de l'angle extérieur ($\displaystyle 72°$) ; l'angle intérieur est son supplémentaire.
+    $\\$
+
+    ● **Résultat :** $\displaystyle 180° - 72° = 108°$
+    $\\$
+
+    ● ⚠️ **Erreur fréquente :** Confondre l'angle dont tourne le lutin ($\displaystyle 72°$) avec l'angle du polygone ($\displaystyle 108°$).
+    $\\$
+
+    ● 💡 **À retenir :** Un bloc personnalisé évite de réécrire les mêmes blocs : on l'appelle avec des valeurs différentes.
+
+Solution:
+1. Pentagone ; $\displaystyle 72°$
+$\\$
+2. $\displaystyle 60°$ ; $\displaystyle 45°$
+$\\$
+3. $\displaystyle 400$
+$\\$
+4. $\displaystyle 360°$
+$\\$
+5. Presque un cercle ; $\displaystyle 360$ pas
+$\\$
+6. $\displaystyle 108°$
+
+===
+
+=== Entraînement - Programmation - 2. Une étoile
+Difficulté: medium
+Images: prog_4e_e2_script.png, prog_4e_e2_solution.png
+
+Énoncé: On exécute le script suivant.
+[IMAGE_1]
+$\\$
+**Question 1 : Quelle figure le lutin dessine-t-il ?**
+$\\$
+**Question 2 : De combien de degrés le lutin a-t-il tourné en tout ? Combien de tours complets cela représente-t-il ?**
+$\\$
+**Question 3 : Calculer la longueur totale tracée.**
+$\\$
+**Question 4 : Pourquoi le lutin revient-il exactement à son point de départ, dans la même orientation ?**
+$\\$
+**Question 5 : Que dessinerait le script avec « tourner de $\displaystyle 72$ degrés » ?**
+$\\$
+**Question 6 : Quelle est la mesure de l'angle aigu à chaque pointe de l'étoile ?**
+
+Étapes:
+
+**Question 1 : La figure**
+
+    ● **Étape 1 :** $\displaystyle 5$ segments de $\displaystyle 150$ pas, en tournant beaucoup ($\displaystyle 144°$) à chaque fois : les segments se croisent.
+    $\\$
+
+    ● **Résultat :** Une étoile à $\displaystyle 5$ branches.
+    $\\$
+
+[IMAGE_2]
+
+**Question 2 : L'angle total**
+
+    ● **Étape 1 :** $\displaystyle 5 \times 144 = 720$
+    $\\$
+
+    ● **Résultat :** $\displaystyle 720°$, soit $\displaystyle 2$ tours complets.
+    $\\$
+
+**Question 3 : La longueur tracée**
+
+    ● **Étape 1 :** $\displaystyle 5 \times 150$
+    $\\$
+
+    ● **Résultat :** $\displaystyle 750$ pas.
+    $\\$
+
+**Question 4 : Le retour au départ**
+
+    ● **Étape 1 :** $\displaystyle 720$ est un multiple de $\displaystyle 360$ : l'orientation finale est la même qu'au départ.
+    $\\$
+
+    ● **Résultat :** Après $\displaystyle 5$ segments, le lutin a fait exactement $\displaystyle 2$ tours sur lui-même : le tracé se referme.
+    $\\$
+
+    ● 💡 **À retenir :** Une figure « fermée » tracée par un lutin correspond toujours à un angle total multiple de $\displaystyle 360°$.
+    $\\$
+
+**Question 5 : Avec 72 degrés**
+
+    ● **Étape 1 :** $\displaystyle \frac{360}{5} = 72$
+    $\\$
+
+    ● **Résultat :** Un pentagone régulier de côté $\displaystyle 150$.
+    $\\$
+
+**Question 6 : L'angle des pointes**
+
+    ● **Étape 1 :** À chaque pointe, le lutin fait demi-tour de $\displaystyle 144°$ : l'angle de la pointe est $\displaystyle 180° - 144°$.
+    $\\$
+
+    ● **Résultat :** $\displaystyle 36°$
+    $\\$
+
+    ● ⚠️ **Erreur fréquente :** Répondre $\displaystyle 144°$ : c'est l'angle dont tourne le lutin, pas l'angle de la pointe.
+
+Solution:
+1. Étoile à $\displaystyle 5$ branches
+$\\$
+2. $\displaystyle 720°$ ; $\displaystyle 2$ tours
+$\\$
+3. $\displaystyle 750$
+$\\$
+4. $\displaystyle 720 = 2 \times 360$
+$\\$
+5. Pentagone régulier
+$\\$
+6. $\displaystyle 36°$
+
+===
+
+=== Entraînement - Programmation - 3. Une frise de carrés
+Difficulté: medium
+Images: prog_4e_e3_script.png, prog_4e_e3_solution.png
+
+Énoncé: Ce script utilise deux boucles, l'une dans l'autre.
+[IMAGE_1]
+$\\$
+**Question 1 : Combien de carrés le lutin dessine-t-il ? De quel côté ?**
+$\\$
+**Question 2 : Combien de fois le bloc « avancer de $\displaystyle 30$ pas » est-il exécuté en tout ?**
+$\\$
+**Question 3 : Calculer la longueur totale tracée par le stylo.**
+$\\$
+**Question 4 : Quelle est la distance entre deux carrés voisins ?**
+$\\$
+**Question 5 : Quelle est l'abscisse du lutin à la fin du programme ?**
+$\\$
+**Question 6 : Pourquoi faut-il « relever le stylo » avant « avancer de $\displaystyle 60$ pas » ?**
+
+Étapes:
+
+**Question 1 : Les carrés**
+
+    ● **Étape 1 :** La grande boucle est répétée $\displaystyle 6$ fois ; à chaque tour, la petite boucle dessine un carré de côté $\displaystyle 30$.
+    $\\$
+
+    ● **Résultat :** $\displaystyle 6$ carrés de côté $\displaystyle 30$ pas.
+    $\\$
+
+[IMAGE_2]
+
+**Question 2 : Le nombre d'exécutions**
+
+    ● **Étape 1 :** $\displaystyle 6$ tours de la grande boucle, et $\displaystyle 4$ tours de la petite à chaque fois : $\displaystyle 6 \times 4$.
+    $\\$
+
+    ● **Résultat :** $\displaystyle 24$ fois.
+    $\\$
+
+    ● ⚠️ **Erreur fréquente :** Additionner $\displaystyle 6 + 4 = 10$ : pour des boucles imbriquées, on multiplie les nombres de tours.
+    $\\$
+
+**Question 3 : La longueur tracée**
+
+    ● **Étape 1 :** $\displaystyle 24 \times 30$ (le déplacement de $\displaystyle 60$ pas se fait stylo relevé).
+    $\\$
+
+    ● **Résultat :** $\displaystyle 720$ pas.
+    $\\$
+
+**Question 4 : L'écart entre les carrés**
+
+    ● **Étape 1 :** Après un carré, le lutin est revenu à son point de départ, puis avance de $\displaystyle 60$ : le carré suivant commence $\displaystyle 60$ pas plus loin.
+    $\\$
+
+    ● **Résultat :** Les carrés commencent tous les $\displaystyle 60$ pas : il y a $\displaystyle 60 - 30 = 30$ pas d'espace entre deux carrés.
+    $\\$
+
+**Question 5 : L'abscisse finale**
+
+    ● **Étape 1 :** $\displaystyle -200 + 6 \times 60$
+    $\\$
+
+    ● **Résultat :** $\displaystyle x = 160$
+    $\\$
+
+**Question 6 : Relever le stylo**
+
+    ● **Étape 1 :** Le stylo est rebaissé au début de chaque tour, avant de dessiner le carré suivant.
+    $\\$
+
+    ● **Résultat :** Sinon, le lutin tracerait un trait entre les carrés.
+    $\\$
+
+    ● 💡 **À retenir :** Une boucle à l'intérieur d'une boucle : la boucle intérieure est entièrement exécutée à chaque tour de la boucle extérieure.
+
+Solution:
+1. $\displaystyle 6$ carrés de côté $\displaystyle 30$
+$\\$
+2. $\displaystyle 24$
+$\\$
+3. $\displaystyle 720$
+$\\$
+4. $\displaystyle 30$ pas d'espace
+$\\$
+5. $\displaystyle 160$
+$\\$
+6. Pour ne pas relier les carrés
+
+===
+
+=== Entraînement - Programmation - 4. Deux programmes de calcul
+Difficulté: medium
+Images: prog_4e_e4_scripts.png
+
+Énoncé: On compare deux programmes de calcul (« $\displaystyle \ast$ » signifie « multiplié par »).
+[IMAGE_1]
+$\\$
+**Question 1 : Qu'affiche le programme A si l'on choisit $\displaystyle 5$ ?**
+$\\$
+**Question 2 : Qu'affiche le programme B si l'on choisit $\displaystyle 5$ ?**
+$\\$
+**Question 3 : Comparer les deux programmes avec le nombre $\displaystyle -4$.**
+$\\$
+**Question 4 : Démontrer que les deux programmes affichent toujours le même résultat.**
+$\\$
+**Question 5 : Un programme C calcule $\displaystyle x \times x + 6$. Avec $\displaystyle 2$, affiche-t-il le même résultat que A ?**
+$\\$
+**Question 6 : Les programmes A et C sont-ils équivalents ?**
+
+Étapes:
+
+**Question 1 : A avec 5**
+
+    ● **Étape 1 :** $\displaystyle (5 + 3) \times 2 = 8 \times 2$
+    $\\$
+
+    ● **Résultat :** $\displaystyle 16$
+    $\\$
+
+**Question 2 : B avec 5**
+
+    ● **Étape 1 :** $\displaystyle 2 \times 5 + 6 = 10 + 6$
+    $\\$
+
+    ● **Résultat :** $\displaystyle 16$
+    $\\$
+
+**Question 3 : Avec −4**
+
+    ● **Étape 1 :** A : $\displaystyle (-4 + 3) \times 2 = -1 \times 2 = -2$ ; B : $\displaystyle 2 \times (-4) + 6 = -8 + 6 = -2$.
+    $\\$
+
+    ● **Résultat :** Les deux programmes affichent $\displaystyle -2$.
+    $\\$
+
+**Question 4 : La démonstration**
+
+    ● **Méthode :** On traduit chaque programme par une expression, puis on développe.
+    $\\$
+
+    ● **Étape 1 :** A : $\displaystyle (x + 3) \times 2 = 2x + 6$ (distributivité) ; B : $\displaystyle 2x + 6$.
+    $\\$
+
+    ● **Résultat :** Les deux expressions sont égales pour tout $\displaystyle x$ : les programmes sont équivalents.
+    $\\$
+
+    ● 💡 **À retenir :** Des tests ne prouvent rien en général ; seul le calcul littéral démontre l'égalité pour tous les nombres.
+    $\\$
+
+**Question 5 : Le programme C avec 2**
+
+    ● **Étape 1 :** C : $\displaystyle 2 \times 2 + 6 = 10$ ; A : $\displaystyle (2 + 3) \times 2 = 10$.
+    $\\$
+
+    ● **Résultat :** Oui, les deux affichent $\displaystyle 10$.
+    $\\$
+
+**Question 6 : A et C**
+
+    ● **Étape 1 :** Avec $\displaystyle 1$ : C donne $\displaystyle 1 \times 1 + 6 = 7$, A donne $\displaystyle (1 + 3) \times 2 = 8$.
+    $\\$
+
+    ● **Résultat :** Non : un seul contre-exemple suffit à montrer qu'ils ne sont pas équivalents.
+    $\\$
+
+    ● ⚠️ **Erreur fréquente :** Conclure qu'ils sont équivalents parce qu'ils coïncident pour une valeur ($\displaystyle 2$).
+
+Solution:
+1. $\displaystyle 16$
+$\\$
+2. $\displaystyle 16$
+$\\$
+3. $\displaystyle -2$ et $\displaystyle -2$
+$\\$
+4. $\displaystyle (x + 3) \times 2 = 2x + 6$
+$\\$
+5. Oui, $\displaystyle 10$
+$\\$
+6. Non (contre-exemple : $\displaystyle 1$)
+
+===
+
+=== Entraînement - Programmation - 5. Simuler un dé
+Difficulté: medium
+Images: prog_4e_e5_script.png
+
+Énoncé: Ce programme simule $\displaystyle 1\,000$ lancers d'un dé équilibré à six faces.
+[IMAGE_1]
+$\\$
+**Question 1 : Que fait le bloc « nombre aléatoire entre $\displaystyle 1$ et $\displaystyle 6$ » ?**
+$\\$
+**Question 2 : Que compte la variable « succès » ?**
+$\\$
+**Question 3 : Quelle est la probabilité d'obtenir $\displaystyle 6$ avec un dé équilibré ? Donner une valeur approchée au millième.**
+$\\$
+**Question 4 : Une exécution affiche $\displaystyle 0{,}172$. Pourquoi n'obtient-on pas exactement la probabilité ?**
+$\\$
+**Question 5 : Que peut-on attendre si l'on remplace $\displaystyle 1\,000$ par $\displaystyle 100\,000$ ?**
+$\\$
+**Question 6 : Comment modifier le programme pour simuler le lancer d'une pièce et compter les « pile » ?**
+
+Étapes:
+
+**Question 1 : Le nombre aléatoire**
+
+    ● **Étape 1 :** Chaque exécution du bloc correspond à un nouveau lancer.
+    $\\$
+
+    ● **Résultat :** Il donne au hasard un entier de $\displaystyle 1$ à $\displaystyle 6$, chacun ayant la même chance d'apparaître : il simule un lancer de dé.
+    $\\$
+
+**Question 2 : La variable succès**
+
+    ● **Étape 1 :** On ajoute $\displaystyle 1$ à « succès » seulement quand le nombre tiré est $\displaystyle 6$.
+    $\\$
+
+    ● **Résultat :** Elle compte le nombre de $\displaystyle 6$ obtenus en $\displaystyle 1\,000$ lancers.
+    $\\$
+
+**Question 3 : La probabilité**
+
+    ● **Étape 1 :** $\displaystyle 6$ issues équiprobables, une seule favorable : $\displaystyle \frac{1}{6}$.
+    $\\$
+
+    ● **Résultat :** $\displaystyle \frac{1}{6} \approx 0{,}167$
+    $\\$
+
+**Question 4 : La fréquence obtenue**
+
+    ● **Étape 1 :** « succès / 1 000 » est une fréquence : elle dépend des tirages au hasard.
+    $\\$
+
+    ● **Résultat :** La fréquence fluctue autour de la probabilité : $\displaystyle 0{,}172$ est proche de $\displaystyle 0{,}167$, l'écart est normal.
+    $\\$
+
+    ● ⚠️ **Erreur fréquente :** Penser que le dé ou le programme est « truqué » parce que la fréquence n'est pas exactement $\displaystyle \frac{1}{6}$.
+    $\\$
+
+**Question 5 : Avec 100 000 lancers**
+
+    ● **Étape 1 :** Plus le nombre de lancers est grand, plus la fréquence se stabilise.
+    $\\$
+
+    ● **Résultat :** La fréquence sera en général encore plus proche de $\displaystyle \frac{1}{6} \approx 0{,}167$.
+    $\\$
+
+    ● 💡 **À retenir :** C'est la loi des grands nombres : la simulation permet d'estimer une probabilité.
+    $\\$
+
+**Question 6 : La pièce**
+
+    ● **Étape 1 :** On tire un nombre entre $\displaystyle 1$ et $\displaystyle 2$ ($\displaystyle 1$ pour pile, $\displaystyle 2$ pour face).
+    $\\$
+
+    ● **Résultat :** On remplace par « si ⟨nombre aléatoire entre $\displaystyle 1$ et $\displaystyle 2$ $\displaystyle = 1$⟩ alors ajouter $\displaystyle 1$ à succès » ; la fréquence sera proche de $\displaystyle 0{,}5$.
+
+Solution:
+1. Un lancer de dé
+$\\$
+2. Le nombre de $\displaystyle 6$
+$\\$
+3. $\displaystyle \approx 0{,}167$
+$\\$
+4. Fluctuation d'échantillonnage
+$\\$
+5. Plus proche de $\displaystyle 0{,}167$
+$\\$
+6. Aléatoire entre $\displaystyle 1$ et $\displaystyle 2$ ; fréquence $\displaystyle \approx 0{,}5$
+
+===
+
+=== Entraînement - Programmation - 6. Déboguer un script
+Difficulté: medium
+Images: prog_4e_e6_script.png, prog_4e_e6_solution.png
+
+Énoncé: Maël veut dessiner un triangle équilatéral de côté $\displaystyle 100$. Il a écrit ce script, mais rien ne s'affiche.
+[IMAGE_1]
+$\\$
+**Question 1 : Pourquoi rien n'est-il dessiné ?**
+$\\$
+**Question 2 : Maël ajoute le bloc manquant au bon endroit. Que dessine alors son script ?**
+$\\$
+**Question 3 : Combien de fois faut-il répéter pour un triangle ?**
+$\\$
+**Question 4 : De quel angle le lutin doit-il tourner ? Pourquoi pas $\displaystyle 60°$ ?**
+$\\$
+**Question 5 : Écrire la liste corrigée des blocs à placer après « s'orienter à $\displaystyle 90$ ».**
+$\\$
+**Question 6 : Quel bloc ajouter au début pour effacer les anciens dessins à chaque lancement ?**
+
+Étapes:
+
+**Question 1 : Rien n'est dessiné**
+
+    ● **Étape 1 :** Aucun bloc « stylo en position d'écriture » : le stylo est relevé.
+    $\\$
+
+    ● **Résultat :** Le lutin se déplace sans laisser de trace.
+    $\\$
+
+    ● ⚠️ **Erreur fréquente :** Chercher l'erreur dans les calculs alors que c'est le stylo qui manque.
+    $\\$
+
+**Question 2 : Le dessin obtenu**
+
+    ● **Étape 1 :** $\displaystyle 4$ segments de $\displaystyle 100$, en tournant de $\displaystyle 60°$ : ce sont $\displaystyle 4$ côtés consécutifs d'un hexagone régulier.
+    $\\$
+
+    ● **Résultat :** Une ligne brisée de $\displaystyle 4$ côtés d'hexagone (la figure n'est pas fermée).
+    $\\$
+
+[IMAGE_2]
+
+**Question 3 : Le nombre de répétitions**
+
+    ● **Étape 1 :** Un triangle a $\displaystyle 3$ côtés.
+    $\\$
+
+    ● **Résultat :** Il faut « répéter $\displaystyle 3$ fois ».
+    $\\$
+
+**Question 4 : L'angle**
+
+    ● **Étape 1 :** Le lutin tourne de l'angle extérieur : $\displaystyle 180° - 60° = 120°$, ou $\displaystyle \frac{360}{3} = 120°$.
+    $\\$
+
+    ● **Résultat :** Il faut tourner de $\displaystyle 120°$ ; $\displaystyle 60°$ est l'angle intérieur du triangle.
+    $\\$
+
+**Question 5 : Le script corrigé**
+
+    ● **Étape 1 :** On teste ensuite : le lutin revient à son point de départ, la figure est fermée.
+    $\\$
+
+    ● **Résultat :** « stylo en position d'écriture », puis « répéter $\displaystyle 3$ fois » [« avancer de $\displaystyle 100$ pas », « tourner ↻ de $\displaystyle 120$ degrés »].
+    $\\$
+
+**Question 6 : Effacer**
+
+    ● **Étape 1 :** Sinon, chaque lancement dessine par-dessus les anciens tracés.
+    $\\$
+
+    ● **Résultat :** Le bloc « effacer tout », juste après le drapeau vert.
+    $\\$
+
+    ● 💡 **À retenir :** Déboguer, c'est tester, observer ce qui se passe, puis corriger une erreur à la fois.
+
+Solution:
+1. Stylo non baissé
+$\\$
+2. $\displaystyle 4$ côtés d'un hexagone
+$\\$
+3. $\displaystyle 3$
+$\\$
+4. $\displaystyle 120°$
+$\\$
+5. Stylo baissé ; $\displaystyle 3$ fois ; $\displaystyle 120°$
+$\\$
+6. « effacer tout »
+
+===
+
+=== Entraînement - Programmation - 7. Des lutins qui se parlent
+Difficulté: medium
+Images: prog_4e_e7_scripts.png
+
+Énoncé: Un chat et un chien dialoguent grâce à des messages. Voici leurs scripts.
+[IMAGE_1]
+$\\$
+**Question 1 : Que se passe-t-il quand on clique sur le drapeau vert ?**
+$\\$
+**Question 2 : Quand le chien commence-t-il à parler ? Pourquoi ?**
+$\\$
+**Question 3 : Dans quel ordre les répliques s'affichent-elles ?**
+$\\$
+**Question 4 : Combien de temps dure toute la scène ?**
+$\\$
+**Question 5 : On place « envoyer à tous [à toi] » AVANT « dire Bonjour ! » dans le script 1 du chat. Que change-t-on ?**
+$\\$
+**Question 6 : À quoi servent les messages dans un programme à plusieurs lutins ?**
+
+Étapes:
+
+**Question 1 : Le drapeau vert**
+
+    ● **Étape 1 :** Seul le script 1 du chat commence par « quand le drapeau vert est cliqué ».
+    $\\$
+
+    ● **Résultat :** Le chat dit « Bonjour ! » pendant $\displaystyle 2$ secondes.
+    $\\$
+
+**Question 2 : Le chien**
+
+    ● **Étape 1 :** Le script du chien démarre « quand je reçois [à toi] » ; ce message est envoyé après les $\displaystyle 2$ secondes du « Bonjour ! ».
+    $\\$
+
+    ● **Résultat :** Le chien parle au bout de $\displaystyle 2$ secondes, quand il reçoit le message « à toi ».
+    $\\$
+
+**Question 3 : L'ordre**
+
+    ● **Étape 1 :** Le chien envoie « fin » après sa réplique ; le script 2 du chat démarre à la réception de « fin ».
+    $\\$
+
+    ● **Résultat :** « Bonjour ! » (chat), puis « Salut ! » (chien), puis « Au revoir ! » (chat).
+    $\\$
+
+**Question 4 : La durée**
+
+    ● **Étape 1 :** Trois répliques de $\displaystyle 2$ secondes, l'une après l'autre : $\displaystyle 3 \times 2$.
+    $\\$
+
+    ● **Résultat :** Environ $\displaystyle 6$ secondes.
+    $\\$
+
+**Question 5 : L'envoi avant**
+
+    ● **Étape 1 :** Le message part tout de suite : le chien répond pendant que le chat parle encore.
+    $\\$
+
+    ● **Résultat :** « Bonjour ! » et « Salut ! » s'affichent en même temps ; la scène dure environ $\displaystyle 4$ secondes.
+    $\\$
+
+    ● ⚠️ **Erreur fréquente :** Croire que l'ordre des blocs n'a pas d'importance : « envoyer » déclenche immédiatement les scripts qui attendent ce message.
+    $\\$
+
+**Question 6 : Le rôle des messages**
+
+    ● **Étape 1 :** Ici, chaque réplique attend la fin de la précédente grâce aux messages « à toi » et « fin ».
+    $\\$
+
+    ● **Résultat :** Ils permettent de synchroniser plusieurs lutins : un script attend un signal envoyé par un autre.
+    $\\$
+
+    ● 💡 **À retenir :** « envoyer à tous » / « quand je reçois » : c'est ainsi que les lutins coordonnent leurs actions.
+
+Solution:
+1. Le chat dit « Bonjour ! »
+$\\$
+2. Après $\displaystyle 2$ s
+$\\$
+3. Bonjour ! ; Salut ! ; Au revoir !
+$\\$
+4. $\displaystyle \approx 6$ s
+$\\$
+5. Les deux parlent en même temps
+$\\$
+6. Synchroniser les lutins
+
+===
+
+=== Problème - Programmation - 1. Le nombre mystère
+Difficulté: hard
+Images: prog_4e_p1_script.png
+
+Énoncé: Ce jeu choisit un nombre mystère entier entre $\displaystyle 1$ et $\displaystyle 100$ ; le joueur propose des nombres jusqu'à trouver.
+[IMAGE_1]
+$\\$
+**Question 1 : À quoi sert la variable « essais » ?**
+$\\$
+**Question 2 : Le nombre mystère est $\displaystyle 37$. Le joueur propose $\displaystyle 50$, puis $\displaystyle 25$, puis $\displaystyle 37$. Quels messages s'affichent ? Combien vaut « essais » à la fin ?**
+$\\$
+**Question 3 : Stratégie « par moitié » : on propose toujours le milieu de l'intervalle possible. Avec le nombre mystère $\displaystyle 81$, quelles propositions fait-on ? Combien d'essais faut-il ?**
+$\\$
+**Question 4 : Avec cette stratégie, combien d'essais faut-il au maximum pour un nombre entre $\displaystyle 1$ et $\displaystyle 100$ ? Justifier.**
+$\\$
+**Question 5 : Pourquoi les puissances de $\displaystyle 2$ interviennent-elles ?**
+$\\$
+**Question 6 : Combien d'essais faudrait-il au maximum pour un nombre entre $\displaystyle 1$ et $\displaystyle 1\,000$ ?**
+
+Étapes:
+
+**Question 1 : La variable essais**
+
+    ● **Étape 1 :** Elle part de $\displaystyle 0$ et augmente de $\displaystyle 1$ à chaque proposition.
+    $\\$
+
+    ● **Résultat :** Elle compte le nombre de propositions du joueur.
+    $\\$
+
+**Question 2 : La partie avec 37**
+
+    ● **Étape 1 :** $\displaystyle 50 > 37$ : « Trop grand ! » ; $\displaystyle 25 < 37$ : « Trop petit ! » ; $\displaystyle 37 = 37$ : aucune des deux conditions, et la boucle s'arrête.
+    $\\$
+
+    ● **Résultat :** « Trop grand ! », « Trop petit ! », puis « Gagné ! » ; essais $\displaystyle = 3$.
+    $\\$
+
+**Question 3 : La stratégie avec 81**
+
+    ● **Étape 1 :** $\displaystyle 50$ : trop petit (reste $\displaystyle 51$ à $\displaystyle 100$) ; $\displaystyle 75$ : trop petit (reste $\displaystyle 76$ à $\displaystyle 100$) ; $\displaystyle 88$ : trop grand (reste $\displaystyle 76$ à $\displaystyle 87$) ; $\displaystyle 81$ : gagné.
+    $\\$
+
+    ● **Résultat :** $\displaystyle 50$, $\displaystyle 75$, $\displaystyle 88$, $\displaystyle 81$ : $\displaystyle 4$ essais.
+    $\\$
+
+**Question 4 : Le maximum d'essais**
+
+    ● **Étape 1 :** À chaque essai, le nombre de possibilités est au moins divisé par $\displaystyle 2$ : $\displaystyle 100 \to 50 \to 25 \to 12 \to 6 \to 3 \to 1$.
+    $\\$
+
+    ● **Résultat :** Au maximum $\displaystyle 7$ essais.
+    $\\$
+
+    ● ⚠️ **Erreur fréquente :** Penser qu'il faut jusqu'à $\displaystyle 50$ essais : la stratégie par moitié est bien plus rapide que de tester les nombres un par un.
+    $\\$
+
+**Question 5 : Les puissances de 2**
+
+    ● **Étape 1 :** Avec $\displaystyle k$ essais, on peut départager jusqu'à $\displaystyle 2^k$ nombres ; $\displaystyle 2^6 = 64 < 100 \leqslant 2^7 = 128$.
+    $\\$
+
+    ● **Résultat :** Il faut le plus petit $\displaystyle k$ tel que $\displaystyle 2^k \geqslant 100$, c'est-à-dire $\displaystyle k = 7$.
+    $\\$
+
+**Question 6 : Entre 1 et 1 000**
+
+    ● **Étape 1 :** $\displaystyle 2^9 = 512 < 1\,000 \leqslant 2^{10} = 1\,024$
+    $\\$
+
+    ● **Résultat :** $\displaystyle 10$ essais au maximum.
+    $\\$
+
+    ● 💡 **À retenir :** Cette méthode s'appelle la dichotomie : elle est utilisée par les ordinateurs pour chercher dans de grandes listes.
+
+Solution:
+1. Compter les propositions
+$\\$
+2. Trop grand, Trop petit, Gagné ; $\displaystyle 3$
+$\\$
+3. $\displaystyle 50$ ; $\displaystyle 75$ ; $\displaystyle 88$ ; $\displaystyle 81$ — $\displaystyle 4$ essais
+$\\$
+4. $\displaystyle 7$
+$\\$
+5. $\displaystyle 2^7 = 128 \geqslant 100$
+$\\$
+6. $\displaystyle 10$
+
+===
+
+=== Problème - Programmation - 2. La spirale
+Difficulté: hard
+Images: prog_4e_p2_script.png, prog_4e_p2_solution.png
+
+Énoncé: On exécute le script suivant. Le lutin part de $\displaystyle (0 ; 0)$, orienté vers la droite.
+[IMAGE_1]
+$\\$
+**Question 1 : Quelles sont les longueurs des trois premiers segments tracés ?**
+$\\$
+**Question 2 : Quelle est la longueur du dernier segment ? Que vaut « longueur » à la fin du programme ?**
+$\\$
+**Question 3 : Calculer la longueur totale tracée.**
+$\\$
+**Question 4 : De combien de degrés le lutin a-t-il tourné en tout ?**
+$\\$
+**Question 5 : Donner les coordonnées du lutin après chacun des quatre premiers segments.**
+$\\$
+**Question 6 : Le lutin finit en $\displaystyle (50 ; 60)$. Calculer sa distance au point de départ, au dixième.**
+
+Étapes:
+
+**Question 1 : Les premiers segments**
+
+    ● **Étape 1 :** longueur vaut $\displaystyle 10$ au départ et augmente de $\displaystyle 10$ après chaque segment.
+    $\\$
+
+    ● **Résultat :** $\displaystyle 10$, $\displaystyle 20$ et $\displaystyle 30$ pas.
+    $\\$
+
+**Question 2 : Le dernier segment**
+
+    ● **Étape 1 :** Le $\displaystyle 10$e segment mesure $\displaystyle 10 \times 10 = 100$ ; ensuite on ajoute encore $\displaystyle 10$.
+    $\\$
+
+    ● **Résultat :** Le dernier segment mesure $\displaystyle 100$ pas ; à la fin, longueur $\displaystyle = 110$.
+    $\\$
+
+    ● ⚠️ **Erreur fréquente :** Répondre $\displaystyle 110$ pour le dernier segment : l'ajout de $\displaystyle 10$ se fait APRÈS le tracé.
+    $\\$
+
+**Question 3 : La longueur totale**
+
+    ● **Étape 1 :** $\displaystyle 10 + 20 + \ldots + 100 = 10 \times (1 + 2 + \ldots + 10) = 10 \times 55$
+    $\\$
+
+    ● **Résultat :** $\displaystyle 550$ pas.
+    $\\$
+
+**Question 4 : L'angle total**
+
+    ● **Étape 1 :** $\displaystyle 10$ quarts de tour : $\displaystyle 10 \times 90$.
+    $\\$
+
+    ● **Résultat :** $\displaystyle 900°$ (deux tours et demi).
+    $\\$
+
+**Question 5 : Les premières positions**
+
+    ● **Étape 1 :** Droite $\displaystyle 10$ : $\displaystyle (10 ; 0)$ ; haut $\displaystyle 20$ : $\displaystyle (10 ; 20)$ ; gauche $\displaystyle 30$ : $\displaystyle (-20 ; 20)$ ; bas $\displaystyle 40$ : $\displaystyle (-20 ; -20)$.
+    $\\$
+
+    ● **Résultat :** $\displaystyle (10 ; 0)$, $\displaystyle (10 ; 20)$, $\displaystyle (-20 ; 20)$, $\displaystyle (-20 ; -20)$.
+    $\\$
+
+[IMAGE_2]
+
+**Question 6 : La distance finale**
+
+    ● **Étape 1 :** Pythagore : $\displaystyle d^2 = 50^2 + 60^2 = 2\,500 + 3\,600 = 6\,100$.
+    $\\$
+
+    ● **Résultat :** $\displaystyle d = \sqrt{6\,100} \approx 78{,}1$ pas.
+    $\\$
+
+    ● 💡 **À retenir :** Un tableau de suivi (segment, direction, position) permet de prévoir exactement le dessin.
+
+Solution:
+1. $\displaystyle 10$ ; $\displaystyle 20$ ; $\displaystyle 30$
+$\\$
+2. $\displaystyle 100$ ; $\displaystyle 110$
+$\\$
+3. $\displaystyle 550$
+$\\$
+4. $\displaystyle 900°$
+$\\$
+5. $\displaystyle (10 ; 0)$ ; $\displaystyle (10 ; 20)$ ; $\displaystyle (-20 ; 20)$ ; $\displaystyle (-20 ; -20)$
+$\\$
+6. $\displaystyle \approx 78{,}1$
+
+===
+
+=== Problème - Programmation - 3. Rendre la monnaie
+Difficulté: hard
+Images: prog_4e_p3_script.png
+
+Énoncé: Un distributeur rend la monnaie avec des pièces de $\displaystyle 2$ € et de $\displaystyle 1$ € (sommes entières). Voici son programme.
+[IMAGE_1]
+$\\$
+**Question 1 : Exécuter le programme pour une somme de $\displaystyle 7$ €. Combien de pièces de chaque sorte sont rendues ?**
+$\\$
+**Question 2 : Même question pour $\displaystyle 10$ € et pour $\displaystyle 1$ €.**
+$\\$
+**Question 3 : Pour $\displaystyle 15$ €, combien de tours de boucle sont effectués ?**
+$\\$
+**Question 4 : Pourquoi « pièces1 » vaut-il toujours $\displaystyle 0$ ou $\displaystyle 1$ à la fin ?**
+$\\$
+**Question 5 : On ajoute des billets de $\displaystyle 5$ €, rendus en premier. Combien de billets et de pièces pour $\displaystyle 18$ € ?**
+$\\$
+**Question 6 : Décrire la boucle à ajouter au début du programme pour les billets de $\displaystyle 5$ €.**
+
+Étapes:
+
+**Question 1 : Avec 7 €**
+
+    ● **Étape 1 :** reste : $\displaystyle 7 \to 5 \to 3 \to 1$ ; on s'arrête car $\displaystyle 1 < 2$ ; pièces2 $\displaystyle = 3$.
+    $\\$
+
+    ● **Résultat :** $\displaystyle 3$ pièces de $\displaystyle 2$ € et $\displaystyle 1$ pièce de $\displaystyle 1$ €.
+    $\\$
+
+    ● 🔎 **Vérification :** $\displaystyle 3 \times 2 + 1 = 7$ ✔️
+    $\\$
+
+**Question 2 : Avec 10 € et 1 €**
+
+    ● **Étape 1 :** $\displaystyle 10$ : reste $\displaystyle 10 \to 8 \to 6 \to 4 \to 2 \to 0$ ; $\displaystyle 5$ pièces de $\displaystyle 2$ € et reste $\displaystyle 0$.
+    $\\$
+
+    ● **Étape 2 :** $\displaystyle 1$ : la condition « reste $\displaystyle < 2$ » est déjà vraie, la boucle n'est pas exécutée.
+    $\\$
+
+    ● **Résultat :** $\displaystyle 10$ € : $\displaystyle 5$ pièces de $\displaystyle 2$ € et $\displaystyle 0$ de $\displaystyle 1$ € ; $\displaystyle 1$ € : $\displaystyle 0$ pièce de $\displaystyle 2$ € et $\displaystyle 1$ pièce de $\displaystyle 1$ €.
+    $\\$
+
+**Question 3 : Avec 15 €**
+
+    ● **Étape 1 :** $\displaystyle 15 \to 13 \to 11 \to 9 \to 7 \to 5 \to 3 \to 1$ : $\displaystyle 7$ soustractions.
+    $\\$
+
+    ● **Résultat :** $\displaystyle 7$ tours (et $\displaystyle 1$ pièce de $\displaystyle 1$ €).
+    $\\$
+
+**Question 4 : Le reste final**
+
+    ● **Étape 1 :** La boucle s'arrête dès que reste $\displaystyle < 2$ ; comme on enlève $\displaystyle 2$ à chaque tour en partant d'un entier positif, il reste $\displaystyle 0$ ou $\displaystyle 1$.
+    $\\$
+
+    ● **Résultat :** C'est le reste de la division de la somme par $\displaystyle 2$ : $\displaystyle 0$ si la somme est paire, $\displaystyle 1$ si elle est impaire.
+    $\\$
+
+    ● 💡 **À retenir :** Retirer $\displaystyle 2$ jusqu'à ce que ce ne soit plus possible revient à faire une division euclidienne par $\displaystyle 2$.
+    $\\$
+
+**Question 5 : Avec des billets de 5 €**
+
+    ● **Étape 1 :** $\displaystyle 18 = 3 \times 5 + 3$, puis $\displaystyle 3 = 1 \times 2 + 1$.
+    $\\$
+
+    ● **Résultat :** $\displaystyle 3$ billets de $\displaystyle 5$ €, $\displaystyle 1$ pièce de $\displaystyle 2$ € et $\displaystyle 1$ pièce de $\displaystyle 1$ € : $\displaystyle 5$ billets et pièces en tout.
+    $\\$
+
+**Question 6 : La nouvelle boucle**
+
+    ● **Étape 1 :** On rend d'abord les plus grosses valeurs pour utiliser le moins de pièces possible.
+    $\\$
+
+    ● **Résultat :** Avant la boucle des pièces de $\displaystyle 2$ € : « mettre [billets5] à $\displaystyle 0$ », puis « répéter jusqu'à ⟨reste $\displaystyle < 5$⟩ » [« ajouter $\displaystyle (-5)$ à [reste] », « ajouter $\displaystyle 1$ à [billets5] »].
+    $\\$
+
+    ● ⚠️ **Erreur fréquente :** Placer cette boucle après celle des pièces de $\displaystyle 2$ € : il ne resterait jamais $\displaystyle 5$ € à rendre en billets.
+
+Solution:
+1. $\displaystyle 3 \times 2$ € et $\displaystyle 1 \times 1$ €
+$\\$
+2. $\displaystyle 5$ et $\displaystyle 0$ ; $\displaystyle 0$ et $\displaystyle 1$
+$\\$
+3. $\displaystyle 7$ tours
+$\\$
+4. Reste de la division par $\displaystyle 2$
+$\\$
+5. $\displaystyle 3$ billets, $\displaystyle 1 \times 2$ €, $\displaystyle 1 \times 1$ €
+$\\$
+6. Boucle « reste $\displaystyle < 5$ » placée en premier
+
+===
+
+=== Problème - Programmation - 4. Convertir des températures
+Difficulté: hard
+Images: prog_4e_p4_script.png
+
+Énoncé: Aux États-Unis, on mesure les températures en degrés Fahrenheit. Ce programme convertit des degrés Celsius en degrés Fahrenheit (« $\displaystyle \ast$ » signifie « multiplié par » ; $\displaystyle 1.8$ s'écrit $\displaystyle 1{,}8$ en français).
+[IMAGE_1]
+$\\$
+**Question 1 : Qu'affiche le programme pour $\displaystyle 0$ °C ? Pour $\displaystyle 100$ °C ?**
+$\\$
+**Question 2 : Quelle est, en °F, la température normale du corps humain ($\displaystyle 37$ °C) ?**
+$\\$
+**Question 3 : Exprimer la température $\displaystyle F$ en fonction de la température $\displaystyle C$.**
+$\\$
+**Question 4 : Quelle température en °C correspond à $\displaystyle 50$ °F ?**
+$\\$
+**Question 5 : Pour quelle température les deux nombres sont-ils égaux ?**
+$\\$
+**Question 6 : Écrire l'expression d'un programme qui convertit des °F en °C.**
+
+Étapes:
+
+**Question 1 : 0 °C et 100 °C**
+
+    ● **Étape 1 :** $\displaystyle 0 \times 1{,}8 + 32 = 32$ ; $\displaystyle 100 \times 1{,}8 + 32 = 180 + 32$.
+    $\\$
+
+    ● **Résultat :** $\displaystyle 32$ °F et $\displaystyle 212$ °F.
+    $\\$
+
+**Question 2 : La température du corps**
+
+    ● **Étape 1 :** $\displaystyle 37 \times 1{,}8 + 32 = 66{,}6 + 32$
+    $\\$
+
+    ● **Résultat :** $\displaystyle 98{,}6$ °F
+    $\\$
+
+**Question 3 : L'expression**
+
+    ● **Étape 1 :** On multiplie par $\displaystyle 1{,}8$, puis on ajoute $\displaystyle 32$, dans cet ordre.
+    $\\$
+
+    ● **Résultat :** $\displaystyle F = 1{,}8 \times C + 32$
+    $\\$
+
+**Question 4 : 50 °F**
+
+    ● **Étape 1 :** On résout $\displaystyle 1{,}8C + 32 = 50$ : $\displaystyle 1{,}8C = 18$, donc $\displaystyle C = 10$.
+    $\\$
+
+    ● **Résultat :** $\displaystyle 10$ °C
+    $\\$
+
+**Question 5 : Égalité des deux nombres**
+
+    ● **Étape 1 :** On résout $\displaystyle 1{,}8C + 32 = C$ : $\displaystyle 0{,}8C = -32$, donc $\displaystyle C = -40$.
+    $\\$
+
+    ● **Résultat :** À $\displaystyle -40$ : $\displaystyle -40$ °C $\displaystyle = -40$ °F.
+    $\\$
+
+    ● 🔎 **Vérification :** $\displaystyle -40 \times 1{,}8 + 32 = -72 + 32 = -40$ ✔️
+    $\\$
+
+**Question 6 : Le programme inverse**
+
+    ● **Étape 1 :** On « défait » les étapes dans l'ordre inverse : on retire $\displaystyle 32$, puis on divise par $\displaystyle 1{,}8$.
+    $\\$
+
+    ● **Résultat :** $\displaystyle C = \frac{F - 32}{1{,}8}$
+    $\\$
+
+    ● ⚠️ **Erreur fréquente :** Diviser d'abord par $\displaystyle 1{,}8$ puis retirer $\displaystyle 32$ : l'ordre des opérations inverses compte.
+    $\\$
+
+    ● 💡 **À retenir :** Pour inverser un programme de calcul, on remonte les étapes à l'envers avec les opérations contraires.
+
+Solution:
+1. $\displaystyle 32$ °F ; $\displaystyle 212$ °F
+$\\$
+2. $\displaystyle 98{,}6$ °F
+$\\$
+3. $\displaystyle F = 1{,}8C + 32$
+$\\$
+4. $\displaystyle 10$ °C
+$\\$
+5. $\displaystyle -40$
+$\\$
+6. $\displaystyle C = \frac{F - 32}{1{,}8}$
+
+===
+
+=== Problème - Programmation - 5. Le robot du jardin
+Difficulté: hard
+Images: prog_4e_p5_script.png, prog_4e_p5_solution.png
+
+Énoncé: Un robot tondeuse est programmé sur un repère dont l'unité est le décimètre. Le stylo matérialise son trajet.
+[IMAGE_1]
+$\\$
+**Question 1 : Quelle est la position du robot après le premier tour de la première boucle ?**
+$\\$
+**Question 2 : Quelle est sa position $\displaystyle A$ à la fin de la première boucle ?**
+$\\$
+**Question 3 : Quelle longueur le robot parcourt-il à chaque tour de la première boucle ? De combien s'éloigne-t-il « à vol d'oiseau » à chaque tour ?**
+$\\$
+**Question 4 : Calculer la distance $\displaystyle OA$ entre le départ $\displaystyle O$ et le point $\displaystyle A$.**
+$\\$
+**Question 5 : Quelle est la position $\displaystyle B$ du robot à la fin du programme ? Quelle distance totale a-t-il parcourue ?**
+$\\$
+**Question 6 : Calculer la distance $\displaystyle OB$ entre son point de départ et son point d'arrivée.**
+
+Étapes:
+
+**Question 1 : Après un tour**
+
+    ● **Étape 1 :** « ajouter $\displaystyle 40$ à x » puis « ajouter $\displaystyle 30$ à y » à partir de $\displaystyle (0 ; 0)$.
+    $\\$
+
+    ● **Résultat :** $\displaystyle (40 ; 30)$
+    $\\$
+
+**Question 2 : Le point A**
+
+    ● **Étape 1 :** $\displaystyle 3$ tours : $\displaystyle x = 3 \times 40 = 120$ et $\displaystyle y = 3 \times 30 = 90$.
+    $\\$
+
+    ● **Résultat :** $\displaystyle A(120 ; 90)$
+    $\\$
+
+**Question 3 : Un tour de boucle**
+
+    ● **Étape 1 :** Le robot avance de $\displaystyle 40$ horizontalement puis de $\displaystyle 30$ verticalement : il parcourt $\displaystyle 40 + 30 = 70$ dm.
+    $\\$
+
+    ● **Étape 2 :** À vol d'oiseau : $\displaystyle \sqrt{40^2 + 30^2} = \sqrt{2\,500} = 50$ dm.
+    $\\$
+
+    ● **Résultat :** Il parcourt $\displaystyle 70$ dm mais ne s'éloigne que de $\displaystyle 50$ dm à chaque tour.
+    $\\$
+
+**Question 4 : La distance OA**
+
+    ● **Étape 1 :** $\displaystyle OA^2 = 120^2 + 90^2 = 14\,400 + 8\,100 = 22\,500$
+    $\\$
+
+    ● **Résultat :** $\displaystyle OA = 150$ dm, soit $\displaystyle 15$ m.
+    $\\$
+
+    ● 🔎 **Vérification :** Les trois déplacements de $\displaystyle 50$ dm sont alignés : $\displaystyle 3 \times 50 = 150$ ✔️
+    $\\$
+
+**Question 5 : Le point B**
+
+    ● **Étape 1 :** $\displaystyle 2$ tours de « ajouter $\displaystyle -60$ à x » : $\displaystyle x = 120 - 120 = 0$, $\displaystyle y$ reste $\displaystyle 90$.
+    $\\$
+
+    ● **Étape 2 :** Distance parcourue : $\displaystyle 3 \times 70 + 2 \times 60 = 210 + 120 = 330$ dm.
+    $\\$
+
+    ● **Résultat :** $\displaystyle B(0 ; 90)$ ; le robot a parcouru $\displaystyle 330$ dm, soit $\displaystyle 33$ m.
+    $\\$
+
+[IMAGE_2]
+
+**Question 6 : La distance OB**
+
+    ● **Étape 1 :** $\displaystyle B$ est sur l'axe des ordonnées : $\displaystyle OB = 90$.
+    $\\$
+
+    ● **Résultat :** $\displaystyle 90$ dm, soit $\displaystyle 9$ m.
+    $\\$
+
+    ● 💡 **À retenir :** Distance parcourue et distance à vol d'oiseau sont différentes : Pythagore donne la seconde.
+
+Solution:
+1. $\displaystyle (40 ; 30)$
+$\\$
+2. $\displaystyle (120 ; 90)$
+$\\$
+3. $\displaystyle 70$ dm ; $\displaystyle 50$ dm
+$\\$
+4. $\displaystyle 150$ dm
+$\\$
+5. $\displaystyle (0 ; 90)$ ; $\displaystyle 330$ dm
+$\\$
+6. $\displaystyle 90$ dm
+
+===
+
+=== Problème - Programmation - 6. Un tableau de valeurs
+Difficulté: hard
+Images: prog_4e_p6_script.png, prog_4e_p6_tableau.png
+
+Énoncé: Ce programme affiche des couples de nombres $\displaystyle (x ; y)$ (« $\displaystyle \ast$ » signifie « multiplié par »).
+[IMAGE_1]
+$\\$
+**Question 1 : Combien de couples le programme affiche-t-il ? Quelle est la première valeur de $\displaystyle x$ ? La dernière ?**
+$\\$
+**Question 2 : Exprimer $\displaystyle y$ en fonction de $\displaystyle x$.**
+$\\$
+**Question 3 : Calculer les valeurs de $\displaystyle y$ pour $\displaystyle x = -3$, $\displaystyle x = 0$ et $\displaystyle x = 2$.**
+$\\$
+**Question 4 : Compléter le tableau des $\displaystyle 7$ couples affichés.**
+$\\$
+**Question 5 : Quelle est la plus petite valeur de $\displaystyle y$ ? Quelle symétrie observe-t-on dans le tableau ?**
+$\\$
+**Question 6 : On veut les valeurs de $\displaystyle x$ de $\displaystyle -3$ à $\displaystyle 3$ avec un pas de $\displaystyle 0{,}5$. Que faut-il modifier ?**
+
+Étapes:
+
+**Question 1 : Les couples**
+
+    ● **Étape 1 :** La boucle est répétée $\displaystyle 7$ fois ; $\displaystyle x$ part de $\displaystyle -3$ et augmente de $\displaystyle 1$ à chaque tour (après l'affichage).
+    $\\$
+
+    ● **Résultat :** $\displaystyle 7$ couples, pour $\displaystyle x$ allant de $\displaystyle -3$ à $\displaystyle 3$.
+    $\\$
+
+**Question 2 : L'expression**
+
+    ● **Étape 1 :** « $\displaystyle 2 \ast x \ast x - 3$ » signifie $\displaystyle 2 \times x \times x - 3$.
+    $\\$
+
+    ● **Résultat :** $\displaystyle y = 2x^2 - 3$
+    $\\$
+
+**Question 3 : Trois valeurs**
+
+    ● **Étape 1 :** $\displaystyle x = -3$ : $\displaystyle 2 \times 9 - 3 = 15$ ; $\displaystyle x = 0$ : $\displaystyle -3$ ; $\displaystyle x = 2$ : $\displaystyle 2 \times 4 - 3 = 5$.
+    $\\$
+
+    ● **Résultat :** $\displaystyle 15$, $\displaystyle -3$ et $\displaystyle 5$.
+    $\\$
+
+    ● ⚠️ **Erreur fréquente :** Calculer $\displaystyle (-3)^2 = -9$ : le carré d'un nombre négatif est positif.
+    $\\$
+
+**Question 4 : Le tableau**
+
+    ● **Étape 1 :** On calcule $\displaystyle 2x^2 - 3$ pour $\displaystyle x = -3, -2, -1, 0, 1, 2, 3$.
+    $\\$
+
+    ● **Résultat :** $\displaystyle y$ : $\displaystyle 15$ ; $\displaystyle 5$ ; $\displaystyle -1$ ; $\displaystyle -3$ ; $\displaystyle -1$ ; $\displaystyle 5$ ; $\displaystyle 15$.
+    $\\$
+
+[IMAGE_2]
+
+**Question 5 : Minimum et symétrie**
+
+    ● **Étape 1 :** $\displaystyle x^2 \geqslant 0$, donc $\displaystyle 2x^2 - 3 \geqslant -3$ ; et $\displaystyle x$ et $\displaystyle -x$ ont le même carré.
+    $\\$
+
+    ● **Résultat :** Le minimum est $\displaystyle -3$ (pour $\displaystyle x = 0$) ; les valeurs de $\displaystyle y$ sont symétriques : $\displaystyle x$ et $\displaystyle -x$ donnent le même $\displaystyle y$.
+    $\\$
+
+    ● 💡 **À retenir :** Un programme peut construire un tableau de valeurs, comme un tableur, pour étudier une expression.
+    $\\$
+
+**Question 6 : Un pas de 0,5**
+
+    ● **Étape 1 :** De $\displaystyle -3$ à $\displaystyle 3$ par pas de $\displaystyle 0{,}5$ : $\displaystyle \frac{3 - (-3)}{0{,}5} + 1 = 13$ valeurs.
+    $\\$
+
+    ● **Résultat :** On remplace « ajouter $\displaystyle 1$ à [x] » par « ajouter $\displaystyle 0{,}5$ à [x] » et « répéter $\displaystyle 7$ fois » par « répéter $\displaystyle 13$ fois ».
+
+Solution:
+1. $\displaystyle 7$ ; de $\displaystyle -3$ à $\displaystyle 3$
+$\\$
+2. $\displaystyle y = 2x^2 - 3$
+$\\$
+3. $\displaystyle 15$ ; $\displaystyle -3$ ; $\displaystyle 5$
+$\\$
+4. $\displaystyle 15$, $\displaystyle 5$, $\displaystyle -1$, $\displaystyle -3$, $\displaystyle -1$, $\displaystyle 5$, $\displaystyle 15$
+$\\$
+5. $\displaystyle -3$ ; $\displaystyle y(-x) = y(x)$
+$\\$
+6. Ajouter $\displaystyle 0{,}5$ ; répéter $\displaystyle 13$ fois
+
+===
+
+=== Problème - Programmation - 7. La somme de deux dés
+Difficulté: hard
+Images: prog_4e_p7_script.png, prog_4e_p7_tableau.png
+
+Énoncé: On lance deux dés équilibrés et on s'intéresse à la somme des deux faces. Ce programme simule $\displaystyle 1\,000$ lancers.
+[IMAGE_1]
+$\\$
+**Question 1 : Quelles sont les sommes possibles ?**
+$\\$
+**Question 2 : Pourquoi ne peut-on pas remplacer la somme des deux tirages par « nombre aléatoire entre $\displaystyle 2$ et $\displaystyle 12$ » ?**
+$\\$
+**Question 3 : Avec un tableau à double entrée, calculer la probabilité d'obtenir une somme de $\displaystyle 7$.**
+$\\$
+**Question 4 : Quelle est la probabilité d'obtenir une somme de $\displaystyle 2$ ? De $\displaystyle 12$ ?**
+$\\$
+**Question 5 : Environ combien de fois la somme $\displaystyle 7$ devrait-elle apparaître en $\displaystyle 1\,000$ lancers ?**
+$\\$
+**Question 6 : Une exécution affiche $\displaystyle 0{,}158$. Est-ce compatible avec le calcul ? Comment obtenir une estimation plus précise ?**
+
+Étapes:
+
+**Question 1 : Les sommes possibles**
+
+    ● **Étape 1 :** Le minimum est $\displaystyle 1 + 1 = 2$, le maximum $\displaystyle 6 + 6 = 12$.
+    $\\$
+
+    ● **Résultat :** Tous les entiers de $\displaystyle 2$ à $\displaystyle 12$ ($\displaystyle 11$ sommes).
+    $\\$
+
+**Question 2 : Pourquoi deux tirages**
+
+    ● **Étape 1 :** « aléatoire entre $\displaystyle 2$ et $\displaystyle 12$ » rendrait les $\displaystyle 11$ sommes équiprobables ($\displaystyle \frac{1}{11}$ chacune).
+    $\\$
+
+    ● **Résultat :** Or les sommes ne sont pas équiprobables avec deux dés : $\displaystyle 7$ s'obtient de $\displaystyle 6$ façons, $\displaystyle 2$ d'une seule.
+    $\\$
+
+    ● ⚠️ **Erreur fréquente :** Croire que toutes les sommes ont la même chance : il faut simuler chaque dé séparément.
+    $\\$
+
+**Question 3 : La somme 7**
+
+    ● **Étape 1 :** Il y a $\displaystyle 6 \times 6 = 36$ issues équiprobables ; $\displaystyle 6$ donnent $\displaystyle 7$ : $\displaystyle (1 ; 6)$, $\displaystyle (2 ; 5)$, $\displaystyle (3 ; 4)$, $\displaystyle (4 ; 3)$, $\displaystyle (5 ; 2)$, $\displaystyle (6 ; 1)$.
+    $\\$
+
+    ● **Résultat :** $\displaystyle P(7) = \frac{6}{36} = \frac{1}{6}$
+    $\\$
+
+[IMAGE_2]
+
+**Question 4 : Les sommes 2 et 12**
+
+    ● **Étape 1 :** Une seule issue pour chacune : $\displaystyle (1 ; 1)$ et $\displaystyle (6 ; 6)$.
+    $\\$
+
+    ● **Résultat :** $\displaystyle P(2) = P(12) = \frac{1}{36}$
+    $\\$
+
+**Question 5 : Le nombre attendu de 7**
+
+    ● **Étape 1 :** $\displaystyle 1\,000 \times \frac{1}{6} \approx 166{,}7$
+    $\\$
+
+    ● **Résultat :** Environ $\displaystyle 167$ fois.
+    $\\$
+
+**Question 6 : Le résultat 0,158**
+
+    ● **Étape 1 :** $\displaystyle 0{,}158$ est proche de $\displaystyle \frac{1}{6} \approx 0{,}167$ : l'écart est dû au hasard (fluctuation).
+    $\\$
+
+    ● **Résultat :** Oui, c'est compatible ; pour une estimation plus précise, on augmente le nombre de lancers simulés.
+    $\\$
+
+    ● 💡 **À retenir :** Simulation (fréquence) et calcul (probabilité) se confirment l'un l'autre quand le nombre d'essais est grand.
+
+Solution:
+1. De $\displaystyle 2$ à $\displaystyle 12$
+$\\$
+2. Les sommes ne sont pas équiprobables
+$\\$
+3. $\displaystyle \frac{1}{6}$
+$\\$
+4. $\displaystyle \frac{1}{36}$
+$\\$
+5. $\displaystyle \approx 167$
+$\\$
+6. Oui ; plus de lancers
+
+===

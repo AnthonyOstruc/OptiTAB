@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import SuiviExercice, SuiviQuiz, QuizSubmission
+from .models import SuiviExercice, SuiviQuiz, QuizSubmission, ResultatQuizChapitre
 
 
 @admin.register(SuiviExercice)
@@ -42,3 +42,10 @@ class QuizSubmissionAdmin(admin.ModelAdmin):
             'classes': ('collapse',)
         }),
     )
+
+@admin.register(ResultatQuizChapitre)
+class ResultatQuizChapitreAdmin(admin.ModelAdmin):
+    list_display = ['user', 'notion', 'note', 'bonnes', 'total', 'date_creation']
+    list_filter = ['date_creation']
+    search_fields = ['user__email', 'notion__titre']
+    raw_id_fields = ['user', 'notion']

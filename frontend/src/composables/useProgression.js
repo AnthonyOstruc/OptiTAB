@@ -9,26 +9,35 @@ const progression = ref(null)
 let proprietaire = null
 let chargeA = 0
 let enCours = null
+let enCoursPour = null
 const DUREE = 60000
 
 export function useProgression() {
   const userStore = useUserStore()
 
   async function charger({ force = false } = {}) {
-    const moi = userStore.id || userStore.email || null
+    // La progression dépend de l'élève ET de sa classe : changer de classe
+    // invalide aussitôt ce qui était gardé.
+    const moi = `${userStore.id || userStore.email || ''}|${userStore.niveau_pays?.id ?? ''}`
     const valide = progression.value && proprietaire === moi && Date.now() - chargeA < DUREE
     if (!force && valide) return progression.value
-    if (!force && enCours) return enCours
-    enCours = getMyProgression()
+    // Autre classe : on n'affiche pas, même un instant, les chapitres de l'ancienne.
+    if (proprietaire !== null && proprietaire !== moi) progression.value = null
+    if (!force && enCours && enCoursPour === moi) return enCours
+    enCoursPour = moi
+    const demande = getMyProgression()
       .then((res) => {
+        // Réponse d'une classe qui n'est plus la bonne : ignorée.
+        if (enCoursPour !== moi) return progression.value
         progression.value = res?.data?.data || null
         proprietaire = moi
         chargeA = Date.now()
         return progression.value
       })
       .catch(() => progression.value)
-      .finally(() => { enCours = null })
-    return enCours
+      .finally(() => { if (enCours === demande) enCours = null })
+    enCours = demande
+    return demande
   }
 
   function invalider() {

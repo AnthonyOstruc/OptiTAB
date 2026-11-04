@@ -1,0 +1,186 @@
+Titre: Penser et programmer par blocs
+
+<!-- optitab:1 -->
+::: objectifs
+- Lire un script en blocs (Scratch) et l'exécuter à la main, bloc après bloc.
+- Utiliser une variable, une entrée (« demander ») et une sortie (« dire ») ; traduire un programme de calcul.
+- Déplacer un lutin et tracer une figure avec le stylo.
+- Utiliser une boucle « répéter n fois » et une instruction « si … alors ».
+- Déclencher un script par un événement : drapeau vert, touche du clavier.
+:::
+
+::: prerequis
+- Calculer en respectant les priorités et les parenthèses.
+- Se repérer dans le plan avec une abscisse et une ordonnée.
+- Connaître les angles droits et la somme des angles d'un triangle.
+:::
+
+## I. Programme, script et blocs
+
+::: definition Algorithme, programme, script
+- Un **algorithme** est une suite d'instructions précises qui, exécutées dans l'ordre, permettent de résoudre un problème.
+- Un **programme** écrit cet algorithme dans un langage compris par l'ordinateur. Au collège, on programme avec **Scratch** : les instructions sont des **blocs** que l'on emboîte.
+- Un **script** est une pile de blocs. Il commence par un **événement** (bloc « chapeau ») et ses blocs sont exécutés **de haut en bas**, un par un.
+- Le personnage qui exécute les scripts s'appelle un **lutin** ; il se déplace sur la **scène**.
+:::
+
+Chaque famille de blocs a sa couleur :
+
+[IMAGE_1]
+
+::: methode Exécuter un script à la main
+1. Repérer l'événement qui démarre le script.
+2. Lire les blocs **dans l'ordre**, de haut en bas, sans en sauter.
+3. Noter après chaque bloc ce qui change (valeur d'une variable, position du lutin) dans un **tableau d'exécution**.
+:::
+
+## II. Variables et programmes de calcul
+
+::: definition Variable
+Une **variable** est une case de la mémoire qui porte un nom et contient une valeur. Cette valeur peut changer pendant l'exécution du script.
+
+- « mettre résultat à 7 » **remplace** la valeur de résultat par $7$ ;
+- « ajouter 3 à résultat » **augmente** la valeur de résultat de $3$.
+:::
+
+::: definition Entrée et sortie
+- **Entrée** : « demander … et attendre » pose une question ; le nombre tapé au clavier est rangé dans le bloc **réponse**.
+- **Sortie** : « dire … » fait afficher par le lutin un nombre, un texte ou la valeur d'une variable.
+:::
+
+::: exemple Un programme de calcul
+[IMAGE_2]
+
+On clique sur le drapeau et on répond $7$. Tableau d'exécution :
+
+| Bloc exécuté | nombre | résultat |
+|---|---|---|
+| mettre nombre à réponse | $7$ | — |
+| mettre résultat à nombre + 5 | $7$ | $7 + 5 = 12$ |
+| mettre résultat à résultat ∗ 2 | $7$ | $12 \times 2 = 24$ |
+
+Le lutin dit $24$. Pour un nombre $x$ quelconque, il dit $(x + 5) \times 2$.
+:::
+
+::: attention Lire « mettre résultat à résultat ∗ 2 »
+On calcule d'abord avec l'**ancienne** valeur : nouvelle valeur de résultat $=$ ancienne valeur $\times\, 2$. Dans Scratch, la multiplication se note $\ast$ et la division se note /.
+:::
+
+### Blocs opérateurs emboîtés
+
+Un bloc opérateur (vert) peut contenir un autre bloc opérateur. Le bloc **le plus à l'intérieur** est calculé **en premier** : il joue le rôle des parenthèses.
+
+[IMAGE_3]
+
+| Bloc | Calcul effectué | Pour $n = 6$ |
+|---|---|---|
+| Bloc 1 | $(n \times 2) + 1$ | $12 + 1 = 13$ |
+| Bloc 2 | $(n + 1) \times 2$ | $7 \times 2 = 14$ |
+
+::: attention Erreur fréquente
+Les deux blocs utilisent les mêmes nombres et les mêmes opérations, mais pas dans le même ordre : ils ne donnent pas le même résultat. On lit toujours le bloc intérieur d'abord.
+:::
+
+## III. Déplacer le lutin et tracer
+
+::: definition La scène et l'orientation
+- La scène est un **repère** : l'abscisse $x$ va de $-240$ à $240$, l'ordonnée $y$ de $-180$ à $180$ ; le centre a pour coordonnées $(0\ ;\ 0)$.
+- L'**orientation** du lutin est un angle en degrés : $0$ vers le haut, $90$ vers la droite, $180$ vers le bas, $-90$ vers la gauche.
+:::
+
+[IMAGE_4]
+
+::: propriete Blocs de mouvement et de stylo
+- « aller à x : … y : … » place le lutin en un point de la scène.
+- « s'orienter à 90 » tourne le lutin vers la droite, quelle que soit son orientation avant.
+- « avancer de 50 pas » déplace le lutin de $50$ pas **dans la direction où il regarde**.
+- « tourner ↻ de 90 degrés » : quart de tour dans le sens des aiguilles d'une montre ; « tourner ↺ de 90 degrés » : quart de tour dans l'autre sens. Une rotation ne trace rien.
+- « stylo en position d'écriture » : le lutin trace ses déplacements ; « relever le stylo » : il ne trace plus ; « effacer tout » efface les dessins.
+:::
+
+::: exemple Tracer la lettre L
+[IMAGE_5]
+
+| Bloc exécuté | Position | Orientation |
+|---|---|---|
+| aller à x : 0 y : 80 | $(0\ ;\ 80)$ | — |
+| s'orienter à 180 | $(0\ ;\ 80)$ | $180$ (bas) |
+| avancer de 80 pas | $(0\ ;\ 0)$ | $180$ (bas) |
+| tourner ↺ de 90 degrés | $(0\ ;\ 0)$ | $90$ (droite) |
+| avancer de 40 pas | $(40\ ;\ 0)$ | $90$ (droite) |
+
+[IMAGE_6]
+
+Le lutin a tracé deux segments, de $80$ et $40$ pas. La flèche orange indique son orientation à la fin.
+:::
+
+## IV. Répéter des instructions : la boucle
+
+::: definition Boucle « répéter n fois »
+Le bloc « répéter 4 fois » exécute **4 fois de suite** tous les blocs qu'il contient, dans l'ordre. Un bloc placé **après** la boucle n'est exécuté qu'une fois.
+:::
+
+::: exemple Tracer un carré de côté 60
+[IMAGE_7]
+
+| Tour | Position après « avancer » | Orientation après « tourner ↺ » |
+|---|---|---|
+| 1 | $(60\ ;\ 0)$ | $0$ (haut) |
+| 2 | $(60\ ;\ 60)$ | $-90$ (gauche) |
+| 3 | $(0\ ;\ 60)$ | $180$ (bas) |
+| 4 | $(0\ ;\ 0)$ | $90$ (droite) |
+
+[IMAGE_8]
+
+Sans boucle, il aurait fallu écrire $8$ blocs de mouvement au lieu de $2$.
+:::
+
+::: propriete Polygone régulier
+Pour tracer un polygone régulier à $n$ côtés, on répète $n$ fois « avancer ; tourner de $360 \div n$ degrés ». En tout, le lutin fait un tour complet ($360^\circ$). Carré : $360 \div 4 = 90^\circ$ ; triangle équilatéral : $360 \div 3 = 120^\circ$.
+:::
+
+::: attention Angle du polygone ou angle de rotation ?
+Le lutin tourne de l'angle qui **prolonge** sa direction, pas de l'angle intérieur de la figure. Pour un triangle équilatéral (angles de $60^\circ$), il tourne de $180^\circ - 60^\circ = 120^\circ$.
+:::
+
+## V. L'instruction conditionnelle « si … alors »
+
+::: definition Condition
+Une **condition** (bloc hexagonal vert) est **vraie** ou **fausse** : « score > 50 », « réponse < 12 », « x = 5 »…
+
+Dans « si condition alors », les blocs intérieurs ne sont exécutés **que si la condition est vraie** ; sinon, le script passe directement au bloc suivant.
+:::
+
+[IMAGE_9]
+
+::: exemple
+| Réponse | score > 50 ? | Ce que dit le lutin |
+|---|---|---|
+| $72$ | vrai | « Niveau réussi ! » puis « Fin de la partie » |
+| $50$ | faux | « Fin de la partie » seulement |
+:::
+
+::: attention Tester la valeur frontière
+$50 > 50$ est **faux** : avec exactement $50$ points, le niveau n'est pas réussi. Pour l'accepter, on écrit « score > 49 » (les scores sont entiers).
+:::
+
+## VI. Les événements
+
+::: definition Événement
+Un script démarre quand son **événement** se produit : « quand le drapeau est cliqué », « quand la touche … est pressée »… Un même lutin peut avoir plusieurs scripts : chacun attend son propre événement.
+:::
+
+[IMAGE_10]
+
+::: exemple
+On clique sur le drapeau : le lutin va en $(0\ ;\ 0)$. Puis on appuie sur « flèche droite », « flèche droite », « flèche gauche », « flèche droite » : l'abscisse du lutin vaut successivement $10$, $20$, $10$ et $20$. Il termine en $(20\ ;\ 0)$.
+:::
+
+::: retenir
+- Un script commence par un événement et s'exécute de haut en bas ; on le suit avec un **tableau d'exécution**.
+- « mettre » remplace la valeur d'une variable ; « ajouter » l'augmente.
+- Dans des blocs emboîtés, le bloc intérieur est calculé en premier.
+- Orientation : $0$ haut, $90$ droite, $180$ bas, $-90$ gauche ; « avancer » suit la direction du lutin.
+- « répéter n fois » exécute $n$ fois tout son contenu ; polygone régulier à $n$ côtés : tourner de $360 \div n$ degrés.
+- « si … alors » : les blocs intérieurs ne s'exécutent que si la condition est vraie ; tester la valeur frontière.
+:::

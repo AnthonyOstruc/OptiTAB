@@ -1,0 +1,188 @@
+Titre: Résumé : Variables Aléatoires Réelles
+
+<!-- optitab:1 -->
+::: objectifs
+Maîtriser les variables aléatoires réelles : définition, loi de probabilité, espérance, variance, écart type et applications.
+:::
+
+## I. Variable aléatoire réelle
+
+::: definition Variable aléatoire réelle
+Soit $(\Omega, P)$ un espace probabilisé fini.
+
+Une **variable aléatoire réelle** $X$ est une fonction qui, à chaque issue $\omega$ de l'univers $\Omega$, associe un nombre réel $X(\omega)$.
+
+::: formule
+$$X : \Omega \to \mathbb{R}$$
+
+$$\omega \mapsto X(\omega)$$
+:::
+
+En pratique, $X$ modélise le **résultat numérique** d'une expérience aléatoire.
+:::
+
+| Notation | Signification |
+|---|---|
+| **Variable aléatoire** | Lettre **majuscule** : $\displaystyle X, Y, Z$ |
+| **Valeurs possibles** | Lettres **minuscules** : $\displaystyle x, y, z$ |
+| **Événement** | $\displaystyle \{X = a\}$ : "$\displaystyle X$ prend la valeur $\displaystyle a$" |
+
+| Langage naturel | Notation symbolique |
+|---|---|
+| La somme des dés vaut 7 | $\displaystyle X = 7$ ou $\displaystyle \{X = 7\}$ |
+| La somme est inférieure ou égale à 5 | $\displaystyle X \leq 5$ ou $\displaystyle \{X \leq 5\}$ |
+| Probabilité que la somme vaille 10 | $\displaystyle P(X = 10)$ |
+| Probabilité que la somme soit au moins 8 | $\displaystyle P(X \geq 8)$ |
+| Le nombre de piles est entre 1 et 2 | $\displaystyle 1 \leq X \leq 2$ ou $\displaystyle \{1 \leq X \leq 2\}$ |
+
+| Exemple | Variable $\displaystyle X$ | Valeurs possibles |
+|---|---|---|
+| Lancer d'un dé | Numéro obtenu | $\displaystyle \{1, 2, 3, 4, 5, 6\}$ |
+| Somme de deux dés | Somme des résultats | $\displaystyle \{2, 3, 4, \ldots, 12\}$ |
+| 3 lancers de pièce | Nombre de piles | $\displaystyle \{0, 1, 2, 3\}$ |
+| Gain dans un jeu | Gain (en euros) | $\displaystyle \{-1, 2, 5\}$ (exemple) |
+
+## II. Loi de probabilité d'une variable aléatoire
+
+::: definition Loi de probabilité
+Soit $X$ une variable aléatoire prenant les valeurs $x_1, x_2, \ldots, x_n$.
+
+La **loi de probabilité** de $X$ est l'ensemble des probabilités $P(X = x_i)$ pour toutes les valeurs possibles $x_i$.
+
+Elle se présente sous forme d'un **tableau** :
+:::
+
+| $\displaystyle x_i$ | $\displaystyle x_1$ | $\displaystyle x_2$ | $\displaystyle \cdots$ | $\displaystyle x_n$ |
+|---|---|---|---|---|
+| $\displaystyle P(X = x_i)$ | $\displaystyle p_1$ | $\displaystyle p_2$ | $\displaystyle \cdots$ | $\displaystyle p_n$ |
+
+::: propriete
+La loi de probabilité d'une variable aléatoire vérifie :
+
+::: formule
+$$p_1 + p_2 + \cdots + p_n = 1$$
+:::
+
+Et : $0 \leq P(X = x_i) \leq 1$ pour tout $i$
+:::
+
+| $\displaystyle x_i$ | 1 | 2 | 3 | 4 | 5 | 6 |
+|---|---|---|---|---|---|---|
+| $\displaystyle P(X = x_i)$ | $\displaystyle \frac{1}{6}$ | $\displaystyle \frac{1}{6}$ | $\displaystyle \frac{1}{6}$ | $\displaystyle \frac{1}{6}$ | $\displaystyle \frac{1}{6}$ | $\displaystyle \frac{1}{6}$ |
+
+*Exemple : Loi de probabilité d'un dé équilibré (loi uniforme)*
+
+| Calcul de probabilité | Formule |
+|---|---|
+| $\displaystyle P(X \leq a)$ | $\displaystyle \sum_{x_i \leq a} P(X = x_i)$ |
+| $\displaystyle P(X \geq a)$ | $\displaystyle \sum_{x_i \geq a} P(X = x_i)$ |
+| $\displaystyle P(a \leq X \leq b)$ | $\displaystyle \sum_{a \leq x_i \leq b} P(X = x_i)$ |
+| $\displaystyle P(X > a)$ | $\displaystyle 1 - P(X \leq a)$ |
+
+## III. Espérance d'une variable aléatoire
+
+::: definition Espérance
+Soit $X$ une variable aléatoire prenant les valeurs $x_1, x_2, \ldots, x_n$ avec les probabilités $p_1, p_2, \ldots, p_n$.
+
+L'**espérance** de $X$, notée $E(X)$ ou $\mu$, est la **moyenne pondérée** des valeurs de $X$ par leurs probabilités :
+
+::: formule
+$$E(X) = \sum_{i=1}^{n} x_i \times P(X = x_i)$$
+:::
+:::
+
+| Interprétation | Signification |
+|---|---|
+| **Valeur moyenne** | Valeur moyenne que prendrait $\displaystyle X$ sur un très grand nombre de répétitions |
+| **Centre de gravité** | Centre de gravité de la distribution de probabilité |
+| **Gain moyen** | Dans un contexte de jeu : gain moyen par partie sur le long terme |
+
+| Propriété | Formule |
+|---|---|
+| **Linéarité** | $\displaystyle E(aX + b) = aE(X) + b$ |
+| **Additivité** | $\displaystyle E(X + Y) = E(X) + E(Y)$ |
+| **Constante** | Si $\displaystyle X = c$ (constante), alors $\displaystyle E(X) = c$ |
+
+::: definition Jeu équitable
+Un jeu est dit **équitable** si l'espérance du gain net est nulle :
+
+::: formule
+$$E(\text{gain net }) = 0$$
+:::
+
+Avec : **gain net** = gain brut - mise payée
+:::
+
+## IV. Variance et écart type
+
+| Concept | Notation | Définition |
+|---|---|---|
+| **Variance** | $\displaystyle V(X)$ ou $\displaystyle \sigma^2$ | $\displaystyle E\left((X - E(X))^2\right)$ |
+| **Écart type** | $\displaystyle \sigma(X)$ ou $\displaystyle \sigma$ | $\displaystyle \sqrt{V(X)}$ |
+
+::: theoreme Formule pratique de la variance
+La variance peut se calculer par :
+
+::: formule
+$$V(X) = E(X^2) - [E(X)]^2$$
+:::
+
+où $\displaystyle E(X^2) = \sum_{i=1}^{n} x_i^2 \times P(X = x_i)$
+:::
+
+| Interprétation | Signification |
+|---|---|
+| **Variance** | Mesure la **dispersion** des valeurs autour de l'espérance <br> Plus elle est grande, plus les valeurs sont dispersées |
+| **Variance nulle** | $\displaystyle V(X) = 0$ si et seulement si $\displaystyle X$ est constante (pas de hasard) |
+| **Écart type** | Donne un ordre de grandeur de l'écart typique par rapport à l'espérance <br> A la **même unité** que $\displaystyle X$ (contrairement à la variance) |
+
+| Propriété | Formule |
+|---|---|
+| **Variance d'une transformation** | $\displaystyle V(aX + b) = a^2 V(X)$ <br> *(une constante ajoutée ne change pas la variance)* |
+| **Écart type d'une transformation** | $\displaystyle \sigma(aX + b) = |a| \sigma(X)$ |
+| **Positivité** | $\displaystyle V(X) \geq 0$ (la variance est toujours positive ou nulle) |
+
+## V. Erreurs fréquentes
+
+| Piège fréquent | Correction |
+|---|---|
+| Oublier de vérifier la somme des probabilités | Elle doit toujours valoir **1** <br> $\displaystyle \sum_{i=1}^{n} P(X = x_i) = 1$ |
+| Confondre $\displaystyle E(X^2)$ et $\displaystyle [E(X)]^2$ | Ce sont des quantités **différentes** ! <br> $\displaystyle E(X^2) = \sum x_i^2 \times P(X = x_i)$ <br> $\displaystyle [E(X)]^2 = \left(\sum x_i \times P(X = x_i)\right)^2$ |
+| Oublier la racine carrée pour l'écart type | L'écart type est $\displaystyle \sqrt{V(X)}$, pas $\displaystyle V(X)$ <br> $\displaystyle \sigma(X) = \sqrt{V(X)}$ |
+| Mal interpréter l'espérance | C'est une **moyenne sur le long terme**, pas une valeur garantie <br> L'espérance peut ne pas être une valeur possible (ex: $\displaystyle E(X) = 3.5$ pour un dé) |
+| Confondre gain brut et gain net | Le **gain net** = gain brut - mise payée <br> Pour un jeu équitable : $\displaystyle E(\text{gain net}) = 0$ |
+| Oublier les unités | Si $\displaystyle X$ est en euros : <br> $\displaystyle E(X)$ en euros <br> $\displaystyle V(X)$ en **euros²** <br> $\displaystyle \sigma(X)$ en euros |
+| Confondre variable aléatoire et valeur | Bien distinguer $\displaystyle X$ (variable aléatoire) de $\displaystyle x$ (valeur particulière) <br> $\displaystyle P(X = x)$ est la probabilité que $\displaystyle X$ prenne la valeur $\displaystyle x$ |
+
+## VI. Formules essentielles — mémo rapide
+
+| Formule | Expression |
+|---|---|
+| Loi de probabilité | $\displaystyle \sum_{i=1}^{n} P(X = x_i) = 1$ |
+| Espérance | $\displaystyle E(X) = \sum_{i=1}^{n} x_i \times P(X = x_i)$ |
+| Variance (définition) | $\displaystyle V(X) = E\left((X - E(X))^2\right)$ |
+| Variance (formule pratique) | $\displaystyle V(X) = E(X^2) - [E(X)]^2$ |
+| Écart type | $\displaystyle \sigma(X) = \sqrt{V(X)}$ |
+| Linéarité de l'espérance | $\displaystyle E(aX + b) = aE(X) + b$ |
+| Propriété de la variance | $\displaystyle V(aX + b) = a^2 V(X)$ |
+| Jeu équitable | $\displaystyle E(\text{gain net}) = 0$ |
+
+## VII. Méthodologie — stratégie de résolution
+
+| Type de problème | Méthode recommandée |
+|---|---|
+| Déterminer la loi de probabilité | 1. Identifier toutes les valeurs possibles <br> 2. Dénombrer les issues pour chaque valeur <br> 3. Calculer $\displaystyle P(X = x_i)$ <br> 4. Présenter sous forme de tableau <br> 5. Vérifier que la somme vaut 1 |
+| Calculer l'espérance | Utiliser : $\displaystyle E(X) = \sum_{i=1}^{n} x_i \times P(X = x_i)$ <br> Multiplier chaque valeur par sa probabilité et additionner |
+| Calculer la variance | Utiliser la formule pratique : $\displaystyle V(X) = E(X^2) - [E(X)]^2$ <br> 1. Calculer $\displaystyle E(X)$ <br> 2. Calculer $\displaystyle E(X^2)$ <br> 3. Appliquer la formule |
+| Calculer l'écart type | Calculer d'abord la variance, puis : <br> $\displaystyle \sigma(X) = \sqrt{V(X)}$ |
+| Rendre un jeu équitable | 1. Déterminer la loi du gain brut $\displaystyle G$ <br> 2. Calculer $\displaystyle E(G)$ <br> 3. Résoudre $\displaystyle E(G) - m = 0$ pour trouver la mise $\displaystyle m$ |
+| Calculer $\displaystyle P(X \leq a)$ ou $\displaystyle P(X \geq a)$ | Sommer les probabilités des valeurs qui vérifient la condition <br> $\displaystyle P(X \leq a) = \sum_{x_i \leq a} P(X = x_i)$ |
+
+| Point de vigilance | Conseil |
+|---|---|
+| Vérification de la loi | Toujours vérifier que la somme des probabilités vaut 1 |
+| Calcul de la variance | Utiliser la formule pratique $\displaystyle V(X) = E(X^2) - [E(X)]^2$ plutôt que la définition |
+| Distinction importante | Ne pas confondre $\displaystyle E(X^2)$ (espérance des carrés) et $\displaystyle [E(X)]^2$ (carré de l'espérance) |
+| Interprétation de l'espérance | L'espérance est une moyenne théorique, pas une valeur garantie |
+| Jeu équitable | Bien distinguer gain brut et gain net |
+| Unités | Attention aux unités : variance en unité², écart type en unité |

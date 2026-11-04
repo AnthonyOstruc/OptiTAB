@@ -1,0 +1,171 @@
+Titre: Représenter algébriquement et graphiquement les fonctions
+
+<!-- optitab:1 -->
+::: objectifs
+Calculer et lire des images et des antécédents, reconnaître les points d’une courbe, résoudre graphiquement des équations et inéquations du type $f(x) = k$, $f(x) \lt k$, $f(x) = g(x)$, $f(x) \lt g(x)$, reconnaître une fonction paire ou impaire, et résoudre une inéquation produit ou quotient avec un tableau de signes.
+:::
+
+## I. Image, antécédent, ensemble de définition
+
+::: definition
+Une **fonction** $f$ définie sur un ensemble $D$ associe à chaque nombre $x$ de $D$ un **unique** nombre noté $f(x)$, appelé **image** de $x$. Si $f(x) = y$, on dit que $x$ est **un antécédent** de $y$.
+:::
+
+Une fonction peut être donnée par une **formule**, par un **tableau de valeurs** ou par une **courbe**.
+
+::: exemple
+Soit $f(x) = x^2 - 2x - 3$.
+
+- Image de $4$ : $f(4) = 16 - 8 - 3 = 5$.
+- Antécédents de $-3$ : on résout $x^2 - 2x - 3 = -3$, soit $x^2 - 2x = 0$, c’est-à-dire $x(x - 2) = 0$. Les antécédents de $-3$ sont $0$ et $2$.
+:::
+
+::: remarque Ensemble de définition
+On exclut les valeurs interdites :
+
+- $x \mapsto \frac{1}{x - 2}$ est définie sur $\mathbb{R} \setminus \{2\}$ (pas de division par $0$) ;
+- $x \mapsto \sqrt{x + 1}$ est définie sur $[-1\,;+\infty[$ (pas de racine carrée d’un nombre négatif).
+:::
+
+::: attention
+Un nombre a toujours **une seule** image, mais il peut avoir aucun, un ou plusieurs antécédents.
+:::
+
+## II. Courbe représentative
+
+::: definition
+Dans un repère, la **courbe représentative** $\mathcal{C}_f$ de $f$ est l’ensemble des points $M(x\,;f(x))$ pour $x$ dans $D$. On dit que $\mathcal{C}_f$ a pour **équation** $y = f(x)$.
+:::
+
+::: propriete
+$$M(a\,;b) \in \mathcal{C}_f \iff a \in D \text{ et } b = f(a)$$
+:::
+
+::: exemple
+Avec $f(x) = x^2 - 2x - 3$ :
+
+- $A(-2\,;5)$ : $f(-2) = 4 + 4 - 3 = 5$, donc $A \in \mathcal{C}_f$ ;
+- $B(1\,;0)$ : $f(1) = 1 - 2 - 3 = -4 \neq 0$, donc $B \notin \mathcal{C}_f$.
+:::
+
+::: methode Lire une image, des antécédents
+- **Image de $a$** : on part de $a$ sur l’axe des abscisses, on monte (ou descend) jusqu’à la courbe, puis on lit l’ordonnée.
+- **Antécédents de $k$** : on trace la droite horizontale $y = k$ ; les antécédents sont les **abscisses** de ses points d’intersection avec la courbe.
+:::
+
+[IMAGE_1]
+
+## III. Résolution graphique d’équations et d’inéquations
+
+::: propriete Avec une droite horizontale
+- Les solutions de $f(x) = k$ sont les abscisses des points de $\mathcal{C}_f$ d’ordonnée $k$.
+- Les solutions de $f(x) \lt k$ sont les abscisses des points de $\mathcal{C}_f$ situés **strictement sous** la droite $y = k$ (pour $f(x) \gt k$ : strictement au-dessus).
+:::
+
+::: propriete Avec deux courbes
+- Les solutions de $f(x) = g(x)$ sont les abscisses des points d’intersection de $\mathcal{C}_f$ et $\mathcal{C}_g$.
+- Les solutions de $f(x) \lt g(x)$ sont les abscisses des points où $\mathcal{C}_f$ est **strictement sous** $\mathcal{C}_g$.
+:::
+
+::: exemple
+Avec $f(x) = x^2 - 2x - 3$ et $g(x) = x + 1$, on lit sur la figure :
+
+- $f(x) = g(x) \iff x = -1$ ou $x = 4$ ;
+- $f(x) \le g(x) \iff x \in [-1\,;4]$ (parabole sous la droite, bornes comprises) ;
+- $f(x) \lt 0 \iff x \in {]-1\,;3[}$ (parabole strictement sous l’axe des abscisses).
+:::
+
+[IMAGE_2]
+
+::: attention
+- Les solutions sont des valeurs de $x$ : on les lit sur l’axe des **abscisses**.
+- Inégalité large ($\le$, $\ge$) : bornes comprises, crochets fermés ; inégalité stricte ($\lt$, $\gt$) : crochets ouverts.
+- Une lecture graphique peut être imprécise : on la confirme par le calcul quand c’est possible.
+:::
+
+::: exemple Confirmation par le calcul
+$$
+\begin{aligned}
+f(x) = g(x) &\iff x^2 - 2x - 3 = x + 1 \\
+&\iff x^2 - 3x - 4 = 0 \\
+&\iff (x + 1)(x - 4) = 0
+\end{aligned}
+$$
+
+Donc $x = -1$ ou $x = 4$ : la lecture graphique est confirmée.
+:::
+
+## IV. Fonctions paires et impaires
+
+::: definition
+Soit $f$ définie sur un ensemble $D$ symétrique par rapport à $0$ (si $x \in D$, alors $-x \in D$).
+
+- $f$ est **paire** si, pour tout $x$ de $D$, $f(-x) = f(x)$.
+- $f$ est **impaire** si, pour tout $x$ de $D$, $f(-x) = -f(x)$.
+:::
+
+::: propriete Traduction géométrique
+- $f$ est paire si et seulement si $\mathcal{C}_f$ est symétrique par rapport à l’**axe des ordonnées** : si $M(x\,;y) \in \mathcal{C}_f$, alors $M'(-x\,;y) \in \mathcal{C}_f$.
+- $f$ est impaire si et seulement si $\mathcal{C}_f$ est symétrique par rapport à l’**origine** $O$ : si $N(x\,;y) \in \mathcal{C}_f$, alors $N'(-x\,;-y) \in \mathcal{C}_f$.
+:::
+
+[IMAGE_3]
+
+::: exemple
+$g(x) = 3x^2 - 5$ est paire : pour tout réel $x$,
+
+$$g(-x) = 3(-x)^2 - 5 = 3x^2 - 5 = g(x)$$
+
+$h(x) = x^3 - 3x$ est impaire : pour tout réel $x$,
+
+$$
+\begin{aligned}
+h(-x) &= (-x)^3 - 3(-x) \\
+&= -x^3 + 3x = -h(x)
+\end{aligned}
+$$
+
+$f(x) = x^2 - 2x - 3$ n’est ni paire ni impaire : $f(1) = -4$ et $f(-1) = 0$, donc $f(-1) \neq f(1)$ et $f(-1) \neq -f(1)$.
+:::
+
+::: attention
+Pour montrer qu’une fonction n’est **pas** paire (ou pas impaire), un seul contre-exemple numérique suffit. Pour montrer qu’elle **est** paire, il faut un calcul valable pour tout $x$.
+:::
+
+## V. Résolution algébrique avec un tableau de signes
+
+::: methode Résoudre une inéquation produit ou quotient
+1. Tout passer dans un membre pour comparer à $0$.
+2. Factoriser (produit ou quotient de facteurs affines).
+3. Étudier le signe de chaque facteur : $ax + b$ s’annule en $-\frac{b}{a}$ et a le signe de $a$ à droite de cette valeur.
+4. Appliquer la règle des signes dans un tableau, puis lire les solutions.
+:::
+
+::: exemple
+Résoudre $x^2 - 2x - 3 \le 0$. On factorise : $x^2 - 2x - 3 = (x + 1)(x - 3)$.
+:::
+
+::: tableau
+x : -\infty, -1, 3, +\infty
+x+1 : , -, z, +, t, +,
+x-3 : , -, t, -, z, +,
+Produit : , +, z, -, z, +,
+:::
+
+::: resultat
+$$(x + 1)(x - 3) \le 0 \iff x \in [-1\,;3]$$
+
+Ce que confirme la courbe : la parabole est sous l’axe des abscisses entre $-1$ et $3$.
+:::
+
+::: attention
+Pour un quotient comme $\frac{x + 1}{x - 3}$, la valeur $3$ est **interdite** (double barre dans le tableau) : elle est toujours exclue de l’ensemble des solutions, même pour une inégalité large.
+:::
+
+::: retenir
+- Une image est unique ; un nombre peut avoir aucun, un ou plusieurs antécédents.
+- $M(a\,;b) \in \mathcal{C}_f \iff b = f(a)$.
+- $f(x) = k$, $f(x) \lt k$, $f(x) = g(x)$, $f(x) \lt g(x)$ : les solutions se lisent sur l’axe des abscisses.
+- Paire : $f(-x) = f(x)$ (symétrie d’axe des ordonnées) ; impaire : $f(-x) = -f(x)$ (symétrie de centre $O$).
+- Inéquation : comparer à $0$, factoriser, tableau de signes.
+:::

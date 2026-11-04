@@ -1,0 +1,66 @@
+Titre: Résumé : Primitives
+
+<!-- optitab:1 -->
+::: objectifs
+Retenir l’essentiel : définition, primitives à une constante près, tableaux des primitives usuelles et des formes composées, primitive d’un produit, lecture graphique. Programme de Terminale.
+:::
+
+## I. Définition
+
+::: formule
+$F$ primitive de $f$ sur $I$ $\iff F' = f$ sur $I$
+:::
+
+1. Les primitives de $f$ sur $I$ sont les fonctions $F + C$, avec $C$ réel.
+2. Une condition $F(x_0) = y_0$ fixe une **unique** primitive (on calcule $C$).
+3. On vérifie toujours une primitive en la dérivant.
+
+[IMAGE_1]
+
+## II. Primitives usuelles
+
+| $f(x)$ | $F(x)$ | Intervalle |
+|---|---|---|
+| $x^n$ ($n \in \mathbb{N}$) | $\dfrac{x^{n+1}}{n + 1}$ | $\mathbb{R}$ |
+| $\dfrac{1}{x^2}$ | $-\dfrac{1}{x}$ | $]0\,;+\infty[$ ou $]-\infty\,;0[$ |
+| $\dfrac{1}{\sqrt{x}}$ | $2\sqrt{x}$ | $]0\,;+\infty[$ |
+| $\dfrac{1}{x}$ | $\ln x$ | $]0\,;+\infty[$ |
+| $e^x$ | $e^x$ | $\mathbb{R}$ |
+| $\cos x$ | $\sin x$ | $\mathbb{R}$ |
+| $\sin x$ | $-\cos x$ | $\mathbb{R}$ |
+
+Linéarité : une primitive de $af + bg$ est $aF + bG$.
+
+## III. Formes composées
+
+| Forme | Primitive | Condition |
+|---|---|---|
+| $u'u^n$ | $\dfrac{u^{n+1}}{n + 1}$ | $n \in \mathbb{N}$ |
+| $\dfrac{u'}{u^2}$ | $-\dfrac{1}{u}$ | $u \neq 0$ |
+| $\dfrac{u'}{\sqrt{u}}$ | $2\sqrt{u}$ | $u \gt 0$ |
+| $\dfrac{u'}{u}$ | $\ln u$ | $u \gt 0$ |
+| $u'e^u$ | $e^u$ | aucune |
+| $u'\cos u$ ; $u'\sin u$ | $\sin u$ ; $-\cos u$ | aucune |
+
+1. Cas $u(x) = ax + b$ : $e^{ax+b} \to \frac{1}{a}e^{ax+b}$ ; $\cos(ax + b) \to \frac{1}{a}\sin(ax + b)$.
+2. Produit : identification, ou intégration par parties : si $G$ est une primitive de $u'v$, alors $uv - G$ est une primitive de $uv'$.
+
+## IV. Lecture graphique
+
+$f \gt 0 \Rightarrow F$ croissante ; $f \lt 0 \Rightarrow F$ décroissante ; $f$ change de signe en $x_0$ $\Rightarrow$ $F$ a un extremum en $x_0$.
+
+[IMAGE_2]
+
+## V. Les pièges à éviter
+
+::: attention Les 5 erreurs classiques
+1. Dériver au lieu de primitiver : $x^n \to \frac{x^{n+1}}{n + 1}$, pas $nx^{n-1}$.
+2. Oublier la constante d’ajustement : $xe^{x^2} \to \frac{1}{2}e^{x^2}$ ; $e^{3x} \to \frac{1}{3}e^{3x}$.
+3. Oublier le signe moins : $\sin x \to -\cos x$.
+4. Écrire $\ln u$ sans vérifier que $u \gt 0$ sur l’intervalle.
+5. Primitiver un produit facteur par facteur.
+:::
+
+::: remarque Réflexe
+Je repère $u$ et $u'$, j’ajuste par une constante, puis je vérifie en dérivant.
+:::

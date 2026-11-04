@@ -1,0 +1,609 @@
+Titre: Algorithmes du programme de Première
+
+<!-- optitab:1 -->
+::: objectifs
+Écrire, lire et utiliser en Python les algorithmes du programme de Première : terme, somme et seuil d'une suite ; tableau de valeurs et balayage ; coefficients directeurs de sécantes ; méthode d'Euler et valeur approchée de $e$ ; approximation de $\pi$ ; simulation d'expériences aléatoires, fréquence et moyenne d'un échantillon.
+:::
+
+::: prerequis
+Programme de Seconde : variables, fonctions `def`, instructions conditionnelles `if`, boucles `for` et `while`. Suites numériques, second degré, dérivation, fonction exponentielle et probabilités conditionnelles de Première.
+:::
+
+## I. Les outils
+
+Les algorithmes de ce chapitre n'utilisent que des outils vus en Seconde. Ils sont rappelés ici ; le reste du chapitre les applique aux notions de Première.
+
+::: rappel Rappel de Seconde
+- `def f(x):` puis `return …` définit une fonction qui renvoie un résultat.
+- `if condition:` … `else:` … exécute un bloc ou l'autre.
+- `for k in range(n):` répète un bloc $n$ fois ; `k` prend les valeurs $0$, $1$, …, $n-1$. `range(a, b)` donne les entiers de $a$ à $b-1$.
+- `while condition:` répète un bloc **tant que** la condition est vraie.
+- Un **accumulateur** s'initialise **avant** la boucle : $0$ pour une somme, $1$ pour un produit, $0$ pour un compteur.
+:::
+
+| Type d'algorithme | Boucle utilisée |
+|---|---|
+| terme de rang $n$, somme, factorielle, méthode d'Euler | `for` : nombre de tours connu |
+| seuil, balayage | `while` : on répète tant que le but n'est pas atteint |
+| simulation de $N$ expériences | `for` et un compteur |
+
+## II. Suites numériques
+
+### 1. Calculer un terme de rang donné
+
+::: methode Terme d'une suite définie par récurrence
+Pour calculer $u_n$, on part de $u_0$ et on applique $n$ fois la relation de récurrence : c'est une boucle `for` de $n$ tours. La variable `k` ne sert qu'à compter les tours.
+:::
+
+::: exemple $u_0 = 0$ et $u_{n+1} = 0{,}5\,u_n + 2$
+```python
+def terme(n):
+    u = 0
+    for k in range(n):
+        u = 0.5 * u + 2
+    return u
+
+for n in range(6):
+    print(n, terme(n))
+```
+
+```console
+0 0
+1 2.0
+2 3.0
+3 3.5
+4 3.75
+5 3.875
+```
+
+Le **tableau d'état** de l'appel `terme(3)` donne la valeur de `u` à la fin de chaque tour :
+
+| Étape | `k` | `u` |
+|---|---|---|
+| avant la boucle | — | $0$ |
+| tour 1 | $0$ | $0{,}5 \times 0 + 2 = 2$ |
+| tour 2 | $1$ | $0{,}5 \times 2 + 2 = 3$ |
+| tour 3 | $2$ | $0{,}5 \times 3 + 2 = 3{,}5$ |
+:::
+
+::: remarque Suite définie de façon explicite
+Si $u_n = f(n)$, aucune boucle n'est nécessaire : pour $u_n = 3n^2 + 1$, la fonction contient la seule ligne `return 3 * n**2 + 1`.
+:::
+
+### 2. Somme de termes et factorielle
+
+::: methode Somme $u_0 + u_1 + \dots + u_n$
+On fait avancer **ensemble** l'accumulateur `s` et le terme `u`. De $u_0$ à $u_n$, il y a $n+1$ termes : la boucle fait $n+1$ tours.
+:::
+
+::: exemple $1 + 2 + 2^2 + \dots + 2^{10}$
+Ici $u_0 = 1$ et $u_{k+1} = 2u_k$.
+
+```python
+def somme(n):
+    s = 0
+    u = 1
+    for k in range(n + 1):
+        s = s + u
+        u = 2 * u
+    return s
+
+print(somme(10))
+```
+
+```console
+2047
+```
+
+On retrouve la formule de la somme des termes d'une suite géométrique :
+
+$$1 + 2 + \dots + 2^{10} = \frac{2^{11} - 1}{2 - 1} = 2047$$
+:::
+
+::: exemple Factorielle
+Pour $n \ge 1$, $n! = 1 \times 2 \times \dots \times n$. Un produit s'initialise à $1$.
+
+```python
+def factorielle(n):
+    p = 1
+    for k in range(1, n + 1):
+        p = p * k
+    return p
+
+print(factorielle(10))
+```
+
+```console
+3628800
+```
+:::
+
+### 3. Algorithme de seuil
+
+::: methode Plus petit rang $n$ tel que $u_n \gt A$
+On calcule les termes un par un **tant que** le seuil n'est pas dépassé, en comptant les tours. La condition du `while` est le **contraire** de la condition cherchée : on veut $u_n \gt A$, on répète donc tant que $u \le A$. À la sortie, `n` est le rang cherché.
+:::
+
+::: exemple $u_0 = 2$, $u_{n+1} = 1{,}5\,u_n$ et le seuil $A = 50$
+```python
+def seuil(A):
+    n = 0
+    u = 2
+    while u <= A:
+        u = 1.5 * u
+        n = n + 1
+    return n
+
+print(seuil(50))
+```
+
+```console
+8
+```
+
+En effet $u_7 = 2 \times 1{,}5^7 \approx 34{,}17 \le 50$ et $u_8 = 2 \times 1{,}5^8 \approx 51{,}26 \gt 50$.
+:::
+
+[IMAGE_1]
+
+::: attention Condition du `while`
+Écrire `while u > A:` est une erreur classique : comme $u_0 = 2 \le 50$, la condition est fausse dès le départ, la boucle ne fait aucun tour et la fonction renvoie $0$.
+:::
+
+### 4. Une suite qui ne dépasse jamais le seuil
+
+Un algorithme de seuil ne s'arrête que si le seuil est **réellement dépassé** à partir d'un certain rang. Il faut le justifier avant de lancer le programme.
+
+::: exemple $u_0 = 0$ et $u_{n+1} = 0{,}5\,u_n + 2$
+```python
+def seuil(A):
+    n = 0
+    u = 0
+    while u <= A:
+        u = 0.5 * u + 2
+        n = n + 1
+    return n
+
+print(seuil(3.9))
+```
+
+```console
+6
+```
+
+En revanche, l'appel `seuil(5)` ne se termine jamais. Posons $v_n = u_n - 4$ :
+
+$$
+\begin{aligned}
+v_{n+1} &= u_{n+1} - 4 \\
+&= 0{,}5\,u_n - 2 \\
+&= 0{,}5\,(u_n - 4) \\
+&= 0{,}5\,v_n
+\end{aligned}
+$$
+
+La suite $(v_n)$ est géométrique de raison $0{,}5$ et de premier terme $v_0 = -4$, donc $u_n = 4 - 4 \times 0{,}5^n$. Ainsi $u_n \lt 4$ pour tout $n$ : la condition `u <= 5` reste toujours vraie et la boucle est **infinie**.
+:::
+
+[IMAGE_2]
+
+::: conseil Un garde-fou
+On peut limiter le nombre de tours en prenant pour condition `u <= A and n < 1000` ; après la boucle, on teste si le seuil a bien été dépassé avant de renvoyer `n`.
+:::
+
+## III. Fonctions : tableau de valeurs et balayage
+
+### 1. Tableau de valeurs
+
+::: exemple $f(x) = x^2 - 4x + 1$ pour $x$ entier de $-1$ à $5$
+```python
+def f(x):
+    return x**2 - 4*x + 1
+
+for x in range(-1, 6):
+    print(x, f(x))
+```
+
+```console
+-1 6
+0 1
+1 -2
+2 -3
+3 -2
+4 1
+5 6
+```
+
+On lit le minimum $f(2) = -3$, qui est bien l'ordonnée du sommet car $f(x) = (x - 2)^2 - 3$. La fonction change de signe entre $0$ et $1$, puis entre $3$ et $4$ : chaque intervalle contient une solution de $f(x) = 0$.
+:::
+
+### 2. Balayage
+
+::: methode Encadrer une solution de $f(x) = 0$
+On part d'un nombre $a$ et on avance de `pas` en `pas` **tant que** $f$ garde le même signe. On obtient un encadrement d'amplitude `pas` de la solution.
+:::
+
+::: exemple Solution de $f(x) = 0$ dans $[0\,;1]$
+$f$ est strictement décroissante sur $[0\,;2]$, avec $f(0) = 1 \gt 0$ et $f(1) = -2 \lt 0$.
+
+```python
+def balayage(a, pas):
+    x = a
+    while f(x + pas) > 0:
+        x = x + pas
+    x = round(x, 6)
+    return x, round(x + pas, 6)
+
+print(balayage(0, 0.1))
+print(balayage(0, 0.01))
+print(balayage(0, 0.001))
+```
+
+```console
+(0.2, 0.3)
+(0.26, 0.27)
+(0.267, 0.268)
+```
+
+La fonction `round(x, 6)` arrondit à $10^{-6}$ : elle efface les erreurs d'arrondi des nombres décimaux en machine (sans elle, Python afficherait par exemple `0.30000000000000004`).
+
+**Vérification :** le discriminant de $x^2 - 4x + 1$ vaut $\Delta = 12$, d'où la solution $x_1 = 2 - \sqrt{3} \approx 0{,}2679$, qui appartient bien à $[0{,}267\,;0{,}268]$.
+:::
+
+## IV. Dérivation : coefficients directeurs des sécantes
+
+Le coefficient directeur de la sécante qui passe par les points de la courbe d'abscisses $x$ et $x + h$ est le taux de variation
+
+$$\frac{f(x + h) - f(x)}{h}$$
+
+Quand $h$ tend vers $0$, il tend vers le nombre dérivé $f'(x)$.
+
+::: exemple Liste des coefficients directeurs pour un pas donné
+Pour $f(x) = x^2$ et le pas $h = 0{,}1$ :
+
+```python
+def f(x):
+    return x**2
+
+h = 0.1
+for x in range(4):
+    t = (f(x + h) - f(x)) / h
+    print(x, round(t, 6))
+```
+
+```console
+0 0.1
+1 2.1
+2 4.1
+3 6.1
+```
+
+En effet
+
+$$\frac{(x + h)^2 - x^2}{h} = \frac{2xh + h^2}{h} = 2x + h$$
+
+Chaque valeur dépasse $f'(x) = 2x$ de $h = 0{,}1$ : plus le pas est petit, plus la liste est proche des nombres dérivés.
+:::
+
+## V. Fonction exponentielle
+
+### 1. La méthode d'Euler
+
+La fonction exponentielle est l'unique fonction $f$ dérivable sur $\mathbb{R}$ telle que $f' = f$ et $f(0) = 1$. Pour $h$ proche de $0$, l'approximation affine $f(x + h) \approx f(x) + h\,f'(x)$ donne
+
+$$f(x + h) \approx f(x) + h\,f(x) = (1 + h)\,f(x)$$
+
+::: methode Méthode d'Euler
+On part du point $(0\,;1)$ et, à chaque tour, on avance de $h$ en abscisse et on multiplie l'ordonnée par $1 + h$ :
+
+$$x_{k+1} = x_k + h \qquad y_{k+1} = y_k + h\,y_k$$
+
+Les points $(x_k\,;y_k)$ forment une ligne brisée proche de la courbe de la fonction exponentielle.
+:::
+
+::: exemple Pas $h = 0{,}25$ sur $[0\,;2]$
+```python
+h = 0.25
+x = 0
+y = 1
+for k in range(8):
+    x = x + h
+    y = y + h * y
+    print(x, round(y, 4))
+```
+
+```console
+0.25 1.25
+0.5 1.5625
+0.75 1.9531
+1.0 2.4414
+1.25 3.0518
+1.5 3.8147
+1.75 4.7684
+2.0 5.9605
+```
+:::
+
+[IMAGE_3]
+
+::: remarque
+La courbe de la fonction exponentielle est au-dessus de ses tangentes : la méthode d'Euler donne ici des valeurs par défaut ($5{,}96 \lt e^2 \approx 7{,}39$). L'écart diminue quand on choisit un pas plus petit.
+:::
+
+### 2. Valeur approchée de $e$
+
+Avec $n$ pas de longueur $h = \dfrac{1}{n}$, on arrive en $x = 1$ ; l'ordonnée $y$ est multipliée $n$ fois par $1 + \dfrac{1}{n}$, donc elle vaut $\left(1 + \dfrac{1}{n}\right)^n$, valeur approchée de $e = \exp(1)$.
+
+```python
+for n in [10, 100, 1000, 10**6]:
+    print(n, (1 + 1/n)**n)
+```
+
+```console
+10 2.5937424601000023
+100 2.7048138294215285
+1000 2.7169239322355936
+1000000 2.7182804690957534
+```
+
+On admet que ces valeurs se rapprochent de $e \approx 2{,}718\,28$, en restant inférieures à $e$.
+
+::: attention Les parenthèses
+`(1 + 1/n)**n` calcule $\left(1 + \frac{1}{n}\right)^n$. Sans les parenthèses, `1 + 1/n**n` calcule $1 + \frac{1}{n^n}$, qui est très proche de $1$.
+:::
+
+## VI. Trigonométrie : approximation de $\pi$
+
+Archimède encadre la longueur $2\pi$ d'un cercle de rayon $1$ par les périmètres de polygones réguliers. On présente ici les polygones **inscrits** dans le cercle.
+
+::: propriete Polygone inscrit
+Soit $c_n$ la longueur d'un côté du polygone régulier à $n$ côtés inscrit dans un cercle de rayon $1$. Son demi-périmètre $p_n = \dfrac{n\,c_n}{2}$ est inférieur à $\pi$, et
+
+$$c_{2n} = \sqrt{2 - \sqrt{4 - c_n^2}}$$
+:::
+
+[IMAGE_4]
+
+::: demonstration
+Soit $A$ et $B$ deux sommets consécutifs du polygone à $n$ côtés, $I$ le milieu de $[AB]$ et $C$ le point du cercle sur la demi-droite $[OI)$ : $[AC]$ est un côté du polygone à $2n$ côtés.
+
+Dans le triangle $OIA$ rectangle en $I$ :
+
+$$
+\begin{aligned}
+OI^2 &= OA^2 - AI^2 \\
+&= 1 - \frac{c_n^2}{4}
+\end{aligned}
+$$
+
+donc $OI = \dfrac{\sqrt{4 - c_n^2}}{2}$.
+
+Dans le triangle $AIC$ rectangle en $I$, avec $IC = 1 - OI$ :
+
+$$
+\begin{aligned}
+AC^2 &= AI^2 + IC^2 \\
+&= \frac{c_n^2}{4} + 1 - 2\,OI + OI^2 \\
+&= \frac{c_n^2}{4} + 1 - \sqrt{4 - c_n^2} + 1 - \frac{c_n^2}{4} \\
+&= 2 - \sqrt{4 - c_n^2}
+\end{aligned}
+$$
+:::
+
+::: exemple De l'hexagone au polygone à $96$ côtés
+L'hexagone régulier inscrit est formé de $6$ triangles équilatéraux : $c_6 = 1$ et $p_6 = 3$.
+
+```python
+from math import sqrt
+
+n = 6
+c = 1
+for k in range(4):
+    c = sqrt(2 - sqrt(4 - c**2))
+    n = 2 * n
+    print(n, n * c / 2)
+```
+
+```console
+12 3.1058285412302498
+24 3.132628613281237
+48 3.139350203046872
+96 3.14103195089053
+```
+
+Avec $96$ côtés, Archimède obtenait ainsi $3{,}1410 \lt \pi$. En utilisant aussi les polygones circonscrits, il prouvait que $\dfrac{223}{71} \lt \pi \lt \dfrac{22}{7}$.
+:::
+
+## VII. Probabilités : simuler une expérience aléatoire
+
+### 1. Les fonctions du module `random`
+
+- `random()` renvoie un nombre réel au hasard dans $[0\,;1[$ : le test `random() < p` est vrai avec la probabilité $p$.
+- `randint(a, b)` renvoie un entier au hasard entre $a$ et $b$ **inclus** : `randint(1, 6)` simule un dé équilibré.
+
+Les résultats changent à chaque exécution ; les affichages de cette partie sont ceux d'une exécution.
+
+### 2. Fréquence d'un événement
+
+::: methode Calculer une fréquence
+On répète $N$ fois l'expérience avec une boucle `for`, on compte avec un compteur `c` les fois où l'événement est réalisé, puis on renvoie $\dfrac{c}{N}$.
+:::
+
+::: exemple Somme de deux dés égale à $7$
+```python
+from random import randint
+
+def frequence(N):
+    c = 0
+    for i in range(N):
+        d1 = randint(1, 6)
+        d2 = randint(1, 6)
+        if d1 + d2 == 7:
+            c = c + 1
+    return c / N
+
+print(frequence(10000))
+```
+
+```console
+0.1642
+```
+
+Sur les $36$ issues équiprobables, $6$ donnent une somme égale à $7$ : la probabilité vaut $\dfrac{6}{36} = \dfrac{1}{6} \approx 0{,}167$. Pour $N$ grand, la fréquence observée en est proche.
+:::
+
+::: exemple Toutes les sommes : histogramme de $1000$ lancers
+La liste `eff` (voir la notion « Notion de liste ») compte les lancers de chaque somme $s$.
+
+```python
+from random import randint
+
+N = 1000
+eff = [0] * 13
+for i in range(N):
+    d1 = randint(1, 6)
+    d2 = randint(1, 6)
+    s = d1 + d2
+    eff[s] = eff[s] + 1
+for s in range(2, 13):
+    print(s, eff[s])
+```
+
+```console
+2 32
+3 52
+4 86
+5 120
+6 139
+7 173
+8 121
+9 113
+10 81
+11 59
+12 24
+```
+:::
+
+[IMAGE_5]
+
+### 3. Moyenne d'un échantillon
+
+::: exemple Un jeu de dé
+On lance un dé équilibré : on gagne $4$ € avec un $6$, $1$ € avec un $4$ ou un $5$, et on perd $1$ € sinon. Le gain $X$ a pour espérance
+
+$$
+\begin{aligned}
+E(X) &= 4 \times \frac{1}{6} + 1 \times \frac{2}{6} - 1 \times \frac{3}{6} \\
+&= \frac{3}{6} = 0{,}5
+\end{aligned}
+$$
+
+```python
+from random import randint
+
+def gain():
+    d = randint(1, 6)
+    if d == 6:
+        return 4
+    elif d >= 4:
+        return 1
+    else:
+        return -1
+
+def moyenne(n):
+    s = 0
+    for i in range(n):
+        s = s + gain()
+    return s / n
+
+print(moyenne(10000))
+```
+
+```console
+0.4776
+```
+
+La moyenne d'un échantillon de grande taille est proche de l'espérance $E(X) = 0{,}5$ ; elle change d'un échantillon à l'autre.
+:::
+
+### 4. Succession de deux épreuves
+
+::: exemple Deux tirages sans remise
+Une urne contient $3$ boules rouges et $2$ vertes. On tire une boule, on ne la remet pas, puis on en tire une seconde. La composition de l'urne au second tirage dépend du premier.
+
+[IMAGE_6]
+
+D'après l'arbre, la probabilité que les deux boules soient de la même couleur vaut
+
+$$
+\begin{aligned}
+&\frac{3}{5} \times \frac{2}{4} + \frac{2}{5} \times \frac{1}{4} \\
+&= \frac{6}{20} + \frac{2}{20} = 0{,}4
+\end{aligned}
+$$
+
+La fonction `tirage(r, v)` simule un tirage dans une urne de `r` boules rouges et `v` vertes ; `experience()` enchaîne les deux épreuves.
+
+```python
+from random import random
+
+def tirage(r, v):
+    if random() < r / (r + v):
+        return "R"
+    return "V"
+
+def experience():
+    t1 = tirage(3, 2)
+    if t1 == "R":
+        t2 = tirage(2, 2)
+    else:
+        t2 = tirage(3, 1)
+    return t1 + t2
+
+N = 10000
+c = 0
+for i in range(N):
+    e = experience()
+    if e == "RR" or e == "VV":
+        c = c + 1
+print(c / N)
+```
+
+```console
+0.406
+```
+
+La fréquence observée est proche de la probabilité $0{,}4$.
+:::
+
+## VIII. Bilan
+
+| Partie du programme | Algorithme | Structure |
+|---|---|---|
+| Suites | terme $u_n$, somme, factorielle | `for` |
+| Suites | seuil | `while` (condition contraire) |
+| Second degré, fonctions | tableau de valeurs, balayage | `for`, `while` |
+| Dérivation | coefficients directeurs des sécantes | `for` |
+| Exponentielle | méthode d'Euler, valeur approchée de $e$ | `for` |
+| Trigonométrie | approximation de $\pi$ (Archimède) | `for` |
+| Probabilités | fréquence, moyenne, deux épreuves | `for` et `random` |
+
+::: attention Pièges fréquents
+- `range(n)` va de $0$ à $n-1$ : la somme $u_0 + \dots + u_n$ demande `range(n + 1)`.
+- L'accumulateur s'initialise **avant** la boucle ; un produit commence à $1$.
+- Dans un algorithme de seuil, la condition du `while` est le **contraire** de la condition cherchée.
+- Avant de chercher un seuil, on vérifie qu'il sera dépassé, sinon la boucle est infinie.
+- Les nombres décimaux sont arrondis en machine : `round` rend l'affichage lisible.
+- `randint(1, 6)` inclut $6$ ; une simulation donne un résultat différent à chaque exécution.
+:::
+
+::: retenir
+- Terme de rang $n$ : $n$ applications de la relation de récurrence (boucle `for`).
+- Seuil : boucle `while` et compteur, à condition que le seuil soit atteint.
+- Balayage : on avance de `pas` en `pas` tant que $f$ garde le même signe.
+- Sécantes : $\dfrac{f(x + h) - f(x)}{h}$ tend vers $f'(x)$ quand $h$ tend vers $0$.
+- Euler : $y \leftarrow y + h\,y$ ; $\left(1 + \dfrac{1}{n}\right)^n$ tend vers $e$.
+- Simulation : `random() < p` réalise un événement de probabilité $p$ ; fréquence $= \dfrac{c}{N}$.
+
+Fiche de synthèse dans l'onglet Fiches !
+:::

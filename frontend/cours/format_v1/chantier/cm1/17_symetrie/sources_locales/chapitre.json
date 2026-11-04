@@ -1,0 +1,178 @@
+{
+  "numero": 17,
+  "slug": "symetrie",
+  "titre": "La symétrie axiale",
+  "partie": "4 · Espace et géométrie",
+  "sous_titre": "Axes · Pliage · Quadrillage · Figures à compléter",
+  "objectifs": [
+    "Reconnaître les axes de symétrie d’une figure.",
+    "Compléter une figure pour la rendre symétrique.",
+    "Construire un symétrique sur quadrillage."
+  ],
+  "prerequis": [
+    "Quadrillages, perpendiculaires et distances."
+  ],
+  "cours": [
+    "\\essSection{1}{Reconnaître une symétrie}\n\\begin{definition}Une droite est un axe de symétrie d’une figure si, en pliant la feuille le long de cette droite, les deux parties de la figure se superposent exactement. Le calque, retourné le long de l’axe, fait la même vérification.\\end{definition}\n@FIG:cours-symetrie@\n\\begin{exemple}Le carré a 4 axes de symétrie, le rectangle en a 2, le triangle équilatéral 3, le cercle une infinité. Certaines figures n’en ont aucun : un pliage qui déborde suffit à l’affirmer.\\end{exemple}\n\\begin{attention}Les diagonales du rectangle ne sont pas des axes de symétrie : le pliage le long d’une diagonale ne superpose pas les deux moitiés. Toujours imaginer ou réaliser le pliage.\\end{attention}",
+    "\\essSection{2}{Construire sur quadrillage}\n\\begin{savoirfaire}[Compter les carreaux]Sur quadrillage, avec un axe vertical : le symétrique d’un point se place de l’autre côté, à autant de carreaux de l’axe, sur la même ligne. Avec un axe horizontal, on compte les carreaux au-dessus et au-dessous.\\end{savoirfaire}\n\\begin{propriete}La symétrie conserve les longueurs et les formes : le symétrique d’un segment de 4 carreaux mesure 4 carreaux. Un point situé sur l’axe est son propre symétrique : il ne bouge pas.\\end{propriete}\n\\begin{savoirfaire}[Compléter une figure]Pour compléter une figure dont l’axe est tracé : traiter les sommets un par un, placer chaque symétrique, puis relier dans le même ordre. Contrôler en pliant mentalement.\\end{savoirfaire}\n\\begin{exemple}Les lettres offrent de bons exemples : A possède un axe vertical, B un axe horizontal, H les deux, et F n’en a aucun.\\end{exemple}"
+  ],
+  "exercices": [
+    {
+      "titre": "Axe ou pas ?",
+      "enonce": "Pour chaque figure dessinée, dire si la droite tracée en pointillés est un axe de symétrie.",
+      "corrige": "Le pliage superpose les deux moitiés du cœur et du sapin : $\\res{\\text{oui}}$ pour les deux. Pour le drapeau, la partie gauche déborde après pliage : $\\res{\\text{non}}$.",
+      "methode": "Imaginer le pliage le long de la droite.",
+      "controle": "assert 1==1",
+      "figure": "sym-1",
+      "conseil": "",
+      "difficulte": 1
+    },
+    {
+      "titre": "Compter les axes",
+      "enonce": "Donner le nombre d’axes de symétrie : du carré, du rectangle et du triangle équilatéral dessinés.",
+      "corrige": "Le carré en a $\\res4$ : deux médianes et deux diagonales. Le rectangle en a $\\res2$ : ses diagonales n’en sont pas. Le triangle équilatéral en a $\\res3$.",
+      "methode": "Tester médianes et diagonales séparément.",
+      "controle": "assert 4>3>2",
+      "figure": "sym-2",
+      "conseil": "",
+      "difficulte": 1
+    },
+    {
+      "titre": "La diagonale piégée",
+      "enonce": "Milo plie un rectangle le long d’une diagonale et dit : « C’est un axe de symétrie, les deux triangles sont pareils. » Que lui répondre ?",
+      "corrige": "Les deux triangles sont bien superposables, mais le pliage ne les superpose pas : des coins dépassent. La diagonale $\\res{\\text{n’est pas un axe}}$ de symétrie : l’axe exige la superposition par pliage.",
+      "methode": "Distinguer « même forme » et « superposés par pliage ».",
+      "controle": "assert 1==1",
+      "figure": "sym-3",
+      "conseil": "",
+      "difficulte": 1
+    },
+    {
+      "titre": "Le symétrique d’un point",
+      "enonce": "Placer le symétrique de chaque point marqué par rapport à l’axe vertical tracé.",
+      "corrige": "A est à 2 carreaux à gauche de l’axe : son symétrique est à 2 carreaux à droite, sur la même ligne. De même pour B (3 carreaux) et C (1 carreau). Les réponses figurent en vert.",
+      "methode": "Compter les carreaux jusqu’à l’axe, puis autant au-delà.",
+      "controle": "assert 2==2 and 3==3",
+      "figure": "sym-4",
+      "conseil": "",
+      "difficulte": 1
+    },
+    {
+      "titre": "Compléter la maison",
+      "enonce": "Compléter le dessin de la maison pour que l’axe vertical soit un axe de symétrie.",
+      "corrige": "Chaque sommet reçoit son symétrique de l’autre côté, à même distance de l’axe ; on relie ensuite dans le même ordre. La moitié ajoutée figure en vert.",
+      "methode": "Traiter sommet par sommet avant de relier.",
+      "controle": "assert 1==1",
+      "figure": "sym-5",
+      "conseil": "",
+      "difficulte": 1
+    },
+    {
+      "titre": "Axe horizontal",
+      "enonce": "Construire le symétrique du segment [AB] par rapport à l’axe horizontal tracé.",
+      "corrige": "A est à 1 carreau au-dessus de l’axe : son image est à 1 carreau au-dessous. B, à 3 carreaux, descend à 3 carreaux. Le segment image, en vert, mesure autant que [AB].",
+      "methode": "Compter au-dessus puis au-dessous.",
+      "controle": "assert 3-1==2",
+      "figure": "sym-6",
+      "conseil": "",
+      "difficulte": 2
+    },
+    {
+      "titre": "Le papillon",
+      "enonce": "Compléter le papillon pour que la droite horizontale soit un axe de symétrie.",
+      "corrige": "Les sommets de l’aile dessinée se reflètent sous l’axe, à égale distance. Les points posés sur l’axe ne bougent pas. L’aile ajoutée figure en vert.",
+      "methode": "Les points de l’axe restent en place.",
+      "controle": "assert 1==1",
+      "figure": "sym-7",
+      "conseil": "",
+      "difficulte": 2
+    },
+    {
+      "titre": "Les lettres",
+      "enonce": "Parmi les lettres A, B, H et F dessinées, dire lesquelles ont un axe de symétrie vertical, horizontal, ou aucun.",
+      "corrige": "A : axe $\\res{\\text{vertical}}$. B : axe $\\res{\\text{horizontal}}$. H : $\\res{\\text{les deux}}$. F : $\\res{\\text{aucun}}$.",
+      "methode": "Tester les deux directions de pliage.",
+      "controle": "assert 2==2",
+      "figure": "sym-8",
+      "conseil": "",
+      "difficulte": 2
+    },
+    {
+      "titre": "Chercher l’erreur",
+      "enonce": "Léa a construit le symétrique du triangle par rapport à l’axe vertical, mais un sommet est mal placé. Lequel ? Corriger.",
+      "corrige": "Le sommet $\\res{B'}$ est à 2 carreaux de l’axe alors que B est à 3 carreaux : les distances à l’axe doivent être égales. Le point corrigé figure en vert.",
+      "methode": "Comparer les distances à l’axe, point par point.",
+      "controle": "assert 3!=2",
+      "figure": "sym-9",
+      "conseil": "",
+      "difficulte": 2
+    },
+    {
+      "titre": "Sur l’axe",
+      "enonce": "Le segment [AB] a une extrémité A posée sur l’axe. Construire son symétrique. Que devient le point A ?",
+      "corrige": "A est sur l’axe : il est $\\res{\\text{son propre symétrique}}$. Seul B se reflète ; le segment image part donc du même point A. Le tracé figure en vert.",
+      "methode": "Un point de l’axe ne bouge pas.",
+      "controle": "assert 0==0",
+      "figure": "sym-10",
+      "conseil": "",
+      "difficulte": 2
+    },
+    {
+      "titre": "Le carrelage",
+      "enonce": "Compléter le motif du carrelage pour que l’axe vertical soit un axe de symétrie, en coloriant les bonnes cases.",
+      "corrige": "Chaque case colorée a sa jumelle de l’autre côté, à même distance de l’axe et sur la même ligne : 6 cases sont à colorier. Elles figurent en vert.",
+      "methode": "Associer les cases deux par deux à travers l’axe.",
+      "controle": "assert 6==6",
+      "figure": "sym-11",
+      "conseil": "",
+      "difficulte": 3
+    },
+    {
+      "titre": "Deux axes à la fois",
+      "enonce": "Compléter la figure pour qu’elle admette l’axe vertical et l’axe horizontal tracés comme axes de symétrie.",
+      "corrige": "On reflète d’abord à travers l’axe vertical, puis tout le résultat à travers l’axe horizontal : la figure finale compte 4 quarts identiques. Les trois quarts ajoutés figurent en vert.",
+      "methode": "Appliquer les deux pliages l’un après l’autre.",
+      "controle": "assert 4==4",
+      "figure": "sym-12",
+      "conseil": "",
+      "difficulte": 3
+    },
+    {
+      "titre": "Les longueurs conservées",
+      "enonce": "Le segment [CD] mesure 4 carreaux. Construire son symétrique par rapport à l’axe, puis donner sa longueur sans la mesurer. Justifier.",
+      "corrige": "La symétrie conserve les longueurs : le segment image mesure $\\res4$ carreaux, comme [CD]. La construction en vert le confirme.",
+      "methode": "Citer la propriété de conservation.",
+      "controle": "assert 4==4",
+      "figure": "sym-13",
+      "conseil": "",
+      "difficulte": 3
+    },
+    {
+      "titre": "Le bateau du port",
+      "enonce": "Compléter le dessin du bateau et de sa voile pour que l’axe vertical soit un axe de symétrie du dessin complet.",
+      "corrige": "Coque et voile se reflètent sommet par sommet ; le mât, posé sur l’axe, reste en place. Le demi-dessin ajouté figure en vert.",
+      "methode": "Commencer par les points les plus proches de l’axe.",
+      "controle": "assert 1==1",
+      "figure": "sym-14",
+      "conseil": "",
+      "difficulte": 3
+    },
+    {
+      "titre": "Vrai ou faux ?",
+      "enonce": "Pour chaque phrase, dire si elle est vraie et corriger si besoin : « Le symétrique d’un point est toujours de l’autre côté de l’axe. » ; « Une figure a au plus un axe de symétrie. »",
+      "corrige": "La première est $\\res{\\text{presque vraie}}$ : elle oublie les points situés sur l’axe, qui ne bougent pas. La seconde est $\\res{\\text{fausse}}$ : le carré a 4 axes et le cercle en a une infinité.",
+      "methode": "Chercher les cas particuliers avant de valider.",
+      "controle": "assert 4>1",
+      "figure": "sym-15",
+      "conseil": "",
+      "difficulte": 3
+    }
+  ],
+  "reperes": [
+    "Axes et pliages",
+    "Symétriques de points et segments",
+    "Figures complétées sur quadrillage",
+    "Propriétés conservées"
+  ],
+  "deco": "geometrie"
+}

@@ -1,0 +1,2475 @@
+=== Découverte - Tirer une boule dans une urne
+Id: 3125
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Une urne contient $6$ boules rouges, $4$ boules bleues et $2$ boules jaunes, indiscernables au toucher. On tire une boule au hasard et on note sa couleur.
+
+[IMAGE_1]
+
+1. Pourquoi est-ce une expérience aléatoire ? Combien y a-t-il d'issues ? Sont-elles équiprobables ?
+2. Calculer la probabilité de tirer une boule rouge.
+3. Calculer la probabilité de tirer une boule bleue, puis celle de tirer une boule jaune.
+4. Vérifier que la somme des trois probabilités est égale à $1$.
+5. Calculer la probabilité de ne pas tirer une boule rouge, puis celle de tirer une boule verte.
+6. On ajoute $3$ boules jaunes dans l'urne. Quelle est la nouvelle probabilité de tirer une boule jaune ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : L'expérience et ses issues
+
+::: methode
+Une issue est un résultat possible : ici, chaque boule de l'urne.
+:::
+
+::: etape Une expérience aléatoire
+On connaît tous les résultats possibles (une des boules de l'urne), mais on ne peut pas savoir à l'avance quelle boule sera tirée.
+:::
+
+::: etape Compter les issues
+$6 + 4 + 2 = 12$ boules. Elles sont indiscernables au toucher et tirées au hasard : chacune a la même chance d'être tirée.
+:::
+
+::: resultat
+C'est une expérience aléatoire à $12$ issues équiprobables.
+:::
+
+## Question 2 : Une boule rouge
+
+::: methode
+Équiprobabilité : $P = \dfrac{\text{nombre d'issues favorables}}{\text{nombre total d'issues}}$.
+:::
+
+::: etape Issues favorables
+Les $6$ boules rouges (entourées en vert) parmi les $12$ boules.
+:::
+
+[IMAGE_2]
+
+::: resultat
+$P(\text{rouge}) = \dfrac{6}{12} = \dfrac{1}{2}$
+:::
+
+## Question 3 : Une boule bleue, une boule jaune
+
+::: etape Bleue
+$4$ boules bleues sur $12$ : $\dfrac{4}{12} = \dfrac{1}{3}$.
+:::
+
+::: etape Jaune
+$2$ boules jaunes sur $12$ : $\dfrac{2}{12} = \dfrac{1}{6}$.
+:::
+
+::: resultat
+$P(\text{bleue}) = \dfrac{1}{3}$ et $P(\text{jaune}) = \dfrac{1}{6}$
+:::
+
+## Question 4 : La somme des probabilités
+
+::: etape Additionner avec le dénominateur $12$
+$$\frac{6}{12} + \frac{4}{12} + \frac{2}{12} = \frac{12}{12}$$
+:::
+
+::: resultat
+La somme vaut $1$ : on est sûr de tirer une boule rouge, bleue ou jaune.
+:::
+
+## Question 5 : Pas rouge ; verte
+
+::: methode
+« Ne pas tirer une boule rouge » est l'événement contraire de « tirer une boule rouge ».
+:::
+
+::: etape Événement contraire
+$$P(\text{non rouge}) = 1 - \frac{1}{2} = \frac{1}{2}$$
+
+Contrôle : les boules qui ne sont pas rouges sont les $4 + 2 = 6$ bleues et jaunes, et $\dfrac{6}{12} = \dfrac{1}{2}$.
+:::
+
+::: etape Une boule verte
+Il n'y a aucune boule verte : aucune issue favorable. L'événement est impossible.
+:::
+
+::: resultat
+$P(\text{non rouge}) = \dfrac{1}{2}$ et $P(\text{verte}) = 0$
+:::
+
+## Question 6 : Trois boules jaunes de plus
+
+::: etape La nouvelle urne
+Il y a maintenant $2 + 3 = 5$ boules jaunes, et $12 + 3 = 15$ boules en tout.
+:::
+
+::: resultat
+$P(\text{jaune}) = \dfrac{5}{15} = \dfrac{1}{3}$
+:::
+
+::: attention Erreur fréquente
+Écrire $\dfrac{5}{12}$ : quand on ajoute des boules, le nombre **total** de boules change aussi.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $12$ issues équiprobables
+2. $\dfrac{1}{2}$
+3. $\dfrac{1}{3}$ et $\dfrac{1}{6}$
+4. $\dfrac{6}{12} + \dfrac{4}{12} + \dfrac{2}{12} = 1$
+5. $\dfrac{1}{2}$ ; $0$ (impossible)
+6. $\dfrac{1}{3}$
+
+===
+
+=== Découverte - Issues et événements avec un dé
+Id: 3126
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+On lance un dé équilibré à six faces, numérotées de $1$ à $6$.
+
+[IMAGE_1]
+
+On considère les événements :
+
+- $A$ : « obtenir un nombre pair » ;
+- $B$ : « obtenir un multiple de $3$ » ;
+- $C$ : « obtenir au moins $5$ ».
+
+1. Donner les issues de l'expérience. Sont-elles équiprobables ?
+2. Écrire la liste des issues favorables à $A$, à $B$ et à $C$.
+3. Calculer $P(A)$, $P(B)$ et $P(C)$.
+4. Calculer la probabilité d'obtenir un nombre premier.
+5. Décrire par une phrase l'événement contraire de $C$, puis calculer sa probabilité de deux façons.
+6. Quelle est la probabilité d'obtenir $0$ ? Celle d'obtenir un nombre inférieur à $10$ ? Comment appelle-t-on ces événements ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les issues
+
+::: etape Liste des issues
+Les issues sont $1$, $2$, $3$, $4$, $5$ et $6$.
+:::
+
+::: resultat
+Il y a $6$ issues ; le dé est équilibré, donc elles sont équiprobables : chacune a la probabilité $\dfrac{1}{6}$.
+:::
+
+## Question 2 : Les issues favorables
+
+::: etape Lire chaque condition
+- $A$ (pair) : $2$, $4$, $6$ (faces en vert ci-dessous) ;
+- $B$ (multiple de $3$) : $3$ et $6$ ;
+- $C$ (au moins $5$, c'est-à-dire $5$ ou plus) : $5$ et $6$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+$A$ : $3$ issues ; $B$ : $2$ issues ; $C$ : $2$ issues.
+:::
+
+## Question 3 : Les probabilités
+
+::: methode
+Équiprobabilité : nombre d'issues favorables divisé par $6$, puis simplification.
+:::
+
+::: resultat
+- $P(A) = \dfrac{3}{6} = \dfrac{1}{2}$
+- $P(B) = \dfrac{2}{6} = \dfrac{1}{3}$
+- $P(C) = \dfrac{2}{6} = \dfrac{1}{3}$
+:::
+
+## Question 4 : Un nombre premier
+
+::: etape Issues favorables
+Un nombre premier a exactement deux diviseurs, $1$ et lui-même : $2$, $3$ et $5$. Le nombre $1$ n'est pas premier (il n'a qu'un diviseur).
+:::
+
+::: resultat
+$P(\text{premier}) = \dfrac{3}{6} = \dfrac{1}{2}$
+:::
+
+::: attention Erreur fréquente
+Compter $1$ parmi les nombres premiers, ou oublier $2$ (c'est le seul nombre premier pair).
+:::
+
+## Question 5 : Le contraire de C
+
+::: etape Décrire le contraire
+Le contraire de « obtenir au moins $5$ » est « obtenir au plus $4$ » : issues $1$, $2$, $3$, $4$.
+:::
+
+::: etape Première façon : compter
+$4$ issues favorables sur $6$ : $\dfrac{4}{6} = \dfrac{2}{3}$.
+:::
+
+::: etape Deuxième façon : la formule du contraire
+$$P(\text{non } C) = 1 - \frac{1}{3} = \frac{2}{3}$$
+:::
+
+::: resultat
+$P(\text{non } C) = \dfrac{2}{3}$
+:::
+
+## Question 6 : Deux cas extrêmes
+
+::: etape Obtenir 0
+Aucune face ne porte $0$ : aucune issue favorable.
+:::
+
+::: etape Un nombre inférieur à 10
+Toutes les faces portent un nombre inférieur à $10$ : les $6$ issues sont favorables.
+:::
+
+::: resultat
+$P(\text{obtenir } 0) = 0$ : événement **impossible** ; $P(\text{inférieur à } 10) = \dfrac{6}{6} = 1$ : événement **certain**.
+:::
+
+::: retenir
+Une probabilité est toujours comprise entre $0$ (impossible) et $1$ (certain).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $1$, $2$, $3$, $4$, $5$, $6$ : $6$ issues équiprobables
+2. $A$ : $2, 4, 6$ ; $B$ : $3, 6$ ; $C$ : $5, 6$
+3. $P(A) = \dfrac{1}{2}$ ; $P(B) = \dfrac{1}{3}$ ; $P(C) = \dfrac{1}{3}$
+4. $\dfrac{1}{2}$
+5. « obtenir au plus $4$ » : $\dfrac{2}{3}$
+6. $0$ (impossible) ; $1$ (certain)
+
+===
+
+=== Découverte - Une roue à secteurs égaux
+Id: 3127
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Une roue est partagée en $8$ secteurs de même angle, numérotés de $1$ à $8$. Les secteurs $1$, $3$ et $6$ sont rouges, les secteurs $2$ et $7$ sont bleus, les secteurs $4$ et $8$ sont jaunes et le secteur $5$ est blanc. On fait tourner la roue ; la flèche désigne un secteur au hasard.
+
+[IMAGE_1]
+
+1. Justifier que les $8$ secteurs ont la même probabilité d'être désignés.
+2. Calculer la probabilité d'obtenir un secteur rouge.
+3. Calculer la probabilité d'obtenir un secteur bleu, jaune, blanc. Vérifier que la somme des quatre probabilités vaut $1$.
+4. Calculer la probabilité de ne pas obtenir un secteur jaune.
+5. Calculer la probabilité d'obtenir un numéro pair.
+6. Calculer la probabilité d'obtenir un secteur rouge **et** pair, puis celle d'obtenir un secteur rouge **ou** pair.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : L'équiprobabilité
+
+::: etape Angle d'un secteur
+Les $8$ secteurs se partagent le tour complet : $360° \div 8 = 45°$ chacun.
+:::
+
+::: resultat
+Les secteurs ont tous le même angle : ils sont équiprobables, chacun de probabilité $\dfrac{1}{8}$.
+:::
+
+## Question 2 : Un secteur rouge
+
+::: etape Issues favorables
+Les secteurs $1$, $3$ et $6$ : $3$ secteurs sur $8$.
+:::
+
+::: resultat
+$P(\text{rouge}) = \dfrac{3}{8}$
+:::
+
+## Question 3 : Les autres couleurs
+
+::: etape Compter les secteurs
+- bleu : $2$ et $7$, donc $\dfrac{2}{8} = \dfrac{1}{4}$ ;
+- jaune : $4$ et $8$, donc $\dfrac{2}{8} = \dfrac{1}{4}$ ;
+- blanc : $5$, donc $\dfrac{1}{8}$.
+:::
+
+::: etape Contrôle
+$$\frac{3}{8} + \frac{2}{8} + \frac{2}{8} + \frac{1}{8} = \frac{8}{8} = 1$$
+:::
+
+::: resultat
+- $P(\text{bleu}) = \dfrac{1}{4}$
+- $P(\text{jaune}) = \dfrac{1}{4}$
+- $P(\text{blanc}) = \dfrac{1}{8}$
+
+La somme des quatre probabilités vaut $1$.
+:::
+
+## Question 4 : Pas jaune
+
+::: methode
+« Ne pas obtenir jaune » est le contraire de « obtenir jaune ».
+:::
+
+::: etape Calcul
+$$P(\text{non jaune}) = 1 - \frac{1}{4} = \frac{3}{4}$$
+:::
+
+::: resultat
+$P(\text{non jaune}) = \dfrac{3}{4}$
+:::
+
+## Question 5 : Un numéro pair
+
+::: etape Issues favorables
+$2$, $4$, $6$ et $8$ : $4$ secteurs sur $8$.
+:::
+
+::: resultat
+$P(\text{pair}) = \dfrac{4}{8} = \dfrac{1}{2}$
+:::
+
+## Question 6 : « et », « ou »
+
+::: methode
+« Rouge **et** pair » : le secteur doit vérifier les deux conditions à la fois. « Rouge **ou** pair » : il doit vérifier au moins une des deux.
+:::
+
+::: etape Rouge et pair
+Parmi les rouges $1$, $3$, $6$, seul le $6$ est pair : $1$ secteur sur $8$.
+:::
+
+::: etape Rouge ou pair
+Rouges : $1$, $3$, $6$ ; pairs : $2$, $4$, $6$, $8$. En tout : $1$, $2$, $3$, $4$, $6$, $8$ (en vert), le $6$ n'étant compté qu'une fois : $6$ secteurs sur $8$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+- $P(\text{rouge et pair}) = \dfrac{1}{8}$
+- $P(\text{rouge ou pair}) = \dfrac{6}{8} = \dfrac{3}{4}$
+:::
+
+::: attention Erreur fréquente
+Additionner $\dfrac{3}{8} + \dfrac{4}{8} = \dfrac{7}{8}$ : le secteur $6$, rouge et pair, serait compté deux fois.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Même angle de $45°$ pour chaque secteur
+2. $\dfrac{3}{8}$
+3. $\dfrac{1}{4}$ ; $\dfrac{1}{4}$ ; $\dfrac{1}{8}$ ; somme $1$
+4. $\dfrac{3}{4}$
+5. $\dfrac{1}{2}$
+6. $\dfrac{1}{8}$ ; $\dfrac{3}{4}$
+
+===
+
+=== Découverte - Tirer une carte dans un jeu de 32 cartes
+Id: 3128
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Un jeu de $32$ cartes comporte $4$ couleurs : pique et trèfle (noires), cœur et carreau (rouges). Dans chaque couleur, il y a $8$ cartes : $7$, $8$, $9$, $10$, valet (V), dame (D), roi (R) et as (A). On tire une carte au hasard dans le jeu bien mélangé.
+
+[IMAGE_1]
+
+1. Combien y a-t-il d'issues ? Sont-elles équiprobables ?
+2. Calculer la probabilité de tirer un cœur.
+3. Calculer la probabilité de tirer un as, puis celle de tirer l'as de cœur.
+4. Calculer la probabilité de tirer une carte rouge.
+5. Les figures sont les valets, les dames et les rois. Calculer la probabilité de tirer une figure.
+6. Calculer la probabilité de ne pas tirer une figure.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les issues
+
+::: etape Chaque carte est une issue
+Le jeu est bien mélangé et la carte est tirée au hasard : les $32$ cartes ont la même chance d'être tirées.
+:::
+
+::: resultat
+$32$ issues équiprobables.
+:::
+
+## Question 2 : Un cœur
+
+::: etape Issues favorables
+Les $8$ cartes de la ligne des cœurs.
+:::
+
+::: resultat
+$P(\text{cœur}) = \dfrac{8}{32} = \dfrac{1}{4}$
+:::
+
+## Question 3 : Un as, l'as de cœur
+
+::: etape Un as
+Il y a un as par couleur, soit $4$ as : $\dfrac{4}{32} = \dfrac{1}{8}$.
+:::
+
+::: etape L'as de cœur
+Une seule carte : $\dfrac{1}{32}$.
+:::
+
+::: resultat
+$P(\text{as}) = \dfrac{1}{8}$ et $P(\text{as de cœur}) = \dfrac{1}{32}$
+:::
+
+## Question 4 : Une carte rouge
+
+::: etape Issues favorables
+Les cœurs et les carreaux : $8 + 8 = 16$ cartes.
+:::
+
+::: resultat
+$P(\text{rouge}) = \dfrac{16}{32} = \dfrac{1}{2}$
+:::
+
+## Question 5 : Une figure
+
+::: etape Compter les figures
+$3$ figures (V, D, R) dans chacune des $4$ couleurs : $3 \times 4 = 12$ figures (en vert).
+:::
+
+[IMAGE_2]
+
+::: resultat
+$P(\text{figure}) = \dfrac{12}{32} = \dfrac{3}{8}$
+:::
+
+::: attention Erreur fréquente
+Compter l'as parmi les figures, ou ne compter que $3$ figures au lieu de $3$ par couleur.
+:::
+
+## Question 6 : Pas une figure
+
+::: methode
+« Ne pas tirer une figure » est l'événement contraire de « tirer une figure ».
+:::
+
+::: etape Calcul
+$$P(\text{non figure}) = 1 - \frac{3}{8} = \frac{5}{8}$$
+:::
+
+::: etape Contrôle par comptage
+$32 - 12 = 20$ cartes ne sont pas des figures, et $\dfrac{20}{32} = \dfrac{5}{8}$.
+:::
+
+::: resultat
+$P(\text{non figure}) = \dfrac{5}{8}$
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $32$ issues équiprobables
+2. $\dfrac{1}{4}$
+3. $\dfrac{1}{8}$ ; $\dfrac{1}{32}$
+4. $\dfrac{1}{2}$
+5. $\dfrac{3}{8}$
+6. $\dfrac{5}{8}$
+
+===
+
+=== Découverte - Placer des événements sur l'échelle des probabilités
+Id: 3129
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+On considère six événements, chacun lié à une expérience différente :
+
+- $A$ : « obtenir pile » en lançant une pièce équilibrée ;
+- $B$ : « obtenir $6$ » en lançant un dé équilibré ;
+- $C$ : « tirer une boule rouge » dans un sac qui ne contient que des boules bleues ;
+- $D$ : « tirer un pique, un cœur, un carreau ou un trèfle » dans un jeu de $32$ cartes ;
+- $E$ : « ne pas obtenir $1$ » en lançant un dé équilibré ;
+- $F$ : « tirer une boule bleue » dans un sac de $3$ boules bleues et $1$ boule rouge.
+
+[IMAGE_1]
+
+1. Quels événements sont impossibles ? Lesquels sont certains ? Donner leur probabilité.
+2. Calculer $P(A)$, $P(B)$ et $P(F)$.
+3. Calculer $P(E)$ en utilisant l'événement contraire.
+4. Donner une valeur approchée au centième de chaque probabilité, puis ranger les six événements du moins probable au plus probable.
+5. Placer les six événements sur l'échelle des probabilités ci-dessus.
+6. Décrire un événement de probabilité $\dfrac{1}{4}$ avec le sac de l'événement $F$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Impossible ou certain
+
+::: etape L'événement C
+Le sac ne contient aucune boule rouge : aucune issue n'est favorable.
+:::
+
+::: etape L'événement D
+Toute carte du jeu est un pique, un cœur, un carreau ou un trèfle : toutes les issues sont favorables.
+:::
+
+::: resultat
+$C$ est impossible : $P(C) = 0$. $D$ est certain : $P(D) = 1$.
+:::
+
+## Question 2 : Trois probabilités
+
+::: methode
+Dans chaque cas, les issues sont équiprobables : favorables sur possibles.
+:::
+
+::: etape Calculs
+- $A$ : $1$ issue (pile) sur $2$ : $P(A) = \dfrac{1}{2}$ ;
+- $B$ : $1$ face sur $6$ : $P(B) = \dfrac{1}{6}$ ;
+- $F$ : $3$ boules bleues sur $4$ boules : $P(F) = \dfrac{3}{4}$.
+:::
+
+::: resultat
+- $P(A) = \dfrac{1}{2}$
+- $P(B) = \dfrac{1}{6}$
+- $P(F) = \dfrac{3}{4}$
+:::
+
+## Question 3 : L'événement E
+
+::: etape Le contraire
+Le contraire de « ne pas obtenir $1$ » est « obtenir $1$ », de probabilité $\dfrac{1}{6}$.
+:::
+
+::: etape Calcul
+$$P(E) = 1 - \frac{1}{6} = \frac{5}{6}$$
+:::
+
+::: resultat
+$P(E) = \dfrac{5}{6}$
+:::
+
+## Question 4 : Ranger les événements
+
+::: etape Valeurs approchées
+$P(C) = 0$ ; $P(B) \approx 0{,}17$ ; $P(A) = 0{,}5$ ; $P(F) = 0{,}75$ ; $P(E) \approx 0{,}83$ ; $P(D) = 1$.
+:::
+
+::: resultat
+Du moins probable au plus probable : $C$, $B$, $A$, $F$, $E$, $D$.
+:::
+
+::: attention Erreur fréquente
+Confondre $\dfrac{1}{6}$ avec $0{,}6$ et placer $B$ après $A$ : on calcule $1 \div 6 \approx 0{,}17$, donc $B$ est moins probable que $A$.
+:::
+
+## Question 5 : L'échelle des probabilités
+
+::: methode
+Chaque probabilité est un nombre entre $0$ et $1$ : on la place comme sur une droite graduée.
+:::
+
+[IMAGE_2]
+
+::: resultat
+De gauche à droite : $C$ en $0$, $B$ vers $0{,}17$, $A$ en $0{,}5$, $F$ en $0{,}75$, $E$ vers $0{,}83$, $D$ en $1$.
+:::
+
+## Question 6 : Un événement de probabilité 1/4
+
+::: etape Chercher une issue favorable sur quatre
+Le sac contient $4$ boules, dont $1$ rouge.
+:::
+
+::: resultat
+« Tirer une boule rouge » dans ce sac a pour probabilité $\dfrac{1}{4}$ : c'est le contraire de $F$.
+:::
+
+::: retenir
+Plus un événement est probable, plus il est placé à droite sur l'échelle : de $0$ (impossible) à $1$ (certain), en passant par $0{,}5$ (une chance sur deux).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $C$ impossible : $P(C) = 0$ ; $D$ certain : $P(D) = 1$
+2. $\dfrac{1}{2}$ ; $\dfrac{1}{6}$ ; $\dfrac{3}{4}$
+3. $\dfrac{5}{6}$
+4. $C$, $B$, $A$, $F$, $E$, $D$
+5. $C$ en $0$, $B$ vers $0{,}17$, $A$ en $0{,}5$, $F$ en $0{,}75$, $E$ vers $0{,}83$, $D$ en $1$
+6. « tirer une boule rouge » dans ce sac
+
+===
+
+=== Découverte - Utiliser l'événement contraire
+Id: 3130
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Dans chaque situation, utiliser la relation $P(\text{non } A) = 1 - P(A)$.
+
+1. La probabilité qu'il pleuve demain est $0{,}35$. Quelle est la probabilité qu'il ne pleuve pas ?
+2. On tire une carte au hasard dans un jeu de $32$ cartes, qui contient $4$ as. Quelle est la probabilité de ne pas tirer un as ?
+3. Une équipe de football a $45\ \%$ de chances de gagner son prochain match et $30\ \%$ de chances de le perdre. Quelle est la probabilité d'un match nul ?
+4. Quelle est la probabilité que cette équipe ne perde pas ?
+5. Quelle est la probabilité qu'elle ne gagne pas ?
+6. Un élève affirme : « $P(A) = 0{,}4$ et $P(\text{non } A) = 0{,}5$ ». Est-ce possible ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : La pluie
+
+::: etape Contraire
+« Il ne pleut pas » est le contraire de « il pleut ».
+
+$$P(\text{pas de pluie}) = 1 - 0{,}35 = 0{,}65$$
+:::
+
+::: resultat
+La probabilité qu'il ne pleuve pas est $0{,}65$.
+:::
+
+## Question 2 : Pas d'as
+
+::: etape Probabilité de tirer un as
+$4$ as sur $32$ cartes : $P(\text{as}) = \dfrac{4}{32} = \dfrac{1}{8}$.
+:::
+
+::: etape Contraire
+$$P(\text{non as}) = 1 - \frac{1}{8} = \frac{7}{8}$$
+:::
+
+::: resultat
+$P(\text{ne pas tirer un as}) = \dfrac{7}{8}$
+:::
+
+## Question 3 : Le match nul
+
+::: methode
+Gagner, perdre et faire match nul sont les trois issues possibles du match : leurs probabilités ont pour somme $100\ \%$.
+:::
+
+::: etape Calcul
+$100 - 45 - 30 = 25$.
+:::
+
+::: resultat
+La probabilité d'un match nul est $25\ \%$.
+:::
+
+## Question 4 : Ne pas perdre
+
+::: etape Le contraire de « perdre »
+$100 - 30 = 70$. Contrôle : ne pas perdre, c'est gagner ou faire match nul, et $45 + 25 = 70$.
+:::
+
+::: resultat
+La probabilité que l'équipe ne perde pas est $70\ \%$.
+:::
+
+## Question 5 : Ne pas gagner
+
+::: etape Le contraire de « gagner »
+$100 - 45 = 55$.
+:::
+
+::: resultat
+La probabilité que l'équipe ne gagne pas est $55\ \%$.
+:::
+
+::: attention Erreur fréquente
+Croire que « ne pas gagner » veut dire « perdre » ($30\ \%$) : il reste le match nul. Ne pas gagner, c'est perdre **ou** faire match nul : $30 + 25 = 55$.
+:::
+
+## Question 6 : Une affirmation impossible
+
+::: etape Additionner
+$0{,}4 + 0{,}5 = 0{,}9$, alors que $P(A) + P(\text{non } A)$ doit valoir $1$.
+:::
+
+::: resultat
+Non, c'est impossible : si $P(A) = 0{,}4$, alors $P(\text{non } A) = 0{,}6$.
+:::
+
+::: retenir
+Un événement et son contraire se partagent toutes les issues, sans issue commune : leurs probabilités ont toujours pour somme $1$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $0{,}65$
+2. $\dfrac{7}{8}$
+3. $25\ \%$
+4. $70\ \%$
+5. $55\ \%$
+6. Non : $0{,}4 + 0{,}5 \neq 1$
+
+===
+
+=== Découverte - Lancer deux pièces
+Id: 3131
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+On lance deux pièces équilibrées, l'une après l'autre, et on note le côté obtenu sur chacune : $P$ pour pile, $F$ pour face. L'arbre ci-dessous présente les possibilités.
+
+[IMAGE_1]
+
+1. En suivant chaque chemin de l'arbre, écrire toutes les issues de l'expérience. Combien y en a-t-il ?
+2. Ces issues sont équiprobables. Calculer la probabilité d'obtenir deux fois pile.
+3. Calculer la probabilité d'obtenir exactement un pile.
+4. Calculer la probabilité d'obtenir au moins un pile.
+5. Léo affirme : « On peut obtenir $0$, $1$ ou $2$ pile : chaque cas a une chance sur trois. » A-t-il raison ?
+6. On lance les deux pièces $400$ fois. Environ combien de fois obtiendra-t-on exactement un pile ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les issues
+
+::: methode
+Dans un arbre, chaque chemin, de la racine à une extrémité, donne une issue.
+:::
+
+::: etape Lire les chemins
+- pile puis pile : $PP$ ;
+- pile puis face : $PF$ ;
+- face puis pile : $FP$ ;
+- face puis face : $FF$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+Il y a $4$ issues : $PP$, $PF$, $FP$ et $FF$.
+:::
+
+## Question 2 : Deux fois pile
+
+::: etape Issue favorable
+Une seule : $PP$.
+:::
+
+::: resultat
+$P(\text{deux pile}) = \dfrac{1}{4}$
+:::
+
+## Question 3 : Exactement un pile
+
+::: etape Issues favorables
+$PF$ et $FP$ (chemins en vert) : $2$ issues sur $4$.
+:::
+
+::: resultat
+$P(\text{exactement un pile}) = \dfrac{2}{4} = \dfrac{1}{2}$
+:::
+
+::: attention Erreur fréquente
+Oublier que $PF$ et $FP$ sont deux issues différentes : la première pièce et la seconde ne sont pas les mêmes.
+:::
+
+## Question 4 : Au moins un pile
+
+::: methode
+« Au moins un pile » a pour contraire « aucun pile », c'est-à-dire $FF$.
+:::
+
+::: etape Calcul
+$$P(\text{au moins un pile}) = 1 - \frac{1}{4} = \frac{3}{4}$$
+
+Contrôle : $PP$, $PF$ et $FP$ sont favorables, soit $3$ issues sur $4$.
+:::
+
+::: resultat
+$P(\text{au moins un pile}) = \dfrac{3}{4}$
+:::
+
+## Question 5 : L'erreur de Léo
+
+::: etape Compter les issues de chaque cas
+- « $0$ pile » : $FF$, soit $\dfrac{1}{4}$ ;
+- « $1$ pile » : $PF$ et $FP$, soit $\dfrac{2}{4} = \dfrac{1}{2}$ ;
+- « $2$ pile » : $PP$, soit $\dfrac{1}{4}$.
+:::
+
+::: resultat
+Léo a tort : les trois cas ne sont pas équiprobables. « $1$ pile » est deux fois plus probable que « $0$ pile » ou « $2$ pile ».
+:::
+
+## Question 6 : Sur 400 lancers
+
+::: methode
+Sur un grand nombre d'essais, la fréquence est proche de la probabilité.
+:::
+
+::: etape Calcul
+$$400 \times \frac{1}{2} = 200$$
+:::
+
+::: resultat
+On obtiendra exactement un pile environ $200$ fois.
+:::
+
+::: retenir
+Pour deux épreuves, un arbre permet de n'oublier aucune issue. Cette méthode sera approfondie en 3e.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $PP$, $PF$, $FP$, $FF$ : $4$ issues
+2. $\dfrac{1}{4}$
+3. $\dfrac{1}{2}$
+4. $\dfrac{3}{4}$
+5. Non : $\dfrac{1}{4}$, $\dfrac{1}{2}$ et $\dfrac{1}{4}$
+6. Environ $200$ fois
+
+===
+
+=== Entraînement - Simuler des lancers de dé avec Scratch
+Id: 3132
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Léa veut savoir combien de fois on obtient $6$ quand on lance un dé équilibré un grand nombre de fois. Elle écrit le script Scratch suivant.
+
+[IMAGE_1]
+
+1. Quelles valeurs la variable « dé » peut-elle prendre ? Que simule le bloc « nombre aléatoire entre $1$ et $6$ » ?
+2. Combien de lancers ce script simule-t-il ? Que compte la variable « succès » ?
+3. Que représente le nombre dit par le lutin à la fin du script ?
+4. Quelle est la probabilité d'obtenir $6$ avec un dé équilibré ? Autour de quel nombre de succès, et de quelle valeur dite, peut-on s'attendre ?
+5. Léa lance son programme quatre fois et obtient : $0{,}155$ ; $0{,}175$ ; $0{,}16$ ; $0{,}18$.
+   - a) Combien de $6$ ont été obtenus lors du premier essai ?
+   - b) Pourquoi les quatre résultats sont-ils différents ? Sont-ils cohérents avec la question 4 ?
+6. Quels nombres faut-il changer dans le script pour simuler $6\,000$ lancers ? Que peut-on attendre du résultat ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : La variable « dé »
+
+::: etape Le bloc aléatoire
+« nombre aléatoire entre $1$ et $6$ » donne au hasard un nombre entier parmi $1$, $2$, $3$, $4$, $5$, $6$, chacun avec la même probabilité.
+:::
+
+::: resultat
+« dé » prend une des valeurs $1$, $2$, $3$, $4$, $5$ ou $6$ : le bloc simule le lancer d'un dé équilibré.
+:::
+
+## Question 2 : Lancers et succès
+
+::: etape La boucle
+Le bloc « répéter $600$ fois » exécute $600$ fois le lancer simulé.
+:::
+
+::: etape La variable « succès »
+Elle vaut $0$ au départ et augmente de $1$ chaque fois que « dé » vaut $6$.
+:::
+
+::: resultat
+Le script simule $600$ lancers ; « succès » compte le nombre de $6$ obtenus.
+:::
+
+## Question 3 : Le nombre dit
+
+::: etape Le calcul final
+Le lutin dit $\dfrac{\text{succès}}{600}$ : nombre de $6$ divisé par le nombre de lancers.
+:::
+
+::: resultat
+C'est la **fréquence** d'apparition du $6$ sur les $600$ lancers simulés.
+:::
+
+## Question 4 : Ce que l'on attend
+
+::: etape La probabilité
+Le dé est équilibré : $P(6) = \dfrac{1}{6} \approx 0{,}167$.
+:::
+
+::: etape Nombre de succès attendu
+$$600 \times \frac{1}{6} = 100$$
+:::
+
+::: resultat
+On s'attend à environ $100$ succès, donc à une valeur dite proche de $\dfrac{1}{6} \approx 0{,}167$.
+:::
+
+## Question 5 : Quatre essais
+
+::: etape a) Retrouver le nombre de 6
+La fréquence est $\dfrac{\text{succès}}{600} = 0{,}155$, donc $\text{succès} = 0{,}155 \times 600 = 93$.
+:::
+
+::: etape b) Des résultats différents
+Chaque exécution tire de nouveaux nombres au hasard : la fréquence change d'une série à l'autre. Les quatre valeurs sont comprises entre $0{,}155$ et $0{,}18$, proches de $0{,}167$.
+:::
+
+::: resultat
+a) $93$ fois le $6$. b) Les fréquences varient à cause du hasard, mais restent proches de $\dfrac{1}{6}$ : c'est cohérent.
+:::
+
+::: attention Erreur fréquente
+Penser que le programme est faux parce qu'il ne donne pas exactement $0{,}167$ ni deux fois le même résultat : une fréquence fluctue, seule la probabilité est fixe.
+:::
+
+## Question 6 : 6 000 lancers
+
+::: etape Les deux blocs à modifier
+Remplacer $600$ par $6\,000$ dans « répéter » **et** dans la division finale (blocs en vert).
+:::
+
+[IMAGE_2]
+
+::: resultat
+Avec $6\,000$ lancers, la fréquence obtenue sera en général encore plus proche de $\dfrac{1}{6}$ : sur un grand nombre d'essais, la fréquence se stabilise autour de la probabilité.
+:::
+
+::: retenir
+Un ordinateur peut simuler des milliers de lancers en un instant : c'est un moyen d'observer la stabilisation des fréquences.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $1$, $2$, $3$, $4$, $5$ ou $6$ : un lancer de dé équilibré
+2. $600$ lancers ; « succès » compte les $6$
+3. La fréquence du $6$
+4. $\dfrac{1}{6}$ ; environ $100$ succès, valeur proche de $0{,}167$
+5. a) $93$ ; b) hasard ; valeurs proches de $\dfrac{1}{6}$ : cohérent
+6. $600 \to 6\,000$ dans « répéter » et dans la division ; fréquence encore plus proche de $\dfrac{1}{6}$
+
+===
+
+=== Entraînement - Simuler des lancers de pièce avec un tableur
+Id: 3133
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Inès simule $10\,000$ lancers d'une pièce équilibrée avec un tableur. Dans la cellule A2, elle écrit `=ALEA.ENTRE.BORNES(0;1)`, puis elle recopie cette formule vers le bas jusqu'à la cellule A10001. Le nombre $1$ représente « pile » et le nombre $0$ représente « face ».
+
+Elle compte ensuite les « pile » parmi les premiers lancers :
+
+| Nombre de lancers | $10$ | $100$ | $1\,000$ | $10\,000$ |
+|---|---|---|---|---|
+| Nombre de « pile » | $7$ | $56$ | $512$ | $4\,985$ |
+
+1. Pourquoi cette formule simule-t-elle un lancer de pièce équilibrée ? Quelle est la probabilité d'obtenir « pile » ?
+2. Inès écrit `=SOMME(A2:A101)`. Expliquer pourquoi cette formule donne le nombre de « pile » parmi les $100$ premiers lancers.
+3. Calculer la fréquence de « pile » pour chaque série.
+4. Calculer l'écart entre chaque fréquence et $0{,}5$. Comment évolue-t-il quand le nombre de lancers augmente ?
+5. Après les $10$ premiers lancers, Inès pensait que sa pièce virtuelle favorisait « pile ». Avait-elle raison ?
+6. Les $5$ premiers lancers ont tous donné « pile ». Quelle est la probabilité que le sixième donne aussi « pile » ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : La formule
+
+::: etape Ce que donne la formule
+`=ALEA.ENTRE.BORNES(0;1)` renvoie au hasard un nombre entier entre $0$ et $1$ : $0$ ou $1$, avec la même chance.
+:::
+
+::: resultat
+Chaque cellule vaut $1$ (pile) ou $0$ (face) avec la même probabilité, comme une pièce équilibrée : $P(\text{pile}) = \dfrac{1}{2} = 0{,}5$.
+:::
+
+## Question 2 : La formule SOMME
+
+::: etape Additionner des 0 et des 1
+Les cellules A2 à A101 contiennent les $100$ premiers lancers. Chaque « face » ajoute $0$ et chaque « pile » ajoute $1$.
+:::
+
+::: resultat
+La somme est égale au nombre de $1$, c'est-à-dire au nombre de « pile » parmi les $100$ premiers lancers.
+:::
+
+## Question 3 : Les fréquences
+
+::: methode
+Fréquence $= \dfrac{\text{nombre de « pile »}}{\text{nombre de lancers}}$.
+:::
+
+::: etape Calculs
+$$
+\begin{aligned}
+\frac{7}{10} &= 0{,}7 & \frac{56}{100} &= 0{,}56 \\[6pt]
+\frac{512}{1\,000} &= 0{,}512 & \frac{4\,985}{10\,000} &= 0{,}498\,5
+\end{aligned}
+$$
+:::
+
+::: resultat
+Fréquences : $0{,}7$ ; $0{,}56$ ; $0{,}512$ ; $0{,}498\,5$.
+:::
+
+## Question 4 : L'écart avec la probabilité
+
+::: etape Écarts avec 0,5
+- $0{,}7 - 0{,}5 = 0{,}2$
+- $0{,}56 - 0{,}5 = 0{,}06$
+- $0{,}512 - 0{,}5 = 0{,}012$
+- $0{,}5 - 0{,}498\,5 = 0{,}001\,5$
+:::
+
+[IMAGE_1]
+
+::: resultat
+L'écart diminue : plus le nombre de lancers est grand, plus la fréquence se rapproche de la probabilité $0{,}5$.
+:::
+
+## Question 5 : Une conclusion trop rapide
+
+::: etape Sur 10 lancers
+Sur un petit nombre de lancers, la fréquence peut être loin de la probabilité : $7$ « pile » sur $10$ arrive assez souvent avec une pièce équilibrée.
+:::
+
+::: resultat
+Non : $10$ lancers ne suffisent pas pour conclure. Sur $10\,000$ lancers, la fréquence vaut $0{,}498\,5$, très proche de $0{,}5$.
+:::
+
+::: attention Erreur fréquente
+Tirer une conclusion d'un petit nombre d'essais : sur peu d'essais, les fréquences varient beaucoup.
+:::
+
+## Question 6 : Après cinq « pile »
+
+::: etape Le hasard n'a pas de mémoire
+Chaque lancer ne dépend pas des précédents : la pièce « ne se souvient » pas des résultats obtenus.
+:::
+
+::: resultat
+La probabilité d'obtenir « pile » au sixième lancer reste $\dfrac{1}{2}$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Elle donne $0$ ou $1$ au hasard, avec la même chance ; $P(\text{pile}) = 0{,}5$
+2. Les « pile » valent $1$ et les « face » $0$ : la somme compte les « pile »
+3. $0{,}7$ ; $0{,}56$ ; $0{,}512$ ; $0{,}498\,5$
+4. $0{,}2$ ; $0{,}06$ ; $0{,}012$ ; $0{,}001\,5$ : l'écart diminue
+5. Non, $10$ lancers ne suffisent pas
+6. $\dfrac{1}{2}$
+
+===
+
+=== Entraînement - Le sac de bonbons
+Id: 3134
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Un sac contient $6$ bonbons à la fraise, $4$ bonbons au citron et $8$ bonbons à la menthe, tous de même forme. On prend un bonbon au hasard, sans regarder.
+
+1. Combien d'issues équiprobables cette expérience compte-t-elle ?
+2. Calculer la probabilité de prendre un bonbon à la fraise, au citron, à la menthe. Donner chaque résultat sous forme de fraction irréductible.
+3. Vérifier que la somme des trois probabilités est égale à $1$.
+4. Calculer la probabilité de ne pas prendre un bonbon à la menthe.
+5. Léo mange $2$ bonbons à la fraise. Quelle est maintenant la probabilité de prendre un bonbon à la fraise ?
+6. On repart du sac initial. Combien de bonbons au citron faut-il ajouter pour que la probabilité de prendre un bonbon au citron soit égale à $\dfrac{1}{2}$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les issues
+
+::: etape Chaque bonbon est une issue
+$6 + 4 + 8 = 18$ bonbons, de même forme, pris au hasard : ils ont tous la même chance d'être pris.
+:::
+
+::: resultat
+$18$ issues équiprobables.
+:::
+
+## Question 2 : Les trois probabilités
+
+::: methode
+Nombre de bonbons du parfum sur nombre total de bonbons, puis simplification.
+:::
+
+::: etape Calculs
+- Fraise : $\dfrac{6}{18} = \dfrac{1}{3}$
+- Citron : $\dfrac{4}{18} = \dfrac{2}{9}$
+- Menthe : $\dfrac{8}{18} = \dfrac{4}{9}$
+:::
+
+::: resultat
+- $P(\text{fraise}) = \dfrac{1}{3}$
+- $P(\text{citron}) = \dfrac{2}{9}$
+- $P(\text{menthe}) = \dfrac{4}{9}$
+:::
+
+## Question 3 : La somme
+
+::: etape Même dénominateur 9
+$$\frac{1}{3} + \frac{2}{9} + \frac{4}{9} = \frac{3}{9} + \frac{2}{9} + \frac{4}{9} = \frac{9}{9}$$
+:::
+
+::: resultat
+La somme vaut $1$.
+:::
+
+## Question 4 : Pas menthe
+
+::: etape Événement contraire
+$$P(\text{non menthe}) = 1 - \frac{4}{9} = \frac{5}{9}$$
+
+Contrôle : $6 + 4 = 10$ bonbons ne sont pas à la menthe, et $\dfrac{10}{18} = \dfrac{5}{9}$.
+:::
+
+::: resultat
+$P(\text{non menthe}) = \dfrac{5}{9}$
+:::
+
+## Question 5 : Deux bonbons à la fraise en moins
+
+::: etape Le nouveau sac
+Il reste $6 - 2 = 4$ bonbons à la fraise et $18 - 2 = 16$ bonbons en tout.
+:::
+
+::: resultat
+$P(\text{fraise}) = \dfrac{4}{16} = \dfrac{1}{4}$
+:::
+
+::: attention Erreur fréquente
+Écrire $\dfrac{4}{18}$ : quand on retire des bonbons, le nombre **total** diminue aussi.
+:::
+
+## Question 6 : Une chance sur deux pour le citron
+
+::: methode
+Une probabilité de $\dfrac{1}{2}$ signifie que la moitié des bonbons sont au citron : il faut autant de bonbons au citron que d'autres bonbons.
+:::
+
+::: etape Les autres bonbons
+Les bonbons qui ne sont pas au citron sont $6 + 8 = 14$ ; on n'en ajoute pas.
+:::
+
+::: etape Le nombre de bonbons au citron
+Il en faut $14$ ; il y en a $4$ : on doit en ajouter $14 - 4 = 10$.
+:::
+
+::: etape Contrôle
+$14$ bonbons au citron sur $14 + 14 = 28$ bonbons : $\dfrac{14}{28} = \dfrac{1}{2}$.
+:::
+
+::: resultat
+Il faut ajouter $10$ bonbons au citron.
+:::
+
+::: retenir
+Ajouter ou retirer des objets change à la fois le nombre d'issues favorables **et** le nombre total d'issues.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $18$ issues équiprobables
+2. $\dfrac{1}{3}$ ; $\dfrac{2}{9}$ ; $\dfrac{4}{9}$
+3. $\dfrac{3}{9} + \dfrac{2}{9} + \dfrac{4}{9} = 1$
+4. $\dfrac{5}{9}$
+5. $\dfrac{1}{4}$
+6. $10$ bonbons au citron
+
+===
+
+=== Entraînement - Une roue à secteurs inégaux
+Id: 3135
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Une roue est partagée en quatre secteurs numérotés de $1$ à $4$, d'angles différents. On fait tourner la roue ; la probabilité que la flèche désigne un secteur est proportionnelle à l'angle de ce secteur.
+
+[IMAGE_1]
+
+1. Vérifier que la somme des angles vaut $360°$. Les quatre issues sont-elles équiprobables ?
+2. Calculer la probabilité d'obtenir le secteur $1$.
+3. Calculer la probabilité d'obtenir le secteur $2$, le secteur $3$, le secteur $4$. Vérifier que la somme des quatre probabilités vaut $1$.
+4. Calculer la probabilité d'obtenir un numéro pair.
+5. On fait tourner la roue $1\,200$ fois. Environ combien de fois obtiendra-t-on le secteur $4$ ?
+6. On veut fabriquer une autre roue sur laquelle le secteur $3$ a une probabilité de $\dfrac{1}{4}$. Quel doit être son angle ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les angles
+
+::: etape Somme des angles
+$180° + 90° + 60° + 30° = 360°$ : les secteurs forment un tour complet.
+:::
+
+::: resultat
+La somme vaut $360°$. Les secteurs n'ont pas le même angle : les issues ne sont **pas** équiprobables.
+:::
+
+## Question 2 : Le secteur 1
+
+::: methode
+$P(\text{secteur}) = \dfrac{\text{angle du secteur}}{360°}$.
+:::
+
+::: resultat
+$P(1) = \dfrac{180}{360} = \dfrac{1}{2}$
+:::
+
+## Question 3 : Les autres secteurs
+
+::: etape Calculs
+- $P(2) = \dfrac{90}{360} = \dfrac{1}{4}$
+- $P(3) = \dfrac{60}{360} = \dfrac{1}{6}$
+- $P(4) = \dfrac{30}{360} = \dfrac{1}{12}$
+:::
+
+::: etape Contrôle avec le dénominateur 12
+$$\frac{6}{12} + \frac{3}{12} + \frac{2}{12} + \frac{1}{12} = \frac{12}{12} = 1$$
+:::
+
+::: resultat
+- $P(2) = \dfrac{1}{4}$
+- $P(3) = \dfrac{1}{6}$
+- $P(4) = \dfrac{1}{12}$
+
+La somme des quatre probabilités vaut $1$.
+:::
+
+::: attention Erreur fréquente
+Donner $\dfrac{1}{4}$ à chaque secteur parce qu'il y a quatre secteurs : ce serait vrai seulement si les angles étaient égaux.
+:::
+
+## Question 4 : Un numéro pair
+
+::: etape Les secteurs favorables
+Les secteurs $2$ et $4$ (en vert), d'angle total $90° + 30° = 120°$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+$P(\text{pair}) = \dfrac{120}{360} = \dfrac{1}{3}$
+:::
+
+## Question 5 : Sur 1 200 tours
+
+::: methode
+Sur un grand nombre d'essais, la fréquence est proche de la probabilité : nombre de tours $\times$ probabilité.
+:::
+
+::: etape Calcul
+$$1\,200 \times \frac{1}{12} = 100$$
+:::
+
+::: resultat
+On obtiendra le secteur $4$ environ $100$ fois.
+:::
+
+## Question 6 : Un secteur de probabilité 1/4
+
+::: etape Calcul de l'angle
+L'angle doit représenter le quart du tour : $\dfrac{1}{4} \times 360° = 90°$.
+:::
+
+::: resultat
+Le secteur $3$ doit mesurer $90°$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $360°$ ; non, pas équiprobables
+2. $\dfrac{1}{2}$
+3. $\dfrac{1}{4}$ ; $\dfrac{1}{6}$ ; $\dfrac{1}{12}$ ; somme $1$
+4. $\dfrac{1}{3}$
+5. Environ $100$ fois
+6. $90°$
+
+===
+
+=== Entraînement - Des cartes numérotées de 1 à 20
+Id: 3136
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Vingt cartes, numérotées de $1$ à $20$, sont retournées et mélangées. On tire une carte au hasard.
+
+[IMAGE_1]
+
+1. Calculer la probabilité de tirer un multiple de $5$.
+2. Calculer la probabilité de tirer un nombre premier.
+3. Calculer la probabilité de tirer un diviseur de $20$.
+4. Calculer la probabilité de tirer le carré d'un nombre entier.
+5. Calculer la probabilité de tirer un nombre premier **et** pair, puis celle de tirer un nombre pair **ou** multiple de $5$.
+6. Calculer la probabilité de ne pas tirer un nombre premier, puis celle de tirer un nombre supérieur à $20$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Un multiple de 5
+
+::: methode
+Les $20$ cartes sont équiprobables : on écrit la liste des cartes favorables, puis on divise par $20$.
+:::
+
+::: etape Issues favorables
+$5$, $10$, $15$, $20$ : $4$ cartes.
+:::
+
+::: resultat
+$P(\text{multiple de } 5) = \dfrac{4}{20} = \dfrac{1}{5}$
+:::
+
+## Question 2 : Un nombre premier
+
+::: etape Issues favorables
+Les nombres premiers inférieurs à $20$ sont $2$, $3$, $5$, $7$, $11$, $13$, $17$, $19$ (en vert) : $8$ cartes.
+:::
+
+[IMAGE_2]
+
+::: resultat
+$P(\text{premier}) = \dfrac{8}{20} = \dfrac{2}{5}$
+:::
+
+::: attention Erreur fréquente
+Compter $1$ (il n'a qu'un diviseur) ou un nombre impair comme $9$ ou $15$ parmi les nombres premiers.
+:::
+
+## Question 3 : Un diviseur de 20
+
+::: etape Issues favorables
+$20 = 1 \times 20 = 2 \times 10 = 4 \times 5$ : les diviseurs sont $1$, $2$, $4$, $5$, $10$, $20$, soit $6$ cartes.
+:::
+
+::: resultat
+$P(\text{diviseur de } 20) = \dfrac{6}{20} = \dfrac{3}{10}$
+:::
+
+## Question 4 : Un carré
+
+::: etape Issues favorables
+$1 = 1^2$, $4 = 2^2$, $9 = 3^2$, $16 = 4^2$ ($5^2 = 25$ dépasse $20$) : $4$ cartes.
+:::
+
+::: resultat
+$P(\text{carré}) = \dfrac{4}{20} = \dfrac{1}{5}$
+:::
+
+## Question 5 : « et », « ou »
+
+::: etape Premier et pair
+Le seul nombre premier pair est $2$ : $1$ carte.
+:::
+
+::: etape Pair ou multiple de 5
+Les $10$ nombres pairs ($2$, $4$, …, $20$), plus les multiples de $5$ impairs : $5$ et $15$. Les nombres $10$ et $20$, pairs et multiples de $5$, ne sont comptés qu'une fois : $10 + 2 = 12$ cartes.
+:::
+
+::: resultat
+- $P(\text{premier et pair}) = \dfrac{1}{20}$
+- $P(\text{pair ou multiple de } 5) = \dfrac{12}{20} = \dfrac{3}{5}$
+:::
+
+## Question 6 : Contraire et impossible
+
+::: etape Pas premier
+$$P(\text{non premier}) = 1 - \frac{2}{5} = \frac{3}{5}$$
+:::
+
+::: etape Supérieur à 20
+Aucune carte ne porte un nombre supérieur à $20$ : l'événement est impossible.
+:::
+
+::: resultat
+$P(\text{non premier}) = \dfrac{3}{5}$ et $P(\text{supérieur à } 20) = 0$
+:::
+
+::: retenir
+Pour ne rien oublier, on écrit toujours la **liste** des issues favorables avant de compter.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\dfrac{1}{5}$
+2. $\dfrac{2}{5}$
+3. $\dfrac{3}{10}$
+4. $\dfrac{1}{5}$
+5. $\dfrac{1}{20}$ ; $\dfrac{3}{5}$
+6. $\dfrac{3}{5}$ ; $0$
+
+===
+
+=== Entraînement - Estimer la probabilité d'une punaise
+Id: 3137
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Quand on lance une punaise, elle retombe soit « pointe en haut », soit « sur le côté ». Une classe a lancé une punaise $1\,000$ fois et a noté, au fur et à mesure, le nombre de « pointe en haut ».
+
+| Nombre de lancers | $20$ | $50$ | $100$ | $200$ | $500$ | $1\,000$ |
+|---|---|---|---|---|---|---|
+| « Pointe en haut » | $14$ | $27$ | $63$ | $118$ | $309$ | $612$ |
+
+1. Pourquoi ne peut-on pas calculer la probabilité de « pointe en haut » comme pour un dé ?
+2. Calculer la fréquence de « pointe en haut » pour chaque nombre de lancers (au millième si nécessaire).
+3. Que remarque-t-on quand le nombre de lancers augmente ?
+4. Proposer une estimation de la probabilité de « pointe en haut », puis de celle de « sur le côté ».
+5. On lance cette punaise $5\,000$ fois. Environ combien de fois retombera-t-elle « pointe en haut » ?
+6. Paul n'a fait que les $20$ premiers lancers ; il affirme que la probabilité de « pointe en haut » est $0{,}7$. Qu'en penser ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Pas d'équiprobabilité
+
+::: etape Comparer avec un dé
+Un dé équilibré est parfaitement symétrique : ses faces ont la même chance. La punaise n'est pas symétrique : rien ne permet de dire que les deux positions ont la même chance.
+:::
+
+::: resultat
+Les deux issues ne sont pas équiprobables : on ne peut pas calculer la probabilité, on doit l'**estimer** par l'expérience.
+:::
+
+## Question 2 : Les fréquences
+
+::: methode
+On divise le nombre de « pointe en haut » par le nombre de lancers.
+:::
+
+::: etape Calculs
+$$
+\begin{aligned}
+\frac{14}{20} &= 0{,}7 & \frac{27}{50} &= 0{,}54 \\[6pt]
+\frac{63}{100} &= 0{,}63 & \frac{118}{200} &= 0{,}59 \\[6pt]
+\frac{309}{500} &= 0{,}618 & \frac{612}{1\,000} &= 0{,}612
+\end{aligned}
+$$
+:::
+
+::: resultat
+Fréquences : $0{,}7$ ; $0{,}54$ ; $0{,}63$ ; $0{,}59$ ; $0{,}618$ ; $0{,}612$.
+:::
+
+## Question 3 : La stabilisation
+
+::: etape Observer les variations
+Au début, la fréquence varie beaucoup (de $0{,}7$ à $0{,}54$) ; à partir de $200$ lancers, elle reste entre $0{,}59$ et $0{,}62$.
+:::
+
+[IMAGE_1]
+
+::: resultat
+Quand le nombre de lancers augmente, la fréquence se stabilise autour de $0{,}61$ environ.
+:::
+
+## Question 4 : Estimer les probabilités
+
+::: etape Prendre la fréquence sur le plus grand nombre de lancers
+Sur $1\,000$ lancers, la fréquence vaut $0{,}612$.
+:::
+
+::: etape Le contraire
+$$P(\text{sur le côté}) \approx 1 - 0{,}612 = 0{,}388$$
+:::
+
+::: resultat
+$P(\text{pointe en haut}) \approx 0{,}61$ et $P(\text{sur le côté}) \approx 0{,}39$.
+:::
+
+## Question 5 : Sur 5 000 lancers
+
+::: etape Calcul
+$$5\,000 \times 0{,}612 = 3\,060$$
+:::
+
+::: resultat
+Environ $3\,000$ fois (autour de $3\,060$) : c'est une estimation, pas un résultat exact.
+:::
+
+## Question 6 : La conclusion de Paul
+
+::: etape Peu de lancers
+Sur $20$ lancers, la fréquence ($0{,}7$) est assez loin de la valeur autour de laquelle elle se stabilise ensuite ($0{,}61$).
+:::
+
+::: resultat
+Paul conclut trop vite : $20$ lancers ne suffisent pas. Seule une fréquence calculée sur un grand nombre de lancers donne une bonne estimation.
+:::
+
+::: attention Erreur fréquente
+Prendre la fréquence d'un petit nombre d'essais pour la probabilité.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Les deux issues ne sont pas équiprobables
+2. $0{,}7$ ; $0{,}54$ ; $0{,}63$ ; $0{,}59$ ; $0{,}618$ ; $0{,}612$
+3. Elle se stabilise autour de $0{,}61$
+4. Environ $0{,}61$ et $0{,}39$
+5. Environ $3\,000$ fois
+6. $20$ lancers ne suffisent pas pour estimer la probabilité
+
+===
+
+=== Entraînement - Un jeu est-il équitable ?
+Id: 3138
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Un jeu entre deux joueurs est **équitable** si les deux joueurs ont la même probabilité de gagner.
+
+1. **Jeu 1.** Ana et Ben lancent un dé équilibré. Ana gagne si le dé donne $1$ ou $2$ ; sinon, c'est Ben qui gagne. Calculer la probabilité de gagner de chaque joueur. Ce jeu est-il équitable ?
+2. Modifier la règle du jeu 1 pour le rendre équitable.
+3. **Jeu 2.** Un sac contient $4$ boules rouges et $6$ boules bleues. On tire une boule au hasard : Ana gagne si elle est rouge, Ben si elle est bleue. Ce jeu est-il équitable ?
+4. Combien de boules rouges faut-il ajouter dans le sac pour que le jeu 2 devienne équitable ?
+5. **Jeu 3.** On fait tourner une roue à $8$ secteurs égaux numérotés de $1$ à $8$. Ana gagne si le numéro est un multiple de $3$, Ben si c'est un multiple de $4$ ; sinon, personne ne gagne. Ce jeu est-il équitable ?
+6. Ana et Ben jouent $60$ parties du jeu 1 (règle de départ). Environ combien de parties Ana peut-elle espérer gagner ?
+
+La roue du jeu 3 :
+
+[IMAGE_1]
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Le jeu 1
+
+::: etape Probabilité de gagner de chacun
+Les $6$ faces sont équiprobables.
+- Ana : $1$ et $2$, soit $\dfrac{2}{6} = \dfrac{1}{3}$ ;
+- Ben : $3$, $4$, $5$, $6$, soit $\dfrac{4}{6} = \dfrac{2}{3}$.
+:::
+
+::: resultat
+$\dfrac{1}{3} \neq \dfrac{2}{3}$ : le jeu 1 n'est pas équitable, Ben a deux fois plus de chances de gagner.
+:::
+
+## Question 2 : Rendre le jeu 1 équitable
+
+::: etape Partager les issues
+Il faut $3$ issues pour chacun, pour avoir $\dfrac{3}{6} = \dfrac{1}{2}$ chacun.
+:::
+
+::: resultat
+Par exemple : Ana gagne avec $1$, $2$ ou $3$ ; Ben avec $4$, $5$ ou $6$. (Autre possibilité : Ana gagne avec un nombre pair, Ben avec un nombre impair.)
+:::
+
+## Question 3 : Le jeu 2
+
+::: etape Probabilités
+$10$ boules équiprobables :
+- $P(\text{Ana}) = \dfrac{4}{10} = \dfrac{2}{5}$ ;
+- $P(\text{Ben}) = \dfrac{6}{10} = \dfrac{3}{5}$.
+:::
+
+::: resultat
+Le jeu 2 n'est pas équitable : Ben est avantagé.
+:::
+
+## Question 4 : Ajouter des boules rouges
+
+::: etape Autant de rouges que de bleues
+Le jeu est équitable s'il y a autant de boules rouges que de bleues, soit $6$ rouges : il faut en ajouter $6 - 4 = 2$.
+:::
+
+::: etape Contrôle
+$6$ rouges et $6$ bleues : $\dfrac{6}{12} = \dfrac{1}{2}$ pour chacun.
+:::
+
+::: resultat
+Il faut ajouter $2$ boules rouges.
+:::
+
+## Question 5 : Le jeu 3
+
+::: etape Issues favorables
+Les $8$ secteurs sont équiprobables (même angle).
+- Ana (multiple de $3$, en vert) : $3$ et $6$, soit $\dfrac{2}{8} = \dfrac{1}{4}$ ;
+- Ben (multiple de $4$, en orange) : $4$ et $8$, soit $\dfrac{2}{8} = \dfrac{1}{4}$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+Les deux joueurs ont la même probabilité de gagner, $\dfrac{1}{4}$ : le jeu 3 est équitable, même si, le plus souvent, personne ne gagne.
+:::
+
+::: attention Erreur fréquente
+Croire qu'un jeu équitable exige une probabilité de $\dfrac{1}{2}$ pour chacun : il suffit que les deux probabilités soient **égales**.
+:::
+
+## Question 6 : Sur 60 parties
+
+::: etape Calcul
+$$60 \times \frac{1}{3} = 20$$
+:::
+
+::: resultat
+Ana peut espérer gagner environ $20$ parties sur $60$ (Ben environ $40$).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Ana $\dfrac{1}{3}$, Ben $\dfrac{2}{3}$ : non équitable
+2. Par exemple : Ana gagne avec $1$, $2$ ou $3$
+3. $\dfrac{2}{5}$ et $\dfrac{3}{5}$ : non équitable
+4. $2$ boules rouges
+5. $\dfrac{1}{4}$ chacun : équitable
+6. Environ $20$ parties
+
+===
+
+=== Problème - La roue de la kermesse
+Id: 3139
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+À la kermesse du collège, une partie coûte $1$ €. Le joueur fait tourner une roue partagée en $12$ secteurs de même angle : un secteur fait gagner $5$ €, trois secteurs font gagner $2$ € et les huit autres secteurs (blancs) ne font rien gagner.
+
+[IMAGE_1]
+
+1. Justifier que les $12$ secteurs sont équiprobables. Calculer la probabilité de gagner $5$ €, celle de gagner $2$ €, puis celle de ne rien gagner.
+2. Calculer la probabilité de gagner quelque chose de deux façons.
+3. Les organisateurs prévoient $600$ parties dans la journée. Environ combien de fois devront-ils donner $5$ € ? Et $2$ € ?
+4. Estimer la somme encaissée, la somme reversée aux joueurs et le bénéfice des organisateurs sur ces $600$ parties.
+5. En fin de journée, $600$ parties ont été jouées et la roue s'est arrêtée $46$ fois sur le secteur à $5$ €. Calculer la fréquence de ce résultat. Est-elle cohérente avec la question 1 ?
+6. L'an prochain, les organisateurs veulent un bénéfice plus grand : ils transforment un des secteurs à $2$ € en secteur blanc. Quel bénéfice peuvent-ils alors espérer sur $600$ parties ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les probabilités des gains
+
+::: etape L'équiprobabilité
+Les $12$ secteurs ont le même angle, $360° \div 12 = 30°$ : ils ont la même chance d'être désignés.
+:::
+
+::: etape Compter les secteurs
+- $5$ € : $1$ secteur sur $12$ ;
+- $2$ € : $3$ secteurs sur $12$ ;
+- rien : $8$ secteurs sur $12$.
+:::
+
+::: resultat
+- $P(5\text{ €}) = \dfrac{1}{12}$
+- $P(2\text{ €}) = \dfrac{3}{12} = \dfrac{1}{4}$
+- $P(\text{rien}) = \dfrac{8}{12} = \dfrac{2}{3}$
+:::
+
+## Question 2 : Gagner quelque chose
+
+::: etape Première façon : compter
+Les secteurs gagnants (en vert) sont $1 + 3 = 4$ sur $12$ : $\dfrac{4}{12} = \dfrac{1}{3}$.
+:::
+
+[IMAGE_2]
+
+::: etape Deuxième façon : le contraire
+« Gagner quelque chose » est le contraire de « ne rien gagner » :
+
+$$1 - \frac{2}{3} = \frac{1}{3}$$
+:::
+
+::: resultat
+$P(\text{gagner quelque chose}) = \dfrac{1}{3}$
+:::
+
+## Question 3 : Sur 600 parties
+
+::: methode
+Sur un grand nombre de parties, la fréquence d'un résultat est proche de sa probabilité : nombre de parties $\times$ probabilité.
+:::
+
+::: etape Calculs
+- $5$ € : $600 \times \dfrac{1}{12} = 50$ ;
+- $2$ € : $600 \times \dfrac{1}{4} = 150$.
+:::
+
+::: resultat
+Environ $50$ fois $5$ € et $150$ fois $2$ €.
+:::
+
+## Question 4 : Le bilan estimé
+
+::: etape Somme encaissée
+$600 \times 1 = 600$ €.
+:::
+
+::: etape Somme reversée
+$50 \times 5 + 150 \times 2 = 250 + 300$, soit $550$ €.
+:::
+
+::: etape Bénéfice
+$600 - 550 = 50$ €.
+:::
+
+::: resultat
+Les organisateurs peuvent espérer environ $600$ € encaissés, $550$ € reversés, soit un bénéfice d'environ $50$ €.
+:::
+
+::: attention Erreur fréquente
+Oublier que ce bilan est une **estimation** : sur une journée réelle, le nombre de lots gagnés varie autour de ces valeurs.
+:::
+
+## Question 5 : La fréquence observée
+
+::: etape Calcul de la fréquence
+$$f = \frac{46}{600} \approx 0{,}077$$
+:::
+
+::: etape Comparaison
+$\dfrac{1}{12} \approx 0{,}083$ : l'écart est d'environ $0{,}006$.
+:::
+
+::: resultat
+La fréquence $0{,}077$ est proche de la probabilité $\dfrac{1}{12} \approx 0{,}083$ : c'est cohérent.
+:::
+
+## Question 6 : Une roue modifiée
+
+::: etape Les nouvelles probabilités
+Il reste $2$ secteurs à $2$ € : $P(2\text{ €}) = \dfrac{2}{12} = \dfrac{1}{6}$ ; le secteur à $5$ € ne change pas.
+:::
+
+::: etape Sur 600 parties
+- $5$ € : environ $50$ fois, soit $250$ € ;
+- $2$ € : environ $600 \times \dfrac{1}{6} = 100$ fois, soit $200$ €.
+:::
+
+::: etape Bénéfice
+$600 - (250 + 200) = 600 - 450$, soit $150$ €.
+:::
+
+::: resultat
+Les organisateurs peuvent espérer un bénéfice d'environ $150$ € sur $600$ parties.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\dfrac{1}{12}$ ; $\dfrac{1}{4}$ ; $\dfrac{2}{3}$
+2. $\dfrac{1}{3}$
+3. Environ $50$ fois et $150$ fois
+4. $600$ € encaissés, $550$ € reversés, bénéfice d'environ $50$ €
+5. $\approx 0{,}077$ : cohérent avec $\dfrac{1}{12} \approx 0{,}083$
+6. Environ $150$ €
+
+===
+
+=== Problème - Choisir la meilleure urne
+Id: 3140
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+On gagne si l'on tire une boule rouge. On peut choisir l'urne dans laquelle on tire une boule au hasard :
+
+- urne A : $3$ boules rouges et $2$ boules noires ;
+- urne B : $5$ boules rouges et $4$ boules noires ;
+- urne C : $8$ boules rouges et $7$ boules noires.
+
+[IMAGE_1]
+
+1. Calculer la probabilité de gagner avec l'urne A.
+2. Calculer la probabilité de gagner avec l'urne B, puis avec l'urne C.
+3. Comparer ces trois probabilités en les écrivant avec le dénominateur $45$. Quelle urne faut-il choisir ?
+4. On vide les urnes A et B dans une même urne. Calculer la probabilité de gagner avec cette nouvelle urne. Est-ce la moyenne des probabilités des urnes A et B ?
+5. Combien de boules rouges faut-il ajouter dans l'urne B pour que la probabilité de gagner soit la même qu'avec l'urne A ?
+6. Combien de boules noires faut-il ajouter dans l'urne A pour que la probabilité de gagner soit égale à $\dfrac{1}{2}$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : L'urne A
+
+::: etape Issues
+$3 + 2 = 5$ boules équiprobables, dont $3$ rouges.
+:::
+
+::: resultat
+$P_A = \dfrac{3}{5}$
+:::
+
+## Question 2 : Les urnes B et C
+
+::: etape Urne B
+$5 + 4 = 9$ boules, dont $5$ rouges : $\dfrac{5}{9}$.
+:::
+
+::: etape Urne C
+$8 + 7 = 15$ boules, dont $8$ rouges : $\dfrac{8}{15}$.
+:::
+
+::: resultat
+$P_B = \dfrac{5}{9}$ et $P_C = \dfrac{8}{15}$
+:::
+
+## Question 3 : Comparer
+
+::: methode
+Pour comparer des fractions, on les écrit avec le même dénominateur : $45$ est un multiple commun de $5$, $9$ et $15$.
+:::
+
+::: etape Même dénominateur
+$$\frac{3}{5} = \frac{27}{45} \qquad \frac{5}{9} = \frac{25}{45} \qquad \frac{8}{15} = \frac{24}{45}$$
+:::
+
+[IMAGE_2]
+
+::: resultat
+$\dfrac{27}{45} > \dfrac{25}{45} > \dfrac{24}{45}$ : il faut choisir l'urne A, même si c'est celle qui contient le moins de boules rouges.
+:::
+
+::: attention Erreur fréquente
+Choisir l'urne C parce qu'elle a le plus de boules rouges : ce qui compte, c'est la **proportion** de boules rouges, pas leur nombre.
+:::
+
+## Question 4 : Réunir A et B
+
+::: etape La nouvelle urne
+$3 + 5 = 8$ boules rouges sur $5 + 9 = 14$ boules : $\dfrac{8}{14} = \dfrac{4}{7} \approx 0{,}571$.
+:::
+
+::: etape La moyenne
+$$\frac{1}{2} \times \left(\frac{27}{45} + \frac{25}{45}\right) = \frac{26}{45} \approx 0{,}578$$
+:::
+
+::: resultat
+$P = \dfrac{4}{7}$ : ce n'est pas la moyenne des deux probabilités ($\dfrac{26}{45}$), car les deux urnes n'ont pas le même nombre de boules.
+:::
+
+## Question 5 : Améliorer l'urne B
+
+::: methode
+On note $r$ le nombre de boules rouges ajoutées : l'urne B contient alors $5 + r$ rouges sur $9 + r$ boules, et l'on veut $\dfrac{5 + r}{9 + r} = \dfrac{3}{5}$.
+:::
+
+::: etape Égalité des produits en croix
+$$
+\begin{aligned}
+5(5 + r) &= 3(9 + r) \\
+25 + 5r &= 27 + 3r \\
+2r &= 2 \\
+r &= 1
+\end{aligned}
+$$
+:::
+
+::: etape Contrôle
+$6$ rouges sur $10$ boules : $\dfrac{6}{10} = \dfrac{3}{5}$.
+:::
+
+::: resultat
+Il suffit d'ajouter $1$ boule rouge dans l'urne B.
+:::
+
+## Question 6 : Une chance sur deux dans l'urne A
+
+::: etape Autant de noires que de rouges
+Pour une probabilité de $\dfrac{1}{2}$, il faut autant de boules noires que de rouges : $3$ noires. Il y en a $2$.
+:::
+
+::: resultat
+Il faut ajouter $1$ boule noire : $\dfrac{3}{6} = \dfrac{1}{2}$.
+:::
+
+::: retenir
+Comparer des probabilités, c'est comparer des proportions : on compare les fractions, pas les effectifs.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\dfrac{3}{5}$
+2. $\dfrac{5}{9}$ ; $\dfrac{8}{15}$
+3. $\dfrac{27}{45} > \dfrac{25}{45} > \dfrac{24}{45}$ : l'urne A
+4. $\dfrac{4}{7}$ ; non (la moyenne vaut $\dfrac{26}{45}$)
+5. $1$ boule rouge
+6. $1$ boule noire
+
+===
+
+=== Problème - Retrouver le contenu d'un sac
+Id: 3141
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Un sac contient des boules rouges, des boules bleues et des boules jaunes, indiscernables au toucher. On tire une boule au hasard. On sait que :
+
+- la probabilité de tirer une boule rouge est $\dfrac{1}{4}$ ;
+- la probabilité de tirer une boule bleue est $\dfrac{1}{3}$ ;
+- le sac contient $10$ boules jaunes.
+
+1. Calculer la probabilité de tirer une boule jaune.
+2. En déduire le nombre total de boules dans le sac.
+3. Calculer le nombre de boules rouges et le nombre de boules bleues.
+4. Vérifier les résultats en recalculant les trois probabilités.
+5. Combien de boules rouges faut-il ajouter pour que la probabilité de tirer une boule rouge soit égale à $\dfrac{1}{2}$ ?
+6. Un autre sac contient $25$ boules. Peut-on avoir une probabilité de $\dfrac{1}{3}$ de tirer une boule bleue dans ce sac ? Justifier.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : La probabilité de jaune
+
+::: methode
+Les probabilités des trois couleurs ont pour somme $1$.
+:::
+
+::: etape Calcul avec le dénominateur 12
+$$
+\begin{aligned}
+P(\text{jaune}) &= 1 - \frac{1}{4} - \frac{1}{3} \\[4pt]
+&= \frac{12}{12} - \frac{3}{12} - \frac{4}{12} \\[4pt]
+&= \frac{5}{12}
+\end{aligned}
+$$
+:::
+
+::: resultat
+$P(\text{jaune}) = \dfrac{5}{12}$
+:::
+
+## Question 2 : Le nombre total de boules
+
+::: etape Interpréter la fraction
+$\dfrac{5}{12}$ signifie : si l'on partage les boules en $12$ parts égales, les jaunes occupent $5$ parts.
+:::
+
+[IMAGE_1]
+
+::: etape Une part
+$5$ parts correspondent à $10$ boules, donc $1$ part correspond à $10 \div 5 = 2$ boules.
+:::
+
+::: resultat
+Le sac contient $12 \times 2 = 24$ boules.
+:::
+
+## Question 3 : Rouges et bleues
+
+::: etape Rouges
+$\dfrac{1}{4}$ de $24$ : $24 \div 4 = 6$ boules rouges ($3$ parts).
+:::
+
+::: etape Bleues
+$\dfrac{1}{3}$ de $24$ : $24 \div 3 = 8$ boules bleues ($4$ parts).
+:::
+
+::: resultat
+$6$ boules rouges et $8$ boules bleues.
+:::
+
+## Question 4 : Vérification
+
+::: etape Le total
+$6 + 8 + 10 = 24$ boules.
+:::
+
+::: etape Les probabilités
+- rouges : $\dfrac{6}{24} = \dfrac{1}{4}$ ;
+- bleues : $\dfrac{8}{24} = \dfrac{1}{3}$ ;
+- jaunes : $\dfrac{10}{24} = \dfrac{5}{12}$.
+:::
+
+::: resultat
+On retrouve bien les probabilités de l'énoncé.
+:::
+
+## Question 5 : Une chance sur deux pour le rouge
+
+::: etape Autant de rouges que d'autres boules
+Les boules non rouges sont $8 + 10 = 18$. Il faut donc $18$ boules rouges ; il y en a $6$.
+:::
+
+::: resultat
+Il faut ajouter $18 - 6 = 12$ boules rouges : $\dfrac{18}{36} = \dfrac{1}{2}$.
+:::
+
+::: attention Erreur fréquente
+Penser qu'il suffit d'ajouter $6$ boules rouges ($12$ rouges) pour avoir la moitié de $24$ : en ajoutant des boules, le total passe à $30$, et $\dfrac{12}{30} = \dfrac{2}{5}$.
+:::
+
+## Question 6 : Un sac de 25 boules
+
+::: etape Le nombre de boules bleues nécessaire
+Il faudrait que les boules bleues soient le tiers de $25$ : $25 \div 3$ n'est pas un nombre entier ($3 \times 8 = 24$ et $3 \times 9 = 27$).
+:::
+
+::: resultat
+Non : avec $8$ boules bleues, la probabilité vaut $\dfrac{8}{25}$ ; avec $9$, elle vaut $\dfrac{9}{25}$. Elle ne peut jamais être égale à $\dfrac{1}{3}$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\dfrac{5}{12}$
+2. $24$ boules
+3. $6$ rouges et $8$ bleues
+4. $\dfrac{6}{24} = \dfrac{1}{4}$, $\dfrac{8}{24} = \dfrac{1}{3}$, $\dfrac{10}{24} = \dfrac{5}{12}$
+5. $12$ boules rouges
+6. Non : $25$ n'est pas divisible par $3$
+
+===
+
+=== Problème - Le dé est-il truqué ?
+Id: 3142
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Pour savoir si un dé est truqué, on l'a lancé $500$ fois. Le diagramme donne le nombre de fois où chaque face est sortie.
+
+[IMAGE_1]
+
+1. Vérifier que le total des effectifs vaut $500$.
+2. Calculer la fréquence de chaque face.
+3. Avec un dé équilibré, environ combien de fois chaque face devrait-elle sortir sur $500$ lancers ? Ce dé semble-t-il équilibré ? Justifier.
+4. Estimer la probabilité d'obtenir un nombre pair avec ce dé.
+5. Avec un dé équilibré, quelle serait la probabilité d'obtenir un nombre pair ?
+6. Dans un jeu, on gagne en obtenant $6$. Sur $200$ lancers, environ combien de victoires peut-on attendre avec ce dé ? Et avec un dé équilibré ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Le total
+
+::: etape Additionner les effectifs
+$60 + 65 + 70 + 75 + 80 + 150 = 500$.
+:::
+
+::: resultat
+Le total vaut bien $500$ lancers.
+:::
+
+## Question 2 : Les fréquences
+
+::: methode
+Fréquence d'une face $= \dfrac{\text{effectif de la face}}{500}$.
+:::
+
+::: etape Calculs
+$$
+\begin{aligned}
+f_1 &= \frac{60}{500} = 0{,}12 & f_2 &= \frac{65}{500} = 0{,}13 \\[6pt]
+f_3 &= \frac{70}{500} = 0{,}14 & f_4 &= \frac{75}{500} = 0{,}15 \\[6pt]
+f_5 &= \frac{80}{500} = 0{,}16 & f_6 &= \frac{150}{500} = 0{,}3
+\end{aligned}
+$$
+
+($f_1$ est la fréquence de la face $1$, etc.)
+:::
+
+::: resultat
+Fréquences : $0{,}12$ ; $0{,}13$ ; $0{,}14$ ; $0{,}15$ ; $0{,}16$ ; $0{,}3$.
+:::
+
+## Question 3 : Équilibré ?
+
+::: etape Ce qu'on attendrait
+Avec un dé équilibré, chaque face a la probabilité $\dfrac{1}{6}$ : $500 \times \dfrac{1}{6} \approx 83$ fois chacune (fréquence $\approx 0{,}17$).
+:::
+
+[IMAGE_2]
+
+::: etape Comparer
+Les faces $1$ à $5$ sortent un peu moins de $83$ fois, et le $6$ sort $150$ fois : près de deux fois plus que prévu. Sur $500$ lancers, un tel écart ne s'explique pas par le hasard.
+:::
+
+::: resultat
+Non : ce dé semble truqué, il favorise le $6$ (fréquence $0{,}3$ au lieu de $0{,}17$ environ).
+:::
+
+## Question 4 : Un nombre pair avec ce dé
+
+::: methode
+On ne peut pas calculer la probabilité : on l'estime par la fréquence observée sur ce grand nombre de lancers.
+:::
+
+::: etape Faces paires
+$2$, $4$ et $6$ sont sorties $65 + 75 + 150 = 290$ fois, d'où :
+
+$$\frac{290}{500} = 0{,}58$$
+:::
+
+::: resultat
+$P(\text{pair}) \approx 0{,}58$ avec ce dé.
+:::
+
+## Question 5 : Avec un dé équilibré
+
+::: etape Faces paires
+$3$ faces paires sur $6$ faces équiprobables.
+:::
+
+::: resultat
+$P(\text{pair}) = \dfrac{3}{6} = \dfrac{1}{2} = 0{,}5$
+:::
+
+## Question 6 : Les victoires sur 200 lancers
+
+::: etape Avec ce dé
+On estime $P(6) \approx 0{,}3$ : $200 \times 0{,}3 = 60$.
+:::
+
+::: etape Avec un dé équilibré
+$$200 \times \frac{1}{6} \approx 33{,}3$$
+:::
+
+::: resultat
+Environ $60$ victoires avec ce dé, contre environ $33$ avec un dé équilibré.
+:::
+
+::: attention Erreur fréquente
+Utiliser $\dfrac{1}{6}$ pour un dé dont on vient de montrer qu'il est truqué : pour lui, la meilleure estimation est la fréquence observée.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $500$
+2. $0{,}12$ ; $0{,}13$ ; $0{,}14$ ; $0{,}15$ ; $0{,}16$ ; $0{,}3$
+3. Environ $83$ fois chacune ; non, le $6$ est favorisé
+4. Environ $0{,}58$
+5. $0{,}5$
+6. Environ $60$ ; environ $33$
+
+===
+
+=== Type brevet - Tirer au sort un élève
+Id: 3143
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Le tableau ci-dessous, incomplet, donne la répartition des $120$ élèves de 4e d'un collège.
+
+|  | Demi-<br>pensionnaires | Externes | Total |
+|---|---|---|---|
+| Filles | $40$ |  | $64$ |
+| Garçons |  | $21$ |  |
+| Total | $75$ |  | $120$ |
+
+1. Recopier et compléter le tableau.
+2. On tire au sort un élève de 4e. Quelle est la probabilité que ce soit une fille ?
+3. Quelle est la probabilité que ce soit un élève demi-pensionnaire ? Le principal affirme : « Plus de $60\ \%$ des élèves de 4e mangent à la cantine. » A-t-il raison ?
+4. Quelle est la probabilité que ce soit une fille demi-pensionnaire ?
+5. Quelle est la probabilité que ce soit un garçon externe ?
+6. Expliquer pourquoi l'événement « l'élève est une fille ou un demi-pensionnaire » est le contraire de l'événement « l'élève est un garçon externe ». En déduire sa probabilité.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Compléter le tableau
+
+::: methode
+Dans chaque ligne et chaque colonne, le total est la somme des cases.
+:::
+
+::: etape Calculs
+- filles externes : $64 - 40 = 24$ ;
+- garçons demi-pensionnaires : $75 - 40 = 35$ ;
+- total des garçons : $120 - 64 = 56$, et contrôle $35 + 21 = 56$ ;
+- total des externes : $24 + 21 = 45$, et contrôle $120 - 75 = 45$.
+:::
+
+::: resultat
+- Filles : $40$ demi-pensionnaires, $24$ externes, $64$ en tout.
+- Garçons : $35$ demi-pensionnaires, $21$ externes, $56$ en tout.
+- Total : $75$ demi-pensionnaires, $45$ externes, $120$ élèves.
+:::
+
+## Question 2 : Une fille
+
+::: etape Issues
+Les $120$ élèves sont équiprobables (tirage au sort) ; $64$ sont des filles.
+:::
+
+::: resultat
+$P(\text{fille}) = \dfrac{64}{120} = \dfrac{8}{15}$
+:::
+
+## Question 3 : Un demi-pensionnaire
+
+::: etape Probabilité
+$$P(\text{demi-pensionnaire}) = \frac{75}{120} = \frac{5}{8}$$
+:::
+
+::: etape En pourcentage
+$\dfrac{5}{8} = 0{,}625 = 62{,}5\ \%$.
+:::
+
+::: resultat
+$P(\text{demi-pensionnaire}) = \dfrac{5}{8}$ ; $62{,}5\ \% > 60\ \%$ : le principal a raison.
+:::
+
+## Question 4 : Une fille demi-pensionnaire
+
+::: etape Lire la case du tableau
+Ligne « Filles », colonne « Demi-pensionnaires » : $40$ élèves.
+:::
+
+::: resultat
+$P(\text{fille demi-pensionnaire}) = \dfrac{40}{120} = \dfrac{1}{3}$
+:::
+
+## Question 5 : Un garçon externe
+
+::: etape Lire la case du tableau
+Ligne « Garçons », colonne « Externes » : $21$ élèves.
+:::
+
+::: resultat
+$P(\text{garçon externe}) = \dfrac{21}{120} = \dfrac{7}{40}$
+:::
+
+## Question 6 : Un événement contraire
+
+::: etape Les élèves qui ne sont pas « fille ou demi-pensionnaire »
+Un élève qui n'est pas une fille est un garçon ; s'il n'est pas demi-pensionnaire, il est externe. Les seuls élèves exclus sont donc les garçons externes.
+:::
+
+::: etape Calcul par le contraire
+$$P = 1 - \frac{7}{40} = \frac{33}{40}$$
+:::
+
+::: etape Contrôle par comptage
+Les $64$ filles et les $35$ garçons demi-pensionnaires : $64 + 35 = 99$ élèves, et $\dfrac{99}{120} = \dfrac{33}{40}$.
+:::
+
+::: resultat
+$P(\text{fille ou demi-pensionnaire}) = \dfrac{33}{40}$
+:::
+
+::: attention Erreur fréquente
+Additionner les $64$ filles et les $75$ demi-pensionnaires : les $40$ filles demi-pensionnaires seraient comptées deux fois ($64 + 75 = 139 > 120$).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Filles externes $24$ ; garçons demi-pensionnaires $35$ ; total garçons $56$ ; total externes $45$
+2. $\dfrac{8}{15}$
+3. $\dfrac{5}{8} = 62{,}5\ \%$ : oui
+4. $\dfrac{1}{3}$
+5. $\dfrac{7}{40}$
+6. $\dfrac{33}{40}$
+
+===
+
+=== Type brevet - Le distributeur de boules de gomme
+Id: 3144
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Un distributeur contient $30$ boules de gomme de même taille : $12$ rouges, $9$ jaunes, $6$ bleues et $3$ blanches. Quand on tourne la poignée, une boule sort au hasard.
+
+[IMAGE_1]
+
+1. Quelle est la probabilité d'obtenir une boule rouge ?
+2. Quelle est la probabilité de ne pas obtenir une boule bleue ?
+3. Tom affirme : « J'ai autant de chances d'obtenir une boule jaune que d'obtenir une boule bleue ou blanche. » A-t-il raison ?
+4. Lucie tourne la poignée la première et obtient une boule rouge, qu'elle garde. C'est au tour de Tom. Quelle est la probabilité qu'il obtienne une boule rouge ? Est-elle plus grande ou plus petite que pour Lucie ?
+5. Le gérant remet le distributeur dans son état de départ ($30$ boules). Combien de boules blanches doit-il ajouter pour que la probabilité d'obtenir une boule blanche soit égale à $\dfrac{1}{4}$ ?
+6. Avec le distributeur de départ, rempli à l'identique après chaque client, $250$ boules ont été vendues en un mois, dont $95$ rouges. Calculer la fréquence des boules rouges. Est-ce cohérent avec la question 1 ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Une boule rouge
+
+::: etape Issues
+Les $30$ boules ont la même taille et sortent au hasard : elles sont équiprobables. $12$ sont rouges (entourées en vert).
+:::
+
+[IMAGE_2]
+
+::: resultat
+$P(\text{rouge}) = \dfrac{12}{30} = \dfrac{2}{5}$
+:::
+
+## Question 2 : Pas bleue
+
+::: etape Événement contraire
+$P(\text{bleue}) = \dfrac{6}{30} = \dfrac{1}{5}$, donc :
+
+$$P(\text{non bleue}) = 1 - \frac{1}{5} = \frac{4}{5}$$
+:::
+
+::: resultat
+$P(\text{non bleue}) = \dfrac{4}{5}$
+:::
+
+## Question 3 : L'affirmation de Tom
+
+::: etape Jaune
+$9$ boules jaunes : $P(\text{jaune}) = \dfrac{9}{30}$.
+:::
+
+::: etape Bleue ou blanche
+$6 + 3 = 9$ boules : $P(\text{bleue ou blanche}) = \dfrac{9}{30}$.
+:::
+
+::: resultat
+Les deux probabilités valent $\dfrac{9}{30} = \dfrac{3}{10}$ : Tom a raison.
+:::
+
+## Question 4 : Après Lucie
+
+::: etape Le nouveau contenu
+Lucie a gardé une boule rouge : il reste $30 - 1 = 29$ boules, dont $12 - 1 = 11$ rouges.
+:::
+
+::: etape Comparer
+$P(\text{rouge pour Tom}) = \dfrac{11}{29} \approx 0{,}379$, alors que $\dfrac{2}{5} = 0{,}4$.
+:::
+
+::: resultat
+La probabilité que Tom obtienne une rouge est $\dfrac{11}{29}$ : elle est un peu plus petite que pour Lucie.
+:::
+
+::: attention Erreur fréquente
+Garder $30$ au dénominateur : la boule de Lucie n'est plus dans le distributeur, il n'y a plus que $29$ issues.
+:::
+
+## Question 5 : Des boules blanches en plus
+
+::: methode
+On note $x$ le nombre de boules blanches ajoutées et on traduit la condition par une équation.
+:::
+
+::: etape Mise en équation
+Il y aura $3 + x$ boules blanches sur $30 + x$ boules. Une probabilité de $\dfrac{1}{4}$ signifie que le total vaut $4$ fois le nombre de blanches :
+
+$$4(3 + x) = 30 + x$$
+:::
+
+::: etape Résolution
+$$
+\begin{aligned}
+12 + 4x &= 30 + x \\
+3x &= 18 \\
+x &= 6
+\end{aligned}
+$$
+:::
+
+::: etape Contrôle
+$3 + 6 = 9$ boules blanches sur $36$ boules : $\dfrac{9}{36} = \dfrac{1}{4}$.
+:::
+
+::: resultat
+Le gérant doit ajouter $6$ boules blanches.
+:::
+
+## Question 6 : La fréquence des rouges
+
+::: etape Calcul
+$$f = \frac{95}{250} = 0{,}38$$
+:::
+
+::: resultat
+La fréquence $0{,}38$ est proche de la probabilité $\dfrac{2}{5} = 0{,}4$ : c'est cohérent.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $\dfrac{2}{5}$
+2. $\dfrac{4}{5}$
+3. Oui : $\dfrac{3}{10}$ dans les deux cas
+4. $\dfrac{11}{29} \approx 0{,}379$ : plus petite
+5. $6$ boules blanches
+6. $0{,}38$ : cohérent avec $0{,}4$
+
+===
+
+=== Type brevet - La cible
+Id: 3145
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Une cible est un carré de $40$ cm de côté. Elle contient deux disques de même centre : un petit disque de rayon $10$ cm et un grand disque de rayon $20$ cm. Une fléchette se plante au hasard dans le carré. On admet que la probabilité d'atteindre une zone est égale à :
+
+$$\frac{\text{aire de la zone}}{\text{aire du carré}}$$
+
+[IMAGE_1]
+
+1. Calculer l'aire du carré.
+2. Calculer l'aire exacte du petit disque, puis une valeur approchée à l'unité.
+3. Calculer la probabilité d'atteindre le petit disque (valeur exacte, puis valeur approchée au millième).
+4. Calculer la probabilité d'atteindre le grand disque, puis celle d'atteindre la couronne (partie du grand disque située hors du petit disque).
+5. Calculer la probabilité de ne pas atteindre le grand disque (au millième).
+6. Sur $200$ lancers, environ combien de fléchettes peut-on attendre dans le petit disque ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Le carré
+
+::: etape Calcul
+$40 \times 40 = 1\,600$.
+:::
+
+::: resultat
+L'aire du carré est $1\,600$ cm².
+:::
+
+## Question 2 : Le petit disque
+
+::: methode
+Aire d'un disque de rayon $r$ : $\pi \times r^2$.
+:::
+
+::: etape Calcul
+$\pi \times 10^2 = 100\pi \approx 314{,}16$.
+:::
+
+::: resultat
+L'aire du petit disque est $100\pi$ cm², soit environ $314$ cm².
+:::
+
+## Question 3 : Atteindre le petit disque
+
+::: etape Quotient des aires
+$$P = \frac{100\pi}{1\,600} = \frac{\pi}{16}$$
+:::
+
+[IMAGE_2]
+
+::: resultat
+$P(\text{petit disque}) = \dfrac{\pi}{16} \approx 0{,}196$
+:::
+
+## Question 4 : Le grand disque et la couronne
+
+::: etape Grand disque
+$$\frac{\pi \times 20^2}{1\,600} = \frac{400\pi}{1\,600} = \frac{\pi}{4} \approx 0{,}785$$
+:::
+
+::: etape Couronne
+L'aire de la couronne est celle du grand disque moins celle du petit :
+
+$$\frac{\pi}{4} - \frac{\pi}{16} = \frac{4\pi}{16} - \frac{\pi}{16} = \frac{3\pi}{16} \approx 0{,}589$$
+:::
+
+[IMAGE_3]
+
+::: resultat
+$P(\text{grand disque}) = \dfrac{\pi}{4} \approx 0{,}785$ ; $P(\text{couronne}) = \dfrac{3\pi}{16} \approx 0{,}589$
+:::
+
+::: attention Erreur fréquente
+Croire qu'en doublant le rayon on double la probabilité : l'aire est multipliée par $2^2 = 4$, donc la probabilité aussi ($\dfrac{\pi}{4} = 4 \times \dfrac{\pi}{16}$).
+:::
+
+## Question 5 : Hors du grand disque
+
+::: etape Événement contraire
+$$1 - \frac{\pi}{4} \approx 1 - 0{,}785 = 0{,}215$$
+:::
+
+::: resultat
+$P(\text{hors du grand disque}) \approx 0{,}215$ (les quatre coins du carré).
+:::
+
+## Question 6 : Sur 200 lancers
+
+::: etape Calcul
+$$200 \times \frac{\pi}{16} \approx 39{,}3$$
+:::
+
+::: resultat
+On peut attendre environ $39$ fléchettes dans le petit disque.
+:::
+
+::: retenir
+Quand les issues ne se comptent pas (un point dans une zone), la probabilité peut être un quotient d'aires.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $1\,600$ cm²
+2. $100\pi$ cm² $\approx 314$ cm²
+3. $\dfrac{\pi}{16} \approx 0{,}196$
+4. $\dfrac{\pi}{4} \approx 0{,}785$ ; $\dfrac{3\pi}{16} \approx 0{,}589$
+5. $\approx 0{,}215$
+6. Environ $39$
+
+===

@@ -7,68 +7,49 @@
   <Modal
     :is-open="isOpen"
     title="Créer un compte"
+    subtitle="Gratuit, sans carte bancaire."
+    :icon="UserPlusIcon"
     size="medium"
     @close="handleClose"
   >
-    <div class="register-zoom-clip">
-      <div class="register-zoom-outer" :style="registerZoomStyle">
-        <div ref="registerContentRef">
-    <!-- Login Link -->
-    <div class="login-link login-link-top">
-      <p>
-        Déjà un compte ?
-        <button
-          type="button"
-          class="login-btn"
-          @click="handleLogin"
-        >
-          Se connecter
-        </button>
-      </p>
+    <!-- Inscription avec Google -->
+    <div class="social-btn-group">
+      <button
+        v-for="provider in socialProviders"
+        :key="provider.key"
+        type="button"
+        :class="['om-btn om-btn--ghost om-btn--block social-btn', provider.btnClass]"
+        @click="() => handleSocialRegister(provider.key)"
+        :disabled="isSubmitting || (provider.key === 'google' && isGoogleLoading)"
+      >
+        <img :src="provider.icon" alt="" class="social-icon" />
+        {{ provider.label }}
+      </button>
     </div>
-    <!-- Social Registration (en haut) -->
-    <div class="social-register">
-      <div class="social-btn-group">
-        <button 
-          v-for="provider in socialProviders"
-          :key="provider.key"
-          :class="['social-btn', provider.btnClass]"
-          @click="() => handleSocialRegister(provider.key)"
-          :disabled="isSubmitting || (provider.key === 'google' && isGoogleLoading)"
-        >
-          <img :src="provider.icon" :alt="provider.key" class="social-icon" />
-          {{ provider.label }}
-        </button>
-      </div>
+
+    <p class="om-divider">ou avec ton e-mail</p>
+
+    <!-- Prénom, Nom -->
+    <div class="name-fields">
+      <FormField
+        :field-name="'firstName'"
+        :field-config="getFieldConfig('firstName')"
+        v-model="formData.firstName"
+        :disabled="isSubmitting"
+        :get-field-error="getFieldError"
+        @blur="handleFieldBlur"
+      />
+      <FormField
+        :field-name="'lastName'"
+        :field-config="getFieldConfig('lastName')"
+        v-model="formData.lastName"
+        :disabled="isSubmitting"
+        :get-field-error="getFieldError"
+        @blur="handleFieldBlur"
+      />
     </div>
-    <!-- Divider -->
-    <div class="divider">
-      <span class="divider-line"></span>
-      <span class="divider-text">ou</span>
-      <span class="divider-line"></span>
-    </div>
-    <!-- Top fields: Prénom, Nom -->
-    <div class="top-fields">
-      <div class="name-fields">
-        <FormField
-          :field-name="'firstName'"
-          :field-config="getFieldConfig('firstName')"
-          v-model="formData.firstName"
-          :disabled="isSubmitting"
-          :get-field-error="getFieldError"
-          @blur="handleFieldBlur"
-        />
-        <FormField
-          :field-name="'lastName'"
-          :field-config="getFieldConfig('lastName')"
-          v-model="formData.lastName"
-          :disabled="isSubmitting"
-          :get-field-error="getFieldError"
-          @blur="handleFieldBlur"
-        />
-      </div>
-    </div>
-    <!-- Registration Form -->
+
+    <!-- Formulaire d'inscription -->
     <DynamicForm
       class="register-dynamic-form"
       :field-names="mainFieldNames"
@@ -82,12 +63,10 @@
       @submit="handleFormSubmit"
     >
       <template #form-content>
-        <!-- Password Strength Indicator -->
-        <div v-if="mainFieldNames.includes('password')" class="password-strength-row">
-          <PasswordStrength :password="formData.password" />
-        </div>
-        <!-- Terms and Conditions -->
-        <div class="terms-section">
+        <!-- Robustesse du mot de passe -->
+        <PasswordStrength v-if="mainFieldNames.includes('password') && formData.password" :password="formData.password" />
+        <!-- Conditions et lettre d'information -->
+        <div class="consents">
           <FormField
             field-name="acceptTerms"
             :field-config="getFieldConfig('acceptTerms')"
@@ -96,9 +75,6 @@
             :get-field-error="getFieldError"
             @blur="handleFieldBlur"
           />
-        </div>
-        <!-- Newsletter Subscription -->
-        <div class="newsletter-section">
           <FormField
             field-name="newsletter"
             :field-config="getFieldConfig('newsletter')"
@@ -111,18 +87,24 @@
       </template>
     </DynamicForm>
 
-    <!-- Feedback Message -->
-    <div v-if="feedbackMessage" :class="['register-feedback', feedbackType]">
+    <!-- Message de retour -->
+    <p
+      v-if="feedbackMessage"
+      :class="['om-alert register-feedback', feedbackType === 'success' ? 'om-alert--success' : 'om-alert--error']"
+      role="status"
+    >
       {{ feedbackMessage }}
-    </div>
-        </div>
-      </div>
-    </div>
+    </p>
+
+    <p class="switch-account">
+      Déjà un compte ?
+      <button type="button" class="om-link" @click="handleLogin">Se connecter</button>
+    </p>
   </Modal>
 </template>
 
 <script>
-import { ref, onMounted, onBeforeUnmount, watch, nextTick } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useAuthForm } from '@/composables/useAuthForms'
 import { registerUser, mapRegisterFormToPayload } from '@/api'
 import Modal from '@/components/common/Modal.vue'
@@ -133,7 +115,7 @@ import PasswordStrength from '@/components/forms/PasswordStrength.vue'
 import { useUserStore } from '@/stores/user'
 import { useGoogleAuth } from '@/composables/useGoogleAuth'
 import FullPageSpinner from '@/components/common/FullPageSpinner.vue'
-import { useZoom } from '@/composables/useZoom'
+import { UserPlusIcon } from '@heroicons/vue/24/outline'
 import * as analytics from '@/services/analytics'
 
 export default {
@@ -168,96 +150,17 @@ export default {
     const userStore = useUserStore()
     const { setupGoogleSignIn, signInWithGoogle, isGoogleLoading } = useGoogleAuth()
 
-    // --- Dézoom mobile (modal) ---
-    const registerContentRef = ref(null)
-
-    function computeRegisterModalZoom(width) {
-      if (width >= 768) return 1
-      if (width >= 520) return 0.96
-      if (width >= 420) return 0.94
-      if (width >= 360) return 0.92
-      return 0.9
-    }
-
-    const {
-      detectMobileAndZoomSupport,
-      createZoomStyle,
-      updateViewportWidth,
-      measureContentHeight,
-      setupViewportListener,
-      cleanupViewportListener
-    } = useZoom({ computeAutoZoom: computeRegisterModalZoom })
-
-    const registerZoomStyle = createZoomStyle({
-      cssVar: '--register-modal-zoom',
-      heightVar: '--register-modal-content-height',
-      mobileZoomAdjustment: (z) => z
-    })
-
-    let registerResizeObserver = null
-    let registerZoomSession = 0
-    const measureRegisterHeight = () => {
-      measureContentHeight(registerContentRef)
-    }
-
-    const handleViewportChange = async () => {
-      updateViewportWidth()
-      await nextTick()
-      measureRegisterHeight()
-    }
-
-    const handleResize = () => {
-      void handleViewportChange()
-    }
-
-    const handleOrientationChange = () => {
-      setTimeout(() => {
-        void handleViewportChange()
-      }, 200)
-    }
-
-    const startRegisterZoomTracking = async (sessionId) => {
-      detectMobileAndZoomSupport()
-      setupViewportListener()
-
-      await nextTick()
-      if (sessionId !== registerZoomSession || !props.isOpen) {
-        stopRegisterZoomTracking()
-        return
-      }
-      measureRegisterHeight()
-
-      if (typeof window !== 'undefined') {
-        window.addEventListener('resize', handleResize, { passive: true })
-        window.addEventListener('orientationchange', handleOrientationChange, { passive: true })
-
-        setTimeout(measureRegisterHeight, 250)
-
-        if (window.ResizeObserver && registerContentRef.value) {
-          registerResizeObserver = new ResizeObserver(() => {
-            measureRegisterHeight()
-          })
-          registerResizeObserver.observe(registerContentRef.value)
-        }
-      }
-    }
-
-    const stopRegisterZoomTracking = () => {
-      cleanupViewportListener()
-      if (typeof window !== 'undefined') {
-        window.removeEventListener('resize', handleResize)
-        window.removeEventListener('orientationchange', handleOrientationChange)
-      }
-      registerResizeObserver?.disconnect?.()
-      registerResizeObserver = null
-    }
-
     // Name fields for the top section
     const nameFields = ['firstName', 'lastName']
-    // Main fields for DynamicForm (excluding custom layout fields)
-    const mainFieldNames = getFieldNames().filter(name => 
-      !['firstName', 'lastName', 'acceptTerms', 'newsletter'].includes(name)
+    // Main fields for DynamicForm (excluding custom layout fields).
+    // Un seul champ mot de passe (avec l'œil pour l'afficher) : la confirmation
+    // attendue par le serveur est recopiée automatiquement.
+    const mainFieldNames = getFieldNames().filter(name =>
+      !['firstName', 'lastName', 'confirmPassword', 'acceptTerms', 'newsletter'].includes(name)
     )
+    watch(() => formData.password, (motDePasse) => {
+      formData.confirmPassword = motDePasse
+    })
 
     // Feedback message state
     const feedbackMessage = ref('')
@@ -266,24 +169,6 @@ export default {
     // Initialiser Google Sign-In
     onMounted(async () => {
       await setupGoogleSignIn()
-    })
-
-    watch(
-      () => props.isOpen,
-      async (isOpen) => {
-        registerZoomSession += 1
-        const sessionId = registerZoomSession
-        if (isOpen) {
-          await startRegisterZoomTracking(sessionId)
-        } else {
-          stopRegisterZoomTracking()
-        }
-      },
-      { immediate: true }
-    )
-
-    onBeforeUnmount(() => {
-      stopRegisterZoomTracking()
     })
 
     // Méthode pour afficher un message
@@ -416,230 +301,17 @@ export default {
       feedbackMessage,
       feedbackType,
       showFeedback,
-      registerContentRef,
-      registerZoomStyle
+      UserPlusIcon
     }
   }
 }
 </script>
 
-<style scoped lang="scss">
-@use '@/assets/variables.scss' as *;
-
-.register-zoom-clip {
-  width: 100%;
-  overflow-x: hidden;
-  overflow-y: visible;
-}
-
-.register-zoom-outer {
-  width: 100%;
-  transform-origin: top left;
-  transition: transform 0.2s ease, zoom 0.2s ease;
-}
-
-.top-fields {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  margin-bottom: 20px;
-}
-.name-fields {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-}
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.form-label {
-  font-weight: 900;
-  color: $text-color;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-.required-indicator {
-  color: #ef4444 !important;
-  font-weight: 700;
-}
-.form-input {
-  width: 100%;
-  padding: 12px 16px;
-  border: 2px solid #e5e7eb;
-  border-radius: 8px;
-  font-size: 16px;
-  background: $white;
-  color: $text-color;
-  font-family: inherit;
-  height: 48px;
-  box-sizing: border-box;
-  transition: all 0.2s ease;
-}
-.form-input::placeholder {
-  color: #9ca3af;
-  opacity: 1;
-  font-size: 16px;
-}
-@media (max-width: 768px) {
-  .name-fields {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-}
-.register-dynamic-form {
-  .form-fields {
-    gap: 20px;
-  }
-}
-// Terms section
-.terms-section {
-  margin-top: 8px;
-}
-
-.newsletter-section {
-  margin-top: -8px;
-}
-
-.checkbox-label {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-.checkbox-input {
-  width: 16px;
-  height: 16px;
-  accent-color: $primary-color;
-  margin-top: 2px;
-  flex-shrink: 0;
-}
-
-.checkbox-text {
-  color: $text-color;
-}
-
-.link-btn {
-  background: none;
-  border: none;
-  color: $primary-color;
-  text-decoration: none;
-  font-weight: 500;
-  cursor: pointer;
-  font-size: 14px;
-  padding: 0;
-
-  &:hover {
-    text-decoration: underline;
-  }
-}
-
-// Submit button
-.register-submit-btn {
-  @extend .btn;
-  @extend .btn-primary;
-  width: 100%;
-  padding: 14px 20px;
-  font-size: 16px;
-  font-weight: 600;
-  border-radius: 8px;
-  position: relative;
-  min-height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-
-  &:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-  }
-}
-
-// Divider
-.divider {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  margin: 24px 0;
-  position: relative;
-}
-
-.divider-line {
-  flex: 1;
-  height: 1px;
-  background: #e5e7eb;
-  margin: 0 12px;
-}
-
-.divider-text {
-  background: $white;
-  padding: 0 16px;
-  color: #6b7280;
-  font-size: 14px;
-  font-weight: 500;
-  z-index: 1;
-  position: relative;
-}
-
-// Social register
-.social-register {
-  margin-bottom: 24px;
-}
-
+<style scoped>
+/* Éléments communs (.om-btn, .om-link, .om-divider, .om-alert) : components/common/Modal.vue */
 .social-btn-group {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.social-btn {
-  @extend .btn;
-  width: 100%;
-  padding: 12px 16px;
-  border: 2px solid #e5e7eb;
-  background: $white;
-  color: $text-color;
-  border-radius: 8px;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  transition: all 0.2s ease;
-
-  &:hover:not(:disabled) {
-    background: #f9fafb;
-    border-color: #d1d5db;
-  }
-
-  &:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-  }
-}
-
-.social-btn.google-btn {
-  border-color: #e5e7eb;
-  color: $text-color;
-}
-
-.social-btn.facebook-btn {
-  border-color: #1877f2;
-  color: #1877f2;
-
-  &:hover:not(:disabled) {
-    background: #f0f6ff;
-    border-color: #1877f2;
-  }
+  display: grid;
+  gap: 10px;
 }
 
 .social-icon {
@@ -647,115 +319,45 @@ export default {
   height: 20px;
 }
 
-// Login link
-.login-link {
-  text-align: center;
-  font-size: 14px;
-  color: $text-color;
-
-  p {
-    margin: 0;
-  }
-}
-
-.login-link-top {
+.name-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
   margin-bottom: 18px;
 }
 
-.login-btn {
-  background: none;
-  border: none;
-  color: $primary-color;
-  text-decoration: none;
-  font-weight: 600;
-  cursor: pointer;
-  font-size: 14px;
-
-  &:hover {
-    text-decoration: underline;
-  }
+.consents {
+  display: grid;
+  gap: 10px;
+  margin: 4px 0 6px;
 }
 
-// Responsive
-@media (max-width: 768px) {
-  .name-fields {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  .checkbox-label {
-    font-size: 13px;
-  }
-}
-.password-strength-row {
-  margin-bottom: 10px;
-}
-.phone-field-top {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 20px;
-}
-.form-label {
-  font-weight: 900;
-  color: $text-color;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-.required-indicator {
-  color: #ef4444 !important;
-  font-weight: 700;
-}
-.phone-group {
-  margin-top: 0;
-}
-#register-phone.form-input {
-  width: 100%;
-  padding: 12px 16px;
-  border: 2px solid #e5e7eb;
-  border-radius: 8px;
-  font-size: 16px;
-  background: $white;
-  color: $text-color;
-  font-family: inherit;
-  height: 48px;
-  box-sizing: border-box;
-  transition: all 0.2s ease;
-}
-#register-phone.form-input::placeholder {
-  color: #9ca3af;
-  opacity: 1;
-  font-size: 16px;
-}
-.phone-input {
-  max-width: 750px;
-  min-width: 0;
-  width: 100%;
-}
-@media (max-width: 768px) {
-  .phone-input {
-    max-width: 100%;
-  }
-}
 .register-feedback {
-  margin: 16px 0 0 0;
-  padding: 12px 18px;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 15px;
+  margin-top: 16px;
+}
+
+.switch-account {
+  margin: 22px 0 0;
+  color: var(--om-muted);
+  font-size: 14.5px;
   text-align: center;
 }
-.register-feedback.error {
-  background: #fee2e2;
-  color: #b91c1c;
-  border: 1px solid #fca5a5;
+
+/* Téléphone : fenêtre compacte (prénom et nom restent côte à côte). */
+@media (max-width: 640px) {
+  .name-fields {
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .consents {
+    gap: 6px;
+    margin: 2px 0 4px;
+  }
+
+  .switch-account {
+    margin-top: 16px;
+    font-size: 14px;
+  }
 }
-.register-feedback.success {
-  background: #eaf4ea;
-  color: #166534;
-  border: 1px solid #86efac;
-}
-</style> 
+</style>

@@ -1,0 +1,232 @@
+Titre: Schéma de Bernoulli et loi binomiale
+
+<!-- optitab:1 -->
+::: objectifs
+- Reconnaître une épreuve et un schéma de Bernoulli ; justifier qu’une variable aléatoire suit une loi binomiale.
+- Connaître et démontrer l’expression de $P(X = k)$ ; connaître l’espérance, la variance et l’écart-type.
+- Calculer $P(X = k)$, $P(X \le k)$, $P(X \ge k)$ et $P(a \le X \le b)$ à la calculatrice ou en Python.
+- Déterminer un seuil.
+:::
+
+::: prerequis
+- Variable aléatoire, espérance et variance (Première).
+- Coefficients binomiaux $\binom{n}{k}$ ; indépendance ; logarithme népérien.
+:::
+
+## I. Épreuve et loi de Bernoulli
+
+::: definition Épreuve de Bernoulli
+Une **épreuve de Bernoulli** est une expérience aléatoire qui n’a que deux issues : le **succès** $S$, de probabilité $p$, et l’**échec** $\overline{S}$, de probabilité $1 - p$.
+:::
+
+::: definition Loi de Bernoulli
+La variable aléatoire $X$ qui vaut $1$ en cas de succès et $0$ en cas d’échec suit la **loi de Bernoulli** de paramètre $p$ :
+
+| $k$ | $0$ | $1$ |
+|---|---|---|
+| $P(X = k)$ | $1 - p$ | $p$ |
+:::
+
+::: propriete
+Si $X$ suit la loi de Bernoulli de paramètre $p$, alors $E(X) = p$ et $V(X) = p(1 - p)$.
+:::
+
+::: demonstration
+$$
+\begin{aligned}
+E(X) &= 0 \times (1 - p) + 1 \times p = p \\
+V(X) &= (0 - p)^2 \times (1 - p) + (1 - p)^2 \times p \\
+&= p(1 - p)\big(p + (1 - p)\big) \\
+&= p(1 - p)
+\end{aligned}
+$$
+:::
+
+::: exemple
+On lance un dé équilibré et l’on appelle succès « obtenir $6$ ». C’est une épreuve de Bernoulli de paramètre $p = \frac{1}{6}$.
+:::
+
+## II. Schéma de Bernoulli et loi binomiale
+
+::: definition Schéma de Bernoulli
+Un **schéma de Bernoulli** de paramètres $n$ et $p$ est la répétition de $n$ épreuves de Bernoulli **identiques** (même probabilité de succès $p$) et **indépendantes**. On le représente par un arbre pondéré à $2^n$ chemins.
+:::
+
+[IMAGE_1]
+
+::: definition Loi binomiale
+Dans un schéma de Bernoulli de paramètres $n$ et $p$, la variable aléatoire $X$ égale au **nombre de succès** prend les valeurs $0, 1, \ldots, n$. Sa loi est la **loi binomiale** de paramètres $n$ et $p$, notée $\mathcal{B}(n\,;p)$.
+:::
+
+::: theoreme
+Si $X$ suit la loi $\mathcal{B}(n\,;p)$, alors pour tout entier $k$ tel que $0 \le k \le n$ :
+
+$$P(X = k) = \binom{n}{k}\,p^k\,(1 - p)^{n - k}$$
+:::
+
+::: demonstration
+L’événement $\{X = k\}$ est formé des chemins de l’arbre qui comportent exactement $k$ succès et $n - k$ échecs.
+
+- Les épreuves étant indépendantes, chacun de ces chemins a pour probabilité le produit des probabilités de ses branches : $p^k(1 - p)^{n - k}$.
+- Un tel chemin est déterminé par le choix des $k$ rangs des succès parmi les $n$ épreuves : il y en a $\binom{n}{k}$.
+
+En additionnant les probabilités de ces $\binom{n}{k}$ chemins : $P(X = k) = \binom{n}{k}\,p^k\,(1 - p)^{n - k}$.
+:::
+
+::: exemple QCM répondu au hasard
+Un QCM comporte $10$ questions à $4$ choix, dont un seul est juste. Un élève répond au hasard, indépendamment d’une question à l’autre ; $X$ est le nombre de bonnes réponses. Chaque question est une épreuve de Bernoulli de succès « bonne réponse », de probabilité $p = 0{,}25$ ; ces $10$ épreuves sont identiques et indépendantes, donc $X$ suit la loi $\mathcal{B}(10\,;0{,}25)$. Avec $\binom{10}{5} = 252$ :
+
+$$P(X = 5) = 252 \times 0{,}25^5 \times 0{,}75^5 \approx 0{,}058$$
+:::
+
+::: methode Justifier une loi binomiale (rédaction type)
+« On répète $n$ fois, de façon identique et indépendante, une épreuve de Bernoulli dont le succès « … » a pour probabilité $p$. La variable $X$ compte le nombre de succès, donc $X$ suit la loi binomiale $\mathcal{B}(n\,;p)$. »
+:::
+
+::: attention
+Sans indépendance, la loi n’est pas binomiale : c’est le cas de tirages **sans remise** dans une petite urne. Un tirage sans remise dans une **très grande** population (sondage de $25$ personnes parmi $5\,000$) est assimilé à un tirage avec remise.
+:::
+
+## III. Espérance, variance et allure de la loi
+
+::: theoreme Espérance, variance, écart-type
+Si $X$ suit la loi $\mathcal{B}(n\,;p)$ :
+
+$$
+\begin{aligned}
+E(X) &= np \\
+V(X) &= np(1 - p) \\
+\sigma(X) &= \sqrt{np(1 - p)}
+\end{aligned}
+$$
+:::
+
+::: remarque
+$X = X_1 + X_2 + \cdots + X_n$, où $X_i$ vaut $1$ si la $i$-ème épreuve est un succès et $0$ sinon : les $X_i$ sont des variables de Bernoulli indépendantes. Par linéarité de l’espérance et additivité de la variance pour des variables indépendantes, $E(X) = np$ et $V(X) = np(1 - p)$ (démonstration dans la notion « Sommes de variables aléatoires »).
+:::
+
+::: exemple
+Pour le QCM :
+
+$$
+\begin{aligned}
+E(X) &= 10 \times 0{,}25 = 2{,}5 \\
+V(X) &= 10 \times 0{,}25 \times 0{,}75 = 1{,}875 \\
+\sigma(X) &= \sqrt{1{,}875} \approx 1{,}37
+\end{aligned}
+$$
+
+Sur un grand nombre d’élèves répondant au hasard, le nombre moyen de bonnes réponses est proche de $2{,}5$.
+:::
+
+[IMAGE_2]
+
+::: remarque Allure du diagramme en bâtons
+Les probabilités se concentrent autour de l’espérance $np$. Pour $n$ fixé, le diagramme est symétrique si $p = 0{,}5$, décalé vers la gauche si $p < 0{,}5$ et vers la droite si $p > 0{,}5$.
+:::
+
+[IMAGE_3]
+
+## IV. Probabilités cumulées et seuils
+
+::: methode Calculer à la calculatrice
+- $P(X = k)$ : « binomFdp » (TI) ou « BinomialPD » (Casio).
+- $P(X \le k)$ : « binomFRép » (TI) ou « BinomialCD » (Casio).
+:::
+
+::: propriete
+Pour des entiers $k$, $a$, $b$ tels que $1 \le a \le b \le n$ et $1 \le k \le n$ :
+
+$$
+\begin{aligned}
+P(X \ge k) &= 1 - P(X \le k - 1) \\
+P(a \le X \le b) &= P(X \le b) - P(X \le a - 1) \\
+P(X \ge 1) &= 1 - P(X = 0) = 1 - (1 - p)^n
+\end{aligned}
+$$
+:::
+
+::: exemple
+Pour le QCM, la probabilité d’obtenir au moins $5$ bonnes réponses (la moyenne) au hasard est
+
+$$P(X \ge 5) = 1 - P(X \le 4) \approx 1 - 0{,}922 = 0{,}078$$
+
+C’est peu probable. Sur le diagramme, les barres $k \ge 5$ (en vert) et les barres $k \le 4$ (en orange) se partagent la probabilité totale $1$.
+:::
+
+[IMAGE_5]
+
+::: attention
+« Au moins $k$ » : $X \ge k$ ; « au plus $k$ » : $X \le k$ ; « plus de $k$ » : $X > k$, c’est-à-dire $X \ge k + 1$. Et $P(X \ge 5) = 1 - P(X \le 4)$, **pas** $1 - P(X \le 5)$.
+:::
+
+### Seuil sur $k$
+
+::: methode Plus petit $k$ tel que $P(X \le k) \ge 1 - \alpha$
+On calcule les probabilités cumulées $P(X \le 0)$, $P(X \le 1)$, … (tableau de valeurs de la calculatrice) jusqu’à atteindre $1 - \alpha$. L’intervalle $I = [0\,;k]$ obtenu vérifie $P(X \in I) \ge 1 - \alpha$.
+:::
+
+[IMAGE_4]
+
+::: exemple
+Pour le QCM, avec $\alpha = 0{,}05$ : $P(X \le 4) \approx 0{,}922 < 0{,}95$ et $P(X \le 5) \approx 0{,}980 \ge 0{,}95$. Le plus petit entier cherché est $k = 5$ : dans au moins $95\,\%$ des cas, un élève qui répond au hasard obtient au plus $5$ bonnes réponses.
+:::
+
+Le même calcul en Python :
+
+```python
+from math import comb
+
+def proba(n, p, k):
+    # P(X = k) pour B(n ; p)
+    c = comb(n, k)
+    q = 1 - p
+    return c * p**k * q**(n-k)
+
+def cumul(n, p, k):
+    # P(X <= k)
+    s = 0
+    for i in range(k + 1):
+        s = s + proba(n, p, i)
+    return s
+
+def seuil(n, p, alpha):
+    # plus petit k tel que
+    # P(X <= k) >= 1 - alpha
+    k = 0
+    s = proba(n, p, 0)
+    while s < 1 - alpha:
+        k = k + 1
+        s = s + proba(n, p, k)
+    return k
+```
+
+L’appel `seuil(10, 0.25, 0.05)` renvoie $5$.
+
+### Seuil sur $n$ : « au moins un succès »
+
+::: methode Plus petit $n$ tel que $P(X \ge 1) \ge c$
+On résout $1 - (1 - p)^n \ge c$, c’est-à-dire $(1 - p)^n \le 1 - c$, avec le logarithme népérien. Comme $0 < 1 - p < 1$, on a $\ln(1 - p) < 0$ : diviser par ce nombre **change le sens** de l’inégalité.
+:::
+
+::: exemple
+Combien de questions faut-il pour que la probabilité d’au moins une bonne réponse au hasard atteigne $0{,}95$ ?
+
+$$
+\begin{aligned}
+1 - 0{,}75^n \ge 0{,}95 &\iff 0{,}75^n \le 0{,}05 \\
+&\iff n\ln(0{,}75) \le \ln(0{,}05) \\
+&\iff n \ge \frac{\ln(0{,}05)}{\ln(0{,}75)} \approx 10{,}41
+\end{aligned}
+$$
+
+Il faut au moins $n = 11$ questions (vérification : $1 - 0{,}75^{10} \approx 0{,}944$ et $1 - 0{,}75^{11} \approx 0{,}958$).
+:::
+
+::: retenir
+- Schéma de Bernoulli : $n$ épreuves à deux issues, identiques et indépendantes ; le nombre $X$ de succès suit $\mathcal{B}(n\,;p)$.
+- $P(X = k) = \binom{n}{k}p^k(1 - p)^{n - k}$ ; $E(X) = np$ ; $V(X) = np(1 - p)$.
+- $P(X \ge k) = 1 - P(X \le k - 1)$ ; $P(X \ge 1) = 1 - (1 - p)^n$.
+
+Fiche de synthèse dans l’onglet Fiches !
+:::

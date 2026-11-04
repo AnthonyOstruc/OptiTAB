@@ -1,0 +1,3 @@
+# -*- coding: utf-8 -*-
+"""Figures TikZ ; compilation officielle figures_livre.py."""
+FIGURES = {'rectangle_6_3': '\\begin{tikzpicture}[line width=0.9pt,text=otInk]\n\\draw[otNavy,line width=1.2pt] (0,0) rectangle (6,3);\\node[font=\\large] at (3,3.42) {6 cm};\n\\node[font=\\large] at (3,-0.42) {6 cm};\n\\node[font=\\large] at (-0.65,1.5) {3 cm};\n\\node[font=\\large] at (6.65,1.5) {3 cm};\n\n\\end{tikzpicture}', 'triangle_3_4_5': '\\begin{tikzpicture}[line width=0.9pt,text=otInk]\n\\draw[otNavy,line width=1.2pt] (0,0)--(4,0)--(0,3)--cycle;\\node[font=\\large] at (2,-0.45) {4 cm};\n\\node[font=\\large] at (-0.65,1.5) {3 cm};\n\\node[font=\\large] at (2.5,1.9) {5 cm};\n\n\\end{tikzpicture}'}

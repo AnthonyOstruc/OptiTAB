@@ -1,0 +1,210 @@
+Titre: Trigonométrie : cercle, cosinus et sinus
+
+<!-- optitab:1 -->
+::: objectifs
+- Utiliser le cercle trigonométrique, le radian et la longueur d’arc.
+- Placer sur le cercle le point image d’un nombre réel (enroulement de la droite des réels).
+- Définir le cosinus et le sinus d’un nombre réel et faire le lien avec le triangle rectangle.
+- Connaître et démontrer les valeurs remarquables ; utiliser les angles associés.
+- Connaître les fonctions cosinus et sinus : parité, périodicité, courbes représentatives.
+:::
+
+::: prerequis
+- Cosinus et sinus d’un angle aigu dans un triangle rectangle (collège).
+- Théorème de Pythagore ; coordonnées d’un point et symétries dans un repère.
+:::
+
+## I. Cercle trigonométrique et radian
+
+::: definition Cercle trigonométrique
+Dans un repère orthonormé $(O\,;I\,;J)$, le **cercle trigonométrique** est le cercle de centre $O$ et de rayon $1$, orienté dans le **sens direct** : le sens inverse des aiguilles d’une montre.
+
+Sa longueur (son périmètre) vaut $2\pi \times 1 = 2\pi$.
+:::
+
+::: definition Enroulement de la droite des réels
+On place une droite graduée tangente au cercle en $I$, son origine en $I$. On « enroule » cette droite autour du cercle : la partie positive dans le sens direct, la partie négative dans le sens indirect.
+
+Chaque réel $t$ vient alors se poser sur un unique point du cercle, noté $M(t)$ : c’est le **point image** de $t$. L’arc parcouru de $I$ à $M(t)$ a pour longueur $|t|$.
+:::
+
+[IMAGE_1]
+
+::: definition Radian
+Le **radian** est l’unité de mesure d’angle telle qu’un angle au centre de $1$ radian intercepte, sur le cercle trigonométrique, un arc de longueur $1$. Ainsi, le point $M(t)$ est tel que l’angle $\widehat{IOM}$ mesure $|t|$ radians.
+:::
+
+::: propriete Conversion degrés – radians
+Un demi-tour mesure $180°$ ou $\pi$ radians. Les mesures en degrés et en radians sont proportionnelles :
+$$\pi \text{ rad} = 180°$$
+
+donc une mesure de $\alpha$ radians correspond à $\alpha \times \frac{180}{\pi}$ degrés, et une mesure de $d$ degrés à $d \times \frac{\pi}{180}$ radians.
+:::
+
+| Degrés | $30°$ | $45°$ | $60°$ | $90°$ | $180°$ | $360°$ |
+|---|---|---|---|---|---|---|
+| Radians | $\frac{\pi}{6}$ | $\frac{\pi}{4}$ | $\frac{\pi}{3}$ | $\frac{\pi}{2}$ | $\pi$ | $2\pi$ |
+
+::: propriete Longueur d’arc
+Sur un cercle de rayon $R$, un angle au centre de $\alpha$ radians intercepte un arc de longueur
+$$\ell = R\alpha$$
+:::
+
+::: exemple
+- $120° = 120 \times \frac{\pi}{180} = \frac{2\pi}{3}$ rad ; $\frac{\pi}{5}$ rad $= \frac{180}{5}° = 36°$.
+- Sur un cercle de rayon $3$ cm, un angle de $\frac{\pi}{6}$ rad intercepte un arc de $3 \times \frac{\pi}{6} = \frac{\pi}{2} \approx 1{,}57$ cm.
+:::
+
+::: propriete Même point image
+Un tour complet mesure $2\pi$. Pour tout entier relatif $k$, les réels $t$ et $t + 2k\pi$ ont le **même point image** : $M(t + 2k\pi) = M(t)$.
+:::
+
+::: methode Placer le point image d’un réel
+1. Retirer (ou ajouter) un nombre entier de tours $2\pi$ pour se ramener à une mesure simple, par exemple dans $\left]-\pi\,;\pi\right]$.
+2. Repérer le quadrant, puis placer le point en comptant en $\frac{\pi}{6}$, $\frac{\pi}{4}$ ou $\frac{\pi}{3}$ à partir de $I$.
+:::
+
+::: exemple
+$\frac{17\pi}{3} = \frac{18\pi - \pi}{3} = 6\pi - \frac{\pi}{3} = 3 \times 2\pi - \frac{\pi}{3}$, donc $M\left(\frac{17\pi}{3}\right) = M\left(-\frac{\pi}{3}\right)$ : on tourne de $\frac{\pi}{3}$ dans le sens indirect à partir de $I$.
+:::
+
+## II. Cosinus et sinus d’un nombre réel
+
+::: definition
+Soit $t$ un réel et $M(t)$ son point image sur le cercle trigonométrique.
+
+- Le **cosinus** de $t$, noté $\cos t$, est l’**abscisse** de $M(t)$.
+- Le **sinus** de $t$, noté $\sin t$, est l’**ordonnée** de $M(t)$.
+
+Autrement dit, $M(t)$ a pour coordonnées $(\cos t\,;\sin t)$.
+:::
+
+[IMAGE_2]
+
+::: propriete Lien avec le triangle rectangle
+Si $0 \lt t \lt \frac{\pi}{2}$, on note $H$ le projeté orthogonal de $M(t)$ sur l’axe des abscisses. Le triangle $OHM$ est rectangle en $H$, avec $OM = 1$ :
+$$\cos t = \frac{OH}{OM} = OH \qquad \sin t = \frac{HM}{OM} = HM$$
+On retrouve le cosinus et le sinus de l’angle aigu $\widehat{HOM}$ vus au collège.
+:::
+
+::: propriete
+Pour tout réel $t$ :
+
+- $-1 \le \cos t \le 1$ et $-1 \le \sin t \le 1$ ;
+- $\cos^2 t + \sin^2 t = 1$ (relation fondamentale) ;
+- pour tout entier relatif $k$ : $\cos(t + 2k\pi) = \cos t$ et $\sin(t + 2k\pi) = \sin t$.
+:::
+
+::: demonstration Relation fondamentale
+Le point $M(t)$ est sur le cercle de centre $O$ et de rayon $1$, donc $OM^2 = 1$. Dans le repère orthonormé, $OM^2 = (\cos t - 0)^2 + (\sin t - 0)^2$, d’où $\cos^2 t + \sin^2 t = 1$. Le point étant sur le cercle, ses coordonnées sont comprises entre $-1$ et $1$.
+:::
+
+::: remarque Signes selon le quadrant
+Le signe de $\cos t$ et de $\sin t$ se lit sur le cercle : dans le premier quadrant, ils sont tous deux positifs ; dans le deuxième, $\cos t \le 0$ et $\sin t \ge 0$ ; dans le troisième, tous deux négatifs ; dans le quatrième, $\cos t \ge 0$ et $\sin t \le 0$.
+:::
+
+::: exemple Calculer un sinus connaissant le cosinus
+On sait que $\cos t = \frac{3}{5}$ et $t \in \left[-\frac{\pi}{2}\,;0\right]$. Alors
+$$\sin^2 t = 1 - \cos^2 t = 1 - \frac{9}{25} = \frac{16}{25}$$
+Le point $M(t)$ est dans le quatrième quadrant, donc $\sin t \le 0$ : $\sin t = -\frac{4}{5}$.
+:::
+
+## III. Valeurs remarquables
+
+::: propriete
+| $t$ | $0$ | $\frac{\pi}{6}$ | $\frac{\pi}{4}$ | $\frac{\pi}{3}$ | $\frac{\pi}{2}$ |
+|---|---|---|---|---|---|
+| $\cos t$ | $1$ | $\frac{\sqrt{3}}{2}$ | $\frac{\sqrt{2}}{2}$ | $\frac{1}{2}$ | $0$ |
+| $\sin t$ | $0$ | $\frac{1}{2}$ | $\frac{\sqrt{2}}{2}$ | $\frac{\sqrt{3}}{2}$ | $1$ |
+
+De plus, $\cos\pi = -1$ et $\sin\pi = 0$.
+:::
+
+[IMAGE_3]
+
+::: demonstration Valeurs en $\frac{\pi}{4}$ et en $\frac{\pi}{3}$ (au programme)
+- **En $\frac{\pi}{4}$.** Le point $M\left(\frac{\pi}{4}\right)$ est sur la bissectrice du premier quadrant (droite d’équation $y = x$), donc $\cos\frac{\pi}{4} = \sin\frac{\pi}{4}$. La relation fondamentale donne $2\sin^2\frac{\pi}{4} = 1$, soit $\sin^2\frac{\pi}{4} = \frac{1}{2}$. Comme $\sin\frac{\pi}{4} \gt 0$ : $\sin\frac{\pi}{4} = \frac{1}{\sqrt{2}} = \frac{\sqrt{2}}{2}$, et $\cos\frac{\pi}{4} = \frac{\sqrt{2}}{2}$.
+- **En $\frac{\pi}{3}$.** Avec $M = M\left(\frac{\pi}{3}\right)$, le triangle $OIM$ est isocèle en $O$ ($OI = OM = 1$) et $\widehat{IOM} = 60°$ : il est donc équilatéral. Le projeté $H$ de $M$ sur $(OI)$ est le pied de la hauteur issue de $M$, c’est aussi le milieu de $[OI]$ : $\cos\frac{\pi}{3} = OH = \frac{1}{2}$. Puis $\sin^2\frac{\pi}{3} = 1 - \frac{1}{4} = \frac{3}{4}$ et $\sin\frac{\pi}{3} \gt 0$, d’où $\sin\frac{\pi}{3} = \frac{\sqrt{3}}{2}$.
+:::
+
+::: conseil Retenir sans se tromper
+Sur $\left[0\,;\frac{\pi}{2}\right]$, les sinus de $0$, $\frac{\pi}{6}$, $\frac{\pi}{4}$, $\frac{\pi}{3}$, $\frac{\pi}{2}$ s’écrivent $\frac{\sqrt{0}}{2}$, $\frac{\sqrt{1}}{2}$, $\frac{\sqrt{2}}{2}$, $\frac{\sqrt{3}}{2}$, $\frac{\sqrt{4}}{2}$ ; les cosinus sont les mêmes valeurs dans l’ordre inverse.
+:::
+
+## IV. Angles associés
+
+::: propriete
+Pour tout réel $x$, les symétries du cercle donnent :
+
+- symétrie par rapport à l’axe des abscisses : $\cos(-x) = \cos x$ et $\sin(-x) = -\sin x$ ;
+- symétrie par rapport à l’axe des ordonnées : $\cos(\pi - x) = -\cos x$ et $\sin(\pi - x) = \sin x$ ;
+- symétrie par rapport à l’origine $O$ : $\cos(\pi + x) = -\cos x$ et $\sin(\pi + x) = -\sin x$ ;
+- symétrie par rapport à la droite d’équation $y = x$ : $\cos\left(\frac{\pi}{2} - x\right) = \sin x$ et $\sin\left(\frac{\pi}{2} - x\right) = \cos x$ ;
+- enfin $\cos\left(\frac{\pi}{2} + x\right) = -\sin x$ et $\sin\left(\frac{\pi}{2} + x\right) = \cos x$.
+:::
+
+[IMAGE_4]
+
+::: methode Calculer une valeur exacte
+1. Se ramener, si besoin, à une mesure de $\left]-\pi\,;\pi\right]$ en retirant des tours $2\pi$.
+2. Écrire la mesure sous la forme $-a$, $\pi - a$ ou $\pi + a$ avec $a$ valeur remarquable.
+3. Appliquer la formule et **contrôler le signe** sur le cercle.
+:::
+
+::: exemple
+$$
+\begin{aligned}
+\cos\frac{5\pi}{6} &= \cos\left(\pi - \frac{\pi}{6}\right) = -\cos\frac{\pi}{6} = -\frac{\sqrt{3}}{2} \\
+\sin\frac{7\pi}{6} &= \sin\left(\pi + \frac{\pi}{6}\right) = -\sin\frac{\pi}{6} = -\frac{1}{2} \\
+\cos\left(-\frac{3\pi}{4}\right) &= \cos\frac{3\pi}{4} = \cos\left(\pi - \frac{\pi}{4}\right) = -\frac{\sqrt{2}}{2}
+\end{aligned}
+$$
+:::
+
+[IMAGE_5]
+
+::: methode Résoudre $\cos x = a$ ou $\sin x = a$ par lecture du cercle
+Pour une valeur remarquable $a$ : on trace la droite verticale d’abscisse $a$ (pour le cosinus) ou la droite horizontale d’ordonnée $a$ (pour le sinus). Elle coupe le cercle en deux points (ou un seul si $a = \pm 1$) ; on lit leurs mesures dans l’intervalle demandé.
+:::
+
+::: exemple
+- Dans $\left]-\pi\,;\pi\right]$ : $\cos x = \frac{1}{2} \iff x = -\frac{\pi}{3}$ ou $x = \frac{\pi}{3}$ (deux points symétriques par rapport à l’axe des abscisses).
+- Dans $[0\,;2\pi[$ : $\sin x = \frac{\sqrt{2}}{2} \iff x = \frac{\pi}{4}$ ou $x = \pi - \frac{\pi}{4} = \frac{3\pi}{4}$.
+:::
+
+::: attention
+- $\cos x = 2$ n’a **aucune** solution : un cosinus est toujours compris entre $-1$ et $1$.
+- Sur un tour, l’équation $\cos x = a$ avec $-1 \lt a \lt 1$ a **deux** solutions : ne pas en oublier une.
+:::
+
+## V. Fonctions cosinus et sinus
+
+::: definition
+La **fonction cosinus** est la fonction $x \mapsto \cos x$ et la **fonction sinus** est la fonction $x \mapsto \sin x$. Elles sont définies sur $\mathbb{R}$ et prennent leurs valeurs dans $[-1\,;1]$.
+:::
+
+::: propriete Périodicité et parité
+- Pour tout réel $x$, $\cos(x + 2\pi) = \cos x$ et $\sin(x + 2\pi) = \sin x$ : les fonctions cosinus et sinus sont **périodiques de période $2\pi$**. Leurs courbes sont invariantes par la translation de $2\pi$ unités le long de l’axe des abscisses.
+- Pour tout réel $x$, $\cos(-x) = \cos x$ : la fonction cosinus est **paire** ; sa courbe est symétrique par rapport à l’axe des ordonnées.
+- Pour tout réel $x$, $\sin(-x) = -\sin x$ : la fonction sinus est **impaire** ; sa courbe est symétrique par rapport à l’origine $O$.
+:::
+
+[IMAGE_6]
+
+::: remarque Du cercle aux courbes
+Quand $x$ parcourt $[0\,;2\pi]$, le point $M(x)$ fait un tour du cercle : son abscisse donne la courbe du cosinus, son ordonnée celle du sinus. Par exemple, sur $[0\,;\pi]$, $M(x)$ va de $I$ au point $(-1\,;0)$ par le haut : son abscisse décroît de $1$ à $-1$, donc la fonction cosinus est décroissante sur $[0\,;\pi]$.
+
+Ces courbes s’appellent des **sinusoïdes** ; il suffit de les connaître sur un intervalle de longueur $2\pi$ et de les reproduire par translation.
+:::
+
+::: attention
+- La calculatrice doit être réglée en mode **radian**.
+- $\cos(a + b) \neq \cos a + \cos b$ en général : $\cos\left(\frac{\pi}{3} + \frac{\pi}{3}\right) = \cos\frac{2\pi}{3} = -\frac{1}{2}$, alors que $\cos\frac{\pi}{3} + \cos\frac{\pi}{3} = 1$.
+:::
+
+::: retenir
+- $\pi$ rad $= 180°$ ; longueur d’arc $\ell = R\alpha$ ; $M(t + 2k\pi) = M(t)$.
+- $M(t)\,(\cos t\,;\sin t)$, $-1 \le \cos t \le 1$, $-1 \le \sin t \le 1$ et $\cos^2 t + \sin^2 t = 1$.
+- Valeurs remarquables en $\frac{\pi}{6}$, $\frac{\pi}{4}$, $\frac{\pi}{3}$ ; angles associés $-x$, $\pi - x$, $\pi + x$, $\frac{\pi}{2} - x$ par symétrie.
+- $\cos$ est paire, $\sin$ est impaire, toutes deux $2\pi$-périodiques.
+:::

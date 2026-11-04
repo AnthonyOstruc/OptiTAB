@@ -1,0 +1,231 @@
+Titre: Algorithmique et programmation
+
+<!-- optitab:1 -->
+::: objectifs
+- Lire, exécuter à la main, compléter, corriger et écrire un script en blocs (Scratch).
+- Utiliser des variables, des entrées (« demander ») et des sorties (« dire ») ; traduire un programme de calcul par une expression.
+- Écrire des instructions conditionnelles et des boucles, bornées ou conditionnelles.
+- Déplacer un lutin dans le repère de la scène, gérer son orientation et tracer des figures avec le stylo.
+- Créer un bloc personnalisé simple ; déclencher des scripts par des événements et des messages.
+:::
+
+::: prerequis
+- Calculer avec des nombres relatifs ; développer une expression comme $5(n - 2)$.
+- Résoudre une équation simple comme $3x - 5 = 10$.
+- Repérage dans le plan : abscisse et ordonnée d'un point.
+:::
+
+## I. Algorithme, programme et script
+
+::: definition Algorithme, programme, script
+- Un **algorithme** est une suite finie d'instructions précises qui, exécutées dans l'ordre, résolvent un problème.
+- Un **programme** traduit un algorithme dans un langage compris par l'ordinateur. Au collège, on programme avec **Scratch** : les instructions sont des **blocs** que l'on emboîte.
+- Un **script** est une pile de blocs. Il commence par un bloc « chapeau », l'**événement** qui le déclenche, et ses blocs sont exécutés **de haut en bas**.
+- Les scripts sont exécutés par des **lutins**, qui se déplacent sur la **scène**.
+:::
+
+Chaque famille de blocs a sa couleur :
+
+[IMAGE_1]
+
+::: remarque La forme d'un bloc indique son rôle
+- Le bloc **chapeau**, arrondi en haut, démarre un script.
+- Le bloc à **encoche** est une instruction : il s'emboîte sous la précédente.
+- Le bloc en forme de **C** contient d'autres blocs : c'est une boucle ou un test.
+- Le bloc **arrondi** est une valeur (nombre, variable, calcul) ; le bloc **hexagonal** est une condition, vraie ou fausse.
+:::
+
+## II. Variables et programmes de calcul
+
+::: definition Variable
+Une **variable** est une case mémoire qui porte un nom et contient une valeur ; cette valeur peut changer pendant l'exécution.
+
+- « mettre x à 3 » **remplace** la valeur de x par $3$ ;
+- « ajouter 3 à x » **augmente** la valeur de x de $3$ : x devient $x + 3$. Avec « ajouter −3 à x », x diminue de $3$.
+:::
+
+::: definition Entrée et sortie
+- **Entrée** : « demander … et attendre » pose une question ; le nombre tapé est rangé dans le bloc **réponse**.
+- **Sortie** : « dire … » affiche une valeur : un nombre, un texte ou le contenu d'une variable.
+:::
+
+::: exemple Un programme de calcul
+[IMAGE_2]
+
+On répond $7$. Tableau d'exécution :
+
+| Bloc exécuté | n | r |
+|---|---|---|
+| mettre n à réponse | $7$ | — |
+| mettre r à n − 2 | $7$ | $5$ |
+| mettre r à r × 5 | $7$ | $25$ |
+
+Le lutin dit $25$. Pour un nombre $n$ quelconque, il dit $(n - 2) \times 5 = 5n - 10$.
+:::
+
+::: methode Exécuter un script à la main
+1. Faire un **tableau d'exécution** : une colonne par variable, une ligne par bloc (ou par tour de boucle).
+2. Suivre les blocs **dans l'ordre**, en utilisant toujours la **dernière** valeur de chaque variable.
+3. Lire la sortie : la valeur dite par le lutin.
+:::
+
+::: methode Traduire un programme de calcul par une expression
+On exécute le script avec une lettre ($x$, $n$…) au lieu d'un nombre, puis on réduit l'expression obtenue. Elle permet de prévoir le résultat pour **tous** les nombres, ou de trouver le nombre de départ en résolvant une équation.
+:::
+
+::: attention Lire une affectation
+« mettre r à r × 5 » signifie : nouvelle valeur de r $=$ ancienne valeur de r $\times\, 5$. Dans Scratch, la multiplication se note $\ast$ et la division se note /.
+:::
+
+## III. Instructions conditionnelles
+
+::: definition Condition, « si … alors … sinon »
+Une **condition** (bloc hexagonal vert) est vraie ou fausse : « x < 10 », « x = 5 », « x > 17 »…
+
+- « si condition alors » : les blocs intérieurs ne sont exécutés que si la condition est **vraie** ;
+- « si condition alors … sinon … » : **une seule** des deux branches est exécutée.
+:::
+
+[IMAGE_3]
+
+::: exemple
+- Réponse $9$ : la condition $9 < 10$ est vraie, le lutin dit « À retravailler ».
+- Réponse $10$ : la condition $10 < 10$ est fausse, le lutin dit « Validé ! ».
+:::
+
+::: propriete Conditions composées
+- « A et B » est vraie quand les deux conditions sont vraies ;
+- « A ou B » est vraie quand au moins l'une des deux est vraie ;
+- « non A » est vraie quand A est fausse.
+:::
+
+::: attention Tester la valeur frontière
+$10 < 10$ est faux. Scratch n'a pas de bloc « inférieur ou égal » : pour « note $\leqslant 10$ », on écrit « (note < 10) ou (note = 10) », ou bien « non (note > 10) ».
+:::
+
+## IV. Les boucles
+
+::: definition Boucle bornée
+« répéter n fois » exécute les blocs qu'elle contient exactement $n$ fois.
+:::
+
+[IMAGE_4]
+
+| Tour | x à la fin du tour |
+|---|---|
+| 1 | $0 + 3 = 3$ |
+| 2 | $3 + 3 = 6$ |
+| 3 | $9$ |
+| 4 | $12$ |
+| 5 | $15$ |
+
+Le bloc « dire x », placé **après** la boucle, est exécuté une seule fois : le lutin dit $15$.
+
+::: definition Boucle conditionnelle
+« répéter jusqu'à condition » : la condition est testée **avant chaque tour** ; la boucle s'arrête dès qu'elle est **vraie**. Le nombre de tours n'est pas connu à l'avance.
+:::
+
+[IMAGE_5]
+
+| Tour | x avant le tour | x < 0 ? | x à la fin du tour |
+|---|---|---|---|
+| 1 | $100$ | faux | $70$ |
+| 2 | $70$ | faux | $40$ |
+| 3 | $40$ | faux | $10$ |
+| 4 | $10$ | faux | $-20$ |
+
+Avant un 5e tour, $-20 < 0$ est vrai : la boucle s'arrête après $4$ tours et le lutin dit $-20$.
+
+::: remarque
+« répéter indéfiniment » ne s'arrête jamais : on l'utilise pour une animation ou un jeu.
+:::
+
+::: attention Erreurs fréquentes
+- Un bloc placé **dans** la boucle est exécuté à chaque tour ; un bloc placé **après** la boucle, une seule fois.
+- « répéter jusqu'à x < 0 » ne s'arrête pas « à 0 » : elle s'arrête à la **première** valeur qui rend la condition vraie (ici $-20$).
+- Si la variable testée n'évolue pas vers la condition d'arrêt, la boucle ne s'arrête jamais : c'est une **boucle infinie**.
+:::
+
+## V. Déplacer le lutin et tracer
+
+::: definition La scène et l'orientation
+- La scène est un **repère** : l'abscisse x va de $-240$ à $240$, l'ordonnée y de $-180$ à $180$ ; le centre a pour coordonnées $(0\ ;\ 0)$.
+- L'**orientation** du lutin est un angle en degrés : $0$ vers le haut, $90$ vers la droite, $180$ vers le bas, $-90$ vers la gauche.
+:::
+
+[IMAGE_6]
+
+::: propriete Blocs de mouvement et de stylo
+- « aller à x : … y : … » place le lutin en un point.
+- « s'orienter à 90 » donne au lutin l'orientation $90$, quelle que soit son orientation avant : l'orientation est **imposée**.
+- « tourner ↻ de 90 degrés » : quart de tour dans le sens des aiguilles d'une montre ; « tourner ↺ » : dans le sens **inverse**. La rotation **s'ajoute** à l'orientation actuelle.
+- « avancer de 50 pas » déplace le lutin de $50$ dans la direction où il regarde.
+- « ajouter 30 à x » : déplacement horizontal de $30$ ; « ajouter 30 à y » : déplacement vertical.
+- « stylo en position d'écriture » : le lutin trace ses déplacements ; « relever le stylo » : il ne trace plus ; « effacer tout » efface la scène.
+:::
+
+::: exemple Tracer un carré de côté 60
+[IMAGE_7]
+
+Le lutin part de $(0\ ;\ 0)$ vers la droite. Il passe par $(60\ ;\ 0)$, $(60\ ;\ 60)$, $(0\ ;\ 60)$ et revient en $(0\ ;\ 0)$ : quatre quarts de tour, soit $4 \times 90^\circ = 360^\circ$. La flèche orange indique l'orientation finale.
+
+[IMAGE_8]
+:::
+
+::: propriete Polygone régulier
+Pour tracer un polygone régulier à $n$ côtés, on répète $n$ fois « avancer ; tourner de $\dfrac{360}{n}$ degrés » : le lutin tourne de l'angle **extérieur** et fait un tour complet en tout. Carré : $90^\circ$ ; triangle équilatéral : $120^\circ$ ; hexagone régulier : $60^\circ$.
+:::
+
+::: attention Angle intérieur ou angle extérieur
+Pour un triangle équilatéral, tourner de $60^\circ$ (l'angle intérieur) ne referme pas la figure : le lutin doit tourner de $180^\circ - 60^\circ = 120^\circ$.
+:::
+
+## VI. Blocs personnalisés
+
+::: definition Bloc personnalisé, paramètre
+Un **bloc personnalisé** (famille « Mes blocs », en rose) donne un nom à une suite d'instructions ; on l'écrit sous le bloc « définir ». Son **paramètre** (ovale rose) reçoit une valeur à chaque **appel** : « triangle (60) » exécute la définition avec côté $= 60$.
+:::
+
+[IMAGE_9]
+
+::: exemple
+Le bloc « triangle » trace un triangle équilatéral et ramène le lutin à son point de départ, avec la même orientation. Les trois appels tracent donc trois triangles équilatéraux de côtés $30$, $60$ et $90$ qui ont le sommet $(0\ ;\ 0)$ en commun.
+
+[IMAGE_10]
+:::
+
+::: conseil
+Découper un problème en blocs personnalisés rend le script plus court, plus lisible et plus facile à corriger.
+:::
+
+## VII. Événements et messages
+
+::: definition Événements
+Un script démarre par un événement : « quand le drapeau est cliqué », « quand la touche … est pressée », « quand je reçois … ». Plusieurs scripts peuvent s'exécuter **en même temps**.
+:::
+
+[IMAGE_11]
+
+::: exemple
+À chaque appui sur la flèche droite, le lutin se déplace de $10$ vers la droite ; à chaque appui sur la flèche gauche, de $10$ vers la gauche. Partant de $x = 0$, après « droite, droite, droite, gauche », il est en $x = 20$.
+:::
+
+::: definition Messages
+« envoyer à tous [message] » déclenche tous les scripts « quand je reçois [message] », de tous les lutins. Avec « envoyer à tous … et attendre », le script qui envoie le message attend que ces scripts soient **terminés** avant de continuer.
+:::
+
+[IMAGE_12]
+
+::: exemple
+Le Chat met total à $0$, puis envoie « compter » et attend : le Chien ajoute $4$ trois fois. Le Chat dit ensuite $12$. Sans « et attendre », il pourrait dire le total avant la fin du comptage.
+:::
+
+::: retenir
+- Un script s'exécute de haut en bas ; on le suit avec un tableau d'exécution.
+- « mettre » remplace la valeur d'une variable ; « ajouter » la modifie.
+- Un programme de calcul se traduit par une expression littérale.
+- « si … alors … sinon » : une seule branche est exécutée ; tester la valeur frontière.
+- « répéter n fois » : $n$ tours ; « répéter jusqu'à » : arrêt dès que la condition est vraie.
+- Orientation : $0$ haut, $90$ droite, $180$ bas, $-90$ gauche ; polygone régulier à $n$ côtés : tourner de $\dfrac{360}{n}$ degrés.
+- Un bloc personnalisé a des paramètres ; les messages coordonnent les lutins.
+:::

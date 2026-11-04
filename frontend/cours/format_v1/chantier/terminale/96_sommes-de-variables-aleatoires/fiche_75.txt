@@ -1,0 +1,52 @@
+Titre: Résumé : Sommes de variables aléatoires
+
+<!-- optitab:1 -->
+::: objectifs
+Retenir l’essentiel : linéarité de l’espérance, variance d’une somme, loi binomiale, échantillons. Programme de Terminale.
+:::
+
+## I. Somme de deux variables
+
+::: formule
+$E(X + Y) = E(X) + E(Y)$ $\quad$ (toujours)
+:::
+
+::: formule
+$V(X + Y) = V(X) + V(Y)$ $\quad$ (si $X$ et $Y$ sont indépendantes)
+:::
+
+1. $E(aX + b) = aE(X) + b$ ; $V(aX + b) = a^2V(X)$ ; $\sigma(aX + b) = |a|\,\sigma(X)$.
+2. Indépendantes : $V(X - Y) = V(X) + V(Y)$ (les variances s’ajoutent toujours).
+3. Loi de $X + Y$ : on regroupe les issues qui donnent la même somme.
+
+[IMAGE_1]
+
+## II. Loi binomiale
+
+::: formule
+$X \sim \mathcal{B}(n\,;p)$ : $\quad E(X) = np$, $\quad V(X) = np(1 - p)$
+:::
+
+1. $X = X_1 + \cdots + X_n$, somme de $n$ variables de Bernoulli indépendantes.
+2. Bernoulli de paramètre $p$ : $E = p$ et $V = p(1 - p)$.
+
+## III. Échantillons
+
+1. $S_n = X_1 + \cdots + X_n$ : $E(S_n) = nE(X)$, $V(S_n) = nV(X)$.
+2. $M_n = \dfrac{S_n}{n}$ : $E(M_n) = E(X)$, $V(M_n) = \dfrac{V(X)}{n}$.
+3. $\sigma(M_n) = \dfrac{\sigma(X)}{\sqrt{n}}$ : la moyenne se concentre quand $n$ grandit.
+
+[IMAGE_2]
+
+## IV. Les pièges à éviter
+
+::: attention Les 4 erreurs classiques
+1. Ajouter les variances de variables non indépendantes.
+2. Écrire $V(X - Y) = V(X) - V(Y)$.
+3. Ajouter les écarts types au lieu des variances.
+4. Oublier le carré dans $V(aX) = a^2V(X)$.
+:::
+
+::: remarque Réflexe
+Variable compliquée → je l’écris comme une somme de variables simples, puis j’additionne les espérances (et les variances si elles sont indépendantes).
+:::

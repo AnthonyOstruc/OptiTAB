@@ -1,0 +1,574 @@
+Titre: Arithmétique
+
+<!-- optitab:1 -->
+::: objectifs
+Raisonner sur les entiers : divisibilité, division euclidienne et congruences ; calculer un PGCD avec l'algorithme d'Euclide ; démontrer et utiliser les théorèmes de Bézout et de Gauss ; résoudre une congruence $ax \equiv b \pmod{n}$ et une équation $ax + by = c$ en nombres entiers ; étudier les nombres premiers (décomposition, petit théorème de Fermat) et des problèmes de chiffrement. Programme de Maths expertes.
+:::
+
+::: prerequis
+Calcul sur les entiers relatifs, puissances, raisonnement par récurrence.
+:::
+
+## I. Divisibilité dans $\mathbb{Z}$
+
+::: definition Diviseur, multiple
+Soient $a$ et $b$ deux entiers relatifs. On dit que $b$ **divise** $a$ s'il existe un entier relatif $k$ tel que $a = kb$.
+
+On note $b \mid a$ ; on dit aussi que $b$ est un **diviseur** de $a$, ou que $a$ est un **multiple** de $b$.
+:::
+
+::: exemple
+- $-6 \mid 42$ car $42 = (-7) \times (-6)$.
+- $0$ est un multiple de tout entier ($0 = 0 \times b$), mais $0$ ne divise que $0$.
+- Les diviseurs de $12$ dans $\mathbb{Z}$ sont $\pm 1$, $\pm 2$, $\pm 3$, $\pm 4$, $\pm 6$ et $\pm 12$.
+:::
+
+::: propriete Règles de calcul
+Soient $a$, $b$, $c$ des entiers relatifs.
+
+1. Si $a \mid b$ et $b \mid c$, alors $a \mid c$ (transitivité).
+2. Si $a \mid b$ et $a \mid c$, alors $a$ divise toute combinaison $bu + cv$ avec $u, v \in \mathbb{Z}$ ; en particulier $a \mid b + c$ et $a \mid b - c$.
+3. Si $a \mid b$ et $b \neq 0$, alors $|a| \le |b|$ : un entier non nul n'a qu'un nombre fini de diviseurs.
+:::
+
+::: demonstration Point 2
+Si $b = ka$ et $c = k'a$ avec $k, k' \in \mathbb{Z}$, alors $bu + cv = a(ku + k'v)$, où $ku + k'v$ est un entier : donc $a \mid bu + cv$.
+:::
+
+::: exemple Éliminer $n$ par une combinaison
+Cherchons les entiers naturels $n$ tels que $n + 1$ divise $n + 5$.
+
+- Si $n + 1 \mid n + 5$, comme $n + 1 \mid n + 1$, alors $n + 1$ divise la différence $(n + 5) - (n + 1) = 4$.
+- Réciproquement, si $n + 1 \mid 4$, alors $n + 1 \mid 4 + (n + 1) = n + 5$.
+
+Donc $n + 1 \mid n + 5 \iff n + 1 \mid 4$. Comme $n + 1 \ge 1$, on a $n + 1 \in \{1, 2, 4\}$, soit $n \in \{0, 1, 3\}$.
+:::
+
+::: methode Déterminer les diviseurs d'un entier $n \ge 2$
+1. Tester les entiers $d$ de $1$ à $\sqrt{n}$.
+2. Chaque diviseur $d$ trouvé en donne un second, $\dfrac{n}{d}$ : les diviseurs vont par paires.
+3. Dans $\mathbb{Z}$, ajouter les opposés.
+:::
+
+::: exemple Diviseurs de $90$
+$\sqrt{90} \approx 9{,}5$ : on teste les entiers de $1$ à $9$. Les paires $1 \times 90$, $2 \times 45$, $3 \times 30$, $5 \times 18$, $6 \times 15$ et $9 \times 10$ donnent les $12$ diviseurs positifs de $90$ : $1, 2, 3, 5, 6, 9, 10, 15, 18, 30, 45, 90$.
+:::
+
+::: attention Les diviseurs négatifs
+Dans $\mathbb{Z}$, un diviseur peut être **négatif** : pour trouver les entiers $n$ tels que $n - 4 \mid 21$, il faut envisager $n - 4 \in \{-21, -7, -3, -1, 1, 3, 7, 21\}$.
+:::
+
+## II. Division euclidienne
+
+::: theoreme Division euclidienne
+Soient $a \in \mathbb{Z}$ et $b \in \mathbb{N}^{\ast}$. Il existe un **unique** couple d'entiers $(q, r)$ tel que
+
+$$a = bq + r \quad \text{et} \quad 0 \le r \lt b.$$
+
+$q$ est le **quotient** et $r$ le **reste** de la division euclidienne de $a$ par $b$.
+:::
+
+::: exemple
+- $742 = 16 \times 46 + 6$ : quotient $46$, reste $6$.
+- $-17 = 4 \times (-5) + 3$ : quotient $-5$, reste $3$. Sur la droite des entiers, $-17$ est situé $3$ unités après le multiple $4 \times (-5) = -20$.
+:::
+
+[IMAGE_1]
+
+::: attention Le reste n'est jamais négatif
+$-17 = 4 \times (-4) - 1$ n'est **pas** l'écriture euclidienne : le reste doit vérifier $0 \le r \lt 4$.
+:::
+
+::: propriete Conséquences
+- $b \mid a$ si et seulement si le reste de la division euclidienne de $a$ par $b$ est nul.
+- Les restes possibles dans la division par $b$ sont $0, 1, \ldots, b - 1$ : tout entier s'écrit $bq$, $bq + 1$, …, ou $bq + (b - 1)$. C'est la base des **raisonnements par disjonction des cas**.
+:::
+
+::: demonstration Unicité (pour aller plus loin)
+Si $a = bq + r = bq' + r'$ avec $0 \le r \lt b$ et $0 \le r' \lt b$, alors $b(q - q') = r' - r$. Or $-b \lt r' - r \lt b$, et le seul multiple de $b$ strictement compris entre $-b$ et $b$ est $0$. Donc $r = r'$, puis $q = q'$.
+:::
+
+En Python, pour $b \gt 0$, `a // b` et `a % b` donnent le quotient et le reste euclidiens, y compris pour $a$ négatif :
+
+```python
+a, b = -17, 4
+q, r = a // b, a % b
+print(q, r)   # -5 3
+```
+
+## III. Congruences dans $\mathbb{Z}$
+
+::: definition Congruence modulo $n$
+Soit $n$ un entier naturel, $n \ge 2$. Deux entiers $a$ et $b$ sont **congrus modulo $n$** lorsque $n$ divise $a - b$. On note
+
+$$a \equiv b \pmod{n} \quad \text{ou} \quad a \equiv b\ [n].$$
+:::
+
+::: propriete Congruence et reste
+- $a \equiv b \pmod{n}$ si et seulement si $a$ et $b$ ont le même reste dans la division euclidienne par $n$.
+- Tout entier est congru modulo $n$ à son reste $r$, avec $0 \le r \lt n$.
+- $a \equiv 0 \pmod{n}$ signifie que $n$ divise $a$.
+:::
+
+::: exemple
+- $17 \equiv 2 \pmod{5}$ car $17 - 2 = 15 = 5 \times 3$.
+- $11 \equiv -3 \pmod{7}$ : $11 = 7 \times 1 + 4$ et $-3 = 7 \times (-1) + 4$ ont le même reste $4$.
+:::
+
+::: theoreme Compatibilité avec les opérations
+Soient $n \ge 2$ et $a, b, c, d$ des entiers tels que $a \equiv b \pmod{n}$ et $c \equiv d \pmod{n}$. Alors :
+
+- $a + c \equiv b + d \pmod{n}$ et $a - c \equiv b - d \pmod{n}$ ;
+- $ac \equiv bd \pmod{n}$ ;
+- $a^k \equiv b^k \pmod{n}$ pour tout entier naturel $k$.
+:::
+
+::: demonstration Produit et puissances
+L'égalité $ac - bd = a(c - d) + d(a - b)$ montre que $ac - bd$ est une combinaison de $c - d$ et $a - b$, tous deux multiples de $n$ : donc $n \mid ac - bd$. Pour les puissances, la règle du produit donne, par récurrence sur $k$ : $a^{k+1} = a^k \times a \equiv b^k \times b = b^{k+1} \pmod{n}$.
+:::
+
+::: attention On ne divise pas une congruence
+$2 \times 1 \equiv 2 \times 4 \pmod{6}$, mais $1 \not\equiv 4 \pmod{6}$. Simplifier par un facteur n'est permis que sous condition (théorème de Gauss, partie V).
+:::
+
+### Reste d'une grande puissance
+
+::: methode Restes de $a^k$ modulo $n$
+1. Remplacer $a$ par un entier plus simple qui lui est congru (son reste, ou un entier négatif comme $-1$).
+2. Calculer les restes de $a^1, a^2, a^3, \ldots$ jusqu'à obtenir le reste $1$ : si $a^p \equiv 1 \pmod{n}$, les restes se répètent avec la période $p$.
+3. Diviser l'exposant par $p$ : si $k = pm + s$, alors $a^k = \left(a^p\right)^m \times a^s \equiv a^s \pmod{n}$.
+:::
+
+::: exemple Reste de $3^{100}$ dans la division par $7$
+Restes successifs : $3^1 \equiv 3$, $3^2 \equiv 2$, $3^3 \equiv 6$, $3^4 \equiv 4$, $3^5 \equiv 5$ et $3^6 \equiv 1 \pmod{7}$. Comme $100 = 6 \times 16 + 4$ :
+
+$$
+\begin{aligned}
+3^{100} &= \left(3^{6}\right)^{16} \times 3^{4} \\
+&\equiv 1^{16} \times 4 \pmod{7} \\
+&\equiv 4 \pmod{7}
+\end{aligned}
+$$
+
+Le reste de la division euclidienne de $3^{100}$ par $7$ est $4$ (en Python : `pow(3, 100, 7)` renvoie `4`).
+:::
+
+[IMAGE_3]
+
+### Raisonner par disjonction des cas
+
+::: exemple Les carrés modulo $4$
+Tout entier $n$ est congru à $0$, $1$, $2$ ou $3$ modulo $4$ :
+
+| Reste de $n$ modulo $4$ | $0$ | $1$ | $2$ | $3$ |
+|---|---|---|---|---|
+| Reste de $n^2$ modulo $4$ | $0$ | $1$ | $0$ | $1$ |
+
+Un carré est donc congru à $0$ ou à $1$ modulo $4$, et une somme de deux carrés à $0$, $1$ ou $2$, jamais à $3$. Par exemple, $2\,027 \equiv 3 \pmod{4}$ n'est pas une somme de deux carrés.
+:::
+
+### Critères de divisibilité
+
+::: propriete Divisibilité par $9$ et par $11$
+Soit $N = a_k \times 10^k + \cdots + a_1 \times 10 + a_0$ un entier naturel de chiffres $a_k, \ldots, a_1, a_0$.
+
+- $N \equiv a_0 + a_1 + \cdots + a_k \pmod{9}$ : $N$ est divisible par $9$ si et seulement si la somme de ses chiffres l'est (de même pour $3$).
+- $N \equiv a_0 - a_1 + a_2 - \cdots + (-1)^k a_k \pmod{11}$ : $N$ est divisible par $11$ si et seulement si la somme alternée de ses chiffres, à partir des unités, l'est.
+:::
+
+::: demonstration
+$10 \equiv 1 \pmod{9}$, donc $10^m \equiv 1 \pmod{9}$ pour tout entier naturel $m$ ; en remplaçant chaque puissance de $10$ dans $N$, on obtient $N \equiv a_k + \cdots + a_1 + a_0 \pmod{9}$. De même, $10 \equiv -1 \pmod{11}$ donne $10^m \equiv (-1)^m \pmod{11}$.
+:::
+
+::: exemple
+- $7 + 3 + 2 + 6 = 18$ est divisible par $9$, donc $7\,326$ aussi : $7\,326 = 9 \times 814$.
+- $1 - 3 + 3 - 1 = 0$ est divisible par $11$, donc $1\,331$ aussi : $1\,331 = 11 \times 121$.
+:::
+
+## IV. PGCD et algorithme d'Euclide
+
+::: definition PGCD
+Soient $a$ et $b$ deux entiers relatifs non tous deux nuls. Leurs diviseurs communs sont en nombre fini ; le plus grand d'entre eux est le **plus grand commun diviseur** de $a$ et $b$, noté $\mathrm{PGCD}(a, b)$. C'est un entier naturel non nul.
+:::
+
+::: propriete
+- $\mathrm{PGCD}(a, b) = \mathrm{PGCD}(b, a) = \mathrm{PGCD}(|a|, |b|)$.
+- Si $a \neq 0$, $\mathrm{PGCD}(a, 0) = |a|$ ; si $b \neq 0$ et $b \mid a$, $\mathrm{PGCD}(a, b) = |b|$.
+:::
+
+::: propriete Propriété clé
+Soient $a$, $b$, $q$, $r$ des entiers avec $b \neq 0$ et $a = bq + r$. Les diviseurs communs de $a$ et $b$ sont exactement les diviseurs communs de $b$ et $r$. En particulier, $\mathrm{PGCD}(a, b) = \mathrm{PGCD}(b, r)$.
+:::
+
+::: demonstration
+Si $d \mid a$ et $d \mid b$, alors $d$ divise la combinaison $r = a - bq$. Réciproquement, si $d \mid b$ et $d \mid r$, alors $d \mid bq + r = a$. Les deux couples ont les mêmes diviseurs communs, donc le même plus grand.
+:::
+
+::: theoreme Algorithme d'Euclide
+Soient $a$ et $b$ deux entiers naturels avec $b \neq 0$. On effectue les divisions euclidiennes successives
+
+$$
+\begin{aligned}
+a &= b q_1 + r_1, & 0 &\le r_1 \lt b \\
+b &= r_1 q_2 + r_2, & 0 &\le r_2 \lt r_1 \\
+r_1 &= r_2 q_3 + r_3, & 0 &\le r_3 \lt r_2
+\end{aligned}
+$$
+
+et ainsi de suite. Les restes forment une suite strictement décroissante d'entiers naturels : un reste nul apparaît après un nombre fini d'étapes. Le **dernier reste non nul** est $\mathrm{PGCD}(a, b)$ (si $r_1 = 0$, le PGCD est $b$).
+:::
+
+::: remarque Pourquoi ça marche
+D'après la propriété clé, $\mathrm{PGCD}(a, b) = \mathrm{PGCD}(b, r_1) = \mathrm{PGCD}(r_1, r_2) = \cdots = \mathrm{PGCD}(r_k, 0) = r_k$, où $r_k$ est le dernier reste non nul.
+:::
+
+::: exemple Calcul de $\mathrm{PGCD}(252, 198)$
+| Division euclidienne | Reste |
+|---|---|
+| $252 = 198 \times 1 + 54$ | $54$ |
+| $198 = 54 \times 3 + 36$ | $36$ |
+| $54 = 36 \times 1 + 18$ | $18$ |
+| $36 = 18 \times 2 + 0$ | $0$ |
+
+Le dernier reste non nul est $18$ : $\mathrm{PGCD}(252, 198) = 18$.
+:::
+
+[IMAGE_2]
+
+Lecture géométrique : on découpe le rectangle de côtés $252$ et $198$ en carrés aussi grands que possible, à chaque étape. Le côté des derniers carrés, $18$, est le PGCD : c'est le plus grand côté de carré qui pave exactement le rectangle.
+
+::: propriete Diviseurs communs
+Les diviseurs communs de $a$ et $b$ sont exactement les diviseurs de $\mathrm{PGCD}(a, b)$ : on l'obtient en suivant l'algorithme d'Euclide jusqu'au couple $(r_k, 0)$.
+:::
+
+::: exemple
+Les diviseurs communs positifs de $252$ et $198$ sont les diviseurs de $18$ : $1, 2, 3, 6, 9, 18$.
+:::
+
+Pour $a$ et $b$ entiers naturels, $b \neq 0$ (`pgcd(252, 198)` renvoie `18`) :
+
+```python
+def pgcd(a, b):
+    while b != 0:
+        a, b = b, a % b
+    return a
+```
+
+## V. Théorèmes de Bézout et de Gauss
+
+::: definition Entiers premiers entre eux
+Deux entiers $a$ et $b$, non tous deux nuls, sont **premiers entre eux** lorsque $\mathrm{PGCD}(a, b) = 1$ : leurs seuls diviseurs communs sont $1$ et $-1$.
+:::
+
+::: exemple
+- $15$ et $28$ sont premiers entre eux, sans être des nombres premiers ; $12$ et $18$ ne le sont pas ($\mathrm{PGCD}(12, 18) = 6$).
+- Deux entiers consécutifs $n$ et $n + 1$ sont toujours premiers entre eux : un diviseur commun divise $(n + 1) - n = 1$.
+:::
+
+::: theoreme Identité de Bézout
+Soient $a$ et $b$ deux entiers non tous deux nuls et $d = \mathrm{PGCD}(a, b)$. Il existe des entiers relatifs $u$ et $v$ tels que
+
+$$au + bv = d.$$
+:::
+
+::: demonstration Écriture du PGCD sous la forme $au + bv$ (au programme)
+Soit $E$ l'ensemble des entiers **strictement positifs** de la forme $au + bv$, avec $u, v \in \mathbb{Z}$. $E$ n'est pas vide : il contient $a \times a + b \times b = a^2 + b^2 \gt 0$. Toute partie non vide de $\mathbb{N}$ admet un plus petit élément : notons $m = au_0 + bv_0$ le plus petit élément de $E$.
+
+1. **$m$ divise $a$.** Écrivons la division euclidienne $a = mq + r$, avec $0 \le r \lt m$. Alors $r = a - (au_0 + bv_0)q = a(1 - qu_0) + b(-qv_0)$ est de la forme $au + bv$. Si $r$ était strictement positif, il appartiendrait à $E$ tout en étant strictement inférieur à $m$ : impossible. Donc $r = 0$ et $m \mid a$. De même, $m \mid b$.
+2. **$m = d$.** $m$ est un diviseur commun positif de $a$ et $b$, donc $m \le d$. Inversement, $d$ divise $a$ et $b$, donc la combinaison $au_0 + bv_0 = m$ ; comme $m \gt 0$, on a $d \le m$.
+
+Ainsi $d = m = au_0 + bv_0$.
+:::
+
+::: theoreme Théorème de Bézout
+Deux entiers $a$ et $b$ sont premiers entre eux si et seulement s'il existe des entiers $u$ et $v$ tels que $au + bv = 1$.
+:::
+
+::: demonstration
+Si $\mathrm{PGCD}(a, b) = 1$, l'identité de Bézout fournit $u$ et $v$. Réciproquement, si $au + bv = 1$, tout diviseur commun positif de $a$ et $b$ divise $au + bv = 1$ : il vaut $1$.
+:::
+
+::: methode Trouver un couple de Bézout (algorithme d'Euclide étendu)
+1. Écrire l'algorithme d'Euclide.
+2. Partir de l'avant-dernière division et isoler le dernier reste non nul.
+3. Remonter les divisions en remplaçant chaque reste par son expression, jusqu'à n'avoir plus que $a$ et $b$.
+:::
+
+::: exemple Un couple de Bézout pour $252$ et $198$
+D'après les divisions du IV : $18 = 54 - 36$, $36 = 198 - 54 \times 3$ et $54 = 252 - 198$. Donc
+
+$$
+\begin{aligned}
+18 &= 54 - (198 - 54 \times 3) \\
+&= 54 \times 4 - 198 \\
+&= (252 - 198) \times 4 - 198 \\
+&= 252 \times 4 + 198 \times (-5)
+\end{aligned}
+$$
+
+Le couple $(4, -5)$ convient : $1\,008 - 990 = 18$.
+:::
+
+Version itérative de l'algorithme (pour $a$ et $b$ entiers naturels, $b \neq 0$) : à chaque étape, $r_0 = au_0 + bv_0$ et $r_1 = au_1 + bv_1$ ; `bezout(252, 198)` renvoie `(18, 4, -5)`.
+
+```python
+def bezout(a, b):
+    r0, u0, v0 = a, 1, 0
+    r1, u1, v1 = b, 0, 1
+    while r1 != 0:
+        q = r0 // r1
+        r0, r1 = r1, r0 - q*r1
+        u0, u1 = u1, u0 - q*u1
+        v0, v1 = v1, v0 - q*v1
+    return r0, u0, v0
+```
+
+::: theoreme Théorème de Gauss
+Soient $a$, $b$, $c$ des entiers. Si $a$ divise $bc$ et si $a$ et $b$ sont premiers entre eux, alors $a$ divise $c$.
+:::
+
+::: demonstration (au programme)
+Comme $\mathrm{PGCD}(a, b) = 1$, le théorème de Bézout donne des entiers $u$ et $v$ tels que $au + bv = 1$. En multipliant par $c$ :
+
+$$c = acu + bcv.$$
+
+$a$ divise $acu$ ; $a$ divise $bc$, donc $bcv$. Ainsi $a$ divise la somme $acu + bcv = c$.
+:::
+
+::: propriete Corollaire
+Si $a$ et $b$ sont premiers entre eux et divisent tous les deux $n$, alors $ab$ divise $n$.
+:::
+
+::: demonstration
+$n = ak$ avec $k \in \mathbb{Z}$. Comme $b \mid ak$ et $\mathrm{PGCD}(b, a) = 1$, le théorème de Gauss donne $b \mid k$ : $k = bk'$, d'où $n = abk'$.
+:::
+
+::: exemple Produit de trois entiers consécutifs
+Pour tout entier $n$, $N = n(n + 1)(n + 2)$ est divisible par $6$. En effet, parmi deux entiers consécutifs l'un est pair, donc $2 \mid N$ ; les restes de $n$, $n + 1$ et $n + 2$ modulo $3$ sont $0$, $1$ et $2$ dans un certain ordre, donc l'un des trois est multiple de $3$ et $3 \mid N$. Comme $2$ et $3$ sont premiers entre eux, $6 \mid N$.
+:::
+
+::: attention L'hypothèse « premiers entre eux » est indispensable
+$6$ divise $4 \times 3 = 12$, mais $6$ ne divise ni $4$ ni $3$ : ici $\mathrm{PGCD}(6, 4) = 2 \neq 1$.
+:::
+
+## VI. Congruences linéaires et équations diophantiennes
+
+::: propriete Inverse modulo $n$
+Soient $n \ge 2$ et $a$ un entier. Il existe un entier $u$ tel que $au \equiv 1 \pmod{n}$ si et seulement si $a$ et $n$ sont premiers entre eux. Un tel $u$ est un **inverse de $a$ modulo $n$**.
+:::
+
+::: demonstration
+$au \equiv 1 \pmod{n}$ équivaut à l'existence d'un entier $v$ tel que $au + nv = 1$ : c'est exactement le théorème de Bézout appliqué à $a$ et $n$.
+:::
+
+::: exemple Inverse de $3$ modulo $7$
+$7 = 3 \times 2 + 1$ donne $1 = 7 - 3 \times 2$, soit $3 \times (-2) \equiv 1 \pmod{7}$. Comme $-2 \equiv 5 \pmod{7}$, $5$ est un inverse de $3$ modulo $7$ : vérification, $3 \times 5 = 15 = 2 \times 7 + 1$.
+:::
+
+::: methode Résoudre $ax \equiv b \pmod{n}$
+1. Calculer $d = \mathrm{PGCD}(a, n)$.
+2. Si $d$ ne divise pas $b$ : **aucune solution** (car $ax - b = nk$ serait divisible par $d$).
+3. Si $d = 1$ : multiplier les deux membres par un inverse $u$ de $a$ modulo $n$ ; $ax \equiv b \pmod{n} \iff x \equiv ub \pmod{n}$.
+4. Si $d \gt 1$ et $d \mid b$ : diviser $a$, $b$ **et** $n$ par $d$ (car $n \mid ax - b \iff \frac{n}{d} \mid \frac{a}{d}x - \frac{b}{d}$), puis appliquer le point 3. On obtient $d$ solutions modulo $n$.
+:::
+
+::: exemple Trois cas
+- $3x \equiv 2 \pmod{7}$ : $\mathrm{PGCD}(3, 7) = 1$ ; en multipliant par $5$, $x \equiv 10 \equiv 3 \pmod{7}$. Les solutions sont les entiers $x = 3 + 7k$, $k \in \mathbb{Z}$.
+- $6x \equiv 4 \pmod{10}$ : $\mathrm{PGCD}(6, 10) = 2$ divise $4$ ; on se ramène à $3x \equiv 2 \pmod{5}$, puis, $2$ étant un inverse de $3$ modulo $5$, à $x \equiv 4 \pmod{5}$. Modulo $10$ : $x \equiv 4$ ou $x \equiv 9 \pmod{10}$.
+- $6x \equiv 5 \pmod{9}$ : $\mathrm{PGCD}(6, 9) = 3$ ne divise pas $5$ : aucune solution.
+:::
+
+::: propriete Équation $ax + by = c$
+Soient $a$ et $b$ deux entiers non nuls et $d = \mathrm{PGCD}(a, b)$. L'équation $ax + by = c$ admet des solutions entières si et seulement si $d$ divise $c$.
+:::
+
+::: demonstration
+Si $ax + by = c$, $d$ divise $a$ et $b$, donc $c$. Réciproquement, si $c = dk$, l'identité de Bézout $au + bv = d$ multipliée par $k$ donne la solution $(uk, vk)$.
+:::
+
+::: methode Résoudre $ax + by = c$ dans $\mathbb{Z}^2$
+1. Vérifier que $d = \mathrm{PGCD}(a, b)$ divise $c$, puis diviser l'équation par $d$ : on se ramène au cas $\mathrm{PGCD}(a, b) = 1$.
+2. Trouver une solution particulière $(x_0, y_0)$ (couple de Bézout, ou essai).
+3. Soustraire : $a(x - x_0) = -b(y - y_0)$. Le théorème de Gauss donne $b \mid x - x_0$, d'où $x = x_0 + bk$ puis $y = y_0 - ak$, avec $k \in \mathbb{Z}$.
+4. Vérifier (réciproque) que ces couples sont bien solutions.
+:::
+
+::: exemple Résoudre $3x + 5y = 7$
+- $\mathrm{PGCD}(3, 5) = 1$ et $3 \times (-1) + 5 \times 2 = 7$ : $(-1, 2)$ est une solution particulière.
+- Si $3x + 5y = 7$, alors $3(x + 1) = -5(y - 2)$. $5$ divise $3(x + 1)$ et est premier avec $3$, donc $5 \mid x + 1$ (Gauss) : $x = -1 + 5k$. En reportant, $15k = -5(y - 2)$, soit $y = 2 - 3k$.
+- Réciproquement, $3(-1 + 5k) + 5(2 - 3k) = -3 + 15k + 10 - 15k = 7$.
+
+Les solutions sont les couples $(-1 + 5k,\ 2 - 3k)$ avec $k \in \mathbb{Z}$.
+:::
+
+::: attention
+Ne pas oublier la **réciproque**, ni de diviser $a$, $b$ et $c$ par le PGCD avant d'appliquer Gauss : dans $12x + 18y = 30$, on travaille sur $2x + 3y = 5$.
+:::
+
+## VII. Nombres premiers
+
+::: definition Nombre premier
+Un **nombre premier** est un entier naturel $p \ge 2$ dont les seuls diviseurs positifs sont $1$ et $p$. Un entier $n \ge 2$ non premier est dit **composé**. L'entier $1$ n'est pas premier.
+:::
+
+::: propriete
+1. Tout entier $n \ge 2$ admet au moins un diviseur premier : son plus petit diviseur $d \ge 2$.
+2. Si $n \ge 2$ est composé, il admet un diviseur premier $p$ tel que $p \le \sqrt{n}$.
+3. Si $p$ est premier et ne divise pas $a$, alors $a$ et $p$ sont premiers entre eux.
+:::
+
+::: demonstration
+1. Si le plus petit diviseur $d \ge 2$ de $n$ était composé, il aurait un diviseur $d'$ avec $1 \lt d' \lt d$, qui diviserait aussi $n$ : contradiction.
+2. Si $n = ab$ avec $2 \le a \le b$, alors $a^2 \le ab = n$, donc $a \le \sqrt{n}$, et un diviseur premier de $a$ convient.
+3. Les diviseurs positifs de $p$ sont $1$ et $p$ ; $p$ ne divise pas $a$, donc le seul diviseur commun positif est $1$.
+:::
+
+::: methode Étudier la primalité d'un entier $n$
+Chercher un diviseur parmi les nombres premiers $p \le \sqrt{n}$. S'il n'y en a aucun, $n$ est premier.
+:::
+
+::: exemple
+$\sqrt{211} \approx 14{,}5$. Aucun des nombres premiers $2$, $3$, $5$, $7$, $11$, $13$ ne divise $211$ (restes $1$, $1$, $1$, $1$, $2$, $3$) : $211$ est premier.
+:::
+
+::: theoreme L'ensemble des nombres premiers est infini
+Il existe une infinité de nombres premiers.
+:::
+
+::: demonstration (au programme)
+Raisonnons par l'absurde : supposons qu'il n'existe qu'un nombre fini de nombres premiers $p_1, p_2, \ldots, p_k$. Posons
+
+$$N = p_1 \times p_2 \times \cdots \times p_k + 1.$$
+
+$N \ge 2$ admet un diviseur premier $p$, qui est l'un des $p_i$. Alors $p$ divise $N$ et le produit $p_1 \times \cdots \times p_k$, donc leur différence $1$ : impossible. Il existe donc une infinité de nombres premiers.
+:::
+
+::: remarque
+$N$ n'est pas forcément premier : $2 \times 3 \times 5 \times 7 \times 11 \times 13 + 1 = 30\,031 = 59 \times 509$. Mais ses diviseurs premiers ne sont pas dans la liste de départ.
+:::
+
+### Crible d'Ératosthène
+
+Pour obtenir les nombres premiers jusqu'à $n$ : on écrit les entiers de $2$ à $n$ ; le premier entier non barré est premier, on barre tous ses multiples à partir de son carré ; on recommence tant que le carré du nombre retenu est inférieur ou égal à $n$. Jusqu'à $100$, il suffit de barrer les multiples de $2$, $3$, $5$ et $7$ (car $11^2 \gt 100$) : il reste les $25$ nombres premiers inférieurs à $100$.
+
+[IMAGE_4]
+
+```python
+def crible(n):
+    est_p = [True] * (n + 1)
+    est_p[0] = est_p[1] = False
+    p = 2
+    while p * p <= n:
+        if est_p[p]:
+            k = p * p
+            while k <= n:
+                est_p[k] = False
+                k += p
+        p += 1
+    return [k for k in range(n+1)
+            if est_p[k]]
+```
+
+### Décomposition en produit de facteurs premiers
+
+::: propriete Un premier qui divise un produit
+Si un nombre premier $p$ divise un produit $ab$, alors $p$ divise $a$ ou $p$ divise $b$.
+:::
+
+::: demonstration
+Si $p$ ne divise pas $a$, alors $a$ et $p$ sont premiers entre eux ; comme $p \mid ab$, le théorème de Gauss donne $p \mid b$.
+:::
+
+::: theoreme Décomposition en facteurs premiers
+Tout entier $n \ge 2$ s'écrit comme produit de nombres premiers :
+
+$$n = p_1^{\alpha_1} \times p_2^{\alpha_2} \times \cdots \times p_k^{\alpha_k},$$
+
+où $p_1 \lt p_2 \lt \cdots \lt p_k$ sont premiers et les exposants $\alpha_i$ des entiers naturels non nuls. Cette écriture est **unique**.
+:::
+
+::: demonstration Idée
+**Existence**, par récurrence forte : si $n$ est premier, c'est fini ; sinon $n = ab$ avec $2 \le a, b \lt n$, et on décompose $a$ et $b$. **Unicité** : si deux décompositions de $n$ existaient, un premier de la première divise le produit de la seconde, donc l'un de ses facteurs (propriété précédente) ; on simplifie par ce premier et on recommence.
+:::
+
+::: exemple
+On divise successivement par les plus petits nombres premiers possibles : $360 = 2 \times 180 = 2^2 \times 90 = 2^3 \times 45 = 2^3 \times 3^2 \times 5$.
+:::
+
+[IMAGE_5]
+
+::: propriete Diviseurs d'un entier décomposé
+Les diviseurs positifs de $n = p_1^{\alpha_1} \times \cdots \times p_k^{\alpha_k}$ sont les entiers $p_1^{\beta_1} \times \cdots \times p_k^{\beta_k}$ avec $0 \le \beta_i \le \alpha_i$. Leur nombre est $(\alpha_1 + 1)(\alpha_2 + 1) \cdots (\alpha_k + 1)$.
+:::
+
+::: exemple
+$360 = 2^3 \times 3^2 \times 5$ a $(3 + 1)(2 + 1)(1 + 1) = 24$ diviseurs positifs. Avec $84 = 2^2 \times 3 \times 7$, on lit $\mathrm{PGCD}(360, 84) = 2^2 \times 3 = 12$ (plus petits exposants communs).
+:::
+
+::: remarque Pour aller plus loin : le PPCM
+Le plus petit multiple commun strictement positif de $a$ et $b$ s'obtient avec les plus grands exposants : $\mathrm{PPCM}(360, 84) = 2^3 \times 3^2 \times 5 \times 7 = 2\,520$. Pour $a, b \gt 0$, on a $\mathrm{PGCD}(a, b) \times \mathrm{PPCM}(a, b) = ab$ : ici $12 \times 2\,520 = 360 \times 84 = 30\,240$.
+:::
+
+Pour $n \ge 2$, `facteurs(360)` renvoie `[2, 2, 2, 3, 3, 5]` :
+
+```python
+def facteurs(n):
+    res, d = [], 2
+    while d * d <= n:
+        while n % d == 0:
+            res.append(d)
+            n //= d
+        d += 1
+    if n > 1:
+        res.append(n)
+    return res
+```
+
+## VIII. Petit théorème de Fermat
+
+::: theoreme Petit théorème de Fermat
+Soit $p$ un nombre premier.
+
+- Si $a$ est un entier non divisible par $p$, alors $a^{p-1} \equiv 1 \pmod{p}$.
+- Pour tout entier $a$, $a^{p} \equiv a \pmod{p}$.
+:::
+
+::: demonstration Pour aller plus loin
+Soit $a$ non divisible par $p$. Les entiers $a, 2a, \ldots, (p - 1)a$ ne sont pas divisibles par $p$ (propriété du VII), et ils ont des restes deux à deux distincts modulo $p$ : si $ia \equiv ja \pmod{p}$, alors $p \mid (i - j)a$, donc $p \mid i - j$ (Gauss), avec $|i - j| \lt p$, d'où $i = j$. Leurs restes sont donc $1, 2, \ldots, p - 1$ dans un certain ordre. En multipliant :
+
+$$(p - 1)! \times a^{p-1} \equiv (p - 1)! \pmod{p}.$$
+
+$p$ divise $(p - 1)!\,\left(a^{p-1} - 1\right)$ et est premier avec $(p - 1)!$, donc $p \mid a^{p-1} - 1$. Enfin, $a^p \equiv a$ s'obtient en multipliant par $a$ (et est évident si $p \mid a$).
+:::
+
+::: exemple Reste de $2^{100}$ dans la division par $13$
+$13$ est premier et ne divise pas $2$ : $2^{12} \equiv 1 \pmod{13}$. Comme $100 = 12 \times 8 + 4$, $2^{100} = \left(2^{12}\right)^8 \times 2^4 \equiv 16 \equiv 3 \pmod{13}$.
+:::
+
+::: attention La réciproque est fausse
+$2^{340} \equiv 1 \pmod{341}$ alors que $341 = 11 \times 31$ n'est pas premier. En revanche, si $a^{n-1} \not\equiv 1 \pmod{n}$ pour un entier $a$ premier avec $n$, alors $n$ est sûrement composé : c'est le principe des tests de primalité.
+:::
+
+## IX. Application : chiffrement
+
+::: exemple Chiffrement affine
+On numérote les lettres de $A = 0$ à $Z = 25$ et on chiffre la lettre $x$ par le reste $y$ de $7x + 3$ modulo $26$. Par exemple, $E$ ($x = 4$) donne $7 \times 4 + 3 = 31 \equiv 5$ : $E$ devient $F$.
+
+Pour déchiffrer, on résout $7x \equiv y - 3 \pmod{26}$. Comme $7 \times 15 = 105 = 4 \times 26 + 1$, $15$ est un inverse de $7$ modulo $26$, d'où $x \equiv 15(y - 3) \pmod{26}$. Pour $y = 5$ : $15 \times 2 = 30 \equiv 4$, on retrouve $E$.
+:::
+
+[IMAGE_6]
+
+::: remarque
+Le déchiffrement n'est possible que si le coefficient ($7$ ici) est premier avec $26$. Le système RSA repose de même sur des calculs de puissances modulo $n = pq$ et sur le petit théorème de Fermat.
+:::
+
+::: retenir
+- $b \mid a \iff a = kb$ ; division euclidienne $a = bq + r$ avec $0 \le r \lt b$.
+- $a \equiv b \pmod{n} \iff n \mid a - b$ : compatible avec $+$, $\times$ et les puissances, mais on ne divise pas.
+- Le dernier reste non nul de l'algorithme d'Euclide est le PGCD ; en remontant les divisions, on obtient $au + bv = \mathrm{PGCD}(a, b)$.
+- Bézout : $\mathrm{PGCD}(a, b) = 1 \iff au + bv = 1$. Gauss : $a \mid bc$ et $\mathrm{PGCD}(a, b) = 1 \Rightarrow a \mid c$.
+- Infinité des nombres premiers, décomposition unique, Fermat : $a^{p-1} \equiv 1 \pmod{p}$ si $p \nmid a$.
+
+Fiche de synthèse dans l'onglet Fiches !
+:::

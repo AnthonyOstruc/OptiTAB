@@ -136,18 +136,19 @@ export default {
 .checkbox-label {
   display: flex;
   align-items: flex-start;
-  gap: 8px;
+  gap: 10px;
   cursor: pointer;
+  font-family: var(--om-font, 'Montserrat', sans-serif);
   font-size: 14px;
   line-height: 1.5;
-  color: $text-color;
+  color: var(--om-ink-soft, #2c3550);
 }
 
 .checkbox-input {
-  width: 16px;
-  height: 16px;
-  accent-color: $primary-color;
-  margin-top: 2px;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--om-navy, #1b3c8e);
+  margin: 1px 0 0;
   flex-shrink: 0;
 }
 
@@ -155,9 +156,9 @@ export default {
   color: inherit;
   
   :deep(a), :deep(button) {
-    color: $primary-color;
+    color: var(--om-navy, #1b3c8e);
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
     background: none;
     border: none;
@@ -171,8 +172,8 @@ export default {
 }
 
 .form-error {
-  color: #ef4444;
-  font-size: 14px;
+  color: var(--om-red, #c0392b);
+  font-size: 13.5px;
   margin: 0;
   font-weight: 500;
 }

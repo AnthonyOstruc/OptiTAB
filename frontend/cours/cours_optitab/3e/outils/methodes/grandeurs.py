@@ -1,0 +1,20 @@
+# -*- coding: utf-8 -*-
+METHODES = {
+    (1, 4): r"§1§ m §= 100§ cm : pour passer des mètres aux centimètres, on multiplie par 100.",
+    (4, 1): r"30 min, c'est la moitié d'une heure (§\frac{30}{60} = 0{,}5§ h) ; on l'ajoute aux 2 heures entières.",
+    (6, 1): r"§1§ t §= 1\,000§ kg : pour passer des tonnes aux kilogrammes, on multiplie par 1 000.",
+    (6, 2): r"§1§ kg §= 1\,000§ g : pour passer des grammes aux kilogrammes, on divise par 1 000.",
+    (6, 3): r"On multiplie par 1 000 pour passer des kilogrammes aux grammes : §0{,}75 \times 1\,000§.",
+    (7, 1): r"Une heure compte 60 minutes : §30§ min §= \frac{30}{60}§ h §= 0{,}5§ h.",
+    (7, 3): r"Le litre est défini comme le volume d'un cube de 1 dm de côté.",
+    (8, 2): r"§1§ m/s §= \frac{3\,600 \text{ m}}{1 \text{ h}} = 3{,}6§ km/h : pour passer des m/s aux km/h, on multiplie par 3,6.",
+    (8, 4): r"Conversion inverse : pour passer des km/h aux m/s, on divise par 3,6.",
+    (9, 5): r"La distance d'arrêt se décompose en deux parties : la distance parcourue pendant la réaction (calculée ici) PUIS la distance de freinage.",
+    (10, 1): r"La masse volumique est la masse d'une unité de volume : on divise la masse par le volume, puis on transforme la formule pour isoler §m§ ou §V§.",
+    (10, 3): r"§1§ kg §= 1\,000§ g : on divise la masse trouvée (900 g) par 1 000.",
+    (12, 4): r"§1§ m³ §= 1\,000§ L : on divise le volume en litres par 1 000.",
+    (14, 3): r"Pour comparer deux vitesses, on les exprime dans la même unité : on compare les 36 km/h du sprinteur (question 2) aux 45 km/h du scooter.",
+    (16, 1): r"Le robinet remplit toute la cuve (§1§) en 30 minutes, donc §\frac{1}{30}§ de la cuve en une minute (débit constant).",
+    (16, 2): r"Même raisonnement : toute la cuve en 45 minutes, donc §\frac{1}{45}§ de la cuve par minute.",
+    (19, 1): r"§1§ m §= 100§ cm : pour passer des centimètres aux mètres, on divise par 100.",
+}

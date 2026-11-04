@@ -1,0 +1,782 @@
+CHAPITRE: Programmation
+
+%% ================================================================ DÉCOUVERTE
+
+@@ Découverte | 1. Lire un script de dessin | easy | prog_4e_d1_script.png, prog_4e_d1_solution.png
+Voici un script. Au départ, le lutin est orienté vers la droite (orientation $90$).
+[IMAGE_1]
+?? Que se passe-t-il quand on clique sur le drapeau vert, avant la boucle ?
+?? Combien de fois les blocs « avancer » et « tourner » sont-ils exécutés ?
+?? Quelle figure le lutin dessine-t-il ? Préciser ses dimensions.
+?? Quelle longueur totale le lutin a-t-il tracée ?
+?? Comment modifier le script pour dessiner un triangle équilatéral de côté $100$ ?
+?? Et pour dessiner un hexagone régulier de côté $100$ ?
+## Avant la boucle
+E> Les blocs s'exécutent dans l'ordre : on efface l'écran, on place le lutin en $(0 ; 0)$, on l'oriente vers la droite et on baisse le stylo.
+R> Le lutin est prêt à dessiner, au centre de la scène, tourné vers la droite.
+S> Écran effacé, lutin en $(0 ; 0)$, stylo baissé
+## Le nombre d'exécutions
+E> Les deux blocs sont à l'intérieur de « répéter $4$ fois ».
+R> Chacun est exécuté $4$ fois.
+S> $4$ fois
+## La figure
+E> $4$ côtés de $100$ pas, et à chaque fois un quart de tour ($90°$) : les côtés sont égaux et perpendiculaires.
+R> Un carré de côté $100$ pas.
+[IMAGE_2]
+S> Carré de côté $100$
+## La longueur tracée
+E> $4 \times 100$
+R> $400$ pas (le périmètre du carré).
+S> $400$ pas
+## Le triangle équilatéral
+M> Pour un polygone régulier à $n$ côtés, on répète $n$ fois et on tourne de $\frac{360}{n}$ degrés.
+E> $n = 3$ et $\frac{360}{3} = 120$.
+R> « répéter $3$ fois », avec « tourner de $120$ degrés ».
+F> Tourner de $60°$ (l'angle du triangle) : le lutin doit tourner de l'angle extérieur, $180° - 60° = 120°$.
+S> $3$ fois, $120°$
+## L'hexagone
+E> $n = 6$ et $\frac{360}{6} = 60$.
+R> « répéter $6$ fois », avec « tourner de $60$ degrés ».
+A> Quel que soit le polygone régulier, le lutin fait en tout un tour complet : $n \times \frac{360}{n} = 360°$.
+S> $6$ fois, $60°$
+
+@@ Découverte | 2. Un programme de calcul | easy | prog_4e_d2_script.png
+Voici un programme de calcul. Le symbole « $\ast$ » est celui de la multiplication en programmation.
+[IMAGE_1]
+?? Quel nombre affiche le programme si l'on choisit $4$ ?
+?? Et si l'on choisit $-2$ ?
+?? Et si l'on choisit $0$ ?
+?? Exprimer le résultat en fonction du nombre $x$ choisi.
+?? Quel nombre faut-il choisir pour que le programme affiche $10$ ?
+?? On remplace le bloc « mettre [y] à y $-$ 5 » par « ajouter $(-5)$ à [y] ». Le programme affiche-t-il la même chose ?
+## Avec 4
+E> $x = 4$ ; $y = 4 \times 3 = 12$ ; puis $y = 12 - 5$.
+R> Le programme affiche $7$.
+S> $7$
+## Avec −2
+E> $y = -2 \times 3 = -6$ ; puis $y = -6 - 5$.
+R> Le programme affiche $-11$.
+S> $-11$
+## Avec 0
+E> $y = 0 \times 3 = 0$ ; puis $y = 0 - 5$.
+R> Le programme affiche $-5$.
+S> $-5$
+## L'expression
+E> $y$ vaut d'abord $3x$, puis on lui retire $5$.
+R> Le résultat est $3x - 5$.
+A> Un programme de calcul se traduit par une expression littérale : chaque bloc « mettre » correspond à une étape du calcul.
+S> $3x - 5$
+## Pour obtenir 10
+E> On résout $3x - 5 = 10$ : $3x = 15$, donc $x = 5$.
+R> Il faut choisir $5$.
+V> $5 \times 3 - 5 = 10$ ✔️
+S> $5$
+## Mettre ou ajouter
+E> « mettre [y] à $y - 5$ » remplace $y$ par $y - 5$ ; « ajouter $(-5)$ à [y] » augmente $y$ de $-5$ : c'est pareil.
+R> Oui, les deux versions affichent le même résultat.
+F> Écrire « mettre [y] à $(-5)$ » : on remplacerait $y$ par $-5$ et le programme afficherait toujours $-5$.
+S> Oui
+
+@@ Découverte | 3. Une boucle qui additionne | easy | prog_4e_d3_script.png, prog_4e_d3_tableau.png
+On étudie le script suivant.
+[IMAGE_1]
+?? Que valent « compteur » et « somme » à la fin du premier tour de boucle ?
+?? Et à la fin du deuxième tour ?
+?? Recopier et compléter un tableau donnant « compteur » et « somme » à la fin de chacun des $5$ tours.
+?? Quel nombre le lutin affiche-t-il ?
+?? Que calcule ce programme ? Qu'afficherait-il avec « répéter $10$ fois » ?
+?? Qu'afficherait-il avec « répéter $100$ fois » ?
+## Premier tour
+E> « ajouter $1$ à compteur » : compteur passe de $0$ à $1$ ; puis « ajouter compteur à somme » : somme passe de $0$ à $1$.
+R> compteur $= 1$ et somme $= 1$.
+S> $1$ et $1$
+## Deuxième tour
+E> compteur passe à $2$ ; somme passe à $1 + 2 = 3$.
+R> compteur $= 2$ et somme $= 3$.
+S> $2$ et $3$
+## Le tableau de suivi
+E> À chaque tour : compteur augmente de $1$, puis on l'ajoute à la somme.
+R> compteur : $1$, $2$, $3$, $4$, $5$ ; somme : $1$, $3$, $6$, $10$, $15$.
+[IMAGE_2]
+A> Le tableau de suivi est l'outil n°1 pour comprendre (ou déboguer) une boucle.
+S> somme : $1$ ; $3$ ; $6$ ; $10$ ; $15$
+## L'affichage
+E> À la fin du dernier tour, somme $= 15$.
+R> Le lutin affiche $15$.
+S> $15$
+## Ce que calcule le programme
+E> somme $= 1 + 2 + 3 + 4 + 5$ ; avec $10$ tours : $1 + 2 + \ldots + 10 = 55$.
+R> Il calcule la somme des entiers de $1$ à $n$ ; avec $10$ tours il affiche $55$.
+S> $1 + 2 + \ldots + n$ ; $55$
+## Avec 100 tours
+E> Astuce de Gauss : on regroupe $1 + 100$, $2 + 99$, … soit $50$ paires valant $101$.
+R> $50 \times 101 = 5\,050$
+S> $5\,050$
+
+@@ Découverte | 4. Une condition | easy | prog_4e_d4_script.png
+Voici un script qui utilise une condition.
+[IMAGE_1]
+?? Qu'affiche le lutin si l'on répond $15$ ?
+?? Et si l'on répond $18$ ?
+?? Et si l'on répond $17$ ? Expliquer.
+?? Par quelle autre condition, utilisant le nombre $18$, pourrait-on remplacer « réponse $> 17$ » (pour des âges entiers) ?
+?? On écrit la condition « réponse $< 18$ ». Comment faut-il réorganiser les messages ?
+?? On veut aussi afficher « Tarif senior » à partir de $65$ ans. Où ajouter une nouvelle condition ?
+## Réponse 15
+E> $15 > 17$ est faux : on exécute la partie « sinon ».
+R> « Tu es mineur. »
+S> Tu es mineur.
+## Réponse 18
+E> $18 > 17$ est vrai : on exécute la partie « alors ».
+R> « Tu es majeur. »
+S> Tu es majeur.
+## Réponse 17
+E> $17 > 17$ est faux (l'inégalité est stricte).
+R> « Tu es mineur. » : c'est correct, à $17$ ans on est mineur.
+F> Lire « $>$ » comme « supérieur ou égal » : $17$ n'est pas strictement supérieur à $17$.
+S> Tu es mineur.
+## Une condition équivalente
+E> Pour des nombres entiers, « être strictement plus grand que $17$ » revient à « être au moins égal à $18$ ».
+R> « réponse $\geqslant 18$ », que l'on écrit en blocs « non ⟨réponse $< 18$⟩ » ou « ⟨réponse $= 18$⟩ ou ⟨réponse $> 18$⟩ ».
+S> réponse $\geqslant 18$
+## La condition inverse
+E> Si la condition « réponse $< 18$ » est vraie, la personne est mineure.
+R> Il faut échanger les messages : « Tu es mineur. » dans « alors » et « Tu es majeur. » dans « sinon ».
+S> On échange les deux messages
+## Le tarif senior
+E> On ne teste $65$ ans que pour les majeurs : on place un nouveau « si ⟨réponse $> 64$⟩ alors … sinon … » dans la partie « alors ».
+R> Dans la partie « alors » : si réponse $> 64$, dire « Tarif senior », sinon dire « Tu es majeur. ».
+A> Des conditions placées les unes dans les autres permettent de distinguer plus de deux cas.
+S> Condition imbriquée dans « alors »
+
+@@ Découverte | 5. Se déplacer dans un repère | easy | prog_4e_d5_script.png, prog_4e_d5_solution.png
+Sur la scène, chaque point est repéré par ses coordonnées $(x ; y)$. On exécute le script suivant.
+[IMAGE_1]
+?? Quels sont les trois points par lesquels passe le lutin ? On les nomme $A$, $C$, $B$ dans l'ordre de passage après le départ.
+?? Quelle figure est dessinée ?
+?? Calculer la longueur $AB$.
+?? Avec le théorème de Pythagore, calculer $AC$ au dixième.
+?? Démontrer que le triangle $ABC$ est rectangle et isocèle en $C$.
+?? Calculer l'aire du triangle $ABC$.
+## Les trois points
+E> Le lutin part de $(-100 ; 0)$, va en $(0 ; 100)$, puis en $(100 ; 0)$ et revient en $(-100 ; 0)$.
+R> $A(-100 ; 0)$, $C(0 ; 100)$ et $B(100 ; 0)$.
+S> $A(-100 ; 0)$, $C(0 ; 100)$, $B(100 ; 0)$
+## La figure
+E> Le stylo est baissé après le placement en $A$ : on trace $[AC]$, $[CB]$ puis $[BA]$.
+R> Le triangle $ABC$.
+[IMAGE_2]
+S> Le triangle $ABC$
+## La longueur AB
+E> $A$ et $B$ ont la même ordonnée : $AB = 100 - (-100)$.
+R> $AB = 200$ pas
+S> $200$
+## La longueur AC
+E> De $A$ à $C$ : $100$ pas vers la droite et $100$ pas vers le haut, donc $AC^2 = 100^2 + 100^2 = 20\,000$.
+R> $AC = \sqrt{20\,000} \approx 141{,}4$ pas
+S> $\approx 141{,}4$
+## Rectangle et isocèle
+E> Par symétrie, $BC = AC \approx 141{,}4$ : le triangle est isocèle en $C$.
+E> $AC^2 + BC^2 = 20\,000 + 20\,000 = 40\,000 = 200^2 = AB^2$.
+R> D'après la réciproque du théorème de Pythagore, $ABC$ est rectangle en $C$ ; il est donc rectangle isocèle en $C$.
+S> $AC^2 + BC^2 = AB^2$ et $AC = BC$
+## L'aire
+E> Base $AB = 200$, hauteur issue de $C$ : $100$ ; $\frac{200 \times 100}{2}$.
+R> $10\,000$ pas²
+A> La scène est un repère : coordonnées, Pythagore et aires s'y appliquent comme en géométrie.
+S> $10\,000$
+
+@@ Découverte | 6. Répéter jusqu'à | easy | prog_4e_d6_script.png, prog_4e_d6_tableau.png
+On étudie le script suivant (« $\ast$ » signifie « multiplié par »).
+[IMAGE_1]
+?? Que vaut $n$ après le premier tour de boucle ? Après le deuxième ?
+?? Compléter un tableau de suivi de $n$ et « étapes » jusqu'à l'arrêt.
+?? Quelle valeur le lutin affiche-t-il ? Combien de tours ont été effectués ?
+?? On remplace la condition par « $n > 1\,000$ ». Que se passe-t-il ?
+?? Quelle différence y a-t-il entre « répéter $7$ fois » et « répéter jusqu'à » ?
+?? Que se passerait-il si l'on oubliait le bloc « mettre [n] à n $\ast$ 2 » ?
+## Les premiers tours
+E> $n$ part de $1$ et est multiplié par $2$ à chaque tour.
+R> $n = 2$ après le premier tour, $n = 4$ après le deuxième.
+S> $2$ puis $4$
+## Le tableau de suivi
+E> $n$ : $1 \to 2 \to 4 \to 8 \to 16 \to 32 \to 64 \to 128$.
+R> Après $7$ tours, $n = 128 > 100$ : la boucle s'arrête.
+[IMAGE_2]
+S> $2$, $4$, $8$, $16$, $32$, $64$, $128$
+## L'affichage
+E> La condition « $n > 100$ » est fausse pour $64$ et vraie pour $128$.
+R> Le lutin affiche $128$, après $7$ tours.
+S> $128$ ; $7$ tours
+## Avec 1 000
+E> On continue : $256$, $512$, $1\,024$.
+R> Le lutin affiche $1\,024$, après $10$ tours.
+S> $1\,024$ ; $10$ tours
+## Les deux boucles
+R> « répéter $7$ fois » fait toujours $7$ tours ; « répéter jusqu'à » s'arrête quand la condition devient vraie, le nombre de tours dépend des calculs.
+E> Ici, on ne connaît pas à l'avance le nombre de doublements nécessaires pour dépasser $100$ : « répéter jusqu'à » est adapté.
+S> Nombre fixe / arrêt par condition
+## L'oubli
+E> $n$ resterait égal à $1$, et « $1 > 100$ » serait toujours faux.
+R> La boucle ne s'arrêterait jamais : c'est une boucle infinie.
+F> Oublier de modifier, dans la boucle, la variable testée par la condition.
+A> Dans une boucle « répéter jusqu'à », il faut qu'au moins un bloc fasse évoluer la condition.
+S> Boucle infinie
+
+@@ Découverte | 7. Vrai ou faux | easy | prog_4e_d7_script.png
+Dire si chaque affirmation est vraie ou fausse, en justifiant. Les trois premières concernent le script ci-dessous.
+[IMAGE_1]
+?? « Ce script dessine un triangle équilatéral de côté $100$. »
+?? « Le bloc « avancer » est exécuté $3$ fois. »
+?? « En remplaçant $3$ par $6$ et $120$ par $60$, on obtient un hexagone régulier. »
+?? « Une variable garde toujours la même valeur pendant tout le programme. »
+?? « Dans « répéter jusqu'à », la condition est testée avant chaque tour. »
+?? « Le bloc « mettre [x] à $5$ » ajoute $5$ à la valeur de $x$. »
+## Affirmation 1
+E> $3$ côtés de $100$, en tournant de $\frac{360}{3} = 120°$ : les trois côtés sont égaux.
+R> Vrai.
+S> Vrai
+## Affirmation 2
+E> Le bloc est dans « répéter $3$ fois ».
+R> Vrai.
+S> Vrai
+## Affirmation 3
+E> $\frac{360}{6} = 60$ : on tourne de $60°$ six fois.
+R> Vrai.
+S> Vrai
+## Affirmation 4
+E> Les blocs « mettre » et « ajouter » changent sa valeur.
+R> Faux : une variable peut changer de valeur, c'est son intérêt.
+S> Faux
+## Affirmation 5
+E> Si la condition est déjà vraie au départ, la boucle n'est pas exécutée du tout.
+R> Vrai.
+S> Vrai
+## Affirmation 6
+E> « mettre » remplace la valeur ; c'est « ajouter » qui augmente.
+R> Faux : après ce bloc, $x$ vaut $5$, quelle que soit sa valeur avant.
+F> Confondre « mettre » et « ajouter » : c'est l'erreur la plus fréquente avec les variables.
+A> mettre = remplacer ; ajouter = augmenter (ou diminuer avec un nombre négatif).
+S> Faux
+
+%% ================================================================ ENTRAÎNEMENT
+
+@@ Entraînement | 1. Un bloc « polygone » | medium | prog_4e_e1_script.png, prog_4e_e1_solution.png
+On a créé un bloc personnalisé « polygone » qui dépend de deux paramètres : le nombre $n$ de côtés et la longueur d'un côté.
+[IMAGE_1]
+?? Que dessine le programme principal ? De quel angle le lutin tourne-t-il à chaque fois ?
+?? De quel angle tourne-t-il pour « polygone $(6)$ $(70)$ » ? Et pour « polygone $(8)$ $(55)$ » ?
+?? Calculer la longueur totale tracée par « polygone $(5)$ $(80)$ ».
+?? De combien de degrés le lutin a-t-il tourné en tout, quel que soit $n$ ?
+?? Que dessine « polygone $(36)$ $(10)$ » ? Quelle longueur est tracée ?
+?? Quelle est la mesure d'un angle intérieur du pentagone régulier ?
+## Le programme principal
+E> « polygone $(5)$ $(80)$ » répète $5$ fois « avancer de $80$, tourner de $\frac{360}{5}$ ».
+R> Un pentagone régulier de côté $80$ ; le lutin tourne de $72°$ à chaque fois.
+S> Pentagone ; $72°$
+## Hexagone et octogone
+E> $\frac{360}{6} = 60$ et $\frac{360}{8} = 45$.
+R> $60°$ pour l'hexagone, $45°$ pour l'octogone.
+[IMAGE_2]
+S> $60°$ ; $45°$
+## La longueur tracée
+E> $5 \times 80$
+R> $400$ pas.
+S> $400$
+## L'angle total
+E> $n \times \frac{360}{n} = 360$
+R> $360°$ : le lutin a fait un tour complet et revient à son orientation de départ.
+S> $360°$
+## Avec 36 côtés
+E> $36$ côtés de $10$ pas, en tournant de $10°$ : la figure ressemble à un cercle.
+R> Un polygone à $36$ côtés, presque un cercle ; longueur tracée $36 \times 10 = 360$ pas.
+S> Presque un cercle ; $360$ pas
+## L'angle intérieur
+E> Le lutin tourne de l'angle extérieur ($72°$) ; l'angle intérieur est son supplémentaire.
+R> $180° - 72° = 108°$
+F> Confondre l'angle dont tourne le lutin ($72°$) avec l'angle du polygone ($108°$).
+A> Un bloc personnalisé évite de réécrire les mêmes blocs : on l'appelle avec des valeurs différentes.
+S> $108°$
+
+@@ Entraînement | 2. Une étoile | medium | prog_4e_e2_script.png, prog_4e_e2_solution.png
+On exécute le script suivant.
+[IMAGE_1]
+?? Quelle figure le lutin dessine-t-il ?
+?? De combien de degrés le lutin a-t-il tourné en tout ? Combien de tours complets cela représente-t-il ?
+?? Calculer la longueur totale tracée.
+?? Pourquoi le lutin revient-il exactement à son point de départ, dans la même orientation ?
+?? Que dessinerait le script avec « tourner de $72$ degrés » ?
+?? Quelle est la mesure de l'angle aigu à chaque pointe de l'étoile ?
+## La figure
+E> $5$ segments de $150$ pas, en tournant beaucoup ($144°$) à chaque fois : les segments se croisent.
+R> Une étoile à $5$ branches.
+[IMAGE_2]
+S> Étoile à $5$ branches
+## L'angle total
+E> $5 \times 144 = 720$
+R> $720°$, soit $2$ tours complets.
+S> $720°$ ; $2$ tours
+## La longueur tracée
+E> $5 \times 150$
+R> $750$ pas.
+S> $750$
+## Le retour au départ
+E> $720$ est un multiple de $360$ : l'orientation finale est la même qu'au départ.
+R> Après $5$ segments, le lutin a fait exactement $2$ tours sur lui-même : le tracé se referme.
+A> Une figure « fermée » tracée par un lutin correspond toujours à un angle total multiple de $360°$.
+S> $720 = 2 \times 360$
+## Avec 72 degrés
+E> $\frac{360}{5} = 72$
+R> Un pentagone régulier de côté $150$.
+S> Pentagone régulier
+## L'angle des pointes
+E> À chaque pointe, le lutin fait demi-tour de $144°$ : l'angle de la pointe est $180° - 144°$.
+R> $36°$
+F> Répondre $144°$ : c'est l'angle dont tourne le lutin, pas l'angle de la pointe.
+S> $36°$
+
+@@ Entraînement | 3. Une frise de carrés | medium | prog_4e_e3_script.png, prog_4e_e3_solution.png
+Ce script utilise deux boucles, l'une dans l'autre.
+[IMAGE_1]
+?? Combien de carrés le lutin dessine-t-il ? De quel côté ?
+?? Combien de fois le bloc « avancer de $30$ pas » est-il exécuté en tout ?
+?? Calculer la longueur totale tracée par le stylo.
+?? Quelle est la distance entre deux carrés voisins ?
+?? Quelle est l'abscisse du lutin à la fin du programme ?
+?? Pourquoi faut-il « relever le stylo » avant « avancer de $60$ pas » ?
+## Les carrés
+E> La grande boucle est répétée $6$ fois ; à chaque tour, la petite boucle dessine un carré de côté $30$.
+R> $6$ carrés de côté $30$ pas.
+[IMAGE_2]
+S> $6$ carrés de côté $30$
+## Le nombre d'exécutions
+E> $6$ tours de la grande boucle, et $4$ tours de la petite à chaque fois : $6 \times 4$.
+R> $24$ fois.
+F> Additionner $6 + 4 = 10$ : pour des boucles imbriquées, on multiplie les nombres de tours.
+S> $24$
+## La longueur tracée
+E> $24 \times 30$ (le déplacement de $60$ pas se fait stylo relevé).
+R> $720$ pas.
+S> $720$
+## L'écart entre les carrés
+E> Après un carré, le lutin est revenu à son point de départ, puis avance de $60$ : le carré suivant commence $60$ pas plus loin.
+R> Les carrés commencent tous les $60$ pas : il y a $60 - 30 = 30$ pas d'espace entre deux carrés.
+S> $30$ pas d'espace
+## L'abscisse finale
+E> $-200 + 6 \times 60$
+R> $x = 160$
+S> $160$
+## Relever le stylo
+R> Sinon, le lutin tracerait un trait entre les carrés.
+E> Le stylo est rebaissé au début de chaque tour, avant de dessiner le carré suivant.
+A> Une boucle à l'intérieur d'une boucle : la boucle intérieure est entièrement exécutée à chaque tour de la boucle extérieure.
+S> Pour ne pas relier les carrés
+
+@@ Entraînement | 4. Deux programmes de calcul | medium | prog_4e_e4_scripts.png
+On compare deux programmes de calcul (« $\ast$ » signifie « multiplié par »).
+[IMAGE_1]
+?? Qu'affiche le programme A si l'on choisit $5$ ?
+?? Qu'affiche le programme B si l'on choisit $5$ ?
+?? Comparer les deux programmes avec le nombre $-4$.
+?? Démontrer que les deux programmes affichent toujours le même résultat.
+?? Un programme C calcule $x \times x + 6$. Avec $2$, affiche-t-il le même résultat que A ?
+?? Les programmes A et C sont-ils équivalents ?
+## A avec 5
+E> $(5 + 3) \times 2 = 8 \times 2$
+R> $16$
+S> $16$
+## B avec 5
+E> $2 \times 5 + 6 = 10 + 6$
+R> $16$
+S> $16$
+## Avec −4
+E> A : $(-4 + 3) \times 2 = -1 \times 2 = -2$ ; B : $2 \times (-4) + 6 = -8 + 6 = -2$.
+R> Les deux programmes affichent $-2$.
+S> $-2$ et $-2$
+## La démonstration
+M> On traduit chaque programme par une expression, puis on développe.
+E> A : $(x + 3) \times 2 = 2x + 6$ (distributivité) ; B : $2x + 6$.
+R> Les deux expressions sont égales pour tout $x$ : les programmes sont équivalents.
+A> Des tests ne prouvent rien en général ; seul le calcul littéral démontre l'égalité pour tous les nombres.
+S> $(x + 3) \times 2 = 2x + 6$
+## Le programme C avec 2
+E> C : $2 \times 2 + 6 = 10$ ; A : $(2 + 3) \times 2 = 10$.
+R> Oui, les deux affichent $10$.
+S> Oui, $10$
+## A et C
+E> Avec $1$ : C donne $1 \times 1 + 6 = 7$, A donne $(1 + 3) \times 2 = 8$.
+R> Non : un seul contre-exemple suffit à montrer qu'ils ne sont pas équivalents.
+F> Conclure qu'ils sont équivalents parce qu'ils coïncident pour une valeur ($2$).
+S> Non (contre-exemple : $1$)
+
+@@ Entraînement | 5. Simuler un dé | medium | prog_4e_e5_script.png
+Ce programme simule $1\,000$ lancers d'un dé équilibré à six faces.
+[IMAGE_1]
+?? Que fait le bloc « nombre aléatoire entre $1$ et $6$ » ?
+?? Que compte la variable « succès » ?
+?? Quelle est la probabilité d'obtenir $6$ avec un dé équilibré ? Donner une valeur approchée au millième.
+?? Une exécution affiche $0{,}172$. Pourquoi n'obtient-on pas exactement la probabilité ?
+?? Que peut-on attendre si l'on remplace $1\,000$ par $100\,000$ ?
+?? Comment modifier le programme pour simuler le lancer d'une pièce et compter les « pile » ?
+## Le nombre aléatoire
+R> Il donne au hasard un entier de $1$ à $6$, chacun ayant la même chance d'apparaître : il simule un lancer de dé.
+E> Chaque exécution du bloc correspond à un nouveau lancer.
+S> Un lancer de dé
+## La variable succès
+E> On ajoute $1$ à « succès » seulement quand le nombre tiré est $6$.
+R> Elle compte le nombre de $6$ obtenus en $1\,000$ lancers.
+S> Le nombre de $6$
+## La probabilité
+E> $6$ issues équiprobables, une seule favorable : $\frac{1}{6}$.
+R> $\frac{1}{6} \approx 0{,}167$
+S> $\approx 0{,}167$
+## La fréquence obtenue
+E> « succès / 1 000 » est une fréquence : elle dépend des tirages au hasard.
+R> La fréquence fluctue autour de la probabilité : $0{,}172$ est proche de $0{,}167$, l'écart est normal.
+F> Penser que le dé ou le programme est « truqué » parce que la fréquence n'est pas exactement $\frac{1}{6}$.
+S> Fluctuation d'échantillonnage
+## Avec 100 000 lancers
+E> Plus le nombre de lancers est grand, plus la fréquence se stabilise.
+R> La fréquence sera en général encore plus proche de $\frac{1}{6} \approx 0{,}167$.
+A> C'est la loi des grands nombres : la simulation permet d'estimer une probabilité.
+S> Plus proche de $0{,}167$
+## La pièce
+E> On tire un nombre entre $1$ et $2$ ($1$ pour pile, $2$ pour face).
+R> On remplace par « si ⟨nombre aléatoire entre $1$ et $2$ $= 1$⟩ alors ajouter $1$ à succès » ; la fréquence sera proche de $0{,}5$.
+S> Aléatoire entre $1$ et $2$ ; fréquence $\approx 0{,}5$
+
+@@ Entraînement | 6. Déboguer un script | medium | prog_4e_e6_script.png, prog_4e_e6_solution.png
+Maël veut dessiner un triangle équilatéral de côté $100$. Il a écrit ce script, mais rien ne s'affiche.
+[IMAGE_1]
+?? Pourquoi rien n'est-il dessiné ?
+?? Maël ajoute le bloc manquant au bon endroit. Que dessine alors son script ?
+?? Combien de fois faut-il répéter pour un triangle ?
+?? De quel angle le lutin doit-il tourner ? Pourquoi pas $60°$ ?
+?? Écrire la liste corrigée des blocs à placer après « s'orienter à $90$ ».
+?? Quel bloc ajouter au début pour effacer les anciens dessins à chaque lancement ?
+## Rien n'est dessiné
+E> Aucun bloc « stylo en position d'écriture » : le stylo est relevé.
+R> Le lutin se déplace sans laisser de trace.
+F> Chercher l'erreur dans les calculs alors que c'est le stylo qui manque.
+S> Stylo non baissé
+## Le dessin obtenu
+E> $4$ segments de $100$, en tournant de $60°$ : ce sont $4$ côtés consécutifs d'un hexagone régulier.
+R> Une ligne brisée de $4$ côtés d'hexagone (la figure n'est pas fermée).
+[IMAGE_2]
+S> $4$ côtés d'un hexagone
+## Le nombre de répétitions
+E> Un triangle a $3$ côtés.
+R> Il faut « répéter $3$ fois ».
+S> $3$
+## L'angle
+E> Le lutin tourne de l'angle extérieur : $180° - 60° = 120°$, ou $\frac{360}{3} = 120°$.
+R> Il faut tourner de $120°$ ; $60°$ est l'angle intérieur du triangle.
+S> $120°$
+## Le script corrigé
+R> « stylo en position d'écriture », puis « répéter $3$ fois » [« avancer de $100$ pas », « tourner ↻ de $120$ degrés »].
+E> On teste ensuite : le lutin revient à son point de départ, la figure est fermée.
+S> Stylo baissé ; $3$ fois ; $120°$
+## Effacer
+R> Le bloc « effacer tout », juste après le drapeau vert.
+E> Sinon, chaque lancement dessine par-dessus les anciens tracés.
+A> Déboguer, c'est tester, observer ce qui se passe, puis corriger une erreur à la fois.
+S> « effacer tout »
+
+@@ Entraînement | 7. Des lutins qui se parlent | medium | prog_4e_e7_scripts.png
+Un chat et un chien dialoguent grâce à des messages. Voici leurs scripts.
+[IMAGE_1]
+?? Que se passe-t-il quand on clique sur le drapeau vert ?
+?? Quand le chien commence-t-il à parler ? Pourquoi ?
+?? Dans quel ordre les répliques s'affichent-elles ?
+?? Combien de temps dure toute la scène ?
+?? On place « envoyer à tous [à toi] » AVANT « dire Bonjour ! » dans le script 1 du chat. Que change-t-on ?
+?? À quoi servent les messages dans un programme à plusieurs lutins ?
+## Le drapeau vert
+E> Seul le script 1 du chat commence par « quand le drapeau vert est cliqué ».
+R> Le chat dit « Bonjour ! » pendant $2$ secondes.
+S> Le chat dit « Bonjour ! »
+## Le chien
+E> Le script du chien démarre « quand je reçois [à toi] » ; ce message est envoyé après les $2$ secondes du « Bonjour ! ».
+R> Le chien parle au bout de $2$ secondes, quand il reçoit le message « à toi ».
+S> Après $2$ s
+## L'ordre
+E> Le chien envoie « fin » après sa réplique ; le script 2 du chat démarre à la réception de « fin ».
+R> « Bonjour ! » (chat), puis « Salut ! » (chien), puis « Au revoir ! » (chat).
+S> Bonjour ! ; Salut ! ; Au revoir !
+## La durée
+E> Trois répliques de $2$ secondes, l'une après l'autre : $3 \times 2$.
+R> Environ $6$ secondes.
+S> $\approx 6$ s
+## L'envoi avant
+E> Le message part tout de suite : le chien répond pendant que le chat parle encore.
+R> « Bonjour ! » et « Salut ! » s'affichent en même temps ; la scène dure environ $4$ secondes.
+F> Croire que l'ordre des blocs n'a pas d'importance : « envoyer » déclenche immédiatement les scripts qui attendent ce message.
+S> Les deux parlent en même temps
+## Le rôle des messages
+R> Ils permettent de synchroniser plusieurs lutins : un script attend un signal envoyé par un autre.
+E> Ici, chaque réplique attend la fin de la précédente grâce aux messages « à toi » et « fin ».
+A> « envoyer à tous » / « quand je reçois » : c'est ainsi que les lutins coordonnent leurs actions.
+S> Synchroniser les lutins
+
+%% ================================================================ PROBLÈMES
+
+@@ Problème | 1. Le nombre mystère | hard | prog_4e_p1_script.png
+Ce jeu choisit un nombre mystère entier entre $1$ et $100$ ; le joueur propose des nombres jusqu'à trouver.
+[IMAGE_1]
+?? À quoi sert la variable « essais » ?
+?? Le nombre mystère est $37$. Le joueur propose $50$, puis $25$, puis $37$. Quels messages s'affichent ? Combien vaut « essais » à la fin ?
+?? Stratégie « par moitié » : on propose toujours le milieu de l'intervalle possible. Avec le nombre mystère $81$, quelles propositions fait-on ? Combien d'essais faut-il ?
+?? Avec cette stratégie, combien d'essais faut-il au maximum pour un nombre entre $1$ et $100$ ? Justifier.
+?? Pourquoi les puissances de $2$ interviennent-elles ?
+?? Combien d'essais faudrait-il au maximum pour un nombre entre $1$ et $1\,000$ ?
+## La variable essais
+E> Elle part de $0$ et augmente de $1$ à chaque proposition.
+R> Elle compte le nombre de propositions du joueur.
+S> Compter les propositions
+## La partie avec 37
+E> $50 > 37$ : « Trop grand ! » ; $25 < 37$ : « Trop petit ! » ; $37 = 37$ : aucune des deux conditions, et la boucle s'arrête.
+R> « Trop grand ! », « Trop petit ! », puis « Gagné ! » ; essais $= 3$.
+S> Trop grand, Trop petit, Gagné ; $3$
+## La stratégie avec 81
+E> $50$ : trop petit (reste $51$ à $100$) ; $75$ : trop petit (reste $76$ à $100$) ; $88$ : trop grand (reste $76$ à $87$) ; $81$ : gagné.
+R> $50$, $75$, $88$, $81$ : $4$ essais.
+S> $50$ ; $75$ ; $88$ ; $81$ — $4$ essais
+## Le maximum d'essais
+E> À chaque essai, le nombre de possibilités est au moins divisé par $2$ : $100 \to 50 \to 25 \to 12 \to 6 \to 3 \to 1$.
+R> Au maximum $7$ essais.
+F> Penser qu'il faut jusqu'à $50$ essais : la stratégie par moitié est bien plus rapide que de tester les nombres un par un.
+S> $7$
+## Les puissances de 2
+E> Avec $k$ essais, on peut départager jusqu'à $2^k$ nombres ; $2^6 = 64 < 100 \leqslant 2^7 = 128$.
+R> Il faut le plus petit $k$ tel que $2^k \geqslant 100$, c'est-à-dire $k = 7$.
+S> $2^7 = 128 \geqslant 100$
+## Entre 1 et 1 000
+E> $2^9 = 512 < 1\,000 \leqslant 2^{10} = 1\,024$
+R> $10$ essais au maximum.
+A> Cette méthode s'appelle la dichotomie : elle est utilisée par les ordinateurs pour chercher dans de grandes listes.
+S> $10$
+
+@@ Problème | 2. La spirale | hard | prog_4e_p2_script.png, prog_4e_p2_solution.png
+On exécute le script suivant. Le lutin part de $(0 ; 0)$, orienté vers la droite.
+[IMAGE_1]
+?? Quelles sont les longueurs des trois premiers segments tracés ?
+?? Quelle est la longueur du dernier segment ? Que vaut « longueur » à la fin du programme ?
+?? Calculer la longueur totale tracée.
+?? De combien de degrés le lutin a-t-il tourné en tout ?
+?? Donner les coordonnées du lutin après chacun des quatre premiers segments.
+?? Le lutin finit en $(50 ; 60)$. Calculer sa distance au point de départ, au dixième.
+## Les premiers segments
+E> longueur vaut $10$ au départ et augmente de $10$ après chaque segment.
+R> $10$, $20$ et $30$ pas.
+S> $10$ ; $20$ ; $30$
+## Le dernier segment
+E> Le $10$e segment mesure $10 \times 10 = 100$ ; ensuite on ajoute encore $10$.
+R> Le dernier segment mesure $100$ pas ; à la fin, longueur $= 110$.
+F> Répondre $110$ pour le dernier segment : l'ajout de $10$ se fait APRÈS le tracé.
+S> $100$ ; $110$
+## La longueur totale
+E> $10 + 20 + \ldots + 100 = 10 \times (1 + 2 + \ldots + 10) = 10 \times 55$
+R> $550$ pas.
+S> $550$
+## L'angle total
+E> $10$ quarts de tour : $10 \times 90$.
+R> $900°$ (deux tours et demi).
+S> $900°$
+## Les premières positions
+E> Droite $10$ : $(10 ; 0)$ ; haut $20$ : $(10 ; 20)$ ; gauche $30$ : $(-20 ; 20)$ ; bas $40$ : $(-20 ; -20)$.
+R> $(10 ; 0)$, $(10 ; 20)$, $(-20 ; 20)$, $(-20 ; -20)$.
+[IMAGE_2]
+S> $(10 ; 0)$ ; $(10 ; 20)$ ; $(-20 ; 20)$ ; $(-20 ; -20)$
+## La distance finale
+E> Pythagore : $d^2 = 50^2 + 60^2 = 2\,500 + 3\,600 = 6\,100$.
+R> $d = \sqrt{6\,100} \approx 78{,}1$ pas.
+A> Un tableau de suivi (segment, direction, position) permet de prévoir exactement le dessin.
+S> $\approx 78{,}1$
+
+@@ Problème | 3. Rendre la monnaie | hard | prog_4e_p3_script.png
+Un distributeur rend la monnaie avec des pièces de $2$ € et de $1$ € (sommes entières). Voici son programme.
+[IMAGE_1]
+?? Exécuter le programme pour une somme de $7$ €. Combien de pièces de chaque sorte sont rendues ?
+?? Même question pour $10$ € et pour $1$ €.
+?? Pour $15$ €, combien de tours de boucle sont effectués ?
+?? Pourquoi « pièces1 » vaut-il toujours $0$ ou $1$ à la fin ?
+?? On ajoute des billets de $5$ €, rendus en premier. Combien de billets et de pièces pour $18$ € ?
+?? Décrire la boucle à ajouter au début du programme pour les billets de $5$ €.
+## Avec 7 €
+E> reste : $7 \to 5 \to 3 \to 1$ ; on s'arrête car $1 < 2$ ; pièces2 $= 3$.
+R> $3$ pièces de $2$ € et $1$ pièce de $1$ €.
+V> $3 \times 2 + 1 = 7$ ✔️
+S> $3 \times 2$ € et $1 \times 1$ €
+## Avec 10 € et 1 €
+E> $10$ : reste $10 \to 8 \to 6 \to 4 \to 2 \to 0$ ; $5$ pièces de $2$ € et reste $0$.
+E> $1$ : la condition « reste $< 2$ » est déjà vraie, la boucle n'est pas exécutée.
+R> $10$ € : $5$ pièces de $2$ € et $0$ de $1$ € ; $1$ € : $0$ pièce de $2$ € et $1$ pièce de $1$ €.
+S> $5$ et $0$ ; $0$ et $1$
+## Avec 15 €
+E> $15 \to 13 \to 11 \to 9 \to 7 \to 5 \to 3 \to 1$ : $7$ soustractions.
+R> $7$ tours (et $1$ pièce de $1$ €).
+S> $7$ tours
+## Le reste final
+E> La boucle s'arrête dès que reste $< 2$ ; comme on enlève $2$ à chaque tour en partant d'un entier positif, il reste $0$ ou $1$.
+R> C'est le reste de la division de la somme par $2$ : $0$ si la somme est paire, $1$ si elle est impaire.
+A> Retirer $2$ jusqu'à ce que ce ne soit plus possible revient à faire une division euclidienne par $2$.
+S> Reste de la division par $2$
+## Avec des billets de 5 €
+E> $18 = 3 \times 5 + 3$, puis $3 = 1 \times 2 + 1$.
+R> $3$ billets de $5$ €, $1$ pièce de $2$ € et $1$ pièce de $1$ € : $5$ billets et pièces en tout.
+S> $3$ billets, $1 \times 2$ €, $1 \times 1$ €
+## La nouvelle boucle
+R> Avant la boucle des pièces de $2$ € : « mettre [billets5] à $0$ », puis « répéter jusqu'à ⟨reste $< 5$⟩ » [« ajouter $(-5)$ à [reste] », « ajouter $1$ à [billets5] »].
+E> On rend d'abord les plus grosses valeurs pour utiliser le moins de pièces possible.
+F> Placer cette boucle après celle des pièces de $2$ € : il ne resterait jamais $5$ € à rendre en billets.
+S> Boucle « reste $< 5$ » placée en premier
+
+@@ Problème | 4. Convertir des températures | hard | prog_4e_p4_script.png
+Aux États-Unis, on mesure les températures en degrés Fahrenheit. Ce programme convertit des degrés Celsius en degrés Fahrenheit (« $\ast$ » signifie « multiplié par » ; $1.8$ s'écrit $1{,}8$ en français).
+[IMAGE_1]
+?? Qu'affiche le programme pour $0$ °C ? Pour $100$ °C ?
+?? Quelle est, en °F, la température normale du corps humain ($37$ °C) ?
+?? Exprimer la température $F$ en fonction de la température $C$.
+?? Quelle température en °C correspond à $50$ °F ?
+?? Pour quelle température les deux nombres sont-ils égaux ?
+?? Écrire l'expression d'un programme qui convertit des °F en °C.
+## 0 °C et 100 °C
+E> $0 \times 1{,}8 + 32 = 32$ ; $100 \times 1{,}8 + 32 = 180 + 32$.
+R> $32$ °F et $212$ °F.
+S> $32$ °F ; $212$ °F
+## La température du corps
+E> $37 \times 1{,}8 + 32 = 66{,}6 + 32$
+R> $98{,}6$ °F
+S> $98{,}6$ °F
+## L'expression
+R> $F = 1{,}8 \times C + 32$
+E> On multiplie par $1{,}8$, puis on ajoute $32$, dans cet ordre.
+S> $F = 1{,}8C + 32$
+## 50 °F
+E> On résout $1{,}8C + 32 = 50$ : $1{,}8C = 18$, donc $C = 10$.
+R> $10$ °C
+S> $10$ °C
+## Égalité des deux nombres
+E> On résout $1{,}8C + 32 = C$ : $0{,}8C = -32$, donc $C = -40$.
+R> À $-40$ : $-40$ °C $= -40$ °F.
+V> $-40 \times 1{,}8 + 32 = -72 + 32 = -40$ ✔️
+S> $-40$
+## Le programme inverse
+E> On « défait » les étapes dans l'ordre inverse : on retire $32$, puis on divise par $1{,}8$.
+R> $C = \frac{F - 32}{1{,}8}$
+F> Diviser d'abord par $1{,}8$ puis retirer $32$ : l'ordre des opérations inverses compte.
+A> Pour inverser un programme de calcul, on remonte les étapes à l'envers avec les opérations contraires.
+S> $C = \frac{F - 32}{1{,}8}$
+
+@@ Problème | 5. Le robot du jardin | hard | prog_4e_p5_script.png, prog_4e_p5_solution.png
+Un robot tondeuse est programmé sur un repère dont l'unité est le décimètre. Le stylo matérialise son trajet.
+[IMAGE_1]
+?? Quelle est la position du robot après le premier tour de la première boucle ?
+?? Quelle est sa position $A$ à la fin de la première boucle ?
+?? Quelle longueur le robot parcourt-il à chaque tour de la première boucle ? De combien s'éloigne-t-il « à vol d'oiseau » à chaque tour ?
+?? Calculer la distance $OA$ entre le départ $O$ et le point $A$.
+?? Quelle est la position $B$ du robot à la fin du programme ? Quelle distance totale a-t-il parcourue ?
+?? Calculer la distance $OB$ entre son point de départ et son point d'arrivée.
+## Après un tour
+E> « ajouter $40$ à x » puis « ajouter $30$ à y » à partir de $(0 ; 0)$.
+R> $(40 ; 30)$
+S> $(40 ; 30)$
+## Le point A
+E> $3$ tours : $x = 3 \times 40 = 120$ et $y = 3 \times 30 = 90$.
+R> $A(120 ; 90)$
+S> $(120 ; 90)$
+## Un tour de boucle
+E> Le robot avance de $40$ horizontalement puis de $30$ verticalement : il parcourt $40 + 30 = 70$ dm.
+E> À vol d'oiseau : $\sqrt{40^2 + 30^2} = \sqrt{2\,500} = 50$ dm.
+R> Il parcourt $70$ dm mais ne s'éloigne que de $50$ dm à chaque tour.
+S> $70$ dm ; $50$ dm
+## La distance OA
+E> $OA^2 = 120^2 + 90^2 = 14\,400 + 8\,100 = 22\,500$
+R> $OA = 150$ dm, soit $15$ m.
+V> Les trois déplacements de $50$ dm sont alignés : $3 \times 50 = 150$ ✔️
+S> $150$ dm
+## Le point B
+E> $2$ tours de « ajouter $-60$ à x » : $x = 120 - 120 = 0$, $y$ reste $90$.
+E> Distance parcourue : $3 \times 70 + 2 \times 60 = 210 + 120 = 330$ dm.
+R> $B(0 ; 90)$ ; le robot a parcouru $330$ dm, soit $33$ m.
+[IMAGE_2]
+S> $(0 ; 90)$ ; $330$ dm
+## La distance OB
+E> $B$ est sur l'axe des ordonnées : $OB = 90$.
+R> $90$ dm, soit $9$ m.
+A> Distance parcourue et distance à vol d'oiseau sont différentes : Pythagore donne la seconde.
+S> $90$ dm
+
+@@ Problème | 6. Un tableau de valeurs | hard | prog_4e_p6_script.png, prog_4e_p6_tableau.png
+Ce programme affiche des couples de nombres $(x ; y)$ (« $\ast$ » signifie « multiplié par »).
+[IMAGE_1]
+?? Combien de couples le programme affiche-t-il ? Quelle est la première valeur de $x$ ? La dernière ?
+?? Exprimer $y$ en fonction de $x$.
+?? Calculer les valeurs de $y$ pour $x = -3$, $x = 0$ et $x = 2$.
+?? Compléter le tableau des $7$ couples affichés.
+?? Quelle est la plus petite valeur de $y$ ? Quelle symétrie observe-t-on dans le tableau ?
+?? On veut les valeurs de $x$ de $-3$ à $3$ avec un pas de $0{,}5$. Que faut-il modifier ?
+## Les couples
+E> La boucle est répétée $7$ fois ; $x$ part de $-3$ et augmente de $1$ à chaque tour (après l'affichage).
+R> $7$ couples, pour $x$ allant de $-3$ à $3$.
+S> $7$ ; de $-3$ à $3$
+## L'expression
+R> $y = 2x^2 - 3$
+E> « $2 \ast x \ast x - 3$ » signifie $2 \times x \times x - 3$.
+S> $y = 2x^2 - 3$
+## Trois valeurs
+E> $x = -3$ : $2 \times 9 - 3 = 15$ ; $x = 0$ : $-3$ ; $x = 2$ : $2 \times 4 - 3 = 5$.
+R> $15$, $-3$ et $5$.
+F> Calculer $(-3)^2 = -9$ : le carré d'un nombre négatif est positif.
+S> $15$ ; $-3$ ; $5$
+## Le tableau
+E> On calcule $2x^2 - 3$ pour $x = -3, -2, -1, 0, 1, 2, 3$.
+R> $y$ : $15$ ; $5$ ; $-1$ ; $-3$ ; $-1$ ; $5$ ; $15$.
+[IMAGE_2]
+S> $15$, $5$, $-1$, $-3$, $-1$, $5$, $15$
+## Minimum et symétrie
+E> $x^2 \geqslant 0$, donc $2x^2 - 3 \geqslant -3$ ; et $x$ et $-x$ ont le même carré.
+R> Le minimum est $-3$ (pour $x = 0$) ; les valeurs de $y$ sont symétriques : $x$ et $-x$ donnent le même $y$.
+A> Un programme peut construire un tableau de valeurs, comme un tableur, pour étudier une expression.
+S> $-3$ ; $y(-x) = y(x)$
+## Un pas de 0,5
+E> De $-3$ à $3$ par pas de $0{,}5$ : $\frac{3 - (-3)}{0{,}5} + 1 = 13$ valeurs.
+R> On remplace « ajouter $1$ à [x] » par « ajouter $0{,}5$ à [x] » et « répéter $7$ fois » par « répéter $13$ fois ».
+S> Ajouter $0{,}5$ ; répéter $13$ fois
+
+@@ Problème | 7. La somme de deux dés | hard | prog_4e_p7_script.png, prog_4e_p7_tableau.png
+On lance deux dés équilibrés et on s'intéresse à la somme des deux faces. Ce programme simule $1\,000$ lancers.
+[IMAGE_1]
+?? Quelles sont les sommes possibles ?
+?? Pourquoi ne peut-on pas remplacer la somme des deux tirages par « nombre aléatoire entre $2$ et $12$ » ?
+?? Avec un tableau à double entrée, calculer la probabilité d'obtenir une somme de $7$.
+?? Quelle est la probabilité d'obtenir une somme de $2$ ? De $12$ ?
+?? Environ combien de fois la somme $7$ devrait-elle apparaître en $1\,000$ lancers ?
+?? Une exécution affiche $0{,}158$. Est-ce compatible avec le calcul ? Comment obtenir une estimation plus précise ?
+## Les sommes possibles
+E> Le minimum est $1 + 1 = 2$, le maximum $6 + 6 = 12$.
+R> Tous les entiers de $2$ à $12$ ($11$ sommes).
+S> De $2$ à $12$
+## Pourquoi deux tirages
+E> « aléatoire entre $2$ et $12$ » rendrait les $11$ sommes équiprobables ($\frac{1}{11}$ chacune).
+R> Or les sommes ne sont pas équiprobables avec deux dés : $7$ s'obtient de $6$ façons, $2$ d'une seule.
+F> Croire que toutes les sommes ont la même chance : il faut simuler chaque dé séparément.
+S> Les sommes ne sont pas équiprobables
+## La somme 7
+E> Il y a $6 \times 6 = 36$ issues équiprobables ; $6$ donnent $7$ : $(1 ; 6)$, $(2 ; 5)$, $(3 ; 4)$, $(4 ; 3)$, $(5 ; 2)$, $(6 ; 1)$.
+R> $P(7) = \frac{6}{36} = \frac{1}{6}$
+[IMAGE_2]
+S> $\frac{1}{6}$
+## Les sommes 2 et 12
+E> Une seule issue pour chacune : $(1 ; 1)$ et $(6 ; 6)$.
+R> $P(2) = P(12) = \frac{1}{36}$
+S> $\frac{1}{36}$
+## Le nombre attendu de 7
+E> $1\,000 \times \frac{1}{6} \approx 166{,}7$
+R> Environ $167$ fois.
+S> $\approx 167$
+## Le résultat 0,158
+E> $0{,}158$ est proche de $\frac{1}{6} \approx 0{,}167$ : l'écart est dû au hasard (fluctuation).
+R> Oui, c'est compatible ; pour une estimation plus précise, on augmente le nombre de lancers simulés.
+A> Simulation (fréquence) et calcul (probabilité) se confirment l'un l'autre quand le nombre d'essais est grand.
+S> Oui ; plus de lancers

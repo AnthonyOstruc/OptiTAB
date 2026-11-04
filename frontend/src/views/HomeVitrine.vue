@@ -30,6 +30,7 @@ import {
   vitrineContact,
   GOOGLE_REVIEWS_URL
 } from '@/config/vitrineContent'
+import { ressourcesDeLaClasse } from '@/config/ressources'
 
 const { openModal } = useModalManager()
 
@@ -44,7 +45,7 @@ const scrollToId = (id) => {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
-const classeLink = (niveau) => ({ path: '/ressources-gratuites/cours', query: { niveau } })
+const classeLink = (niveau) => ressourcesDeLaClasse(niveau)
 
 const CYCLE_CLES = { Primaire: 'primaire', Collège: 'college', Lycée: 'lycee' }
 const classes = vitrineClasses.flatMap((cycle) =>

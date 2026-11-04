@@ -1,0 +1,73 @@
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+    <div style="background:#e8f4fd; border:2px solid #3498db; border-radius:8px; padding:15px; margin-bottom:20px;">
+        <p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🎯 Objectifs du chapitre :</strong> dériver une fonction composée, calculer une dérivée seconde, étudier la convexité d’une fonction, déterminer un point d’inflexion et utiliser la convexité pour établir des inégalités.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Rappels de Première</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;">• Tangente en $\displaystyle a$ : $\displaystyle y = f'(a)(x - a) + f(a)$.</p>
+            <p style="margin:6px 0 0 0;">• $\displaystyle (x^n)' = nx^{n-1}$ ; $\displaystyle \left(\frac{1}{x}\right)' = -\frac{1}{x^2}$ ; $\displaystyle (\sqrt{x})' = \frac{1}{2\sqrt{x}}$ ; $\displaystyle (e^x)' = e^x$ ; $\displaystyle (\sin x)' = \cos x$ ; $\displaystyle (\cos x)' = -\sin x$.</p>
+            <p style="margin:6px 0 0 0;">• $\displaystyle (uv)' = u'v + uv'$ ; $\displaystyle \left(\frac{u}{v}\right)' = \frac{u'v - uv'}{v^2}$ ; le signe de $\displaystyle f'$ donne les variations de $\displaystyle f$.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Dérivée d’une fonction composée</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Théorème :</strong> si $\displaystyle u$ est dérivable sur $\displaystyle I$ et $\displaystyle v$ dérivable sur un intervalle contenant $\displaystyle u(I)$, alors $\displaystyle v \circ u$ est dérivable sur $\displaystyle I$ et</p>
+            <div style="text-align:center; margin:10px 0 0 0;">$\displaystyle (v \circ u)'(x) = v'(u(x)) \times u'(x)$</div>
+        </div>
+        [IMAGE_1]
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Cas à connaître :</strong> $\displaystyle (e^u)' = u'e^u$ ; $\displaystyle (u^n)' = nu'u^{n-1}$ ; $\displaystyle (\sqrt{u})' = \frac{u'}{2\sqrt{u}}$ ; $\displaystyle \left(\frac{1}{u}\right)' = -\frac{u'}{u^2}$.
+        </div>
+        <p style="font-size:1em;"><strong>Exemples :</strong> $\displaystyle f(x) = e^{x^2 + 1}$ donne $\displaystyle f'(x) = 2x\,e^{x^2 + 1}$ ; $\displaystyle g(x) = (3x - 1)^5$ donne $\displaystyle g'(x) = 15(3x - 1)^4$ ; $\displaystyle h(x) = \sqrt{x^2 + 9}$ donne $\displaystyle h'(x) = \frac{x}{\sqrt{x^2 + 9}}$.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Dérivée seconde et convexité</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Définitions :</strong> la <strong>dérivée seconde</strong> $\displaystyle f''$ est la dérivée de $\displaystyle f'$. Une fonction est <strong>convexe</strong> sur $\displaystyle I$ si sa courbe est au-dessus de ses tangentes, <strong>concave</strong> si elle est en dessous.</p>
+            <p style="margin:6px 0 0 0;"><strong>Théorème :</strong> si $\displaystyle f$ est deux fois dérivable sur $\displaystyle I$ : $\displaystyle f$ convexe $\displaystyle \iff f'$ croissante $\displaystyle \iff f'' \ge 0$ sur $\displaystyle I$ (et de même concave $\displaystyle \iff f'' \le 0$).</p>
+        </div>
+        [IMAGE_2]
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Propriété (démonstration au programme) :</strong> si $\displaystyle f'$ est croissante sur $\displaystyle I$, la courbe de $\displaystyle f$ est au-dessus de chacune de ses tangentes.</p>
+            <p style="margin:6px 0 0 0;"><em>Preuve :</em> pour $\displaystyle a \in I$, on pose $\displaystyle g(x) = f(x) - f'(a)(x - a) - f(a)$. Alors $\displaystyle g'(x) = f'(x) - f'(a)$ est négatif pour $\displaystyle x \le a$ et positif pour $\displaystyle x \ge a$ ; $\displaystyle g$ admet donc un minimum en $\displaystyle a$, égal à $\displaystyle g(a) = 0$, d’où $\displaystyle g \ge 0$.</p>
+        </div>
+        <p style="font-size:1em;"><strong>Application :</strong> $\displaystyle \exp'' = \exp \gt 0$, donc l’exponentielle est convexe ; sa courbe est au-dessus de sa tangente en $\displaystyle 0$, d’où l’inégalité $\displaystyle e^x \ge 1 + x$ pour tout réel $\displaystyle x$.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Point d’inflexion</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; border-left:6px solid #3498db; padding:12px; margin:10px 0; border-radius:4px;">
+            <p style="margin:0;"><strong>Définition et propriété :</strong> un <strong>point d’inflexion</strong> est un point où la courbe traverse sa tangente ; la convexité y change. Si $\displaystyle f''$ s’annule <strong>en changeant de signe</strong> en $\displaystyle a$, le point d’abscisse $\displaystyle a$ est un point d’inflexion.</p>
+        </div>
+        [IMAGE_3]
+        <p style="font-size:1em;"><strong>Exemple :</strong> $\displaystyle f(x) = x^3 - 3x$ : $\displaystyle f'(x) = 3x^2 - 3$ et $\displaystyle f''(x) = 6x$, qui change de signe en $\displaystyle 0$. $\displaystyle f$ est concave sur $\displaystyle ]-\infty\,;0]$, convexe sur $\displaystyle [0\,;+\infty[$, et $\displaystyle I(0\,;0)$ est un point d’inflexion ; la tangente en $\displaystyle I$ a pour équation $\displaystyle y = -3x$.</p>
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong> $\displaystyle f''(a) = 0$ ne suffit pas : pour $\displaystyle f(x) = x^4$, $\displaystyle f''(0) = 0$ mais $\displaystyle f'' = 12x^2 \ge 0$ ne change pas de signe, et il n’y a pas de point d’inflexion.
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Une application : la courbe de Lorenz</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <p style="font-size:1em;">En économie, la courbe de Lorenz associe à $\displaystyle x$ % de la population la plus pauvre la part $\displaystyle L(x)$ des richesses qu’elle possède. C’est une fonction croissante et convexe, ici $\displaystyle L(x) = x^2$ (avec $\displaystyle x$ et $\displaystyle L(x)$ exprimés en proportions).</p>
+        [IMAGE_4]
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Lecture :</strong> plus la courbe est « creusée » sous la droite d’égalité $\displaystyle y = x$, plus la répartition est inégalitaire. Par exemple $\displaystyle L(0{,}5) = 0{,}25$ : la moitié la plus pauvre possède $\displaystyle 25\,\%$ des richesses.
+        </div>
+    </div>
+
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:8px; padding:15px; margin:20px 0 0 0;">
+        <p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>🏆 L’essentiel :</strong> $\displaystyle (v \circ u)' = (v' \circ u) \times u'$, d’où $\displaystyle (e^u)' = u'e^u$ et $\displaystyle (u^n)' = nu'u^{n-1}$ ; convexe $\displaystyle \iff$ courbe au-dessus de ses tangentes $\displaystyle \iff f'' \ge 0$ ; point d’inflexion là où $\displaystyle f''$ change de signe ; la convexité fournit des inégalités comme $\displaystyle e^x \ge 1 + x$. Fiche de synthèse dans l’onglet Fiches !</p>
+    </div>
+
+</div>

@@ -1,17 +1,23 @@
 import { ref } from 'vue'
 import apiClient from '@/api/client'
 import { useProgression } from './useProgression'
+import { useUserStore } from '@/stores/user'
 
 // La rubrique Quiz n'apparaît dans le menu que si au moins un quiz est publié
-// pour une matière de la classe de l'élève (vérifié une fois par session).
+// pour une matière de la classe de l'élève (vérifié une fois par classe).
 const disponible = ref(false)
 let verification = null
+let classeVerifiee = null
 
 export function useQuizDisponible() {
   const { charger } = useProgression()
+  const userStore = useUserStore()
 
   function verifier() {
-    if (verification) return verification
+    const classe = userStore.niveau_pays?.id ?? null
+    if (verification && classe === classeVerifiee) return verification
+    classeVerifiee = classe
+    disponible.value = false
     verification = (async () => {
       const progression = await charger()
       const matieres = [...new Set((progression?.chapitres || []).map((c) => c.matiere_id).filter(Boolean))]

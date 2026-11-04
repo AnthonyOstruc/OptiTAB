@@ -1,0 +1,2276 @@
+=== Découverte - Lire un script de tracé
+Id: 3713
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+On rappelle que l'orientation $90$ est vers la droite et que « tourner ↻ » fait tourner le lutin dans le sens des aiguilles d'une montre.
+
+[IMAGE_1]
+
+1. Que font les cinq premiers blocs, avant la boucle ?
+2. Combien de fois les blocs « avancer de 100 pas » et « tourner ↻ de 90 degrés » sont-ils exécutés ?
+3. Donner la position et l'orientation du lutin à la fin de chaque tour de boucle. Quelle figure est tracée ?
+4. Quelle longueur le stylo a-t-il tracée ?
+5. On remplace « tourner ↻ de 90 degrés » par « tourner ↺ de 90 degrés ». Quelle figure obtient-on ? Donner ses sommets.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Avant la boucle
+
+::: methode
+Un script s'exécute de haut en bas : on lit les blocs un par un.
+:::
+
+::: etape Les cinq premiers blocs
+- « quand le drapeau est cliqué » : le script démarre ;
+- « effacer tout » : les anciens dessins sont effacés ;
+- « aller à x : 0 y : 0 » : le lutin est placé au centre de la scène ;
+- « s'orienter à 90 » : il regarde vers la droite ;
+- « stylo en position d'écriture » : ses déplacements seront tracés.
+:::
+
+::: resultat
+Le lutin est prêt à dessiner : en $(0\ ;\ 0)$, tourné vers la droite, stylo baissé.
+:::
+
+## Question 2 : Le nombre d'exécutions
+
+::: etape
+Les deux blocs sont **à l'intérieur** de « répéter 4 fois » : ils sont exécutés à chaque tour.
+:::
+
+::: resultat
+Chacun des deux blocs est exécuté $4$ fois.
+:::
+
+## Question 3 : La figure tracée
+
+::: methode
+À chaque tour : « avancer » change la position (dans la direction où le lutin regarde), puis « tourner ↻ de 90 » ajoute $90$ à l'orientation.
+:::
+
+::: etape Tableau d'exécution, tour par tour
+| Tour | Position après « avancer » | Orientation après « tourner » |
+|---|---|---|
+| 1 | $(100\ ;\ 0)$ | $180$ (bas) |
+| 2 | $(100\ ;\ -100)$ | $-90$ (gauche) |
+| 3 | $(0\ ;\ -100)$ | $0$ (haut) |
+| 4 | $(0\ ;\ 0)$ | $90$ (droite) |
+:::
+
+[IMAGE_2]
+
+::: resultat
+Un carré de côté $100$, de sommets $(0\ ;\ 0)$, $(100\ ;\ 0)$, $(100\ ;\ -100)$ et $(0\ ;\ -100)$, situé **sous** l'axe des abscisses. Le lutin revient à son point de départ, orienté vers la droite.
+:::
+
+## Question 4 : La longueur tracée
+
+::: etape Calcul
+Le stylo trace $4$ segments de $100$ pas : $4 \times 100 = 400$.
+:::
+
+::: resultat
+Le stylo a tracé $400$ pas : c'est le périmètre du carré.
+:::
+
+## Question 5 : En tournant dans l'autre sens
+
+::: etape
+Après le premier côté, le lutin tourne d'un quart de tour dans le sens **inverse** des aiguilles d'une montre : il regarde vers le **haut** au lieu du bas. Il passe ensuite par $(100\ ;\ 100)$ et $(0\ ;\ 100)$.
+:::
+
+[IMAGE_3]
+
+::: resultat
+On obtient encore un carré de côté $100$, mais **au-dessus** de l'axe des abscisses (en vert ; l'ancien carré est en pointillés), de sommets $(0\ ;\ 0)$, $(100\ ;\ 0)$, $(100\ ;\ 100)$ et $(0\ ;\ 100)$.
+:::
+
+::: attention Erreur fréquente
+Penser que « tourner ↻ » et « tourner ↺ » donnent le même dessin : le sens de rotation décide de quel côté la figure est tracée.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Efface la scène, place le lutin en $(0\ ;\ 0)$, l'oriente vers la droite, baisse le stylo
+2. $4$ fois chacun
+3. $(100\ ;\ 0)$, $(100\ ;\ -100)$, $(0\ ;\ -100)$, $(0\ ;\ 0)$ : un carré de côté $100$
+4. $400$ pas
+5. Un carré de côté $100$ au-dessus de l'axe : $(0\ ;\ 0)$, $(100\ ;\ 0)$, $(100\ ;\ 100)$, $(0\ ;\ 100)$
+
+===
+
+=== Découverte - Exécuter un programme de calcul
+Id: 3714
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Voici un programme de calcul écrit avec Scratch. Le symbole « $\ast$ » est celui de la multiplication.
+
+[IMAGE_1]
+
+1. Quel nombre le lutin dit-il si l'on choisit $4$ ? Présenter un tableau d'exécution.
+2. Et si l'on choisit $-2$ ? Et $0$ ?
+3. Exprimer le résultat en fonction du nombre $x$ choisi.
+4. Quel nombre faut-il choisir pour que le lutin dise $10$ ?
+5. On remplace le bloc « mettre y à y − 5 » par « ajouter −5 à y ». Le programme dit-il la même chose ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Avec le nombre 4
+
+::: methode
+On suit les blocs dans l'ordre en notant, après chaque bloc, la valeur des variables.
+:::
+
+::: etape Tableau d'exécution
+| Bloc exécuté | x | y |
+|---|---|---|
+| mettre x à réponse | $4$ | — |
+| mettre y à x ∗ 3 | $4$ | $4 \times 3 = 12$ |
+| mettre y à y − 5 | $4$ | $12 - 5 = 7$ |
+:::
+
+::: resultat
+Le lutin dit $7$.
+:::
+
+## Question 2 : Avec −2 et avec 0
+
+::: etape Avec $-2$
+$y = -2 \times 3 = -6$, puis $y = -6 - 5 = -11$.
+:::
+
+::: etape Avec $0$
+$y = 0 \times 3 = 0$, puis $y = 0 - 5 = -5$.
+:::
+
+::: resultat
+Le lutin dit $-11$, puis $-5$.
+:::
+
+## Question 3 : L'expression
+
+::: methode
+On exécute le programme avec la lettre $x$ à la place d'un nombre.
+:::
+
+::: etape
+y vaut d'abord $3x$ ; on lui retire ensuite $5$.
+:::
+
+::: resultat
+Le résultat est $3x - 5$.
+:::
+
+## Question 4 : Pour obtenir 10
+
+::: etape On résout l'équation
+$$
+\begin{aligned}
+3x - 5 &= 10 \\
+3x &= 15 \\
+x &= 5
+\end{aligned}
+$$
+:::
+
+::: etape Vérification
+$5 \times 3 - 5 = 15 - 5 = 10$.
+:::
+
+::: resultat
+Il faut choisir $5$.
+:::
+
+## Question 5 : « mettre » ou « ajouter »
+
+::: etape
+« mettre y à y − 5 » remplace y par $y - 5$ ; « ajouter −5 à y » augmente y de $-5$, c'est-à-dire lui retire $5$ : les deux blocs font la même chose.
+:::
+
+[IMAGE_2]
+
+::: resultat
+Oui : le programme modifié (bloc en vert) dit toujours $3x - 5$.
+:::
+
+::: attention Erreur fréquente
+Écrire « mettre y à −5 » : on **remplacerait** y par $-5$ et le lutin dirait toujours $-5$, quel que soit le nombre choisi.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $7$
+2. $-11$ ; $-5$
+3. $3x - 5$
+4. $5$
+5. Oui, le résultat est le même
+
+===
+
+=== Découverte - Une boucle qui additionne
+Id: 3715
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+On étudie le script suivant, qui utilise deux variables : compteur et somme.
+
+[IMAGE_1]
+
+1. Que valent compteur et somme à la fin du premier tour de boucle ? Du deuxième ?
+2. Faire un tableau donnant compteur et somme à la fin de chacun des $5$ tours.
+3. Quel nombre le lutin dit-il ? Quel calcul le script a-t-il effectué ?
+4. Qu'afficherait-il avec « répéter 10 fois » ?
+5. Et avec « répéter 100 fois » ? On pourra regrouper les nombres par paires.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les deux premiers tours
+
+::: methode
+À chaque tour, on augmente d'abord compteur de $1$, **puis** on ajoute la nouvelle valeur de compteur à somme.
+:::
+
+::: etape Tour 1
+compteur passe de $0$ à $1$ ; somme passe de $0$ à $0 + 1 = 1$.
+:::
+
+::: etape Tour 2
+compteur passe à $2$ ; somme passe à $1 + 2 = 3$.
+:::
+
+::: resultat
+Fin du tour 1 : compteur $= 1$, somme $= 1$. Fin du tour 2 : compteur $= 2$, somme $= 3$.
+:::
+
+## Question 2 : Le tableau d'exécution
+
+::: etape Tableau
+| Tour | compteur | somme |
+|---|---|---|
+| départ | $0$ | $0$ |
+| 1 | $1$ | $0 + 1 = 1$ |
+| 2 | $2$ | $1 + 2 = 3$ |
+| 3 | $3$ | $3 + 3 = 6$ |
+| 4 | $4$ | $6 + 4 = 10$ |
+| 5 | $5$ | $10 + 5 = 15$ |
+:::
+
+::: resultat
+somme vaut $1$, $3$, $6$, $10$ puis $15$.
+:::
+
+## Question 3 : La valeur dite
+
+::: etape
+Le bloc « dire somme » est **après** la boucle : on lit la dernière valeur de somme.
+:::
+
+::: resultat
+Le lutin dit $15$ : le script a calculé $1 + 2 + 3 + 4 + 5$.
+:::
+
+## Question 4 : Avec 10 tours
+
+::: etape
+Le script calcule alors $1 + 2 + \ldots + 10$. On regroupe : $(1 + 10) + (2 + 9) + (3 + 8) + (4 + 7) + (5 + 6) = 5 \times 11$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+Avec « répéter 10 fois » (en vert), le lutin dirait $55$.
+:::
+
+## Question 5 : Avec 100 tours
+
+::: etape Paires de somme 101
+$1 + 100 = 101$, $2 + 99 = 101$, …, $50 + 51 = 101$ : il y a $50$ paires.
+:::
+
+::: resultat
+$$1 + 2 + \ldots + 100 = 50 \times 101 = 5\,050$$
+:::
+
+::: attention Erreur fréquente
+Inverser les deux blocs de la boucle : si l'on ajoute compteur à somme **avant** d'augmenter compteur, le script calcule $0 + 1 + 2 + 3 + 4 = 10$ au lieu de $15$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Tour 1 : $1$ et $1$ ; tour 2 : $2$ et $3$
+2. somme : $1$ ; $3$ ; $6$ ; $10$ ; $15$
+3. $15 = 1 + 2 + 3 + 4 + 5$
+4. $55$
+5. $5\,050$
+
+===
+
+=== Découverte - Un test « si … alors … sinon »
+Id: 3716
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Ce script demande un âge (un nombre entier) et affiche un message.
+
+[IMAGE_1]
+
+1. Qu'affiche le lutin si l'on répond $15$ ? Et $18$ ?
+2. Qu'affiche-t-il si l'on répond $17$ ? Expliquer.
+3. Scratch n'a pas de bloc « supérieur ou égal ». Avec le bloc « non », écrire une condition qui utilise le nombre $18$ et donne les mêmes messages.
+4. On veut afficher « Tarif senior » à partir de $65$ ans. Où ajouter une nouvelle condition ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Réponses 15 et 18
+
+::: methode
+On teste la condition « réponse > 17 » : si elle est vraie, on exécute la partie « alors » ; sinon, la partie « sinon ». Une seule des deux branches est exécutée.
+:::
+
+::: etape Réponse $15$
+$15 > 17$ est faux : on exécute la partie « sinon ».
+:::
+
+::: etape Réponse $18$
+$18 > 17$ est vrai : on exécute la partie « alors ».
+:::
+
+::: resultat
+$15$ : « Tu es mineur. » ; $18$ : « Tu es majeur. ».
+:::
+
+## Question 2 : La valeur frontière 17
+
+::: etape
+$17 > 17$ est **faux** : un nombre n'est pas strictement plus grand que lui-même.
+:::
+
+::: resultat
+Le lutin dit « Tu es mineur. », ce qui est juste : à $17$ ans, on est mineur.
+:::
+
+::: attention Erreur fréquente
+Lire « > » comme « supérieur ou égal ». Il faut toujours tester la valeur frontière d'une condition.
+:::
+
+## Question 3 : Une condition avec 18
+
+::: etape
+Pour des nombres entiers, « être plus grand que $17$ » revient à « ne pas être plus petit que $18$ ». La condition « réponse < 18 » est vraie pour les mineurs ; sa négation « non (réponse < 18) » est vraie pour les majeurs.
+:::
+
+[IMAGE_2]
+
+::: resultat
+On peut écrire « non (réponse < 18) » (en vert), c'est-à-dire « réponse $\geqslant 18$ ».
+:::
+
+## Question 4 : Le tarif senior
+
+::: methode
+Les seniors sont des majeurs : on ajoute un second test **dans la partie « alors »**.
+:::
+
+::: etape
+Dans « alors », on place « si réponse > 64 alors dire Tarif senior sinon dire Tu es majeur. ». On teste : $70$ donne « Tarif senior », $64$ donne « Tu es majeur. », $12$ donne « Tu es mineur. ».
+:::
+
+[IMAGE_3]
+
+::: resultat
+Un test imbriqué (en vert) dans la partie « alors » permet de distinguer trois cas.
+:::
+
+::: retenir
+Des tests placés les uns dans les autres permettent de distinguer plus de deux cas.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. « Tu es mineur. » ; « Tu es majeur. »
+2. « Tu es mineur. » car $17 > 17$ est faux
+3. « non (réponse < 18) »
+4. « si réponse > 64 alors … sinon … » dans la partie « alors »
+
+===
+
+=== Découverte - Tracer un triangle avec des coordonnées
+Id: 3717
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+Sur la scène, chaque point est repéré par ses coordonnées $(x\ ;\ y)$. On exécute le script suivant.
+
+[IMAGE_1]
+
+1. Le lutin part du point $A$, passe par le point $C$, puis par le point $B$. Donner les coordonnées de $A$, $C$ et $B$.
+2. Le déplacement jusqu'à $A$ est-il tracé ? Quelle figure le lutin dessine-t-il ?
+3. Calculer la longueur $AB$.
+4. Calculer $AC$, arrondie au dixième.
+5. Démontrer que le triangle $ABC$ est rectangle et isocèle en $C$.
+6. Calculer l'aire du triangle $ABC$.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les trois points
+
+::: etape
+« aller à x : −100 y : 0 » place le lutin en $A$ ; les blocs « aller à » suivants l'envoient en $C$, puis en $B$, puis le ramènent en $A$.
+:::
+
+::: resultat
+$A(-100\ ;\ 0)$, $C(0\ ;\ 100)$ et $B(100\ ;\ 0)$.
+:::
+
+## Question 2 : La figure
+
+::: etape
+Le stylo est mis en position d'écriture **après** l'arrivée en $A$ : ce premier déplacement n'est pas tracé. Ensuite, le lutin trace $[AC]$, $[CB]$ et $[BA]$, puis relève le stylo.
+:::
+
+[IMAGE_2]
+
+::: resultat
+Le déplacement jusqu'à $A$ n'est pas tracé ; le lutin dessine le triangle $ABC$.
+:::
+
+## Question 3 : La longueur AB
+
+::: etape
+$A$ et $B$ ont la même ordonnée : $[AB]$ est horizontal et $AB = 100 - (-100) = 200$.
+:::
+
+::: resultat
+$AB = 200$ pas.
+:::
+
+## Question 4 : La longueur AC
+
+::: methode
+Pour aller de $A$ à $C$, on se déplace de $100$ vers la droite et de $100$ vers le haut : on applique le théorème de Pythagore dans le triangle rectangle formé par ces deux déplacements.
+:::
+
+::: etape Calcul
+$$
+\begin{aligned}
+AC^2 &= 100^2 + 100^2 = 20\,000 \\
+AC &= \sqrt{20\,000} \approx 141{,}4
+\end{aligned}
+$$
+:::
+
+::: resultat
+$AC \approx 141{,}4$ pas.
+:::
+
+## Question 5 : Rectangle et isocèle
+
+::: etape Isocèle
+De $C$ à $B$, on se déplace aussi de $100$ horizontalement et de $100$ verticalement : $BC^2 = 20\,000$, donc $BC = AC$.
+:::
+
+::: etape Rectangle
+$AC^2 + BC^2 = 20\,000 + 20\,000 = 40\,000$ et $AB^2 = 200^2 = 40\,000$. Donc $AC^2 + BC^2 = AB^2$ : d'après la réciproque du théorème de Pythagore, le triangle est rectangle en $C$.
+:::
+
+::: resultat
+$ABC$ est rectangle et isocèle en $C$.
+:::
+
+## Question 6 : L'aire
+
+::: etape
+On prend la base $[AB]$ ; la hauteur issue de $C$ est la distance de $C$ à l'axe des abscisses, soit $100$.
+$$
+\begin{aligned}
+\mathcal{A} &= \frac{AB \times 100}{2} \\
+&= \frac{200 \times 100}{2} \\
+&= 10\,000
+\end{aligned}
+$$
+:::
+
+::: resultat
+L'aire du triangle $ABC$ est $10\,000$ pas².
+:::
+
+::: retenir
+La scène est un repère : les coordonnées, le théorème de Pythagore et les aires s'y utilisent comme en géométrie.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $A(-100\ ;\ 0)$, $C(0\ ;\ 100)$, $B(100\ ;\ 0)$
+2. Non ; le triangle $ABC$
+3. $AB = 200$
+4. $AC \approx 141{,}4$
+5. $AC = BC$ et $AC^2 + BC^2 = AB^2$
+6. $10\,000$
+
+===
+
+=== Découverte - Une boucle « répéter jusqu'à »
+Id: 3718
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+On étudie le script suivant (« $\ast$ » signifie « multiplié par »).
+
+[IMAGE_1]
+
+1. Que vaut n après le premier tour de boucle ? Après le deuxième ?
+2. Faire un tableau donnant n et étapes à la fin de chaque tour, jusqu'à l'arrêt de la boucle.
+3. Quel nombre le lutin dit-il ? Combien de tours ont été effectués ?
+4. On remplace la condition par « n > 1000 ». Que dit le lutin ? Après combien de tours ?
+5. Que se passerait-il si l'on oubliait le bloc « mettre n à n ∗ 2 » ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les premiers tours
+
+::: methode
+La condition « n > 100 » est testée **avant chaque tour** ; tant qu'elle est fausse, on fait un tour de plus.
+:::
+
+::: etape
+Au départ n vaut $1$ : $1 > 100$ est faux, on fait un tour et n devient $1 \times 2 = 2$. Puis $2 > 100$ est faux : n devient $4$.
+:::
+
+::: resultat
+n vaut $2$ après le premier tour et $4$ après le deuxième.
+:::
+
+## Question 2 : Le tableau d'exécution
+
+::: etape Tableau
+| Tour | n | étapes |
+|---|---|---|
+| départ | $1$ | $0$ |
+| 1 | $2$ | $1$ |
+| 2 | $4$ | $2$ |
+| 3 | $8$ | $3$ |
+| 4 | $16$ | $4$ |
+| 5 | $32$ | $5$ |
+| 6 | $64$ | $6$ |
+| 7 | $128$ | $7$ |
+:::
+
+::: etape Arrêt
+Avant le tour 7, $64 > 100$ est faux : on fait le tour. Avant un tour 8, $128 > 100$ est vrai : la boucle s'arrête.
+:::
+
+::: resultat
+La boucle s'arrête quand n vaut $128$, avec étapes $= 7$.
+:::
+
+## Question 3 : La valeur dite
+
+::: resultat
+Le lutin dit $128$, après $7$ tours.
+:::
+
+::: attention Erreur fréquente
+Répondre $100$ ou $64$ : la boucle s'arrête à la **première** valeur qui rend la condition vraie, ici $128$.
+:::
+
+## Question 4 : Avec la condition n > 1000
+
+::: etape On continue le tableau
+$128 \to 256 \to 512 \to 1\,024$ : ce sont les tours 8, 9 et 10. Comme $512 > 1\,000$ est faux et $1\,024 > 1\,000$ est vrai, la boucle s'arrête après le tour 10.
+:::
+
+::: resultat
+Le lutin dit $1\,024$, après $10$ tours.
+:::
+
+## Question 5 : L'oubli
+
+::: etape
+n resterait égal à $1$ et la condition « $1 > 100$ » serait toujours fausse.
+:::
+
+::: resultat
+La boucle ne s'arrêterait jamais : c'est une **boucle infinie**.
+:::
+
+::: retenir
+Dans une boucle « répéter jusqu'à », un bloc doit faire évoluer la variable testée vers la condition d'arrêt.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $2$, puis $4$
+2. n : $2$ ; $4$ ; $8$ ; $16$ ; $32$ ; $64$ ; $128$
+3. $128$ ; $7$ tours
+4. $1\,024$ ; $10$ tours
+5. Boucle infinie
+
+===
+
+=== Découverte - Orientation et déplacements du lutin
+Id: 3719
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+L'orientation $0$ est vers le haut, $90$ vers la droite, $180$ vers le bas et $-90$ vers la gauche. « tourner ↻ » fait tourner le lutin dans le sens des aiguilles d'une montre.
+
+[IMAGE_1]
+
+1. Vers où le lutin regarde-t-il après « s'orienter à 0 » ? Où est-il après « avancer de 80 pas » ?
+2. Quelle est son orientation après « tourner ↻ de 90 degrés » ? Où est-il après « avancer de 60 pas » ?
+3. Où est-il après « s'orienter à 180 » puis « avancer de 40 pas » ?
+4. Quelle est son orientation après le second « tourner ↻ de 90 degrés » ? Où le script se termine-t-il ?
+5. Calculer la longueur totale tracée et représenter le tracé dans un repère.
+6. On remplace « s'orienter à 180 » par « tourner ↻ de 90 degrés ». Le tracé change-t-il ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Vers le haut
+
+::: methode
+« s'orienter à » **impose** une orientation ; « tourner » **ajoute** un angle à l'orientation actuelle ; « avancer » déplace le lutin dans la direction où il regarde.
+:::
+
+::: etape
+Orientation $0$ : le lutin regarde vers le haut. En avançant de $80$, seule l'ordonnée change : $y = 0 + 80 = 80$.
+:::
+
+::: resultat
+Le lutin regarde vers le haut ; il est en $(0\ ;\ 80)$.
+:::
+
+## Question 2 : Un quart de tour à droite
+
+::: etape
+$0 + 90 = 90$ : le lutin regarde vers la droite. En avançant de $60$, l'abscisse augmente : $x = 0 + 60 = 60$.
+:::
+
+::: resultat
+Orientation $90$ ; le lutin est en $(60\ ;\ 80)$.
+:::
+
+## Question 3 : Vers le bas
+
+::: etape
+Orientation $180$ : le lutin regarde vers le bas. En avançant de $40$, l'ordonnée diminue : $y = 80 - 40 = 40$.
+:::
+
+::: resultat
+Le lutin est en $(60\ ;\ 40)$, tourné vers le bas.
+:::
+
+## Question 4 : La fin du script
+
+::: etape
+$180 + 90 = 270$, qui correspond à l'orientation $-90$ : le lutin regarde vers la gauche. En avançant de $20$, l'abscisse diminue : $x = 60 - 20 = 40$.
+:::
+
+::: resultat
+Orientation $-90$ (gauche) ; le script se termine en $(40\ ;\ 40)$.
+:::
+
+## Question 5 : Le tracé
+
+::: etape Les positions successives
+- $(0\ ;\ 0) \to (0\ ;\ 80)$ : segment de $80$ ;
+- $(0\ ;\ 80) \to (60\ ;\ 80)$ : segment de $60$ ;
+- $(60\ ;\ 80) \to (60\ ;\ 40)$ : segment de $40$ ;
+- $(60\ ;\ 40) \to (40\ ;\ 40)$ : segment de $20$.
+:::
+
+::: etape Longueur totale
+$$80 + 60 + 40 + 20 = 200$$
+:::
+
+[IMAGE_2]
+
+::: resultat
+Le tracé (en vert) mesure $200$ pas ; la flèche orange montre le lutin final, tourné vers la gauche.
+:::
+
+## Question 6 : « s'orienter » ou « tourner »
+
+::: etape
+Juste avant ce bloc, le lutin est orienté à $90$. « tourner ↻ de 90 degrés » donne $90 + 90 = 180$ : la même orientation que « s'orienter à 180 ».
+:::
+
+::: resultat
+Le tracé ne change pas. Mais ce n'est vrai **qu'ici** : « tourner » dépend de l'orientation de départ, « s'orienter » non.
+:::
+
+::: attention Erreur fréquente
+Confondre « s'orienter à 90 » (regarder vers la droite) et « tourner de 90 degrés » (faire un quart de tour à partir de l'orientation actuelle).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Vers le haut ; $(0\ ;\ 80)$
+2. $90$ ; $(60\ ;\ 80)$
+3. $(60\ ;\ 40)$
+4. $-90$ ; $(40\ ;\ 40)$
+5. $200$ pas
+6. Non (ici, $90 + 90 = 180$)
+
+===
+
+=== Entraînement - Un bloc personnalisé « polygone »
+Id: 3720
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On a créé un bloc personnalisé « polygone » qui a deux paramètres : le nombre n de côtés et la longueur côté d'un côté. Le symbole « / » est celui de la division.
+
+[IMAGE_1]
+
+1. Que dessine le script principal ? De quel angle le lutin tourne-t-il à chaque sommet ?
+2. De quel angle tourne-t-il avec « polygone 6 70 » ? Et avec « polygone 8 55 » ?
+3. Calculer la longueur tracée par « polygone 5 80 ».
+4. De combien de degrés le lutin a-t-il tourné en tout, quel que soit n ? Dans quelle orientation finit-il ?
+5. Que dessine « polygone 36 10 » ? Quelle longueur est tracée ?
+6. Quelle est la mesure d'un angle intérieur du pentagone régulier ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Le script principal
+
+::: methode
+À l'appel « polygone 5 80 », le paramètre n prend la valeur $5$ et le paramètre côté la valeur $80$ : on exécute la définition avec ces valeurs.
+:::
+
+::: etape
+Le lutin répète $5$ fois « avancer de $80$ ; tourner ↺ de $\dfrac{360}{5}$ degrés », avec $\dfrac{360}{5} = 72$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+Un pentagone régulier de côté $80$ (en vert) ; le lutin tourne de $72^\circ$ à chaque sommet.
+:::
+
+## Question 2 : Hexagone et octogone
+
+::: etape Calculs
+$\dfrac{360}{6} = 60$ et $\dfrac{360}{8} = 45$.
+:::
+
+::: resultat
+$60^\circ$ pour l'hexagone, $45^\circ$ pour l'octogone.
+:::
+
+## Question 3 : La longueur tracée
+
+::: etape
+$5$ côtés de $80$ : $5 \times 80 = 400$.
+:::
+
+::: resultat
+$400$ pas (le périmètre du pentagone).
+:::
+
+## Question 4 : L'angle total
+
+::: etape
+$n$ rotations de $\dfrac{360}{n}$ degrés : $n \times \dfrac{360}{n} = 360$.
+:::
+
+::: resultat
+$360^\circ$ : un tour complet. Le lutin revient à son point de départ dans son orientation de départ, $90$.
+:::
+
+## Question 5 : Trente-six côtés
+
+::: etape
+$36$ côtés de $10$ pas ; à chaque sommet, le lutin tourne de $\dfrac{360}{36} = 10^\circ$ seulement.
+:::
+
+[IMAGE_3]
+
+::: resultat
+Un polygone régulier à $36$ côtés, qui ressemble à un cercle ; longueur tracée $36 \times 10 = 360$ pas.
+:::
+
+## Question 6 : L'angle intérieur
+
+::: etape
+Le lutin tourne de l'angle **extérieur** ($72^\circ$) ; l'angle intérieur et l'angle extérieur forment un angle plat.
+$$180^\circ - 72^\circ = 108^\circ$$
+:::
+
+::: resultat
+Un angle intérieur du pentagone régulier mesure $108^\circ$.
+:::
+
+::: attention Erreur fréquente
+Confondre l'angle dont tourne le lutin ($72^\circ$) avec l'angle du polygone ($108^\circ$).
+:::
+
+::: retenir
+Un bloc personnalisé évite de réécrire les mêmes blocs : on l'appelle avec des valeurs différentes de ses paramètres.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Un pentagone régulier de côté $80$ ; $72^\circ$
+2. $60^\circ$ ; $45^\circ$
+3. $400$ pas
+4. $360^\circ$ ; orientation $90$
+5. Presque un cercle ; $360$ pas
+6. $108^\circ$
+
+===
+
+=== Entraînement - Une étoile à cinq branches
+Id: 3721
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On exécute le script suivant.
+
+[IMAGE_1]
+
+1. Combien de segments le lutin trace-t-il ? Quelle est la longueur totale tracée ?
+2. De combien de degrés le lutin a-t-il tourné en tout ? Combien de tours complets cela représente-t-il ?
+3. Pourquoi le lutin revient-il à son point de départ, dans la même orientation ?
+4. Quelle figure est dessinée ?
+5. Quelle est la mesure de l'angle à chaque pointe de la figure ?
+6. Que dessinerait le script avec « tourner ↻ de 72 degrés » ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Segments et longueur
+
+::: etape
+La boucle fait $5$ tours ; à chaque tour, le lutin trace un segment de $150$ pas : $5 \times 150 = 750$.
+:::
+
+::: resultat
+$5$ segments ; longueur totale $750$ pas.
+:::
+
+## Question 2 : L'angle total
+
+::: etape
+$5$ rotations de $144^\circ$ : $5 \times 144 = 720$ et $720 = 2 \times 360$.
+:::
+
+::: resultat
+$720^\circ$, soit $2$ tours complets.
+:::
+
+## Question 3 : Le retour au départ
+
+::: etape
+L'angle total est un multiple de $360^\circ$ : l'orientation finale est la même qu'au départ ($90$). De plus, les $5$ segments de même longueur se referment : le lutin revient en $(-75\ ;\ 20)$.
+:::
+
+::: resultat
+Le lutin a fait exactement $2$ tours sur lui-même : le tracé se referme.
+:::
+
+## Question 4 : La figure
+
+[IMAGE_2]
+
+::: resultat
+Une étoile à cinq branches (en vert) : les segments se croisent car le lutin tourne beaucoup ($144^\circ$) à chaque pointe.
+:::
+
+## Question 5 : L'angle des pointes
+
+::: etape
+À chaque pointe, le lutin fait presque demi-tour : il tourne de $144^\circ$. L'angle de la pointe est le supplémentaire de cette rotation :
+$$180^\circ - 144^\circ = 36^\circ$$
+:::
+
+::: resultat
+Chaque pointe mesure $36^\circ$.
+:::
+
+::: attention Erreur fréquente
+Répondre $144^\circ$ : c'est l'angle dont tourne le lutin, pas l'angle de la pointe.
+:::
+
+## Question 6 : Avec 72 degrés
+
+::: etape
+$\dfrac{360}{5} = 72$ : on retrouve la règle du polygone régulier à $5$ côtés.
+:::
+
+::: resultat
+Un pentagone régulier de côté $150$ (angle total $5 \times 72 = 360^\circ$, un seul tour).
+:::
+
+::: retenir
+Un tracé de lutin se referme quand l'angle total est un multiple de $360^\circ$ (et que les côtés se compensent).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $5$ segments ; $750$ pas
+2. $720^\circ$ ; $2$ tours
+3. $720 = 2 \times 360$
+4. Une étoile à cinq branches
+5. $36^\circ$
+6. Un pentagone régulier de côté $150$
+
+===
+
+=== Entraînement - Une frise de carrés (boucles imbriquées)
+Id: 3722
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Ce script utilise deux boucles, l'une dans l'autre. Le lutin part de $(-200\ ;\ 0)$, tourné vers la droite.
+
+[IMAGE_1]
+
+1. Que dessine la boucle intérieure « répéter 4 fois » ? Où est le lutin à la fin de cette boucle ?
+2. Combien de carrés le lutin dessine-t-il ?
+3. Combien de fois le bloc « avancer de 30 pas » est-il exécuté en tout ? Quelle longueur le stylo trace-t-il ?
+4. Quelle est l'abscisse du lutin à la fin du programme ? Quel est l'espace entre deux carrés voisins ?
+5. Pourquoi faut-il « relever le stylo » avant « avancer de 60 pas » ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : La boucle intérieure
+
+::: etape
+Elle répète $4$ fois « avancer de $30$ ; tourner ↺ de $90$ degrés » : c'est un carré de côté $30$, tracé au-dessus de l'axe. Après $4 \times 90^\circ = 360^\circ$, le lutin est revenu à son point de départ, tourné vers la droite.
+:::
+
+::: resultat
+Un carré de côté $30$ ; le lutin revient au coin d'où il est parti.
+:::
+
+## Question 2 : Le nombre de carrés
+
+::: etape
+La boucle extérieure est répétée $6$ fois et chacun de ses tours exécute toute la boucle intérieure.
+:::
+
+[IMAGE_2]
+
+::: resultat
+Le lutin dessine $6$ carrés de côté $30$.
+:::
+
+## Question 3 : Nombre d'exécutions et longueur
+
+::: methode
+Pour des boucles imbriquées, on **multiplie** les nombres de tours.
+:::
+
+::: etape
+$6 \times 4 = 24$ exécutions de « avancer de 30 pas » ; le déplacement de $60$ pas se fait stylo relevé. Longueur tracée : $24 \times 30 = 720$.
+:::
+
+::: resultat
+$24$ fois ; le stylo trace $720$ pas.
+:::
+
+::: attention Erreur fréquente
+Additionner $6 + 4 = 10$ : la boucle intérieure est entièrement exécutée à **chaque** tour de la boucle extérieure.
+:::
+
+## Question 4 : Position finale et espaces
+
+::: etape
+À chaque tour de la grande boucle, le lutin avance de $60$ vers la droite : $x = -200 + 6 \times 60 = -200 + 360 = 160$. Les carrés commencent tous les $60$ pas et mesurent $30$ : il reste $60 - 30 = 30$ pas entre deux carrés.
+:::
+
+::: resultat
+Le lutin finit en $(160\ ;\ 0)$ ; deux carrés voisins sont séparés de $30$ pas.
+:::
+
+## Question 5 : Relever le stylo
+
+::: etape
+Sans ce bloc, le déplacement de $60$ pas serait tracé : un trait relierait les carrés, et la longueur tracée passerait à $720 + 6 \times 60 = 1\,080$ pas.
+:::
+
+::: resultat
+Pour ne pas tracer de trait entre les carrés ; le stylo est rebaissé au début du tour suivant.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Un carré de côté $30$ ; retour au point de départ
+2. $6$ carrés
+3. $24$ fois ; $720$ pas
+4. $x = 160$ ; $30$ pas
+5. Pour ne pas relier les carrés par un trait
+
+===
+
+=== Entraînement - Comparer deux programmes de calcul
+Id: 3723
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+On compare deux programmes de calcul (« $\ast$ » signifie « multiplié par » ; les calculs entre parenthèses sont faits en premier).
+
+[IMAGE_1]
+
+1. Que dit le programme A si l'on choisit $5$ ? Et le programme B ?
+2. Comparer les deux programmes avec le nombre $-4$.
+3. Démontrer que les deux programmes disent toujours le même nombre.
+4. Un programme C calcule $x \times x + 6$. Avec $2$, dit-il la même chose que A ?
+5. Les programmes A et C sont-ils équivalents ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Avec 5
+
+::: etape Programme A
+$(5 + 3) \times 2 = 8 \times 2 = 16$.
+:::
+
+::: etape Programme B
+$2 \times 5 + 6 = 10 + 6 = 16$.
+:::
+
+::: resultat
+Les deux programmes disent $16$.
+:::
+
+## Question 2 : Avec −4
+
+::: etape
+A : $(-4 + 3) \times 2 = -1 \times 2 = -2$ ; B : $2 \times (-4) + 6 = -8 + 6 = -2$.
+:::
+
+::: resultat
+Les deux programmes disent $-2$.
+:::
+
+## Question 3 : La démonstration
+
+::: methode
+Des essais ne prouvent rien pour **tous** les nombres : on traduit chaque programme par une expression avec la lettre $x$, puis on compare.
+:::
+
+::: etape Programme A (on développe)
+$$(x + 3) \times 2 = 2x + 6$$
+:::
+
+::: etape Programme B
+$$2 \times x + 6 = 2x + 6$$
+:::
+
+::: resultat
+Les deux expressions sont égales pour tout nombre $x$ : les programmes A et B disent toujours le même nombre.
+:::
+
+## Question 4 : Le programme C avec 2
+
+::: etape
+C : $2 \times 2 + 6 = 10$ ; A : $(2 + 3) \times 2 = 10$.
+:::
+
+::: resultat
+Oui, avec $2$ les deux programmes disent $10$.
+:::
+
+## Question 5 : A et C
+
+::: etape Un contre-exemple
+Avec $1$ : C donne $1 \times 1 + 6 = 7$ et A donne $(1 + 3) \times 2 = 8$.
+:::
+
+::: resultat
+Non : un seul contre-exemple suffit à prouver que A et C ne sont pas équivalents.
+:::
+
+::: attention Erreur fréquente
+Conclure que deux programmes sont équivalents parce qu'ils donnent le même résultat pour une valeur (ici $2$).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $16$ et $16$
+2. $-2$ et $-2$
+3. $(x + 3) \times 2 = 2x + 6$
+4. Oui, $10$
+5. Non (avec $1$ : $7 \neq 8$)
+
+===
+
+=== Entraînement - Piloter le lutin au clavier
+Id: 3724
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Un lutin possède les cinq scripts suivants. Chaque script démarre quand l'événement de son chapeau se produit.
+
+[IMAGE_1]
+
+1. Que se passe-t-il quand on clique sur le drapeau vert ?
+2. On clique sur le drapeau, puis on appuie sur : flèche droite, flèche droite, flèche haut, flèche haut, flèche gauche. Donner la position du lutin après chaque appui.
+3. Représenter le tracé obtenu et calculer sa longueur.
+4. Partant de $(0\ ;\ 0)$, quelle suite de touches la plus courte amène le lutin en $(60\ ;\ 40)$ ? Quelle est la distance « à vol d'oiseau » entre ces deux points, au dixième ?
+5. Écrire un sixième script pour que la flèche bas fasse descendre le lutin de $20$.
+6. On clique sur le drapeau, puis on appuie sur : flèche droite, espace, flèche haut, flèche droite. Qu'est-ce qui est tracé ? Où le lutin finit-il ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Le drapeau vert
+
+::: etape
+Seul le script 1 commence par « quand le drapeau est cliqué » : il efface la scène, place le lutin en $(0\ ;\ 0)$ et baisse le stylo.
+:::
+
+::: resultat
+Le lutin est au centre de la scène, prêt à tracer.
+:::
+
+## Question 2 : Les positions
+
+::: methode
+Chaque appui sur une touche déclenche le script correspondant : « ajouter 20 à x » déplace de $20$ vers la droite, « ajouter 20 à y » de $20$ vers le haut, « ajouter −20 à x » de $20$ vers la gauche.
+:::
+
+::: etape Position après chaque appui
+- flèche droite : $(20\ ;\ 0)$ ;
+- flèche droite : $(40\ ;\ 0)$ ;
+- flèche haut : $(40\ ;\ 20)$ ;
+- flèche haut : $(40\ ;\ 40)$ ;
+- flèche gauche : $(20\ ;\ 40)$.
+:::
+
+::: resultat
+Le lutin finit en $(20\ ;\ 40)$.
+:::
+
+## Question 3 : Le tracé
+
+[IMAGE_2]
+
+::: etape Longueur
+Cinq déplacements de $20$, tous tracés : $5 \times 20 = 100$.
+:::
+
+::: resultat
+Une ligne brisée (en vert) de longueur $100$ pas.
+:::
+
+## Question 4 : Aller en (60 ; 40)
+
+::: etape La suite la plus courte
+Il faut $60$ vers la droite, soit $3$ appuis sur la flèche droite, et $40$ vers le haut, soit $2$ appuis sur la flèche haut : $5$ touches au minimum (dans n'importe quel ordre). Le stylo trace alors $60 + 40 = 100$ pas.
+:::
+
+::: etape À vol d'oiseau (théorème de Pythagore)
+$$
+\begin{aligned}
+d^2 &= 60^2 + 40^2 \\
+&= 3\,600 + 1\,600 \\
+&= 5\,200 \\
+d &= \sqrt{5\,200} \approx 72{,}1
+\end{aligned}
+$$
+:::
+
+::: resultat
+$3$ fois flèche droite et $2$ fois flèche haut ; distance à vol d'oiseau $\approx 72{,}1$ pas.
+:::
+
+## Question 5 : La flèche bas
+
+::: etape
+Descendre, c'est diminuer l'ordonnée : on ajoute $-20$ à y.
+:::
+
+[IMAGE_3]
+
+::: resultat
+« quand la touche flèche bas est pressée », puis « ajouter −20 à y » (en vert).
+:::
+
+## Question 6 : La touche espace
+
+::: etape
+Après la flèche droite, le segment de $(0\ ;\ 0)$ à $(20\ ;\ 0)$ est tracé. La touche espace **relève le stylo** : les déplacements suivants, vers $(20\ ;\ 20)$ puis $(40\ ;\ 20)$, ne sont pas tracés (pointillés gris).
+:::
+
+[IMAGE_4]
+
+::: resultat
+Seul le segment de $(0\ ;\ 0)$ à $(20\ ;\ 0)$ est tracé ; le lutin finit en $(40\ ;\ 20)$.
+:::
+
+::: attention Erreur fréquente
+Croire que tous les scripts s'exécutent au clic sur le drapeau : un script ne démarre que lorsque **son** événement se produit.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Scène effacée, lutin en $(0\ ;\ 0)$, stylo baissé
+2. $(20\ ;\ 0)$ ; $(40\ ;\ 0)$ ; $(40\ ;\ 20)$ ; $(40\ ;\ 40)$ ; $(20\ ;\ 40)$
+3. Longueur $100$ pas
+4. $3$ × flèche droite, $2$ × flèche haut ; $\approx 72{,}1$ pas
+5. « quand la touche flèche bas est pressée » puis « ajouter −20 à y »
+6. Seul le segment $(0\ ;\ 0)$ – $(20\ ;\ 0)$ ; fin en $(40\ ;\ 20)$
+
+===
+
+=== Entraînement - Déboguer un script de tracé
+Id: 3725
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Maël veut dessiner un triangle équilatéral de côté $100$. Il a écrit ce script, mais rien ne s'affiche.
+
+[IMAGE_1]
+
+1. Pourquoi rien n'est-il dessiné ?
+2. Maël ajoute le bloc manquant juste avant la boucle. Que dessine alors son script ? La figure est-elle fermée ?
+3. Combien de fois faut-il répéter pour un triangle ?
+4. De quel angle le lutin doit-il tourner à chaque sommet ? Pourquoi pas $60^\circ$ ?
+5. Écrire le script corrigé, avec un bloc qui efface les anciens dessins à chaque lancement.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Rien n'est dessiné
+
+::: etape
+Le script ne contient pas le bloc « stylo en position d'écriture » : le lutin se déplace sans laisser de trace.
+:::
+
+::: resultat
+Le stylo n'est pas en position d'écriture.
+:::
+
+::: attention Erreur fréquente
+Chercher l'erreur dans les nombres alors qu'il manque un bloc : on teste d'abord, puis on corrige **une** erreur à la fois.
+:::
+
+## Question 2 : Le dessin obtenu
+
+::: etape
+Avec le stylo baissé, le lutin trace $4$ segments de $100$ en tournant de $60^\circ$ à chaque fois : ce sont $4$ côtés consécutifs d'un hexagone régulier ($\dfrac{360}{6} = 60$). Il a tourné de $4 \times 60^\circ = 240^\circ$ seulement, moins qu'un tour.
+:::
+
+[IMAGE_2]
+
+::: resultat
+Une ligne brisée de $4$ côtés d'hexagone : la figure n'est pas fermée.
+:::
+
+## Question 3 : Le nombre de répétitions
+
+::: resultat
+Un triangle a $3$ côtés : il faut « répéter 3 fois ».
+:::
+
+## Question 4 : L'angle
+
+::: methode
+Le lutin tourne de l'angle **extérieur** : en tout, il doit faire un tour complet, soit $360^\circ$.
+:::
+
+::: etape
+$\dfrac{360}{3} = 120$, ou encore $180^\circ - 60^\circ = 120^\circ$ : $60^\circ$ est l'angle **intérieur** du triangle équilatéral.
+:::
+
+::: resultat
+Il faut tourner de $120^\circ$.
+:::
+
+## Question 5 : Le script corrigé
+
+[IMAGE_3]
+
+::: etape On teste le script corrigé
+Le lutin passe par $(100\ ;\ 0)$, puis par un troisième sommet, et revient en $(0\ ;\ 0)$ tourné vers la droite : la figure est fermée.
+:::
+
+[IMAGE_4]
+
+::: resultat
+On ajoute « effacer tout » et « stylo en position d'écriture », on répète $3$ fois et on tourne de $120$ degrés (en vert).
+:::
+
+::: retenir
+Déboguer, c'est tester, observer ce qui se passe, puis corriger une erreur à la fois.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Le stylo n'est pas baissé
+2. $4$ côtés d'un hexagone ; non fermée
+3. $3$ fois
+4. $120^\circ$ (angle extérieur)
+5. « effacer tout », « stylo en position d'écriture », « répéter 3 fois », « tourner ↻ de 120 degrés »
+
+===
+
+=== Entraînement - Des lutins qui se parlent
+Id: 3726
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Un chat et un chien dialoguent grâce à des messages. Voici leurs scripts.
+
+[IMAGE_1]
+
+1. Quel script démarre quand on clique sur le drapeau vert ? Que fait-il ?
+2. Quand le chien commence-t-il à parler ? Pourquoi ?
+3. Dans quel ordre les répliques s'affichent-elles ?
+4. Combien de temps dure toute la scène, environ ?
+5. Dans le script 1 du chat, on place « envoyer à tous à toi » **avant** « dire Bonjour ! pendant 2 secondes ». Que change-t-on ?
+6. À quoi servent les messages dans un programme à plusieurs lutins ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Le drapeau vert
+
+::: etape
+Seul le script 1 du chat commence par « quand le drapeau est cliqué » ; les deux autres attendent un message.
+:::
+
+::: resultat
+Le script 1 du chat : le chat dit « Bonjour ! » pendant $2$ secondes, puis envoie le message « à toi ».
+:::
+
+## Question 2 : Le chien
+
+::: etape
+Le script du chien démarre « quand je reçois à toi » ; ce message n'est envoyé qu'**après** les $2$ secondes du « Bonjour ! ».
+:::
+
+::: resultat
+Le chien parle au bout de $2$ secondes, quand il reçoit le message « à toi ».
+:::
+
+## Question 3 : L'ordre des répliques
+
+::: etape Le déroulement
+- de $0$ à $2$ s : le chat dit « Bonjour ! », puis envoie « à toi » ;
+- de $2$ à $4$ s : le chien dit « Salut ! », puis envoie « fin » ;
+- de $4$ à $6$ s : le script 2 du chat, déclenché par « fin », dit « Au revoir ! ».
+:::
+
+::: resultat
+« Bonjour ! » (chat), puis « Salut ! » (chien), puis « Au revoir ! » (chat).
+:::
+
+## Question 4 : La durée
+
+::: etape
+Trois répliques de $2$ secondes, l'une après l'autre : $3 \times 2 = 6$.
+:::
+
+::: resultat
+La scène dure environ $6$ secondes.
+:::
+
+## Question 5 : Le message envoyé trop tôt
+
+::: etape
+Le message « à toi » part tout de suite : le chien répond pendant que le chat dit encore « Bonjour ! ». Le chien envoie « fin » au bout de $2$ s, et le chat dit alors « Au revoir ! » jusqu'à $4$ s.
+:::
+
+::: resultat
+« Bonjour ! » et « Salut ! » s'affichent en même temps ; la scène ne dure plus qu'environ $4$ secondes.
+:::
+
+::: attention Erreur fréquente
+Croire que l'ordre des blocs n'a pas d'importance : « envoyer à tous » déclenche **immédiatement** les scripts qui attendent ce message.
+:::
+
+## Question 6 : Le rôle des messages
+
+::: resultat
+Les messages synchronisent les lutins : un script attend le signal envoyé par un autre, ce qui fixe l'ordre des actions.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Le script 1 du chat : « Bonjour ! » pendant 2 s, puis envoi de « à toi »
+2. Au bout de 2 s, à la réception de « à toi »
+3. Bonjour ! ; Salut ! ; Au revoir !
+4. Environ 6 s
+5. Bonjour ! et Salut ! en même temps ; environ 4 s
+6. Synchroniser les lutins
+
+===
+
+=== Problème - Le nombre mystère
+Id: 3727
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Ce jeu choisit au hasard un nombre mystère entier entre $1$ et $100$ ; le joueur propose des nombres jusqu'à le trouver.
+
+[IMAGE_1]
+
+1. À quoi sert la variable essais ?
+2. Le nombre mystère est $37$. Le joueur propose $50$, puis $25$, puis $37$. Quels messages s'affichent ? Combien vaut essais à la fin ?
+3. Stratégie « par moitié » : on propose toujours le milieu des nombres encore possibles (arrondi à l'unité inférieure). Le nombre mystère est $81$. Quelles propositions fait-on ? Combien d'essais faut-il ?
+4. Avec cette stratégie, combien d'essais faut-il au maximum pour un nombre entre $1$ et $100$ ? Justifier.
+5. Expliquer ce résultat avec les puissances de $2$.
+6. Combien d'essais faudrait-il au maximum pour un nombre entre $1$ et $1\,000$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : La variable essais
+
+::: etape
+essais est mise à $0$ au début, puis on lui ajoute $1$ à chaque passage dans la boucle, c'est-à-dire à chaque proposition.
+:::
+
+::: resultat
+essais compte le nombre de propositions du joueur.
+:::
+
+## Question 2 : La partie avec 37
+
+::: etape Tableau d'exécution
+| Proposition | essais | Message |
+|---|---|---|
+| $50$ | $1$ | Trop grand ! |
+| $25$ | $2$ | Trop petit ! |
+| $37$ | $3$ | aucun |
+:::
+
+::: etape Les tests
+- $50 > 37$ : seul le second test est vrai, « Trop grand ! » ;
+- $25 < 37$ : seul le premier test est vrai, « Trop petit ! » ;
+- $37$ : ni $37 < 37$ ni $37 > 37$ ne sont vrais, aucun message.
+:::
+
+::: etape Fin de la boucle
+Avant un nouveau tour, la condition « réponse = mystère » est vraie : la boucle s'arrête et le lutin dit « Gagné ! ».
+:::
+
+::: resultat
+« Trop grand ! », « Trop petit ! », puis « Gagné ! » ; essais vaut $3$.
+:::
+
+## Question 3 : La stratégie avec 81
+
+::: methode
+À chaque réponse, on élimine la moitié des nombres et l'on propose le milieu de ceux qui restent.
+:::
+
+::: etape Les propositions
+- nombres possibles $1$ à $100$ : on propose $50$, « Trop petit ! » ;
+- possibles $51$ à $100$ : on propose $75$, « Trop petit ! » ;
+- possibles $76$ à $100$ : on propose $88$, « Trop grand ! » ;
+- possibles $76$ à $87$ : on propose $81$, « Gagné ! ».
+:::
+
+::: resultat
+$50$, $75$, $88$ puis $81$ : $4$ essais.
+:::
+
+## Question 4 : Le maximum d'essais
+
+::: etape
+Après chaque proposition fausse, il reste au plus la moitié des nombres possibles :
+$$100 \to 50 \to 25 \to 12 \to 6 \to 3 \to 1$$
+Après $6$ propositions fausses, il ne reste plus qu'un nombre possible : la $7$e proposition est la bonne.
+:::
+
+::: resultat
+Au maximum $7$ essais (le script, joué pour les $100$ nombres mystères possibles, le confirme).
+:::
+
+::: attention Erreur fréquente
+Penser qu'il faut jusqu'à $100$ essais : c'est vrai si l'on essaie les nombres un par un, pas avec la stratégie par moitié.
+:::
+
+## Question 5 : Les puissances de 2
+
+::: etape
+Avec $k$ essais, on peut départager jusqu'à $2^k$ nombres. Or $2^6 = 64 < 100$ et $2^7 = 128 \geqslant 100$.
+:::
+
+::: resultat
+Il faut le plus petit $k$ tel que $2^k \geqslant 100$ : $k = 7$.
+:::
+
+## Question 6 : Entre 1 et 1 000
+
+::: etape
+$2^9 = 512 < 1\,000$ et $2^{10} = 1\,024 \geqslant 1\,000$.
+:::
+
+::: resultat
+Au maximum $10$ essais.
+:::
+
+::: retenir
+Cette méthode s'appelle la **dichotomie** : elle permet de chercher très vite dans une grande liste rangée dans l'ordre.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Compter les propositions
+2. Trop grand !, Trop petit !, Gagné ! ; essais $= 3$
+3. $50$ ; $75$ ; $88$ ; $81$ : $4$ essais
+4. $7$ essais
+5. $2^6 = 64 < 100 \leqslant 2^7 = 128$
+6. $10$ essais
+
+===
+
+=== Problème - Une spirale
+Id: 3728
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+On exécute le script suivant. « tourner ↺ » fait tourner le lutin dans le sens inverse des aiguilles d'une montre.
+
+[IMAGE_1]
+
+1. Quelles sont les longueurs des trois premiers segments tracés ?
+2. Quelle est la longueur du dernier segment ? Que vaut la variable longueur à la fin du programme ?
+3. Calculer la longueur totale tracée.
+4. De combien de degrés le lutin a-t-il tourné en tout ? Dans quelle direction regarde-t-il à la fin ?
+5. Donner les coordonnées du lutin après chacun des quatre premiers segments.
+6. Le lutin finit en $(50\ ;\ 60)$. Calculer sa distance au point de départ, au dixième.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les premiers segments
+
+::: methode
+Dans la boucle, l'ordre compte : le lutin avance de longueur, tourne, **puis** longueur augmente de $10$.
+:::
+
+::: etape
+longueur vaut $10$ au premier tour, $20$ au deuxième, $30$ au troisième.
+:::
+
+::: resultat
+$10$, $20$ et $30$ pas.
+:::
+
+## Question 2 : Le dernier segment
+
+::: etape
+Au $k$-ième tour, le segment mesure $10 \times k$ : le $10$e mesure $100$. Après ce tracé, on ajoute encore $10$ à longueur.
+:::
+
+::: resultat
+Le dernier segment mesure $100$ pas ; à la fin, longueur vaut $110$.
+:::
+
+::: attention Erreur fréquente
+Répondre $110$ pour le dernier segment : l'ajout de $10$ se fait **après** le tracé.
+:::
+
+## Question 3 : La longueur totale
+
+::: etape
+$$
+\begin{aligned}
+& 10 + 20 + \ldots + 100 \\
+&= 10 \times (1 + 2 + \ldots + 10) \\
+&= 10 \times 55 \\
+&= 550
+\end{aligned}
+$$
+:::
+
+::: resultat
+Le stylo trace $550$ pas.
+:::
+
+## Question 4 : L'angle total
+
+::: etape
+$10$ quarts de tour : $10 \times 90 = 900$, soit $2$ tours et demi ($900 = 2 \times 360 + 180$). Parti vers la droite, le lutin finit donc tourné dans la direction opposée.
+:::
+
+::: resultat
+$900^\circ$ ; le lutin regarde vers la gauche (orientation $-90$).
+:::
+
+## Question 5 : Les premières positions
+
+::: etape Segment par segment
+- point 1 : vers la droite de $10$ : $(10\ ;\ 0)$ ;
+- point 2 : vers le haut de $20$ : $(10\ ;\ 20)$ ;
+- point 3 : vers la gauche de $30$ : $(-20\ ;\ 20)$ ;
+- point 4 : vers le bas de $40$ : $(-20\ ;\ -20)$.
+:::
+
+[IMAGE_2]
+
+::: resultat
+$(10\ ;\ 0)$, $(10\ ;\ 20)$, $(-20\ ;\ 20)$ et $(-20\ ;\ -20)$ (points 1 à 4 du tracé en vert).
+:::
+
+## Question 6 : La distance finale
+
+::: etape Théorème de Pythagore
+Entre $(0\ ;\ 0)$ et $(50\ ;\ 60)$ : $50$ horizontalement et $60$ verticalement.
+$$
+\begin{aligned}
+d^2 &= 50^2 + 60^2 \\
+&= 2\,500 + 3\,600 \\
+&= 6\,100 \\
+d &= \sqrt{6\,100} \approx 78{,}1
+\end{aligned}
+$$
+:::
+
+::: resultat
+Le lutin est à environ $78{,}1$ pas de son point de départ.
+:::
+
+::: retenir
+Une liste (segment, direction, position) permet de prévoir exactement le dessin d'un lutin.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $10$ ; $20$ ; $30$
+2. $100$ ; longueur $= 110$
+3. $550$ pas
+4. $900^\circ$ ; vers la gauche
+5. $(10\ ;\ 0)$ ; $(10\ ;\ 20)$ ; $(-20\ ;\ 20)$ ; $(-20\ ;\ -20)$
+6. $\approx 78{,}1$ pas
+
+===
+
+=== Problème - Rendre la monnaie
+Id: 3729
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Un distributeur rend la monnaie (sommes entières) avec des pièces de $2$ € et de $1$ €. Voici son programme : il dit d'abord le nombre de pièces de $2$ €, puis le nombre de pièces de $1$ €.
+
+[IMAGE_1]
+
+1. Exécuter le programme pour une somme de $7$ € avec un tableau d'exécution. Combien de pièces de chaque sorte sont rendues ?
+2. Même question pour $10$ € et pour $1$ €.
+3. Pour $15$ €, combien de tours de boucle sont effectués ?
+4. Pourquoi pièces1 vaut-il toujours $0$ ou $1$ à la fin ?
+5. On ajoute des billets de $5$ €, rendus en premier. Combien de billets et de pièces de chaque sorte pour $18$ € ?
+6. Quels blocs faut-il ajouter au programme pour rendre les billets de $5$ € ? Où les placer ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Avec 7 €
+
+::: methode
+La condition « reste < 2 » est testée avant chaque tour ; à chaque tour, on retire $2$ € et on compte une pièce de $2$ €.
+:::
+
+::: etape Tableau d'exécution
+| Tour | reste | pièces2 |
+|---|---|---|
+| départ | $7$ | $0$ |
+| 1 | $5$ | $1$ |
+| 2 | $3$ | $2$ |
+| 3 | $1$ | $3$ |
+:::
+
+::: etape Fin
+$1 < 2$ est vrai : la boucle s'arrête. pièces1 prend la valeur de reste, soit $1$.
+:::
+
+::: resultat
+$3$ pièces de $2$ € et $1$ pièce de $1$ €. Vérification : $3 \times 2 + 1 = 7$.
+:::
+
+## Question 2 : Avec 10 € et avec 1 €
+
+::: etape Avec $10$ €
+reste : $10 \to 8 \to 6 \to 4 \to 2 \to 0$ en $5$ tours ; pièces2 $= 5$ et pièces1 $= 0$.
+:::
+
+::: etape Avec $1$ €
+La condition « $1 < 2$ » est vraie **dès le départ** : la boucle n'est pas exécutée. pièces2 $= 0$ et pièces1 $= 1$.
+:::
+
+::: resultat
+$10$ € : $5$ pièces de $2$ € et aucune de $1$ € ; $1$ € : une pièce de $1$ €.
+:::
+
+## Question 3 : Avec 15 €
+
+::: etape
+$15 \to 13 \to 11 \to 9 \to 7 \to 5 \to 3 \to 1$ : $7$ soustractions.
+:::
+
+::: resultat
+$7$ tours ($7$ pièces de $2$ € et $1$ pièce de $1$ €).
+:::
+
+## Question 4 : Le reste final
+
+::: etape
+On retire $2$ tant que reste vaut au moins $2$ : la boucle s'arrête dès que reste vaut $0$ ou $1$. On a retiré $2$ autant de fois que possible : pièces2 est le quotient et reste le reste de la division euclidienne de la somme par $2$.
+:::
+
+::: resultat
+pièces1 vaut $0$ si la somme est paire et $1$ si elle est impaire.
+:::
+
+## Question 5 : Avec des billets de 5 €
+
+::: etape
+On rend d'abord le plus de billets possible : $18 = 3 \times 5 + 3$. Puis les $3$ € restants : $3 = 1 \times 2 + 1$.
+:::
+
+::: resultat
+$3$ billets de $5$ €, $1$ pièce de $2$ € et $1$ pièce de $1$ €. Vérification : $15 + 2 + 1 = 18$.
+:::
+
+## Question 6 : Les blocs à ajouter
+
+::: etape
+Juste après « mettre reste à réponse », on ajoute une boucle du même modèle avec $5$ : « mettre billets5 à 0 », puis « répéter jusqu'à reste < 5 » contenant « ajouter −5 à reste » et « ajouter 1 à billets5 ». On ajoute aussi « dire billets5 ».
+:::
+
+[IMAGE_2]
+
+::: resultat
+Les blocs en vert, placés **avant** la boucle des pièces de $2$ €. Le script dit alors $3$, $1$ et $1$ pour $18$ €.
+:::
+
+::: attention Erreur fréquente
+Placer la boucle des billets **après** celle des pièces de $2$ € : il ne resterait jamais $5$ € à rendre, et aucun billet ne serait rendu.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $3$ pièces de $2$ € et $1$ pièce de $1$ €
+2. $5$ et $0$ ; $0$ et $1$
+3. $7$ tours
+4. C'est le reste de la division de la somme par $2$
+5. $3$ billets, $1$ pièce de $2$ €, $1$ pièce de $1$ €
+6. Une boucle « répéter jusqu'à reste < 5 », placée en premier
+
+===
+
+=== Problème - Convertir des températures
+Id: 3730
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Aux États-Unis, on mesure les températures en degrés Fahrenheit (°F). Ce programme convertit une température en degrés Celsius (°C) en degrés Fahrenheit (« $\ast$ » signifie « multiplié par »).
+
+[IMAGE_1]
+
+1. Qu'affiche le programme pour $0$ °C ? Pour $100$ °C ?
+2. Quelle est, en °F, la température normale du corps humain, $37$ °C ?
+3. Exprimer la température $F$ en fonction de la température $C$.
+4. Quelle température en °C correspond à $50$ °F ?
+5. Pour quelle température le nombre en °C et le nombre en °F sont-ils égaux ?
+6. Écrire un programme qui convertit des °F en °C.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : 0 °C et 100 °C
+
+::: etape
+$0 \times 1{,}8 = 0$, puis $0 + 32 = 32$ ; $100 \times 1{,}8 = 180$, puis $180 + 32 = 212$.
+:::
+
+::: resultat
+$0$ °C $= 32$ °F et $100$ °C $= 212$ °F.
+:::
+
+## Question 2 : La température du corps
+
+::: etape Tableau d'exécution
+| Bloc exécuté | C | F |
+|---|---|---|
+| mettre C à réponse | $37$ | — |
+| mettre F à C ∗ 1,8 | $37$ | $66{,}6$ |
+| ajouter 32 à F | $37$ | $98{,}6$ |
+:::
+
+::: resultat
+$37$ °C $= 98{,}6$ °F.
+:::
+
+## Question 3 : L'expression
+
+::: etape
+On multiplie $C$ par $1{,}8$, **puis** on ajoute $32$.
+:::
+
+::: resultat
+$$F = 1{,}8C + 32$$
+:::
+
+## Question 4 : 50 °F
+
+::: etape On résout l'équation
+$$
+\begin{aligned}
+1{,}8C + 32 &= 50 \\
+1{,}8C &= 18 \\
+C &= \frac{18}{1{,}8} = 10
+\end{aligned}
+$$
+:::
+
+::: resultat
+$50$ °F correspondent à $10$ °C.
+:::
+
+## Question 5 : Égalité des deux nombres
+
+::: etape On résout $1{,}8C + 32 = C$
+$$
+\begin{aligned}
+1{,}8C - C &= -32 \\
+0{,}8C &= -32 \\
+C &= \frac{-32}{0{,}8} = -40
+\end{aligned}
+$$
+:::
+
+::: etape Vérification
+$-40 \times 1{,}8 + 32 = -72 + 32 = -40$.
+:::
+
+::: resultat
+$-40$ °C $= -40$ °F.
+:::
+
+## Question 6 : Le programme inverse
+
+::: methode
+Pour inverser un programme de calcul, on remonte les étapes **dans l'ordre inverse**, avec les opérations contraires : on retire d'abord $32$, puis on divise par $1{,}8$.
+:::
+
+[IMAGE_2]
+
+::: etape Test
+Avec $212$ °F : $212 - 32 = 180$ et $180 / 1{,}8 = 100$ °C. Avec $50$ °F : $18 / 1{,}8 = 10$ °C.
+:::
+
+::: resultat
+Le programme en vert calcule $C = \dfrac{F - 32}{1{,}8}$.
+:::
+
+::: attention Erreur fréquente
+Diviser d'abord par $1{,}8$, puis retirer $32$ : avec $212$ °F, on obtiendrait environ $85{,}8$ au lieu de $100$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $32$ °F ; $212$ °F
+2. $98{,}6$ °F
+3. $F = 1{,}8C + 32$
+4. $10$ °C
+5. $-40$
+6. Retirer $32$, puis diviser par $1{,}8$ : $C = \dfrac{F - 32}{1{,}8}$
+
+===
+
+=== Problème - Le robot du jardin
+Id: 3731
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Un robot tondeuse est programmé comme un lutin, sur un repère dont l'unité est le décimètre (dm). Il part du point $O(0\ ;\ 0)$ et son stylo matérialise son trajet.
+
+[IMAGE_1]
+
+1. Quelle est la position du robot après le premier tour de la première boucle ?
+2. Quelle est sa position $A$ à la fin de la première boucle ?
+3. Quelle longueur le robot parcourt-il à chaque tour de la première boucle ? De combien s'éloigne-t-il « à vol d'oiseau » à chaque tour ?
+4. Calculer la distance $OA$.
+5. Quelle est la position $B$ du robot à la fin du programme ? Quelle distance totale a-t-il parcourue ?
+6. Calculer la distance $OB$ entre son point de départ et son point d'arrivée.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Après un tour
+
+::: etape
+« ajouter 40 à x » puis « ajouter 30 à y » à partir de $(0\ ;\ 0)$ : $(40\ ;\ 0)$, puis $(40\ ;\ 30)$.
+:::
+
+::: resultat
+Le robot est en $(40\ ;\ 30)$.
+:::
+
+## Question 2 : Le point A
+
+::: etape
+$3$ tours : $x = 3 \times 40 = 120$ et $y = 3 \times 30 = 90$.
+:::
+
+::: resultat
+$A(120\ ;\ 90)$.
+:::
+
+## Question 3 : Un tour de boucle
+
+::: etape Distance parcourue
+Le robot avance de $40$ dm horizontalement, puis de $30$ dm verticalement : $40 + 30 = 70$ dm.
+:::
+
+::: etape À vol d'oiseau (théorème de Pythagore)
+$$
+\begin{aligned}
+d^2 &= 40^2 + 30^2 \\
+&= 1\,600 + 900 \\
+&= 2\,500 \\
+d &= \sqrt{2\,500} = 50
+\end{aligned}
+$$
+:::
+
+::: resultat
+Il parcourt $70$ dm, mais ne s'éloigne que de $50$ dm à chaque tour.
+:::
+
+## Question 4 : La distance OA
+
+::: etape
+$$
+\begin{aligned}
+OA^2 &= 120^2 + 90^2 \\
+&= 14\,400 + 8\,100 \\
+&= 22\,500 \\
+OA &= \sqrt{22\,500} = 150
+\end{aligned}
+$$
+:::
+
+::: etape Vérification
+Les trois « marches » sont identiques et les points $O$, $(40\ ;\ 30)$, $(80\ ;\ 60)$, $A$ sont alignés : $3 \times 50 = 150$.
+:::
+
+::: resultat
+$OA = 150$ dm, soit $15$ m.
+:::
+
+## Question 5 : Le point B
+
+::: etape Position
+$2$ tours de « ajouter −60 à x » : $x = 120 - 2 \times 60 = 0$ ; y reste égal à $90$.
+:::
+
+::: etape Distance parcourue
+$3 \times 70 + 2 \times 60 = 210 + 120 = 330$ dm.
+:::
+
+[IMAGE_2]
+
+::: resultat
+$B(0\ ;\ 90)$ ; le robot a parcouru $330$ dm, soit $33$ m (trajet en vert, $[OA]$ en pointillés orange).
+:::
+
+## Question 6 : La distance OB
+
+::: etape
+$B$ est sur l'axe des ordonnées, comme $O$ : $OB = 90 - 0 = 90$.
+:::
+
+::: resultat
+$OB = 90$ dm, soit $9$ m.
+:::
+
+::: attention Erreur fréquente
+Confondre la distance **parcourue** ($330$ dm) et la distance **à vol d'oiseau** entre le départ et l'arrivée ($90$ dm).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $(40\ ;\ 30)$
+2. $A(120\ ;\ 90)$
+3. $70$ dm ; $50$ dm
+4. $OA = 150$ dm
+5. $B(0\ ;\ 90)$ ; $330$ dm
+6. $OB = 90$ dm
+
+===
+
+=== Type brevet - Des carrés emboîtés
+Id: 3732
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+On a créé le bloc personnalisé « carré », qui a un paramètre côté, et le script principal ci-dessous, qui utilise une variable longueur.
+
+[IMAGE_1]
+
+1. Quelles sont les longueurs des côtés des carrés tracés ? Quelle est la valeur de la variable longueur à la fin du script ?
+2. Parmi les trois dessins suivants, lequel le script produit-il ? Justifier.
+
+[IMAGE_2]
+
+3. Calculer la longueur totale tracée par le stylo.
+4. Exprimer, en fonction de $n$, la longueur du côté du $n$-ième carré tracé.
+5. On remplace « répéter 4 fois » par « répéter 7 fois ». Quelle est la longueur du côté du plus grand carré ? Ce carré tient-il entièrement sur la scène ? On rappelle que y va de $-180$ à $180$.
+6. On remplace aussi « aller à x : 0 y : 0 » par « aller à x : −200 y : −170 ». Montrer que la figure tient alors sur la scène.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Les côtés des carrés
+
+::: methode
+À chaque appel « carré longueur », le paramètre côté reçoit la valeur **actuelle** de la variable longueur. Après l'appel, longueur augmente de $30$.
+:::
+
+::: etape Tableau d'exécution
+| Tour | Côté du carré tracé | longueur à la fin du tour |
+|---|---|---|
+| 1 | $20$ | $50$ |
+| 2 | $50$ | $80$ |
+| 3 | $80$ | $110$ |
+| 4 | $110$ | $140$ |
+:::
+
+::: resultat
+Les carrés ont pour côtés $20$, $50$, $80$ et $110$ ; à la fin, longueur vaut $140$.
+:::
+
+## Question 2 : Le bon dessin
+
+::: etape
+Le bloc « carré » ramène le lutin à son point de départ, dans la même orientation ($4 \times 90^\circ = 360^\circ$). Entre deux appels, le lutin ne se déplace pas : tous les carrés partent du même coin $(0\ ;\ 0)$, et ils grandissent.
+:::
+
+::: etape On élimine
+- Dessin A : carrés tous de la même taille et séparés : faux.
+- Dessin C : carrés séparés ; il faudrait déplacer le lutin entre deux carrés : faux.
+:::
+
+[IMAGE_3]
+
+::: resultat
+C'est le dessin B : quatre carrés emboîtés de sommet commun $(0\ ;\ 0)$.
+:::
+
+## Question 3 : La longueur tracée
+
+::: etape
+Chaque carré a $4$ côtés :
+$$
+\begin{aligned}
+& 4 \times (20 + 50 + 80 + 110) \\
+&= 4 \times 260 \\
+&= 1\,040
+\end{aligned}
+$$
+:::
+
+::: resultat
+Le stylo trace $1\,040$ pas.
+:::
+
+## Question 4 : Le côté du n-ième carré
+
+::: etape
+Le premier carré a pour côté $20$, et chaque carré a $30$ de plus que le précédent : le $n$-ième a pour côté
+$$
+\begin{aligned}
+& 20 + 30 \times (n - 1) \\
+&= 20 + 30n - 30 \\
+&= 30n - 10
+\end{aligned}
+$$
+:::
+
+::: etape Vérification
+$n = 4$ : $30 \times 4 - 10 = 110$.
+:::
+
+::: resultat
+Le côté du $n$-ième carré est $30n - 10$.
+:::
+
+## Question 5 : Avec 7 carrés
+
+::: etape
+Le plus grand est le $7$e : $30 \times 7 - 10 = 200$. Partant de $(0\ ;\ 0)$ vers la droite, il monte jusqu'à $y = 200$.
+:::
+
+::: resultat
+Le plus grand carré a un côté de $200$ ; il ne tient pas sur la scène car $200 > 180$ : son côté supérieur sort par le haut.
+:::
+
+## Question 6 : Un nouveau point de départ
+
+::: etape Les coordonnées extrêmes
+Le plus grand carré part de $(-200\ ;\ -170)$ et s'étend de $200$ vers la droite et vers le haut :
+- x va de $-200$ à $-200 + 200 = 0$, compris entre $-240$ et $240$ ;
+- y va de $-170$ à $-170 + 200 = 30$, compris entre $-180$ et $180$.
+:::
+
+[IMAGE_4]
+
+[IMAGE_5]
+
+::: resultat
+Avec le script modifié (en vert), les $7$ carrés tiennent sur la scène : le coin opposé du plus grand est en $(0\ ;\ 30)$.
+:::
+
+::: attention Erreur fréquente
+Confondre le **paramètre** côté du bloc personnalisé et la **variable** longueur du script principal : à chaque appel, côté reçoit la valeur que longueur a à ce moment-là.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $20$, $50$, $80$, $110$ ; longueur $= 140$
+2. Le dessin B
+3. $1\,040$ pas
+4. $30n - 10$
+5. $200$ ; non, car $200 > 180$
+6. x de $-200$ à $0$, y de $-170$ à $30$ : la figure tient
+
+===
+
+=== Type brevet - Un programme de calcul à deux lutins
+Id: 3733
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+Le Chat et le Chien réalisent ensemble un programme de calcul. Les variables x et r sont communes aux deux lutins ; « $\ast$ » signifie « multiplié par ».
+
+[IMAGE_1]
+
+1. On choisit $3$. Présenter un tableau d'exécution et donner le nombre dit par le Chat.
+2. Quel nombre le Chat dit-il si l'on choisit $-5$ ?
+3. Quelle conjecture peut-on faire sur le nombre dit par le Chat ? La tester avec $2{,}5$.
+4. Démontrer cette conjecture.
+5. Quel nombre faut-il choisir pour que le Chat dise $30$ ?
+6. On remplace « envoyer à tous calcule et attendre » par « envoyer à tous calcule ». Pourquoi le Chat risque-t-il alors de dire $7$ quand on choisit $3$ ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Avec 3
+
+::: methode
+« envoyer à tous calcule et attendre » déclenche le script du Chien ; le Chat attend qu'il soit **terminé** avant de continuer.
+:::
+
+::: etape Tableau d'exécution
+| Lutin et bloc | x | r |
+|---|---|---|
+| Chat : mettre x à réponse | $3$ | — |
+| Chat : mettre r à x + 4 | $3$ | $7$ |
+| Chien : mettre r à r ∗ x | $3$ | $7 \times 3 = 21$ |
+| Chien : mettre r à r − x ∗ x | $3$ | $21 - 9 = 12$ |
+:::
+
+::: resultat
+Le Chat dit $12$.
+:::
+
+## Question 2 : Avec −5
+
+::: etape Tableau d'exécution
+| Lutin et bloc | r |
+|---|---|
+| Chat : mettre r à x + 4 | $-5 + 4 = -1$ |
+| Chien : mettre r à r ∗ x | $-1 \times (-5) = 5$ |
+| Chien : mettre r à r − x ∗ x | $5 - 25 = -20$ |
+:::
+
+::: resultat
+Le Chat dit $-20$.
+:::
+
+## Question 3 : La conjecture
+
+::: etape
+$12 = 4 \times 3$ et $-20 = 4 \times (-5)$ : le résultat semble être le quadruple du nombre choisi.
+:::
+
+::: etape Test avec $2{,}5$
+- Chat : $r = 2{,}5 + 4 = 6{,}5$ ;
+- Chien : $r = 6{,}5 \times 2{,}5 = 16{,}25$ ;
+- Chien : $r = 16{,}25 - 6{,}25 = 10$.
+
+Et $4 \times 2{,}5 = 10$ : la conjecture est vérifiée.
+:::
+
+::: resultat
+Conjecture : le Chat dit toujours $4$ fois le nombre choisi.
+:::
+
+## Question 4 : La démonstration
+
+::: methode
+On exécute le programme avec un nombre quelconque $x$, puis on développe et on réduit.
+:::
+
+::: etape Calcul littéral
+$$
+\begin{aligned}
+r &= (x + 4) \times x - x \times x \\
+&= x^2 + 4x - x^2 \\
+&= 4x
+\end{aligned}
+$$
+:::
+
+[IMAGE_2]
+
+::: resultat
+Pour tout nombre $x$, le Chat dit $4x$ : la conjecture est démontrée. Le programme équivaut à un seul bloc « mettre r à 4 ∗ x » (en vert).
+:::
+
+::: attention Erreur fréquente
+Se contenter des essais : trois exemples ne démontrent rien, seul le calcul littéral prouve le résultat pour **tous** les nombres.
+:::
+
+## Question 5 : Pour obtenir 30
+
+::: etape
+$4x = 30$, donc $x = \dfrac{30}{4} = 7{,}5$. Vérification : $4 \times 7{,}5 = 30$.
+:::
+
+::: resultat
+Il faut choisir $7{,}5$.
+:::
+
+## Question 6 : Sans « et attendre »
+
+::: etape
+Sans « et attendre », le Chat n'attend pas la fin du script du Chien : il peut exécuter « dire r » alors que r vaut encore $3 + 4 = 7$, avant les calculs du Chien.
+:::
+
+::: resultat
+Le Chat dirait la valeur de r **avant** les calculs du Chien, soit $7$ au lieu de $12$.
+:::
+
+::: retenir
+« envoyer à tous … et attendre » garantit que les scripts déclenchés sont terminés avant que le script continue.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. $12$
+2. $-20$
+3. Le résultat est $4$ fois le nombre choisi ; avec $2{,}5$ : $10$
+4. $(x + 4)x - x^2 = 4x$
+5. $7{,}5$
+6. Il dirait r avant les calculs du Chien, c'est-à-dire $7$

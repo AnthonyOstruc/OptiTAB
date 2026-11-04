@@ -1,0 +1,655 @@
+=== Structures Conditionnelles - Conditions Imbriquées
+Id: 829
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+Dans les questions 1 et 2, on utilise une structure conditionnelle **imbriquée** : un `if` placé à l’intérieur d’un autre.
+
+1. Un cinéma applique les tarifs suivants :
+   - moins de 18 ans : 7 € ;
+   - de 18 à 64 ans : 12 €, mais 9 € le lundi ;
+   - 65 ans et plus : 8 €.
+
+   Écrire un programme qui calcule le tarif à partir des variables `age` et `jour`. Quel tarif obtient-on pour `age = 25` et `jour = "Lundi"` ?
+2. L’accès à une salle VIP est accordé aux membres premium ; pour les autres, il faut avoir plus de $1\,000$ points **et** avoir validé son adresse e-mail. Écrire un programme qui affiche « Accès accordé » ou « Accès refusé », puis donner l’affichage pour `premium = False`, `points = 1200` et `email_ok = True`.
+3. Réécrire le programme de la question 2 sans imbrication, avec une seule instruction `if … else` utilisant `and` et `or`. Quel est l’affichage si `points = 800` (les autres données étant inchangées) ?
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Tarif du cinéma
+
+::: methode
+On distingue d’abord les trois tranches d’âge (`if … elif … else`) ; le jour n’intervient que pour la tranche de 18 à 64 ans, d’où un test imbriqué dans ce seul bloc.
+:::
+
+[IMAGE_1]
+
+```python
+age = 25
+jour = "Lundi"
+if age < 18:
+    tarif = 7
+elif age < 65:
+    if jour == "Lundi":
+        tarif = 9
+    else:
+        tarif = 12
+else:
+    tarif = 8
+print("Tarif :", tarif, "€")
+```
+
+```console
+Tarif : 9 €
+```
+
+::: etape Déroulement
+- `25 < 18` est faux : on passe au `elif` ;
+- `25 < 65` est vrai : on entre dans ce bloc ;
+- test imbriqué : `jour == "Lundi"` est vrai, donc `tarif` reçoit $9$.
+:::
+
+::: attention
+La comparaison de chaînes distingue majuscules et minuscules : avec `jour = "lundi"`, le test `jour == "Lundi"` serait faux et le tarif serait $12$ €.
+:::
+
+::: resultat
+Pour un spectateur de 25 ans un lundi, le tarif est de $9$ €.
+:::
+
+## Question 2 : Accès à la salle VIP
+
+::: methode
+Premier niveau : être membre premium ou non ; second niveau, seulement pour les non-membres : points et e-mail.
+:::
+
+```python
+premium = False
+points = 1200
+email_ok = True
+ok = False
+if premium:
+    ok = True
+else:
+    if points > 1000:
+        if email_ok:
+            ok = True
+if ok:
+    print("Accès accordé")
+else:
+    print("Accès refusé")
+```
+
+```console
+Accès accordé
+```
+
+::: etape Déroulement
+- `premium` vaut `False` : on entre dans le bloc `else` ;
+- `1200 > 1000` est vrai : on passe au test suivant ;
+- `email_ok` vaut `True` : `ok` reçoit `True` et le programme affiche « Accès accordé ».
+:::
+
+::: resultat
+Le programme affiche « Accès accordé ».
+:::
+
+## Question 3 : Une seule condition
+
+::: methode
+On traduit la règle en une seule phrase logique : premium **ou** (plus de 1000 points **et** e-mail validé).
+:::
+
+::: etape Écrire la condition
+On range la seconde partie dans une variable booléenne `bonus`, puis on teste `premium or bonus`.
+:::
+
+```python
+premium = False
+points = 800
+email_ok = True
+bonus = (points > 1000
+         and email_ok)
+if premium or bonus:
+    print("Accès accordé")
+else:
+    print("Accès refusé")
+```
+
+```console
+Accès refusé
+```
+
+::: etape Déroulement avec points = 800
+`800 > 1000` est faux, donc `bonus` vaut `False and True`, c’est-à-dire `False` ; `premium or bonus` vaut `False or False`, soit `False`.
+:::
+
+::: retenir
+Les parenthèses sont indispensables à la lecture : `premium or (A and B)` n’est pas `(premium or A) and B`. En Python, `and` est prioritaire sur `or`, mais écrire les parenthèses évite toute ambiguïté.
+:::
+
+::: resultat
+Avec `points = 800`, le programme affiche « Accès refusé ». Avec `points = 1200`, il affiche « Accès accordé », comme à la question 2.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Tests successifs `age < 18`, `age < 65`, puis `jour == "Lundi"` dans le bloc des 18-64 ans : le tarif est de $9$ €.
+2. Le programme affiche « Accès accordé ».
+3. Condition `premium or bonus`, où `bonus` vaut `points > 1000 and email_ok` ; avec `points = 800`, l’affichage est « Accès refusé ».
+
+===
+
+=== Structures Conditionnelles - Opérateurs Logiques
+Id: 827
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+1. Un service est réservé aux personnes âgées de 18 à 65 ans inclus. Écrire un programme qui affiche « Accès autorisé » ou « Accès refusé » selon la valeur de `age`. Donner l’affichage pour `age = 25`, puis pour `age = 70`.
+2. Une remise est accordée le week-end (samedi ou dimanche) ou aux clients qui ont une carte de fidélité. Écrire le programme et donner l’affichage pour `jour = "Samedi"` et `carte = False`.
+3. Écrire, sans utiliser `not`, la condition contraire de celle de la question 1.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Âge entre 18 et 65 ans inclus
+
+::: methode
+« Entre 18 et 65 inclus » signifie `age >= 18` **et** `age <= 65`, ce que Python écrit aussi `18 <= age <= 65`.
+:::
+
+```python
+age = 25
+if 18 <= age <= 65:
+    print("Accès autorisé")
+else:
+    print("Accès refusé")
+```
+
+```console
+Accès autorisé
+```
+
+::: etape Analyse pour age = 25
+`25 >= 18` est vrai et `25 <= 65` est vrai : `True and True` vaut `True`.
+:::
+
+::: etape Analyse pour age = 70
+`70 >= 18` est vrai mais `70 <= 65` est faux : `True and False` vaut `False`, le programme affiche « Accès refusé ».
+:::
+
+::: resultat
+« Accès autorisé » pour $25$ ans, « Accès refusé » pour $70$ ans.
+:::
+
+## Question 2 : Remise le week-end ou avec une carte
+
+::: methode
+`or` est vrai dès qu’**une** des conditions est vraie.
+:::
+
+```python
+jour = "Samedi"
+carte = False
+sam = jour == "Samedi"
+dim = jour == "Dimanche"
+if sam or dim or carte:
+    print("Remise accordée")
+else:
+    print("Pas de remise")
+```
+
+```console
+Remise accordée
+```
+
+::: etape Analyse
+`sam` vaut `True`, `dim` vaut `False`, `carte` vaut `False` : `True or False or False` vaut `True`.
+:::
+
+::: attention
+Écrire `jour == "Samedi" or "Dimanche"` est une erreur classique : `"Dimanche"` seul est considéré comme vrai, et la condition serait vraie tous les jours. Chaque comparaison doit être écrite en entier.
+:::
+
+::: resultat
+Le programme affiche « Remise accordée ».
+:::
+
+## Question 3 : Condition contraire
+
+::: methode
+Loi de De Morgan : `not (A and B)` équivaut à `(not A) or (not B)`.
+:::
+
+::: etape Appliquer la règle
+La condition de la question 1 est `age >= 18 and age <= 65`. Sa négation est `not (age >= 18)` **ou** `not (age <= 65)`, c’est-à-dire `age < 18 or age > 65`.
+:::
+
+[IMAGE_1]
+
+::: attention
+La négation de « et » est un « ou » : `age < 18 and age > 65` serait toujours faux, car aucun âge n’est à la fois inférieur à 18 et supérieur à 65.
+:::
+
+::: resultat
+La condition contraire est `age < 18 or age > 65`.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Condition `18 <= age <= 65` : « Accès autorisé » pour $25$ ans, « Accès refusé » pour $70$ ans.
+2. `True or False or False` vaut `True` : le programme affiche « Remise accordée ».
+3. `age < 18 or age > 65`.
+
+===
+
+=== Structures Conditionnelles - Problèmes de Synthèse
+Id: 830
+Difficulté: hard
+
+Énoncé:
+<!-- optitab:1 -->
+1. Une compagnie aérienne calcule le prix d’un billet en appliquant, dans cet ordre, les règles suivantes :
+   - prix de base selon la destination : Paris 100 €, Londres 150 €, New York 500 € ;
+   - réduction de $20\,\%$ si la réservation est faite plus de 30 jours à l’avance ;
+   - supplément de 50 € en classe affaires ;
+   - réduction supplémentaire de $10\,\%$ pour les membres du club.
+
+   a) Écrire un programme qui calcule le prix final, et le donner pour un vol pour Londres réservé 45 jours à l’avance, en classe économique, par un membre du club.
+
+   b) Quel est le prix d’un vol pour New York réservé 10 jours à l’avance, en classe affaires, par un non-membre ?
+2. Un système de sécurité attribue un niveau d’accès (« total », « limité » ou « refusé ») :
+   - sans badge valide, l’accès est refusé ;
+   - en dehors de la plage de 8 h à 18 h (incluses), l’accès est refusé ;
+   - sinon, un administrateur a un accès total, un employé un accès limité, et un stagiaire un accès limité jusqu’à 17 h, refusé après 17 h.
+
+   a) Écrire une fonction `acces(badge, h, niveau)` qui renvoie le niveau d’accès, et donner son résultat pour un employé qui présente un badge valide à 15 h.
+
+   b) Tester la fonction sur les cas limites : un stagiaire à 17 h puis à 18 h, un administrateur à 19 h.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Prix d’un billet d’avion
+
+::: methode
+Le prix de base relève de **cas qui s’excluent** (`if … elif`) ; les trois règles suivantes sont **indépendantes** : chacune fait l’objet d’un `if` séparé, appliqué dans l’ordre.
+:::
+
+```python
+dest = "Londres"
+jours = 45
+classe = "Économique"
+club = True
+if dest == "Paris":
+    prix = 100
+elif dest == "Londres":
+    prix = 150
+elif dest == "New York":
+    prix = 500
+if jours > 30:
+    prix = prix * 0.8
+if classe == "Affaires":
+    prix = prix + 50
+if club:
+    prix = prix * 0.9
+print(round(prix, 2), "€")
+```
+
+```console
+108.0 €
+```
+
+::: etape a) Calcul pour Londres
+- prix de base : $150$ € ;
+- $45 \gt 30$ est vrai : $150 \times 0{,}8 = 120$ € ;
+- classe économique : pas de supplément ;
+- membre du club : $120 \times 0{,}9 = 108$ €.
+:::
+
+::: etape b) Calcul pour New York
+- prix de base : $500$ € ;
+- $10 \gt 30$ est faux : pas de réduction ;
+- classe affaires : $500 + 50 = 550$ € ;
+- non-membre : pas de réduction.
+
+En remplaçant les données par `"New York"`, `10`, `"Affaires"` et `False`, le programme affiche `550 €`.
+:::
+
+::: attention
+Avec des `elif` à la place des trois derniers `if`, une seule règle serait appliquée : pour Londres, seule la réduction de $20\,\%$ serait prise en compte, et le prix serait faux ($120$ € au lieu de $108$ €).
+:::
+
+::: resultat
+a) $108$ € pour Londres ; b) $550$ € pour New York. La fonction `round(prix, 2)` arrondit au centime les calculs sur les nombres décimaux.
+:::
+
+## Question 2 : Système de sécurité
+
+::: methode
+Dans une fonction, `return` termine l’exécution : chaque test n’est examiné que si les précédents ont échoué, ce qui équivaut à des conditions imbriquées.
+:::
+
+```python
+def acces(badge, h, niveau):
+    if not badge:
+        return "refusé"
+    if h < 8 or h > 18:
+        return "refusé"
+    if niveau == "Admin":
+        return "total"
+    if niveau == "Stagiaire":
+        if h > 17:
+            return "refusé"
+    return "limité"
+
+e = "Employé"
+print(acces(True, 15, e))
+```
+
+```console
+limité
+```
+
+::: etape a) Employé à 15 h avec badge
+`not badge` est faux ; `15 < 8 or 15 > 18` est faux ; le niveau n’est ni `"Admin"` ni `"Stagiaire"` : la fonction renvoie `"limité"`.
+:::
+
+On teste ensuite les cas limites de la question b).
+
+```python
+def acces(badge, h, niveau):
+    if not badge:
+        return "refusé"
+    if h < 8 or h > 18:
+        return "refusé"
+    if niveau == "Admin":
+        return "total"
+    if niveau == "Stagiaire":
+        if h > 17:
+            return "refusé"
+    return "limité"
+
+s = "Stagiaire"
+print(acces(True, 17, s))
+print(acces(True, 18, s))
+a = "Admin"
+print(acces(True, 19, a))
+```
+
+```console
+limité
+refusé
+refusé
+```
+
+::: etape b) Cas limites
+- stagiaire à 17 h : `17 > 17` est faux, accès limité ;
+- stagiaire à 18 h : l’heure est dans la plage, mais `18 > 17` est vrai, accès refusé ;
+- administrateur à 19 h : `19 > 18` est vrai, accès refusé avant même de regarder le niveau.
+:::
+
+::: resultat
+a) La fonction renvoie « limité ». b) « limité », « refusé » et « refusé ».
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. a) $150 \times 0{,}8 \times 0{,}9 = 108$ € ; b) $500 + 50 = 550$ €.
+2. a) « limité » ; b) stagiaire à 17 h : « limité » ; stagiaire à 18 h : « refusé » ; administrateur à 19 h : « refusé ».
+
+===
+
+=== Structures Conditionnelles - Structures Multiples (if, elif, else)
+Id: 828
+Difficulté: medium
+
+Énoncé:
+<!-- optitab:1 -->
+1. Un site de vidéos indique à chaque utilisateur les films qu’il peut regarder selon son âge : moins de 12 ans, « tous publics » ; de 12 à 15 ans, « jusqu’à -12 » ; 16 ou 17 ans, « jusqu’à -16 » ; 18 ans et plus, « tous les films ». Écrire un programme avec `if … elif … else` et donner l’affichage pour `age = 14`.
+2. Le prix d’un billet de train est : gratuit avant 4 ans, 8 € de 4 à 17 ans, 15 € de 18 à 64 ans, 10 € à partir de 65 ans. Écrire une fonction `tarif(age)` et donner les prix pour 67, 4, 18 et 65 ans.
+3. Un élève a écrit le programme ci-dessous. Qu’affiche-t-il pour `age = 30` ? Expliquer l’erreur et la corriger.
+
+   ```python
+   age = 30
+   if age >= 4:
+       prix = 8
+   elif age >= 18:
+       prix = 15
+   elif age >= 65:
+       prix = 10
+   else:
+       prix = 0
+   print(prix)
+   ```
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Films autorisés selon l’âge
+
+::: methode
+Les tranches d’âge s’excluent : une seule structure `if … elif … else`, avec des seuils croissants testés par `<`.
+:::
+
+```python
+age = 14
+if age < 12:
+    films = "tous publics"
+elif age < 16:
+    films = "jusqu'à -12"
+elif age < 18:
+    films = "jusqu'à -16"
+else:
+    films = "tous les films"
+print(films)
+```
+
+```console
+jusqu'à -12
+```
+
+::: etape Déroulement
+`14 < 12` est faux, puis `14 < 16` est vrai : `films` reçoit `"jusqu'à -12"` et les tests suivants ne sont pas examinés.
+:::
+
+::: resultat
+Pour 14 ans, le programme affiche « jusqu’à -12 ».
+:::
+
+## Question 2 : Prix du billet de train
+
+::: methode
+Même structure, dans une fonction ; on la teste sur les valeurs frontières.
+:::
+
+```python
+def tarif(age):
+    if age < 4:
+        return 0
+    elif age < 18:
+        return 8
+    elif age < 65:
+        return 15
+    else:
+        return 10
+
+for a in [67, 4, 18, 65]:
+    print(a, tarif(a))
+```
+
+```console
+67 10
+4 8
+18 15
+65 10
+```
+
+::: etape Déroulement pour 67 ans
+`67 < 4`, `67 < 18` et `67 < 65` sont faux : on arrive au `else`, le prix est $10$ €.
+:::
+
+::: etape Frontières
+- $4$ ans : `4 < 4` est faux et `4 < 18` est vrai, soit $8$ € ;
+- $18$ ans : `18 < 18` est faux et `18 < 65` est vrai, soit $15$ € ;
+- $65$ ans : tous les tests sont faux, soit $10$ €.
+:::
+
+::: resultat
+$10$ € à 67 ans, $8$ € à 4 ans, $15$ € à 18 ans, $10$ € à 65 ans.
+:::
+
+## Question 3 : Erreur d’ordre des conditions
+
+::: methode
+On suit le programme pas à pas : le **premier** test vrai décide.
+:::
+
+::: etape Ce qu’affiche le programme
+`30 >= 4` est vrai dès le premier test : `prix` reçoit $8$ et le programme affiche `8`. Les tests `age >= 18` et `age >= 65` ne sont jamais atteints pour une personne de 4 ans ou plus : tous paient $8$ €.
+:::
+
+::: etape Correction
+Avec des tests « supérieur ou égal », on part du plus grand seuil :
+
+```python
+age = 30
+if age >= 65:
+    prix = 10
+elif age >= 18:
+    prix = 15
+elif age >= 4:
+    prix = 8
+else:
+    prix = 0
+print(prix)
+```
+
+```console
+15
+```
+:::
+
+::: resultat
+Le programme de l’élève affiche `8` au lieu de `15`. Il faut tester les seuils dans l’ordre décroissant : $65$, $18$, puis $4$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Le programme affiche « jusqu’à -12 ».
+2. $10$ € à 67 ans, $8$ € à 4 ans, $15$ € à 18 ans, $10$ € à 65 ans.
+3. Il affiche `8` : le test `age >= 4`, placé en premier, est vrai pour tous à partir de 4 ans. Il faut tester `age >= 65`, puis `age >= 18`, puis `age >= 4` ; on obtient alors `15`.
+
+===
+
+=== Structures Conditionnelles - Tests Simples et Comparaisons
+Id: 826
+Difficulté: easy
+
+Énoncé:
+<!-- optitab:1 -->
+1. Écrire une fonction `signe(n)` qui renvoie « Positif » si $n$ est strictement positif, « Négatif » s’il est strictement négatif et « Zéro » sinon. Donner son résultat pour $15$, $-3$ et $0$.
+2. Un site est réservé aux personnes d’au moins 18 ans. Écrire un programme qui affiche « Accès autorisé » ou « Accès refusé ». Donner l’affichage pour `age = 20`, puis pour `age = 18`.
+3. Écrire un programme qui affiche « pair » ou « impair » selon la valeur de l’entier `n`. Donner l’affichage pour `n = 15`.
+
+Étapes:
+<!-- optitab:1 -->
+## Question 1 : Signe d’un nombre
+
+::: methode
+Trois cas qui s’excluent : `if … elif … else`.
+:::
+
+```python
+def signe(n):
+    if n > 0:
+        return "Positif"
+    elif n < 0:
+        return "Négatif"
+    else:
+        return "Zéro"
+
+print(signe(15))
+print(signe(-3))
+print(signe(0))
+```
+
+```console
+Positif
+Négatif
+Zéro
+```
+
+::: etape Déroulement
+- $15$ : `15 > 0` est vrai ;
+- $-3$ : `-3 > 0` est faux, `-3 < 0` est vrai ;
+- $0$ : les deux tests sont faux, on arrive au `else`.
+:::
+
+::: resultat
+« Positif » pour $15$, « Négatif » pour $-3$, « Zéro » pour $0$.
+:::
+
+## Question 2 : Accès à partir de 18 ans
+
+::: methode
+« Au moins 18 ans » se traduit par `age >= 18` (et non `age > 18`).
+:::
+
+```python
+age = 18
+if age >= 18:
+    print("Accès autorisé")
+else:
+    print("Accès refusé")
+```
+
+```console
+Accès autorisé
+```
+
+::: etape Analyse
+- `age = 20` : `20 >= 18` est vrai, « Accès autorisé » ;
+- `age = 18` : `18 >= 18` est vrai, « Accès autorisé ».
+:::
+
+::: attention
+Avec `age > 18`, une personne de 18 ans serait refusée à tort : c’est pourquoi on teste toujours la valeur frontière.
+:::
+
+::: resultat
+« Accès autorisé » dans les deux cas.
+:::
+
+## Question 3 : Pair ou impair
+
+::: methode
+Un entier est pair lorsque le reste de sa division par $2$ est nul : `n % 2 == 0`.
+:::
+
+```python
+n = 15
+if n % 2 == 0:
+    print("pair")
+else:
+    print("impair")
+```
+
+```console
+impair
+```
+
+::: etape Analyse
+$15 = 2 \times 7 + 1$ : le reste `15 % 2` vaut $1$, la condition `n % 2 == 0` est fausse.
+:::
+
+::: resultat
+Le programme affiche « impair ».
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. « Positif » pour $15$, « Négatif » pour $-3$, « Zéro » pour $0$.
+2. Condition `age >= 18` : « Accès autorisé » pour 20 ans comme pour 18 ans.
+3. `15 % 2` vaut $1$ : le programme affiche « impair ».
+
+===

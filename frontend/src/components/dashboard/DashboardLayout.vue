@@ -31,7 +31,6 @@ import DashboardLayoutClassic from './DashboardLayoutClassic.vue'
 import EspaceLayout from '@/components/espace/EspaceLayout.vue'
 import VitrineLayout from '@/components/vitrine/VitrineLayout.vue'
 import CalculatorTabs from '@/components/calculator/CalculatorTabs.vue'
-import BillingTabs from '@/components/payments/BillingTabs.vue'
 import { useUserStore } from '@/stores/user'
 import { ESPACE_ROUTES } from '@/config/espace'
 
@@ -46,8 +45,8 @@ const QUIZ = { to: '/quiz', label: 'Retour aux quiz' }
 // Titre (téléphone), flèche retour et éventuels onglets propres à chaque page.
 const PAGES = {
   Account: { titre: 'Mon compte', retour: ACCUEIL },
-  Billing: { titre: 'Abonnement', retour: ACCUEIL, sousEntete: BillingTabs },
-  Subscription: { titre: 'Mon abonnement', retour: { to: '/billing', label: 'Retour aux formules' } },
+  Billing: { titre: 'Abonnement', retour: ACCUEIL },
+  Subscription: { titre: 'Mon abonnement', retour: ACCUEIL },
   Pricing: { titre: 'Formules', retour: ACCUEIL },
   ExercisesHistory: { titre: 'Historique', retour: ACCUEIL },
   QuizzesHistory: { titre: 'Historique des quiz', retour: ACCUEIL },

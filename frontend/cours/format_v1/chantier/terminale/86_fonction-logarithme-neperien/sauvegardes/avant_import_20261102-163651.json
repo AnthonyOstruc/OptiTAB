@@ -1,0 +1,450 @@
+{
+ "notion": 86,
+ "dossier": "C:\\Users\\SWEELCO-AT\\Desktop\\SWINDER\\OptiTABV2\\frontend\\cours\\format_v1\\chantier\\terminale\\86_fonction-logarithme-neperien",
+ "date": "2026-11-02T16:36:51",
+ "cours": [
+  {
+   "id": 90,
+   "contenu": "<!-- optitab:1 -->\n::: objectifs\nDéfinir le logarithme népérien à partir de l’exponentielle, utiliser ses propriétés algébriques, connaître sa dérivée, ses variations, ses limites et les croissances comparées, et résoudre des équations, inéquations et problèmes de seuil.\n:::\n\n## I. Définition\n\n::: definition Logarithme népérien\nPour tout réel $x \\gt 0$, l’équation $e^y = x$ d’inconnue $y$ admet une unique solution réelle, notée $\\ln x$. La fonction $\\ln$, définie sur $]0\\,;+\\infty[$, est la **fonction logarithme népérien**. Pour $x \\gt 0$ et $y$ réel :\n\n$$y = \\ln x \\iff e^y = x$$\n:::\n\n::: propriete Conséquences immédiates\n- $\\ln 1 = 0$ et $\\ln e = 1$ ;\n- $e^{\\ln x} = x$ pour tout réel $x \\gt 0$ ;\n- $\\ln\\left(e^{x}\\right) = x$ pour tout réel $x$.\n:::\n\n::: remarque Courbes de $\\exp$ et de $\\ln$\nLes fonctions $\\exp$ et $\\ln$ sont **réciproques** l’une de l’autre : dans un repère orthonormé, leurs courbes sont symétriques par rapport à la droite d’équation $y = x$. Le point $(0\\,;1)$ de la courbe de $\\exp$ correspond au point $(1\\,;0)$ de celle de $\\ln$, et le point $(1\\,;e)$ au point $(e\\,;1)$.\n:::\n\n[IMAGE_1]\n\n## II. Propriétés algébriques\n\n::: theoreme Relation fonctionnelle\nPour tous réels $a \\gt 0$ et $b \\gt 0$ :\n\n$$\\ln(ab) = \\ln a + \\ln b$$\n:::\n\n::: demonstration\n$e^{\\ln a + \\ln b} = e^{\\ln a} \\times e^{\\ln b} = ab$ et $e^{\\ln(ab)} = ab$. Les deux nombres $\\ln a + \\ln b$ et $\\ln(ab)$ ont la même exponentielle ; la fonction exponentielle étant strictement croissante, ils sont égaux.\n:::\n\n::: propriete Conséquences\nPour tous réels $a \\gt 0$, $b \\gt 0$ et tout entier relatif $n$ :\n\n| Règle | Formule | Exemple |\n|---|---|---|\n| Inverse | $\\ln\\dfrac{1}{a} = -\\ln a$ | $\\ln\\dfrac{1}{8} = -3\\ln 2$ |\n| Quotient | $\\ln\\dfrac{a}{b} = \\ln a - \\ln b$ | $\\ln\\dfrac{5}{3} = \\ln 5 - \\ln 3$ |\n| Puissance | $\\ln\\left(a^n\\right) = n\\ln a$ | $\\ln 32 = 5\\ln 2$ |\n| Racine carrée | $\\ln\\sqrt{a} = \\dfrac{1}{2}\\ln a$ | $\\ln\\sqrt{e} = \\dfrac{1}{2}$ |\n:::\n\n::: exemple\n$\\ln 8 = \\ln\\left(2^3\\right) = 3\\ln 2$ ; $\\ln\\dfrac{1}{9} = -\\ln\\left(3^2\\right) = -2\\ln 3$.\n:::\n\n::: attention\n$\\ln(a + b) \\neq \\ln a + \\ln b$ : c’est le logarithme d’un **produit** qui se décompose en somme. Et $\\ln x$ n’existe que pour $x \\gt 0$ : on commence toujours par déterminer l’ensemble de définition.\n:::\n\n## III. Étude de la fonction ln\n\n::: theoreme Dérivée et variations\nLa fonction $\\ln$ est dérivable sur $]0\\,;+\\infty[$ et\n\n$$(\\ln x)' = \\frac{1}{x}$$\n\nComme $\\frac{1}{x} \\gt 0$ sur $]0\\,;+\\infty[$, la fonction $\\ln$ est **strictement croissante** sur $]0\\,;+\\infty[$.\n:::\n\n::: demonstration Calcul de la dérivée (dérivabilité admise)\nPour tout $x \\gt 0$, $e^{\\ln x} = x$. On dérive les deux membres ; la dérivée de $e^{u}$ est $u'e^{u}$, donc $(\\ln x)' \\times e^{\\ln x} = 1$, c’est-à-dire $(\\ln x)' \\times x = 1$. D’où $(\\ln x)' = \\dfrac{1}{x}$.\n:::\n\n::: propriete Conséquences\nPour tous réels $a \\gt 0$ et $b \\gt 0$ :\n- $\\ln a = \\ln b \\iff a = b$ et $\\ln a \\lt \\ln b \\iff a \\lt b$ ;\n- $\\ln x \\lt 0$ sur $]0\\,;1[$, $\\ln 1 = 0$ et $\\ln x \\gt 0$ sur $]1\\,;+\\infty[$.\n:::\n\n::: propriete Limites aux bornes\n$$\\lim_{x \\to 0^+} \\ln x = -\\infty \\qquad \\lim_{x \\to +\\infty} \\ln x = +\\infty$$\n\nL’axe des ordonnées (droite d’équation $x = 0$) est asymptote verticale à la courbe.\n:::\n\n::: tableau Variations de $\\ln$ sur $]0\\,;+\\infty[$\nx : 0, 1, +\\infty\n\\ln'(x) = \\frac{1}{x} : d, +, t, +,\n\\ln x : D-/-\\infty, =/0, +/+\\infty\n:::\n\n[IMAGE_2]\n\n::: remarque Position par rapport à la tangente en 1\nLa tangente en $1$ a pour équation $y = x - 1$ (car $\\ln 1 = 0$ et $\\ln'(1) = 1$). La courbe de $\\ln$ est située sous cette tangente : $\\ln x \\le x - 1$ pour tout $x \\gt 0$.\n:::\n\n::: theoreme Fonction $\\ln u$\nSi $u$ est dérivable et strictement positive sur un intervalle $I$, alors $\\ln u$ est dérivable sur $I$ et\n\n$$\\big(\\ln u\\big)' = \\frac{u'}{u}$$\n:::\n\n::: exemple\n$\\big(\\ln(x^2 + 1)\\big)' = \\dfrac{2x}{x^2 + 1}$ sur $\\mathbb{R}$, car $x^2 + 1 \\gt 0$ pour tout réel $x$.\n:::\n\n## IV. Limites et croissances comparées\n\n::: theoreme Croissances comparées\n$$\\lim_{x \\to +\\infty} \\frac{\\ln x}{x} = 0 \\qquad \\lim_{x \\to 0^+} x\\ln x = 0$$\n\nPlus généralement, pour tout entier $n \\ge 1$, $\\lim\\limits_{x \\to +\\infty} \\dfrac{\\ln x}{x^n} = 0$ et $\\lim\\limits_{x \\to 0^+} x^n\\ln x = 0$.\n:::\n\n::: demonstration Limite de $x\\ln x$ en $0$\nOn pose $X = \\ln x$, soit $x = e^{X}$. Quand $x \\to 0^+$, $X \\to -\\infty$, et $x\\ln x = Xe^{X}$. Or $\\lim\\limits_{X \\to -\\infty} Xe^{X} = 0$ (croissances comparées de l’exponentielle). Donc $\\lim\\limits_{x \\to 0^+} x\\ln x = 0$.\n:::\n\n[IMAGE_3]\n\n::: propriete Une limite remarquable\n$$\\lim_{x \\to 0} \\frac{\\ln(1 + x)}{x} = 1$$\n\nC’est le nombre dérivé en $0$ de la fonction $x \\mapsto \\ln(1 + x)$, qui vaut $\\dfrac{1}{1 + 0} = 1$.\n:::\n\n::: retenir\nEn $+\\infty$, toute puissance $x^n$ ($n \\ge 1$) « l’emporte » sur $\\ln x$ : la fonction $\\ln$ tend vers $+\\infty$, mais très lentement.\n:::\n\n## V. Équations, inéquations et seuils\n\n::: methode Résoudre une équation ou une inéquation avec $\\ln$\n1. Déterminer l’ensemble des réels pour lesquels tous les logarithmes existent.\n2. Se ramener à $\\ln A = \\ln B$ (ou $\\ln A \\lt \\ln B$), puis utiliser $A = B$ (ou $A \\lt B$), car $\\ln$ est strictement croissante.\n3. Garder seulement les solutions qui appartiennent à l’ensemble de l’étape 1.\n:::\n\n::: exemple\n- $e^{x} = 5 \\iff x = \\ln 5$.\n- $\\ln x \\le 2 \\iff 0 \\lt x \\le e^2$ : $S = \\left]0\\,;e^2\\right]$.\n- $\\ln(2x - 1) = \\ln(x + 3)$ : les deux logarithmes existent pour $x \\gt \\frac{1}{2}$. Alors $2x - 1 = x + 3$, d’où $x = 4$, qui convient : $S = \\{4\\}$.\n:::\n\n::: methode Déterminer un seuil\nPour résoudre $q^n \\gt A$ ou $q^n \\lt A$ (avec $q \\gt 0$ et $A \\gt 0$), on applique $\\ln$, qui conserve l’ordre, puis on utilise $\\ln\\left(q^n\\right) = n\\ln q$.\n:::\n\n::: exemple\n$$\n\\begin{aligned}\n2^n \\gt 1\\,000 &\\iff n\\ln 2 \\gt \\ln 1\\,000 \\\\\n&\\iff n \\gt \\frac{\\ln 1\\,000}{\\ln 2} \\approx 9{,}97\n\\end{aligned}\n$$\n\ndonc $n \\ge 10$. De même, comme $\\ln 0{,}8 \\lt 0$ :\n\n$$\n\\begin{aligned}\n0{,}8^n \\lt 0{,}001 &\\iff n\\ln 0{,}8 \\lt \\ln 0{,}001 \\\\\n&\\iff n \\gt \\frac{\\ln 0{,}001}{\\ln 0{,}8} \\approx 30{,}96\n\\end{aligned}\n$$\n\ndonc $n \\ge 31$.\n:::\n\n::: attention\nDiviser par $\\ln q$ change le sens de l’inégalité quand $0 \\lt q \\lt 1$, car alors $\\ln q \\lt 0$.\n:::\n\n::: exemple Demi-vie du carbone 14\nLa quantité de carbone 14 d’un échantillon suit $N(t) = N_0\\,e^{-\\lambda t}$ ($t$ en années). Elle est divisée par deux au bout du temps $T$ tel que $e^{-\\lambda T} = \\frac{1}{2}$, soit $-\\lambda T = -\\ln 2$, donc $T = \\dfrac{\\ln 2}{\\lambda}$. Avec $T = 5\\,730$ ans : $\\lambda = \\dfrac{\\ln 2}{5\\,730} \\approx 1{,}21 \\times 10^{-4}$ par an.\n:::\n\n[IMAGE_4]\n\n::: retenir\n- $y = \\ln x \\iff e^y = x$ ($x \\gt 0$) ; $\\ln(ab) = \\ln a + \\ln b$ ; $\\ln\\left(a^n\\right) = n\\ln a$.\n- $(\\ln x)' = \\dfrac{1}{x}$ ; $(\\ln u)' = \\dfrac{u'}{u}$ ; $\\ln$ est strictement croissante.\n- $\\lim\\limits_{x \\to 0^+} \\ln x = -\\infty$ ; $\\lim\\limits_{x \\to +\\infty} \\ln x = +\\infty$ ; $\\dfrac{\\ln x}{x} \\to 0$ en $+\\infty$ ; $x\\ln x \\to 0$ en $0^+$.\n- On « prend le logarithme » pour résoudre $q^n \\gt A$. Fiche de synthèse dans l’onglet Fiches !\n:::"
+  }
+ ],
+ "fiches": [
+  {
+   "id": 31,
+   "summary": "<!-- optitab:1 -->\n::: objectifs\nRetenir l’essentiel : définition, règles de calcul, dérivée, limites, résolution d’équations et de seuils. Programme de Terminale.\n:::\n\n## I. Définition et règles\n\n::: formule\n$y = \\ln x \\iff e^y = x \\quad (x \\gt 0)$\n:::\n\n1. $\\ln 1 = 0$, $\\ln e = 1$, $e^{\\ln x} = x$ pour $x \\gt 0$, $\\ln\\left(e^x\\right) = x$ pour tout réel $x$.\n2. $\\ln(ab) = \\ln a + \\ln b$ ; $\\ln\\dfrac{a}{b} = \\ln a - \\ln b$ ; $\\ln\\left(a^n\\right) = n\\ln a$ ; $\\ln\\sqrt{a} = \\dfrac{1}{2}\\ln a$.\n3. Courbes de $\\exp$ et $\\ln$ symétriques par rapport à la droite $y = x$.\n\n[IMAGE_1]\n\n## II. Étude de la fonction ln\n\n::: tableau\nx : 0, 1, +\\infty\n\\ln'(x) = \\frac{1}{x} : d, +, t, +,\n\\ln x : D-/-\\infty, =/0, +/+\\infty\n:::\n\n1. $(\\ln x)' = \\dfrac{1}{x}$ ; $(\\ln u)' = \\dfrac{u'}{u}$ (avec $u \\gt 0$).\n2. $\\ln a \\lt \\ln b \\iff a \\lt b$ ; $\\ln x \\lt 0$ sur $]0\\,;1[$, $\\ln x \\gt 0$ sur $]1\\,;+\\infty[$.\n3. $\\lim\\limits_{x \\to 0^+} \\ln x = -\\infty$ ; $\\lim\\limits_{x \\to +\\infty} \\ln x = +\\infty$.\n4. Croissances comparées : $\\dfrac{\\ln x}{x} \\to 0$ en $+\\infty$ ; $x\\ln x \\to 0$ en $0^+$ ; $\\dfrac{\\ln(1 + x)}{x} \\to 1$ en $0$.\n\n[IMAGE_2]\n\n## III. Équations et seuils\n\n1. Ensemble de définition d’abord, puis $\\ln A = \\ln B \\iff A = B$ et $\\ln A \\lt \\ln B \\iff A \\lt B$.\n2. Seuil : $q^n \\gt A \\iff n\\ln q \\gt \\ln A$, puis on divise par $\\ln q$ (sens inversé si $0 \\lt q \\lt 1$).\n\n## IV. Les pièges à éviter\n\n::: attention Les 4 erreurs classiques\n1. Oublier le domaine : $\\ln u$ exige $u \\gt 0$.\n2. Écrire $\\ln(a + b) = \\ln a + \\ln b$.\n3. Diviser par $\\ln q \\lt 0$ sans changer le sens de l’inégalité.\n4. Oublier de vérifier que la solution trouvée appartient au domaine.\n:::\n\n::: remarque Réflexe\nInconnue en exposant → je « prends le logarithme » ; inconnue dans un $\\ln$ → domaine, puis j’applique l’exponentielle.\n:::"
+  }
+ ],
+ "exercices": [
+  {
+   "id": 1244,
+   "question": "<!-- optitab:1 -->\nCalculer les valeurs exactes suivantes.\n\n1. $\\ln\\sqrt{e}$\n2. $\\ln\\left(e^5\\right)$\n3. $\\ln\\left(\\dfrac{1}{e^2}\\right)$\n4. $\\ln\\sqrt[3]{e}$, où $\\sqrt[3]{e} = e^{\\frac{1}{3}}$ désigne la racine cubique de $e$\n5. $\\ln\\left(e^{2x - 1}\\right)$ pour $x = 3$",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Calculer $\\ln\\sqrt{e}$\n\n::: methode\nÉcrire le nombre comme une puissance de $e$, puis utiliser $\\ln\\left(e^a\\right) = a$.\n:::\n\n::: etape Écrire la racine carrée comme une puissance\n$$\\sqrt{e} = e^{\\frac{1}{2}}$$\n:::\n\n::: etape Appliquer $\\ln\\left(e^a\\right) = a$\n$$\\ln\\sqrt{e} = \\ln\\left(e^{\\frac{1}{2}}\\right) = \\frac{1}{2}$$\n:::\n\n::: resultat\n$$\\ln\\sqrt{e} = \\frac{1}{2}$$\n:::\n\n::: retenir\nPour tout réel $a$, $\\ln\\left(e^a\\right) = a$ : le logarithme « annule » l’exponentielle.\n:::\n\n## Question 2 : Calculer $\\ln\\left(e^5\\right)$\n\n::: methode\nApplication directe de $\\ln\\left(e^a\\right) = a$.\n:::\n\n::: etape Appliquer la propriété avec $a = 5$\n$$\\ln\\left(e^5\\right) = 5$$\n:::\n\n::: resultat\n$$\\ln\\left(e^5\\right) = 5$$\n:::\n\n## Question 3 : Calculer $\\ln\\left(\\dfrac{1}{e^2}\\right)$\n\n::: methode\nÉcrire $\\dfrac{1}{e^2}$ comme une puissance de $e$.\n:::\n\n::: etape Écrire l’inverse comme une puissance\n$$\\frac{1}{e^2} = e^{-2}$$\n:::\n\n::: etape Appliquer $\\ln\\left(e^a\\right) = a$\n$$\\ln\\left(\\frac{1}{e^2}\\right) = \\ln\\left(e^{-2}\\right) = -2$$\n:::\n\n::: etape Vérification avec la règle de l’inverse\n$$\\ln\\left(\\frac{1}{e^2}\\right) = -\\ln\\left(e^2\\right) = -2$$\n:::\n\n::: resultat\n$$\\ln\\left(\\frac{1}{e^2}\\right) = -2$$\n:::\n\n## Question 4 : Calculer $\\ln\\sqrt[3]{e}$\n\n::: methode\nUtiliser l’écriture $\\sqrt[3]{e} = e^{\\frac{1}{3}}$ donnée par l’énoncé.\n:::\n\n::: etape Appliquer $\\ln\\left(e^a\\right) = a$ avec $a = \\frac{1}{3}$\n$$\\ln\\sqrt[3]{e} = \\ln\\left(e^{\\frac{1}{3}}\\right) = \\frac{1}{3}$$\n:::\n\n::: resultat\n$$\\ln\\sqrt[3]{e} = \\frac{1}{3}$$\n:::\n\n## Question 5 : Calculer $\\ln\\left(e^{2x - 1}\\right)$ pour $x = 3$\n\n::: methode\nSimplifier d’abord l’expression pour tout réel $x$, puis remplacer $x$ par $3$.\n:::\n\n::: etape Simplifier pour tout réel $x$\n$$\\ln\\left(e^{2x - 1}\\right) = 2x - 1$$\n:::\n\n::: etape Remplacer $x$ par $3$\n$$2 \\times 3 - 1 = 5$$\n:::\n\n::: resultat\nPour $x = 3$ : $\\ln\\left(e^{2x - 1}\\right) = 5$.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $\\ln\\sqrt{e} = \\dfrac{1}{2}$\n2. $\\ln\\left(e^5\\right) = 5$\n3. $\\ln\\left(\\dfrac{1}{e^2}\\right) = -2$\n4. $\\ln\\sqrt[3]{e} = \\dfrac{1}{3}$\n5. Pour $x = 3$ : $\\ln\\left(e^{2x - 1}\\right) = 2 \\times 3 - 1 = 5$",
+   "titre": "Découverte - Fonction Logarithme - Calculs avec Puissances et Racines",
+   "difficulty": "easy",
+   "contenu": "Calculer les valeurs exactes des expressions logarithmiques suivantes.\n**Question 1 :** Calculer $\\displaystyle \\ln(\\sqrt{e})$\n$\\\\$\n**Question 2 :** Calculer $\\displaystyle \\ln(e^5)$\n$\\\\$\n**Question 3 :** Calculer $\\displaystyle \\ln\\left(\\frac{1}{e^2}\\right)$\n$\\\\$\n**Question 4 :** Calculer $\\displaystyle \\ln(\\sqrt[3]{e})$\n$\\\\$\n**Question 5 :** Calculer $\\displaystyle \\ln(e^{2x-1})$ pour $\\displaystyle x = 3$"
+  },
+  {
+   "id": 1243,
+   "question": "<!-- optitab:1 -->\nSimplifier les expressions suivantes à l’aide des propriétés du logarithme népérien.\n\n1. $\\ln 8 + \\ln 2$\n2. $\\ln 27 - \\ln 3$\n3. $2\\ln 5 + 3\\ln 2$ (écrire sous la forme d’un seul logarithme)\n4. $\\ln\\left(\\dfrac{16}{9}\\right) + \\ln\\left(\\dfrac{3}{4}\\right)$\n5. $\\ln\\left(e^3\\right) + \\ln\\left(e^{-2}\\right) - \\ln e$",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Simplifier $\\ln 8 + \\ln 2$\n\n::: methode\nRegrouper avec $\\ln a + \\ln b = \\ln(ab)$, puis écrire le résultat comme une puissance de $2$.\n:::\n\n::: etape Appliquer la règle du produit\n$$\\ln 8 + \\ln 2 = \\ln(8 \\times 2) = \\ln 16$$\n:::\n\n::: etape Écrire $16$ comme une puissance de $2$\n$$\\ln 16 = \\ln\\left(2^4\\right) = 4\\ln 2$$\n:::\n\n::: resultat\n$$\\ln 8 + \\ln 2 = 4\\ln 2$$\n:::\n\n::: attention\nLa règle porte sur le logarithme d’un **produit** : $\\ln 8 + \\ln 2 = \\ln 16$, et surtout pas $\\ln 10$.\n:::\n\n## Question 2 : Simplifier $\\ln 27 - \\ln 3$\n\n::: methode\nRegrouper avec $\\ln a - \\ln b = \\ln\\dfrac{a}{b}$.\n:::\n\n::: etape Appliquer la règle du quotient\n$$\\ln 27 - \\ln 3 = \\ln\\left(\\frac{27}{3}\\right) = \\ln 9$$\n:::\n\n::: etape Écrire $9$ comme une puissance de $3$\n$$\\ln 9 = \\ln\\left(3^2\\right) = 2\\ln 3$$\n:::\n\n::: resultat\n$$\\ln 27 - \\ln 3 = 2\\ln 3$$\n:::\n\n## Question 3 : Écrire $2\\ln 5 + 3\\ln 2$ sous la forme d’un seul logarithme\n\n::: methode\nFaire « rentrer » les coefficients avec $n\\ln a = \\ln\\left(a^n\\right)$, puis regrouper.\n:::\n\n::: etape Règle de la puissance\n- $2\\ln 5 = \\ln\\left(5^2\\right) = \\ln 25$\n- $3\\ln 2 = \\ln\\left(2^3\\right) = \\ln 8$\n:::\n\n::: etape Règle du produit\n$$\\ln 25 + \\ln 8 = \\ln(25 \\times 8) = \\ln 200$$\n:::\n\n::: resultat\n$$2\\ln 5 + 3\\ln 2 = \\ln 200$$\n:::\n\n## Question 4 : Simplifier $\\ln\\left(\\dfrac{16}{9}\\right) + \\ln\\left(\\dfrac{3}{4}\\right)$\n\n::: methode\nRegrouper avec $\\ln a + \\ln b = \\ln(ab)$, puis simplifier la fraction.\n:::\n\n::: etape Règle du produit\n$$\\ln\\left(\\frac{16}{9}\\right) + \\ln\\left(\\frac{3}{4}\\right) = \\ln\\left(\\frac{16}{9} \\times \\frac{3}{4}\\right)$$\n:::\n\n::: etape Simplifier le produit\n$$\n\\begin{aligned}\n\\frac{16}{9} \\times \\frac{3}{4} &= \\frac{16 \\times 3}{9 \\times 4} \\\\\n&= \\frac{4 \\times 4 \\times 3}{3 \\times 3 \\times 4} \\\\\n&= \\frac{4}{3}\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$$\\ln\\left(\\frac{16}{9}\\right) + \\ln\\left(\\frac{3}{4}\\right) = \\ln\\left(\\frac{4}{3}\\right)$$\n:::\n\n## Question 5 : Simplifier $\\ln\\left(e^3\\right) + \\ln\\left(e^{-2}\\right) - \\ln e$\n\n::: methode\nSimplifier chaque terme avec $\\ln\\left(e^a\\right) = a$.\n:::\n\n::: etape Simplifier chaque terme\n- $\\ln\\left(e^3\\right) = 3$\n- $\\ln\\left(e^{-2}\\right) = -2$\n- $\\ln e = 1$\n:::\n\n::: etape Calculer\n$$3 + (-2) - 1 = 0$$\n:::\n\n::: resultat\n$$\\ln\\left(e^3\\right) + \\ln\\left(e^{-2}\\right) - \\ln e = 0$$\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $\\ln 8 + \\ln 2 = \\ln 16 = 4\\ln 2$\n2. $\\ln 27 - \\ln 3 = \\ln 9 = 2\\ln 3$\n3. $2\\ln 5 + 3\\ln 2 = \\ln 200$\n4. $\\ln\\left(\\dfrac{16}{9}\\right) + \\ln\\left(\\dfrac{3}{4}\\right) = \\ln\\left(\\dfrac{4}{3}\\right)$\n5. $\\ln\\left(e^3\\right) + \\ln\\left(e^{-2}\\right) - \\ln e = 0$",
+   "titre": "Découverte - Fonction Logarithme - Propriétés Algébriques et Calculs",
+   "difficulty": "easy",
+   "contenu": "Simplifier les expressions logarithmiques suivantes en utilisant les propriétés du logarithme népérien.\n**Question 1 :** Simplifier $\\displaystyle \\ln(8) + \\ln(2)$\n$\\\\$\n**Question 2 :** Simplifier $\\displaystyle \\ln(27) - \\ln(3)$\n$\\\\$\n**Question 3 :** Simplifier $\\displaystyle 2\\ln(5) + 3\\ln(2)$\n$\\\\$\n**Question 4 :** Simplifier $\\displaystyle \\ln\\left(\\frac{16}{9}\\right) + \\ln\\left(\\frac{3}{4}\\right)$\n$\\\\$\n**Question 5 :** Simplifier $\\displaystyle \\ln(e^3) + \\ln(e^{-2}) - \\ln(e)$"
+  },
+  {
+   "id": 1245,
+   "question": "<!-- optitab:1 -->\nPour chacune des fonctions suivantes, préciser l’ensemble de définition puis calculer la dérivée.\n\n1. $f(x) = \\ln(3x + 1)$\n2. $g(x) = \\ln\\left(x^2 - 4\\right)$\n3. $h(x) = x^2\\ln x$\n4. $k(x) = \\dfrac{\\ln x}{x}$\n5. $m(x) = \\ln\\sqrt{x^2 + 1}$",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Dériver $f(x) = \\ln(3x + 1)$\n\n::: methode\nDérivée de $\\ln u$ : $\\big(\\ln u\\big)' = \\dfrac{u'}{u}$, avec $u \\gt 0$.\n:::\n\n::: etape Ensemble de définition\n$3x + 1 \\gt 0 \\iff x \\gt -\\frac{1}{3}$, donc $D_f = \\left]-\\frac{1}{3}\\,;+\\infty\\right[$.\n:::\n\n::: etape Identifier $u$ et calculer $u'$\n$f = \\ln u$ avec $u(x) = 3x + 1$, donc $u'(x) = 3$.\n:::\n\n::: etape Appliquer la formule\n$$f'(x) = \\frac{u'(x)}{u(x)} = \\frac{3}{3x + 1}$$\n:::\n\n::: resultat\nPour tout $x \\gt -\\frac{1}{3}$ : $f'(x) = \\dfrac{3}{3x + 1}$.\n:::\n\n## Question 2 : Dériver $g(x) = \\ln\\left(x^2 - 4\\right)$\n\n::: methode\nEnsemble de définition par le signe de $x^2 - 4$, puis $\\big(\\ln u\\big)' = \\dfrac{u'}{u}$.\n:::\n\n::: etape Ensemble de définition\n$x^2 - 4 = (x - 2)(x + 2)$ est strictement positif à l’extérieur des racines $-2$ et $2$ :\n\n$$D_g = ]-\\infty\\,;-2[ \\cup ]2\\,;+\\infty[$$\n:::\n\n::: etape Identifier $u$ et calculer $u'$\n$g = \\ln u$ avec $u(x) = x^2 - 4$, donc $u'(x) = 2x$.\n:::\n\n::: etape Appliquer la formule\n$$g'(x) = \\frac{2x}{x^2 - 4}$$\n:::\n\n::: resultat\nPour tout $x \\in D_g$ : $g'(x) = \\dfrac{2x}{x^2 - 4}$.\n:::\n\n## Question 3 : Dériver $h(x) = x^2\\ln x$\n\n::: methode\nDérivée d’un produit : $(uv)' = u'v + uv'$.\n:::\n\n::: etape Ensemble de définition\n$\\ln x$ existe pour $x \\gt 0$ : $D_h = ]0\\,;+\\infty[$.\n:::\n\n::: etape Identifier $u$ et $v$\n$u(x) = x^2$ et $v(x) = \\ln x$, donc $u'(x) = 2x$ et $v'(x) = \\frac{1}{x}$.\n:::\n\n::: etape Appliquer la formule et factoriser\n$$\n\\begin{aligned}\nh'(x) &= 2x \\times \\ln x + x^2 \\times \\frac{1}{x} \\\\\n&= 2x\\ln x + x \\\\\n&= x(2\\ln x + 1)\n\\end{aligned}\n$$\n:::\n\n::: resultat\nPour tout $x \\gt 0$ : $h'(x) = x(2\\ln x + 1)$.\n:::\n\n## Question 4 : Dériver $k(x) = \\dfrac{\\ln x}{x}$\n\n::: methode\nDérivée d’un quotient : $\\left(\\dfrac{u}{v}\\right)' = \\dfrac{u'v - uv'}{v^2}$.\n:::\n\n::: etape Ensemble de définition\n$\\ln x$ existe pour $x \\gt 0$, et alors $x \\neq 0$ : $D_k = ]0\\,;+\\infty[$.\n:::\n\n::: etape Identifier $u$ et $v$\n$u(x) = \\ln x$ et $v(x) = x$, donc $u'(x) = \\frac{1}{x}$ et $v'(x) = 1$.\n:::\n\n::: etape Appliquer la formule\n$$\n\\begin{aligned}\nk'(x) &= \\frac{\\frac{1}{x} \\times x - \\ln x \\times 1}{x^2} \\\\\n&= \\frac{1 - \\ln x}{x^2}\n\\end{aligned}\n$$\n:::\n\n::: resultat\nPour tout $x \\gt 0$ : $k'(x) = \\dfrac{1 - \\ln x}{x^2}$.\n:::\n\n## Question 5 : Dériver $m(x) = \\ln\\sqrt{x^2 + 1}$\n\n::: methode\nSimplifier d’abord avec $\\ln\\sqrt{a} = \\dfrac{1}{2}\\ln a$, puis dériver $\\ln u$.\n:::\n\n::: etape Ensemble de définition\n$x^2 + 1 \\ge 1 \\gt 0$ pour tout réel $x$ : $D_m = \\mathbb{R}$.\n:::\n\n::: etape Simplifier l’expression\n$$m(x) = \\ln\\left(\\left(x^2 + 1\\right)^{\\frac{1}{2}}\\right) = \\frac{1}{2}\\ln\\left(x^2 + 1\\right)$$\n:::\n\n::: etape Dériver avec $u(x) = x^2 + 1$, $u'(x) = 2x$\n$$\n\\begin{aligned}\nm'(x) &= \\frac{1}{2} \\times \\frac{2x}{x^2 + 1} \\\\\n&= \\frac{x}{x^2 + 1}\n\\end{aligned}\n$$\n:::\n\n::: resultat\nPour tout réel $x$ : $m'(x) = \\dfrac{x}{x^2 + 1}$.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. Sur $\\left]-\\frac{1}{3}\\,;+\\infty\\right[$ : $f'(x) = \\dfrac{3}{3x + 1}$\n2. Sur $]-\\infty\\,;-2[ \\cup ]2\\,;+\\infty[$ : $g'(x) = \\dfrac{2x}{x^2 - 4}$\n3. Sur $]0\\,;+\\infty[$ : $h'(x) = x(2\\ln x + 1)$\n4. Sur $]0\\,;+\\infty[$ : $k'(x) = \\dfrac{1 - \\ln x}{x^2}$\n5. Sur $\\mathbb{R}$ : $m'(x) = \\dfrac{x}{x^2 + 1}$",
+   "titre": "Entraînement - Fonction Logarithme - Dérivées et Calculs",
+   "difficulty": "medium",
+   "contenu": "Calculer les dérivées des fonctions suivantes.\n**Question 1 :** Dériver $\\displaystyle f(x) = \\ln(3x + 1)$\n$\\\\$\n**Question 2 :** Dériver $\\displaystyle g(x) = \\ln(x^2 - 4)$\n$\\\\$\n**Question 3 :** Dériver $\\displaystyle h(x) = x^2 \\ln(x)$\n$\\\\$\n**Question 4 :** Dériver $\\displaystyle k(x) = \\frac{\\ln(x)}{x}$\n$\\\\$\n**Question 5 :** Dériver $\\displaystyle m(x) = \\ln(\\sqrt{x^2 + 1})$"
+  },
+  {
+   "id": 1247,
+   "question": "<!-- optitab:1 -->\nRésoudre dans $\\mathbb{R}$ les équations suivantes, après avoir déterminé l’ensemble des réels pour lesquels elles ont un sens.\n\n1. $\\ln(x + 2) = \\ln(3x - 1)$\n2. $\\ln x = 2$\n3. $\\ln\\left(x^2 - 4\\right) - \\ln(x - 2) = 1$\n4. $\\ln(x + 1) + \\ln(x - 1) = \\ln 8$\n5. $2\\ln x = \\ln\\left(x^2 + 3\\right)$",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Résoudre $\\ln(x + 2) = \\ln(3x - 1)$\n\n::: methode\nDomaine d’abord, puis $\\ln a = \\ln b \\iff a = b$.\n:::\n\n::: etape Ensemble de résolution\nIl faut $x + 2 \\gt 0$ et $3x - 1 \\gt 0$, soit $x \\gt -2$ et $x \\gt \\frac{1}{3}$. On résout donc sur $I = \\left]\\frac{1}{3}\\,;+\\infty\\right[$.\n:::\n\n::: etape Résoudre l’équation sur $I$\n$$\n\\begin{aligned}\n\\ln(x + 2) = \\ln(3x - 1) &\\iff x + 2 = 3x - 1 \\\\\n&\\iff 3 = 2x \\\\\n&\\iff x = \\frac{3}{2}\n\\end{aligned}\n$$\n:::\n\n::: etape Vérifier l’appartenance au domaine\n$\\frac{3}{2} \\gt \\frac{1}{3}$ : la valeur convient.\n:::\n\n::: resultat\n$$S = \\left\\{\\frac{3}{2}\\right\\}$$\n:::\n\n[IMAGE_1]\n\n## Question 2 : Résoudre $\\ln x = 2$\n\n::: methode\nPour tout réel $k$ : $\\ln x = k \\iff x = e^k$.\n:::\n\n::: etape Ensemble de résolution\n$\\ln x$ existe pour $x \\gt 0$.\n:::\n\n::: etape Appliquer l’exponentielle\n$$\\ln x = 2 \\iff x = e^2$$\n\net $e^2 \\approx 7{,}39 \\gt 0$ convient.\n:::\n\n::: resultat\n$$S = \\left\\{e^2\\right\\}$$\n:::\n\n[IMAGE_2]\n\n## Question 3 : Résoudre $\\ln\\left(x^2 - 4\\right) - \\ln(x - 2) = 1$\n\n::: methode\nDomaine d’abord (les deux logarithmes doivent exister), puis règle du quotient.\n:::\n\n::: etape Ensemble de résolution\n- $\\ln(x - 2)$ existe si $x \\gt 2$ ;\n- $\\ln\\left(x^2 - 4\\right)$ existe si $x^2 - 4 \\gt 0$, soit $x \\lt -2$ ou $x \\gt 2$.\n\nLes deux existent si et seulement si $x \\gt 2$ : on résout sur $I = ]2\\,;+\\infty[$.\n:::\n\n::: etape Transformer l’équation sur $I$\n$$\n\\begin{aligned}\n\\ln\\left(x^2 - 4\\right) - \\ln(x - 2) &= \\ln\\left(\\frac{x^2 - 4}{x - 2}\\right) \\\\\n&= \\ln\\left(\\frac{(x - 2)(x + 2)}{x - 2}\\right) \\\\\n&= \\ln(x + 2)\n\\end{aligned}\n$$\n:::\n\n::: etape Résoudre\n$$\n\\begin{aligned}\n\\ln(x + 2) = 1 &\\iff x + 2 = e \\\\\n&\\iff x = e - 2\n\\end{aligned}\n$$\n:::\n\n::: etape Vérifier l’appartenance au domaine\n$e - 2 \\approx 0{,}72$ et $0{,}72 \\lt 2$ : cette valeur n’appartient pas à $I$, elle est rejetée.\n:::\n\n::: resultat\n$$S = \\varnothing$$\n:::\n\n::: attention\nSans l’étude préalable du domaine, on conclurait à tort $S = \\{e - 2\\}$. Sur $I$, l’expression vaut $\\ln(x + 2) \\gt \\ln 4 \\approx 1{,}39$ : elle ne peut pas valoir $1$.\n:::\n\n[IMAGE_3]\n\n## Question 4 : Résoudre $\\ln(x + 1) + \\ln(x - 1) = \\ln 8$\n\n::: methode\nDomaine d’abord, puis règle du produit et $\\ln a = \\ln b \\iff a = b$.\n:::\n\n::: etape Ensemble de résolution\nIl faut $x + 1 \\gt 0$ et $x - 1 \\gt 0$, soit $x \\gt 1$ : $I = ]1\\,;+\\infty[$.\n:::\n\n::: etape Regrouper les logarithmes sur $I$\n$$\n\\begin{aligned}\n\\ln(x + 1) + \\ln(x - 1) &= \\ln\\big((x + 1)(x - 1)\\big) \\\\\n&= \\ln\\left(x^2 - 1\\right)\n\\end{aligned}\n$$\n:::\n\n::: etape Résoudre\n$$\n\\begin{aligned}\n\\ln\\left(x^2 - 1\\right) = \\ln 8 &\\iff x^2 - 1 = 8 \\\\\n&\\iff x^2 = 9 \\\\\n&\\iff x = 3 \\text{ ou } x = -3\n\\end{aligned}\n$$\n:::\n\n::: etape Vérifier l’appartenance au domaine\n$3 \\in I$ convient ; $-3 \\notin I$ est rejeté.\n:::\n\n::: resultat\n$$S = \\{3\\}$$\n:::\n\n[IMAGE_4]\n\n## Question 5 : Résoudre $2\\ln x = \\ln\\left(x^2 + 3\\right)$\n\n::: methode\nDomaine d’abord, puis $2\\ln x = \\ln\\left(x^2\\right)$ (valable pour $x \\gt 0$).\n:::\n\n::: etape Ensemble de résolution\n$\\ln x$ existe pour $x \\gt 0$ et $x^2 + 3 \\gt 0$ toujours : $I = ]0\\,;+\\infty[$.\n:::\n\n::: etape Transformer et résoudre\n$$\n\\begin{aligned}\n2\\ln x = \\ln\\left(x^2 + 3\\right) &\\iff \\ln\\left(x^2\\right) = \\ln\\left(x^2 + 3\\right) \\\\\n&\\iff x^2 = x^2 + 3 \\\\\n&\\iff 0 = 3\n\\end{aligned}\n$$\n\nLa dernière égalité est fausse : l’équation n’a aucune solution.\n:::\n\n::: resultat\n$$S = \\varnothing$$\n:::\n\n::: remarque\nGraphiquement, la courbe de $y = \\ln\\left(x^2 + 3\\right)$ est toujours au-dessus de celle de $y = 2\\ln x$ : l’écart vaut $\\ln\\left(1 + \\frac{3}{x^2}\\right) \\gt 0$.\n:::\n\n[IMAGE_5]",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. Sur $\\left]\\frac{1}{3}\\,;+\\infty\\right[$ : $S = \\left\\{\\dfrac{3}{2}\\right\\}$\n2. $S = \\left\\{e^2\\right\\}$\n3. Sur $]2\\,;+\\infty[$, la seule valeur trouvée, $e - 2 \\approx 0{,}72$, est rejetée : $S = \\varnothing$\n4. Sur $]1\\,;+\\infty[$ : $S = \\{3\\}$ ($-3$ est rejeté)\n5. $S = \\varnothing$",
+   "titre": "Entraînement - Fonction Logarithme - Équations Logarithmiques",
+   "difficulty": "medium",
+   "contenu": "Résoudre les équations logarithmiques suivantes.\n**Question 1 :** Résoudre $\\displaystyle \\ln(x + 2) = \\ln(3x - 1)$\n$\\\\$\n**Question 2 :** Résoudre $\\displaystyle \\ln(x) = 2$\n$\\\\$\n**Question 3 :** Résoudre $\\displaystyle \\ln(x^2 - 4) - \\ln(x - 2) = 1$\n$\\\\$\n**Question 4 :** Résoudre $\\displaystyle \\ln(x + 1) + \\ln(x - 1) = \\ln(8)$\n$\\\\$\n**Question 5 :** Résoudre $\\displaystyle 2\\ln(x) = \\ln(x^2 + 3)$"
+  },
+  {
+   "id": 1248,
+   "question": "<!-- optitab:1 -->\nRésoudre dans $\\mathbb{R}$ les inéquations suivantes, après avoir déterminé l’ensemble des réels pour lesquels elles ont un sens.\n\n1. $\\ln(x + 1) \\lt \\ln(2x)$\n2. $\\ln x \\ge -1$\n3. $\\ln(2x + 3) \\le 0$\n4. $\\ln\\left(x^2 - 1\\right) \\gt \\ln 3$\n5. $\\ln x + \\ln(x - 2) \\le \\ln 8$",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Résoudre $\\ln(x + 1) \\lt \\ln(2x)$\n\n::: methode\nDomaine d’abord, puis $\\ln a \\lt \\ln b \\iff a \\lt b$ (la fonction $\\ln$ est strictement croissante).\n:::\n\n::: etape Ensemble de résolution\nIl faut $x + 1 \\gt 0$ et $2x \\gt 0$, soit $x \\gt -1$ et $x \\gt 0$ : $I = ]0\\,;+\\infty[$.\n:::\n\n::: etape Résoudre sur $I$\n$$\n\\begin{aligned}\n\\ln(x + 1) \\lt \\ln(2x) &\\iff x + 1 \\lt 2x \\\\\n&\\iff 1 \\lt x\n\\end{aligned}\n$$\n:::\n\n::: etape Intersection avec $I$\n$x \\gt 0$ et $x \\gt 1$ donnent $x \\gt 1$.\n:::\n\n::: resultat\n$$S = ]1\\,;+\\infty[$$\n:::\n\n[IMAGE_1]\n\n## Question 2 : Résoudre $\\ln x \\ge -1$\n\n::: methode\nÉcrire $-1 = \\ln\\left(e^{-1}\\right)$, puis utiliser la croissance de $\\ln$.\n:::\n\n::: etape Ensemble de résolution\n$\\ln x$ existe pour $x \\gt 0$.\n:::\n\n::: etape Résoudre\n$$\n\\begin{aligned}\n\\ln x \\ge -1 &\\iff \\ln x \\ge \\ln\\left(e^{-1}\\right) \\\\\n&\\iff x \\ge e^{-1} = \\frac{1}{e}\n\\end{aligned}\n$$\n:::\n\n::: etape Intersection avec $]0\\,;+\\infty[$\nComme $\\frac{1}{e} \\gt 0$, la condition $x \\ge \\frac{1}{e}$ suffit.\n:::\n\n::: resultat\n$$S = \\left[\\frac{1}{e}\\,;+\\infty\\right[$$\n:::\n\n[IMAGE_2]\n\n## Question 3 : Résoudre $\\ln(2x + 3) \\le 0$\n\n::: methode\nÉcrire $0 = \\ln 1$, puis utiliser la croissance de $\\ln$.\n:::\n\n::: etape Ensemble de résolution\n$2x + 3 \\gt 0 \\iff x \\gt -\\frac{3}{2}$ : $I = \\left]-\\frac{3}{2}\\,;+\\infty\\right[$.\n:::\n\n::: etape Résoudre sur $I$\n$$\n\\begin{aligned}\n\\ln(2x + 3) \\le \\ln 1 &\\iff 2x + 3 \\le 1 \\\\\n&\\iff 2x \\le -2 \\\\\n&\\iff x \\le -1\n\\end{aligned}\n$$\n:::\n\n::: etape Intersection avec $I$\n$x \\gt -\\frac{3}{2}$ et $x \\le -1$ donnent $-\\frac{3}{2} \\lt x \\le -1$.\n:::\n\n::: resultat\n$$S = \\left]-\\frac{3}{2}\\,;-1\\right]$$\n:::\n\n::: attention\nNe pas oublier la borne $-\\frac{3}{2}$, exclue : $\\ln(2x + 3) \\le 0$ signifie $0 \\lt 2x + 3 \\le 1$, et pas seulement $2x + 3 \\le 1$.\n:::\n\n[IMAGE_3]\n\n## Question 4 : Résoudre $\\ln\\left(x^2 - 1\\right) \\gt \\ln 3$\n\n::: methode\nDomaine par le signe de $x^2 - 1$, puis croissance de $\\ln$ et signe de $x^2 - 4$.\n:::\n\n::: etape Ensemble de résolution\n$x^2 - 1 = (x - 1)(x + 1) \\gt 0$ à l’extérieur des racines : $I = ]-\\infty\\,;-1[ \\cup ]1\\,;+\\infty[$.\n:::\n\n::: etape Se ramener à une inéquation du second degré\n$$\n\\begin{aligned}\n\\ln\\left(x^2 - 1\\right) \\gt \\ln 3 &\\iff x^2 - 1 \\gt 3 \\\\\n&\\iff x^2 - 4 \\gt 0 \\\\\n&\\iff (x - 2)(x + 2) \\gt 0\n\\end{aligned}\n$$\n:::\n\n::: point Signe de $x^2 - 4$\n::: tableau\nx : -\\infty, -2, 2, +\\infty\nx^2 - 4 : , +, z, -, z, +,\n:::\n:::\n\n::: etape Intersection avec $I$\n$x^2 - 4 \\gt 0$ pour $x \\in ]-\\infty\\,;-2[ \\cup ]2\\,;+\\infty[$. Cet ensemble est contenu dans $I$ (car $x^2 \\gt 4$ entraîne $x^2 \\gt 1$).\n:::\n\n::: resultat\n$$S = ]-\\infty\\,;-2[ \\cup ]2\\,;+\\infty[$$\n:::\n\n[IMAGE_4]\n\n## Question 5 : Résoudre $\\ln x + \\ln(x - 2) \\le \\ln 8$\n\n::: methode\nDomaine d’abord, puis règle du produit, croissance de $\\ln$ et signe d’un trinôme.\n:::\n\n::: etape Ensemble de résolution\nIl faut $x \\gt 0$ et $x - 2 \\gt 0$, soit $x \\gt 2$ : $I = ]2\\,;+\\infty[$.\n:::\n\n::: etape Regrouper et appliquer la croissance de $\\ln$ sur $I$\n$$\n\\begin{aligned}\n\\ln x + \\ln(x - 2) \\le \\ln 8 &\\iff \\ln\\big(x(x - 2)\\big) \\le \\ln 8 \\\\\n&\\iff x^2 - 2x \\le 8 \\\\\n&\\iff x^2 - 2x - 8 \\le 0\n\\end{aligned}\n$$\n:::\n\n::: etape Factoriser le trinôme\n$\\Delta = (-2)^2 - 4 \\times 1 \\times (-8) = 36$, racines $\\frac{2 - 6}{2} = -2$ et $\\frac{2 + 6}{2} = 4$ :\n\n$$x^2 - 2x - 8 = (x + 2)(x - 4)$$\n:::\n\n::: point Signe de $x^2 - 2x - 8$\n::: tableau\nx : -\\infty, -2, 4, +\\infty\nx + 2 : , -, z, +, t, +,\nx - 4 : , -, t, -, z, +,\nx^2 - 2x - 8 : , +, z, -, z, +,\n:::\n:::\n\n::: etape Intersection avec $I$\n$x^2 - 2x - 8 \\le 0$ pour $x \\in [-2\\,;4]$ ; avec $x \\gt 2$, on obtient $2 \\lt x \\le 4$.\n:::\n\n::: resultat\n$$S = ]2\\,;4]$$\n:::\n\n[IMAGE_5]",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $S = ]1\\,;+\\infty[$\n2. $S = \\left[\\dfrac{1}{e}\\,;+\\infty\\right[$\n3. $S = \\left]-\\dfrac{3}{2}\\,;-1\\right]$\n4. $S = ]-\\infty\\,;-2[ \\cup ]2\\,;+\\infty[$\n5. $S = ]2\\,;4]$",
+   "titre": "Entraînement - Fonction Logarithme - Inéquations Logarithmiques",
+   "difficulty": "medium",
+   "contenu": "Résoudre les inéquations logarithmiques suivantes.\n**Question 1 :** Résoudre $\\displaystyle \\ln(x + 1) < \\ln(2x)$\n$\\\\$\n**Question 2 :** Résoudre $\\displaystyle \\ln(x) \\geq -1$\n$\\\\$\n**Question 3 :** Résoudre $\\displaystyle \\ln(2x + 3) \\leq 0$\n$\\\\$\n**Question 4 :** Résoudre $\\displaystyle \\ln(x^2 - 1) > \\ln(3)$\n$\\\\$\n**Question 5 :** Résoudre $\\displaystyle \\ln(x) + \\ln(x - 2) \\leq \\ln(8)$"
+  },
+  {
+   "id": 1249,
+   "question": "<!-- optitab:1 -->\nCalculer les limites suivantes.\n\n1. $\\lim\\limits_{x \\to 0^+} x\\ln x$\n2. $\\lim\\limits_{x \\to +\\infty} \\dfrac{\\ln x}{x}$\n3. $\\lim\\limits_{x \\to 0} \\dfrac{\\ln(1 + x)}{x}$\n4. $\\lim\\limits_{x \\to +\\infty} \\dfrac{x}{\\ln x}$\n5. $\\lim\\limits_{x \\to 1} \\dfrac{\\ln x}{x - 1}$",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Calculer $\\lim\\limits_{x \\to 0^+} x\\ln x$\n\n::: methode\nRepérer la forme indéterminée, puis utiliser une croissance comparée du cours.\n:::\n\n::: etape Identifier la forme\nQuand $x \\to 0^+$ : $x \\to 0$ et $\\ln x \\to -\\infty$. C’est une forme indéterminée « $0 \\times \\infty$ ».\n:::\n\n::: etape Croissance comparée\nD’après le cours, $\\lim\\limits_{x \\to 0^+} x\\ln x = 0$ : au voisinage de $0$, $x$ « l’emporte » sur $\\ln x$.\n:::\n\n::: resultat\n$$\\lim_{x \\to 0^+} x\\ln x = 0$$\n:::\n\n## Question 2 : Calculer $\\lim\\limits_{x \\to +\\infty} \\dfrac{\\ln x}{x}$\n\n::: methode\nForme indéterminée, levée par la croissance comparée du cours.\n:::\n\n::: etape Identifier la forme\nQuand $x \\to +\\infty$, $\\ln x \\to +\\infty$ et $x \\to +\\infty$ : forme indéterminée « $\\frac{\\infty}{\\infty}$ ».\n:::\n\n::: etape Croissance comparée\nEn $+\\infty$, $x$ croît beaucoup plus vite que $\\ln x$ : $\\lim\\limits_{x \\to +\\infty} \\dfrac{\\ln x}{x} = 0$.\n:::\n\n::: resultat\n$$\\lim_{x \\to +\\infty} \\frac{\\ln x}{x} = 0$$\n:::\n\n## Question 3 : Calculer $\\lim\\limits_{x \\to 0} \\dfrac{\\ln(1 + x)}{x}$\n\n::: methode\nReconnaître un taux d’accroissement : la limite est un nombre dérivé.\n:::\n\n::: etape Identifier la forme\nQuand $x \\to 0$, $\\ln(1 + x) \\to \\ln 1 = 0$ et $x \\to 0$ : forme indéterminée « $\\frac{0}{0}$ ».\n:::\n\n::: etape Reconnaître un taux d’accroissement\nOn pose $u(x) = \\ln(1 + x)$, définie et dérivable sur $]-1\\,;+\\infty[$, avec $u(0) = 0$. Alors\n\n$$\\frac{\\ln(1 + x)}{x} = \\frac{u(x) - u(0)}{x - 0}$$\n\nqui tend vers $u'(0)$ quand $x \\to 0$.\n:::\n\n::: etape Calculer $u'(0)$\n$u'(x) = \\dfrac{1}{1 + x}$, donc $u'(0) = 1$.\n:::\n\n::: resultat\n$$\\lim_{x \\to 0} \\frac{\\ln(1 + x)}{x} = 1$$\n:::\n\n::: retenir\nUne forme « $\\frac{0}{0}$ » du type $\\dfrac{u(x) - u(a)}{x - a}$ se calcule comme un nombre dérivé : sa limite en $a$ vaut $u'(a)$.\n:::\n\n## Question 4 : Calculer $\\lim\\limits_{x \\to +\\infty} \\dfrac{x}{\\ln x}$\n\n::: methode\nÉcrire le quotient comme l’inverse de $\\dfrac{\\ln x}{x}$.\n:::\n\n::: etape Écrire l’inverse\nPour $x \\gt 1$, $\\ln x \\gt 0$ et\n\n$$\\frac{x}{\\ln x} = \\frac{1}{\\frac{\\ln x}{x}}$$\n:::\n\n::: etape Passer à la limite\nD’après la question 2, $\\dfrac{\\ln x}{x} \\to 0$ en $+\\infty$, avec $\\dfrac{\\ln x}{x} \\gt 0$ pour $x \\gt 1$ : le dénominateur tend vers $0^+$, donc le quotient tend vers $+\\infty$.\n:::\n\n::: resultat\n$$\\lim_{x \\to +\\infty} \\frac{x}{\\ln x} = +\\infty$$\n:::\n\n## Question 5 : Calculer $\\lim\\limits_{x \\to 1} \\dfrac{\\ln x}{x - 1}$\n\n::: methode\nReconnaître le taux d’accroissement de $\\ln$ en $1$.\n:::\n\n::: etape Identifier la forme\nQuand $x \\to 1$, $\\ln x \\to 0$ et $x - 1 \\to 0$ : forme indéterminée « $\\frac{0}{0}$ ».\n:::\n\n::: etape Reconnaître un taux d’accroissement\nComme $\\ln 1 = 0$ :\n\n$$\\frac{\\ln x}{x - 1} = \\frac{\\ln x - \\ln 1}{x - 1}$$\n\nqui tend vers $\\ln'(1)$ quand $x \\to 1$.\n:::\n\n::: etape Calculer $\\ln'(1)$\n$\\ln'(x) = \\dfrac{1}{x}$, donc $\\ln'(1) = 1$.\n:::\n\n::: resultat\n$$\\lim_{x \\to 1} \\frac{\\ln x}{x - 1} = 1$$\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $\\lim\\limits_{x \\to 0^+} x\\ln x = 0$ (croissance comparée)\n2. $\\lim\\limits_{x \\to +\\infty} \\dfrac{\\ln x}{x} = 0$ (croissance comparée)\n3. $\\lim\\limits_{x \\to 0} \\dfrac{\\ln(1 + x)}{x} = 1$ (nombre dérivé de $x \\mapsto \\ln(1 + x)$ en $0$)\n4. $\\lim\\limits_{x \\to +\\infty} \\dfrac{x}{\\ln x} = +\\infty$\n5. $\\lim\\limits_{x \\to 1} \\dfrac{\\ln x}{x - 1} = 1$ (nombre dérivé de $\\ln$ en $1$)",
+   "titre": "Entraînement - Fonction Logarithme - Limites et Continuité",
+   "difficulty": "medium",
+   "contenu": "Calculer les limites suivantes.\n**Question 1 :** Calculer $\\displaystyle\\lim_{x \\to 0^+} x \\ln(x)$\n$\\\\$\n**Question 2 :** Calculer $\\displaystyle\\lim_{x \\to +\\infty} \\frac{\\ln(x)}{x}$\n$\\\\$\n**Question 3 :** Calculer $\\displaystyle\\lim_{x \\to 0} \\frac{\\ln(1 + x)}{x}$\n$\\\\$\n**Question 4 :** Calculer $\\displaystyle\\lim_{x \\to +\\infty} \\frac{x}{\\ln(x)}$\n$\\\\$\n**Question 5 :** Calculer $\\displaystyle\\lim_{x \\to 1} \\frac{\\ln(x)}{x - 1}$"
+  },
+  {
+   "id": 1250,
+   "question": "<!-- optitab:1 -->\nRésoudre les problèmes suivants à l’aide du logarithme népérien.\n\n1. Une population de bactéries suit la loi $P(t) = P_0\\,e^{kt}$ ($t$ en heures). Elle double en $3$ heures et $P_0 = 100$ bactéries. Déterminer $k$, puis le temps nécessaire pour atteindre $10\\,000$ bactéries.\n2. Un capital de $1\\,000$ € est placé à intérêts composés au taux de $5\\,\\%$ par an (les intérêts sont versés en fin d’année). Au bout de combien d’années le capital aura-t-il doublé ?\n3. La température d’un objet suit la loi de refroidissement de Newton : $T(t) = T_a + (T_0 - T_a)\\,e^{-kt}$ ($t$ en minutes), où $T_a = 20$ °C est la température ambiante. On a $T_0 = 100$ °C et $T(10) = 60$ °C. Déterminer $k$.\n4. Une substance radioactive se désintègre selon $Q(t) = Q_0\\,e^{-\\lambda t}$ ($t$ en années). Sa demi-vie est de $30$ ans. Calculer $\\lambda$, puis la proportion de substance restante après $100$ ans.\n5. Une échelle de niveau sonore est définie par $L = 10\\ln\\left(\\dfrac{I}{I_0}\\right)$, où $I$ est l’intensité du son et $I_0$ une intensité de référence. Exprimer $I$ en fonction de $I_0$ lorsque $L = 80$.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Population de bactéries\n\n::: methode\nTraduire « double en 3 heures » par une équation, puis isoler l’exposant en prenant le logarithme.\n:::\n\n::: etape Déterminer $k$\nLa population double en $3$ heures : $P(3) = 2P_0$.\n\n$$\n\\begin{aligned}\nP_0\\,e^{3k} = 2P_0 &\\iff e^{3k} = 2 \\\\\n&\\iff 3k = \\ln 2 \\\\\n&\\iff k = \\frac{\\ln 2}{3}\n\\end{aligned}\n$$\n:::\n\n::: etape Résoudre $P(t) = 10\\,000$\n$$\n\\begin{aligned}\n100\\,e^{kt} = 10\\,000 &\\iff e^{kt} = 100 \\\\\n&\\iff kt = \\ln 100 \\\\\n&\\iff t = \\frac{\\ln 100}{k} = \\frac{3\\ln 100}{\\ln 2}\n\\end{aligned}\n$$\n:::\n\n::: etape Valeur approchée\n$$t = \\frac{3\\ln 100}{\\ln 2} \\approx 19{,}93$$\n:::\n\n::: resultat\n$k = \\dfrac{\\ln 2}{3}$ ; la population atteint $10\\,000$ bactéries au bout d’environ $19{,}9$ heures, soit à peu près $20$ heures.\n:::\n\n## Question 2 : Doublement d’un capital\n\n::: methode\nModéliser par une suite géométrique, puis résoudre une inéquation de seuil avec $\\ln$.\n:::\n\n::: etape Modèle\nChaque année, le capital est multiplié par $1{,}05$. Après $n$ années : $C_n = 1\\,000 \\times 1{,}05^n$. On cherche le plus petit entier $n$ tel que $C_n \\ge 2\\,000$.\n:::\n\n::: etape Résoudre l’inéquation\n$$\n\\begin{aligned}\n1\\,000 \\times 1{,}05^n \\ge 2\\,000 &\\iff 1{,}05^n \\ge 2 \\\\\n&\\iff n\\ln 1{,}05 \\ge \\ln 2 \\\\\n&\\iff n \\ge \\frac{\\ln 2}{\\ln 1{,}05} \\approx 14{,}2\n\\end{aligned}\n$$\n\nOn a divisé par $\\ln 1{,}05 \\gt 0$ : le sens de l’inégalité est conservé.\n:::\n\n::: etape Conclure avec un entier\nLe plus petit entier $n$ qui convient est $15$. Vérification : $C_{14} \\approx 1\\,979{,}93$ € et $C_{15} \\approx 2\\,078{,}93$ €.\n:::\n\n::: resultat\nLe capital aura doublé au bout de $15$ ans.\n:::\n\n::: attention\nLes intérêts étant versés une fois par an, la réponse est un nombre **entier** d’années : $14{,}2$ ans n’a pas de sens ici, on arrondit à l’entier supérieur.\n:::\n\n## Question 3 : Loi de refroidissement de Newton\n\n::: methode\nRemplacer par les données, isoler l’exponentielle, puis prendre le logarithme.\n:::\n\n::: etape Utiliser $T(10) = 60$\n$$\n\\begin{aligned}\n20 + (100 - 20)\\,e^{-10k} = 60 &\\iff 80\\,e^{-10k} = 40 \\\\\n&\\iff e^{-10k} = \\frac{1}{2}\n\\end{aligned}\n$$\n:::\n\n::: etape Prendre le logarithme\n$$\n\\begin{aligned}\n-10k = \\ln\\frac{1}{2} = -\\ln 2 &\\iff k = \\frac{\\ln 2}{10}\n\\end{aligned}\n$$\n:::\n\n::: resultat\n$k = \\dfrac{\\ln 2}{10} \\approx 0{,}069$ min$^{-1}$\n:::\n\n## Question 4 : Décroissance radioactive\n\n::: methode\nLa demi-vie $T$ vérifie $Q(T) = \\dfrac{Q_0}{2}$.\n:::\n\n::: etape Déterminer $\\lambda$\n$$\n\\begin{aligned}\nQ_0\\,e^{-30\\lambda} = \\frac{Q_0}{2} &\\iff e^{-30\\lambda} = \\frac{1}{2} \\\\\n&\\iff -30\\lambda = -\\ln 2 \\\\\n&\\iff \\lambda = \\frac{\\ln 2}{30}\n\\end{aligned}\n$$\n\nsoit $\\lambda \\approx 0{,}0231$ par an.\n:::\n\n::: etape Proportion restante après $100$ ans\n$$\n\\begin{aligned}\n\\frac{Q(100)}{Q_0} &= e^{-100\\lambda} \\\\\n&= e^{-\\frac{100\\ln 2}{30}} \\\\\n&= e^{-\\frac{10}{3}\\ln 2} \\\\\n&= 2^{-\\frac{10}{3}} \\approx 0{,}099\n\\end{aligned}\n$$\n\nOn a utilisé $e^{a\\ln 2} = \\left(e^{\\ln 2}\\right)^a = 2^a$.\n:::\n\n::: resultat\n$\\lambda = \\dfrac{\\ln 2}{30} \\approx 0{,}0231$ an$^{-1}$ ; après $100$ ans, il reste environ $9{,}9\\,\\%$ de la substance.\n:::\n\n## Question 5 : Niveau sonore\n\n::: methode\nIsoler le logarithme, puis appliquer l’exponentielle.\n:::\n\n::: etape Isoler le logarithme\n$$\n\\begin{aligned}\n10\\ln\\left(\\frac{I}{I_0}\\right) = 80 &\\iff \\ln\\left(\\frac{I}{I_0}\\right) = 8\n\\end{aligned}\n$$\n:::\n\n::: etape Appliquer l’exponentielle\n$$\\frac{I}{I_0} = e^8 \\iff I = e^8\\,I_0$$\n:::\n\n::: resultat\n$I = e^8\\,I_0 \\approx 2\\,981\\,I_0$\n:::\n\n::: remarque Pour aller plus loin\nL’échelle réelle des décibels utilise le logarithme décimal $\\log x = \\dfrac{\\ln x}{\\ln 10}$ : $L = 10\\log\\left(\\dfrac{I}{I_0}\\right)$. Avec $L = 80$ dB, on obtiendrait $I = 10^8\\,I_0$.\n:::",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $k = \\dfrac{\\ln 2}{3}$ ; $t = \\dfrac{3\\ln 100}{\\ln 2} \\approx 19{,}9$ heures, soit environ $20$ heures\n2. $n \\ge \\dfrac{\\ln 2}{\\ln 1{,}05} \\approx 14{,}2$ : le capital double au bout de $15$ ans\n3. $k = \\dfrac{\\ln 2}{10} \\approx 0{,}069$ min$^{-1}$\n4. $\\lambda = \\dfrac{\\ln 2}{30} \\approx 0{,}0231$ an$^{-1}$ ; il reste $2^{-\\frac{10}{3}} \\approx 9{,}9\\,\\%$ après $100$ ans\n5. $I = e^8\\,I_0 \\approx 2\\,981\\,I_0$",
+   "titre": "Problème - Fonction Logarithme - Applications et Modélisation",
+   "difficulty": "medium",
+   "contenu": "Résoudre les problèmes d'application suivants.\n**Question 1 :** Une population de bactéries suit la loi $\\displaystyle P(t) = P_0 e^{kt}$. Si la population double en 3 heures et qu'on a $\\displaystyle P_0 = 100$ bactéries au temps $\\displaystyle t = 0$, combien de temps faut-il pour atteindre 10000 bactéries ?\n$\\\\$\n**Question 2 :** Un capital de 1000€ est placé à un taux d'intérêt composé de 5% par an. Au bout de combien d'années le capital aura-t-il doublé ?\n$\\\\$\n**Question 3 :** La température d'un objet suit la loi de Newton : $\\displaystyle T(t) = T_a + (T_0 - T_a)e^{-kt}$ où $\\displaystyle T_a = 20°C$ est la température ambiante. Si $\\displaystyle T_0 = 100°C$ et qu'après 10 minutes $\\displaystyle T(10) = 60°C$, déterminer $k$.\n$\\\\$\n**Question 4 :** Une substance radioactive se désintègre selon $\\displaystyle Q(t) = Q_0 e^{-\\lambda t}$. Sachant que la demi-vie est de 30 ans, calculer $\\lambda$ puis déterminer quelle fraction reste après 100 ans.\n$\\\\$\n**Question 5 :** L'intensité sonore $\\displaystyle L$ (en décibels) est liée à l'intensité $\\displaystyle I$ par la formule $\\displaystyle L = 10 \\ln\\left(\\frac{I}{I_0}\\right)$ où $\\displaystyle I_0$ est l'intensité de référence. Si $\\displaystyle L = 80$ dB, exprimer $\\displaystyle I$ en fonction de $\\displaystyle I_0$."
+  },
+  {
+   "id": 1246,
+   "question": "<!-- optitab:1 -->\nPour chacune des fonctions suivantes : déterminer l’ensemble de définition, calculer la dérivée, étudier le sens de variation, calculer les limites aux bornes et dresser le tableau de variations.\n\n1. $f(x) = \\ln(2x - 1)$\n2. $g(x) = x\\ln x$\n3. $h(x) = \\ln\\left(x^2 - 3x + 2\\right)$\n4. $k(x) = \\dfrac{\\ln x}{x^2}$\n5. $m(x) = \\ln\\left(\\dfrac{x + 1}{x - 1}\\right)$",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Étudier $f(x) = \\ln(2x - 1)$\n\n::: methode\nFonction $\\ln u$ : domaine $u \\gt 0$, dérivée $\\dfrac{u'}{u}$, limites par composition.\n:::\n\n::: etape Ensemble de définition\n$2x - 1 \\gt 0 \\iff x \\gt \\frac{1}{2}$ : $D_f = \\left]\\frac{1}{2}\\,;+\\infty\\right[$.\n:::\n\n::: etape Dérivée et signe\nAvec $u(x) = 2x - 1$ et $u'(x) = 2$ :\n\n$$f'(x) = \\frac{2}{2x - 1}$$\n\nSur $D_f$, $2x - 1 \\gt 0$, donc $f'(x) \\gt 0$ : $f$ est strictement croissante sur $D_f$.\n:::\n\n::: etape Limites aux bornes\n- Quand $x \\to \\frac{1}{2}^+$, $2x - 1 \\to 0^+$ et $\\lim\\limits_{X \\to 0^+} \\ln X = -\\infty$, donc $\\lim\\limits_{x \\to \\frac{1}{2}^+} f(x) = -\\infty$.\n- Quand $x \\to +\\infty$, $2x - 1 \\to +\\infty$ et $\\lim\\limits_{X \\to +\\infty} \\ln X = +\\infty$, donc $\\lim\\limits_{x \\to +\\infty} f(x) = +\\infty$.\n:::\n\n::: point Tableau de variations\n::: tableau\nx : \\frac{1}{2}, +\\infty\nf'(x) : d, +,\nf(x) : D-/-\\infty, +/+\\infty\n:::\n:::\n\n::: resultat\n$f$ est strictement croissante sur $\\left]\\frac{1}{2}\\,;+\\infty\\right[$, de $-\\infty$ à $+\\infty$ ; la droite d’équation $x = \\frac{1}{2}$ est asymptote verticale.\n:::\n\n[IMAGE_1]\n\n## Question 2 : Étudier $g(x) = x\\ln x$\n\n::: methode\nDérivée d’un produit, puis signe de $\\ln x + 1$ ; croissance comparée en $0^+$.\n:::\n\n::: etape Ensemble de définition\n$\\ln x$ existe pour $x \\gt 0$ : $D_g = ]0\\,;+\\infty[$.\n:::\n\n::: etape Dérivée\n$$\n\\begin{aligned}\ng'(x) &= 1 \\times \\ln x + x \\times \\frac{1}{x} \\\\\n&= \\ln x + 1\n\\end{aligned}\n$$\n:::\n\n::: etape Signe de la dérivée\n$$\n\\begin{aligned}\n\\ln x + 1 \\gt 0 &\\iff \\ln x \\gt -1 \\\\\n&\\iff x \\gt e^{-1} = \\frac{1}{e}\n\\end{aligned}\n$$\n\nDonc $g'(x) \\lt 0$ sur $\\left]0\\,;\\frac{1}{e}\\right[$, $g'\\left(\\frac{1}{e}\\right) = 0$ et $g'(x) \\gt 0$ sur $\\left]\\frac{1}{e}\\,;+\\infty\\right[$.\n:::\n\n::: etape Valeur du minimum\n$$g\\left(\\frac{1}{e}\\right) = \\frac{1}{e} \\times \\ln\\left(\\frac{1}{e}\\right) = \\frac{1}{e} \\times (-1) = -\\frac{1}{e}$$\n:::\n\n::: etape Limites aux bornes\n- $\\lim\\limits_{x \\to 0^+} x\\ln x = 0$ (croissance comparée).\n- Quand $x \\to +\\infty$, $x \\to +\\infty$ et $\\ln x \\to +\\infty$, donc $\\lim\\limits_{x \\to +\\infty} g(x) = +\\infty$.\n:::\n\n::: point Tableau de variations\n::: tableau\nx : 0, \\frac{1}{e}, +\\infty\ng'(x) : d, -, z, +,\ng(x) : D+/0, -/-\\frac{1}{e}, +/+\\infty\n:::\n:::\n\n::: resultat\n$g$ est décroissante sur $\\left]0\\,;\\frac{1}{e}\\right]$ et croissante sur $\\left[\\frac{1}{e}\\,;+\\infty\\right[$ ; elle admet un minimum égal à $-\\frac{1}{e} \\approx -0{,}37$ en $x = \\frac{1}{e}$.\n:::\n\n[IMAGE_2]\n\n## Question 3 : Étudier $h(x) = \\ln\\left(x^2 - 3x + 2\\right)$\n\n::: methode\nDomaine par le signe du trinôme, dérivée $\\dfrac{u'}{u}$, puis étude sur chacun des deux intervalles.\n:::\n\n::: etape Ensemble de définition\n$x^2 - 3x + 2 = (x - 1)(x - 2)$ (racines $1$ et $2$) est strictement positif à l’extérieur des racines :\n\n$$D_h = ]-\\infty\\,;1[ \\cup ]2\\,;+\\infty[$$\n:::\n\n::: etape Dérivée\nAvec $u(x) = x^2 - 3x + 2$ et $u'(x) = 2x - 3$ :\n\n$$h'(x) = \\frac{2x - 3}{x^2 - 3x + 2}$$\n:::\n\n::: etape Signe de la dérivée\nSur $D_h$, le dénominateur est strictement positif : $h'(x)$ a le signe de $2x - 3$, qui s’annule en $\\frac{3}{2} \\notin D_h$.\n- Sur $]-\\infty\\,;1[$ : $2x - 3 \\lt 0$, donc $h'(x) \\lt 0$.\n- Sur $]2\\,;+\\infty[$ : $2x - 3 \\gt 0$, donc $h'(x) \\gt 0$.\n:::\n\n::: etape Limites aux bornes\n- En $1^-$ et en $2^+$ : $x^2 - 3x + 2 \\to 0^+$, donc $h(x) \\to -\\infty$.\n- En $-\\infty$ et en $+\\infty$ : $x^2 - 3x + 2 \\to +\\infty$, donc $h(x) \\to +\\infty$.\n:::\n\n::: point Tableau de variations\n::: tableau\nx : -\\infty, 1, 2, +\\infty\nh'(x) : , -, d, h, d, +,\nh(x) : +/+\\infty, -D/-\\infty, D-/-\\infty, +/+\\infty\n:::\n:::\n\n::: resultat\n$h$ est strictement décroissante sur $]-\\infty\\,;1[$ et strictement croissante sur $]2\\,;+\\infty[$ ; les droites d’équations $x = 1$ et $x = 2$ sont asymptotes verticales.\n:::\n\n::: remarque\n$h(3 - x) = h(x)$ : la courbe est symétrique par rapport à la droite d’équation $x = \\frac{3}{2}$.\n:::\n\n[IMAGE_3]\n\n## Question 4 : Étudier $k(x) = \\dfrac{\\ln x}{x^2}$\n\n::: methode\nDérivée d’un quotient, signe de $1 - 2\\ln x$ ; croissance comparée en $+\\infty$.\n:::\n\n::: etape Ensemble de définition\n$\\ln x$ existe pour $x \\gt 0$, et alors $x^2 \\neq 0$ : $D_k = ]0\\,;+\\infty[$.\n:::\n\n::: etape Dérivée\n$$\n\\begin{aligned}\nk'(x) &= \\frac{\\frac{1}{x} \\times x^2 - \\ln x \\times 2x}{x^4} \\\\\n&= \\frac{x(1 - 2\\ln x)}{x^4} \\\\\n&= \\frac{1 - 2\\ln x}{x^3}\n\\end{aligned}\n$$\n:::\n\n::: etape Signe de la dérivée\nSur $]0\\,;+\\infty[$, $x^3 \\gt 0$ : $k'(x)$ a le signe de $1 - 2\\ln x$.\n\n$$\n\\begin{aligned}\n1 - 2\\ln x \\gt 0 &\\iff \\ln x \\lt \\frac{1}{2} \\\\\n&\\iff x \\lt e^{\\frac{1}{2}} = \\sqrt{e}\n\\end{aligned}\n$$\n:::\n\n::: etape Valeur du maximum\n$$k\\left(\\sqrt{e}\\right) = \\frac{\\ln\\sqrt{e}}{\\left(\\sqrt{e}\\right)^2} = \\frac{\\frac{1}{2}}{e} = \\frac{1}{2e}$$\n:::\n\n::: etape Limites aux bornes\n- En $0^+$ : $\\ln x \\to -\\infty$ et $\\frac{1}{x^2} \\to +\\infty$, donc $k(x) = \\ln x \\times \\frac{1}{x^2} \\to -\\infty$.\n- En $+\\infty$ : $k(x) = \\dfrac{\\ln x}{x} \\times \\dfrac{1}{x}$, avec $\\dfrac{\\ln x}{x} \\to 0$ et $\\dfrac{1}{x} \\to 0$, donc $k(x) \\to 0$.\n:::\n\n::: point Tableau de variations\n::: tableau\nx : 0, \\sqrt{e}, +\\infty\nk'(x) : d, +, z, -,\nk(x) : D-/-\\infty, +/\\frac{1}{2e}, -/0\n:::\n:::\n\n::: resultat\n$k$ est croissante sur $\\left]0\\,;\\sqrt{e}\\right]$ et décroissante sur $\\left[\\sqrt{e}\\,;+\\infty\\right[$ ; maximum $\\frac{1}{2e} \\approx 0{,}18$ en $x = \\sqrt{e}$ ; asymptotes $x = 0$ et $y = 0$.\n:::\n\n[IMAGE_4]\n\n## Question 5 : Étudier $m(x) = \\ln\\left(\\dfrac{x + 1}{x - 1}\\right)$\n\n::: methode\nDomaine par un tableau de signes du quotient, dérivée $\\dfrac{u'}{u}$, limites par composition.\n:::\n\n::: etape Ensemble de définition\nIl faut $\\dfrac{x + 1}{x - 1} \\gt 0$ (avec $x \\neq 1$).\n\n::: tableau\nx : -\\infty, -1, 1, +\\infty\nx + 1 : , -, z, +, t, +,\nx - 1 : , -, t, -, z, +,\n\\frac{x + 1}{x - 1} : , +, z, -, d, +,\n:::\n\nDonc $D_m = ]-\\infty\\,;-1[ \\cup ]1\\,;+\\infty[$.\n:::\n\n::: etape Dérivée\nAvec $u(x) = \\dfrac{x + 1}{x - 1}$ :\n\n$$u'(x) = \\frac{1 \\times (x - 1) - (x + 1) \\times 1}{(x - 1)^2} = \\frac{-2}{(x - 1)^2}$$\n\n$$\n\\begin{aligned}\nm'(x) &= \\frac{u'(x)}{u(x)} = \\frac{-2}{(x - 1)^2} \\times \\frac{x - 1}{x + 1} \\\\\n&= \\frac{-2}{(x - 1)(x + 1)} = \\frac{-2}{x^2 - 1}\n\\end{aligned}\n$$\n:::\n\n::: etape Signe de la dérivée\nSur $D_m$, $x^2 - 1 \\gt 0$, donc $m'(x) \\lt 0$ : $m$ est strictement décroissante sur chacun des deux intervalles.\n:::\n\n::: etape Limites aux bornes\n- En $-\\infty$ et en $+\\infty$ : $\\dfrac{x + 1}{x - 1} \\to 1$, donc $m(x) \\to \\ln 1 = 0$.\n- En $-1^-$ : $x + 1 \\to 0^-$ et $x - 1 \\to -2$, donc $\\dfrac{x + 1}{x - 1} \\to 0^+$ et $m(x) \\to -\\infty$.\n- En $1^+$ : $x + 1 \\to 2$ et $x - 1 \\to 0^+$, donc $\\dfrac{x + 1}{x - 1} \\to +\\infty$ et $m(x) \\to +\\infty$.\n:::\n\n::: point Tableau de variations\n::: tableau\nx : -\\infty, -1, 1, +\\infty\nm'(x) : , -, d, h, d, -,\nm(x) : +/0, -D/-\\infty, D+/+\\infty, -/0\n:::\n:::\n\n::: resultat\n$m$ est strictement décroissante sur $]-\\infty\\,;-1[$ et sur $]1\\,;+\\infty[$ ; asymptotes verticales $x = -1$ et $x = 1$, asymptote horizontale $y = 0$ en $-\\infty$ et en $+\\infty$.\n:::\n\n::: remarque\n$m(-x) = \\ln\\left(\\dfrac{x - 1}{x + 1}\\right) = -m(x)$ : $m$ est impaire, sa courbe est symétrique par rapport à l’origine.\n:::\n\n[IMAGE_5]",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $D_f = \\left]\\frac{1}{2}\\,;+\\infty\\right[$, $f'(x) = \\dfrac{2}{2x - 1} \\gt 0$ : $f$ croît de $-\\infty$ à $+\\infty$ ; asymptote $x = \\frac{1}{2}$.\n2. $D_g = ]0\\,;+\\infty[$, $g'(x) = \\ln x + 1$ : $g$ décroît sur $\\left]0\\,;\\frac{1}{e}\\right]$, croît ensuite ; minimum $-\\frac{1}{e}$ ; limites $0$ en $0^+$ et $+\\infty$ en $+\\infty$.\n3. $D_h = ]-\\infty\\,;1[ \\cup ]2\\,;+\\infty[$, $h'(x) = \\dfrac{2x - 3}{x^2 - 3x + 2}$ : $h$ décroît sur $]-\\infty\\,;1[$, croît sur $]2\\,;+\\infty[$ ; limites $+\\infty$ en $\\pm\\infty$, $-\\infty$ en $1^-$ et $2^+$.\n4. $D_k = ]0\\,;+\\infty[$, $k'(x) = \\dfrac{1 - 2\\ln x}{x^3}$ : maximum $\\frac{1}{2e}$ en $\\sqrt{e}$ ; limites $-\\infty$ en $0^+$ et $0$ en $+\\infty$.\n5. $D_m = ]-\\infty\\,;-1[ \\cup ]1\\,;+\\infty[$, $m'(x) = \\dfrac{-2}{x^2 - 1} \\lt 0$ : $m$ décroît sur chaque intervalle ; limites $0$ en $\\pm\\infty$, $-\\infty$ en $-1^-$, $+\\infty$ en $1^+$.",
+   "titre": "Problème - Fonction Logarithme - Étude de Fonctions",
+   "difficulty": "medium",
+   "contenu": "Étudier les fonctions suivantes : domaine de définition, dérivée, sens de variation, limites.\n**Question 1 :** Étudier $\\displaystyle f(x) = \\ln(2x - 1)$\n$\\\\$\n**Question 2 :** Étudier $\\displaystyle g(x) = x \\ln(x)$\n$\\\\$\n**Question 3 :** Étudier $\\displaystyle h(x) = \\ln(x^2 - 3x + 2)$\n$\\\\$\n**Question 4 :** Étudier $\\displaystyle k(x) = \\frac{\\ln(x)}{x^2}$\n$\\\\$\n**Question 5 :** Étudier $\\displaystyle m(x) = \\ln\\left(\\frac{x + 1}{x - 1}\\right)$"
+  },
+  {
+   "id": 1251,
+   "question": "<!-- optitab:1 -->\nLes cinq questions sont indépendantes.\n\n1. Étudier complètement la fonction $f(x) = \\ln\\left(x^2 - 4x + 3\\right)$ : ensemble de définition, dérivée, variations, limites.\n2. Résoudre le système $\\begin{cases} \\ln x + \\ln y = \\ln 12 \\\\ \\ln x - \\ln y = \\ln 3 \\end{cases}$\n3. Montrer que $\\ln(1 + x) \\le x$ pour tout réel $x \\gt -1$.\n4. Calculer $\\lim\\limits_{x \\to +\\infty} \\dfrac{\\ln\\left(x^2 + 1\\right)}{x}$.\n5. Déterminer les valeurs du réel $a$ pour lesquelles l’équation $\\ln x = ax$ admet exactement une solution dans $]0\\,;+\\infty[$.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Étude complète de $f(x) = \\ln\\left(x^2 - 4x + 3\\right)$\n\n::: methode\nDomaine par le signe du trinôme, dérivée $\\dfrac{u'}{u}$, puis variations et limites sur chaque intervalle.\n:::\n\n::: etape Racines du trinôme\n$\\Delta = (-4)^2 - 4 \\times 1 \\times 3 = 4$, racines $x_1 = \\frac{4 - 2}{2} = 1$ et $x_2 = \\frac{4 + 2}{2} = 3$ :\n\n$$x^2 - 4x + 3 = (x - 1)(x - 3)$$\n:::\n\n::: point Signe de $x^2 - 4x + 3$\n::: tableau\nx : -\\infty, 1, 3, +\\infty\nx - 1 : , -, z, +, t, +,\nx - 3 : , -, t, -, z, +,\nx^2 - 4x + 3 : , +, z, -, z, +,\n:::\n:::\n\n::: etape Ensemble de définition\n$x^2 - 4x + 3 \\gt 0$ pour $x \\in ]-\\infty\\,;1[ \\cup ]3\\,;+\\infty[$ :\n\n$$D_f = ]-\\infty\\,;1[ \\cup ]3\\,;+\\infty[$$\n:::\n\n::: etape Dérivée\nAvec $u(x) = x^2 - 4x + 3$ et $u'(x) = 2x - 4$ :\n\n$$\n\\begin{aligned}\nf'(x) &= \\frac{2x - 4}{x^2 - 4x + 3} \\\\\n&= \\frac{2(x - 2)}{(x - 1)(x - 3)}\n\\end{aligned}\n$$\n:::\n\n::: etape Signe de la dérivée\nSur $D_f$, le dénominateur est strictement positif : $f'(x)$ a le signe de $x - 2$, qui s’annule en $2 \\notin D_f$.\n- Sur $]-\\infty\\,;1[$ : $x - 2 \\lt 0$, donc $f'(x) \\lt 0$.\n- Sur $]3\\,;+\\infty[$ : $x - 2 \\gt 0$, donc $f'(x) \\gt 0$.\n:::\n\n::: etape Limites aux bornes\n- En $1^-$ et en $3^+$ : $x^2 - 4x + 3 \\to 0^+$, donc $f(x) \\to -\\infty$.\n- En $-\\infty$ et en $+\\infty$ : $x^2 - 4x + 3 \\to +\\infty$, donc $f(x) \\to +\\infty$.\n:::\n\n::: point Tableau de variations\n::: tableau\nx : -\\infty, 1, 3, +\\infty\nf'(x) : , -, d, h, d, +,\nf(x) : +/+\\infty, -D/-\\infty, D-/-\\infty, +/+\\infty\n:::\n:::\n\n::: resultat\n$f$ est strictement décroissante sur $]-\\infty\\,;1[$ et strictement croissante sur $]3\\,;+\\infty[$ ; asymptotes verticales $x = 1$ et $x = 3$. Comme $f(4 - x) = f(x)$, la courbe est symétrique par rapport à la droite $x = 2$.\n:::\n\n[IMAGE_1]\n\n## Question 2 : Résoudre le système\n\n::: methode\nDomaine ($x \\gt 0$ et $y \\gt 0$), puis règles du produit et du quotient pour se ramener à un système sans logarithme.\n:::\n\n::: etape Domaine\n$\\ln x$ et $\\ln y$ existent si et seulement si $x \\gt 0$ et $y \\gt 0$.\n:::\n\n::: etape Éliminer les logarithmes\n$$\n\\begin{aligned}\n\\ln x + \\ln y = \\ln 12 &\\iff \\ln(xy) = \\ln 12 \\iff xy = 12 \\\\\n\\ln x - \\ln y = \\ln 3 &\\iff \\ln\\left(\\frac{x}{y}\\right) = \\ln 3 \\iff \\frac{x}{y} = 3\n\\end{aligned}\n$$\n:::\n\n::: etape Résoudre le système obtenu\nLa deuxième équation donne $x = 3y$. En remplaçant dans la première : $3y^2 = 12$, soit $y^2 = 4$, donc $y = 2$ ou $y = -2$.\n:::\n\n::: etape Tenir compte du domaine\n$y \\gt 0$ impose $y = 2$, puis $x = 3 \\times 2 = 6$. Vérification : $\\ln 6 + \\ln 2 = \\ln 12$ et $\\ln 6 - \\ln 2 = \\ln 3$.\n:::\n\n::: resultat\n$$(x\\,;y) = (6\\,;2)$$\n:::\n\n## Question 3 : Montrer que $\\ln(1 + x) \\le x$ pour tout $x \\gt -1$\n\n::: methode\nÉtudier le signe de la différence $g(x) = x - \\ln(1 + x)$ grâce à ses variations.\n:::\n\n::: etape Fonction auxiliaire\nOn pose $g(x) = x - \\ln(1 + x)$ pour $x \\gt -1$. Il s’agit de montrer que $g(x) \\ge 0$.\n:::\n\n::: etape Dérivée\n$$\n\\begin{aligned}\ng'(x) &= 1 - \\frac{1}{1 + x} \\\\\n&= \\frac{1 + x - 1}{1 + x} \\\\\n&= \\frac{x}{1 + x}\n\\end{aligned}\n$$\n\nSur $]-1\\,;+\\infty[$, $1 + x \\gt 0$ : $g'(x)$ a le signe de $x$.\n:::\n\n::: etape Limites aux bornes\n- En $-1^+$ : $\\ln(1 + x) \\to -\\infty$, donc $g(x) \\to -1 + \\infty = +\\infty$.\n- En $+\\infty$ (forme « $\\infty - \\infty$ ») : avec $X = 1 + x$,\n\n$$g(x) = X - 1 - \\ln X = X\\left(1 - \\frac{\\ln X}{X}\\right) - 1$$\n\nComme $\\dfrac{\\ln X}{X} \\to 0$ quand $X \\to +\\infty$, on obtient $g(x) \\to +\\infty$.\n:::\n\n::: point Tableau de variations\n::: tableau\nx : -1, 0, +\\infty\ng'(x) : d, -, z, +,\ng(x) : D+/+\\infty, -/0, +/+\\infty\n:::\n:::\n\n::: etape Conclusion\n$g$ admet un minimum égal à $g(0) = 0 - \\ln 1 = 0$. Donc $g(x) \\ge 0$ pour tout $x \\gt -1$, c’est-à-dire $\\ln(1 + x) \\le x$.\n:::\n\n::: resultat\nPour tout réel $x \\gt -1$ : $\\ln(1 + x) \\le x$, avec égalité seulement pour $x = 0$.\n:::\n\n::: remarque\nLa droite d’équation $y = x$ est la tangente en $0$ à la courbe de $x \\mapsto \\ln(1 + x)$ : la courbe est sous sa tangente.\n:::\n\n[IMAGE_2]\n\n## Question 4 : Calculer $\\lim\\limits_{x \\to +\\infty} \\dfrac{\\ln\\left(x^2 + 1\\right)}{x}$\n\n::: methode\nFactoriser par le terme dominant $x^2$ dans le logarithme, puis utiliser $\\dfrac{\\ln x}{x} \\to 0$.\n:::\n\n::: etape Factoriser dans le logarithme\nPour $x \\gt 0$ : $x^2 + 1 = x^2\\left(1 + \\frac{1}{x^2}\\right)$, donc\n\n$$\n\\begin{aligned}\n\\ln\\left(x^2 + 1\\right) &= \\ln\\left(x^2\\right) + \\ln\\left(1 + \\frac{1}{x^2}\\right) \\\\\n&= 2\\ln x + \\ln\\left(1 + \\frac{1}{x^2}\\right)\n\\end{aligned}\n$$\n:::\n\n::: etape Séparer le quotient\n$$\\frac{\\ln\\left(x^2 + 1\\right)}{x} = 2 \\times \\frac{\\ln x}{x} + \\frac{1}{x}\\ln\\left(1 + \\frac{1}{x^2}\\right)$$\n:::\n\n::: etape Limites des deux termes\n- $\\dfrac{\\ln x}{x} \\to 0$ (croissance comparée).\n- $1 + \\dfrac{1}{x^2} \\to 1$, donc $\\ln\\left(1 + \\dfrac{1}{x^2}\\right) \\to 0$ ; et $\\dfrac{1}{x} \\to 0$ : le produit tend vers $0$.\n:::\n\n::: resultat\n$$\\lim_{x \\to +\\infty} \\frac{\\ln\\left(x^2 + 1\\right)}{x} = 2 \\times 0 + 0 = 0$$\n:::\n\n## Question 5 : Nombre de solutions de $\\ln x = ax$ selon $a$\n\n::: methode\nÉtudier $h(x) = \\ln x - ax$ sur $]0\\,;+\\infty[$ et compter ses annulations (corollaire du théorème des valeurs intermédiaires).\n:::\n\n::: etape Fonction auxiliaire et dérivée\nOn pose $h(x) = \\ln x - ax$ pour $x \\gt 0$ : $\\ln x = ax \\iff h(x) = 0$.\n\n$$h'(x) = \\frac{1}{x} - a = \\frac{1 - ax}{x}$$\n:::\n\n::: etape Cas $a \\le 0$\nPour $x \\gt 0$, $1 - ax \\ge 1 \\gt 0$, donc $h'(x) \\gt 0$ : $h$ est continue et strictement croissante.\n- En $0^+$ : $\\ln x \\to -\\infty$ et $ax \\to 0$, donc $h(x) \\to -\\infty$.\n- En $+\\infty$ : $\\ln x \\to +\\infty$ et $-ax \\ge 0$, donc $h(x) \\to +\\infty$.\n\nD’après le corollaire du théorème des valeurs intermédiaires, $h$ s’annule **exactement une fois**.\n:::\n\n::: etape Cas $a \\gt 0$ : variations\n$h'(x)$ a le signe de $1 - ax$ : positif sur $\\left]0\\,;\\frac{1}{a}\\right[$, négatif sur $\\left]\\frac{1}{a}\\,;+\\infty\\right[$. Maximum :\n\n$$\n\\begin{aligned}\nh\\left(\\frac{1}{a}\\right) &= \\ln\\left(\\frac{1}{a}\\right) - a \\times \\frac{1}{a} \\\\\n&= -\\ln a - 1\n\\end{aligned}\n$$\n:::\n\n::: etape Cas $a \\gt 0$ : limites\n- En $0^+$ : $h(x) \\to -\\infty$.\n- En $+\\infty$ : $h(x) = x\\left(\\dfrac{\\ln x}{x} - a\\right)$ avec $\\dfrac{\\ln x}{x} - a \\to -a \\lt 0$, donc $h(x) \\to -\\infty$.\n:::\n\n::: point Tableau de variations (cas $a \\gt 0$)\n::: tableau\nx : 0, \\frac{1}{a}, +\\infty\nh'(x) : d, +, z, -,\nh(x) : D-/-\\infty, +/-\\ln a - 1, -/-\\infty\n:::\n:::\n\n::: etape Cas $a \\gt 0$ : discussion selon le signe du maximum\n- Si $-\\ln a - 1 \\gt 0$, soit $0 \\lt a \\lt \\frac{1}{e}$ : une solution sur $\\left]0\\,;\\frac{1}{a}\\right[$ et une sur $\\left]\\frac{1}{a}\\,;+\\infty\\right[$, donc **deux** solutions.\n- Si $-\\ln a - 1 = 0$, soit $a = \\frac{1}{e}$ : le maximum vaut $0$, atteint seulement en $x = e$ : **une** solution.\n- Si $-\\ln a - 1 \\lt 0$, soit $a \\gt \\frac{1}{e}$ : $h(x) \\lt 0$ partout, **aucune** solution.\n:::\n\n::: resultat\nL’équation $\\ln x = ax$ admet exactement une solution si et seulement si $a \\le 0$ ou $a = \\dfrac{1}{e}$.\n:::\n\n::: remarque Interprétation graphique\nLes solutions sont les abscisses des points communs à la courbe de $\\ln$ et à la droite $y = ax$, qui passe par l’origine. Pour $a = \\frac{1}{e}$, cette droite est tangente à la courbe au point $(e\\,;1)$.\n:::\n\n[IMAGE_3]",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $D_f = ]-\\infty\\,;1[ \\cup ]3\\,;+\\infty[$, $f'(x) = \\dfrac{2(x - 2)}{(x - 1)(x - 3)}$ : $f$ décroît sur $]-\\infty\\,;1[$, croît sur $]3\\,;+\\infty[$ ; limites $+\\infty$ en $\\pm\\infty$, $-\\infty$ en $1^-$ et $3^+$ (asymptotes $x = 1$ et $x = 3$).\n2. $(x\\,;y) = (6\\,;2)$\n3. $g(x) = x - \\ln(1 + x)$ a pour minimum $g(0) = 0$, donc $\\ln(1 + x) \\le x$ pour tout $x \\gt -1$.\n4. $\\lim\\limits_{x \\to +\\infty} \\dfrac{\\ln\\left(x^2 + 1\\right)}{x} = 0$\n5. Exactement une solution si et seulement si $a \\le 0$ ou $a = \\dfrac{1}{e}$ (deux si $0 \\lt a \\lt \\frac{1}{e}$, aucune si $a \\gt \\frac{1}{e}$).",
+   "titre": "Problème - Fonction Logarithme - Problèmes de Synthèse 1",
+   "difficulty": "hard",
+   "contenu": "Résoudre les problèmes complexes suivants.\n**Question 1 :** Étudier complètement la fonction $\\displaystyle f(x) = \\ln(x^2 - 4x + 3)$\n$\\\\$\n**Question 2 :** Résoudre le système : $\\displaystyle \\begin{cases} \\ln(x) + \\ln(y) = \\ln(12) \\\\ \\ln(x) - \\ln(y) = \\ln(3) \\end{cases}$\n$\\\\$\n**Question 3 :** Montrer que $\\displaystyle \\ln(1 + x) \\leq x$ pour tout $\\displaystyle x > -1$\n$\\\\$\n**Question 4 :** Calculer $\\displaystyle\\lim_{x \\to +\\infty} \\frac{\\ln(x^2 + 1)}{x}$\n$\\\\$\n**Question 5 :** Déterminer les valeurs de $\\displaystyle a$ pour lesquelles l'équation $\\displaystyle \\ln(x) = ax$ admet exactement une solution."
+  },
+  {
+   "id": 1252,
+   "question": "<!-- optitab:1 -->\nOn considère la fonction $f$ définie sur $]0\\,;+\\infty[$ par $f(x) = \\ln x - x + 2$.\n\n1. Calculer $f'(x)$ et étudier son signe.\n2. Dresser le tableau de variations de $f$ et déterminer ses extremums.\n3. Calculer les limites de $f$ en $0^+$ et en $+\\infty$.\n4. Déterminer le nombre de solutions de l’équation $\\ln x = x - 2$.\n5. Résoudre l’inéquation $\\ln x \\ge x - 2$.",
+   "etapes": "<!-- optitab:1 -->\n## Question 1 : Calculer $f'(x)$ et étudier son signe\n\n::: methode\nDériver terme à terme, réduire au même dénominateur, puis étudier le signe du numérateur.\n:::\n\n::: etape Dérivée\n$$\n\\begin{aligned}\nf'(x) &= \\frac{1}{x} - 1 \\\\\n&= \\frac{1 - x}{x}\n\\end{aligned}\n$$\n:::\n\n::: etape Signe\nSur $]0\\,;+\\infty[$, $x \\gt 0$ : $f'(x)$ a le signe de $1 - x$.\n\n::: tableau\nx : 0, 1, +\\infty\n1 - x : , +, z, -,\nx : z, +, t, +,\nf'(x) : d, +, z, -,\n:::\n:::\n\n::: resultat\n$f'(x) = \\dfrac{1 - x}{x}$ : $f'(x) \\gt 0$ sur $]0\\,;1[$, $f'(1) = 0$ et $f'(x) \\lt 0$ sur $]1\\,;+\\infty[$.\n:::\n\n## Question 2 : Tableau de variations et extremums\n\n::: methode\nLire les variations sur le signe de $f'$ et calculer la valeur en $1$.\n:::\n\n::: etape Valeur en $1$\n$$f(1) = \\ln 1 - 1 + 2 = 1$$\n:::\n\n::: point Tableau de variations\n::: tableau\nx : 0, 1, +\\infty\nf'(x) : d, +, z, -,\nf(x) : D-/-\\infty, +/1, -/-\\infty\n:::\n:::\n\n::: remarque\nLes limites inscrites dans le tableau sont justifiées à la question 3.\n:::\n\n::: resultat\n$f$ est croissante sur $]0\\,;1]$ et décroissante sur $[1\\,;+\\infty[$ ; elle admet un **maximum** égal à $1$ en $x = 1$, et aucun minimum.\n:::\n\n[IMAGE_1]\n\n## Question 3 : Limites en $0^+$ et en $+\\infty$\n\n::: methode\nEn $0^+$, pas d’indétermination ; en $+\\infty$, factoriser par $x$ pour lever la forme « $\\infty - \\infty$ ».\n:::\n\n::: etape Limite en $0^+$\n$\\ln x \\to -\\infty$ et $-x + 2 \\to 2$, donc\n\n$$\\lim_{x \\to 0^+} f(x) = -\\infty$$\n:::\n\n::: etape Limite en $+\\infty$\n$\\ln x \\to +\\infty$ et $-x + 2 \\to -\\infty$ : forme indéterminée. Pour $x \\gt 0$ :\n\n$$f(x) = x\\left(\\frac{\\ln x}{x} - 1 + \\frac{2}{x}\\right)$$\n\nOr $\\dfrac{\\ln x}{x} \\to 0$ et $\\dfrac{2}{x} \\to 0$ : la parenthèse tend vers $-1$, donc\n\n$$\\lim_{x \\to +\\infty} f(x) = -\\infty$$\n:::\n\n::: resultat\n$\\lim\\limits_{x \\to 0^+} f(x) = -\\infty$ et $\\lim\\limits_{x \\to +\\infty} f(x) = -\\infty$.\n:::\n\n## Question 4 : Nombre de solutions de $\\ln x = x - 2$\n\n::: methode\n$\\ln x = x - 2 \\iff f(x) = 0$ ; appliquer le corollaire du théorème des valeurs intermédiaires sur chaque intervalle de monotonie.\n:::\n\n::: etape Sur $]0\\,;1]$\n$f$ est continue et strictement croissante, $\\lim\\limits_{x \\to 0^+} f(x) = -\\infty$ et $f(1) = 1 \\gt 0$ : l’équation $f(x) = 0$ a une unique solution $\\alpha$ dans $]0\\,;1[$.\n:::\n\n::: etape Sur $[1\\,;+\\infty[$\n$f$ est continue et strictement décroissante, $f(1) = 1 \\gt 0$ et $\\lim\\limits_{x \\to +\\infty} f(x) = -\\infty$ : une unique solution $\\beta$ dans $]1\\,;+\\infty[$.\n:::\n\n::: etape Encadrements à la calculatrice\n- $f(0{,}15) \\approx -0{,}047 \\lt 0$ et $f(0{,}16) \\approx 0{,}007 \\gt 0$, donc $0{,}15 \\lt \\alpha \\lt 0{,}16$.\n- $f(3{,}14) \\approx 0{,}004 \\gt 0$ et $f(3{,}15) \\approx -0{,}003 \\lt 0$, donc $3{,}14 \\lt \\beta \\lt 3{,}15$.\n:::\n\n::: resultat\nL’équation $\\ln x = x - 2$ admet exactement **deux** solutions : $\\alpha \\approx 0{,}16$ et $\\beta \\approx 3{,}15$.\n:::\n\n## Question 5 : Résoudre $\\ln x \\ge x - 2$\n\n::: methode\n$\\ln x \\ge x - 2 \\iff f(x) \\ge 0$ : lire le signe de $f$ sur son tableau de variations.\n:::\n\n::: etape Signe de $f$\n- Sur $]0\\,;\\alpha[$ : $f$ croissante et $f(\\alpha) = 0$, donc $f(x) \\lt 0$.\n- Sur $[\\alpha\\,;\\beta]$ : $f(x) \\ge 0$ ($f$ croît de $0$ à $1$, puis décroît de $1$ à $0$).\n- Sur $]\\beta\\,;+\\infty[$ : $f$ décroissante et $f(\\beta) = 0$, donc $f(x) \\lt 0$.\n:::\n\n::: resultat\n$$S = [\\alpha\\,;\\beta] \\quad \\text{avec } \\alpha \\approx 0{,}16 \\text{ et } \\beta \\approx 3{,}15$$\n:::\n\n::: remarque Interprétation graphique\nSur $[\\alpha\\,;\\beta]$, la courbe de $\\ln$ est au-dessus de la droite d’équation $y = x - 2$.\n:::\n\n[IMAGE_2]",
+   "reponse_correcte": "<!-- optitab:1 -->\n1. $f'(x) = \\dfrac{1 - x}{x}$ : positive sur $]0\\,;1[$, nulle en $1$, négative sur $]1\\,;+\\infty[$.\n2. $f$ croît sur $]0\\,;1]$ et décroît sur $[1\\,;+\\infty[$ ; maximum $f(1) = 1$.\n3. $\\lim\\limits_{x \\to 0^+} f(x) = -\\infty$ et $\\lim\\limits_{x \\to +\\infty} f(x) = -\\infty$.\n4. Deux solutions : $\\alpha \\approx 0{,}16$ et $\\beta \\approx 3{,}15$.\n5. $S = [\\alpha\\,;\\beta]$, avec $\\alpha \\approx 0{,}16$ et $\\beta \\approx 3{,}15$.",
+   "titre": "Problème - Fonction Logarithme - Problèmes de Synthèse 2",
+   "difficulty": "hard",
+   "contenu": "On considère la fonction $\\displaystyle f(x) = \\ln(x) - x + 2$ définie sur $\\displaystyle ]0, +\\infty[$.\n**Question 1 :** Calculer la dérivée $\\displaystyle f'(x)$ et étudier son signe\n$\\\\$\n**Question 2 :** Dresser le tableau de variations de $f$ et déterminer ses extremums\n$\\\\$\n**Question 3 :** Calculer les limites de $f$ en $0^+$ et $+\\infty$\n$\\\\$\n**Question 4 :** Déterminer le nombre de solutions de l'équation $\\displaystyle \\ln(x) = x - 2$\n$\\\\$\n**Question 5 :** Résoudre l'inéquation $\\displaystyle \\ln(x) \\geq x - 2$"
+  }
+ ],
+ "images": [
+  {
+   "modele": "CoursImage",
+   "id": 765,
+   "proprietaire": 90,
+   "position": 1,
+   "image": "cours_images/v1_n86_co90_1_cours_symetrie.png",
+   "legende": null,
+   "alt_text": "Courbes de l’exponentielle et du logarithme népérien, symétriques par rapport à la droite d’équation y = x, avec les points (0 ; 1), (1 ; 0), (1 ; e) et (e ; 1)",
+   "title_text": "",
+   "width": 334,
+   "height": 336
+  },
+  {
+   "modele": "CoursImage",
+   "id": 766,
+   "proprietaire": 90,
+   "position": 2,
+   "image": "cours_images/v1_n86_co90_2_cours_ln_tangente.png",
+   "legende": null,
+   "alt_text": "Courbe de la fonction ln, sa tangente y = x − 1 au point d’abscisse 1 et le point (e ; 1) ; l’axe des ordonnées est asymptote",
+   "title_text": "",
+   "width": 406,
+   "height": 229
+  },
+  {
+   "modele": "CoursImage",
+   "id": 767,
+   "proprietaire": 90,
+   "position": 3,
+   "image": "cours_images/v1_n86_co90_3_cours_croissances.png",
+   "legende": null,
+   "alt_text": "Courbes de y = x, y = racine de x et y = ln x sur [0 ; 25] : ln x croît beaucoup plus lentement",
+   "title_text": "",
+   "width": 407,
+   "height": 218
+  },
+  {
+   "modele": "CoursImage",
+   "id": 768,
+   "proprietaire": 90,
+   "position": 4,
+   "image": "cours_images/v1_n86_co90_4_cours_demivie.png",
+   "legende": null,
+   "alt_text": "Décroissance du carbone 14 : il reste 50 % au bout de 5 730 ans (demi-vie) et 25 % au bout de 11 460 ans",
+   "title_text": "",
+   "width": 408,
+   "height": 232
+  },
+  {
+   "modele": "SynthesisImage",
+   "id": 341,
+   "proprietaire": 31,
+   "position": 1,
+   "image": "synthesis_images/v1_n86_fi31_1_cours_symetrie.png",
+   "legende": null,
+   "alt_text": "Courbes de l’exponentielle et du logarithme népérien, symétriques par rapport à la droite d’équation y = x",
+   "title_text": "",
+   "width": 334,
+   "height": 336
+  },
+  {
+   "modele": "SynthesisImage",
+   "id": 342,
+   "proprietaire": 31,
+   "position": 2,
+   "image": "synthesis_images/v1_n86_fi31_2_cours_ln_tangente.png",
+   "legende": null,
+   "alt_text": "Courbe de la fonction ln avec sa tangente y = x − 1 en 1 et l’asymptote verticale x = 0",
+   "title_text": "",
+   "width": 406,
+   "height": 229
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 351,
+   "proprietaire": 1247,
+   "position": 1,
+   "image": "exercice_images/v1_n86_ex1247_1_eq_q1.png",
+   "legende": null,
+   "alt_text": "Courbes de y = ln(x + 2) et y = ln(3x − 1) qui se coupent au point d’abscisse 3/2",
+   "title_text": "",
+   "width": 408,
+   "height": 232
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 352,
+   "proprietaire": 1247,
+   "position": 2,
+   "image": "exercice_images/v1_n86_ex1247_2_eq_q2.png",
+   "legende": null,
+   "alt_text": "Courbe de y = ln x et droite y = 2 qui se coupent au point d’abscisse e²",
+   "title_text": "",
+   "width": 410,
+   "height": 214
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 353,
+   "proprietaire": 1247,
+   "position": 3,
+   "image": "exercice_images/v1_n86_ex1247_3_eq_q3.png",
+   "legende": null,
+   "alt_text": "Pour x > 2, la courbe de y = ln(x + 2) reste au-dessus de la droite y = 1 ; la valeur e − 2 se trouve hors du domaine",
+   "title_text": "",
+   "width": 418,
+   "height": 224
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 354,
+   "proprietaire": 1247,
+   "position": 4,
+   "image": "exercice_images/v1_n86_ex1247_4_eq_q4.png",
+   "legende": null,
+   "alt_text": "Courbe de y = ln(x + 1) + ln(x − 1) pour x > 1 et droite y = ln 8, qui se coupent au point d’abscisse 3",
+   "title_text": "",
+   "width": 433,
+   "height": 232
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 355,
+   "proprietaire": 1247,
+   "position": 5,
+   "image": "exercice_images/v1_n86_ex1247_5_eq_q5.png",
+   "legende": null,
+   "alt_text": "Courbes de y = 2 ln x et y = ln(x² + 3) sans point commun : l’équation n’a pas de solution",
+   "title_text": "",
+   "width": 408,
+   "height": 232
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 356,
+   "proprietaire": 1248,
+   "position": 1,
+   "image": "exercice_images/v1_n86_ex1248_1_ineq_q1.png",
+   "legende": null,
+   "alt_text": "Courbes de y = ln(2x) et y = ln(x + 1) : ln(2x) est au-dessus pour x > 1, ensemble solution en vert sur l’axe",
+   "title_text": "",
+   "width": 404,
+   "height": 223
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 357,
+   "proprietaire": 1248,
+   "position": 2,
+   "image": "exercice_images/v1_n86_ex1248_2_ineq_q2.png",
+   "legende": null,
+   "alt_text": "Courbe de y = ln x au-dessus de la droite y = −1 pour x ≥ 1/e, ensemble solution en vert sur l’axe",
+   "title_text": "",
+   "width": 428,
+   "height": 214
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 358,
+   "proprietaire": 1248,
+   "position": 3,
+   "image": "exercice_images/v1_n86_ex1248_3_ineq_q3.png",
+   "legende": null,
+   "alt_text": "Courbe de y = ln(2x + 3) avec l’asymptote x = −3/2 ; ensemble solution ]−3/2 ; −1] en vert sur l’axe",
+   "title_text": "",
+   "width": 400,
+   "height": 214
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 359,
+   "proprietaire": 1248,
+   "position": 4,
+   "image": "exercice_images/v1_n86_ex1248_4_ineq_q4.png",
+   "legende": null,
+   "alt_text": "Courbe de y = ln(x² − 1) et droite y = ln 3 : solutions x < −2 ou x > 2, en vert sur l’axe",
+   "title_text": "",
+   "width": 432,
+   "height": 223
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 360,
+   "proprietaire": 1248,
+   "position": 5,
+   "image": "exercice_images/v1_n86_ex1248_5_ineq_q5.png",
+   "legende": null,
+   "alt_text": "Courbe de y = ln x + ln(x − 2) et droite y = ln 8 : ensemble solution ]2 ; 4] en vert sur l’axe",
+   "title_text": "",
+   "width": 434,
+   "height": 232
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 346,
+   "proprietaire": 1246,
+   "position": 1,
+   "image": "exercice_images/v1_n86_ex1246_1_etude_f.png",
+   "legende": null,
+   "alt_text": "Courbe de f(x) = ln(2x − 1), croissante, avec l’asymptote verticale x = 1/2",
+   "title_text": "",
+   "width": 400,
+   "height": 223
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 347,
+   "proprietaire": 1246,
+   "position": 2,
+   "image": "exercice_images/v1_n86_ex1246_2_etude_g.png",
+   "legende": null,
+   "alt_text": "Courbe de g(x) = x ln x avec son minimum −1/e atteint en x = 1/e",
+   "title_text": "",
+   "width": 402,
+   "height": 214
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 348,
+   "proprietaire": 1246,
+   "position": 3,
+   "image": "exercice_images/v1_n86_ex1246_3_etude_h.png",
+   "legende": null,
+   "alt_text": "Courbe de h(x) = ln(x² − 3x + 2) en deux branches, avec les asymptotes verticales x = 1 et x = 2",
+   "title_text": "",
+   "width": 400,
+   "height": 223
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 349,
+   "proprietaire": 1246,
+   "position": 4,
+   "image": "exercice_images/v1_n86_ex1246_4_etude_k.png",
+   "legende": null,
+   "alt_text": "Courbe de k(x) = ln x / x² avec son maximum 1/(2e) atteint en x = racine de e",
+   "title_text": "",
+   "width": 421,
+   "height": 214
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 350,
+   "proprietaire": 1246,
+   "position": 5,
+   "image": "exercice_images/v1_n86_ex1246_5_etude_m.png",
+   "legende": null,
+   "alt_text": "Courbe de m(x) = ln((x + 1)/(x − 1)) en deux branches décroissantes, asymptotes x = −1, x = 1 et y = 0",
+   "title_text": "",
+   "width": 400,
+   "height": 223
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 361,
+   "proprietaire": 1251,
+   "position": 1,
+   "image": "exercice_images/v1_n86_ex1251_1_synth1_f.png",
+   "legende": null,
+   "alt_text": "Courbe de f(x) = ln(x² − 4x + 3), asymptotes x = 1 et x = 3, symétrique par rapport à la droite x = 2",
+   "title_text": "",
+   "width": 400,
+   "height": 228
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 362,
+   "proprietaire": 1251,
+   "position": 2,
+   "image": "exercice_images/v1_n86_ex1251_2_synth1_ineg.png",
+   "legende": null,
+   "alt_text": "La courbe de y = ln(1 + x) est sous la droite y = x, tangente en 0",
+   "title_text": "",
+   "width": 372,
+   "height": 232
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 363,
+   "proprietaire": 1251,
+   "position": 3,
+   "image": "exercice_images/v1_n86_ex1251_3_synth1_ax.png",
+   "legende": null,
+   "alt_text": "Courbe de ln et droites y = ax : deux points communs pour a = 0,3, un point de tangence pour a = 1/e, un seul point pour a = −0,5",
+   "title_text": "",
+   "width": 438,
+   "height": 234
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 364,
+   "proprietaire": 1252,
+   "position": 1,
+   "image": "exercice_images/v1_n86_ex1252_1_synth2_f.png",
+   "legende": null,
+   "alt_text": "Courbe de f(x) = ln x − x + 2 avec son maximum 1 en x = 1 et ses deux zéros α et β",
+   "title_text": "",
+   "width": 406,
+   "height": 214
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 365,
+   "proprietaire": 1252,
+   "position": 2,
+   "image": "exercice_images/v1_n86_ex1252_2_synth2_ineq.png",
+   "legende": null,
+   "alt_text": "Courbe de ln au-dessus de la droite y = x − 2 entre α et β : ensemble solution [α ; β] en vert sur l’axe",
+   "title_text": "",
+   "width": 406,
+   "height": 233
+  }
+ ],
+ "images_creees": [
+  {
+   "modele": "ExerciceImage",
+   "id": 3710
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3711
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3712
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3713
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3714
+  },
+  {
+   "modele": "ExerciceImage",
+   "id": 3715
+  }
+ ],
+ "exercices_crees": []
+}

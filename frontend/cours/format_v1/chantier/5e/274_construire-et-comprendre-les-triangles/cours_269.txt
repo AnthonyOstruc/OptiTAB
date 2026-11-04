@@ -1,0 +1,307 @@
+Titre: Construire et comprendre les triangles
+
+<!-- optitab:1 -->
+::: objectifs
+- Savoir si trois longueurs permettent de construire un triangle.
+- Connaître la somme des angles d'un triangle, savoir la démontrer et l'utiliser, notamment dans les triangles particuliers.
+- Construire un triangle connaissant trois longueurs, deux longueurs et l'angle compris, ou une longueur et deux angles.
+- Tracer les médiatrices et le cercle circonscrit d'un triangle, en particulier d'un triangle rectangle.
+- Définir et tracer les hauteurs ; calculer l'aire d'un triangle.
+- Définir et tracer les médianes ; démontrer qu'une médiane partage un triangle en deux triangles de même aire.
+:::
+
+## I. Le triangle existe-t-il ?
+
+::: propriete Inégalité triangulaire
+Dans un triangle $ABC$, la longueur de chaque côté est inférieure à la somme des longueurs des deux autres côtés. Par exemple :
+
+$$AB < AC + CB$$
+
+Aller directement de $A$ à $B$ est plus court que de faire le détour par $C$.
+:::
+
+::: propriete Cas d'égalité
+Si $AB = AC + CB$, alors le point $C$ est sur le segment $[AB]$ : les trois points sont alignés et le « triangle » est **aplati**.
+:::
+
+Pour savoir si trois longueurs conviennent, il suffit de tester la **plus grande** : si elle est plus petite que la somme des deux autres, les deux autres comparaisons sont forcément vraies.
+
+::: methode Tester trois longueurs
+1. Repérer la plus grande des trois longueurs.
+2. Calculer la somme des deux autres.
+3. Conclure :
+   - plus grande longueur $<$ somme des deux autres : le triangle existe ;
+   - plus grande longueur $=$ somme des deux autres : le triangle est aplati ;
+   - plus grande longueur $>$ somme des deux autres : aucun triangle.
+:::
+
+Sur la figure, on a tracé un côté $[AB]$ de $5$ cm, puis les deux arcs de cercle qui doivent porter le troisième sommet.
+
+[IMAGE_1]
+
+::: exemple
+- Avec $6$ cm, $3{,}5$ cm et $2$ cm : la plus grande longueur est $6$ cm et $3{,}5 + 2 = 5{,}5$. Comme $6 > 5{,}5$, ce triangle n'existe pas.
+- Avec $4{,}5$ cm, $3$ cm et $2$ cm : la plus grande longueur est $4{,}5$ cm et $3 + 2 = 5$. Comme $4{,}5 < 5$, ce triangle existe.
+:::
+
+::: attention Erreur fréquente
+Tester la **plus petite** longueur : avec $2$ cm, $3$ cm et $8$ cm, on a bien $2 < 3 + 8$, et pourtant le triangle n'existe pas, car $8 > 2 + 3$.
+:::
+
+## II. Les angles d'un triangle
+
+::: propriete Somme des angles d'un triangle
+Dans tout triangle $ABC$, la somme des mesures des trois angles est égale à $180°$ :
+
+$$\widehat{A} + \widehat{B} + \widehat{C} = 180°$$
+:::
+
+[IMAGE_2]
+
+::: demonstration
+On trace la droite $(d)$ parallèle à $(BC)$ passant par $A$.
+
+- Les droites $(d)$ et $(BC)$ sont parallèles et coupées par la sécante $(AB)$ : les angles alternes-internes marqués en orange sont égaux (chapitre « Angles et droites parallèles »).
+- De même, avec la sécante $(AC)$, les angles marqués en vert sont égaux.
+- En $A$, l'angle orange, l'angle $\widehat{BAC}$ et l'angle vert sont placés côte à côte et forment un angle plat, qui mesure $180°$.
+
+Donc $\widehat{A} + \widehat{B} + \widehat{C} = 180°$.
+:::
+
+::: methode Calculer le troisième angle
+On soustrait de $180°$ la somme des deux angles connus.
+:::
+
+::: exemple
+Dans un triangle $ABC$, $\widehat{A} = 38°$ et $\widehat{B} = 85°$.
+
+$$
+\begin{aligned}
+\widehat{C} &= 180° - (38° + 85°) \\
+&= 180° - 123° \\
+&= 57°
+\end{aligned}
+$$
+:::
+
+### Les triangles particuliers
+
+[IMAGE_3]
+
+| Triangle | Définition | Propriété des angles |
+|---|---|---|
+| isocèle en $A$ | $AB = AC$ | les angles à la base $\widehat{B}$ et $\widehat{C}$ sont égaux |
+| équilatéral | trois côtés égaux | trois angles de $60°$ |
+| rectangle en $R$ | $\widehat{R} = 90°$ | $\widehat{S} + \widehat{T} = 90°$ |
+| rectangle isocèle en $K$ | $\widehat{K} = 90°$ et $KL = KM$ | $90°$, $45°$ et $45°$ |
+
+Dans un triangle isocèle en $A$, le point $A$ est le **sommet principal** et $[BC]$ est la **base**.
+
+::: propriete Reconnaître par les angles
+- Si un triangle a deux angles égaux, alors il est isocèle.
+- Si un triangle a trois angles égaux, alors il est équilatéral.
+:::
+
+::: demonstration Les angles d'un triangle équilatéral
+Un triangle équilatéral est isocèle en chacun de ses sommets : ses trois angles sont donc égaux. Leur somme vaut $180°$, donc chacun mesure $180° \div 3 = 60°$.
+:::
+
+::: exemple Dans un triangle isocèle
+- L'angle au sommet principal mesure $36°$. Les deux angles à la base sont égaux et se partagent $180° - 36° = 144°$ : chacun mesure $144° \div 2 = 72°$.
+- Un angle à la base mesure $25°$. L'autre aussi, et l'angle au sommet principal mesure $180° - 2 \times 25° = 130°$.
+:::
+
+::: attention Erreurs fréquentes
+- Dans un triangle isocèle **en $A$**, les angles égaux sont ceux en $B$ et en $C$, pas l'angle en $A$.
+- Un triangle ne peut pas avoir deux angles droits, ni deux angles obtus : leur somme atteindrait ou dépasserait déjà $180°$.
+:::
+
+## III. Construire un triangle
+
+Avant de construire, on vérifie que les données sont possibles (inégalité triangulaire, somme des angles inférieure à $180°$) et on fait une **figure à main levée** codée. Les traits de construction (arcs de cercle, demi-droites) restent visibles : ils montrent comment le triangle a été obtenu.
+
+### Avec les trois longueurs
+
+::: methode Construire $LMN$ avec $LM = 5{,}5$ cm, $LN = 4{,}5$ cm et $MN = 3$ cm
+1. Vérifier : $4{,}5 + 3 = 7{,}5 > 5{,}5$, le triangle existe.
+2. Tracer le segment $[LM]$ de $5{,}5$ cm.
+3. Tracer un arc de cercle de centre $L$ et de rayon $4{,}5$ cm : $N$ est à $4{,}5$ cm de $L$.
+4. Tracer un arc de cercle de centre $M$ et de rayon $3$ cm : $N$ est à $3$ cm de $M$.
+5. Le point $N$ est le point d'intersection des deux arcs ; tracer $[LN]$ et $[MN]$.
+:::
+
+[IMAGE_4]
+
+### Avec deux longueurs et l'angle compris entre elles
+
+::: methode Construire $RST$ avec $RS = 5$ cm, $RT = 3{,}5$ cm et $\widehat{SRT} = 40°$
+1. Tracer le segment $[RS]$ de $5$ cm.
+2. Placer le centre du rapporteur en $R$, le zéro sur $[RS]$, et tracer la demi-droite d'origine $R$ qui fait un angle de $40°$ avec $[RS]$.
+3. Reporter $3{,}5$ cm au compas sur cette demi-droite à partir de $R$ : c'est le point $T$.
+4. Tracer $[ST]$.
+:::
+
+[IMAGE_5]
+
+### Avec une longueur et les deux angles adjacents
+
+::: methode Construire $IJK$ avec $IJ = 5$ cm, $\widehat{KIJ} = 35°$ et $\widehat{IJK} = 70°$
+1. Vérifier : $35° + 70° = 105° < 180°$, le triangle existe.
+2. Tracer le segment $[IJ]$ de $5$ cm.
+3. Tracer en $I$ une demi-droite faisant un angle de $35°$ avec $[IJ]$, puis en $J$ une demi-droite faisant un angle de $70°$ avec $[JI]$, **du même côté** de $(IJ)$.
+4. Le point $K$ est le point d'intersection des deux demi-droites.
+:::
+
+[IMAGE_6]
+
+::: methode Quand un angle adjacent manque
+On veut construire $XYZ$ avec $XY = 6$ cm, $\widehat{X} = 50°$ et $\widehat{Z} = 60°$. L'angle en $Z$ n'est pas au bout du côté $[XY]$ : on calcule d'abord l'angle en $Y$, puis on construit avec $[XY]$ et ses deux angles adjacents.
+
+$$\widehat{Y} = 180° - (50° + 60°) = 70°$$
+:::
+
+::: retenir
+Trois longueurs, deux longueurs et l'angle compris entre elles, ou une longueur et les deux angles adjacents : chacune de ces données permet de construire **un seul** triangle. Deux élèves qui suivent la même construction obtiennent des triangles superposables.
+:::
+
+::: attention Erreur fréquente
+Avec deux longueurs et un angle, l'angle doit être celui **compris** entre les deux côtés connus, c'est-à-dire placé à leur extrémité commune.
+:::
+
+## IV. Médiatrices et cercle circonscrit
+
+::: definition Médiatrice d'un segment
+La **médiatrice** d'un segment $[AB]$ est la droite perpendiculaire à $[AB]$ qui passe par son milieu.
+:::
+
+::: propriete Équidistance
+- Si un point est sur la médiatrice de $[AB]$, alors il est à la même distance de $A$ et de $B$.
+- Si un point est à la même distance de $A$ et de $B$, alors il est sur la médiatrice de $[AB]$.
+:::
+
+::: methode Tracer la médiatrice de $[AB]$ au compas
+1. Avec un écartement plus grand que la moitié de $AB$, tracer deux arcs de centre $A$, de part et d'autre de $[AB]$.
+2. Avec **le même écartement**, tracer deux arcs de centre $B$ qui coupent les premiers.
+3. Les deux points d'intersection sont à égale distance de $A$ et de $B$ : la droite qui les joint est la médiatrice.
+:::
+
+[IMAGE_7]
+
+::: propriete Cercle circonscrit
+Les trois médiatrices d'un triangle $ABC$ se coupent en un même point $O$. Ce point vérifie $OA = OB = OC$ : le cercle de centre $O$ et de rayon $OA$ passe par les trois sommets. C'est le **cercle circonscrit** au triangle.
+:::
+
+[IMAGE_8]
+
+::: methode Construire le cercle circonscrit
+Deux médiatrices suffisent : leur point d'intersection $O$ est à égale distance des trois sommets. La troisième médiatrice passe aussi par $O$ ; elle sert de vérification.
+:::
+
+### Dans les triangles particuliers
+
+- **Triangle isocèle en $A$** : comme $AB = AC$, le sommet $A$ est sur la médiatrice de la base $[BC]$. Cette médiatrice est l'axe de symétrie du triangle.
+- **Triangle équilatéral** : chaque médiatrice passe par le sommet opposé.
+- **Triangle rectangle** : le centre du cercle circonscrit est le **milieu de l'hypoténuse**.
+
+[IMAGE_9]
+
+::: propriete Triangle rectangle et cercle circonscrit
+Si le triangle $EFG$ est rectangle en $E$, alors le centre $O$ de son cercle circonscrit est le milieu de l'hypoténuse $[FG]$. Le triangle est inscrit dans un demi-cercle de diamètre $[FG]$, et le rayon vaut la moitié de l'hypoténuse.
+:::
+
+::: exemple
+Si $EFG$ est rectangle en $E$ avec $FG = 7$ cm, le cercle circonscrit a pour centre le milieu de $[FG]$ et pour rayon $7 \div 2 = 3{,}5$ cm. On l'observe en traçant deux médiatrices ; cette propriété sera démontrée en 4e.
+:::
+
+## V. Hauteurs et aire d'un triangle
+
+::: definition Hauteur
+Une **hauteur** d'un triangle est une droite qui passe par un sommet et qui est perpendiculaire à la droite portant le côté opposé. Le point d'intersection est le **pied** de la hauteur.
+
+On appelle aussi « hauteur » la longueur du segment qui joint le sommet au pied.
+:::
+
+[IMAGE_10]
+
+::: propriete
+Les trois hauteurs d'un triangle sont concourantes : elles passent par un même point, appelé **orthocentre**.
+:::
+
+::: attention Erreur fréquente
+Dans un triangle qui a un angle obtus, une hauteur peut tomber **à l'extérieur** du triangle : il faut alors prolonger le côté opposé (en pointillés) avant de tracer la perpendiculaire.
+:::
+
+### L'aire d'un triangle
+
+[IMAGE_11]
+
+La hauteur $[AH]$ partage le rectangle de base $[BC]$ et de hauteur $AH$ en deux rectangles. Chacun est coupé en deux par un côté du triangle : le triangle $ABC$ occupe exactement la **moitié** du grand rectangle.
+
+::: formule
+$$\mathcal{A} = \frac{\text{base} \times \text{hauteur correspondante}}{2}$$
+:::
+
+::: exemple
+Un triangle a une base de $9$ cm et une hauteur correspondante de $4$ cm :
+
+$$\mathcal{A} = \frac{9 \times 4}{2} = \frac{36}{2} = 18 \text{ cm}^2$$
+:::
+
+::: propriete Même base, même hauteur
+Deux triangles qui ont des bases de même longueur et des hauteurs correspondantes de même longueur ont la même aire.
+:::
+
+::: methode Calculer une hauteur à partir de l'aire
+On écrit la formule de l'aire avec la base choisie, puis on remonte le calcul. Un triangle d'aire $21$ cm$^2$ a une base de $6$ cm : la hauteur correspondante $h$ vérifie $6 \times h = 2 \times 21 = 42$, donc $h = 42 \div 6 = 7$ cm.
+:::
+
+::: attention Erreurs fréquentes
+- Utiliser une hauteur qui ne correspond pas à la base choisie : la hauteur est perpendiculaire à **cette** base.
+- Oublier de diviser par $2$, ou mélanger des longueurs exprimées dans des unités différentes.
+- Donner une aire en cm au lieu de cm$^2$.
+:::
+
+## VI. Médianes d'un triangle
+
+::: definition Médiane
+Une **médiane** d'un triangle est une droite (ou un segment) qui passe par un sommet et par le **milieu** du côté opposé.
+:::
+
+[IMAGE_12]
+
+::: propriete
+Une médiane partage un triangle en deux triangles de même aire.
+:::
+
+::: demonstration
+Sur la figure, $M$ est le milieu de $[BC]$. Les triangles $ABM$ et $AMC$ ont :
+
+- des bases de même longueur : $BM = MC$ ;
+- la même hauteur correspondante $AH$, puisque leurs bases sont portées par la même droite $(BC)$.
+
+Ils ont donc la même aire, égale à la moitié de l'aire de $ABC$.
+:::
+
+::: exemple
+Un triangle a une aire de $30$ cm$^2$. Chacune de ses médianes le partage en deux triangles de $30 \div 2 = 15$ cm$^2$.
+:::
+
+[IMAGE_13]
+
+::: propriete
+Les trois médianes d'un triangle sont concourantes : elles passent par un même point, appelé **centre de gravité**.
+:::
+
+::: attention Erreur fréquente
+Une médiane n'est pas, en général, perpendiculaire au côté opposé : sur la figure, $M$ et $H$ sont deux points différents. La médiane et la hauteur issues de $A$ ne sont confondues que si le triangle est isocèle en $A$.
+:::
+
+::: retenir Les droites remarquables
+| Droite | Elle passe par… | À retenir |
+|---|---|---|
+| médiatrice de $[BC]$ | le milieu de $[BC]$, perpendiculairement | ses points sont à égale distance de $B$ et $C$ ; centre du cercle circonscrit |
+| hauteur issue de $A$ | $A$, perpendiculairement à $(BC)$ | sert à calculer l'aire ; orthocentre |
+| médiane issue de $A$ | $A$ et le milieu de $[BC]$ | partage l'aire en deux ; centre de gravité |
+
+Dans un triangle isocèle en $A$, la médiatrice de $[BC]$, la hauteur et la médiane issues de $A$ sont la même droite : l'axe de symétrie du triangle.
+:::

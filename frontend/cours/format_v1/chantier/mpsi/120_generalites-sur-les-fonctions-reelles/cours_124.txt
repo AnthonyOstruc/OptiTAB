@@ -1,0 +1,537 @@
+Titre: Généralités sur les Fonctions
+
+<!-- optitab:1 -->
+## I. Définitions et vocabulaire
+
+### Fonction et ensemble de définition
+
+::: definition Fonction
+Une fonction $f$ de $E$ dans $F$ (où $E$ et $F$ sont des parties de $\mathbb{R}$ ou $\mathbb{C}$) associe à tout élément $x$ de $E$ un unique élément $f(x)$ de $F$.
+
+Notation : $f : E \to F$ ou $f : x \mapsto f(x)$
+:::
+
+::: definition Ensemble de définition
+L'**ensemble de définition** (ou domaine de définition) d'une fonction $f$, noté $\mathcal{D}_f$ ou $D_f$, est l'ensemble des valeurs de $x$ pour lesquelles $f(x)$ est défini.
+
+Pour une fonction donnée par une expression $f(x)$, $\mathcal{D}_f$ est l'ensemble des $x \in \mathbb{R}$ tels que l'expression $f(x)$ a un sens.
+:::
+
+::: exemple
+- Pour $f(x) = \sqrt{x}$, on a $\mathcal{D}_f = [0, +\infty[$ (le radicande doit être positif ou nul)
+- Pour $g(x) = \frac{1}{x-1}$, on a $\mathcal{D}_g = \mathbb{R} \setminus \{1\}$ (le dénominateur ne doit pas s'annuler)
+- Pour $h(x) = \ln(x)$, on a $\mathcal{D}_h = ]0, +\infty[$ (l'argument du logarithme doit être strictement positif)
+- Pour $k(x) = \frac{1}{\sqrt{x-2}}$, on a $\mathcal{D}_k = ]2, +\infty[$ (le radicande doit être strictement positif et le dénominateur non nul)
+:::
+
+::: definition Image et antécédent
+Soit $\displaystyle f : E \to F$ une fonction.
+
+- Pour $x \in E$, $f(x)$ est l'**image** de $x$ par $f$
+- Pour $y \in F$, si $y = f(x)$ pour un certain $x \in E$, alors $x$ est un **antécédent** de $y$ par $f$
+- L'**image** de $f$, notée $\text{Im}(f)$ ou $f(E)$, est l'ensemble $\{f(x) : x \in E\}$
+
+**Attention :** $F$ est l'ensemble d'arrivée (codomaine), tandis que $\text{Im}(f) \subset F$ est l'image effective.
+:::
+
+::: definition Image directe et image réciproque d'un ensemble
+Soit $\displaystyle f : E \to F$ une fonction.
+
+Pour $A \subset E$ et $B \subset F$ :
+
+- **Image directe de $A$ :** $f(A) = \{f(x) : x \in A\}$
+- **Image réciproque de $B$ :** $f^{-1}(B) = \{x \in E : f(x) \in B\}$
+
+Notation : $\displaystyle \text{Im}(f) = f(E)$
+
+L'image réciproque existe même si $f$ n'est pas bijective. Elle permet de formuler correctement "l'ensemble des solutions de $f(x) \in B$" comme $f^{-1}(B)$.
+:::
+
+::: exemple
+Pour $f : x \mapsto x^2$ définie sur $\mathbb{R}$, l'image de $3$ est $f(3) = 9$.
+
+Les antécédents de $4$ sont $2$ et $-2$ car $f(2) = f(-2) = 4$.
+
+L'image de $f$ est $\text{Im}(f) = [0, +\infty[$.
+
+Pour $f(x) = x^2$, on a $f^{-1}([1, 4]) = [-2, -1] \cup [1, 2]$ (image réciproque de l'intervalle $[1, 4]$).
+:::
+
+::: remarque Zéros, signe et ensembles de niveau
+Pour une fonction $f$ définie sur $I$ :
+
+- **Zéros de $f$ :** $\{x \in I : f(x) = 0\}$
+- **Signe de $f$ :** déterminer sur quels intervalles $f(x) > 0$, $f(x) < 0$ ou $f(x) = 0$
+- **Ensemble de niveau :** $\displaystyle \{x \in I : f(x) \geq 0\} = f^{-1}([0, +\infty[)$
+
+Ces notions sont utilisées très tôt pour les tableaux de signes et la résolution d'inéquations.
+:::
+
+::: definition Vocabulaire : injectivité, surjectivité, bijectivité
+Soit $\displaystyle f : E \to F$ une fonction.
+
+- **Injective :** $f$ est injective si pour tous $x, x' \in E$ avec $f(x) = f(x')$, on a $x = x'$ (deux éléments distincts ont des images distinctes)
+- **Surjective :** $f$ est surjective si $\text{Im}(f) = F$ (tout élément de $F$ a au moins un antécédent)
+- **Bijective :** $f$ est bijective si elle est à la fois injective et surjective
+
+**Remarque importante :** Si $f$ est strictement monotone sur un intervalle $I$, alors $f$ est injective sur $I$.
+:::
+
+::: definition Restriction et prolongement
+Soit $f$ une fonction définie sur $\mathcal{D}_f$ et $A \subset \mathcal{D}_f$.
+
+La **restriction** de $f$ à $A$, notée $f_{|A}$ ou $f_A$, est la fonction définie sur $A$ par $f_{|A}(x) = f(x)$ pour tout $x \in A$.
+
+Un **prolongement** de $f$ est une fonction $g$ définie sur un ensemble contenant $\mathcal{D}_f$ telle que $g_{|\mathcal{D}_f} = f$. On parlera notamment de **prolongement par continuité** (détail dans le chapitre « Continuité »).
+:::
+
+## II. Représentation graphique
+
+### Courbe représentative
+
+::: definition Courbe représentative
+Soit $f : I \to \mathbb{R}$ une fonction définie sur un intervalle $I$.
+
+La **courbe représentative** (ou graphe) de $f$ dans un repère orthonormé est l'ensemble des points $M(x, f(x))$ pour $x \in I$.
+
+Notation : $\displaystyle \mathcal{C}_f = \{(x, f(x)) : x \in \mathcal{D}_f\}$
+:::
+
+::: demonstration Interprétation géométrique
+Un point $M(x_0, y_0)$ appartient à $\mathcal{C}_f$ si et seulement si $y_0 = f(x_0)$.
+
+La courbe $\mathcal{C}_f$ coupe l'axe des abscisses aux points d'abscisse $x$ tels que $f(x) = 0$.
+
+La courbe $\mathcal{C}_f$ coupe l'axe des ordonnées au point $(0, f(0))$ si $0 \in \mathcal{D}_f$.
+:::
+
+::: exemple
+Pour $f(x) = x^2 - 1$, la courbe $\mathcal{C}_f$ est une parabole.
+
+Elle coupe l'axe des abscisses en $x = 1$ et $x = -1$ (car $f(1) = f(-1) = 0$).
+
+Elle coupe l'axe des ordonnées en $(0, -1)$.
+:::
+
+### Transformations de graphiques
+
+::: methode Transformations élémentaires
+Soit $f$ une fonction et $\mathcal{C}_f$ sa courbe représentative.
+
+On considère les transformations suivantes :
+:::
+
+::: propriete Translation horizontale : $\displaystyle x \mapsto f(x + a)$
+La courbe de $g : x \mapsto f(x + a)$ s'obtient en translatant $\mathcal{C}_f$ de $-a$ selon l'axe des abscisses.
+
+- Si $a > 0$ : translation vers la gauche de $a$ unités
+- Si $a < 0$ : translation vers la droite de $|a|$ unités
+:::
+
+::: propriete Translation verticale : $\displaystyle x \mapsto f(x) + b$
+La courbe de $h : x \mapsto f(x) + b$ s'obtient en translatant $\mathcal{C}_f$ de $b$ selon l'axe des ordonnées.
+
+- Si $b > 0$ : translation vers le haut de $b$ unités
+- Si $b < 0$ : translation vers le bas de $|b|$ unités
+:::
+
+::: propriete Dilatation/contraction horizontale : $x \mapsto f(ax)$
+La courbe de $k : x \mapsto f(ax)$ s'obtient en transformant $\mathcal{C}_f$ par une dilatation/contraction horizontale.
+
+- Si $a > 1$ : contraction horizontale (rapport $\frac{1}{a}$)
+- Si $0 < a < 1$ : dilatation horizontale (rapport $\frac{1}{a}$)
+- Si $a < 0$ : contraction/dilatation + symétrie par rapport à l'axe des ordonnées
+:::
+
+::: propriete Dilatation/contraction verticale : $x \mapsto \lambda f(x)$
+La courbe de $\ell : x \mapsto \lambda f(x)$ s'obtient en transformant $\mathcal{C}_f$ par une dilatation/contraction verticale.
+
+- Si $\lambda > 1$ : dilatation verticale (rapport $\lambda$)
+- Si $0 < \lambda < 1$ : contraction verticale (rapport $\lambda$)
+- Si $\lambda < 0$ : dilatation/contraction + symétrie par rapport à l'axe des abscisses
+:::
+
+::: propriete Symétries
+- $x \mapsto f(-x)$ : symétrie par rapport à l'axe des ordonnées
+- $x \mapsto -f(x)$ : symétrie par rapport à l'axe des abscisses
+- $x \mapsto -f(-x)$ : symétrie par rapport à l'origine
+- $x \mapsto f(a - x)$ : symétrie horizontale par rapport à la droite $x = \frac{a}{2}$ avec domaine $a - \mathcal{D}_f = \{x : a - x \in \mathcal{D}_f\}$ (réflexion du domaine)
+- $x \mapsto a - f(x)$ : symétrie verticale par rapport à la droite $y = \frac{a}{2}$ (le domaine reste $\mathcal{D}_f$)
+:::
+
+::: demonstration Utilisation pour la réduction du domaine d'étude
+Si une fonction possède des propriétés de symétrie (parité, imparité, périodicité), on peut réduire son domaine d'étude à une partie seulement, puis reconstruire la courbe complète par symétrie ou translation.
+
+Par exemple, pour une fonction paire, il suffit d'étudier $f$ sur $[0, +\infty[$ puis de compléter par symétrie.
+:::
+
+::: exemple
+- La courbe de $x \mapsto (x-2)^2$ s'obtient en translatant celle de $x \mapsto x^2$ de $2$ unités vers la droite
+- La courbe de $x \mapsto x^2 + 3$ s'obtient en translatant celle de $x \mapsto x^2$ de $3$ unités vers le haut
+- La courbe de $x \mapsto (2x)^2 = 4x^2$ s'obtient en contractant horizontalement celle de $x \mapsto x^2$ d'un facteur $2$
+- La courbe de $x \mapsto 2x^2$ s'obtient en dilatant verticalement celle de $x \mapsto x^2$ d'un facteur $2$
+:::
+
+## III. Parité, imparité, périodicité
+
+### Parité
+
+::: definition Fonction paire
+Une fonction $f$ est dite **paire** si :
+
+- Son ensemble de définition $\mathcal{D}_f$ est symétrique par rapport à $0$ (c'est-à-dire : $x \in \mathcal{D}_f \Leftrightarrow -x \in \mathcal{D}_f$)
+- Pour tout $x \in \mathcal{D}_f$, on a $f(-x) = f(x)$
+:::
+
+::: demonstration Traduction géométrique
+La courbe représentative d'une fonction paire est symétrique par rapport à l'axe des ordonnées.
+
+Si $M(x, f(x))$ appartient à $\mathcal{C}_f$, alors $M'(-x, f(x))$ appartient aussi à $\mathcal{C}_f$.
+:::
+
+::: exemple
+- $f(x) = x^2$ est paire : $f(-x) = (-x)^2 = x^2 = f(x)$
+- $g(x) = |x|$ est paire : $g(-x) = |-x| = |x| = g(x)$
+- $h(x) = \cos(x)$ est paire : $\cos(-x) = \cos(x)$
+- $k(x) = x^4 - 3x^2 + 1$ est paire (polynôme ne contenant que des puissances paires)
+:::
+
+### Imparité
+
+::: definition Fonction impaire
+Une fonction $f$ est dite **impaire** si :
+
+- Son ensemble de définition $\mathcal{D}_f$ est symétrique par rapport à $0$
+- Pour tout $x \in \mathcal{D}_f$, on a $f(-x) = -f(x)$
+:::
+
+::: demonstration Traduction géométrique
+La courbe représentative d'une fonction impaire est symétrique par rapport à l'origine du repère.
+
+Si $M(x, f(x))$ appartient à $\mathcal{C}_f$, alors $M'(-x, -f(x))$ appartient aussi à $\mathcal{C}_f$.
+
+En particulier, si $0 \in \mathcal{D}_f$, alors $f(0) = 0$.
+:::
+
+::: exemple
+- $f(x) = x^3$ est impaire : $f(-x) = (-x)^3 = -x^3 = -f(x)$
+- $\displaystyle g(x) = x$ est impaire
+- $h(x) = \sin(x)$ est impaire : $\sin(-x) = -\sin(x)$
+- $k(x) = x^5 - 2x^3 + x$ est impaire (polynôme ne contenant que des puissances impaires)
+:::
+
+### Périodicité
+
+::: definition Fonction périodique
+Une fonction $f$ est dite **périodique** de période $T > 0$ (ou $T$-périodique) si :
+
+- Pour tout $x \in \mathcal{D}_f$, on a $x + T \in \mathcal{D}_f$ et $x - T \in \mathcal{D}_f$
+- Pour tout $x \in \mathcal{D}_f$, on a $f(x + T) = f(x)$
+
+Si $T$ est une période de $f$, alors tout multiple entier de $T$ est aussi une période.
+:::
+
+::: definition Période fondamentale
+La **période fondamentale** (ou plus petite période) d'une fonction périodique non constante est la plus petite période strictement positive.
+
+Notation : souvent notée $T_0$ ou simplement $T$.
+:::
+
+::: demonstration Traduction géométrique
+La courbe représentative d'une fonction $T$-périodique est invariante par translation horizontale de vecteur $(T, 0)$.
+
+Il suffit d'étudier la fonction sur un intervalle de longueur $T$ (par exemple $[0, T[$ ou $[-\frac{T}{2}, \frac{T}{2}]$), puis de compléter par translation.
+:::
+
+::: propriete
+- Si $f$ est $T$-périodique, alors pour tout $k \in \mathbb{Z}$, $f(x + kT) = f(x)$
+- Les fonctions constantes sont périodiques de toute période (mais n'ont pas de période fondamentale)
+- Si $f$ est périodique de période $T$, alors $\lambda f$ (avec $\lambda \in \mathbb{R}$) est aussi $T$-périodique
+:::
+
+::: propriete Stabilité et changement d'échelle
+- Si $f$ est $T$-périodique et $a \neq 0$, alors $x \mapsto f(ax)$ est $\frac{T}{|a|}$-périodique
+- Si $f$ est $T$-périodique et $g$ est $T$-périodique, alors $f \pm g$ et $fg$ sont aussi $T$-périodiques
+- Si les périodes de $f$ et $g$ diffèrent, une période commune peut ne pas exister
+:::
+
+::: exemple
+- $\sin(x)$ et $\cos(x)$ sont $2\pi$-périodiques
+- $\tan(x)$ est $\pi$-périodique
+- La fonction partie entière $x \mapsto \lfloor x \rfloor$ n'est pas périodique
+- La fonction $x \mapsto \{x\}$ (partie fractionnaire) est $1$-périodique
+- **Changement d'échelle :** Si $f$ est $2\pi$-périodique, alors $x \mapsto f(3x)$ est $\frac{2\pi}{3}$-périodique. Plus généralement, si $f$ est $T$-périodique, alors $x \mapsto f(ax)$ est $\frac{T}{|a|}$-périodique pour $a \neq 0$
+:::
+
+## IV. Opérations sur les fonctions
+
+### Somme, produit, quotient
+
+::: definition Somme de deux fonctions
+Soient $f$ et $g$ deux fonctions définies respectivement sur $\mathcal{D}_f$ et $\mathcal{D}_g$.
+
+La fonction **somme** $f + g$ est définie par : $(f + g)(x) = f(x) + g(x)$
+
+Son ensemble de définition est : $\mathcal{D}_{f+g} = \mathcal{D}_f \cap \mathcal{D}_g$
+:::
+
+::: definition Produit de deux fonctions
+La fonction **produit** $f \times g$ (ou $fg$) est définie par : $(fg)(x) = f(x) \times g(x)$
+
+Son ensemble de définition est : $\mathcal{D}_{fg} = \mathcal{D}_f \cap \mathcal{D}_g$
+:::
+
+::: definition Quotient de deux fonctions
+La fonction **quotient** $\frac{f}{g}$ est définie par : $\left(\frac{f}{g}\right)(x) = \frac{f(x)}{g(x)}$
+
+Son ensemble de définition est : $\mathcal{D}_{f/g} = \mathcal{D}_f \cap \mathcal{D}_g \cap \{x \in \mathbb{R} : g(x) \neq 0\}$
+:::
+
+::: definition Produit par un scalaire
+Pour $\lambda \in \mathbb{R}$, la fonction $\lambda f$ est définie par : $(\lambda f)(x) = \lambda \times f(x)$
+
+Son ensemble de définition est : $\mathcal{D}_{\lambda f} = \mathcal{D}_f$
+:::
+
+::: propriete
+- La somme de deux fonctions paires est paire
+- La somme de deux fonctions impaires est impaire
+- Le produit de deux fonctions paires est paire
+- Le produit de deux fonctions impaires est paire
+- Le produit d'une fonction paire et d'une fonction impaire est impaire
+- Le quotient de deux fonctions de même parité est paire, de parités différentes est impaire (sous réserve que le dénominateur ne s'annule pas)
+:::
+
+::: exemple
+- Pour $f(x) = x^2$ et $g(x) = x^3$, on a $(f+g)(x) = x^2 + x^3$ (ni paire ni impaire en général)
+- Pour $f(x) = x^2$ (paire) et $g(x) = x^4$ (paire), on a $(fg)(x) = x^6$ (paire)
+- Pour $f(x) = x$ (impaire) et $g(x) = x^3$ (impaire), on a $(fg)(x) = x^4$ (paire)
+- Pour $f(x) = x^2$ (paire) et $g(x) = x$ (impaire), on a $\left(\frac{f}{g}\right)(x) = \frac{x^2}{x} = x$ (impaire sur $\mathbb{R}^{\ast}$)
+:::
+
+### Composition de fonctions
+
+::: definition Fonction composée
+Soient $f : E \to F$ et $g : F' \to G$ deux fonctions telles que $\text{Im}(f) \subset F'$.
+
+La fonction **composée** $g \circ f$ (lire "$g$ rond $f$") est définie par :
+
+$(g \circ f)(x) = g(f(x))$ pour tout $x \in E$
+
+Son ensemble de définition est : $\mathcal{D}_{g \circ f} = \{x \in \mathcal{D}_f : f(x) \in \mathcal{D}_g\}$
+:::
+
+::: attention À l'ordre
+En général, $\displaystyle g \circ f \neq f \circ g$.
+
+Par exemple, si $f(x) = x^2$ et $g(x) = x + 1$, alors :
+
+$$(g \circ f)(x) = g(f(x)) = g(x^2) = x^2 + 1$$
+
+$$
+\begin{aligned}
+(f \circ g)(x) &= f(g(x)) \\
+&= f(x+1) \\
+&= (x+1)^2 \\
+&= x^2 + 2x + 1
+\end{aligned}
+$$
+:::
+
+::: methode Domaine de définition d'une fonction composée
+$(g \circ f)(x)$ est défini si et seulement si $x \in \mathcal{D}_f$ et $f(x) \in \mathcal{D}_g$.
+
+Donc : $\displaystyle \mathcal{D}_{g \circ f} = \{x \in \mathcal{D}_f : f(x) \in \mathcal{D}_g\}$
+:::
+
+::: propriete
+- **Associativité :** $\displaystyle (h \circ g) \circ f = h \circ (g \circ f)$
+- **Parité et composition :**
+:::
+
+::: exemple
+- Pour $f(x) = x^2$ et $g(x) = \sqrt{x}$, on a $(g \circ f)(x) = \sqrt{x^2} = |x|$
+- Pour $f(x) = x + 1$ et $g(x) = x^2$, on a $(g \circ f)(x) = (x+1)^2$ et $(f \circ g)(x) = x^2 + 1$
+- Pour $f(x) = \sin(x)$ et $g(x) = x^2$, on a $(g \circ f)(x) = \sin^2(x)$ (fonction paire car $\sin$ est impaire et $x \mapsto x^2$ est paire)
+:::
+
+## V. Monotonie
+
+### Fonctions monotones
+
+::: definition Fonction croissante
+Une fonction $f$ définie sur un intervalle $I$ est dite **croissante** (ou **croissante au sens large**) si :
+
+Pour tous $x, y \in I$ avec $x \leq y$, on a $f(x) \leq f(y)$
+:::
+
+::: definition Fonction strictement croissante
+Une fonction $f$ définie sur un intervalle $I$ est dite **strictement croissante** si :
+
+Pour tous $x, y \in I$ avec $x < y$, on a $f(x) < f(y)$
+:::
+
+::: definition Fonction décroissante
+Une fonction $f$ définie sur un intervalle $I$ est dite **décroissante** (ou **décroissante au sens large**) si :
+
+Pour tous $x, y \in I$ avec $x \leq y$, on a $f(x) \geq f(y)$
+:::
+
+::: definition Fonction strictement décroissante
+Une fonction $f$ définie sur un intervalle $I$ est dite **strictement décroissante** si :
+
+Pour tous $x, y \in I$ avec $x < y$, on a $f(x) > f(y)$
+:::
+
+::: definition Fonction monotone
+Une fonction est dite **monotone** si elle est soit croissante, soit décroissante (au sens large).
+
+Une fonction est dite **strictement monotone** si elle est soit strictement croissante, soit strictement décroissante.
+:::
+
+::: demonstration Interprétation géométrique
+Une fonction croissante a une courbe qui « monte » de gauche à droite.
+
+Une fonction décroissante a une courbe qui « descend » de gauche à droite.
+
+Une fonction constante est à la fois croissante et décroissante (au sens large).
+:::
+
+::: propriete
+- La somme de deux fonctions croissantes est croissante
+- Le produit d'une fonction croissante par un réel positif est croissante
+- Le produit d'une fonction croissante par un réel négatif est décroissante
+- Si $f$ est croissante et $g$ est croissante, alors $g \circ f$ est croissante
+- Si $f$ est croissante et $g$ est décroissante, alors $g \circ f$ est décroissante
+- L'opposée d'une fonction croissante est décroissante
+:::
+
+::: exemple
+- $f(x) = x$ est strictement croissante sur $\mathbb{R}$
+- $g(x) = x^2$ est strictement décroissante sur $]-\infty, 0]$ et strictement croissante sur $[0, +\infty[$
+- $h(x) = -x^3$ est strictement décroissante sur $\mathbb{R}$
+- $k(x) = \frac{1}{x}$ est strictement décroissante sur $]0, +\infty[$ et sur $]-\infty, 0[$
+:::
+
+### Fonction réciproque
+
+::: definition Fonction réciproque
+Soit $f : I \to J$ une fonction bijective (en pratique : strictement monotone et continue sur un intervalle $I$).
+
+La fonction **réciproque** de $f$, notée $f^{-1} : J \to I$, est définie par :
+
+Pour tout $y \in J$, $f^{-1}(y)$ est l'unique $x \in I$ tel que $f(x) = y$.
+:::
+
+::: propriete
+- $(f^{-1}) \circ f = \text{id}_I$ (identité sur $I$)
+- $f \circ (f^{-1}) = \text{id}_J$ (identité sur $J$)
+- **Parité :** Si $f$ est impaire et bijective, alors $f^{-1}$ est impaire
+- **Monotonie :** Si $f$ est croissante, alors $f^{-1}$ est croissante. Si $f$ est décroissante, alors $f^{-1}$ est décroissante
+:::
+
+::: remarque
+En MPSI, on utilise le lien entre monotonie/variations pour construire des tableaux de variations. La méthode détaillée (via la dérivation) sera vue dans le chapitre « Dérivation ».
+:::
+
+::: exemple
+- Pour $f(x) = x^3$ (strictement croissante sur $\mathbb{R}$), on a $f^{-1}(y) = \sqrt[3]{y}$
+- Pour $f(x) = e^x$ (strictement croissante sur $\mathbb{R}$), on a $f^{-1}(y) = \ln(y)$ pour $y > 0$
+- Pour $f(x) = x^2$ sur $[0, +\infty[$, on a $f^{-1}(y) = \sqrt{y}$ pour $y \geq 0$
+:::
+
+## VI. Fonctions majorées, minorées, bornées
+
+### Majoration et minoration
+
+::: definition Fonction majorée
+Une fonction $f$ définie sur $I$ est dite **majorée** s'il existe un réel $M$ tel que :
+
+Pour tout $x \in I$, on a $f(x) \leq M$
+
+Un tel réel $M$ est appelé un **majorant** de $f$.
+:::
+
+::: definition Fonction minorée
+Une fonction $f$ définie sur $I$ est dite **minorée** s'il existe un réel $m$ tel que :
+
+Pour tout $x \in I$, on a $f(x) \geq m$
+
+Un tel réel $m$ est appelé un **minorant** de $f$.
+:::
+
+::: definition Fonction bornée
+Une fonction $f$ définie sur $I$ est dite **bornée** si elle est à la fois majorée et minorée.
+
+Cela équivaut à dire qu'il existe un réel $M > 0$ tel que :
+
+Pour tout $x \in I$, on a $|f(x)| \leq M$
+:::
+
+::: propriete Caractérisation via la valeur absolue
+Une fonction $f$ est bornée si et seulement si la fonction $|f|$ est majorée.
+
+En effet : $f$ est bornée $\Leftrightarrow$ il existe $M > 0$ tel que $|f(x)| \leq M$ pour tout $x \in I$
+
+$\Leftrightarrow |f|$ est majorée par $M$
+:::
+
+::: propriete
+- La somme de deux fonctions majorées est majorée
+- Le produit de deux fonctions bornées est borné
+- Si $f$ est bornée et $g$ est bornée, alors $f + g$ et $fg$ sont bornées
+- Si $f$ est bornée et $g$ ne s'annule pas avec $\frac{1}{|g|}$ bornée, alors $\frac{f}{g}$ est bornée
+:::
+
+::: exemple
+- $f(x) = \sin(x)$ est bornée : $-1 \leq \sin(x) \leq 1$ pour tout $x \in \mathbb{R}$
+- $g(x) = x^2$ est minorée (par $0$) mais non majorée sur $\mathbb{R}$
+- Sur $]0, +\infty[$, $h(x) = \frac{1}{x}$ est non majorée mais minorée par $0$ ; sur $\mathbb{R}^{\ast}$, elle n'est ni majorée ni minorée
+- $k(x) = \frac{1}{1+x^2}$ est bornée : $0 < k(x) \leq 1$ pour tout $x \in \mathbb{R}$
+:::
+
+## VII. Conseils méthodologiques
+
+### Méthodes pratiques
+
+::: methode Déterminer $\displaystyle \mathcal{D}_f$
+Pour déterminer l'ensemble de définition d'une fonction donnée par une expression $f(x)$ :
+
+1. Identifier toutes les opérations qui imposent des conditions :
+2. Traduire chaque condition par une inéquation ou une équation
+3. Prendre l'intersection de tous les ensembles obtenus
+:::
+
+::: methode Étudier la parité
+1. Vérifier que $\mathcal{D}_f$ est symétrique par rapport à $0$
+2. Calculer $\displaystyle f(-x)$
+3. Comparer avec $\displaystyle f(x)$ :
+:::
+
+::: methode Trouver la période
+Pour montrer qu'une fonction est périodique de période $T$ :
+
+1. Vérifier que si $x \in \mathcal{D}_f$, alors $x + T \in \mathcal{D}_f$
+2. Montrer que $f(x + T) = f(x)$ pour tout $x \in \mathcal{D}_f$
+3. Vérifier que $T$ est bien la plus petite période (si nécessaire)
+:::
+
+::: conseil
+- **Ensemble de définition :** Toujours vérifier toutes les conditions (division, racine, logarithme, etc.)
+- **Parité :** Commencer par vérifier que l'ensemble de définition est symétrique
+- **Réduction du domaine d'étude :** Utiliser la parité ou la périodicité pour réduire l'étude à un intervalle plus petit
+- **Composition :** Attention à l'ordre : $g \circ f$ signifie "$f$ puis $g$"
+- **Transformations graphiques :** $f(x+a)$ translate vers la gauche si $a > 0$, vers la droite si $a < 0$
+- **Monotonie :** Distinguer croissante (large) et strictement croissante
+- **Bornée :** Une fonction est bornée si et seulement si $|f|$ est majorée
+:::
+
+::: attention
+- **Parité :** Oublier de vérifier que l'ensemble de définition est symétrique
+- **Composition :** Confondre $g \circ f$ et $f \circ g$
+- **Ensemble de définition :** Oublier certaines conditions (par exemple, oublier que $\ln(x)$ nécessite $x > 0$)
+- **Monotonie :** Confondre croissante et strictement croissante
+- **Bornée :** Oublier que « bornée » signifie « majorée ET minorée »
+- **Transformations graphiques :** Confondre la direction de translation (par exemple, $f(x+a)$ translate vers la gauche si $a > 0$)
+- **Périodicité :** Confondre période et période fondamentale
+:::

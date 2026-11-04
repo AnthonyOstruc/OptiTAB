@@ -1,0 +1,719 @@
+=== Création et Accès aux Listes - Exercices de Base
+Id: 836
+Difficulté: easy
+Image: v1_n99_ex836_1_fruits_indices.png
+
+Énoncé: <!-- optitab:1 -->
+On considère les deux listes suivantes.
+
+```python
+notes = [12, 15, 18, 10, 14]
+fruits = ["pomme", "banane",
+          "orange", "kiwi"]
+```
+
+1. Écrire les instructions qui affichent la première note, la dernière note et la note du milieu de la liste `notes`.
+2. Sans ordinateur, donner la valeur de :
+   - a) `fruits[2]` ;
+   - b) `fruits[-2]` ;
+   - c) `len(fruits)`.
+3. Que se passe-t-il si l’on exécute `print(fruits[4])` ? Comment afficher le dernier fruit sans connaître la longueur de la liste ?
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Afficher la première, la dernière et la note du milieu
+
+::: methode
+Un élément s’obtient par son indice : le premier a l’indice $0$, le dernier l’indice $-1$.
+:::
+
+::: etape Repérer les indices
+La liste `notes` contient $5$ éléments, d’indices $0$ à $4$ :
+- la première note a l’indice $0$ ;
+- la dernière note a l’indice $4$, ou plus simplement $-1$ ;
+- la note du milieu est la troisième : son indice est $2$.
+:::
+
+::: etape Programme et affichage
+```python
+# Lecture des notes
+notes = [12, 15, 18, 10, 14]
+print(notes[0])
+print(notes[-1])
+print(notes[2])
+```
+
+```console
+12
+14
+18
+```
+:::
+
+::: attention
+La note du milieu n’est pas `notes[3]` : on compte à partir de $0$, donc la troisième note a l’indice $2$.
+:::
+
+::: resultat
+Le programme affiche la première note $12$, la dernière note $14$ et la note du milieu $18$.
+:::
+
+## Question 2 : Lire des éléments de la liste fruits
+
+::: methode
+Les indices positifs se comptent depuis le début (à partir de $0$), les indices négatifs depuis la fin (à partir de $-1$).
+:::
+
+[IMAGE_1]
+
+::: etape Indices positifs
+`fruits[0]` est `"pomme"`, `fruits[1]` est `"banane"`, donc `fruits[2]` est `"orange"`.
+:::
+
+::: etape Indices négatifs
+`fruits[-1]` est le dernier élément, `"kiwi"` ; `fruits[-2]` est l’avant-dernier, `"orange"`. Avec $n = 4$ éléments, `fruits[-2]` désigne le même élément que `fruits[4 - 2]`, c’est-à-dire `fruits[2]`.
+:::
+
+::: etape Longueur
+La liste contient $4$ chaînes de caractères : `len(fruits)` vaut `4`.
+:::
+
+::: etape Vérification sur machine
+```python
+# Vérification
+fruits = ["pomme", "banane",
+          "orange", "kiwi"]
+print(fruits[2], fruits[-2])
+print(len(fruits))
+```
+
+```console
+orange orange
+4
+```
+:::
+
+::: resultat
+- a) `fruits[2]` vaut `"orange"` ;
+- b) `fruits[-2]` vaut aussi `"orange"` ;
+- c) `len(fruits)` vaut `4`.
+:::
+
+## Question 3 : Indice hors de la liste
+
+::: methode
+Une liste de $n$ éléments a pour indices $0$ à $n-1$ : l’indice $n$ n’existe pas.
+:::
+
+::: etape Analyse
+La liste `fruits` a $4$ éléments, d’indices $0$, $1$, $2$ et $3$. L’indice $4$ n’existe pas : le programme s’arrête sur une erreur `IndexError` (message « list index out of range » : indice hors de la liste).
+:::
+
+::: etape Dernier élément, quelle que soit la longueur
+On utilise l’indice $-1$, ou l’indice `len(fruits) - 1` :
+
+```python
+# Dernier fruit
+fruits = ["pomme", "banane",
+          "orange", "kiwi"]
+print(fruits[-1])
+n = len(fruits)
+print(fruits[n - 1])
+```
+
+```console
+kiwi
+kiwi
+```
+:::
+
+::: resultat
+`print(fruits[4])` provoque une erreur `IndexError` ; le dernier fruit s’obtient par `fruits[-1]` (ou `fruits[len(fruits) - 1]`).
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. `print(notes[0])`, `print(notes[-1])` et `print(notes[2])` affichent $12$, $14$ et $18$.
+2. a) `"orange"` ; b) `"orange"` ; c) `4`.
+3. Erreur `IndexError` : l’indice $4$ n’existe pas (indices de $0$ à $3$). Le dernier fruit s’obtient par `fruits[-1]`.
+
+===
+
+=== Méthodes d'Information sur les Listes
+Id: 838
+Difficulté: easy
+
+Énoncé: <!-- optitab:1 -->
+On considère les deux listes suivantes.
+
+```python
+notes = [15, 12, 18, 12, 10]
+eleves = ["Alice", "Bob",
+          "Charlie", "Alice"]
+```
+
+1. Donner la valeur de `len(notes)`, de `notes.index(12)` et de `notes.count(12)`, puis écrire un programme qui les affiche.
+2. Donner la valeur de `"Alice" in eleves`, de `eleves.index("Alice")` et de `eleves.count("Alice")`.
+3. L’instruction `notes.index(13)` provoque une erreur. Pourquoi ? Écrire un programme qui affiche l’indice de $13$ s’il est dans la liste `notes`, et le message « absent » sinon.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Longueur, position et nombre d’occurrences dans notes
+
+::: methode
+`len` compte les éléments, `index` donne l’indice de la **première** occurrence, `count` compte les occurrences.
+:::
+
+::: etape Calcul à la main
+- La liste contient $5$ notes : `len(notes)` vaut `5`.
+- Le premier $12$ est le deuxième élément, d’indice $1$ : `notes.index(12)` vaut `1`. Le second $12$, d’indice $3$, n’est pas pris en compte.
+- La valeur $12$ apparaît deux fois : `notes.count(12)` vaut `2`.
+:::
+
+::: etape Programme et affichage
+```python
+# Informations sur notes
+notes = [15, 12, 18, 12, 10]
+print(len(notes))
+print(notes.index(12))
+print(notes.count(12))
+```
+
+```console
+5
+1
+2
+```
+:::
+
+::: resultat
+`len(notes)` vaut `5`, `notes.index(12)` vaut `1` et `notes.count(12)` vaut `2`.
+:::
+
+## Question 2 : Rechercher Alice dans la liste eleves
+
+::: methode
+`x in L` renvoie un booléen ; `index` et `count` se lisent comme à la question 1.
+:::
+
+::: etape Analyse
+- `"Alice"` figure dans la liste : `"Alice" in eleves` vaut `True`.
+- Sa première occurrence est le premier élément : `eleves.index("Alice")` vaut `0`.
+- `"Alice"` apparaît aux indices $0$ et $3$ : `eleves.count("Alice")` vaut `2`.
+:::
+
+::: etape Vérification sur machine
+```python
+# Recherche d'Alice
+eleves = ["Alice", "Bob",
+          "Charlie", "Alice"]
+print("Alice" in eleves)
+print(eleves.index("Alice"))
+print(eleves.count("Alice"))
+```
+
+```console
+True
+0
+2
+```
+:::
+
+::: retenir
+`in` ne provoque jamais d’erreur : il renvoie `True` ou `False`. C’est le bon outil pour tester la présence d’une valeur.
+:::
+
+::: resultat
+`"Alice" in eleves` vaut `True`, `eleves.index("Alice")` vaut `0` et `eleves.count("Alice")` vaut `2`.
+:::
+
+## Question 3 : Chercher une valeur qui peut être absente
+
+::: methode
+On teste la présence avec `in` **avant** d’appeler `index`.
+:::
+
+::: etape Pourquoi une erreur ?
+La valeur $13$ n’est pas dans la liste `notes` : `index` ne peut renvoyer aucun indice et le programme s’arrête sur une erreur `ValueError` (message « 13 is not in list »).
+:::
+
+::: etape Programme protégé
+```python
+x = 13
+notes = [15, 12, 18, 12, 10]
+if x in notes:
+    print(notes.index(x))
+else:
+    print("absent")
+```
+
+```console
+absent
+```
+
+Avec `x = 18`, le même programme affiche `2`, l’indice de $18$.
+:::
+
+::: resultat
+$13$ est absent de la liste, d’où l’erreur. Le programme protégé teste `if x in notes:` avant d’appeler `notes.index(x)` et affiche « absent » sinon.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. `len(notes)` vaut `5`, `notes.index(12)` vaut `1` et `notes.count(12)` vaut `2`.
+2. `True`, `0` et `2`.
+3. $13$ n’est pas dans la liste : erreur `ValueError`. On teste d’abord `if x in notes:`, puis on affiche `notes.index(x)` ou « absent ».
+
+===
+
+=== Modification des Listes - Ajout et Suppression
+Id: 837
+Difficulté: easy
+Image: v1_n99_ex837_1_liste_insertion.png
+
+Énoncé: <!-- optitab:1 -->
+On travaille sur deux listes : une liste `nombres`, vide au départ (`nombres = []`), et la liste `couleurs` suivante.
+
+```python
+couleurs = ["rouge", "bleu",
+            "vert", "bleu"]
+```
+
+1. Ajouter à `nombres` les valeurs $5$, $10$ et $15$ avec `append`, puis insérer $8$ à l’indice $1$ avec `insert`. Donner le contenu de la liste après chaque étape.
+2. Supprimer le premier `"bleu"` de `couleurs` avec `remove`, puis remplacer `"vert"` par `"jaune"`. Donner la liste obtenue.
+3. On exécute ensuite `x = couleurs.pop()`. Que valent `x` et `couleurs` ?
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Construire la liste nombres
+
+::: methode
+`append(v)` ajoute `v` à la fin ; `insert(i, v)` place `v` à l’indice `i` et décale d’un rang les éléments suivants.
+:::
+
+::: etape Ajouts successifs avec append
+- au départ, `nombres` vaut `[]` ;
+- après `nombres.append(5)` : `[5]` ;
+- après `nombres.append(10)` : `[5, 10]` ;
+- après `nombres.append(15)` : `[5, 10, 15]`.
+:::
+
+::: etape Insertion à l’indice 1
+`nombres.insert(1, 8)` place $8$ à l’indice $1$ : `10` et `15` reculent d’un rang et prennent les indices $2$ et $3$.
+:::
+
+[IMAGE_1]
+
+::: etape Programme et affichage
+```python
+nombres = []
+nombres.append(5)
+nombres.append(10)
+nombres.append(15)
+print(nombres)
+nombres.insert(1, 8)
+print(nombres)
+```
+
+```console
+[5, 10, 15]
+[5, 8, 10, 15]
+```
+:::
+
+::: resultat
+Après les ajouts : `[5, 10, 15]` ; après l’insertion : `[5, 8, 10, 15]`.
+:::
+
+## Question 2 : Supprimer puis remplacer dans couleurs
+
+::: methode
+`remove(v)` supprime la **première** occurrence de la valeur `v` ; `L[i] = v` remplace l’élément d’indice `i`.
+:::
+
+::: etape Suppression du premier bleu
+`couleurs.remove("bleu")` supprime le `"bleu"` d’indice $1$ ; le second `"bleu"` reste. La liste devient `["rouge", "vert", "bleu"]`.
+:::
+
+::: etape Remplacement de vert
+Les indices ont changé : `"vert"` a maintenant l’indice $1$ (il avait l’indice $2$ avant la suppression). On écrit donc `couleurs[1] = "jaune"`.
+:::
+
+::: etape Programme et affichage
+```python
+# Modifications
+couleurs = ["rouge", "bleu",
+            "vert", "bleu"]
+couleurs.remove("bleu")
+print(len(couleurs))
+print(couleurs)
+couleurs[1] = "jaune"
+print(couleurs)
+```
+
+```console
+3
+['rouge', 'vert', 'bleu']
+['rouge', 'jaune', 'bleu']
+```
+
+La liste n’a plus que $3$ éléments après la suppression.
+:::
+
+::: attention
+Après une suppression, les éléments suivants reculent d’un rang : on vérifie les indices avant de modifier un élément. Ici, `couleurs[2] = "jaune"` aurait remplacé le second `"bleu"`.
+:::
+
+::: resultat
+`couleurs` vaut `["rouge", "jaune", "bleu"]`.
+:::
+
+## Question 3 : Retirer le dernier élément avec pop
+
+::: methode
+`pop()` retire le dernier élément de la liste **et le renvoie**.
+:::
+
+::: etape Analyse
+Le dernier élément de `["rouge", "jaune", "bleu"]` est `"bleu"` : il est retiré de la liste et sa valeur est rangée dans `x`.
+:::
+
+::: etape Programme et affichage
+```python
+# Retrait avec pop
+couleurs = ["rouge", "jaune",
+            "bleu"]
+x = couleurs.pop()
+print(x)
+print(couleurs)
+```
+
+```console
+bleu
+['rouge', 'jaune']
+```
+:::
+
+::: resultat
+`x` vaut `"bleu"` et `couleurs` vaut `["rouge", "jaune"]`.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. `[5]`, `[5, 10]`, `[5, 10, 15]`, puis `[5, 8, 10, 15]` après l’insertion.
+2. `["rouge", "vert", "bleu"]` après `remove`, puis `["rouge", "jaune", "bleu"]`.
+3. `x` vaut `"bleu"` et `couleurs` vaut `["rouge", "jaune"]`.
+
+===
+
+=== Parcours et Calculs avec les Listes
+Id: 840
+Difficulté: medium
+
+Énoncé: <!-- optitab:1 -->
+On considère les deux listes suivantes.
+
+```python
+notes = [14, 12, 16, 10, 18]
+nombres = [5, 8, 12, 3, 15]
+```
+
+1. Calculer la somme et la moyenne des notes à l’aide d’une boucle `for`, sans utiliser `sum`.
+2. Déterminer le plus grand élément de `nombres` à l’aide d’une boucle, sans utiliser `max`.
+3. Écrire un programme qui affiche le plus petit élément de `nombres` et son indice, sans utiliser `min` ni `index`.
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Somme et moyenne des notes
+
+::: methode
+Accumulateur : une variable `somme` initialisée à $0$, à laquelle on ajoute chaque note ; la moyenne est la somme divisée par le nombre de notes.
+:::
+
+::: etape Programme et affichage
+```python
+# Somme et moyenne
+notes = [14, 12, 16, 10, 18]
+somme = 0
+for note in notes:
+    somme = somme + note
+moyenne = somme / len(notes)
+print(somme, moyenne)
+```
+
+```console
+70 14.0
+```
+:::
+
+::: etape Suivi de la boucle
+| Tour | `note` | `somme` après le tour |
+|---|---|---|
+| $1$ | $14$ | $14$ |
+| $2$ | $12$ | $26$ |
+| $3$ | $16$ | $42$ |
+| $4$ | $10$ | $52$ |
+| $5$ | $18$ | $70$ |
+:::
+
+::: etape Moyenne
+$$\text{moyenne} = \frac{70}{5} = 14$$
+
+Python affiche `14.0` : une division `/` donne toujours un nombre décimal.
+:::
+
+::: attention
+L’initialisation `somme = 0` se place **avant** la boucle : écrite dans la boucle, elle remettrait la somme à zéro à chaque tour.
+:::
+
+::: resultat
+La somme des notes vaut $70$ et la moyenne $14$.
+:::
+
+## Question 2 : Plus grand élément sans max
+
+::: methode
+On garde en mémoire le plus grand élément rencontré et on le remplace dès qu’un élément le dépasse.
+:::
+
+::: etape Programme et affichage
+```python
+# Plus grand élément
+nombres = [5, 8, 12, 3, 15]
+maxi = nombres[0]
+for x in nombres:
+    if x > maxi:
+        maxi = x
+print(maxi)
+```
+
+```console
+15
+```
+:::
+
+::: etape Suivi de la boucle
+| `x` | Comparaison | `maxi` après le tour |
+|---|---|---|
+| $5$ | $5 > 5$ : faux | $5$ |
+| $8$ | $8 > 5$ : vrai | $8$ |
+| $12$ | $12 > 8$ : vrai | $12$ |
+| $3$ | $3 > 12$ : faux | $12$ |
+| $15$ | $15 > 12$ : vrai | $15$ |
+:::
+
+::: attention
+On initialise `maxi` avec le premier élément de la liste, et non avec $0$ : si tous les nombres étaient négatifs, `maxi = 0` donnerait un résultat faux.
+:::
+
+::: resultat
+Le plus grand élément de `nombres` est $15$.
+:::
+
+## Question 3 : Plus petit élément et son indice
+
+::: methode
+Pour connaître la position, on parcourt la liste **par indices** et on mémorise la plus petite valeur rencontrée ainsi que son indice.
+:::
+
+::: etape Programme et affichage
+```python
+# Plus petit élément
+nombres = [5, 8, 12, 3, 15]
+mini = nombres[0]
+imin = 0
+for i in range(len(nombres)):
+    if nombres[i] < mini:
+        mini = nombres[i]
+        imin = i
+print("Minimum :", mini)
+print("Indice :", imin)
+```
+
+```console
+Minimum : 3
+Indice : 3
+```
+:::
+
+::: etape Suivi de la boucle
+| `i` | `nombres[i]` | `mini` | `imin` |
+|---|---|---|---|
+| $0$ | $5$ | $5$ | $0$ |
+| $1$ | $8$ | $5$ | $0$ |
+| $2$ | $12$ | $5$ | $0$ |
+| $3$ | $3$ | $3$ | $3$ |
+| $4$ | $15$ | $3$ | $3$ |
+
+Seul le tour $i = 3$ modifie `mini` et `imin`, car c’est le seul où `nombres[i] < mini` est vrai ($3 < 5$).
+:::
+
+::: resultat
+Le plus petit élément de `nombres` est $3$ ; c’est le quatrième élément, d’indice $3$.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. Somme : $70$ ; moyenne : $\frac{70}{5} = 14$ (Python affiche `70 14.0`).
+2. Le plus grand élément est $15$.
+3. Le plus petit élément est $3$, à l’indice $3$.
+
+===
+
+=== Tri et Organisation des Listes
+Id: 839
+Difficulté: medium
+
+Énoncé: <!-- optitab:1 -->
+On considère les deux listes suivantes.
+
+```python
+notes = [15, 8, 20, 12]
+prenoms = ["Charlie",
+           "Alice", "Bob"]
+```
+
+1. Trier `notes` dans l’ordre croissant avec `sort`, puis l’inverser avec `reverse`, en affichant la liste à chaque étape.
+2. Trier `prenoms` dans l’ordre alphabétique, puis afficher le premier et le dernier prénom.
+3. Qu’affiche le programme ci-dessous ? Quelle différence y a-t-il entre `sorted(L)` et `L.sort()` ?
+
+   ```python
+   L = [15, 8, 20, 12]
+   M = sorted(L)
+   print(L)
+   print(M)
+   ```
+
+4. Pourquoi l’instruction `notes = notes.sort()` est-elle une erreur ?
+
+Étapes:
+
+<!-- optitab:1 -->
+## Question 1 : Trier puis inverser les notes
+
+::: methode
+`sort()` trie la liste elle-même dans l’ordre croissant ; `reverse()` inverse l’ordre de ses éléments.
+:::
+
+::: etape Programme et affichage
+```python
+notes = [15, 8, 20, 12]
+print(notes)
+notes.sort()
+print(notes)
+notes.reverse()
+print(notes)
+```
+
+```console
+[15, 8, 20, 12]
+[8, 12, 15, 20]
+[20, 15, 12, 8]
+```
+:::
+
+::: retenir
+Trier puis inverser donne l’ordre décroissant ; on peut aussi écrire directement `notes.sort(reverse=True)`.
+:::
+
+::: resultat
+La liste vaut successivement `[15, 8, 20, 12]`, `[8, 12, 15, 20]` puis `[20, 15, 12, 8]`.
+:::
+
+## Question 2 : Trier des prénoms
+
+::: methode
+`sort()` range les chaînes de caractères dans l’ordre alphabétique ; le premier élément est alors `prenoms[0]`, le dernier `prenoms[-1]`.
+:::
+
+::: etape Programme et affichage
+```python
+prenoms = ["Charlie",
+           "Alice", "Bob"]
+prenoms.sort()
+print(prenoms[0])
+print(prenoms[-1])
+print(prenoms)
+```
+
+```console
+Alice
+Charlie
+['Alice', 'Bob', 'Charlie']
+```
+:::
+
+::: attention
+Python compare les caractères un à un : toutes les majuscules passent avant les minuscules, et les lettres accentuées après. Ici, tous les prénoms commencent par une majuscule : l’ordre obtenu est bien l’ordre alphabétique.
+:::
+
+::: resultat
+La liste triée est `["Alice", "Bob", "Charlie"]` ; le premier prénom est `Alice`, le dernier `Charlie`.
+:::
+
+## Question 3 : Comparer sorted et sort
+
+::: methode
+`sorted(L)` **renvoie une nouvelle liste** triée sans modifier `L` ; `L.sort()` **modifie** `L` et ne renvoie rien.
+:::
+
+::: etape Exécution
+```python
+L = [15, 8, 20, 12]
+M = sorted(L)
+print(L)
+print(M)
+```
+
+```console
+[15, 8, 20, 12]
+[8, 12, 15, 20]
+```
+:::
+
+::: etape Interprétation
+`L` est inchangée : `sorted` a fabriqué une copie triée, rangée dans `M`. Avec `L.sort()`, c’est `L` elle-même qui aurait été triée, et aucune nouvelle liste n’aurait été créée.
+:::
+
+::: resultat
+Le programme affiche `[15, 8, 20, 12]` puis `[8, 12, 15, 20]` : `sorted(L)` renvoie une copie triée, alors que `L.sort()` trie `L` elle-même.
+:::
+
+## Question 4 : L’erreur notes = notes.sort()
+
+::: methode
+Une méthode qui modifie la liste, comme `sort`, ne renvoie rien : sa valeur est `None`.
+:::
+
+::: etape Exécution
+```python
+notes = [15, 8, 20, 12]
+notes = notes.sort()
+print(notes)
+```
+
+```console
+None
+```
+:::
+
+::: etape Explication
+`notes.sort()` trie bien la liste, mais renvoie `None` ; l’affectation `notes = …` remplace alors la liste par `None` : les notes sont perdues.
+:::
+
+::: resultat
+Il faut écrire `notes.sort()` seul, ou `triees = sorted(notes)` pour garder une copie triée.
+:::
+
+Solution:
+<!-- optitab:1 -->
+1. `[15, 8, 20, 12]`, puis `[8, 12, 15, 20]`, puis `[20, 15, 12, 8]`.
+2. `["Alice", "Bob", "Charlie"]` ; premier prénom : `Alice`, dernier : `Charlie`.
+3. `[15, 8, 20, 12]` puis `[8, 12, 15, 20]` : `sorted(L)` renvoie une copie triée, `L.sort()` trie `L` elle-même.
+4. `sort` renvoie `None` : `notes` ne contient plus la liste. On écrit `notes.sort()` seul.
+
+===

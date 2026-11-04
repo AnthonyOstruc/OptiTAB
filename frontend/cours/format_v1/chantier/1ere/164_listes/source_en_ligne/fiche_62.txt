@@ -1,0 +1,78 @@
+Titre: Résumé : Notion de liste
+
+<!-- optitab:1 -->
+::: objectifs
+L’essentiel sur les listes en Python : générer, lire, modifier, parcourir, et s’en servir en mathématiques. Programme de Première.
+:::
+
+## I. Éléments et indices
+
+::: definition
+Une **liste** est une suite ordonnée de valeurs, écrite entre crochets : `notes = [12, 15, 9, 14, 10]`. `len(notes)` vaut $5$. Les indices vont de $0$ à `len(notes) - 1` ; `notes[-1]` est le dernier élément.
+:::
+
+[IMAGE_1]
+
+| Écriture | Valeur ou effet |
+|---|---|
+| `notes[0]` | `12` (premier élément) |
+| `notes[-1]` | `10` (dernier élément) |
+| `notes[2] = 11` | remplace `9` par `11` |
+| `notes[5]` | erreur `IndexError` |
+
+Pour une suite rangée à partir de $u_0$ : `u[n]` est le terme $u_n$.
+
+## II. Générer une liste
+
+- **En extension** : `[2, 3, 5, 7]`
+- **Par ajouts successifs** : `L.append(x)` dans une boucle
+- **En compréhension** : `[k**2 for k in range(6)]`
+- **Avec un filtre** : `[x for x in L if x > 0]`
+
+```python
+u = [1]
+for k in range(5):
+    u.append(2 * u[-1] + 1)
+print(u)
+```
+
+```console
+[1, 3, 7, 15, 31, 63]
+```
+
+[IMAGE_2]
+
+::: methode Choisir
+Formule explicite $u_n = f(n)$ → compréhension ; relation de récurrence → ajouts successifs avec `u[-1]`.
+:::
+
+## III. Parcourir une liste
+
+::: methode Deux parcours
+- Par les éléments, quand seules les valeurs comptent : `for x in L:`
+- Par les indices, quand la position compte : `for i in range(len(L)):` puis `L[i]`
+:::
+
+- Somme et moyenne : accumulateur `s = 0`, puis `s = s + x` ; moyenne `s / len(L)`.
+- Fréquence : compteur `c = 0`, puis `c = c + 1` si la condition est vraie ; fréquence `c / len(L)`.
+- Directement : `sum(L)`, `max(L)` et `min(L)` donnent la somme, le plus grand et le plus petit élément.
+
+## IV. Les listes en mathématiques
+
+| Usage | Écriture type |
+|---|---|
+| Termes d’une suite | `u.append(…u[-1]…)` |
+| Valeurs d’une fonction | `Y = [f(x) for x in X]` |
+| Simulation | `R.append(randint(1, 6))` |
+| Sécantes | `[taux(h) for h in H]` |
+
+Une liste de valeurs permet de **conjecturer** (nuage de points, fréquences, coefficients directeurs qui se rapprochent d’un nombre dérivé) ; elle ne démontre pas.
+
+## V. Les pièges à éviter
+
+::: attention Les 4 erreurs classiques
+1. Croire que le premier élément est `L[1]` : c’est `L[0]`.
+2. Utiliser l’indice `len(L)`, qui n’existe pas.
+3. Écrire `L = L.append(x)` : `append` modifie la liste et ne renvoie rien.
+4. Oublier qu’avec `u = [u0]` et `range(n)` tours, on obtient $n + 1$ termes.
+:::

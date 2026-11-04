@@ -5,14 +5,14 @@
 //
 //   node scripts/ressources/generer.mjs [--sortie dossier] [--classes 3e,terminale] [--limite 3]
 //
-// Source : l'API publique des ressources gratuites (RESSOURCES_API_BASE, par
-// défaut l'API de production). En cas d'échec de lecture, la construction
-// échoue : l'hébergeur garde alors la version en ligne précédente.
+// Source : l'export public vérifié dans contenu/ressources/. La construction
+// ne contacte pas le backend. Actualisation explicite : npm run ressources:actualiser.
 import crypto from 'node:crypto'
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { chargerCatalogue, slugifier } from './catalogue.mjs'
+import { slugifier } from './catalogue.mjs'
+import { lireInstantane } from './instantane.mjs'
 import {
   composerFormules, contenuEnHtml, feuilleMathJax, latexEnTexte, objectifs, preparerRendu, texteBrut
 } from './rendu.mjs'
@@ -38,7 +38,6 @@ const option = (nom, defaut) => {
   return i >= 0 ? args[i + 1] : defaut
 }
 const SORTIE = path.resolve(option('sortie', path.join(FRONT, 'dist')))
-const API = (process.env.RESSOURCES_API_BASE || 'https://optitab-backend.onrender.com').replace(/\/+$/, '')
 const FILTRE_CLASSES = option('classes', '') ? option('classes').split(',') : null
 const LIMITE = Number(option('limite', 0)) || 0
 
@@ -123,8 +122,8 @@ function finaliser(url, page) {
 }
 
 async function main() {
-  journal(`lecture du catalogue sur ${API}…`)
-  const catalogue = await chargerCatalogue(API)
+  const { catalogue, manifeste } = lireInstantane()
+  journal(`catalogue public local du ${manifeste.genereLe}, vérifié ; aucun appel au backend`)
   if (FILTRE_CLASSES || LIMITE) {
     catalogue.classes = catalogue.classes
       .filter((c) => !FILTRE_CLASSES || FILTRE_CLASSES.includes(c.slug))

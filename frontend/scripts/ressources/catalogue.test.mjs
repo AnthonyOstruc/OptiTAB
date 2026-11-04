@@ -59,6 +59,8 @@ test('lots réduits, requêtes successives et pagination complète', async t => 
     assert.equal(url.searchParams.get('page_size'), leger ? '100' : '20')
     assert.equal(url.searchParams.get('full_content'), leger ? null : '1')
     assert.equal(url.searchParams.get('include_images'), leger ? null : '1')
+    const type = url.searchParams.get('type')
+    assert.equal(url.searchParams.get('ordering'), type === 'exercise' ? null : 'id')
   }
   assert.deepEqual(simulation.requetes.map(u => u.searchParams.get('type')),
     ['course', 'course', 'summary', 'summary', 'exercise', 'exercise', 'exercise', 'exercise'])

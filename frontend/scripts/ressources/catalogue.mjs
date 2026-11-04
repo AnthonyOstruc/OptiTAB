@@ -45,6 +45,9 @@ async function toutesLesPages(api, type, { jusquAuxPayants = false, leger = fals
   for (let page = 1; ; page++) {
     if (page > 1000) throw new Error(`Pagination sans fin pour le catalogue ${type}`)
     const params = new URLSearchParams({ type, page: String(page), page_size: String(leger ? TAILLE_PAGE_LEGERE : TAILLE_PAGE) })
+    // Un identifiant unique stabilise les frontières entre pages. Le tri
+    // implicite des cours/fiches peut répéter ou omettre des lignes ex æquo.
+    if (type === 'course' || type === 'summary') params.set('ordering', 'id')
     if (leger) params.set('light', '1')
     else { params.set('full_content', '1'); params.set('include_images', '1') }
     const donnees = await lireJson(`${api}/api/free/learning-resources/?${params}`)
@@ -79,13 +82,30 @@ export function slugifier(texte, max = 72) {
 
 const nombre = (v) => (v === null || v === undefined || v === '' ? null : Number(v))
 
-export async function chargerCatalogue(api) {
+export async function lireSourcesCatalogue(api) {
   // Une seule requête à la fois : les contenus et leurs images sont volumineux,
   // et le backend Render dispose aussi de ses requêtes visiteurs à traiter.
   const cours = await toutesLesPages(api, 'course')
   const fiches = await toutesLesPages(api, 'summary')
   const exercices = await toutesLesPages(api, 'exercise', { jusquAuxPayants: true })
   const tousExercices = await toutesLesPages(api, 'exercise', { leger: true })
+
+  // L'export contient uniquement les textes accessibles sans abonnement.
+  // Pour les exercices réservés aux abonnés, seuls les identifiants nécessaires
+  // au décompte par chapitre sont conservés.
+  return {
+    cours: cours.filter(estLibre),
+    fiches: fiches.filter(estLibre),
+    exercices: exercices.filter(estLibre),
+    tousExercices: tousExercices.map(({ id, notion }) => ({ id, notion }))
+  }
+}
+
+export async function chargerCatalogue(api) {
+  return construireCatalogue(await lireSourcesCatalogue(api))
+}
+
+export function construireCatalogue({ cours, fiches, exercices, tousExercices }) {
 
   // Nombre total d'exercices corrigés par chapitre (gratuits et réservés aux abonnés).
   const totalParChapitre = new Map()

@@ -78,6 +78,7 @@ function pied(catalogue) {
       <li><a href="/cours-particuliers">Cours particuliers</a></li>
       <li><a href="/tarifs">Tarifs</a></li>
       <li><a href="${RACINE}formulaires/">Formulaires de maths</a></li>
+      <li><a href="${RACINE}tables/">Tables de maths</a></li>
       <li><a href="/about">À propos</a></li>
       <li><a href="/blog">Blog</a></li>
       <li><a href="/contact">Contact</a></li>
@@ -254,10 +255,10 @@ export function appelsAction(classe, ch, lieu) {
 </section>`
 }
 
-// Formulaires de maths liés au chapitre (ch.formulaires, rempli par generer.mjs) :
-// une carte « Le formulaire … » dans « Pour continuer » (maillage interne).
+// Formulaires et tables liés au chapitre (ch.formulaires, rempli par generer.mjs) :
+// une carte « Le formulaire … » ou « La table … » dans « Pour continuer » (maillage interne).
 function cartesFormulaires(ch) {
-  return (ch.formulaires || []).map((f) => `<a class="rg-next__card" href="${RACINE}formulaires/${f.slug}/">${icone('fiche')}<span><strong>${e(f.titre)}</strong><small>Le formulaire : ${e(f.resume || 'toutes les formules à connaître')}</small></span></a>`).join('')
+  return (ch.formulaires || []).map((f) => `<a class="rg-next__card" href="${f.url}">${icone('fiche')}<span><strong>${e(f.titre)}</strong><small>${e(f.article)} : ${e(f.resume || 'à consulter ou imprimer')}</small></span></a>`).join('')
 }
 
 // ---------- Pages ----------

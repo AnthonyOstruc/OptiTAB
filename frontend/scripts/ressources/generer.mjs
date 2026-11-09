@@ -25,7 +25,7 @@ import {
   markdownArticle, metaArticle, pageArticle, pageBlog, urlArticle
 } from './blog.mjs'
 import {
-  RACINE_FORMULAIRES, blocAccueilFormulaires, figuresAPublier, jsonldFormulaire, jsonldFormulaires,
+  RUBRIQUES, blocAccueilFormulaires, figuresAPublier, jsonldFormulaire, jsonldFormulaires,
   lireFormulaires, llmsFormulaires, markdownFormulaire, pageFormulaire, pageFormulaires, rendreFormulaire, urlFormulaire
 } from './formulaires.mjs'
 import {
@@ -130,12 +130,15 @@ function finaliser(url, page) {
 async function main() {
   const { catalogue, manifeste } = lireInstantane()
   journal(`catalogue public local du ${manifeste.genereLe}, vérifié ; aucun appel au backend`)
-  // Formulaires (contenu/formulaires/) : lus avant tout filtre, leurs liens vers
-  // les chapitres sont vérifiés sur le catalogue complet.
-  const formulaires = lireFormulaires(path.join(FRONT, 'contenu', 'formulaires'), catalogue)
-  // Maillage interne : chaque chapitre lié à un formulaire affiche une carte vers lui.
+  // Formulaires et tables (contenu/formulaires/, contenu/tables/) : lus avant
+  // tout filtre, leurs liens vers les chapitres sont vérifiés sur le catalogue complet.
+  const formulaires = Object.entries(RUBRIQUES).flatMap(([categorie, r]) => (
+    lireFormulaires(path.join(FRONT, 'contenu', r.dossier), catalogue, categorie)))
+  // Maillage interne : chaque chapitre lié à un formulaire ou à une table affiche une carte vers lui.
   for (const f of formulaires) {
-    for (const ch of f.chapitres) (ch.formulaires ||= []).push({ slug: f.slug, titre: f.titre, resume: f.resume })
+    for (const ch of f.chapitres) {
+      (ch.formulaires ||= []).push({ url: urlFormulaire(f), titre: f.titre, resume: f.resume, article: RUBRIQUES[f.categorie].article })
+    }
   }
   if (FILTRE_CLASSES || LIMITE) {
     catalogue.classes = catalogue.classes
@@ -158,7 +161,7 @@ async function main() {
   // sans toucher aux autres pages, au plan du site ni à llms.txt.
   if (FORMULAIRES_SEULS) {
     genererFormulaires(formulaires, catalogue, ctx, plan)
-    journal(`formulaires seuls : ${formulaires.length} formulaire(s), ${totalFormules} formules, en ${Math.round((Date.now() - debut) / 1000)} s → ${SORTIE}`)
+    journal(`formulaires seuls : ${formulaires.length} page(s), ${totalFormules} formules, en ${Math.round((Date.now() - debut) / 1000)} s → ${SORTIE}`)
     if (latexRestant.length) latexRestant.forEach((l) => journal('ATTENTION LaTeX non composé :', l))
     return
   }
@@ -290,7 +293,7 @@ async function main() {
 
   // Formulaires de maths
   genererFormulaires(formulaires, catalogue, ctx, plan)
-  journal(`formulaires : ${formulaires.length}`)
+  journal(`formulaires et tables : ${formulaires.length}`)
 
   ecrire('sitemap-ressources.xml', planDuSite(plan))
   ecrire('llms.txt', llmsTxt(catalogue) + llmsFormulaires(formulaires) + llmsBlog(articles))
@@ -322,15 +325,18 @@ function genererFormulaires(formulaires, catalogue, ctx, plan) {
     ecrire(`${url}index.md`, markdownFormulaire(f))
     plan.push({ chemin: url, modifie: f.modifie, images: figuresAPublier(f).map(([, adresse]) => absolu(adresse)) })
   }
-  if (formulaires.length) {
-    finaliser(RACINE_FORMULAIRES, {
-      titre: 'Formulaires de maths gratuits : toutes les formules à connaître',
-      description: 'Formulaires de maths gratuits : les formules à connaître réunies dans des tableaux clairs, avec schémas, du collège au supérieur. À consulter ou imprimer.',
-      contenu: pageFormulaires(formulaires),
+  // Une page de liste par rubrique (formulaires, tables).
+  for (const [categorie, r] of Object.entries(RUBRIQUES)) {
+    const liste = formulaires.filter((f) => f.categorie === categorie)
+    if (!liste.length) continue
+    finaliser(r.racine, {
+      titre: r.titreSeo,
+      description: r.description,
+      contenu: pageFormulaires(liste, categorie),
       catalogue, ctx,
-      jsonld: jsonldFormulaires(formulaires)
+      jsonld: jsonldFormulaires(liste, categorie)
     })
-    plan.splice(1, 0, { chemin: RACINE_FORMULAIRES, modifie: formulaires.map((f) => f.modifie).sort().pop() })
+    plan.splice(1, 0, { chemin: r.racine, modifie: liste.map((f) => f.modifie).sort().pop() })
   }
 }
 

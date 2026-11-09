@@ -37,6 +37,11 @@
   color: var(--rg-orange-700);
 }
 
+.fm-niveau--primaire {
+  background: #fdf2f8;
+  color: #9d2a64;
+}
+
 .fm-legende {
   display: flex;
   flex-wrap: wrap;
@@ -111,6 +116,27 @@
   font-family: var(--rg-font);
   font-size: 0.86em;
   line-height: 1.45;
+}
+
+/* Grands tableaux de nombres (6 colonnes ou plus : table de multiplication,
+   loi normale…) : grille compacte, chiffres alignés, aucune largeur minimale. */
+.fm-sci .otm.otm table.otm-table.fm-grille-n th,
+.fm-sci .otm.otm table.otm-table.fm-grille-n td {
+  min-width: 0;
+  padding: 0.5em 0.45em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.fm-sci .otm.otm table.otm-table.fm-grille-n td:first-child,
+.fm-sci .otm.otm table.otm-table.fm-grille-n th:first-child {
+  background: var(--rg-navy-50);
+}
+
+.fm-sci .otm.otm table.otm-table.fm-grille-n thead th {
+  background: var(--rg-navy-50);
+  color: var(--rg-navy);
+  font-size: 0.9em;
 }
 
 /* Les figures : centrées, sans marge excessive. */
@@ -255,6 +281,15 @@
 /* ---------- Téléphone ---------- */
 
 @media (max-width: 640px) {
+  .fm-sci .otm.otm table.otm-table.fm-grille-n {
+    font-size: 0.8em;
+  }
+
+  .fm-sci .otm.otm table.otm-table.fm-grille-n th,
+  .fm-sci .otm.otm table.otm-table.fm-grille-n td {
+    padding: 0.42em 0.18em;
+  }
+
   .fm-sci .otm.otm table.otm-table th,
   .fm-sci .otm.otm table.otm-table td {
     padding: 0.55em 0.6em;

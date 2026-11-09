@@ -1,7 +1,12 @@
-// Formulaires de maths (ressources gratuites) : tableaux des formules à
-// connaître (trigonométrie, dérivées, développements limités, aires…).
+// Formulaires et tables de maths (ressources gratuites).
 //
-// Chaque formulaire est un dossier de contenu/formulaires/<slug>/ :
+// Deux rubriques, même moteur :
+//   - formulaires (contenu/formulaires/) : les formules à connaître par thème
+//     (trigonométrie, dérivées, développements limités, aires…) ;
+//   - tables (contenu/tables/) : les tableaux de référence à consulter ou
+//     imprimer (multiplication, conversions, chiffres romains, loi normale…).
+//
+// Chaque page est un dossier <rubrique>/<slug>/ :
 //   formulaire.md        bloc d'informations en JSON entre « --- », puis le
 //                        texte au format OptiTAB v1 (mêmes encadrés et tableaux
 //                        que les fiches du site) ; « {Collège} », « {Lycée} » ou
@@ -11,9 +16,9 @@
 //   figures/images/*.png figures produites, appelées par [IMAGE_n] dans
 //                        l'ordre de la liste « figures » du bloc d'informations.
 //
-// Chaque formulaire devient une page complète (texte, formules en SVG + MathML,
-// figures, sommaire, questions fréquentes, données structurées) lisible par
-// Google et les assistants d'IA sans JavaScript, et une version Markdown.
+// Chaque page est complète (texte, formules en SVG + MathML, figures,
+// sommaire, questions fréquentes, données structurées) et lisible par Google
+// et les assistants d'IA sans JavaScript ; elle a aussi une version Markdown.
 import fs from 'node:fs'
 import path from 'node:path'
 import { slugifier } from './catalogue.mjs'
@@ -21,12 +26,52 @@ import { RACINE, SITE, absolu, appelsAction, e, filAriane, urlCours, urlFiche } 
 import { contenuEnHtml, contenuEnMarkdown, latexEnTexte, texteBrut } from './rendu.mjs'
 import { ORGANISATION, ariane } from './seo.mjs'
 
-export const RACINE_FORMULAIRES = `${RACINE}formulaires/`
-export const urlFormulaire = (f) => `${RACINE_FORMULAIRES}${f.slug}/`
+// ---------- Rubriques ----------
+
+export const RUBRIQUES = {
+  formulaire: {
+    dossier: 'formulaires',
+    racine: `${RACINE}formulaires/`,
+    court: 'Formulaires',
+    titre: 'Formulaires de maths',
+    kicker: 'Formulaire de maths',
+    lead: 'Toutes les formules à connaître, du collège au supérieur, à consulter ou imprimer.',
+    accroche: 'Toutes les formules à connaître, à consulter ou imprimer.',
+    titreSeo: 'Formulaires de maths gratuits : toutes les formules à connaître',
+    description: 'Formulaires de maths gratuits : les formules à connaître réunies dans des tableaux clairs, avec schémas, du collège au supérieur. À consulter ou imprimer.',
+    typeRessource: ['Formulaire', 'Fiche de révision'],
+    autres: 'Les autres formulaires de maths',
+    imprimer: 'Imprimer le formulaire',
+    lies: 'Revoir le cours de ces formules',
+    article: 'Le formulaire',
+    lieu: 'formulaire'
+  },
+  table: {
+    dossier: 'tables',
+    racine: `${RACINE}tables/`,
+    court: 'Tables',
+    titre: 'Tables de maths',
+    kicker: 'Table de maths',
+    lead: 'Les tables et tableaux les plus utilisés : multiplication, conversions, chiffres romains, loi normale, nombres premiers… à consulter ou imprimer.',
+    accroche: 'Les tableaux de référence les plus utilisés, à consulter ou imprimer.',
+    titreSeo: 'Tables de maths gratuites : multiplication, conversions, loi normale',
+    description: 'Tables de maths gratuites à consulter ou imprimer : table de multiplication, tableau de conversion, chiffres romains, loi normale, nombres premiers et plus.',
+    typeRessource: ['Table de référence'],
+    autres: 'Les autres tables de maths',
+    imprimer: 'Imprimer la table',
+    lies: 'Revoir le cours',
+    article: 'La table',
+    lieu: 'table'
+  }
+}
+const rubrique = (f) => RUBRIQUES[f.categorie || 'formulaire']
+
+export const RACINE_FORMULAIRES = RUBRIQUES.formulaire.racine
+export const urlFormulaire = (f) => `${rubrique(f).racine}${f.slug}/`
 const urlFigure = (f, nom) => `${urlFormulaire(f)}${nom}.png`
 
 // Niveaux (pastille à la fin d'un titre de partie, ordre d'affichage).
-export const NIVEAUX = ['Collège', 'Lycée', 'Supérieur']
+export const NIVEAUX = ['Primaire', 'Collège', 'Lycée', 'Supérieur']
 const cleNiveau = (n) => slugifier(n, 20)
 
 const ICONES = {
@@ -40,8 +85,9 @@ const icone = (nom, cls = 'rg-ico') => `<svg class="${cls}" viewBox="0 0 24 24" 
 
 const dateLongue = (iso) => new Date(`${iso}T12:00:00`).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
 const pluriel = (n, un, plusieurs) => `${n} ${n > 1 ? plusieurs : un}`
-// Typographie française : espace insécable avant ? ! : ; (jamais de signe seul en début de ligne).
-const typo = (texte) => String(texte).replace(/ ([?!:;])/g, ' $1')
+// Typographie française : espace insécable avant ? ! : ; (jamais de signe seul en
+// début de ligne) et espace fine insécable dans les milliers (« 1 000 » jamais coupé).
+const typo = (texte) => String(texte).replace(/ ([?!:;])/g, ' $1').replace(/(\d) (?=\d{3}\b)/g, '$1 ')
 
 // Taille d'une image PNG (en-tête IHDR).
 function taillePng(fichier) {
@@ -54,43 +100,44 @@ function taillePng(fichier) {
 
 // ---------- Lecture ----------
 
-function lireFormulaire(dossier, catalogue) {
+function lireFormulaire(dossier, catalogue, categorie) {
   const fichier = path.join(dossier, 'formulaire.md')
   const nom = path.basename(dossier)
   const source = fs.readFileSync(fichier, 'utf8').replace(/\r\n/g, '\n')
   const m = source.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/)
-  if (!m) throw new Error(`formulaire ${nom} : bloc d'informations (--- … ---) introuvable`)
+  if (!m) throw new Error(`${categorie} ${nom} : bloc d'informations (--- … ---) introuvable`)
   const info = JSON.parse(m[1])
   for (const champ of ['slug', 'titre', 'description', 'publie']) {
-    if (!info[champ]) throw new Error(`formulaire ${nom} : champ « ${champ} » manquant`)
+    if (!info[champ]) throw new Error(`${categorie} ${nom} : champ « ${champ} » manquant`)
   }
-  if (info.slug !== nom) throw new Error(`formulaire ${nom} : le slug (${info.slug}) doit être le nom du dossier`)
-  if (info.description.length > 160) throw new Error(`formulaire ${nom} : description trop longue (${info.description.length} > 160)`)
+  if (info.slug !== nom) throw new Error(`${categorie} ${nom} : le slug (${info.slug}) doit être le nom du dossier`)
+  if (info.description.length > 160) throw new Error(`${categorie} ${nom} : description trop longue (${info.description.length} > 160)`)
   const contenu = m[2].trim()
-  if (!contenu.startsWith('<!-- optitab:1 -->')) throw new Error(`formulaire ${nom} : le texte doit commencer par <!-- optitab:1 -->`)
+  if (!contenu.startsWith('<!-- optitab:1 -->')) throw new Error(`${categorie} ${nom} : le texte doit commencer par <!-- optitab:1 -->`)
 
   // Figures : [IMAGE_n] = n-ième figure de la liste ; chacune doit exister et être appelée.
   const figures = (info.figures || []).map((fig, i) => {
     const png = path.join(dossier, 'figures', 'images', `${fig.nom}.png`)
-    if (!fs.existsSync(png)) throw new Error(`formulaire ${nom} : figure introuvable (${fig.nom}.png) — compiler figures/figures.py`)
-    if (!fig.alt || fig.alt.length < 15) throw new Error(`formulaire ${nom} : texte alternatif manquant pour ${fig.nom}`)
+    if (!fs.existsSync(png)) throw new Error(`${categorie} ${nom} : figure introuvable (${fig.nom}.png) — compiler figures/figures.py`)
+    if (!fig.alt || fig.alt.length < 15) throw new Error(`${categorie} ${nom} : texte alternatif manquant pour ${fig.nom}`)
     const { largeur, hauteur } = taillePng(png)
     return { ...fig, position: i + 1, png, largeur: Math.round(largeur / 2), hauteur: Math.round(hauteur / 2) }
   })
   const appels = [...contenu.matchAll(/\[IMAGE_(\d+)\]/g)].map((x) => Number(x[1]))
-  for (const n of appels) if (!figures[n - 1]) throw new Error(`formulaire ${nom} : [IMAGE_${n}] sans figure`)
-  for (const fig of figures) if (!appels.includes(fig.position)) throw new Error(`formulaire ${nom} : figure ${fig.nom} jamais appelée`)
+  for (const n of appels) if (!figures[n - 1]) throw new Error(`${categorie} ${nom} : [IMAGE_${n}] sans figure`)
+  for (const fig of figures) if (!appels.includes(fig.position)) throw new Error(`${categorie} ${nom} : figure ${fig.nom} jamais appelée`)
 
   // Chapitres liés « classe/chapitre » : ils doivent exister dans les ressources.
   const chapitres = (info.chapitresLies || []).map((cle) => {
     const [classe, slug] = cle.split('/')
     const ch = catalogue.chapitres.find((c) => c.classe.slug === classe && c.slug === slug)
-    if (!ch) throw new Error(`formulaire ${nom} : chapitre lié inconnu (${cle})`)
+    if (!ch) throw new Error(`${categorie} ${nom} : chapitre lié inconnu (${cle})`)
     return ch
   })
 
   return {
     ...info,
+    categorie,
     titreCourt: info.titreCourt || info.titre,
     modifie: info.modifie || info.publie,
     niveaux: info.niveaux || [],
@@ -104,11 +151,12 @@ function lireFormulaire(dossier, catalogue) {
   }
 }
 
-export function lireFormulaires(dossier, catalogue) {
+// Lit une rubrique (contenu/formulaires ou contenu/tables).
+export function lireFormulaires(dossier, catalogue, categorie = 'formulaire') {
   if (!fs.existsSync(dossier)) return []
   const liste = fs.readdirSync(dossier, { withFileTypes: true })
     .filter((d) => d.isDirectory() && fs.existsSync(path.join(dossier, d.name, 'formulaire.md')))
-    .map((d) => lireFormulaire(path.join(dossier, d.name), catalogue))
+    .map((d) => lireFormulaire(path.join(dossier, d.name), catalogue, categorie))
     .filter((f) => !f.brouillon)
   return liste.sort((a, b) => (a.ordre ?? 99) - (b.ordre ?? 99) || a.titre.localeCompare(b.titre, 'fr'))
 }
@@ -130,15 +178,18 @@ export function rendreFormulaire(f) {
   }))
   let html = contenuEnHtml(f.contenu, images, 'cours')
     // Figures servies par le site lui-même (adresse relative).
-    .split(`src="${SITE}${RACINE_FORMULAIRES}`).join(`src="${RACINE_FORMULAIRES}`)
+    .split(`src="${SITE}${RACINE}`).join(`src="${RACINE}`)
     // Tableaux dont la première colonne est un libellé en mots (« Carré de
     // côté c », « Produit »…) : libellé à gauche ; à deux colonnes (fm-t2),
-    // le libellé passe au-dessus de sa formule sur téléphone. Les tableaux
-    // dont la première colonne est une formule restent tels quels.
+    // le libellé passe au-dessus de sa formule sur téléphone. Les grands
+    // tableaux de nombres (6 colonnes ou plus) passent en grille compacte
+    // (fm-grille-n). Les autres restent tels quels.
     .replace(/<table class="otm-table">([\s\S]*?)<\/table>/g, (tout, interieur) => {
-      const premieres = [...interieur.matchAll(/<tr><td\b[^>]*>((?:(?!<\/td>)[\s\S])*)<\/td>/g)].map((m) => m[1].replace(/\$[^$]*\$/g, ''))
-      if (!premieres.length || !premieres.every((t) => /[a-zé]{3,}/i.test(t))) return tout
       const colonnes = (((interieur.match(/<thead><tr>([\s\S]*?)<\/tr><\/thead>/) || [])[1] || '').match(/<th\b/g) || []).length
+      const premieres = [...interieur.matchAll(/<tr><td\b[^>]*>((?:(?!<\/td>)[\s\S])*)<\/td>/g)].map((m) => m[1].replace(/\$[^$]*\$/g, ''))
+      const libelles = premieres.length && premieres.every((t) => /[a-zé]{3,}/i.test(t))
+      if (colonnes >= 6) return `<table class="otm-table fm-grille-n${libelles ? ' fm-libelles' : ''}">${interieur}</table>`
+      if (!libelles) return tout
       return `<table class="otm-table ${colonnes === 2 ? 'fm-t2' : 'fm-libelles'}">${interieur}</table>`
     })
 
@@ -148,7 +199,7 @@ export function rendreFormulaire(f) {
     const num = texteBrut((interieur.match(/class="otm-h2-num"[^>]*>([\s\S]*?)<\/span>/) || [])[1] || '')
     let texteHtml = (interieur.match(/class="otm-h2-text"[^>]*>([\s\S]*?)<\/span>/) || [])[1] || interieur
     const niveau = (texteHtml.match(/\s*\{([^{}]+)\}\s*$/) || [])[1] || ''
-    if (niveau && !NIVEAUX.includes(niveau)) throw new Error(`formulaire ${f.slug} : niveau inconnu « ${niveau} » (${NIVEAUX.join(', ')})`)
+    if (niveau && !NIVEAUX.includes(niveau)) throw new Error(`${f.categorie} ${f.slug} : niveau inconnu « ${niveau} » (${NIVEAUX.join(', ')})`)
     texteHtml = texteHtml.replace(/\s*\{[^{}]+\}\s*$/, '').trim()
     const texte = latexEnTexte(texteBrut(texteHtml))
     let id = slugifier(texte, 48)
@@ -169,7 +220,7 @@ function pastilles(niveaux) {
 }
 
 function sommaire(f, titres) {
-  return `<aside class="rg-toc fm-toc" aria-label="Sommaire du formulaire">
+  return `<aside class="rg-toc fm-toc" aria-label="Sommaire">
     <details class="rg-toc__box" open><summary>Sommaire</summary><ol>${titres.map((t) => `<li><a href="#${t.id}"><span class="rg-toc__num">${e(t.num)}</span><span>${t.html}</span></a></li>`).join('')}${f.faq.length ? '<li><a href="#questions-frequentes"><span class="rg-toc__num">?</span><span>Questions fréquentes</span></a></li>' : ''}</ol></details>
   </aside>`
 }
@@ -177,7 +228,7 @@ function sommaire(f, titres) {
 function chapitresLies(f) {
   if (!f.chapitres.length) return ''
   return `<section class="rg-next fm-lies" aria-labelledby="fm-lies-titre">
-      <h2 class="rg-next__title" id="fm-lies-titre">${icone('check')} Revoir le cours de ces formules</h2>
+      <h2 class="rg-next__title" id="fm-lies-titre">${icone('check')} ${rubrique(f).lies}</h2>
       <div class="rg-next__grid">
         ${f.chapitres.map((ch) => `<a class="rg-next__card" href="${urlCours(ch)}">${icone('cours')}<span><strong>${e(ch.titre)}</strong><small>Maths ${e(ch.classe.court)} · cours, fiche${ch.exercices.length ? ' et exercices corrigés' : ''}</small></span></a>`).join('\n        ')}
       </div>
@@ -206,21 +257,24 @@ function carte(f, niveauTitre = 3) {
 }
 
 function autresFormulaires(f, formulaires) {
-  // Les trois formulaires les plus proches (ordre du programme) : une rangée.
+  // Les trois pages les plus proches de la même rubrique (ordre) : une rangée.
   const rang = (x) => Math.abs((x.ordre ?? 99) - (f.ordre ?? 99))
-  const autres = formulaires.filter((x) => x.slug !== f.slug).sort((a, b) => rang(a) - rang(b) || (a.ordre ?? 99) - (b.ordre ?? 99)).slice(0, 3)
+  const autres = formulaires.filter((x) => x.slug !== f.slug && x.categorie === f.categorie)
+    .sort((a, b) => rang(a) - rang(b) || (a.ordre ?? 99) - (b.ordre ?? 99)).slice(0, 3)
   if (!autres.length) return ''
   return `<section class="fm-autres" aria-labelledby="fm-autres-titre">
-    <h2 id="fm-autres-titre">Les autres formulaires de maths</h2>
+    <h2 id="fm-autres-titre">${rubrique(f).autres}</h2>
     <div class="fm-grille">${autres.map((x) => carte(x)).join('')}</div>
   </section>`
 }
 
-const etapes = (f) => [['Accueil', '/'], ['Ressources gratuites', RACINE], ['Formulaires', RACINE_FORMULAIRES], ...(f ? [[f.titreCourt, urlFormulaire(f)]] : [])]
+const etapesRubrique = (r) => [['Accueil', '/'], ['Ressources gratuites', RACINE], [r.court, r.racine]]
+const etapes = (f) => [...etapesRubrique(rubrique(f)), [f.titreCourt, urlFormulaire(f)]]
 
 // ---------- Pages ----------
 
 export function pageFormulaire(f, rendu, formulaires) {
+  const r = rubrique(f)
   const infos = [
     pluriel(rendu.titres.length, 'partie', 'parties'),
     f.figures.length ? pluriel(f.figures.length, 'schéma', 'schémas') : '',
@@ -229,7 +283,7 @@ export function pageFormulaire(f, rendu, formulaires) {
   return `<header class="rg-chap fm-head">
   <div class="rg-wrap">
     ${filAriane(etapes(f))}
-    <p class="rg-kicker">Formulaire de maths${f.theme ? ` · ${e(f.theme)}` : ''}</p>
+    <p class="rg-kicker">${r.kicker}${f.theme ? ` · ${e(f.theme)}` : ''}</p>
     <h1 class="rg-h1">${e(f.titre)}</h1>
     ${f.chapo ? `<p class="rg-lead">${e(f.chapo)}</p>` : ''}
     <ul class="rg-infos">${infos.map((i) => `<li>${e(i)}</li>`).join('')}</ul>
@@ -239,7 +293,7 @@ export function pageFormulaire(f, rendu, formulaires) {
 <div class="rg-wrap rg-reading rg-reading--toc">
   ${sommaire(f, rendu.titres)}
   <article class="rg-doc rg-doc--fiche fm-doc">
-    <div class="rg-doc__tools"><button type="button" class="rg-btn rg-btn--ghost rg-btn--sm" data-imprimer>${icone('imprimer')} Imprimer le formulaire</button></div>
+    <div class="rg-doc__tools"><button type="button" class="rg-btn rg-btn--ghost rg-btn--sm" data-imprimer>${icone('imprimer')} ${r.imprimer}</button></div>
     <div class="sci-doc rg-sci fm-sci">${rendu.html}</div>
     ${chapitresLies(f)}
     ${blocFaq(f)}
@@ -247,32 +301,37 @@ export function pageFormulaire(f, rendu, formulaires) {
 </div>
 <div class="rg-wrap">
   ${autresFormulaires(f, formulaires)}
-  ${appelsAction(null, null, 'ressources_formulaire')}
+  ${appelsAction(null, null, `ressources_${r.lieu}`)}
 </div>`
 }
 
-export function pageFormulaires(formulaires) {
+// Page d'une rubrique (liste de ses pages).
+export function pageFormulaires(liste, categorie = 'formulaire') {
+  const r = RUBRIQUES[categorie]
   return `<header class="rg-chap fm-head">
   <div class="rg-wrap">
-    ${filAriane(etapes(null))}
+    ${filAriane(etapesRubrique(r))}
     <p class="rg-kicker">Ressources gratuites · Sans inscription</p>
-    <h1 class="rg-h1">Formulaires de maths</h1>
-    <p class="rg-lead">Toutes les formules à connaître, du collège au supérieur, à consulter ou imprimer.</p>
+    <h1 class="rg-h1">${r.titre}</h1>
+    <p class="rg-lead">${r.lead}</p>
   </div>
 </header>
 <div class="rg-wrap fm-hub">
-  <div class="fm-grille">${formulaires.map((f) => carte(f, 2)).join('')}</div>
-  ${appelsAction(null, null, 'ressources_formulaires')}
+  <div class="fm-grille">${liste.map((f) => carte(f, 2)).join('')}</div>
+  ${appelsAction(null, null, `ressources_${r.dossier}`)}
 </div>`
 }
 
-// Bloc « Formulaires » de l'accueil des ressources gratuites.
-export function blocAccueilFormulaires(formulaires) {
-  if (!formulaires.length) return ''
-  return `<section class="rg-cycle fm-accueil" aria-labelledby="cycle-formulaires">
-    <div class="rg-cycle__head"><h2 id="cycle-formulaires">Formulaires de maths</h2><p>Toutes les formules à connaître, à consulter ou imprimer.</p></div>
-    <div class="fm-grille">${formulaires.map((f) => carte(f)).join('')}</div>
+// Blocs « Formulaires » et « Tables » de l'accueil des ressources gratuites.
+export function blocAccueilFormulaires(pages) {
+  return Object.entries(RUBRIQUES).map(([categorie, r]) => {
+    const liste = pages.filter((f) => f.categorie === categorie)
+    if (!liste.length) return ''
+    return `<section class="rg-cycle fm-accueil" aria-labelledby="cycle-${r.dossier}">
+    <div class="rg-cycle__head"><h2 id="cycle-${r.dossier}"><a href="${r.racine}">${r.titre}</a></h2><p>${r.accroche}</p></div>
+    <div class="fm-grille">${liste.map((f) => carte(f)).join('')}</div>
   </section>`
+  }).join('\n')
 }
 
 // ---------- Référencement ----------
@@ -285,14 +344,14 @@ export function jsonldFormulaire(f, titres) {
     {
       '@context': 'https://schema.org',
       '@type': 'LearningResource',
-      '@id': `${url}#formulaire`,
+      '@id': `${url}#ressource`,
       name: f.titre,
       headline: f.titreSeo || f.titre,
       description: f.description,
       url,
       inLanguage: 'fr-FR',
       isAccessibleForFree: true,
-      learningResourceType: ['Formulaire', 'Fiche de révision'],
+      learningResourceType: rubrique(f).typeRessource,
       educationalLevel: f.niveaux,
       about: { '@type': 'Thing', name: f.titreCourt },
       teaches: titres.map((t) => t.texte),
@@ -312,22 +371,23 @@ export function jsonldFormulaire(f, titres) {
   ].filter(Boolean)
 }
 
-export function jsonldFormulaires(formulaires) {
+export function jsonldFormulaires(liste, categorie = 'formulaire') {
+  const r = RUBRIQUES[categorie]
   return [
     {
       '@context': 'https://schema.org',
       '@type': 'CollectionPage',
-      name: 'Formulaires de maths',
-      url: absolu(RACINE_FORMULAIRES),
+      name: r.titre,
+      url: absolu(r.racine),
       inLanguage: 'fr-FR',
       isAccessibleForFree: true,
       publisher: ORGA,
       mainEntity: {
         '@type': 'ItemList',
-        itemListElement: formulaires.map((f, i) => ({ '@type': 'ListItem', position: i + 1, name: f.titre, url: absolu(urlFormulaire(f)) }))
+        itemListElement: liste.map((f, i) => ({ '@type': 'ListItem', position: i + 1, name: f.titre, url: absolu(urlFormulaire(f)) }))
       }
     },
-    ariane(etapes(null))
+    ariane(etapesRubrique(r))
   ]
 }
 
@@ -340,13 +400,16 @@ export function markdownFormulaire(f) {
 
 > ${f.description}
 
-Formulaire gratuit OptiTAB (niveaux : ${f.niveaux.join(', ')}). Mis à jour le ${dateLongue(f.modifie)}. Source : ${absolu(urlFormulaire(f))}
+${rubrique(f).kicker} gratuit OptiTAB${f.niveaux.length ? ` (niveaux : ${f.niveaux.join(', ')})` : ''}. Mis à jour le ${dateLongue(f.modifie)}. Source : ${absolu(urlFormulaire(f))}
 
 ${corps}
 ${f.chapitres.length ? `\n## Cours associés\n\n${f.chapitres.map((ch) => `- [${ch.titre} (maths ${ch.classe.court})](${absolu(urlCours(ch))}) · [fiche](${absolu(urlFiche(ch))})`).join('\n')}\n` : ''}${f.faq.length ? `\n## Questions fréquentes\n\n${f.faq.map(([q, r]) => `### ${q}\n\n${r}`).join('\n\n')}\n` : ''}`
 }
 
-export function llmsFormulaires(formulaires) {
-  if (!formulaires.length) return ''
-  return `\n## Formulaires de maths\n\n- [Tous les formulaires](${absolu(RACINE_FORMULAIRES)})\n${formulaires.map((f) => `- [${f.titre}](${absolu(urlFormulaire(f))}) : ${f.description} Version texte : ${absolu(urlFormulaire(f))}index.md`).join('\n')}\n`
+export function llmsFormulaires(pages) {
+  return Object.entries(RUBRIQUES).map(([categorie, r]) => {
+    const liste = pages.filter((f) => f.categorie === categorie)
+    if (!liste.length) return ''
+    return `\n## ${r.titre}\n\n- [${r.titre} : la liste](${absolu(r.racine)})\n${liste.map((f) => `- [${f.titre}](${absolu(urlFormulaire(f))}) : ${f.description} Version texte : ${absolu(urlFormulaire(f))}index.md`).join('\n')}\n`
+  }).join('')
 }

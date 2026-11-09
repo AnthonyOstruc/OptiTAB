@@ -77,6 +77,7 @@ function pied(catalogue) {
     <div class="rg-footer__col"><p class="rg-footer__title">OptiTAB</p><ul>
       <li><a href="/cours-particuliers">Cours particuliers</a></li>
       <li><a href="/tarifs">Tarifs</a></li>
+      <li><a href="${RACINE}formulaires/">Formulaires de maths</a></li>
       <li><a href="/about">À propos</a></li>
       <li><a href="/blog">Blog</a></li>
       <li><a href="/contact">Contact</a></li>
@@ -253,6 +254,12 @@ export function appelsAction(classe, ch, lieu) {
 </section>`
 }
 
+// Formulaires de maths liés au chapitre (ch.formulaires, rempli par generer.mjs) :
+// une carte « Le formulaire … » dans « Pour continuer » (maillage interne).
+function cartesFormulaires(ch) {
+  return (ch.formulaires || []).map((f) => `<a class="rg-next__card" href="${RACINE}formulaires/${f.slug}/">${icone('fiche')}<span><strong>${e(f.titre)}</strong><small>Le formulaire : ${e(f.resume || 'toutes les formules à connaître')}</small></span></a>`).join('')
+}
+
 // ---------- Pages ----------
 export function pageCours(ch, rendu) {
   // Titres du sommaire : HTML du titre de partie (ses formules sont composées avec la page).
@@ -269,6 +276,7 @@ export function pageCours(ch, rendu) {
       <div class="rg-next__grid">
         ${ch.fiche ? `<a class="rg-next__card" href="${urlFiche(ch)}">${icone('fiche')}<span><strong>La fiche de révision</strong><small>L’essentiel du chapitre, à relire avant un contrôle</small></span></a>` : ''}
         ${ch.exercices.length ? `<a class="rg-next__card" href="${urlExercices(ch)}">${icone('exercices')}<span><strong>${pluriel(ch.exercices.length, 'exercice corrigé', 'exercices corrigés')}</strong><small>Du plus simple au plus complet, corrigés pas à pas</small></span></a>` : ''}
+        ${cartesFormulaires(ch)}
       </div>
     </section>
   </article>
@@ -287,6 +295,7 @@ export function pageFiche(ch, rendu) {
       <div class="rg-next__grid">
         ${ch.exercices.length ? `<a class="rg-next__card" href="${urlExercices(ch)}">${icone('exercices')}<span><strong>${pluriel(ch.exercices.length, 'exercice corrigé', 'exercices corrigés')}</strong><small>Cherche, puis compare avec la correction détaillée</small></span></a>` : ''}
         <a class="rg-next__card" href="${urlCours(ch)}">${icone('cours')}<span><strong>Le cours complet</strong><small>Les explications, exemples et démonstrations</small></span></a>
+        ${cartesFormulaires(ch)}
       </div>
     </section>
   </article>
@@ -369,7 +378,7 @@ export function pageClasse(classe, catalogue) {
 </div>`
 }
 
-export function pageAccueil(catalogue, faq) {
+export function pageAccueil(catalogue, faq, apresClasses = '') {
   const t = catalogue.totaux
   const cycles = CYCLES.map((cy) => {
     const classes = catalogue.classes.filter((c) => c.cycle === cy.cle)
@@ -413,6 +422,7 @@ export function pageAccueil(catalogue, faq) {
 </header>
 <div class="rg-wrap rg-home">
   ${cycles}
+  ${apresClasses}
   <section class="rg-steps" aria-labelledby="steps-title">
     <h2 id="steps-title">Comment bien utiliser ces ressources</h2>
     <ol>

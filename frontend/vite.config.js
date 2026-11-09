@@ -8,7 +8,7 @@ import { existsSync, statSync, createReadStream } from 'fs'
 // le fait en ligne avec le dossier dist.
 function ressourcesLocales() {
   const dossier = resolve(__dirname, '.ressources-local')
-  const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.json': 'application/json', '.xml': 'application/xml', '.txt': 'text/plain; charset=utf-8', '.md': 'text/markdown; charset=utf-8' }
+  const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.json': 'application/json', '.xml': 'application/xml', '.txt': 'text/plain; charset=utf-8', '.md': 'text/markdown; charset=utf-8', '.png': 'image/png' }
   return {
     name: 'ressources-locales',
     configureServer(server) {

@@ -25,6 +25,10 @@ import {
   markdownArticle, metaArticle, pageArticle, pageBlog, urlArticle
 } from './blog.mjs'
 import {
+  RACINE_FORMULAIRES, blocAccueilFormulaires, figuresAPublier, jsonldFormulaire, jsonldFormulaires,
+  lireFormulaires, llmsFormulaires, markdownFormulaire, pageFormulaire, pageFormulaires, rendreFormulaire, urlFormulaire
+} from './formulaires.mjs'
+import {
   FAQ, correspondances, descriptionCourte, jsonldAccueil, jsonldChapitre, jsonldClasse,
   llmsTxt, markdownChapitre, markdownClasse, planDuSite
 } from './seo.mjs'
@@ -40,6 +44,7 @@ const option = (nom, defaut) => {
 const SORTIE = path.resolve(option('sortie', path.join(FRONT, 'dist')))
 const FILTRE_CLASSES = option('classes', '') ? option('classes').split(',') : null
 const LIMITE = Number(option('limite', 0)) || 0
+const FORMULAIRES_SEULS = args.includes('--formulaires-seuls')
 
 const debut = Date.now()
 const journal = (...m) => console.log('[ressources]', ...m)
@@ -69,6 +74,7 @@ function feuilleDeStyle() {
   const parties = [
     fs.readFileSync(path.join(ICI, 'ressources.css'), 'utf8'),
     fs.readFileSync(path.join(ICI, 'blog.css'), 'utf8'),
+    fs.readFileSync(path.join(ICI, 'formulaires.css'), 'utf8'),
     '/* Contenus de cours (styles du site) */',
     fs.readFileSync(path.join(FRONT, 'src/styles/scientific-content.css'), 'utf8'),
     fs.readFileSync(path.join(FRONT, 'src/styles/optitab-doc.css'), 'utf8'),
@@ -124,6 +130,13 @@ function finaliser(url, page) {
 async function main() {
   const { catalogue, manifeste } = lireInstantane()
   journal(`catalogue public local du ${manifeste.genereLe}, vérifié ; aucun appel au backend`)
+  // Formulaires (contenu/formulaires/) : lus avant tout filtre, leurs liens vers
+  // les chapitres sont vérifiés sur le catalogue complet.
+  const formulaires = lireFormulaires(path.join(FRONT, 'contenu', 'formulaires'), catalogue)
+  // Maillage interne : chaque chapitre lié à un formulaire affiche une carte vers lui.
+  for (const f of formulaires) {
+    for (const ch of f.chapitres) (ch.formulaires ||= []).push({ slug: f.slug, titre: f.titre, resume: f.resume })
+  }
   if (FILTRE_CLASSES || LIMITE) {
     catalogue.classes = catalogue.classes
       .filter((c) => !FILTRE_CLASSES || FILTRE_CLASSES.includes(c.slug))
@@ -140,6 +153,15 @@ async function main() {
   await preparerRendu()
   const ctx = { css: feuilleDeStyle(), ...suiviDuSite() }
   const plan = []
+
+  // Aperçu rapide (--formulaires-seuls) : seulement les pages des formulaires,
+  // sans toucher aux autres pages, au plan du site ni à llms.txt.
+  if (FORMULAIRES_SEULS) {
+    genererFormulaires(formulaires, catalogue, ctx, plan)
+    journal(`formulaires seuls : ${formulaires.length} formulaire(s), ${totalFormules} formules, en ${Math.round((Date.now() - debut) / 1000)} s → ${SORTIE}`)
+    if (latexRestant.length) latexRestant.forEach((l) => journal('ATTENTION LaTeX non composé :', l))
+    return
+  }
 
   for (const ch of catalogue.chapitres) {
     const { classe } = ch
@@ -223,7 +245,7 @@ async function main() {
   finaliser(RACINE, {
     titre: 'Cours de maths gratuits du CP à la Terminale : cours, fiches, exercices corrigés',
     description: `${catalogue.totaux.cours} cours de maths complets, ${catalogue.totaux.fiches} fiches de révision et ${catalogue.totaux.exercicesGratuits} exercices corrigés pas à pas, du CP à la Terminale, conformes au programme. Gratuit, sans inscription.`,
-    contenu: pageAccueil(catalogue, FAQ),
+    contenu: pageAccueil(catalogue, FAQ, blocAccueilFormulaires(formulaires)),
     catalogue, ctx,
     jsonld: jsonldAccueil(catalogue)
   })
@@ -266,14 +288,49 @@ async function main() {
   for (const ancien of ANCIENNES_ADRESSES) ecrirePage(`${RACINE_BLOG}${ancien}`, pageRedirection(RACINE_BLOG, 'Blog'))
   journal(`blog : ${articles.length} article(s)`)
 
+  // Formulaires de maths
+  genererFormulaires(formulaires, catalogue, ctx, plan)
+  journal(`formulaires : ${formulaires.length}`)
+
   ecrire('sitemap-ressources.xml', planDuSite(plan))
-  ecrire('llms.txt', llmsTxt(catalogue) + llmsBlog(articles))
+  ecrire('llms.txt', llmsTxt(catalogue) + llmsFormulaires(formulaires) + llmsBlog(articles))
   retirerAnciennesAdresses()
 
   journal(`${plan.length} pages, ${totalFormules} formules composées, en ${Math.round((Date.now() - debut) / 1000)} s → ${SORTIE}`)
   if (latexRestant.length) {
     journal(`ATTENTION : LaTeX non composé sur ${latexRestant.length} page(s) :`)
     latexRestant.slice(0, 15).forEach((l) => journal('   ', l))
+  }
+}
+
+// Pages des formulaires (contenu/formulaires/) et page qui les liste.
+function genererFormulaires(formulaires, catalogue, ctx, plan) {
+  for (const f of formulaires) {
+    const url = urlFormulaire(f)
+    const rendu = rendreFormulaire(f)
+    for (const [source, adresse] of figuresAPublier(f)) ecrire(adresse, fs.readFileSync(source))
+    finaliser(url, {
+      titre: f.titreSeo || f.titre,
+      description: f.description,
+      contenu: pageFormulaire(f, rendu, formulaires),
+      catalogue, ctx, type: 'article', actif: RACINE,
+      image: f.figures.length ? absolu(figuresAPublier(f)[0][1]) : undefined,
+      markdown: `${url}index.md`,
+      motsCles: f.motsCles.join(', '),
+      jsonld: jsonldFormulaire(f, rendu.titres)
+    })
+    ecrire(`${url}index.md`, markdownFormulaire(f))
+    plan.push({ chemin: url, modifie: f.modifie, images: figuresAPublier(f).map(([, adresse]) => absolu(adresse)) })
+  }
+  if (formulaires.length) {
+    finaliser(RACINE_FORMULAIRES, {
+      titre: 'Formulaires de maths gratuits : toutes les formules à connaître',
+      description: 'Formulaires de maths gratuits : les formules à connaître réunies dans des tableaux clairs, avec schémas, du collège au supérieur. À consulter ou imprimer.',
+      contenu: pageFormulaires(formulaires),
+      catalogue, ctx,
+      jsonld: jsonldFormulaires(formulaires)
+    })
+    plan.splice(1, 0, { chemin: RACINE_FORMULAIRES, modifie: formulaires.map((f) => f.modifie).sort().pop() })
   }
 }
 

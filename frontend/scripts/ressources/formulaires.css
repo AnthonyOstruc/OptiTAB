@@ -1,0 +1,379 @@
+/*
+ * Formulaires de maths (ressources gratuites). Préfixe « fm- ». Les
+ * formules gardent les styles des fiches du site (optitab-doc.css) ; ce
+ * fichier règle les tableaux de formules, les pastilles de niveau, les
+ * cartes et l'impression.
+ */
+
+/* ---------- Pastilles de niveau ---------- */
+
+.fm-niveau {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-family: var(--rg-font);
+  font-size: 11.5px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.fm-niveau--college {
+  background: var(--rg-green-50);
+  color: var(--rg-green-700);
+}
+
+.fm-niveau--lycee {
+  background: var(--rg-navy-50);
+  color: var(--rg-navy);
+}
+
+.fm-niveau--superieur {
+  background: var(--rg-orange-50);
+  color: var(--rg-orange-700);
+}
+
+.fm-legende {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 18px 0 0;
+}
+
+.fm-legende__titre {
+  margin-right: 2px;
+  color: var(--rg-muted);
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+/* Pastille dans un titre de partie : à la suite du titre, jamais coupée. */
+.fm-sci .otm.otm .otm-h2 .fm-niveau {
+  position: relative;
+  top: -2px;
+  margin-left: 10px;
+}
+
+/* ---------- Tableaux de formules ---------- */
+
+/* Tous les tableaux occupent la largeur de la page, comme sur une fiche imprimée. */
+.fm-sci .otm.otm table.otm-table {
+  width: 100%;
+  margin: 0;
+}
+
+.fm-sci .otm.otm .otm-scroll {
+  margin: 1.25em 0 1.4em;
+}
+
+.fm-sci .otm.otm table.otm-table th,
+.fm-sci .otm.otm table.otm-table td {
+  padding: 0.62em 1em;
+}
+
+.fm-sci .otm.otm table.otm-table tbody tr:nth-child(even) td {
+  background: #f8f9fc;
+}
+
+/* Tableau à deux colonnes « nom en mots | formule » (classe fm-t2) : lecture
+   de gauche à droite. Les tableaux dont la première colonne est une formule
+   (limites, dérivées…) restent centrés, comme dans les livres. */
+.fm-sci .otm.otm table.otm-table.fm-t2 th:first-child,
+.fm-sci .otm.otm table.otm-table.fm-t2 td:first-child {
+  width: 34%;
+  text-align: left;
+}
+
+.fm-sci .otm.otm table.otm-table.fm-t2 th:last-child,
+.fm-sci .otm.otm table.otm-table.fm-t2 td:last-child {
+  text-align: left;
+}
+
+.fm-sci .otm.otm table.otm-table.fm-t2 td:first-child {
+  font-family: var(--rg-font);
+  font-size: 0.86em;
+  line-height: 1.45;
+}
+
+/* Tableau à trois colonnes ou plus dont la première colonne est un libellé
+   (figure, solide…) : libellé à gauche, dans la police du site. */
+.fm-sci .otm.otm table.otm-table.fm-libelles th:first-child,
+.fm-sci .otm.otm table.otm-table.fm-libelles td:first-child {
+  text-align: left;
+}
+
+.fm-sci .otm.otm table.otm-table.fm-libelles td:first-child {
+  font-family: var(--rg-font);
+  font-size: 0.86em;
+  line-height: 1.45;
+}
+
+/* Les figures : centrées, sans marge excessive. */
+.fm-sci .course-figure {
+  margin: 1.6em 0 !important;
+}
+
+.fm-sci .course-figure img {
+  display: block;
+  margin: 0 auto;
+}
+
+/* ---------- Page ---------- */
+
+.fm-doc .rg-doc__tools {
+  margin-bottom: 4px;
+}
+
+/* Le premier titre de partie n'a pas besoin de la grande marge du haut. */
+.fm-sci .otm.otm > .otm-h2:first-child {
+  margin-top: 0.4em;
+}
+
+.fm-toc .rg-toc__box ol {
+  max-height: calc(100vh - var(--rg-header) - 120px);
+  overflow-y: auto;
+}
+
+.fm-lies {
+  margin-top: 48px;
+}
+
+.fm-lies .rg-next__title {
+  font-size: 17px;
+}
+
+.fm-faq {
+  margin: 48px 0 0;
+}
+
+.fm-faq h2 {
+  font-size: 22px;
+}
+
+/* ---------- Cartes (accueil, liste des formulaires) ---------- */
+
+.fm-hub {
+  padding-top: 40px;
+}
+
+/* Grille de 3 cartes (9 formulaires = 3 × 3), 2 sur tablette, 1 sur téléphone. */
+.fm-grille {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+@media (max-width: 900px) {
+  .fm-grille {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.fm-hub .fm-grille {
+  margin-bottom: 48px;
+}
+
+/* Carte : aperçu de la figure, titre, une ligne de mots-clés. */
+.fm-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid var(--rg-line);
+  border-radius: var(--rg-radius);
+  background: #fff;
+  color: var(--rg-ink) !important;
+  text-decoration: none;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+
+.fm-card:hover {
+  border-color: var(--rg-navy);
+  box-shadow: var(--rg-shadow);
+  transform: translateY(-2px);
+}
+
+/* Aperçu de hauteur fixe : l'image s'y loge sans jamais l'agrandir. */
+.fm-card__visuel {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 10;
+  border-bottom: 1px solid var(--rg-line);
+  background: #fff;
+}
+
+.fm-sci .fm-card__visuel img,
+.fm-card__visuel img {
+  position: absolute;
+  inset: 16px;
+  width: calc(100% - 32px);
+  height: calc(100% - 32px);
+  max-width: none;
+  object-fit: contain;
+}
+
+.fm-card__corps {
+  display: block;
+  padding: 16px 18px 18px;
+}
+
+.fm-card__titre {
+  margin: 0;
+  color: var(--rg-navy-900);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.fm-card:hover .fm-card__titre {
+  color: var(--rg-navy);
+}
+
+.fm-card__resume {
+  display: block;
+  margin-top: 4px;
+  color: var(--rg-muted);
+  font-size: 13.5px;
+  line-height: 1.45;
+}
+
+.fm-autres {
+  margin: 8px 0 40px;
+}
+
+.fm-autres h2 {
+  margin: 0 0 16px;
+  color: var(--rg-navy-900);
+  font-size: 22px;
+}
+
+/* ---------- Téléphone ---------- */
+
+@media (max-width: 640px) {
+  .fm-sci .otm.otm table.otm-table th,
+  .fm-sci .otm.otm table.otm-table td {
+    padding: 0.55em 0.6em;
+  }
+
+  /* Cartes compactes : petit aperçu à gauche, titre à droite. */
+  .fm-grille {
+    gap: 12px;
+  }
+
+  .fm-card {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .fm-grille {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .fm-card__visuel {
+    flex: 0 0 104px;
+    width: 104px;
+    aspect-ratio: 1;
+    border-bottom: 0;
+    border-right: 1px solid var(--rg-line);
+  }
+
+  .fm-card__visuel img {
+    inset: 8px;
+    width: calc(100% - 16px);
+    height: calc(100% - 16px);
+  }
+
+  .fm-card__corps {
+    padding: 12px 14px;
+  }
+
+  .fm-card__titre {
+    font-size: 15.5px;
+  }
+
+  .fm-card__resume {
+    font-size: 13px;
+  }
+
+  /* Tableau nom | formule : le nom au-dessus de sa formule, sur toute la largeur. */
+  .fm-sci .otm.otm table.otm-table.fm-t2,
+  .fm-sci .otm.otm table.otm-table.fm-t2 tbody,
+  .fm-sci .otm.otm table.otm-table.fm-t2 tr,
+  .fm-sci .otm.otm table.otm-table.fm-t2 td {
+    display: block;
+    width: 100%;
+  }
+
+  .fm-sci .otm.otm table.otm-table.fm-t2 thead {
+    display: none;
+  }
+
+  .fm-sci .otm.otm table.otm-table.fm-t2 tr {
+    padding: 0.55em 0.7em 0.6em;
+  }
+
+  .fm-sci .otm.otm table.otm-table.fm-t2 tbody tr:nth-child(even) {
+    background: #f8f9fc;
+  }
+
+  .fm-sci .otm.otm table.otm-table.fm-t2 tbody tr:nth-child(even) td {
+    background: none;
+  }
+
+  .fm-sci .otm.otm table.otm-table.fm-t2 tbody tr + tr {
+    border-top: 1px solid #e8ebf1;
+  }
+
+  .fm-sci .otm.otm table.otm-table.fm-t2 tbody tr + tr td {
+    border-top: 0;
+  }
+
+  .fm-sci .otm.otm table.otm-table.fm-t2 td,
+  .fm-sci .otm.otm table.otm-table.fm-t2 td:first-child {
+    width: 100%;
+    padding: 0;
+  }
+
+  .fm-sci .otm.otm table.otm-table.fm-t2 td:first-child {
+    margin-bottom: 0.3em;
+    font-size: 0.8em;
+    letter-spacing: 0.01em;
+  }
+
+  .fm-sci .otm.otm .otm-h2 .fm-niveau {
+    top: -1px;
+    margin-left: 6px;
+    padding: 2px 8px;
+    font-size: 10.5px;
+  }
+}
+
+/* ---------- Impression : le formulaire seul ---------- */
+
+@media print {
+  .fm-legende,
+  .fm-lies,
+  .fm-faq,
+  .fm-autres {
+    display: none !important;
+  }
+
+  .fm-sci .otm.otm table.otm-table,
+  .fm-sci .course-figure,
+  .fm-sci .otm.otm .otm-box {
+    break-inside: avoid;
+  }
+
+  .fm-sci .otm.otm .otm-h2 {
+    break-after: avoid;
+  }
+
+  .fm-sci .otm.otm table.otm-table tbody tr:nth-child(even) td {
+    background: none;
+  }
+}

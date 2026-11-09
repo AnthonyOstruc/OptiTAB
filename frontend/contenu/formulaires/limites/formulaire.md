@@ -10,7 +10,7 @@
   "vignette": "asymptotes",
   "theme": "Analyse",
   "niveaux": ["Lycée", "Supérieur"],
-  "ordre": 9,
+  "ordre": 10,
   "publie": "2026-11-09",
   "modifie": "2026-11-09",
   "motsCles": ["limites formules", "formes indéterminées", "opérations sur les limites", "limites usuelles", "croissances comparées", "asymptote horizontale verticale", "théorème des gendarmes", "théorème des valeurs intermédiaires"],

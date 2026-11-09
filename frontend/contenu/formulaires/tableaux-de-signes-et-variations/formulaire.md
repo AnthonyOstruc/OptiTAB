@@ -10,7 +10,7 @@
   "vignette": "courbe_variations",
   "theme": "Analyse",
   "niveaux": ["Lycée"],
-  "ordre": 7,
+  "ordre": 8,
   "publie": "2026-11-09",
   "modifie": "2026-11-09",
   "motsCles": ["tableau de signes", "tableau de variations", "faire un tableau de signe", "signe de ax+b", "tableau de signe produit", "tableau de signe quotient", "dérivée et variations", "étudier le signe d'une fonction"],

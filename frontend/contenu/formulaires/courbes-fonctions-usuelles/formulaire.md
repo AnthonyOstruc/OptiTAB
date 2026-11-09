@@ -10,7 +10,7 @@
   "vignette": "arcsin_arccos",
   "theme": "Analyse",
   "niveaux": ["Lycée", "Supérieur"],
-  "ordre": 12,
+  "ordre": 13,
   "publie": "2026-11-09",
   "modifie": "2026-11-09",
   "motsCles": ["courbes des fonctions usuelles", "fonctions de référence", "courbe arcsin", "courbe arccos", "courbe arctan", "courbe tangente", "fonctions hyperboliques", "fonction partie entière", "ensemble de définition"],

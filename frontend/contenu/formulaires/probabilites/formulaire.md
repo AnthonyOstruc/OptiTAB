@@ -10,7 +10,7 @@
   "vignette": "arbre_pondere",
   "theme": "Probabilités et statistiques",
   "niveaux": ["Collège", "Lycée", "Supérieur"],
-  "ordre": 18,
+  "ordre": 19,
   "publie": "2026-11-09",
   "modifie": "2026-11-09",
   "motsCles": ["formules probabilités", "probabilité conditionnelle formule", "formule des probabilités totales", "loi binomiale formule", "espérance variance", "arbre pondéré", "combinaisons dénombrement", "loi normale"],

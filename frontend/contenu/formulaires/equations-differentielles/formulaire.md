@@ -10,7 +10,7 @@
   "vignette": "famille_solutions",
   "theme": "Analyse",
   "niveaux": ["Lycée", "Supérieur"],
-  "ordre": 17,
+  "ordre": 18,
   "publie": "2026-11-09",
   "modifie": "2026-11-09",
   "motsCles": ["équations différentielles", "équation différentielle y'=ay+b", "résoudre une équation différentielle", "solution particulière", "variation de la constante", "équation caractéristique", "équation différentielle du second ordre", "équation différentielle terminale"],

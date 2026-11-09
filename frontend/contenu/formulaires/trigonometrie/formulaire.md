@@ -10,7 +10,7 @@
   "vignette": "cercle_complet",
   "theme": "Analyse et géométrie",
   "niveaux": ["Collège", "Lycée", "Supérieur"],
-  "ordre": 11,
+  "ordre": 12,
   "publie": "2026-11-09",
   "modifie": "2026-11-09",
   "motsCles": ["formulaire trigonométrie", "formules de trigonométrie", "valeurs remarquables cos sin", "cercle trigonométrique", "formules d'addition", "formules de duplication", "angles associés", "trigonométrie lycée"],

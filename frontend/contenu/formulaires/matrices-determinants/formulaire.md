@@ -10,7 +10,7 @@
   "vignette": "produit_matrices",
   "theme": "Algèbre",
   "niveaux": ["Lycée", "Supérieur"],
-  "ordre": 24,
+  "ordre": 25,
   "publie": "2026-11-09",
   "modifie": "2026-11-09",
   "motsCles": ["matrices formules", "produit de matrices", "déterminant 2x2", "déterminant 3x3", "règle de Sarrus", "inverse d'une matrice", "inverse matrice 2x2", "système linéaire matrice"],

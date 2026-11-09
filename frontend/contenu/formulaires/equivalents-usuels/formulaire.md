@@ -10,7 +10,7 @@
   "vignette": "sinus_equivalent",
   "theme": "Analyse",
   "niveaux": ["Supérieur"],
-  "ordre": 26,
+  "ordre": 27,
   "publie": "2026-11-09",
   "modifie": "2026-11-09",
   "motsCles": ["équivalents usuels", "équivalent en 0", "tableau des équivalents", "sin x équivalent à x", "ln(1+x) équivalent", "règles équivalents", "formule de Stirling", "calcul de limite avec équivalents"],

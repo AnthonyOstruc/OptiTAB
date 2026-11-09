@@ -10,7 +10,7 @@
   "vignette": "triangle_pascal",
   "theme": "Probabilités",
   "niveaux": ["Lycée", "Supérieur"],
-  "ordre": 19,
+  "ordre": 20,
   "publie": "2026-11-09",
   "modifie": "2026-11-09",
   "motsCles": ["combinatoire", "dénombrement formules", "coefficient binomial", "k parmi n", "arrangement et combinaison", "triangle de Pascal", "binôme de Newton", "factorielle"],

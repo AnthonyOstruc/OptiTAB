@@ -10,7 +10,7 @@
   "vignette": "plan_complexe",
   "theme": "Algèbre",
   "niveaux": ["Lycée", "Supérieur"],
-  "ordre": 23,
+  "ordre": 24,
   "publie": "2026-11-09",
   "modifie": "2026-11-09",
   "motsCles": ["nombres complexes formules", "formulaire nombres complexes", "module et argument", "forme exponentielle", "formule d'Euler", "formule de Moivre", "conjugué d'un nombre complexe", "racines n-ièmes de l'unité"],

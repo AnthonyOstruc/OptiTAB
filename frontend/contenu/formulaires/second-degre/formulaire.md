@@ -10,7 +10,7 @@
   "vignette": "trois_cas",
   "theme": "Algèbre",
   "niveaux": ["Lycée"],
-  "ordre": 6,
+  "ordre": 7,
   "publie": "2026-11-09",
   "modifie": "2026-11-09",
   "motsCles": ["second degré formule", "discriminant", "formule discriminant", "racines trinôme", "forme canonique", "équation du second degré", "signe d'un trinôme", "sommet parabole"],

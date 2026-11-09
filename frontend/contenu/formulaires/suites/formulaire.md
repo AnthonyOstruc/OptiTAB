@@ -10,7 +10,7 @@
   "vignette": "suites_points",
   "theme": "Suites",
   "niveaux": ["Lycée", "Supérieur"],
-  "ordre": 8,
+  "ordre": 9,
   "publie": "2026-11-09",
   "modifie": "2026-11-09",
   "motsCles": ["suite arithmétique formule", "suite géométrique formule", "somme suite géométrique", "somme suite arithmétique", "terme général", "limite q puissance n", "suite arithmético-géométrique", "raisonnement par récurrence"],

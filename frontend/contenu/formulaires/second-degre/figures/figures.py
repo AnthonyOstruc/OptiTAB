@@ -29,7 +29,7 @@ PARABOLE_SOMMET = r"""
 \begin{tikzpicture}
 \begin{axis}[otWeb, width=6.6cm, height=4.6cm, xmin=-2.4, xmax=4.4, ymin=-2.9, ymax=2.9,
   xtick=\empty, ytick=\empty]
-  \draw[seuil] (axis cs:1,-2.9) -- (axis cs:1,2.6);
+  \draw[seuil] (axis cs:1,-2) -- (axis cs:1,2.6);
   \addplot[courbe, domain=-1.75:3.75] {0.5*(x-1)^2-2};
   \pnt{1}{-2}
   \fill[otGreenDark] (axis cs:-1,0) circle (2.3pt);

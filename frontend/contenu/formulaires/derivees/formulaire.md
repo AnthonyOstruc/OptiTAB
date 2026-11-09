@@ -10,7 +10,7 @@
   "vignette": "tangente",
   "theme": "Analyse",
   "niveaux": ["Lycée", "Supérieur"],
-  "ordre": 7,
+  "ordre": 9,
   "publie": "2026-11-09",
   "modifie": "2026-11-09",
   "motsCles": ["tableau des dérivées", "dérivées usuelles", "formules de dérivation", "dérivée d'un quotient", "dérivée d'un produit", "dérivée de racine de x", "équation de la tangente", "dérivée fonction composée"],

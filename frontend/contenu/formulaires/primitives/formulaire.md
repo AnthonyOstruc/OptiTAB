@@ -10,7 +10,7 @@
   "vignette": "aire_integrale",
   "theme": "Analyse",
   "niveaux": ["Lycée", "Supérieur"],
-  "ordre": 8,
+  "ordre": 10,
   "publie": "2026-11-09",
   "modifie": "2026-11-09",
   "motsCles": ["tableau des primitives", "primitives usuelles", "primitive de 1/x", "formules d'intégration", "intégration par parties", "propriétés intégrale", "valeur moyenne", "équation différentielle y'=ay+b"],

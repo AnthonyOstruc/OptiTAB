@@ -10,7 +10,7 @@
   "vignette": "droite_normale",
   "theme": "Géométrie",
   "niveaux": ["Lycée", "Supérieur"],
-  "ordre": 15,
+  "ordre": 22,
   "publie": "2026-11-09",
   "modifie": "2026-11-09",
   "motsCles": ["produit scalaire formule", "produit scalaire coordonnées", "vecteurs orthogonaux", "vecteur normal", "équation cartésienne d'une droite", "équation d'un cercle", "équation d'un plan", "projeté orthogonal"],

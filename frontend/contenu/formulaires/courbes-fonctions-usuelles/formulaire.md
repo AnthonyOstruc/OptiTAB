@@ -10,7 +10,7 @@
   "vignette": "arcsin_arccos",
   "theme": "Analyse",
   "niveaux": ["Lycée", "Supérieur"],
-  "ordre": 8,
+  "ordre": 12,
   "publie": "2026-11-09",
   "modifie": "2026-11-09",
   "motsCles": ["courbes des fonctions usuelles", "fonctions de référence", "courbe arcsin", "courbe arccos", "courbe arctan", "courbe tangente", "fonctions hyperboliques", "fonction partie entière", "ensemble de définition"],
@@ -52,7 +52,7 @@
 | Valeurs prises | $[0\,;+\infty[$ | $\mathbb{R}$ |
 | Parité | paire | impaire |
 | Dérivée | $2x$ | $3x^2$ |
-| Variations | décroissante sur $]-\infty\,;0]$, croissante sur $[0\,;+\infty[$ | croissante sur $\mathbb{R}$ |
+| Variations | décroissante sur $]{-\infty}\,;0]$, croissante sur $[0\,;+\infty[$ | croissante sur $\mathbb{R}$ |
 
 La courbe de $x \mapsto x^2$ est une **parabole**, symétrique par rapport à l’axe des ordonnées ; celle de $x \mapsto x^3$ est symétrique par rapport à l’origine.
 
@@ -66,11 +66,11 @@ La courbe de $x \mapsto x^2$ est une **parabole**, symétrique par rapport à l�
 | Valeurs prises | $\mathbb{R}^*$ | $[0\,;+\infty[$ |
 | Parité | impaire | ni paire ni impaire |
 | Dérivée | $-\dfrac{1}{x^2}$ | $\dfrac{1}{2\sqrt{x}}$ pour $x > 0$ |
-| Variations | décroissante sur $]-\infty\,;0[$ et sur $]0\,;+\infty[$ | croissante |
+| Variations | décroissante sur $]{-\infty}\,;0[$ et sur $]0\,;+\infty[$ | croissante |
 | Asymptotes | les deux axes | aucune |
 
 ::: attention Deux pièges
-- La fonction inverse est décroissante sur **chacun** des intervalles $]-\infty\,;0[$ et $]0\,;+\infty[$, mais pas sur $\mathbb{R}^*$ : $-1 < 1$ et pourtant $\dfrac{1}{-1} < \dfrac{1}{1}$.
+- La fonction inverse est décroissante sur **chacun** des intervalles $]{-\infty}\,;0[$ et $]0\,;+\infty[$, mais pas sur $\mathbb{R}^*$ : $-1 < 1$ et pourtant $\dfrac{1}{-1} < \dfrac{1}{1}$.
 - La racine carrée n’est pas dérivable en $0$ : sa courbe y a une tangente verticale.
 :::
 

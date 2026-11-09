@@ -10,7 +10,7 @@
   "vignette": "exp_ln",
   "theme": "Analyse",
   "niveaux": ["Lycée", "Supérieur"],
-  "ordre": 6,
+  "ordre": 10,
   "publie": "2026-11-09",
   "modifie": "2026-11-09",
   "motsCles": ["propriétés logarithme", "propriétés exponentielle", "logarithme népérien", "ln formules", "limite exponentielle", "croissances comparées", "dérivée ln", "dérivée exponentielle"],

@@ -10,7 +10,7 @@
   "vignette": "aire_integrale",
   "theme": "Analyse",
   "niveaux": ["Lycée", "Supérieur"],
-  "ordre": 10,
+  "ordre": 14,
   "publie": "2026-11-09",
   "modifie": "2026-11-09",
   "motsCles": ["tableau des primitives", "primitives usuelles", "primitive de 1/x", "formules d'intégration", "intégration par parties", "propriétés intégrale", "valeur moyenne", "équation différentielle y'=ay+b"],
@@ -61,7 +61,7 @@ $C$ désigne une constante réelle, que l’on peut ajouter à chaque primitive.
 | $\sin x$ | $-\cos x$ | $\mathbb{R}$ |
 | $\dfrac{1}{\cos^2 x}$ | $\tan x$ | $\left]-\dfrac{\pi}{2}\,;\dfrac{\pi}{2}\right[$ |
 
-Les fonctions $\dfrac{1}{x^2}$, $\dfrac{1}{x^n}$ et $\dfrac{1}{x}$ ont aussi des primitives sur $]-\infty\,;0[$ : les mêmes formules, avec $\ln(-x)$ pour $\dfrac{1}{x}$.
+Les fonctions $\dfrac{1}{x^2}$, $\dfrac{1}{x^n}$ et $\dfrac{1}{x}$ ont aussi des primitives sur $]{-\infty}\,;0[$ : les mêmes formules, avec $\ln(-x)$ pour $\dfrac{1}{x}$.
 
 ::: conseil Vérifier une primitive
 On dérive la primitive trouvée : on doit retrouver exactement la fonction de départ.
@@ -141,7 +141,7 @@ La condition initiale $y(x_0) = y_0$ fixe la valeur de $C$.
 
 | Fonction | Primitive | Sur |
 |---|---|---|
-| $\dfrac{1}{x}$ | $\ln\lvert x \rvert$ | $]-\infty\,;0[$ ou $]0\,;+\infty[$ |
+| $\dfrac{1}{x}$ | $\ln\lvert x \rvert$ | $]{-\infty}\,;0[$ ou $]0\,;+\infty[$ |
 | $\dfrac{1}{1 + x^2}$ | $\arctan x$ | $\mathbb{R}$ |
 | $\dfrac{1}{\sqrt{1 - x^2}}$ | $\arcsin x$ | $]-1\,;1[$ |
 | $\ln x$ | $x\ln x - x$ | $]0\,;+\infty[$ |

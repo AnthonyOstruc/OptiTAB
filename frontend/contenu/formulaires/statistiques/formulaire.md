@@ -10,7 +10,7 @@
   "vignette": "boite_moustaches",
   "theme": "Probabilités et statistiques",
   "niveaux": ["Collège", "Lycée", "Supérieur"],
-  "ordre": 14,
+  "ordre": 21,
   "publie": "2026-11-09",
   "modifie": "2026-11-09",
   "motsCles": ["formules statistiques", "calcul moyenne", "moyenne pondérée", "médiane", "quartiles", "écart type", "variance", "boîte à moustaches", "droite des moindres carrés"],

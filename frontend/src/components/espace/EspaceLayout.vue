@@ -6,7 +6,12 @@
         <img src="@/assets/logos/Logo_bg.png" alt="OptiTAB" width="124" height="39" />
       </router-link>
 
-      <router-link v-if="classe" to="/account" class="es-side__class" title="Changer de classe dans Mon compte">
+      <p v-if="admin" class="es-side__admin">
+        <ShieldCheckIcon aria-hidden="true" />
+        <span>Administration</span>
+      </p>
+
+      <router-link v-if="classe && !admin" to="/account" class="es-side__class" title="Changer de classe dans Mon compte">
         <span class="es-side__class-icon" aria-hidden="true"><AcademicCapIcon /></span>
         <span class="es-side__class-text">
           <span>Ma classe</span>
@@ -15,7 +20,32 @@
         <ChevronUpDownIcon class="es-side__class-chev" aria-hidden="true" />
       </router-link>
 
-      <nav class="es-side__nav">
+      <!-- Administration : tableau de bord, puis les outils par rubrique. -->
+      <nav v-if="admin" class="es-side__nav">
+        <router-link
+          :to="ADMIN_HOME.to"
+          :class="['es-side__item', { 'is-active': isActive(ADMIN_HOME) }]"
+          :aria-current="isActive(ADMIN_HOME) ? 'page' : undefined"
+        >
+          <component :is="isActive(ADMIN_HOME) ? ADMIN_HOME.iconOn : ADMIN_HOME.icon" aria-hidden="true" />
+          <span>{{ ADMIN_HOME.label }}</span>
+        </router-link>
+        <template v-for="section in ADMIN_SECTIONS" :key="section.titre">
+          <p class="es-side__group">{{ section.titre }}</p>
+          <router-link
+            v-for="item in section.items"
+            :key="item.to"
+            :to="item.to"
+            :class="['es-side__item', 'es-side__item--admin', { 'is-active': isActive({ to: item.to, prefix: `${item.to}/` }) }]"
+            :aria-current="isActive({ to: item.to, prefix: `${item.to}/` }) ? 'page' : undefined"
+          >
+            <component :is="item.icon" aria-hidden="true" />
+            <span>{{ item.label }}</span>
+          </router-link>
+        </template>
+      </nav>
+
+      <nav v-else class="es-side__nav">
         <p class="es-side__group">{{ isParent ? 'Suivi' : 'Apprendre' }}</p>
         <router-link
           v-for="item in mainItems"
@@ -29,7 +59,18 @@
         </router-link>
       </nav>
 
-      <div class="es-side__bottom">
+      <div v-if="admin" class="es-side__bottom">
+        <router-link :to="homeLink" class="es-side__item es-side__item--sm">
+          <HomeIcon aria-hidden="true" />
+          <span>Retour à mon espace</span>
+        </router-link>
+        <a href="/" target="_blank" rel="noopener" class="es-side__item es-side__item--sm">
+          <GlobeAltIcon aria-hidden="true" />
+          <span>Voir le site</span>
+        </a>
+      </div>
+
+      <div v-else class="es-side__bottom">
         <!-- Le prof, toujours à portée de main -->
         <div class="es-prof">
           <div class="es-prof__head">
@@ -72,10 +113,15 @@
           <img src="@/assets/logos/Logo_bg.png" alt="OptiTAB" width="102" height="32" />
         </router-link>
         <p v-if="title" class="es-top__title">{{ title }}</p>
-        <EspaceSearch v-if="!isParent" class="es-top__search" />
+        <EspaceSearch v-if="!isParent && !admin" class="es-top__search" />
+        <p v-if="admin && adminTitre" class="es-top__admin">
+          <span>Administration</span>
+          <ChevronRightIcon aria-hidden="true" />
+          <strong>{{ adminTitre }}</strong>
+        </p>
       </div>
       <div class="es-top__right">
-        <router-link v-if="!isParent" :to="{ path: ESPACE_ROUTES.chapitres, query: { recherche: '1' } }" class="es-top__icon-btn" aria-label="Rechercher un chapitre">
+        <router-link v-if="!isParent && !admin" :to="{ path: ESPACE_ROUTES.chapitres, query: { recherche: '1' } }" class="es-top__icon-btn" aria-label="Rechercher un chapitre">
           <MagnifyingGlassIcon aria-hidden="true" />
         </router-link>
         <EspaceNotifications />
@@ -85,7 +131,7 @@
     </header>
 
     <main :class="['es-main', { 'es-main--full': pleineLargeur }]">
-      <div :class="['es-main__inner', { 'es-main__inner--wide': wide }]">
+      <div :class="['es-main__inner', { 'es-main__inner--wide': wide, 'es-main__inner--admin': admin }]">
         <div v-if="$slots.subheader" class="es-subheader"><slot name="subheader" /></div>
         <slot />
       </div>
@@ -115,14 +161,19 @@ import {
   BookOpenIcon,
   CalculatorIcon,
   ChevronLeftIcon,
+  ChevronRightIcon,
   ChevronUpDownIcon,
   ClockIcon,
   CreditCardIcon,
+  GlobeAltIcon,
   HomeIcon,
   MagnifyingGlassIcon,
+  ClipboardDocumentListIcon,
   QuestionMarkCircleIcon,
   ShieldCheckIcon,
-  UserCircleIcon
+  Squares2X2Icon,
+  UserCircleIcon,
+  UserGroupIcon
 } from '@heroicons/vue/24/outline'
 import {
   AcademicCapIcon as AcademicCapSolid,
@@ -132,6 +183,7 @@ import {
   CreditCardIcon as CreditCardSolid,
   HomeIcon as HomeSolid,
   QuestionMarkCircleIcon as QuestionSolid,
+  Squares2X2Icon as Squares2X2Solid,
   UserCircleIcon as UserCircleSolid
 } from '@heroicons/vue/24/solid'
 import EspaceNotifications from './EspaceNotifications.vue'
@@ -141,6 +193,7 @@ import { useUserStore } from '@/stores/user'
 import { useSubscriptionStore } from '@/stores/subscription'
 import { useQuizDisponible } from '@/composables/useQuizDisponible'
 import { ESPACE_ROUTES } from '@/config/espace'
+import { ADMIN_ACCUEIL, ADMIN_SECTIONS, pageAdmin } from '@/config/adminMenu'
 import { vitrineContact } from '@/config/vitrineContent'
 import { chapitreDuLien, prechargerChapitre } from '@/utils/chapitreContenu'
 import '@/styles/espace.css'
@@ -155,7 +208,9 @@ const props = defineProps({
   // Pages de lecture (cours) : colonne plus large pour le sommaire.
   wide: { type: Boolean, default: false },
   // Outils plein écran (calculatrice) : pas de marge latérale sur téléphone.
-  pleineLargeur: { type: Boolean, default: false }
+  pleineLargeur: { type: Boolean, default: false },
+  // Administration : menu des outils d'administration, contenu en pleine largeur.
+  admin: { type: Boolean, default: false }
 })
 
 const route = useRoute()
@@ -200,7 +255,21 @@ const mainItems = computed(() => {
 })
 const ABONNEMENT = computed(() => ({ ...ABONNEMENT_BASE, to: subscriptionStore.hasAccess ? '/subscription' : '/billing' }))
 const accountItems = computed(() => [ABONNEMENT.value, COMPTE, ...(userStore.isAdmin ? [ADMIN] : [])])
+// Administration : entrée « Tableau de bord » et titre de la page en cours.
+const ADMIN_HOME = { label: 'Tableau de bord', short: 'Admin', to: ADMIN_ACCUEIL, icon: Squares2X2Icon, iconOn: Squares2X2Solid, exact: true }
+const adminTitre = computed(() => (props.admin ? pageAdmin(route.path)?.label || 'Tableau de bord' : ''))
+const adminOnglet = (to, label, icon, iconOn = icon) => ({ label, to, icon, iconOn, prefix: `${to}/` })
+
 const tabItems = computed(() => {
+  if (props.admin) {
+    return [
+      ADMIN_HOME,
+      adminOnglet('/admin/cours', 'Cours', BookOpenIcon, BookOpenSolid),
+      adminOnglet('/admin/exercices', 'Exercices', ClipboardDocumentListIcon),
+      adminOnglet('/admin/subscribers', 'Abonnés', UserGroupIcon),
+      { ...ACCUEIL, label: 'Mon espace', short: 'Espace' }
+    ]
+  }
   if (isParent.value) return [ACCUEIL, PROF, ABONNEMENT.value, COMPTE]
   return [ACCUEIL, CHAPITRES, ...(avecQuiz.value ? [QUIZ] : []), HISTORIQUE, PROF]
 })
@@ -400,6 +469,70 @@ html.es-page body {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #98a2b3;
+}
+
+/* ---------- Administration ---------- */
+
+.es-side__admin {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 2px 18px !important;
+  padding: 9px 12px;
+  border-radius: 12px;
+  background: var(--es-navy);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.es-side__admin svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Menu plus compact : une vingtaine d'outils à afficher. */
+.es-side__item.es-side__item--admin {
+  min-height: 36px;
+  font-size: 14px;
+}
+
+.es-side__item.es-side__item--admin svg {
+  width: 19px;
+  height: 19px;
+}
+
+.es-side__item.es-side__item--admin.is-active::before {
+  top: 8px;
+  bottom: 8px;
+}
+
+.es-side__nav .es-side__group:not(:first-child) {
+  margin-top: 16px !important;
+}
+
+.es-top__admin {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 !important;
+  font-size: 14px;
+  color: var(--es-muted, #6b7385);
+}
+
+.es-top__admin svg {
+  width: 14px;
+  height: 14px;
+}
+
+.es-top__admin strong {
+  color: var(--es-ink);
+  font-weight: 700;
+}
+
+.es-main__inner--admin {
+  max-width: 1480px;
 }
 
 .es-side__item {
@@ -637,7 +770,8 @@ html.es-page body {
   }
 
   .es-top__search,
-  .es-top__sep {
+  .es-top__sep,
+  .es-top__admin {
     display: none;
   }
 

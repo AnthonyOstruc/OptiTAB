@@ -1,261 +1,172 @@
 <template>
-  <main class="admin-home">
-    <header class="admin-home__header">
+  <div class="ah">
+    <header class="es-page-head">
       <div>
-        <p class="admin-home__eyebrow">Administration</p>
-        <h1>Tableau de bord admin</h1>
+        <p class="ah__eyebrow">Administration</p>
+        <h1 class="es-h1">Tableau de bord</h1>
+        <p class="es-sub">Tous les outils pour gérer les contenus, le programme et les abonnements.</p>
       </div>
-      <RouterLink to="/blog" class="admin-home__preview">
-        <NewspaperIcon />
-        Voir le blog
-      </RouterLink>
+      <div class="ah__liens">
+        <a href="/ressources-gratuites/" target="_blank" rel="noopener" class="es-btn es-btn--ghost es-btn--sm">
+          <BookOpenIcon aria-hidden="true" />
+          Ressources gratuites
+        </a>
+        <a href="/blog/" target="_blank" rel="noopener" class="es-btn es-btn--ghost es-btn--sm">
+          <NewspaperIcon aria-hidden="true" />
+          Blog
+        </a>
+      </div>
     </header>
 
-    <section
-      v-for="section in sections"
-      :key="section.title"
-      class="admin-section"
-    >
-      <h2>{{ section.title }}</h2>
-      <div class="admin-grid">
-        <RouterLink
-          v-for="item in section.items"
-          :key="item.to"
-          :to="item.to"
-          class="admin-tile"
-        >
-          <span class="admin-tile__icon">
-            <component :is="item.icon" />
+    <section v-for="section in ADMIN_SECTIONS" :key="section.titre" class="ah__section" :aria-labelledby="idSection(section)">
+      <h2 :id="idSection(section)" class="ah__titre">{{ section.titre }}</h2>
+      <div class="ah__grille">
+        <RouterLink v-for="item in section.items" :key="item.to" :to="item.to" class="ah__tuile">
+          <span class="ah__icone" aria-hidden="true"><component :is="item.icon" /></span>
+          <span class="ah__texte">
+            <strong>{{ item.label }}</strong>
+            <span>{{ item.description }}</span>
           </span>
-          <span class="admin-tile__body">
-            <span class="admin-tile__title">{{ item.label }}</span>
-            <span class="admin-tile__description">{{ item.description }}</span>
-          </span>
-          <ChevronRightIcon class="admin-tile__arrow" />
+          <ChevronRightIcon class="ah__fleche" aria-hidden="true" />
         </RouterLink>
       </div>
     </section>
-  </main>
+  </div>
 </template>
 
 <script setup>
-import {
-  AcademicCapIcon,
-  BanknotesIcon,
-  BookOpenIcon,
-  ChatBubbleLeftRightIcon,
-  ClipboardDocumentCheckIcon,
-  ClipboardDocumentListIcon,
-  DocumentTextIcon,
-  EnvelopeIcon,
-  FilmIcon,
-  GlobeAltIcon,
-  NewspaperIcon,
-  QuestionMarkCircleIcon,
-  Squares2X2Icon,
-  TagIcon,
-  UserGroupIcon,
-  ChevronRightIcon,
-} from '@heroicons/vue/24/outline'
+// Accueil de l'administration, dans le style du nouvel espace. La liste des
+// outils vient de config/adminMenu.js (la même que le menu latéral).
+import { BookOpenIcon, ChevronRightIcon, NewspaperIcon } from '@heroicons/vue/24/outline'
+import { ADMIN_SECTIONS } from '@/config/adminMenu'
 
-const sections = [
-  {
-    title: 'Configuration',
-    items: [
-      { label: 'Pays', description: 'Configurer les pays disponibles.', to: '/admin/pays', icon: GlobeAltIcon },
-      { label: 'Niveaux', description: 'Gérer les niveaux scolaires.', to: '/admin/niveaux', icon: AcademicCapIcon },
-    ],
-  },
-  {
-    title: 'Structure pédagogique',
-    items: [
-      { label: 'Matières', description: 'Organiser les matières principales.', to: '/admin/matieres', icon: BookOpenIcon },
-      { label: 'Thèmes', description: 'Classer les thèmes par matière.', to: '/admin/themes', icon: Squares2X2Icon },
-      { label: 'Notions', description: 'Gérer les notions et chapitres.', to: '/admin/notions', icon: TagIcon },
-    ],
-  },
-  {
-    title: 'Contenus',
-    items: [
-      { label: 'Cours', description: 'Modifier les cours classiques.', to: '/admin/cours', icon: BookOpenIcon },
-      { label: 'Exercices', description: 'Gérer les exercices guidés.', to: '/admin/exercices', icon: ClipboardDocumentListIcon },
-      { label: 'Quiz', description: 'Administrer les QCM.', to: '/admin/quiz', icon: QuestionMarkCircleIcon },
-      { label: 'Fiches', description: 'Publier les fiches et tables.', to: '/admin/sheets', icon: DocumentTextIcon },
-      { label: 'Blog', description: 'Créer et valider les articles.', to: '/admin/blog', icon: NewspaperIcon },
-    ],
-  },
-  {
-    title: 'Contenus avancés',
-    items: [
-      { label: 'PDF cours', description: 'Vérifier les exports PDF.', to: '/admin/cours-pdf', icon: DocumentTextIcon },
-      { label: 'Cours+', description: 'Gérer les contenus premium cours.', to: '/admin/cours-plus', icon: BookOpenIcon },
-      { label: 'Exercices+', description: 'Gérer les exercices premium.', to: '/admin/exercices-plus', icon: ClipboardDocumentCheckIcon },
-      { label: 'Quiz+', description: 'Gérer les quiz premium.', to: '/admin/quiz-plus', icon: QuestionMarkCircleIcon },
-      { label: 'Reel Studio', description: 'Créer des reels pédagogiques 9:16.', to: '/admin/reel-studio', icon: FilmIcon },
-      { label: 'Canva', description: 'Créer les fonds pour vidéos courtes.', to: '/admin/reel-background', icon: FilmIcon },
-    ],
-  },
-  {
-    title: 'Communication et paiements',
-    items: [
-      { label: 'Témoignages', description: 'Publier les avis WhatsApp et SMS.', to: '/admin/temoignages', icon: ChatBubbleLeftRightIcon },
-      { label: 'Newsletter', description: 'Piloter les envois newsletter.', to: '/admin/newsletter', icon: EnvelopeIcon },
-      { label: 'Abonnements', description: 'Configurer les offres.', to: '/admin/subscriptions', icon: BanknotesIcon },
-      { label: 'Abonnés', description: 'Suivre les abonnés actifs.', to: '/admin/subscribers', icon: UserGroupIcon },
-      { label: 'Passes', description: 'Gérer les accès temporaires.', to: '/admin/passes', icon: ClipboardDocumentCheckIcon },
-      { label: 'Notation quiz', description: 'Corriger les quiz rendus.', to: '/admin/quiz-submissions', icon: ClipboardDocumentListIcon },
-    ],
-  },
-]
+const idSection = (section) => `ah-${section.titre.toLowerCase().normalize('NFD').replace(/[^a-z]+/g, '-')}`
 </script>
 
 <style scoped>
-.admin-home {
-  width: 100%;
-  padding: 24px 24px 96px;
-  background: #f8fafc;
-  min-height: 100%;
+.ah__eyebrow {
+  margin: 0 0 6px !important;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--es-green-700);
 }
 
-.admin-home__header {
+.ah__liens {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 28px;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
-.admin-home__eyebrow {
-  margin: 0 0 4px;
-  color: #2563eb;
+.ah__liens svg {
+  width: 17px;
+  height: 17px;
+}
+
+.ah__section + .ah__section {
+  margin-top: 32px;
+}
+
+.ah__titre {
+  margin: 0 0 12px !important;
   font-size: 13px;
   font-weight: 700;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
+  color: var(--es-muted);
 }
 
-.admin-home h1 {
-  margin: 0;
-  color: #0f172a;
-  font-size: 30px;
-  line-height: 1.2;
-}
-
-.admin-home__preview {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 14px;
-  border-radius: 8px;
-  background: #2563eb;
-  color: #fff;
-  text-decoration: none;
-  font-weight: 700;
-}
-
-.admin-home__preview svg {
-  width: 20px;
-  height: 20px;
-}
-
-.admin-section {
-  margin-bottom: 28px;
-}
-
-.admin-section:last-child {
-  margin-bottom: 160px;
-}
-
-.admin-section h2 {
-  margin: 0 0 12px;
-  color: #334155;
-  font-size: 15px;
-  font-weight: 800;
-  text-transform: uppercase;
-}
-
-.admin-grid {
+.ah__grille {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 12px;
 }
 
-.admin-tile {
-  display: grid;
-  grid-template-columns: 42px 1fr 18px;
+.ah__tuile {
+  display: flex;
   align-items: center;
-  gap: 12px;
-  min-height: 86px;
-  padding: 14px;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  background: #fff;
-  color: inherit;
+  gap: 14px;
+  min-height: 84px;
+  padding: 16px;
+  border: 1px solid var(--es-line);
+  border-radius: var(--es-radius);
+  background: var(--es-card);
+  box-shadow: var(--es-shadow);
   text-decoration: none;
-  transition: border-color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
 }
 
-.admin-tile:hover {
-  border-color: #93c5fd;
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+.ah__tuile:hover {
+  border-color: var(--es-navy-100);
+  box-shadow: var(--es-shadow-lg);
   transform: translateY(-1px);
 }
 
-.admin-tile__icon {
+.ah__tuile:focus-visible {
+  outline: 3px solid rgba(27, 60, 142, 0.35);
+  outline-offset: 2px;
+}
+
+.ah__icone {
   display: inline-flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 42px;
-  border-radius: 8px;
-  background: #eff6ff;
-  color: #2563eb;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--es-navy-50);
+  color: var(--es-navy);
 }
 
-.admin-tile__icon svg,
-.admin-tile__arrow {
-  width: 21px;
-  height: 21px;
+.ah__icone svg {
+  width: 22px;
+  height: 22px;
 }
 
-.admin-tile__body {
+.ah__texte {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 3px;
   min-width: 0;
 }
 
-.admin-tile__title {
-  display: block;
-  margin-bottom: 4px;
-  color: #0f172a;
-  font-size: 16px;
-  font-weight: 800;
+.ah__texte strong {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--es-ink);
 }
 
-.admin-tile__description {
-  display: block;
-  color: #64748b;
+.ah__texte span {
   font-size: 13px;
-  line-height: 1.35;
+  line-height: 1.4;
+  color: var(--es-muted);
 }
 
-.admin-tile__arrow {
-  color: #94a3b8;
+.ah__fleche {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: #a3abbd;
+  transition: transform 0.15s ease, color 0.15s ease;
 }
 
-@media (max-width: 768px) {
-  .admin-home {
-    padding: 18px 14px 84px;
-  }
+.ah__tuile:hover .ah__fleche {
+  color: var(--es-navy);
+  transform: translateX(2px);
+}
 
-  .admin-home__header {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .admin-home h1 {
-    font-size: 24px;
-  }
-
-  .admin-grid {
+@media (max-width: 640px) {
+  .ah__grille {
     grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .ah__tuile {
+    min-height: 0;
+    padding: 14px;
   }
 }
 </style>

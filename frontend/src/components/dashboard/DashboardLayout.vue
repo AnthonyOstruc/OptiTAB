@@ -1,8 +1,9 @@
 <template>
-  <!-- Administration : ancienne coque, inchangée. -->
-  <DashboardLayoutClassic v-if="classique">
+  <!-- Administration : nouvel espace, avec le menu des outils d'administration
+       (depuis le 2026-11-10 ; l'ancienne coque reste dans DashboardLayoutClassic.vue). -->
+  <EspaceLayout v-if="administration" admin :title="pageAdm.titre" :back="pageAdm.retour">
     <slot />
-  </DashboardLayoutClassic>
+  </EspaceLayout>
 
   <!-- Visiteur non connecté (outil de calcul) : en-tête et pied de page de la vitrine. -->
   <VitrineLayout v-else-if="!userStore.isAuthenticated">
@@ -23,12 +24,13 @@
 
 <script setup>
 // Toutes les pages connectées passent par ce composant. Depuis le 2026-11-03,
-// il affiche le nouvel espace (EspaceLayout) ; l'ancienne coque est conservée
-// dans DashboardLayoutClassic.vue pour l'administration (et un retour arrière).
+// il affiche le nouvel espace (EspaceLayout) ; depuis le 2026-11-10,
+// l'administration aussi. L'ancienne coque est conservée dans
+// DashboardLayoutClassic.vue (retour arrière : la réutiliser pour /admin).
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-import DashboardLayoutClassic from './DashboardLayoutClassic.vue'
 import EspaceLayout from '@/components/espace/EspaceLayout.vue'
+import { ADMIN_ACCUEIL, pageAdmin } from '@/config/adminMenu'
 import VitrineLayout from '@/components/vitrine/VitrineLayout.vue'
 import CalculatorTabs from '@/components/calculator/CalculatorTabs.vue'
 import { useUserStore } from '@/stores/user'
@@ -37,7 +39,15 @@ import { ESPACE_ROUTES } from '@/config/espace'
 const route = useRoute()
 const userStore = useUserStore()
 
-const classique = computed(() => String(route.path || '').startsWith('/admin'))
+const administration = computed(() => String(route.path || '').startsWith('/admin'))
+
+// Administration : titre de la page (téléphone) et retour au tableau de bord.
+const pageAdm = computed(() => {
+  const p = pageAdmin(route.path)
+  return p
+    ? { titre: p.label, retour: { to: ADMIN_ACCUEIL, label: 'Retour au tableau de bord' } }
+    : { titre: 'Administration', retour: null }
+})
 
 const ACCUEIL = { to: ESPACE_ROUTES.accueil, label: 'Retour à l’accueil' }
 const QUIZ = { to: '/quiz', label: 'Retour aux quiz' }

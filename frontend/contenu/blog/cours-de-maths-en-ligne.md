@@ -32,7 +32,7 @@
     "titre": "Cours de maths",
     "accent": "en ligne",
     "sous": "La méthode pour progresser vraiment, du collège au lycée.",
-    "points": [["Comprendre", "le cours, crayon en main"], ["Retenir", "l’essentiel avec la fiche"], ["S’entraîner", "exercices corrigés pas à pas"], ["Revoir", "ce qui coince, jusqu’à maîtriser"]]
+    "visuel": {"icone": "ordinateur", "chiffre": "4 étapes", "legende": "pour progresser vraiment"}
   }
 }
 ---

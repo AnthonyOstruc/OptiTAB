@@ -29,7 +29,7 @@
     "titre": "Progresser",
     "accent": "en maths",
     "sous": "10 conseils concrets qui marchent vraiment.",
-    "points": [["Combler", "les lacunes des années passées"], ["Chercher", "avant de lire la correction"], ["Analyser", "chacune de ses erreurs"], ["S’entraîner", "un peu, mais chaque jour"]]
+    "visuel": {"icone": "progression", "chiffre": "10 conseils", "legende": "qui marchent vraiment"}
   }
 }
 ---

@@ -30,7 +30,7 @@
     "titre": "Épreuve anticipée",
     "accent": "de maths",
     "sous": "Format, programme et méthode pour la réussir en Première.",
-    "points": [["2 heures", "sans calculatrice"], ["Automatismes", "un QCM sur 6 points"], ["Exercices", "deux ou trois, sur 14 points"], ["Coefficient 2", "pour le bac"]]
+    "visuel": {"icone": "horloge", "chiffre": "2 h", "legende": "sans calculatrice"}
   }
 }
 ---

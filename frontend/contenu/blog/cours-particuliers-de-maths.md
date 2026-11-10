@@ -30,7 +30,7 @@
     "titre": "Cours particuliers",
     "accent": "de maths",
     "sous": "Prix, bénéfices et conseils pour bien choisir son professeur.",
-    "points": [["Un premier échange", "gratuit et sans engagement"], ["Un programme", "adapté à l’élève et à ses objectifs"], ["Des séances en visio", "exercices en direct"], ["Un suivi", "entre les séances, 7 j/7"]]
+    "visuel": {"icone": "visio", "chiffre": "35 €/h", "legende": "au collège, en visio"}
   }
 }
 ---

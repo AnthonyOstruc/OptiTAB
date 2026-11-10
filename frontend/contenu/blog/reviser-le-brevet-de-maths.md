@@ -30,7 +30,7 @@
     "titre": "Brevet",
     "accent": "de maths",
     "sous": "La méthode et le planning pour réviser efficacement.",
-    "points": [["Automatismes", "20 minutes, sans calculatrice"], ["Raisonnement", "problèmes à justifier"], ["8 semaines", "un planning clair"], ["Sujets complets", "en conditions réelles"]]
+    "visuel": {"icone": "calendrier", "chiffre": "8 semaines", "legende": "pour tout réviser"}
   }
 }
 ---

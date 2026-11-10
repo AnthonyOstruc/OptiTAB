@@ -7,13 +7,9 @@ const __dirname = path.dirname(__filename)
 
 const STATIC_INDEXABLE_PATHS = new Set([
   '/',
-  '/plateforme-maths',
-  '/exercices-corriges',
-  '/start',
   // '/avis',  ← TEMPORAIRE : page reservee a l'admin, donc en noindex.
   //            La remettre ici le jour de l'ouverture au public, sinon le
   //            plan du site declarerait une page que Google ne peut pas lire.
-  '/bases-methode',
   '/tarifs',
   '/cours-particuliers',
   '/about',

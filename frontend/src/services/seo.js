@@ -2,6 +2,7 @@ import { vitrineFaq } from '@/config/vitrineContent.js'
 import { FREE_RESOURCES_FAQ_BY_ROUTE } from '@/config/freeResourcesAuthority'
 import { getManualSeoOverrideByPath } from '@/config/manualSeoOverrides'
 import { FAQ as BIO_LANDING_FAQ } from '@/config/bioLandingContent'
+import { cheminCanonique, urlCanonique } from '@/config/pagesStatiques'
 
 const DEFAULT_SITE_NAME = 'OptiTAB'
 const DEFAULT_TITLE = 'Plateforme de maths & cours particuliers en ligne'
@@ -16,7 +17,8 @@ const DEFAULT_KEYWORDS = [
   'bac maths',
   'prepa maths'
 ].join(', ')
-const DEFAULT_IMAGE_PATH = '/Logo_bg.png'
+// Image de partage 1200 × 630 (scripts/vitrine/image-partage.mjs).
+const DEFAULT_IMAGE_PATH = '/og/optitab.png'
 const DEFAULT_ROBOTS_INDEX =
   'index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1'
 const DEFAULT_ROBOTS_NOINDEX = 'noindex,follow'
@@ -474,7 +476,10 @@ export function setPageSeo({
   const normalizedCanonicalUrl = normalizeCanonicalUrl(canonicalUrl)
 
   const path = canonicalizePath(canonicalPath || normalizedCanonicalUrl || '/')
-  const finalCanonical = removeTrailingSlash(String(normalizedCanonicalUrl || `${getSiteBaseUrl()}${path}`).trim()) || `${getSiteBaseUrl()}${path}`
+  // Pages livrées en HTML complet (config/pagesStatiques.js) : adresse avec « / » final.
+  const finalCanonical = urlCanonique(
+    removeTrailingSlash(String(normalizedCanonicalUrl || `${getSiteBaseUrl()}${path}`).trim()) || `${getSiteBaseUrl()}${path}`
+  )
 
   const finalImage = toAbsoluteUrl(image || DEFAULT_IMAGE_PATH)
   const finalOgType = String(ogType || 'website').trim() || 'website'
@@ -737,7 +742,17 @@ const NOINDEX_ROUTE_NAMES = new Set([
   'ChildOverview',
   // Pages de versement : lien envoye au cas par cas, aucun interet a l'indexer.
   'LessonPayment',
-  'LessonPaymentThanks'
+  'LessonPaymentThanks',
+  // Pages des publicités Google Ads : quasi-doublons de l'accueil, gardées en
+  // ligne pour les annonces mais hors de l'index (décision du 2026-11-10).
+  'StartLanding',
+  'GoogleAdsLanding',
+  'BasesMethodeLanding',
+  'ExercicesCorrigesLanding',
+  // « Lien en bio » des réseaux sociaux, aide de l'outil de calcul, remerciement.
+  'BioLanding',
+  'HelpGraphe',
+  'DiagnosticMerci'
 ])
 
 export function applyRouteSeo(route) {
@@ -772,7 +787,7 @@ export function applyRouteSeo(route) {
             .replace(/^OptiTAB\s*-\s*/i, '')
             .trim()
           if (label) {
-            breadcrumbs.push({ name: label, item: inferredCanonicalPath })
+            breadcrumbs.push({ name: label, item: cheminCanonique(inferredCanonicalPath) })
           }
         }
       }
@@ -783,7 +798,7 @@ export function applyRouteSeo(route) {
     const breadcrumbGraph = buildBreadcrumbJsonLd(breadcrumbs)
     const faqGraph = buildFaqJsonLd(faqItems)
     const extraGraph = Array.isArray(resolvedSeo.jsonLdGraph) ? resolvedSeo.jsonLdGraph : []
-    const finalCanonical = toAbsoluteUrl(inferredCanonicalPath || '/')
+    const finalCanonical = urlCanonique(toAbsoluteUrl(inferredCanonicalPath || '/'))
     const websiteId = `${getSiteBaseUrl()}/#website`
     const webPageId = `${finalCanonical}#webpage`
     const organizationId = `${getSiteBaseUrl()}/#organization`

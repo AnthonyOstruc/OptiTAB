@@ -10,7 +10,7 @@
   "vignette": "centree_reduite",
   "theme": "Probabilités et statistiques",
   "niveaux": ["Lycée", "Supérieur"],
-  "ordre": 21,
+  "ordre": 23,
   "publie": "2026-11-09",
   "modifie": "2026-11-09",
   "motsCles": ["lois de probabilité", "loi binomiale", "loi de Poisson", "loi géométrique", "loi normale", "loi exponentielle", "intervalle de confiance", "intervalle de fluctuation", "espérance variance loi"],

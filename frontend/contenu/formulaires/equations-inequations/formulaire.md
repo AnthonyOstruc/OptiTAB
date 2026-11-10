@@ -10,7 +10,7 @@
   "vignette": "intervalles",
   "theme": "Algèbre",
   "niveaux": ["Collège", "Lycée"],
-  "ordre": 6,
+  "ordre": 7,
   "publie": "2026-11-09",
   "modifie": "2026-11-09",
   "motsCles": ["résoudre une équation", "résoudre une inéquation", "équation produit nul", "équation du premier degré", "inéquation changement de sens", "équation quotient", "système d'équations", "intervalles solution"],

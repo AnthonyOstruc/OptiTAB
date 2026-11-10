@@ -10,7 +10,7 @@
   "vignette": "carre_identite",
   "theme": "Calcul",
   "niveaux": ["Collège", "Lycée", "Supérieur"],
-  "ordre": 4,
+  "ordre": 5,
   "publie": "2026-11-09",
   "modifie": "2026-11-09",
   "motsCles": ["identités remarquables", "formules identités remarquables", "règles des puissances", "propriétés des puissances", "racine carrée propriétés", "développer factoriser", "calcul fractions", "binôme de Newton"],

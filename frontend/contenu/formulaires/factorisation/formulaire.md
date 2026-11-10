@@ -10,7 +10,7 @@
   "vignette": "facteur_commun",
   "theme": "Algèbre",
   "niveaux": ["Collège", "Lycée"],
-  "ordre": 5,
+  "ordre": 6,
   "publie": "2026-11-09",
   "modifie": "2026-11-09",
   "motsCles": ["factorisation", "factoriser une expression", "comment factoriser", "facteur commun", "factoriser avec une identité remarquable", "factoriser a²−b²", "factoriser un trinôme", "factorisation formule"],

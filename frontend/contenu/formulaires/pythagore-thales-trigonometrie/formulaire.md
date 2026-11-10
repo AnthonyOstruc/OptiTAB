@@ -10,7 +10,7 @@
   "vignette": "pythagore_carres",
   "theme": "Géométrie",
   "niveaux": ["Collège"],
-  "ordre": 2,
+  "ordre": 3,
   "publie": "2026-11-09",
   "modifie": "2026-11-09",
   "motsCles": ["théorème de Pythagore", "formule de Pythagore", "réciproque de Pythagore", "théorème de Thalès", "formule de Thalès", "SOH CAH TOA", "cosinus sinus tangente", "trigonométrie triangle rectangle"],

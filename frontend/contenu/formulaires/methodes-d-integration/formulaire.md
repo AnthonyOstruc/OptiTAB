@@ -10,7 +10,7 @@
   "vignette": "quart_disque",
   "theme": "Analyse",
   "niveaux": ["Lycée", "Supérieur"],
-  "ordre": 17,
+  "ordre": 19,
   "publie": "2026-11-09",
   "modifie": "2026-11-09",
   "motsCles": ["intégration par parties", "formule intégration par parties", "IPP", "changement de variable intégrale", "calcul d'intégrale", "méthodes d'intégration", "intégrale de x e^x", "sommes de Riemann"],

@@ -10,7 +10,7 @@
   "vignette": "partage_carres",
   "theme": "Arithmétique",
   "niveaux": ["Collège", "Lycée"],
-  "ordre": 3,
+  "ordre": 4,
   "publie": "2026-11-09",
   "modifie": "2026-11-09",
   "motsCles": ["PGCD", "PPCM", "calculer le PGCD", "calculer le PPCM", "algorithme d'Euclide", "PGCD et PPCM exemple", "plus grand commun diviseur", "plus petit commun multiple"],

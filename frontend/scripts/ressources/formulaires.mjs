@@ -189,7 +189,14 @@ export function rendreFormulaire(f) {
       const premieres = [...interieur.matchAll(/<tr><td\b[^>]*>((?:(?!<\/td>)[\s\S])*)<\/td>/g)].map((m) => m[1].replace(/\$[^$]*\$/g, ''))
       const libelles = premieres.length && premieres.every((t) => /[a-zé]{3,}/i.test(t))
       if (colonnes >= 6) return `<table class="otm-table fm-grille-n${libelles ? ' fm-libelles' : ''}">${interieur}</table>`
-      if (!libelles) return tout
+      if (!libelles) {
+        // Deux colonnes « symbole | explication en phrases » (alphabet grec…) :
+        // la colonne de texte se lit mieux alignée à gauche.
+        const dernieres = [...interieur.matchAll(/<td\b[^>]*>((?:(?!<\/td>)[\s\S])*)<\/td><\/tr>/g)]
+          .map((m) => m[1].replace(/\$[^$]*\$/g, '').replace(/<[^>]+>/g, '').trim())
+        const long = dernieres.length && dernieres.reduce((n, t) => n + t.length, 0) / dernieres.length > 40
+        return colonnes === 2 && long ? `<table class="otm-table fm-texte">${interieur}</table>` : tout
+      }
       return `<table class="otm-table ${colonnes === 2 ? 'fm-t2' : 'fm-libelles'}">${interieur}</table>`
     })
 

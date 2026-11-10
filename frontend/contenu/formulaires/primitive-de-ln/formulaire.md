@@ -10,7 +10,7 @@
   "vignette": "aire_ln",
   "theme": "Analyse",
   "niveaux": ["Lycée", "Supérieur"],
-  "ordre": 16,
+  "ordre": 18,
   "publie": "2026-11-09",
   "modifie": "2026-11-09",
   "motsCles": ["primitive de ln x", "primitive de ln", "primitive logarithme", "intégrale de ln x", "primitive de ln(x)/x", "primitive de x ln x", "primitive de ln(2x+1)", "intégration par parties ln"],

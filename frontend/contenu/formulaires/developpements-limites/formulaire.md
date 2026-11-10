@@ -10,7 +10,7 @@
   "vignette": "dl_exp",
   "theme": "Analyse",
   "niveaux": ["Supérieur"],
-  "ordre": 26,
+  "ordre": 28,
   "publie": "2026-11-09",
   "modifie": "2026-11-09",
   "motsCles": ["développements limités usuels", "DL usuels", "développement limité en 0", "formule de Taylor-Young", "DL exponentielle", "DL ln(1+x)", "DL sinus cosinus", "équivalents usuels"],

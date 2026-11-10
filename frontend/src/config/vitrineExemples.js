@@ -1,4 +1,7 @@
-// Exemples de corrections qui défilent en haut de l'accueil (un toutes les 5 s).
+// Exemples de corrections qui défilent en haut de l'accueil (un toutes les 2 s).
+// La carte n'affiche que l'énoncé, la méthode, l'étape clé (celle qui a un
+// schéma, sinon la dernière) et le résultat ; les autres étapes restent ici
+// pour le texte lu par les lecteurs d'écran (champ « alt »).
 //
 // Chaque exemple suit la présentation de la plateforme : énoncé, méthode, étapes,
 // résultat. Les formules sont écrites en LaTeX et PRÉ-RENDUES par KaTeX :

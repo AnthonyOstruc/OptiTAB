@@ -40,7 +40,6 @@
         >
           <div class="mk-meta">
             <span class="mk-chip mk-chip--navy">{{ ex.niveau }}</span>
-            <span class="mk-chip mk-chip--extra">{{ ex.type }}</span>
           </div>
 
           <p class="mk-statement"><MathText :items="ex.enonce" /></p>
@@ -50,8 +49,10 @@
             <span class="mk-method__text">{{ ex.methode.titre }}&nbsp;: <MathText :items="ex.methode.formule" /></span>
           </div>
 
+          <!-- Une seule étape affichée, l'étape clé (celle qui a un schéma, sinon
+               la dernière) : la carte se lit d'un coup d'œil pendant ses 2 s. -->
           <ol class="mk-steps">
-            <li v-for="(etape, n) in ex.etapes" :key="n" class="mk-step">
+            <li v-for="{ etape, n } in [etapeCle(ex)]" :key="n" class="mk-step">
               <p class="mk-step__head"><span class="mk-step__num">Étape {{ n + 1 }}</span>{{ etape.titre }}</p>
 
               <div v-if="etape.lignes" class="mk-step__body">
@@ -163,7 +164,7 @@
       </Transition>
     </div>
 
-    <!-- Navigation : une barre par exemple ; celle en cours se remplit en 5 s,
+    <!-- Navigation : une barre par exemple ; celle en cours se remplit en 2 s,
          et la fin de son animation fait passer à l'exemple suivant. -->
     <div class="mk-nav">
       <button
@@ -204,6 +205,14 @@ import M from '@/config/vitrineMath.js'
 
 const exemples = vitrineExemples
 const total = exemples.length
+
+// Étape montrée sur la carte : celle qui porte un schéma (tableau, figure,
+// arbre), sinon la dernière étape, qui contient le calcul principal.
+const etapeCle = (ex) => {
+  const n = ex.etapes.findIndex((e) => e.visuel)
+  const i = n >= 0 ? n : ex.etapes.length - 1
+  return { etape: ex.etapes[i], n: i }
+}
 
 const escapeHtml = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c])
 
@@ -366,14 +375,14 @@ onBeforeUnmount(() => {
   opacity: 0;
   visibility: hidden;
   transform: translateY(8px);
-  transition: opacity 0.45s ease, transform 0.45s ease, visibility 0s linear 0.45s;
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0.3s;
 }
 
 .mk-slide.is-active {
   opacity: 1;
   visibility: visible;
   transform: none;
-  transition-delay: 0.12s, 0.12s, 0s;
+  transition-delay: 0.08s, 0.08s, 0s;
 }
 
 .mk-slide p {
@@ -970,7 +979,7 @@ onBeforeUnmount(() => {
 }
 
 .mk-nav__fill.is-running {
-  animation: mk-fill 5s linear forwards;
+  animation: mk-fill 2s linear forwards;
 }
 
 @keyframes mk-fill {

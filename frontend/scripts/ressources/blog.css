@@ -243,6 +243,65 @@
   border-bottom: 0;
 }
 
+/* Téléphone : chaque ligne devient une fiche, chaque valeur précédée du
+   titre de sa colonne (attribut data-label posé par blog.mjs). */
+@media (max-width: 640px) {
+  .bl-table {
+    overflow: visible;
+  }
+
+  .bl-table table {
+    min-width: 0;
+  }
+
+  .bl-table thead {
+    display: none;
+  }
+
+  .bl-table table,
+  .bl-table tbody,
+  .bl-table tr,
+  .bl-table th,
+  .bl-table td {
+    display: block;
+  }
+
+  .bl-table tbody tr {
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--rg-line);
+  }
+
+  .bl-table tbody tr:last-child {
+    border-bottom: 0;
+  }
+
+  .bl-table tbody th,
+  .bl-table tbody td {
+    padding: 0;
+    border-bottom: 0;
+  }
+
+  .bl-table tbody th {
+    margin-bottom: 8px;
+    font-size: 16px;
+  }
+
+  .bl-table tbody td + td {
+    margin-top: 8px;
+  }
+
+  .bl-table tbody td::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 2px;
+    color: var(--rg-green-700);
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+}
+
 /* ---------- Schéma de la méthode ---------- */
 
 .bl-cycle {
@@ -871,8 +930,18 @@
   height: auto;
 }
 
+/* Tablette et téléphone : l'article à la une passe sur une colonne, image en
+   haut (cette règle doit rester après la grille à deux colonnes ci-dessus). */
 @media (max-width: 960px) {
+  .bl-card--une {
+    grid-template-columns: 1fr;
+  }
+
   .bl-card--une .bl-card__img {
     aspect-ratio: 1200 / 630;
+  }
+
+  .bl-card--une .bl-card__img img {
+    height: 100%;
   }
 }

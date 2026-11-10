@@ -68,6 +68,17 @@ function lireArticle(fichier) {
   })
   // Liens sortants : nouvel onglet, sans transmettre de droits.
   html = html.replace(/<a href="(https?:\/\/(?!www\.optitab\.net)[^"]+)"/g, '<a href="$1" target="_blank" rel="noopener nofollow"')
+  // Tableaux comparatifs : chaque cellule reçoit le titre de sa colonne
+  // (data-label), affiché devant la valeur quand le tableau passe en fiches
+  // empilées sur téléphone (voir .bl-table dans blog.css).
+  html = html.replace(/<div class="bl-table"[\s\S]*?<\/table>/g, (bloc) => {
+    const titres = [...((bloc.match(/<thead>([\s\S]*?)<\/thead>/) || [])[1] || '').matchAll(/<th\b[^>]*>([\s\S]*?)<\/th>/g)]
+      .map((m) => sansBalises(m[1]).replace(/"/g, '&quot;'))
+    return bloc.replace(/<tr>([\s\S]*?)<\/tr>/g, (ligne, cellules) => {
+      let k = 0
+      return `<tr>${cellules.replace(/<(th scope="row"|td)>/g, (o, b) => `<${b} data-label="${titres[k++] || ''}">`)}</tr>`
+    })
+  })
 
   const mots = sansBalises(html).split(' ').filter(Boolean).length
   return {

@@ -42,6 +42,11 @@
   color: #9d2a64;
 }
 
+.fm-niveau--maternelle {
+  background: #f5effb;
+  color: #6c3fa3;
+}
+
 .fm-legende {
   display: flex;
   flex-wrap: wrap;
@@ -291,6 +296,98 @@
   font-size: 22px;
 }
 
+/* ---------- Maths en maternelle ---------- */
+
+/* Liste : un titre par section (grande, moyenne, petite), son âge en pastille. */
+.fm-section__titre {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  margin: 0 0 18px;
+  color: var(--rg-navy-900);
+  font-size: 22px;
+}
+
+.fm-section__titre span {
+  padding: 3px 11px;
+  border-radius: 999px;
+  background: #f5effb;
+  color: #6c3fa3;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.fm-hub .fm-section .fm-grille {
+  margin-bottom: 0;
+}
+
+.fm-section + .fm-section {
+  margin-top: 40px;
+}
+
+/* Section d'une seule page : la carte s'étale (aperçu à gauche, titre à droite). */
+.fm-section .fm-grille:has(> .fm-card:only-child) {
+  grid-template-columns: minmax(0, 760px);
+}
+
+.fm-section .fm-card:only-child {
+  flex-direction: row;
+  align-items: center;
+}
+
+.fm-section .fm-card:only-child .fm-card__visuel {
+  flex: 0 0 42%;
+  border-right: 1px solid var(--rg-line);
+  border-bottom: 0;
+}
+
+.fm-section .fm-card:only-child .fm-card__corps {
+  padding: 24px 28px;
+}
+
+.fm-section .fm-card:only-child .fm-card__titre {
+  font-size: 20px;
+}
+
+.fm-section .fm-card:only-child .fm-card__resume {
+  margin-top: 8px;
+  font-size: 14.5px;
+}
+
+.fm-bientot {
+  margin: 22px 0 48px;
+  color: var(--rg-muted);
+  font-size: 14.5px;
+}
+
+/* Page : encadrés titrés par leur seul titre (« La bonne réponse »,
+   « Erreur fréquente »…), dans la couleur de l'encadré. */
+.fm-doc--maternelle .otm.otm .otm-box-label {
+  display: none;
+}
+
+.fm-doc--maternelle .otm.otm .otm-box-title {
+  color: var(--box-accent);
+  font-weight: 700;
+}
+
+/* Illustrations : à taille de dessin d'enfant, la réponse un peu plus petite,
+   posée comme une fiche sur le fond vert de « La bonne réponse ». */
+.fm-doc.fm-doc--maternelle .fm-sci .course-figure img {
+  max-width: min(100%, 540px) !important;
+}
+
+.fm-doc--maternelle .fm-sci .otm-box--resultat .course-figure {
+  margin: 0.9em 0 0.35em !important;
+}
+
+.fm-doc--maternelle .fm-sci .otm-box--resultat .course-figure img {
+  max-width: min(100%, 440px) !important;
+  border-radius: 10px;
+  box-shadow: 0 0 0 1px rgba(59, 133, 68, 0.2);
+}
+
 /* ---------- Téléphone ---------- */
 
 @media (max-width: 640px) {
@@ -399,6 +496,38 @@
     padding: 2px 8px;
     font-size: 10.5px;
   }
+
+  /* Carte seule d'une section : aperçu en haut, sur toute la largeur. */
+  .fm-section .fm-card:only-child {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .fm-section .fm-card:only-child .fm-card__visuel {
+    flex: none;
+    width: auto;
+    aspect-ratio: 16 / 10;
+    border-right: 0;
+    border-bottom: 1px solid var(--rg-line);
+  }
+
+  .fm-section .fm-card:only-child .fm-card__visuel img {
+    inset: 14px;
+    width: calc(100% - 28px);
+    height: calc(100% - 28px);
+  }
+
+  .fm-section .fm-card:only-child .fm-card__corps {
+    padding: 14px 16px 16px;
+  }
+
+  .fm-section .fm-card:only-child .fm-card__titre {
+    font-size: 17px;
+  }
+
+  .fm-section__titre {
+    font-size: 20px;
+  }
 }
 
 /* ---------- Impression : le formulaire seul ---------- */
@@ -423,5 +552,28 @@
 
   .fm-sci .otm.otm table.otm-table tbody tr:nth-child(even) td {
     background: none;
+  }
+
+  /* Maternelle : « Imprimer les activités » donne la fiche de l'enfant, une
+     activité par page (titre, consigne, dessin), sans les réponses ni les
+     textes pour les parents, qui restent à l'écran. */
+  .fm-doc--maternelle .otm.otm > :not(h2[id^="activite"], h2[id^="activite"] ~ *),
+  .fm-doc--maternelle .otm.otm > h2[id^="jeux"],
+  .fm-doc--maternelle .otm.otm > h2[id^="jeux"] ~ *,
+  .fm-doc--maternelle .otm.otm > .otm-box {
+    display: none !important;
+  }
+
+  .fm-doc--maternelle .otm.otm > h2[id^="activite"] ~ h2[id^="activite"] {
+    break-before: page;
+  }
+
+  /* La première activité partage sa page avec le titre : dessin un peu plus petit. */
+  .fm-doc.fm-doc--maternelle .fm-sci .course-figure img {
+    max-width: 13cm !important;
+  }
+
+  .fm-doc.fm-doc--maternelle .fm-sci .otm.otm > h2[id^="activite"] ~ h2[id^="activite"] ~ .otm-figure img {
+    max-width: 16.5cm !important;
   }
 }

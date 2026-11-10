@@ -4,7 +4,10 @@
 //   - formulaires (contenu/formulaires/) : les formules à connaître par thème
 //     (trigonométrie, dérivées, développements limités, aires…) ;
 //   - tables (contenu/tables/) : les tableaux de référence à consulter ou
-//     imprimer (multiplication, conversions, chiffres romains, loi normale…).
+//     imprimer (multiplication, conversions, chiffres romains, loi normale…) ;
+//   - maternelle (contenu/maternelle/) : une page par thème et par section,
+//     activités illustrées du cahier OptiTAB avec leur réponse, conseils aux
+//     parents et jeux (champs propres : section, activites).
 //
 // Chaque page est un dossier <rubrique>/<slug>/ :
 //   formulaire.md        bloc d'informations en JSON entre « --- », puis le
@@ -62,6 +65,39 @@ export const RUBRIQUES = {
     lies: 'Revoir le cours',
     article: 'La table',
     lieu: 'table'
+  },
+  // Maths en maternelle : une page par thème et par section (activités du
+  // cahier OptiTAB, figures avec leur réponse, conseils aux parents, jeux).
+  maternelle: {
+    dossier: 'maternelle',
+    racine: `${RACINE}maternelle/`,
+    court: 'Maternelle',
+    titre: 'Maths en maternelle',
+    kicker: 'Maths en maternelle',
+    lead: 'Des fiches de maths de maternelle gratuites, à faire à la maison ou à imprimer : activités illustrées de la petite à la grande section avec la bonne réponse, conseils pour les parents et jeux simples, conformes au programme de l’école maternelle.',
+    accroche: 'Activités illustrées à faire avec votre enfant, avec la bonne réponse et des conseils.',
+    titreSeo: 'Maths en maternelle : fiches et activités gratuites à imprimer',
+    description: 'Fiches de maths de maternelle gratuites à imprimer : activités illustrées avec la bonne réponse, conseils aux parents et jeux, conformes au programme.',
+    typeRessource: ['Activité', 'Fiche à imprimer'],
+    autres: 'Les autres activités de maternelle',
+    imprimer: 'Imprimer les activités',
+    lies: 'Et ensuite, au CP',
+    article: 'En maternelle',
+    lieu: 'maternelle',
+    // Particularités de la rubrique : pas de légende des niveaux (toute la page
+    // est d'une seule section), « illustrations » plutôt que « schémas », pages
+    // de la liste groupées par section, appel vers les maths du CP (pas d'offre
+    // d'abonnement ni de cours particuliers en maternelle).
+    legende: false,
+    libelleTexte: 'Fiche de maths de maternelle gratuite',
+    motFigure: ['illustration', 'illustrations'],
+    sections: [
+      ['petite-section', 'Petite section', 'avant 4 ans'],
+      ['moyenne-section', 'Moyenne section', 'à partir de 4 ans'],
+      ['grande-section', 'Grande section', 'à partir de 5 ans']
+    ],
+    bientot: '',
+    appel: 'cp'
   }
 }
 const rubrique = (f) => RUBRIQUES[f.categorie || 'formulaire']
@@ -71,7 +107,7 @@ export const urlFormulaire = (f) => `${rubrique(f).racine}${f.slug}/`
 const urlFigure = (f, nom) => `${urlFormulaire(f)}${nom}.png`
 
 // Niveaux (pastille à la fin d'un titre de partie, ordre d'affichage).
-export const NIVEAUX = ['Primaire', 'Collège', 'Lycée', 'Supérieur']
+export const NIVEAUX = ['Maternelle', 'Primaire', 'Collège', 'Lycée', 'Supérieur']
 const cleNiveau = (n) => slugifier(n, 20)
 
 const ICONES = {
@@ -86,8 +122,8 @@ const icone = (nom, cls = 'rg-ico') => `<svg class="${cls}" viewBox="0 0 24 24" 
 const dateLongue = (iso) => new Date(`${iso}T12:00:00`).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
 const pluriel = (n, un, plusieurs) => `${n} ${n > 1 ? plusieurs : un}`
 // Typographie française : espace insécable avant ? ! : ; (jamais de signe seul en
-// début de ligne) et espace fine insécable dans les milliers (« 1 000 » jamais coupé).
-const typo = (texte) => String(texte).replace(/ ([?!:;])/g, ' $1').replace(/(\d) (?=\d{3}\b)/g, '$1 ')
+// début de ligne), guillemets « » jamais seuls en bout de ligne, et espace fine insécable dans les milliers (« 1 000 » jamais coupé).
+const typo = (texte) => String(texte).replace(/ ([?!:;])/g, ' $1').replace(/« /g, '«\u00A0').replace(/ »/g, '\u00A0»').replace(/(\d) (?=\d{3}\b)/g, '$1 ')
 
 // Taille d'une image PNG (en-tête IHDR).
 function taillePng(fichier) {
@@ -156,6 +192,9 @@ export function lireFormulaires(dossier, catalogue, categorie = 'formulaire') {
   if (!fs.existsSync(dossier)) return []
   const liste = fs.readdirSync(dossier, { withFileTypes: true })
     .filter((d) => d.isDirectory() && fs.existsSync(path.join(dossier, d.name, 'formulaire.md')))
+    // Aperçu d'une seule page de maternelle (RESSOURCES_MATERNELLE_SEULE=<slug>) : les autres
+    // pages en cours de rédaction ne bloquent pas la génération. Sans la variable (production), rien ne change.
+    .filter((d) => categorie !== 'maternelle' || !process.env.RESSOURCES_MATERNELLE_SEULE || d.name === process.env.RESSOURCES_MATERNELLE_SEULE)
     .map((d) => lireFormulaire(path.join(dossier, d.name), catalogue, categorie))
     .filter((f) => !f.brouillon)
   return liste.sort((a, b) => (a.ordre ?? 99) - (b.ordre ?? 99) || a.titre.localeCompare(b.titre, 'fr'))
@@ -280,11 +319,25 @@ const etapes = (f) => [...etapesRubrique(rubrique(f)), [f.titreCourt, urlFormula
 
 // ---------- Pages ----------
 
+// Appel de fin de page : l'offre du site, ou (maternelle) les maths du CP.
+function appelFinal(r, lieu) {
+  if (r.appel !== 'cp') return appelsAction(null, null, lieu)
+  return `<section class="rg-ctas rg-ctas--seul" aria-label="Aller plus loin">
+  <div class="rg-cta rg-cta--plateforme">
+    <p class="rg-cta__kicker">Après la maternelle</p>
+    <h2 class="rg-cta__title">Les maths du CP, gratuites et en ligne</h2>
+    <p>Des cours illustrés, des fiches et des exercices corrigés pour accompagner votre enfant dès le CP, conformes au programme.</p>
+    <a class="rg-btn rg-btn--primary" href="${RACINE}maths/cp/" data-cta-name="maths_cp" data-cta-location="${lieu}">Voir les maths du CP ${icone('fleche')}</a>
+  </div>
+</section>`
+}
+
 export function pageFormulaire(f, rendu, formulaires) {
   const r = rubrique(f)
+  const [figure, figures] = r.motFigure || ['schéma', 'schémas']
   const infos = [
-    pluriel(rendu.titres.length, 'partie', 'parties'),
-    f.figures.length ? pluriel(f.figures.length, 'schéma', 'schémas') : '',
+    f.activites ? pluriel(f.activites, 'activité', 'activités') : pluriel(rendu.titres.length, 'partie', 'parties'),
+    f.figures.length ? pluriel(f.figures.length, figure, figures) : '',
     `Mis à jour le ${dateLongue(f.modifie)}`
   ].filter(Boolean)
   return `<header class="rg-chap fm-head">
@@ -294,12 +347,12 @@ export function pageFormulaire(f, rendu, formulaires) {
     <h1 class="rg-h1">${e(f.titre)}</h1>
     ${f.chapo ? `<p class="rg-lead">${e(f.chapo)}</p>` : ''}
     <ul class="rg-infos">${infos.map((i) => `<li>${e(i)}</li>`).join('')}</ul>
-    ${f.niveaux.length ? `<p class="fm-legende"><span class="fm-legende__titre">Niveau de chaque partie :</span>${pastilles(f.niveaux)}</p>` : ''}
+    ${f.niveaux.length && r.legende !== false ? `<p class="fm-legende"><span class="fm-legende__titre">Niveau de chaque partie :</span>${pastilles(f.niveaux)}</p>` : ''}
   </div>
 </header>
 <div class="rg-wrap rg-reading rg-reading--toc">
   ${sommaire(f, rendu.titres)}
-  <article class="rg-doc rg-doc--fiche fm-doc">
+  <article class="rg-doc rg-doc--fiche fm-doc fm-doc--${f.categorie}">
     <div class="rg-doc__tools"><button type="button" class="rg-btn rg-btn--ghost rg-btn--sm" data-imprimer>${icone('imprimer')} ${r.imprimer}</button></div>
     <div class="sci-doc rg-sci fm-sci">${rendu.html}</div>
     ${chapitresLies(f)}
@@ -308,13 +361,27 @@ export function pageFormulaire(f, rendu, formulaires) {
 </div>
 <div class="rg-wrap">
   ${autresFormulaires(f, formulaires)}
-  ${appelsAction(null, null, `ressources_${r.lieu}`)}
+  ${appelFinal(r, `ressources_${r.lieu}`)}
 </div>`
 }
 
 // Page d'une rubrique (liste de ses pages).
 export function pageFormulaires(liste, categorie = 'formulaire') {
   const r = RUBRIQUES[categorie]
+  // Rubrique découpée en sections (maternelle : grande, moyenne, petite
+  // section) : un titre par section qui a des pages, puis une ligne « bientôt ».
+  const perdues = r.sections ? liste.filter((f) => !r.sections.some(([cle]) => cle === f.section)) : []
+  if (perdues.length) throw new Error(`${categorie} ${perdues[0].slug} : champ « section » absent ou inconnu (${r.sections.map(([cle]) => cle).join(', ')})`)
+  const grille = r.sections
+    ? r.sections.map(([cle, titre, age]) => {
+        const pages = liste.filter((f) => f.section === cle)
+        if (!pages.length) return ''
+        return `<section class="fm-section" aria-labelledby="section-${cle}">
+    <h2 class="fm-section__titre" id="section-${cle}">${e(titre)} <span>${e(age)}</span></h2>
+    <div class="fm-grille">${pages.map((f) => carte(f, 3)).join('')}</div>
+  </section>`
+      }).join('\n  ')
+    : `<div class="fm-grille">${liste.map((f) => carte(f, 2)).join('')}</div>`
   return `<header class="rg-chap fm-head">
   <div class="rg-wrap">
     ${filAriane(etapesRubrique(r))}
@@ -323,9 +390,10 @@ export function pageFormulaires(liste, categorie = 'formulaire') {
     <p class="rg-lead">${r.lead}</p>
   </div>
 </header>
-<div class="rg-wrap fm-hub">
-  <div class="fm-grille">${liste.map((f) => carte(f, 2)).join('')}</div>
-  ${appelsAction(null, null, `ressources_${r.dossier}`)}
+<div class="rg-wrap fm-hub fm-hub--${categorie}">
+  ${grille}
+  ${r.bientot ? `<p class="fm-bientot">${e(r.bientot)}</p>` : ''}
+  ${appelFinal(r, `ressources_${r.dossier}`)}
 </div>`
 }
 
@@ -407,7 +475,7 @@ export function markdownFormulaire(f) {
 
 > ${f.description}
 
-${rubrique(f).kicker} gratuit OptiTAB${f.niveaux.length ? ` (niveaux : ${f.niveaux.join(', ')})` : ''}. Mis à jour le ${dateLongue(f.modifie)}. Source : ${absolu(urlFormulaire(f))}
+${rubrique(f).libelleTexte || `${rubrique(f).kicker} gratuit`} OptiTAB${f.niveaux.length ? ` (niveaux : ${f.niveaux.join(', ')})` : ''}. Mis à jour le ${dateLongue(f.modifie)}. Source : ${absolu(urlFormulaire(f))}
 
 ${corps}
 ${f.chapitres.length ? `\n## Cours associés\n\n${f.chapitres.map((ch) => `- [${ch.titre} (maths ${ch.classe.court})](${absolu(urlCours(ch))}) · [fiche](${absolu(urlFiche(ch))})`).join('\n')}\n` : ''}${f.faq.length ? `\n## Questions fréquentes\n\n${f.faq.map(([q, r]) => `### ${q}\n\n${r}`).join('\n\n')}\n` : ''}`

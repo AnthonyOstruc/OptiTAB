@@ -211,7 +211,7 @@ const enAttente = ref([])
 // id enfant -> { trend, chapitres, aRevoir }
 const details = reactive({})
 
-const titreCourt = (titre = '') => titre.replace(/^(Découverte|Entraînement|Problème|Approfondissement)\s*[-–]\s*/i, '')
+const titreCourt = (titre = '') => titre.replace(/^(Découverte|Entraînement|Problème|Approfondissement|Synthèse|Bilan|Type concours|Type brevet|Type bac|Type examen|DS)\s*[-–]\s*/i, '')
 
 function derniereActivite(enfant) {
   const last = enfant.last_activity

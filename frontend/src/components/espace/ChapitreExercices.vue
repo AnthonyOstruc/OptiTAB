@@ -182,7 +182,7 @@ const courantId = ref(null)
 const bravo = ref(false)
 
 // ---------- Libellés ----------
-const PREFIXE = /^(Découverte|Entraînement|Problème|Approfondissement|Synthèse|Bilan)\s*[-–]\s*/i
+const PREFIXE = /^(Découverte|Entraînement|Problème|Approfondissement|Synthèse|Bilan|Type concours|Type brevet|Type bac|Type examen|DS)\s*[-–]\s*/i
 const titreCourt = (ex) => String(ex?.titre || ex?.nom || 'Exercice').replace(PREFIXE, '')
 const DIFFICULTES = {
   easy: { niveau: 1, label: 'facile' },

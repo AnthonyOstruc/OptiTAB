@@ -373,7 +373,7 @@ const programme = computed(() => {
   return [...enCours, ...suivants].slice(0, 5)
 })
 
-const titreCourt = (titre = '') => titre.replace(/^(Découverte|Entraînement|Problème|Approfondissement)\s*[-–]\s*/i, '')
+const titreCourt = (titre = '') => titre.replace(/^(Découverte|Entraînement|Problème|Approfondissement|Synthèse|Bilan|Type concours|Type brevet|Type bac|Type examen|DS)\s*[-–]\s*/i, '')
 
 const whatsappUrl = `https://wa.me/${vitrineContact.whatsapp}?text=${encodeURIComponent('Bonjour, je bloque sur un exercice OptiTAB, pouvez-vous m’aider ?')}`
 

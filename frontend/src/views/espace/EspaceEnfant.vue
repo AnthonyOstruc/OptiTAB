@@ -187,7 +187,7 @@ const chapitresTravailles = computed(() => chapitres.value
   .sort((a, b) => String(b.derniere_activite || '').localeCompare(String(a.derniere_activite || ''))))
 const aRevoir = computed(() => progression.value?.a_revoir || [])
 
-const titreCourt = (titre = '') => String(titre || '').replace(/^(Découverte|Entraînement|Problème|Approfondissement)\s*[-–]\s*/i, '')
+const titreCourt = (titre = '') => String(titre || '').replace(/^(Découverte|Entraînement|Problème|Approfondissement|Synthèse|Bilan|Type concours|Type brevet|Type bac|Type examen|DS)\s*[-–]\s*/i, '')
 
 const synthese = computed(() => {
   const m = metrics.value || {}

@@ -14,6 +14,7 @@
       :pays-list="paysList"
       :filtered-niveaux="filteredNiveaux"
       :loading-niveaux="loadingNiveaux"
+      :loading-pays="loadingPays"
       :selected-pays-id="selectedPaysId"
       :selected-niveau-id="selectedNiveauId"
       :user-pays="userPays"
@@ -51,6 +52,7 @@ const {
   showConfigModal,
   currentStep,
   loadingNiveaux,
+  loadingPays,
   restrictedLevels,
   isSelectionRestricted,
   

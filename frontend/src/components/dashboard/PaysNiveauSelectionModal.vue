@@ -16,7 +16,8 @@
     <!-- 1. Pays -->
     <section class="config-step">
       <h3 class="config-step__title"><span>1</span> Pays</h3>
-      <p v-if="paysDisponibles.length === 0" class="config-empty">Aucun pays disponible pour le moment.</p>
+      <p v-if="loadingPays" class="config-empty" role="status">Chargement des pays…</p>
+      <p v-else-if="paysDisponibles.length === 0" class="config-empty">Aucun pays disponible pour le moment.</p>
       <div v-else class="config-grid">
         <SelectionCard
           v-for="pays in paysDisponibles"
@@ -88,6 +89,10 @@ const props = defineProps({
     default: () => []
   },
   loadingNiveaux: {
+    type: Boolean,
+    default: false
+  },
+  loadingPays: {
     type: Boolean,
     default: false
   },

@@ -21,6 +21,7 @@ export function usePaysNiveauConfig() {
   const showConfigModal = ref(false)
   const currentStep = ref('pays')
   const loadingNiveaux = ref(false)
+  const loadingPays = ref(true)
 
   // Cache local pour éviter les requêtes répétées
   const niveauxCacheByPays = new Map()
@@ -58,9 +59,11 @@ export function usePaysNiveauConfig() {
   // Méthodes
   const loadData = async () => {
     try {
+      loadingPays.value = true
       const paysData = await getPays()
-      paysList.value = paysData
-      
+      paysList.value = Array.isArray(paysData) ? paysData : (paysData?.results || [])
+      loadingPays.value = false
+
       if (userPays.value) {
         selectedPaysId.value = userPays.value.id
         await loadNiveauxForPays(userPays.value.id)
@@ -77,6 +80,8 @@ export function usePaysNiveauConfig() {
     } catch (error) {
       console.error('Error loading data:', error)
       showToast('Erreur lors du chargement des données', 'error')
+    } finally {
+      loadingPays.value = false
     }
   }
 
@@ -238,7 +243,8 @@ export function usePaysNiveauConfig() {
     showConfigModal,
     currentStep,
     loadingNiveaux,
-    
+    loadingPays,
+
     // Computed
     userPays,
     userNiveau,

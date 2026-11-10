@@ -14,6 +14,14 @@ class PaysSerializer(serializers.ModelSerializer):
         model = Pays
         fields = ['id', 'nom', 'code_iso', 'drapeau_emoji', 'est_actif', 'ordre', 'nombre_niveaux', 'nombre_utilisateurs']
 
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        # Le nombre d'inscrits par pays est réservé à l'administration.
+        request = self.context.get('request')
+        if not (request and getattr(request.user, 'is_staff', False)):
+            data.pop('nombre_utilisateurs', None)
+        return data
+
 
 class NiveauSerializer(serializers.ModelSerializer):
     """Sérialiseur simple pour les niveaux"""
@@ -46,6 +54,10 @@ class NiveauSerializer(serializers.ModelSerializer):
         ]
 
     def get_statistiques(self, obj):
+        # Six comptages par classe : calculés seulement quand on les demande
+        # (détail d'une classe, administration), jamais pour les listes.
+        if not self.context.get('include_stats', False):
+            return None
         # Importer localement pour éviter les imports circulaires
         try:
             from curriculum.models import MatiereContexte, Theme, Notion, Exercice

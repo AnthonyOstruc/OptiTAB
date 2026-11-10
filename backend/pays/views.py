@@ -20,9 +20,12 @@ class PaysViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         from django.db.models import Count
         queryset = Pays.objects.all().annotate(
-            nombre_niveaux=Count('niveaux', filter=Q(niveaux__est_actif=True), distinct=True),
-            nombre_utilisateurs=Count('users', distinct=True)
+            nombre_niveaux=Count('niveaux', filter=Q(niveaux__est_actif=True), distinct=True)
         )
+        # Nombre d'inscrits : administration seulement (évite aussi une
+        # jointure pays × classes × utilisateurs à chaque visite).
+        if getattr(self.request.user, 'is_staff', False):
+            queryset = queryset.annotate(nombre_utilisateurs=Count('users', distinct=True))
         
         # Filtrer par statut actif
         est_actif = self.request.query_params.get('est_actif')
@@ -44,11 +47,11 @@ class PaysViewSet(viewsets.ModelViewSet):
         """GET /api/pays/{id}/niveaux/ - Récupère les niveaux d'un pays"""
         pays = self.get_object()
         niveaux = Niveau.objects.filter(
-            pays=pays, 
+            pays=pays,
             est_actif=True
-        ).order_by('ordre', 'nom')
-        
-        serializer = NiveauSerializer(niveaux, many=True)
+        ).select_related('pays', 'demo_notion').prefetch_related('demo_exercices').order_by('ordre', 'nom')
+
+        serializer = NiveauSerializer(niveaux, many=True, context={'request': request})
         return Response(serializer.data)
 
 
@@ -59,7 +62,7 @@ class NiveauViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]  # Lecture publique, écriture admin
     
     def get_queryset(self):
-        queryset = Niveau.objects.select_related('pays').all()
+        queryset = Niveau.objects.select_related('pays', 'demo_notion').prefetch_related('demo_exercices').all()
         
         # Filtrer par pays
         pays_id = self.request.query_params.get('pays_id')

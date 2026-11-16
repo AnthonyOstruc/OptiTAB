@@ -3,7 +3,7 @@
   "slug": "compter-jusqu-a-6-moyenne-section",
   "titre": "Compter jusqu’à 6 en moyenne section",
   "titreCourt": "Compter jusqu’à 6 (MS)",
-  "titreSeo": "Compter jusqu’à 6 en moyenne section : fiches de maths MS à imprimer",
+  "titreSeo": "Compter jusqu’à 6 en moyenne section : fiches à imprimer",
   "description": "Compter jusqu’à 6 en moyenne section : dénombrer, constituer, associer quantité et chiffre. 3 fiches à imprimer avec la réponse, conseils et jeux.",
   "chapo": "Dénombrer, prendre le bon nombre d’objets, relier une quantité à son chiffre : ce que le programme attend en moyenne section, trois activités illustrées à imprimer avec leur réponse et des idées de jeux pour la maison.",
   "resume": "Points, doigts et dés : 3 activités pour compter jusqu’à six",

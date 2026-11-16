@@ -3,7 +3,7 @@
   "slug": "premier-dernier-bande-numerique-grande-section",
   "titre": "Premier, dernier et bande numérique en grande section",
   "titreCourt": "Premier, dernier, bande numérique (GS)",
-  "titreSeo": "Premier, dernier, bande numérique en grande section : activités à imprimer",
+  "titreSeo": "Premier, dernier, bande numérique en GS : à imprimer",
   "description": "Premier, dernier, avant-dernier et bande numérique en grande section (GS) : le programme, 3 activités à imprimer avec la réponse et des jeux.",
   "chapo": "Ce que votre enfant apprend en grande section sur les rangs (premier, deuxième, avant-dernier, dernier) et sur la bande numérique jusqu’à dix, trois activités illustrées à faire ensemble ou à imprimer, avec la bonne réponse, et des jeux simples pour la maison.",
   "resume": "Premier, dernier, changer de départ, avancer et reculer : 3 activités et leurs réponses",

@@ -3,7 +3,7 @@
   "slug": "produit-scalaire",
   "titre": "Produit scalaire et géométrie repérée",
   "titreCourt": "Produit scalaire",
-  "titreSeo": "Produit scalaire : formules, équations de droites, cercles, espace",
+  "titreSeo": "Produit scalaire : formules, droites, cercles, espace",
   "description": "Les formules du produit scalaire et de la géométrie repérée : vecteurs, orthogonalité, Al-Kashi, équations de droites, de cercles et de plans, espace.",
   "chapo": "Les quatre expressions du produit scalaire, ses propriétés, ses applications au triangle et les équations de droites, de cercles et de plans, du plan à l’espace.",
   "resume": "Produit scalaire, vecteur normal, droites, cercles, plans",

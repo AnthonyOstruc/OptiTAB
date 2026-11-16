@@ -30,6 +30,7 @@ import { RACINE, SITE, absolu, appelsAction, e, filAriane, urlCours, urlFiche } 
 import { contenuEnHtml, contenuEnMarkdown, latexEnTexte, texteBrut } from './rendu.mjs'
 import { ORGANISATION, ariane } from './seo.mjs'
 import { OUTILS, outilHtml, outilScript } from './outils.mjs'
+import { MAX_TITRE } from './titres.mjs'
 
 // ---------- Rubriques ----------
 
@@ -44,7 +45,7 @@ export const RUBRIQUES = {
     kicker: 'Opération posée',
     lead: 'Addition, soustraction, multiplication et division posées : chaque méthode expliquée étape par étape, avec des schémas clairs, les erreurs à éviter et la vérification. À consulter ou imprimer.',
     accroche: 'Chaque opération posée expliquée étape par étape, avec les différentes méthodes.',
-    titreSeo: 'Poser les opérations : addition, soustraction, multiplication, division',
+    titreSeo: 'Poser une addition, soustraction, multiplication, division',
     description: 'Comment poser une addition, une soustraction, une multiplication et une division : les méthodes expliquées étape par étape avec des schémas, gratuites.',
     typeRessource: ['Méthode', 'Fiche de révision'],
     autres: 'Les autres opérations posées',
@@ -52,6 +53,8 @@ export const RUBRIQUES = {
     lies: 'Revoir le cours et s’entraîner',
     article: 'La méthode',
     lieu: 'operation',
+    vedettes: ['addition-posee', 'soustraction-posee', 'multiplication-posee', 'division-posee'],
+    voirTout: (n) => `Voir les ${n} opérations`,
     libelleTexte: 'Méthode d’opération posée gratuite'
   },
   // Méthodes de calcul : une méthode pas à pas par page, avec en tête un
@@ -64,7 +67,7 @@ export const RUBRIQUES = {
     kicker: 'Méthode de calcul',
     lead: 'Pourcentages, moyennes, durées, fractions, arrondis : chaque méthode expliquée pas à pas avec des exemples, et un calculateur gratuit pour vérifier vos résultats.',
     accroche: 'Chaque méthode expliquée pas à pas, avec un calculateur pour vérifier.',
-    titreSeo: 'Méthodes de calcul et calculateurs gratuits : pourcentage, moyenne, durée',
+    titreSeo: 'Méthodes de calcul et calculateurs gratuits : %, moyenne, durée',
     description: 'Méthodes de calcul expliquées pas à pas avec un calculateur gratuit : pourcentages, moyennes, durées, fractions, arrondis. Exemples et erreurs à éviter.',
     typeRessource: ['Méthode', 'Calculateur'],
     autres: 'Les autres méthodes de calcul',
@@ -72,6 +75,8 @@ export const RUBRIQUES = {
     lies: 'Revoir le cours et s’entraîner',
     article: 'La méthode',
     lieu: 'methode',
+    vedettes: ['calculer-un-pourcentage', 'calculer-une-moyenne', 'calculer-une-duree', 'calculer-avec-des-fractions'],
+    voirTout: (n) => `Voir les ${n} méthodes`,
     libelleTexte: 'Méthode de calcul gratuite'
   },
   // Fiches à imprimer : une page par opération et par classe, avec des PDF
@@ -92,6 +97,8 @@ export const RUBRIQUES = {
     lies: 'Revoir le cours',
     article: 'La fiche',
     lieu: 'fiche',
+    vedettes: ['additions-posees-ce1', 'multiplications-posees-ce2', 'divisions-posees-cm1', 'divisions-posees-6e'],
+    voirTout: (n, liste) => `Voir les ${liste.reduce((k, f) => k + (f.telechargements || []).length, 0)} fiches`,
     libelleTexte: 'Fiche de maths gratuite à imprimer',
     sections: [
       ['ce1', 'CE1', '7 à 8 ans'],
@@ -117,7 +124,9 @@ export const RUBRIQUES = {
     imprimer: 'Imprimer le formulaire',
     lies: 'Revoir le cours de ces formules',
     article: 'Le formulaire',
-    lieu: 'formulaire'
+    lieu: 'formulaire',
+    vedettes: ['aires-perimetres-volumes', 'pythagore-thales-trigonometrie', 'second-degre', 'derivees'],
+    voirTout: (n) => `Voir les ${n} formulaires`
   },
   table: {
     dossier: 'tables',
@@ -127,14 +136,16 @@ export const RUBRIQUES = {
     kicker: 'Table de maths',
     lead: 'Les tables et tableaux les plus utilisés : multiplication, conversions, chiffres romains, loi normale, nombres premiers… à consulter ou imprimer.',
     accroche: 'Les tableaux de référence les plus utilisés, à consulter ou imprimer.',
-    titreSeo: 'Tables de maths gratuites : multiplication, conversions, loi normale',
+    titreSeo: 'Tables de maths : multiplication, conversions, loi normale',
     description: 'Tables de maths gratuites à consulter ou imprimer : table de multiplication, tableau de conversion, chiffres romains, loi normale, nombres premiers et plus.',
     typeRessource: ['Table de référence'],
     autres: 'Les autres tables de maths',
     imprimer: 'Imprimer la table',
     lies: 'Revoir le cours',
     article: 'La table',
-    lieu: 'table'
+    lieu: 'table',
+    vedettes: ['table-de-multiplication', 'tableau-de-conversion', 'chiffres-romains', 'nombres-premiers'],
+    voirTout: (n) => `Voir les ${n} tables`
   },
   // Maths en maternelle : une page par thème et par section (activités du
   // cahier OptiTAB, figures avec leur réponse, conseils aux parents, jeux).
@@ -154,6 +165,8 @@ export const RUBRIQUES = {
     lies: 'Et ensuite, au CP',
     article: 'En maternelle',
     lieu: 'maternelle',
+    vedettes: ['compter-jusqu-a-3-petite-section', 'compter-jusqu-a-6-moyenne-section', 'compter-jusqu-a-10-grande-section', 'formes-geometriques-grande-section'],
+    voirTout: (n) => `Voir les ${n} thèmes`,
     // Particularités de la rubrique : pas de légende des niveaux (toute la page
     // est d'une seule section), « illustrations » plutôt que « schémas », pages
     // de la liste groupées par section, appel vers les maths du CP (pas d'offre
@@ -217,6 +230,8 @@ function lireFormulaire(dossier, catalogue, categorie) {
     if (!info[champ]) throw new Error(`${categorie} ${nom} : champ « ${champ} » manquant`)
   }
   if (info.slug !== nom) throw new Error(`${categorie} ${nom} : le slug (${info.slug}) doit être le nom du dossier`)
+  const titreGoogle = info.titreSeo || info.titre
+  if (titreGoogle.length > MAX_TITRE) throw new Error(`${categorie} ${nom} : titre pour Google trop long (${titreGoogle.length} > ${MAX_TITRE}) : « ${titreGoogle} »`)
   if (info.description.length > 160) throw new Error(`${categorie} ${nom} : description trop longue (${info.description.length} > 160)`)
   const contenu = m[2].trim()
   if (!contenu.startsWith('<!-- optitab:1 -->')) throw new Error(`${categorie} ${nom} : le texte doit commencer par <!-- optitab:1 -->`)
@@ -530,14 +545,33 @@ export function pageFormulaires(liste, categorie = 'formulaire') {
 
 // Blocs « Formulaires » et « Tables » de l'accueil des ressources gratuites.
 export function blocAccueilFormulaires(pages) {
-  return Object.entries(RUBRIQUES).map(([categorie, r]) => {
+  for (const [categorie, r] of Object.entries(RUBRIQUES)) {
+    for (const slug of r.vedettes || []) {
+      if (!pages.some((f) => f.categorie === categorie && f.slug === slug)) throw new Error(`rubrique ${categorie} : page vedette inconnue (${slug})`)
+    }
+  }
+  const tuiles = Object.entries(RUBRIQUES).map(([categorie, r]) => {
     const liste = pages.filter((f) => f.categorie === categorie)
     if (!liste.length) return ''
-    return `<section class="rg-cycle fm-accueil" aria-labelledby="cycle-${r.dossier}">
-    <div class="rg-cycle__head"><h2 id="cycle-${r.dossier}"><a href="${r.racine}">${r.titre}</a></h2><p>${r.accroche}</p></div>
-    <div class="fm-grille">${liste.map((f) => carte(f)).join('')}</div>
+    const vedettes = (r.vedettes || []).map((slug) => liste.find((f) => f.slug === slug))
+    const choix = vedettes.length ? vedettes : liste.slice(0, 4)
+    const fig = choix[0].figures.find((x) => x.nom === choix[0].vignette) || choix[0].figures[0]
+    return `<li class="fm-tuile">
+      ${fig ? `<a class="fm-tuile__visuel" href="${r.racine}" tabindex="-1" aria-hidden="true"><img src="${urlFigure(choix[0], fig.nom)}" alt="" width="${fig.largeur}" height="${fig.hauteur}" loading="lazy" decoding="async"></a>` : ''}
+      <div class="fm-tuile__corps">
+        <h3 class="fm-tuile__titre"><a href="${r.racine}">${e(r.titre)}</a></h3>
+        <p class="fm-tuile__texte">${e(typo(r.accroche))}</p>
+        <ul class="fm-tuile__liens">${choix.map((f) => `<li><a href="${urlFormulaire(f)}">${e(typo(f.titreCourt))}</a></li>`).join('')}</ul>
+        <a class="fm-tuile__tout" href="${r.racine}">${e(r.voirTout ? r.voirTout(liste.length, liste) : 'Tout voir')} ${icone('fleche')}</a>
+      </div>
+    </li>`
+  }).join('\n    ')
+  return `<section class="rg-cycle fm-rubriques" aria-labelledby="cycle-outils">
+    <div class="rg-cycle__head"><h2 id="cycle-outils">Méthodes, fiches et formulaires</h2><p>Apprendre une méthode, s’entraîner sur papier ou retrouver une formule.</p></div>
+    <ul class="fm-tuiles">
+    ${tuiles}
+    </ul>
   </section>`
-  }).join('\n')
 }
 
 // ---------- Référencement ----------

@@ -3,7 +3,7 @@
   "slug": "algorithmes-motifs-moyenne-section",
   "titre": "Algorithmes et motifs en moyenne section",
   "titreCourt": "Algorithmes et motifs (MS)",
-  "titreSeo": "Algorithme en moyenne section : suites logiques et motifs à imprimer",
+  "titreSeo": "Algorithmes en moyenne section : motifs à imprimer",
   "description": "Algorithme en moyenne section (MS) : continuer une suite logique, trouver l’intrus, mémoriser un motif. Le programme, 3 activités corrigées et des jeux.",
   "chapo": "Comment votre enfant de moyenne section apprend à repérer et à continuer des algorithmes, aussi appelés suites logiques ou motifs, trois activités illustrées à faire ensemble ou à imprimer, avec la bonne réponse, et des jeux tout simples pour la maison.",
   "resume": "Continuer, trouver l’intrus, mémoriser : 3 activités et leurs réponses",

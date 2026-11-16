@@ -3,7 +3,7 @@
   "slug": "algorithmes-motifs-grande-section",
   "titre": "Algorithmes et motifs en grande section",
   "titreCourt": "Algorithmes et motifs (GS)",
-  "titreSeo": "Algorithmes en grande section : suites logiques et motifs à imprimer",
+  "titreSeo": "Algorithmes en grande section : motifs à imprimer",
   "description": "Algorithmes et suites logiques en grande section (GS) : ce que dit le programme sur les motifs, 3 activités à imprimer avec la réponse et des jeux.",
   "chapo": "Ce que votre enfant apprend en grande section avec les algorithmes, aussi appelés suites logiques ou motifs, trois activités illustrées à faire ensemble ou à imprimer, avec la bonne réponse, et des jeux simples pour la maison.",
   "resume": "Motifs qui grandissent, transcrire, même règle : 3 activités et leurs réponses",

@@ -3,7 +3,7 @@
   "slug": "plus-moins-autant-petite-section",
   "titre": "Plus, moins, autant en petite section",
   "titreCourt": "Plus, moins, autant (PS)",
-  "titreSeo": "Beaucoup, pas beaucoup en petite section : comparer des quantités, fiches à imprimer",
+  "titreSeo": "Beaucoup, pas beaucoup en petite section : à imprimer",
   "description": "Beaucoup, pas beaucoup, autant en petite section (PS) : comparer des quantités sans compter, 3 activités à imprimer avec la réponse et des jeux.",
   "chapo": "Comment votre enfant apprend, en petite section, à voir où il y a beaucoup ou pas beaucoup d’objets et à faire des paires, trois activités illustrées à faire ensemble ou à imprimer, avec la bonne réponse, et des jeux de tous les jours.",
   "resume": "Beaucoup ou pas beaucoup, une chaise par ours, autant d’éléphants que de fourmis : 3 activités et leurs réponses",

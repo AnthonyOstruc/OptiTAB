@@ -1,6 +1,7 @@
 // Gabarits HTML des ressources gratuites. Pages statiques complètes : texte,
 // formules et figures sont dans le HTML (lisibles par Google et les IA).
 import { CYCLES, CLASSES } from './classes.mjs'
+import { titreDePage } from './titres.mjs'
 
 export const SITE = 'https://www.optitab.net'
 export const RACINE = '/ressources-gratuites/'
@@ -98,7 +99,7 @@ function pied(catalogue) {
 // ---------- Squelette ----------
 export function gabarit({ titre, description, chemin, contenu, catalogue, ctx, jsonld = [], image, type = 'website', markdown, motsCles, actif = RACINE, meta = '' }) {
   const canonique = absolu(chemin)
-  const titrePage = `${titre} | OptiTAB`.length <= 68 ? `${titre} | OptiTAB` : titre
+  const titrePage = titreDePage(titre)
   const img = image || `${SITE}/Logo_bg.png`
   return `<!DOCTYPE html>
 <html lang="fr">

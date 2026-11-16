@@ -3,7 +3,7 @@
   "slug": "decomposer-les-nombres-grande-section",
   "titre": "Décomposer les nombres en grande section",
   "titreCourt": "Décomposer les nombres (GS)",
-  "titreSeo": "Décomposer les nombres en grande section : doubles, un de plus, un de moins",
+  "titreSeo": "Décomposer les nombres en grande section : à imprimer",
   "description": "Décomposer les nombres jusqu’à 10 en grande section : un de plus, un de moins, les doubles, la maison des nombres. 3 activités à imprimer avec la réponse.",
   "chapo": "Ce que votre enfant apprend en grande section pour composer et décomposer les nombres jusqu’à dix, trois activités illustrées à faire ensemble ou à imprimer, avec la bonne réponse, et des jeux simples pour la maison.",
   "resume": "Un de moins, les doubles, la maison du huit : 3 activités et leurs réponses",

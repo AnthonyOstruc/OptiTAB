@@ -3,7 +3,7 @@
   "slug": "fractions-decimaux-pourcentages",
   "titre": "Fractions, décimaux et pourcentages",
   "titreCourt": "Fractions et pourcentages",
-  "titreSeo": "Tableau d’équivalence : fractions, nombres décimaux et pourcentages",
+  "titreSeo": "Tableau fractions, nombres décimaux et pourcentages",
   "description": "Le tableau d’équivalence entre fractions, nombres décimaux et pourcentages (1/2, 1/4, 3/4, 1/3, 1/8…), les méthodes de conversion et le calcul d’un pourcentage.",
   "chapo": "Les fractions les plus courantes avec leur écriture décimale et leur pourcentage, les méthodes pour passer de l’une à l’autre et le calcul mental des pourcentages.",
   "resume": "1/2 = 0,5 = 50 %, conversions, calcul mental",

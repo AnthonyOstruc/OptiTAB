@@ -3,7 +3,7 @@
   "slug": "formes-geometriques-grande-section",
   "titre": "Les formes géométriques en grande section",
   "titreCourt": "Formes géométriques (GS)",
-  "titreSeo": "Formes géométriques en grande section : activités gratuites à imprimer",
+  "titreSeo": "Formes géométriques en grande section : fiches à imprimer",
   "description": "Formes géométriques en grande section : carré, rectangle, triangle, disque, cube et tangram. 3 activités à imprimer avec la réponse, jeux et conseils.",
   "chapo": "Ce que votre enfant apprend en grande section sur les formes : reconnaître le carré, le rectangle, le triangle et le disque, décrire le cube par ses faces, reproduire un tangram. Trois activités illustrées avec la bonne réponse et des jeux simples pour la maison.",
   "resume": "Nommer les formes, décrire le cube, reproduire un tangram : 3 activités et leurs réponses",

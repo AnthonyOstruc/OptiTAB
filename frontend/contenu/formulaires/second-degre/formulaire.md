@@ -3,7 +3,7 @@
   "slug": "second-degre",
   "titre": "Second degré : discriminant et racines",
   "titreCourt": "Second degré",
-  "titreSeo": "Second degré : discriminant, racines, forme canonique (formulaire)",
+  "titreSeo": "Second degré : discriminant, racines, forme canonique",
   "description": "Toutes les formules du second degré : discriminant, racines, forme canonique, factorisation, somme et produit des racines, signe et variations du trinôme.",
   "chapo": "Tout le second degré sur une page : les trois formes du trinôme, le discriminant, les racines, le signe et les variations, avec les schémas de la parabole.",
   "resume": "Discriminant Δ, racines, forme canonique, parabole",

@@ -31,7 +31,7 @@ INFO = {
     "slug": "pourcentages-evolution",
     "titre": "Pourcentages d’évolution et coefficients multiplicateurs",
     "titreCourt": "Pourcentages d’évolution",
-    "titreSeo": "Pourcentage d’augmentation et de baisse : coefficient multiplicateur",
+    "titreSeo": "Augmentation et baisse en % : coefficient multiplicateur",
     "description": "Calculer une hausse ou une baisse en pourcentage : coefficients multiplicateurs, évolutions successives, évolution réciproque, taux d’évolution, TVA.",
     "chapo": "Le coefficient multiplicateur de chaque hausse et de chaque baisse, les évolutions successives et réciproques, le calcul d’un taux d’évolution et les applications (TVA, soldes).",
     "resume": "Hausse, baisse, évolutions successives, TVA",

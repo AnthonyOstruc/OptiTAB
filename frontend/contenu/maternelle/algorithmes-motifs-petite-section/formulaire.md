@@ -3,7 +3,7 @@
   "slug": "algorithmes-motifs-petite-section",
   "titre": "Algorithmes et motifs en petite section",
   "titreCourt": "Algorithmes et motifs (PS)",
-  "titreSeo": "Algorithme en petite section : suites logiques et colliers de perles à imprimer",
+  "titreSeo": "Algorithmes en petite section : colliers et motifs",
   "description": "Algorithme en petite section (PS) : copier une suite logique, compléter un collier de perles, deviner ce qui est caché. 3 activités corrigées et des jeux.",
   "chapo": "Comment votre enfant découvre, en petite section, ses premiers algorithmes, aussi appelés suites logiques ou motifs, trois activités illustrées à faire ensemble ou à imprimer, avec la bonne réponse, et des jeux de tous les jours.",
   "resume": "Le train à copier, le collier à compléter, la carte cachée : 3 activités et leurs réponses",

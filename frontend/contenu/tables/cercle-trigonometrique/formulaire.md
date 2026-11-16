@@ -3,7 +3,7 @@
   "slug": "cercle-trigonometrique",
   "titre": "Cercle trigonométrique",
   "titreCourt": "Cercle trigonométrique",
-  "titreSeo": "Cercle trigonométrique : valeurs remarquables en radians et degrés",
+  "titreSeo": "Cercle trigonométrique : valeurs remarquables (radians, degrés)",
   "description": "Le cercle trigonométrique complet avec ses 16 angles remarquables en radians et en degrés, le tableau des cos, sin et tan de 0 à 2π et les signes par quart.",
   "chapo": "Le cercle trigonométrique complet, en radians et en degrés, le tableau des cosinus, sinus et tangentes des seize angles remarquables, les signes selon le quart de cercle et la mesure principale.",
   "resume": "16 angles, cos, sin, tan, radians et degrés",

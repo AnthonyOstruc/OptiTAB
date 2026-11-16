@@ -397,8 +397,11 @@ export default {
           }
         } catch (_) {}
 
-        // IMPORTANT: Charger le profil pour mettre à jour isAuthenticated
-        await userStore.fetchUser()
+        // IMPORTANT: Charger le profil pour mettre à jour isAuthenticated.
+        // Sans l'écran de chargement global : il démonterait toute l'application,
+        // fenêtre comprise, qui réapparaîtrait (vide) au remontage avant de se
+        // fermer. Le bouton « Se connecter » montre déjà que la connexion est en cours.
+        await userStore.fetchUser({ silent: true })
 
         analytics.login('email_password')
         if (userStore.id) analytics.setUserId(userStore.id)

@@ -3,7 +3,7 @@
   "slug": "formes-geometriques-moyenne-section",
   "titre": "Les formes géométriques en moyenne section",
   "titreCourt": "Formes géométriques (MS)",
-  "titreSeo": "Formes géométriques en moyenne section : activités gratuites à imprimer",
+  "titreSeo": "Formes géométriques en moyenne section : fiches à imprimer",
   "description": "Formes géométriques en moyenne section : triangle, carré, disque, empreintes du cube, fusée à reproduire. 3 activités à imprimer avec la réponse et des jeux.",
   "chapo": "Ce que votre enfant apprend en moyenne section sur les formes : reconnaître le triangle, le carré et le disque dans tous les sens, faire les empreintes d’un cube, reproduire un assemblage simple. Trois activités illustrées avec la bonne réponse et des jeux faciles pour la maison.",
   "resume": "Triangle, carré, disque, empreintes et assemblage : 3 activités et leurs réponses",

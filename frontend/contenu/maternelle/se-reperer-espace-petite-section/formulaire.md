@@ -3,7 +3,7 @@
   "slug": "se-reperer-espace-petite-section",
   "titre": "Se repérer dans l’espace en petite section",
   "titreCourt": "Se repérer dans l’espace (PS)",
-  "titreSeo": "Dans, dehors, sur, sous, devant, derrière en petite section : fiches",
+  "titreSeo": "Se repérer dans l’espace en petite section : fiches",
   "description": "Se repérer en petite section (PS) : dans, dehors, sur, sous, devant, derrière. 3 activités illustrées à imprimer avec la réponse, et des jeux.",
   "chapo": "Comment votre enfant apprend, en petite section, les premiers mots pour dire où sont les choses, trois activités illustrées à faire ensemble ou à imprimer, avec la bonne réponse, et des jeux de tous les jours pour bouger et parler.",
   "resume": "Dans ou dehors, sur ou sous, devant ou derrière : 3 activités et leurs réponses",

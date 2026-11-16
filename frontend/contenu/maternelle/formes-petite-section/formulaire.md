@@ -3,7 +3,7 @@
   "slug": "formes-petite-section",
   "titre": "Les formes en petite section",
   "titreCourt": "Les formes (PS)",
-  "titreSeo": "Les formes en petite section : rond, carré, triangle, fiches à imprimer",
+  "titreSeo": "Les formes en petite section : rond, carré, triangle",
   "description": "Les formes en petite section (PS) : reconnaître le rond, le carré et le triangle, trier, encastrer. 3 activités à imprimer avec la réponse et des jeux.",
   "chapo": "Comment votre enfant apprend, en petite section, à reconnaître des formes, à les trier et à les faire entrer dans leur trou, trois activités illustrées à faire ensemble ou à imprimer, avec la bonne réponse, et des jeux de tous les jours.",
   "resume": "Pareil que le modèle, ranger les formes, chaque pièce dans son trou : 3 activités et leurs réponses",

@@ -3,7 +3,7 @@
   "slug": "calculer-avec-des-fractions",
   "titre": "Calculer avec des fractions : simplifier, additionner, multiplier",
   "titreCourt": "Calculer avec des fractions",
-  "titreSeo": "Calcul de fractions : simplifier, additionner, multiplier, diviser",
+  "titreSeo": "Calcul de fractions : simplifier, additionner, multiplier",
   "description": "Calculateur de fractions gratuit et méthodes pas à pas : simplifier une fraction, additionner, soustraire, multiplier, diviser, fraction d’un nombre.",
   "chapo": "Un calculateur qui donne le résultat simplifié avec toutes les étapes, et les méthodes pour savoir le faire seul : simplifier une fraction, mettre au même dénominateur, additionner, multiplier, diviser et prendre une fraction d’une quantité.",
   "resume": "Simplifier, additionner, multiplier",

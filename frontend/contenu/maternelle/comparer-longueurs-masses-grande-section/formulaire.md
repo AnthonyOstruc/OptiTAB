@@ -3,7 +3,7 @@
   "slug": "comparer-longueurs-masses-grande-section",
   "titre": "Comparer des longueurs et des masses en grande section",
   "titreCourt": "Longueurs et masses (GS)",
-  "titreSeo": "Comparer des longueurs et des masses en grande section : fiches à imprimer",
+  "titreSeo": "Comparer longueurs et masses en GS : fiches à imprimer",
   "description": "Longueurs et masses en grande section : bande témoin, ranger du plus court au plus long, balance. 3 activités à imprimer avec la réponse et des jeux.",
   "chapo": "Ce que votre enfant apprend en grande section pour comparer des longueurs et des masses, trois activités illustrées à faire ensemble ou à imprimer, avec la bonne réponse, et des jeux simples pour la maison.",
   "resume": "Bande témoin, rangement, balance : 3 activités et leurs réponses",

@@ -3,7 +3,7 @@
   "slug": "equivalents-usuels",
   "titre": "Équivalents usuels",
   "titreCourt": "Équivalents usuels",
-  "titreSeo": "Équivalents usuels : tableau en 0 et en l’infini, règles de calcul",
+  "titreSeo": "Équivalents usuels en 0 et en l’infini : tableau et règles",
   "description": "Le tableau des équivalents usuels en 0 (sin, tan, ln(1 + x), eˣ − 1, 1 − cos x…) et en l’infini, les règles de calcul et les pièges, avec exemples.",
   "chapo": "Les équivalents à connaître en 0 et en l’infini, les opérations autorisées et interdites, et leur usage pour calculer des limites en quelques lignes.",
   "resume": "sin x ~ x, ln(1 + x) ~ x, règles, Stirling",

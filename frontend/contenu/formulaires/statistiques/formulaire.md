@@ -3,7 +3,7 @@
   "slug": "statistiques",
   "titre": "Statistiques",
   "titreCourt": "Statistiques",
-  "titreSeo": "Formules de statistiques : moyenne, médiane, quartiles, écart type",
+  "titreSeo": "Formules de statistiques : moyenne, médiane, écart type",
   "description": "Toutes les formules de statistiques : moyenne, moyenne pondérée, médiane, quartiles, variance, écart type, diagrammes, boîte à moustaches, droite d’ajustement.",
   "chapo": "Les indicateurs de position et de dispersion, les représentations graphiques et les statistiques à deux variables, avec un exemple entièrement calculé.",
   "resume": "Moyenne, médiane, quartiles, écart type, régression",

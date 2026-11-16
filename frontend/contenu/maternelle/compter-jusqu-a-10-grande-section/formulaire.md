@@ -3,7 +3,7 @@
   "slug": "compter-jusqu-a-10-grande-section",
   "titre": "Compter jusqu’à 10 en grande section",
   "titreCourt": "Compter jusqu’à 10 (GS)",
-  "titreSeo": "Compter jusqu’à 10 en grande section : activités gratuites à imprimer",
+  "titreSeo": "Compter jusqu’à 10 en grande section : fiches à imprimer",
   "description": "Compter jusqu’à 10 en grande section (GS) : ce que dit le programme, 3 activités illustrées à imprimer avec la réponse, jeux à la maison et conseils.",
   "chapo": "Ce que votre enfant apprend en grande section pour compter jusqu’à dix, trois activités illustrées à faire ensemble ou à imprimer, avec la bonne réponse, et des jeux simples pour la maison.",
   "resume": "Dénombrer, constituer, comparer : 3 activités et leurs réponses",

@@ -3,7 +3,7 @@
   "slug": "long-court-petite-section",
   "titre": "Long et court en petite section",
   "titreCourt": "Long et court (PS)",
-  "titreSeo": "Long et court en petite section : comparer des longueurs, fiches à imprimer",
+  "titreSeo": "Long et court en petite section : fiches à imprimer",
   "description": "Long et court en petite section (PS) : comparer des longueurs sans mesurer, 3 activités à imprimer avec la réponse et des jeux pour la maison.",
   "chapo": "Comment votre enfant apprend, en petite section, à dire ce qui est long et ce qui est court, trois activités illustrées à faire ensemble ou à imprimer, avec la bonne réponse, et des jeux de tous les jours.",
   "resume": "Le serpent le plus long, des crayons au même départ, la brique la plus longue et la plus courte : 3 activités et leurs réponses",

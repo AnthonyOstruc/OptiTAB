@@ -3,7 +3,7 @@
   "slug": "premier-deuxieme-bande-numerique-moyenne-section",
   "titre": "Premier, deuxième et bande numérique en moyenne section",
   "titreCourt": "Premier, deuxième, bande numérique (MS)",
-  "titreSeo": "Premier, deuxième, bande numérique en moyenne section : activités à imprimer",
+  "titreSeo": "Premier, deuxième, bande numérique en MS : à imprimer",
   "description": "Premier, deuxième, bande numérique et jeu de l’oie en moyenne section (MS) : le programme, 3 activités à imprimer avec la réponse et des jeux.",
   "chapo": "Ce que votre enfant apprend en moyenne section sur les rangs (le premier, le deuxième… jusqu’au sixième), le début de la bande numérique et le jeu de l’oie, trois activités illustrées à faire ensemble ou à imprimer, avec la bonne réponse, et des jeux simples pour la maison.",
   "resume": "Le deuxième d’une file, les nombres qui manquent, avancer au jeu de l’oie : 3 activités et leurs réponses",

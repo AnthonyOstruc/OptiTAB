@@ -3,7 +3,7 @@
   "slug": "comparer-longueurs-masses-moyenne-section",
   "titre": "Comparer des longueurs et des masses en moyenne section",
   "titreCourt": "Longueurs et masses (MS)",
-  "titreSeo": "Plus long, plus court, plus lourd en moyenne section : fiches à imprimer",
+  "titreSeo": "Long, court, lourd en moyenne section : fiches à imprimer",
   "description": "Plus long, plus court, plus lourd, plus léger en moyenne section (MS) : le programme, 3 activités à imprimer avec la réponse et des jeux à la maison.",
   "chapo": "Ce que votre enfant apprend en moyenne section pour comparer des longueurs et des masses, trois activités illustrées à faire ensemble ou à imprimer, avec la bonne réponse, et des jeux simples pour la maison.",
   "resume": "Trier, ranger, soupeser : 3 activités et leurs réponses",

@@ -41,7 +41,7 @@ INFO = {
     "slug": "nombres-premiers",
     "titre": "Nombres premiers et critères de divisibilité",
     "titreCourt": "Nombres premiers",
-    "titreSeo": "Liste des nombres premiers jusqu’à 1 000 et critères de divisibilité",
+    "titreSeo": "Nombres premiers jusqu’à 1 000 et critères de divisibilité",
     "description": "La liste des nombres premiers jusqu’à 1 000, le crible d’Ératosthène, les critères de divisibilité et la décomposition en facteurs premiers.",
     "chapo": "Les 168 nombres premiers inférieurs à 1 000, le crible de 1 à 100, les critères de divisibilité à connaître et la décomposition en facteurs premiers, avec le PGCD et le PPCM.",
     "resume": "Liste jusqu’à 1 000, critères de divisibilité",

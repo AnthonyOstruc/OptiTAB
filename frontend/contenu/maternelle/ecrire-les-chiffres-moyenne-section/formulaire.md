@@ -3,7 +3,7 @@
   "slug": "ecrire-les-chiffres-moyenne-section",
   "titre": "Écrire les chiffres et composer les nombres en moyenne section",
   "titreCourt": "Écrire les chiffres, comptine (MS)",
-  "titreSeo": "Écrire les chiffres en moyenne section, comptine jusqu’à 12 : fiches à imprimer",
+  "titreSeo": "Écrire les chiffres en moyenne section : fiches à imprimer",
   "description": "Écrire les chiffres de 1 à 6, composer les nombres avec les doigts, réciter la comptine jusqu’à 12 en moyenne section : 3 activités à imprimer avec la réponse.",
   "chapo": "Ce que votre enfant apprend en moyenne section pour écrire les chiffres de un à six, composer les petits nombres avec ses doigts et réciter la comptine jusqu’à douze, trois activités illustrées à faire ensemble ou à imprimer, avec la bonne réponse, et des jeux simples pour la maison.",
   "resume": "Écrire 4, 5, 6, compter les doigts levés, réciter jusqu’à 12 : 3 activités",

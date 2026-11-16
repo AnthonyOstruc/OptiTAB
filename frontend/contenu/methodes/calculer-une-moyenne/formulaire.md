@@ -3,7 +3,7 @@
   "slug": "calculer-une-moyenne",
   "titre": "Calculer une moyenne : notes et coefficients",
   "titreCourt": "Calculer une moyenne",
-  "titreSeo": "Calcul de moyenne avec coefficients : calculateur de notes gratuit",
+  "titreSeo": "Calcul de moyenne avec coefficients : calculateur gratuit",
   "description": "Calculateur de moyenne gratuit avec coefficients et méthode : moyenne simple, moyenne pondérée, note sur 20, note à obtenir pour atteindre une moyenne.",
   "chapo": "Un calculateur pour obtenir tout de suite la moyenne de vos notes, avec ou sans coefficients, et la méthode pas à pas : moyenne simple, moyenne pondérée, notes sur 10 ou sur 40, et la note qu’il faut pour atteindre une moyenne.",
   "resume": "Calculateur de notes, coefficients",

@@ -3,7 +3,7 @@
   "slug": "ecrire-les-chiffres-comptine-grande-section",
   "titre": "Écrire les chiffres et réciter la comptine en grande section",
   "titreCourt": "Écrire les chiffres, comptine (GS)",
-  "titreSeo": "Écrire les chiffres en grande section, comptine jusqu’à 30 : fiches à imprimer",
+  "titreSeo": "Écrire les chiffres en grande section : fiches à imprimer",
   "description": "Écrire les chiffres de 1 à 10 et réciter la comptine jusqu’à 30 en grande section : programme, 3 activités à imprimer avec la réponse, jeux et conseils.",
   "chapo": "Ce que votre enfant apprend en grande section pour écrire les chiffres de un à dix et réciter la comptine des nombres jusqu’à trente, trois activités illustrées à faire ensemble ou à imprimer, avec la bonne réponse, et des jeux simples pour la maison.",
   "resume": "Écrire jusqu’à 10, compter à rebours et de deux en deux : 3 activités",

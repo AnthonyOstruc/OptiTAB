@@ -3,7 +3,7 @@
   "slug": "factorisation",
   "titre": "Factorisation",
   "titreCourt": "Factorisation",
-  "titreSeo": "Factorisation : méthodes et formules pour factoriser une expression",
+  "titreSeo": "Factorisation : méthodes et formules pour factoriser",
   "description": "Comment factoriser une expression : facteur commun, identités remarquables, trinôme du second degré, racine évidente, regroupement, avec exemples corrigés.",
   "chapo": "Les méthodes pour factoriser, dans l’ordre où on les essaie : facteur commun, identités remarquables, trinôme du second degré et polynômes de degré 3, avec des exemples rédigés.",
   "resume": "Facteur commun, identités remarquables, trinôme",

@@ -3,7 +3,7 @@
   "slug": "plus-moins-autant-moyenne-section",
   "titre": "Plus, moins, autant en moyenne section",
   "titreCourt": "Plus, moins, autant (MS)",
-  "titreSeo": "Plus, moins, autant en moyenne section : comparer des quantités, fiches à imprimer",
+  "titreSeo": "Plus, moins, autant en moyenne section : fiches à imprimer",
   "description": "Plus, moins, autant en moyenne section (MS) : comparer des quantités jusqu’à six, 3 activités à imprimer avec la réponse, des jeux et des conseils.",
   "chapo": "Ce que votre enfant apprend en moyenne section pour comparer des quantités et dire où il y en a plus, moins ou autant, trois activités illustrées à faire ensemble ou à imprimer, avec la bonne réponse, et des jeux simples pour la maison.",
   "resume": "Le bocal le plus rempli, autant de jetons, voitures ou bateaux : 3 activités et leurs réponses",

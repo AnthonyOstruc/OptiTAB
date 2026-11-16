@@ -106,7 +106,7 @@ export function useGoogleAuth() {
 
       // Mettre à jour l'utilisateur
       userStore.setUser(user)
-      await userStore.fetchUser()
+      await userStore.fetchUser({ silent: true })
 
       analytics.login('google_one_tap')
       if (userStore.id) analytics.setUserId(userStore.id)
@@ -154,7 +154,7 @@ export function useGoogleAuth() {
                   localStorage.setItem('access_token', access)
                   localStorage.setItem('refresh_token', refresh)
                   userStore.setUser(user)
-                  await userStore.fetchUser()
+                  await userStore.fetchUser({ silent: true })
 
                   analytics.login('google_one_tap')
                   if (userStore.id) analytics.setUserId(userStore.id)
@@ -187,7 +187,7 @@ export function useGoogleAuth() {
                           localStorage.setItem('access_token', access)
                           localStorage.setItem('refresh_token', refresh)
                           userStore.setUser(user)
-                          await userStore.fetchUser()
+                          await userStore.fetchUser({ silent: true })
 
                           analytics.login('google_one_tap')
                           if (userStore.id) analytics.setUserId(userStore.id)
@@ -239,7 +239,7 @@ export function useGoogleAuth() {
                   localStorage.setItem('access_token', access)
                   localStorage.setItem('refresh_token', refresh)
                   userStore.setUser(user)
-                  await userStore.fetchUser()
+                  await userStore.fetchUser({ silent: true })
 
                   analytics.login('google_one_tap')
                   if (userStore.id) analytics.setUserId(userStore.id)

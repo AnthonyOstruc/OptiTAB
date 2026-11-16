@@ -3,7 +3,7 @@
   "slug": "matrices-determinants",
   "titre": "Matrices et déterminants",
   "titreCourt": "Matrices et déterminants",
-  "titreSeo": "Matrices et déterminants : formulaire (produit, inverse, 2×2, 3×3)",
+  "titreSeo": "Matrices et déterminants : formulaire (2×2, 3×3, inverse)",
   "description": "Les formules sur les matrices : produit, transposée, déterminant 2×2 et 3×3 (Sarrus), inverse, systèmes linéaires, puissances, graphes et valeurs propres.",
   "chapo": "Le calcul matriciel en une page : produit de matrices, déterminant d’une matrice 2 × 2 et 3 × 3, inverse, résolution de systèmes, puissances de matrices et applications aux suites et aux graphes.",
   "resume": "Produit, déterminant, inverse, systèmes",

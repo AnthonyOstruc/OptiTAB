@@ -32,6 +32,25 @@ import { ORGANISATION, ariane } from './seo.mjs'
 // ---------- Rubriques ----------
 
 export const RUBRIQUES = {
+  // Poser les opérations : une page par opération, chaque méthode expliquée
+  // étape par étape (figures calculées par contenu/operations/poser.py).
+  operation: {
+    dossier: 'operations',
+    racine: `${RACINE}operations/`,
+    court: 'Opérations posées',
+    titre: 'Poser les opérations',
+    kicker: 'Opération posée',
+    lead: 'Addition, soustraction, multiplication et division posées : chaque méthode expliquée étape par étape, avec des schémas clairs, les erreurs à éviter et la vérification. À consulter ou imprimer.',
+    accroche: 'Chaque opération posée expliquée étape par étape, avec les différentes méthodes.',
+    titreSeo: 'Poser les opérations : addition, soustraction, multiplication, division',
+    description: 'Comment poser une addition, une soustraction, une multiplication et une division : les méthodes expliquées étape par étape avec des schémas, gratuites.',
+    typeRessource: ['Méthode', 'Fiche de révision'],
+    autres: 'Les autres opérations posées',
+    imprimer: 'Imprimer la méthode',
+    lies: 'Revoir le cours et s’entraîner',
+    article: 'La méthode',
+    lieu: 'operation'
+  },
   formulaire: {
     dossier: 'formulaires',
     racine: `${RACINE}formulaires/`,
@@ -161,7 +180,10 @@ function lireFormulaire(dossier, catalogue, categorie) {
   })
   const appels = [...contenu.matchAll(/\[IMAGE_(\d+)\]/g)].map((x) => Number(x[1]))
   for (const n of appels) if (!figures[n - 1]) throw new Error(`${categorie} ${nom} : [IMAGE_${n}] sans figure`)
-  for (const fig of figures) if (!appels.includes(fig.position)) throw new Error(`${categorie} ${nom} : figure ${fig.nom} jamais appelée`)
+  // Seule exception : une figure « carte » (aperçu des cartes de la liste, au
+  // même cadre pour toute la rubrique) n'est pas dans le texte.
+  for (const fig of figures) if (!fig.carte && !appels.includes(fig.position)) throw new Error(`${categorie} ${nom} : figure ${fig.nom} jamais appelée`)
+  if (info.vignette && !figures.some((fig) => fig.nom === info.vignette)) throw new Error(`${categorie} ${nom} : vignette ${info.vignette} introuvable dans les figures`)
 
   // Chapitres liés « classe/chapitre » : ils doivent exister dans les ressources.
   const chapitres = (info.chapitresLies || []).map((cle) => {
@@ -296,7 +318,7 @@ function carte(f, niveauTitre = 3) {
   return `<a class="fm-card" href="${urlFormulaire(f)}">
       ${fig ? `<span class="fm-card__visuel"><img src="${urlFigure(f, fig.nom)}" alt="${e(`${f.titre} : ${fig.alt}`)}" width="${fig.largeur}" height="${fig.hauteur}" loading="lazy" decoding="async"></span>` : ''}
       <span class="fm-card__corps">
-        <h${niveauTitre} class="fm-card__titre">${e(f.titre)}</h${niveauTitre}>
+        <h${niveauTitre} class="fm-card__titre">${e(typo(f.titre))}</h${niveauTitre}>
         ${f.resume ? `<span class="fm-card__resume">${e(f.resume)}</span>` : ''}
       </span>
     </a>`
@@ -335,16 +357,17 @@ function appelFinal(r, lieu) {
 export function pageFormulaire(f, rendu, formulaires) {
   const r = rubrique(f)
   const [figure, figures] = r.motFigure || ['schéma', 'schémas']
+  const nbFigures = f.figures.filter((fig) => !fig.carte).length
   const infos = [
     f.activites ? pluriel(f.activites, 'activité', 'activités') : pluriel(rendu.titres.length, 'partie', 'parties'),
-    f.figures.length ? pluriel(f.figures.length, figure, figures) : '',
+    nbFigures ? pluriel(nbFigures, figure, figures) : '',
     `Mis à jour le ${dateLongue(f.modifie)}`
   ].filter(Boolean)
   return `<header class="rg-chap fm-head">
   <div class="rg-wrap">
     ${filAriane(etapes(f))}
     <p class="rg-kicker">${r.kicker}${f.theme ? ` · ${e(f.theme)}` : ''}</p>
-    <h1 class="rg-h1">${e(f.titre)}</h1>
+    <h1 class="rg-h1">${e(typo(f.titre))}</h1>
     ${f.chapo ? `<p class="rg-lead">${e(f.chapo)}</p>` : ''}
     <ul class="rg-infos">${infos.map((i) => `<li>${e(i)}</li>`).join('')}</ul>
     ${f.niveaux.length && r.legende !== false ? `<p class="fm-legende"><span class="fm-legende__titre">Niveau de chaque partie :</span>${pastilles(f.niveaux)}</p>` : ''}

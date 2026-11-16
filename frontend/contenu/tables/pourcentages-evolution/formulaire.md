@@ -15,7 +15,10 @@
   ],
   "ordre": 9,
   "publie": "2026-11-09",
-  "modifie": "2026-11-09",
+  "modifie": "2026-11-16",
+  "liees": [
+    "methodes/calculer-un-pourcentage"
+  ],
   "motsCles": [
     "coefficient multiplicateur",
     "pourcentage d'augmentation",

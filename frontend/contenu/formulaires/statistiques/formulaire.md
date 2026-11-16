@@ -12,7 +12,8 @@
   "niveaux": ["Collège", "Lycée", "Supérieur"],
   "ordre": 24,
   "publie": "2026-11-09",
-  "modifie": "2026-11-09",
+  "modifie": "2026-11-16",
+  "liees": ["methodes/calculer-une-moyenne"],
   "motsCles": ["formules statistiques", "calcul moyenne", "moyenne pondérée", "médiane", "quartiles", "écart type", "variance", "boîte à moustaches", "droite des moindres carrés"],
   "figures": [
     { "nom": "boite_moustaches", "alt": "Boîte à moustaches de la série 3, 4, 5, 6, 6, 7, 8, 9 : minimum 3, premier quartile 4, médiane 6, troisième quartile 7, maximum 9." },

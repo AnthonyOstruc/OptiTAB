@@ -15,16 +15,18 @@
   ],
   "ordre": 8,
   "publie": "2026-11-09",
-  "modifie": "2026-11-09",
+  "modifie": "2026-11-16",
+  "liees": [
+    "methodes/calculer-avec-des-fractions",
+    "methodes/calculer-un-pourcentage"
+  ],
   "motsCles": [
     "fraction en pourcentage",
     "fraction en décimal",
     "tableau fraction décimal pourcentage",
     "1/4 en pourcentage",
     "1/3 en décimal",
-    "convertir un pourcentage en fraction",
-    "calculer un pourcentage",
-    "pourcentage d'un nombre"
+    "convertir un pourcentage en fraction"
   ],
   "figures": [
     {

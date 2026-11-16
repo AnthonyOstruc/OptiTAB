@@ -62,8 +62,9 @@ INFO = {
     "niveaux": ["Primaire", "Collège"],
     "ordre": 8,
     "publie": "2026-11-09",
-    "modifie": "2026-11-09",
-    "motsCles": ["fraction en pourcentage", "fraction en décimal", "tableau fraction décimal pourcentage", "1/4 en pourcentage", "1/3 en décimal", "convertir un pourcentage en fraction", "calculer un pourcentage", "pourcentage d'un nombre"],
+    "modifie": "2026-11-16",
+    "liees": ["methodes/calculer-avec-des-fractions", "methodes/calculer-un-pourcentage"],
+    "motsCles": ["fraction en pourcentage", "fraction en décimal", "tableau fraction décimal pourcentage", "1/4 en pourcentage", "1/3 en décimal", "convertir un pourcentage en fraction"],
     "figures": [
         {"nom": "disques_fractions", "alt": "Quatre disques partagés : la moitié colorée (1/2 = 0,5 = 50 %), un quart (1/4 = 0,25 = 25 %), trois quarts (3/4 = 0,75 = 75 %) et un tiers (1/3 ≈ 33 %)."},
     ],

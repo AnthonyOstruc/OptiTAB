@@ -50,7 +50,8 @@ INFO = {
     "niveaux": ["Primaire", "Collège", "Lycée"],
     "ordre": 5,
     "publie": "2026-11-09",
-    "modifie": "2026-11-09",
+    "modifie": "2026-11-16",
+    "outil": "diviseurs",
     "motsCles": ["nombres premiers", "liste des nombres premiers", "nombres premiers jusqu'à 100", "nombres premiers jusqu'à 1000", "critères de divisibilité", "décomposition en facteurs premiers", "crible d'Ératosthène", "PGCD PPCM"],
     "figures": [
         {"nom": "crible_100", "alt": "Crible d’Ératosthène de 1 à 100 : les 25 nombres premiers 2, 3, 5, 7, 11, … 97 sont surlignés en vert."},

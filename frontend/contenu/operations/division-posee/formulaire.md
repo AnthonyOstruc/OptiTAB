@@ -13,6 +13,7 @@
   "ordre": 4,
   "publie": "2026-11-16",
   "modifie": "2026-11-16",
+  "liees": ["fiches/divisions-posees-cm1", "fiches/divisions-posees-6e"],
   "motsCles": ["division posée", "comment faire une division", "poser une division", "division euclidienne", "division à deux chiffres", "division avec virgule", "division décimale", "potence", "quotient et reste", "méthode de la division"],
   "figures": [
     { "nom": "division_vocabulaire", "alt": "Division posée de 1 475 par 6 : le dividende 1 475 à gauche de la potence, le diviseur 6 à droite, le quotient 245 sous le diviseur et le reste 5 en bas ; 1 475 = 6 × 245 + 5 avec 5 < 6." },

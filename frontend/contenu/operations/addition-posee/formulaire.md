@@ -13,6 +13,7 @@
   "ordre": 1,
   "publie": "2026-11-16",
   "modifie": "2026-11-16",
+  "liees": ["fiches/additions-posees-ce1", "fiches/additions-posees-ce2"],
   "motsCles": ["addition posée", "poser une addition", "addition avec retenue", "addition en colonnes", "comment faire une addition", "addition de nombres décimaux", "addition avec virgule", "retenue addition"],
   "figures": [
     { "nom": "addition_colonnes", "alt": "Addition posée de 2 748 et 1 395 : les chiffres sont alignés sous les lettres m, c, d, u ; trois retenues de 1 sont écrites en petit en haut des colonnes des dizaines, des centaines et des milliers ; le résultat est 4 143." },

@@ -24,10 +24,12 @@
 // et les assistants d'IA sans JavaScript ; elle a aussi une version Markdown.
 import fs from 'node:fs'
 import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { slugifier } from './catalogue.mjs'
 import { RACINE, SITE, absolu, appelsAction, e, filAriane, urlCours, urlFiche } from './pages.mjs'
 import { contenuEnHtml, contenuEnMarkdown, latexEnTexte, texteBrut } from './rendu.mjs'
 import { ORGANISATION, ariane } from './seo.mjs'
+import { OUTILS, outilHtml, outilScript } from './outils.mjs'
 
 // ---------- Rubriques ----------
 
@@ -49,7 +51,56 @@ export const RUBRIQUES = {
     imprimer: 'Imprimer la méthode',
     lies: 'Revoir le cours et s’entraîner',
     article: 'La méthode',
-    lieu: 'operation'
+    lieu: 'operation',
+    libelleTexte: 'Méthode d’opération posée gratuite'
+  },
+  // Méthodes de calcul : une méthode pas à pas par page, avec en tête un
+  // calculateur (champ « outil », voir outils.mjs).
+  methode: {
+    dossier: 'methodes',
+    racine: `${RACINE}methodes/`,
+    court: 'Méthodes de calcul',
+    titre: 'Méthodes de calcul',
+    kicker: 'Méthode de calcul',
+    lead: 'Pourcentages, moyennes, durées, fractions, arrondis : chaque méthode expliquée pas à pas avec des exemples, et un calculateur gratuit pour vérifier vos résultats.',
+    accroche: 'Chaque méthode expliquée pas à pas, avec un calculateur pour vérifier.',
+    titreSeo: 'Méthodes de calcul et calculateurs gratuits : pourcentage, moyenne, durée',
+    description: 'Méthodes de calcul expliquées pas à pas avec un calculateur gratuit : pourcentages, moyennes, durées, fractions, arrondis. Exemples et erreurs à éviter.',
+    typeRessource: ['Méthode', 'Calculateur'],
+    autres: 'Les autres méthodes de calcul',
+    imprimer: 'Imprimer la méthode',
+    lies: 'Revoir le cours et s’entraîner',
+    article: 'La méthode',
+    lieu: 'methode',
+    libelleTexte: 'Méthode de calcul gratuite'
+  },
+  // Fiches à imprimer : une page par opération et par classe, avec des PDF
+  // (fiches et corrigés) générés par contenu/fiches/generer_fiches.py.
+  fiche: {
+    dossier: 'fiches',
+    racine: `${RACINE}fiches-a-imprimer/`,
+    court: 'Fiches à imprimer',
+    titre: 'Fiches de maths à imprimer',
+    kicker: 'Fiche à imprimer',
+    lead: 'Des fiches de calcul gratuites à imprimer en PDF, du CE1 à la 6e, avec un corrigé où chaque calcul est posé en entier : additions, soustractions, multiplications et divisions.',
+    accroche: 'Des fiches de calcul en PDF, avec leur corrigé posé, du CE1 à la 6e.',
+    titreSeo: 'Fiches de maths à imprimer (PDF) avec corrigé, du CE1 à la 6e',
+    description: 'Fiches de maths gratuites à imprimer en PDF avec corrigé, du CE1 à la 6e : additions, soustractions, multiplications et divisions posées.',
+    typeRessource: ['Fiche d’exercices', 'Exercices corrigés'],
+    autres: 'Les autres fiches à imprimer',
+    imprimer: 'Imprimer la page',
+    lies: 'Revoir le cours',
+    article: 'La fiche',
+    lieu: 'fiche',
+    libelleTexte: 'Fiche de maths gratuite à imprimer',
+    sections: [
+      ['ce1', 'CE1', '7 à 8 ans'],
+      ['ce2', 'CE2', '8 à 9 ans'],
+      ['cm1', 'CM1', '9 à 10 ans'],
+      ['cm2', 'CM2', '10 à 11 ans'],
+      ['6e', 'Sixième', '11 à 12 ans']
+    ],
+    bientot: ''
   },
   formulaire: {
     dossier: 'formulaires',
@@ -184,6 +235,13 @@ function lireFormulaire(dossier, catalogue, categorie) {
   // même cadre pour toute la rubrique) n'est pas dans le texte.
   for (const fig of figures) if (!fig.carte && !appels.includes(fig.position)) throw new Error(`${categorie} ${nom} : figure ${fig.nom} jamais appelée`)
   if (info.vignette && !figures.some((fig) => fig.nom === info.vignette)) throw new Error(`${categorie} ${nom} : vignette ${info.vignette} introuvable dans les figures`)
+  if (info.outil && !OUTILS[info.outil]) throw new Error(`${categorie} ${nom} : outil inconnu (${info.outil})`)
+  for (const t of info.telechargements || []) {
+    for (const url of [t.pdf, t.corrige].filter(Boolean)) {
+      if (!fs.existsSync(path.join(PUBLIC, url))) throw new Error(`${categorie} ${nom} : PDF introuvable (${url}) — lancer contenu/fiches/generer_fiches.py`)
+    }
+  }
+  if (!info.outil && /\[OUTIL\]/.test(contenu)) throw new Error(`${categorie} ${nom} : [OUTIL] sans champ « outil »`)
 
   // Chapitres liés « classe/chapitre » : ils doivent exister dans les ressources.
   const chapitres = (info.chapitresLies || []).map((cle) => {
@@ -278,6 +336,18 @@ export function rendreFormulaire(f) {
     const nouveau = interieur.replace(/(class="otm-h2-text"[^>]*>)[\s\S]*?(<\/span>)/, `$1${texteHtml}${pastille}$2`)
     return `<h2${attributs} id="${id}">${nouveau}</h2>`
   })
+  // Téléchargements (fiches PDF) : à la place de [TELECHARGEMENTS], ou en tête.
+  if (f.telechargements?.length) {
+    const bloc = blocTelechargements(f)
+    const marque = /<p\b[^>]*>\s*\[TELECHARGEMENTS\]\s*<\/p>/
+    html = marque.test(html) ? html.replace(marque, bloc) : `${bloc}\n${html}`
+  }
+  // Calculateur : à la place de [OUTIL], ou en tête du texte.
+  if (f.outil) {
+    const bloc = outilHtml(f.outil)
+    const marque = /<p\b[^>]*>\s*\[OUTIL\]\s*<\/p>/
+    html = marque.test(html) ? html.replace(marque, bloc) : `${bloc}\n${html}`
+  }
   return { html, titres }
 }
 
@@ -291,6 +361,43 @@ function sommaire(f, titres) {
   return `<aside class="rg-toc fm-toc" aria-label="Sommaire">
     <details class="rg-toc__box" open><summary>Sommaire</summary><ol>${titres.map((t) => `<li><a href="#${t.id}"><span class="rg-toc__num">${e(t.num)}</span><span>${t.html}</span></a></li>`).join('')}${f.faq.length ? '<li><a href="#questions-frequentes"><span class="rg-toc__num">?</span><span>Questions fréquentes</span></a></li>' : ''}</ol></details>
   </aside>`
+}
+
+const PUBLIC = fileURLToPath(new URL('../../public/', import.meta.url))
+const taille = (url) => {
+  const o = fs.statSync(path.join(PUBLIC, url)).size
+  return o < 1024 * 1024 ? `${Math.max(1, Math.round(o / 1024))} Ko` : `${(o / 1024 / 1024).toFixed(1).replace('.', ',')} Mo`
+}
+
+// Boutons de téléchargement des fiches PDF et de leurs corrigés.
+function blocTelechargements(f) {
+  return `<section class="fm-pdf" aria-label="Télécharger les fiches">
+  ${f.telechargements.map((t) => `<div class="fm-pdf__ligne">
+    <p class="fm-pdf__titre">${e(t.titre)}</p>
+    <div class="fm-pdf__boutons">
+      <a class="rg-btn rg-btn--primary fm-pdf__btn" href="${t.pdf}" download data-cta-name="fiche_pdf" data-cta-location="ressources_fiche">${icone('imprimer')} Fiche (PDF, ${taille(t.pdf)})</a>
+      ${t.corrige ? `<a class="rg-btn rg-btn--ghost fm-pdf__btn" href="${t.corrige}" download data-cta-name="corrige_pdf" data-cta-location="ressources_fiche">${icone('check')} Corrigé (PDF, ${taille(t.corrige)})</a>` : ''}
+    </div>
+  </div>`).join('\n  ')}
+</section>`
+}
+
+// « À voir aussi » : pages proches des autres rubriques (champ « liees »,
+// clés « dossier/slug », par exemple « tables/pourcentages-evolution »).
+// Évite que deux pages se fassent concurrence : chacune renvoie vers l'autre.
+function pagesLiees(f, formulaires) {
+  const liees = (f.liees || []).map((cle) => {
+    const x = formulaires.find((p) => `${RUBRIQUES[p.categorie].dossier}/${p.slug}` === cle)
+    if (!x) throw new Error(`${f.categorie} ${f.slug} : page liée inconnue (${cle})`)
+    return x
+  })
+  if (!liees.length) return ''
+  return `<section class="rg-next fm-lies" aria-labelledby="fm-voir-titre">
+      <h2 class="rg-next__title" id="fm-voir-titre">${icone('tableau')} À voir aussi</h2>
+      <div class="rg-next__grid">
+        ${liees.map((x) => `<a class="rg-next__card" href="${urlFormulaire(x)}">${icone('tableau')}<span><strong>${e(typo(x.titre))}</strong><small>${e(RUBRIQUES[x.categorie].titre)}${x.resume ? ` · ${e(x.resume)}` : ''}</small></span></a>`).join('\n        ')}
+      </div>
+    </section>`
 }
 
 function chapitresLies(f) {
@@ -377,7 +484,8 @@ export function pageFormulaire(f, rendu, formulaires) {
   ${sommaire(f, rendu.titres)}
   <article class="rg-doc rg-doc--fiche fm-doc fm-doc--${f.categorie}">
     <div class="rg-doc__tools"><button type="button" class="rg-btn rg-btn--ghost rg-btn--sm" data-imprimer>${icone('imprimer')} ${r.imprimer}</button></div>
-    <div class="sci-doc rg-sci fm-sci">${rendu.html}</div>
+    <div class="sci-doc rg-sci fm-sci">${rendu.html}</div>${f.outil ? `\n    ${outilScript(f.outil)}` : ''}
+    ${pagesLiees(f, formulaires)}
     ${chapitresLies(f)}
     ${blocFaq(f)}
   </article>
@@ -465,6 +573,27 @@ export function jsonldFormulaire(f, titres) {
       '@type': 'FAQPage',
       mainEntity: f.faq.map(([q, r]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: r } }))
     } : null,
+    // Fiches PDF : documents associés à la ressource.
+    f.telechargements?.length ? {
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      name: `${f.titre} : fichiers PDF`,
+      itemListElement: f.telechargements.flatMap((t) => [[t.titre, t.pdf], [`${t.titre} : corrigé`, t.corrige]]).filter(([, u]) => u)
+        .map(([nom, u], i) => ({ '@type': 'ListItem', position: i + 1, item: { '@type': 'DigitalDocument', name: nom, url: absolu(u), encodingFormat: 'application/pdf', isAccessibleForFree: true } }))
+    } : null,
+    // Calculateur de la page : application web gratuite.
+    f.outil ? {
+      '@context': 'https://schema.org',
+      '@type': 'WebApplication',
+      name: OUTILS[f.outil].titre,
+      url: `${url}#otc-${f.outil}-titre`,
+      applicationCategory: 'EducationalApplication',
+      operatingSystem: 'Tous (navigateur web)',
+      inLanguage: 'fr-FR',
+      isAccessibleForFree: true,
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+      publisher: ORGA
+    } : null,
     ariane(etapes(f))
   ].filter(Boolean)
 }
@@ -492,7 +621,11 @@ export function jsonldFormulaires(liste, categorie = 'formulaire') {
 // Version texte (Markdown) pour les assistants d'IA.
 export function markdownFormulaire(f) {
   const images = f.figures.map((fig) => ({ position: fig.position, image: absolu(urlFigure(f, fig.nom)), alt_text: fig.alt }))
-  const corps = contenuEnMarkdown(f.contenu, images)
+  const pdfs = (f.telechargements || []).map((t) => `- ${t.titre} : [fiche (PDF)](${absolu(t.pdf)})${t.corrige ? ` · [corrigé (PDF)](${absolu(t.corrige)})` : ''}`).join('\n')
+  const outil = f.outil ? `> ${OUTILS[f.outil].titre} gratuit en ligne : ${absolu(urlFormulaire(f))}` : ''
+  const corps = contenuEnMarkdown(f.contenu.replace(/^\[OUTIL\]\s*$/m, 'OUTIL_EN_LIGNE').replace(/^\[TELECHARGEMENTS\]\s*$/m, 'PDF_EN_LIGNE'), images)
+    .replace(/^.*PDF_EN_LIGNE.*$/m, pdfs)
+    .replace(/^.*OUTIL_EN_LIGNE.*$/m, outil)
     .replace(/^(##\s.*?)\s*\{([^{}]+)\}\s*$/gm, '$1 ($2)')
   return `# ${f.titre}
 

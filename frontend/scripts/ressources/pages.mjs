@@ -79,6 +79,8 @@ function pied(catalogue) {
       <li><a href="/tarifs">Tarifs</a></li>
       <li><a href="${RACINE}maternelle/">Maths en maternelle</a></li>
       <li><a href="${RACINE}operations/">Poser les opérations</a></li>
+      <li><a href="${RACINE}methodes/">Méthodes de calcul</a></li>
+      <li><a href="${RACINE}fiches-a-imprimer/">Fiches à imprimer</a></li>
       <li><a href="${RACINE}formulaires/">Formulaires de maths</a></li>
       <li><a href="${RACINE}tables/">Tables de maths</a></li>
       <li><a href="/about">À propos</a></li>

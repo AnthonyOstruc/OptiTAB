@@ -79,9 +79,60 @@ export function contenuEnHtml(source, images = [], type = 'cours') {
   return nettoyer(renderContentWithImages(brut, images || [], { imageType: type === 'fiche' ? 'synthesis' : type }))
 }
 
-// Compose toutes les formules d'un fragment HTML (une seule passe par page :
-// un seul jeu de glyphes). Renvoie le HTML et le nombre de formules.
-export function composerFormules(fragment) {
+// Lettres accentuées dans les formules (« \text{hypoténuse} ») : les polices de
+// MathJax n'ont pas ces lettres ; il les écrivait dans une autre police, avec
+// une largeur estimée, d'où « hypoté nuse ». On les réécrit en accents TeX
+// (\'e, \`e, \^o…), composés avec les glyphes de MathJax (extension textmacros).
+// Le tréma, la cédille et les majuscules à circonflexe ne sont pas convertis
+// (rares ; \" casserait un attribut, et le chapeau sur une majuscule est trop large).
+const ACCENTS_TEX = {
+  é: "\\'e", É: "\\'E", è: '\\`e', È: '\\`E', ê: '\\^e',
+  à: '\\`a', À: '\\`A', â: '\\^a', ù: '\\`u', û: '\\^u', ô: '\\^o'
+}
+const DEBUT_TEXTE = /\\(?:text|textrm|textnormal|textbf|textit|mbox)\s*\{/g
+
+function accentsEnTex(fragment) {
+  if (!/[éÉèÈêàÀâùûô]/.test(fragment)) return fragment
+  let sortie = ''
+  let pos = 0
+  DEBUT_TEXTE.lastIndex = 0
+  for (let m = DEBUT_TEXTE.exec(fragment); m; m = DEBUT_TEXTE.exec(fragment)) {
+    const debut = m.index + m[0].length
+    let fin = debut
+    for (let niveau = 1; fin < fragment.length; fin++) {
+      if (fragment[fin] === '{') niveau++
+      else if (fragment[fin] === '}' && --niveau === 0) break
+    }
+    // un accent suivi d'une lettre : « \'e » puis la suite, sans espace ajoutée
+    const interieur = fragment.slice(debut, fin).replace(/[éÉèÈêàÀâùûô]/g, (c) => `{${ACCENTS_TEX[c]}}`)
+    sortie += fragment.slice(pos, debut) + interieur
+    pos = fin
+    DEBUT_TEXTE.lastIndex = fin
+  }
+  return sortie + fragment.slice(pos)
+}
+
+// Accent grave : MathJax le dessine avec le « prime inversé » (U+2035), trop
+// grand et trop haut. On le remplace par le reflet de l'accent aigu (U+B4),
+// placé comme un accent aigu (même centrage, 462 unités plus bas).
+let cheminAigu = ''
+function accentGrave(html) {
+  if (!html.includes('#MJX-TEX-N-2035')) return html
+  let sortie = html.replace(
+    /transform="translate\(([-\d.]+),([-\d.]+)\) translate\(-137\.5 0\)"><use data-c="2035" xlink:href="#MJX-TEX-N-2035"><\/use>/g,
+    (tout, x, y) => `transform="translate(${x},${Math.round((Number(y) - 462) * 10) / 10}) translate(-250 0)"><use data-c="60" xlink:href="#MJX-TEX-N-B4" transform="translate(500,0) scale(-1,1)"></use>`
+  )
+  if (sortie.includes('xlink:href="#MJX-TEX-N-B4"') && !sortie.includes('id="MJX-TEX-N-B4"')) {
+    if (!cheminAigu) {
+      const essai = composerBrut(String.raw`<p>$\text{\'e}$</p>`)
+      cheminAigu = (essai.match(/<path id="MJX-TEX-N-B4"[^>]*><\/path>/) || [''])[0]
+    }
+    sortie = sortie.replace('<defs>', `<defs>${cheminAigu}`)
+  }
+  return sortie
+}
+
+function composerBrut(fragment) {
   const MJ = globalThis.MathJax
   const doc = MJ._.mathjax.mathjax.document(`<!DOCTYPE html><html><head></head><body>${fragment}</body></html>`, {
     InputJax: MJ.startup.input,
@@ -89,7 +140,13 @@ export function composerFormules(fragment) {
   })
   doc.render()
   const adaptor = MJ.startup.adaptor
-  const html = adaptor.innerHTML(adaptor.body(doc.document))
+  return adaptor.innerHTML(adaptor.body(doc.document))
+}
+
+// Compose toutes les formules d'un fragment HTML (une seule passe par page :
+// un seul jeu de glyphes). Renvoie le HTML et le nombre de formules.
+export function composerFormules(fragment) {
+  const html = accentGrave(composerBrut(accentsEnTex(fragment)))
   return { html, formules: (html.match(/<mjx-container/g) || []).length }
 }
 

@@ -40,7 +40,8 @@ INFO = {
     "niveaux": ["Collège", "Lycée"],
     "ordre": 9,
     "publie": "2026-11-09",
-    "modifie": "2026-11-09",
+    "modifie": "2026-11-16",
+    "liees": ["methodes/calculer-un-pourcentage"],
     "motsCles": ["coefficient multiplicateur", "pourcentage d'augmentation", "pourcentage de baisse", "calculer une augmentation en pourcentage", "évolutions successives", "évolution réciproque", "taux d'évolution", "calcul TVA"],
     "figures": [
         {"nom": "hausse_retour", "alt": "Un prix de 100 € augmente de 20 % (multiplié par 1,2) pour atteindre 120 € ; pour revenir à 100 €, on divise par 1,2, soit une baisse d’environ 16,7 %."},

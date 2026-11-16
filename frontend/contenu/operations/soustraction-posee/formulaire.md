@@ -13,6 +13,7 @@
   "ordre": 2,
   "publie": "2026-11-16",
   "modifie": "2026-11-16",
+  "liees": ["fiches/soustractions-posees-ce1", "fiches/soustractions-posees-ce2"],
   "motsCles": ["soustraction posée", "poser une soustraction", "soustraction avec retenue", "soustraction en colonnes", "soustraction par cassage", "méthode par compensation", "soustraction avec un zéro", "soustraction décimaux"],
   "figures": [
     { "nom": "soustraction_simple", "alt": "Soustraction posée de 4 869 moins 2 345, chiffres alignés sous m, c, d, u ; chaque chiffre du haut est plus grand que celui du bas ; le résultat est 2 524." },

@@ -13,6 +13,7 @@
   "ordre": 3,
   "publie": "2026-11-16",
   "modifie": "2026-11-16",
+  "liees": ["fiches/multiplications-posees-ce2", "fiches/multiplications-posees-cm1"],
   "motsCles": ["multiplication posée", "poser une multiplication", "multiplication à deux chiffres", "multiplication à trois chiffres", "multiplication avec retenue", "multiplication de nombres décimaux", "multiplication per jalousie", "multiplication par jalousie"],
   "figures": [
     { "nom": "multiplication_un_chiffre", "alt": "Multiplication posée de 347 par 6 : les retenues 4 et 2 sont écrites en petit au-dessus des chiffres 4 et 3 ; le résultat est 2 082." },

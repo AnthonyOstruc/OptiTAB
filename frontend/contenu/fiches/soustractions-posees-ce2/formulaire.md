@@ -1,0 +1,138 @@
+---
+{
+  "slug": "soustractions-posees-ce2",
+  "titre": "Soustractions posées CE2 : fiches à imprimer avec corrigé",
+  "titreCourt": "Soustractions posées CE2",
+  "titreSeo": "Soustractions posées CE2 à imprimer (PDF) avec corrigé",
+  "description": "Fiches gratuites de soustractions posées CE2 à imprimer en PDF (nombres jusqu’à 10 000, avec retenues et zéros), avec le corrigé posé de chaque calcul.",
+  "chapo": "Des fiches de soustractions posées pour le CE2, prêtes à imprimer : 12 calculs par fiche (nombres jusqu’à 10 000, avec retenues et zéros), un quadrillage pour poser chaque calcul, et un corrigé où chaque opération est posée en entier.",
+  "resume": "2 fiches PDF et leurs corrigés",
+  "vignette": "carte_soustractions-posees-ce2",
+  "theme": "Soustractions posées",
+  "niveaux": [
+    "Primaire"
+  ],
+  "section": "ce2",
+  "ordre": 4,
+  "publie": "2026-11-16",
+  "modifie": "2026-11-16",
+  "motsCles": [
+    "soustractions posées CE2",
+    "soustractions posées CE2 à imprimer",
+    "fiche soustractions posées CE2",
+    "exercices soustractions posées CE2",
+    "soustractions posées CE2 pdf",
+    "soustractions posées avec corrigé",
+    "fiche de calcul CE2"
+  ],
+  "figures": [
+    {
+      "nom": "apercu_fiche_1",
+      "alt": "Aperçu de la fiche 1 « Soustractions posées CE2 » : 12 calculs à poser sur des quadrillages, avec prénom, date et score."
+    },
+    {
+      "nom": "apercu_corrige_1",
+      "alt": "Aperçu du corrigé de la fiche 1 : les 12 calculs posés avec leurs résultats en vert."
+    },
+    {
+      "nom": "carte_soustractions-posees-ce2",
+      "alt": "Aperçu : haut de la fiche « Soustractions posées CE2 » à imprimer.",
+      "carte": true
+    }
+  ],
+  "telechargements": [
+    {
+      "titre": "Fiche 1",
+      "pdf": "/ressources-gratuites/fiches-a-imprimer/soustractions-posees-ce2/soustractions-posees-ce2-fiche-1.pdf",
+      "corrige": "/ressources-gratuites/fiches-a-imprimer/soustractions-posees-ce2/soustractions-posees-ce2-corrige-1.pdf"
+    },
+    {
+      "titre": "Fiche 2",
+      "pdf": "/ressources-gratuites/fiches-a-imprimer/soustractions-posees-ce2/soustractions-posees-ce2-fiche-2.pdf",
+      "corrige": "/ressources-gratuites/fiches-a-imprimer/soustractions-posees-ce2/soustractions-posees-ce2-corrige-2.pdf"
+    }
+  ],
+  "liees": [
+    "operations/soustraction-posee"
+  ],
+  "chapitresLies": [
+    "ce2/soustraire-en-colonnes"
+  ],
+  "faq": [
+    [
+      "Les fiches de soustractions posées CE2 sont-elles gratuites ?",
+      "Oui. Les fiches et leurs corrigés sont gratuits, sans inscription : il suffit de télécharger le PDF et de l’imprimer."
+    ],
+    [
+      "Comment imprimer la fiche ?",
+      "Cliquez sur « Fiche » pour ouvrir le PDF, puis imprimez-le en A4, à 100 % (taille réelle), pour que les carreaux mesurent 5 mm. Le corrigé est un PDF séparé, à garder pour la correction."
+    ],
+    [
+      "Que contient une fiche de soustractions posées CE2 ?",
+      "12 calculs (nombres jusqu’à 10 000, avec retenues et zéros), adaptés au programme du CE2, avec un quadrillage pour poser chaque opération, une ligne pour le prénom, la date et le score."
+    ],
+    [
+      "Comment utiliser le corrigé ?",
+      "Le corrigé montre chaque calcul posé en entier, avec les retenues et le résultat en vert. Comparez colonne par colonne pour trouver où se trouve une erreur, plutôt que de regarder seulement le résultat."
+    ]
+  ]
+}
+---
+<!-- optitab:1 -->
+[TELECHARGEMENTS]
+
+## I. Ce que contiennent les fiches {Primaire}
+
+Chaque fiche propose **12 soustractions posées** (nombres jusqu’à 10 000, avec retenues et zéros), choisies pour le niveau **CE2**. Chaque calcul a son quadrillage à petits carreaux pour être posé proprement, et le corrigé montre toutes les étapes.
+
+[IMAGE_1]
+
+::: conseil Bien imprimer
+Imprimez en A4, à **100 %** (taille réelle) : les carreaux mesurent alors $5$ mm, comme dans un cahier.
+:::
+
+## II. Le corrigé de la fiche 1 {Primaire}
+
+[IMAGE_2]
+
+| Calcul | Résultat |
+|---|---|
+| a) $5\,274 - 2\,574$ | $2\,700$ |
+| b) $3\,168 - 2\,436$ | $732$ |
+| c) $2\,364 - 1\,541$ | $823$ |
+| d) $7\,215 - 257$ | $6\,958$ |
+| e) $4\,277 - 2\,218$ | $2\,059$ |
+| f) $5\,129 - 212$ | $4\,917$ |
+| g) $9\,333 - 1\,524$ | $7\,809$ |
+| h) $8\,009 - 3\,330$ | $4\,679$ |
+| i) $9\,343 - 3\,983$ | $5\,360$ |
+| j) $7\,078 - 679$ | $6\,399$ |
+| k) $5\,052 - 2\,491$ | $2\,561$ |
+| l) $8\,648 - 2\,063$ | $6\,585$ |
+
+## III. Le corrigé de la fiche 2 {Primaire}
+
+| Calcul | Résultat |
+|---|---|
+| a) $3\,253 - 1\,541$ | $1\,712$ |
+| b) $7\,510 - 2\,619$ | $4\,891$ |
+| c) $4\,881 - 1\,308$ | $3\,573$ |
+| d) $9\,658 - 865$ | $8\,793$ |
+| e) $3\,378 - 2\,293$ | $1\,085$ |
+| f) $8\,374 - 4\,803$ | $3\,571$ |
+| g) $9\,421 - 4\,860$ | $4\,561$ |
+| h) $9\,298 - 3\,388$ | $5\,910$ |
+| i) $8\,906 - 2\,823$ | $6\,083$ |
+| j) $8\,450 - 2\,853$ | $5\,597$ |
+| k) $3\,183 - 2\,371$ | $812$ |
+| l) $9\,327 - 978$ | $8\,349$ |
+
+## IV. Pour réussir {Primaire}
+
+::: retenir Les points clés
+- Le plus grand nombre en haut, unités sous unités.
+- Si le chiffre du haut est trop petit, utiliser une retenue (cassage ou compensation).
+- Vérifier : résultat + nombre retiré = nombre de départ.
+:::
+
+La méthode complète, avec des schémas étape par étape, est dans la page liée en bas de page.

@@ -12,7 +12,8 @@
   "niveaux": ["Primaire", "Collège"],
   "ordre": 2,
   "publie": "2026-11-09",
-  "modifie": "2026-11-09",
+  "modifie": "2026-11-16",
+  "liees": ["methodes/calculer-une-duree"],
   "motsCles": ["tableau de conversion", "tableau de conversion longueur", "tableau de conversion masse", "tableau de conversion litre", "conversion m2", "conversion m3 en litre", "conversion km/h en m/s", "conversion heures minutes"],
   "figures": [
     { "nom": "bande_unites", "alt": "Bande des unités de longueur km, hm, dam, m, dm, cm, mm : on multiplie par 10 à chaque case vers la droite et on divise par 10 à chaque case vers la gauche." },

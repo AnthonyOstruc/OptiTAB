@@ -16,7 +16,8 @@
   ],
   "ordre": 5,
   "publie": "2026-11-09",
-  "modifie": "2026-11-09",
+  "modifie": "2026-11-16",
+  "outil": "diviseurs",
   "motsCles": [
     "nombres premiers",
     "liste des nombres premiers",

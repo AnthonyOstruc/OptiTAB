@@ -8,16 +8,19 @@ import {
 } from './pages.mjs'
 import { contenuEnMarkdown, latexEnTexte } from './rendu.mjs'
 
+// Même entité que l'application (src/services/seo.js) : même identifiant
+// « #organization », même type, même logo carré, mêmes réseaux. Google relie
+// ainsi toutes les pages du site à une seule organisation.
 export const ORGANISATION = {
   '@type': 'EducationalOrganization',
-  '@id': `${SITE}/#organisation`,
+  '@id': `${SITE}/#organization`,
   name: 'OptiTAB',
   url: `${SITE}/`,
-  logo: `${SITE}/Logo_bg.png`,
+  logo: { '@type': 'ImageObject', url: `${SITE}/logo-optitab-carre.png`, width: 512, height: 512 },
   email: 'contact@optitab.net',
-  sameAs: ['https://instagram.com/opti.tab', 'https://facebook.com/optitab', 'https://tiktok.com/@optitab']
+  sameAs: ['https://instagram.com/opti.tab', 'https://tiktok.com/@optitab', 'https://facebook.com/optitab']
 }
-const EDITEUR = { '@id': `${SITE}/#organisation` }
+const EDITEUR = { '@id': `${SITE}/#organization` }
 
 export const FAQ = [
   ['Les ressources OptiTAB sont-elles vraiment gratuites ?',

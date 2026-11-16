@@ -19,6 +19,10 @@ const DEFAULT_KEYWORDS = [
 ].join(', ')
 // Image de partage 1200 × 630 (scripts/vitrine/image-partage.mjs).
 const DEFAULT_IMAGE_PATH = '/og/optitab.png'
+// Logo de la marque pour Google (données structurées Organization).
+const LOGO_CARRE_PATH = '/logo-optitab-carre.png'
+// Comptes officiels (mêmes liens que la page À propos).
+const ORGANISATION_RESEAUX = ['https://instagram.com/opti.tab', 'https://tiktok.com/@optitab', 'https://facebook.com/optitab']
 const DEFAULT_ROBOTS_INDEX =
   'index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1'
 const DEFAULT_ROBOTS_NOINDEX = 'noindex,follow'
@@ -520,10 +524,14 @@ export function setPageSeo({
       '@context': 'https://schema.org',
       '@graph': [
         {
-          '@type': 'Organization',
+          // Même entité que les pages statiques (scripts/ressources/seo.mjs) :
+          // même identifiant, même type, même logo carré, mêmes réseaux.
+          '@type': 'EducationalOrganization',
           '@id': organizationId,
           name: DEFAULT_SITE_NAME,
-          url: siteUrl,
+          url: `${siteUrl}/`,
+          description: 'Cours de maths en ligne, fiches de révision et exercices corrigés du CP à la Terminale, et cours particuliers.',
+          sameAs: ORGANISATION_RESEAUX,
           email: 'contact@optitab.net',
           telephone: '+33764040251',
           contactPoint: [
@@ -536,16 +544,21 @@ export function setPageSeo({
               availableLanguage: ['fr']
             }
           ],
+          // Logo carré (Google : au moins 112 × 112, lisible sur fond blanc),
+          // et non l'image de partage 1200 × 630.
           logo: {
             '@type': 'ImageObject',
-            url: toAbsoluteUrl(DEFAULT_IMAGE_PATH)
+            url: toAbsoluteUrl(LOGO_CARRE_PATH),
+            width: 512,
+            height: 512
           }
         },
         {
           '@type': 'WebSite',
           '@id': websiteId,
-          url: siteUrl,
+          url: `${siteUrl}/`,
           name: DEFAULT_SITE_NAME,
+          alternateName: 'optitab.net',
           publisher: { '@id': organizationId },
           inLanguage: 'fr-FR'
         },

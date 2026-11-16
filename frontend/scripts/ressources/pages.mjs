@@ -100,7 +100,8 @@ function pied(catalogue) {
 export function gabarit({ titre, description, chemin, contenu, catalogue, ctx, jsonld = [], image, type = 'website', markdown, motsCles, actif = RACINE, meta = '' }) {
   const canonique = absolu(chemin)
   const titrePage = titreDePage(titre)
-  const img = image || `${SITE}/Logo_bg.png`
+  // Image de partage 1200 × 630 (la même que la vitrine) quand la page n'en a pas.
+  const img = image || `${SITE}/og/optitab.png`
   return `<!DOCTYPE html>
 <html lang="fr">
 <head>

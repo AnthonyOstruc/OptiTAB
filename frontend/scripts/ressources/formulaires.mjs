@@ -7,7 +7,9 @@
 //     imprimer (multiplication, conversions, chiffres romains, loi normale…) ;
 //   - maternelle (contenu/maternelle/) : une page par thème et par section,
 //     activités illustrées du cahier OptiTAB avec leur réponse, conseils aux
-//     parents et jeux (champs propres : section, activites).
+//     parents et jeux (champs propres : section, activites) ;
+//   - physique-chimie (contenu/physique-chimie/) : formules et fiches de
+//     physique-chimie, avec leur propre section sur l'accueil des ressources.
 //
 // Chaque page est un dossier <rubrique>/<slug>/ :
 //   formulaire.md        bloc d'informations en JSON entre « --- », puis le
@@ -26,7 +28,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { slugifier } from './catalogue.mjs'
-import { RACINE, SITE, absolu, appelsAction, e, filAriane, urlCours, urlFiche } from './pages.mjs'
+import { RACINE, SITE, absolu, appelsAction, e, encartProf, filAriane, urlCours, urlFiche } from './pages.mjs'
 import { contenuEnHtml, contenuEnMarkdown, latexEnTexte, texteBrut } from './rendu.mjs'
 import { ORGANISATION, ariane } from './seo.mjs'
 import { OUTILS, outilHtml, outilScript } from './outils.mjs'
@@ -53,8 +55,6 @@ export const RUBRIQUES = {
     lies: 'Revoir le cours et s’entraîner',
     article: 'La méthode',
     lieu: 'operation',
-    vedettes: ['addition-posee', 'soustraction-posee', 'multiplication-posee', 'division-posee'],
-    voirTout: (n) => `Voir les ${n} opérations`,
     libelleTexte: 'Méthode d’opération posée gratuite'
   },
   // Méthodes de calcul : une méthode pas à pas par page, avec en tête un
@@ -75,8 +75,6 @@ export const RUBRIQUES = {
     lies: 'Revoir le cours et s’entraîner',
     article: 'La méthode',
     lieu: 'methode',
-    vedettes: ['calculer-un-pourcentage', 'calculer-une-moyenne', 'calculer-une-duree', 'calculer-avec-des-fractions'],
-    voirTout: (n) => `Voir les ${n} méthodes`,
     libelleTexte: 'Méthode de calcul gratuite'
   },
   // Fiches à imprimer : une page par opération et par classe, avec des PDF
@@ -97,8 +95,6 @@ export const RUBRIQUES = {
     lies: 'Revoir le cours',
     article: 'La fiche',
     lieu: 'fiche',
-    vedettes: ['additions-posees-ce1', 'multiplications-posees-ce2', 'divisions-posees-cm1', 'divisions-posees-6e'],
-    voirTout: (n, liste) => `Voir les ${liste.reduce((k, f) => k + (f.telechargements || []).length, 0)} fiches`,
     libelleTexte: 'Fiche de maths gratuite à imprimer',
     sections: [
       ['ce1', 'CE1', '7 à 8 ans'],
@@ -125,8 +121,6 @@ export const RUBRIQUES = {
     lies: 'Revoir le cours de ces formules',
     article: 'Le formulaire',
     lieu: 'formulaire',
-    vedettes: ['aires-perimetres-volumes', 'pythagore-thales-trigonometrie', 'second-degre', 'derivees'],
-    voirTout: (n) => `Voir les ${n} formulaires`
   },
   table: {
     dossier: 'tables',
@@ -144,8 +138,6 @@ export const RUBRIQUES = {
     lies: 'Revoir le cours',
     article: 'La table',
     lieu: 'table',
-    vedettes: ['table-de-multiplication', 'tableau-de-conversion', 'chiffres-romains', 'nombres-premiers'],
-    voirTout: (n) => `Voir les ${n} tables`
   },
   // Maths en maternelle : une page par thème et par section (activités du
   // cahier OptiTAB, figures avec leur réponse, conseils aux parents, jeux).
@@ -165,8 +157,6 @@ export const RUBRIQUES = {
     lies: 'Et ensuite, au CP',
     article: 'En maternelle',
     lieu: 'maternelle',
-    vedettes: ['compter-jusqu-a-3-petite-section', 'compter-jusqu-a-6-moyenne-section', 'compter-jusqu-a-10-grande-section', 'formes-geometriques-grande-section'],
-    voirTout: (n) => `Voir les ${n} thèmes`,
     // Particularités de la rubrique : pas de légende des niveaux (toute la page
     // est d'une seule section), « illustrations » plutôt que « schémas », pages
     // de la liste groupées par section, appel vers les maths du CP (pas d'offre
@@ -183,6 +173,31 @@ export const RUBRIQUES = {
     appel: 'cp'
   }
 }
+// Physique-chimie : les formules à connaître, expliquées une à une (première
+// page : les formules du brevet). « accueil: 'section' » : tant que la rubrique
+// n'a qu'une page, sa page de liste la montre en grande carte (vedette).
+RUBRIQUES.physique = {
+  dossier: 'physique-chimie',
+  racine: `${RACINE}physique-chimie/`,
+  court: 'Physique-chimie',
+  titre: 'Physique-chimie',
+  titreH1: 'Physique-chimie : formules et fiches gratuites',
+  kicker: 'Physique-chimie',
+  lead: 'Les formules de physique-chimie à connaître, expliquées une à une : le sens de chaque lettre et son unité, un exemple corrigé et le piège à éviter. À consulter ou à imprimer.',
+  accroche: 'Les formules à connaître, expliquées une à une avec leurs unités, un exemple corrigé et le piège à éviter.',
+  titreSeo: 'Physique-chimie : formules et fiches de révision gratuites',
+  description: 'Physique-chimie gratuite : les formules du brevet expliquées une à une, avec unités, exemples corrigés, schémas et pièges à éviter. À consulter ou imprimer.',
+  typeRessource: ['Formulaire', 'Fiche de révision'],
+  autres: 'Les autres fiches de physique-chimie',
+  imprimer: 'Imprimer le formulaire',
+  lies: 'Revoir le cours',
+  article: 'Le formulaire',
+  lieu: 'physique',
+  libelleTexte: 'Formulaire de physique-chimie gratuit',
+  appel: 'physique',
+  accueil: 'section'
+}
+
 const rubrique = (f) => RUBRIQUES[f.categorie || 'formulaire']
 
 export const RACINE_FORMULAIRES = RUBRIQUES.formulaire.racine
@@ -446,6 +461,21 @@ function carte(f, niveauTitre = 3) {
     </a>`
 }
 
+// Grande carte d'une rubrique qui n'a encore qu'une page (accueil des ressources).
+function vedette(f) {
+  const fig = f.figures.find((x) => x.nom === f.vignette) || f.figures[0]
+  return `<a class="fm-vedette" href="${urlFormulaire(f)}">
+      ${fig ? `<span class="fm-vedette__visuel"><img src="${urlFigure(f, fig.nom)}" alt="" width="${fig.largeur}" height="${fig.hauteur}" loading="lazy" decoding="async"></span>` : ''}
+      <span class="fm-vedette__corps">
+        <span class="fm-vedette__kicker">${e([...f.niveaux, f.theme].filter(Boolean).join(' · '))}</span>
+        <h3 class="fm-vedette__titre">${e(typo(f.titre))}</h3>
+        ${f.chapo ? `<span class="fm-vedette__texte">${e(f.chapo)}</span>` : ''}
+        ${f.resume ? `<span class="fm-vedette__resume">${e(f.resume)}</span>` : ''}
+        <span class="fm-vedette__lien">Voir le formulaire ${icone('fleche')}</span>
+      </span>
+    </a>`
+}
+
 function autresFormulaires(f, formulaires) {
   // Les trois pages les plus proches de la même rubrique (ordre) : une rangée.
   const rang = (x) => Math.abs((x.ordre ?? 99) - (f.ordre ?? 99))
@@ -465,6 +495,22 @@ const etapes = (f) => [...etapesRubrique(rubrique(f)), [f.titreCourt, urlFormula
 
 // Appel de fin de page : l'offre du site, ou (maternelle) les maths du CP.
 function appelFinal(r, lieu) {
+  if (r.appel === 'physique') {
+    return `<section class="rg-ctas" aria-label="Aller plus loin">
+  <div class="rg-cta rg-cta--plateforme">
+    <p class="rg-cta__kicker">Brevet</p>
+    <h2 class="rg-cta__title">Réviser aussi les maths du brevet</h2>
+    <p>Les cours, les fiches de révision et les exercices corrigés de maths de 3e, gratuits et conformes au programme.</p>
+    <a class="rg-btn rg-btn--primary" href="${RACINE}maths/3e/" data-cta-name="maths_3e" data-cta-location="${lieu}">Voir les maths de 3e ${icone('fleche')}</a>
+  </div>
+  <div class="rg-cta rg-cta--prof">
+    <p class="rg-cta__kicker">Cours particuliers</p>
+    <h2 class="rg-cta__title">Un prof de physique-chimie, en ligne</h2>
+    <p>Des séances individuelles à distance pour comprendre le cours, refaire les exercices et préparer le brevet ou le bac, avec un professeur expérimenté.</p>
+    <a class="rg-btn rg-btn--green" href="/cours-particuliers" data-cta-name="tutoring" data-cta-location="${lieu}">Réserver un cours particulier ${icone('fleche')}</a>
+  </div>
+</section>`
+  }
   if (r.appel !== 'cp') return appelsAction(null, null, lieu)
   return `<section class="rg-ctas rg-ctas--seul" aria-label="Aller plus loin">
   <div class="rg-cta rg-cta--plateforme">
@@ -474,6 +520,22 @@ function appelFinal(r, lieu) {
     <a class="rg-btn rg-btn--primary" href="${RACINE}maths/cp/" data-cta-name="maths_cp" data-cta-location="${lieu}">Voir les maths du CP ${icone('fleche')}</a>
   </div>
 </section>`
+}
+
+// Physique-chimie : pas d'abonnement dans cette matière, les cours particuliers
+// sont la seule offre. Un encadré au milieu de la page (avant la partie du
+// milieu), car le bas d'une longue page est peu lu. Pages de moins de 4 parties : rien.
+function avecEncartProf(f, html) {
+  if (rubrique(f).appel !== 'physique') return html
+  const parties = [...html.matchAll(/<h2\b/g)].map((m) => m.index)
+  if (parties.length < 4) return html
+  const i = parties[Math.ceil(parties.length / 2)]
+  const encart = encartProf({
+    titre: 'Besoin d’aide en physique-chimie\u00a0?',
+    texte: 'Un prof t’explique les formules et refait les exercices avec toi, en cours particulier en ligne, du collège à la prépa.',
+    lieu: 'ressources_physique_milieu'
+  })
+  return `${html.slice(0, i)}${encart}\n${html.slice(i)}`
 }
 
 export function pageFormulaire(f, rendu, formulaires) {
@@ -499,7 +561,7 @@ export function pageFormulaire(f, rendu, formulaires) {
   ${sommaire(f, rendu.titres)}
   <article class="rg-doc rg-doc--fiche fm-doc fm-doc--${f.categorie}">
     <div class="rg-doc__tools"><button type="button" class="rg-btn rg-btn--ghost rg-btn--sm" data-imprimer>${icone('imprimer')} ${r.imprimer}</button></div>
-    <div class="sci-doc rg-sci fm-sci">${rendu.html}</div>${f.outil ? `\n    ${outilScript(f.outil)}` : ''}
+    <div class="sci-doc rg-sci fm-sci">${avecEncartProf(f, rendu.html)}</div>${f.outil ? `\n    ${outilScript(f.outil)}` : ''}
     ${pagesLiees(f, formulaires)}
     ${chapitresLies(f)}
     ${blocFaq(f)}
@@ -527,12 +589,14 @@ export function pageFormulaires(liste, categorie = 'formulaire') {
     <div class="fm-grille">${pages.map((f) => carte(f, 3)).join('')}</div>
   </section>`
       }).join('\n  ')
-    : `<div class="fm-grille">${liste.map((f) => carte(f, 2)).join('')}</div>`
+    : liste.length === 1 && r.accueil === 'section'
+      ? vedette(liste[0])
+      : `<div class="fm-grille">${liste.map((f) => carte(f, 2)).join('')}</div>`
   return `<header class="rg-chap fm-head">
   <div class="rg-wrap">
     ${filAriane(etapesRubrique(r))}
     <p class="rg-kicker">Ressources gratuites · Sans inscription</p>
-    <h1 class="rg-h1">${r.titre}</h1>
+    <h1 class="rg-h1">${e(typo(r.titreH1 || r.titre))}</h1>
     <p class="rg-lead">${r.lead}</p>
   </div>
 </header>
@@ -543,35 +607,63 @@ export function pageFormulaires(liste, categorie = 'formulaire') {
 </div>`
 }
 
-// Blocs « Formulaires » et « Tables » de l'accueil des ressources gratuites.
-export function blocAccueilFormulaires(pages) {
-  for (const [categorie, r] of Object.entries(RUBRIQUES)) {
-    for (const slug of r.vedettes || []) {
-      if (!pages.some((f) => f.categorie === categorie && f.slug === slug)) throw new Error(`rubrique ${categorie} : page vedette inconnue (${slug})`)
-    }
+// ---------- Accueil des ressources gratuites ----------
+// Données des blocs de l'accueil, mis en page par pageAccueil (pages.mjs) :
+// la ligne « Maternelle » du choix de la classe, l'accès rapide et les rubriques.
+
+// Accès rapide : les pages qui répondent aux recherches les plus fréquentes
+// (pourcentage, moyenne, tables, conversions, formules du collège et du lycée).
+const ACCES_RAPIDE = [
+  ['table', 'table-de-multiplication'],
+  ['methode', 'calculer-un-pourcentage'],
+  ['table', 'tableau-de-conversion'],
+  ['formulaire', 'pythagore-thales-trigonometrie'],
+  ['methode', 'calculer-une-moyenne'],
+  ['formulaire', 'aires-perimetres-volumes'],
+  ['methode', 'calculer-avec-des-fractions'],
+  ['operation', 'division-posee'],
+  ['formulaire', 'second-degre'],
+  ['formulaire', 'derivees'],
+  ['physique', 'formules-physique-chimie-brevet'],
+  ['table', 'chiffres-romains']
+]
+
+// Rubriques de l'accueil, dans l'ordre : icône (pages.mjs) et ce qu'elles contiennent.
+const RUBRIQUES_ACCUEIL = [
+  ['formulaire', 'formule', (n) => pluriel(n, 'formulaire', 'formulaires')],
+  ['table', 'table', (n) => pluriel(n, 'table', 'tables')],
+  ['methode', 'calcul', (n) => `${pluriel(n, 'méthode', 'méthodes')} et calculateurs`],
+  ['operation', 'operation', (n) => pluriel(n, 'opération expliquée', 'opérations expliquées')],
+  ['fiche', 'imprimer', (n, liste) => pluriel(liste.reduce((k, f) => k + (f.telechargements || []).length, 0), 'fiche PDF', 'fiches PDF')],
+  ['physique', 'physique', (n) => pluriel(n, 'fiche', 'fiches')]
+]
+
+export function donneesAccueil(pages) {
+  const page = (categorie, slug) => {
+    const f = pages.find((x) => x.categorie === categorie && x.slug === slug)
+    if (!f) throw new Error(`accueil des ressources : page inconnue (${categorie}/${slug})`)
+    return f
   }
-  const tuiles = Object.entries(RUBRIQUES).map(([categorie, r]) => {
+  const acces = ACCES_RAPIDE.map(([categorie, slug]) => {
+    const f = page(categorie, slug)
+    return { titre: typo(f.titreCourt || f.titre), url: urlFormulaire(f) }
+  })
+  const rubriques = RUBRIQUES_ACCUEIL.map(([categorie, ico, compte]) => {
+    const r = RUBRIQUES[categorie]
     const liste = pages.filter((f) => f.categorie === categorie)
-    if (!liste.length) return ''
-    const vedettes = (r.vedettes || []).map((slug) => liste.find((f) => f.slug === slug))
-    const choix = vedettes.length ? vedettes : liste.slice(0, 4)
-    const fig = choix[0].figures.find((x) => x.nom === choix[0].vignette) || choix[0].figures[0]
-    return `<li class="fm-tuile">
-      ${fig ? `<a class="fm-tuile__visuel" href="${r.racine}" tabindex="-1" aria-hidden="true"><img src="${urlFigure(choix[0], fig.nom)}" alt="" width="${fig.largeur}" height="${fig.hauteur}" loading="lazy" decoding="async"></a>` : ''}
-      <div class="fm-tuile__corps">
-        <h3 class="fm-tuile__titre"><a href="${r.racine}">${e(r.titre)}</a></h3>
-        <p class="fm-tuile__texte">${e(typo(r.accroche))}</p>
-        <ul class="fm-tuile__liens">${choix.map((f) => `<li><a href="${urlFormulaire(f)}">${e(typo(f.titreCourt))}</a></li>`).join('')}</ul>
-        <a class="fm-tuile__tout" href="${r.racine}">${e(r.voirTout ? r.voirTout(liste.length, liste) : 'Tout voir')} ${icone('fleche')}</a>
-      </div>
-    </li>`
-  }).join('\n    ')
-  return `<section class="rg-cycle fm-rubriques" aria-labelledby="cycle-outils">
-    <div class="rg-cycle__head"><h2 id="cycle-outils">Méthodes, fiches et formulaires</h2><p>Apprendre une méthode, s’entraîner sur papier ou retrouver une formule.</p></div>
-    <ul class="fm-tuiles">
-    ${tuiles}
-    </ul>
-  </section>`
+    if (!liste.length) return null
+    return { cle: categorie, titre: typo(r.titre), texte: typo(r.accroche), compte: compte(liste.length, liste), url: r.racine, icone: ico }
+  }).filter(Boolean)
+  const m = RUBRIQUES.maternelle
+  const maternelle = {
+    titre: typo(m.titre),
+    url: m.racine,
+    sections: m.sections.map(([cle, titre]) => {
+      const n = pages.filter((f) => f.categorie === 'maternelle' && f.section === cle).length
+      return n ? { titre, meta: pluriel(n, 'thème', 'thèmes'), url: `${m.racine}#section-${cle}` } : null
+    }).filter(Boolean)
+  }
+  return { acces, rubriques, maternelle }
 }
 
 // ---------- Référencement ----------

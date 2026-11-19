@@ -122,7 +122,7 @@ function ligneAuteur(a) {
     ? `Mis à jour le <time datetime="${a.modifie}">${dateLongue(a.modifie)}</time>`
     : `Publié le <time datetime="${a.publie}">${dateLongue(a.publie)}</time>`
   return `<div class="bl-byline">
-      <span class="bl-byline__logo" aria-hidden="true"><img src="/favicon.png" alt="" width="26" height="26"></span>
+      <span class="bl-byline__logo" aria-hidden="true"><img src="/favicon-48.png" alt="" width="26" height="26"></span>
       <div>
         <p class="bl-byline__nom">Par ${SIGNATURE}</p>
         <p class="bl-byline__meta"><span>${icone('calendrier')}${date}</span><span>${icone('horloge')}${a.lecture} min de lecture</span></p>
@@ -188,10 +188,15 @@ function carte(a, { une = false, niveauTitre = 3 } = {}) {
 }
 
 // « D'autres articles pourraient vous intéresser » : ceux choisis dans
-// « lireAussi », complétés par les plus récents.
+// « lireAussi », complétés à tour de rôle par les articles qui suivent dans la
+// liste : chaque article est ainsi proposé par plusieurs autres (avant, les
+// mêmes revenaient partout et certains n'étaient liés que depuis l'accueil du blog).
 function suggestions(a, articles) {
   const choisis = a.lireAussi.map((s) => articles.find((x) => x.slug === s)).filter(Boolean)
-  const autres = articles.filter((x) => x.slug !== a.slug && !choisis.includes(x))
+  const i = articles.indexOf(a)
+  const autres = articles
+    .map((_, k) => articles[(i + 1 + k) % articles.length])
+    .filter((x) => x.slug !== a.slug && !choisis.includes(x))
   const liste = [...choisis, ...autres].slice(0, 3)
   if (!liste.length) return ''
   return `<section class="bl-suggestions" aria-labelledby="bl-suggestions-titre">

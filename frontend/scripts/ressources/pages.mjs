@@ -34,7 +34,13 @@ const ICONES = {
   prof: '<path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/>',
   check: '<path d="m5 12 5 5L20 7"/>',
   imprimer: '<path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v7H6z"/>',
-  menu: '<path d="M4 7h16M4 12h16M4 17h16"/>'
+  menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
+  // Rubriques de l'accueil des ressources
+  formule: '<path d="M18 4H6l6 8-6 8h12"/>',
+  table: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9.5h18M3 14.5h18M9 4v16M15 4v16"/>',
+  calcul: '<rect x="5" y="2.5" width="14" height="19" rx="2"/><path d="M8.5 6.5h7v3h-7z"/><path d="M8.5 13.5h.01M12 13.5h.01M15.5 13.5h.01M8.5 17.5h.01M12 17.5h.01M15.5 17.5h.01"/>',
+  operation: '<path d="M7 3.5v7M3.5 7h7M14 7h6.5M4.5 15.5l5 5M9.5 15.5l-5 5M14 18h6.5"/><path d="M17.25 15.25h.01M17.25 20.75h.01"/>',
+  physique: '<path d="M9 3h6M10 3v6.5L4.6 18.4A1.7 1.7 0 0 0 6 21h12a1.7 1.7 0 0 0 1.4-2.6L14 9.5V3"/><path d="M7.5 15h9"/>'
 }
 const icone = (nom, cls = 'rg-ico') => `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true" focusable="false">${ICONES[nom]}</svg>`
 
@@ -48,7 +54,7 @@ function entete(actif = RACINE) {
   ]
   return `<header class="rg-header">
   <div class="rg-wrap rg-header__inner">
-    <a href="/" class="rg-brand" aria-label="OptiTAB, cours de maths en ligne — accueil" data-track="nav" data-nav-name="home" data-nav-location="header_ressources"><img src="/Logo_bg.png" alt="OptiTAB" width="132" height="43"></a>
+    <a href="/" class="rg-brand" aria-label="OptiTAB, cours de maths en ligne — accueil" data-track="nav" data-nav-name="home" data-nav-location="header_ressources"><img src="/logo-optitab.png" alt="OptiTAB" width="132" height="43"></a>
     <nav class="rg-nav" id="rg-nav" aria-label="Navigation principale">
       ${liens.map(([href, texte, nom]) => `<a href="${href}"${href === actif ? ' class="is-active"' : ''} data-track="nav" data-nav-name="${nom}" data-nav-location="header_ressources">${texte}</a>`).join('\n      ')}
       <a href="/?compte=connexion" class="rg-nav__login" data-cta-name="login" data-cta-location="header_ressources">Se connecter</a>
@@ -70,7 +76,7 @@ function pied(catalogue) {
   return `<footer class="rg-footer">
   <div class="rg-wrap rg-footer__grid">
     <div class="rg-footer__brand">
-      <img src="/Logo_bg.png" alt="OptiTAB" width="132" height="43" loading="lazy">
+      <img src="/logo-optitab.png" alt="OptiTAB" width="132" height="43" loading="lazy">
       <p>Cours de maths clairs, fiches de révision et exercices corrigés pas à pas, du CP à la Terminale. Et des profs disponibles en cours particuliers.</p>
       <p class="rg-footer__contact"><a href="mailto:contact@optitab.net">contact@optitab.net</a> · <a href="https://wa.me/33764040251" rel="noopener">WhatsApp 07 64 04 02 51</a></p>
     </div>
@@ -84,6 +90,7 @@ function pied(catalogue) {
       <li><a href="${RACINE}fiches-a-imprimer/">Fiches à imprimer</a></li>
       <li><a href="${RACINE}formulaires/">Formulaires de maths</a></li>
       <li><a href="${RACINE}tables/">Tables de maths</a></li>
+      <li><a href="${RACINE}physique-chimie/">Physique-chimie</a></li>
       <li><a href="/about">À propos</a></li>
       <li><a href="/blog">Blog</a></li>
       <li><a href="/contact">Contact</a></li>
@@ -124,7 +131,9 @@ ${motsCles ? `<meta name="keywords" content="${e(motsCles)}">\n` : ''}<meta name
 <meta name="twitter:title" content="${e(titre)}">
 <meta name="twitter:description" content="${e(description)}">
 <meta name="twitter:image" content="${e(img)}">
-<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+<link rel="apple-touch-icon" href="/favicon-192.png">
 ${markdown ? `<link rel="alternate" type="text/markdown" href="${markdown}" title="Version texte (Markdown)">\n` : ''}<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&amp;display=swap">
@@ -154,8 +163,8 @@ const BANDEAU_COOKIES = `<section class="rg-cookies" id="rg-cookies" role="dialo
   <div class="rg-cookies__text"><strong>Votre vie privée compte.</strong>
     <p>OptiTAB utilise des cookies essentiels pour le fonctionnement du site et des cookies de statistiques et marketing/publicité pour mesurer l’audience et personnaliser nos campagnes. Vous pouvez accepter, refuser ou personnaliser votre choix. <a href="/cookies">En savoir plus</a>.</p>
     <div class="rg-cookies__choix" hidden>
-      <label><input type="checkbox" data-consent="analytics" checked> Statistiques (Google Analytics, Microsoft Clarity)</label>
-      <label><input type="checkbox" data-consent="marketing" checked> Marketing / Publicité (Meta Pixel)</label>
+      <label><input type="checkbox" data-consent="analytics"> Statistiques (Google Analytics, Microsoft Clarity)</label>
+      <label><input type="checkbox" data-consent="marketing"> Marketing / Publicité (Meta Pixel)</label>
     </div>
   </div>
   <div class="rg-cookies__actions">
@@ -180,6 +189,32 @@ perso.addEventListener('click',function(){if(choix.hidden){choix.hidden=false;pe
 
 // Menu sur téléphone, impression avec les corrections ouvertes.
 const SCRIPT = `(function(){var b=document.querySelector('.rg-menu'),n=document.getElementById('rg-nav');if(b&&n){b.addEventListener('click',function(){var o=n.classList.toggle('is-open');b.setAttribute('aria-expanded',o?'true':'false')})}var p=document.querySelector('[data-imprimer]');if(p){p.addEventListener('click',function(){window.print()})}window.addEventListener('beforeprint',function(){document.querySelectorAll('details').forEach(function(d){d.setAttribute('data-ferme',d.open?'':'1');d.open=true})});window.addEventListener('afterprint',function(){document.querySelectorAll('details[data-ferme="1"]').forEach(function(d){d.open=false})})})();`
+
+// ---------- Recherche (accueil des ressources) ----------
+// L'index (recherche.json : chapitres, formulaires, tables, méthodes…) n'est
+// chargé qu'au premier usage de la case. Sans JavaScript, la case est masquée.
+const SCRIPT_RECHERCHE = `(function(){var z=document.querySelector('[data-recherche]');if(!z)return;z.hidden=false;
+var i=z.querySelector('input'),r=z.querySelector('.rg-search__res'),et=document.getElementById('rg-search-etat'),idx=null,att=null;
+function n(t){return ' '+String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()+' '}
+function charger(){if(!att){att=fetch('/ressources-gratuites/recherche.json').then(function(x){return x.json()}).then(function(d){idx=d.map(function(e){return {t:e[0],s:e[1],u:e[2],k:n(e[0]+' '+e[1]+' '+(e[3]||''))}});return idx}).catch(function(){att=null;return []})}return att}
+function esc(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function montrer(){var q=n(i.value).trim();if(q.length<2){r.hidden=true;r.innerHTML='';et.textContent='';return}
+charger().then(function(d){var m=q.split(' ').filter(function(w){return w.length>1}).map(function(w){return w.length>5?w.slice(0,5):w});if(!m.length)m=[q];var s=function(e){var t=n(e.t);return (t.indexOf(' '+q)>-1?6:0)+(e.k.indexOf(' '+q)>-1?3:0)+m.filter(function(w){return t.indexOf(' '+w)>-1}).length},res=d.filter(function(e){return m.every(function(w){return e.k.indexOf(' '+w)>-1})});res.sort(function(a,b){return s(b)-s(a)});res=res.slice(0,8);
+r.innerHTML=res.length?res.map(function(e){return '<li><a href="'+e.u+'"><strong>'+esc(e.t)+'</strong><span>'+esc(e.s)+'</span></a></li>'}).join(''):'<li class="rg-search__vide">Aucun résultat. Essaie un autre mot, ou choisis ta classe ci-dessous.</li>';
+r.hidden=false;et.textContent=res.length?res.length+' résultat'+(res.length>1?'s':''):'Aucun résultat'})}
+var tm;i.addEventListener('focus',charger);i.addEventListener('input',function(){clearTimeout(tm);tm=setTimeout(montrer,120)});
+i.addEventListener('keydown',function(ev){if(ev.key==='Escape'){i.value='';montrer()}if(ev.key==='Enter'){var a=r.querySelector('a');if(a){ev.preventDefault();location.href=a.href}}})})();`
+
+const RECHERCHE = `<div class="rg-search" data-recherche hidden>
+        <label class="rg-search__box">
+          <span class="rg-visually-hidden">Rechercher une leçon, un chapitre ou une formule</span>
+          <svg class="rg-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+          <input type="search" placeholder="Fractions, Pythagore, dérivée…" autocomplete="off" enterkeyhint="search" aria-controls="rg-search-res" aria-describedby="rg-search-etat">
+        </label>
+        <p class="rg-visually-hidden" id="rg-search-etat" aria-live="polite"></p>
+        <ul class="rg-search__res" id="rg-search-res" hidden></ul>
+      </div>
+      <script>${SCRIPT_RECHERCHE}</script>`
 
 // ---------- Blocs communs ----------
 export function filAriane(etapes) {
@@ -239,12 +274,30 @@ const examen = (classe) => {
   return ''
 }
 
+// Les cours particuliers sont proposés du collège à la prépa (pas en primaire).
+const avecProf = (classe) => !classe || classe.cycle !== 'primaire'
+
+// Ligne d'aide en haut du cours et de la fiche, à gauche du bouton Imprimer :
+// visible dès l'arrivée, sans gêner la lecture.
+function lienAide(classe, lieu) {
+  if (!avecProf(classe)) return ''
+  return `<a class="rg-aide" href="/cours-particuliers" data-cta-name="tutoring" data-cta-location="${lieu}">${icone('prof')}<span>Besoin d’aide sur ce chapitre\u00a0? <strong>Un prof t’explique en cours particulier</strong></span>${icone('fleche')}</a>`
+}
+
+// Encadré « cours particuliers » placé au milieu d'une longue page (physique-chimie).
+export function encartProf({ titre, texte, lieu }) {
+  return `<aside class="rg-encart" aria-label="Cours particuliers">
+  <span class="rg-encart__ico">${icone('prof')}</span>
+  <div class="rg-encart__texte"><p class="rg-encart__titre">${e(titre).replace(/(\S+-\S+)/g, '<span class="rg-insecable">$1</span>')}</p><p>${e(texte)}</p></div>
+  <a class="rg-btn rg-btn--green rg-btn--sm" href="/cours-particuliers" data-cta-name="tutoring" data-cta-location="${lieu}">Réserver un cours ${icone('fleche')}</a>
+</aside>`
+}
+
 export function appelsAction(classe, ch, lieu) {
   const totalChapitre = ch && ch.totalExercices > ch.exercices.length
     ? `Les ${ch.totalExercices} exercices corrigés de ce chapitre, le suivi de tes progrès et des révisions guidées.`
     : 'Tous les exercices corrigés pas à pas, le suivi de tes progrès et des révisions guidées.'
-  // Les cours particuliers sont proposés du collège à la prépa.
-  const prof = !classe || classe.cycle !== 'primaire'
+  const prof = avecProf(classe)
   return `<section class="rg-ctas${prof ? '' : ' rg-ctas--seul'}" aria-label="Aller plus loin">
   <div class="rg-cta rg-cta--plateforme">
     <p class="rg-cta__kicker">Plateforme OptiTAB</p>
@@ -277,6 +330,7 @@ export function pageCours(ch, rendu) {
 <div class="rg-wrap rg-reading${sommaire ? ' rg-reading--toc' : ''}">
   ${sommaire}
   <article class="rg-doc">
+    <div class="rg-doc__tools">${lienAide(ch.classe, 'ressources_cours_haut')}<button type="button" class="rg-btn rg-btn--ghost rg-btn--sm" data-imprimer>${icone('imprimer')} Imprimer le cours</button></div>
     <div class="sci-doc rg-sci">${rendu.html}</div>
     <section class="rg-next" aria-label="Pour continuer">
       <p class="rg-next__title">${icone('check')} Cours lu ? Continue avec :</p>
@@ -295,7 +349,7 @@ export function pageFiche(ch, rendu) {
   return `${enTeteChapitre(ch, 'fiche', `L’essentiel du chapitre « ${e(ch.titre)} » en une page : définitions, propriétés et méthodes à connaître en ${e(ch.classe.court)}.`)}
 <div class="rg-wrap rg-reading">
   <article class="rg-doc rg-doc--fiche">
-    <div class="rg-doc__tools"><button type="button" class="rg-btn rg-btn--ghost rg-btn--sm" data-imprimer>${icone('imprimer')} Imprimer la fiche</button></div>
+    <div class="rg-doc__tools">${lienAide(ch.classe, 'ressources_fiche_haut')}<button type="button" class="rg-btn rg-btn--ghost rg-btn--sm" data-imprimer>${icone('imprimer')} Imprimer la fiche</button></div>
     <div class="sci-doc rg-sci">${rendu.html}</div>
     <section class="rg-next" aria-label="Pour continuer">
       <p class="rg-next__title">${icone('check')} Fiche relue ? Vérifie que tu sais l’appliquer :</p>
@@ -328,13 +382,23 @@ export function pageExercices(ch, exercicesRendus) {
       </div>
     </details>` : ''}
   </section>`).join('\n')
-  const reste = ch.totalExercices > n ? `<aside class="rg-more">
-    <p><strong>${ch.totalExercices - n} autres exercices corrigés</strong> t’attendent sur ce chapitre dans la plateforme OptiTAB, avec le suivi de tes réussites.</p>
-    <a class="rg-btn rg-btn--primary rg-btn--sm" href="/tarifs" data-cta-name="pricing" data-cta-location="ressources_exercices">Voir les formules</a>
+  // Après les exercices gratuits, le moment où l'élève sait s'il a besoin de
+  // plus : d'autres exercices (abonnement) ou l'aide d'un prof (collège et plus).
+  const autres = ch.totalExercices > n ? `<div class="rg-more__ligne">
+      <p><strong>${ch.totalExercices - n} autres exercices corrigés</strong> t’attendent sur ce chapitre dans la plateforme OptiTAB, avec le suivi de tes réussites.</p>
+      <a class="rg-btn rg-btn--primary rg-btn--sm" href="/tarifs" data-cta-name="pricing" data-cta-location="ressources_exercices">Voir les formules</a>
+    </div>` : ''
+  const aide = avecProf(ch.classe) ? `<div class="rg-more__ligne">
+      <p><strong>Tu bloques sur un exercice\u00a0?</strong> Un prof de maths le reprend avec toi, pas à pas, en cours particulier en ligne.</p>
+      <a class="rg-btn rg-btn--green rg-btn--sm" href="/cours-particuliers" data-cta-name="tutoring" data-cta-location="ressources_exercices_aide">Réserver un cours</a>
+    </div>` : ''
+  const reste = autres || aide ? `<aside class="rg-more" aria-label="Aller plus loin">
+    ${[autres, aide].filter(Boolean).join('\n    ')}
   </aside>` : ''
   return `${enTeteChapitre(ch, 'exercices', `${pluriel(n, 'exercice corrigé', 'exercices corrigés')} sur « ${e(ch.titre)} » (${e(ch.classe.court)}), du plus simple au plus complet. Cherche d’abord sur ton brouillon, puis ouvre la correction détaillée.`)}
 <div class="rg-wrap rg-reading">
   <div class="rg-exos">
+    <div class="rg-doc__tools"><button type="button" class="rg-btn rg-btn--ghost rg-btn--sm" data-imprimer>${icone('imprimer')} Imprimer les exercices et leurs corrigés</button></div>
     ${blocs}
     ${reste}
     <section class="rg-next" aria-label="Pour continuer">
@@ -349,7 +413,32 @@ export function pageExercices(ch, exercicesRendus) {
 <div class="rg-wrap">${voisins(ch)}${appelsAction(ch.classe, ch, 'ressources_exercices')}</div>`
 }
 
-export function pageClasse(classe, catalogue) {
+// Articles du blog proposés sur la page de chaque classe.
+const BLOG_PAR_CLASSE = {
+  cp: ['comment-aider-son-enfant-en-maths', 'astuces-calcul-mental'],
+  ce1: ['comment-aider-son-enfant-en-maths', 'astuces-calcul-mental'],
+  ce2: ['apprendre-les-tables-de-multiplication', 'astuces-calcul-mental'],
+  cm1: ['apprendre-les-tables-de-multiplication', 'comment-aider-son-enfant-en-maths'],
+  cm2: ['apprendre-les-tables-de-multiplication', 'reviser-un-controle-de-maths'],
+  '6e': ['reviser-un-controle-de-maths', 'comment-progresser-en-maths'],
+  '5e': ['reviser-un-controle-de-maths', 'comment-progresser-en-maths'],
+  '4e': ['reviser-un-controle-de-maths', 'calculatrice-college-lycee'],
+  '3e': ['reviser-le-brevet-de-maths', 'calculatrice-college-lycee'],
+  seconde: ['comment-progresser-en-maths', 'calculatrice-college-lycee'],
+  premiere: ['specialite-maths-premiere-terminale', 'epreuve-anticipee-de-maths-premiere'],
+  terminale: ['specialite-maths-premiere-terminale', 'reviser-les-maths-pendant-les-vacances']
+}
+
+function conseilsBlog(classe, articles) {
+  const liste = (BLOG_PAR_CLASSE[classe.slug] || []).map((s) => articles.find((a) => a.slug === s)).filter(Boolean)
+  if (!liste.length) return ''
+  return `<section class="rg-next rg-conseils" aria-labelledby="conseils-${classe.slug}">
+    <p class="rg-next__title" id="conseils-${classe.slug}">${icone('check')} Conseils pour réussir en maths ${e(classe.court)}</p>
+    <div class="rg-next__grid">${liste.map((a) => `<a class="rg-next__card" href="/blog/${a.slug}/">${icone('cours')}<span><strong>${e(a.titre)}</strong><small>${e(a.description)}</small></span></a>`).join('')}</div>
+  </section>`
+}
+
+export function pageClasse(classe, catalogue, articles = []) {
   const nb = classe.chapitres.length
   const nbExos = classe.chapitres.reduce((s, ch) => s + ch.exercices.length, 0)
   const themes = classe.themes.map((t) => `<section class="rg-theme" aria-labelledby="theme-${t.id}">
@@ -381,70 +470,72 @@ export function pageClasse(classe, catalogue) {
 </header>
 <div class="rg-wrap rg-classe">
   ${themes}
+  ${conseilsBlog(classe, articles)}
   ${appelsAction(classe, null, 'ressources_classe')}
 </div>`
 }
 
-export function pageAccueil(catalogue, faq, apresClasses = '') {
+// Accueil des ressources : une seule question par bloc, dans l'ordre où le
+// visiteur se la pose. Chercher une notion (en-tête), choisir sa classe,
+// aller droit aux pages les plus demandées, ou ouvrir une rubrique d'outils.
+// blocs = donneesAccueil() de formulaires.mjs : { acces, rubriques, maternelle }.
+export function pageAccueil(catalogue, faq, blocs) {
   const t = catalogue.totaux
-  const cycles = CYCLES.map((cy) => {
-    const classes = catalogue.classes.filter((c) => c.cycle === cy.cle)
-    if (!classes.length) return ''
-    return `<section class="rg-cycle" aria-labelledby="cycle-${cy.cle}">
-    <div class="rg-cycle__head"><h2 id="cycle-${cy.cle}">${e(cy.titre)}</h2><p>${e(cy.resume)}</p></div>
-    <ul class="rg-classes">${classes.map((c) => `<li><a class="rg-classe-card" href="${urlClasse(c)}">
-      <span class="rg-classe-card__name">Maths ${e(c.court)}</span>
-      <span class="rg-classe-card__text">${e(c.accroche)}</span>
-      <span class="rg-classe-card__meta">${pluriel(c.chapitres.length, 'chapitre', 'chapitres')} ${icone('fleche')}</span>
-    </a></li>`).join('')}</ul>
-  </section>`
-  }).join('\n')
+  const ligne = (id, titre, liens) => `<div class="rg-choix__ligne">
+      <h3 class="rg-choix__cycle" id="choix-${id}">${e(titre)}</h3>
+      <ul class="rg-choix__classes" aria-labelledby="choix-${id}">${liens.map((l) => `<li><a href="${l.url}"><strong>${e(l.titre)}</strong><span>${e(l.meta)}</span></a></li>`).join('')}</ul>
+    </div>`
+  const { maternelle } = blocs
+  const lignes = [
+    maternelle.sections.length ? ligne('maternelle', 'Maternelle', maternelle.sections) : '',
+    ...CYCLES.map((cy) => {
+      const classes = catalogue.classes.filter((c) => c.cycle === cy.cle)
+      return classes.length ? ligne(cy.cle, cy.titre, classes.map((c) => ({
+        titre: `Maths ${c.court}`, meta: pluriel(c.chapitres.length, 'chapitre', 'chapitres'), url: urlClasse(c)
+      }))) : ''
+    })
+  ].filter(Boolean).join('\n    ')
   return `<header class="rg-hero">
-  <div class="rg-wrap rg-hero__grid">
-    <div>
-      ${filAriane([['Accueil', '/'], ['Ressources gratuites', RACINE]])}
-      <p class="rg-kicker">Ressources gratuites · Sans inscription</p>
-      <h1 class="rg-h1 rg-h1--hero">Cours de maths gratuits, du CP à la Terminale</h1>
-      <p class="rg-lead">Des cours complets et illustrés, des fiches de révision et des exercices corrigés pas à pas, conformes au programme de l’Éducation nationale. Choisis ta classe et commence.</p>
-      <ul class="rg-stats rg-stats--hero">
-        <li><strong>${t.cours}</strong> cours complets</li>
-        <li><strong>${t.fiches}</strong> fiches de révision</li>
-        <li><strong>${t.exercicesGratuits}</strong> exercices corrigés</li>
-        <li><strong>${catalogue.classes.length}</strong> classes</li>
-      </ul>
-    </div>
-    <div class="rg-hero__visual" aria-hidden="true">
-      <div class="rg-demo">
-        <p class="rg-demo__kicker">Exemple · Maths 4e</p>
-        <p class="rg-demo__title">Le théorème de Pythagore</p>
-        <div class="rg-demo__box"><span class="rg-demo__label">Théorème</span><p>Si le triangle $ABC$ est rectangle en $A$, alors le carré de l’hypoténuse est égal à la somme des carrés des deux autres côtés :</p><p class="rg-demo__math">$$BC^2 = AB^2 + AC^2$$</p></div>
-        <ul class="rg-demo__list">
-          <li>${icone('check')} Cours illustré de schémas</li>
-          <li>${icone('check')} Fiche de révision d’une page</li>
-          <li>${icone('check')} Exercices corrigés pas à pas</li>
-        </ul>
-      </div>
-    </div>
+  <div class="rg-wrap rg-hero__inner">
+    ${filAriane([['Accueil', '/'], ['Ressources gratuites', RACINE]])}
+    <h1 class="rg-h1 rg-h1--hero">Cours de maths gratuits, du CP à la Terminale</h1>
+    <p class="rg-lead">Des cours complets et illustrés, des fiches de révision et des exercices corrigés pas à pas, conformes au programme de l’Éducation nationale. Choisis ta classe ou cherche une notion.</p>
+    ${RECHERCHE}
+    <ul class="rg-garanties">
+      <li>${icone('check')}<span><strong>${t.cours}</strong> cours et <strong>${t.fiches}</strong> fiches</span></li>
+      <li>${icone('check')}<span><strong>${t.exercicesGratuits}</strong> exercices corrigés</span></li>
+      <li>${icone('check')}<span>Sans inscription</span></li>
+    </ul>
   </div>
 </header>
 <div class="rg-wrap rg-home">
-  ${cycles}
-  ${apresClasses}
-  <section class="rg-steps" aria-labelledby="steps-title">
-    <h2 id="steps-title">Comment bien utiliser ces ressources</h2>
-    <ol>
-      <li>${icone('cours')}<strong>Lis le cours</strong><span>Définitions, propriétés, méthodes et exemples, illustrés de schémas.</span></li>
-      <li>${icone('fiche')}<strong>Révise avec la fiche</strong><span>L’essentiel du chapitre sur une page, à relire avant un contrôle.</span></li>
-      <li>${icone('exercices')}<strong>Entraîne-toi</strong><span>Des exercices du plus simple au plus complet, avec une correction détaillée.</span></li>
-    </ol>
+  <section class="rg-bloc" aria-labelledby="choix-titre">
+    <h2 class="rg-bloc__titre" id="choix-titre">Choisis ta classe</h2>
+    <div class="rg-choix">
+    ${lignes}
+    </div>
+  </section>
+  <section class="rg-bloc" aria-labelledby="acces-titre">
+    <h2 class="rg-bloc__titre" id="acces-titre">Accès rapide</h2>
+    <ul class="rg-acces">${blocs.acces.map((a) => `<li><a href="${a.url}">${e(a.titre)}</a></li>`).join('')}</ul>
+  </section>
+  <section class="rg-bloc" aria-labelledby="outils-titre">
+    <h2 class="rg-bloc__titre" id="outils-titre">Formulaires, tables et outils</h2>
+    <ul class="rg-rubs">${blocs.rubriques.map((r) => `<li><a class="rg-rub rg-rub--${r.cle}" href="${r.url}">
+      <span class="rg-rub__ico">${icone(r.icone)}</span>
+      <span class="rg-rub__corps"><h3 class="rg-rub__titre">${e(r.titre)}</h3><span class="rg-rub__texte">${e(r.texte)}</span><span class="rg-rub__compte">${e(r.compte)} ${icone('fleche')}</span></span>
+    </a></li>`).join('')}</ul>
   </section>
   ${appelsAction(null, null, 'ressources_accueil')}
   <section class="rg-faq" aria-labelledby="faq-title">
     <h2 id="faq-title">Questions fréquentes</h2>
-    ${faq.map(([q, r]) => `<details class="rg-faq__item"><summary>${e(q)}</summary><p>${r}</p></details>`).join('\n    ')}
+    ${faq.map(([q, r]) => `<details class="rg-faq__item"><summary>${e(insecables(q))}</summary><p>${insecables(r)}</p></details>`).join('\n    ')}
   </section>
 </div>`
 }
+
+// Espace insécable avant « ? ! : ; » (pas de ponctuation seule en début de ligne).
+const insecables = (texte) => String(texte).replace(/ ([?!:;])/g, '\u00a0$1')
 
 export function pageRedirection(cible, nom = 'Ressources gratuites') {
   const url = absolu(cible)

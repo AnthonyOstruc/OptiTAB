@@ -24,13 +24,17 @@ const EDITEUR = { '@id': `${SITE}/#organization` }
 
 export const FAQ = [
   ['Les ressources OptiTAB sont-elles vraiment gratuites ?',
-    'Oui. Tous les cours, toutes les fiches de révision et plusieurs exercices corrigés par chapitre sont en accès libre, sans inscription ni carte bancaire.'],
+    'Oui. Tous les cours, toutes les fiches de révision, plusieurs exercices corrigés par chapitre, les formulaires, les tables, les calculateurs et les fiches à imprimer sont en accès libre, sans inscription ni carte bancaire.'],
   ['Les cours suivent-ils le programme officiel ?',
     'Oui. Chaque classe, du CP à la Terminale, suit le programme de mathématiques de l’Éducation nationale, chapitre par chapitre.'],
-  ['Comment sont faits les exercices corrigés ?',
-    'Chaque exercice a une correction détaillée, étape par étape, puis les réponses. Ils vont du plus simple au plus complet : on cherche d’abord, puis on compare avec la correction.'],
+  ['Comment bien utiliser ces ressources ?',
+    'Lis d’abord le cours, illustré de schémas et d’exemples. Relis la fiche de révision avant un contrôle. Puis entraîne-toi : les exercices vont du plus simple au plus complet, cherche sur ton brouillon avant d’ouvrir la correction détaillée, étape par étape.'],
+  ['Peut-on imprimer les cours et les fiches ?',
+    'Oui. Chaque cours, fiche, série d’exercices, formulaire et table a un bouton «\u00a0Imprimer\u00a0». Les <a href="/ressources-gratuites/fiches-a-imprimer/">fiches à imprimer</a> sont en PDF, avec leur corrigé.'],
+  ['Y a-t-il aussi la maternelle et la physique-chimie ?',
+    'Oui : des <a href="/ressources-gratuites/maternelle/">activités de maths en maternelle</a>, de la petite à la grande section, et des <a href="/ressources-gratuites/physique-chimie/">fiches de physique-chimie</a> avec les formules expliquées, du collège à la prépa.'],
   ['Que propose l’abonnement en plus ?',
-    'Tous les exercices corrigés de chaque chapitre (plus de 3 900), le suivi des progrès, les exercices à revoir et un espace parent. <a href="/tarifs">Voir les formules</a>.'],
+    'Tous les exercices corrigés de chaque chapitre (plus de 3 700), le suivi des progrès, les exercices à revoir et un espace parent. <a href="/tarifs">Voir les formules</a>.'],
   ['Proposez-vous des cours particuliers de maths ?',
     'Oui : des cours particuliers en ligne en maths, physique-chimie et informatique, du collège à la prépa, avec un professeur expérimenté. <a href="/cours-particuliers">Découvrir les cours particuliers</a>.']
 ]
@@ -111,19 +115,29 @@ export function jsonldClasse(classe) {
   }, ariane(etapesAriane(classe))]
 }
 
-export function jsonldAccueil(catalogue) {
+// blocs = donneesAccueil() (formulaires.mjs) : rubriques et maternelle, en plus des classes.
+export function jsonldAccueil(catalogue, blocs, description) {
   const url = absolu(RACINE)
+  const t = (texte) => String(texte).replace(/\u00a0/g, ' ')
   return [
     { '@context': 'https://schema.org', ...ORGANISATION },
     {
       '@context': 'https://schema.org',
       '@type': 'CollectionPage',
+      '@id': `${url}#collection`,
       name: 'Cours de maths gratuits du CP à la Terminale',
+      description,
       url,
       inLanguage: 'fr-FR',
       isAccessibleForFree: true,
+      about: [{ '@type': 'Thing', name: 'Mathématiques' }, { '@type': 'Thing', name: 'Physique-chimie' }],
+      audience: { '@type': 'EducationalAudience', educationalRole: 'student' },
       publisher: EDITEUR,
-      hasPart: catalogue.classes.map((c) => ({ '@type': 'CollectionPage', name: `Maths ${c.court}`, url: absolu(urlClasse(c)) }))
+      hasPart: [
+        { '@type': 'CollectionPage', name: t(blocs.maternelle.titre), url: absolu(blocs.maternelle.url) },
+        ...catalogue.classes.map((c) => ({ '@type': 'CollectionPage', name: `Maths ${c.court}`, url: absolu(urlClasse(c)) })),
+        ...blocs.rubriques.map((r) => ({ '@type': 'CollectionPage', name: t(r.titre), url: absolu(r.url) }))
+      ]
     },
     {
       '@context': 'https://schema.org',
@@ -159,7 +173,7 @@ export function llmsTxt(catalogue) {
   }).join('\n')
   return `# OptiTAB : cours de maths gratuits, du CP à la Terminale
 
-> OptiTAB publie en accès libre ${t.cours} cours de mathématiques complets, ${t.fiches} fiches de révision et ${t.exercicesGratuits} exercices corrigés pas à pas, du CP à la Terminale, conformes au programme de l’Éducation nationale (France). Chaque chapitre a une page « cours », une page « fiche de révision » et une page « exercices corrigés », ainsi qu’une version texte en Markdown (formules en LaTeX). OptiTAB propose aussi une plateforme d’entraînement sur abonnement (plus de 3 900 exercices corrigés, suivi des progrès) et des cours particuliers en ligne en maths, physique-chimie et informatique, du collège à la prépa.
+> OptiTAB publie en accès libre ${t.cours} cours de mathématiques complets, ${t.fiches} fiches de révision et ${t.exercicesGratuits} exercices corrigés pas à pas, du CP à la Terminale, conformes au programme de l’Éducation nationale (France). Chaque chapitre a une page « cours », une page « fiche de révision » et une page « exercices corrigés », ainsi qu’une version texte en Markdown (formules en LaTeX). OptiTAB propose aussi une plateforme d’entraînement sur abonnement (plus de 3 700 exercices corrigés, suivi des progrès) et des cours particuliers en ligne en maths, physique-chimie et informatique, du collège à la prépa.
 
 - Accueil des ressources gratuites : ${absolu(RACINE)}
 - Cours particuliers de maths en ligne : ${SITE}/cours-particuliers

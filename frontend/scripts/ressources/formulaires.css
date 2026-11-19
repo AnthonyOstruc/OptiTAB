@@ -928,179 +928,115 @@
   }
 }
 
-/* ---------- Accueil des ressources : une tuile par rubrique ---------- */
+/* ---------- Grande carte d’une rubrique qui n’a qu’une page ---------- */
 
-.fm-tuiles {
+.fm-vedette {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 20px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.fm-tuile {
-  display: flex;
-  flex-direction: column;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
   overflow: hidden;
   border: 1px solid var(--rg-line);
   border-radius: var(--rg-radius);
   background: #fff;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  color: var(--rg-ink) !important;
+  text-decoration: none;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
 }
 
-.fm-tuile:hover {
-  border-color: var(--rg-navy-100);
+.fm-vedette:hover {
+  border-color: var(--rg-navy);
   box-shadow: var(--rg-shadow);
+  transform: translateY(-2px);
 }
 
-.fm-tuile__visuel {
+.fm-vedette__visuel {
   position: relative;
   display: block;
-  height: 150px;
-  border-bottom: 1px solid var(--rg-line);
+  min-height: 220px;
+  border-right: 1px solid var(--rg-line);
   background: #fff;
 }
 
-.fm-tuile__visuel img {
+.fm-vedette__visuel img {
   position: absolute;
-  inset: 14px;
-  width: calc(100% - 28px);
-  height: calc(100% - 28px);
-  max-width: none;
+  inset: 24px;
+  width: calc(100% - 48px);
+  height: calc(100% - 48px);
   object-fit: contain;
 }
 
-.fm-tuile__corps {
+.fm-vedette__corps {
   display: flex;
-  flex: 1;
   flex-direction: column;
-  padding: 18px 22px 20px;
+  gap: 10px;
+  padding: 26px 28px;
 }
 
-.fm-tuile__titre {
-  margin: 0;
-  font-size: 19px;
+.fm-vedette__kicker {
+  font-size: 12px;
   font-weight: 700;
-  line-height: 1.3;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--rg-green-700, #2f7a3a);
 }
 
-.fm-tuile__titre a {
-  color: var(--rg-navy-900) !important;
-  text-decoration: none;
+.fm-vedette__titre {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--rg-navy-900);
 }
 
-.fm-tuile__titre a:hover {
-  color: var(--rg-navy) !important;
-}
-
-.fm-tuile__texte {
-  margin: 6px 0 12px;
-  color: var(--rg-muted);
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-.fm-tuile__liens {
-  margin: 0 0 14px;
-  padding: 0;
-  list-style: none;
-}
-
-.fm-tuile__liens li + li {
-  border-top: 1px solid var(--rg-line);
-}
-
-.fm-tuile__liens a {
-  display: block;
-  padding: 8px 0;
-  color: var(--rg-ink-soft) !important;
+.fm-vedette__texte {
   font-size: 15px;
+  line-height: 1.6;
+  color: var(--rg-muted);
+}
+
+.fm-vedette__resume {
+  font-size: 14px;
   font-weight: 600;
-  text-decoration: none;
+  color: var(--rg-ink-soft);
 }
 
-.fm-tuile__liens a:hover {
-  color: var(--rg-navy) !important;
-  text-decoration: underline;
-}
-
-.fm-tuile__tout {
+.fm-vedette__lien {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  margin-top: auto;
-  color: var(--rg-navy) !important;
+  gap: 8px;
+  margin-top: 4px;
   font-size: 15px;
   font-weight: 700;
-  text-decoration: none;
+  color: var(--rg-navy);
 }
 
-.fm-tuile__tout .rg-ico {
-  width: 16px;
-  height: 16px;
+.fm-vedette__lien .rg-ico {
+  width: 18px;
+  height: 18px;
 }
 
-.fm-tuile__tout:hover {
-  text-decoration: underline;
-}
-
-.fm-tuile__titre a:focus-visible,
-.fm-tuile__liens a:focus-visible,
-.fm-tuile__tout:focus-visible {
-  outline: 3px solid rgba(27, 60, 142, 0.35);
-  outline-offset: 2px;
-  border-radius: 4px;
-}
-
-@media (max-width: 1024px) {
-  .fm-tuiles {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 640px) {
-  .fm-tuiles {
+@media (max-width: 760px) {
+  .fm-vedette {
     grid-template-columns: minmax(0, 1fr);
-    gap: 14px;
   }
 
-  .fm-tuile__visuel {
-    height: 120px;
+  .fm-vedette__visuel {
+    min-height: 0;
+    aspect-ratio: 16 / 9;
+    border-right: 0;
+    border-bottom: 1px solid var(--rg-line);
   }
 
-  .fm-tuile__corps {
-    padding: 16px 18px 18px;
-  }
-}
-
-/* Accueil sur téléphone : classes sur deux colonnes compactes (le texte de
-   chaque carte reste dans la page pour les moteurs de recherche), tuiles sans
-   image (trop petite pour être utile à cette taille). */
-@media (max-width: 640px) {
-  .rg-home .rg-classes {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
+  .fm-vedette__visuel img {
+    inset: 14px;
+    width: calc(100% - 28px);
+    height: calc(100% - 28px);
   }
 
-  .rg-home .rg-classe-card {
-    padding: 14px 14px 12px;
+  .fm-vedette__corps {
+    padding: 18px;
   }
 
-  .rg-home .rg-classe-card__name {
-    font-size: 17px;
-  }
-
-  .rg-home .rg-classe-card__text {
-    display: none;
-  }
-
-  .rg-home .rg-classe-card__meta {
-    margin-top: 6px;
-    font-size: 13px;
-  }
-
-  .fm-tuile__visuel {
-    display: none;
+  .fm-vedette__titre {
+    font-size: 19px;
   }
 }

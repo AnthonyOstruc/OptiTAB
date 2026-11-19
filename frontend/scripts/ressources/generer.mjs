@@ -25,7 +25,7 @@ import {
   markdownArticle, metaArticle, pageArticle, pageBlog, urlArticle
 } from './blog.mjs'
 import {
-  RUBRIQUES, blocAccueilFormulaires, figuresAPublier, jsonldFormulaire, jsonldFormulaires,
+  RUBRIQUES, donneesAccueil, figuresAPublier, jsonldFormulaire, jsonldFormulaires,
   lireFormulaires, llmsFormulaires, markdownFormulaire, pageFormulaire, pageFormulaires, rendreFormulaire, urlFormulaire
 } from './formulaires.mjs'
 import {
@@ -228,13 +228,14 @@ async function main() {
     ecrire(urlMarkdown(ch), markdownChapitre(ch))
   }
 
-  // Pages des classes
+  // Pages des classes (avec les conseils du blog adaptés à chacune)
+  const articlesBlog = lireArticles(path.join(FRONT, 'contenu', 'blog'))
   for (const classe of catalogue.classes) {
     const description = descriptionCourte(`Maths ${classe.court} : cours complets, fiches de révision et exercices corrigés gratuits, chapitre par chapitre. ${classe.accroche}`)
     finaliser(urlClasse(classe), {
       titre: `Maths ${classe.court} : cours, fiches et exercices corrigés gratuits`,
       description,
-      contenu: pageClasse(classe, catalogue),
+      contenu: pageClasse(classe, catalogue, articlesBlog),
       catalogue, ctx,
       jsonld: jsonldClasse(classe),
       motsCles: `cours maths ${classe.court}, exercices corrigés ${classe.court}, fiche révision maths ${classe.court}`
@@ -245,14 +246,24 @@ async function main() {
   }
 
   // Accueil des ressources
+  const accueil = donneesAccueil(formulaires)
+  const descriptionAccueil = `${catalogue.totaux.cours} cours de maths, ${catalogue.totaux.fiches} fiches de révision et ${catalogue.totaux.exercicesGratuits} exercices corrigés pas à pas, du CP à la Terminale, conformes au programme. Gratuit, sans inscription.`
   finaliser(RACINE, {
     titre: 'Cours de maths gratuits du CP à la Terminale : cours, fiches, exercices corrigés',
-    description: `${catalogue.totaux.cours} cours de maths complets, ${catalogue.totaux.fiches} fiches de révision et ${catalogue.totaux.exercicesGratuits} exercices corrigés pas à pas, du CP à la Terminale, conformes au programme. Gratuit, sans inscription.`,
-    contenu: pageAccueil(catalogue, FAQ, blocAccueilFormulaires(formulaires)),
+    description: descriptionAccueil,
+    contenu: pageAccueil(catalogue, FAQ, accueil),
     catalogue, ctx,
-    jsonld: jsonldAccueil(catalogue)
+    jsonld: jsonldAccueil(catalogue, accueil, descriptionAccueil)
   })
   plan.unshift({ chemin: RACINE, modifie: new Date().toISOString() })
+
+  // Index de la recherche de l'accueil : [titre, rubrique, adresse, mots en plus].
+  const index = [
+    ...catalogue.classes.map((c) => [`Maths ${c.court}`, 'Tous les chapitres de la classe', urlClasse(c), c.nom || '']),
+    ...catalogue.classes.flatMap((c) => c.chapitres.map((ch) => [ch.titre, `Maths ${c.court} · cours, fiche et exercices`, urlCours(ch), ch.theme || ''])),
+    ...formulaires.map((f) => [f.titre, RUBRIQUES[f.categorie || 'formulaire']?.court || 'Formulaire', urlFormulaire(f), [f.resume, ...f.motsCles].join(' ')])
+  ]
+  ecrire(`${RACINE}recherche.json`, JSON.stringify(index))
 
   // Anciennes pages d'accueil des ressources → nouvel accueil.
   for (const ancien of ['cours/', 'exercices/', 'syntheses/', 'maths/']) ecrirePage(`${RACINE}${ancien}`, pageRedirection(RACINE))
@@ -343,7 +354,7 @@ function genererFormulaires(formulaires, catalogue, ctx, plan) {
 // Les anciennes adresses des ressources gratuites quittent les plans du site
 // généraux : les nouvelles pages (et le blog) sont dans sitemap-ressources.xml.
 function retirerAnciennesAdresses() {
-  for (const nom of ['sitemap.xml', 'sitemap-images.xml']) {
+  for (const nom of ['sitemap.xml']) {
     const fichier = path.join(SORTIE, nom)
     if (!fs.existsSync(fichier)) continue
     const xml = fs.readFileSync(fichier, 'utf8')

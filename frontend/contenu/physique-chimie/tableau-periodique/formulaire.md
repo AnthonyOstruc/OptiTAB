@@ -55,6 +55,7 @@
     }
   ],
   "liees": [
+    "physique-chimie/ions-courants",
     "physique-chimie/quantite-de-matiere-concentration",
     "physique-chimie/formules-physique-chimie-brevet",
     "tables/puissances-de-10-prefixes"

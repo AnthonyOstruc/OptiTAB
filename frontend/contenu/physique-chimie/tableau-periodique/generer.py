@@ -90,6 +90,7 @@ INFOS = {
         {"nom": "apercu_tableau_periodique", "alt": "Aperçu du tableau périodique à imprimer : les 118 éléments rangés en 7 périodes et 18 groupes, avec les lanthanides et les actinides en dessous, chaque case colorée selon sa famille, avec numéro atomique, symbole, nom et masse molaire."}
     ],
     "liees": [
+        "physique-chimie/ions-courants",
         "physique-chimie/quantite-de-matiere-concentration",
         "physique-chimie/formules-physique-chimie-brevet",
         "tables/puissances-de-10-prefixes"

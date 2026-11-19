@@ -23,7 +23,8 @@
   "liees": [
     "physique-chimie/lois-de-l-electricite",
     "formulaires/nombres-complexes",
-    "formulaires/equations-differentielles"
+    "formulaires/equations-differentielles",
+    "physique-chimie/formulaire-mecanique-prepa"
   ],
   "faq": [
     ["Quelle est l’impédance d’une bobine et d’un condensateur ?", "En régime sinusoïdal de pulsation ω, l’impédance d’une bobine d’inductance L vaut ZL = jLω et celle d’un condensateur de capacité C vaut ZC = 1/(jCω). À basse fréquence, la bobine se comporte comme un fil et le condensateur comme un interrupteur ouvert ; à haute fréquence, c’est l’inverse."],

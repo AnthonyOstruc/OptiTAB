@@ -235,7 +235,9 @@ Supprimer ensuite `figures/build`, `figures/__pycache__` et les planches.
   de matière et concentration, **tableau périodique** (interactif, PDF),
   **ions courants**, **formules de mécanique** (Seconde → Terminale :
   vitesse, forces, lois de Newton, chute libre, satellites ; `generer.py`
-  recalcule chaque exemple).
+  recalcule chaque exemple) et **formulaire de mécanique du supérieur**
+  (`formulaire-mecanique-prepa` : prépa 1re et 2e année, licence, Lagrange
+  et Hamilton). Une page par public : lycée et supérieur sont séparés, et reliés.
 
 **À faire ensuite, par demande décroissante :**
 1. **Énergie** (Première) : énergie cinétique, travail d'une force, théorème de

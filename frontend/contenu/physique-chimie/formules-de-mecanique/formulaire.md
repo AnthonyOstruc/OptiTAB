@@ -63,6 +63,7 @@
     }
   ],
   "liees": [
+    "physique-chimie/formulaire-mecanique-prepa",
     "physique-chimie/formules-physique-chimie-brevet",
     "formulaires/derivees",
     "formulaires/pythagore-thales-trigonometrie",
@@ -102,6 +103,7 @@
 - **En Première** : la partie II (champ de gravitation, loi de Coulomb) et la partie III (variation de la vitesse).
 - **En Terminale** : parties IV à VII, avec les constantes de la partie VIII.
 - **Au collège** : le formulaire de physique-chimie du brevet (lien en bas de page).
+- **En prépa et à l’université** : le formulaire de mécanique du supérieur (lien en bas de page).
 :::
 
 ## I. La vitesse et le vecteur vitesse {Lycée}

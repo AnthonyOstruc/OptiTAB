@@ -18,6 +18,7 @@
     { "nom": "famille_solutions", "alt": "Courbes des solutions de l’équation y′ = −y + 2 : toutes se rapprochent de la droite y = 2, solution constante ; la solution telle que y(0) = 4,2 est mise en évidence." },
     { "nom": "oscillations_amorties", "alt": "Solution d’une équation différentielle du second ordre dont l’équation caractéristique a des racines complexes : une oscillation amortie, comprise entre les courbes ± e^(−0,3t)." }
   ],
+  "liees": ["physique-chimie/formulaire-mecanique-prepa", "physique-chimie/electrocinetique"],
   "chapitresLies": [
     "terminale/equations-differentielles",
     "terminale/primitives",

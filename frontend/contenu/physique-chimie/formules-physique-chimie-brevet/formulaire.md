@@ -21,6 +21,7 @@
   ],
   "liees": [
     "physique-chimie/lois-de-l-electricite",
+    "physique-chimie/quantite-de-matiere-concentration",
     "tables/tableau-de-conversion",
     "tables/puissances-de-10-prefixes",
     "formulaires/produit-en-croix-proportionnalite"

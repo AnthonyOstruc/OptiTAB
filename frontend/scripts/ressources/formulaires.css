@@ -1040,3 +1040,277 @@
     font-size: 19px;
   }
 }
+
+/* ---------- Tableau périodique interactif (physique-chimie/tableau-periodique) ---------- */
+
+.tp {
+  margin: 8px 0 36px;
+  padding: 24px;
+  border: 1px solid var(--rg-navy-100);
+  border-radius: var(--rg-radius);
+  background: linear-gradient(180deg, var(--rg-navy-50), #fff 60%);
+  box-shadow: var(--rg-shadow);
+  font-family: var(--rg-font);
+}
+
+/* Couleurs des familles : teintes claires, texte foncé (contraste suffisant). */
+.tp--alcalin { background: #ffdcd8; }
+.tp--alcalino-terreux { background: #ffe7c9; }
+.tp--transition { background: #fff2b8; }
+.tp--metal-pauvre { background: #e3e8ef; }
+.tp--lanthanide { background: #e2f3c8; }
+.tp--actinide { background: #cfeedd; }
+.tp--metalloide { background: #d2edf2; }
+.tp--non-metal { background: #d9e7ff; }
+.tp--halogene { background: #e8dcff; }
+.tp--gaz-noble { background: #ffdcee; }
+
+.tp__glisser {
+  display: none;
+  margin: 0 0 8px;
+  color: var(--rg-muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.tp__defile {
+  overflow-x: auto;
+  padding-bottom: 6px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tp__defile:focus-visible {
+  outline: 3px solid rgba(27, 60, 142, 0.35);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+.tp__grille {
+  display: grid;
+  grid-template-columns: repeat(18, minmax(34px, 1fr));
+  grid-template-rows: repeat(8, auto) 10px auto auto;
+  gap: 3px;
+  min-width: 664px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tp__grille > li {
+  margin: 0;
+  padding: 0;
+}
+
+.tp__groupe {
+  align-self: end;
+  padding-bottom: 2px;
+  color: var(--rg-muted);
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.tp__el {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 1 / 1.08;
+  padding: 2px 0;
+  border: 1px solid rgba(18, 26, 51, 0.12);
+  border-radius: 6px;
+  color: var(--rg-ink);
+  font-family: var(--rg-font);
+  cursor: pointer;
+  transition: transform 0.12s, box-shadow 0.12s, border-color 0.12s;
+}
+
+.tp__el:hover {
+  border-color: var(--rg-navy);
+  box-shadow: 0 2px 8px rgba(16, 32, 79, 0.18);
+  transform: translateY(-1px);
+}
+
+.tp__el:focus-visible {
+  outline: 3px solid rgba(27, 60, 142, 0.45);
+  outline-offset: 1px;
+}
+
+.tp__el[aria-pressed='true'] {
+  border: 2px solid var(--rg-navy-900);
+  box-shadow: 0 2px 10px rgba(16, 32, 79, 0.25);
+}
+
+.tp__z {
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--rg-ink-soft);
+}
+
+.tp__s {
+  margin-top: 2px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.tp__renvoi {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  color: var(--rg-ink-soft);
+  font-size: 10px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.tp__legende {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--rg-ink-soft);
+  font-size: 13.5px;
+}
+
+.tp__legende li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tp__pastille {
+  width: 14px;
+  height: 14px;
+  border: 1px solid rgba(18, 26, 51, 0.15);
+  border-radius: 4px;
+}
+
+/* Fiche de l'élément choisi */
+.tp__fiche {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  margin-top: 18px;
+  padding: 18px;
+  border: 1px solid var(--rg-line);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.tp__fiche-tete {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 92px;
+  height: 100px;
+  border: 1px solid rgba(18, 26, 51, 0.15);
+  border-radius: 10px;
+}
+
+.tp__fiche-z {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--rg-ink-soft);
+}
+
+.tp__fiche-s {
+  font-size: 38px;
+  font-weight: 700;
+  line-height: 1.05;
+  color: var(--rg-ink);
+}
+
+.tp__fiche-corps {
+  flex: 1;
+  min-width: 0;
+}
+
+.tp__fiche-nom {
+  margin: 0 0 8px;
+  color: var(--rg-navy-900);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.tp__fiche-dl {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 6px 18px;
+  margin: 0;
+}
+
+.tp__fiche-dl div {
+  min-width: 0;
+}
+
+.tp__fiche-dl dt {
+  color: var(--rg-muted);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.tp__fiche-dl dd {
+  margin: 0;
+  color: var(--rg-ink);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .tp {
+    margin-right: calc(-1 * var(--rg-gutter) + 4px);
+    margin-left: calc(-1 * var(--rg-gutter) + 4px);
+    padding: 18px 12px;
+  }
+
+  .tp__glisser {
+    display: block;
+  }
+
+  .tp__grille {
+    grid-template-columns: repeat(18, 42px);
+    min-width: 0;
+  }
+
+  .tp__fiche {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tp__fiche-tete {
+    flex-direction: row;
+    gap: 10px;
+    width: auto;
+    height: auto;
+    padding: 10px 14px;
+    justify-content: flex-start;
+  }
+
+  .tp__fiche-s {
+    font-size: 30px;
+  }
+
+  .tp__fiche-dl {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media print {
+  .tp__glisser,
+  .tp__fiche {
+    display: none;
+  }
+
+  .tp {
+    box-shadow: none;
+  }
+}

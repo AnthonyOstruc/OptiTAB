@@ -10,7 +10,7 @@
   "vignette": "bode_passe_bas",
   "theme": "Électricité",
   "niveaux": ["Supérieur"],
-  "ordre": 3,
+  "ordre": 11,
   "publie": "2026-11-18",
   "modifie": "2026-11-18",
   "motsCles": ["formulaire électrocinétique", "électrocinétique prépa", "pont diviseur de tension", "pont diviseur de courant", "théorème de Thévenin", "modèle de Norton", "théorème de Millman", "impédance complexe", "impédance d'une bobine", "impédance d'un condensateur", "circuit RLC", "facteur de qualité", "résonance", "filtre passe-bas", "diagramme de Bode", "fréquence de coupure"],

@@ -277,11 +277,15 @@ const examen = (classe) => {
 // Les cours particuliers sont proposés du collège à la prépa (pas en primaire).
 const avecProf = (classe) => !classe || classe.cycle !== 'primaire'
 
-// Ligne d'aide en haut du cours et de la fiche, à gauche du bouton Imprimer :
-// visible dès l'arrivée, sans gêner la lecture.
+// Ligne d'aide (cours particuliers) à gauche du bouton Imprimer : visible dès
+// l'arrivée, sans gêner la lecture. Cours et fiches de maths, pages de physique-chimie.
+export function ligneAide(question, lieu) {
+  return `<a class="rg-aide" href="/cours-particuliers" data-cta-name="tutoring" data-cta-location="${lieu}">${icone('prof')}<span>${question} <strong>Un prof t’explique en cours particulier</strong></span>${icone('fleche')}</a>`
+}
+
 function lienAide(classe, lieu) {
   if (!avecProf(classe)) return ''
-  return `<a class="rg-aide" href="/cours-particuliers" data-cta-name="tutoring" data-cta-location="${lieu}">${icone('prof')}<span>Besoin d’aide sur ce chapitre\u00a0? <strong>Un prof t’explique en cours particulier</strong></span>${icone('fleche')}</a>`
+  return ligneAide('Besoin d’aide sur ce chapitre\u00a0?', lieu)
 }
 
 // Encadré « cours particuliers » placé au milieu d'une longue page (physique-chimie).

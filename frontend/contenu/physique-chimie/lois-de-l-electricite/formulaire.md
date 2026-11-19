@@ -10,7 +10,7 @@
   "vignette": "noeud_maille",
   "theme": "Électricité",
   "niveaux": ["Collège", "Lycée"],
-  "ordre": 2,
+  "ordre": 8,
   "publie": "2026-11-18",
   "modifie": "2026-11-18",
   "motsCles": ["lois de l'électricité", "formules électricité", "loi des nœuds", "loi des mailles", "loi d'Ohm", "circuit en série", "circuit en dérivation", "loi d'additivité des tensions", "puissance électrique", "effet Joule", "rendement", "source réelle de tension", "condensateur", "circuit RC", "symboles électriques"],

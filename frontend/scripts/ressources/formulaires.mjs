@@ -28,7 +28,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { slugifier } from './catalogue.mjs'
-import { RACINE, SITE, absolu, appelsAction, e, encartProf, filAriane, urlCours, urlFiche } from './pages.mjs'
+import { RACINE, SITE, absolu, appelsAction, e, encartProf, filAriane, ligneAide, urlCours, urlFiche } from './pages.mjs'
 import { contenuEnHtml, contenuEnMarkdown, latexEnTexte, texteBrut } from './rendu.mjs'
 import { ORGANISATION, ariane } from './seo.mjs'
 import { OUTILS, outilHtml, outilScript } from './outils.mjs'
@@ -186,7 +186,7 @@ RUBRIQUES.physique = {
   lead: 'Les formules de physique-chimie à connaître, expliquées une à une : le sens de chaque lettre et son unité, un exemple corrigé et le piège à éviter. À consulter ou à imprimer.',
   accroche: 'Les formules à connaître, expliquées une à une avec leurs unités, un exemple corrigé et le piège à éviter.',
   titreSeo: 'Physique-chimie : formules et fiches de révision gratuites',
-  description: 'Physique-chimie gratuite : les formules du brevet expliquées une à une, avec unités, exemples corrigés, schémas et pièges à éviter. À consulter ou imprimer.',
+  description: 'Tableau périodique interactif et formules de physique-chimie expliquées, du collège à la prépa : brevet, électricité, mole, concentration, dilution.',
   typeRessource: ['Formulaire', 'Fiche de révision'],
   autres: 'Les autres fiches de physique-chimie',
   imprimer: 'Imprimer le formulaire',
@@ -405,8 +405,8 @@ function blocTelechargements(f) {
   ${f.telechargements.map((t) => `<div class="fm-pdf__ligne">
     <p class="fm-pdf__titre">${e(t.titre)}</p>
     <div class="fm-pdf__boutons">
-      <a class="rg-btn rg-btn--primary fm-pdf__btn" href="${t.pdf}" download data-cta-name="fiche_pdf" data-cta-location="ressources_fiche">${icone('imprimer')} Fiche (PDF, ${taille(t.pdf)})</a>
-      ${t.corrige ? `<a class="rg-btn rg-btn--ghost fm-pdf__btn" href="${t.corrige}" download data-cta-name="corrige_pdf" data-cta-location="ressources_fiche">${icone('check')} Corrigé (PDF, ${taille(t.corrige)})</a>` : ''}
+      <a class="rg-btn rg-btn--primary fm-pdf__btn" href="${t.pdf}" download data-cta-name="fiche_pdf" data-cta-location="ressources_${rubrique(f).lieu}">${icone('imprimer')} ${e(t.libelle || 'Fiche')} (PDF, ${taille(t.pdf)})</a>
+      ${t.corrige ? `<a class="rg-btn rg-btn--ghost fm-pdf__btn" href="${t.corrige}" download data-cta-name="corrige_pdf" data-cta-location="ressources_${rubrique(f).lieu}">${icone('check')} Corrigé (PDF, ${taille(t.corrige)})</a>` : ''}
     </div>
   </div>`).join('\n  ')}
 </section>`
@@ -523,19 +523,39 @@ function appelFinal(r, lieu) {
 }
 
 // Physique-chimie : pas d'abonnement dans cette matière, les cours particuliers
-// sont la seule offre. Un encadré au milieu de la page (avant la partie du
-// milieu), car le bas d'une longue page est peu lu. Pages de moins de 4 parties : rien.
+// sont la seule offre. Une ligne d'aide en haut (à côté d'Imprimer), puis des
+// encadrés dans la page, car le bas d'une longue page est peu lu : un au milieu,
+// ou deux (au tiers et aux deux tiers de la longueur) à partir de 10 parties.
+// Moins de 4 parties : aucun.
+const AIDE_PHYSIQUE = 'Besoin d’aide en physique-chimie\u00a0?'
+const ENCARTS_PHYSIQUE = [
+  {
+    titre: 'Une notion reste floue\u00a0?',
+    texte: 'Un prof t’explique les formules et refait les exercices avec toi, en cours particulier en ligne, du collège à la prépa.',
+    lieu: 'ressources_physique_milieu'
+  },
+  {
+    titre: 'Un exercice te bloque\u00a0?',
+    texte: 'Un prof de physique-chimie le reprend avec toi, pas à pas, en cours particulier en ligne.',
+    lieu: 'ressources_physique_milieu_2'
+  }
+]
+
 function avecEncartProf(f, html) {
   if (rubrique(f).appel !== 'physique') return html
   const parties = [...html.matchAll(/<h2\b/g)].map((m) => m.index)
   if (parties.length < 4) return html
-  const i = parties[Math.ceil(parties.length / 2)]
-  const encart = encartProf({
-    titre: 'Besoin d’aide en physique-chimie\u00a0?',
-    texte: 'Un prof t’explique les formules et refait les exercices avec toi, en cours particulier en ligne, du collège à la prépa.',
-    lieu: 'ressources_physique_milieu'
-  })
-  return `${html.slice(0, i)}${encart}\n${html.slice(i)}`
+  // Début de partie le plus proche du tiers, des deux tiers ou du milieu de la page
+  // (jamais la première partie, ni deux fois la même).
+  const cibles = parties.length >= 10 ? [1 / 3, 2 / 3] : [1 / 2]
+  const places = []
+  for (const t of cibles) {
+    const libres = parties.map((_, k) => k).filter((k) => k > 0 && !places.includes(k))
+    places.push(libres.reduce((a, b) => (Math.abs(parties[b] - t * html.length) < Math.abs(parties[a] - t * html.length) ? b : a)))
+  }
+  // De la fin vers le début : les positions des parties restent justes.
+  return places.map((k, rang) => [parties[k], encartProf(ENCARTS_PHYSIQUE[rang])]).reverse()
+    .reduce((h, [i, encart]) => `${h.slice(0, i)}${encart}\n${h.slice(i)}`, html)
 }
 
 export function pageFormulaire(f, rendu, formulaires) {
@@ -560,7 +580,7 @@ export function pageFormulaire(f, rendu, formulaires) {
 <div class="rg-wrap rg-reading rg-reading--toc">
   ${sommaire(f, rendu.titres)}
   <article class="rg-doc rg-doc--fiche fm-doc fm-doc--${f.categorie}">
-    <div class="rg-doc__tools"><button type="button" class="rg-btn rg-btn--ghost rg-btn--sm" data-imprimer>${icone('imprimer')} ${r.imprimer}</button></div>
+    <div class="rg-doc__tools">${r.appel === 'physique' ? ligneAide(AIDE_PHYSIQUE, 'ressources_physique_haut') : ''}<button type="button" class="rg-btn rg-btn--ghost rg-btn--sm" data-imprimer>${icone('imprimer')} ${r.imprimer}</button></div>
     <div class="sci-doc rg-sci fm-sci">${avecEncartProf(f, rendu.html)}</div>${f.outil ? `\n    ${outilScript(f.outil)}` : ''}
     ${pagesLiees(f, formulaires)}
     ${chapitresLies(f)}
@@ -616,6 +636,7 @@ export function pageFormulaires(liste, categorie = 'formulaire') {
 const ACCES_RAPIDE = [
   ['table', 'table-de-multiplication'],
   ['methode', 'calculer-un-pourcentage'],
+  ['physique', 'tableau-periodique'],
   ['table', 'tableau-de-conversion'],
   ['formulaire', 'pythagore-thales-trigonometrie'],
   ['methode', 'calculer-une-moyenne'],
@@ -624,8 +645,7 @@ const ACCES_RAPIDE = [
   ['operation', 'division-posee'],
   ['formulaire', 'second-degre'],
   ['formulaire', 'derivees'],
-  ['physique', 'formules-physique-chimie-brevet'],
-  ['table', 'chiffres-romains']
+  ['physique', 'formules-physique-chimie-brevet']
 ]
 
 // Rubriques de l'accueil, dans l'ordre : icône (pages.mjs) et ce qu'elles contiennent.

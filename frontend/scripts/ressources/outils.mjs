@@ -12,12 +12,18 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { tableauPeriodiqueHtml } from './tableau-periodique.mjs'
 
 const ICI = path.dirname(fileURLToPath(import.meta.url))
 const e = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 const nb = (s) => String(s).replace(/ ([?!:;%])/g, ' $1')
 
 export const OUTILS = {
+  // Outil à HTML propre (champ « html ») : la grille des 118 éléments, voir tableau-periodique.mjs.
+  'tableau-periodique': {
+    titre: 'Tableau périodique interactif',
+    html: tableauPeriodiqueHtml
+  },
   pourcentage: {
     titre: 'Calculateur de pourcentage',
     intro: 'Choisissez le calcul, tapez vos nombres : le résultat et le détail du calcul s’affichent tout de suite.',
@@ -152,6 +158,7 @@ function corpsMoyenne(o) {
 export function outilHtml(nom) {
   const o = OUTILS[nom]
   if (!o) throw new Error(`outil inconnu : ${nom}`)
+  if (o.html) return o.html()
   const id = `otc-${nom}`
   const plusieurs = (o.onglets || []).length > 1
   return `<section class="otc" data-outil="${nom}" aria-labelledby="${id}-titre">

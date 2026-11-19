@@ -21,6 +21,7 @@
   ],
   "liees": [
     "methodes/simulateur-brevet",
+    "physique-chimie/formules-de-mecanique",
     "physique-chimie/lois-de-l-electricite",
     "physique-chimie/quantite-de-matiere-concentration",
     "physique-chimie/ions-courants",

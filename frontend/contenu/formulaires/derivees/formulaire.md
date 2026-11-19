@@ -17,6 +17,7 @@
   "figures": [
     { "nom": "tangente", "alt": "Courbe d’une fonction f et sa tangente T au point A d’abscisse a : quand on avance de 1 sur la tangente, on monte de f′(a), le coefficient directeur." }
   ],
+  "liees": ["physique-chimie/formules-de-mecanique"],
   "chapitresLies": [
     "premiere/derivation-variations-et-courbes-representatives",
     "terminale/derivation-et-convexite"

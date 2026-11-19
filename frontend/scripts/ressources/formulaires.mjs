@@ -186,7 +186,7 @@ RUBRIQUES.physique = {
   lead: 'Les formules de physique-chimie à connaître, expliquées une à une : le sens de chaque lettre et son unité, un exemple corrigé et le piège à éviter. À consulter ou à imprimer.',
   accroche: 'Les formules à connaître, expliquées une à une avec leurs unités, un exemple corrigé et le piège à éviter.',
   titreSeo: 'Physique-chimie : formules et fiches de révision gratuites',
-  description: 'Tableau périodique interactif et formules de physique-chimie expliquées, du collège à la prépa : brevet, électricité, mole, concentration, dilution.',
+  description: 'Tableau périodique interactif et formules de physique-chimie expliquées, du collège à la prépa : brevet, mécanique, électricité, mole, concentration.',
   typeRessource: ['Formulaire', 'Fiche de révision'],
   autres: 'Les autres fiches de physique-chimie',
   imprimer: 'Imprimer le formulaire',
@@ -494,14 +494,23 @@ const etapes = (f) => [...etapesRubrique(rubrique(f)), [f.titreCourt, urlFormula
 // ---------- Pages ----------
 
 // Appel de fin de page : l'offre du site, ou (maternelle) les maths du CP.
-function appelFinal(r, lieu) {
+// Physique-chimie : les maths de 3e, ou celles du lycée pour une page sans
+// partie de collège (mécanique, électrocinétique…).
+function appelFinal(r, lieu, f = null) {
   if (r.appel === 'physique') {
-    return `<section class="rg-ctas" aria-label="Aller plus loin">
-  <div class="rg-cta rg-cta--plateforme">
-    <p class="rg-cta__kicker">Brevet</p>
+    const lycee = f && f.niveaux.length > 0 && !f.niveaux.includes('Collège')
+    const maths = lycee
+      ? `<p class="rg-cta__kicker">Bac</p>
+    <h2 class="rg-cta__title">Réviser aussi les maths du lycée</h2>
+    <p>Dérivées, vecteurs, équations différentielles : les cours, les fiches de révision et les exercices corrigés de maths du lycée, gratuits et conformes au programme.</p>
+    <a class="rg-btn rg-btn--primary" href="${RACINE}maths/terminale/" data-cta-name="maths_terminale" data-cta-location="${lieu}">Voir les maths de Terminale ${icone('fleche')}</a>`
+      : `<p class="rg-cta__kicker">Brevet</p>
     <h2 class="rg-cta__title">Réviser aussi les maths du brevet</h2>
     <p>Les cours, les fiches de révision et les exercices corrigés de maths de 3e, gratuits et conformes au programme.</p>
-    <a class="rg-btn rg-btn--primary" href="${RACINE}maths/3e/" data-cta-name="maths_3e" data-cta-location="${lieu}">Voir les maths de 3e ${icone('fleche')}</a>
+    <a class="rg-btn rg-btn--primary" href="${RACINE}maths/3e/" data-cta-name="maths_3e" data-cta-location="${lieu}">Voir les maths de 3e ${icone('fleche')}</a>`
+    return `<section class="rg-ctas" aria-label="Aller plus loin">
+  <div class="rg-cta rg-cta--plateforme">
+    ${maths}
   </div>
   <div class="rg-cta rg-cta--prof">
     <p class="rg-cta__kicker">Cours particuliers</p>
@@ -589,7 +598,7 @@ export function pageFormulaire(f, rendu, formulaires) {
 </div>
 <div class="rg-wrap">
   ${autresFormulaires(f, formulaires)}
-  ${appelFinal(r, `ressources_${r.lieu}`)}
+  ${appelFinal(r, `ressources_${r.lieu}`, f)}
 </div>`
 }
 

@@ -224,8 +224,7 @@ Supprimer ensuite `figures/build`, `figures/__pycache__` et les planches.
 - maths : formulaires, tables, méthodes de calcul (dont **lire l'heure**, avec
   horloge interactive et fiches CP, CE1, CE2), opérations posées, fiches à
   imprimer, maternelle ;
-- **simulateur du brevet** (`methodes/simulateur-brevet`, en local, à pousser
-  avec l'accord du propriétaire) : calcul officiel depuis 2026 (40 % contrôle
+- **simulateur du brevet** (`methodes/simulateur-brevet`, poussé le 19/11) : calcul officiel depuis 2026 (40 % contrôle
   continu, 60 % épreuves), mention, note à viser. Le calcul existe en trois
   exemplaires qui doivent rester identiques : `scripts/ressources/brevet.mjs`
   (page), `scripts/ressources/outils/brevet.js` (saisie) et `generer.py` (texte) ;
@@ -234,11 +233,14 @@ Supprimer ensuite `figures/build`, `figures/__pycache__` et les planches.
   puis mettre à jour `modifie` ;
 - physique-chimie : formules du brevet, électricité, électrocinétique, quantité
   de matière et concentration, **tableau périodique** (interactif, PDF),
-  **ions courants**.
+  **ions courants**, **formules de mécanique** (Seconde → Terminale :
+  vitesse, forces, lois de Newton, chute libre, satellites ; `generer.py`
+  recalcule chaque exemple).
 
 **À faire ensuite, par demande décroissante :**
-1. **Formules de mécanique** : vitesse, lois de Newton, chute libre, satellites.
-   Puis l'énergie (cinétique, potentielle, travail).
+1. **Énergie** (Première) : énergie cinétique, travail d'une force, théorème de
+   l'énergie cinétique, énergie potentielle et mécanique. Page à relier à
+   `physique-chimie/formules-de-mecanique` dans les deux sens.
 2. **Automatismes** : QCM de l'épreuve anticipée de Première, et calcul mental
    en CM1 et CM2.
 3. Primaire : **problèmes** classés par type (CP au CE2), la **monnaie**.

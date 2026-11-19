@@ -19,7 +19,7 @@
     { "nom": "moyenne_barres", "alt": "Diagramme en barres de quatre notes, 9 en maths, 16 en français, 8 en anglais et 17 en histoire, avec une ligne en pointillés à 12,5 : la moyenne." },
     { "nom": "carte_moyenne", "alt": "Aperçu : quatre barres de notes et la ligne de la moyenne 12,5.", "carte": true }
   ],
-  "liees": ["formulaires/statistiques"],
+  "liees": ["formulaires/statistiques", "methodes/simulateur-brevet"],
   "chapitresLies": [
     "6e/statistiques-tres-simples",
     "4e/statistiques-et-diagrammes",

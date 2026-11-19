@@ -20,6 +20,7 @@
     { "nom": "echelle_ph", "alt": "Échelle de pH de 0 à 14 : de 0 à 7 la solution est acide (ions H+ majoritaires), à 7 elle est neutre, de 7 à 14 elle est basique (ions OH− majoritaires). Exemples : jus de citron vers 2, eau pure à 7, eau de Javel vers 12." }
   ],
   "liees": [
+    "methodes/simulateur-brevet",
     "physique-chimie/lois-de-l-electricite",
     "physique-chimie/quantite-de-matiere-concentration",
     "physique-chimie/ions-courants",

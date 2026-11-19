@@ -14,6 +14,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { tableauPeriodiqueHtml } from './tableau-periodique.mjs'
 import { horlogeHtml } from './horloge.mjs'
+import { brevetHtml } from './brevet.mjs'
 
 const ICI = path.dirname(fileURLToPath(import.meta.url))
 const e = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
@@ -29,6 +30,11 @@ export const OUTILS = {
   horloge: {
     titre: 'Horloge interactive pour apprendre l’heure',
     html: horlogeHtml
+  },
+  // Simulateur du brevet : contrôle continu, épreuves, mention, note à viser (voir brevet.mjs).
+  brevet: {
+    titre: 'Simulateur de note du brevet',
+    html: brevetHtml
   },
   pourcentage: {
     titre: 'Calculateur de pourcentage',

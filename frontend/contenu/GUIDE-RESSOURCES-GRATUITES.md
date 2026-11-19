@@ -224,18 +224,23 @@ Supprimer ensuite `figures/build`, `figures/__pycache__` et les planches.
 - maths : formulaires, tables, méthodes de calcul (dont **lire l'heure**, avec
   horloge interactive et fiches CP, CE1, CE2), opérations posées, fiches à
   imprimer, maternelle ;
+- **simulateur du brevet** (`methodes/simulateur-brevet`, en local, à pousser
+  avec l'accord du propriétaire) : calcul officiel depuis 2026 (40 % contrôle
+  continu, 60 % épreuves), mention, note à viser. Le calcul existe en trois
+  exemplaires qui doivent rester identiques : `scripts/ressources/brevet.mjs`
+  (page), `scripts/ressources/outils/brevet.js` (saisie) et `generer.py` (texte) ;
+  `generer.py` les compare sur 5 000 cas. Si les règles du brevet changent
+  (nouvel arrêté, BO de rentrée), modifier les trois, relancer `generer.py`,
+  puis mettre à jour `modifie` ;
 - physique-chimie : formules du brevet, électricité, électrocinétique, quantité
   de matière et concentration, **tableau périodique** (interactif, PDF),
   **ions courants**.
 
 **À faire ensuite, par demande décroissante :**
-1. **Simulateur de note du brevet 2026**, à mettre en ligne avant le printemps.
-   Vérifier d'abord le texte officiel : note sur 20, 40 % de contrôle continu
-   et 60 % d'épreuves.
-2. **Formules de mécanique** : vitesse, lois de Newton, chute libre, satellites.
+1. **Formules de mécanique** : vitesse, lois de Newton, chute libre, satellites.
    Puis l'énergie (cinétique, potentielle, travail).
-3. **Automatismes** : QCM de l'épreuve anticipée de Première, et calcul mental
+2. **Automatismes** : QCM de l'épreuve anticipée de Première, et calcul mental
    en CM1 et CM2.
-4. Primaire : **problèmes** classés par type (CP au CE2), la **monnaie**.
-5. Physique-chimie : couples acide-base (pKa) et indicateurs colorés, ondes,
+3. Primaire : **problèmes** classés par type (CP au CE2), la **monnaie**.
+4. Physique-chimie : couples acide-base (pKa) et indicateurs colorés, ondes,
    optique (réfraction, lentilles), thermodynamique, mécanique de prépa.

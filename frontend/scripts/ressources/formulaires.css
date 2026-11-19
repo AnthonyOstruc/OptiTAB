@@ -1503,3 +1503,214 @@
     display: none;
   }
 }
+
+/* ---------- Simulateur du brevet (methodes/simulateur-brevet) ---------- */
+
+.bv__aide {
+  margin: -8px 0 16px;
+  color: var(--rg-muted);
+  font-size: 13.5px;
+}
+
+.bv__bloc {
+  margin: 0 0 16px;
+  padding: 16px 18px 12px;
+  border: 1px solid var(--rg-line);
+  border-radius: 14px;
+  background: #fff;
+}
+
+/* Titre du bloc à l'intérieur du cadre (sur le cadre, il le chevauchait sur téléphone). */
+.bv__bloc legend {
+  float: left;
+  width: 100%;
+  margin: 0 0 12px;
+  padding: 0;
+  line-height: 1.35;
+  color: var(--rg-navy-900);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.bv__bloc legend span {
+  color: var(--rg-green-700);
+  font-weight: 600;
+}
+
+.bv__bloc legend + * {
+  clear: both;
+}
+
+.bv__grille {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px 14px;
+}
+
+.bv__option {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 10px 14px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--rg-line-strong);
+}
+
+/* Libellé en haut, champ en bas : les champs d'une même ligne restent alignés
+   même quand un libellé tient sur deux lignes. */
+.bv__champ {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 4px;
+  min-width: 0;
+}
+
+.bv__lib {
+  color: var(--rg-ink-soft);
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.bv__lib em {
+  color: var(--rg-navy);
+  font-style: normal;
+  font-weight: 700;
+}
+
+.bv__champ input,
+.bv__champ select {
+  width: 100%;
+  min-height: 42px;
+  padding: 8px 10px;
+  border: 1px solid var(--rg-line-strong);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--rg-ink);
+  font: 600 16px var(--rg-font);
+}
+
+.bv__champ input:focus,
+.bv__champ select:focus {
+  border-color: var(--rg-navy);
+  outline: 3px solid rgba(27, 60, 142, 0.2);
+}
+
+.bv__champ input:disabled {
+  background: var(--rg-bg-soft);
+  color: var(--rg-muted);
+}
+
+.bv__champ input.is-erreur {
+  border-color: var(--rg-red-700);
+  background: var(--rg-red-50);
+}
+
+.bv__sous {
+  margin: 12px 0 2px;
+  color: var(--rg-ink-soft);
+  font-size: 15px;
+}
+
+.bv__sous strong {
+  color: var(--rg-navy-900);
+}
+
+.bv__resultat {
+  padding: 18px 20px;
+  border-radius: 14px;
+  background: var(--rg-navy-900);
+  color: #fff;
+}
+
+.bv__resultat .otc__res-lib {
+  color: #c9d6f2;
+}
+
+.bv__note {
+  margin: 2px 0 0;
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.bv__verdict {
+  margin: 8px 0 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.bv__verdict.is-oui { color: #a5e3a7; }
+.bv__verdict.is-non { color: #ffc2bb; }
+
+.bv__calc {
+  margin: 6px 0 0;
+  color: #c9d6f2;
+  font-size: 14px;
+}
+
+.bv__viser {
+  margin-top: 14px;
+  padding: 14px 18px;
+  border: 1px solid var(--rg-line);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.bv__viser-titre {
+  margin: 0 0 8px;
+  color: var(--rg-navy-900);
+  font-size: 15.5px;
+  font-weight: 700;
+}
+
+.bv .bv__viser ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bv__viser li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 7px 0;
+  border-top: 1px solid var(--rg-line);
+  font-size: 15px;
+}
+
+.bv__viser li:first-child {
+  border-top: 0;
+}
+
+.bv__viser strong {
+  color: var(--rg-navy);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 640px) {
+  .bv__bloc {
+    padding: 12px 12px 10px;
+  }
+
+  .bv__grille {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .bv__option {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .bv__note {
+    font-size: 34px;
+  }
+}
+
+@media print {
+  .bv {
+    display: none;
+  }
+}

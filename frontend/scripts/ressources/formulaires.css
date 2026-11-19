@@ -1314,3 +1314,192 @@
     box-shadow: none;
   }
 }
+
+/* ---------- Horloge interactive (methodes/lire-l-heure) ---------- */
+
+.hl__grille {
+  display: grid;
+  grid-template-columns: minmax(0, 260px) minmax(0, 1fr);
+  gap: 24px;
+  align-items: center;
+}
+
+.hl-cadran {
+  display: block;
+  width: 100%;
+  max-width: 260px;
+  height: auto;
+  margin: 0 auto;
+}
+
+.hl-bord { fill: var(--rg-navy-900); }
+.hl-fond { fill: #fff; }
+.hl-t1 { stroke: #9aa3b5; stroke-width: 1; }
+.hl-t5 { stroke: var(--rg-navy-900); stroke-width: 2.4; stroke-linecap: round; }
+.hl-n { fill: var(--rg-navy-900); font: 700 17px var(--rg-font); text-anchor: middle; dominant-baseline: central; }
+.hl-mn { fill: var(--rg-green-700); font: 600 9.5px var(--rg-font); text-anchor: middle; dominant-baseline: central; }
+.hl-ah { stroke: var(--rg-navy); stroke-width: 7; stroke-linecap: round; }
+.hl-am { stroke: #e8892c; stroke-width: 4.5; stroke-linecap: round; }
+.hl-centre { fill: var(--rg-navy-900); }
+
+.hl__num {
+  margin: 0;
+  color: var(--rg-navy-900);
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.hl__mots {
+  margin: 8px 0 0;
+  color: var(--rg-ink);
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.hl__24 {
+  margin: 6px 0 0;
+  color: var(--rg-muted);
+  font-size: 14.5px;
+}
+
+.hl__boutons,
+.hl__niveaux {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.hl__niveaux {
+  margin: 0 0 16px;
+}
+
+.hl__btn,
+.hl__niveau,
+.hl__reponse {
+  min-height: 42px;
+  padding: 8px 14px;
+  border: 1px solid var(--rg-line-strong);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--rg-ink);
+  font: 600 15px/1.2 var(--rg-font);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+
+.hl__btn:hover,
+.hl__niveau:hover,
+.hl__reponse:hover:not(:disabled) {
+  border-color: var(--rg-navy);
+  color: var(--rg-navy);
+}
+
+.hl__btn:focus-visible,
+.hl__niveau:focus-visible,
+.hl__reponse:focus-visible {
+  outline: 3px solid rgba(27, 60, 142, 0.35);
+  outline-offset: 2px;
+}
+
+.hl__niveau[aria-checked='true'] {
+  border-color: var(--rg-navy);
+  background: var(--rg-navy);
+  color: #fff;
+}
+
+.hl__consigne {
+  margin: 0 0 12px;
+  color: var(--rg-navy-900);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.hl__choix {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.hl__reponse {
+  font-size: 19px;
+  font-variant-numeric: tabular-nums;
+}
+
+.hl__reponse:disabled {
+  cursor: default;
+}
+
+.hl__reponse.is-juste {
+  border-color: var(--rg-green-700);
+  background: var(--rg-green-50);
+  color: var(--rg-green-700);
+}
+
+.hl__reponse.is-faux {
+  border-color: var(--rg-red-700);
+  background: var(--rg-red-50);
+  color: var(--rg-red-700);
+}
+
+.hl__retour {
+  min-height: 1.5em;
+  margin: 12px 0 0;
+  font-size: 15.5px;
+  line-height: 1.5;
+}
+
+.hl__retour.is-juste { color: var(--rg-green-700); }
+.hl__retour.is-faux { color: var(--rg-red-700); }
+
+.hl__suite {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.hl__score {
+  color: var(--rg-muted);
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .hl__grille {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .hl-cadran {
+    max-width: 230px;
+  }
+
+  .hl__lecture {
+    text-align: center;
+  }
+
+  .hl__num {
+    font-size: 34px;
+  }
+
+  .hl__mots {
+    font-size: 17px;
+  }
+
+  .hl__boutons .hl__btn {
+    flex: 1 1 30%;
+  }
+
+  .hl__btn--large {
+    flex-basis: 100% !important;
+  }
+}
+
+@media print {
+  .hl {
+    display: none;
+  }
+}

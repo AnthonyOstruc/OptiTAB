@@ -640,11 +640,11 @@ const ACCES_RAPIDE = [
   ['table', 'tableau-de-conversion'],
   ['formulaire', 'pythagore-thales-trigonometrie'],
   ['methode', 'calculer-une-moyenne'],
+  ['methode', 'lire-l-heure'],
   ['formulaire', 'aires-perimetres-volumes'],
   ['methode', 'calculer-avec-des-fractions'],
   ['operation', 'division-posee'],
   ['formulaire', 'second-degre'],
-  ['formulaire', 'derivees'],
   ['physique', 'formules-physique-chimie-brevet']
 ]
 

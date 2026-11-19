@@ -23,3 +23,11 @@ Tout est documenté dans `frontend/cours/format_v1/` :
 Chaque chapitre a son dossier `frontend/cours/format_v1/chantier/<niveau>/<id>_<slug>/`
 avec `RAPPORT.md` (historique) et `etat.json` (a_faire / en_cours / pret / importe).
 Ne jamais travailler sur un dossier « en_cours » d'un autre agent.
+
+## Ressources gratuites (formulaires, tables, méthodes, outils, fiches à imprimer)
+Pages publiques de `/ressources-gratuites/`, faites pour être trouvées sur Google
+et reprises par les IA. Avant d'en créer ou d'en modifier une, lire
+`frontend/contenu/GUIDE-RESSOURCES-GRATUITES.md` : référencement (titres,
+descriptions, données structurées, images, indexation), rédaction, téléphone,
+contrôles obligatoires, mise en ligne sans embarquer le travail des autres
+sessions, pièges connus et liste de ce qui reste à faire.

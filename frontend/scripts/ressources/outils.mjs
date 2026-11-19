@@ -13,6 +13,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { tableauPeriodiqueHtml } from './tableau-periodique.mjs'
+import { horlogeHtml } from './horloge.mjs'
 
 const ICI = path.dirname(fileURLToPath(import.meta.url))
 const e = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
@@ -23,6 +24,11 @@ export const OUTILS = {
   'tableau-periodique': {
     titre: 'Tableau périodique interactif',
     html: tableauPeriodiqueHtml
+  },
+  // Horloge à aiguilles : explorer l'heure et s'entraîner (voir horloge.mjs).
+  horloge: {
+    titre: 'Horloge interactive pour apprendre l’heure',
+    html: horlogeHtml
   },
   pourcentage: {
     titre: 'Calculateur de pourcentage',

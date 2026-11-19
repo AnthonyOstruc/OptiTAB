@@ -32,6 +32,9 @@
       "alt": "Échelle des préfixes, de pico (10 puissance −12) à téra (10 puissance 12) en passant par nano, micro, milli, l’unité, kilo, méga et giga : on multiplie par 1 000 à chaque case vers la droite."
     }
   ],
+  "liees": [
+    "physique-chimie/unites-si-constantes-physiques"
+  ],
   "chapitresLies": [
     "4e/puissances-et-notation-scientifique",
     "3e/puissances-racines-et-ecriture-scientifique",

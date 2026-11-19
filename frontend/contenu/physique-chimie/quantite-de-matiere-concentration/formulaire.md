@@ -24,6 +24,7 @@
   ],
   "liees": [
     "physique-chimie/formules-physique-chimie-brevet",
+    "physique-chimie/unites-si-constantes-physiques",
     "tables/tableau-de-conversion",
     "tables/puissances-de-10-prefixes",
     "formulaires/produit-en-croix-proportionnalite"

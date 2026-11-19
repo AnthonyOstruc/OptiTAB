@@ -67,7 +67,8 @@
     "physique-chimie/formules-physique-chimie-brevet",
     "formulaires/derivees",
     "formulaires/pythagore-thales-trigonometrie",
-    "tables/puissances-de-10-prefixes"
+    "tables/puissances-de-10-prefixes",
+    "physique-chimie/unites-si-constantes-physiques"
   ],
   "faq": [
     [

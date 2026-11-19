@@ -190,7 +190,8 @@ INFOS = {
         {"nom": "satellite", "alt": "Satellite sur une orbite circulaire autour de la Terre, de rayon r égal au rayon de la Terre RT plus l’altitude h. La force de gravitation F exercée par la Terre est dirigée vers le centre O de la Terre ; la vitesse v du satellite est tangente à l’orbite."},
     ],
     "liees": ["physique-chimie/formulaire-mecanique-prepa", "physique-chimie/formules-physique-chimie-brevet",
-              "formulaires/derivees", "formulaires/pythagore-thales-trigonometrie", "tables/puissances-de-10-prefixes"],
+              "formulaires/derivees", "formulaires/pythagore-thales-trigonometrie", "tables/puissances-de-10-prefixes",
+              "physique-chimie/unites-si-constantes-physiques"],
     "faq": [
         ["Quelle est la formule de la vitesse ?", "La vitesse moyenne est la distance parcourue divisée par la durée du parcours : v = d / Δt. Avec des mètres et des secondes, elle s’exprime en m/s ; avec des kilomètres et des heures, en km/h. Un cycliste qui parcourt 18 km en 0,75 h roule à {CYCL_KMH} km/h, soit environ {CYCL_MS} m/s : on divise par 3,6."],
         ["Que dit la deuxième loi de Newton ?", "Dans un référentiel galiléen, la somme des forces appliquées à un système est égale au produit de sa masse par l’accélération de son centre de masse : ΣF = m × a, en vecteurs. L’accélération a donc la direction et le sens de la somme des forces. Un chariot de 2,0 kg tiré par une force de 5,0 N, sans frottement, a une accélération de {A_CHARIOT} m/s²."],

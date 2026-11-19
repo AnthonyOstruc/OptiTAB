@@ -238,6 +238,9 @@ Supprimer ensuite `figures/build`, `figures/__pycache__` et les planches.
   recalcule chaque exemple) et **formulaire de mécanique du supérieur**
   (`formulaire-mecanique-prepa` : prépa 1re et 2e année, licence, Lagrange
   et Hamilton). Une page par public : lycée et supérieur sont séparés, et reliés.
+- **unités SI et constantes physiques** (`physique-chimie/unites-si-constantes-physiques`) :
+  `generer.py` compare chaque constante à CODATA 2022 (scipy.constants) ; à
+  relancer après chaque nouvelle publication du CODATA (tous les 4 ans).
 
 **À faire ensuite, par demande décroissante :**
 1. **Énergie** (Première) : énergie cinétique, travail d'une force, théorème de

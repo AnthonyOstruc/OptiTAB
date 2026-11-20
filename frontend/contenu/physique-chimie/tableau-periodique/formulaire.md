@@ -156,26 +156,26 @@ Les électrons occupent les sous-couches dans l’ordre $\mathrm{1s}$, $\mathrm{
 Le chlore ($Z = 17$) a pour configuration $\mathrm{1s^{2}\,2s^{2}\,2p^{6}\,3s^{2}\,3p^{5}}$. Sa dernière couche, la couche 3, porte $2 + 5 = 7$ électrons de valence : le chlore est dans la troisième période et dans la colonne 17.
 :::
 
-| Élément | Configuration électronique | Électrons de valence |
+| Élément | Configuration électronique | Valence |
 |---|---|---|
-| Hydrogène H ($Z = 1$) | $\mathrm{1s^{1}}$ | 1 |
-| Hélium He ($Z = 2$) | $\mathrm{1s^{2}}$ | 2 |
-| Lithium Li ($Z = 3$) | $\mathrm{1s^{2}\,2s^{1}}$ | 1 |
-| Béryllium Be ($Z = 4$) | $\mathrm{1s^{2}\,2s^{2}}$ | 2 |
-| Bore B ($Z = 5$) | $\mathrm{1s^{2}\,2s^{2}\,2p^{1}}$ | 3 |
-| Carbone C ($Z = 6$) | $\mathrm{1s^{2}\,2s^{2}\,2p^{2}}$ | 4 |
-| Azote N ($Z = 7$) | $\mathrm{1s^{2}\,2s^{2}\,2p^{3}}$ | 5 |
-| Oxygène O ($Z = 8$) | $\mathrm{1s^{2}\,2s^{2}\,2p^{4}}$ | 6 |
-| Fluor F ($Z = 9$) | $\mathrm{1s^{2}\,2s^{2}\,2p^{5}}$ | 7 |
-| Néon Ne ($Z = 10$) | $\mathrm{1s^{2}\,2s^{2}\,2p^{6}}$ | 8 |
-| Sodium Na ($Z = 11$) | $\mathrm{1s^{2}\,2s^{2}\,2p^{6}\,3s^{1}}$ | 1 |
-| Magnésium Mg ($Z = 12$) | $\mathrm{1s^{2}\,2s^{2}\,2p^{6}\,3s^{2}}$ | 2 |
-| Aluminium Al ($Z = 13$) | $\mathrm{1s^{2}\,2s^{2}\,2p^{6}\,3s^{2}\,3p^{1}}$ | 3 |
-| Silicium Si ($Z = 14$) | $\mathrm{1s^{2}\,2s^{2}\,2p^{6}\,3s^{2}\,3p^{2}}$ | 4 |
-| Phosphore P ($Z = 15$) | $\mathrm{1s^{2}\,2s^{2}\,2p^{6}\,3s^{2}\,3p^{3}}$ | 5 |
-| Soufre S ($Z = 16$) | $\mathrm{1s^{2}\,2s^{2}\,2p^{6}\,3s^{2}\,3p^{4}}$ | 6 |
-| Chlore Cl ($Z = 17$) | $\mathrm{1s^{2}\,2s^{2}\,2p^{6}\,3s^{2}\,3p^{5}}$ | 7 |
-| Argon Ar ($Z = 18$) | $\mathrm{1s^{2}\,2s^{2}\,2p^{6}\,3s^{2}\,3p^{6}}$ | 8 |
+| Hydrogène H ($Z = 1$) | $\small\mathrm{1s^{1}}$ | 1 |
+| Hélium He ($Z = 2$) | $\small\mathrm{1s^{2}}$ | 2 |
+| Lithium Li ($Z = 3$) | $\small\mathrm{1s^{2}\,2s^{1}}$ | 1 |
+| Béryllium Be ($Z = 4$) | $\small\mathrm{1s^{2}\,2s^{2}}$ | 2 |
+| Bore B ($Z = 5$) | $\small\mathrm{1s^{2}\,2s^{2}\,2p^{1}}$ | 3 |
+| Carbone C ($Z = 6$) | $\small\mathrm{1s^{2}\,2s^{2}\,2p^{2}}$ | 4 |
+| Azote N ($Z = 7$) | $\small\mathrm{1s^{2}\,2s^{2}\,2p^{3}}$ | 5 |
+| Oxygène O ($Z = 8$) | $\small\mathrm{1s^{2}\,2s^{2}\,2p^{4}}$ | 6 |
+| Fluor F ($Z = 9$) | $\small\mathrm{1s^{2}\,2s^{2}\,2p^{5}}$ | 7 |
+| Néon Ne ($Z = 10$) | $\small\mathrm{1s^{2}\,2s^{2}\,2p^{6}}$ | 8 |
+| Sodium Na ($Z = 11$) | $\small\mathrm{1s^{2}\,2s^{2}\,2p^{6}\,3s^{1}}$ | 1 |
+| Magnésium Mg ($Z = 12$) | $\small\mathrm{1s^{2}\,2s^{2}\,2p^{6}\,3s^{2}}$ | 2 |
+| Aluminium Al ($Z = 13$) | $\small\mathrm{1s^{2}\,2s^{2}\,2p^{6}\,3s^{2}\,3p^{1}}$ | 3 |
+| Silicium Si ($Z = 14$) | $\small\mathrm{1s^{2}\,2s^{2}\,2p^{6}\,3s^{2}\,3p^{2}}$ | 4 |
+| Phosphore P ($Z = 15$) | $\small\mathrm{1s^{2}\,2s^{2}\,2p^{6}\,3s^{2}\,3p^{3}}$ | 5 |
+| Soufre S ($Z = 16$) | $\small\mathrm{1s^{2}\,2s^{2}\,2p^{6}\,3s^{2}\,3p^{4}}$ | 6 |
+| Chlore Cl ($Z = 17$) | $\small\mathrm{1s^{2}\,2s^{2}\,2p^{6}\,3s^{2}\,3p^{5}}$ | 7 |
+| Argon Ar ($Z = 18$) | $\small\mathrm{1s^{2}\,2s^{2}\,2p^{6}\,3s^{2}\,3p^{6}}$ | 8 |
 
 Les **gaz nobles** ont une couche externe complète : 2 électrons pour l’hélium, 8 pour les autres. C’est pourquoi ils sont très stables. Les autres atomes gagnent ou perdent des électrons pour obtenir la configuration du gaz noble le plus proche : ils forment des **ions monoatomiques**.
 

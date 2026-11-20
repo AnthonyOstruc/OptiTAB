@@ -46,6 +46,7 @@
   ],
   "liees": [
     "methodes/convertisseur-d-unites",
+    "physique-chimie/masse-volumique-des-materiaux",
     "tables/puissances-de-10-prefixes",
     "tables/tableau-de-conversion",
     "physique-chimie/quantite-de-matiere-concentration",

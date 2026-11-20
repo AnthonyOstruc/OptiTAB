@@ -55,7 +55,8 @@
     "tables/tableau-de-conversion",
     "tables/puissances-de-10-prefixes",
     "physique-chimie/unites-si-constantes-physiques",
-    "methodes/calculer-une-duree"
+    "methodes/calculer-une-duree",
+    "physique-chimie/masse-volumique-des-materiaux"
   ],
   "faq": [
     [

@@ -202,7 +202,8 @@ INFOS = {
         {"nom": "echelles_temperature", "alt": "Les échelles de température Celsius, Kelvin et Fahrenheit côte à côte : le zéro absolu vaut −273,15 °C, 0 K et −459,67 °F ; la glace fond à 0 °C, 273,15 K et 32 °F ; le corps humain est à 37 °C, 310,15 K et 98,6 °F ; l’eau bout à 100 °C, 373,15 K et 212 °F."},
     ],
     "liees": ["tables/tableau-de-conversion", "tables/puissances-de-10-prefixes",
-              "physique-chimie/unites-si-constantes-physiques", "methodes/calculer-une-duree"],
+              "physique-chimie/unites-si-constantes-physiques", "methodes/calculer-une-duree",
+              "physique-chimie/masse-volumique-des-materiaux"],
     "faq": [
         ["Comment convertir des kN en N ?", "1 kN = 1 000 N : on multiplie par 1 000. Ainsi 2,5 kN = 2 500 N. Dans l’autre sens, on divise par 1 000 : 750 N = 0,75 kN. Le préfixe kilo signifie toujours mille."],
         ["Comment convertir des km/h en m/s ?", "On divise par 3,6, car 1 m/s = 3,6 km/h : 90 km/h = 90 ÷ 3,6 = 25 m/s. Pour passer des m/s aux km/h, on multiplie par 3,6 : 10 m/s = 36 km/h."],

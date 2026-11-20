@@ -25,6 +25,7 @@
   "liees": [
     "physique-chimie/formules-physique-chimie-brevet",
     "physique-chimie/unites-si-constantes-physiques",
+    "physique-chimie/masse-volumique-des-materiaux",
     "tables/tableau-de-conversion",
     "tables/puissances-de-10-prefixes",
     "formulaires/produit-en-croix-proportionnalite"

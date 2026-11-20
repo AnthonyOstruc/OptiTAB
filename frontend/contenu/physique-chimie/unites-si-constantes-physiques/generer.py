@@ -274,7 +274,7 @@ INFOS = {
     "figures": [
         {"nom": "unites_de_base", "alt": "Les 7 unités de base du Système international et la constante qui définit chacune depuis 2019 : la seconde (s) par la fréquence du césium Δν(Cs), le mètre (m) par la vitesse de la lumière c, le kilogramme (kg) par la constante de Planck h, l’ampère (A) par la charge élémentaire e, le kelvin (K) par la constante de Boltzmann kB, la mole (mol) par la constante d’Avogadro NA et la candela (cd) par l’efficacité lumineuse Kcd."},
     ],
-    "liees": ["methodes/convertisseur-d-unites", "tables/puissances-de-10-prefixes", "tables/tableau-de-conversion",
+    "liees": ["methodes/convertisseur-d-unites", "physique-chimie/masse-volumique-des-materiaux", "tables/puissances-de-10-prefixes", "tables/tableau-de-conversion",
               "physique-chimie/quantite-de-matiere-concentration", "physique-chimie/formules-de-mecanique"],
     "faq": [
         ["Quelles sont les 7 unités de base du Système international ?", "Le mètre (m) pour les longueurs, le kilogramme (kg) pour les masses, la seconde (s) pour le temps, l’ampère (A) pour l’intensité du courant, le kelvin (K) pour la température, la mole (mol) pour la quantité de matière et la candela (cd) pour l’intensité lumineuse. Toutes les autres unités s’en déduisent : par exemple 1 N = 1 kg·m·s⁻²."],

@@ -205,6 +205,15 @@ Supprimer ensuite `figures/build`, `figures/__pycache__` et les planches.
    - dans Bing Webmaster Tools, faire de même : ChatGPT et Copilot s'appuient
      en partie sur l'index de Bing.
 
+### Appels à l'action (cours particuliers, abonnement, contact)
+
+- Sous chaque outil interactif, la barre `apresOutil` (formulaires.mjs) : le visiteur d'un
+  outil lit rarement le bas de page. Cours particuliers : jamais pour une page de
+  primaire seulement. Abonnement : toujours (il inclut les maths et la
+  physique-chimie, confirmé par le propriétaire le 20/11/2026). Contact : toujours.
+- En bas de page : les cartes habituelles, puis la ligne « Une question ? Écris-nous »
+  vers /contact. Ne pas promettre de délai de réponse.
+
 ## 11. Pièges déjà rencontrés
 
 - L'outil Bash (heredoc, `python -c`, `sed`) mange les `\\`. Écrire le LaTeX avec
@@ -247,6 +256,12 @@ Supprimer ensuite `figures/build`, `figures/__pycache__` et les planches.
   unité, l'ajouter là puis relancer `generer.py`, qui vérifie chaque facteur
   (scipy.constants) et que la page calcule comme le module. Lien direct vers une
   grandeur : `…/convertisseur-d-unites/#pression`.
+- **masse volumique des matériaux** (`physique-chimie/masse-volumique-des-materiaux`, outil
+  `masses-volumiques`) : 126 lignes (liquides, gaz, métaux, bois, sols, autres) et
+  poids volumiques de l'Eurocode (EN 1991-1-1, annexe A, relevés dans la norme).
+  Les données sont dans `generer.py`, qui écrit `materiaux.json` (lu par l'outil)
+  et vérifie métaux (PubChem, `sources/pubchem.csv`), gaz (gaz parfaits) et
+  cohérence avec l'Eurocode.
 
 **À faire ensuite, par demande décroissante :**
 1. **Énergie** (Première) : énergie cinétique, travail d'une force, théorème de

@@ -372,9 +372,10 @@ export function rendreFormulaire(f) {
     const marque = /<p\b[^>]*>\s*\[TELECHARGEMENTS\]\s*<\/p>/
     html = marque.test(html) ? html.replace(marque, bloc) : `${bloc}\n${html}`
   }
-  // Calculateur : à la place de [OUTIL], ou en tête du texte.
+  // Calculateur : à la place de [OUTIL], ou en tête du texte, suivi de la barre
+  // « cours particulier, abonnement, contact » (le visiteur d'un outil lit rarement le bas de page).
   if (f.outil) {
-    const bloc = outilHtml(f.outil)
+    const bloc = outilHtml(f.outil) + apresOutil(f)
     const marque = /<p\b[^>]*>\s*\[OUTIL\]\s*<\/p>/
     html = marque.test(html) ? html.replace(marque, bloc) : `${bloc}\n${html}`
   }
@@ -493,24 +494,45 @@ const etapes = (f) => [...etapesRubrique(rubrique(f)), [f.titreCourt, urlFormula
 
 // ---------- Pages ----------
 
-// Appel de fin de page : l'offre du site, ou (maternelle) les maths du CP.
-// Physique-chimie : les maths de 3e, ou celles du lycée pour une page sans
-// partie de collège (mécanique, électrocinétique…).
-function appelFinal(r, lieu, f = null) {
+// Barre sous un outil interactif : cours particulier (pas pour une page de
+// primaire seulement : pas de cours particuliers au primaire), abonnement (maths et
+// physique-chimie), contact.
+function apresOutil(f) {
+  const r = rubrique(f)
+  const physique = r.appel === 'physique'
+  const primaire = f.niveaux.length > 0 && f.niveaux.every((n) => n === 'Primaire')
+  const lieu = `ressources_${r.lieu}_outil`
+  const texte = primaire
+    ? '<strong>Pour aller plus loin</strong> : les cours, les fiches et les exercices corrigés de toute la classe, avec l’abonnement.'
+    : `<strong>Un exercice te bloque ?</strong> Un prof de ${physique ? 'physique-chimie' : 'maths'} te l’explique en cours particulier, en ligne.`
+  const boutons = [
+    primaire ? '' : `<a class="rg-btn rg-btn--green rg-btn--sm" href="/cours-particuliers" data-cta-name="tutoring" data-cta-location="${lieu}">Réserver un cours ${icone('fleche')}</a>`,
+    `<a class="rg-btn rg-btn--ghost rg-btn--sm" href="/tarifs" data-cta-name="pricing" data-cta-location="${lieu}">Découvrir l’abonnement</a>`,
+    `<a class="rg-suite__contact" href="/contact" data-cta-name="contact" data-cta-location="${lieu}">Nous contacter</a>`
+  ].filter(Boolean).join('\n    ')
+  return `\n<aside class="rg-suite" aria-label="Aller plus loin">
+  <p class="rg-suite__texte">${texte.replace(' ?', ' ?').replace(' :', ' :')}</p>
+  <div class="rg-suite__actions">
+    ${boutons}
+  </div>
+</aside>`
+}
+
+// Ligne « contact » sous les appels de fin de page.
+function ligneContact(lieu, vous = false) {
+  return `\n<p class="rg-ctas__contact">Une question${vous ? '' : ' sur les cours'} ? <a href="/contact" data-cta-name="contact" data-cta-location="${lieu}">${vous ? 'Écrivez-nous' : 'Écris-nous'}</a>.</p>`
+}
+
+// Appel de fin de page : l'offre du site (abonnement et cours particuliers), ou
+// (maternelle) les maths du CP. La physique-chimie est incluse dans l'abonnement.
+function appelFinal(r, lieu) {
   if (r.appel === 'physique') {
-    const lycee = f && f.niveaux.length > 0 && !f.niveaux.includes('Collège')
-    const maths = lycee
-      ? `<p class="rg-cta__kicker">Bac</p>
-    <h2 class="rg-cta__title">Réviser aussi les maths du lycée</h2>
-    <p>Dérivées, vecteurs, équations différentielles : les cours, les fiches de révision et les exercices corrigés de maths du lycée, gratuits et conformes au programme.</p>
-    <a class="rg-btn rg-btn--primary" href="${RACINE}maths/terminale/" data-cta-name="maths_terminale" data-cta-location="${lieu}">Voir les maths de Terminale ${icone('fleche')}</a>`
-      : `<p class="rg-cta__kicker">Brevet</p>
-    <h2 class="rg-cta__title">Réviser aussi les maths du brevet</h2>
-    <p>Les cours, les fiches de révision et les exercices corrigés de maths de 3e, gratuits et conformes au programme.</p>
-    <a class="rg-btn rg-btn--primary" href="${RACINE}maths/3e/" data-cta-name="maths_3e" data-cta-location="${lieu}">Voir les maths de 3e ${icone('fleche')}</a>`
     return `<section class="rg-ctas" aria-label="Aller plus loin">
   <div class="rg-cta rg-cta--plateforme">
-    ${maths}
+    <p class="rg-cta__kicker">Plateforme OptiTAB</p>
+    <h2 class="rg-cta__title">S’entraîner jusqu’à maîtriser</h2>
+    <p>Les cours de physique-chimie et de maths, des exercices corrigés pas à pas, le suivi de tes progrès et des révisions guidées.</p>
+    <a class="rg-btn rg-btn--primary" href="/tarifs" data-cta-name="pricing" data-cta-location="${lieu}">Découvrir l’abonnement ${icone('fleche')}</a>
   </div>
   <div class="rg-cta rg-cta--prof">
     <p class="rg-cta__kicker">Cours particuliers</p>
@@ -518,9 +540,9 @@ function appelFinal(r, lieu, f = null) {
     <p>Des séances individuelles à distance pour comprendre le cours, refaire les exercices et préparer le brevet ou le bac, avec un professeur expérimenté.</p>
     <a class="rg-btn rg-btn--green" href="/cours-particuliers" data-cta-name="tutoring" data-cta-location="${lieu}">Réserver un cours particulier ${icone('fleche')}</a>
   </div>
-</section>`
+</section>${ligneContact(lieu)}`
   }
-  if (r.appel !== 'cp') return appelsAction(null, null, lieu)
+  if (r.appel !== 'cp') return appelsAction(null, null, lieu) + ligneContact(lieu)
   return `<section class="rg-ctas rg-ctas--seul" aria-label="Aller plus loin">
   <div class="rg-cta rg-cta--plateforme">
     <p class="rg-cta__kicker">Après la maternelle</p>
@@ -528,11 +550,10 @@ function appelFinal(r, lieu, f = null) {
     <p>Des cours illustrés, des fiches et des exercices corrigés pour accompagner votre enfant dès le CP, conformes au programme.</p>
     <a class="rg-btn rg-btn--primary" href="${RACINE}maths/cp/" data-cta-name="maths_cp" data-cta-location="${lieu}">Voir les maths du CP ${icone('fleche')}</a>
   </div>
-</section>`
+</section>${ligneContact(lieu, true)}`
 }
 
-// Physique-chimie : pas d'abonnement dans cette matière, les cours particuliers
-// sont la seule offre. Une ligne d'aide en haut (à côté d'Imprimer), puis des
+// Physique-chimie : une ligne d'aide en haut (à côté d'Imprimer), puis des
 // encadrés dans la page, car le bas d'une longue page est peu lu : un au milieu,
 // ou deux (au tiers et aux deux tiers de la longueur) à partir de 10 parties.
 // Moins de 4 parties : aucun.
@@ -598,7 +619,7 @@ export function pageFormulaire(f, rendu, formulaires) {
 </div>
 <div class="rg-wrap">
   ${autresFormulaires(f, formulaires)}
-  ${appelFinal(r, `ressources_${r.lieu}`, f)}
+  ${appelFinal(r, `ressources_${r.lieu}`)}
 </div>`
 }
 

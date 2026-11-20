@@ -16,6 +16,7 @@ import { tableauPeriodiqueHtml } from './tableau-periodique.mjs'
 import { horlogeHtml } from './horloge.mjs'
 import { brevetHtml } from './brevet.mjs'
 import { convertisseurHtml } from './convertisseur.mjs'
+import { masseVolumiqueHtml } from './masses-volumiques.mjs'
 
 const ICI = path.dirname(fileURLToPath(import.meta.url))
 const e = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
@@ -41,6 +42,11 @@ export const OUTILS = {
   convertisseur: {
     titre: 'Convertisseur d’unités',
     html: () => convertisseurHtml('longueur')
+  },
+  // Masse volumique des matériaux : recherche et calcul de masse (voir masses-volumiques.mjs).
+  'masses-volumiques': {
+    titre: 'Masse volumique des matériaux',
+    html: masseVolumiqueHtml
   },
   pourcentage: {
     titre: 'Calculateur de pourcentage',

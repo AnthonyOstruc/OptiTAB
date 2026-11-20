@@ -1859,3 +1859,197 @@
     display: none;
   }
 }
+
+/* ---------- Masse volumique des matériaux (physique-chimie/masse-volumique-des-materiaux) ---------- */
+
+.mv__recherche {
+  margin-bottom: 18px;
+}
+
+.mv__lib {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--rg-ink-soft);
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+.mv .mv__q {
+  width: 100%;
+  text-align: left;
+  font-size: 16px;
+}
+
+.mv__compte {
+  margin: 10px 0 6px;
+  color: var(--rg-muted);
+  font-size: 13.5px;
+}
+
+.mv .mv__resultats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mv .mv__resultats li {
+  margin: 0;
+}
+
+.mv__resultats button {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 8px;
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--rg-line);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--rg-ink);
+  font: 500 14.5px/1.35 var(--rg-font);
+  text-align: left;
+  cursor: pointer;
+}
+
+.mv__resultats button:hover {
+  border-color: var(--rg-navy);
+}
+
+.mv__resultats strong {
+  color: var(--rg-navy-900);
+}
+
+.mv__val {
+  color: var(--rg-green-700);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.mv__cat {
+  flex-basis: 100%;
+  color: var(--rg-muted);
+  font-size: 12.5px;
+}
+
+.mv__calcul {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: 12px;
+  align-items: end;
+  padding-top: 16px;
+  border-top: 1px dashed var(--rg-line-strong);
+}
+
+.mv__champ {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.mv .mv__calcul .otc__menu,
+.mv .mv__calcul .otc__champ {
+  width: 100%;
+  min-width: 0;
+  font-size: 16px;
+}
+
+.mv .mv__calcul .otc__champ {
+  text-align: left;
+}
+
+@media (max-width: 640px) {
+  .mv .mv__resultats,
+  .mv__calcul {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media print {
+  .mv {
+    display: none;
+  }
+}
+
+/* ---------- Barre sous un outil : cours particulier, abonnement, contact ---------- */
+
+.rg-suite {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+  margin: -20px 0 36px;
+  padding: 14px 18px;
+  border: 1px solid var(--rg-line);
+  border-radius: 14px;
+  background: var(--rg-bg-soft, #f6f8fc);
+  font-family: var(--rg-font);
+}
+
+.rg-suite__texte {
+  flex: 1 1 280px;
+  margin: 0;
+  color: var(--rg-ink-soft);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.rg-suite__texte strong {
+  color: var(--rg-navy-900);
+}
+
+.rg-suite__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+}
+
+.rg-suite__contact {
+  color: var(--rg-navy);
+  font-size: 14.5px;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.rg-suite__contact:hover {
+  color: var(--rg-navy-900);
+}
+
+/* Ligne « Une question ? Écris-nous » sous les appels de fin de page. */
+.rg-ctas__contact {
+  margin: -8px 0 32px;
+  color: var(--rg-muted);
+  font-size: 15px;
+  text-align: center;
+}
+
+.rg-ctas__contact a {
+  color: var(--rg-navy);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 640px) {
+  .rg-suite {
+    margin-top: -24px;
+    padding: 14px;
+  }
+
+  .rg-suite__actions {
+    width: 100%;
+  }
+}
+
+@media print {
+  .rg-suite,
+  .rg-ctas__contact {
+    display: none;
+  }
+}

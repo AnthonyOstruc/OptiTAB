@@ -49,9 +49,11 @@ def masse_texte(el):
 
 # ---------------------------------------------------------------- formulaire.md
 def tableau_configurations():
-    lignes = ["| Élément | Configuration électronique | Électrons de valence |", "|---|---|---|"]
+    lignes = ["| Élément | Configuration électronique | Valence |", "|---|---|---|"]
     for el in E[:18]:
-        lignes.append(f"| {el['nom']} {el['s']} ($Z = {el['z']}$) | {config_latex(el['config'])} | {el['valence']} |")
+        # configuration en petit dans le tableau : elle ne se coupe pas, et doit tenir sur un écran de 360 px
+        conf = config_latex(el['config']).replace(r"$\mathrm{", r"$\small\mathrm{", 1)
+        lignes.append(f"| {el['nom']} {el['s']} ($Z = {el['z']}$) | {conf} | {el['valence']} |")
     return "\n".join(lignes)
 
 

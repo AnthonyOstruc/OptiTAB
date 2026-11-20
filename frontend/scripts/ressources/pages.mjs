@@ -433,6 +433,49 @@ const BLOG_PAR_CLASSE = {
   terminale: ['specialite-maths-premiere-terminale', 'reviser-les-maths-pendant-les-vacances']
 }
 
+// Outils et rubriques gratuites utiles à chaque classe : liens depuis les pages
+// de classe, parmi les plus fortes du site, vers les pages d'outils (maillage interne).
+const OUTIL = {
+  maternelle: ['maternelle/', 'cours', 'Avant le CP : la maternelle', 'Compter, les formes, se repérer : pour revoir les bases'],
+  operations: ['operations/', 'operation', 'Poser les opérations', 'Addition, soustraction, multiplication et division posées'],
+  fiches: ['fiches-a-imprimer/', 'imprimer', 'Fiches à imprimer', 'Des opérations à poser, avec leurs corrigés'],
+  heure: ['methodes/lire-l-heure/', 'calcul', 'Lire l’heure', 'Une horloge interactive pour s’entraîner'],
+  multiplication: ['tables/table-de-multiplication/', 'table', 'Table de multiplication', 'De 1 à 20, avec des astuces pour la retenir'],
+  conversion: ['tables/tableau-de-conversion/', 'table', 'Tableau de conversion', 'Longueurs, masses, contenances, aires et volumes'],
+  methodes: ['methodes/', 'calcul', 'Méthodes de calcul', 'Pourcentages, fractions, moyennes, durées, avec calculateurs'],
+  formulaires: ['formulaires/', 'formule', 'Formulaires de maths', 'Toutes les formules expliquées, avec des exemples'],
+  convertisseur: ['methodes/convertisseur-d-unites/', 'calcul', 'Convertisseur d’unités', 'Longueurs, masses, vitesses, pressions, températures'],
+  brevet: ['methodes/simulateur-brevet/', 'calcul', 'Simulateur du brevet', 'Calculer sa note et sa mention au brevet'],
+  physiqueBrevet: ['physique-chimie/formules-physique-chimie-brevet/', 'physique', 'Physique-chimie du brevet', 'Toutes les formules de 3e, avec exemples'],
+  physique: ['physique-chimie/', 'physique', 'Physique-chimie', 'Formules, tableau périodique et unités, du collège à la prépa'],
+  mecanique: ['physique-chimie/formules-de-mecanique/', 'physique', 'Formules de mécanique', 'Vitesse, forces, lois de Newton, chute libre'],
+  periodique: ['physique-chimie/tableau-periodique/', 'physique', 'Tableau périodique', 'Interactif et à imprimer'],
+  tables: ['tables/', 'table', 'Tables de maths', 'Carrés, puissances de 10, fractions, trigonométrie']
+}
+const OUTILS_PAR_CLASSE = {
+  cp: ['maternelle', 'heure', 'operations'],
+  ce1: ['operations', 'multiplication', 'heure', 'fiches'],
+  ce2: ['operations', 'multiplication', 'heure', 'fiches'],
+  cm1: ['operations', 'multiplication', 'methodes', 'fiches'],
+  cm2: ['operations', 'multiplication', 'conversion', 'methodes'],
+  '6e': ['formulaires', 'methodes', 'conversion', 'operations'],
+  '5e': ['formulaires', 'methodes', 'tables', 'convertisseur'],
+  '4e': ['formulaires', 'methodes', 'tables', 'physiqueBrevet'],
+  '3e': ['brevet', 'formulaires', 'physiqueBrevet', 'methodes'],
+  seconde: ['formulaires', 'mecanique', 'periodique', 'convertisseur'],
+  premiere: ['formulaires', 'mecanique', 'periodique', 'tables'],
+  terminale: ['formulaires', 'mecanique', 'physique', 'tables']
+}
+
+function outilsClasse(classe) {
+  const liste = (OUTILS_PAR_CLASSE[classe.slug] || []).map((k) => OUTIL[k])
+  if (!liste.length) return ''
+  return `<section class="rg-next rg-outils" aria-labelledby="outils-${classe.slug}">
+    <p class="rg-next__title" id="outils-${classe.slug}">${icone('check')} Outils et fiches gratuits utiles en ${e(classe.court)}</p>
+    <div class="rg-next__grid">${liste.map(([chemin, ico, titre, texte]) => `<a class="rg-next__card" href="${RACINE}${chemin}">${icone(ico)}<span><strong>${e(titre)}</strong><small>${e(texte)}</small></span></a>`).join('')}</div>
+  </section>`
+}
+
 function conseilsBlog(classe, articles) {
   const liste = (BLOG_PAR_CLASSE[classe.slug] || []).map((s) => articles.find((a) => a.slug === s)).filter(Boolean)
   if (!liste.length) return ''
@@ -474,6 +517,7 @@ export function pageClasse(classe, catalogue, articles = []) {
 </header>
 <div class="rg-wrap rg-classe">
   ${themes}
+  ${outilsClasse(classe)}
   ${conseilsBlog(classe, articles)}
   ${appelsAction(classe, null, 'ressources_classe')}
 </div>`

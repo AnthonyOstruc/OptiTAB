@@ -158,6 +158,9 @@ Maillage interne (les liens qui font monter une page) :
 - `ACCES_RAPIDE` dans `formulaires.mjs` : les 12 pages les plus demandées, mises en avant sur l'accueil ;
 - les liens `liees`, dans les deux sens ;
 - les `chapitresLies` ;
+- le bloc « Outils et fiches gratuits utiles en … » des pages de classe
+  (`OUTILS_PAR_CLASSE` dans `pages.mjs`, 3 ou 4 cartes par classe) : y ajouter
+  une nouvelle rubrique ou un nouvel outil quand il sert vraiment à cette classe ;
 - la rubrique ;
 - le pied de page.
 
@@ -201,9 +204,18 @@ Supprimer ensuite `figures/build`, `figures/__pycache__` et les planches.
 3. `git push origin main`. Prévenir le propriétaire qu'il doit faire **Manual
    Deploy → Deploy latest commit** sur Render.
 4. Après le déploiement :
-   - dans Google Search Console, inspecter l'adresse et demander l'indexation ;
-   - dans Bing Webmaster Tools, faire de même : ChatGPT et Copilot s'appuient
-     en partie sur l'index de Bing.
+   - **IndexNow** (Bing, donc Copilot et la recherche de ChatGPT) : signaler les
+     pages nouvelles ou modifiées, depuis `frontend/` :
+     ```sh
+     node scripts/ressources/indexnow.mjs --url /ressources-gratuites/<rubrique>/<slug>/ --url /ressources-gratuites/<rubrique>/
+     node scripts/ressources/indexnow.mjs --depuis AAAA-MM-JJ    # pages dont la date de modification est récente
+     ```
+     Ajouter `--essai` pour voir la liste sans rien envoyer. Le script refuse une
+     adresse absente du plan du site en ligne. La clé est
+     `public/972077ebf71c7764ee5ced535382ebee.txt` : ne jamais la supprimer ni la
+     renommer. Ne pas renvoyer la même page plusieurs fois par jour ;
+   - dans Google Search Console (Google n'utilise pas IndexNow), inspecter
+     l'adresse et demander l'indexation.
 
 ### Appels à l'action (cours particuliers, abonnement, contact)
 
@@ -224,10 +236,13 @@ Supprimer ensuite `figures/build`, `figures/__pycache__` et les planches.
 - Dans le terminal Git Bash, les chemins qui commencent par « / » sont
   transformés : préfixer la commande par `MSYS_NO_PATHCONV=1`.
 - PDF LuaLaTeX : Montserrat existe en `SemiBold` (pas de `Bold`).
-- Render a des règles en boucle sur `/ressources-gratuites` (sans « / ») : seul
-  le propriétaire peut les supprimer. Les liens du site ont toujours le « / » final.
+- Render (service `optitab-frontend`, onglet Redirects/Rewrites) : les règles
+  ajoutent le « / » final (`/ressources-gratuites` → `/ressources-gratuites/`, idem
+  pour `/cours`, `/exercices`, `/syntheses`) ; la dernière règle `/*` → `/index.html`
+  (Rewrite) doit rester en dernier. Ne jamais créer de règle qui retire le « / » :
+  elle tourne en boucle (corrigé le 20/11/2026). Les liens du site ont toujours le « / » final.
 
-## 12. Où en est le chantier (19/11/2026)
+## 12. Où en est le chantier (20/11/2026)
 
 **En ligne ou poussé :**
 - maths : formulaires, tables, méthodes de calcul (dont **lire l'heure**, avec
@@ -262,6 +277,8 @@ Supprimer ensuite `figures/build`, `figures/__pycache__` et les planches.
   Les données sont dans `generer.py`, qui écrit `materiaux.json` (lu par l'outil)
   et vérifie métaux (PubChem, `sources/pubchem.csv`), gaz (gaz parfaits) et
   cohérence avec l'Eurocode.
+- **maillage des pages de classe** (20/11) : bloc « Outils et fiches gratuits utiles
+  en … » sur les 12 pages de classe ; **IndexNow** prêt (`scripts/ressources/indexnow.mjs`).
 
 **À faire ensuite, par demande décroissante :**
 1. **Énergie** (Première) : énergie cinétique, travail d'une force, théorème de

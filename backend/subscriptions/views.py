@@ -1,5 +1,5 @@
 import json
-from datetime import datetime, time as dt_time
+from datetime import datetime, time as dt_time, timedelta
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
@@ -67,6 +67,7 @@ from .handlers import (
     handle_refund_event,
     handle_subscription_deleted,
     handle_subscription_updated,
+    resolve_guest_user,
 )
 from .email_jobs import _schedule_cancellation_emails
 from .subscription_status import build_subscription_status
@@ -839,24 +840,7 @@ class CheckoutSessionStatusView(APIView):
             except Exception:
                 beneficiary_label = ''
 
-        payment_status = str(session.get('payment_status') or '').lower()
-        currency = str(session.get('currency') or 'EUR').upper()
-        amount_total_minor = session.get('amount_total')
-        try:
-            amount_total_minor = int(amount_total_minor) if amount_total_minor is not None else None
-        except (TypeError, ValueError):
-            amount_total_minor = None
-        amount_total = (amount_total_minor / 100.0) if amount_total_minor is not None else None
-        is_paid = bool(payment_status == 'paid' and amount_total_minor and amount_total_minor > 0)
-        if is_paid:
-            transaction_id = _resolve_checkout_transaction_reference(session)
-        else:
-            transaction_id = str(session.get('id') or '')
-        tiktok_purchase_event_id = (
-            build_purchase_event_id(transaction_id)
-            if is_paid and transaction_id
-            else ''
-        )
+        payment = _checkout_payment_payload(session)
 
         return JsonResponse({
             'status': status_payload,
@@ -867,30 +851,101 @@ class CheckoutSessionStatusView(APIView):
                 'is_beneficiary': is_beneficiary,
                 'beneficiary_label': beneficiary_label
             },
-            'payment': {
-                'is_paid': is_paid,
-                'status': payment_status,
-                'value': amount_total,
-                'value_minor': amount_total_minor,
-                'currency': currency,
-                'transaction_id': transaction_id,
-                'tiktok_event_id': tiktok_purchase_event_id,
-            }
+            'payment': payment,
         })
 
 
-class GuestCheckoutStatusView(APIView):
-    """Valider une session Stripe pour un guest checkout.
+# Achat sans connexion : la page de retour ne connecte automatiquement qu'un compte
+# créé par CET achat, une seule fois, peu après le paiement. L'email saisi sur la
+# page Stripe n'est pas vérifié : s'il appartient déjà à un compte, l'achat y est
+# rattaché, mais il faut se connecter normalement. Sinon, n'importe qui pourrait
+# entrer dans le compte d'un autre en payant avec son adresse.
+GUEST_AUTO_LOGIN_MAX_AGE = timedelta(hours=2)
+GUEST_ACCOUNT_CLOCK_SKEW = timedelta(minutes=2)
 
-    Crée automatiquement le compte OptiTAB si nécessaire, puis renvoie
-    des JWT tokens pour connecter l'utilisateur côté frontend.
+
+def _checkout_session_is_paid(session):
+    return (
+        str(session.get('status') or '').lower() == 'complete'
+        and str(session.get('payment_status') or '').lower() in ('paid', 'no_payment_required')
+    )
+
+
+def _checkout_payment_payload(session):
+    """Résumé du paiement renvoyé aux pages de retour (suivi des achats)."""
+    payment_status = str(session.get('payment_status') or '').lower()
+    amount_total_minor = session.get('amount_total')
+    try:
+        amount_total_minor = int(amount_total_minor) if amount_total_minor is not None else None
+    except (TypeError, ValueError):
+        amount_total_minor = None
+    is_paid = bool(payment_status == 'paid' and amount_total_minor and amount_total_minor > 0)
+    transaction_id = (
+        _resolve_checkout_transaction_reference(session) if is_paid
+        else str(session.get('id') or '')
+    )
+    return {
+        'is_paid': is_paid,
+        'status': payment_status,
+        'value': (amount_total_minor / 100.0) if amount_total_minor is not None else None,
+        'value_minor': amount_total_minor,
+        'currency': str(session.get('currency') or 'EUR').upper(),
+        'transaction_id': transaction_id,
+        'tiktok_event_id': build_purchase_event_id(transaction_id) if is_paid and transaction_id else '',
+    }
+
+
+def _guest_auto_login_allowed(user, created, session):
+    """Vrai seulement pour un compte neuf, créé par cet achat et jamais utilisé."""
+    if not user or not user.is_active or user.is_staff or user.is_superuser:
+        return False
+    if created:
+        return True
+    session_created = _from_timestamp(session.get('created'))
+    if not session_created or timezone.now() - session_created > GUEST_AUTO_LOGIN_MAX_AGE:
+        return False
+    # Compte créé par le webhook de ce même achat, quelques secondes plus tôt.
+    return (
+        user.last_login is None
+        and not user.has_usable_password()
+        and user.date_joined >= session_created - GUEST_ACCOUNT_CLOCK_SKEW
+    )
+
+
+def _guest_auth_payload(user, refresh):
+    niveau = user.niveau_pays
+    pays = niveau.pays if niveau else None
+    pays_payload = {
+        'id': pays.id,
+        'nom': pays.nom,
+        'drapeau_emoji': getattr(pays, 'drapeau_emoji', ''),
+    } if pays else None
+    return {
+        'access': str(refresh.access_token),
+        'refresh': str(refresh),
+        'user_id': user.id,
+        'email': user.email,
+        'first_name': user.first_name,
+        'last_name': user.last_name,
+        'niveau_pays': {'id': niveau.id, 'nom': niveau.nom, 'pays': pays_payload} if niveau else None,
+        'pays': pays_payload,
+    }
+
+
+class GuestCheckoutStatusView(APIView):
+    """Finaliser un achat fait sans être connecté.
+
+    Rattache l'achat au compte de l'email saisi sur Stripe (créé au besoin).
+    Connecte automatiquement uniquement un compte créé par cet achat
+    (voir ``_guest_auto_login_allowed``) ; sinon répond ``login_required``.
     """
     permission_classes = [AllowAny]
 
     def get(self, request):
+        from django.contrib.auth.models import update_last_login
         from rest_framework_simplejwt.tokens import RefreshToken as JWTRefreshToken
 
-        session_id = request.query_params.get('session_id') or request.GET.get('session_id')
+        session_id = (request.query_params.get('session_id') or '').strip()
         if not session_id:
             return JsonResponse({'detail': 'session_id parameter is required'}, status=400)
 
@@ -903,78 +958,30 @@ class GuestCheckoutStatusView(APIView):
             return JsonResponse({'detail': 'Impossible de récupérer la session Stripe'}, status=400)
 
         metadata = session.get('metadata') or {}
+        if str(metadata.get('guest_checkout') or '').lower() != 'true':
+            return JsonResponse({'detail': 'Session de paiement non valide'}, status=400)
 
-        # Récupérer l'email du client depuis la session Stripe
-        customer_details = session.get('customer_details') or {}
-        customer_email = (customer_details.get('email') or '').strip().lower()
+        payment = _checkout_payment_payload(session)
+        if not _checkout_session_is_paid(session):
+            return JsonResponse({'pending': True, 'has_access': False, 'payment': payment}, status=202)
 
-        if not customer_email:
-            # Fallback: essayer le customer Stripe
-            stripe_customer_id = session.get('customer')
-            if stripe_customer_id:
-                try:
-                    cust = stripe.Customer.retrieve(stripe_customer_id)
-                    customer_email = (getattr(cust, 'email', '') or '').strip().lower()
-                except stripe_error.StripeError:
-                    pass
-
-        if not customer_email:
-            return JsonResponse({'detail': 'Email client introuvable dans la session Stripe'}, status=400)
-
-        # Trouver ou créer l'utilisateur
-        user = User.objects.filter(email__iexact=customer_email, is_active=True).first()
-        account_created = False
-
+        user, created = resolve_guest_user(session, metadata)
         if not user:
-            # Vérifier s'il existe un compte inactif
-            user = User.objects.filter(email__iexact=customer_email).first()
-            if user:
-                user.is_active = True
-                user.save(update_fields=['is_active'])
-            else:
-                # Créer un nouveau compte
-                customer_name = (customer_details.get('name') or '').strip()
-                parts = customer_name.split(' ', 1) if customer_name else ['', '']
-                first_name = parts[0] or 'Utilisateur'
-                last_name = parts[1] if len(parts) > 1 else ''
+            return JsonResponse({'detail': 'Email client introuvable dans la session Stripe'}, status=400)
+        auto_login = _guest_auto_login_allowed(user, created, session)
 
-                niveau_id = metadata.get('niveau_pays_id')
-                niveau_obj = None
-                if niveau_id:
-                    try:
-                        niveau_obj = Niveau.objects.get(id=niveau_id, est_actif=True)
-                    except Niveau.DoesNotExist:
-                        pass
-
-                user = User(
-                    email=customer_email,
-                    first_name=first_name,
-                    last_name=last_name,
-                    is_active=True,
-                    niveau_pays=niveau_obj,
-                )
-                user.set_unusable_password()
-                user.save()
-                account_created = True
-                logger.info("Guest checkout: compte créé pour %s (user=%s)", customer_email, user.id)
-
-        # Mettre à jour le metadata Stripe avec le user_id pour que les handlers le trouvent
+        # Pour que les handlers appelés ci-dessous rattachent l'achat à ce compte.
         if not metadata.get('user_id'):
             metadata['user_id'] = str(user.id)
             if not metadata.get('payer_user_id'):
                 metadata['payer_user_id'] = str(user.id)
-            try:
-                stripe.checkout.Session.modify(session_id, metadata=metadata)
-            except Exception:
-                pass  # Non bloquant — modify peut ne pas exister selon la version du SDK
 
-        # Associer le customer Stripe à l'utilisateur
+        # Le client Stripe n'est associé qu'à un compte créé par cet achat.
         stripe_customer_id = session.get('customer')
-        if stripe_customer_id and not user.stripe_customer_id:
+        if auto_login and stripe_customer_id and not user.stripe_customer_id:
             user.stripe_customer_id = stripe_customer_id
             user.save(update_fields=['stripe_customer_id'])
 
-        # Finaliser la session (créer l'abonnement/pass localement)
         try:
             if session.get('subscription'):
                 handle_checkout_session_completed(session)
@@ -983,79 +990,31 @@ class GuestCheckoutStatusView(APIView):
         except Exception as exc:
             logger.error("GuestCheckoutStatus: finalisation error %s: %s", session_id, exc)
 
-        # Envoyer l'email de bienvenue avec lien de définition de mot de passe
-        if account_created:
-            try:
-                _send_welcome_set_password_email(user)
-            except Exception as exc:
-                logger.error("GuestCheckoutStatus: email error for %s: %s", user.email, exc)
+        if not auto_login:
+            # Compte déjà existant : on ne révèle rien de ce compte et on ne connecte pas.
+            return JsonResponse({
+                'login_required': True,
+                'has_access': False,
+                'account_created': False,
+                'payment': payment,
+            })
 
-        # Générer les JWT tokens
         refresh = JWTRefreshToken.for_user(user)
-
+        update_last_login(None, user)  # une seule connexion automatique par compte
         user.refresh_from_db()
         status_payload = build_subscription_status(user)
-
-        payment_status_str = str(session.get('payment_status') or '').lower()
-        currency = str(session.get('currency') or 'EUR').upper()
-        amount_total_minor = session.get('amount_total')
-        try:
-            amount_total_minor = int(amount_total_minor) if amount_total_minor is not None else None
-        except (TypeError, ValueError):
-            amount_total_minor = None
-        amount_total = (amount_total_minor / 100.0) if amount_total_minor is not None else None
-        is_paid = bool(payment_status_str == 'paid' and amount_total_minor and amount_total_minor > 0)
-        if is_paid:
-            transaction_id = _resolve_checkout_transaction_reference(session)
-        else:
-            transaction_id = str(session.get('id') or '')
-        tiktok_purchase_event_id = (
-            build_purchase_event_id(transaction_id)
-            if is_paid and transaction_id
-            else ''
-        )
-
         return JsonResponse({
             'status': status_payload,
             'has_access': status_payload.get('has_access', False),
-            'account_created': account_created,
+            'account_created': True,
             'session': {
                 'is_gift': False,
                 'is_payer': True,
                 'is_beneficiary': True,
                 'beneficiary_label': '',
             },
-            'payment': {
-                'is_paid': is_paid,
-                'status': payment_status_str,
-                'value': amount_total,
-                'value_minor': amount_total_minor,
-                'currency': currency,
-                'transaction_id': transaction_id,
-                'tiktok_event_id': tiktok_purchase_event_id,
-            },
-            'auth': {
-                'access': str(refresh.access_token),
-                'refresh': str(refresh),
-                'user_id': user.id,
-                'email': user.email,
-                'first_name': user.first_name,
-                'last_name': user.last_name,
-                'niveau_pays': {
-                    'id': user.niveau_pays.id,
-                    'nom': user.niveau_pays.nom,
-                    'pays': {
-                        'id': user.niveau_pays.pays.id,
-                        'nom': user.niveau_pays.pays.nom,
-                        'drapeau_emoji': getattr(user.niveau_pays.pays, 'drapeau_emoji', ''),
-                    }
-                } if user.niveau_pays else None,
-                'pays': {
-                    'id': user.niveau_pays.pays.id,
-                    'nom': user.niveau_pays.pays.nom,
-                    'drapeau_emoji': getattr(user.niveau_pays.pays, 'drapeau_emoji', ''),
-                } if user.niveau_pays and user.niveau_pays.pays else None,
-            },
+            'payment': payment,
+            'auth': _guest_auth_payload(user, refresh),
         })
 
 

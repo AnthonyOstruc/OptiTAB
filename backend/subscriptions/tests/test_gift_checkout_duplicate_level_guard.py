@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from datetime import timedelta
 from decimal import Decimal
-from types import SimpleNamespace
 from unittest.mock import patch
 
 from django.contrib.auth import get_user_model
@@ -12,6 +11,7 @@ from rest_framework.test import APIClient
 
 from pays.models import Niveau, Pays
 from subscriptions.models import AccessPass, PaymentHistory, SubscriptionPlan, UserSubscription
+from subscriptions.stripe_client import stripe
 
 
 class GiftCheckoutDuplicateLevelGuardTests(TestCase):
@@ -51,6 +51,7 @@ class GiftCheckoutDuplicateLevelGuardTests(TestCase):
             billing_period="daily",
             price=Decimal("3.99"),
             stripe_price_id=f"price_pass_gift_guard_{tag}",
+            stripe_price_id_test=f"price_pass_gift_guard_{tag}",
             features=[],
             access_days=1,
             is_active=True,
@@ -64,6 +65,7 @@ class GiftCheckoutDuplicateLevelGuardTests(TestCase):
             billing_period="monthly",
             price=Decimal("7.99"),
             stripe_price_id=f"price_sub_gift_guard_{tag}",
+            stripe_price_id_test=f"price_sub_gift_guard_{tag}",
             features=[],
             is_active=True,
         )
@@ -190,7 +192,10 @@ class GiftCheckoutDuplicateLevelGuardTests(TestCase):
             return_value=None,
         ), patch(
             "subscriptions.views.stripe.checkout.Session.create",
-            return_value=SimpleNamespace(url="https://checkout.example.com/session"),
+            return_value=stripe.checkout.Session.construct_from(
+                {"id": "cs_gift_guard", "url": "https://checkout.example.com/session"},
+                "sk_test_factice",
+            ),
         ):
             response = self.api_client.post(
                 "/api/subscriptions/create-checkout-session/",

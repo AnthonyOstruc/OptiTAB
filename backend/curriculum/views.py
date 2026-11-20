@@ -22,6 +22,7 @@ from cours.models import Cours, CoursImage
 from quiz.models import Quiz, QuizImage
 from synthesis.models import SynthesisSheet
 from .services import duplicate_theme_deep, duplicate_notion_deep
+from subscriptions.acces_contenu import EcritureAdminMixin, ListeContenuMixin
 from .serializers import (
     MatiereSerializer, ThemeSerializer, NotionSerializer, 
     ExerciceSerializer, MatiereContexteSerializer,
@@ -39,7 +40,7 @@ from subscriptions.permissions import (
 logger = logging.getLogger(__name__)
 
 
-class MatiereViewSet(viewsets.ModelViewSet):
+class MatiereViewSet(EcritureAdminMixin, viewsets.ModelViewSet):
     """ViewSet pour les matières"""
     queryset = Matiere.objects.filter(est_actif=True)
     serializer_class = MatiereSerializer
@@ -233,7 +234,7 @@ class MatiereViewSet(viewsets.ModelViewSet):
     
 
 
-class MatiereContexteViewSet(viewsets.ModelViewSet):
+class MatiereContexteViewSet(EcritureAdminMixin, viewsets.ModelViewSet):
     """CRUD pour les contextes Matière+Niveau
 
     Permet de créer Mathématiques (France, 5ème) et de rattacher tout le contenu dessous.
@@ -277,7 +278,7 @@ class MatiereContexteViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-class ThemeViewSet(viewsets.ModelViewSet):
+class ThemeViewSet(EcritureAdminMixin, viewsets.ModelViewSet):
     """ViewSet pour les thèmes avec actions hiérarchiques"""
     queryset = Theme.objects.all()
     serializer_class = ThemeSerializer
@@ -493,7 +494,7 @@ class ThemeViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-class NotionViewSet(viewsets.ModelViewSet):
+class NotionViewSet(EcritureAdminMixin, ListeContenuMixin, viewsets.ModelViewSet):
     """ViewSet pour les notions avec actions hiérarchiques"""
     queryset = Notion.objects.all()
     serializer_class = NotionSerializer
@@ -528,34 +529,6 @@ class NotionViewSet(viewsets.ModelViewSet):
             return queryset.order_by('theme_id', 'ordre', 'titre')
 
         return queryset.filter(est_actif=True).order_by('ordre', 'titre')
-
-    def list(self, request, *args, **kwargs):
-        """Supporte une pagination simple via ?limit=5&offset=0 pour l'admin."""
-        queryset = self.filter_queryset(self.get_queryset())
-
-        limit = request.query_params.get('limit')
-        offset = request.query_params.get('offset', 0)
-
-        if limit is not None:
-            try:
-                limit_value = int(limit)
-                offset_value = int(offset or 0)
-                if limit_value <= 0 or offset_value < 0:
-                    raise ValueError
-            except ValueError:
-                return Response({'detail': 'Paramètres de pagination invalides'}, status=status.HTTP_400_BAD_REQUEST)
-
-            total = queryset.count()
-            serializer = self.get_serializer(queryset[offset_value:offset_value + limit_value], many=True)
-            return Response({
-                'count': total,
-                'limit': limit_value,
-                'offset': offset_value,
-                'results': serializer.data
-            })
-
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
 
     def partial_update(self, request, *args, **kwargs):
         # Accepter 'nom' comme alias de 'titre' côté admin/frontend
@@ -649,10 +622,11 @@ class NotionViewSet(viewsets.ModelViewSet):
 
 
 
-class ExerciceViewSet(viewsets.ModelViewSet):
+class ExerciceViewSet(EcritureAdminMixin, ListeContenuMixin, viewsets.ModelViewSet):
     """ViewSet pour les exercices (ressource finale)"""
     queryset = Exercice.objects.all()
     serializer_class = ExerciceSerializer
+    champs_payants = {'reponse_correcte': '', 'etapes': ''}
     permission_classes = [IsAuthenticated, HasActiveSubscriptionOrPass]
 
     def get_permissions(self):
@@ -693,34 +667,6 @@ class ExerciceViewSet(viewsets.ModelViewSet):
             .filter(est_actif=True)
             .order_by('notion_id', 'titre', 'id')
         )
-
-    def list(self, request, *args, **kwargs):
-        """Supporte une pagination simple via ?limit=5&offset=0 pour l'admin."""
-        queryset = self.filter_queryset(self.get_queryset())
-
-        limit = request.query_params.get('limit')
-        offset = request.query_params.get('offset', 0)
-
-        if limit is not None:
-            try:
-                limit_value = int(limit)
-                offset_value = int(offset or 0)
-                if limit_value <= 0 or offset_value < 0:
-                    raise ValueError
-            except ValueError:
-                return Response({'detail': 'Paramètres de pagination invalides'}, status=status.HTTP_400_BAD_REQUEST)
-
-            total = queryset.count()
-            serializer = self.get_serializer(queryset[offset_value:offset_value + limit_value], many=True)
-            return Response({
-                'count': total,
-                'limit': limit_value,
-                'offset': offset_value,
-                'results': serializer.data
-            })
-
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
 
     @action(detail=True, methods=['get'], url_path='pdf')
     def pdf_single(self, request, pk=None):
@@ -789,7 +735,7 @@ class ExerciceViewSet(viewsets.ModelViewSet):
         return response
 
 
-class ExerciceImageViewSet(viewsets.ModelViewSet):
+class ExerciceImageViewSet(EcritureAdminMixin, viewsets.ModelViewSet):
     """CRUD pour les images d'exercice
 
     Frontend attends /api/exercice-images/ avec filtre ?exercice=<id>

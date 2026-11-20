@@ -1,7 +1,7 @@
 """
 VUES ULTRA SIMPLES pour quiz
 """
-from rest_framework import viewsets, status
+from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
@@ -11,12 +11,14 @@ from subscriptions.permissions import (
     user_has_active_subscription_or_pass,
 )
 from .models import Quiz, QuizImage
+from subscriptions.acces_contenu import EcritureAdminMixin, ListeContenuMixin
 from .serializers import QuizSerializer, QuizImageSerializer
 
 
-class QuizViewSet(viewsets.ModelViewSet):
+class QuizViewSet(EcritureAdminMixin, ListeContenuMixin, viewsets.ModelViewSet):
     queryset = Quiz.objects.all()
     serializer_class = QuizSerializer
+    champs_payants = {'questions_data': list, 'solution': ''}
     permission_classes = [IsAuthenticated, HasActiveSubscriptionOrPass]
 
     def get_permissions(self):
@@ -57,36 +59,8 @@ class QuizViewSet(viewsets.ModelViewSet):
             .order_by('notion_id', 'titre', 'id')
         )
 
-    def list(self, request, *args, **kwargs):
-        """Supporte une pagination simple via ?limit=5&offset=0 pour l'admin."""
-        queryset = self.filter_queryset(self.get_queryset())
 
-        limit = request.query_params.get('limit')
-        offset = request.query_params.get('offset', 0)
-
-        if limit is not None:
-            try:
-                limit_value = int(limit)
-                offset_value = int(offset or 0)
-                if limit_value <= 0 or offset_value < 0:
-                    raise ValueError
-            except ValueError:
-                return Response({'detail': 'Paramètres de pagination invalides'}, status=status.HTTP_400_BAD_REQUEST)
-
-            total = queryset.count()
-            serializer = self.get_serializer(queryset[offset_value:offset_value + limit_value], many=True)
-            return Response({
-                'count': total,
-                'limit': limit_value,
-                'offset': offset_value,
-                'results': serializer.data
-            })
-
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
-
-
-class QuizImageViewSet(viewsets.ModelViewSet):
+class QuizImageViewSet(EcritureAdminMixin, viewsets.ModelViewSet):
     """CRUD pour les images de quiz
     
     Frontend attends /api/quiz-images/ avec filtre ?quiz=<id>

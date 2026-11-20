@@ -2,7 +2,7 @@ import logging
 from datetime import timedelta
 
 from django.contrib.auth import get_user_model
-from django.db import transaction
+from django.db import IntegrityError, transaction
 from django.utils import timezone
 
 from .models import SubscriptionPlan, UserSubscription, PaymentHistory, AccessPass
@@ -122,36 +122,53 @@ def _resolve_currency(value, default='EUR'):
     return normalized or default
 
 
-def _resolve_guest_user(session, metadata):
-    """Résout ou crée un utilisateur pour un guest checkout depuis une session Stripe."""
+def _guest_checkout_email(session):
+    """Email saisi par le client sur la page Stripe (non vérifié par Stripe)."""
     customer_details = session.get('customer_details') or {}
     customer_email = (customer_details.get('email') or '').strip().lower()
+    if customer_email:
+        return customer_email
 
-    if not customer_email:
-        stripe_customer_id = session.get('customer')
-        if stripe_customer_id:
-            try:
-                from .stripe_client import stripe as _stripe
-                cust = _stripe.Customer.retrieve(stripe_customer_id)
-                customer_email = (getattr(cust, 'email', '') or '').strip().lower()
-            except Exception:
-                pass
+    stripe_customer_id = session.get('customer')
+    if stripe_customer_id:
+        try:
+            from .stripe_client import stripe as _stripe
+            cust = _stripe.Customer.retrieve(stripe_customer_id)
+            return (getattr(cust, 'email', '') or '').strip().lower()
+        except Exception:
+            pass
+    return ''
 
+
+def _resolve_guest_user(session, metadata):
+    """Résout ou crée un utilisateur pour un guest checkout depuis une session Stripe."""
+    return resolve_guest_user(session, metadata)[0]
+
+
+def resolve_guest_user(session, metadata):
+    """Retrouve ou crée le compte d'un achat sans connexion.
+
+    Renvoie ``(user, created)``. L'email vient de la page Stripe et n'est PAS
+    vérifié : il sert à rattacher l'achat, jamais à connecter quelqu'un à un
+    compte existant (voir ``GuestCheckoutStatusView``).
+    """
+    customer_email = _guest_checkout_email(session)
     if not customer_email:
-        return None
+        return None, False
 
     user = User.objects.filter(email__iexact=customer_email, is_active=True).first()
     if user:
-        return user
+        return user, False
 
     # Vérifier un compte inactif
     user = User.objects.filter(email__iexact=customer_email).first()
     if user:
         user.is_active = True
         user.save(update_fields=['is_active'])
-        return user
+        return user, False
 
     # Créer un nouveau compte
+    customer_details = session.get('customer_details') or {}
     customer_name = (customer_details.get('name') or '').strip()
     parts = customer_name.split(' ', 1) if customer_name else ['', '']
     first_name = parts[0] or 'Utilisateur'
@@ -174,17 +191,25 @@ def _resolve_guest_user(session, metadata):
         niveau_pays=niveau_obj,
     )
     user.set_unusable_password()
-    user.save()
-    logger.info("Guest checkout webhook: compte créé pour %s (user=%s)", customer_email, user.id)
+    try:
+        with transaction.atomic():
+            user.save()
+    except IntegrityError:
+        # Le webhook et la page de retour ont créé le compte en même temps.
+        existing = User.objects.filter(email__iexact=customer_email).first()
+        if existing:
+            return existing, False
+        raise
+    logger.info("Guest checkout: compte créé (user=%s)", user.id)
 
     # Envoyer l'email de bienvenue
     try:
         from subscriptions.views import _send_welcome_set_password_email
         _send_welcome_set_password_email(user)
     except Exception as exc:
-        logger.error("Guest checkout webhook: email error for %s: %s", customer_email, exc)
+        logger.error("Guest checkout: email error for user=%s: %s", user.id, exc)
 
-    return user
+    return user, True
 
 
 # =============================================================================
@@ -1155,6 +1180,7 @@ def handle_refund_event(refund):
 
 
 __all__ = [
+    'resolve_guest_user',
     'handle_invoice_created',
     'handle_checkout_session_completed',
     'handle_checkout_session_payment_completed',

@@ -5,13 +5,14 @@ Structure: Pays → Niveau → Matière → Thème → Notion → Chapitre → E
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from subscriptions.acces_contenu import EcritureAdminMixin
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from django.db.models import Q
 from .models import Pays, Niveau
 from .serializers import PaysSerializer, NiveauSerializer
 
 
-class PaysViewSet(viewsets.ModelViewSet):
+class PaysViewSet(EcritureAdminMixin, viewsets.ModelViewSet):
     """ViewSet pour les pays avec actions hiérarchiques"""
     queryset = Pays.objects.all()
     serializer_class = PaysSerializer
@@ -55,7 +56,7 @@ class PaysViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-class NiveauViewSet(viewsets.ModelViewSet):
+class NiveauViewSet(EcritureAdminMixin, viewsets.ModelViewSet):
     """ViewSet pour les niveaux avec actions hiérarchiques"""
     queryset = Niveau.objects.all()
     serializer_class = NiveauSerializer

@@ -20,6 +20,21 @@
       <router-link class="pc-lien" to="/dashboard">Aller à l’accueil</router-link>
     </template>
 
+    <!-- Paiement reçu, compte déjà existant : connexion normale -->
+    <template v-else-if="loginRequired">
+      <span class="pc-icone" aria-hidden="true"><CheckIcon /></span>
+      <h1>Paiement reçu</h1>
+      <p class="pc-texte">
+        Un compte OptiTAB existe déjà avec l’adresse e-mail saisie lors du paiement. Ton achat y est
+        rattaché : connecte-toi pour en profiter.
+      </p>
+      <button type="button" class="pc-btn bs-bouton" @click="ouvrirConnexion">
+        Me connecter
+        <ArrowRightIcon aria-hidden="true" />
+      </button>
+      <router-link class="pc-lien" to="/">Aller à l’accueil</router-link>
+    </template>
+
     <!-- Paiement non confirmé -->
     <template v-else-if="isFailure">
       <span class="pc-icone pc-icone--alerte" aria-hidden="true"><ExclamationTriangleIcon /></span>
@@ -28,7 +43,7 @@
         Nous n’avons pas encore reçu la confirmation de ton paiement. Si ton compte a été débité,
         écris-nous : nous réglons ça rapidement.
       </p>
-      <router-link class="pc-btn" to="/billing">Réessayer</router-link>
+      <router-link class="pc-btn" to="/contact">Nous écrire</router-link>
       <router-link class="pc-lien" to="/dashboard">Aller à l’accueil</router-link>
     </template>
 
@@ -50,7 +65,8 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
 import { useSubscriptionStore } from '@/stores/subscription'
 import { useUserStore } from '@/stores/user'
 import { finalizeCheckoutSession, finalizeGuestCheckoutSession } from '@/api/subscriptions'
@@ -63,6 +79,8 @@ const ETAPES = ['Paiement reçu', 'Vérification', 'Accès activé']
 const etapeVisible = computed(() => Math.max(2, step.value))
 
 const route = useRoute()
+const router = useRouter()
+const { openModal } = useModalManager()
 const subscriptionStore = useSubscriptionStore()
 const userStore = useUserStore()
 
@@ -75,10 +93,13 @@ const step = ref(1)
 const progress = ref(10)
 const purchaseTracked = ref(false)
 const paymentFailed = ref(false)
+const loginRequired = ref(false)
 
-const sessionId = computed(() => route.query.session_id || '')
+// Lu une fois puis retiré de l'adresse : il ne doit pas rester dans l'historique.
+const sessionInitiale = String(route.query.session_id || '')
+const sessionId = computed(() => sessionInitiale)
 const isSuccess = computed(() => hasAccess.value || isGiftPayer.value)
-const isFailure = computed(() => paymentFailed.value && !isSuccess.value)
+const isFailure = computed(() => paymentFailed.value && !isSuccess.value && !loginRequired.value)
 const headline = computed(() => {
   if (accountCreated.value) return 'Bienvenue sur OptiTAB !'
   if (isGiftPayer.value) return 'Ton cadeau est activé'
@@ -167,12 +188,17 @@ function loginFromGuestResponse(data) {
 }
 
 
+function ouvrirConnexion() {
+  openModal(MODAL_IDS.LOGIN)
+}
+
 async function finalizeSessionIfNeeded() {
   if (!sessionId.value) {
-    updateProgress(3, 100, 'Accès activé !')
-    hasAccess.value = true
+    router.replace(userStore.isAuthenticated ? '/subscription' : '/')
     return
   }
+  // Sans navigation (la page ne doit pas être rechargée pendant la vérification).
+  try { window.history.replaceState(window.history.state, '', route.path) } catch (_) {}
 
   updateProgress(1, 20, 'Vérification du paiement…')
 
@@ -182,19 +208,25 @@ async function finalizeSessionIfNeeded() {
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
     try {
       let data
-      // Premieres tentatives : appeler finalize (guest ou auth)
-      if (attempt < 3) {
+      // Sans connexion : le serveur finalise l'achat à chaque tentative.
+      // Connecté : finalisation d'abord, puis relecture forcée du statut.
+      if (isGuest || attempt < 3) {
         const finalizeFn = isGuest ? finalizeGuestCheckoutSession : finalizeCheckoutSession
         const res = await finalizeFn(sessionId.value)
         data = res.data
-      } else if (userStore.isAuthenticated) {
-        // Tentatives suivantes : polling simple du statut
-        await subscriptionStore.fetchStatus()
+      } else {
+        await subscriptionStore.fetchStatus({ force: true })
         data = { status: subscriptionStore.status, has_access: subscriptionStore.status?.has_access }
       }
 
       if (data) {
         trackPurchaseIfPaid(data)
+
+        // Compte déjà existant : jamais de connexion automatique.
+        if (isGuest && data.login_required) {
+          loginRequired.value = true
+          return
+        }
 
         // Progression fluide en une seule montee
         const pct = Math.min(90, 20 + Math.floor((attempt / maxAttempts) * 70))
@@ -250,6 +282,11 @@ onMounted(() => {
 
 <style scoped>
 /* Cadre, titres, boutons : components/payments/PaiementCadre.vue */
+.bs-bouton {
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+}
 .bs-recap {
   display: grid;
   gap: 10px;

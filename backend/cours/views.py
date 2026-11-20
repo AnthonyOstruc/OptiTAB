@@ -17,6 +17,7 @@ from subscriptions.permissions import (
     user_has_active_subscription_or_pass,
 )
 from .models import Cours, CoursImage
+from subscriptions.acces_contenu import EcritureAdminMixin, ListeContenuMixin
 from .serializers import CoursSerializer, CoursImageSerializer
 from .services import (
     CoursePdfGenerationError,
@@ -26,9 +27,10 @@ from .services import (
 )
 
 
-class CoursViewSet(viewsets.ModelViewSet):
+class CoursViewSet(EcritureAdminMixin, ListeContenuMixin, viewsets.ModelViewSet):
     queryset = Cours.objects.all()
     serializer_class = CoursSerializer
+    champs_payants = {'contenu': '', 'pdf_file': None, 'pdf_url': '', 'video_url': None}
     permission_classes = [IsAuthenticated, HasActiveSubscriptionOrPass]
 
     def get_permissions(self):
@@ -101,34 +103,6 @@ class CoursViewSet(viewsets.ModelViewSet):
 
         return queryset.filter(est_actif=True).select_related('notion', 'notion__theme', 'notion__theme__matiere').order_by('ordre', 'id')
 
-    def list(self, request, *args, **kwargs):
-        """Pagination légère pour l'admin via ?limit=5&offset=0."""
-        queryset = self.filter_queryset(self.get_queryset())
-
-        limit = request.query_params.get('limit')
-        offset = request.query_params.get('offset', 0)
-
-        if limit is not None:
-            try:
-                limit_value = int(limit)
-                offset_value = int(offset or 0)
-                if limit_value <= 0 or offset_value < 0:
-                    raise ValueError
-            except ValueError:
-                return Response({'detail': 'Paramètres de pagination invalides'}, status=status.HTTP_400_BAD_REQUEST)
-
-            total = queryset.count()
-            serializer = self.get_serializer(queryset[offset_value:offset_value + limit_value], many=True)
-            return Response({
-                'count': total,
-                'limit': limit_value,
-                'offset': offset_value,
-                'results': serializer.data
-            })
-
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
-
     @action(detail=False, methods=['post'], url_path='pdf-draft-preview')
     def pdf_draft_preview(self, request, *args, **kwargs):
         """Prévisualisation HTML d'un cours collé/importé (sans sauvegarde DB)."""
@@ -181,7 +155,7 @@ class CoursViewSet(viewsets.ModelViewSet):
         return response
 
 
-class CoursImageViewSet(viewsets.ModelViewSet):
+class CoursImageViewSet(EcritureAdminMixin, viewsets.ModelViewSet):
     """CRUD pour les images de cours
 
     Frontend attend /api/cours/cours-images/ avec filtre ?cours=<id>

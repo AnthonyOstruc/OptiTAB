@@ -44,7 +44,7 @@ INFO = {
     "figures": [
         {"nom": "echelle_prefixes", "alt": "Échelle des préfixes, de pico (10 puissance −12) à téra (10 puissance 12) en passant par nano, micro, milli, l’unité, kilo, méga et giga : on multiplie par 1 000 à chaque case vers la droite."},
     ],
-    "liees": ["physique-chimie/unites-si-constantes-physiques"],
+    "liees": ["physique-chimie/unites-si-constantes-physiques", "methodes/convertisseur-d-unites"],
     "chapitresLies": ["4e/puissances-et-notation-scientifique", "3e/puissances-racines-et-ecriture-scientifique", "4e/grandeurs-composees-et-unites"],
     "faq": [
         ["Combien vaut un giga ?", "Le préfixe giga (G) signifie 10⁹, soit un milliard. Un gigaoctet (Go) vaut donc 1 000 000 000 octets selon le Système international."],

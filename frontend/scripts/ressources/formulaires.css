@@ -1714,3 +1714,148 @@
     display: none;
   }
 }
+
+/* ---------- Convertisseur d'unités (methodes/convertisseur-d-unites) ---------- */
+
+.cv__grille {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.6fr) auto minmax(0, 1.6fr);
+  align-items: end;
+  gap: 12px 12px;
+}
+
+.cv__champ {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.cv__champ--grandeur {
+  grid-column: 1 / -1;
+  max-width: 360px;
+}
+
+.cv__lib {
+  color: var(--rg-ink-soft);
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+.cv .otc__menu,
+.cv .otc__champ {
+  width: 100%;
+  min-width: 0;
+  font-size: 16px;
+}
+
+.cv .cv__valeur {
+  text-align: left;
+}
+
+.cv__inverser {
+  min-width: 48px;
+  min-height: 48px;
+  border: 1.5px solid var(--rg-line-strong);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--rg-navy);
+  font: 700 20px/1 var(--rg-font);
+  cursor: pointer;
+}
+
+.cv__inverser:hover {
+  border-color: var(--rg-navy);
+  background: var(--rg-navy-50);
+}
+
+.cv__inverser:focus-visible {
+  outline: 3px solid rgba(27, 60, 142, 0.35);
+  outline-offset: 2px;
+}
+
+.cv__tout {
+  margin-top: 16px;
+}
+
+.cv__tout-titre {
+  margin: 0 0 8px;
+  color: var(--rg-navy-900);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.cv .cv__liste {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cv .cv__liste li {
+  margin: 0;
+}
+
+.cv__liste button {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 8px;
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--rg-line);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--rg-ink);
+  font: 500 14.5px/1.35 var(--rg-font);
+  text-align: left;
+  cursor: pointer;
+}
+
+.cv__liste button:hover {
+  border-color: var(--rg-navy);
+}
+
+.cv__liste button[aria-current='true'] {
+  border-color: var(--rg-green);
+  background: var(--rg-green-50, #eef8ef);
+}
+
+.cv__liste strong {
+  color: var(--rg-navy-900);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.cv__liste span {
+  color: var(--rg-muted);
+}
+
+@media (max-width: 640px) {
+  /* Téléphone : un champ par ligne, le bouton d'inversion entre « De » et « Vers ». */
+  .cv__grille {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .cv__champ--grandeur {
+    max-width: none;
+  }
+
+  .cv__inverser {
+    justify-self: center;
+    min-height: 40px;
+  }
+
+  .cv .cv__liste {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media print {
+  .cv {
+    display: none;
+  }
+}

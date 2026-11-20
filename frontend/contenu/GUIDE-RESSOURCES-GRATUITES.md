@@ -241,6 +241,12 @@ Supprimer ensuite `figures/build`, `figures/__pycache__` et les planches.
 - **unités SI et constantes physiques** (`physique-chimie/unites-si-constantes-physiques`) :
   `generer.py` compare chaque constante à CODATA 2022 (scipy.constants) ; à
   relancer après chaque nouvelle publication du CODATA (tous les 4 ans).
+- **convertisseur d'unités** (`methodes/convertisseur-d-unites`, outil `convertisseur`) :
+  15 grandeurs. Les unités sont dans `scripts/ressources/convertisseur.mjs`,
+  SOURCE UNIQUE du convertisseur et des tableaux de la page ; pour ajouter une
+  unité, l'ajouter là puis relancer `generer.py`, qui vérifie chaque facteur
+  (scipy.constants) et que la page calcule comme le module. Lien direct vers une
+  grandeur : `…/convertisseur-d-unites/#pression`.
 
 **À faire ensuite, par demande décroissante :**
 1. **Énergie** (Première) : énergie cinétique, travail d'une force, théorème de

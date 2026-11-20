@@ -15,6 +15,7 @@ import { fileURLToPath } from 'node:url'
 import { tableauPeriodiqueHtml } from './tableau-periodique.mjs'
 import { horlogeHtml } from './horloge.mjs'
 import { brevetHtml } from './brevet.mjs'
+import { convertisseurHtml } from './convertisseur.mjs'
 
 const ICI = path.dirname(fileURLToPath(import.meta.url))
 const e = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
@@ -35,6 +36,11 @@ export const OUTILS = {
   brevet: {
     titre: 'Simulateur de note du brevet',
     html: brevetHtml
+  },
+  // Convertisseur d'unités : 15 grandeurs, toutes les équivalences (voir convertisseur.mjs).
+  convertisseur: {
+    titre: 'Convertisseur d’unités',
+    html: () => convertisseurHtml('longueur')
   },
   pourcentage: {
     titre: 'Calculateur de pourcentage',

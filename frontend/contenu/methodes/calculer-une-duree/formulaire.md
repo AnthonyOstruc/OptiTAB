@@ -19,7 +19,7 @@
     { "nom": "duree_sauts", "alt": "Ligne du temps de 8 h 45 à 11 h 20 avec trois sauts : 15 minutes jusqu’à 9 h 00, 2 heures jusqu’à 11 h 00, puis 20 minutes jusqu’à 11 h 20 ; total 2 h 35 min." },
     { "nom": "carte_duree", "alt": "Aperçu : ligne du temps de 8 h 45 à 11 h 20 avec trois sauts, total 2 h 35 min.", "carte": true }
   ],
-  "liees": ["methodes/lire-l-heure", "tables/tableau-de-conversion"],
+  "liees": ["methodes/lire-l-heure", "tables/tableau-de-conversion", "methodes/convertisseur-d-unites"],
   "chapitresLies": [
     "ce2/calculer-et-comparer-des-durees",
     "cm1/horaires-et-durees",

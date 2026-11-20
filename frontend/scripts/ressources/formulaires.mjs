@@ -647,6 +647,7 @@ const ACCES_RAPIDE = [
   ['methode', 'calculer-un-pourcentage'],
   ['physique', 'tableau-periodique'],
   ['table', 'tableau-de-conversion'],
+  ['methode', 'convertisseur-d-unites'],
   ['formulaire', 'pythagore-thales-trigonometrie'],
   ['methode', 'calculer-une-moyenne'],
   ['methode', 'lire-l-heure'],

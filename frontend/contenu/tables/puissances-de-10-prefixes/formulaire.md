@@ -33,7 +33,8 @@
     }
   ],
   "liees": [
-    "physique-chimie/unites-si-constantes-physiques"
+    "physique-chimie/unites-si-constantes-physiques",
+    "methodes/convertisseur-d-unites"
   ],
   "chapitresLies": [
     "4e/puissances-et-notation-scientifique",

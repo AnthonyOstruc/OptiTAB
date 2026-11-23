@@ -1,8 +1,8 @@
 from django.utils import timezone
 from rest_framework.permissions import BasePermission
 
-from .models import UserSubscription
-from .pass_access import has_valid_active_pass
+from .models import AccessPass, PaymentHistory, UserSubscription
+from .pass_access import has_valid_active_pass, sync_refunded_passes
 
 
 def _normalize_niveau_id(niveau):
@@ -149,6 +149,35 @@ def user_has_manual_access_for_level(user, niveau=None):
     return bool(getattr(user, 'has_complimentary_access', False))
 
 
+def _niveau_compatible(niveau_paye_id, niveau_id):
+    """Un achat ouvre sa classe. Classe inconnue (ancien achat) ou demande sans
+    classe précise : on ne bloque pas."""
+    return niveau_id is None or niveau_paye_id is None or niveau_paye_id == niveau_id
+
+
+def _abonnement_ouvre(user, niveau_id):
+    abonnements = UserSubscription.objects.filter(user=user).only(
+        'status', 'cancel_at_period_end', 'current_period_end', 'niveau_pays_id',
+    )
+    return any(a.is_active and _niveau_compatible(a.niveau_pays_id, niveau_id) for a in abonnements)
+
+
+def _pass_ouvre(user, niveau_id):
+    now = timezone.now()
+    if niveau_id is None:
+        return has_valid_active_pass(user, now=now)
+    passes = list(AccessPass.objects.filter(user=user, ends_at__gt=now, is_revoked=False).order_by('-ends_at'))
+    if not passes:
+        return False
+    # La classe d'un pass est celle de son paiement (le payeur peut être un parent).
+    classes = dict(
+        PaymentHistory.objects.filter(stripe_payment_intent_id__in=[p.stripe_payment_intent_id for p in passes])
+        .values_list('stripe_payment_intent_id', 'niveau_pays_id')
+    )
+    candidats = [p for p in passes if _niveau_compatible(classes.get(p.stripe_payment_intent_id), niveau_id)]
+    return bool(candidats) and bool(sync_refunded_passes(candidats[:3], max_stripe_checks=1))
+
+
 def user_has_active_subscription_or_pass(user, niveau=None):
     """Return True if the user has premium access for the requested context."""
     if not user or not getattr(user, 'is_authenticated', False):
@@ -177,18 +206,8 @@ def user_has_active_subscription_or_pass(user, niveau=None):
     if user_has_manual_access_for_level(user, niveau=niveau):
         has_access = True
     else:
-        try:
-            subscription = user.subscription
-        except (UserSubscription.DoesNotExist, AttributeError):  # pragma: no cover - handled by except
-            subscription = None
-        except Exception:  # pragma: no cover - defensive
-            subscription = None
-
-        if subscription and subscription.is_active:
-            has_access = True
-        else:
-            now = timezone.now()
-            has_access = has_valid_active_pass(user, now=now)
+        niveau_id = _normalize_niveau_id(niveau)
+        has_access = _abonnement_ouvre(user, niveau_id) or _pass_ouvre(user, niveau_id)
 
     cached[cache_key] = has_access
     setattr(user, '_has_subscription_access_cache', cached)

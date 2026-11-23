@@ -216,9 +216,10 @@ const themes = computed(() => {
 // Accès : abonnés, administrateurs, et chapitre démo de la classe pour les autres.
 const demoNotionId = computed(() => Number(userStore.niveau_pays?.demo_notion) || null)
 const aAcces = computed(() => {
-  if (userStore.isAdmin || subscriptionStore.hasAccess) return true
+  // Un abonnement n'ouvre que la classe payée.
+  if (userStore.isAdmin) return true
   const niveauId = userStore.niveau_pays?.id
-  return niveauId ? subscriptionStore.accessForLevel(niveauId) : false
+  return niveauId ? subscriptionStore.accessForLevel(niveauId) : subscriptionStore.hasAccess
 })
 const estVerrouille = (c) => Boolean(subscriptionStore.status) && !aAcces.value && c.id !== demoNotionId.value
 

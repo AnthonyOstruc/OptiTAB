@@ -117,6 +117,11 @@ def _prime_customer_invoice_custom_fields(customer_id, metadata):
         logger.warning("Impossible de préparer les custom_fields client Stripe (%s): %s", customer_id, exc)
 
 
+# Statuts posés par nos traitements (remboursement, litige) que la synchronisation
+# des factures ne doit pas écraser.
+STATUTS_LOCAUX_DEFINITIFS = ('refunded', 'partially_refunded', 'disputed')
+
+
 def _clear_customer_temp_invoice_custom_fields(customer_id, names=STRIPE_TEMP_CUSTOM_FIELD_NAMES):
     """Remove only OptiTAB temporary fields from customer.invoice_settings.custom_fields."""
     if not customer_id:
@@ -134,7 +139,8 @@ def _clear_customer_temp_invoice_custom_fields(customer_id, names=STRIPE_TEMP_CU
         ]
         if filtered == existing:
             return
-        stripe.Customer.modify(customer_id, invoice_settings={'custom_fields': filtered})
+        # Stripe ignore une liste vide : une chaîne vide efface les champs.
+        stripe.Customer.modify(customer_id, invoice_settings={'custom_fields': filtered or ''})
     except stripe_error.StripeError as exc:
         logger.warning("Impossible de nettoyer les custom_fields client Stripe (%s): %s", customer_id, exc)
 
@@ -696,6 +702,11 @@ def _sync_payment_history_from_stripe(user, limit=12):
                         setattr(payment_history, field, value)
                         updated_fields.append(field)
                     continue
+                if field == 'status' and current_value in STATUTS_LOCAUX_DEFINITIFS:
+                    continue  # Stripe laisse la facture « paid » après un remboursement ou un litige
+                if (field == 'stripe_payment_intent_id' and str(current_value or '').startswith('pi_')
+                        and not str(value or '').startswith('pi_')):
+                    continue  # ne jamais remplacer un vrai paiement par un identifiant de repli
                 if current_value != value:
                     setattr(payment_history, field, value)
                     updated_fields.append(field)

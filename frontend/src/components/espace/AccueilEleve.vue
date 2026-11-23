@@ -310,8 +310,9 @@ const aRevoir = computed(() => progression.value?.a_revoir || [])
 const niveauId = computed(() => userStore.niveau_pays?.id)
 const demoNotionId = computed(() => Number(userStore.niveau_pays?.demo_notion) || null)
 const aAcces = computed(() => {
-  if (userStore.isAdmin || subscriptionStore.hasAccess) return true
-  return niveauId.value ? subscriptionStore.accessForLevel(niveauId.value) : false
+  // Un abonnement n'ouvre que la classe payée.
+  if (userStore.isAdmin) return true
+  return niveauId.value ? subscriptionStore.accessForLevel(niveauId.value) : subscriptionStore.hasAccess
 })
 const statutCharge = computed(() => Boolean(subscriptionStore.status) && !subscriptionStore.loading)
 const afficherAbonnement = computed(() => statutCharge.value && !aAcces.value && Boolean(niveauId.value))

@@ -1,7 +1,10 @@
 import logging
 from datetime import timedelta
 
+from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ObjectDoesNotExist
+from django.core.mail import send_mail
 from django.db import IntegrityError, transaction
 from django.utils import timezone
 
@@ -359,6 +362,50 @@ def _add_custom_fields_to_invoice(invoice, invoice_id, niveau_label, is_gift, be
 # Handler: checkout.session.completed (subscription)
 # =============================================================================
 
+def _deja_acces_au_niveau(user, niveau_obj):
+    from subscriptions.views import _beneficiary_already_has_level_access
+    return _beneficiary_already_has_level_access(user, niveau_obj)
+
+
+def _rembourser_achat_en_double(session, user, plan, niveau_obj):
+    """Achat sans connexion d'une classe déjà ouverte sur ce compte : annulé et remboursé.
+
+    Sans connexion, l'adresse n'est connue qu'une fois sur la page Stripe : on ne
+    peut pas refuser l'achat avant. Idempotent (message rejoué = rien de plus).
+    """
+    payment_intent = _normalize_stripe_id(session.get('payment_intent'))
+    subscription_id = _normalize_stripe_id(session.get('subscription'))
+    if subscription_id:
+        abonnement = stripe.Subscription.retrieve(subscription_id)
+        if abonnement.get('status') != 'canceled':
+            stripe.Subscription.cancel(subscription_id)
+        facture = _normalize_stripe_id(abonnement.get('latest_invoice'))
+        if facture and not payment_intent:
+            payment_intent = _normalize_stripe_id(stripe.Invoice.retrieve(facture).get('payment_intent'))
+    if not payment_intent:
+        return
+    intention = stripe.PaymentIntent.retrieve(payment_intent, expand=['latest_charge'])
+    if (intention.get('latest_charge') or {}).get('refunded'):
+        return
+    stripe.Refund.create(payment_intent=payment_intent, reason='duplicate')
+
+    classe = _format_level_label_from_obj(niveau_obj) or 'cette classe'
+    site = getattr(settings, 'FRONTEND_URL', '') or 'https://www.optitab.net'
+    try:
+        send_mail(
+            "Ton paiement en double a été remboursé",
+            f"Bonjour,\n\nTu as déjà accès à {classe} sur OptiTAB. Le paiement que tu viens de faire "
+            f"({plan.name}) faisait donc double emploi : nous l'avons annulé et remboursé en totalité. "
+            f"Le remboursement apparaît sur ton compte bancaire sous 5 à 10 jours.\n\n"
+            f"Pour retrouver ton accès, connecte-toi sur {site} avec cette adresse e-mail.\n\nL'équipe OptiTAB",
+            settings.DEFAULT_FROM_EMAIL, [user.email], fail_silently=True,
+        )
+    except Exception:
+        logger.exception("Courriel « achat en double » non envoyé (user=%s)", user.id)
+    _alerter_admin("Achat en double remboursé", f"Compte n° {user.id} : {plan.name} ({classe}) déjà ouvert, paiement {payment_intent} remboursé automatiquement.")
+    logger.info("Achat en double remboursé (user=%s, plan=%s, niveau=%s)", user.id, plan.id, getattr(niveau_obj, 'id', None))
+
+
 def handle_checkout_session_completed(session):
     """Gérer la completion d'une session de checkout (abonnement)."""
     customer_id = session.get('customer')
@@ -399,6 +446,12 @@ def handle_checkout_session_completed(session):
         plan = SubscriptionPlan.objects.get(id=plan_id)
         niveau_obj = _get_niveau_from_id(niveau_id)
 
+        if (is_guest and niveau_obj
+                and not UserSubscription.objects.filter(stripe_subscription_id=session.get('subscription')).exists()
+                and _deja_acces_au_niveau(user, niveau_obj)):
+            _rembourser_achat_en_double(session, user, plan, niveau_obj)
+            return
+
         # Récupérer l'abonnement Stripe
         subscription = stripe.Subscription.retrieve(session['subscription'])
         subscription_data = _stripe_obj_to_dict(subscription)
@@ -425,8 +478,11 @@ def handle_checkout_session_completed(session):
         # Fallback: déclencher l'envoi des emails si la facture est déjà payée
         _ensure_paid_invoice_email_from_session(session)
 
-    except Exception as e:
-        logger.error(f"Erreur dans handle_checkout_session_completed: {e}")
+    except ObjectDoesNotExist as e:
+        logger.warning("handle_checkout_session_completed: donnée introuvable (%s)", e)
+    except Exception:
+        logger.exception("Erreur dans handle_checkout_session_completed")
+        raise
     finally:
         if should_clear_customer_fields:
             _clear_customer_temp_invoice_custom_fields(customer_id)
@@ -546,6 +602,10 @@ def handle_checkout_session_payment_completed(session):
                     existing_pass.save(update_fields=['user'])
                 return
 
+        if is_guest and niveau_obj and _deja_acces_au_niveau(user, niveau_obj):
+            _rembourser_achat_en_double(session, user, plan, niveau_obj)
+            return
+
         # Créer le pass d'accès (pour le bénéficiaire)
         days = _resolve_access_days(plan, metadata)
         start = timezone.now()
@@ -567,8 +627,12 @@ def handle_checkout_session_payment_completed(session):
         if niveau_obj:
             _sync_user_niveau(user, niveau_obj)
 
+        # Paiement déjà remboursé ou contesté (messages reçus dans le désordre) :
+        # le pass n'ouvre rien et aucun courriel de bienvenue n'est envoyé.
+        valable = _paiement_toujours_valable(payment_intent)
+
         # Envoyer les emails
-        if payment_created:
+        if payment_created and valable:
             _send_pass_emails(user, plan, niveau_obj, metadata, payment_history)
 
         purchase_reference = payment_intent or session.get('id')
@@ -588,8 +652,32 @@ def handle_checkout_session_payment_completed(session):
             content_name=plan.name,
         )
 
-    except Exception as e:
-        logger.error(f"Erreur dans handle_checkout_session_payment_completed: {e}")
+    except ObjectDoesNotExist as e:
+        logger.warning("handle_checkout_session_payment_completed: donnée introuvable (%s)", e)
+    except Exception:
+        logger.exception("Erreur dans handle_checkout_session_payment_completed")
+        raise
+
+
+def _paiement_toujours_valable(payment_intent_id):
+    """Applique un remboursement ou un litige déjà survenu. Renvoie False si le paiement ne vaut plus."""
+    if not payment_intent_id:
+        return True
+    try:
+        charge = stripe.PaymentIntent.retrieve(payment_intent_id, expand=['latest_charge']).get('latest_charge') or {}
+    except stripe_error.StripeError as exc:
+        # Stripe injoignable : le contrôle des remboursements des pass (pass_access) prendra le relais.
+        logger.warning("Vérification du paiement %s impossible : %s", payment_intent_id, exc)
+        return True
+    charge = _stripe_obj_to_dict(charge)
+    if charge.get('disputed'):
+        revoke_pass_for_payment_intent(payment_intent_id, amount_refunded=charge.get('amount'), amount_total=charge.get('amount'))
+        PaymentHistory.objects.filter(stripe_payment_intent_id=payment_intent_id).update(status='disputed')
+        return False
+    if charge.get('refunded') or charge.get('amount_refunded'):
+        _appliquer_remboursement(charge, payment_intent_id)
+        return False
+    return True
 
 
 def _create_pass_payment_history(invoice_owner, beneficiary, plan, session, niveau_obj, payment_intent, start, ends, days, is_gift=False):
@@ -766,8 +854,11 @@ def handle_payment_succeeded(invoice):
                     metadata=merged_metadata,
                 )
 
-    except Exception as e:
-        logger.error(f"Erreur dans handle_payment_succeeded: {e}")
+    except ObjectDoesNotExist as e:
+        logger.warning("handle_payment_succeeded: donnée introuvable (%s)", e)
+    except Exception:
+        logger.exception("Erreur dans handle_payment_succeeded")
+        raise
 
 
 def _get_or_create_subscription_from_invoice(subscription_id, subscription_data, invoice):
@@ -923,6 +1014,25 @@ def _is_first_charge(invoice, previous_status, subscription_data, payment_create
 # Handler: invoice.payment_failed
 # =============================================================================
 
+def _prevenir_paiement_refuse(user_subscription, invoice):
+    """Courriel au payeur (adresse de la facture Stripe) avec le lien pour régler."""
+    destinataire = (invoice.get('customer_email') or '').strip() or user_subscription.user.email
+    lien = invoice.get('hosted_invoice_url') or ''
+    montant = (invoice.get('amount_due') or 0) / 100
+    offre = user_subscription.plan.name if user_subscription.plan else 'OptiTAB'
+    try:
+        send_mail(
+            "Ton paiement OptiTAB n'est pas passé",
+            f"Bonjour,\n\nLe prélèvement de {montant:.2f} € pour ton abonnement OptiTAB ({offre}) a été "
+            f"refusé par la banque. Pour garder ton accès, règle la facture avec une autre carte :\n{lien}\n\n"
+            f"Ton accès reste ouvert 3 jours, le temps de régler. Sans règlement, l'abonnement s'arrêtera "
+            f"après quelques nouvelles tentatives de Stripe.\n\nL'équipe OptiTAB",
+            settings.DEFAULT_FROM_EMAIL, [destinataire], fail_silently=True,
+        )
+    except Exception:
+        logger.exception("Courriel « paiement refusé » non envoyé (abonnement %s)", user_subscription.id)
+
+
 def handle_payment_failed(invoice):
     """Gérer un paiement échoué."""
     try:
@@ -930,20 +1040,24 @@ def handle_payment_failed(invoice):
         if not subscription_id:
             return
         user_subscription = UserSubscription.objects.get(stripe_subscription_id=subscription_id)
-        user_subscription.status = 'past_due'
-        user_subscription.save(update_fields=['status'])
+        # Statut lu chez Stripe (impayé, non payé, ou déjà terminé après la dernière relance) :
+        # ne jamais imposer « impayé » à un abonnement que Stripe vient d'arrêter.
+        _update_subscription_status(user_subscription, _stripe_obj_to_dict(stripe.Subscription.retrieve(subscription_id)))
+        if (invoice.get('attempt_count') or 0) <= 1:
+            _prevenir_paiement_refuse(user_subscription, invoice)
     except UserSubscription.DoesNotExist:
         logger.warning("handle_payment_failed: subscription introuvable (%s)", subscription_id)
-    except Exception as e:
-        logger.error(f"Erreur dans handle_payment_failed: {e}")
+    except Exception:
+        logger.exception("Erreur dans handle_payment_failed")
+        raise
 
 
 # =============================================================================
 # Handler: customer.subscription.updated
 # =============================================================================
 
-def handle_subscription_updated(subscription):
-    """Gérer la mise à jour d'un abonnement."""
+def handle_subscription_updated(subscription, *, notifier=True):
+    """Gérer la mise à jour d'un abonnement (courriels de résiliation si ``notifier``)."""
     try:
         subscription = _stripe_obj_to_dict(subscription)
         stripe_subscription_id = subscription.get('id')
@@ -973,20 +1087,22 @@ def handle_subscription_updated(subscription):
             user_subscription.save()
 
             # Envoyer les emails de résiliation si nécessaire
-            _schedule_cancellation_if_needed(
-                user_subscription.id,
-                stripe_subscription_id,
-                metadata,
-                previous_cancel_at_period_end,
-                new_cancel_at_period_end,
-                previous_status,
-                new_status,
-            )
+            if notifier:
+                _schedule_cancellation_if_needed(
+                    user_subscription.id,
+                    stripe_subscription_id,
+                    metadata,
+                    previous_cancel_at_period_end,
+                    new_cancel_at_period_end,
+                    previous_status,
+                    new_status,
+                )
 
     except UserSubscription.DoesNotExist:
         logger.warning("handle_subscription_updated: subscription introuvable (%s)", stripe_subscription_id)
-    except Exception as e:
-        logger.error(f"Erreur dans handle_subscription_updated: {e}")
+    except Exception:
+        logger.exception("Erreur dans handle_subscription_updated")
+        raise
 
 
 def _schedule_cancellation_if_needed(us_id, sub_id, metadata, prev_cancel, new_cancel, prev_status, new_status):
@@ -1014,8 +1130,8 @@ def _schedule_cancellation_if_needed(us_id, sub_id, metadata, prev_cancel, new_c
 # Handler: customer.subscription.deleted
 # =============================================================================
 
-def handle_subscription_deleted(subscription):
-    """Gérer la suppression d'un abonnement."""
+def handle_subscription_deleted(subscription, *, notifier=True):
+    """Gérer la fin d'un abonnement (courriel de résiliation si ``notifier``)."""
     try:
         subscription = _stripe_obj_to_dict(subscription)
         stripe_subscription_id = subscription.get('id')
@@ -1044,7 +1160,7 @@ def handle_subscription_deleted(subscription):
             user_subscription.save()
 
             # Notifier seulement si pas déjà notifié via cancel_at_period_end
-            if previous_status != 'canceled' and not previous_cancel_at_period_end:
+            if notifier and previous_status != 'canceled' and not previous_cancel_at_period_end:
                 transaction.on_commit(lambda: _schedule_cancellation_emails(
                     user_subscription_id=user_subscription.id,
                     cancel_type='canceled',
@@ -1054,8 +1170,9 @@ def handle_subscription_deleted(subscription):
 
     except UserSubscription.DoesNotExist:
         logger.warning("handle_subscription_deleted: subscription introuvable (%s)", stripe_subscription_id)
-    except Exception as e:
-        logger.error(f"Erreur dans handle_subscription_deleted: {e}")
+    except Exception:
+        logger.exception("Erreur dans handle_subscription_deleted")
+        raise
 
 
 # =============================================================================
@@ -1113,73 +1230,112 @@ def _resolve_payment_intent_from_refund(refund):
 # Handler: charge.refunded (remboursement de pass one-time)
 # =============================================================================
 
-def handle_charge_refunded(charge):
-    """Gère le remboursement d'un paiement (charge.refunded) - révoque le pass associé."""
+def _alerter_admin(sujet, texte):
+    """Courriel à l'administration (litige, remboursement automatique...)."""
     try:
-        charge = _stripe_obj_to_dict(charge)
-        payment_intent_id = _resolve_payment_intent_from_charge(charge)
-        if not payment_intent_id:
-            logger.info(
-                "handle_charge_refunded: payment_intent introuvable (charge=%s), ignoré",
-                charge.get('id'),
-            )
-            return
+        send_mail(f"[OptiTAB] {sujet}", texte, settings.DEFAULT_FROM_EMAIL, ['contact@optitab.net'], fail_silently=True)
+    except Exception:
+        logger.exception("Alerte administration non envoyée : %s", sujet)
 
-        # Vérifier si c'est un remboursement (partiel ou total)
-        refunded = charge.get('refunded', False)
-        amount_refunded = charge.get('amount_refunded', 0)
 
-        if not refunded and amount_refunded == 0:
-            logger.info("handle_charge_refunded: pas de remboursement effectif, ignoré")
-            return
+def _abonnement_de_la_charge(charge):
+    """Identifiant de l'abonnement Stripe payé par cette charge (None pour un pass)."""
+    invoice_id = _normalize_stripe_id(charge.get('invoice'))
+    if not invoice_id:
+        return None
+    return _normalize_stripe_id(stripe.Invoice.retrieve(invoice_id).get('subscription'))
 
-        amount_total = charge.get('amount')
-        revoke_pass_for_payment_intent(
-            payment_intent_id,
-            amount_refunded=amount_refunded,
-            amount_total=amount_total,
-        )
 
-    except Exception as e:
-        logger.error(f"Erreur dans handle_charge_refunded: {e}", exc_info=True)
+def _arreter_abonnement(subscription_id, raison):
+    """Arrête tout de suite un abonnement chez Stripe et en base (idempotent)."""
+    abonnement = stripe.Subscription.retrieve(subscription_id)
+    if abonnement.get('status') != 'canceled':
+        abonnement = stripe.Subscription.cancel(subscription_id)
+        logger.info("Abonnement %s arrêté (%s)", subscription_id, raison)
+    handle_subscription_deleted(abonnement)
+
+
+def _appliquer_remboursement(charge, payment_intent_id):
+    """Conséquences d'un remboursement, quel que soit l'événement qui l'annonce.
+
+    - pass : révoqué (total ou partiel, règle existante) ;
+    - abonnement remboursé en totalité : arrêté tout de suite ;
+    - cours particulier remboursé en totalité : marqué « Remboursé ».
+    """
+    amount_total = charge.get('amount')
+    amount_refunded = charge.get('amount_refunded', 0)
+    if not charge.get('refunded') and not amount_refunded:
+        return
+    total = bool(charge.get('refunded')) or (amount_total and amount_refunded >= amount_total)
+
+    revoke_pass_for_payment_intent(payment_intent_id, amount_refunded=amount_refunded, amount_total=amount_total)
+    if not total:
+        return
+    from .models import LessonPayment
+    LessonPayment.objects.filter(stripe_payment_intent_id=payment_intent_id, status='paid').update(status='refunded')
+    subscription_id = _abonnement_de_la_charge(charge)
+    if subscription_id:
+        _arreter_abonnement(subscription_id, 'paiement remboursé')
+
+
+def handle_charge_refunded(charge):
+    """charge.refunded : remboursement total ou partiel d'un paiement."""
+    charge = _stripe_obj_to_dict(charge)
+    payment_intent_id = _resolve_payment_intent_from_charge(charge)
+    if not payment_intent_id:
+        logger.info("handle_charge_refunded: payment_intent introuvable (charge=%s), ignoré", charge.get('id'))
+        return
+    _appliquer_remboursement(charge, payment_intent_id)
 
 
 def handle_refund_event(refund):
-    """Gère un remboursement (refund.created/refund.updated/charge.refund.*)."""
-    try:
-        refund = _stripe_obj_to_dict(refund)
-        status = (refund.get('status') or '').lower()
-        if status in ('failed', 'canceled'):
-            logger.info("handle_refund_event: remboursement échoué/annulé (%s)", refund.get('id'))
+    """refund.* / charge.refund.* : même traitement que charge.refunded."""
+    refund = _stripe_obj_to_dict(refund)
+    if (refund.get('status') or '').lower() in ('failed', 'canceled'):
+        logger.info("handle_refund_event: remboursement échoué/annulé (%s)", refund.get('id'))
+        return
+    charge = refund.get('charge')
+    if not isinstance(charge, dict):  # identifiant seul : on relit la charge chez Stripe
+        if not charge:
+            logger.info("handle_refund_event: charge introuvable (%s)", refund.get('id'))
             return
+        charge = stripe.Charge.retrieve(charge)
+    charge = _stripe_obj_to_dict(charge)
+    payment_intent_id = _resolve_payment_intent_from_charge(charge)
+    if payment_intent_id:
+        _appliquer_remboursement(charge, payment_intent_id)
 
-        payment_intent_id, charge_data = _resolve_payment_intent_from_refund(refund)
-        if not payment_intent_id:
-            logger.info("handle_refund_event: payment_intent introuvable (%s)", refund.get('id'))
-            return
 
-        amount_refunded = refund.get('amount')
-        amount_total = None
+# =============================================================================
+# Handler: charge.dispute.created (opposition bancaire)
+# =============================================================================
 
-        if charge_data:
-            amount_total = charge_data.get('amount')
-            amount_refunded = charge_data.get('amount_refunded', amount_refunded)
-        elif isinstance(refund.get('charge'), dict):
-            charge = refund.get('charge')
-            amount_total = charge.get('amount')
-            amount_refunded = charge.get('amount_refunded', amount_refunded)
-
-        revoke_pass_for_payment_intent(
-            payment_intent_id,
-            amount_refunded=amount_refunded,
-            amount_total=amount_total,
-        )
-
-    except Exception as e:
-        logger.error(f"Erreur dans handle_refund_event: {e}", exc_info=True)
+def handle_dispute_created(dispute):
+    """Litige : accès coupé (pass révoqué, abonnement arrêté) et alerte à l'administration."""
+    dispute = _stripe_obj_to_dict(dispute)
+    charge_id = _normalize_stripe_id(dispute.get('charge'))
+    if not charge_id:
+        return
+    charge = _stripe_obj_to_dict(stripe.Charge.retrieve(charge_id))
+    payment_intent_id = _resolve_payment_intent_from_charge(charge)
+    if payment_intent_id:
+        revoke_pass_for_payment_intent(payment_intent_id, amount_refunded=charge.get('amount'), amount_total=charge.get('amount'))
+        PaymentHistory.objects.filter(stripe_payment_intent_id=payment_intent_id).update(status='disputed')
+    subscription_id = _abonnement_de_la_charge(charge)
+    if subscription_id:
+        _arreter_abonnement(subscription_id, 'litige bancaire')
+    montant = (dispute.get('amount') or 0) / 100
+    _alerter_admin(
+        "Litige bancaire",
+        f"Un client a contesté un paiement de {montant:.2f} € auprès de sa banque "
+        f"(motif : {dispute.get('reason') or 'non précisé'}).\n"
+        f"L'accès correspondant a été coupé automatiquement.\n"
+        f"Répondre au litige dans le tableau de bord Stripe : Paiements > Litiges ({dispute.get('id')}).",
+    )
 
 
 __all__ = [
+    'handle_dispute_created',
     'resolve_guest_user',
     'handle_invoice_created',
     'handle_checkout_session_completed',

@@ -1,3 +1,4 @@
+from datetime import timedelta
 from decimal import Decimal
 
 from django.db import models
@@ -143,14 +144,27 @@ class UserSubscription(models.Model):
     def __str__(self):
         return f"{_user_identifier(self.user)} - {self.plan.name} ({self.status})"
     
+    # Marge après la fin de période : le renouvellement peut mettre un peu de temps
+    # à être confirmé (webhook, vérification quotidienne auprès de Stripe).
+    MARGE_FIN_DE_PERIODE = timedelta(days=3)
+
     @property
     def is_active(self):
-        """Vérifie si l'abonnement donne toujours accès."""
+        """Vérifie si l'abonnement donne toujours accès.
+
+        Un statut « actif » ne suffit pas : si la période est finie depuis plus de
+        3 jours sans renouvellement enregistré, l'accès est fermé.
+        """
+        now = timezone.now()
+        fin = self.current_period_end
         if self.status in ['active', 'trialing']:
-            return True
-        if self.cancel_at_period_end and self.current_period_end:
-            if self.current_period_end > timezone.now():
-                return True
+            return fin is None or fin > now - self.MARGE_FIN_DE_PERIODE
+        if self.status == 'past_due':
+            # Carte refusée au renouvellement : 3 jours pour régler, puis accès fermé.
+            debut = self.current_period_start
+            return debut is not None and now < debut + self.MARGE_FIN_DE_PERIODE
+        if self.cancel_at_period_end and fin:
+            return fin > now
         return False
     
     @property

@@ -97,7 +97,7 @@ class ListeContenuMixin:
 
     def _donnees(self, request, objets):
         donnees = self.get_serializer(objets, many=True).data
-        if not self.champs_payants or user_has_active_subscription_or_pass(request.user):
+        if not self.champs_payants or getattr(request.user, 'is_staff', False):
             return donnees
         verificateur = _VerificateurAcces(request.user)
         for obj, item in zip(objets, donnees):

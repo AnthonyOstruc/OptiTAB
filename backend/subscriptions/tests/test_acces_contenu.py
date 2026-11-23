@@ -18,7 +18,10 @@ from cours.models import Cours
 from curriculum.models import Exercice, Matiere, MatiereContexte, Notion, Theme
 from pays.models import Niveau, Pays
 from quiz.models import Quiz
-from subscriptions.models import SubscriptionPlan, UserSubscription
+from unittest.mock import patch
+
+from subscriptions.models import AccessPass, PaymentHistory, SubscriptionPlan, UserSubscription
+from subscriptions.permissions import user_has_active_subscription_or_pass
 
 User = get_user_model()
 
@@ -139,3 +142,81 @@ class AccesContenuTests(TestCase):
         data = self._client(self.admin).get("/api/exercices/", {"limit": 1, "offset": 0}).json()
         self.assertEqual(data["count"], 3)
         self.assertEqual(len(data["results"]), 1)
+
+
+class AccesParClasseTests(TestCase):
+    """Un abonnement ou un pass n'ouvre que la classe payée ; un abonnement périmé n'ouvre plus rien."""
+
+    @classmethod
+    def setUpTestData(cls):
+        pays = Pays.objects.create(nom="France", code_iso="FRA")
+        cls.seconde = Niveau.objects.create(pays=pays, nom="Seconde", ordre=10)
+        cls.terminale = Niveau.objects.create(pays=pays, nom="Terminale", ordre=12)
+        matiere = Matiere.objects.create(titre="Mathématiques", ordre=1)
+        notions = {}
+        for niveau in (cls.seconde, cls.terminale):
+            contexte = MatiereContexte.objects.create(matiere=matiere, niveau=niveau)
+            theme = Theme.objects.create(titre=f"Thème {niveau.nom}", matiere=matiere, contexte=contexte, ordre=1)
+            notions[niveau.nom] = Notion.objects.create(theme=theme, titre=f"Chapitre {niveau.nom}", ordre=1)
+        cls.ex_seconde = Exercice.objects.create(notion=notions["Seconde"], titre="Ex 2nde", contenu="É", question="Q",
+                                                 reponse_correcte="SECRET 2NDE", etapes="É")
+        cls.ex_terminale = Exercice.objects.create(notion=notions["Terminale"], titre="Ex Tle", contenu="É", question="Q",
+                                                   reponse_correcte="SECRET TLE", etapes="É")
+        cls.plan = SubscriptionPlan.objects.create(
+            name="Mensuel", plan_type="basic", plan_mode="subscription", billing_period="monthly",
+            price=Decimal("7.99"), stripe_price_id="price_classe", features=[],
+        )
+        cls.pass_plan = SubscriptionPlan.objects.create(
+            name="Pass 1 jour", plan_type="basic", plan_mode="one_time", billing_period="daily",
+            price=Decimal("3.99"), stripe_price_id="price_classe_pass", features=[], access_days=1,
+        )
+
+    def _eleve(self, nom):
+        return User.objects.create_user(email=f"{nom}@example.com", password="x", first_name=nom, last_name="T",
+                                        niveau_pays=self.seconde)
+
+    def _abonner(self, user, niveau, fin):
+        return UserSubscription.objects.create(
+            user=user, plan=self.plan, status="active", stripe_subscription_id=f"sub_{user.pk}",
+            current_period_start=fin - timedelta(days=30), current_period_end=fin, niveau_pays=niveau,
+        )
+
+    def _client(self, user):
+        client = APIClient()
+        client.credentials(HTTP_ACCEPT="application/json")
+        client.force_authenticate(user=user)
+        return client
+
+    def test_subscription_opens_only_its_class(self):
+        eleve = self._eleve("seconde")
+        self._abonner(eleve, self.seconde, timezone.now() + timedelta(days=20))
+        self.assertTrue(user_has_active_subscription_or_pass(eleve, niveau=self.seconde))
+        eleve = User.objects.get(pk=eleve.pk)
+        self.assertFalse(user_has_active_subscription_or_pass(eleve, niveau=self.terminale))
+        client = self._client(eleve)
+        self.assertEqual(client.get(f"/api/exercices/{self.ex_seconde.id}/").status_code, 200)
+        self.assertEqual(client.get(f"/api/exercices/{self.ex_terminale.id}/").status_code, 403)
+        liste = client.get("/api/exercices/", {"notion": self.ex_terminale.notion_id}).json()
+        self.assertEqual(liste[0]["reponse_correcte"], "")
+
+    def test_stale_active_subscription_no_longer_opens(self):
+        eleve = self._eleve("perime")
+        self._abonner(eleve, self.seconde, timezone.now() - timedelta(days=10))
+        self.assertFalse(user_has_active_subscription_or_pass(eleve, niveau=self.seconde))
+
+    def test_renewal_grace_period(self):
+        eleve = self._eleve("marge")
+        self._abonner(eleve, self.seconde, timezone.now() - timedelta(days=1))
+        self.assertTrue(user_has_active_subscription_or_pass(eleve, niveau=self.seconde))
+
+    def test_pass_opens_only_its_class(self):
+        eleve = self._eleve("pass")
+        maintenant = timezone.now()
+        AccessPass.objects.create(user=eleve, plan=self.pass_plan, starts_at=maintenant, ends_at=maintenant + timedelta(days=1),
+                                  stripe_payment_intent_id="pi_classe")
+        PaymentHistory.objects.create(user=eleve, stripe_payment_intent_id="pi_classe", amount=Decimal("3.99"),
+                                      status="succeeded", plan_mode="one_time", niveau_pays=self.seconde)
+        with patch("subscriptions.pass_access.stripe_refund_status_for_payment_intent", return_value=(None, 0, 399)):
+            self.assertTrue(user_has_active_subscription_or_pass(eleve, niveau=self.seconde))
+            eleve = User.objects.get(pk=eleve.pk)
+            self.assertFalse(user_has_active_subscription_or_pass(eleve, niveau=self.terminale))

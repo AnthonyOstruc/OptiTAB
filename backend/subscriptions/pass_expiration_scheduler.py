@@ -66,6 +66,32 @@ def _run_once(*, hours_ago: int) -> None:
         logger.exception("Pass expiration scheduler: error running command: %s", exc)
 
 
+SYNCHRO_STRIPE_INTERVALLE = 6 * 3600
+
+
+def _synchroniser_stripe_si_besoin() -> None:
+    """Toutes les 6 heures, en production : abonnements remis d'accord avec Stripe.
+
+    Jamais avec la clé de test (le site local écrit dans la base réelle).
+    """
+    from django.core.cache import cache
+    from stripe_config import STRIPE_RUNTIME_MODE
+
+    forcer = str(os.getenv("STRIPE_SYNC_FORCE", "")).strip().lower() in {"1", "true", "yes"}
+    if STRIPE_RUNTIME_MODE != "live" and not forcer:
+        return
+    if cache.get("optitab_synchro_stripe"):
+        return
+    cache.set("optitab_synchro_stripe", timezone.now().isoformat(), SYNCHRO_STRIPE_INTERVALLE)
+    try:
+        from subscriptions.synchronisation import synchroniser_abonnements
+
+        bilan = synchroniser_abonnements()
+        print(f"[synchro-stripe] {bilan}", flush=True)
+    except Exception as exc:
+        logger.exception("Synchronisation Stripe : erreur (%s)", exc)
+
+
 def _scheduler_loop(*, lock_key: int, interval_seconds: int, hours_ago: int) -> None:
     while True:
         try:
@@ -86,6 +112,7 @@ def _scheduler_loop(*, lock_key: int, interval_seconds: int, hours_ago: int) -> 
                         timezone.now().isoformat(),
                     )
                     _run_once(hours_ago=hours_ago)
+                    _synchroniser_stripe_si_besoin()
                 finally:
                     _release_db_lock(lock_key)
         except Exception as exc:

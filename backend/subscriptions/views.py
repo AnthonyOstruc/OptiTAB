@@ -6,6 +6,7 @@ from django.views.decorators.http import require_http_methods
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.contrib.auth import get_user_model
+from django.core.cache import cache
 from django.utils import timezone
 from django.utils.dateparse import parse_datetime, parse_date
 from decimal import Decimal
@@ -67,7 +68,9 @@ from .handlers import (
     handle_refund_event,
     handle_subscription_deleted,
     handle_subscription_updated,
+    handle_dispute_created,
     resolve_guest_user,
+    _alerter_admin,
 )
 from .email_jobs import _schedule_cancellation_emails
 from .subscription_status import build_subscription_status
@@ -82,6 +85,25 @@ logger = logging.getLogger(__name__)
 
 User = get_user_model()
 
+
+
+# Page de paiement Stripe : renonciation au délai de rétractation de 14 jours
+# (code de la consommation, art. L221-28 13°). L'accès au contenu numérique est
+# immédiat ; sans accord exprès, le client pourrait demander un remboursement
+# complet pendant 14 jours. L'adresse des CGV est réglée dans Stripe
+# (Paramètres > Informations publiques).
+OPTIONS_LEGALES_CHECKOUT = {
+    'consent_collection': {'terms_of_service': 'required'},
+    'custom_text': {
+        'terms_of_service_acceptance': {
+            'message': (
+                "J’accepte les [conditions générales de vente](https://www.optitab.net/cgv) et je demande "
+                "l’accès immédiat aux contenus : je renonce ainsi à mon droit de rétractation de 14 jours."
+            ),
+        },
+        'submit': {'message': 'Accès instantané après paiement. Facture disponible par e-mail.'},
+    },
+}
 
 
 def _is_stripe_test_runtime():
@@ -150,13 +172,15 @@ def _find_plan_from_checkout_price_id(price_id):
     candidate = (price_id or '').strip()
     if not candidate:
         return None
+    # Une offre désactivée ne se vend plus, même si son prix existe encore chez Stripe.
+    plans = SubscriptionPlan.objects.filter(is_active=True)
     if _is_stripe_test_runtime():
         # Primary lookup in test field; fallback to live field for backward compatibility.
         return (
-            SubscriptionPlan.objects.filter(stripe_price_id_test=candidate).first()
-            or SubscriptionPlan.objects.filter(stripe_price_id=candidate).first()
+            plans.filter(stripe_price_id_test=candidate).first()
+            or plans.filter(stripe_price_id=candidate).first()
         )
-    return SubscriptionPlan.objects.filter(stripe_price_id=candidate).first()
+    return plans.filter(stripe_price_id=candidate).first()
 
 
 def _plans_queryset_for_runtime():
@@ -458,12 +482,7 @@ class CreateCheckoutSessionView(APIView):
                 success_url=SUCCESS_URL + '?session_id={CHECKOUT_SESSION_ID}',
                 cancel_url=CANCEL_URL,
                 metadata=metadata,
-                # Personnalisation UI du checkout
-                custom_text={
-                    'submit': {
-                        'message': 'Accès instantané après paiement. Facture disponible par email.'
-                    }
-                },
+                **OPTIONS_LEGALES_CHECKOUT,
                 locale='fr',  # Force la langue française
                 allow_promotion_codes=True,  # Permet les codes promo
             )
@@ -603,11 +622,7 @@ class GuestCheckoutSessionView(APIView):
                 success_url=SUCCESS_URL + '?session_id={CHECKOUT_SESSION_ID}',
                 cancel_url=CANCEL_URL,
                 metadata=metadata,
-                custom_text={
-                    'submit': {
-                        'message': 'Accès instantané après paiement. Facture disponible par email.'
-                    }
-                },
+                **OPTIONS_LEGALES_CHECKOUT,
                 locale='fr',
                 allow_promotion_codes=True,
             )
@@ -1153,39 +1168,50 @@ def _retrieve_stripe_subscription_for_management(stripe_subscription_id):
             status=400
         )
 
+def _abonnement_a_gerer(request):
+    """Abonnement visé par une résiliation ou une réactivation, si ce compte a le droit d'agir.
+
+    Renvoie ``(abonnement_local, abonnement_stripe, réponse_d_erreur)``. Les droits
+    viennent toujours de Stripe (``_can_user_manage_subscription_from_stripe``) :
+    un abonnement offert ne peut être géré que par celui qui le paie, jamais par
+    l'enfant qui en profite (sinon il pourrait le réactiver aux frais du parent).
+    """
+    identifiant = str(request.data.get('subscription_id') or '').strip()
+    stripe_id = str(request.data.get('stripe_subscription_id') or '').strip()
+    local = None
+    if identifiant:
+        local = UserSubscription.objects.filter(stripe_subscription_id=identifiant).first()
+        if local is None and identifiant.isdigit():
+            local = UserSubscription.objects.filter(id=int(identifiant)).first()
+    if local is None and stripe_id:
+        local = UserSubscription.objects.filter(stripe_subscription_id=stripe_id).first()
+
+    introuvable = JsonResponse(
+        {'error': 'Abonnement introuvable', 'message': 'Aucun abonnement correspondant trouvé.'}, status=404,
+    )
+    cible = (local.stripe_subscription_id if local else '') or stripe_id
+    if not cible:
+        # Abonnement sans Stripe (accès offert à la main) : seul son titulaire agit.
+        if local and local.user_id == request.user.id:
+            return local, None, None
+        return None, None, introuvable
+
+    stripe_sub, error_response = _retrieve_stripe_subscription_for_management(cible)
+    if error_response:
+        return None, None, error_response
+    if not _can_user_manage_subscription_from_stripe(request.user, stripe_sub):
+        return None, None, JsonResponse({'detail': 'Forbidden'}, status=403)
+    return local, stripe_sub, None
+
+
 class CancelSubscriptionView(APIView):
     """Annuler l'abonnement"""
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        subscription_id = request.data.get('subscription_id')
-        stripe_subscription_id = request.data.get('stripe_subscription_id')
-        subscription = None
-
-        stripe_sub_for_access = None
-
-        if subscription_id:
-            try:
-                subscription = UserSubscription.objects.get(id=subscription_id, user=request.user)
-            except (UserSubscription.DoesNotExist, ValueError):
-                subscription = UserSubscription.objects.filter(stripe_subscription_id=subscription_id, user=request.user).first()
-
-        if not subscription and stripe_subscription_id:
-            subscription = UserSubscription.objects.filter(stripe_subscription_id=stripe_subscription_id, user=request.user).first()
-
-        if not subscription and stripe_subscription_id:
-            subscription = UserSubscription.objects.filter(stripe_subscription_id=stripe_subscription_id).first()
-
-        if subscription and subscription.user_id != request.user.id:
-            if not subscription.stripe_subscription_id:
-                return JsonResponse({'detail': 'Forbidden'}, status=403)
-            stripe_sub_for_access, error_response = _retrieve_stripe_subscription_for_management(
-                subscription.stripe_subscription_id
-            )
-            if error_response:
-                return error_response
-            if not _can_user_manage_subscription_from_stripe(request.user, stripe_sub_for_access):
-                return JsonResponse({'detail': 'Forbidden'}, status=403)
+        subscription, stripe_sub_for_access, error_response = _abonnement_a_gerer(request)
+        if error_response:
+            return error_response
 
         if subscription:
             was_scheduled = bool(subscription.cancel_at_period_end)
@@ -1231,14 +1257,9 @@ class CancelSubscriptionView(APIView):
                 return JsonResponse({'success': True, 'message': message})
             return JsonResponse({'error': 'Erreur lors de l\'annulation', 'message': 'Impossible de programmer l\'annulation.'}, status=400)
 
-        # Fallback sécurisé: annulation Stripe si l'abonnement n'est pas en base locale
-        if stripe_subscription_id:
-            stripe_sub, error_response = _retrieve_stripe_subscription_for_management(stripe_subscription_id)
-            if error_response:
-                return error_response
-            if not _can_user_manage_subscription_from_stripe(request.user, stripe_sub):
-                return JsonResponse({'detail': 'Forbidden'}, status=403)
-
+        # Abonnement absent de la base locale : on agit directement chez Stripe.
+        if stripe_sub_for_access:
+            stripe_subscription_id = stripe_sub_for_access.get('id')
             try:
                 stripe.Subscription.modify(
                     stripe_subscription_id,
@@ -1258,34 +1279,9 @@ class ReactivateSubscriptionView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        subscription_id = request.data.get('subscription_id')
-        stripe_subscription_id = request.data.get('stripe_subscription_id')
-        subscription = None
-
-        stripe_sub_for_access = None
-
-        if subscription_id:
-            try:
-                subscription = UserSubscription.objects.get(id=subscription_id, user=request.user)
-            except (UserSubscription.DoesNotExist, ValueError):
-                subscription = UserSubscription.objects.filter(stripe_subscription_id=subscription_id, user=request.user).first()
-
-        if not subscription and stripe_subscription_id:
-            subscription = UserSubscription.objects.filter(stripe_subscription_id=stripe_subscription_id, user=request.user).first()
-
-        if not subscription and stripe_subscription_id:
-            subscription = UserSubscription.objects.filter(stripe_subscription_id=stripe_subscription_id).first()
-
-        if subscription and subscription.user_id != request.user.id:
-            if not subscription.stripe_subscription_id:
-                return JsonResponse({'detail': 'Forbidden'}, status=403)
-            stripe_sub_for_access, error_response = _retrieve_stripe_subscription_for_management(
-                subscription.stripe_subscription_id
-            )
-            if error_response:
-                return error_response
-            if not _can_user_manage_subscription_from_stripe(request.user, stripe_sub_for_access):
-                return JsonResponse({'detail': 'Forbidden'}, status=403)
+        subscription, stripe_sub_for_access, error_response = _abonnement_a_gerer(request)
+        if error_response:
+            return error_response
 
         if subscription:
             if not subscription.cancel_at_period_end:
@@ -1323,14 +1319,9 @@ class ReactivateSubscriptionView(APIView):
                 logger.error(f"Stripe reactivate error {subscription.stripe_subscription_id}: {exc}")
                 return JsonResponse({'error': 'Stripe indisponible', 'message': 'Impossible de contacter Stripe pour le moment.'}, status=400)
 
-        # Fallback: réactivation via stripe_subscription_id directement
-        if stripe_subscription_id:
-            stripe_sub, error_response = _retrieve_stripe_subscription_for_management(stripe_subscription_id)
-            if error_response:
-                return error_response
-            if not _can_user_manage_subscription_from_stripe(request.user, stripe_sub):
-                return JsonResponse({'detail': 'Forbidden'}, status=403)
-
+        # Abonnement absent de la base locale : on agit directement chez Stripe.
+        if stripe_sub_for_access:
+            stripe_subscription_id = stripe_sub_for_access.get('id')
             try:
                 stripe.Subscription.modify(
                     stripe_subscription_id,
@@ -2316,70 +2307,93 @@ def stripe_webhook(request):
     return _handle_webhook_event(event)
 
 
-def _handle_webhook_event(event):
-    """Route a verified Stripe event to the appropriate handler.
+def _checkout_termine(session):
+    # Un versement pour cours particulier n'ouvre aucun accès plateforme :
+    # il ne doit surtout pas passer par le traitement des pass.
+    if (session.get('metadata') or {}).get('kind') == 'lesson_payment':
+        handle_lesson_payment_completed(session)
+    elif session.get('subscription'):
+        handle_checkout_session_completed(session)
+    else:
+        handle_checkout_session_payment_completed(session)
 
-    Shared by stripe_webhook (live/main) and stripe_webhook_test.
+
+def _checkout_expire(session):
+    customer_id = session.get('customer')
+    if customer_id:
+        _clear_customer_temp_invoice_custom_fields(customer_id)
+
+
+# Événement Stripe -> traitement. Les mêmes noms doivent être cochés dans le
+# tableau de bord Stripe (Développeurs > Webhooks > Événements écoutés).
+GESTIONNAIRES_WEBHOOK = {
+    'checkout.session.completed': _checkout_termine,
+    'checkout.session.expired': _checkout_expire,
+    'invoice.created': handle_invoice_created,
+    'invoice.paid': handle_payment_succeeded,
+    'invoice.payment_succeeded': handle_payment_succeeded,
+    'invoice.payment_failed': handle_payment_failed,
+    'customer.subscription.updated': handle_subscription_updated,
+    'customer.subscription.deleted': handle_subscription_deleted,
+    'charge.refunded': handle_charge_refunded,
+    'refund.created': handle_refund_event,
+    'refund.updated': handle_refund_event,
+    'charge.refund.created': handle_refund_event,
+    'charge.refund.updated': handle_refund_event,
+    'charge.dispute.created': handle_dispute_created,
+}
+
+_RELECTURE_STRIPE = {
+    'checkout.session': lambda i: stripe.checkout.Session.retrieve(i),
+    'invoice': lambda i: stripe.Invoice.retrieve(i),
+    'subscription': lambda i: stripe.Subscription.retrieve(i),
+    'charge': lambda i: stripe.Charge.retrieve(i),
+    'refund': lambda i: stripe.Refund.retrieve(i),
+    'dispute': lambda i: stripe.Dispute.retrieve(i),
+}
+
+
+def _objet_a_jour(objet):
+    """État actuel de l'objet chez Stripe, au format de la bibliothèque.
+
+    Le webhook envoie l'objet au format de SA version d'API (2025-10-29.clover),
+    où plusieurs champs ont changé de place (dates de période, lien facture ->
+    abonnement...). Relire l'objet par son identifiant rend le traitement
+    indépendant de cette version et donne l'état le plus récent, même si les
+    messages arrivent dans le désordre.
     """
+    lire = _RELECTURE_STRIPE.get(objet.get('object'))
+    if not lire or not objet.get('id'):
+        return objet
     try:
-        event_type = event.get('type')
-        event_id = event.get('id')
-    except Exception:
-        try:
-            event_type = event['type']
-        except Exception:
-            event_type = None
-        try:
-            event_id = event['id']
-        except Exception:
-            event_id = None
-    
-    # Gérer les différents types d'événements
-    if event_type == 'checkout.session.completed':
-        session = event['data']['object']
-        session_kind = (session.get('metadata') or {}).get('kind')
+        return lire(objet['id'])
+    except stripe_error.InvalidRequestError:
+        # Objet supprimé chez Stripe : on garde le contenu du message.
+        return objet
 
-        # Un versement pour cours particulier n'ouvre aucun acces plateforme :
-        # il ne doit surtout pas passer par le traitement des pass.
-        if session_kind == 'lesson_payment':
-            handle_lesson_payment_completed(session)
-        elif session.get('subscription'):
-            handle_checkout_session_completed(session)
-        else:
-            handle_checkout_session_payment_completed(session)
-    elif event_type == 'checkout.session.expired':
-        session = event['data']['object']
-        customer_id = session.get('customer')
-        if customer_id:
-            _clear_customer_temp_invoice_custom_fields(customer_id)
 
-    elif event_type == 'invoice.created':
-        handle_invoice_created(event['data']['object'])
-    
-    elif event_type == 'invoice.payment_succeeded':
-        handle_payment_succeeded(event['data']['object'])
-    
-    elif event_type == 'invoice.payment_failed':
-        handle_payment_failed(event['data']['object'])
-    
-    elif event_type == 'customer.subscription.updated':
-        handle_subscription_updated(event['data']['object'])
-    
-    elif event_type == 'customer.subscription.deleted':
-        handle_subscription_deleted(event['data']['object'])
-    
-    elif event_type == 'charge.refunded':
-        logger.info("Stripe webhook: refund event received (type=%s, id=%s)", event_type, event_id)
-        handle_charge_refunded(event['data']['object'])
-    elif event_type in (
-        'refund.created',
-        'refund.updated',
-        'charge.refund.created',
-        'charge.refund.updated',
-    ):
-        logger.info("Stripe webhook: refund event received (type=%s, id=%s)", event_type, event_id)
-        handle_refund_event(event['data']['object'])
-    
+def _handle_webhook_event(event):
+    """Traite un événement Stripe vérifié (signature et mode déjà contrôlés).
+
+    Répond 500 si le traitement échoue : Stripe renvoie alors le message
+    pendant 3 jours au lieu de le perdre. Les traitements sont idempotents.
+    """
+    event_type = event.get('type')
+    gestionnaire = GESTIONNAIRES_WEBHOOK.get(event_type)
+    if gestionnaire is None:
+        return HttpResponse(status=200)
+    try:
+        gestionnaire(_objet_a_jour(event['data']['object']))
+    except Exception as exc:
+        logger.exception("Stripe webhook: échec du traitement %s (%s)", event_type, event.get('id'))
+        if cache.add(f'alerte_webhook_{event_type}', 1, 3600):
+            _alerter_admin(
+                "Message Stripe non traité",
+                f"Le message Stripe {event_type} ({event.get('id')}) n'a pas pu être traité : {exc}.\n"
+                "Stripe va le renvoyer automatiquement pendant 3 jours. Si l'alerte se répète, "
+                "voir les journaux du serveur (Render) et Stripe > Développeurs > Webhooks.",
+            )
+        return HttpResponse(status=500)
     return HttpResponse(status=200)
 
 
@@ -2394,6 +2408,10 @@ def stripe_webhook_test(request):
     dans le Dashboard Stripe sans interférer avec le webhook live.
     """
     from stripe_config import STRIPE_WEBHOOK_SECRET_TEST
+
+    # En production, aucun événement de test ne doit toucher la base.
+    if not _is_stripe_test_runtime():
+        return HttpResponse(status=404)
 
     payload = request.body
     sig_header = request.META.get('HTTP_STRIPE_SIGNATURE')

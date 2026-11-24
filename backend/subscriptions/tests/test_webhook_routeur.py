@@ -50,3 +50,41 @@ class RouteurWebhookTests(TestCase):
         with patch.object(views, '_is_stripe_test_runtime', return_value=False):
             reponse = self.client.post('/api/subscriptions/webhook/test/', data='{}', content_type='application/json')
         self.assertEqual(reponse.status_code, 404)
+
+
+class VerrouillageAbonnementTests(TestCase):
+    """Fin et modification d'abonnement : le verrou ne doit porter que sur la ligne
+    (PostgreSQL refuse FOR UPDATE sur une jointure externe ; panne réelle du 24/11/2026)."""
+
+    def setUp(self):
+        from datetime import timedelta
+        from decimal import Decimal
+
+        from django.contrib.auth import get_user_model
+        from django.utils import timezone
+
+        from subscriptions.models import SubscriptionPlan, UserSubscription
+
+        user = get_user_model().objects.create_user(email='verrou@example.com', password='x', first_name='V', last_name='V')
+        plan = SubscriptionPlan.objects.create(
+            name='Mensuel', plan_type='basic', plan_mode='subscription', billing_period='monthly',
+            price=Decimal('7.99'), stripe_price_id='price_verrou', features=[],
+        )
+        self.fin = timezone.now() + timedelta(days=10)
+        self.abonnement = UserSubscription.objects.create(
+            user=user, plan=plan, status='active', stripe_subscription_id='sub_verrou',
+            current_period_start=self.fin - timedelta(days=30), current_period_end=self.fin, niveau_pays=None,
+        )
+
+    def test_subscription_updated_and_deleted_are_saved(self):
+        from subscriptions.handlers import handle_subscription_deleted, handle_subscription_updated
+
+        horodatage = int(self.fin.timestamp())
+        handle_subscription_updated({'id': 'sub_verrou', 'status': 'active', 'cancel_at_period_end': True,
+                                     'current_period_start': horodatage - 30 * 86400, 'current_period_end': horodatage},
+                                    notifier=False)
+        self.abonnement.refresh_from_db()
+        self.assertTrue(self.abonnement.cancel_at_period_end)
+        handle_subscription_deleted({'id': 'sub_verrou', 'status': 'canceled'}, notifier=False)
+        self.abonnement.refresh_from_db()
+        self.assertEqual(self.abonnement.status, 'canceled')

@@ -1069,7 +1069,7 @@ def handle_subscription_updated(subscription, *, notifier=True):
         with transaction.atomic():
             user_subscription = (
                 UserSubscription.objects
-                .select_for_update()
+                .select_for_update(of=('self',))
                 .select_related('user', 'plan', 'niveau_pays', 'niveau_pays__pays')
                 .get(stripe_subscription_id=stripe_subscription_id)
             )
@@ -1143,7 +1143,7 @@ def handle_subscription_deleted(subscription, *, notifier=True):
         with transaction.atomic():
             user_subscription = (
                 UserSubscription.objects
-                .select_for_update()
+                .select_for_update(of=('self',))
                 .select_related('user', 'plan', 'niveau_pays', 'niveau_pays__pays')
                 .get(stripe_subscription_id=stripe_subscription_id)
             )

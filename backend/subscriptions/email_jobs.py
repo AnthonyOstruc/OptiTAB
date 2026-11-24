@@ -119,7 +119,7 @@ def _send_subscription_emails_job(payment_history_id, stripe_subscription_id, me
         with transaction.atomic():
             payment_history = (
                 PaymentHistory.objects
-                .select_for_update()
+                .select_for_update(of=('self',))
                 .select_related('user')
                 .get(pk=payment_history_id)
             )
@@ -227,7 +227,7 @@ def _send_invoice_email_job(payment_history_id, stripe_subscription_id, metadata
         with transaction.atomic():
             payment_history = (
                 PaymentHistory.objects
-                .select_for_update()
+                .select_for_update(of=('self',))
                 .select_related('user', 'niveau_pays', 'niveau_pays__pays')
                 .get(pk=payment_history_id)
             )

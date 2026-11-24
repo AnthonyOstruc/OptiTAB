@@ -227,6 +227,17 @@ else:
         "DATABASE configuration is missing. Set DATABASE_URL or POSTGRES_* / DB_* variables."
     )
 
+# Réseau : une connexion à la base ne doit jamais retenir une requête sans fin
+# (échec en 10 s si la base ne répond pas, connexion morte détectée en 1 minute).
+_reseau_base = {
+    "connect_timeout": int(os.getenv("DB_CONNECT_TIMEOUT", 10)),
+    "keepalives": 1,
+    "keepalives_idle": 30,
+    "keepalives_interval": 10,
+    "keepalives_count": 3,
+}
+DATABASES["default"].setdefault("OPTIONS", {}).update(_reseau_base)
+
 
 # ========================================
 # AUTHENTIFICATION
@@ -719,6 +730,7 @@ if not DEBUG:
             conn_max_age=600,
             ssl_require=True
         )
+        DATABASES['default'].setdefault("OPTIONS", {}).update(_reseau_base)
     else:
         # Fallback configuration si aucune configuration n'est définie
         raise ImproperlyConfigured(

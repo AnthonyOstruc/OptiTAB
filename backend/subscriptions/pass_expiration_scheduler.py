@@ -121,6 +121,37 @@ def _scheduler_loop(*, lock_key: int, interval_seconds: int, hours_ago: int) -> 
         time.sleep(max(30, interval_seconds))
 
 
+_PREMIERE_REQUETE = "optitab-taches-de-fond"
+
+
+def demarrer_a_la_premiere_requete() -> None:
+    """Lance la tâche de fond quand ce processus sert sa première requête.
+
+    Jamais à l'import du serveur : avec « gunicorn --preload », l'import a lieu dans
+    le processus maître, avant la création des processus qui servent les requêtes.
+    Un fil déjà au travail à cet instant (connexion à la base, appel à Stripe) peut
+    laisser un verrou pris dans un processus fils, qui ne répond alors plus jamais
+    (panne du 24/11/2026 : après un démarrage, une requête sur deux sans réponse).
+    Ici, le fil naît toujours dans un processus qui sert des requêtes.
+    """
+    if not _should_start_scheduler():
+        return
+    from django.core.signals import request_started
+
+    request_started.connect(_a_la_premiere_requete, weak=False, dispatch_uid=_PREMIERE_REQUETE)
+
+
+def _a_la_premiere_requete(**_kwargs) -> None:
+    from django.core.signals import request_started
+
+    request_started.disconnect(dispatch_uid=_PREMIERE_REQUETE)
+    try:
+        start_pass_expiration_emails_scheduler()
+    except Exception:  # une tâche de fond ne doit jamais faire échouer une requête
+        logger.exception("Tâche de fond : démarrage impossible.")
+        print("[pass-expiration] scheduler failed to start — check backend logs.", flush=True)
+
+
 def start_pass_expiration_emails_scheduler() -> None:
     """Start a lightweight in-process scheduler for pass expiration emails.
 

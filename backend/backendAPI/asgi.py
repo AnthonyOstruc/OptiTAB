@@ -16,12 +16,14 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backendAPI.settings')
 
 application = get_asgi_application()
 
-# Auto-run pass expiration emails (dev + prod) via an in-process scheduler.
-# Safe across multiple workers/instances using a Postgres advisory lock.
+# Tâche de fond (fin des pass, synchronisation Stripe) : lancée à la première requête
+# servie, jamais ici — ce fichier est chargé par le processus maître de gunicorn, avant
+# la création des processus qui servent les requêtes (voir demarrer_a_la_premiere_requete).
+# Plusieurs processus peuvent la lancer : un verrou PostgreSQL n'en laisse tourner qu'un.
 try:
-    from subscriptions.pass_expiration_scheduler import start_pass_expiration_emails_scheduler
+    from subscriptions.pass_expiration_scheduler import demarrer_a_la_premiere_requete
 
-    start_pass_expiration_emails_scheduler()
+    demarrer_a_la_premiere_requete()
 except Exception:
     logging.getLogger(__name__).exception(
         "Impossible de démarrer le scheduler d'emails d'expiration de pass (ASGI)."

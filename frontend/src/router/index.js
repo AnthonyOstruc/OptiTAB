@@ -122,7 +122,7 @@ const routes = [
   // conservé hors route : views/Dashboard.vue, views/ChildOverview.vue.
   { path: '/dashboard', name: 'Dashboard', component: () => import('@/views/espace/EspaceAccueil.vue'), meta: { requiresAuth: true } },
   { path: '/chapitres', name: 'Chapitres', component: () => import('@/views/espace/EspaceChapitres.vue'), meta: { requiresAuth: true } },
-  { path: '/chapitre/:notionId', name: 'Chapitre', component: () => import('@/views/espace/EspaceChapitre.vue'), meta: { requiresAuth: true, requiresSubscription: true } },
+  { path: '/chapitre/:notionId', name: 'Chapitre', component: () => import('@/views/espace/EspaceChapitre.vue'), meta: { requiresAuth: true } },
   { path: '/child/:childId', name: 'ChildOverview', component: () => import('@/views/espace/EspaceEnfant.vue'), meta: { requiresAuth: true } },
 
   { path: '/account', name: 'Account', component: () => import('@/views/Account.vue'), meta: { requiresAuth: true } },

@@ -101,7 +101,7 @@
                   </span>
                 </span>
               </span>
-              <LockClosedIcon v-if="estVerrouille(c)" class="ec-row__lock" aria-label="Réservé aux abonnés" />
+              <LockClosedIcon v-if="estVerrouille(c)" class="ec-row__lock" aria-label="Aperçu gratuit, le reste est réservé aux abonnés" />
               <span v-else :class="['es-pill', `es-pill--${etatChapitre(c).cle}`, 'ec-row__pill']">{{ etatChapitre(c).label }}</span>
             </router-link>
             <div class="ec-row__actions" :aria-label="`Ouvrir ${c.titre}`">
@@ -213,15 +213,14 @@ const themes = computed(() => {
   })
 })
 
-// Accès : abonnés, administrateurs, et chapitre démo de la classe pour les autres.
-const demoNotionId = computed(() => Number(userStore.niveau_pays?.demo_notion) || null)
+// Sans abonnement, chaque chapitre s'ouvre en aperçu (début du cours, un exercice) : cadenas dans la liste.
 const aAcces = computed(() => {
   // Un abonnement n'ouvre que la classe payée.
   if (userStore.isAdmin) return true
   const niveauId = userStore.niveau_pays?.id
   return niveauId ? subscriptionStore.accessForLevel(niveauId) : subscriptionStore.hasAccess
 })
-const estVerrouille = (c) => Boolean(subscriptionStore.status) && !aAcces.value && c.id !== demoNotionId.value
+const estVerrouille = (c) => Boolean(subscriptionStore.status) && !aAcces.value
 
 onMounted(async () => {
   await charger()

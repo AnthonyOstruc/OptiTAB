@@ -87,8 +87,8 @@
         <div v-if="estVerrouille(courant.id)" class="cx-locked">
           <LockClosedIcon aria-hidden="true" />
           <strong>{{ titreCourt(courant) }}</strong>
-          <p>Cet exercice fait partie de l’abonnement. Abonne-toi pour débloquer tous les exercices corrigés de ta classe.</p>
-          <router-link to="/billing#plans" class="es-btn es-btn--green">Voir les formules</router-link>
+          <p>Cet exercice est réservé aux abonnés. Débloque ta classe pour faire tous les exercices, corrigés pas à pas.</p>
+          <router-link :to="{ name: 'Billing', hash: '#plans' }" class="es-btn es-btn--green" data-cta-name="pricing" data-cta-location="apercu_exercice">Débloquer ma classe</router-link>
         </div>
         <div v-else class="cx-qcm">
           <ExerciceQCM
@@ -152,7 +152,6 @@ import { chargerExercices } from '@/utils/chapitreContenu'
 import { tuneMathOverflow, typesetElements } from '@/utils/scientificRenderer'
 import { useProgression } from '@/composables/useProgression'
 import { useUserStore } from '@/stores/user'
-import { useSubscriptionStore } from '@/stores/subscription'
 import { vitrineContact } from '@/config/vitrineContent'
 
 const props = defineProps({
@@ -166,7 +165,6 @@ const emit = defineEmits(['progress'])
 const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
-const subscriptionStore = useSubscriptionStore()
 const { invalider } = useProgression()
 
 const rootRef = ref(null)
@@ -282,11 +280,10 @@ function reinitialiser() {
   filtreStatut.value = 'tous'
 }
 
-// ---------- Accès démo (même règle que l'ancienne page) ----------
-const demoNotionId = computed(() => Number(userStore.niveau_pays?.demo_notion) || null)
-const demoExerciceIds = computed(() => (Array.isArray(userStore.niveau_pays?.demo_exercices_ids) ? userStore.niveau_pays.demo_exercices_ids.map(Number) : []))
-const modeDemo = computed(() => !userStore.isAdmin && !subscriptionStore.hasAccess && demoNotionId.value && Number(props.notionId) === demoNotionId.value)
-const estVerrouille = (id) => Boolean(modeDemo.value) && !demoExerciceIds.value.includes(Number(id))
+// ---------- Aperçu : sans abonnement, le serveur n'ouvre qu'un exercice par chapitre ----------
+// (les autres arrivent sans énoncé ni corrigé, marqués « acces_limite »).
+const verrouilles = computed(() => new Set(exercices.value.filter((ex) => ex.acces_limite).map((ex) => ex.id)))
+const estVerrouille = (id) => verrouilles.value.has(id)
 
 // ---------- Enregistrement « J'ai compris / À revoir » (logique inchangée) ----------
 async function enregistrerStatut({ exerciceId, status }) {
@@ -350,6 +347,7 @@ async function charger() {
   const demande = Number(props.exerciceInitial)
   const depart = exercices.value.find((ex) => ex.id === demande) ||
     exercices.value.find((ex) => !statut(ex.id) && !estVerrouille(ex.id)) ||
+    exercices.value.find((ex) => !estVerrouille(ex.id)) ||
     exercices.value[0]
   if (depart) courantId.value = depart.id
   emit('progress', compteurs.value)

@@ -1,8 +1,8 @@
 <template>
   <Modal
     :is-open="isOpen"
-    title="Accède à tout OptiTAB"
-    subtitle="Toute ta classe, sans limite."
+    :title="titre"
+    :subtitle="sousTitre"
     :icon="LockOpenIcon"
     centered
     size="small"
@@ -22,11 +22,11 @@
         </li>
       </ul>
 
-      <button type="button" class="om-btn om-btn--primary om-btn--block" data-cta-name="pricing" data-cta-location="dashboard-modal" @click="voirLesFormules">
+      <button type="button" class="om-btn om-btn--primary om-btn--block" data-cta-name="pricing" :data-cta-location="emplacement" @click="voirLesFormules">
         Voir les formules
         <ArrowRightIcon aria-hidden="true" />
       </button>
-      <button type="button" class="om-link sp-plus-tard" @click="fermer">Plus tard</button>
+      <button type="button" class="om-link sp-plus-tard" @click="fermer">{{ plusTard }}</button>
 
       <p class="sp-rassurance">
         <ShieldCheckIcon aria-hidden="true" />
@@ -47,7 +47,12 @@ import { DEFAULT_PLANS } from '@/config/subscriptions'
 import { ArrowRightIcon, CheckIcon, LockOpenIcon, ShieldCheckIcon } from '@heroicons/vue/24/outline'
 
 defineProps({
-  isOpen: { type: Boolean, default: false }
+  isOpen: { type: Boolean, default: false },
+  titre: { type: String, default: 'Accède à tout OptiTAB' },
+  sousTitre: { type: String, default: 'Toute ta classe, sans limite.' },
+  plusTard: { type: String, default: 'Plus tard' },
+  // Nom de l'endroit, pour le suivi des clics.
+  emplacement: { type: String, default: 'dashboard-modal' }
 })
 
 const emit = defineEmits(['close'])

@@ -183,7 +183,7 @@ class GiftSubscriptionManagementTests(TestCase):
             "subscriptions.views.stripe.Subscription.modify",
             return_value=None,
         ), patch(
-            "subscriptions.views.EmailService.send_reactivation_notification_to_admin",
+            "subscriptions.views.courriels.reactivation",
             return_value=True,
         ):
             response = self.api_client.post(

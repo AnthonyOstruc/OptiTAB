@@ -186,7 +186,7 @@
                     </template>
                   </span>
                 </span>
-                <LockClosedIcon v-if="estVerrouille(c)" class="ae-chap__lock" aria-label="Réservé aux abonnés" />
+                <LockClosedIcon v-if="estVerrouille(c)" class="ae-chap__lock" aria-label="Aperçu gratuit, le reste est réservé aux abonnés" />
                 <span v-else :class="['es-pill', `es-pill--${etatChapitre(c).cle}`, 'ae-chap__pill']">{{ etatChapitre(c).label }}</span>
                 <ChevronRightIcon class="ae-chev" aria-hidden="true" />
               </router-link>
@@ -316,7 +316,7 @@ const aAcces = computed(() => {
 })
 const statutCharge = computed(() => Boolean(subscriptionStore.status) && !subscriptionStore.loading)
 const afficherAbonnement = computed(() => statutCharge.value && !aAcces.value && Boolean(niveauId.value))
-const estVerrouille = (c) => statutCharge.value && !aAcces.value && c.id !== demoNotionId.value
+const estVerrouille = (c) => statutCharge.value && !aAcces.value
 
 // ---------- Reprendre ----------
 const reprise = computed(() => {

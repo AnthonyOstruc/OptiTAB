@@ -32,6 +32,13 @@
       </div>
     </header>
 
+    <!-- Aperçu (élève connecté sans abonnement) -->
+    <p v-if="enApercu" class="ch-apercu">
+      <LockClosedIcon aria-hidden="true" />
+      <span><strong>Aperçu gratuit</strong> : le début du cours et un exercice corrigé.</span>
+      <router-link :to="{ name: 'Billing', hash: '#plans' }" class="es-link" data-cta-name="pricing" data-cta-location="apercu_bandeau">Débloquer ma classe</router-link>
+    </p>
+
     <!-- Onglets, collés en haut pendant la lecture -->
     <div ref="tabsRef" class="ch-tabs" role="tablist" aria-label="Contenu du chapitre" :style="{ '--ch-n': onglets.length }">
       <button
@@ -59,6 +66,13 @@
       >
         <ChapitreCours v-if="cle === 'cours'" :notion-id="notionId" :actif="cle === onglet" @go="ouvrir" />
         <ChapitreFiche v-else-if="cle === 'fiche'" :notion-id="notionId" :actif="cle === onglet" @go="ouvrir" />
+        <div v-else-if="cle === 'quiz' && enApercu" class="es-card ch-verrou">
+          <ApercuVerrou
+            emplacement="quiz"
+            titre="Le quiz est réservé aux abonnés"
+            texte="Vérifie en quelques minutes que tu maîtrises le chapitre. Débloque ta classe pour le faire."
+          />
+        </div>
         <ChapitreQuiz v-else-if="cle === 'quiz'" :notion-id="notionId" @go="ouvrir" />
         <ChapitreExercices v-else :notion-id="notionId" :actif="cle === onglet" :exercice-initial="route.query.ex || null" @progress="majProgres" />
       </div>
@@ -82,6 +96,15 @@
         <ChevronRightIcon aria-hidden="true" />
       </router-link>
     </nav>
+
+    <SubscriptionPromptModal
+      :is-open="invitation"
+      titre="Tu lis un aperçu gratuit"
+      sous-titre="Le début du cours et un exercice corrigé. Débloque ta classe pour tout ouvrir."
+      plus-tard="Continuer l’aperçu"
+      emplacement="apercu_fenetre"
+      @close="invitation = false"
+    />
   </EspaceLayout>
 </template>
 
@@ -95,9 +118,14 @@ import {
   BoltIcon,
   ClockIcon,
   DocumentTextIcon,
+  LockClosedIcon,
   PencilSquareIcon
 } from '@heroicons/vue/24/outline'
 import EspaceLayout from '@/components/espace/EspaceLayout.vue'
+import ApercuVerrou from '@/components/espace/ApercuVerrou.vue'
+import SubscriptionPromptModal from '@/components/modals/SubscriptionPromptModal.vue'
+import { useSubscriptionStore } from '@/stores/subscription'
+import { useUserStore } from '@/stores/user'
 import ProgressRing from '@/components/espace/ProgressRing.vue'
 import ChapitreCours from '@/components/espace/ChapitreCours.vue'
 import ChapitreFiche from '@/components/espace/ChapitreFiche.vue'
@@ -120,8 +148,18 @@ const ONGLETS = [
 const route = useRoute()
 const router = useRouter()
 const { progression, charger } = useProgression()
+const userStore = useUserStore()
+const subscriptionStore = useSubscriptionStore()
 
 const notionId = computed(() => route.params.notionId)
+
+// ---------- Aperçu : élève connecté sans accès à sa classe ----------
+// Le chapitre s'ouvre en version limitée (c'est le serveur qui limite le contenu).
+// Une fenêtre le rappelle à chaque chapitre ouvert.
+const enApercu = computed(() =>
+  !userStore.isAdmin && Boolean(subscriptionStore.status) && !subscriptionStore.accessForLevel(userStore.niveau_pays?.id))
+const invitation = ref(false)
+watch([enApercu, notionId], ([apercu]) => { invitation.value = Boolean(apercu) }, { immediate: true })
 // L'onglet Quiz n'existe que pour les chapitres qui ont un quiz (src/data/quiz).
 const onglets = computed(() => (aUnQuiz(notionId.value) ? [...ONGLETS, { cle: 'quiz', label: 'Quiz', icone: BoltIcon }] : ONGLETS))
 const onglet = computed(() => (onglets.value.some((o) => o.cle === route.query.onglet) ? route.query.onglet : 'cours'))
@@ -209,6 +247,7 @@ function prechargerAutresOnglets() {
 }
 
 onMounted(async () => {
+  subscriptionStore.fetchStatus().catch(() => {})
   prechargerAutresOnglets()
   await charger()
   depuisServeur()
@@ -397,6 +436,45 @@ watch([notionId, onglet], async ([id, cle], [ancienId, ancienneCle]) => {
 
 .ch-dot--review {
   background: var(--es-orange);
+}
+
+/* ---------- Aperçu (sans abonnement) ---------- */
+
+.ch-apercu {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  margin: 0 0 12px;
+  padding: 10px 16px;
+  border: 1px solid var(--es-line);
+  border-radius: 14px;
+  background: #fff;
+  font-size: 14px;
+  color: var(--es-muted);
+}
+
+.ch-apercu svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+}
+
+.ch-apercu span {
+  flex: 1 1 200px;
+}
+
+.ch-apercu strong {
+  color: var(--es-ink, #121a33);
+}
+
+.ch-apercu .es-link {
+  margin-left: auto;
+}
+
+.ch-verrou {
+  max-width: 920px;
+  margin: 0 auto;
 }
 
 /* ---------- Onglets collants ---------- */

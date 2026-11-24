@@ -17,6 +17,7 @@ from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.throttling import AnonRateThrottle
 
+from core import courriels
 from stripe_config import CANCEL_URL, FRONTEND_BASE_URL
 from .models import LessonPayment
 from .stripe_client import stripe, stripe_error
@@ -239,6 +240,7 @@ def handle_lesson_payment_completed(session):
         payer_name=details.get('name') or '',
     ):
         _demander_recu_stripe(payment.stripe_payment_intent_id, payment.payer_email)
+        courriels.versement_cours(payment)
         logger.info('Versement cours confirme : %s€ (%s)', payment.amount, session_id)
 
 

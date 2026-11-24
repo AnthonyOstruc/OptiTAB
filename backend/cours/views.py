@@ -12,12 +12,9 @@ from rest_framework.permissions import IsAuthenticated
 
 from subscriptions.permissions import (
     HasActiveSubscriptionOrPass,
-    get_content_niveau,
-    is_demo_content,
-    user_has_active_subscription_or_pass,
 )
 from .models import Cours, CoursImage
-from subscriptions.acces_contenu import EcritureAdminMixin, ListeContenuMixin
+from subscriptions.acces_contenu import ContenuMixin, EcritureAdminMixin, debut_du_cours, images_visibles
 from .serializers import CoursSerializer, CoursImageSerializer
 from .services import (
     CoursePdfGenerationError,
@@ -27,10 +24,12 @@ from .services import (
 )
 
 
-class CoursViewSet(EcritureAdminMixin, ListeContenuMixin, viewsets.ModelViewSet):
+class CoursViewSet(EcritureAdminMixin, ContenuMixin, viewsets.ModelViewSet):
     queryset = Cours.objects.all()
     serializer_class = CoursSerializer
-    champs_payants = {'contenu': '', 'pdf_file': None, 'pdf_url': '', 'video_url': None}
+    # Sans accès : la première partie du cours seulement.
+    champs_payants = {'contenu': debut_du_cours, 'pdf_file': None, 'pdf_url': '', 'video_url': None}
+    detail_en_apercu = True
     permission_classes = [IsAuthenticated, HasActiveSubscriptionOrPass]
 
     def get_permissions(self):
@@ -65,18 +64,6 @@ class CoursViewSet(EcritureAdminMixin, ListeContenuMixin, viewsets.ModelViewSet)
             difficulty = "medium"
 
         return Cours(titre=title, contenu=source_content, difficulty=difficulty)
-
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        # Bypass subscription check for demo content
-        if not user_has_active_subscription_or_pass(
-            request.user,
-            niveau=get_content_niveau(instance),
-        ):
-            if not is_demo_content(request.user, 'cours', instance):
-                self.permission_denied(request, message=HasActiveSubscriptionOrPass.message)
-        serializer = self.get_serializer(instance)
-        return Response(serializer.data)
 
     def get_serializer_context(self):
         # Injecter la requête pour construire des URLs absolues dans le serializer
@@ -180,13 +167,8 @@ class CoursImageViewSet(EcritureAdminMixin, viewsets.ModelViewSet):
         if cours_id:
             queryset = queryset.filter(cours_id=cours_id)
 
-        user = getattr(self.request, "user", None)
-        if user and user.is_authenticated and not (user.is_staff or user.is_superuser):
-            if not user_has_active_subscription_or_pass(user, niveau=getattr(user, "niveau_pays", None)):
-                demo_notion_id = getattr(getattr(user, "niveau_pays", None), "demo_notion_id", None)
-                if not demo_notion_id:
-                    return queryset.none()
-                queryset = queryset.filter(cours__notion_id=demo_notion_id)
+        parent = Cours.objects.filter(pk=cours_id).first() if cours_id else None
+        queryset = images_visibles(queryset, self.request.user, parent, apercu=True)
 
         return queryset.order_by('position', 'id')
 

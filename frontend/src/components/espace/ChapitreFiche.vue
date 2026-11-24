@@ -14,6 +14,14 @@
       </div>
     </div>
 
+    <div v-else-if="fiche.acces_limite" class="es-card cf-article">
+      <ApercuVerrou
+        emplacement="fiche"
+        titre="La fiche est réservée aux abonnés"
+        texte="L’essentiel du chapitre en une page, à relire avant un contrôle. Débloque ta classe pour l’ouvrir."
+      />
+    </div>
+
     <article v-else class="es-card cf-article">
       <div class="cf-toolbar">
         <p class="cf-toolbar__hint">
@@ -37,6 +45,7 @@
 <script setup>
 import { computed, onMounted, ref, watch } from 'vue'
 import { ArrowRightIcon, DocumentTextIcon } from '@heroicons/vue/24/outline'
+import ApercuVerrou from './ApercuVerrou.vue'
 import EspaceDoc from './EspaceDoc.vue'
 import TextSize from './TextSize.vue'
 import { chargerFiche } from '@/utils/chapitreContenu'

@@ -22,7 +22,7 @@ from cours.models import Cours, CoursImage
 from quiz.models import Quiz, QuizImage
 from synthesis.models import SynthesisSheet
 from .services import duplicate_theme_deep, duplicate_notion_deep
-from subscriptions.acces_contenu import EcritureAdminMixin, ListeContenuMixin
+from subscriptions.acces_contenu import ContenuMixin, EcritureAdminMixin, images_visibles, vide
 from .serializers import (
     MatiereSerializer, ThemeSerializer, NotionSerializer, 
     ExerciceSerializer, MatiereContexteSerializer,
@@ -31,9 +31,6 @@ from .serializers import (
 
 from subscriptions.permissions import (
     HasActiveSubscriptionOrPass,
-    get_content_niveau,
-    is_demo_content,
-    user_has_active_subscription_or_pass,
 )
 
 
@@ -494,7 +491,7 @@ class ThemeViewSet(EcritureAdminMixin, viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-class NotionViewSet(EcritureAdminMixin, ListeContenuMixin, viewsets.ModelViewSet):
+class NotionViewSet(EcritureAdminMixin, ContenuMixin, viewsets.ModelViewSet):
     """ViewSet pour les notions avec actions hiérarchiques"""
     queryset = Notion.objects.all()
     serializer_class = NotionSerializer
@@ -622,29 +619,18 @@ class NotionViewSet(EcritureAdminMixin, ListeContenuMixin, viewsets.ModelViewSet
 
 
 
-class ExerciceViewSet(EcritureAdminMixin, ListeContenuMixin, viewsets.ModelViewSet):
+class ExerciceViewSet(EcritureAdminMixin, ContenuMixin, viewsets.ModelViewSet):
     """ViewSet pour les exercices (ressource finale)"""
     queryset = Exercice.objects.all()
     serializer_class = ExerciceSerializer
-    champs_payants = {'reponse_correcte': '', 'etapes': ''}
+    # Sans accès : un exercice ouvert par chapitre, les autres ne montrent que titre et difficulté.
+    champs_payants = {'question': '', 'contenu': '', 'reponse_correcte': '', 'etapes': '', 'images': vide}
     permission_classes = [IsAuthenticated, HasActiveSubscriptionOrPass]
 
     def get_permissions(self):
         if self.action in ('list', 'retrieve'):
             return [IsAuthenticated()]
         return [IsAuthenticated(), HasActiveSubscriptionOrPass()]
-
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        # Bypass subscription check for demo exercices
-        if not user_has_active_subscription_or_pass(
-            request.user,
-            niveau=get_content_niveau(instance),
-        ):
-            if not is_demo_content(request.user, 'exercice', instance):
-                self.permission_denied(request, message=HasActiveSubscriptionOrPass.message)
-        serializer = self.get_serializer(instance)
-        return Response(serializer.data)
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -758,13 +744,8 @@ class ExerciceImageViewSet(EcritureAdminMixin, viewsets.ModelViewSet):
         if exercice_id:
             queryset = queryset.filter(exercice_id=exercice_id)
 
-        user = getattr(self.request, "user", None)
-        if user and user.is_authenticated and not (user.is_staff or user.is_superuser):
-            if not user_has_active_subscription_or_pass(user, niveau=getattr(user, "niveau_pays", None)):
-                demo_notion_id = getattr(getattr(user, "niveau_pays", None), "demo_notion_id", None)
-                if not demo_notion_id:
-                    return queryset.none()
-                queryset = queryset.filter(exercice__notion_id=demo_notion_id)
+        parent = Exercice.objects.filter(pk=exercice_id).first() if exercice_id else None
+        queryset = images_visibles(queryset, self.request.user, parent)
 
         return queryset.order_by('position', 'id')
 

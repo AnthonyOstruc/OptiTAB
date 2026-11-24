@@ -24,6 +24,7 @@ from stripe_config import (
     STRIPE_RUNTIME_MODE,
     get_stripe_webhook_secrets,
 )
+from core import courriels
 from core.services import EmailService
 from core.tiktok_events import (
     build_initiate_checkout_event_id,
@@ -70,7 +71,6 @@ from .handlers import (
     handle_subscription_updated,
     handle_dispute_created,
     resolve_guest_user,
-    _alerter_admin,
 )
 from .email_jobs import _schedule_cancellation_emails
 from .subscription_status import build_subscription_status
@@ -1034,72 +1034,13 @@ class GuestCheckoutStatusView(APIView):
 
 
 def _send_welcome_set_password_email(user):
-    """Envoie un email de bienvenue avec lien pour définir le mot de passe."""
-    from django_rest_passwordreset.models import ResetPasswordToken
+    """Compte créé par un achat sans connexion : lien pour choisir son mot de passe."""
     from django.conf import settings
-    import secrets
+    from django_rest_passwordreset.models import ResetPasswordToken
 
-    # Générer un token de reset
-    token = ResetPasswordToken.objects.create(
-        user=user,
-        user_agent='guest-checkout',
-        ip_address='0.0.0.0',
-    )
+    token = ResetPasswordToken.objects.create(user=user, user_agent='guest-checkout', ip_address='0.0.0.0')
     frontend_base = getattr(settings, 'FRONTEND_BASE_URL', 'http://localhost:3000').rstrip('/')
-    reset_url = f"{frontend_base}/password-reset?token={token.key}"
-
-    first_name = (user.first_name or '').strip() or 'OptiTABien'
-    subject = 'Bienvenue sur OptiTAB — Définissez votre mot de passe'
-    brand = '#4F46E5'
-    site_url = frontend_base
-
-    text_body = (
-        f"Bonjour {first_name},\n\n"
-        "Votre compte OptiTAB a été créé suite à votre abonnement.\n\n"
-        f"Définissez votre mot de passe en cliquant sur ce lien :\n{reset_url}\n\n"
-        "Merci pour votre confiance !\nL'équipe OptiTAB"
-    )
-
-    html_body = f"""
-    <div style="font-family:'Helvetica Neue',Arial,sans-serif;background:#f9fafb;padding:24px 0;">
-      <table role="presentation" width="100%" cellspacing="0" cellpadding="0"
-             style="max-width:520px;margin:0 auto;background:#fff;border-radius:16px;border:1px solid #e5e7eb;overflow:hidden;">
-        <tr><td style="padding:24px;">
-          <h1 style="margin:0 0 12px;font-size:22px;color:#111827;">Bienvenue sur OptiTAB !</h1>
-          <p style="margin:0 0 16px;color:#4b5563;font-size:15px;line-height:1.6;">
-            Bonjour {first_name},<br/>
-            Votre compte a été créé automatiquement suite à votre abonnement.
-            Pour vous connecter facilement, définissez votre mot de passe :
-          </p>
-          <p style="margin:24px 0;text-align:center;">
-            <a href="{reset_url}" style="display:inline-block;background:{brand};color:#fff;
-              text-decoration:none;font-weight:600;padding:14px 28px;border-radius:10px;font-size:16px;">
-              Définir mon mot de passe
-            </a>
-          </p>
-          <p style="margin:0 0 10px;color:#6b7280;font-size:13px;">
-            Si le bouton ne fonctionne pas, copiez ce lien :<br/>
-            <a href="{reset_url}" style="color:#2563eb;">{reset_url}</a>
-          </p>
-          <hr style="border:none;border-top:1px solid #e5e7eb;margin:20px 0;"/>
-          <p style="margin:0;color:#9ca3af;font-size:12px;">
-            Vous recevez cet email car un abonnement OptiTAB a été souscrit avec cette adresse.
-          </p>
-        </td></tr>
-      </table>
-    </div>
-    """.strip()
-
-    from django.core.mail import EmailMultiAlternatives
-    email_message = EmailMultiAlternatives(
-        subject=subject,
-        body=text_body,
-        from_email=settings.DEFAULT_FROM_EMAIL,
-        to=[user.email],
-    )
-    email_message.attach_alternative(html_body, "text/html")
-    email_message.send(fail_silently=False)
-    logger.info("Welcome set-password email sent to %s", user.email)
+    courriels.bienvenue_apres_achat(user, f"{frontend_base}/password-reset?token={token.key}")
 
 
 def _normalize_metadata_user_id(value):
@@ -1295,7 +1236,7 @@ class ReactivateSubscriptionView(APIView):
                 subscription.cancel_at_period_end = False
                 subscription.save(update_fields=['cancel_at_period_end', 'updated_at'])
                 # Envoyer notification admin
-                EmailService.send_reactivation_notification_to_admin(request.user, subscription)
+                courriels.reactivation(request.user, subscription)
                 return JsonResponse({'success': True, 'message': 'Abonnement réactivé avec succès.'})
 
             try:
@@ -1310,7 +1251,7 @@ class ReactivateSubscriptionView(APIView):
                 subscription.cancel_at_period_end = bool(updated.get('cancel_at_period_end', False))
                 subscription.save(update_fields=['status', 'cancel_at_period_end', 'updated_at'])
                 # Envoyer notification admin
-                EmailService.send_reactivation_notification_to_admin(request.user, subscription)
+                courriels.reactivation(request.user, subscription)
                 return JsonResponse({'success': True, 'message': 'Abonnement réactivé avec succès ! Votre abonnement continuera normalement.'})
             except stripe_error.InvalidRequestError as exc:
                 logger.warning(f"Stripe reactivate error {subscription.stripe_subscription_id}: {exc}")
@@ -1329,7 +1270,7 @@ class ReactivateSubscriptionView(APIView):
                 )
                 # Chercher l'abonnement local pour la notification
                 local_sub = UserSubscription.objects.filter(stripe_subscription_id=stripe_subscription_id).first()
-                EmailService.send_reactivation_notification_to_admin(request.user, local_sub)
+                courriels.reactivation(request.user, local_sub)
                 return JsonResponse({'success': True, 'message': 'Abonnement réactivé avec succès !'})
             except stripe_error.StripeError as exc:
                 logger.error(f"Stripe reactivate error {stripe_subscription_id}: {exc}")
@@ -2167,8 +2108,13 @@ class AdminSubscriptionPlanChangeView(APIView):
                 )
                 return JsonResponse({'detail': 'Erreur serveur pendant la mise à jour Stripe.'}, status=500)
 
+        ancienne_offre = subscription.plan
         subscription.plan = target_plan
         subscription.save(update_fields=list(dict.fromkeys(updated_fields)))
+        if ancienne_offre and ancienne_offre.id != target_plan.id:
+            courriels.changement_offre(
+                subscription.user, ancienne_offre, target_plan, subscription.niveau_pays, subscription.current_period_end,
+            )
 
         return JsonResponse({
             'success': True,
@@ -2387,12 +2333,7 @@ def _handle_webhook_event(event):
     except Exception as exc:
         logger.exception("Stripe webhook: échec du traitement %s (%s)", event_type, event.get('id'))
         if cache.add(f'alerte_webhook_{event_type}', 1, 3600):
-            _alerter_admin(
-                "Message Stripe non traité",
-                f"Le message Stripe {event_type} ({event.get('id')}) n'a pas pu être traité : {exc}.\n"
-                "Stripe va le renvoyer automatiquement pendant 3 jours. Si l'alerte se répète, "
-                "voir les journaux du serveur (Render) et Stripe > Développeurs > Webhooks.",
-            )
+            courriels.message_stripe_non_traite(event_type, event.get('id'), exc)
         return HttpResponse(status=500)
     return HttpResponse(status=200)
 

@@ -1,7 +1,6 @@
 import { getCours } from '@/api/cours'
 import { getExercices, getStatuses } from '@/api'
 import { apiUtils } from '@/api/client'
-import { useSubscriptionStore } from '@/stores/subscription'
 import { useUserStore } from '@/stores/user'
 
 // Contenu d'un chapitre (cours, fiche, exercices). Les onglets et le
@@ -42,23 +41,12 @@ function prechargerVue() {
   import('@/views/espace/EspaceChapitre.vue').catch(() => { vuePrete = false })
 }
 
-// Même règle que le routeur : on ne demande pas un contenu que l'élève ne peut pas ouvrir.
-async function accesAuChapitre(notionId) {
-  const userStore = useUserStore()
-  if (userStore.isAdmin) return true
-  if (Number(userStore.niveau_pays?.demo_notion) === Number(notionId)) return true
-  const abonnement = useSubscriptionStore()
-  await abonnement.fetchStatus()
-  return abonnement.accessForLevel(userStore.niveau_pays?.id)
-}
-
 // Prépare l'ouverture d'un chapitre (page, vérification d'accès, contenu des
 // onglets demandés) pour que le clic affiche une page déjà prête.
 export async function prechargerChapitre(notionId, onglets = ['cours']) {
   if (!notionId) return
   prechargerVue()
   try {
-    if (!(await accesAuChapitre(notionId))) return
     await Promise.all(onglets.map((onglet) => CHARGEURS[onglet]?.(notionId)))
   } catch {
     // Simple anticipation : l'onglet refera la demande à son ouverture.

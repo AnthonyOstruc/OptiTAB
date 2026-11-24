@@ -5,12 +5,8 @@ from django.db.models import Q
 from django.core.files.base import ContentFile
 import os
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from subscriptions.acces_contenu import ContenuMixin, images_visibles, vide
 
-from subscriptions.permissions import (
-    HasActiveSubscriptionOrPass,
-    get_content_niveau,
-    user_has_active_subscription_or_pass,
-)
 from .models import SynthesisSheet, SynthesisImage
 from .serializers import (
     SynthesisSheetSerializer,
@@ -20,13 +16,15 @@ from .serializers import (
 )
 
 
-class SynthesisSheetViewSet(viewsets.ModelViewSet):
+class SynthesisSheetViewSet(ContenuMixin, viewsets.ModelViewSet):
     """
     ViewSet pour la gestion des fiches de synthese.
     - Lecture (list/retrieve) accessible aux utilisateurs authentifies
     - Ecriture (create/update/delete/duplicate/preview_data) reservee aux administrateurs
     """
     queryset = SynthesisSheet.objects.all()
+    # Sans accès : la fiche est verrouillée (titre seul dans la liste, détail refusé).
+    champs_payants = {'summary': '', 'key_points': vide, 'formulas': vide, 'examples': vide, 'images': vide}
 
     def get_permissions(self):
         # Autoriser tous les utilisateurs authentifies a lister
@@ -48,20 +46,6 @@ class SynthesisSheetViewSet(viewsets.ModelViewSet):
             return [IsAdminUser()]
         return super().get_permissions()
 
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        # Bypass subscription for synthesis of demo notion
-        if not user_has_active_subscription_or_pass(
-            request.user,
-            niveau=get_content_niveau(instance),
-        ):
-            niveau = getattr(request.user, 'niveau_pays', None)
-            is_demo = niveau and niveau.demo_notion_id and niveau.demo_notion_id == instance.notion_id
-            if not is_demo:
-                self.permission_denied(request, message=HasActiveSubscriptionOrPass.message)
-        serializer = self.get_serializer(instance)
-        return Response(serializer.data)
-    
     def get_serializer_class(self):
         if self.action == 'list':
             return SynthesisSheetListSerializer
@@ -117,35 +101,6 @@ class SynthesisSheetViewSet(viewsets.ModelViewSet):
             )
         
         return queryset
-
-    def list(self, request, *args, **kwargs):
-        """Pagination simple via ?limit=5&offset=0 pour l'admin."""
-        queryset = self.filter_queryset(self.get_queryset())
-
-        limit = request.query_params.get('limit')
-        offset = request.query_params.get('offset', 0)
-
-        if limit is not None:
-            try:
-                limit_value = int(limit)
-                offset_value = int(offset or 0)
-                if limit_value <= 0 or offset_value < 0:
-                    raise ValueError
-            except ValueError:
-                return Response({'detail': 'Parametres de pagination invalides'}, status=status.HTTP_400_BAD_REQUEST)
-
-            total = queryset.count()
-            page_qs = queryset[offset_value:offset_value + limit_value]
-            serializer = self.get_serializer(page_qs, many=True)
-            return Response({
-                'count': total,
-                'limit': limit_value,
-                'offset': offset_value,
-                'results': serializer.data
-            })
-
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
 
     @action(detail=True, methods=['post'])
     def add_image(self, request, pk=None):
@@ -278,12 +233,7 @@ class SynthesisImageViewSet(viewsets.ModelViewSet):
         if sheet_id:
             queryset = queryset.filter(sheet_id=sheet_id)
 
-        user = getattr(self.request, "user", None)
-        if user and user.is_authenticated and not (user.is_staff or user.is_superuser):
-            if not user_has_active_subscription_or_pass(user, niveau=getattr(user, "niveau_pays", None)):
-                demo_notion_id = getattr(getattr(user, "niveau_pays", None), "demo_notion_id", None)
-                if not demo_notion_id:
-                    return queryset.none()
-                queryset = queryset.filter(sheet__notion_id=demo_notion_id)
+        parent = SynthesisSheet.objects.filter(pk=sheet_id).first() if sheet_id else None
+        queryset = images_visibles(queryset, self.request.user, parent)
 
         return queryset.order_by('position', 'id')

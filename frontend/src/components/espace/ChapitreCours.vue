@@ -45,6 +45,14 @@
 
         <EspaceDoc ref="docRef" :html="html" :zoom="zoom" :actif="actif" @ready="onReady" />
 
+        <ApercuVerrou
+          v-if="cours.acces_limite"
+          suite
+          emplacement="cours"
+          titre="La suite du cours est réservée aux abonnés"
+          texte="Tu viens de lire la première partie. Débloque ta classe pour lire le cours en entier, la fiche et tous les exercices corrigés."
+        />
+
         <div v-if="cours.video_url" class="cc-video">
           <h2 class="es-h2">Vidéo explicative</h2>
           <div class="cc-video__frame">
@@ -52,7 +60,7 @@
           </div>
         </div>
 
-        <div class="cc-next">
+        <div v-if="!cours.acces_limite" class="cc-next">
           <CheckCircleIcon class="cc-next__icon" aria-hidden="true" />
           <div>
             <strong>Cours terminé&nbsp;?</strong>
@@ -88,6 +96,7 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { ArrowDownTrayIcon, ArrowRightIcon, CheckCircleIcon, ListBulletIcon } from '@heroicons/vue/24/outline'
 import EspaceDoc from './EspaceDoc.vue'
 import TextSize from './TextSize.vue'
+import ApercuVerrou from './ApercuVerrou.vue'
 import { chargerCours } from '@/utils/chapitreContenu'
 import { renderContentWithImages } from '@/utils/scientificRenderer'
 import { useTailleTexte } from '@/composables/useTailleTexte'

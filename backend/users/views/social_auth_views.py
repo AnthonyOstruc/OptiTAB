@@ -13,6 +13,7 @@ from allauth.socialaccount.providers.google.provider import GoogleProvider
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import update_last_login
 from django.conf import settings
+from core import courriels
 import logging
 from google.oauth2 import id_token
 from google.auth.transport import requests as google_requests
@@ -92,6 +93,7 @@ class GoogleLoginView(APIView):
             refresh = RefreshToken.for_user(user)
             registration_event_id = None
             if created:
+                courriels.bienvenue(user)
                 registration_event_id = build_complete_registration_event_id(user.id)
                 send_complete_registration_event(
                     event_id=registration_event_id,
@@ -242,6 +244,7 @@ class GoogleOAuthCodeExchangeView(APIView):
             refresh = RefreshToken.for_user(user)
             registration_event_id = None
             if created:
+                courriels.bienvenue(user)
                 registration_event_id = build_complete_registration_event_id(user.id)
                 send_complete_registration_event(
                     event_id=registration_event_id,
@@ -353,6 +356,7 @@ class GoogleOAuthAccessTokenView(APIView):
             refresh = RefreshToken.for_user(user)
             registration_event_id = None
             if created:
+                courriels.bienvenue(user)
                 registration_event_id = build_complete_registration_event_id(user.id)
                 send_complete_registration_event(
                     event_id=registration_event_id,

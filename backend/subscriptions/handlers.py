@@ -1,15 +1,14 @@
 import logging
 from datetime import timedelta
 
-from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
-from django.core.mail import send_mail
 from django.db import IntegrityError, transaction
 from django.utils import timezone
 
 from .models import SubscriptionPlan, UserSubscription, PaymentHistory, AccessPass
 from pays.models import Niveau
+from core import courriels
 from core.services import EmailService
 from core.tiktok_events import (
     build_purchase_event_id,
@@ -389,20 +388,7 @@ def _rembourser_achat_en_double(session, user, plan, niveau_obj):
         return
     stripe.Refund.create(payment_intent=payment_intent, reason='duplicate')
 
-    classe = _format_level_label_from_obj(niveau_obj) or 'cette classe'
-    site = getattr(settings, 'FRONTEND_URL', '') or 'https://www.optitab.net'
-    try:
-        send_mail(
-            "Ton paiement en double a été remboursé",
-            f"Bonjour,\n\nTu as déjà accès à {classe} sur OptiTAB. Le paiement que tu viens de faire "
-            f"({plan.name}) faisait donc double emploi : nous l'avons annulé et remboursé en totalité. "
-            f"Le remboursement apparaît sur ton compte bancaire sous 5 à 10 jours.\n\n"
-            f"Pour retrouver ton accès, connecte-toi sur {site} avec cette adresse e-mail.\n\nL'équipe OptiTAB",
-            settings.DEFAULT_FROM_EMAIL, [user.email], fail_silently=True,
-        )
-    except Exception:
-        logger.exception("Courriel « achat en double » non envoyé (user=%s)", user.id)
-    _alerter_admin("Achat en double remboursé", f"Compte n° {user.id} : {plan.name} ({classe}) déjà ouvert, paiement {payment_intent} remboursé automatiquement.")
+    courriels.achat_en_double(user, plan, niveau_obj, payment_intent)
     logger.info("Achat en double remboursé (user=%s, plan=%s, niveau=%s)", user.id, plan.id, getattr(niveau_obj, 'id', None))
 
 
@@ -739,6 +725,9 @@ def _create_pass_payment_history(invoice_owner, beneficiary, plan, session, nive
 def _send_pass_emails(user, plan, niveau_obj, metadata, payment_history):
     """Envoie les emails pour un achat de pass."""
     is_gift, payer = _parse_gift_metadata(metadata)
+    facture = None
+    if payment_history:
+        facture = (payment_history.invoice_pdf_url or payment_history.hosted_invoice_url or '').strip() or None
 
     try:
         if is_gift and payer:
@@ -746,10 +735,10 @@ def _send_pass_emails(user, plan, niveau_obj, metadata, payment_history):
                 recipient=user, gifter=payer, plan=plan, niveau=niveau_obj
             )
             EmailService.send_gift_purchase_confirmation(
-                payer=payer, recipient=user, plan=plan, niveau=niveau_obj, is_pass=True
+                payer=payer, recipient=user, plan=plan, niveau=niveau_obj, is_pass=True, invoice_link=facture
             )
         else:
-            EmailService.send_subscription_confirmation(user, plan, niveau_obj)
+            EmailService.send_subscription_confirmation(user, plan, niveau_obj, invoice_link=facture)
 
         EmailService.send_new_subscription_notification_to_admin(
             user=user, plan=plan, niveau=niveau_obj, is_gift=is_gift, payer=payer
@@ -1014,25 +1003,6 @@ def _is_first_charge(invoice, previous_status, subscription_data, payment_create
 # Handler: invoice.payment_failed
 # =============================================================================
 
-def _prevenir_paiement_refuse(user_subscription, invoice):
-    """Courriel au payeur (adresse de la facture Stripe) avec le lien pour régler."""
-    destinataire = (invoice.get('customer_email') or '').strip() or user_subscription.user.email
-    lien = invoice.get('hosted_invoice_url') or ''
-    montant = (invoice.get('amount_due') or 0) / 100
-    offre = user_subscription.plan.name if user_subscription.plan else 'OptiTAB'
-    try:
-        send_mail(
-            "Ton paiement OptiTAB n'est pas passé",
-            f"Bonjour,\n\nLe prélèvement de {montant:.2f} € pour ton abonnement OptiTAB ({offre}) a été "
-            f"refusé par la banque. Pour garder ton accès, règle la facture avec une autre carte :\n{lien}\n\n"
-            f"Ton accès reste ouvert 3 jours, le temps de régler. Sans règlement, l'abonnement s'arrêtera "
-            f"après quelques nouvelles tentatives de Stripe.\n\nL'équipe OptiTAB",
-            settings.DEFAULT_FROM_EMAIL, [destinataire], fail_silently=True,
-        )
-    except Exception:
-        logger.exception("Courriel « paiement refusé » non envoyé (abonnement %s)", user_subscription.id)
-
-
 def handle_payment_failed(invoice):
     """Gérer un paiement échoué."""
     try:
@@ -1044,7 +1014,7 @@ def handle_payment_failed(invoice):
         # ne jamais imposer « impayé » à un abonnement que Stripe vient d'arrêter.
         _update_subscription_status(user_subscription, _stripe_obj_to_dict(stripe.Subscription.retrieve(subscription_id)))
         if (invoice.get('attempt_count') or 0) <= 1:
-            _prevenir_paiement_refuse(user_subscription, invoice)
+            courriels.paiement_refuse(user_subscription, invoice)
     except UserSubscription.DoesNotExist:
         logger.warning("handle_payment_failed: subscription introuvable (%s)", subscription_id)
     except Exception:
@@ -1230,14 +1200,6 @@ def _resolve_payment_intent_from_refund(refund):
 # Handler: charge.refunded (remboursement de pass one-time)
 # =============================================================================
 
-def _alerter_admin(sujet, texte):
-    """Courriel à l'administration (litige, remboursement automatique...)."""
-    try:
-        send_mail(f"[OptiTAB] {sujet}", texte, settings.DEFAULT_FROM_EMAIL, ['contact@optitab.net'], fail_silently=True)
-    except Exception:
-        logger.exception("Alerte administration non envoyée : %s", sujet)
-
-
 def _abonnement_de_la_charge(charge):
     """Identifiant de l'abonnement Stripe payé par cette charge (None pour un pass)."""
     invoice_id = _normalize_stripe_id(charge.get('invoice'))
@@ -1268,12 +1230,21 @@ def _appliquer_remboursement(charge, payment_intent_id):
         return
     total = bool(charge.get('refunded')) or (amount_total and amount_refunded >= amount_total)
 
-    revoke_pass_for_payment_intent(payment_intent_id, amount_refunded=amount_refunded, amount_total=amount_total)
+    statut = 'refunded' if total else 'partially_refunded'
+    a_prevenir = list(PaymentHistory.objects.filter(stripe_payment_intent_id=payment_intent_id)
+                      .exclude(status=statut).select_related('user'))
+    pass_revoque = revoke_pass_for_payment_intent(payment_intent_id, amount_refunded=amount_refunded, amount_total=amount_total)
+    subscription_id = _abonnement_de_la_charge(charge) if total else None
+    for paiement in a_prevenir:
+        courriels.remboursement(paiement.user, (amount_refunded or 0) / 100, paiement.plan_name or paiement.description,
+                                total=total, acces_ferme=bool(pass_revoque or subscription_id))
     if not total:
         return
     from .models import LessonPayment
-    LessonPayment.objects.filter(stripe_payment_intent_id=payment_intent_id, status='paid').update(status='refunded')
-    subscription_id = _abonnement_de_la_charge(charge)
+    for versement in LessonPayment.objects.filter(stripe_payment_intent_id=payment_intent_id, status='paid'):
+        versement.status = 'refunded'
+        versement.save(update_fields=['status'])
+        courriels.versement_cours(versement, rembourse=True)
     if subscription_id:
         _arreter_abonnement(subscription_id, 'paiement remboursé')
 
@@ -1324,14 +1295,10 @@ def handle_dispute_created(dispute):
     subscription_id = _abonnement_de_la_charge(charge)
     if subscription_id:
         _arreter_abonnement(subscription_id, 'litige bancaire')
-    montant = (dispute.get('amount') or 0) / 100
-    _alerter_admin(
-        "Litige bancaire",
-        f"Un client a contesté un paiement de {montant:.2f} € auprès de sa banque "
-        f"(motif : {dispute.get('reason') or 'non précisé'}).\n"
-        f"L'accès correspondant a été coupé automatiquement.\n"
-        f"Répondre au litige dans le tableau de bord Stripe : Paiements > Litiges ({dispute.get('id')}).",
-    )
+    paiement = PaymentHistory.objects.filter(stripe_payment_intent_id=payment_intent_id).select_related('user').first() \
+        if payment_intent_id else None
+    courriels.litige((dispute.get('amount') or 0) / 100, dispute.get('reason') or '', dispute.get('id') or '',
+                     paiement.user if paiement else None)
 
 
 __all__ = [

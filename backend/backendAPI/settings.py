@@ -316,6 +316,10 @@ EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS") == "True"
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "OptiTAB <contact@optitab.net>")
+# Un serveur de messagerie lent ne doit jamais bloquer une inscription ni un paiement.
+EMAIL_TIMEOUT = int(os.getenv("EMAIL_TIMEOUT", 15))
+# Adresse qui reçoit les notifications internes (nouveau compte, abonnement, carte refusée...).
+ADMIN_NOTIFICATION_EMAIL = os.getenv("ADMIN_NOTIFICATION_EMAIL", "contact@optitab.net")
 
 # URL absolue du logo utilisé dans les emails (ex: https://optitab.net/Logo_Fr.png)
 # À définir dans l'environnement (.env) surtout en développement, car localhost n'est pas accessible par les clients mail

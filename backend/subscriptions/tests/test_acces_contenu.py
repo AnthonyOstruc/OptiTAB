@@ -1,8 +1,8 @@
 """Accès aux contenus pédagogiques (subscriptions/acces_contenu.py).
 
 - Seule l'administration crée, modifie, supprime ou duplique un contenu.
-- La liste ne transmet les corrigés, le texte des cours et les réponses des quiz
-  qu'aux comptes qui y ont accès (abonnés, chapitre de découverte, contenu gratuit).
+- Sans abonnement, chaque chapitre est servi en aperçu : première partie du cours,
+  un exercice ouvert, fiche et quiz verrouillés. Le reste ne quitte pas le serveur.
 """
 from __future__ import annotations
 
@@ -18,12 +18,19 @@ from cours.models import Cours
 from curriculum.models import Exercice, Matiere, MatiereContexte, Notion, Theme
 from pays.models import Niveau, Pays
 from quiz.models import Quiz
+from synthesis.models import SynthesisSheet
+from subscriptions.acces_contenu import debut_du_cours
 from unittest.mock import patch
 
 from subscriptions.models import AccessPass, PaymentHistory, SubscriptionPlan, UserSubscription
 from subscriptions.permissions import user_has_active_subscription_or_pass
 
 User = get_user_model()
+COURS = (
+    "<!-- optitab:1 -->\n::: objectifs\n- Savoir A\n:::\n\n"
+    "## I. Première partie\nTexte de la première partie.\n\n"
+    "## II. Deuxième partie\nSUITE RÉSERVÉE AUX ABONNÉS.\n"
+)
 
 
 class AccesContenuTests(TestCase):
@@ -35,8 +42,8 @@ class AccesContenuTests(TestCase):
         contexte = MatiereContexte.objects.create(matiere=matiere, niveau=cls.niveau)
         theme = Theme.objects.create(titre="Fonctions", matiere=matiere, contexte=contexte, ordre=1)
         cls.notion = Notion.objects.create(theme=theme, titre="Payante", ordre=1)
-        cls.demo = Notion.objects.create(theme=theme, titre="Découverte", ordre=2)
-        cls.niveau.demo_notion = cls.demo
+        cls.autre = Notion.objects.create(theme=theme, titre="Autre chapitre", ordre=2)
+        cls.niveau.demo_notion = cls.autre  # l'ancien « chapitre de découverte » n'ouvre plus rien de plus
         cls.niveau.save()
 
         cls.exercice = Exercice.objects.create(
@@ -47,11 +54,12 @@ class AccesContenuTests(TestCase):
             notion=cls.notion, titre="Ex gratuit", contenu="Énoncé", question="Q ?",
             reponse_correcte="réponse libre", etapes="étapes libres", access_scope="free",
         )
-        cls.exercice_demo = Exercice.objects.create(
-            notion=cls.demo, titre="Ex démo", contenu="Énoncé", question="Q ?",
-            reponse_correcte="réponse démo", etapes="étapes démo",
-        )
-        Cours.objects.create(notion=cls.notion, titre="Cours payant", contenu="TEXTE DU COURS")
+        for titre, difficulte in (("Ex 1 moyen", "medium"), ("Ex 2 facile", "easy"), ("Ex 3 facile", "easy")):
+            Exercice.objects.create(notion=cls.autre, titre=titre, contenu="Énoncé", question="Q ?", difficulty=difficulte,
+                                    reponse_correcte=f"réponse {titre}", etapes="étapes")
+        cls.cours = Cours.objects.create(notion=cls.notion, titre="Cours payant", contenu=COURS)
+        cls.fiche = SynthesisSheet.objects.create(notion=cls.notion, titre="Fiche", summary="TEXTE DE LA FICHE",
+                                                  sheet_type=SynthesisSheet.SHEET_TYPE_SUMMARY)
         Quiz.objects.create(notion=cls.notion, titre="Quiz", contenu="", questions_data=[{"q": 1, "bonne": "A"}], solution="SOLUTION")
 
         cls.gratuit = User.objects.create_user(email="gratuit@example.com", password="x", first_name="G", last_name="G", niveau_pays=cls.niveau)
@@ -110,37 +118,72 @@ class AccesContenuTests(TestCase):
         data = self._client(user).get("/api/exercices/", {"notion": notion.id}).json()
         return {item["titre"]: item for item in data}
 
-    def test_free_account_does_not_receive_paid_solutions(self):
+    def test_free_account_gets_one_open_exercise_per_chapter(self):
         items = self._exercices(self.gratuit, self.notion)
-        payant = items["Ex payant"]
-        self.assertEqual(payant["reponse_correcte"], "")
-        self.assertEqual(payant["etapes"], "")
-        self.assertTrue(payant["acces_limite"])
-        self.assertEqual(payant["question"], "Q ?")  # l'énoncé reste visible
+        verrouille = items["Ex payant"]
+        for champ in ("question", "contenu", "reponse_correcte", "etapes"):
+            self.assertEqual(verrouille[champ], "", champ)
+        self.assertEqual(verrouille["images"], [])
+        self.assertTrue(verrouille["acces_limite"])
+        self.assertEqual(verrouille["titre"], "Ex payant")  # le titre reste visible, avec un cadenas
+        # L'exercice marqué « gratuit » est celui du chapitre qui est ouvert.
         self.assertEqual(items["Ex gratuit"]["reponse_correcte"], "réponse libre")
+        self.assertNotIn("acces_limite", items["Ex gratuit"])
 
-    def test_free_account_keeps_the_demo_chapter(self):
-        item = self._exercices(self.gratuit, self.demo)["Ex démo"]
-        self.assertEqual(item["reponse_correcte"], "réponse démo")
-        self.assertNotIn("acces_limite", item)
+    def test_without_a_free_exercise_the_first_easy_one_is_open(self):
+        items = self._exercices(self.gratuit, self.autre)
+        ouverts = [titre for titre, item in items.items() if "acces_limite" not in item]
+        self.assertEqual(ouverts, ["Ex 2 facile"])
+        self.assertEqual(items["Ex 2 facile"]["reponse_correcte"], "réponse Ex 2 facile")
+
+    def test_exercise_detail_follows_the_same_rule(self):
+        client = self._client(self.gratuit)
+        self.assertEqual(client.get(f"/api/exercices/{self.exercice_gratuit.id}/").status_code, 200)
+        self.assertEqual(client.get(f"/api/exercices/{self.exercice.id}/").status_code, 403)
 
     def test_subscriber_and_admin_receive_everything(self):
         for user in (self.abonne, self.admin):
             item = self._exercices(user, self.notion)["Ex payant"]
             self.assertEqual(item["reponse_correcte"], "RÉPONSE SECRÈTE")
             self.assertNotIn("acces_limite", item)
+            cours = self._client(user).get("/api/cours/cours/", {"notion": self.notion.id}).json()[0]
+            self.assertIn("SUITE RÉSERVÉE AUX ABONNÉS", cours["contenu"])
+            fiche = self._client(user).get("/api/sheets/", {"notion": self.notion.id}).json()[0]
+            self.assertEqual(fiche["summary"], "TEXTE DE LA FICHE")
 
-    def test_free_account_does_not_receive_course_text_or_quiz_answers(self):
+    def test_free_account_reads_only_the_first_part_of_the_course(self):
         client = self._client(self.gratuit)
-        cours = client.get("/api/cours/cours/", {"notion": self.notion.id}).json()[0]
-        self.assertEqual(cours["contenu"], "")
+        for cours in (client.get("/api/cours/cours/", {"notion": self.notion.id}).json()[0],
+                      client.get(f"/api/cours/cours/{self.cours.id}/").json()):
+            self.assertIn("Texte de la première partie.", cours["contenu"])
+            self.assertIn("::: objectifs", cours["contenu"])
+            self.assertNotIn("Deuxième partie", cours["contenu"])
+            self.assertNotIn("SUITE RÉSERVÉE", cours["contenu"])
+            self.assertTrue(cours["acces_limite"])
+
+    def test_free_account_gets_no_sheet_and_no_quiz(self):
+        client = self._client(self.gratuit)
+        fiche = client.get("/api/sheets/", {"notion": self.notion.id}).json()[0]
+        self.assertEqual(fiche["summary"], "")
+        self.assertTrue(fiche["acces_limite"])
+        self.assertEqual(client.get(f"/api/sheets/{self.fiche.id}/").status_code, 403)
         quiz = client.get("/api/quiz/quiz/", {"notion": self.notion.id}).json()[0]
         self.assertEqual(quiz["questions_data"], [])
         self.assertEqual(quiz["solution"], "")
+        self.assertEqual(client.get(f"/api/quiz/quiz/{quiz['id']}/").status_code, 403)
+
+    def test_course_preview_cut(self):
+        self.assertEqual(debut_du_cours(COURS).count("## "), 1)
+        self.assertEqual(debut_du_cours("Une seule ligne sans partie"), "")  # rien de sûr à montrer
+        sans_parties = "Intro.\n\n::: definition\nA\n\nB\n:::\n\nMilieu.\n\nFin du cours.\n"
+        apercu = debut_du_cours(sans_parties)
+        self.assertTrue(apercu and len(apercu) < len(sans_parties))
+        self.assertEqual(apercu.count(":::") % 2, 0)  # jamais coupé au milieu d'un encadré
+        self.assertEqual(debut_du_cours(None), "")
 
     def test_admin_pagination_still_works(self):
         data = self._client(self.admin).get("/api/exercices/", {"limit": 1, "offset": 0}).json()
-        self.assertEqual(data["count"], 3)
+        self.assertEqual(data["count"], 5)
         self.assertEqual(len(data["results"]), 1)
 
 
@@ -162,6 +205,9 @@ class AccesParClasseTests(TestCase):
                                                  reponse_correcte="SECRET 2NDE", etapes="É")
         cls.ex_terminale = Exercice.objects.create(notion=notions["Terminale"], titre="Ex Tle", contenu="É", question="Q",
                                                    reponse_correcte="SECRET TLE", etapes="É")
+        for niveau in ("Seconde", "Terminale"):  # l'exercice d'aperçu de chaque chapitre (facile)
+            Exercice.objects.create(notion=notions[niveau], titre="Aperçu", contenu="É", question="Q", difficulty="easy",
+                                    reponse_correcte="LIBRE", etapes="É")
         cls.plan = SubscriptionPlan.objects.create(
             name="Mensuel", plan_type="basic", plan_mode="subscription", billing_period="monthly",
             price=Decimal("7.99"), stripe_price_id="price_classe", features=[],
@@ -196,8 +242,9 @@ class AccesParClasseTests(TestCase):
         client = self._client(eleve)
         self.assertEqual(client.get(f"/api/exercices/{self.ex_seconde.id}/").status_code, 200)
         self.assertEqual(client.get(f"/api/exercices/{self.ex_terminale.id}/").status_code, 403)
-        liste = client.get("/api/exercices/", {"notion": self.ex_terminale.notion_id}).json()
-        self.assertEqual(liste[0]["reponse_correcte"], "")
+        liste = {e["titre"]: e for e in client.get("/api/exercices/", {"notion": self.ex_terminale.notion_id}).json()}
+        self.assertEqual(liste["Ex Tle"]["reponse_correcte"], "")
+        self.assertEqual(liste["Aperçu"]["reponse_correcte"], "LIBRE")
 
     def test_stale_active_subscription_no_longer_opens(self):
         eleve = self._eleve("perime")

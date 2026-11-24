@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 from django.db import close_old_connections, transaction
 
 from .models import PaymentHistory, UserSubscription
+from core import courriels
 from core.services import EmailService
 from .stripe_services import _hydrate_payment_history_invoice
 
@@ -245,6 +246,10 @@ def _send_invoice_email_job(payment_history_id, stripe_subscription_id, metadata
                     niveau=user_subscription.niveau_pays or payment_history.niveau_pays,
                     invoice_link=invoice_link,
                     payment_history=payment_history,
+                )
+                courriels.renouvellement_admin(
+                    recipient, user_subscription.plan,
+                    user_subscription.niveau_pays or payment_history.niveau_pays, payment_history,
                 )
             else:
                 # Fallback: envoyer juste le reçu si pas d'abonnement trouvé

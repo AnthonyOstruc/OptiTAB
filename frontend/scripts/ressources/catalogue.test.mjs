@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { chargerCatalogue } from './catalogue.mjs'
+import { chargerCatalogue, construireCatalogue, SLUGS_FIGES } from './catalogue.mjs'
 
 const cours = Array.from({ length: 21 }, (_, i) => ({
   id: i + 1, notion: i + 1, titre: `Chapitre ${i + 1}`, niveau_nom: 'CP',
@@ -135,4 +135,16 @@ test('page vide avant la fin : refus du catalogue incomplet', async t => {
   simuler(t, url => url.searchParams.get('type') === 'exercise'
     ? Response.json({ count: 150, results: [], next: 'page-suivante' }) : null)
   await assert.rejects(chargerCatalogue('https://catalogue.test'), /page 1 vide avant la fin/)
+})
+
+test('chapitre renommé : son adresse reste celle déjà indexée', () => {
+  const chapitre = (notion, nom) => ({ id: notion, notion, notion_nom: nom, titre: nom, niveau_nom: 'Terminale',
+    theme_id: 1, theme_nom: 'Analyse', ordre: notion, is_locked: false })
+  const { chapitres } = construireCatalogue({
+    cours: [chapitre(81, 'Suites : récurrence, limites et convergence'), chapitre(82, 'Limites des fonctions')],
+    fiches: [], exercices: [], tousExercices: []
+  })
+  assert.equal(chapitres.find(c => c.notionId === '81').slug, SLUGS_FIGES[81])
+  assert.equal(chapitres.find(c => c.notionId === '81').slug, 'limites-et-convergence-des-suites')
+  assert.equal(chapitres.find(c => c.notionId === '82').slug, 'limites-des-fonctions')
 })

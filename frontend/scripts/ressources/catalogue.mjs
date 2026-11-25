@@ -82,6 +82,14 @@ export function slugifier(texte, max = 72) {
 
 const nombre = (v) => (v === null || v === undefined || v === '' ? null : Number(v))
 
+// Adresses figées (n° de chapitre -> adresse) : un chapitre renommé pour suivre le programme officiel
+// garde l'adresse sous laquelle il est déjà indexé par les moteurs de recherche.
+export const SLUGS_FIGES = {
+  81: 'limites-et-convergence-des-suites', // « Suites : récurrence, limites et convergence » (25/11/2026)
+  85: 'fonction-exponentielle', // « Fonction exponentielle : rappels et compléments » (25/11/2026)
+  179: 'probabilites-conditionnelles-et-independance' // « Probabilités conditionnelles et succession d’épreuves » (25/11/2026)
+}
+
 export async function lireSourcesCatalogue(api) {
   // Une seule requête à la fois : les contenus et leurs images sont volumineux,
   // et le backend Render dispose aussi de ses requêtes visiteurs à traiter.
@@ -148,7 +156,7 @@ export function construireCatalogue({ cours, fiches, exercices, tousExercices })
     const vus = new Set()
     liste.forEach((ch, i) => {
       ch.numero = i + 1
-      let slug = slugifier(ch.titre)
+      let slug = SLUGS_FIGES[ch.notionId] || slugifier(ch.titre)
       while (vus.has(slug)) slug = `${slug}-${ch.notionId}`
       vus.add(slug)
       ch.slug = slug

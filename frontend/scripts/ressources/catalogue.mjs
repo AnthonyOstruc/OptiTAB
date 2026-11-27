@@ -87,7 +87,10 @@ const nombre = (v) => (v === null || v === undefined || v === '' ? null : Number
 export const SLUGS_FIGES = {
   81: 'limites-et-convergence-des-suites', // « Suites : récurrence, limites et convergence » (25/11/2026)
   85: 'fonction-exponentielle', // « Fonction exponentielle : rappels et compléments » (25/11/2026)
-  179: 'probabilites-conditionnelles-et-independance' // « Probabilités conditionnelles et succession d’épreuves » (25/11/2026)
+  179: 'probabilites-conditionnelles-et-independance', // « Probabilités conditionnelles et succession d’épreuves » (25/11/2026)
+  102: 'nombres-complexes', // maths expertes, recentré sur le point de vue algébrique (26/11/2026)
+  103: 'arithmetique', // « Divisibilité, division euclidienne et congruences » (26/11/2026)
+  157: 'fonctions-trigonometriques' // Première, renommée « Trigonométrie » (programme 2026, 26/11/2026)
 }
 
 export async function lireSourcesCatalogue(api) {
